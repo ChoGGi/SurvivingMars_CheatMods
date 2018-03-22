@@ -1,3 +1,5 @@
+### These mods are not needed if you use my CheatMenu
+
 ### No warranty implied or otherwise!
 
 ##### FLiNGs Mods
