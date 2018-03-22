@@ -5,6 +5,8 @@ You should buy a copy: http://store.steampowered.com/app/464920
 ##### Install help
 ```
 place CheatMod_* folders in %APPDATA%\Surviving Mars\Mods
+
+https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_location
 ```
 
 ##### CheatMenu
