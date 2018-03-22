@@ -1,0 +1,1 @@
+Consts.OutsourceResearchCost = 0
