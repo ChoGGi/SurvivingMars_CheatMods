@@ -1,0 +1,1 @@
+const.ResearchQueueSize = 25

@@ -1,0 +1,1 @@
+const.fastGameSpeed = 10
