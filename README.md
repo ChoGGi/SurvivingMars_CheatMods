@@ -1,4 +1,3 @@
-### Collection of cheat mods for the game [Surviving Mars](https://www.survivingmars.com/)
 You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
