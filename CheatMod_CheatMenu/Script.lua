@@ -2115,7 +2115,7 @@ local function InitCheats()
       end
     },
 
-    ["MeteorHealthDamage0"] = {
+    ["MeteorHealthDamageZero"] = {
       mode = "Game",
       menu = "Gameplay/Meteors/Damage = 0",
       description = "Stops Meteor damage (not sure to what)",
@@ -2124,7 +2124,7 @@ local function InitCheats()
         CheatMenuSettings["MeteorHealthDamage"] = 0
         WriteSettings()
         CreateRealTimeThread(AddCustomOnScreenNotification(
-          "MeteorHealthDamage0",
+          "MeteorHealthDamageZero",
           "Colonists",
           "Sticks and stones",
           "UI/Icons/Notifications/meteor_storm.tga",
@@ -2304,16 +2304,16 @@ local function InitCheats()
       end
     },
 
-    ["AvoidWorkplaceTrue"] = {
+    ["AvoidWorkplaceFalse"] = {
       mode = "Game",
-      menu = "Gameplay/Colonists/Colonists Avoid Fired Workplace True",
+      menu = "Gameplay/Colonists/Colonists Avoid Fired Workplace False",
       description = "After being fired, Colonists won't avoid that Workplace searching for a Workplace.    Only works on colonists that have yet to spawn (maybe).",
       action = function()
         Consts.AvoidWorkplaceSols = 0
         CheatMenuSettings["AvoidWorkplaceSols"] = 0
         WriteSettings()
         CreateRealTimeThread(AddCustomOnScreenNotification(
-          "AvoidWorkplaceTrue",
+          "AvoidWorkplaceFalse",
           "Colonists",
           "No Shame",
           "UI/Icons/Notifications/colonist.tga",
