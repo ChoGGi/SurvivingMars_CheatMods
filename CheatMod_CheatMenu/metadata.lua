@@ -5,7 +5,4 @@ return PlaceObj('ModDef', {
 	'id', "ChoGGi_CheatMenu",
 	'author', "ChoGGi (thanks to chippydip and therealshibe)",
 	'version', 1,
-	'code', {
-		"Script.lua",
-	},
 })

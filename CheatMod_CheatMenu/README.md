@@ -15,23 +15,23 @@ Hover over menu items for a description
 Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
 http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 
-List of functions added (maybe not completely up to date):
+List of functions added (not up to date):
 ResearchAllBreakthroughs
 UnlockAllBreakthroughs
 ResearchAllMysteries
-25FoodPerRocketPassenger,50,100,1000
+FoodPerRocketPassengerIncrease
 Add100PrefabsDrone + 10 of each kind of prefab/spire
 FundsAdded25M,1000M,10000M
 ResearchQueueLarger 25
 OutsourcingFree
 OutsourcePoints1000000
 Double,Triple,Quad
-RCTransportStorage256,RCTransportStorage1024
+RCTransportStorageIncrease
 DroneBatteryInfinite
-DroneCarryAmount10,DroneCarryAmount25,DroneCarryAmount100
+DroneCarryAmountIncrease
 DroneBuildSpeedInstant
-DronesPerDroneHub100,DronesPerDroneHub200
-DronesPerRCRover100,DronesPerRCRover200
+DronesPerDroneHubIncrease
+DronesPerRCRoverIncrease
 RCRoverDroneRechargeFree
 RCTransportResourceFast
 DroneMeteorMalfunctionDisable
@@ -59,7 +59,7 @@ PositivePlayground100
 ProjectMorpheusPositiveTrait100
 PerformancePenaltyNonSpecialistNever
 OutsideWorkplaceRadiusLarge
-ColonistsPerRocket100,50
+ColonistsPerRocketIncrease
 RocketCargoCapacityLarge
 RocketTravelInstant
 MaintenanceBuildingsFree
