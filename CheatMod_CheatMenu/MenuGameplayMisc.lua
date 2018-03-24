@@ -1,13 +1,13 @@
 UserActions.AddActions({
 
-  ["ResearchQueueLarger"] = {
-
+  ChoGGi_ResearchQueueLarger = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Research Queue Larger",
     description = "Add up to 25 items to queue.",
     action = function()
       const.ResearchQueueSize = 25
-      CheatMenuSettings["ResearchQueueSize"] = 25
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["ResearchQueueSize"] = const.ResearchQueueSize
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "ResearchQueueLarger",
         "Research",
@@ -18,14 +18,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["ResearchQueueDefault"] = {
 
+  ChoGGi_ResearchQueueDefault = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Research Queue Default",
     description = "Add up to 4 items to queue.",
     action = function()
       const.ResearchQueueSize = 4
-      CheatMenuSettings["ResearchQueueSize"] = 4
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["ResearchQueueSize"] = const.ResearchQueueSize
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "ResearchQueueDefault",
         "Research",
@@ -36,14 +37,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["OutsourcingFree"] = {
 
+  ChoGGi_OutsourcingFree = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Outsourcing Free",
     description = "Outsourcing is free to purchase (over n over).",
     action = function()
       Consts.OutsourceResearchCost = 0
-      CheatMenuSettings["OutsourceResearchCost"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["OutsourceResearchCost"] = Consts.OutsourceResearchCost
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "OutsourcingFree",
         "Research",
@@ -54,14 +56,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["OutsourcingDefault"] = {
 
+  ChoGGi_OutsourcingDefault = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Outsourcing Default",
     description = "Outsourcing is the usual cost.",
     action = function()
       Consts.OutsourceResearchCost = 200000000
-      CheatMenuSettings["OutsourceResearchCost"] = 200000000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["OutsourceResearchCost"] = Consts.OutsourceResearchCost
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "OutsourcingDefault",
         "Research",
@@ -72,14 +75,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["OutsourcePoints1000000"] = {
 
+  ChoGGi_OutsourcePoints1000000 = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Outsource Points (1,000,000)",
     description = "Gives a crapload of research points (almost instant research)",
     action = function()
       Consts.OutsourceResearch = 9999900
-      CheatMenuSettings["OutsourceResearch"] = 9999900
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["OutsourceResearch"] = Consts.OutsourceResearch
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "OutsourcePoints1000000",
         "Research",
@@ -90,14 +94,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["OutsourcePointsDefault"] = {
 
+  ChoGGi_OutsourcePointsDefault = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Research/Outsource Points Default",
     description = "Gives regular amount of research points",
     action = function()
       Consts.OutsourceResearch = 1000
-      CheatMenuSettings["OutsourceResearch"] = 1000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["OutsourceResearch"] = Consts.OutsourceResearch
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "OutsourcePointsDefault",
         "Research",
@@ -109,16 +114,16 @@ UserActions.AddActions({
     end
   },
 
-  ["GameSpeedDefault"] = {
-
+  ChoGGi_GameSpeedDefault = {
+    icon = "DarkSideOfTheMoon.tga",
     menu = "Gameplay/Speed/[1]GameSpeed Default",
     description = "Default speed",
     action = function()
       const.mediumGameSpeed = 3
       const.fastGameSpeed = 5
-      CheatMenuSettings["mediumGameSpeed"] = 3
-      CheatMenuSettings["fastGameSpeed"] = 5
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["mediumGameSpeed"] = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings["fastGameSpeed"] = const.fastGameSpeed
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "GameSpeedDefault",
         "Speed",
@@ -129,16 +134,17 @@ UserActions.AddActions({
       )
     end
   },
-  ["GameSpeedDouble"] = {
 
+  ChoGGi_GameSpeedDouble = {
+    icon = "DarkSideOfTheMoon.tga",
     menu = "Gameplay/Speed/[2]GameSpeed Double",
     description = "Doubles the speed of the game (at medium/fast)",
     action = function()
       const.mediumGameSpeed = 6
       const.fastGameSpeed = 10
-      CheatMenuSettings["mediumGameSpeed"] = 6
-      CheatMenuSettings["fastGameSpeed"] = 10
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["mediumGameSpeed"] = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings["fastGameSpeed"] = const.fastGameSpeed
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "GameSpeedDouble",
         "Speed",
@@ -149,16 +155,17 @@ UserActions.AddActions({
       )
     end
   },
-  ["GameSpeedTriple"] = {
 
+  ChoGGi_GameSpeedTriple = {
+    icon = "DarkSideOfTheMoon.tga",
     menu = "Gameplay/Speed/[3]GameSpeed Triple",
     description = "Triples the speed of the game (at medium/fast)",
     action = function()
       const.mediumGameSpeed = 9
       const.fastGameSpeed = 15
-      CheatMenuSettings["mediumGameSpeed"] = 9
-      CheatMenuSettings["fastGameSpeed"] = 15
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["mediumGameSpeed"] = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings["fastGameSpeed"] = const.fastGameSpeed
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "GameSpeedTriple",
         "Speed",
@@ -169,16 +176,17 @@ UserActions.AddActions({
       )
     end
   },
-  ["GameSpeedQuad"] = {
 
+  ChoGGi_GameSpeedQuad = {
+    icon = "DarkSideOfTheMoon.tga",
     menu = "Gameplay/Speed/[4]GameSpeed Quad",
     description = "Quadruples the speed of the game (at medium/fast)",
     action = function()
       const.mediumGameSpeed = 12
       const.fastGameSpeed = 20
-      CheatMenuSettings["mediumGameSpeed"] = 12
-      CheatMenuSettings["fastGameSpeed"] = 20
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["mediumGameSpeed"] = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings["fastGameSpeed"] = const.fastGameSpeed
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "GameSpeedQuad",
         "Speed",
@@ -190,23 +198,26 @@ UserActions.AddActions({
     end
   },
 
-  ["EnableDeepScan"] = {
-
-    menu = "Gameplay/Scan/Enable Deep Scan",
+  ChoGGi_DeepScanEnable = {
+    icon = "change_height_down.tga",
+    menu = "Gameplay/Scan/Deep Scan Enable",
     description = "Enable deep scan and make deep resources exploitable. Also deep scanning probes.",
     action = function()
-    --[[
       Consts.DeepScanAvailable = 1
       Consts.IsDeepWaterExploitable = 1
       Consts.IsDeepMetalsExploitable = 1
       Consts.IsDeepPreciousMetalsExploitable = 1
-      --]]
-      GrantTech("AdaptedProbes")
-      GrantTech("DeepScanning")
-      GrantTech("DeepWaterExtraction")
-      GrantTech("DeepMetalExtraction")
+      ChoGGi.CheatMenuSettings["DeepScanAvailable"] = Consts.DeepScanAvailable
+      ChoGGi.CheatMenuSettings["IsDeepWaterExploitable"] = Consts.IsDeepWaterExploitable
+      ChoGGi.CheatMenuSettings["IsDeepMetalsExploitable"] = Consts.IsDeepMetalsExploitable
+      ChoGGi.CheatMenuSettings["IsDeepPreciousMetalsExploitable"] = Consts.IsDeepPreciousMetalsExploitable
+      ChoGGi.WriteSettings()
+      --GrantTech("AdaptedProbes")
+      --GrantTech("DeepScanning")
+      --GrantTech("DeepWaterExtraction")
+      --GrantTech("DeepMetalExtraction")
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "EnableDeepScan",
+        "ChoGGi_DeepScanEnable",
         "Scan",
         "Down the rabbit hole",
         "UI/Icons/Notifications/scan.tga",
@@ -215,16 +226,46 @@ UserActions.AddActions({
       )
     end
   },
-  ["EnableDeeperScan"] = {
 
-    menu = "Gameplay/Scan/Enable Deeper Scan",
+  ChoGGi_DeepScanDisable = {
+    icon = "change_height_up.tga",
+    menu = "Gameplay/Scan/Deep Scan Disable",
+    description = "Enable deep scan and make deep resources exploitable. Also deep scanning probes.",
+    action = function()
+      Consts.DeepScanAvailable = 0
+      Consts.IsDeepWaterExploitable = 0
+      Consts.IsDeepMetalsExploitable = 0
+      Consts.IsDeepPreciousMetalsExploitable = 0
+      ChoGGi.CheatMenuSettings["DeepScanAvailable"] = Consts.DeepScanAvailable
+      ChoGGi.CheatMenuSettings["IsDeepWaterExploitable"] = Consts.IsDeepWaterExploitable
+      ChoGGi.CheatMenuSettings["IsDeepMetalsExploitable"] = Consts.IsDeepMetalsExploitable
+      ChoGGi.CheatMenuSettings["IsDeepPreciousMetalsExploitable"] = Consts.IsDeepPreciousMetalsExploitable
+      ChoGGi.WriteSettings()
+      --GrantTech("AdaptedProbes")
+      --GrantTech("DeepScanning")
+      --GrantTech("DeepWaterExtraction")
+      --GrantTech("DeepMetalExtraction")
+      CreateRealTimeThread(AddCustomOnScreenNotification(
+        "ChoGGi_DeepScanDisable",
+        "Scan",
+        "Down the rabbit hole",
+        "UI/Icons/Notifications/scan.tga",
+        nil,
+        {expiration=5000})
+      )
+    end
+  },
+
+  ChoGGi_DeeperScanEnable = {
+    icon = "change_height_down.tga",
+    menu = "Gameplay/Scan/Deeper Scan Enable",
     description = "Uncovers extremely rich underground deposits",
     action = function()
       GrantTech("CoreMetals")
       GrantTech("CoreWater")
       GrantTech("CoreRareMetals")
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "EnableDeeperScan",
+        "ChoGGi_DeeperScanEnable",
         "Scan",
         "Further down the rabbit hole",
         "UI/Icons/Notifications/scan.tga",
@@ -233,14 +274,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["ScannerQueueLarger"] = {
 
+  ChoGGi_ScannerQueueLarger = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Scan/Scanner Queue Larger",
     description = "Queue up to 100 squares instead of 5",
     action = function()
       const.ExplorationQueueMaxSize = 100
-      CheatMenuSettings["ExplorationQueueMaxSize"] = 100
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["ExplorationQueueMaxSize"] = const.ExplorationQueueMaxSize
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "ScannerQueueLarger",
         "Scan",
@@ -251,14 +293,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["ScannerQueueDefault"] = {
 
+  ChoGGi_ScannerQueueDefault = {
+    icon = "ViewArea.tga",
     menu = "Gameplay/Scan/Scanner Queue Default",
     description = "Queue up to 5",
     action = function()
       const.ExplorationQueueMaxSize = 5
-      CheatMenuSettings["ExplorationQueueMaxSize"] = 5
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["ExplorationQueueMaxSize"] = const.ExplorationQueueMaxSize
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "ScannerQueueDefault",
         "Scan",
@@ -270,14 +313,13 @@ UserActions.AddActions({
     end
   },
 
-  ["MeteorHealthDamageZero"] = {
-
+  ChoGGi_MeteorHealthDamageZero = {
     menu = "Gameplay/Meteors/Damage = 0",
     description = "Stops Meteor damage (not sure to what)",
     action = function()
       Consts.MeteorHealthDamage = 0
-      CheatMenuSettings["MeteorHealthDamage"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["MeteorHealthDamage"] = Consts.MeteorHealthDamage
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "MeteorHealthDamageZero",
         "Colonists",
@@ -288,14 +330,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["MeteorHealthDamageDefault"] = {
 
+  ChoGGi_MeteorHealthDamageDefault = {
     menu = "Gameplay/Meteors/Damage = Default",
     description = "Default Meteor damage",
     action = function()
       Consts.MeteorHealthDamage = 50000
-      CheatMenuSettings["MeteorHealthDamage"] = 50000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["MeteorHealthDamage"] = Consts.MeteorHealthDamage
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "MeteorHealthDamageDefault",
         "Colonists",
@@ -307,18 +349,17 @@ UserActions.AddActions({
     end
   },
 
-
-
-  ["ColonistsPerRocket100"] = {
-
-    menu = "Gameplay/Rocket/Colonists Per Rocket 100",
-    description = "100 colonists can arrive on Mars in a single Rocket.",
+  ChoGGi_ColonistsPerRocketIncrease = {
+    menu = "Gameplay/Rocket/Colonists Per Rocket + 25",
+    description = function()
+      return Consts.MaxColonistsPerRocket .. " + 25 colonists can arrive on Mars in a single Rocket."
+    end,
     action = function()
-      Consts.MaxColonistsPerRocket = 100
-      CheatMenuSettings["MaxColonistsPerRocket"] = 100
-      WriteSettings()
+      Consts.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket + 25
+      ChoGGi.CheatMenuSettings["MaxColonistsPerRocket"] = Consts.MaxColonistsPerRocket
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "ColonistsPerRocket100",
+        "ColonistsPerRocketIncrease",
         "Rocket",
         "Long pig sardines",
         "UI/Icons/Notifications/colonist.tga",
@@ -327,26 +368,8 @@ UserActions.AddActions({
       )
     end
   },
-  ["ColonistsPerRocket50"] = {
 
-    menu = "Gameplay/Rocket/Colonists Per Rocket 50",
-    description = "50 colonists can arrive on Mars in a single Rocket.",
-    action = function()
-      Consts.MaxColonistsPerRocket = 50
-      CheatMenuSettings["MaxColonistsPerRocket"] = 50
-      WriteSettings()
-      CreateRealTimeThread(AddCustomOnScreenNotification(
-        "ColonistsPerRocket50",
-        "Rocket",
-        "Long pig sardines",
-        "UI/Icons/Notifications/colonist.tga",
-        nil,
-        {expiration=5000})
-      )
-    end
-  },
-  ["ColonistsPerRocketDefault"] = {
-
+  ChoGGi_ColonistsPerRocketDefault = {
     menu = "Gameplay/Rocket/Colonists Per Rocket Default",
     description = "Default colonists can arrive on Mars in a single Rocket.",
     action = function()
@@ -358,8 +381,8 @@ UserActions.AddActions({
         PerRocket = PerRocket + 20
       end
       Consts.MaxColonistsPerRocket = PerRocket
-      CheatMenuSettings["MaxColonistsPerRocket"] = PerRocket
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["MaxColonistsPerRocket"] = Consts.MaxColonistsPerRocket
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "ColonistsPerRocket",
         "Rocket",
@@ -370,14 +393,15 @@ UserActions.AddActions({
       )
     end
   },
-  ["RocketCargoCapacityLarge"] = {
 
+  ChoGGi_RocketCargoCapacityLarge = {
+    icon = "EnrichTerrainEditor.tga",
     menu = "Gameplay/Rocket/Cargo Capacity Large",
     description = "+1,000,000,000",
     action = function()
       Consts.CargoCapacity = 1000000000
-      CheatMenuSettings["CargoCapacity"] = 1000000000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["CargoCapacity"] = Consts.CargoCapacity
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RocketCargoCapacityLarge",
         "Rocket",
@@ -388,8 +412,9 @@ UserActions.AddActions({
       )
     end
   },
-  ["RocketCargoCapacityDefault"] = {
 
+  ChoGGi_RocketCargoCapacityDefault = {
+    icon = "EnrichTerrainEditor.tga",
     menu = "Gameplay/Rocket/Cargo Capacity Default",
     action = function()
       local CargoCap = 50000
@@ -397,8 +422,8 @@ UserActions.AddActions({
         CargoCap = CargoCap + 10000
       end
       Consts.CargoCapacity = CargoCap
-      CheatMenuSettings["CargoCapacity"] = CargoCap
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["CargoCapacity"] = Consts.CargoCapacity
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RocketCargoCapacityDefault",
         "Rocket",
@@ -410,16 +435,16 @@ UserActions.AddActions({
     end
   },
 
-  ["RocketTravelInstant"] = {
-
+  ChoGGi_RocketTravelInstant = {
+    icon = "place_particles.tga",
     menu = "Gameplay/Rocket/Travel Instant",
     description = "Instant travel between Earth and Mars.",
     action = function()
       Consts.TravelTimeEarthMars = 0
       Consts.TravelTimeMarsEarth = 0
-      CheatMenuSettings["TravelTimeEarthMars"] = 0
-      CheatMenuSettings["TravelTimeMarsEarth"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["TravelTimeEarthMars"] = Consts.TravelTimeEarthMars
+      ChoGGi.CheatMenuSettings["TravelTimeMarsEarth"] = Consts.TravelTimeMarsEarth
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RocketTravelInstant",
         "Rocket",
@@ -430,8 +455,9 @@ UserActions.AddActions({
       )
     end
   },
-  ["RocketTravelDefault"] = {
 
+  ChoGGi_RocketTravelDefault = {
+    icon = "place_particles.tga",
     menu = "Gameplay/Rocket/Travel Default",
     description = "Default travel between Earth and Mars.",
     action = function()
@@ -441,9 +467,9 @@ UserActions.AddActions({
       end
       Consts.TravelTimeEarthMars = TravelTime
       Consts.TravelTimeMarsEarth = TravelTime
-      CheatMenuSettings["TravelTimeEarthMars"] = TravelTime
-      CheatMenuSettings["TravelTimeMarsEarth"] = TravelTime
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["TravelTimeEarthMars"] = Consts.TravelTimeEarthMars
+      ChoGGi.CheatMenuSettings["TravelTimeMarsEarth"] = Consts.TravelTimeMarsEarth
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RocketTravelDefault",
         "Rocket",
@@ -455,13 +481,21 @@ UserActions.AddActions({
     end
   },
 
-  ["RCRoverRadiusIncrease"] = {
+  ChoGGi_HintRadius = {
+    icon = "ReportBug.tga",
+    menu = "Gameplay/Radius/[0]These don't really work for now",
+    description = "keeps resetting...",
+    action = function()
+      return
+    end
+  },
 
+  ChoGGi_RCRoverRadiusIncrease = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/RC Rover Radius + 25",
     description = "Increase drone radius of each Rover",
     action = function()
-      local rcvehicles = UICity.labels.RCRover or empty_table
-      for _,rcvehicle in ipairs(rcvehicles) do
+      for _,rcvehicle in ipairs(UICity.labels.RCRover or empty_table) do
         local prop_meta = rcvehicle:GetPropertyMetadata("UIWorkRadius")
         if prop_meta then
           local radius = rcvehicle:GetProperty(prop_meta.id)
@@ -478,13 +512,13 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCRoverRadiusDefault"] = {
 
+  ChoGGi_RCRoverRadiusDefault = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/RC Rover Radius Default",
     description = "Default drone radius to each Rover",
     action = function()
-      local rcvehicles = UICity.labels.RCRover or empty_table
-      for _,rcvehicle in ipairs(rcvehicles) do
+      for _,rcvehicle in ipairs(UICity.labels.RCRover or empty_table) do
         local prop_meta = rcvehicle:GetPropertyMetadata("UIWorkRadius")
         if prop_meta then
           local radius = rcvehicle:GetProperty(prop_meta.id)
@@ -501,11 +535,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["CommandCenterRadiusIncrease"] = {
 
+--not working
+  ChoGGi_CommandCenterRadiusIncrease = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/Command Center Radius + 25",
     description = "Increase Drone radius of drone hubs",
     action = function()
+
       const.RCRoverDefaultRadius = const.RCRoverDefaultRadius + 25
       const.RCRoverMaxRadius = const.RCRoverDefaultRadius + 25
       const.RCRoverMinRadius = const.RCRoverMinRadius + 25
@@ -532,8 +569,9 @@ UserActions.AddActions({
       )
     end
   },
-  ["CommandCenterRadiusDefault"] = {
 
+  ChoGGi_CommandCenterRadiusDefault = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/Command Center Radius Default",
     description = "Default Drone radius of drone hubs",
     action = function()
@@ -559,7 +597,8 @@ UserActions.AddActions({
     end
   },
 
-  ["TriboelectricScrubberRadiusIncrease"] = {
+  ChoGGi_TriboelectricScrubberRadiusIncrease = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/Triboelectric Scrubber Radius + 25",
     description = "Increase radius of Triboelectric Scrubber",
     action = function()
@@ -584,7 +623,8 @@ UserActions.AddActions({
     end
   },
 
-  ["TriboelectricScrubberRadiusDefault"] = {
+  ChoGGi_TriboelectricScrubberRadiusDefault = {
+    icon = "DisableRMMaps.tga",
     menu = "Gameplay/Radius/Triboelectric Scrubber Radius Default",
     description = "Default radius of Triboelectric Scrubber",
     action = function()

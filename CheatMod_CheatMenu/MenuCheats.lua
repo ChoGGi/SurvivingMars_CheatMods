@@ -1,83 +1,9 @@
 UserActions.AddActions({
 
-  ToggleCheatsMenu = {
-    key = "F2",
-    action = function()
-      UAMenu.ToggleOpen()
-      -- Also toggle the infopanel cheats to show/hide with the menu
-      config.BuildingInfopanelCheats = not not dlgUAMenu
-      ReopenSelectionXInfopanel()
-    end
-  },
-  Console1 = {
-    key = "Alt-Enter",
-    action = function()
-      ShowConsole(true)
-    end
-  },
-  NewGameMenuitem2 = {
-    menu = "Cheats/[06]^ WARNING ^",
-    description = "WARNING: SAVE YOUR GAME",
-    action = function()
-    end
-  },
-  EditorMenuitem = {
-    menu = "Cheats/[14]^ WARNING ^",
-    description = "WARNING: SAVE YOUR GAME",
-    action = function()
-    end
-  },
-  AboutCheatsMenu = {
-    menu = "[998]Help/[1]About",
-    action = function()
-      CreateRealTimeThread(WaitCustomPopupNotification,
-        "About Cheats",
-        "This mod enables the built-in cheats menu. Take a look at the mod code to see how to add additional menus and menu items like this about dialog.",
-        { "OK" }
-      )
-    end
-  },
-  DE_HexBuildGridToggle = {
-    description = "Toggle Hex Build Grid Visibility",
-    menu = "[102]Debug/[09]Toggle Hex Build Grid Visibility",
-    action = function()
-      debug_build_grid()
-    end
-  },
-  DE_ToggleTerrainDepositGrid = {
-    description = "Toggle Terrain Deposit Grid",
-    menu = "[102]Debug/[10]Toggle Terrain Deposit Grid",
-    action = function()
-      ToggleTerrainDepositGrid()
-    end
-  },
-  DE_Toolbar = {
-    description = "Show/Hide the User Actions toolbar",
-    menu = "[102]Debug/[11]Toggle Terrain Deposit Grid",
-    action = function()
-      GetToolbar():Toggle()
-      ToggleSidebar()
-      ToggleEditorStatusbar()
-    end
-  },
-  DE_Toggle = {
-    description = "Toggle developer mode",
-    menu = "[102]Debug/[12]Toggle developer mode",
-    action = function()
-      Platform.developer = not Platform.developer
-      CheatMenuSettings["developer"] = Platform.developer
-      WriteSettings()
-      CreateRealTimeThread(WaitCustomPopupNotification,
-        "Toggles Dev mode",
-        "This Adds more menuitems, but it'll change a bunch of labels to *stripped*, and some shortcut keys don't work\r\nrestart to take effect.",
-        { "OK" }
-      )
-    end
-  },
-
-  ["ResearchAllBreakthroughs"] = {
-    menu = "Cheats/[04]Research/[11]Research All Breakthroughs",
-    description = "Research every Breakthrough",
+  ChoGGi_ResearchEveryBreakthrough = {
+    icon = "ViewArea.tga",
+    menu = "Cheats/[04]Research/[11]Research Every Breakthrough",
+    description = "Research all Breakthroughs",
     action = function()
       GrantTech("ConstructionNanites")
       GrantTech("HullPolarization")
@@ -135,7 +61,7 @@ UserActions.AddActions({
       GrantTech("AutonomousHubs")
       GrantTech("FactoryAutomation")
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "ResearchAllBreakthroughs",
+        "ChoGGi_ResearchEveryBreakthrough",
         "Research",
         "Unleash your inner Black Monolith",
         "UI/Icons/Notifications/research.tga",
@@ -144,10 +70,11 @@ UserActions.AddActions({
       )
     end
   },
-  ["UnlockAllBreakthroughs"] = {
 
-    menu = "Cheats/[04]Research/[12]Unlock All Breakthroughs",
-    description = "Unlock every Breakthrough",
+  ChoGGi_UnlockEveryBreakthrough = {
+    icon = "ViewArea.tga",
+    menu = "Cheats/[04]Research/[12]Unlock Every Breakthrough",
+    description = "Unlocks all Breakthroughs",
     action = function()
       DiscoverTech("ConstructionNanites")
       DiscoverTech("HullPolarization")
@@ -205,7 +132,7 @@ UserActions.AddActions({
       DiscoverTech("AutonomousHubs")
       DiscoverTech("FactoryAutomation")
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "UnlockAllBreakthroughs",
+        "ChoGGi_UnlockEveryBreakthrough",
         "Research",
         "Unleash your inner Black Monolith",
         "UI/Icons/Notifications/research.tga",
@@ -215,10 +142,10 @@ UserActions.AddActions({
     end
   },
 
-  ["ResearchAllMysteries"] = {
-
-    menu = "Cheats/[04]Research/[13]Research All Mysteries",
-    description = "Research every Mystery",
+  ChoGGi_ResearchEveryMystery = {
+    icon = "ViewArea.tga",
+    menu = "Cheats/[04]Research/[13]Research Every Mystery",
+    description = "Research all Mysteries",
     action = function()
       GrantTech("BlackCubesDisposal")
       GrantTech("AlienDiggersDestruction")
@@ -233,7 +160,7 @@ UserActions.AddActions({
       GrantTech("SolExploration")
       GrantTech("WildfireCure")
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        "ResearchAllMysteries",
+        "ChoGGi_ResearchEveryMystery",
         "Research",
         "Unleash your inner Black Cube Dome",
         "UI/Icons/Notifications/research.tga",

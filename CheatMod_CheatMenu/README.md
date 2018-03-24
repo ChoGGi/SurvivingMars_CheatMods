@@ -1,21 +1,67 @@
 ### No warranty implied or otherwise!
 
-##### CheatMenu
+##### Info
 ```
 Contains pretty much all of mine and FLiNGs mods, as well a few more (none of the new/modified building mods though)
 
-Enables the game's built-in cheat tools.
-This can be useful for mod developers or if you just want to play the game in creative mode.
-Use the F2 key to toggle the cheats menu.
-A toolbar will appear at the top of the screen and an additional Cheats section will show up in most info panels on the right side of the screen.
-Many of the cheat commands have keyboard shortcuts and these will function even when the menu is hidden.
+F2: Toggle the cheats menu.
+F4: Open object examiner for selected object
+F5: Dump info for selected object to file (AppData/DumpedText.txt)
+Ctrl+F: Fill resource of selected object
 
+There's a cheats section in most info panels on the right side of the screen.
+Menu>Toggles>Infopanel Cheats
+
+Many of the cheat commands have keyboard shortcuts and these will function even when the menu is hidden.
 Hover over menu items for a description
 
 Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
 http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
+```
 
-List of functions added (not up to date):
+##### Console
+```
+Can now open with tilde as well (but it adds a `)
+Added option to toggle showing history on-screen
+Added option clear history
+Added restart cmd
+Added dump cmd: dump(obj,type,filename,ext)
+
+If you want to dump something without quitting to check log
+copy n paste this into the console
+dump("test") < append to file
+dump("test","w") < overwrite file
+then open AppData/DumpedText.txt
+
+you can paste chunks of scripts to test out:
+local temp
+for _,building in ipairs(DataInstances.BuildingTemplate) do
+	temp = temp .. tostring(building.name) .. tostring(building.wonder)
+end
+dump(temp)
+```
+
+##### Menus
+```
+Added icons to some menuitems
+
+Toggles menu:
+Infopanel Cheats
+Block CheatEmpty (stop CheatEmpty from emptying resources)
+Storage Depot|Waste Rock Hold 1000
+Building_wonder (allow multi wonders)
+Building_hide_from_build_menu (show hidden stuff)
+
+Debug menu:
+Debug\Destroy Selected Object
+Debug\Asteroid attack (single or bombardment)
+Debug\Examine selected object
+Debug\Dump info for selected object to file (AppData/DumpedText.txt)
+Debug\Toggle Hex Build Grid Visibility (works now)
+```
+
+##### List of some stuff added (not up to date)
+```
 ResearchAllBreakthroughs
 UnlockAllBreakthroughs
 ResearchAllMysteries

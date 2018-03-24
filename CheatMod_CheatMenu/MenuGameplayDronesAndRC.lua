@@ -1,7 +1,6 @@
 UserActions.AddActions({
 
-  ["DroneBatteryInfinite"] = {
-
+  ChoGGi_DroneBatteryInfinite = {
     menu = "Gameplay/Drones/Drone Battery Infinite",
     action = function()
       Consts.DroneMoveBatteryUse = 0
@@ -10,25 +9,25 @@ UserActions.AddActions({
       Consts.DroneBuildingRepairBatteryUse = 0
       Consts.DroneDeconstructBatteryUse = 0
       Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse = 0
-      CheatMenuSettings["DroneMoveBatteryUse"] = 0
-      CheatMenuSettings["DroneCarryBatteryUse"] = 0
-      CheatMenuSettings["DroneConstructBatteryUse"] = 0
-      CheatMenuSettings["DroneBuildingRepairBatteryUse"] = 0
-      CheatMenuSettings["DroneDeconstructBatteryUse"] = 0
-      CheatMenuSettings["DroneTransformWasteRockObstructorToStockpileBatteryUse"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneMoveBatteryUse"] = Consts.DroneMoveBatteryUse
+      ChoGGi.CheatMenuSettings["DroneCarryBatteryUse"] = Consts.DroneCarryBatteryUse
+      ChoGGi.CheatMenuSettings["DroneConstructBatteryUse"] = Consts.DroneConstructBatteryUse
+      ChoGGi.CheatMenuSettings["DroneBuildingRepairBatteryUse"] = Consts.DroneBuildingRepairBatteryUse
+      ChoGGi.CheatMenuSettings["DroneDeconstructBatteryUse"] = Consts.DroneDeconstructBatteryUse
+      ChoGGi.CheatMenuSettings["DroneTransformWasteRockObstructorToStockpileBatteryUse"] = Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneBatteryInfinite",
         "Drones",
         "What happens when the drones get into your Jolt Cola supply...",
         "UI/Icons/IPButtons/drone.tga",
         nil,
-        {expiration=5000})
-      )
+        {expiration=5000}
+      ))
     end
   },
-  ["DroneBatteryDefault"] = {
 
+  ChoGGi_DroneBatteryDefault = {
     menu = "Gameplay/Drones/Drone Battery Default",
     action = function()
       Consts.DroneMoveBatteryUse = 100
@@ -37,13 +36,13 @@ UserActions.AddActions({
       Consts.DroneBuildingRepairBatteryUse = 100
       Consts.DroneDeconstructBatteryUse = 100
       Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse = 100
-      CheatMenuSettings["DroneMoveBatteryUse"] = 100
-      CheatMenuSettings["DroneCarryBatteryUse"] = 100
-      CheatMenuSettings["DroneConstructBatteryUse"] = 100
-      CheatMenuSettings["DroneBuildingRepairBatteryUse"] = 100
-      CheatMenuSettings["DroneDeconstructBatteryUse"] = 100
-      CheatMenuSettings["DroneTransformWasteRockObstructorToStockpileBatteryUse"] = 100
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneMoveBatteryUse"] = Consts.DroneMoveBatteryUse
+      ChoGGi.CheatMenuSettings["DroneCarryBatteryUse"] = Consts.DroneCarryBatteryUse
+      ChoGGi.CheatMenuSettings["DroneConstructBatteryUse"] = Consts.DroneConstructBatteryUse
+      ChoGGi.CheatMenuSettings["DroneBuildingRepairBatteryUse"] = Consts.DroneBuildingRepairBatteryUse
+      ChoGGi.CheatMenuSettings["DroneDeconstructBatteryUse"] = Consts.DroneDeconstructBatteryUse
+      ChoGGi.CheatMenuSettings["DroneTransformWasteRockObstructorToStockpileBatteryUse"] = Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneBatteryDefault",
         "Drones",
@@ -54,13 +53,13 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneCarryAmountIncrease"] = {
 
+  ChoGGi_DroneCarryAmountIncrease = {
     menu = "Gameplay/Drones/Drone Carry Amount + 10",
     action = function()
       Consts.DroneResourceCarryAmount = Consts.DroneResourceCarryAmount + 10
-      CheatMenuSettings["DroneResourceCarryAmount"] = Consts.DroneResourceCarryAmount
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneResourceCarryAmount"] = Consts.DroneResourceCarryAmount
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneCarryAmountIncrease",
         "Drones",
@@ -71,8 +70,8 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneCarryAmountDefault"] = {
 
+  ChoGGi_DroneCarryAmountDefault = {
     menu = "Gameplay/Drones/Drone Carry Amount Default",
     action = function()
       local CarryAmount = 1
@@ -80,8 +79,8 @@ UserActions.AddActions({
         CarryAmount = 2
       end
       Consts.DroneResourceCarryAmount = CarryAmount
-      CheatMenuSettings["DroneResourceCarryAmount"] = CarryAmount
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneResourceCarryAmount"] = Consts.DroneResourceCarryAmount
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneCarryAmountDefault",
         "Drones",
@@ -92,16 +91,16 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneBuildSpeedInstant"] = {
 
+  ChoGGi_DroneBuildSpeedInstant = {
     menu = "Gameplay/Drones/Drone Build Speed Instant",
     description = "Instant build/repair when resources are ready.",
     action = function()
       Consts.DroneConstructAmount = 999900
       Consts.DroneBuildingRepairAmount = 999900
-      CheatMenuSettings["DroneConstructAmount"] = 999900
-      CheatMenuSettings["DroneBuildingRepairAmount"] = 999900
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneConstructAmount"] = Consts.DroneConstructAmount
+      ChoGGi.CheatMenuSettings["DroneBuildingRepairAmount"] = Consts.DroneBuildingRepairAmount
+      ChoGGi.WriteSettings()
       --Consts.DroneConstrutionTime = 0
       --Consts.AndroidConstrutionTime = 0
       CreateRealTimeThread(AddCustomOnScreenNotification(
@@ -114,16 +113,16 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneBuildSpeedDefault"] = {
 
+  ChoGGi_DroneBuildSpeedDefault = {
     menu = "Gameplay/Drones/Drone Build Speed Default",
     description = "Default build/repair when resources are ready.",
     action = function()
       Consts.DroneConstructAmount = 100
       Consts.DroneBuildingRepairAmount = 5000
-      CheatMenuSettings["DroneConstructAmount"] = 100
-      CheatMenuSettings["DroneBuildingRepairAmount"] = 5000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneConstructAmount"] = Consts.DroneConstructAmount
+      ChoGGi.CheatMenuSettings["DroneBuildingRepairAmount"] = Consts.DroneBuildingRepairAmount
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneBuildSpeedDefault",
         "Drones",
@@ -134,14 +133,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["DronesPerDroneHubIncrease"] = {
 
+  ChoGGi_DronesPerDroneHubIncrease = {
     menu = "Gameplay/Drones/Drones Per Drone Hub + 25",
     description = "Command more drones with each hub",
     action = function()
       Consts.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones + 25
-      CheatMenuSettings["CommandCenterMaxDrones"] = Consts.CommandCenterMaxDrones
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["CommandCenterMaxDrones"] = Consts.CommandCenterMaxDrones
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DronesPerDroneHub200",
         "Drones",
@@ -152,8 +151,8 @@ UserActions.AddActions({
       )
     end
   },
-  ["DronesPerDroneHubDefault"] = {
 
+  ChoGGi_DronesPerDroneHubDefault = {
     menu = "Gameplay/Drones/Drones Per Drone Hub (Default)",
     description = "Command Default drones with each hub",
     action = function()
@@ -162,8 +161,8 @@ UserActions.AddActions({
         DroneAmount = 80
       end
       Consts.CommandCenterMaxDrones = DroneAmount
-      CheatMenuSettings["CommandCenterMaxDrones"] = DroneAmount
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["CommandCenterMaxDrones"] = Consts.CommandCenterMaxDrones
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DronesPerDroneHubDefault",
         "Drones",
@@ -174,14 +173,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["DronesPerRCRoverIncrease"] = {
 
+  ChoGGi_DronesPerRCRoverIncrease = {
     menu = "Gameplay/Drones/Drones Per RC Rover + 25",
     description = "Command more drones with each rover",
     action = function()
       Consts.RCRoverMaxDrones = Consts.RCRoverMaxDrones + 25
-      CheatMenuSettings["RCRoverMaxDrones"] = Consts.RCRoverMaxDrones
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverMaxDrones"] = Consts.RCRoverMaxDrones
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DronesPerRCRoverIncrease",
         "Drones",
@@ -193,8 +192,7 @@ UserActions.AddActions({
     end
   },
 
-  ["DronesPerRCRoverDefault"] = {
-
+  ChoGGi_DronesPerRCRoverDefault = {
     menu = "Gameplay/Drones/Drones Per RC Rover Default",
     description = "Command Default drones with each rover",
     action = function()
@@ -203,8 +201,8 @@ UserActions.AddActions({
         DroneAmount = 12
       end
       Consts.RCRoverMaxDrones = DroneAmount
-      CheatMenuSettings["RCRoverMaxDrones"] = DroneAmount
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverMaxDrones"] = Consts.RCRoverMaxDrones
+      ChoGGi.WriteSettings()
        CreateRealTimeThread(AddCustomOnScreenNotification(
         "DronesPerRCRoverDefault",
         "Drones",
@@ -215,14 +213,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCRoverDroneRechargeFree"] = {
 
+  ChoGGi_RCRoverDroneRechargeFree = {
     menu = "Gameplay/RC/RC Rover Drone Recharge Free",
     description = "No more draining Rover Battery when recharging drones",
     action = function()
       Consts.RCRoverDroneRechargeCost = 0
-      CheatMenuSettings["RCRoverDroneRechargeCost"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverDroneRechargeCost"] = Consts.RCRoverDroneRechargeCost
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RCRoverDroneRechargeFree",
         "RC",
@@ -233,14 +231,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCRoverDroneRechargeDefault"] = {
 
+  ChoGGi_RCRoverDroneRechargeDefault = {
     menu = "Gameplay/RC/RC Rover Drone Recharge Default",
     description = "Default draining Rover Battery when recharging drones",
     action = function()
       Consts.RCRoverDroneRechargeCost = 15000
-      CheatMenuSettings["RCRoverDroneRechargeCost"] = 15000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverDroneRechargeCost"] = Consts.RCRoverDroneRechargeCost
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RCRoverDroneRechargeDefault",
         "RC",
@@ -251,16 +249,16 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCTransportResourceFast"] = {
 
+  ChoGGi_RCTransportResourceFast = {
     menu = "Gameplay/RC/RC Transport Resource Fast",
     description = "The time it takes for an RC Rover to Transfer/Gather resources (0 seconds).",
     action = function()
       Consts.RCRoverTransferResourceWorkTime = 0
       Consts.RCTransportGatherResourceWorkTime = 0
-      CheatMenuSettings["RCRoverTransferResourceWorkTime"] = 0
-      CheatMenuSettings["RCTransportGatherResourceWorkTime"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverTransferResourceWorkTime"] = Consts.RCRoverTransferResourceWorkTime
+      ChoGGi.CheatMenuSettings["RCTransportGatherResourceWorkTime"] = Consts.RCTransportGatherResourceWorkTime
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RCTransportResourceFast",
         "RC",
@@ -271,8 +269,8 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCTransportResourceDefault"] = {
 
+  ChoGGi_RCTransportResourceDefault = {
     menu = "Gameplay/RC/RC Transport Resource Default",
     description = "The time it takes for an RC Rover to Transfer/Gather resources (Default).",
     action = function()
@@ -282,9 +280,9 @@ UserActions.AddActions({
         ResourceWorkTime = 7500
       end
       Consts.RCTransportGatherResourceWorkTime = ResourceWorkTime
-      CheatMenuSettings["RCRoverTransferResourceWorkTime"] = 1000
-      CheatMenuSettings["RCTransportGatherResourceWorkTime"] = ResourceWorkTime
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["RCRoverTransferResourceWorkTime"] = Consts.RCRoverTransferResourceWorkTime
+      ChoGGi.CheatMenuSettings["RCTransportGatherResourceWorkTime"] = Consts.RCTransportGatherResourceWorkTime
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "RCTransportResourceDefault",
         "RC",
@@ -295,14 +293,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneMeteorMalfunctionDisable"] = {
 
+  ChoGGi_DroneMeteorMalfunctionDisable = {
     menu = "Gameplay/Drones/Drone Meteor Malfunction Disable",
     description = "Drones will not malfunction when close to a meteor impact site.",
     action = function()
       Consts.DroneMeteorMalfunctionChance = 0
-      CheatMenuSettings["DroneMeteorMalfunctionChance"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneMeteorMalfunctionChance"] = Consts.DroneMeteorMalfunctionChance
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneMeteorMalfunctionDisable",
         "Drones",
@@ -313,14 +311,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneMeteorMalfunctionDefault"] = {
 
+  ChoGGi_DroneMeteorMalfunctionDefault = {
     menu = "Gameplay/Drones/Drone Meteor Malfunction Default",
     description = "Drones may malfunction when close to a meteor impact site.",
     action = function()
       Consts.DroneMeteorMalfunctionChance = 50
-      CheatMenuSettings["DroneMeteorMalfunctionChance"] = 50
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneMeteorMalfunctionChance"] = Consts.DroneMeteorMalfunctionChance
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneMeteorMalfunctionDefault",
         "Drones",
@@ -332,14 +330,13 @@ UserActions.AddActions({
     end
   },
 
-  ["DroneRechargeTimeFast"] = {
-
+  ChoGGi_DroneRechargeTimeFast = {
     menu = "Gameplay/Drones/Drone Recharge Time Fast",
     description = "The time it takes for a Drone to be fully recharged (0 seconds).",
     action = function()
       Consts.DroneRechargeTime = 0
-      CheatMenuSettings["DroneRechargeTime"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneRechargeTime"] = Consts.DroneRechargeTime
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneRechargeTimeFast",
         "Drones",
@@ -351,14 +348,13 @@ UserActions.AddActions({
     end
   },
 
-  ["DroneRechargeTimeDefault"] = {
-
+  ChoGGi_DroneRechargeTimeDefault = {
     menu = "Gameplay/Drones/Drone Recharge Time Default",
     description = "The time it takes for a Drone to be fully recharged (Default).",
     action = function()
       Consts.DroneRechargeTime = 40000
-      CheatMenuSettings["DroneRechargeTime"] = 40000
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneRechargeTime"] = Consts.DroneRechargeTime
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneRechargeTimeDefault",
         "Drones",
@@ -370,14 +366,13 @@ UserActions.AddActions({
     end
   },
 
-  ["DroneRepairSupplyLeakFast"] = {
-
+  ChoGGi_DroneRepairSupplyLeakFast = {
     menu = "Gameplay/Drones/Drone Repair Supply Leak Fast",
     description = "The amount of time in seconds it takes a Drone to fix a supply leak (0 seconds).",
     action = function()
       Consts.DroneRepairSupplyLeak = 0
-      CheatMenuSettings["DroneRepairSupplyLeak"] = 0
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneRepairSupplyLeak"] = Consts.DroneRepairSupplyLeak
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneRepairSupplyLeakFast",
         "Drones",
@@ -388,14 +383,14 @@ UserActions.AddActions({
       )
     end
   },
-  ["DroneRepairSupplyLeakDefault"] = {
 
+  ChoGGi_DroneRepairSupplyLeakDefault = {
     menu = "Gameplay/Drones/Drone Repair Supply Leak Default",
     description = "The amount of time in seconds it takes a Drone to fix a supply leak (Default).",
     action = function()
       Consts.DroneRepairSupplyLeak = 180
-      CheatMenuSettings["DroneRepairSupplyLeak"] = 180
-      WriteSettings()
+      ChoGGi.CheatMenuSettings["DroneRepairSupplyLeak"] = Consts.DroneRepairSupplyLeak
+      ChoGGi.WriteSettings()
       CreateRealTimeThread(AddCustomOnScreenNotification(
         "DroneRepairSupplyLeakDefault",
         "Drones",
@@ -407,13 +402,11 @@ UserActions.AddActions({
     end
   },
 
-  ["RCTransportStorageIncrease"] = {
-
+  ChoGGi_RCTransportStorageIncrease = {
     menu = "Gameplay/RC/RC Transport Storage Increase + 100",
     description = "Adds 100 to Transport Storage",
     action = function()
-      local rcvehicles = UICity.labels.RCTransport or empty_table
-      for _,rcvehicle in ipairs(rcvehicles) do
+      for _,rcvehicle in ipairs(UICity.labels.RCTransport or empty_table) do
         rcvehicle.max_shared_storage = rcvehicle.max_shared_storage + (100 * const.ResourceScale)
       end
       CreateRealTimeThread(AddCustomOnScreenNotification(
@@ -426,17 +419,16 @@ UserActions.AddActions({
       )
     end
   },
-  ["RCTransportStorageDefault"] = {
 
+  ChoGGi_RCTransportStorageDefault = {
     menu = "Gameplay/RC/RC Transport Storage Default",
     description = "I miss 30 spaces",
     action = function()
-      local rcvehicles = UICity.labels.RCTransport or empty_table
       local TransportSpace = 30
       if UICity:IsTechDiscovered("TransportOptimization") then
         TransportSpace = 45
       end
-      for _,rcvehicle in ipairs(rcvehicles) do
+      for _,rcvehicle in ipairs(UICity.labels.RCTransport or empty_table) do
         rcvehicle.max_shared_storage = TransportSpace * const.ResourceScale
       end
       CreateRealTimeThread(AddCustomOnScreenNotification(
@@ -449,4 +441,5 @@ UserActions.AddActions({
       )
     end
   },
+
 })
