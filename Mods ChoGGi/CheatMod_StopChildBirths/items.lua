@@ -1,6 +1,7 @@
 Consts.BirthThreshold = 0
 
---can mods override built-in function?
+--[[May be freeziing game
 function Dome:CalcBirth()
   return false
 end
+--]]

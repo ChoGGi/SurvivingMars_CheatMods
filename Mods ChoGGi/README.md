@@ -3,6 +3,7 @@
 ##### SanatoriumCureAll
 ```
 Sanatoriums cure all negative traits, and Sanatorium+ treats 12 instead of 4 people at a time
+Press F4 to toggle showing the full list of traits for it.
 ```
 
 ##### StopChildBirths
