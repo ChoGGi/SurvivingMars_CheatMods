@@ -95,20 +95,9 @@ dofile("Lua/hex.lua")
 --add ConsoleExec
 dofile("CommonLua/console.lua")
 
---add trailblazer skins
-dbg_AddTrailBlazerSkins()
 --we want dev mode left on?
 if not ChoGGi.CheatMenuSettings["developer"] then
   Platform.developer = false
-end
---show cheat pane?
-if ChoGGi.CheatMenuSettings["ToggleInfopanelCheats"] then
-  config.BuildingInfopanelCheats = true
-  ReopenSelectionXInfopanel()
-end
---block CheatEmpty from working?
-if ChoGGi.CheatMenuSettings["BlockCheatEmpty"] then
-  ChoGGi.BlockCheatEmpty()
 end
 
 --load up custom actions (menus/keys)

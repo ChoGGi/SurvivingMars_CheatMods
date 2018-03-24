@@ -1,6 +1,9 @@
 --default game settings
 ChoGGi.CheatMenuSettings = {
 --Custom
+  ToggleBorderScrolling = false,
+  ToggleCameraZoom = false,
+  ToggleCameraZoomSpeed = false,
   ToggleInfopanelCheats = true,
   BlockCheatEmpty = true,
   ConsoleToggleHistory = false,

@@ -124,6 +124,14 @@ function ChoGGi.Dump(obj,openas,name,ext)
   )
 end
 
+function ChoGGi.DumpObject(obj)
+  local keyset={}
+  for key,value in pairs(obj) do
+    keyset[#keyset+1] = tostring(key) .. " = " .. tostring(value) .. "\n"
+  end
+  ChoGGi.Dump(keyset)
+end
+
 --list active functions
 --[[
 UserActions.IsActionActive(id)

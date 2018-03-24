@@ -90,7 +90,7 @@ UserActions.AddActions({
 --]]
 
   ChoGGi_ExamineCurrentObj = {
-    icon = "UIDesigner.tga",
+    icon = "SelectByClassName.tga",
     description = "Opens the object examiner",
     menu = "[102]Debug/Examine Current Obj",
     key = "F4",
@@ -100,7 +100,7 @@ UserActions.AddActions({
   },
 
   ChoGGi_DumpCurrentObj = {
-    icon = "UIDesigner.tga",
+    icon = "SaveMapEntityList.tga",
     description = "Dumps info for current object to AppData/DumpText.txt",
     menu = "[102]Debug/Dump Current Obj",
     key = "F5",

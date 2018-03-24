@@ -84,6 +84,41 @@ end
 --saved game is loaded
 function OnMsg.LoadGame(metadata)
 
+  if ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] then
+    --disable border scrolling
+    cameraRTS.SetProperties(1,{ScrollBorder = 0})
+  else
+    --reduce ScrollBorder to the smallest we can (1 = no scrolling down)
+    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+  end
+
+  --zoom
+  if ChoGGi.CheatMenuSettings["ToggleCameraZoom"] then
+    cameraRTS.SetProperties(1, {
+      MinHeight = 1,
+      MaxHeight = 80,
+      MinZoom = 1,
+      MaxZoom = 24000,
+    })
+  end
+
+  --faster zoom
+  if ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] then
+    cameraRTS.SetProperties(1,{UpDownSpeed = 800})
+  end
+
+  --add trailblazer skins
+  dbg_AddTrailBlazerSkins()
+  --show cheat pane?
+  if ChoGGi.CheatMenuSettings["ToggleInfopanelCheats"] then
+    config.BuildingInfopanelCheats = true
+    ReopenSelectionXInfopanel()
+  end
+  --block CheatEmpty from working?
+  if ChoGGi.CheatMenuSettings["BlockCheatEmpty"] then
+    ChoGGi.BlockCheatEmpty()
+  end
+
   --show console log history
   if ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] then
     ShowConsoleLog(true)

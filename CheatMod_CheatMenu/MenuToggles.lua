@@ -15,6 +15,78 @@ UserActions.AddActions({
     end
   },
 
+  ChoGGi_ToggleBorderScrolling = {
+    icon = "CameraToggle.tga",
+    menu = "Toggles/Camera/Border Scrolling",
+    description = function()
+      local action = ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] and "Enable" or "Disable"
+      return action .. " scrolling when mouse is near borders."
+    end,
+    action = function()
+      ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] = not ChoGGi.CheatMenuSettings["ToggleBorderScrolling"]
+      if ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] then
+        cameraRTS.SetProperties(1, {
+          ScrollBorder = 0,
+          MoveSpeedNormal = ChoGGi.CameraNorm(),
+          MoveSpeedFast = ChoGGi.CameraFast(),
+        })
+      else
+        cameraRTS.SetProperties(1, {
+          ScrollBorder = 2,
+          MoveSpeedNormal = ChoGGi.CameraNorm(),
+          MoveSpeedFast = ChoGGi.CameraFast(),
+        })
+      end
+      ChoGGi.WriteSettings()
+    end
+  },
+
+  ChoGGi_ToggleCameraZoom = {
+    icon = "MoveUpCamera.tga",
+    menu = "Toggles/Camera/Camera Zoom",
+    description = function()
+      local action = ChoGGi.CheatMenuSettings["ToggleCameraZoom"] and "Disable" or "Enable"
+      return action .. " further zoom out/in (best to lower your scroll speed in options)."
+    end,
+    action = function()
+      ChoGGi.CheatMenuSettings["ToggleCameraZoom"] = not ChoGGi.CheatMenuSettings["ToggleCameraZoom"]
+      if ChoGGi.CheatMenuSettings["ToggleCameraZoom"] then
+        cameraRTS.SetProperties(1, {
+          MinHeight = 1,
+          MaxHeight = 80,
+          MinZoom = 1,
+          MaxZoom = 24000,
+        })
+      else
+        cameraRTS.SetProperties(1, {
+          MinHeight = 4,
+          MaxHeight = 40,
+          MinZoom = 400,
+          MaxZoom = 8000,
+        })
+      end
+      ChoGGi.WriteSettings()
+    end
+  },
+
+  ChoGGi_ToggleCameraZoomSpeed = {
+    icon = "AreaToggleOverviewCamera.tga",
+    menu = "Toggles/Camera/Camera Zoom Speed",
+    description = function()
+      local action = ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] and "Disable" or "Enable"
+      return action .. " faster zooming."
+    end,
+    action = function()
+      ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] = not ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"]
+      if ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] then
+        cameraRTS.SetProperties(1,{ToggleCameraZoomSpeed = 800})
+      else
+        cameraRTS.SetProperties(1,{ToggleCameraZoomSpeed = 230})
+      end
+      ChoGGi.WriteSettings()
+    end
+  },
+
   ChoGGi_BlockCheatEmpty = {
     icon = "toggle_dtm_slots.tga",
     menu = "Toggles/[1]Block CheatEmpty",
@@ -29,7 +101,7 @@ UserActions.AddActions({
     end
   },
 
-  ChoGGi_Toggle = {
+  ChoGGi_ToggleDeveloperMode = {
     icon = "ReportBug.tga",
     menu = "Toggles/[99]developer mode",
     description = "messes up labels/some keys.",
