@@ -1,1 +1,0 @@
-Consts.CommandCenterMaxDrones = 100
