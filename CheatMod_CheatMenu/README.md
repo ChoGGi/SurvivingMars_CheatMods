@@ -41,25 +41,6 @@ end
 dump(temp)
 ```
 
-##### Menus
-```
-Added icons to some menuitems
-
-Toggles menu:
-Infopanel Cheats
-Block CheatEmpty (stop CheatEmpty from emptying resources)
-Storage Depot|Waste Rock Hold 1000
-Building_wonder (allow multi wonders)
-Building_hide_from_build_menu (show hidden stuff)
-
-Debug menu:
-Debug\Destroy Selected Object
-Debug\Asteroid attack (single or bombardment)
-Debug\Examine selected object
-Debug\Dump info for selected object to file (AppData/DumpedText.txt)
-Debug\Toggle Hex Build Grid Visibility (works now)
-```
-
 ##### List of some stuff added (not up to date)
 ```
 Add100PrefabsDrone
