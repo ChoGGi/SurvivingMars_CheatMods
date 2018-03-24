@@ -1,1 +1,0 @@
-Consts.BuildingMaintenancePointsModifier = -100
