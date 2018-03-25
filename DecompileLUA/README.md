@@ -11,6 +11,6 @@ Edit DeCompileLUA.ini before starting it
 
 [unluac](https://sourceforge.net/projects/unluac/files/Unstable/)
 
-Use [hpk](https://github.com/nickelc/hpk) to extract LUA files from hpk archives
+Use [hpk](https://github.com/nickelc/hpk) to extract LUA files from hpk archives  (don't use the --fix-lua-files flag when you extract, as DecompileLUA does that)
 
 ### Thank you [nickelc](https://www.techpowerup.com/forums/threads/tropico-3-4-5-hpk-archiver.113705/page-6#post-3815805) for showing how to change the header
