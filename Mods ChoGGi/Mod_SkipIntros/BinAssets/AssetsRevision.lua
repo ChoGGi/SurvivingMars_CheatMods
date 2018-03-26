@@ -4,7 +4,7 @@ function OnMsg.DesktopCreated()
 end
 
 function OnMsg.ReloadLua()
-  --opens load game menu
+  --opens load game menu, uncomment to enable
   --[[
   CreateRealTimeThread(function()
     OpenPreGameMainMenu("Load")
@@ -266,20 +266,8 @@ end
 function OnMsg.LightmodelRainChange(view, lm, time, prev_lm)
 	DebugPrint("INFO_LightmodelRainChange\n")
 end
-function OnMsg.LoadGame(metadata)
+function OnMsg.LoadGame(metadata) --fired after a game has been loaded.
 	DebugPrint("INFO_LoadGame\n")
-end
---[[fired after a game has been loaded.
-	DebugPrint("INFO_ired after a game has been l\n")
-end
-This message is sent after the load game process has finished, everything is deserialized,
-	DebugPrint("INFO_message is sent after the load game process has finished, everything is deseria\n")
-end
-but the game time hasn't yet started running. Use it to fix savegame compatibility issues.
-	DebugPrint("INFO_he game time hasn't yet started running. Use it to fix savegame compatibility i\n")
-end
-metadata.lua_revision contains the version of the game which created the savegame.--]]
-	DebugPrint("INFO_ata.lua_revision contains the version of the game which created the savegam\n")
 end
 function OnMsg.LoadingScreenPreClose()
 	DebugPrint("INFO_LoadingScreenPreClose\n")
