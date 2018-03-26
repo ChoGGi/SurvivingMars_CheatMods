@@ -5,32 +5,35 @@ UserActions.AddActions({
     key = "Ctrl-F3",
     description = "Toggle Hex Build Grid Visibility",
     menu = "[102]Debug/[09]Toggle Hex Build Grid Visibility",
-    action = function()
-      debug_build_grid()
-    end
+    action = debug_build_grid
   },
 
   ChoGGi_ConsoleClearDisplay = {
     icon = "Voice.tga",
     key = "F9",
+    description = "Clears console history display.",
     menu = "[102]Debug/Console Clear Display",
-    action = function()
-      cls()
-    end
+    action = cls
+  },
+
+  ChoGGi_WriteDebugLogs = {
+    icon = "save_city.tga",
+    menu = "[102]Debug/Write Debug Logs",
+    description = function()
+      local action = ChoGGi.CheatMenuSettings["WriteDebugLogs"] and "(Enabled)" or "(Disabled)"
+      return action .. " Writing debug logs to AppData/DebugPrint and AppData/printf (immediately instead of only after quiting, restart for disable)."
+    end,
+    action = ChoGGi.WriteDebugLogs
   },
 
   ChoGGi_ConsoleToggleHistory = {
     icon = "Voice.tga",
     menu = "[102]Debug/Console Toggle History",
     description = function()
-      local action = ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] and "Disable" or "Enable"
-      return action .. " showing console history on screen."
+      local action = ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] and "(Enabled)" or "(Disabled)"
+      return action .. " Show console history on screen."
     end,
-    action = function()
-      ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] = not ChoGGi.CheatMenuSettings["ConsoleToggleHistory"]
-      ShowConsoleLog(ChoGGi.CheatMenuSettings["ConsoleToggleHistory"])
-      ChoGGi.WriteSettings()
-    end
+    action = ChoGGi.ConsoleToggleHistory
   },
 
   ChoGGi_ToggleTerrainDepositGrid = {
@@ -38,65 +41,37 @@ UserActions.AddActions({
     key = "Ctrl-F4",
     description = "Toggle Terrain Deposit Grid",
     menu = "[102]Debug/[09]Toggle Terrain Deposit Grid",
-    action = function()
-      ToggleTerrainDepositGrid()
-    end
+    action = ToggleTerrainDepositGrid
   },
 
   ChoGGi_DestroySelectedObject = {
     icon = "DeleteArea.tga",
     description = "(Some, not all).",
     menu = "[102]Debug/Destroy Selected Object",
-    action = function()
-      pcall(function()
-        SelectedObj.can_demolish = true
-        SelectedObj.indestructible = false
-        DestroyBuildingImmediate(SelectedObj)
-        SelectedObj:Destroy()
-      end)
-    end
+    action = ChoGGi.DestroySelectedObject
   },
 
   ChoGGi_BombardmentAtCursor = {
     icon = "ToggleEnvMap.tga",
     key = "Ctrl-Numpad 1",
     menu = "[102]Debug/Asteroid At Cursor",
-    action = function()
-      StartBombard(GetTerrainCursor(),0,1,0,0)
-      --function WaitBombard(obj, radius, count, delay_min, delay_max)
-    end
+    description = "May have trouble aiming when an object is selected.",
+    action = ChoGGi.BombardmentAtCursor
   },
   ChoGGi_BombardmentAtCursorMass = {
     icon = "ToggleEnvMap.tga",
     description = "Zoom out",
     key = "Ctrl-Numpad 2",
     menu = "[102]Debug/Asteroid Bombardment",
-    action = function()
-      StartBombard(GetTerrainCursor(),0,100,0,0)
-    end
+    action = ChoGGi.BombardmentAtCursorMass
   },
-
---[[
-  ChoGGi_DumpCurrentObj = {
-    menu = "[102]Debug/Dump Current Obj",
-    key = "F5",
-    action = function()
-      Examine.onclick_handles = {}
-      Examine.obj = SelectedObj
-      local tempTable = Examine:totextex(SelectedObj)
-      ChoGGi.Dump(tempTable .. "\n\n","a","DumpedHtml","html")
-    end
-  },
---]]
 
   ChoGGi_ExamineCurrentObj = {
     icon = "SelectByClassName.tga",
     description = "Opens the object examiner",
     menu = "[102]Debug/Examine Current Obj",
     key = "F4",
-    action = function()
-      OpenExamine(SelectedObj)
-    end
+    action = ChoGGi.ExamineCurrentObj
   },
 
   ChoGGi_DumpCurrentObj = {
@@ -105,11 +80,7 @@ UserActions.AddActions({
     menu = "[102]Debug/Dump Current Obj",
     key = "F5",
     action = function()
-      local objInfo = "\n"
-      for key,value in pairs(SelectedObj) do
-        objInfo = objInfo .. tostring(key) .. " = " .. tostring(value) .. "\n"
-      end
-      ChoGGi.Dump(objInfo,"a")
+      ChoGGi.DumpObject(SelectedObj)
     end
   },
 
@@ -119,101 +90,50 @@ UserActions.AddActions({
     toolbar = "01_File/01_ChangeMap",
     icon = "load_city.tga",
     menu = "[102]Map/[01]Change Map",
-    action = function()
-      local ineditor = Platform.editor and IsEditorActive()
-      if ineditor then
-        s_OldChangeMapAction()
-      else
-        CreateRealTimeThread(function()
-          local caption = Untranslated("Choose map with settings presets:")
-          local maps = ListMaps()
-          local items = {}
-          for i = 1, #maps do
-            if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
-              table.insert(items, {
-                text = Untranslated(maps[i]),
-                map = maps[i]
-              })
-            end
-          end
-          local default_selection = table.find(maps, GetMapName())
-          local map_settings = {}
-          local class_names = ClassDescendantsList("MapSettings")
-          for i = 1, #class_names do
-            local class = class_names[i]
-            map_settings[class] = mapdata[class]
-          end
-          local sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
-          if sel_idx ~= "idCancel" then
-            local map = sel_idx and items[sel_idx].map
-            if not map or map == "" then
-              return
-            end
-            CloseMenuWizards()
-            StartGame(map, map_settings)
-            LocalStorage.last_map = map
-            SaveLocalStorage()
-          end
-        end)
-      end
-    end
+    action = ChoGGi.ChangeMap
   },
 
 --[[
   ChoGGi_ReloadStaticClasses = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/ReloadStaticClasses()",
-    action = function()
-      ReloadStaticClasses()
-    end
+    action = ReloadStaticClasses
   },
 
   ChoGGi_ReloadTexture = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/ReloadTexture()",
-    action = function()
-      ReloadTexture()
-    end
+    action = ReloadTexture
   },
 
   ChoGGi_ReloadEntity = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/ReloadEntity()",
-    action = function()
-      ReloadEntity()
-    end
+    action = ReloadEntity
   },
 
   ChoGGi_InitSourceController = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/InitSourceController()",
-    action = function()
-      InitSourceController()
-    end
+    action = InitSourceController
   },
 
   ChoGGi_CNSProcess = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/CNSProcess()",
-    action = function()
-      CNSProcess()
-    end
+    action = CNSProcess
   },
 
   ChoGGi_ParticlesReload = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/ParticlesReload()",
-    action = function()
-      ParticlesReload()
-    end
+    action = ParticlesReload
   },
 
   ChoGGi_ReloadShaders = {
     icon = "CollisionGeometry.tga",
     menu = "[102]Debug/ReloadShaders()",
-    action = function()
-      hr.ReloadShaders()
-    end
+    action = hr.ReloadShaders
   },
 
 dofolder_files("Lua/Dev")
@@ -273,3 +193,7 @@ dofolder_files("Lua/Dev")
 --]]
 
 })
+
+if ChoGGi.ChoGGiComp then
+  AddConsoleLog("ChoGGi: MenuDebug.lua",true)
+end

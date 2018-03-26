@@ -1,5 +1,27 @@
 ### No warranty implied or otherwise!
 
+##### OutdoorDomeBuildings
+```
+Add dome buildings outdoors (dome service buildings still need to be near domes).
+doesn't mean they'll work properly, but they look nice.
+Made Spires buildable in other spaces in domes (can't build them in spire place)< Thank you BoehserOnkel
+```
+
+### All the rest are included in CheatMod_CheatMenu, but if you want them then...
+
+##### DefensiveTurret
+```
+A laser-targeting defense structure. Protect nearby buildings from meteors. Can attack enemy vehicles at extreme range.
+enemy vehicles sounds like dlc? :)
+```
+
+##### HiddenBuildings
+```
+Add hidden buildings to build menu...Warning: The ones in the "Hidden" category may break your game...
+The Rocket Landing Site will break selection if you select it, so you'll need to manually uncomment it in items.lua (it's useless anyways).
+Added a * to the names, to distinguish from the normal ones.
+```
+
 ##### SanatoriumCureAll
 ```
 Sanatoriums cure all negative traits, and Sanatorium+ treats 12 instead of 4 people at a time
@@ -21,28 +43,6 @@ Turns all born/sent from Earth Colonists into youths (no more dealing with child
 Add as many wonders as you want (the space elevator doesn't like it when there's more than one).
 Added a * to the names, to distinguish from the normal ones.
 ```
-
-##### OutdoorDomeBuildings
-```
-Add dome buildings outdoors (dome service buildings still need to be near domes).
-doesn't mean they'll work properly, but they look nice.
-Made Spires buildable in other spaces in domes (can't build them in spire place)< Thank you BoehserOnkel
-```
-
-##### DefensiveTurret
-```
-A laser-targeting defense structure. Protect nearby buildings from meteors. Can attack enemy vehicles at extreme range.
-enemy vehicles sounds like dlc? :)
-```
-
-##### HiddenBuildings
-```
-Add hidden buildings to build menu...Warning: The ones in the "Hidden" category may break your game...
-The Rocket Landing Site will break selection if you select it, so you'll need to manually uncomment it in items.lua (it's useless anyways).
-Added a * to the names, to distinguish from the normal ones.
-```
-
-### All the below are included in the Cheat menu, but if you want them to be permanently enabled then...
 
 ##### AddFunding
 ```

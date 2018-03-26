@@ -11,13 +11,8 @@ UserActions.AddActions({
   TESTING = {
     key = "F3",
     action = function()
-      CreateRealTimeThread(AddCustomOnScreenNotification(
-        "TESTING",
-        "TESTING",
-        "TESTING",
-        "UI/Icons/IPButtons/assign_residence.tga",
-        nil,
-        {expiration=5000})
+      ChoGGi.MsgPopup("TESTING",
+        "TESTING","UI/Icons/IPButtons/assign_residence.tga"
       )
 ----------------------
 ChoGGi.Dump(tostring(ChoGGi.Examine.idText))
@@ -46,3 +41,7 @@ ChoGGi.Dump(tostring(ChoGGi.Examine.idText))
   },
 
 })
+
+if ChoGGi.ChoGGiComp then
+  AddConsoleLog("ChoGGi: Keys.lua",true)
+end

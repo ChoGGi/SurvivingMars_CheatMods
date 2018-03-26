@@ -1,87 +1,124 @@
-function restart()
-  quit("restart")
-end
-function dump(obj,openas,name,ext)
-  ChoGGi.Dump(obj,openas,name,ext)
+--called everytime we set a setting in menu
+function ChoGGi.WriteSettings()
+  AsyncStringToFile(ChoGGi.SettingsFile,TupleToLuaCode(ChoGGi.CheatMenuSettings))
 end
 
-function ChoGGi.FillResource(self)
-  local temp
-  if pcall(function ()
-    ResourceProducer.CheatFill(self)
-  end) then temp = false
-  elseif pcall(function ()
-    ResourceProducer.CheatFill(self)
-    self.amount_stored = self.producers[1].max_storage
-  end) then temp = false
-  elseif pcall(function ()
-    local group = self.group
-    for i = 1, #group do
-      group[i].transport_request:AddAmount(10000)
-    end
-    self:UpdateUI()
-  end) then temp = false
-  elseif pcall(function ()
-    self.electricity:SetStoredAmount(self.capacity, "electricity")
-  end) then temp = false
-  elseif pcall(function ()
-    self.air:SetStoredAmount(self.air_capacity, "air")
-  end) then temp = false
-  elseif pcall(function ()
-    self.water:SetStoredAmount(self.water_capacity, "water")
-  end) then temp = false
-  elseif pcall(function ()
-    self.transport_request:AddAmount(10000)
-    self:UpdateUI()
-  end) then temp = false
-  elseif pcall(function ()
-    self.demand.WasteRock:SetAmount(0)
-    if self.supply.Concrete then
-      self.supply.Concrete:SetAmount(self.max_amount_WasteRock / Max(1, g_Consts.WasteRockToConcreteRatio))
-    end
-    self:SetCount(self.max_amount_WasteRock)
-  end) then temp = false
-  elseif pcall(function ()
-    self.amount = self.max_amount
-    self:NotifyNearbyExploiters()
-  end) then temp = false
-  elseif pcall(function ()
-    local resource = self.resource
-    if self.supply[resource] then
-      local max_name = "max_amount_" .. resource
-      self.supply[resource]:SetAmount(self[max_name])
-      self.demand[resource]:SetAmount(0)
-    end
-    self:SetCount(self.supply[resource]:GetActualAmount())
-  end) then temp = false
-  elseif pcall(function ()
-    local amount_to_fill = self.max_storage - self:GetAmountStored()
-    self.today_production = self.today_production + amount_to_fill
-    self.lifetime_production = self.lifetime_production + amount_to_fill
-    self:UpdateStockpileAmounts(self.max_storage)
-  end) then temp = false
-  elseif pcall(function ()
-    local storable_resources = self.storable_resources
-    local resource_count = #storable_resources
-    self:InterruptDrones(nil, function(drone)
-      local r = drone.d_request
-      if r and self.demand[r:GetResource()] == r then
-        return drone
-      end
-    end)
-    for i = 1, resource_count do
-      local resource_name = storable_resources[i]
-      if self.supply[resource_name] then
-        local a = self.demand[resource_name]:GetActualAmount()
-        self:AddResource(a, resource_name)
-      end
-    end
-  end) then temp = false
+--read saved settings from file
+function ChoGGi.ReadSettings()
+	if not ChoGGi.SettingsFile then return end
+
+	local file_error, code = AsyncFileToString(ChoGGi.SettingsFile)
+	if file_error then
+		return file_error
+	end
+
+	local code_error
+  code_error, ChoGGi.CheatMenuSettings = LuaCodeToTuple(code)
+	if code_error then
+		return code_error
+	end
+
+  --set consts to saved ones
+  if ChoGGi.SettingsFileLoaded then
+    ChoGGi.SetSettings()
   end
 end
 
-function ChoGGi.BlockCheatEmpty()
-  --stop these from happening
+function restart()
+  quit("restart")
+end
+function dump(Obj,Mode,File,Ext)
+  ChoGGi.Dump(Obj,Mode,File,Ext)
+end
+function alert(Msg,Title,Icon)
+  ChoGGi.MsgPopup(Msg,Title,Icon)
+end
+
+function ChoGGi.MsgPopup(Msg,Title,Icon)
+  Msg = Msg or ""
+  Title = Title or "Placeholder"
+  Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
+  CreateRealTimeThread(AddCustomOnScreenNotification(
+    AsyncRand(),Title,"" .. Msg,Icon,nil,{expiration=5000})
+  )
+end
+
+--give a CheatFill cmd to concrete (well try to, it doesn't seem to have the cheat section...find out why)
+--[[
+function TerrainDepositConcrete:CheatRefill()
+  self.amount = self.max_amount
+  self:NotifyNearbyExploiters()
+  self:UpdateUI()
+end
+--]]
+
+function ChoGGi.FullyAutomatedBuildingsSet(building)
+  if building.encyclopedia_id == "ElectronicsFactory"
+  or building.encyclopedia_id == "MachinePartsFactory"
+  or building.encyclopedia_id == "ElectronicsFactory"
+  or building.encyclopedia_id == "PolymerPlant"
+  or building.encyclopedia_id == "MachinePartsFactory"
+  or building.encyclopedia_id == "MetalsExtractor"
+  or building.encyclopedia_id == "PreciousMetalsExtractor"
+  or building.encyclopedia_id == "WaterExtractor"
+  or building.encyclopedia_id == "RegolithExtractor" then
+      building.upgrade2_id = "FullyAutomatedBuildings"
+      building.upgrade2_display_name = "Fully Automated"
+      building.upgrade2_description = "Fully Automated"
+      building.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
+      building.upgrade2_mod_prop_id_1 = "automation"
+      building.upgrade2_add_value_1 = 1
+      building.upgrade2_mod_prop_id_2 = "auto_performance"
+      building.upgrade2_add_value_2 = 150
+      building.upgrade2_mod_prop_id_3 = "max_workers"
+      building.upgrade2_mul_value_3 = -100
+  elseif building.encyclopedia_id == "CloningVats"
+  or building.encyclopedia_id == "DroneFactory"
+  or building.encyclopedia_id == "ElectronicsFactory"
+  or building.encyclopedia_id == "Farm"
+  or building.encyclopedia_id == "FungalFarm"
+  or building.encyclopedia_id == "FusionReactor"
+  or building.encyclopedia_id == "HydroponicFarm"
+  or building.encyclopedia_id == "Infirmary"
+  or building.encyclopedia_id == "MedicalCenter"
+  or building.encyclopedia_id == "NetworkNode"
+  or building.encyclopedia_id == "RechargeStation"
+  or building.encyclopedia_id == "ScienceInstitute"
+  or building.encyclopedia_id == "ScienceInstitute"
+  or building.encyclopedia_id == "SecurityStation"
+  or building.encyclopedia_id == "SecurityStation" then
+      building.upgrade3_id = "FullyAutomatedBuildings"
+      building.upgrade3_display_name = "Fully Automated"
+      building.upgrade3_description = "Fully Automated"
+      building.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
+      building.upgrade3_mod_prop_id_1 = "automation"
+      building.upgrade3_add_value_1 = 1
+      building.upgrade3_mod_prop_id_2 = "auto_performance"
+      building.upgrade3_add_value_2 = 150
+      building.upgrade3_mod_prop_id_3 = "max_workers"
+      building.upgrade3_mul_value_3 = -100
+    end
+end
+
+--used to add or remove traits from schools/sanitariums
+function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Nil)
+  local Buildings = UICity.labels.Building
+  for i = 1, #(Buildings or "") do
+    local Obj = Buildings[i]
+    if IsKindOf(Obj,Building) then
+      for j = 1, #Traits do
+        if Nil then
+          Obj:SetTrait(j,nil)
+        else
+          Obj:SetTrait(j,Traits[j])
+        end
+      end
+    end
+  end
+end
+
+--stop these from happening
+function ChoGGi.SetBlockCheatEmpty()
   function SurfaceDeposit:CheatEmpty()
   end
   function Deposit:CheatEmpty()
@@ -107,155 +144,322 @@ function ChoGGi.BlockCheatEmpty()
   UniversalStorageDepot.CheatEmpty = false
 end
 
-function ChoGGi.Dump(obj,openas,name,ext)
-  openas = openas or "a"
-  ext = ext or "txt"
-  name = name or "DumpedText"
-  local tempfile = assert(io.open("AppData/" .. name .. "." .. ext,openas))
-  tempfile:write(obj)
-  tempfile:close()
-  CreateRealTimeThread(AddCustomOnScreenNotification(
-    "ChoGGi_Dump_Func",
-    "Dump",
-    "Dumped: " .. Examine:ToString(obj) .. " to AppData/" .. name .. "." .. ext,
-    "UI/Icons/Upgrades/magnetic_filtering_04.tga",
-    nil,
-    {expiration=5000})
-  )
-end
-
-function ChoGGi.DumpObject(obj)
-  local keyset={}
-  for key,value in pairs(obj) do
-    keyset[#keyset+1] = tostring(key) .. " = " .. tostring(value) .. "\n"
-  end
-  ChoGGi.Dump(keyset)
-end
-
---list active functions
---[[
-UserActions.IsActionActive(id)
-UserActions.RemoveActions({
-  "G_ToggleInfopanelCheats",
-})
---]]
-function ChoGGi.GetActiveActions()
-  local ActiveActions = {}
-  for id, _ in pairs(UserActions.Actions) do
-    if UserActions.IsActionActive(id) then
-      ActiveActions[#ActiveActions + 1] = id .. "\n"
+--ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier")
+--ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
+--ReturnTechAmount().a amount and .p percent
+function ChoGGi.ReturnTechAmount(Tech,Prop)
+  for i,_ in ipairs(TechTree) do
+    for j,_ in ipairs(TechTree[i]) do
+      if TechTree[i][j].id == Tech then
+        for k,_ in ipairs(TechTree[i][j]) do
+          if TechTree[i][j][k].Prop == Prop then
+            local Tech = TechTree[i][j][k]
+            local RetObj = {}
+            if Tech.Percent then
+              RetObj.p = Tech.Percent * -1 + 0.0 / 100 -- -5 > 5 > 5.0 > 0.05
+            end
+            if Tech.Amount then
+              if Tech.Amount <= 0 then
+                RetObj.a = Tech.Amount * -1
+              else
+                RetObj.a = Tech.Amount
+              end
+            end
+            return RetObj
+          end
+        end
+      end
     end
   end
-  return ActiveActions
 end
 
---functions to check for tech for default values
+--check if tech is researched before we set these consts (activated from menuitems)
 function ChoGGi.BuildingMaintenancePointsModifier()
   if UICity and UICity:IsTechDiscovered("HullPolarization") then
-    return 75
+    local p = ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
+    return ChoGGi.Consts["BuildingMaintenancePointsModifier"] * p
   end
-  return 100
+  return ChoGGi.Consts["BuildingMaintenancePointsModifier"]
 end
 --
 function ChoGGi.CargoCapacity()
   if UICity and UICity:IsTechDiscovered("FuelCompression") then
-    return 60000
+    local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity").a
+    return ChoGGi.Consts["CargoCapacity"] + a
   end
-  return 50000
+  return ChoGGi.Consts["CargoCapacity"]
 end
 --
 function ChoGGi.CommandCenterMaxDrones()
   if UICity and UICity:IsTechDiscovered("DroneSwarm") then
-    return 80
+    local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones").a
+    return ChoGGi.Consts["CommandCenterMaxDrones"] + a
   end
-  return 20
+  return ChoGGi.Consts["CommandCenterMaxDrones"]
 end
 --
 function ChoGGi.DroneResourceCarryAmount()
   if UICity and UICity:IsTechDiscovered("ArtificialMuscles") then
-    return 2
+    local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount").a
+    return ChoGGi.Consts["DroneResourceCarryAmount"] + a
   end
-  return 1
+  return ChoGGi.Consts["DroneResourceCarryAmount"]
 end
 --
 function ChoGGi.LowSanityNegativeTraitChance()
   if UICity and UICity:IsTechDiscovered("SupportiveCommunity") then
-    return 7.5
+    local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
+    --[[
+    LowSanityNegativeTraitChance = 30%
+    SupportiveCommunity = -70%
+    --]]
+    local LowSan = ChoGGi.Consts["LowSanityNegativeTraitChance"] + 0.0 --SM has no math.funcs so + 0.0
+    return p*LowSan/100*100
   end
-  return 30
+  return ChoGGi.Consts["LowSanityNegativeTraitChance"]
 end
 --
 function ChoGGi.MaxColonistsPerRocket()
-  local PerRocket = 12
+  local PerRocket = ChoGGi.Consts["MaxColonistsPerRocket"]
+  local a
   if UICity and UICity:IsTechDiscovered("CompactPassengerModule") then
-    PerRocket = PerRocket + 10
+    a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
+    PerRocket = PerRocket + a
   end
   if UICity and UICity:IsTechDiscovered("CryoSleep") then
-    PerRocket = PerRocket + 20
+    a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    PerRocket = PerRocket + a
   end
   return PerRocket
 end
 --
 function ChoGGi.NonSpecialistPerformancePenalty()
   if UICity and UICity:IsTechDiscovered("GeneralTraining") then
-    return 40
+    local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
+    return ChoGGi.Consts["NonSpecialistPerformancePenalty"] - a
   end
-  return 50
+  return ChoGGi.Consts["NonSpecialistPerformancePenalty"]
 end
 --
 function ChoGGi.RCRoverMaxDrones()
   if UICity and UICity:IsTechDiscovered("RoverCommandAI") then
-    return 12
+    local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones").a
+    return ChoGGi.Consts["RCRoverMaxDrones"] + a
   end
-  return 8
+  return ChoGGi.Consts["RCRoverMaxDrones"]
 end
 --
 function ChoGGi.RCTransportGatherResourceWorkTime()
   if UICity and UICity:IsTechDiscovered("TransportOptimization") then
-    ResourceWorkTime = 7500
-    return 7500
+    local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime").p
+    return ChoGGi.Consts["RCTransportGatherResourceWorkTime"] * p
   end
-  return 15000
+  return ChoGGi.Consts["RCTransportGatherResourceWorkTime"]
 end
 --
-function ChoGGi.TravelTimePlanets()
+function ChoGGi.RCTransportResourceCapacity()
+  if UICity and UICity:IsTechDiscovered("TransportOptimization") then
+    local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage").a
+    return ChoGGi.Consts["RCTransportResourceCapacity"] + a
+  end
+  return ChoGGi.Consts["RCTransportResourceCapacity"]
+end
+--
+function ChoGGi.TravelTimeEarthMars()
   if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
-    return 375000
+    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars").p
+    return ChoGGi.Consts["TravelTimeEarthMars"] * p
   end
-  return 750000
+  return ChoGGi.Consts["TravelTimeEarthMars"]
 end
-
---called everytime you set a setting
-function ChoGGi.WriteSettings()
-  AsyncStringToFile(ChoGGi.SettingsFile,TupleToLuaCode(ChoGGi.CheatMenuSettings))
-end
-
---read settings from file
-function ChoGGi.ReadSettings()
-	if not ChoGGi.SettingsFile then return end
-
-	local file_error, code = AsyncFileToString(ChoGGi.SettingsFile)
-	if file_error then
-		return file_error
-	end
-
-	local code_error
-  code_error, ChoGGi.CheatMenuSettings = LuaCodeToTuple(code)
-	if code_error then
-		return code_error
-	end
-
-  if ChoGGi.SettingsFileLoaded then
-    ChoGGi.SetSettings()
+--
+function ChoGGi.TravelTimeMarsEarth()
+  if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
+    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth").p
+    return ChoGGi.Consts["TravelTimeMarsEarth"] * p
   end
-
+  return ChoGGi.Consts["TravelTimeMarsEarth"]
 end
 
---give a CheatFill cmd to concrete (well try to, it doesn't seem to have the cheat section...find out why)
+--debug stuff
+function ChoGGi.MsgPopup2(Msg,Title,Icon)
+  Msg = Msg or ""
+  Title = Title or "Placeholder"
+  Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
+  CreateRealTimeThread(AddCustomOnScreenNotification(
+    AsyncRand(),Title,Msg,Icon,nil,{expiration=5000})
+  )
+end
+
+function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
+  Mode = Mode or "a"
+  Ext = Ext or "txt"
+  File = File or "DumpedText"
+  local tempfile = assert(io.open("AppData/" .. File .. "." .. Ext,Mode))
+  tempfile:write(tostring(Obj))
+  tempfile:close()
+  if not Skip then
+    ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
+      "AppData/" .. File .. "." .. Ext,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
+    )
+  end
+end
+
+--redirect print to consolelog
+function ChoGGi.AddConsoleLog(...)
+  if ... then
+    AddConsoleLog(...,true)
+  end
+  ChoGGi.print(...)
+end
+
+function ChoGGi.WriteDebugLogsEnable()
+  --remove old logs
+  os.remove("AppData/Printf.previous.log")
+  os.remove("AppData/DebugPrint.previous.log")
+  os.rename("AppData/Printf.log","AppData/Printf.previous.log")
+  os.rename("AppData/DebugPrint.log","AppData/DebugPrint.previous.log")
+
+  ChoGGi.printf = printf
+  printf = function(...)
+    ChoGGi.Dump(... .. "\n","a","printf","log",true)
+    ChoGGi.printf(...)
+  end
+  DebugPrint = function(...)
+    ChoGGi.Dump(... .. "\n","a","DebugPrint","log",true)
+  end
+  OutputDebugString = function(...)
+    ChoGGi.Dump(... .. "\n","a","DebugPrint","log",true)
+  end
+end
+
+--ChoGGi.PrintIds(TechTree)
+function ChoGGi.PrintIds(Table)
+  local text = ""
+  for i,_ in ipairs(Table) do
+    text = text .. "----------------- " .. Table[i].id .. ": " .. i .. "\n"
+    for j,_ in ipairs(Table[i]) do
+      text = text .. Table[i][j].id .. ": " .. j .. "\n"
+    end
+  end
+  dump(text)
+end
+
 --[[
-function TerrainDepositConcrete:CheatRefill()
-  self.amount = self.max_amount
-  self:NotifyNearbyExploiters()
-  self:UpdateUI()
-end
+ChoGGi.TextFile = assert(io.open("AppData/DumpedTable.txt","w"))
+ChoGGi.DumpTable(TechTree)
+ChoGGi.TextFile:close()
+
+if you want to dump functions as well DumpTable(TechTree,nil,true)
 --]]
+function ChoGGi.DumpTable(Obj,Mode,Funcs)
+  if not Obj then
+    ChoGGi.MsgPopup("Can't dump nothing",
+      "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
+    )
+    return
+  end
+  Mode = Mode or "a"
+  ChoGGi.TextFile = assert(io.open("AppData/DumpedText.txt",Mode))
+  ChoGGi.DumpTableFunc(Obj,nil,Funcs)
+  ChoGGi.TextFile:close()
+  ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
+    "AppData/DumpedText.txt","UI/Icons/Upgrades/magnetic_filtering_04.tga"
+  )
+end
+
+function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
+  if (hierarchyLevel == nil) then
+    hierarchyLevel = 0
+  elseif (hierarchyLevel == 4) then
+    return 0
+  end
+
+  if Obj.id then
+    ChoGGi.TextFile:write("\n-----------------Obj.id: " .. Obj.id .. " :")
+  end
+  if (type(Obj) == "table") then
+    for k,v in pairs(Obj) do
+      if (type(v) == "table") then
+        ChoGGi.DumpTableFunc(v, hierarchyLevel+1)
+      else
+        if k ~= nil then
+          ChoGGi.TextFile:write("\n" .. tostring(k) .. " = ")
+        end
+        if v ~= nil then
+          ChoGGi.TextFile:write(tostring(ChoGGi.RetTextForDump(v,Funcs)))
+        end
+        ChoGGi.TextFile:write("\n")
+      end
+    end
+  end
+end
+
+--[[
+ChoGGi.DumpObject(Consts)
+ChoGGi.DumpObject(const)
+if you want to dump functions as well DumpObject(object,true)
+--]]
+function ChoGGi.DumpObject(Obj,Mode,Funcs)
+  if not Obj then
+    ChoGGi.MsgPopup("Can't dump nothing",
+      "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
+    )
+    return
+  end
+
+  local Text = ""
+  for k,v in pairs(Obj) do
+    if k ~= nil then
+      Text = Text .. "\n" .. tostring(k) .. " = "
+    end
+    if v ~= nil then
+      Text = Text .. tostring(ChoGGi.RetTextForDump(v,Funcs))
+    end
+    --Text = Text .. "\n"
+  end
+  ChoGGi.Dump(Text,Mode)
+--[[
+  tech = ""
+  for k,i in ipairs(Obj) do
+    tech = tech .. ChoGGi.RetTextForDump(k[i]) .. "\n"
+  end
+  tech = tech .. "\n\n\n"
+  ChoGGi.Dump(tech)
+--]]
+end
+
+function ChoGGi.RetTextForDump(Obj,Funcs)
+  if type(Obj) == "userdata" then
+    return tostring(Obj) .. ": " .. tostring(getmetatable(Obj) or {})
+  elseif Funcs and type(Obj) == "function" then
+    return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
+  elseif type(Obj) == "table" then
+    return tostring(Obj) .. " len: " .. #Obj
+  else
+    return tostring(Obj)
+  end
+end
+
+--list active user actions (menuitem entries)
+--UserActions.IsActionActive(id)
+--[[
+UserActions.RemoveActions({
+  "G_ToggleInfopanelCheats",
+})
+--]]
+function ChoGGi.GetActiveActions()
+  local ActiveActions = {}
+  for id,_ in pairs(UserActions.Actions) do
+    if UserActions.IsActionActive(id) then
+      ActiveActions[#ActiveActions + 1] = id .. "\n"
+    end
+  end
+  --ChoGGi.Dump(ActiveActions)
+  return ActiveActions
+end
+
+if ChoGGi.ChoGGiComp then
+  AddConsoleLog("ChoGGi: Functions.lua",true)
+end
+

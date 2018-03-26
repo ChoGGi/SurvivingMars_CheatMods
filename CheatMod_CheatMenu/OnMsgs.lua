@@ -11,37 +11,42 @@ available_prefabs = UICity:GetPrefabs(building_template.name)
 City:AddPrefabs(bld, count)
 
 --loop through all buildings
-  for _,building in ipairs(UICity.labels.Building) do
-    if IsKindOf(building,"Sanatorium") then
-      for i = 1, #traits do
-        building:SetTrait(i, traits[i])
-      end
+for _,building in ipairs(UICity.labels.Building) do
+  if IsKindOf(building,"Sanatorium") then
+    for i = 1, #traits do
+      building:SetTrait(i, traits[i])
     end
   end
+end
 
 function OnMsg.SelectionChange()
   local dome_to_select = IsKindOf(SelectedObj, "Dome") and SelectedObj or IsObjInDome(SelectedObj)
   UICity:SelectDome(dome_to_select, SelectedObj)
 end
+--]]
 
-function OnMsg.ClassesBuilt()
-  local win = Button:new(ExamineDesigner)
-  win:SetId("idDump")
-  win:SetPos(point(597, 191))
-  win:SetSize(point(50, 24))
-  win:SetHSizing("AnchorToLeft")
-  win:SetText(Untranslated("Dump"))
-  win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+function OnMsg.ConstructionComplete(building)
+  if ChoGGi.CheatMenuSettings["FullyAutomatedBuildings"] and building.max_workers >= 1 then
+    ChoGGi.FullyAutomatedBuildingsSet(building)
+  end
+  if ChoGGi.CheatMenuSettings["SanatoriumCureAll"] and IsKindOf(building,"Sanatorium") then
+    for i = 1, #ChoGGi.BadTraits do
+      building:SetTrait(i,ChoGGi.BadTraits[i])
+    end
+  end
 end
 
-function OnMsg.ClassesGenerate()
-function OnMsg.ClassesPostprocess()
-
-function OnMsg.ClassesPreprocess()
-  function self.idDump.OnButtonPressed()
-    ChoGGi.Dump(self.idFilter:GetText())
+function OnMsg.ColonistArrived()
+  if ChoGGi.CheatMenuSettings["NewColonistAge"] then
+    colonist.age_trait = ChoGGi.CheatMenuSettings["NewColonistAge"]
   end
---]]
+end
+
+function OnMsg.ColonistBorn(colonist)
+  if ChoGGi.CheatMenuSettings["NewColonistSex"] then
+    colonist.gender = ChoGGi.CheatMenuSettings["NewColonistSex"]
+  end
+end
 
 --Edit new buildings
 --function OnMsg.ConstructionComplete(building)
@@ -49,9 +54,9 @@ function OnMsg.BuildingPlaced(building)
   --increase UniversalStorageDepot to 1000
   if ChoGGi.CheatMenuSettings["StorageDepotSpace"] then
     if IsKindOf(building,"UniversalStorageDepot") then
-      building.max_storage_per_resource = 1000 * const.ResourceScale
+      building.max_storage_per_resource = 1000 * ChoGGi.Consts["ResourceScale"]
     elseif IsKindOf(building,"WasteRockDumpSite") then
-      building.max_amount_WasteRock = 1000 * const.ResourceScale
+      building.max_amount_WasteRock = 1000 * ChoGGi.Consts["ResourceScale"]
     end
   end
 end
@@ -84,17 +89,37 @@ end
 --saved game is loaded
 function OnMsg.LoadGame(metadata)
 
+  --show all Mystery Breakthrough buildings
+  if ChoGGi.CheatMenuSettings["AddMysteryBreakthroughBuildings"] then
+    UnlockBuilding("DefenceTower")
+    UnlockBuilding("CloningVats")
+    UnlockBuilding("BlackCubeDump")
+    UnlockBuilding("BlackCubeSmallMonument")
+    UnlockBuilding("BlackCubeLargeMonument")
+    UnlockBuilding("PowerDecoy")
+    UnlockBuilding("DomeOval")
+  end
+
+  --for SanatoriumCureAll
+  ChoGGi.BadTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
+  ChoGGi.GoodTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
+
+  if ChoGGi.CheatMenuSettings["ShowAllTraits"] then
+    g_SchoolTraits = ChoGGi.GoodTraits
+    g_SanatoriumTraits = ChoGGi.BadTraits
+  end
+
   if ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] then
     --disable border scrolling
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
-    --reduce ScrollBorder to the smallest we can (1 = no scrolling down)
+    --reduce ScrollBorder to the smallest we can (1 = can't scroll down)
     cameraRTS.SetProperties(1,{ScrollBorder = 2})
   end
 
   --zoom
   if ChoGGi.CheatMenuSettings["ToggleCameraZoom"] then
-    cameraRTS.SetProperties(1, {
+    cameraRTS.SetProperties(1,{
       MinHeight = 1,
       MaxHeight = 80,
       MinZoom = 1,
@@ -102,21 +127,24 @@ function OnMsg.LoadGame(metadata)
     })
   end
 
-  --faster zoom
+  --faster zoom (I perfer instant, but make it too fast and it gets funky)
   if ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] then
     cameraRTS.SetProperties(1,{UpDownSpeed = 800})
   end
 
-  --add trailblazer skins
-  dbg_AddTrailBlazerSkins()
+  --add trailblazer skins (fucking pre-order bonus bullshit)
+  if not pcall(dbg_AddTrailBlazerSkins) then
+    g_TrailblazerSkins.Drone = "Drone_Trailblazer"
+    g_TrailblazerSkins.RCRover = "Rover_Trailblazer"
+    g_TrailblazerSkins.RCTransport = "RoverTransport_Trailblazer"
+    g_TrailblazerSkins.ExplorerRover = "RoverExplorer_Trailblazer"
+    g_TrailblazerSkins.SupplyRocket = "Rocket_Trailblazer"
+  end
+
   --show cheat pane?
   if ChoGGi.CheatMenuSettings["ToggleInfopanelCheats"] then
     config.BuildingInfopanelCheats = true
     ReopenSelectionXInfopanel()
-  end
-  --block CheatEmpty from working?
-  if ChoGGi.CheatMenuSettings["BlockCheatEmpty"] then
-    ChoGGi.BlockCheatEmpty()
   end
 
   --show console log history
@@ -124,35 +152,25 @@ function OnMsg.LoadGame(metadata)
     ShowConsoleLog(true)
   end
 
-  --add hidden category
+  --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
-    BuildCategories = {
-      {id = "Infrastructure", name = T({78, "Infrastructure"}), img = "UI/Icons/bmc_infrastructure.tga", highlight_img = "UI/Icons/bmc_infrastructure_shine.tga"},
-      {id = "Power", name = T({79, "Power"}), img = "UI/Icons/bmc_power.tga", highlight_img = "UI/Icons/bmc_power_shine.tga"},
-      {id = "Production", name = T({80, "Production"}), img = "UI/Icons/bmc_building_resources.tga", highlight_img = "UI/Icons/bmc_building_resources_shine.tga"},
-      {id = "Life-Support", name = T({81, "Life Support"}), img = "UI/Icons/bmc_life_support.tga", highlight_img = "UI/Icons/bmc_life_support_shine.tga"},
-      {id = "Storages", name = T({82, "Storages"}), img = "UI/Icons/bmc_building_storages.tga", highlight_img = "UI/Icons/bmc_building_storages_shine.tga"},
-      {id = "Domes", name = T({83, "Domes"}), img = "UI/Icons/bmc_domes.tga", highlight_img = "UI/Icons/bmc_domes_shine.tga"},
-      {id = "Habitats", name = T({84, "Homes, Education & Research"}), img = "UI/Icons/bmc_habitats.tga", highlight_img = "UI/Icons/bmc_habitats_shine.tga"},
-      {id = "Dome Services", name = T({85, "Dome Services"}), img = "UI/Icons/bmc_dome_buildings.tga", highlight_img = "UI/Icons/bmc_dome_buildings_shine.tga"},
-      {id = "Dome Spires", name = T({86, "Dome Spires"}), img = "UI/Icons/bmc_dome_spires.tga", highlight_img = "UI/Icons/bmc_dome_spires_shine.tga"},
-      {id = "Decorations", name = T({87, "Decorations"}), img = "UI/Icons/bmc_decorations.tga", highlight_img = "UI/Icons/bmc_decorations_shine.tga"},
-      {id = "Wonders", name = T({88, "Wonders"}), img = "UI/Icons/bmc_wonders.tga", highlight_img = "UI/Icons/bmc_wonders_shine.tga"},
-      {id = "Hidden", name = T({1000155, "Hidden"}), img = "UI/Icons/bmc_placeholder.tga", highlight_img = "UI/Icons/bmc_placeholder_shine.tga"},
-      {id = "HiddenX", name = T({1000155, "Hidden"}), img = "UI/Icons/bmc_placeholder.tga", highlight_img = "UI/Icons/bmc_placeholder_shine.tga"}
-    }
+    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga"}
   end
 
   --setup building template properties
   for _,building in ipairs(DataInstances.BuildingTemplate) do
-    if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
-      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
-        building.build_category = "HiddenX"
-      end
-      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
-        building.hide_from_build_menu = false
-      end
+
+  --switch hidden buildings to visible
+  if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
+    BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+    if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
+      building.hide_from_build_menu = false
     end
+    if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
+      building.build_category = "HiddenX"
+    end
+  end
+
     if ChoGGi.CheatMenuSettings["Building_wonder"] then
       building.wonder = false
     end
@@ -180,4 +198,13 @@ function OnMsg.LoadGame(metadata)
     end
 --]]
   end
+  --always show on my comp
+	if ChoGGi.ChoGGiComp then
+    UAMenu.ToggleOpen()
+    ShowConsole(true)
+  end
+end
+
+if ChoGGi.ChoGGiComp then
+  AddConsoleLog("ChoGGi: OnMsgs.lua",true)
 end
