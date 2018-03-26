@@ -4,7 +4,7 @@ UserActions.AddActions({
     icon = "ToggleTerrainHeight.tga",
     menu = "Resources/Passengers/[1]Food Per Rocket Passenger Default",
     description = function()
-      return ChoGGi.Consts["FoodPerRocketPassenger"] / ChoGGi.Consts["ResourceScale"] .. " = The amount of Food supplied with each Colonist arrival."
+      return ChoGGi.Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " = The amount of Food supplied with each Colonist arrival."
     end,
     action = function()
       ChoGGi.FoodPerRocketPassenger(1)
@@ -15,7 +15,7 @@ UserActions.AddActions({
     icon = "ToggleTerrainHeight.tga",
     menu = "Resources/Passengers/[2]Food Per Rocket Passenger + 25",
     description = function()
-      return Consts.FoodPerRocketPassenger / ChoGGi.Consts["ResourceScale"] .. " + 25 = The amount of Food supplied with each Colonist arrival."
+      return Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " + 25 = The amount of Food supplied with each Colonist arrival."
     end,
     action = function()
       ChoGGi.FoodPerRocketPassenger(2)
@@ -26,7 +26,7 @@ UserActions.AddActions({
     icon = "ToggleTerrainHeight.tga",
     menu = "Resources/Passengers/[5]Food Per Rocket Passenger + 1000",
     description = function()
-      return Consts.FoodPerRocketPassenger / ChoGGi.Consts["ResourceScale"] .. " + 1000 = The amount of Food supplied with each Colonist arrival."
+      return Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " + 1000 = The amount of Food supplied with each Colonist arrival."
     end,
     action = function()
       ChoGGi.FoodPerRocketPassenger(3)

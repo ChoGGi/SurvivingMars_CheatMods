@@ -20,7 +20,7 @@ UserActions.AddActions({
     icon = "save_city.tga",
     menu = "[102]Debug/Write Debug Logs",
     description = function()
-      local action = ChoGGi.CheatMenuSettings["WriteDebugLogs"] and "(Enabled)" or "(Disabled)"
+      local action = ChoGGi.CheatMenuSettings.WriteDebugLogs and "(Enabled)" or "(Disabled)"
       return action .. " Writing debug logs to AppData/DebugPrint and AppData/printf (immediately instead of only after quiting, restart for disable)."
     end,
     action = ChoGGi.WriteDebugLogs
@@ -30,7 +30,7 @@ UserActions.AddActions({
     icon = "Voice.tga",
     menu = "[102]Debug/Console Toggle History",
     description = function()
-      local action = ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] and "(Enabled)" or "(Disabled)"
+      local action = ChoGGi.CheatMenuSettings.ConsoleToggleHistory and "(Enabled)" or "(Disabled)"
       return action .. " Show console history on screen."
     end,
     action = ChoGGi.ConsoleToggleHistory

@@ -8,12 +8,14 @@ F2: Toggle the cheats menu.
 F4: Open object examiner for selected object
 F5: Dump info for selected object to file (AppData/DumpedText.txt)
 Ctrl+F: Fill resource of selected object
+Enter or Tilde to show the console
+F9 to clear the console
 
 There's a cheats section in most info panels on the right side of the screen.
-Menu>Toggles>Infopanel Cheats
+Menu>Toggles>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
 
-Many of the cheat commands have keyboard shortcuts and these will function even when the menu is hidden.
 Hover over menu items for a description
+If a menu has "+ num" then it'll increase it by that number each time
 
 Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
 http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
@@ -21,17 +23,17 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 
 ##### Console
 ```
-Can now open with tilde as well (but it adds a `)
-Added option to toggle showing history on-screen
-Added option clear history
-Added restart cmd
-Added dump cmd: dump(obj,type,filename,ext)
+Can open with tilde as well (but it adds a `)
+Toggle showing history/results on-screen (Menu>Toggle)
+restart
+dump(TupleToLuaCode(dlgConsole))
+dumpobject(SelectedObj)
+dumptable(Consts)
+if you want to overwrite instead of append text: DumpObject(TechTree,"w")
+if you want to dump functions as well: DumpTable(TechTree,nil,true)
 
-If you want to dump something without quitting to check log
-copy n paste this into the console
-dump("test") < append to file
-dump("test","w") < overwrite file
-then open AppData/DumpedText.txt
+ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
+TechTree[6][46] = Breakthroughs>PrefabCompression
 
 you can paste chunks of scripts to test out:
 local temp
@@ -39,6 +41,18 @@ for _,building in ipairs(DataInstances.BuildingTemplate) do
 	temp = temp .. tostring(building.name) .. tostring(building.wonder)
 end
 dump(temp)
+
+ChoGGi.ReturnTechAmount(Tech,Prop)
+returns number from TechTree (so you know how much it changes)
+
+ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
+^returns 10
+ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
+^ returns 0.25
+
+it returns percentages in decimal for ease of mathing
+ie: BuildingMaintenancePointsModifier is -25 this returns it as 0.25
+it also returns negative amounts as positive (I prefer doing num - a not num + a)
 ```
 
 ##### List of some stuff added (not up to date)
@@ -58,20 +72,26 @@ Add10PrefabsPolymerPlant
 Add10PrefabsSanatorium
 Add10PrefabsStirlingGenerator
 Add10PrefabsWaterReclamationSystem
-AvoidWorkplaceFalse
+AddMysteryBreakthroughBuildings
+AvoidWorkplaceToggle
+BirthThresholdToggle
 BlockCheatEmpty
 BombardmentAtCursor
 BombardmentAtCursorMass
+BorderScrollingToggle
+BreakThroughTechsPerGameToggle
 Building_hide_from_build_menu
 Building_wonder
-BuildingDamageCrimeNever
-CablesAndPipesInstant
-ChanceOfSanityDamageNever
-ChangeMap
+BuildingDamageCrimeToggle
+CablesAndPipesToggle
+CameraZoomToggle
+CameraZoomToggleSpeed
+ChanceOfNegativeTraitToggle
+ChanceOfSanityDamageToggle
 ColonistsAddSpecializationToAll
-ColonistsChanceOfNegativeTraitNever
-ColonistsChanceOfSuicideNever
-ColonistsMoraleMaxAlways
+ColonistsChanceOfSuicideToggle
+ColonistsMoraleMaxToggle
+ColonistsPerRocketDefault
 ColonistsPerRocketIncrease
 ColonistsSetAgesToAdult
 ColonistsSetAgesToChild
@@ -91,74 +111,97 @@ ColonistsSetSexClone
 ColonistsSetSexFemale
 ColonistsSetSexMale
 ColonistsSetSexOther
-ColonistsWillStarve
-ColonistsWillSuffocate
-ColonistsWontStarve
-ColonistsWontSuffocate
+ColonistsStarveToggle
+ColonistsSuffocateToggle
+CommandCenterRadiusDefault
 CommandCenterRadiusIncrease
-Console
 ConsoleClearDisplay
 ConsoleToggleHistory
-ConstructionForFree
+ConstructionForFreeToggle
 DeeperScanEnable
-DeepScanDisable
-DeepScanEnable
+DeepScanToggle
 DestroySelectedObject
-DroneBatteryInfinite
-DroneBuildSpeedInstant
+DeveloperModeToggle
+DroneBatteryInfiniteToggle
+DroneBuildSpeedToggle
+DroneCarryAmountDefault
 DroneCarryAmountIncrease
-DroneMeteorMalfunctionDisable
-DroneRechargeTimeFast
-DroneRepairSupplyLeakFast
+DroneMeteorMalfunctionToggle
+DroneRechargeTimeToggle
+DroneRepairSupplyLeakToggle
+DronesPerDroneHubDefault
 DronesPerDroneHubIncrease
+DronesPerRCRoverDefault
 DronesPerRCRoverIncrease
 DumpCurrentObj
 ExamineCurrentObj
 FillSelectedResource
+FoodPerRocketPassengerDefault
 FoodPerRocketPassengerIncrease
 FoodPerRocketPassengerIncrease1000
+FullyAutomatedBuildingsToggle
 FundsAdded10000M
 FundsAdded1000M
 FundsAdded25M
-GameSpeedDefault,Double,Triple,Quad
+GameSpeedDefault
+GameSpeedDouble
+GameSpeedQuad
+GameSpeedTriple
 HexBuildGridToggle
-MaintenanceBuildingsFree
-MeteorHealthDamageZero
-MinComfortBirthZero
-MoistureVaporatorPenaltyRemove
+MaintenanceBuildingsFreeToggle
+MeteorHealthDamageToggle
+MinComfortBirthToggle
+MoistureVaporatorPenaltyToggle
 NegativeTraitsAddAll
 NegativeTraitsRemoveAll
-OutsideWorkplaceRadiusLarge
+NewColonistAgeAdult
+NewColonistAgeChild
+NewColonistAgeDefault
+NewColonistAgeMiddleAged
+NewColonistAgeRetiree
+NewColonistAgeSenior
+NewColonistAgeYouth
+NewColonistSexAndroid
+NewColonistSexClone
+NewColonistSexDefault
+NewColonistSexFemale
+NewColonistSexMale
+NewColonistSexOther
+OutsideWorkplaceRadiusDefault
+OutsideWorkplaceRadiusIncrease
 OutsourcePoints1000000
-OutsourcingFree
-PerformancePenaltyNonSpecialistNever
-PositivePlayground100
+OutsourcingFreeToggle
+PerformancePenaltyNonSpecialistToggle
+PositivePlaygroundToggle
 PositiveTraitsAddAll
 PositiveTraitsRemoveAll
-ProjectMorpheusPositiveTrait100
-RCRoverDroneRechargeFree
+ProjectMorpheusPositiveTraitToggle
+RCRoverDroneRechargeFreeToggle
+RCRoverRadiusDefault
 RCRoverRadiusIncrease
-RCTransportResourceFast
+RCTransportResourceToggle
+RCTransportStorageDefault
 RCTransportStorageIncrease
-RenegadeCreationStop
+RenegadeCreationToggle
 ResearchEveryBreakthrough
 ResearchEveryMystery
-ResearchQueueLarger
-RocketCargoCapacityLarge
-RocketTravelInstant
-ScannerQueueLarger
-SpacingPipesPillarsMax
+ResearchQueueLargerToggle
+RocketCargoCapacityToggle
+RocketTravelInstantToggle
+SanatoriumCureAllToggle
+SanatoriumSchoolShowAll
+ScannerQueueLargerToggle
+SchoolTrainAllToggle
+ShowAllTraitsToggle
+SpacingPipesPillarsToggle
 StorageDepotHold1000
-ToggleBorderScrolling
-ToggleCameraZoom
-ToggleCameraZoomSpeed
-ToggleCheatsMenu
-ToggleDeveloperMode
 ToggleInfopanelCheats
 ToggleTerrainDepositGrid
+TriboelectricScrubberRadiusDefault
 TriboelectricScrubberRadiusIncrease
 UnlockEveryBreakthrough
-VisitFailPenaltyZero
+VisitFailPenaltyToggle
+WriteDebugLogs
 
 Also includes default menuitems for all toggleable settings
 

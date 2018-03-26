@@ -1,10 +1,10 @@
 function ChoGGi.WriteDebugLogs()
-  ChoGGi.CheatMenuSettings["WriteDebugLogs"] = not ChoGGi.CheatMenuSettings["WriteDebugLogs"]
-  if ChoGGi.CheatMenuSettings["WriteDebugLogs"] then
+  ChoGGi.CheatMenuSettings.WriteDebugLogs = not ChoGGi.CheatMenuSettings.WriteDebugLogs
+  if ChoGGi.CheatMenuSettings.WriteDebugLogs then
     ChoGGi.WriteDebugLogsEnable()
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Write Debug Logs: " .. ChoGGi.CheatMenuSettings["WriteDebugLogs"],
+  ChoGGi.MsgPopup("Write Debug Logs: " .. ChoGGi.CheatMenuSettings.WriteDebugLogs,
    "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -43,8 +43,8 @@ function ChoGGi.DestroySelectedObject()
 end
 
 function ChoGGi.ConsoleToggleHistory()
-  ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] = not ChoGGi.CheatMenuSettings["ConsoleToggleHistory"]
-  ShowConsoleLog(ChoGGi.CheatMenuSettings["ConsoleToggleHistory"])
+  ChoGGi.CheatMenuSettings.ConsoleToggleHistory = not ChoGGi.CheatMenuSettings.ConsoleToggleHistory
+  ShowConsoleLog(ChoGGi.CheatMenuSettings.ConsoleToggleHistory)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Those who cannot remember the past are condemned to repeat it.",
    "Console","UI/Icons/Sections/workshifts.tga"

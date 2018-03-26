@@ -21,22 +21,22 @@ ChoGGi.Dump(tostring(ChoGGi.Examine.idText))
     end
   },
 --]]
-  ChoGGi_ToggleCheatsMenu = {
+  ChoGGi_CheatsMenuToggle = {
     key = "F2",
-    action = function()
-      UAMenu.ToggleOpen()
-    end
+    action = UAMenu.ToggleOpen
   },
   ChoGGi_Console = {
     key = "~",
     action = function()
-      ShowConsole(true)
+      dlgConsole:Show(true)
+      --ShowConsole(true)
     end
   },
   ChoGGi_Console2 = {
     key = "Enter",
     action = function()
-      ShowConsole(true)
+      dlgConsole:Show(true)
+      --ShowConsole(true)
     end
   },
 

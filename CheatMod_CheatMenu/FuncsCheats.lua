@@ -1,10 +1,10 @@
 function ChoGGi.BreakThroughTechsPerGameToggle()
   if const.BreakThroughTechsPerGame == 26 then
-    const.BreakThroughTechsPerGame = ChoGGi.Consts["BreakThroughTechsPerGame"]
+    const.BreakThroughTechsPerGame = ChoGGi.Consts.BreakThroughTechsPerGame
   else
     const.BreakThroughTechsPerGame = 26
   end
-  ChoGGi.CheatMenuSettings["BreakThroughTechsPerGame"] = const.BreakThroughTechsPerGame
+  ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("S M R T",
    "Research","UI/Icons/Notifications/research.tga"

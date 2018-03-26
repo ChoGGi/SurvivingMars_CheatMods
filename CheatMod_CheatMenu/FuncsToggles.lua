@@ -1,13 +1,13 @@
 function ChoGGi.ToggleInfopanelCheats()
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
-  ChoGGi.CheatMenuSettings["ToggleInfopanelCheats"] = config.BuildingInfopanelCheats
+  ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
   ChoGGi.WriteSettings()
 end
 
-function ChoGGi.ToggleBorderScrolling()
-  ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] = not ChoGGi.CheatMenuSettings["ToggleBorderScrolling"]
-  if ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] then
+function ChoGGi.BorderScrollingToggle()
+  ChoGGi.CheatMenuSettings.BorderScrollingToggle = not ChoGGi.CheatMenuSettings.BorderScrollingToggle
+  if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
     cameraRTS.SetProperties(1,{ScrollBorder = 2})
@@ -15,9 +15,9 @@ function ChoGGi.ToggleBorderScrolling()
   ChoGGi.WriteSettings()
 end
 
-function ChoGGi.ToggleCameraZoom()
-  ChoGGi.CheatMenuSettings["ToggleCameraZoom"] = not ChoGGi.CheatMenuSettings["ToggleCameraZoom"]
-  if ChoGGi.CheatMenuSettings["ToggleCameraZoom"] then
+function ChoGGi.CameraZoomToggle()
+  ChoGGi.CheatMenuSettings.CameraZoomToggle = not ChoGGi.CheatMenuSettings.CameraZoomToggle
+  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
     cameraRTS.SetProperties(1,{
       MinHeight = 1,
       MaxHeight = 80,
@@ -35,24 +35,24 @@ function ChoGGi.ToggleCameraZoom()
   ChoGGi.WriteSettings()
 end
 
-function ChoGGi.ToggleCameraZoomSpeed()
-  ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] = not ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"]
-  if ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] then
-    cameraRTS.SetProperties(1,{ToggleCameraZoomSpeed = 800})
+function ChoGGi.CameraZoomToggleSpeed()
+  ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed = not ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed
+  if ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed then
+    cameraRTS.SetProperties(1,{CameraZoomToggleSpeed = 800})
   else
-    cameraRTS.SetProperties(1,{ToggleCameraZoomSpeed = 230})
+    cameraRTS.SetProperties(1,{CameraZoomToggleSpeed = 230})
   end
   ChoGGi.WriteSettings()
 end
 
 function ChoGGi.BlockCheatEmpty()
   ChoGGi.SetBlockCheatEmpty()
-  ChoGGi.CheatMenuSettings["BlockCheatEmpty"] = not ChoGGi.CheatMenuSettings["BlockCheatEmpty"]
+  ChoGGi.CheatMenuSettings.BlockCheatEmpty = not ChoGGi.CheatMenuSettings.BlockCheatEmpty
   ChoGGi.WriteSettings()
 end
 
-function ChoGGi.ToggleDeveloperMode()
-  ChoGGi.CheatMenuSettings["developer"] = not Platform.developer
+function ChoGGi.DeveloperModeToggle()
+  ChoGGi.CheatMenuSettings.developer = not Platform.developer
   ChoGGi.WriteSettings()
   CreateRealTimeThread(WaitCustomPopupNotification,
     "Toggles Dev mode",

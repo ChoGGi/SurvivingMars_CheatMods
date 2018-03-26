@@ -1,10 +1,10 @@
 function ChoGGi.ResearchQueueLargerToggle()
   if const.ResearchQueueSize == 25 then
-    const.ResearchQueueSize = ChoGGi.Consts["ResearchQueueSize"]
+    const.ResearchQueueSize = ChoGGi.Consts.ResearchQueueSize
   else
     const.ResearchQueueSize = 25
   end
-  ChoGGi.CheatMenuSettings["ResearchQueueSize"] = const.ResearchQueueSize
+  ChoGGi.CheatMenuSettings.ResearchQueueSize = const.ResearchQueueSize
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Nerdgasm",
    "Research","UI/Icons/Notifications/research.tga"
@@ -13,11 +13,11 @@ end
 
 function ChoGGi.OutsourcingFreeToggle()
   if Consts.OutsourceResearchCost == 0 then
-    Consts.OutsourceResearchCost = ChoGGi.Consts["OutsourceResearchCost"]
+    Consts.OutsourceResearchCost = ChoGGi.Consts.OutsourceResearchCost
   else
     Consts.OutsourceResearchCost = 0
   end
-  ChoGGi.CheatMenuSettings["OutsourceResearchCost"] = Consts.OutsourceResearchCost
+  ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Best hope you picked India as your Mars sponsor",
    "Research","UI/Icons/Sections/research_1.tga"
@@ -26,10 +26,10 @@ end
 
 function ChoGGi.DeepScanToggle()
   if Consts.DeepScanAvailable == 1 then
-    Consts.DeepScanAvailable = ChoGGi.Consts["DeepScanAvailable"]
-    Consts.IsDeepWaterExploitable = ChoGGi.Consts["IsDeepWaterExploitable"]
-    Consts.IsDeepMetalsExploitable = ChoGGi.Consts["IsDeepMetalsExploitable"]
-    Consts.IsDeepPreciousMetalsExploitable = ChoGGi.Consts["IsDeepPreciousMetalsExploitable"]
+    Consts.DeepScanAvailable = ChoGGi.Consts.DeepScanAvailable
+    Consts.IsDeepWaterExploitable = ChoGGi.Consts.IsDeepWaterExploitable
+    Consts.IsDeepMetalsExploitable = ChoGGi.Consts.IsDeepMetalsExploitable
+    Consts.IsDeepPreciousMetalsExploitable = ChoGGi.Consts.IsDeepPreciousMetalsExploitable
   else
     Consts.DeepScanAvailable = 1
     Consts.IsDeepWaterExploitable = 1
@@ -40,10 +40,10 @@ function ChoGGi.DeepScanToggle()
   --GrantTech("DeepScanning")
   --GrantTech("DeepWaterExtraction")
   --GrantTech("DeepMetalExtraction")
-  ChoGGi.CheatMenuSettings["DeepScanAvailable"] = Consts.DeepScanAvailable
-  ChoGGi.CheatMenuSettings["IsDeepWaterExploitable"] = Consts.IsDeepWaterExploitable
-  ChoGGi.CheatMenuSettings["IsDeepMetalsExploitable"] = Consts.IsDeepMetalsExploitable
-  ChoGGi.CheatMenuSettings["IsDeepPreciousMetalsExploitable"] = Consts.IsDeepPreciousMetalsExploitable
+  ChoGGi.CheatMenuSettings.DeepScanAvailable = Consts.DeepScanAvailable
+  ChoGGi.CheatMenuSettings.IsDeepWaterExploitable = Consts.IsDeepWaterExploitable
+  ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable = Consts.IsDeepMetalsExploitable
+  ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable = Consts.IsDeepPreciousMetalsExploitable
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Alice thought to herself... Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
    "Scanner","UI/Icons/Notifications/scan.tga"
@@ -52,11 +52,11 @@ end
 
 function ChoGGi.ScannerQueueLargerToggle()
   if const.ExplorationQueueMaxSize == 100 then
-    const.ExplorationQueueMaxSize = ChoGGi.Consts["ExplorationQueueMaxSize"]
+    const.ExplorationQueueMaxSize = ChoGGi.Consts.ExplorationQueueMaxSize
   else
     const.ExplorationQueueMaxSize = 100
   end
-  ChoGGi.CheatMenuSettings["ExplorationQueueMaxSize"] = const.ExplorationQueueMaxSize
+  ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("5 scans at a time...bulldiddy",
    "Scanner","UI/Icons/Notifications/scan.tga"
@@ -65,11 +65,11 @@ end
 
 function ChoGGi.MeteorHealthDamageToggle()
   if Consts.MeteorHealthDamage == 0 then
-    Consts.MeteorHealthDamage = ChoGGi.Consts["MeteorHealthDamage"]
+    Consts.MeteorHealthDamage = ChoGGi.Consts.MeteorHealthDamage
   else
     Consts.MeteorHealthDamage = 0
   end
-  ChoGGi.CheatMenuSettings["MeteorHealthDamage"] = Consts.MeteorHealthDamage
+  ChoGGi.CheatMenuSettings.MeteorHealthDamage = Consts.MeteorHealthDamage
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
    "Colonists","UI/Icons/Notifications/meteor_storm.tga"
@@ -82,7 +82,7 @@ function ChoGGi.RocketCargoCapacityToggle()
   else
     Consts.CargoCapacity = 1000000000
   end
-  ChoGGi.CheatMenuSettings["CargoCapacity"] = Consts.CargoCapacity
+  ChoGGi.CheatMenuSettings.CargoCapacity = Consts.CargoCapacity
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("I can still see some space",
    "Rocket","UI/Icons/Sections/spaceship.tga"
@@ -97,8 +97,8 @@ function ChoGGi.RocketTravelInstantToggle()
     Consts.TravelTimeEarthMars = 0
     Consts.TravelTimeMarsEarth = 0
   end
-  ChoGGi.CheatMenuSettings["TravelTimeEarthMars"] = Consts.TravelTimeEarthMars
-  ChoGGi.CheatMenuSettings["TravelTimeMarsEarth"] = Consts.TravelTimeMarsEarth
+  ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
+  ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("88 MPH",
    "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
@@ -107,7 +107,7 @@ end
 
 function ChoGGi.OutsourcePoints1000000()
   Consts.OutsourceResearch = 9999900
-  ChoGGi.CheatMenuSettings["OutsourceResearch"] = Consts.OutsourceResearch
+  ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("The same thing we do every night, Pinky - try to take over the world!",
    "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
@@ -116,8 +116,8 @@ end
 
 function ChoGGi.SetGameSpeed(Speed)
   if Speed == 1 then
-    const.mediumGameSpeed = ChoGGi.Consts["mediumGameSpeed"]
-    const.fastGameSpeed = ChoGGi.Consts["fastGameSpeed"]
+    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed
+    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed
   elseif Speed == 2 then
     const.mediumGameSpeed = 6
     const.fastGameSpeed = 10
@@ -128,8 +128,8 @@ function ChoGGi.SetGameSpeed(Speed)
     const.mediumGameSpeed = 12
     const.fastGameSpeed = 20
   end
-  ChoGGi.CheatMenuSettings["mediumGameSpeed"] = const.mediumGameSpeed
-  ChoGGi.CheatMenuSettings["fastGameSpeed"] = const.fastGameSpeed
+  ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
+  ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("I think I can",
    "Speed","UI/Icons/Notifications/timer.tga"
@@ -151,7 +151,7 @@ function ChoGGi.ColonistsPerRocket(Bool)
   else
     Consts.MaxColonistsPerRocket = ChoGGi.MaxColonistsPerRocket()
   end
-  ChoGGi.CheatMenuSettings["MaxColonistsPerRocket"] = Consts.MaxColonistsPerRocket
+  ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Long pig sardines",
    "Rocket","UI/Icons/Notifications/colonist.tga"
@@ -171,7 +171,7 @@ function ChoGGi.RCRoverRadius(Bool)
         local radius = rcvehicle:GetProperty(prop_meta.id)
         rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
       else
-        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max,ChoGGi.Consts["RCRoverMaxRadius"]))
+        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max,ChoGGi.Consts.RCRoverMaxRadius))
       end
     end
   end
@@ -195,9 +195,9 @@ function ChoGGi.CommandCenterRadius(Bool)
           building:SetProperty(prop_meta.id, Default(prop_meta.default, radius + 25))
           building:SetProperty(prop_meta.id, Min(prop_meta.min, radius + 25))
         else
-          const.CommandCenterDefaultRadius = ChoGGi.Consts["CommandCenterDefaultRadius"]
-          const.CommandCenterMaxRadius = ChoGGi.Consts["CommandCenterMaxRadius"]
-          const.CommandCenterMinRadius = ChoGGi.Consts["CommandCenterMinRadius"]
+          const.CommandCenterDefaultRadius = ChoGGi.Consts.CommandCenterDefaultRadius
+          const.CommandCenterMaxRadius = ChoGGi.Consts.CommandCenterMaxRadius
+          const.CommandCenterMinRadius = ChoGGi.Consts.CommandCenterMinRadius
           building:SetProperty(prop_meta.id, Default(prop_meta.default, const.CommandCenterDefaultRadius))
           building:SetProperty(prop_meta.id, Max(prop_meta.max, const.CommandCenterMaxRadius))
           building:SetProperty(prop_meta.id, Min(prop_meta.min, const.CommandCenterMinRadius))

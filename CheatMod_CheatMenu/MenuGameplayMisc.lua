@@ -147,7 +147,7 @@ UserActions.AddActions({
   ChoGGi_ColonistsPerRocketDefault = {
     menu = "Gameplay/Rocket/Colonists Per Rocket Default",
     description = function()
-      return ChoGGi.Consts["MaxColonistsPerRocket"] .. " colonists can arrive on Mars in a single Rocket."
+      return ChoGGi.Consts.MaxColonistsPerRocket .. " colonists can arrive on Mars in a single Rocket."
     end,
     action = function()
       ChoGGi.ColonistsPerRocket()

@@ -1,12 +1,12 @@
 function ChoGGi.FoodPerRocketPassenger(Amount)
   if Amount == 1 then
-    Consts.FoodPerRocketPassenger = ChoGGi.Consts["FoodPerRocketPassenger"] * ChoGGi.Consts["ResourceScale"]
+    Consts.FoodPerRocketPassenger = ChoGGi.Consts.FoodPerRocketPassenger * ChoGGi.Consts.ResourceScale
   elseif Amount == 2 then
-    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (25 * ChoGGi.Consts["ResourceScale"])
+    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (25 * ChoGGi.Consts.ResourceScale)
   elseif Amount == 3 then
-    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (1000 * ChoGGi.Consts["ResourceScale"])
+    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (1000 * ChoGGi.Consts.ResourceScale)
   end
-  ChoGGi.CheatMenuSettings["FoodPerRocketPassenger"] = Consts.FoodPerRocketPassenger
+  ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("om nom nom nom nom",
    "Passengers","UI/Icons/Sections/Food_4.tga"

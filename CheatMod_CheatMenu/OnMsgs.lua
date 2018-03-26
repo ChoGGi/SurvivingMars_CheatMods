@@ -26,10 +26,10 @@ end
 --]]
 
 function OnMsg.ConstructionComplete(building)
-  if ChoGGi.CheatMenuSettings["FullyAutomatedBuildings"] and building.max_workers >= 1 then
+  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.max_workers >= 1 then
     ChoGGi.FullyAutomatedBuildingsSet(building)
   end
-  if ChoGGi.CheatMenuSettings["SanatoriumCureAll"] and IsKindOf(building,"Sanatorium") then
+  if ChoGGi.CheatMenuSettings.SanatoriumCureAll and IsKindOf(building,"Sanatorium") then
     for i = 1, #ChoGGi.BadTraits do
       building:SetTrait(i,ChoGGi.BadTraits[i])
     end
@@ -37,14 +37,14 @@ function OnMsg.ConstructionComplete(building)
 end
 
 function OnMsg.ColonistArrived()
-  if ChoGGi.CheatMenuSettings["NewColonistAge"] then
-    colonist.age_trait = ChoGGi.CheatMenuSettings["NewColonistAge"]
+  if ChoGGi.CheatMenuSettings.NewColonistAge then
+    colonist.age_trait = ChoGGi.CheatMenuSettings.NewColonistAge
   end
 end
 
 function OnMsg.ColonistBorn(colonist)
-  if ChoGGi.CheatMenuSettings["NewColonistSex"] then
-    colonist.gender = ChoGGi.CheatMenuSettings["NewColonistSex"]
+  if ChoGGi.CheatMenuSettings.NewColonistSex then
+    colonist.gender = ChoGGi.CheatMenuSettings.NewColonistSex
   end
 end
 
@@ -52,11 +52,11 @@ end
 --function OnMsg.ConstructionComplete(building)
 function OnMsg.BuildingPlaced(building)
   --increase UniversalStorageDepot to 1000
-  if ChoGGi.CheatMenuSettings["StorageDepotSpace"] then
+  if ChoGGi.CheatMenuSettings.StorageDepotSpace then
     if IsKindOf(building,"UniversalStorageDepot") then
-      building.max_storage_per_resource = 1000 * ChoGGi.Consts["ResourceScale"]
+      building.max_storage_per_resource = 1000 * ChoGGi.Consts.ResourceScale
     elseif IsKindOf(building,"WasteRockDumpSite") then
-      building.max_amount_WasteRock = 1000 * ChoGGi.Consts["ResourceScale"]
+      building.max_amount_WasteRock = 1000 * ChoGGi.Consts.ResourceScale
     end
   end
 end
@@ -90,7 +90,7 @@ end
 function OnMsg.LoadGame(metadata)
 
   --show all Mystery Breakthrough buildings
-  if ChoGGi.CheatMenuSettings["AddMysteryBreakthroughBuildings"] then
+  if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
     UnlockBuilding("DefenceTower")
     UnlockBuilding("CloningVats")
     UnlockBuilding("BlackCubeDump")
@@ -104,12 +104,12 @@ function OnMsg.LoadGame(metadata)
   ChoGGi.BadTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
   ChoGGi.GoodTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
 
-  if ChoGGi.CheatMenuSettings["ShowAllTraits"] then
+  if ChoGGi.CheatMenuSettings.ShowAllTraits then
     g_SchoolTraits = ChoGGi.GoodTraits
     g_SanatoriumTraits = ChoGGi.BadTraits
   end
 
-  if ChoGGi.CheatMenuSettings["ToggleBorderScrolling"] then
+  if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     --disable border scrolling
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
@@ -118,7 +118,7 @@ function OnMsg.LoadGame(metadata)
   end
 
   --zoom
-  if ChoGGi.CheatMenuSettings["ToggleCameraZoom"] then
+  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
     cameraRTS.SetProperties(1,{
       MinHeight = 1,
       MaxHeight = 80,
@@ -128,7 +128,7 @@ function OnMsg.LoadGame(metadata)
   end
 
   --faster zoom (I perfer instant, but make it too fast and it gets funky)
-  if ChoGGi.CheatMenuSettings["ToggleCameraZoomSpeed"] then
+  if ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed then
     cameraRTS.SetProperties(1,{UpDownSpeed = 800})
   end
 
@@ -142,18 +142,18 @@ function OnMsg.LoadGame(metadata)
   end
 
   --show cheat pane?
-  if ChoGGi.CheatMenuSettings["ToggleInfopanelCheats"] then
+  if ChoGGi.CheatMenuSettings.ToggleInfopanelCheats then
     config.BuildingInfopanelCheats = true
     ReopenSelectionXInfopanel()
   end
 
   --show console log history
-  if ChoGGi.CheatMenuSettings["ConsoleToggleHistory"] then
+  if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
     ShowConsoleLog(true)
   end
 
   --add HiddenX cat for Hidden items
-  if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
+  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga"}
   end
 
@@ -161,7 +161,7 @@ function OnMsg.LoadGame(metadata)
   for _,building in ipairs(DataInstances.BuildingTemplate) do
 
   --switch hidden buildings to visible
-  if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
+  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
     if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
       building.hide_from_build_menu = false
@@ -171,29 +171,29 @@ function OnMsg.LoadGame(metadata)
     end
   end
 
-    if ChoGGi.CheatMenuSettings["Building_wonder"] then
+    if ChoGGi.CheatMenuSettings.Building_wonder then
       building.wonder = false
     end
 --[[
-    if ChoGGi.CheatMenuSettings["Building_dome_required"] then
+    if ChoGGi.CheatMenuSettings.Building_dome_required then
       building.dome_required = false
     end
-    if ChoGGi.CheatMenuSettings["Building_dome_forbidden"] then
+    if ChoGGi.CheatMenuSettings.Building_dome_forbidden then
       building.dome_forbidden = false
     end
-    if ChoGGi.CheatMenuSettings["Building_dome_spot"] then
+    if ChoGGi.CheatMenuSettings.Building_dome_spot then
       building.dome_spot = "none"
     end
-    if ChoGGi.CheatMenuSettings["Building_is_tall"] then
+    if ChoGGi.CheatMenuSettings.Building_is_tall then
       building.is_tall = false
     end
-    if ChoGGi.CheatMenuSettings["Building_hide_from_build_menu"] then
+    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
       building.hide_from_build_menu = false
     end
-    if ChoGGi.CheatMenuSettings["Building_require_prefab"] then
+    if ChoGGi.CheatMenuSettings.Building_require_prefab then
       building.require_prefab = false
     end
-    if ChoGGi.CheatMenuSettings["Building_instant_build"] then
+    if ChoGGi.CheatMenuSettings.Building_instant_build then
       building.instant_build = true
     end
 --]]

@@ -43,17 +43,24 @@ dofile("Lua/Units/Drone.lua")
 --Toggle Hex Build Grid Visibility
 dofile("Lua/hex.lua")
 --add ConsoleExec
+--[[
+dlgConsole.autoCompleteList = true
+dlgConsole.cursorPosOnTabPress = true
+dlgConsole.autoCompleteListPos = true
+dlgConsole.autoCompleteCursorPosOnLastUpdate = true
+dlgConsole.autoCompleteTextOnLastUpdate = true
+--]]
 dofile("CommonLua/console.lua")
 dofile("CommonLua/UI/Dev/uiConsole.lua")
 dofile("CommonLua/UI/Dev/uiConsoleLog.lua")
 
 --we want dev mode left on?
-if not ChoGGi.CheatMenuSettings["developer"] then
+if not ChoGGi.CheatMenuSettings.developer then
   Platform.developer = false
 end
 
 --block CheatEmpty from working?
-if ChoGGi.CheatMenuSettings["BlockCheatEmpty"] then
+if ChoGGi.CheatMenuSettings.BlockCheatEmpty then
   ChoGGi.SetBlockCheatEmpty()
 end
 
