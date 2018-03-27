@@ -11,12 +11,16 @@ available_prefabs = UICity:GetPrefabs(building_template.name)
 City:AddPrefabs(bld, count)
 
 --loop through all buildings
-for _,building in ipairs(UICity.labels.Building) do
+for _,building in ipairs(UICity.labels.Building or empty_table) do
   if IsKindOf(building,"Sanatorium") then
     for i = 1, #traits do
       building:SetTrait(i, traits[i])
     end
   end
+end
+
+for i = 1, #ChoGGi.PositiveTraits do
+  colonist:RemoveTrait(ChoGGi.PositiveTraits[i])
 end
 
 function OnMsg.SelectionChange()
@@ -26,14 +30,27 @@ end
 --]]
 
 function OnMsg.ConstructionComplete(building)
+
+  if IsKindOf(building,"Arcology") then
+    building.capacity = ChoGGi.CheatMenuSettings.ArcologyCapacity
+  end
+
   if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.max_workers >= 1 then
     ChoGGi.FullyAutomatedBuildingsSet(building)
   end
-  if ChoGGi.CheatMenuSettings.SanatoriumCureAll and IsKindOf(building,"Sanatorium") then
-    for i = 1, #ChoGGi.BadTraits do
-      building:SetTrait(i,ChoGGi.BadTraits[i])
+
+  if ChoGGi.CheatMenuSettings.SchoolTrainAll and IsKindOf(building,"School") then
+    for i = 1, #ChoGGi.PositiveTraits do
+      building:SetTrait(i,ChoGGi.PositiveTraits[i])
     end
   end
+
+  if ChoGGi.CheatMenuSettings.SanatoriumCureAll and IsKindOf(building,"Sanatorium") then
+    for i = 1, #ChoGGi.NegativeTraits do
+      building:SetTrait(i,ChoGGi.NegativeTraits[i])
+    end
+  end
+
 end
 
 function OnMsg.ColonistArrived()
@@ -89,6 +106,10 @@ end
 --saved game is loaded
 function OnMsg.LoadGame(metadata)
 
+  ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
+  ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
+  ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
+
   --show all Mystery Breakthrough buildings
   if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
     UnlockBuilding("DefenceTower")
@@ -100,13 +121,9 @@ function OnMsg.LoadGame(metadata)
     UnlockBuilding("DomeOval")
   end
 
-  --for SanatoriumCureAll
-  ChoGGi.BadTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
-  ChoGGi.GoodTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
-
   if ChoGGi.CheatMenuSettings.ShowAllTraits then
-    g_SchoolTraits = ChoGGi.GoodTraits
-    g_SanatoriumTraits = ChoGGi.BadTraits
+    g_SchoolTraits = ChoGGi.PositiveTraits
+    g_SanatoriumTraits = ChoGGi.NegativeTraits
   end
 
   if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
@@ -154,7 +171,7 @@ function OnMsg.LoadGame(metadata)
 
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga"}
+    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
 
   --setup building template properties

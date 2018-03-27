@@ -1,11 +1,3 @@
-UserActions.RemoveActions({
-  --these will switch the map without asking to save
-  "G_ModsEditor",
-  "G_OpenPregameMenu",
-  --added to toggles menu
-  "G_ToggleInfopanelCheats",
-})
-
 UserActions.AddActions({
 --[[
   TESTING = {

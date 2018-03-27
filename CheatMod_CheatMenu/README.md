@@ -26,9 +26,10 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 Can open with tilde as well (but it adds a `)
 Toggle showing history/results on-screen (Menu>Toggle)
 restart
-dump(TupleToLuaCode(dlgConsole))
-dumpobject(SelectedObj)
-dumptable(Consts)
+dumpl(TdlgConsole) --TupleToLuaCode
+dumpo(SelectedObj) --object
+dumpt(Consts) --table
+dump() --anything
 if you want to overwrite instead of append text: DumpObject(TechTree,"w")
 if you want to dump functions as well: DumpTable(TechTree,nil,true)
 

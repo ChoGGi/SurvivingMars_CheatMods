@@ -1,8 +1,28 @@
---central place for consts, if updates change them
+--central place for consts/default values, if updates change them
 ChoGGi.Consts = {
---other const
+--custom
+  BlockCheatEmpty = true,
+  ConsoleToggleHistory = true,
+  ToggleInfopanelCheats = true,
+  AddMysteryBreakthroughBuildings = false,
+  BorderScrollingToggle = false,
+  Building_hide_from_build_menu = false,
+  Building_wonder = false,
+  CameraZoomToggle = false,
+  CameraZoomToggleSpeed = false,
+  developer = false,
+  FullyAutomatedBuildings = false,
+  NewColonistAge = false,
+  NewColonistSex = false,
+  SanatoriumCureAll = false,
+  SchoolTrainAll = false,
+  ShowAllTraits = false,
+  StorageDepotSpace = false,
+  WriteDebugLogs = false,
+--custom Consts
   RCTransportResourceCapacity = 30,
   NurseryCapacity = 8,
+  ArcologyCapacity = 32,
 --Consts.
   AvoidWorkplaceSols = 5,
   BirthThreshold = 1000000,
@@ -68,8 +88,8 @@ ChoGGi.Consts = {
   RCTransportGatherResourceWorkTime = 15000,
   rebuild_cost_modifier = 100,
   RenegadeCreation = 70000,
-  SuperiorCables = 0,
-  SuperiorPipes = 0,
+  InstantCables = 0,
+  InstantPipes = 0,
   TimeBeforeStarving = 1080000,
   TravelTimeEarthMars = 750000,
   TravelTimeMarsEarth = 750000,
@@ -85,27 +105,31 @@ ChoGGi.Consts = {
   ResourceScale = 1000,
 }
 
---load settings from defaults
+--initial default settings, edited during use
 ChoGGi.CheatMenuSettings = {
 --Custom
-  BlockCheatEmpty = true,
-  ConsoleToggleHistory = true,
-  ToggleInfopanelCheats = true,
-  AddMysteryBreakthroughBuildings = false,
-  FullyAutomatedBuildings = false,
-  Building_wonder = false,
-  Building_hide_from_build_menu = false,
-  developer = false,
-  StorageDepotSpace = false,
-  BorderScrollingToggle = false,
-  CameraZoomToggle = false,
-  CameraZoomToggleSpeed = false,
-  WriteDebugLogs = false,
-  NewColonistAge = false,
-  NewColonistSex = false,
-  SanatoriumCureAll = false,
-  SchoolTrainAll = false,
-  ShowAllTraits = false,
+  BlockCheatEmpty = ChoGGi.Consts.BlockCheatEmpty,
+  ConsoleToggleHistory = ChoGGi.Consts.ConsoleToggleHistory,
+  ToggleInfopanelCheats = ChoGGi.Consts.ToggleInfopanelCheats,
+  AddMysteryBreakthroughBuildings = ChoGGi.Consts.AddMysteryBreakthroughBuildings,
+  BorderScrollingToggle = ChoGGi.Consts.BorderScrollingToggle,
+  Building_hide_from_build_menu = ChoGGi.Consts.Building_hide_from_build_menu,
+  Building_wonder = ChoGGi.Consts.Building_wonder,
+  CameraZoomToggle = ChoGGi.Consts.CameraZoomToggle,
+  CameraZoomToggleSpeed = ChoGGi.Consts.CameraZoomToggleSpeed,
+  developer = ChoGGi.Consts.developer,
+  FullyAutomatedBuildings = ChoGGi.Consts.FullyAutomatedBuildings,
+  NewColonistAge = ChoGGi.Consts.NewColonistAge,
+  NewColonistSex = ChoGGi.Consts.NewColonistSex,
+  SanatoriumCureAll = ChoGGi.Consts.SanatoriumCureAll,
+  SchoolTrainAll = ChoGGi.Consts.SchoolTrainAll,
+  ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
+  StorageDepotSpace = ChoGGi.Consts.StorageDepotSpace,
+  WriteDebugLogs = ChoGGi.Consts.WriteDebugLogs,
+--custom Consts
+  RCTransportResourceCapacity = ChoGGi.Consts.RCTransportResourceCapacity,
+  NurseryCapacity = ChoGGi.Consts.NurseryCapacity,
+  ArcologyCapacity = ChoGGi.Consts.ArcologyCapacity,
   --Building_dome_required = false,
   --Building_dome_forbidden = false,
   --Building_dome_spot = false,
@@ -177,8 +201,8 @@ ChoGGi.CheatMenuSettings = {
   RCTransportGatherResourceWorkTime = ChoGGi.Consts.RCTransportGatherResourceWorkTime,
   rebuild_cost_modifier = ChoGGi.Consts.rebuild_cost_modifier,
   RenegadeCreation = ChoGGi.Consts.RenegadeCreation,
-  SuperiorCables = ChoGGi.Consts.SuperiorCables,
-  SuperiorPipes = ChoGGi.Consts.SuperiorPipes,
+  InstantCables = ChoGGi.Consts.InstantCables,
+  InstantPipes = ChoGGi.Consts.InstantPipes,
   TimeBeforeStarving = ChoGGi.Consts.TimeBeforeStarving,
   TravelTimeEarthMars = ChoGGi.Consts.TravelTimeEarthMars,
   TravelTimeMarsEarth = ChoGGi.Consts.TravelTimeMarsEarth,
@@ -192,7 +216,7 @@ ChoGGi.CheatMenuSettings = {
   ResearchQueueSize = ChoGGi.Consts.ResearchQueueSize,
 }
 
---load settings from user settings
+--set Consts from CheatMenuSettings
 function ChoGGi.SetSettings()
 --Consts.
   Consts.AvoidWorkplaceSols = ChoGGi.CheatMenuSettings.AvoidWorkplaceSols
@@ -259,8 +283,8 @@ function ChoGGi.SetSettings()
   Consts.RCTransportGatherResourceWorkTime = ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime
   Consts.rebuild_cost_modifier = ChoGGi.CheatMenuSettings.rebuild_cost_modifier
   Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
-  Consts.SuperiorCables = ChoGGi.Consts.SuperiorCables
-  Consts.SuperiorPipes = ChoGGi.Consts.SuperiorPipes
+  Consts.InstantCables = ChoGGi.Consts.InstantCables
+  Consts.InstantPipes = ChoGGi.Consts.InstantPipes
   Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
   Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
   Consts.TimeBeforeStarving = ChoGGi.CheatMenuSettings.TimeBeforeStarving

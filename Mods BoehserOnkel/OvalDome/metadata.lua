@@ -5,6 +5,5 @@ return PlaceObj('ModDef', {
 	'id', "cfm7fr4",
 	'author', "unknown",
 	'version', 2,
-	'lua_revision', 227831,
 	'saved', 1521490142,
 })
