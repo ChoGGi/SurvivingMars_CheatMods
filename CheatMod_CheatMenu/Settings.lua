@@ -17,9 +17,12 @@ ChoGGi.Consts = {
   SanatoriumCureAll = false,
   SchoolTrainAll = false,
   ShowAllTraits = false,
-  StorageDepotSpace = false,
   WriteDebugLogs = false,
 --custom Consts
+  RCTransportStorage = 30000,
+  StorageUniversalDepot = 30000,
+  StorageOtherDepot = 180000,
+  StorageWasteDepot = 70000,
   RCTransportResourceCapacity = 30,
   NurseryCapacity = 8,
   ArcologyCapacity = 32,
@@ -96,7 +99,7 @@ ChoGGi.Consts = {
   VisitFailPenalty = 10000,
 --const.
   BreakThroughTechsPerGame = 13,
-  ExplorationQueueMaxSize = 5,
+  ExplorationQueueMaxSize = 10,
   fastGameSpeed = 5,
   mediumGameSpeed = 3,
   MoistureVaporatorPenaltyPercent = 40,
@@ -104,6 +107,11 @@ ChoGGi.Consts = {
   ResearchQueueSize = 4,
   ResourceScale = 1000,
 }
+
+--easier access to traits
+ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
+ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
+ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
 
 --initial default settings, edited during use
 ChoGGi.CheatMenuSettings = {
@@ -124,9 +132,12 @@ ChoGGi.CheatMenuSettings = {
   SanatoriumCureAll = ChoGGi.Consts.SanatoriumCureAll,
   SchoolTrainAll = ChoGGi.Consts.SchoolTrainAll,
   ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
-  StorageDepotSpace = ChoGGi.Consts.StorageDepotSpace,
   WriteDebugLogs = ChoGGi.Consts.WriteDebugLogs,
+  RCTransportStorage = ChoGGi.Consts.RCTransportStorage,
 --custom Consts
+  StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot,
+  StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot,
+  StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot,
   RCTransportResourceCapacity = ChoGGi.Consts.RCTransportResourceCapacity,
   NurseryCapacity = ChoGGi.Consts.NurseryCapacity,
   ArcologyCapacity = ChoGGi.Consts.ArcologyCapacity,
@@ -302,6 +313,6 @@ end
 
 ChoGGi.SettingsFileLoaded = true
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: Settings.lua",true)
 end

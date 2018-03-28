@@ -6,7 +6,7 @@ function ChoGGi.BirthThreshold()
   end
   ChoGGi.CheatMenuSettings.BirthThreshold = Consts.BirthThreshold
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BirthThreshold .. " Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -15,7 +15,7 @@ function ChoGGi.MinComfortBirthToggle()
   Consts.MinComfortBirth = ChoGGi.NumRetBool(Consts.MinComfortBirth,0,ChoGGi.Consts.MinComfortBirth)
   ChoGGi.CheatMenuSettings.MinComfortBirth = Consts.MinComfortBirth
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MinComfortBirth .. " Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -24,7 +24,7 @@ function ChoGGi.VisitFailPenaltyToggle()
   Consts.VisitFailPenalty = ChoGGi.NumRetBool(Consts.VisitFailPenalty,0,ChoGGi.Consts.VisitFailPenalty)
   ChoGGi.CheatMenuSettings.VisitFailPenalty = Consts.VisitFailPenalty
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.VisitFailPenalty .. " The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -37,7 +37,7 @@ function ChoGGi.RenegadeCreationToggle()
   end
   ChoGGi.CheatMenuSettings.RenegadeCreation = Consts.RenegadeCreation
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("I just love findin' subversives.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RenegadeCreation .. " I just love findin' subversives.",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -55,7 +55,7 @@ function ChoGGi.ColonistsMoraleMaxToggle()
   ChoGGi.CheatMenuSettings.HighStatLevel = Consts.HighStatLevel
   ChoGGi.CheatMenuSettings.LowStatLevel = Consts.LowStatLevel
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Happy as a pig in shit",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.HighStatMoraleEffect .. " Happy as a pig in shit",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -70,7 +70,7 @@ function ChoGGi.ChanceOfSanityDamageToggle()
   ChoGGi.CheatMenuSettings.ColdWaveSanityDamage = Consts.ColdWaveSanityDamage
   ChoGGi.CheatMenuSettings.MeteorSanityDamage = Consts.MeteorSanityDamage
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Happy as a pig in shit",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DustStormSanityDamage .. " Happy as a pig in shit",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -79,7 +79,7 @@ function ChoGGi.ChanceOfNegativeTraitToggle()
   Consts.LowSanityNegativeTraitChance = ChoGGi.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.Consts.LowSanityNegativeTraitChance)
   ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance = Consts.LowSanityNegativeTraitChance
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Stupid and happy",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance .. " Stupid and happy",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -88,7 +88,7 @@ function ChoGGi.ColonistsChanceOfSuicideToggle()
   Consts.LowSanitySuicideChance = ChoGGi.ToggleBoolNum(Consts.LowSanitySuicideChance)
   ChoGGi.CheatMenuSettings.LowSanitySuicideChance = Consts.LowSanitySuicideChance
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Getting away ain't that easy",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.LowSanitySuicideChance .. " Getting away ain't that easy",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -101,7 +101,7 @@ function ChoGGi.ColonistsSuffocateToggle()
   end
   ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime = Consts.OxygenMaxOutsideTime
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Free Air",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime .. " Free Air",
     "Colonists","UI/Icons/Sections/colonist.tga"
   )
 end
@@ -114,7 +114,7 @@ function ChoGGi.ColonistsStarveToggle()
   end
   ChoGGi.CheatMenuSettings.TimeBeforeStarving = Consts.TimeBeforeStarving
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Free Food",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TimeBeforeStarving .. " Free Food",
    "Colonists","UI/Icons/Sections/Food_2.tga"
   )
 end
@@ -123,7 +123,7 @@ function ChoGGi.AvoidWorkplaceToggle()
   ConstsAvoidWorkplaceSols = ChoGGi.NumRetBool(Consts.AvoidWorkplaceSols,0,ChoGGi.Consts.AvoidWorkplaceSols)
   ChoGGi.CheatMenuSettings.AvoidWorkplaceSols = Consts.AvoidWorkplaceSols
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("No Shame",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.AvoidWorkplaceSols .. " No Shame",
    "Colonists","UI/Icons/Notifications/colonist.tga"
   )
 end
@@ -136,7 +136,7 @@ function ChoGGi.PositivePlaygroundToggle()
   end
   ChoGGi.CheatMenuSettings.positive_playground_chance = Consts.positive_playground_chance
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("We've all seen them, on the playground, at the store, walking on the streets.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.positive_playground_chance .. " We've all seen them, on the playground, at the store, walking on the streets.",
     "Traits","UI/Icons/Upgrades/home_collective_02.tga"
   )
 end
@@ -149,7 +149,7 @@ function ChoGGi.ProjectMorpheusPositiveTraitToggle()
   end
   ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance = Consts.ProjectMorphiousPositiveTraitChance
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup('Say, "Small umbrella, small umbrella."',
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance .. ' Say, "Small umbrella, small umbrella."',
    "Colonists","UI/Icons/Upgrades/rejuvenation_treatment_04.tga"
   )
 end
@@ -158,7 +158,7 @@ function ChoGGi.PerformancePenaltyNonSpecialistToggle()
   Consts.NonSpecialistPerformancePenalty = ChoGGi.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.Consts.NonSpecialistPerformancePenalty)
   ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty = Consts.NonSpecialistPerformancePenalty
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("You never know what you're gonna get.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty .. " You never know what you're gonna get.",
    "Penalty","UI/Icons/Notifications/colonist.tga"
   )
 end
@@ -171,7 +171,7 @@ function ChoGGi.OutsideWorkplaceRadius(Bool)
   end
   ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius = Consts.DefaultOutsideWorkplacesRadius
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Maybe tomorrow, I'll find what I call home. Until tomorrow, you know I'm free to roam.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius .. " Maybe tomorrow, I'll find what I call home. Until tomorrow, you know I'm free to roam.",
    "Colonists","UI/Icons/Sections/dome.tga"
   )
 end
@@ -271,6 +271,6 @@ function ChoGGi.NegativeTraitsAllToggle(Bool)
   )
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuColonistsFunc.lua",true)
 end

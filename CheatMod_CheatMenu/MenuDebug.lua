@@ -197,6 +197,6 @@ dofolder_files("Lua/Dev")
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuDebug.lua",true)
 end

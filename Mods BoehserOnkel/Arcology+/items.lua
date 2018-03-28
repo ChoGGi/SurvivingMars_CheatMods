@@ -1,4 +1,10 @@
 return {
+
+PlaceObj('ModItemCode', {
+	'name', "Script",
+	'FileName', "Script.lua"
+}),
+
 PlaceObj('ModItemBuildingTemplate', {
 	'name', "ArcologyX",
 	'template_class', "Arcology",
@@ -38,7 +44,6 @@ PlaceObj('ModItemBuildingTemplate', {
 	'demolish_debris', 90,
 	'spire_frame_entity', "ArcologyFrame",
 	'electricity_consumption', 20000,
-	'capacity', 120,
 
 	--'service_comfort', 35000,
   --why'd BoehserOnkel lower this?
@@ -49,5 +54,7 @@ PlaceObj('ModItemBuildingTemplate', {
 	'sanity_change', 20000,
 	'rest_duration', 30000,
 	'sanity_increase', 20000,
+
+	'capacity', 256,
 }),
 }

@@ -29,27 +29,41 @@ function OnMsg.SelectionChange()
 end
 --]]
 
+--function OnMsg.BuildingPlaced(building)
 function OnMsg.ConstructionComplete(building)
 
   if IsKindOf(building,"Arcology") then
     building.capacity = ChoGGi.CheatMenuSettings.ArcologyCapacity
-  end
 
-  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.max_workers >= 1 then
-    ChoGGi.FullyAutomatedBuildingsSet(building)
-  end
+  elseif IsKindOf(building,"UniversalStorageDepot") then
+    if building.encyclopedia_id ~= "UniversalStorageDepot" then
+      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
+    else
+      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.UniversalStorageDepot
+    end
 
-  if ChoGGi.CheatMenuSettings.SchoolTrainAll and IsKindOf(building,"School") then
+  elseif IsKindOf(building,"WasteRockDumpSite") then
+    building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
+
+  elseif IsKindOf(building,"RCTransportBuilding") and ChoGGi.CheatMenuSettings.RCTransportStorage > 45 then
+    building.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorage
+
+  elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
     for i = 1, #ChoGGi.PositiveTraits do
       building:SetTrait(i,ChoGGi.PositiveTraits[i])
     end
-  end
 
-  if ChoGGi.CheatMenuSettings.SanatoriumCureAll and IsKindOf(building,"Sanatorium") then
+  elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
     for i = 1, #ChoGGi.NegativeTraits do
       building:SetTrait(i,ChoGGi.NegativeTraits[i])
     end
   end
+
+  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.max_workers and building.max_workers >= 1 then
+    ChoGGi.FullyAutomatedBuildingsSet(building)
+  end
+
+  building.can_change_skin = true
 
 end
 
@@ -65,50 +79,14 @@ function OnMsg.ColonistBorn(colonist)
   end
 end
 
---Edit new buildings
---function OnMsg.ConstructionComplete(building)
-function OnMsg.BuildingPlaced(building)
-  --increase UniversalStorageDepot to 1000
-  if ChoGGi.CheatMenuSettings.StorageDepotSpace then
-    if IsKindOf(building,"UniversalStorageDepot") then
-      building.max_storage_per_resource = 1000 * ChoGGi.Consts.ResourceScale
-    elseif IsKindOf(building,"WasteRockDumpSite") then
-      building.max_amount_WasteRock = 1000 * ChoGGi.Consts.ResourceScale
-    end
-  end
-end
-
---add preset menuitems
-function OnMsg.ClassesBuilt()
-  ClassDescendantsList("Preset", function(name, class)
-    local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or {}
-    local map = class.GlobalMap
-    if map then
-      rawset(_G, map, rawget(_G, map) or {})
-    end
-    UserActions.AddActions({
-      [name] = {
-        menu = "Presets/" .. name,
-        key = class.EditorShortcut or nil,
-        icon = class.EditorIcon or nil,
-        action = function()
-          OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-            PresetClass = name,
-            SingleFile = class.SingleFile
-          })
-        end
-      }
-    })
-  end)
-end
-
 --saved game is loaded
 function OnMsg.LoadGame(metadata)
 
-  ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
-  ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
-  ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
+  --limit height of colonists section
+  if ChoGGi.CheatMenuSettings.ArcologyCapacity > 96 then
+    XTemplates.sectionResidence[1]["MaxHeight"] = 128
+    XTemplates.sectionResidence[1]["Clip"] = true
+  end
 
   --show all Mystery Breakthrough buildings
   if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
@@ -169,24 +147,19 @@ function OnMsg.LoadGame(metadata)
     ShowConsoleLog(true)
   end
 
-  --add HiddenX cat for Hidden items
-  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
-  end
-
   --setup building template properties
   for _,building in ipairs(DataInstances.BuildingTemplate) do
 
-  --switch hidden buildings to visible
-  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-    BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-    if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
-      building.hide_from_build_menu = false
+    --switch hidden buildings to visible
+    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
+        building.hide_from_build_menu = false
+      end
+      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
+        building.build_category = "HiddenX"
+      end
     end
-    if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
-      building.build_category = "HiddenX"
-    end
-  end
 
     if ChoGGi.CheatMenuSettings.Building_wonder then
       building.wonder = false
@@ -215,13 +188,67 @@ function OnMsg.LoadGame(metadata)
     end
 --]]
   end
-  --always show on my comp
-	if ChoGGi.ChoGGiComp then
+
+  --always show on my computer
+	if ChoGGi.ChoGGiTest then
     UAMenu.ToggleOpen()
-    ShowConsole(true)
+    --ShowConsole(true)
   end
+
+--OnMsg.LoadGame()
 end
 
-if ChoGGi.ChoGGiComp then
+function OnMsg.ClassesBuilt()
+
+  --add HiddenX cat for Hidden items
+  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+    table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
+  end
+
+  --add preset menuitems
+  ClassDescendantsList("Preset", function(name, class)
+    local preset_class = class.PresetClass or name
+    Presets[preset_class] = Presets[preset_class] or {}
+    local map = class.GlobalMap
+    if map then
+      rawset(_G, map, rawget(_G, map) or {})
+    end
+    UserActions.AddActions({
+      [name] = {
+        menu = "Presets/" .. name,
+        key = class.EditorShortcut or nil,
+        icon = class.EditorIcon or nil,
+        action = function()
+          OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+            PresetClass = name,
+            SingleFile = class.SingleFile
+          })
+        end
+      }
+    })
+  end)
+
+--OnMsg.ClassesBuilt()
+end
+
+--[[
+o:test()  -- method call. equivalent to o.test(o)
+o.test()  -- regular function call. similar to just test()
+o.x = 5   -- field access
+
+  function self.idNext.OnButtonPressed()
+    ChoGGi.Dump(self.idFilter:GetText())
+    --self:FindNext(self.idFilter:GetText())
+  end
+
+Examine = ChoGGi.ExamineInitNew
+
+Examine.idNext.OnButtonPressed = function(...)
+ChoGGi.Dump(...)
+end
+--]]
+
+
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: OnMsgs.lua",true)
 end

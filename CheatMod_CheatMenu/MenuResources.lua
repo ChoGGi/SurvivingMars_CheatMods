@@ -204,6 +204,6 @@ UserActions.AddActions({
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuResources.lua",true)
 end

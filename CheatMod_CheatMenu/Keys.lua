@@ -34,6 +34,6 @@ ChoGGi.Dump(tostring(ChoGGi.Examine.idText))
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: Keys.lua",true)
 end

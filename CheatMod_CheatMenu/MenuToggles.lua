@@ -32,6 +32,6 @@ UserActions.AddActions({
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuToggles.lua",true)
 end

@@ -1,4 +1,91 @@
 
+--1=waste,2=other,3=uni, Bool true=add
+function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
+  if not UICity.labels.Building then
+    if Type == 1 then
+      ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.CheatMenuSettings.StorageWasteDepot + (1024 * ChoGGi.Consts.ResourceScale)
+    elseif Type == 2 then
+      ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.CheatMenuSettings.StorageOtherDepot + (1024 * ChoGGi.Consts.ResourceScale)
+    elseif Type == 3 then
+      ChoGGi.CheatMenuSettings.UniversalStorageDepot = ChoGGi.CheatMenuSettings.UniversalStorageDepot + (1024 * ChoGGi.Consts.ResourceScale)
+    end
+  else
+    for _,building in ipairs(UICity.labels.Building or empty_table) do
+
+      if IsKindOf(building,"WasteRockDumpSite") and Type == 1 then
+        if Bool == true then
+          building.max_amount_WasteRock = building.max_amount_WasteRock + (1024 * ChoGGi.Consts.ResourceScale)
+          ChoGGi.CheatMenuSettings.StorageWasteDepot = building.max_amount_WasteRock
+        else
+          building.max_amount_WasteRock = ChoGGi.Consts.StorageWasteDepot
+          ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot
+        end
+
+      elseif IsKindOf(building,"UniversalStorageDepot") and Type == 2 or Type == 3 then
+        --Other storage
+        if building.encyclopedia_id ~= "UniversalStorageDepot" then
+          if Bool == true then
+            building.max_storage_per_resource = building.max_storage_per_resource + (1024 * ChoGGi.Consts.ResourceScale)
+            ChoGGi.CheatMenuSettings.StorageOtherDepot = building.max_storage_per_resource
+          else
+            building.max_storage_per_resource = ChoGGi.Consts.StorageOtherDepot
+            ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot
+          end
+        --uni storage
+        else
+          if Bool == true then
+            building.max_storage_per_resource = building.max_storage_per_resource + (1024 * ChoGGi.Consts.ResourceScale)
+            ChoGGi.CheatMenuSettings.UniversalStorageDepot = building.max_storage_per_resource
+          else
+            building.max_storage_per_resource = ChoGGi.Consts.StorageUniversalDepot
+            ChoGGi.CheatMenuSettings.UniversalStorageDepot = ChoGGi.Consts.StorageUniversalDepot
+          end
+
+        end
+      end
+    end
+  end
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(Name .. " + " .. Which,
+   "Storage","UI/Icons/Sections/basic.tga"
+  )
+end
+
+function ChoGGi.ArcologyColonistsToggle(Bool,Which)
+  if not UICity.labels.Building then
+    if Bool == true then
+      ChoGGi.CheatMenuSettings.ArcologyCapacity = ChoGGi.CheatMenuSettings.ArcologyCapacity + ChoGGi.Consts.ArcologyCapacity
+    else
+      ChoGGi.CheatMenuSettings.ArcologyCapacity = ChoGGi.Consts.ArcologyCapacity
+    end
+  else
+    for _,building in ipairs(UICity.labels.Building or empty_table) do
+      if IsKindOf(building,"Arcology") then
+        if Bool == true then
+          building.capacity = building.capacity + ChoGGi.Consts.ArcologyCapacity
+        else
+          building.capacity = ChoGGi.Consts.ArcologyCapacity
+        end
+        ChoGGi.CheatMenuSettings.ArcologyCapacity = building.capacity
+      end
+    end
+  end
+
+  if ChoGGi.CheatMenuSettings.ArcologyCapacity > 96 then
+    XTemplates.sectionResidence[1]["MaxHeight"] = 128
+    XTemplates.sectionResidence[1]["Clip"] = true
+  else
+    XTemplates.sectionResidence[1]["MaxHeight"] = nil
+    XTemplates.sectionResidence[1]["Clip"] = false
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Capacity is now " .. ChoGGi.CheatMenuSettings.ArcologyCapacity,
+   "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
+  )
+end
+
+
 function ChoGGi.ArcologyColonistsToggle(Bool)
   if UICity.labels.Building then
     for _,building in ipairs(UICity.labels.Building or empty_table) do
@@ -28,7 +115,7 @@ function ChoGGi.FullyAutomatedBuildingsToggle()
   ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
   if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
     pcall(function()
-      for _,building in ipairs(UICity.labels.Building) do
+      for _,building in ipairs(UICity.labels.Building or empty_table) do
         if building.max_workers >= 1 then
           ChoGGi.FullyAutomatedBuildingsSet(building)
         end
@@ -36,7 +123,7 @@ function ChoGGi.FullyAutomatedBuildingsToggle()
     end)
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("I presume the PM's in favour of the scheme because it'll reduce unemployment.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings .. " I presume the PM's in favour of the scheme because it'll reduce unemployment.",
    "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
@@ -49,7 +136,7 @@ function ChoGGi.SanatoriumCureAllToggle()
     ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits,true)
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("You keep your work station so clean, Jerome.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.SanatoriumCureAll .. " You keep your work station so clean, Jerome.",
    "Sanatorium","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
@@ -72,7 +159,7 @@ function ChoGGi.AddMysteryBreakthroughBuildings()
     LockBuilding("DomeOval")
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("I'm sorry, I'm simply not at liberty to say.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings .. " I'm sorry, I'm simply not at liberty to say.",
    "Buildings","UI/Icons/Anomaly_Tech.tga"
   )
 end
@@ -85,7 +172,7 @@ function ChoGGi.SchoolTrainAllToggle()
     ChoGGi.BuildingsSetAll_Traits("School",ChoGGi.PositiveTraits,true)
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("You keep your work station so clean, Jerome.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.SchoolTrainAll .. " You keep your work station so clean, Jerome.",
    "School","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
@@ -98,16 +185,17 @@ function ChoGGi.SanatoriumSchoolShowAll()
     Sanatorium.max_traits = 16
     School.max_traits = 16
   end
-  ChoGGi.MsgPopup("Good for what ails you",
+  ChoGGi.MsgPopup(Sanatorium.max_traits .. " Good for what ails you",
    "Buildings","UI/Icons/Upgrades/superfungus_03.tga"
   )
 end
 
 function ChoGGi.MaintenanceBuildingsFreeToggle()
-  Consts.BuildingMaintenancePointsModifier = ChoGGi.NumRetBool(Consts.BuildingMaintenancePointsModifier,-100,ChoGGi.Consts.BuildingMaintenancePointsModifier)
+-- -100
+  Consts.BuildingMaintenancePointsModifier = ChoGGi.NumRetBool(Consts.BuildingMaintenancePointsModifier,0,ChoGGi.Consts.BuildingMaintenancePointsModifier)
   ChoGGi.CheatMenuSettings.BuildingMaintenancePointsModifier = Consts.BuildingMaintenancePointsModifier
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("The spice must flow!",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BuildingMaintenancePointsModifier .. " The spice must flow!",
     "Buildings",
     "UI/Icons/Sections/dust.tga"
   )
@@ -120,7 +208,7 @@ function ChoGGi.MoistureVaporatorPenaltyToggle()
   ChoGGi.CheatMenuSettings.MoistureVaporatorRange = const.MoistureVaporatorRange
   ChoGGi.CheatMenuSettings.MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Here at the Titty Twister we're slashing pussy in half!",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MoistureVaporatorRange .. " Here at the Titty Twister we're slashing pussy in half!",
    "Buildings","UI/Icons/Upgrades/zero_space_04.tga"
   )
 end
@@ -169,7 +257,7 @@ function ChoGGi.ConstructionForFreeToggle()
   ChoGGi.CheatMenuSettings.MachineParts_dome_cost_modifier = Consts.MachineParts_dome_cost_modifier
   ChoGGi.CheatMenuSettings.rebuild_cost_modifier = Consts.rebuild_cost_modifier
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Get yourself a beautiful showhome (even if it'll fall apart after you move in)",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Metals_cost_modifier .. " Get yourself a beautiful showhome (even if it'll fall apart after you move in)",
    "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
@@ -180,7 +268,7 @@ function ChoGGi.BuildingDamageCrimeToggle()
   ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount = Consts.CrimeEventSabotageBuildingsCount
   ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount = Consts.CrimeEventDestroyedBuildingsCount
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("We were all feeling a bit shagged and fagged and fashed, it being a night of no small expenditure.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount .. " We were all feeling a bit shagged and fagged and fashed, it being a night of no small expenditure.",
    "Buildings","UI/Icons/Notifications/fractured_dome.tga"
   )
 end
@@ -193,23 +281,8 @@ function ChoGGi.CablesAndPipesToggle()
   ChoGGi.CheatMenuSettings.InstantCables = Consts.InstantCables
   ChoGGi.CheatMenuSettings.InstantPipes = Consts.InstantPipes
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Aliens? We gotta deal with aliens too?",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.InstantCables .. " Aliens? We gotta deal with aliens too?",
    "Buildings","UI/Icons/Notifications/timer.tga"
-  )
-end
-
-function ChoGGi.StorageDepotHold1000()
-  for _,building in ipairs(UICity.labels.Building) do
-    if IsKindOf(building,"UniversalStorageDepot") then
-      building.max_storage_per_resource = 1000 * ChoGGi.Consts.ResourceScale
-    elseif IsKindOf(building,"WasteRockDumpSite") then
-      building.max_amount_WasteRock = 1000 * ChoGGi.Consts.ResourceScale
-    end
-  end
-  ChoGGi.CheatMenuSettings.StorageDepotSpace = not ChoGGi.CheatMenuSettings.StorageDepotSpace
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("not a space elevator",
-   "Storage","UI/Icons/Sections/basic.tga"
   )
 end
 
@@ -220,7 +293,7 @@ function ChoGGi.Building_wonder()
   end
   ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_Wonder",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_wonder .. " Building_Wonder",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -229,7 +302,7 @@ end
 function ChoGGi.Building_hide_from_build_menu()
   ChoGGi.CheatMenuSettings.Building_hide_from_build_menu = not ChoGGi.CheatMenuSettings.Building_hide_from_build_menu
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_hide_from_build_menu",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_hide_from_build_menu .. " Building_hide_from_build_menu",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -240,7 +313,7 @@ function ChoGGi.Building_dome_required()
   end
   ChoGGi.CheatMenuSettings.Building_dome_required = not ChoGGi.CheatMenuSettings.Building_dome_required
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_dome_required",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_dome_required .. " Building_dome_required",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -251,7 +324,7 @@ function ChoGGi.Building_dome_forbidden()
   end
   ChoGGi.CheatMenuSettings.Building_dome_forbidden = not ChoGGi.CheatMenuSettings.Building_dome_forbidden
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_dome_forbidden",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_dome_forbidden .. " Building_dome_forbidden",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -262,7 +335,7 @@ function ChoGGi.Building_dome_spot()
   end
   ChoGGi.CheatMenuSettings.Building_dome_spot = not ChoGGi.CheatMenuSettings.Building_dome_spot
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_dome_spot",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_dome_spot .. " Building_dome_spot",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -273,7 +346,7 @@ function ChoGGi.Building_is_tall()
   end
   ChoGGi.CheatMenuSettings.Building_is_tall = not ChoGGi.CheatMenuSettings.Building_is_tall
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_is_tall",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_is_tall .. " Building_is_tall",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -284,7 +357,7 @@ function ChoGGi.Building_instant_build()
   end
   ChoGGi.CheatMenuSettings.Building_instant_build = not ChoGGi.CheatMenuSettings.Building_instant_build
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_instant_build",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_instant_build .. " Building_instant_build",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -295,11 +368,11 @@ function ChoGGi.Building_require_prefab()
   end
   ChoGGi.CheatMenuSettings.Building_require_prefab = not ChoGGi.CheatMenuSettings.Building_require_prefab
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Building_require_prefab",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Building_require_prefab .. " Building_require_prefab",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuBuildingsFunc.lua",true)
 end

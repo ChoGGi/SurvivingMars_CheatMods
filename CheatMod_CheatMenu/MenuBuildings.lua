@@ -1,11 +1,80 @@
 UserActions.AddActions({
 
+  ChoGGi_StorageWasteDepotIncrease = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Waste Depot + 1024",
+    description = function()
+      return "Set Depot capacity " .. (ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1024
+        .. " (applies to each depot as well as newly built)."
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(1,true,"Waste",(ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1024)
+    end
+  },
+
+  ChoGGi_StorageWasteDepotDefault = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Waste Depot Default",
+    description = function()
+      return "Set Depot capacity " .. ChoGGi.Consts.StorageWasteDepot / ChoGGi.Consts.ResourceScale
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(1,nil,"Waste",ChoGGi.Consts.StorageWasteDepot / ChoGGi.Consts.ResourceScale)
+    end
+  },
+
+  ChoGGi_StorageOtherDepotIncrease = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Other Depot + 1024",
+    description = function()
+      return "Set Depot capacity " .. (ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1024
+        .. " (applies to each depot as well as newly built)."
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(2,true,"Other",(ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1024)
+    end
+  },
+
+  ChoGGi_StorageOtherDepotDefault = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Other Depot Default",
+    description = function()
+      return "Set Depot capacity " .. ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(2,nil,"Other",ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale)
+    end
+  },
+
+  ChoGGi_StorageUniversalDepotIncrease = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Universal Depot + 1024",
+    description = function()
+      return "Set Depot capacity " .. (ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1024
+        .. " (applies to each depot as well as newly built)."
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(3,true,"Universal",(ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1024)
+    end
+  },
+
+  ChoGGi_StorageUniversalDepotDefault = {
+    icon = "ToggleTerrainHeight.tga",
+    menu = "Gameplay/Buildings/[01]Capacity/Storage Universal Depot Default",
+    description = function()
+      return "Set Depot capacity " .. ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale
+    end,
+    action = function()
+      ChoGGi.StorageDepotSet(3,nil,"Universal",ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale)
+    end
+  },
+
   ChoGGi_ArcologyColonistsIncrease = {
     icon = "DisableAOMaps.tga",
-    menu = "Gameplay/Buildings/Arcology Colonists + " .. ChoGGi.Consts.ArcologyCapacity,
+    menu = "Gameplay/Buildings/[01]Capacity/Arcology Colonists + 32",
     description = function()
-      return ChoGGi.CheatMenuSettings.ArcologyCapacity .. " + "
-        .. ChoGGi.Consts.ArcologyCapacity .. " to the capacity of each Arcology (also newly built)."
+      return "Set arcology colonist capacity " .. ChoGGi.CheatMenuSettings.ArcologyCapacity + ChoGGi.Consts.ArcologyCapacity
+        .. " (applies to the capacity of each Arcology as well as newly built)."
     end,
     action = function()
       ChoGGi.ArcologyColonistsToggle(true)
@@ -14,9 +83,9 @@ UserActions.AddActions({
 
   ChoGGi_ArcologyColonistsDefault = {
     icon = "DisableAOMaps.tga",
-    menu = "Gameplay/Buildings/Arcology Colonists Default",
+    menu = "Gameplay/Buildings/[01]Capacity/Arcology Colonists Default",
     description = function()
-      return "Set the capacity of each Arcology to " .. ChoGGi.Consts.ArcologyCapacity
+      return "Set arcology capacity " .. ChoGGi.Consts.ArcologyCapacity
     end,
     action = ChoGGi.ArcologyColonistsToggle
   },
@@ -25,8 +94,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Fully Automated Buildings Toggle",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"
-      return action .. " Add an upgrade to automate buildings (if another upgrade replaces it; toggle it off and on).\nThanks to BoehserOnkel for the idea."
+      local res = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"
+      return res .. " Add an upgrade to automate buildings, restart to enable/disable (if another upgrade replaces it; toggle it off and on).\nThanks to BoehserOnkel for the idea."
     end,
     action = ChoGGi.FullyAutomatedBuildingsToggle
   },
@@ -35,8 +104,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Add Mystery|Breakthrough Buildings",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings and "(Enabled)" or "(Disabled)"
-      return action .. " Show all the Mystery and Breakthrough buildings in the build menu."
+      local res = ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings and "(Enabled)" or "(Disabled)"
+      return res .. " Show all the Mystery and Breakthrough buildings in the build menu."
     end,
     action = ChoGGi.AddMysteryBreakthroughBuildings
   },
@@ -45,8 +114,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Sanatoriums Cure All Toggle",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.SanatoriumCureAll and "(Disabled)" or "(Enabled)"
-      return action .. " Sanatoriums now cure all bad traits."
+      local res = ChoGGi.CheatMenuSettings.SanatoriumCureAll and "(Disabled)" or "(Enabled)"
+      return res .. " Sanatoriums now cure all bad traits."
     end,
     action = ChoGGi.SanatoriumCureAllToggle
   },
@@ -55,8 +124,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Schools Train All Toggle",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.SchoolTrainAll and "(Disabled)" or "(Enabled)"
-      return action .. " Schools now can train all good traits."
+      local res = ChoGGi.CheatMenuSettings.SchoolTrainAll and "(Disabled)" or "(Enabled)"
+      return res .. " Schools now can train all good traits."
     end,
     action = ChoGGi.SchoolTrainAllToggle
   },
@@ -65,23 +134,23 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Sanatoriums|Schools Show Full List Toggle",
     description = function()
-      local action
+      local res
       if Sanatorium.max_traits == 16 then
-        action = "(Enabled)"
+        res = "(Enabled)"
       else
-        action = "(Disabled)"
+        res = "(Disabled)"
       end
-      return action .. " Toggle showing 16 traits in side pane."
+      return res .. " Toggle showing 16 traits in side pane."
     end,
     action = ChoGGi.SanatoriumSchoolShowAll
   },
 
   ChoGGi_MaintenanceBuildingsFreeToggle = {
     icon = "DisableAOMaps.tga",
-    menu = "Gameplay/Buildings/Maintenance Buildings Free Toggle",
+    menu = "Gameplay/Buildings/Maintenance Free Toggle",
     description = function()
-        local action = ChoGGi.NumRetBool(Consts.BuildingMaintenancePointsModifier,"(Disabled)","(Enabled)")
-      return action .. " Buildings don't get dusty."
+      local res = ChoGGi.NumRetBool(Consts.BuildingMaintenancePointsModifier,"(Disabled)","(Enabled)")
+      return res .. " Buildings don't get dusty."
     end,
     action = ChoGGi.MaintenanceBuildingsFreeToggle
   },
@@ -90,8 +159,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Moisture Vaporator Penalty Toggle",
     description = function()
-      local action = ChoGGi.NumRetBool(const.MoistureVaporatorRange,"(Disabled)","(Enabled)")
-      return action .. " penalty when Moisture Vaporators are close to each other."
+      local res = ChoGGi.NumRetBool(const.MoistureVaporatorRange,"(Disabled)","(Enabled)")
+      return res .. " penalty when Moisture Vaporators are close to each other."
     end,
     action = ChoGGi.MoistureVaporatorPenaltyToggle
   },
@@ -100,8 +169,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Construction For Free Toggle",
     description = function()
-      local action = ChoGGi.NumRetBool(Consts.rebuild_cost_modifier,"(Disabled)","(Enabled)")
-      return action .. " Build without resources."
+      local res = ChoGGi.NumRetBool(Consts.rebuild_cost_modifier,"(Disabled)","(Enabled)")
+      return res .. " Build without resources."
     end,
     action = ChoGGi.ConstructionForFreeToggle
   },
@@ -110,8 +179,8 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Building Damage Crime Toggle",
     description = function()
-      local action = ChoGGi.NumRetBool(Consts.CrimeEventSabotageBuildingsCount,"(Disabled)","(Enabled)")
-      return action .. " damage from renegedes to buildings."
+      local res = ChoGGi.NumRetBool(Consts.CrimeEventSabotageBuildingsCount,"(Disabled)","(Enabled)")
+      return res .. " damage from renegedes to buildings."
     end,
     action = ChoGGi.BuildingDamageCrimeToggle
   },
@@ -120,28 +189,18 @@ UserActions.AddActions({
     icon = "DisableAOMaps.tga",
     menu = "Gameplay/Buildings/Cables And Pipes Toggle",
     description = function()
-      local action = ChoGGi.NumRetBool(Consts.InstantCables,"(Disabled)","(Enabled)")
-      return action .. " Cables and pipes are built instantly."
+      local res = ChoGGi.NumRetBool(Consts.InstantCables,"(Disabled)","(Enabled)")
+      return res .. " Cables and pipes are built instantly."
     end,
     action = ChoGGi.CablesAndPipesToggle
-  },
-
-  ChoGGi_StorageDepotHold1000 = {
-    icon = "ToggleTerrainHeight.tga",
-    menu = "Gameplay/Buildings/Storage Depot|Waste Rock Hold 1000",
-    description = function()
-      local action = ChoGGi.CheatMenuSettings.StorageDepotSpace and "(Enabled)" or "(Disabled)"
-      return action .. " Larger storage depot space (applies to existing and newly placed)."
-    end,
-    action = ChoGGi.StorageDepotHold1000
   },
 
   ChoGGi_Building_wonder = {
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Unlimited Wonders",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_wonder and "(Enabled)" or "(Disabled)"
-      return action .. " Wonder build limit (restart game to toggle)."
+      local res = ChoGGi.CheatMenuSettings.Building_wonder and "(Enabled)" or "(Disabled)"
+      return res .. " Wonder build limit (restart game to toggle)."
     end,
     action = ChoGGi.Building_wonder
   },
@@ -150,8 +209,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Show Hidden Buildings",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "(Enabled)" or "(Disabled)"
-      return action .. " Show hidden buildings (restart game to toggle)."
+      local res = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "(Enabled)" or "(Disabled)"
+      return res .. " Show hidden buildings (restart game to toggle)."
     end,
     action = ChoGGi.Building_hide_from_build_menu
   },
@@ -161,8 +220,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_dome_required",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_dome_required and "Allow" or "Block"
-      return action .. " inside buildings outside (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_dome_required and "Allow" or "Block"
+      return res .. " inside buildings outside (restart game to disable)."
     end,
     action = ChoGGi.Building_dome_required
   },
@@ -171,8 +230,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_dome_forbidden",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_dome_forbidden and "Allow" or "Block"
-      return action .. " outer buildings placed inside (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_dome_forbidden and "Allow" or "Block"
+      return res .. " outer buildings placed inside (restart game to disable)."
     end,
     action = ChoGGi.Building_dome_forbidden
   },
@@ -181,8 +240,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_dome_spot",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_dome_spot and "Allow" or "Block"
-      return action .. " spires to be placed anywhere inside dome, other than spire area (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_dome_spot and "Allow" or "Block"
+      return res .. " spires to be placed anywhere inside dome, other than spire area (restart game to disable)."
     end,
     action = ChoGGi.Building_dome_spot
   },
@@ -191,8 +250,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_is_tall",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_is_tall and "Allow" or "Block"
-      return action .. " tall buildings placed under pipes (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_is_tall and "Allow" or "Block"
+      return res .. " tall buildings placed under pipes (restart game to disable)."
     end,
     action = ChoGGi.Building_is_tall
   },
@@ -201,8 +260,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_instant_build",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_instant_build and "Allow" or "Block"
-      return action .. " instant building (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_instant_build and "Allow" or "Block"
+      return res .. " instant building (restart game to disable)."
     end,
     action = ChoGGi.Building_instant_build
   },
@@ -212,8 +271,8 @@ UserActions.AddActions({
     icon = "toggle_post.tga",
     menu = "Gameplay/Buildings/Building_require_prefab",
     description = function()
-      local action = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "Allow" or "Block"
-      return action .. " requiring Prefabs (restart game to disable)."
+      local res = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "Allow" or "Block"
+      return res .. " requiring Prefabs (restart game to disable)."
     end,
     action = ChoGGi.Building_require_prefab
   },
@@ -221,6 +280,6 @@ UserActions.AddActions({
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuBuildings.lua",true)
 end

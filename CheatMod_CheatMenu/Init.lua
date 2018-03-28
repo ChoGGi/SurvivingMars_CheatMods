@@ -9,10 +9,11 @@ ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   ModPath = "AppData/Mods/CheatMod_CheatMenu/",
 }
+
 --used to let me know if any files didn't load
 local file_error, code = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
-  ChoGGi.ChoGGiComp = true
+  ChoGGi.ChoGGiTest = true
 end
 
 --msgs file (OnMsg.DataLoaded, GameLoaded, etc)
@@ -61,15 +62,40 @@ dofile("CommonLua/console.lua")
 dofile("CommonLua/UI/Dev/uiConsole.lua")
 dofile("CommonLua/UI/Dev/uiConsoleLog.lua")
 
+--we want dev mode left on?
+if not ChoGGi.CheatMenuSettings.developer then
+  Platform.developer = false
+end
 
 --output results to console
+ChoGGi.ConsolePrintOrig = ConsolePrint
+ConsolePrint = ChoGGi.ConsolePrint
+ChoGGi.printOrig = print
+print = ChoGGi.print
+
+--[[
 ConsolePrint = ChoGGi.AddConsoleLog
 ChoGGi.print = print
 print = ChoGGi.AddConsoleLog
+--]]
+
 --make some easy to type names
 function console(...)
   ConsolePrint(tostring(...))
 end
+function sel()
+  return SelectedObj
+end
+function dumplua(...)
+  ChoGGi.Dump(TupleToLuaCode(...))
+end
+function restart()
+  quit("restart")
+end
+function examine(Obj)
+  OpenExamine(Obj)
+end
+ex = examine
 con = console
 log = ChoGGi.Dump
 dump = ChoGGi.Dump
@@ -78,85 +104,18 @@ dumpo = ChoGGi.DumpObject
 dumptable = ChoGGi.DumpTable
 dumpt = ChoGGi.DumpTable
 alert = ChoGGi.MsgPopup
-function dumplua(...)
-  ChoGGi.Dump(TupleToLuaCode(...))
-end
 dumpl = dumplua
 exit = quit
-function restart()
-  quit("restart")
-end
-
---we want dev mode left on?
-if not ChoGGi.CheatMenuSettings.developer then
-  Platform.developer = false
-end
+reboot = restart
 
 --block CheatEmpty from working?
 if ChoGGi.CheatMenuSettings.BlockCheatEmpty then
   ChoGGi.SetBlockCheatEmpty()
 end
 
---[[
-o:test()  -- method call. equivalent to o.test(o)
-o.test()  -- regular function call. similar to just test()
-o.x = 5   -- field access
-
-function ChoGGi.ExamineInitNew()
-  self.onclick_handles = {}
-  self.obj = false
-  self.show_times = "relative"
-  self.offset = 1
-  self.page = 1
-  self.transp_mode = transp_mode
-  function self.idText.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
-  self.idText:AddInterpolation({
-    type = const.intAlpha,
-    startValue = 255,
-    flags = const.intfIgnoreParent
-  })
-  function self.idMenu.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
-  self.idMenu:AddInterpolation({
-    type = const.intAlpha,
-    startValue = 255,
-    flags = const.intfIgnoreParent
-  })
-  function self.idNext.OnButtonPressed()
-    ChoGGi.Dump(self.idFilter:GetText())
-    --self:FindNext(self.idFilter:GetText())
-  end
-  self.idFilter:AddInterpolation({
-    type = const.intAlpha,
-    startValue = 255,
-    flags = const.intfIgnoreParent
-  })
-  function self.idFilter.OnValueChanged(this, value)
-    self:FindNext(value)
-  end
-  function self.idFilter.OnKbdKeyDown(_, char, virtual_key)
-    if virtual_key == const.vkEnter then
-      self:FindNext(self.idFilter:GetText())
-      return "break"
-    end
-    StaticText.OnKbdKeyDown(self, char, virtual_key)
-  end
-  function self.idClose.OnButtonPressed()
-    self:delete()
-  end
-  self:SetTranspMode(self.transp_mode)
-end
-
-Examine = ChoGGi.ExamineInitNew
---]]
-
-
 --if we toggled debuglog option
-if ChoGGi.WriteDebugLogs then
-  AddConsoleLog("ChoGGi: WriteDebugLogs",true)
+if ChoGGi.CheatMenuSettings.WriteDebugLogs then
+  AddConsoleLog("ChoGGi: Writing Debug/Console Logs to AppData/logs",true)
   ChoGGi.WriteDebugLogsEnable()
 end
 
@@ -178,6 +137,10 @@ dofile(ChoGGi.ModPath .. "MenuResourcesFunc.lua")
 dofile(ChoGGi.ModPath .. "MenuResources.lua")
 dofile(ChoGGi.ModPath .. "MenuTogglesFunc.lua")
 dofile(ChoGGi.ModPath .. "MenuToggles.lua")
+dofile(ChoGGi.ModPath .. "libs/ExamineDialog.lua")
+
+--Residence
+--XTemplates.sectionResidence[1]["MaxHeight"] = 200
 
 --change some default menu items
 UserActions.RemoveActions({
@@ -186,17 +149,15 @@ UserActions.RemoveActions({
   --these will switch the map without asking to save
   "G_ModsEditor",
   "G_OpenPregameMenu",
-  --added to toggles menu
+  --added to toggles
   "G_ToggleInfopanelCheats",
 })
 --move some items around
---UserActions.Actions["DE_Screenshot"].menu = "[999]Help/[105]Screenshot"
---UserActions.Actions["DE_UpsampledScreenshot"].menu = "[999]Help/[106]Upsampled Screenshot"
 UserActions.Actions["DE_Screenshot"].menu = "Help/Screenshot"
 UserActions.Actions["DE_UpsampledScreenshot"].menu = "Help/Upsampled Screenshot"
 --update menu
 UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: Init.lua",true)
 end

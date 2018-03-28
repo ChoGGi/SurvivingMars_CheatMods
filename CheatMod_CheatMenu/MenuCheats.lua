@@ -53,6 +53,6 @@ UserActions.AddActions({
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuCheats.lua",true)
 end

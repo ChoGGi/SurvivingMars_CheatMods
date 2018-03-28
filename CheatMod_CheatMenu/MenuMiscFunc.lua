@@ -6,7 +6,7 @@ function ChoGGi.BorderScrollingToggle()
     cameraRTS.SetProperties(1,{ScrollBorder = 2})
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Mouse Border Scrolling",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BorderScrollingToggle .. " Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
   )
 end
@@ -29,7 +29,7 @@ function ChoGGi.CameraZoomToggle()
     })
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Camera Zoom",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CameraZoomToggle .. " Camera Zoom",
    "Camera","UI/Icons/IPButtons/status_effects.tga"
   )
 end
@@ -42,7 +42,7 @@ function ChoGGi.CameraZoomToggleSpeed()
     cameraRTS.SetProperties(1,{CameraZoomToggleSpeed = 230})
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Camera Zoom Speed",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed .. " Camera Zoom Speed",
    "Camera","UI/Icons/IPButtons/status_effects.tga"
   )
 end
@@ -55,7 +55,7 @@ function ChoGGi.SpacingPipesPillarsToggle()
   end
   ChoGGi.CheatMenuSettings.PipesPillarSpacing = Consts.PipesPillarSpacing
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Is that a rocket in your pocket?",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.PipesPillarSpacing .. " Is that a rocket in your pocket?",
    "Buildings","UI/Icons/Sections/spaceship.tga"
   )
 end
@@ -70,7 +70,7 @@ function ChoGGi.ShowAllTraitsToggle()
     g_SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Good for what ails you",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ShowAllTraits .. " Good for what ails you",
    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
   )
 end
@@ -83,7 +83,7 @@ function ChoGGi.ResearchQueueLargerToggle()
   end
   ChoGGi.CheatMenuSettings.ResearchQueueSize = const.ResearchQueueSize
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Nerdgasm",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ResearchQueueSize .. " Nerdgasm",
    "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -92,7 +92,7 @@ function ChoGGi.OutsourcingFreeToggle()
   Consts.OutsourceResearchCost = ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost
   ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Best hope you picked India as your Mars sponsor",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. " Best hope you picked India as your Mars sponsor",
    "Research","UI/Icons/Sections/research_1.tga"
   )
 end
@@ -105,7 +105,7 @@ function ChoGGi.ScannerQueueLargerToggle()
   end
   ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("5 scans at a time...bulldiddy",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize .. " scans at a time.",
    "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
@@ -114,7 +114,7 @@ function ChoGGi.MeteorHealthDamageToggle()
   Consts.MeteorHealthDamage = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage)
   ChoGGi.CheatMenuSettings.MeteorHealthDamage = Consts.MeteorHealthDamage
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MeteorHealthDamage .. " Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
    "Colonists","UI/Icons/Notifications/meteor_storm.tga"
   )
 end
@@ -127,7 +127,7 @@ function ChoGGi.RocketCargoCapacityToggle()
   end
   ChoGGi.CheatMenuSettings.CargoCapacity = Consts.CargoCapacity
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("I can still see some space",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CargoCapacity .. " I can still see some space",
    "Rocket","UI/Icons/Sections/spaceship.tga"
   )
 end
@@ -138,7 +138,7 @@ function ChoGGi.RocketTravelInstantToggle()
   ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
   ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("88 MPH",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. "or 88 MPH",
    "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
   )
 end
@@ -147,7 +147,7 @@ function ChoGGi.OutsourcePoints1000000()
   Consts.OutsourceResearch = 9999900
   ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("The same thing we do every night, Pinky - try to take over the world!",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. " The same thing we do every night, Pinky - try to take over the world!",
    "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
   )
 end
@@ -169,7 +169,7 @@ function ChoGGi.SetGameSpeed(Speed)
   ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
   ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("I think I can",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.mediumGameSpeed .. " I think I can",
    "Speed","UI/Icons/Notifications/timer.tga"
   )
 end
@@ -182,7 +182,7 @@ function ChoGGi.ColonistsPerRocket(Bool)
   end
   ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Long pig sardines",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MaxColonistsPerRocket .. " Long pig sardines",
    "Rocket","UI/Icons/Notifications/colonist.tga"
   )
 end
@@ -259,6 +259,6 @@ function ChoGGi.TriboelectricScrubberRadius(Bool)
   )
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuMiscFunc.lua",true)
 end

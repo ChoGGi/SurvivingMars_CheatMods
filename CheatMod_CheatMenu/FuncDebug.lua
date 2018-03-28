@@ -24,7 +24,15 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   Ext = Ext or "txt"
   File = File or "DumpedText"
   local tempfile = assert(io.open("AppData/" .. File .. "." .. Ext,Mode))
-  tempfile:write(tostring(Obj))
+
+  if not pcall(function()
+    tempfile:write(Obj)
+  end) then
+    pcall(function()
+      tempfile:write(tostring(Obj))
+    end)
+  end
+
   tempfile:close()
   if not Skip then
     ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
@@ -33,32 +41,61 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   end
 end
 
---redirect print to consolelog
-function ChoGGi.AddConsoleLog(...)
+--redirect print/ConsolePrint to consolelog
+function ChoGGi.print(...)
   if ... then
     AddConsoleLog(...,true)
   end
-  ChoGGi.print(...)
+  ChoGGi.printOrig(...)
+end
+
+function ChoGGi.ConsolePrint(...)
+  if ... then
+    AddConsoleLog(...,true)
+  end
+  ChoGGi.ConsolePrintOrig(...)
 end
 
 function ChoGGi.WriteDebugLogsEnable()
   --remove old logs
-  os.remove("AppData/Printf.previous.log")
-  os.remove("AppData/DebugPrint.previous.log")
-  os.rename("AppData/Printf.log","AppData/Printf.previous.log")
-  os.rename("AppData/DebugPrint.log","AppData/DebugPrint.previous.log")
+  local logs = "AppData/logs/"
+  os.remove(logs .. "Printf.previous.log")
+  os.remove(logs .. "ConsolePrint.previous.log")
+  os.remove(logs .. "DebugPrint.previous.log")
+  os.rename(logs .. "Printf.log",logs .. "Printf.previous.log")
+  os.rename(logs .. "ConsolePrint.log",logs .. "ConsolePrint.previous.log")
+  os.rename(logs .. "DebugPrint.log",logs .. "DebugPrint.previous.log")
 
-  ChoGGi.printf = printf
+  --so we can pass the msgs on
+  ChoGGi.printfOrig = printf
+  ChoGGi.DebugPrintOrig = DebugPrint
+  ChoGGi.OutputDebugStringOrig = OutputDebugString
+  --we already have ConsolePrintOrig
+
+  local function PrintFiles(Filename,Function,...)
+    --needed pass ... onto pcall function
+    local Variadic = ...
+    pcall(function()
+      ChoGGi.Dump(Variadic .. "\r\n","a","logs/" .. Filename,"log",true)
+    end)
+    Function(...)
+  end
+
+  --replace these functions
   printf = function(...)
-    ChoGGi.Dump(... .. "\n","a","printf","log",true)
-    ChoGGi.printf(...)
+    PrintFiles("printf",ChoGGi.printfOrig,...)
+  end
+  ConsolePrint = function(...)
+    --we want to use our function instead of the orig to give us console history output
+    PrintFiles("ConsolePrint",ChoGGi.ConsolePrint,...)
   end
   DebugPrint = function(...)
-    ChoGGi.Dump(... .. "\n","a","DebugPrint","log",true)
+    PrintFiles("DebugPrint",ChoGGi.DebugPrintOrig,...)
   end
   OutputDebugString = function(...)
-    ChoGGi.Dump(... .. "\n","a","DebugPrint","log",true)
+    PrintFiles("DebugPrint",ChoGGi.OutputDebugStringOrig,...)
   end
+
 end
 
 --ChoGGi.PrintIds(TechTree)
@@ -70,7 +107,7 @@ function ChoGGi.PrintIds(Table)
       text = text .. Table[i][j].id .. ": " .. j .. "\n"
     end
   end
-  dump(text)
+  ChoGGi.Dump(text)
 end
 
 --[[
@@ -201,7 +238,7 @@ end
   end
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: FuncDebug.lua",true)
 end
 

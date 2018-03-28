@@ -10,9 +10,7 @@ function ChoGGi.WriteDebugLogs()
 end
 
 function ChoGGi.ExamineCurrentObj()
-  pcall(function()
-    OpenExamine(SelectedObj)
-  end)
+  OpenExamine(SelectedObj)
 end
 
 function ChoGGi.DumpCurrentObj()
@@ -46,7 +44,7 @@ function ChoGGi.ConsoleToggleHistory()
   ChoGGi.CheatMenuSettings.ConsoleToggleHistory = not ChoGGi.CheatMenuSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.CheatMenuSettings.ConsoleToggleHistory)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Those who cannot remember the past are condemned to repeat it.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ConsoleToggleHistory .. " Those who cannot remember the past are condemned to repeat it.",
    "Console","UI/Icons/Sections/workshifts.tga"
   )
 end
@@ -90,6 +88,6 @@ function ChoGGi.ChangeMap()
   end
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuDebugFunc.lua",true)
 end

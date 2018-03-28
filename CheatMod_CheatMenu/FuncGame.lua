@@ -23,7 +23,7 @@ function ChoGGi.ReadSettings()
     if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
       ChoGGi.CheatMenuSettings[Key] = Value
     end
- end
+  end
 
   --set consts to saved ones
   if ChoGGi.SettingsFileLoaded then
@@ -32,12 +32,17 @@ function ChoGGi.ReadSettings()
 end
 
 function ChoGGi.MsgPopup(Msg,Title,Icon)
-  Msg = Msg or ""
-  Title = Title or "Placeholder"
-  Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
-  CreateRealTimeThread(AddCustomOnScreenNotification(
-    AsyncRand(),Title,"" .. Msg,Icon,nil,{expiration=5000})
-  )
+  pcall(function()
+    Msg = Msg or ""
+    Title = Title or "Placeholder"
+    Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
+    if type(AddCustomOnScreenNotification) == "function" then --incase we called it where there ain't no UI
+      CreateRealTimeThread(AddCustomOnScreenNotification(
+        --AsyncRand(),Title,"" .. Msg,Icon,nil,{expiration=5000}
+        AsyncRand(),Title,Msg,Icon,nil,{expiration=5000}
+      ))
+    end
+  end)
 end
 
 --give a CheatFill cmd to concrete (well try to, it doesn't seem to have the cheat section...find out why)
@@ -296,7 +301,7 @@ function ChoGGi.TravelTimeMarsEarth()
   return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: FuncGame.lua",true)
 end
 

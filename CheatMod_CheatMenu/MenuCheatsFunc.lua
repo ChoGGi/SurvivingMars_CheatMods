@@ -6,7 +6,7 @@ function ChoGGi.BreakThroughTechsPerGameToggle()
   end
   ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("S M R T",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame .. " S M R T",
    "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -24,7 +24,7 @@ function ChoGGi.ResearchEveryMystery()
   GrantTech("DefenseTower")
   GrantTech("SolExploration")
   GrantTech("WildfireCure")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith",
+  ChoGGi.MsgPopup("Unleash your inner Black Monolith Mystery",
     "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -85,7 +85,7 @@ function ChoGGi.UnlockEveryBreakthrough()
   DiscoverTech("PlasmaRocket")
   DiscoverTech("AutonomousHubs")
   DiscoverTech("FactoryAutomation")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith",
+  ChoGGi.MsgPopup("Unleash your inner Black Monolith DiscoverTech",
     "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -146,11 +146,11 @@ function ChoGGi.ResearchEveryBreakthrough()
   GrantTech("PlasmaRocket")
   GrantTech("AutonomousHubs")
   GrantTech("FactoryAutomation")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith",
+  ChoGGi.MsgPopup("Unleash your inner Black Monolith GrantTech",
     "Research","UI/Icons/Notifications/research.tga"
   )
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuCheatsFunc.lua",true)
 end

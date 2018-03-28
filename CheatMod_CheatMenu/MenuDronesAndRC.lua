@@ -82,7 +82,7 @@ UserActions.AddActions({
       return "Drones carry + 10 items."
     end,
     action = function()
-      ChoGGi.DroneCarryAmount(true)
+      ChoGGi.DroneCarryAmount(true,ChoGGi.CheatMenuSettings.DroneResourceCarryAmount + 10)
     end
   },
 
@@ -92,7 +92,9 @@ UserActions.AddActions({
     description = function()
       return "Drones carry " .. ChoGGi.DroneResourceCarryAmount() .. " items."
     end,
-    action = ChoGGi.DroneCarryAmount
+    action = function()
+      ChoGGi.DroneCarryAmount(false,ChoGGi.DroneResourceCarryAmount())
+    end
   },
 
   ChoGGi_DronesPerDroneHubIncrease = {
@@ -102,7 +104,7 @@ UserActions.AddActions({
       return "Drone hubs command + 25 drones."
     end,
     action = function()
-      ChoGGi.DronesPerDroneHub(true)
+      ChoGGi.DronesPerDroneHub(true,ChoGGi.CheatMenuSettings.CommandCenterMaxDrones + 25)
     end
   },
 
@@ -112,7 +114,9 @@ UserActions.AddActions({
     description = function()
       return "Drone hubs command " .. ChoGGi.CommandCenterMaxDrones() .. " drones."
     end,
-    action = ChoGGi.DronesPerDroneHub
+    action = function()
+      ChoGGi.DronesPerDroneHub(false,ChoGGi.CommandCenterMaxDrones())
+    end
   },
 
   ChoGGi_DronesPerRCRoverIncrease = {
@@ -122,7 +126,7 @@ UserActions.AddActions({
       return "RC Rovers command + 25 drones."
     end,
     action = function()
-      ChoGGi.DronesPerRCRover(true)
+      ChoGGi.DronesPerRCRover(true,ChoGGi.CheatMenuSettings.RCRoverMaxDrones + 25)
     end
   },
 
@@ -132,17 +136,19 @@ UserActions.AddActions({
     description = function()
       return "RC Rovers command " .. ChoGGi.RCRoverMaxDrones() .. " drones."
     end,
-    action = ChoGGi.DronesPerRCRover
+    action = function()
+      ChoGGi.DronesPerRCRover(false,ChoGGi.RCRoverMaxDrones())
+    end
   },
 
   ChoGGi_RCTransportStorageIncrease = {
     icon = "ToggleTerrainHeight.tga",
-    menu = "Gameplay/RC/RC Transport Storage Increase + 100",
+    menu = "Gameplay/RC/RC Transport Storage Increase + 256",
     description = function()
-      return "RC Transports can carry + 100 items."
+      return "RC Transports can carry + 256 items."
     end,
     action = function()
-      ChoGGi.RCTransportStorage(true)
+      ChoGGi.RCTransportStorage(true,(ChoGGi.CheatMenuSettings.RCTransportStorage / ChoGGi.Consts.ResourceScale) + 256)
     end
   },
 
@@ -152,11 +158,13 @@ UserActions.AddActions({
     description = function()
       return "RC Transports can carry " .. ChoGGi.RCTransportResourceCapacity() .. " items."
     end,
-    action = ChoGGi.RCTransportStorage
+    action = function()
+      ChoGGi.RCTransportStorage(false,ChoGGi.RCTransportResourceCapacity())
+    end
   },
 
 })
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuDronesAndRC.lua",true)
 end

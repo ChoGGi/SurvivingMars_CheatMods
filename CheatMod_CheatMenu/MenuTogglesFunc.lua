@@ -3,7 +3,7 @@ function ChoGGi.ToggleInfopanelCheats()
   ReopenSelectionXInfopanel()
   ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("HAXOR",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ToggleInfopanelCheats .. " HAXOR",
    "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
@@ -12,8 +12,8 @@ function ChoGGi.BlockCheatEmpty()
   ChoGGi.SetBlockCheatEmpty()
   ChoGGi.CheatMenuSettings.BlockCheatEmpty = not ChoGGi.CheatMenuSettings.BlockCheatEmpty
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Camera Zoom Speed",
-   "Camera","UI/Icons/Sections/warning.tga"
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BlockCheatEmpty .. " Block CheatEmpty",
+   "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -28,6 +28,6 @@ function ChoGGi.DeveloperModeToggle()
   )
 end
 
-if ChoGGi.ChoGGiComp then
+if ChoGGi.ChoGGiTest then
   AddConsoleLog("ChoGGi: MenuTogglesFunc.lua",true)
 end
