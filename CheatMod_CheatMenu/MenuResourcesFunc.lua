@@ -12,7 +12,7 @@ function ChoGGi.DeepScanToggle()
   ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable = Consts.IsDeepMetalsExploitable
   ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable = Consts.IsDeepPreciousMetalsExploitable
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DeepScanAvailable .. " Alice thought to herself... Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DeepScanAvailable .. ": Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
    "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
@@ -36,7 +36,7 @@ function ChoGGi.FoodPerRocketPassenger(Amount)
   end
   ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " om nom nom nom nom",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. ": om nom nom nom nom",
    "Passengers","UI/Icons/Sections/Food_4.tga"
   )
 end
@@ -55,7 +55,7 @@ function ChoGGi.AddPrefabs(Type,Amount,Msg)
   )
 end
 
-function ChoGGi.AddFunds(Amount,Msg)
+function ChoGGi.SetFunds(Amount,Msg)
   ChangeFunding(Amount)
   ChoGGi.MsgPopup(Msg,
   "Funding","UI/Icons/IPButtons/rare_metals.tga"
@@ -63,9 +63,12 @@ function ChoGGi.AddFunds(Amount,Msg)
 end
 
 function ChoGGi.FillResource(self)
+  ChoGGi.MsgPopup("Resouce Filled",
+  "Resource","UI/Icons/IPButtons/rare_metals.tga"
+  )
   if pcall(function ()
     ResourceProducer.CheatFill(self)
-  end) then return
+  end) then return --needed to put something for then
   elseif pcall(function ()
     ResourceProducer.CheatFill(self)
     self.amount_stored = self.producers[1].max_storage
@@ -134,11 +137,8 @@ function ChoGGi.FillResource(self)
     end
   end) then return
   end
-  ChoGGi.MsgPopup("Resouce Filled",
-  "Resource","UI/Icons/IPButtons/rare_metals.tga"
-  )
 end
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuResourcesFunc.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuResourcesFunc")
 end

@@ -1,4 +1,50 @@
-function ChoGGi.BreakThroughTechsPerGameToggle()
+function ChoGGi.OutsourcePoints1000000()
+  Consts.OutsourceResearch = 1000 * ChoGGi.Consts.ResearchPointsScale
+  ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. ": The same thing we do every night, Pinky - try to take over the world!",
+   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
+  )
+end
+
+function ChoGGi.OutsourcingFree_Toggle()
+  Consts.OutsourceResearchCost = ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost
+  ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. ": Best hope you picked India as your Mars sponsor",
+   "Research","UI/Icons/Sections/research_1.tga"
+  )
+end
+
+local function CheatStartMystery(mystery_id)
+--mapdata.StartMystery?
+  UICity.mystery_id = mystery_id
+  for i = 1, #TechTree do
+    local field = TechTree[i]
+    local field_id = field.id
+    local costs = field.costs or empty_table
+    local list = UICity.tech_field[field_id] or {}
+    UICity.tech_field[field_id] = list
+    for _, tech in ipairs(field) do
+      if tech.mystery == mystery_id then
+        local tech_id = tech.id
+        list[#list + 1] = tech_id
+        UICity.tech_status[tech_id] = {points = 0, field = field_id}
+        tech:Initialize(UICity)
+      end
+    end
+  end
+  UICity:InitMystery()
+end
+
+function ChoGGi.StartMystery(Mystery)
+  --inform people of actions, so they don't add a bunch of them
+  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
+  UICity.mystery_id = Mystery
+  CheatStartMystery(Mystery)
+end
+
+function ChoGGi.BreakThroughTechsPerGame_Toggle()
   if const.BreakThroughTechsPerGame == 26 then
     const.BreakThroughTechsPerGame = ChoGGi.Consts.BreakThroughTechsPerGame
   else
@@ -6,7 +52,7 @@ function ChoGGi.BreakThroughTechsPerGameToggle()
   end
   ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame .. " S M R T",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame .. ": S M R T",
    "Research","UI/Icons/Notifications/research.tga"
   )
 end
@@ -152,5 +198,5 @@ function ChoGGi.ResearchEveryBreakthrough()
 end
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuCheatsFunc.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuCheatsFunc")
 end

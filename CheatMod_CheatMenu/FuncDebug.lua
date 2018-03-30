@@ -1,7 +1,4 @@
 --[[
-
-
-
 dump(TupleToLuaCode(UserActions.Actions["UpsampledScreenshot"]))
 dumpobject(UserActions.Actions["DE_UpsampledScreenshot"])
 
@@ -18,12 +15,51 @@ UserActions.RemoveActions({
   "G_ToggleInfopanelCheats",
 })
 --]]
+function ChoGGi.PrintFiles(Filename,Function,Text,...)
+  Text = Text or ""
+  --pass ... onto pcall function
+  local Variadic = ...
+  pcall(function()
+    ChoGGi.Dump(Text .. Variadic .. "\r\n","a",Filename,"log",true)
+  end)
+  if Function then
+    Function(...)
+  end
+end
+
+function ChoGGi.WriteLogsEnable()
+  --remove old logs
+  local logs = "AppData/logs/"
+  os.remove(logs .. "ConsoleLog.previous.log")
+  os.remove(logs .. "DebugLog.previous.log")
+  os.rename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
+  os.rename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
+
+  --so we can pass the msgs on
+  ChoGGi.OrigFunc.printf = printf
+  ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
+
+  --replace these functions
+  printf = function(...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
+  end
+  DebugPrint = function(...)
+    ChoGGi.PrintFiles("DebugLog",nil,nil,...)
+  end
+  OutputDebugString = function(...)
+    ChoGGi.PrintFiles("DebugLog",nil,nil,...)
+  end
+  AddConsoleLog = function(...)
+    --we want to use our function instead of the orig to give us console history output
+    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+  end
+end
 
 function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   Mode = Mode or "a"
   Ext = Ext or "txt"
   File = File or "DumpedText"
-  local tempfile = assert(io.open("AppData/" .. File .. "." .. Ext,Mode))
+  local tempfile = assert(io.open("AppData/logs/" .. File .. "." .. Ext,Mode))
 
   if not pcall(function()
     tempfile:write(Obj)
@@ -39,63 +75,6 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
       "AppData/" .. File .. "." .. Ext,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
     )
   end
-end
-
---redirect print/ConsolePrint to consolelog
-function ChoGGi.print(...)
-  if ... then
-    AddConsoleLog(...,true)
-  end
-  ChoGGi.printOrig(...)
-end
-
-function ChoGGi.ConsolePrint(...)
-  if ... then
-    AddConsoleLog(...,true)
-  end
-  ChoGGi.ConsolePrintOrig(...)
-end
-
-function ChoGGi.WriteDebugLogsEnable()
-  --remove old logs
-  local logs = "AppData/logs/"
-  os.remove(logs .. "Printf.previous.log")
-  os.remove(logs .. "ConsolePrint.previous.log")
-  os.remove(logs .. "DebugPrint.previous.log")
-  os.rename(logs .. "Printf.log",logs .. "Printf.previous.log")
-  os.rename(logs .. "ConsolePrint.log",logs .. "ConsolePrint.previous.log")
-  os.rename(logs .. "DebugPrint.log",logs .. "DebugPrint.previous.log")
-
-  --so we can pass the msgs on
-  ChoGGi.printfOrig = printf
-  ChoGGi.DebugPrintOrig = DebugPrint
-  ChoGGi.OutputDebugStringOrig = OutputDebugString
-  --we already have ConsolePrintOrig
-
-  local function PrintFiles(Filename,Function,...)
-    --needed pass ... onto pcall function
-    local Variadic = ...
-    pcall(function()
-      ChoGGi.Dump(Variadic .. "\r\n","a","logs/" .. Filename,"log",true)
-    end)
-    Function(...)
-  end
-
-  --replace these functions
-  printf = function(...)
-    PrintFiles("printf",ChoGGi.printfOrig,...)
-  end
-  ConsolePrint = function(...)
-    --we want to use our function instead of the orig to give us console history output
-    PrintFiles("ConsolePrint",ChoGGi.ConsolePrint,...)
-  end
-  DebugPrint = function(...)
-    PrintFiles("DebugPrint",ChoGGi.DebugPrintOrig,...)
-  end
-  OutputDebugString = function(...)
-    PrintFiles("DebugPrint",ChoGGi.OutputDebugStringOrig,...)
-  end
-
 end
 
 --ChoGGi.PrintIds(TechTree)
@@ -239,6 +218,5 @@ end
 end
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: FuncDebug.lua",true)
+  table.insert(ChoGGi.FilesCount,"FuncDebug")
 end
-

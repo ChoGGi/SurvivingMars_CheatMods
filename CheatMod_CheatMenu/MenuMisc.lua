@@ -1,258 +1,316 @@
-UserActions.AddActions({
+--ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  ChoGGi_BorderScrollingToggle = {
-    icon = "CameraToggle.tga",
-    menu = "Gameplay/QoL/Camera/Border Scrolling",
-    description = function()
-      local action = ChoGGi.CheatMenuSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
-      return action .. " scrolling when mouse is near borders."
-    end,
-    action = ChoGGi.BorderScrollingToggle
-  },
+ChoGGi.AddAction(
+  "Gameplay/Qol/Camera/Border Scrolling",
+  ChoGGi.BorderScrolling_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
+    return des .. " Disable scrolling when mouse is near borders."
+  end,
+  "CameraToggle.tga"
+)
 
-  ChoGGi_CameraZoomToggle = {
-    icon = "MoveUpCamera.tga",
-    menu = "Gameplay/QoL/Camera/Camera Zoom Distance",
-    description = function()
-      local action = ChoGGi.CheatMenuSettings.CameraZoomToggle and "(Enabled)" or "(Disabled)"
-      return action .. " further zoom out/in (best to lower your scroll speed in options)."
-    end,
-    action = ChoGGi.CameraZoomToggle
-  },
+ChoGGi.AddAction(
+  "Gameplay/Qol/Camera/Zoom Distance",
+  ChoGGi.CameraZoom_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.CameraZoomToggle and "(Enabled)" or "(Disabled)"
+    return des .. " Further zoom distance."
+  end,
+  "MoveUpCamera.tga"
+)
 
-  ChoGGi_CameraZoomToggleSpeed = {
-    icon = "AreaToggleOverviewCamera.tga",
-    menu = "Gameplay/QoL/Camera/Camera Zoom Speed",
-    description = function()
-      local action = ChoGGi.CheatMenuSettings.CameraZoomToggleSpeed and "(Enabled)" or "(Disabled)"
-      return action .. " faster zooming."
-    end,
-    action = ChoGGi.CameraZoomToggleSpeed
-  },
+ChoGGi.AddAction(
+  "Gameplay/QoL/[-1]Infopanel Cheats",
+  ChoGGi.InfopanelCheats_Toggle,
+  nil,
+  function()
+    local des = config.BuildingInfopanelCheats and "(Enabled)" or "(Disabled)"
+    return des .. " the cheats in the infopanels"
+  end,
+  "toggle_dtm_slots.tga"
+)
 
-  ChoGGi_SpacingPipesPillarsToggle = {
-    icon = "ViewCamPath.tga",
-    menu = "Gameplay/QoL/Spacing Pipes Pillars Toggle",
-    description = function()
-      local action
-      if Consts.PipesPillarSpacing == 1000 then
-        action = "(Enabled)"
-      else
-        action = "(Disabled)"
-      end
-      return action .. " Only place Pillars at start and end."
-    end,
-    action = ChoGGi.SpacingPipesPillarsToggle
-  },
+ChoGGi.AddAction(
+  "Gameplay/QoL/[1]Block CheatEmpty",
+  ChoGGi.BlockCheatEmpty_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.BlockCheatEmpty and "(Enabled)" or "(Disabled)"
+    return des .. " Block CheatEmpty from working (need to restart to enable/disable)"
+  end,
+  "toggle_dtm_slots.tga"
+)
 
-  ChoGGi_ShowAllTraitsToggle = {
-    icon = "LightArea.tga",
-    menu = "Gameplay/QoL/Show All Traits Toggle",
-    description = function()
-      local action = ChoGGi.CheatMenuSettings.ShowAllTraits and "(Disabled)" or "(Enabled)"
-      return action .. " Shows all appropriate traits in Sanatoriums/Schools."
-    end,
-    action = ChoGGi.ShowAllTraitsToggle
-  },
-
-  ChoGGi_ResearchQueueLargerToggle = {
-    icon = "ViewArea.tga",
-    menu = "Gameplay/QoL/Research Queue Larger Toggle",
-    description = function()
-      local action
-      if const.ResearchQueueSize == 25 then
-        action = "(Enabled)"
-      else
-        action = "(Disabled)"
-      end
-      return action .. " up to 25 items in queue."
-    end,
-    action = ChoGGi.ResearchQueueLargerToggle
-  },
-
-  ChoGGi_OutsourcingFreeToggle = {
-    icon = "ViewArea.tga",
-    menu = "Gameplay/Research/Outsourcing Free Toggle",
-    description = function()
-      local action = ChoGGi.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
-      return action .. " Outsourcing is free to purchase (over n over)."
-    end,
-    action = ChoGGi.OutsourcingFreeToggle
-  },
-
-  ChoGGi_ScannerQueueLargerToggle = {
-    icon = "ViewArea.tga",
-    menu = "Gameplay/QoL/Scanner Queue Larger Toggle",
-    description = function()
-      local action
-      if Consts.ExplorationQueueMaxSize == 100 then
-        action = "(Enabled)"
-      else
-        action = "(Disabled)"
-      end
-      return action .. " Queue up to 100 squares (default 5)."
-    end,
-    action = ChoGGi.ScannerQueueLargerToggle
-  },
-
-  ChoGGi_MeteorHealthDamageToggle = {
-    icon = "remove_water.tga",
-    menu = "Gameplay/Meteors/Damage Toggle",
-    description = function()
-      local action = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
-      return action .. " Meteor damage (colonists and maybe buildings)."
-    end,
-    action = ChoGGi.MeteorHealthDamageToggle
-  },
-
-  ChoGGi_RocketCargoCapacityToggle = {
-    icon = "EnrichTerrainEditor.tga",
-    menu = "Gameplay/Rocket/Cargo Capacity Toggle",
-    description = function()
-      local action
-      if Consts.CargoCapacity == 1000000000 then
-        action = "(Enabled)"
-      else
-        action = "(Disabled)"
-      end
-      return action .. " 1,000,000,000 space."
-    end,
-    action = ChoGGi.RocketCargoCapacityToggle
-  },
-
-  ChoGGi_RocketTravelInstantToggle = {
-    icon = "place_particles.tga",
-    menu = "Gameplay/Rocket/Travel Instant Toggle",
-    description = function()
-      local action = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,"(Disabled)","(Enabled)")
-      return action .. " Instant travel between Earth and Mars."
-    end,
-    action = ChoGGi.RocketTravelInstantToggle
-  },
-
-  ChoGGi_OutsourcePoints1000000 = {
-    icon = "ViewArea.tga",
-    menu = "Gameplay/Research/Outsource Points +1,000,000",
-    description = "Gives a crapload of research points (almost instant research)",
-    action = ChoGGi.OutsourcePoints1000000
-  },
-
-  ChoGGi_GameSpeedDefault = {
-    icon = "SelectionToTemplates.tga",
-    menu = "Gameplay/Speed/[1]Game Speed Default",
-    description = "Default game speed.",
-    action = function()
-      ChoGGi.SetGameSpeed(1)
+ChoGGi.AddAction(
+  "Gameplay/QoL/Pipes Pillars Spacing Toggle",
+  ChoGGi.PipesPillarsSpacing_Toggle,
+  nil,
+  function()
+    local des
+    if Consts.PipesPillarSpacing == 1000 then
+      des = "(Enabled)"
+    else
+      des = "(Disabled)"
     end
-  },
+    return des .. " Only place Pillars at start and end."
+  end,
+  "ViewCamPath.tga"
+)
 
-  ChoGGi_GameSpeedDouble = {
-    icon = "SelectionToTemplates.tga",
-    menu = "Gameplay/Speed/[2]Game Speed Double",
-    description = "Doubles the speed of the game (at medium/fast).",
-    action = function()
-      ChoGGi.SetGameSpeed(2)
+ChoGGi.AddAction(
+  "Gameplay/QoL/Show All Traits Toggle",
+  ChoGGi.ShowAllTraits_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.ShowAllTraits and "(Enabled)" or "(Disabled)"
+    return des .. " Shows all appropriate traits in Sanatoriums/Schools."
+  end,
+  "LightArea.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/Research Queue Larger Toggle",
+  ChoGGi.ResearchQueueLarger_Toggle,
+  nil,
+  function()
+    local des
+    if const.ResearchQueueSize == 25 then
+      des = "(Enabled)"
+    else
+      des = "(Disabled)"
     end
-  },
+    return des .. " Enable up to 25 items in queue."
+  end,
+  "ViewArea.tga"
+)
 
-  ChoGGi_GameSpeedTriple = {
-    icon = "SelectionToTemplates.tga",
-    menu = "Gameplay/Speed/[3]Game Speed Triple",
-    description = "Triples the speed of the game (at medium/fast).",
-    action = function()
-      ChoGGi.SetGameSpeed(3)
+ChoGGi.AddAction(
+  "Gameplay/QoL/Scanner Queue Larger Toggle",
+  ChoGGi.ScannerQueueLarger_Toggle,
+  nil,
+  function()
+    local des
+    if const.ExplorationQueueMaxSize == 100 then
+      des = "(Enabled)"
+    else
+      des = "(Disabled)"
     end
-  },
+    return des .. " Queue up to 100 squares (default " .. ChoGGi.Consts.ExplorationQueueMaxSize .. ")."
+  end,
+  "ViewArea.tga"
+)
 
-  ChoGGi_GameSpeedQuad = {
-    icon = "SelectionToTemplates.tga",
-    menu = "Gameplay/Speed/[4]Game Speed Quad",
-    description = "Quadruples the speed of the game (at medium/fast).",
-    action = function()
-      ChoGGi.SetGameSpeed(4)
+ChoGGi.AddAction(
+  "Gameplay/Meteors/Damage Toggle",
+  ChoGGi.MeteorHealthDamage_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
+    return des .. " Disable Meteor damage (colonists?)."
+  end,
+  "remove_water.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Rocket/Cargo Capacity Toggle",
+  ChoGGi.RocketCargoCapacity_Toggle,
+  nil,
+  function()
+    local des
+    if Consts.CargoCapacity == 1000000000 then
+      des = "(Enabled)"
+    else
+      des = "(Disabled)"
     end
-  },
+    return des .. " 1,000,000,000 space."
+  end,
+  "EnrichTerrainEditor.tga"
+)
 
-  ChoGGi_ColonistsPerRocketIncrease = {
-    icon = "ToggleMarkers.tga",
-    menu = "Gameplay/Rocket/Colonists Per Rocket + 25",
-    description = function()
-      return Consts.MaxColonistsPerRocket .. " + 25 colonists can arrive on Mars in a single Rocket."
-    end,
-    action = function()
-      ChoGGi.ColonistsPerRocket(true)
-    end
-  },
+ChoGGi.AddAction(
+  "Gameplay/Rocket/Travel Instant Toggle",
+  ChoGGi.RocketTravelInstant_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,"(Disabled)","(Enabled)")
+    return des .. " Instant travel between Earth and Mars."
+  end,
+  "place_particles.tga"
+)
 
-  ChoGGi_ColonistsPerRocketDefault = {
-    icon = "ToggleMarkers.tga",
-    menu = "Gameplay/Rocket/Colonists Per Rocket Default",
-    description = function()
-      return ChoGGi.Consts.MaxColonistsPerRocket .. " colonists can arrive on Mars in a single Rocket."
-    end,
-    action = ChoGGi.ColonistsPerRocket
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[1]Game Speed Default",
+  function()
+    ChoGGi.SetGameSpeed(1)
+  end,
+  nil,
+  "Default game speed.",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_HintRadius = {
-    icon = "ReportBug.tga",
-    menu = "Gameplay/Radius/[0]These don't really work for now",
-    description = "keeps resetting...",
-    action = function()
-      return
-    end
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[2]Game Speed Double",
+  function()
+    ChoGGi.SetGameSpeed(2)
+  end,
+  nil,
+  "Doubles (2) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_RCRoverRadiusIncrease = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/RC Rover Radius + 25",
-    description = "Increase drone radius of each Rover.",
-    action = function()
-      ChoGGi.RCRoverRadius(true)
-    end
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[3]Game Speed Triple",
+  function()
+    ChoGGi.SetGameSpeed(3)
+  end,
+  nil,
+  "Triples (3) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_RCRoverRadiusDefault = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/RC Rover Radius Default",
-    description = "Default drone radius to each Rover.",
-    action = ChoGGi.RCRoverRadius
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[4]Game Speed Quad",
+  function()
+    ChoGGi.SetGameSpeed(4)
+  end,
+  nil,
+  "Quadruples (4) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
---not working
-  ChoGGi_CommandCenterRadiusIncrease = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/Command Center Radius + 25",
-    description = "Increase Drone radius of drone hubs.",
-    action = function()
-      ChoGGi.CommandCenterRadius(true)
-    end
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[5]Game Speed Octuple",
+  function()
+    ChoGGi.SetGameSpeed(5)
+  end,
+  nil,
+  "Octuples (8) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_CommandCenterRadiusDefault = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/Command Center Radius Default",
-    description = "Default Drone radius of drone hubs.",
-    action = ChoGGi.CommandCenterRadius
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[6]Game Speed Sexdecuple",
+  function()
+    ChoGGi.SetGameSpeed(6)
+  end,
+  nil,
+  "Sexdecuples (16) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_TriboelectricScrubberRadiusIncrease = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/Triboelectric Scrubber Radius + 25",
-    description = "Increase radius of Triboelectric Scrubber.",
-    action = function()
-      ChoGGi.TriboelectricScrubberRadius(true)
-    end
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[7]Game Speed Duotriguple",
+  function()
+    ChoGGi.SetGameSpeed(7)
+  end,
+  nil,
+  "Duotriguples (32) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-  ChoGGi_TriboelectricScrubberRadiusDefault = {
-    icon = "DisableRMMaps.tga",
-    menu = "Gameplay/Radius/Triboelectric Scrubber Radius Default",
-    description = "Default radius of Triboelectric Scrubber.",
-    action = ChoGGi.TriboelectricScrubberRadius
-  },
+ChoGGi.AddAction(
+  "Gameplay/Speed/[8]Game Speed Quattuorsexaguple",
+  function()
+    ChoGGi.SetGameSpeed(8)
+  end,
+  nil,
+  "Quattuorsexaguples (64) the speed of the game (at medium/fast).",
+  "SelectionToTemplates.tga"
+)
 
-})
+ChoGGi.AddAction(
+  "Gameplay/Rocket/Colonists Per Rocket + 25",
+  function()
+    ChoGGi.ColonistsPerRocket(true)
+  end,
+  "Ctrl-Shift-O",
+  function()
+    return Consts.MaxColonistsPerRocket + 25 .. " colonists can arrive on Mars in a single Rocket."
+  end,
+  "ToggleMarkers.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Rocket/Colonists Per Rocket Default",
+  ChoGGi.ColonistsPerRocket,
+  nil,
+  function()
+    return ChoGGi.Consts.MaxColonistsPerRocket .. " colonists can arrive on Mars in a single Rocket."
+  end,
+  "ToggleMarkers.tga"
+)
+
+--[[
+not working
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/[0]These don't really work for now...",
+  function()
+    return
+  end,
+  nil,
+  "keeps resetting...",
+  "ReportBug.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/RC Rover Radius + 25",
+  function()
+    ChoGGi.RCRoverRadius(true)
+  end,
+  nil,
+  "Increase drone radius of each Rover.",
+  "DisableRMMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/RC Rover Radius Default",
+  ChoGGi.RCRoverRadius,
+  nil,
+  "Default drone radius to each Rover.",
+  "DisableRMMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/Command Center Radius + 25",
+  function()
+    ChoGGi.CommandCenterRadius(true)
+  end,
+  nil,
+  "Increase Drone radius of drone hubs.",
+  "DisableRMMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/Command Center Radius Default",
+  ChoGGi.CommandCenterRadius,
+  nil,
+  "Default Drone radius of drone hubs.",
+  "DisableRMMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/Triboelectric Scrubber Radius + 25",
+  function()
+    ChoGGi.TriboelectricScrubberRadius(true)
+  end,
+  nil,
+  "Increase radius of Triboelectric Scrubber.",
+  "DisableRMMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Radius/Triboelectric Scrubber Radius Default",
+  "Default radius of Triboelectric Scrubber.",,
+  nil,
+  ChoGGi.TriboelectricScrubberRadius
+  "DisableRMMaps.tga"
+)
+--]]
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuMisc.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuMisc")
 end

@@ -1,202 +1,310 @@
-UserActions.AddActions({
+--ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
---G_ToggleOnScreenHints
---option to disable perm
+ChoGGi.AddAction(
+  "[102]Debug/[09]Toggle Hex Build Grid Visibility",
+  debug_build_grid,
+  "Ctrl-F3",
+  "Toggle Hex Build Grid Visibility",
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_HexBuildGridToggle = {
-    icon = "CollisionGeometry.tga",
-    key = "Ctrl-F3",
-    description = "Toggle Hex Build Grid Visibility",
-    menu = "[102]Debug/[09]Toggle Hex Build Grid Visibility",
-    action = debug_build_grid
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Console Clear Display",
+  cls,
+  "F9",
+  "Clears console history display.",
+  "Voice.tga"
+)
 
-  ChoGGi_ConsoleClearDisplay = {
-    icon = "Voice.tga",
-    key = "F9",
-    description = "Clears console history display.",
-    menu = "[102]Debug/Console Clear Display",
-    action = cls
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Toggle Editor",
+  ChoGGi.Editor_Toggle,
+  "Ctrl-Shift-E",
+  "You can move stuff around, but that's all that I know.",
+  "SelectionEditor.tga"
+)
 
-  ChoGGi_WriteDebugLogs = {
-    icon = "save_city.tga",
-    menu = "[102]Debug/Write Debug Logs",
-    description = function()
-      local des = ChoGGi.CheatMenuSettings.WriteDebugLogs and "(Enabled)" or "(Disabled)"
-      return des .. " Writing debug logs to AppData/DebugPrint and AppData/printf (immediately instead of only after quiting, restart for disable)."
-    end,
-    action = ChoGGi.WriteDebugLogs
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Open In Ged Editor",
+  function()
+    OpenGedGameObjectEditor(SelectedObj)
+  end,
+  nil,
+  "It edits stuff?",
+  "SelectionEditor.tga"
+)
 
-  ChoGGi_ConsoleToggleHistory = {
-    icon = "Voice.tga",
-    menu = "[102]Debug/Console Toggle History",
-    description = function()
-      local des = ChoGGi.CheatMenuSettings.ConsoleToggleHistory and "(Enabled)" or "(Disabled)"
-      return des .. " Show console history on screen."
-    end,
-    action = ChoGGi.ConsoleToggleHistory
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Write Logs",
+  ChoGGi.WriteLogs_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.WriteLogs and "(Enabled)" or "(Disabled)"
+    return des .. "Write Debug/Console logs to AppData/logs (restart to disable).\n\nThis will also write all console output (great way to examine large objects, along with examine(Obj))."
+  end,
+  "save_city.tga"
+)
 
-  ChoGGi_ToggleTerrainDepositGrid = {
-    icon = "CollisionGeometry.tga",
-    key = "Ctrl-F4",
-    description = "Toggle Terrain Deposit Grid",
-    menu = "[102]Debug/[09]Toggle Terrain Deposit Grid",
-    action = ToggleTerrainDepositGrid
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Console Toggle History",
+  ChoGGi.ConsoleHistory_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.ConsoleToggleHistory and "(Enabled)" or "(Disabled)"
+    return des .. " Show console history on screen."
+  end,
+  "Voice.tga"
+)
 
-  ChoGGi_DestroySelectedObject = {
-    icon = "DeleteArea.tga",
-    description = "(Some, not all).",
-    menu = "[102]Debug/Destroy Selected Object",
-    action = ChoGGi.DestroySelectedObject
-  },
+ChoGGi.AddAction(
+  "[102]Debug/[09]Toggle Terrain Deposit Grid",
+  ToggleTerrainDepositGrid,
+  "Ctrl-F4",
+  "Toggle Terrain Deposit Grid",
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_BombardmentAtCursor = {
-    icon = "ToggleEnvMap.tga",
-    key = "Ctrl-Numpad 1",
-    menu = "[102]Debug/Asteroid At Cursor",
-    description = "May have trouble aiming when an object is selected.",
-    action = ChoGGi.BombardmentAtCursor
-  },
-  ChoGGi_BombardmentAtCursorMass = {
-    icon = "ToggleEnvMap.tga",
-    description = "Zoom out",
-    key = "Ctrl-Numpad 2",
-    menu = "[102]Debug/Asteroid Bombardment",
-    action = ChoGGi.BombardmentAtCursorMass
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Delete Selected Object",
+  ChoGGi.DeleteSelectedObject,
+  nil,
+  "(Some, not all).",
+  "DeleteArea.tga"
+)
 
-  ChoGGi_ExamineCurrentObj = {
-    icon = "SelectByClassName.tga",
-    description = "Opens the object examiner",
-    menu = "[102]Debug/Examine Current Obj",
-    key = "F4",
-    action = ChoGGi.ExamineCurrentObj
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Asteroids/Meteor At Cursor",
+  function()
+    ChoGGi.MeteorBombardment(true)
+  end,
+  "Ctrl-Numpad 9",
+  "May have trouble aiming when an object is selected.",
+  "ToggleEnvMap.tga"
+)
 
-  ChoGGi_DumpCurrentObj = {
-    icon = "SaveMapEntityList.tga",
-    description = "Dumps info for current object to AppData/DumpText.txt",
-    menu = "[102]Debug/Dump Current Obj",
-    key = "F5",
-    action = function()
-      ChoGGi.DumpObject(SelectedObj)
-    end
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Asteroids/Meteor Bombardment",
+  function()
+    ChoGGi.MeteorBombardment()
+  end,
+  nil,
+  "Zoom out",
+  "ToggleEnvMap.tga"
+)
 
-  ChoGGi_ChangeMap = {
-    key = "F12",
-    description = "Change Map",
-    toolbar = "01_File/01_ChangeMap",
-    icon = "load_city.tga",
-    menu = "[102]Map/[01]Change Map",
-    action = ChoGGi.ChangeMap
-  },
+ChoGGi.AddAction(
+  "[102]Debug/Asteroids/Asteroid At Cursor",
+  function()
+    ChoGGi.AsteroidBombardment(1)
+  end,
+  "Ctrl-Numpad 8",
+  "Single shot.",
+  "ToggleEnvMap.tga"
+)
+
+ChoGGi.AddAction(
+  "[102]Debug/Asteroids/Asteroid Multi At Cursor",
+  function()
+    ChoGGi.AsteroidBombardment(2)
+  end,
+  "Ctrl-Numpad 7",
+  "Over and over.",
+  "ToggleEnvMap.tga"
+)
+
+ChoGGi.AddAction(
+  "[102]Debug/Asteroids/Asteroid Storm At Cursor",
+  function()
+    ChoGGi.AsteroidBombardment(3)
+  end,
+  "Ctrl-Numpad 6",
+  "Over and over.",
+  "ToggleEnvMap.tga"
+)
+
+ChoGGi.AddAction(
+  "[102]Debug/Examine Current Obj",
+  function()
+    OpenExamine(SelectedObj)
+  end,
+  "F4",
+  "Opens the object examiner",
+  "SelectByClassName.tga"
+)
+
+ChoGGi.AddAction(
+  "[102]Debug/Dump Current Obj",
+  function()
+    ChoGGi.DumpObject(SelectedObj)
+  end,
+  "F5",
+  "Dumps info for current object to AppData/DumpText.txt",
+  "SaveMapEntityList.tga"
+)
+
+ChoGGi.AddAction(
+  "[102]Debug/Change Map",
+  ChoGGi.ChangeMap,
+  "F12",
+  "Change Map",
+  "load_city.tga"
+  --toolbar = "01_File/01_ChangeMap",
+)
 
 --[[
-  ChoGGi_ReloadStaticClasses = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/ReloadStaticClasses()",
-    action = ReloadStaticClasses
-  },
+ChoGGi.AddAction(
+  "[203]Editors/ReloadStaticClasses()",
+  ReloadStaticClasses,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_ReloadTexture = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/ReloadTexture()",
-    action = ReloadTexture
-  },
+ChoGGi.AddAction(
+  "[203]Editors/ReloadTexture()",
+  ReloadTexture,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_ReloadEntity = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/ReloadEntity()",
-    action = ReloadEntity
-  },
+ChoGGi.AddAction(
+  "[203]Editors/ReloadEntity()",
+  ReloadEntity,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_InitSourceController = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/InitSourceController()",
-    action = InitSourceController
-  },
+ChoGGi.AddAction(
+  "[203]Editors/InitSourceController()",
+  InitSourceController,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_CNSProcess = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/CNSProcess()",
-    action = CNSProcess
-  },
+ChoGGi.AddAction(
+  "[203]Editors/CNSProcess()",
+  CNSProcess,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_ParticlesReload = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/ParticlesReload()",
-    action = ParticlesReload
-  },
+ChoGGi.AddAction(
+  "[203]Editors/ParticlesReload()",
+  ParticlesReload,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_ReloadShaders = {
-    icon = "CollisionGeometry.tga",
-    menu = "[102]Debug/ReloadShaders()",
-    action = hr.ReloadShaders
-  },
+ChoGGi.AddAction(
+  "[203]Editors/ReloadShaders()",
+  hr.ReloadShaders,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-dofolder_files("Lua/Dev")
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[2]Toggle Buildable Grid",
+  DbgToggleBuildableGrid,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
 
-  ChoGGi_DbgToggleBuildableGrid = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[2]Toggle Buildable Grid",
-    action = DbgToggleBuildableGrid
-  },
-  ChoGGi_PrefabDbgDrawMinCircles = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[3]Draw Min Circles",
-    action = PrefabDbgDrawMinCircles
-  },
-  ChoGGi_PrefabDbgDrawMaxCircles = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[4]Draw Max Circles",
-    action = PrefabDbgDrawMaxCircles
-  },
-  ChoGGi_PrefabDbgDrawDecorCircles = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[5]Draw Decor Circles",
-    action = PrefabDbgDrawDecorCircles
-  },
-  ChoGGi_PrefabDbgDrawPos = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[6]Draw Prefab Pos",
-    action = PrefabDbgDrawPos
-  },
-  ChoGGi_PrefabEditorDrawClusters = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[7]Draw Resource Clusters",
-    action = PrefabDbgDrawResourceClusters
-  },
-  ChoGGi_PrefabDbgDrawFeatures = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[8]Draw Features",
-    action = PrefabDbgDrawFeatures
-  },
-  ChoGGi_PrefabEditorObjectsToggle = {
-    menu = "[203]Editors/[02]Random Map/[2]Debug/[9]Editor Objects Toggle",
-    action = PrefabEditorObjectsToggle
-  },
-  ChoGGi_ResaveAllPrefabs = {
-    menu = "[203]Editors/[02]Random Map/Resave All Prefabs",
-    action = ResaveAllPrefabs
-  },
-  ChoGGi_ResaveAllBlankMaps = {
-    menu = "[203]Editors/[02]Random Map/Resave All Blank Maps",
-    action = ResaveAllBlankMaps
-  },
-  ChoGGi_CheckGameRevision = {
-    menu = "[203]Editors/[02]Random Map/Recover Game Revision",
-    mode = "Editor",
-    action = function()
-      local gen = GetRandomMapGenerator() or GetRandomMapGeneratorHolder()
-      if gen then
-        CreateRealTimeThread(function(gen)
-          gen:RecoverRevision()
-        end, gen)
-      end
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[3]Draw Min Circles",
+  PrefabDbgDrawMinCircles,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[4]Draw Max Circles",
+  PrefabDbgDrawMaxCircles,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[5]Draw Decor Circles",
+  PrefabDbgDrawDecorCircles,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[6]Draw Prefab Pos",
+  PrefabDbgDrawPos,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[7]Draw Resource Clusters",
+  PrefabDbgDrawResourceClusters,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[8]Draw Features",
+  PrefabDbgDrawFeatures,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/[2]Debug/[9]Editor Objects Toggle",
+  PrefabEditorObjectsToggle,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/Resave All Prefabs",
+  ResaveAllPrefabs,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/Resave All Blank Maps",
+  ResaveAllBlankMaps,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+)
+
+ChoGGi.AddAction(
+  "[203]Editors/[02]Random Map/Recover Game Revision",
+  function()
+    local gen = GetRandomMapGenerator() or GetRandomMapGeneratorHolder()
+    if gen then
+      CreateRealTimeThread(function(gen)
+        gen:RecoverRevision()
+      end, gen)
     end
-  },
+  end,
+  nil,
+  nil,
+  "CollisionGeometry.tga"
+  --mode = "Editor",
+)
 --]]
 
-})
-
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuDebug.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuDebug")
 end

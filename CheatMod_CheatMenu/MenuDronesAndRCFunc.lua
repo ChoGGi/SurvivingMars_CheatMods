@@ -1,3 +1,32 @@
+function ChoGGi.ShuttleCapacitySet(Bool)
+  if not SelectedObj and not SelectedObj.base_max_shuttles or not UICity.labels.BuildingNoDomes then
+    ChoGGi.MsgPopup("You need to select something that has shuttles.",
+      "Drones","UI/Icons/IPButtons/drone.tga"
+    )
+    return
+  end
+  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+    --if IsKindOf(building,SelectedObj.encyclopedia_id) then
+    if building.encyclopedia_id == SelectedObj.encyclopedia_id then
+      if Bool == true then
+        building.max_shuttles = building.max_shuttles + ChoGGi.Consts.ShuttleAddAmount
+      else
+        building.max_shuttles = nil
+      end
+      if building.max_shuttles ~= building.base_max_shuttles then
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = building.max_shuttles
+      elseif building.max_shuttles == building.base_max_shuttles then
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = nil
+      end
+    end
+  end
+  ChoGGi.WriteSettings()
+
+  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Capacity is now " .. ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] or "default",
+   "Drones","UI/Icons/IPButtons/drone.tga"
+  )
+end
+
 function ChoGGi.DroneBatteryInfiniteToggle()
   Consts.DroneMoveBatteryUse = ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse)
   Consts.DroneCarryBatteryUse = ChoGGi.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse)
@@ -12,7 +41,7 @@ function ChoGGi.DroneBatteryInfiniteToggle()
   ChoGGi.CheatMenuSettings.DroneDeconstructBatteryUse = Consts.DroneDeconstructBatteryUse
   ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileBatteryUse = Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneMoveBatteryUse .. " What happens when the drones get into your Jolt Cola supply...",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneMoveBatteryUse .. ": What happens when the drones get into your Jolt Cola supply...",
    "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -30,7 +59,7 @@ function ChoGGi.DroneBuildSpeedToggle()
   ChoGGi.WriteSettings()
   --Consts.DroneConstrutionTime = 0
   --Consts.AndroidConstrutionTime = 0
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneConstructAmount .. " What happens when the drones get into your Jolt Cola supply... and drink it",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneConstructAmount .. ": What happens when the drones get into your Jolt Cola supply... and drink it",
    "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -39,7 +68,7 @@ function ChoGGi.RCRoverDroneRechargeFreeToggle()
   Consts.RCRoverDroneRechargeCost = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost)
   ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost = Consts.RCRoverDroneRechargeCost
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost .. " More where that came from",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost .. ": More where that came from",
    "RC","UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -50,7 +79,7 @@ function ChoGGi.RCTransportResourceToggle()
   ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime = Consts.RCRoverTransferResourceWorkTime
   ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime = Consts.RCTransportGatherResourceWorkTime
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime .. " Slight of hand",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime .. ": Slight of hand",
    "RC","UI/Icons/IPButtons/resources_section.tga"
   )
 end
@@ -59,7 +88,7 @@ function ChoGGi.DroneMeteorMalfunctionToggle()
   Consts.DroneMeteorMalfunctionChance = ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance)
   ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance = Consts.DroneMeteorMalfunctionChance
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance .. " I'm singing in the rain. Just singin' in the rain. What a glorious feeling",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling",
    "Drones","UI/Icons/Notifications/meteor_storm.tga"
   )
 end
@@ -68,7 +97,7 @@ function ChoGGi.DroneRechargeTimeToggle()
   Consts.DroneRechargeTime = ChoGGi.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime)
   ChoGGi.CheatMenuSettings.DroneRechargeTime = Consts.DroneRechargeTime
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRechargeTime .. " Well, if jacking on'll make strangers think I'm cool, I'll do it!",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRechargeTime .. ": Well, if jacking on'll make strangers think I'm cool, I'll do it!",
    "Drones","UI/Icons/Notifications/low_battery.tga"
   )
 end
@@ -77,7 +106,7 @@ function ChoGGi.DroneRepairSupplyLeakToggle()
   Consts.DroneRepairSupplyLeak = ChoGGi.NumRetBool(Consts.DroneRepairSupplyLeak,0,ChoGGi.Consts.DroneRepairSupplyLeak)
   ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak = Consts.DroneRepairSupplyLeak
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak .. " You know what they say about leaky pipes",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak .. ": You know what they say about leaky pipes",
    "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -90,7 +119,7 @@ function ChoGGi.DroneCarryAmount(Bool)
   end
   ChoGGi.CheatMenuSettings.DroneResourceCarryAmount = Consts.DroneResourceCarryAmount
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneResourceCarryAmount .. " What happens when the drones get into your Jolt Cola supply...",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneResourceCarryAmount .. ": What happens when the drones get into your Jolt Cola supply...",
    "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -146,5 +175,5 @@ function ChoGGi.RCTransportStorage(Bool,Which)
 end
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuDronesAndRCFunc.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuDronesAndRCFunc")
 end

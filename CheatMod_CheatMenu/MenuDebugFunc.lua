@@ -1,16 +1,12 @@
-function ChoGGi.WriteDebugLogs()
-  ChoGGi.CheatMenuSettings.WriteDebugLogs = not ChoGGi.CheatMenuSettings.WriteDebugLogs
-  if ChoGGi.CheatMenuSettings.WriteDebugLogs then
-    ChoGGi.WriteDebugLogsEnable()
+function ChoGGi.WriteLogs_Toggle()
+  ChoGGi.CheatMenuSettings.WriteLogs = not ChoGGi.CheatMenuSettings.WriteLogs
+  if ChoGGi.CheatMenuSettings.WriteLogs then
+    ChoGGi.WriteLogsEnable()
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Write Debug Logs: " .. ChoGGi.CheatMenuSettings.WriteDebugLogs,
+  ChoGGi.MsgPopup("Write Debug Logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
    "Research","UI/Icons/Notifications/research.tga"
   )
-end
-
-function ChoGGi.ExamineCurrentObj()
-  OpenExamine(SelectedObj)
 end
 
 function ChoGGi.DumpCurrentObj()
@@ -22,29 +18,60 @@ function ChoGGi.DumpCurrentObj()
   end)
 end
 
-function ChoGGi.BombardmentAtCursorMass()
-  StartBombard(GetTerrainCursor(),0,50,0,0)
+function ChoGGi.Editor_Toggle()
+  if IsEditorActive() then
+    EditorDeactivate()
+  else
+    EditorActivate()
+  end
 end
 
-function ChoGGi.BombardmentAtCursor()
-  StartBombard(GetTerrainCursor(),0,1,0,0)
+function ChoGGi.MeteorBombardment(Bool)
   --function WaitBombard(obj, radius, count, delay_min, delay_max)
+  if Bool then
+    StartBombard(GetTerrainCursor(),0,50,0,0)
+  else
+    StartBombard(GetTerrainCursor(),0,50,0,0)
+  end
 end
 
-function ChoGGi.DestroySelectedObject()
+function ChoGGi.AsteroidBombardment(Num)
+  --function WaitBombard(obj, radius, count, delay_min, delay_max)
+  if Num == 1 then
+    CreateGameTimeThread(function()
+      local def = MapSettings_Meteor:new({storm_radius = 0})
+      MeteorsDisaster(def, "single", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
+    end)
+  elseif Num == 2 then
+    CreateGameTimeThread(function()
+      local def = MapSettings_Meteor:new({storm_radius = 5000})
+      MeteorsDisaster(def, "multispawn", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
+    end)
+  elseif Num == 3 then
+    --pound it
+    CreateGameTimeThread(function()
+      local def = MapSettings_Meteor:new({storm_radius = 50000})
+      MeteorsDisaster(def, "storm", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
+    end)
+  end
+end
+
+
+function ChoGGi.DeleteSelectedObject()
   pcall(function()
     SelectedObj.can_demolish = true
     SelectedObj.indestructible = false
     DestroyBuildingImmediate(SelectedObj)
     SelectedObj:Destroy()
+    SelectedObj:delete()
   end)
 end
 
-function ChoGGi.ConsoleToggleHistory()
+function ChoGGi.ConsoleHistory_Toggle()
   ChoGGi.CheatMenuSettings.ConsoleToggleHistory = not ChoGGi.CheatMenuSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.CheatMenuSettings.ConsoleToggleHistory)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ConsoleToggleHistory .. " Those who cannot remember the past are condemned to repeat it.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
    "Console","UI/Icons/Sections/workshifts.tga"
   )
 end
@@ -89,5 +116,5 @@ function ChoGGi.ChangeMap()
 end
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuDebugFunc.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuDebugFunc")
 end

@@ -1,58 +1,66 @@
-UserActions.AddActions({
+--ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  ChoGGi_ResearchEveryBreakthrough = {
-    icon = "ViewArea.tga",
-    menu = "Cheats/[04]Research/[11]Research Every Breakthrough",
-    description = "Research all Breakthroughs",
-    action = ChoGGi.ResearchEveryBreakthrough
-  },
+--"Cheats/Start Mystery" menu items are built in OnMsgs.lua>ClassesBuilt()
 
-  ChoGGi_UnlockEveryBreakthrough = {
-    icon = "ViewArea.tga",
-    menu = "Cheats/[04]Research/[12]Unlock Every Breakthrough",
-    description = "Unlocks all Breakthroughs",
-    action = ChoGGi.UnlockEveryBreakthrough
-  },
+ChoGGi.AddAction(
+  "Cheats/[04]Research/Outsource Points 1,000,000",
+  ChoGGi.OutsourcePoints1000000,
+  nil,
+  "Gives a crapload of research points when you outsource (almost instant research)",
+  "ViewArea.tga"
+)
 
-  ChoGGi_ResearchEveryMystery = {
-    icon = "ViewArea.tga",
-    menu = "Cheats/[04]Research/[13]Research Every Mystery",
-    description = "Research all Mysteries",
-    action = ChoGGi.ResearchEveryMystery
-  },
+ChoGGi.AddAction(
+  "Cheats/[04]Research/Outsourcing Free Toggle",
+  ChoGGi.OutsourcingFree_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
+    return des .. " Outsourcing is free to purchase (over n over)."
+  end,
+  "ViewArea.tga"
+)
 
-  ChoGGi_BreakThroughTechsPerGameToggle = {
-    icon = "ViewArea.tga",
-    menu = "Cheats/[04]Research/[14]Double Amount of Breakthroughs per game",
-    description = function()
-      local action
-      if const.BreakThroughTechsPerGame == 26 then
-        action = "(Enabled)"
-      else
-        action = "(Disabled)"
-      end
-      return action .. " Doubled amount of breakthroughs per game."
-    end,
-    action = ChoGGi.BreakThroughTechsPerGameToggle
-  },
+ChoGGi.AddAction(
+  "Cheats/[04]Research/[11]Research Every Breakthrough",
+  ChoGGi.ResearchEveryBreakthrough,
+  nil,
+  "Research all Breakthroughs",
+  "ViewArea.tga"
+)
 
-  --can't be bothered making MenuHelp.lua just for this
-  ChoGGi_ShowHelp = {
-    icon = "ReportBug.tga",
-    menu = "[999]Help/Help",
-    action = function()
-      CreateRealTimeThread(WaitCustomPopupNotification,
-        "Help",
-        "Hover mouse over menu item to get description and enabled status"
-          .. "\nIf menu item has a '+ num' then that means it'll add to the current amount"
-          .. "\n(you can add as many times as you want)",
-        {"OK"}
-      )
+ChoGGi.AddAction(
+  "Cheats/[04]Research/[12]Unlock Every Breakthrough",
+  ChoGGi.UnlockEveryBreakthrough,
+  nil,
+  "Unlocks all Breakthroughs",
+  "ViewArea.tga"
+)
+
+ChoGGi.AddAction(
+  "Cheats/[04]Research/[13]Research Every Mystery",
+  ChoGGi.ResearchEveryMystery,
+  nil,
+  "Research all Mysteries",
+  "ViewArea.tga"
+)
+
+ChoGGi.AddAction(
+  "Cheats/[04]Research/[14]Double Amount of Breakthroughs per game",
+  ChoGGi.BreakThroughTechsPerGame_Toggle,
+  nil,
+  function()
+    local des
+    if const.BreakThroughTechsPerGame == 26 then
+      des = "(Enabled)"
+    else
+      des = "(Disabled)"
     end
-  },
-
-})
+    return des .. " Doubled amount of breakthroughs unlockable per game."
+  end,
+  "ViewArea.tga"
+)
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: MenuCheats.lua",true)
+  table.insert(ChoGGi.FilesCount,"MenuCheats")
 end

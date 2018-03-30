@@ -33,83 +33,91 @@ end
 
 function ChoGGi.MsgPopup(Msg,Title,Icon)
   pcall(function()
-    Msg = Msg or ""
+    Msg = Msg or "Empty"
+    --returns translated text corresponding to number if we don't do this
+    if type(Msg) == "number" then
+      Msg = tostring(Msg)
+    end
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
     if type(AddCustomOnScreenNotification) == "function" then --incase we called it where there ain't no UI
       CreateRealTimeThread(AddCustomOnScreenNotification(
-        --AsyncRand(),Title,"" .. Msg,Icon,nil,{expiration=5000}
         AsyncRand(),Title,Msg,Icon,nil,{expiration=5000}
       ))
     end
   end)
 end
 
---give a CheatFill cmd to concrete (well try to, it doesn't seem to have the cheat section...find out why)
---[[
-function TerrainDepositConcrete:CheatRefill()
-  self.amount = self.max_amount
-  self:NotifyNearbyExploiters()
-  self:UpdateUI()
+function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
+  pcall(function()
+    Msg = Msg or "Empty"
+    Ok = Ok or "Ok"
+    Cancel = Cancel or "Cancel"
+    Title = Title or "Placeholder"
+    Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
+    CreateRealTimeThread(function()
+      if "ok" == WaitQuestion(nil,
+        Title,
+        Msg,
+        Ok,
+        Cancel)
+      then
+        Function()
+      end
+    end)
+  end)
 end
+
+function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput)
+  if Menu then
+    Menu = "/" .. tostring(Menu)
+  end
+
+--[[
+--TEST menu items
+  if Menu then
+    print(Menu)
+  end
+  if Action then
+    print(Action)
+  end
+  if Key then
+    print(Key)
+  end
+  if Des then
+    print(Des)
+  end
+  if Icon then
+    print(Icon)
+  end
+print("\n")
 --]]
 
-function ChoGGi.FullyAutomatedBuildingsSet(building)
-  if building.encyclopedia_id == "ElectronicsFactory"
-  or building.encyclopedia_id == "MachinePartsFactory"
-  or building.encyclopedia_id == "ElectronicsFactory"
-  or building.encyclopedia_id == "PolymerPlant"
-  or building.encyclopedia_id == "MachinePartsFactory"
-  or building.encyclopedia_id == "MetalsExtractor"
-  or building.encyclopedia_id == "PreciousMetalsExtractor"
-  or building.encyclopedia_id == "WaterExtractor"
-  or building.encyclopedia_id == "RegolithExtractor" then
-      building.upgrade2_id = "FullyAutomatedBuildings"
-      building.upgrade2_display_name = "Fully Automated"
-      building.upgrade2_description = "Fully Automated"
-      building.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
-      building.upgrade2_mod_prop_id_1 = "automation"
-      building.upgrade2_add_value_1 = 1
-      building.upgrade2_mod_prop_id_2 = "auto_performance"
-      building.upgrade2_add_value_2 = 150
-      building.upgrade2_mod_prop_id_3 = "max_workers"
-      building.upgrade2_mul_value_3 = -100
-  elseif building.encyclopedia_id == "CloningVats"
-  or building.encyclopedia_id == "DroneFactory"
-  or building.encyclopedia_id == "ElectronicsFactory"
-  or building.encyclopedia_id == "Farm"
-  or building.encyclopedia_id == "FungalFarm"
-  or building.encyclopedia_id == "FusionReactor"
-  or building.encyclopedia_id == "HydroponicFarm"
-  or building.encyclopedia_id == "Infirmary"
-  or building.encyclopedia_id == "MedicalCenter"
-  or building.encyclopedia_id == "NetworkNode"
-  or building.encyclopedia_id == "RechargeStation"
-  or building.encyclopedia_id == "ScienceInstitute"
-  or building.encyclopedia_id == "ScienceInstitute"
-  or building.encyclopedia_id == "SecurityStation"
-  or building.encyclopedia_id == "SecurityStation" then
-      building.upgrade3_id = "FullyAutomatedBuildings"
-      building.upgrade3_display_name = "Fully Automated"
-      building.upgrade3_description = "Fully Automated"
-      building.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
-      building.upgrade3_mod_prop_id_1 = "automation"
-      building.upgrade3_add_value_1 = 1
-      building.upgrade3_mod_prop_id_2 = "auto_performance"
-      building.upgrade3_add_value_2 = 150
-      building.upgrade3_mod_prop_id_3 = "max_workers"
-      building.upgrade3_mul_value_3 = -100
-    end
+  --_InternalTranslate(T({Number from Game.csv}))
+  --UserActions.AddActions({
+  --UserActions.RejectedActions()
+  ChoGGi.UserAddActions({
+    ["ChoGGi_" .. AsyncRand()] = {
+      menu = Menu,
+      action = Action,
+      key = Key,
+      description = Des or "",
+      icon = Icon,
+      toolbar = Toolbar,
+      mode = Mode,
+      xinput = xInput
+    }
+  })
 end
 
 --used to add or remove traits from schools/sanitariums
-function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Nil)
-  local Buildings = UICity.labels.Building
+function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
+  local Buildings = UICity.labels.BuildingNoDomes
   for i = 1, #(Buildings or "") do
     local Obj = Buildings[i]
     if IsKindOf(Obj,Building) then
       for j = 1, #Traits do
-        if Nil then
+        if Bool then
           Obj:SetTrait(j,nil)
         else
           Obj:SetTrait(j,Traits[j])
@@ -156,6 +164,14 @@ function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
   return Bool and TrueVar or FalseVar
 end
 
+--return as num
+function ChoGGi.BoolRetNum(Bool)
+  if Bool then
+    return 1
+  end
+  return 0
+end
+
 --toggle 0/1
 function ChoGGi.ToggleBoolNum(Num)
   if Num == 0 then
@@ -163,6 +179,7 @@ function ChoGGi.ToggleBoolNum(Num)
   end
   return 0
 end
+
 
 --ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier")
 --ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
@@ -301,7 +318,42 @@ function ChoGGi.TravelTimeMarsEarth()
   return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
-if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: FuncGame.lua",true)
+function ChoGGi.FreeCamera_Toggle()
+  if not mapdata.GameLogic then
+    return
+  end
+  if cameraFly.IsActive() then
+    print("Camera RTS")
+    SetMouseDeltaMode(false)
+    ShowMouseCursor("InGameCursor")
+    cameraRTS.Activate(1)
+  else
+    print("Camera Fly")
+    cameraFly.Activate(1)
+    HideMouseCursor("InGameCursor")
+    SetMouseDeltaMode(true)
+  end
+  --resets zoom so...
+  ChoGGi.SetCameraSettings()
 end
 
+function ChoGGi.SetCameraSettings()
+  if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
+    --disable border scrolling
+    cameraRTS.SetProperties(1,{ScrollBorder = 0})
+  else
+    --reduce ScrollBorder to the smallest we can (1 = can't scroll down)
+    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+  end
+
+  --zoom
+  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
+    cameraRTS.SetZoomLimits(0,24000)
+  end
+
+  cameraRTS.SetProperties(1,{HeightInertia = 0})
+end
+
+if ChoGGi.ChoGGiTest then
+  table.insert(ChoGGi.FilesCount,"FuncGame")
+end

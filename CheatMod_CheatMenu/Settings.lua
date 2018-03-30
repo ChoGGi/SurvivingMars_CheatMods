@@ -1,35 +1,69 @@
+--stores default values and some tables
+
+--for increasing school/sanatorium traits
+ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
+ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
+--for add Colonist Specializations ()
+ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
+--for mystery menu items
+ChoGGi.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
+ChoGGi.MysteryDifficulty = {
+    BlackCubeMystery = 1164, --The Power of Three (Easy)
+    DiggersMystery = 1170, --The Dredgers (Normal)
+    MirrorSphereMystery = 1184, --Spheres (Normal)
+    DreamMystery = 1180, --Inner Light (Easy)
+    AIUprisingMystery = 1162, --Artificial Intelligence (Normal)
+    MarsgateMystery = 8063, --Marsgate (Hard)
+    WorldWar3 = 8072, --The Last War (Hard)
+    TheMarsBug = 8067, --Wildfire (Hard)
+    UnitedEarthMystery = 8070 --Beyond Earth (Easy)
+  }
+
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {
 --custom
-  BlockCheatEmpty = true,
+  BuildingsCapacity = {},
+  BuildingsProduction = {},
+  FirstRun = true,
   ConsoleToggleHistory = true,
   ToggleInfopanelCheats = true,
+  WriteLogs = false,
+  ConsoleDim = true,
+  FullyAutomatedBuildings = false,
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingToggle = false,
+  CameraZoomToggle = false,
   Building_hide_from_build_menu = false,
   Building_wonder = false,
-  CameraZoomToggle = false,
-  CameraZoomToggleSpeed = false,
-  developer = false,
-  FullyAutomatedBuildings = false,
+  Building_dome_spot = false,
+  Building_dome_forbidden = false,
+  Building_dome_required = false,
+  Building_is_tall = false,
+  Building_instant_build = false,
   NewColonistAge = false,
   NewColonistSex = false,
   SanatoriumCureAll = false,
   SchoolTrainAll = false,
   ShowAllTraits = false,
-  WriteDebugLogs = false,
+  ShowMysteryMsgs = false,
+  RemoveBuildingLimits = false,
+  RemoveMaintenanceBuildUp = false,
 --custom Consts
+  ProductionAddAmount = 25000,
+  AirWaterAddAmount = 1000000,
+  BatteryAddAmount = 1000000,
+  ShuttleAddAmount = 25,
+  TrainersAddAmount = 16,
+  ResidenceAddAmount = 16,
+  ResidenceMaxHeight = 256,
   RCTransportStorage = 30000,
   StorageUniversalDepot = 30000,
   StorageOtherDepot = 180000,
   StorageWasteDepot = 70000,
   RCTransportResourceCapacity = 30,
-  NurseryCapacity = 8,
-  ArcologyCapacity = 32,
 --Consts.
   AvoidWorkplaceSols = 5,
   BirthThreshold = 1000000,
-  BuildingMaintenancePointsModifier = 100,
   CargoCapacity = 50000,
   ColdWaveSanityDamage = 300,
   CommandCenterMaxDrones = 20,
@@ -57,6 +91,7 @@ ChoGGi.Consts = {
   FoodPerRocketPassenger = 10000,
   HighStatLevel = 70000,
   HighStatMoraleEffect = 5000,
+  CropFailThreshold = 25,
   InstantCables = 0,
   InstantPipes = 0,
   IsDeepMetalsExploitable = 0,
@@ -91,8 +126,8 @@ ChoGGi.Consts = {
   RCTransportGatherResourceWorkTime = 15000,
   rebuild_cost_modifier = 100,
   RenegadeCreation = 70000,
-  InstantCables = 0,
-  InstantPipes = 0,
+  SeeDeadSanity = 15000,
+  NoHomeComfort = 20000,
   TimeBeforeStarving = 1080000,
   TravelTimeEarthMars = 750000,
   TravelTimeMarsEarth = 750000,
@@ -108,49 +143,46 @@ ChoGGi.Consts = {
   ResourceScale = 1000,
 }
 
---easier access to traits
-ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
-ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
-ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
-
 --initial default settings, edited during use
 ChoGGi.CheatMenuSettings = {
 --Custom
+  FirstRun = ChoGGi.Consts.FirstRun,
+  BuildingsCapacity = ChoGGi.Consts.BuildingsCapacity,
+  BuildingsProduction = ChoGGi.Consts.BuildingsProduction,
   BlockCheatEmpty = ChoGGi.Consts.BlockCheatEmpty,
   ConsoleToggleHistory = ChoGGi.Consts.ConsoleToggleHistory,
   ToggleInfopanelCheats = ChoGGi.Consts.ToggleInfopanelCheats,
+  ConsoleDim = ChoGGi.Consts.ConsoleDim,
   AddMysteryBreakthroughBuildings = ChoGGi.Consts.AddMysteryBreakthroughBuildings,
   BorderScrollingToggle = ChoGGi.Consts.BorderScrollingToggle,
+  CameraZoomToggle = ChoGGi.Consts.CameraZoomToggle,
   Building_hide_from_build_menu = ChoGGi.Consts.Building_hide_from_build_menu,
   Building_wonder = ChoGGi.Consts.Building_wonder,
-  CameraZoomToggle = ChoGGi.Consts.CameraZoomToggle,
-  CameraZoomToggleSpeed = ChoGGi.Consts.CameraZoomToggleSpeed,
-  developer = ChoGGi.Consts.developer,
+  Building_dome_spot = ChoGGi.Consts.Building_dome_spot,
+  Building_dome_forbidden = ChoGGi.Consts.Building_dome_forbidden,
+  Building_dome_required = ChoGGi.Consts.Building_dome_required,
+  Building_is_tall = ChoGGi.Consts.Building_is_tall,
+  Building_instant_build = ChoGGi.Consts.Building_instant_build,
   FullyAutomatedBuildings = ChoGGi.Consts.FullyAutomatedBuildings,
   NewColonistAge = ChoGGi.Consts.NewColonistAge,
   NewColonistSex = ChoGGi.Consts.NewColonistSex,
   SanatoriumCureAll = ChoGGi.Consts.SanatoriumCureAll,
   SchoolTrainAll = ChoGGi.Consts.SchoolTrainAll,
   ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
-  WriteDebugLogs = ChoGGi.Consts.WriteDebugLogs,
+  ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
+  ShowMysteryMsgs = ChoGGi.Consts.ShowMysteryMsgs,
+  RemoveBuildingLimits = ChoGGi.Consts.RemoveBuildingLimits,
+  RemoveMaintenanceBuildUp = ChoGGi.Consts.RemoveMaintenanceBuildUp,
+  WriteLogs = ChoGGi.Consts.WriteLogs,
   RCTransportStorage = ChoGGi.Consts.RCTransportStorage,
 --custom Consts
   StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot,
   StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot,
   StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot,
   RCTransportResourceCapacity = ChoGGi.Consts.RCTransportResourceCapacity,
-  NurseryCapacity = ChoGGi.Consts.NurseryCapacity,
-  ArcologyCapacity = ChoGGi.Consts.ArcologyCapacity,
-  --Building_dome_required = false,
-  --Building_dome_forbidden = false,
-  --Building_dome_spot = false,
-  --Building_is_tall = false,
-  --Building_require_prefab = false,
-  --Building_instant_build = false,
 --Consts.
   AvoidWorkplaceSols = ChoGGi.Consts.AvoidWorkplaceSols,
   BirthThreshold = ChoGGi.Consts.BirthThreshold,
-  BuildingMaintenancePointsModifier = ChoGGi.Consts.BuildingMaintenancePointsModifier,
   CargoCapacity = ChoGGi.Consts.CargoCapacity,
   ColdWaveSanityDamage = ChoGGi.Consts.ColdWaveSanityDamage,
   CommandCenterMaxDrones = ChoGGi.Consts.CommandCenterMaxDrones,
@@ -212,8 +244,9 @@ ChoGGi.CheatMenuSettings = {
   RCTransportGatherResourceWorkTime = ChoGGi.Consts.RCTransportGatherResourceWorkTime,
   rebuild_cost_modifier = ChoGGi.Consts.rebuild_cost_modifier,
   RenegadeCreation = ChoGGi.Consts.RenegadeCreation,
-  InstantCables = ChoGGi.Consts.InstantCables,
-  InstantPipes = ChoGGi.Consts.InstantPipes,
+  SeeDeadSanity = ChoGGi.Consts.SeeDeadSanity,
+  NoHomeComfort = ChoGGi.Consts.NoHomeComfort,
+  CropFailThreshold = ChoGGi.Consts.CropFailThreshold,
   TimeBeforeStarving = ChoGGi.Consts.TimeBeforeStarving,
   TravelTimeEarthMars = ChoGGi.Consts.TravelTimeEarthMars,
   TravelTimeMarsEarth = ChoGGi.Consts.TravelTimeMarsEarth,
@@ -227,11 +260,10 @@ ChoGGi.CheatMenuSettings = {
   ResearchQueueSize = ChoGGi.Consts.ResearchQueueSize,
 }
 
---set Consts from CheatMenuSettings
+--set game values to saved values
 function ChoGGi.SetSettings()
 --Consts.
   Consts.AvoidWorkplaceSols = ChoGGi.CheatMenuSettings.AvoidWorkplaceSols
-  Consts.BuildingMaintenancePointsModifier = ChoGGi.CheatMenuSettings.BuildingMaintenancePointsModifier
   Consts.BirthThreshold = ChoGGi.CheatMenuSettings.BirthThreshold
   Consts.CargoCapacity = ChoGGi.CheatMenuSettings.CargoCapacity
   Consts.ColdWaveSanityDamage = ChoGGi.CheatMenuSettings.ColdWaveSanityDamage
@@ -260,6 +292,7 @@ function ChoGGi.SetSettings()
   Consts.FoodPerRocketPassenger = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger
   Consts.HighStatLevel = ChoGGi.CheatMenuSettings.HighStatLevel
   Consts.HighStatMoraleEffect = ChoGGi.CheatMenuSettings.HighStatMoraleEffect
+  Consts.CropFailThreshold = ChoGGi.CheatMenuSettings.CropFailThreshold
   Consts.InstantCables = ChoGGi.CheatMenuSettings.InstantCables
   Consts.InstantPipes = ChoGGi.CheatMenuSettings.InstantPipes
   Consts.IsDeepWaterExploitable = ChoGGi.CheatMenuSettings.IsDeepWaterExploitable
@@ -294,10 +327,9 @@ function ChoGGi.SetSettings()
   Consts.RCTransportGatherResourceWorkTime = ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime
   Consts.rebuild_cost_modifier = ChoGGi.CheatMenuSettings.rebuild_cost_modifier
   Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
-  Consts.InstantCables = ChoGGi.Consts.InstantCables
-  Consts.InstantPipes = ChoGGi.Consts.InstantPipes
-  Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
-  Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
+  Consts.SeeDeadSanity = ChoGGi.CheatMenuSettings.SeeDeadSanity
+  Consts.NoHomeComfort = ChoGGi.CheatMenuSettings.NoHomeComfort
+  Consts.CropFailThreshold = ChoGGi.Consts.CropFailThreshold
   Consts.TimeBeforeStarving = ChoGGi.CheatMenuSettings.TimeBeforeStarving
   Consts.TravelTimeEarthMars = ChoGGi.CheatMenuSettings.TravelTimeEarthMars
   Consts.TravelTimeMarsEarth = ChoGGi.CheatMenuSettings.TravelTimeMarsEarth
@@ -314,5 +346,5 @@ end
 ChoGGi.SettingsFileLoaded = true
 
 if ChoGGi.ChoGGiTest then
-  AddConsoleLog("ChoGGi: Settings.lua",true)
+  table.insert(ChoGGi.FilesCount,"Settings")
 end

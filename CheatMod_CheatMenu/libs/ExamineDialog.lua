@@ -1,7 +1,3 @@
---CommonLua\UI\uiExamine.lua
---CommonLua\UI\uiExamine.designer.lua
-
---adds dump button to Examine dialog
 function OnMsg.ClassesGenerate(classdefs)
 
 --[[
@@ -10,6 +6,8 @@ dumpt(classdefs)
 dumpl(classdefs)
 --]]
 
+--CommonLua\UI\uiExamine.lua
+--CommonLua\UI\uiExamine.designer.lua
   --add dump button to Examine windows
   function ExamineDesigner:Init()
     self:SetPos(point(278, 191))
@@ -119,4 +117,8 @@ dumpl(classdefs)
     self:SetTranspMode(self.transp_mode)
   end
 
+end
+
+if ChoGGi.ChoGGiTest then
+  table.insert(ChoGGi.FilesCount,"ExamineDialog")
 end
