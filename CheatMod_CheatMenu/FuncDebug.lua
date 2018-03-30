@@ -210,6 +210,8 @@ end
     "MenuGameplayColonists",
     "MenuGameplayDronesAndRC",
     "MenuGameplayMisc",
+    "MenuToggles",
+    "MenuTogglesFunc",
     "Script",
   }
   for _,Value in ipairs(Table) do
