@@ -21,55 +21,14 @@ Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
 http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 ```
 
-##### Console
-```
-Toggle showing history/results on-screen (Menu>Debug, it's on by default)
-type any name in to see it in the console log (ex: Consts)
-exit (or quit)
-restart (or reboot)
-examine(Consts) (or ex(SelectedObj))
-dump(Consts) (dump puts files in AppData/logs)
-dumplua(dlgConsole) (dumps using TupleToLuaCode())
-dumpobject(SelectedObj) (or dumpo)
-dumptable(Consts) (or dumpt)
-SelectedObj
-SelectionMouseObj
-GetTerrainCursorObjSel (or cur)
-GetTerrainCursor()
-
-If you want to overwrite instead of append text: dumpobject(TechTree,"w")
-If you want to dump functions as well: dumptable(TechTree,nil,true)
-If you want to save the text then Debug>Write Logs
-
-you can paste chunks of scripts to test out:
-local templates = DataInstances.BuildingTemplate
-for i = 1, #templates do
-  local building = templates[i]
-	print(building.name)
-end
-
-some functions I added that may be useful to modders:
-
-ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
-TechTree[6][46] = Breakthroughs>PrefabCompression
-
-ChoGGi.ReturnTechAmount(Tech,Prop)
-returns number from TechTree (so you know how much it changes)
-
-ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
-^returns 10
-ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
-^ returns 0.25
-
-it returns percentages in decimal for ease of mathing
-ie: BuildingMaintenancePointsModifier is -25 this returns it as 0.25
-it also returns negative amounts as positive (I prefer doing num - Amt, not num + Amt)
-```
-
 ##### List of some stuff added (not up to date)
 ```
+Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
+Fire All Colonists
+Turn Off All Shifts
+Turn On All Shifts
 Set New Colonists Age,Sex
 Sanatorium Cure All Traits
 School Train All Traits
@@ -122,7 +81,7 @@ RC Transport Storage Increase
 Food Per Rocket Passenger Increase
 Fully Automated Buildings
 Add Funds
-Game Speed Default,Double,Triple,Quad
+Game Speed Default,Double,Triple,Quad,Octuple,Sexdecuple,Duotriguple,Quattuorsexaguple
 Maintenance Free Buildings
 Meteor Health Damage Toggle
 Min Comfort Birth
@@ -142,9 +101,71 @@ Storage Depot / Waste Dump increase
 Toggle Infopanel Cheats
 Visit Fail Penalty Toggle
 Write Logs
+Repair Pipes/Cables (instantly repairs them all)
+Crop Fail Threshold Toggle (lower the threshold to 0)
+Build Spires Outside of Spire Point
+Allow Dome Forbidden Buildings
+Allow Dome Required Buildings
+Allow Tall Buildings Under Pipes
+Instant Build
+See Dead Sanity Damage Toggle
+No Home Comfort Damage Toggle
+ShuttleHub Shuttles Increase
+Asteroids (single,multi,storm)
+Toggle Editor (you can move stuff around (if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
+Open In Ged Editor (lets you open some objects in the ged editor)
+Start Mysteries
+Remove Building Limits:
+Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up)
+no tunnels in domes either I'm afraid, but unlimited tunnel length :)
 
 Also includes default menuitems for all toggleable settings
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
+```
+
+##### Console
+```
+Toggle showing history/results on-screen (Menu>Debug, it's on by default)
+type any name in to see it in the console log (ex: Consts)
+exit (or quit)
+restart (or reboot)
+examine(Consts) (or ex(SelectedObj))
+dump(Consts) (dump puts files in AppData/logs)
+dumplua(dlgConsole) (dumps using TupleToLuaCode())
+dumpobject(SelectedObj) (or dumpo)
+dumptable(Consts) (or dumpt)
+SelectedObj
+SelectionMouseObj
+GetTerrainCursorObjSel (or cur)
+GetTerrainCursor()
+
+If you want to overwrite instead of append text: dumpobject(TechTree,"w")
+If you want to dump functions as well: dumptable(TechTree,nil,true)
+If you want to save the text then Debug>Write Logs
+
+you can paste chunks of scripts to test out:
+local templates = DataInstances.BuildingTemplate
+for i = 1, #templates do
+  local building = templates[i]
+	print(building.name)
+end
+
+some functions I added that may be useful to modders:
+
+ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
+TechTree[6][46] = Breakthroughs>PrefabCompression
+
+ChoGGi.ReturnTechAmount(Tech,Prop)
+returns number from TechTree (so you know how much it changes)
+
+ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
+^returns 10
+ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
+^ returns 0.25
+
+it returns percentages in decimal for ease of mathing
+ie: BuildingMaintenancePointsModifier is -25 this returns it as 0.25
+it also returns negative amounts as positive (I prefer doing num - Amt, not num + Amt)
 ```
