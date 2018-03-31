@@ -1,4 +1,6 @@
 --[[
+SelectedObj:__toluacode()
+
 dump(TupleToLuaCode(UserActions.Actions["UpsampledScreenshot"]))
 dumpobject(UserActions.Actions["DE_UpsampledScreenshot"])
 
@@ -15,6 +17,7 @@ UserActions.RemoveActions({
   "G_ToggleInfopanelCheats",
 })
 --]]
+
 function ChoGGi.PrintFiles(Filename,Function,Text,...)
   Text = Text or ""
   --pass ... onto pcall function

@@ -354,6 +354,45 @@ function ChoGGi.SetCameraSettings()
   cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
+local FixNamesList = {
+  RCDesireTransport = 1,
+  RCRover = 1,
+  RCTransport = 1
+  }
+--place item under the mouse for construction
+function ChoGGi.SetConstructionMode(itemname)
+  --fix up some names
+  if FixNamesList[itemname] then
+    itemname = itemname .. "Building"
+  elseif itemname == "ExplorerRover" then
+    itemname = "RCExplorerBuilding"
+  end
+
+  local igi = GetInGameInterface()
+  if not igi or not igi:GetVisible() then
+    return
+  end
+  local bld_template = DataInstances.BuildingTemplate[itemname]
+  local show, prefabs, can_build, action = UIGetBuildingPrerequisites(bld_template.build_category, bld_template, true)
+  local dlg = GetXDialog("XBuildMenu")
+  if show then
+    if action then
+      action(dlg, {
+        enabled = can_build,
+        name = bld_template.name,
+        construction_mode = bld_template.construction_mode
+      })
+    else
+  local dlg = GetXDialog("XBuildMenu")
+      igi:SetMode("construction", {
+        template = bld_template.name,
+        selected_dome = dlg and dlg.context.selected_dome
+      })
+    end
+    CloseXBuildMenu()
+  end
+end
+
 if ChoGGi.ChoGGiTest then
   table.insert(ChoGGi.FilesCount,"FuncGame")
 end

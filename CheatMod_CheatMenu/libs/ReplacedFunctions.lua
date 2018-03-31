@@ -86,9 +86,9 @@ function ChoGGi.UserAddActions(ActionsToAdd)
   UserActions.SetMode(UserActions.mode)
 end
 
-
 --RemoveBuildingLimits
 function OnMsg.LoadGame()
+
   --save teh OrigFunc
   ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
   --ChoGGi.OrigFunc.CC_UpdateConstructionObstructors = ConstructionController.UpdateConstructionObstructors

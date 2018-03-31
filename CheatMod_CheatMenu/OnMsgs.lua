@@ -259,7 +259,14 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.SetCameraSettings()
 end --OnMsg
 
---function OnMsg.BuildingPlaced(building)
+--if instant_build is on
+function OnMsg.BuildingPlaced(building)
+  ChoGGi.LastPlacedObj = building
+end --OnMsg
+--if it isn't
+function OnMsg.ConstructionSitePlaced(site)
+  ChoGGi.LastPlacedObj = site
+end --OnMsg
 
 function OnMsg.ConstructionComplete(building)
 

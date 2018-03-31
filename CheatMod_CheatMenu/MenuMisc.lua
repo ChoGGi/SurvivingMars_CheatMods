@@ -1,7 +1,7 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
-  "Gameplay/Qol/Camera/Border Scrolling",
+  "Gameplay/QoL/Camera/Border Scrolling",
   ChoGGi.BorderScrolling_Toggle,
   nil,
   function()
@@ -12,7 +12,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Qol/Camera/Zoom Distance",
+  "Gameplay/QoL/Camera/Zoom Distance",
   ChoGGi.CameraZoom_Toggle,
   nil,
   function()

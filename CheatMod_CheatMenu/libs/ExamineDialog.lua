@@ -1,5 +1,11 @@
 function OnMsg.ClassesGenerate(classdefs)
 
+DefineClass.RCDesireTransportBuilding = {
+__parents = {
+    "BaseRoverBuilding"
+  },
+  rover_class = "RCDesireTransport"
+}
 --[[
 --dumpo(classdefs)
 dumpt(classdefs)
