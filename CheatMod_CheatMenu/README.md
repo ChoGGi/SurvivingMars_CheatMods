@@ -10,6 +10,9 @@ F4: Open object examiner for selected object (now with dump button)
 Ctrl+F: Fill resource of selected object
 Enter or Tilde to show the console
 F9 to clear the console log
+Ctrl-Alt-Shift-R: opens console and puts restart in it
+Ctrl-Space: Opens placement mode with the last placed item
+Ctrl-Shift-Space: Opens placement mode with the selected item
 
 There's a cheats section in most info panels on the right side of the screen.
 Menu>Toggles>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
