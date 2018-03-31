@@ -15,10 +15,10 @@ Ctrl-Space: Opens placement mode with the last placed item
 Ctrl-Shift-Space: Opens placement mode with the selected item
 
 There's a cheats section in most info panels on the right side of the screen.
-Menu>Toggles>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
+Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
 
 Hover over menu items for a description (will say if enabled or disabled)
-If a menu has "+ num" then it'll increase it by that number each time
+If a menu has "+ *number*" then it'll increase it by that number each time
 
 Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
 http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
@@ -29,17 +29,14 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
+Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))
 Fire All Colonists
-Turn Off All Shifts
-Turn On All Shifts
+Turn Off All Shifts/Turn On All Shifts
 Set New Colonists Age,Sex
 Sanatorium Cure All Traits
 School Train All Traits
 Sanatorium/School Show All Traits
 Show All Traits in Sanatorium/School
-Fire All Colonists
-Turn Off All Shifts
-Turn On All Shifts
 Colonist Residence Capacity
 Add Prefabs
 Fill Resource Selected
@@ -118,11 +115,6 @@ Asteroids (single,multi,storm)
 Toggle Editor (you can move stuff around (if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Open In Ged Editor (lets you open some objects in the ged editor)
 Start Mysteries
-Remove Building Limits:
-Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up)
-no tunnels in domes either I'm afraid, but unlimited tunnel length :)
-
-Also includes default menuitems for all toggleable settings
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
