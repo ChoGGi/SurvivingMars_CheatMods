@@ -1,3 +1,5 @@
+You should buy a copy: http://store.steampowered.com/app/464920
+
 ### No warranty implied or otherwise!
 
 ##### Info
