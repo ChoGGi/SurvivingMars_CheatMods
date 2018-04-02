@@ -15,6 +15,9 @@ F9 to clear the console log
 Ctrl-Alt-Shift-R: opens console and puts restart in it
 Ctrl-Space: Opens placement mode with the last placed item
 Ctrl-Shift-Space: Opens placement mode with the selected item
+Ctrl-Shift-F: Follow Camera (select an object to follow around)
+Ctrl-Alt-F: Follow Camera toggle mouse
+Ctrl-Shift-E: Toggle editor mode
 
 There's a cheats section in most info panels on the right side of the screen.
 Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
@@ -32,6 +35,9 @@ Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
 Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))
+Increase Production Amounts
+Set Gravity for Colonists,Drones,RCs (bouncy time)
+
 Fire All Colonists
 Turn Off All Shifts/Turn On All Shifts
 Set New Colonists Age,Sex
