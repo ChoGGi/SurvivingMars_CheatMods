@@ -37,7 +37,6 @@ Traits Add All/Remove All Negative/Positive
 Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))
 Increase Production Amounts
 Set Gravity for Colonists,Drones,RCs (bouncy time)
-
 Fire All Colonists
 Turn Off All Shifts/Turn On All Shifts
 Set New Colonists Age,Sex

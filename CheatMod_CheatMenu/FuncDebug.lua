@@ -207,7 +207,9 @@ end
 
 function ChoGGi.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
-    return _InternalTranslate(Obj)
+    return function()
+      _InternalTranslate(Obj)
+    end
   elseif Funcs and type(Obj) == "function" then
     return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
   elseif type(Obj) == "table" then
