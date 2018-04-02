@@ -130,7 +130,9 @@ end --OnMsg
 --fired as late as we can
 --function OnMsg.Resume()
 function OnMsg.LoadingScreenPreClose()
-
+  if not UICity then
+    return
+  end
   --set shuttle speed/capacity (not sure how to get an onmsg for shuttle spawning)
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
     if ChoGGi.CheatMenuSettings.ShuttleStorage then
@@ -387,10 +389,10 @@ function OnMsg.ColonistBorn(colonist)
 end --OnMsg
 
 function OnMsg.SelectionAdded(Object)
-  ChoGGi.SelectedObj = Object
+  s = Object
 end
 function OnMsg.SelectedObjChange(Object)
-  ChoGGi.SelectedObj = Object
+  s = Object
 end
 
 --if you pick a mystery from the cheat menu

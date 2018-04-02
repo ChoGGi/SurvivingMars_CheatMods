@@ -9,8 +9,10 @@ function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
     elseif Type == 3 then
       ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.CheatMenuSettings.StorageUniversalDepot + (1000 * ChoGGi.Consts.ResourceScale)
     end
+
   else
-    for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+
+    for _,building in ipairs(UICity.labels.Storages or empty_table) do
 
       if IsKindOf(building,"WasteRockDumpSite") and Type == 1 then
         if Bool == true then
@@ -22,8 +24,8 @@ function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
         end
 
       elseif IsKindOf(building,"UniversalStorageDepot") and Type == 2 then
-        if building.encyclopedia_id == "UniversalStorageDepot" then
 
+        if building.encyclopedia_id == "UniversalStorageDepot" then
         --uni storage
           if Bool == true then
             building.max_storage_per_resource = building.max_storage_per_resource + (1000 * ChoGGi.Consts.ResourceScale)
@@ -33,8 +35,7 @@ function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
             ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot
           end
 
-        --Other storage
-        else
+        else --Other storage
           if Bool == true then
             building.max_storage_per_resource = building.max_storage_per_resource + (1000 * ChoGGi.Consts.ResourceScale)
             ChoGGi.CheatMenuSettings.StorageOtherDepot = building.max_storage_per_resource
@@ -42,12 +43,13 @@ function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
             building.max_storage_per_resource = ChoGGi.Consts.StorageOtherDepot
             ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot
           end
-
         end
-      end
+
+      end --if
 
     end --for
-  end
+
+  end --if
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(Name .. " + " .. Which,
     "Storage","UI/Icons/Sections/basic.tga"

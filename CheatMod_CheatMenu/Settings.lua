@@ -46,7 +46,6 @@ ChoGGi.Consts = {
   FirstRun = true,
   ConsoleToggleHistory = true,
   ToggleInfopanelCheats = true,
-  PrependSelObjConsole = false,
   WriteLogs = false,
   ConsoleDim = true,
   FullyAutomatedBuildings = false,

@@ -1,3 +1,4 @@
+GlobalVar("s", false)
 -- This must return true for most cheats to function
 function CheatsEnabled()
   return true

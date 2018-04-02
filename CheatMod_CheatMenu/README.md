@@ -4,8 +4,7 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ##### Info
 ```
-Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menuitems, allows you to build as many Wonders as you want, etc...
-Contains pretty much all of mine and FLiNGs mods, as well quite a few more.
+Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menuitems, set gravity, follow camera, allows you to build as many Wonders as you want, build almost anywhere, etc...
 
 F2: Toggle the cheats menu.
 F4: Open object examiner for selected object (now with dump button)
@@ -138,10 +137,11 @@ dump(Consts) (dump puts files in AppData/logs)
 dumplua(dlgConsole) (dumps using TupleToLuaCode())
 dumpobject(SelectedObj) (or dumpo)
 dumptable(Consts) (or dumpt)
-SelectedObj
-SelectionMouseObj
-GetTerrainCursorObjSel (or cur)
-GetTerrainCursor()
+SelectedObj (or s)
+SelectionMouseObj() (or sm)
+GetTerrainCursorObjSel() (or st or cur)
+GetPreciseCursorObj() (or sp)
+GetTerrainCursor() (or sc)
 
 If you want to overwrite instead of append text: dumpobject(TechTree,"w")
 If you want to dump functions as well: dumptable(TechTree,nil,true)

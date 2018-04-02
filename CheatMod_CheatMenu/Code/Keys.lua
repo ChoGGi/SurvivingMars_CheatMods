@@ -2,9 +2,6 @@
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
-    if ChoGGi.CheatMenuSettings.PrependSelObjConsole then
-      AddConsolePrompt("SelectedObj")
-    end
   end,
   "~"
 )
@@ -12,9 +9,6 @@ ChoGGi.AddAction(nil,
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
-    if ChoGGi.CheatMenuSettings.PrependSelObjConsole then
-      AddConsolePrompt("SelectedObj")
-    end
   end,
   "Enter"
 )

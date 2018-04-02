@@ -23,18 +23,16 @@ ConsolePrint = ChoGGi.ReplacedFunc.ConsolePrint
 function console(...)
   ConsolePrint(tostring(...))
 end
-s = ChoGGi.SelectedObj
-sp = SelectionMouseObj
---GetTerrainCursorObjSel()
---GetPreciseCursorObj()
+sm = SelectionMouseObj
+st = GetTerrainCursorObjSel
+cur = GetTerrainCursorObjSel
+sp = GetPreciseCursorObj
+sc = GetTerrainCursor
 --[[
 Selection
 SelectionAdd
 SelectionRemove
 --]]
-function cur()
-  return GetTerrainCursor()
-end
 function dumplua(...)
   ChoGGi.Dump(TupleToLuaCode(...))
 end
@@ -306,7 +304,7 @@ dumpl(classdefs)
     self.Dump = function(String)
       --remove html tags
       String = String:gsub("<[/%s%a%d]*>","")
-      ChoGGi.Dump(String,nil,nil,"html")
+      ChoGGi.Dump(String,nil,"DumpedExamine","lua")
     end
     self.onclick_handles = {}
     self.obj = false

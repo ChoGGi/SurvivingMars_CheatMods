@@ -20,9 +20,12 @@ end
 
 function ChoGGi.Editor_Toggle()
   if IsEditorActive() then
-    EditorDeactivate()
+    EditorState(0)
+    XShortcutsSetMode("Game")
+    --XShortcutsSetMode("Editor")
   else
-    EditorActivate()
+    EditorState(1)
+    XShortcutsSetMode("Game")
   end
 end
 
