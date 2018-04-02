@@ -1,9 +1,9 @@
 --stores default values and some tables
 
---for increasing school/sanatorium traits
+--for increasing school/sanatorium traits and adding/removing traits funcs
 ChoGGi.NegativeTraits = {"Clone","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
 ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
---for add Colonist Specializations ()
+--for add Colonist Specializations func
 ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
 --for mystery menu items
 ChoGGi.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
@@ -18,9 +18,28 @@ ChoGGi.MysteryDifficulty = {
     TheMarsBug = 8067, --Wildfire (Hard)
     UnitedEarthMystery = 8070 --Beyond Earth (Easy)
   }
+--Some names need to be fixed when doing construction placement
+ChoGGi.ConstructionNamesListFix = {
+  RCRover = "RCRoverBuilding",
+  RCDesireTransport = "RCDesireTransportBuilding",
+  RCTransport = "RCTransportBuilding",
+  ExplorerRover = "RCExplorerBuilding",
+  Rocket = "SupplyRocket"
+  }
+ChoGGi.ConstructionSkipErrors = {}
+ChoGGi.ConstructionSkipErrors["Blocking objects"] = 1
+ChoGGi.ConstructionSkipErrors["Requires a Dome"] = 1
+ChoGGi.ConstructionSkipErrors["Unbuildable area"] = 1
+ChoGGi.ConstructionSkipErrors["Outside building"] = 1
+ChoGGi.ConstructionSkipErrors["Too tall"] = 1
+ChoGGi.ConstructionSkipErrors["Too long"] = 1
+ChoGGi.ConstructionSkipErrors["Too far from Domes"] = 1
+ChoGGi.ConstructionSkipErrors["Too far"] = 1
+ChoGGi.ConstructionSkipErrors["Can't Land"] = 1
 
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {
+  _VERSION = 0.0,
 --custom
   BuildingsCapacity = {},
   BuildingsProduction = {},
@@ -49,6 +68,13 @@ ChoGGi.Consts = {
   ShowMysteryMsgs = false,
   RemoveBuildingLimits = false,
   RemoveMaintenanceBuildUp = false,
+  developer = false,
+  HighQualitySettings = false,
+  ShuttleSpeed = false,
+  ShuttleStorage = false,
+  GravityDrone = false,
+  GravityRC = false,
+  GravityColonist = false,
 --custom Consts
   ProductionAddAmount = 25000,
   AirWaterAddAmount = 1000000,
@@ -144,126 +170,8 @@ ChoGGi.Consts = {
   ResourceScale = 1000,
 }
 
---initial default settings, edited during use
-ChoGGi.CheatMenuSettings = {
---Custom
-  FirstRun = ChoGGi.Consts.FirstRun,
-  BuildingsCapacity = ChoGGi.Consts.BuildingsCapacity,
-  BuildingsProduction = ChoGGi.Consts.BuildingsProduction,
-  BlockCheatEmpty = ChoGGi.Consts.BlockCheatEmpty,
-  ConsoleToggleHistory = ChoGGi.Consts.ConsoleToggleHistory,
-  ToggleInfopanelCheats = ChoGGi.Consts.ToggleInfopanelCheats,
-  PrependSelObjConsole = ChoGGi.Consts.PrependSelObjConsole,
-  ConsoleDim = ChoGGi.Consts.ConsoleDim,
-  AddMysteryBreakthroughBuildings = ChoGGi.Consts.AddMysteryBreakthroughBuildings,
-  BorderScrollingToggle = ChoGGi.Consts.BorderScrollingToggle,
-  CameraZoomToggle = ChoGGi.Consts.CameraZoomToggle,
-  Building_hide_from_build_menu = ChoGGi.Consts.Building_hide_from_build_menu,
-  Building_wonder = ChoGGi.Consts.Building_wonder,
-  Building_dome_spot = ChoGGi.Consts.Building_dome_spot,
-  Building_dome_forbidden = ChoGGi.Consts.Building_dome_forbidden,
-  Building_dome_required = ChoGGi.Consts.Building_dome_required,
-  Building_is_tall = ChoGGi.Consts.Building_is_tall,
-  Building_instant_build = ChoGGi.Consts.Building_instant_build,
-  FullyAutomatedBuildings = ChoGGi.Consts.FullyAutomatedBuildings,
-  NewColonistAge = ChoGGi.Consts.NewColonistAge,
-  NewColonistSex = ChoGGi.Consts.NewColonistSex,
-  SanatoriumCureAll = ChoGGi.Consts.SanatoriumCureAll,
-  SchoolTrainAll = ChoGGi.Consts.SchoolTrainAll,
-  ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
-  ShowAllTraits = ChoGGi.Consts.ShowAllTraits,
-  ShowMysteryMsgs = ChoGGi.Consts.ShowMysteryMsgs,
-  RemoveBuildingLimits = ChoGGi.Consts.RemoveBuildingLimits,
-  RemoveMaintenanceBuildUp = ChoGGi.Consts.RemoveMaintenanceBuildUp,
-  WriteLogs = ChoGGi.Consts.WriteLogs,
-  RCTransportStorage = ChoGGi.Consts.RCTransportStorage,
---custom Consts
-  StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot,
-  StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot,
-  StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot,
-  RCTransportResourceCapacity = ChoGGi.Consts.RCTransportResourceCapacity,
---Consts.
-  AvoidWorkplaceSols = ChoGGi.Consts.AvoidWorkplaceSols,
-  BirthThreshold = ChoGGi.Consts.BirthThreshold,
-  CargoCapacity = ChoGGi.Consts.CargoCapacity,
-  ColdWaveSanityDamage = ChoGGi.Consts.ColdWaveSanityDamage,
-  CommandCenterMaxDrones = ChoGGi.Consts.CommandCenterMaxDrones,
-  Concrete_cost_modifier = ChoGGi.Consts.Concrete_cost_modifier,
-  Concrete_dome_cost_modifier = ChoGGi.Consts.Concrete_dome_cost_modifier,
-  CrimeEventDestroyedBuildingsCount = ChoGGi.Consts.CrimeEventDestroyedBuildingsCount,
-  CrimeEventSabotageBuildingsCount = ChoGGi.Consts.CrimeEventSabotageBuildingsCount,
-  DeepScanAvailable = ChoGGi.Consts.DeepScanAvailable,
-  DefaultOutsideWorkplacesRadius = ChoGGi.Consts.DefaultOutsideWorkplacesRadius,
-  DroneBuildingRepairAmount = ChoGGi.Consts.DroneBuildingRepairAmount,
-  DroneBuildingRepairBatteryUse = ChoGGi.Consts.DroneBuildingRepairBatteryUse,
-  DroneCarryBatteryUse = ChoGGi.Consts.DroneCarryBatteryUse,
-  DroneConstructAmount = ChoGGi.Consts.DroneConstructAmount,
-  DroneConstructBatteryUse = ChoGGi.Consts.DroneConstructBatteryUse,
-  DroneDeconstructBatteryUse = ChoGGi.Consts.DroneDeconstructBatteryUse,
-  DroneMeteorMalfunctionChance = ChoGGi.Consts.DroneMeteorMalfunctionChance,
-  DroneMoveBatteryUse = ChoGGi.Consts.DroneMoveBatteryUse,
-  DroneRechargeTime = ChoGGi.Consts.DroneRechargeTime,
-  DroneRepairSupplyLeak = ChoGGi.Consts.DroneRepairSupplyLeak,
-  DroneResourceCarryAmount = ChoGGi.Consts.DroneResourceCarryAmount,
-  DroneTransformWasteRockObstructorToStockpileBatteryUse = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,
-  DustStormSanityDamage = ChoGGi.Consts.DustStormSanityDamage,
-  Electronics_cost_modifier = ChoGGi.Consts.Electronics_cost_modifier,
-  Electronics_dome_cost_modifier = ChoGGi.Consts.Electronics_dome_cost_modifier,
-  FoodPerRocketPassenger = ChoGGi.Consts.FoodPerRocketPassenger,
-  HighStatLevel = ChoGGi.Consts.HighStatLevel,
-  HighStatMoraleEffect = ChoGGi.Consts.HighStatMoraleEffect,
-  InstantCables = ChoGGi.Consts.InstantCables,
-  InstantPipes = ChoGGi.Consts.InstantPipes,
-  IsDeepMetalsExploitable = ChoGGi.Consts.IsDeepMetalsExploitable,
-  IsDeepPreciousMetalsExploitable = ChoGGi.Consts.IsDeepPreciousMetalsExploitable,
-  IsDeepWaterExploitable = ChoGGi.Consts.IsDeepWaterExploitable,
-  LowSanityNegativeTraitChance = ChoGGi.Consts.LowSanityNegativeTraitChance,
-  LowSanitySuicideChance = ChoGGi.Consts.LowSanitySuicideChance,
-  LowStatLevel = ChoGGi.Consts.LowStatLevel,
-  MachineParts_cost_modifier = ChoGGi.Consts.MachineParts_cost_modifier,
-  MachineParts_dome_cost_modifier = ChoGGi.Consts.MachineParts_dome_cost_modifier,
-  MaxColonistsPerRocket = ChoGGi.Consts.MaxColonistsPerRocket,
-  Metals_cost_modifier = ChoGGi.Consts.Metals_cost_modifier,
-  Metals_dome_cost_modifier = ChoGGi.Consts.Metals_dome_cost_modifier,
-  MeteorHealthDamage = ChoGGi.Consts.MeteorHealthDamage,
-  MeteorSanityDamage = ChoGGi.Consts.MeteorSanityDamage,
-  MinComfortBirth = ChoGGi.Consts.MinComfortBirth,
-  MysteryDreamSanityDamage = ChoGGi.Consts.MysteryDreamSanityDamage,
-  NonSpecialistPerformancePenalty = ChoGGi.Consts.NonSpecialistPerformancePenalty,
-  OutsourceResearch = ChoGGi.Consts.OutsourceResearch,
-  OutsourceResearchCost = ChoGGi.Consts.OutsourceResearchCost,
-  OxygenMaxOutsideTime = ChoGGi.Consts.OxygenMaxOutsideTime,
-  PipesPillarSpacing = ChoGGi.Consts.PipesPillarSpacing,
-  Polymers_cost_modifier = ChoGGi.Consts.Polymers_cost_modifier,
-  Polymers_dome_cost_modifier = ChoGGi.Consts.Polymers_dome_cost_modifier,
-  positive_playground_chance = ChoGGi.Consts.positive_playground_chance,
-  PreciousMetals_cost_modifier = ChoGGi.Consts.PreciousMetals_cost_modifier,
-  PreciousMetals_dome_cost_modifier = ChoGGi.Consts.PreciousMetals_dome_cost_modifier,
-  ProjectMorphiousPositiveTraitChance = ChoGGi.Consts.ProjectMorphiousPositiveTraitChance,
-  RCRoverDroneRechargeCost = ChoGGi.Consts.RCRoverDroneRechargeCost,
-  RCRoverMaxDrones = ChoGGi.Consts.RCRoverMaxDrones,
-  RCRoverTransferResourceWorkTime = ChoGGi.Consts.RCRoverTransferResourceWorkTime,
-  RCTransportGatherResourceWorkTime = ChoGGi.Consts.RCTransportGatherResourceWorkTime,
-  rebuild_cost_modifier = ChoGGi.Consts.rebuild_cost_modifier,
-  RenegadeCreation = ChoGGi.Consts.RenegadeCreation,
-  SeeDeadSanity = ChoGGi.Consts.SeeDeadSanity,
-  NoHomeComfort = ChoGGi.Consts.NoHomeComfort,
-  CropFailThreshold = ChoGGi.Consts.CropFailThreshold,
-  TimeBeforeStarving = ChoGGi.Consts.TimeBeforeStarving,
-  TravelTimeEarthMars = ChoGGi.Consts.TravelTimeEarthMars,
-  TravelTimeMarsEarth = ChoGGi.Consts.TravelTimeMarsEarth,
-  VisitFailPenalty = ChoGGi.Consts.VisitFailPenalty,
---const.
-  ExplorationQueueMaxSize = ChoGGi.Consts.ExplorationQueueMaxSize,
-  fastGameSpeed = ChoGGi.Consts.fastGameSpeed,
-  mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed,
-  MoistureVaporatorPenaltyPercent = ChoGGi.Consts.MoistureVaporatorPenaltyPercent,
-  MoistureVaporatorRange = ChoGGi.Consts.MoistureVaporatorRange,
-  ResearchQueueSize = ChoGGi.Consts.ResearchQueueSize,
-}
-
 --set game values to saved values
-function ChoGGi.SetSettings()
+function ChoGGi.SetConstsToSaved()
 --Consts.
   Consts.AvoidWorkplaceSols = ChoGGi.CheatMenuSettings.AvoidWorkplaceSols
   Consts.BirthThreshold = ChoGGi.CheatMenuSettings.BirthThreshold
@@ -345,7 +253,45 @@ function ChoGGi.SetSettings()
   const.ResearchQueueSize = ChoGGi.CheatMenuSettings.ResearchQueueSize
 end
 
-ChoGGi.SettingsFileLoaded = true
+--called everytime we set a setting in menu
+function ChoGGi.WriteSettings()
+  AsyncStringToFile(ChoGGi.SettingsFile,TupleToLuaCode(ChoGGi.CheatMenuSettings))
+end
+
+--read saved settings from file
+function ChoGGi.ReadSettings()
+  local errormsg = "\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n"
+
+	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
+	if file_error then
+    file_error = ""
+    --no settings file so make a new one
+    ChoGGi.WriteSettings()
+    file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
+    if file_error then
+      DebugPrint(errormsg)
+      return file_error
+    end
+	end
+
+  local code_error
+  code_error, ChoGGi.CheatMenuSettings = LuaCodeToTuple(Settings)
+	if code_error then
+    DebugPrint(errormsg)
+		return code_error
+	end
+
+  --if we have new settings not yet in SettingsFile, check for nil
+  for Key,Value in pairs(ChoGGi.Consts) do
+    if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
+      --DebugPrint(tostring(Key) .. ": " .. tostring(Value) .. "\n")
+      ChoGGi.CheatMenuSettings[Key] = Value
+    end
+  end
+
+  --set consts to saved ones
+  ChoGGi.SetConstsToSaved()
+end
 
 if ChoGGi.ChoGGiTest then
   table.insert(ChoGGi.FilesCount,"Settings")

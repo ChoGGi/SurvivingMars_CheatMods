@@ -1,4 +1,13 @@
 --[[
+Surviving Mars comes with
+print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as 1.6.3 is the one with lua 5.3 support)
+
+socket = require("socket")
+print(socket._VERSION)
+
+--see where the function comes from
+debug.getinfo(ChoGGi.RemoveOldFiles)
+
 SelectedObj:__toluacode()
 
 dump(TupleToLuaCode(UserActions.Actions["UpsampledScreenshot"]))
@@ -33,11 +42,18 @@ end
 function ChoGGi.WriteLogsEnable()
   --remove old logs
   local logs = "AppData/logs/"
+  --AsyncFileDelete(logs .. "ConsoleLog.previous.log")
+  --AsyncFileDelete(logs .. "DebugLog.previous.log")
+  AsyncFileDelete(logs .. "ConsoleLog.log")
+  AsyncFileDelete(logs .. "DebugLog.log")
+  AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
+  AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
+--[[
   os.remove(logs .. "ConsoleLog.previous.log")
   os.remove(logs .. "DebugLog.previous.log")
   os.rename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
   os.rename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
-
+--]]
   --so we can pass the msgs on
   ChoGGi.OrigFunc.printf = printf
   ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
@@ -59,23 +75,30 @@ function ChoGGi.WriteLogsEnable()
 end
 
 function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
-  Mode = Mode or "a"
+  if Mode == "w" or Mode == "w+" then
+    Mode = nil
+  else
+    Mode = "-1"
+  end
   Ext = Ext or "txt"
   File = File or "DumpedText"
-  local tempfile = assert(io.open("AppData/logs/" .. File .. "." .. Ext,Mode))
+  local Filename = "AppData/logs/" .. File .. "." .. Ext
+  --local tempfile = assert(io.open("AppData/logs/" .. File .. "." .. Ext,Mode))
 
   if not pcall(function()
-    tempfile:write(Obj)
+    AsyncStringToFile(Filename,Obj,Mode)
+    --tempfile:write(Obj)
   end) then
     pcall(function()
-      tempfile:write(tostring(Obj))
+      AsyncStringToFile(Filename,Obj,Mode)
+      --tempfile:write(tostring(Obj))
     end)
   end
 
-  tempfile:close()
+  --tempfile:close()
   if not Skip then
     ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
-      "AppData/" .. File .. "." .. Ext,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
+      Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
     )
   end
 end
@@ -93,11 +116,9 @@ function ChoGGi.PrintIds(Table)
 end
 
 --[[
-ChoGGi.TextFile = assert(io.open("AppData/DumpedTable.txt","w"))
+Mode = -1 to append or nil to overwrite (default: -1)
+Funcs = true to dump functions as well (default: false)
 ChoGGi.DumpTable(TechTree)
-ChoGGi.TextFile:close()
-
-if you want to dump functions as well DumpTable(TechTree,nil,true)
 --]]
 function ChoGGi.DumpTable(Obj,Mode,Funcs)
   if not Obj then
@@ -106,12 +127,14 @@ function ChoGGi.DumpTable(Obj,Mode,Funcs)
     )
     return
   end
-  Mode = Mode or "a"
-  ChoGGi.TextFile = assert(io.open("AppData/DumpedText.txt",Mode))
+  Mode = Mode or "-1"
+  --make sure it's empty
+  ChoGGi.TextFile = ""
   ChoGGi.DumpTableFunc(Obj,nil,Funcs)
-  ChoGGi.TextFile:close()
+  AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
+
   ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
-    "AppData/DumpedText.txt","UI/Icons/Upgrades/magnetic_filtering_04.tga"
+    "AppData/logs/DumpedText.txt","UI/Icons/Upgrades/magnetic_filtering_04.tga"
   )
 end
 
@@ -123,7 +146,8 @@ function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   end
 
   if Obj.id then
-    ChoGGi.TextFile:write("\n-----------------Obj.id: " .. Obj.id .. " :")
+    ChoGGi.TextFile = ChoGGi.TextFile .. "\n-----------------Obj.id: " .. Obj.id .. " :"
+    --ChoGGi.TextFile:write()
   end
   if (type(Obj) == "table") then
     for k,v in pairs(Obj) do
@@ -131,14 +155,17 @@ function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
         ChoGGi.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
-          ChoGGi.TextFile:write("\n" .. tostring(k) .. " = ")
+          ChoGGi.TextFile = ChoGGi.TextFile .. "\n" .. tostring(k) .. " = "
+          --ChoGGi.TextFile:write("\n" .. tostring(k) .. " = ")
         end
 --make it add the table index #
 --Value: table: 0000000005FD3470
         if v ~= nil then
-          ChoGGi.TextFile:write(tostring(ChoGGi.RetTextForDump(v,Funcs)))
+          ChoGGi.TextFile = ChoGGi.TextFile .. tostring(ChoGGi.RetTextForDump(v,Funcs))
+          --ChoGGi.TextFile:write(tostring(ChoGGi.RetTextForDump(v,Funcs)))
         end
-        ChoGGi.TextFile:write("\n")
+        ChoGGi.TextFile = ChoGGi.TextFile .. "\n"
+        --ChoGGi.TextFile:write("\n")
       end
     end
   end
@@ -180,7 +207,7 @@ end
 
 function ChoGGi.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
-    return tostring(Obj) .. ": " .. tostring(getmetatable(Obj) or {})
+    return _InternalTranslate(Obj)
   elseif Funcs and type(Obj) == "function" then
     return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
   elseif type(Obj) == "table" then
@@ -190,35 +217,55 @@ function ChoGGi.RetTextForDump(Obj,Funcs)
   end
 end
 
-function ChoGGi.RemoveOldFiles()
---[[
-local file_error, code = AsyncFileToString(ModPath .. "Script.lua")
-if not file_error then
-  ChoGGi.RemoveOldFiles()
-end
---]]
-  local Table = {
-    "CheatMenuSettings",
-    "ConsoleExec",
-    "FuncsCheats",
-    "FuncsDebug",
-    "FuncsGameplayBuildings",
-    "FuncsGameplayColonists",
-    "FuncsGameplayDronesAndRC",
-    "FuncsGameplayMisc",
-    "FuncsResources",
-    "FuncsToggles",
-    "Functions",
-    "MenuGameplayBuildings",
-    "MenuGameplayColonists",
-    "MenuGameplayDronesAndRC",
-    "MenuGameplayMisc",
-    "MenuToggles",
-    "MenuTogglesFunc",
-    "Script",
-  }
-  for _,Value in ipairs(Table) do
-    os.remove(ChoGGi.ModPath .. Value .. ".lua")
+--hex rings
+do
+  local build_grid_debug_range = 10
+  GlobalVar("build_grid_debug_objs", false)
+  GlobalVar("build_grid_debug_thread", false)
+  function debug_build_grid()
+    if build_grid_debug_thread then
+      DeleteThread(build_grid_debug_thread)
+      build_grid_debug_thread = false
+      if build_grid_debug_objs then
+        for i = 1, #build_grid_debug_objs do
+          DoneObject(build_grid_debug_objs[i])
+        end
+        build_grid_debug_objs = false
+      end
+    else
+      build_grid_debug_objs = {}
+      build_grid_debug_thread = CreateRealTimeThread(function()
+        local last_q, last_r
+        while build_grid_debug_objs do
+          local q, r = WorldToHex(GetTerrainCursor())
+          if last_q ~= q or last_r ~= r then
+            local z = -q - r
+            local idx = 1
+            for q_i = q - build_grid_debug_range, q + build_grid_debug_range do
+              for r_i = r - build_grid_debug_range, r + build_grid_debug_range do
+                for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
+                  if q_i + r_i + z_i == 0 then
+                    local c = build_grid_debug_objs[idx] or Circle:new()
+                    c:SetRadius(const.GridSpacing / 2)
+                    c:SetPos(point(HexToWorld(q_i, r_i)))
+                    if HexGridGetObject(ObjectGrid, q_i, r_i) then
+                      c:SetColor(RGBA(255, 0, 0, 0))
+                    else
+                      c:SetColor(RGBA(0, 255, 0, 0))
+                    end
+                    build_grid_debug_objs[idx] = c
+                    idx = idx + 1
+                  end
+                end
+              end
+            end
+            last_q = q
+            last_r = r
+          end
+          Sleep(50)
+        end
+      end)
+    end
   end
 end
 

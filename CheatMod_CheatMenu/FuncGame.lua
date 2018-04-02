@@ -1,36 +1,3 @@
---called everytime we set a setting in menu
-function ChoGGi.WriteSettings()
-  AsyncStringToFile(ChoGGi.SettingsFile,TupleToLuaCode(ChoGGi.CheatMenuSettings))
-end
-
---read saved settings from file
-function ChoGGi.ReadSettings()
-	if not ChoGGi.SettingsFile then return end
-
-	local file_error, code = AsyncFileToString(ChoGGi.SettingsFile)
-	if file_error then
-		return file_error
-	end
-
-	local code_error
-  code_error, ChoGGi.CheatMenuSettings = LuaCodeToTuple(code)
-	if code_error then
-		return code_error
-	end
-
-  --if we have new settings not yet in SettingsFile, check for nil
-  for Key,Value in pairs(ChoGGi.Consts) do
-    if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
-      ChoGGi.CheatMenuSettings[Key] = Value
-    end
-  end
-
-  --set consts to saved ones
-  if ChoGGi.SettingsFileLoaded then
-    ChoGGi.SetSettings()
-  end
-end
-
 function ChoGGi.MsgPopup(Msg,Title,Icon)
   pcall(function()
     Msg = Msg or "Empty"
@@ -125,33 +92,6 @@ function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
       end
     end
   end
-end
-
---stop these from happening
-function ChoGGi.SetBlockCheatEmpty()
-  function SurfaceDeposit:CheatEmpty()
-  end
-  function Deposit:CheatEmpty()
-  end
-  function SubsurfaceDeposit:CheatEmpty()
-  end
-  function WasteRockDumpSite:CheatEmpty()
-  end
-  function WaterStorage:CheatEmpty()
-  end
-  function AirStorage:CheatEmpty()
-  end
-  function ElectricityStorage:CheatEmpty()
-  end
-  function Mine:CheatEmpty()
-  end
-  function ResourceProducer:CheatEmpty()
-  end
-  function SingleResourceProducer:CheatEmpty()
-  end
-  function StorageDepot:CheatEmpty()
-  end
-  UniversalStorageDepot.CheatEmpty = false
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
@@ -318,25 +258,6 @@ function ChoGGi.TravelTimeMarsEarth()
   return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
-function ChoGGi.FreeCamera_Toggle()
-  if not mapdata.GameLogic then
-    return
-  end
-  if cameraFly.IsActive() then
-    print("Camera RTS")
-    SetMouseDeltaMode(false)
-    ShowMouseCursor("InGameCursor")
-    cameraRTS.Activate(1)
-  else
-    print("Camera Fly")
-    cameraFly.Activate(1)
-    HideMouseCursor("InGameCursor")
-    SetMouseDeltaMode(true)
-  end
-  --resets zoom so...
-  ChoGGi.SetCameraSettings()
-end
-
 function ChoGGi.SetCameraSettings()
   if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     --disable border scrolling
@@ -354,20 +275,35 @@ function ChoGGi.SetCameraSettings()
   cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
-local FixNamesList = {
-  RCDesireTransport = 1,
-  RCRover = 1,
-  RCTransport = 1
-  }
---place item under the mouse for construction
-function ChoGGi.SetConstructionMode(itemname)
-  --fix up some names
-  if FixNamesList[itemname] then
-    itemname = itemname .. "Building"
-  elseif itemname == "ExplorerRover" then
-    itemname = "RCExplorerBuilding"
-  end
+--[[
+DataInstances.BuildingTemplate[""]
+SelectedObj:__toluacode()
 
+    ChoGGi.ConstructionModeNameClean(SelectedObj:__toluacode())
+
+SelectedObj:__toluacode()
+--]]
+
+--fixup names we get from SelectedObj:__toluacode()
+function ChoGGi.ConstructionModeNameClean(itemname)
+  --we want template_name or we have to guess from the placeobj name
+  local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
+  --local tempname = itemname:match("^.+template_name%A+(%a+).+$")
+  if not tempname then
+    tempname = itemname:match("^PlaceObj%('(%a+).+$")
+  end
+  --print(tempname)
+  ChoGGi.ConstructionModeSet(tempname)
+end
+--place item under the mouse for construction
+function ChoGGi.ConstructionModeSet(itemname)
+  --make sure it's closed so we don't mess up selection
+  pcall(function()
+    CloseXBuildMenu()
+  end)
+  --fix up some names
+  itemname = ChoGGi.ConstructionNamesListFix[itemname] or itemname
+  --n all the rest
   local igi = GetInGameInterface()
   if not igi or not igi:GetVisible() then
     return
@@ -383,7 +319,6 @@ function ChoGGi.SetConstructionMode(itemname)
         construction_mode = bld_template.construction_mode
       })
     else
-  local dlg = GetXDialog("XBuildMenu")
       igi:SetMode("construction", {
         template = bld_template.name,
         selected_dome = dlg and dlg.context.selected_dome
@@ -391,6 +326,113 @@ function ChoGGi.SetConstructionMode(itemname)
     end
     CloseXBuildMenu()
   end
+end
+
+function ChoGGi.RemoveOldFiles()
+--[[
+local file_error, code = AsyncFileToString(ChoGGi.ModPath .. "Script.lua")
+if not file_error then
+  ChoGGi.RemoveOldFiles()
+end
+--]]
+  local Table = {
+    "CheatMenuSettings",
+    "ConsoleExec",
+    "FuncsCheats",
+    "FuncsDebug",
+    "FuncsGameplayBuildings",
+    "FuncsGameplayColonists",
+    "FuncsGameplayDronesAndRC",
+    "FuncsGameplayMisc",
+    "FuncsResources",
+    "FuncsToggles",
+    "Functions",
+    "MenuGameplayBuildings",
+    "MenuGameplayColonists",
+    "MenuGameplayDronesAndRC",
+    "MenuGameplayMisc",
+    "MenuToggles",
+    "MenuTogglesFunc",
+    "Script",
+    --second files change :)
+    "Keys",
+    "MenuBuildings",
+    "MenuBuildingsFunc",
+    "MenuCheats",
+    "MenuCheatsFunc",
+    "MenuColonists",
+    "MenuColonistsFunc",
+    "MenuDebug",
+    "MenuDebugFunc",
+    "MenuDronesAndRC",
+    "MenuDronesAndRCFunc",
+    "MenuHelp",
+    "MenuMisc",
+    "MenuMiscFunc",
+    "MenuResources",
+    "MenuResourcesFunc",
+    "OnMsgs",
+    "libs/ReplacedFunctions",
+    "libs/ExamineDialog",
+  }
+  for _,Value in ipairs(Table) do
+    AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
+    --os.remove(ChoGGi.ModPath .. Value .. ".lua")
+  end
+  --lfs.rmdir(ChoGGi.HomeModPath .. "libs")
+  AsyncFileDelete(ChoGGi.ModPath .. "libs")
+end
+
+function ChoGGi.SetGravity(Bool,Who)
+  local NewGravity
+  if Who == 1 then --drones
+    for _,object in ipairs(UICity.labels.Drone or empty_table) do
+      if Bool then
+        NewGravity = object:GetGravity() + 1000
+        object:SetGravity(NewGravity)
+        ChoGGi.CheatMenuSettings.GravityDrone = NewGravity
+      else
+        object:SetGravity(0)
+      end
+    end
+    if not Bool then
+      ChoGGi.CheatMenuSettings.GravityDrone = false
+    end
+
+  elseif Who == 2 then --rc
+    for _,object in ipairs(UICity.labels.Rover or empty_table) do
+      if Bool then
+        NewGravity = object:GetGravity() + 5000
+        object:SetGravity(NewGravity)
+        ChoGGi.CheatMenuSettings.GravityRC = NewGravity
+      else
+        object:SetGravity(0)
+      end
+    end
+    if not Bool then
+      ChoGGi.CheatMenuSettings.GravityRC = false
+    end
+
+  elseif Who == 3 then --colonists
+    for _,object in ipairs(UICity.labels.Colonist or empty_table) do
+      if Bool then
+        NewGravity = object:GetGravity() + 250
+        object:SetGravity(NewGravity)
+        ChoGGi.CheatMenuSettings.GravityColonist = NewGravity
+      else
+        object:SetGravity(0)
+      end
+    end
+    if not Bool then
+      ChoGGi.CheatMenuSettings.GravityColonist = false
+    end
+
+  end
+  ChoGGi.WriteSettings()
+
+  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Gravity is increased " .. Bool or "default",
+   "Drones","UI/Icons/IPButtons/drone.tga"
+  )
 end
 
 if ChoGGi.ChoGGiTest then
