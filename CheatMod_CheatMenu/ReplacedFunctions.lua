@@ -23,6 +23,7 @@ ConsolePrint = ChoGGi.ReplacedFunc.ConsolePrint
 function console(...)
   ConsolePrint(tostring(...))
 end
+
 sm = SelectionMouseObj
 st = GetTerrainCursorObjSel
 cur = GetTerrainCursorObjSel
@@ -43,7 +44,6 @@ function examine(Obj)
   OpenExamine(Obj)
 end
 ex = examine
-log = ChoGGi.Dump
 dump = ChoGGi.Dump
 dumpobject = ChoGGi.DumpObject
 dumpo = ChoGGi.DumpObject

@@ -224,7 +224,7 @@ do
   local build_grid_debug_range = 10
   GlobalVar("build_grid_debug_objs", false)
   GlobalVar("build_grid_debug_thread", false)
-  function debug_build_grid()
+  function ChoGGi.debug_build_grid()
     if build_grid_debug_thread then
       DeleteThread(build_grid_debug_thread)
       build_grid_debug_thread = false

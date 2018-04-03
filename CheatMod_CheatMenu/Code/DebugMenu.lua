@@ -24,7 +24,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "[102]Debug/[09]Toggle Hex Build Grid Visibility",
-  debug_build_grid,
+  ChoGGi.debug_build_grid,
   "Ctrl-F3",
   "Toggle Hex Build Grid Visibility",
   "CollisionGeometry.tga"
