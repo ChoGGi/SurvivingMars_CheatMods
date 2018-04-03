@@ -43,7 +43,7 @@ ChoGGi.AddAction(
 -------------
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Battery Infinite Toggle",
-  ChoGGi.DroneBatteryInfiniteToggle,
+  ChoGGi.DroneBatteryInfinite_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,"(Disabled)","(Enabled)")
@@ -54,7 +54,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Build Speed Toggle",
-  ChoGGi.DroneBuildSpeedToggle,
+  ChoGGi.DroneBuildSpeed_Toggle,
   nil,
   function()
     local des
@@ -70,7 +70,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/RC/RC Rover Drone Recharge Free Toggle",
-  ChoGGi.RCRoverDroneRechargeFreeToggle,
+  ChoGGi.RCRoverDroneRechargeFree_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
@@ -81,7 +81,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/RC/RC Transport Resource Toggle",
-  ChoGGi.RCTransportResourceToggle,
+  ChoGGi.RCTransportResource_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
@@ -92,7 +92,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Meteor Malfunction Toggle",
-  ChoGGi.DroneMeteorMalfunctionToggle,
+  ChoGGi.DroneMeteorMalfunction_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,"(Disabled)","(Enabled)")
@@ -103,7 +103,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Recharge Time Toggle",
-  ChoGGi.DroneRechargeTimeToggle,
+  ChoGGi.DroneRechargeTime_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.DroneRechargeTime,"(Disabled)","(Enabled)")
@@ -114,7 +114,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Repair Supply Leak Toggle",
-  ChoGGi.DroneRepairSupplyLeakToggle,
+  ChoGGi.DroneRepairSupplyLeak_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.DroneRepairSupplyLeak,"(Disabled)","(Enabled)")

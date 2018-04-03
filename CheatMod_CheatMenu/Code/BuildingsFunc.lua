@@ -1,3 +1,4 @@
+--[[
 function ChoGGi.StorageDepotWasteSet(Bool,Amount)
   if Bool == true then
     ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.CheatMenuSettings.StorageWasteDepot + (1000 * ChoGGi.Consts.ResourceScale)
@@ -67,6 +68,7 @@ function ChoGGi.StorageDepotUniversalSet(Bool,Amount)
     "Storage","UI/Icons/Sections/basic.tga"
   )
 end
+--]]
 
 function ChoGGi.SetCapacity(Bool,Which)
   if not SelectedObj and not SelectedObj.base_capacity or not UICity.labels.BuildingNoDomes then

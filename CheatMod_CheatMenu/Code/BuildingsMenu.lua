@@ -139,6 +139,7 @@ ChoGGi.AddAction(
   "DisableAOMaps.tga"
 )
 --------------
+--[[
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Waste Depot + 1000",
   function()
@@ -212,6 +213,7 @@ ChoGGi.AddAction(
   end,
   "ToggleTerrainHeight.tga"
 )
+--]]
 --------------
 ChoGGi.AddAction(
   "Gameplay/Buildings/Repair Pipes|Cables",

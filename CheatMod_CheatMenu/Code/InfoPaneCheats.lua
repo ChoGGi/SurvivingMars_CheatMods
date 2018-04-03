@@ -105,6 +105,7 @@ function OnMsg.ClassesGenerate()
     self.air_capacity = self.base_air_capacity
   end
   --
+  --[[
   local function CheatCapStorageDbl(self)
     self.max_storage_per_resource = self.max_storage_per_resource * 2
     ChoGGi.UpdateResourceAmount(self,self.max_storage_per_resource)
@@ -126,6 +127,7 @@ function OnMsg.ClassesGenerate()
     self.max_amount_BlackCube = self.base_max_amount_BlackCube
     ChoGGi.UpdateResourceAmount(self,self.max_amount_BlackCube)
   end
+  --]]
 --CheatCapDbl people
   local function CheatColonistCapDbl(self)
     if self.capacity == 4096 then

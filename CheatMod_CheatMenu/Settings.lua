@@ -84,9 +84,9 @@ ChoGGi.Consts = {
   ResidenceAddAmount = 16,
   ResidenceMaxHeight = 256,
   RCTransportStorage = 30000,
-  StorageUniversalDepot = 30000,
-  StorageOtherDepot = 180000,
-  StorageWasteDepot = 70000,
+  --StorageUniversalDepot = 30000,
+  --StorageOtherDepot = 180000,
+  --StorageWasteDepot = 70000,
   RCTransportResourceCapacity = 30,
 --Consts.
   AvoidWorkplaceSols = 5,

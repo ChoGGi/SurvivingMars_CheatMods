@@ -1,4 +1,4 @@
-function ChoGGi.DroneBatteryInfiniteToggle()
+function ChoGGi.DroneBatteryInfinite_Toggle()
   Consts.DroneMoveBatteryUse = ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse)
   Consts.DroneCarryBatteryUse = ChoGGi.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse)
   Consts.DroneConstructBatteryUse = ChoGGi.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse)
@@ -17,7 +17,7 @@ function ChoGGi.DroneBatteryInfiniteToggle()
   )
 end
 
-function ChoGGi.DroneBuildSpeedToggle()
+function ChoGGi.DroneBuildSpeed_Toggle()
   if Consts.DroneConstructAmount == 999900 then
     Consts.DroneConstructAmount = ChoGGi.Consts.DroneConstructAmount
     Consts.DroneBuildingRepairAmount = ChoGGi.Consts.DroneBuildingRepairAmount
@@ -35,7 +35,7 @@ function ChoGGi.DroneBuildSpeedToggle()
   )
 end
 
-function ChoGGi.RCRoverDroneRechargeFreeToggle()
+function ChoGGi.RCRoverDroneRechargeFree_Toggle()
   Consts.RCRoverDroneRechargeCost = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost)
   ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost = Consts.RCRoverDroneRechargeCost
   ChoGGi.WriteSettings()
@@ -44,7 +44,7 @@ function ChoGGi.RCRoverDroneRechargeFreeToggle()
   )
 end
 
-function ChoGGi.RCTransportResourceToggle()
+function ChoGGi.RCTransportResource_Toggle()
   Consts.RCRoverTransferResourceWorkTime = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime)
   Consts.RCTransportGatherResourceWorkTime = ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.RCTransportGatherResourceWorkTime())
   ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime = Consts.RCRoverTransferResourceWorkTime
@@ -55,7 +55,7 @@ function ChoGGi.RCTransportResourceToggle()
   )
 end
 
-function ChoGGi.DroneMeteorMalfunctionToggle()
+function ChoGGi.DroneMeteorMalfunction_Toggle()
   Consts.DroneMeteorMalfunctionChance = ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance)
   ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance = Consts.DroneMeteorMalfunctionChance
   ChoGGi.WriteSettings()
@@ -64,7 +64,7 @@ function ChoGGi.DroneMeteorMalfunctionToggle()
   )
 end
 
-function ChoGGi.DroneRechargeTimeToggle()
+function ChoGGi.DroneRechargeTime_Toggle()
   Consts.DroneRechargeTime = ChoGGi.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime)
   ChoGGi.CheatMenuSettings.DroneRechargeTime = Consts.DroneRechargeTime
   ChoGGi.WriteSettings()
@@ -73,9 +73,15 @@ function ChoGGi.DroneRechargeTimeToggle()
   )
 end
 
-function ChoGGi.DroneRepairSupplyLeakToggle()
-  Consts.DroneRepairSupplyLeak = ChoGGi.NumRetBool(Consts.DroneRepairSupplyLeak,0,ChoGGi.Consts.DroneRepairSupplyLeak)
+function ChoGGi.DroneRepairSupplyLeak_Toggle()
+
+  if Consts.DroneRepairSupplyLeak == 1 then
+    Consts.DroneRepairSupplyLeak = ChoGGi.Consts.DroneRepairSupplyLeak
+  else
+    Consts.DroneRepairSupplyLeak = 1
+  end
   ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak = Consts.DroneRepairSupplyLeak
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak .. ": You know what they say about leaky pipes",
     "Drones","UI/Icons/IPButtons/drone.tga"

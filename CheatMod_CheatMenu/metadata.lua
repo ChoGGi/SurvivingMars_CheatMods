@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Cheat Menu",
+	"title", "Cheat Menu Expanded",
 	"description", "Enables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
     .. "\nUse the F2 key to toggle the cheats menu. "
     .. "There's a cheats section in most info panels on the right side of the screen."
@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CheatMenu",
   --"steam_id","",
 	"author", "ChoGGi (thanks to chippydip, therealshibe, BoehserOnkel, Fling)",
-	"version", 1.8,
+	"version", 2.0,
   --"lua_revision","",
 	"code", {
 		"Init.lua",

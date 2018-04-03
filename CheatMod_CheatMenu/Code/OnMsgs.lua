@@ -299,6 +299,7 @@ function OnMsg.ConstructionComplete(building)
   if IsKindOf(building,"Arcology") then
     building.capacity = ChoGGi.CheatMenuSettings.ArcologyCapacity
 
+--[[
   elseif IsKindOf(building,"UniversalStorageDepot") then
     if building.encyclopedia_id ~= "UniversalStorageDepot" then
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
@@ -308,6 +309,7 @@ function OnMsg.ConstructionComplete(building)
 
   elseif IsKindOf(building,"WasteRockDumpSite") then
     building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
+--]]
 
   elseif IsKindOf(building,"RCTransportBuilding") then
     if ChoGGi.CheatMenuSettings.RCTransportStorage > 45 then
