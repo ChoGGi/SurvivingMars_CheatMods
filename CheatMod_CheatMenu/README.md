@@ -154,7 +154,7 @@ for i = 1, #templates do
 	print(building.name)
 end
 
-some functions I added that may be useful to modders:
+some functions I added that may be useful for modding:
 
 ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
 TechTree[6][46] = Breakthroughs>PrefabCompression

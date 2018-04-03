@@ -54,6 +54,7 @@ exit = quit
 reboot = restart
 trans = _InternalTranslate
 
+--change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.UserAddActions(ActionsToAdd)
   for k, v in pairs(ActionsToAdd) do
@@ -85,74 +86,120 @@ function ChoGGi.UserAddActions(ActionsToAdd)
   UserActions.SetMode(UserActions.mode)
 end
 
+
 --RemoveBuildingLimits
 function OnMsg.ClassesBuilt()
+
   --save teh OrigFuncs
-  ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-  --replace teh OrigFuncs
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.ReplacedFunc.TC_UpdateConstructionStatuses
-  end
-end
---function OnMsg.ClassesBuilt()
-function OnMsg.LoadGame()
-  --save teh OrigFuncs
+  --so we can build without (as many) limits
   ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+  --so we can do long spaced tunnels
+  ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+--[[
+  sometimes gets stuck in placement mode when placing domes (and others, but usually domes), so I changed
+    if st.short then
+  to
+    if st and st.short then
+--]]
+  ChoGGi.OrigFunc.CC_UpdateShortConstructionStatus = ConstructionController.UpdateShortConstructionStatus
+  --doesn't cause any real problems, but it does spam the log with st.test missing, so I did the same as UpdateShortConstructionStatus
+  ChoGGi.OrigFunc.CC_Getconstruction_statuses_property = ConstructionController.Getconstruction_statuses_property
+
   --replace teh OrigFuncs
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-    ConstructionController.UpdateConstructionStatuses = ChoGGi.ReplacedFunc.CC_UpdateConstructionStatuses
-  end
-end
 
-function ChoGGi.ReplacedFunc.CC_UpdateConstructionStatuses(dont_finalize)
-  local self = CityConstruction[UICity]
-  local constr_dlg = GetInGameInterface() and GetInGameInterface().mode_dialog
-  if constr_dlg and constr_dlg:IsKindOf("GridConstructionDialog") then
-    self = CityGridConstruction[UICity]
-  elseif constr_dlg and constr_dlg:IsKindOf("TunnelConstructionDialog") then
-    self = CityTunnelConstruction[UICity]
-  end
-  ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,dont_finalize)
-
-  --no errors for construction
-  --self.construction_statuses = {}
-
-  --remove errors we want to remove
-  local status = self.construction_statuses
-  if #status > 0 then
-    for i = 1, #status do
-      if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
-        status[i] = nil
+    function ConstructionController:UpdateConstructionStatuses(dont_finalize)
+      pcall(function()
+        ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,dont_finalize)
+      end)
+      --remove errors we want to remove
+      local status = self.construction_statuses
+      if #status > 0 then
+        for i = 1, #status do
+          if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
+            status[i] = nil
+          end
+        end
       end
+    end --ConstructionController
+
+    --we only want to block uneven terrain
+    function TunnelConstructionController:UpdateConstructionStatuses(pt)
+      local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
+      local status = self.construction_statuses
+      if #status > 0 then
+        for i = 1, #status do
+          if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
+            status[i] = nil
+          end
+        end
+      end
+      self:FinalizeStatusGathering(old_t)
+    end --TunnelConstructionController
+
+    function ConstructionController:UpdateShortConstructionStatus()
+    --ChoGGi.OrigFunc.CC_UpdateShortConstructionStatus
+      local dlg = GetDialog("HUD")
+      if not dlg then
+        return
+      end
+      local ctrl = dlg.idtxtConstructionStatus
+      local text = ""
+      if #self.construction_statuses > 0 then
+        for i = 1, #self.construction_statuses do
+          local st = self.construction_statuses[i]
+          if st and st.short then
+            text = T({878,"<col><short></color>",col = ConstructionStatusColors[st.type].color_tag_short,st})
+            break
+          end
+        end
+      end
+      ctrl:SetText(text)
+      ctrl:SetVisible(text ~= "")
+      ctrl:SetMargins(box(-ctrl.text_width / 2, 30, 0, 0))
+      return text, ctrl
+    end --UpdateShortConstructionStatus
+
+    function ConstructionController:Getconstruction_statuses_property()
+      local items = {}
+      if #self.construction_statuses > 0 then
+        for i = 1, Min(#self.construction_statuses, 2) do
+          local st = self.construction_statuses[i]
+          if st and st.text then
+            items[#items + 1] = T({879,"<col><text></color>",col = ConstructionStatusColors[st.type].color_tag,text = st.text})
+          end
+        end
+        if #self.construction_statuses < 2 then
+          local constr_dlg = GetInGameInterface() and GetInGameInterface().mode_dialog
+          if constr_dlg and constr_dlg.class == "ConstructionModeDialog" and constr_dlg.params and constr_dlg.params.passengers then
+            local domes = GetDomesInWalkableDistance(UICity, self.cursor_obj:GetPos())
+            items[#items + 1] = T({7688,"<green>Domes in walkable distance: <number></color></shadowcolor>",number = #domes})
+          end
+        end
+      else
+        local constr_dlg = GetInGameInterface() and GetInGameInterface().mode_dialog
+        if constr_dlg and constr_dlg.class == "ConstructionModeDialog" and constr_dlg.params and constr_dlg.params.passengers then
+          local domes = GetDomesInWalkableDistance(UICity, self.cursor_obj:GetPos())
+          items[#items + 1] = T({7688,"<green>Domes in walkable distance: <number></color></shadowcolor>",number = #domes})
+        else
+          items[#items + 1] = T({880,"<color 138 223 47>All Clear!</color>"})
+        end
+      end
+      return table.concat(items, "\n")
+    end --Getconstruction_statuses_property
+
+  end --if
+
+  --was giving a nil error in log, I assume devs'll fix it one day (changed amount to amount or 0)
+  function RequiresMaintenance:AddDust(amount)
+    if self:IsKindOf("Building") then
+      amount = MulDivRound(amount or 0, g_Consts.BuildingDustModifier, 100)
+    end
+    if self.accumulate_dust then
+      self:AccumulateMaintenancePoints(amount)
     end
   end
-
-end
-
---we only want to block uneven terrain
-function ChoGGi.ReplacedFunc:TC_UpdateConstructionStatuses(pt)
-      --[[
-  local self = CityConstruction[UICity]
-  local constr_dlg = GetInGameInterface() and GetInGameInterface().mode_dialog
-  if constr_dlg and constr_dlg:IsKindOf("GridConstructionDialog") then
-    self = CityGridConstruction[UICity]
-  elseif constr_dlg and constr_dlg:IsKindOf("TunnelConstructionDialog") then
-    self = CityTunnelConstruction[UICity]
-  end
---]]
-  --local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
-  local old_t = ChoGGi.ReplacedFunc.CC_UpdateConstructionStatuses(self, "dont_finalize")
-  local status = self.construction_statuses
-  if #status > 0 then
-    for i = 1, #status do
-      print(_InternalTranslate(status[i].short))
-      if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
-        status[i] = nil
-      end
-    end
-  end
-  self:FinalizeStatusGathering(old_t)
-end
+end --OnMsg
 
 --[[
   CityConstruction[UICity] = ConstructionController:new()
@@ -356,19 +403,6 @@ dumpl(classdefs)
   end
 
 end --OnMsg
-
---was giving a nil error in log, I assume devs'll fix it one day (changed amount to amount or 0)
-function OnMsg.ClassesBuilt()
-  function RequiresMaintenance:AddDust(amount)
-    if self:IsKindOf("Building") then
-      amount = MulDivRound(amount or 0, g_Consts.BuildingDustModifier, 100)
-    end
-    if self.accumulate_dust then
-      self:AccumulateMaintenancePoints(amount)
-    end
-  end
-end --OnMsg
-
 
 if ChoGGi.ChoGGiTest then
   table.insert(ChoGGi.FilesCount,"ReplacedFunctions")

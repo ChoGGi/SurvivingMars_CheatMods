@@ -142,7 +142,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Waste Depot + 1000",
   function()
-    ChoGGi.StorageDepotSet(1,true,"Waste",(ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1000)
+    ChoGGi.StorageDepotWasteSet(true,(ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1000)
   end,
   "Ctrl-Alt-Numpad 3",
   function()
@@ -154,7 +154,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Waste Depot (Default)",
   function()
-    ChoGGi.StorageDepotSet(1,nil,"Waste",ChoGGi.Consts.StorageWasteDepot / ChoGGi.Consts.ResourceScale)
+    ChoGGi.StorageDepotWasteSet(nil,ChoGGi.Consts.StorageWasteDepot / ChoGGi.Consts.ResourceScale)
   end,
   nil,
   function()
@@ -166,7 +166,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Other Depot + 1000",
   function()
-    ChoGGi.StorageDepotSet(2,true,"Other",(ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1000)
+    ChoGGi.StorageDepotOtherSet(true,(ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1000)
   end,
   "Ctrl-Alt-Numpad 2",
   function()
@@ -179,7 +179,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Other Depot (Default)",
   function()
-    ChoGGi.StorageDepotSet(2,nil,"Other",ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale)
+    ChoGGi.StorageDepotOtherSet(nil,ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale)
   end,
   nil,
   function()
@@ -191,7 +191,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Universal Depot + 1000",
   function()
-    ChoGGi.StorageDepotSet(2,true,"Universal",(ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1000)
+    ChoGGi.StorageDepotUniversalSet(true,(ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1000)
   end,
   "Ctrl-Alt-Numpad 1",
   function()
@@ -204,7 +204,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Universal Depot (Default)",
   function()
-    ChoGGi.StorageDepotSet(2,nil,"Universal",ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale)
+    ChoGGi.StorageDepotUniversalSet(nil,ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale)
   end,
   nil,
   function()

@@ -2,148 +2,79 @@
 function OnMsg.ClassesGenerate()
 
 --CheatDoubleMaxAmount
-  function SubsurfaceDepositMetals:CheatDoubleMaxAmount()
+  local function CheatDoubleMaxAmount(self)
     self.max_amount = self.max_amount * 2
   end
-  --
-  function SubsurfaceDepositWater:CheatDoubleMaxAmount()
-    self.max_amount = self.max_amount * 2
-  end
-  --
-  function SubsurfaceDepositPreciousMetals:CheatDoubleMaxAmount()
-    self.max_amount = self.max_amount * 2
-  end
-  --
-  function SurfaceDepositGroup:CheatDoubleMaxAmount()
-    self.max_amount = self.max_amount * 2
-  end
+  SubsurfaceDepositMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  SubsurfaceDepositWater.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  SubsurfaceDepositPreciousMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  SurfaceDepositGroup.CheatDoubleMaxAmount = CheatDoubleMaxAmount
 --CheatProdDbl
-  function MoistureVaporator:CheatProdDbl()
+  local function CheatProdDblWater(self)
     self.water.production = self.water.production * 2
   end
-  function MoistureVaporator:CheatProdDef()
+  local function CheatProdDefWater(self)
     self.water.production = self.base_water_production
   end
+  MoistureVaporator.CheatProdDbl = CheatProdDblWater
+  MoistureVaporator.CheatProdDef = CheatProdDefWater
+  WaterExtractor.CheatProdDbl = CheatProdDblWater
+  WaterExtractor.CheatProdDef = CheatProdDefWater
   --
-  function WaterExtractor:CheatProdDbl()
-    self.water.production = self.water.production * 2
+  local function CheatProdDblElec(self)
+    self.electricity.production = self.electricity.production * 2
   end
-  function WaterExtractor:CheatProdDef()
-    self.water.production = self.base_water_production
+  local function CheatProdDefElec(self)
+    self.electricity.production = self.base_electricity_production
   end
+  FusionReactor.CheatProdDbl = CheatProdDblElec
+  FusionReactor.CheatProdDef = CheatProdDefElec
+  StirlingGenerator.CheatProdDbl = CheatProdDblElec
+  StirlingGenerator.CheatProdDef = CheatProdDefElec
+  WindTurbine.CheatProdDbl = CheatProdDblElec
+  WindTurbine.CheatProdDef = CheatProdDefElec
+  SolarPanel.CheatProdDbl = CheatProdDblElec
+  SolarPanel.CheatProdDef = CheatProdDefElec
+  ArtificialSun.CheatProdDbl = CheatProdDblElec
+  ArtificialSun.CheatProdDef = CheatProdDefElec
   --
-  function MOXIE:CheatProdDbl()
+  local function CheatProdDblAir(self)
     self.air.production = self.air.production * 2
   end
-  function MOXIE:CheatProdDef()
+  local function CheatProdDefAir(self)
     self.air.production = self.base_air_production
   end
+  MOXIE.CheatProdDbl = CheatProdDblAir
+  MOXIE.CheatProdDef = CheatProdDefAir
   --
-  function FusionReactor:CheatProdDbl()
-    self.electricity.production = self.electricity.production * 2
-  end
-  function FusionReactor:CheatProdDef()
-    self.electricity.production = self.base_electricity_production
-  end
-  --
-  function StirlingGenerator:CheatProdDbl()
-    self.electricity.production = self.electricity.production * 2
-  end
-  function StirlingGenerator:CheatProdDef()
-    self.electricity.production = self.base_electricity_production
-  end
-  --
-  function WindTurbine:CheatProdDbl()
-    self.electricity.production = self.electricity.production * 2
-  end
-  function WindTurbine:CheatProdDef()
-    self.electricity.production = self.base_electricity_production
-  end
-  --
-  function SolarPanel:CheatProdDbl()
-    self.electricity.production = self.electricity.production * 2
-  end
-  function SolarPanel:CheatProdDef()
-    self.electricity.production = self.base_electricity_production
-  end
-  --
-  function ArtificialSun:CheatProdDbl()
-    self.electricity.production = self.electricity.production * 2
-  end
-  function ArtificialSun:CheatProdDef()
-    self.electricity.production = self.base_electricity_production
-  end
-  --
-  function RegolithExtractor:CheatProdDbl()
+  local function CheatProdDblProducer(self)
     self.producers[1].production_per_day = self.producers[1].production_per_day * 2
   end
-  function RegolithExtractor:CheatProdDef()
+  local function CheatProdDefProducer(self)
     self.producers[1].production_per_day = self.producers[1].base_production_per_day
   end
-  --
-  function MetalsExtractor:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function MetalsExtractor:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function PreciousMetalsExtractor:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function PreciousMetalsExtractor:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function PolymerPlant:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function PolymerPlant:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function ElectronicsFactory:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function ElectronicsFactory:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function MachinePartsFactory:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function MachinePartsFactory:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function FuelFactory:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function FuelFactory:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function FarmHydroponic:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function FarmHydroponic:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function FungalFarm:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function FungalFarm:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
-  function FarmConventional:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function ElectricityStorage:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-  end
-  --
+  RegolithExtractor.CheatProdDbl = CheatProdDblProducer
+  RegolithExtractor.CheatProdDef = CheatProdDefProducer
+  MetalsExtractor.CheatProdDbl = CheatProdDblProducer
+  MetalsExtractor.CheatProdDef = CheatProdDefProducer
+  PreciousMetalsExtractor.CheatProdDbl = CheatProdDblProducer
+  PreciousMetalsExtractor.CheatProdDef = CheatProdDefProducer
+  PolymerPlant.CheatProdDbl = CheatProdDblProducer
+  PolymerPlant.CheatProdDef = CheatProdDefProducer
+  ElectronicsFactory.CheatProdDbl = CheatProdDblProducer
+  ElectronicsFactory.CheatProdDef = CheatProdDefProducer
+  MachinePartsFactory.CheatProdDbl = CheatProdDblProducer
+  MachinePartsFactory.CheatProdDef = CheatProdDefProducer
+  FuelFactory.CheatProdDbl = CheatProdDblProducer
+  FuelFactory.CheatProdDef = CheatProdDefProducer
+  FarmHydroponic.CheatProdDbl = CheatProdDblProducer
+  FarmHydroponic.CheatProdDef = CheatProdDefProducer
+  FungalFarm.CheatProdDbl = CheatProdDblProducer
+  FungalFarm.CheatProdDef = CheatProdDefProducer
+  FarmConventional.CheatProdDbl = CheatProdDblProducer
+  FarmConventional.CheatProdDef = CheatProdDefProducer
+  TheExcavator.CheatProdDbl = CheatProdDblProducer
+  TheExcavator.CheatProdDef = CheatProdDefProducer
   function MoholeMine:CheatProdDbl()
     self.producers[1].production_per_day = self.producers[1].production_per_day * 2
     self.producers[2].production_per_day = self.producers[2].production_per_day * 2
@@ -151,13 +82,6 @@ function OnMsg.ClassesGenerate()
   function MoholeMine:CheatProdDef()
     self.producers[1].production_per_day = self.producers[1].base_production_per_day
     self.producers[2].production_per_day = self.producers[2].base_production_per_day
-  end
-  --
-  function TheExcavator:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  function TheExcavator:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
   end
 --CheatCapDbl storage
   function ElectricityStorage:CheatCapDbl()
@@ -181,176 +105,83 @@ function OnMsg.ClassesGenerate()
     self.air_capacity = self.base_air_capacity
   end
   --
-  function UniversalStorageDepot:CheatCapDbl()
+  local function CheatCapStorageDbl(self)
     self.max_storage_per_resource = self.max_storage_per_resource * 2
+    ChoGGi.UpdateResourceAmount(self,self.max_storage_per_resource)
   end
-  function UniversalStorageDepot:CheatCapDef()
+  local function CheatCapStorageDef(self)
     self.max_storage_per_resource = self.base_max_storage_per_resource
+    ChoGGi.UpdateResourceAmount(self,self.max_storage_per_resource)
   end
+  UniversalStorageDepot.CheatCapStorageDbl = CheatCapStorageDbl
+  UniversalStorageDepot.CheatCapStorageDef = CheatCapStorageDef
+  MysteryDepot.CheatCapStorageDbl = CheatCapStorageDbl
+  MysteryDepot.CheatCapStorageDef = CheatCapStorageDef
   --
   function BlackCubeDumpSite:CheatCapDbl()
     self.max_amount_BlackCube = self.max_amount_BlackCube * 2
+    ChoGGi.UpdateResourceAmount(self,self.max_amount_BlackCube)
   end
   function BlackCubeDumpSite:CheatCapDef()
     self.max_amount_BlackCube = self.base_max_amount_BlackCube
-  end
-  --
-  function MysteryDepot:CheatCapDbl()
-    self.max_storage_per_resource = self.max_storage_per_resource * 2
-  end
-  function MysteryDepot:CheatCapDef()
-    self.max_storage_per_resource = self.base_max_storage_per_resource
+    ChoGGi.UpdateResourceAmount(self,self.max_amount_BlackCube)
   end
 --CheatCapDbl people
-  function Arcology:CheatCapDbl()
+  local function CheatColonistCapDbl(self)
     if self.capacity == 4096 then
       return
     end
     self.capacity = self.capacity * 2
   end
-  function Arcology:CheatCapDef()
+  local function CheatColonistCapDef(self)
     self.capacity = self.base_capacity
   end
-  --
-  function SmartHome:CheatCapDbl()
-    if self.capacity == 4096 then
-      return
-    end
-    self.capacity = self.capacity * 2
-  end
-  function SmartHome:CheatCapDef()
-    self.capacity = self.base_capacity
-  end
-  --
-  function Nursery:CheatCapDbl()
-    if self.capacity == 4096 then
-      return
-    end
-    self.capacity = self.capacity * 2
-  end
-  function Nursery:CheatCapDef()
-    self.capacity = self.base_capacity
-  end
-  --
-  function Apartments:CheatCapDbl()
-    if self.capacity == 4096 then
-      return
-    end
-    self.capacity = self.capacity * 2
-  end
-  function Apartments:CheatCapDef()
-    self.capacity = self.base_capacity
-  end
-  --
-  function LivingQuarters:CheatCapDbl()
-    if self.capacity == 4096 then
-      return
-    end
-    self.capacity = self.capacity * 2
-  end
-  function LivingQuarters:CheatCapDef()
-    self.capacity = self.base_capacity
-  end
+  Arcology.CheatColonistCapDbl = CheatColonistCapDbl
+  Arcology.CheatColonistCapDef = CheatColonistCapDef
+  SmartHome.CheatColonistCapDbl = CheatColonistCapDbl
+  SmartHome.CheatColonistCapDef = CheatColonistCapDef
+  Nursery.CheatColonistCapDbl = CheatColonistCapDbl
+  Nursery.CheatColonistCapDef = CheatColonistCapDef
+  Apartments.CheatColonistCapDbl = CheatColonistCapDbl
+  Apartments.CheatColonistCapDef = CheatColonistCapDef
+  LivingQuarters.CheatColonistCapDbl = CheatColonistCapDbl
+  LivingQuarters.CheatColonistCapDef = CheatColonistCapDef
 --CheatVisitorsDbl
-  function CasinoComplex:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function CasinoComplex:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function Diner:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Diner:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function Grocery:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Grocery:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function HangingGardens:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function HangingGardens:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function Infirmary:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Infirmary:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function MedicalCenter:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function MedicalCenter:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function OpenAirGym:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function OpenAirGym:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function Playground:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Playground:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function ServiceWorkplace:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function ServiceWorkplace:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function Spacebar:CheatVisitorsDbl()
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Spacebar:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function MartianUniversity:CheatVisitorsDbl()
+  local function CheatVisitorsDbl(self)
     if self.max_visitors == 4096 then
       return
     end
     self.max_visitors = self.max_visitors * 2
   end
-  function MartianUniversity:CheatVisitorsDef()
+  local function CheatVisitorsDef(self)
     self.max_visitors = self.base_max_visitors
   end
-  --
-  function Sanatorium:CheatVisitorsDbl()
-    if self.max_visitors == 4096 then
-      return
-    end
-    self.max_visitors = self.max_visitors * 2
-  end
-  function Sanatorium:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
-  --
-  function School:CheatVisitorsDbl()
-    if self.max_visitors == 4096 then
-      return
-    end
-    self.max_visitors = self.max_visitors * 2
-  end
-  function School:CheatVisitorsDef()
-    self.max_visitors = self.base_max_visitors
-  end
+  CasinoComplex.CheatVisitorsDbl = CheatVisitorsDbl
+  CasinoComplex.CheatVisitorsDef = CheatVisitorsDef
+  Diner.CheatVisitorsDbl = CheatVisitorsDbl
+  Diner.CheatVisitorsDef = CheatVisitorsDef
+  Grocery.CheatVisitorsDbl = CheatVisitorsDbl
+  Grocery.CheatVisitorsDef = CheatVisitorsDef
+  HangingGardens.CheatVisitorsDbl = CheatVisitorsDbl
+  HangingGardens.CheatVisitorsDef = CheatVisitorsDef
+  Infirmary.CheatVisitorsDbl = CheatVisitorsDbl
+  Infirmary.CheatVisitorsDef = CheatVisitorsDef
+  MedicalCenter.CheatVisitorsDbl = CheatVisitorsDbl
+  MedicalCenter.CheatVisitorsDef = CheatVisitorsDef
+  OpenAirGym.CheatVisitorsDbl = CheatVisitorsDbl
+  OpenAirGym.CheatVisitorsDef = CheatVisitorsDef
+  Playground.CheatVisitorsDbl = CheatVisitorsDbl
+  Playground.CheatVisitorsDef = CheatVisitorsDef
+  ServiceWorkplace.CheatVisitorsDbl = CheatVisitorsDbl
+  ServiceWorkplace.CheatVisitorsDef = CheatVisitorsDef
+  Spacebar.CheatVisitorsDbl = CheatVisitorsDbl
+  Spacebar.CheatVisitorsDef = CheatVisitorsDef
+  MartianUniversity.CheatVisitorsDbl = CheatVisitorsDbl
+  MartianUniversity.CheatVisitorsDef = CheatVisitorsDef
+  Sanatorium.CheatVisitorsDbl = CheatVisitorsDbl
+  Sanatorium.CheatVisitorsDef = CheatVisitorsDef
+  School.CheatVisitorsDbl = CheatVisitorsDbl
+  School.CheatVisitorsDef = CheatVisitorsDef
   --
 --Double Drones/Shuttles
   function DroneHub:CheatDblMaxAllHubs()
@@ -363,81 +194,42 @@ function OnMsg.ClassesGenerate()
   function ShuttleHub:CheatDefMaxShuttles()
     self.max_shuttles = self.base_max_shuttles
   end
---Explorer
-  function ExplorerRover:CheatBattRefill()
-    self:ApplyBatteryChange(self.battery_max)
-  end
-  --
-  function ExplorerRover:CheatBattCapDbl()
+--CheatBattCapDbl
+  local function CheatBattCapDbl(self)
     self.battery_max = self.battery_max * 2
   end
-  function ExplorerRover:CheatBattCapDef()
+  local function CheatBattCapDef(self)
     self.battery_max = const.BaseRoverMaxBattery
   end
-  --
-  function ExplorerRover:CheatMoveSpeedDbl()
+  ExplorerRover.CheatBattCapDbl = CheatBattCapDbl
+  ExplorerRover.CheatBattCapDef = CheatBattCapDef
+  RCTransport.CheatBattCapDbl = CheatBattCapDbl
+  RCTransport.CheatBattCapDef = CheatBattCapDef
+  RCRover.CheatBattCapDbl = CheatBattCapDbl
+  RCRover.CheatBattCapDef = CheatBattCapDef
+  Drone.CheatBattCapDbl = CheatBattCapDbl
+  Drone.CheatBattCapDef = CheatBattCapDef
+--CheatMoveSpeedDbl
+  local function CheatMoveSpeedDbl(self)
     self:SetMoveSpeed(self:GetMoveSpeed() * 2)
   end
-  function ExplorerRover:CheatMoveSpeedDef()
+  local function CheatMoveSpeedDef(self)
     self:SetMoveSpeed(self.base_move_speed)
   end
---Transport
-  function RCTransport:CheatBattRefill()
+  ExplorerRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  ExplorerRover.CheatMoveSpeedDef = CheatMoveSpeedDef
+  RCTransport.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  RCTransport.CheatMoveSpeedDef = CheatMoveSpeedDef
+  RCRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  RCRover.CheatMoveSpeedDef = CheatMoveSpeedDef
+  Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
+  local function CheatBattRefill(self)
     self:ApplyBatteryChange(self.battery_max)
   end
-  --
-  function RCTransport:CheatBattCapDbl()
-    self.battery_max = self.battery_max * 2
-  end
-  function RCTransport:CheatBattCapDef()
-    self.battery_max = const.BaseRoverMaxBattery
-  end
-  --
-  function RCTransport:CheatMoveSpeedDbl()
-    self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-  end
-  function RCTransport:CheatMoveSpeedDef()
-    self:SetMoveSpeed(self.base_move_speed)
-  end
---Rover
-  --[[
-  function RCRover:CheatBattRefill()
-    self:ApplyBatteryChange(self.battery_max)
-  end
-  --]]
-  --
-  function RCRover:CheatBattCapDbl()
-    self.battery_max = self.battery_max * 2
-  end
-  function RCRover:CheatBattCapDef()
-    self.battery_max = const.BaseRoverMaxBattery
-  end
-  --
-  function RCRover:CheatMoveSpeedDbl()
-    self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-  end
-  function RCRover:CheatMoveSpeedDef()
-    self:SetMoveSpeed(self.base_move_speed)
-  end
---Drones
-  function Drone:CheatBattRefill()
-    self:ApplyBatteryChange(self.battery_max)
-  end
-  --
-  function Drone:CheatBattCapDbl()
-    self.battery_max = self.battery_max * 2
-  end
-  function Drone:CheatBattCapDef()
-    self.battery_max = self.base_battery_max
-  end
-  --
-  function Drone:CheatMoveSpeedDbl()
-    self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-  end
-  function Drone:CheatMoveSpeedDef()
-    self:SetMoveSpeed(self.base_move_speed)
-  end
-
+  ExplorerRover.CheatBattRefill = CheatBattRefill
+  RCTransport.CheatBattRefill = CheatBattRefill
+  Drone.CheatBattRefill = CheatBattRefill
 --misc
   function SecurityStation:CheatNegReneagadesDbl()
     self.negated_renegades = self.negated_renegades * 2
@@ -445,8 +237,6 @@ function OnMsg.ClassesGenerate()
   function SecurityStation:CheatNegReneagadesDef()
     self.negated_renegades = self.max_negated_renegades
   end
-
-
 
 end --OnMsg
 

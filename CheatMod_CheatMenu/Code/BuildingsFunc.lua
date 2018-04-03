@@ -1,57 +1,69 @@
-
---1=waste,2=other,3=uni, Bool true=add
-function ChoGGi.StorageDepotSet(Type,Bool,Name,Which)
-  if not UICity.labels.BuildingNoDomes then
-    if Type == 1 then
-      ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.CheatMenuSettings.StorageWasteDepot + (1000 * ChoGGi.Consts.ResourceScale)
-    elseif Type == 2 then
-      ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.CheatMenuSettings.StorageOtherDepot + (1000 * ChoGGi.Consts.ResourceScale)
-    elseif Type == 3 then
-      ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.CheatMenuSettings.StorageUniversalDepot + (1000 * ChoGGi.Consts.ResourceScale)
-    end
-
+function ChoGGi.StorageDepotWasteSet(Bool,Amount)
+  if Bool == true then
+    ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.CheatMenuSettings.StorageWasteDepot + (1000 * ChoGGi.Consts.ResourceScale)
   else
+    ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot
+  end
 
+  if UICity.labels.Storages then
+    local amount
     for _,building in ipairs(UICity.labels.Storages or empty_table) do
+      if IsKindOf(building,"WasteRockDumpSite") then
+        --amount = building:GetStoredAmount()
+        building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
+        --building:SetStoredAmount(amount)
+        --visual update
+        building:SetCountFromRequest(amount)
+      end
+    end
+  end
 
-      if IsKindOf(building,"WasteRockDumpSite") and Type == 1 then
-        if Bool == true then
-          building.max_amount_WasteRock = building.max_amount_WasteRock + (1000 * ChoGGi.Consts.ResourceScale)
-          ChoGGi.CheatMenuSettings.StorageWasteDepot = building.max_amount_WasteRock
-        else
-          building.max_amount_WasteRock = ChoGGi.Consts.StorageWasteDepot
-          ChoGGi.CheatMenuSettings.StorageWasteDepot = ChoGGi.Consts.StorageWasteDepot
-        end
-
-      elseif IsKindOf(building,"UniversalStorageDepot") and Type == 2 then
-
-        if building.encyclopedia_id == "UniversalStorageDepot" then
-        --uni storage
-          if Bool == true then
-            building.max_storage_per_resource = building.max_storage_per_resource + (1000 * ChoGGi.Consts.ResourceScale)
-            ChoGGi.CheatMenuSettings.StorageUniversalDepot = building.max_storage_per_resource
-          else
-            building.max_storage_per_resource = ChoGGi.Consts.StorageUniversalDepot
-            ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot
-          end
-
-        else --Other storage
-          if Bool == true then
-            building.max_storage_per_resource = building.max_storage_per_resource + (1000 * ChoGGi.Consts.ResourceScale)
-            ChoGGi.CheatMenuSettings.StorageOtherDepot = building.max_storage_per_resource
-          else
-            building.max_storage_per_resource = ChoGGi.Consts.StorageOtherDepot
-            ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot
-          end
-        end
-
-      end --if
-
-    end --for
-
-  end --if
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(Name .. " + " .. Which,
+  ChoGGi.MsgPopup("Waste + " .. Amount,
+    "Storage","UI/Icons/Sections/basic.tga"
+  )
+end
+
+function ChoGGi.StorageDepotOtherSet(Bool,Amount)
+  if Bool == true then
+    ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.CheatMenuSettings.StorageOtherDepot + (1000 * ChoGGi.Consts.ResourceScale)
+  else
+    ChoGGi.CheatMenuSettings.StorageOtherDepot = ChoGGi.Consts.StorageOtherDepot
+  end
+
+  if UICity.labels.Storages then
+    for _,building in ipairs(UICity.labels.Storages or empty_table) do
+      if IsKindOf(building,"UniversalStorageDepot") and building.encyclopedia_id ~= "UniversalStorageDepot" then
+        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
+        ChoGGi.UpdateResourceAmount(building,ChoGGi.CheatMenuSettings.StorageOtherDepot)
+      end
+    end
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Other + " .. Amount,
+    "Storage","UI/Icons/Sections/basic.tga"
+  )
+end
+
+function ChoGGi.StorageDepotUniversalSet(Bool,Amount)
+  if Bool == true then
+    ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.CheatMenuSettings.StorageUniversalDepot + (1000 * ChoGGi.Consts.ResourceScale)
+  else
+    ChoGGi.CheatMenuSettings.StorageUniversalDepot = ChoGGi.Consts.StorageUniversalDepot
+  end
+
+  if UICity.labels.Storages then
+    for _,building in ipairs(UICity.labels.Storages or empty_table) do
+      if building.encyclopedia_id == "UniversalStorageDepot" then
+        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
+        ChoGGi.UpdateResourceAmount(building,ChoGGi.CheatMenuSettings.StorageUniversalDepot)
+      end
+    end
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Universal + " .. Amount,
     "Storage","UI/Icons/Sections/basic.tga"
   )
 end

@@ -77,6 +77,23 @@ print("\n")
   })
 end
 
+--update storage depot space
+function ChoGGi.UpdateResourceAmount(building,new_size)
+  local storable_resources = building.storable_resources
+  local resource_count = #storable_resources
+  local orig_amount
+  for i = 1, resource_count do
+    local resource_name = storable_resources[i]
+    if building.supply[resource_name] then
+      orig_amount = building.supply[resource_name]:GetActualAmount()
+      building.supply[resource_name]:SetAmount(orig_amount)
+      building.demand[resource_name]:SetAmount(new_size)
+      building.stockpiled_amount[resource_name] = orig_amount
+      building:SetCount(orig_amount, resource_name)
+    end
+  end
+end
+
 --used to add or remove traits from schools/sanitariums
 function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
   local Buildings = UICity.labels.BuildingNoDomes
