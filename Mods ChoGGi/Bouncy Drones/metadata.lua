@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"tags", "Misc",
 	"id", "ChoGGi_BouncyDrones",
 	"author", "ChoGGi",
-	"version", 1,
+	"version", 0.1,
   "image","BouncyDrones.jpg",
 	"code", {
 		"Script.lua",
