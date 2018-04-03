@@ -262,16 +262,15 @@ end
 
 function ChoGGi.FullyAutomatedBuildings_Toggle()
   ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsSetting = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsSetting
-    for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-      if Bool == true and building.base_max_workers then
-        building.max_workers = 0
-        building.automation = 1
-        building.auto_performance = 150
-      else
-        building.max_workers = nil
-        building.automation = nil
-        building.auto_performance = nil
-      end
+  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+    if Bool == true and building.base_max_workers then
+      building.max_workers = 0
+      building.automation = 1
+      building.auto_performance = 150
+    else
+      building.max_workers = nil
+      building.automation = nil
+      building.auto_performance = nil
     end
   end
 
