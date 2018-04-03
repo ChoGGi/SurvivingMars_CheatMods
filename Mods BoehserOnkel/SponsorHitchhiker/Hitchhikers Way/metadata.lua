@@ -4,12 +4,14 @@ return PlaceObj('ModDef', {
 	'tags', "",
 	'id', "oG6ipfN",
 	'author', "BoehserOnkel",
-	'version', 45,
-	'lua_revision', 227831,
+	'version', 76,
+	'lua_revision', 228184,
 	'code', {
 		"Code/Script.lua",
 		"Code/Script2.lua",
 		"Code/Script3.lua",
+		"Code/Script4.lua",
+		"Code/Script5.lua",
 	},
-	'saved', 1522165838,
+	'saved', 1522512402,
 })
