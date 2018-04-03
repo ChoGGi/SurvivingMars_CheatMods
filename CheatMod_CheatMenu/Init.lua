@@ -1,5 +1,8 @@
+--easier access to SelectedObj from console
 GlobalVar("s", false)
--- This must return true for most cheats to function
+--stops log errors in editor mode
+GlobalVar("g_revision_map", false)
+-- This must return true for most cheats to function (built-in ones)
 function CheatsEnabled()
   return true
 end
@@ -80,6 +83,22 @@ dofolder_files("CommonLua/Editor")
 dofolder_files("Lua/editor")
 dofolder_folders("Lua/editor")
 --]]
+PlaceObjectConfig = {}
+dlgEditorPlaceObjectsDlg = false
+editor.PlaceObjectInited = false
+l_SortCache = setmetatable({}, weak_keys_meta)
+ObjectPaletteFilters = {
+  {text = "all", item = nil}
+}
+ObjectPaletteTempCategories = false
+ObjectPaletteFilterCategoryData = false
+ObjectPaletteLastSearchString = false
+dofile("CommonLua/UI/uiEditorInterface.designer.lua")
+dofile("CommonLua/UI/uiEditorInterface.lua")
+dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.designer.lua")
+dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.lua")
+dofile("CommonLua/UI/uiEditorStatusbar.designer.lua")
+dofile("CommonLua/UI/uiEditorStatusbar.lua")
 
 --get saved settings for this mod
 dofile(ChoGGi.ModPath .. "Settings.lua")
@@ -96,6 +115,8 @@ dofile(ChoGGi.ModPath .. "FuncDebug.lua")
 dofile(ChoGGi.ModPath .. "FuncGame.lua")
 --load up function overrides
 dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
+--load all my other files
+dofolder_files(ChoGGi.ModPath .. "Code")
 
 --people will likely just copy new mod over old, and I moved stuff around
 if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
@@ -106,27 +127,12 @@ if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
   ChoGGi.Init_WriteSettings = 1
 end
 
---menus/menus funcs
-dofolder_files(ChoGGi.ModPath .. "Code")
-
---do they do anything, or do they have to be set before modload?
-if ChoGGi.CheatMenuSettings.HighQualitySettings then
-  hr.EnableScreenSpaceReflection = 1
-  hr.AutoFadeDistanceScale = 10000
-  hr.FadeCullRadius = 5000
-  hr.D3D11ParallelCompilation = 1
-  config.MapSlotChunksMem = 16384
-  config.ObjectPoolMem = 256000
-  config.ParticlesMaxBaseColorMapSize = 4096
-  config.ParticlesMaxNormalMapSize = 1024
-  config.MinimapScreenshotSize = 4096
-end
-
 --if writelogs option
 if ChoGGi.CheatMenuSettings.WriteLogs then
   AddConsoleLog("ChoGGi: Writing Debug/Console Logs to AppData/logs",true)
   ChoGGi.WriteLogsEnable()
 end
+
 --first time run info
 if not ChoGGi.CheatMenuSettings.FirstRun then
   AddConsoleLog("\nCheatMenu Active:\nF2 to toggle menu\nDebug>Console History to toggle console history.\n\n\n",true)
@@ -139,8 +145,8 @@ if ChoGGi.Init_WriteSettings then
   ChoGGi.WriteSettings()
 end
 
---checking if all files loaded
-if ChoGGi.ChoGGiTest and #ChoGGi.FilesCount < 4+18 then
+--tell me if all files loaded
+if ChoGGi.ChoGGiTest and #ChoGGi.FilesCount < 4+19 then
   for _,Value in ipairs(ChoGGi.FilesCount) do
     AddConsoleLog(Value,true)
   end

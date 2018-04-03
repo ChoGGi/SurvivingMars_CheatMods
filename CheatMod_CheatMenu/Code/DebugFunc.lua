@@ -1,3 +1,33 @@
+function ChoGGi.HigherShadowDist_Toggle()
+  ChoGGi.CheatMenuSettings.HigherShadowDist = not ChoGGi.CheatMenuSettings.HigherShadowDist
+  if ChoGGi.CheatMenuSettings.HigherShadowDist then
+    hr.ShadowRangeOverride = 1000000
+    hr.ShadowFadeOutRangePercent = 0
+  else
+    hr.ShadowRangeOverride = 0
+    hr.ShadowFadeOutRangePercent = 30
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherShadowDist),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
+function ChoGGi.HigherRenderDist_Toggle()
+  ChoGGi.CheatMenuSettings.HigherRenderDist = not ChoGGi.CheatMenuSettings.HigherRenderDist
+  if ChoGGi.CheatMenuSettings.HigherRenderDist then
+    hr.LODDistanceModifier = 600
+  else
+    hr.LODDistanceModifier = 120
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
 function ChoGGi.WriteLogs_Toggle()
   ChoGGi.CheatMenuSettings.WriteLogs = not ChoGGi.CheatMenuSettings.WriteLogs
   if ChoGGi.CheatMenuSettings.WriteLogs then
@@ -19,13 +49,45 @@ function ChoGGi.DumpCurrentObj()
 end
 
 function ChoGGi.Editor_Toggle()
+  --keep menu opened if visible
+  local showmenu
+  if dlgUAMenu then
+    showmenu = true
+  end
+
   if IsEditorActive() then
     EditorState(0)
+    table.restore(hr, "Editor")
+    editor.SavedDynRes = false
     XShortcutsSetMode("Game")
-    --XShortcutsSetMode("Editor")
   else
-    EditorState(1)
-    XShortcutsSetMode("Game")
+    table.change(hr, "Editor", {
+      ResolutionPercent = 100,
+      SceneWidth = 0,
+      SceneHeight = 0,
+      DynResTargetFps = 0
+    })
+    XShortcutsSetMode("Editor", function()
+      EditorDeactivate()
+    end)
+    EditorState(1,1)
+    GetEditorInterface():Show(true)
+
+      --GetToolbar():SetVisible(true)
+      editor.OldCameraType = {
+        GetCamera()
+      }
+      editor.CameraWasLocked = camera.IsLocked(1)
+      camera.Unlock(1)
+
+      GetEditorInterface():SetVisible(true)
+      GetEditorInterface():ShowSidebar(true)
+      GetEditorInterface().dlgEditorStatusbar:SetVisible(true)
+      --GetEditorInterface():SetMinimapVisible(true)
+      --CreateEditorPlaceObjectsDlg()
+    if showmenu then
+      UAMenu.ToggleOpen()
+    end
   end
 end
 
