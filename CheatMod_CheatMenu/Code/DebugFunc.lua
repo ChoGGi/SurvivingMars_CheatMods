@@ -73,18 +73,18 @@ function ChoGGi.Editor_Toggle()
     EditorState(1,1)
     GetEditorInterface():Show(true)
 
-      --GetToolbar():SetVisible(true)
-      editor.OldCameraType = {
-        GetCamera()
-      }
-      editor.CameraWasLocked = camera.IsLocked(1)
-      camera.Unlock(1)
+    --GetToolbar():SetVisible(true)
+    editor.OldCameraType = {
+      GetCamera()
+    }
+    editor.CameraWasLocked = camera.IsLocked(1)
+    camera.Unlock(1)
 
-      GetEditorInterface():SetVisible(true)
-      GetEditorInterface():ShowSidebar(true)
-      GetEditorInterface().dlgEditorStatusbar:SetVisible(true)
-      --GetEditorInterface():SetMinimapVisible(true)
-      --CreateEditorPlaceObjectsDlg()
+    GetEditorInterface():SetVisible(true)
+    GetEditorInterface():ShowSidebar(true)
+    GetEditorInterface().dlgEditorStatusbar:SetVisible(true)
+    --GetEditorInterface():SetMinimapVisible(true)
+    --CreateEditorPlaceObjectsDlg()
     if showmenu then
       UAMenu.ToggleOpen()
     end

@@ -261,9 +261,10 @@ function ChoGGi.VisitorCapacitySet(Bool)
 end
 
 function ChoGGi.FullyAutomatedBuildings_Toggle()
-  ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsSetting = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsSetting
+  ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+
   for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-    if Bool == true and building.base_max_workers then
+    if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
       building.max_workers = 0
       building.automation = 1
       building.auto_performance = 150
@@ -275,7 +276,7 @@ function ChoGGi.FullyAutomatedBuildings_Toggle()
   end
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsSetting) .. " I presume the PM's in favour of the scheme because it'll reduce unemployment.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings) .. " I presume the PM's in favour of the scheme because it'll reduce unemployment.",
    "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end

@@ -19,7 +19,7 @@ hr.TreeWind = 0
 
 if ChoGGi.CheatMenuSettings.HigherRenderDist then
   --lot of lag for some small rocks in distance
-  --hr.DistanceModifier = 230 --default 130
+  --hr.DistanceModifier = 260 --default 130
   --hr.AutoFadeDistanceScale = 2200 --def 2200
   --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
   if type(ChoGGi.CheatMenuSettings.HigherRenderDist) == "number" then
