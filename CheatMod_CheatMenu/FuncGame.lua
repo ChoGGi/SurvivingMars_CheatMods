@@ -452,6 +452,6 @@ function ChoGGi.SetGravity(Bool,Who)
   )
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"FuncGame")
 end

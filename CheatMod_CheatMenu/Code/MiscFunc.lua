@@ -379,6 +379,6 @@ function ChoGGi.TriboelectricScrubberRadius(Bool)
   )
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"MiscFunc")
 end

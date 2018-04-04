@@ -146,9 +146,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "[102]Debug/Examine Current Obj",
-  function()
-    OpenExamine(SelectedObj)
-  end,
+  ChoGGi.ObjExaminer,
   "F4",
   "Opens the object examiner",
   "SelectByClassName.tga"
@@ -156,9 +154,7 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "[102]Debug/Dump Current Obj",
-  function()
-    ChoGGi.DumpObject(SelectedObj)
-  end,
+  ChoGGi.DumpCurrentObj,
   "F5",
   "Dumps info for current object to AppData/DumpText.txt",
   "SaveMapEntityList.tga"
@@ -327,6 +323,6 @@ ChoGGi.AddAction(
 )
 --]]
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"DebugMenu")
 end

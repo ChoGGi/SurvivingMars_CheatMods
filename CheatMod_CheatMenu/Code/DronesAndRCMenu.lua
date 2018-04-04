@@ -213,6 +213,6 @@ ChoGGi.AddAction(
   "ToggleTerrainHeight.tga"
 )
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"DronesAndRCMenu")
 end

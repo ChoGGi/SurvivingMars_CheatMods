@@ -40,6 +40,6 @@ ChoGGi.AddAction(nil,
 ChoGGi.AddAction(nil,UAMenu.ToggleOpen,"F2")
 ChoGGi.AddAction(nil,function() quit("restart") end,"Ctrl-Shift-Alt-Numpad Enter")
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"Keys")
 end

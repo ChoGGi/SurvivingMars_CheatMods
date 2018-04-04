@@ -552,6 +552,6 @@ function ChoGGi.Building_instant_build_Toggle()
   )
 end
 
-if ChoGGi.ChoGGiTest then
-  table.insert(ChoGGi.FilesCount,"MenuBuildingFunc")
+if ChoGGi.Testing then
+  table.insert(ChoGGi.FilesCount,"BuildingsFunc")
 end

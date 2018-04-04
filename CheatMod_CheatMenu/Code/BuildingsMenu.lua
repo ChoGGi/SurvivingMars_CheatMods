@@ -439,6 +439,6 @@ ChoGGi.AddAction(
   "toggle_post.tga"
 )
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"BuildingsMenu")
 end

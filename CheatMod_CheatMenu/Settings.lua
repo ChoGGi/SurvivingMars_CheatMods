@@ -293,6 +293,6 @@ function ChoGGi.ReadSettings()
   ChoGGi.SetConstsToSaved()
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"Settings")
 end

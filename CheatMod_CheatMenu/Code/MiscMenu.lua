@@ -383,6 +383,6 @@ ChoGGi.AddAction(
 )
 --]]
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"MiscMenu")
 end

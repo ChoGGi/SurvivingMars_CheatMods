@@ -1,4 +1,4 @@
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   --uses slightly more vid memory (it seems 1 means toggle off)
   hr.TR_ToggleTextureCompression = 1
 
@@ -36,6 +36,6 @@ if ChoGGi.CheatMenuSettings.HigherShadowDist then
   hr.ShadowFadeOutRangePercent = 0 --def 30
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"RenderSettings")
 end

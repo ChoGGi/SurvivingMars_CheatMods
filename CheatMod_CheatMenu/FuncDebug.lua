@@ -8,6 +8,12 @@ print(socket._VERSION)
 --see where the function comes from
 debug.getinfo(ChoGGi.RemoveOldFiles)
 
+--zoom in on obj
+local obj = SelectedObj
+local center, radius = obj:GetBSphere()
+local min, max = cameraRTS.GetZoomLimits()
+ViewObjectMars(obj, nil, nil, Clamp(radius / 2, min, max))
+
 SelectedObj:__toluacode()
 
 dump(TupleToLuaCode(UserActions.Actions["UpsampledScreenshot"]))
@@ -42,18 +48,11 @@ end
 function ChoGGi.WriteLogsEnable()
   --remove old logs
   local logs = "AppData/logs/"
-  --AsyncFileDelete(logs .. "ConsoleLog.previous.log")
-  --AsyncFileDelete(logs .. "DebugLog.previous.log")
   AsyncFileDelete(logs .. "ConsoleLog.log")
   AsyncFileDelete(logs .. "DebugLog.log")
   AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
   AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
---[[
-  os.remove(logs .. "ConsoleLog.previous.log")
-  os.remove(logs .. "DebugLog.previous.log")
-  os.rename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
-  os.rename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
---]]
+
   --so we can pass the msgs on
   ChoGGi.OrigFunc.printf = printf
   ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
@@ -271,6 +270,6 @@ do
   end
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"FuncDebug")
 end

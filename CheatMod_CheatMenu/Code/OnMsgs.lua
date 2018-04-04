@@ -80,7 +80,6 @@ function OnMsg.ClassesBuilt()
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
   end
-
   --build "Cheats/Start Mystery" menu
   --MysteryBase = { AIUprisingMystery, BlackCubeMystery, DiggersMystery, DreamMystery, MarsgateMystery, MirrorSphereMystery, TheMarsBug, UnitedEarthMystery, WorldWar3 }
   --type(g_Classes.DreamMystery.scenario_name)
@@ -123,8 +122,6 @@ end --OnMsg
 
 --saved game is loaded
 function OnMsg.LoadGame(metadata)
-
-
 end --OnMsg
 
 --fired as late as we can
@@ -268,19 +265,25 @@ function OnMsg.LoadingScreenPreClose()
   end)
 
   --always show on my computer
-	if ChoGGi.ChoGGiTest then
+	if ChoGGi.Testing then
     if not dlgUAMenu then
       UAMenu.ToggleOpen()
     end
     --ShowConsole(true)
   end
 
-  --toggle these so we don't have crazy scroll speed
-  --[[
-  cameraFly.Activate(1)
-  cameraRTS.Activate(1)
-  --]]
+  --set zoom/border scrolling
   ChoGGi.SetCameraSettings()
+
+  --people will likely just copy new mod over old, and I moved stuff around
+  if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
+    --clean up
+    ChoGGi.RemoveOldFiles()
+    --update saved version
+    ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
+    ChoGGi.WriteSettings()
+  end
+
 end --OnMsg
 
 --if instant_build is on
@@ -418,6 +421,6 @@ function OnMsg.ApplicationQuit()
 	DebugPrint("INFO_ApplicationQuit\n")
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"OnMsgs")
 end

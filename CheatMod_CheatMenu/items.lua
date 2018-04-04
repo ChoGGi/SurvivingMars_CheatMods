@@ -1,6 +1,6 @@
 return {
-PlaceObj('ModItemCode', {
-	'name', "CheatMod_CheatMenu",
-	'FileName', "Init.lua"
-}),
+  PlaceObj('ModItemCode', {
+    'name', "ChoGGi_Init",
+    'FileName', "Init.lua"
+  }),
 }

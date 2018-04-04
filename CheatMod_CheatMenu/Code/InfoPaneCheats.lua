@@ -242,6 +242,6 @@ function OnMsg.ClassesGenerate()
 
 end --OnMsg
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"InfoPaneCheats")
 end

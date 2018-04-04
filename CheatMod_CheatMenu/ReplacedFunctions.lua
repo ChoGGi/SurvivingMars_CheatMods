@@ -243,7 +243,7 @@ IGIModeClasses = {
     ChoGGi.OrigFunc.ConsoleShow(bShow)
     local c = dlgConsole
     --set console how I like it
-    if ChoGGi.ChoGGiTest then
+    if ChoGGi.Testing then
       local l = dlgConsoleLog
       local size = UIL.GetSafeArea()
       local w = size:sizex() / 3
@@ -300,6 +300,7 @@ dumpl(classdefs)
     self:SetSize(point(372, 459))
     self:SetZOrder(10000)
     local win
+
     win = StaticText:new(self)
     win:SetId("idText")
     win:SetPos(point(283, 306))
@@ -309,6 +310,7 @@ dumpl(classdefs)
     win:SetBackgroundColor(RGBA(0, 0, 0, 16))
     win:SetFontStyle("Editor12Bold")
     win:SetScrollBar(true)
+
     win = StaticText:new(self)
     win:SetId("idMenu")
     win:SetPos(point(283, 217))
@@ -316,6 +318,7 @@ dumpl(classdefs)
     win:SetHSizing("Resize")
     win:SetBackgroundColor(RGBA(0, 0, 0, 16))
     win:SetFontStyle("Editor12Bold")
+
     win = SingleLineEdit:new(self)
     win:SetId("idFilter")
     win:SetPos(point(283, 275))
@@ -323,6 +326,7 @@ dumpl(classdefs)
     win:SetHSizing("Resize")
     win:SetBackgroundColor(RGBA(0, 0, 0, 16))
     win:SetFontStyle("Editor12Bold")
+
     win = Button:new(self)
     win:SetId("idClose")
     win:SetPos(point(597, 191))
@@ -330,6 +334,7 @@ dumpl(classdefs)
     win:SetHSizing("AnchorToRight")
     win:SetText(Untranslated("Close"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+
     win = Button:new(self)
     win:SetId("idNext")
     win:SetPos(point(592, 275))
@@ -339,11 +344,18 @@ dumpl(classdefs)
 
     win = Button:new(self)
     win:SetId("idDump")
-    win:SetPos(point(300, 275))
+    win:SetPos(point(290, 275))
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Dump"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-
+--[[
+    win = Button:new(self)
+    win:SetId("idEdit")
+    win:SetPos(point(350, 275))
+    win:SetSize(point(53, 26))
+    win:SetText(Untranslated("Edit"))
+    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+--]]
     self:InitChildrenSizing()
   end
 
@@ -381,6 +393,11 @@ dumpl(classdefs)
     function self.idDump.OnButtonPressed()
       self.Dump(self:totextex(self.obj) .. "\n")
     end
+--[[
+    function self.idEdit.OnButtonPressed()
+      OpenManipulator(self.obj,self)
+    end
+--]]
     self.idFilter:AddInterpolation({
       type = const.intAlpha,
       startValue = 255,
@@ -404,6 +421,6 @@ dumpl(classdefs)
 
 end --OnMsg
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"ReplacedFunctions")
 end

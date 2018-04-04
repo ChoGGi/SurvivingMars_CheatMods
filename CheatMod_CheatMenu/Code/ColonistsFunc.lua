@@ -315,6 +315,6 @@ function ChoGGi.AllNegativeTraits_Toggle(Bool)
   )
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"ColonistsFunc")
 end

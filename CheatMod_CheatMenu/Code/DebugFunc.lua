@@ -34,17 +34,30 @@ function ChoGGi.WriteLogs_Toggle()
     ChoGGi.WriteLogsEnable()
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Write Debug Logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
-   "Research","UI/Icons/Notifications/research.tga"
+  ChoGGi.MsgPopup("Write Debug/Console Logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
+   "Logging","UI/Icons/Anomaly_Breakthrough.tga"
   )
+end
+
+function ChoGGi.ObjExaminer()
+  local obj = SelectedObj or SelectionMouseObj()
+  --OpenExamine(SelectedObj)
+  if obj == nil then
+    return ClearShowMe()
+  end
+  local ex = Examine:new()
+  ex:SetPos(terminal.GetMousePos())
+  ex:SetObj(obj)
 end
 
 function ChoGGi.DumpCurrentObj()
   pcall(function()
+    local obj = SelectedObj or SelectionMouseObj()
     Examine.onclick_handles = {}
-    Examine.obj = SelectedObj
-    local tempTable = Examine:totextex(SelectedObj)
-    ChoGGi.Dump(tempTable .. "\n\n","a","DumpedHtml","html")
+    Examine.obj = obj
+    local tempTable = Examine:totextex(obj)
+    tempTable = tempTable:gsub("<[/%s%a%d]*>","")
+    ChoGGi.Dump(tempTable .. "\n\n","a","DumpedExamine","lua")
   end)
 end
 
@@ -121,7 +134,6 @@ function ChoGGi.AsteroidBombardment(Num)
   end
 end
 
-
 function ChoGGi.DeleteSelectedObject()
   pcall(function()
     SelectedObj.can_demolish = true
@@ -180,6 +192,6 @@ function ChoGGi.ChangeMap()
   end
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"DebugFunc")
 end

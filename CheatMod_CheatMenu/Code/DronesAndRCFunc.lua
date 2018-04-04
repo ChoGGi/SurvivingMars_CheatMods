@@ -151,6 +151,6 @@ function ChoGGi.RCTransportStorage(Bool,Which)
   )
 end
 
-if ChoGGi.ChoGGiTest then
+if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"DronesAndRCFunc")
 end
