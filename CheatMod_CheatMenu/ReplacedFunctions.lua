@@ -385,14 +385,14 @@ dumpl(classdefs)
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Dump"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-
+--[[
     win = Button:new(self)
     win:SetId("idEdit")
     win:SetPos(point(350, 275))
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Edit"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-
+--]]
     self:InitChildrenSizing()
   end
 
@@ -430,11 +430,11 @@ dumpl(classdefs)
     function self.idDump.OnButtonPressed()
       self.Dump(self:totextex(self.obj) .. "\n")
     end
-
+--[[
     function self.idEdit.OnButtonPressed()
       OpenManipulator(self.obj,self)
     end
-
+--]]
     self.idFilter:AddInterpolation({
       type = const.intAlpha,
       startValue = 255,
