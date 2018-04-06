@@ -2,11 +2,17 @@
 GlobalVar("s", false)
 --stops log errors in editor mode
 GlobalVar("g_revision_map", false)
+--fucking pre-orders
+if not g_TrailblazerSkins then
+  g_TrailblazerSkins = {}
+end
 
 -- This must return true for most cheats to function (built-in ones)
 function CheatsEnabled()
   return true
 end
+--needed to make the console appear when not in ged mod editor more
+ConsoleEnabled = true
 
 --keep my mod contained in
 ChoGGi = {
@@ -35,10 +41,10 @@ AddCheatsUA()
 dofile("Lua/Buildings/Building.lua")
 --Toggle Hex Build Grid Visibility
 --dofile("Lua/hex.lua")
---ConsoleExec
-dofile("CommonLua/console.lua")
+--ConsoleExec --re-added back in with Spirit update
+--dofile("CommonLua/console.lua")
 --console log
-dofolder("CommonLua/UI/Dev")
+--dofolder("CommonLua/UI/Dev")
 --[[
 LGS = {}
 --load up the editors
@@ -179,10 +185,3 @@ if ChoGGi.Testing then
   end
 
 end --Testing
-
-    table.insert(ChoGGi.StartupMsgs,tostring(ChoGGi._VERSION))
-
---print startup msgs to console log
-for i = 1, #ChoGGi.StartupMsgs do
-  AddConsoleLog(ChoGGi.StartupMsgs[i],true)
-end

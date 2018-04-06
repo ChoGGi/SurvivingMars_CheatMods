@@ -1,3 +1,4 @@
+--[[
 --for redirecting print/ConsolePrint to consolelog
 function ChoGGi.ReplacedFunc.print(...)
   if ... then
@@ -18,22 +19,12 @@ ChoGGi.OrigFunc.print = print
 ChoGGi.OrigFunc.ConsolePrint = ConsolePrint
 print = ChoGGi.ReplacedFunc.print
 ConsolePrint = ChoGGi.ReplacedFunc.ConsolePrint
+--]]
 
 --make some easy to type names
 function console(...)
   ConsolePrint(tostring(...))
 end
-
-sm = SelectionMouseObj
-st = GetTerrainCursorObjSel
-cur = GetTerrainCursorObjSel
-sp = GetPreciseCursorObj
-sc = GetTerrainCursor
---[[
-Selection
-SelectionAdd
-SelectionRemove
---]]
 function dumplua(...)
   ChoGGi.Dump(TupleToLuaCode(...))
 end
@@ -53,6 +44,50 @@ alert = ChoGGi.MsgPopup
 exit = quit
 reboot = restart
 trans = _InternalTranslate
+con = console
+sm = SelectionMouseObj
+st = GetTerrainCursorObjSel
+cur = GetTerrainCursorObjSel
+sp = GetPreciseCursorObj
+sc = GetTerrainCursor
+
+--some dickhead removed this from the Spirit update...
+function Console:AddPromptText(text)
+  self:Show(true)
+  self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
+  self.idEdit:SetCursorPos(#text)
+end
+function AddConsolePrompt(text)
+  if dlgConsole then
+    dlgConsole:AddPromptText(text)
+  end
+end
+
+--make it so it goes to the end of the text when you use history
+function Console:HistoryDown()
+  if self.history_queue_idx <= 1 then
+    self.history_queue_idx = #self.history_queue
+  else
+    self.history_queue_idx = self.history_queue_idx - 1
+  end
+  --changed:
+  local text = self.history_queue[self.history_queue_idx] or ""
+  self.idEdit:SetText(text)
+  --added:
+  self.idEdit:SetCursorPos(#text)
+end
+function Console:HistoryUp()
+  if self.history_queue_idx + 1 <= #self.history_queue then
+    self.history_queue_idx = self.history_queue_idx + 1
+  else
+    self.history_queue_idx = 1
+  end
+  --changed:
+  local text = self.history_queue[self.history_queue_idx] or ""
+  self.idEdit:SetText(text)
+  --added:
+  self.idEdit:SetCursorPos(#text)
+end
 
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
@@ -108,15 +143,37 @@ function OnMsg.ClassesBuilt()
   --replace teh OrigFuncs
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
 
+--[[
+CityConstruction[UICity] = ConstructionController:new()
+CityGridConstruction[UICity] = GridConstructionController:new()
+CityGridSwitchConstruction[UICity] = GridSwitchConstructionController:new()
+CityTunnelConstruction[UICity] = TunnelConstructionController:new()
+CityUnitController[UICity] = UnitController:new()
+IGIModeClasses = {
+construction = ConstructionModeDialog
+demolish = DemolishModeDialog
+electricity_grid = GridConstructionDialog
+electricity_switch = GridSwitchConstructionDialog
+hex_painter = HexPainterModeDialog
+life_support_grid = GridConstructionDialogPipes
+lifesupport_switch = GridSwitchConstructionDialogPipes
+overview = OverviewModeDialog
+selection = SelectionModeDialog
+tunnel_construction = TunnelConstructionDialog
+unit_direction_internal_use_only = UnitDirectionModeDialog
+}
+--]]
+
     function ConstructionController:UpdateConstructionStatuses(dont_finalize)
       pcall(function()
         ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,dont_finalize)
       end)
       --remove errors we want to remove
+
       local status = self.construction_statuses
       if #status > 0 then
         for i = 1, #status do
-          if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
+          if pcall(ChoGGi.ConstructionErrors[_InternalTranslate(status[i].short)]) then
             status[i] = nil
           end
         end
@@ -129,7 +186,7 @@ function OnMsg.ClassesBuilt()
       local status = self.construction_statuses
       if #status > 0 then
         for i = 1, #status do
-          if ChoGGi.ConstructionSkipErrors[_InternalTranslate(status[i].short)] then
+          if pcall(ChoGGi.ConstructionErrors[_InternalTranslate(status[i].short)]) then
             status[i] = nil
           end
         end
@@ -148,6 +205,7 @@ function OnMsg.ClassesBuilt()
       if #self.construction_statuses > 0 then
         for i = 1, #self.construction_statuses do
           local st = self.construction_statuses[i]
+          -- (dev check)
           if st and st.short then
             text = T({878,"<col><short></color>",col = ConstructionStatusColors[st.type].color_tag_short,st})
             break
@@ -159,12 +217,12 @@ function OnMsg.ClassesBuilt()
       ctrl:SetMargins(box(-ctrl.text_width / 2, 30, 0, 0))
       return text, ctrl
     end --UpdateShortConstructionStatus
-
     function ConstructionController:Getconstruction_statuses_property()
       local items = {}
       if #self.construction_statuses > 0 then
         for i = 1, Min(#self.construction_statuses, 2) do
           local st = self.construction_statuses[i]
+          -- (dev check)
           if st and st.text then
             items[#items + 1] = T({879,"<col><text></color>",col = ConstructionStatusColors[st.type].color_tag,text = st.text})
           end
@@ -193,6 +251,7 @@ function OnMsg.ClassesBuilt()
   --was giving a nil error in log, I assume devs'll fix it one day (changed amount to amount or 0)
   function RequiresMaintenance:AddDust(amount)
     if self:IsKindOf("Building") then
+      --(dev check)
       amount = MulDivRound(amount or 0, g_Consts.BuildingDustModifier, 100)
     end
     if self.accumulate_dust then
@@ -200,28 +259,6 @@ function OnMsg.ClassesBuilt()
     end
   end
 end --OnMsg
-
---[[
-  CityConstruction[UICity] = ConstructionController:new()
-  CityGridConstruction[UICity] = GridConstructionController:new()
-  CityGridSwitchConstruction[UICity] = GridSwitchConstructionController:new()
-  CityTunnelConstruction[UICity] = TunnelConstructionController:new()
-  CityUnitController[UICity] = UnitController:new()
-IGIModeClasses = {
-    construction = ConstructionModeDialog
-    demolish = DemolishModeDialog
-    electricity_grid = GridConstructionDialog
-    electricity_switch = GridSwitchConstructionDialog
-    hex_painter = HexPainterModeDialog
-    life_support_grid = GridConstructionDialogPipes
-    lifesupport_switch = GridSwitchConstructionDialogPipes
-    overview = OverviewModeDialog
-    selection = SelectionModeDialog
-    tunnel_construction = TunnelConstructionDialog
-    unit_direction_internal_use_only = UnitDirectionModeDialog
-}
---]]
-
 
 --[[
   XMultiLineEdit < make console multilined?
@@ -348,14 +385,14 @@ dumpl(classdefs)
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Dump"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
---[[
+
     win = Button:new(self)
     win:SetId("idEdit")
     win:SetPos(point(350, 275))
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Edit"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
---]]
+
     self:InitChildrenSizing()
   end
 
@@ -393,11 +430,11 @@ dumpl(classdefs)
     function self.idDump.OnButtonPressed()
       self.Dump(self:totextex(self.obj) .. "\n")
     end
---[[
+
     function self.idEdit.OnButtonPressed()
       OpenManipulator(self.obj,self)
     end
---]]
+
     self.idFilter:AddInterpolation({
       type = const.intAlpha,
       startValue = 255,

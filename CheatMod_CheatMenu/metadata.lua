@@ -6,11 +6,11 @@ return PlaceObj("ModDef", {
     .. "\nPress F4 for info about selected object (ex(Obj) for cmdline). Enter or Tilde for console."
     .. "\nFor more info see: https://github.com/ChoGGi/SurvivingMars_CheatMods (or browse the lua files)",
   "tags", "Cheats",
-  "image","CheatMenu.jpg",
+  "image","CheatMenu.png",
   "id", "ChoGGi_CheatMenu",
   --"steam_id","",
 	"author", "ChoGGi (thanks to chippydip, therealshibe, BoehserOnkel, Fling)",
-	"version", 2.0,
+	"version", 2.1,
   --"lua_revision","",
 	"code", {
 		"Init.lua",

@@ -2,6 +2,9 @@
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
+    if rawget(_G, "dlgConsole") then
+      dlgConsole.idEdit:SetText("") -- :(
+    end
   end,
   "~"
 )

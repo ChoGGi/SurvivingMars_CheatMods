@@ -11,7 +11,8 @@ end
 
 function ChoGGi.AllShifts_Toggle(Bool,Msg)
   local AllShiftsToggle = function()
-    for _,object in ipairs(UICity.labels.Building or empty_table) do
+    --for _,object in ipairs(UICity.labels.Building or empty_table) do
+    for _,object in ipairs(UICity.labels.ShiftsBuilding or empty_table) do
       if object.closed_shifts then
         if Bool then
           object.closed_shifts = {true,true,true}

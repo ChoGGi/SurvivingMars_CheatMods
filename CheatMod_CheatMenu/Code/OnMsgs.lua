@@ -185,17 +185,18 @@ function OnMsg.LoadingScreenPreClose()
     ShowConsoleLog(true)
   end
 
+  --dim that console bg
   if ChoGGi.CheatMenuSettings.ConsoleDim then
     config.ConsoleDim = 1
     --make the background hide when console not visible (instead of after a second or two)
-    function ShowConsoleLogBackground(bVisible, bImmediate)
-      if dlgConsoleLog and config.ConsoleDim ~= 0 then
-        DeleteThread(dlgConsoleLog.background_thread)
-        if bVisible then
-          dlgConsoleLog:SetBackgroundColor(RGBA(0, 0, 0, bVisible and 96 or 0))
-        else
-          dlgConsoleLog:SetBackgroundColor(RGBA(0, 0, 0, 0))
-        end
+    --function ShowConsoleLogBackground(bVisible, bImmediate)
+    --ConsoleLog:ShowBackground
+    function ConsoleLog.ShowBackground(self,visible, immediate)
+      DeleteThread(self.background_thread)
+      if visible or immediate then
+        self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
+      else
+        self:SetBackground(RGBA(0, 0, 0, 0))
       end
     end
   end
@@ -251,18 +252,10 @@ function OnMsg.LoadingScreenPreClose()
     "G_ToggleSigns",
     "G_ToggleOnScreenHints",
     "G_ResetOnScreenHints",
+    "DE_BugReport",
   })
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
-
-  --add trailblazer skins (fucking pre-order bonus bullshit)
-  pcall(function()
-    g_TrailblazerSkins.Drone = "Drone_Trailblazer"
-    g_TrailblazerSkins.RCRover = "Rover_Trailblazer"
-    g_TrailblazerSkins.RCTransport = "RoverTransport_Trailblazer"
-    g_TrailblazerSkins.ExplorerRover = "RoverExplorer_Trailblazer"
-    g_TrailblazerSkins.SupplyRocket = "Rocket_Trailblazer"
-  end)
 
   --always show on my computer
 	if ChoGGi.Testing then
@@ -272,8 +265,21 @@ function OnMsg.LoadingScreenPreClose()
     --ShowConsole(true)
   end
 
+  --fucking pre-orders
+  g_TrailblazerSkins.Drone = "Drone_Trailblazer"
+  g_TrailblazerSkins.RCRover = "Rover_Trailblazer"
+  g_TrailblazerSkins.RCTransport = "RoverTransport_Trailblazer"
+  g_TrailblazerSkins.ExplorerRover = "RoverExplorer_Trailblazer"
+  g_TrailblazerSkins.SupplyRocket = "Rocket_Trailblazer"
+
   --set zoom/border scrolling
   ChoGGi.SetCameraSettings()
+
+    --print startup msgs to console log
+  for i = 1, #ChoGGi.StartupMsgs do
+    --AddConsoleLog(ChoGGi.StartupMsgs[i],true)
+    ConsolePrint(ChoGGi.StartupMsgs[i])
+  end
 
   --people will likely just copy new mod over old, and I moved stuff around
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then

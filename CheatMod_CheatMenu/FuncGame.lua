@@ -35,7 +35,7 @@ function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
   end)
 end
 
-function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput)
+function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   if Menu then
     Menu = "/" .. tostring(Menu)
   end
@@ -72,7 +72,8 @@ print("\n")
       icon = Icon,
       toolbar = Toolbar,
       mode = Mode,
-      xinput = xInput
+      xinput = xInput,
+      toolbar_default = ToolbarDefault
     }
   })
 end
@@ -319,7 +320,7 @@ function ChoGGi.ConstructionModeSet(itemname)
     CloseXBuildMenu()
   end)
   --fix up some names
-  itemname = ChoGGi.ConstructionNamesListFix[itemname] or itemname
+  itemname = pcall(ChoGGi.ConstructionNamesListFix[itemname]) or itemname
   --n all the rest
   local igi = GetInGameInterface()
   if not igi or not igi:GetVisible() then

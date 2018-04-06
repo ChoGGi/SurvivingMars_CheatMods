@@ -26,16 +26,16 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
-ChoGGi.ConstructionSkipErrors = {}
-ChoGGi.ConstructionSkipErrors["Blocking objects"] = 1
-ChoGGi.ConstructionSkipErrors["Requires a Dome"] = 1
-ChoGGi.ConstructionSkipErrors["Unbuildable area"] = 1
-ChoGGi.ConstructionSkipErrors["Outside building"] = 1
-ChoGGi.ConstructionSkipErrors["Too tall"] = 1
-ChoGGi.ConstructionSkipErrors["Too long"] = 1
-ChoGGi.ConstructionSkipErrors["Too far from Domes"] = 1
-ChoGGi.ConstructionSkipErrors["Too far"] = 1
-ChoGGi.ConstructionSkipErrors["Can't Land"] = 1
+ChoGGi.ConstructionErrors = {}
+ChoGGi.ConstructionErrors["Blocking objects"] = 1
+ChoGGi.ConstructionErrors["Requires a Dome"] = 1
+ChoGGi.ConstructionErrors["Unbuildable area"] = 1
+ChoGGi.ConstructionErrors["Outside building"] = 1
+ChoGGi.ConstructionErrors["Too tall"] = 1
+ChoGGi.ConstructionErrors["Too long"] = 1
+ChoGGi.ConstructionErrors["Too far from Domes"] = 1
+ChoGGi.ConstructionErrors["Too far"] = 1
+ChoGGi.ConstructionErrors["Can't Land"] = 1
 
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {

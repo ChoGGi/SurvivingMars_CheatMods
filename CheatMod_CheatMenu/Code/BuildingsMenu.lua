@@ -1,3 +1,5 @@
+--ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+
 ChoGGi.AddAction(
   "Gameplay/Buildings/Production Amount + 25",
   function()
