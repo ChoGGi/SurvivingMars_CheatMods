@@ -16,14 +16,10 @@ function OnMsg.ReloadLua()
   ParadoxBuildsModManagerWarning = true
 end
 
---return fake revision, 1 seems to work fine
-return 17000
+--return revision, or else you get a blank map on new game
+return 18035
 
---[[load order for Msgs
-function OnMsg.ClassesGenerate()
-  dosomething()
-end
-
+--[[startup msg order
 ClassesGenerate
 ClassesPreprocess
 ClassesPostprocess
@@ -41,4 +37,9 @@ GameStateChanged
 GameStateChangedNotify
 SystemSize
 ReloadLua
+
+example:
+function OnMsg.ClassesGenerate()
+  dosomething()
+end
 --]]
