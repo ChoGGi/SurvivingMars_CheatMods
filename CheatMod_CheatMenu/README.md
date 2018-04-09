@@ -35,30 +35,25 @@ Occurrence level of disasters
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
-Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))
-Increase Production Amounts
-Set Gravity for Colonists,Drones,RCs (bouncy time)
-Fire All Colonists
-Turn Off All Shifts/Turn On All Shifts
+Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))Increase Production AmountsSet Gravity for Colonists,Drones,RCs (bouncy time)Fire All ColonistsTurn Off All Shifts/Turn On All Shifts
 Set New Colonists Age,Sex
 Sanatorium Cure All Traits
 School Train All Traits
 Sanatorium/School Show All Traits
 Show All Traits in Sanatorium/School
 Colonist Residence Capacity
-Add Prefabs,Orbital Probes
+Add Prefabs
 Fill Resource Selected
-Add Mystery Breakthrough Buildings
-BreakThrough Techs Per Game
+Start Mysteries
+Add Mystery Buildings
+Amount of BreakThrough Techs Per Game
 Research Every Breakthrough
 Research Every Mystery
 Research Queue Larger Toggle
 Unlock Every Breakthrough
 AvoidWorkplaceToggle
-Birth Threshold
-Asteroid Bombardment At Cursor
-Building Show Hidden
-Building Wonder
+Show Hidden Buildings
+Unlimited Wonders
 Building Damage Crime Toggle
 Cables And Pipes Toggle
 Border Scrolling Toggle
@@ -88,11 +83,10 @@ RC Transport Transfer Speed
 RC Transport Storage Increase
 Food Per Rocket Passenger Increase
 Fully Automated Buildings
-Add Funds
+Add Funds/Reset Funds
 Game Speed Default,Double,Triple,Quad,Octuple,Sexdecuple,Duotriguple,Quattuorsexaguple
 Maintenance Free Buildings
 Meteor Health Damage Toggle
-Min Comfort Birth
 Moisture Vaporator Penalty Toggle
 Outside Workplace Radius Increase
 Outsource Points 1000000
@@ -115,14 +109,13 @@ Build Spires Outside of Spire Point
 Allow Dome Forbidden Buildings
 Allow Dome Required Buildings
 Allow Tall Buildings Under Pipes
-Instant Build
+Instant Build (most items)
 See Dead Sanity Damage Toggle
 No Home Comfort Damage Toggle
 ShuttleHub Shuttles Increase
 Asteroids (single,multi,storm)
 Toggle Editor (you can move stuff around (if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Open In Ged Editor (lets you open some objects in the ged editor)
-Start Mysteries
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
