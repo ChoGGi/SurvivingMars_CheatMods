@@ -1,18 +1,24 @@
-function ChoGGi.SetNewLogo(sName)
 
+function ChoGGi.SetNewLogo(sName)
   --any newly built/landed uses this logo
   g_CurrentMissionParams.idMissionLogo = sName
 
   --loop through landed rockets and change logo
   for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
     local tempLogo = object:GetAttach("Logo")
-    tempLogo:ChangeEntity(DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name)
+    if tempLogo then
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
+    end
   end
   --same for any buildings that use the logo
   for _,object in ipairs(UICity.labels.Building or empty_table) do
     local tempLogo = object:GetAttach("Logo")
     if tempLogo then
-      tempLogo:ChangeEntity(DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name)
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
     end
   end
 
@@ -20,7 +26,6 @@ function ChoGGi.SetNewLogo(sName)
   ChoGGi.MsgPopup("Logo is now " .. sName,
     "Logo","UI/Icons/Sections/spaceship.tga"
   )
-
 end
 
 function ChoGGi.BuildDisasterMenu(sList,sType,sName)
