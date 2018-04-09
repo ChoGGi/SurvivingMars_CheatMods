@@ -2,10 +2,10 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
+Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, change logo, unlimited wonders, build almost anywhere, etc...
+
 ##### Info
 ```
-Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menuitems, set gravity, follow camera, allows you to build as many Wonders as you want, build almost anywhere, etc...
-
 F2: Toggle the cheats menu.
 F4: Open object examiner for selected object (now with dump button)
 Ctrl+F: Fill resource of selected object
