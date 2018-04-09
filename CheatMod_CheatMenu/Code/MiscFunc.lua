@@ -156,6 +156,8 @@ function ChoGGi.CameraFollow_Toggle()
       cls() --if it's going to spam the log, might as well clear it
       ToggleConsoleLog()
     end
+    --make sure it's visible
+    engineShowMouseCursor()
     --reset camera zoom settings
     ChoGGi.SetCameraSettings()
     return
@@ -179,18 +181,25 @@ function ChoGGi.CameraFollow_Toggle()
     camera.SetFovX(8400)
   end
   --consistent zoom level
-  cameraRTS.SetZoom(15000)
+  cameraRTS.SetZoom(8000)
   --Activate it
   camera3p.Activate(1)
   camera3p.AttachObject(obj)
   camera3p.SetLookAtOffset(point(0,0,-1500))
   camera3p.SetEyeOffset(point(0,0,-1000))
   camera3p.EnableMouseControl(true)
+  --make sure it's hidden for toggling CursorVisible
+  engineHideMouseCursor()
 
   --toggle showing console history as console spams when colonist and looking through glass
   if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
     ToggleConsoleLog()
   end
+
+  --if it's a rover then stops the ctrl control mode from being active (from pressing ctrl-shift-f)
+  pcall(function()
+    obj:SetControlMode(false)
+  end)
 end
 
 function ChoGGi.CursorVisible_Toggle()
@@ -230,11 +239,7 @@ end
 
 function ChoGGi.BorderScrolling_Toggle()
   ChoGGi.CheatMenuSettings.BorderScrollingToggle = not ChoGGi.CheatMenuSettings.BorderScrollingToggle
-  if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
-    cameraRTS.SetProperties(1,{ScrollBorder = 0})
-  else
-    cameraRTS.SetProperties(1,{ScrollBorder = 5})
-  end
+  ChoGGi.SetCameraSettings()
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingToggle) .. ": Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
@@ -243,11 +248,7 @@ end
 
 function ChoGGi.BorderScrollingArea_Toggle()
   ChoGGi.CheatMenuSettings.BorderScrollingArea = not ChoGGi.CheatMenuSettings.BorderScrollingArea
-  if ChoGGi.CheatMenuSettings.BorderScrollingArea then
-    cameraRTS.SetProperties(1,{ScrollBorder = 2})
-  else
-    cameraRTS.SetProperties(1,{ScrollBorder = 5})
-  end
+  ChoGGi.SetCameraSettings()
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingArea) .. ": Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
@@ -256,11 +257,7 @@ end
 
 function ChoGGi.CameraZoom_Toggle()
   ChoGGi.CheatMenuSettings.CameraZoomToggle = not ChoGGi.CheatMenuSettings.CameraZoomToggle
-  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
-    cameraRTS.SetZoomLimits(0,24000)
-  else
-    cameraRTS.SetZoomLimits(400,8000)
-  end
+  ChoGGi.SetCameraSettings()
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CameraZoomToggle) .. ": Camera Zoom",
    "Camera","UI/Icons/IPButtons/status_effects.tga"

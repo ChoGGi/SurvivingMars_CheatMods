@@ -281,7 +281,8 @@ function ChoGGi.SetCameraSettings()
 
   --reduce ScrollBorder to the smallest we can (1 = can't scroll down)
   if ChoGGi.CheatMenuSettings.BorderScrollingArea then
-    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+    --cameraRTS.SetProperties(1,{ScrollBorder = 2})
+    cameraRTS.SetProperties(1,{ScrollBorder = 3})
   --disable border scrolling
   elseif ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
@@ -294,7 +295,7 @@ function ChoGGi.SetCameraSettings()
   if ChoGGi.CheatMenuSettings.CameraZoomToggle then
     cameraRTS.SetZoomLimits(0,24000)
   else
-    cameraRTS.SetZoomLimits(400,15000)
+    cameraRTS.SetZoomLimits(400,8000)
   end
 
   --cameraRTS.SetProperties(1,{HeightInertia = 0})
