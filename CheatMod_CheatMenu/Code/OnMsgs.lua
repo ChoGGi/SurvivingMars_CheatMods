@@ -1,4 +1,6 @@
 --[[
+g_Classes
+
 --retrieve list of building/vehicle names
 local templates = DataInstances.BuildingTemplate
 for i = 1, #templates do
@@ -57,7 +59,10 @@ function OnMsg.ClassesGenerate()
       building.is_tall = nil
     end
     if ChoGGi.CheatMenuSettings.Building_instant_build then
-      building.instant_build = true
+      --needed else missing textures on domes
+      if not (building.build_category == "Domes" or building.template_class == "GeoscapeDome") then
+        building.instant_build = true
+      end
     end
 
     if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then
@@ -95,7 +100,7 @@ function OnMsg.ClassesBuilt()
     )
   end)
 
-  --add preset menuitems
+  --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
     local preset_class = class.PresetClass or name
     Presets[preset_class] = Presets[preset_class] or {}
@@ -120,16 +125,39 @@ function OnMsg.ClassesBuilt()
 
 end --OnMsg
 
---saved game is loaded
-function OnMsg.LoadGame(metadata)
+function OnMsg.OptionsApply()
+  --earlist we can call Consts:GetProperties()
+  ChoGGi.ReadSettingsInGame()
 end --OnMsg
 
+function OnMsg.ModsLoaded()
+  --create logo menu items (needs to be loaded here, so we get logos from other mods)
+  local templates = DataInstances.MissionLogo
+  for i = 1, #templates do
+    ChoGGi.AddAction(
+      "Gameplay/QoL/Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
+      function()
+        ChoGGi.SetNewLogo(templates[i].name)
+      end,
+      nil,
+      "Change the logo to ".. _InternalTranslate(templates[i].display_name) .. " for anything that uses the logo.",
+      "ViewArea.tga"
+    )
+  end
+end --OnMsg
+
+--saved game is loaded
+--function OnMsg.LoadGame(metadata)
+
 --fired as late as we can
---function OnMsg.Resume()
 function OnMsg.LoadingScreenPreClose()
+--function OnMsg.Resume()
+
+  --doubtful, but what the hell
   if not UICity then
     return
   end
+
   --set shuttle speed/capacity (not sure how to get an onmsg for shuttle spawning)
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
     if ChoGGi.CheatMenuSettings.ShuttleStorage then
@@ -139,6 +167,7 @@ function OnMsg.LoadingScreenPreClose()
       object.max_speed = ChoGGi.CheatMenuSettings.ShuttleSpeed
     end
   end
+
   --drone gravity (not sure how to get an onmsg for drone spawning)
   for _,object in ipairs(UICity.labels.Drone or empty_table) do
     if ChoGGi.CheatMenuSettings.GravityDrone then
@@ -154,8 +183,9 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
-  --limit height of colonists section
+  --limit height of colonists section in info pane, so it doesn't go crazy expand with too many colonists
   XTemplates.sectionResidence[1]["MaxHeight"] = ChoGGi.Consts.ResidenceMaxHeight
+  --too bad it clips the little icon in half
   XTemplates.sectionResidence[1]["Clip"] = true
 
   --show all Mystery Breakthrough buildings
@@ -272,6 +302,11 @@ function OnMsg.LoadingScreenPreClose()
   g_TrailblazerSkins.ExplorerRover = "RoverExplorer_Trailblazer"
   g_TrailblazerSkins.SupplyRocket = "Rocket_Trailblazer"
 
+  --remove some uselessish Cheats to clear up space
+  if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
+    ChoGGi.InfopanelCheatsCleanup()
+  end
+
   --set zoom/border scrolling
   ChoGGi.SetCameraSettings()
 
@@ -282,6 +317,7 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --people will likely just copy new mod over old, and I moved stuff around
+  ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
     --clean up
     ChoGGi.RemoveOldFiles()
@@ -423,9 +459,7 @@ function OnMsg.MysteryEnd(Outcome)
   end
 end
 
-function OnMsg.ApplicationQuit()
-	DebugPrint("INFO_ApplicationQuit\n")
-end
+--function OnMsg.ApplicationQuit()
 
 if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"OnMsgs")

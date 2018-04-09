@@ -11,11 +11,11 @@ F4: Open object examiner for selected object (now with dump button)
 Ctrl+F: Fill resource of selected object
 Enter or Tilde to show the console
 F9 to clear the console log
-Ctrl-Alt-Shift-R: opens console and puts restart in it
+Ctrl-Alt-Shift-R: opens console and places "restart" in it
 Ctrl-Space: Opens placement mode with the last placed item
 Ctrl-Shift-Space: Opens placement mode with the selected item
 Ctrl-Shift-F: Follow Camera (select an object to follow around)
-Ctrl-Alt-F: Follow Camera toggle mouse
+Ctrl-Alt-F: Toggle mouse cursor
 Ctrl-Shift-E: Toggle editor mode
 
 There's a cheats section in most info panels on the right side of the screen.
@@ -30,6 +30,8 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 
 ##### List of some stuff added (not up to date)
 ```
+Change logo
+Occurrence level of disasters
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
@@ -44,7 +46,7 @@ School Train All Traits
 Sanatorium/School Show All Traits
 Show All Traits in Sanatorium/School
 Colonist Residence Capacity
-Add Prefabs
+Add Prefabs,Orbital Probes
 Fill Resource Selected
 Add Mystery Breakthrough Buildings
 BreakThrough Techs Per Game

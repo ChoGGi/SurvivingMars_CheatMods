@@ -383,15 +383,6 @@ end
 function ChoGGi.RemoveBuildingLimits_Toggle()
   ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
 
---[[gives error when you don't restart
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-    ConstructionController.UpdateConstructionStatuses = ChoGGi.ReplacedFunc.CC_UpdateConstructionStatuses
-    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.ReplacedFunc.TC_UpdateConstructionStatuses
-  else
-    ConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.CC_UpdateConstructionStatuses
-    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.TC_UpdateConstructionStatuses
-  end
---]]
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there (restart to toggle).",
     "Buildings",

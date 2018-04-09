@@ -1,6 +1,14 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "Gameplay/Resources/Add 10 Orbital Probes",
+  ChoGGi.AddOrbitalProbes,
+  nil,
+  "Add 10 probes to pinned list",
+  "ToggleTerrainHeight.tga"
+)
+
+ChoGGi.AddAction(
   "Gameplay/Resources/Deep Scan Toggle",
   ChoGGi.DeepScanToggle,
   nil,
@@ -26,7 +34,7 @@ ChoGGi.AddAction(
   end,
   nil,
   function()
-    return ChoGGi.Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " = The amount of Food supplied with each Colonist arrival."
+    return ChoGGi.Consts.FoodPerRocketPassenger / 100 .. " = The amount of Food supplied with each Colonist arrival."
   end,
   "ToggleTerrainHeight.tga"
 )
@@ -38,7 +46,7 @@ ChoGGi.AddAction(
   end,
   nil,
   function()
-    return Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " + 25 = The amount of Food supplied with each Colonist arrival."
+    return Consts.FoodPerRocketPassenger / 100 + 25 .. " = The amount of Food supplied with each Colonist arrival."
   end,
   "ToggleTerrainHeight.tga"
 )
@@ -50,7 +58,7 @@ ChoGGi.AddAction(
   end,
   nil,
   function()
-    return Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. " + 1000 = The amount of Food supplied with each Colonist arrival."
+    return Consts.FoodPerRocketPassenger / 100  + 1000 .. " = The amount of Food supplied with each Colonist arrival."
   end,
   "ToggleTerrainHeight.tga"
 )
@@ -59,7 +67,7 @@ ChoGGi.AddAction(
   "Gameplay/Resources/Prefabs/Add 100 Drones",
   ChoGGi.Add100PrefabsDrone,
   nil,
-  nil,
+  "Adds prefabs (use with DroneHub).",
   "gear.tga"
 )
 
@@ -69,7 +77,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("DroneHub",10,"10 DroneHub Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -79,7 +87,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("ElectronicsFactory",10,"10 ElectronicsFactory Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -89,7 +97,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("FuelFactory",10,"10 FuelFactory Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -99,7 +107,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("MachinePartsFactory",10,"10 MachinePartsFactory Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -109,7 +117,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("MoistureVaporator",10,"10 MoistureVaporator Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -119,7 +127,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("PolymerPlant",10,"10 PolymerPlant Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -129,7 +137,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("StirlingGenerator",10,"10 StirlingGenerator Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -139,7 +147,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("WaterReclamationSystem",10,"10 WaterReclamationSystem Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -149,7 +157,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("Arcology",10,"10 Arcology Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -159,7 +167,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("Sanatorium",10,"10 Sanatorium Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -169,7 +177,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("NetworkNode",10,"10 NetworkNode Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -179,7 +187,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("MedicalCenter",10,"10 MedicalCenter Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -189,7 +197,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("HangingGardens",10,"10 HangingGardens Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -199,7 +207,7 @@ ChoGGi.AddAction(
     ChoGGi.AddPrefabs("CloningVats",10,"10 CloningVats Prefabs Added")
   end,
   nil,
-  nil,
+  "Adds prefabs.",
   "gear.tga"
 )
 
@@ -209,7 +217,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(100,"100 M Added")
   end,
   nil,
-  nil,
+  "Adds amount to current funding.",
   "pirate.tga"
 )
 
@@ -219,7 +227,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(1000,"1,000 M Added")
   end,
   nil,
-  nil,
+  "Adds amount to current funding.",
   "pirate.tga"
 )
 
@@ -229,7 +237,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(10000,"10,000 M Added")
   end,
   nil,
-  nil,
+  "Adds amount to current funding.",
   "pirate.tga"
 )
 
@@ -239,7 +247,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(100000,"100,000 M Added")
   end,
   nil,
-  nil,
+  "Adds amount to current funding.",
   "pirate.tga"
 )
 
@@ -249,7 +257,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(1000000000,"1,000,000,000 M Added")
   end,
   nil,
-  nil,
+  "Adds amount to current funding.",
   "pirate.tga"
 )
 
@@ -262,7 +270,7 @@ ChoGGi.AddAction(
     ChoGGi.SetFunds(500,"500 M")
   end,
   nil,
-  nil,
+  "Resets funding to 500 M.",
   "pirate.tga"
 )
 

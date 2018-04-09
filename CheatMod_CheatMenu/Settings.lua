@@ -26,16 +26,6 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
-ChoGGi.ConstructionErrors = {}
-ChoGGi.ConstructionErrors["Blocking objects"] = 1
-ChoGGi.ConstructionErrors["Requires a Dome"] = 1
-ChoGGi.ConstructionErrors["Unbuildable area"] = 1
-ChoGGi.ConstructionErrors["Outside building"] = 1
-ChoGGi.ConstructionErrors["Too tall"] = 1
-ChoGGi.ConstructionErrors["Too long"] = 1
-ChoGGi.ConstructionErrors["Too far from Domes"] = 1
-ChoGGi.ConstructionErrors["Too far"] = 1
-ChoGGi.ConstructionErrors["Can't Land"] = 1
 
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {
@@ -43,39 +33,42 @@ ChoGGi.Consts = {
 --custom
   BuildingsCapacity = {},
   BuildingsProduction = {},
-  FirstRun = true,
-  ConsoleToggleHistory = true,
-  ToggleInfopanelCheats = true,
   ConsoleDim = true,
-  HigherRenderDist = true,
-  HigherShadowDist = true,
-  WriteLogs = false,
-  FullyAutomatedBuildings = false,
+  ConsoleToggleHistory = true,
+  FirstRun = true,
+  ToggleInfopanelCheats = true,
+  CleanupCheatsInfoPane = true,
+
   AddMysteryBreakthroughBuildings = false,
+  BorderScrollingArea = false,
   BorderScrollingToggle = false,
-  CameraZoomToggle = false,
-  Building_hide_from_build_menu = false,
-  Building_wonder = false,
-  Building_dome_spot = false,
   Building_dome_forbidden = false,
   Building_dome_required = false,
-  Building_is_tall = false,
+  Building_dome_spot = false,
+  Building_hide_from_build_menu = false,
   Building_instant_build = false,
+  Building_is_tall = false,
+  Building_wonder = false,
+  CameraZoomToggle = false,
+  developer = false,
+  FullyAutomatedBuildings = false,
+  GravityColonist = false,
+  GravityDrone = false,
+  GravityRC = false,
+  HigherRenderDist = false,
+  HigherShadowDist = false,
   NewColonistAge = false,
   NewColonistSex = false,
+  RemoveBuildingLimits = false,
+  RemoveMaintenanceBuildUp = false,
   SanatoriumCureAll = false,
   SchoolTrainAll = false,
   ShowAllTraits = false,
   ShowMysteryMsgs = false,
-  RemoveBuildingLimits = false,
-  RemoveMaintenanceBuildUp = false,
-  developer = false,
   ShuttleSpeed = false,
   ShuttleStorage = false,
-  GravityDrone = false,
-  GravityRC = false,
-  GravityColonist = false,
---custom Consts
+  WriteLogs = false,
+--custom amounts
   ProductionAddAmount = 25000,
   AirWaterAddAmount = 1000000,
   BatteryAddAmount = 1000000,
@@ -88,77 +81,77 @@ ChoGGi.Consts = {
   --StorageOtherDepot = 180000,
   --StorageWasteDepot = 70000,
   RCTransportResourceCapacity = 30,
---Consts.
-  AvoidWorkplaceSols = 5,
-  BirthThreshold = 1000000,
-  CargoCapacity = 50000,
-  ColdWaveSanityDamage = 300,
-  CommandCenterMaxDrones = 20,
-  Concrete_cost_modifier = 0,
-  Concrete_dome_cost_modifier = 0,
-  CrimeEventDestroyedBuildingsCount = 1,
-  CrimeEventSabotageBuildingsCount = 1,
-  DeepScanAvailable = 0,
-  DefaultOutsideWorkplacesRadius = 10,
-  DroneBuildingRepairAmount = 5000,
-  DroneBuildingRepairBatteryUse = 100,
-  DroneCarryBatteryUse = 150,
-  DroneConstructAmount = 100,
-  DroneConstructBatteryUse = 300,
-  DroneDeconstructBatteryUse = 100,
-  DroneMeteorMalfunctionChance = 50,
-  DroneMoveBatteryUse = 100,
-  DroneRechargeTime = 40000,
-  DroneRepairSupplyLeak = 180,
-  DroneResourceCarryAmount = 1,
-  DroneTransformWasteRockObstructorToStockpileBatteryUse = 100,
-  DustStormSanityDamage = 300,
-  Electronics_cost_modifier = 0,
-  Electronics_dome_cost_modifier = 0,
-  FoodPerRocketPassenger = 10000,
-  HighStatLevel = 70000,
-  HighStatMoraleEffect = 5000,
-  CropFailThreshold = 25,
-  InstantCables = 0,
-  InstantPipes = 0,
-  IsDeepMetalsExploitable = 0,
-  IsDeepPreciousMetalsExploitable = 0,
-  IsDeepWaterExploitable = 0,
-  LowSanityNegativeTraitChance = 30,
-  LowSanitySuicideChance = 1,
-  LowStatLevel = 30000,
-  MachineParts_cost_modifier = 0,
-  MachineParts_dome_cost_modifier = 0,
-  MaxColonistsPerRocket = 12,
-  Metals_cost_modifier = 0,
-  Metals_dome_cost_modifier = 0,
-  MeteorHealthDamage = 50000,
-  MeteorSanityDamage = 12000,
-  MinComfortBirth = 70000,
-  MysteryDreamSanityDamage = 500,
-  NonSpecialistPerformancePenalty = 50,
-  OutsourceResearch = 1000,
-  OutsourceResearchCost = 200000000,
-  OxygenMaxOutsideTime = 120000,
-  PipesPillarSpacing = 4,
-  Polymers_cost_modifier = 0,
-  Polymers_dome_cost_modifier = 0,
-  positive_playground_chance = 100,
-  PreciousMetals_cost_modifier = 0,
-  PreciousMetals_dome_cost_modifier = 0,
-  ProjectMorphiousPositiveTraitChance = 2,
-  RCRoverDroneRechargeCost = 15000,
-  RCRoverMaxDrones = 8,
-  RCRoverTransferResourceWorkTime = 1000,
-  RCTransportGatherResourceWorkTime = 15000,
-  rebuild_cost_modifier = 100,
-  RenegadeCreation = 70000,
-  SeeDeadSanity = 15000,
-  NoHomeComfort = 20000,
-  TimeBeforeStarving = 1080000,
-  TravelTimeEarthMars = 750000,
-  TravelTimeMarsEarth = 750000,
-  VisitFailPenalty = 10000,
+--Consts (we just need the name, not the value).
+  AvoidWorkplaceSols = false,
+  BirthThreshold = false,
+  CargoCapacity = false,
+  ColdWaveSanityDamage = false,
+  CommandCenterMaxDrones = false,
+  Concrete_cost_modifier = false,
+  Concrete_dome_cost_modifier = false,
+  CrimeEventDestroyedBuildingsCount = false,
+  CrimeEventSabotageBuildingsCount = false,
+  CropFailThreshold = false,
+  DeepScanAvailable = false,
+  DefaultOutsideWorkplacesRadius = false,
+  DroneBuildingRepairAmount = false,
+  DroneBuildingRepairBatteryUse = false,
+  DroneCarryBatteryUse = false,
+  DroneConstructAmount = false,
+  DroneConstructBatteryUse = false,
+  DroneDeconstructBatteryUse = false,
+  DroneMeteorMalfunctionChance = false,
+  DroneMoveBatteryUse = false,
+  DroneRechargeTime = false,
+  DroneRepairSupplyLeak = false,
+  DroneResourceCarryAmount = false,
+  DroneTransformWasteRockObstructorToStockpileBatteryUse = false,
+  DustStormSanityDamage = false,
+  Electronics_cost_modifier = false,
+  Electronics_dome_cost_modifier = false,
+  FoodPerRocketPassenger = false,
+  HighStatLevel = false,
+  HighStatMoraleEffect = false,
+  InstantCables = false,
+  InstantPipes = false,
+  IsDeepMetalsExploitable = false,
+  IsDeepPreciousMetalsExploitable = false,
+  IsDeepWaterExploitable = false,
+  LowSanityNegativeTraitChance = false,
+  LowSanitySuicideChance = false,
+  LowStatLevel = false,
+  MachineParts_cost_modifier = false,
+  MachineParts_dome_cost_modifier = false,
+  MaxColonistsPerRocket = false,
+  Metals_cost_modifier = false,
+  Metals_dome_cost_modifier = false,
+  MeteorHealthDamage = false,
+  MeteorSanityDamage = false,
+  MinComfortBirth = false,
+  MysteryDreamSanityDamage = false,
+  NoHomeComfort = false,
+  NonSpecialistPerformancePenalty = false,
+  OutsourceResearch = false,
+  OutsourceResearchCost = false,
+  OxygenMaxOutsideTime = false,
+  PipesPillarSpacing = false,
+  Polymers_cost_modifier = false,
+  Polymers_dome_cost_modifier = false,
+  positive_playground_chance = false,
+  PreciousMetals_cost_modifier = false,
+  PreciousMetals_dome_cost_modifier = false,
+  ProjectMorphiousPositiveTraitChance = false,
+  RCRoverDroneRechargeCost = false,
+  RCRoverMaxDrones = false,
+  RCRoverTransferResourceWorkTime = false,
+  RCTransportGatherResourceWorkTime = false,
+  rebuild_cost_modifier = false,
+  RenegadeCreation = false,
+  SeeDeadSanity = false,
+  TimeBeforeStarving = false,
+  TravelTimeEarthMars = false,
+  TravelTimeMarsEarth = false,
+  VisitFailPenalty = false,
 --const.
   BreakThroughTechsPerGame = 13,
   ExplorationQueueMaxSize = 10,
@@ -181,9 +174,10 @@ function ChoGGi.SetConstsToSaved()
   Consts.Concrete_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_cost_modifier
   Consts.Concrete_dome_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_dome_cost_modifier
   Consts.CrimeEventDestroyedBuildingsCount = ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount
-  Consts.CrimeEventSabotageBuildingsCount = ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount
-  Consts.DefaultOutsideWorkplacesRadius = ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius
+  Consts.CrimeEventSabotageBuildingsCount  = ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount
+  Consts.CropFailThreshold = ChoGGi.CheatMenuSettings.CropFailThreshold
   Consts.DeepScanAvailable = ChoGGi.CheatMenuSettings.DeepScanAvailable
+  Consts.DefaultOutsideWorkplacesRadius  = ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius
   Consts.DroneBuildingRepairAmount = ChoGGi.CheatMenuSettings.DroneBuildingRepairAmount
   Consts.DroneBuildingRepairBatteryUse = ChoGGi.CheatMenuSettings.DroneBuildingRepairBatteryUse
   Consts.DroneCarryBatteryUse = ChoGGi.CheatMenuSettings.DroneCarryBatteryUse
@@ -202,12 +196,11 @@ function ChoGGi.SetConstsToSaved()
   Consts.FoodPerRocketPassenger = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger
   Consts.HighStatLevel = ChoGGi.CheatMenuSettings.HighStatLevel
   Consts.HighStatMoraleEffect = ChoGGi.CheatMenuSettings.HighStatMoraleEffect
-  Consts.CropFailThreshold = ChoGGi.CheatMenuSettings.CropFailThreshold
   Consts.InstantCables = ChoGGi.CheatMenuSettings.InstantCables
   Consts.InstantPipes = ChoGGi.CheatMenuSettings.InstantPipes
-  Consts.IsDeepWaterExploitable = ChoGGi.CheatMenuSettings.IsDeepWaterExploitable
   Consts.IsDeepMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable
   Consts.IsDeepPreciousMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable
+  Consts.IsDeepWaterExploitable = ChoGGi.CheatMenuSettings.IsDeepWaterExploitable
   Consts.LowSanityNegativeTraitChance = ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance
   Consts.LowSanitySuicideChance = ChoGGi.CheatMenuSettings.LowSanitySuicideChance
   Consts.LowStatLevel = ChoGGi.CheatMenuSettings.LowStatLevel
@@ -220,6 +213,7 @@ function ChoGGi.SetConstsToSaved()
   Consts.MeteorSanityDamage = ChoGGi.CheatMenuSettings.MeteorSanityDamage
   Consts.MinComfortBirth = ChoGGi.CheatMenuSettings.MinComfortBirth
   Consts.MysteryDreamSanityDamage = ChoGGi.CheatMenuSettings.MysteryDreamSanityDamage
+  Consts.NoHomeComfort = ChoGGi.CheatMenuSettings.NoHomeComfort
   Consts.NonSpecialistPerformancePenalty = ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty
   Consts.OutsourceResearch = ChoGGi.CheatMenuSettings.OutsourceResearch
   Consts.OutsourceResearchCost = ChoGGi.CheatMenuSettings.OutsourceResearchCost
@@ -238,13 +232,12 @@ function ChoGGi.SetConstsToSaved()
   Consts.rebuild_cost_modifier = ChoGGi.CheatMenuSettings.rebuild_cost_modifier
   Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
   Consts.SeeDeadSanity = ChoGGi.CheatMenuSettings.SeeDeadSanity
-  Consts.NoHomeComfort = ChoGGi.CheatMenuSettings.NoHomeComfort
-  Consts.CropFailThreshold = ChoGGi.Consts.CropFailThreshold
   Consts.TimeBeforeStarving = ChoGGi.CheatMenuSettings.TimeBeforeStarving
   Consts.TravelTimeEarthMars = ChoGGi.CheatMenuSettings.TravelTimeEarthMars
   Consts.TravelTimeMarsEarth = ChoGGi.CheatMenuSettings.TravelTimeMarsEarth
   Consts.VisitFailPenalty = ChoGGi.CheatMenuSettings.VisitFailPenalty
 --const.
+  const.BreakThroughTechsPerGame = ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame
   const.ExplorationQueueMaxSize = ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize
   const.fastGameSpeed = ChoGGi.CheatMenuSettings.fastGameSpeed
   const.mediumGameSpeed = ChoGGi.CheatMenuSettings.mediumGameSpeed
@@ -281,10 +274,23 @@ function ChoGGi.ReadSettings()
 		return code_error
 	end
 
+end
+
+function ChoGGi.ReadSettingsInGame()
+  --update our list of consts with defaults
+  local tmpc
+  for i = 1, #Consts:GetProperties() do
+    tmpc = Consts:GetProperties()[i]
+    for Key,_ in pairs(ChoGGi.Consts) do
+      if Key == tmpc.id then
+        ChoGGi.Consts[Key] = tmpc.default
+      end
+    end
+  end
+
   --if we have new settings not yet in SettingsFile, check for nil
   for Key,Value in pairs(ChoGGi.Consts) do
     if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
-      --DebugPrint(tostring(Key) .. ": " .. tostring(Value) .. "\n")
       ChoGGi.CheatMenuSettings[Key] = Value
     end
   end

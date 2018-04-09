@@ -1,6 +1,63 @@
 --add items to the cheat pane
 function OnMsg.ClassesGenerate()
 
+--CheatFullyAuto
+  local function CheatWorkAuto(self)
+    self.max_workers = 0
+    self.automation = 1
+    self.auto_performance = 150
+  end
+  local function CheatWorkManual(self)
+    self.max_workers = nil
+    self.automation = nil
+    self.auto_performance = nil
+  end
+  DroneFactory.CheatWorkAuto = CheatWorkAuto
+  DroneFactory.CheatWorkManual = CheatWorkManual
+  MedicalCenter.CheatWorkAuto = CheatWorkAuto
+  MedicalCenter.CheatWorkManual = CheatWorkManual
+  NetworkNode.CheatWorkAuto = CheatWorkAuto
+  NetworkNode.CheatWorkManual = CheatWorkManual
+  CloningVats.CheatWorkAuto = CheatWorkAuto
+  CloningVats.CheatWorkManual = CheatWorkManual
+  WaterReclamationSpire.CheatWorkAuto = CheatWorkAuto
+  WaterReclamationSpire.CheatWorkManual = CheatWorkManual
+  BaseResearchLab.CheatWorkAuto = CheatWorkAuto
+  BaseResearchLab.CheatWorkManual = CheatWorkManual
+
+  SecurityStation.CheatWorkAuto = CheatWorkAuto
+  SecurityStation.CheatWorkManual = CheatWorkManual
+
+  CasinoComplex.CheatWorkAuto = CheatWorkAuto
+  CasinoComplex.CheatWorkManual = CheatWorkManual
+  Spacebar.CheatWorkAuto = CheatWorkAuto
+  Spacebar.CheatWorkManual = CheatWorkManual
+  ServiceWorkplace.CheatWorkAuto = CheatWorkAuto
+  ServiceWorkplace.CheatWorkManual = CheatWorkManual
+  Diner.CheatWorkAuto = CheatWorkAuto
+  Diner.CheatWorkManual = CheatWorkManual
+  MachinePartsFactory.CheatWorkAuto = CheatWorkAuto
+  MachinePartsFactory.CheatWorkManual = CheatWorkManual
+  ElectronicsFactory.CheatWorkAuto = CheatWorkAuto
+  ElectronicsFactory.CheatWorkManual = CheatWorkManual
+  Infirmary.CheatWorkAuto = CheatWorkAuto
+  Infirmary.CheatWorkManual = CheatWorkManual
+  Grocery.CheatWorkAuto = CheatWorkAuto
+  Grocery.CheatWorkManual = CheatWorkManual
+  FungalFarm.CheatWorkAuto = CheatWorkAuto
+  FungalFarm.CheatWorkManual = CheatWorkManual
+  PolymerPlant.CheatWorkAuto = CheatWorkAuto
+  PolymerPlant.CheatWorkManual = CheatWorkManual
+  FarmConventional.CheatWorkAuto = CheatWorkAuto
+  FarmConventional.CheatWorkManual = CheatWorkManual
+  FarmHydroponic.CheatWorkAuto = CheatWorkAuto
+  FarmHydroponic.CheatWorkManual = CheatWorkManual
+  MetalsExtractor.CheatWorkAuto = CheatWorkAuto
+  MetalsExtractor.CheatWorkManual = CheatWorkManual
+  PreciousMetalsExtractor.CheatWorkAuto = CheatWorkAuto
+  PreciousMetalsExtractor.CheatWorkManual = CheatWorkManual
+  FusionReactor.CheatWorkAuto = CheatWorkAuto
+  FusionReactor.CheatWorkManual = CheatWorkManual
 --CheatDoubleMaxAmount
   local function CheatDoubleMaxAmount(self)
     self.max_amount = self.max_amount * 2
@@ -233,14 +290,22 @@ function OnMsg.ClassesGenerate()
   RCTransport.CheatBattRefill = CheatBattRefill
   Drone.CheatBattRefill = CheatBattRefill
 --misc
-  function SecurityStation:CheatNegReneagadesDbl()
+  function SecurityStation:CheatReneagadesCapDbl()
     self.negated_renegades = self.negated_renegades * 2
   end
-  function SecurityStation:CheatNegReneagadesDef()
+  function SecurityStation:CheatReneagadesCapDef()
     self.negated_renegades = self.max_negated_renegades
   end
 
 end --OnMsg
+
+function ChoGGi.InfopanelCheatsCleanup()
+  Building.CheatAddMaintenancePnts = nil
+  Building.CheatMakeSphereTarget = nil
+  Building.CheatMalfunction = nil
+  Building.CheatSpawnWorker = nil
+  Building.CheatSpawnVisitor = nil
+end
 
 if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"InfoPaneCheats")

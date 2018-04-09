@@ -359,7 +359,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.Building_wonder and "(Enabled)" or "(Disabled)"
-    return des .. " Wonder build limit (restart game to toggle)."
+    return des .. " Unlimited wonder build limit (restart game to toggle)."
   end,
   "toggle_post.tga"
 )
@@ -370,7 +370,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.Building_dome_spot and "(Enabled)" or "(Disabled)"
-    return des .. " Wonder build limit (restart game to toggle)."
+    return des .. " Wonder build limit (restart game to toggle).\nUse with Remove Building Limits to fill up a dome with spires."
   end,
   "toggle_post.tga"
 )
@@ -381,13 +381,13 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "(Enabled)" or "(Disabled)"
-    return des .. " Show hidden buildings (restart game to toggle).\nUse with remove building limits to fill up a dome with spires."
+    return des .. " Show hidden buildings (restart game to toggle)."
   end,
   "toggle_post.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Allow Dome Forbidden Buildings",
+  "Gameplay/Buildings/Unlock Dome Forbidden Buildings",
   ChoGGi.Building_dome_forbidden_Toggle,
   nil,
   function()
@@ -398,7 +398,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Allow Dome Required Buildings",
+  "Gameplay/Buildings/Unlock Dome Required Buildings",
   ChoGGi.Building_dome_required_Toggle,
   nil,
   function()
@@ -409,12 +409,12 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Allow Tall Buildings Under Pipes",
+  "Gameplay/Buildings/Unlock Tall Buildings Under Pipes",
   ChoGGi.Building_is_tall_Toggle,
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.Building_is_tall and "(Enabled)" or "(Disabled)"
-    return des .. " Allow tall buildings to be placed under pipes (restart game to toggle)."
+    return des .. " Allow tall buildings to be placed under pipes (restart game to toggle).\nMay also need Remove Building Limits."
   end,
   "toggle_post.tga"
 )
@@ -425,7 +425,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.Building_instant_build and "(Enabled)" or "(Disabled)"
-    return des .. " Allow buildings to be built instantly (restart game to toggle)."
+    return des .. " Allow buildings to be built instantly (restart game to toggle).\nDoesn't work with domes."
   end,
   "toggle_post.tga"
 )

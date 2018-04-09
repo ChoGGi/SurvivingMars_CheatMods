@@ -1,3 +1,45 @@
+function ChoGGi.SetNewLogo(sName)
+
+  --any newly built/landed uses this logo
+  g_CurrentMissionParams.idMissionLogo = sName
+
+  --loop through landed rockets and change logo
+  for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    tempLogo:ChangeEntity(DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name)
+  end
+  --same for any buildings that use the logo
+  for _,object in ipairs(UICity.labels.Building or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    if tempLogo then
+      tempLogo:ChangeEntity(DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name)
+    end
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Logo is now " .. sName,
+    "Logo","UI/Icons/Sections/spaceship.tga"
+  )
+
+end
+
+function ChoGGi.BuildDisasterMenu(sList,sType,sName)
+  for i = 1, #sList do
+    ChoGGi.AddAction(
+      "Gameplay/Disasters/" .. sName .. "/[" .. i .. "]" .. sList[i],
+      function()
+        mapdata[sType] = sName .. "_" .. sList[i]
+        ChoGGi.MsgPopup(sName .. " occurrence is now: " .. sList[i],
+          "Disaster","UI/Icons/Sections/attention.tga"
+        )
+      end,
+      nil,
+      "Set the occurrence level of ".. sName .. " disasters.",
+      "RandomMapPresetEditor.tga"
+    )
+  end
+end
+
 function ChoGGi.ShuttleCapacitySet(Bool)
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
     if Bool then
@@ -11,8 +53,8 @@ function ChoGGi.ShuttleCapacitySet(Bool)
   if not Bool then
     ChoGGi.CheatMenuSettings.ShuttleStorage = false
   end
-  ChoGGi.WriteSettings()
 
+  ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Storage is now " .. ChoGGi.CheatMenuSettings.ShuttleStorage or "default",
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
@@ -32,8 +74,8 @@ function ChoGGi.ShuttleSpeedSet(Bool)
   if not Bool then
     ChoGGi.CheatMenuSettings.ShuttleSpeed = false
   end
-  ChoGGi.WriteSettings()
 
+  ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Speed is now " .. ChoGGi.CheatMenuSettings.ShuttleSpeed or "default",
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
@@ -61,8 +103,8 @@ function ChoGGi.ShuttleHubCapacitySet(Bool)
       end
     end
   end
-  ChoGGi.WriteSettings()
 
+  ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Capacity is now " .. ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] or "default",
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
@@ -92,36 +134,61 @@ function ChoGGi.CameraFollow_Toggle()
   if not mapdata.GameLogic then
     return
   end
-  --turn it off
+  local obj = SelectedObj or SelectionMouseObj()
+
+  --turn it off?
   if camera3p.IsActive() then
     engineShowMouseCursor()
     SetMouseDeltaMode(false)
     ShowMouseCursor("InGameCursor")
     cameraRTS.Activate(1)
+    --reset camera fov settings
+    if ChoGGi.cameraFovX then
+      camera.SetFovX(ChoGGi.cameraFovX)
+    end
+    --show log again if it was hidden
+    if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
+      cls() --if it's going to spam the log, might as well clear it
+      ToggleConsoleLog()
+    end
+    --reset camera zoom settings
+    ChoGGi.SetCameraSettings()
     return
-  --crashes if we attach to false
-  elseif not SelectedObj then
+  --crashes game if we attach to "false"
+  elseif not obj then
     return
   end
+  --let user know the camera mode
+  print("Camera Follow")
   --we only want to follow one object
   if ChoGGi.LastFollowedObject then
     camera3p.DetachObject(ChoGGi.LastFollowedObject)
   end
   --save for DetachObject
-  ChoGGi.LastFollowedObject = SelectedObj
-
+  ChoGGi.LastFollowedObject = obj
+  --save for fovX reset
+  ChoGGi.cameraFovX = camera.GetFovX()
+  --zoom further out unless it's a colonist
+  if not obj.age then
+    --up the horizontal fov so we're zoomed away from object
+    camera.SetFovX(8400)
+  end
+  --consistent zoom level
+  cameraRTS.SetZoom(15000)
+  --Activate it
   camera3p.Activate(1)
-  camera3p.AttachObject(SelectedObj)
-  --camera3p.SetZoom(10) --default 100
-  --if SelectedObj:GetSpecialization() --human
+  camera3p.AttachObject(obj)
   camera3p.SetLookAtOffset(point(0,0,-1500))
   camera3p.SetEyeOffset(point(0,0,-1000))
   camera3p.EnableMouseControl(true)
-  camera3p.EnableMouseControl(true)
-  print("Camera Follow")
+
+  --toggle showing console history as console spams when colonist and looking through glass
+  if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
+    ToggleConsoleLog()
+  end
 end
 
-function ChoGGi.CameraCursor_Toggle()
+function ChoGGi.CursorVisible_Toggle()
   if IsMouseCursorHidden() then
     engineShowMouseCursor()
     SetMouseDeltaMode(false)
@@ -143,15 +210,41 @@ function ChoGGi.InfopanelCheats_Toggle()
   )
 end
 
+function ChoGGi.InfopanelCheatsCleanup_Toggle()
+  ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane = not ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane
+
+  if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
+    ChoGGi.InfopanelCheatsCleanup()
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane) .. ": Cleanup",
+   "Cheats","UI/Icons/Anomaly_Tech.tga"
+  )
+end
+
 function ChoGGi.BorderScrolling_Toggle()
   ChoGGi.CheatMenuSettings.BorderScrollingToggle = not ChoGGi.CheatMenuSettings.BorderScrollingToggle
   if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
-    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+    cameraRTS.SetProperties(1,{ScrollBorder = 5})
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingToggle) .. ": Mouse Border Scrolling",
+   "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
+  )
+end
+
+function ChoGGi.BorderScrollingArea_Toggle()
+  ChoGGi.CheatMenuSettings.BorderScrollingArea = not ChoGGi.CheatMenuSettings.BorderScrollingArea
+  if ChoGGi.CheatMenuSettings.BorderScrollingArea then
+    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+  else
+    cameraRTS.SetProperties(1,{ScrollBorder = 5})
+  end
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingArea) .. ": Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
   )
 end
@@ -251,7 +344,7 @@ function ChoGGi.RocketTravelInstant_Toggle()
   ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
   ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. "or 88 MPH",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. " or 88 MPH",
    "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
   )
 end

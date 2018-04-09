@@ -11,17 +11,13 @@ end
 function CheatsEnabled()
   return true
 end
---needed to make the console appear when not in ged mod editor more
-ConsoleEnabled = true
 
 --keep my mod contained in
 ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  _VERSION = _G.Mods.ChoGGi_CheatMenu.version,
   ModPath = "AppData/Mods/CheatMod_CheatMenu/",
   FilesCount = {},
   FilesCountAuto = {},
-  ReplacedFunc = {},
   StartupMsgs = {},
   OrigFunc = {},
   CheatMenuSettings = {},
@@ -33,7 +29,7 @@ ChoGGi = {
 -- Turn on editor mode (this is required for cheats to work) and then add the editor commands
 Platform.editor = true
 Platform.developer = true
-Platform.cmdline = true
+--Platform.cmdline = true
 --add built-in cheat menu items
 AddCheatsUA()
 
@@ -101,8 +97,9 @@ dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.designer.lua")
 dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.designer.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.lua")
-Platform.developer = false
 
+--causes some labels to say stripped/shortcut keys are different
+Platform.developer = false
 
 --used to let me know if we're on my computer for extra StartupMsgs
 local file_error, code = AsyncFileToString("AppData/ChoGGi.lua")
@@ -135,7 +132,7 @@ if ChoGGi.CheatMenuSettings.WriteLogs then
 end
 
 --first time run info
-if not ChoGGi.CheatMenuSettings.FirstRun then
+if ChoGGi.CheatMenuSettings.FirstRun then
   table.insert(ChoGGi.StartupMsgs,"\nCheatMenu Active:\nF2 to toggle menu\nDebug>Console History to toggle console history.\n\n\n")
   ChoGGi.CheatMenuSettings.FirstRun = false
   ChoGGi.Init_WriteSettings = 1

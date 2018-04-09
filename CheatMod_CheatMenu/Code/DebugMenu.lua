@@ -6,7 +6,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.HigherRenderDist and "(Enabled)" or "(Disabled)"
-    return des .. " Renders model from further away (probably not noticeable unless using higher zoom)."
+    return des .. " Renders model from further away.\nNot noticeable unless using higher zoom."
   end,
   "CameraEditor.tga"
 )
@@ -17,7 +17,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.HigherShadowDist and "(Enabled)" or "(Disabled)"
-    return des .. " Renders shadows from further away (probably not noticeable unless using higher zoom)."
+    return des .. " Renders shadows from further away.\nNot noticeable unless using higher zoom."
   end,
   "toggle_post.tga"
 )

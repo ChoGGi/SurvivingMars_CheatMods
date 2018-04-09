@@ -277,20 +277,27 @@ function ChoGGi.TravelTimeMarsEarth()
 end
 
 function ChoGGi.SetCameraSettings()
-  if ChoGGi.CheatMenuSettings.BorderScrollingToggle then
-    --disable border scrolling
+--cameraRTS.GetProperties(1)
+
+  --reduce ScrollBorder to the smallest we can (1 = can't scroll down)
+  if ChoGGi.CheatMenuSettings.BorderScrollingArea then
+    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+  --disable border scrolling
+  elseif ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
-    --reduce ScrollBorder to the smallest we can (1 = can't scroll down)
-    cameraRTS.SetProperties(1,{ScrollBorder = 2})
+  --pretty sure this is the default, but they seem to have removed it in the Spirit update...
+    cameraRTS.SetProperties(1,{ScrollBorder = 5})
   end
 
   --zoom
   if ChoGGi.CheatMenuSettings.CameraZoomToggle then
     cameraRTS.SetZoomLimits(0,24000)
+  else
+    cameraRTS.SetZoomLimits(400,15000)
   end
 
-  cameraRTS.SetProperties(1,{HeightInertia = 0})
+  --cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
 --[[

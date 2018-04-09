@@ -135,6 +135,12 @@ function ChoGGi.AsteroidBombardment(Num)
 end
 
 function ChoGGi.DeleteSelectedObject()
+  --deleting domes can freeze game.
+  if IsKindOf(SelectedObj,"Dome") then
+    return
+  end
+  SelectedObj:delete()
+--[[
   pcall(function()
     SelectedObj.can_demolish = true
     SelectedObj.indestructible = false
@@ -142,6 +148,7 @@ function ChoGGi.DeleteSelectedObject()
     SelectedObj:Destroy()
     SelectedObj:delete()
   end)
+  --]]
 end
 
 function ChoGGi.ConsoleHistory_Toggle()

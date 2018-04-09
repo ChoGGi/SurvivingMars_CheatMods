@@ -1,24 +1,21 @@
---[[
+--[[fixed in spirit update
+--output results to console
+
 --for redirecting print/ConsolePrint to consolelog
-function ChoGGi.ReplacedFunc.print(...)
+ChoGGi.OrigFunc.print = print
+function print(...)
   if ... then
     AddConsoleLog(...,true)
   end
   ChoGGi.OrigFunc.print(...)
 end
-
-function ChoGGi.ReplacedFunc.ConsolePrint(...)
+ChoGGi.OrigFunc.ConsolePrint = ConsolePrint
+function ConsolePrint(...)
   if ... then
     AddConsoleLog(...,true)
   end
   ChoGGi.OrigFunc.ConsolePrint(...)
 end
-
---output results to console
-ChoGGi.OrigFunc.print = print
-ChoGGi.OrigFunc.ConsolePrint = ConsolePrint
-print = ChoGGi.ReplacedFunc.print
-ConsolePrint = ChoGGi.ReplacedFunc.ConsolePrint
 --]]
 
 --make some easy to type names
@@ -51,19 +48,54 @@ cur = GetTerrainCursorObjSel
 sp = GetPreciseCursorObj
 sc = GetTerrainCursor
 
---some dickhead removed this from the Spirit update...
-function Console:AddPromptText(text)
-  self:Show(true)
-  self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
-  self.idEdit:SetCursorPos(#text)
+--make sure console is focused even when construction is opened
+ChoGGi.OrigFunc.Console_Show = Console.Show
+function Console:Show(show)
+  local was_visible = self:GetVisible()
+  self:SetVisible(show)
+  ShowConsoleLogBackground(show)
+  if show and not was_visible then
+    self.idEdit:SetFocus()
+    self.idEdit:SetText("")
+    self:ReadHistory()
+    --always on top
+    self:SetModal()
+  end
+  if not show then
+    self:CloseAutoComplete()
+    --always on top
+    self:SetModal(false)
+  end
 end
+
+--always able to show console
+ChoGGi.OrigFunc.ShowConsole = ShowConsole
+function ShowConsole(visible)
+--[[
+  if not Platform.developer and not ConsoleEnabled then
+    return
+  end
+--]]
+  if visible and not rawget(_G, "dlgConsole") then
+    CreateConsole()
+  end
+  if rawget(_G, "dlgConsole") then
+    dlgConsole:Show(visible)
+  end
+end
+
+--some dev removed this from the Spirit update... (harumph)
 function AddConsolePrompt(text)
   if dlgConsole then
-    dlgConsole:AddPromptText(text)
+    local self = dlgConsole
+    self:Show(true)
+    self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
+    self.idEdit:SetCursorPos(#text)
   end
 end
 
 --make it so it goes to the end of the text when you use history
+ChoGGi.OrigFunc.Console_HistoryDown = Console.HistoryDown
 function Console:HistoryDown()
   if self.history_queue_idx <= 1 then
     self.history_queue_idx = #self.history_queue
@@ -76,6 +108,7 @@ function Console:HistoryDown()
   --added:
   self.idEdit:SetCursorPos(#text)
 end
+ChoGGi.OrigFunc.Console_HistoryUp = Console.HistoryUp
 function Console:HistoryUp()
   if self.history_queue_idx + 1 <= #self.history_queue then
     self.history_queue_idx = self.history_queue_idx + 1
@@ -88,7 +121,19 @@ function Console:HistoryUp()
   --added:
   self.idEdit:SetCursorPos(#text)
 end
-
+--toggle visiblity of console log
+function ToggleConsoleLog()
+  if dlgConsoleLog then
+    local isVis = dlgConsoleLog:GetVisible()
+    if isVis then
+      dlgConsoleLog:SetVisible(false)
+    else
+      dlgConsoleLog:SetVisible(true)
+    end
+  else
+    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+  end
+end
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.UserAddActions(ActionsToAdd)
@@ -121,34 +166,13 @@ function ChoGGi.UserAddActions(ActionsToAdd)
   UserActions.SetMode(UserActions.mode)
 end
 
-
---RemoveBuildingLimits
-function OnMsg.ClassesBuilt()
-
-  --save teh OrigFuncs
-  --so we can build without (as many) limits
-  ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
-  --so we can do long spaced tunnels
-  ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
---[[
-  sometimes gets stuck in placement mode when placing domes (and others, but usually domes), so I changed
-    if st.short then
-  to
-    if st and st.short then
---]]
-  ChoGGi.OrigFunc.CC_UpdateShortConstructionStatus = ConstructionController.UpdateShortConstructionStatus
-  --doesn't cause any real problems, but it does spam the log with st.test missing, so I did the same as UpdateShortConstructionStatus
-  ChoGGi.OrigFunc.CC_Getconstruction_statuses_property = ConstructionController.Getconstruction_statuses_property
-
-  --replace teh OrigFuncs
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-
 --[[
 CityConstruction[UICity] = ConstructionController:new()
 CityGridConstruction[UICity] = GridConstructionController:new()
 CityGridSwitchConstruction[UICity] = GridSwitchConstructionController:new()
 CityTunnelConstruction[UICity] = TunnelConstructionController:new()
 CityUnitController[UICity] = UnitController:new()
+
 IGIModeClasses = {
 construction = ConstructionModeDialog
 demolish = DemolishModeDialog
@@ -164,38 +188,79 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 }
 --]]
 
+--RemoveBuildingLimits
+function OnMsg.ClassesBuilt()
+
+  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+
+    --so we can build without (as many) limits
+    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
     function ConstructionController:UpdateConstructionStatuses(dont_finalize)
-      pcall(function()
-        ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,dont_finalize)
-      end)
-      --remove errors we want to remove
+      --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
+      ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,"dont_finalize")
+
+      --CityConstruction[UICity].construction_statuses
 
       local status = self.construction_statuses
+
+      if self.is_template then
+        local cobj = rawget(self.cursor_obj, true)
+        local tobj = setmetatable({
+          [true] = cobj,
+          ["city"] = UICity
+        }, {
+          __index = self.template_obj
+        })
+        tobj:GatherConstructionStatuses(self.construction_statuses)
+      end
+
+      --remove errors we want to remove
+      local statusNew = {}
       if #status > 0 then
         for i = 1, #status do
-          if pcall(ChoGGi.ConstructionErrors[_InternalTranslate(status[i].short)]) then
-            status[i] = nil
+          if status[i].type == "warning" then
+            table.insert(statusNew,status[i])
+          --UnevenTerrain < causes issues when placing buildings (martian ground viagra)
+          --ResourceRequired < no point in building an extractor when there's nothing to extract
+          --BlockingObjects < place buildings in each other
+          elseif status[i] == ConstructionStatus.UnevenTerrain then
+            table.insert(statusNew,status[i])
           end
         end
       end
-    end --ConstructionController
+      --make sure we don't get errors down the line
+      if type(statusNew) == "boolean" then
+        statusNew = {}
+      end
 
-    --we only want to block uneven terrain
+      self.construction_statuses = statusNew
+      status = self.construction_statuses
+
+
+      if not dont_finalize then
+        self:FinalizeStatusGathering(status)
+      else
+        return status
+      end
+
+    end --ConstructionController:UpdateConstructionStatuses
+
+    --so we can do long spaced tunnels
+    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
     function TunnelConstructionController:UpdateConstructionStatuses(pt)
       local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
-      local status = self.construction_statuses
-      if #status > 0 then
-        for i = 1, #status do
-          if pcall(ChoGGi.ConstructionErrors[_InternalTranslate(status[i].short)]) then
-            status[i] = nil
-          end
-        end
+      --[[
+      if self.placed_obj and not IsCloser2D(self.placed_obj, self.cursor_obj, self.max_range * const.GridSpacing) then
+        table.insert(self.construction_statuses, ConstructionStatus.TooFarFromTunnelEntrance)
       end
+      --]]
       self:FinalizeStatusGathering(old_t)
-    end --TunnelConstructionController
+    end --TunnelConstructionController:UpdateConstructionStatuses
 
+--[[
+    --sometimes gets stuck in placement mode when placing domes (and others, but usually domes), so I changed
+    ChoGGi.OrigFunc.CC_UpdateShortConstructionStatus = ConstructionController.UpdateShortConstructionStatus
     function ConstructionController:UpdateShortConstructionStatus()
-    --ChoGGi.OrigFunc.CC_UpdateShortConstructionStatus
       local dlg = GetDialog("HUD")
       if not dlg then
         return
@@ -203,9 +268,11 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
       local ctrl = dlg.idtxtConstructionStatus
       local text = ""
       if #self.construction_statuses > 0 then
+      local st
         for i = 1, #self.construction_statuses do
-          local st = self.construction_statuses[i]
+          st = self.construction_statuses[i]
           -- (dev check)
+          --if st.short then
           if st and st.short then
             text = T({878,"<col><short></color>",col = ConstructionStatusColors[st.type].color_tag_short,st})
             break
@@ -216,13 +283,17 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
       ctrl:SetVisible(text ~= "")
       ctrl:SetMargins(box(-ctrl.text_width / 2, 30, 0, 0))
       return text, ctrl
-    end --UpdateShortConstructionStatus
+    end --ConstructionController:UpdateShortConstructionStatus
+
+    --doesn't cause any real problems, but it does spam the log with st.test missing, so I did the same as UpdateShortConstructionStatus
+    ChoGGi.OrigFunc.CC_Getconstruction_statuses_property = ConstructionController.Getconstruction_statuses_property
     function ConstructionController:Getconstruction_statuses_property()
       local items = {}
       if #self.construction_statuses > 0 then
         for i = 1, Min(#self.construction_statuses, 2) do
           local st = self.construction_statuses[i]
           -- (dev check)
+          --if st.text then
           if st and st.text then
             items[#items + 1] = T({879,"<col><text></color>",col = ConstructionStatusColors[st.type].color_tag,text = st.text})
           end
@@ -244,80 +315,35 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
         end
       end
       return table.concat(items, "\n")
-    end --Getconstruction_statuses_property
+    end --ConstructionController:Getconstruction_statuses_property
+
+    --doesn't cause any real problems, but it does spam the log with b is nil value
+    ChoGGi.OrigFunc.SortConstructionStatuses = SortConstructionStatuses
+    function SortConstructionStatuses(statuses)
+      if not statuses then
+        return
+      else
+        ChoGGi.OrigFunc.SortConstructionStatuses(statuses)
+      end
+    end --SortConstructionStatuses
+--]]
 
   end --if
 
   --was giving a nil error in log, I assume devs'll fix it one day (changed amount to amount or 0)
+  ChoGGi.OrigFunc.RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
   function RequiresMaintenance:AddDust(amount)
     if self:IsKindOf("Building") then
       --(dev check)
+      --amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
       amount = MulDivRound(amount or 0, g_Consts.BuildingDustModifier, 100)
     end
     if self.accumulate_dust then
       self:AccumulateMaintenancePoints(amount)
     end
   end
+
 end --OnMsg
-
---[[
-  XMultiLineEdit < make console multilined?
-
-
-    function Console.children[2].OnKbdKeyUp()
-    GetText()
-    SetCursorPos()
-    end
-    function Console.children[2].OnKbdKeyDown()
-
-    end
-    dlgConsole.autoCompleteList = {"Consts"}
-    dlgConsole:UpdateAutoCompleteList()
-    dlgConsole:visible =
-
-  ChoGGi.OrigFunc.ConsoleShow = Console.Show
-  function Console.Show(bShow)
-    ChoGGi.OrigFunc.ConsoleShow(bShow)
-    local c = dlgConsole
-    --set console how I like it
-    if ChoGGi.Testing then
-      local l = dlgConsoleLog
-      local size = UIL.GetSafeArea()
-      local w = size:sizex() / 3
-      local h = size:sizey()
-      if w > 100 or h > 100 then
-        c:GetSize():y()
-        c:SetPos(point(320,h - c:GetSize():y() - 8))
-        c:SetSize(point(w - 325,24))
-        l:SetTextOffset(point(16,h - 32))
-        l:SetPos(point(512,48))
-        l:SetSize(point(1920 - 512 - 16,h - 32 - 48 - 16))
-      end
-    end
-
-    --console settings
-    c.children[2].cursor_blink_time = 196
-    --dlgConsole.children[2].auto_select_all = false
-  end
-
-  --move the log window a bit
-  function ConsoleLog.Resize()
-    local self = dlgConsoleLog
-
-    local size = UIL.GetSafeArea()
-    local w = size:sizex()
-    local h = size:sizey()
-    if w < 100 or h < 100 then
-      return
-    end
-    self:SetSize(point(
-      w - 8,
-      h - 44 - VirtualKeyboardHeight() - (h - 44) % self:GetFontHeight())
-    )
-    self:SetTextOffset(point(0, self:GetSize():y() - self:GetTextHeight()))
-    self:SetPos(point(size:minx() + 4, size:miny() + 4))
-  end
-  --]]
 
 function OnMsg.ClassesGenerate()
 --[[

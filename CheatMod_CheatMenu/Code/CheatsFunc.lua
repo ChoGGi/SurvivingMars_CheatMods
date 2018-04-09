@@ -22,7 +22,7 @@ local function CheatStartMystery(mystery_id)
   for i = 1, #TechTree do
     local field = TechTree[i]
     local field_id = field.id
-    local costs = field.costs or empty_table
+    --local costs = field.costs or empty_table
     local list = UICity.tech_field[field_id] or {}
     UICity.tech_field[field_id] = list
     for _, tech in ipairs(field) do

@@ -1,4 +1,37 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+
+ChoGGi.BuildDisasterMenu(
+  {"VeryLow","Low","High","VeryHigh","VeryHigh_1","VeryHigh_2","VeryHigh_3"},
+  "MapSettings_DustDevils",
+  "DustDevils"
+)
+ChoGGi.BuildDisasterMenu(
+  {"VeryLow","Low","High","VeryHigh","VeryHigh_1"},
+  "MapSettings_ColdWave",
+  "ColdWave"
+)
+ChoGGi.BuildDisasterMenu(
+  {"VeryLow","Low","High","VeryHigh","VeryHigh_1","VeryHigh_2"},
+  "MapSettings_DustStorm",
+  "DustStorm"
+)
+ChoGGi.BuildDisasterMenu(
+  {"VeryLow","Low","High","VeryHigh"},
+  "MapSettings_Meteor",
+  "Meteor"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Disasters/Damage Toggle",
+  ChoGGi.MeteorHealthDamage_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
+    return des .. " Disable Meteor damage (colonists?)."
+  end,
+  "remove_water.tga"
+)
+
 -------------
 ChoGGi.AddAction(
   "Gameplay/Shuttles/ShuttleHub Shuttles + 25",
@@ -66,21 +99,24 @@ ChoGGi.AddAction(
   "Gameplay/QoL/Camera/Toggle Free Camera",
   ChoGGi.CameraFree_Toggle,
   "Shift-C",
-  "I believe I can fly."
+  "I believe I can fly.",
+  "CameraToggle.tga"
 )
 
 ChoGGi.AddAction(
   "Gameplay/QoL/Camera/Toggle Follow Camera",
   ChoGGi.CameraFollow_Toggle,
   "Ctrl-Shift-F",
-  "Select an object to follow."
+  "Select (or mouse over) an object to follow.",
+  "CameraToggle.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Toggle Camera Cursor",
-  ChoGGi.CameraCursor_Toggle,
+  "Gameplay/QoL/Camera/Toggle Cursor",
+  ChoGGi.CursorVisible_Toggle,
   "Ctrl-Alt-F",
-  "Toggles showing cursor."
+  "Toggle between moving camera and selecting objects.",
+  "CameraToggle.tga"
 )
 
 ChoGGi.AddAction(
@@ -90,6 +126,17 @@ ChoGGi.AddAction(
   function()
     local des = ChoGGi.CheatMenuSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
     return des .. " Disable scrolling when mouse is near borders."
+  end,
+  "CameraToggle.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/Camera/Border Scrolling Area",
+  ChoGGi.BorderScrollingArea_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.BorderScrollingArea and "(Enabled)" or "(Disabled)"
+    return des .. " Minimize activation area for mouse scrolling, so menus are less annoying to use."
   end,
   "CameraToggle.tga"
 )
@@ -115,6 +162,18 @@ ChoGGi.AddAction(
   end,
   "toggle_dtm_slots.tga"
 )
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[-1]Infopanel Cheats Cleanup",
+  ChoGGi.InfopanelCheatsCleanup_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane and "(Enabled)" or "(Disabled)"
+    return des .. " Remove some entries from the cheats pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
+  end,
+  "toggle_dtm_slots.tga"
+)
+
 
 ChoGGi.AddAction(
   "Gameplay/QoL/Pipes Pillars Spacing Toggle",
@@ -173,17 +232,6 @@ ChoGGi.AddAction(
     return des .. " Queue up to 100 squares (default " .. ChoGGi.Consts.ExplorationQueueMaxSize .. ")."
   end,
   "ViewArea.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Meteors/Damage Toggle",
-  ChoGGi.MeteorHealthDamage_Toggle,
-  nil,
-  function()
-    local des = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
-    return des .. " Disable Meteor damage (colonists?)."
-  end,
-  "remove_water.tga"
 )
 
 ChoGGi.AddAction(
@@ -299,9 +347,7 @@ ChoGGi.AddAction(
     ChoGGi.ColonistsPerRocket(true)
   end,
   "Ctrl-Shift-O",
-  function()
-    return Consts.MaxColonistsPerRocket + 25 .. " colonists can arrive on Mars in a single Rocket."
-  end,
+  "+ 25 colonists can arrive on Mars in a single Rocket.",
   "ToggleMarkers.tga"
 )
 

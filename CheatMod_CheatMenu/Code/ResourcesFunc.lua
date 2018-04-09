@@ -1,3 +1,12 @@
+function ChoGGi.AddOrbitalProbes()
+  if not UICity then
+    return
+  end
+  for i = 1, 10 do
+    PlaceObject("OrbitalProbe",{city = UICity})
+  end
+end
+
 function ChoGGi.DeepScanToggle()
   Consts.DeepScanAvailable = ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable)
   Consts.IsDeepWaterExploitable = ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable)
