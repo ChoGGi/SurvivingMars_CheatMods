@@ -96,7 +96,145 @@ ChoGGi.AddAction(
 )
 -------------
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Toggle Free Camera",
+  "Gameplay/QoL/[3]Shadow Map/[0](default)",
+  function()
+    ChoGGi.SetShadowmapSize(false)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nUses setting from Menu>Options>Video>Shadows (restart to enable)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[1]Crap (256)",
+  function()
+    ChoGGi.SetShadowmapSize(256)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[2]Lower (512)",
+  function()
+    ChoGGi.SetShadowmapSize(512)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[3]Low (1536)",
+  function()
+    ChoGGi.SetShadowmapSize(1536)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[3]Medium (2048)",
+  function()
+    ChoGGi.SetShadowmapSize(2048)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[4]High (4096)",
+  function()
+    ChoGGi.SetShadowmapSize(4096)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[5]Higher (8192)",
+  function()
+    ChoGGi.SetShadowmapSize(8192)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows)."
+  end,
+  "DisableEyeSpec.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[3]Shadow Map/[6]Highest (16384)",
+  function()
+    ChoGGi.SetShadowmapSize(16384)
+  end,
+  nil,
+  function()
+    local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+    return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows).\nWarning: Uses a couple gigs of vram."
+  end,
+  "DisableEyeSpec.tga"
+)
+--------------------
+ChoGGi.AddAction(
+  "Gameplay/QoL/[2]Render/Disable Texture Compression Toggle",
+  ChoGGi.DisableTextureCompression_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.DisableTextureCompression and "(Enabled)" or "(Disabled)"
+    return des .. " Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram)."
+  end,
+  "ExportImageSequence.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[2]Render/Higher Render Distance Toggle",
+  ChoGGi.HigherRenderDist_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.HigherRenderDist and "(Enabled)" or "(Disabled)"
+    return des .. " Renders model from further away.\nNot noticeable unless using higher zoom."
+  end,
+  "CameraEditor.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[2]Render/Higher Shadow Distance Toggle",
+  ChoGGi.HigherShadowDist_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.HigherShadowDist and "(Enabled)" or "(Disabled)"
+    return des .. " Renders shadows from further away.\nNot noticeable unless using higher zoom."
+  end,
+  "toggle_post.tga"
+)
+
+
+ChoGGi.AddAction(
+  "Gameplay/QoL/[1]Camera/Toggle Free Camera",
   ChoGGi.CameraFree_Toggle,
   "Shift-C",
   "I believe I can fly.",
@@ -104,7 +242,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Toggle Follow Camera",
+  "Gameplay/QoL/[1]Camera/Toggle Follow Camera",
   ChoGGi.CameraFollow_Toggle,
   "Ctrl-Shift-F",
   "Select (or mouse over) an object to follow.",
@@ -112,7 +250,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Toggle Cursor",
+  "Gameplay/QoL/[1]Camera/Toggle Cursor",
   ChoGGi.CursorVisible_Toggle,
   "Ctrl-Alt-F",
   "Toggle between moving camera and selecting objects.",
@@ -120,7 +258,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Border Scrolling",
+  "Gameplay/QoL/[1]Camera/Border Scrolling",
   ChoGGi.BorderScrolling_Toggle,
   nil,
   function()
@@ -131,7 +269,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Border Scrolling Area",
+  "Gameplay/QoL/[1]Camera/Border Scrolling Area",
   ChoGGi.BorderScrollingArea_Toggle,
   nil,
   function()
@@ -142,7 +280,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Camera/Zoom Distance",
+  "Gameplay/QoL/[1]Camera/Zoom Distance",
   ChoGGi.CameraZoom_Toggle,
   nil,
   function()

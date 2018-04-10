@@ -135,7 +135,7 @@ function OnMsg.ModsLoaded()
   local templates = DataInstances.MissionLogo
   for i = 1, #templates do
     ChoGGi.AddAction(
-      "Gameplay/QoL/Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
+      "Gameplay/QoL/[4]Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
       function()
         ChoGGi.SetNewLogo(templates[i].name,_InternalTranslate(templates[i].display_name))
       end,

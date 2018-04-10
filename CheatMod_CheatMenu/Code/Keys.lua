@@ -34,7 +34,8 @@ ChoGGi.AddAction(nil,
 --goes to placement mode with SelectedObj
 ChoGGi.AddAction(nil,
   function()
-    ChoGGi.ConstructionModeNameClean(SelectedObj:__toluacode())
+    local obj = SelectedObj or SelectionMouseObj()
+    ChoGGi.ConstructionModeNameClean(obj:__toluacode())
   end,
   "Ctrl-Shift-Space"
 )

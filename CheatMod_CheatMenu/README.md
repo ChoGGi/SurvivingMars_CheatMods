@@ -13,11 +13,11 @@ Enter or Tilde to show the console
 F9 to clear the console log
 Ctrl-Alt-Shift-R: opens console and places "restart" in it
 Ctrl-Space: Opens placement mode with the last placed item
-Ctrl-Shift-Space: Opens placement mode with the selected item
+Ctrl-Shift-Space: Opens placement mode with the selected (or object under mouse) item
 Ctrl-Shift-F: Follow Camera (select an object to follow around)
 Ctrl-Alt-F: Toggle mouse cursor
 Ctrl-Shift-E: Toggle editor mode
-Ctrl-Alt-Shift-D: Delete object (selected or object under mouse).
+Ctrl-Alt-Shift-D: Delete object (selected or object under mouse)
 
 There's a cheats section in most info panels on the right side of the screen.
 Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
@@ -31,6 +31,9 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 
 ##### List of some stuff added (not up to date)
 ```
+Disable Texture Compression
+Set Shadow Map Size
+Set Death Age to 250
 Add 250 Applicants
 Change Sponsor/Commander
 Change logo

@@ -1,33 +1,3 @@
-function ChoGGi.HigherShadowDist_Toggle()
-  ChoGGi.CheatMenuSettings.HigherShadowDist = not ChoGGi.CheatMenuSettings.HigherShadowDist
-  if ChoGGi.CheatMenuSettings.HigherShadowDist then
-    hr.ShadowRangeOverride = 1000000
-    hr.ShadowFadeOutRangePercent = 0
-  else
-    hr.ShadowRangeOverride = 0
-    hr.ShadowFadeOutRangePercent = 30
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherShadowDist),
-   "Video","UI/Icons/Anomaly_Event.tga"
-  )
-end
-
-function ChoGGi.HigherRenderDist_Toggle()
-  ChoGGi.CheatMenuSettings.HigherRenderDist = not ChoGGi.CheatMenuSettings.HigherRenderDist
-  if ChoGGi.CheatMenuSettings.HigherRenderDist then
-    hr.LODDistanceModifier = 600
-  else
-    hr.LODDistanceModifier = 120
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
-   "Video","UI/Icons/Anomaly_Event.tga"
-  )
-end
-
 function ChoGGi.WriteLogs_Toggle()
   ChoGGi.CheatMenuSettings.WriteLogs = not ChoGGi.CheatMenuSettings.WriteLogs
   if ChoGGi.CheatMenuSettings.WriteLogs then

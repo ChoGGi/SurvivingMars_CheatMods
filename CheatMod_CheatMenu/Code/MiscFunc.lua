@@ -1,3 +1,57 @@
+function ChoGGi.DisableTextureCompression_Toggle()
+  ChoGGi.CheatMenuSettings.DisableTextureCompression = not ChoGGi.CheatMenuSettings.DisableTextureCompression
+
+  hr.TR_ToggleTextureCompression = 1
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Texture Compression: " .. tostring(ChoGGi.CheatMenuSettings.DisableTextureCompression),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
+function ChoGGi.SetShadowmapSize(iSize)
+
+  ChoGGi.CheatMenuSettings.ShadowmapSize = iSize
+  if iSize then
+    hr.ShadowmapSize = iSize
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("ShadowmapSize: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
+function ChoGGi.HigherShadowDist_Toggle()
+  ChoGGi.CheatMenuSettings.HigherShadowDist = not ChoGGi.CheatMenuSettings.HigherShadowDist
+  if ChoGGi.CheatMenuSettings.HigherShadowDist then
+    hr.ShadowRangeOverride = 1000000
+    hr.ShadowFadeOutRangePercent = 0
+  else
+    hr.ShadowRangeOverride = 0
+    hr.ShadowFadeOutRangePercent = 30
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherShadowDist),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
+function ChoGGi.HigherRenderDist_Toggle()
+  ChoGGi.CheatMenuSettings.HigherRenderDist = not ChoGGi.CheatMenuSettings.HigherRenderDist
+  if ChoGGi.CheatMenuSettings.HigherRenderDist then
+    hr.LODDistanceModifier = 600
+  else
+    hr.LODDistanceModifier = 120
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
+   "Video","UI/Icons/Anomaly_Event.tga"
+  )
+end
+
 function ChoGGi.SetNewLogo(sName,sDisplay)
   --any newly built/landed uses this logo
   g_CurrentMissionParams.idMissionLogo = sName
