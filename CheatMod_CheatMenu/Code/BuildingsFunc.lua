@@ -70,6 +70,23 @@ function ChoGGi.StorageDepotUniversalSet(Bool,Amount)
 end
 --]]
 
+function ChoGGi.FarmShiftsAllOn()
+  for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
+    building.closed_shifts[1] = false
+    building.closed_shifts[2] = false
+    building.closed_shifts[3] = false
+  end
+  --BaseFarm doesn't include FungalFarm...
+  for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
+    building.closed_shifts[1] = false
+    building.closed_shifts[2] = false
+    building.closed_shifts[3] = false
+  end
+  ChoGGi.MsgPopup("Well, I been working in a coal mine. Going down, down",
+    "Farms","UI/Icons/Sections/Food_2.tga"
+  )
+end
+
 function ChoGGi.SetCapacity(Bool,Which)
   if not SelectedObj and not SelectedObj.base_capacity or not UICity.labels.BuildingNoDomes then
     ChoGGi.MsgPopup("You need to select something that has capacity.",
@@ -298,19 +315,6 @@ function ChoGGi.RepairPipesCables()
   ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.water)
 end
 
-function ChoGGi.SanatoriumCureAll_Toggle()
-  ChoGGi.CheatMenuSettings.SanatoriumCureAll = not ChoGGi.CheatMenuSettings.SanatoriumCureAll
-  if ChoGGi.CheatMenuSettings.SanatoriumCureAll then
-    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits)
-  else
-    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits,true)
-  end
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumCureAll) .. " You keep your work station so clean, Jerome.",
-   "Sanatorium","UI/Icons/Upgrades/home_collective_04.tga"
-  )
-end
-
 function ChoGGi.AddMysteryBreakthroughBuildings()
   ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings = not ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings
   if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
@@ -347,15 +351,32 @@ function ChoGGi.SchoolTrainAll_Toggle()
   )
 end
 
+function ChoGGi.SanatoriumCureAll_Toggle()
+  ChoGGi.CheatMenuSettings.SanatoriumCureAll = not ChoGGi.CheatMenuSettings.SanatoriumCureAll
+  if ChoGGi.CheatMenuSettings.SanatoriumCureAll then
+    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits)
+  else
+    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits,true)
+  end
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumCureAll) .. " There's more vodka in this piss than there is piss.",
+   "Sanatorium","UI/Icons/Upgrades/home_collective_04.tga"
+  )
+end
+
 function ChoGGi.SanatoriumSchoolShowAll()
-  if Sanatorium.max_traits == 16 then
+  ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll = not ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll
+
+  if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
+    Sanatorium.max_traits = #ChoGGi.NegativeTraits
+    School.max_traits = #ChoGGi.PositiveTraits
+  else
     Sanatorium.max_traits = 3
     School.max_traits = 3
-  else
-    Sanatorium.max_traits = 16
-    School.max_traits = 16
   end
-  ChoGGi.MsgPopup(Sanatorium.max_traits .. " Good for what ails you",
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",
    "Buildings","UI/Icons/Upgrades/superfungus_03.tga"
   )
 end

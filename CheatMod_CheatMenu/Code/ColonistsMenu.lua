@@ -1,6 +1,14 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "Gameplay/Colonists/Add Applicants + 250",
+  ChoGGi.AddApplicants,
+  nil,
+  "Add 250 applicants to the pool.",
+  "groups.tga"
+)
+
+ChoGGi.AddAction(
   "Gameplay/Colonists/Gravity - 250",
   function()
     ChoGGi.SetGravity(true,3)

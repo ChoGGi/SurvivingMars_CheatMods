@@ -59,6 +59,7 @@ ChoGGi.Consts = {
   CleanupCheatsInfoPane = true,
   ShowInterfaceInScreenshots = true,
 
+  SanatoriumSchoolShowAll = false,
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,
   BorderScrollingToggle = false,

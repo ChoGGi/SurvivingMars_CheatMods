@@ -1,6 +1,15 @@
 --add items to the cheat pane
 function OnMsg.ClassesGenerate()
 
+--CheatAllShifts
+  local function CheatAllShifts(self)
+    self.closed_shifts[1] = false
+    self.closed_shifts[2] = false
+    self.closed_shifts[3] = false
+  end
+  FungalFarm.CheatAllShifts = CheatAllShifts
+  FarmConventional.CheatAllShifts = CheatAllShifts
+  FarmHydroponic.CheatAllShifts = CheatAllShifts
 --CheatFullyAuto
   local function CheatWorkAuto(self)
     self.max_workers = 0
@@ -243,14 +252,17 @@ function OnMsg.ClassesGenerate()
   School.CheatVisitorsDef = CheatVisitorsDef
   --
 --Double Drones/Shuttles
-  function DroneHub:CheatDblMaxAllHubs()
+  function DroneHub:CheatAllDronesMaxDbl()
     Consts.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones * 2
   end
+  function DroneHub:CheatAllDronesMaxDef()
+    Consts.CommandCenterMaxDrones = ChoGGi.Consts.CommandCenterMaxDrones
+  end
   --
-  function ShuttleHub:CheatDblMaxShuttles()
+  function ShuttleHub:CheatMaxShuttlesDbl()
     self.max_shuttles = self.max_shuttles * 2
   end
-  function ShuttleHub:CheatDefMaxShuttles()
+  function ShuttleHub:CheatMaxShuttlesDef()
     self.max_shuttles = self.base_max_shuttles
   end
 --CheatBattCapDbl

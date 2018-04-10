@@ -1,12 +1,48 @@
-function ChoGGi.FireAllColonists(Which)
 
+function ChoGGi.AddApplicants()
+  local number = 250
+  local now = GameTime()
+  local self = SA_AddApplicants
+  for i = 1, number do
+    local colonist = GenerateApplicant(now)
+    local to_add = self.Trait
+    if self.Trait == "random_positive" then
+      to_add = GetRandomTrait(colonist.traits, {}, {}, "Positive", "base")
+    elseif self.Trait == "random_negative" then
+      to_add = GetRandomTrait(colonist.traits, {}, {}, "Negative", "base")
+    elseif self.Trait == "random_rare" then
+      to_add = GetRandomTrait(colonist.traits, {}, {}, "Rare", "base")
+    elseif self.Trait == "random_common" then
+      to_add = GetRandomTrait(colonist.traits, {}, {}, "Common", "base")
+    elseif self.Trait == "random" then
+      to_add = GenerateTraits(colonist, false, 1)
+    else
+      to_add = self.Trait
+    end
+    if type(to_add) == "table" then
+      for trait in pairs(to_add) do
+        colonist.traits[trait] = true
+      end
+    else
+      colonist.traits[to_add] = true
+    end
+    if self.Specialization ~= "any" then
+      colonist.traits[self.Specialization] = true
+      colonist.specialist = self.Specialization
+    end
+  end
+  ChoGGi.MsgPopup("Added 250 applicants",
+    "Applicants","UI/Icons/Sections/colonist.tga"
+  )
+end
+
+function ChoGGi.FireAllColonists(Which)
   local FireAllColonists = function()
     for _,object in ipairs(UICity.labels.Colonist or empty_table) do
         object:GetFired()
     end
   end
   ChoGGi.QuestionBox("Are you sure you want to fire everyone?",FireAllColonists,"Yer outta here!")
-
 end
 
 function ChoGGi.AllShifts_Toggle(Bool,Msg)

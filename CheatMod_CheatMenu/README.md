@@ -17,6 +17,7 @@ Ctrl-Shift-Space: Opens placement mode with the selected item
 Ctrl-Shift-F: Follow Camera (select an object to follow around)
 Ctrl-Alt-F: Toggle mouse cursor
 Ctrl-Shift-E: Toggle editor mode
+Ctrl-Alt-Shift-D: Delete object (selected or object under mouse).
 
 There's a cheats section in most info panels on the right side of the screen.
 Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
@@ -30,6 +31,8 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 
 ##### List of some stuff added (not up to date)
 ```
+Add 250 Applicants
+Change Sponsor/Commander
 Change logo
 Occurrence level of disasters
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
@@ -165,4 +168,10 @@ ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").
 it returns percentages in decimal for ease of mathing
 ie: BuildingMaintenancePointsModifier is -25 this returns it as 0.25
 it also returns negative amounts as positive (I prefer doing num - Amt, not num + Amt)
+```
+
+##### Known issues
+```
+Going above 4096 or so will making clicking on certain buildings laggy (houses/schools).
+  Don't go too high...
 ```

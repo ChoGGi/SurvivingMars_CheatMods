@@ -85,25 +85,23 @@ function ChoGGi.ShuttleSpeedSet(Bool)
 end
 
 function ChoGGi.ShuttleHubCapacitySet(Bool)
-  if not SelectedObj and not SelectedObj.base_max_shuttles or not UICity.labels.BuildingNoDomes then
+  if not SelectedObj and not SelectedObj.base_max_shuttles or not UICity.labels.ShuttleHub then
     ChoGGi.MsgPopup("You need to select something that has shuttles.",
       "Drones","UI/Icons/IPButtons/drone.tga"
     )
     return
   end
-  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+  for _,building in ipairs(UICity.labels.ShuttleHub or empty_table) do
     --if IsKindOf(building,SelectedObj.encyclopedia_id) then
-    if building.encyclopedia_id == SelectedObj.encyclopedia_id then
-      if Bool == true then
-        building.max_shuttles = building.max_shuttles + ChoGGi.Consts.ShuttleAddAmount
-      else
-        building.max_shuttles = nil
-      end
-      if building.max_shuttles ~= building.base_max_shuttles then
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = building.max_shuttles
-      elseif building.max_shuttles == building.base_max_shuttles then
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = nil
-      end
+    if Bool == true then
+      building.max_shuttles = building.max_shuttles + ChoGGi.Consts.ShuttleAddAmount
+    else
+      building.max_shuttles = nil
+    end
+    if building.max_shuttles ~= building.base_max_shuttles then
+      ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = building.max_shuttles
+    elseif building.max_shuttles == building.base_max_shuttles then
+      ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = nil
     end
   end
 
@@ -423,27 +421,24 @@ function ChoGGi.RCRoverRadius(Bool)
 end
 
 function ChoGGi.CommandCenterRadius(Bool)
-  local buildings = UICity.labels.BuildingNoDomes
-  for _,building in ipairs(buildings) do
-    if IsKindOf(building,"DroneHub") then
-      local prop_meta = building:GetPropertyMetadata("UIWorkRadius")
-      if prop_meta then
-        if Bool == true then
-          const.CommandCenterDefaultRadius = const.CommandCenterDefaultRadius + 25
-          const.CommandCenterMaxRadius = const.CommandCenterMaxRadius + 25
-          const.CommandCenterMinRadius = const.CommandCenterMinRadius + 25
-          local radius = building:GetProperty(prop_meta.id)
-          building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-          building:SetProperty(prop_meta.id, Default(prop_meta.default, radius + 25))
-          building:SetProperty(prop_meta.id, Min(prop_meta.min, radius + 25))
-        else
-          const.CommandCenterDefaultRadius = ChoGGi.Consts.CommandCenterDefaultRadius
-          const.CommandCenterMaxRadius = ChoGGi.Consts.CommandCenterMaxRadius
-          const.CommandCenterMinRadius = ChoGGi.Consts.CommandCenterMinRadius
-          building:SetProperty(prop_meta.id, Default(prop_meta.default, const.CommandCenterDefaultRadius))
-          building:SetProperty(prop_meta.id, Max(prop_meta.max, const.CommandCenterMaxRadius))
-          building:SetProperty(prop_meta.id, Min(prop_meta.min, const.CommandCenterMinRadius))
-        end
+  for _,building in ipairs(UICity.labels.DroneHub) do
+    local prop_meta = building:GetPropertyMetadata("UIWorkRadius")
+    if prop_meta then
+      if Bool == true then
+        const.CommandCenterDefaultRadius = const.CommandCenterDefaultRadius + 25
+        const.CommandCenterMaxRadius = const.CommandCenterMaxRadius + 25
+        const.CommandCenterMinRadius = const.CommandCenterMinRadius + 25
+        local radius = building:GetProperty(prop_meta.id)
+        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
+        building:SetProperty(prop_meta.id, Default(prop_meta.default, radius + 25))
+        building:SetProperty(prop_meta.id, Min(prop_meta.min, radius + 25))
+      else
+        const.CommandCenterDefaultRadius = ChoGGi.Consts.CommandCenterDefaultRadius
+        const.CommandCenterMaxRadius = ChoGGi.Consts.CommandCenterMaxRadius
+        const.CommandCenterMinRadius = ChoGGi.Consts.CommandCenterMinRadius
+        building:SetProperty(prop_meta.id, Default(prop_meta.default, const.CommandCenterDefaultRadius))
+        building:SetProperty(prop_meta.id, Max(prop_meta.max, const.CommandCenterMaxRadius))
+        building:SetProperty(prop_meta.id, Min(prop_meta.min, const.CommandCenterMinRadius))
       end
     end
   end
@@ -453,17 +448,14 @@ function ChoGGi.CommandCenterRadius(Bool)
 end
 
 function ChoGGi.TriboelectricScrubberRadius(Bool)
-  local buildings = UICity.labels.BuildingNoDomes
-  for _,building in ipairs(buildings) do
-    if IsKindOf(building,"TriboelectricScrubber") then
-      local prop_meta = building:GetPropertyMetadata("UIRange")
-      if prop_meta then
-        if Bool == true then
-          local radius = building:GetProperty(prop_meta.id)
-          building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-        else
-          building:SetProperty(prop_meta.id, Max(prop_meta.max,5)) --figure out default const to put here
-        end
+  for _,building in ipairs(UICity.labels.TriboelectricScrubber) do
+    local prop_meta = building:GetPropertyMetadata("UIRange")
+    if prop_meta then
+      if Bool == true then
+        local radius = building:GetProperty(prop_meta.id)
+        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
+      else
+        building:SetProperty(prop_meta.id, Max(prop_meta.max,5)) --figure out default const to put here
       end
     end
   end

@@ -388,6 +388,12 @@ function OnMsg.LoadingScreenPreClose()
   --set zoom/border scrolling
   ChoGGi.SetCameraSettings()
 
+  --show all traits
+  if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
+    Sanatorium.max_traits = #ChoGGi.NegativeTraits
+    School.max_traits = #ChoGGi.PositiveTraits
+  end
+
   --Commander bonuses
   if ChoGGi.CheatMenuSettings.CommanderInventor then
     ChoGGi.CommanderInventor_Enable()

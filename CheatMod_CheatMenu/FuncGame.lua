@@ -97,16 +97,14 @@ end
 
 --used to add or remove traits from schools/sanitariums
 function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
-  local Buildings = UICity.labels.BuildingNoDomes
-  for i = 1,#(Buildings or "") do
+  local Buildings = UICity.labels[Building] or 0
+  for i = 1,#Buildings do
     local Obj = Buildings[i]
-    if IsKindOf(Obj,Building) then
-      for j = 1,#Traits do
-        if Bool then
-          Obj:SetTrait(j,nil)
-        else
-          Obj:SetTrait(j,Traits[j])
-        end
+    for j = 1,#Traits do
+      if Bool then
+        Obj:SetTrait(j,nil)
+      else
+        Obj:SetTrait(j,Traits[j])
       end
     end
   end

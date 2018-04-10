@@ -1,4 +1,3 @@
-
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)

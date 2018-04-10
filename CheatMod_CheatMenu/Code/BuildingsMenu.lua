@@ -1,6 +1,14 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "Gameplay/Buildings/Farm Shifts All On",
+  ChoGGi.FarmShiftsAllOn,
+  nil,
+  "Turns on all the farm shifts.",
+  "DisableAOMaps.tga"
+)
+--------------------
+ChoGGi.AddAction(
   "Gameplay/Buildings/Production Amount + 25",
   function()
     ChoGGi.SetProduction(true)
@@ -26,7 +34,7 @@ ChoGGi.AddAction(
   "DisableAOMaps.tga"
 )
 
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Battery Capacity + 1000",
   function()
@@ -54,7 +62,7 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Air|Water Capacity + 1000",
   function()
@@ -80,7 +88,7 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Colonist Capacity + 16",
   function()
@@ -111,7 +119,7 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Visitor Capacity + 16",
   function()
@@ -140,7 +148,7 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
---------------
+--------------------
 --[[
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Waste Depot + 1000",
@@ -165,7 +173,7 @@ ChoGGi.AddAction(
   end,
   "ToggleTerrainHeight.tga"
 )
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Other Depot + 1000",
   function()
@@ -190,7 +198,7 @@ ChoGGi.AddAction(
   end,
   "ToggleTerrainHeight.tga"
 )
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Capacity/Storage Universal Depot + 1000",
   function()
@@ -216,7 +224,7 @@ ChoGGi.AddAction(
   "ToggleTerrainHeight.tga"
 )
 --]]
---------------
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Buildings/Repair Pipes|Cables",
   ChoGGi.RepairPipesCables,
@@ -252,7 +260,7 @@ ChoGGi.AddAction(
   ChoGGi.SanatoriumCureAll_Toggle,
   nil,
   function()
-    local des = ChoGGi.CheatMenuSettings.SanatoriumCureAll and "(Disabled)" or "(Enabled)"
+    local des = ChoGGi.CheatMenuSettings.SanatoriumCureAll and "(Enabled)" or "(Disabled)"
     return des .. " Sanatoriums can cure all bad traits."
   end,
   "DisableAOMaps.tga"
@@ -263,29 +271,22 @@ ChoGGi.AddAction(
   ChoGGi.SchoolTrainAll_Toggle,
   nil,
   function()
-    local des = ChoGGi.CheatMenuSettings.SchoolTrainAll and "(Disabled)" or "(Enabled)"
+    local des = ChoGGi.CheatMenuSettings.SchoolTrainAll and "(Enabled)" or "(Disabled)"
     return des .. " Schools can train all good traits."
   end,
   "DisableAOMaps.tga"
 )
-
 
 ChoGGi.AddAction(
   "Gameplay/Buildings/Sanatoriums|Schools Show Full List Toggle",
   ChoGGi.SanatoriumSchoolShowAll,
   nil,
   function()
-    local des
-    if Sanatorium.max_traits == 16 then
-      des = "(Enabled)"
-    else
-      des = "(Disabled)"
-    end
-    return des .. " Toggle showing 16 traits in side pane."
+    local des = ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll and "(Enabled)" or "(Disabled)"
+    return des .. " Toggle showing all traits in side pane."
   end,
   "DisableAOMaps.tga"
 )
-
 
 ChoGGi.AddAction(
   "Gameplay/Buildings/Maintenance Free Toggle",
