@@ -37,11 +37,11 @@ Set Death Age to 250
 Add 250 Applicants
 Change Sponsor/Commander
 Change logo
-Occurrence level of disasters
+Change occurrence level of disasters
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Traits Add All/Remove All Negative/Positive
-Remove Building Limits (Buildings can be placed almost anywhere (no uneven terrain, it messes the buildings up))Increase Production AmountsSet Gravity for Colonists,Drones,RCs (bouncy time)Fire All ColonistsTurn Off All Shifts/Turn On All Shifts
+Remove Building Limits (they can be placed almost anywhere: no uneven terrain, it messes the buildings up)
 Set New Colonists Age,Sex
 Sanatorium Cure All Traits
 School Train All Traits
@@ -57,7 +57,7 @@ Research Every Breakthrough
 Research Every Mystery
 Research Queue Larger Toggle
 Unlock Every Breakthrough
-AvoidWorkplaceToggle
+Avoid Workplace Toggle
 Show Hidden Buildings
 Unlimited Wonders
 Building Damage Crime Toggle
