@@ -257,16 +257,22 @@ function ChoGGi.OutsideWorkplaceRadius(Bool)
   )
 end
 
+function ChoGGi.SetDeathAge()
+  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+    colonist.death_age = 250
+  end
+end
+
 function ChoGGi.SetColonistsAge(Age,Msg)
   for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
-    colonist.age_trait = Age
+    ChoGGi.ColonistUpdateAge(colonist,Age)
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
 function ChoGGi.SetColonistsSex(Sex,Msg)
   for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
-    colonist.gender = Sex
+    ChoGGi.ColonistUpdateSex(colonist,Sex)
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
@@ -313,11 +319,36 @@ end
 
 function ChoGGi.ColonistsAddSpecializationToAll()
   for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
-    if colonist.traits.none then
+    --skip children, or they'll be a black cube
+    if colonist.specialist == "none" and not colonist.entity:find("Child",1,true) then
       colonist:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init") --1-6 = num of specializations
     end
   end
   ChoGGi.MsgPopup("No lazy good fer nuthins round here",
+   "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
+  )
+end
+
+function ChoGGi.ColonistsFixBlackCube()
+  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+    if colonist.entity:find("Child",1,true) then
+      colonist.specialist = "none"
+
+      colonist.traits.Youth = nil
+      colonist.traits.Adult = nil
+      colonist.traits["Middle Aged"] = nil
+      colonist.traits.Senior = nil
+      colonist.traits.Retiree = nil
+
+      colonist.traits.Child = true
+      colonist.age_trait = "Child"
+      colonist.age = 0
+      colonist:ChooseEntity()
+      colonist:SetResidence(false)
+      colonist:UpdateResidence()
+    end
+  end
+  ChoGGi.MsgPopup("Fixed black cubes",
    "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
@@ -330,6 +361,7 @@ function ChoGGi.AllPositiveTraits_Toggle(Bool)
       else
         colonist:RemoveTrait(ChoGGi.PositiveTraits[i])
       end
+      Notify(colonist, "UpdateMorale")
     end
   end
   ChoGGi.MsgPopup("All Positive Traits",
@@ -345,6 +377,7 @@ function ChoGGi.AllNegativeTraits_Toggle(Bool)
       else
         colonist:RemoveTrait(ChoGGi.NegativeTraits[i])
       end
+      Notify(colonist, "UpdateMorale")
     end
   end
   ChoGGi.MsgPopup("All Negative Traits",

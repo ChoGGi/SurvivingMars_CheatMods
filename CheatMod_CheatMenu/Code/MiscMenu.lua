@@ -371,7 +371,7 @@ ChoGGi.AddAction(
   end,
   nil,
   "keeps resetting...",
-  "ReportBug.tga"
+  "ToggleEnvMap.tga"
 )
 
 ChoGGi.AddAction(

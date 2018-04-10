@@ -149,6 +149,25 @@ function ChoGGi.DeleteObject()
   end)
   obj:delete()
 
+  --clean up
+  pcall(function()
+    obj:RemoveFromLabels()
+  end)
+  pcall(function()
+    obj:SetDome(false)
+  end)
+  pcall(function()
+    obj:ReturnStockpiledResources()
+  end)
+  pcall(function()
+    obj:Gossip("done")
+  end)
+  pcall(function()
+    obj:StopFX()
+    PlayFX("Spawn", "end", obj)
+    obj:SetHolder(false)
+  end)
+
 end
 
 function ChoGGi.ConsoleHistory_Toggle()

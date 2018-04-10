@@ -33,7 +33,7 @@ ChoGGi.AddAction(
   ChoGGi.FireAllColonists,
   nil,
   "Fires everyone from every job.",
-  "ReportBug.tga"
+  "ToggleEnvMap.tga"
 )
 
 ChoGGi.AddAction(
@@ -43,7 +43,7 @@ ChoGGi.AddAction(
   end,
   nil,
   "Turns all work shifts off.",
-  "ReportBug.tga"
+  "ToggleEnvMap.tga"
 )
 
 ChoGGi.AddAction(
@@ -53,7 +53,7 @@ ChoGGi.AddAction(
   end,
   nil,
   "Turns all work shifts on.",
-  "ReportBug.tga"
+  "ToggleEnvMap.tga"
 )
 
 ChoGGi.AddAction(
@@ -288,7 +288,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Child","When you're youngest at heart")
   end,
   nil,
-  "Make all newly arrived and born colonists Children",
+  "Make all newly arrived and born colonists Children.",
   "AlignSel.tga"
 )
 
@@ -298,7 +298,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Youth","When you're young at heart")
   end,
   nil,
-  "Make all newly arrived and born colonists Youths",
+  "Make all newly arrived and born colonists Youths.",
   "AlignSel.tga"
 )
 
@@ -308,7 +308,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Adult","Time for the rat race")
   end,
   nil,
-  "Make all newly arrived and born colonists Adults",
+  "Make all newly arrived and born colonists Adults.",
   "AlignSel.tga"
 )
 
@@ -318,7 +318,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Middle Aged","Still time for the rat race")
   end,
   nil,
-  "Make all newly arrived and born colonists Middle Aged",
+  "Make all newly arrived and born colonists Middle Aged.",
   "AlignSel.tga"
 )
 
@@ -328,7 +328,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Senior","When you're (very much) young at heart")
   end,
   nil,
-  "Make all newly arrived and born colonists Seniors",
+  "Make all newly arrived and born colonists Seniors.",
   "AlignSel.tga"
 )
 
@@ -338,7 +338,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge("Retiree","Time for some long pig")
   end,
   nil,
-  "Make all newly arrived and born colonists Retirees",
+  "Make all newly arrived and born colonists Retirees.",
   "AlignSel.tga"
 )
 
@@ -348,7 +348,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistAge(false,"The miracle of childbirth")
   end,
   nil,
-  "Back to random Age",
+  "Back to random Age.",
   "AlignSel.tga"
 )
 
@@ -358,7 +358,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex("Other","Whole lotta nothing going on")
   end,
   nil,
-  "Make all newly arrived and born colonists Other",
+  "Make all newly arrived and born colonists Other.",
   "AlignSel.tga"
 )
 
@@ -368,7 +368,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex("Android","Ever kissed a cyborg? No.\nYou will.")
   end,
   nil,
-  "Make all newly arrived and born colonists Android",
+  "Make all newly arrived and born colonists Android.",
   "AlignSel.tga"
 )
 
@@ -378,7 +378,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex("Clone","Nasty Star Wars funk in the pants.")
   end,
   nil,
-  "Make all newly arrived and born colonists Clone",
+  "Make all newly arrived and born colonists Clone.",
   "AlignSel.tga"
 )
 
@@ -388,7 +388,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex("Male","Sausage Fest")
   end,
   nil,
-  "Make all newly arrived and born colonists Male",
+  "Make all newly arrived and born colonists Male.",
   "AlignSel.tga"
 )
 
@@ -398,7 +398,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex("Female","Fish Market")
   end,
   nil,
-  "Make all newly arrived and born colonists Female",
+  "Make all newly arrived and born colonists Female.",
   "AlignSel.tga"
 )
 
@@ -408,7 +408,7 @@ ChoGGi.AddAction(
     ChoGGi.NewColonistSex(false,"The miracle of childbirth")
   end,
   nil,
-  "Back to random Sex",
+  "Back to random Sex.",
   "AlignSel.tga"
 )
 
@@ -420,7 +420,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsMorale(100000,"Happy days are here again!")
   end,
   nil,
-  "Set all Colonists Morale to 100",
+  "Set all Colonists Morale to 100.",
   "AlignSel.tga"
 )
 
@@ -430,7 +430,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsSanity(9999900,"No need for shrinks")
   end,
   nil,
-  "Set all Colonists Sanity to Max",
+  "Set all Colonists Sanity to Max.",
   "AlignSel.tga"
 )
 
@@ -440,7 +440,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsSanity(100000,"No need for shrinks")
   end,
   nil,
-  "Set all Colonists Sanity to 100",
+  "Set all Colonists Sanity to 100.",
   "AlignSel.tga"
 )
 
@@ -450,7 +450,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsComfort(9999900,"Happy days are here again!")
   end,
   nil,
-  "Set all Colonists Comfort to Max",
+  "Set all Colonists Comfort to Max.",
   "AlignSel.tga"
 )
 
@@ -460,7 +460,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsComfort(100000,"Happy days are here again!")
   end,
   nil,
-  "Set all Colonists Comfort to 100",
+  "Set all Colonists Comfort to 100.",
   "AlignSel.tga"
 )
 
@@ -470,7 +470,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsHealth(9999900,"Healthy!")
   end,
   nil,
-  "Set all Colonists Health to Max",
+  "Set all Colonists Health to Max.",
   "AlignSel.tga"
 )
 
@@ -480,7 +480,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsHealth(100000,"Healthy!")
   end,
   nil,
-  "Set all Colonists Health to 100",
+  "Set all Colonists Health to 100.",
   "AlignSel.tga"
 )
 
@@ -490,7 +490,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsAge("Child","When you're youngest at heart")
   end,
   nil,
-  "Make all Colonists Child age",
+  "Make all Colonists Child age (removes all specializations as well).",
   "AlignSel.tga"
 )
 
@@ -500,7 +500,7 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsAge("Youth","When you're young at heart")
   end,
   nil,
-  "Make all Colonists Youth age",
+  "Make all Colonists Youth age.",
   "AlignSel.tga"
 )
 
@@ -541,6 +541,14 @@ ChoGGi.AddAction(
   end,
   nil,
   "Make all Colonists Retiree age",
+  "AlignSel.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Colonists/Age/[5]Set Death Age To 250",
+  ChoGGi.SetDeathAge,
+  nil,
+  "No one dies till they're 250",
   "AlignSel.tga"
 )
 
@@ -636,6 +644,14 @@ ChoGGi.AddAction(
   nil,
   "If Colonist has no Specialization then add a random one",
   "AlignSel.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Colonists/Work/Fix Black Cubed Colonists",
+  ChoGGi.ColonistsFixBlackCube,
+  nil,
+  "If any colonists are black cubes click this.",
+  "ReportBug.tga"
 )
 
 if ChoGGi.Testing then

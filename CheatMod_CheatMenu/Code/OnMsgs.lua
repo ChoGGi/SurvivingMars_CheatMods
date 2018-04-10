@@ -527,7 +527,7 @@ function OnMsg.ConstructionComplete(building)
   end
 
   if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
-    building.maintenance_build_up_per_hr = 0
+    building.maintenance_build_up_per_hr = -10000
   end
 
   if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
@@ -560,8 +560,11 @@ function OnMsg.ColonistArrived()
   if ChoGGi.CheatMenuSettings.GravityColonist then
     colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
+  if ChoGGi.CheatMenuSettings.NewColonistSex then
+    ChoGGi.ColonistUpdateSex(colonist,ChoGGi.CheatMenuSettings.NewColonistSex)
+  end
   if ChoGGi.CheatMenuSettings.NewColonistAge then
-    colonist.age_trait = ChoGGi.CheatMenuSettings.NewColonistAge
+    ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)
   end
 
 end --OnMsg
@@ -571,7 +574,10 @@ function OnMsg.ColonistBorn(colonist)
     colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
   if ChoGGi.CheatMenuSettings.NewColonistSex then
-    colonist.gender = ChoGGi.CheatMenuSettings.NewColonistSex
+    ChoGGi.ColonistUpdateSex(colonist,ChoGGi.CheatMenuSettings.NewColonistSex)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistAge then
+    ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)
   end
 
 end --OnMsg

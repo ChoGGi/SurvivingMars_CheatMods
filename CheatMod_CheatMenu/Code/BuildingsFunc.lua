@@ -387,7 +387,7 @@ function ChoGGi.MaintenanceBuildingsFree_Toggle()
   for _,object in ipairs(UICity.labels.Building or empty_table) do
     if object.base_maintenance_build_up_per_hr then
       if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp then
-        object.maintenance_build_up_per_hr = 0
+        object.maintenance_build_up_per_hr = -10000
       else
         object.maintenance_build_up_per_hr = nil
       end

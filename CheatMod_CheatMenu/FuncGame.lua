@@ -720,6 +720,39 @@ function ChoGGi.SponsorParadox_Enable()
   sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,DataInstances.MissionSponsor.paradox.anomaly_bonus_breakthrough)
 end
 
+function ChoGGi.ColonistUpdateAge(colonist,Age)
+  --remove all other age traits
+  colonist.traits.Child = nil
+  colonist.traits.Youth = nil
+  colonist.traits.Adult = nil
+  colonist.traits["Middle Aged"] = nil
+  colonist.traits.Senior = nil
+  colonist.traits.Retiree = nil
+
+  colonist.traits[Age] = true
+  colonist.age_trait = Age
+  colonist.age = colonist["base_MinAge_" .. Age or 65]
+  if Age == "Child" then
+    colonist.specialist = "none"
+  end
+
+  colonist:ChooseEntity()
+  colonist:UpdateResidence()
+end
+
+function ChoGGi.ColonistUpdateSex(colonist,Gender)
+  --remove all other gender traits
+  colonist.traits.Other = nil
+  colonist.traits.Android = nil
+  colonist.traits.Clone = nil
+  colonist.traits.Male = nil
+  colonist.traits.Female = nil
+  colonist.traits[Gender] = true
+  colonist.gender = Gender
+
+  colonist:ChooseEntity()
+end
+
 if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"FuncGame")
 end

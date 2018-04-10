@@ -293,7 +293,7 @@ ChoGGi.AddAction(
   ChoGGi.MaintenanceBuildingsFree_Toggle,
   nil,
   function()
-    local des = ChoGGi.NumRetBool(Consts.BuildingMaintenancePointsModifier,"(Disabled)","(Enabled)")
+    local des = ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and "(Enabled)" or "(Disabled)"
     return des .. " Buildings don't build up maintenance points."
   end,
   "DisableAOMaps.tga"
