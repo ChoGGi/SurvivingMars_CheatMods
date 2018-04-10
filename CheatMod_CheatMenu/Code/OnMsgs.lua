@@ -126,7 +126,7 @@ function OnMsg.ClassesBuilt()
 end --OnMsg
 
 function OnMsg.OptionsApply()
-  --earlist we can call Consts:GetProperties()
+  --earliest we can call Consts:GetProperties()
   ChoGGi.ReadSettingsInGame()
 end --OnMsg
 
@@ -137,13 +137,87 @@ function OnMsg.ModsLoaded()
     ChoGGi.AddAction(
       "Gameplay/QoL/Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
       function()
-        ChoGGi.SetNewLogo(templates[i].name)
+        ChoGGi.SetNewLogo(templates[i].name,_InternalTranslate(templates[i].display_name))
       end,
       nil,
       "Change the logo to ".. _InternalTranslate(templates[i].display_name) .. " for anything that uses the logo.",
       "ViewArea.tga"
     )
   end
+
+  --also create sponsor menus
+  local templates = DataInstances.MissionSponsor
+  for i = 1, #templates do
+    if templates[i].name ~= "random" then
+      ChoGGi.AddAction(
+        "Gameplay/Sponsors/" .. _InternalTranslate(templates[i].display_name),
+        function()
+          ChoGGi.SetNewSponsor(templates[i].name,_InternalTranslate(templates[i].display_name))
+        end,
+        nil,
+        _InternalTranslate(templates[i].effect),
+        "SelectByClassName.tga"
+      )
+    end
+  end
+
+  --also create sponsor menus
+  local templates = DataInstances.CommanderProfile
+  for i = 1, #templates do
+    if templates[i].name ~= "random" then
+      ChoGGi.AddAction(
+        "Gameplay/Commanders/" .. _InternalTranslate(templates[i].display_name),
+        function()
+          ChoGGi.SetNewCommander(templates[i].name,_InternalTranslate(templates[i].display_name))
+        end,
+        nil,
+        _InternalTranslate(templates[i].effect),
+        "SetCamPos&Loockat.tga"
+      )
+    end
+  end
+
+  --build key actions for build menu
+  local skipped = false
+  for i = 1, #BuildCategories do
+    if i < 10 then
+      ChoGGi.AddAction(nil,
+        function()
+          ChoGGi.ShowBuildMenu(i)
+        end,
+        tostring(i)
+      )
+    elseif i == 10 then
+      ChoGGi.AddAction(nil,
+        function()
+          ChoGGi.ShowBuildMenu(i)
+        end,
+        "0"
+      )
+    else
+      --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
+      if BuildCategories[i].id == "Hidden" then
+        skipped = true
+      else
+        if skipped then
+          ChoGGi.AddAction(nil,
+            function()
+              ChoGGi.ShowBuildMenu(i)
+            end,
+            "Shift-" .. i - 11
+          )
+        else
+          ChoGGi.AddAction(nil,
+            function()
+              ChoGGi.ShowBuildMenu(i)
+            end,
+            "Shift-" .. i - 10
+          )
+        end
+      end
+    end
+  end
+
 end --OnMsg
 
 --saved game is loaded
@@ -307,10 +381,71 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.InfopanelCheatsCleanup()
   end
 
+  if ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots then
+    hr.InterfaceInScreenshot = 1
+  end
+
   --set zoom/border scrolling
   ChoGGi.SetCameraSettings()
 
-    --print startup msgs to console log
+  --Commander bonuses
+  if ChoGGi.CheatMenuSettings.CommanderInventor then
+    ChoGGi.CommanderInventor_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderOligarch then
+    ChoGGi.CommanderOligarch_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderHydroEngineer then
+    ChoGGi.CommanderHydroEngineer_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderDoctor then
+    ChoGGi.CommanderDoctor_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderPolitician then
+    ChoGGi.CommanderPolitician_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderAuthor then
+    ChoGGi.CommanderAuthor_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderEcologist then
+    ChoGGi.CommanderEcologist_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.CommanderAstrogeologist then
+    ChoGGi.CommanderAstrogeologist_Enable()
+  end
+  --Sponsor bonuses
+  if ChoGGi.CheatMenuSettings.SponsorIMM then
+    ChoGGi.SponsorIMM_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorNASA then
+    ChoGGi.SponsorNASA_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorBlueSun then
+    ChoGGi.SponsorBlueSun_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorCNSA then
+    ChoGGi.SponsorCNSA_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorISRO then
+    ChoGGi.SponsorISRO_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorESA then
+    ChoGGi.SponsorESA_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorSpaceY then
+    ChoGGi.SponsorSpaceY_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorNewArk then
+    ChoGGi.SponsorNewArk_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorRoscosmos then
+    ChoGGi.SponsorRoscosmos_Enable()
+  end
+  if ChoGGi.CheatMenuSettings.SponsorParadox then
+    ChoGGi.SponsorParadox_Enable()
+  end
+
+  --print startup msgs to console log
   for i = 1, #ChoGGi.StartupMsgs do
     --AddConsoleLog(ChoGGi.StartupMsgs[i],true)
     ConsolePrint(ChoGGi.StartupMsgs[i])
@@ -459,7 +594,12 @@ function OnMsg.MysteryEnd(Outcome)
   end
 end
 
---function OnMsg.ApplicationQuit()
+function OnMsg.ApplicationQuit()
+  --save any unsaved settings on exit
+  if not ChoGGi.Testing then
+    ChoGGi.WriteSettings()
+  end
+end
 
 if ChoGGi.Testing then
   table.insert(ChoGGi.FilesCount,"OnMsgs")

@@ -30,6 +30,25 @@ ChoGGi.ConstructionNamesListFix = {
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {
   _VERSION = 0.0,
+--sponsor/commander bonuses
+  CommanderInventor = false,
+  CommanderOligarch = false,
+  CommanderHydroEngineer = false,
+  CommanderDoctor = false,
+  CommanderPolitician = false,
+  CommanderAuthor = false,
+  CommanderEcologist = false,
+  CommanderAstrogeologist = false,
+  SponsorNASA = false,
+  SponsorBlueSun = false,
+  SponsorCNSA = false,
+  SponsorISRO = false,
+  SponsorESA = false,
+  SponsorSpaceY = false,
+  SponsorNewArk = false,
+  SponsorRoscosmos = false,
+  SponsorParadox = false,
+
 --custom
   BuildingsCapacity = {},
   BuildingsProduction = {},
@@ -38,6 +57,7 @@ ChoGGi.Consts = {
   FirstRun = true,
   ToggleInfopanelCheats = true,
   CleanupCheatsInfoPane = true,
+  ShowInterfaceInScreenshots = true,
 
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,

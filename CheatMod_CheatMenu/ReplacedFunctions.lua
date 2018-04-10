@@ -373,6 +373,7 @@ dumpl(classdefs)
     win:SetBackgroundColor(RGBA(0, 0, 0, 16))
     win:SetFontStyle("Editor12Bold")
     win:SetScrollBar(true)
+    win:SetScrollAutohide(true)
 
     win = StaticText:new(self)
     win:SetId("idMenu")

@@ -1,5 +1,4 @@
-
-function ChoGGi.SetNewLogo(sName)
+function ChoGGi.SetNewLogo(sName,sDisplay)
   --any newly built/landed uses this logo
   g_CurrentMissionParams.idMissionLogo = sName
 
@@ -22,8 +21,7 @@ function ChoGGi.SetNewLogo(sName)
     end
   end
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Logo is now " .. sName,
+  ChoGGi.MsgPopup("Logo is now " .. sDisplay,
     "Logo","UI/Icons/Sections/spaceship.tga"
   )
 end

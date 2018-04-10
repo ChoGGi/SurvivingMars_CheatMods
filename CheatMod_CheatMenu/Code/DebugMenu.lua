@@ -88,9 +88,9 @@ ChoGGi.AddAction(
 
 ChoGGi.AddAction(
   "[102]Debug/Delete Selected Object",
-  ChoGGi.DeleteSelectedObject,
-  nil,
-  "(Some, not all).",
+  ChoGGi.DeleteObject,
+  "Ctrl-Alt-Shift-D",
+  "or object under mouse cursor (some, not all).",
   "DeleteArea.tga"
 )
 

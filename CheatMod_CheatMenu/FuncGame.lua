@@ -83,14 +83,14 @@ function ChoGGi.UpdateResourceAmount(building,new_size)
   local storable_resources = building.storable_resources
   local resource_count = #storable_resources
   local orig_amount
-  for i = 1, resource_count do
+  for i = 1,resource_count do
     local resource_name = storable_resources[i]
     if building.supply[resource_name] then
       orig_amount = building.supply[resource_name]:GetActualAmount()
       building.supply[resource_name]:SetAmount(orig_amount)
       building.demand[resource_name]:SetAmount(new_size)
       building.stockpiled_amount[resource_name] = orig_amount
-      building:SetCount(orig_amount, resource_name)
+      building:SetCount(orig_amount,resource_name)
     end
   end
 end
@@ -98,10 +98,10 @@ end
 --used to add or remove traits from schools/sanitariums
 function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
   local Buildings = UICity.labels.BuildingNoDomes
-  for i = 1, #(Buildings or "") do
+  for i = 1,#(Buildings or "") do
     local Obj = Buildings[i]
     if IsKindOf(Obj,Building) then
-      for j = 1, #Traits do
+      for j = 1,#Traits do
         if Bool then
           Obj:SetTrait(j,nil)
         else
@@ -138,6 +138,14 @@ function ChoGGi.ToggleBoolNum(Num)
   return 0
 end
 
+--return equal or higher amount
+function ChoGGi.CompareAmounts(iAmtA,iAmtB)
+  if iAmtA >= iAmtB then
+    return iAmtA
+  elseif iAmtB >= iAmtA then
+    return iAmtB
+  end
+end
 
 --ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier")
 --ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
@@ -287,7 +295,7 @@ function ChoGGi.SetCameraSettings()
   elseif ChoGGi.CheatMenuSettings.BorderScrollingToggle then
     cameraRTS.SetProperties(1,{ScrollBorder = 0})
   else
-  --pretty sure this is the default, but they seem to have removed it in the Spirit update...
+  --pretty sure this is the default,but they seem to have removed it in the Spirit update...
     cameraRTS.SetProperties(1,{ScrollBorder = 5})
   end
 
@@ -300,15 +308,6 @@ function ChoGGi.SetCameraSettings()
 
   --cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
-
---[[
-DataInstances.BuildingTemplate[""]
-SelectedObj:__toluacode()
-
-    ChoGGi.ConstructionModeNameClean(SelectedObj:__toluacode())
-
-SelectedObj:__toluacode()
---]]
 
 --fixup names we get from SelectedObj:__toluacode()
 function ChoGGi.ConstructionModeNameClean(itemname)
@@ -335,17 +334,17 @@ function ChoGGi.ConstructionModeSet(itemname)
     return
   end
   local bld_template = DataInstances.BuildingTemplate[itemname]
-  local show, prefabs, can_build, action = UIGetBuildingPrerequisites(bld_template.build_category, bld_template, true)
+  local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
   local dlg = GetXDialog("XBuildMenu")
   if show then
     if action then
-      action(dlg, {
+      action(dlg,{
         enabled = can_build,
         name = bld_template.name,
         construction_mode = bld_template.construction_mode
       })
     else
-      igi:SetMode("construction", {
+      igi:SetMode("construction",{
         template = bld_template.name,
         selected_dome = dlg and dlg.context.selected_dome
       })
@@ -356,7 +355,7 @@ end
 
 function ChoGGi.RemoveOldFiles()
 --[[
-local file_error, code = AsyncFileToString(ChoGGi.ModPath .. "Script.lua")
+local file_error,code = AsyncFileToString(ChoGGi.ModPath .. "Script.lua")
 if not file_error then
   ChoGGi.RemoveOldFiles()
 end
@@ -459,6 +458,268 @@ function ChoGGi.SetGravity(Bool,Who)
   ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Gravity is increased " .. Bool or "default",
    "Drones","UI/Icons/IPButtons/drone.tga"
   )
+end
+
+function ChoGGi.ShowBuildMenu(iWhich)
+  if not GetXDialog("XBuildMenu") then
+    OpenXBuildMenu()
+  end
+  local dlg = GetXDialog("XBuildMenu")
+  dlg:SelectCategory(BuildCategories[iWhich])
+  --fire twice to highlight the icon
+  dlg:SelectCategory(BuildCategories[iWhich])
+end
+
+--ex(DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile])
+function ChoGGi.CommanderInventor_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
+    "Label","Consts",
+    "Prop","DroneConstructAmount",
+    "Percent",1,
+    "TimeInterval",2,
+    "TimeUnits",750000,
+    "Repetitions",50
+  }))
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
+    "Label","Consts",
+    "Prop","DroneBuildingRepairAmount",
+    "Percent",1,
+    "TimeInterval",2,
+    "TimeUnits",750000,
+    "Repetitions",50
+  }))
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
+    "Label","Consts",
+    "Prop","DroneGatherResourceWorkTime",
+    "Percent",-1,
+    "TimeInterval",2,
+    "TimeUnits",750000,
+    "Repetitions",50
+  }))
+end
+
+function ChoGGi.CommanderOligarch_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","FuelFactory",
+    "Prop","production_per_day1",
+    "Percent",25
+  }))
+end
+
+function ChoGGi.CommanderHydroEngineer_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Dome",
+    "Prop","water_consumption",
+    "Percent",-25
+  }))
+end
+
+function ChoGGi.CommanderDoctor_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","MinComfortBirth",
+    "Amount",-15
+  }))
+end
+
+function ChoGGi.CommanderPolitician_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","FundingGainsModifier",
+    "Percent",20
+  }))
+end
+
+function ChoGGi.CommanderAuthor_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","BreakThroughTechCostMod",
+    "Amount",-30
+  }))
+end
+
+function ChoGGi.CommanderEcologist_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Decorations",
+    "Prop","service_comfort",
+    "Amount",10
+  }))
+end
+
+function ChoGGi.CommanderAstrogeologist_Enable()
+  local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","WaterExtractor",
+    "Prop","water_production",
+    "Percent",10
+  }))
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","MetalsExtractor",
+    "Prop","production_per_day1",
+    "Percent",10
+  }))
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","PreciousMetalsExtractor",
+    "Prop","production_per_day1",
+    "Percent",10
+  }))
+  table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","RegolithExtractor",
+    "Prop","production_per_day1",
+    "Percent",10
+  }))
+end
+
+--ex(DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor])
+function ChoGGi.SponsorIMM_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,DataInstances.MissionSponsor.IMM.cargo)
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.IMM.additional_research_points)
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","FoodPerRocketPassenger",
+    "Amount",9000
+  }))
+end
+
+function ChoGGi.SponsorNASA_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,DataInstances.MissionSponsor.NASA.cargo)
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.NASA.additional_research_points)
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","SponsorFundingPerInterval",
+    "Amount",500
+  }))
+end
+
+function ChoGGi.SponsorBlueSun_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.rocket_price = ChoGGi.CompareAmounts(sponsor.rocket_price,DataInstances.MissionSponsor.BlueSun.rocket_price)
+  sponsor.applicants_price = ChoGGi.CompareAmounts(sponsor.applicants_price,DataInstances.MissionSponsor.BlueSun.applicants_price)
+  table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    "Field","Physics",
+    "Research","DeepMetalExtraction"
+  }))
+end
+
+function ChoGGi.SponsorCNSA_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.CNSA.additional_research_points)
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","ApplicantGenerationInterval",
+    "Percent",-50
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","MaxColonistsPerRocket",
+    "Amount",10
+  }))
+end
+
+function ChoGGi.SponsorISRO_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    "Field","Engineering",
+    "Research","LowGEngineering"
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","Concrete_cost_modifier",
+    "Percent",-20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","Electronics_cost_modifier",
+    "Percent",-20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","MachineParts_cost_modifier",
+    "Percent",-20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","ApplicantsPoolStartingSize",
+    "Percent",50
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","Metals_cost_modifier",
+    "Percent",-20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","Polymers_cost_modifier",
+    "Percent",-20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","PreciousMetals_cost_modifier",
+    "Percent",-20
+  }))
+end
+
+function ChoGGi.SponsorESA_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.funding_per_tech = ChoGGi.CompareAmounts(sponsor.funding_per_tech,DataInstances.MissionSponsor.ESA.funding_per_tech)
+  sponsor.funding_per_breakthrough = ChoGGi.CompareAmounts(sponsor.funding_per_breakthrough,DataInstances.MissionSponsor.ESA.funding_per_breakthrough)
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.ESA.additional_research_points)
+end
+
+function ChoGGi.SponsorSpaceY_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.SpaceY.additional_research_points)
+  sponsor.modifier_name1 = DataInstances.MissionSponsor.SpaceY.modifier_name1
+  sponsor.modifier_value1 = DataInstances.MissionSponsor.SpaceY.modifier_value1
+  sponsor.modifier_name2 = DataInstances.MissionSponsor.SpaceY.modifier_name2
+  sponsor.modifier_value2 = DataInstances.MissionSponsor.SpaceY.modifier_value2
+  sponsor.modifier_name3 = DataInstances.MissionSponsor.SpaceY.modifier_name3
+  sponsor.modifier_value3 = DataInstances.MissionSponsor.SpaceY.modifier_value3
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","CommandCenterMaxDrones",
+    "Percent",20
+  }))
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","starting_drones",
+    "Percent",4
+  }))
+end
+
+function ChoGGi.SponsorNewArk_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    "Label","Consts",
+    "Prop","BirthThreshold",
+    "Percent",-50
+  }))
+end
+
+function ChoGGi.SponsorRoscosmos_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.modifier_name1 = DataInstances.MissionSponsor.Roscosmos.modifier_name1
+  sponsor.modifier_value1 = DataInstances.MissionSponsor.Roscosmos.modifier_value1
+  sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.Roscosmos.additional_research_points)
+  table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    "Field","Robotics",
+    "Research","FueledExtractors"
+  }))
+end
+
+function ChoGGi.SponsorParadox_Enable()
+  local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
+  sponsor.applicants_per_breakthrough = ChoGGi.CompareAmounts(sponsor.applicants_per_breakthrough,DataInstances.MissionSponsor.paradox.applicants_per_breakthrough)
+  sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,DataInstances.MissionSponsor.paradox.anomaly_bonus_breakthrough)
 end
 
 if ChoGGi.Testing then

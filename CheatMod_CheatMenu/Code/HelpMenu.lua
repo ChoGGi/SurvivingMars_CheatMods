@@ -1,19 +1,25 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
+--------------------
 ChoGGi.AddAction(
-  "[999]Help/Report Bug",
+  "[999]Help/[2]Screenshot/Show Interface in Screenshots",
   function()
-    CreateRealTimeThread(function()
-      CreateBugReportDlg()
-    end)
+    hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
+    ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots = not ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots
+    ChoGGi.MsgPopup("Interface is: " .. tostring(ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots),
+      "Interface","UI/Icons/Sections/attention.tga"
+    )
   end,
-  "Ctrl-F1",
-  "Report Bug\nThis doesn't go to ECM author, if you have a bug with ECM then msg me on github/nexusmods.",
-  "ReportBug.tga"
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots and "(Enabled)" or "(Disabled)"
+    return des .. " Toggle showing interface in screenshots."
+  end,
+  "light_model.tga"
 )
 
 ChoGGi.AddAction(
-  "[999]Help/Screenshot",
+  "[999]Help/[2]Screenshot/Screenshot",
   function()
     WriteScreenshot(GenerateScreenshotFilename("SS", "AppData/"))
   end,
@@ -23,7 +29,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "[999]Help/Screenshot Upsampled",
+  "[999]Help/[2]Screenshot/Screenshot Upsampled",
   function()
     CreateRealTimeThread(function()
       WaitNextFrame(3)
@@ -36,46 +42,29 @@ ChoGGi.AddAction(
   "Write screenshot upsampled",
   "light_model.tga"
 )
-
+--------------------
 ChoGGi.AddAction(
-  "[999]Help/Toggle Interface",
+  "[999]Help/[1]Interface/Toggle Interface",
   function()
     hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
   end,
   "Ctrl-Alt-I"
 )
---[[ alt interface toggle
-rawset(_G, "OrgXRender", rawget(_G, "OrgXRender") or XRender)
-if XRender == OrgXRender then
-  function XRender() end
-else
-  XRender = OrgXRender
-end
-UIL.Invalidate()
---]]
 
 ChoGGi.AddAction(
-  "[999]Help/Toggle Signs",
+  "[999]Help/[1]Interface/Toggle Signs",
   function()
     ToggleSigns()
     ChoGGi.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
-      "Signs","UI/Icons/Sections/attention.tga")
+      "Signs","UI/Icons/Sections/attention.tga"
+    )
   end,
   "Ctrl-Alt-S",
   "Concrete, metal deposits, etc..."
 )
 
 ChoGGi.AddAction(
-  "[999]Help/Show Last Hint",
-  function(_, controller_id)
-    ShowLastHint()
-  end,
-  "F1",
-  "Show Last Hint"
-)
-
-ChoGGi.AddAction(
-  "[999]Help/[16]Toggle on-screen hints",
+  "[999]Help/[1]Interface/[16]Toggle on-screen hints",
   function()
     SetHintNotificationsEnabled(not HintsEnabled)
     UpdateOnScreenHintDlg()
@@ -84,12 +73,24 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "[999]Help/[17]Reset on-screen hints",
+  "[999]Help/[1]Interface/[17]Reset on-screen hints",
   function()
     g_ShownOnScreenHints = {}
     UpdateOnScreenHintDlg()
     ChoGGi.MsgPopup("Hints Reset!","Hints","UI/Icons/Sections/attention.tga")
   end
+)
+--------------------
+ChoGGi.AddAction(
+  "[999]Help/Report Bug",
+  function()
+    CreateRealTimeThread(function()
+      CreateBugReportDlg()
+    end)
+  end,
+  "Ctrl-F1",
+  "Report Bug\nThis doesn't go to ECM author, if you have a bug with ECM then msg me on github/nexusmods.",
+  "ReportBug.tga"
 )
 
 ChoGGi.AddAction(

@@ -1,5 +1,6 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
+-------------
 ChoGGi.BuildDisasterMenu(
   {"VeryLow","Low","High","VeryHigh","VeryHigh_1","VeryHigh_2","VeryHigh_3"},
   "MapSettings_DustDevils",
@@ -22,7 +23,7 @@ ChoGGi.BuildDisasterMenu(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Disasters/Damage Toggle",
+  "Gameplay/Disasters/Meteor Damage Toggle",
   ChoGGi.MeteorHealthDamage_Toggle,
   nil,
   function()
@@ -31,7 +32,6 @@ ChoGGi.AddAction(
   end,
   "remove_water.tga"
 )
-
 -------------
 ChoGGi.AddAction(
   "Gameplay/Shuttles/ShuttleHub Shuttles + 25",
