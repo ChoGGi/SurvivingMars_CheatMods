@@ -3,6 +3,14 @@
 --"Cheats/Start Mystery" menu items are built in OnMsgs.lua>ClassesBuilt()
 
 ChoGGi.AddAction(
+  "Cheats/[10]Unlock all buildings",
+  ChoGGi.UnlockAllBuildings,
+  nil,
+  "Unlock all buildings for construction.",
+  nil
+)
+
+ChoGGi.AddAction(
   "Cheats/[04]Research/Outsource Points 1,000,000",
   ChoGGi.OutsourcePoints1000000,
   nil,

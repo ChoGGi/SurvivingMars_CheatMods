@@ -458,13 +458,22 @@ function ChoGGi.SetGravity(Bool,Who)
   )
 end
 
+
 function ChoGGi.ShowBuildMenu(iWhich)
-  if not GetXDialog("XBuildMenu") then
+  local dlg = GetXDialog("XBuildMenu")
+
+  if dlg then
+    --opened so check if number corresponds and if so hide the menu
+    if dlg.category == BuildCategories[iWhich].id then
+      CloseXDialog("XBuildMenu")
+    end
+  else
     OpenXBuildMenu()
   end
-  local dlg = GetXDialog("XBuildMenu")
+
+  dlg = GetXDialog("XBuildMenu")
   dlg:SelectCategory(BuildCategories[iWhich])
-  --fire twice to highlight the icon
+  --have to fire twice to highlight the icon
   dlg:SelectCategory(BuildCategories[iWhich])
 end
 
@@ -731,9 +740,14 @@ function ChoGGi.ColonistUpdateAge(colonist,Age)
 
   colonist.traits[Age] = true
   colonist.age_trait = Age
-  colonist.age = colonist["base_MinAge_" .. Age or 65]
+  if Age == "Retiree" then
+    colonist.age = 65 --why isn't there a base_MinAge_Retiree...
+  else
+    colonist.age = colonist["base_MinAge_" .. Age]
+  end
   if Age == "Child" then
     colonist.specialist = "none"
+    colonist:SetResidence(false)
   end
 
   colonist:ChooseEntity()

@@ -26,6 +26,8 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
+ChoGGi.ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"}
+ChoGGi.ColonistGenders = {"Other","Android","Clone","Male","Female"}
 
 --central place for consts/default values, if updates change them
 ChoGGi.Consts = {
@@ -184,6 +186,7 @@ ChoGGi.Consts = {
   MoistureVaporatorRange = 5,
   ResearchQueueSize = 4,
   ResourceScale = 1000,
+  ResearchPointsScale = 1000,
 }
 
 --set game values to saved values

@@ -145,7 +145,7 @@ function OnMsg.ModsLoaded()
     )
   end
 
-  --also create sponsor menus
+  --create Sponsor menus
   local templates = DataInstances.MissionSponsor
   for i = 1, #templates do
     if templates[i].name ~= "random" then
@@ -161,7 +161,7 @@ function OnMsg.ModsLoaded()
     end
   end
 
-  --also create sponsor menus
+  --create Commander menus
   local templates = DataInstances.CommanderProfile
   for i = 1, #templates do
     if templates[i].name ~= "random" then
@@ -177,7 +177,7 @@ function OnMsg.ModsLoaded()
     end
   end
 
-  --build key actions for build menu
+  --number keys to activate build menu
   local skipped = false
   for i = 1, #BuildCategories do
     if i < 10 then
@@ -185,7 +185,7 @@ function OnMsg.ModsLoaded()
         function()
           ChoGGi.ShowBuildMenu(i)
         end,
-        tostring(i)
+        tostring(i) --the key has to be a string
       )
     elseif i == 10 then
       ChoGGi.AddAction(nil,
@@ -204,14 +204,14 @@ function OnMsg.ModsLoaded()
             function()
               ChoGGi.ShowBuildMenu(i)
             end,
-            "Shift-" .. i - 11
+            "Shift-" .. i - 11 -- -1 more for skipping Hidden
           )
         else
           ChoGGi.AddAction(nil,
             function()
               ChoGGi.ShowBuildMenu(i)
             end,
-            "Shift-" .. i - 10
+            "Shift-" .. i - 10 -- -10 since we're doing Shift-*
           )
         end
       end
@@ -335,6 +335,8 @@ function OnMsg.LoadingScreenPreClose()
     "G_OpenPregameMenu",
     --added to toggles
     "G_ToggleInfopanelCheats",
+    --changed to refreshe build menu without having to re-open it
+    "G_UnlockAllBuildings",
     --broken, I've re-added them
     "StartMysteryAIUprisingMystery",
     "StartMysteryBlackCubeMystery",

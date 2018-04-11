@@ -1,6 +1,39 @@
 --add items to the cheat pane
 function OnMsg.ClassesGenerate()
 
+  function Colonist.CheatFillAllStats(self)
+    self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
+    self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
+    self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
+    self.stat_health = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatMorale(self)
+    self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatSanity(self)
+    self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatComfort(self)
+    self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatHealth(self)
+    self.stat_health = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatRandomSpecialization(self)
+    --skip children, or they'll be a black cube
+    if not self.entity:find("Child",1,true) then
+      self:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init")
+    end
+  end
+  function Colonist.CheatBoostPref(self)
+    self.performance = 250
+  end
+  function Colonist.CheatRandomGender(self)
+    ChoGGi.ColonistUpdateSex(self,ChoGGi.ColonistGenders[UICity:Random(1,5)])
+  end
+  function Colonist.CheatRandomAge(self)
+    ChoGGi.ColonistUpdateAge(self,ChoGGi.ColonistAges[UICity:Random(1,6)])
+  end
 --CheatAllShifts
   local function CheatAllShifts(self)
     self.closed_shifts[1] = false

@@ -1,3 +1,12 @@
+function ChoGGi.UnlockAllBuildings()
+  CheatUnlockAllBuildings()
+  RefreshXBuildMenu()
+
+  ChoGGi.MsgPopup("Unlocked all buildings for construction.",
+   "Buildings","UI/Icons/Upgrades/build_2.tga"
+  )
+end
+
 function ChoGGi.OutsourcePoints1000000()
   Consts.OutsourceResearch = 1000 * ChoGGi.Consts.ResearchPointsScale
   ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch

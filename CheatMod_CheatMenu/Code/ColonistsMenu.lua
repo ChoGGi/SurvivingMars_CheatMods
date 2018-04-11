@@ -5,7 +5,7 @@ ChoGGi.AddAction(
   ChoGGi.AddApplicants,
   nil,
   "Add 250 applicants to the pool.",
-  "groups.tga"
+  "AlignSel.tga"
 )
 
 ChoGGi.AddAction(
@@ -29,7 +29,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Fire All Colonists!",
+  "Gameplay/Colonists/[3]Work/Fire All Colonists!",
   ChoGGi.FireAllColonists,
   nil,
   "Fires everyone from every job.",
@@ -37,7 +37,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Turn Off All Shifts",
+  "Gameplay/Colonists/[3]Work/Turn Off All Shifts",
   function()
     ChoGGi.AllShifts_Toggle(true,"off")
   end,
@@ -47,7 +47,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Turn On All Shifts",
+  "Gameplay/Colonists/[3]Work/Turn On All Shifts",
   function()
     ChoGGi.AllShifts_Toggle(false,"on")
   end,
@@ -73,7 +73,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Min Comfort Birth Toggle",
+  "Gameplay/Colonists/[1]Stats/Min Comfort Birth Toggle",
   ChoGGi.MinComfortBirth_Toggle,
   nil,
   function()
@@ -84,7 +84,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Visit Fail Penalty Toggle",
+  "Gameplay/Colonists/[1]Stats/Visit Fail Penalty Toggle",
   ChoGGi.VisitFailPenalty_Toggle,
   nil,
   function()
@@ -111,7 +111,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Morale Max Toggle",
+  "Gameplay/Colonists/[1]Stats/Morale Max Toggle",
   ChoGGi.ColonistsMoraleMax_Toggle,
   nil,
   function()
@@ -122,7 +122,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/See Dead Sanity Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/See Dead Sanity Damage Toggle",
   ChoGGi.SeeDeadSanityDamage_Toggle,
   nil,
   function()
@@ -133,7 +133,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/No Home Comfort Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/No Home Comfort Damage Toggle",
   ChoGGi.NoHomeComfortDamage_Toggle,
   nil,
   function()
@@ -144,7 +144,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Chance Of Sanity Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/Chance Of Sanity Damage Toggle",
   ChoGGi.ChanceOfSanityDamage_Toggle,
   nil,
   function()
@@ -155,7 +155,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Chance Of Negative Trait Toggle",
+  "Gameplay/Colonists/[2]Traits/Chance Of Negative Trait Toggle",
   ChoGGi.ChanceOfNegativeTrait_Toggle,
   nil,
   function()
@@ -166,7 +166,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Chance Of Suicide Toggle",
+  "Gameplay/Colonists/[1]Stats/Chance Of Suicide Toggle",
   ChoGGi.ColonistsChanceOfSuicide_Toggle,
   nil,
   function()
@@ -209,7 +209,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Colonists Avoid Fired Workplace Toggle",
+  "Gameplay/Colonists/[3]Work/Colonists Avoid Fired Workplace Toggle",
   ChoGGi.AvoidWorkplace_Toggle,
   nil,
   function()
@@ -220,7 +220,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Positive Playground Toggle",
+  "Gameplay/Colonists/[2]Traits/Positive Playground Toggle",
   ChoGGi.PositivePlayground_Toggle,
   nil,
   function()
@@ -236,7 +236,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Project Morpheus Positive Trait Toggle",
+  "Gameplay/Colonists/[2]Traits/Project Morpheus Positive Trait Toggle",
   ChoGGi.ProjectMorpheusPositiveTrait_Toggle,
   nil,
   function()
@@ -252,7 +252,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Performance Penalty Non-Specialist Toggle",
+  "Gameplay/Colonists/[3]Work/Performance Penalty Non-Specialist Toggle",
   ChoGGi.PerformancePenaltyNonSpecialist_Toggle,
   nil,
   function()
@@ -263,7 +263,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Outside Workplace Radius + 16",
+  "Gameplay/Colonists/[3]Work/Outside Workplace Radius + 16",
   function()
     ChoGGi.OutsideWorkplaceRadius(true)
   end,
@@ -275,7 +275,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Outside Workplace Radius Toggle",
+  "Gameplay/Colonists/[3]Work/Outside Workplace Radius Toggle",
   ChoGGi.OutsideWorkplaceRadius,
   nil,
   "Colonists search 10 hexes outside their Dome when looking for a Workplace.",
@@ -283,7 +283,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Children",
+  "Gameplay/Colonists/[6]New/Age: Children",
   function()
     ChoGGi.NewColonistAge("Child","When you're youngest at heart")
   end,
@@ -293,7 +293,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Youth",
+  "Gameplay/Colonists/[6]New/Age: Youth",
   function()
     ChoGGi.NewColonistAge("Youth","When you're young at heart")
   end,
@@ -303,7 +303,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Adult",
+  "Gameplay/Colonists/[6]New/Age: Adult",
   function()
     ChoGGi.NewColonistAge("Adult","Time for the rat race")
   end,
@@ -313,7 +313,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Middle Aged",
+  "Gameplay/Colonists/[6]New/Age: Middle Aged",
   function()
     ChoGGi.NewColonistAge("Middle Aged","Still time for the rat race")
   end,
@@ -323,7 +323,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Senior",
+  "Gameplay/Colonists/[6]New/Age: Senior",
   function()
     ChoGGi.NewColonistAge("Senior","When you're (very much) young at heart")
   end,
@@ -333,7 +333,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: Retiree",
+  "Gameplay/Colonists/[6]New/Age: Retiree",
   function()
     ChoGGi.NewColonistAge("Retiree","Time for some long pig")
   end,
@@ -343,7 +343,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Age: (Default)",
+  "Gameplay/Colonists/[6]New/Age: (Default)",
   function()
     ChoGGi.NewColonistAge(false,"The miracle of childbirth")
   end,
@@ -353,7 +353,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: Other",
+  "Gameplay/Colonists/[6]New/Gender: Other",
   function()
     ChoGGi.NewColonistSex("Other","Whole lotta nothing going on")
   end,
@@ -363,7 +363,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: Android",
+  "Gameplay/Colonists/[6]New/Gender: Android",
   function()
     ChoGGi.NewColonistSex("Android","Ever kissed a cyborg? No.\nYou will.")
   end,
@@ -373,7 +373,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: Clone",
+  "Gameplay/Colonists/[6]New/Gender: Clone",
   function()
     ChoGGi.NewColonistSex("Clone","Nasty Star Wars funk in the pants.")
   end,
@@ -383,7 +383,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: Male",
+  "Gameplay/Colonists/[6]New/Gender: Male",
   function()
     ChoGGi.NewColonistSex("Male","Sausage Fest")
   end,
@@ -393,7 +393,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: Female",
+  "Gameplay/Colonists/[6]New/Gender: Female",
   function()
     ChoGGi.NewColonistSex("Female","Fish Market")
   end,
@@ -403,7 +403,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/New/Gender: (Default)",
+  "Gameplay/Colonists/[6]New/Gender: (Default)",
   function()
     ChoGGi.NewColonistSex(false,"The miracle of childbirth")
   end,
@@ -415,9 +415,9 @@ ChoGGi.AddAction(
 --modify colonists directly
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Morale 100",
+  "Gameplay/Colonists/[1]Stats/Set Morale 100",
   function()
-    ChoGGi.SetColonistsMorale(100000,"Happy days are here again!")
+    ChoGGi.SetColonistsMorale(100 * ChoGGi.Consts.ResourceScale,"Happy days are here again!")
   end,
   nil,
   "Set all Colonists Morale to 100.",
@@ -425,7 +425,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Sanity Max",
+  "Gameplay/Colonists/[1]Stats/Set Sanity Max",
   function()
     ChoGGi.SetColonistsSanity(9999900,"No need for shrinks")
   end,
@@ -435,9 +435,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Sanity 100",
+  "Gameplay/Colonists/[1]Stats/Set Sanity 100",
   function()
-    ChoGGi.SetColonistsSanity(100000,"No need for shrinks")
+    ChoGGi.SetColonistsSanity(100 * ChoGGi.Consts.ResourceScale,"No need for shrinks")
   end,
   nil,
   "Set all Colonists Sanity to 100.",
@@ -445,7 +445,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Comfort Max",
+  "Gameplay/Colonists/[1]Stats/Set Comfort Max",
   function()
     ChoGGi.SetColonistsComfort(9999900,"Happy days are here again!")
   end,
@@ -455,9 +455,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Comfort 100",
+  "Gameplay/Colonists/[1]Stats/Set Comfort 100",
   function()
-    ChoGGi.SetColonistsComfort(100000,"Happy days are here again!")
+    ChoGGi.SetColonistsComfort(100 * ChoGGi.Consts.ResourceScale,"Happy days are here again!")
   end,
   nil,
   "Set all Colonists Comfort to 100.",
@@ -465,7 +465,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Health Max",
+  "Gameplay/Colonists/[1]Stats/Set Health Max",
   function()
     ChoGGi.SetColonistsHealth(9999900,"Healthy!")
   end,
@@ -475,9 +475,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Stats/Set Health 100",
+  "Gameplay/Colonists/[1]Stats/Set Health 100",
   function()
-    ChoGGi.SetColonistsHealth(100000,"Healthy!")
+    ChoGGi.SetColonistsHealth(100 * ChoGGi.Consts.ResourceScale,"Healthy!")
   end,
   nil,
   "Set all Colonists Health to 100.",
@@ -485,17 +485,17 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[1]Make all Colonists Children",
+  "Gameplay/Colonists/[5]Age/[0]Make all Colonists Children",
   function()
     ChoGGi.SetColonistsAge("Child","When you're youngest at heart")
   end,
   nil,
   "Make all Colonists Child age (removes all specializations as well).",
-  "AlignSel.tga"
+  "ToggleEnvMap.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[2]Make all Colonists Youths",
+  "Gameplay/Colonists/[5]Age/[1]Make all Colonists Youths",
   function()
     ChoGGi.SetColonistsAge("Youth","When you're young at heart")
   end,
@@ -505,7 +505,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[3]Make all Colonists Adult",
+  "Gameplay/Colonists/[5]Age/[2]Make all Colonists Adult",
   function()
     ChoGGi.SetColonistsAge("Adult","Time for the rat race")
   end,
@@ -515,7 +515,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[3]Make all Colonists Middle Aged",
+  "Gameplay/Colonists/[5]Age/[3]Make all Colonists Middle Aged",
   function()
     ChoGGi.SetColonistsAge("Middle Aged","Still time for the rat race")
   end,
@@ -525,7 +525,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[4]Make all Colonists Senior",
+  "Gameplay/Colonists/[5]Age/[4]Make all Colonists Senior",
   function()
     ChoGGi.SetColonistsAge("Senior","When you're (very much) young at heart")
   end,
@@ -535,7 +535,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[5]Make all Colonists Retirees",
+  "Gameplay/Colonists/[5]Age/[5]Make all Colonists Retirees",
   function()
     ChoGGi.SetColonistsAge("Retiree","Time for some long pig")
   end,
@@ -545,7 +545,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Age/[5]Set Death Age To 250",
+  "Gameplay/Colonists/[5]Age/[6]Set Death Age To 250",
   ChoGGi.SetDeathAge,
   nil,
   "No one dies till they're 250",
@@ -553,7 +553,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Gender/Make all Colonists Others",
+  "Gameplay/Colonists/[4]Gender/Make all Colonists Others",
   function()
     ChoGGi.SetColonistsSex("Other","Whole lotta nothing going on")
   end,
@@ -563,7 +563,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Gender/Make all Colonists Androids",
+  "Gameplay/Colonists/[4]Gender/Make all Colonists Androids",
   function()
     ChoGGi.SetColonistsSex("Android","Ever kissed a cyborg? No.\nYou will.")
   end,
@@ -573,7 +573,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Gender/Make all Colonists Clones",
+  "Gameplay/Colonists/[4]Gender/Make all Colonists Clones",
   function()
     ChoGGi.SetColonistsSex("Clone","Nasty Star Wars funk in the pants.")
   end,
@@ -583,7 +583,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Gender/Make all Colonists Male",
+  "Gameplay/Colonists/[4]Gender/Make all Colonists Male",
   function()
     ChoGGi.SetColonistsSex("Male","Sausage Fest")
   end,
@@ -593,7 +593,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Gender/Make all Colonists Female",
+  "Gameplay/Colonists/[4]Gender/Make all Colonists Female",
   function()
     ChoGGi.SetColonistsSex("Female","Fish Market")
   end,
@@ -603,7 +603,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Positive Traits Add All",
+  "Gameplay/Colonists/[2]Traits/Positive Traits Add All",
   function()
     ChoGGi.AllPositiveTraits_Toggle(true)
   end,
@@ -613,7 +613,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Positive Traits Remove All",
+  "Gameplay/Colonists/[2]Traits/Positive Traits Remove All",
   ChoGGi.AllPositiveTraits_Toggle,
   nil,
   "Remove all Positive traits from colonists",
@@ -621,7 +621,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Negative Traits Remove All",
+  "Gameplay/Colonists/[2]Traits/Negative Traits Remove All",
   function()
     ChoGGi.AllNegativeTraits_Toggle(true)
   end,
@@ -631,7 +631,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Traits/Negative Traits Add All",
+  "Gameplay/Colonists/[2]Traits/Negative Traits Add All",
   ChoGGi.AllNegativeTraits_Toggle,
   nil,
   "Add all negative traits to colonists",
@@ -639,7 +639,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Add Specialization To All",
+  "Gameplay/Colonists/[3]Work/Add Specialization To All",
   ChoGGi.ColonistsAddSpecializationToAll,
   nil,
   "If Colonist has no Specialization then add a random one",
@@ -647,7 +647,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Work/Fix Black Cubed Colonists",
+  "Gameplay/Colonists/[3]Work/Fix Black Cubed Colonists",
   ChoGGi.ColonistsFixBlackCube,
   nil,
   "If any colonists are black cubes click this.",
