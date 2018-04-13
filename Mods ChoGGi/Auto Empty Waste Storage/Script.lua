@@ -1,4 +1,7 @@
-AutoEmptyWasteStorage = {}
+AutoEmptyWasteStorage = {
+  Enabled = true,
+  Which = 1
+}
 
 --when ModConfig is ready to be used
 function OnMsg.ModConfigReady()
