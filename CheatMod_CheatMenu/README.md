@@ -4,6 +4,13 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menu items: set gravity, follow camera, higher render/shadow distance, change logo, unlimited wonders, build almost anywhere, etc...
 
+##### Install help
+```
+Place CheatMod_CheatMenu folder in %AppData%\Surviving Mars\Mods (Create Mods folder if it doesn't exist)
+Other OS locations: https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_location
+Enable with in-game mod manager
+```
+
 ##### Info
 ```
 F2: Toggle the cheats menu.
@@ -24,60 +31,44 @@ Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat be
 
 Hover over menu items for a description (will say if enabled or disabled)
 If a menu has "+ *number*" then it'll increase it by that number each time
-
-Thanks to chippydip (for the original mod) and therealshibe (for mentioning it)
-http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 ```
 
 ##### List of some stuff added (not up to date)
 ```
-Disable Texture Compression
-Set Shadow Map Size
-Set Death Age to 250
 Add 250 Applicants
-Change Sponsor/Commander
-Change logo
-Change occurrence level of disasters
-Increasable Capacity Colonist/Visitor/Battery/Air/Water
-Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
-Traits Add All/Remove All Negative/Positive
-Remove Building Limits (they can be placed almost anywhere: no uneven terrain, it messes the buildings up)
-Set New Colonists Age,Sex
-Sanatorium Cure All Traits
-School Train All Traits
-Sanatorium/School Show All Traits
-Show All Traits in Sanatorium/School
-Colonist Residence Capacity
-Add Prefabs
-Fill Resource Selected
-Start Mysteries
+Add Funds/Reset Funds
 Add Mystery Buildings
+Add Prefabs
+Allow Dome Forbidden Buildings
+Allow Dome Required Buildings
+Allow Tall Buildings Under Pipes
 Amount of BreakThrough Techs Per Game
-Research Every Breakthrough
-Research Every Mystery
-Research Queue Larger Toggle
-Unlock Every Breakthrough
+Asteroids (single,multi,storm)
 Avoid Workplace Toggle
-Show Hidden Buildings
-Unlimited Wonders
+Border Scrolling Toggle
+Build Spires Outside of Spire Point
 Building Damage Crime Toggle
 Cables & Pipes: Instant Build
 Cables & Pipes: Instant Repair
-Cables & Pipes: No Chance Of Break
-Border Scrolling Toggle
+Cables & Pipes: No Chance of Break
 Camera Zoom Dist
-Camera Zoom Speed
-Chance Of Negative Trait
-Chance Of Sanity Damage
-Colonists Chance Of Suicide
+Chance of Negative Trait
+Chance of Sanity Damage
+Change Logo
+Change Occurrence Level of Disasters
+Change Sponsor/Commander
+Colonist Residence Capacity
 Colonists Add Specialization To All
+Colonists Chance of Suicide
 Colonists Morale Max Toggle
 Colonists Per Rocket
 Colonists Starve Toggle
 Colonists Suffocate Toggle
 Construction For Cheap
+Crop Fail Threshold Toggle (lower the threshold to 0)
 Deep Scan Toggle
 Deeper Scan Enable
+Disable Texture Compression
 Drone Battery Infinite
 Drone Build Speed
 Drone Carry Amount Increase
@@ -86,43 +77,55 @@ Drone Recharge Time Toggle
 Drone Repair Supply Leak Toggle
 Drones Per DroneHub Increase
 Drones Per RC Rover Increase
-RC Rover Drone Recharge Free Toggle
-RC Transport Transfer Speed
-RC Transport Storage Increase
+Fill Resource Selected
 Food Per Rocket Passenger Increase
 Fully Automated Buildings
-Add Funds/Reset Funds
 Game Speed Default,Double,Triple,Quad,Octuple,Sexdecuple,Duotriguple,Quattuorsexaguple
+Increasable Capacity Colonist/Visitor/Battery/Air/Water
+Instant Build (most items)
 Maintenance Free Buildings
 Meteor Health Damage Toggle
 Moisture Vaporator Penalty Toggle
+No Home Comfort Damage Toggle
+Open In Ged Editor (lets you open some objects in the ged editor)
 Outside Workplace Radius Increase
 Outsource Points 1000000
 Outsourcing Free Toggle
 Performance Penalty Non-Specialist Toggle
 Positive Playground Toggle
 Project Morpheus Positive Trait Toggle
+RC Rover Drone Recharge Free Toggle
+RC Transport Storage Increase
+RC Transport Transfer Speed
+Remove Building Limits (they can be placed almost anywhere: no uneven terrain, it messes the buildings up)
 Renegade Creation Toggle
+Research Every Breakthrough
+Research Every Mystery
+Research Queue Larger Toggle
 Rocket Cargo Capacity Toggle
 Rocket Travel Instant Toggle
+Sanatorium Cure All Traits
+Sanatorium/School Show All Traits
 Scanner Queue Larger Toggle
+School Train All Traits
+See Dead Sanity Damage Toggle
+Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
+Set Death Age to 250
+Set New Colonists Age,Sex
+Set Shadow Map Size
+Show All Traits in Sanatorium/School
+Show Hidden Buildings
+ShuttleHub Shuttles Increase
 Spacing between Pipe Pillars
+Start Mysteries
 Storage Depot / Waste Dump increase
+Toggle Editor (you can move stuff around: if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Toggle Infopanel Cheats
+Traits: Add/Remove All Negative or Positive
+Unlimited Wonders
+Unlock Every Breakthrough
 Visit Fail Penalty Toggle
 Write Logs
-Crop Fail Threshold Toggle (lower the threshold to 0)
-Build Spires Outside of Spire Point
-Allow Dome Forbidden Buildings
-Allow Dome Required Buildings
-Allow Tall Buildings Under Pipes
-Instant Build (most items)
-See Dead Sanity Damage Toggle
-No Home Comfort Damage Toggle
-ShuttleHub Shuttles Increase
-Asteroids (single,multi,storm)
-Toggle Editor (you can move stuff around (if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
-Open In Ged Editor (lets you open some objects in the ged editor)
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
@@ -188,4 +191,9 @@ If you increase a number high enough it'll go negative.
 
 Production will reset when the production changes (Solar panels, Wind turbines, etc).
   It is what it is.
+```
+
+##### Thanks
+```
+chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 ```
