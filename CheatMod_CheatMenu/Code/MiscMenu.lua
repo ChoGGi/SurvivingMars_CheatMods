@@ -23,7 +23,7 @@ ChoGGi.BuildDisasterMenu(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Disasters/Meteor Damage Toggle",
+  "Gameplay/Disasters/Meteor Damage",
   ChoGGi.MeteorHealthDamage_Toggle,
   nil,
   function()
@@ -60,7 +60,7 @@ ChoGGi.AddAction(
 )
 -------------
 ChoGGi.AddAction(
-  "Gameplay/Shuttles/Shuttle Cargo + 256",
+  "Gameplay/Shuttles/Shuttle Cargo + 250",
   function()
     ChoGGi.ShuttleCapacitySet(true)
   end,
@@ -200,7 +200,7 @@ ChoGGi.AddAction(
 )
 --------------------
 ChoGGi.AddAction(
-  "Gameplay/QoL/[2]Render/Disable Texture Compression Toggle",
+  "Gameplay/QoL/[2]Render/Disable Texture Compression",
   ChoGGi.DisableTextureCompression_Toggle,
   nil,
   function()
@@ -211,7 +211,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/[2]Render/Higher Render Distance Toggle",
+  "Gameplay/QoL/[2]Render/Higher Render Distance",
   ChoGGi.HigherRenderDist_Toggle,
   nil,
   function()
@@ -222,7 +222,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/[2]Render/Higher Shadow Distance Toggle",
+  "Gameplay/QoL/[2]Render/Higher Shadow Distance",
   ChoGGi.HigherShadowDist_Toggle,
   nil,
   function()
@@ -296,7 +296,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = config.BuildingInfopanelCheats and "(Enabled)" or "(Disabled)"
-    return des .. " the cheats in the infopanels"
+    return des .. " Show the cheat pane in the info panel."
   end,
   "toggle_dtm_slots.tga"
 )
@@ -307,14 +307,13 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane and "(Enabled)" or "(Disabled)"
-    return des .. " Remove some entries from the cheats pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
+    return des .. " Remove some entries from the cheat pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
   end,
   "toggle_dtm_slots.tga"
 )
 
-
 ChoGGi.AddAction(
-  "Gameplay/QoL/Pipes Pillars Spacing Toggle",
+  "Gameplay/QoL/Pipes Pillars Spacing",
   ChoGGi.PipesPillarsSpacing_Toggle,
   nil,
   function()
@@ -330,7 +329,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Show All Traits Toggle",
+  "Gameplay/QoL/Show All Traits",
   ChoGGi.ShowAllTraits_Toggle,
   nil,
   function()
@@ -341,7 +340,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Research Queue Larger Toggle",
+  "Gameplay/QoL/Research Queue Larger",
   ChoGGi.ResearchQueueLarger_Toggle,
   nil,
   function()
@@ -357,7 +356,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/QoL/Scanner Queue Larger Toggle",
+  "Gameplay/QoL/Scanner Queue Larger",
   ChoGGi.ScannerQueueLarger_Toggle,
   nil,
   function()
@@ -373,7 +372,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Rocket/Cargo Capacity Toggle",
+  "Gameplay/Rocket/Cargo Capacity",
   ChoGGi.RocketCargoCapacity_Toggle,
   nil,
   function()
@@ -389,8 +388,8 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Rocket/Travel Instant Toggle",
-  ChoGGi.RocketTravelInstant_Toggle,
+  "Gameplay/Rocket/Instant Travel",
+  ChoGGi.RocketInstantTravel_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,"(Disabled)","(Enabled)")
@@ -566,7 +565,3 @@ ChoGGi.AddAction(
   "DisableRMMaps.tga"
 )
 --]]
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"MiscMenu")
-end

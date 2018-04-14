@@ -99,15 +99,15 @@ end
 
 function ChoGGi.ShuttleCapacitySet(Bool)
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    if Bool then
-      object.max_shared_storage = object.max_shared_storage  + (256 * ChoGGi.Consts.ResourceScale)
+    if Bool == true then
+      object.max_shared_storage = object.max_shared_storage  + (250 * ChoGGi.Consts.ResourceScale)
       ChoGGi.CheatMenuSettings.ShuttleStorage = object.max_shared_storage
     else
       object.max_speed = object.base_max_shared_storage
     end
   end
 
-  if not Bool then
+  if Bool ~= true then
     ChoGGi.CheatMenuSettings.ShuttleStorage = false
   end
 
@@ -121,14 +121,14 @@ end
 function ChoGGi.ShuttleSpeedSet(Bool)
 --base_max_speed
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    if Bool then
+    if Bool == true then
       object.max_speed = object.max_speed + 5000
       ChoGGi.CheatMenuSettings.ShuttleSpeed = object.max_shared_storage
     else
       object.max_speed = object.base_max_speed
     end
   end
-  if not Bool then
+  if Bool ~= true then
     ChoGGi.CheatMenuSettings.ShuttleSpeed = false
   end
 
@@ -379,7 +379,7 @@ end
 
 function ChoGGi.RocketCargoCapacity_Toggle()
   if Consts.CargoCapacity == 1000000000 then
-    Consts.CargoCapacity = ChoGGi.CargoCapacity()
+    Consts.CargoCapacity = ChoGGi.GetCargoCapacity()
   else
     Consts.CargoCapacity = 1000000000
   end
@@ -390,13 +390,15 @@ function ChoGGi.RocketCargoCapacity_Toggle()
   )
 end
 
-function ChoGGi.RocketTravelInstant_Toggle()
-  Consts.TravelTimeEarthMars = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,0,ChoGGi.Consts.TravelTimeEarthMars)
-  Consts.TravelTimeMarsEarth = ChoGGi.NumRetBool(Consts.TravelTimeMarsEarth,0,ChoGGi.Consts.TravelTimeMarsEarth)
+function ChoGGi.RocketInstantTravel_Toggle()
+  --Consts.TravelTimeEarthMars = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,0,ChoGGi.Consts.TravelTimeEarthMars)
+  --Consts.TravelTimeMarsEarth = ChoGGi.NumRetBool(Consts.TravelTimeMarsEarth,0,ChoGGi.Consts.TravelTimeMarsEarth)
+  Consts.TravelTimeEarthMars = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,0,ChoGGi.GetTravelTimeEarthMars())
+  Consts.TravelTimeMarsEarth = ChoGGi.NumRetBool(Consts.TravelTimeMarsEarth,0,ChoGGi.GetTravelTimeMarsEarth())
   ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
   ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. " or 88 MPH",
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. ": 88 MPH",
    "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
   )
 end
@@ -443,7 +445,7 @@ function ChoGGi.ColonistsPerRocket(Bool)
   if Bool == true then
     Consts.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket + 25
   else
-    Consts.MaxColonistsPerRocket = ChoGGi.MaxColonistsPerRocket()
+    Consts.MaxColonistsPerRocket = ChoGGi.GetMaxColonistsPerRocket()
   end
   ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket
   ChoGGi.WriteSettings()
@@ -516,8 +518,4 @@ function ChoGGi.TriboelectricScrubberRadius(Bool)
   ChoGGi.MsgPopup("I see you there",
    "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
   )
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"MiscFunc")
 end

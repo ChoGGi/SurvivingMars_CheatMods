@@ -127,7 +127,7 @@ dofolder_files(ChoGGi.ModPath .. "Code")
 
 --if writelogs option
 if ChoGGi.CheatMenuSettings.WriteLogs then
-  table.insert(ChoGGi.StartupMsgs,"ChoGGi: Writing Debug/Console Logs to AppData/logs")
+  table.insert(ChoGGi.StartupMsgs,"ChoGGi: Writing debug/console logs to AppData/logs")
   ChoGGi.WriteLogsEnable()
 end
 
@@ -142,43 +142,3 @@ end
 if ChoGGi.Init_WriteSettings then
   ChoGGi.WriteSettings()
 end
-
---check if all files loaded
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCountAuto,"Settings")
-  table.insert(ChoGGi.FilesCountAuto,"FuncDebug")
-  table.insert(ChoGGi.FilesCountAuto,"FuncGame")
-  table.insert(ChoGGi.FilesCountAuto,"ReplacedFunctions")
-  --add files in Code to list
-  local err, files = AsyncListFiles(ChoGGi.ModPath .. "Code", "*.lua")
-  if err then
-    table.insert(ChoGGi.StartupMsgs,"Error reading " .. ChoGGi.ModPath .. "Code")
-    return
-  end
-  --we just want the file names
-  for i = 1, #files do
-    local dir, file, ext = SplitPath(files[i])
-    table.insert(ChoGGi.FilesCountAuto,file)
-  end
-  --remove file if name is matched
-  local listedfile
-  local rem = false
-  for i = 1, #ChoGGi.FilesCountAuto do
-    listedfile = ChoGGi.FilesCountAuto[i]
-    for j = 1, #ChoGGi.FilesCount do
-      if listedfile == ChoGGi.FilesCount[j] then
-        rem = true
-        break
-      end
-    end
-    if rem then
-      ChoGGi.FilesCountAuto[i] = nil
-      rem = false
-    end
-  end
-  --send missing names to console
-  for _,v in pairs(ChoGGi.FilesCountAuto) do
-    table.insert(ChoGGi.StartupMsgs,"LUA ERROR: " .. v)
-  end
-
-end --Testing

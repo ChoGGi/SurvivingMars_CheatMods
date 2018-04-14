@@ -109,7 +109,3 @@ ChoGGi.AddAction(
   "Expanded Cheat Menu info dialog.",
   "ReportBug.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"HelpMenu")
-end

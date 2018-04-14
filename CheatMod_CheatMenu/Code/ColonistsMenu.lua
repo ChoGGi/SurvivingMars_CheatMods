@@ -57,34 +57,18 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Baby Birth Toggle",
-  ChoGGi.BirthThreshold_Toggle,
-  nil,
-  function()
-    local des
-    if Consts.BirthThreshold == 999999900 then
-      des = "(Enabled)"
-    else
-      des = "(Disabled)"
-    end
-    return des .. " Maxed out BirthThreshold (no chance of birth)."
-  end,
-  "AlignSel.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/Min Comfort Birth Toggle",
+  "Gameplay/Colonists/[1]Stats/Min Comfort Birth",
   ChoGGi.MinComfortBirth_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.MinComfortBirth,"(Disabled)","(Enabled)")
-    return des .. " Lower limit on birthing comfort."
+    return des .. " Lower limit on birthing comfort (more babies)."
   end,
   "AlignSel.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/Visit Fail Penalty Toggle",
+  "Gameplay/Colonists/[1]Stats/Visit Fail Penalty",
   ChoGGi.VisitFailPenalty_Toggle,
   nil,
   function()
@@ -95,7 +79,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Renegade Creation Toggle",
+  "Gameplay/Colonists/Renegade Creation",
   ChoGGi.RenegadeCreation_Toggle,
   nil,
   function()
@@ -111,8 +95,8 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/Morale Max Toggle",
-  ChoGGi.ColonistsMoraleMax_Toggle,
+  "Gameplay/Colonists/[1]Stats/Morale Always Max",
+  ChoGGi.ColonistsMoraleAlwaysMax_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.HighStatLevel,"(Disabled)","(Enabled)")
@@ -122,7 +106,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/See Dead Sanity Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/See Dead Sanity Damage",
   ChoGGi.SeeDeadSanityDamage_Toggle,
   nil,
   function()
@@ -133,7 +117,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/No Home Comfort Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/No Home Comfort Damage",
   ChoGGi.NoHomeComfortDamage_Toggle,
   nil,
   function()
@@ -144,7 +128,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/Chance Of Sanity Damage Toggle",
+  "Gameplay/Colonists/[1]Stats/Chance Of Sanity Damage",
   ChoGGi.ChanceOfSanityDamage_Toggle,
   nil,
   function()
@@ -155,7 +139,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[2]Traits/Chance Of Negative Trait Toggle",
+  "Gameplay/Colonists/[2]Traits/Chance Of Negative Trait",
   ChoGGi.ChanceOfNegativeTrait_Toggle,
   nil,
   function()
@@ -166,7 +150,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[1]Stats/Chance Of Suicide Toggle",
+  "Gameplay/Colonists/[1]Stats/Chance Of Suicide",
   ChoGGi.ColonistsChanceOfSuicide_Toggle,
   nil,
   function()
@@ -177,7 +161,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Colonists Suffocate Toggle",
+  "Gameplay/Colonists/Colonists Suffocate",
   ChoGGi.ColonistsSuffocate_Toggle,
   nil,
   function()
@@ -193,7 +177,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/Colonists Starve Toggle",
+  "Gameplay/Colonists/Colonists Starve",
   ChoGGi.ColonistsStarve_Toggle,
   nil,
   function()
@@ -209,7 +193,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[3]Work/Colonists Avoid Fired Workplace Toggle",
+  "Gameplay/Colonists/[3]Work/Colonists Avoid Fired Workplace",
   ChoGGi.AvoidWorkplace_Toggle,
   nil,
   function()
@@ -220,7 +204,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[2]Traits/Positive Playground Toggle",
+  "Gameplay/Colonists/[2]Traits/Positive Playground",
   ChoGGi.PositivePlayground_Toggle,
   nil,
   function()
@@ -236,7 +220,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[2]Traits/Project Morpheus Positive Trait Toggle",
+  "Gameplay/Colonists/[2]Traits/Project Morpheus Positive Trait",
   ChoGGi.ProjectMorpheusPositiveTrait_Toggle,
   nil,
   function()
@@ -252,7 +236,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[3]Work/Performance Penalty Non-Specialist Toggle",
+  "Gameplay/Colonists/[3]Work/Performance Penalty Non-Specialist",
   ChoGGi.PerformancePenaltyNonSpecialist_Toggle,
   nil,
   function()
@@ -263,7 +247,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[3]Work/Outside Workplace Radius + 16",
+  "Gameplay/Colonists/[3]Work/Outside Workplace Radius + 10",
   function()
     ChoGGi.OutsideWorkplaceRadius(true)
   end,
@@ -275,7 +259,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[3]Work/Outside Workplace Radius Toggle",
+  "Gameplay/Colonists/[3]Work/Outside Workplace Radius",
   ChoGGi.OutsideWorkplaceRadius,
   nil,
   "Colonists search 10 hexes outside their Dome when looking for a Workplace.",
@@ -621,7 +605,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[2]Traits/Negative Traits Remove All",
+  "Gameplay/Colonists/[2]Traits/Negative Traits Add All",
   function()
     ChoGGi.AllNegativeTraits_Toggle(true)
   end,
@@ -631,7 +615,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[2]Traits/Negative Traits Add All",
+  "Gameplay/Colonists/[2]Traits/Negative Traits Remove All",
   ChoGGi.AllNegativeTraits_Toggle,
   nil,
   "Add all negative traits to colonists",
@@ -647,13 +631,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[3]Work/Fix Black Cubed Colonists",
+  "Gameplay/Colonists/[3]Work/Fix Black Cube Colonists",
   ChoGGi.ColonistsFixBlackCube,
   nil,
   "If any colonists are black cubes click this.",
   "ReportBug.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"ColonistsMenu")
-end

@@ -1,29 +1,9 @@
---[[fixed in spirit update
---output results to console
-
---for redirecting print/ConsolePrint to consolelog
-ChoGGi.OrigFunc.print = print
-function print(...)
-  if ... then
-    AddConsoleLog(...,true)
-  end
-  ChoGGi.OrigFunc.print(...)
-end
-ChoGGi.OrigFunc.ConsolePrint = ConsolePrint
-function ConsolePrint(...)
-  if ... then
-    AddConsoleLog(...,true)
-  end
-  ChoGGi.OrigFunc.ConsolePrint(...)
-end
---]]
-
 --make some easy to type names
 function console(...)
   ConsolePrint(tostring(...))
 end
-function dumplua(...)
-  ChoGGi.Dump(TupleToLuaCode(...))
+function dumplua(Value)
+  ChoGGi.Dump("\r\n" .. ValueToLuaCode(Value),nil,"DumpedLua","lua")
 end
 function restart()
   quit("restart")
@@ -48,6 +28,36 @@ cur = GetTerrainCursorObjSel
 sp = GetPreciseCursorObj
 sc = GetTerrainCursor
 
+--make sure it updates with our new value
+ChoGGi.OrigFunc.ElectricityProducer_CreateElectricityElement = ElectricityProducer.CreateElectricityElement
+function ElectricityProducer:CreateElectricityElement()
+  ChoGGi.OrigFunc.ElectricityProducer_CreateElectricityElement(self)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
+    self.electricity_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
+  end
+end
+ChoGGi.OrigFunc.AirProducer_CreateLifeSupportElements = AirProducer.CreateLifeSupportElements
+function AirProducer:CreateLifeSupportElements()
+  ChoGGi.OrigFunc.AirProducer_CreateLifeSupportElements(self)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
+    self.air_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
+  end
+end
+ChoGGi.OrigFunc.WaterProducer_CreateLifeSupportElements = WaterProducer.CreateLifeSupportElements
+function WaterProducer:CreateLifeSupportElements()
+  ChoGGi.OrigFunc.WaterProducer_CreateLifeSupportElements(self)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
+    self.water_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
+  end
+end
+ChoGGi.OrigFunc.SingleResourceProducer_Init = SingleResourceProducer.Init
+function SingleResourceProducer:Init()
+  ChoGGi.OrigFunc.SingleResourceProducer_Init(self)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.parent.encyclopedia_id] then
+    self.production_per_day = ChoGGi.CheatMenuSettings.BuildingsProduction[self.parent.encyclopedia_id]
+  end
+end
+
 --make sure console is focused even when construction is opened
 ChoGGi.OrigFunc.Console_Show = Console.Show
 function Console:Show(show)
@@ -71,7 +81,7 @@ end
 --always able to show console
 ChoGGi.OrigFunc.ShowConsole = ShowConsole
 function ShowConsole(visible)
---[[
+--[[remvoed from orig func
   if not Platform.developer and not ConsoleEnabled then
     return
   end
@@ -84,6 +94,28 @@ function ShowConsole(visible)
   end
 end
 
+--ugly way of making sure console doesn't include ` when using tilde to open console
+ChoGGi.OrigFunc.Console_TextChanged = Console.TextChanged
+function Console:TextChanged()
+  ChoGGi.OrigFunc.Console_TextChanged(self)
+  if self.idEdit:GetText() == "`" then
+    self.idEdit:SetText("")
+  end
+end
+
+--make it so it goes to the end of the text when you use history
+ChoGGi.OrigFunc.Console_HistoryDown = Console.HistoryDown
+function Console:HistoryDown()
+  ChoGGi.OrigFunc.Console_HistoryDown(self)
+  self.idEdit:SetCursorPos(#self.idEdit:GetText())
+end
+
+ChoGGi.OrigFunc.Console_HistoryUp = Console.HistoryUp
+function Console:HistoryUp()
+  ChoGGi.OrigFunc.Console_HistoryUp(self)
+  self.idEdit:SetCursorPos(#self.idEdit:GetText())
+end
+
 --some dev removed this from the Spirit update... (harumph)
 function AddConsolePrompt(text)
   if dlgConsole then
@@ -94,34 +126,8 @@ function AddConsolePrompt(text)
   end
 end
 
---make it so it goes to the end of the text when you use history
-ChoGGi.OrigFunc.Console_HistoryDown = Console.HistoryDown
-function Console:HistoryDown()
-  if self.history_queue_idx <= 1 then
-    self.history_queue_idx = #self.history_queue
-  else
-    self.history_queue_idx = self.history_queue_idx - 1
-  end
-  --changed:
-  local text = self.history_queue[self.history_queue_idx] or ""
-  self.idEdit:SetText(text)
-  --added:
-  self.idEdit:SetCursorPos(#text)
-end
-ChoGGi.OrigFunc.Console_HistoryUp = Console.HistoryUp
-function Console:HistoryUp()
-  if self.history_queue_idx + 1 <= #self.history_queue then
-    self.history_queue_idx = self.history_queue_idx + 1
-  else
-    self.history_queue_idx = 1
-  end
-  --changed:
-  local text = self.history_queue[self.history_queue_idx] or ""
-  self.idEdit:SetText(text)
-  --added:
-  self.idEdit:SetCursorPos(#text)
-end
 --toggle visiblity of console log
+--(ok, so it isn't a replaced func, but all the other console stuff is here)
 function ToggleConsoleLog()
   if dlgConsoleLog then
     local isVis = dlgConsoleLog:GetVisible()
@@ -134,6 +140,7 @@ function ToggleConsoleLog()
     dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
   end
 end
+
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.UserAddActions(ActionsToAdd)
@@ -189,7 +196,7 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 --]]
 
 --RemoveBuildingLimits
-function OnMsg.ClassesBuilt()
+function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
 
@@ -345,7 +352,8 @@ function OnMsg.ClassesBuilt()
 
 end --OnMsg
 
-function OnMsg.ClassesGenerate()
+function ChoGGi.ReplacedFunctions_ClassesGenerate()
+
 --[[
 --dumpo(classdefs)
 dumpt(classdefs)
@@ -424,9 +432,12 @@ dumpl(classdefs)
   end
 
   function Examine:Init()
-    self.Dump = function(String)
+    self.Dump = function(Obj)
+      local String = self:totextex(Obj)
       --remove html tags
       String = String:gsub("<[/%s%a%d]*>","")
+      --also dump object code
+      String = "\r\n" .. String .. "\r\n" .. ValueToLuaCode(Obj) .. "\r\n"
       ChoGGi.Dump(String,nil,"DumpedExamine","lua")
     end
     self.onclick_handles = {}
@@ -455,7 +466,7 @@ dumpl(classdefs)
       self:FindNext(self.idFilter:GetText())
     end
     function self.idDump.OnButtonPressed()
-      self.Dump(self:totextex(self.obj) .. "\n")
+      self.Dump(self.obj)
     end
 --[[
     function self.idEdit.OnButtonPressed()
@@ -484,7 +495,3 @@ dumpl(classdefs)
   end
 
 end --OnMsg
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"ReplacedFunctions")
-end

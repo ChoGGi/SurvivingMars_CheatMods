@@ -2,7 +2,7 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
-Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, change logo, unlimited wonders, build almost anywhere, etc...
+Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menu items: set gravity, follow camera, higher render/shadow distance, change logo, unlimited wonders, build almost anywhere, etc...
 
 ##### Info
 ```
@@ -61,7 +61,9 @@ Avoid Workplace Toggle
 Show Hidden Buildings
 Unlimited Wonders
 Building Damage Crime Toggle
-Cables And Pipes Toggle
+Cables & Pipes: Instant Build
+Cables & Pipes: Instant Repair
+Cables & Pipes: No Chance Of Break
 Border Scrolling Toggle
 Camera Zoom Dist
 Camera Zoom Speed
@@ -109,7 +111,6 @@ Storage Depot / Waste Dump increase
 Toggle Infopanel Cheats
 Visit Fail Penalty Toggle
 Write Logs
-Repair Pipes/Cables (instantly repairs them all)
 Crop Fail Threshold Toggle (lower the threshold to 0)
 Build Spires Outside of Spire Point
 Allow Dome Forbidden Buildings
@@ -135,7 +136,7 @@ exit (or quit)
 restart (or reboot)
 examine(Consts) (or ex(SelectedObj))
 dump(Consts) (dump puts files in AppData/logs)
-dumplua(dlgConsole) (dumps using TupleToLuaCode())
+dumplua(dlgConsole) (dump using ValueToLuaCode())
 dumpobject(SelectedObj) (or dumpo)
 dumptable(Consts) (or dumpt)
 SelectedObj (or s)
@@ -146,7 +147,7 @@ GetTerrainCursor() (or sc)
 
 If you want to overwrite instead of append text: dumpobject(TechTree,"w")
 If you want to dump functions as well: dumptable(TechTree,nil,true)
-If you want to save the text then Debug>Write Logs
+If you want to save the console text: Debug>Write Logs (very helpful for examining an object)
 
 you can paste chunks of scripts to test out:
 local templates = DataInstances.BuildingTemplate
@@ -162,19 +163,29 @@ TechTree[6][46] = Breakthroughs>PrefabCompression
 
 ChoGGi.ReturnTechAmount(Tech,Prop)
 returns number from TechTree (so you know how much it changes)
+see: Data/TechTree.lua, or ex(TechTree)
 
-ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
+ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
 ^returns 10
-ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
-^ returns 0.25
+ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
+^ returns 0.7
 
-it returns percentages in decimal for ease of mathing
-ie: BuildingMaintenancePointsModifier is -25 this returns it as 0.25
-it also returns negative amounts as positive (I prefer doing num - Amt, not num + Amt)
+it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
+ie: SupportiveCommunity is -70 this returns it as 0.7
+it also returns negative amounts as positive (I prefer num - PositiveAmt, not num + NegativeAmt)
+
+if .a is 0 or .p is 0.0 then you most likely have the wrong one
+(TechTree'll always return both, I assume there's a default value somewhere)
 ```
 
 ##### Known issues
 ```
 Going above 4096 or so will making clicking on certain buildings laggy (houses/schools).
   Don't go too high...
+
+If you increase a number high enough it'll go negative.
+  Don't go too high or use the menu to reset to default (if it's still broken send me your save).
+
+Production will reset when the production changes (Solar panels, Wind turbines, etc).
+  It is what it is.
 ```

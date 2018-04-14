@@ -50,7 +50,7 @@ function ChoGGi.AllShifts_Toggle(Bool,Msg)
     --for _,object in ipairs(UICity.labels.Building or empty_table) do
     for _,object in ipairs(UICity.labels.ShiftsBuilding or empty_table) do
       if object.closed_shifts then
-        if Bool then
+        if Bool == true then
           object.closed_shifts = {true,true,true}
         else
           object.closed_shifts = {false,false,false}
@@ -59,19 +59,6 @@ function ChoGGi.AllShifts_Toggle(Bool,Msg)
     end
   end
   ChoGGi.QuestionBox("Are you sure you want to turn " .. Msg .. ": all shifts?",AllShiftsToggle,"Early night? Vamos al bar les serviria un trago.")
-end
-
-function ChoGGi.BirthThreshold_Toggle()
-  if Consts.BirthThreshold == 999999900 then
-    Consts.BirthThreshold = ChoGGi.Consts.BirthThreshold
-  else
-    Consts.BirthThreshold = 999999900
-  end
-  ChoGGi.CheatMenuSettings.BirthThreshold = Consts.BirthThreshold
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BirthThreshold .. ": Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
-    "Colonists","UI/Icons/Sections/colonist.tga"
-  )
 end
 
 function ChoGGi.MinComfortBirth_Toggle()
@@ -105,7 +92,7 @@ function ChoGGi.RenegadeCreation_Toggle()
   )
 end
 
-function ChoGGi.ColonistsMoraleMax_Toggle()
+function ChoGGi.ColonistsMoraleAlwaysMax_Toggle()
 -- -100
   Consts.HighStatLevel = ChoGGi.NumRetBool(Consts.HighStatLevel,0,ChoGGi.Consts.HighStatLevel)
   Consts.LowStatLevel = ChoGGi.NumRetBool(Consts.LowStatLevel,0,ChoGGi.Consts.LowStatLevel)
@@ -157,7 +144,7 @@ function ChoGGi.ChanceOfSanityDamage_Toggle()
 end
 
 function ChoGGi.ChanceOfNegativeTrait_Toggle()
-  Consts.LowSanityNegativeTraitChance = ChoGGi.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.Consts.LowSanityNegativeTraitChance)
+  Consts.LowSanityNegativeTraitChance = ChoGGi.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.GetLowSanityNegativeTraitChance())
   ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance = Consts.LowSanityNegativeTraitChance
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance .. ": Stupid and happy",
@@ -236,7 +223,7 @@ function ChoGGi.ProjectMorpheusPositiveTrait_Toggle()
 end
 
 function ChoGGi.PerformancePenaltyNonSpecialist_Toggle()
-  Consts.NonSpecialistPerformancePenalty = ChoGGi.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.Consts.NonSpecialistPerformancePenalty)
+  Consts.NonSpecialistPerformancePenalty = ChoGGi.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.GetNonSpecialistPerformancePenalty())
   ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty = Consts.NonSpecialistPerformancePenalty
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty .. ": You never know what you're gonna get.",
@@ -246,7 +233,7 @@ end
 
 function ChoGGi.OutsideWorkplaceRadius(Bool)
   if Bool == true then
-    Consts.DefaultOutsideWorkplacesRadius = Consts.DefaultOutsideWorkplacesRadius + 16
+    Consts.DefaultOutsideWorkplacesRadius = Consts.DefaultOutsideWorkplacesRadius + 10
   else
     Consts.DefaultOutsideWorkplacesRadius = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
   end
@@ -383,8 +370,4 @@ function ChoGGi.AllNegativeTraits_Toggle(Bool)
   ChoGGi.MsgPopup("All Negative Traits",
     "Traits","UI/Icons/Sections/traits.tga"
   )
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"ColonistsFunc")
 end

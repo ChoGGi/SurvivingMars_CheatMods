@@ -9,7 +9,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Deep Scan Toggle",
+  "Gameplay/Resources/Deep Scan",
   ChoGGi.DeepScanToggle,
   nil,
   function()
@@ -283,7 +283,3 @@ ChoGGi.AddAction(
   "Fill the selected object's resource(s)",
   "Cube.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"ResourcesMenu")
-end

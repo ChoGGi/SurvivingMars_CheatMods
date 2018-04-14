@@ -1,48 +1,8 @@
---[[
-g_Classes
-
---retrieve list of building/vehicle names
-local templates = DataInstances.BuildingTemplate
-for i = 1, #templates do
-  local building = templates[i]
-	print(building.name)
-  building.dome_forbidden = false
-  building.dome_required = false
-end
-
---loop through stuff
-#UICity.labels.Colonist
-People: Colonist,Homeless,Residence,Unemployed
-bld: Building (all),BuildingNoDomes (skips domes, still includes bld inside)
-drones/rc: Unit (all),Drone,Rover,RCRover
-
-for _,object in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-  if IsKindOf(object,"Sanatorium") then
-    for i = 1, #traits do
-      object:SetTrait(i, traits[i])
-    end
-  end
-end
-
-for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-  print(object.encyclopedia_id)
-end
-
-for i = 1, #ChoGGi.PositiveTraits do
-  colonist:RemoveTrait(ChoGGi.PositiveTraits[i])
-end
-
-GetXDialog(
-function OnMsg.SelectionChange()
-  local dome_to_select = IsKindOf(SelectedObj, "Dome") and SelectedObj or IsObjInDome(SelectedObj)
-  UICity:SelectDome(dome_to_select, SelectedObj)
-end
-
-function OnMsg.ClassesPreprocess()
-end --OnMsg
---]]
-
 function OnMsg.ClassesGenerate()
+
+  --i like keeping all my OnMsgs in here
+  ChoGGi.ReplacedFunctions_ClassesGenerate()
+  ChoGGi.InfoPaneCheats_ClassesGenerate()
 
   --change some building template settings
   for _,building in ipairs(DataInstances.BuildingTemplate) do
@@ -59,27 +19,33 @@ function OnMsg.ClassesGenerate()
       building.is_tall = nil
     end
     if ChoGGi.CheatMenuSettings.Building_instant_build then
-      --needed else missing textures on domes
+      --instant_build on domes == missing ground textures
       if not (building.build_category == "Domes" or building.template_class == "GeoscapeDome") then
         building.instant_build = true
       end
     end
-
-    if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then
-      if building.air then
-        building.air.production = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
-      elseif building.water then
-        building.water.production = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
-      elseif building.electricity then
-        building.electricity.production = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
+    --update depot storage amounts
+    if building.template_class == "UniversalStorageDepot" then
+      if building.max_storage_per_resource == 30000 then
+        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
+      else
+        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
       end
+    elseif building.template_class == "WasteRockDumpSite" then
+      building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
+    elseif building.template_class == "BlackCubeDumpSite" then
+      building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
+    elseif building.template_class == "MysteryDepot" then
+      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
     end
 
-  end
+  end --BuildingTemplate
 
 end --OnMsg
 
 function OnMsg.ClassesBuilt()
+
+  ChoGGi.ReplacedFunctions_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
@@ -122,6 +88,11 @@ function OnMsg.ClassesBuilt()
       }
     })
   end)
+
+  --update base rc transport capacity for newly placed
+  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity > 45000 then
+    RCTransport.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  end
 
 end --OnMsg
 
@@ -221,15 +192,52 @@ function OnMsg.ModsLoaded()
 end --OnMsg
 
 --saved game is loaded
---function OnMsg.LoadGame(metadata)
+function OnMsg.LoadGame()
+  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
+  ChoGGi.IsGameLoaded = false
+end
 
 --fired as late as we can
 function OnMsg.LoadingScreenPreClose()
---function OnMsg.Resume()
 
   --doubtful, but what the hell
   if not UICity then
     return
+  end
+
+  if ChoGGi.IsGameLoaded == true then
+    return
+  else
+    ChoGGi.IsGameLoaded = true
+  end
+
+  ChoGGi.RenderSettings_LoadingScreenPreClose()
+
+  --make sure all buildings are using correct production
+  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+    if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then
+      local amount = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
+      if building.base_air_production then
+        building.air:SetProduction(amount)
+        building.air_production = amount
+      elseif building.base_water_production then
+        building.water:SetProduction(amount)
+        building.water_production = amount
+      elseif building.base_electricity_production then
+        building.electricity:SetProduction(amount)
+        building.electricity_production = amount
+      elseif building.producers then
+        building.producers[1].production_per_day = amount
+        building.production_per_day1 = amount
+      end
+    end
+  end
+
+  --something messed up if storage is negative (usually setting an amount then lowering it), so we'll empty it
+  for _,building in ipairs(UICity.labels.Storages or empty_table) do
+    if building:GetStoredAmount() < 0 then
+      building:CheatEmpty()
+    end
   end
 
   --set shuttle speed/capacity (not sure how to get an onmsg for shuttle spawning)
@@ -257,6 +265,25 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
+  --override building templates
+  for _,building in ipairs(DataInstances.BuildingTemplate) do
+
+    --make hidden buildings visible
+    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
+        building.hide_from_build_menu = nil
+      end
+      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
+        building.build_category = "HiddenX"
+      end
+    end
+
+    if ChoGGi.CheatMenuSettings.Building_wonder then
+      building.wonder = nil
+    end
+  end
+
   --limit height of colonists section in info pane, so it doesn't go crazy expand with too many colonists
   XTemplates.sectionResidence[1]["MaxHeight"] = ChoGGi.Consts.ResidenceMaxHeight
   --too bad it clips the little icon in half
@@ -279,7 +306,7 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --show cheat pane?
-  if ChoGGi.CheatMenuSettings.ToggleInfopanelCheats then
+  if ChoGGi.CheatMenuSettings.InfopanelCheats then
     config.BuildingInfopanelCheats = true
     ReopenSelectionXInfopanel()
   end
@@ -305,25 +332,6 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
-  --setup building template properties
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-
-    --switch hidden buildings to visible
-    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
-        building.hide_from_build_menu = nil
-      end
-      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
-        building.build_category = "HiddenX"
-      end
-    end
-
-    if ChoGGi.CheatMenuSettings.Building_wonder then
-      building.wonder = nil
-    end
-  end
-
   --Residence
   --XTemplates.sectionResidence[1]["MaxHeight"] = 200
   --change some default menu items
@@ -333,7 +341,7 @@ function OnMsg.LoadingScreenPreClose()
     --these will switch the map without asking to save
     "G_ModsEditor",
     "G_OpenPregameMenu",
-    --added to toggles
+    --added to QoL
     "G_ToggleInfopanelCheats",
     --changed to refreshe build menu without having to re-open it
     "G_UnlockAllBuildings",
@@ -396,6 +404,12 @@ function OnMsg.LoadingScreenPreClose()
     School.max_traits = #ChoGGi.PositiveTraits
   end
 
+  --unbreakable cables/pipes
+  if ChoGGi.CheatMenuSettings.BreakChanceCablePipe then
+    const.BreakChanceCable = 10000000
+    const.BreakChancePipe = 10000000
+  end
+
   --Commander bonuses
   if ChoGGi.CheatMenuSettings.CommanderInventor then
     ChoGGi.CommanderInventor_Enable()
@@ -455,8 +469,8 @@ function OnMsg.LoadingScreenPreClose()
 
   --print startup msgs to console log
   for i = 1, #ChoGGi.StartupMsgs do
-    --AddConsoleLog(ChoGGi.StartupMsgs[i],true)
-    ConsolePrint(ChoGGi.StartupMsgs[i])
+    AddConsoleLog(ChoGGi.StartupMsgs[i],true)
+    --ConsolePrint(ChoGGi.StartupMsgs[i])
   end
 
   --people will likely just copy new mod over old, and I moved stuff around
@@ -476,6 +490,7 @@ function OnMsg.BuildingPlaced(building)
   ChoGGi.LastPlacedObj = building
 --print(building.encyclopedia_id)
 end --OnMsg
+
 function OnMsg.ConstructionSitePlaced(site)
   ChoGGi.LastPlacedObj = site
 --print(building.encyclopedia_id)
@@ -484,76 +499,59 @@ end --OnMsg
 function OnMsg.ConstructionComplete(building)
 --print(building.encyclopedia_id)
 
-  if IsKindOf(building,"Arcology") then
-    building.capacity = ChoGGi.CheatMenuSettings.ArcologyCapacity
+    if IsKindOf(building,"RCTransportBuilding") then
+      if ChoGGi.CheatMenuSettings.GravityRC then
+        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+      end
 
---[[
-  elseif IsKindOf(building,"UniversalStorageDepot") then
-    if building.encyclopedia_id ~= "UniversalStorageDepot" then
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
-    else
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
+    elseif IsKindOf(building,"RCRoverBuilding") then
+      if ChoGGi.CheatMenuSettings.GravityRC then
+        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+      end
+
+    elseif IsKindOf(building,"RCExplorerBuilding") then
+      if ChoGGi.CheatMenuSettings.GravityRC then
+        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+      end
+
+    elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
+      for i = 1, #ChoGGi.PositiveTraits do
+        building:SetTrait(i,ChoGGi.PositiveTraits[i])
+      end
+
+    elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
+      for i = 1, #ChoGGi.NegativeTraits do
+        building:SetTrait(i,ChoGGi.NegativeTraits[i])
+      end
     end
 
-  elseif IsKindOf(building,"WasteRockDumpSite") then
-    building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
---]]
-
-  elseif IsKindOf(building,"RCTransportBuilding") then
-    if ChoGGi.CheatMenuSettings.RCTransportStorage > 45 then
-      building.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorage
-    end
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+    if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
+      building.maintenance_build_up_per_hr = -10000
     end
 
-  elseif IsKindOf(building,"RCRoverBuilding") then
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+    if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
+      building.max_workers = 0
+      building.automation = 1
+      building.auto_performance = 100
     end
 
-  elseif IsKindOf(building,"RCExplorerBuilding") then
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+    --saved settings for capacity, visitors, shuttles
+    if ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id] then
+      local amount = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
+      if building.base_capacity then
+        building.capacity = amount
+      elseif building.base_max_visitors then
+        building.max_visitors = amount
+      elseif building.base_air_capacity then
+        building.air_capacity = amount
+      elseif building.base_water_capacity then
+        building.water_capacity = amount
+      elseif building.base_max_shuttles then
+        building.max_shuttles = amount
+      end
     end
 
-  elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
-    for i = 1, #ChoGGi.PositiveTraits do
-      building:SetTrait(i,ChoGGi.PositiveTraits[i])
-    end
-
-  elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
-    for i = 1, #ChoGGi.NegativeTraits do
-      building:SetTrait(i,ChoGGi.NegativeTraits[i])
-    end
-  end
-
-  if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
-    building.maintenance_build_up_per_hr = -10000
-  end
-
-  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
-    building.max_workers = 0
-    building.automation = 1
-    building.auto_performance = 150
-  end
-
-  building.can_change_skin = true
-
-  --saved settings for residence capacity
-  if ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id] then
-    if building.base_capacity then
-      building.capacity = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-    elseif building.base_max_visitors then
-      building.max_visitors = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-    elseif building.base_air_capacity then
-      building.air_capacity = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-    elseif building.base_water_capacity then
-      building.water_capacity = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-    elseif building.base_max_shuttles then
-      building.max_shuttles = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-    end
-  end
+    building.can_change_skin = true
 
 end --OnMsg
 
@@ -613,8 +611,4 @@ function OnMsg.ApplicationQuit()
   if not ChoGGi.Testing then
     ChoGGi.WriteSettings()
   end
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"OnMsgs")
 end

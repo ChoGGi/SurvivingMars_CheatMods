@@ -78,6 +78,12 @@ print("\n")
   })
 end
 
+--toggle working status
+function ChoGGi.ToggleWorking(building)
+  building:ToggleWorking()
+  building:ToggleWorking()
+end
+
 --update storage depot space
 function ChoGGi.UpdateResourceAmount(building,new_size)
   local storable_resources = building.storable_resources
@@ -101,7 +107,7 @@ function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
   for i = 1,#Buildings do
     local Obj = Buildings[i]
     for j = 1,#Traits do
-      if Bool then
+      if Bool == true then
         Obj:SetTrait(j,nil)
       else
         Obj:SetTrait(j,Traits[j])
@@ -122,7 +128,7 @@ end
 
 --return as num
 function ChoGGi.BoolRetNum(Bool)
-  if Bool then
+  if Bool == true then
     return 1
   end
   return 0
@@ -144,10 +150,23 @@ function ChoGGi.CompareAmounts(iAmtA,iAmtB)
     return iAmtB
   end
 end
+--[[
+ChoGGi.ReturnTechAmount(Tech,Prop)
+returns number from TechTree (so you know how much it changes)
+see: Data/TechTree.lua, or examine(TechTree)
 
---ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier")
---ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
---ReturnTechAmount().a amount and .p percent
+ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
+^returns 10
+ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
+^ returns 0.7
+
+it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
+ie: SupportiveCommunity is -70 this returns it as 0.7
+it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
+
+if .a is 0 or .p is 0.0 then you most likely have the wrong one
+(TechTree'll always return both, I assume there's a default value somewhere)
+--]]
 function ChoGGi.ReturnTechAmount(Tech,Prop)
   for i,_ in ipairs(TechTree) do
     for j,_ in ipairs(TechTree[i]) do
@@ -157,7 +176,7 @@ function ChoGGi.ReturnTechAmount(Tech,Prop)
             local Tech = TechTree[i][j][k]
             local RetObj = {}
             if Tech.Percent then
-              RetObj.p = Tech.Percent * -1 + 0.0 / 100 -- -5 > 5 > 5.0 > 0.05
+              RetObj.p = (Tech.Percent * -1 + 0.0) / 100 -- (-50 > 50 > 50.0) > 0.50
             end
             if Tech.Amount then
               if Tech.Amount <= 0 then
@@ -174,16 +193,8 @@ function ChoGGi.ReturnTechAmount(Tech,Prop)
   end
 end
 
---check if tech is researched before we set these consts (activated from menuitems)
-function ChoGGi.BuildingMaintenancePointsModifier()
-  if UICity and UICity:IsTechDiscovered("HullPolarization") then
-    local p = ChoGGi.ReturnTechAmount("HullPolarization","BuildingMaintenancePointsModifier").p
-    return ChoGGi.Consts.BuildingMaintenancePointsModifier * p
-  end
-  return ChoGGi.Consts.BuildingMaintenancePointsModifier
-end
---
-function ChoGGi.CargoCapacity()
+--check if tech is researched before we set these consts (activated from menu items)
+function ChoGGi.GetCargoCapacity()
   if UICity and UICity:IsTechDiscovered("FuelCompression") then
     local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity").a
     return ChoGGi.Consts.CargoCapacity + a
@@ -191,7 +202,7 @@ function ChoGGi.CargoCapacity()
   return ChoGGi.Consts.CargoCapacity
 end
 --
-function ChoGGi.CommandCenterMaxDrones()
+function ChoGGi.GetCommandCenterMaxDrones()
   if UICity and UICity:IsTechDiscovered("DroneSwarm") then
     local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones").a
     return ChoGGi.Consts.CommandCenterMaxDrones + a
@@ -199,7 +210,7 @@ function ChoGGi.CommandCenterMaxDrones()
   return ChoGGi.Consts.CommandCenterMaxDrones
 end
 --
-function ChoGGi.DroneResourceCarryAmount()
+function ChoGGi.GetDroneResourceCarryAmount()
   if UICity and UICity:IsTechDiscovered("ArtificialMuscles") then
     local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount").a
     return ChoGGi.Consts.DroneResourceCarryAmount + a
@@ -207,7 +218,7 @@ function ChoGGi.DroneResourceCarryAmount()
   return ChoGGi.Consts.DroneResourceCarryAmount
 end
 --
-function ChoGGi.LowSanityNegativeTraitChance()
+function ChoGGi.GetLowSanityNegativeTraitChance()
   if UICity and UICity:IsTechDiscovered("SupportiveCommunity") then
     local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
     --[[
@@ -220,21 +231,20 @@ function ChoGGi.LowSanityNegativeTraitChance()
   return ChoGGi.Consts.LowSanityNegativeTraitChance
 end
 --
-function ChoGGi.MaxColonistsPerRocket()
+function ChoGGi.GetMaxColonistsPerRocket()
   local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
-  local a
   if UICity and UICity:IsTechDiscovered("CompactPassengerModule") then
-    a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
+    local a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
     PerRocket = PerRocket + a
   end
   if UICity and UICity:IsTechDiscovered("CryoSleep") then
-    a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
     PerRocket = PerRocket + a
   end
   return PerRocket
 end
 --
-function ChoGGi.NonSpecialistPerformancePenalty()
+function ChoGGi.GetNonSpecialistPerformancePenalty()
   if UICity and UICity:IsTechDiscovered("GeneralTraining") then
     local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
     return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
@@ -242,7 +252,7 @@ function ChoGGi.NonSpecialistPerformancePenalty()
   return ChoGGi.Consts.NonSpecialistPerformancePenalty
 end
 --
-function ChoGGi.RCRoverMaxDrones()
+function ChoGGi.GetRCRoverMaxDrones()
   if UICity and UICity:IsTechDiscovered("RoverCommandAI") then
     local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones").a
     return ChoGGi.Consts.RCRoverMaxDrones + a
@@ -250,7 +260,7 @@ function ChoGGi.RCRoverMaxDrones()
   return ChoGGi.Consts.RCRoverMaxDrones
 end
 --
-function ChoGGi.RCTransportGatherResourceWorkTime()
+function ChoGGi.GetRCTransportGatherResourceWorkTime()
   if UICity and UICity:IsTechDiscovered("TransportOptimization") then
     local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime").p
     return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
@@ -258,15 +268,15 @@ function ChoGGi.RCTransportGatherResourceWorkTime()
   return ChoGGi.Consts.RCTransportGatherResourceWorkTime
 end
 --
-function ChoGGi.RCTransportResourceCapacity()
+function ChoGGi.GetRCTransportStorageCapacity()
   if UICity and UICity:IsTechDiscovered("TransportOptimization") then
     local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage").a
-    return ChoGGi.Consts.RCTransportResourceCapacity + a
+    return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
   end
-  return ChoGGi.Consts.RCTransportResourceCapacity
+  return ChoGGi.Consts.RCTransportStorageCapacity
 end
 --
-function ChoGGi.TravelTimeEarthMars()
+function ChoGGi.GetTravelTimeEarthMars()
   if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
     local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars").p
     return ChoGGi.Consts.TravelTimeEarthMars * p
@@ -274,7 +284,7 @@ function ChoGGi.TravelTimeEarthMars()
   return ChoGGi.Consts.TravelTimeEarthMars
 end
 --
-function ChoGGi.TravelTimeMarsEarth()
+function ChoGGi.GetTravelTimeMarsEarth()
   if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
     local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth").p
     return ChoGGi.Consts.TravelTimeMarsEarth * p
@@ -307,17 +317,43 @@ function ChoGGi.SetCameraSettings()
   --cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
---fixup names we get from SelectedObj:__toluacode()
+--spawn and fill a deposit at mouse pos
+function ChoGGi.AddDeposit(sType)
+
+  local obj = PlaceObj(sType, {
+    "Pos", GetTerrainCursor(),
+    "max_amount", UICity:Random(1000 * ChoGGi.Consts.ResourceScale,5000 * ChoGGi.Consts.ResourceScale),
+    "revealed", true,
+  })
+  --[[
+  if sType:find("Concrete") then
+    TerrainDepositMarker.resource = "TerrainDepositConcrete"
+    local marker = TerrainDepositMarker:SpawnDeposit()
+    marker:SetPos(obj:GetPos())
+  else
+    obj:CheatRefill()
+  end
+  --]]
+  obj:CheatRefill()
+end
+
+--fixup name we get from Object
 function ChoGGi.ConstructionModeNameClean(itemname)
+
   --we want template_name or we have to guess from the placeobj name
   local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
-  --local tempname = itemname:match("^.+template_name%A+(%a+).+$")
   if not tempname then
     tempname = itemname:match("^PlaceObj%('(%a+).+$")
   end
+
   --print(tempname)
-  ChoGGi.ConstructionModeSet(tempname)
+  if tempname:find("Deposit") then
+    ChoGGi.AddDeposit(tempname)
+  else
+    ChoGGi.ConstructionModeSet(tempname)
+  end
 end
+
 --place item under the mouse for construction
 function ChoGGi.ConstructionModeSet(itemname)
   --make sure it's closed so we don't mess up selection
@@ -400,9 +436,7 @@ end
   }
   for _,Value in ipairs(Table) do
     AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
-    --os.remove(ChoGGi.ModPath .. Value .. ".lua")
   end
-  --lfs.rmdir(ChoGGi.HomeModPath .. "libs")
   AsyncFileDelete(ChoGGi.ModPath .. "libs")
 end
 
@@ -410,7 +444,7 @@ function ChoGGi.SetGravity(Bool,Who)
   local NewGravity
   if Who == 1 then --drones
     for _,object in ipairs(UICity.labels.Drone or empty_table) do
-      if Bool then
+      if Bool == true then
         NewGravity = object:GetGravity() + 1000
         object:SetGravity(NewGravity)
         ChoGGi.CheatMenuSettings.GravityDrone = NewGravity
@@ -418,13 +452,13 @@ function ChoGGi.SetGravity(Bool,Who)
         object:SetGravity(0)
       end
     end
-    if not Bool then
+    if Bool ~= true then
       ChoGGi.CheatMenuSettings.GravityDrone = false
     end
 
   elseif Who == 2 then --rc
     for _,object in ipairs(UICity.labels.Rover or empty_table) do
-      if Bool then
+      if Bool == true then
         NewGravity = object:GetGravity() + 5000
         object:SetGravity(NewGravity)
         ChoGGi.CheatMenuSettings.GravityRC = NewGravity
@@ -432,13 +466,13 @@ function ChoGGi.SetGravity(Bool,Who)
         object:SetGravity(0)
       end
     end
-    if not Bool then
+    if Bool ~= true then
       ChoGGi.CheatMenuSettings.GravityRC = false
     end
 
   elseif Who == 3 then --colonists
     for _,object in ipairs(UICity.labels.Colonist or empty_table) do
-      if Bool then
+      if Bool == true then
         NewGravity = object:GetGravity() + 250
         object:SetGravity(NewGravity)
         ChoGGi.CheatMenuSettings.GravityColonist = NewGravity
@@ -446,7 +480,7 @@ function ChoGGi.SetGravity(Bool,Who)
         object:SetGravity(0)
       end
     end
-    if not Bool then
+    if Bool ~= true then
       ChoGGi.CheatMenuSettings.GravityColonist = false
     end
 
@@ -470,7 +504,6 @@ function ChoGGi.ShowBuildMenu(iWhich)
   else
     OpenXBuildMenu()
   end
-
   dlg = GetXDialog("XBuildMenu")
   dlg:SelectCategory(BuildCategories[iWhich])
   --have to fire twice to highlight the icon
@@ -730,43 +763,66 @@ function ChoGGi.SponsorParadox_Enable()
 end
 
 function ChoGGi.ColonistUpdateAge(colonist,Age)
-  --remove all other age traits
+  --remove all age traits
   colonist.traits.Child = nil
   colonist.traits.Youth = nil
   colonist.traits.Adult = nil
   colonist.traits["Middle Aged"] = nil
   colonist.traits.Senior = nil
   colonist.traits.Retiree = nil
-
+  --add new age trait
   colonist.traits[Age] = true
+
+  --needed for comparison
+  local OrigAge = colonist.age_trait
+  --needed for updating entity
   colonist.age_trait = Age
+
   if Age == "Retiree" then
     colonist.age = 65 --why isn't there a base_MinAge_Retiree...
   else
     colonist.age = colonist["base_MinAge_" .. Age]
   end
+
   if Age == "Child" then
+    --there aren't any child specialist entities
     colonist.specialist = "none"
+    --only children live in nurseries
+    if OrigAge ~= "Child" then
+      colonist:SetResidence(false)
+    end
+  end
+  --only children live in nurseries
+  if OrigAge == "Child" and Age ~= "Child" then
     colonist:SetResidence(false)
   end
-
+  --now we can set the new entity
   colonist:ChooseEntity()
+  --and (hopefully) prod them into finding a new residence
   colonist:UpdateResidence()
 end
 
 function ChoGGi.ColonistUpdateSex(colonist,Gender)
-  --remove all other gender traits
+  --remove all gender traits
   colonist.traits.Other = nil
   colonist.traits.Android = nil
   colonist.traits.Clone = nil
   colonist.traits.Male = nil
   colonist.traits.Female = nil
+  --add new gender trait
   colonist.traits[Gender] = true
+  --needed for updating entity
   colonist.gender = Gender
-
+  --set entity gender
+  if Gender == "Male" or Gender == "Female" then
+    colonist.entity_gender = Gender
+  else --random
+    if UICity:Random(1,2) == 1 then
+      colonist.entity_gender = "Male"
+    else
+      colonist.entity_gender = "Female"
+    end
+  end
+  --now we can set the new entity
   colonist:ChooseEntity()
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"FuncGame")
 end

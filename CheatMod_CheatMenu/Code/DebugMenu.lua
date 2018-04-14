@@ -40,7 +40,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.WriteLogs and "(Enabled)" or "(Disabled)"
-    return des .. " Write Debug/Console logs to AppData/logs (restart to disable).\n\nThis will also write all console output (great way to examine large objects, along with examine(Obj))."
+    return des .. " Write debug/console logs to AppData/logs (restart to disable)."
   end,
   "save_city.tga"
 )
@@ -261,7 +261,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "[203]Editors/[02]Random Map/[2]Debug/[9]Editor Objects Toggle",
+  "[203]Editors/[02]Random Map/[2]Debug/[9]Editor Objects",
   PrefabEditorObjectsToggle,
   nil,
   nil,
@@ -300,7 +300,3 @@ ChoGGi.AddAction(
   --mode = "Editor",
 )
 --]]
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"DebugMenu")
-end

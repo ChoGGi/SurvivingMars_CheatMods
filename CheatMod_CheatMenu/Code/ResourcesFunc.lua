@@ -150,7 +150,3 @@ function ChoGGi.FillResource(self)
   end) then return
   end
 end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"ResourcesFunc")
-end

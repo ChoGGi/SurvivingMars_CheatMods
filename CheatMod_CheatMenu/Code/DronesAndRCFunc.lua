@@ -46,7 +46,7 @@ end
 
 function ChoGGi.RCTransportResource_Toggle()
   Consts.RCRoverTransferResourceWorkTime = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime)
-  Consts.RCTransportGatherResourceWorkTime = ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.RCTransportGatherResourceWorkTime())
+  Consts.RCTransportGatherResourceWorkTime = ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.GetRCTransportGatherResourceWorkTime())
   ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime = Consts.RCRoverTransferResourceWorkTime
   ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime = Consts.RCTransportGatherResourceWorkTime
   ChoGGi.WriteSettings()
@@ -88,11 +88,11 @@ function ChoGGi.DroneRepairSupplyLeak_Toggle()
   )
 end
 
-function ChoGGi.DroneCarryAmount(Bool)
+function ChoGGi.SetDroneCarryAmount(Bool)
   if Bool == true then
     Consts.DroneResourceCarryAmount = Consts.DroneResourceCarryAmount + 10
   else
-    Consts.DroneResourceCarryAmount = ChoGGi.DroneResourceCarryAmount()
+    Consts.DroneResourceCarryAmount = ChoGGi.GetDroneResourceCarryAmount()
   end
   ChoGGi.CheatMenuSettings.DroneResourceCarryAmount = Consts.DroneResourceCarryAmount
   ChoGGi.WriteSettings()
@@ -101,56 +101,64 @@ function ChoGGi.DroneCarryAmount(Bool)
   )
 end
 
-function ChoGGi.DronesPerDroneHub(Bool,Which)
+function ChoGGi.SetDronesPerDroneHub(Bool,Which)
   if Bool == true then
-    Consts.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones + 25
+    Consts.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones + 50
   else
-    Consts.CommandCenterMaxDrones = ChoGGi.CommandCenterMaxDrones()
+    Consts.CommandCenterMaxDrones = ChoGGi.GetCommandCenterMaxDrones()
   end
   ChoGGi.CheatMenuSettings.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("RC Drones: " .. Which,
+  ChoGGi.MsgPopup("RC Drones: " .. ChoGGi.CheatMenuSettings.CommandCenterMaxDrones,
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
 
-function ChoGGi.DronesPerRCRover(Bool,Which)
+function ChoGGi.SetDronesPerRCRover(Bool)
   if Bool == true then
-    Consts.RCRoverMaxDrones = Consts.RCRoverMaxDrones + 25
+    Consts.RCRoverMaxDrones = Consts.RCRoverMaxDrones + 50
   else
-    Consts.RCRoverMaxDrones = ChoGGi.RCRoverMaxDrones()
+    Consts.RCRoverMaxDrones = ChoGGi.GetRCRoverMaxDrones()
   end
   ChoGGi.CheatMenuSettings.RCRoverMaxDrones = Consts.RCRoverMaxDrones
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("RC Drones: " .. Which,
+  ChoGGi.MsgPopup("RC Drones: " .. ChoGGi.CheatMenuSettings.RCRoverMaxDrones,
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
 
-function ChoGGi.RCTransportStorage(Bool,Which)
-  if not UICity.labels.RCTransport then
-    if Bool == true then
-      ChoGGi.CheatMenuSettings.RCTransportStorage = ChoGGi.CheatMenuSettings.RCTransportStorage + (256 * ChoGGi.Consts.ResourceScale)
-    else
-      ChoGGi.CheatMenuSettings.RCTransportStorage = ChoGGi.RCTransportResourceCapacity() * ChoGGi.Consts.ResourceScale
-    end
+function ChoGGi.SetRCTransportStorageCapacity(Bool)
+  --update saved amount
+  if Bool == true then
+    ChoGGi.CheatMenuSettings.RCTransportStorageCapacity = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity + (250 * ChoGGi.Consts.ResourceScale)
   else
-    for _,rcvehicle in ipairs(UICity.labels.RCTransport or empty_table) do
-      if Bool == true then
-        rcvehicle.max_shared_storage = rcvehicle.max_shared_storage + (256 * ChoGGi.Consts.ResourceScale)
-        ChoGGi.CheatMenuSettings.RCTransportStorage = rcvehicle.max_shared_storage
-      else
-        rcvehicle.max_shared_storage = ChoGGi.RCTransportResourceCapacity() * ChoGGi.Consts.ResourceScale
-        ChoGGi.CheatMenuSettings.RCTransportStorage = rcvehicle.max_shared_storage
+    if ChoGGi.GetRCTransportStorageCapacity() == 45000 then
+      ChoGGi.CheatMenuSettings.RCTransportStorageCapacity = ChoGGi.GetRCTransportStorageCapacity()
+    else
+      ChoGGi.CheatMenuSettings.RCTransportStorageCapacity = ChoGGi.Consts.RCTransportStorageCapacity
+    end
+  end
+  --update each rc
+  if UICity.labels.RCTransport and #UICity.labels.RCTransport > 0 then
+    for i = 1, #UICity.labels.RCTransport do
+      local rcvehicle = UICity.labels.RCTransport[i]
+      rcvehicle.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+      --if it's a negative number something fucked up, so make it the default
+      if rcvehicle.max_shared_storage < 0 then
+        rcvehicle.max_shared_storage = ChoGGi.GetRCTransportStorageCapacity()
       end
     end
   end
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(" Storage: " .. Which,
-    "Drones","UI/Icons/bmc_building_storages_shine.tga"
-  )
-end
+  --for newly placed transports
+  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity == 45000 then
+    --we need 45 for the already placed rc above, but 30 for ones yet to be placed
+    RCTransport.max_shared_storage = 30000
+  else
+    RCTransport.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  end
 
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"DronesAndRCFunc")
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(" Storage: " .. ChoGGi.CheatMenuSettings.RCTransportStorageCapacity / ChoGGi.Consts.ResourceScale,
+    "RC","UI/Icons/bmc_building_storages_shine.tga"
+  )
 end

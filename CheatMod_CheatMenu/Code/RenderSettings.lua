@@ -11,7 +11,8 @@ if ChoGGi.Testing then
   config.MinimapScreenshotSize = 4096
 end
 
-function OnMsg.LoadingScreenPreClose()
+function ChoGGi.RenderSettings_LoadingScreenPreClose()
+
   --on by default, you know all them martian trees (might make a cpu difference, probably not)
   hr.TreeWind = 0
 
@@ -42,8 +43,4 @@ function OnMsg.LoadingScreenPreClose()
     --no shadow fade out when zooming
     hr.ShadowFadeOutRangePercent = 0 --def 30
   end
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"RenderSettings")
 end

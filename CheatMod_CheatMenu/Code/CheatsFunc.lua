@@ -205,7 +205,3 @@ function ChoGGi.ResearchEveryBreakthrough()
     "Research","UI/Icons/Notifications/research.tga"
   )
 end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"CheatsFunc")
-end

@@ -42,7 +42,7 @@ ChoGGi.AddAction(
 )
 -------------
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drone Battery Infinite Toggle",
+  "Gameplay/Drones/Drone Battery Infinite",
   ChoGGi.DroneBatteryInfinite_Toggle,
   nil,
   function()
@@ -53,7 +53,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drone Build Speed Toggle",
+  "Gameplay/Drones/Drone Build Speed",
   ChoGGi.DroneBuildSpeed_Toggle,
   nil,
   function()
@@ -69,7 +69,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/RC/RC Rover Drone Recharge Free Toggle",
+  "Gameplay/RC/RC Rover Drone Recharge Free",
   ChoGGi.RCRoverDroneRechargeFree_Toggle,
   nil,
   function()
@@ -80,7 +80,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/RC/RC Transport Resource Toggle",
+  "Gameplay/RC/RC Transport Resource",
   ChoGGi.RCTransportResource_Toggle,
   nil,
   function()
@@ -91,7 +91,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drone Meteor Malfunction Toggle",
+  "Gameplay/Drones/Drone Meteor Malfunction",
   ChoGGi.DroneMeteorMalfunction_Toggle,
   nil,
   function()
@@ -102,7 +102,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drone Recharge Time Toggle",
+  "Gameplay/Drones/Drone Recharge Time",
   ChoGGi.DroneRechargeTime_Toggle,
   nil,
   function()
@@ -113,7 +113,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drone Repair Supply Leak Toggle",
+  "Gameplay/Drones/Drone Repair Supply Leak Speed",
   ChoGGi.DroneRepairSupplyLeak_Toggle,
   nil,
   function()
@@ -126,93 +126,79 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Carry Amount + 10",
   function()
-    ChoGGi.DroneCarryAmount(true,ChoGGi.CheatMenuSettings.DroneResourceCarryAmount + 10)
+    ChoGGi.SetDroneCarryAmount(true)
   end,
   nil,
-  "Drones carry + 10 items.",
+  "Drones will carry + 10 items.",
   "groups.tga"
 )
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drone Carry Amount (Default)",
-  function()
-    ChoGGi.DroneCarryAmount(false,ChoGGi.DroneResourceCarryAmount())
-  end,
+  ChoGGi.SetDroneCarryAmount,
   nil,
   function()
-    return "Drones carry " .. ChoGGi.DroneResourceCarryAmount() .. " items."
+    return "Drones will carry " .. ChoGGi.GetDroneResourceCarryAmount() .. " items."
   end,
   "groups.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drones Per Drone Hub + 25",
+  "Gameplay/Drones/Drones Per Drone Hub + 50",
   function()
-    ChoGGi.DronesPerDroneHub(true,ChoGGi.CheatMenuSettings.CommandCenterMaxDrones + 25)
+    ChoGGi.SetDronesPerDroneHub(true)
   end,
   "Ctrl-Shift-D",
-  "Drone hubs command + 25 drones.",
+  "Drone hubs will command + 50 drones.",
   "groups.tga"
 )
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drones Per Drone Hub (Default)",
-  function()
-    ChoGGi.DronesPerDroneHub(false,ChoGGi.CommandCenterMaxDrones())
-  end,
+  ChoGGi.SetDronesPerDroneHub,
   nil,
   function()
-    return "Drone hubs command " .. ChoGGi.CommandCenterMaxDrones() .. " drones."
+    return "Drone hubs will command " .. ChoGGi.GetCommandCenterMaxDrones() .. " drones."
   end,
   "groups.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Drones/Drones Per RC Rover + 25",
+  "Gameplay/Drones/Drones Per RC Rover + 50",
   function()
-    ChoGGi.DronesPerRCRover(true,ChoGGi.CheatMenuSettings.RCRoverMaxDrones + 25)
+    ChoGGi.SetDronesPerRCRover(true)
   end,
   "Ctrl-Shift-R",
-  "RC Rovers command + 25 drones.",
+  "RC Rovers will command + 50 drones.",
   "groups.tga"
 )
 
 ChoGGi.AddAction(
   "Gameplay/Drones/Drones Per RC Rover (Default)",
-  function()
-    ChoGGi.DronesPerRCRover(false,ChoGGi.RCRoverMaxDrones())
-  end,
+  ChoGGi.SetDronesPerRCRover,
   nil,
   function()
-    return "RC Rovers command " .. ChoGGi.RCRoverMaxDrones() .. " drones."
+    return "RC Rovers will command " .. ChoGGi.GetRCRoverMaxDrones() .. " drones."
   end,
   "groups.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/RC/RC Transport Storage Increase + 256",
+  "Gameplay/RC/RC Transport Storage Increase + 250",
   function()
-    ChoGGi.RCTransportStorage(true,
-      (ChoGGi.CheatMenuSettings.RCTransportStorage / ChoGGi.Consts.ResourceScale) + 256
-    )
+    ChoGGi.SetRCTransportStorageCapacity(true)
   end,
   "Ctrl-Shift-T",
-  "RC Transports can carry + 256 items.",
+  "RC Transports will carry + 250 items.",
   "ToggleTerrainHeight.tga"
 )
 
 ChoGGi.AddAction(
   "Gameplay/RC/RC Transport Storage (Default)",
-  function()
-    ChoGGi.RCTransportStorage(false,ChoGGi.RCTransportResourceCapacity())
-  end,
+  ChoGGi.SetRCTransportStorageCapacity,
   nil,
   function()
-    return "RC Transports can carry " .. ChoGGi.RCTransportResourceCapacity() .. " items."
+    return "RC Transports will carry " .. ChoGGi.GetRCTransportStorageCapacity() / ChoGGi.Consts.ResourceScale .. " items."
   end,
   "ToggleTerrainHeight.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"DronesAndRCMenu")
-end

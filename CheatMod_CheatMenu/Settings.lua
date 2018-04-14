@@ -57,10 +57,11 @@ ChoGGi.Consts = {
   ConsoleDim = true,
   ConsoleToggleHistory = true,
   FirstRun = true,
-  ToggleInfopanelCheats = true,
+  InfopanelCheats = true,
   CleanupCheatsInfoPane = true,
   ShowInterfaceInScreenshots = true,
 
+  BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,
@@ -95,20 +96,17 @@ ChoGGi.Consts = {
   WriteLogs = false,
 --custom amounts
   ProductionAddAmount = 25000,
-  AirWaterAddAmount = 1000000,
-  BatteryAddAmount = 1000000,
+  AirWaterBatteryAddAmount = 500000,
   ShuttleAddAmount = 25,
-  TrainersAddAmount = 16,
+  --TrainersAddAmount = 16,
   ResidenceAddAmount = 16,
   ResidenceMaxHeight = 256,
-  RCTransportStorage = 30000,
-  --StorageUniversalDepot = 30000,
-  --StorageOtherDepot = 180000,
-  --StorageWasteDepot = 70000,
-  RCTransportResourceCapacity = 30,
---Consts (we just need the name, not the value).
+  RCTransportStorageCapacity = 30000,
+  StorageUniversalDepot = 30000,
+  StorageOtherDepot = 180000,
+  StorageWasteDepot = 70000,
+--Consts (we just need the name, not the value we get the default later on).
   AvoidWorkplaceSols = false,
-  BirthThreshold = false,
   CargoCapacity = false,
   ColdWaveSanityDamage = false,
   CommandCenterMaxDrones = false,
@@ -177,7 +175,7 @@ ChoGGi.Consts = {
   TravelTimeEarthMars = false,
   TravelTimeMarsEarth = false,
   VisitFailPenalty = false,
---const.
+--const. (not sure where default values are stored so init them here)
   BreakThroughTechsPerGame = 13,
   ExplorationQueueMaxSize = 10,
   fastGameSpeed = 5,
@@ -274,7 +272,8 @@ end
 
 --called everytime we set a setting in menu
 function ChoGGi.WriteSettings()
-  AsyncStringToFile(ChoGGi.SettingsFile,TupleToLuaCode(ChoGGi.CheatMenuSettings))
+  AsyncCopyFile(ChoGGi.SettingsFile,ChoGGi.SettingsFile .. ".bak")
+  AsyncStringToFile(ChoGGi.SettingsFile,ValueToLuaCode(ChoGGi.CheatMenuSettings))
 end
 
 --read saved settings from file
@@ -323,8 +322,4 @@ function ChoGGi.ReadSettingsInGame()
 
   --set consts to saved ones
   ChoGGi.SetConstsToSaved()
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"Settings")
 end

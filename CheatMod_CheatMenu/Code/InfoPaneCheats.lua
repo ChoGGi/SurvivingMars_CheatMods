@@ -1,22 +1,22 @@
 --add items to the cheat pane
-function OnMsg.ClassesGenerate()
+function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
-  function Colonist.CheatFillAllStats(self)
+  function Colonist.CheatFillAll(self)
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
     self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
     self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
     self.stat_health = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatMorale(self)
+  function Colonist.CheatFillMorale(self)
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatSanity(self)
+  function Colonist.CheatFillSanity(self)
     self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatComfort(self)
+  function Colonist.CheatFillComfort(self)
     self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatHealth(self)
+  function Colonist.CheatFillHealth(self)
     self.stat_health = 100 * ChoGGi.Consts.ResourceScale
   end
   function Colonist.CheatRandomSpecialization(self)
@@ -47,12 +47,14 @@ function OnMsg.ClassesGenerate()
   local function CheatWorkAuto(self)
     self.max_workers = 0
     self.automation = 1
-    self.auto_performance = 150
+    self.auto_performance = 100
+    ChoGGi.ToggleWorking(self)
   end
   local function CheatWorkManual(self)
     self.max_workers = nil
     self.automation = nil
     self.auto_performance = nil
+    ChoGGi.ToggleWorking(self)
   end
   DroneFactory.CheatWorkAuto = CheatWorkAuto
   DroneFactory.CheatWorkManual = CheatWorkManual
@@ -111,9 +113,11 @@ function OnMsg.ClassesGenerate()
 --CheatProdDbl
   local function CheatProdDblWater(self)
     self.water.production = self.water.production * 2
+    self.water_production = self.water.production
   end
   local function CheatProdDefWater(self)
     self.water.production = self.base_water_production
+    self.water_production = self.base_water_production
   end
   MoistureVaporator.CheatProdDbl = CheatProdDblWater
   MoistureVaporator.CheatProdDef = CheatProdDefWater
@@ -122,9 +126,11 @@ function OnMsg.ClassesGenerate()
   --
   local function CheatProdDblElec(self)
     self.electricity.production = self.electricity.production * 2
+    self.electricity_production = self.electricity.production
   end
   local function CheatProdDefElec(self)
     self.electricity.production = self.base_electricity_production
+    self.electricity_production = self.base_electricity_production
   end
   FusionReactor.CheatProdDbl = CheatProdDblElec
   FusionReactor.CheatProdDef = CheatProdDefElec
@@ -137,14 +143,14 @@ function OnMsg.ClassesGenerate()
   ArtificialSun.CheatProdDbl = CheatProdDblElec
   ArtificialSun.CheatProdDef = CheatProdDefElec
   --
-  local function CheatProdDblAir(self)
+  function MOXIE.CheatProdDbl(self)
     self.air.production = self.air.production * 2
+    self.air_production = self.air.production
   end
-  local function CheatProdDefAir(self)
+  function MOXIE.CheatProdDef(self)
     self.air.production = self.base_air_production
+    self.air_production = self.base_air_production
   end
-  MOXIE.CheatProdDbl = CheatProdDblAir
-  MOXIE.CheatProdDef = CheatProdDefAir
   --
   local function CheatProdDblProducer(self)
     self.producers[1].production_per_day = self.producers[1].production_per_day * 2
@@ -185,23 +191,41 @@ function OnMsg.ClassesGenerate()
 --CheatCapDbl storage
   function ElectricityStorage:CheatCapDbl()
     self.capacity = self.capacity * 2
+    self.electricity.storage_capacity = self.capacity
+    self.electricity.storage_mode = "charging"
+    ChoGGi.ToggleWorking(self)
   end
   function ElectricityStorage:CheatCapDef()
     self.capacity = self.base_capacity
+    self.electricity.storage_capacity = self.capacity
+    self.electricity.storage_mode = "full"
+    ChoGGi.ToggleWorking(self)
   end
   --
   function WaterTank:CheatCapDbl()
     self.water_capacity = self.water_capacity * 2
+    self.water.storage_capacity = self.water_capacity
+    self.water.storage_mode = "charging"
+    ChoGGi.ToggleWorking(self)
   end
   function WaterTank:CheatCapDef()
     self.water_capacity = self.base_water_capacity
+    self.water.storage_capacity = self.water_capacity
+    self.water.storage_mode = "full"
+    ChoGGi.ToggleWorking(self)
   end
   --
   function OxygenTank:CheatCapDbl()
     self.air_capacity = self.air_capacity * 2
+    self.air.storage_capacity = self.air_capacity
+    self.air.storage_mode = "charging"
+    ChoGGi.ToggleWorking(self)
   end
   function OxygenTank:CheatCapDef()
     self.air_capacity = self.base_air_capacity
+    self.air.storage_capacity = self.air_capacity
+    self.air.storage_mode = "full"
+    ChoGGi.ToggleWorking(self)
   end
   --
   --[[
@@ -284,14 +308,7 @@ function OnMsg.ClassesGenerate()
   School.CheatVisitorsDbl = CheatVisitorsDbl
   School.CheatVisitorsDef = CheatVisitorsDef
   --
---Double Drones/Shuttles
-  function DroneHub:CheatAllDronesMaxDbl()
-    Consts.CommandCenterMaxDrones = Consts.CommandCenterMaxDrones * 2
-  end
-  function DroneHub:CheatAllDronesMaxDef()
-    Consts.CommandCenterMaxDrones = ChoGGi.Consts.CommandCenterMaxDrones
-  end
-  --
+--Double Shuttles
   function ShuttleHub:CheatMaxShuttlesDbl()
     self.max_shuttles = self.max_shuttles * 2
   end
@@ -350,8 +367,4 @@ function ChoGGi.InfopanelCheatsCleanup()
   Building.CheatMalfunction = nil
   Building.CheatSpawnWorker = nil
   Building.CheatSpawnVisitor = nil
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"InfoPaneCheats")
 end

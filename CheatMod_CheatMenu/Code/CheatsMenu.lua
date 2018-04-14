@@ -19,7 +19,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Cheats/[04]Research/Outsourcing Free Toggle",
+  "Cheats/[04]Research/Outsourcing For Free",
   ChoGGi.OutsourcingFree_Toggle,
   nil,
   function()
@@ -68,7 +68,3 @@ ChoGGi.AddAction(
   end,
   "ViewArea.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"CheatsMenu")
-end

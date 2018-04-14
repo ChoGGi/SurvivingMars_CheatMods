@@ -1,9 +1,24 @@
+--[[
+ChoGGi.AddAction(nil,
+  function()
+    if GetXDialog("SaveLoadDlg") then
+      CloseXDialog("SaveLoadDlg")
+    else
+      OpenXDialog("SaveLoadDlg"):SetMode("Load")
+    end
+  end,
+  "Ctrl-F9"
+)
+--]]
+
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
+    --[[ why doesn't this way work?
     if rawget(_G, "dlgConsole") then
-      dlgConsole.idEdit:SetText("") -- :(
+      dlgConsole.idEdit:SetText("")
     end
+    --]]
   end,
   "~"
 )
@@ -34,15 +49,10 @@ ChoGGi.AddAction(nil,
 --goes to placement mode with SelectedObj
 ChoGGi.AddAction(nil,
   function()
-    local obj = SelectedObj or SelectionMouseObj()
-    ChoGGi.ConstructionModeNameClean(obj:__toluacode())
+    ChoGGi.ConstructionModeNameClean(ValueToLuaCode(SelectedObj or SelectionMouseObj()))
   end,
   "Ctrl-Shift-Space"
 )
 
 ChoGGi.AddAction(nil,UAMenu.ToggleOpen,"F2")
 ChoGGi.AddAction(nil,function() quit("restart") end,"Ctrl-Shift-Alt-Numpad Enter")
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"Keys")
-end

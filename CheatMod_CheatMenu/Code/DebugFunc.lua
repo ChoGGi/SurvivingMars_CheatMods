@@ -4,7 +4,7 @@ function ChoGGi.WriteLogs_Toggle()
     ChoGGi.WriteLogsEnable()
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Write Debug/Console Logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
+  ChoGGi.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
    "Logging","UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
@@ -76,7 +76,7 @@ end
 
 function ChoGGi.MeteorBombardment(Bool)
   --function WaitBombard(obj, radius, count, delay_min, delay_max)
-  if Bool then
+  if Bool == true then
     StartBombard(GetTerrainCursor(),0,50,0,0)
   else
     StartBombard(GetTerrainCursor(),0,50,0,0)
@@ -186,8 +186,4 @@ function ChoGGi.ChangeMap()
       end
     end)
   end
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"DebugFunc")
 end

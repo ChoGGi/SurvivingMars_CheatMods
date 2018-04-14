@@ -9,17 +9,17 @@ ChoGGi.AddAction(
 )
 --------------------
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Production Amount + 25",
+  "Gameplay/Buildings/Production Amount Increase",
   function()
     ChoGGi.SetProduction(true)
   end,
   "Ctrl-Shift-P",
-  "Set production of buildings of selected type (air/water/elec/other + 25 (as well as newly placed ones).\nWorks on any building that produces.",
+  "Set production of buildings of selected type + 25, also applies to newly placed ones.\nWorks on any building that produces.",
   "DisableAOMaps.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Production Amount (Default)",
+  "Gameplay/Buildings/Production Amount Default",
   ChoGGi.SetProduction,
   nil,
   function()
@@ -33,105 +33,45 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
-
 --------------------
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Battery Capacity + 1000",
+  "Gameplay/Capacity/Capacity Increase",
   function()
-    ChoGGi.SetCapacity(true,2)
-  end,
-  "Ctrl-Shift-B",
-  "Set capacity of buildings of selected type + 1000 (as well as newly placed ones)",
-  "DisableAOMaps.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Battery Capacity (Default)",
-  function()
-    ChoGGi.SetCapacity(nil,2)
-  end,
-  nil,
-  function()
-    local name
-    if SelectedObj then
-      name = SelectedObj.encyclopedia_id
-    else
-      name = "buildings of selected type"
-    end
-    return "Set capacity of all " .. tostring(name) .. " to default value."
-  end,
-  "DisableAOMaps.tga"
-)
---------------------
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Air|Water Capacity + 1000",
-  function()
-    ChoGGi.AirWaterCapacity(true)
-  end,
-  "Ctrl-Shift-A",
-  "Set capacity of buildings of selected type + 1000 (as well as newly placed ones)",
-  "DisableAOMaps.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Air|Water Capacity (Default)",
-  ChoGGi.AirWaterCapacity,
-  nil,
-  function()
-    local name
-    if SelectedObj then
-      name = SelectedObj.encyclopedia_id
-    else
-      name = "buildings of selected type"
-    end
-    return "Set capacity of all " .. tostring(name) .. " to default value."
-  end,
-  "DisableAOMaps.tga"
-)
---------------------
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Colonist Capacity + 16",
-  function()
-    ChoGGi.SetCapacity(true,1)
+    ChoGGi.SetCapacity(true)
   end,
   "Ctrl-Shift-C",
-  "Set colonist capacity of all buildings of selected type + 16 (as well as newly placed ones)",
+  "Set capacity of buildings of selected type + 500 (+ 16 for residences), also applies to newly placed ones.",
   "DisableAOMaps.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Colonist Capacity (Default)",
-  function()
-    ChoGGi.SetCapacity(nil,1)
-  end,
+  "Gameplay/Capacity/Capacity Default",
+  ChoGGi.SetCapacity,
   nil,
   function()
-    local amt
     local name
-    if SelectedObj and SelectedObj.base_capacity then
-      amt = SelectedObj.base_capacity
+    if SelectedObj then
       name = SelectedObj.encyclopedia_id
     else
-      amt = "default value"
       name = "buildings of selected type"
     end
-    return "Set colonist capacity of all " .. tostring(name) .. " to " .. tostring(amt)
+    return "Set capacity of all " .. tostring(name) .. " to default value."
   end,
   "DisableAOMaps.tga"
 )
 --------------------
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Visitor Capacity + 16",
+  "Gameplay/Capacity/Capacity Visitor Increase",
   function()
     ChoGGi.VisitorCapacitySet(true)
   end,
   "Ctrl-Shift-V",
-  "Set visitors capacity of all buildings of selected type + 16 (as well as newly placed ones)",
+  "Set visitors capacity of all buildings of selected type + 16, also applies to newly placed ones.",
   "DisableAOMaps.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Visitor Capacity (Default)",
+  "Gameplay/Capacity/Capacity Visitor Default",
   ChoGGi.VisitorCapacitySet,
   nil,
   function()
@@ -149,23 +89,63 @@ ChoGGi.AddAction(
   "DisableAOMaps.tga"
 )
 --------------------
---[[
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Waste Depot + 1000",
+  "Gameplay/Capacity/Storage Universal Depot Increase",
   function()
-    ChoGGi.StorageDepotWasteSet(true,(ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1000)
+    ChoGGi.SetStorageDepotSize(true,"StorageUniversalDepot")
   end,
-  "Ctrl-Alt-Numpad 3",
+  "Ctrl-Alt-Numpad 1",
+  "Set universal depot capacity +1000 (only applies after restarting).",
+  "ToggleTerrainHeight.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Capacity/Storage Universal Depot Default",
   function()
-    local des = "Set Depot capacity to " .. (ChoGGi.CheatMenuSettings.StorageWasteDepot / ChoGGi.Consts.ResourceScale) + 1000
-    return des .. " (applies to each depot as well as newly built)."
+    ChoGGi.SetStorageDepotSize(nil,"StorageUniversalDepot")
+  end,
+  nil,
+  function()
+    return "Set Depot capacity to " .. ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale
   end,
   "ToggleTerrainHeight.tga"
 )
+--------------------
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Waste Depot (Default)",
+  "Gameplay/Capacity/Storage Other Depot Increase",
   function()
-    ChoGGi.StorageDepotWasteSet(nil,ChoGGi.Consts.StorageWasteDepot / ChoGGi.Consts.ResourceScale)
+    ChoGGi.SetStorageDepotSize(true,"StorageOtherDepot")
+  end,
+  "Ctrl-Alt-Numpad 2",
+  "Set other depot capacity +1000 (only applies after restarting).",
+  "ToggleTerrainHeight.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Capacity/Storage Other Depot Default",
+  function()
+    ChoGGi.SetStorageDepotSize(nil,"StorageOtherDepot")
+  end,
+  nil,
+  function()
+    return "Set Depot capacity to " .. ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale
+  end,
+  "ToggleTerrainHeight.tga"
+)
+---------------------
+ChoGGi.AddAction(
+  "Gameplay/Capacity/Storage Waste Depot Increase",
+  function()
+    ChoGGi.SetStorageDepotSize(true,"StorageWasteDepot")
+  end,
+  "Ctrl-Alt-Numpad 3",
+  "Set waste depot capacity +1000 (only applies after restarting).",
+  "ToggleTerrainHeight.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Capacity/Storage Waste Depot Default",
+  function()
+    ChoGGi.SetStorageDepotSize(nil,"StorageWasteDepot")
   end,
   nil,
   function()
@@ -175,66 +155,7 @@ ChoGGi.AddAction(
 )
 --------------------
 ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Other Depot + 1000",
-  function()
-    ChoGGi.StorageDepotOtherSet(true,(ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1000)
-  end,
-  "Ctrl-Alt-Numpad 2",
-  function()
-    local des = "Set Depot capacity to " .. (ChoGGi.CheatMenuSettings.StorageOtherDepot / ChoGGi.Consts.ResourceScale) + 1000
-    return des .. " (applies to each depot as well as newly built)."
-  end,
-  "ToggleTerrainHeight.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Other Depot (Default)",
-  function()
-    ChoGGi.StorageDepotOtherSet(nil,ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale)
-  end,
-  nil,
-  function()
-    return "Set Depot capacity to " .. ChoGGi.Consts.StorageOtherDepot / ChoGGi.Consts.ResourceScale
-  end,
-  "ToggleTerrainHeight.tga"
-)
---------------------
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Universal Depot + 1000",
-  function()
-    ChoGGi.StorageDepotUniversalSet(true,(ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1000)
-  end,
-  "Ctrl-Alt-Numpad 1",
-  function()
-    local des = "Set Depot capacity to " .. (ChoGGi.CheatMenuSettings.StorageUniversalDepot / ChoGGi.Consts.ResourceScale) + 1000
-    return des .. " (applies to each depot as well as newly built)."
-  end,
-  "ToggleTerrainHeight.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Capacity/Storage Universal Depot (Default)",
-  function()
-    ChoGGi.StorageDepotUniversalSet(nil,ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale)
-  end,
-  nil,
-  function()
-    return "Set Depot capacity to " .. ChoGGi.Consts.StorageUniversalDepot / ChoGGi.Consts.ResourceScale
-  end,
-  "ToggleTerrainHeight.tga"
-)
---]]
---------------------
-ChoGGi.AddAction(
-  "Gameplay/Buildings/Repair Pipes|Cables",
-  ChoGGi.RepairPipesCables,
-  nil,
-  "Instantly repair all broken pipes and cables.",
-  "DisableAOMaps.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Buildings/Fully Automated Buildings Toggle",
+  "Gameplay/Buildings/Fully Automated Buildings",
   ChoGGi.FullyAutomatedBuildings_Toggle,
   nil,
   function()
@@ -245,7 +166,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Add Mystery|Breakthrough Buildings",
+  "Gameplay/Buildings/Add Mystery & Breakthrough Buildings",
   ChoGGi.AddMysteryBreakthroughBuildings,
   nil,
   function()
@@ -256,7 +177,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Sanatoriums Cure All Toggle",
+  "Gameplay/Buildings/Sanatoriums Cure All",
   ChoGGi.SanatoriumCureAll_Toggle,
   nil,
   function()
@@ -267,7 +188,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Schools Train All Toggle",
+  "Gameplay/Buildings/Schools Train All",
   ChoGGi.SchoolTrainAll_Toggle,
   nil,
   function()
@@ -278,7 +199,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Sanatoriums|Schools Show Full List Toggle",
+  "Gameplay/Buildings/Sanatoriums & Schools Show Full List",
   ChoGGi.SanatoriumSchoolShowAll,
   nil,
   function()
@@ -289,7 +210,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Maintenance Free Toggle",
+  "Gameplay/Buildings/Maintenance Free",
   ChoGGi.MaintenanceBuildingsFree_Toggle,
   nil,
   function()
@@ -300,7 +221,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Moisture Vaporator Penalty Toggle",
+  "Gameplay/Buildings/Moisture Vaporator Penalty",
   ChoGGi.MoistureVaporatorPenalty_Toggle,
   nil,
   function()
@@ -311,7 +232,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Crop Fail Threshold Toggle",
+  "Gameplay/Buildings/Crop Fail Threshold",
   ChoGGi.CropFailThreshold_Toggle,
   nil,
   function()
@@ -322,7 +243,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Cheap Construction Toggle",
+  "Gameplay/Buildings/Cheap Construction",
   ChoGGi.CheapConstruction_Toggle,
   nil,
   function()
@@ -333,7 +254,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Building Damage Crime Toggle",
+  "Gameplay/Buildings/Building Damage Crime",
   ChoGGi.BuildingDamageCrime_Toggle,
   nil,
   function()
@@ -343,9 +264,29 @@ ChoGGi.AddAction(
   "DisableAOMaps.tga"
 )
 
+--------------------
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Instant Cables And Pipes Toggle",
-  ChoGGi.CablesAndPipes_Toggle,
+  "Gameplay/Buildings/Cables & Pipes: No Chance Of Break",
+  ChoGGi.CablesAndPipesNoBreak_Toggle,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.BreakChanceCablePipe and "(Enabled)" or "(Disabled)"
+    return des .. " Cables & pipes will never break."
+  end,
+  "toggle_post.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Buildings/Cables & Pipes: Instant Repair",
+  ChoGGi.CablesAndPipesRepair,
+  nil,
+  "Instantly repair all broken pipes and cables.",
+  "DisableAOMaps.tga"
+)
+
+ChoGGi.AddAction(
+  "Gameplay/Buildings/Cables & Pipes: Instant Build",
+  ChoGGi.CablesAndPipesInstant_Toggle,
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.InstantCables,"(Enabled)","(Disabled)")
@@ -353,7 +294,7 @@ ChoGGi.AddAction(
   end,
   "DisableAOMaps.tga"
 )
-
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Buildings/Unlimited Wonders",
   ChoGGi.Building_wonder_Toggle,
@@ -364,7 +305,6 @@ ChoGGi.AddAction(
   end,
   "toggle_post.tga"
 )
-
 ChoGGi.AddAction(
   "Gameplay/Buildings/Build Spires Outside of Spire Point",
   ChoGGi.Building_dome_spot_Toggle,
@@ -430,7 +370,7 @@ ChoGGi.AddAction(
   end,
   "toggle_post.tga"
 )
-
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Buildings/Remove Building Limits",
   ChoGGi.RemoveBuildingLimits_Toggle,
@@ -441,7 +381,3 @@ ChoGGi.AddAction(
   end,
   "toggle_post.tga"
 )
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"BuildingsMenu")
-end

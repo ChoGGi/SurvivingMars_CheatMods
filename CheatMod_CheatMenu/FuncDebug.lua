@@ -1,36 +1,10 @@
 --[[
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
+though SM has a bunch of AsyncFile* functions that should probably be used instead (as you can use AppData with them to specify the profile folder)
 
 socket = require("socket")
 print(socket._VERSION)
-
---see where the function comes from
-debug.getinfo(ChoGGi.RemoveOldFiles)
-
---zoom in on obj
-local obj = SelectedObj
-local center, radius = obj:GetBSphere()
-local min, max = cameraRTS.GetZoomLimits()
-ViewObjectMars(obj, nil, nil, Clamp(radius / 2, min, max))
-
-SelectedObj:__toluacode()
-
-dump(TupleToLuaCode(UserActions.Actions["UpsampledScreenshot"]))
-dumpobject(UserActions.Actions["DE_UpsampledScreenshot"])
-
-
-dump(TupleToLuaCode(dlgConsole))
-dumpobject(SelectedObj)
-dumptable(Consts)
-
-list active user actions (menuitem entries)
-UserActions.GetActiveActions()
-
---UserActions.IsActionActive(id)
-UserActions.RemoveActions({
-  "G_ToggleInfopanelCheats",
-})
 --]]
 
 function ChoGGi.PrintFiles(Filename,Function,Text,...)
@@ -53,23 +27,23 @@ function ChoGGi.WriteLogsEnable()
   AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
   AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
 
-  --so we can pass the msgs on
-  ChoGGi.OrigFunc.printf = printf
+  --redirect functions
   ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
-
-  --replace these functions
+  AddConsoleLog = function(...)
+    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+  end
+  ChoGGi.OrigFunc.printf = printf
   printf = function(...)
     ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
   end
+  --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
+  ChoGGi.OrigFunc.DebugPrint = DebugPrint
   DebugPrint = function(...)
-    ChoGGi.PrintFiles("DebugLog",nil,nil,...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
   end
+  ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
   OutputDebugString = function(...)
-    ChoGGi.PrintFiles("DebugLog",nil,nil,...)
-  end
-  AddConsoleLog = function(...)
-    --we want to use our function instead of the orig to give us console history output
-    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
   end
 end
 
@@ -268,8 +242,4 @@ do
       end)
     end
   end
-end
-
-if ChoGGi.Testing then
-  table.insert(ChoGGi.FilesCount,"FuncDebug")
 end
