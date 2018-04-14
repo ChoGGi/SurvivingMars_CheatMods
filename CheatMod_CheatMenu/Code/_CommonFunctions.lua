@@ -1,5 +1,13 @@
 --any functions called from Code/*.lua
 
+function ChoGGi.AttachToNearestDome(building)
+  if not building.parent_dome then
+    local dome = FindNearestObject(UICity.labels.Domes,building)
+    building.parent_dome = dome
+    table.insert(dome.labels.Residence,building)
+  end
+end
+
 function ChoGGi.SetProductionToSavedAmt()
   for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
     if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then

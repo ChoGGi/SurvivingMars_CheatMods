@@ -1,6 +1,13 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "Gameplay/Buildings/Attach Buildings To Nearest Dome",
+  ChoGGi.AttachBuildingsToNearestDome,
+  nil,
+  "If you placed inside buildings outside and removed the dome they're attached to; use this",
+  "ReportBug.tga"
+)
+ChoGGi.AddAction(
   "Gameplay/Buildings/Farm Shifts All On",
   ChoGGi.FarmShiftsAllOn,
   nil,
@@ -281,7 +288,7 @@ ChoGGi.AddAction(
     local des = ChoGGi.CheatMenuSettings.BreakChanceCablePipe and "(Enabled)" or "(Disabled)"
     return des .. " Cables & pipes will never break."
   end,
-  "toggle_post.tga"
+  "DisableAOMaps.tga"
 )
 
 ChoGGi.AddAction(
@@ -289,7 +296,7 @@ ChoGGi.AddAction(
   ChoGGi.CablesAndPipesRepair,
   nil,
   "Instantly repair all broken pipes and cables.",
-  "DisableAOMaps.tga"
+  "ReportBug.tga"
 )
 
 ChoGGi.AddAction(

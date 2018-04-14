@@ -1,3 +1,15 @@
+function ChoGGi.AttachBuildingsToNearestDome()
+  for _,building in ipairs(UICity.labels.Residence or empty_table) do
+    ChoGGi.AttachToNearestDome(building)
+  end
+  for _,building in ipairs(UICity.labels.Workplace or empty_table) do
+    ChoGGi.AttachToNearestDome(building)
+  end
+  ChoGGi.MsgPopup("Buildings attached.",
+    "Buildings","UI/Icons/Sections/basic.tga"
+  )
+end
+
 function ChoGGi.SetStorageDepotSize(Bool,Type)
   if Bool == true then
     ChoGGi.CheatMenuSettings[Type] = ChoGGi.CheatMenuSettings[Type] + (1000 * ChoGGi.Consts.ResourceScale)

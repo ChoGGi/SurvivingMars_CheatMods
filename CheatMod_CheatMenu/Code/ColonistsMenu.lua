@@ -251,7 +251,7 @@ ChoGGi.AddAction(
   function()
     ChoGGi.OutsideWorkplaceRadius(true)
   end,
-  nil,
+  "Ctrl-Shift-W",
   function()
     return "Colonists search " .. Consts.DefaultOutsideWorkplacesRadius + ChoGGi.Consts.DefaultOutsideWorkplacesRadius .. " hexes outside their Dome when looking for a Workplace (default " .. ChoGGi.Consts.DefaultOutsideWorkplacesRadius .. ")."
   end,

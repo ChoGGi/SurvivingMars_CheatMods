@@ -94,6 +94,11 @@ ChoGGi.AddAction(
     ChoGGi.WriteSettings()
 
     ChoGGi.MsgPopup("No more hints stopping gameplay","Hints","UI/Icons/Sections/attention.tga")
+  end,
+  nil,
+  function()
+    local des = ChoGGi.CheatMenuSettings.DisableHints and "(Enabled)" or "(Disabled)"
+    return des .. " Stop showing hints."
   end
 )
 --------------------
@@ -105,7 +110,7 @@ ChoGGi.AddAction(
     end)
   end,
   "Ctrl-F1",
-  "Report Bug\nThis doesn't go to ECM author, if you have a bug with ECM then msg me on github/nexusmods.",
+  "Report Bug\n\nThis doesn't go to ECM author, if you have a bug with ECM; see Help>About.",
   "ReportBug.tga"
 )
 

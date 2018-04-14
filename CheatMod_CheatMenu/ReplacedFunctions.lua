@@ -28,6 +28,19 @@ cur = GetTerrainCursorObjSel
 sp = GetPreciseCursorObj
 sc = GetTerrainCursor
 
+--if building placed outside of dome, attach it to nearest dome
+ChoGGi.OrigFunc.Residence_GameInit = Residence.GameInit
+function Residence:GameInit()
+  ChoGGi.OrigFunc.Residence_GameInit(self)
+  ChoGGi.AttachToNearestDome(self)
+end
+
+ChoGGi.OrigFunc.Workplace_GameInit = Workplace.GameInit
+function Workplace:GameInit()
+  ChoGGi.OrigFunc.Workplace_GameInit(self)
+  ChoGGi.AttachToNearestDome(self)
+end
+
 --make sure it updates with our new value
 ChoGGi.OrigFunc.ElectricityProducer_CreateElectricityElement = ElectricityProducer.CreateElectricityElement
 function ElectricityProducer:CreateElectricityElement()
