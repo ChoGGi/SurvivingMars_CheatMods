@@ -161,7 +161,7 @@ for i = 1, #templates do
 	print(building.name)
 end
 
-some functions I added that may be useful for modding:
+some functions I added that may be useful for modders:
 
 ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
 TechTree[6][46] = Breakthroughs>PrefabCompression
@@ -185,14 +185,14 @@ if .a is 0 or .p is 0.0 then you most likely have the wrong one
 
 ##### Known issues
 ```
-Going above 4096 or so will making clicking on certain buildings laggy (houses/schools).
-  Don't go too high...
+Going above 4096 capacity will make certain buildings laggy (houses/schools), and around 64K will crash.
+  >Don't go too high...
 
 If you increase a number high enough it'll go negative.
-  Don't go too high or use the menu to reset to default (if it's still broken send me your save).
+  >Don't go too high or use the menu to reset to default (if it's still broken send me your save).
 
 Production will reset when the production changes (Solar panels, Wind turbines, etc).
-  It is what it is.
+  >You can use Buildings>Production Amount Refresh to reset to saved amounts.
 ```
 
 ##### Thanks

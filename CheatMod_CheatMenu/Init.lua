@@ -117,9 +117,8 @@ if ChoGGi.CheatMenuSettings.developer then
   Platform.developer = true
 end
 
---my functions
-dofile(ChoGGi.ModPath .. "FuncDebug.lua")
-dofile(ChoGGi.ModPath .. "FuncGame.lua")
+--functions needed for before Code/ is loaded
+dofile(ChoGGi.ModPath .. "Functions.lua")
 --load up function overrides
 dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
 --load all my other files

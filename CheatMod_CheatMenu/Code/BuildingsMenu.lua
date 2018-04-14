@@ -9,6 +9,14 @@ ChoGGi.AddAction(
 )
 --------------------
 ChoGGi.AddAction(
+  "Gameplay/Buildings/Production Amount Refresh",
+  ChoGGi.SetProductionToSavedAmt,
+  nil,
+  "Loops through all buildings and checks that production is set to saved amounts.",
+  "DisableAOMaps.tga"
+)
+
+ChoGGi.AddAction(
   "Gameplay/Buildings/Production Amount Increase",
   function()
     ChoGGi.SetProduction(true)

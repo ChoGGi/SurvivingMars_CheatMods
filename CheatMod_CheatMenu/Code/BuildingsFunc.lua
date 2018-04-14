@@ -321,6 +321,21 @@ function ChoGGi.AddMysteryBreakthroughBuildings()
   )
 end
 
+--used to add or remove traits from schools/sanitariums
+function ChoGGi.BuildingsSetAll_Traits(Building,Traits,Bool)
+  local Buildings = UICity.labels[Building] or 0
+  for i = 1,#Buildings do
+    local Obj = Buildings[i]
+    for j = 1,#Traits do
+      if Bool == true then
+        Obj:SetTrait(j,nil)
+      else
+        Obj:SetTrait(j,Traits[j])
+      end
+    end
+  end
+end
+
 function ChoGGi.SchoolTrainAll_Toggle()
   ChoGGi.CheatMenuSettings.SchoolTrainAll = not ChoGGi.CheatMenuSettings.SchoolTrainAll
   if ChoGGi.CheatMenuSettings.SchoolTrainAll then

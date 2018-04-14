@@ -228,29 +228,6 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     ChoGGi.ToggleWorking(self)
   end
   --
-  --[[
-  local function CheatCapStorageDbl(self)
-    self.max_storage_per_resource = self.max_storage_per_resource * 2
-    ChoGGi.UpdateResourceAmount(self,self.max_storage_per_resource)
-  end
-  local function CheatCapStorageDef(self)
-    self.max_storage_per_resource = self.base_max_storage_per_resource
-    ChoGGi.UpdateResourceAmount(self,self.max_storage_per_resource)
-  end
-  UniversalStorageDepot.CheatCapStorageDbl = CheatCapStorageDbl
-  UniversalStorageDepot.CheatCapStorageDef = CheatCapStorageDef
-  MysteryDepot.CheatCapStorageDbl = CheatCapStorageDbl
-  MysteryDepot.CheatCapStorageDef = CheatCapStorageDef
-  --
-  function BlackCubeDumpSite:CheatCapDbl()
-    self.max_amount_BlackCube = self.max_amount_BlackCube * 2
-    ChoGGi.UpdateResourceAmount(self,self.max_amount_BlackCube)
-  end
-  function BlackCubeDumpSite:CheatCapDef()
-    self.max_amount_BlackCube = self.base_max_amount_BlackCube
-    ChoGGi.UpdateResourceAmount(self,self.max_amount_BlackCube)
-  end
-  --]]
 --CheatCapDbl people
   local function CheatColonistCapDbl(self)
     if self.capacity == 4096 then
