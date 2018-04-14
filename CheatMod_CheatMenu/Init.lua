@@ -16,8 +16,6 @@ end
 ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   ModPath = "AppData/Mods/CheatMod_CheatMenu/",
-  FilesCount = {},
-  FilesCountAuto = {},
   StartupMsgs = {},
   OrigFunc = {},
   CheatMenuSettings = {},

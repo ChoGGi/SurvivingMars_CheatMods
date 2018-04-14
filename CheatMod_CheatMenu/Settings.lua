@@ -61,6 +61,7 @@ ChoGGi.Consts = {
   CleanupCheatsInfoPane = true,
   ShowInterfaceInScreenshots = true,
 
+  DisableHints = false,
   BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
   AddMysteryBreakthroughBuildings = false,

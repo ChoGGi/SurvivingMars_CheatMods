@@ -2,7 +2,7 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
-Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, etc... Useful for testing out mods. Requests are welcome.
+Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, useful shortcuts, etc... Requests are welcome.
 
 ##### Install help
 ```
@@ -119,7 +119,7 @@ Show All Traits in Sanatorium/School
 Show Hidden Buildings
 ShuttleHub Shuttles Increase
 Spacing between Pipe Pillars
-Start Mysteries
+Start Mysteries (mysteries don't start till after you have 100 colonists, and an amount of time has passed)
 Storage Depot / Waste Dump increase
 Toggle Editor (you can move stuff around: if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Toggle Infopanel Cheats

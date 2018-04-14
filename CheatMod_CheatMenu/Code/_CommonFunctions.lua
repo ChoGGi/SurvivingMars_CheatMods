@@ -4,19 +4,21 @@ function ChoGGi.SetProductionToSavedAmt()
   for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
     if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then
       local amount = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
-      if building.base_air_production then
-        building.air:SetProduction(amount)
-        building.air_production = amount
-      elseif building.base_water_production then
-        building.water:SetProduction(amount)
-        building.water_production = amount
-      elseif building.base_electricity_production then
-        building.electricity:SetProduction(amount)
-        building.electricity_production = amount
-      elseif building.producers then
-        building.producers[1].production_per_day = amount
-        building.production_per_day1 = amount
-      end
+      pcall(function()
+        if building.base_air_production then
+          building.air:SetProduction(amount)
+          building.air_production = amount
+        elseif building.base_water_production then
+          building.water:SetProduction(amount)
+          building.water_production = amount
+        elseif building.base_electricity_production then
+          building.electricity:SetProduction(amount)
+          building.electricity_production = amount
+        elseif building.producers then
+          building.producers[1].production_per_day = amount
+          building.production_per_day1 = amount
+        end
+      end)
     end
   end
 end

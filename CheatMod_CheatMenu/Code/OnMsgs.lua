@@ -65,6 +65,18 @@ function OnMsg.ClassesBuilt()
       "DarkSideOfTheMoon.tga"
     )
   end)
+  --instant start
+  ClassDescendantsList("MysteryBase", function(class)
+    ChoGGi.AddAction(
+      "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) .. ": Instant" or "Missing Name: Instant",
+      function()
+        return ChoGGi.StartMystery(class,true)
+      end,
+      nil,
+      _InternalTranslate(T({ChoGGi.MysteryDescription[class]})) .. "\n\nStarts mystery instantly (may take up to 1 sol)." or "Missing Description: Starts mystery instantly (may take up to 1 sol).",
+      "SelectionToTemplates.tga"
+    )
+  end)
 
   --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
@@ -393,6 +405,10 @@ function OnMsg.LoadingScreenPreClose()
     const.BreakChancePipe = 10000000
   end
 
+  if ChoGGi.CheatMenuSettings.DisableHints then
+    mapdata.DisableHints = true
+  end
+
   --Commander bonuses
   if ChoGGi.CheatMenuSettings.CommanderInventor then
     ChoGGi.CommanderInventor_Enable()
@@ -585,7 +601,7 @@ function OnMsg.MysteryChosen()
 end
 function OnMsg.MysteryEnd(Outcome)
   if ChoGGi.CheatMenuSettings.ShowMysteryMsgs then
-    ChoGGi.MsgPopup(Outcome,"Mystery","UI/Icons/Logos/logo_13.tga")
+    ChoGGi.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 

@@ -6,6 +6,7 @@ ChoGGi.AddAction(
   function()
     hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
     ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots = not ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots
+    ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("Interface is: " .. tostring(ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots),
       "Interface","UI/Icons/Sections/attention.tga"
     )
@@ -78,6 +79,21 @@ ChoGGi.AddAction(
     g_ShownOnScreenHints = {}
     UpdateOnScreenHintDlg()
     ChoGGi.MsgPopup("Hints Reset!","Hints","UI/Icons/Sections/attention.tga")
+  end
+)
+
+ChoGGi.AddAction(
+  "[999]Help/[1]Interface/[18]Never Show Hints",
+  function()
+    ChoGGi.CheatMenuSettings.DisableHints = not ChoGGi.CheatMenuSettings.DisableHints
+    if ChoGGi.CheatMenuSettings.DisableHints then
+      mapdata.DisableHints = true
+    else
+      mapdata.DisableHints = false
+    end
+    ChoGGi.WriteSettings()
+
+    ChoGGi.MsgPopup("No more hints stopping gameplay","Hints","UI/Icons/Sections/attention.tga")
   end
 )
 --------------------

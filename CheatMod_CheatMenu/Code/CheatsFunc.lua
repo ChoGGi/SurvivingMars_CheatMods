@@ -25,7 +25,8 @@ function ChoGGi.OutsourcingFree_Toggle()
   )
 end
 
-local function CheatStartMystery(mystery_id)
+--called from below
+local function CheatStartMystery(mystery_id,Bool)
 --mapdata.StartMystery?
   UICity.mystery_id = mystery_id
   for i = 1, #TechTree do
@@ -44,13 +45,34 @@ local function CheatStartMystery(mystery_id)
     end
   end
   UICity:InitMystery()
+  --might help
+  if UICity.mystery then
+    UICity.mystery_id = UICity.mystery.class
+    UICity.mystery:ApplyMysteryResourceProperties()
+  end
+  --instant start
+  if Bool == true then
+    local sequence = UICity.mystery.seq_player.seq_list[1]
+    for i = 1, #sequence do
+      if sequence[i].class == "SA_WaitExpression" then
+        UICity.mystery.seq_player.seq_list[1][i].duration = 0
+        UICity.mystery.seq_player.seq_list[1][i].expression = nil
+      elseif sequence[i].class == "SA_WaitMarsTime" then
+        UICity.mystery.seq_player.seq_list[1][i].duration = 0
+        UICity.mystery.seq_player.seq_list[1][i].rand_duration = 0
+        break
+      end
+    end
+    UICity.mystery.seq_player:AutostartSequences()
+  end
 end
 
-function ChoGGi.StartMystery(Mystery)
+--"Cheats/Start Mystery" menu items are built in OnMsgs.lua>ClassesBuilt()
+function ChoGGi.StartMystery(Mystery,Bool)
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
   UICity.mystery_id = Mystery
-  CheatStartMystery(Mystery)
+  CheatStartMystery(Mystery,Bool)
 end
 
 function ChoGGi.BreakThroughTechsPerGame_Toggle()
