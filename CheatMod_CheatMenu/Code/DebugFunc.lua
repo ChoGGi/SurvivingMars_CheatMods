@@ -27,7 +27,9 @@ function ChoGGi.DumpCurrentObj()
     Examine.obj = obj
     local tempTable = Examine:totextex(obj)
     tempTable = tempTable:gsub("<[/%s%a%d]*>","")
-    ChoGGi.Dump(tempTable .. "\n\n","a","DumpedExamine","lua")
+    --also dump object code
+    tempTable = "\r\n" .. tempTable .. "\r\n" .. ValueToLuaCode(obj) .. "\r\n"
+    ChoGGi.Dump(tempTable,"a","DumpedExamine","lua")
   end)
 end
 

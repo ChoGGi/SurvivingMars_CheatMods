@@ -1,6 +1,6 @@
 return {
   PlaceObj('ModItemCode', {
-    'name', "ChoGGi_Init",
+    'name', "Init.lua",
     'FileName', "Init.lua"
   }),
 }

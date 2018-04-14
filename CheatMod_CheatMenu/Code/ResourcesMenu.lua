@@ -277,7 +277,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Resources/Fill Selected Resource",
   function()
-    ChoGGi.FillResource(SelectedObj)
+    ChoGGi.FillResource(SelectedObj or SelectionMouseObj())
   end,
   "Ctrl-F",
   "Fill the selected object's resource(s)",

@@ -2,7 +2,7 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
-Enables Cheat menu, Cheat info pane, Console, adds a whole bunch of menu items: set gravity, follow camera, higher render/shadow distance, change logo, unlimited wonders, build almost anywhere, etc...
+Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, etc... Useful for testing out mods. Requests are welcome.
 
 ##### Install help
 ```
@@ -14,17 +14,19 @@ Enable with in-game mod manager
 ##### Info
 ```
 F2: Toggle the cheats menu.
-F4: Open object examiner for selected object (now with dump button)
-Ctrl+F: Fill resource of selected object
-Enter or Tilde to show the console
-F9 to clear the console log
-Ctrl-Alt-Shift-R: opens console and places "restart" in it
-Ctrl-Space: Opens placement mode with the last placed item
-Ctrl-Shift-Space: Opens placement mode with the selected (or object under mouse) item
-Ctrl-Shift-F: Follow Camera (select an object to follow around)
-Ctrl-Alt-F: Toggle mouse cursor
+F4: Open object examiner for object
+Ctrl+F: Fill resource of object
+Enter or Tilde: Show the console
+F9: Clear the console log
+Ctrl-Alt-Shift-R: Opens console and places "restart" in it
+Ctrl-Space: Opens placement mode with the last placed object
+Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits)
+Ctrl-Shift-F: Follow Camera (follow an object around)
+Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)
 Ctrl-Shift-E: Toggle editor mode
-Ctrl-Alt-Shift-D: Delete object (selected or object under mouse)
+Ctrl-Alt-Shift-D: Delete object
+
+When I say object that means either the selected object or the object under the mouse cursor
 
 There's a cheats section in most info panels on the right side of the screen.
 Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)

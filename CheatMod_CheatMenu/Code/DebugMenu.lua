@@ -27,7 +27,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "[102]Debug/Open In Ged Editor",
   function()
-    OpenGedGameObjectEditor(SelectedObj)
+    OpenGedGameObjectEditor(SelectedObj or SelectionMouseObj())
   end,
   nil,
   "It edits stuff?",
@@ -134,7 +134,7 @@ ChoGGi.AddAction(
   "[102]Debug/Dump Current Obj",
   ChoGGi.DumpCurrentObj,
   "F5",
-  "Dumps info for current object to AppData/DumpText.txt",
+  "Dumps info for current object to AppData/DumpedExamine.lua",
   "SaveMapEntityList.tga"
 )
 
