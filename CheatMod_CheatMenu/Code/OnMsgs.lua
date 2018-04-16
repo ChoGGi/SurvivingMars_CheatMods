@@ -1,6 +1,6 @@
 function OnMsg.ClassesGenerate()
 
-  --i like keeping all my OnMsgs in here
+  --i like keeping all my OnMsgs. in one file
   ChoGGi.ReplacedFunctions_ClassesGenerate()
   ChoGGi.InfoPaneCheats_ClassesGenerate()
 
@@ -109,58 +109,37 @@ function OnMsg.ClassesBuilt()
 end --OnMsg
 
 function OnMsg.OptionsApply()
-  --earliest we can call Consts:GetProperties()
-  ChoGGi.ReadSettingsInGame()
+  ChoGGi.Settings_OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
-  --create logo menu items (needs to be loaded here, so we get logos from other mods)
-  local templates = DataInstances.MissionLogo
-  for i = 1, #templates do
-    ChoGGi.AddAction(
-      "Gameplay/QoL/[4]Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
-      function()
-        ChoGGi.SetNewLogo(templates[i].name,_InternalTranslate(templates[i].display_name))
-      end,
-      nil,
-      "Change the logo to ".. _InternalTranslate(templates[i].display_name) .. " for anything that uses the logo.",
-      "ViewArea.tga"
-    )
+  ChoGGi.SponsorsFunc_ModsLoaded()
+  ChoGGi.MiscFunc_ModsLoaded()
+end --OnMsg
+
+--saved game is loaded
+function OnMsg.LoadGame()
+  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
+  ChoGGi.IsGameLoaded = false
+end
+
+--fired as late as we can
+function OnMsg.LoadingScreenPreClose()
+
+  --doubtful, but what the hell
+  if not UICity then
+    return
   end
 
-  --create Sponsor menus
-  local templates = DataInstances.MissionSponsor
-  for i = 1, #templates do
-    if templates[i].name ~= "random" then
-      ChoGGi.AddAction(
-        "Gameplay/Sponsors/" .. _InternalTranslate(templates[i].display_name),
-        function()
-          ChoGGi.SetNewSponsor(templates[i].name,_InternalTranslate(templates[i].display_name))
-        end,
-        nil,
-        _InternalTranslate(templates[i].effect),
-        "SelectByClassName.tga"
-      )
-    end
+  if ChoGGi.IsGameLoaded == true then
+    return
+  else
+    ChoGGi.IsGameLoaded = true
   end
 
-  --create Commander menus
-  local templates = DataInstances.CommanderProfile
-  for i = 1, #templates do
-    if templates[i].name ~= "random" then
-      ChoGGi.AddAction(
-        "Gameplay/Commanders/" .. _InternalTranslate(templates[i].display_name),
-        function()
-          ChoGGi.SetNewCommander(templates[i].name,_InternalTranslate(templates[i].display_name))
-        end,
-        nil,
-        _InternalTranslate(templates[i].effect),
-        "SetCamPos&Loockat.tga"
-      )
-    end
-  end
+  ChoGGi.RenderSettings_LoadingScreenPreClose()
 
-  --number keys to activate build menu
+  --use number keys to activate/hide build menus
   local skipped = false
   for i = 1, #BuildCategories do
     if i < 10 then
@@ -201,37 +180,15 @@ function OnMsg.ModsLoaded()
     end
   end
 
-end --OnMsg
-
---saved game is loaded
-function OnMsg.LoadGame()
-  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
-  ChoGGi.IsGameLoaded = false
-end
-
---fired as late as we can
-function OnMsg.LoadingScreenPreClose()
-
-  --doubtful, but what the hell
-  if not UICity then
-    return
-  end
-
-  if ChoGGi.IsGameLoaded == true then
-    return
-  else
-    ChoGGi.IsGameLoaded = true
-  end
-
-  ChoGGi.RenderSettings_LoadingScreenPreClose()
-
   --make sure all buildings are using correct production
   ChoGGi.SetProductionToSavedAmt()
 
-  --something messed up if storage is negative (usually setting an amount then lowering it), so we'll empty it
+  --something messed up if storage is negative (usually setting an amount then lowering it)
   for _,building in ipairs(UICity.labels.Storages or empty_table) do
     if building:GetStoredAmount() < 0 then
+      --we have to empty it first (just filling doesn't fix the issue)
       building:CheatEmpty()
+      building:CheatFill()
     end
   end
 
@@ -374,13 +331,6 @@ function OnMsg.LoadingScreenPreClose()
     --ShowConsole(true)
   end
 
-  --fucking pre-orders
-  g_TrailblazerSkins.Drone = "Drone_Trailblazer"
-  g_TrailblazerSkins.RCRover = "Rover_Trailblazer"
-  g_TrailblazerSkins.RCTransport = "RoverTransport_Trailblazer"
-  g_TrailblazerSkins.ExplorerRover = "RoverExplorer_Trailblazer"
-  g_TrailblazerSkins.SupplyRocket = "Rocket_Trailblazer"
-
   --remove some uselessish Cheats to clear up space
   if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
     ChoGGi.InfopanelCheatsCleanup()
@@ -411,59 +361,59 @@ function OnMsg.LoadingScreenPreClose()
 
   --Commander bonuses
   if ChoGGi.CheatMenuSettings.CommanderInventor then
-    ChoGGi.CommanderInventor_Enable()
+    ChoGGi.SetCommanderBonuses("Inventor")
   end
   if ChoGGi.CheatMenuSettings.CommanderOligarch then
-    ChoGGi.CommanderOligarch_Enable()
+    ChoGGi.SetCommanderBonuses("Oligarch")
   end
   if ChoGGi.CheatMenuSettings.CommanderHydroEngineer then
-    ChoGGi.CommanderHydroEngineer_Enable()
+    ChoGGi.SetCommanderBonuses("HydroEngineer")
   end
   if ChoGGi.CheatMenuSettings.CommanderDoctor then
-    ChoGGi.CommanderDoctor_Enable()
+    ChoGGi.SetCommanderBonuses("Doctor")
   end
   if ChoGGi.CheatMenuSettings.CommanderPolitician then
-    ChoGGi.CommanderPolitician_Enable()
+    ChoGGi.SetCommanderBonuses("Politician")
   end
   if ChoGGi.CheatMenuSettings.CommanderAuthor then
-    ChoGGi.CommanderAuthor_Enable()
+    ChoGGi.SetCommanderBonuses("Author")
   end
   if ChoGGi.CheatMenuSettings.CommanderEcologist then
-    ChoGGi.CommanderEcologist_Enable()
+    ChoGGi.SetCommanderBonuses("Ecologist")
   end
   if ChoGGi.CheatMenuSettings.CommanderAstrogeologist then
-    ChoGGi.CommanderAstrogeologist_Enable()
+    ChoGGi.SetCommanderBonuses("Astrogeologist")
   end
   --Sponsor bonuses
   if ChoGGi.CheatMenuSettings.SponsorIMM then
-    ChoGGi.SponsorIMM_Enable()
+    ChoGGi.SetSponsorBonuses("IMM")
   end
   if ChoGGi.CheatMenuSettings.SponsorNASA then
-    ChoGGi.SponsorNASA_Enable()
+    ChoGGi.SetSponsorBonuses("NASA")
   end
   if ChoGGi.CheatMenuSettings.SponsorBlueSun then
-    ChoGGi.SponsorBlueSun_Enable()
+    ChoGGi.SetSponsorBonuses("BlueSun")
   end
   if ChoGGi.CheatMenuSettings.SponsorCNSA then
-    ChoGGi.SponsorCNSA_Enable()
+    ChoGGi.SetSponsorBonuses("CNSA")
   end
   if ChoGGi.CheatMenuSettings.SponsorISRO then
-    ChoGGi.SponsorISRO_Enable()
+    ChoGGi.SetSponsorBonuses("ISRO")
   end
   if ChoGGi.CheatMenuSettings.SponsorESA then
-    ChoGGi.SponsorESA_Enable()
+    ChoGGi.SetSponsorBonuses("ESA")
   end
   if ChoGGi.CheatMenuSettings.SponsorSpaceY then
-    ChoGGi.SponsorSpaceY_Enable()
+    ChoGGi.SetSponsorBonuses("SpaceY")
   end
   if ChoGGi.CheatMenuSettings.SponsorNewArk then
-    ChoGGi.SponsorNewArk_Enable()
+    ChoGGi.SetSponsorBonuses("NewArk")
   end
   if ChoGGi.CheatMenuSettings.SponsorRoscosmos then
-    ChoGGi.SponsorRoscosmos_Enable()
+    ChoGGi.SetSponsorBonuses("Roscosmos")
   end
   if ChoGGi.CheatMenuSettings.SponsorParadox then
-    ChoGGi.SponsorParadox_Enable()
+    ChoGGi.SetSponsorBonuses("Paradox")
   end
 
   --print startup msgs to console log
@@ -475,8 +425,9 @@ function OnMsg.LoadingScreenPreClose()
   --people will likely just copy new mod over old, and I moved stuff around
   ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
-    --clean up
-    ChoGGi.RemoveOldFiles()
+    --clean up (in a seprate thread)
+    ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
+    --ChoGGi.RemoveOldFiles()
     --update saved version
     ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
     ChoGGi.WriteSettings()
@@ -554,13 +505,23 @@ function OnMsg.ConstructionComplete(building)
 
 end --OnMsg
 
+function OnMsg.Demolished(building)
+  --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
+  if building.achievement == "FirstDome" then
+    UICity.labels.Domes_Working = {}
+    for _,object in ipairs(UICity.labels.Domes) do
+      table.insert(UICity.labels.Domes_Working,object)
+    end
+  end
+end --OnMsg
+
 function OnMsg.ColonistArrived()
 
   if ChoGGi.CheatMenuSettings.GravityColonist then
     colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistSex then
-    ChoGGi.ColonistUpdateSex(colonist,ChoGGi.CheatMenuSettings.NewColonistSex)
+  if ChoGGi.CheatMenuSettings.NewColonistGender then
+    ChoGGi.ColonistUpdateGender(colonist,ChoGGi.CheatMenuSettings.NewColonistGender)
   end
   if ChoGGi.CheatMenuSettings.NewColonistAge then
     ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)
@@ -572,8 +533,8 @@ function OnMsg.ColonistBorn(colonist)
   if ChoGGi.CheatMenuSettings.GravityColonist then
     colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistSex then
-    ChoGGi.ColonistUpdateSex(colonist,ChoGGi.CheatMenuSettings.NewColonistSex)
+  if ChoGGi.CheatMenuSettings.NewColonistGender then
+    ChoGGi.ColonistUpdateGender(colonist,ChoGGi.CheatMenuSettings.NewColonistGender)
   end
   if ChoGGi.CheatMenuSettings.NewColonistAge then
     ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)

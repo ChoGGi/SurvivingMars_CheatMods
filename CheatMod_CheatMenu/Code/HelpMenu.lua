@@ -117,7 +117,8 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "[999]Help/About",
   function()
-    CreateRealTimeThread(WaitCustomPopupNotification,
+    CreateRealTimeThread(
+      WaitCustomPopupNotification,
       "Help",
       "Hover mouse over menu item to get description and enabled status" ..
         "\nIf menu item has a '+ num' then that means it'll add to the current amount" ..

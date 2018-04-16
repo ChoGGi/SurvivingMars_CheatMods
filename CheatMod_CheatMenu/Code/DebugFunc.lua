@@ -26,9 +26,7 @@ function ChoGGi.DumpCurrentObj()
     Examine.onclick_handles = {}
     Examine.obj = obj
     local tempTable = Examine:totextex(obj)
-    tempTable = tempTable:gsub("<[/%s%a%d]*>","")
-    --also dump object code
-    tempTable = "\r\n" .. tempTable .. "\r\n" .. ValueToLuaCode(obj) .. "\r\n"
+    tempTable = "\r\n" .. tempTable:gsub("<[/%s%a%d]*>","")
     ChoGGi.Dump(tempTable,"a","DumpedExamine","lua")
   end)
 end

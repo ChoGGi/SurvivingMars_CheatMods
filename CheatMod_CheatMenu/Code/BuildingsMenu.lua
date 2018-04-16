@@ -1,10 +1,10 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
-  "Gameplay/Buildings/Attach Buildings To Nearest Dome",
-  ChoGGi.AttachBuildingsToNearestDome,
+  "Gameplay/Buildings/Attach Buildings To Nearest Working Dome",
+  ChoGGi.AttachBuildingsToNearestWorkingDome,
   nil,
-  "If you placed inside buildings outside and removed the dome they're attached to; use this",
+  "If you placed inside buildings outside and removed the dome they're attached to; use this.",
   "ReportBug.tga"
 )
 ChoGGi.AddAction(

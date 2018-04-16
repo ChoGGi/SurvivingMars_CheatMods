@@ -1,3 +1,19 @@
+--create logo menu items (needs to be loaded at ModsLoaded, so we get logos from other mods)
+function ChoGGi.MiscFunc_ModsLoaded()
+  local templates = DataInstances.MissionLogo
+  for i = 1, #templates do
+    ChoGGi.AddAction(
+      "Gameplay/QoL/[4]Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
+      function()
+        ChoGGi.SetNewLogo(templates[i].name,_InternalTranslate(templates[i].display_name))
+      end,
+      nil,
+      "Change the logo to ".. _InternalTranslate(templates[i].display_name) .. " for anything that uses the logo.",
+      "ViewArea.tga"
+    )
+  end
+end
+
 function ChoGGi.DisableTextureCompression_Toggle()
   ChoGGi.CheatMenuSettings.DisableTextureCompression = not ChoGGi.CheatMenuSettings.DisableTextureCompression
 
@@ -98,21 +114,42 @@ function ChoGGi.BuildDisasterMenu(sList,sType,sName)
 end
 
 function ChoGGi.ShuttleCapacitySet(Bool)
-  for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    if Bool == true then
-      object.max_shared_storage = object.max_shared_storage  + (250 * ChoGGi.Consts.ResourceScale)
-      ChoGGi.CheatMenuSettings.ShuttleStorage = object.max_shared_storage
-    else
-      object.max_speed = object.base_max_shared_storage
+
+  --get saved prod amount
+  local SavedAmount = ChoGGi.CheatMenuSettings.ShuttleStorage
+  --get base amount
+  local DefaultAmount
+  for _,Value in ipairs(CargoShuttle:GetProperties()) do
+    if Value.id == "max_shared_storage" then
+      DefaultAmount = Value.default
     end
   end
 
-  if Bool ~= true then
+  --nothing saved so use defaults
+  if not SavedAmount then
+    SavedAmount = DefaultAmount
+  end
+
+  --get the saved or base amount
+  if Bool == true then
+    SavedAmount = SavedAmount + (250 * ChoGGi.Consts.ResourceScale)
+  else --defaults
+    SavedAmount = DefaultAmount
+  end
+
+  --loop through and set all shuttles
+  for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
+    object.max_shared_storage = SavedAmount
+  end
+
+  if Bool == true then
+    ChoGGi.CheatMenuSettings.ShuttleStorage = SavedAmount
+  else
     ChoGGi.CheatMenuSettings.ShuttleStorage = false
   end
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Storage is now " .. ChoGGi.CheatMenuSettings.ShuttleStorage or "default",
+  ChoGGi.MsgPopup(_InternalTranslate(CargoShuttle.display_name) .. ": Storage is now " .. SavedAmount / ChoGGi.Consts.ResourceScale,
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
 
@@ -123,7 +160,7 @@ function ChoGGi.ShuttleSpeedSet(Bool)
   for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
     if Bool == true then
       object.max_speed = object.max_speed + 5000
-      ChoGGi.CheatMenuSettings.ShuttleSpeed = object.max_shared_storage
+      ChoGGi.CheatMenuSettings.ShuttleSpeed = object.max_speed
     else
       object.max_speed = object.base_max_speed
     end
@@ -206,8 +243,6 @@ function ChoGGi.CameraFollow_Toggle()
       cls() --if it's going to spam the log, might as well clear it
       ToggleConsoleLog()
     end
-    --make sure it's visible
-    engineShowMouseCursor()
     --reset camera zoom settings
     ChoGGi.SetCameraSettings()
     return
@@ -226,8 +261,8 @@ function ChoGGi.CameraFollow_Toggle()
   --save for fovX reset
   ChoGGi.cameraFovX = camera.GetFovX()
   --zoom further out unless it's a colonist
-  if not obj.age then
-    --up the horizontal fov so we're zoomed away from object
+  if not obj.base_death_age then
+    --up the horizontal fov so we're further away from object
     camera.SetFovX(8400)
   end
   --consistent zoom level
@@ -237,20 +272,22 @@ function ChoGGi.CameraFollow_Toggle()
   camera3p.AttachObject(obj)
   camera3p.SetLookAtOffset(point(0,0,-1500))
   camera3p.SetEyeOffset(point(0,0,-1000))
+  --moving mouse moves camera
   camera3p.EnableMouseControl(true)
-  --make sure it's hidden for toggling CursorVisible
+  --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
   engineHideMouseCursor()
 
-  --toggle showing console history as console spams when colonist and looking through glass
+  --toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
   if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
     ToggleConsoleLog()
   end
 
-  --if it's a rover then stops the ctrl control mode from being active (from pressing ctrl-shift-f)
+  --if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
   pcall(function()
     obj:SetControlMode(false)
   end)
 end
+--LogCameraPos(print)
 
 function ChoGGi.CursorVisible_Toggle()
   if IsMouseCursorHidden() then

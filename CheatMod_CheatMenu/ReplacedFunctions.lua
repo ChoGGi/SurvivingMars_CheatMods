@@ -22,11 +22,18 @@ exit = quit
 reboot = restart
 trans = _InternalTranslate
 con = console
-sm = SelectionMouseObj
-st = GetTerrainCursorObjSel
-cur = GetTerrainCursorObjSel
-sp = GetPreciseCursorObj
-sc = GetTerrainCursor
+mh = GetTerrainCursorObjSel
+mc = GetPreciseCursorObj
+m = SelectionMouseObj
+c = GetTerrainCursor
+
+--so we can add hints to info pane cheats
+ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+function InfopanelObj:CreateCheatActions(win)
+  local retvalue = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
+  ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
+  return retvalue
+end
 
 --if building placed outside of dome, attach it to nearest dome
 ChoGGi.OrigFunc.Residence_GameInit = Residence.GameInit
@@ -426,17 +433,27 @@ dumpl(classdefs)
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Next"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+    win:SetHint("Scrolls down")
 
     win = Button:new(self)
     win:SetId("idDump")
     win:SetPos(point(290, 275))
-    win:SetSize(point(53, 26))
-    win:SetText(Untranslated("Dump"))
+    win:SetSize(point(75, 26))
+    win:SetText(Untranslated("Dump Text"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+    win:SetHint("Dumps text to AppData/DumpedExamine.lua")
+
+    win = Button:new(self)
+    win:SetId("idDumpObj")
+    win:SetPos(point(375, 275))
+    win:SetSize(point(75, 26))
+    win:SetText(Untranslated("Dump Obj"))
+    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+    win:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
 --[[
     win = Button:new(self)
     win:SetId("idEdit")
-    win:SetPos(point(350, 275))
+    win:SetPos(point(475, 275))
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Edit"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
@@ -449,9 +466,11 @@ dumpl(classdefs)
       local String = self:totextex(Obj)
       --remove html tags
       String = String:gsub("<[/%s%a%d]*>","")
-      --also dump object code
-      String = "\r\n" .. String .. "\r\n" .. ValueToLuaCode(Obj) .. "\r\n"
-      ChoGGi.Dump(String,nil,"DumpedExamine","lua")
+      ChoGGi.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
+    end
+    self.DumpObj = function(Obj)
+      --dump object code
+      ChoGGi.Dump("\r\n" .. ValueToLuaCode(Obj),nil,"DumpedExamineObject","lua")
     end
     self.onclick_handles = {}
     self.obj = false
@@ -480,6 +499,9 @@ dumpl(classdefs)
     end
     function self.idDump.OnButtonPressed()
       self.Dump(self.obj)
+    end
+    function self.idDumpObj.OnButtonPressed()
+      self.DumpObj(self.obj)
     end
 --[[
     function self.idEdit.OnButtonPressed()

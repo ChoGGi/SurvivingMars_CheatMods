@@ -308,3 +308,8 @@ function ChoGGi.RetTextForDump(Obj,Funcs)
     return tostring(Obj)
   end
 end
+
+--open func in a new thread
+function ChoGGi.NewThread(Func)
+  return coroutine.resume(coroutine.create(Func))
+end

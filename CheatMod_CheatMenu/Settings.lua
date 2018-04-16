@@ -29,29 +29,11 @@ ChoGGi.ConstructionNamesListFix = {
 ChoGGi.ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"}
 ChoGGi.ColonistGenders = {"Other","Android","Clone","Male","Female"}
 
---central place for consts/default values, if updates change them
+--stores defaults and constants
 ChoGGi.Consts = {
-  _VERSION = 0.0,
---sponsor/commander bonuses
-  CommanderInventor = false,
-  CommanderOligarch = false,
-  CommanderHydroEngineer = false,
-  CommanderDoctor = false,
-  CommanderPolitician = false,
-  CommanderAuthor = false,
-  CommanderEcologist = false,
-  CommanderAstrogeologist = false,
-  SponsorNASA = false,
-  SponsorBlueSun = false,
-  SponsorCNSA = false,
-  SponsorISRO = false,
-  SponsorESA = false,
-  SponsorSpaceY = false,
-  SponsorNewArk = false,
-  SponsorRoscosmos = false,
-  SponsorParadox = false,
 
---custom
+  --defaults:
+  _VERSION = 0.0,
   BuildingsCapacity = {},
   BuildingsProduction = {},
   ConsoleDim = true,
@@ -60,7 +42,7 @@ ChoGGi.Consts = {
   InfopanelCheats = true,
   CleanupCheatsInfoPane = true,
   ShowInterfaceInScreenshots = true,
-
+--false
   DisableHints = false,
   BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
@@ -85,7 +67,7 @@ ChoGGi.Consts = {
   HigherRenderDist = false,
   HigherShadowDist = false,
   NewColonistAge = false,
-  NewColonistSex = false,
+  NewColonistGender = false,
   RemoveBuildingLimits = false,
   RemoveMaintenanceBuildUp = false,
   SanatoriumCureAll = false,
@@ -95,18 +77,46 @@ ChoGGi.Consts = {
   ShuttleSpeed = false,
   ShuttleStorage = false,
   WriteLogs = false,
---custom amounts
+--sponsor/commander bonuses
+  CommanderInventor = false,
+  CommanderOligarch = false,
+  CommanderHydroEngineer = false,
+  CommanderDoctor = false,
+  CommanderPolitician = false,
+  CommanderAuthor = false,
+  CommanderEcologist = false,
+  CommanderAstrogeologist = false,
+  SponsorNASA = false,
+  SponsorBlueSun = false,
+  SponsorCNSA = false,
+  SponsorISRO = false,
+  SponsorESA = false,
+  SponsorSpaceY = false,
+  SponsorNewArk = false,
+  SponsorRoscosmos = false,
+  SponsorParadox = false,
+
+--constants:
   ProductionAddAmount = 25000,
   AirWaterBatteryAddAmount = 500000,
   ShuttleAddAmount = 25,
-  --TrainersAddAmount = 16,
   ResidenceAddAmount = 16,
   ResidenceMaxHeight = 256,
   RCTransportStorageCapacity = 30000,
   StorageUniversalDepot = 30000,
   StorageOtherDepot = 180000,
   StorageWasteDepot = 70000,
---Consts (we just need the name, not the value we get the default later on).
+--const. (I don't think these have default values in-game anywhere, so I can't get the defaults)
+  BreakThroughTechsPerGame = 13,
+  ExplorationQueueMaxSize = 10,
+  fastGameSpeed = 5,
+  mediumGameSpeed = 3,
+  MoistureVaporatorPenaltyPercent = 40,
+  MoistureVaporatorRange = 5,
+  ResearchQueueSize = 4,
+  ResourceScale = 1000,
+  ResearchPointsScale = 1000,
+--Consts. (Consts. is a prop object, so we get the default with ReadSettingsInGame).
   AvoidWorkplaceSols = false,
   CargoCapacity = false,
   ColdWaveSanityDamage = false,
@@ -176,16 +186,6 @@ ChoGGi.Consts = {
   TravelTimeEarthMars = false,
   TravelTimeMarsEarth = false,
   VisitFailPenalty = false,
---const. (not sure where default values are stored so init them here)
-  BreakThroughTechsPerGame = 13,
-  ExplorationQueueMaxSize = 10,
-  fastGameSpeed = 5,
-  mediumGameSpeed = 3,
-  MoistureVaporatorPenaltyPercent = 40,
-  MoistureVaporatorRange = 5,
-  ResearchQueueSize = 4,
-  ResourceScale = 1000,
-  ResearchPointsScale = 1000,
 }
 
 --set game values to saved values
@@ -274,7 +274,7 @@ end
 --called everytime we set a setting in menu
 function ChoGGi.WriteSettings()
   AsyncCopyFile(ChoGGi.SettingsFile,ChoGGi.SettingsFile .. ".bak")
-  AsyncStringToFile(ChoGGi.SettingsFile,ValueToLuaCode(ChoGGi.CheatMenuSettings))
+  AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.CheatMenuSettings))
 end
 
 --read saved settings from file
@@ -302,25 +302,24 @@ function ChoGGi.ReadSettings()
 
 end
 
-function ChoGGi.ReadSettingsInGame()
-  --update our list of consts with defaults
-  local tmpc
-  for i = 1, #Consts:GetProperties() do
-    tmpc = Consts:GetProperties()[i]
-    for Key,_ in pairs(ChoGGi.Consts) do
-      if Key == tmpc.id then
-        ChoGGi.Consts[Key] = tmpc.default
+--OptionsApply is the earliest we can call Consts:GetProperties()
+function ChoGGi.Settings_OptionsApply()
+
+  --get the default values for our Consts
+  for _,DefaultValue in ipairs(Consts:GetProperties()) do
+    for SettingName,_ in pairs(ChoGGi.Consts) do
+      if SettingName == DefaultValue.id then
+        ChoGGi.Consts[SettingName] = DefaultValue.default
       end
     end
   end
 
-  --if we have new settings not yet in SettingsFile, check for nil
+  --nil means we need to give it the default value (or errors eventuate)
   for Key,Value in pairs(ChoGGi.Consts) do
     if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
       ChoGGi.CheatMenuSettings[Key] = Value
     end
   end
 
-  --set consts to saved ones
   ChoGGi.SetConstsToSaved()
 end

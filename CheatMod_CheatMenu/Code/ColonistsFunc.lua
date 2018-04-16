@@ -1,3 +1,11 @@
+function ChoGGi.FillAllStatsOfAllColonists()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    colonist.stat_morale = 100 * ChoGGi.Consts.ResourceScale
+    colonist.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
+    colonist.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
+    colonist.stat_health = 100 * ChoGGi.Consts.ResourceScale
+  end
+end
 
 function ChoGGi.AddApplicants()
   local number = 250
@@ -245,21 +253,48 @@ function ChoGGi.OutsideWorkplaceRadius(Bool)
 end
 
 function ChoGGi.SetDeathAge()
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     colonist.death_age = 250
   end
 end
 
+function ChoGGi.ColonistsRandomRaceAll()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    colonist.race = UICity:Random(1,5)
+    colonist:ChooseEntity()
+  end
+end
+
+function ChoGGi.SetColonistsRace(Race,Msg)
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    colonist.race = Race
+    colonist:ChooseEntity()
+  end
+  ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
+end
+
+function ChoGGi.ColonistsRandomAgeAll()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    ChoGGi.ColonistUpdateAge(colonist,ChoGGi.ColonistAges[UICity:Random(1,6)])
+  end
+end
+
 function ChoGGi.SetColonistsAge(Age,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     ChoGGi.ColonistUpdateAge(colonist,Age)
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
-function ChoGGi.SetColonistsSex(Sex,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
-    ChoGGi.ColonistUpdateSex(colonist,Sex)
+function ChoGGi.ColonistsRandomGenderAll()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    ChoGGi.ColonistUpdateGender(colonist,ChoGGi.ColonistGenders[UICity:Random(1,5)])
+  end
+end
+
+function ChoGGi.SetColonistsGender(Gender,Msg)
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    ChoGGi.ColonistUpdateGender(colonist,Gender)
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
@@ -270,42 +305,50 @@ function ChoGGi.NewColonistAge(Type,Msg)
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
-function ChoGGi.NewColonistSex(Type,Msg)
-  ChoGGi.CheatMenuSettings.NewColonistSex = Type
+function ChoGGi.NewColonistGender(Type,Msg)
+  ChoGGi.CheatMenuSettings.NewColonistGender = Type
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
 function ChoGGi.SetColonistsMorale(Number,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     colonist.stat_morale = Number
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
 function ChoGGi.SetColonistsSanity(Number,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     colonist.stat_sanity = Number
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
 function ChoGGi.SetColonistsComfort(Number,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     colonist.stat_comfort = Number
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Upgrades/home_collective_04.tga")
 end
 
 function ChoGGi.SetColonistsHealth(Number,Msg)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     colonist.stat_health = Number
   end
   ChoGGi.MsgPopup(Msg,"Colonists","UI/Icons/Notifications/colonist.tga")
 end
 
+function ChoGGi.ColonistsRandomSpecializationAll()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    if not colonist.entity:find("Child",1,true) then
+      colonist:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init")
+    end
+  end
+end
+
 function ChoGGi.ColonistsAddSpecializationToAll()
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     --skip children, or they'll be a black cube
     if colonist.specialist == "none" and not colonist.entity:find("Child",1,true) then
       colonist:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init") --1-6 = num of specializations
@@ -317,7 +360,7 @@ function ChoGGi.ColonistsAddSpecializationToAll()
 end
 
 function ChoGGi.ColonistsFixBlackCube()
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     if colonist.entity:find("Child",1,true) then
       colonist.specialist = "none"
 
@@ -341,7 +384,7 @@ function ChoGGi.ColonistsFixBlackCube()
 end
 
 function ChoGGi.AllPositiveTraits_Toggle(Bool)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     for i = 1, #ChoGGi.PositiveTraits do
       if Bool == true then
         colonist:AddTrait(ChoGGi.PositiveTraits[i])
@@ -357,7 +400,7 @@ function ChoGGi.AllPositiveTraits_Toggle(Bool)
 end
 
 function ChoGGi.AllNegativeTraits_Toggle(Bool)
-  for _,colonist in ipairs((UICity.labels).Colonist or empty_table) do
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
     for i = 1, #ChoGGi.NegativeTraits do
       if Bool == true then
         colonist:AddTrait(ChoGGi.NegativeTraits[i])

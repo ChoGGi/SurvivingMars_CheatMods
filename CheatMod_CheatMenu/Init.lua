@@ -2,10 +2,6 @@
 GlobalVar("s", false)
 --stops log errors in editor mode
 GlobalVar("g_revision_map", false)
---fucking pre-orders
-if not g_TrailblazerSkins then
-  g_TrailblazerSkins = {}
-end
 
 -- This must return true for most cheats to function (built-in ones)
 function CheatsEnabled()
@@ -96,10 +92,10 @@ dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.designer.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.lua")
 
---causes some labels to say stripped/shortcut keys are different
+--causes some labels to say stripped/keys are different
 Platform.developer = false
 
---used to let me know if we're on my computer for extra StartupMsgs
+--used to let me know if we're on my computer for extra msgs
 local file_error, code = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
   ChoGGi.Testing = true
@@ -107,8 +103,15 @@ end
 
 --get saved settings for this mod
 dofile(ChoGGi.ModPath .. "Settings.lua")
---reading settings from AppData/CheatMenuModSettings.lua
+--read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.ReadSettings()
+
+--TEMP REMOVE ME AFTER NEXT UPDATE (or two)
+if ChoGGi.CheatMenuSettings.NewColonistSex then
+  ChoGGi.CheatMenuSettings.NewColonistGender = ChoGGi.CheatMenuSettings.NewColonistSex
+  ChoGGi.CheatMenuSettings.NewColonistSex = nil
+  ChoGGi.Init_WriteSettings = 1
+end
 
 --if you want it...
 if ChoGGi.CheatMenuSettings.developer then
@@ -117,7 +120,7 @@ end
 
 --functions needed for before Code/ is loaded
 dofile(ChoGGi.ModPath .. "Functions.lua")
---load up function overrides
+--function overrides / shortened func names
 dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
 --load all my other files
 dofolder_files(ChoGGi.ModPath .. "Code")

@@ -226,7 +226,7 @@ ChoGGi.AddAction(
   function()
     ChoGGi.SetFunds(1000,"1,000 M Added")
   end,
-  nil,
+  "Ctrl-Shift-0",
   "Adds amount to current funding.",
   "pirate.tga"
 )

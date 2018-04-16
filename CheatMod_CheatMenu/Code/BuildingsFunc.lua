@@ -1,4 +1,4 @@
-function ChoGGi.AttachBuildingsToNearestDome()
+function ChoGGi.AttachBuildingsToNearestWorkingDome()
   for _,building in ipairs(UICity.labels.Residence or empty_table) do
     ChoGGi.AttachToNearestDome(building)
   end
@@ -17,7 +17,7 @@ function ChoGGi.SetStorageDepotSize(Bool,Type)
     ChoGGi.CheatMenuSettings[Type] = ChoGGi.Consts[Type]
   end
 
-  --limit amounts so saving doesn't delete your game
+  --limit amounts so saving with a full load doesn't delete your game
   if Type == "StorageWasteDepot" and ChoGGi.CheatMenuSettings[Type] > 100000000 then
     ChoGGi.CheatMenuSettings[Type] = 100000000 --it's actually fine with a million, but I figured I'd stop somewhere
   elseif Type == "StorageOtherDepot" and ChoGGi.CheatMenuSettings[Type] > 20000000 then

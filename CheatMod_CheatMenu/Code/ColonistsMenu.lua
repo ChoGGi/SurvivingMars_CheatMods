@@ -68,6 +68,14 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
+  "Gameplay/Colonists/[1]Stats/Fill All Stats Of All Colonists",
+  ChoGGi.FillAllStatsOfAllColonists,
+  nil,
+  "Fill bars of all stats of all colonists (Health,Sanity,Comfort,Morale)",
+  "AlignSel.tga"
+)
+
+ChoGGi.AddAction(
   "Gameplay/Colonists/[1]Stats/Visit Fail Penalty",
   ChoGGi.VisitFailPenalty_Toggle,
   nil,
@@ -267,7 +275,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Children",
+  "Gameplay/Colonists/[7]New/Age: Children",
   function()
     ChoGGi.NewColonistAge("Child","When you're youngest at heart")
   end,
@@ -277,7 +285,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Youth",
+  "Gameplay/Colonists/[7]New/Age: Youth",
   function()
     ChoGGi.NewColonistAge("Youth","When you're young at heart")
   end,
@@ -287,7 +295,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Adult",
+  "Gameplay/Colonists/[7]New/Age: Adult",
   function()
     ChoGGi.NewColonistAge("Adult","Time for the rat race")
   end,
@@ -297,7 +305,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Middle Aged",
+  "Gameplay/Colonists/[7]New/Age: Middle Aged",
   function()
     ChoGGi.NewColonistAge("Middle Aged","Still time for the rat race")
   end,
@@ -307,7 +315,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Senior",
+  "Gameplay/Colonists/[7]New/Age: Senior",
   function()
     ChoGGi.NewColonistAge("Senior","When you're (very much) young at heart")
   end,
@@ -317,7 +325,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: Retiree",
+  "Gameplay/Colonists/[7]New/Age: Retiree",
   function()
     ChoGGi.NewColonistAge("Retiree","Time for some long pig")
   end,
@@ -327,7 +335,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Age: (Default)",
+  "Gameplay/Colonists/[7]New/Age: (Default)",
   function()
     ChoGGi.NewColonistAge(false,"The miracle of childbirth")
   end,
@@ -337,9 +345,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: Other",
+  "Gameplay/Colonists/[7]New/Gender: Other",
   function()
-    ChoGGi.NewColonistSex("Other","Whole lotta nothing going on")
+    ChoGGi.NewColonistGender("Other","Whole lotta nothing going on")
   end,
   nil,
   "Make all newly arrived and born colonists Other.",
@@ -347,9 +355,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: Android",
+  "Gameplay/Colonists/[7]New/Gender: Android",
   function()
-    ChoGGi.NewColonistSex("Android","Ever kissed a cyborg? No.\nYou will.")
+    ChoGGi.NewColonistGender("Android","Ever kissed a cyborg? No.\nYou will.")
   end,
   nil,
   "Make all newly arrived and born colonists Android.",
@@ -357,9 +365,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: Clone",
+  "Gameplay/Colonists/[7]New/Gender: Clone",
   function()
-    ChoGGi.NewColonistSex("Clone","Nasty Star Wars funk in the pants.")
+    ChoGGi.NewColonistGender("Clone","Nasty Star Wars funk in the pants.")
   end,
   nil,
   "Make all newly arrived and born colonists Clone.",
@@ -367,9 +375,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: Male",
+  "Gameplay/Colonists/[7]New/Gender: Male",
   function()
-    ChoGGi.NewColonistSex("Male","Sausage Fest")
+    ChoGGi.NewColonistGender("Male","Sausage Fest")
   end,
   nil,
   "Make all newly arrived and born colonists Male.",
@@ -377,9 +385,9 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: Female",
+  "Gameplay/Colonists/[7]New/Gender: Female",
   function()
-    ChoGGi.NewColonistSex("Female","Fish Market")
+    ChoGGi.NewColonistGender("Female","Fish Market")
   end,
   nil,
   "Make all newly arrived and born colonists Female.",
@@ -387,17 +395,69 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Colonists/[6]New/Gender: (Default)",
+  "Gameplay/Colonists/[7]New/Gender: (Default)",
   function()
-    ChoGGi.NewColonistSex(false,"The miracle of childbirth")
+    ChoGGi.NewColonistGender(false,"The miracle of childbirth")
   end,
   nil,
-  "Back to random Sex.",
+  "Back to random Gender.",
   "AlignSel.tga"
 )
 
 --modify colonists directly
-
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/(Random)",
+  ChoGGi.ColonistsRandomRaceAll,
+  nil,
+  "Make all Colonists random races.",
+  "AlignSel.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/Make All Colonists White",
+  function()
+    ChoGGi.SetColonistsRace(1,"Nationalsozialistische Rassenhygiene: Herrenvolk")
+  end,
+  nil,
+  "Make all Colonists White.",
+  "AlignSel.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/Make All Colonists Black",
+  function()
+    ChoGGi.SetColonistsRace(2,"Nationalsozialistische Rassenhygiene: Schwarzvolk")
+  end,
+  nil,
+  "Make all Colonists Black.",
+  "AlignSel.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/Make All Colonists Asian",
+  function()
+    ChoGGi.SetColonistsRace(3,"Nationalsozialistische Rassenhygiene: Asiatischvolk")
+  end,
+  nil,
+  "Make all Colonists Asian.",
+  "AlignSel.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/Make All Colonists Indian",
+  function()
+    ChoGGi.SetColonistsRace(4,"Nationalsozialistische Rassenhygiene: Indischvolk")
+  end,
+  nil,
+  "Make all Colonists Indian.",
+  "AlignSel.tga"
+)
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[6]Race/Make All Colonists Southeast Asian",
+  function()
+    ChoGGi.SetColonistsRace(5,"Nationalsozialistische Rassenhygiene: Südost Asiatischvolk")
+  end,
+  nil,
+  "Make all Colonists Southeast Asian.",
+  "AlignSel.tga"
+)
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Colonists/[1]Stats/Set Morale 100",
   function()
@@ -465,6 +525,14 @@ ChoGGi.AddAction(
   end,
   nil,
   "Set all Colonists Health to 100.",
+  "AlignSel.tga"
+)
+--------------------
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[5]Age/(Random)",
+  ChoGGi.ColonistsRandomAgeAll,
+  nil,
+  "Make all Colonists random ages.",
   "AlignSel.tga"
 )
 
@@ -535,11 +603,19 @@ ChoGGi.AddAction(
   "No one dies till they're 250",
   "AlignSel.tga"
 )
+--------------------
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[4]Gender/(Random)",
+  ChoGGi.ColonistsRandomGenderAll,
+  nil,
+  "Make all Colonist's sex random",
+  "AlignSel.tga"
+)
 
 ChoGGi.AddAction(
   "Gameplay/Colonists/[4]Gender/Make all Colonists Others",
   function()
-    ChoGGi.SetColonistsSex("Other","Whole lotta nothing going on")
+    ChoGGi.SetColonistsGender("Other","Whole lotta nothing going on")
   end,
   nil,
   "Make all Colonist's sex Other",
@@ -549,7 +625,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Colonists/[4]Gender/Make all Colonists Androids",
   function()
-    ChoGGi.SetColonistsSex("Android","Ever kissed a cyborg? No.\nYou will.")
+    ChoGGi.SetColonistsGender("Android","Ever kissed a cyborg? No.\nYou will.")
   end,
   nil,
   "Make all Colonist's sex Android",
@@ -559,7 +635,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Colonists/[4]Gender/Make all Colonists Clones",
   function()
-    ChoGGi.SetColonistsSex("Clone","Nasty Star Wars funk in the pants.")
+    ChoGGi.SetColonistsGender("Clone","Nasty Star Wars funk in the pants.")
   end,
   nil,
   "Make all Colonist's sex Clone",
@@ -569,7 +645,7 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Colonists/[4]Gender/Make all Colonists Male",
   function()
-    ChoGGi.SetColonistsSex("Male","Sausage Fest")
+    ChoGGi.SetColonistsGender("Male","Sausage Fest")
   end,
   nil,
   "Make all Colonist's sex Male",
@@ -579,13 +655,13 @@ ChoGGi.AddAction(
 ChoGGi.AddAction(
   "Gameplay/Colonists/[4]Gender/Make all Colonists Female",
   function()
-    ChoGGi.SetColonistsSex("Female","Fish Market")
+    ChoGGi.SetColonistsGender("Female","Fish Market")
   end,
   nil,
   "Make all Colonist's sex Female",
   "AlignSel.tga"
 )
-
+--------------------
 ChoGGi.AddAction(
   "Gameplay/Colonists/[2]Traits/Positive Traits Add All",
   function()
@@ -621,7 +697,14 @@ ChoGGi.AddAction(
   "Add all negative traits to colonists",
   "AlignSel.tga"
 )
-
+--------------------
+ChoGGi.AddAction(
+  "Gameplay/Colonists/[3]Work/Random Specialization To All",
+  ChoGGi.ColonistsRandomSpecializationAll,
+  nil,
+  "Randomly changes all colonist's specialization.",
+  "AlignSel.tga"
+)
 ChoGGi.AddAction(
   "Gameplay/Colonists/[3]Work/Add Specialization To All",
   ChoGGi.ColonistsAddSpecializationToAll,

@@ -2,11 +2,12 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
-Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, useful shortcuts, etc... Requests are welcome.
+Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, start mysteries, useful shortcuts, etc... Requests are welcome.
 
 ##### Install help
 ```
-Place CheatMod_CheatMenu folder in %AppData%\Surviving Mars\Mods (Create Mods folder if it doesn't exist)
+Place CheatMod_CheatMenu folder in %AppData%\Surviving Mars\Mods
+(create Mods folder if it doesn't exist)
 Other OS locations: https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_location
 Enable with in-game mod manager
 ```
@@ -25,6 +26,7 @@ Ctrl-Shift-F: Follow Camera (follow an object around)
 Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)
 Ctrl-Shift-E: Toggle editor mode
 Ctrl-Alt-Shift-D: Delete object
+Ctrl-Shift-C: Clone selected object to mouse position
 
 When I say object that means either the selected object or the object under the mouse cursor
 
@@ -46,10 +48,10 @@ Allow Dome Required Buildings
 Allow Tall Buildings Under Pipes
 Amount of BreakThrough Techs Per Game
 Asteroids (single,multi,storm)
-Avoid Workplace Toggle
-Border Scrolling Toggle
+Avoid Workplace
+Border Scrolling
 Build Spires Outside of Spire Point
-Building Damage Crime Toggle
+Building Damage Crime
 Cables & Pipes: Instant Build
 Cables & Pipes: Instant Repair
 Cables & Pipes: No Chance of Break
@@ -62,21 +64,21 @@ Change Sponsor/Commander
 Colonist Residence Capacity
 Colonists Add Specialization To All
 Colonists Chance of Suicide
-Colonists Morale Max Toggle
+Colonists Morale Max
 Colonists Per Rocket
-Colonists Starve Toggle
-Colonists Suffocate Toggle
+Colonists Starve
+Colonists Suffocate
 Construction For Cheap
-Crop Fail Threshold Toggle (lower the threshold to 0)
-Deep Scan Toggle
+Crop Fail Threshold (lower the threshold to 0)
+Deep Scan
 Deeper Scan Enable
 Disable Texture Compression
 Drone Battery Infinite
 Drone Build Speed
 Drone Carry Amount Increase
 Drone Meteor Malfunction
-Drone Recharge Time Toggle
-Drone Repair Supply Leak Toggle
+Drone Recharge Time
+Drone Repair Supply Leak
 Drones Per DroneHub Increase
 Drones Per RC Rover Increase
 Fill Resource Selected
@@ -86,31 +88,31 @@ Game Speed Default,Double,Triple,Quad,Octuple,Sexdecuple,Duotriguple,Quattuorsex
 Increasable Capacity Colonist/Visitor/Battery/Air/Water
 Instant Build (most items)
 Maintenance Free Buildings
-Meteor Health Damage Toggle
-Moisture Vaporator Penalty Toggle
-No Home Comfort Damage Toggle
+Meteor Health Damage
+Moisture Vaporator Penalty
+No Home Comfort Damage
 Open In Ged Editor (lets you open some objects in the ged editor)
 Outside Workplace Radius Increase
 Outsource Points 1000000
-Outsourcing Free Toggle
-Performance Penalty Non-Specialist Toggle
-Positive Playground Toggle
-Project Morpheus Positive Trait Toggle
-RC Rover Drone Recharge Free Toggle
+Outsourcing Free
+Performance Penalty Non-Specialist
+Positive Playground
+Project Morpheus Positive Trait
+RC Rover Drone Recharge Free
 RC Transport Storage Increase
 RC Transport Transfer Speed
 Remove Building Limits (they can be placed almost anywhere: no uneven terrain, it messes the buildings up)
-Renegade Creation Toggle
+Renegade Creation
 Research Every Breakthrough
 Research Every Mystery
-Research Queue Larger Toggle
-Rocket Cargo Capacity Toggle
-Rocket Travel Instant Toggle
+Research Queue Larger
+Rocket Cargo Capacity
+Rocket Travel Instant
 Sanatorium Cure All Traits
 Sanatorium/School Show All Traits
-Scanner Queue Larger Toggle
+Scanner Queue Larger
 School Train All Traits
-See Dead Sanity Damage Toggle
+See Dead Sanity Damage
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Set Death Age to 250
 Set New Colonists Age,Sex
@@ -119,14 +121,14 @@ Show All Traits in Sanatorium/School
 Show Hidden Buildings
 ShuttleHub Shuttles Increase
 Spacing between Pipe Pillars
-Start Mysteries (mysteries don't start till after you have 100 colonists, and an amount of time has passed)
+Start Mysteries (mysteries don't start till after you have 100 colonists, and an amount of time has passed. they stack up, so I wouldn't start too many)
 Storage Depot / Waste Dump increase
 Toggle Editor (you can move stuff around: if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Toggle Infopanel Cheats
 Traits: Add/Remove All Negative or Positive
 Unlimited Wonders
 Unlock Every Breakthrough
-Visit Fail Penalty Toggle
+Visit Fail Penalty
 Write Logs
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
@@ -145,10 +147,10 @@ dumplua(dlgConsole) (dump using ValueToLuaCode())
 dumpobject(SelectedObj) (or dumpo)
 dumptable(Consts) (or dumpt)
 SelectedObj (or s)
-SelectionMouseObj() (or sm)
-GetTerrainCursorObjSel() (or st or cur)
-GetPreciseCursorObj() (or sp)
-GetTerrainCursor() (or sc)
+SelectionMouseObj() (or m) (object under mouse cursor)
+GetPreciseCursorObj() (or mc) (like SelectionMouseObj but compact)
+GetTerrainCursor() (or c) (position of cursor: use with s:SetPos(c()), or c():x(), c():y(), c():z() )
+GetTerrainCursorObjSel() (or mh) (just the handle)
 
 If you want to overwrite instead of append text: dumpobject(TechTree,"w")
 If you want to dump functions as well: dumptable(TechTree,nil,true)
