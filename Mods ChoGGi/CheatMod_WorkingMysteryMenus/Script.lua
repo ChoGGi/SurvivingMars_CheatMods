@@ -125,8 +125,6 @@ ChoGGiX.MysteryDifficulty = {
 function OnMsg.ClassesBuilt()
 
   --build "Cheats/Start Mystery" menu
-  --MysteryBase = { AIUprisingMystery, BlackCubeMystery, DiggersMystery, DreamMystery, MarsgateMystery, MirrorSphereMystery, TheMarsBug, UnitedEarthMystery, WorldWar3 }
-  --type(g_Classes.DreamMystery.scenario_name)
   ClassDescendantsList("MysteryBase", function(class)
     ChoGGiX.AddAction(
       "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGiX.MysteryDifficulty[class]})) or "Missing Name",
@@ -136,6 +134,19 @@ function OnMsg.ClassesBuilt()
       nil,
       _InternalTranslate(T({ChoGGiX.MysteryDescription[class]})) or "Missing Description",
       "DarkSideOfTheMoon.tga"
+    )
+  end)
+
+  --instant start
+  ClassDescendantsList("MysteryBase", function(class)
+    ChoGGiX.AddAction(
+      "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGiX.MysteryDifficulty[class]})) .. ": Instant" or "Missing Name: Instant",
+      function()
+        return ChoGGiX.StartMystery(class,true)
+      end,
+      nil,
+      _InternalTranslate(T({ChoGGiX.MysteryDescription[class]})) .. "\n\nStarts mystery instantly (may take up to 1 sol)." or "Missing Description: Starts mystery instantly (may take up to 1 sol).",
+      "SelectionToTemplates.tga"
     )
   end)
 
