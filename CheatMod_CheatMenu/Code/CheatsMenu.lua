@@ -1,13 +1,27 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
---"Cheats/Start Mystery" menu items are built in OnMsgs.lua>ClassesBuilt()
+ChoGGi.AddAction(
+  "Cheats/[05]Trigger Disasters",
+  ChoGGi.DisastersTrigger,
+  nil,
+  "Trigger a disaster.",
+  "ApplyWaterMarkers.tga"
+)
+
+ChoGGi.AddAction(
+  "Cheats/[05]Spawn Colonists",
+  ChoGGi.SpawnColonists,
+  nil,
+  "Spawn certain amount of colonists.",
+  "UncollectObjects.tga"
+)
 
 ChoGGi.AddAction(
   "Cheats/[10]Unlock all buildings",
   ChoGGi.UnlockAllBuildings,
   nil,
   "Unlock all buildings for construction.",
-  nil
+  "TerrainConfigEditor.tga"
 )
 
 ChoGGi.AddAction(

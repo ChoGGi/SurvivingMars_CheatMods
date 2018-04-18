@@ -1,3 +1,18 @@
+--no sense in building the list more then once?
+local ObjectSpawner_ListDisplay = {}
+function ChoGGi.ObjectSpawner()
+  if #ObjectSpawner_ListDisplay == 0 then
+    for Key,_ in pairs(g_Classes) do
+      table.insert(ObjectSpawner_ListDisplay,Key)
+    end
+    table.sort(ObjectSpawner_ListDisplay)
+  end
+  local TempFunc = function(choice)
+    PlaceObj(ObjectSpawner_ListDisplay[choice],{"Pos",GetTerrainCursor()})
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ObjectSpawner_ListDisplay,"Object Spawner",1)
+end
+
 function ChoGGi.WriteLogs_Toggle()
   ChoGGi.CheatMenuSettings.WriteLogs = not ChoGGi.CheatMenuSettings.WriteLogs
   if ChoGGi.CheatMenuSettings.WriteLogs then
@@ -107,16 +122,18 @@ end
 function ChoGGi.DeleteObject()
   local obj = SelectedObj or SelectionMouseObj()
 
-  --deleting domes can freeze game.
+  --deleting domes will freeze game.
   if IsKindOf(obj,"Dome") then
     return
   end
+  --try nicely first
   pcall(function()
     obj.can_demolish = true
     obj.indestructible = false
     DestroyBuildingImmediate(obj)
     obj:Destroy()
   end)
+  --fuck it, I asked nicely
   obj:delete()
 
   --clean up

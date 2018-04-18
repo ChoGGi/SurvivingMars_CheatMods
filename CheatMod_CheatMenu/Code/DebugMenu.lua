@@ -1,6 +1,14 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "[102]Debug/Object Spawner",
+  ChoGGi.ObjectSpawner,
+  "Ctrl-Shift-S",
+  "Shows list of objects, and spawns at mouse cursor",
+  "add_water.tga"
+)
+
+ChoGGi.AddAction(
   "[102]Debug/[09]Toggle Hex Build Grid Visibility",
   ChoGGi.debug_build_grid,
   "Ctrl-F3",

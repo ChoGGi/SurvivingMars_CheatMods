@@ -5,12 +5,14 @@ function ChoGGi.AttachToNearestDome(building)
   if (building.parent_dome and not building.parent_dome.air) or not building.parent_dome then
     --find the nearest working dome
     local dome = FindNearestObject(UICity.labels.Domes_Working,building)
-    building.parent_dome = dome
-    --which type is it (check for getlabels or some such)
-    if building.base_max_workers then
-      table.insert(dome.labels.Workplace,building)
-    else
-      table.insert(dome.labels.Residence,building)
+    if dome then
+      building.parent_dome = dome
+      --which type is it (check for getlabels or some such)
+      if building.base_max_workers then
+        table.insert(dome.labels.Workplace,building)
+      else
+        table.insert(dome.labels.Residence,building)
+      end
     end
   end
 end
@@ -124,58 +126,6 @@ function ChoGGi.RemoveOldFiles()
   AsyncFileDelete(ChoGGi.ModPath .. "libs")
 end
 
-function ChoGGi.SetGravity(Bool,Who)
-  local NewGravity
-  if Who == 1 then --drones
-    for _,object in ipairs(UICity.labels.Drone or empty_table) do
-      if Bool == true then
-        NewGravity = object:GetGravity() + 1000
-        object:SetGravity(NewGravity)
-        ChoGGi.CheatMenuSettings.GravityDrone = NewGravity
-      else
-        object:SetGravity(0)
-      end
-    end
-    if Bool ~= true then
-      ChoGGi.CheatMenuSettings.GravityDrone = false
-    end
-
-  elseif Who == 2 then --rc
-    for _,object in ipairs(UICity.labels.Rover or empty_table) do
-      if Bool == true then
-        NewGravity = object:GetGravity() + 5000
-        object:SetGravity(NewGravity)
-        ChoGGi.CheatMenuSettings.GravityRC = NewGravity
-      else
-        object:SetGravity(0)
-      end
-    end
-    if Bool ~= true then
-      ChoGGi.CheatMenuSettings.GravityRC = false
-    end
-
-  elseif Who == 3 then --colonists
-    for _,object in ipairs(UICity.labels.Colonist or empty_table) do
-      if Bool == true then
-        NewGravity = object:GetGravity() + 250
-        object:SetGravity(NewGravity)
-        ChoGGi.CheatMenuSettings.GravityColonist = NewGravity
-      else
-        object:SetGravity(0)
-      end
-    end
-    if Bool ~= true then
-      ChoGGi.CheatMenuSettings.GravityColonist = false
-    end
-
-  end
-  ChoGGi.WriteSettings()
-
-  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Gravity is increased " .. Bool or "default",
-   "Drones","UI/Icons/IPButtons/drone.tga"
-  )
-end
-
 function ChoGGi.ShowBuildMenu(iWhich)
   local dlg = GetXDialog("XBuildMenu")
 
@@ -194,15 +144,18 @@ function ChoGGi.ShowBuildMenu(iWhich)
 end
 
 function ChoGGi.ColonistUpdateAge(colonist,Age)
+  if Age == "Random" then
+    Age = ChoGGi.ColonistAges[UICity:Random(1,6)]
+  end
   --remove all age traits
-  colonist.traits.Child = nil
-  colonist.traits.Youth = nil
-  colonist.traits.Adult = nil
-  colonist.traits["Middle Aged"] = nil
-  colonist.traits.Senior = nil
-  colonist.traits.Retiree = nil
+  colonist:RemoveTrait("Child")
+  colonist:RemoveTrait("Youth")
+  colonist:RemoveTrait("Adult")
+  colonist:RemoveTrait("Middle Aged")
+  colonist:RemoveTrait("Senior")
+  colonist:RemoveTrait("Retiree")
   --add new age trait
-  colonist.traits[Age] = true
+  colonist:AddTrait(Age)
 
   --needed for comparison
   local OrigAge = colonist.age_trait
@@ -230,18 +183,25 @@ function ChoGGi.ColonistUpdateAge(colonist,Age)
   --now we can set the new entity
   colonist:ChooseEntity()
   --and (hopefully) prod them into finding a new residence
+  colonist:UpdateWorkplace()
   colonist:UpdateResidence()
+  colonist:TryToEmigrate()
 end
 
 function ChoGGi.ColonistUpdateGender(colonist,Gender,Cloned)
+  if Gender == "Random" then
+    Gender = ChoGGi.ColonistGenders[UICity:Random(1,5)]
+  elseif Gender == "MaleOrFemale" then
+    Gender = ChoGGi.ColonistGenders[UICity:Random(4,5)]
+  end
   --remove all gender traits
-  colonist.traits.Other = nil
-  colonist.traits.Android = nil
-  colonist.traits.Clone = nil
-  colonist.traits.Male = nil
-  colonist.traits.Female = nil
+  colonist:RemoveTrait("OtherGender")
+  colonist:RemoveTrait("Android")
+  colonist:RemoveTrait("Clone")
+  colonist:RemoveTrait("Male")
+  colonist:RemoveTrait("Female")
   --add new gender trait
-  colonist.traits[Gender] = true
+  colonist:AddTrait(Gender)
   --needed for updating entity
   colonist.gender = Gender
   --set entity gender
@@ -259,6 +219,44 @@ function ChoGGi.ColonistUpdateGender(colonist,Gender,Cloned)
     end
   end
   --now we can set the new entity
+  colonist:ChooseEntity()
+end
+
+function ChoGGi.ColonistUpdateSpecialization(colonist,Spec)
+  if not colonist.entity:find("Child",1,true) then
+    if Spec == "Random" then
+      Spec = ChoGGi.ColonistSpecializations[UICity:Random(1,6)]
+    end
+    colonist:SetSpecialization(Spec,"init")
+    colonist:ChooseEntity()
+    colonist:UpdateWorkplace()
+    colonist:TryToEmigrate()
+  end
+end
+
+function ChoGGi.ColonistUpdateSingleTrait(colonist,Bool,Trait)
+  if Bool == true then
+    colonist:AddTrait(Trait,true)
+  else
+    colonist:RemoveTrait(Trait)
+  end
+end
+
+function ChoGGi.ColonistUpdateTraits(colonist,Bool,Type)
+  for i = 1, #ChoGGi[Type] do
+    if Bool == true then
+      colonist:AddTrait(ChoGGi[Type][i],true)
+    else
+      colonist:RemoveTrait(ChoGGi[Type][i])
+    end
+  end
+end
+
+function ChoGGi.ColonistUpdateRace(colonist,Race)
+  if Race == "Random" then
+    Race = UICity:Random(1,5)
+  end
+  colonist.race = Race
   colonist:ChooseEntity()
 end
 
@@ -350,7 +348,7 @@ function ChoGGi.GetMaxColonistsPerRocket()
     PerRocket = PerRocket + a
   end
   if UICity and UICity:IsTechDiscovered("CryoSleep") then
-    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket").a
     PerRocket = PerRocket + a
   end
   return PerRocket
@@ -678,4 +676,68 @@ function ChoGGi.SetSponsorBonuses(sType)
     sponsor.applicants_per_breakthrough = ChoGGi.CompareAmounts(sponsor.applicants_per_breakthrough,DataInstances.MissionSponsor.paradox.applicants_per_breakthrough)
     sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,DataInstances.MissionSponsor.paradox.anomaly_bonus_breakthrough)
   end
+end
+
+--called from below
+ChoGGi.WaitListChoice_OpenedHintDlg = nil
+function ChoGGi.WaitListChoice(Items,Caption,DefaultSelection,Hints,HintWin,CurPos)
+  local dlg = OpenDialog("ListChoiceDialog", nil, terminal.desktop, _InternalTranslate(Caption))
+  dlg.idCaption:SetText(Caption)
+  dlg.idList:SetContent(Items)
+  dlg.idList:SetScrollAutohide(true)
+  if CurPos == false then
+    --dlg:SetPos(point(25,125))
+    dlg:SetPos(point(650,150))
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+
+  --[[get hints working per list item
+  for _,Object in ipairs(dlg.idList.item_windows or empty_table) do
+    Object:SetHint("XXXXXX")
+  end
+  --]]
+
+  if HintWin then
+    ChoGGi.WaitListChoice_OpenedHintDlg = 1
+    OpenExamine(Hints)
+    --dlg.idList:SetHint("See other dialog for more information.")
+  elseif Hints then
+    dlg.idList:SetHint(Hints)
+  end
+  dlg.idList:SetFocus()
+  if DefaultSelection then
+    dlg.idList:SetSelection(DefaultSelection, true)
+  else
+    dlg.idList:SetSelection(1, true)
+  end
+  local idx = dlg:Wait()
+  return idx
+end
+
+function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,DefaultSelection,Hint,HintWin,CurPos)
+  if not Func or #Items == 0 then
+    return
+  end
+  DefaultSelection = DefaultSelection or 1
+
+  local ItemList = {}
+  for i = 1, #Items do
+    table.insert(ItemList,{text = Items[i]})
+  end
+
+  CreateRealTimeThread(function()
+    local option = ChoGGi.WaitListChoice(ItemList,Caption,DefaultSelection,Hint,HintWin,CurPos)
+
+    if HintWin and ChoGGi.WaitListChoice_OpenedHintDlg then
+      --close hints dlg
+      ChoGGi.WaitListChoice_OpenedHintDlg:Close()
+      ChoGGi.WaitListChoice_OpenedHintDlg = nil
+    end
+
+    if option ~= "idCancel" then
+      Func(option)
+    end
+  end)
+
 end

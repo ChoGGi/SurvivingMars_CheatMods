@@ -1,12 +1,6 @@
 --add items to the cheat pane
 function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
-  function Colonist.CheatFillAll(self)
-    self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
-    self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
-    self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
-    self.stat_health = 100 * ChoGGi.Consts.ResourceScale
-  end
   function Colonist.CheatFillMorale(self)
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
@@ -18,6 +12,22 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   end
   function Colonist.CheatFillHealth(self)
     self.stat_health = 100 * ChoGGi.Consts.ResourceScale
+  end
+  function Colonist.CheatFillAll(self)
+    Colonist.CheatFillSanity(self)
+    Colonist.CheatFillComfort(self)
+    Colonist.CheatFillHealth(self)
+    Colonist.CheatFillMorale(self)
+  end
+  function Colonist.CheatRenegade(self)
+    self:AddTrait("Renegade",true)
+  end
+  function Colonist.CheatRenegadeClear(self)
+    self:RemoveTrait("Renegade")
+    CreateRealTimeThread(function()
+      Sleep(100)
+      Colonist.CheatFillMorale(self)
+    end)
   end
   function Colonist.CheatRandomRace(self)
     self.race = UICity:Random(1,5)
@@ -39,19 +49,19 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     ChoGGi.ColonistUpdateAge(self,ChoGGi.ColonistAges[UICity:Random(1,6)])
   end
 --CheatAllShifts
-  local function CheatAllShifts(self)
+  local function CheatAllShiftsOn(self)
     self.closed_shifts[1] = false
     self.closed_shifts[2] = false
     self.closed_shifts[3] = false
   end
-  FungalFarm.CheatAllShifts = CheatAllShifts
-  FarmConventional.CheatAllShifts = CheatAllShifts
-  FarmHydroponic.CheatAllShifts = CheatAllShifts
+  FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
+  FarmConventional.CheatAllShiftsOn = CheatAllShiftsOn
+  FarmHydroponic.CheatAllShiftsOn = CheatAllShiftsOn
 --CheatFullyAuto
   local function CheatWorkAuto(self)
     self.max_workers = 0
     self.automation = 1
-    self.auto_performance = 100
+    self.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
     ChoGGi.ToggleWorking(self)
   end
   local function CheatWorkManual(self)
@@ -158,7 +168,7 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self.producers[1].production_per_day = self.producers[1].production_per_day * 2
   end
   local function CheatProdDefProducer(self)
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
+    self.producers[1].production_per_day = self.base_production_per_day1
   end
   RegolithExtractor.CheatProdDbl = CheatProdDblProducer
   RegolithExtractor.CheatProdDef = CheatProdDefProducer
@@ -412,6 +422,9 @@ function ChoGGi.SetHintsInfoPaneCheats(win)
     elseif action.ActionId == "CapDef" then
       action.ActionName = action.ActionId
       action.RolloverHint = "Reset the storage capacity of this " .. id .. " to default."
+    elseif action.ActionId == "VisitorsDbl" then
+      action.ActionName = action.ActionId
+      action.RolloverHint = "Double the amount of colonist slots for this " .. id .. "."
 
     --RC
     elseif action.ActionId == "BattCapDbl" then

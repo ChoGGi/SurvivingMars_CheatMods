@@ -17,24 +17,14 @@ ChoGGi = {
   CheatMenuSettings = {},
 }
 
---Platform.ged = true
---Platform.cmdline = true
---upsampled screenshot
 -- Turn on editor mode (this is required for cheats to work) and then add the editor commands
 Platform.editor = true
 Platform.developer = true
---Platform.cmdline = true
 --add built-in cheat menu items
 AddCheatsUA()
 
 --buildings menu (pretty much useless, but what the haeh)
 dofile("Lua/Buildings/Building.lua")
---Toggle Hex Build Grid Visibility
---dofile("Lua/hex.lua")
---ConsoleExec --re-added back in with Spirit update
---dofile("CommonLua/console.lua")
---console log
---dofolder("CommonLua/UI/Dev")
 --[[
 LGS = {}
 --load up the editors
@@ -86,16 +76,16 @@ ObjectPaletteTempCategories = false
 ObjectPaletteFilterCategoryData = false
 ObjectPaletteLastSearchString = false
 dofile("CommonLua/UI/uiEditorInterface.designer.lua")
-dofile("CommonLua/UI/uiEditorInterface.lua")
 dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.designer.lua")
-dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.designer.lua")
+dofile("CommonLua/UI/uiEditorInterface.lua")
+dofile("CommonLua/UI/uiEditorPlaceObjectsDlg.lua")
 dofile("CommonLua/UI/uiEditorStatusbar.lua")
 
 --causes some labels to say stripped/keys are different
 Platform.developer = false
 
---used to let me know if we're on my computer for extra msgs
+--used to let me know if we're on my computer
 local file_error, code = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
   ChoGGi.Testing = true
@@ -110,6 +100,16 @@ ChoGGi.ReadSettings()
 if ChoGGi.CheatMenuSettings.NewColonistSex then
   ChoGGi.CheatMenuSettings.NewColonistGender = ChoGGi.CheatMenuSettings.NewColonistSex
   ChoGGi.CheatMenuSettings.NewColonistSex = nil
+  ChoGGi.Init_WriteSettings = 1
+end
+if ChoGGi.CheatMenuSettings.ShuttleSpeed then
+  ChoGGi.CheatMenuSettings.SpeedShuttle = ChoGGi.CheatMenuSettings.ShuttleSpeed
+  ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
+  ChoGGi.Init_WriteSettings = 1
+end
+if ChoGGi.CheatMenuSettings.ShuttleStorage then
+  ChoGGi.CheatMenuSettings.StorageShuttle = ChoGGi.CheatMenuSettings.ShuttleStorage
+  ChoGGi.CheatMenuSettings.ShuttleStorage = nil
   ChoGGi.Init_WriteSettings = 1
 end
 

@@ -26,55 +26,47 @@ mh = GetTerrainCursorObjSel
 mc = GetPreciseCursorObj
 m = SelectionMouseObj
 c = GetTerrainCursor
+cs = terminal.GetMousePos --pos on screen, not map
+
+--asdd dump buttons/etc
+ChoGGi.OrigFunc.Examine_Init = Examine.Init
+function Examine:Init()
+  ChoGGi.OrigFunc.Examine_Init(self)
+
+  self.DumpText = function(Obj)
+    local String = self:totextex(Obj)
+    --remove html tags
+    String = String:gsub("<[/%s%a%d]*>","")
+    ChoGGi.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
+  end
+  self.DumpObj = function(Obj)
+    --dump object code
+    ChoGGi.Dump("\r\n" .. ValueToLuaCode(Obj),nil,"DumpedExamineObject","lua")
+  end
+  function self.idDump.OnButtonPressed()
+    self.DumpText(self.obj)
+  end
+  function self.idDumpObj.OnButtonPressed()
+    self.DumpObj(self.obj)
+  end
+--[[
+  function self.idEdit.OnButtonPressed()
+    OpenManipulator(self.obj,self)
+  end
+--]]
+  --so we can close it after we close the list dialog
+  if ChoGGi.WaitListChoice_OpenedHintDlg == 1 then
+    ChoGGi.WaitListChoice_OpenedHintDlg = self
+  end
+end
 
 --so we can add hints to info pane cheats
 ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
 function InfopanelObj:CreateCheatActions(win)
-  local retvalue = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
+  local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
   ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
-  return retvalue
-end
-
---if building placed outside of dome, attach it to nearest dome
-ChoGGi.OrigFunc.Residence_GameInit = Residence.GameInit
-function Residence:GameInit()
-  ChoGGi.OrigFunc.Residence_GameInit(self)
-  ChoGGi.AttachToNearestDome(self)
-end
-
-ChoGGi.OrigFunc.Workplace_GameInit = Workplace.GameInit
-function Workplace:GameInit()
-  ChoGGi.OrigFunc.Workplace_GameInit(self)
-  ChoGGi.AttachToNearestDome(self)
-end
-
---make sure it updates with our new value
-ChoGGi.OrigFunc.ElectricityProducer_CreateElectricityElement = ElectricityProducer.CreateElectricityElement
-function ElectricityProducer:CreateElectricityElement()
-  ChoGGi.OrigFunc.ElectricityProducer_CreateElectricityElement(self)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
-    self.electricity_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
-  end
-end
-ChoGGi.OrigFunc.AirProducer_CreateLifeSupportElements = AirProducer.CreateLifeSupportElements
-function AirProducer:CreateLifeSupportElements()
-  ChoGGi.OrigFunc.AirProducer_CreateLifeSupportElements(self)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
-    self.air_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
-  end
-end
-ChoGGi.OrigFunc.WaterProducer_CreateLifeSupportElements = WaterProducer.CreateLifeSupportElements
-function WaterProducer:CreateLifeSupportElements()
-  ChoGGi.OrigFunc.WaterProducer_CreateLifeSupportElements(self)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id] then
-    self.water_production = ChoGGi.CheatMenuSettings.BuildingsProduction[self.encyclopedia_id]
-  end
-end
-ChoGGi.OrigFunc.SingleResourceProducer_Init = SingleResourceProducer.Init
-function SingleResourceProducer:Init()
-  ChoGGi.OrigFunc.SingleResourceProducer_Init(self)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[self.parent.encyclopedia_id] then
-    self.production_per_day = ChoGGi.CheatMenuSettings.BuildingsProduction[self.parent.encyclopedia_id]
+  if ret then
+    return ret
   end
 end
 
@@ -459,74 +451,8 @@ dumpl(classdefs)
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
 --]]
     self:InitChildrenSizing()
+    --have to size children before doing these:
+    self:SetPos(point(50,150))
+    self:SetSize(point(500,600))
   end
-
-  function Examine:Init()
-    self.Dump = function(Obj)
-      local String = self:totextex(Obj)
-      --remove html tags
-      String = String:gsub("<[/%s%a%d]*>","")
-      ChoGGi.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
-    end
-    self.DumpObj = function(Obj)
-      --dump object code
-      ChoGGi.Dump("\r\n" .. ValueToLuaCode(Obj),nil,"DumpedExamineObject","lua")
-    end
-    self.onclick_handles = {}
-    self.obj = false
-    self.show_times = "relative"
-    self.offset = 1
-    self.page = 1
-    self.transp_mode = transp_mode
-    function self.idText.OnHyperLink(_, link, _, box, pos, button)
-      self.onclick_handles[tonumber(link)](box, pos, button)
-    end
-    self.idText:AddInterpolation({
-      type = const.intAlpha,
-      startValue = 255,
-      flags = const.intfIgnoreParent
-    })
-    function self.idMenu.OnHyperLink(_, link, _, box, pos, button)
-      self.onclick_handles[tonumber(link)](box, pos, button)
-    end
-    self.idMenu:AddInterpolation({
-      type = const.intAlpha,
-      startValue = 255,
-      flags = const.intfIgnoreParent
-    })
-    function self.idNext.OnButtonPressed()
-      self:FindNext(self.idFilter:GetText())
-    end
-    function self.idDump.OnButtonPressed()
-      self.Dump(self.obj)
-    end
-    function self.idDumpObj.OnButtonPressed()
-      self.DumpObj(self.obj)
-    end
---[[
-    function self.idEdit.OnButtonPressed()
-      OpenManipulator(self.obj,self)
-    end
---]]
-    self.idFilter:AddInterpolation({
-      type = const.intAlpha,
-      startValue = 255,
-      flags = const.intfIgnoreParent
-    })
-    function self.idFilter.OnValueChanged(this, value)
-      self:FindNext(value)
-    end
-    function self.idFilter.OnKbdKeyDown(_, char, virtual_key)
-      if virtual_key == const.vkEnter then
-        self:FindNext(self.idFilter:GetText())
-        return "break"
-      end
-      StaticText.OnKbdKeyDown(self, char, virtual_key)
-    end
-    function self.idClose.OnButtonPressed()
-      self:delete()
-    end
-    self:SetTranspMode(self.transp_mode)
-  end
-
 end --OnMsg

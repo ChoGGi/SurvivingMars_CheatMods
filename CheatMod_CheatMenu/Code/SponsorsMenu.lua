@@ -3,7 +3,7 @@
 local appendtext = " Applies the good effects only (no drawbacks).\n\n(if value already exists; set to larger amount).\nrestart to disable."
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Inventor bonuses",
+  "Expanded CM/Commanders/[1]Inventor bonuses",
   function()
     ChoGGi.SetCommanderBonus("Inventor")
   end,
@@ -16,7 +16,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Oligarch bonuses",
+  "Expanded CM/Commanders/[1]Oligarch bonuses",
   function()
     ChoGGi.SetCommanderBonus("Oligarch")
   end,
@@ -29,7 +29,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]HydroEngineer bonuses",
+  "Expanded CM/Commanders/[1]HydroEngineer bonuses",
   function()
     ChoGGi.SetCommanderBonus("HydroEngineer")
   end,
@@ -42,7 +42,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Doctor bonuses",
+  "Expanded CM/Commanders/[1]Doctor bonuses",
   function()
     ChoGGi.SetCommanderBonus("Doctor")
   end,
@@ -55,7 +55,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Politician bonuses",
+  "Expanded CM/Commanders/[1]Politician bonuses",
   function()
     ChoGGi.SetCommanderBonus("Politician")
   end,
@@ -68,7 +68,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Futurist bonuses",
+  "Expanded CM/Commanders/[1]Futurist bonuses",
   function()
     ChoGGi.SetCommanderBonus("Author")
   end,
@@ -81,7 +81,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Ecologist bonuses",
+  "Expanded CM/Commanders/[1]Ecologist bonuses",
   function()
     ChoGGi.SetCommanderBonus("Ecologist")
   end,
@@ -94,7 +94,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Commanders/[1]Astrogeologist bonuses",
+  "Expanded CM/Commanders/[1]Astrogeologist bonuses",
   function()
     ChoGGi.SetCommanderBonus("Astrogeologist")
   end,
@@ -107,7 +107,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]IMM bonuses",
+  "Expanded CM/Sponsors/[1]IMM bonuses",
   function()
     ChoGGi.SetSponsorBonus("IMM")
   end,
@@ -120,7 +120,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]USA bonuses",
+  "Expanded CM/Sponsors/[1]USA bonuses",
   function()
     ChoGGi.SetSponsorBonus("NASA")
   end,
@@ -133,7 +133,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]BlueSun bonuses",
+  "Expanded CM/Sponsors/[1]BlueSun bonuses",
   function()
     ChoGGi.SetSponsorBonus("BlueSun")
   end,
@@ -146,7 +146,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]China bonuses",
+  "Expanded CM/Sponsors/[1]China bonuses",
   function()
     ChoGGi.SetSponsorBonus("CNSA")
   end,
@@ -159,7 +159,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]India bonuses",
+  "Expanded CM/Sponsors/[1]India bonuses",
   function()
     ChoGGi.SetSponsorBonus("ISRO")
   end,
@@ -172,7 +172,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]Europe bonuses",
+  "Expanded CM/Sponsors/[1]Europe bonuses",
   function()
     ChoGGi.SetSponsorBonus("ESA")
   end,
@@ -185,7 +185,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]SpaceY bonuses",
+  "Expanded CM/Sponsors/[1]SpaceY bonuses",
   function()
     ChoGGi.SetSponsorBonus("SpaceY")
   end,
@@ -198,7 +198,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]NewArk bonuses",
+  "Expanded CM/Sponsors/[1]NewArk bonuses",
   function()
     ChoGGi.SetSponsorBonus("NewArk")
   end,
@@ -211,7 +211,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]Russia bonuses",
+  "Expanded CM/Sponsors/[1]Russia bonuses",
   function()
     ChoGGi.SetSponsorBonus("Roscosmos")
   end,
@@ -224,7 +224,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Sponsors/[1]Paradox bonuses",
+  "Expanded CM/Sponsors/[1]Paradox bonuses",
   function()
     ChoGGi.SetSponsorBonus("Paradox")
   end,
@@ -234,4 +234,20 @@ ChoGGi.AddAction(
     return des .. " Paradox sponsor bonus" .. appendtext
   end,
   "remove_water.tga"
+)
+
+ChoGGi.AddAction(
+  "Expanded CM/Sponsors/Set New Sponsor",
+  ChoGGi.ChangeSponsor,
+  nil,
+  "Switch to a different sponsor.",
+  "SelectByClassName.tga"
+)
+
+ChoGGi.AddAction(
+  "Expanded CM/Commanders/Set New Commander",
+  ChoGGi.ChangeCommander,
+  nil,
+  "Switch to a different commander.",
+  "SetCamPos&Loockat.tga"
 )

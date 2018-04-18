@@ -46,65 +46,42 @@ end --OnMsg
 function OnMsg.ClassesBuilt()
 
   ChoGGi.ReplacedFunctions_ClassesBuilt()
-
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
   end
-  --build "Cheats/Start Mystery" menu
-  --MysteryBase = { AIUprisingMystery, BlackCubeMystery, DiggersMystery, DreamMystery, MarsgateMystery, MirrorSphereMystery, TheMarsBug, UnitedEarthMystery, WorldWar3 }
-  --type(g_Classes.DreamMystery.scenario_name)
-  ClassDescendantsList("MysteryBase", function(class)
-    ChoGGi.AddAction(
-      "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) or "Missing Name",
-      function()
-        return ChoGGi.StartMystery(class)
-      end,
-      nil,
-      _InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description",
-      "DarkSideOfTheMoon.tga"
-    )
-  end)
-  --instant start
-  ClassDescendantsList("MysteryBase", function(class)
-    ChoGGi.AddAction(
-      "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) .. ": Instant" or "Missing Name: Instant",
-      function()
-        return ChoGGi.StartMystery(class,true)
-      end,
-      nil,
-      _InternalTranslate(T({ChoGGi.MysteryDescription[class]})) .. "\n\nStarts mystery instantly (may take up to 1 sol)." or "Missing Description: Starts mystery instantly (may take up to 1 sol).",
-      "SelectionToTemplates.tga"
-    )
-  end)
 
   --add preset menu items
-  ClassDescendantsList("Preset", function(name, class)
-    local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or {}
-    local map = class.GlobalMap
-    if map then
-      rawset(_G, map, rawget(_G, map) or {})
-    end
-    UserActions.AddActions({
-      [name] = {
-        menu = "Presets/" .. name,
-        key = class.EditorShortcut or nil,
-        icon = class.EditorIcon or nil,
-        action = function()
-          OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-            PresetClass = name,
-            SingleFile = class.SingleFile
-          })
-        end
-      }
-    })
+  ChoGGi.NewThread(function()
+    ClassDescendantsList("Preset", function(name, class)
+      local preset_class = class.PresetClass or name
+      Presets[preset_class] = Presets[preset_class] or {}
+      local map = class.GlobalMap
+      if map then
+        rawset(_G, map, rawget(_G, map) or {})
+      end
+      UserActions.AddActions({
+        [name] = {
+          menu = "Presets/" .. name,
+          key = class.EditorShortcut or nil,
+          icon = class.EditorIcon or nil,
+          action = function()
+            OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+              PresetClass = name,
+              SingleFile = class.SingleFile
+            })
+          end
+        }
+      })
+    end)
   end)
 
   --update base rc transport capacity for newly placed
+  --[[
   if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity > 45000 then
     RCTransport.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
   end
+  --]]
 
 end --OnMsg
 
@@ -113,8 +90,8 @@ function OnMsg.OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
-  ChoGGi.SponsorsFunc_ModsLoaded()
-  ChoGGi.MiscFunc_ModsLoaded()
+  --ChoGGi.SponsorsFunc_ModsLoaded()
+  --ChoGGi.MiscFunc_ModsLoaded()
 end --OnMsg
 
 --saved game is loaded
@@ -137,290 +114,210 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.IsGameLoaded = true
   end
 
-  ChoGGi.RenderSettings_LoadingScreenPreClose()
+  ChoGGi.NewThread(function()
+    ChoGGi.RenderSettings_LoadingScreenPreClose()
+    ChoGGi.Keys_LoadingScreenPreClose()
+    ChoGGi.SponsorsFunc_LoadingScreenPreClose()
 
-  --use number keys to activate/hide build menus
-  local skipped = false
-  for i = 1, #BuildCategories do
-    if i < 10 then
-      ChoGGi.AddAction(nil,
-        function()
-          ChoGGi.ShowBuildMenu(i)
-        end,
-        tostring(i) --the key has to be a string
-      )
-    elseif i == 10 then
-      ChoGGi.AddAction(nil,
-        function()
-          ChoGGi.ShowBuildMenu(i)
-        end,
-        "0"
-      )
-    else
-      --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
-      if BuildCategories[i].id == "Hidden" then
-        skipped = true
-      else
-        if skipped then
-          ChoGGi.AddAction(nil,
-            function()
-              ChoGGi.ShowBuildMenu(i)
-            end,
-            "Shift-" .. i - 11 -- -1 more for skipping Hidden
-          )
+    --
+    ChoGGi.SetGConstsToSaved()
+
+    --make sure all buildings are using correct production
+    ChoGGi.SetProductionToSavedAmt()
+
+    --something messed up if storage is negative (usually setting an amount then lowering it)
+    for _,building in ipairs(UICity.labels.Storages or empty_table) do
+      if building:GetStoredAmount() < 0 then
+        --we have to empty it first (just filling doesn't fix the issue)
+        building:CheatEmpty()
+        building:CheatFill()
+      end
+    end
+
+    if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
+      for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
+        Object.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+      end
+    end
+
+    --drone gravity
+    if ChoGGi.CheatMenuSettings.GravityDrone then
+      for _,Object in ipairs(UICity.labels.Drone or empty_table) do
+        Object:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
+      end
+    end
+
+    --so we can change the max_amount for concrete
+    for Key,_ in ipairs(TerrainDepositConcrete.properties) do
+      local prop = TerrainDepositConcrete.properties[Key]
+      if prop.id == "max_amount" then
+        prop.read_only = nil
+      end
+    end
+
+    --override building templates
+    for _,building in ipairs(DataInstances.BuildingTemplate) do
+
+      --make hidden buildings visible
+      if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+        BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+        if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
+          building.hide_from_build_menu = nil
+        end
+        if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
+          building.build_category = "HiddenX"
+        end
+      end
+
+      if ChoGGi.CheatMenuSettings.Building_wonder then
+        building.wonder = nil
+      end
+    end
+
+    --limit height of colonists section in info pane, so it doesn't go crazy expand with too many colonists
+    XTemplates.sectionResidence[1]["MaxHeight"] = ChoGGi.Consts.ResidenceMaxHeight
+    --too bad it clips the little icon in half
+    XTemplates.sectionResidence[1]["Clip"] = true
+
+    --show all Mystery Breakthrough buildings
+    if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
+      UnlockBuilding("DefenceTower")
+      UnlockBuilding("CloningVats")
+      UnlockBuilding("BlackCubeDump")
+      UnlockBuilding("BlackCubeSmallMonument")
+      UnlockBuilding("BlackCubeLargeMonument")
+      UnlockBuilding("PowerDecoy")
+      UnlockBuilding("DomeOval")
+    end
+
+    if ChoGGi.CheatMenuSettings.ShowAllTraits then
+      g_SchoolTraits = ChoGGi.PositiveTraits
+      g_SanatoriumTraits = ChoGGi.NegativeTraits
+    end
+
+    --show cheat pane?
+    if ChoGGi.CheatMenuSettings.InfopanelCheats then
+      config.BuildingInfopanelCheats = true
+      ReopenSelectionXInfopanel()
+    end
+
+    --show console log history
+    if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
+      ShowConsoleLog(true)
+    end
+
+    --dim that console bg
+    if ChoGGi.CheatMenuSettings.ConsoleDim then
+      config.ConsoleDim = 1
+      --make the background hide when console not visible (instead of after a second or two)
+      --function ShowConsoleLogBackground(bVisible, bImmediate)
+      --ConsoleLog:ShowBackground
+      function ConsoleLog.ShowBackground(self,visible, immediate)
+        DeleteThread(self.background_thread)
+        if visible or immediate then
+          self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
         else
-          ChoGGi.AddAction(nil,
-            function()
-              ChoGGi.ShowBuildMenu(i)
-            end,
-            "Shift-" .. i - 10 -- -10 since we're doing Shift-*
-          )
+          self:SetBackground(RGBA(0, 0, 0, 0))
         end
       end
     end
-  end
 
-  --make sure all buildings are using correct production
-  ChoGGi.SetProductionToSavedAmt()
+    --Residence
+    --XTemplates.sectionResidence[1]["MaxHeight"] = 200
+    --change some default menu items
+    UserActions.RemoveActions({
+      --useless without developer tools?
+      "BuildingEditor",
+      --these will switch the map without asking to save
+      "G_ModsEditor",
+      "G_OpenPregameMenu",
+      --broken, I've re-added them
+      "StartMysteryAIUprisingMystery",
+      "StartMysteryBlackCubeMystery",
+      "StartMysteryDiggersMystery",
+      "StartMysteryDreamMystery",
+      "StartMysteryMarsgateMystery",
+      "StartMysteryMirrorSphereMystery",
+      "StartMysteryTheMarsBug",
+      "StartMysteryUnitedEarthMystery",
+      "StartMysteryWorldWar3",
+      --moved them to help menu
+      "DE_Screenshot",
+      "UpsampledScreenshot",
+      "DE_UpsampledScreenshot",
+      "DE_ToggleScreenshotInterface",
+      "DisableUIL",
+      "G_ToggleInGameInterface",
+      "FreeCamera",
+      "G_ToggleSigns",
+      "G_ToggleOnScreenHints",
+      "G_ResetOnScreenHints",
+      "DE_BugReport",
+      --re-added
+      "TriggerDisasterColdWave",
+      "TriggerDisasterDustDevil",
+      "TriggerDisasterDustDevilMajor",
+      "TriggerDisasterDustStormElectrostatic",
+      "TriggerDisasterDustStormGreat",
+      "TriggerDisasterDustStormNormal",
+      "TriggerDisasterMeteorsMultiSpawn",
+      "TriggerDisasterMeteorsSingle",
+      "TriggerDisasterMeteorsStorm",
+      "TriggerDisasterStop",
+      "G_ToggleInfopanelCheats",
+      "G_UnlockAllBuildings",
+      "G_AddFunding",
+      "SpawnColonist1",
+      "SpawnColonist10",
+      "SpawnColonist100",
+    })
+    --update menu
+    UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
-  --something messed up if storage is negative (usually setting an amount then lowering it)
-  for _,building in ipairs(UICity.labels.Storages or empty_table) do
-    if building:GetStoredAmount() < 0 then
-      --we have to empty it first (just filling doesn't fix the issue)
-      building:CheatEmpty()
-      building:CheatFill()
-    end
-  end
-
-  --set shuttle speed/capacity (not sure how to get an onmsg for shuttle spawning)
-  for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    if ChoGGi.CheatMenuSettings.ShuttleStorage then
-      object.max_shared_storage = ChoGGi.CheatMenuSettings.ShuttleStorage
-    end
-    if ChoGGi.CheatMenuSettings.ShuttleSpeed then
-      object.max_speed = ChoGGi.CheatMenuSettings.ShuttleSpeed
-    end
-  end
-
-  --drone gravity (not sure how to get an onmsg for drone spawning)
-  for _,object in ipairs(UICity.labels.Drone or empty_table) do
-    if ChoGGi.CheatMenuSettings.GravityDrone then
-      object:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
-    end
-  end
-
-  --so we can change the max_amount for concrete
-  for Key,_ in ipairs(TerrainDepositConcrete.properties) do
-    local prop = TerrainDepositConcrete.properties[Key]
-    if prop.id == "max_amount" then
-      prop.read_only = nil
-    end
-  end
-
-  --override building templates
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-
-    --make hidden buildings visible
-    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
-        building.hide_from_build_menu = nil
+    --always show on my computer
+    if ChoGGi.Testing then
+      if not dlgUAMenu then
+        UAMenu.ToggleOpen()
       end
-      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
-        building.build_category = "HiddenX"
-      end
+      --ShowConsole(true)
     end
 
-    if ChoGGi.CheatMenuSettings.Building_wonder then
-      building.wonder = nil
+    --remove some uselessish Cheats to clear up space
+    if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
+      ChoGGi.InfopanelCheatsCleanup()
     end
-  end
 
-  --limit height of colonists section in info pane, so it doesn't go crazy expand with too many colonists
-  XTemplates.sectionResidence[1]["MaxHeight"] = ChoGGi.Consts.ResidenceMaxHeight
-  --too bad it clips the little icon in half
-  XTemplates.sectionResidence[1]["Clip"] = true
-
-  --show all Mystery Breakthrough buildings
-  if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
-    UnlockBuilding("DefenceTower")
-    UnlockBuilding("CloningVats")
-    UnlockBuilding("BlackCubeDump")
-    UnlockBuilding("BlackCubeSmallMonument")
-    UnlockBuilding("BlackCubeLargeMonument")
-    UnlockBuilding("PowerDecoy")
-    UnlockBuilding("DomeOval")
-  end
-
-  if ChoGGi.CheatMenuSettings.ShowAllTraits then
-    g_SchoolTraits = ChoGGi.PositiveTraits
-    g_SanatoriumTraits = ChoGGi.NegativeTraits
-  end
-
-  --show cheat pane?
-  if ChoGGi.CheatMenuSettings.InfopanelCheats then
-    config.BuildingInfopanelCheats = true
-    ReopenSelectionXInfopanel()
-  end
-
-  --show console log history
-  if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
-    ShowConsoleLog(true)
-  end
-
-  --dim that console bg
-  if ChoGGi.CheatMenuSettings.ConsoleDim then
-    config.ConsoleDim = 1
-    --make the background hide when console not visible (instead of after a second or two)
-    --function ShowConsoleLogBackground(bVisible, bImmediate)
-    --ConsoleLog:ShowBackground
-    function ConsoleLog.ShowBackground(self,visible, immediate)
-      DeleteThread(self.background_thread)
-      if visible or immediate then
-        self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
-      else
-        self:SetBackground(RGBA(0, 0, 0, 0))
-      end
+    --default to showing interface in ss
+    if ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots then
+      hr.InterfaceInScreenshot = 1
     end
-  end
 
-  --Residence
-  --XTemplates.sectionResidence[1]["MaxHeight"] = 200
-  --change some default menu items
-  UserActions.RemoveActions({
-    --useless without developer tools?
-    "BuildingEditor",
-    --these will switch the map without asking to save
-    "G_ModsEditor",
-    "G_OpenPregameMenu",
-    --added to QoL
-    "G_ToggleInfopanelCheats",
-    --changed to refreshe build menu without having to re-open it
-    "G_UnlockAllBuildings",
-    --broken, I've re-added them
-    "StartMysteryAIUprisingMystery",
-    "StartMysteryBlackCubeMystery",
-    "StartMysteryDiggersMystery",
-    "StartMysteryDreamMystery",
-    "StartMysteryMarsgateMystery",
-    "StartMysteryMirrorSphereMystery",
-    "StartMysteryTheMarsBug",
-    "StartMysteryUnitedEarthMystery",
-    "StartMysteryWorldWar3",
-    --move them to help menu
-    "DE_Screenshot",
-    "UpsampledScreenshot",
-    "DE_UpsampledScreenshot",
-    "DE_ToggleScreenshotInterface",
-    "DisableUIL",
-    "G_ToggleInGameInterface",
-    "FreeCamera",
-    "G_ToggleSigns",
-    "G_ToggleOnScreenHints",
-    "G_ResetOnScreenHints",
-    "DE_BugReport",
-  })
-  --update menu
-  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
+    --set zoom/border scrolling
+    ChoGGi.SetCameraSettings()
 
-  --always show on my computer
-	if ChoGGi.Testing then
-    if not dlgUAMenu then
-      UAMenu.ToggleOpen()
+    --show all traits
+    if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
+      Sanatorium.max_traits = #ChoGGi.NegativeTraits
+      School.max_traits = #ChoGGi.PositiveTraits
     end
-    --ShowConsole(true)
-  end
 
-  --remove some uselessish Cheats to clear up space
-  if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
-    ChoGGi.InfopanelCheatsCleanup()
-  end
+    --unbreakable cables/pipes
+    if ChoGGi.CheatMenuSettings.BreakChanceCablePipe then
+      const.BreakChanceCable = 10000000
+      const.BreakChancePipe = 10000000
+    end
 
-  if ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots then
-    hr.InterfaceInScreenshot = 1
-  end
+    if ChoGGi.CheatMenuSettings.DisableHints then
+      mapdata.DisableHints = true
+    end
 
-  --set zoom/border scrolling
-  ChoGGi.SetCameraSettings()
+    --print startup msgs to console log
+    for i = 1, #ChoGGi.StartupMsgs do
+      AddConsoleLog(ChoGGi.StartupMsgs[i],true)
+      --ConsolePrint(ChoGGi.StartupMsgs[i])
+    end
 
-  --show all traits
-  if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #ChoGGi.NegativeTraits
-    School.max_traits = #ChoGGi.PositiveTraits
-  end
-
-  --unbreakable cables/pipes
-  if ChoGGi.CheatMenuSettings.BreakChanceCablePipe then
-    const.BreakChanceCable = 10000000
-    const.BreakChancePipe = 10000000
-  end
-
-  if ChoGGi.CheatMenuSettings.DisableHints then
-    mapdata.DisableHints = true
-  end
-
-  --Commander bonuses
-  if ChoGGi.CheatMenuSettings.CommanderInventor then
-    ChoGGi.SetCommanderBonuses("Inventor")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderOligarch then
-    ChoGGi.SetCommanderBonuses("Oligarch")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderHydroEngineer then
-    ChoGGi.SetCommanderBonuses("HydroEngineer")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderDoctor then
-    ChoGGi.SetCommanderBonuses("Doctor")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderPolitician then
-    ChoGGi.SetCommanderBonuses("Politician")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderAuthor then
-    ChoGGi.SetCommanderBonuses("Author")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderEcologist then
-    ChoGGi.SetCommanderBonuses("Ecologist")
-  end
-  if ChoGGi.CheatMenuSettings.CommanderAstrogeologist then
-    ChoGGi.SetCommanderBonuses("Astrogeologist")
-  end
-  --Sponsor bonuses
-  if ChoGGi.CheatMenuSettings.SponsorIMM then
-    ChoGGi.SetSponsorBonuses("IMM")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorNASA then
-    ChoGGi.SetSponsorBonuses("NASA")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorBlueSun then
-    ChoGGi.SetSponsorBonuses("BlueSun")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorCNSA then
-    ChoGGi.SetSponsorBonuses("CNSA")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorISRO then
-    ChoGGi.SetSponsorBonuses("ISRO")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorESA then
-    ChoGGi.SetSponsorBonuses("ESA")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorSpaceY then
-    ChoGGi.SetSponsorBonuses("SpaceY")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorNewArk then
-    ChoGGi.SetSponsorBonuses("NewArk")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorRoscosmos then
-    ChoGGi.SetSponsorBonuses("Roscosmos")
-  end
-  if ChoGGi.CheatMenuSettings.SponsorParadox then
-    ChoGGi.SetSponsorBonuses("Paradox")
-  end
-
-  --print startup msgs to console log
-  for i = 1, #ChoGGi.StartupMsgs do
-    AddConsoleLog(ChoGGi.StartupMsgs[i],true)
-    --ConsolePrint(ChoGGi.StartupMsgs[i])
-  end
+  end) --thread
 
   --people will likely just copy new mod over old, and I moved stuff around
   ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
@@ -442,13 +339,15 @@ function OnMsg.BuildingPlaced(building)
 end --OnMsg
 
 function OnMsg.ConstructionSitePlaced(site)
-  ChoGGi.LastPlacedObj = site
---print(building.encyclopedia_id)
+  --if building site then skip (instant build)
+  if not site.building_class_proto then
+    ChoGGi.LastPlacedObj = site
+  end
 end --OnMsg
 
 function OnMsg.ConstructionComplete(building)
---print(building.encyclopedia_id)
-
+  ChoGGi.NewThread(function()
+    --print(building.encyclopedia_id)
     if IsKindOf(building,"RCTransportBuilding") then
       if ChoGGi.CheatMenuSettings.GravityRC then
         building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
@@ -462,6 +361,11 @@ function OnMsg.ConstructionComplete(building)
     elseif IsKindOf(building,"RCExplorerBuilding") then
       if ChoGGi.CheatMenuSettings.GravityRC then
         building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+      end
+
+    elseif IsKindOf(building,"DroneFactory") then
+      if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
+        building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
       end
 
     elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
@@ -482,7 +386,7 @@ function OnMsg.ConstructionComplete(building)
     if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
       building.max_workers = 0
       building.automation = 1
-      building.auto_performance = 100
+      building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
     end
 
     --saved settings for capacity, visitors, shuttles
@@ -502,6 +406,7 @@ function OnMsg.ConstructionComplete(building)
     end
 
     building.can_change_skin = true
+  end)
 
 end --OnMsg
 
@@ -515,38 +420,53 @@ function OnMsg.Demolished(building)
   end
 end --OnMsg
 
-function OnMsg.ColonistArrived()
-
+function OnMsg.ColonistArrived(Obj)
   if ChoGGi.CheatMenuSettings.GravityColonist then
-    colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
+    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
   if ChoGGi.CheatMenuSettings.NewColonistGender then
-    ChoGGi.ColonistUpdateGender(colonist,ChoGGi.CheatMenuSettings.NewColonistGender)
+    ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
   end
   if ChoGGi.CheatMenuSettings.NewColonistAge then
-    ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)
+    ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
   end
-
+  if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
+    ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistRace then
+    ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistTraits then
+    ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
+  end
 end --OnMsg
 
-function OnMsg.ColonistBorn(colonist)
+function OnMsg.ColonistBorn(Obj)
   if ChoGGi.CheatMenuSettings.GravityColonist then
-    colonist:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
+    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
   end
   if ChoGGi.CheatMenuSettings.NewColonistGender then
-    ChoGGi.ColonistUpdateGender(colonist,ChoGGi.CheatMenuSettings.NewColonistGender)
+    ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
   end
   if ChoGGi.CheatMenuSettings.NewColonistAge then
-    ChoGGi.ColonistUpdateAge(colonist,ChoGGi.CheatMenuSettings.NewColonistAge)
+    ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
   end
-
+  if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
+    ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistRace then
+    ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistTraits then
+    ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
+  end
 end --OnMsg
 
-function OnMsg.SelectionAdded(Object)
-  s = Object
+function OnMsg.SelectionAdded(Obj)
+  s = Obj
 end
-function OnMsg.SelectedObjChange(Object)
-  s = Object
+function OnMsg.SelectedObjChange(Obj)
+  s = Obj
 end
 
 --if you pick a mystery from the cheat menu
@@ -570,5 +490,69 @@ function OnMsg.ApplicationQuit()
   --save any unsaved settings on exit
   if not ChoGGi.Testing then
     ChoGGi.WriteSettings()
+  end
+end
+
+--custom OnMsgs
+ChoGGi.AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
+ChoGGi.AddMsgToFunc(Drone.GameInit,"Drone","GameInit","SpawnedDrone")
+ChoGGi.AddMsgToFunc(RCTransport.GameInit,"RCTransport","GameInit","SpawnedRCTransport")
+ChoGGi.AddMsgToFunc(Residence.GameInit,"Residence","GameInit","SpawnedResidence")
+ChoGGi.AddMsgToFunc(Workplace.GameInit,"Workplace","GameInit","SpawnedWorkplace")
+ChoGGi.AddMsgToFunc(ElectricityProducer.CreateElectricityElement,"ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
+ChoGGi.AddMsgToFunc(AirProducer.CreateLifeSupportElements,"AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
+ChoGGi.AddMsgToFunc(WaterProducer.CreateLifeSupportElements,"WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
+ChoGGi.AddMsgToFunc(SingleResourceProducer.Init,"SingleResourceProducer","Init","SpawnedProducerSingle")
+
+--shuttle comes out of a hub
+function OnMsg.SpawnedShuttle(Obj)
+  if ChoGGi.CheatMenuSettings.StorageShuttle then
+    Obj.max_shared_storage = ChoGGi.CheatMenuSettings.StorageShuttle
+  end
+  if ChoGGi.CheatMenuSettings.SpeedShuttle then
+    Obj.max_speed = ChoGGi.CheatMenuSettings.SpeedShuttle
+  end
+end
+
+function OnMsg.SpawnedDrone(Obj)
+  --what is move_speed for?
+  if ChoGGi.CheatMenuSettings.GravityDrone then
+    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
+  end
+end
+
+function OnMsg.SpawnedRCTransport(Obj)
+  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
+    Obj.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  end
+end
+
+--if building placed outside of dome, attach it to nearest dome
+function OnMsg.SpawnedResidence(Obj)
+  ChoGGi.AttachToNearestDome(Obj)
+end
+function OnMsg.SpawnedWorkplace(Obj)
+  ChoGGi.AttachToNearestDome(Obj)
+end
+
+--make sure they update with our new values
+function OnMsg.SpawnedProducerElectricity(Obj)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
+    Obj.electricity_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
+  end
+end
+function OnMsg.SpawnedProducerAir(Obj)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
+    Obj.air_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
+  end
+end
+function OnMsg.SpawnedProducerWater(Obj)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
+    Obj.water_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
+  end
+end
+function OnMsg.SpawnedProducerSingle(Obj)
+  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.parent.encyclopedia_id] then
+    Obj.production_per_day = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.parent.encyclopedia_id]
   end
 end

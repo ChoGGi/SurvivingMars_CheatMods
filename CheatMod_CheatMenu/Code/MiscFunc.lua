@@ -1,17 +1,51 @@
---create logo menu items (needs to be loaded at ModsLoaded, so we get logos from other mods)
-function ChoGGi.MiscFunc_ModsLoaded()
-  local templates = DataInstances.MissionLogo
-  for i = 1, #templates do
-    ChoGGi.AddAction(
-      "Gameplay/QoL/[4]Logo/[" .. i .. "]" .. _InternalTranslate(templates[i].display_name),
-      function()
-        ChoGGi.SetNewLogo(templates[i].name,_InternalTranslate(templates[i].display_name))
-      end,
-      nil,
-      "Change the logo to ".. _InternalTranslate(templates[i].display_name) .. " for anything that uses the logo.",
-      "ViewArea.tga"
-    )
+
+function ChoGGi.ChangeGameLogo()
+  local ListActual = {}
+  for _,Value in ipairs(DataInstances.MissionLogo) do
+    if Value.name ~= "random" then
+      table.insert(ListActual,Value.name)
+    end
   end
+
+  table.sort(ListActual)
+  local ListDisplay = {}
+  for i = 1, #ListActual do
+    local Value = DataInstances.MissionLogo[ListActual[i]]
+    table.insert(ListDisplay,_InternalTranslate(Value.display_name))
+  end
+
+  local TempFunc = function(choice)
+    ChoGGi.SetNewLogo(ListActual[choice],ListDisplay[choice])
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set New Logo",1)
+end
+
+function ChoGGi.SetNewLogo(sName,sDisplay)
+  --any newly built/landed uses this logo
+  g_CurrentMissionParams.idMissionLogo = sName
+
+  --loop through landed rockets and change logo
+  for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    if tempLogo then
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
+    end
+  end
+  --same for any buildings that use the logo
+  for _,object in ipairs(UICity.labels.Building or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    if tempLogo then
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
+    end
+  end
+
+  ChoGGi.MsgPopup("Logo: " .. sDisplay,
+    "Logo","UI/Icons/Sections/spaceship.tga"
+  )
 end
 
 function ChoGGi.DisableTextureCompression_Toggle()
@@ -25,17 +59,23 @@ function ChoGGi.DisableTextureCompression_Toggle()
   )
 end
 
-function ChoGGi.SetShadowmapSize(iSize)
+function ChoGGi.SetShadowmapSize()
+  local ListDisplay = {"Default (restart to enable)","Crap (256)","Lower (512)","Low (1536) < Menu Option","Medium (2048) < Menu Option","High (4096) < Menu Option","Higher (8192)","Highest (16384)"}
+  local ListActual = {false,256,512,1536,2048,4096,8192,16384}
+  local TempFunc = function(choice)
+    if choice == 1 then
+      ChoGGi.CheatMenuSettings.ShadowmapSize = nil
+    else
+      ChoGGi.CheatMenuSettings.ShadowmapSize = ListActual[choice]
+      hr.ShadowmapSize = ListActual[choice]
+    end
 
-  ChoGGi.CheatMenuSettings.ShadowmapSize = iSize
-  if iSize then
-    hr.ShadowmapSize = iSize
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup("ShadowmapSize: " .. ListActual[choice],
+     "Video","UI/Icons/Anomaly_Event.tga"
+    )
   end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("ShadowmapSize: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize),
-   "Video","UI/Icons/Anomaly_Event.tga"
-  )
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set Shadowmap Size",1," Warning: Highest uses a couple extra gigs of vram")
 end
 
 function ChoGGi.HigherShadowDist_Toggle()
@@ -68,140 +108,6 @@ function ChoGGi.HigherRenderDist_Toggle()
   )
 end
 
-function ChoGGi.SetNewLogo(sName,sDisplay)
-  --any newly built/landed uses this logo
-  g_CurrentMissionParams.idMissionLogo = sName
-
-  --loop through landed rockets and change logo
-  for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
-    local tempLogo = object:GetAttach("Logo")
-    if tempLogo then
-      tempLogo:ChangeEntity(
-        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
-      )
-    end
-  end
-  --same for any buildings that use the logo
-  for _,object in ipairs(UICity.labels.Building or empty_table) do
-    local tempLogo = object:GetAttach("Logo")
-    if tempLogo then
-      tempLogo:ChangeEntity(
-        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
-      )
-    end
-  end
-
-  ChoGGi.MsgPopup("Logo is now " .. sDisplay,
-    "Logo","UI/Icons/Sections/spaceship.tga"
-  )
-end
-
-function ChoGGi.BuildDisasterMenu(sList,sType,sName)
-  for i = 1, #sList do
-    ChoGGi.AddAction(
-      "Gameplay/Disasters/" .. sName .. "/[" .. i .. "]" .. sList[i],
-      function()
-        mapdata[sType] = sName .. "_" .. sList[i]
-        ChoGGi.MsgPopup(sName .. " occurrence is now: " .. sList[i],
-          "Disaster","UI/Icons/Sections/attention.tga"
-        )
-      end,
-      nil,
-      "Set the occurrence level of ".. sName .. " disasters.",
-      "RandomMapPresetEditor.tga"
-    )
-  end
-end
-
-function ChoGGi.ShuttleCapacitySet(Bool)
-
-  --get saved prod amount
-  local SavedAmount = ChoGGi.CheatMenuSettings.ShuttleStorage
-  --get base amount
-  local DefaultAmount
-  for _,Value in ipairs(CargoShuttle:GetProperties()) do
-    if Value.id == "max_shared_storage" then
-      DefaultAmount = Value.default
-    end
-  end
-
-  --nothing saved so use defaults
-  if not SavedAmount then
-    SavedAmount = DefaultAmount
-  end
-
-  --get the saved or base amount
-  if Bool == true then
-    SavedAmount = SavedAmount + (250 * ChoGGi.Consts.ResourceScale)
-  else --defaults
-    SavedAmount = DefaultAmount
-  end
-
-  --loop through and set all shuttles
-  for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    object.max_shared_storage = SavedAmount
-  end
-
-  if Bool == true then
-    ChoGGi.CheatMenuSettings.ShuttleStorage = SavedAmount
-  else
-    ChoGGi.CheatMenuSettings.ShuttleStorage = false
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(_InternalTranslate(CargoShuttle.display_name) .. ": Storage is now " .. SavedAmount / ChoGGi.Consts.ResourceScale,
-    "Drones","UI/Icons/IPButtons/drone.tga"
-  )
-
-end
-
-function ChoGGi.ShuttleSpeedSet(Bool)
---base_max_speed
-  for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-    if Bool == true then
-      object.max_speed = object.max_speed + 5000
-      ChoGGi.CheatMenuSettings.ShuttleSpeed = object.max_speed
-    else
-      object.max_speed = object.base_max_speed
-    end
-  end
-  if Bool ~= true then
-    ChoGGi.CheatMenuSettings.ShuttleSpeed = false
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Speed is now " .. ChoGGi.CheatMenuSettings.ShuttleSpeed or "default",
-    "Drones","UI/Icons/IPButtons/drone.tga"
-  )
-end
-
-function ChoGGi.ShuttleHubCapacitySet(Bool)
-  if not SelectedObj and not SelectedObj.base_max_shuttles or not UICity.labels.ShuttleHub then
-    ChoGGi.MsgPopup("You need to select something that has shuttles.",
-      "Drones","UI/Icons/IPButtons/drone.tga"
-    )
-    return
-  end
-  for _,building in ipairs(UICity.labels.ShuttleHub or empty_table) do
-    --if IsKindOf(building,SelectedObj.encyclopedia_id) then
-    if Bool == true then
-      building.max_shuttles = building.max_shuttles + ChoGGi.Consts.ShuttleAddAmount
-    else
-      building.max_shuttles = nil
-    end
-    if building.max_shuttles ~= building.base_max_shuttles then
-      ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = building.max_shuttles
-    elseif building.max_shuttles == building.base_max_shuttles then
-      ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] = nil
-    end
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(SelectedObj.encyclopedia_id .. ": Capacity is now " .. ChoGGi.CheatMenuSettings.BuildingsCapacity[SelectedObj.encyclopedia_id] or "default",
-    "Drones","UI/Icons/IPButtons/drone.tga"
-  )
-end
-
 function ChoGGi.CameraFree_Toggle()
   if not mapdata.GameLogic then
     return
@@ -210,11 +116,14 @@ function ChoGGi.CameraFree_Toggle()
     SetMouseDeltaMode(false)
     ShowMouseCursor("InGameCursor")
     cameraRTS.Activate(1)
+    engineShowMouseCursor()
     print("Camera RTS")
   else
     cameraFly.Activate(1)
     HideMouseCursor("InGameCursor")
     SetMouseDeltaMode(true)
+    --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
+    engineHideMouseCursor()
     print("Camera Fly")
   end
   --resets zoom so...
@@ -288,7 +197,6 @@ function ChoGGi.CameraFollow_Toggle()
   end)
 end
 --LogCameraPos(print)
-
 function ChoGGi.CursorVisible_Toggle()
   if IsMouseCursorHidden() then
     engineShowMouseCursor()
@@ -405,154 +313,24 @@ function ChoGGi.ScannerQueueLarger_Toggle()
   )
 end
 
-function ChoGGi.MeteorHealthDamage_Toggle()
-  Consts.MeteorHealthDamage = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage)
-  ChoGGi.CheatMenuSettings.MeteorHealthDamage = Consts.MeteorHealthDamage
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MeteorHealthDamage .. ": Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
-   "Colonists","UI/Icons/Notifications/meteor_storm.tga"
-  )
-end
-
-function ChoGGi.RocketCargoCapacity_Toggle()
-  if Consts.CargoCapacity == 1000000000 then
-    Consts.CargoCapacity = ChoGGi.GetCargoCapacity()
-  else
-    Consts.CargoCapacity = 1000000000
-  end
-  ChoGGi.CheatMenuSettings.CargoCapacity = Consts.CargoCapacity
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CargoCapacity .. ": I can still see some space",
-   "Rocket","UI/Icons/Sections/spaceship.tga"
-  )
-end
-
-function ChoGGi.RocketInstantTravel_Toggle()
-  --Consts.TravelTimeEarthMars = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,0,ChoGGi.Consts.TravelTimeEarthMars)
-  --Consts.TravelTimeMarsEarth = ChoGGi.NumRetBool(Consts.TravelTimeMarsEarth,0,ChoGGi.Consts.TravelTimeMarsEarth)
-  Consts.TravelTimeEarthMars = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,0,ChoGGi.GetTravelTimeEarthMars())
-  Consts.TravelTimeMarsEarth = ChoGGi.NumRetBool(Consts.TravelTimeMarsEarth,0,ChoGGi.GetTravelTimeMarsEarth())
-  ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
-  ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.TravelTimeEarthMars / ChoGGi.Consts.ResourceScale .. ": 88 MPH",
-   "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
-  )
-end
-
 --SetTimeFactor(1000) = normal speed
-function ChoGGi.SetGameSpeed(Speed)
-  if Speed == 1 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed
-  elseif Speed == 2 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 2
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 2
-  elseif Speed == 3 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 3
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 3
-  elseif Speed == 4 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 4
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 4
-  elseif Speed == 5 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 8
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 8
-  elseif Speed == 6 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 16
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 16
-  elseif Speed == 7 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 32
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 32
-  elseif Speed == 8 then
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * 64
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * 64
+function ChoGGi.SetGameSpeed()
+  local ListDisplay = {"(Default)","Double (2)","Triple (3)","Quadruple (4)","Octuple (8)","Sexdecuple (16)","Duotriguple (32)","Quattuorsexaguple (64)"}
+  local ListActual = {1,2,3,4,8,16,32,64}
+  local hint = "Current speed: " .. const.mediumGameSpeed .. " (3 = Default, 9 = Triple)"
+  local TempFunc = function(choice)
+    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * ListActual[choice]
+    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * ListActual[choice]
+    --so it changes the speed
+    ChangeGameSpeedState(-1)
+    ChangeGameSpeedState(1)
+    --update settings
+    ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
+    ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup(ListDisplay[choice] .. ": I think I can...",
+     "Speed","UI/Icons/Notifications/timer.tga"
+    )
   end
-  --so it changes the speed
-  ChangeGameSpeedState(-1)
-  ChangeGameSpeedState(1)
-  ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
-  ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.mediumGameSpeed .. ": I think I can",
-   "Speed","UI/Icons/Notifications/timer.tga"
-  )
-end
-
-function ChoGGi.ColonistsPerRocket(Bool)
-  if Bool == true then
-    Consts.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket + 25
-  else
-    Consts.MaxColonistsPerRocket = ChoGGi.GetMaxColonistsPerRocket()
-  end
-  ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = Consts.MaxColonistsPerRocket
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MaxColonistsPerRocket .. ": Long pig sardines",
-   "Rocket","UI/Icons/Notifications/colonist.tga"
-  )
-end
-
---TESTING
---TESTING
---TESTING
---TESTING
---TESTING
-function ChoGGi.RCRoverRadius(Bool)
-  for _,rcvehicle in ipairs(UICity.labels.RCRover or empty_table) do
-    local prop_meta = rcvehicle:GetPropertyMetadata("UIWorkRadius")
-    if prop_meta then
-      if Bool == true then
-        local radius = rcvehicle:GetProperty(prop_meta.id)
-        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-      else
-        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max,ChoGGi.Consts.RCRoverMaxRadius))
-      end
-    end
-  end
-  ChoGGi.MsgPopup("+25 I can see for miles and miles",
-   "RC","UI/Icons/Upgrades/service_bots_04.tga"
-  )
-end
-
-function ChoGGi.CommandCenterRadius(Bool)
-  for _,building in ipairs(UICity.labels.DroneHub) do
-    local prop_meta = building:GetPropertyMetadata("UIWorkRadius")
-    if prop_meta then
-      if Bool == true then
-        const.CommandCenterDefaultRadius = const.CommandCenterDefaultRadius + 25
-        const.CommandCenterMaxRadius = const.CommandCenterMaxRadius + 25
-        const.CommandCenterMinRadius = const.CommandCenterMinRadius + 25
-        local radius = building:GetProperty(prop_meta.id)
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-        building:SetProperty(prop_meta.id, Default(prop_meta.default, radius + 25))
-        building:SetProperty(prop_meta.id, Min(prop_meta.min, radius + 25))
-      else
-        const.CommandCenterDefaultRadius = ChoGGi.Consts.CommandCenterDefaultRadius
-        const.CommandCenterMaxRadius = ChoGGi.Consts.CommandCenterMaxRadius
-        const.CommandCenterMinRadius = ChoGGi.Consts.CommandCenterMinRadius
-        building:SetProperty(prop_meta.id, Default(prop_meta.default, const.CommandCenterDefaultRadius))
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, const.CommandCenterMaxRadius))
-        building:SetProperty(prop_meta.id, Min(prop_meta.min, const.CommandCenterMinRadius))
-      end
-    end
-  end
-  ChoGGi.MsgPopup("I see you there",
-   "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
-  )
-end
-
-function ChoGGi.TriboelectricScrubberRadius(Bool)
-  for _,building in ipairs(UICity.labels.TriboelectricScrubber) do
-    local prop_meta = building:GetPropertyMetadata("UIRange")
-    if prop_meta then
-      if Bool == true then
-        local radius = building:GetProperty(prop_meta.id)
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-      else
-        building:SetProperty(prop_meta.id, Max(prop_meta.max,5)) --figure out default const to put here
-      end
-    end
-  end
-  ChoGGi.MsgPopup("I see you there",
-   "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
-  )
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set Game Speed",1,hint)
 end

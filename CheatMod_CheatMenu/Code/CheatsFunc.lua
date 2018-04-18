@@ -1,3 +1,121 @@
+function ChoGGi.DisasterTriggerColdWave()
+  CreateGameTimeThread(function()
+    local data = DataInstances.MapSettings_ColdWave
+    local descr = data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
+    StartColdWave(descr)
+  end)
+end
+function ChoGGi.DisasterTriggerDustDevil(major)
+  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
+  local data = DataInstances.MapSettings_DustDevils
+  --local descr = mapdata.MapSettings_DustDevils ~= "disabled" and data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  local devil = GenerateDustDevil(pos, descr, nil, major)
+  devil:Start()
+end
+function ChoGGi.DisasterTriggerDustStorm(storm_type)
+  CreateGameTimeThread(function()
+    local data = DataInstances.MapSettings_DustStorm
+    local descr = data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
+    StartDustStorm(storm_type,descr)
+  end)
+end
+function ChoGGi.DisasterTriggerMeteor(meteors_type)
+  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
+  local data = DataInstances.MapSettings_Meteor
+  --local descr = mapdata.MapSettings_Meteor ~= "disabled" and data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+  local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+  CreateGameTimeThread(function()
+    MeteorsDisaster(descr, meteors_type, pos)
+  end)
+end
+function ChoGGi.DisastersStop()
+  for Key,_ in pairs(g_IncomingMissiles or empty_table) do
+    Key:ExplodeInAir()
+  end
+  if g_DustStorm then
+    StopDustStorm()
+  end
+  if g_ColdWave then
+    StopColdWave()
+  end
+end
+
+function ChoGGi.DisastersTrigger()
+  local ListDisplay = {"Stop All Disasters","Cold Wave","Dust Devil Major","Dust Devil","Dust Storm Electrostatic","Dust Storm Great","Dust Storm Normal","Meteors Storm","Meteors Multi Spawn","Meteors Single"}
+  local ListActual = {nil,nil,"major",nil,"electrostatic","great","normal","storm","multispawn","single"}
+
+  local TempFunc = function(choice)
+    if choice == 1 then
+      ChoGGi.DisastersStop()
+    elseif choice == 2 then
+      ChoGGi.DisasterTriggerColdWave()
+    elseif choice == 3 or choice == 4 then
+      ChoGGi.DisasterTriggerDustDevil(ListActual[choice])
+    elseif choice == 5 or choice == 6 or choice == 7 then
+      ChoGGi.DisasterTriggerDustStorm(ListActual[choice])
+    elseif choice == 8 or choice == 9 or choice == 10 then
+      ChoGGi.DisasterTriggerMeteor(ListActual[choice])
+    end
+
+    ChoGGi.MsgPopup("Spawned: " .. ListDisplay[choice],
+      "Disasters","UI/Icons/Sections/attention.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Trigger Disaster",1,"Targeted to mouse cursor (use arrow keys and enter to select).")
+end
+
+function ChoGGi.SpawnColonists()
+  local ListDisplay = {1,10,50,100,150,250,500,1000,2500,5000,10000}
+  local TempFunc = function(choice)
+    CheatSpawnNColonists(ListDisplay[choice])
+    ChoGGi.MsgPopup("Spawned: " .. ListDisplay[choice],
+      "Colonists","UI/Icons/Sections/colonist.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Spawn Colonists",1,"Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.")
+end
+
+function ChoGGi.ShowMysteryList()
+  local ListActual = {}
+  ClassDescendantsList("MysteryBase", function(class)
+    table.insert(ListActual,{
+      name = g_Classes[class].scenario_name,
+      class = class
+    })
+    table.insert(ListActual,{
+      name = g_Classes[class].scenario_name,
+      class = class
+    })
+  end)
+  table.sort(ListActual,ChoGGi.CompareTableNames)
+
+  local ListDisplay = {}
+  local hint = ""
+  for i = 1, #ListActual do
+    local class = ListActual[i].class
+    if (i % 2 == 0) then
+      table.insert(ListDisplay,(g_Classes[class].scenario_name or "Missing Name: Instant") .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) .. ": Instant")
+    else
+      table.insert(ListDisplay,(g_Classes[class].scenario_name or "Missing Name") .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})))
+      hint = hint .. (g_Classes[class].scenario_name or "Missing Name") .. ": " .. (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description") .. "\n\n\n\n"
+    end
+  end
+  --clean up text
+  hint = hint:gsub("<newline><right>","\n\t\t\t\t")
+  hint = "\n\nWarning: Adding a mystery is cumulative, this will NOT replace existing mystery.\nMay take up to one Sol to activate instant mystery.\n\n\n\n\n\n\n\n" .. hint
+
+  local TempFunc = function(choice)
+    if (choice % 2 == 0) then
+      --instant
+      ChoGGi.StartMystery(ListActual[choice].class,true)
+    else
+      ChoGGi.StartMystery(ListActual[choice].class)
+    end
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Start A Mystery",1,hint,true,false)
+end
+
 function ChoGGi.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
@@ -67,7 +185,6 @@ local function CheatStartMystery(mystery_id,Bool)
   end
 end
 
---"Cheats/Start Mystery" menu items are built in OnMsgs.lua>ClassesBuilt()
 function ChoGGi.StartMystery(Mystery,Bool)
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true

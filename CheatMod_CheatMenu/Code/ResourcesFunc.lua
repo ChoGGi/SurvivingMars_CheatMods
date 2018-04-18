@@ -2,9 +2,13 @@ function ChoGGi.AddOrbitalProbes()
   if not UICity then
     return
   end
-  for i = 1, 10 do
-    PlaceObject("OrbitalProbe",{city = UICity})
+  local ListDisplay = {5,10,25,50,100,200}
+  local TempFunc = function(choice)
+    for i = 1, ListDisplay[choice] do
+      PlaceObject("OrbitalProbe",{city = UICity})
+    end
   end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Add Probes",10)
 end
 
 function ChoGGi.DeepScanToggle()
@@ -35,40 +39,76 @@ function ChoGGi.DeeperScanEnable()
   )
 end
 
-function ChoGGi.FoodPerRocketPassenger(Amount)
-  if Amount == 1 then
-    Consts.FoodPerRocketPassenger = ChoGGi.Consts.FoodPerRocketPassenger * ChoGGi.Consts.ResourceScale
-  elseif Amount == 2 then
-    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (25 * ChoGGi.Consts.ResourceScale)
-  elseif Amount == 3 then
-    Consts.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger + (1000 * ChoGGi.Consts.ResourceScale)
+function ChoGGi.SetFoodPerRocketPassenger()
+  local DefaultAmount = ChoGGi.Consts.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale
+  local ListDisplay = {DefaultAmount,25,50,75,100,250,500,1000,10000}
+  local hint
+  if ChoGGi.CheatMenuSettings.FoodPerRocketPassenger then
+    hint = "Current gravity: " .. ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale
   end
-  ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = Consts.FoodPerRocketPassenger
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / ChoGGi.Consts.ResourceScale .. ": om nom nom nom nom",
-   "Passengers","UI/Icons/Sections/Food_4.tga"
-  )
+
+  local TempFunc = function(choice)
+    local amount = ListDisplay[choice] * ChoGGi.Consts.ResourceScale
+    Consts.FoodPerRocketPassenger = amount
+    --save option for spawned
+    if choice == 1 then
+      ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = false
+    else
+      ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = amount
+    end
+    --save setting
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup(ListDisplay[choice] .. ": om nom nom nom nom",
+     "Passengers","UI/Icons/Sections/Food_4.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set Colonists Gravity",1,hint)
 end
 
-function ChoGGi.Add100PrefabsDrone()
-  UICity.drone_prefabs = UICity.drone_prefabs + 100
-  ChoGGi.MsgPopup("100 Drone Prefabs Added",
-    "Prefabs","UI/Icons/Sections/storage.tga"
-  )
+function ChoGGi.AddPrefabsDrone()
+  local ListDisplay = {1,5,10,25,50,100,500,1000}
+  local TempFunc = function(choice)
+    UICity.drone_prefabs = UICity.drone_prefabs + ListDisplay[choice]
+    ChoGGi.MsgPopup(ListDisplay[choice] .. " Drone prefabs added.",
+      "Prefabs","UI/Icons/Sections/storage.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Add Prefabs: Drone")
 end
 
-function ChoGGi.AddPrefabs(Type,Amount,Msg)
-  UICity:AddPrefabs(Type,Amount)
-  ChoGGi.MsgPopup(Msg,
-    "Prefabs","UI/Icons/Sections/storage.tga"
-  )
+function ChoGGi.AddPrefabs(Type,Msg)
+  --list to display and list with values
+  local ListDisplay = {1,5,10,25,50,100,500,1000}
+  local TempFunc = function(choice)
+    UICity:AddPrefabs(Type,ListDisplay[choice])
+    --and add the new amount
+    ChangeFunding(ListDisplay[choice])
+
+    ChoGGi.MsgPopup(ListDisplay[choice] .. Msg,
+      "Prefabs","UI/Icons/Sections/storage.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Add Prefabs: " .. Type)
 end
 
-function ChoGGi.SetFunds(Amount,Msg)
-  ChangeFunding(Amount)
-  ChoGGi.MsgPopup(Msg,
-  "Funding","UI/Icons/IPButtons/rare_metals.tga"
-  )
+function ChoGGi.SetFunding()
+  --list to display and list with values
+  local DefaultAmount = "(Reset to 500 M)"
+  local ListDisplay = {DefaultAmount,"100 M","1 000 M","10 000 M","100 000 M","1 000 000 000 M","90 000 000 000 M"}
+  local ListActual = {500,100,1000,10000,100000,1000000000,90000000000}
+  local TempFunc = function(choice)
+    --reset money back to 0
+    if choice == 1 and UICity then
+      UICity.funding = 0
+    end
+    --and add the new amount
+    ChangeFunding(ListActual[choice])
+
+    ChoGGi.MsgPopup(ListDisplay[choice],
+    "Funding","UI/Icons/IPButtons/rare_metals.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Add Funding",3,"If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultAmount)
 end
 
 function ChoGGi.FillResource(self)

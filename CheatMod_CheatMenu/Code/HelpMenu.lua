@@ -121,8 +121,7 @@ ChoGGi.AddAction(
       WaitCustomPopupNotification,
       "Help",
       "Hover mouse over menu item to get description and enabled status" ..
-        "\nIf menu item has a '+ num' then that means it'll add to the current amount" ..
-        "\n(you can add as many times as you want)" ..
+        "\nIf there isn't a status then it's likely a list of options to choose from" ..
         "\n\nFor any issues; please report them to my github/nexusmods page, or email ECM@choggi.org",
       {"OK"}
     )

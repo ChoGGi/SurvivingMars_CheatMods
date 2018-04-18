@@ -32,7 +32,6 @@ function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
     Ok = Ok or "Ok"
     Cancel = Cancel or "Cancel"
     Title = Title or "Placeholder"
-    Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
     CreateRealTimeThread(function()
       if "ok" == WaitQuestion(nil,
         Title,
@@ -312,4 +311,22 @@ end
 --open func in a new thread
 function ChoGGi.NewThread(Func)
   return coroutine.resume(coroutine.create(Func))
+end
+
+--changes a function to also post a Msg for use with OnMsg
+--AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
+function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
+  local SavedName = ClassName .. FuncName
+  --save orig
+  ChoGGi.OrigFunc[SavedName] = OrigFunc
+  --redefine it
+  _G[ClassName][FuncName] = function(self,...)
+    local ret = ChoGGi.OrigFunc[SavedName](self,...)
+    Msg(sMsg,self)
+    return ret
+  end
+end
+
+function ChoGGi.CompareTableNames(a,b)
+  return a.name < b.name
 end

@@ -1,15 +1,15 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Add 10 Orbital Probes",
+  "Expanded CM/Resources/Add Orbital Probes",
   ChoGGi.AddOrbitalProbes,
   nil,
-  "Add 10 probes to pinned list",
+  "Add more probes.",
   "ToggleTerrainHeight.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Deep Scan",
+  "Expanded CM/Resources/Deep Scan",
   ChoGGi.DeepScanToggle,
   nil,
   function()
@@ -20,7 +20,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Deeper Scan Enable",
+  "Expanded CM/Resources/Deeper Scan Enable",
   ChoGGi.DeeperScanEnable,
   nil,
   "Uncovers extremely rich underground deposits (unlocks research).",
@@ -28,254 +28,171 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Passengers/[1]Food Per Rocket Passenger (Default)",
-  function()
-    ChoGGi.FoodPerRocketPassenger(1)
-  end,
+  "Expanded CM/Resources/Food Per Rocket Passenger",
+  ChoGGi.SetFoodPerRocketPassenger,
   nil,
-  function()
-    return ChoGGi.Consts.FoodPerRocketPassenger / 100 .. " = The amount of Food supplied with each Colonist arrival."
-  end,
+  "Change the amount of Food supplied with each Colonist arrival.",
   "ToggleTerrainHeight.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Passengers/[2]Food Per Rocket Passenger + 25",
-  function()
-    ChoGGi.FoodPerRocketPassenger(2)
-  end,
+  "Expanded CM/Resources/Prefabs/Add Drones",
+  ChoGGi.AddPrefabsDrone,
   nil,
-  function()
-    return Consts.FoodPerRocketPassenger / 100 + 25 .. " = The amount of Food supplied with each Colonist arrival."
-  end,
-  "ToggleTerrainHeight.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Passengers/[5]Food Per Rocket Passenger + 1000",
-  function()
-    ChoGGi.FoodPerRocketPassenger(3)
-  end,
-  nil,
-  function()
-    return Consts.FoodPerRocketPassenger / 100  + 1000 .. " = The amount of Food supplied with each Colonist arrival."
-  end,
-  "ToggleTerrainHeight.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 100 Drones",
-  ChoGGi.Add100PrefabsDrone,
-  nil,
-  "Adds prefabs (use with DroneHub).",
+  "Add drone prefabs (use with DroneHub).",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 DroneHub",
+  "Expanded CM/Resources/Prefabs/Add DroneHubs",
   function()
-    ChoGGi.AddPrefabs("DroneHub",10,"10 DroneHub Prefabs Added")
+    ChoGGi.AddPrefabs("DroneHub"," DroneHub prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add DroneHub prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 ElectronicsFactory",
+  "Expanded CM/Resources/Prefabs/Add ElectronicsFactory",
   function()
-    ChoGGi.AddPrefabs("ElectronicsFactory",10,"10 ElectronicsFactory Prefabs Added")
+    ChoGGi.AddPrefabs("ElectronicsFactory"," ElectronicsFactory prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add ElectronicsFactory prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 FuelFactory",
+  "Expanded CM/Resources/Prefabs/Add FuelFactory",
   function()
-    ChoGGi.AddPrefabs("FuelFactory",10,"10 FuelFactory Prefabs Added")
+    ChoGGi.AddPrefabs("FuelFactory"," FuelFactory prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add FuelFactory prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 MachinePartsFactory",
+  "Expanded CM/Resources/Prefabs/Add MachinePartsFactory",
   function()
-    ChoGGi.AddPrefabs("MachinePartsFactory",10,"10 MachinePartsFactory Prefabs Added")
+    ChoGGi.AddPrefabs("MachinePartsFactory"," MachinePartsFactory prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add MachinePartsFactory prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 MoistureVaporator",
+  "Expanded CM/Resources/Prefabs/Add MoistureVaporator",
   function()
-    ChoGGi.AddPrefabs("MoistureVaporator",10,"10 MoistureVaporator Prefabs Added")
+    ChoGGi.AddPrefabs("MoistureVaporator"," MoistureVaporator prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add MoistureVaporator prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 PolymerPlant",
+  "Expanded CM/Resources/Prefabs/Add PolymerPlant",
   function()
-    ChoGGi.AddPrefabs("PolymerPlant",10,"10 PolymerPlant Prefabs Added")
+    ChoGGi.AddPrefabs("PolymerPlant"," PolymerPlant prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add PolymerPlant prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 StirlingGenerator",
+  "Expanded CM/Resources/Prefabs/Add StirlingGenerator",
   function()
-    ChoGGi.AddPrefabs("StirlingGenerator",10,"10 StirlingGenerator Prefabs Added")
+    ChoGGi.AddPrefabs("StirlingGenerator"," StirlingGenerator prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add StirlingGenerator prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Add 10 WaterReclamationSystem",
+  "Expanded CM/Resources/Prefabs/Spire/Add WaterReclamationSystem",
   function()
-    ChoGGi.AddPrefabs("WaterReclamationSystem",10,"10 WaterReclamationSystem Prefabs Added")
+    ChoGGi.AddPrefabs("WaterReclamationSystem"," WaterReclamationSystem prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add WaterReclamationSystem prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 Arcology",
+  "Expanded CM/Resources/Prefabs/Spire/Add Arcology",
   function()
-    ChoGGi.AddPrefabs("Arcology",10,"10 Arcology Prefabs Added")
+    ChoGGi.AddPrefabs("Arcology"," Arcology prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add Arcology prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 Sanatorium",
+  "Expanded CM/Resources/Prefabs/Spire/Add Sanatorium",
   function()
-    ChoGGi.AddPrefabs("Sanatorium",10,"10 Sanatorium Prefabs Added")
+    ChoGGi.AddPrefabs("Sanatorium"," Sanatorium prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add Sanatorium prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 NetworkNode",
+  "Expanded CM/Resources/Prefabs/Spire/Add NetworkNode",
   function()
-    ChoGGi.AddPrefabs("NetworkNode",10,"10 NetworkNode Prefabs Added")
+    ChoGGi.AddPrefabs("NetworkNode"," NetworkNode prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add NetworkNode prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 MedicalCenter",
+  "Expanded CM/Resources/Prefabs/Spire/Add MedicalCenter",
   function()
-    ChoGGi.AddPrefabs("MedicalCenter",10,"10 MedicalCenter Prefabs Added")
+    ChoGGi.AddPrefabs("MedicalCenter"," MedicalCenter prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add MedicalCenter prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 HangingGardens",
+  "Expanded CM/Resources/Prefabs/Spire/Add HangingGardens",
   function()
-    ChoGGi.AddPrefabs("HangingGardens",10,"10 HangingGardens Prefabs Added")
+    ChoGGi.AddPrefabs("HangingGardens"," HangingGardens prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add HangingGardens prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Prefabs/Spire/Add 10 CloningVats",
+  "Expanded CM/Resources/Prefabs/Spire/Add CloningVats",
   function()
-    ChoGGi.AddPrefabs("CloningVats",10,"10 CloningVats Prefabs Added")
+    ChoGGi.AddPrefabs("CloningVats"," CloningVats prefabs added.")
   end,
   nil,
-  "Adds prefabs.",
+  "Add CloningVats prefabs.",
   "gear.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[1]Add 100 M",
-  function()
-    ChoGGi.SetFunds(100,"100 M Added")
-  end,
-  nil,
-  "Adds amount to current funding.",
-  "pirate.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[2]Add 1,000 M",
-  function()
-    ChoGGi.SetFunds(1000,"1,000 M Added")
-  end,
+  "Expanded CM/Resources/Add Funding",
+  ChoGGi.SetFunding,
   "Ctrl-Shift-0",
-  "Adds amount to current funding.",
+  "Add more funding (or reset back to 500 M).",
   "pirate.tga"
 )
 
 ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[3]Add 10,000 M",
-  function()
-    ChoGGi.SetFunds(10000,"10,000 M Added")
-  end,
-  nil,
-  "Adds amount to current funding.",
-  "pirate.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[4]Add 100,000 M",
-  function()
-    ChoGGi.SetFunds(100000,"100,000 M Added")
-  end,
-  nil,
-  "Adds amount to current funding.",
-  "pirate.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[5]Add 1,000,000,000 M",
-  function()
-    ChoGGi.SetFunds(1000000000,"1,000,000,000 M Added")
-  end,
-  nil,
-  "Adds amount to current funding.",
-  "pirate.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Add Funding/[6]Set to 500 M",
-  function()
-    if UICity then
-      UICity.funding = 0
-    end
-    ChoGGi.SetFunds(500,"500 M")
-  end,
-  nil,
-  "Resets funding to 500 M.",
-  "pirate.tga"
-)
-
-ChoGGi.AddAction(
-  "Gameplay/Resources/Fill Selected Resource",
+  "Expanded CM/Resources/Fill Selected Resource",
   function()
     ChoGGi.FillResource(SelectedObj or SelectionMouseObj())
   end,

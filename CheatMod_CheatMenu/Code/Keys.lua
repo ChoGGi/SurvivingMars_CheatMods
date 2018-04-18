@@ -1,3 +1,48 @@
+function ChoGGi.Keys_LoadingScreenPreClose()
+  if ChoGGi.CheatMenuSettings.NumberKeysBuildMenu then
+    --use number keys to activate/hide build menus
+    local skipped = false
+    for i = 1, #BuildCategories do
+      if i < 10 then
+        ChoGGi.AddAction(nil,
+          function()
+            ChoGGi.ShowBuildMenu(i)
+          end,
+          tostring(i) --the key has to be a string
+        )
+      elseif i == 10 then
+        ChoGGi.AddAction(nil,
+          function()
+            ChoGGi.ShowBuildMenu(i)
+          end,
+          "0"
+        )
+      else
+        --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
+        if BuildCategories[i].id == "Hidden" then
+          skipped = true
+        else
+          if skipped then
+            ChoGGi.AddAction(nil,
+              function()
+                ChoGGi.ShowBuildMenu(i)
+              end,
+              "Shift-" .. i - 11 -- -1 more for skipping Hidden
+            )
+          else
+            ChoGGi.AddAction(nil,
+              function()
+                ChoGGi.ShowBuildMenu(i)
+              end,
+              "Shift-" .. i - 10 -- -10 since we're doing Shift-*
+            )
+          end
+        end
+      end
+    end
+  end
+end
+
 --spawn and fill a deposit at mouse pos
 function ChoGGi.AddDeposit(sType)
 
@@ -61,8 +106,7 @@ function ChoGGi.ConstructionModeSet(itemname)
     CloseXBuildMenu()
   end
 end
-
-
+--show console
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
@@ -76,7 +120,7 @@ ChoGGi.AddAction(nil,
   end,
   "Enter"
 )
-
+--show console with restart
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
@@ -135,7 +179,7 @@ ChoGGi.AddAction(nil,
       NewObj:ChooseEntity()
     end
   end,
-  "Ctrl-Shift-C"
+  "Shift-Q"
 )
 
 ChoGGi.AddAction(nil,UAMenu.ToggleOpen,"F2")

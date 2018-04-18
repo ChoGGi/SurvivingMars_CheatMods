@@ -2,7 +2,7 @@ You should buy a copy: http://store.steampowered.com/app/464920
 
 ### No warranty implied or otherwise!
 
-Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo, unlimited wonders, build almost anywhere, start mysteries, useful shortcuts, etc... Requests are welcome.
+Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 ##### Install help
 ```
@@ -19,6 +19,7 @@ F4: Open object examiner for object
 Ctrl+F: Fill resource of object
 Enter or Tilde: Show the console
 F9: Clear the console log
+Number keys to open/close build menu (Shift-*Num for menus above 10)
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it
 Ctrl-Space: Opens placement mode with the last placed object
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits)
@@ -26,15 +27,13 @@ Ctrl-Shift-F: Follow Camera (follow an object around)
 Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)
 Ctrl-Shift-E: Toggle editor mode
 Ctrl-Alt-Shift-D: Delete object
-Ctrl-Shift-C: Clone selected object to mouse position
+Shift-Q: Clone selected object to mouse position
 
 When I say object that means either the selected object or the object under the mouse cursor
 
-There's a cheats section in most info panels on the right side of the screen.
-Menu>Gameplay>QoL>Infopanel Cheats (on by default, as well as the empty cheat being disabled)
-
+There's a cheats section in most selection panels on the right side of the screen.
+Menu>Gameplay>QoL>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled)
-If a menu has "+ *number*" then it'll increase it by that number each time
 ```
 
 ##### List of some stuff added (not up to date)
@@ -195,6 +194,9 @@ If you increase a number high enough it'll go negative.
 
 Production will reset when the production changes (Solar panels, Wind turbines, etc).
   >You can use Buildings>Production Amount Refresh to reset to saved amounts.
+
+You can't cheat fill concrete deposits.
+  >Got me.
 ```
 
 ##### Thanks
