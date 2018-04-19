@@ -327,6 +327,21 @@ function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
   end
 end
 
-function ChoGGi.CompareTableNames(a,b)
-  return a.name < b.name
+--compares two values, if types are different then makes them both strings
+function ChoGGi.CompareTableNames(a,b,sName)
+  if type(a[sName]) == type(b[sName]) then
+    return a[sName] < b[sName]
+  else
+    return tostring(a[sName]) < tostring(b[sName])
+  end
 end
+
+--tries to convert "65" to 65
+function ChoGGi.RetNumOrString(Value)
+  local ret = tonumber(Value)
+  if not ret then
+    ret = Value
+  end
+  return ret
+end
+

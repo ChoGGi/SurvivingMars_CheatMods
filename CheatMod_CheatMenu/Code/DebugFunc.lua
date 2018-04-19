@@ -1,16 +1,42 @@
+
 --no sense in building the list more then once?
-local ObjectSpawner_ListDisplay = {}
+local ObjectSpawner_ItemList = {}
 function ChoGGi.ObjectSpawner()
-  if #ObjectSpawner_ListDisplay == 0 then
+  if #ObjectSpawner_ItemList == 0 then
     for Key,_ in pairs(g_Classes) do
-      table.insert(ObjectSpawner_ListDisplay,Key)
+      table.insert(ObjectSpawner_ItemList,{
+        text = Key,
+        value = Key
+      })
     end
-    table.sort(ObjectSpawner_ListDisplay)
   end
-  local TempFunc = function(choice)
-    PlaceObj(ObjectSpawner_ListDisplay[choice],{"Pos",GetTerrainCursor()})
+
+  local CallBackFunc = function(choice)
+    local NewObj = PlaceObj(choice[1].value,{"Pos",GetTerrainCursor()})
+
+    --[[
+    for _, prop in ipairs(NewObj:GetProperties()) do
+      NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
+    end
+    --]]
+
+    ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
+     "Object","UI/Icons/Notifications/placeholder.tga"
+    )
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ObjectSpawner_ListDisplay,"Object Spawner",1)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner","Warning: Objects are unselectable with mouse cursor.")
+end
+
+
+function ChoGGi.ObjectsStats_Toggle()
+  --check for any opened windows and kill them
+  for i = 1, #terminal.desktop do
+    if IsKindOf(terminal.desktop[i],"ObjectsStatsDlg") then
+      terminal.desktop[i]:delete()
+    end
+  end
+  --open a new copy
+  OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
 function ChoGGi.WriteLogs_Toggle()

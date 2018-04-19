@@ -1,10 +1,18 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "[102]Debug/Objects Stats",
+  ChoGGi.ObjectsStats_Toggle,
+  nil,
+  "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then use this menu item to make it closeable).",
+  "ToggleCutSmoothTrans.tga"
+)
+
+ChoGGi.AddAction(
   "[102]Debug/Object Spawner",
   ChoGGi.ObjectSpawner,
   "Ctrl-Shift-S",
-  "Shows list of objects, and spawns at mouse cursor",
+  "Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to select items after spawn.",
   "add_water.tga"
 )
 

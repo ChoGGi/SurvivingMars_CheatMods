@@ -134,22 +134,10 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Expanded CM/Colonists/[2]Traits/Trait Add",
-  function()
-    ChoGGi.ChangeColonistsTrait(1)
-  end,
+  "Expanded CM/Colonists/[2]Traits/Change Individual Traits",
+  ChoGGi.ChangeColonistsTrait,
   nil,
-  "Add a trait to all colonists.",
-  "AlignSel.tga"
-)
-
-ChoGGi.AddAction(
-  "Expanded CM/Colonists/[2]Traits/Trait Remove",
-  function()
-    ChoGGi.ChangeColonistsTrait(2)
-  end,
-  nil,
-  "Remove a trait from all colonists.",
+  "Add/Remove traits for all colonists.",
   "AlignSel.tga"
 )
 

@@ -17,6 +17,7 @@ ChoGGi = {
   CheatMenuSettings = {},
 }
 
+--for loading from the main menu
 -- Turn on editor mode (this is required for cheats to work) and then add the editor commands
 Platform.editor = true
 Platform.developer = true
@@ -86,7 +87,7 @@ dofile("CommonLua/UI/uiEditorStatusbar.lua")
 Platform.developer = false
 
 --used to let me know if we're on my computer
-local file_error, code = AsyncFileToString("AppData/ChoGGi.lua")
+local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
   ChoGGi.Testing = true
 end

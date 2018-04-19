@@ -28,7 +28,7 @@ m = SelectionMouseObj
 c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
 
---asdd dump buttons/etc
+--add dump buttons/etc
 ChoGGi.OrigFunc.Examine_Init = Examine.Init
 function Examine:Init()
   ChoGGi.OrigFunc.Examine_Init(self)
@@ -54,10 +54,6 @@ function Examine:Init()
     OpenManipulator(self.obj,self)
   end
 --]]
-  --so we can close it after we close the list dialog
-  if ChoGGi.WaitListChoice_OpenedHintDlg == 1 then
-    ChoGGi.WaitListChoice_OpenedHintDlg = self
-  end
 end
 
 --so we can add hints to info pane cheats
@@ -349,20 +345,22 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
   end --if
 
-  --was giving a nil error in log, I assume devs'll fix it one day (changed amount to amount or 0)
+  --was giving a nil error in log, I assume devs'll fix it one day (changed it to check if amount is a number...)
   ChoGGi.OrigFunc.RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
   function RequiresMaintenance:AddDust(amount)
-    if self:IsKindOf("Building") then
-      --(dev check)
-      --amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
-      amount = MulDivRound(amount or 0, g_Consts.BuildingDustModifier, 100)
-    end
-    if self.accumulate_dust then
-      self:AccumulateMaintenancePoints(amount)
+    --(dev check)
+    if type(amount) == "number" or luadebugger and (luadebugger:Type(amount) == "Point" or luadebugger:Type(amount) == "Box") then
+      if self:IsKindOf("Building") then
+        amount = MulDivRound(amount, Consts.BuildingDustModifier, 100)
+      end
+      if self.accumulate_dust then
+        self:AccumulateMaintenancePoints(amount)
+      end
     end
   end
 
 end --OnMsg
+
 
 function ChoGGi.ReplacedFunctions_ClassesGenerate()
 

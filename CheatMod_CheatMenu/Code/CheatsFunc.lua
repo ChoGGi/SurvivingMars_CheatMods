@@ -1,3 +1,4 @@
+
 function ChoGGi.DisasterTriggerColdWave()
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_ColdWave
@@ -42,111 +43,160 @@ function ChoGGi.DisastersStop()
 end
 
 function ChoGGi.DisastersTrigger()
-  local ListDisplay = {"Stop All Disasters","Cold Wave","Dust Devil Major","Dust Devil","Dust Storm Electrostatic","Dust Storm Great","Dust Storm Normal","Meteors Storm","Meteors Multi Spawn","Meteors Single"}
-  local ListActual = {nil,nil,"major",nil,"electrostatic","great","normal","storm","multispawn","single"}
+  local ItemList = {
+    {
+      text = "Stop All Disasters",
+      value = false,
+    },
+    {
+      text = "Cold Wave",
+      value = false,
+    },
+    {
+      text = "Dust Devil Major",
+      value = "major",
+    },
+    {
+      text = "Dust Devil",
+      value = false,
+    },
+    {
+      text = "Dust Storm Electrostatic",
+      value = "electrostatic",
+    },
+    {
+      text = "Dust Storm Great",
+      value = "great",
+    },
+    {
+      text = "Dust Storm Normal",
+      value = "normal",
+    },
+    {
+      text = "Meteors Storm",
+      value = "storm",
+    },
+    {
+      text = "Meteors Multi Spawn",
+      value = "multispawn",
+    },
+    {
+      text = "Meteors Single",
+      value = "single",
+    },
+  }
 
-  local TempFunc = function(choice)
-    if choice == 1 then
+  local CallBackFunc = function(choice)
+    if choice[1].which == 1 then
       ChoGGi.DisastersStop()
-    elseif choice == 2 then
+    elseif choice[1].which == 2 then
       ChoGGi.DisasterTriggerColdWave()
-    elseif choice == 3 or choice == 4 then
-      ChoGGi.DisasterTriggerDustDevil(ListActual[choice])
-    elseif choice == 5 or choice == 6 or choice == 7 then
-      ChoGGi.DisasterTriggerDustStorm(ListActual[choice])
-    elseif choice == 8 or choice == 9 or choice == 10 then
-      ChoGGi.DisasterTriggerMeteor(ListActual[choice])
+    elseif choice[1].which == 3 or choice[1].which == 4 then
+      ChoGGi.DisasterTriggerDustDevil(choice[1].value)
+    elseif choice[1].which == 5 or choice[1].which == 6 or choice[1].which == 7 then
+      ChoGGi.DisasterTriggerDustStorm(choice[1].value)
+    elseif choice[1].which == 8 or choice[1].which == 9 or choice[1].which == 10 then
+      ChoGGi.DisasterTriggerMeteor(choice[1].value)
     end
 
-    ChoGGi.MsgPopup("Spawned: " .. ListDisplay[choice],
+
+    ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
       "Disasters","UI/Icons/Sections/attention.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Trigger Disaster",1,"Targeted to mouse cursor (use arrow keys and enter to select).")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster","Targeted to mouse cursor (use arrow keys and enter to select).")
 end
 
 function ChoGGi.SpawnColonists()
-  local ListDisplay = {1,10,50,100,150,250,500,1000,2500,5000,10000}
-  local TempFunc = function(choice)
-    CheatSpawnNColonists(ListDisplay[choice])
-    ChoGGi.MsgPopup("Spawned: " .. ListDisplay[choice],
-      "Colonists","UI/Icons/Sections/colonist.tga"
-    )
+  local ItemList = {
+    {
+      text = 1,
+      value = 1,
+    },
+    {
+      text = 10,
+      value = 10,
+    },
+    {
+      text = 25,
+      value = 25,
+    },
+    {
+      text = 50,
+      value = 50,
+    },
+    {
+      text = 75,
+      value = 75,
+    },
+    {
+      text = 100,
+      value = 100,
+    },
+    {
+      text = 250,
+      value = 250,
+    },
+    {
+      text = 500,
+      value = 500,
+    },
+    {
+      text = 1000,
+      value = 1000,
+    },
+    {
+      text = 2500,
+      value = 2500,
+    },
+    {
+      text = 5000,
+      value = 5000,
+    },
+    {
+      text = 10000,
+      value = 10000,
+    },
+  }
+
+  local CallBackFunc = function(choice)
+    local amount = choice[1].value
+    if type(amount) == "number" then
+      CheatSpawnNColonists(amount)
+      ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
+        "Colonists","UI/Icons/Sections/colonist.tga"
+      )
+    end
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Spawn Colonists",1,"Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists","Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.")
 end
 
 function ChoGGi.ShowMysteryList()
-  local ListActual = {}
-  ClassDescendantsList("MysteryBase", function(class)
-    table.insert(ListActual,{
-      name = g_Classes[class].scenario_name,
-      class = class
-    })
-    table.insert(ListActual,{
-      name = g_Classes[class].scenario_name,
-      class = class
+  local ItemList = {}
+  ClassDescendantsList("MysteryBase",function(class)
+    table.insert(ItemList,{
+      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) or "Missing Name"),
+      value = class,
+      hint = (g_Classes[class].scenario_name or "Missing Name") .. ": " .. (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description")
     })
   end)
-  table.sort(ListActual,ChoGGi.CompareTableNames)
 
-  local ListDisplay = {}
-  local hint = ""
-  for i = 1, #ListActual do
-    local class = ListActual[i].class
-    if (i % 2 == 0) then
-      table.insert(ListDisplay,(g_Classes[class].scenario_name or "Missing Name: Instant") .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) .. ": Instant")
-    else
-      table.insert(ListDisplay,(g_Classes[class].scenario_name or "Missing Name") .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})))
-      hint = hint .. (g_Classes[class].scenario_name or "Missing Name") .. ": " .. (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description") .. "\n\n\n\n"
-    end
-  end
-  --clean up text
-  hint = hint:gsub("<newline><right>","\n\t\t\t\t")
-  hint = "\n\nWarning: Adding a mystery is cumulative, this will NOT replace existing mystery.\nMay take up to one Sol to activate instant mystery.\n\n\n\n\n\n\n\n" .. hint
-
-  local TempFunc = function(choice)
-    if (choice % 2 == 0) then
+  local CallBackFunc = function(choice)
+    if ChoGGi.ListChoiceCustom_CheckBox1 then
       --instant
-      ChoGGi.StartMystery(ListActual[choice].class,true)
+      ChoGGi.StartMystery(choice[1].value,true)
     else
-      ChoGGi.StartMystery(ListActual[choice].class)
+      ChoGGi.StartMystery(choice[1].value)
     end
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Start A Mystery",1,hint,true,false)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery","Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries.",nil,"Instant Start","May take up to one Sol to \"instantly\" activate mystery.")
 end
 
-function ChoGGi.UnlockAllBuildings()
-  CheatUnlockAllBuildings()
-  RefreshXBuildMenu()
+function ChoGGi.StartMystery(Mystery,Bool)
+  --inform people of actions, so they don't add a bunch of them
+  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
 
-  ChoGGi.MsgPopup("Unlocked all buildings for construction.",
-   "Buildings","UI/Icons/Upgrades/build_2.tga"
-  )
-end
-
-function ChoGGi.OutsourcePoints1000000()
-  Consts.OutsourceResearch = 1000 * ChoGGi.Consts.ResearchPointsScale
-  ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. ": The same thing we do every night, Pinky - try to take over the world!",
-   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
-  )
-end
-
-function ChoGGi.OutsourcingFree_Toggle()
-  Consts.OutsourceResearchCost = ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost
-  ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. ": Best hope you picked India as your Mars sponsor",
-   "Research","UI/Icons/Sections/research_1.tga"
-  )
-end
-
---called from below
-local function CheatStartMystery(mystery_id,Bool)
---mapdata.StartMystery?
-  UICity.mystery_id = mystery_id
+  UICity.mystery_id = Mystery
   for i = 1, #TechTree do
     local field = TechTree[i]
     local field_id = field.id
@@ -154,7 +204,7 @@ local function CheatStartMystery(mystery_id,Bool)
     local list = UICity.tech_field[field_id] or {}
     UICity.tech_field[field_id] = list
     for _, tech in ipairs(field) do
-      if tech.mystery == mystery_id then
+      if tech.mystery == Mystery then
         local tech_id = tech.id
         list[#list + 1] = tech_id
         UICity.tech_status[tech_id] = {points = 0, field = field_id}
@@ -185,11 +235,92 @@ local function CheatStartMystery(mystery_id,Bool)
   end
 end
 
-function ChoGGi.StartMystery(Mystery,Bool)
-  --inform people of actions, so they don't add a bunch of them
-  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
-  UICity.mystery_id = Mystery
-  CheatStartMystery(Mystery,Bool)
+function ChoGGi.UnlockAllBuildings()
+  CheatUnlockAllBuildings()
+  RefreshXBuildMenu()
+
+  ChoGGi.MsgPopup("Unlocked all buildings for construction.",
+   "Buildings","UI/Icons/Upgrades/build_2.tga"
+  )
+end
+
+function ChoGGi.AddOutsourcePoints()
+  local ItemList = {
+    {
+      text = 100,
+      value = 100,
+    },
+    {
+      text = 250,
+      value = 250,
+    },
+    {
+      text = 500,
+      value = 500,
+    },
+    {
+      text = 1000,
+      value = 1000,
+    },
+    {
+      text = 2500,
+      value = 2500,
+    },
+    {
+      text = 5000,
+      value = 5000,
+    },
+    {
+      text = 10000,
+      value = 10000,
+    },
+    {
+      text = 25000,
+      value = 25000,
+    },
+    {
+      text = 50000,
+      value = 50000,
+    },
+    {
+      text = 100000,
+      value = 100000,
+    },
+    {
+      text = 100000000,
+      value = 100000000,
+    },
+  }
+
+  local CallBackFunc = function(choice)
+    local amount = choice[1].value
+    if type(amount) == "number" then
+      UICity:AddResearchPoints(amount)
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
+      )
+    end
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points","If you need a little boost (or a lotta boost) in research.")
+
+end
+
+function ChoGGi.OutsourcePoints1000000()
+  Consts.OutsourceResearch = 1000 * ChoGGi.Consts.ResearchPointsScale
+  ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. ": The same thing we do every night, Pinky - try to take over the world!",
+   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
+  )
+end
+
+function ChoGGi.OutsourcingFree_Toggle()
+  Consts.OutsourceResearchCost = ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost
+  ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. ": Best hope you picked India as your Mars sponsor",
+   "Research","UI/Icons/Sections/research_1.tga"
+  )
 end
 
 function ChoGGi.BreakThroughTechsPerGame_Toggle()
@@ -205,142 +336,256 @@ function ChoGGi.BreakThroughTechsPerGame_Toggle()
   )
 end
 
-function ChoGGi.ResearchEveryMystery()
-  GrantTech("BlackCubesDisposal")
-  GrantTech("AlienDiggersDestruction")
-  GrantTech("AlienDiggersDetection")
-  GrantTech("XenoExtraction")
-  GrantTech("RegolithExtractor")
-  GrantTech("PowerDecoy")
-  GrantTech("Xeno-Terraforming")
-  GrantTech("DreamSimulation")
-  GrantTech("NumberSixTracing")
-  GrantTech("DefenseTower")
-  GrantTech("SolExploration")
-  GrantTech("WildfireCure")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith Mystery",
-    "Research","UI/Icons/Notifications/research.tga"
-  )
+function ChoGGi.ShowResearchDialog()
+  local ItemList = {}
+  table.insert(ItemList,{
+    text = "(Everything)",
+    value = "Everything",
+    hint = "All the tech/breakthroughs/mysteries"
+  })
+  table.insert(ItemList,{
+    text = "(All Tech)",
+    value = "AllTech",
+    hint = "All the regular tech"
+  })
+  table.insert(ItemList,{
+    text = "(All Breakthroughs)",
+    value = "AllBreakthroughs",
+    hint = "All the breakthroughs"
+  })
+  table.insert(ItemList,{
+    text = "(All Mysteries)",
+    value = "AllMysteries",
+    hint = "All the mysteries"
+  })
+  for i = 1, #TechTree do
+    for j = 1, #TechTree[i] do
+      table.insert(ItemList,{
+        text = _InternalTranslate(TechTree[i][j].display_name),
+        value = TechTree[i][j].id,
+        hint = _InternalTranslate(TechTree[i][j].description)
+      })
+    end
+  end
+
+  local CallBackFunc = function(choice)
+
+    --nothing checked so just return
+    if not ChoGGi.ListChoiceCustom_CheckBox1 and not ChoGGi.ListChoiceCustom_CheckBox2 then
+      ChoGGi.MsgPopup("Pick a checkbox next time...","Research","UI/Icons/Notifications/research.tga")
+      return
+    elseif ChoGGi.ListChoiceCustom_CheckBox1 and ChoGGi.ListChoiceCustom_CheckBox2 then
+      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Research","UI/Icons/Notifications/research.tga")
+      return
+    end
+
+    local sType
+    local Which
+    --add
+    if ChoGGi.ListChoiceCustom_CheckBox1 then
+      sType = "DiscoverTech"
+      Which = "Unlocked"
+    --remove
+    elseif ChoGGi.ListChoiceCustom_CheckBox2 then
+      sType = "GrantTech"
+      Which = "Researched"
+    end
+
+    --MultiSel
+    for i = 1, #choice do
+      local value = choice[i].value
+      if value == "Everything" then
+        ChoGGi.SetTech_EveryMystery(sType)
+        ChoGGi.SetTech_EveryBreakthrough(sType)
+        ChoGGi.SetTech_EveryTech(sType)
+      elseif value == "AllTech" then
+        ChoGGi.SetTech_EveryTech(sType)
+      elseif value == "AllBreakthroughs" then
+        ChoGGi.SetTech_EveryBreakthrough(sType)
+      elseif value == "AllMysteries" then
+        ChoGGi.SetTech_EveryMystery(sType)
+      else
+        _G[sType](value)
+      end
+    end
+
+    ChoGGi.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
+      "Research","UI/Icons/Notifications/research.tga"
+    )
+
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock","Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).",true,"Unlock","Just unlocks in the tree","Research","Unlocks and researchs.")
+
 end
 
-function ChoGGi.UnlockEveryBreakthrough()
-  DiscoverTech("ConstructionNanites")
-  DiscoverTech("HullPolarization")
-  DiscoverTech("ProjectPhoenix")
-  DiscoverTech("SoylentGreen")
-  DiscoverTech("NeuralEmpathy")
-  DiscoverTech("RapidSleep")
-  DiscoverTech("ThePositronicBrain")
-  DiscoverTech("SafeMode")
-  DiscoverTech("HiveMind")
-  DiscoverTech("SpaceRehabilitation")
-  DiscoverTech("WirelessPower")
-  DiscoverTech("PrintedElectronics")
-  DiscoverTech("CoreMetals")
-  DiscoverTech("CoreWater")
-  DiscoverTech("CoreRareMetals")
-  DiscoverTech("SuperiorCables")
-  DiscoverTech("SuperiorPipes")
-  DiscoverTech("AlienImprints")
-  DiscoverTech("NocturnalAdaptation")
-  DiscoverTech("GeneSelection")
-  DiscoverTech("MartianDiet")
-  DiscoverTech("EternalFusion")
-  DiscoverTech("SuperconductingComputing")
-  DiscoverTech("NanoRefinement")
-  DiscoverTech("ArtificialMuscles")
-  DiscoverTech("InspiringArchitecture")
-  DiscoverTech("GiantCrops")
-  DiscoverTech("NeoConcrete")
-  DiscoverTech("AdvancedDroneDrive")
-  DiscoverTech("DryFarming")
-  DiscoverTech("MartianSteel")
-  DiscoverTech("VectorPump")
-  DiscoverTech("Superfungus")
-  DiscoverTech("HypersensitivePhotovoltaics")
-  DiscoverTech("FrictionlessComposites")
-  DiscoverTech("ZeroSpaceComputing")
-  DiscoverTech("MultispiralArchitecture")
-  DiscoverTech("MagneticExtraction")
-  DiscoverTech("SustainedWorkload")
-  DiscoverTech("ForeverYoung")
-  DiscoverTech("MartianbornIngenuity")
-  DiscoverTech("CryoSleep")
-  DiscoverTech("Cloning")
-  DiscoverTech("GoodVibrations")
-  DiscoverTech("DomeStreamlining")
-  DiscoverTech("PrefabCompression")
-  DiscoverTech("ExtractorAI")
-  DiscoverTech("ServiceBots")
-  DiscoverTech("OverchargeAmplification")
-  DiscoverTech("PlutoniumSynthesis")
-  DiscoverTech("InterplanetaryLearning")
-  DiscoverTech("Vocation-Oriented Society")
-  DiscoverTech("PlasmaRocket")
-  DiscoverTech("AutonomousHubs")
-  DiscoverTech("FactoryAutomation")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith DiscoverTech",
-    "Research","UI/Icons/Notifications/research.tga"
-  )
+function ChoGGi.SetTech_EveryMystery(sType)
+  _G[sType]("BlackCubesDisposal")
+  _G[sType]("AlienDiggersDestruction")
+  _G[sType]("AlienDiggersDetection")
+  _G[sType]("XenoExtraction")
+  _G[sType]("RegolithExtractor")
+  _G[sType]("PowerDecoy")
+  _G[sType]("Xeno-Terraforming")
+  _G[sType]("DreamSimulation")
+  _G[sType]("NumberSixTracing")
+  _G[sType]("DefenseTower")
+  _G[sType]("SolExploration")
+  _G[sType]("WildfireCure")
 end
 
-function ChoGGi.ResearchEveryBreakthrough()
-  GrantTech("ConstructionNanites")
-  GrantTech("HullPolarization")
-  GrantTech("ProjectPhoenix")
-  GrantTech("SoylentGreen")
-  GrantTech("NeuralEmpathy")
-  GrantTech("RapidSleep")
-  GrantTech("ThePositronicBrain")
-  GrantTech("SafeMode")
-  GrantTech("HiveMind")
-  GrantTech("SpaceRehabilitation")
-  GrantTech("WirelessPower")
-  GrantTech("PrintedElectronics")
-  GrantTech("CoreMetals")
-  GrantTech("CoreWater")
-  GrantTech("CoreRareMetals")
-  GrantTech("SuperiorCables")
-  GrantTech("SuperiorPipes")
-  GrantTech("AlienImprints")
-  GrantTech("NocturnalAdaptation")
-  GrantTech("GeneSelection")
-  GrantTech("MartianDiet")
-  GrantTech("EternalFusion")
-  GrantTech("SuperconductingComputing")
-  GrantTech("NanoRefinement")
-  GrantTech("ArtificialMuscles")
-  GrantTech("InspiringArchitecture")
-  GrantTech("GiantCrops")
-  GrantTech("NeoConcrete")
-  GrantTech("AdvancedDroneDrive")
-  GrantTech("DryFarming")
-  GrantTech("MartianSteel")
-  GrantTech("VectorPump")
-  GrantTech("Superfungus")
-  GrantTech("HypersensitivePhotovoltaics")
-  GrantTech("FrictionlessComposites")
-  GrantTech("ZeroSpaceComputing")
-  GrantTech("MultispiralArchitecture")
-  GrantTech("MagneticExtraction")
-  GrantTech("SustainedWorkload")
-  GrantTech("ForeverYoung")
-  GrantTech("MartianbornIngenuity")
-  GrantTech("CryoSleep")
-  GrantTech("Cloning")
-  GrantTech("GoodVibrations")
-  GrantTech("DomeStreamlining")
-  GrantTech("PrefabCompression")
-  GrantTech("ExtractorAI")
-  GrantTech("ServiceBots")
-  GrantTech("OverchargeAmplification")
-  GrantTech("PlutoniumSynthesis")
-  GrantTech("InterplanetaryLearning")
-  GrantTech("Vocation-Oriented Society")
-  GrantTech("PlasmaRocket")
-  GrantTech("AutonomousHubs")
-  GrantTech("FactoryAutomation")
-  ChoGGi.MsgPopup("Unleash your inner Black Monolith GrantTech",
-    "Research","UI/Icons/Notifications/research.tga"
-  )
+function ChoGGi.SetTech_EveryBreakthrough(sType)
+  _G[sType]("ConstructionNanites")
+  _G[sType]("HullPolarization")
+  _G[sType]("ProjectPhoenix")
+  _G[sType]("SoylentGreen")
+  _G[sType]("NeuralEmpathy")
+  _G[sType]("RapidSleep")
+  _G[sType]("ThePositronicBrain")
+  _G[sType]("SafeMode")
+  _G[sType]("HiveMind")
+  _G[sType]("SpaceRehabilitation")
+  _G[sType]("WirelessPower")
+  _G[sType]("PrintedElectronics")
+  _G[sType]("CoreMetals")
+  _G[sType]("CoreWater")
+  _G[sType]("CoreRareMetals")
+  _G[sType]("SuperiorCables")
+  _G[sType]("SuperiorPipes")
+  _G[sType]("AlienImprints")
+  _G[sType]("NocturnalAdaptation")
+  _G[sType]("GeneSelection")
+  _G[sType]("MartianDiet")
+  _G[sType]("EternalFusion")
+  _G[sType]("SuperconductingComputing")
+  _G[sType]("NanoRefinement")
+  _G[sType]("ArtificialMuscles")
+  _G[sType]("InspiringArchitecture")
+  _G[sType]("GiantCrops")
+  _G[sType]("NeoConcrete")
+  _G[sType]("AdvancedDroneDrive")
+  _G[sType]("DryFarming")
+  _G[sType]("MartianSteel")
+  _G[sType]("VectorPump")
+  _G[sType]("Superfungus")
+  _G[sType]("HypersensitivePhotovoltaics")
+  _G[sType]("FrictionlessComposites")
+  _G[sType]("ZeroSpaceComputing")
+  _G[sType]("MultispiralArchitecture")
+  _G[sType]("MagneticExtraction")
+  _G[sType]("SustainedWorkload")
+  _G[sType]("ForeverYoung")
+  _G[sType]("MartianbornIngenuity")
+  _G[sType]("CryoSleep")
+  _G[sType]("Cloning")
+  _G[sType]("GoodVibrations")
+  _G[sType]("DomeStreamlining")
+  _G[sType]("PrefabCompression")
+  _G[sType]("ExtractorAI")
+  _G[sType]("ServiceBots")
+  _G[sType]("OverchargeAmplification")
+  _G[sType]("PlutoniumSynthesis")
+  _G[sType]("InterplanetaryLearning")
+  _G[sType]("Vocation-Oriented Society")
+  _G[sType]("PlasmaRocket")
+  _G[sType]("AutonomousHubs")
+  _G[sType]("FactoryAutomation")
+end
+
+function ChoGGi.SetTech_EveryTech(sType)
+  _G[sType]("HygroscopicVaporators")
+  _G[sType]("SoilAdaptation")
+  _G[sType]("LowGFungi")
+  _G[sType]("MagneticFiltering")
+  _G[sType]("WaterReclamation")
+  _G[sType]("UtilityCrops")
+  _G[sType]("MartianbornAdaptability")
+  _G[sType]("BiomeEngineering")
+  _G[sType]("DomeBioscaping")
+  _G[sType]("MicrogravityMedicine")
+  _G[sType]("GeneAdaptation")
+  _G[sType]("WaterCoservationSystem")
+  _G[sType]("FarmAutomation ")
+  _G[sType]("HangingGardens")
+  _G[sType]("HolographicScanning")
+  _G[sType]("MoistureFarming")
+  _G[sType]("RejuvenationTreatment")
+  _G[sType]("StemReconstruction")
+  _G[sType]("LocalizedTerraforming")
+  _G[sType]("FuelCompression")
+  _G[sType]("DecommissionProtocol")
+  _G[sType]("LowGHydrosynthsis")
+  _G[sType]("AdvancedMartianEngines")
+  _G[sType]("LowGHighrise")
+  _G[sType]("CompactPassengerModule")
+  _G[sType]("StorageCompression")
+  _G[sType]("LowGEngineering")
+  _G[sType]("SustainableArchitecture")
+  _G[sType]("SmartHome")
+  _G[sType]("MicroManufacturing")
+  _G[sType]("Arcology")
+  _G[sType]("MarsNoveau")
+  _G[sType]("ResilientArchitecture")
+  _G[sType]("AdvancedPassengerModule")
+  _G[sType]("GravityEngineering")
+  _G[sType]("PlasmaCutters")
+  _G[sType]("WasteRockLiquefaction")
+  _G[sType]("OrbitalEngineering")
+  _G[sType]("TransportOptimization")
+  _G[sType]("LowGDrive")
+  _G[sType]("DroneSwarm")
+  _G[sType]("ExplorerAI")
+  _G[sType]("DroneHub")
+  _G[sType]("BatteryOptimization")
+  _G[sType]("RoverCommandAI")
+  _G[sType]("DronePrinting")
+  _G[sType]("3DMachining")
+  _G[sType]("CO2JetPropulsion")
+  _G[sType]("FueledExtractors")
+  _G[sType]("FactoryAI")
+  _G[sType]("MartianAerodynamics")
+  _G[sType]("RoverPrinting")
+  _G[sType]("CompactHangars")
+  _G[sType]("HighPoweredJets")
+  _G[sType]("TheMartianNetwork")
+  _G[sType]("ProjectMohole")
+  _G[sType]("LargeScaleExcavation")
+  _G[sType]("ExtractorAmplification")
+  _G[sType]("AutonomousSensors")
+  _G[sType]("SubsurfaceHeating")
+  _G[sType]("LowGTurbines")
+  _G[sType]("AdaptedProbes")
+  _G[sType]("StirlingGenerator")
+  _G[sType]("AtomicAccumulator")
+  _G[sType]("DustRepulsion")
+  _G[sType]("FactoryAmplification")
+  _G[sType]("DeepScanning")
+  _G[sType]("DeepWaterExtraction")
+  _G[sType]("DeepMetalExtraction")
+  _G[sType]("NuclearFusion")
+  _G[sType]("MeteorDefenseSystem")
+  _G[sType]("TriboelectricScrubbing")
+  _G[sType]("ResearchAmplification")
+  _G[sType]("FusionAutoregulation")
+  _G[sType]("MicroFusion")
+  _G[sType]("InterplanetaryAstronomy")
+  _G[sType]("LiveFromMars")
+  _G[sType]("ProductivityTraining")
+  _G[sType]("EarthMarsInitiative")
+  _G[sType]("SystematicTraining")
+  _G[sType]("MarsHype")
+  _G[sType]("MartianEducation")
+  _G[sType]("MartianPatents")
+  _G[sType]("SupportiveCommunity")
+  _G[sType]("EmergencyTraining")
+  _G[sType]("GeneralTraining")
+  _G[sType]("MartianInstituteOfScience")
+  _G[sType]("BehavioralShaping")
+  _G[sType]("MartianFestivals")
+  _G[sType]("MartianbornStrength")
+  _G[sType]("MartianbornResilience")
+  _G[sType]("HomeCollective")
+  _G[sType]("MartianCopyrithgts")
+  _G[sType]("BehavioralMelding")
+  _G[sType]("DreamReality")
 end

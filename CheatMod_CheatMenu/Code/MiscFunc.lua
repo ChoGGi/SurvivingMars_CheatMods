@@ -1,23 +1,19 @@
 
 function ChoGGi.ChangeGameLogo()
-  local ListActual = {}
+  local ItemList = {}
   for _,Value in ipairs(DataInstances.MissionLogo) do
     if Value.name ~= "random" then
-      table.insert(ListActual,Value.name)
+      table.insert(ItemList,{
+        text = _InternalTranslate(Value.display_name),
+        value = Value.name,
+      })
     end
   end
 
-  table.sort(ListActual)
-  local ListDisplay = {}
-  for i = 1, #ListActual do
-    local Value = DataInstances.MissionLogo[ListActual[i]]
-    table.insert(ListDisplay,_InternalTranslate(Value.display_name))
+  local CallBackFunc = function(choice)
+    ChoGGi.SetNewLogo(choice[1].value,choice[1].text)
   end
-
-  local TempFunc = function(choice)
-    ChoGGi.SetNewLogo(ListActual[choice],ListDisplay[choice])
-  end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set New Logo",1)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo")
 end
 
 function ChoGGi.SetNewLogo(sName,sDisplay)
@@ -60,22 +56,56 @@ function ChoGGi.DisableTextureCompression_Toggle()
 end
 
 function ChoGGi.SetShadowmapSize()
-  local ListDisplay = {"Default (restart to enable)","Crap (256)","Lower (512)","Low (1536) < Menu Option","Medium (2048) < Menu Option","High (4096) < Menu Option","Higher (8192)","Highest (16384)"}
-  local ListActual = {false,256,512,1536,2048,4096,8192,16384}
-  local TempFunc = function(choice)
-    if choice == 1 then
-      ChoGGi.CheatMenuSettings.ShadowmapSize = nil
+  local ItemList = {
+    {
+      text = " Default (restart to enable)",
+      value = false,
+    },
+    {
+      text = "Crap (256)",
+      value = 256,
+    },
+    {
+      text = "Lower (512)",
+      value = 512,
+    },
+    {
+      text = "Low (1536) < Menu Option",
+      value = 1536,
+    },
+    {
+      text = "Medium (2048) < Menu Option",
+      value = 2048,
+    },
+    {
+      text = "High (4096) < Menu Option",
+      value = 4096,
+    },
+    {
+      text = "Higher (8192)",
+      value = 8192,
+    },
+    {
+      text = "Highest (16384)",
+      value = 16384,
+    },
+  }
+
+  local CallBackFunc = function(choice)
+    local amount = choice[1].value
+    if type(amount) == "number" then
+      ChoGGi.CheatMenuSettings.ShadowmapSize = amount
+      hr.ShadowmapSize = amount
     else
-      ChoGGi.CheatMenuSettings.ShadowmapSize = ListActual[choice]
-      hr.ShadowmapSize = ListActual[choice]
+      ChoGGi.CheatMenuSettings.ShadowmapSize = false
     end
 
     ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("ShadowmapSize: " .. ListActual[choice],
+    ChoGGi.MsgPopup("ShadowmapSize: " .. choice[1].text,
      "Video","UI/Icons/Anomaly_Event.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set Shadowmap Size",1," Warning: Highest uses a couple extra gigs of vram")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Warning: Highest uses a couple extra gigs of vram.")
 end
 
 function ChoGGi.HigherShadowDist_Toggle()
@@ -315,22 +345,57 @@ end
 
 --SetTimeFactor(1000) = normal speed
 function ChoGGi.SetGameSpeed()
-  local ListDisplay = {"(Default)","Double (2)","Triple (3)","Quadruple (4)","Octuple (8)","Sexdecuple (16)","Duotriguple (32)","Quattuorsexaguple (64)"}
-  local ListActual = {1,2,3,4,8,16,32,64}
-  local hint = "Current speed: " .. const.mediumGameSpeed .. " (3 = Default, 9 = Triple)"
-  local TempFunc = function(choice)
-    const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * ListActual[choice]
-    const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * ListActual[choice]
-    --so it changes the speed
-    ChangeGameSpeedState(-1)
-    ChangeGameSpeedState(1)
-    --update settings
-    ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
-    ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(ListDisplay[choice] .. ": I think I can...",
-     "Speed","UI/Icons/Notifications/timer.tga"
-    )
+  local ItemList = {
+    {
+      text = "(Default)",
+      value = 1,
+    },
+    {
+      text = "Double (2)",
+      value = 2,
+    },
+    {
+      text = "Triple (3)",
+      value = 3,
+    },
+    {
+      text = "Quadruple (4)",
+      value = 4,
+    },
+    {
+      text = "Octuple (8)",
+      value = 8,
+    },
+    {
+      text = "Sexdecuple (16)",
+      value = 16,
+    },
+    {
+      text = "Duotriguple (32)",
+      value = 32,
+    },
+    {
+      text = "Quattuorsexaguple (64)",
+      value = 64,
+    },
+  }
+
+  local CallBackFunc = function(choice)
+    local amount = choice[1].value
+    if type(amount) == "number" then
+      const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * amount
+      const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * amount
+      --so it changes the speed
+      ChangeGameSpeedState(-1)
+      ChangeGameSpeedState(1)
+      --update settings
+      ChoGGi.CheatMenuSettings.mediumGameSpeed = amount
+      ChoGGi.CheatMenuSettings.fastGameSpeed = amount
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": I think I can...",
+       "Speed","UI/Icons/Notifications/timer.tga"
+      )
+    end
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set Game Speed",1,hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed","Current speed: " .. const.mediumGameSpeed .. " (3 = Default, 9 = Triple)")
 end

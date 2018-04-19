@@ -1,3 +1,4 @@
+
 function ChoGGi.AttachBuildingsToNearestWorkingDome()
   for _,building in ipairs(UICity.labels.Residence or empty_table) do
     ChoGGi.AttachToNearestDome(building)
@@ -49,92 +50,150 @@ function ChoGGi.SetProductionAmount()
   end
 
   --get base amount
-  local DefaultAmount
+  local DefaultSetting
   if ProdType == "other" then
-    DefaultAmount = sel.base_production_per_day1 / ChoGGi.Consts.ResourceScale
+    DefaultSetting = sel.base_production_per_day1
   else
-    DefaultAmount = sel["base_" .. ProdType .. "_production"] / ChoGGi.Consts.ResourceScale
+    DefaultSetting = sel["base_" .. ProdType .. "_production"]
   end
+  local r = ChoGGi.Consts.ResourceScale
+  local ItemList = {
+    {
+      text = " Default: " .. DefaultSetting / r,
+      value = DefaultSetting,
+    },
+    {
+      text = 25,
+      value = 25 * r,
+    },
+    {
+      text = 50,
+      value = 50 * r,
+    },
+    {
+      text = 75,
+      value = 75 * r,
+    },
+    {
+      text = 100,
+      value = 100 * r,
+    },
+    {
+      text = 250,
+      value = 250 * r,
+    },
+    {
+      text = 500,
+      value = 500 * r,
+    },
+    {
+      text = 1000,
+      value = 1000 * r,
+    },
+    {
+      text = 2500,
+      value = 2500 * r,
+    },
+    {
+      text = 5000,
+      value = 5000 * r,
+    },
+    {
+      text = 10000,
+      value = 10000 * r,
+    },
+    {
+      text = 25000,
+      value = 25000 * r,
+    },
+    {
+      text = 50000,
+      value = 50000 * r,
+    },
+    {
+      text = 100000,
+      value = 100000 * r,
+    },
+  }
 
-  local ListDisplay = {DefaultAmount,25,50,75,100,150,250,500,750,1000,10000,25000,50000,100000}
-  local hint = DefaultAmount
+  local hint = DefaultSetting / r
   if ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] then
-    hint = ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] / ChoGGi.Consts.ResourceScale
+    hint = ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] / r
   end
-  local TempFunc = function(choice)
-    local amount = ListDisplay[choice] * ChoGGi.Consts.ResourceScale
-    if ProdType == "electricity" then
-      --electricity
-      for _,building in ipairs(UICity.labels.Power or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          --current prod
-          building[ProdType]:SetProduction(amount)
-          --when toggled on n off
-          building[ProdType .. "_production"] = amount
-        end
-      end
+  local CallBackFunc = function(choice)
 
-    elseif ProdType == "water" or ProdType == "air" then
-      --water/air
-      for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building[ProdType]:SetProduction(amount)
-          building[ProdType .. "_production"] = amount
+    local amount = choice[1].value
+    if type(amount) == "number" then
+      if ProdType == "electricity" then
+        --electricity
+        for _,building in ipairs(UICity.labels.Power or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            --current prod
+            building[ProdType]:SetProduction(amount)
+            --when toggled on n off
+            building[ProdType .. "_production"] = amount
+          end
         end
-      end
 
-    else --other prod
-      --extractors/factories
-      for _,building in ipairs(UICity.labels.Production or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.producers[1].production_per_day = amount
-          building.production_per_day1 = amount
+      elseif ProdType == "water" or ProdType == "air" then
+        --water/air
+        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building[ProdType]:SetProduction(amount)
+            building[ProdType .. "_production"] = amount
+          end
         end
-      end
-      --moholemine/theexvacator
-      for _,building in ipairs(UICity.labels.Wonders or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.producers[1].production_per_day = amount
-          building.production_per_day1 = amount
-        end
-      end
-      --farms
-      if sel.encyclopedia_id:find("Farm") then
-        for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
+
+      else --other prod
+        --extractors/factories
+        for _,building in ipairs(UICity.labels.Production or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
             building.producers[1].production_per_day = amount
             building.production_per_day1 = amount
           end
         end
-        for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
+        --moholemine/theexvacator
+        for _,building in ipairs(UICity.labels.Wonders or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
             building.producers[1].production_per_day = amount
             building.production_per_day1 = amount
           end
         end
+        --farms
+        if sel.encyclopedia_id:find("Farm") then
+          for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
+            if building.encyclopedia_id == sel.encyclopedia_id then
+              building.producers[1].production_per_day = amount
+              building.production_per_day1 = amount
+            end
+          end
+          for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
+            if building.encyclopedia_id == sel.encyclopedia_id then
+              building.producers[1].production_per_day = amount
+              building.production_per_day1 = amount
+            end
+          end
+        end
       end
-    end
-
-    if choice == 1 then
-      --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
-      ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] = nil
-    else
       --update/create saved setting
       ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] = amount
+    else
+      --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
+      ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] = nil
     end
 
     ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(sel.encyclopedia_id .. " Production is now " .. ListDisplay[choice],
+    ChoGGi.MsgPopup(sel.encyclopedia_id .. " Production is now " .. choice[1].text,
       "Buildings","UI/Icons/Sections/storage.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set " .. sel.encyclopedia_id .. " Production Amount",1,"Current production: " .. hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Production Amount","Current production: " .. hint)
 end
 
 function ChoGGi.FullyAutomatedBuildings_Toggle()
   ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
 
-  if not ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
+  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings == false then
     for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
       if building.base_max_workers then
         building.max_workers = nil
@@ -143,31 +202,90 @@ function ChoGGi.FullyAutomatedBuildings_Toggle()
       end
     end
     ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings) .. " I presume the PM's in favour of the scheme because it'll reduce unemployment.",
+    ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings) .. ": I presume the PM's in favour of the scheme because it'll reduce unemployment.",
      "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
     )
-  else
-    --show list of options to pick
-    local DefaultSetting = ChoGGi.Consts.FullyAutomatedBuildingsPerf
-    local ListDisplay = {DefaultSetting,150,250,500,750,1000,2500,5000,7500,10000,100000}
+    --all done
+    return
+  end
 
-    local TempFunc = function(choice)
+  --show list of options to pick
+  local DefaultSetting = ChoGGi.Consts.FullyAutomatedBuildingsPerf
+  local ItemList = {
+    {
+      text = " Default: " .. DefaultSetting,
+      value = DefaultSetting,
+    },
+    {
+      text = 250,
+      value = 250,
+    },
+    {
+      text = 500,
+      value = 500,
+    },
+    {
+      text = 1000,
+      value = 1000,
+    },
+    {
+      text = 2500,
+      value = 2500,
+    },
+    {
+      text = 5000,
+      value = 5000,
+    },
+    {
+      text = 10000,
+      value = 10000,
+    },
+    {
+      text = 25000,
+      value = 25000,
+    },
+    {
+      text = 50000,
+      value = 50000,
+    },
+    {
+      text = 100000,
+      value = 100000,
+    },
+  }
+
+  local CallBackFunc = function(choice)
+    local amount = choice[1].value
+
+    if type(amount) == "number" then
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.base_max_workers then
           building.max_workers = 0
           building.automation = 1
-          building.auto_performance = ListDisplay[choice]
+          building.auto_performance = amount
         end
       end
       --for new buildings
-      ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = ListDisplay[choice]
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings) .. " I presume the PM's in favour of the scheme because it'll reduce unemployment.",
-       "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
-      )
+      ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = amount
+    else
+      for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+        if building.base_max_workers then
+          building.max_workers = nil
+          building.automation = nil
+          building.auto_performance = nil
+        end
+      end
+      --for new buildings
+      ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = false
     end
-    ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Fully Automated Buildings: performance",1,"Sets performance of all automated buildings")
-  end --if
+
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup(choice[1].text .. ": I presume the PM's in favour of the scheme because it'll reduce unemployment.",
+     "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
+    )
+
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
 end
 
 function ChoGGi.RepairBrokenShit(BrokenShit)

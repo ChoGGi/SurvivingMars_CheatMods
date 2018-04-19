@@ -58,54 +58,39 @@ function ChoGGi.SponsorsFunc_LoadingScreenPreClose()
 end
 
 function ChoGGi.ChangeSponsor()
-  local ListActual = {}
+  local ItemList = {}
   for _,Value in ipairs(DataInstances.MissionSponsor) do
     if Value.name ~= "random" then
-      table.insert(ListActual,Value.name)
+      table.insert(ItemList,{
+        text = _InternalTranslate(Value.display_name),
+        value = Value.name,
+        hint = _InternalTranslate(Value.effect)
+      })
     end
   end
 
-  table.sort(ListActual)
-  local ListDisplay = {}
-  local hint = ""
-  for i = 1, #ListActual do
-    local Value = DataInstances.MissionSponsor[ListActual[i]]
-    table.insert(ListDisplay,_InternalTranslate(Value.display_name))
-    hint = hint .. _InternalTranslate(Value.display_name) .. ": " .. _InternalTranslate(Value.effect) .. "\n\n\n\n"
+  local CallBackFunc = function(choice)
+    ChoGGi.SetNewSponsor(choice[1].value,choice[1].text)
   end
-
-  local TempFunc = function(choice)
-    if choice then
-      ChoGGi.SetNewSponsor(ListActual[choice],ListDisplay[choice])
-    end
-  end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set New Sponsor",1,hint,true,false)
-
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Sponsor","Select item for better tooltip info.")
 end
 
 function ChoGGi.ChangeCommander()
-  local ListActual = {}
+  local ItemList = {}
   for _,Value in ipairs(DataInstances.CommanderProfile) do
     if Value.name ~= "random" then
-      table.insert(ListActual,Value.name)
+      table.insert(ItemList,{
+        text = _InternalTranslate(Value.display_name),
+        value = Value.name,
+        hint = _InternalTranslate(Value.effect)
+      })
     end
   end
 
-  table.sort(ListActual)
-  local ListDisplay = {}
-  local hint = ""
-  for i = 1, #ListActual do
-    local Value = DataInstances.CommanderProfile[ListActual[i]]
-    table.insert(ListDisplay,_InternalTranslate(Value.display_name))
-    hint = hint .. _InternalTranslate(Value.display_name) .. ": " .. _InternalTranslate(Value.effect) .. "\n\n\n\n"
+  local CallBackFunc = function(choice)
+    ChoGGi.SetNewCommander(choice[1].value,choice[1].text)
   end
-
-  local TempFunc = function(choice)
-    if choice then
-      ChoGGi.SetNewCommander(ListActual[choice],ListDisplay[choice])
-    end
-  end
-  ChoGGi.FireFuncAfterChoice(TempFunc,ListDisplay,"Set New Commander",1,hint,true,false)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Commander","Select item for better tooltip info.")
 end
 
 function ChoGGi.SetNewSponsor(sName,sDisplay)

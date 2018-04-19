@@ -1,6 +1,22 @@
 --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
 ChoGGi.AddAction(
+  "Expanded CM/Drones/Fill Selected DroneHub With Drones",
+  ChoGGi.FillSelectedDroneHubWithDrones,
+  "Alt-F",
+  "Select a hub then use this to convert all drones to prefabs.",
+  "groups.tga"
+)
+
+ChoGGi.AddAction(
+  "Expanded CM/Drones/Dismantle All Drones Of Selected Hub",
+  ChoGGi.DismantleAllDronesOfSelectedHub,
+  "Alt-D",
+  "Select a hub then use this to fill with drones (depending on prefabs).",
+  "groups.tga"
+)
+
+ChoGGi.AddAction(
   "Expanded CM/Drones/DroneFactory Build Speed",
   ChoGGi.SetDroneFactoryBuildSpeed,
   nil,

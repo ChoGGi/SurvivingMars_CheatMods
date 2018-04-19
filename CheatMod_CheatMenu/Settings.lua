@@ -34,7 +34,7 @@ ChoGGi.ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian"}
 ChoGGi.Consts = {
 
   --defaults:
-  _VERSION = 0.0,
+  _VERSION = 0,
   BuildingsCapacity = {},
   BuildingsProduction = {},
   ConsoleDim = true,

@@ -60,13 +60,10 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Expanded CM/Rocket/Instant Travel",
-  ChoGGi.RocketInstantTravel_Toggle,
+  "Expanded CM/Rocket/Travel Time",
+  ChoGGi.SetRocketTravelTime,
   nil,
-  function()
-    local des = ChoGGi.NumRetBool(Consts.TravelTimeEarthMars,"(Disabled)","(Enabled)")
-    return des .. " Instant travel between Earth and Mars."
-  end,
+  "Change how long to take to travel between planets.",
   "place_particles.tga"
 )
 

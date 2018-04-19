@@ -234,14 +234,6 @@ function ChoGGi.ColonistUpdateSpecialization(colonist,Spec)
   end
 end
 
-function ChoGGi.ColonistUpdateSingleTrait(colonist,Bool,Trait)
-  if Bool == true then
-    colonist:AddTrait(Trait,true)
-  else
-    colonist:RemoveTrait(Trait)
-  end
-end
-
 function ChoGGi.ColonistUpdateTraits(colonist,Bool,Type)
   for i = 1, #ChoGGi[Type] do
     if Bool == true then
@@ -679,62 +671,78 @@ function ChoGGi.SetSponsorBonuses(sType)
 end
 
 --called from below
-ChoGGi.WaitListChoice_OpenedHintDlg = nil
-function ChoGGi.WaitListChoice(Items,Caption,DefaultSelection,Hints,HintWin,CurPos)
-  local dlg = OpenDialog("ListChoiceDialog", nil, terminal.desktop, _InternalTranslate(Caption))
-  dlg.idCaption:SetText(Caption)
-  dlg.idList:SetContent(Items)
+
+
+function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
+  --set before opening dlg
+  if MultiSel then
+    ChoGGi.ListChoiceCustom_MultiSel = true
+  end
+  if ListHints then
+    ChoGGi.ListChoiceCustom_Hint = true
+  end
+  --local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop, _InternalTranslate(Caption))
+  local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop)
+--easy access to the dlg from elsewhere
+ChoGGi.ListChoiceCustom_Dialog = dlg
+  --hides if short list
   dlg.idList:SetScrollAutohide(true)
-  if CurPos == false then
-    --dlg:SetPos(point(25,125))
-    dlg:SetPos(point(650,150))
+  --title text
+  dlg.idCaption:SetText(Caption)
+  --list
+  dlg.idList:SetContent(Items)
+
+  --setup checkboxes
+  if Check1 then
+    dlg.idCheckBox1:SetText(Check1)
+    dlg.idCheckBox1:SetHint(Check1Hint)
   else
-    dlg:SetPos(terminal.GetMousePos())
+    dlg.idCheckBox1:SetVisible(false)
+  end
+  if Check2 then
+    dlg.idCheckBox2:SetText(Check2)
+    dlg.idCheckBox2:SetHint(Check2Hint)
+  else
+    dlg.idCheckBox2:SetVisible(false)
+  end
+  --where to position dlg
+  dlg:SetPos(terminal.GetMousePos())
+
+  --are we showing a hint?
+  if Hint then
+    dlg.idList:SetHint(Hint)
+    dlg.idOK:SetHint("Apply and close dialog (arrow keys and Enter/Esc can also be used).\n\n\n\n" .. Hint)
   end
 
-  --[[get hints working per list item
-  for _,Object in ipairs(dlg.idList.item_windows or empty_table) do
-    Object:SetHint("XXXXXX")
-  end
-  --]]
-
-  if HintWin then
-    ChoGGi.WaitListChoice_OpenedHintDlg = 1
-    OpenExamine(Hints)
-    --dlg.idList:SetHint("See other dialog for more information.")
-  elseif Hints then
-    dlg.idList:SetHint(Hints)
-  end
-  dlg.idList:SetFocus()
-  if DefaultSelection then
-    dlg.idList:SetSelection(DefaultSelection, true)
-  else
-    dlg.idList:SetSelection(1, true)
-  end
-  local idx = dlg:Wait()
-  return idx
+  --waiting for choice
+  return dlg:Wait()
 end
 
-function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,DefaultSelection,Hint,HintWin,CurPos)
+function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
   if not Func or #Items == 0 then
     return
   end
-  DefaultSelection = DefaultSelection or 1
 
-  local ItemList = {}
-  for i = 1, #Items do
-    table.insert(ItemList,{text = Items[i]})
+  local ListHints
+  if Items[1].hint then
+    ListHints = true
   end
 
-  CreateRealTimeThread(function()
-    local option = ChoGGi.WaitListChoice(ItemList,Caption,DefaultSelection,Hint,HintWin,CurPos)
-
-    if HintWin and ChoGGi.WaitListChoice_OpenedHintDlg then
-      --close hints dlg
-      ChoGGi.WaitListChoice_OpenedHintDlg:Close()
-      ChoGGi.WaitListChoice_OpenedHintDlg = nil
+  --sort table by display text
+  table.sort(Items,
+    function(a,b)
+      return ChoGGi.CompareTableNames(a,b,"text")
     end
+  )
 
+  --blank item for custom value
+  table.insert(Items,{text = "",hint = "",value = false})
+
+
+  CreateRealTimeThread(function()
+    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
+    ChoGGi.ListChoiceCustom_MultiSel = nil
+    ChoGGi.ListChoiceCustom_Hint = nil
     if option ~= "idCancel" then
       Func(option)
     end
