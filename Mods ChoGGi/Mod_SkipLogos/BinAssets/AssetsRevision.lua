@@ -4,14 +4,30 @@ function OnMsg.DesktopCreated()
 end
 
 function OnMsg.ReloadLua()
-  --opens load game menu, uncomment to enable
   --[[
   CreateRealTimeThread(function()
-    OpenPreGameMainMenu("Load")
+
+    --opens to load game menu
+    local savegame_count = WaitCountSaveGames()
+    if savegame_count then
+      local dlg = OpenXDialog("PGMainMenu", nil, {savegame_count = savegame_count})
+      if dlg then
+        dlg:SetMode("Load")
+      end
+    end
+
+    --show menu
+    UAMenu.ToggleOpen()
+
+    --stop bugging me about missing mods
+    function GetMissingMods()
+      return "", false
+    end
+
   end)
   --]]
 
-  --get rid of some of those mod manager warnings (not the reboot prompt)
+  --get rid of mod manager warnings (not the reboot one though)
   ParadoxBuildsModEditorWarning = true
   ParadoxBuildsModManagerWarning = true
 end
