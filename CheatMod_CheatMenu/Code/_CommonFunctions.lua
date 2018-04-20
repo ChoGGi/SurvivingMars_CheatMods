@@ -1,16 +1,20 @@
 --any functions called from Code/*.lua
 
 function ChoGGi.AttachToNearestDome(building)
+  --ignore outdoor buildings
+  if building.dome_required ~= true then
+    return
+  end
   --dome ruins don't have air/water/elec
   if (building.parent_dome and not building.parent_dome.air) or not building.parent_dome then
     --find the nearest working dome
     local dome = FindNearestObject(UICity.labels.Domes_Working,building)
-    if dome then
+    if dome and dome.labels then
       building.parent_dome = dome
       --which type is it (check for getlabels or some such)
-      if building.base_max_workers then
+      if building.closed_shifts then
         table.insert(dome.labels.Workplace,building)
-      else
+      elseif building.colonists then
         table.insert(dome.labels.Residence,building)
       end
     end
@@ -731,7 +735,7 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
 end
 
 function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
-  if not Func or #Items == 0 then
+  if not Func or not Items or (Items and #Items == 0) then
     return
   end
 
@@ -756,5 +760,43 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
       Func(option)
     end
   end)
+end
 
+--some dev removed this from the Spirit update... (harumph)
+function ChoGGi.AddConsolePrompt(text)
+  if dlgConsole then
+    local self = dlgConsole
+    self:Show(true)
+    self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
+    self.idEdit:SetCursorPos(#text)
+  end
+end
+
+--toggle visiblity of console log
+function ChoGGi.ToggleConsoleLog()
+  if dlgConsoleLog then
+    if dlgConsoleLog:GetVisible() then
+      dlgConsoleLog:SetVisible(false)
+    else
+      dlgConsoleLog:SetVisible(true)
+    end
+  else
+    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+  end
+end
+
+function ChoGGi.OpenInObjectManipulator(object,parent)
+  local dlg = OpenDialog("ObjectManipulatorDialog", nil, parent or terminal.desktop)
+  if dlg then
+    --hides if short list
+    dlg.idList:SetScrollAutohide(true)
+    --title text
+    dlg.idCaption:SetText(tostring(object))
+
+    --create prop list for list
+    local list = ChoGGi.CreatePropList(object)
+    if list then
+      dlg.idList:SetContent(list)
+    end
+  end
 end

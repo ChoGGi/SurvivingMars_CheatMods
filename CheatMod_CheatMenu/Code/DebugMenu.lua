@@ -146,13 +146,17 @@ ChoGGi.AddAction(
   "SelectByClassName.tga"
 )
 
-ChoGGi.AddAction(
-  "[102]Debug/Dump Current Obj",
-  ChoGGi.DumpCurrentObj,
-  "F5",
-  "Dumps info for current object to AppData/DumpedExamine.lua",
-  "SaveMapEntityList.tga"
-)
+if ChoGGi.Testing then
+  ChoGGi.AddAction(
+    "[102]Debug/Object Manipulator",
+    function()
+      ChoGGi.OpenInObjectManipulator(SelectedObj or SelectionMouseObj())
+    end,
+    "F5",
+    "Manipulate objects (selected or under mouse cursor)",
+    "SaveMapEntityList.tga"
+  )
+end
 
 ChoGGi.AddAction(
   "[102]Debug/Change Map",

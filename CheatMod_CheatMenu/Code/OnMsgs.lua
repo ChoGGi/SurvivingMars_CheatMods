@@ -46,20 +46,13 @@ end --OnMsg
 
 function OnMsg.ClassesBuilt()
 
-  --ChoGGi.ReplacedFunctions_ClassesBuilt()
+  ChoGGi.ReplacedFunctions_ClassesBuilt()
   ChoGGi.UIDesignerData_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
   end
-
-  --update base rc transport capacity for newly placed
-  --[[
-  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity > 45000 then
-    RCTransport.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
-  end
-  --]]
 
 end --OnMsg
 
@@ -85,6 +78,9 @@ function OnMsg.LoadingScreenPreClose()
 
   --for new games
   if not UICity then
+    if ChoGGi.Testing then
+      table.insert(ChoGGi.StartupMsgs,"not UICity")
+    end
     return
   end
 
@@ -94,13 +90,57 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.IsGameLoaded = true
   end
 
-  ChoGGi.NewThread(ChoGGi.ReplacedFunctions_LoadingScreenPreClose)
-  ChoGGi.NewThread(ChoGGi.RenderSettings_LoadingScreenPreClose)
-  ChoGGi.NewThread(ChoGGi.Keys_LoadingScreenPreClose)
-  ChoGGi.NewThread(ChoGGi.SponsorsFunc_LoadingScreenPreClose)
-
   --late enough that I can set g_Consts.
   ChoGGi.SetGConstsToSaved()
+
+  ChoGGi.RenderSettings_LoadingScreenPreClose()
+  ChoGGi.Keys_LoadingScreenPreClose()
+  ChoGGi.SponsorsFunc_LoadingScreenPreClose()
+
+  --remove any opened examine dialogs
+  local win = terminal.desktop
+  while ChoGGi.CheckForTypeInList(win,"Examine") do
+    for i = 1, #win do
+      if IsKindOf(win[i],"Examine") then
+        win[i]:delete()
+      end
+    end
+  end
+
+  --not sure why this would be false on a dome
+  for _,Object in ipairs(UICity.labels.Dome or empty_table) do
+    if Object.achievement == "FirstDome" and type(Object.connected_domes) ~= "table" then
+      Object.connected_domes = {}
+    end
+  end
+
+  --remove any outside buildings i accidentally attached to domes ;)
+  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+    if building.dome_required == false and building.parent_dome then
+
+      --remove it from the dome label
+      local sType = false
+      if building.closed_shifts then
+        sType = "Residence"
+      elseif building.colonists then
+        sType = "Workplace"
+      end
+
+      if sType then --get a fucking continue lua
+        if building.parent_dome.labels and building.parent_dome.labels[sType] then
+          local dome = building.parent_dome.labels[sType]
+          for i = 1, #dome do
+            if dome[i].class == building.class then
+              dome[i] = nil
+            end
+          end
+        end
+        --remove parent_dome
+        building.parent_dome = nil
+      end
+
+    end
+  end
 
   --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
@@ -211,17 +251,6 @@ function OnMsg.LoadingScreenPreClose()
   --dim that console bg
   if ChoGGi.CheatMenuSettings.ConsoleDim then
     config.ConsoleDim = 1
-    --make the background hide when console not visible (instead of after a second or two)
-    --function ShowConsoleLogBackground(bVisible, bImmediate)
-    --ConsoleLog:ShowBackground
-    function ConsoleLog.ShowBackground(self,visible, immediate)
-      DeleteThread(self.background_thread)
-      if visible or immediate then
-        self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
-      else
-        self:SetBackground(RGBA(0, 0, 0, 0))
-      end
-    end
   end
 
   -- This must return true for most (built-in) cheats to function
@@ -331,7 +360,7 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
     --clean up (in a seprate thread)
-    ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
+    ChoGGi.RemoveOldFiles()
     --update saved version
     ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
     ChoGGi.WriteSettings()
@@ -348,70 +377,76 @@ function OnMsg.ConstructionSitePlaced(Object)
 end --OnMsg
 
 function OnMsg.ConstructionComplete(building)
+
+  --skip rockets
+  if building.class == "RocketLandingSite" then
+    return
+  end
+
+  print("ConstructionComplete")
+
   --for ctrl-space
   ChoGGi.LastPlacedBuildingObj = building
 
-  ChoGGi.NewThread(function()
-    --print(building.encyclopedia_id)
-    if IsKindOf(building,"RCTransportBuilding") then
-      if ChoGGi.CheatMenuSettings.GravityRC then
-        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
-      end
-
-    elseif IsKindOf(building,"RCRoverBuilding") then
-      if ChoGGi.CheatMenuSettings.GravityRC then
-        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
-      end
-
-    elseif IsKindOf(building,"RCExplorerBuilding") then
-      if ChoGGi.CheatMenuSettings.GravityRC then
-        building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
-      end
-
-    elseif IsKindOf(building,"DroneFactory") then
-      if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
-        building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
-      end
-
-    elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
-      for i = 1, #ChoGGi.PositiveTraits do
-        building:SetTrait(i,ChoGGi.PositiveTraits[i])
-      end
-
-    elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
-      for i = 1, #ChoGGi.NegativeTraits do
-        building:SetTrait(i,ChoGGi.NegativeTraits[i])
-      end
+  --print(building.encyclopedia_id)
+  if IsKindOf(building,"RCTransportBuilding") then
+    if ChoGGi.CheatMenuSettings.GravityRC then
+      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
     end
 
-    if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
-      building.maintenance_build_up_per_hr = -10000
+  elseif IsKindOf(building,"RCRoverBuilding") then
+    if ChoGGi.CheatMenuSettings.GravityRC then
+      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
     end
 
-    if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
-      building.max_workers = 0
-      building.automation = 1
-      building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
+  elseif IsKindOf(building,"RCExplorerBuilding") then
+    if ChoGGi.CheatMenuSettings.GravityRC then
+      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
     end
 
-    --saved settings for capacity, visitors, shuttles
-    if ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id] then
-      local amount = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-      if building.base_capacity then
-        building.capacity = amount
-      elseif building.base_max_visitors then
-        building.max_visitors = amount
-      elseif building.base_air_capacity then
-        building.air_capacity = amount
-      elseif building.base_water_capacity then
-        building.water_capacity = amount
-      elseif building.base_max_shuttles then
-        building.max_shuttles = amount
-      end
+  elseif IsKindOf(building,"DroneFactory") then
+    if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
+      building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
     end
 
-    building.can_change_skin = true
-  end)
+  elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
+    for i = 1, #ChoGGi.PositiveTraits do
+      building:SetTrait(i,ChoGGi.PositiveTraits[i])
+    end
+
+  elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
+    for i = 1, #ChoGGi.NegativeTraits do
+      building:SetTrait(i,ChoGGi.NegativeTraits[i])
+    end
+  end
+
+  if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
+    building.maintenance_build_up_per_hr = -10000
+  end
+
+  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
+    building.max_workers = 0
+    building.automation = 1
+    building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
+  end
+
+  --saved settings for capacity, visitors, shuttles
+  if ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id] then
+    local amount = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
+    if building.base_capacity then
+      building.capacity = amount
+    elseif building.base_max_visitors then
+      building.max_visitors = amount
+    elseif building.base_air_capacity then
+      building.air_capacity = amount
+    elseif building.base_water_capacity then
+      building.water_capacity = amount
+    elseif building.base_max_shuttles then
+      building.max_shuttles = amount
+    end
+  end
+
+  building.can_change_skin = true
 
 end --OnMsg
 
@@ -419,56 +454,39 @@ function OnMsg.Demolished(building)
   --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
   if building.achievement == "FirstDome" then
     UICity.labels.Domes_Working = {}
-    for _,object in ipairs(UICity.labels.Domes) do
+    for _,object in ipairs(UICity.labels.Dome) do
       table.insert(UICity.labels.Domes_Working,object)
     end
   end
 end --OnMsg
 
+local function ColonistCreated(Obj)
+  if ChoGGi.CheatMenuSettings.GravityColonist then
+    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistGender then
+    ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistAge then
+    ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
+    ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistRace then
+    ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
+  end
+  if ChoGGi.CheatMenuSettings.NewColonistTraits then
+    ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
+  end
+end
+
 function OnMsg.ColonistArrived(Obj)
-  ChoGGi.NewThread(function()
-    if ChoGGi.CheatMenuSettings.GravityColonist then
-      Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistGender then
-      ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistAge then
-      ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
-      ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistRace then
-      ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistTraits then
-      ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
-    end
-  end)
+  ColonistCreated(Obj)
 end --OnMsg
 
 function OnMsg.ColonistBorn(Obj)
-  ChoGGi.NewThread(function()
-    if ChoGGi.CheatMenuSettings.GravityColonist then
-      Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistGender then
-      ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistAge then
-      ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
-      ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistRace then
-      ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
-    end
-    if ChoGGi.CheatMenuSettings.NewColonistTraits then
-      ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
-    end
-  end)
+  ColonistCreated(Obj)
 end --OnMsg
 
 function OnMsg.SelectionAdded(Obj)
@@ -502,7 +520,7 @@ function OnMsg.ApplicationQuit()
   end
 end
 
---custom OnMsgs
+--custom OnMsgs, these aren't part of the base game, so without this mod they don't work
 ChoGGi.AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
 ChoGGi.AddMsgToFunc(Drone.GameInit,"Drone","GameInit","SpawnedDrone")
 ChoGGi.AddMsgToFunc(RCTransport.GameInit,"RCTransport","GameInit","SpawnedRCTransport")
@@ -524,7 +542,6 @@ function OnMsg.SpawnedShuttle(Obj)
 end
 
 function OnMsg.SpawnedDrone(Obj)
-  --what is move_speed for?
   if ChoGGi.CheatMenuSettings.GravityDrone then
     Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
   end
@@ -544,7 +561,7 @@ function OnMsg.SpawnedWorkplace(Obj)
   ChoGGi.AttachToNearestDome(Obj)
 end
 
---make sure they update with our new values
+--make sure they use with our new values
 function OnMsg.SpawnedProducerElectricity(Obj)
   if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
     Obj.electricity_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]

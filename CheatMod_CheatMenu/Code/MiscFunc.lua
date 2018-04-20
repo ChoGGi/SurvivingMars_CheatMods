@@ -56,39 +56,17 @@ function ChoGGi.DisableTextureCompression_Toggle()
 end
 
 function ChoGGi.SetShadowmapSize()
+  local current = hr.ShadowmapSize
   local ItemList = {
-    {
-      text = " Default (restart to enable)",
-      value = false,
-    },
-    {
-      text = "Crap (256)",
-      value = 256,
-    },
-    {
-      text = "Lower (512)",
-      value = 512,
-    },
-    {
-      text = "Low (1536) < Menu Option",
-      value = 1536,
-    },
-    {
-      text = "Medium (2048) < Menu Option",
-      value = 2048,
-    },
-    {
-      text = "High (4096) < Menu Option",
-      value = 4096,
-    },
-    {
-      text = "Higher (8192)",
-      value = 8192,
-    },
-    {
-      text = "Highest (16384)",
-      value = 16384,
-    },
+    {text = " Default (restart to enable)",value = false},
+    {text = " Current: " .. current,value = current},
+    {text = "Crap (256)",value = 256},
+    {text = "Lower (512)",value = 512},
+    {text = "Low (1536) < Menu Option",value = 1536},
+    {text = "Medium (2048) < Menu Option",value = 2048},
+    {text = "High (4096) < Menu Option",value = 4096},
+    {text = "Higher (8192)",value = 8192},
+    {text = "Highest (16384)",value = 16384},
   }
 
   local CallBackFunc = function(choice)
@@ -105,7 +83,7 @@ function ChoGGi.SetShadowmapSize()
      "Video","UI/Icons/Anomaly_Event.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Warning: Highest uses a couple extra gigs of vram.")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Current: " .. current .. "\n\nWarning: Highest uses a couple extra gigs of vram.")
 end
 
 function ChoGGi.HigherShadowDist_Toggle()
@@ -180,7 +158,7 @@ function ChoGGi.CameraFollow_Toggle()
     --show log again if it was hidden
     if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
       cls() --if it's going to spam the log, might as well clear it
-      ToggleConsoleLog()
+      ChoGGi.ToggleConsoleLog()
     end
     --reset camera zoom settings
     ChoGGi.SetCameraSettings()
@@ -218,7 +196,7 @@ function ChoGGi.CameraFollow_Toggle()
 
   --toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
   if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
-    ToggleConsoleLog()
+    ChoGGi.ToggleConsoleLog()
   end
 
   --if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
@@ -346,38 +324,14 @@ end
 --SetTimeFactor(1000) = normal speed
 function ChoGGi.SetGameSpeed()
   local ItemList = {
-    {
-      text = "(Default)",
-      value = 1,
-    },
-    {
-      text = "Double (2)",
-      value = 2,
-    },
-    {
-      text = "Triple (3)",
-      value = 3,
-    },
-    {
-      text = "Quadruple (4)",
-      value = 4,
-    },
-    {
-      text = "Octuple (8)",
-      value = 8,
-    },
-    {
-      text = "Sexdecuple (16)",
-      value = 16,
-    },
-    {
-      text = "Duotriguple (32)",
-      value = 32,
-    },
-    {
-      text = "Quattuorsexaguple (64)",
-      value = 64,
-    },
+    {text = "(Default)",value = 1},
+    {text = "Double (2)",value = 2},
+    {text = "Triple (3)",value = 3},
+    {text = "Quadruple (4)",value = 4},
+    {text = "Octuple (8)",value = 8},
+    {text = "Sexdecuple (16)",value = 16},
+    {text = "Duotriguple (32)",value = 32},
+    {text = "Quattuorsexaguple (64)",value = 64},
   }
 
   local CallBackFunc = function(choice)
@@ -389,8 +343,8 @@ function ChoGGi.SetGameSpeed()
       ChangeGameSpeedState(-1)
       ChangeGameSpeedState(1)
       --update settings
-      ChoGGi.CheatMenuSettings.mediumGameSpeed = amount
-      ChoGGi.CheatMenuSettings.fastGameSpeed = amount
+      ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": I think I can...",
        "Speed","UI/Icons/Notifications/timer.tga"

@@ -127,7 +127,7 @@ ChoGGi.AddAction(nil,
 ChoGGi.AddAction(nil,
   function()
     ShowConsole(true)
-    AddConsolePrompt("restart")
+    ChoGGi.AddConsolePrompt("restart")
   end,
   "Ctrl-Alt-Shift-R"
 )

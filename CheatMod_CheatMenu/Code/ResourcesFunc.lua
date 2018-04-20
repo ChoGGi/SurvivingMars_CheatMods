@@ -5,30 +5,12 @@ function ChoGGi.AddOrbitalProbes()
   end
 
   local ItemList = {
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 200,
-      value = 200,
-    },
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 200,value = 200},
   }
 
   local CallBackFunc = function(choice)
@@ -74,42 +56,15 @@ function ChoGGi.SetFoodPerRocketPassenger()
   local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = 25,
-      value = 25 * r,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
-    {
-      text = 10000,
-      value = 10000 * r,
-    },
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 10000,value = 10000 * r},
   }
 
   local hint = DefaultSetting / r
@@ -137,38 +92,14 @@ end
 
 function ChoGGi.AddPrefabsDrone()
   local ItemList = {
-    {
-      text = 1,
-      value = 1,
-    },
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = 1,value = 1},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local CallBackFunc = function(choice)
@@ -186,38 +117,14 @@ end
 function ChoGGi.AddPrefabs(Type,Msg)
 
   local ItemList = {
-    {
-      text = 1,
-      value = 1,
-    },
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = 1,value = 1},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local CallBackFunc = function(choice)
@@ -236,34 +143,13 @@ function ChoGGi.SetFunding()
   --list to display and list with values
   local DefaultSetting = "(Reset to 500 M)"
   local ItemList = {
-    {
-      text = DefaultSetting,
-      value = 500,
-    },
-    {
-      text = "100 M",
-      value = 100,
-    },
-    {
-      text = "1 000 M",
-      value = 1000,
-    },
-    {
-      text = "10 000 M",
-      value = 10000,
-    },
-    {
-      text = "100 000 M",
-      value = 100000,
-    },
-    {
-      text = "1 000 000 000 M",
-      value = 1000000000,
-    },
-    {
-      text = "90 000 000 000 M",
-      value = 90000000000,
-    },
+    {text = DefaultSetting,value = 500},
+    {text = "100 M",value = 100},
+    {text = "1 000 M",value = 1000},
+    {text = "10 000 M",value = 10000},
+    {text = "100 000 M",value = 100000},
+    {text = "1 000 000 000 M",value = 1000000000},
+    {text = "90 000 000 000 M",value = 90000000000},
   }
 
   local CallBackFunc = function(choice)

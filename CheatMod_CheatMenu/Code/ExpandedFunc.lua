@@ -30,42 +30,15 @@ end
 function ChoGGi.SetRocketCargoCapacity()
   local DefaultSetting = ChoGGi.GetCargoCapacity()
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting .. " kg",
-      value = DefaultSetting,
-    },
-    {
-      text = "50 000 kg",
-      value = 50000,
-    },
-    {
-      text = "100 000 kg",
-      value = 100000,
-    },
-    {
-      text = "250 000 kg",
-      value = 250000,
-    },
-    {
-      text = "500 000 kg",
-      value = 500000,
-    },
-    {
-      text = "1 000 000 kg",
-      value = 1000000,
-    },
-    {
-      text = "10 000 000 kg",
-      value = 10000000,
-    },
-    {
-      text = "100 000 000 kg",
-      value = 100000000,
-    },
-    {
-      text = "1 000 000 000 kg",
-      value = 1000000000,
-    },
+    {text = " Default: " .. DefaultSetting .. " kg",value = DefaultSetting},
+    {text = "50 000 kg",value = 50000},
+    {text = "100 000 kg",value = 100000},
+    {text = "250 000 kg",value = 250000},
+    {text = "500 000 kg",value = 500000},
+    {text = "1 000 000 kg",value = 1000000},
+    {text = "10 000 000 kg",value = 10000000},
+    {text = "100 000 000 kg",value = 100000000},
+    {text = "1 000 000 000 kg",value = 1000000000},
   }
 
   local CallBackFunc = function(choice)
@@ -92,58 +65,19 @@ function ChoGGi.SetRocketTravelTime()
   local DefaultSetting = ChoGGi.GetTravelTimeEarthMars()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Instant",
-      value = 0,
-    },
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = " Original: " .. 750,
-      value = 750 * r,
-    },
-    {
-      text = " Half of Original: " .. 375,
-      value = 375 * r,
-    },
-    {
-      text = 10,
-      value = 10 * r,
-    },
-    {
-      text = 25,
-      value = 25 * r,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 150,
-      value = 150 * r,
-    },
-    {
-      text = 200,
-      value = 200 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
+    {text = " Instant",value = 0},
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Original: " .. 750,value = 750 * r},
+    {text = " Half of Original: " .. 375,value = 375 * r},
+    {text = 10,value = 10 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 150,value = 150 * r},
+    {text = 200,value = 200 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
   }
 
   --other hint type
@@ -177,42 +111,15 @@ end
 function ChoGGi.SetColonistsPerRocket()
   local DefaultSetting = ChoGGi.GetMaxColonistsPerRocket()
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 10000,value = 10000},
   }
 
   local CallBackFunc = function(choice)
@@ -270,74 +177,23 @@ function ChoGGi.SetBuildingCapacity()
   end
 
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 2000,
-      value = 2000,
-    },
-    {
-      text = 3000,
-      value = 3000,
-    },
-    {
-      text = 4000,
-      value = 4000,
-    },
-    {
-      text = 5000,
-      value = 5000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
-    {
-      text = 25000,
-      value = 25000,
-    },
-    {
-      text = 50000,
-      value = 50000,
-    },
-    {
-      text = 100000,
-      value = 100000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2000,value = 2000},
+    {text = 3000,value = 3000},
+    {text = 4000,value = 4000},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
   }
   local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
@@ -415,38 +271,14 @@ function ChoGGi.SetVisitorCapacity()
       text = " Default: " .. DefaultSetting,
       value = DefaultSetting,
     },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local hint = DefaultSetting
@@ -478,50 +310,17 @@ function ChoGGi.SetStorageDepotSize(sType)
   local DefaultSetting = ChoGGi.Consts[sType]
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
-    {
-      text = 2500,
-      value = 2500 * r,
-    },
-    {
-      text = 5000,
-      value = 5000 * r,
-    },
-    {
-      text = 10000,
-      value = 10000 * r,
-    },
-    {
-      text = 20000,
-      value = 20000 * r,
-    },
-    {
-      text = 100000,
-      value = 100000 * r,
-    },
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 2500,value = 2500 * r},
+    {text = 5000,value = 5000 * r},
+    {text = 10000,value = 10000 * r},
+    {text = 20000,value = 20000 * r},
+    {text = 100000,value = 100000 * r},
   }
 
   local hint = DefaultSetting / r
@@ -546,7 +345,7 @@ function ChoGGi.SetStorageDepotSize(sType)
       "Storage","UI/Icons/Sections/basic.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ListDisplay,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\nMax capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\nMax capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000")
 end
 
 --TESTING

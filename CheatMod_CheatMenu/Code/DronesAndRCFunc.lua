@@ -23,62 +23,20 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
     end
   end
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 2500,
-      value = 2500,
-    },
-    {
-      text = 5000,
-      value = 5000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
-    {
-      text = 25000,
-      value = 25000,
-    },
-    {
-      text = 50000,
-      value = 50000,
-    },
-    {
-      text = 100000,
-      value = 100000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
   }
 
   local hint = DefaultSetting
@@ -203,46 +161,16 @@ function ChoGGi.SetDroneCarryAmount()
   --retrieve default
   local DefaultSetting = ChoGGi.GetDroneResourceCarryAmount()
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local hint = DefaultSetting
@@ -280,46 +208,16 @@ end
 function ChoGGi.SetDronesPerDroneHub()
   local DefaultSetting = ChoGGi.GetCommandCenterMaxDrones()
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local hint = DefaultSetting
@@ -348,46 +246,16 @@ end
 function ChoGGi.SetDronesPerRCRover()
   local DefaultSetting = ChoGGi.GetRCRoverMaxDrones()
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 5,
-      value = 5,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local hint = DefaultSetting
@@ -418,38 +286,14 @@ function ChoGGi.SetRCTransportStorageCapacity()
   local DefaultSetting = ChoGGi.GetRCTransportStorageCapacity()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
-    {
-      text = 2000,
-      value = 2000 * r,
-    },
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 2000,value = 2000 * r},
   }
 
   local hint = DefaultSetting / r
@@ -496,34 +340,13 @@ function ChoGGi.SetShuttleCapacity()
 
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
   }
 
   local hint = DefaultSetting / r
@@ -570,54 +393,18 @@ function ChoGGi.SetShuttleSpeed()
   end
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting / r,
-      value = DefaultSetting,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
-    {
-      text = 1000,
-      value = 1000 * r,
-    },
-    {
-      text = 5000,
-      value = 5000 * r,
-    },
-    {
-      text = 10000,
-      value = 10000 * r,
-    },
-    {
-      text = 25000,
-      value = 25000 * r,
-    },
-    {
-      text = 50000,
-      value = 50000 * r,
-    },
-    {
-      text = 100000,
-      value = 100000 * r,
-    },
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 5000,value = 5000 * r},
+    {text = 10000,value = 10000 * r},
+    {text = 25000,value = 25000 * r},
+    {text = 50000,value = 50000 * r},
+    {text = 100000,value = 100000 * r},
   }
 
   local hint = DefaultSetting / r
@@ -659,38 +446,14 @@ function ChoGGi.SetShuttleHubCapacity()
     end
   end
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   local hint = DefaultSetting
@@ -728,62 +491,20 @@ function ChoGGi.SetGravityRC()
   local DefaultSetting = 0
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 1,
-      value = 1 * r,
-    },
-    {
-      text = 2,
-      value = 2 * r,
-    },
-    {
-      text = 3,
-      value = 3 * r,
-    },
-    {
-      text = 4,
-      value = 4 * r,
-    },
-    {
-      text = 5,
-      value = 5 * r,
-    },
-    {
-      text = 10,
-      value = 10 * r,
-    },
-    {
-      text = 15,
-      value = 15 * r,
-    },
-    {
-      text = 25,
-      value = 25 * r,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 1,value = 1 * r},
+    {text = 2,value = 2 * r},
+    {text = 3,value = 3 * r},
+    {text = 4,value = 4 * r},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
   }
 
   local hint = DefaultSetting
@@ -819,62 +540,20 @@ function ChoGGi.SetGravityDrones()
   local DefaultSetting = 0
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 1,
-      value = 1 * r,
-    },
-    {
-      text = 2,
-      value = 2 * r,
-    },
-    {
-      text = 3,
-      value = 3 * r,
-    },
-    {
-      text = 4,
-      value = 4 * r,
-    },
-    {
-      text = 5,
-      value = 5 * r,
-    },
-    {
-      text = 10,
-      value = 10 * r,
-    },
-    {
-      text = 15,
-      value = 15 * r,
-    },
-    {
-      text = 25,
-      value = 25 * r,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 1,value = 1 * r},
+    {text = 2,value = 2 * r},
+    {text = 3,value = 3 * r},
+    {text = 4,value = 4 * r},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
   }
 
   local hint = DefaultSetting

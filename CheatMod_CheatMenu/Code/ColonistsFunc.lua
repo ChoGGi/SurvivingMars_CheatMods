@@ -4,62 +4,20 @@ function ChoGGi.SetGravityColonists()
   local DefaultSetting = 0
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 1,
-      value = 1 * r,
-    },
-    {
-      text = 2,
-      value = 2 * r,
-    },
-    {
-      text = 3,
-      value = 3 * r,
-    },
-    {
-      text = 4,
-      value = 4 * r,
-    },
-    {
-      text = 5,
-      value = 5 * r,
-    },
-    {
-      text = 10,
-      value = 10 * r,
-    },
-    {
-      text = 15,
-      value = 15 * r,
-    },
-    {
-      text = 25,
-      value = 25 * r,
-    },
-    {
-      text = 50,
-      value = 50 * r,
-    },
-    {
-      text = 75,
-      value = 75 * r,
-    },
-    {
-      text = 100,
-      value = 100 * r,
-    },
-    {
-      text = 250,
-      value = 250 * r,
-    },
-    {
-      text = 500,
-      value = 500 * r,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 1,value = 1 * r},
+    {text = 2,value = 2 * r},
+    {text = 3,value = 3 * r},
+    {text = 4,value = 4 * r},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 75,value = 75 * r},
+    {text = 100,value = 100 * r},
+    {text = 250,value = 250 * r},
+    {text = 500,value = 500 * r},
   }
 
   local hint = DefaultSetting
@@ -92,66 +50,21 @@ end
 
 function ChoGGi.AddApplicantsToPool()
   local ItemList = {
-    {
-      text = 1,
-      value = 1,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 2500,
-      value = 2500,
-    },
-    {
-      text = 5000,
-      value = 5000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
-    {
-      text = 25000,
-      value = 25000,
-    },
-    {
-      text = 50000,
-      value = 50000,
-    },
-    {
-      text = 100000,
-      value = 100000,
-    },
+    {text = 1,value = 1},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
   }
 
   local CallBackFunc = function(choice)
@@ -207,14 +120,8 @@ end
 
 function ChoGGi.SetAllWorkShifts()
   local ItemList = {
-    {
-      text = "Turn On All Shifts",
-      value = 0,
-    },
-    {
-      text = "Turn Off All Shifts",
-      value = 3.1415926535,
-    },
+    {text = "Turn On All Shifts",value = 0},
+    {text = "Turn Off All Shifts",value = 3.1415926535},
   }
 
   local CallBackFunc = function(choice)
@@ -424,38 +331,14 @@ function ChoGGi.SetOutsideWorkplaceRadius()
   --show list of options to pick
   local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
-    {
-      text = 15,
-      value = 15,
-    },
-    {
-      text = 20,
-      value = 20,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 15,value = 15},
+    {text = 20,value = 20},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
   }
 
   local hint = DefaultSetting
@@ -482,54 +365,18 @@ end
 
 function ChoGGi.SetDeathAge()
   local ItemList = {
-    {
-      text = 60,
-      value = 60,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
-    {
-      text = "Logan's Run (Novel)",
-      value = 21,
-    },
-    {
-      text = "Logan's Run (Movie)",
-      value = 30,
-    },
-    {
-      text = "TNG: Half a Life",
-      value = 60,
-    },
-    {
-      text = "The Happy Place",
-      value = 60,
-    },
-    {
-      text = "In Time",
-      value = 26,
-    },
+    {text = 60,value = 60},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 10000,value = 10000},
+    {text = "Logan's Run (Novel)",value = 21},
+    {text = "Logan's Run (Movie)",value = 30},
+    {text = "TNG: Half a Life",value = 60},
+    {text = "The Happy Place",value = 60},
+    {text = "In Time",value = 26},
   }
 
   local CallBackFunc = function(choice)
@@ -818,41 +665,17 @@ function ChoGGi.SetColonistsTraits(iType)
     sSetting = nil
     DefaultSetting = "Random"
     ItemList = {
-      {
-        text = " Default: " .. DefaultSetting,
-        value = DefaultSetting,
-      },
-      {
-        text = "Add All Positive Traits",
-        value = "PositiveTraits",
-      },
-      {
-        text = "Add All Negative Traits",
-        value = "NegativeTraits",
-      },
-      {
-        text = "Remove All Positive Traits",
-        value = "PositiveTraits",
-      },
-      {
-        text = "Remove All Negative Traits",
-        value = "NegativeTraits",
-      },
+      {  text = " Default: " .. DefaultSetting,        value = DefaultSetting,      },
+      {  text = "Add All Positive Traits",        value = "PositiveTraits",      },
+      {  text = "Add All Negative Traits",        value = "NegativeTraits",      },
+      {  text = "Remove All Positive Traits",        value = "PositiveTraits",      },
+      {  text = "Remove All Negative Traits",        value = "NegativeTraits",      },
     }
   else
     ItemList = {
-      {
-        text = " Default: " .. DefaultSetting,
-        value = DefaultSetting,
-      },
-      {
-        text = "All Positive Traits",
-        value = "PositiveTraits",
-      },
-      {
-        text = "All Negative Traits",
-        value = "NegativeTraits",
-      },
+      {  text = " Default: " .. DefaultSetting,        value = DefaultSetting,      },
+      {  text = "All Positive Traits",        value = "PositiveTraits",      },
+      {  text = "All Negative Traits",        value = "NegativeTraits",      },
     }
   end
 
@@ -1002,42 +825,15 @@ function ChoGGi.SetStatsOfAllColonists()
 
 	local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {
-      text = "All Stats Max",
-      value = 100000 * r,
-    },
-    {
-      text = "All Stats Fill",
-      value = 100 * r,
-    },
-    {
-      text = "Health Max",
-      value = 100000 * r,
-    },
-    {
-      text = "Health Fill",
-      value = 100 * r,
-    },
-    {
-      text = "Morale Fill",
-      value = 100 * r,
-    },
-    {
-      text = "Sanity Max",
-      value = 100000 * r,
-    },
-    {
-      text = "Sanity Fill",
-      value = 100 * r,
-    },
-    {
-      text = "Comfort Max",
-      value = 100000 * r,
-    },
-    {
-      text = "Comfort Fill",
-      value = 100 * r,
-    },
+    {text = "All Stats Max",value = 100000 * r},
+    {text = "All Stats Fill",value = 100 * r},
+    {text = "Health Max",value = 100000 * r},
+    {text = "Health Fill",value = 100 * r},
+    {text = "Morale Fill",value = 100 * r},
+    {text = "Sanity Max",value = 100000 * r},
+    {text = "Sanity Fill",value = 100 * r},
+    {text = "Comfort Max",value = 100000 * r},
+    {text = "Comfort Fill",value = 100 * r},
   }
 
   --show list of options to pick

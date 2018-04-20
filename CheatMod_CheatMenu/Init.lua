@@ -28,21 +28,10 @@ dofile(ChoGGi.ModPath .. "Settings.lua")
 ChoGGi.ReadSettings()
 
 --TEMP REMOVE ME AFTER NEXT UPDATE (or two)
-if ChoGGi.CheatMenuSettings.NewColonistSex then
-  ChoGGi.CheatMenuSettings.NewColonistGender = ChoGGi.CheatMenuSettings.NewColonistSex
-  ChoGGi.CheatMenuSettings.NewColonistSex = nil
-  ChoGGi.Init_WriteSettings = 1
-end
-if ChoGGi.CheatMenuSettings.ShuttleSpeed then
-  ChoGGi.CheatMenuSettings.SpeedShuttle = ChoGGi.CheatMenuSettings.ShuttleSpeed
-  ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
-  ChoGGi.Init_WriteSettings = 1
-end
-if ChoGGi.CheatMenuSettings.ShuttleStorage then
-  ChoGGi.CheatMenuSettings.StorageShuttle = ChoGGi.CheatMenuSettings.ShuttleStorage
-  ChoGGi.CheatMenuSettings.ShuttleStorage = nil
-  ChoGGi.Init_WriteSettings = 1
-end
+ChoGGi.CheatMenuSettings.NewColonistSex = nil
+ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
+ChoGGi.CheatMenuSettings.ShuttleStorage = nil
+ChoGGi.Init_WriteSettings = 1
 
 --function overrides / shortened func names
 dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
@@ -52,13 +41,13 @@ dofile(ChoGGi.ModPath .. "Functions.lua")
 dofolder_files(ChoGGi.ModPath .. "Code")
 
 --if writelogs option
-if ChoGGi.CheatMenuSettings.WriteLogs then
+if ChoGGi.CheatMenuSettings.WriteLogs ~= false then
   table.insert(ChoGGi.StartupMsgs,"ChoGGi: Writing debug/console logs to AppData/logs")
   ChoGGi.WriteLogsEnable()
 end
 
 --first time run info
-if ChoGGi.CheatMenuSettings.FirstRun then
+if ChoGGi.CheatMenuSettings.FirstRun ~= false then
   table.insert(ChoGGi.StartupMsgs,"\nCheatMenu Active:\nF2 to toggle menu\nDebug>Console History to toggle console history.\n\n\n")
   ChoGGi.CheatMenuSettings.FirstRun = false
   ChoGGi.Init_WriteSettings = 1
@@ -110,8 +99,3 @@ EntitiesLoaded
   HexShapesRebuilt
 BinAssetsLoaded
 --]]
-
-function OnMsg.ChangeMapDone()
-  --stops log errors in editor mode
-  --GlobalVar("g_revision_map", false)
-end

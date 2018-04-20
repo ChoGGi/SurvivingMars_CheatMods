@@ -63,17 +63,6 @@ function ChoGGi.ObjExaminer()
   ex:SetObj(obj)
 end
 
-function ChoGGi.DumpCurrentObj()
-  pcall(function()
-    local obj = SelectedObj or SelectionMouseObj()
-    Examine.onclick_handles = {}
-    Examine.obj = obj
-    local tempTable = Examine:totextex(obj)
-    tempTable = "\r\n" .. tempTable:gsub("<[/%s%a%d]*>","")
-    ChoGGi.Dump(tempTable,"a","DumpedExamine","lua")
-  end)
-end
-
 function ChoGGi.Editor_Toggle()
   --keep menu opened if visible
   local showmenu

@@ -44,6 +44,9 @@ dumpl(classdefs)
     win:SetHSizing("Resize")
     win:SetBackgroundColor(RGBA(0, 0, 0, 16))
     win:SetFontStyle("Editor12Bold")
+if ChoGGi.Testing then
+    win:SetHint("idFilter")
+end
 
     win = Button:new(self)
     win:SetId("idClose")
@@ -52,6 +55,7 @@ dumpl(classdefs)
     win:SetHSizing("AnchorToRight")
     win:SetText(Untranslated("Close"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+    win:SetHint("Good bye")
 
     win = Button:new(self)
     win:SetId("idNext")
@@ -76,14 +80,16 @@ dumpl(classdefs)
     win:SetText(Untranslated("Dump Obj"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
     win:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
---testing
+
+if ChoGGi.Testing then
     win = Button:new(self)
     win:SetId("idEdit")
     win:SetPos(point(460, 275))
     win:SetSize(point(53, 26))
     win:SetText(Untranslated("Edit"))
     win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
---testing
+end
+
     self:InitChildrenSizing()
     --have to size children before doing these:
     self:SetPos(point(50,150))
@@ -92,8 +98,19 @@ dumpl(classdefs)
 end --OnMsg
 
 
-function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
---function ChoGGi.ReplacedFunctions_ClassesBuilt()
+--function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
+function ChoGGi.ReplacedFunctions_ClassesBuilt()
+
+  --make the background hide when console not visible (instead of after a second or two)
+  ChoGGi.OrigFunc.ConsoleLog_ShowBackground = ConsoleLog.ShowBackground
+  function ConsoleLog:ShowBackground(visible, immediate)
+    DeleteThread(self.background_thread)
+    if visible or immediate then
+      self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
+    else
+      self:SetBackground(RGBA(0, 0, 0, 0))
+    end
+  end
 
   --add dump buttons/etc
   ChoGGi.OrigFunc.Examine_Init = Examine.Init
@@ -110,25 +127,14 @@ function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
       ChoGGi.Dump("\r\n" .. ValueToLuaCode(self.obj),nil,"DumpedExamineObject","lua")
     end
 
-  --testing
+if ChoGGi.Testing then
     function self.idEdit.OnButtonPressed()
       --OpenManipulator(self.obj,self)
-      local dlg = OpenDialog("ObjectManipulatorDialog", nil, self or terminal.desktop)
-      --hides if short list
-      dlg.idList:SetScrollAutohide(true)
-      --title text
-      dlg.idCaption:SetText(tostring(self.obj))
-
-      --create prop list for list
-      local list = ChoGGi.CreatePropList(self.obj)
-      if list then
-        dlg.idList:SetContent(list)
-      end
-
+      ChoGGi.OpenInObjectManipulator(object,parent)
     end
-  --testing
+end
 
-  end
+  end --Examine:Init
 
   --so we can add hints to info pane cheats
   ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
@@ -235,7 +241,7 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
     return cursor_obj
   end
 
-  --replace orig funcs so we can ignore certain limits
+  --ignore certain placement limits
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
 
     --so we can build without (as many) limits
@@ -245,10 +251,7 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
       --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
       ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,"dont_finalize")
 
-
-
       --CityConstruction[UICity].construction_statuses
-
       local status = self.construction_statuses
 
       if self.is_template then

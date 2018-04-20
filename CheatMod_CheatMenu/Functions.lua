@@ -37,31 +37,6 @@ m = SelectionMouseObj
 c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
 
---some dev removed this from the Spirit update... (harumph)
-function AddConsolePrompt(text)
-  if dlgConsole then
-    local self = dlgConsole
-    self:Show(true)
-    self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
-    self.idEdit:SetCursorPos(#text)
-  end
-end
-
---toggle visiblity of console log
---(ok, so it isn't a replaced func, but all the other console stuff is here)
-function ToggleConsoleLog()
-  if dlgConsoleLog then
-    local isVis = dlgConsoleLog:GetVisible()
-    if isVis then
-      dlgConsoleLog:SetVisible(false)
-    else
-      dlgConsoleLog:SetVisible(true)
-    end
-  else
-    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
-  end
-end
-
 function ChoGGi.MsgPopup(Msg,Title,Icon)
   pcall(function()
     Msg = Msg or "Empty"
@@ -312,11 +287,6 @@ function ChoGGi.RetTextForDump(Obj,Funcs)
   end
 end
 
---open func in a new thread
-function ChoGGi.NewThread(Func)
-  return coroutine.resume(coroutine.create(Func))
-end
-
 --changes a function to also post a Msg for use with OnMsg
 --AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
 function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
@@ -411,15 +381,26 @@ print("\n")
   --UserActions.RejectedActions()
   ChoGGi.UserAddActions({
     ["ChoGGi_" .. AsyncRand()] = {
-      menu = Menu,
-      action = Action,
-      key = Key,
+      menu = Menu or nil,
+      action = Action or nil,
+      key = Key or nil,
       description = Des or "",
-      icon = Icon,
-      toolbar = Toolbar,
-      mode = Mode,
-      xinput = xInput,
-      toolbar_default = ToolbarDefault
+      icon = Icon or nil,
+      toolbar = Toolbar or nil,
+      mode = Mode or nil,
+      xinput = xInput or nil,
+      toolbar_default = ToolbarDefault or nil
     }
   })
+end
+
+--while ChoGGi.CheckForTypeInList(terminal.desktop,"Examine") do
+function ChoGGi.CheckForTypeInList(List,Type)
+  local ret = false
+  for i = 1, #List do
+    if IsKindOf(List[i],Type) then
+      ret = true
+    end
+  end
+  return ret
 end

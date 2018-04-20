@@ -121,6 +121,7 @@ ChoGGi.Consts = {
   ResearchPointsScale = 1000,
 --Consts. (Consts. is a prop object, so we get the default with ReadSettingsInGame).
   AvoidWorkplaceSols = false,
+  BirthThreshold = false,
   CargoCapacity = false,
   ColdWaveSanityDamage = false,
   CommandCenterMaxDrones = false,
@@ -353,8 +354,22 @@ end
 
 --called everytime we set a setting in menu
 function ChoGGi.WriteSettings()
-  AsyncCopyFile(ChoGGi.SettingsFile,ChoGGi.SettingsFile .. ".bak")
-  AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.CheatMenuSettings))
+
+    local file = ChoGGi.SettingsFile
+    local bak = file .. ".bak"
+
+    ThreadLockKey(bak)
+    AsyncCopyFile(file,bak)
+    ThreadUnlockKey(bak)
+
+    ThreadLockKey(file)
+    local err = AsyncStringToFile(file,TableToLuaCode(ChoGGi.CheatMenuSettings))
+    ThreadUnlockKey(file)
+    if err then
+      print("once", "Failed to save a settings to", file, ":", err)
+      return false, err
+    end
+
 end
 
 --read saved settings from file

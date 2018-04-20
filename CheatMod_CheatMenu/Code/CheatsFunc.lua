@@ -44,46 +44,22 @@ end
 
 function ChoGGi.DisastersTrigger()
   local ItemList = {
+
     {
-      text = " Stop All Disasters",
-      value = "Stop",
+      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
+      value = false,
     },
-    {
-      text = "Cold Wave",
-      value = "ColdWave",
-    },
-    {
-      text = "Dust Devil Major",
-      value = "DustDevilMajor",
-    },
-    {
-      text = "Dust Devil",
-      value = "DustDevil",
-    },
-    {
-      text = "Dust Storm Electrostatic",
-      value = "DustStormElectrostatic",
-    },
-    {
-      text = "Dust Storm Great",
-      value = "DustStormGreat",
-    },
-    {
-      text = "Dust Storm",
-      value = "DustStorm",
-    },
-    {
-      text = "Meteors Storm",
-      value = "MeteorsStorm",
-    },
-    {
-      text = "Meteors Multi Spawn",
-      value = "MeteorsMultiSpawn",
-    },
-    {
-      text = "Meteor",
-      value = "Meteor",
-    },
+
+    {text = " Stop All Disasters",value = "Stop"},
+    {text = "Cold Wave",value = "ColdWave"},
+    {text = "Dust Devil Major",value = "DustDevilMajor"},
+    {text = "Dust Devil",value = "DustDevil"},
+    {text = "Dust Storm Electrostatic",value = "DustStormElectrostatic"},
+    {text = "Dust Storm Great",value = "DustStormGreat"},
+    {text = "Dust Storm",value = "DustStorm"},
+    {text = "Meteors Storm",value = "MeteorsStorm"},
+    {text = "Meteors Multi Spawn",value = "MeteorsMultiSpawn"},
+    {text = "Meteor",value = "Meteor"},
   }
 
   local CallBackFunc = function(choice)
@@ -122,54 +98,18 @@ end
 
 function ChoGGi.SpawnColonists()
   local ItemList = {
-    {
-      text = 1,
-      value = 1,
-    },
-    {
-      text = 10,
-      value = 10,
-    },
-    {
-      text = 25,
-      value = 25,
-    },
-    {
-      text = 50,
-      value = 50,
-    },
-    {
-      text = 75,
-      value = 75,
-    },
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 2500,
-      value = 2500,
-    },
-    {
-      text = 5000,
-      value = 5000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
+    {text = 1,value = 1},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
   }
 
   local CallBackFunc = function(choice)
@@ -261,50 +201,17 @@ end
 
 function ChoGGi.AddOutsourcePoints()
   local ItemList = {
-    {
-      text = 100,
-      value = 100,
-    },
-    {
-      text = 250,
-      value = 250,
-    },
-    {
-      text = 500,
-      value = 500,
-    },
-    {
-      text = 1000,
-      value = 1000,
-    },
-    {
-      text = 2500,
-      value = 2500,
-    },
-    {
-      text = 5000,
-      value = 5000,
-    },
-    {
-      text = 10000,
-      value = 10000,
-    },
-    {
-      text = 25000,
-      value = 25000,
-    },
-    {
-      text = 50000,
-      value = 50000,
-    },
-    {
-      text = 100000,
-      value = 100000,
-    },
-    {
-      text = 100000000,
-      value = 100000000,
-    },
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
+    {text = 100000000,value = 100000000},
   }
 
   local CallBackFunc = function(choice)
