@@ -76,6 +76,7 @@ end
 
 --place item under the mouse for construction
 function ChoGGi.ConstructionModeSet(itemname)
+
   --make sure it's closed so we don't mess up selection
   pcall(function()
     CloseXBuildMenu()
@@ -89,8 +90,9 @@ function ChoGGi.ConstructionModeSet(itemname)
   end
   local bld_template = DataInstances.BuildingTemplate[itemname]
   local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
-  local dlg = GetXDialog("XBuildMenu")
+
   if show then
+    local dlg = GetXDialog("XBuildMenu")
     if action then
       action(dlg,{
         enabled = can_build,
@@ -106,6 +108,7 @@ function ChoGGi.ConstructionModeSet(itemname)
     CloseXBuildMenu()
   end
 end
+
 --show console
 ChoGGi.AddAction(nil,
   function()
@@ -131,8 +134,9 @@ ChoGGi.AddAction(nil,
 --goes to placement mode with last built object
 ChoGGi.AddAction(nil,
   function()
-    if ChoGGi.LastPlacedObj.entity then
-      ChoGGi.ConstructionModeSet(ChoGGi.LastPlacedObj.encyclopedia_id or ChoGGi.LastPlacedObj.entity)
+    local last = ChoGGi.LastPlacedBuildingObj
+    if last.entity then
+      ChoGGi.ConstructionModeSet(last.encyclopedia_id or last.entity)
     end
   end,
   "Ctrl-Space"
@@ -140,7 +144,11 @@ ChoGGi.AddAction(nil,
 --goes to placement mode with SelectedObj
 ChoGGi.AddAction(nil,
   function()
-    ChoGGi.ConstructionModeNameClean(ValueToLuaCode(SelectedObj or SelectionMouseObj()))
+    local sel = SelectedObj or SelectionMouseObj()
+    if sel then
+      ChoGGi.LastPlacedObject = sel
+      ChoGGi.ConstructionModeNameClean(ValueToLuaCode(sel))
+    end
   end,
   "Ctrl-Shift-Space"
 )

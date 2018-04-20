@@ -7,7 +7,60 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
---functions (maybe) used before game is loaded
+--make some easy to type names
+function console(...)
+  ConsolePrint(tostring(...))
+end
+function dumplua(Value)
+  ChoGGi.Dump("\r\n" .. ValueToLuaCode(Value),nil,"DumpedLua","lua")
+end
+function restart()
+  quit("restart")
+end
+function examine(Obj)
+  OpenExamine(Obj)
+end
+ex = examine
+dump = ChoGGi.Dump
+dumpobject = ChoGGi.DumpObject
+dumpo = ChoGGi.DumpObject
+dumptable = ChoGGi.DumpTable
+dumpt = ChoGGi.DumpTable
+alert = ChoGGi.MsgPopup
+exit = quit
+reboot = restart
+trans = _InternalTranslate
+con = console
+mh = GetTerrainCursorObjSel
+mc = GetPreciseCursorObj
+m = SelectionMouseObj
+c = GetTerrainCursor
+cs = terminal.GetMousePos --pos on screen, not map
+
+--some dev removed this from the Spirit update... (harumph)
+function AddConsolePrompt(text)
+  if dlgConsole then
+    local self = dlgConsole
+    self:Show(true)
+    self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
+    self.idEdit:SetCursorPos(#text)
+  end
+end
+
+--toggle visiblity of console log
+--(ok, so it isn't a replaced func, but all the other console stuff is here)
+function ToggleConsoleLog()
+  if dlgConsoleLog then
+    local isVis = dlgConsoleLog:GetVisible()
+    if isVis then
+      dlgConsoleLog:SetVisible(false)
+    else
+      dlgConsoleLog:SetVisible(true)
+    end
+  else
+    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+  end
+end
 
 function ChoGGi.MsgPopup(Msg,Title,Icon)
   pcall(function()
@@ -43,49 +96,6 @@ function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
       end
     end)
   end)
-end
-
-function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
-  if Menu then
-    Menu = "/" .. tostring(Menu)
-  end
-
---[[
---TEST menu items
-  if Menu then
-    print(Menu)
-  end
-  if Action then
-    print(Action)
-  end
-  if Key then
-    print(Key)
-  end
-  if Des then
-    print(Des)
-  end
-  if Icon then
-    print(Icon)
-  end
-print("\n")
---]]
-
-  --_InternalTranslate(T({Number from Game.csv}))
-  --UserActions.AddActions({
-  --UserActions.RejectedActions()
-  ChoGGi.UserAddActions({
-    ["ChoGGi_" .. AsyncRand()] = {
-      menu = Menu,
-      action = Action,
-      key = Key,
-      description = Des or "",
-      icon = Icon,
-      toolbar = Toolbar,
-      mode = Mode,
-      xinput = xInput,
-      toolbar_default = ToolbarDefault
-    }
-  })
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
@@ -172,23 +182,17 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   Ext = Ext or "txt"
   File = File or "DumpedText"
   local Filename = "AppData/logs/" .. File .. "." .. Ext
-  --local tempfile = assert(io.open("AppData/logs/" .. File .. "." .. Ext,Mode))
 
-  if not pcall(function()
+  if pcall(function()
     AsyncStringToFile(Filename,Obj,Mode)
     --tempfile:write(Obj)
   end) then
-    pcall(function()
-      AsyncStringToFile(Filename,Obj,Mode)
-      --tempfile:write(tostring(Obj))
-    end)
-  end
-
-  --tempfile:close()
-  if not Skip then
-    ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
-      Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
-    )
+    --tempfile:close()
+    if not Skip then
+      ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
+        Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
+      )
+    end
   end
 end
 
@@ -345,3 +349,77 @@ function ChoGGi.RetNumOrString(Value)
   return ret
 end
 
+--change some annoying stuff about UserActions.AddActions()
+local g_idxAction = 0
+function ChoGGi.UserAddActions(ActionsToAdd)
+  for k, v in pairs(ActionsToAdd) do
+    if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
+      if v.key ~= nil and v.key ~= "" then
+        if type(v.key) == "table" then
+          local keys = v.key
+          if #keys <= 0 then
+            v.description = ""
+          else
+            v.description = v.description .. " (" .. keys[1]
+            for i = 2, #keys do
+              v.description = v.description .. " or " .. keys[i]
+            end
+            v.description = v.description .. ")"
+          end
+        else
+          v.description = tostring(v.description) .. " (" .. v.key .. ")"
+        end
+      end
+      v.id = k
+      v.idx = g_idxAction
+      g_idxAction = g_idxAction + 1
+      UserActions.Actions[k] = v
+    else
+      UserActions.RejectedActions[k] = v
+    end
+  end
+  UserActions.SetMode(UserActions.mode)
+end
+
+function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+  if Menu then
+    Menu = "/" .. tostring(Menu)
+  end
+
+--[[
+--TEST menu items
+  if Menu then
+    print(Menu)
+  end
+  if Action then
+    print(Action)
+  end
+  if Key then
+    print(Key)
+  end
+  if Des then
+    print(Des)
+  end
+  if Icon then
+    print(Icon)
+  end
+print("\n")
+--]]
+
+  --_InternalTranslate(T({Number from Game.csv}))
+  --UserActions.AddActions({
+  --UserActions.RejectedActions()
+  ChoGGi.UserAddActions({
+    ["ChoGGi_" .. AsyncRand()] = {
+      menu = Menu,
+      action = Action,
+      key = Key,
+      description = Des or "",
+      icon = Icon,
+      toolbar = Toolbar,
+      mode = Mode,
+      xinput = xInput,
+      toolbar_default = ToolbarDefault
+    }
+  })
+end

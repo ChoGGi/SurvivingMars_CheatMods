@@ -7,7 +7,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     }
   }
 
-  --ChoGGi.ListChoiceCustom_Dialog.idList:SetHint("XXXX")
+  --ex(ChoGGi.ListChoiceCustomDialog_Dlg.idList)
   function ListChoiceCustomDialog:Init()
     --init stuff?
     DataInstances.UIDesignerData.ListChoiceCustomDialog:InitDialogFromView(self, "Default")
@@ -18,11 +18,14 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idCancel:SetHint("Cancel without changing anything.")
     self.choices = {}
     self.sel = false
+    self.showlisthints = false
 
-    --setup for multi selection
-    if ChoGGi.ListChoiceCustom_MultiSel then
-      self.idList.multiple_selection = true
-    end
+    --have to do it for each item?
+    self.idList:SetHSizing("Resize")
+
+    --add some padding before the text
+    self.idCustomValue.DisplacementPos = 0
+    self.idCustomValue.DisplacementWidth = 10
 
     --do stuff on selection
     local origOnLButtonDown = self.idList.OnLButtonDown
@@ -31,7 +34,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
       --if we want to change hints on selection (why doesn't onmouseenter work for list items?)
-      if ChoGGi.ListChoiceCustom_Hint then
+      if self.showlisthints then
         --only call when sending hint type
         self.idList:SetHint(self.sel.text .. " " .. self.sel.hint)
       end
@@ -56,8 +59,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
     function self.idOK.OnButtonPressed(this)
       --check checkboxes
-      ChoGGi.ListChoiceCustom_CheckBox1 = self.idCheckBox1:GetToggled()
-      ChoGGi.ListChoiceCustom_CheckBox2 = self.idCheckBox2:GetToggled()
+      ChoGGi.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
+      ChoGGi.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
 
       --get sel item(s)
       local items = self.idList:GetSelection()
@@ -77,12 +80,6 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
   end --init
 
-  function ListChoiceCustomDialog:PostInit()
-    --focus on list and set selection to last item
-    self.idList:SetFocus()
-    self.idList:SetSelection(#self.idList.items, true)
-  end
-
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
       self.idCancel:Press()
@@ -100,6 +97,13 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 end --ClassesGenerate
 
 function ChoGGi.UIDesignerData_ClassesBuilt()
+
+  --dialog layout
+  --[[
+  DesignResolution
+  MinSize
+  SizeOrg
+  --]]
   UIDesignerData:new({
     DesignOrigin = point(100, 100),
     DesignResolution = point(300, 450),
@@ -124,17 +128,21 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
       {
         name = "default",
         {
-          --MultipleSelection = true,
+          ShowPartialItems = true,
+          ScrollPadding = 1,
+          SelectionColor = RGB(0, 0, 0),
+
           Class = "List",
           FontStyle = "Editor14",
           Id = "idList",
           PosOrg = point(105, 123),
           RolloverFontStyle = "Editor14",
           ScrollBar = true,
+          ScrollAutohide = true,
           SelectionFontStyle = "Editor14",
           Spacing = point(8, 2),
           Subview = "default",
-          SizeOrg = point(390, 322),
+          SizeOrg = point(390, 335),
           HSizing = "0, 1, 0",
           VSizing = "0, 1, 0"
         },
@@ -178,15 +186,14 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
         },
+
         {
           AutoSelectAll = true,
           NegFilter = "`~!@#$%^&*()_-+={}[]|\\;:'\"<,>./?",
-          BackgroundColor = -16777216,
           Id = "idCustomValue",
           Class = "SingleLineEdit",
           FontStyle = "Editor14Bold",
           Subview = "default",
-          TextColorDisabled = -8421505,
           PosOrg = point(110, 465),
           SizeOrg = point(375, 24),
           TextVAlign = "center",

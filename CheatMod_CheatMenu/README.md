@@ -42,6 +42,7 @@ Add 250 Applicants
 Add Funds/Reset Funds
 Add Mystery Buildings
 Add Prefabs
+Add Research Points
 Allow Dome Forbidden Buildings
 Allow Dome Required Buildings
 Allow Tall Buildings Under Pipes

@@ -12,21 +12,23 @@ function ChoGGi.ObjectSpawner()
   end
 
   local CallBackFunc = function(choice)
-    local NewObj = PlaceObj(choice[1].value,{"Pos",GetTerrainCursor()})
+    local value = choice[1].value
+    if g_Classes[value] then
+      local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
 
-    --[[
-    for _, prop in ipairs(NewObj:GetProperties()) do
-      NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
+      --[[
+      for _, prop in ipairs(NewObj:GetProperties()) do
+        NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
+      end
+      --]]
+
+      ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
+       "Object","UI/Icons/Notifications/placeholder.tga"
+      )
     end
-    --]]
-
-    ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
-     "Object","UI/Icons/Notifications/placeholder.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner","Warning: Objects are unselectable with mouse cursor.")
 end
-
 
 function ChoGGi.ObjectsStats_Toggle()
   --check for any opened windows and kill them

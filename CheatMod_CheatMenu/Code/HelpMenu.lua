@@ -7,7 +7,7 @@ ChoGGi.AddAction(
     hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
     ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots = not ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots
     ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Interface is: " .. tostring(ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots),
+    ChoGGi.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots),
       "Interface","UI/Icons/Sections/attention.tga"
     )
   end,
@@ -93,12 +93,12 @@ ChoGGi.AddAction(
     end
     ChoGGi.WriteSettings()
 
-    ChoGGi.MsgPopup("No more hints stopping gameplay","Hints","UI/Icons/Sections/attention.tga")
+    ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
   end,
   nil,
   function()
     local des = ChoGGi.CheatMenuSettings.DisableHints and "(Enabled)" or "(Disabled)"
-    return des .. " Stop showing hints."
+    return des .. " No more hints popping up and stopping gameplay."
   end
 )
 --------------------

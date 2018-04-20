@@ -672,46 +672,58 @@ end
 
 --called from below
 
-
 function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
-  --set before opening dlg
-  if MultiSel then
-    ChoGGi.ListChoiceCustom_MultiSel = true
-  end
-  if ListHints then
-    ChoGGi.ListChoiceCustom_Hint = true
-  end
   --local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop, _InternalTranslate(Caption))
   local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop)
---easy access to the dlg from elsewhere
-ChoGGi.ListChoiceCustom_Dialog = dlg
+
+--easier to fiddle with it like this (remove sometime)
+ChoGGi.ListChoiceCustomDialog_Dlg = dlg
+
+  if MultiSel then
+    dlg.idList.multiple_selection = true
+  end
+  if ListHints then
+    dlg.showlisthints = true
+  end
   --hides if short list
-  dlg.idList:SetScrollAutohide(true)
+  --dlg.idList:SetScrollAutohide(true)
   --title text
   dlg.idCaption:SetText(Caption)
   --list
   dlg.idList:SetContent(Items)
 
   --setup checkboxes
-  if Check1 then
-    dlg.idCheckBox1:SetText(Check1)
-    dlg.idCheckBox1:SetHint(Check1Hint)
-  else
+  if not Check1 and not Check2 then
     dlg.idCheckBox1:SetVisible(false)
-  end
-  if Check2 then
-    dlg.idCheckBox2:SetText(Check2)
-    dlg.idCheckBox2:SetHint(Check2Hint)
-  else
     dlg.idCheckBox2:SetVisible(false)
+  else
+    dlg.idList:SetSize(point(390, 310))
+
+
+    if Check1 then
+      dlg.idCheckBox1:SetText(Check1)
+      dlg.idCheckBox1:SetHint(Check1Hint)
+    else
+      dlg.idCheckBox1:SetVisible(false)
+    end
+    if Check2 then
+      dlg.idCheckBox2:SetText(Check2)
+      dlg.idCheckBox2:SetHint(Check2Hint)
+    else
+      dlg.idCheckBox2:SetVisible(false)
+    end
   end
   --where to position dlg
   dlg:SetPos(terminal.GetMousePos())
 
+  --focus on list
+  dlg.idList:SetFocus()
+  --dlg.idList:SetSelection(1, true)
+
   --are we showing a hint?
   if Hint then
     dlg.idList:SetHint(Hint)
-    dlg.idOK:SetHint("Apply and close dialog (arrow keys and Enter/Esc can also be used).\n\n\n\n" .. Hint)
+    dlg.idOK:SetHint("Apply and close dialog (Arrow keys and Enter/Esc can also be used).\n\n\n\n" .. Hint)
   end
 
   --waiting for choice
@@ -723,7 +735,7 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
     return
   end
 
-  local ListHints
+  local ListHints = false
   if Items[1].hint then
     ListHints = true
   end
@@ -735,14 +747,11 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
     end
   )
 
-  --blank item for custom value
+  --insert blank item for adding custom value
   table.insert(Items,{text = "",hint = "",value = false})
-
 
   CreateRealTimeThread(function()
     local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
-    ChoGGi.ListChoiceCustom_MultiSel = nil
-    ChoGGi.ListChoiceCustom_Hint = nil
     if option ~= "idCancel" then
       Func(option)
     end

@@ -46,38 +46,13 @@ end --OnMsg
 
 function OnMsg.ClassesBuilt()
 
-  ChoGGi.ReplacedFunctions_ClassesBuilt()
+  --ChoGGi.ReplacedFunctions_ClassesBuilt()
   ChoGGi.UIDesignerData_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
     table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
   end
-
-  --add preset menu items
-  ChoGGi.NewThread(function()
-    ClassDescendantsList("Preset", function(name, class)
-      local preset_class = class.PresetClass or name
-      Presets[preset_class] = Presets[preset_class] or {}
-      local map = class.GlobalMap
-      if map then
-        rawset(_G, map, rawget(_G, map) or {})
-      end
-      UserActions.AddActions({
-        [name] = {
-          menu = "Presets/" .. name,
-          key = class.EditorShortcut or nil,
-          icon = class.EditorIcon or nil,
-          action = function()
-            OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-              PresetClass = name,
-              SingleFile = class.SingleFile
-            })
-          end
-        }
-      })
-    end)
-  end)
 
   --update base rc transport capacity for newly placed
   --[[
@@ -119,12 +94,35 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.IsGameLoaded = true
   end
 
-  ChoGGi.RenderSettings_LoadingScreenPreClose()
-  ChoGGi.Keys_LoadingScreenPreClose()
-  ChoGGi.SponsorsFunc_LoadingScreenPreClose()
+  ChoGGi.NewThread(ChoGGi.ReplacedFunctions_LoadingScreenPreClose)
+  ChoGGi.NewThread(ChoGGi.RenderSettings_LoadingScreenPreClose)
+  ChoGGi.NewThread(ChoGGi.Keys_LoadingScreenPreClose)
+  ChoGGi.NewThread(ChoGGi.SponsorsFunc_LoadingScreenPreClose)
 
   --late enough that I can set g_Consts.
   ChoGGi.SetGConstsToSaved()
+
+  --add preset menu items
+  ClassDescendantsList("Preset", function(name, class)
+    local preset_class = class.PresetClass or name
+    Presets[preset_class] = Presets[preset_class] or {}
+    local map = class.GlobalMap
+    if map then
+      rawset(_G, map, rawget(_G, map) or {})
+    end
+    ChoGGi.AddAction(
+      "Presets/" .. name,
+      function()
+        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+          PresetClass = name,
+          SingleFile = class.SingleFile
+        })
+      end,
+      class.EditorShortcut or nil,
+      "Open a preset in the editor.",
+      class.EditorIcon or "CollectionsEditor.tga"
+    )
+  end)
 
   --make sure all buildings are using correct production
   ChoGGi.SetProductionToSavedAmt()
@@ -226,9 +224,14 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
-  --Residence
-  --XTemplates.sectionResidence[1]["MaxHeight"] = 200
-  --change some default menu items
+  -- This must return true for most (built-in) cheats to function
+  function CheatsEnabled()
+    return true
+  end
+  --add built-in cheat menu items
+  AddCheatsUA()
+
+  --remove some built-in menu items
   UserActions.RemoveActions({
     --useless without developer tools?
     "BuildingEditor",
@@ -281,8 +284,8 @@ function OnMsg.LoadingScreenPreClose()
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
-  --always show on my computer
   if ChoGGi.Testing then
+    --always show on my computer
     if not dlgUAMenu then
       UAMenu.ToggleOpen()
     end
@@ -329,29 +332,25 @@ function OnMsg.LoadingScreenPreClose()
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
     --clean up (in a seprate thread)
     ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
-    --ChoGGi.RemoveOldFiles()
     --update saved version
     ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
     ChoGGi.WriteSettings()
   end
-  DebugPrint("\n\nExpanded Cheat Menu: v" .. ChoGGi._VERSION .. "\n\n")
 
 end --OnMsg
 
---if instant_build is on
-function OnMsg.BuildingPlaced(building)
-  ChoGGi.LastPlacedObj = building
---print(building.encyclopedia_id)
+function OnMsg.BuildingPlaced(Object)
+  ChoGGi.LastPlacedObject = Object
 end --OnMsg
 
-function OnMsg.ConstructionSitePlaced(site)
-  --if building site then skip (instant build)
-  if not site.building_class_proto then
-    ChoGGi.LastPlacedObj = site
-  end
+function OnMsg.ConstructionSitePlaced(Object)
+  ChoGGi.LastPlacedObject = Object
 end --OnMsg
 
 function OnMsg.ConstructionComplete(building)
+  --for ctrl-space
+  ChoGGi.LastPlacedBuildingObj = building
+
   ChoGGi.NewThread(function()
     --print(building.encyclopedia_id)
     if IsKindOf(building,"RCTransportBuilding") then

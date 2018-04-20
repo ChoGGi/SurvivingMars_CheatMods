@@ -60,7 +60,6 @@ ChoGGi.Consts = {
   Building_is_tall = false,
   Building_wonder = false,
   CameraZoomToggle = false,
-  developer = false,
   FullyAutomatedBuildings = false,
   GravityColonist = false,
   GravityDrone = false,

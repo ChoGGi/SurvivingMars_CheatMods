@@ -72,7 +72,7 @@ function ChoGGi.ChangeSponsor()
   local CallBackFunc = function(choice)
     ChoGGi.SetNewSponsor(choice[1].value,choice[1].text)
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Sponsor","Select item for better tooltip info.")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Sponsor","Select item for tooltip info.")
 end
 
 function ChoGGi.ChangeCommander()
@@ -90,7 +90,7 @@ function ChoGGi.ChangeCommander()
   local CallBackFunc = function(choice)
     ChoGGi.SetNewCommander(choice[1].value,choice[1].text)
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Commander","Select item for better tooltip info.")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Commander","Select item for tooltip info.")
 end
 
 function ChoGGi.SetNewSponsor(sName,sDisplay)

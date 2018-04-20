@@ -963,20 +963,20 @@ function ChoGGi.ChangeColonistsTrait()
     local Which
 
     --nothing checked so just return
-    if not ChoGGi.ListChoiceCustom_CheckBox1 and not ChoGGi.ListChoiceCustom_CheckBox2 then
+    if not ChoGGi.ListChoiceCustomDialog_CheckBox1 and not ChoGGi.ListChoiceCustomDialog_CheckBox2 then
       ChoGGi.MsgPopup("Pick a checkbox next time...","Colonists","UI/Icons/Notifications/colonist.tga")
       return
-    elseif ChoGGi.ListChoiceCustom_CheckBox1 and ChoGGi.ListChoiceCustom_CheckBox2 then
+    elseif ChoGGi.ListChoiceCustomDialog_CheckBox1 and ChoGGi.ListChoiceCustomDialog_CheckBox2 then
       ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Colonists","UI/Icons/Notifications/colonist.tga")
       return
     end
 
     --add
-    if ChoGGi.ListChoiceCustom_CheckBox1 then
+    if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
       Bool = true
       Which = "Added"
     --remove
-    elseif ChoGGi.ListChoiceCustom_CheckBox2 then
+    elseif ChoGGi.ListChoiceCustomDialog_CheckBox2 then
       Bool = false
       Which = "Removed"
     end
@@ -995,7 +995,7 @@ function ChoGGi.ChangeColonistsTrait()
     ChoGGi.MsgPopup(Which .. " trait(s)","Colonists","UI/Icons/Notifications/colonist.tga")
 
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Trait(s)","Check Add or Remove, and use Shift or Ctrl to select multiple traits.",true,"Add","Check to add selected traits","Remove","Check to remove selected traits")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Trait(s) For All Colonists","Check Add or Remove, and use Shift or Ctrl to select multiple traits.",true,"Add","Check to add selected traits","Remove","Check to remove selected traits")
 end
 
 function ChoGGi.SetStatsOfAllColonists()
