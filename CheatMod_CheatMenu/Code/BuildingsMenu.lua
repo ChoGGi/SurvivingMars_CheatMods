@@ -114,7 +114,7 @@ ChoGGi.AddAction(
   nil,
   function()
     local des = ChoGGi.NumRetBool(Consts.CropFailThreshold,"(Disabled)","(Enabled)")
-    return des .. " Remove Threshold for failing crops."
+    return des .. " Remove Threshold for failing crops (crops won't fail)."
   end,
   "DisableAOMaps.tga"
 )

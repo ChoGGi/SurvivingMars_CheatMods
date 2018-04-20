@@ -19,7 +19,7 @@ function ChoGGi.SetDisasterOccurrence(sType,tList)
 end
 
 function ChoGGi.MeteorHealthDamage_Toggle()
-  Consts.MeteorHealthDamage = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage)
+  ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
   ChoGGi.CheatMenuSettings.MeteorHealthDamage = Consts.MeteorHealthDamage
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MeteorHealthDamage .. ": Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
@@ -44,12 +44,10 @@ function ChoGGi.SetRocketCargoCapacity()
   local CallBackFunc = function(choice)
     local amount = choice[1].value
     if type(amount) == "number" then
-      Consts.CargoCapacity = amount
-      g_Consts.CargoCapacity = amount
+      ChoGGi.SetConstsG("CargoCapacity",amount)
       ChoGGi.CheatMenuSettings.CargoCapacity = amount
     else
-      Consts.CargoCapacity = DefaultSetting
-      g_Consts.CargoCapacity = DefaultSetting
+      ChoGGi.SetConstsG("CargoCapacity",DefaultSetting)
       ChoGGi.CheatMenuSettings.CargoCapacity = DefaultSetting
     end
     ChoGGi.WriteSettings()
@@ -89,13 +87,13 @@ function ChoGGi.SetRocketTravelTime()
   local CallBackFunc = function(choice)
     local amount = choice[1].value
     if type(amount) == "number" then
-      Consts.TravelTimeEarthMars = amount
-      Consts.TravelTimeMarsEarth = amount
-      ChoGGi.CheatMenuSettings.TravelTimeEarthMars = amount
-      ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = amount
+      ChoGGi.SetConstsG("TravelTimeEarthMars",amount)
+      ChoGGi.SetConstsG("TravelTimeMarsEarth",amount)
+      ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
+      ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
     else
-      Consts.TravelTimeEarthMars = ChoGGi.GetTravelTimeEarthMars()
-      Consts.TravelTimeMarsEarth = ChoGGi.GetTravelTimeMarsEarth()
+      ChoGGi.SetConstsG("TravelTimeEarthMars",ChoGGi.GetTravelTimeEarthMars())
+      ChoGGi.SetConstsG("TravelTimeMarsEarth",ChoGGi.GetTravelTimeMarsEarth())
       ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
       ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
     end
@@ -125,12 +123,10 @@ function ChoGGi.SetColonistsPerRocket()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      Consts.MaxColonistsPerRocket = value
-      g_Consts.MaxColonistsPerRocket = value
+      ChoGGi.SetConstsG("MaxColonistsPerRocket",value)
       ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = value
     else
-      Consts.MaxColonistsPerRocket = DefaultSetting
-      g_Consts.MaxColonistsPerRocket = DefaultSetting
+      ChoGGi.SetConstsG("MaxColonistsPerRocket",DefaultSetting)
       ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = DefaultSetting
     end
 
@@ -211,7 +207,7 @@ function ChoGGi.SetBuildingCapacity()
 
     --NewLabel needed to update battery/etc capacity without toggling it?
     local NewLabel
-    if choice[1].which == 1 then
+    if choice[1].value == DefaultSetting then
       ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
       NewLabel = "full"
     else
@@ -267,10 +263,7 @@ function ChoGGi.SetVisitorCapacity()
   local DefaultSetting = sel.base_max_visitors
 
   local ItemList = {
-    {
-      text = " Default: " .. DefaultSetting,
-      value = DefaultSetting,
-    },
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -287,7 +280,7 @@ function ChoGGi.SetVisitorCapacity()
   end
   local CallBackFunc = function(choice)
     local amount
-    if choice[1].which ~= 1 then
+    if choice[1].value ~= DefaultSetting then
       amount = choice[1].value
     end
 

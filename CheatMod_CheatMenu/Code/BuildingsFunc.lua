@@ -293,13 +293,8 @@ end
 function ChoGGi.SanatoriumSchoolShowAll()
   ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll = not ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll
 
-  if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #ChoGGi.NegativeTraits
-    School.max_traits = #ChoGGi.PositiveTraits
-  else
-    Sanatorium.max_traits = 3
-    School.max_traits = 3
-  end
+	Sanatorium.max_traits = ChoGGi.ValueRetOpp(Sanatorium.max_traits,3,#ChoGGi.NegativeTraits)
+	School.max_traits = ChoGGi.ValueRetOpp(School.max_traits,3,#ChoGGi.PositiveTraits)
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",
@@ -349,8 +344,8 @@ function ChoGGi.MoistureVaporatorPenalty_Toggle()
 end
 
 function ChoGGi.CropFailThreshold_Toggle()
-  const.CropFailThreshold = ChoGGi.NumRetBool(const.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
-  ChoGGi.CheatMenuSettings.CropFailThreshold = const.CropFailThreshold
+  Consts.CropFailThreshold = ChoGGi.NumRetBool(Consts.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
+  ChoGGi.CheatMenuSettings.CropFailThreshold = Consts.CropFailThreshold
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CropFailThreshold) .. " The small but great planet of Potatoho",
    "Buildings","UI/Icons/Sections/Food_1.tga"
@@ -358,35 +353,21 @@ function ChoGGi.CropFailThreshold_Toggle()
 end
 
 function ChoGGi.CheapConstruction_Toggle()
-  if Consts.Metals_cost_modifier == -100 then
-    Consts.Metals_cost_modifier = ChoGGi.Consts.Metals_cost_modifier
-    Consts.Metals_dome_cost_modifier = ChoGGi.Consts.Metals_dome_cost_modifier
-    Consts.PreciousMetals_cost_modifier = ChoGGi.Consts.PreciousMetals_cost_modifier
-    Consts.PreciousMetals_dome_cost_modifier = ChoGGi.Consts.PreciousMetals_dome_cost_modifier
-    Consts.Concrete_cost_modifier = ChoGGi.Consts.Concrete_cost_modifier
-    Consts.Concrete_dome_cost_modifier = ChoGGi.Consts.Concrete_dome_cost_modifier
-    Consts.Polymers_dome_cost_modifier = ChoGGi.Consts.Polymers_dome_cost_modifier
-    Consts.Polymers_cost_modifier = ChoGGi.Consts.Polymers_cost_modifier
-    Consts.Electronics_cost_modifier = ChoGGi.Consts.Electronics_cost_modifier
-    Consts.Electronics_dome_cost_modifier = ChoGGi.Consts.Electronics_dome_cost_modifier
-    Consts.MachineParts_cost_modifier = ChoGGi.Consts.MachineParts_cost_modifier
-    Consts.MachineParts_dome_cost_modifier = ChoGGi.Consts.MachineParts_dome_cost_modifier
-    Consts.rebuild_cost_modifier = ChoGGi.Consts.rebuild_cost_modifier
-  else
-    Consts.Metals_cost_modifier = -100
-    Consts.Metals_dome_cost_modifier = -100
-    Consts.PreciousMetals_cost_modifier = -100
-    Consts.PreciousMetals_dome_cost_modifier = -100
-    Consts.Concrete_cost_modifier = -100
-    Consts.Concrete_dome_cost_modifier = -100
-    Consts.Polymers_dome_cost_modifier = -100
-    Consts.Polymers_cost_modifier = -100
-    Consts.Electronics_cost_modifier = -100
-    Consts.Electronics_dome_cost_modifier = -100
-    Consts.MachineParts_cost_modifier = -100
-    Consts.MachineParts_dome_cost_modifier = -100
-    Consts.rebuild_cost_modifier = -100
-  end
+
+  ChoGGi.SetConstsG("Metals_cost_modifier",ChoGGi.ValueRetOpp(Consts.Metals_cost_modifier,-100,ChoGGi.Consts.Metals_cost_modifier))
+  ChoGGi.SetConstsG("Metals_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.Metals_dome_cost_modifier,-100,ChoGGi.Consts.Metals_dome_cost_modifier))
+  ChoGGi.SetConstsG("PreciousMetals_cost_modifier",ChoGGi.ValueRetOpp(Consts.PreciousMetals_cost_modifier,-100,ChoGGi.Consts.PreciousMetals_cost_modifier))
+  ChoGGi.SetConstsG("PreciousMetals_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.PreciousMetals_dome_cost_modifier,-100,ChoGGi.Consts.PreciousMetals_dome_cost_modifier))
+  ChoGGi.SetConstsG("Concrete_cost_modifier",ChoGGi.ValueRetOpp(Consts.Concrete_cost_modifier,-100,ChoGGi.Consts.Concrete_cost_modifier))
+  ChoGGi.SetConstsG("Concrete_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.Concrete_dome_cost_modifier,-100,ChoGGi.Consts.Concrete_dome_cost_modifier))
+  ChoGGi.SetConstsG("Polymers_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.Polymers_dome_cost_modifier,-100,ChoGGi.Consts.Polymers_dome_cost_modifier))
+  ChoGGi.SetConstsG("Polymers_cost_modifier",ChoGGi.ValueRetOpp(Consts.Polymers_cost_modifier,-100,ChoGGi.Consts.Polymers_cost_modifier))
+  ChoGGi.SetConstsG("Electronics_cost_modifier",ChoGGi.ValueRetOpp(Consts.Electronics_cost_modifier,-100,ChoGGi.Consts.Electronics_cost_modifier))
+  ChoGGi.SetConstsG("Electronics_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.Electronics_dome_cost_modifier,-100,ChoGGi.Consts.Electronics_dome_cost_modifier))
+  ChoGGi.SetConstsG("MachineParts_cost_modifier",ChoGGi.ValueRetOpp(Consts.MachineParts_cost_modifier,-100,ChoGGi.Consts.MachineParts_cost_modifier))
+  ChoGGi.SetConstsG("MachineParts_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.MachineParts_dome_cost_modifier,-100,ChoGGi.Consts.MachineParts_dome_cost_modifier))
+  ChoGGi.SetConstsG("rebuild_cost_modifier",ChoGGi.ValueRetOpp(Consts.rebuild_cost_modifier,-100,ChoGGi.Consts.rebuild_cost_modifier))
+
   ChoGGi.CheatMenuSettings.Metals_cost_modifier = Consts.Metals_cost_modifier
   ChoGGi.CheatMenuSettings.Metals_dome_cost_modifier = Consts.Metals_dome_cost_modifier
   ChoGGi.CheatMenuSettings.PreciousMetals_cost_modifier = Consts.PreciousMetals_cost_modifier
@@ -407,8 +388,9 @@ function ChoGGi.CheapConstruction_Toggle()
 end
 
 function ChoGGi.BuildingDamageCrime_Toggle()
-  Consts.CrimeEventSabotageBuildingsCount = ChoGGi.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount)
-  Consts.CrimeEventDestroyedBuildingsCount = ChoGGi.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount)
+  ChoGGi.SetConstsG("CrimeEventSabotageBuildingsCount",ChoGGi.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
+  ChoGGi.SetConstsG("CrimeEventDestroyedBuildingsCount",ChoGGi.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
+
   ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount = Consts.CrimeEventSabotageBuildingsCount
   ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount = Consts.CrimeEventDestroyedBuildingsCount
   ChoGGi.WriteSettings()
@@ -418,15 +400,10 @@ function ChoGGi.BuildingDamageCrime_Toggle()
 end
 
 function ChoGGi.CablesAndPipesNoBreak_Toggle()
-    ChoGGi.CheatMenuSettings.BreakChanceCablePipe = not ChoGGi.CheatMenuSettings.BreakChanceCablePipe
+  ChoGGi.CheatMenuSettings.BreakChanceCablePipe = not ChoGGi.CheatMenuSettings.BreakChanceCablePipe
 
-    if ChoGGi.CheatMenuSettings.BreakChanceCablePipe then
-      const.BreakChanceCable = 10000000
-      const.BreakChancePipe = 10000000
-    else
-      const.BreakChanceCable = 600
-      const.BreakChancePipe = 600
-    end
+  const.BreakChanceCable = ChoGGi.ValueRetOpp(const.BreakChanceCable,600,10000000)
+  const.BreakChancePipe = ChoGGi.ValueRetOpp(const.BreakChancePipe,600,10000000)
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakChanceCablePipe .. " Aliens? We gotta deal with aliens too?",
@@ -440,8 +417,9 @@ function ChoGGi.CablesAndPipesRepair()
 end
 
 function ChoGGi.CablesAndPipesInstant_Toggle()
-  Consts.InstantCables = ChoGGi.ToggleBoolNum(Consts.InstantCables)
-  Consts.InstantPipes = ChoGGi.ToggleBoolNum(Consts.InstantPipes)
+  ChoGGi.SetConstsG("InstantCables",ChoGGi.ToggleBoolNum(Consts.InstantCables))
+  ChoGGi.SetConstsG("InstantPipes",ChoGGi.ToggleBoolNum(Consts.InstantPipes))
+
   ChoGGi.CheatMenuSettings.InstantCables = Consts.InstantCables
   ChoGGi.CheatMenuSettings.InstantPipes = Consts.InstantPipes
   ChoGGi.WriteSettings()

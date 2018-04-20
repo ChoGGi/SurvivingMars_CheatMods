@@ -65,10 +65,12 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       --get sel item(s)
       local items = self.idList:GetSelection()
       for i = 1, #items do
+      --[[
         if i == 1 then
-          --if we're just returning the one item then add list item number
+          --if we're just returning one item then add list item number
           items[i].which = self.idList:GetSelectionIdx()[1]
         end
+        --]]
         table.insert(self.choices,items[i])
       end
       --send selection back

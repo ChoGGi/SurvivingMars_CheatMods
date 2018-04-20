@@ -25,14 +25,11 @@ function ChoGGi.AddOrbitalProbes()
 end
 
 function ChoGGi.DeepScanToggle()
-  Consts.DeepScanAvailable = ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable)
-  Consts.IsDeepWaterExploitable = ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable)
-  Consts.IsDeepMetalsExploitable = ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable)
-  Consts.IsDeepPreciousMetalsExploitable = ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable)
-  --GrantTech("AdaptedProbes")
-  --GrantTech("DeepScanning")
-  --GrantTech("DeepWaterExtraction")
-  --GrantTech("DeepMetalExtraction")
+  ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
+  ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+  ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+  ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+
   ChoGGi.CheatMenuSettings.DeepScanAvailable = Consts.DeepScanAvailable
   ChoGGi.CheatMenuSettings.IsDeepWaterExploitable = Consts.IsDeepWaterExploitable
   ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable = Consts.IsDeepMetalsExploitable
@@ -75,10 +72,10 @@ function ChoGGi.SetFoodPerRocketPassenger()
   local CallBackFunc = function(choice)
     local amount = choice[1].value
     if type(amount) == "number" then
-      Consts.FoodPerRocketPassenger = amount
+      ChoGGi.SetConstsG("FoodPerRocketPassenger",amount)
       ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = amount
     else
-      Consts.FoodPerRocketPassenger = DefaultSetting
+      ChoGGi.SetConstsG("FoodPerRocketPassenger",DefaultSetting)
       ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = false
     end
     --save setting

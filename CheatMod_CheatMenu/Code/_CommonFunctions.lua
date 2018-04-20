@@ -147,113 +147,113 @@ function ChoGGi.ShowBuildMenu(iWhich)
   dlg:SelectCategory(BuildCategories[iWhich])
 end
 
-function ChoGGi.ColonistUpdateAge(colonist,Age)
+function ChoGGi.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
     Age = ChoGGi.ColonistAges[UICity:Random(1,6)]
   end
   --remove all age traits
-  colonist:RemoveTrait("Child")
-  colonist:RemoveTrait("Youth")
-  colonist:RemoveTrait("Adult")
-  colonist:RemoveTrait("Middle Aged")
-  colonist:RemoveTrait("Senior")
-  colonist:RemoveTrait("Retiree")
+  Colonist:RemoveTrait("Child")
+  Colonist:RemoveTrait("Youth")
+  Colonist:RemoveTrait("Adult")
+  Colonist:RemoveTrait("Middle Aged")
+  Colonist:RemoveTrait("Senior")
+  Colonist:RemoveTrait("Retiree")
   --add new age trait
-  colonist:AddTrait(Age)
+  Colonist:AddTrait(Age)
 
   --needed for comparison
-  local OrigAge = colonist.age_trait
+  local OrigAge = Colonist.age_trait
   --needed for updating entity
-  colonist.age_trait = Age
+  Colonist.age_trait = Age
 
   if Age == "Retiree" then
-    colonist.age = 65 --why isn't there a base_MinAge_Retiree...
+    Colonist.age = 65 --why isn't there a base_MinAge_Retiree...
   else
-    colonist.age = colonist["base_MinAge_" .. Age]
+    Colonist.age = Colonist["base_MinAge_" .. Age]
   end
 
   if Age == "Child" then
     --there aren't any child specialist entities
-    colonist.specialist = "none"
+    Colonist.specialist = "none"
     --only children live in nurseries
     if OrigAge ~= "Child" then
-      colonist:SetResidence(false)
+      Colonist:SetResidence(false)
     end
   end
   --only children live in nurseries
   if OrigAge == "Child" and Age ~= "Child" then
-    colonist:SetResidence(false)
+    Colonist:SetResidence(false)
   end
   --now we can set the new entity
-  colonist:ChooseEntity()
+  Colonist:ChooseEntity()
   --and (hopefully) prod them into finding a new residence
-  colonist:UpdateWorkplace()
-  colonist:UpdateResidence()
-  colonist:TryToEmigrate()
+  Colonist:UpdateWorkplace()
+  Colonist:UpdateResidence()
+  Colonist:TryToEmigrate()
 end
 
-function ChoGGi.ColonistUpdateGender(colonist,Gender,Cloned)
+function ChoGGi.ColonistUpdateGender(Colonist,Gender,Cloned)
   if Gender == "Random" then
     Gender = ChoGGi.ColonistGenders[UICity:Random(1,5)]
   elseif Gender == "MaleOrFemale" then
     Gender = ChoGGi.ColonistGenders[UICity:Random(4,5)]
   end
   --remove all gender traits
-  colonist:RemoveTrait("OtherGender")
-  colonist:RemoveTrait("Android")
-  colonist:RemoveTrait("Clone")
-  colonist:RemoveTrait("Male")
-  colonist:RemoveTrait("Female")
+  Colonist:RemoveTrait("OtherGender")
+  Colonist:RemoveTrait("Android")
+  Colonist:RemoveTrait("Clone")
+  Colonist:RemoveTrait("Male")
+  Colonist:RemoveTrait("Female")
   --add new gender trait
-  colonist:AddTrait(Gender)
+  Colonist:AddTrait(Gender)
   --needed for updating entity
-  colonist.gender = Gender
+  Colonist.gender = Gender
   --set entity gender
   if Gender == "Male" or Gender == "Female" then
-    colonist.entity_gender = Gender
+    Colonist.entity_gender = Gender
   else --random
     if Cloned then
-      colonist.entity_gender = Cloned
+      Colonist.entity_gender = Cloned
     else
       if UICity:Random(1,2) == 1 then
-        colonist.entity_gender = "Male"
+        Colonist.entity_gender = "Male"
       else
-        colonist.entity_gender = "Female"
+        Colonist.entity_gender = "Female"
       end
     end
   end
   --now we can set the new entity
-  colonist:ChooseEntity()
+  Colonist:ChooseEntity()
 end
 
-function ChoGGi.ColonistUpdateSpecialization(colonist,Spec)
-  if not colonist.entity:find("Child",1,true) then
+function ChoGGi.ColonistUpdateSpecialization(Colonist,Spec)
+  if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
       Spec = ChoGGi.ColonistSpecializations[UICity:Random(1,6)]
     end
-    colonist:SetSpecialization(Spec,"init")
-    colonist:ChooseEntity()
-    colonist:UpdateWorkplace()
-    colonist:TryToEmigrate()
+    Colonist:SetSpecialization(Spec,"init")
+    Colonist:ChooseEntity()
+    Colonist:UpdateWorkplace()
+    Colonist:TryToEmigrate()
   end
 end
 
-function ChoGGi.ColonistUpdateTraits(colonist,Bool,Type)
-  for i = 1, #ChoGGi[Type] do
+function ChoGGi.ColonistUpdateTraits(Colonist,Bool,Traits)
+  for i = 1, #Traits do
     if Bool == true then
-      colonist:AddTrait(ChoGGi[Type][i],true)
+      Colonist:AddTrait(Traits[i],true)
     else
-      colonist:RemoveTrait(ChoGGi[Type][i])
+      Colonist:RemoveTrait(Traits[i])
     end
   end
 end
 
-function ChoGGi.ColonistUpdateRace(colonist,Race)
+function ChoGGi.ColonistUpdateRace(Colonist,Race)
   if Race == "Random" then
     Race = UICity:Random(1,5)
   end
-  colonist.race = Race
-  colonist:ChooseEntity()
+  Colonist.race = Race
+  Colonist:ChooseEntity()
 end
 
 --[[
@@ -785,16 +785,16 @@ function ChoGGi.ToggleConsoleLog()
   end
 end
 
-function ChoGGi.OpenInObjectManipulator(object,parent)
-  local dlg = OpenDialog("ObjectManipulatorDialog", nil, parent or terminal.desktop)
+function ChoGGi.OpenInObjectManipulator(Object,Parent)
+  local dlg = OpenDialog("ObjectManipulatorDialog", nil, Parent or terminal.desktop)
   if dlg then
     --hides if short list
     dlg.idList:SetScrollAutohide(true)
     --title text
-    dlg.idCaption:SetText(tostring(object))
+    dlg.idCaption:SetText(tostring(Object))
 
     --create prop list for list
-    local list = ChoGGi.CreatePropList(object)
+    local list = ChoGGi.CreatePropList(Object)
     if list then
       dlg.idList:SetContent(list)
     end

@@ -108,7 +108,6 @@ ChoGGi.Consts = {
   StorageUniversalDepot = 30000,
   StorageOtherDepot = 180000,
   StorageWasteDepot = 70000,
-  ResidenceMaxHeight = 256,
 --const. (I don't think these have default values in-game anywhere, so I can't get the defaults)
   BreakThroughTechsPerGame = 13,
   ExplorationQueueMaxSize = 10,
@@ -195,76 +194,76 @@ ChoGGi.Consts = {
 --set game values to saved values
 function ChoGGi.SetConstsToSaved()
 --Consts.
-  Consts.AvoidWorkplaceSols = ChoGGi.CheatMenuSettings.AvoidWorkplaceSols
-  Consts.BirthThreshold = ChoGGi.CheatMenuSettings.BirthThreshold
-  Consts.CargoCapacity = ChoGGi.CheatMenuSettings.CargoCapacity
-  Consts.ColdWaveSanityDamage = ChoGGi.CheatMenuSettings.ColdWaveSanityDamage
-  Consts.CommandCenterMaxDrones = ChoGGi.CheatMenuSettings.CommandCenterMaxDrones
-  Consts.Concrete_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_cost_modifier
-  Consts.Concrete_dome_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_dome_cost_modifier
-  Consts.CrimeEventDestroyedBuildingsCount = ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount
-  Consts.CrimeEventSabotageBuildingsCount  = ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount
-  Consts.CropFailThreshold = ChoGGi.CheatMenuSettings.CropFailThreshold
-  Consts.DeepScanAvailable = ChoGGi.CheatMenuSettings.DeepScanAvailable
-  Consts.DefaultOutsideWorkplacesRadius  = ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius
-  Consts.DroneBuildingRepairAmount = ChoGGi.CheatMenuSettings.DroneBuildingRepairAmount
-  Consts.DroneBuildingRepairBatteryUse = ChoGGi.CheatMenuSettings.DroneBuildingRepairBatteryUse
-  Consts.DroneCarryBatteryUse = ChoGGi.CheatMenuSettings.DroneCarryBatteryUse
-  Consts.DroneConstructAmount = ChoGGi.CheatMenuSettings.DroneConstructAmount
-  Consts.DroneConstructBatteryUse = ChoGGi.CheatMenuSettings.DroneConstructBatteryUse
-  Consts.DroneDeconstructBatteryUse = ChoGGi.CheatMenuSettings.DroneDeconstructBatteryUse
-  Consts.DroneMeteorMalfunctionChance = ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance
-  Consts.DroneMoveBatteryUse = ChoGGi.CheatMenuSettings.DroneMoveBatteryUse
-  Consts.DroneRechargeTime = ChoGGi.CheatMenuSettings.DroneRechargeTime
-  Consts.DroneRepairSupplyLeak = ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak
-  Consts.DroneResourceCarryAmount = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
-  Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse = ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileBatteryUse
-  Consts.DustStormSanityDamage = ChoGGi.CheatMenuSettings.DustStormSanityDamage
-  Consts.Electronics_cost_modifier = ChoGGi.CheatMenuSettings.Electronics_cost_modifier
-  Consts.Electronics_dome_cost_modifier = ChoGGi.CheatMenuSettings.Electronics_dome_cost_modifier
-  Consts.FoodPerRocketPassenger = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger
-  Consts.HighStatLevel = ChoGGi.CheatMenuSettings.HighStatLevel
-  Consts.HighStatMoraleEffect = ChoGGi.CheatMenuSettings.HighStatMoraleEffect
-  Consts.InstantCables = ChoGGi.CheatMenuSettings.InstantCables
-  Consts.InstantPipes = ChoGGi.CheatMenuSettings.InstantPipes
-  Consts.IsDeepMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable
-  Consts.IsDeepPreciousMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable
-  Consts.IsDeepWaterExploitable = ChoGGi.CheatMenuSettings.IsDeepWaterExploitable
-  Consts.LowSanityNegativeTraitChance = ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance
-  Consts.LowSanitySuicideChance = ChoGGi.CheatMenuSettings.LowSanitySuicideChance
-  Consts.LowStatLevel = ChoGGi.CheatMenuSettings.LowStatLevel
-  Consts.MachineParts_cost_modifier = ChoGGi.CheatMenuSettings.MachineParts_cost_modifier
-  Consts.MachineParts_dome_cost_modifier = ChoGGi.CheatMenuSettings.MachineParts_dome_cost_modifier
-  Consts.MaxColonistsPerRocket = ChoGGi.CheatMenuSettings.MaxColonistsPerRocket
-  Consts.Metals_cost_modifier = ChoGGi.CheatMenuSettings.Metals_cost_modifier
-  Consts.Metals_dome_cost_modifier = ChoGGi.CheatMenuSettings.Metals_dome_cost_modifier
-  Consts.MeteorHealthDamage = ChoGGi.CheatMenuSettings.MeteorHealthDamage
-  Consts.MeteorSanityDamage = ChoGGi.CheatMenuSettings.MeteorSanityDamage
-  Consts.MinComfortBirth = ChoGGi.CheatMenuSettings.MinComfortBirth
-  Consts.MysteryDreamSanityDamage = ChoGGi.CheatMenuSettings.MysteryDreamSanityDamage
-  Consts.NoHomeComfort = ChoGGi.CheatMenuSettings.NoHomeComfort
-  Consts.NonSpecialistPerformancePenalty = ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty
-  Consts.OutsourceResearch = ChoGGi.CheatMenuSettings.OutsourceResearch
-  Consts.OutsourceResearchCost = ChoGGi.CheatMenuSettings.OutsourceResearchCost
-  Consts.OxygenMaxOutsideTime = ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime
-  Consts.PipesPillarSpacing = ChoGGi.CheatMenuSettings.PipesPillarSpacing
-  Consts.Polymers_cost_modifier = ChoGGi.CheatMenuSettings.Polymers_cost_modifier
-  Consts.Polymers_dome_cost_modifier = ChoGGi.CheatMenuSettings.Polymers_dome_cost_modifier
-  Consts.positive_playground_chance = ChoGGi.CheatMenuSettings.positive_playground_chance
-  Consts.PreciousMetals_cost_modifier = ChoGGi.CheatMenuSettings.PreciousMetals_cost_modifier
-  Consts.PreciousMetals_dome_cost_modifier = ChoGGi.CheatMenuSettings.PreciousMetals_dome_cost_modifier
-  Consts.ProjectMorphiousPositiveTraitChance = ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance
-  Consts.RCRoverDroneRechargeCost = ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost
-  Consts.RCRoverMaxDrones = ChoGGi.CheatMenuSettings.RCRoverMaxDrones
-  Consts.RCRoverTransferResourceWorkTime = ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime
-  Consts.RCTransportGatherResourceWorkTime = ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime
-  Consts.rebuild_cost_modifier = ChoGGi.CheatMenuSettings.rebuild_cost_modifier
-  Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
-  Consts.SeeDeadSanity = ChoGGi.CheatMenuSettings.SeeDeadSanity
-  Consts.TimeBeforeStarving = ChoGGi.CheatMenuSettings.TimeBeforeStarving
-  Consts.TravelTimeEarthMars = ChoGGi.CheatMenuSettings.TravelTimeEarthMars
-  Consts.TravelTimeMarsEarth = ChoGGi.CheatMenuSettings.TravelTimeMarsEarth
-  Consts.VisitFailPenalty = ChoGGi.CheatMenuSettings.VisitFailPenalty
+  ChoGGi.SetConstsG("AvoidWorkplaceSols",ChoGGi.CheatMenuSettings.AvoidWorkplaceSols)
+  ChoGGi.SetConstsG("BirthThreshold",ChoGGi.CheatMenuSettings.BirthThreshold)
+  ChoGGi.SetConstsG("CargoCapacity",ChoGGi.CheatMenuSettings.CargoCapacity)
+  ChoGGi.SetConstsG("ColdWaveSanityDamage",ChoGGi.CheatMenuSettings.ColdWaveSanityDamage)
+  ChoGGi.SetConstsG("CommandCenterMaxDrones",ChoGGi.CheatMenuSettings.CommandCenterMaxDrones)
+  ChoGGi.SetConstsG("Concrete_cost_modifier",ChoGGi.CheatMenuSettings.Concrete_cost_modifier)
+  ChoGGi.SetConstsG("Concrete_dome_cost_modifier",ChoGGi.CheatMenuSettings.Concrete_dome_cost_modifier)
+  ChoGGi.SetConstsG("CrimeEventDestroyedBuildingsCount",ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount)
+  ChoGGi.SetConstsG("CrimeEventSabotageBuildingsCount ",ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount)
+  ChoGGi.SetConstsG("CropFailThreshold",ChoGGi.CheatMenuSettings.CropFailThreshold)
+  ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.CheatMenuSettings.DeepScanAvailable)
+  ChoGGi.SetConstsG("DefaultOutsideWorkplacesRadius ",ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius)
+  ChoGGi.SetConstsG("DroneBuildingRepairAmount",ChoGGi.CheatMenuSettings.DroneBuildingRepairAmount)
+  ChoGGi.SetConstsG("DroneBuildingRepairBatteryUse",ChoGGi.CheatMenuSettings.DroneBuildingRepairBatteryUse)
+  ChoGGi.SetConstsG("DroneCarryBatteryUse",ChoGGi.CheatMenuSettings.DroneCarryBatteryUse)
+  ChoGGi.SetConstsG("DroneConstructAmount",ChoGGi.CheatMenuSettings.DroneConstructAmount)
+  ChoGGi.SetConstsG("DroneConstructBatteryUse",ChoGGi.CheatMenuSettings.DroneConstructBatteryUse)
+  ChoGGi.SetConstsG("DroneDeconstructBatteryUse",ChoGGi.CheatMenuSettings.DroneDeconstructBatteryUse)
+  ChoGGi.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance)
+  ChoGGi.SetConstsG("DroneMoveBatteryUse",ChoGGi.CheatMenuSettings.DroneMoveBatteryUse)
+  ChoGGi.SetConstsG("DroneRechargeTime",ChoGGi.CheatMenuSettings.DroneRechargeTime)
+  ChoGGi.SetConstsG("DroneRepairSupplyLeak",ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak)
+  ChoGGi.SetConstsG("DroneResourceCarryAmount",ChoGGi.CheatMenuSettings.DroneResourceCarryAmount)
+  ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileBatteryUse)
+  ChoGGi.SetConstsG("DustStormSanityDamage",ChoGGi.CheatMenuSettings.DustStormSanityDamage)
+  ChoGGi.SetConstsG("Electronics_cost_modifier",ChoGGi.CheatMenuSettings.Electronics_cost_modifier)
+  ChoGGi.SetConstsG("Electronics_dome_cost_modifier",ChoGGi.CheatMenuSettings.Electronics_dome_cost_modifier)
+  ChoGGi.SetConstsG("FoodPerRocketPassenger",ChoGGi.CheatMenuSettings.FoodPerRocketPassenger)
+  ChoGGi.SetConstsG("HighStatLevel",ChoGGi.CheatMenuSettings.HighStatLevel)
+  ChoGGi.SetConstsG("HighStatMoraleEffect",ChoGGi.CheatMenuSettings.HighStatMoraleEffect)
+  ChoGGi.SetConstsG("InstantCables",ChoGGi.CheatMenuSettings.InstantCables)
+  ChoGGi.SetConstsG("InstantPipes",ChoGGi.CheatMenuSettings.InstantPipes)
+  ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable)
+  ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable)
+  ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.CheatMenuSettings.IsDeepWaterExploitable)
+  ChoGGi.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance)
+  ChoGGi.SetConstsG("LowSanitySuicideChance",ChoGGi.CheatMenuSettings.LowSanitySuicideChance)
+  ChoGGi.SetConstsG("LowStatLevel",ChoGGi.CheatMenuSettings.LowStatLevel)
+  ChoGGi.SetConstsG("MachineParts_cost_modifier",ChoGGi.CheatMenuSettings.MachineParts_cost_modifier)
+  ChoGGi.SetConstsG("MachineParts_dome_cost_modifier",ChoGGi.CheatMenuSettings.MachineParts_dome_cost_modifier)
+  ChoGGi.SetConstsG("MaxColonistsPerRocket",ChoGGi.CheatMenuSettings.MaxColonistsPerRocket)
+  ChoGGi.SetConstsG("Metals_cost_modifier",ChoGGi.CheatMenuSettings.Metals_cost_modifier)
+  ChoGGi.SetConstsG("Metals_dome_cost_modifier",ChoGGi.CheatMenuSettings.Metals_dome_cost_modifier)
+  ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.CheatMenuSettings.MeteorHealthDamage)
+  ChoGGi.SetConstsG("MeteorSanityDamage",ChoGGi.CheatMenuSettings.MeteorSanityDamage)
+  ChoGGi.SetConstsG("MinComfortBirth",ChoGGi.CheatMenuSettings.MinComfortBirth)
+  ChoGGi.SetConstsG("MysteryDreamSanityDamage",ChoGGi.CheatMenuSettings.MysteryDreamSanityDamage)
+  ChoGGi.SetConstsG("NoHomeComfort",ChoGGi.CheatMenuSettings.NoHomeComfort)
+  ChoGGi.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty)
+  ChoGGi.SetConstsG("OutsourceResearch",ChoGGi.CheatMenuSettings.OutsourceResearch)
+  ChoGGi.SetConstsG("OutsourceResearchCost",ChoGGi.CheatMenuSettings.OutsourceResearchCost)
+  ChoGGi.SetConstsG("OxygenMaxOutsideTime",ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime)
+  ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.CheatMenuSettings.PipesPillarSpacing)
+  ChoGGi.SetConstsG("Polymers_cost_modifier",ChoGGi.CheatMenuSettings.Polymers_cost_modifier)
+  ChoGGi.SetConstsG("Polymers_dome_cost_modifier",ChoGGi.CheatMenuSettings.Polymers_dome_cost_modifier)
+  ChoGGi.SetConstsG("positive_playground_chance",ChoGGi.CheatMenuSettings.positive_playground_chance)
+  ChoGGi.SetConstsG("PreciousMetals_cost_modifier",ChoGGi.CheatMenuSettings.PreciousMetals_cost_modifier)
+  ChoGGi.SetConstsG("PreciousMetals_dome_cost_modifier",ChoGGi.CheatMenuSettings.PreciousMetals_dome_cost_modifier)
+  ChoGGi.SetConstsG("ProjectMorphiousPositiveTraitChance",ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance)
+  ChoGGi.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost)
+  ChoGGi.SetConstsG("RCRoverMaxDrones",ChoGGi.CheatMenuSettings.RCRoverMaxDrones)
+  ChoGGi.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime)
+  ChoGGi.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime)
+  ChoGGi.SetConstsG("rebuild_cost_modifier",ChoGGi.CheatMenuSettings.rebuild_cost_modifier)
+  ChoGGi.SetConstsG("RenegadeCreation",ChoGGi.CheatMenuSettings.RenegadeCreation)
+  ChoGGi.SetConstsG("SeeDeadSanity",ChoGGi.CheatMenuSettings.SeeDeadSanity)
+  ChoGGi.SetConstsG("TimeBeforeStarving",ChoGGi.CheatMenuSettings.TimeBeforeStarving)
+  ChoGGi.SetConstsG("TravelTimeEarthMars",ChoGGi.CheatMenuSettings.TravelTimeEarthMars)
+  ChoGGi.SetConstsG("TravelTimeMarsEarth",ChoGGi.CheatMenuSettings.TravelTimeMarsEarth)
+  ChoGGi.SetConstsG("VisitFailPenalty",ChoGGi.CheatMenuSettings.VisitFailPenalty)
 --const.
   const.BreakThroughTechsPerGame = ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame
   const.ExplorationQueueMaxSize = ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize
@@ -273,83 +272,6 @@ function ChoGGi.SetConstsToSaved()
   const.MoistureVaporatorPenaltyPercent = ChoGGi.CheatMenuSettings.MoistureVaporatorPenaltyPercent
   const.MoistureVaporatorRange = ChoGGi.CheatMenuSettings.MoistureVaporatorRange
   const.ResearchQueueSize = ChoGGi.CheatMenuSettings.ResearchQueueSize
-end
-
---g_Consts. (sometimes it uses these instead, setting both just to be sure...also lazy)
-function ChoGGi.SetGConstsToSaved()
-  g_Consts.AvoidWorkplaceSols = ChoGGi.CheatMenuSettings.AvoidWorkplaceSols
-  g_Consts.BirthThreshold = ChoGGi.CheatMenuSettings.BirthThreshold
-  g_Consts.CargoCapacity = ChoGGi.CheatMenuSettings.CargoCapacity
-  g_Consts.ColdWaveSanityDamage = ChoGGi.CheatMenuSettings.ColdWaveSanityDamage
-  g_Consts.CommandCenterMaxDrones = ChoGGi.CheatMenuSettings.CommandCenterMaxDrones
-  g_Consts.Concrete_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_cost_modifier
-  g_Consts.Concrete_dome_cost_modifier = ChoGGi.CheatMenuSettings.Concrete_dome_cost_modifier
-  g_Consts.CrimeEventDestroyedBuildingsCount = ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount
-  g_Consts.CrimeEventSabotageBuildingsCount  = ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount
-  g_Consts.CropFailThreshold = ChoGGi.CheatMenuSettings.CropFailThreshold
-  g_Consts.DeepScanAvailable = ChoGGi.CheatMenuSettings.DeepScanAvailable
-  g_Consts.DefaultOutsideWorkplacesRadius  = ChoGGi.CheatMenuSettings.DefaultOutsideWorkplacesRadius
-  g_Consts.DroneBuildingRepairAmount = ChoGGi.CheatMenuSettings.DroneBuildingRepairAmount
-  g_Consts.DroneBuildingRepairBatteryUse = ChoGGi.CheatMenuSettings.DroneBuildingRepairBatteryUse
-  g_Consts.DroneCarryBatteryUse = ChoGGi.CheatMenuSettings.DroneCarryBatteryUse
-  g_Consts.DroneConstructAmount = ChoGGi.CheatMenuSettings.DroneConstructAmount
-  g_Consts.DroneConstructBatteryUse = ChoGGi.CheatMenuSettings.DroneConstructBatteryUse
-  g_Consts.DroneDeconstructBatteryUse = ChoGGi.CheatMenuSettings.DroneDeconstructBatteryUse
-  g_Consts.DroneMeteorMalfunctionChance = ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance
-  g_Consts.DroneMoveBatteryUse = ChoGGi.CheatMenuSettings.DroneMoveBatteryUse
-  g_Consts.DroneRechargeTime = ChoGGi.CheatMenuSettings.DroneRechargeTime
-  g_Consts.DroneRepairSupplyLeak = ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak
-  g_Consts.DroneResourceCarryAmount = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
-  g_Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse = ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileBatteryUse
-  g_Consts.DustStormSanityDamage = ChoGGi.CheatMenuSettings.DustStormSanityDamage
-  g_Consts.Electronics_cost_modifier = ChoGGi.CheatMenuSettings.Electronics_cost_modifier
-  g_Consts.Electronics_dome_cost_modifier = ChoGGi.CheatMenuSettings.Electronics_dome_cost_modifier
-  g_Consts.FoodPerRocketPassenger = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger
-  g_Consts.HighStatLevel = ChoGGi.CheatMenuSettings.HighStatLevel
-  g_Consts.HighStatMoraleEffect = ChoGGi.CheatMenuSettings.HighStatMoraleEffect
-  g_Consts.InstantCables = ChoGGi.CheatMenuSettings.InstantCables
-  g_Consts.InstantPipes = ChoGGi.CheatMenuSettings.InstantPipes
-  g_Consts.IsDeepMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable
-  g_Consts.IsDeepPreciousMetalsExploitable = ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable
-  g_Consts.IsDeepWaterExploitable = ChoGGi.CheatMenuSettings.IsDeepWaterExploitable
-  g_Consts.LowSanityNegativeTraitChance = ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance
-  g_Consts.LowSanitySuicideChance = ChoGGi.CheatMenuSettings.LowSanitySuicideChance
-  g_Consts.LowStatLevel = ChoGGi.CheatMenuSettings.LowStatLevel
-  g_Consts.MachineParts_cost_modifier = ChoGGi.CheatMenuSettings.MachineParts_cost_modifier
-  g_Consts.MachineParts_dome_cost_modifier = ChoGGi.CheatMenuSettings.MachineParts_dome_cost_modifier
-  g_Consts.MaxColonistsPerRocket = ChoGGi.CheatMenuSettings.MaxColonistsPerRocket
-  g_Consts.Metals_cost_modifier = ChoGGi.CheatMenuSettings.Metals_cost_modifier
-  g_Consts.Metals_dome_cost_modifier = ChoGGi.CheatMenuSettings.Metals_dome_cost_modifier
-  g_Consts.MeteorHealthDamage = ChoGGi.CheatMenuSettings.MeteorHealthDamage
-  g_Consts.MeteorSanityDamage = ChoGGi.CheatMenuSettings.MeteorSanityDamage
-  g_Consts.MinComfortBirth = ChoGGi.CheatMenuSettings.MinComfortBirth
-  g_Consts.MysteryDreamSanityDamage = ChoGGi.CheatMenuSettings.MysteryDreamSanityDamage
-  g_Consts.NoHomeComfort = ChoGGi.CheatMenuSettings.NoHomeComfort
-  g_Consts.NonSpecialistPerformancePenalty = ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty
-  g_Consts.OutsourceResearch = ChoGGi.CheatMenuSettings.OutsourceResearch
-  g_Consts.OutsourceResearchCost = ChoGGi.CheatMenuSettings.OutsourceResearchCost
-  g_Consts.OxygenMaxOutsideTime = ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime
-  g_Consts.PipesPillarSpacing = ChoGGi.CheatMenuSettings.PipesPillarSpacing
-  g_Consts.Polymers_cost_modifier = ChoGGi.CheatMenuSettings.Polymers_cost_modifier
-  g_Consts.Polymers_dome_cost_modifier = ChoGGi.CheatMenuSettings.Polymers_dome_cost_modifier
-  g_Consts.positive_playground_chance = ChoGGi.CheatMenuSettings.positive_playground_chance
-  g_Consts.PreciousMetals_cost_modifier = ChoGGi.CheatMenuSettings.PreciousMetals_cost_modifier
-  g_Consts.PreciousMetals_dome_cost_modifier = ChoGGi.CheatMenuSettings.PreciousMetals_dome_cost_modifier
-  g_Consts.ProjectMorphiousPositiveTraitChance = ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance
-  g_Consts.RCRoverDroneRechargeCost = ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost
-  g_Consts.RCRoverMaxDrones = ChoGGi.CheatMenuSettings.RCRoverMaxDrones
-  g_Consts.RCRoverTransferResourceWorkTime = ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime
-  g_Consts.RCTransportGatherResourceWorkTime = ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime
-  g_Consts.rebuild_cost_modifier = ChoGGi.CheatMenuSettings.rebuild_cost_modifier
-  g_Consts.RenegadeCreation = ChoGGi.CheatMenuSettings.RenegadeCreation
-  g_Consts.SeeDeadSanity = ChoGGi.CheatMenuSettings.SeeDeadSanity
-  g_Consts.TimeBeforeStarving = ChoGGi.CheatMenuSettings.TimeBeforeStarving
-  g_Consts.TravelTimeEarthMars = ChoGGi.CheatMenuSettings.TravelTimeEarthMars
-  g_Consts.TravelTimeMarsEarth = ChoGGi.CheatMenuSettings.TravelTimeMarsEarth
-  g_Consts.TravelTimeMarsEarth = ChoGGi.CheatMenuSettings.TravelTimeMarsEarth
-  g_Consts.VisitFailPenalty = ChoGGi.CheatMenuSettings.VisitFailPenalty
-  --needed for DroneResourceCarryAmount
-  UpdateDroneResourceUnits()
 end
 
 --called everytime we set a setting in menu
@@ -415,6 +337,4 @@ function ChoGGi.Settings_OptionsApply()
       ChoGGi.CheatMenuSettings[Key] = Value
     end
   end
-
-  ChoGGi.SetConstsToSaved()
 end

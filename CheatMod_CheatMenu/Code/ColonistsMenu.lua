@@ -55,7 +55,7 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Expanded CM/Colonists[1]Stats/Renegade Creation Toggle",
+  "Expanded CM/Colonists/[1]Stats/Renegade Creation Toggle",
   ChoGGi.RenegadeCreation_Toggle,
   nil,
   function()
@@ -71,10 +71,10 @@ ChoGGi.AddAction(
 )
 
 ChoGGi.AddAction(
-  "Expanded CM/Colonists[1]Stats/Make All Colonists Renegades",
+  "Expanded CM/Colonists/[1]Stats/Make All Colonists Renegades",
   ChoGGi.MakeAllColonistsRenegades,
   nil,
-  "From what I.N.T.E.L.L.I.G.E.N.C.E. has gathered, it would be 9/11 times 100.",
+  "I'm afraid it could be 9/11 times 1,000.",
   "AlignSel.tga"
 )
 
@@ -130,14 +130,6 @@ ChoGGi.AddAction(
     local des = ChoGGi.NumRetBool(Consts.LowSanityNegativeTraitChance,"(Disabled)","(Enabled)")
     return des .. " Disable chance of getting a negative trait when Sanity reaches zero.\nWorks after colonist idle."
   end,
-  "AlignSel.tga"
-)
-
-ChoGGi.AddAction(
-  "Expanded CM/Colonists/[2]Traits/Change Individual Traits",
-  ChoGGi.ChangeColonistsTrait,
-  nil,
-  "Add/Remove traits for all colonists.",
   "AlignSel.tga"
 )
 
@@ -339,14 +331,14 @@ ChoGGi.AddAction(
     ChoGGi.SetColonistsTraits(2)
   end,
   nil,
-  "This will make all colonists have certain traits.",
+  "Choose traits for all colonists.",
   "AlignSel.tga"
 )
 
 -------------------
 
 ChoGGi.AddAction(
-  "Expanded CM/Colonists/[1]Stats/Set Stats Of All Colonists",
+  "Expanded CM/Colonists/Set Stats",
   ChoGGi.SetStatsOfAllColonists,
   nil,
   "Change the stats of all colonists.",

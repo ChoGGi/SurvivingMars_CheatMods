@@ -83,6 +83,15 @@ function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
   return Bool and TrueVar or FalseVar
 end
 
+--return the opposite
+function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
+  if Setting == Value1 then
+    return Value2
+  elseif Setting == Value2 then
+    return Value1
+  end
+end
+
 --return as num
 function ChoGGi.BoolRetNum(Bool)
   if Bool == true then
@@ -403,4 +412,9 @@ function ChoGGi.CheckForTypeInList(List,Type)
     end
   end
   return ret
+end
+
+function ChoGGi.SetConstsG(Name,Value)
+  Consts[Name] = Value
+  g_Consts[Name] = Value
 end

@@ -88,13 +88,9 @@ end
 
 function ChoGGi.HigherShadowDist_Toggle()
   ChoGGi.CheatMenuSettings.HigherShadowDist = not ChoGGi.CheatMenuSettings.HigherShadowDist
-  if ChoGGi.CheatMenuSettings.HigherShadowDist then
-    hr.ShadowRangeOverride = 1000000
-    hr.ShadowFadeOutRangePercent = 0
-  else
-    hr.ShadowRangeOverride = 0
-    hr.ShadowFadeOutRangePercent = 30
-  end
+
+  hr.ShadowRangeOverride = ChoGGi.ValueRetOpp(hr.ShadowRangeOverride,0,1000000)
+  hr.ShadowFadeOutRangePercent = ChoGGi.ValueRetOpp(hr.ShadowFadeOutRangePercent,30,0)
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherShadowDist),
@@ -104,11 +100,8 @@ end
 
 function ChoGGi.HigherRenderDist_Toggle()
   ChoGGi.CheatMenuSettings.HigherRenderDist = not ChoGGi.CheatMenuSettings.HigherRenderDist
-  if ChoGGi.CheatMenuSettings.HigherRenderDist then
-    hr.LODDistanceModifier = 600
-  else
-    hr.LODDistanceModifier = 120
-  end
+
+  hr.LODDistanceModifier = ChoGGi.ValueRetOpp(hr.LODDistanceModifier,600,120)
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
@@ -268,11 +261,8 @@ function ChoGGi.CameraZoom_Toggle()
 end
 
 function ChoGGi.PipesPillarsSpacing_Toggle()
-  if Consts.PipesPillarSpacing == 1000 then
-    Consts.PipesPillarSpacing = ChoGGi.Consts.PipesPillarSpacing
-  else
-    Consts.PipesPillarSpacing = 1000
-  end
+  ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
+
   ChoGGi.CheatMenuSettings.PipesPillarSpacing = Consts.PipesPillarSpacing
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
@@ -282,13 +272,18 @@ end
 
 function ChoGGi.ShowAllTraits_Toggle()
   ChoGGi.CheatMenuSettings.ShowAllTraits = not ChoGGi.CheatMenuSettings.ShowAllTraits
-  if ChoGGi.CheatMenuSettings.ShowAllTraits then
-    g_SchoolTraits = ChoGGi.PositiveTraits
-    g_SanatoriumTraits = ChoGGi.NegativeTraits
-  else
-    g_SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-    g_SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-  end
+
+  g_SchoolTraits = ChoGGi.ValueRetOpp(
+    g_SchoolTraits,
+    ChoGGi.PositiveTraits,
+    {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+  )
+  g_SanatoriumTraits = ChoGGi.ValueRetOpp(
+    g_SanatoriumTraits,
+    ChoGGi.NegativeTraits,
+    {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+  )
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ShowAllTraits) .. ": Good for what ails you",
    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
@@ -296,11 +291,8 @@ function ChoGGi.ShowAllTraits_Toggle()
 end
 
 function ChoGGi.ResearchQueueLarger_Toggle()
-  if const.ResearchQueueSize == 25 then
-    const.ResearchQueueSize = ChoGGi.Consts.ResearchQueueSize
-  else
-    const.ResearchQueueSize = 25
-  end
+  const.ResearchQueueSize = ChoGGi.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
+
   ChoGGi.CheatMenuSettings.ResearchQueueSize = const.ResearchQueueSize
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ResearchQueueSize .. ": Nerdgasm",
@@ -309,11 +301,8 @@ function ChoGGi.ResearchQueueLarger_Toggle()
 end
 
 function ChoGGi.ScannerQueueLarger_Toggle()
-  if const.ExplorationQueueMaxSize == 100 then
-    const.ExplorationQueueMaxSize = ChoGGi.Consts.ExplorationQueueMaxSize
-  else
-    const.ExplorationQueueMaxSize = 100
-  end
+  const.ExplorationQueueMaxSize = ChoGGi.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
+
   ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize .. ": scans at a time.",

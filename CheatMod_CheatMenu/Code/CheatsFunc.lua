@@ -228,7 +228,8 @@ function ChoGGi.AddOutsourcePoints()
 end
 
 function ChoGGi.OutsourcePoints1000000()
-  Consts.OutsourceResearch = 1000 * ChoGGi.Consts.ResearchPointsScale
+  ChoGGi.SetConstsG("OutsourceResearch",1000 * ChoGGi.Consts.ResearchPointsScale)
+
   ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. ": The same thing we do every night, Pinky - try to take over the world!",
@@ -237,7 +238,8 @@ function ChoGGi.OutsourcePoints1000000()
 end
 
 function ChoGGi.OutsourcingFree_Toggle()
-  Consts.OutsourceResearchCost = ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost
+  ChoGGi.SetConstsG("OutsourceResearchCost",ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
+
   ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. ": Best hope you picked India as your Mars sponsor",
@@ -246,11 +248,8 @@ function ChoGGi.OutsourcingFree_Toggle()
 end
 
 function ChoGGi.BreakThroughTechsPerGame_Toggle()
-  if const.BreakThroughTechsPerGame == 26 then
-    const.BreakThroughTechsPerGame = ChoGGi.Consts.BreakThroughTechsPerGame
-  else
-    const.BreakThroughTechsPerGame = 26
-  end
+  const.BreakThroughTechsPerGame = ChoGGi.ValueRetOpp(const.BreakThroughTechsPerGame,26,ChoGGi.Consts.BreakThroughTechsPerGame)
+
   ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame .. ": S M R T",

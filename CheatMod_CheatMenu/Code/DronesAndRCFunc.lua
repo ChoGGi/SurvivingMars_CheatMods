@@ -68,12 +68,13 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
 end
 
 function ChoGGi.DroneBatteryInfinite_Toggle()
-  Consts.DroneMoveBatteryUse = ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse)
-  Consts.DroneCarryBatteryUse = ChoGGi.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse)
-  Consts.DroneConstructBatteryUse = ChoGGi.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse)
-  Consts.DroneBuildingRepairBatteryUse = ChoGGi.NumRetBool(Consts.DroneBuildingRepairBatteryUse,0,ChoGGi.Consts.DroneBuildingRepairBatteryUse)
-  Consts.DroneDeconstructBatteryUse = ChoGGi.NumRetBool(Consts.DroneDeconstructBatteryUse,0,ChoGGi.Consts.DroneDeconstructBatteryUse)
-  Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse = ChoGGi.NumRetBool(Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,0,ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse)
+  ChoGGi.SetConstsG("DroneMoveBatteryUse",ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse))
+  ChoGGi.SetConstsG("DroneCarryBatteryUse",ChoGGi.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse))
+  ChoGGi.SetConstsG("DroneConstructBatteryUse",ChoGGi.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse))
+  ChoGGi.SetConstsG("DroneBuildingRepairBatteryUse",ChoGGi.NumRetBool(Consts.DroneBuildingRepairBatteryUse,0,ChoGGi.Consts.DroneBuildingRepairBatteryUse))
+  ChoGGi.SetConstsG("DroneDeconstructBatteryUse",ChoGGi.NumRetBool(Consts.DroneDeconstructBatteryUse,0,ChoGGi.Consts.DroneDeconstructBatteryUse))
+  ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.NumRetBool(Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,0,ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse))
+
   ChoGGi.CheatMenuSettings.DroneMoveBatteryUse = Consts.DroneMoveBatteryUse
   ChoGGi.CheatMenuSettings.DroneCarryBatteryUse = Consts.DroneCarryBatteryUse
   ChoGGi.CheatMenuSettings.DroneConstructBatteryUse = Consts.DroneConstructBatteryUse
@@ -87,13 +88,9 @@ function ChoGGi.DroneBatteryInfinite_Toggle()
 end
 
 function ChoGGi.DroneBuildSpeed_Toggle()
-  if Consts.DroneConstructAmount == 999900 then
-    Consts.DroneConstructAmount = ChoGGi.Consts.DroneConstructAmount
-    Consts.DroneBuildingRepairAmount = ChoGGi.Consts.DroneBuildingRepairAmount
-  else
-    Consts.DroneConstructAmount = 999900
-    Consts.DroneBuildingRepairAmount = 999900
-  end
+  ChoGGi.SetConstsG("DroneConstructAmount",ChoGGi.ValueRetOpp(Consts.DroneConstructAmount,999900,ChoGGi.Consts.DroneConstructAmount))
+  ChoGGi.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ValueRetOpp(Consts.DroneBuildingRepairAmount,999900,ChoGGi.Consts.DroneBuildingRepairAmount))
+
   ChoGGi.CheatMenuSettings.DroneConstructAmount = Consts.DroneConstructAmount
   ChoGGi.CheatMenuSettings.DroneBuildingRepairAmount = Consts.DroneBuildingRepairAmount
   ChoGGi.WriteSettings()
@@ -105,7 +102,8 @@ function ChoGGi.DroneBuildSpeed_Toggle()
 end
 
 function ChoGGi.RCRoverDroneRechargeFree_Toggle()
-  Consts.RCRoverDroneRechargeCost = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost)
+  ChoGGi.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost))
+
   ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost = Consts.RCRoverDroneRechargeCost
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost .. ": More where that came from",
@@ -114,8 +112,9 @@ function ChoGGi.RCRoverDroneRechargeFree_Toggle()
 end
 
 function ChoGGi.RCTransportInstantTransfer_Toggle()
-  Consts.RCRoverTransferResourceWorkTime = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime)
-  Consts.RCTransportGatherResourceWorkTime = ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.GetRCTransportGatherResourceWorkTime())
+  ChoGGi.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
+  ChoGGi.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.GetRCTransportGatherResourceWorkTime()))
+
   ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime = Consts.RCRoverTransferResourceWorkTime
   ChoGGi.CheatMenuSettings.RCTransportGatherResourceWorkTime = Consts.RCTransportGatherResourceWorkTime
   ChoGGi.WriteSettings()
@@ -125,7 +124,8 @@ function ChoGGi.RCTransportInstantTransfer_Toggle()
 end
 
 function ChoGGi.DroneMeteorMalfunction_Toggle()
-  Consts.DroneMeteorMalfunctionChance = ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance)
+  ChoGGi.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance))
+
   ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance = Consts.DroneMeteorMalfunctionChance
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling",
@@ -134,7 +134,8 @@ function ChoGGi.DroneMeteorMalfunction_Toggle()
 end
 
 function ChoGGi.DroneRechargeTime_Toggle()
-  Consts.DroneRechargeTime = ChoGGi.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime)
+  ChoGGi.SetConstsG("DroneRechargeTime",ChoGGi.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
+
   ChoGGi.CheatMenuSettings.DroneRechargeTime = Consts.DroneRechargeTime
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRechargeTime .. ": Well, if jacking on'll make strangers think I'm cool, I'll do it!",
@@ -143,14 +144,9 @@ function ChoGGi.DroneRechargeTime_Toggle()
 end
 
 function ChoGGi.DroneRepairSupplyLeak_Toggle()
+  ChoGGi.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
 
-  if Consts.DroneRepairSupplyLeak == 1 then
-    Consts.DroneRepairSupplyLeak = ChoGGi.Consts.DroneRepairSupplyLeak
-  else
-    Consts.DroneRepairSupplyLeak = 1
-  end
   ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak = Consts.DroneRepairSupplyLeak
-
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak .. ": You know what they say about leaky pipes",
     "Drones","UI/Icons/IPButtons/drone.tga"
@@ -186,13 +182,12 @@ function ChoGGi.SetDroneCarryAmount()
       if amount > 1000 then
         amount = 1000
       end
-      Consts.DroneResourceCarryAmount = amount
-      g_Consts.DroneResourceCarryAmount = amount
+      ChoGGi.SetConstsG("DroneResourceCarryAmount",amount)
       UpdateDroneResourceUnits()
       ChoGGi.CheatMenuSettings.DroneResourceCarryAmount = amount
     else
-      Consts.DroneResourceCarryAmount = DefaultSetting
-      g_Consts.DroneResourceCarryAmount = DefaultSetting
+      ChoGGi.SetConstsG("DroneResourceCarryAmount",DefaultSetting)
+      Consts.DroneResourceCarryAmount =
       UpdateDroneResourceUnits()
       ChoGGi.CheatMenuSettings.DroneResourceCarryAmount = DefaultSetting
     end
@@ -228,10 +223,10 @@ function ChoGGi.SetDronesPerDroneHub()
   local CallBackFunc = function(choice)
     local amount = choice[1].value
     if type(amount) == "number" then
-      Consts.CommandCenterMaxDrones = amount
+      ChoGGi.SetConstsG("CommandCenterMaxDrones",amount)
       ChoGGi.CheatMenuSettings.CommandCenterMaxDrones = amount
     else
-      Consts.CommandCenterMaxDrones = DefaultSetting
+      ChoGGi.SetConstsG("CommandCenterMaxDrones",DefaultSetting)
       ChoGGi.CheatMenuSettings.CommandCenterMaxDrones = DefaultSetting
     end
 
@@ -266,10 +261,10 @@ function ChoGGi.SetDronesPerRCRover()
   local CallBackFunc = function(choice)
     local amount = choice[1].value
     if type(amount) == "number" then
-      Consts.RCRoverMaxDrones = amount
+      ChoGGi.SetConstsG("RCRoverMaxDrones",amount)
       ChoGGi.CheatMenuSettings.RCRoverMaxDrones = amount
     else
-      Consts.RCRoverMaxDrones = DefaultSetting
+      ChoGGi.SetConstsG("RCRoverMaxDrones",DefaultSetting)
       ChoGGi.CheatMenuSettings.RCRoverMaxDrones = DefaultSetting
     end
     ChoGGi.WriteSettings()
