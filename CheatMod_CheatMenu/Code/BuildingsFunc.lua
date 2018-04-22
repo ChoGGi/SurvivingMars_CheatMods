@@ -148,20 +148,22 @@ function ChoGGi.SetProductionAmount()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Production Amount","Current production: " .. hint)
 end
 
-function ChoGGi.FullyAutomatedBuildings_Toggle()
+function ChoGGi.FullyAutomatedBuildings()
 
   --show list of options to pick
   local ItemList = {
     {text = " Disable",value = 0},
-    {text = "250",value = 250},
-    {text = "500",value = 500},
-    {text = "1000",value = 1000},
-    {text = "2500",value = 2500},
-    {text = "5000",value = 5000},
-    {text = "10000",value = 10000},
-    {text = "25000",value = 25000},
-    {text = "50000",value = 50000},
-    {text = "100000",value = 100000},
+    {text = 100,value = 100},
+    {text = 150,value = 150},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
   }
 
   local CallBackFunc = function(choice)

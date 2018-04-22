@@ -121,7 +121,8 @@ end --OnMsg
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
-  if ChoGGi.CheatMenuSettings.DroneResourceCarryAmount > 10 then
+  local ca = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
+  if ca and ca > 10 then
     ChoGGi.ForceDronesToEmptyStorage_Enable()
   end
 

@@ -28,6 +28,7 @@ Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)
 Ctrl-Shift-E: Toggle editor mode
 Ctrl-Alt-Shift-D: Delete object
 Shift-Q: Clone selected object to mouse position
+More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor
 
@@ -139,18 +140,20 @@ Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ```
 Toggle showing history/results on-screen (Menu>Debug, it's on by default)
 type any name in to see it in the console log (ex: Consts)
-exit (or quit)
-restart (or reboot)
-examine(Consts) (or ex(SelectedObj))
-dump(Consts) (dump puts files in AppData/logs)
-dumplua(dlgConsole) (dump using ValueToLuaCode())
-dumpobject(SelectedObj) (or dumpo)
-dumptable(Consts) (or dumpt)
-SelectedObj (or s)
-SelectionMouseObj() (or m) (object under mouse cursor)
-GetPreciseCursorObj() (or mc) (like SelectionMouseObj but compact)
-GetTerrainCursor() (or c) (position of cursor: use with s:SetPos(c()), or c():x(), c():y(), c():z() )
-GetTerrainCursorObjSel() (or mh) (just the handle)
+exit : or quit
+restart : or reboot
+examine(Consts) : or ex(SelectedObj)
+dump(12345) : dump puts files in AppData/logs
+dumplua(dlgConsole) : dump using ValueToLuaCode()
+dumpobject(SelectedObj) : or dumpo
+dumptable(Consts) : or dumpt
+trans() : translate userdata: ********** to text
+SelectedObj : or s
+SelectionMouseObj() : or m, object under mouse cursor
+GetPreciseCursorObj() : or mc, like SelectionMouseObj but compact
+GetTerrainCursorObjSel() : or mh, just the handle
+GetTerrainCursor() : or c, position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
+terminal.GetMousePos : or cs, mouse pos on screen, not map
 
 If you want to overwrite instead of append text: dumpobject(TechTree,"w")
 If you want to dump functions as well: dumptable(TechTree,nil,true)
