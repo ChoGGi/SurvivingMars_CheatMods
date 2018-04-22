@@ -39,16 +39,14 @@ end
     self.idEditValue.display_text = "Edit Value"
     self.choices = {}
     self.sel = false
-    self.showlisthints = false
     self.obj = false
-    self.Orig_ListSetContent = false
 
     --have to do it for each item?
     --self.idList.single = false
 
     --add some padding before the text
-    self.idEditValue.DisplacementPos = 0
-    self.idEditValue.DisplacementWidth = 10
+    --self.idEditValue.DisplacementPos = 0
+    --self.idEditValue.DisplacementWidth = 10
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
@@ -68,8 +66,6 @@ end
     self.idList.Orig_SetContent = self.idList.SetContent
     function self.idList:SetContent(items)
       self.Orig_SetContent(self,items)
-
-      --retrieve list of building/vehicle names
       local listitems = self.item_windows
       for i = 1, #listitems do
         local listitem = listitems[i]
@@ -79,13 +75,12 @@ end
           if rollovered or selected then
             local hint = item.text
             if item.value then
-              hint = hint .. "\n" .. item.value
-            elseif item.hint then
-              hint = hint .. "\n" .. item.hint
+              hint = hint .. ": " .. item.value
+            end
+            if item.hint then
+              hint = hint .. "\n\n" .. item.hint
             end
             self.parent.parent:SetHint(hint)
-            self.parent.parent:UpdateRollover()
-            --see what else is around to update hints or toggle or some shit
           end
         end
       end
@@ -99,11 +94,6 @@ end
       local ret = origOnLButtonDown(selfList,...)
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-      --if we want to change hints on selection (why doesn't onmouseenter work for list items?)
-      if self.showlisthints then
-        --only call when sending hint type
-        self.idList:SetHint(self.sel.text .. " " .. self.sel.hint)
-      end
       --for whatever is expecting a return value
       return ret
     end
@@ -184,12 +174,10 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
         {
           Id = "idClose",
           Class = "Button",
-          TextHAlign = "center",
-          TextVAlign = "center",
           CloseDialog = true,
           --FontStyle = "Editor14Bold",
           Image = "CommonAssets/UI/Controls/Button/Close.tga",
-          ImageType = "aaaaa",
+          --ImageType = "aaaaa",
           Subview = "default",
           --Text = "X",
           --HSizing = "1, 0, 1",
@@ -283,7 +271,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Id = "idEditValue",
           Class = "SingleLineEdit",
           AutoSelectAll = true,
-          NegFilter = "`~!@#$%^&*()_-+={}[]|\\;:'\"<,>./?",
+          NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
           FontStyle = "Editor14Bold",
           Subview = "default",
           TextVAlign = "center",

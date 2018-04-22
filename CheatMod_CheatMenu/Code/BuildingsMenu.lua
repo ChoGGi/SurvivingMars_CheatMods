@@ -34,7 +34,7 @@ function OnMsg.Resume()
   --------------------
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Fully Automated Buildings",
-    ChoGGi.FullyAutomatedBuildings_Toggle,
+    ChoGGi.FullyAutomatedBuildings,
     nil,
     function()
       local des = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"

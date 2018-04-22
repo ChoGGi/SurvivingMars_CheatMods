@@ -385,6 +385,11 @@ function ChoGGi.ColonistsAddSpecializationToAll()
   )
 end
 
+local function IsChild(value)
+  if value == "Child" then
+    return "Warning: Child will remove specialization."
+  end
+end
 function ChoGGi.SetColonistsAge(iType)
   --show list of options to pick
   local DefaultSetting = " Default"
@@ -408,6 +413,7 @@ function ChoGGi.SetColonistsAge(iType)
     table.insert(ItemList,{
       text = ChoGGi.ColonistAges[i],
       value = ChoGGi.ColonistAges[i],
+      hint = IsChild(ChoGGi.ColonistAges[i]),
     })
   end
 
@@ -458,10 +464,12 @@ function ChoGGi.SetColonistsGender(iType)
   table.insert(ItemList,{
     text = DefaultSetting,
     value = DefaultSetting,
+    hint = "How the game normally works",
   })
   table.insert(ItemList,{
     text = " MaleOrFemale",
     value = "MaleOrFemale",
+    hint = "Only set as male or female",
   })
   for i = 1, #ChoGGi.ColonistGenders do
     table.insert(ItemList,{
@@ -470,13 +478,13 @@ function ChoGGi.SetColonistsGender(iType)
     })
   end
 
-  local hint = DefaultSetting .. ": Any gender\nMaleOrFemale: Only set as male or female"
+  local hint
   if iType == 1 then
     hint = DefaultSetting
     if ChoGGi.CheatMenuSettings[sSetting] then
       hint = ChoGGi.CheatMenuSettings[sSetting]
     end
-    hint = "Current: " .. hint .. "\n\n" .. DefaultSetting .. ": Game choice.\nMaleOrFemale: Only male or female"
+    hint = "Current: " .. hint
   end
 
   local CallBackFunc = function(choice)
@@ -515,16 +523,19 @@ function ChoGGi.SetColonistsSpecialization(iType)
   table.insert(ItemList,{
     text = DefaultSetting,
     value = DefaultSetting,
+    hint = "How the game normally works",
   })
   if iType == 1 then
     table.insert(ItemList,{
       text = "Random",
       value = "Random",
+      hint = "Everyone gets a spec",
     })
   end
   table.insert(ItemList,{
     text = "none",
     value = "none",
+    hint = "Removes specializations",
   })
   for i = 1, #ChoGGi.ColonistSpecializations do
     table.insert(ItemList,{
@@ -539,7 +550,7 @@ function ChoGGi.SetColonistsSpecialization(iType)
     if ChoGGi.CheatMenuSettings[sSetting] then
       hint = ChoGGi.CheatMenuSettings[sSetting]
     end
-    hint = "Current: " .. hint .. "\n\nDefault: How the game normally works\nRandom: Everyone gets a spec"
+    hint = "Current: " .. hint
   end
 
   local CallBackFunc = function(choice)

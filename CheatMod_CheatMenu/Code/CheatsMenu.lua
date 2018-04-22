@@ -3,9 +3,9 @@ function OnMsg.Resume()
 
   ChoGGi.AddAction(
     "Cheats/[01]Map Exploration",
-    ChoGGi.ShowScanOptions,
+    ChoGGi.ShowScanAndMapOptions,
     nil,
-    "Reveal all deposits or deposits level 1 and above.",
+    "Scanning, deep scanning, core mines, and alien imprints.",
     "LightArea.tga"
   )
 

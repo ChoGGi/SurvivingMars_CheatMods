@@ -1,9 +1,5 @@
 
 function ChoGGi.AddOrbitalProbes()
-  if not UICity then
-    return
-  end
-
   local ItemList = {
     {text = 5,value = 5},
     {text = 10,value = 10},
@@ -22,31 +18,6 @@ function ChoGGi.AddOrbitalProbes()
     end
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
-end
-
-function ChoGGi.DeepScanToggle()
-  ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
-  ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
-  ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
-  ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
-  ChoGGi.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
-  ChoGGi.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
-  ChoGGi.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
-  ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DeepScanAvailable) .. ": Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
-   "Scanner","UI/Icons/Notifications/scan.tga"
-  )
-end
-
-function ChoGGi.DeeperScanEnable()
-  GrantTech("CoreMetals")
-  GrantTech("CoreWater")
-  GrantTech("CoreRareMetals")
-  ChoGGi.MsgPopup("Further down the rabbit hole",
-   "Scanner","UI/Icons/Notifications/scan.tga"
-  )
 end
 
 function ChoGGi.SetFoodPerRocketPassenger()
@@ -85,70 +56,63 @@ function ChoGGi.SetFoodPerRocketPassenger()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
 
---UICity.available_prefabs.StirlingGenerator=5
---UICity.drone_prefabs=5
-
-function ChoGGi.AddPrefabsDrone()
+function ChoGGi.AddPrefabs()
+  local hint = "Use custom value to enter amount of prefabs to add."
   local ItemList = {
-    {text = 1,value = 1},
-    {text = 5,value = 5},
-    {text = 10,value = 10},
-    {text = 25,value = 25},
-    {text = 50,value = 50},
-    {text = 100,value = 100},
-    {text = 500,value = 500},
-    {text = 1000,value = 1000},
+    {text = "Drone",value = "Drone",hint = hint},
+    {text = "Drone Hub",value = "DroneHub",hint = hint},
+    {text = "Electronics Factory",value = "ElectronicsFactory",hint = hint},
+    {text = "Fuel Factory",value = "FuelFactory",hint = hint},
+    {text = "Machine Parts Factory",value = "MachinePartsFactory",hint = hint},
+    {text = "Moisture Vaporator",value = "MoistureVaporator",hint = hint},
+    {text = "Polymer Plant",value = "PolymerPlant",hint = hint},
+    {text = "Stirling Generator",value = "StirlingGenerator",hint = hint},
+    {text = "Spire: Water Reclamation System",value = "WaterReclamationSystem",hint = hint},
+    {text = "Spire: Arcology",value = "Arcology",hint = hint},
+    {text = "Spire: Sanatorium",value = "Sanatorium",hint = hint},
+    {text = "Spire: Network Node",value = "NetworkNode",hint = hint},
+    {text = "Spire: Medical Center",value = "MedicalCenter",hint = hint},
+    {text = "Spire: Hanging Garden",value = "HangingGardens",hint = hint},
+    {text = "Spire: Cloning Vat",value = "CloningVats",hint = hint},
   }
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if type(value) == "number" then
-      UICity.drone_prefabs = UICity.drone_prefabs + value
+    local value = choice[1].value --name
+    local custom = choice[1].custom --num
+
+    if type(custom) ~= "number" then
+      ChoGGi.MsgPopup("Number of prefabs missing from custom value box.",
+        "Error","UI/Icons/Sections/storage.tga"
+      )
+    else
+      if value == "Drone" then
+        UICity.drone_prefabs = UICity.drone_prefabs + custom
+      else
+        UICity:AddPrefabs(value,custom)
+      end
       RefreshXBuildMenu()
-      ChoGGi.MsgPopup(choice[1].text .. " Drone prefabs added.",
+      ChoGGi.MsgPopup(custom .. " " .. choice[1].text .. " prefabs have been added.",
         "Prefabs","UI/Icons/Sections/storage.tga"
       )
     end
+
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs: Drone")
-end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs")
 
-function ChoGGi.AddPrefabs(Type,Msg)
-
-  local ItemList = {
-    {text = 1,value = 1},
-    {text = 5,value = 5},
-    {text = 10,value = 10},
-    {text = 25,value = 25},
-    {text = 50,value = 50},
-    {text = 100,value = 100},
-    {text = 500,value = 500},
-    {text = 1000,value = 1000},
-  }
-
-  local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if type(value) == "number" then
-      UICity:AddPrefabs(Type,value)
-      ChoGGi.MsgPopup(choice[1].text .. Msg,
-        "Prefabs","UI/Icons/Sections/storage.tga"
-      )
-    end
-  end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs: " .. Type)
 end
 
 function ChoGGi.SetFunding()
   --list to display and list with values
   local DefaultSetting = "(Reset to 500 M)"
+  local hint = "If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting
   local ItemList = {
     {text = DefaultSetting,value = 500},
-    {text = "100 M",value = 100},
-    {text = "1 000 M",value = 1000},
-    {text = "10 000 M",value = 10000},
-    {text = "100 000 M",value = 100000},
-    {text = "1 000 000 000 M",value = 1000000000},
-    {text = "90 000 000 000 M",value = 90000000000},
+    {text = "100 M",value = 100,hint = hint},
+    {text = "1 000 M",value = 1000,hint = hint},
+    {text = "10 000 M",value = 10000,hint = hint},
+    {text = "100 000 M",value = 100000,hint = hint},
+    {text = "1 000 000 000 M",value = 1000000000,hint = hint},
+    {text = "90 000 000 000 M",value = 90000000000,hint = hint},
   }
 
   local CallBackFunc = function(choice)
@@ -164,16 +128,18 @@ function ChoGGi.SetFunding()
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding","If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
 end
 
 function ChoGGi.FillResource(self)
   if not SelectedObj then
     return
   end
+  --need the msg here, as i made it return if it succeeds
   ChoGGi.MsgPopup("Resouce Filled",
-  "Resource","UI/Icons/IPButtons/rare_metals.tga"
+    "Resource","UI/Icons/IPButtons/rare_metals.tga"
   )
+
   if pcall(function()
     ResourceProducer.CheatFill(self)
   end) then return --needed to put something for then
@@ -243,6 +209,5 @@ function ChoGGi.FillResource(self)
         self:AddResource(a, resource_name)
       end
     end
-  end) then return
-  end
+  end) then return end
 end

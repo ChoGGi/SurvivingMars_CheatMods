@@ -11,6 +11,9 @@ function ChoGGi.SetDisasterOccurrence(sType,tList)
 
   local CallBackFunc = function(choice)
     mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
+    --apply it?
+    UICity:ApplyModificationsFromProperties()
+
     ChoGGi.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
       "Disaster","UI/Icons/Sections/attention.tga"
     )
@@ -140,6 +143,7 @@ function ChoGGi.SetBuildingCapacity()
   end
   local sel = SelectedObj
   local r = ChoGGi.Consts.ResourceScale
+  local hinttoolarge = "Warning For Colonist Capacity: 4K is laggy (above 60K may crash)."
 
   --get type of capacity
   local CapType
@@ -177,12 +181,12 @@ function ChoGGi.SetBuildingCapacity()
     {text = 1000,value = 1000},
     {text = 2000,value = 2000},
     {text = 3000,value = 3000},
-    {text = 4000,value = 4000},
-    {text = 5000,value = 5000},
-    {text = 10000,value = 10000},
-    {text = 25000,value = 25000},
-    {text = 50000,value = 50000},
-    {text = 100000,value = 100000},
+    {text = 4000,value = 4000,hint = hinttoolarge},
+    {text = 5000,value = 5000,hint = hinttoolarge},
+    {text = 10000,value = 10000,hint = hinttoolarge},
+    {text = 25000,value = 25000,hint = hinttoolarge},
+    {text = 50000,value = 50000,hint = hinttoolarge},
+    {text = 100000,value = 100000,hint = hinttoolarge},
   }
   local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
@@ -247,7 +251,8 @@ function ChoGGi.SetBuildingCapacity()
     end
 
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity","Current capacity: " .. hint .. "\n\nWarning For Colonist Capacity: 4000 is laggy (above 60K may crash).")
+  hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
 
 function ChoGGi.SetVisitorCapacity()
@@ -305,6 +310,7 @@ end
 function ChoGGi.SetStorageDepotSize(sType)
   local DefaultSetting = ChoGGi.Consts[sType]
   local r = ChoGGi.Consts.ResourceScale
+  local hintmax = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000"
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
     {text = 50,value = 50 * r},
@@ -312,11 +318,11 @@ function ChoGGi.SetStorageDepotSize(sType)
     {text = 250,value = 250 * r},
     {text = 500,value = 500 * r},
     {text = 1000,value = 1000 * r},
-    {text = 2500,value = 2500 * r},
-    {text = 5000,value = 5000 * r},
-    {text = 10000,value = 10000 * r},
-    {text = 20000,value = 20000 * r},
-    {text = 100000,value = 100000 * r},
+    {text = 2500,value = 2500 * r,hint = hintmax},
+    {text = 5000,value = 5000 * r,hint = hintmax},
+    {text = 10000,value = 10000 * r,hint = hintmax},
+    {text = 20000,value = 20000 * r,hint = hintmax},
+    {text = 100000,value = 100000 * r,hint = hintmax},
   }
 
   local hint = DefaultSetting / r
@@ -345,7 +351,7 @@ function ChoGGi.SetStorageDepotSize(sType)
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\nMax capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hintmax)
 end
 
 --TESTING

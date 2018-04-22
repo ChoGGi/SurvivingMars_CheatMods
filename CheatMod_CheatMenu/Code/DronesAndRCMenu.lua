@@ -2,18 +2,28 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
-    "Expanded CM/Drones/Fill Selected DroneHub With Drones",
-    ChoGGi.FillSelectedDroneHubWithDrones,
-    "Alt-F",
-    "Select a hub then use this to convert all drones to prefabs.",
+    "Expanded CM/Drones/[1]Fill Selected DroneHub With Drones",
+    function()
+      ChoGGi.FillSelectedDroneHubWithDrones(true)
+    end,
+    nil,
+    "Select a hub then use this to fill with drones (dependent on prefab amount).",
     "groups.tga"
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Drones/Dismantle All Drones Of Selected Hub",
+    "Expanded CM/Drones/[1]Add 20 Drones to Selected DroneHub",
+    ChoGGi.FillSelectedDroneHubWithDrones,
+    "Alt-F",
+    "Select a hub then use this to add 20 drones (dependent on prefab amount).",
+    "groups.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Drones/[1]Dismantle All Drones Of Selected Hub",
     ChoGGi.DismantleAllDronesOfSelectedHub,
     "Alt-D",
-    "Select a hub then use this to fill with drones (depending on prefabs).",
+    "Select a hub then use this to convert all drones to prefabs.",
     "groups.tga"
   )
 

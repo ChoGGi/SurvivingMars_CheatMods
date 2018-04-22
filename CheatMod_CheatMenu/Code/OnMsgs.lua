@@ -173,13 +173,15 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.SetProductionToSavedAmt()
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
-  for _,building in ipairs(UICity.labels.Storages or empty_table) do
-    if building:GetStoredAmount() < 0 then
-      --we have to empty it first (just filling doesn't fix the issue)
-      building:CheatEmpty()
-      building:CheatFill()
+  pcall(function()
+    for _,building in ipairs(UICity.labels.Storages or empty_table) do
+      if building:GetStoredAmount() < 0 then
+        --we have to empty it first (just filling doesn't fix the issue)
+        building:CheatEmpty()
+        building:CheatFill()
+      end
     end
-  end
+  end)
 
   if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
     for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
@@ -393,9 +395,6 @@ function OnMsg.ConstructionComplete(building)
 
 --  print("ConstructionComplete")
 
-  --for ctrl-space
-  ChoGGi.LastPlacedBuildingObj = building
-
   --print(building.encyclopedia_id)
   if IsKindOf(building,"RCTransportBuilding") then
     if ChoGGi.CheatMenuSettings.GravityRC then
@@ -435,7 +434,7 @@ function OnMsg.ConstructionComplete(building)
   if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
     building.max_workers = 0
     building.automation = 1
-    building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
+    building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
   end
 
   --saved settings for capacity, visitors, shuttles
@@ -501,12 +500,22 @@ function OnMsg.SelectionAdded(Obj)
   --update selection shortcut
   s = Obj
 end
-
 --[[
 function OnMsg.SelectedObjChange(Obj)
   s = Obj
 end
 --]]
+
+function OnMsg.NewHour()
+  --make them lazy drones work
+  if ChoGGi.DronesOverride then
+    local rp = UICity.labels.ResourceProducer
+    for i = 1, #rp do
+      ChoGGi.FuckingDrones(rp[i]:GetProducerObj())
+      ChoGGi.FuckingDrones(rp[i].wasterock_producer)
+    end
+  end
+end
 
 --if you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()

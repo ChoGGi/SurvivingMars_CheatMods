@@ -1,7 +1,129 @@
 --any functions called from Code/*.lua
 
-function ChoGGi.AttachToNearestDome(building)
+--make some easy to type names
+function console(...)ConsolePrint(tostring(...))end
+function examine(Obj)OpenExamine(Obj)end
+function ex(Obj)OpenExamine(Obj)end
+function con(...)console(...)end
+function dump(...)ChoGGi.Dump(...)end
+function dumpobject(...)ChoGGi.DumpObject(...)end
+function dumplua(...)ChoGGi.DumpLua(...)end
+function dumptable(...)ChoGGi.DumpTable(...)end
+function dumpo(...)ChoGGi.DumpObject(...)end
+function dumpl(...)ChoGGi.DumpLua(...)end
+function dumpt(...)ChoGGi.DumpTable(...)end
+function alert(...)ChoGGi.MsgPopup(...)end
+function restart()quit("restart")end
+s = false --used to store SelectedObj
+reboot = restart
+exit = quit
+trans = _InternalTranslate
+mh = GetTerrainCursorObjSel
+mc = GetPreciseCursorObj
+m = SelectionMouseObj
+c = GetTerrainCursor
+cs = terminal.GetMousePos --pos on screen, not map
 
+--check if tech is researched before we set these consts (activated from menu items)
+function ChoGGi.GetCargoCapacity()
+  if UICity and UICity:IsTechResearched("FuelCompression") then
+    local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity")
+    return ChoGGi.Consts.CargoCapacity + a
+  end
+  return ChoGGi.Consts.CargoCapacity
+end
+--
+function ChoGGi.GetCommandCenterMaxDrones()
+  if UICity and UICity:IsTechResearched("DroneSwarm") then
+    local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+    return ChoGGi.Consts.CommandCenterMaxDrones + a
+  end
+  return ChoGGi.Consts.CommandCenterMaxDrones
+end
+--
+function ChoGGi.GetDroneResourceCarryAmount()
+  if UICity and UICity:IsTechResearched("ArtificialMuscles") then
+    local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+    return ChoGGi.Consts.DroneResourceCarryAmount + a
+  end
+  return ChoGGi.Consts.DroneResourceCarryAmount
+end
+--
+function ChoGGi.GetLowSanityNegativeTraitChance()
+  if UICity and UICity:IsTechResearched("SupportiveCommunity") then
+    local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+    --[[
+    LowSanityNegativeTraitChance = 30%
+    SupportiveCommunity = -70%
+    --]]
+    local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
+    return p*LowSan/100*100
+  end
+  return ChoGGi.Consts.LowSanityNegativeTraitChance
+end
+--
+function ChoGGi.GetMaxColonistsPerRocket()
+  local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
+  if UICity and UICity:IsTechResearched("CompactPassengerModule") then
+    local a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+    PerRocket = PerRocket + a
+  end
+  if UICity and UICity:IsTechResearched("CryoSleep") then
+    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    PerRocket = PerRocket + a
+  end
+  return PerRocket
+end
+--
+function ChoGGi.GetNonSpecialistPerformancePenalty()
+  if UICity and UICity:IsTechResearched("GeneralTraining") then
+    local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+    return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
+  end
+  return ChoGGi.Consts.NonSpecialistPerformancePenalty
+end
+--
+function ChoGGi.GetRCRoverMaxDrones()
+  if UICity and UICity:IsTechResearched("RoverCommandAI") then
+    local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+    return ChoGGi.Consts.RCRoverMaxDrones + a
+  end
+  return ChoGGi.Consts.RCRoverMaxDrones
+end
+--
+function ChoGGi.GetRCTransportGatherResourceWorkTime()
+  if UICity and UICity:IsTechResearched("TransportOptimization") then
+    local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+    return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
+  end
+  return ChoGGi.Consts.RCTransportGatherResourceWorkTime
+end
+--
+function ChoGGi.GetRCTransportStorageCapacity()
+  if UICity and UICity:IsTechResearched("TransportOptimization") then
+    local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
+    return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
+  end
+  return ChoGGi.Consts.RCTransportStorageCapacity
+end
+--
+function ChoGGi.GetTravelTimeEarthMars()
+  if UICity and UICity:IsTechResearched("PlasmaRocket") then
+    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+    return ChoGGi.Consts.TravelTimeEarthMars * p
+  end
+  return ChoGGi.Consts.TravelTimeEarthMars
+end
+--
+function ChoGGi.GetTravelTimeMarsEarth()
+  if UICity and UICity:IsTechResearched("PlasmaRocket") then
+    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+    return ChoGGi.Consts.TravelTimeMarsEarth * p
+  end
+  return ChoGGi.Consts.TravelTimeMarsEarth
+end
+
+function ChoGGi.AttachToNearestDome(building)
   --ignore outdoor buildings
   if  building.dome_required ~= true then
     return
@@ -541,7 +663,7 @@ end
 
 --called from below
 
-function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
+function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
   --local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop, _InternalTranslate(Caption))
   local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop)
 
@@ -550,9 +672,6 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
 
   if MultiSel then
     dlg.idList.multiple_selection = true
-  end
-  if ListHints then
-    dlg.showlisthints = true
   end
   --title text
   dlg.idCaption:SetText(Caption)
@@ -590,7 +709,7 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   --are we showing a hint?
   if Hint then
     dlg.idList:SetHint(Hint)
-    dlg.idOK:SetHint("Apply and close dialog (Arrow keys and Enter/Esc can also be used).\n\n\n\n" .. Hint)
+    dlg.idOK:SetHint(dlg.idOK:GetHint() .. "\n\n\n" .. Hint)
   end
 
   --waiting for choice
@@ -600,11 +719,6 @@ end
 function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
   if not Func or not Items or (Items and #Items == 0) then
     return
-  end
-
-  local ListHints = false
-  if Items[1].hint then
-    ListHints = true
   end
 
   --sort table by display text
@@ -618,7 +732,7 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
   table.insert(Items,{text = "",hint = "",value = false})
 
   CreateRealTimeThread(function()
-    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,ListHints)
+    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
     if option ~= "idCancel" then
       Func(option)
     end
@@ -645,6 +759,17 @@ function ChoGGi.ToggleConsoleLog()
     end
   else
     dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+  end
+end
+
+--force drones to pickup from producers even if they have a large carry cap
+function ChoGGi.FuckingDrones(producer)
+  local amount = producer:GetAmountStored()
+  if amount > 1000 then
+    local drone = FindNearestObject(UICity.labels.Drone,producer.parent)
+    if drone and not drone:GetCarriedResource() then
+      drone:SetCommandUserInteraction("PickUp", producer.stockpiles[1].supply_request, false,producer.resource_produced, amount)
+    end
   end
 end
 

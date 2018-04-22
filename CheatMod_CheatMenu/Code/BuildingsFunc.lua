@@ -149,50 +149,33 @@ function ChoGGi.SetProductionAmount()
 end
 
 function ChoGGi.FullyAutomatedBuildings_Toggle()
-  ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = not ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
-
-  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings == false then
-    for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-      if building.base_max_workers then
-        building.max_workers = nil
-        building.automation = nil
-        building.auto_performance = nil
-      end
-    end
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.FullyAutomatedBuildings) .. ": I presume the PM's in favour of the scheme because it'll reduce unemployment.",
-     "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
-    )
-    --all done
-    return
-  end
 
   --show list of options to pick
-  local DefaultSetting = ChoGGi.Consts.FullyAutomatedBuildingsPerf
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = 250,value = 250},
-    {text = 500,value = 500},
-    {text = 1000,value = 1000},
-    {text = 2500,value = 2500},
-    {text = 5000,value = 5000},
-    {text = 10000,value = 10000},
-    {text = 25000,value = 25000},
-    {text = 50000,value = 50000},
-    {text = 100000,value = 100000},
+    {text = " Disable",value = 0},
+    {text = "250",value = 250},
+    {text = "500",value = 500},
+    {text = "1000",value = 1000},
+    {text = "2500",value = 2500},
+    {text = "5000",value = 5000},
+    {text = "10000",value = 10000},
+    {text = "25000",value = 25000},
+    {text = "50000",value = 50000},
+    {text = "100000",value = 100000},
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
+    local value = choice[1].value
 
-    if type(amount) == "number" then
+    if type(value) == "number" then
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.base_max_workers then
           building.max_workers = 0
           building.automation = 1
-          building.auto_performance = amount
+          building.auto_performance = value
         end
       end
+      ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = value
     else
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.base_max_workers then
@@ -201,9 +184,8 @@ function ChoGGi.FullyAutomatedBuildings_Toggle()
           building.auto_performance = nil
         end
       end
+      ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = false
     end
-    --for new buildings
-    ChoGGi.SetSavedSetting("FullyAutomatedBuildingsPerf",amount)
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup(choice[1].text .. ": I presume the PM's in favour of the scheme because it'll reduce unemployment.",

@@ -2,6 +2,14 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Misc/Instant Colony Approval",
+    ChoGGi.InstantColonyApproval,
+    nil,
+    "Make your colony instantly approved.",
+    "AlignSel.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Misc/Shadow Map",
     ChoGGi.SetShadowmapSize,
     nil,

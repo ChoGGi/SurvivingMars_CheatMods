@@ -7,55 +7,6 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
---make some easy to type names
-GlobalVar("console", false)
-function console(...)
-  ConsolePrint(tostring(...))
-end
-GlobalVar("dumplua", false)
-function dumplua(Value)
-  ChoGGi.Dump("\r\n" .. ValueToLuaCode(Value),nil,"DumpedLua","lua")
-end
-GlobalVar("restart", false)
-function restart()
-  quit("restart")
-end
-GlobalVar("examine", false)
-function examine(Obj)
-  OpenExamine(Obj)
-end
-GlobalVar("ex", false)
-  ex = examine
-GlobalVar("dump", false)
-  dump = ChoGGi.Dump
-GlobalVar("dumpobject", false)
-  dumpobject = ChoGGi.DumpObject
-GlobalVar("dumpo", false)
-  dumpo = ChoGGi.DumpObject
-GlobalVar("dumptable", false)
-  dumptable = ChoGGi.DumpTable
-GlobalVar("dumpt", false)
-  dumpt = ChoGGi.DumpTable
-GlobalVar("alert", false)
-  alert = ChoGGi.MsgPopup
-GlobalVar("exit", false)
-  exit = quit
-GlobalVar("reboot", false)
-  reboot = restart
-GlobalVar("trans", false)
-  trans = _InternalTranslate
-GlobalVar("con", false)
-  con = console
-GlobalVar("mh", false)
-  mh = GetTerrainCursorObjSel
-GlobalVarmc("mc", false)
-  mc = GetPreciseCursorObj
-GlobalVarm("m", false)
-  m = SelectionMouseObj
-GlobalVar("c", false)
-  c = GetTerrainCursor
-GlobalVar("cs", false)
-  cs = terminal.GetMousePos --pos on screen, not map
 
 function ChoGGi.MsgPopup(Msg,Title,Icon)
   pcall(function()
@@ -74,109 +25,6 @@ function ChoGGi.MsgPopup(Msg,Title,Icon)
   end)
 end
 
-function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
-  pcall(function()
-    Msg = Msg or "Empty"
-    Ok = Ok or "Ok"
-    Cancel = Cancel or "Cancel"
-    Title = Title or "Placeholder"
-    CreateRealTimeThread(function()
-      if "ok" == WaitQuestion(nil,
-        Title,
-        Msg,
-        Ok,
-        Cancel)
-      then
-        Function()
-      end
-    end)
-  end)
-end
-
--- positive or 1 return TrueVar || negative or 0 return FalseVar
----Consts.XXX = ChoGGi.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
-function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
-  local Bool = true
-  if Num < 1 then
-    Bool = nil
-  end
-  return Bool and TrueVar or FalseVar
-end
-
---return the opposite
-function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
-  if Setting == Value1 then
-    return Value2
-  elseif Setting == Value2 then
-    return Value1
-  end
-end
-
---return as num
-function ChoGGi.BoolRetNum(Bool)
-  if Bool == true then
-    return 1
-  end
-  return 0
-end
-
---toggle 0/1
-function ChoGGi.ToggleBoolNum(Num)
-  if Num == 0 then
-    return 1
-  end
-  return 0
-end
-
---return equal or higher amount
-function ChoGGi.CompareAmounts(iAmtA,iAmtB)
-  if iAmtA >= iAmtB then
-    return iAmtA
-  elseif iAmtB >= iAmtA then
-    return iAmtB
-  end
-end
-
-function ChoGGi.PrintFiles(Filename,Function,Text,...)
-  Text = Text or ""
-  --pass ... onto pcall function
-  local Variadic = ...
-  pcall(function()
-    ChoGGi.Dump(Text .. Variadic .. "\r\n","a",Filename,"log",true)
-  end)
-  if Function then
-    Function(...)
-  end
-end
-
-function ChoGGi.WriteLogsEnable()
-  --remove old logs
-  local logs = "AppData/logs/"
-  AsyncFileDelete(logs .. "ConsoleLog.log")
-  AsyncFileDelete(logs .. "DebugLog.log")
-  AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
-  AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
-
-  --redirect functions
-  ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
-  AddConsoleLog = function(...)
-    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
-  end
-  ChoGGi.OrigFunc.printf = printf
-  printf = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
-  end
-  --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
-  ChoGGi.OrigFunc.DebugPrint = DebugPrint
-  DebugPrint = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
-  end
-  ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
-  OutputDebugString = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
-  end
-end
-
 function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil
@@ -188,10 +36,10 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   local Filename = "AppData/logs/" .. File .. "." .. Ext
 
   if pcall(function()
+    ThreadLockKey(Filename)
     AsyncStringToFile(Filename,Obj,Mode)
-    --tempfile:write(Obj)
+    ThreadUnlockKey(Filename)
   end) then
-    --tempfile:close()
     if not Skip then
       ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
@@ -200,16 +48,16 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   end
 end
 
---ChoGGi.PrintIds(TechTree)
-function ChoGGi.PrintIds(Table)
-  local text = ""
-  for i,_ in ipairs(Table) do
-    text = text .. "----------------- " .. Table[i].id .. ": " .. i .. "\n"
-    for j,_ in ipairs(Table[i]) do
-      text = text .. Table[i][j].id .. ": " .. j .. "\n"
-    end
+function ChoGGi.DumpLua(Value)
+  local which = "TupleToLuaCode"
+  if type(Value) == "table" then
+    which = "TableToLuaCode"
+  elseif type(Value) == "string" then
+    which = "StringToLuaCode"
+  elseif type(Value) == "userdata" then
+    which = "ValueToLuaCode"
   end
-  ChoGGi.Dump(text)
+  ChoGGi.Dump("\r\n" .. _G[which](Value),nil,"DumpedLua","lua")
 end
 
 --[[
@@ -314,6 +162,121 @@ function ChoGGi.RetTextForDump(Obj,Funcs)
   else
     return tostring(Obj)
   end
+end
+
+function ChoGGi.PrintFiles(Filename,Function,Text,...)
+  Text = Text or ""
+  --pass ... onto pcall function
+  local Vararg = ...
+  pcall(function()
+    ChoGGi.Dump(Text .. Vararg .. "\r\n","a",Filename,"log",true)
+  end)
+  if type(Function) == "function" then
+    Function(...)
+  end
+end
+
+function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
+  pcall(function()
+    Msg = Msg or "Empty"
+    Ok = Ok or "Ok"
+    Cancel = Cancel or "Cancel"
+    Title = Title or "Placeholder"
+    CreateRealTimeThread(function()
+      if "ok" == WaitQuestion(nil,
+        Title,
+        Msg,
+        Ok,
+        Cancel)
+      then
+        Function()
+      end
+    end)
+  end)
+end
+
+-- positive or 1 return TrueVar || negative or 0 return FalseVar
+---Consts.XXX = ChoGGi.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
+function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
+  local Bool = true
+  if Num < 1 then
+    Bool = nil
+  end
+  return Bool and TrueVar or FalseVar
+end
+
+--return the opposite
+function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
+  if Setting == Value1 then
+    return Value2
+  elseif Setting == Value2 then
+    return Value1
+  end
+end
+
+--return as num
+function ChoGGi.BoolRetNum(Bool)
+  if Bool == true then
+    return 1
+  end
+  return 0
+end
+
+--toggle 0/1
+function ChoGGi.ToggleBoolNum(Num)
+  if Num == 0 then
+    return 1
+  end
+  return 0
+end
+
+--return equal or higher amount
+function ChoGGi.CompareAmounts(iAmtA,iAmtB)
+  if iAmtA >= iAmtB then
+    return iAmtA
+  elseif iAmtB >= iAmtA then
+    return iAmtB
+  end
+end
+
+function ChoGGi.WriteLogsEnable()
+  --remove old logs
+  local logs = "AppData/logs/"
+  AsyncFileDelete(logs .. "ConsoleLog.log")
+  AsyncFileDelete(logs .. "DebugLog.log")
+  AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
+  AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
+
+  --redirect functions
+  ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
+  AddConsoleLog = function(...)
+    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+  end
+  ChoGGi.OrigFunc.printf = printf
+  printf = function(...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
+  end
+  --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
+  ChoGGi.OrigFunc.DebugPrint = DebugPrint
+  DebugPrint = function(...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
+  end
+  ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
+  OutputDebugString = function(...)
+    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
+  end
+end
+
+--ChoGGi.PrintIds(TechTree)
+function ChoGGi.PrintIds(Table)
+  local text = ""
+  for i,_ in ipairs(Table) do
+    text = text .. "----------------- " .. Table[i].id .. ": " .. i .. "\n"
+    for j,_ in ipairs(Table[i]) do
+      text = text .. Table[i][j].id .. ": " .. j .. "\n"
+    end
+  end
+  ChoGGi.Dump(text)
 end
 
 --changes a function to also post a Msg for use with OnMsg
@@ -472,105 +435,6 @@ function ChoGGi.ReturnTechAmount(Tech,Prop)
       end
     end
   end
-end
-
---check if tech is researched before we set these consts (activated from menu items)
-function ChoGGi.GetCargoCapacity()
-  if UICity and UICity:IsTechResearched("FuelCompression") then
-    local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity")
-    return ChoGGi.Consts.CargoCapacity + a
-  end
-  return ChoGGi.Consts.CargoCapacity
-end
---
-function ChoGGi.GetCommandCenterMaxDrones()
-  if UICity and UICity:IsTechResearched("DroneSwarm") then
-    local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
-    return ChoGGi.Consts.CommandCenterMaxDrones + a
-  end
-  return ChoGGi.Consts.CommandCenterMaxDrones
-end
---
-function ChoGGi.GetDroneResourceCarryAmount()
-  if UICity and UICity:IsTechResearched("ArtificialMuscles") then
-    local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
-    return ChoGGi.Consts.DroneResourceCarryAmount + a
-  end
-  return ChoGGi.Consts.DroneResourceCarryAmount
-end
---
-function ChoGGi.GetLowSanityNegativeTraitChance()
-  if UICity and UICity:IsTechResearched("SupportiveCommunity") then
-    local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
-    --[[
-    LowSanityNegativeTraitChance = 30%
-    SupportiveCommunity = -70%
-    --]]
-    local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
-    return p*LowSan/100*100
-  end
-  return ChoGGi.Consts.LowSanityNegativeTraitChance
-end
---
-function ChoGGi.GetMaxColonistsPerRocket()
-  local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
-  if UICity and UICity:IsTechResearched("CompactPassengerModule") then
-    local a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
-    PerRocket = PerRocket + a
-  end
-  if UICity and UICity:IsTechResearched("CryoSleep") then
-    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
-    PerRocket = PerRocket + a
-  end
-  return PerRocket
-end
---
-function ChoGGi.GetNonSpecialistPerformancePenalty()
-  if UICity and UICity:IsTechResearched("GeneralTraining") then
-    local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
-    return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
-  end
-  return ChoGGi.Consts.NonSpecialistPerformancePenalty
-end
---
-function ChoGGi.GetRCRoverMaxDrones()
-  if UICity and UICity:IsTechResearched("RoverCommandAI") then
-    local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
-    return ChoGGi.Consts.RCRoverMaxDrones + a
-  end
-  return ChoGGi.Consts.RCRoverMaxDrones
-end
---
-function ChoGGi.GetRCTransportGatherResourceWorkTime()
-  if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
-    return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
-  end
-  return ChoGGi.Consts.RCTransportGatherResourceWorkTime
-end
---
-function ChoGGi.GetRCTransportStorageCapacity()
-  if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
-    return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
-  end
-  return ChoGGi.Consts.RCTransportStorageCapacity
-end
---
-function ChoGGi.GetTravelTimeEarthMars()
-  if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
-    return ChoGGi.Consts.TravelTimeEarthMars * p
-  end
-  return ChoGGi.Consts.TravelTimeEarthMars
-end
---
-function ChoGGi.GetTravelTimeMarsEarth()
-  if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
-    return ChoGGi.Consts.TravelTimeMarsEarth * p
-  end
-  return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
 --[[

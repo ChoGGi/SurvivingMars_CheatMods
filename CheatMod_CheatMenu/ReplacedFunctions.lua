@@ -1,3 +1,27 @@
+function ChoGGi.ForceDronesToEmptyStorage_Enable()
+  if ChoGGi.DronesOverride then
+    return
+  end
+  ChoGGi.DronesOverride = true
+
+  --[[it checks every hour so...
+  ChoGGi.OrigFunc.SingleResourceProducer_BuildingDailyUpdate = SingleResourceProducer.BuildingDailyUpdate
+  function SingleResourceProducer:BuildingDailyUpdate(day)
+    local ret = ChoGGi.OrigFunc.SingleResourceProducer_BuildingDailyUpdate(self,day)
+    ChoGGi.FuckingDrones(self)
+    return ret
+  end
+--]]
+
+  ChoGGi.OrigFunc.SingleResourceProducer_OnProduce = SingleResourceProducer.OnProduce
+  function SingleResourceProducer:OnProduce(amount_to_produce)
+    local ret = ChoGGi.OrigFunc.SingleResourceProducer_OnProduce(self,amount_to_produce)
+    ChoGGi.FuckingDrones(self)
+    return ret
+  end
+
+end
+
 function ChoGGi.ReplacedFunctions_ClassesGenerate()
 
 --[[
@@ -10,85 +34,81 @@ dumpl(classdefs)
 --CommonLua\UI\uiExamine.designer.lua
   --add dump button to Examine windows
   function ExamineDesigner:Init()
+    self:SetMinSize(point(309, 53))
+    self:SetSize(point(372, 459))
     self:SetPos(point(278, 191))
     self:SetTranslate(false)
-    self:SetMinSize(point(309, 53))
     self:SetMovable(true)
-    self:SetSize(point(372, 459))
     self:SetZOrder(10000)
-    local win
+    local obj
 
-    win = StaticText:new(self)
-    win:SetId("idText")
-    win:SetPos(point(283, 306))
-    win:SetSize(point(362, 332))
-    win:SetHSizing("Resize")
-    win:SetVSizing("Resize")
-    win:SetBackgroundColor(RGBA(0, 0, 0, 16))
-    win:SetFontStyle("Editor12Bold")
-    win:SetScrollBar(true)
-    win:SetScrollAutohide(true)
+    obj = StaticText:new(self)
+    obj:SetId("idMenu")
+    obj:SetPos(point(283, 217))
+    obj:SetSize(point(362, 52))
+    obj:SetHSizing("Resize")
+    obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
+    obj:SetFontStyle("Editor12Bold")
 
-    win = StaticText:new(self)
-    win:SetId("idMenu")
-    win:SetPos(point(283, 217))
-    win:SetSize(point(362, 52))
-    win:SetHSizing("Resize")
-    win:SetBackgroundColor(RGBA(0, 0, 0, 16))
-    win:SetFontStyle("Editor12Bold")
+    obj = Button:new(self)
+    obj:SetId("idClose")
+    obj:SetPos(point(629, 194))
+    obj:SetSize(point(18, 18))
+    obj:SetHSizing("AnchorToRight")
+    obj:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+    obj:SetHint("Good bye")
 
-    win = SingleLineEdit:new(self)
-    win:SetId("idFilter")
-    win:SetPos(point(283, 275))
-    win:SetSize(point(306, 26))
-    win:SetHSizing("Resize")
-    win:SetBackgroundColor(RGBA(0, 0, 0, 16))
-    win:SetFontStyle("Editor12Bold")
-if ChoGGi.Testing then
-    win:SetHint("idFilter")
-end
+    obj = SingleLineEdit:new(self)
+    obj:SetId("idFilter")
+    obj:SetPos(point(288, 275))
+    obj:SetSize(point(350, 26))
+    obj:SetHSizing("Resize")
+    obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
+    obj:SetFontStyle("Editor12Bold")
+    obj:SetHint("Moves to text entered")
+    obj:SetTextHAlign("center")
+    obj:SetTextVAlign("center")
+    obj.display_text = "Goto text"
 
-    win = Button:new(self)
-    win:SetId("idClose")
-    win:SetPos(point(597, 191))
-    win:SetSize(point(50, 24))
-    win:SetHSizing("AnchorToRight")
-    win:SetText(Untranslated("Close"))
-    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-    win:SetHint("Good bye")
+    obj = Button:new(self)
+    obj:SetId("idNext")
+    obj:SetPos(point(715, 304))
+    obj:SetSize(point(53, 26))
+    obj:SetText("Next")
+    obj:SetHint("Scrolls down")
 
-    win = Button:new(self)
-    win:SetId("idNext")
-    win:SetPos(point(700, 275))
-    win:SetSize(point(53, 26))
-    win:SetText(Untranslated("Next"))
-    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-    win:SetHint("Scrolls down")
+    obj = Button:new(self)
+    obj:SetId("idDump")
+    obj:SetPos(point(290, 304))
+    obj:SetSize(point(75, 26))
+    obj:SetText("Dump Text")
+    obj:SetHint("Dumps text to AppData/DumpedExamine.lua")
 
-    win = Button:new(self)
-    win:SetId("idDump")
-    win:SetPos(point(290, 275))
-    win:SetSize(point(75, 26))
-    win:SetText(Untranslated("Dump Text"))
-    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-    win:SetHint("Dumps text to AppData/DumpedExamine.lua")
-
-    win = Button:new(self)
-    win:SetId("idDumpObj")
-    win:SetPos(point(375, 275))
-    win:SetSize(point(75, 26))
-    win:SetText(Untranslated("Dump Obj"))
-    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-    win:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
+    obj = Button:new(self)
+    obj:SetId("idDumpObj")
+    obj:SetPos(point(375, 304))
+    obj:SetSize(point(75, 26))
+    obj:SetText("Dump Obj")
+    obj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
 
 if ChoGGi.Testing then
-    win = Button:new(self)
-    win:SetId("idEdit")
-    win:SetPos(point(460, 275))
-    win:SetSize(point(53, 26))
-    win:SetText(Untranslated("Edit"))
-    win:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+    obj = Button:new(self)
+    obj:SetId("idEdit")
+    obj:SetPos(point(460, 304))
+    obj:SetSize(point(53, 26))
+    obj:SetText("Edit")
 end
+
+    obj = StaticText:new(self)
+    obj:SetId("idText")
+    obj:SetPos(point(283, 332))
+    obj:SetSize(point(362, 310))
+    obj:SetHSizing("Resize")
+    obj:SetVSizing("Resize")
+    obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
+    obj:SetFontStyle("Editor12Bold")
+    obj:SetScrollBar(true)
+    --obj:SetScrollAutohide(true)
 
     self:InitChildrenSizing()
     --have to size children before doing these:
@@ -100,6 +120,10 @@ end --OnMsg
 
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
+
+  if ChoGGi.CheatMenuSettings.DroneResourceCarryAmount > 10 then
+    ChoGGi.ForceDronesToEmptyStorage_Enable()
+  end
 
   --if certain panels (cheats/traits/colonists) are too large then hide most of them till mouseover
   ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
@@ -172,6 +196,40 @@ if ChoGGi.Testing then
       ChoGGi.OpenInObjectManipulator(self.obj,self)
     end
 end
+
+  function self.idFilter.OnKbdKeyDown(_, char, vk)
+    local text = self.idFilter
+    if vk == const.vkEnter then
+      self:FindNext(text:GetText())
+      return "break"
+    elseif vk == const.vkBackspace or vk == const.vkDelete then
+      local selection_min_pos = text.cursor_pos - 1
+      local selection_max_pos = text.cursor_pos
+      if vk == const.vkDelete then
+        selection_min_pos = text.cursor_pos
+        selection_max_pos = text.cursor_pos + 1
+      end
+      text:Replace(selection_min_pos, selection_max_pos, "")
+      text:SetCursorPos(selection_min_pos, true)
+      return "break"
+    elseif vk == const.vkRight then
+      text:SetCursorPos(text.cursor_pos + 1, true)
+      return "break"
+    elseif vk == const.vkLeft then
+      text:SetCursorPos(text.cursor_pos + -1, true)
+      return "break"
+    elseif vk == const.vkHome then
+      text:SetCursorPos(0, true)
+      return "break"
+    elseif vk == const.vkEnd then
+      text:SetCursorPos(#text.display_text, true)
+      return "break"
+    elseif vk == const.vkEsc then
+      self:delete()
+      return "break"
+    end
+    StaticText.OnKbdKeyDown(self, char, vk)
+  end
 
   end --Examine:Init
 
@@ -265,7 +323,7 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 }
 --]]
 
-  --so we can build without (as many) limits
+  --SetOrientation of placed objects
   ChoGGi.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
 

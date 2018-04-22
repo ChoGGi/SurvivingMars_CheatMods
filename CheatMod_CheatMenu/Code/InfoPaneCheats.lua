@@ -61,7 +61,11 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   local function CheatWorkAuto(self)
     self.max_workers = 0
     self.automation = 1
-    self.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf
+    if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
+      self.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+    else
+      self.auto_performance = 150
+    end
     ChoGGi.ToggleWorking(self)
   end
   local function CheatWorkManual(self)

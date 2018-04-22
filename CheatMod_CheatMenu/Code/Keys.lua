@@ -1,6 +1,7 @@
 function ChoGGi.Keys_LoadingScreenPreClose()
+
+  --use number keys to activate/hide build menus
   if ChoGGi.CheatMenuSettings.NumberKeysBuildMenu then
-    --use number keys to activate/hide build menus
     local skipped = false
     for i = 1, #BuildCategories do
       if i < 10 then
@@ -41,7 +42,8 @@ function ChoGGi.Keys_LoadingScreenPreClose()
       end
     end
   end
-end
+
+end --OnMsg
 
 --spawn and fill a deposit at mouse pos
 function ChoGGi.AddDeposit(sType)
@@ -135,7 +137,7 @@ ChoGGi.AddAction(nil,
 --goes to placement mode with last built object
 ChoGGi.AddAction(nil,
   function()
-    local last = ChoGGi.LastPlacedBuildingObj
+    local last = UICity.LastConstructedBuilding
     if last.entity then
       ChoGGi.ConstructionModeSet(last.encyclopedia_id or last.entity)
     end

@@ -57,6 +57,7 @@ end
 
 function ChoGGi.SetShadowmapSize()
   local current = hr.ShadowmapSize
+  local hint_highest = "Warning: Highest uses vram (one gig for starter base, a couple for large base)."
   local ItemList = {
     {text = " Default (restart to enable)",value = false},
     {text = " Current: " .. current,value = current},
@@ -66,7 +67,7 @@ function ChoGGi.SetShadowmapSize()
     {text = "Medium (2048) < Menu Option",value = 2048},
     {text = "High (4096) < Menu Option",value = 4096},
     {text = "Higher (8192)",value = 8192},
-    {text = "Highest (16384)",value = 16384},
+    {text = "Highest (16384)",value = 16384,hint = hint_highest},
   }
 
   local CallBackFunc = function(choice)
@@ -82,7 +83,7 @@ function ChoGGi.SetShadowmapSize()
     end
 
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Current: " .. current .. "\n\nWarning: Highest uses a couple extra gigs of vram.")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Current: " .. current .. "\n\n" .. hint_highest)
 end
 
 function ChoGGi.HigherShadowDist_Toggle()
@@ -102,15 +103,15 @@ function ChoGGi.HigherRenderDist_Toggle()
   local DefaultSetting = 120
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = " Small FPS hit on large: " .. 600,value = 600},
-    {text = " Minimal FPS hit on large: " .. 480,value = 480},
-    {text = 240,value = 240},
-    {text = 360,value = 360},
-    {text = 720,value = 720},
-    {text = 840,value = 840},
-    {text = 960,value = 960},
-    {text = 1080,value = 1080},
-    {text = 1200,value = 1200},
+    {text = 240,value = 240,hint = "Minimal FPS hit on large base"},
+    {text = 360,value = 360,hint = "Minimal FPS hit on large base"},
+    {text = 480,value = 480,hint = "Minimal FPS hit on large base"},
+    {text = 600,value = 600,hint = "Small FPS hit on large base"},
+    {text = 720,value = 720,hint = "Small FPS hit on large base"},
+    {text = 840,value = 840,hint = "FPS hit"},
+    {text = 960,value = 960,hint = "FPS hit"},
+    {text = 1080,value = 1080,hint = "FPS hit"},
+    {text = 1200,value = 1200,hint = "FPS hit"},
   }
 
   local hint = DefaultSetting
@@ -368,14 +369,14 @@ end
 --SetTimeFactor(1000) = normal speed
 function ChoGGi.SetGameSpeed()
   local ItemList = {
-    {text = "(Default)",value = 1},
-    {text = "Double (2)",value = 2},
-    {text = "Triple (3)",value = 3},
-    {text = "Quadruple (4)",value = 4},
-    {text = "Octuple (8)",value = 8},
-    {text = "Sexdecuple (16)",value = 16},
-    {text = "Duotriguple (32)",value = 32},
-    {text = "Quattuorsexaguple (64)",value = 64},
+    {text = " Default",value = 1},
+    {text = "1 Double",value = 2},
+    {text = "2 Triple",value = 3},
+    {text = "3 Quadruple",value = 4},
+    {text = "4 Octuple",value = 8},
+    {text = "5 Sexdecuple",value = 16},
+    {text = "6 Duotriguple",value = 32},
+    {text = "7 Quattuorsexaguple",value = 64},
   }
 
   local CallBackFunc = function(choice)
@@ -396,5 +397,33 @@ function ChoGGi.SetGameSpeed()
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed","Current speed: " .. const.mediumGameSpeed .. " (3 = Default, 9 = Triple)")
+
+  local current = "Default"
+  if const.mediumGameSpeed == 6 then
+    current = "Double"
+  elseif const.mediumGameSpeed == 9 then
+    current = "Triple"
+  elseif const.mediumGameSpeed == 12 then
+    current = "Quadruple"
+  elseif const.mediumGameSpeed == 24 then
+    current = "Octuple"
+  elseif const.mediumGameSpeed == 48 then
+    current = "Sexdecuple"
+  elseif const.mediumGameSpeed == 96 then
+    current = "Duotriguple"
+  elseif const.mediumGameSpeed == 192 then
+    current = "Quattuorsexaguple"
+  else
+    current = "Custom: " .. const.mediumGameSpeed .. " < base number 3 multipled by custom amount"
+  end
+
+  local hint = "Current speed: " .. current
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
 end
+
+function ChoGGi.InstantColonyApproval()
+  CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
+  Msg("ColonyApprovalPassed")
+  g_ColonyNotViableUntil = -1
+end
+

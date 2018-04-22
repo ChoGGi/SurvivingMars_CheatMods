@@ -13,11 +13,7 @@ Slackware64 user:
 Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz
 AMD CAPE VERDE (DRM 2.50.0 / 4.14.23, LLVM 5.0.1)
 --]]
---easier access to SelectedObj from console
-GlobalVar("s", false)
 
---keep my mod contained in
-GlobalVar("ChoGGi", false)
 ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   ModPath = "AppData/Mods/CheatMod_CheatMenu/",
@@ -70,10 +66,13 @@ end
 
 Platform.editor = true
 config.LuaDebugger = true
+GlobalVar("outputSocket", false)
 dofile("CommonLua/Core/luasocket.lua")
 dofile("CommonLua/Core/luadebugger.lua")
 dofile("CommonLua/Core/luaDebuggerOutput.lua")
 dofile("CommonLua/Core/ProjectSync.lua")
+config.LuaDebugger = false
+Platform.editor = false
 
 --[[
 ClassesGenerate

@@ -6,9 +6,14 @@ function ChoGGi.DismantleAllDronesOfSelectedHub()
   until #sel.drones == 0
 end
 
-function ChoGGi.FillSelectedDroneHubWithDrones()
+function ChoGGi.FillSelectedDroneHubWithDrones(Bool)
   local sel = SelectedObj or SelectionMouseObj()
-  for _ = 1, Consts.CommandCenterMaxDrones do
+  local amt = 20
+  if Bool == true then
+    amt = sel:GetMaxDrones() - sel:GetDronesCount()
+  end
+
+  for _ = 1, amt do
     sel:UseDronePrefab()
   end
 end
@@ -41,6 +46,7 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
   if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
     hint = tostring(ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed)
   end
+
   local CallBackFunc = function(choice)
     local value = choice[1].value
 
@@ -152,17 +158,19 @@ end
 function ChoGGi.SetDroneCarryAmount()
   --retrieve default
   local DefaultSetting = ChoGGi.GetDroneResourceCarryAmount()
+  --local hinttoolarge = "Warning: If you set this amount larger then a building's \"Stored\" amount drones will NOT empty those buildings."
+  local hinttoolarge = "If you set this amount larger then a building's \"Stored\" amount then it'll use my method for removing storage. If you have an insane production amount set then it'll take an (in-game) hour between calling drones."
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
-    {text = 25,value = 25},
-    {text = 50,value = 50},
-    {text = 75,value = 75},
-    {text = 100,value = 100},
-    {text = 250,value = 250},
-    {text = 500,value = 500},
-    {text = 1000,value = 1000},
+    {text = 25,value = 25,hint = hinttoolarge},
+    {text = 50,value = 50,hint = hinttoolarge},
+    {text = 75,value = 75,hint = hinttoolarge},
+    {text = 100,value = 100,hint = hinttoolarge},
+    {text = 250,value = 250,hint = hinttoolarge},
+    {text = 500,value = 500,hint = hinttoolarge},
+    {text = 1000,value = 1000,hint = hinttoolarge .. "\n\nsomewhere above 1000 will delete the save"},
   }
 
   local hint = DefaultSetting
@@ -181,6 +189,7 @@ function ChoGGi.SetDroneCarryAmount()
       ChoGGi.SetConstsG("DroneResourceCarryAmount",value)
       UpdateDroneResourceUnits()
       ChoGGi.SetSavedSetting("DroneResourceCarryAmount",value)
+      ChoGGi.ForceDronesToEmptyStorage_Enable()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Drones can carry: " .. choice[1].text .. " items.",
@@ -188,7 +197,7 @@ function ChoGGi.SetDroneCarryAmount()
       )
     end
   end
-  hint = "Current capacity: " .. hint .. "\n\nWarning: If you set this amount larger then a building's \"Stored\" amount drones will NOT empty those buildings.\n\nMax locked to 1000."
+  hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge .. "\n\nMax: 1000."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Carry Capacity",hint)
 end
 
@@ -275,7 +284,7 @@ function ChoGGi.SetRCTransportStorageCapacity()
     {text = 250,value = 250 * r},
     {text = 500,value = 500 * r},
     {text = 1000,value = 1000 * r},
-    {text = 2000,value = 2000 * r},
+    {text = 2000,value = 2000 * r,hint = "somewhere above 2000 will delete the save"},
   }
 
   local hint = DefaultSetting / r
@@ -323,7 +332,7 @@ function ChoGGi.SetShuttleCapacity()
     {text = 100,value = 100 * r},
     {text = 250,value = 250 * r},
     {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
+    {text = 1000,value = 1000 * r,hint = "above 1000 may delete the save"},
   }
 
   local hint = DefaultSetting / r

@@ -42,21 +42,92 @@ function ChoGGi.DisastersStop()
   end
 end
 
-function ChoGGi.ShowScanOptions()
+
+function ChoGGi.ShowScanAndMapOptions()
+  local hint_core = "Core: Repeatable"
+  local hint_deep = "Deep: Toggleable"
   local ItemList = {
-    {text = "Reveal all Deposits",value = 1},
-    {text = "Reveal all deposits level 1 and above",value = 2},
+    {text = " All",value = 1,hint = hint_core .. "\n" .. hint_deep},
+    {text = " Deep",value = 2,hint = hint_deep},
+    {text = " Core",value = 3,hint = hint_core},
+    {text = "Deep Scan",value = 4,hint = hint_deep .. "\nEnabled: " .. Consts.DeepScanAvailable},
+    {text = "Deep Water",value = 5,hint = hint_deep .. "\nEnabled: " .. Consts.IsDeepWaterExploitable},
+    {text = "Deep Metals",value = 6,hint = hint_deep .. "\nEnabled: " .. Consts.IsDeepMetalsExploitable},
+    {text = "Deep Precious Metals",value = 7,hint = hint_deep .. "\nEnabled: " .. Consts.IsDeepPreciousMetalsExploitable},
+    {text = "Core Water",value = 8,hint = hint_core},
+    {text = "Core Metals",value = 9,hint = hint_core},
+    {text = "Core Precious Metals",value = 10,hint = hint_core},
+    {text = "Alien Imprints",value = 11,hint = hint_core},
+    {text = "Reveal deposits",value = 12,hint = "Reveals the map squares"},
+    {text = "Reveal deposits deep",value = 13,hint = "Reveals \"Deep\" resources"},
+    {text = "Reveal deposits both",value = 14,hint = "Reveals both..."},
   }
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if value == 1 then
+    local function deep()
+      ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
+      ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+      ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+      ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+    end
+    local function core()
+      Msg("TechResearched","CoreWater", UICity)
+      Msg("TechResearched","CoreMetals", UICity)
+      Msg("TechResearched","CoreRareMetals", UICity)
+      Msg("TechResearched","AlienImprints", UICity)
+    end
+    local function scan()
       CheatMapExplore("scanned")
-    elseif value == 2 then
       CheatMapExplore("deep scanned")
     end
+
+    local value
+    for i=1,#choice do
+      value = choice[i].value
+      print(value)
+      if value == 1 then
+        scan()
+        deep()
+        core()
+      elseif value == 2 then
+        deep()
+      elseif value == 3 then
+        core()
+      elseif value == 4 then
+        ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
+      elseif value == 5 then
+        ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+      elseif value == 6 then
+        ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+      elseif value == 7 then
+        ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+      elseif value == 8 then
+        Msg("TechResearched","CoreWater", UICity)
+      elseif value == 9 then
+        Msg("TechResearched","CoreMetals", UICity)
+      elseif value == 10 then
+        Msg("TechResearched","CoreRareMetals", UICity)
+      elseif value == 11 then
+        Msg("TechResearched","AlienImprints", UICity)
+      elseif value == 12 then
+        CheatMapExplore("scanned")
+      elseif value == 13 then
+        CheatMapExplore("deep scanned")
+      elseif value == 14 then
+        scan()
+      end
+    end
+
+    ChoGGi.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
+    ChoGGi.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
+    ChoGGi.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
+    ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
+     "Scanner","UI/Icons/Notifications/scan.tga"
+    )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Reveal Deposits")
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
 end
 
 function ChoGGi.DisastersTrigger()
@@ -142,7 +213,7 @@ function ChoGGi.ShowMysteryList()
     table.insert(ItemList,{
       text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) or "Missing Name"),
       value = class,
-      hint = (g_Classes[class].scenario_name or "Missing Name") .. ": " .. (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description")
+      hint = (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description")
     })
   end)
 
@@ -235,7 +306,8 @@ function ChoGGi.AddOutsourcePoints()
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points","If you need a little boost (or a lotta boost) in research.")
+  local hint = "If you need a little boost (or a lotta boost) in research."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
 
 end
 
