@@ -14,8 +14,6 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
     --set some values...
     self.idCustomValue.display_text = "Add Custom Value"
-    self.idCustomValue:SetHint("You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.")
-    self.idCancel:SetHint("Cancel without changing anything.")
     self.choices = {}
     self.sel = false
     self.showlisthints = false
@@ -57,7 +55,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       self.idList:SetSelection(self.idList.rows, true)
     end
 
-    function self.idOK.OnButtonPressed(this)
+    --function self.idOK.OnButtonPressed(this)
+    function self.idOK.OnButtonPressed()
       --check checkboxes
       ChoGGi.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
       ChoGGi.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
@@ -129,14 +128,28 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
     subviews = {
       {
         name = "default",
+
         {
+          Id = "idCaption",
+          Class = "StaticText",
+          TextPrefix = "<center>",
+          BackgroundColor = 0,
+          FontStyle = "Editor14Bold",
+          HandleMouse = false,
+          Subview = "default",
+          PosOrg = point(105, 101),
+          SizeOrg = point(390, 22),
+          HSizing = "0, 1, 0",
+          VSizing = "0, 1, 0"
+        },
+
+        {
+          Id = "idList",
+          Class = "List",
           ShowPartialItems = true,
           ScrollPadding = 1,
           SelectionColor = RGB(0, 0, 0),
-
-          Class = "List",
           FontStyle = "Editor14",
-          Id = "idList",
           PosOrg = point(105, 123),
           RolloverFontStyle = "Editor14",
           ScrollBar = true,
@@ -149,64 +162,24 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           VSizing = "0, 1, 0"
         },
         {
-          BackgroundColor = 0,
-          Class = "StaticText",
-          FontStyle = "Editor14Bold",
-          HandleMouse = false,
-          Id = "idCaption",
-          Subview = "default",
-          TextPrefix = "<center>",
-          PosOrg = point(105, 101),
-          SizeOrg = point(390, 22),
-          HSizing = "0, 1, 0",
-          VSizing = "0, 1, 0"
-        },
-        {
-          Class = "Button",
-          FontStyle = "Editor14Bold",
-          GamepadButton = "ButtonA",
-          Id = "idOK",
-          Subview = "default",
-          Text = T({1000429, "OK"}),
-          TextColorDisabled = -8421505,
-          PosOrg = point(110, 500),
-          SizeOrg = point(129, 34),
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
-        },
-        {
-          Class = "Button",
-          CloseDialog = true,
-          FontStyle = "Editor14Bold",
-          GamepadButton = "ButtonB",
-          Id = "idCancel",
-          Subview = "default",
-          Text = T({1000430, "Cancel"}),
-          TextColorDisabled = -8421505,
-          PosOrg = point(353, 500),
-          SizeOrg = point(132, 34),
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
-        },
-
-        {
-          AutoSelectAll = true,
-          NegFilter = "`~!@#$%^&*()_-+={}[]|\\;:'\"<,>./?",
           Id = "idCustomValue",
           Class = "SingleLineEdit",
+          AutoSelectAll = true,
+          NegFilter = "`~!@#$%^&*()_-+={}[]|\\;:'\"<,>./?",
           FontStyle = "Editor14Bold",
           Subview = "default",
           PosOrg = point(110, 465),
           SizeOrg = point(375, 24),
           TextVAlign = "center",
+          Hint = "You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.",
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
         },
         {
+          Id = "idCheckBox1",
+          Class = "CheckButton",
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
-          Class = "CheckButton",
-          Id = "idCheckBox1",
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
           ImageType = "aaaaa",
           PosOrg = point(110, 440),
@@ -216,10 +189,10 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           VSizing = "1, 0, 0"
         },
         {
+          Id = "idCheckBox2",
+          Class = "CheckButton",
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
-          Class = "CheckButton",
-          Id = "idCheckBox2",
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
           ImageType = "aaaaa",
           PosOrg = point(300, 440),
@@ -227,7 +200,34 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           Subview = "default",
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
-        }
+        },
+        {
+          Id = "idOK",
+          Class = "Button",
+          FontStyle = "Editor14Bold",
+          GamepadButton = "ButtonA",
+          Subview = "default",
+          Text = T({1000429, "OK"}),
+          PosOrg = point(110, 500),
+          SizeOrg = point(129, 34),
+          HSizing = "1, 0, 1",
+          VSizing = "1, 0, 0"
+        },
+        {
+          Id = "idCancel",
+          Class = "Button",
+          CloseDialog = true,
+          FontStyle = "Editor14Bold",
+          GamepadButton = "ButtonB",
+          Hint = "Cancel without changing anything.",
+          Subview = "default",
+          Text = T({1000430, "Cancel"}),
+          PosOrg = point(353, 500),
+          SizeOrg = point(132, 34),
+          HSizing = "1, 0, 1",
+          VSizing = "1, 0, 0"
+        },
+
       }
     },
     views = PlaceObj("UIDesignerViews", nil, {

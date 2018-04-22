@@ -14,9 +14,10 @@ function ChoGGi.ObjectSpawner()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if g_Classes[value] then
-      local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
+      PlaceObj(value,{"Pos",GetTerrainCursor()})
 
       --[[
+      --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
       for _, prop in ipairs(NewObj:GetProperties()) do
         NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
       end
@@ -207,7 +208,8 @@ function ChoGGi.ChangeMap()
         local class = class_names[i]
         map_settings[class] = mapdata[class]
       end
-      local sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
+      local sel_idx
+      sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
       if sel_idx ~= "idCancel" then
         local map = sel_idx and items[sel_idx].map
         if not map or map == "" then

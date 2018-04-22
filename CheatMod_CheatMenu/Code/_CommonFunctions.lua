@@ -1,10 +1,12 @@
 --any functions called from Code/*.lua
 
 function ChoGGi.AttachToNearestDome(building)
+
   --ignore outdoor buildings
-  if building.dome_required ~= true then
+  if  building.dome_required ~= true then
     return
   end
+
   --dome ruins don't have air/water/elec
   if (building.parent_dome and not building.parent_dome.air) or not building.parent_dome then
     --find the nearest working dome
@@ -68,7 +70,12 @@ function ChoGGi.SetCameraSettings()
   --camera.GetFovY()
   --camera.GetFovX()
   if ChoGGi.CheatMenuSettings.CameraZoomToggle then
-    cameraRTS.SetZoomLimits(0,24000)
+    if type(ChoGGi.CheatMenuSettings.CameraZoomToggle) == "number" then
+      cameraRTS.SetZoomLimits(0,ChoGGi.CheatMenuSettings.CameraZoomToggle)
+    else
+      cameraRTS.SetZoomLimits(0,24000)
+    end
+
     --5760x1080 doesn't get the correct zoom size till after zooming out
     if UIL.GetScreenSize():x() == 5760 then
       camera.SetFovY(2580)
@@ -254,148 +261,6 @@ function ChoGGi.ColonistUpdateRace(Colonist,Race)
   end
   Colonist.race = Race
   Colonist:ChooseEntity()
-end
-
---[[
-ChoGGi.ReturnTechAmount(Tech,Prop)
-returns number from TechTree (so you know how much it changes)
-see: Data/TechTree.lua, or examine(TechTree)
-
-ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
-^returns 10
-ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
-^ returns 0.7
-
-it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
-ie: SupportiveCommunity is -70 this returns it as 0.7
-it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
-
-if .a is 0 or .p is 0.0 then you most likely have the wrong one
-(TechTree'll always return both, I assume there's a default value somewhere)
---]]
-function ChoGGi.ReturnTechAmount(Tech,Prop)
-  for i,_ in ipairs(TechTree) do
-    for j,_ in ipairs(TechTree[i]) do
-      if TechTree[i][j].id == Tech then
-        for k,_ in ipairs(TechTree[i][j]) do
-          if TechTree[i][j][k].Prop == Prop then
-            local Tech = TechTree[i][j][k]
-            local RetObj = {}
-            if Tech.Percent then
-              RetObj.p = (Tech.Percent * -1 + 0.0) / 100 -- (-50 > 50 > 50.0) > 0.50
-            end
-            if Tech.Amount then
-              if Tech.Amount <= 0 then
-                RetObj.a = Tech.Amount * -1
-              else
-                RetObj.a = Tech.Amount
-              end
-            end
-            return RetObj
-          end
-        end
-      end
-    end
-  end
-end
-
---check if tech is researched before we set these consts (activated from menu items)
-function ChoGGi.GetCargoCapacity()
-  if UICity and UICity:IsTechDiscovered("FuelCompression") then
-    local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity").a
-    return ChoGGi.Consts.CargoCapacity + a
-  end
-  return ChoGGi.Consts.CargoCapacity
-end
---
-function ChoGGi.GetCommandCenterMaxDrones()
-  if UICity and UICity:IsTechDiscovered("DroneSwarm") then
-    local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones").a
-    return ChoGGi.Consts.CommandCenterMaxDrones + a
-  end
-  return ChoGGi.Consts.CommandCenterMaxDrones
-end
---
-function ChoGGi.GetDroneResourceCarryAmount()
-  if UICity and UICity:IsTechDiscovered("ArtificialMuscles") then
-    local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount").a
-    return ChoGGi.Consts.DroneResourceCarryAmount + a
-  end
-  return ChoGGi.Consts.DroneResourceCarryAmount
-end
---
-function ChoGGi.GetLowSanityNegativeTraitChance()
-  if UICity and UICity:IsTechDiscovered("SupportiveCommunity") then
-    local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
-    --[[
-    LowSanityNegativeTraitChance = 30%
-    SupportiveCommunity = -70%
-    --]]
-    local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
-    return p*LowSan/100*100
-  end
-  return ChoGGi.Consts.LowSanityNegativeTraitChance
-end
---
-function ChoGGi.GetMaxColonistsPerRocket()
-  local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
-  if UICity and UICity:IsTechDiscovered("CompactPassengerModule") then
-    local a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket").a
-    PerRocket = PerRocket + a
-  end
-  if UICity and UICity:IsTechDiscovered("CryoSleep") then
-    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket").a
-    PerRocket = PerRocket + a
-  end
-  return PerRocket
-end
---
-function ChoGGi.GetNonSpecialistPerformancePenalty()
-  if UICity and UICity:IsTechDiscovered("GeneralTraining") then
-    local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
-    return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
-  end
-  return ChoGGi.Consts.NonSpecialistPerformancePenalty
-end
---
-function ChoGGi.GetRCRoverMaxDrones()
-  if UICity and UICity:IsTechDiscovered("RoverCommandAI") then
-    local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones").a
-    return ChoGGi.Consts.RCRoverMaxDrones + a
-  end
-  return ChoGGi.Consts.RCRoverMaxDrones
-end
---
-function ChoGGi.GetRCTransportGatherResourceWorkTime()
-  if UICity and UICity:IsTechDiscovered("TransportOptimization") then
-    local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime").p
-    return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
-  end
-  return ChoGGi.Consts.RCTransportGatherResourceWorkTime
-end
---
-function ChoGGi.GetRCTransportStorageCapacity()
-  if UICity and UICity:IsTechDiscovered("TransportOptimization") then
-    local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage").a
-    return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
-  end
-  return ChoGGi.Consts.RCTransportStorageCapacity
-end
---
-function ChoGGi.GetTravelTimeEarthMars()
-  if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars").p
-    return ChoGGi.Consts.TravelTimeEarthMars * p
-  end
-  return ChoGGi.Consts.TravelTimeEarthMars
-end
---
-function ChoGGi.GetTravelTimeMarsEarth()
-  if UICity and UICity:IsTechDiscovered("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth").p
-    return ChoGGi.Consts.TravelTimeMarsEarth * p
-  end
-  return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
 --hex rings
@@ -689,8 +554,6 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   if ListHints then
     dlg.showlisthints = true
   end
-  --hides if short list
-  --dlg.idList:SetScrollAutohide(true)
   --title text
   dlg.idCaption:SetText(Caption)
   --list
@@ -785,18 +648,51 @@ function ChoGGi.ToggleConsoleLog()
   end
 end
 
+--creates a list for use with ObjectManipulator
+function ChoGGi.CreatePropList(Object)
+  local List
+
+  return List
+end
+
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
+  if not Object then
+    return
+  end
+
   local dlg = OpenDialog("ObjectManipulatorDialog", nil, Parent or terminal.desktop)
+ChoGGi.ObjectManipulatorDialog_Dlg = dlg
   if dlg then
-    --hides if short list
-    dlg.idList:SetScrollAutohide(true)
     --title text
-    dlg.idCaption:SetText(tostring(Object))
+    if Object.entity then
+      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
+    else
+      dlg.idCaption:SetText(Object.class)
+    end
+    if not Parent then
+      dlg:SetPos(terminal.GetMousePos())
+    end
+
+    dlg.obj = Object
 
     --create prop list for list
     local list = ChoGGi.CreatePropList(Object)
-    if list then
-      dlg.idList:SetContent(list)
+    if not list then
+      dlg.idList:SetContent({{text="Error"}})
+---------TESTING
+dlg.idList:SetContent({
+    {
+      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
+      hint = "long",
+    },
+  {text = 1,hint = 11111,column1 = true},
+  {text = 2,hint = 22222,column2 = true},
+  {text = 3,hint = 33333,column3 = true}
+})
+---------TESTING
+      return
     end
+    dlg.idList:SetContent(list)
+
   end
 end

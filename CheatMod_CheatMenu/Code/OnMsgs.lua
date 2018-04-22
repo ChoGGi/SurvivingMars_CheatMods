@@ -1,41 +1,11 @@
 
---hide some panel text till mouseover (this should be in replacedfuncs, but it doesn't work there...)
-ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
---ex(GetInGameInterface()[6][2][3])
--- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
-function InfopanelDlg:Open(...)
-  local ret = ChoGGi.OrigFunc.InfopanelDlg_Open(self,...)
-  CreateRealTimeThread(function()
-    self = self[2]
-    for i = 1, #self do
-      if self[i].class == "XSection" then
-        local title = self[i][2][1].text
-        if title and (title == "Traits" or title == "Cheats" or title:find("Residents")) then
-          --hides overflow
-          self[i][2]:SetClip(true)
-          --sets height
-          self[i][2]:SetMaxHeight(168)
-
-          self[i].OnMouseEnter = function()
-            self[i][2]:SetMaxHeight()
-          end
-          self[i].OnMouseLeft = function()
-            self[i][2]:SetMaxHeight(168)
-          end
-        end
-      end
-    end
-  end)
-
-  return ret
-end
-
 function OnMsg.ClassesGenerate()
 
   --i like keeping all my OnMsgs. in one file
   ChoGGi.ReplacedFunctions_ClassesGenerate()
   ChoGGi.InfoPaneCheats_ClassesGenerate()
   ChoGGi.UIDesignerData_ClassesGenerate()
+  ChoGGi.ObjectManipulator_ClassesGenerate()
 
   --change some building template settings
   for _,building in ipairs(DataInstances.BuildingTemplate) do
@@ -80,6 +50,7 @@ function OnMsg.ClassesBuilt()
 
   ChoGGi.ReplacedFunctions_ClassesBuilt()
   ChoGGi.UIDesignerData_ClassesBuilt()
+  ChoGGi.ObjectManipulator_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
@@ -344,6 +315,8 @@ function OnMsg.LoadingScreenPreClose()
     "SpawnColonist1",
     "SpawnColonist10",
     "SpawnColonist100",
+    "MapExplorationScan",
+    "MapExplorationDeepScan",
   })
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
@@ -529,9 +502,11 @@ function OnMsg.SelectionAdded(Obj)
   s = Obj
 end
 
+--[[
 function OnMsg.SelectedObjChange(Obj)
   s = Obj
 end
+--]]
 
 --if you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()

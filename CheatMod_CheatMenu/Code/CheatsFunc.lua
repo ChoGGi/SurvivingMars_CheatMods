@@ -42,14 +42,25 @@ function ChoGGi.DisastersStop()
   end
 end
 
+function ChoGGi.ShowScanOptions()
+  local ItemList = {
+    {text = "Reveal all Deposits",value = 1},
+    {text = "Reveal all deposits level 1 and above",value = 2},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if value == 1 then
+      CheatMapExplore("scanned")
+    elseif value == 2 then
+      CheatMapExplore("deep scanned")
+    end
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Reveal Deposits")
+end
+
 function ChoGGi.DisastersTrigger()
   local ItemList = {
-
-    {
-      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
-      value = false,
-    },
-
     {text = " Stop All Disasters",value = "Stop"},
     {text = "Cold Wave",value = "ColdWave"},
     {text = "Dust Devil Major",value = "DustDevilMajor"},
@@ -93,7 +104,8 @@ function ChoGGi.DisastersTrigger()
       "Disasters","UI/Icons/Sections/attention.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster","Targeted to mouse cursor (use arrow keys to select and enter to start).\n\nSelect item for more info.")
+  local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start).\n\nSelect item for more info."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint)
 end
 
 function ChoGGi.SpawnColonists()
@@ -230,9 +242,9 @@ end
 function ChoGGi.OutsourcePoints1000000()
   ChoGGi.SetConstsG("OutsourceResearch",1000 * ChoGGi.Consts.ResearchPointsScale)
 
-  ChoGGi.CheatMenuSettings.OutsourceResearch = Consts.OutsourceResearch
+  ChoGGi.SetSavedSetting("OutsourceResearch",Consts.OutsourceResearch)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearch .. ": The same thing we do every night, Pinky - try to take over the world!",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. ": The same thing we do every night, Pinky - try to take over the world!",
    "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
   )
 end
@@ -240,9 +252,9 @@ end
 function ChoGGi.OutsourcingFree_Toggle()
   ChoGGi.SetConstsG("OutsourceResearchCost",ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
 
-  ChoGGi.CheatMenuSettings.OutsourceResearchCost = Consts.OutsourceResearchCost
+  ChoGGi.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.OutsourceResearchCost .. ": Best hope you picked India as your Mars sponsor",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearchCost) .. ": Best hope you picked India as your Mars sponsor",
    "Research","UI/Icons/Sections/research_1.tga"
   )
 end
@@ -250,9 +262,9 @@ end
 function ChoGGi.BreakThroughTechsPerGame_Toggle()
   const.BreakThroughTechsPerGame = ChoGGi.ValueRetOpp(const.BreakThroughTechsPerGame,26,ChoGGi.Consts.BreakThroughTechsPerGame)
 
-  ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame
+  ChoGGi.SetSavedSetting("BreakThroughTechsPerGame",const.BreakThroughTechsPerGame)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame .. ": S M R T",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame) .. ": S M R T",
    "Research","UI/Icons/Notifications/research.tga"
   )
 end

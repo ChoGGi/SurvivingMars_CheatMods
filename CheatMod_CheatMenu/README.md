@@ -165,24 +165,20 @@ end
 
 some functions I added that may be useful for modders:
 
-ChoGGi.PrintIds(TechTree): Dumps table names+number (access with TechTree[6][46])
+ChoGGi.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
 TechTree[6][46] = Breakthroughs>PrefabCompression
 
-ChoGGi.ReturnTechAmount(Tech,Prop)
-returns number from TechTree (so you know how much it changes)
-see: Data/TechTree.lua, or ex(TechTree)
+ChoGGi.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
+see: Data/TechTree.lua, or ex(TechTree) ex(TechDef)
 
-ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty").a
+ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10
-ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance").p
+ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
 ^ returns 0.7
 
 it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
 ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - PositiveAmt, not num + NegativeAmt)
-
-if .a is 0 or .p is 0.0 then you most likely have the wrong one
-(TechTree'll always return both, I assume there's a default value somewhere)
 ```
 
 ##### Known issues

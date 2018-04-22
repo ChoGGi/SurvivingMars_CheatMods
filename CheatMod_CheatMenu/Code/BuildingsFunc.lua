@@ -193,8 +193,6 @@ function ChoGGi.FullyAutomatedBuildings_Toggle()
           building.auto_performance = amount
         end
       end
-      --for new buildings
-      ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = amount
     else
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.base_max_workers then
@@ -203,9 +201,9 @@ function ChoGGi.FullyAutomatedBuildings_Toggle()
           building.auto_performance = nil
         end
       end
-      --for new buildings
-      ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = false
     end
+    --for new buildings
+    ChoGGi.SetSavedSetting("FullyAutomatedBuildingsPerf",amount)
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup(choice[1].text .. ": I presume the PM's in favour of the scheme because it'll reduce unemployment.",
@@ -335,8 +333,8 @@ end
 function ChoGGi.MoistureVaporatorPenalty_Toggle()
   const.MoistureVaporatorRange = ChoGGi.NumRetBool(const.MoistureVaporatorRange,0,ChoGGi.Consts.MoistureVaporatorRange)
   const.MoistureVaporatorPenaltyPercent = ChoGGi.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,ChoGGi.Consts.MoistureVaporatorPenaltyPercent)
-  ChoGGi.CheatMenuSettings.MoistureVaporatorRange = const.MoistureVaporatorRange
-  ChoGGi.CheatMenuSettings.MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent
+  ChoGGi.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorRange)
+  ChoGGi.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorPenaltyPercent)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MoistureVaporatorRange) .. " Here at the Titty Twister we're slashing pussy in half!",
    "Buildings","UI/Icons/Upgrades/zero_space_04.tga"
@@ -345,7 +343,7 @@ end
 
 function ChoGGi.CropFailThreshold_Toggle()
   Consts.CropFailThreshold = ChoGGi.NumRetBool(Consts.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
-  ChoGGi.CheatMenuSettings.CropFailThreshold = Consts.CropFailThreshold
+  ChoGGi.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CropFailThreshold) .. " The small but great planet of Potatoho",
    "Buildings","UI/Icons/Sections/Food_1.tga"
@@ -368,21 +366,21 @@ function ChoGGi.CheapConstruction_Toggle()
   ChoGGi.SetConstsG("MachineParts_dome_cost_modifier",ChoGGi.ValueRetOpp(Consts.MachineParts_dome_cost_modifier,-100,ChoGGi.Consts.MachineParts_dome_cost_modifier))
   ChoGGi.SetConstsG("rebuild_cost_modifier",ChoGGi.ValueRetOpp(Consts.rebuild_cost_modifier,-100,ChoGGi.Consts.rebuild_cost_modifier))
 
-  ChoGGi.CheatMenuSettings.Metals_cost_modifier = Consts.Metals_cost_modifier
-  ChoGGi.CheatMenuSettings.Metals_dome_cost_modifier = Consts.Metals_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.PreciousMetals_cost_modifier = Consts.PreciousMetals_cost_modifier
-  ChoGGi.CheatMenuSettings.PreciousMetals_dome_cost_modifier = Consts.PreciousMetals_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.Concrete_cost_modifier = Consts.Concrete_cost_modifier
-  ChoGGi.CheatMenuSettings.Concrete_dome_cost_modifier = Consts.Concrete_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.Polymers_cost_modifier = Consts.Polymers_cost_modifier
-  ChoGGi.CheatMenuSettings.Polymers_dome_cost_modifier = Consts.Polymers_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.Electronics_cost_modifier = Consts.Electronics_cost_modifier
-  ChoGGi.CheatMenuSettings.Electronics_dome_cost_modifier = Consts.Electronics_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.MachineParts_cost_modifier = Consts.MachineParts_cost_modifier
-  ChoGGi.CheatMenuSettings.MachineParts_dome_cost_modifier = Consts.MachineParts_dome_cost_modifier
-  ChoGGi.CheatMenuSettings.rebuild_cost_modifier = Consts.rebuild_cost_modifier
+  ChoGGi.SetSavedSetting("Metals_cost_modifier",Consts.Metals_cost_modifier)
+  ChoGGi.SetSavedSetting("Metals_dome_cost_modifier",Consts.Metals_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("PreciousMetals_cost_modifier",Consts.PreciousMetals_cost_modifier)
+  ChoGGi.SetSavedSetting("PreciousMetals_dome_cost_modifier",Consts.PreciousMetals_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("Concrete_cost_modifier",Consts.Concrete_cost_modifier)
+  ChoGGi.SetSavedSetting("Concrete_dome_cost_modifier",Consts.Concrete_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("Polymers_cost_modifier",Consts.Polymers_cost_modifier)
+  ChoGGi.SetSavedSetting("Polymers_dome_cost_modifier",Consts.Polymers_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("Electronics_cost_modifier",Consts.Electronics_cost_modifier)
+  ChoGGi.SetSavedSetting("Electronics_dome_cost_modifier",Consts.Electronics_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("MachineParts_cost_modifier",Consts.MachineParts_cost_modifier)
+  ChoGGi.SetSavedSetting("MachineParts_dome_cost_modifier",Consts.MachineParts_dome_cost_modifier)
+  ChoGGi.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.Metals_cost_modifier .. " Get yourself a beautiful showhome (even if it'll fall apart after you move in)",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Metals_cost_modifier) .. " Get yourself a beautiful showhome (even if it'll fall apart after you move in)",
    "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
@@ -391,10 +389,10 @@ function ChoGGi.BuildingDamageCrime_Toggle()
   ChoGGi.SetConstsG("CrimeEventSabotageBuildingsCount",ChoGGi.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
   ChoGGi.SetConstsG("CrimeEventDestroyedBuildingsCount",ChoGGi.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
 
-  ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount = Consts.CrimeEventSabotageBuildingsCount
-  ChoGGi.CheatMenuSettings.CrimeEventDestroyedBuildingsCount = Consts.CrimeEventDestroyedBuildingsCount
+  ChoGGi.SetSavedSetting("CrimeEventSabotageBuildingsCount",Consts.CrimeEventSabotageBuildingsCount)
+  ChoGGi.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount .. " We were all feeling a bit shagged and fagged and fashed, it being a night of no small expenditure.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount) .. " We were all feeling a bit shagged and fagged and fashed, it being a night of no small expenditure.",
    "Buildings","UI/Icons/Notifications/fractured_dome.tga"
   )
 end
@@ -406,7 +404,7 @@ function ChoGGi.CablesAndPipesNoBreak_Toggle()
   const.BreakChancePipe = ChoGGi.ValueRetOpp(const.BreakChancePipe,600,10000000)
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.BreakChanceCablePipe .. " Aliens? We gotta deal with aliens too?",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BreakChanceCablePipe) .. " Aliens? We gotta deal with aliens too?",
    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
@@ -420,30 +418,44 @@ function ChoGGi.CablesAndPipesInstant_Toggle()
   ChoGGi.SetConstsG("InstantCables",ChoGGi.ToggleBoolNum(Consts.InstantCables))
   ChoGGi.SetConstsG("InstantPipes",ChoGGi.ToggleBoolNum(Consts.InstantPipes))
 
-  ChoGGi.CheatMenuSettings.InstantCables = Consts.InstantCables
-  ChoGGi.CheatMenuSettings.InstantPipes = Consts.InstantPipes
+  ChoGGi.SetSavedSetting("InstantCables",Consts.InstantCables)
+  ChoGGi.SetSavedSetting("InstantPipes",Consts.InstantPipes)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.InstantCables .. " Aliens? We gotta deal with aliens too?",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
 
 function ChoGGi.Building_wonder_Toggle()
+  ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
+
   for _,building in ipairs(DataInstances.BuildingTemplate) do
     building.wonder = false
-    --building.wonderSet = true
   end
-  ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders\n(restart to disable)",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
 
 function ChoGGi.Building_dome_spot_Toggle()
   ChoGGi.CheatMenuSettings.Building_dome_spot = not ChoGGi.CheatMenuSettings.Building_dome_spot
+  for _,building in ipairs(DataInstances.BuildingTemplate) do
+    building.dome_spot = "none"
+  end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to toggle)",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to disable)",
+   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
+  )
+end
+
+function ChoGGi.Building_instant_build_Toggle()
+  ChoGGi.CheatMenuSettings.Building_instant_build = not ChoGGi.CheatMenuSettings.Building_instant_build
+  for _,building in ipairs(DataInstances.BuildingTemplate) do
+    building.instant_build = true
+  end
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to disable).",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -452,38 +464,6 @@ function ChoGGi.Building_hide_from_build_menu_Toggle()
   ChoGGi.CheatMenuSettings.Building_hide_from_build_menu = not ChoGGi.CheatMenuSettings.Building_hide_from_build_menu
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_hide_from_build_menu) .. " Buildings hidden\n(restart to toggle).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
-  )
-end
-
-function ChoGGi.Building_dome_forbidden_Toggle()
-  ChoGGi.CheatMenuSettings.Building_dome_forbidden = not ChoGGi.CheatMenuSettings.Building_dome_forbidden
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_forbidden) .. " Buildings dome forbidden\n(restart to toggle).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
-  )
-end
-
-function ChoGGi.Building_dome_required_Toggle()
-  ChoGGi.CheatMenuSettings.Building_dome_required = not ChoGGi.CheatMenuSettings.Building_dome_required
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_required) .. " Buildings dome required\n(restart to toggle).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
-  )
-end
-
-function ChoGGi.Building_is_tall_Toggle()
-  ChoGGi.CheatMenuSettings.Building_is_tall = not ChoGGi.CheatMenuSettings.Building_is_tall
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_is_tall) .. " Building tall under pipes\n(restart to toggle).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
-  )
-end
-
-function ChoGGi.Building_instant_build_Toggle()
-  ChoGGi.CheatMenuSettings.Building_instant_build = not ChoGGi.CheatMenuSettings.Building_instant_build
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to toggle).",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end

@@ -70,18 +70,17 @@ function ChoGGi.SetShadowmapSize()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      ChoGGi.CheatMenuSettings.ShadowmapSize = amount
-      hr.ShadowmapSize = amount
-    else
-      ChoGGi.CheatMenuSettings.ShadowmapSize = false
+    local value = choice[1].value
+    if type(value) == "number" then
+      hr.ShadowmapSize = value
+      ChoGGi.SetSavedSetting("ShadowmapSize",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("ShadowmapSize: " .. choice[1].text,
+       "Video","UI/Icons/Anomaly_Event.tga"
+      )
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("ShadowmapSize: " .. choice[1].text,
-     "Video","UI/Icons/Anomaly_Event.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Current: " .. current .. "\n\nWarning: Highest uses a couple extra gigs of vram.")
 end
@@ -99,14 +98,41 @@ function ChoGGi.HigherShadowDist_Toggle()
 end
 
 function ChoGGi.HigherRenderDist_Toggle()
-  ChoGGi.CheatMenuSettings.HigherRenderDist = not ChoGGi.CheatMenuSettings.HigherRenderDist
 
-  hr.LODDistanceModifier = ChoGGi.ValueRetOpp(hr.LODDistanceModifier,600,120)
+  local DefaultSetting = 120
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " Small FPS hit on large: " .. 600,value = 600},
+    {text = " Minimal FPS hit on large: " .. 480,value = 480},
+    {text = 240,value = 240},
+    {text = 360,value = 360},
+    {text = 720,value = 720},
+    {text = 840,value = 840},
+    {text = 960,value = 960},
+    {text = 1080,value = 1080},
+    {text = 1200,value = 1200},
+  }
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
-   "Video","UI/Icons/Anomaly_Event.tga"
-  )
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.HigherRenderDist then
+    hint = tostring(ChoGGi.CheatMenuSettings.HigherRenderDist)
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      hr.LODDistanceModifier = value
+      ChoGGi.SetSavedSetting("HigherRenderDist",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
+       "Video","UI/Icons/Anomaly_Event.tga"
+      )
+    end
+
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Higher Render Dist","Current: " .. hint)
 end
 
 function ChoGGi.CameraFree_Toggle()
@@ -213,7 +239,8 @@ end
 function ChoGGi.InfopanelCheats_Toggle()
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
-  ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
+  ChoGGi.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ToggleInfopanelCheats) .. ": HAXOR",
    "Cheats","UI/Icons/Anomaly_Tech.tga"
@@ -236,6 +263,7 @@ end
 function ChoGGi.BorderScrolling_Toggle()
   ChoGGi.CheatMenuSettings.BorderScrollingToggle = not ChoGGi.CheatMenuSettings.BorderScrollingToggle
   ChoGGi.SetCameraSettings()
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingToggle) .. ": Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
@@ -245,6 +273,7 @@ end
 function ChoGGi.BorderScrollingArea_Toggle()
   ChoGGi.CheatMenuSettings.BorderScrollingArea = not ChoGGi.CheatMenuSettings.BorderScrollingArea
   ChoGGi.SetCameraSettings()
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingArea) .. ": Mouse Border Scrolling",
    "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
@@ -252,18 +281,44 @@ function ChoGGi.BorderScrollingArea_Toggle()
 end
 
 function ChoGGi.CameraZoom_Toggle()
-  ChoGGi.CheatMenuSettings.CameraZoomToggle = not ChoGGi.CheatMenuSettings.CameraZoomToggle
-  ChoGGi.SetCameraSettings()
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CameraZoomToggle) .. ": Camera Zoom",
-   "Camera","UI/Icons/IPButtons/status_effects.tga"
-  )
+  local DefaultSetting = 8000
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 16000,value = 16000},
+    {text = 20000,value = 20000},
+    {text = 24000,value = 24000},
+    {text = 32000,value = 32000},
+    {text = 64000,value = 64000},
+    {text = 128000,value = 128000},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
+    hint = tostring(ChoGGi.CheatMenuSettings.CameraZoomToggle)
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetSavedSetting("CameraZoomToggle",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": Camera Zoom",
+       "Camera","UI/Icons/IPButtons/status_effects.tga"
+      )
+    end
+
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
 end
 
 function ChoGGi.PipesPillarsSpacing_Toggle()
   ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
+  ChoGGi.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
 
-  ChoGGi.CheatMenuSettings.PipesPillarSpacing = Consts.PipesPillarSpacing
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
    "Buildings","UI/Icons/Sections/spaceship.tga"
@@ -292,20 +347,20 @@ end
 
 function ChoGGi.ResearchQueueLarger_Toggle()
   const.ResearchQueueSize = ChoGGi.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
+  ChoGGi.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
 
-  ChoGGi.CheatMenuSettings.ResearchQueueSize = const.ResearchQueueSize
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ResearchQueueSize .. ": Nerdgasm",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
    "Research","UI/Icons/Notifications/research.tga"
   )
 end
 
 function ChoGGi.ScannerQueueLarger_Toggle()
   const.ExplorationQueueMaxSize = ChoGGi.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
+  ChoGGi.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
-  ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize .. ": scans at a time.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize) .. ": scans at a time.",
    "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
@@ -332,8 +387,9 @@ function ChoGGi.SetGameSpeed()
       ChangeGameSpeedState(-1)
       ChangeGameSpeedState(1)
       --update settings
-      ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
-      ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
+      ChoGGi.SetSavedSetting("mediumGameSpeed",const.mediumGameSpeed)
+      ChoGGi.SetSavedSetting("fastGameSpeed",const.fastGameSpeed)
+
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": I think I can...",
        "Speed","UI/Icons/Notifications/timer.tga"

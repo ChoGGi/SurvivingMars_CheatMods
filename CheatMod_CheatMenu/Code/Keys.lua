@@ -89,7 +89,8 @@ function ChoGGi.ConstructionModeSet(itemname)
     return
   end
   local bld_template = DataInstances.BuildingTemplate[itemname]
-  local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+  --local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+  local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
   if show then
     local dlg = GetXDialog("XBuildMenu")

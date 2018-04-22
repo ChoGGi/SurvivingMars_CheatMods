@@ -14,9 +14,9 @@ function ChoGGi.AddOrbitalProbes()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      for i = 1, amount do
+    local value = choice[1].value
+    if type(value) == "number" then
+      for _ = 1, value do
         PlaceObject("OrbitalProbe",{city = UICity})
       end
     end
@@ -29,13 +29,13 @@ function ChoGGi.DeepScanToggle()
   ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
   ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
   ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+  ChoGGi.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
+  ChoGGi.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
+  ChoGGi.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
+  ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
 
-  ChoGGi.CheatMenuSettings.DeepScanAvailable = Consts.DeepScanAvailable
-  ChoGGi.CheatMenuSettings.IsDeepWaterExploitable = Consts.IsDeepWaterExploitable
-  ChoGGi.CheatMenuSettings.IsDeepMetalsExploitable = Consts.IsDeepMetalsExploitable
-  ChoGGi.CheatMenuSettings.IsDeepPreciousMetalsExploitable = Consts.IsDeepPreciousMetalsExploitable
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.DeepScanAvailable .. ": Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DeepScanAvailable) .. ": Alice thought to herself 'Now you will see a film... made for children... perhaps... ' But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
    "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
@@ -70,22 +70,23 @@ function ChoGGi.SetFoodPerRocketPassenger()
   end
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      ChoGGi.SetConstsG("FoodPerRocketPassenger",amount)
-      ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = amount
-    else
-      ChoGGi.SetConstsG("FoodPerRocketPassenger",DefaultSetting)
-      ChoGGi.CheatMenuSettings.FoodPerRocketPassenger = false
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetConstsG("FoodPerRocketPassenger",value)
+      ChoGGi.SetSavedSetting("FoodPerRocketPassenger",value)
+
+      --save setting
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": om nom nom nom nom",
+       "Passengers","UI/Icons/Sections/Food_4.tga"
+      )
     end
-    --save setting
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(choice[1].text .. ": om nom nom nom nom",
-     "Passengers","UI/Icons/Sections/Food_4.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
+
+--UICity.available_prefabs.StirlingGenerator=5
+--UICity.drone_prefabs=5
 
 function ChoGGi.AddPrefabsDrone()
   local ItemList = {
@@ -100,9 +101,10 @@ function ChoGGi.AddPrefabsDrone()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      UICity.drone_prefabs = UICity.drone_prefabs + amount
+    local value = choice[1].value
+    if type(value) == "number" then
+      UICity.drone_prefabs = UICity.drone_prefabs + value
+      RefreshXBuildMenu()
       ChoGGi.MsgPopup(choice[1].text .. " Drone prefabs added.",
         "Prefabs","UI/Icons/Sections/storage.tga"
       )
@@ -125,9 +127,9 @@ function ChoGGi.AddPrefabs(Type,Msg)
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      UICity:AddPrefabs(Type,amount)
+    local value = choice[1].value
+    if type(value) == "number" then
+      UICity:AddPrefabs(Type,value)
       ChoGGi.MsgPopup(choice[1].text .. Msg,
         "Prefabs","UI/Icons/Sections/storage.tga"
       )
@@ -150,12 +152,12 @@ function ChoGGi.SetFunding()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
+    local value = choice[1].value
+    if type(value) == "number" then
       --reset money back to 0
       UICity.funding = 0
       --and add the new amount
-      ChangeFunding(amount)
+      ChangeFunding(value)
 
       ChoGGi.MsgPopup(choice[1].text,
       "Funding","UI/Icons/IPButtons/rare_metals.tga"

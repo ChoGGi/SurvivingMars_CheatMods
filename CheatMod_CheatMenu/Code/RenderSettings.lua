@@ -38,8 +38,12 @@ function ChoGGi.RenderSettings_LoadingScreenPreClose()
   end
 
   if ChoGGi.CheatMenuSettings.HigherShadowDist then
+    if type(ChoGGi.CheatMenuSettings.HigherShadowDist) == "number" then
+      hr.ShadowRangeOverride = ChoGGi.CheatMenuSettings.HigherShadowDist
+    else
     --shadow cutoff dist
-    hr.ShadowRangeOverride = 1000000
+    hr.ShadowRangeOverride = 1000000 --def 0
+    end
     --no shadow fade out when zooming
     hr.ShadowFadeOutRangePercent = 0 --def 30
   end

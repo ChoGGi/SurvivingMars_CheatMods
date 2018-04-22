@@ -52,12 +52,9 @@ ChoGGi.Consts = {
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,
   BorderScrollingToggle = false,
-  Building_dome_forbidden = false,
-  Building_dome_required = false,
   Building_dome_spot = false,
   Building_hide_from_build_menu = false,
   Building_instant_build = false,
-  Building_is_tall = false,
   Building_wonder = false,
   CameraZoomToggle = false,
   FullyAutomatedBuildings = false,
@@ -103,7 +100,6 @@ ChoGGi.Consts = {
   SponsorParadox = false,
 
 --constants:
-  FullyAutomatedBuildingsPerf = 100,
   RCTransportStorageCapacity = 30000,
   StorageUniversalDepot = 30000,
   StorageOtherDepot = 180000,
@@ -193,6 +189,15 @@ ChoGGi.Consts = {
 
 --set game values to saved values
 function ChoGGi.SetConstsToSaved()
+--[[ returns which Consts can be researched, and their research name: ChoGGi. (Consts,Name)
+  for k,_ in pairs(TechDef) do
+    for _,v in ipairs(TechDef[k]) do
+      if v.Label == "Consts" then
+        print(v.Prop .. ": " .. k)
+      end
+    end
+  end
+--]]
 --Consts.
   ChoGGi.SetConstsG("AvoidWorkplaceSols",ChoGGi.CheatMenuSettings.AvoidWorkplaceSols)
   ChoGGi.SetConstsG("BirthThreshold",ChoGGi.CheatMenuSettings.BirthThreshold)
@@ -322,7 +327,14 @@ end
 --OptionsApply is the earliest we can call Consts:GetProperties()
 function ChoGGi.Settings_OptionsApply()
 
-  --get the default values for our Consts
+  --if our setting doesn't exist then make it false
+  for Key,Value in pairs(ChoGGi.Consts) do
+    if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
+      ChoGGi.CheatMenuSettings[Key] = Value
+    end
+  end
+
+  --then get the default values for our Consts
   for _,DefaultValue in ipairs(Consts:GetProperties()) do
     for SettingName,_ in pairs(ChoGGi.Consts) do
       if SettingName == DefaultValue.id then
@@ -331,10 +343,4 @@ function ChoGGi.Settings_OptionsApply()
     end
   end
 
-  --nil means we need to give it the default value (or errors eventuate)
-  for Key,Value in pairs(ChoGGi.Consts) do
-    if type(ChoGGi.CheatMenuSettings[Key]) == "nil" then
-      ChoGGi.CheatMenuSettings[Key] = Value
-    end
-  end
 end

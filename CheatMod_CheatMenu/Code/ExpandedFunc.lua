@@ -20,9 +20,10 @@ end
 
 function ChoGGi.MeteorHealthDamage_Toggle()
   ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
-  ChoGGi.CheatMenuSettings.MeteorHealthDamage = Consts.MeteorHealthDamage
+  ChoGGi.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
+
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(ChoGGi.CheatMenuSettings.MeteorHealthDamage .. ": Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. ": Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
    "Colonists","UI/Icons/Notifications/meteor_storm.tga"
   )
 end
@@ -42,18 +43,17 @@ function ChoGGi.SetRocketCargoCapacity()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      ChoGGi.SetConstsG("CargoCapacity",amount)
-      ChoGGi.CheatMenuSettings.CargoCapacity = amount
-    else
-      ChoGGi.SetConstsG("CargoCapacity",DefaultSetting)
-      ChoGGi.CheatMenuSettings.CargoCapacity = DefaultSetting
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetConstsG("CargoCapacity",value)
+      ChoGGi.SetSavedSetting("CargoCapacity",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": I can still see some space",
+       "Rocket","UI/Icons/Sections/spaceship.tga"
+      )
     end
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(choice[1].text .. ": I can still see some space",
-     "Rocket","UI/Icons/Sections/spaceship.tga"
-    )
+
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
 end
@@ -85,25 +85,20 @@ function ChoGGi.SetRocketTravelTime()
   end
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      ChoGGi.SetConstsG("TravelTimeEarthMars",amount)
-      ChoGGi.SetConstsG("TravelTimeMarsEarth",amount)
-      ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
-      ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
-    else
-      ChoGGi.SetConstsG("TravelTimeEarthMars",ChoGGi.GetTravelTimeEarthMars())
-      ChoGGi.SetConstsG("TravelTimeMarsEarth",ChoGGi.GetTravelTimeMarsEarth())
-      ChoGGi.CheatMenuSettings.TravelTimeEarthMars = Consts.TravelTimeEarthMars
-      ChoGGi.CheatMenuSettings.TravelTimeMarsEarth = Consts.TravelTimeMarsEarth
-    end
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetConstsG("TravelTimeEarthMars",value)
+      ChoGGi.SetConstsG("TravelTimeMarsEarth",value)
+      ChoGGi.SetSavedSetting("TravelTimeEarthMars",value)
+      ChoGGi.SetSavedSetting("TravelTimeMarsEarth",value)
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("88 MPH: " .. choice[1].text,
-      "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
-    )
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("88 MPH: " .. choice[1].text,
+        "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
+      )
+    end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Currently: " .. hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
 end
 
 function ChoGGi.SetColonistsPerRocket()
@@ -124,16 +119,14 @@ function ChoGGi.SetColonistsPerRocket()
     local value = choice[1].value
     if type(value) == "number" then
       ChoGGi.SetConstsG("MaxColonistsPerRocket",value)
-      ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = value
-    else
-      ChoGGi.SetConstsG("MaxColonistsPerRocket",DefaultSetting)
-      ChoGGi.CheatMenuSettings.MaxColonistsPerRocket = DefaultSetting
+      ChoGGi.SetSavedSetting("MaxColonistsPerRocket",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": Long pig sardines",
+        "Rocket","UI/Icons/Notifications/colonist.tga"
+      )
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(choice[1].text .. ": Long pig sardines",
-      "Rocket","UI/Icons/Notifications/colonist.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
@@ -197,57 +190,62 @@ function ChoGGi.SetBuildingCapacity()
   end
 
   local CallBackFunc = function(choice)
-    --colonist cap doesn't use res scale
-    local amount
-    if CapType == "colonist" then
-      amount = choice[1].value
-    else
-      amount = choice[1].value * r
-    end
+    local value = choice[1].value
+    if type(value) == "number" then
 
-    --NewLabel needed to update battery/etc capacity without toggling it?
-    local NewLabel
-    if choice[1].value == DefaultSetting then
-      ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
-      NewLabel = "full"
-    else
-      ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = amount
-      NewLabel = "charging"
-    end
+      --colonist cap doesn't use res scale
+      local amount
+      if CapType == "colonist" then
+        amount = value
+      else
+        amount = value * r
+      end
 
-    --updating time
-    if CapType == "electricity" then
-      for _,building in ipairs(UICity.labels.Power or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.capacity = amount
-          building[CapType].storage_capacity = amount
-          building[CapType].storage_mode = NewLabel
-          ChoGGi.ToggleWorking(building)
+      --NewLabel needed to update battery/etc capacity without toggling it?
+      local NewLabel
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
+        NewLabel = "full"
+      else
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = amount
+        NewLabel = "charging"
+      end
+
+      --updating time
+      if CapType == "electricity" then
+        for _,building in ipairs(UICity.labels.Power or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building.capacity = amount
+            building[CapType].storage_capacity = amount
+            building[CapType].storage_mode = NewLabel
+            ChoGGi.ToggleWorking(building)
+          end
+        end
+
+      elseif CapType == "colonist" then
+        for _,building in ipairs(UICity.labels.Residence or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building.capacity = amount
+          end
+        end
+
+      else --water and air
+        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building[CapType .. "_capacity"] = amount
+            building[CapType].storage_capacity = amount
+            building[CapType].storage_mode = NewLabel
+            ChoGGi.ToggleWorking(building)
+          end
         end
       end
 
-    elseif CapType == "colonist" then
-      for _,building in ipairs(UICity.labels.Residence or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.capacity = amount
-        end
-      end
-
-    else --water and air
-      for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building[CapType .. "_capacity"] = amount
-          building[CapType].storage_capacity = amount
-          building[CapType].storage_mode = NewLabel
-          ChoGGi.ToggleWorking(building)
-        end
-      end
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+        "Buildings","UI/Icons/Sections/storage.tga"
+      )
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
-      "Buildings","UI/Icons/Sections/storage.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity","Current capacity: " .. hint .. "\n\nWarning For Colonist Capacity: 4000 is laggy (above 60K may crash).")
 end --SetBuildingCapacity
@@ -279,22 +277,27 @@ function ChoGGi.SetVisitorCapacity()
     hint = ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id]
   end
   local CallBackFunc = function(choice)
-    local amount
-    if choice[1].value ~= DefaultSetting then
-      amount = choice[1].value
-    end
+    local value = choice[1].value
+    if type(value) == "number" then
 
-    for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-      if building.encyclopedia_id == sel.encyclopedia_id then
-        building.max_visitors = amount
+      for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
+        if building.encyclopedia_id == sel.encyclopedia_id then
+          building.max_visitors = value
+        end
       end
+
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = value
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
+       "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
+      )
     end
 
-    ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = amount
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
-     "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
 end
@@ -322,21 +325,25 @@ function ChoGGi.SetStorageDepotSize(sType)
   end
 
   local CallBackFunc = function(choice)
-    ChoGGi.CheatMenuSettings[sType] = choice[1].value
+    local value = choice[1].value
+    if type(value) == "number" then
 
-    --limit amounts so saving with a full load doesn't delete your game
-    if sType == "StorageWasteDepot" and choice[1].value > 1000000 then
-      ChoGGi.CheatMenuSettings[sType] = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
-    elseif sType == "StorageOtherDepot" and choice[1].value > 20000 then
-      ChoGGi.CheatMenuSettings[sType] = 20000000
-    elseif sType == "StorageUniversalDepot" and choice[1].value > 2500 then
-      ChoGGi.CheatMenuSettings[sType] = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400 storage
+      --limit amounts so saving with a full load doesn't delete your game
+      if sType == "StorageWasteDepot" and value > 1000000 then
+        ChoGGi.SetSavedSetting(sType,1000000000) --might be safe above a million, but I figured I'd stop somewhere
+      elseif sType == "StorageOtherDepot" and value > 20000 then
+        ChoGGi.SetSavedSetting(sType,20000000)
+      elseif sType == "StorageUniversalDepot" and value > 2500 then
+        ChoGGi.SetSavedSetting(sType,2500000) --can go to 2900, but I got a crash; which may have been something else, but it's only 400 storage
+      else
+        ChoGGi.SetSavedSetting(sType,value)
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(sType .. ": " ..  choice[1].text,
+        "Storage","UI/Icons/Sections/basic.tga"
+      )
     end
-
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(sType .. ": " ..  choice[1].text,
-      "Storage","UI/Icons/Sections/basic.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\nMax capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000")
 end

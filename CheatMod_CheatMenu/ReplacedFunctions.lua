@@ -101,6 +101,45 @@ end --OnMsg
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
+  --if certain panels (cheats/traits/colonists) are too large then hide most of them till mouseover
+  ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
+  --ex(GetInGameInterface()[6][2][3])
+  -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
+  function InfopanelDlg:Open(...)
+    --fire the orig func and keep it's return value to pass on later
+    local ret = ChoGGi.OrigFunc.InfopanelDlg_Open(self,...)
+
+    CreateRealTimeThread(function()
+      --it's always the second window (should we check for the correct class?)
+      self = self[2]
+
+      for i = 1, #self do
+        if self[i].class == "XSection" then
+          local title = self[i][2][1].text
+          if title then
+            if title == "Traits" or title == "Cheats" or title:find("Residents") then
+              --hides overflow
+              self[i][2]:SetClip(true)
+              --sets height
+              self[i][2]:SetMaxHeight(168)
+
+              self[i].OnMouseEnter = function()
+                self[i][2]:SetMaxHeight()
+              end
+              self[i].OnMouseLeft = function()
+                self[i][2]:SetMaxHeight(168)
+              end
+            elseif title == "visitor cap section" then
+              --display it as a vlist?
+            end
+          end
+        end --if XSection
+      end
+    end)
+
+    return ret
+  end
+
   --make the background hide when console not visible (instead of after a second or two)
   ChoGGi.OrigFunc.ConsoleLog_ShowBackground = ConsoleLog.ShowBackground
   function ConsoleLog:ShowBackground(visible, immediate)
@@ -130,7 +169,7 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
 if ChoGGi.Testing then
     function self.idEdit.OnButtonPressed()
       --OpenManipulator(self.obj,self)
-      ChoGGi.OpenInObjectManipulator(object,parent)
+      ChoGGi.OpenInObjectManipulator(self.obj,self)
     end
 end
 
@@ -297,7 +336,7 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 
     --so we can do long spaced tunnels
     ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-    function TunnelConstructionController:UpdateConstructionStatuses(pt)
+    function TunnelConstructionController:UpdateConstructionStatuses()
       local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
       --[[
       if self.placed_obj and not IsCloser2D(self.placed_obj, self.cursor_obj, self.max_range * const.GridSpacing) then
