@@ -25,14 +25,14 @@ function ChoGGi.SetFoodPerRocketPassenger()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
-    {text = 10000,value = 10000 * r},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 10000,value = 10000},
   }
 
   local hint = DefaultSetting / r
@@ -41,7 +41,7 @@ function ChoGGi.SetFoodPerRocketPassenger()
   end
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
+    local value = choice[1].value * r
     if type(value) == "number" then
       ChoGGi.SetConstsG("FoodPerRocketPassenger",value)
       ChoGGi.SetSavedSetting("FoodPerRocketPassenger",value)
@@ -81,7 +81,7 @@ function ChoGGi.AddPrefabs()
     local custom = choice[1].custom --num
 
     if type(custom) ~= "number" then
-      ChoGGi.MsgPopup("Number of prefabs missing from custom value box.",
+      ChoGGi.MsgPopup("Prefab number is missing from custom value box.",
         "Error","UI/Icons/Sections/storage.tga"
       )
     else
@@ -124,7 +124,7 @@ function ChoGGi.SetFunding()
       ChangeFunding(value)
 
       ChoGGi.MsgPopup(choice[1].text,
-      "Funding","UI/Icons/IPButtons/rare_metals.tga"
+        "Funding","UI/Icons/IPButtons/rare_metals.tga"
       )
     end
   end

@@ -130,7 +130,7 @@ function ChoGGi.DroneMeteorMalfunction_Toggle()
   ChoGGi.SetSavedSetting("DroneMeteorMalfunctionChance",Consts.DroneMeteorMalfunctionChance)
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance) .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance) .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling.",
     "Drones","UI/Icons/Notifications/meteor_storm.tga"
   )
 end
@@ -140,8 +140,8 @@ function ChoGGi.DroneRechargeTime_Toggle()
   ChoGGi.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneRechargeTime) .. ": Well, if jacking on'll make strangers think I'm cool, I'll do it!",
-    "Drones","UI/Icons/Notifications/low_battery.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneRechargeTime) .. "\nWell, if jacking on'll make strangers think I'm cool, I'll do it!",
+    "Drones","UI/Icons/Notifications/low_battery.tga",true
   )
 end
 
@@ -278,13 +278,13 @@ function ChoGGi.SetRCTransportStorageCapacity()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
-    {text = 2000,value = 2000 * r,hint = "somewhere above 2000 will delete the save"},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2000,value = 2000,hint = "somewhere above 2000 will delete the save"},
   }
 
   local hint = DefaultSetting / r
@@ -293,12 +293,11 @@ function ChoGGi.SetRCTransportStorageCapacity()
   end
 
   local CallBackFunc = function(choice)
-
-    local value = choice[1].value
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       --somewhere above 2000 fucks the save
-      if value > 2000 * r then
-        value = 2000 * r
+      if value > 2000 then
+        value = 2000
       end
       --loop through and set all
       for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
@@ -327,12 +326,12 @@ function ChoGGi.SetShuttleCapacity()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r,hint = "above 1000 may delete the save"},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000,hint = "above 1000 may delete the save"},
   }
 
   local hint = DefaultSetting / r
@@ -341,12 +340,11 @@ function ChoGGi.SetShuttleCapacity()
   end
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
-
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       --not tested but I assume too much = dead save as well
-      if value > 1000 * r then
-        value = 1000 * r
+      if value > 1000 then
+        value = 1000
       end
       --loop through and set all shuttles
       for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
@@ -374,17 +372,17 @@ function ChoGGi.SetShuttleSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
-    {text = 5000,value = 5000 * r},
-    {text = 10000,value = 10000 * r},
-    {text = 25000,value = 25000 * r},
-    {text = 50000,value = 50000 * r},
-    {text = 100000,value = 100000 * r},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+    {text = 25000,value = 25000},
+    {text = 50000,value = 50000},
+    {text = 100000,value = 100000},
   }
 
   local hint = DefaultSetting / r
@@ -393,9 +391,8 @@ function ChoGGi.SetShuttleSpeed()
   end
 
   local CallBackFunc = function(choice)
-
-    local value = choice[1].value
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       --loop through and set all shuttles
       for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
         object.max_speed = value
@@ -462,19 +459,19 @@ function ChoGGi.SetGravityRC()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = 1,value = 1 * r},
-    {text = 2,value = 2 * r},
-    {text = 3,value = 3 * r},
-    {text = 4,value = 4 * r},
-    {text = 5,value = 5 * r},
-    {text = 10,value = 10 * r},
-    {text = 15,value = 15 * r},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
+    {text = 1,value = 1},
+    {text = 2,value = 2},
+    {text = 3,value = 3},
+    {text = 4,value = 4},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
   }
 
   local hint = DefaultSetting
@@ -483,9 +480,8 @@ function ChoGGi.SetGravityRC()
   end
 
   local CallBackFunc = function(choice)
-
-    local value = choice[1].value
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       for _,Object in ipairs(UICity.labels.Rover or empty_table) do
         Object:SetGravity(value)
       end
@@ -506,19 +502,19 @@ function ChoGGi.SetGravityDrones()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = 1,value = 1 * r},
-    {text = 2,value = 2 * r},
-    {text = 3,value = 3 * r},
-    {text = 4,value = 4 * r},
-    {text = 5,value = 5 * r},
-    {text = 10,value = 10 * r},
-    {text = 15,value = 15 * r},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
+    {text = 1,value = 1},
+    {text = 2,value = 2},
+    {text = 3,value = 3},
+    {text = 4,value = 4},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
   }
 
   local hint = DefaultSetting
@@ -526,9 +522,8 @@ function ChoGGi.SetGravityDrones()
     hint = ChoGGi.CheatMenuSettings.GravityDrone / r
   end
   local CallBackFunc = function(choice)
-
-    local value = choice[1].value
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       --loop through and set all
       for _,Object in ipairs(UICity.labels.Drone or empty_table) do
         Object:SetGravity(value)

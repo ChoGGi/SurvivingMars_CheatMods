@@ -78,6 +78,7 @@ end
 
 --fired as late as we can
 function OnMsg.LoadingScreenPreClose()
+--function OnMsg.Resume()
 
   --for new games
   if not UICity then
@@ -506,15 +507,35 @@ function OnMsg.SelectedObjChange(Obj)
 end
 --]]
 
-function OnMsg.NewHour()
-  --make them lazy drones work
-  if ChoGGi.DronesOverride then
-    local rp = UICity.labels.ResourceProducer
-    for i = 1, #rp do
-      ChoGGi.FuckingDrones(rp[i]:GetProducerObj())
-      ChoGGi.FuckingDrones(rp[i].wasterock_producer)
+function OnMsg.NewDay()
+print("NewDay")
+
+  --clean up my old notifications
+  local shown = g_ShownOnScreenNotifications
+  for Key,_ in pairs(shown) do
+    if tostring(Key):find("ChoGGi_") then
+      shown[Key] = nil
     end
   end
+
+end
+
+function OnMsg.NewHour()
+
+  --make them lazy drones stop abusing electricity
+  if ChoGGi.DronesOverride then
+    --Hey. Do I preach at you when you're lying stoned in the gutter? No!
+    for _,Value in ipairs(UICity.labels.ResourceProducer or empty_table) do
+      ChoGGi.FuckingDrones(Value:GetProducerObj())
+      if Value.wasterock_producer then
+        ChoGGi.FuckingDrones(Value.wasterock_producer)
+      end
+    end
+  end
+
+  --make sure all buildings are using correct production
+  ChoGGi.SetProductionToSavedAmt()
+
 end
 
 --if you pick a mystery from the cheat menu

@@ -124,7 +124,7 @@ function ChoGGi.ShowScanAndMapOptions()
     ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
-     "Scanner","UI/Icons/Notifications/scan.tga"
+     "Scanner","UI/Icons/Notifications/scan.tga",true
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
@@ -316,8 +316,8 @@ function ChoGGi.OutsourcePoints1000000()
 
   ChoGGi.SetSavedSetting("OutsourceResearch",Consts.OutsourceResearch)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. ": The same thing we do every night, Pinky - try to take over the world!",
-   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. "\nThe same thing we do every night, Pinky - try to take over the world!",
+   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga",true
   )
 end
 
@@ -326,8 +326,8 @@ function ChoGGi.OutsourcingFree_Toggle()
 
   ChoGGi.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearchCost) .. ": Best hope you picked India as your Mars sponsor",
-   "Research","UI/Icons/Sections/research_1.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
+   "Research","UI/Icons/Sections/research_1.tga",true
   )
 end
 

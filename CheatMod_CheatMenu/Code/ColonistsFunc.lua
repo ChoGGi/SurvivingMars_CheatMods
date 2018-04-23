@@ -5,19 +5,19 @@ function ChoGGi.SetGravityColonists()
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = 1,value = 1 * r},
-    {text = 2,value = 2 * r},
-    {text = 3,value = 3 * r},
-    {text = 4,value = 4 * r},
-    {text = 5,value = 5 * r},
-    {text = 10,value = 10 * r},
-    {text = 15,value = 15 * r},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 75,value = 75 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
+    {text = 1,value = 1},
+    {text = 2,value = 2},
+    {text = 3,value = 3},
+    {text = 4,value = 4},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
   }
 
   local hint = DefaultSetting
@@ -26,23 +26,18 @@ function ChoGGi.SetGravityColonists()
   end
 
   local CallBackFunc = function(choice)
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
+      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
+        Object:SetGravity(value)
+      end
+      ChoGGi.SetSavedSetting("GravityColonist",value)
 
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        Object:SetGravity(amount)
-      end
-    else
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        Object:SetGravity(DefaultSetting)
-      end
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Colonist gravity is now: " .. choice[1].text,
+        "Colonists","UI/Icons/Sections/colonist.tga"
+      )
     end
-    ChoGGi.SetSavedSetting("GravityColonist",amount)
-
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Colonist gravity is now: " .. choice[1].text,
-      "Colonists","UI/Icons/Sections/colonist.tga"
-    )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint)
 end
@@ -150,8 +145,8 @@ function ChoGGi.MinComfortBirth_Toggle()
 
   ChoGGi.SetSavedSetting("MinComfortBirth",Consts.MinComfortBirth)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MinComfortBirth) .. ": Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MinComfortBirth) .. "\nLook at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
+    "Colonists","UI/Icons/Sections/colonist.tga",true
   )
 end
 
@@ -160,8 +155,8 @@ function ChoGGi.VisitFailPenalty_Toggle()
 
   ChoGGi.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.VisitFailPenalty) .. ": The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.VisitFailPenalty) .. "\nThe mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.",
+    "Colonists","UI/Icons/Sections/colonist.tga",true
   )
 end
 
@@ -210,8 +205,8 @@ function ChoGGi.NoHomeComfortDamage_Toggle()
   ChoGGi.SetConstsG("NoHomeComfort",ChoGGi.NumRetBool(Consts.NoHomeComfort,0,ChoGGi.Consts.NoHomeComfort))
   ChoGGi.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NoHomeComfort) .. ": Oh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NoHomeComfort) .. "\nOh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,",
+    "Colonists","UI/Icons/Sections/colonist.tga",true
   )
 end
 
@@ -286,8 +281,8 @@ function ChoGGi.PositivePlayground_Toggle()
 
   ChoGGi.SetSavedSetting("positive_playground_chance",Consts.positive_playground_chance)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.positive_playground_chance) .. ": We've all seen them, on the playground, at the store, walking on the streets.",
-    "Traits","UI/Icons/Upgrades/home_collective_02.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.positive_playground_chance) .. "\nWe've all seen them, on the playground, at the store, walking on the streets.",
+    "Traits","UI/Icons/Upgrades/home_collective_02.tga",true
   )
 end
 
@@ -296,8 +291,8 @@ function ChoGGi.ProjectMorpheusPositiveTrait_Toggle()
 
   ChoGGi.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance) .. ' Say, "Small umbrella, small umbrella."',
-   "Colonists","UI/Icons/Upgrades/rejuvenation_treatment_04.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance) .. "\nSay, \"Small umbrella, small umbrella.\"",
+   "Colonists","UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
   )
 end
 
@@ -306,8 +301,8 @@ function ChoGGi.PerformancePenaltyNonSpecialist_Toggle()
 
   ChoGGi.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty) .. ": You never know what you're gonna get.",
-   "Penalty","UI/Icons/Notifications/colonist.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty) .. "\nYou never know what you're gonna get.",
+   "Penalty","UI/Icons/Notifications/colonist.tga",true
   )
 end
 
@@ -336,8 +331,8 @@ function ChoGGi.SetOutsideWorkplaceRadius()
       ChoGGi.SetConstsG("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.SetSavedSetting("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.WriteSettings()
-        ChoGGi.MsgPopup(choice[1].text .. ": Maybe tomorrow, I'll find what I call home. Until tomorrow, you know I'm free to roam.",
-         "Colonists","UI/Icons/Sections/dome.tga"
+        ChoGGi.MsgPopup(choice[1].text .. ": There's a voice that keeps on calling me\nDown the road is where I'll always be\nMaybe tomorrow, I'll find what I call home\nUntil tomorrow, you know I'm free to roam",
+         "Colonists","UI/Icons/Sections/dome.tga",true
         )
     end
   end
@@ -346,6 +341,7 @@ end
 
 function ChoGGi.SetDeathAge()
   local ItemList = {
+    {text = " Default",value = "Default",hint = "Uses same code as game to pick death ages."},
     {text = 60,value = 60},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -353,19 +349,41 @@ function ChoGGi.SetDeathAge()
     {text = 500,value = 500},
     {text = 1000,value = 1000},
     {text = 10000,value = 10000},
-    {text = "Logan's Run (Novel)",value = 21},
-    {text = "Logan's Run (Movie)",value = 30},
-    {text = "TNG: Half a Life",value = 60},
-    {text = "The Happy Place",value = 60},
-    {text = "In Time",value = 26},
+    {text = "Logan's Run (Novel)",value = "LoganNovel"},
+    {text = "Logan's Run (Movie)",value = "LoganMovie"},
+    {text = "TNG: Half a Life",value = "TNG"},
+    {text = "The Happy Place",value = "TheHappyPlace"},
+    {text = "In Time",value = "InTime"},
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-        colonist.death_age = amount
+    local value = choice[1].value
+    local amount
+    if type(value) == "number" then
+      amount = value
+    elseif value == "LoganNovel" then
+      amount = 21
+    elseif value == "LoganMovie" then
+      amount = 30
+    elseif value == "TNG" then
+      amount = 60
+    elseif value == "TheHappyPlace" then
+      amount = 60
+    elseif value == "InTime" then
+      amount = 26
+    end
+
+    if value == "Default" or type(amount) == "number" then
+      if value == "Default" then
+        for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+          colonist.death_age = colonist.MinAge_Senior + 5 + colonist:Random(10) + colonist:Random(5) + colonist:Random(5)
+        end
+      elseif type(amount) == "number" then
+        for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+          colonist.death_age = amount
+        end
       end
+
       ChoGGi.MsgPopup("Death age: " .. choice[1].text,
         "Colonists","UI/Icons/Sections/attention.tga"
       )

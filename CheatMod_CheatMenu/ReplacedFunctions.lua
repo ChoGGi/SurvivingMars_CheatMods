@@ -4,15 +4,7 @@ function ChoGGi.ForceDronesToEmptyStorage_Enable()
   end
   ChoGGi.DronesOverride = true
 
-  --[[it checks every hour so...
-  ChoGGi.OrigFunc.SingleResourceProducer_BuildingDailyUpdate = SingleResourceProducer.BuildingDailyUpdate
-  function SingleResourceProducer:BuildingDailyUpdate(day)
-    local ret = ChoGGi.OrigFunc.SingleResourceProducer_BuildingDailyUpdate(self,day)
-    ChoGGi.FuckingDrones(self)
-    return ret
-  end
---]]
-
+  --checks whenever something is produced, if you have an insane production amount then it messes up (so we also check every hour (OnMsg))
   ChoGGi.OrigFunc.SingleResourceProducer_OnProduce = SingleResourceProducer.OnProduce
   function SingleResourceProducer:OnProduce(amount_to_produce)
     local ret = ChoGGi.OrigFunc.SingleResourceProducer_OnProduce(self,amount_to_produce)

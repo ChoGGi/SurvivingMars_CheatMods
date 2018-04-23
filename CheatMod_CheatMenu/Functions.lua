@@ -7,8 +7,7 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
-
-function ChoGGi.MsgPopup(Msg,Title,Icon)
+function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     Msg = Msg or "Empty"
     --returns translated text corresponding to number if we don't do this
@@ -17,10 +16,44 @@ function ChoGGi.MsgPopup(Msg,Title,Icon)
     end
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
-    if type(AddCustomOnScreenNotification) == "function" then --incase we called it where there ain't no UI
-      CreateRealTimeThread(AddCustomOnScreenNotification(
-        AsyncRand(),Title,Msg,Icon,nil,{expiration=5000}
-      ))
+    local id = "ChoGGi_" .. AsyncRand()
+    local delay = 8000
+    if Size then
+      delay = 15000
+    end
+    if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
+      CreateRealTimeThread(function()
+        AddCustomOnScreenNotification(
+          --nil=callback
+          id,Title,Msg,Icon,nil,{expiration=delay}
+          --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
+        )
+        if Size then
+          --add some custom settings this way, till i figure out hwo to add them as params
+          local osDlg = GetXDialog("OnScreenNotificationsDlg")[1]
+          local popup
+          for i = 1, #osDlg do
+            if osDlg[i].notification_id == id then
+              popup = osDlg[i]
+              break
+            end
+          end
+          --remove text limit
+          --popup.idText.Shorten = false
+          --popup.idText.MaxHeight = nil
+          popup.idText.Margins = box(0,0,0,-500)
+          --resize
+          popup.idTitle.Margins = box(0,-20,0,0)
+          --image
+          Sleep(0)
+          popup[1].scale = point(2800,2500)
+          popup[1].Margins = box(-5,-30,0,-5)
+          --update dialog
+          popup:InvalidateMeasure()
+  --parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
+  --osn GetXDialog("OnScreenNotificationsDlg")[1][1]
+        end
+      end)
     end
   end)
 end

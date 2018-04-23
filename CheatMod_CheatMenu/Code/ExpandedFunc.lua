@@ -26,8 +26,8 @@ function ChoGGi.MeteorHealthDamage_Toggle()
   ChoGGi.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. ": Damage? Total, sir. It's what we call a global killer. The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
-   "Colonists","UI/Icons/Notifications/meteor_storm.tga"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+   "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
 
@@ -63,33 +63,33 @@ end
 
 function ChoGGi.SetRocketTravelTime()
 
-  local DefaultSetting = ChoGGi.GetTravelTimeEarthMars()
+  local DefaultSetting = ChoGGi.GetTravelTimeEarthMars() / r
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Instant",value = 0},
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = " Original: " .. 750,value = 750 * r},
-    {text = " Half of Original: " .. 375,value = 375 * r},
-    {text = 10,value = 10 * r},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 100,value = 100 * r},
-    {text = 150,value = 150 * r},
-    {text = 200,value = 200 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " Original: " .. 750,value = 750},
+    {text = " Half of Original: " .. 375,value = 375},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 150,value = 150},
+    {text = 200,value = 200},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
   }
 
   --other hint type
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.TravelTimeEarthMars then
     hint = ChoGGi.CheatMenuSettings.TravelTimeEarthMars / r
   end
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
     if type(value) == "number" then
+      local value = choice[1].value * r
       ChoGGi.SetConstsG("TravelTimeEarthMars",value)
       ChoGGi.SetConstsG("TravelTimeMarsEarth",value)
       ChoGGi.SetSavedSetting("TravelTimeEarthMars",value)
@@ -313,16 +313,16 @@ function ChoGGi.SetStorageDepotSize(sType)
   local hintmax = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000"
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 50,value = 50 * r},
-    {text = 100,value = 100 * r},
-    {text = 250,value = 250 * r},
-    {text = 500,value = 500 * r},
-    {text = 1000,value = 1000 * r},
-    {text = 2500,value = 2500 * r,hint = hintmax},
-    {text = 5000,value = 5000 * r,hint = hintmax},
-    {text = 10000,value = 10000 * r,hint = hintmax},
-    {text = 20000,value = 20000 * r,hint = hintmax},
-    {text = 100000,value = 100000 * r,hint = hintmax},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500,hint = hintmax},
+    {text = 5000,value = 5000,hint = hintmax},
+    {text = 10000,value = 10000,hint = hintmax},
+    {text = 20000,value = 20000,hint = hintmax},
+    {text = 100000,value = 100000,hint = hintmax},
   }
 
   local hint = DefaultSetting / r
@@ -331,19 +331,17 @@ function ChoGGi.SetStorageDepotSize(sType)
   end
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if type(value) == "number" then
-
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       --limit amounts so saving with a full load doesn't delete your game
-      if sType == "StorageWasteDepot" and value > 1000000 then
-        ChoGGi.SetSavedSetting(sType,1000000000) --might be safe above a million, but I figured I'd stop somewhere
-      elseif sType == "StorageOtherDepot" and value > 20000 then
-        ChoGGi.SetSavedSetting(sType,20000000)
-      elseif sType == "StorageUniversalDepot" and value > 2500 then
-        ChoGGi.SetSavedSetting(sType,2500000) --can go to 2900, but I got a crash; which may have been something else, but it's only 400 storage
-      else
-        ChoGGi.SetSavedSetting(sType,value)
+      if sType == "StorageWasteDepot" and value > 1000000000 then
+        value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
+      elseif sType == "StorageOtherDepot" and value > 20000000 then
+        value = 20000000
+      elseif sType == "StorageUniversalDepot" and value > 2500000 then
+        value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
       end
+      ChoGGi.SetSavedSetting(sType,value)
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(sType .. ": " ..  choice[1].text,

@@ -21,7 +21,7 @@ Enter or Tilde: Show the console
 F9: Clear the console log
 Number keys to open/close build menu (Shift-*Num for menus above 10)
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it
-Ctrl-Space: Opens placement mode with the last placed object
+Ctrl-Space: Opens placement mode with the last built object
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits)
 Ctrl-Shift-F: Follow Camera (follow an object around)
 Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)

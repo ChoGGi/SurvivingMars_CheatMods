@@ -764,6 +764,9 @@ end
 
 --force drones to pickup from producers even if they have a large carry cap
 function ChoGGi.FuckingDrones(producer)
+  --Come on, Bender. Grab a jack. I told these guys you were cool.
+  --Well, if jacking on will make strangers think I'm cool, I'll do it.
+
   local amount = producer:GetAmountStored()
   if amount > 1000 then
     local drone = FindNearestObject(UICity.labels.Drone,producer.parent)
