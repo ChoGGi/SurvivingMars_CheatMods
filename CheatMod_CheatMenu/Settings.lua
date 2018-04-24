@@ -45,7 +45,6 @@ ChoGGi.Consts = {
   ShowInterfaceInScreenshots = true,
   NumberKeysBuildMenu = true,
 --false
-  DroneFactoryBuildSpeed = false,
   DisableHints = false,
   BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
@@ -58,9 +57,6 @@ ChoGGi.Consts = {
   Building_wonder = false,
   CameraZoomToggle = false,
   FullyAutomatedBuildings = false,
-  GravityColonist = false,
-  GravityDrone = false,
-  GravityRC = false,
   DisableTextureCompression = false,
   ShadowmapSize = false,
   HigherRenderDist = false,
@@ -76,9 +72,6 @@ ChoGGi.Consts = {
   SchoolTrainAll = false,
   ShowAllTraits = false,
   ShowMysteryMsgs = false,
-  SpeedShuttle = false,
-  SpeedDrone = false,
-  CapacityShuttle = false,
   WriteLogs = false,
 --sponsor/commander bonuses
   CommanderInventor = false,
@@ -98,12 +91,6 @@ ChoGGi.Consts = {
   SponsorNewArk = false,
   SponsorRoscosmos = false,
   SponsorParadox = false,
-
---constants:
-  RCTransportStorageCapacity = 30000,
-  StorageUniversalDepot = 30000,
-  StorageOtherDepot = 180000,
-  StorageWasteDepot = 70000,
 --const. (I don't think these have default values in-game anywhere, so I can't get the defaults)
   BreakThroughTechsPerGame = 13,
   ExplorationQueueMaxSize = 10,
@@ -335,6 +322,7 @@ function ChoGGi.Settings_OptionsApply()
   end
 
   --then get the default values for our Consts
+  --[[
   for _,DefaultValue in ipairs(Consts:GetProperties()) do
     for SettingName,_ in pairs(ChoGGi.Consts) do
       if SettingName == DefaultValue.id then
@@ -342,5 +330,39 @@ function ChoGGi.Settings_OptionsApply()
       end
     end
   end
+  --]]
+  for SettingName,_ in pairs(ChoGGi.Consts) do
+    local setting = Consts:GetDefaultPropertyValue(SettingName)
+    if setting then
+      ChoGGi.Consts[SettingName] = setting
+    end
+  end
 
+  --get other defaults not stored in Consts
+  ChoGGi.Consts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
+  ChoGGi.Consts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
+  ChoGGi.Consts.ShuttleHubCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+  ChoGGi.Consts.GravityColonist = 0
+  ChoGGi.Consts.GravityDrone = 0
+  ChoGGi.Consts.GravityRC = 0
+  ChoGGi.Consts.RCTransportStorageCapacity = ChoGGi.GetRCTransportStorageCapacity()
+  --ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+  --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+  ChoGGi.Consts.StorageWasteDepot = 70000 --^ that has 45000 as default...
+  ChoGGi.Consts.StorageOtherDepot = 180000
+  --^ they're all UniversalStorageDepot
+
+  ChoGGi.Consts.CameraZoomToggle = 8000
+  ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
+
+--[[
+local blah = {}
+for _,DefaultValue in ipairs(CargoShuttle:GetProperties()) do
+  table.insert(blah,DefaultValue.id)
+end
+table.sort(blah)
+ex(blah)
+--]]

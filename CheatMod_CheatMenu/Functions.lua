@@ -272,6 +272,25 @@ function ChoGGi.CompareAmounts(iAmtA,iAmtB)
   end
 end
 
+--compares two values, if types are different then makes them both strings
+--[[
+    if sort[a] and sort[b] then
+      return sort[a] < sort[b]
+    end
+    if sort[a] or sort[b] then
+      return sort[a] and true
+    end
+    return CmpLower(a, b)
+--]]
+function ChoGGi.CompareTableNames(a,b,sName)
+  if type(a[sName]) == type(b[sName]) then
+    return a[sName] < b[sName]
+  else
+    return tostring(a[sName]) < tostring(b[sName])
+  end
+end
+
+
 function ChoGGi.WriteLogsEnable()
   --remove old logs
   local logs = "AppData/logs/"
@@ -323,15 +342,6 @@ function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
     local ret = ChoGGi.OrigFunc[SavedName](self,...)
     Msg(sMsg,self)
     return ret
-  end
-end
-
---compares two values, if types are different then makes them both strings
-function ChoGGi.CompareTableNames(a,b,sName)
-  if type(a[sName]) == type(b[sName]) then
-    return a[sName] < b[sName]
-  else
-    return tostring(a[sName]) < tostring(b[sName])
   end
 end
 
@@ -490,10 +500,12 @@ function ChoGGi.SetConstsG(Name,Value)
 end
 
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function ChoGGi.SetSavedSetting(Saved,Value)
-  if ChoGGi.CheatMenuSettings[Saved] == Value then
-    ChoGGi.CheatMenuSettings[Saved] = false
+function ChoGGi.SetSavedSetting(Setting,Value)
+  --if setting is the same as the default then make it false
+  if ChoGGi.Consts[Setting] == Value then
+    ChoGGi.CheatMenuSettings[Setting] = false
   else
-    ChoGGi.CheatMenuSettings[Saved] = Value
+    ChoGGi.CheatMenuSettings[Setting] = Value
   end
+print(ChoGGi.CheatMenuSettings[Setting])
 end

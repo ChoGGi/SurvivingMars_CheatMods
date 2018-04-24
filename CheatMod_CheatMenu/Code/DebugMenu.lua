@@ -12,7 +12,7 @@ ChoGGi.AddAction(
   "[102]Debug/Object Spawner",
   ChoGGi.ObjectSpawner,
   "Ctrl-Shift-S",
-  "Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to select items after spawn.",
+  "Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use SelectionMouseObj():delete() ",
   "add_water.tga"
 )
 

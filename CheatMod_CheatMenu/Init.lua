@@ -33,10 +33,24 @@ dofile(ChoGGi.ModPath .. "Settings.lua")
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.ReadSettings()
 
---TEMP REMOVE ME AFTER NEXT UPDATE (or two)
+--old settings that aren't needed anymore
 ChoGGi.CheatMenuSettings.NewColonistSex = nil
 ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
 ChoGGi.CheatMenuSettings.ShuttleStorage = nil
+ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
+ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
+ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
+ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
+ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
+ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
+ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
+ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
+ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
+ChoGGi.CheatMenuSettings.developer = nil
+ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
+ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
+ChoGGi.CheatMenuSettings.Building_dome_required = nil
+ChoGGi.CheatMenuSettings.Building_is_tall = nil
 ChoGGi.Init_WriteSettings = 1
 
 --function overrides / shortened func names

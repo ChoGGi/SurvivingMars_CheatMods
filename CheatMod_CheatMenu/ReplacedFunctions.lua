@@ -1,3 +1,117 @@
+if ChoGGi.Testing then
+  function OnMsg.ClassesGenerate(classdefs)
+    for name, def in pairs(classdefs) do
+      local properties = def.properties
+      for _, meta in ipairs(properties or empty_table) do
+        if meta.modifiable then
+          local prop = meta.id
+          if def["Get" .. prop] or def["Set" .. prop] then
+            table.insert(ChoGGi.StartupMsgs,"Class " .. name .. "should not have accessor functions for the modifiable property " .. prop)
+          end
+          def["base_" .. prop] = false
+        end
+      end
+    end
+  end
+end
+
+function ChoGGi.OverrideConstructionLimits_Enable()
+  if ChoGGi.OverrideConstructionLimits then
+    return
+  end
+  ChoGGi.OverrideConstructionLimits = true
+
+  --[[
+CityConstruction[UICity] = ConstructionController:new()
+CityGridConstruction[UICity] = GridConstructionController:new()
+CityGridSwitchConstruction[UICity] = GridSwitchConstructionController:new()
+CityTunnelConstruction[UICity] = TunnelConstructionController:new()
+CityUnitController[UICity] = UnitController:new()
+
+IGIModeClasses = {
+construction = ConstructionModeDialog
+demolish = DemolishModeDialog
+electricity_grid = GridConstructionDialog
+electricity_switch = GridSwitchConstructionDialog
+hex_painter = HexPainterModeDialog
+life_support_grid = GridConstructionDialogPipes
+lifesupport_switch = GridSwitchConstructionDialogPipes
+overview = OverviewModeDialog
+selection = SelectionModeDialog
+tunnel_construction = TunnelConstructionDialog
+unit_direction_internal_use_only = UnitDirectionModeDialog
+}
+--]]
+
+  --ignore certain placement limits
+  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+
+    --so we can build without (as many) limits
+    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+    function ConstructionController:UpdateConstructionStatuses(dont_finalize)
+
+      --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
+      ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,"dont_finalize")
+
+      --CityConstruction[UICity].construction_statuses
+      local status = self.construction_statuses
+
+      if self.is_template then
+        local cobj = rawget(self.cursor_obj, true)
+        local tobj = setmetatable({
+          [true] = cobj,
+          ["city"] = UICity
+        }, {
+          __index = self.template_obj
+        })
+        tobj:GatherConstructionStatuses(self.construction_statuses)
+      end
+
+      --remove errors we want to remove
+      local statusNew = {}
+      if #status > 0 then
+        for i = 1, #status do
+          if status[i].type == "warning" then
+            table.insert(statusNew,status[i])
+          --UnevenTerrain < causes issues when placing buildings (martian ground viagra)
+          --ResourceRequired < no point in building an extractor when there's nothing to extract
+          --BlockingObjects < place buildings in each other
+          elseif status[i] == ConstructionStatus.UnevenTerrain then
+            table.insert(statusNew,status[i])
+          end
+        end
+      end
+      --make sure we don't get errors down the line
+      if type(statusNew) == "boolean" then
+        statusNew = {}
+      end
+
+      self.construction_statuses = statusNew
+      status = self.construction_statuses
+
+      if not dont_finalize then
+        self:FinalizeStatusGathering(status)
+      else
+        return status
+      end
+
+    end --ConstructionController:UpdateConstructionStatuses
+
+    --so we can do long spaced tunnels
+    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+    function TunnelConstructionController:UpdateConstructionStatuses()
+      local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
+      --[[
+      if self.placed_obj and not IsCloser2D(self.placed_obj, self.cursor_obj, self.max_range * const.GridSpacing) then
+        table.insert(self.construction_statuses, ConstructionStatus.TooFarFromTunnelEntrance)
+      end
+      --]]
+      self:FinalizeStatusGathering(old_t)
+    end --TunnelConstructionController:UpdateConstructionStatuses
+
+  end --if
+end
+
 function ChoGGi.ForceDronesToEmptyStorage_Enable()
   if ChoGGi.DronesOverride then
     return
@@ -100,7 +214,7 @@ end
     obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
     obj:SetFontStyle("Editor12Bold")
     obj:SetScrollBar(true)
-    --obj:SetScrollAutohide(true)
+    obj:SetScrollAutohide(true)
 
     self:InitChildrenSizing()
     --have to size children before doing these:
@@ -112,6 +226,8 @@ end --OnMsg
 
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
+
+  ChoGGi.OverrideConstructionLimits_Enable()
 
   local ca = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
   if ca and ca > 10 then
@@ -294,28 +410,6 @@ end
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
 
---[[
-CityConstruction[UICity] = ConstructionController:new()
-CityGridConstruction[UICity] = GridConstructionController:new()
-CityGridSwitchConstruction[UICity] = GridSwitchConstructionController:new()
-CityTunnelConstruction[UICity] = TunnelConstructionController:new()
-CityUnitController[UICity] = UnitController:new()
-
-IGIModeClasses = {
-construction = ConstructionModeDialog
-demolish = DemolishModeDialog
-electricity_grid = GridConstructionDialog
-electricity_switch = GridSwitchConstructionDialog
-hex_painter = HexPainterModeDialog
-life_support_grid = GridConstructionDialogPipes
-lifesupport_switch = GridSwitchConstructionDialogPipes
-overview = OverviewModeDialog
-selection = SelectionModeDialog
-tunnel_construction = TunnelConstructionDialog
-unit_direction_internal_use_only = UnitDirectionModeDialog
-}
---]]
-
   --SetOrientation of placed objects
   ChoGGi.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
@@ -330,74 +424,6 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 
     return cursor_obj
   end
-
-  --ignore certain placement limits
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-
-    --so we can build without (as many) limits
-    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
-    function ConstructionController:UpdateConstructionStatuses(dont_finalize)
-
-      --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
-      ChoGGi.OrigFunc.CC_UpdateConstructionStatuses(self,"dont_finalize")
-
-      --CityConstruction[UICity].construction_statuses
-      local status = self.construction_statuses
-
-      if self.is_template then
-        local cobj = rawget(self.cursor_obj, true)
-        local tobj = setmetatable({
-          [true] = cobj,
-          ["city"] = UICity
-        }, {
-          __index = self.template_obj
-        })
-        tobj:GatherConstructionStatuses(self.construction_statuses)
-      end
-
-      --remove errors we want to remove
-      local statusNew = {}
-      if #status > 0 then
-        for i = 1, #status do
-          if status[i].type == "warning" then
-            table.insert(statusNew,status[i])
-          --UnevenTerrain < causes issues when placing buildings (martian ground viagra)
-          --ResourceRequired < no point in building an extractor when there's nothing to extract
-          --BlockingObjects < place buildings in each other
-          elseif status[i] == ConstructionStatus.UnevenTerrain then
-            table.insert(statusNew,status[i])
-          end
-        end
-      end
-      --make sure we don't get errors down the line
-      if type(statusNew) == "boolean" then
-        statusNew = {}
-      end
-
-      self.construction_statuses = statusNew
-      status = self.construction_statuses
-
-      if not dont_finalize then
-        self:FinalizeStatusGathering(status)
-      else
-        return status
-      end
-
-    end --ConstructionController:UpdateConstructionStatuses
-
-    --so we can do long spaced tunnels
-    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-    function TunnelConstructionController:UpdateConstructionStatuses()
-      local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
-      --[[
-      if self.placed_obj and not IsCloser2D(self.placed_obj, self.cursor_obj, self.max_range * const.GridSpacing) then
-        table.insert(self.construction_statuses, ConstructionStatus.TooFarFromTunnelEntrance)
-      end
-      --]]
-      self:FinalizeStatusGathering(old_t)
-    end --TunnelConstructionController:UpdateConstructionStatuses
-
-  end --if
 
   --was giving a nil error in log, I assume devs'll fix it one day (changed it to check if amount is a number/point/box...)
   ChoGGi.OrigFunc.RequiresMaintenance_AddDust = RequiresMaintenance.AddDust

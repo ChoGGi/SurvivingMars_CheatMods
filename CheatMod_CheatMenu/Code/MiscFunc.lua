@@ -100,7 +100,7 @@ end
 
 function ChoGGi.HigherRenderDist_Toggle()
 
-  local DefaultSetting = 120
+  local DefaultSetting = ChoGGi.Consts.HigherRenderDist
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 240,value = 240,hint = "Minimal FPS hit on large base"},
@@ -282,7 +282,7 @@ function ChoGGi.BorderScrollingArea_Toggle()
 end
 
 function ChoGGi.CameraZoom_Toggle()
-  local DefaultSetting = 8000
+  local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 16000,value = 16000},

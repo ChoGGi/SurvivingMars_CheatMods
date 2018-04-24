@@ -117,11 +117,11 @@ function ChoGGi.ShowScanAndMapOptions()
         scan()
       end
     end
-
     ChoGGi.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
     ChoGGi.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
     ChoGGi.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
     ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
      "Scanner","UI/Icons/Notifications/scan.tga",true

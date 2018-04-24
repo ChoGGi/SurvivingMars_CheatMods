@@ -306,8 +306,18 @@ end
 function ChoGGi.RemoveBuildingLimits_Toggle()
   ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
 
+  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+    ChoGGi.OverrideConstructionLimits_Enable()
+  else
+    ChoGGi.OverrideConstructionLimits = nil
+    ConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.CC_UpdateConstructionStatuses
+    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.TC_UpdateConstructionStatuses
+    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = nil
+    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = nil
+  end
+
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there (restart to toggle).",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there.",
     "Buildings",
     "UI/Icons/Upgrades/zero_space_04.tga"
   )

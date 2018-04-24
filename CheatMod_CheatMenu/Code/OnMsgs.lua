@@ -508,7 +508,6 @@ end
 --]]
 
 function OnMsg.NewDay()
-print("NewDay")
 
   --clean up my old notifications
   local shown = g_ShownOnScreenNotifications

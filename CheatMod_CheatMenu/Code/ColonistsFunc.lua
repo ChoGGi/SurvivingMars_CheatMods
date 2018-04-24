@@ -1,7 +1,7 @@
 
 function ChoGGi.SetGravityColonists()
   --retrieve default
-  local DefaultSetting = 0
+  local DefaultSetting = ChoGGi.Consts.GravityColonist
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},

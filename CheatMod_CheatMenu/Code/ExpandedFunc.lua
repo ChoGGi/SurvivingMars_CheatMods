@@ -264,7 +264,6 @@ function ChoGGi.SetVisitorCapacity()
   end
   local sel = SelectedObj
   local DefaultSetting = sel.base_max_visitors
-
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
@@ -308,11 +307,11 @@ function ChoGGi.SetVisitorCapacity()
 end
 
 function ChoGGi.SetStorageDepotSize(sType)
-  local DefaultSetting = ChoGGi.Consts[sType]
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts[sType] / r
   local hintmax = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000"
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -325,13 +324,14 @@ function ChoGGi.SetStorageDepotSize(sType)
     {text = 100000,value = 100000,hint = hintmax},
   }
 
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings[sType] then
     hint = ChoGGi.CheatMenuSettings[sType] / r
   end
 
   local CallBackFunc = function(choice)
     if type(choice[1].value) == "number" then
+
       local value = choice[1].value * r
       --limit amounts so saving with a full load doesn't delete your game
       if sType == "StorageWasteDepot" and value > 1000000000 then

@@ -167,7 +167,8 @@ ChoGGi.AddAction(nil,
       NewObj[Key] = Value
     end
     --]]
-    NewObj:SetPos(point(GetTerrainCursor():x(),GetTerrainCursor():y()))
+    --NewObj:SetPos(point(GetTerrainCursor():x(),GetTerrainCursor():y()))
+    NewObj:SetPos(GetTerrainCursor())
     --if it's a deposit then make max_amount random and add
     --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
     --if ObjName:find("SubsurfaceDeposit") then

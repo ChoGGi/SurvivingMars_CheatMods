@@ -21,10 +21,10 @@ function ChoGGi.AddOrbitalProbes()
 end
 
 function ChoGGi.SetFoodPerRocketPassenger()
-  local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -35,7 +35,7 @@ function ChoGGi.SetFoodPerRocketPassenger()
     {text = 10000,value = 10000},
   }
 
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.FoodPerRocketPassenger then
     hint = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / r
   end

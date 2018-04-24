@@ -19,12 +19,7 @@ function ChoGGi.FillSelectedDroneHubWithDrones(Bool)
 end
 
 function ChoGGi.SetDroneFactoryBuildSpeed()
-  local DefaultSetting
-  for _,Prop in ipairs(DroneFactory:GetProperties()) do
-    if Prop.id == "performance" then
-      DefaultSetting = Prop.default
-    end
-  end
+  local DefaultSetting = ChoGGi.Consts.DroneFactoryBuildSpeed
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -170,7 +165,7 @@ function ChoGGi.SetDroneCarryAmount()
     {text = 100,value = 100,hint = hinttoolarge},
     {text = 250,value = 250,hint = hinttoolarge},
     {text = 500,value = 500,hint = hinttoolarge},
-    {text = 1000,value = 1000,hint = hinttoolarge .. "\n\nsomewhere above 1000 will delete the save"},
+    {text = 1000,value = 1000,hint = hinttoolarge .. "\n\nsomewhere above 1000 will delete the save (when it's full)"},
   }
 
   local hint = DefaultSetting
@@ -274,20 +269,20 @@ end
 --somewhere above 2000 it will fuck the save
 function ChoGGi.SetRCTransportStorageCapacity()
   --retrieve default
-  local DefaultSetting = ChoGGi.GetRCTransportStorageCapacity()
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.GetRCTransportStorageCapacity() / r
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
     {text = 75,value = 75},
     {text = 100,value = 100},
     {text = 250,value = 250},
     {text = 500,value = 500},
     {text = 1000,value = 1000},
-    {text = 2000,value = 2000,hint = "somewhere above 2000 will delete the save"},
+    {text = 2000,value = 2000,hint = "somewhere above 2000 will delete the save (when it's full)"},
   }
 
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
     hint = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity / r
   end
@@ -296,8 +291,8 @@ function ChoGGi.SetRCTransportStorageCapacity()
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
       --somewhere above 2000 fucks the save
-      if value > 2000 then
-        value = 2000
+      if value > 2000000 then
+        value = 2000000
       end
       --loop through and set all
       for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
@@ -315,26 +310,22 @@ function ChoGGi.SetRCTransportStorageCapacity()
 end
 
 function ChoGGi.SetShuttleCapacity()
-  --retrieve default
-  local DefaultSetting
-  for _,Value in ipairs(CargoShuttle:GetProperties()) do
-    if Value.id == "max_shared_storage" then
-      DefaultSetting = Value.default
-    end
-  end
-
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.StorageShuttle / r
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
     {text = 100,value = 100},
     {text = 250,value = 250},
     {text = 500,value = 500},
-    {text = 1000,value = 1000,hint = "above 1000 may delete the save"},
+    {text = 1000,value = 1000,hint = "above 1000 may delete the save (when it's full)"},
   }
 
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.StorageShuttle then
     hint = ChoGGi.CheatMenuSettings.StorageShuttle / r
   end
@@ -342,14 +333,16 @@ function ChoGGi.SetShuttleCapacity()
   local CallBackFunc = function(choice)
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
-      --not tested but I assume too much = dead save as well
-      if value > 1000 then
-        value = 1000
+      --not tested but I assume too much = dead save as well (like rc and transport)
+      if value > 1000000 then
+        value = 1000000
       end
+
       --loop through and set all shuttles
       for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
         object.max_shared_storage = value
       end
+
       ChoGGi.SetSavedSetting("StorageShuttle",value)
 
       ChoGGi.WriteSettings()
@@ -363,15 +356,10 @@ end
 
 function ChoGGi.SetShuttleSpeed()
   --retrieve default
-  local DefaultSetting
-  for _,Value in ipairs(CargoShuttle:GetProperties()) do
-    if Value.id == "max_speed" then
-      DefaultSetting = Value.default
-    end
-  end
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.SpeedShuttle / r
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -385,7 +373,7 @@ function ChoGGi.SetShuttleSpeed()
     {text = 100000,value = 100000},
   }
 
-  local hint = DefaultSetting / r
+  local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.SpeedShuttle then
     hint = ChoGGi.CheatMenuSettings.SpeedShuttle / r
   end
@@ -410,12 +398,7 @@ end
 
 function ChoGGi.SetShuttleHubCapacity()
   --retrieve default
-  local DefaultSetting
-  for _,Value in ipairs(ShuttleHub:GetProperties()) do
-    if Value.id == "max_shuttles" then
-      DefaultSetting = Value.default
-    end
-  end
+  local DefaultSetting = ChoGGi.Consts.ShuttleHubCapacity
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -455,7 +438,7 @@ end
 
 function ChoGGi.SetGravityRC()
   --retrieve default
-  local DefaultSetting = 0
+  local DefaultSetting = ChoGGi.Consts.GravityRC
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -498,7 +481,7 @@ end
 
 function ChoGGi.SetGravityDrones()
   --retrieve default
-  local DefaultSetting = 0
+  local DefaultSetting = ChoGGi.Consts.GravityDrone
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},

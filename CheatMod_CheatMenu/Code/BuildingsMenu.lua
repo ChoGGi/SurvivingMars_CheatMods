@@ -222,7 +222,7 @@ function OnMsg.Resume()
     nil,
     function()
       local des = ChoGGi.CheatMenuSettings.RemoveBuildingLimits and "(Enabled)" or "(Disabled)"
-      return des .. " Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).\nRestart to toggle."
+      return des .. " Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes)."
     end,
     "toggle_post.tga"
   )

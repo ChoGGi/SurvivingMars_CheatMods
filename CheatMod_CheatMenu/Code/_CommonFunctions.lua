@@ -170,8 +170,11 @@ end
 
 --toggle working status
 function ChoGGi.ToggleWorking(building)
-  building:ToggleWorking()
-  building:ToggleWorking()
+  CreateRealTimeThread(function()
+    building:ToggleWorking()
+    Sleep(5)
+    building:ToggleWorking()
+  end)
 end
 
 function ChoGGi.SetCameraSettings()
