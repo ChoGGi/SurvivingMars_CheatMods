@@ -336,8 +336,7 @@ function ChoGGi.Settings_OptionsApply()
   ChoGGi.Consts.GravityColonist = 0
   ChoGGi.Consts.GravityDrone = 0
   ChoGGi.Consts.GravityRC = 0
-  ChoGGi.Consts.RCTransportStorageCapacity = ChoGGi.GetRCTransportStorageCapacity()
-  --ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
   ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
   --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
   ChoGGi.Consts.StorageWasteDepot = 70000 --^ that has 45000 as default...

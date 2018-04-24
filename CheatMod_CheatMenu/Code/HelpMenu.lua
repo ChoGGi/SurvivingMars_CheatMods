@@ -31,6 +31,34 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
+    "[999]Help/[999]Reset ECM Settings",
+    function()
+      local file = ChoGGi.SettingsFile
+      local old = file .. ".old"
+
+      local ResetSettings = function()
+        ChoGGi.ResetSettings = true
+
+        ThreadLockKey(old)
+        AsyncCopyFile(file,old)
+        ThreadUnlockKey(old)
+
+        ThreadLockKey(file)
+        AsyncFileDelete(ChoGGi.SettingsFile)
+        ThreadUnlockKey(file)
+
+        ChoGGi.MsgPopup("Restart to take effect.","Reset!","UI/Icons/Sections/attention.tga")
+
+      end
+
+      ChoGGi.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old,ResetSettings,"Reset!")
+    end,
+    nil,
+    "Reset all settings to default (restart to enable).",
+    "ToggleEnvMap.tga"
+  )
+
+  ChoGGi.AddAction(
     "[999]Help/[2]Screenshot/Screenshot Upsampled",
     function()
       CreateRealTimeThread(function()

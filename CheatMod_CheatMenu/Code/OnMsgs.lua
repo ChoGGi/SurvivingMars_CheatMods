@@ -555,10 +555,18 @@ function OnMsg.MysteryEnd(Outcome)
 end
 
 function OnMsg.ApplicationQuit()
-  --save any unsaved settings on exit
-  if not ChoGGi.Testing then
-    ChoGGi.WriteSettings()
+
+  --defaults goddamnit
+  if ChoGGi.ResetSettings then
+    return
   end
+
+  --save any unsaved settings on exit
+  if ChoGGi.Testing then
+    return
+  end
+
+  ChoGGi.WriteSettings()
 end
 
 --custom OnMsgs, these aren't part of the base game, so without this mod they don't work
