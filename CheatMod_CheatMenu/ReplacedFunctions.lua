@@ -411,7 +411,9 @@ end
   end
 
   --SetOrientation of placed objects
-  ChoGGi.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
+  if not ChoGGi.OrigFunc.CC_ChangeCursorObj then
+    ChoGGi.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
+  end
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
 
     local cursor_obj = ChoGGi.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
@@ -419,7 +421,9 @@ end
     --set orientation to last object if same entity (should I just do it for everything)
     --if ChoGGi.LastPlacedObject and ChoGGi.LastPlacedObject.entity == cursor_obj.entity then
     if ChoGGi.LastPlacedObject then
-      cursor_obj:SetOrientation(ChoGGi.LastPlacedObject:GetOrientation())
+      pcall(function()
+        cursor_obj:SetOrientation(ChoGGi.LastPlacedObject:GetOrientation())
+      end)
     end
 
     return cursor_obj

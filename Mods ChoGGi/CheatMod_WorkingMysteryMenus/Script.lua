@@ -37,7 +37,7 @@ function ChoGGiX.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarD
     Menu = "/" .. tostring(Menu)
   end
   ChoGGiX.UserAddActions({
-    ["ChoGGi_" .. AsyncRand()] = {
+    ["ChoGGiX_" .. AsyncRand()] = {
       menu = Menu,
       action = Action,
       key = Key,
@@ -110,17 +110,7 @@ end
 
 --for mystery menu items
 ChoGGiX.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
-ChoGGiX.MysteryDifficulty = {
-    BlackCubeMystery = 1164, --The Power of Three (Easy)
-    DiggersMystery = 1170, --The Dredgers (Normal)
-    MirrorSphereMystery = 1184, --Spheres (Normal)
-    DreamMystery = 1180, --Inner Light (Easy)
-    AIUprisingMystery = 1162, --Artificial Intelligence (Normal)
-    MarsgateMystery = 8063, --Marsgate (Hard)
-    WorldWar3 = 8072, --The Last War (Hard)
-    TheMarsBug = 8067, --Wildfire (Hard)
-    UnitedEarthMystery = 8070 --Beyond Earth (Easy)
-  }
+ChoGGiX.MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070}
 
 function OnMsg.ClassesBuilt()
 
@@ -138,6 +128,7 @@ function OnMsg.ClassesBuilt()
   end)
 
   --instant start
+  local maytake = "Starts mystery instantly (may take up to 1 sol)."
   ClassDescendantsList("MysteryBase", function(class)
     ChoGGiX.AddAction(
       "Cheats/[05]Start Mystery/" .. g_Classes[class].scenario_name .. " " .. _InternalTranslate(T({ChoGGiX.MysteryDifficulty[class]})) .. ": Instant" or "Missing Name: Instant",
@@ -145,13 +136,14 @@ function OnMsg.ClassesBuilt()
         return ChoGGiX.StartMystery(class,true)
       end,
       nil,
-      _InternalTranslate(T({ChoGGiX.MysteryDescription[class]})) .. "\n\nStarts mystery instantly (may take up to 1 sol)." or "Missing Description: Starts mystery instantly (may take up to 1 sol).",
+      _InternalTranslate(T({ChoGGiX.MysteryDescription[class]})) .. "\n\n" .. maytake or "Missing Description: " .. maytake,
       "SelectionToTemplates.tga"
     )
   end)
 
 end --OnMsg
 
+--remove broken menu items
 function OnMsg.LoadingScreenPreClose()
 
   UserActions.RemoveActions({

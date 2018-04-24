@@ -5,17 +5,12 @@ ChoGGi.NegativeTraits = {"Alcoholic","Glutton","Lazy","Refugee","ChronicConditio
 ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
 --for mystery menu items
 ChoGGi.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
-ChoGGi.MysteryDifficulty = {
-    BlackCubeMystery = 1164, --The Power of Three (Easy)
-    DiggersMystery = 1170, --The Dredgers (Normal)
-    MirrorSphereMystery = 1184, --Spheres (Normal)
-    DreamMystery = 1180, --Inner Light (Easy)
-    AIUprisingMystery = 1162, --Artificial Intelligence (Normal)
-    MarsgateMystery = 8063, --Marsgate (Hard)
-    WorldWar3 = 8072, --The Last War (Hard)
-    TheMarsBug = 8067, --Wildfire (Hard)
-    UnitedEarthMystery = 8070 --Beyond Earth (Easy)
-  }
+ChoGGi.MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070}
+ChoGGi.ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"}
+ChoGGi.ColonistGenders = {"OtherGender","Android","Clone","Male","Female"}
+ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
+--display names only! (stored as numbers, not names like the rest; which is why i guessed)
+ChoGGi.ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian"}
 --Some names need to be fixed when doing construction placement
 ChoGGi.ConstructionNamesListFix = {
   RCRover = "RCRoverBuilding",
@@ -24,11 +19,6 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
-ChoGGi.ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"}
-ChoGGi.ColonistGenders = {"OtherGender","Android","Clone","Male","Female"}
-ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
---display names only!
-ChoGGi.ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian"}
 
 --stores defaults and constants
 ChoGGi.Consts = {
