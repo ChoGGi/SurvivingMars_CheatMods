@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_CheatMenu",
   --"steam_id","",
 	"author", "ChoGGi (thanks to chippydip, therealshibe, BoehserOnkel, Fling)",
-	"version", 30,
+	"version", 32,
   --"lua_revision","",
 	"code", {
 		"Init.lua",

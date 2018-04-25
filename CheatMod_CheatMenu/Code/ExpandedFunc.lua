@@ -352,6 +352,79 @@ function ChoGGi.SetStorageDepotSize(sType)
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hintmax)
 end
 
+---------all the fixes funcs
+
+function ChoGGi.AttachBuildingsToNearestWorkingDome()
+  for _,building in ipairs(UICity.labels.Residence or empty_table) do
+    ChoGGi.AttachToNearestDome(building)
+  end
+  for _,building in ipairs(UICity.labels.Workplace or empty_table) do
+    ChoGGi.AttachToNearestDome(building)
+  end
+  ChoGGi.MsgPopup("Buildings attached.",
+    "Buildings","UI/Icons/Sections/basic.tga"
+  )
+end
+
+function ChoGGi.ColonistsFixBlackCube()
+  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+    if colonist.entity:find("Child",1,true) then
+      colonist.specialist = "none"
+
+      colonist.traits.Youth = nil
+      colonist.traits.Adult = nil
+      colonist.traits["Middle Aged"] = nil
+      colonist.traits.Senior = nil
+      colonist.traits.Retiree = nil
+
+      colonist.traits.Child = true
+      colonist.age_trait = "Child"
+      colonist.age = 0
+      colonist:ChooseEntity()
+      colonist:SetResidence(false)
+      colonist:UpdateResidence()
+    end
+  end
+  ChoGGi.MsgPopup("Fixed black cubes",
+   "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
+  )
+end
+
+function ChoGGi.RepairBrokenShit(BrokenShit)
+  local JustInCase = 0
+  while #BrokenShit > 0 do
+
+    for i = 1, #BrokenShit do
+      pcall(function()
+        BrokenShit[i]:Repair()
+      end)
+    end
+
+    if JustInCase == 10000 then
+      break
+    end
+    JustInCase = JustInCase + 1
+
+  end
+end
+
+function ChoGGi.CablesAndPipesRepair()
+  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
+  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.water)
+end
+
+function ChoGGi.CablesAndPipesInstant_Toggle()
+  ChoGGi.SetConstsG("InstantCables",ChoGGi.ToggleBoolNum(Consts.InstantCables))
+  ChoGGi.SetConstsG("InstantPipes",ChoGGi.ToggleBoolNum(Consts.InstantPipes))
+
+  ChoGGi.SetSavedSetting("InstantCables",Consts.InstantCables)
+  ChoGGi.SetSavedSetting("InstantPipes",Consts.InstantPipes)
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
+   "Cables & Pipes","UI/Icons/Notifications/timer.tga"
+  )
+end
+
 --TESTING
 --[[
 function ChoGGi.RCRoverRadius(Bool)

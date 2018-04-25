@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"tags", "Cheats",
 	"id", "ChoGGi_WorkingMysteryMenus",
 	"author", "ChoGGi",
-	"version", 2,
+	"version", 3,
 	"code", {
 		"Script.lua",
 	},

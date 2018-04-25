@@ -40,7 +40,6 @@ ChoGGi.Consts = {
   SanatoriumSchoolShowAll = false,
   AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,
-  BorderScrollingToggle = false,
   Building_dome_spot = false,
   Building_hide_from_build_menu = false,
   Building_instant_build = false,

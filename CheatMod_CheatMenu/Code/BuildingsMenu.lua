@@ -2,13 +2,6 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
-    "Expanded CM/Buildings/Attach Buildings To Nearest Working Dome",
-    ChoGGi.AttachBuildingsToNearestWorkingDome,
-    nil,
-    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
-    "ReportBug.tga"
-  )
-  ChoGGi.AddAction(
     "Expanded CM/Buildings/Farm Shifts All On",
     ChoGGi.FarmShiftsAllOn,
     nil,
@@ -152,14 +145,6 @@ function OnMsg.Resume()
       return des .. " Cables & pipes will never break."
     end,
     "DisableAOMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Buildings/Cables & Pipes: Instant Repair",
-    ChoGGi.CablesAndPipesRepair,
-    nil,
-    "Instantly repair all broken pipes and cables.",
-    "ReportBug.tga"
   )
 
   ChoGGi.AddAction(

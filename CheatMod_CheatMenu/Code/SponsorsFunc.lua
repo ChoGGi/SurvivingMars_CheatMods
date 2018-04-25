@@ -140,3 +140,49 @@ function ChoGGi.SetSponsorBonus(sType)
     "Sponsor","UI/Icons/Sections/spaceship.tga"
   )
 end
+
+function ChoGGi.ChangeGameLogo()
+  local ItemList = {}
+  for _,Value in ipairs(DataInstances.MissionLogo) do
+    if Value.name ~= "random" then
+      table.insert(ItemList,{
+        text = _InternalTranslate(Value.display_name),
+        value = Value.name,
+      })
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    ChoGGi.SetNewLogo(choice[1].value,choice[1].text)
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo")
+end
+
+function ChoGGi.SetNewLogo(sName,sDisplay)
+  --any newly built/landed uses this logo
+  g_CurrentMissionParams.idMissionLogo = sName
+
+  --loop through landed rockets and change logo
+  for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    if tempLogo then
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
+    end
+  end
+  --same for any buildings that use the logo
+  for _,object in ipairs(UICity.labels.Building or empty_table) do
+    local tempLogo = object:GetAttach("Logo")
+    if tempLogo then
+      tempLogo:ChangeEntity(
+        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
+      )
+    end
+  end
+
+  ChoGGi.MsgPopup("Logo: " .. sDisplay,
+    "Logo","UI/Icons/Sections/spaceship.tga"
+  )
+end
+

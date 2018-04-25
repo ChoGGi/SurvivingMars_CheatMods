@@ -1,19 +1,4 @@
---[[
-find out how to check the map, so we can delay loading on a new game,
-or figure out what causes that black screen for only some people
-loaded game:
-Map changed to ""
-new game:
-Map changed to "PreGame"
-
-win10.0.16299 user:
-NVIDIA GeForce GTX 770 (Feature Level: 11.0)
-Intel(R) Core(TM) i5-4690K CPU @ 3.50GHz
-Slackware64 user:
-Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz
-AMD CAPE VERDE (DRM 2.50.0 / 4.14.23, LLVM 5.0.1)
---]]
-
+--keep everything stored in
 ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   ModPath = "AppData/Mods/CheatMod_CheatMenu/",
@@ -32,26 +17,6 @@ end
 dofile(ChoGGi.ModPath .. "Settings.lua")
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.ReadSettings()
-
---old settings that aren't needed anymore
-ChoGGi.CheatMenuSettings.NewColonistSex = nil
-ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
-ChoGGi.CheatMenuSettings.ShuttleStorage = nil
-ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
-ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
-ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
-ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
-ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
-ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
-ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
-ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
-ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
-ChoGGi.CheatMenuSettings.developer = nil
-ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
-ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
-ChoGGi.CheatMenuSettings.Building_dome_required = nil
-ChoGGi.CheatMenuSettings.Building_is_tall = nil
-ChoGGi.Init_WriteSettings = 1
 
 --function overrides / shortened func names
 dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")

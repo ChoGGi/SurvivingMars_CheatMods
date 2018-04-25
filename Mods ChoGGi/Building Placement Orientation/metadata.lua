@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"tags", "Building",
 	"id", "ChoGGi_BuildingPlacementOrientation",
 	"author", "ChoGGi",
-	"version", 1,
+	"version", 3,
 	"code", {
 		"Script.lua",
 	},

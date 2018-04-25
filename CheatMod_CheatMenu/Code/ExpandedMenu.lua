@@ -122,6 +122,32 @@ function OnMsg.Resume()
     "ToggleTerrainHeight.tga"
   )
 
+---------all the fixes
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Fix Black Cube Colonists",
+    ChoGGi.ColonistsFixBlackCube,
+    nil,
+    "If any colonists are black cubes click this.",
+    "ReportBug.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome",
+    ChoGGi.AttachBuildingsToNearestWorkingDome,
+    nil,
+    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
+    "ReportBug.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Cables & Pipes: Instant Repair",
+    ChoGGi.CablesAndPipesRepair,
+    nil,
+    "Instantly repair all broken pipes and cables.",
+    "DisableAOMaps.tga"
+  )
+
   --[[
   not working
 

@@ -2,27 +2,27 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Instant Colony Approval",
+    "Expanded CM/[999]Misc/Instant Colony Approval",
     ChoGGi.InstantColonyApproval,
     nil,
-    "Make your colony instantly approved.",
+    "Make your colony instantly approved (can be called before you summon your first victims).",
     "AlignSel.tga"
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Shadow Map",
+    "Expanded CM/[999]Misc/[2]Render/Shadow Map",
     ChoGGi.SetShadowmapSize,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
-      return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows), the menu options max out at 4096."
+      return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096."
     end,
     "DisableEyeSpec.tga"
   )
 
   --------------------
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[2]Render/Disable Texture Compression",
+    "Expanded CM/[999]Misc/[2]Render/Disable Texture Compression",
     ChoGGi.DisableTextureCompression_Toggle,
     nil,
     function()
@@ -33,7 +33,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[2]Render/Higher Render Distance",
+    "Expanded CM/[999]Misc/[2]Render/Higher Render Distance",
     ChoGGi.HigherRenderDist_Toggle,
     nil,
     function()
@@ -44,7 +44,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[2]Render/Higher Shadow Distance",
+    "Expanded CM/[999]Misc/[2]Render/Higher Shadow Distance",
     ChoGGi.HigherShadowDist_Toggle,
     nil,
     function()
@@ -56,7 +56,7 @@ function OnMsg.Resume()
 
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Toggle Free Camera",
+    "Expanded CM/[999]Misc/[1]Camera/Toggle Free Camera",
     ChoGGi.CameraFree_Toggle,
     "Shift-C",
     "I believe I can fly.",
@@ -64,7 +64,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Toggle Follow Camera",
+    "Expanded CM/[999]Misc/[1]Camera/Toggle Follow Camera",
     ChoGGi.CameraFollow_Toggle,
     "Ctrl-Shift-F",
     "Select (or mouse over) an object to follow.",
@@ -72,7 +72,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Toggle Cursor",
+    "Expanded CM/[999]Misc/[1]Camera/Toggle Cursor",
     ChoGGi.CursorVisible_Toggle,
     "Ctrl-Alt-F",
     "Toggle between moving camera and selecting objects.",
@@ -80,29 +80,18 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Border Scrolling",
-    ChoGGi.BorderScrolling_Toggle,
+    "Expanded CM/[999]Misc/[1]Camera/Border Scrolling",
+    ChoGGi.SetBorderScrolling,
     nil,
     function()
       local des = ChoGGi.CheatMenuSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
-      return des .. " Disable scrolling when mouse is near borders."
+      return des .. " Set size of activation for mouse border scrolling."
     end,
     "CameraToggle.tga"
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Border Scrolling Area",
-    ChoGGi.BorderScrollingArea_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.CheatMenuSettings.BorderScrollingArea and "(Enabled)" or "(Disabled)"
-      return des .. " Minimize activation area for mouse scrolling, so menus are less annoying to use."
-    end,
-    "CameraToggle.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Misc/[1]Camera/Zoom Distance",
+    "Expanded CM/[999]Misc/[1]Camera/Zoom Distance",
     ChoGGi.CameraZoom_Toggle,
     nil,
     function()
@@ -113,7 +102,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[-1]Infopanel Cheats",
+    "Expanded CM/[999]Misc/[-1]Infopanel Cheats",
     ChoGGi.InfopanelCheats_Toggle,
     nil,
     function()
@@ -124,7 +113,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/[-1]Infopanel Cheats Cleanup",
+    "Expanded CM/[999]Misc/[-1]Infopanel Cheats Cleanup",
     ChoGGi.InfopanelCheatsCleanup_Toggle,
     nil,
     function()
@@ -135,7 +124,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Pipes Pillars Spacing",
+    "Expanded CM/[999]Misc/Pipes Pillars Spacing",
     ChoGGi.PipesPillarsSpacing_Toggle,
     nil,
     function()
@@ -151,7 +140,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Show All Traits",
+    "Expanded CM/[999]Misc/Show All Traits",
     ChoGGi.ShowAllTraits_Toggle,
     nil,
     function()
@@ -162,23 +151,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Research Queue Larger",
-    ChoGGi.ResearchQueueLarger_Toggle,
-    nil,
-    function()
-      local des
-      if const.ResearchQueueSize == 25 then
-        des = "(Enabled)"
-      else
-        des = "(Disabled)"
-      end
-      return des .. " Enable up to 25 items in queue."
-    end,
-    "ViewArea.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Misc/Scanner Queue Larger",
+    "Expanded CM/[999]Misc/Scanner Queue Larger",
     ChoGGi.ScannerQueueLarger_Toggle,
     nil,
     function()
@@ -194,18 +167,11 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Misc/Game Speed",
+    "Expanded CM/[999]Misc/Game Speed",
     ChoGGi.SetGameSpeed,
     nil,
     "Change the game speed (only for medium/fast, normal is normal).",
     "SelectionToTemplates.tga"
   )
 
-  ChoGGi.AddAction(
-    "Expanded CM/Misc/Change Logo",
-    ChoGGi.ChangeGameLogo,
-    nil,
-    "Change the logo for anything that uses the logo.",
-    "ViewArea.tga"
-  )
 end

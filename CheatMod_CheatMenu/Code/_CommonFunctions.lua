@@ -180,14 +180,11 @@ end
 function ChoGGi.SetCameraSettings()
 --cameraRTS.GetProperties(1)
 
-  --reduce ScrollBorder to the smallest we can (1 or 2 = can't scroll down)
+  --size of activation area for border scrolling
   if ChoGGi.CheatMenuSettings.BorderScrollingArea then
-    cameraRTS.SetProperties(1,{ScrollBorder = 3})
-  --disable border scrolling
-  elseif ChoGGi.CheatMenuSettings.BorderScrollingToggle then
-    cameraRTS.SetProperties(1,{ScrollBorder = 0})
+    cameraRTS.SetProperties(1,{ScrollBorder = ChoGGi.CheatMenuSettings.BorderScrollingArea})
   else
-  --default
+    --default
     cameraRTS.SetProperties(1,{ScrollBorder = 5})
   end
 
@@ -207,6 +204,7 @@ function ChoGGi.SetCameraSettings()
       camera.SetFovX(7745)
     end
   else
+    --default
     cameraRTS.SetZoomLimits(400,8000)
   end
 
@@ -260,6 +258,26 @@ function ChoGGi.RemoveOldFiles()
     AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
   end
   AsyncFileDelete(ChoGGi.ModPath .. "libs")
+
+  --and old settings that aren't used anymore
+  ChoGGi.CheatMenuSettings.NewColonistSex = nil
+  ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
+  ChoGGi.CheatMenuSettings.ShuttleStorage = nil
+  ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
+  ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
+  ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
+  ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
+  ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
+  ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
+  ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
+  ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
+  ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
+  ChoGGi.CheatMenuSettings.developer = nil
+  ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
+  ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
+  ChoGGi.CheatMenuSettings.Building_dome_required = nil
+  ChoGGi.CheatMenuSettings.Building_is_tall = nil
+  ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
 end
 
 function ChoGGi.ShowBuildMenu(iWhich)
@@ -779,11 +797,153 @@ function ChoGGi.FuckingDrones(producer)
   end
 end
 
---creates a list for use with ObjectManipulator
-function ChoGGi.CreatePropList(Object)
-  local List
 
-  return List
+function ChoGGi.CreateProp(o)
+  local self = ChoGGi.ObjectManipulator_Dlg
+  local ShowPoint = function()
+    if IsValid(o) then
+      ShowMe(o)
+    end
+  end
+
+  if type(o) == "function" then
+    local debug_info = debug.getinfo(o, "Sn")
+    return self:HyperLink(ShowPoint) .. tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
+  end
+
+  if IsValid(o) then
+    return self:HyperLink(ShowPoint) .. o.class .. "@" .. ChoGGi.CreateProp(o:GetPos())
+  end
+
+  if IsPoint(o) then
+    local res = {
+      o:x(),
+      o:y(),
+      o:z()
+    }
+    return self:HyperLink(ShowPoint) .. "(" .. table.concat(res, ",") .. ")"
+  end
+
+  if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
+    local res = {}
+    for i = 1, Min(#o, 3) do
+      table.insert(res, {text = i,value = ChoGGi.CreateProp(o[i])})
+      --table.insert(res, i .. " = " .. ChoGGi.CreateProp(o[i]))
+    end
+    if #o > 3 then
+      table.insert(res, {text = "..."})
+    end
+    return self:HyperLink(ShowPoint) .. "objlist" .. "{" .. table.concat(res, ", ") .. "}"
+  end
+
+  if type(o) == "thread" then
+    return self:HyperLink(ShowPoint) .. tostring(o)
+  end
+
+  if type(o) == "string" then
+    return o
+  end
+
+  if type(o) == "table" then
+    if IsT(o) then
+      return self:HyperLink(ShowPoint) .. "T{\"" .. _InternalTranslate(o) .. "\"}"
+    else
+      local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
+      return self:HyperLink(ShowPoint) .. text
+    end
+  end
+
+  return tostring(o)
+
+end
+
+--creates a list for use with ObjectManipulator
+function ChoGGi.CreatePropList(o)
+  local self = ChoGGi.ObjectManipulator_Dlg
+  local res = {}
+  local sort = {}
+  local ShowPoint = function()
+    if IsValid(o) then
+      ShowMe(o)
+    end
+  end
+
+  if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
+    for k, v in pairs(o) do
+      table.insert(res,{text = ChoGGi.CreateProp(k),value = ChoGGi.CreateProp(v)})
+      --table.insert(res,{text =  ChoGGi.CreateProp(k) .. " = " .. ChoGGi.CreateProp(v)})
+      if type(k) == "number" then
+        sort[res[#res]] = k
+      end
+    end
+  else
+    if type(o) == "thread" then
+      local info, level, s = true, 0, nil
+      while true do
+        info = debug.getinfo(o, level, "Slfun")
+        if info then
+          table.insert(res,{text =  self:HyperLink(ShowPoint(level, info)) .. info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
+          level = level + 1
+          else
+            if type(o) == "function" then
+              local i = 1
+              while true do
+                local k, v = debug.getupvalue(o, i)
+                if k ~= nil then
+                  table.insert(res, {text = ChoGGi.CreateProp(k),value = ChoGGi.CreateProp(v)})
+                  --table.insert(res, {text = ChoGGi.CreateProp(k) .. " = " .. ChoGGi.CreateProp(v)})
+                  i = i + 1
+                  elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
+                    table.insert(res,{text =  ChoGGi.CreateProp(o)})
+                  end
+                end
+              end
+          end
+        end
+      end
+  end
+
+  table.sort(res, function(a, b)
+    if sort[a.text] and sort[b.text] then
+      return sort[a.text] < sort[b.text]
+    end
+    if sort[a.text] or sort[b.text] then
+      return sort[a.text] and true
+    end
+    return CmpLower(a.text, b.text)
+  end)
+
+  if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
+    local items = 1
+    for i = 1, #o do
+      if not (items >= self.page * 150) then
+        local format_text, e = self:filtersmarttable(o[i])
+        if format_text then
+          items = items + 1
+          if items >= (self.page - 1) * 150 then
+            local t = self:evalsmarttable(format_text, e)
+            if t then
+              if self.show_times ~= "relative" then
+                t = "<color 255 255 0>" .. tostring(e[1]) .. "</color>:" .. t
+              else
+                t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
+              end
+              table.insert(res,{text =  t .. "<vspace 8>"})
+            end
+          end
+        end
+      end
+    end
+  end
+--meh
+ClearShowMe()
+
+  --ex(res)
+  return res
+  --return Untranslated(table.concat(res, "\n"))
+
+  --local List
+  --return List
 end
 
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
@@ -791,8 +951,9 @@ function ChoGGi.OpenInObjectManipulator(Object,Parent)
     return
   end
 
-  local dlg = OpenDialog("ObjectManipulatorDialog", nil, Parent or terminal.desktop)
-ChoGGi.ObjectManipulatorDialog_Dlg = dlg
+  local dlg = OpenDialog("ObjectManipulator", nil, Parent or terminal.desktop)
+ChoGGi.ObjectManipulator_Dlg = dlg
+
   if dlg then
     --title text
     if Object.entity then
@@ -809,20 +970,13 @@ ChoGGi.ObjectManipulatorDialog_Dlg = dlg
     --create prop list for list
     local list = ChoGGi.CreatePropList(Object)
     if not list then
-      dlg.idList:SetContent({{text="Error"}})
----------TESTING
-dlg.idList:SetContent({
-    {
-      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
-      hint = "long",
-    },
-  {text = 1,hint = 11111,column1 = true},
-  {text = 2,hint = 22222,column2 = true},
-  {text = 3,hint = 33333,column3 = true}
-})
----------TESTING
+      dlg.idList:SetContent({{text="Error opening" .. tostring(Object)}})
       return
     end
+    table.insert(list,1,{
+      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
+      hint = "long",
+    })
     dlg.idList:SetContent(list)
 
   end

@@ -361,12 +361,4 @@ function OnMsg.Resume()
     "If Colonist has no Specialization then add a random one",
     "AlignSel.tga"
   )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Colonists/[3]Work/Fix Black Cube Colonists",
-    ChoGGi.ColonistsFixBlackCube,
-    nil,
-    "If any colonists are black cubes click this.",
-    "ReportBug.tga"
-  )
 end

@@ -4,7 +4,7 @@ function OnMsg.Resume()
   local appendtext = " Applies the good effects only (no drawbacks).\n\n(if value already exists; set to larger amount).\nrestart to disable."
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Inventor bonuses",
+    "Expanded CM/Mission/Commander/[1]Inventor bonuses",
     function()
       ChoGGi.SetCommanderBonus("Inventor")
     end,
@@ -17,7 +17,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Oligarch bonuses",
+    "Expanded CM/Mission/Commander/[1]Oligarch bonuses",
     function()
       ChoGGi.SetCommanderBonus("Oligarch")
     end,
@@ -30,7 +30,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]HydroEngineer bonuses",
+    "Expanded CM/Mission/Commander/[1]HydroEngineer bonuses",
     function()
       ChoGGi.SetCommanderBonus("HydroEngineer")
     end,
@@ -43,7 +43,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Doctor bonuses",
+    "Expanded CM/Mission/Commander/[1]Doctor bonuses",
     function()
       ChoGGi.SetCommanderBonus("Doctor")
     end,
@@ -56,7 +56,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Politician bonuses",
+    "Expanded CM/Mission/Commander/[1]Politician bonuses",
     function()
       ChoGGi.SetCommanderBonus("Politician")
     end,
@@ -69,7 +69,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Futurist bonuses",
+    "Expanded CM/Mission/Commander/[1]Futurist bonuses",
     function()
       ChoGGi.SetCommanderBonus("Author")
     end,
@@ -82,7 +82,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Ecologist bonuses",
+    "Expanded CM/Mission/Commander/[1]Ecologist bonuses",
     function()
       ChoGGi.SetCommanderBonus("Ecologist")
     end,
@@ -95,7 +95,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/[1]Astrogeologist bonuses",
+    "Expanded CM/Mission/Commander/[1]Astrogeologist bonuses",
     function()
       ChoGGi.SetCommanderBonus("Astrogeologist")
     end,
@@ -108,7 +108,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]IMM bonuses",
+    "Expanded CM/Mission/Sponsor/[1]IMM bonuses",
     function()
       ChoGGi.SetSponsorBonus("IMM")
     end,
@@ -121,7 +121,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]USA bonuses",
+    "Expanded CM/Mission/Sponsor/[1]USA bonuses",
     function()
       ChoGGi.SetSponsorBonus("NASA")
     end,
@@ -134,7 +134,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]BlueSun bonuses",
+    "Expanded CM/Mission/Sponsor/[1]BlueSun bonuses",
     function()
       ChoGGi.SetSponsorBonus("BlueSun")
     end,
@@ -147,7 +147,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]China bonuses",
+    "Expanded CM/Mission/Sponsor/[1]China bonuses",
     function()
       ChoGGi.SetSponsorBonus("CNSA")
     end,
@@ -160,7 +160,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]India bonuses",
+    "Expanded CM/Mission/Sponsor/[1]India bonuses",
     function()
       ChoGGi.SetSponsorBonus("ISRO")
     end,
@@ -173,7 +173,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]Europe bonuses",
+    "Expanded CM/Mission/Sponsor/[1]Europe bonuses",
     function()
       ChoGGi.SetSponsorBonus("ESA")
     end,
@@ -186,7 +186,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]SpaceY bonuses",
+    "Expanded CM/Mission/Sponsor/[1]SpaceY bonuses",
     function()
       ChoGGi.SetSponsorBonus("SpaceY")
     end,
@@ -199,7 +199,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]NewArk bonuses",
+    "Expanded CM/Mission/Sponsor/[1]NewArk bonuses",
     function()
       ChoGGi.SetSponsorBonus("NewArk")
     end,
@@ -212,7 +212,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]Russia bonuses",
+    "Expanded CM/Mission/Sponsor/[1]Russia bonuses",
     function()
       ChoGGi.SetSponsorBonus("Roscosmos")
     end,
@@ -225,7 +225,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/[1]Paradox bonuses",
+    "Expanded CM/Mission/Sponsor/[1]Paradox bonuses",
     function()
       ChoGGi.SetSponsorBonus("Paradox")
     end,
@@ -238,7 +238,7 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Sponsors/Set New Sponsor",
+    "Expanded CM/Mission/Sponsor/Set New Sponsor",
     ChoGGi.ChangeSponsor,
     nil,
     "Switch to a different sponsor.",
@@ -246,10 +246,18 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Commanders/Set New Commander",
+    "Expanded CM/Mission/Commander/Set New Commander",
     ChoGGi.ChangeCommander,
     nil,
     "Switch to a different commander.",
     "SetCamPos&Loockat.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Change Logo",
+    ChoGGi.ChangeGameLogo,
+    nil,
+    "Change the logo for anything that uses the logo.",
+    "ViewArea.tga"
   )
 end

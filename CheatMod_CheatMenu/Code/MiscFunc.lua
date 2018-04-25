@@ -1,49 +1,4 @@
 
-function ChoGGi.ChangeGameLogo()
-  local ItemList = {}
-  for _,Value in ipairs(DataInstances.MissionLogo) do
-    if Value.name ~= "random" then
-      table.insert(ItemList,{
-        text = _InternalTranslate(Value.display_name),
-        value = Value.name,
-      })
-    end
-  end
-
-  local CallBackFunc = function(choice)
-    ChoGGi.SetNewLogo(choice[1].value,choice[1].text)
-  end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo")
-end
-
-function ChoGGi.SetNewLogo(sName,sDisplay)
-  --any newly built/landed uses this logo
-  g_CurrentMissionParams.idMissionLogo = sName
-
-  --loop through landed rockets and change logo
-  for _,object in ipairs(UICity.labels.AllRockets or empty_table) do
-    local tempLogo = object:GetAttach("Logo")
-    if tempLogo then
-      tempLogo:ChangeEntity(
-        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
-      )
-    end
-  end
-  --same for any buildings that use the logo
-  for _,object in ipairs(UICity.labels.Building or empty_table) do
-    local tempLogo = object:GetAttach("Logo")
-    if tempLogo then
-      tempLogo:ChangeEntity(
-        DataInstances.MissionLogo[g_CurrentMissionParams.idMissionLogo].entity_name
-      )
-    end
-  end
-
-  ChoGGi.MsgPopup("Logo: " .. sDisplay,
-    "Logo","UI/Icons/Sections/spaceship.tga"
-  )
-end
-
 function ChoGGi.DisableTextureCompression_Toggle()
   ChoGGi.CheatMenuSettings.DisableTextureCompression = not ChoGGi.CheatMenuSettings.DisableTextureCompression
 
@@ -56,34 +11,38 @@ function ChoGGi.DisableTextureCompression_Toggle()
 end
 
 function ChoGGi.SetShadowmapSize()
-  local current = hr.ShadowmapSize
   local hint_highest = "Warning: Highest uses vram (one gig for starter base, a couple for large base)."
   local ItemList = {
-    {text = " Default (restart to enable)",value = false},
-    {text = " Current: " .. current,value = current},
-    {text = "Crap (256)",value = 256},
-    {text = "Lower (512)",value = 512},
-    {text = "Low (1536) < Menu Option",value = 1536},
-    {text = "Medium (2048) < Menu Option",value = 2048},
-    {text = "High (4096) < Menu Option",value = 4096},
-    {text = "Higher (8192)",value = 8192},
-    {text = "Highest (16384)",value = 16384,hint = hint_highest},
+    {text = " Default",value = false,hint = "restart to enable"},
+    {text = "1 Crap (256)",value = 256},
+    {text = "2 Lower (512)",value = 512},
+    {text = "3 Low (1536) < Menu Option",value = 1536},
+    {text = "4 Medium (2048) < Menu Option",value = 2048},
+    {text = "5 High (4096) < Menu Option",value = 4096},
+    {text = "6 Higher (8192)",value = 8192},
+    {text = "7 Highest (16384)",value = 16384,hint = hint_highest},
   }
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      hr.ShadowmapSize = value
+      if value > 16384 then
+        hr.ShadowmapSize = 16384
+      else
+        hr.ShadowmapSize = value
+      end
       ChoGGi.SetSavedSetting("ShadowmapSize",value)
+    else
+      ChoGGi.CheatMenuSettings.ShadowmapSize = false
+    end
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("ShadowmapSize: " .. choice[1].text,
        "Video","UI/Icons/Anomaly_Event.tga"
       )
-    end
-
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size","Current: " .. current .. "\n\n" .. hint_highest)
+  local hint = "Current: " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\nMax set to 16384."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size",hint)
 end
 
 function ChoGGi.HigherShadowDist_Toggle()
@@ -261,24 +220,42 @@ function ChoGGi.InfopanelCheatsCleanup_Toggle()
   )
 end
 
-function ChoGGi.BorderScrolling_Toggle()
-  ChoGGi.CheatMenuSettings.BorderScrollingToggle = not ChoGGi.CheatMenuSettings.BorderScrollingToggle
-  ChoGGi.SetCameraSettings()
+function ChoGGi.SetBorderScrolling()
+  local DefaultSetting = 5
+  local hint_down = "Down scrolling may not work (dependant on aspect ratio?)."
+  local ItemList = {
+    {text = " Default",value = DefaultSetting},
+    {text = 0,value = 0,hint = "disable mouse border scrolling, WASD still works fine."},
+    {text = 1,value = 1,hint = hint_down},
+    {text = 2,value = 2,hint = hint_down},
+    {text = 3,value = 3},
+    {text = 4,value = 4},
+    {text = 10,value = 10},
+  }
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingToggle) .. ": Mouse Border Scrolling",
-   "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
-  )
-end
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.BorderScrollingArea then
+    hint = tostring(ChoGGi.CheatMenuSettings.BorderScrollingArea)
+  end
 
-function ChoGGi.BorderScrollingArea_Toggle()
-  ChoGGi.CheatMenuSettings.BorderScrollingArea = not ChoGGi.CheatMenuSettings.BorderScrollingArea
-  ChoGGi.SetCameraSettings()
+  --callback
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetSavedSetting("BorderScrollingArea",value)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BorderScrollingArea) .. ": Mouse Border Scrolling",
-   "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
-  )
+      ChoGGi.SetCameraSettings()
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].value .. ": Mouse Border Scrolling",
+       "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
+      )
+    end
+
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
+
 end
 
 function ChoGGi.CameraZoom_Toggle()
@@ -287,10 +264,8 @@ function ChoGGi.CameraZoom_Toggle()
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 16000,value = 16000},
     {text = 20000,value = 20000},
-    {text = 24000,value = 24000},
+    {text = 24000,value = 24000, hint = "What used to be the default for this ECM setting"},
     {text = 32000,value = 32000},
-    {text = 64000,value = 64000},
-    {text = 128000,value = 128000},
   }
 
   --other hint type
@@ -313,7 +288,7 @@ function ChoGGi.CameraZoom_Toggle()
     end
 
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
 end
 
 function ChoGGi.PipesPillarsSpacing_Toggle()
@@ -343,16 +318,6 @@ function ChoGGi.ShowAllTraits_Toggle()
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ShowAllTraits) .. ": Good for what ails you",
    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
-  )
-end
-
-function ChoGGi.ResearchQueueLarger_Toggle()
-  const.ResearchQueueSize = ChoGGi.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
-  ChoGGi.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
-   "Research","UI/Icons/Notifications/research.tga"
   )
 end
 

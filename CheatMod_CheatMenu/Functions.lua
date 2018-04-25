@@ -2,6 +2,8 @@
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
 though SM has a bunch of AsyncFile* functions that should probably be used instead (as you can use AppData with them to specify the profile folder)
+lpeg v0.10
+
 
 socket = require("socket")
 print(socket._VERSION)

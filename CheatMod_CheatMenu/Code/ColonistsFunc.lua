@@ -796,31 +796,6 @@ function ChoGGi.SetColonistsTraits(iType)
   end
 end
 
-
-function ChoGGi.ColonistsFixBlackCube()
-  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-    if colonist.entity:find("Child",1,true) then
-      colonist.specialist = "none"
-
-      colonist.traits.Youth = nil
-      colonist.traits.Adult = nil
-      colonist.traits["Middle Aged"] = nil
-      colonist.traits.Senior = nil
-      colonist.traits.Retiree = nil
-
-      colonist.traits.Child = true
-      colonist.age_trait = "Child"
-      colonist.age = 0
-      colonist:ChooseEntity()
-      colonist:SetResidence(false)
-      colonist:UpdateResidence()
-    end
-  end
-  ChoGGi.MsgPopup("Fixed black cubes",
-   "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
-  )
-end
-
 function ChoGGi.SetStatsOfAllColonists()
 
 	local r = ChoGGi.Consts.ResourceScale

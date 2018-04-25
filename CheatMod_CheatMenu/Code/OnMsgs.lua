@@ -103,11 +103,18 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.Keys_LoadingScreenPreClose()
   ChoGGi.SponsorsFunc_LoadingScreenPreClose()
 
-  --remove any opened examine dialogs
+  --remove any opened Examine/ObjectManipulator dialogs
   local win = terminal.desktop
   while ChoGGi.CheckForTypeInList(win,"Examine") do
     for i = 1, #win do
       if IsKindOf(win[i],"Examine") then
+        win[i]:delete()
+      end
+    end
+  end
+  while ChoGGi.CheckForTypeInList(win,"ObjectManipulator") do
+    for i = 1, #win do
+      if IsKindOf(win[i],"ObjectManipulator") then
         win[i]:delete()
       end
     end

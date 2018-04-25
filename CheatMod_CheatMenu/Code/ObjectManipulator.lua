@@ -1,7 +1,7 @@
 --
 function ChoGGi.ObjectManipulator_ClassesGenerate()
 
-  DefineClass.ObjectManipulatorDialog = {
+  DefineClass.ObjectManipulator = {
     __parents = {
       "FrameWindow",
       "PauseGameDialog"
@@ -9,37 +9,44 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
   }
 
 -------------------------
-function ObjectManipulatorDialog:dsgffdjhftsffhjgf()
+function ObjectManipulator:dsgffdjhftsffhjgf()
 -------------------------
 print("ChoGGi.testing")
-ex(ChoGGi.ObjectManipulatorDialog_Dlg.idList)
+ex(ChoGGi.ObjectManipulator_Dlg.idList)
 
 
-ChoGGi.ObjectManipulatorDialog_Dlg.idList:UpdateRollover()
-ChoGGi.ObjectManipulatorDialog_Dlg.idList.columns = 3
-ChoGGi.ObjectManipulatorDialog_Dlg.idList.column_or_row_sizes = {column1=50,column2=50,column3=50}
+ChoGGi.ObjectManipulator_Dlg.idList:UpdateRollover()
+ChoGGi.ObjectManipulator_Dlg.idList.columns = 3
+ChoGGi.ObjectManipulator_Dlg.idList.column_or_row_sizes = {column1=50,column2=50,column3=50}
 
-ChoGGi.ObjectManipulatorDialog_Dlg.idList:SetContent({
+ChoGGi.ObjectManipulator_Dlg.idList:SetContent({
 
   {text = 1,hint = 11111,column1 = true},
   {text = 2,hint = 22222,column2 = true},
   {text = 3,hint = 33333,column3 = true}
 })
 
-ChoGGi.ObjectManipulatorDialog_Dlg.idList.item_windows[1]:SetHint()
+ChoGGi.ObjectManipulator_Dlg.idList.item_windows[1]:SetHint()
 -------------------------
 end
 -------------------------
 
-  function ObjectManipulatorDialog:Init()
+  function ObjectManipulator:Init()
     --init stuff?
-    DataInstances.UIDesignerData.ObjectManipulatorDialog:InitDialogFromView(self, "Default")
+    DataInstances.UIDesignerData.ObjectManipulator:InitDialogFromView(self, "Default")
 
     --set some values...
     self.idEditValue.display_text = "Edit Value"
     self.choices = {}
     self.sel = false
     self.obj = false
+  self.onclick_handles = {}
+  self.page = 1
+  self.show_times = "relative"
+
+  function self.idList.OnHyperLink(_, link, _, box, pos, button)
+    self.onclick_handles[tonumber(link)](box, pos, button)
+  end
 
     --have to do it for each item?
     --self.idList.single = false
@@ -105,14 +112,13 @@ end
 
     --dblclick to ?
     --self.idList.OnDoubleClick = ""
-
   end --init
 
-  function ObjectManipulatorDialog:PostInit()
+  function ObjectManipulator:PostInit()
   print("PostInit")
   end
 
-  function ObjectManipulatorDialog:OnKbdKeyDown(char, virtual_key)
+  function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
       self.idClose:Press()
       return "break"
@@ -122,6 +128,46 @@ end
     end
     return "continue"
   end
+
+  function ObjectManipulator:HyperLink(f, custom_color)
+    table.insert(self.onclick_handles, f)
+    return (custom_color or "<color 150 170 250>") .. "<h " .. #self.onclick_handles .. " 230 195 50>"
+  end
+
+  function ObjectManipulator:filtersmarttable(e)
+    local format_text = tostring(e[2])
+    local t = string.match(format_text, "^%[(.*)%]")
+    if t then
+      if LocalStorage.trace_config ~= nil then
+        local filter = filters[LocalStorage.trace_config] or filters.General
+        if not table.find(filter, t) then
+          return false
+        end
+      end
+      format_text = string.sub(format_text, 3 + #t)
+    end
+    return format_text, e
+  end
+
+  function ObjectManipulator:evalsmarttable(format_text, e)
+  local touched = {}
+  local i = 0
+  format_text = string.gsub(format_text, "{(%d-)}", function(s)
+    if #s == 0 then
+      i = i + 1
+    else
+      i = tonumber(s)
+    end
+    touched[i + 1] = true
+    return "<color 255 255 128>" .. ChoGGi.CreateProp(e[i + 2]) .. "</color>"
+  end)
+  for i = 2, #e do
+    if not touched[i] then
+      format_text = format_text .. " <color 255 255 128>[" .. ChoGGi.CreateProp(e[i]) .. "]</color>"
+    end
+  end
+  return format_text
+end
 
 end --ClassesGenerate
 
@@ -135,28 +181,29 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
   --]]
   UIDesignerData:new({
     DesignOrigin = point(100, 100),
-    DesignResolution = point(300, 450),
-    HGE = true,
-    file_name = "ObjectManipulatorDialog",
-    name = "ObjectManipulatorDialog",
+    DesignResolution = point(650, 450),
+    --HGE = true,
+    Translate = false,
+    file_name = "ObjectManipulator",
+    name = "ObjectManipulator",
     parent_control = {
       CaptionHeight = 32,
       Class = "FrameWindow",
       GamepadStrip = false,
       Image = "CommonAssets/UI/Controls/WindowFrame.tga",
-      MinSize = point(400, 450),
+      --Image = ChoGGi.ModPath .. "Images/WindowFrameDark.tga",
+      MinSize = point(100, 450),
       Movable = true,
       PatternBottomRight = point(123, 122),
       PatternTopLeft = point(4, 24),
       PosOrg = point(100, 100),
-      SizeOrg = point(400, 450),
+      SizeOrg = point(650, 450),
       HorizontalResize = true,
-      VerticalResize = true
+      VerticalResize = true,
     },
     subviews = {
       {
         name = "default",
-
         {
           Id = "idCaption",
           Class = "StaticText",
@@ -168,7 +215,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Subview = "default",
           HSizing = "0, 1, 0",
           VSizing = "0, 1, 0",
-          PosOrg = point(105, 101),
+          PosOrg = point(250, 101),
           SizeOrg = point(390, 22),
         },
         {
@@ -183,7 +230,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           --HSizing = "1, 0, 1",
           HSizing = "AnchorToRight",
           VSizing = "1, 0, 0",
-          PosOrg = point(478, 103),
+          PosOrg = point(729, 103),
           SizeOrg = point(18, 18),
         },
         --(row) of checkboxe(s)
@@ -249,9 +296,15 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
         },
         --list
         {
+        --  column_or_row_sizes = false,
+  --columns = 0,
+
           Id = "idList",
           Class = "List",
+          --Class = "AccordionList",
           ShowPartialItems = true,
+          --ByRows = true, --When true the list box orders the items in rows, otherwise in columns
+          --Single = false, --When true the list box shows only one item per row or column
           ScrollPadding = 1,
           FontStyle = "Editor14Bold",
           RolloverFontStyle = "Editor14",
@@ -259,21 +312,24 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           ScrollAutohide = true,
           SelectionColor = RGB(0, 0, 0),
           SelectionFontStyle = "Editor14Bold",
+          BackgroundColor = RGB(50, 50, 50),
           Spacing = point(8, 2),
           Subview = "default",
           HSizing = "0, 1, 0",
           VSizing = "0, 1, 0",
-          PosOrg = point(100, 180),
-          SizeOrg = point(385, 335),
+          PosOrg = point(104, 180),
+          SizeOrg = point(642, 330),
         },
         --editor line
         {
           Id = "idEditValue",
           Class = "SingleLineEdit",
           AutoSelectAll = true,
+          MaxLen = 500,
           NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
           FontStyle = "Editor14Bold",
           Subview = "default",
+          Spacing = 10,
           TextVAlign = "center",
           Hint = "Use to change values of selected list item.",
           --HSizing = "1, 0, 1",

@@ -42,6 +42,22 @@ function OnMsg.Resume()
   )
 
   ChoGGi.AddAction(
+    "Cheats/[04]Research/Research Queue Larger",
+    ChoGGi.ResearchQueueLarger_Toggle,
+    nil,
+    function()
+      local des
+      if const.ResearchQueueSize == 25 then
+        des = "(Enabled)"
+      else
+        des = "(Disabled)"
+      end
+      return des .. " Enable up to 25 items in queue."
+    end,
+    "ViewArea.tga"
+  )
+
+  ChoGGi.AddAction(
     "Cheats/[04]Research/Outsource Points 1,000,000",
     ChoGGi.OutsourcePoints1000000,
     nil,

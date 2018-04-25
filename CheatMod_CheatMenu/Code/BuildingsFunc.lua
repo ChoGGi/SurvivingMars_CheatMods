@@ -1,16 +1,4 @@
 
-function ChoGGi.AttachBuildingsToNearestWorkingDome()
-  for _,building in ipairs(UICity.labels.Residence or empty_table) do
-    ChoGGi.AttachToNearestDome(building)
-  end
-  for _,building in ipairs(UICity.labels.Workplace or empty_table) do
-    ChoGGi.AttachToNearestDome(building)
-  end
-  ChoGGi.MsgPopup("Buildings attached.",
-    "Buildings","UI/Icons/Sections/basic.tga"
-  )
-end
-
 function ChoGGi.FarmShiftsAllOn()
   for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
     building.closed_shifts[1] = false
@@ -195,16 +183,6 @@ function ChoGGi.FullyAutomatedBuildings()
 
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
-end
-
-function ChoGGi.RepairBrokenShit(BrokenShit)
-  while #BrokenShit > 0 do
-    for i = 1, #BrokenShit do
-      pcall(function()
-        BrokenShit[i]:Repair()
-      end)
-    end
-  end
 end
 
 function ChoGGi.AddMysteryBreakthroughBuildings()
@@ -398,23 +376,6 @@ function ChoGGi.CablesAndPipesNoBreak_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BreakChanceCablePipe) .. " Aliens? We gotta deal with aliens too?",
-   "Cables & Pipes","UI/Icons/Notifications/timer.tga"
-  )
-end
-
-function ChoGGi.CablesAndPipesRepair()
-  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
-  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.water)
-end
-
-function ChoGGi.CablesAndPipesInstant_Toggle()
-  ChoGGi.SetConstsG("InstantCables",ChoGGi.ToggleBoolNum(Consts.InstantCables))
-  ChoGGi.SetConstsG("InstantPipes",ChoGGi.ToggleBoolNum(Consts.InstantPipes))
-
-  ChoGGi.SetSavedSetting("InstantCables",Consts.InstantCables)
-  ChoGGi.SetSavedSetting("InstantPipes",Consts.InstantPipes)
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end

@@ -42,7 +42,6 @@ function ChoGGi.DisastersStop()
   end
 end
 
-
 function ChoGGi.ShowScanAndMapOptions()
   local hint_core = "Core: Repeatable"
   local hint_deep = "Deep: Toggleable"
@@ -341,6 +340,16 @@ function ChoGGi.BreakThroughTechsPerGame_Toggle()
   )
 end
 
+function ChoGGi.ResearchQueueLarger_Toggle()
+  const.ResearchQueueSize = ChoGGi.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
+  ChoGGi.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
+   "Research","UI/Icons/Notifications/research.tga"
+  )
+end
+
 function ChoGGi.ShowResearchDialog()
   local ItemList = {}
   table.insert(ItemList,{
@@ -596,3 +605,4 @@ function ChoGGi.SetTech_EveryTech(sType)
   _G[sType]("WaterCoservationSystem")
   _G[sType]("WaterReclamation")
 end
+
