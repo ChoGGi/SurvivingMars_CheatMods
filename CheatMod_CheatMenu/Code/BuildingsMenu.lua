@@ -2,6 +2,22 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Buildings/Change Colour",
+    ChoGGi.ChangeBuildingColour,
+    "F6",
+    "Select a building to change the colour (of some buildings).",
+    "toggle_dtm_slots.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Use Last Orientation",
+    ChoGGi.UseLastOrientation_Toggle,
+    "F7",
+    "Toggles between saving building placement orientation.",
+    "ToggleTerrainHeight.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Buildings/Farm Shifts All On",
     ChoGGi.FarmShiftsAllOn,
     nil,

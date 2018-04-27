@@ -7,7 +7,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     }
   }
 
-  --ex(ChoGGi.ListChoiceCustomDialog_Dlg.idList)
+  --ex(ChoGGi.ListChoiceCustomDialog_Dlg)
+  --ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
   function ListChoiceCustomDialog:Init()
     --init stuff?
     DataInstances.UIDesignerData.ListChoiceCustomDialog:InitDialogFromView(self, "Default")
@@ -16,6 +17,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idCustomValue.display_text = "Add Custom Value"
     self.choices = {}
     self.sel = false
+    self.CustomType = nil
+    self.colorpicker = nil
 
     --have to do it for each item?
     self.idList:SetHSizing("Resize")
@@ -28,24 +31,48 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     local origOnLButtonDown = self.idList.OnLButtonDown
     self.idList.OnLButtonDown = function(selfList,...)
       local ret = origOnLButtonDown(selfList,...)
+
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+      --update the custom value box
+      self.idCustomValue:SetText(tostring(self.sel.value))
+      if type(self.CustomType) == "number" then
+        --2 = showing the colour picker
+        if self.CustomType == 2 then
+          self:UpdateColourPicker()
+        end
+      end
+
       --for whatever is expecting a return value
       return ret
     end
 
     --update custom value when dbl right
+    self.OnColorChanged = function(color)
+      --update item
+      self.idList.items[self.idList.last_selected].value = color
+      --custom value box
+      self.idCustomValue:SetText(tostring(color))
+    end
+
     self.idList.OnRButtonDoubleClick = function()
       self.idCustomValue:SetText(self.sel.text)
     end
 
     --update custom value list item
+    --function self.idCustomValue.OnValueChanged()
     function self.idCustomValue.OnValueChanged()
-      self.idList:SetItem(#self.idList.items,{
-        text = self.idCustomValue:GetText(),
-        value = ChoGGi.RetNumOrString(self.idCustomValue:GetText()),
-        hint = "< Use custom value"
-      })
+      local value = ChoGGi.RetNumOrString(self.idCustomValue:GetValue())
+
+      if type(self.CustomType) == "number" then
+        self.idList.items[self.idList.last_selected].value = value
+      else
+        self.idList:SetItem(#self.idList.items,{
+          text = value,
+          value = value,
+          hint = "< Use custom value"
+        })
+      end
     end
 
     --return values
@@ -56,6 +83,10 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
       --get sel item(s)
       local items = self.idList:GetSelection()
+      --get all items
+      if type(self.CustomType) == "number" then
+        items = self.idList.items
+      end
       for i = 1, #items do
         if i == 1 then
           --always return the custom value
@@ -100,6 +131,14 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     end
 
   end --init
+
+  --update colour
+  function ListChoiceCustomDialog:UpdateColourPicker()
+    local num = ChoGGi.RetNumOrString(self.idCustomValue:GetText())
+    self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
+    self.idColorHSV:InitHSVPtPos()
+    self.idColorHSV:Invalidate()
+  end
 
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
@@ -247,6 +286,13 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           SizeOrg = point(132, 34),
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
+        },
+        {
+          Id = "idColorHSV",
+          Class = "ColorHSVControl",
+          Visible = false,
+          PosOrg = point(500, 115),
+          SizeOrg = point(300, 300),
         },
 
       }

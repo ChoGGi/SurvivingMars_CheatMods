@@ -62,7 +62,6 @@ end
         value = ChoGGi.RetNumOrString(self.idEditValue:GetText()),
         hint = "< Use custom value"
       })
-      self.idList:SetSelection(self.idList.rows, true)
     end
 
     function self.idClose.OnButtonPressed()

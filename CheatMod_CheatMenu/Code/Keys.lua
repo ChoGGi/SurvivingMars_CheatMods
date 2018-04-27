@@ -84,17 +84,19 @@ function ChoGGi.ConstructionModeSet(itemname)
     CloseXBuildMenu()
   end)
   --fix up some names
-  itemname = pcall(ChoGGi.ConstructionNamesListFix[itemname]) or itemname
+  local fixed = ChoGGi.ConstructionNamesListFix[itemname]
+  if fixed then
+    itemname = fixed
+  end
   --n all the rest
   local igi = GetInGameInterface()
   if not igi or not igi:GetVisible() then
     return
   end
   local bld_template = DataInstances.BuildingTemplate[itemname]
-  --local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
   local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
-  if show then
+  --if show then --interferes with building passageramp
     local dlg = GetXDialog("XBuildMenu")
     if action then
       action(dlg,{
@@ -109,7 +111,7 @@ function ChoGGi.ConstructionModeSet(itemname)
       })
     end
     CloseXBuildMenu()
-  end
+  --end
 end
 
 --show console

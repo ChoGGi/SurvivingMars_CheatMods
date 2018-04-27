@@ -1,4 +1,108 @@
 
+function ChoGGi.UseLastOrientation_Toggle()
+  ChoGGi.CheatMenuSettings.UseLastOrientation = not ChoGGi.CheatMenuSettings.UseLastOrientation
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.UseLastOrientation) .. " Building Orientation",
+   "Buildings"
+  )
+end
+
+function ChoGGi.ChangeBuildingColour()
+  local sel = SelectedObj or SelectionMouseObj()
+  if not sel and not sel:IsKindOf("ColorizableObject") then
+    ChoGGi.MsgPopup("Can't colour object","Colour")
+    return
+  end
+  --SetPal(sel,i,Color,Roughness,Metallic)
+  local SetPal = sel.SetColorizationMaterial
+  local GetPal = sel.GetColorizationMaterial
+  local pal = ChoGGi.GetPalette(sel)
+
+  local ItemList = {}
+  for i = 1, 4 do
+    table.insert(ItemList,{
+      text = "Colour " .. i,
+      value = pal["Color" .. i],
+      hint = "Use the colour picker.",
+    })
+    table.insert(ItemList,{
+      text = "Metallic " .. i,
+      value = pal["Metallic" .. i],
+      hint = "Don't use the colour picker. Numbers range from -255 to 255?",
+    })
+    table.insert(ItemList,{
+      text = "Roughness " .. i,
+      value = pal["Roughness" .. i],
+      hint = "Don't use the colour picker. Numbers range from -255 to 255?",
+    })
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+    if #choice == 12 then
+      --keep original colours as part of object
+      local function saveold(obj)
+        if not obj.ChoGGi_origcolors then
+          obj.ChoGGi_origcolors = {}
+          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
+          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
+          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
+          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
+        end
+      end
+      local function restoreold(obj)
+        if obj.ChoGGi_origcolors then
+          local c = obj.ChoGGi_origcolors
+          local SetPal = obj.SetColorizationMaterial
+          SetPal(obj,1, c[1][1], c[1][2], c[1][3])
+          SetPal(obj,2, c[2][1], c[2][2], c[2][3])
+          SetPal(obj,3, c[3][1], c[3][2], c[3][3])
+          SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+        end
+      end
+
+      table.sort(choice,
+        function(a,b)
+          return ChoGGi.CompareTableNames(a,b,"text")
+        end
+      )
+
+      if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+        for _,building in ipairs(UICity.labels[sel.class] or empty_table) do
+          if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+            restoreold(building)
+          else
+            saveold(building)
+            for i = 1, 4 do
+              local Color = choice[i].value
+              local Metallic = choice[i+4].value
+              local Roughness = choice[i+8].value
+              SetPal(building,i,Color,Roughness,Metallic)
+            end
+          end
+        end
+      else
+        if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+          restoreold(sel)
+        else
+          saveold(sel)
+          for i = 1, 4 do
+            local Color = choice[i].value
+            local Metallic = choice[i+4].value
+            local Roughness = choice[i+8].value
+            SetPal(sel,i,Color,Roughness,Metallic)
+          end
+        end
+      end
+
+      ChoGGi.MsgPopup("Colour is set on " .. sel.encyclopedia_id,"Colour")
+    end
+  end
+  local hint = "If number is 8421504 (0 for Metallic/Roughness) then you can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour (of some buildings)",hint,true,"All of type","Change all objects of the same type.","Default Colour","if they're there; resets to default colours.",2)
+end
+
 function ChoGGi.FarmShiftsAllOn()
   for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
     building.closed_shifts[1] = false
@@ -285,6 +389,7 @@ function ChoGGi.RemoveBuildingLimits_Toggle()
   ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
 
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+    ChoGGi.OverrideConstructionLimits = nil
     ChoGGi.OverrideConstructionLimits_Enable()
   else
     ChoGGi.OverrideConstructionLimits = nil

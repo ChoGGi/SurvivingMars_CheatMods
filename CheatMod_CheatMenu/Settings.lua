@@ -34,6 +34,7 @@ ChoGGi.Consts = {
   CleanupCheatsInfoPane = true,
   ShowInterfaceInScreenshots = true,
   NumberKeysBuildMenu = true,
+  UseLastOrientation = true,
 --false
   DisableHints = false,
   BreakChanceCablePipe = false,

@@ -140,10 +140,11 @@ end
 function ChoGGi.DeleteObject()
   local obj = SelectedObj or SelectionMouseObj()
 
-  --deleting domes will freeze game.
+  --deleting domes will freeze game if they have anything in them.
   if IsKindOf(obj,"Dome") then
     return
   end
+
   --try nicely first
   pcall(function()
     obj.can_demolish = true
@@ -151,27 +152,32 @@ function ChoGGi.DeleteObject()
     DestroyBuildingImmediate(obj)
     obj:Destroy()
   end)
-  --fuck it, I asked nicely
-  obj:delete()
 
   --clean up
   pcall(function()
-    obj:RemoveFromLabels()
+    obj:ReturnStockpiledResources()
   end)
   pcall(function()
     obj:SetDome(false)
   end)
   pcall(function()
-    obj:ReturnStockpiledResources()
+    obj:Gossip("done")
   end)
   pcall(function()
-    obj:Gossip("done")
+    obj:RemoveFromLabels()
   end)
   pcall(function()
     obj:StopFX()
     PlayFX("Spawn", "end", obj)
     obj:SetHolder(false)
   end)
+
+  --fuck it, I asked nicely
+  if obj then
+    pcall(function()
+      obj:delete()
+    end)
+  end
 
 end
 

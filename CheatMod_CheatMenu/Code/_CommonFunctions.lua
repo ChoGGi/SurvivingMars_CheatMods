@@ -684,20 +684,40 @@ end
 
 --called from below
 
-function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
-  --local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop, _InternalTranslate(Caption))
-  local dlg = OpenDialog("ListChoiceCustomDialog", nil, terminal.desktop)
+function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+  local dlg = OpenDialog("ListChoiceCustomDialog", nil,terminal.desktop)
 
 --easier to fiddle with it like this (remove sometime)
 ChoGGi.ListChoiceCustomDialog_Dlg = dlg
 
-  if MultiSel then
-    dlg.idList.multiple_selection = true
-  end
   --title text
   dlg.idCaption:SetText(Caption)
   --list
   dlg.idList:SetContent(Items)
+
+  --fiddling with custom value
+  if CustomType then
+    dlg.idCustomValue.auto_select_all = false
+    dlg.CustomType = CustomType
+    if dlg.CustomType == 2 then
+      dlg.idColorHSV:SetVisible(true)
+      dlg:SetWidth(800)
+      dlg.idList:SetSelection(1, true)
+      dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
+      dlg.idCustomValue:SetText(tostring(dlg.sel.value))
+      dlg:UpdateColourPicker()
+    end
+  end
+
+  if MultiSel then
+    dlg.idList.multiple_selection = true
+    if type(MultiSel) == "number" then
+      --select all of number
+      for i = 1, MultiSel do
+        dlg.idList:SetSelection(i, true)
+      end
+    end
+  end
 
   --setup checkboxes
   if not Check1 and not Check2 then
@@ -705,7 +725,6 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
     dlg.idCheckBox2:SetVisible(false)
   else
     dlg.idList:SetSize(point(390, 310))
-
 
     if Check1 then
       dlg.idCheckBox1:SetText(Check1)
@@ -737,7 +756,7 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   return dlg:Wait()
 end
 
-function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
+function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
   if not Func or not Items or (Items and #Items == 0) then
     return
   end
@@ -749,11 +768,14 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
     end
   )
 
-  --insert blank item for adding custom value
-  table.insert(Items,{text = "",hint = "",value = false})
+  --only insert blank item if we aren't updating other items with it
+  if not CustomType then
+    --insert blank item for adding custom value
+    table.insert(Items,{text = "",hint = "",value = false})
+  end
 
   CreateRealTimeThread(function()
-    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint)
+    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
     if option ~= "idCancel" then
       Func(option)
     end
@@ -797,6 +819,15 @@ function ChoGGi.FuckingDrones(producer)
   end
 end
 
+function ChoGGi.GetPalette(Obj)
+  local get = Obj.GetColorizationMaterial
+  local pal = {}
+  pal.Color1, pal.Roughness1, pal.Metallic1 = get(Obj, 1)
+  pal.Color2, pal.Roughness2, pal.Metallic2 = get(Obj, 2)
+  pal.Color3, pal.Roughness3, pal.Metallic3 = get(Obj, 3)
+  pal.Color4, pal.Roughness4, pal.Metallic4 = get(Obj, 4)
+  return pal
+end
 
 function ChoGGi.CreateProp(o)
   local self = ChoGGi.ObjectManipulator_Dlg
@@ -878,7 +909,7 @@ function ChoGGi.CreatePropList(o)
     end
   else
     if type(o) == "thread" then
-      local info, level, s = true, 0, nil
+      local info, level, _ = true, 0, nil
       while true do
         info = debug.getinfo(o, level, "Slfun")
         if info then

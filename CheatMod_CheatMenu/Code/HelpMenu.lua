@@ -117,8 +117,10 @@ function OnMsg.Resume()
       ChoGGi.CheatMenuSettings.DisableHints = not ChoGGi.CheatMenuSettings.DisableHints
       if ChoGGi.CheatMenuSettings.DisableHints then
         mapdata.DisableHints = true
+        HintsEnabled = false
       else
         mapdata.DisableHints = false
+        HintsEnabled = true
       end
       ChoGGi.WriteSettings()
 
@@ -134,6 +136,9 @@ function OnMsg.Resume()
   ChoGGi.AddAction(
     "[999]Help/Report Bug",
     function()
+      if Platform.ged then
+        return
+      end
       CreateRealTimeThread(function()
         CreateBugReportDlg()
       end)

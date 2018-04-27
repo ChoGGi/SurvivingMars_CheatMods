@@ -1,4 +1,35 @@
 
+function ChoGGi.SetObjectOpacity()
+  local sel = SelectedObj or SelectionMouseObj()
+  if not sel then
+    ChoGGi.MsgPopup("Nothing selected or moused over","Object")
+    return
+  end
+
+  local ItemList = {
+    {text = 0,value = 0},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+  }
+  --callback
+  local CallBackFunc = function(choice)
+    --ChoGGi.ListChoiceCustomDialog_CheckBox1
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      sel:SetOpacity(value)
+    end
+    ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      "Opacity","UI/Icons/Sections/attention.tga"
+    )
+  end
+  local hint = "Current: " .. sel:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some time :)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity",hint)
+
+end
+
 function ChoGGi.DisableTextureCompression_Toggle()
   ChoGGi.CheatMenuSettings.DisableTextureCompression = not ChoGGi.CheatMenuSettings.DisableTextureCompression
 

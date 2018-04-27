@@ -1,20 +1,27 @@
-if ChoGGi.Testing then
-  function OnMsg.ClassesGenerate(classdefs)
-    for name, def in pairs(classdefs) do
-      local properties = def.properties
-      for _, meta in ipairs(properties or empty_table) do
-        if meta.modifiable then
-          local prop = meta.id
-          if def["Get" .. prop] or def["Set" .. prop] then
-            table.insert(ChoGGi.StartupMsgs,"Class " .. name .. "should not have accessor functions for the modifiable property " .. prop)
-          end
-          def["base_" .. prop] = false
-        end
-      end
-    end
-  end
-end
+--[[
+CommonLua\UI\uiExamine.lua
+  Examine:Init
+CommonLua\UI\uiExamine.designer.lua
+    ExamineDesigner:Init
+CommonLua\UI\Dev\uiConsoleLog.lua
+  ConsoleLog:ShowBackground
+CommonLua\UI\Dev\uiConsole.lua
+  Console:Show
+  Console:TextChanged
+  Console:HistoryDown
+  Console:HistoryUp
+Lua\Construction.lua
+  ConstructionController:UpdateConstructionStatuses
+  ConstructionController:CreateCursorObj
+  TunnelConstructionController:UpdateConstructionStatuses
+Lua\RequiresMaintenance.lua
+  RequiresMaintenance:AddDust
+Lua\Buildings\BuildingComponents.lua
+  SingleResourceProducer:OnProduce
+Lua\X\Infopanel.lua
+  InfopanelObj:CreateCheatActions
 
+--]]
 function ChoGGi.OverrideConstructionLimits_Enable()
   if ChoGGi.OverrideConstructionLimits then
     return
@@ -76,7 +83,12 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
           --UnevenTerrain < causes issues when placing buildings (martian ground viagra)
           --ResourceRequired < no point in building an extractor when there's nothing to extract
           --BlockingObjects < place buildings in each other
+
+          --PassageAngleToSteep might be needed?
           elseif status[i] == ConstructionStatus.UnevenTerrain then
+            table.insert(statusNew,status[i])
+          --probably good to have, but might be fun if it doesn't fuck up?
+          elseif status[i] == ConstructionStatus.PassageRequiresDifferentDomes then
             table.insert(statusNew,status[i])
           end
         end
@@ -136,9 +148,8 @@ dumpt(classdefs)
 dumpl(classdefs)
 --]]
 
---CommonLua\UI\uiExamine.lua
---CommonLua\UI\uiExamine.designer.lua
   --add dump button to Examine windows
+  ChoGGi.OrigFunc.ExamineDesigner_Init = ExamineDesigner.Init
   function ExamineDesigner:Init()
     self:SetMinSize(point(309, 53))
     self:SetSize(point(372, 459))
@@ -171,7 +182,7 @@ dumpl(classdefs)
     obj:SetHSizing("Resize")
     obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
     obj:SetFontStyle("Editor12Bold")
-    obj:SetHint("Moves to text entered")
+    obj:SetHint("Scrolls to text entered")
     obj:SetTextHAlign("center")
     obj:SetTextVAlign("center")
     obj.display_text = "Goto text"
@@ -227,6 +238,40 @@ end --OnMsg
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
+if ChoGGi.Testing then
+  ChoGGi.OrigFunc.PinsDlg_Pin = PinsDlg.Pin
+  function PinsDlg:Pin(obj, on_open)
+    local ret = ChoGGi.OrigFunc.PinsDlg_Pin(self,obj, on_open)
+
+    local pins_dlg = OpenXDialog("PinsDlg", GetInGameInterface())
+    if #g_PinnedObjs > 0 then
+      for i = #g_PinnedObjs, 1, -1 do
+        local obj = g_PinnedObjs[i]
+        obj.is_pinned = false
+        g_PinnedObjs[i] = nil
+        if IsKindOf(obj,"Colonist") then
+          print(obj.class)
+          pins_dlg:Unpin(obj)
+        end
+      end
+    end
+
+    return ret
+  end
+end
+
+  --so we can add hints to info pane cheats
+  ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+  function InfopanelObj:CreateCheatActions(win)
+
+    local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
+    ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
+    if ret then
+      return ret
+    end
+  end
+
+  --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
   local ca = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
@@ -342,16 +387,6 @@ end
 
   end --Examine:Init
 
-  --so we can add hints to info pane cheats
-  ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-  function InfopanelObj:CreateCheatActions(win)
-    local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
-    ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
-    if ret then
-      return ret
-    end
-  end
-
   --make sure console is focused even when construction is opened
   ChoGGi.OrigFunc.Console_Show = Console.Show
   function Console:Show(show)
@@ -420,7 +455,7 @@ end
 
     --set orientation to last object if same entity (should I just do it for everything)
     --if ChoGGi.LastPlacedObject and ChoGGi.LastPlacedObject.entity == cursor_obj.entity then
-    if ChoGGi.LastPlacedObject then
+    if ChoGGi.LastPlacedObject and ChoGGi.CheatMenuSettings.UseLastOrientation then
       pcall(function()
         cursor_obj:SetOrientation(ChoGGi.LastPlacedObject:GetOrientation())
       end)

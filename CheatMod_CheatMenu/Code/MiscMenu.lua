@@ -2,6 +2,14 @@ function OnMsg.Resume()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/[999]Misc/Set Opacity",
+    ChoGGi.SetObjectOpacity,
+    "F3",
+    "Change the opacity of objects",
+    "set_last_texture.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Instant Colony Approval",
     ChoGGi.InstantColonyApproval,
     nil,

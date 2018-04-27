@@ -15,10 +15,13 @@ Enable with in-game mod manager
 ##### Info
 ```
 F2: Toggle the cheats menu.
-F4: Open object examiner for object
+F3: Set object opacity.
+F4: Open object examiner for object.
+F6: Change building colour.
+F7: Toggle using last building orientation.
+F9: Clear the console log.
 Ctrl+F: Fill resource of object
 Enter or Tilde: Show the console
-F9: Clear the console log
 Number keys to open/close build menu (Shift-*Num for menus above 10)
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it
 Ctrl-Space: Opens placement mode with the last built object

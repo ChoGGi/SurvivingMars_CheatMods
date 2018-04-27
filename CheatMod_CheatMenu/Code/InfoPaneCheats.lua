@@ -1,6 +1,34 @@
 --add items to the cheat pane
 function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
+  function Object.CheatColourRandom(self)
+    if self:IsKindOf("ColorizableObject") then
+      local SetPal = self.SetColorizationMaterial
+      local GetPal = self.GetColorizationMaterial
+      --s,1,Color, Roughness, Metallic
+      if not self.ChoGGi_origcolors then
+        self.ChoGGi_origcolors = {}
+        table.insert(self.ChoGGi_origcolors,{GetPal(self,1)})
+        table.insert(self.ChoGGi_origcolors,{GetPal(self,2)})
+        table.insert(self.ChoGGi_origcolors,{GetPal(self,3)})
+        table.insert(self.ChoGGi_origcolors,{GetPal(self,4)})
+      end
+      SetPal(self, 1, UICity:Random(1,99999999), 0,0)
+      SetPal(self, 2, UICity:Random(1,99999999), 0,0)
+      SetPal(self, 3, UICity:Random(1,99999999), 0,0)
+      SetPal(self, 4, UICity:Random(1,99999999), 0,0)
+    end
+  end
+  function Object.CheatColourDefault(self)
+    if self.ChoGGi_origcolors then
+      local SetPal = self.SetColorizationMaterial
+      local c = self.ChoGGi_origcolors
+      SetPal(self,1, c[1][1], c[1][2], c[1][3])
+      SetPal(self,2, c[2][1], c[2][2], c[2][3])
+      SetPal(self,3, c[3][1], c[3][2], c[3][3])
+      SetPal(self,4, c[4][1], c[4][2], c[4][3])
+    end
+  end
   function Colonist.CheatFillMorale(self)
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
@@ -444,6 +472,9 @@ function ChoGGi.SetHintsInfoPaneCheats(win)
       action.RolloverHint = "Turn on all work shifts."
 
     --Misc
+    elseif action.ActionId == "ColourRandom" then
+      action.ActionName = action.ActionId
+      action.RolloverHint = "Changes colour of object to random colour."
     elseif action.ActionId == "AddDust" then
       if cur.class == "SupplyRocket" or cur.class == "UniversalStorageDepot" or cur.class == "WasteRockDumpSite" then
         action.ActionId = false

@@ -72,13 +72,14 @@ function OnMsg.LoadGame()
 end
 
 --for new games
+--OnMsg.NewMapLoaded()
 function OnMsg.CityStart()
   ChoGGi.IsGameLoaded = false
 end
 
 --fired as late as we can
-function OnMsg.LoadingScreenPreClose()
 --function OnMsg.Resume()
+function OnMsg.LoadingScreenPreClose()
 
   --for new games
   if not UICity then
@@ -90,9 +91,8 @@ function OnMsg.LoadingScreenPreClose()
 
   if ChoGGi.IsGameLoaded == true then
     return
-  else
-    ChoGGi.IsGameLoaded = true
   end
+  ChoGGi.IsGameLoaded = true
 
   --late enough that I can set g_Consts.
   ChoGGi.SetConstsToSaved()
@@ -366,6 +366,7 @@ function OnMsg.LoadingScreenPreClose()
 
   if ChoGGi.CheatMenuSettings.DisableHints then
     mapdata.DisableHints = true
+    HintsEnabled = false
   end
 
   --print startup msgs to console log
@@ -586,6 +587,7 @@ ChoGGi.AddMsgToFunc(ElectricityProducer.CreateElectricityElement,"ElectricityPro
 ChoGGi.AddMsgToFunc(AirProducer.CreateLifeSupportElements,"AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
 ChoGGi.AddMsgToFunc(WaterProducer.CreateLifeSupportElements,"WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
 ChoGGi.AddMsgToFunc(SingleResourceProducer.Init,"SingleResourceProducer","Init","SpawnedProducerSingle")
+ChoGGi.AddMsgToFunc(PinsDlg.Pin,"PinsDlg","Pin","PinnedObject")
 
 --shuttle comes out of a hub
 function OnMsg.SpawnedShuttle(Obj)
