@@ -16,21 +16,21 @@ Enable with in-game mod manager
 ```
 F2: Toggle the cheats menu.
 F3: Set object opacity.
-F4: Open object examiner for object.
+F4: Open object examiner.
 F6: Change building colour.
 F7: Toggle using last building orientation.
 F9: Clear the console log.
-Ctrl+F: Fill resource of object
-Enter or Tilde: Show the console
-Number keys to open/close build menu (Shift-*Num for menus above 10)
-Ctrl-Alt-Shift-R: Opens console and places "restart" in it
-Ctrl-Space: Opens placement mode with the last built object
-Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits)
-Ctrl-Shift-F: Follow Camera (follow an object around)
-Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff)
-Ctrl-Shift-E: Toggle editor mode
-Ctrl-Alt-Shift-D: Delete object
-Shift-Q: Clone selected object to mouse position
+Ctrl+F: Fill resource of object.
+Enter or Tilde: Show the console.
+Number keys to open/close build menu (Shift-*Num for menus above 10).
+Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
+Ctrl-Space: Opens placement mode with the last built object.
+Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
+Ctrl-Shift-F: Follow Camera (follow an object around).
+Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff).
+Ctrl-Shift-E: Toggle editor mode.
+Ctrl-Alt-Shift-D: Delete object.
+Shift-Q: Clone selected object to mouse position.
 More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor
