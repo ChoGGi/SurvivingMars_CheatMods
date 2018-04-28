@@ -1,11 +1,11 @@
-function OnMsg.Resume()
+function ChoGGi.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Set Opacity",
     ChoGGi.SetObjectOpacity,
     "F3",
-    "Change the opacity of objects",
+    "Change the opacity of objects.",
     "set_last_texture.tga"
   )
 
@@ -68,7 +68,7 @@ function OnMsg.Resume()
     ChoGGi.CameraFree_Toggle,
     "Shift-C",
     "I believe I can fly.",
-    "CameraToggle.tga"
+    "NewCamera.tga"
   )
 
   ChoGGi.AddAction(
@@ -76,7 +76,7 @@ function OnMsg.Resume()
     ChoGGi.CameraFollow_Toggle,
     "Ctrl-Shift-F",
     "Select (or mouse over) an object to follow.",
-    "CameraToggle.tga"
+    "Shot.tga"
   )
 
   ChoGGi.AddAction(
@@ -84,7 +84,7 @@ function OnMsg.Resume()
     ChoGGi.CursorVisible_Toggle,
     "Ctrl-Alt-F",
     "Toggle between moving camera and selecting objects.",
-    "CameraToggle.tga"
+    "select_objects.tga"
   )
 
   ChoGGi.AddAction(

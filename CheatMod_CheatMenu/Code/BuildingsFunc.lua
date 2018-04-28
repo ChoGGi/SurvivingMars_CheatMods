@@ -150,7 +150,7 @@ function ChoGGi.SetProductionAmount()
   end
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting / r},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -171,7 +171,7 @@ function ChoGGi.SetProductionAmount()
     hint = ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] / r
   end
   local CallBackFunc = function(choice)
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
       local value = choice[1].value * r
       if ProdType == "electricity" then
         --electricity
@@ -236,6 +236,7 @@ function ChoGGi.SetProductionAmount()
       "Buildings","UI/Icons/Sections/storage.tga"
     )
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Production Amount","Current production: " .. hint)
 end
 
@@ -243,7 +244,7 @@ function ChoGGi.FullyAutomatedBuildings()
 
   --show list of options to pick
   local ItemList = {
-    {text = " Disable",value = 0},
+    {text = " Disable",value = "disable"},
     {text = 100,value = 100},
     {text = 150,value = 150},
     {text = 250,value = 250},
@@ -259,7 +260,6 @@ function ChoGGi.FullyAutomatedBuildings()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
-
     if type(value) == "number" then
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.base_max_workers then
@@ -284,8 +284,8 @@ function ChoGGi.FullyAutomatedBuildings()
     ChoGGi.MsgPopup(choice[1].text .. "\nI presume the PM's in favour of the scheme because it'll reduce unemployment.",
      "Buildings","UI/Icons/Upgrades/home_collective_04.tga",true
     )
-
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
 end
 
@@ -492,7 +492,7 @@ function ChoGGi.Building_wonder_Toggle()
     building.wonder = false
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders\n(restart to disable)",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders\n(restart to set disabled)",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -503,7 +503,7 @@ function ChoGGi.Building_dome_spot_Toggle()
     building.dome_spot = "none"
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to disable)",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end
@@ -514,7 +514,7 @@ function ChoGGi.Building_instant_build_Toggle()
     building.instant_build = true
   end
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to disable).",
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
    "Buildings","UI/Icons/IPButtons/assign_residence.tga"
   )
 end

@@ -156,12 +156,12 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   SurfaceDepositGroup.CheatDoubleMaxAmount = CheatDoubleMaxAmount
 --CheatProdDbl
   local function CheatProdDblWater(self)
-    self.water.production = self.water.production * 2
-    self.water_production = self.water.production
+    self.water_production = self.water.production * 2
+    self.water:SetProduction(self.water_production)
   end
   local function CheatProdDefWater(self)
-    self.water.production = self.base_water_production
     self.water_production = self.base_water_production
+    self.water:SetProduction(self.water_production)
   end
   MoistureVaporator.CheatProdDbl = CheatProdDblWater
   MoistureVaporator.CheatProdDef = CheatProdDefWater
@@ -169,12 +169,12 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   WaterExtractor.CheatProdDef = CheatProdDefWater
   --
   local function CheatProdDblElec(self)
-    self.electricity.production = self.electricity.production * 2
-    self.electricity_production = self.electricity.production
+    self.electricity_production = self.electricity.production * 2
+    self.electricity:SetProduction(self.electricity_production)
   end
   local function CheatProdDefElec(self)
-    self.electricity.production = self.base_electricity_production
     self.electricity_production = self.base_electricity_production
+    self.electricity:SetProduction(self.electricity_production)
   end
   FusionReactor.CheatProdDbl = CheatProdDblElec
   FusionReactor.CheatProdDef = CheatProdDefElec
@@ -188,12 +188,12 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   ArtificialSun.CheatProdDef = CheatProdDefElec
   --
   function MOXIE.CheatProdDbl(self)
-    self.air.production = self.air.production * 2
-    self.air_production = self.air.production
+    self.air_production = self.air.production * 2
+    self.air:SetProduction(self.air_production)
   end
   function MOXIE.CheatProdDef(self)
-    self.air.production = self.base_air_production
     self.air_production = self.base_air_production
+    self.air:SetProduction(self.air_production)
   end
   --
   local function CheatProdDblProducer(self)
@@ -372,6 +372,35 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   ExplorerRover.CheatBattRefill = CheatBattRefill
   RCTransport.CheatBattRefill = CheatBattRefill
   Drone.CheatBattRefill = CheatBattRefill
+--CheatCleanAndFix
+  local function CheatCleanAndFix(self)
+    self:CheatMalfunction()
+    CreateRealTimeThread(function()
+      self:Repair()
+   end)
+  end
+  local function CheatCleanAndFixDrone(self)
+    self:CheatMalfunction()
+    CreateRealTimeThread(function()
+      self.auto_connect = false
+      if self.malfunction_end_state then
+        self:PlayState(self.malfunction_end_state, 1)
+        if not IsValid(self) then
+          return
+        end
+      end
+      self:SetState("idle")
+      self:AddDust(-self.dust_max)
+      self.command = ""
+      self:SetCommand("Idle")
+      RebuildInfopanel(self)
+   end)
+  end
+
+  ExplorerRover.CheatCleanAndFix = CheatCleanAndFix
+  RCTransport.CheatCleanAndFix = CheatCleanAndFix
+  RCRover.CheatCleanAndFix = CheatCleanAndFix
+  Drone.CheatCleanAndFix = CheatCleanAndFixDrone
 --misc
   function SecurityStation:CheatReneagadeCapDbl()
     self.negated_renegades = self.negated_renegades * 2
@@ -389,6 +418,7 @@ function ChoGGi.InfopanelCheatsCleanup()
   Building.CheatSpawnWorker = nil
   Building.CheatSpawnVisitor = nil
 end
+
 
 function ChoGGi.SetHintsInfoPaneCheats(win)
   local cur = win.context
@@ -437,8 +467,15 @@ function ChoGGi.SetHintsInfoPaneCheats(win)
         action.ActionId = nil
       end
     elseif action.ActionId == "WorkAuto" then
+      local perf
+      if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
+        perf = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+      else
+        perf = 150
+      end
       action.ActionName = action.ActionId
-      action.RolloverHint = "Make this " .. id .. " not need workers."
+      action.RolloverHint = "Make this " .. id .. " not need workers (performance: " .. perf .. ")."
+
     elseif action.ActionId == "WorkManual" then
       action.ActionName = action.ActionId
       action.RolloverHint = "Make this " .. id .. " need workers."

@@ -195,15 +195,17 @@ function ChoGGi.SpawnColonists()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      CheatSpawnNColonists(amount)
+    local value = choice[1].value
+    if type(value) == "number" then
+      CheatSpawnNColonists(value)
       ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
         "Colonists","UI/Icons/Sections/colonist.tga"
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists","Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.")
+
+  local hint = "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
 end
 
 function ChoGGi.ShowMysteryList()
@@ -224,6 +226,7 @@ function ChoGGi.ShowMysteryList()
       ChoGGi.StartMystery(choice[1].value)
     end
   end
+
   local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries.\n\nSelect item for more info."
   local checkmarkhint = "May take up to one Sol to \"instantly\" activate mystery."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
@@ -275,7 +278,6 @@ end
 function ChoGGi.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
-
   ChoGGi.MsgPopup("Unlocked all buildings for construction.",
    "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
@@ -297,17 +299,17 @@ function ChoGGi.AddOutsourcePoints()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      UICity:AddResearchPoints(amount)
+    local value = choice[1].value
+    if type(value) == "number" then
+      UICity:AddResearchPoints(value)
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
         "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
   end
+
   local hint = "If you need a little boost (or a lotta boost) in research."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
-
 end
 
 function ChoGGi.OutsourcePoints1000000()
@@ -315,7 +317,8 @@ function ChoGGi.OutsourcePoints1000000()
 
   ChoGGi.SetSavedSetting("OutsourceResearch",Consts.OutsourceResearch)
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. "\nThe same thing we do every night, Pinky - try to take over the world!",
+  local msg = "\nThe same thing we do every night, Pinky - try to take over the world!"
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. msg,
    "Research","UI/Icons/Upgrades/eternal_fusion_04.tga",true
   )
 end
@@ -383,7 +386,6 @@ function ChoGGi.ShowResearchDialog()
   end
 
   local CallBackFunc = function(choice)
-
     --nothing checked so just return
     if not ChoGGi.ListChoiceCustomDialog_CheckBox1 and not ChoGGi.ListChoiceCustomDialog_CheckBox2 then
       ChoGGi.MsgPopup("Pick a checkbox next time...","Research","UI/Icons/Notifications/research.tga")
@@ -426,13 +428,12 @@ function ChoGGi.ShowResearchDialog()
     ChoGGi.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
       "Research","UI/Icons/Notifications/research.tga"
     )
-
   end
+
   local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).\n\nSelect item for more info."
   local checkhint1 = "Just unlocks in the tree"
   local checkhint2 = "Unlocks and researchs."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
-
 end
 
 function ChoGGi.SetTech_EveryMystery(sType)

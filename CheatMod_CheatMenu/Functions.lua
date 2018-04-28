@@ -267,7 +267,13 @@ end
 
 --return equal or higher amount
 function ChoGGi.CompareAmounts(iAmtA,iAmtB)
-  if iAmtA >= iAmtB then
+  --if ones missing then just return the other
+  if not iAmtA then
+    return iAmtB
+  elseif not iAmtB then
+    return iAmtA
+  --else return equal or higher amount
+  elseif iAmtA >= iAmtB then
     return iAmtA
   elseif iAmtB >= iAmtA then
     return iAmtB
@@ -293,31 +299,50 @@ function ChoGGi.CompareTableNames(a,b,sName)
 end
 
 
-function ChoGGi.WriteLogsEnable()
-  --remove old logs
-  local logs = "AppData/logs/"
-  AsyncFileDelete(logs .. "ConsoleLog.log")
-  AsyncFileDelete(logs .. "DebugLog.log")
-  AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
-  AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
+function ChoGGi.WriteLogs_Toggle(Bool)
+  if Bool == true then
+    --remove old logs
+    local logs = "AppData/logs/"
+    AsyncFileDelete(logs .. "ConsoleLog.log")
+    AsyncFileDelete(logs .. "DebugLog.log")
+    AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
+    AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
 
-  --redirect functions
-  ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
-  AddConsoleLog = function(...)
-    ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
-  end
-  ChoGGi.OrigFunc.printf = printf
-  printf = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
-  end
-  --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
-  ChoGGi.OrigFunc.DebugPrint = DebugPrint
-  DebugPrint = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
-  end
-  ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
-  OutputDebugString = function(...)
-    ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
+    --redirect functions
+    ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
+    AddConsoleLog = function(...)
+      ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+    end
+    ChoGGi.OrigFunc.printf = printf
+    printf = function(...)
+      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
+    end
+    --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
+    ChoGGi.OrigFunc.DebugPrint = DebugPrint
+    DebugPrint = function(...)
+      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
+    end
+    ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
+    OutputDebugString = function(...)
+      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
+    end
+  else
+    if ChoGGi.OrigFunc.AddConsoleLog then
+      AddConsoleLog = ChoGGi.OrigFunc.AddConsoleLog
+      ChoGGi.OrigFunc.AddConsoleLog = nil
+    end
+    if ChoGGi.OrigFunc.printf then
+      printf = ChoGGi.OrigFunc.printf
+      ChoGGi.OrigFunc.printf = nil
+    end
+    if ChoGGi.OrigFunc.DebugPrint then
+      DebugPrint = ChoGGi.OrigFunc.DebugPrint
+      ChoGGi.OrigFunc.DebugPrint = nil
+    end
+    if ChoGGi.OrigFunc.OutputDebugString then
+      OutputDebugString = ChoGGi.OrigFunc.OutputDebugString
+      ChoGGi.OrigFunc.OutputDebugString = nil
+    end
   end
 end
 
@@ -509,5 +534,4 @@ function ChoGGi.SetSavedSetting(Setting,Value)
   else
     ChoGGi.CheatMenuSettings[Setting] = Value
   end
-print(ChoGGi.CheatMenuSettings[Setting])
 end

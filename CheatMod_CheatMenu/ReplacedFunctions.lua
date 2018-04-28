@@ -147,6 +147,15 @@ function ChoGGi.ReplacedFunctions_ClassesGenerate()
 dumpt(classdefs)
 dumpl(classdefs)
 --]]
+  --so we can add hints to info pane cheats
+  ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+  function InfopanelObj:CreateCheatActions(win)
+    local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
+    ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
+    if ret then
+      return ret
+    end
+  end
 
   --add dump button to Examine windows
   ChoGGi.OrigFunc.ExamineDesigner_Init = ExamineDesigner.Init
@@ -260,17 +269,6 @@ if ChoGGi.Testing then
   end
 end
 
-  --so we can add hints to info pane cheats
-  ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-  function InfopanelObj:CreateCheatActions(win)
-
-    local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
-    ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
-    if ret then
-      return ret
-    end
-  end
-
   --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
@@ -288,8 +286,7 @@ end
     local ret = ChoGGi.OrigFunc.InfopanelDlg_Open(self,...)
 
     CreateRealTimeThread(function()
-      --it's always the second window (should we check for the correct class?)
-      self = self[2]
+      self = self.idContent
 
       for i = 1, #self do
         if self[i].class == "XSection" then
@@ -308,7 +305,7 @@ end
                 self[i][2]:SetMaxHeight(168)
               end
             elseif title == "visitor cap section" then
-              --display it as a vlist?
+              --display it as a vlist instead of hlist?
             end
           end
         end --if XSection

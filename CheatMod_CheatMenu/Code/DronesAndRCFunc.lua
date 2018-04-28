@@ -44,7 +44,6 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
-
     if type(value) == "number" then
       for _,Object in ipairs(UICity.labels.DroneFactory or empty_table) do
         Object.performance = value
@@ -61,6 +60,7 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
       "Drones","UI/Icons/IPButtons/drone.tga"
     )
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Factory Build Speed","Current: " .. hint)
 end
 
@@ -91,8 +91,6 @@ function ChoGGi.DroneBuildSpeed_Toggle()
   ChoGGi.SetSavedSetting("DroneBuildingRepairAmount",Consts.DroneBuildingRepairAmount)
 
   ChoGGi.WriteSettings()
-  --Consts.DroneConstrutionTime = 0
-  --Consts.AndroidConstrutionTime = 0
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneConstructAmount) .. ": What happens when the drones get into your Jolt Cola supply... and drink it",
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
@@ -175,7 +173,6 @@ function ChoGGi.SetDroneCarryAmount()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
-
     if type(value) == "number" then
       --somewhere above 1000 fucks the save
       if value > 1000 then
@@ -192,6 +189,7 @@ function ChoGGi.SetDroneCarryAmount()
       )
     end
   end
+
   hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge .. "\n\nMax: 1000."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Carry Capacity",hint)
 end
@@ -228,6 +226,7 @@ function ChoGGi.SetDronesPerDroneHub()
       )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Drone Capacity","Current capacity: " .. hint)
 end
 
@@ -263,6 +262,7 @@ function ChoGGi.SetDronesPerRCRover()
       )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Rover Drone Capacity","Current capacity: " .. hint)
 end
 
@@ -433,6 +433,7 @@ function ChoGGi.SetShuttleHubCapacity()
       "Shuttle","UI/Icons/IPButtons/shuttle.tga"
     )
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set ShuttleHub Shuttle Capacity","Current capacity: " .. hint)
 end
 

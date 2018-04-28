@@ -26,9 +26,9 @@ dofile(ChoGGi.ModPath .. "Functions.lua")
 dofolder_files(ChoGGi.ModPath .. "Code")
 
 --if writelogs option
-if ChoGGi.CheatMenuSettings.WriteLogs ~= false then
+if ChoGGi.CheatMenuSettings.WriteLogs == true then
   table.insert(ChoGGi.StartupMsgs,"ChoGGi: Writing debug/console logs to AppData/logs")
-  ChoGGi.WriteLogsEnable()
+  ChoGGi.WriteLogs_Toggle(ChoGGi.CheatMenuSettings.WriteLogs)
 end
 
 --first time run info

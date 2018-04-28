@@ -1,4 +1,4 @@
-function OnMsg.Resume()
+function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 

@@ -56,8 +56,8 @@ function ChoGGi.SetRocketCargoCapacity()
        "Rocket","UI/Icons/Sections/spaceship.tga"
       )
     end
-
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
 end
 
@@ -101,6 +101,7 @@ function ChoGGi.SetRocketTravelTime()
       )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
 end
 
@@ -129,8 +130,8 @@ function ChoGGi.SetColonistsPerRocket()
         "Rocket","UI/Icons/Notifications/colonist.tga"
       )
     end
-
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
 
@@ -251,6 +252,7 @@ function ChoGGi.SetBuildingCapacity()
     end
 
   end
+
   hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
@@ -280,10 +282,10 @@ function ChoGGi.SetVisitorCapacity()
   if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
     hint = ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id]
   end
+
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-
       for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
         if building.encyclopedia_id == sel.encyclopedia_id then
           building.max_visitors = value
@@ -301,8 +303,8 @@ function ChoGGi.SetVisitorCapacity()
        "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
       )
     end
-
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
 end
 

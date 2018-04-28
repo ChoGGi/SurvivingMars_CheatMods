@@ -270,6 +270,18 @@ function OnMsg.LoadingScreenPreClose()
   --add built-in cheat menu items
   AddCheatsUA()
 
+  --load up my menu actions
+  ChoGGi.SponsorsMenu_LoadingScreenPreClose()
+  ChoGGi.BuildingsMenu_LoadingScreenPreClose()
+  ChoGGi.CheatsMenu_LoadingScreenPreClose()
+  ChoGGi.ColonistsMenu_LoadingScreenPreClose()
+  ChoGGi.DebugMenu_LoadingScreenPreClose()
+  ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
+  ChoGGi.ExpandedMenu_LoadingScreenPreClose()
+  ChoGGi.HelpMenu_LoadingScreenPreClose()
+  ChoGGi.MiscMenu_LoadingScreenPreClose()
+  ChoGGi.ResourcesMenu_LoadingScreenPreClose()
+
   --remove some built-in menu items
   UserActions.RemoveActions({
     --useless without developer tools?
@@ -378,7 +390,7 @@ function OnMsg.LoadingScreenPreClose()
   --people will likely just copy new mod over old, and I moved stuff around
   ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
-    --clean up (in a seprate thread)
+    --clean up
     ChoGGi.RemoveOldFiles()
     --update saved version
     ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION

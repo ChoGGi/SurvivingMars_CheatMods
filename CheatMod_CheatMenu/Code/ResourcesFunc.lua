@@ -17,6 +17,7 @@ function ChoGGi.AddOrbitalProbes()
       end
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
 end
 
@@ -41,18 +42,18 @@ function ChoGGi.SetFoodPerRocketPassenger()
   end
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value * r
-    if type(value) == "number" then
+    if type(choice[1].value) == "number" then
+      local value = choice[1].value * r
       ChoGGi.SetConstsG("FoodPerRocketPassenger",value)
       ChoGGi.SetSavedSetting("FoodPerRocketPassenger",value)
 
-      --save setting
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": om nom nom nom nom",
        "Passengers","UI/Icons/Sections/Food_4.tga"
       )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
 

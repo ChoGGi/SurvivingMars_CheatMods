@@ -240,7 +240,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           TextVAlign = "center",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          ImageType = "aaaaa",
+          --ImageType = "aaaaa",
           Text = "Auto-Refresh",
           Hint = "Auto-refresh list every second (removes any unapplied values).",
           Subview = "default",

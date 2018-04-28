@@ -62,11 +62,11 @@ function ChoGGi.AddApplicantsToPool()
   }
 
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
+    local value = choice[1].value
+    if type(value) == "number" then
       local now = GameTime()
       local self = SA_AddApplicants
-      for _ = 1, amount do
+      for _ = 1, value do
      -- for i = 1, amount do
         local colonist = GenerateApplicant(now)
         local to_add = self.Trait
@@ -99,9 +99,9 @@ function ChoGGi.AddApplicantsToPool()
         "Applicants","UI/Icons/Sections/colonist.tga"
       )
     end
-
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool","Will take some time for 25K and up.")
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool","Warning: Will take some time for 25K and up.")
 end
 
 function ChoGGi.FireAllColonists()
@@ -336,6 +336,7 @@ function ChoGGi.SetOutsideWorkplaceRadius()
         )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Outside Workplace Radius","Current distance: " .. hint .. "\n\nYou may not want to make it too far away unless you turned off suffocation.")
 end
 
@@ -389,6 +390,7 @@ function ChoGGi.SetDeathAge()
       )
     end
   end
+
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Death Age")
 end
 

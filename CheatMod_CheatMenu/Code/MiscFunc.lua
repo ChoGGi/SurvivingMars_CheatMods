@@ -375,42 +375,44 @@ function ChoGGi.SetGameSpeed()
     {text = "7 Quattuorsexaguple",value = 64},
   }
 
+  local current = "Default"
+  pcall(function()
+    if const.mediumGameSpeed == 6 then
+      current = "Double"
+    elseif const.mediumGameSpeed == 9 then
+      current = "Triple"
+    elseif const.mediumGameSpeed == 12 then
+      current = "Quadruple"
+    elseif const.mediumGameSpeed == 24 then
+      current = "Octuple"
+    elseif const.mediumGameSpeed == 48 then
+      current = "Sexdecuple"
+    elseif const.mediumGameSpeed == 96 then
+      current = "Duotriguple"
+    elseif const.mediumGameSpeed == 192 then
+      current = "Quattuorsexaguple"
+    else
+      current = "Custom: " .. const.mediumGameSpeed .. " < base number 3 multipled by custom amount"
+    end
+  end)
+
   local CallBackFunc = function(choice)
-    local amount = choice[1].value
-    if type(amount) == "number" then
-      const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * amount
-      const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * amount
+    local value = choice[1].value
+    if type(value) == "number" then
+      const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
+      const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
       --so it changes the speed
       ChangeGameSpeedState(-1)
       ChangeGameSpeedState(1)
       --update settings
-      ChoGGi.SetSavedSetting("mediumGameSpeed",const.mediumGameSpeed)
-      ChoGGi.SetSavedSetting("fastGameSpeed",const.fastGameSpeed)
+      ChoGGi.CheatMenuSettings.mediumGameSpeed = const.mediumGameSpeed
+      ChoGGi.CheatMenuSettings.fastGameSpeed = const.fastGameSpeed
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": I think I can...",
        "Speed","UI/Icons/Notifications/timer.tga"
       )
     end
-  end
-
-  local current = "Default"
-  if const.mediumGameSpeed == 6 then
-    current = "Double"
-  elseif const.mediumGameSpeed == 9 then
-    current = "Triple"
-  elseif const.mediumGameSpeed == 12 then
-    current = "Quadruple"
-  elseif const.mediumGameSpeed == 24 then
-    current = "Octuple"
-  elseif const.mediumGameSpeed == 48 then
-    current = "Sexdecuple"
-  elseif const.mediumGameSpeed == 96 then
-    current = "Duotriguple"
-  elseif const.mediumGameSpeed == 192 then
-    current = "Quattuorsexaguple"
-  else
-    current = "Custom: " .. const.mediumGameSpeed .. " < base number 3 multipled by custom amount"
   end
 
   local hint = "Current speed: " .. current

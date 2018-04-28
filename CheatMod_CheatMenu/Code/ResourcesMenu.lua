@@ -1,4 +1,4 @@
-function OnMsg.Resume()
+function ChoGGi.ResourcesMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(

@@ -1,4 +1,4 @@
---any functions called from Code/*.lua
+--any funcs called from Code/*.lua
 
 --make some easy to type names
 function console(...)ConsolePrint(tostring(...))end
@@ -212,72 +212,91 @@ function ChoGGi.SetCameraSettings()
 end
 
 function ChoGGi.RemoveOldFiles()
-  local Table = {
-    "CheatMenuSettings",
-    "ConsoleExec",
-    "FuncsCheats",
-    "FuncsDebug",
-    "FuncsGameplayBuildings",
-    "FuncsGameplayColonists",
-    "FuncsGameplayDronesAndRC",
-    "FuncsGameplayMisc",
-    "FuncsResources",
-    "FuncsToggles",
-    "MenuGameplayBuildings",
-    "MenuGameplayColonists",
-    "MenuGameplayDronesAndRC",
-    "MenuGameplayMisc",
-    "MenuToggles",
-    "MenuTogglesFunc",
-    "Script",
-    --second files change :)
-    "Keys",
-    "MenuBuildings",
-    "MenuBuildingsFunc",
-    "MenuCheats",
-    "MenuCheatsFunc",
-    "MenuColonists",
-    "MenuColonistsFunc",
-    "MenuDebug",
-    "MenuDebugFunc",
-    "MenuDronesAndRC",
-    "MenuDronesAndRCFunc",
-    "MenuHelp",
-    "MenuMisc",
-    "MenuMiscFunc",
-    "MenuResources",
-    "MenuResourcesFunc",
-    "OnMsgs",
-    "libs/ReplacedFunctions",
-    "libs/ExamineDialog",
-    --third
-    "FuncDebug",
-    "FuncGame",
-  }
-  for _,Value in ipairs(Table) do
-    AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
-  end
-  AsyncFileDelete(ChoGGi.ModPath .. "libs")
+  CreateRealTimeThread(function()
+    local Table = {
+      "CheatMenuSettings",
+      "ConsoleExec",
+      "FuncsCheats",
+      "FuncsDebug",
+      "FuncsGameplayBuildings",
+      "FuncsGameplayColonists",
+      "FuncsGameplayDronesAndRC",
+      "FuncsGameplayMisc",
+      "FuncsResources",
+      "FuncsToggles",
+      "MenuGameplayBuildings",
+      "MenuGameplayColonists",
+      "MenuGameplayDronesAndRC",
+      "MenuGameplayMisc",
+      "MenuToggles",
+      "MenuTogglesFunc",
+      "Script",
+      --second files change :)
+      "Keys",
+      "MenuBuildings",
+      "MenuBuildingsFunc",
+      "MenuCheats",
+      "MenuCheatsFunc",
+      "MenuColonists",
+      "MenuColonistsFunc",
+      "MenuDebug",
+      "MenuDebugFunc",
+      "MenuDronesAndRC",
+      "MenuDronesAndRCFunc",
+      "MenuHelp",
+      "MenuMisc",
+      "MenuMiscFunc",
+      "MenuResources",
+      "MenuResourcesFunc",
+      "OnMsgs",
+      "libs/ReplacedFunctions",
+      "libs/ExamineDialog",
+      --third
+      "FuncDebug",
+      "FuncGame",
+    }
+    for _,Value in ipairs(Table) do
+      AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
+    end
+    AsyncFileDelete(ChoGGi.ModPath .. "libs")
 
-  --and old settings that aren't used anymore
-  ChoGGi.CheatMenuSettings.NewColonistSex = nil
-  ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
-  ChoGGi.CheatMenuSettings.ShuttleStorage = nil
-  ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
-  ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
-  ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
-  ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
-  ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
-  ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
-  ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
-  ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
-  ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
-  ChoGGi.CheatMenuSettings.developer = nil
-  ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
-  ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
-  ChoGGi.CheatMenuSettings.Building_dome_required = nil
-  ChoGGi.CheatMenuSettings.Building_is_tall = nil
-  ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
+    --and old settings that aren't used anymore
+    ChoGGi.CheatMenuSettings.NewColonistSex = nil
+    ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
+    ChoGGi.CheatMenuSettings.ShuttleStorage = nil
+    ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
+    ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
+    ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
+    ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
+    ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
+    ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
+    ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
+    ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
+    ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
+    ChoGGi.CheatMenuSettings.developer = nil
+    ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
+    ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
+    ChoGGi.CheatMenuSettings.Building_dome_required = nil
+    ChoGGi.CheatMenuSettings.Building_is_tall = nil
+    ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
+    ChoGGi.CheatMenuSettings.CommanderAstrogeologist = nil
+    ChoGGi.CheatMenuSettings.CommanderAuthor = nil
+    ChoGGi.CheatMenuSettings.CommanderDoctor = nil
+    ChoGGi.CheatMenuSettings.CommanderEcologist = nil
+    ChoGGi.CheatMenuSettings.CommanderHydroEngineer = nil
+    ChoGGi.CheatMenuSettings.CommanderInventor = nil
+    ChoGGi.CheatMenuSettings.CommanderOligarch = nil
+    ChoGGi.CheatMenuSettings.CommanderPolitician = nil
+    ChoGGi.CheatMenuSettings.SponsorBlueSun = nil
+    ChoGGi.CheatMenuSettings.SponsorCNSA = nil
+    ChoGGi.CheatMenuSettings.SponsorESA = nil
+    ChoGGi.CheatMenuSettings.SponsorISRO = nil
+    ChoGGi.CheatMenuSettings.SponsorNASA = nil
+    ChoGGi.CheatMenuSettings.SponsorNewArk = nil
+    ChoGGi.CheatMenuSettings.SponsorParadox = nil
+    ChoGGi.CheatMenuSettings.SponsorRoscosmos = nil
+    ChoGGi.CheatMenuSettings.SponsorSpaceY = nil
+  end)
 end
 
 function ChoGGi.ShowBuildMenu(iWhich)
@@ -458,132 +477,50 @@ do
   end
 end
 
---ex(DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile])
 function ChoGGi.SetCommanderBonuses(sType)
-  if sType == "Inventor" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
-      "Label","Consts",
-      "Prop","DroneConstructAmount",
-      "Percent",1,
-      "TimeInterval",2,
-      "TimeUnits",750000,
-      "Repetitions",50
-    }))
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
-      "Label","Consts",
-      "Prop","DroneBuildingRepairAmount",
-      "Percent",1,
-      "TimeInterval",2,
-      "TimeUnits",750000,
-      "Repetitions",50
-    }))
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabelOverTime",{
-      "Label","Consts",
-      "Prop","DroneGatherResourceWorkTime",
-      "Percent",-1,
-      "TimeInterval",2,
-      "TimeUnits",750000,
-      "Repetitions",50
-    }))
-  elseif sType == "Oligarch" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","FuelFactory",
-      "Prop","production_per_day1",
-      "Percent",25
-    }))
-  elseif sType == "HydroEngineer" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","Dome",
-      "Prop","water_consumption",
-      "Percent",-25
-    }))
-  elseif sType == "Doctor" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","Consts",
-      "Prop","MinComfortBirth",
-      "Amount",-15
-    }))
-  elseif sType == "Politician" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","Consts",
-      "Prop","FundingGainsModifier",
-      "Percent",20
-    }))
-  elseif sType == "Author" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","Consts",
-      "Prop","BreakThroughTechCostMod",
-      "Amount",-30
-    }))
-  elseif sType == "Ecologist" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","Decorations",
-      "Prop","service_comfort",
-      "Amount",10
-    }))
-  elseif sType == "Astrogeologist" then
-    local comm = DataInstances.CommanderProfile[g_CurrentMissionParams.idCommanderProfile]
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","WaterExtractor",
-      "Prop","water_production",
-      "Percent",10
-    }))
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","MetalsExtractor",
-      "Prop","production_per_day1",
-      "Percent",10
-    }))
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","PreciousMetalsExtractor",
-      "Prop","production_per_day1",
-      "Percent",10
-    }))
-    table.insert(comm,PlaceObj("TechEffect_ModifyLabel",{
-      "Label","RegolithExtractor",
-      "Prop","production_per_day1",
-      "Percent",10
-    }))
+  local currentname = g_CurrentMissionParams.idCommanderProfile
+  local comm = MissionParams.idCommanderProfile.items[currentname]
+  local bonus = Presets.CommanderProfilePreset.Default[sType]
+
+  for _,Value in ipairs(bonus or empty_table) do
+    CreateRealTimeThread(function()
+      table.insert(comm,Value)
+    end)
   end
 end
 
---ex(DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor])
 function ChoGGi.SetSponsorBonuses(sType)
+  local currentname = g_CurrentMissionParams.idMissionSponsor
+  local sponsor = MissionParams.idMissionSponsor.items[currentname]
+  local bonus = Presets.MissionSponsorPreset.Default[sType]
+  --bonuses multiple sponsors have:
+  if sponsor.cargo then
+    sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,bonus.cargo)
+  end
+  if sponsor.additional_research_points then
+    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+  end
+
   if sType == "IMM" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,DataInstances.MissionSponsor.IMM.cargo)
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.IMM.additional_research_points)
     table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","FoodPerRocketPassenger",
       "Amount",9000
     }))
   elseif sType == "NASA" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,DataInstances.MissionSponsor.NASA.cargo)
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.NASA.additional_research_points)
     table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","SponsorFundingPerInterval",
       "Amount",500
     }))
   elseif sType == "BlueSun" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.rocket_price = ChoGGi.CompareAmounts(sponsor.rocket_price,DataInstances.MissionSponsor.BlueSun.rocket_price)
-    sponsor.applicants_price = ChoGGi.CompareAmounts(sponsor.applicants_price,DataInstances.MissionSponsor.BlueSun.applicants_price)
+    sponsor.rocket_price = ChoGGi.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+    sponsor.applicants_price = ChoGGi.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
     table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
       "Field","Physics",
       "Research","DeepMetalExtraction"
     }))
   elseif sType == "CNSA" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.CNSA.additional_research_points)
     table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","ApplicantGenerationInterval",
@@ -595,7 +532,6 @@ function ChoGGi.SetSponsorBonuses(sType)
       "Amount",10
     }))
   elseif sType == "ISRO" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
     table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
       "Field","Engineering",
       "Research","LowGEngineering"
@@ -636,19 +572,15 @@ function ChoGGi.SetSponsorBonuses(sType)
       "Percent",-20
     }))
   elseif sType == "ESA" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.funding_per_tech = ChoGGi.CompareAmounts(sponsor.funding_per_tech,DataInstances.MissionSponsor.ESA.funding_per_tech)
-    sponsor.funding_per_breakthrough = ChoGGi.CompareAmounts(sponsor.funding_per_breakthrough,DataInstances.MissionSponsor.ESA.funding_per_breakthrough)
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.ESA.additional_research_points)
+    sponsor.funding_per_tech = ChoGGi.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+    sponsor.funding_per_breakthrough = ChoGGi.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
   elseif sType == "SpaceY" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.SpaceY.additional_research_points)
-    sponsor.modifier_name1 = DataInstances.MissionSponsor.SpaceY.modifier_name1
-    sponsor.modifier_value1 = DataInstances.MissionSponsor.SpaceY.modifier_value1
-    sponsor.modifier_name2 = DataInstances.MissionSponsor.SpaceY.modifier_name2
-    sponsor.modifier_value2 = DataInstances.MissionSponsor.SpaceY.modifier_value2
-    sponsor.modifier_name3 = DataInstances.MissionSponsor.SpaceY.modifier_name3
-    sponsor.modifier_value3 = DataInstances.MissionSponsor.SpaceY.modifier_value3
+    sponsor.modifier_name1 = ChoGGi.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name2 = ChoGGi.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
+    sponsor.modifier_value2 = ChoGGi.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+    sponsor.modifier_name3 = ChoGGi.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+    sponsor.modifier_value3 = ChoGGi.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
     table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","CommandCenterMaxDrones",
@@ -660,29 +592,25 @@ function ChoGGi.SetSponsorBonuses(sType)
       "Percent",4
     }))
   elseif sType == "NewArk" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
     table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","BirthThreshold",
       "Percent",-50
     }))
   elseif sType == "Roscosmos" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.modifier_name1 = DataInstances.MissionSponsor.Roscosmos.modifier_name1
-    sponsor.modifier_value1 = DataInstances.MissionSponsor.Roscosmos.modifier_value1
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,DataInstances.MissionSponsor.Roscosmos.additional_research_points)
+    sponsor.modifier_name1 = ChoGGi.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
     table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
       "Field","Robotics",
       "Research","FueledExtractors"
     }))
   elseif sType == "Paradox" then
-    local sponsor = DataInstances.MissionSponsor[g_CurrentMissionParams.idMissionSponsor]
-    sponsor.applicants_per_breakthrough = ChoGGi.CompareAmounts(sponsor.applicants_per_breakthrough,DataInstances.MissionSponsor.paradox.applicants_per_breakthrough)
-    sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,DataInstances.MissionSponsor.paradox.anomaly_bonus_breakthrough)
+    sponsor.applicants_per_breakthrough = ChoGGi.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+    sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end
 
---called from below
+--called from FireFuncAfterChoice
 
 function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
   local dlg = OpenDialog("ListChoiceCustomDialog", nil,terminal.desktop)

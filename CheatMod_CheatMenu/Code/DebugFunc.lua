@@ -28,7 +28,9 @@ function ChoGGi.ObjectSpawner()
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner","Warning: Objects are unselectable with mouse cursor.")
+
+  local hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
 end
 
 function ChoGGi.ObjectsStats_Toggle()
@@ -42,11 +44,10 @@ function ChoGGi.ObjectsStats_Toggle()
   OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
-function ChoGGi.WriteLogs_Toggle()
+function ChoGGi.SetWriteLogs()
   ChoGGi.CheatMenuSettings.WriteLogs = not ChoGGi.CheatMenuSettings.WriteLogs
-  if ChoGGi.CheatMenuSettings.WriteLogs then
-    ChoGGi.WriteLogsEnable()
-  end
+  ChoGGi.WriteLogs_Toggle(ChoGGi.CheatMenuSettings.WriteLogs)
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
    "Logging","UI/Icons/Anomaly_Breakthrough.tga"
@@ -184,6 +185,7 @@ end
 function ChoGGi.ConsoleHistory_Toggle()
   ChoGGi.CheatMenuSettings.ConsoleToggleHistory = not ChoGGi.CheatMenuSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.CheatMenuSettings.ConsoleToggleHistory)
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
    "Console","UI/Icons/Sections/workshifts.tga"
