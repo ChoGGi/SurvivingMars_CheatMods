@@ -247,7 +247,7 @@ end --OnMsg
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
-if ChoGGi.Testing then
+if ChoGGi.Testing and dsfgdfgfd then
   ChoGGi.OrigFunc.PinsDlg_Pin = PinsDlg.Pin
   function PinsDlg:Pin(obj, on_open)
     local ret = ChoGGi.OrigFunc.PinsDlg_Pin(self,obj, on_open)

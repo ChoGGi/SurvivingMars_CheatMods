@@ -52,7 +52,10 @@ dofile("CommonLua/Core/luaDebuggerOutput.lua")
 dofile("CommonLua/Core/ProjectSync.lua")
 config.LuaDebugger = false
 Platform.editor = false
-
+--fixes UpdateInterface nil value in editor mode
+Platform.developer = true
+editor.LoadPlaceObjConfig()
+Platform.developer = false
 --[[
 ClassesGenerate
 ClassesPreprocess

@@ -2,44 +2,49 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  -------------
+-------------
+  local function DisasterOccurrenceText(Name)
+    local des = mapdata["MapSettings_" .. Name]
+    return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
+  end
+
   ChoGGi.AddAction(
     "Expanded CM/Disasters/DustDevils",
     function()
-      ChoGGi.SetDisasterOccurrence("DustDevils",{"VeryLow","Low","High","VeryHigh","VeryHigh_1","VeryHigh_2","VeryHigh_3"})
+      ChoGGi.SetDisasterOccurrence("DustDevils")
     end,
     nil,
-    "Set the occurrence level of DustDevils disasters.",
+    DisasterOccurrenceText("DustDevils"),
     "RandomMapPresetEditor.tga"
   )
   ChoGGi.AddAction(
     "Expanded CM/Disasters/ColdWave",
     function()
-      ChoGGi.SetDisasterOccurrence("ColdWave",{"VeryLow","Low","High","VeryHigh","VeryHigh_1"})
+      ChoGGi.SetDisasterOccurrence("ColdWave")
     end,
     nil,
-    "Set the occurrence level of ColdWave disasters.",
+    DisasterOccurrenceText("ColdWave"),
     "RandomMapPresetEditor.tga"
   )
   ChoGGi.AddAction(
     "Expanded CM/Disasters/DustStorm",
     function()
-      ChoGGi.SetDisasterOccurrence("DustStorm",{"VeryLow","Low","High","VeryHigh","VeryHigh_1","VeryHigh_2"})
+      ChoGGi.SetDisasterOccurrence("DustStorm")
     end,
     nil,
-    "Set the occurrence level of DustStorm disasters.",
+    DisasterOccurrenceText("DustStorm"),
     "RandomMapPresetEditor.tga"
   )
   ChoGGi.AddAction(
     "Expanded CM/Disasters/Meteor",
     function()
-      ChoGGi.SetDisasterOccurrence("Meteor",{"VeryLow","Low","High","VeryHigh"})
+      ChoGGi.SetDisasterOccurrence("Meteor")
     end,
     nil,
-    "Set the occurrence level of Meteor disasters.",
+    DisasterOccurrenceText("Meteor"),
     "RandomMapPresetEditor.tga"
   )
-
+-------------
   ChoGGi.AddAction(
     "Expanded CM/Disasters/Meteor Damage",
     ChoGGi.MeteorHealthDamage_Toggle,

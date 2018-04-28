@@ -1,11 +1,14 @@
 --funcs under Gameplay menu without a separate file
 
-function ChoGGi.SetDisasterOccurrence(sType,tList)
+function ChoGGi.SetDisasterOccurrence(sType)
+
   local ItemList = {}
-  for i = 1, #tList do
+  local data = DataInstances["MapSettings_" .. sType]
+
+  for i = 1, #data do
     table.insert(ItemList,{
-      text = tList[i],
-      value = tList[i]
+      text = data[i].name,
+      value = data[i].name
     })
   end
 
@@ -63,8 +66,8 @@ end
 
 function ChoGGi.SetRocketTravelTime()
 
-  local DefaultSetting = ChoGGi.GetTravelTimeEarthMars() / r
   local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.GetTravelTimeEarthMars() / r
   local ItemList = {
     {text = " Instant",value = 0},
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},

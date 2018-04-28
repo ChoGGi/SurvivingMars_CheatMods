@@ -9,11 +9,15 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     "toggle_dtm_slots.tga"
   )
 
+  local function UseLastOrientationText()
+    local des = ChoGGi.CheatMenuSettings.UseLastOrientation and "(Enabled)" or "(Disabled)"
+    return des  .. " Toggles between saving building placement orientation."
+  end
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Use Last Orientation",
     ChoGGi.UseLastOrientation_Toggle,
     "F7",
-    "Toggles between saving building placement orientation.",
+    UseLastOrientationText(),
     "ToggleTerrainHeight.tga"
   )
 

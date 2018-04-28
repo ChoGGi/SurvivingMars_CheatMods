@@ -6,14 +6,6 @@ function ChoGGi.DisasterTriggerColdWave()
     StartColdWave(descr)
   end)
 end
-function ChoGGi.DisasterTriggerDustDevil(major)
-  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
-  local data = DataInstances.MapSettings_DustDevils
-  --local descr = mapdata.MapSettings_DustDevils ~= "disabled" and data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-  local devil = GenerateDustDevil(pos, descr, nil, major)
-  devil:Start()
-end
 function ChoGGi.DisasterTriggerDustStorm(storm_type)
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_DustStorm
@@ -21,10 +13,16 @@ function ChoGGi.DisasterTriggerDustStorm(storm_type)
     StartDustStorm(storm_type,descr)
   end)
 end
+function ChoGGi.DisasterTriggerDustDevils(major)
+  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
+  local data = DataInstances.MapSettings_DustDevils
+  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  local devil = GenerateDustDevil(pos, descr, nil, major)
+  devil:Start()
+end
 function ChoGGi.DisasterTriggerMeteor(meteors_type)
   local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
   local data = DataInstances.MapSettings_Meteor
-  --local descr = mapdata.MapSettings_Meteor ~= "disabled" and data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   CreateGameTimeThread(function()
     MeteorsDisaster(descr, meteors_type, pos)
@@ -40,6 +38,64 @@ function ChoGGi.DisastersStop()
   if g_ColdWave then
     StopColdWave()
   end
+  --[[causes error msgs for next ones (seems to work fine, but still)
+  while #g_MeteorsPredicted > 0 do
+    for i = 1, #g_MeteorsPredicted do
+      pcall(function()
+        g_MeteorsPredicted[i]:ExplodeInAir()
+      end)
+    end
+  end
+  --]]
+end
+
+function ChoGGi.DisastersTrigger()
+  local ItemList = {
+    {text = " Stop All Disasters",value = "Stop"},
+    {text = "Cold Wave",value = "ColdWave"},
+    {text = "Dust Devil Major",value = "DustDevilsMajor"},
+    {text = "Dust Devil",value = "DustDevils"},
+    {text = "Dust Storm Electrostatic",value = "DustStormElectrostatic"},
+    {text = "Dust Storm Great",value = "DustStormGreat"},
+    {text = "Dust Storm",value = "DustStorm"},
+    {text = "Meteors Storm",value = "MeteorsStorm"},
+    {text = "Meteors Multi Spawn",value = "MeteorsMultiSpawn"},
+    {text = "Meteor",value = "Meteor"},
+  }
+
+  local CallBackFunc = function(choice)
+    for i = 1, #choice do
+      local value = choice[i].value
+      if value == "Stop" then
+        ChoGGi.DisastersStop()
+      elseif value == "ColdWave" then
+        ChoGGi.DisasterTriggerColdWave()
+
+      elseif value == "DustDevilsMajor" then
+        ChoGGi.DisasterTriggerDustDevils("major")
+      elseif value == "DustDevils" then
+        ChoGGi.DisasterTriggerDustDevils()
+
+      elseif value == "DustStormElectrostatic" then
+        ChoGGi.DisasterTriggerDustStorm("electrostatic")
+      elseif value == "DustStormGreat" then
+        ChoGGi.DisasterTriggerDustStorm("great")
+      elseif value == "DustStorm" then
+        ChoGGi.DisasterTriggerDustStorm("normal")
+
+      elseif value == "MeteorsStorm" then
+        ChoGGi.DisasterTriggerMeteor("storm")
+      elseif value == "MeteorsMultiSpawn" then
+        ChoGGi.DisasterTriggerMeteor("multispawn")
+      elseif value == "Meteor" then
+        ChoGGi.DisasterTriggerMeteor("single")
+      end
+      ChoGGi.MsgPopup(choice[i].text,"Disasters")
+    end
+  end
+
+  local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
 end
 
 function ChoGGi.ShowScanAndMapOptions()
@@ -129,55 +185,6 @@ function ChoGGi.ShowScanAndMapOptions()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
 end
 
-function ChoGGi.DisastersTrigger()
-  local ItemList = {
-    {text = " Stop All Disasters",value = "Stop"},
-    {text = "Cold Wave",value = "ColdWave"},
-    {text = "Dust Devil Major",value = "DustDevilMajor"},
-    {text = "Dust Devil",value = "DustDevil"},
-    {text = "Dust Storm Electrostatic",value = "DustStormElectrostatic"},
-    {text = "Dust Storm Great",value = "DustStormGreat"},
-    {text = "Dust Storm",value = "DustStorm"},
-    {text = "Meteors Storm",value = "MeteorsStorm"},
-    {text = "Meteors Multi Spawn",value = "MeteorsMultiSpawn"},
-    {text = "Meteor",value = "Meteor"},
-  }
-
-  local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if value == "Stop" then
-      ChoGGi.DisastersStop()
-    elseif value == "ColdWave" then
-      ChoGGi.DisasterTriggerColdWave()
-
-    elseif value == "DustDevilMajor" then
-      ChoGGi.DisasterTriggerDustDevil("major")
-    elseif value == "DustDevil" then
-      ChoGGi.DisasterTriggerDustDevil()
-
-    elseif value == "DustStormElectrostatic" then
-      ChoGGi.DisasterTriggerDustStorm("electrostatic")
-    elseif value == "DustStormGreat" then
-      ChoGGi.DisasterTriggerDustStorm("great")
-    elseif value == "DustStorm" then
-      ChoGGi.DisasterTriggerDustStorm("normal")
-
-    elseif value == "MeteorsStorm" then
-      ChoGGi.DisasterTriggerMeteor("storm")
-    elseif value == "MeteorsMultiSpawn" then
-      ChoGGi.DisasterTriggerMeteor("multispawn")
-    elseif value == "Meteor" then
-      ChoGGi.DisasterTriggerMeteor("single")
-    end
-
-    ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
-      "Disasters","UI/Icons/Sections/attention.tga"
-    )
-  end
-  local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start).\n\nSelect item for more info."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint)
-end
-
 function ChoGGi.SpawnColonists()
   local ItemList = {
     {text = 1,value = 1},
@@ -227,7 +234,7 @@ function ChoGGi.ShowMysteryList()
     end
   end
 
-  local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries.\n\nSelect item for more info."
+  local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries."
   local checkmarkhint = "May take up to one Sol to \"instantly\" activate mystery."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
 end
@@ -430,180 +437,35 @@ function ChoGGi.ShowResearchDialog()
     )
   end
 
-  local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).\n\nSelect item for more info."
+  local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select)."
   local checkhint1 = "Just unlocks in the tree"
   local checkhint2 = "Unlocks and researchs."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
 end
 
+local function listfields(sType,field)
+  for i = 1, #TechTree do
+    if TechTree[i].id == field then
+      for j = 1, #TechTree[i] do
+        _G[sType](TechTree[i][j].id)
+      end
+    end
+  end
+end
+
 function ChoGGi.SetTech_EveryMystery(sType)
-  _G[sType]("AlienDiggersDestruction")
-  _G[sType]("AlienDiggersDetection")
-  _G[sType]("BlackCubesDisposal")
-  _G[sType]("DefenseTower")
-  _G[sType]("DreamSimulation")
-  _G[sType]("NumberSixTracing")
-  _G[sType]("PowerDecoy")
-  _G[sType]("RegolithExtractor")
-  _G[sType]("SolExploration")
-  _G[sType]("WildfireCure")
-  _G[sType]("XenoExtraction")
-  _G[sType]("Xeno-Terraforming")
+  listfields(sType,"Mysteries")
 end
 
 function ChoGGi.SetTech_EveryBreakthrough(sType)
-  _G[sType]("AdvancedDroneDrive")
-  _G[sType]("AlienImprints")
-  _G[sType]("ArtificialMuscles")
-  _G[sType]("AutonomousHubs")
-  _G[sType]("Cloning")
-  _G[sType]("ConstructionNanites")
-  _G[sType]("CoreMetals")
-  _G[sType]("CoreRareMetals")
-  _G[sType]("CoreWater")
-  _G[sType]("CryoSleep")
-  _G[sType]("DomeStreamlining")
-  _G[sType]("DryFarming")
-  _G[sType]("EternalFusion")
-  _G[sType]("ExtractorAI")
-  _G[sType]("FactoryAutomation")
-  _G[sType]("ForeverYoung")
-  _G[sType]("FrictionlessComposites")
-  _G[sType]("GeneSelection")
-  _G[sType]("GiantCrops")
-  _G[sType]("GoodVibrations")
-  _G[sType]("HiveMind")
-  _G[sType]("HullPolarization")
-  _G[sType]("HypersensitivePhotovoltaics")
-  _G[sType]("InspiringArchitecture")
-  _G[sType]("InterplanetaryLearning")
-  _G[sType]("MagneticExtraction")
-  _G[sType]("MartianbornIngenuity")
-  _G[sType]("MartianDiet")
-  _G[sType]("MartianSteel")
-  _G[sType]("MultispiralArchitecture")
-  _G[sType]("NanoRefinement")
-  _G[sType]("NeoConcrete")
-  _G[sType]("NeuralEmpathy")
-  _G[sType]("NocturnalAdaptation")
-  _G[sType]("OverchargeAmplification")
-  _G[sType]("PlasmaRocket")
-  _G[sType]("PlutoniumSynthesis")
-  _G[sType]("PrefabCompression")
-  _G[sType]("PrintedElectronics")
-  _G[sType]("ProjectPhoenix")
-  _G[sType]("RapidSleep")
-  _G[sType]("SafeMode")
-  _G[sType]("ServiceBots")
-  _G[sType]("SoylentGreen")
-  _G[sType]("SpaceRehabilitation")
-  _G[sType]("SuperconductingComputing")
-  _G[sType]("Superfungus")
-  _G[sType]("SuperiorCables")
-  _G[sType]("SuperiorPipes")
-  _G[sType]("SustainedWorkload")
-  _G[sType]("ThePositronicBrain")
-  _G[sType]("VectorPump")
-  _G[sType]("Vocation-Oriented Society")
-  _G[sType]("WirelessPower")
-  _G[sType]("ZeroSpaceComputing")
+  listfields(sType,"Breakthroughs")
 end
 
 function ChoGGi.SetTech_EveryTech(sType)
-  _G[sType]("3DMachining")
-  _G[sType]("AdaptedProbes")
-  _G[sType]("AdvancedMartianEngines")
-  _G[sType]("AdvancedPassengerModule")
-  _G[sType]("Arcology")
-  _G[sType]("AtomicAccumulator")
-  _G[sType]("AutonomousSensors")
-  _G[sType]("BatteryOptimization")
-  _G[sType]("BehavioralMelding")
-  _G[sType]("BehavioralShaping")
-  _G[sType]("BiomeEngineering")
-  _G[sType]("CO2JetPropulsion")
-  _G[sType]("CompactHangars")
-  _G[sType]("CompactPassengerModule")
-  _G[sType]("DecommissionProtocol")
-  _G[sType]("DeepMetalExtraction")
-  _G[sType]("DeepScanning")
-  _G[sType]("DeepWaterExtraction")
-  _G[sType]("DomeBioscaping")
-  _G[sType]("DreamReality")
-  _G[sType]("DroneHub")
-  _G[sType]("DronePrinting")
-  _G[sType]("DroneSwarm")
-  _G[sType]("DustRepulsion")
-  _G[sType]("EarthMarsInitiative")
-  _G[sType]("EmergencyTraining")
-  _G[sType]("ExplorerAI")
-  _G[sType]("ExtractorAmplification")
-  _G[sType]("FactoryAI")
-  _G[sType]("FactoryAmplification")
-  _G[sType]("FarmAutomation ")
-  _G[sType]("FuelCompression")
-  _G[sType]("FueledExtractors")
-  _G[sType]("FusionAutoregulation")
-  _G[sType]("GeneAdaptation")
-  _G[sType]("GeneralTraining")
-  _G[sType]("GravityEngineering")
-  _G[sType]("HangingGardens")
-  _G[sType]("HighPoweredJets")
-  _G[sType]("HolographicScanning")
-  _G[sType]("HomeCollective")
-  _G[sType]("HygroscopicVaporators")
-  _G[sType]("InterplanetaryAstronomy")
-  _G[sType]("LargeScaleExcavation")
-  _G[sType]("LiveFromMars")
-  _G[sType]("LocalizedTerraforming")
-  _G[sType]("LowGDrive")
-  _G[sType]("LowGEngineering")
-  _G[sType]("LowGFungi")
-  _G[sType]("LowGHighrise")
-  _G[sType]("LowGHydrosynthsis")
-  _G[sType]("LowGTurbines")
-  _G[sType]("MagneticFiltering")
-  _G[sType]("MarsHype")
-  _G[sType]("MarsNoveau")
-  _G[sType]("MartianAerodynamics")
-  _G[sType]("MartianbornAdaptability")
-  _G[sType]("MartianbornResilience")
-  _G[sType]("MartianbornStrength")
-  _G[sType]("MartianCopyrithgts")
-  _G[sType]("MartianEducation")
-  _G[sType]("MartianFestivals")
-  _G[sType]("MartianInstituteOfScience")
-  _G[sType]("MartianPatents")
-  _G[sType]("MeteorDefenseSystem")
-  _G[sType]("MicroFusion")
-  _G[sType]("MicrogravityMedicine")
-  _G[sType]("MicroManufacturing")
-  _G[sType]("MoistureFarming")
-  _G[sType]("NuclearFusion")
-  _G[sType]("OrbitalEngineering")
-  _G[sType]("PlasmaCutters")
-  _G[sType]("ProductivityTraining")
-  _G[sType]("ProjectMohole")
-  _G[sType]("RejuvenationTreatment")
-  _G[sType]("ResearchAmplification")
-  _G[sType]("ResilientArchitecture")
-  _G[sType]("RoverCommandAI")
-  _G[sType]("RoverPrinting")
-  _G[sType]("SmartHome")
-  _G[sType]("SoilAdaptation")
-  _G[sType]("StemReconstruction")
-  _G[sType]("StirlingGenerator")
-  _G[sType]("StorageCompression")
-  _G[sType]("SubsurfaceHeating")
-  _G[sType]("SupportiveCommunity")
-  _G[sType]("SustainableArchitecture")
-  _G[sType]("SystematicTraining")
-  _G[sType]("TheMartianNetwork")
-  _G[sType]("TransportOptimization")
-  _G[sType]("TriboelectricScrubbing")
-  _G[sType]("UtilityCrops")
-  _G[sType]("WasteRockLiquefaction")
-  _G[sType]("WaterCoservationSystem")
-  _G[sType]("WaterReclamation")
+  listfields(sType,"Biotech")
+  listfields(sType,"Engineering")
+  listfields(sType,"Physics")
+  listfields(sType,"Robotics")
+  listfields(sType,"Social")
 end
 
