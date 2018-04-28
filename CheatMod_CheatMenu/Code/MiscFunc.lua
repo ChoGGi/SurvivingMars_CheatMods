@@ -32,6 +32,27 @@ function ChoGGi.CreateObjectListAndAttaches()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
 end
 
+function ChoGGi.SaveOldPalette(obj)
+  local GetPal = obj.GetColorizationMaterial
+  if not obj.ChoGGi_origcolors then
+    obj.ChoGGi_origcolors = {}
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
+  end
+end
+function ChoGGi.RestoreOldPalette(obj)
+  if obj.ChoGGi_origcolors then
+    local c = obj.ChoGGi_origcolors
+    local SetPal = obj.SetColorizationMaterial
+    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+  end
+end
+
 function ChoGGi.ChangeObjectColour(obj)
   if not obj and not obj:IsKindOf("ColorizableObject") then
     ChoGGi.MsgPopup("Can't colour object","Colour")
@@ -39,13 +60,13 @@ function ChoGGi.ChangeObjectColour(obj)
   end
   --SetPal(sel,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
-  local GetPal = obj.GetColorizationMaterial
   local pal = ChoGGi.GetPalette(obj)
 
   local ItemList = {}
   table.insert(ItemList,{
     text = "X_BaseColour",
     value = 6579300,
+    obj = obj,
     hint = "single colour for object (if you really want to change the colour of something you can't above).",
   })
   for i = 1, 4 do
@@ -71,25 +92,6 @@ function ChoGGi.ChangeObjectColour(obj)
     if #choice == 13 then
       --keep original colours as part of object
       local base = choice[13].value
-      local function saveold(obj)
-        if not obj.ChoGGi_origcolors then
-          obj.ChoGGi_origcolors = {}
-          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
-          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
-          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
-          table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
-        end
-      end
-      local function restoreold(obj)
-        if obj.ChoGGi_origcolors then
-          local c = obj.ChoGGi_origcolors
-          local SetPal = obj.SetColorizationMaterial
-          SetPal(obj,1, c[1][1], c[1][2], c[1][3])
-          SetPal(obj,2, c[2][1], c[2][2], c[2][3])
-          SetPal(obj,3, c[3][1], c[3][2], c[3][3])
-          SetPal(obj,4, c[4][1], c[4][2], c[4][3])
-        end
-      end
 
       table.sort(choice,
         function(a,b)
@@ -100,39 +102,33 @@ function ChoGGi.ChangeObjectColour(obj)
       if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
         for _,building in ipairs(UICity.labels[obj.class] or empty_table) do
           if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-            restoreold(building)
+            ChoGGi.RestoreOldPalette(building)
             --6579300 = reset color mod thingy
             building:SetColorModifier(6579300)
           else
-            if base == 6579300 then
-              saveold(building)
-              for i = 1, 4 do
-                local Color = choice[i].value
-                local Metallic = choice[i+4].value
-                local Roughness = choice[i+8].value
-                SetPal(building,i,Color,Roughness,Metallic)
-              end
-            else
-              building:SetColorModifier(base)
-            end
-          end
-        end
-      else
-        if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-          restoreold(obj)
-          obj:SetColorModifier(6579300)
-        else
-          if base == 6579300 then
-            saveold(obj)
+            ChoGGi.SaveOldPalette(building)
             for i = 1, 4 do
               local Color = choice[i].value
               local Metallic = choice[i+4].value
               local Roughness = choice[i+8].value
-              SetPal(obj,i,Color,Roughness,Metallic)
+              SetPal(building,i,Color,Roughness,Metallic)
             end
-          else
-            obj:SetColorModifier(base)
+            building:SetColorModifier(base)
           end
+        end
+      else
+        if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+          ChoGGi.RestoreOldPalette(obj)
+          obj:SetColorModifier(6579300)
+        else
+          ChoGGi.SaveOldPalette(obj)
+          for i = 1, 4 do
+            local Color = choice[i].value
+            local Metallic = choice[i+4].value
+            local Roughness = choice[i+8].value
+            SetPal(obj,i,Color,Roughness,Metallic)
+          end
+          obj:SetColorModifier(base)
         end
       end
 

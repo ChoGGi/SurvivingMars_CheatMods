@@ -17,6 +17,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idEditValue.display_text = "Add Custom Value"
     self.choices = false
     self.sel = false
+    self.obj = false
     self.CustomType = nil
     self.colorpicker = nil
 
@@ -85,14 +86,33 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       self:delete(self.choices)
     end
 
+    --what happens when you dbl click the list
     self.idList.OnDoubleClick = function()
       if type(self.CustomType) == "number" and self.CustomType == 1 then
         --dblclick to open item
         ChoGGi.ChangeObjectColour(self.sel.obj)
       else
-        --dblclick to ret item
+        --dblclick to close and ret item
         self.idOK.OnButtonPressed()
       end
+    end
+
+    --stop idColorHSV from closing on dblclick
+    self.idColorHSV.OnLButtonDoubleClick = function()
+      if not self.obj then
+        --grab the object from the last list item
+        self.obj = self.idList.items[#self.idList.items].obj
+      end
+      local SetPal = self.obj.SetColorizationMaterial
+      local items = self.idList.items
+      ChoGGi.SaveOldPalette(self.obj)
+      for i = 1, 4 do
+        local Color = items[i].value
+        local Metallic = items[i+4].value
+        local Roughness = items[i+8].value
+        SetPal(self.obj,i,Color,Roughness,Metallic)
+      end
+      self.obj:SetColorModifier(self.idList.items[#self.idList.items].value)
     end
 
     --hook into SetContent so we can add OnSetState to each list item to show hints
