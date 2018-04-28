@@ -1,5 +1,7 @@
 ### No warranty implied or otherwise!
 
+See also: [nexus mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files)
+
 ##### OutdoorDomeBuildings
 ```
 Add dome buildings outdoors (dome service buildings still need to be near domes).
@@ -12,7 +14,6 @@ Made Spires buildable in other spaces in domes (can't build them in spire place)
 ##### DefensiveTurret
 ```
 A laser-targeting defense structure. Protect nearby buildings from meteors. Can attack enemy vehicles at extreme range.
-enemy vehicles sounds like dlc? :)
 ```
 
 ##### HiddenBuildings
