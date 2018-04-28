@@ -613,10 +613,16 @@ end
 --called from FireFuncAfterChoice
 
 function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-  local dlg = OpenDialog("ListChoiceCustomDialog", nil,terminal.desktop)
+  local dlg = ListChoiceCustomDialog:new()
 
---easier to fiddle with it like this (remove sometime)
+  if not dlg then
+    return
+  end
+
+  if ChoGGi.Testing then
+--easier to fiddle with it like this
 ChoGGi.ListChoiceCustomDialog_Dlg = dlg
+  end
 
   --title text
   dlg.idCaption:SetText(Caption)
@@ -625,14 +631,14 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
 
   --fiddling with custom value
   if CustomType then
-    dlg.idCustomValue.auto_select_all = false
+    dlg.idEditValue.auto_select_all = false
     dlg.CustomType = CustomType
     if dlg.CustomType == 2 then
       dlg.idColorHSV:SetVisible(true)
       dlg:SetWidth(800)
       dlg.idList:SetSelection(1, true)
       dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-      dlg.idCustomValue:SetText(tostring(dlg.sel.value))
+      dlg.idEditValue:SetText(tostring(dlg.sel.value))
       dlg:UpdateColourPicker()
     end
   end
@@ -704,7 +710,7 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
 
   CreateRealTimeThread(function()
     local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-    if option ~= "idCancel" then
+    if option ~= "idClose" then
       Func(option)
     end
   end)
@@ -757,186 +763,47 @@ function ChoGGi.GetPalette(Obj)
   return pal
 end
 
-function ChoGGi.CreateProp(o)
-  local self = ChoGGi.ObjectManipulator_Dlg
-  local ShowPoint = function()
-    if IsValid(o) then
-      ShowMe(o)
-    end
-  end
-
-  if type(o) == "function" then
-    local debug_info = debug.getinfo(o, "Sn")
-    return self:HyperLink(ShowPoint) .. tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
-  end
-
-  if IsValid(o) then
-    return self:HyperLink(ShowPoint) .. o.class .. "@" .. ChoGGi.CreateProp(o:GetPos())
-  end
-
-  if IsPoint(o) then
-    local res = {
-      o:x(),
-      o:y(),
-      o:z()
-    }
-    return self:HyperLink(ShowPoint) .. "(" .. table.concat(res, ",") .. ")"
-  end
-
-  if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
-    local res = {}
-    for i = 1, Min(#o, 3) do
-      table.insert(res, {text = i,value = ChoGGi.CreateProp(o[i])})
-      --table.insert(res, i .. " = " .. ChoGGi.CreateProp(o[i]))
-    end
-    if #o > 3 then
-      table.insert(res, {text = "..."})
-    end
-    return self:HyperLink(ShowPoint) .. "objlist" .. "{" .. table.concat(res, ", ") .. "}"
-  end
-
-  if type(o) == "thread" then
-    return self:HyperLink(ShowPoint) .. tostring(o)
-  end
-
-  if type(o) == "string" then
-    return o
-  end
-
-  if type(o) == "table" then
-    if IsT(o) then
-      return self:HyperLink(ShowPoint) .. "T{\"" .. _InternalTranslate(o) .. "\"}"
-    else
-      local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
-      return self:HyperLink(ShowPoint) .. text
-    end
-  end
-
-  return tostring(o)
-
-end
-
---creates a list for use with ObjectManipulator
-function ChoGGi.CreatePropList(o)
-  local self = ChoGGi.ObjectManipulator_Dlg
-  local res = {}
-  local sort = {}
-  local ShowPoint = function()
-    if IsValid(o) then
-      ShowMe(o)
-    end
-  end
-
-  if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
-    for k, v in pairs(o) do
-      table.insert(res,{text = ChoGGi.CreateProp(k),value = ChoGGi.CreateProp(v)})
-      --table.insert(res,{text =  ChoGGi.CreateProp(k) .. " = " .. ChoGGi.CreateProp(v)})
-      if type(k) == "number" then
-        sort[res[#res]] = k
-      end
-    end
-  else
-    if type(o) == "thread" then
-      local info, level, _ = true, 0, nil
-      while true do
-        info = debug.getinfo(o, level, "Slfun")
-        if info then
-          table.insert(res,{text =  self:HyperLink(ShowPoint(level, info)) .. info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
-          level = level + 1
-          else
-            if type(o) == "function" then
-              local i = 1
-              while true do
-                local k, v = debug.getupvalue(o, i)
-                if k ~= nil then
-                  table.insert(res, {text = ChoGGi.CreateProp(k),value = ChoGGi.CreateProp(v)})
-                  --table.insert(res, {text = ChoGGi.CreateProp(k) .. " = " .. ChoGGi.CreateProp(v)})
-                  i = i + 1
-                  elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
-                    table.insert(res,{text =  ChoGGi.CreateProp(o)})
-                  end
-                end
-              end
-          end
-        end
-      end
-  end
-
-  table.sort(res, function(a, b)
-    if sort[a.text] and sort[b.text] then
-      return sort[a.text] < sort[b.text]
-    end
-    if sort[a.text] or sort[b.text] then
-      return sort[a.text] and true
-    end
-    return CmpLower(a.text, b.text)
-  end)
-
-  if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
-    local items = 1
-    for i = 1, #o do
-      if not (items >= self.page * 150) then
-        local format_text, e = self:filtersmarttable(o[i])
-        if format_text then
-          items = items + 1
-          if items >= (self.page - 1) * 150 then
-            local t = self:evalsmarttable(format_text, e)
-            if t then
-              if self.show_times ~= "relative" then
-                t = "<color 255 255 0>" .. tostring(e[1]) .. "</color>:" .. t
-              else
-                t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
-              end
-              table.insert(res,{text =  t .. "<vspace 8>"})
-            end
-          end
-        end
-      end
-    end
-  end
---meh
-ClearShowMe()
-
-  --ex(res)
-  return res
-  --return Untranslated(table.concat(res, "\n"))
-
-  --local List
-  --return List
-end
-
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
   if not Object then
     return
   end
 
-  local dlg = OpenDialog("ObjectManipulator", nil, Parent or terminal.desktop)
-ChoGGi.ObjectManipulator_Dlg = dlg
+  local dlg = ObjectManipulator:new()
 
-  if dlg then
-    --title text
+  if not dlg then
+    return
+  end
+
+  if ChoGGi.Testing then
+--easier to fiddle with it like this
+ChoGGi.ObjectManipulator_Dlg = dlg
+  end
+
+  --title text
+  if type(Object) == "table" then
     if Object.entity then
       dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
     else
       dlg.idCaption:SetText(Object.class)
     end
-    if not Parent then
-      dlg:SetPos(terminal.GetMousePos())
-    end
-
-    dlg.obj = Object
-
-    --create prop list for list
-    local list = ChoGGi.CreatePropList(Object)
-    if not list then
-      dlg.idList:SetContent({{text="Error opening" .. tostring(Object)}})
-      return
-    end
-    table.insert(list,1,{
-      text = "   Really long text to test out some stuff, feel free to ignore if I forget to remove this when I upload the next version. Thank you. uiyghjkjgfjhcvbmnjuyghfjeriuy23o7q5tugrtesh;394o5f7syo58j4t7sc6yknl345u;j836cvylte4eksdocfx6j8745tyxdt89ydvpe8xtroo8c7dry......................",
-      hint = "long",
-    })
-    dlg.idList:SetContent(list)
-
+  else
+    dlg.idCaption:SetText(tostring(Object))
   end
+  --set pos
+  if Parent then
+    local pos = Parent:GetPos()
+    if not pos then
+      dlg:SetPos(terminal.GetMousePos())
+    else
+      dlg:SetPos(point(pos:x(),pos:y() + 15))
+    end
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+
+  --update internal object ref
+  dlg.obj = Object
+
+  dlg:AddContentToList(Object)
+
 end

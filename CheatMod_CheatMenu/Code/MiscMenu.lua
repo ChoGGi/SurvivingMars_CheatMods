@@ -2,6 +2,14 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/[999]Misc/Change Colour",
+    ChoGGi.CreateObjectListAndAttaches,
+    "F6",
+    "Select/mouse over an object to change the colours.",
+    "toggle_dtm_slots.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Set Opacity",
     ChoGGi.SetObjectOpacity,
     "F3",

@@ -1,21 +1,19 @@
 function ChoGGi.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  if ChoGGi.Testing then
-    ChoGGi.AddAction(
-      "[102]Debug/Object Manipulator",
-      function()
-        ChoGGi.OpenInObjectManipulator(SelectedObj or SelectionMouseObj())
-      end,
-      "F5",
-      "Manipulate objects (selected or under mouse cursor)",
-      "SaveMapEntityList.tga"
-    )
-  end
+  ChoGGi.AddAction(
+    "[102]Debug/Object Manipulator",
+    function()
+      ChoGGi.OpenInObjectManipulator(SelectedObj or SelectionMouseObj())
+    end,
+    "F5",
+    "Manipulate objects (selected or under mouse cursor)",
+    "SaveMapEntityList.tga"
+  )
 
   ChoGGi.AddAction(
-    "[102]Debug/Objects Stats",
-    ChoGGi.ObjectsStats_Toggle,
+    "[102]Debug/Selection Editor",
+    ChoGGi.ShowSelectionEditor,
     nil,
     "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then use this menu item to make it closeable).",
     "ToggleCutSmoothTrans.tga"

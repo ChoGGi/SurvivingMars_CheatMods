@@ -33,7 +33,7 @@ function ChoGGi.ObjectSpawner()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
 end
 
-function ChoGGi.ObjectsStats_Toggle()
+function ChoGGi.ShowSelectionEditor()
   --check for any opened windows and kill them
   for i = 1, #terminal.desktop do
     if IsKindOf(terminal.desktop[i],"ObjectsStatsDlg") then
@@ -41,7 +41,13 @@ function ChoGGi.ObjectsStats_Toggle()
     end
   end
   --open a new copy
-  OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
+  local dlg = ObjectsStatsDlg:new()
+  if not dlg then
+    return
+  end
+  dlg:SetPos(terminal.GetMousePos())
+
+  --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
 function ChoGGi.SetWriteLogs()
@@ -218,7 +224,7 @@ function ChoGGi.ChangeMap()
       end
       local sel_idx
       sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
-      if sel_idx ~= "idCancel" then
+      if sel_idx ~= "idClose" then
         local map = sel_idx and items[sel_idx].map
         if not map or map == "" then
           return

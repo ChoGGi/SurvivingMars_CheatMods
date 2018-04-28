@@ -1,5 +1,6 @@
-if ChoGGi.Testing then
 --do they do anything?
+--[[
+if ChoGGi.Testing then
   hr.EnableScreenSpaceReflection = 1
   hr.FadeCullRadius = 5000
   hr.D3D11ParallelCompilation = 1
@@ -10,6 +11,7 @@ if ChoGGi.Testing then
   config.ParticlesMaxNormalMapSize = 1024
   config.MinimapScreenshotSize = 4096
 end
+--]]
 
 function ChoGGi.RenderSettings_LoadingScreenPreClose()
 

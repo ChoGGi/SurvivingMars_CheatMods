@@ -14,8 +14,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     DataInstances.UIDesignerData.ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     --set some values...
-    self.idCustomValue.display_text = "Add Custom Value"
-    self.choices = {}
+    self.idEditValue.display_text = "Add Custom Value"
+    self.choices = false
     self.sel = false
     self.CustomType = nil
     self.colorpicker = nil
@@ -24,8 +24,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idList:SetHSizing("Resize")
 
     --add some padding before the text
-    --self.idCustomValue.DisplacementPos = 0
-    --self.idCustomValue.DisplacementWidth = 10
+    --self.idEditValue.DisplacementPos = 0
+    --self.idEditValue.DisplacementWidth = 10
 
     --do stuff on selection
     local origOnLButtonDown = self.idList.OnLButtonDown
@@ -35,7 +35,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
       --update the custom value box
-      self.idCustomValue:SetText(tostring(self.sel.value))
+      self.idEditValue:SetText(tostring(self.sel.value))
       if type(self.CustomType) == "number" then
         --2 = showing the colour picker
         if self.CustomType == 2 then
@@ -52,17 +52,16 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       --update item
       self.idList.items[self.idList.last_selected].value = color
       --custom value box
-      self.idCustomValue:SetText(tostring(color))
+      self.idEditValue:SetText(tostring(color))
     end
 
     self.idList.OnRButtonDoubleClick = function()
-      self.idCustomValue:SetText(self.sel.text)
+      self.idEditValue:SetText(self.sel.text)
     end
 
     --update custom value list item
-    --function self.idCustomValue.OnValueChanged()
-    function self.idCustomValue.OnValueChanged()
-      local value = ChoGGi.RetNumOrString(self.idCustomValue:GetValue())
+    function self.idEditValue.OnValueChanged()
+      local value = ChoGGi.RetProperType(self.idEditValue:GetValue())
 
       if type(self.CustomType) == "number" then
         self.idList.items[self.idList.last_selected].value = value
@@ -81,30 +80,20 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       ChoGGi.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
       ChoGGi.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
 
-      --get sel item(s)
-      local items = self.idList:GetSelection()
-      --get all items
-      if type(self.CustomType) == "number" then
-        items = self.idList.items
-      end
-      for i = 1, #items do
-        if i == 1 then
-          --always return the custom value
-          local number = tonumber(self.idCustomValue:GetText())
-          if number then
-            items[i].custom = number
-          else
-            items[i].custom = self.idCustomValue:GetText()
-          end
-        end
-        table.insert(self.choices,items[i])
-      end
+      self:GetAllItems()
       --send selection back
       self:delete(self.choices)
     end
 
-    --dblclick to ret item
-    self.idList.OnDoubleClick = self.idOK.OnButtonPressed
+    self.idList.OnDoubleClick = function()
+      if type(self.CustomType) == "number" and self.CustomType == 1 then
+        --dblclick to open item
+        ChoGGi.ChangeObjectColour(self.sel.obj)
+      else
+        --dblclick to ret item
+        self.idOK.OnButtonPressed()
+      end
+    end
 
     --hook into SetContent so we can add OnSetState to each list item to show hints
     self.idList.Orig_SetContent = self.idList.SetContent
@@ -134,15 +123,36 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
   --update colour
   function ListChoiceCustomDialog:UpdateColourPicker()
-    local num = ChoGGi.RetNumOrString(self.idCustomValue:GetText())
+    local num = ChoGGi.RetProperType(self.idEditValue:GetText())
     self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
     self.idColorHSV:InitHSVPtPos()
     self.idColorHSV:Invalidate()
   end
 
+  function ListChoiceCustomDialog:GetAllItems()
+    --always start with blank choices
+    self.choices = {}
+    --get sel item(s)
+    local items = self.idList:GetSelection()
+    --get all items
+    if type(self.CustomType) == "number" then
+      items = self.idList.items
+    end
+    for i = 1, #items do
+      if i == 1 then
+        --always return the custom value (and try to convert it to correct type)
+        items[i].custom = ChoGGi.RetProperType(self.idEditValue:GetText())
+      end
+      table.insert(self.choices,items[i])
+    end
+  end
+
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
-      self.idCancel:Press()
+      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
+        self.idClose:Press()
+      end
+      self:SetFocus()
       return "break"
     elseif virtual_key == const.vkEnter then
       self.idOK:Press()
@@ -206,7 +216,6 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           Id = "idList",
           Class = "List",
           ShowPartialItems = true,
-          ScrollPadding = 1,
           SelectionColor = RGB(0, 0, 0),
           FontStyle = "Editor14",
           PosOrg = point(105, 123),
@@ -221,7 +230,7 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           VSizing = "0, 1, 0"
         },
         {
-          Id = "idCustomValue",
+          Id = "idEditValue",
           Class = "SingleLineEdit",
           AutoSelectAll = true,
           NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
@@ -240,7 +249,6 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          --ImageType = "aaaaa",
           PosOrg = point(110, 440),
           SizeOrg = point(164, 17),
           Subview = "default",
@@ -253,7 +261,6 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          --ImageType = "aaaaa",
           PosOrg = point(300, 440),
           SizeOrg = point(164, 17),
           Subview = "default",
@@ -274,7 +281,7 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           VSizing = "1, 0, 0"
         },
         {
-          Id = "idCancel",
+          Id = "idClose",
           Class = "Button",
           CloseDialog = true,
           FontStyle = "Editor14Bold",

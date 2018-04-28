@@ -5,8 +5,8 @@ return PlaceObj("ModDef", {
     .. "\n\nF2: Toggle the cheats menu.."
     .. "\nF3: Set object opacity."
     .. "\nF4: Open object examiner."
-    --.. "\nF5: Open object manipulator."
-    .. "\nF6: Change building colour."
+    .. "\nF5: Open object manipulator (or use edit button in examiner)."
+    .. "\nF6: Change object colours."
     .. "\nF7: Toggle using last building orientation."
     .. "\nF9: Clear the console log."
     .. "\nCtrl+F: Fill resource of object."
@@ -27,7 +27,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_CheatMenu",
   --"steam_id","",
 	"author", "ChoGGi (thanks to chippydip, therealshibe, BoehserOnkel, Fling)",
-	"version", 33,
+	"version", 34,
   --"lua_revision","",
 	"code", {
 		"Init.lua",

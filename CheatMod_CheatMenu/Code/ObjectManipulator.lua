@@ -8,29 +8,8 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     }
   }
 
--------------------------
-function ObjectManipulator:dsgffdjhftsffhjgf()
--------------------------
-print("ChoGGi.testing")
-ex(ChoGGi.ObjectManipulator_Dlg.idList)
-
-
-ChoGGi.ObjectManipulator_Dlg.idList:UpdateRollover()
-ChoGGi.ObjectManipulator_Dlg.idList.columns = 3
-ChoGGi.ObjectManipulator_Dlg.idList.column_or_row_sizes = {column1=50,column2=50,column3=50}
-
-ChoGGi.ObjectManipulator_Dlg.idList:SetContent({
-
-  {text = 1,hint = 11111,column1 = true},
-  {text = 2,hint = 22222,column2 = true},
-  {text = 3,hint = 33333,column3 = true}
-})
-
-ChoGGi.ObjectManipulator_Dlg.idList.item_windows[1]:SetHint()
--------------------------
-end
--------------------------
-
+  --ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
+  --ex(ChoGGi.ObjectManipulator_Dlg)
   function ObjectManipulator:Init()
     --init stuff?
     DataInstances.UIDesignerData.ObjectManipulator:InitDialogFromView(self, "Default")
@@ -40,13 +19,9 @@ end
     self.choices = {}
     self.sel = false
     self.obj = false
-  self.onclick_handles = {}
+    self.refreshing = false
   self.page = 1
   self.show_times = "relative"
-
-  function self.idList.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
 
     --have to do it for each item?
     --self.idList.single = false
@@ -57,15 +32,21 @@ end
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      self.idList:SetItem(#self.idList.items,{
-        text = self.idEditValue:GetText(),
-        value = ChoGGi.RetNumOrString(self.idEditValue:GetText()),
-        hint = "< Use custom value"
-      })
-    end
+      local sel = self.idList.last_selected
+      local text = self.idEditValue:GetText()
+      local value = ChoGGi.RetProperType(text)
 
-    function self.idClose.OnButtonPressed()
-      self:delete()
+      --listitem
+      self.idList.items[sel].value = text
+      --stored obj
+      self.idList.item_windows[sel].value:SetText(text)
+
+      --actual object (only update strings/numbers/boolean)
+      local objtype = type(self.obj[self.idList.items[sel].text])
+      if objtype == "string" or objtype == "number" or objtype == "boolean" then
+        self.obj[self.idList.items[sel].text] = value
+      end
+
     end
 
     --hook into SetContent so we can add OnSetState to each listitem to show hints
@@ -86,51 +67,167 @@ end
             if item.hint then
               hint = hint .. "\n\n" .. item.hint
             end
-            self.parent.parent:SetHint(hint)
+            self.parent.parent:SetHint(hint .. "\n\nDouble right-click selected item to open in new manipulator.")
           end
         end
       end
     end
 
+    --override ListItem:OnCreate
+    function self.idList:ItemCreate(item_window, item)
+      if not item_window then
+        return
+      end
+      self.parent.OnCreate(item_window,item,self)
+    end
+
 ----click actions
 
-    --single left click
+    --do stuff on selection
     local origOnLButtonDown = self.idList.OnLButtonDown
     self.idList.OnLButtonDown = function(selfList,...)
       local ret = origOnLButtonDown(selfList,...)
+
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+      --update the edit value box
+      self.idEditValue:SetText(self.sel.value)
+
       --for whatever is expecting a return value
       return ret
     end
 
-    --update custom value when dbl right
+    --open editor with whatever is selected
     self.idList.OnRButtonDoubleClick = function()
-      self.idEditValue:SetText(self.sel.text)
+      ChoGGi.OpenInObjectManipulator(self.sel.object,self)
     end
 
-    --dblclick to ?
-    --self.idList.OnDoubleClick = ""
+    --close without doing anything
+    function self.idClose.OnButtonPressed()
+      self:delete()
+    end
+
+    --refresh the list...
+    function self.idRefresh.OnButtonPressed()
+      self:AddContentToList(self.obj)
+    end
+    --move viewpoint to obj
+    function self.idGoto.OnButtonPressed()
+      self:ViewObject(self.obj)
+    end
+    --idApplyAll
+    function self.idApplyAll.OnButtonPressed()
+      local value = self.sel.value
+      if value then
+        for _,Object in ipairs(UICity.labels[self.obj.class] or empty_table) do
+          Object[self.sel.text] = value
+        end
+      end
+    end
+
+    --add check for auto-refresh
+    local children = self.idAutoRefresh.children
+    for i = 1, #children do
+      if children[i].class == "Button" then
+        local but = children[i]
+        function but.OnButtonPressed()
+          self.refreshing = self.idAutoRefresh:GetState()
+          CreateRealTimeThread(function()
+            while self.refreshing do
+              self:AddContentToList(self.obj)
+              Sleep(1000)
+            end
+          end)
+        end
+      end
+    end
+
   end --init
 
+--[[
   function ObjectManipulator:PostInit()
-  print("PostInit")
+    print("PostInit")
   end
+--]]
 
   function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
-      self.idClose:Press()
-      return "break"
-    elseif virtual_key == const.vkSpace then
-      self.idCheckBox1:SetToggled(not self.idCheckBox1:GetToggled())
+      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
+        self.idClose:Press()
+      end
+      self:SetFocus()
       return "break"
     end
     return "continue"
   end
 
-  function ObjectManipulator:HyperLink(f, custom_color)
-    table.insert(self.onclick_handles, f)
-    return (custom_color or "<color 150 170 250>") .. "<h " .. #self.onclick_handles .. " 230 195 50>"
+  function ObjectManipulator:AddContentToList(obj)
+    --check for scroll pos
+    local scrollpos = self.idList.vscrollbar:GetPosition()
+    --create prop list for list
+    local list = self:CreatePropList(obj)
+    if not list then
+      local err = "Error opening" .. tostring(obj)
+      self.idList:SetContent({{text=err,value=err}})
+      return
+    end
+    --populate it
+    self.idList:SetContent(list)
+    --and scroll to saved pos
+    self.idList.vscrollbar:SetPosition(scrollpos)
+  end
+
+  function ObjectManipulator:ViewObject(obj)
+    ShowMe(obj)
+    ClearShowMe()
+    SelectObj(obj)
+  end
+
+  --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
+  function ObjectManipulator:OnCreate(item,list)
+    local data_instance = item.ItemDataInstance or list:GetItemDataInstance()
+    local view_name = item and item.ItemSubview or list:GetItemSubview()
+    if data_instance ~= "" and view_name ~= "" then
+      self.DesignerFile = data_instance
+      self:SetDesignerFileView(view_name)
+      if InDesigner(list) and #self.children == 0 then
+        self:SetSize(point(25, 25))
+      end
+    else
+      local text_item = StaticText:new(self)
+      text_item:SetBackgroundColor(0)
+      text_item:SetId("text")
+      text_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
+      local item_spacing = list.item_spacing * list:GetWindowScale() / 100
+      local width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
+      local _, height = text_item:MeasureText(item.text or "", nil, nil, nil, width)
+      height = Min(720, height)
+      text_item:SetSize(point(width, height))
+      --newly added
+      local value_item = StaticText:new(self)
+      value_item:SetBackgroundColor(0)
+      value_item:SetId("value")
+      value_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
+      local item_spacing = list.item_spacing * list:GetWindowScale() / 100
+      local value_width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
+      local _, value_height = value_item:MeasureText(item.text or "", nil, nil, nil, value_width)
+      value_height = Min(720, value_height)
+      value_item:SetSize(point(value_width, value_height))
+      value_item:SetPos(point(width - 250, value_item:GetY()))
+      --newly added
+    end
+    for i = 1, #self.children do
+      local child = self.children[i]
+      if item[child.id] and child:HasMember("SetText") then
+        child:SetText(item[child.id])
+      elseif item[child.id] and child:HasMember("SetImage") then
+        child:SetImage(item[child.id])
+      end
+    end
+    self:SetHint(item.rollover)
+    if item.ZOrder then
+      self:SetZOrder(item.ZOrder)
+    end
   end
 
   function ObjectManipulator:filtersmarttable(e)
@@ -149,29 +246,195 @@ end
   end
 
   function ObjectManipulator:evalsmarttable(format_text, e)
-  local touched = {}
-  local i = 0
-  format_text = string.gsub(format_text, "{(%d-)}", function(s)
-    if #s == 0 then
-      i = i + 1
-    else
-      i = tonumber(s)
+    local touched = {}
+    local i = 0
+    format_text = string.gsub(format_text, "{(%d-)}", function(s)
+      if #s == 0 then
+        i = i + 1
+      else
+        i = tonumber(s)
+      end
+      touched[i + 1] = true
+      return "<color 255 255 128>" .. self:CreateProp(e[i + 2]) .. "</color>"
+    end)
+    for i = 2, #e do
+      if not touched[i] then
+        format_text = format_text .. " <color 255 255 128>[" .. self:CreateProp(e[i]) .. "]</color>"
+      end
     end
-    touched[i + 1] = true
-    return "<color 255 255 128>" .. ChoGGi.CreateProp(e[i + 2]) .. "</color>"
-  end)
-  for i = 2, #e do
-    if not touched[i] then
-      format_text = format_text .. " <color 255 255 128>[" .. ChoGGi.CreateProp(e[i]) .. "]</color>"
-    end
+    return format_text
   end
-  return format_text
-end
+
+  function ObjectManipulator:CreateProp(o)
+    local ShowPoint = function()
+      if IsValid(o) then
+        ShowMe(o)
+      end
+    end
+
+    if type(o) == "function" then
+      local debug_info = debug.getinfo(o, "Sn")
+      --return self:HyperLink(ShowPoint) .. tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
+      return tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
+    end
+
+    if IsValid(o) then
+      --return self:HyperLink(ShowPoint) .. o.class .. "@" .. self:CreateProp(o:GetPos())
+      return o.class .. "@" .. self:CreateProp(o:GetPos())
+    end
+
+    if IsPoint(o) then
+      local res = {
+        o:x(),
+        o:y(),
+        o:z()
+      }
+      --return self:HyperLink(ShowPoint) .. "(" .. table.concat(res, ",") .. ")"
+      return "(" .. table.concat(res, ",") .. ")"
+    end
+
+    if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
+      local res = {}
+      for i = 1, Min(#o, 3) do
+        table.insert(res, {text = i,value = self:CreateProp(o[i])})
+        --table.insert(res, i .. " = " .. self:CreateProp(o[i]))
+      end
+      if #o > 3 then
+        table.insert(res, {text = "..."})
+      end
+      --return self:HyperLink(ShowPoint) .. "objlist" .. "{" .. table.concat(res, ", ") .. "}"
+      return "objlist" .. "{" .. table.concat(res, ", ") .. "}"
+    end
+
+    if type(o) == "thread" then
+      --return self:HyperLink(ShowPoint) .. tostring(o)
+      return tostring(o)
+    end
+
+    if type(o) == "string" then
+      return o
+    end
+
+    if type(o) == "table" then
+      if IsT(o) then
+        --return self:HyperLink(ShowPoint) .. "T{\"" .. _InternalTranslate(o) .. "\"}"
+        return "T{\"" .. _InternalTranslate(o) .. "\"}"
+      else
+        local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
+        --return self:HyperLink(ShowPoint) .. text
+        return text
+      end
+    end
+
+    return tostring(o)
+
+  end
+
+  function ObjectManipulator:CreatePropList(o)
+    local res = {}
+    local sort = {}
+    local ShowPoint = function()
+      if IsValid(o) then
+        ShowMe(o)
+      end
+    end
+
+    if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
+      for k, v in pairs(o) do
+        table.insert(res,{
+          text = self:CreateProp(k),
+          value = self:CreateProp(v),
+          object = v
+        })
+        --table.insert(res,{text =  self:CreateProp(k) .. " = " .. self:CreateProp(v)})
+        if type(k) == "number" then
+          sort[res[#res]] = k
+        end
+      end
+    else
+      if type(o) == "thread" then
+        local info, level, _ = true, 0, nil
+        while true do
+          info = debug.getinfo(o, level, "Slfun")
+          if info then
+            --table.insert(res,{text = self:HyperLink(ShowPoint(level, info)) .. info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
+            table.insert(res,{text = info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
+            level = level + 1
+            else
+              if type(o) == "function" then
+                local i = 1
+                while true do
+                  local k, v = debug.getupvalue(o, i)
+                  if k ~= nil then
+                    table.insert(res, {
+                      text = self:CreateProp(k),
+                      value = self:CreateProp(v),
+                      object = v
+                    })
+                    --table.insert(res, {text = self:CreateProp(k) .. " = " .. self:CreateProp(v)})
+                    i = i + 1
+                    elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
+                      table.insert(res,{
+                      text =  self:CreateProp(o),
+                      value = self:CreateProp(o),
+                      object = o
+                      })
+                    end
+                  end
+                end
+            end
+          end
+        end
+    end
+
+    table.sort(res, function(a, b)
+      if sort[a.text] and sort[b.text] then
+        return sort[a.text] < sort[b.text]
+      end
+      if sort[a.text] or sort[b.text] then
+        return sort[a.text] and true
+      end
+      return CmpLower(a.text, b.text)
+    end)
+
+    if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
+      local items = 1
+      for i = 1, #o do
+        if not (items >= self.page * 150) then
+          local format_text, e = self:filtersmarttable(o[i])
+          if format_text then
+            items = items + 1
+            if items >= (self.page - 1) * 150 then
+              local t = self:evalsmarttable(format_text, e)
+              if t then
+                if self.show_times ~= "relative" then
+                  t = "<color 255 255 0>" .. tostring(e[1]) .. "</color>:" .. t
+                else
+                  t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
+                end
+                table.insert(res,{text =  t .. "<vspace 8>"})
+              end
+            end
+          end
+        end
+      end
+    end
+  --meh
+  ClearShowMe()
+
+    --ex(res)
+    return res
+    --return Untranslated(table.concat(res, "\n"))
+
+    --local List
+    --return List
+  end
+
+
 
 end --ClassesGenerate
 
 function ChoGGi.ObjectManipulator_ClassesBuilt()
-
   --dialog layout
   --[[
   DesignResolution
@@ -199,6 +462,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
       SizeOrg = point(650, 450),
       HorizontalResize = true,
       VerticalResize = true,
+      Hint = "You can only change strings/numbers/booleans.",
     },
     subviews = {
       {
@@ -212,8 +476,8 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           FontStyle = "Editor14Bold",
           HandleMouse = false,
           Subview = "default",
-          HSizing = "0, 1, 0",
-          VSizing = "0, 1, 0",
+          HSizing = "Resize",
+          VSizing = "Resize",
           PosOrg = point(250, 101),
           SizeOrg = point(390, 22),
         },
@@ -223,12 +487,10 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           CloseDialog = true,
           --FontStyle = "Editor14Bold",
           Image = "CommonAssets/UI/Controls/Button/Close.tga",
+          Hint = "Closes dialog.",
           --ImageType = "aaaaa",
-          Subview = "default",
-          --Text = "X",
-          --HSizing = "1, 0, 1",
           HSizing = "AnchorToRight",
-          VSizing = "1, 0, 0",
+          Subview = "default",
           PosOrg = point(729, 103),
           SizeOrg = point(18, 18),
         },
@@ -242,15 +504,12 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
           --ImageType = "aaaaa",
           Text = "Auto-Refresh",
-          Hint = "Auto-refresh list every second (removes any unapplied values).",
+          Hint = "Auto-refresh list every second (turn off to edit values).",
           Subview = "default",
-          --HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0",
           PosOrg = point(115, 128),
           SizeOrg = point(164, 17),
         },
         --row of buttons
-
         {
           Id = "idRefresh",
           Class = "Button",
@@ -259,9 +518,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           --FontStyle = "Editor14Bold",
           Subview = "default",
           Text = "Refresh",
-          Hint = "Refresh list without applying changed values.",
-          --HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0",
+          Hint = "Refresh list.",
           PosOrg = point(115, 150),
           SizeOrg = point(65, 26),
         },
@@ -274,37 +531,26 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Subview = "default",
           Text = "Goto Obj",
           Hint = "View object on map.",
-          --HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0",
           PosOrg = point(185, 150),
           SizeOrg = point(75, 26),
         },
         {
-          Id = "idApply",
+          Id = "idApplyAll",
           Class = "Button",
           TextHAlign = "center",
           TextVAlign = "center",
           --FontStyle = "Editor14Bold",
           Subview = "default",
-          Text = "Apply",
-          Hint = "Apply unsaved values to object.",
-          --HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0",
+          Text = "Apply To All",
+          Hint = "Apply selected value to all objects of the same type.",
           PosOrg = point(280, 150),
-          SizeOrg = point(65, 26),
+          SizeOrg = point(90, 26),
         },
         --list
         {
-        --  column_or_row_sizes = false,
-  --columns = 0,
-
           Id = "idList",
           Class = "List",
-          --Class = "AccordionList",
           ShowPartialItems = true,
-          --ByRows = true, --When true the list box orders the items in rows, otherwise in columns
-          --Single = false, --When true the list box shows only one item per row or column
-          ScrollPadding = 1,
           FontStyle = "Editor14Bold",
           RolloverFontStyle = "Editor14",
           ScrollBar = true,
@@ -314,8 +560,8 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           BackgroundColor = RGB(50, 50, 50),
           Spacing = point(8, 2),
           Subview = "default",
-          HSizing = "0, 1, 0",
-          VSizing = "0, 1, 0",
+          HSizing = "Resize",
+          VSizing = "Resize",
           PosOrg = point(104, 180),
           SizeOrg = point(642, 330),
         },
@@ -331,11 +577,10 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Spacing = 10,
           TextVAlign = "center",
           Hint = "Use to change values of selected list item.",
-          --HSizing = "1, 0, 1",
-          HSizing = "0, 1, 0",
-          VSizing = "1, 0, 0",
-          PosOrg = point(106, 513),
-          SizeOrg = point(385, 28),
+          HSizing = "Resize",
+          VSizing = "AnchorToBottom",
+          PosOrg = point(106, 514),
+          SizeOrg = point(640, 28),
         },
 
       }

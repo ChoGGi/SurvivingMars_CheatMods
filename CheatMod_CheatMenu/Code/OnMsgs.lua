@@ -581,11 +581,12 @@ function OnMsg.ApplicationQuit()
     return
   end
 
-  --save any unsaved settings on exit
+  --return before it saves settings
   if ChoGGi.Testing then
     return
   end
 
+  --save any unsaved settings on exit
   ChoGGi.WriteSettings()
 end
 

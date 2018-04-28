@@ -372,13 +372,29 @@ function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
   end
 end
 
---tries to convert "65" to 65
-function ChoGGi.RetNumOrString(Value)
-  local ret = tonumber(Value)
-  if not ret then
-    ret = Value
+function toboolean(Str)
+  if Str == "true" then
+    return true
+  elseif Str == "false" then
+    return false
   end
-  return ret
+end
+
+--tries to convert "65" to 65 or "true"/"false" to true/false
+function ChoGGi.RetProperType(Value)
+  --number?
+  local ret = tonumber(Value)
+  if ret then
+    return ret
+  end
+  --stringy boolean
+  if Value == "true" then
+    return true
+  elseif Value == "false" then
+    return false
+  end
+  --then it's a string (probably)
+  return Value
 end
 
 --change some annoying stuff about UserActions.AddActions()

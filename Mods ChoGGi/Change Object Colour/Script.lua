@@ -14,8 +14,8 @@ function OnMsg.ClassesGenerate()
     DataInstances.UIDesignerData.ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     --set some values...
-    self.idCustomValue.display_text = "Add Custom Value"
-    self.choices = {}
+    self.idEditValue.display_text = "Add Custom Value"
+    self.choices = false
     self.sel = false
     self.CustomType = nil
     self.colorpicker = nil
@@ -24,8 +24,8 @@ function OnMsg.ClassesGenerate()
     self.idList:SetHSizing("Resize")
 
     --add some padding before the text
-    --self.idCustomValue.DisplacementPos = 0
-    --self.idCustomValue.DisplacementWidth = 10
+    --self.idEditValue.DisplacementPos = 0
+    --self.idEditValue.DisplacementWidth = 10
 
     --do stuff on selection
     local origOnLButtonDown = self.idList.OnLButtonDown
@@ -34,9 +34,10 @@ function OnMsg.ClassesGenerate()
 
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-      --are we updating the custom value box?
+      --update the custom value box
+      self.idEditValue:SetText(tostring(self.sel.value))
       if type(self.CustomType) == "number" then
-        self.idCustomValue:SetText(tostring(self.sel.value))
+        --2 = showing the colour picker
         if self.CustomType == 2 then
           self:UpdateColourPicker()
         end
@@ -51,17 +52,16 @@ function OnMsg.ClassesGenerate()
       --update item
       self.idList.items[self.idList.last_selected].value = color
       --custom value box
-      self.idCustomValue:SetText(tostring(color))
+      self.idEditValue:SetText(tostring(color))
     end
 
     self.idList.OnRButtonDoubleClick = function()
-      self.idCustomValue:SetText(self.sel.text)
+      self.idEditValue:SetText(self.sel.text)
     end
 
     --update custom value list item
-    --function self.idCustomValue.OnValueChanged()
-    function self.idCustomValue.OnValueChanged()
-      local value = ChoGGiX.RetNumOrString(self.idCustomValue:GetValue())
+    function self.idEditValue.OnValueChanged()
+      local value = ChoGGiX.RetProperType(self.idEditValue:GetValue())
 
       if type(self.CustomType) == "number" then
         self.idList.items[self.idList.last_selected].value = value
@@ -80,30 +80,20 @@ function OnMsg.ClassesGenerate()
       ChoGGiX.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
       ChoGGiX.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
 
-      --get sel item(s)
-      local items = self.idList:GetSelection()
-      --get all items
-      if type(self.CustomType) == "number" then
-        items = self.idList.items
-      end
-      for i = 1, #items do
-        if i == 1 then
-          --always return the custom value
-          local number = tonumber(self.idCustomValue:GetText())
-          if number then
-            items[i].custom = number
-          else
-            items[i].custom = self.idCustomValue:GetText()
-          end
-        end
-        table.insert(self.choices,items[i])
-      end
+      self:GetAllItems()
       --send selection back
       self:delete(self.choices)
     end
 
-    --dblclick to ret item
-    self.idList.OnDoubleClick = self.idOK.OnButtonPressed
+    self.idList.OnDoubleClick = function()
+      if type(self.CustomType) == "number" and self.CustomType == 1 then
+        --dblclick to open item
+        ChoGGiX.ChangeObjectColour(self.sel.obj)
+      else
+        --dblclick to ret item
+        self.idOK.OnButtonPressed()
+      end
+    end
 
     --hook into SetContent so we can add OnSetState to each list item to show hints
     self.idList.Orig_SetContent = self.idList.SetContent
@@ -133,15 +123,36 @@ function OnMsg.ClassesGenerate()
 
   --update colour
   function ListChoiceCustomDialog:UpdateColourPicker()
-    local num = ChoGGiX.RetNumOrString(self.idCustomValue:GetText())
+    local num = ChoGGiX.RetProperType(self.idEditValue:GetText())
     self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
     self.idColorHSV:InitHSVPtPos()
     self.idColorHSV:Invalidate()
   end
 
+  function ListChoiceCustomDialog:GetAllItems()
+    --always start with blank choices
+    self.choices = {}
+    --get sel item(s)
+    local items = self.idList:GetSelection()
+    --get all items
+    if type(self.CustomType) == "number" then
+      items = self.idList.items
+    end
+    for i = 1, #items do
+      if i == 1 then
+        --always return the custom value (and try to convert it to correct type)
+        items[i].custom = ChoGGiX.RetProperType(self.idEditValue:GetText())
+      end
+      table.insert(self.choices,items[i])
+    end
+  end
+
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
-      self.idCancel:Press()
+      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
+        self.idClose:Press()
+      end
+      self:SetFocus()
       return "break"
     elseif virtual_key == const.vkEnter then
       self.idOK:Press()
@@ -205,7 +216,6 @@ function OnMsg.ClassesBuilt()
           Id = "idList",
           Class = "List",
           ShowPartialItems = true,
-          ScrollPadding = 1,
           SelectionColor = RGB(0, 0, 0),
           FontStyle = "Editor14",
           PosOrg = point(105, 123),
@@ -220,7 +230,7 @@ function OnMsg.ClassesBuilt()
           VSizing = "0, 1, 0"
         },
         {
-          Id = "idCustomValue",
+          Id = "idEditValue",
           Class = "SingleLineEdit",
           AutoSelectAll = true,
           NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
@@ -239,7 +249,6 @@ function OnMsg.ClassesBuilt()
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          ImageType = "aaaaa",
           PosOrg = point(110, 440),
           SizeOrg = point(164, 17),
           Subview = "default",
@@ -252,7 +261,6 @@ function OnMsg.ClassesBuilt()
           Text = "PlaceHolder",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          ImageType = "aaaaa",
           PosOrg = point(300, 440),
           SizeOrg = point(164, 17),
           Subview = "default",
@@ -273,7 +281,7 @@ function OnMsg.ClassesBuilt()
           VSizing = "1, 0, 0"
         },
         {
-          Id = "idCancel",
+          Id = "idClose",
           Class = "Button",
           CloseDialog = true,
           FontStyle = "Editor14Bold",
@@ -368,10 +376,16 @@ function OnMsg.LoadGame()
   end
 
   function ChoGGiX.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-    local dlg = OpenDialog("ListChoiceCustomDialog", nil,terminal.desktop)
+  local dlg = ListChoiceCustomDialog:new()
 
-  --easier to fiddle with it like this (remove sometime)
-  ChoGGiX.ListChoiceCustomDialog_Dlg = dlg
+  if not dlg then
+    return
+  end
+
+  if ChoGGiX.Testing then
+--easier to fiddle with it like this
+ChoGGiX.ListChoiceCustomDialog_Dlg = dlg
+  end
 
     --title text
     dlg.idCaption:SetText(Caption)
@@ -380,14 +394,14 @@ function OnMsg.LoadGame()
 
     --fiddling with custom value
     if CustomType then
-      dlg.idCustomValue.auto_select_all = false
+    dlg.idEditValue.auto_select_all = false
       dlg.CustomType = CustomType
       if dlg.CustomType == 2 then
         dlg.idColorHSV:SetVisible(true)
         dlg:SetWidth(800)
         dlg.idList:SetSelection(1, true)
         dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-        dlg.idCustomValue:SetText(tostring(dlg.sel.value))
+      dlg.idEditValue:SetText(tostring(dlg.sel.value))
         dlg:UpdateColourPicker()
       end
     end
@@ -446,13 +460,22 @@ function OnMsg.LoadGame()
       return tostring(a[sName]) < tostring(b[sName])
     end
   end
-  function ChoGGiX.RetNumOrString(Value)
+  function ChoGGiX.RetProperType(Value)
+    --number?
     local ret = tonumber(Value)
-    if not ret then
-      ret = Value
+    if ret then
+      return ret
     end
-    return ret
+    --stringy boolean
+    if Value == "true" then
+      return true
+    elseif Value == "false" then
+      return false
+    end
+    --then it's a string (probably)
+    return Value
   end
+
 
   function ChoGGiX.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
     if not Func or not Items or (Items and #Items == 0) then
@@ -474,24 +497,62 @@ function OnMsg.LoadGame()
 
     CreateRealTimeThread(function()
       local option = ChoGGiX.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-      if option ~= "idCancel" then
+    if option ~= "idClose" then
         Func(option)
       end
     end)
   end
 
-function ChoGGiX.ChangeBuildingColour()
-  local sel = SelectedObj or SelectionMouseObj()
-  if not sel and not sel:IsKindOf("ColorizableObject") then
+--build n show a list of attaches for changing colour
+  function ChoGGiX.CreateObjectListAndAttaches()
+    local obj = SelectedObj or SelectionMouseObj()
+    local ItemList = {}
+
+    --has no Attaches so just open as is
+    if obj:GetNumAttaches() == 0 then
+      ChoGGiX.ChangeObjectColour(obj)
+      return
+    else
+      table.insert(ItemList,{
+        text = " " .. obj.class,
+        obj = obj,
+        hint = "Change main object colours."
+      })
+      local Attaches = obj:GetAttaches()
+      for i = 1, #Attaches do
+        table.insert(ItemList,{
+          text = Attaches[i].class,
+          obj = Attaches[i],
+          hint = "Change colours of a part of an object."
+        })
+      end
+    end
+
+    --callback
+    local CallBackFunc = function(choice)
+      ChoGGiX.ChangeObjectColour(choice[1].obj)
+    end
+
+    local hint = "Double click to open object/attachment to edit."
+    ChoGGiX.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
+  end
+
+  function ChoGGiX.ChangeObjectColour(obj)
+  if not obj and not obj:IsKindOf("ColorizableObject") then
     ChoGGiX.MsgPopup("Can't colour object","Colour")
     return
   end
   --SetPal(sel,i,Color,Roughness,Metallic)
-  local SetPal = sel.SetColorizationMaterial
-  local GetPal = sel.GetColorizationMaterial
-  local pal = ChoGGiX.GetPalette(sel)
+  local SetPal = obj.SetColorizationMaterial
+  local GetPal = obj.GetColorizationMaterial
+  local pal = ChoGGiX.GetPalette(obj)
 
   local ItemList = {}
+  table.insert(ItemList,{
+    text = "X_BaseColour",
+    value = 6579300,
+    hint = "single colour for object (if you really want to change the colour of something you can't above).",
+  })
   for i = 1, 4 do
     table.insert(ItemList,{
       text = "Colour " .. i,
@@ -512,8 +573,9 @@ function ChoGGiX.ChangeBuildingColour()
 
   --callback
   local CallBackFunc = function(choice)
-    if #choice == 12 then
+    if #choice == 13 then
       --keep original colours as part of object
+      local base = choice[13].value
       local function saveold(obj)
         if not obj.ChoGGi_origcolors then
           obj.ChoGGi_origcolors = {}
@@ -541,42 +603,59 @@ function ChoGGiX.ChangeBuildingColour()
       )
 
       if ChoGGiX.ListChoiceCustomDialog_CheckBox1 then
-        for _,building in ipairs(UICity.labels[sel.class] or empty_table) do
+        for _,building in ipairs(UICity.labels[obj.class] or empty_table) do
           if ChoGGiX.ListChoiceCustomDialog_CheckBox2 then
             restoreold(building)
+            --6579300 = reset color mod thingy
+            building:SetColorModifier(6579300)
           else
-            saveold(building)
-            for i = 1, 4 do
-              local Color = choice[i].value
-              local Metallic = choice[i+4].value
-              local Roughness = choice[i+8].value
-              SetPal(building,i,Color,Roughness,Metallic)
+            if base == 6579300 then
+              saveold(building)
+              for i = 1, 4 do
+                local Color = choice[i].value
+                local Metallic = choice[i+4].value
+                local Roughness = choice[i+8].value
+                SetPal(building,i,Color,Roughness,Metallic)
+              end
+            else
+              building:SetColorModifier(base)
             end
           end
         end
       else
         if ChoGGiX.ListChoiceCustomDialog_CheckBox2 then
-          restoreold(sel)
+          restoreold(obj)
+          obj:SetColorModifier(6579300)
         else
-          saveold(sel)
-          for i = 1, 4 do
-            local Color = choice[i].value
-            local Metallic = choice[i+4].value
-            local Roughness = choice[i+8].value
-            SetPal(sel,i,Color,Roughness,Metallic)
+          if base == 6579300 then
+            saveold(obj)
+            for i = 1, 4 do
+              local Color = choice[i].value
+              local Metallic = choice[i+4].value
+              local Roughness = choice[i+8].value
+              SetPal(obj,i,Color,Roughness,Metallic)
+            end
+          else
+            obj:SetColorModifier(base)
           end
         end
       end
 
-      ChoGGiX.MsgPopup("Colour is set on " .. sel.encyclopedia_id,"Colour")
+      ChoGGiX.MsgPopup("Colour is set on " .. obj.encyclopedia_id,"Colour")
     end
   end
   local hint = "If number is 8421504 (0 for Metallic/Roughness) then you can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
-  ChoGGiX.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour (of some buildings)",hint,true,"All of type","Change all objects of the same type.","Default Colour","if they're there; resets to default colours.",2)
+  local hint_check1 = "Change all objects of the same type."
+  local hint_check2 = "if they're there; resets to default colours."
+  ChoGGiX.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
 end
+
+
+
+
   ChoGGiX.AddAction(
     "Expanded CM/Buildings/Change Colour",
-    ChoGGiX.ChangeBuildingColour,
+    ChoGGiX.CreateObjectListAndAttaches,
     "F6",
     "Select a building to change the colour (of some buildings).",
     "toggle_dtm_slots.tga"

@@ -17,6 +17,7 @@ Enable with in-game mod manager
 F2: Toggle the cheats menu.
 F3: Set object opacity.
 F4: Open object examiner.
+F5: Open object manipulator (or use edit button in examiner).
 F6: Change building colour.
 F7: Toggle using last building orientation.
 F9: Clear the console log.
