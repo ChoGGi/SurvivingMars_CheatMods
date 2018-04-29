@@ -229,13 +229,18 @@ function ChoGGi.SetConstsToSaved()
   ChoGGi.SetConstsG("TravelTimeMarsEarth",ChoGGi.CheatMenuSettings.TravelTimeMarsEarth)
   ChoGGi.SetConstsG("VisitFailPenalty",ChoGGi.CheatMenuSettings.VisitFailPenalty)
 --const.
-  const.BreakThroughTechsPerGame = ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame
-  const.ExplorationQueueMaxSize = ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize
-  const.fastGameSpeed = ChoGGi.CheatMenuSettings.fastGameSpeed
-  const.mediumGameSpeed = ChoGGi.CheatMenuSettings.mediumGameSpeed
-  const.MoistureVaporatorPenaltyPercent = ChoGGi.CheatMenuSettings.MoistureVaporatorPenaltyPercent
-  const.MoistureVaporatorRange = ChoGGi.CheatMenuSettings.MoistureVaporatorRange
-  const.ResearchQueueSize = ChoGGi.CheatMenuSettings.ResearchQueueSize
+  local function setconst(con)
+    if ChoGGi.CheatMenuSettings[con] then
+      const[con] = ChoGGi.CheatMenuSettings[con]
+    end
+  end
+  setconst("BreakThroughTechsPerGame")
+  setconst("ExplorationQueueMaxSize")
+  setconst("fastGameSpeed")
+  setconst("mediumGameSpeed")
+  setconst("MoistureVaporatorPenaltyPercent")
+  setconst("ResearchQueueSize")
+  setconst("MoistureVaporatorRange")
 end
 
 --called everytime we set a setting in menu

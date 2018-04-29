@@ -296,6 +296,7 @@ function ChoGGi.RemoveOldFiles()
     ChoGGi.CheatMenuSettings.SponsorParadox = nil
     ChoGGi.CheatMenuSettings.SponsorRoscosmos = nil
     ChoGGi.CheatMenuSettings.SponsorSpaceY = nil
+    ChoGGi.CheatMenuSettings.CapacityShuttle = nil
   end)
 end
 
