@@ -233,6 +233,9 @@ end
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
 ---Consts.XXX = ChoGGi.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
 function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
+  if type(Num) ~= "number" then
+    return
+  end
   local Bool = true
   if Num < 1 then
     Bool = nil
