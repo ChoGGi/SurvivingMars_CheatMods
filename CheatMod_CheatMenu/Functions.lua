@@ -375,6 +375,30 @@ function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
   end
 end
 
+--ex(UICity.labels.GridElements)
+
+function ChoGGi.RemoveMissingLabelObjects(Label)
+  local found = true
+  while found do
+    found = nil
+    for Key,Object in ipairs(UICity.labels[Label] or empty_table) do
+      if tostring(Object:GetPos()) == "(0, 0, 0)" then
+        table.remove(UICity.labels[Label],Key)
+        found = true
+        break
+      end
+    end
+  end
+end
+
+function ChoGGi.RemoveFromLabel(Label,Obj)
+  for Key,Object in ipairs(UICity.labels[Label] or empty_table) do
+    if Object.handle == Obj.handle then
+      table.remove(UICity.labels[Label],Key)
+    end
+  end
+end
+
 function toboolean(Str)
   if Str == "true" then
     return true
@@ -395,6 +419,9 @@ function ChoGGi.RetProperType(Value)
     return true
   elseif Value == "false" then
     return false
+  end
+  if Value == "nil" then
+    return
   end
   --then it's a string (probably)
   return Value
@@ -462,15 +489,15 @@ print("\n")
   --UserActions.RejectedActions()
   ChoGGi.UserAddActions({
     ["ChoGGi_" .. AsyncRand()] = {
-      menu = Menu or nil,
-      action = Action or nil,
-      key = Key or nil,
+      menu = Menu,
+      action = Action,
+      key = Key,
       description = Des or "",
-      icon = Icon or nil,
-      toolbar = Toolbar or nil,
-      mode = Mode or nil,
-      xinput = xInput or nil,
-      toolbar_default = ToolbarDefault or nil
+      icon = Icon,
+      toolbar = Toolbar,
+      mode = Mode,
+      xinput = xInput,
+      toolbar_default = ToolbarDefault
     }
   })
 end
@@ -506,16 +533,23 @@ function ChoGGi.ReturnTechAmount(Tech,Prop)
     if v.Prop == Prop then
       Tech = v
       local RetObj = {}
+
       if Tech.Percent then
-        RetObj.p = (Tech.Percent * -1 + 0.0) / 100 -- (-50 > 50 > 50.0) > 0.50
+        local percent = Tech.Percent
+        if percent < 0 then
+          percent = percent * -1 -- -50 > 50
+        end
+        RetObj.p = (percent + 0.0) / 100 -- (50 > 50.0) > 0.50
       end
+
       if Tech.Amount then
-        if Tech.Amount <= 0 then
+        if Tech.Amount < 0 then
           RetObj.a = Tech.Amount * -1 -- always gotta be positive
         else
           RetObj.a = Tech.Amount
         end
       end
+
       --With enemies you know where they stand but with Neutrals, who knows?
       if RetObj.a == 0 then
         return RetObj.p

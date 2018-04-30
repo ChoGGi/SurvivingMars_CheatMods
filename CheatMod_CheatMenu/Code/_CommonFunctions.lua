@@ -25,6 +25,29 @@ c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
 
 --check if tech is researched before we set these consts (activated from menu items)
+function ChoGGi.GetSpeedDrone()
+  local MoveSpeed = ChoGGi.Consts.SpeedDrone
+
+  if UICity and UICity:IsTechResearched("LowGDrive") then
+    local p = ChoGGi.ReturnTechAmount("LowGDrive","move_speed")
+    MoveSpeed = MoveSpeed + MoveSpeed * p
+  end
+  if UICity and UICity:IsTechResearched("AdvancedDroneDrive") then
+    local p = ChoGGi.ReturnTechAmount("AdvancedDroneDrive","move_speed")
+    MoveSpeed = MoveSpeed + MoveSpeed * p
+  end
+
+  return MoveSpeed
+end
+
+function ChoGGi.GetSpeedRC()
+  if UICity and UICity:IsTechResearched("LowGDrive") then
+    local p = ChoGGi.ReturnTechAmount("LowGDrive","move_speed")
+    return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
+  end
+  return ChoGGi.Consts.SpeedRC
+end
+
 function ChoGGi.GetCargoCapacity()
   if UICity and UICity:IsTechResearched("FuelCompression") then
     local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity")
@@ -636,6 +659,9 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
     dlg.CustomType = CustomType
     if dlg.CustomType == 2 then
       dlg.idColorHSV:SetVisible(true)
+      dlg.idColorCheckAir:SetVisible(true)
+      dlg.idColorCheckWater:SetVisible(true)
+      dlg.idColorCheckElec:SetVisible(true)
       dlg:SetWidth(800)
       dlg.idList:SetSelection(1, true)
       dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
@@ -692,7 +718,7 @@ ChoGGi.ListChoiceCustomDialog_Dlg = dlg
 end
 
 function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-  if not Func or not Items or (Items and #Items == 0) then
+  if not Func or not Items then
     return
   end
 
@@ -754,13 +780,35 @@ function ChoGGi.FuckingDrones(producer)
   end
 end
 
+function ChoGGi.SaveOldPalette(obj)
+  local GetPal = obj.GetColorizationMaterial
+  if not obj.ChoGGi_origcolors then
+    obj.ChoGGi_origcolors = {}
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
+    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
+  end
+end
+function ChoGGi.RestoreOldPalette(obj)
+  if obj.ChoGGi_origcolors then
+    local c = obj.ChoGGi_origcolors
+    local SetPal = obj.SetColorizationMaterial
+    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+    obj.ChoGGi_origcolors = nil
+  end
+end
+
 function ChoGGi.GetPalette(Obj)
-  local get = Obj.GetColorizationMaterial
+  local g = Obj.GetColorizationMaterial
   local pal = {}
-  pal.Color1, pal.Roughness1, pal.Metallic1 = get(Obj, 1)
-  pal.Color2, pal.Roughness2, pal.Metallic2 = get(Obj, 2)
-  pal.Color3, pal.Roughness3, pal.Metallic3 = get(Obj, 3)
-  pal.Color4, pal.Roughness4, pal.Metallic4 = get(Obj, 4)
+  pal.Color1, pal.Roughness1, pal.Metallic1 = g(Obj, 1)
+  pal.Color2, pal.Roughness2, pal.Metallic2 = g(Obj, 2)
+  pal.Color3, pal.Roughness3, pal.Metallic3 = g(Obj, 3)
+  pal.Color4, pal.Roughness4, pal.Metallic4 = g(Obj, 4)
   return pal
 end
 
@@ -779,6 +827,16 @@ function ChoGGi.OpenInObjectManipulator(Object,Parent)
 --easier to fiddle with it like this
 ChoGGi.ObjectManipulator_Dlg = dlg
   end
+
+  --update internal object
+  dlg.obj = Object
+
+  local title = tostring(Object)
+  if type(Object) == "table" then
+    title = "Class: " .. Object.class
+  end
+
+  dlg.idAddNew:SetHint(dlg.idAddNew:GetHint() .. title .. ".")
 
   --title text
   if type(Object) == "table" then
@@ -801,10 +859,24 @@ ChoGGi.ObjectManipulator_Dlg = dlg
   else
     dlg:SetPos(terminal.GetMousePos())
   end
+  --update item list
+  dlg:UpdateListContent(Object)
 
-  --update internal object ref
-  dlg.obj = Object
+end
 
-  dlg:AddContentToList(Object)
+local function RemoveOldDialogs(Dialog,win)
+  while ChoGGi.CheckForTypeInList(win,Dialog) do
+    for i = 1, #win do
+      if IsKindOf(win[i],Dialog) then
+        win[i]:delete()
+      end
+    end
+  end
+end
 
+function ChoGGi.CloseDialogsECM()
+  local win = terminal.desktop
+  RemoveOldDialogs("Examine",win)
+  RemoveOldDialogs("ObjectManipulator",win)
+  RemoveOldDialogs("ListChoiceCustomDialog",win)
 end

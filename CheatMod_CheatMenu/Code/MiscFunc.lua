@@ -1,6 +1,10 @@
+
 --build n show a list of attaches for changing colour
 function ChoGGi.CreateObjectListAndAttaches()
   local obj = SelectedObj or SelectionMouseObj()
+  if not obj then
+    return
+  end
   local ItemList = {}
 
   --has no Attaches so just open as is
@@ -10,6 +14,7 @@ function ChoGGi.CreateObjectListAndAttaches()
   else
     table.insert(ItemList,{
       text = " " .. obj.class,
+      value = obj.class,
       obj = obj,
       hint = "Change main object colours."
     })
@@ -17,125 +22,149 @@ function ChoGGi.CreateObjectListAndAttaches()
     for i = 1, #Attaches do
       table.insert(ItemList,{
         text = Attaches[i].class,
+        value = Attaches[i].class,
+        parentobj = obj,
         obj = Attaches[i],
         hint = "Change colours of a part of an object."
       })
     end
   end
 
-  --callback
   local CallBackFunc = function(choice)
-    ChoGGi.ChangeObjectColour(choice[1].obj)
+    return
   end
 
   local hint = "Double click to open object/attachment to edit."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
 end
 
-function ChoGGi.SaveOldPalette(obj)
-  local GetPal = obj.GetColorizationMaterial
-  if not obj.ChoGGi_origcolors then
-    obj.ChoGGi_origcolors = {}
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
-  end
-end
-function ChoGGi.RestoreOldPalette(obj)
-  if obj.ChoGGi_origcolors then
-    local c = obj.ChoGGi_origcolors
-    local SetPal = obj.SetColorizationMaterial
-    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
-  end
-end
-
-function ChoGGi.ChangeObjectColour(obj)
+function ChoGGi.ChangeObjectColour(obj,Parent)
   if not obj and not obj:IsKindOf("ColorizableObject") then
     ChoGGi.MsgPopup("Can't colour object","Colour")
     return
   end
-  --SetPal(sel,i,Color,Roughness,Metallic)
+  --SetPal(Obj,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
   local pal = ChoGGi.GetPalette(obj)
 
   local ItemList = {}
-  table.insert(ItemList,{
-    text = "X_BaseColour",
-    value = 6579300,
-    obj = obj,
-    hint = "single colour for object (if you really want to change the colour of something you can't above).",
-  })
   for i = 1, 4 do
     table.insert(ItemList,{
       text = "Colour " .. i,
       value = pal["Color" .. i],
-      hint = "Use the colour picker.",
+      hint = "Use the colour picker (dbl-click for instant change).",
     })
     table.insert(ItemList,{
       text = "Metallic " .. i,
       value = pal["Metallic" .. i],
-      hint = "Don't use the colour picker. Numbers range from -255 to 255?",
+      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
     })
     table.insert(ItemList,{
       text = "Roughness " .. i,
       value = pal["Roughness" .. i],
-      hint = "Don't use the colour picker. Numbers range from -255 to 255?",
+      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
     })
   end
+  table.insert(ItemList,{
+    text = "X_BaseColour",
+    value = 6579300,
+    obj = obj,
+    hint = "single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).",
+  })
 
   --callback
   local CallBackFunc = function(choice)
     if #choice == 13 then
       --keep original colours as part of object
       local base = choice[13].value
+      --used to check for grid connections
+      local CheckAir = ChoGGi.ListChoiceCustomDialog_ColorCheckAir
+      local CheckWater = ChoGGi.ListChoiceCustomDialog_ColorCheckWater
+      local CheckElec = ChoGGi.ListChoiceCustomDialog_ColorCheckElec
+      --needed to set attachment colours
+      local Label = obj.class
+      local FakeParent
+      if Parent then
+        Label = Parent.class
+        FakeParent = Parent
+      else
+        FakeParent = obj.parentobj
+      end
+      if not FakeParent then
+        FakeParent = obj
+      end
+      --they get called a few times so
+      local function SetOrigColours(Object)
+        ChoGGi.RestoreOldPalette(Object)
+        --6579300 = reset base color
+        Object:SetColorModifier(6579300)
+      end
+      local function SetColours(Object)
+        ChoGGi.SaveOldPalette(Object)
+        for i = 1, 4 do
+          local Color = choice[i].value
+          local Metallic = choice[i+4].value
+          local Roughness = choice[i+8].value
+          SetPal(Object,i,Color,Roughness,Metallic)
+        end
+        Object:SetColorModifier(base)
+      end
+      --make sure we're in the same grid
+      local function CheckGrid(Func,Object,Building)
+        if CheckAir and Building.air and FakeParent.air and Building.air.grid.elements[1].building.handle == FakeParent.air.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if CheckWater and Building.water and FakeParent.water and Building.water.grid.elements[1].building.handle == FakeParent.water.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if CheckElec and Building.electricity and FakeParent.electricity and Building.electricity.grid.elements[1].building.handle == FakeParent.electricity.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if not CheckAir and not CheckWater and not CheckElec then
+          Func(Object)
+        end
+      end
 
+      --store table so it's the same as was displayed
       table.sort(choice,
         function(a,b)
           return ChoGGi.CompareTableNames(a,b,"text")
         end
       )
-
+      --All of type checkbox
       if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
-        for _,building in ipairs(UICity.labels[obj.class] or empty_table) do
-          if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-            ChoGGi.RestoreOldPalette(building)
-            --6579300 = reset color mod thingy
-            building:SetColorModifier(6579300)
-          else
-            ChoGGi.SaveOldPalette(building)
-            for i = 1, 4 do
-              local Color = choice[i].value
-              local Metallic = choice[i+4].value
-              local Roughness = choice[i+8].value
-              SetPal(building,i,Color,Roughness,Metallic)
+        for _,building in ipairs(UICity.labels[Label] or empty_table) do
+          if Parent then
+            local Attaches = building:GetAttaches()
+            for i = 1, #Attaches do
+              if Attaches[i].class == obj.class then
+                if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+                  CheckGrid(SetOrigColours,Attaches[i],building)
+                else
+                  CheckGrid(SetColours,Attaches[i],building)
+                end
+              end
             end
-            building:SetColorModifier(base)
-          end
-        end
-      else
+          else --not parent
+            if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+              CheckGrid(SetOrigColours,building,building)
+            else
+              CheckGrid(SetColours,building,building)
+            end
+          end --Parent
+        end --for
+      else --single building change
         if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-          ChoGGi.RestoreOldPalette(obj)
-          obj:SetColorModifier(6579300)
+          CheckGrid(SetOrigColours,obj,obj)
         else
-          ChoGGi.SaveOldPalette(obj)
-          for i = 1, 4 do
-            local Color = choice[i].value
-            local Metallic = choice[i+4].value
-            local Roughness = choice[i+8].value
-            SetPal(obj,i,Color,Roughness,Metallic)
-          end
-          obj:SetColorModifier(base)
+          CheckGrid(SetColours,obj,obj)
         end
       end
 
-      ChoGGi.MsgPopup("Colour is set on " .. obj.encyclopedia_id,"Colour")
+      ChoGGi.MsgPopup("Colour is set on " .. obj.class,"Colour")
     end
   end
-  local hint = "If number is 8421504 (0 for Metallic/Roughness) then you can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
+  local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
   local hint_check1 = "Change all objects of the same type."
   local hint_check2 = "if they're there; resets to default colours."
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)

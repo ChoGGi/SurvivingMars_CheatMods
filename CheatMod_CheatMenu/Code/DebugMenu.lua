@@ -2,6 +2,14 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "[102]Debug/Close Dialogs",
+    ChoGGi.CloseDialogsECM,
+    nil,
+    "Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)",
+    "remove_water.tga"
+  )
+
+  ChoGGi.AddAction(
     "[102]Debug/Object Manipulator",
     function()
       ChoGGi.OpenInObjectManipulator(SelectedObj or SelectionMouseObj())
@@ -92,61 +100,11 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "[102]Debug/Delete Selected Object",
+    "[102]Debug/Delete Object",
     ChoGGi.DeleteObject,
     "Ctrl-Alt-Shift-D",
     "Deletes selected object or object under mouse cursor (most obj, not all).",
-    "DeleteArea.tga"
-  )
-
-  ChoGGi.AddAction(
-    "[102]Debug/Asteroids/Meteor At Cursor",
-    function()
-      ChoGGi.MeteorBombardment(true)
-    end,
-    "Ctrl-Numpad 9",
-    "May have trouble aiming when an object is selected.",
-    "ToggleEnvMap.tga"
-  )
-
-  ChoGGi.AddAction(
-    "[102]Debug/Asteroids/Meteor Bombardment",
-    function()
-      ChoGGi.MeteorBombardment()
-    end,
-    nil,
-    "Zoom out",
-    "ToggleEnvMap.tga"
-  )
-
-  ChoGGi.AddAction(
-    "[102]Debug/Asteroids/Asteroid At Cursor",
-    function()
-      ChoGGi.AsteroidBombardment(1)
-    end,
-    "Ctrl-Numpad 8",
-    "Single shot.",
-    "ToggleEnvMap.tga"
-  )
-
-  ChoGGi.AddAction(
-    "[102]Debug/Asteroids/Asteroid Multi At Cursor",
-    function()
-      ChoGGi.AsteroidBombardment(2)
-    end,
-    "Ctrl-Numpad 7",
-    "Over and over.",
-    "ToggleEnvMap.tga"
-  )
-
-  ChoGGi.AddAction(
-    "[102]Debug/Asteroids/Asteroid Storm At Cursor",
-    function()
-      ChoGGi.AsteroidBombardment(3)
-    end,
-    "Ctrl-Numpad 6",
-    "Over and over.",
-    "ToggleEnvMap.tga"
+    "delete_objects.tga"
   )
 
   ChoGGi.AddAction(

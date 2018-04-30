@@ -2,6 +2,15 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Colonists/Colonists Move Speed",
+    ChoGGi.SetColonistMoveSpeed,
+    nil,
+    "How fast colonists will move.",
+    "AlignSel.tga"
+  )
+
+
+  ChoGGi.AddAction(
     "Expanded CM/Colonists/Add Applicants",
     ChoGGi.AddApplicantsToPool,
     nil,

@@ -4,7 +4,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
   DefineClass.ObjectManipulator = {
     __parents = {
       "FrameWindow",
-      "PauseGameDialog"
+      --"PauseGameDialog"
     }
   }
 
@@ -41,12 +41,12 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       --stored obj
       self.idList.item_windows[sel].value:SetText(text)
 
-      --actual object (only update strings/numbers/boolean)
+      --actual object (only update strings/numbers/boolean/nil)
       local objtype = type(self.obj[self.idList.items[sel].text])
-      if objtype == "string" or objtype == "number" or objtype == "boolean" then
-        self.obj[self.idList.items[sel].text] = value
+      if objtype == "string" or objtype == "number" or objtype == "boolean" or objtype == "nil" then
+        --self.obj[self.idList.items[sel].text] = value
+        self.obj[ChoGGi.RetProperType(self.idList.items[sel].text)] = value
       end
-
     end
 
     --hook into SetContent so we can add OnSetState to each listitem to show hints
@@ -92,6 +92,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
       --update the edit value box
       self.idEditValue:SetText(self.sel.value)
+      self.idEditValue:SetFocus()
 
       --for whatever is expecting a return value
       return ret
@@ -109,11 +110,26 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
     --refresh the list...
     function self.idRefresh.OnButtonPressed()
-      self:AddContentToList(self.obj)
+      self:UpdateListContent(self.obj)
     end
     --move viewpoint to obj
     function self.idGoto.OnButtonPressed()
       self:ViewObject(self.obj)
+    end
+    --open dialog to get new name
+    function self.idAddNew.OnButtonPressed()
+      local ItemList = {
+        {text = "New Entry",value = "BLANK",hint = "Enter the name of the new entry to be added."},
+        {text = "New Value",value = false,hint = "Set teh value of the new entry to be added."},
+      }
+
+      local CallBackFunc = function(choice)
+        --add it to the actual object
+        self.obj[choice[1].value] = ChoGGi.RetProperType(choice[2].value)
+        --refresh list
+        self:UpdateListContent(self.obj)
+      end
+      ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,3)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -134,7 +150,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
           self.refreshing = self.idAutoRefresh:GetState()
           CreateRealTimeThread(function()
             while self.refreshing do
-              self:AddContentToList(self.obj)
+              self:UpdateListContent(self.obj)
               Sleep(1000)
             end
           end)
@@ -144,12 +160,6 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
   end --init
 
---[[
-  function ObjectManipulator:PostInit()
-    print("PostInit")
-  end
---]]
-
   function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
     if virtual_key == const.vkEsc then
       if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
@@ -157,11 +167,16 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       end
       self:SetFocus()
       return "break"
+    elseif virtual_key == const.vkEnter then
+      local origsel = self.idList.last_selected
+      self:UpdateListContent(self.obj)
+      self.idList:SetSelection(origsel, true)
+      return "break"
     end
     return "continue"
   end
 
-  function ObjectManipulator:AddContentToList(obj)
+  function ObjectManipulator:UpdateListContent(obj)
     --check for scroll pos
     local scrollpos = self.idList.vscrollbar:GetPosition()
     --create prop list for list
@@ -266,20 +281,12 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
   end
 
   function ObjectManipulator:CreateProp(o)
-    local ShowPoint = function()
-      if IsValid(o) then
-        ShowMe(o)
-      end
-    end
-
     if type(o) == "function" then
       local debug_info = debug.getinfo(o, "Sn")
-      --return self:HyperLink(ShowPoint) .. tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
       return tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
     end
 
     if IsValid(o) then
-      --return self:HyperLink(ShowPoint) .. o.class .. "@" .. self:CreateProp(o:GetPos())
       return o.class .. "@" .. self:CreateProp(o:GetPos())
     end
 
@@ -289,25 +296,26 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
         o:y(),
         o:z()
       }
-      --return self:HyperLink(ShowPoint) .. "(" .. table.concat(res, ",") .. ")"
       return "(" .. table.concat(res, ",") .. ")"
     end
-
-    if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
-      local res = {}
-      for i = 1, Min(#o, 3) do
-        table.insert(res, {text = i,value = self:CreateProp(o[i])})
-        --table.insert(res, i .. " = " .. self:CreateProp(o[i]))
+    --if some value is fucked, this just lets us ignore whatever value is fucked.
+    pcall(function()
+      if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
+        local res = {}
+        for i = 1, Min(#o, 3) do
+          table.insert(res, {
+            text = i,
+            value = self:CreateProp(o[i])
+          })
+        end
+        if #o > 3 then
+          table.insert(res, {text = "..."})
+        end
+        return "objlist" .. "{" .. table.concat(res, ", ") .. "}"
       end
-      if #o > 3 then
-        table.insert(res, {text = "..."})
-      end
-      --return self:HyperLink(ShowPoint) .. "objlist" .. "{" .. table.concat(res, ", ") .. "}"
-      return "objlist" .. "{" .. table.concat(res, ", ") .. "}"
-    end
+    end)
 
     if type(o) == "thread" then
-      --return self:HyperLink(ShowPoint) .. tostring(o)
       return tostring(o)
     end
 
@@ -317,11 +325,9 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
     if type(o) == "table" then
       if IsT(o) then
-        --return self:HyperLink(ShowPoint) .. "T{\"" .. _InternalTranslate(o) .. "\"}"
         return "T{\"" .. _InternalTranslate(o) .. "\"}"
       else
         local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
-        --return self:HyperLink(ShowPoint) .. text
         return text
       end
     end
@@ -333,20 +339,26 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
   function ObjectManipulator:CreatePropList(o)
     local res = {}
     local sort = {}
-    local ShowPoint = function()
-      if IsValid(o) then
-        ShowMe(o)
+    local function tableinsert(k,v)
+      local hint
+      if type(v) == "table" then
+        if v.class then
+          hint = "<color 150 170 250>" .. tostring(v.class) .. "</color>"
+        else
+          hint = "<color 150 170 150>" .. tostring(v) .. "</color>"
+        end
       end
+      table.insert(res,{
+        text = self:CreateProp(k),
+        value = self:CreateProp(v),
+        hint = hint,
+        object = v
+      })
     end
 
     if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
       for k, v in pairs(o) do
-        table.insert(res,{
-          text = self:CreateProp(k),
-          value = self:CreateProp(v),
-          object = v
-        })
-        --table.insert(res,{text =  self:CreateProp(k) .. " = " .. self:CreateProp(v)})
+        tableinsert(k,v,res)
         if type(k) == "number" then
           sort[res[#res]] = k
         end
@@ -357,7 +369,6 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
         while true do
           info = debug.getinfo(o, level, "Slfun")
           if info then
-            --table.insert(res,{text = self:HyperLink(ShowPoint(level, info)) .. info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
             table.insert(res,{text = info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
             level = level + 1
             else
@@ -366,19 +377,10 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
                 while true do
                   local k, v = debug.getupvalue(o, i)
                   if k ~= nil then
-                    table.insert(res, {
-                      text = self:CreateProp(k),
-                      value = self:CreateProp(v),
-                      object = v
-                    })
-                    --table.insert(res, {text = self:CreateProp(k) .. " = " .. self:CreateProp(v)})
+                    tableinsert(k,v,res)
                     i = i + 1
                     elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
-                      table.insert(res,{
-                      text =  self:CreateProp(o),
-                      value = self:CreateProp(o),
-                      object = o
-                      })
+                      tableinsert(k,v,res)
                     end
                   end
                 end
@@ -419,15 +421,9 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
         end
       end
     end
-  --meh
-  ClearShowMe()
 
-    --ex(res)
     return res
     --return Untranslated(table.concat(res, "\n"))
-
-    --local List
-    --return List
   end
 
 
@@ -462,7 +458,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
       SizeOrg = point(650, 450),
       HorizontalResize = true,
       VerticalResize = true,
-      Hint = "You can only change strings/numbers/booleans.",
+      Hint = "You can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to update list names.",
     },
     subviews = {
       {
@@ -535,6 +531,18 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           SizeOrg = point(75, 26),
         },
         {
+          Id = "idAddNew",
+          Class = "Button",
+          TextHAlign = "center",
+          TextVAlign = "center",
+          --FontStyle = "Editor14Bold",
+          Subview = "default",
+          Text = "Add",
+          Hint = "Add new entry to ",
+          PosOrg = point(265, 150),
+          SizeOrg = point(60, 26),
+        },
+        {
           Id = "idApplyAll",
           Class = "Button",
           TextHAlign = "center",
@@ -543,7 +551,7 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           Subview = "default",
           Text = "Apply To All",
           Hint = "Apply selected value to all objects of the same type.",
-          PosOrg = point(280, 150),
+          PosOrg = point(450, 150),
           SizeOrg = point(90, 26),
         },
         --list

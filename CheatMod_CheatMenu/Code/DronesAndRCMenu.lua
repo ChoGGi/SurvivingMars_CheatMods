@@ -2,6 +2,22 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Drones/Drone Rock To Concrete Speed",
+    ChoGGi.SetRockToConcreteSpeed,
+    nil,
+    "How long it takes drones to convert rock to concrete (may need restart).",
+    "groups.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Drones/Drone Move Speed",
+    ChoGGi.SetDroneMoveSpeed,
+    nil,
+    "How fast drones will move.",
+    "groups.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Drones/[1]Fill Selected DroneHub With Drones",
     function()
       ChoGGi.FillSelectedDroneHubWithDrones(true)
@@ -44,14 +60,6 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Gravity",
-    ChoGGi.SetGravityRC,
-    nil,
-    "Change gravity of RCs.",
-    "groups.tga"
-  )
-  -------------
-  ChoGGi.AddAction(
     "Expanded CM/Drones/Drone Battery Infinite",
     ChoGGi.DroneBatteryInfinite_Toggle,
     nil,
@@ -76,28 +84,6 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       return des .. " Instant build/repair when resources are ready."
     end,
     "groups.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/RC/RC Rover Drone Recharge Free",
-    ChoGGi.RCRoverDroneRechargeFree_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
-      return des .. " No more draining Rover Battery when recharging drones."
-    end,
-    "ToggleTerrainHeight.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/RC/RC Transport Instant Transfer",
-    ChoGGi.RCTransportInstantTransfer_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
-      return des .. " RC Rover quick Transfer/Gather resources."
-    end,
-    "ToggleTerrainHeight.tga"
   )
 
   ChoGGi.AddAction(
@@ -157,14 +143,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     "groups.tga"
   )
 
-  ChoGGi.AddAction(
-    "Expanded CM/RC/RC Transport Storage Capacity",
-    ChoGGi.SetRCTransportStorageCapacity,
-    nil,
-    "Change amount of resources RC Transports can carry.",
-    "groups.tga"
-  )
-  -------------
+  -------------Shuttles
   ChoGGi.AddAction(
     "Expanded CM/Shuttles/Set ShuttleHub Shuttle Amount",
     ChoGGi.SetShuttleHubCapacity,
@@ -188,4 +167,52 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     "Change speed of shuttles.",
     "groups.tga"
   )
+
+  -------------RCs
+  ChoGGi.AddAction(
+    "Expanded CM/RC/RC Move Speed",
+    ChoGGi.SetRCMoveSpeed,
+    nil,
+    "How fast RCs will move.",
+    "ToggleTerrainHeight.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/RC/RC Gravity",
+    ChoGGi.SetGravityRC,
+    nil,
+    "Change gravity of RCs.",
+    "groups.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/RC/RC Rover Drone Recharge Free",
+    ChoGGi.RCRoverDroneRechargeFree_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
+      return des .. " No more draining Rover Battery when recharging drones."
+    end,
+    "ToggleTerrainHeight.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/RC/RC Transport Instant Transfer",
+    ChoGGi.RCTransportInstantTransfer_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
+      return des .. " RC Rover quick Transfer/Gather resources."
+    end,
+    "ToggleTerrainHeight.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/RC/RC Transport Storage Capacity",
+    ChoGGi.SetRCTransportStorageCapacity,
+    nil,
+    "Change amount of resources RC Transports can carry.",
+    "groups.tga"
+  )
+
 end

@@ -27,6 +27,7 @@ ChoGGi.Consts = {
   _VERSION = 0,
   BuildingsCapacity = {},
   BuildingsProduction = {},
+  BuildingsWorkers = {},
   ConsoleDim = true,
   ConsoleToggleHistory = true,
   FirstRun = true,
@@ -36,6 +37,9 @@ ChoGGi.Consts = {
   NumberKeysBuildMenu = true,
   UseLastOrientation = true,
 --false
+  SpeedDrone = false,
+  SpeedRC = false,
+  SpeedColonist = false,
   DisableHints = false,
   BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
@@ -97,6 +101,7 @@ ChoGGi.Consts = {
   DroneRechargeTime = false,
   DroneRepairSupplyLeak = false,
   DroneResourceCarryAmount = false,
+  DroneTransformWasteRockObstructorToStockpileAmount = false,
   DroneTransformWasteRockObstructorToStockpileBatteryUse = false,
   DustStormSanityDamage = false,
   Electronics_cost_modifier = false,
@@ -181,6 +186,7 @@ function ChoGGi.SetConstsToSaved()
   ChoGGi.SetConstsG("DroneRechargeTime",ChoGGi.CheatMenuSettings.DroneRechargeTime)
   ChoGGi.SetConstsG("DroneRepairSupplyLeak",ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak)
   ChoGGi.SetConstsG("DroneResourceCarryAmount",ChoGGi.CheatMenuSettings.DroneResourceCarryAmount)
+  ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileAmount)
   ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileBatteryUse)
   ChoGGi.SetConstsG("DustStormSanityDamage",ChoGGi.CheatMenuSettings.DustStormSanityDamage)
   ChoGGi.SetConstsG("Electronics_cost_modifier",ChoGGi.CheatMenuSettings.Electronics_cost_modifier)
@@ -323,11 +329,15 @@ function ChoGGi.Settings_OptionsApply()
   ChoGGi.Consts.GravityColonist = 0
   ChoGGi.Consts.GravityDrone = 0
   ChoGGi.Consts.GravityRC = 0
+  ChoGGi.Consts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
   ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
   ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
   --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-  ChoGGi.Consts.StorageWasteDepot = 70000 --^ that has 45000 as default...
-  ChoGGi.Consts.StorageOtherDepot = 180000
+  ChoGGi.Consts.StorageWasteDepot = 70 * ChoGGi.Consts.ResourceScale --^ that has 45000 as default...
+  ChoGGi.Consts.StorageOtherDepot = 180 * ChoGGi.Consts.ResourceScale
+  ChoGGi.Consts.StorageMechanizedDepot = 3950 * ChoGGi.Consts.ResourceScale
   --^ they're all UniversalStorageDepot
 
   ChoGGi.Consts.CameraZoomToggle = 8000

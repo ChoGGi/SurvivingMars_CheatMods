@@ -2,8 +2,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
   DefineClass.ListChoiceCustomDialog = {
     __parents = {
-      "FrameWindow",
-      "PauseGameDialog"
+      "FrameWindow"
     }
   }
 
@@ -32,15 +31,17 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     local origOnLButtonDown = self.idList.OnLButtonDown
     self.idList.OnLButtonDown = function(selfList,...)
       local ret = origOnLButtonDown(selfList,...)
-
-      --update selection (select last selected if multisel)
-      self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-      --update the custom value box
-      self.idEditValue:SetText(tostring(self.sel.value))
-      if type(self.CustomType) == "number" then
-        --2 = showing the colour picker
-        if self.CustomType == 2 then
-          self:UpdateColourPicker()
+      local sel = self.idList:GetSelection()
+      if #sel ~= 0 then
+        --update selection (select last selected if multisel)
+        self.sel = sel[#sel]
+        --update the custom value box
+        self.idEditValue:SetText(tostring(self.sel.value))
+        if type(self.CustomType) == "number" then
+          --2 = showing the colour picker
+          if self.CustomType == 2 then
+            self:UpdateColourPicker()
+          end
         end
       end
 
@@ -80,6 +81,9 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       --check checkboxes
       ChoGGi.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
       ChoGGi.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
+      ChoGGi.ListChoiceCustomDialog_ColorCheckAir = self.idColorCheckAir:GetToggled()
+      ChoGGi.ListChoiceCustomDialog_ColorCheckWater = self.idColorCheckWater:GetToggled()
+      ChoGGi.ListChoiceCustomDialog_ColorCheckElec = self.idColorCheckElec:GetToggled()
 
       self:GetAllItems()
       --send selection back
@@ -88,9 +92,11 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
     --what happens when you dbl click the list
     self.idList.OnDoubleClick = function()
-      if type(self.CustomType) == "number" and self.CustomType == 1 then
+      if type(self.CustomType) == "number" then
+        if self.CustomType == 1 then
         --dblclick to open item
-        ChoGGi.ChangeObjectColour(self.sel.obj)
+        ChoGGi.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+        end
       else
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -194,6 +200,7 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
   MinSize
   SizeOrg
   --]]
+  local hint_connectedgrid = "Check this for \"All of type\" to only apply to connected grid."
   UIDesignerData:new({
     DesignOrigin = point(100, 100),
     DesignResolution = point(300, 450),
@@ -270,7 +277,7 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
           PosOrg = point(110, 440),
-          SizeOrg = point(164, 17),
+          SizeOrg = point(200, 17),
           Subview = "default",
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
@@ -282,7 +289,7 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
           PosOrg = point(300, 440),
-          SizeOrg = point(164, 17),
+          SizeOrg = point(200, 17),
           Subview = "default",
           HSizing = "1, 0, 1",
           VSizing = "1, 0, 0"
@@ -320,6 +327,40 @@ function ChoGGi.UIDesignerData_ClassesBuilt()
           Visible = false,
           PosOrg = point(500, 115),
           SizeOrg = point(300, 300),
+          Hint = "Double-click to set colour without closing dialog.",
+        },
+        {
+          Id = "idColorCheckAir",
+          Class = "CheckButton",
+          Visible = false,
+          PosOrg = point(525, 400),
+          SizeOrg = point(50, 17),
+          ButtonSize = point(16, 16),
+          Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
+          Text = "Air",
+          Hint = hint_connectedgrid,
+        },
+        {
+          Id = "idColorCheckWater",
+          Class = "CheckButton",
+          Visible = false,
+          PosOrg = point(575, 400),
+          SizeOrg = point(60, 17),
+          ButtonSize = point(16, 16),
+          Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
+          Text = "Water",
+          Hint = hint_connectedgrid,
+        },
+        {
+          Id = "idColorCheckElec",
+          Class = "CheckButton",
+          Visible = false,
+          PosOrg = point(645, 400),
+          SizeOrg = point(85, 17),
+          ButtonSize = point(16, 16),
+          Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
+          Text = "Electricity",
+          Hint = hint_connectedgrid,
         },
 
       }

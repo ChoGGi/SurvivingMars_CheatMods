@@ -82,10 +82,18 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------
   ChoGGi.AddAction(
+    "Expanded CM/Capacity/Worker Capacity",
+    ChoGGi.SetWorkerCapacity,
+    "Ctrl-Shift-W",
+    "Change how many workers per building type.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Capacity/Building Capacity",
     ChoGGi.SetBuildingCapacity,
     "Ctrl-Shift-C",
-    "Set capacity of buildings of selected type, also applies to newly placed ones.",
+    "Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).",
     "DisableAOMaps.tga"
   )
 
@@ -103,7 +111,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
       ChoGGi.SetStorageDepotSize("StorageUniversalDepot")
     end,
     nil,
-    "Change universal storage depot capacity (only applies after restarting).",
+    "Change universal storage depot capacity.",
     "ToggleTerrainHeight.tga"
   )
 
@@ -113,7 +121,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
       ChoGGi.SetStorageDepotSize("StorageOtherDepot")
     end,
     nil,
-    "Change other storage depot capacity (only applies after restarting).",
+    "Change other storage depot capacity.",
     "ToggleTerrainHeight.tga"
   )
 
@@ -123,11 +131,37 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
       ChoGGi.SetStorageDepotSize("StorageWasteDepot")
     end,
     nil,
-    "Change waste storage depot capacity (only applies after restarting).",
+    "Change waste storage depot capacity.",
+    "ToggleTerrainHeight.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Capacity/Storage Mechanized Depots",
+    function()
+      ChoGGi.SetStorageDepotSize("StorageMechanizedDepot")
+    end,
+    nil,
+    "Change mechanized depot storage capacity.",
     "ToggleTerrainHeight.tga"
   )
 
 ---------all the fixes
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Clean All Objects",
+    ChoGGi.CleanAllObjects,
+    nil,
+    "Removes all dust from all objects.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Fix All Objects",
+    ChoGGi.FixAllObjects,
+    nil,
+    "Fixes all broken objects.",
+    "DisableAOMaps.tga"
+  )
 
   ChoGGi.AddAction(
     "Expanded CM/Fixes/Fix Black Cube Colonists",

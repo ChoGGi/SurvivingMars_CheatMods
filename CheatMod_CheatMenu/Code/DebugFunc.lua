@@ -114,36 +114,6 @@ function ChoGGi.Editor_Toggle()
   end
 end
 
-function ChoGGi.MeteorBombardment(Bool)
-  --function WaitBombard(obj, radius, count, delay_min, delay_max)
-  if Bool == true then
-    StartBombard(GetTerrainCursor(),0,50,0,0)
-  else
-    StartBombard(GetTerrainCursor(),0,50,0,0)
-  end
-end
-
-function ChoGGi.AsteroidBombardment(Num)
-  --function WaitBombard(obj, radius, count, delay_min, delay_max)
-  if Num == 1 then
-    CreateGameTimeThread(function()
-      local def = MapSettings_Meteor:new({storm_radius = 0})
-      MeteorsDisaster(def, "single", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
-    end)
-  elseif Num == 2 then
-    CreateGameTimeThread(function()
-      local def = MapSettings_Meteor:new({storm_radius = 5000})
-      MeteorsDisaster(def, "multispawn", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
-    end)
-  elseif Num == 3 then
-    --pound it
-    CreateGameTimeThread(function()
-      local def = MapSettings_Meteor:new({storm_radius = 50000})
-      MeteorsDisaster(def, "storm", IsValid(SelectedObj) and SelectedObj:GetVisualPos() or GetTerrainCursor())
-    end)
-  end
-end
-
 function ChoGGi.DeleteObject()
   local obj = SelectedObj or SelectionMouseObj()
 

@@ -1,4 +1,13 @@
 
+function ChoGGi.DisasterTriggerMissle(Amount)
+  Amount = Amount or 1
+  --(obj, radius, count, delay_min, delay_max)
+  StartBombard(
+    SelectedObj or SelectionMouseObj() or GetTerrainCursor(),
+    0,
+    Amount
+  )
+end
 function ChoGGi.DisasterTriggerColdWave()
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_ColdWave
@@ -14,18 +23,15 @@ function ChoGGi.DisasterTriggerDustStorm(storm_type)
   end)
 end
 function ChoGGi.DisasterTriggerDustDevils(major)
-  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
   local data = DataInstances.MapSettings_DustDevils
   local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-  local devil = GenerateDustDevil(pos, descr, nil, major)
-  devil:Start()
+  GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
 end
 function ChoGGi.DisasterTriggerMeteor(meteors_type)
-  local pos = point(GetTerrainCursor():x(),GetTerrainCursor():y())
   local data = DataInstances.MapSettings_Meteor
   local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   CreateGameTimeThread(function()
-    MeteorsDisaster(descr, meteors_type, pos)
+    MeteorsDisaster(descr, meteors_type, GetTerrainCursor())
   end)
 end
 function ChoGGi.DisastersStop()
@@ -51,16 +57,20 @@ end
 
 function ChoGGi.DisastersTrigger()
   local ItemList = {
-    {text = " Stop All Disasters",value = "Stop"},
+    {text = " Stop Most Disasters",value = "Stop",hint = "Can't stop meteors."},
     {text = "Cold Wave",value = "ColdWave"},
     {text = "Dust Devil Major",value = "DustDevilsMajor"},
     {text = "Dust Devil",value = "DustDevils"},
     {text = "Dust Storm Electrostatic",value = "DustStormElectrostatic"},
     {text = "Dust Storm Great",value = "DustStormGreat"},
     {text = "Dust Storm",value = "DustStorm"},
-    {text = "Meteors Storm",value = "MeteorsStorm"},
-    {text = "Meteors Multi Spawn",value = "MeteorsMultiSpawn"},
+    {text = "Meteor Storm",value = "MeteorStorm"},
+    {text = "Meteor Multi-Spawn",value = "MeteorMultiSpawn"},
     {text = "Meteor",value = "Meteor"},
+    {text = "Missle 1",value = "Missle1"},
+    {text = "Missle 10",value = "Missle10"},
+    {text = "Missle 100",value = "Missle100"},
+    {text = "Missle 500",value = "Missle500",hint = "Might be a little laggy"},
   }
 
   local CallBackFunc = function(choice)
@@ -83,12 +93,21 @@ function ChoGGi.DisastersTrigger()
       elseif value == "DustStorm" then
         ChoGGi.DisasterTriggerDustStorm("normal")
 
-      elseif value == "MeteorsStorm" then
+      elseif value == "MeteorStorm" then
         ChoGGi.DisasterTriggerMeteor("storm")
-      elseif value == "MeteorsMultiSpawn" then
+      elseif value == "MeteorMultiSpawn" then
         ChoGGi.DisasterTriggerMeteor("multispawn")
       elseif value == "Meteor" then
         ChoGGi.DisasterTriggerMeteor("single")
+
+      elseif value == "Missle1" then
+        ChoGGi.DisasterTriggerMissle(1)
+      elseif value == "Missle10" then
+        ChoGGi.DisasterTriggerMissle(10)
+      elseif value == "Missle100" then
+        ChoGGi.DisasterTriggerMissle(100)
+      elseif value == "Missle500" then
+        ChoGGi.DisasterTriggerMissle(500)
       end
       ChoGGi.MsgPopup(choice[i].text,"Disasters")
     end

@@ -1,4 +1,44 @@
 
+function ChoGGi.SetColonistMoveSpeed()
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.SpeedColonist
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 10000,value = 10000 * r},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.SpeedColonist then
+    hint = ChoGGi.CheatMenuSettings.SpeedColonist
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
+        Object:SetMoveSpeed(value)
+      end
+      ChoGGi.SetSavedSetting("SpeedColonist",value)
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "Colonists","UI/Icons/Sections/colonist.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint)
+end
+
 function ChoGGi.SetGravityColonists()
   --retrieve default
   local DefaultSetting = ChoGGi.Consts.GravityColonist

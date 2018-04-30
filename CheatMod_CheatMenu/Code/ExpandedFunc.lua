@@ -1,5 +1,28 @@
 --funcs under Gameplay menu without a separate file
 
+function ChoGGi.CleanAllObjects()
+  for _,Object in ipairs(UICity.labels.Building or empty_table) do
+    Object:SetDust(0,const.DustMaterialExterior)
+  end
+  for _,Object in ipairs(UICity.labels.Unit or empty_table) do
+    Object:SetDust(0,const.DustMaterialExterior)
+  end
+end
+
+function ChoGGi.FixAllObjects()
+  for _,Object in ipairs(UICity.labels.Building or empty_table) do
+    Object:Repair()
+    Object.accumulated_maintenance_points = 0
+  end
+  for _,Object in ipairs(UICity.labels.Rover or empty_table) do
+    Object:Repair()
+    Object.accumulated_maintenance_points = 0
+  end
+  for _,Object in ipairs(UICity.labels.Drone or empty_table) do
+    Object:SetCommand("RepairDrone")
+  end
+end
+
 function ChoGGi.SetDisasterOccurrence(sType)
 
   local ItemList = {}
@@ -138,6 +161,67 @@ function ChoGGi.SetColonistsPerRocket()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
 
+function ChoGGi.SetWorkerCapacity()
+  if not SelectedObj or not SelectedObj.base_max_workers then
+    ChoGGi.MsgPopup("You need to select a building that has workers.",
+      "Worker Capacity","UI/Icons/Sections/storage.tga"
+    )
+    return
+  end
+  local sel = SelectedObj
+  local DefaultSetting = sel.base_max_workers
+  local hint_toolarge = "Warning: Above a thousand is laggy (above 60K may crash)."
+
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000,hint = hint_toolarge},
+    {text = 2000,value = 2000,hint = hint_toolarge},
+    {text = 3000,value = 3000,hint = hint_toolarge},
+    {text = 4000,value = 4000,hint = hint_toolarge},
+    {text = 5000,value = 5000,hint = hint_toolarge},
+    {text = 10000,value = 10000,hint = hint_toolarge},
+    {text = 25000,value = 25000,hint = hint_toolarge},
+  }
+
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.BuildingsWorkers[sel.encyclopedia_id] then
+    hint = ChoGGi.CheatMenuSettings.BuildingsWorkers[sel.encyclopedia_id]
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      for _,building in ipairs(UICity.labels.Workplace or empty_table) do
+        if building.encyclopedia_id == sel.encyclopedia_id then
+          building.max_workers = value
+        end
+      end
+
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = value
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+        "Worker Capacity","UI/Icons/Sections/storage.tga"
+      )
+    end
+  end
+
+  hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
+end
+
 function ChoGGi.SetBuildingCapacity()
   if not SelectedObj or (not SelectedObj.base_water_capacity and not SelectedObj.base_air_capacity and not SelectedObj.base_capacity) then
     ChoGGi.MsgPopup("You need to select a building that has capacity.",
@@ -147,7 +231,7 @@ function ChoGGi.SetBuildingCapacity()
   end
   local sel = SelectedObj
   local r = ChoGGi.Consts.ResourceScale
-  local hinttoolarge = "Warning For Colonist Capacity: 4K is laggy (above 60K may crash)."
+  local hint_toolarge = "Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash)."
 
   --get type of capacity
   local CapType
@@ -182,15 +266,15 @@ function ChoGGi.SetBuildingCapacity()
     {text = 100,value = 100},
     {text = 250,value = 250},
     {text = 500,value = 500},
-    {text = 1000,value = 1000},
-    {text = 2000,value = 2000},
-    {text = 3000,value = 3000},
-    {text = 4000,value = 4000,hint = hinttoolarge},
-    {text = 5000,value = 5000,hint = hinttoolarge},
-    {text = 10000,value = 10000,hint = hinttoolarge},
-    {text = 25000,value = 25000,hint = hinttoolarge},
-    {text = 50000,value = 50000,hint = hinttoolarge},
-    {text = 100000,value = 100000,hint = hinttoolarge},
+    {text = 1000,value = 1000,hint = hint_toolarge},
+    {text = 2000,value = 2000,hint = hint_toolarge},
+    {text = 3000,value = 3000,hint = hint_toolarge},
+    {text = 4000,value = 4000,hint = hint_toolarge},
+    {text = 5000,value = 5000,hint = hint_toolarge},
+    {text = 10000,value = 10000,hint = hint_toolarge},
+    {text = 25000,value = 25000,hint = hint_toolarge},
+    {text = 50000,value = 50000,hint = hint_toolarge},
+    {text = 100000,value = 100000,hint = hint_toolarge},
   }
   local hint = DefaultSetting
   if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
@@ -256,7 +340,7 @@ function ChoGGi.SetBuildingCapacity()
 
   end
 
-  hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge
+  hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
 
@@ -314,7 +398,7 @@ end
 function ChoGGi.SetStorageDepotSize(sType)
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts[sType] / r
-  local hintmax = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000"
+  local hint_max = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000"
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
@@ -322,11 +406,12 @@ function ChoGGi.SetStorageDepotSize(sType)
     {text = 250,value = 250},
     {text = 500,value = 500},
     {text = 1000,value = 1000},
-    {text = 2500,value = 2500,hint = hintmax},
-    {text = 5000,value = 5000,hint = hintmax},
-    {text = 10000,value = 10000,hint = hintmax},
-    {text = 20000,value = 20000,hint = hintmax},
-    {text = 100000,value = 100000,hint = hintmax},
+    {text = 2500,value = 2500,hint = hint_max},
+    {text = 5000,value = 5000,hint = hint_max},
+    {text = 10000,value = 10000,hint = hint_max},
+    {text = 20000,value = 20000,hint = hint_max},
+    {text = 100000,value = 100000,hint = hint_max},
+    {text = 1000000,value = 1000000,hint = hint_max},
   }
 
   local hint = DefaultSetting
@@ -338,14 +423,57 @@ function ChoGGi.SetStorageDepotSize(sType)
     if type(choice[1].value) == "number" then
 
       local value = choice[1].value * r
-      --limit amounts so saving with a full load doesn't delete your game
-      if sType == "StorageWasteDepot" and value > 1000000000 then
-        value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
-      elseif sType == "StorageOtherDepot" and value > 20000000 then
-        value = 20000000
-      elseif sType == "StorageUniversalDepot" and value > 2500000 then
-        value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
+      local entity
+      local function otherdepot(label,res)
+        for _,building in ipairs(UICity.labels[label] or empty_table) do
+          building[res] = value
+        end
       end
+      if sType == "StorageWasteDepot" then
+        --limit amounts so saving with a full load doesn't delete your game
+        if value > 1000000000 then
+          value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
+        end
+        --loop through and change all existing
+        for _,building in ipairs(UICity.labels.WasteRockDumpSite or empty_table) do
+          building.max_amount_WasteRock = value
+          if building:GetStoredAmount() < 0 then
+            building:CheatEmpty()
+            building:CheatFill()
+          end
+        end
+      elseif sType == "StorageOtherDepot" then
+        if value > 20000000 then
+          value = 20000000
+        end
+        for _,building in ipairs(UICity.labels.UniversalStorageDepot or empty_table) do
+          if building.entity ~= "StorageDepot" then
+            building.max_storage_per_resource = value
+          end
+        end
+        otherdepot("MysteryResource","max_storage_per_resource")
+        otherdepot("BlackCubeDumpSite","max_amount_BlackCube")
+      elseif sType == "StorageUniversalDepot" then
+        if value > 2500000 then
+          value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
+        end
+        for _,building in ipairs(UICity.labels.UniversalStorageDepot or empty_table) do
+          if building.entity == "StorageDepot" then
+            building.max_storage_per_resource = value
+          end
+        end
+      elseif sType == "StorageMechanizedDepot" then
+        if value > 1000000000 then
+          value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
+        end
+        for _,building in ipairs(UICity.labels.MechanizedDepot or empty_table) do
+          building.max_storage_per_resource = value
+        end
+        for _,building in ipairs(UICity.labels.MechanizedDepotMysteryResource or empty_table) do
+          building.max_storage_per_resource = value
+        end
+      end
+      --for new buildings
       ChoGGi.SetSavedSetting(sType,value)
 
       ChoGGi.WriteSettings()
@@ -354,7 +482,7 @@ function ChoGGi.SetStorageDepotSize(sType)
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hintmax)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
 end
 
 ---------all the fixes funcs

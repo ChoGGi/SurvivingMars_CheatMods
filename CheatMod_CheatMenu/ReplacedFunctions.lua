@@ -20,7 +20,7 @@ Lua\Buildings\BuildingComponents.lua
   SingleResourceProducer:OnProduce
 Lua\X\Infopanel.lua
   InfopanelObj:CreateCheatActions
-
+  InfopanelDlg:Open
 --]]
 function ChoGGi.OverrideConstructionLimits_Enable()
   if ChoGGi.OverrideConstructionLimits then
@@ -151,7 +151,7 @@ dumpl(classdefs)
   ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
   function InfopanelObj:CreateCheatActions(win)
     local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
-    ChoGGi.SetHintsInfoPaneCheats(GetActionsHost(win),win)
+    ChoGGi.SetInfoPanelCheatHints(GetActionsHost(win))
     if ret then
       return ret
     end
@@ -288,23 +288,34 @@ end
       self = self.idContent
 
       for i = 1, #self do
-        if self[i].class == "XSection" then
-          local title = self[i][2][1].text
-          if title then
-            if title == "Traits" or title == "Cheats" or title:find("Residents") then
-              --hides overflow
-              self[i][2]:SetClip(true)
-              --sets height
-              self[i][2]:SetMaxHeight(168)
+        local section = self[i]
+        if section.class == "XSection" then
+          --local title = section[2][1].text
+          local title = section.idSectionTitle.text
+          local content = section.idContent[2]
+          if section.idWorkers and (#section.idWorkers > 14 and title == "") then
+            --sets height
+              content:SetMaxHeight(32)
 
-              self[i].OnMouseEnter = function()
-                self[i][2]:SetMaxHeight()
-              end
-              self[i].OnMouseLeft = function()
-                self[i][2]:SetMaxHeight(168)
-              end
-            elseif title == "visitor cap section" then
-              --display it as a vlist instead of hlist?
+            section.OnMouseEnter = function()
+              content:SetLayoutMethod("HWrap")
+              content:SetMaxHeight()
+            end
+            section.OnMouseLeft = function()
+              content:SetLayoutMethod("HList")
+              content:SetMaxHeight(32)
+            end
+          elseif title and (title == "Traits" or title == "Cheats" or title:find("Residents")) then
+            --hides overflow
+            content:SetClip(true)
+            --sets height
+            content:SetMaxHeight(168)
+
+            section.OnMouseEnter = function()
+              content:SetMaxHeight()
+            end
+            section.OnMouseLeft = function()
+              content:SetMaxHeight(168)
             end
           end
         end --if XSection

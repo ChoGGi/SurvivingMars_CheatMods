@@ -6,6 +6,9 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"version", 2,
 	"code", {
+		"Functions.lua",
+		"_CommonFunctions.lua",
 		"Script.lua",
+		"UIDesignerData.lua",
 	},
 })

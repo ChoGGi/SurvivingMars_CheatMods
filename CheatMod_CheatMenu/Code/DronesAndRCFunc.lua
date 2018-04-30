@@ -1,4 +1,126 @@
 
+function ChoGGi.SetRockToConcreteSpeed()
+  local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 0,value = 0},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileAmount then
+    hint = ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileAmount
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
+
+      ChoGGi.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "Drones","UI/Icons/IPButtons/drone.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Rock To Concrete Speed","Current: " .. hint)
+end
+
+function ChoGGi.SetDroneMoveSpeed()
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.SpeedDrone
+  local UpgradedSetting = ChoGGi.GetSpeedDrone()
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 10000,value = 10000 * r},
+  }
+
+  --other hint type
+  local hint = UpgradedSetting
+  if ChoGGi.CheatMenuSettings.SpeedDrone then
+    hint = ChoGGi.CheatMenuSettings.SpeedDrone
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      for _,Object in ipairs(UICity.labels.Drone or empty_table) do
+        Object:SetMoveSpeed(value)
+      end
+      ChoGGi.SetSavedSetting("SpeedDrone",value)
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "Drones","UI/Icons/IPButtons/drone.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Move Speed","Current: " .. hint)
+end
+
+function ChoGGi.SetRCMoveSpeed()
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.SpeedRC
+  local UpgradedSetting = ChoGGi.GetSpeedRC()
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 10000,value = 10000 * r},
+  }
+
+  --other hint type
+  local hint = UpgradedSetting
+  if ChoGGi.CheatMenuSettings.SpeedRC then
+    hint = ChoGGi.CheatMenuSettings.SpeedRC
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      ChoGGi.SetSavedSetting("SpeedRC",value)
+
+      for _,Object in ipairs(UICity.labels.Rover or empty_table) do
+        Object:SetMoveSpeed(value)
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "RCs","UI/Icons/IPButtons/transport_route.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"RC Move Speed","Current: " .. hint)
+end
+
 function ChoGGi.DismantleAllDronesOfSelectedHub()
   local sel = SelectedObj or SelectionMouseObj()
   repeat
@@ -102,7 +224,7 @@ function ChoGGi.RCRoverDroneRechargeFree_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost) .. ": More where that came from",
-    "RC","UI/Icons/IPButtons/transport_route.tga"
+    "RCs","UI/Icons/IPButtons/transport_route.tga"
   )
 end
 
@@ -114,7 +236,7 @@ function ChoGGi.RCTransportInstantTransfer_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime) .. ": Slight of hand",
-    "RC","UI/Icons/IPButtons/resources_section.tga"
+    "RCs","UI/Icons/IPButtons/resources_section.tga"
   )
 end
 
@@ -222,7 +344,7 @@ function ChoGGi.SetDronesPerDroneHub()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("DroneHubs can control: " .. choice[1].text .. " drones.",
-        "RC","UI/Icons/IPButtons/drone.tga"
+        "RCs","UI/Icons/IPButtons/drone.tga"
       )
     end
   end
@@ -258,7 +380,7 @@ function ChoGGi.SetDronesPerRCRover()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC Rovers can control: " .. choice[1].text .. " drones.",
-        "RC","UI/Icons/IPButtons/transport_route.tga"
+        "RCs","UI/Icons/IPButtons/transport_route.tga"
       )
     end
   end
@@ -302,7 +424,7 @@ function ChoGGi.SetRCTransportStorageCapacity()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC Transport capacity is now: " .. choice[1].text,
-        "RC","UI/Icons/bmc_building_storages_shine.tga"
+        "RCs","UI/Icons/bmc_building_storages_shine.tga"
       )
     end
   end
@@ -473,7 +595,7 @@ function ChoGGi.SetGravityRC()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
-        "RC","UI/Icons/IPButtons/transport_route.tga"
+        "RCs","UI/Icons/IPButtons/transport_route.tga"
       )
     end
   end
@@ -516,7 +638,7 @@ function ChoGGi.SetGravityDrones()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
-        "RC","UI/Icons/IPButtons/transport_route.tga"
+        "RCs","UI/Icons/IPButtons/transport_route.tga"
       )
     end
   end

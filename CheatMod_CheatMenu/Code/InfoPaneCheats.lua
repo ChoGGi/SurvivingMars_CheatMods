@@ -67,8 +67,11 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
       self:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init")
     end
   end
-  function Colonist.CheatBoostPref(self)
-    self.performance = 250
+  function Colonist.CheatPrefDbl(self)
+    self.performance = self.performance * 2
+  end
+  function Colonist.CheatPrefDef(self)
+    self.performance = self.base_performance
   end
   function Colonist.CheatRandomGender(self)
     ChoGGi.ColonistUpdateGender(self,ChoGGi.ColonistGenders[UICity:Random(1,5)])
@@ -86,6 +89,12 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   FarmConventional.CheatAllShiftsOn = CheatAllShiftsOn
   FarmHydroponic.CheatAllShiftsOn = CheatAllShiftsOn
 --CheatFullyAuto
+  local function CheatWorkersDbl(self)
+    self.max_workers = self.max_workers * 2
+  end
+  local function CheatWorkersDef(self)
+    self.max_workers = self.base_max_workers
+  end
   local function CheatWorkAuto(self)
     self.max_workers = 0
     self.automation = 1
@@ -104,48 +113,92 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   end
   DroneFactory.CheatWorkAuto = CheatWorkAuto
   DroneFactory.CheatWorkManual = CheatWorkManual
+  DroneFactory.CheatWorkersDbl = CheatWorkersDbl
+  DroneFactory.CheatWorkersDef = CheatWorkersDef
   MedicalCenter.CheatWorkAuto = CheatWorkAuto
   MedicalCenter.CheatWorkManual = CheatWorkManual
+  MedicalCenter.CheatWorkersDbl = CheatWorkersDbl
+  MedicalCenter.CheatWorkersDef = CheatWorkersDef
   NetworkNode.CheatWorkAuto = CheatWorkAuto
   NetworkNode.CheatWorkManual = CheatWorkManual
+  NetworkNode.CheatWorkersDbl = CheatWorkersDbl
+  NetworkNode.CheatWorkersDef = CheatWorkersDef
   CloningVats.CheatWorkAuto = CheatWorkAuto
   CloningVats.CheatWorkManual = CheatWorkManual
+  CloningVats.CheatWorkersDbl = CheatWorkersDbl
+  CloningVats.CheatWorkersDef = CheatWorkersDef
   WaterReclamationSpire.CheatWorkAuto = CheatWorkAuto
   WaterReclamationSpire.CheatWorkManual = CheatWorkManual
+  WaterReclamationSpire.CheatWorkersDbl = CheatWorkersDbl
+  WaterReclamationSpire.CheatWorkersDef = CheatWorkersDef
   BaseResearchLab.CheatWorkAuto = CheatWorkAuto
   BaseResearchLab.CheatWorkManual = CheatWorkManual
+  BaseResearchLab.CheatWorkersDbl = CheatWorkersDbl
+  BaseResearchLab.CheatWorkersDef = CheatWorkersDef
   SecurityStation.CheatWorkAuto = CheatWorkAuto
   SecurityStation.CheatWorkManual = CheatWorkManual
+  SecurityStation.CheatWorkersDbl = CheatWorkersDbl
+  SecurityStation.CheatWorkersDef = CheatWorkersDef
   CasinoComplex.CheatWorkAuto = CheatWorkAuto
   CasinoComplex.CheatWorkManual = CheatWorkManual
+  CasinoComplex.CheatWorkersDbl = CheatWorkersDbl
+  CasinoComplex.CheatWorkersDef = CheatWorkersDef
   Spacebar.CheatWorkAuto = CheatWorkAuto
   Spacebar.CheatWorkManual = CheatWorkManual
+  Spacebar.CheatWorkersDbl = CheatWorkersDbl
+  Spacebar.CheatWorkersDef = CheatWorkersDef
   ServiceWorkplace.CheatWorkAuto = CheatWorkAuto
   ServiceWorkplace.CheatWorkManual = CheatWorkManual
+  ServiceWorkplace.CheatWorkersDbl = CheatWorkersDbl
+  ServiceWorkplace.CheatWorkersDef = CheatWorkersDef
   Diner.CheatWorkAuto = CheatWorkAuto
   Diner.CheatWorkManual = CheatWorkManual
+  Diner.CheatWorkersDbl = CheatWorkersDbl
+  Diner.CheatWorkersDef = CheatWorkersDef
   MachinePartsFactory.CheatWorkAuto = CheatWorkAuto
   MachinePartsFactory.CheatWorkManual = CheatWorkManual
+  MachinePartsFactory.CheatWorkersDbl = CheatWorkersDbl
+  MachinePartsFactory.CheatWorkersDef = CheatWorkersDef
   ElectronicsFactory.CheatWorkAuto = CheatWorkAuto
   ElectronicsFactory.CheatWorkManual = CheatWorkManual
+  ElectronicsFactory.CheatWorkersDbl = CheatWorkersDbl
+  ElectronicsFactory.CheatWorkersDef = CheatWorkersDef
   Infirmary.CheatWorkAuto = CheatWorkAuto
   Infirmary.CheatWorkManual = CheatWorkManual
+  Infirmary.CheatWorkersDbl = CheatWorkersDbl
+  Infirmary.CheatWorkersDef = CheatWorkersDef
   Grocery.CheatWorkAuto = CheatWorkAuto
   Grocery.CheatWorkManual = CheatWorkManual
+  Grocery.CheatWorkersDbl = CheatWorkersDbl
+  Grocery.CheatWorkersDef = CheatWorkersDef
   FungalFarm.CheatWorkAuto = CheatWorkAuto
   FungalFarm.CheatWorkManual = CheatWorkManual
+  FungalFarm.CheatWorkersDbl = CheatWorkersDbl
+  FungalFarm.CheatWorkersDef = CheatWorkersDef
   PolymerPlant.CheatWorkAuto = CheatWorkAuto
   PolymerPlant.CheatWorkManual = CheatWorkManual
+  PolymerPlant.CheatWorkersDbl = CheatWorkersDbl
+  PolymerPlant.CheatWorkersDef = CheatWorkersDef
   FarmConventional.CheatWorkAuto = CheatWorkAuto
   FarmConventional.CheatWorkManual = CheatWorkManual
+  FarmConventional.CheatWorkersDbl = CheatWorkersDbl
+  FarmConventional.CheatWorkersDef = CheatWorkersDef
   FarmHydroponic.CheatWorkAuto = CheatWorkAuto
   FarmHydroponic.CheatWorkManual = CheatWorkManual
+  FarmHydroponic.CheatWorkersDbl = CheatWorkersDbl
+  FarmHydroponic.CheatWorkersDef = CheatWorkersDef
   MetalsExtractor.CheatWorkAuto = CheatWorkAuto
   MetalsExtractor.CheatWorkManual = CheatWorkManual
+  MetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
+  MetalsExtractor.CheatWorkersDef = CheatWorkersDef
   PreciousMetalsExtractor.CheatWorkAuto = CheatWorkAuto
   PreciousMetalsExtractor.CheatWorkManual = CheatWorkManual
+  PreciousMetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
+  PreciousMetalsExtractor.CheatWorkersDef = CheatWorkersDef
   FusionReactor.CheatWorkAuto = CheatWorkAuto
   FusionReactor.CheatWorkManual = CheatWorkManual
+  FusionReactor.CheatWorkersDbl = CheatWorkersDbl
+  FusionReactor.CheatWorkersDef = CheatWorkersDef
 --CheatDoubleMaxAmount
   local function CheatDoubleMaxAmount(self)
     self.max_amount = self.max_amount * 2
@@ -420,49 +473,66 @@ function ChoGGi.InfopanelCheatsCleanup()
 end
 
 
-function ChoGGi.SetHintsInfoPaneCheats(win)
-  local cur = win.context
-  local name = _InternalTranslate(cur.name)
-  local id = cur.encyclopedia_id
+function ChoGGi.SetInfoPanelCheatHints(win)
+  local obj = win.context
+  local name = _InternalTranslate(obj.name)
+  local id = obj.encyclopedia_id
+  if id then
+    local doublec = "Double the amount of colonist slots for this " .. id .. ".\n\nReselect to update display."
+    local resetc = "Reset the capacity of colonist slots for this " .. id .. " to default.\n\nReselect to update display."
+  else
+    local doublec = ""
+    local resetc = ""
+  end
+  local function SetHint(action,hint)
+    --name has to be set to make the hint show up
+    action.ActionName = action.ActionId
+    action.RolloverHint = hint
+  end
   for _,action in ipairs(win.actions) do
 
-    --Colonists
+  --Colonists
     if action.ActionId == "FillAll" then
-      --have to set the name to make the hint show up
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Fill all stat bars."
-    elseif action.ActionId == "BoostPref" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Set " .. name .. "'s performance to 250."
+      SetHint(action,"Fill all stat bars.")
+    elseif action.ActionId == "PrefDbl" then
+      SetHint(action,"Double " .. name .. "'s performance.")
+    elseif action.ActionId == "PrefDef" then
+      SetHint(action,"Reset " .. name .. "'s performance to default.")
     elseif action.ActionId == "RandomSpecialization" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Randomly set " .. name .. "'s specialization."
-    elseif action.ActionId == "ColonistCapDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the colonist capacity of this building (reselect to update head amount)."
+      SetHint(action,"Randomly set " .. name .. "'s specialization.")
 
-    --Buildings
+  --Buildings
+    elseif action.ActionId == "VisitorsDbl" then
+      SetHint(action,doublec)
+    elseif action.ActionId == "VisitorsDef" then
+      SetHint(action,resetc)
+    elseif action.ActionId == "WorkersDbl" then
+      SetHint(action,doublec)
+    elseif action.ActionId == "WorkersDef" then
+      SetHint(action,resetc)
+    elseif action.ActionId == "ColonistCapDbl" then
+      SetHint(action,doublec)
+    elseif action.ActionId == "ColonistCapDef" then
+      SetHint(action,resetc)
+
     elseif action.ActionId == "Upgrade1" then
-      local tempname = _InternalTranslate(cur.upgrade1_display_name)
+      local tempname = _InternalTranslate(obj.upgrade1_display_name)
       if tempname ~= "" then
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(cur.upgrade1_description)
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(obj.upgrade1_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade2" then
-      local tempname = _InternalTranslate(cur.upgrade2_display_name)
+      local tempname = _InternalTranslate(obj.upgrade2_display_name)
       if tempname ~= "" then
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(cur.upgrade2_description)
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(obj.upgrade2_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade3" then
-      local tempname = _InternalTranslate(cur.upgrade3_display_name)
+      local tempname = _InternalTranslate(obj.upgrade3_display_name)
       if tempname ~= "" then
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(cur.upgrade3_description)
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. _InternalTranslate(obj.upgrade3_description))
       else
         action.ActionId = nil
       end
@@ -473,89 +543,65 @@ function ChoGGi.SetHintsInfoPaneCheats(win)
       else
         perf = 150
       end
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Make this " .. id .. " not need workers (performance: " .. perf .. ")."
+      SetHint(action,"Make this " .. id .. " not need workers (performance: " .. perf .. ").")
 
     elseif action.ActionId == "WorkManual" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Make this " .. id .. " need workers."
+      SetHint(action,"Make this " .. id .. " need workers.")
     elseif action.ActionId == "ProdDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the production of this " .. id .. " (certain buildings will reset: Wind turbines and such)."
+      SetHint(action,"Double the production of this " .. id .. " (certain buildings will reset: Wind turbines and such).")
     elseif action.ActionId == "ProdDef" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Reset the production of this " .. id .. " to default."
+      SetHint(action,"Reset the production of this " .. id .. " to default.")
     elseif action.ActionId == "CapDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the storage capacity of this " .. id .. "."
+      SetHint(action,"Double the storage capacity of this " .. id .. ".")
     elseif action.ActionId == "CapDef" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Reset the storage capacity of this " .. id .. " to default."
-    elseif action.ActionId == "VisitorsDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the amount of colonist slots for this " .. id .. "."
-
-    --RC
-    elseif action.ActionId == "BattCapDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double capacity of battery."
-    elseif action.ActionId == "MaxShuttlesDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the shuttles this ShuttleHub can control."
-
-    --Farms
+      SetHint(action,"Reset the storage capacity of this " .. id .. " to default.")
+  --Farms
     elseif action.ActionId == "AllShifts" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Turn on all work shifts."
+      SetHint(action,"Turn on all work shifts.")
 
-    --Misc
+  --RC
+    elseif action.ActionId == "BattCapDbl" then
+      SetHint(action,"Double capacity of battery.")
+    elseif action.ActionId == "MaxShuttlesDbl" then
+      SetHint(action,"Double the shuttles this ShuttleHub can control.")
+
+  --Misc
     elseif action.ActionId == "ColourRandom" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Changes colour of object to random colour."
+      SetHint(action,"Changes colour of object to random colour.")
     elseif action.ActionId == "AddDust" then
-      if cur.class == "SupplyRocket" or cur.class == "UniversalStorageDepot" or cur.class == "WasteRockDumpSite" then
+      if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = false
       else
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Add visual dust and maintenance points."
+        SetHint(action,"Add visual dust and maintenance points.")
       end
     elseif action.ActionId == "CleanAndFix" then
-      if cur.class == "SupplyRocket" or cur.class == "UniversalStorageDepot" or cur.class == "WasteRockDumpSite" then
+      if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = nil
       else
-        action.ActionName = action.ActionId
-        action.RolloverHint = "You may need to use AddDust before using this to make the building look visually."
+        SetHint(action,"You may need to use AddDust before using this to make the building look visually.")
       end
     elseif action.ActionId == "Destroy" then
-      if cur.class == "SupplyRocket" then
+      if obj.class == "SupplyRocket" then
         action.ActionId = nil
       else
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Turns object into ruin."
+        SetHint(action,"Turns object into ruin.")
       end
     elseif action.ActionId == "Empty" then
-      if cur.class:find("SubsurfaceDeposit") then
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Warning: This will remove the " .. id .. " object from the map."
+      if obj.class:find("SubsurfaceDeposit") then
+        SetHint(action,"Warning: This will remove the " .. id .. " object from the map.")
       else
-        action.ActionName = action.ActionId
-        action.RolloverHint = "Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site."
+        SetHint(action,"Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site.")
       end
     elseif action.ActionId == "Refill" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Refill the deposit to full capacity."
+      SetHint(action,"Refill the deposit to full capacity.")
     elseif action.ActionId == "Fill" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Fill the storage of this building."
+      SetHint(action,"Fill the storage of this building.")
     elseif action.ActionId == "Launch" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Warning: Launches rocket without asking."
+      SetHint(action,"Warning: Launches rocket without asking.")
     elseif action.ActionId == "DoubleMaxAmount" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double the amount this " .. id .. " can hold."
+      SetHint(action,"Double the amount this " .. id .. " can hold.")
     elseif action.ActionId == "ReneagadeCapDbl" then
-      action.ActionName = action.ActionId
-      action.RolloverHint = "Double amount of reneagades this station can negate (currently: " .. cur.negated_renegades .. ") < reselect to update num."
+      SetHint(action,"Double amount of reneagades this station can negate (currently: " .. obj.negated_renegades .. ") < Reselect to update amount.")
     end
 
   end --for
