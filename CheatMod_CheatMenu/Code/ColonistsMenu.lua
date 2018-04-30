@@ -44,11 +44,11 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
 
   ChoGGi.AddAction(
     "Expanded CM/Colonists/[1]Stats/Min Comfort Birth",
-    ChoGGi.MinComfortBirth_Toggle,
+    ChoGGi.SetMinComfortBirth,
     nil,
     function()
       local des = ChoGGi.NumRetBool(Consts.MinComfortBirth,"(Disabled)","(Enabled)")
-      return des .. " Lower limit on birthing comfort (more babies)."
+      return des .. " Change the limit on birthing comfort (more/less babies)."
     end,
     "AlignSel.tga"
   )

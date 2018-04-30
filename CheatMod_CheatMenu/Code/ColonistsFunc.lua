@@ -180,14 +180,43 @@ function ChoGGi.SetAllWorkShifts()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shifts","Are you sure you want to change all shifts?")
 end
 
-function ChoGGi.MinComfortBirth_Toggle()
-  ChoGGi.SetConstsG("MinComfortBirth",ChoGGi.NumRetBool(Consts.MinComfortBirth,0,ChoGGi.Consts.MinComfortBirth))
+function ChoGGi.SetMinComfortBirth()
 
-  ChoGGi.SetSavedSetting("MinComfortBirth",Consts.MinComfortBirth)
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MinComfortBirth) .. "\nLook at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
-    "Colonists","UI/Icons/Sections/colonist.tga",true
-  )
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.MinComfortBirth / r
+  local hint_low = "Lower = more babies"
+  local hint_high = "Higher = less babies"
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 0,value = 0,hint = hint_low},
+    {text = 35,value = 35,hint = hint_low},
+    {text = 140,value = 140,hint = hint_high},
+    {text = 280,value = 280,hint = hint_high},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.MinComfortBirth then
+    hint = ChoGGi.CheatMenuSettings.MinComfortBirth / r
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      value = value * r
+      ChoGGi.SetConstsG("MinComfortBirth",value)
+      ChoGGi.SetSavedSetting("MinComfortBirth",Consts.MinComfortBirth)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text .. "\nLook at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
+        "Colonists","UI/Icons/Sections/colonist.tga",true
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"MinComfortBirth","Current: " .. hint)
 end
 
 function ChoGGi.VisitFailPenalty_Toggle()
