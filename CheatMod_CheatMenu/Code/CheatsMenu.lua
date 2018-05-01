@@ -58,18 +58,11 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Cheats/[04]Research/Outsource Points 1,000,000",
-    ChoGGi.OutsourcePoints1000000,
-    nil,
-    "Gives a crapload of research points when you outsource (almost instant research)",
-    "ViewArea.tga"
-  )
-  ChoGGi.AddAction(
     "Cheats/[04]Research/Add Research Points",
-    ChoGGi.AddOutsourcePoints,
+    ChoGGi.AddResearchPoints,
     nil,
-    "Add a number of research points.",
-    "ViewArea.tga"
+    "Add a specified amount of research points.",
+    "pirate.tga"
   )
 
   ChoGGi.AddAction(
@@ -84,7 +77,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Cheats/[04]Research/Research Stuff",
+    "Cheats/[04]Research/Research Tech",
     ChoGGi.ShowResearchDialog,
     nil,
     "Pick what you want to unlock/research.",
@@ -92,18 +85,11 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Cheats/[04]Research/[14]Double Amount of Breakthroughs per game",
-    ChoGGi.BreakThroughTechsPerGame_Toggle,
+    "Cheats/[04]Research/[14]Set Amount Of Breakthroughs Allowed",
+    ChoGGi.SetBreakThroughsAllowed,
     nil,
-    function()
-      local des
-      if const.BreakThroughTechsPerGame == 26 then
-        des = "(Enabled)"
-      else
-        des = "(Disabled)"
-      end
-      return des .. " Doubled amount of breakthroughs unlockable per game."
-    end,
-    "ViewArea.tga"
+    "How many breakthroughs are allowed to be unlocked?",
+    "AlignSel.tga"
   )
+
 end

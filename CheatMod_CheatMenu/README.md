@@ -43,7 +43,7 @@ Hover over menu items for a description (will say if enabled or disabled)
 
 ##### List of some stuff added (not up to date)
 ```
-Add 250 Applicants
+Add Applicants
 Add Funds/Reset Funds
 Add Mystery Buildings
 Add Prefabs
@@ -70,6 +70,7 @@ Colonist Residence Capacity
 Colonists Add Specialization To All
 Colonists Chance of Suicide
 Colonists Morale Max
+Colonists Min birth threshold
 Colonists Per Rocket
 Colonists Starve
 Colonists Suffocate
@@ -119,7 +120,7 @@ Scanner Queue Larger
 School Train All Traits
 See Dead Sanity Damage
 Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
-Set Death Age to 250
+Set Death Age
 Set New Colonists Age,Sex
 Set Shadow Map Size
 Show All Traits in Sanatorium/School

@@ -309,7 +309,7 @@ function ChoGGi.UnlockAllBuildings()
   )
 end
 
-function ChoGGi.AddOutsourcePoints()
+function ChoGGi.AddResearchPoints()
   local ItemList = {
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -338,17 +338,6 @@ function ChoGGi.AddOutsourcePoints()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
 end
 
-function ChoGGi.OutsourcePoints1000000()
-  ChoGGi.SetConstsG("OutsourceResearch",1000 * ChoGGi.Consts.ResearchPointsScale)
-
-  ChoGGi.SetSavedSetting("OutsourceResearch",Consts.OutsourceResearch)
-  ChoGGi.WriteSettings()
-  local msg = "\nThe same thing we do every night, Pinky - try to take over the world!"
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearch) .. msg,
-   "Research","UI/Icons/Upgrades/eternal_fusion_04.tga",true
-  )
-end
-
 function ChoGGi.OutsourcingFree_Toggle()
   ChoGGi.SetConstsG("OutsourceResearchCost",ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
 
@@ -359,14 +348,34 @@ function ChoGGi.OutsourcingFree_Toggle()
   )
 end
 
-function ChoGGi.BreakThroughTechsPerGame_Toggle()
-  const.BreakThroughTechsPerGame = ChoGGi.ValueRetOpp(const.BreakThroughTechsPerGame,26,ChoGGi.Consts.BreakThroughTechsPerGame)
+function ChoGGi.SetBreakThroughsAllowed()
+  local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 26,value = 26,hint = "Doubled the base amount."},
+    {text = 57,value = 57,hint = "There's only 57 in the list, but you could make the amount larger..."},
+  }
 
-  ChoGGi.SetSavedSetting("BreakThroughTechsPerGame",const.BreakThroughTechsPerGame)
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame) .. ": S M R T",
-   "Research","UI/Icons/Notifications/research.tga"
-  )
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame then
+    hint = ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame
+  end
+
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      const.BreakThroughTechsPerGame = value
+      ChoGGi.SetSavedSetting("BreakThroughTechsPerGame",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": S M R T",
+        "Research","UI/Icons/Notifications/research.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
 end
 
 function ChoGGi.ResearchQueueLarger_Toggle()
@@ -375,7 +384,7 @@ function ChoGGi.ResearchQueueLarger_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
-   "Research","UI/Icons/Notifications/research.tga"
+    "Research","UI/Icons/Notifications/research.tga"
   )
 end
 

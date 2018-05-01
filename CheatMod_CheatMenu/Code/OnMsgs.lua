@@ -29,20 +29,21 @@ function OnMsg.ClassesGenerate()
     end
 
     --update depot storage amounts (gotta leave this here, or people are going to lose product from existing sites, removeable in a few versions?)
+--[[
     if building.template_class == "UniversalStorageDepot" then
-      if building.max_storage_per_resource == 30000 then
+      if building.max_storage_per_resource == 30000 and ChoGGi.CheatMenuSettings.StorageUniversalDepot then
         building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
-      else
+      elseif building.max_storage_per_resource == 180000 and ChoGGi.CheatMenuSettings.StorageOtherDepot then
         building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
       end
-    elseif building.template_class == "WasteRockDumpSite" then
+    elseif building.template_class == "WasteRockDumpSite" and ChoGGi.CheatMenuSettings.StorageWasteDepot then
       building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
-    elseif building.template_class == "BlackCubeDumpSite" then
+    elseif building.template_class == "BlackCubeDumpSite" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
       building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
-    elseif building.template_class == "MysteryDepot" then
+    elseif building.template_class == "MysteryDepot" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
     end
-
+--]]
   end --BuildingTemplate
 
 end --OnMsg
