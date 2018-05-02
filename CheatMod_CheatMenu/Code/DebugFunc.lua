@@ -117,7 +117,7 @@ function ChoGGi.DeleteObject()
   local obj = SelectedObj or SelectionMouseObj()
 
   --deleting domes will freeze game if they have anything in them.
-  if IsKindOf(obj,"Dome") then
+  if IsKindOf(obj,"Dome") and obj.air then
     return
   end
 

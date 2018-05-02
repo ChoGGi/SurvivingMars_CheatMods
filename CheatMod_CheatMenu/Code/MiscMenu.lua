@@ -2,7 +2,15 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
-    "Expanded CM/Fixes/Clean All Objects",
+    "Expanded CM/[999]Misc/Auto Unpin Objects",
+    ChoGGi.ShowAutoUnpinObjectList,
+    nil,
+    "Will automagically stop any of these objects from being added to the pinned list.",
+    "CutSceneArea.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/[999]Misc/Clean All Objects",
     ChoGGi.CleanAllObjects,
     nil,
     "Removes all dust from all objects.",
@@ -10,7 +18,7 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Fixes/Fix All Objects",
+    "Expanded CM/[999]Misc/Fix All Objects",
     ChoGGi.FixAllObjects,
     nil,
     "Fixes all broken objects.",
@@ -153,22 +161,6 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
       return des .. " Remove some entries from the cheat pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
     end,
     "toggle_dtm_slots.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/[999]Misc/Pipes Pillars Spacing",
-    ChoGGi.PipesPillarsSpacing_Toggle,
-    nil,
-    function()
-      local des
-      if Consts.PipesPillarSpacing == 1000 then
-        des = "(Enabled)"
-      else
-        des = "(Disabled)"
-      end
-      return des .. " Only place Pillars at start and end."
-    end,
-    "ViewCamPath.tga"
   )
 
   ChoGGi.AddAction(

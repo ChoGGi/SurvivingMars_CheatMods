@@ -917,3 +917,16 @@ function ChoGGi.CloseDialogsECM()
   RemoveOldDialogs("ObjectManipulator",win)
   RemoveOldDialogs("ListChoiceCustomDialog",win)
 end
+
+function ChoGGi.SetMechanizedDepotTempAmount(Obj,amount)
+  amount = amount or 10
+  local resource = Obj.resource
+  local io_stockpile = Obj.stockpiles[1]
+  local io_supply_req = io_stockpile.supply[resource]
+  local io_demand_req = io_stockpile.demand[resource]
+
+  io_stockpile.max_z = amount
+  amount = (amount * 10) * ChoGGi.Consts.ResourceScale
+  io_supply_req:SetAmount(amount)
+  io_demand_req:SetAmount(amount)
+end

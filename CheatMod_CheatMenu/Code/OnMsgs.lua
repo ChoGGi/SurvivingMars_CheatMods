@@ -133,6 +133,10 @@ function OnMsg.LoadingScreenPreClose()
     AddToCustomLabels("LifeSupportGridElement","water")
   end
 
+  if ChoGGi.CheatMenuSettings.UnlimitedConnectionLength then
+    GridConstructionController.max_hex_distance_to_allow_build = 1000
+  end
+
   --not sure why this would be false on a dome
   for _,Object in ipairs(UICity.labels.Dome or empty_table) do
     if Object.achievement == "FirstDome" and type(Object.connected_domes) ~= "table" then
@@ -429,20 +433,18 @@ function OnMsg.ConstructionComplete(building)
   end
 
   --print(building.encyclopedia_id) print(building.class)
-  if building.class:find("MechanizedDepot") then
-    if ChoGGi.CheatMenuSettings.StorageMechanizedDepot then
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
-    end
+  if ChoGGi.CheatMenuSettings.StorageMechanizedDepot and building.class:find("MechanizedDepot") then
+    building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
 
   elseif building.class == "UniversalStorageDepot" then
-    if building.entity == "StorageDepot" and ChoGGi.CheatMenuSettings.StorageUniversalDepot then
+    if ChoGGi.CheatMenuSettings.StorageUniversalDepot and building.entity == "StorageDepot" then
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
     --other
-    elseif building.entity ~= "StorageDepot" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
+    elseif ChoGGi.CheatMenuSettings.StorageOtherDepot and building.entity ~= "StorageDepot" then
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
     end
 
-  elseif building.class == "WasteRockDumpSite" and ChoGGi.CheatMenuSettings.StorageWasteDepot then
+  elseif ChoGGi.CheatMenuSettings.StorageWasteDepot and building.class == "WasteRockDumpSite" then
     building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
     if building:GetStoredAmount() < 0 then
       building:CheatEmpty()
@@ -455,15 +457,15 @@ function OnMsg.ConstructionComplete(building)
   elseif building.class == "BlackCubeDumpSite" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
     building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
 
-  elseif building.class == "DroneFactory" and ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
+  elseif ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed and building.class == "DroneFactory" then
     building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
 
-  elseif building.class == "School" and ChoGGi.CheatMenuSettings.SchoolTrainAll then
+  elseif ChoGGi.CheatMenuSettings.SchoolTrainAll and building.class == "School" then
     for i = 1, #ChoGGi.PositiveTraits do
       building:SetTrait(i,ChoGGi.PositiveTraits[i])
     end
 
-  elseif building.class == "Sanatorium" and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
+  elseif ChoGGi.CheatMenuSettings.SanatoriumCureAll and building.class == "Sanatorium" then
     for i = 1, #ChoGGi.NegativeTraits do
       building:SetTrait(i,ChoGGi.NegativeTraits[i])
     end
@@ -642,8 +644,26 @@ ChoGGi.AddMsgToFunc(WaterProducer.CreateLifeSupportElements,"WaterProducer","Cre
 ChoGGi.AddMsgToFunc(SingleResourceProducer.Init,"SingleResourceProducer","Init","SpawnedProducerSingle")
 ChoGGi.AddMsgToFunc(ElectricityStorage.GameInit,"ElectricityStorage","GameInit","SpawnedElectricityStorage")
 ChoGGi.AddMsgToFunc(LifeSupportGridObject.GameInit,"LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
-if ChoGGi.Testing then
-  ChoGGi.AddMsgToFunc(PinsDlg.Pin,"PinsDlg","Pin","PinnedObject")
+ChoGGi.AddMsgToFunc(PinnableObject.TogglePin,"PinnableObject","TogglePin","TogglePinnableObject")
+ChoGGi.AddMsgToFunc(ResourceStockpileLR.GameInit,"ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
+
+--attached resource depots
+function OnMsg.SpawnedResourceStockpileLR(Obj)
+  if ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
+    ChoGGi.SetMechanizedDepotTempAmount(Obj.parent)
+  end
+end
+
+function OnMsg.TogglePinnableObject(Obj)
+  local unpin = ChoGGi.CheatMenuSettings.UnpinObjects
+  if next(unpin) then
+    for _,Name in ipairs(unpin) do
+      if Obj.class == Name and Obj:IsPinned() then
+        Obj:TogglePin()
+        break
+      end
+    end
+  end
 end
 
 function OnMsg.RemovedGridObject(Obj)
@@ -744,7 +764,7 @@ end
 local function CheckForRate(Obj)
 
   --charge/discharge
-  local value = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id][sType]
+  local value = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id]
 
   if value then
     local function SetValue(sType)

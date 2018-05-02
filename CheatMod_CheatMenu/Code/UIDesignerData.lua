@@ -159,19 +159,21 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     if type(self.CustomType) == "number" then
       items = self.idList.items
     end
-    for i = 1, #items do
-      if i == 1 then
-        --always return the custom value (and try to convert it to correct type)
-        items[i].custom = ChoGGi.RetProperType(self.idEditValue:GetText())
+    if #items > 0 then
+      for i = 1, #items do
+        if i == 1 then
+          --always return the custom value (and try to convert it to correct type)
+          items[i].custom = ChoGGi.RetProperType(self.idEditValue:GetText())
+        end
+        table.insert(self.choices,items[i])
       end
-      table.insert(self.choices,items[i])
+      --add checkbox statuses
+      self.choices[1].check1 = self.idCheckBox1:GetToggled()
+      self.choices[1].check2 = self.idCheckBox2:GetToggled()
+      self.choices[1].checkair = self.idColorCheckAir:GetToggled()
+      self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
+      self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
     end
-    --add checkbox statuses
-    self.choices[1].check1 = self.idCheckBox1:GetToggled()
-    self.choices[1].check2 = self.idCheckBox2:GetToggled()
-    self.choices[1].checkair = self.idColorCheckAir:GetToggled()
-    self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
-    self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
   end
 
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)

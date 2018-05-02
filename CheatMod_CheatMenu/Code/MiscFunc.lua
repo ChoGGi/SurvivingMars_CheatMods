@@ -1,5 +1,91 @@
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
+function ChoGGi.ShowAutoUnpinObjectList()
+
+  --build a list
+  local ItemList = {
+    {text = "RC Rover",value = "RCRover"},
+    {text = "RC Explorer",value = "RCExplorer"},
+    {text = "RC Transport",value = "RCTransport"},
+    {text = "Drone Hub",value = "DroneHub"},
+    {text = "Colonist",value = "Colonist"},
+    {text = "Supply Rocket",value = "SupplyRocket"},
+    {text = "Space Elevator",value = "SpaceElevator"},
+    {text = "Dome Basic",value = "DomeBasic"},
+    {text = "Dome Medium",value = "DomeMedium"},
+    {text = "Dome Mega",value = "DomeMega"},
+    {text = "Dome Oval",value = "DomeOval"},
+    {text = "Dome Geoscape",value = "GeoscapeDome"},
+  }
+
+  if not ChoGGi.CheatMenuSettings.UnpinObjects then
+    ChoGGi.CheatMenuSettings.UnpinObjects = {}
+  end
+
+  --other hint type
+  local EnabledList = ""
+  local list = ChoGGi.CheatMenuSettings.UnpinObjects
+  if next(list) then
+    for Key,_ in ipairs(list) do
+      EnabledList = EnabledList .. " " .. Key
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    --nothing checked so just return
+    if not check1 and not check2 then
+      ChoGGi.MsgPopup("Pick a checkbox next time...","Pins")
+      return
+    elseif check1 and check2 then
+      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Pins")
+      return
+    end
+
+    for i = 1, #choice do
+      local value = choice[i].value
+      if check2 then
+        local pins = ChoGGi.CheatMenuSettings.UnpinObjects
+        for i = 1, #pins do
+          if pins[i] == value then
+            pins[i] = false
+          end
+        end
+      elseif check1 then
+        table.insert(ChoGGi.CheatMenuSettings.UnpinObjects,value)
+      end
+    end
+
+    --remove dupes
+    ChoGGi.CheatMenuSettings.UnpinObjects = ChoGGi.RetTableNoDupes(ChoGGi.CheatMenuSettings.UnpinObjects)
+
+    local found = true
+    while found do
+      found = nil
+      for i = 1, #ChoGGi.CheatMenuSettings.UnpinObjects do
+        if ChoGGi.CheatMenuSettings.UnpinObjects[i] == false then
+          ChoGGi.CheatMenuSettings.UnpinObjects[i] = nil
+          found = true
+          break
+        end
+      end
+    end
+
+    --if it's empty then remove setting
+    if next(ChoGGi.CheatMenuSettings.UnpinObjects) == nil then
+      ChoGGi.CheatMenuSettings.UnpinObjects = nil
+    end
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup("Toggled: " .. #choice .. " pinnable objects.","Pins")
+  end
+
+  local hint = "Auto Unpinned:" .. EnabledList .. "\nEnter a class name (s.class) to add a custom entry."
+  local hint_check1 = "Add these items to the unpin list."
+  local hint_check2 = "Remove these items from the unpin list."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Auto Remove Items From Pin List",hint,true,"Add to list",hint_check1,"Remove from list",hint_check2)
+end
+
 function ChoGGi.CleanAllObjects()
   for _,Object in ipairs(UICity.labels.Building or empty_table) do
     Object:SetDust(0,const.DustMaterialExterior)
@@ -7,6 +93,7 @@ function ChoGGi.CleanAllObjects()
   for _,Object in ipairs(UICity.labels.Unit or empty_table) do
     Object:SetDust(0,const.DustMaterialExterior)
   end
+  ChoGGi.MsgPopup("Cleaned all","Objects")
 end
 
 function ChoGGi.FixAllObjects()
@@ -21,6 +108,7 @@ function ChoGGi.FixAllObjects()
   for _,Object in ipairs(UICity.labels.Drone or empty_table) do
     Object:SetCommand("RepairDrone")
   end
+  ChoGGi.MsgPopup("Fixed all","Objects")
 end
 
 --build and show a list of attachments for changing their colours
@@ -514,16 +602,6 @@ function ChoGGi.CameraZoom_Toggle()
 
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
-end
-
-function ChoGGi.PipesPillarsSpacing_Toggle()
-  ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
-  ChoGGi.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
-    "Buildings","UI/Icons/Sections/spaceship.tga"
-  )
 end
 
 function ChoGGi.ShowAllTraits_Toggle()

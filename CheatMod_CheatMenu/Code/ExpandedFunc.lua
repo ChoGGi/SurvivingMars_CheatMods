@@ -3,6 +3,25 @@
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
+function ChoGGi.StorageMechanizedDepotsTemp_Toggle()
+  ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp = not ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp
+
+  local amount
+  if not ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp then
+    amount = 5
+  end
+
+  for _,building in ipairs(UICity.labels.MechanizedDepots or empty_table) do
+    ChoGGi.SetMechanizedDepotTempAmount(building,amount)
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Temp Storage: " .. tostring(ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp),
+    "Storage",UsualIcon
+  )
+
+end
+
 function ChoGGi.SetDisasterOccurrence(sType)
 
   local ItemList = {}

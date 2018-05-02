@@ -248,29 +248,6 @@ end --OnMsg
 --function ChoGGi.ReplacedFunctions_LoadingScreenPreClose()
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
-if ChoGGi.Testing and false then
-  ChoGGi.OrigFunc.PinsDlg_Pin = PinsDlg.Pin
-  function PinsDlg:Pin(obj, on_open)
-    local ret = ChoGGi.OrigFunc.PinsDlg_Pin(self,obj, on_open)
-
-    local pins_dlg = OpenXDialog("PinsDlg", GetInGameInterface())
-    --if #g_PinnedObjs > 0 then
-    if next(g_PinnedObjs) then
-      for i = #g_PinnedObjs, 1, -1 do
-        local obj = g_PinnedObjs[i]
-        obj.is_pinned = false
-        g_PinnedObjs[i] = nil
-        if IsKindOf(obj,"Colonist") then
-          print(obj.class)
-          pins_dlg:Unpin(obj)
-        end
-      end
-    end
-
-    return ret
-  end
-end
-
   --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
@@ -466,6 +443,7 @@ end
     --set orientation to last object if same entity (should I just do it for everything)
     --if ChoGGi.LastPlacedObject and ChoGGi.LastPlacedObject.entity == cursor_obj.entity then
     if ChoGGi.LastPlacedObject and ChoGGi.CheatMenuSettings.UseLastOrientation then
+      --likes to fail, so add a pcall
       pcall(function()
         cursor_obj:SetOrientation(ChoGGi.LastPlacedObject:GetOrientation())
       end)

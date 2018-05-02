@@ -2,6 +2,33 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Buildings/Pipes Pillars Spacing",
+    ChoGGi.PipesPillarsSpacing_Toggle,
+    nil,
+    function()
+      local des
+      if Consts.PipesPillarSpacing == 1000 then
+        des = "(Enabled)"
+      else
+        des = "(Disabled)"
+      end
+      return des .. " Only place Pillars at start and end."
+    end,
+    "ViewCamPath.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Unlimited Connection Length",
+    ChoGGi.UnlimitedConnectionLength_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.CheatMenuSettings.UnlimitedConnectionLength and "(Enabled)" or "(Disabled)"
+      return des .. " No more length limits to pipes, cables, and passages."
+    end,
+    "toggle_post.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Buildings/Powerless Building",
     ChoGGi.BuildingPower_Toggle,
     nil,

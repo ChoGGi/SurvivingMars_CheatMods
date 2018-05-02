@@ -2,7 +2,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
--------------
+  --------------------disasters
   local function DisasterOccurrenceText(Name)
     local des = mapdata["MapSettings_" .. Name]
     return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
@@ -55,7 +55,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     "remove_water.tga"
   )
-  -------------
+  -------------rockets
   ChoGGi.AddAction(
     "Expanded CM/Rocket/Cargo Capacity",
     ChoGGi.SetRocketCargoCapacity,
@@ -80,7 +80,17 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     "ToggleMarkers.tga"
   )
 
-  --------------------
+  --------------------capacity
+  ChoGGi.AddAction(
+    "Expanded CM/Capacity/Storage Mechanized Depots Temp",
+    ChoGGi.StorageMechanizedDepotsTemp_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp and "(Enabled)" or "(Disabled)"
+      return des .. " Allow the temporary storage to hold 100 instead of 50 cubes."
+    end,
+    "DisableAOMaps.tga"
+  )
   ChoGGi.AddAction(
     "Expanded CM/Capacity/Worker Capacity",
     ChoGGi.SetWorkerCapacity,
@@ -145,8 +155,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     "ToggleTerrainHeight.tga"
   )
 
----------all the fixes
-
+  --------------------fixes
   ChoGGi.AddAction(
     "Expanded CM/Fixes/Production Amount Refresh",
     function()

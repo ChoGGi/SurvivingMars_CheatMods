@@ -422,9 +422,9 @@ function ChoGGi.ShowResearchTechList()
   end
 
   local CallBackFunc = function(choice)
-    --nothing checked so just return
     local check1 = choice[1].check1
     local check2 = choice[1].check2
+    --nothing checked so just return
     if not check1 and not check2 then
       ChoGGi.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
       return

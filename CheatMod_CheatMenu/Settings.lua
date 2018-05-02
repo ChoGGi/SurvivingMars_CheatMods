@@ -35,6 +35,8 @@ ChoGGi.Consts = {
 --stores custom settings for each building
   BuildingSettings = {},
 --false
+  StorageMechanizedDepotsTemp = false,
+  UnlimitedConnectionLength = false,
   SpeedDrone = false,
   SpeedRC = false,
   SpeedColonist = false,

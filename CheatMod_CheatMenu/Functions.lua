@@ -588,3 +588,15 @@ function ChoGGi.SetSavedSetting(Setting,Value)
     ChoGGi.CheatMenuSettings[Setting] = Value
   end
 end
+
+function ChoGGi.RetTableNoDupes(Table)
+  local tempt = {}
+  local dupe = {}
+  for _,Name in ipairs(Table) do
+    if not dupe[Name] then
+      tempt[#tempt+1] = Name
+      dupe[Name] = true
+    end
+  end
+  return tempt
+end

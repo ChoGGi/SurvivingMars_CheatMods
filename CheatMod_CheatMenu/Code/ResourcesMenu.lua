@@ -35,11 +35,9 @@ function ChoGGi.ResourcesMenu_LoadingScreenPreClose()
 
   ChoGGi.AddAction(
     "Expanded CM/Resources/Fill Selected Resource",
-    function()
-      ChoGGi.FillResource(SelectedObj or SelectionMouseObj())
-    end,
+    ChoGGi.FillResource,
     "Ctrl-F",
-    "Fill the selected object's resource(s)",
+    "Fill the selected/moused over object's resource(s)",
     "Cube.tga"
   )
 end

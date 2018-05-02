@@ -2,6 +2,31 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
+function ChoGGi.PipesPillarsSpacing_Toggle()
+  ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
+  ChoGGi.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
+    "Buildings"
+  )
+end
+
+function ChoGGi.UnlimitedConnectionLength_Toggle()
+  ChoGGi.CheatMenuSettings.UnlimitedConnectionLength = not ChoGGi.CheatMenuSettings.UnlimitedConnectionLength
+  if ChoGGi.CheatMenuSettings.UnlimitedConnectionLength then
+    GridConstructionController.max_hex_distance_to_allow_build = 1000
+  else
+    GridConstructionController.max_hex_distance_to_allow_build = 20
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.UnlimitedConnectionLength) .. ": Is that a rocket in your pocket?",
+    "Buildings"
+  )
+
+end
+
 function ChoGGi.BuildingPower_Toggle()
   local sel = SelectedObj
   if not sel or not sel.electricity_consumption then
