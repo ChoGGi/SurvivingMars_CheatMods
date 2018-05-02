@@ -78,7 +78,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
 
   ChoGGi.AddAction(
     "Cheats/[04]Research/Research Tech",
-    ChoGGi.ShowResearchDialog,
+    ChoGGi.ShowResearchTechList,
     nil,
     "Pick what you want to unlock/research.",
     "ViewArea.tga"

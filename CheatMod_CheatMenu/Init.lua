@@ -27,13 +27,13 @@ dofolder_files(ChoGGi.ModPath .. "Code")
 
 --if writelogs option
 if ChoGGi.CheatMenuSettings.WriteLogs == true then
-  table.insert(ChoGGi.StartupMsgs,"<color 255 255 128>ChoGGi: Writing debug/console logs to AppData/logs</color>")
+  table.insert(ChoGGi.StartupMsgs,"<color 255 255 255>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>")
   ChoGGi.WriteLogs_Toggle(ChoGGi.CheatMenuSettings.WriteLogs)
 end
 
 --first time run info
 if ChoGGi.CheatMenuSettings.FirstRun ~= false then
-  table.insert(ChoGGi.StartupMsgs,"<color 255 255 255>\nCheatMenu Active:</color><color 128 255 128>\nF2 to toggle menu\nDebug>Console History to toggle console history.</color>\n\n\n")
+  table.insert(ChoGGi.StartupMsgs,"<color 255 255 255>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle menu\nDebug>Console History to toggle console history.</color>\n\n\n")
   ChoGGi.CheatMenuSettings.FirstRun = false
   ChoGGi.Init_WriteSettings = 1
 end

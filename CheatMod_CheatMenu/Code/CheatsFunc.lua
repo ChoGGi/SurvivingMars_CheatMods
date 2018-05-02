@@ -1,3 +1,4 @@
+local UsualIcon = "UI/Icons/Notifications/research.tga"
 
 function ChoGGi.DisasterTriggerMissle(Amount)
   Amount = Amount or 1
@@ -198,7 +199,7 @@ function ChoGGi.ShowScanAndMapOptions()
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
-     "Scanner","UI/Icons/Notifications/scan.tga",true
+      "Scanner","UI/Icons/Notifications/scan.tga",true
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
@@ -245,7 +246,7 @@ function ChoGGi.ShowMysteryList()
   end)
 
   local CallBackFunc = function(choice)
-    if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+    if choice[1].check1 then
       --instant
       ChoGGi.StartMystery(choice[1].value,true)
     else
@@ -305,7 +306,7 @@ function ChoGGi.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
   ChoGGi.MsgPopup("Unlocked all buildings for construction.",
-   "Buildings","UI/Icons/Upgrades/build_2.tga"
+    "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
 
@@ -344,7 +345,7 @@ function ChoGGi.OutsourcingFree_Toggle()
   ChoGGi.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
-   "Research","UI/Icons/Sections/research_1.tga",true
+    "Research","UI/Icons/Sections/research_1.tga",true
   )
 end
 
@@ -370,7 +371,7 @@ function ChoGGi.SetBreakThroughsAllowed()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": S M R T",
-        "Research","UI/Icons/Notifications/research.tga"
+        "Research",UsualIcon
       )
     end
   end
@@ -384,11 +385,11 @@ function ChoGGi.ResearchQueueLarger_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
-    "Research","UI/Icons/Notifications/research.tga"
+    "Research",UsualIcon
   )
 end
 
-function ChoGGi.ShowResearchDialog()
+function ChoGGi.ShowResearchTechList()
   local ItemList = {}
   table.insert(ItemList,{
     text = "(Everything)",
@@ -422,22 +423,24 @@ function ChoGGi.ShowResearchDialog()
 
   local CallBackFunc = function(choice)
     --nothing checked so just return
-    if not ChoGGi.ListChoiceCustomDialog_CheckBox1 and not ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-      ChoGGi.MsgPopup("Pick a checkbox next time...","Research","UI/Icons/Notifications/research.tga")
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if not check1 and not check2 then
+      ChoGGi.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
       return
-    elseif ChoGGi.ListChoiceCustomDialog_CheckBox1 and ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Research","UI/Icons/Notifications/research.tga")
+    elseif check1 and check2 then
+      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Research",UsualIcon)
       return
     end
 
     local sType
     local Which
     --add
-    if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+    if check1 then
       sType = "DiscoverTech"
       Which = "Unlocked"
     --remove
-    elseif ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+    elseif check2 then
       sType = "GrantTech"
       Which = "Researched"
     end
@@ -461,7 +464,7 @@ function ChoGGi.ShowResearchDialog()
     end
 
     ChoGGi.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
-      "Research","UI/Icons/Notifications/research.tga"
+      "Research",UsualIcon
     )
   end
 

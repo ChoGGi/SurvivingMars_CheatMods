@@ -5,7 +5,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     "Expanded CM/Drones/Drone Rock To Concrete Speed",
     ChoGGi.SetRockToConcreteSpeed,
     nil,
-    "How long it takes drones to convert rock to concrete (may need restart).",
+    "How long it takes drones to convert rock to concrete.",
     "groups.tga"
   )
 
@@ -18,28 +18,10 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Drones/[1]Fill Selected DroneHub With Drones",
-    function()
-      ChoGGi.FillSelectedDroneHubWithDrones(true)
-    end,
-    nil,
-    "Select a hub then use this to fill with drones (dependent on prefab amount).",
-    "groups.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Drones/[1]Add 20 Drones to Selected DroneHub",
-    ChoGGi.FillSelectedDroneHubWithDrones,
-    "Alt-F",
-    "Select a hub then use this to add 20 drones (dependent on prefab amount).",
-    "groups.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Drones/[1]Dismantle All Drones Of Selected Hub",
-    ChoGGi.DismantleAllDronesOfSelectedHub,
-    "Alt-D",
-    "Select a hub then use this to convert all drones to prefabs.",
+    "Expanded CM/Drones/Change Amount Of Drones In Hub",
+    ChoGGi.SetDroneAmountDroneHub,
+    "Shift-D",
+    "Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).",
     "groups.tga"
   )
 

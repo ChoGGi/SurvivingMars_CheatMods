@@ -1,3 +1,5 @@
+local UsualIcon = "UI/Icons/Sections/storage.tga"
+local UsualIcon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
 function ChoGGi.AddOrbitalProbes()
   local ItemList = {
@@ -49,7 +51,7 @@ function ChoGGi.SetFoodPerRocketPassenger()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": om nom nom nom nom",
-       "Passengers","UI/Icons/Sections/Food_4.tga"
+        "Passengers","UI/Icons/Sections/Food_4.tga"
       )
     end
   end
@@ -83,7 +85,7 @@ function ChoGGi.AddPrefabs()
 
     if type(custom) ~= "number" then
       ChoGGi.MsgPopup("Prefab number is missing from custom value box.",
-        "Error","UI/Icons/Sections/storage.tga"
+        "Error",UsualIcon
       )
     else
       if value == "Drone" then
@@ -93,7 +95,7 @@ function ChoGGi.AddPrefabs()
       end
       RefreshXBuildMenu()
       ChoGGi.MsgPopup(custom .. " " .. choice[1].text .. " prefabs have been added.",
-        "Prefabs","UI/Icons/Sections/storage.tga"
+        "Prefabs",UsualIcon
       )
     end
 
@@ -125,7 +127,7 @@ function ChoGGi.SetFunding()
       ChangeFunding(value)
 
       ChoGGi.MsgPopup(choice[1].text,
-        "Funding","UI/Icons/IPButtons/rare_metals.tga"
+        "Funding",UsualIcon2
       )
     end
   end
@@ -138,7 +140,7 @@ function ChoGGi.FillResource(self)
   end
   --need the msg here, as i made it return if it succeeds
   ChoGGi.MsgPopup("Resouce Filled",
-    "Resource","UI/Icons/IPButtons/rare_metals.tga"
+    "Resource",UsualIcon2
   )
 
   if pcall(function()

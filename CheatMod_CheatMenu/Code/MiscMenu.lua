@@ -2,6 +2,22 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Fixes/Clean All Objects",
+    ChoGGi.CleanAllObjects,
+    nil,
+    "Removes all dust from all objects.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Fixes/Fix All Objects",
+    ChoGGi.FixAllObjects,
+    nil,
+    "Fixes all broken objects.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Change Colour",
     ChoGGi.CreateObjectListAndAttaches,
     "F6",

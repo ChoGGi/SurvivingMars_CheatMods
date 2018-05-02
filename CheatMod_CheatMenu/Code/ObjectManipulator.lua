@@ -264,7 +264,8 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     local touched = {}
     local i = 0
     format_text = string.gsub(format_text, "{(%d-)}", function(s)
-      if #s == 0 then
+      if next(s) == nil then
+      --if #s == 0 then
         i = i + 1
       else
         i = tonumber(s)

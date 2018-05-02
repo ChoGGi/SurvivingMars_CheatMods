@@ -147,15 +147,16 @@ function ChoGGi.GetTravelTimeMarsEarth()
 end
 
 function ChoGGi.AttachToNearestDome(building)
-  --ignore outdoor buildings
-  if  building.dome_required ~= true then
+  --ignore outdoor buildings, and if there aren't any domes
+  local work = UICity.labels.Domes_Working
+  if building.dome_required ~= true or not work or (work and next(work) == nil) then
     return
   end
 
-  --dome ruins don't have air/water/elec
+  --check for domes and dome ruins don't have air/water/elec
   if (building.parent_dome and not building.parent_dome.air) or not building.parent_dome then
     --find the nearest working dome
-    local dome = FindNearestObject(UICity.labels.Domes_Working,building)
+    local dome = FindNearestObject(work,building)
     if dome and dome.labels then
       building.parent_dome = dome
       --which type is it (check for getlabels or some such)
@@ -169,24 +170,58 @@ function ChoGGi.AttachToNearestDome(building)
 end
 
 function ChoGGi.SetProductionToSavedAmt()
-  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-    if ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id] then
-      local amount = ChoGGi.CheatMenuSettings.BuildingsProduction[building.encyclopedia_id]
-      pcall(function()
-        if building.base_air_production then
-          building.air:SetProduction(amount)
-          building.air_production = amount
-        elseif building.base_water_production then
-          building.water:SetProduction(amount)
-          building.water_production = amount
-        elseif building.base_electricity_production then
-          building.electricity:SetProduction(amount)
-          building.electricity_production = amount
-        elseif building.producers then
-          building.producers[1].production_per_day = amount
-          building.production_per_day1 = amount
-        end
-      end)
+  --electricity
+  for _,building in ipairs(UICity.labels.Power or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      building.electricity:SetProduction(bld.production)
+      building.electricity_production = bld.production
+    end
+  end
+
+  --water/air
+  for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      if building.base_air_production then
+        building.air:SetProduction(bld.production)
+        building.air_production = bld.production
+      elseif building.base_water_production then
+        building.water:SetProduction(bld.production)
+        building.water_production = bld.production
+      end
+    end
+  end
+
+  --extractors/factories
+  for _,building in ipairs(UICity.labels.Production or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      building.producers[1].production_per_day = bld.production
+      building.production_per_day1 = bld.production
+    end
+  end
+  --moholemine/theexvacator
+  for _,building in ipairs(UICity.labels.Wonders or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      building.producers[1].production_per_day = bld.production
+      building.production_per_day1 = bld.production
+    end
+  end
+  --farms
+  for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      building.producers[1].production_per_day = bld.production
+      building.production_per_day1 = bld.production
+    end
+  end
+  for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
+    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+    if bld and bld.production then
+      building.producers[1].production_per_day = bld.production
+      building.production_per_day1 = bld.production
     end
   end
 end
@@ -517,7 +552,7 @@ function ChoGGi.SetSponsorBonuses(sType)
   local currentname = g_CurrentMissionParams.idMissionSponsor
   local sponsor = MissionParams.idMissionSponsor.items[currentname]
   local bonus = Presets.MissionSponsorPreset.Default[sType]
-  --bonuses multiple sponsors have:
+  --bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
   if sponsor.cargo then
     sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,bonus.cargo)
   end
@@ -644,8 +679,8 @@ function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hi
   end
 
   if ChoGGi.Testing then
---easier to fiddle with it like this
-ChoGGi.ListChoiceCustomDialog_Dlg = dlg
+    --easier to fiddle with it
+    ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   end
 
   --title text
@@ -824,8 +859,8 @@ function ChoGGi.OpenInObjectManipulator(Object,Parent)
   end
 
   if ChoGGi.Testing then
---easier to fiddle with it like this
-ChoGGi.ObjectManipulator_Dlg = dlg
+    --easier to fiddle with it
+    ChoGGi.ObjectManipulator_Dlg = dlg
   end
 
   --update internal object
@@ -836,6 +871,7 @@ ChoGGi.ObjectManipulator_Dlg = dlg
     title = "Class: " .. Object.class
   end
 
+  --update the add button hint
   dlg.idAddNew:SetHint(dlg.idAddNew:GetHint() .. title .. ".")
 
   --title text
@@ -848,6 +884,7 @@ ChoGGi.ObjectManipulator_Dlg = dlg
   else
     dlg.idCaption:SetText(tostring(Object))
   end
+
   --set pos
   if Parent then
     local pos = Parent:GetPos()

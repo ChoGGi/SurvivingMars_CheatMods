@@ -1,3 +1,6 @@
+local UsualIcon = "UI/Icons/IPButtons/drone.tga"
+local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
+local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"
 
 function ChoGGi.SetRockToConcreteSpeed()
   local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
@@ -27,7 +30,7 @@ function ChoGGi.SetRockToConcreteSpeed()
 
       ChoGGi.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
-        "Drones","UI/Icons/IPButtons/drone.tga"
+        "Drones",UsualIcon
       )
     end
   end
@@ -69,7 +72,7 @@ function ChoGGi.SetDroneMoveSpeed()
       ChoGGi.SetSavedSetting("SpeedDrone",value)
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
-        "Drones","UI/Icons/IPButtons/drone.tga"
+        "Drones",UsualIcon
       )
     end
   end
@@ -113,7 +116,7 @@ function ChoGGi.SetRCMoveSpeed()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
-        "RCs","UI/Icons/IPButtons/transport_route.tga"
+        "RCs",UsualIcon2
       )
     end
   end
@@ -121,23 +124,55 @@ function ChoGGi.SetRCMoveSpeed()
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"RC Move Speed","Current: " .. hint)
 end
 
-function ChoGGi.DismantleAllDronesOfSelectedHub()
+function ChoGGi.SetDroneAmountDroneHub()
   local sel = SelectedObj or SelectionMouseObj()
-  repeat
-    sel:ConvertDroneToPrefab()
-  until #sel.drones == 0
-end
-
-function ChoGGi.FillSelectedDroneHubWithDrones(Bool)
-  local sel = SelectedObj or SelectionMouseObj()
-  local amt = 20
-  if Bool == true then
-    amt = sel:GetMaxDrones() - sel:GetDronesCount()
+  if not sel then
+    return
   end
 
-  for _ = 1, amt do
-    sel:UseDronePrefab()
+  local CurrentAmount = sel:GetDronesCount()
+  local ItemList = {
+    {text = " Current amount: " .. CurrentAmount,value = CurrentAmount},
+    {text = 1,value = 1},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+  }
+
+  local CallBackFunc = function(choice)
+    --nothing checked so just return
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if not check1 and not check2 then
+      ChoGGi.MsgPopup("Pick a checkbox next time...","Drones")
+      return
+    elseif check1 and check2 then
+      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Drones")
+      return
+    end
+
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      if check1 then
+        for _ = 1, value do
+          sel:UseDronePrefab()
+        end
+      elseif check2 then
+        for _ = 1, value do
+          sel:ConvertDroneToPrefab()
+        end
+      end
+
+      ChoGGi.MsgPopup("Drones: " .. choice[1].text,"Drones")
+    end
   end
+
+  local hint = "Drones in hub: " .. CurrentAmount .. "\nDrone prefabs: " .. UICity.drone_prefabs
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,"Add","Check this to add drones to hub","Dismantle","Check this to dismantle drones in hub")
 end
 
 function ChoGGi.SetDroneFactoryBuildSpeed()
@@ -179,7 +214,7 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("Build Speed: " .. choice[1].text,
-      "Drones","UI/Icons/IPButtons/drone.tga"
+      "Drones",UsualIcon
     )
   end
 
@@ -202,7 +237,7 @@ function ChoGGi.DroneBatteryInfinite_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneMoveBatteryUse) .. ": What happens when the drones get into your Jolt Cola supply...",
-    "Drones","UI/Icons/IPButtons/drone.tga"
+    "Drones",UsualIcon
   )
 end
 
@@ -214,7 +249,7 @@ function ChoGGi.DroneBuildSpeed_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneConstructAmount) .. ": What happens when the drones get into your Jolt Cola supply... and drink it",
-    "Drones","UI/Icons/IPButtons/drone.tga"
+    "Drones",UsualIcon
   )
 end
 
@@ -224,7 +259,7 @@ function ChoGGi.RCRoverDroneRechargeFree_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost) .. ": More where that came from",
-    "RCs","UI/Icons/IPButtons/transport_route.tga"
+    "RCs",UsualIcon2
   )
 end
 
@@ -266,7 +301,7 @@ function ChoGGi.DroneRepairSupplyLeak_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak) .. ": You know what they say about leaky pipes",
-    "Drones","UI/Icons/IPButtons/drone.tga"
+    "Drones",UsualIcon
   )
 end
 
@@ -307,7 +342,7 @@ function ChoGGi.SetDroneCarryAmount()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Drones can carry: " .. choice[1].text .. " items.",
-        "Drones","UI/Icons/IPButtons/drone.tga"
+        "Drones",UsualIcon
       )
     end
   end
@@ -344,7 +379,7 @@ function ChoGGi.SetDronesPerDroneHub()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("DroneHubs can control: " .. choice[1].text .. " drones.",
-        "RCs","UI/Icons/IPButtons/drone.tga"
+        "RCs",UsualIcon
       )
     end
   end
@@ -380,7 +415,7 @@ function ChoGGi.SetDronesPerRCRover()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC Rovers can control: " .. choice[1].text .. " drones.",
-        "RCs","UI/Icons/IPButtons/transport_route.tga"
+        "RCs",UsualIcon2
       )
     end
   end
@@ -469,7 +504,7 @@ function ChoGGi.SetShuttleCapacity()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Shuttle storage is now: " .. choice[1].text,
-        "Shuttle","UI/Icons/IPButtons/shuttle.tga"
+        "Shuttle",UsualIcon3
       )
     end
   end
@@ -511,7 +546,7 @@ function ChoGGi.SetShuttleSpeed()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Shuttle speed is now: " .. choice[1].text,
-        "Shuttle","UI/Icons/IPButtons/shuttle.tga"
+        "Shuttle",UsualIcon3
       )
     end
   end
@@ -532,9 +567,15 @@ function ChoGGi.SetShuttleHubCapacity()
     {text = 1000,value = 1000},
   }
 
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub then
+    ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub = {}
+  end
+
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.BuildingsCapacity.ShuttleHub then
-    hint = tostring(ChoGGi.CheatMenuSettings.BuildingsCapacity.ShuttleHub)
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub
+  if setting and setting.shuttles then
+    hint = tostring(setting.shuttles)
   end
 
   local CallBackFunc = function(choice)
@@ -545,14 +586,14 @@ function ChoGGi.SetShuttleHubCapacity()
       for _,object in ipairs(UICity.labels.ShuttleHub or empty_table) do
         object.max_shuttles = value
       end
-      ChoGGi.CheatMenuSettings.BuildingsCapacity.ShuttleHub = value
+      ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = value
     else
-      ChoGGi.CheatMenuSettings.BuildingsCapacity.ShuttleHub = nil
+      ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = nil
     end
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup("ShuttleHub shuttle capacity is now: " .. choice[1].text,
-      "Shuttle","UI/Icons/IPButtons/shuttle.tga"
+      "Shuttle",UsualIcon3
     )
   end
 
@@ -595,7 +636,7 @@ function ChoGGi.SetGravityRC()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
-        "RCs","UI/Icons/IPButtons/transport_route.tga"
+        "RCs",UsualIcon2
       )
     end
   end
@@ -638,7 +679,7 @@ function ChoGGi.SetGravityDrones()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
-        "RCs","UI/Icons/IPButtons/transport_route.tga"
+        "RCs",UsualIcon2
       )
     end
   end

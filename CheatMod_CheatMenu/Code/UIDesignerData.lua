@@ -32,7 +32,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idList.OnLButtonDown = function(selfList,...)
       local ret = origOnLButtonDown(selfList,...)
       local sel = self.idList:GetSelection()
-      if #sel ~= 0 then
+      if next(sel) then
+      --if #sel ~= 0 then
         --update selection (select last selected if multisel)
         self.sel = sel[#sel]
         --update the custom value box
@@ -78,13 +79,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
     --return values
     function self.idOK.OnButtonPressed()
-      --check checkboxes
-      ChoGGi.ListChoiceCustomDialog_CheckBox1 = self.idCheckBox1:GetToggled()
-      ChoGGi.ListChoiceCustomDialog_CheckBox2 = self.idCheckBox2:GetToggled()
-      ChoGGi.ListChoiceCustomDialog_ColorCheckAir = self.idColorCheckAir:GetToggled()
-      ChoGGi.ListChoiceCustomDialog_ColorCheckWater = self.idColorCheckWater:GetToggled()
-      ChoGGi.ListChoiceCustomDialog_ColorCheckElec = self.idColorCheckElec:GetToggled()
-
+      --item list
       self:GetAllItems()
       --send selection back
       self:delete(self.choices)
@@ -171,6 +166,12 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
       end
       table.insert(self.choices,items[i])
     end
+    --add checkbox statuses
+    self.choices[1].check1 = self.idCheckBox1:GetToggled()
+    self.choices[1].check2 = self.idCheckBox2:GetToggled()
+    self.choices[1].checkair = self.idColorCheckAir:GetToggled()
+    self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
+    self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
   end
 
   function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)

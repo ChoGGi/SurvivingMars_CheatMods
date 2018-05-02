@@ -76,7 +76,8 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
 
       --remove errors we want to remove
       local statusNew = {}
-      if #status > 0 then
+      --if #status > 0 then
+      if next(status) then
         for i = 1, #status do
           if status[i].type == "warning" then
             table.insert(statusNew,status[i])
@@ -130,7 +131,7 @@ function ChoGGi.ForceDronesToEmptyStorage_Enable()
   end
   ChoGGi.DronesOverride = true
 
-  --checks whenever something is produced, if you have an insane production amount then it messes up (so we also check every hour (OnMsg))
+  --checks whenever something is produced, if you have an insane production amount then it messes up (so we also check every hour (in OnMsg))
   ChoGGi.OrigFunc.SingleResourceProducer_OnProduce = SingleResourceProducer.OnProduce
   function SingleResourceProducer:OnProduce(amount_to_produce)
     local ret = ChoGGi.OrigFunc.SingleResourceProducer_OnProduce(self,amount_to_produce)
@@ -147,6 +148,7 @@ function ChoGGi.ReplacedFunctions_ClassesGenerate()
 dumpt(classdefs)
 dumpl(classdefs)
 --]]
+
   --so we can add hints to info pane cheats
   ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
   function InfopanelObj:CreateCheatActions(win)
@@ -252,7 +254,8 @@ if ChoGGi.Testing and false then
     local ret = ChoGGi.OrigFunc.PinsDlg_Pin(self,obj, on_open)
 
     local pins_dlg = OpenXDialog("PinsDlg", GetInGameInterface())
-    if #g_PinnedObjs > 0 then
+    --if #g_PinnedObjs > 0 then
+    if next(g_PinnedObjs) then
       for i = #g_PinnedObjs, 1, -1 do
         local obj = g_PinnedObjs[i]
         obj.is_pinned = false

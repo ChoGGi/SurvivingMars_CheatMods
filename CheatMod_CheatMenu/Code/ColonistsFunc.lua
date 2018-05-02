@@ -1,3 +1,4 @@
+local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 function ChoGGi.SetColonistMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
@@ -31,7 +32,7 @@ function ChoGGi.SetColonistMoveSpeed()
       ChoGGi.SetSavedSetting("SpeedColonist",value)
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
-        "Colonists","UI/Icons/Sections/colonist.tga"
+        "Colonists",UsualIcon
       )
     end
   end
@@ -75,7 +76,7 @@ function ChoGGi.SetGravityColonists()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Colonist gravity is now: " .. choice[1].text,
-        "Colonists","UI/Icons/Sections/colonist.tga"
+        "Colonists",UsualIcon
       )
     end
   end
@@ -136,7 +137,7 @@ function ChoGGi.AddApplicantsToPool()
         end
       end
       ChoGGi.MsgPopup("Added applicants: " .. choice[1].text,
-        "Applicants","UI/Icons/Sections/colonist.tga"
+        "Applicants",UsualIcon
       )
     end
   end
@@ -174,7 +175,7 @@ function ChoGGi.SetAllWorkShifts()
     end
 
     ChoGGi.MsgPopup("Early night? Vamos al bar un trago!",
-      "Shifts","UI/Icons/Sections/colonist.tga"
+      "Shifts",UsualIcon
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shifts","Are you sure you want to change all shifts?")
@@ -211,7 +212,7 @@ function ChoGGi.SetMinComfortBirth()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Selected: " .. choice[1].text .. "\nLook at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.",
-        "Colonists","UI/Icons/Sections/colonist.tga",true
+        "Colonists",UsualIcon,true
       )
     end
   end
@@ -225,7 +226,7 @@ function ChoGGi.VisitFailPenalty_Toggle()
   ChoGGi.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.VisitFailPenalty) .. "\nThe mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.",
-    "Colonists","UI/Icons/Sections/colonist.tga",true
+    "Colonists",UsualIcon,true
   )
 end
 
@@ -235,7 +236,7 @@ function ChoGGi.RenegadeCreation_Toggle()
   ChoGGi.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RenegadeCreation) .. ": I just love findin' subversives.",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 function ChoGGi.MakeAllColonistsRenegades()
@@ -243,7 +244,7 @@ function ChoGGi.MakeAllColonistsRenegades()
     Object:AddTrait("Renegade",true)
   end
   ChoGGi.MsgPopup("Really? Have you seen a man eat his own head?",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -257,7 +258,7 @@ function ChoGGi.ColonistsMoraleAlwaysMax_Toggle()
   ChoGGi.SetSavedSetting("LowStatLevel",Consts.LowStatLevel)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.HighStatMoraleEffect) .. ": Happy as a pig in shit",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -266,7 +267,7 @@ function ChoGGi.SeeDeadSanityDamage_Toggle()
   ChoGGi.SetSavedSetting("SeeDeadSanity",Consts.SeeDeadSanity)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SeeDeadSanity) .. ": I love me some corpses.",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -275,7 +276,7 @@ function ChoGGi.NoHomeComfortDamage_Toggle()
   ChoGGi.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NoHomeComfort) .. "\nOh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,",
-    "Colonists","UI/Icons/Sections/colonist.tga",true
+    "Colonists",UsualIcon,true
   )
 end
 
@@ -291,7 +292,7 @@ function ChoGGi.ChanceOfSanityDamage_Toggle()
   ChoGGi.SetSavedSetting("MeteorSanityDamage",Consts.MeteorSanityDamage)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DustStormSanityDamage) .. ": Happy as a pig in shit",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -301,7 +302,7 @@ function ChoGGi.ChanceOfNegativeTrait_Toggle()
   ChoGGi.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.LowSanityNegativeTraitChance) .. ": Stupid and happy",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -311,7 +312,7 @@ function ChoGGi.ColonistsChanceOfSuicide_Toggle()
   ChoGGi.SetSavedSetting("LowSanitySuicideChance",Consts.LowSanitySuicideChance)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.LowSanitySuicideChance) .. ": Getting away ain't that easy",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -321,7 +322,7 @@ function ChoGGi.ColonistsSuffocate_Toggle()
   ChoGGi.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OxygenMaxOutsideTime) .. ": Free Air",
-    "Colonists","UI/Icons/Sections/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -331,7 +332,7 @@ function ChoGGi.ColonistsStarve_Toggle()
   ChoGGi.SetSavedSetting("TimeBeforeStarving",Consts.TimeBeforeStarving)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.TimeBeforeStarving) .. ": Free Food",
-   "Colonists","UI/Icons/Sections/Food_2.tga"
+    "Colonists","UI/Icons/Sections/Food_2.tga"
   )
 end
 
@@ -341,7 +342,7 @@ function ChoGGi.AvoidWorkplace_Toggle()
   ChoGGi.SetSavedSetting("AvoidWorkplaceSols",Consts.AvoidWorkplaceSols)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.AvoidWorkplaceSols) .. ": No Shame",
-   "Colonists","UI/Icons/Notifications/colonist.tga"
+    "Colonists",UsualIcon
   )
 end
 
@@ -361,7 +362,7 @@ function ChoGGi.ProjectMorpheusPositiveTrait_Toggle()
   ChoGGi.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ProjectMorphiousPositiveTraitChance) .. "\nSay, \"Small umbrella, small umbrella.\"",
-   "Colonists","UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
+    "Colonists","UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
   )
 end
 
@@ -371,7 +372,7 @@ function ChoGGi.PerformancePenaltyNonSpecialist_Toggle()
   ChoGGi.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.NonSpecialistPerformancePenalty) .. "\nYou never know what you're gonna get.",
-   "Penalty","UI/Icons/Notifications/colonist.tga",true
+    "Penalty",UsualIcon,true
   )
 end
 
@@ -401,7 +402,7 @@ function ChoGGi.SetOutsideWorkplaceRadius()
       ChoGGi.SetSavedSetting("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.WriteSettings()
         ChoGGi.MsgPopup(choice[1].text .. ": There's a voice that keeps on calling me\nDown the road is where I'll always be\nMaybe tomorrow, I'll find what I call home\nUntil tomorrow, you know I'm free to roam",
-         "Colonists","UI/Icons/Sections/dome.tga",true
+          "Colonists","UI/Icons/Sections/dome.tga",true
         )
     end
   end
@@ -470,7 +471,7 @@ function ChoGGi.ColonistsAddSpecializationToAll()
     end
   end
   ChoGGi.MsgPopup("No lazy good fer nuthins round here",
-   "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
+    "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
 
@@ -530,7 +531,7 @@ function ChoGGi.SetColonistsAge(iType)
     end
 
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
-      "Colonists","UI/Icons/Notifications/colonist.tga"
+      "Colonists",UsualIcon
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint)
@@ -589,7 +590,7 @@ function ChoGGi.SetColonistsGender(iType)
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
-      "Colonists","UI/Icons/Notifications/colonist.tga"
+      "Colonists",UsualIcon
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint)
@@ -655,7 +656,7 @@ function ChoGGi.SetColonistsSpecialization(iType)
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
-      "Colonists","UI/Icons/Notifications/colonist.tga"
+      "Colonists",UsualIcon
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint)
@@ -711,7 +712,7 @@ function ChoGGi.SetColonistsRace(iType)
       end
     end
     ChoGGi.MsgPopup("Nationalsozialistische Rassenhygiene: " .. choice[1].race,
-      "Colonists","UI/Icons/Notifications/colonist.tga"
+      "Colonists",UsualIcon
     )
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint)
@@ -811,11 +812,11 @@ function ChoGGi.SetColonistsTraits(iType)
     elseif iType == 2 then
 
       --nothing checked so just return
-      if not ChoGGi.ListChoiceCustomDialog_CheckBox1 and not ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-        ChoGGi.MsgPopup("Pick a checkbox next time...","Colonists","UI/Icons/Notifications/colonist.tga")
+      if not choice[1].check1 and not ChoGGi.choice[1].check2 then
+        ChoGGi.MsgPopup("Pick a checkbox next time...","Colonists",UsualIcon)
         return
-      elseif ChoGGi.ListChoiceCustomDialog_CheckBox1 and ChoGGi.ListChoiceCustomDialog_CheckBox2 then
-        ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Colonists","UI/Icons/Notifications/colonist.tga")
+      elseif choice[1].check1 and choice[1].check2 then
+        ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Colonists",UsualIcon)
         return
       end
 
@@ -837,9 +838,9 @@ function ChoGGi.SetColonistsTraits(iType)
 
       else
         local Bool
-        if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+        if choice[1].check1 then
           Bool = true
-        elseif ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+        elseif choice[1].check2 then
           Bool = false
         end
 
@@ -857,7 +858,7 @@ function ChoGGi.SetColonistsTraits(iType)
 
     end
     ChoGGi.MsgPopup(sType .. "olonists traits set: " .. #TraitsList,
-      "Colonists","UI/Icons/Notifications/colonist.tga"
+      "Colonists",UsualIcon
     )
   end
   if iType == 1 then
@@ -925,7 +926,7 @@ function ChoGGi.SetStatsOfAllColonists()
       SetStat("stat_comfort",value)
     end
 
-    ChoGGi.MsgPopup(choice[1].text,"Colonists","UI/Icons/Notifications/colonist.tga")
+    ChoGGi.MsgPopup(choice[1].text,"Colonists",UsualIcon)
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Stats Of All Colonists","Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else...")
 end

@@ -1,10 +1,140 @@
+local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
+local UsualIcon2 = "UI/Icons/Sections/storage.tga"
+local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
+
+function ChoGGi.BuildingPower_Toggle()
+  local sel = SelectedObj
+  if not sel or not sel.electricity_consumption then
+    ChoGGi.MsgPopup("You need to select something that uses electricity.",
+      "Buildings",UsualIcon
+    )
+    return
+  end
+
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  end
+
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local amount
+  if setting.nopower then
+    setting.nopower = nil
+    amount = DataInstances.BuildingTemplate[sel.encyclopedia_id].electricity_consumption
+  else
+    setting.nopower = true
+    amount = 0
+  end
+
+  for _,building in ipairs(UICity.labels[sel.encyclopedia_id] or empty_table) do
+    building:SetBase("electricity_consumption", amount)
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(sel.encyclopedia_id .. " power consumption: " .. amount,"Buildings")
+end
+
+function ChoGGi.SetMaxChangeOrDischarge(sType)
+  local sel = SelectedObj
+  if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
+    ChoGGi.MsgPopup("You need to select something that has capacity (air/water/elec).",
+      "Buildings",UsualIcon
+    )
+    return
+  end
+  local r = ChoGGi.Consts.ResourceScale
+
+  --get type of capacity
+  local CapType
+  if sel.base_air_capacity then
+    CapType = "air"
+  elseif sel.base_water_capacity then
+    CapType = "water"
+  elseif sel.electricity and sel.electricity.storage_capacity then
+    CapType = "electricity"
+  end
+  --probably selected something with colonists
+  if not CapType then
+    return
+  end
+
+  --get default amount
+  local template = DataInstances.BuildingTemplate[sel.encyclopedia_id]
+  local DefaultSetting = template["max_" .. CapType .. "_" .. sType] / r
+
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 2500,value = 2500},
+    {text = 5000,value = 5000},
+    {text = 10000,value = 10000},
+  }
+
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  end
+
+  local hint = DefaultSetting
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  if setting and setting[sType] then
+    hint = tostring(setting[sType] / r)
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      value = value * r
+
+      --updating time
+      if CapType == "electricity" then
+        for _,building in ipairs(UICity.labels.Power or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building[CapType]["max_" .. sType] = value
+            building["max_" .. CapType .. "_" .. sType] = value
+            ChoGGi.ToggleWorking(building)
+          end
+        end
+
+      else --water and air
+        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
+          if building.encyclopedia_id == sel.encyclopedia_id then
+            building[CapType]["max_" .. sType] = value
+            building["max_" .. CapType .. "_" .. sType] = value
+            ChoGGi.ToggleWorking(building)
+          end
+        end
+      end
+
+      if value == DefaultSetting * r then
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id][sType] = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id][sType] = value
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(sel.encyclopedia_id .. " rate is now " .. choice[1].text,
+        "Buildings",UsualIcon2
+      )
+    end
+  end
+
+  hint = "Current rate: " .. hint
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " " .. sType .. " Rate",hint)
+end
+
 
 function ChoGGi.UseLastOrientation_Toggle()
   ChoGGi.CheatMenuSettings.UseLastOrientation = not ChoGGi.CheatMenuSettings.UseLastOrientation
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.UseLastOrientation) .. " Building Orientation",
-   "Buildings"
+    "Buildings"
   )
 end
 
@@ -26,14 +156,14 @@ function ChoGGi.FarmShiftsAllOn()
 end
 
 function ChoGGi.SetProductionAmount()
-  if not SelectedObj or (not SelectedObj.base_air_production and not SelectedObj.base_water_production and not SelectedObj.base_electricity_production and not SelectedObj.producers) then
+  local sel = SelectedObj
+  if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
     ChoGGi.MsgPopup("Select something that produces (air,water,electricity,other).",
-      "Buildings","UI/Icons/Sections/storage.tga"
+      "Buildings",UsualIcon2
     )
     return
   end
 
-  local sel = SelectedObj
   --get type of producer
   local ProdType
   if sel.base_air_production then
@@ -47,15 +177,16 @@ function ChoGGi.SetProductionAmount()
   end
 
   --get base amount
+  local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting
   if ProdType == "other" then
-    DefaultSetting = sel.base_production_per_day1
+    DefaultSetting = sel.base_production_per_day1 / r
   else
-    DefaultSetting = sel["base_" .. ProdType .. "_production"]
+    DefaultSetting = sel["base_" .. ProdType .. "_production"] / r
   end
-  local r = ChoGGi.Consts.ResourceScale
+
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting / r},
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -71,21 +202,29 @@ function ChoGGi.SetProductionAmount()
     {text = 100000,value = 100000},
   }
 
-  local hint = DefaultSetting / r
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] then
-    hint = ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] / r
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
   end
+
+  local hint = DefaultSetting
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  if setting and setting.production then
+    hint = tostring(setting.production / r)
+  end
+
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if type(value) == "number" then
+      local amount = value * r
       if ProdType == "electricity" then
         --electricity
         for _,building in ipairs(UICity.labels.Power or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
             --current prod
-            building[ProdType]:SetProduction(value)
+            building[ProdType]:SetProduction(amount)
             --when toggled on n off
-            building[ProdType .. "_production"] = value
+            building[ProdType .. "_production"] = amount
           end
         end
 
@@ -93,8 +232,8 @@ function ChoGGi.SetProductionAmount()
         --water/air
         for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
-            building[ProdType]:SetProduction(value)
-            building[ProdType .. "_production"] = value
+            building[ProdType]:SetProduction(amount)
+            building[ProdType .. "_production"] = amount
           end
         end
 
@@ -102,43 +241,46 @@ function ChoGGi.SetProductionAmount()
         --extractors/factories
         for _,building in ipairs(UICity.labels.Production or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
-            building.producers[1].production_per_day = value
-            building.production_per_day1 = value
+            building.producers[1].production_per_day = amount
+            building.production_per_day1 = amount
           end
         end
         --moholemine/theexvacator
         for _,building in ipairs(UICity.labels.Wonders or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
-            building.producers[1].production_per_day = value
-            building.production_per_day1 = value
+            building.producers[1].production_per_day = amount
+            building.production_per_day1 = amount
           end
         end
         --farms
         if sel.encyclopedia_id:find("Farm") then
           for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
             if building.encyclopedia_id == sel.encyclopedia_id then
-              building.producers[1].production_per_day = value
-              building.production_per_day1 = value
+              building.producers[1].production_per_day = amount
+              building.production_per_day1 = amount
             end
           end
           for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
             if building.encyclopedia_id == sel.encyclopedia_id then
-              building.producers[1].production_per_day = value
-              building.production_per_day1 = value
+              building.producers[1].production_per_day = amount
+              building.production_per_day1 = amount
             end
           end
         end
       end
-      --update/create saved setting
-      ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] = value
-    else
-      --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
-      ChoGGi.CheatMenuSettings.BuildingsProduction[sel.encyclopedia_id] = nil
+
+      if value == DefaultSetting then
+        --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].production = nil
+      else
+        --update/create saved setting
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].production = amount
+      end
     end
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup(sel.encyclopedia_id .. " Production is now " .. choice[1].text,
-      "Buildings","UI/Icons/Sections/storage.tga"
+      "Buildings",UsualIcon2
     )
   end
 
@@ -187,7 +329,7 @@ function ChoGGi.FullyAutomatedBuildings()
 
     ChoGGi.WriteSettings()
     ChoGGi.MsgPopup(choice[1].text .. "\nI presume the PM's in favour of the scheme because it'll reduce unemployment.",
-     "Buildings","UI/Icons/Upgrades/home_collective_04.tga",true
+      "Buildings",UsualIcon,true
     )
   end
 
@@ -213,7 +355,7 @@ function ChoGGi.AddMysteryBreakthroughBuildings()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings) .. "\nI'm sorry, I'm simply not at liberty to say.",
-   "Buildings","UI/Icons/Anomaly_Tech.tga",true
+    "Buildings","UI/Icons/Anomaly_Tech.tga",true
   )
 end
 
@@ -241,7 +383,7 @@ function ChoGGi.SchoolTrainAll_Toggle()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SchoolTrainAll) .. "\nYou keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?",
-   "School","UI/Icons/Upgrades/home_collective_04.tga",true
+    "School",UsualIcon,true
   )
 end
 
@@ -254,7 +396,7 @@ function ChoGGi.SanatoriumCureAll_Toggle()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumCureAll) .. "\nThere's more vodka in this piss than there is piss.",
-   "Sanatorium","UI/Icons/Upgrades/home_collective_04.tga",true
+    "Sanatorium",UsualIcon,true
   )
 end
 
@@ -266,7 +408,7 @@ function ChoGGi.SanatoriumSchoolShowAll()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",
-   "Buildings","UI/Icons/Upgrades/superfungus_03.tga"
+    "Buildings","UI/Icons/Upgrades/superfungus_03.tga"
   )
 end
 
@@ -318,7 +460,7 @@ function ChoGGi.MoistureVaporatorPenalty_Toggle()
   ChoGGi.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorPenaltyPercent)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MoistureVaporatorRange) .. ": All right, pussy, pussy, pussy! Come on in pussy lovers! Here at the Titty Twister we're slashing pussy in half! Give us an offer on our vast selection of pussy, this is a pussy blow out! All right, we got white pussy, black pussy, Spanish pussy, yellow pussy, we got hot pussy, cold pussy, we got wet pussy, we got... smelly pussy, we got hairy pussy, bloody pussy, we got snappin' pussy, we got silk pussy, velvet pussy, Naugahyde pussy, we even got horse pussy, dog pussy, chicken pussy! Come on, you want pussy, come on in, pussy lovers! If we don't got it, you don't want it! Come on in, pussy lovers!",
-   "Buildings","UI/Icons/Upgrades/zero_space_04.tga",true
+    "Buildings","UI/Icons/Upgrades/zero_space_04.tga",true
   )
 end
 
@@ -327,7 +469,7 @@ function ChoGGi.CropFailThreshold_Toggle()
   ChoGGi.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CropFailThreshold) .. "\nSo, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings, it is a friendship greeting from the children of our small but great planet of Potatoho.",
-   "Buildings","UI/Icons/Sections/Food_1.tga",true
+    "Buildings","UI/Icons/Sections/Food_1.tga",true
   )
 end
 
@@ -362,7 +504,7 @@ function ChoGGi.CheapConstruction_Toggle()
   ChoGGi.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Metals_cost_modifier) .. ": Get yourself a beautiful showhome (even if it falls apart after you move in)",
-   "Buildings","UI/Icons/Upgrades/build_2.tga"
+    "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
 
@@ -374,7 +516,7 @@ function ChoGGi.BuildingDamageCrime_Toggle()
   ChoGGi.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CrimeEventSabotageBuildingsCount) .. "\nWe were all feeling a bit shagged and fagged and fashed, it having been an evening of some small energy expenditure, O my brothers. So we got rid of the auto and stopped off at the Korova for a nightcap.",
-   "Buildings","UI/Icons/Notifications/fractured_dome.tga",true
+    "Buildings","UI/Icons/Notifications/fractured_dome.tga",true
   )
 end
 
@@ -386,7 +528,7 @@ function ChoGGi.CablesAndPipesNoBreak_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.BreakChanceCablePipe) .. " Aliens? We gotta deal with aliens too?",
-   "Cables & Pipes","UI/Icons/Notifications/timer.tga"
+    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
 
@@ -398,7 +540,7 @@ function ChoGGi.Building_wonder_Toggle()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders\n(restart to set disabled)",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
+    "Buildings",UsualIcon3
   )
 end
 
@@ -409,7 +551,7 @@ function ChoGGi.Building_dome_spot_Toggle()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
+    "Buildings",UsualIcon3
   )
 end
 
@@ -420,7 +562,7 @@ function ChoGGi.Building_instant_build_Toggle()
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
+    "Buildings",UsualIcon3
   )
 end
 
@@ -428,6 +570,6 @@ function ChoGGi.Building_hide_from_build_menu_Toggle()
   ChoGGi.CheatMenuSettings.Building_hide_from_build_menu = not ChoGGi.CheatMenuSettings.Building_hide_from_build_menu
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_hide_from_build_menu) .. " Buildings hidden\n(restart to toggle).",
-   "Buildings","UI/Icons/IPButtons/assign_residence.tga"
+    "Buildings",UsualIcon3
   )
 end

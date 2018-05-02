@@ -22,12 +22,8 @@ ChoGGi.ConstructionNamesListFix = {
 
 --stores defaults and constants
 ChoGGi.Consts = {
-
   --defaults:
   _VERSION = 0,
-  BuildingsCapacity = {},
-  BuildingsProduction = {},
-  BuildingsWorkers = {},
   ConsoleDim = true,
   ConsoleToggleHistory = true,
   FirstRun = true,
@@ -36,6 +32,8 @@ ChoGGi.Consts = {
   ShowInterfaceInScreenshots = true,
   NumberKeysBuildMenu = true,
   UseLastOrientation = true,
+--stores custom settings for each building
+  BuildingSettings = {},
 --false
   SpeedDrone = false,
   SpeedRC = false,
@@ -342,6 +340,57 @@ function ChoGGi.Settings_OptionsApply()
 
   ChoGGi.Consts.CameraZoomToggle = 8000
   ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
+end
+
+function ChoGGi.Settings_ModsLoaded()
+
+  --if empty table then new settings file or old settings
+  if next(ChoGGi.CheatMenuSettings.BuildingSettings) == nil then
+
+    --used to add old lists to new combined list
+    local function AddOldSettings(OldCat,NewName)
+      --is there anthing in the table?
+      if ChoGGi.CheatMenuSettings[OldCat] and next(ChoGGi.CheatMenuSettings[OldCat]) then
+        --then loop through it
+        for BuildingName,Value in pairs(ChoGGi.CheatMenuSettings[OldCat]) do
+          --it likely doesn't exist, but check first and add a blank table
+          if not ChoGGi.CheatMenuSettings.BuildingSettings[BuildingName] then
+            ChoGGi.CheatMenuSettings.BuildingSettings[BuildingName] = {}
+          end
+          --add it to vistors list?
+          if NewName == "capacity" and DataInstances.BuildingTemplate[BuildingName].max_visitors then
+            ChoGGi.CheatMenuSettings.BuildingSettings[BuildingName].visitors = Value
+          else
+            ChoGGi.CheatMenuSettings.BuildingSettings[BuildingName][NewName] = Value
+          end
+        end
+      end
+      --remove old settings
+      ChoGGi.CheatMenuSettings[OldCat] = nil
+      --if not then we'll give an error msg for users
+      return true
+    end
+    --then we check if this is an older version still using the old way of storing building settings and convert over to new
+    local errormsg = "Error: Couldn't convert old settings to new settings: "
+    if not AddOldSettings("BuildingsCapacity","capacity") then
+      table.insert(ChoGGi.StartupMsgs,errormsg .. "BuildingsCapacity")
+    end
+    if not AddOldSettings("BuildingsProduction","production") then
+      table.insert(ChoGGi.StartupMsgs,errormsg .. "BuildingsProduction")
+    end
+  else
+    --remove any empty building tables
+    for Key,_ in pairs(ChoGGi.CheatMenuSettings.BuildingSettings) do
+      if next(ChoGGi.CheatMenuSettings.BuildingSettings[Key]) == nil then
+        ChoGGi.CheatMenuSettings.BuildingSettings[Key] = nil
+      end
+    end
+  end
+
+  if ChoGGi.Testing then
+    ChoGGi.WriteSettings()
+  end
+
 end
 
 --[[

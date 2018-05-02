@@ -1,6 +1,34 @@
 function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Powerless Building",
+    ChoGGi.BuildingPower_Toggle,
+    nil,
+    "Toggle electricity use for selected building type.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Set Charge Rates",
+    function()
+      ChoGGi.SetMaxChangeOrDischarge("charge")
+    end,
+    "Ctrl-Numpad 1",
+    "Change how fast Air/Water/Battery storage capacity changes.",
+    "DisableAOMaps.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Set Discharge Rates",
+    function()
+      ChoGGi.SetMaxChangeOrDischarge("discharge")
+    end,
+    "Ctrl-Numpad 2",
+    "Change how fast Air/Water/Battery storage capacity changes.",
+    "DisableAOMaps.tga"
+  )
+
   local function UseLastOrientationText()
     local des = ChoGGi.CheatMenuSettings.UseLastOrientation and "(Enabled)" or "(Disabled)"
     return des  .. " Toggles between saving building placement orientation."
@@ -21,14 +49,6 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     "DisableAOMaps.tga"
   )
   --------------------
-  ChoGGi.AddAction(
-    "Expanded CM/Buildings/Production Amount Refresh",
-    ChoGGi.SetProductionToSavedAmt,
-    nil,
-    "Loops through all buildings and checks that production is set to saved amounts.",
-    "ToggleEnvMap.tga"
-  )
-
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Production Amount Set",
     ChoGGi.SetProductionAmount,

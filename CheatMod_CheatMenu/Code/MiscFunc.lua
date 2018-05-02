@@ -1,5 +1,29 @@
+local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
---build n show a list of attaches for changing colour
+function ChoGGi.CleanAllObjects()
+  for _,Object in ipairs(UICity.labels.Building or empty_table) do
+    Object:SetDust(0,const.DustMaterialExterior)
+  end
+  for _,Object in ipairs(UICity.labels.Unit or empty_table) do
+    Object:SetDust(0,const.DustMaterialExterior)
+  end
+end
+
+function ChoGGi.FixAllObjects()
+  for _,Object in ipairs(UICity.labels.Building or empty_table) do
+    Object:Repair()
+    Object.accumulated_maintenance_points = 0
+  end
+  for _,Object in ipairs(UICity.labels.Rover or empty_table) do
+    Object:Repair()
+    Object.accumulated_maintenance_points = 0
+  end
+  for _,Object in ipairs(UICity.labels.Drone or empty_table) do
+    Object:SetCommand("RepairDrone")
+  end
+end
+
+--build and show a list of attachments for changing their colours
 function ChoGGi.CreateObjectListAndAttaches()
   local obj = SelectedObj or SelectionMouseObj()
   if not obj then
@@ -78,9 +102,9 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
       --keep original colours as part of object
       local base = choice[13].value
       --used to check for grid connections
-      local CheckAir = ChoGGi.ListChoiceCustomDialog_ColorCheckAir
-      local CheckWater = ChoGGi.ListChoiceCustomDialog_ColorCheckWater
-      local CheckElec = ChoGGi.ListChoiceCustomDialog_ColorCheckElec
+      local CheckAir = choice[1].checkair
+      local CheckWater = choice[1].checkwater
+      local CheckElec = choice[1].checkelec
       --needed to set attachment colours
       local Label = obj.class
       local FakeParent
@@ -132,13 +156,13 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
         end
       )
       --All of type checkbox
-      if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+      if choice[1].check1 then
         for _,building in ipairs(UICity.labels[Label] or empty_table) do
           if Parent then
             local Attaches = building:GetAttaches()
             for i = 1, #Attaches do
               if Attaches[i].class == obj.class then
-                if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+                if choice[1].check2 then
                   CheckGrid(SetOrigColours,Attaches[i],building)
                 else
                   CheckGrid(SetColours,Attaches[i],building)
@@ -146,7 +170,7 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
               end
             end
           else --not parent
-            if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+            if choice[1].check2 then
               CheckGrid(SetOrigColours,building,building)
             else
               CheckGrid(SetColours,building,building)
@@ -154,7 +178,7 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
           end --Parent
         end --for
       else --single building change
-        if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+        if choice[1].check2 then
           CheckGrid(SetOrigColours,obj,obj)
         else
           CheckGrid(SetColours,obj,obj)
@@ -186,7 +210,6 @@ function ChoGGi.SetObjectOpacity()
   }
   --callback
   local CallBackFunc = function(choice)
-    --ChoGGi.ListChoiceCustomDialog_CheckBox1
 
     local value = choice[1].value
     if type(value) == "number" then
@@ -208,7 +231,7 @@ function ChoGGi.DisableTextureCompression_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Texture Compression: " .. tostring(ChoGGi.CheatMenuSettings.DisableTextureCompression),
-   "Video","UI/Icons/Anomaly_Event.tga"
+    "Video",UsualIcon
   )
 end
 
@@ -240,7 +263,7 @@ function ChoGGi.SetShadowmapSize()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("ShadowmapSize: " .. choice[1].text,
-       "Video","UI/Icons/Anomaly_Event.tga"
+        "Video",UsualIcon
       )
   end
   local hint = "Current: " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\nMax set to 16384."
@@ -255,7 +278,7 @@ function ChoGGi.HigherShadowDist_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherShadowDist),
-   "Video","UI/Icons/Anomaly_Event.tga"
+    "Video",UsualIcon
   )
 end
 
@@ -289,7 +312,7 @@ function ChoGGi.HigherRenderDist_Toggle()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.CheatMenuSettings.HigherRenderDist),
-       "Video","UI/Icons/Anomaly_Event.tga"
+        "Video",UsualIcon
       )
     end
 
@@ -405,7 +428,7 @@ function ChoGGi.InfopanelCheats_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ToggleInfopanelCheats) .. ": HAXOR",
-   "Cheats","UI/Icons/Anomaly_Tech.tga"
+    "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -418,7 +441,7 @@ function ChoGGi.InfopanelCheatsCleanup_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane) .. ": Cleanup",
-   "Cheats","UI/Icons/Anomaly_Tech.tga"
+    "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -451,7 +474,7 @@ function ChoGGi.SetBorderScrolling()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].value .. ": Mouse Border Scrolling",
-       "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
+        "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
       )
     end
 
@@ -485,7 +508,7 @@ function ChoGGi.CameraZoom_Toggle()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": Camera Zoom",
-       "Camera","UI/Icons/IPButtons/status_effects.tga"
+        "Camera","UI/Icons/IPButtons/status_effects.tga"
       )
     end
 
@@ -499,7 +522,7 @@ function ChoGGi.PipesPillarsSpacing_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
-   "Buildings","UI/Icons/Sections/spaceship.tga"
+    "Buildings","UI/Icons/Sections/spaceship.tga"
   )
 end
 
@@ -519,7 +542,7 @@ function ChoGGi.ShowAllTraits_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ShowAllTraits) .. ": Good for what ails you",
-   "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
+    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
   )
 end
 
@@ -529,7 +552,7 @@ function ChoGGi.ScannerQueueLarger_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ExplorationQueueMaxSize) .. ": scans at a time.",
-   "Scanner","UI/Icons/Notifications/scan.tga"
+    "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
 
@@ -581,7 +604,7 @@ function ChoGGi.SetGameSpeed()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": I think I can...",
-       "Speed","UI/Icons/Notifications/timer.tga"
+        "Speed","UI/Icons/Notifications/timer.tga"
       )
     end
   end

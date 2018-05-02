@@ -2,7 +2,8 @@
 --no sense in building the list more then once?
 local ObjectSpawner_ItemList = {}
 function ChoGGi.ObjectSpawner()
-  if #ObjectSpawner_ItemList == 0 then
+  --if #ObjectSpawner_ItemList == 0 then
+  if next(ObjectSpawner_ItemList) == nil then
     for Key,_ in pairs(g_Classes) do
       table.insert(ObjectSpawner_ItemList,{
         text = Key,
@@ -23,9 +24,7 @@ function ChoGGi.ObjectSpawner()
       end
       --]]
 
-      ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
-       "Object","UI/Icons/Notifications/placeholder.tga"
-      )
+      ChoGGi.MsgPopup("Spawned: " .. choice[1].text,"Object")
     end
   end
 
@@ -56,7 +55,7 @@ function ChoGGi.SetWriteLogs()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.CheatMenuSettings.WriteLogs),
-   "Logging","UI/Icons/Anomaly_Breakthrough.tga"
+    "Logging","UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
 
@@ -164,7 +163,7 @@ function ChoGGi.ConsoleHistory_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
-   "Console","UI/Icons/Sections/workshifts.tga"
+    "Console","UI/Icons/Sections/workshifts.tga"
   )
 end
 

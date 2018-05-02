@@ -1,13 +1,13 @@
+local UsualIcon = "UI/Icons/Sections/spaceship.tga"
+
 function ChoGGi.SponsorsFunc_LoadingScreenPreClose()
   for _,Value in ipairs(Presets.MissionSponsorPreset.Default) do
-   local name = "Sponsor" .. Value.id
-    if ChoGGi.CheatMenuSettings[name] then
+    if ChoGGi.CheatMenuSettings["Sponsor" .. Value.id] then
       ChoGGi.SetSponsorBonuses(Value.id)
     end
   end
   for _,Value in ipairs(Presets.CommanderProfilePreset.Default) do
-   local name = "Commander" .. Value.id
-    if ChoGGi.CheatMenuSettings[name] then
+    if ChoGGi.CheatMenuSettings["Commander" .. Value.id] then
       ChoGGi.SetCommanderBonuses(Value.id)
     end
   end
@@ -39,7 +39,7 @@ function ChoGGi.ChangeSponsor()
         UICity:InitMissionBonuses()
 
         ChoGGi.MsgPopup("Sponsor for this save is now " .. choice[1].text,
-          "Sponsor","UI/Icons/Sections/spaceship.tga"
+          "Sponsor",UsualIcon
         )
         break
       end
@@ -58,13 +58,13 @@ function ChoGGi.SetSponsorBonus()
       table.insert(ItemList,{
         text = _InternalTranslate(Value.display_name),
         value = Value.id,
-        hint = _InternalTranslate(Value.effect)
+        hint = _InternalTranslate(Value.effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.CheatMenuSettings["Sponsor" .. Value.id])
       })
     end
   end
 
   local CallBackFunc = function(choice)
-    if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+    if choice[1].check2 then
       for i = 1, #ItemList do
         local value = ItemList[i].value
         if type(value) == "string" then
@@ -79,7 +79,7 @@ function ChoGGi.SetSponsorBonus()
           local value = choice[i].value
           if ItemList[j].value == value and type(value) == "string" then
             local name = "Sponsor" .. value
-            if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+            if choice[1].check1 then
               ChoGGi.CheatMenuSettings[name] = nil
             else
               ChoGGi.CheatMenuSettings[name] = true
@@ -130,7 +130,7 @@ function ChoGGi.ChangeCommander()
         UICity:InitMissionBonuses()
 
         ChoGGi.MsgPopup("Commander for this save is now " .. choice[1].text,
-          "Commander","UI/Icons/Sections/spaceship.tga"
+          "Commander",UsualIcon
         )
         break
       end
@@ -149,13 +149,13 @@ function ChoGGi.SetCommanderBonus()
       table.insert(ItemList,{
         text = _InternalTranslate(Value.display_name),
         value = Value.id,
-        hint = _InternalTranslate(Value.effect)
+        hint = _InternalTranslate(Value.effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.CheatMenuSettings["Commander" .. Value.id])
       })
     end
   end
 
   local CallBackFunc = function(choice)
-    if ChoGGi.ListChoiceCustomDialog_CheckBox2 then
+    if choice[1].check2 then
       for i = 1, #ItemList do
         local value = ItemList[i].value
         if type(value) == "string" then
@@ -170,7 +170,7 @@ function ChoGGi.SetCommanderBonus()
           local value = choice[i].value
           if ItemList[j].value == value and type(value) == "string" then
             local name = "Commander" .. value
-            if ChoGGi.ListChoiceCustomDialog_CheckBox1 then
+            if choice[1].check1 then
               ChoGGi.CheatMenuSettings[name] = nil
             else
               ChoGGi.CheatMenuSettings[name] = true
@@ -234,7 +234,7 @@ function ChoGGi.ChangeGameLogo()
         changelogo("Building",entity_name)
 
         ChoGGi.MsgPopup("Logo: " .. choice[1].text,
-          "Logo","UI/Icons/Sections/spaceship.tga"
+          "Logo",UsualIcon
         )
       end
     end

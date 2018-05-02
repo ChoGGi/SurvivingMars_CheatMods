@@ -1,6 +1,19 @@
 --add items to the cheat pane
 function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
+--global objects
+  function Building.CheatPowerless(self)
+    self:SetBase("electricity_consumption", 0)
+  end
+  function Building.CheatPowered(self)
+    local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
+    self:SetBase("electricity_consumption", amount)
+  end
+  function Object.CheatHideSigns(self)
+    for Key,_ in pairs(self.signs or empty_table) do
+      self:AttachSign(false, Key)
+    end
+  end
   function Object.CheatColourRandom(self)
     if self:IsKindOf("ColorizableObject") then
       local SetPal = self.SetColorizationMaterial
@@ -29,6 +42,7 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
       SetPal(self,4, c[4][1], c[4][2], c[4][3])
     end
   end
+--colonists
   function Colonist.CheatFillMorale(self)
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
@@ -477,12 +491,11 @@ function ChoGGi.SetInfoPanelCheatHints(win)
   local obj = win.context
   local name = _InternalTranslate(obj.name)
   local id = obj.encyclopedia_id
+  local doublec = ""
+  local resetc = ""
   if id then
     local doublec = "Double the amount of colonist slots for this " .. id .. ".\n\nReselect to update display."
     local resetc = "Reset the capacity of colonist slots for this " .. id .. " to default.\n\nReselect to update display."
-  else
-    local doublec = ""
-    local resetc = ""
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
@@ -566,6 +579,21 @@ function ChoGGi.SetInfoPanelCheatHints(win)
       SetHint(action,"Double the shuttles this ShuttleHub can control.")
 
   --Misc
+    elseif action.ActionId == "Powerless" then
+      if obj.electricity_consumption then
+        SetHint(action,"Change this " .. id .. " so it doesn't need a power connection.")
+      else
+        action.ActionId = nil
+      end
+    elseif action.ActionId == "Powered" then
+      if obj.electricity_consumption then
+        SetHint(action,"Change this " .. id .. " so it needs a power connection.")
+      else
+        action.ActionId = nil
+      end
+
+    elseif action.ActionId == "HideSigns" then
+      SetHint(action,"Hides any signs above object (until state is changed).")
     elseif action.ActionId == "ColourRandom" then
       SetHint(action,"Changes colour of object to random colour.")
     elseif action.ActionId == "AddDust" then

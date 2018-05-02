@@ -1,11 +1,31 @@
 
 function OnMsg.ClassesGenerate()
-
   --i like keeping all my OnMsgs. in one file
   ChoGGi.ReplacedFunctions_ClassesGenerate()
   ChoGGi.InfoPaneCheats_ClassesGenerate()
   ChoGGi.UIDesignerData_ClassesGenerate()
   ChoGGi.ObjectManipulator_ClassesGenerate()
+end --OnMsg
+
+function OnMsg.ClassesBuilt()
+
+  ChoGGi.ReplacedFunctions_ClassesBuilt()
+  ChoGGi.UIDesignerData_ClassesBuilt()
+  ChoGGi.ObjectManipulator_ClassesBuilt()
+
+  --add HiddenX cat for Hidden items
+  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+    table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
+  end
+
+end --OnMsg
+
+function OnMsg.OptionsApply()
+  ChoGGi.Settings_OptionsApply()
+end --OnMsg
+
+function OnMsg.ModsLoaded()
+  ChoGGi.Settings_ModsLoaded()
 
   --change some building template settings
   for _,building in ipairs(DataInstances.BuildingTemplate) do
@@ -27,45 +47,12 @@ function OnMsg.ClassesGenerate()
         building.instant_build = true
       end
     end
-
-    --update depot storage amounts (gotta leave this here, or people are going to lose product from existing sites, removeable in a few versions?)
---[[
-    if building.template_class == "UniversalStorageDepot" then
-      if building.max_storage_per_resource == 30000 and ChoGGi.CheatMenuSettings.StorageUniversalDepot then
-        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
-      elseif building.max_storage_per_resource == 180000 and ChoGGi.CheatMenuSettings.StorageOtherDepot then
-        building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
-      end
-    elseif building.template_class == "WasteRockDumpSite" and ChoGGi.CheatMenuSettings.StorageWasteDepot then
-      building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
-    elseif building.template_class == "BlackCubeDumpSite" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
-      building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
-    elseif building.template_class == "MysteryDepot" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
-    end
---]]
-  end --BuildingTemplate
-
-end --OnMsg
-
-function OnMsg.ClassesBuilt()
-
-  ChoGGi.ReplacedFunctions_ClassesBuilt()
-  ChoGGi.UIDesignerData_ClassesBuilt()
-  ChoGGi.ObjectManipulator_ClassesBuilt()
-
-  --add HiddenX cat for Hidden items
-  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-    table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
   end
 
-end --OnMsg
+end
 
-function OnMsg.OptionsApply()
-  ChoGGi.Settings_OptionsApply()
-end --OnMsg
-
---function OnMsg.ModsLoaded()
+--earlist on-ground objects are loaded?
+--function OnMsg.PersistLoad()
 
 --saved game is loaded
 function OnMsg.LoadGame()
@@ -136,10 +123,12 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
-  if #UICity.labels.ElectricityGridElement == 0 then
+  --if #UICity.labels.ElectricityGridElement == 0 then
+  if next(UICity.labels.ElectricityGridElement) == nil then
     AddToCustomLabels("ElectricityGridElement","electricity")
   end
-  if #UICity.labels.LifeSupportGridElement == 0 then
+  --if #UICity.labels.LifeSupportGridElement == 0 then
+  if next(UICity.labels.LifeSupportGridElement) == nil then
     AddToCustomLabels("LifeSupportGridElement","air")
     AddToCustomLabels("LifeSupportGridElement","water")
   end
@@ -431,6 +420,7 @@ function OnMsg.ConstructionSitePlaced(Object)
   ChoGGi.LastPlacedObject = Object
 end --OnMsg
 
+--this gets called before buildings are completely initialized (no air/water/elec attached)
 function OnMsg.ConstructionComplete(building)
 
   --skip rockets
@@ -438,23 +428,13 @@ function OnMsg.ConstructionComplete(building)
     return
   end
 
-  --print(building.encyclopedia_id)
-  if IsKindOf(building,"RCTransportBuilding") then
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+  --print(building.encyclopedia_id) print(building.class)
+  if building.class:find("MechanizedDepot") then
+    if ChoGGi.CheatMenuSettings.StorageMechanizedDepot then
+      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
     end
 
-  elseif IsKindOf(building,"RCRoverBuilding") then
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
-    end
-
-  elseif IsKindOf(building,"RCExplorerBuilding") then
-    if ChoGGi.CheatMenuSettings.GravityRC then
-      building:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
-    end
-
-  elseif IsKindOf(building,"UniversalStorageDepot") then
+  elseif building.class == "UniversalStorageDepot" then
     if building.entity == "StorageDepot" and ChoGGi.CheatMenuSettings.StorageUniversalDepot then
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
     --other
@@ -462,36 +442,28 @@ function OnMsg.ConstructionComplete(building)
       building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
     end
 
-  elseif IsKindOf(building,"MechanizedDepot") and ChoGGi.CheatMenuSettings.StorageMechanizedDepot then
-    building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
-
-  elseif IsKindOf(building,"MechanizedDepotMystery") and ChoGGi.CheatMenuSettings.StorageMechanizedDepot then
-    building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
-
-  elseif IsKindOf(building,"WasteRockDumpSite") and ChoGGi.CheatMenuSettings.StorageWasteDepot then
+  elseif building.class == "WasteRockDumpSite" and ChoGGi.CheatMenuSettings.StorageWasteDepot then
     building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
     if building:GetStoredAmount() < 0 then
       building:CheatEmpty()
       building:CheatFill()
     end
 
-  elseif IsKindOf(building,"MysteryDepot") and ChoGGi.CheatMenuSettings.StorageOtherDepot then
+  elseif building.class == "MysteryDepot" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
     building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
 
-  elseif IsKindOf(building,"BlackCubeDumpSite") and ChoGGi.CheatMenuSettings.StorageOtherDepot then
+  elseif building.class == "BlackCubeDumpSite" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
     building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
 
-  elseif IsKindOf(building,"DroneFactory") then
-    if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
-      building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
-    end
+  elseif building.class == "DroneFactory" and ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
+    building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
 
-  elseif IsKindOf(building,"School") and ChoGGi.CheatMenuSettings.SchoolTrainAll then
+  elseif building.class == "School" and ChoGGi.CheatMenuSettings.SchoolTrainAll then
     for i = 1, #ChoGGi.PositiveTraits do
       building:SetTrait(i,ChoGGi.PositiveTraits[i])
     end
 
-  elseif IsKindOf(building,"Sanatorium") and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
+  elseif building.class == "Sanatorium" and ChoGGi.CheatMenuSettings.SanatoriumCureAll then
     for i = 1, #ChoGGi.NegativeTraits do
       building:SetTrait(i,ChoGGi.NegativeTraits[i])
     end
@@ -507,25 +479,34 @@ function OnMsg.ConstructionComplete(building)
     building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
   end
 
-  --saved settings for capacity, visitors, shuttles
-  local amount = ChoGGi.CheatMenuSettings.BuildingsCapacity[building.encyclopedia_id]
-  if amount then
+  --saved settings for capacity, shuttles
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+  if setting and setting.capacity then
+    setting = setting.capacity
     if building.base_capacity then
-      building.capacity = amount
-    elseif building.base_max_visitors then
-      building.max_visitors = amount
+      building.capacity = setting
     elseif building.base_air_capacity then
-      building.air_capacity = amount
+      building.air_capacity = setting
     elseif building.base_water_capacity then
-      building.water_capacity = amount
+      building.water_capacity = setting
     elseif building.base_max_shuttles then
-      building.max_shuttles = amount
+      building.max_shuttles = setting
     end
   end
-  --and max workers
-  amount = ChoGGi.CheatMenuSettings.BuildingsWorkers[building.encyclopedia_id]
-  if amount then
-    building.max_workers = amount
+  --max visitors
+  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+  if setting and setting.visitors and building.base_max_visitors then
+    building.max_visitors = setting.visitors
+  end
+  --max workers
+  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+  if setting and setting.workers then
+    building.max_workers = setting.workers
+  end
+  --no power needed
+  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+  if setting and setting.nopower then
+    building:SetBase("electricity_consumption", 0)
   end
 
 end --OnMsg
@@ -659,7 +640,11 @@ ChoGGi.AddMsgToFunc(ElectricityProducer.CreateElectricityElement,"ElectricityPro
 ChoGGi.AddMsgToFunc(AirProducer.CreateLifeSupportElements,"AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
 ChoGGi.AddMsgToFunc(WaterProducer.CreateLifeSupportElements,"WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
 ChoGGi.AddMsgToFunc(SingleResourceProducer.Init,"SingleResourceProducer","Init","SpawnedProducerSingle")
-ChoGGi.AddMsgToFunc(PinsDlg.Pin,"PinsDlg","Pin","PinnedObject")
+ChoGGi.AddMsgToFunc(ElectricityStorage.GameInit,"ElectricityStorage","GameInit","SpawnedElectricityStorage")
+ChoGGi.AddMsgToFunc(LifeSupportGridObject.GameInit,"LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
+if ChoGGi.Testing then
+  ChoGGi.AddMsgToFunc(PinsDlg.Pin,"PinsDlg","Pin","PinnedObject")
+end
 
 function OnMsg.RemovedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
@@ -685,26 +670,33 @@ end
 
 --shuttle comes out of a hub
 function OnMsg.SpawnedShuttle(Obj)
-  if ChoGGi.CheatMenuSettings.StorageShuttle then
-    Obj.max_shared_storage = ChoGGi.CheatMenuSettings.StorageShuttle
+  local stor = ChoGGi.CheatMenuSettings.StorageShuttle
+  if stor then
+    Obj.max_shared_storage = stor
   end
-  if ChoGGi.CheatMenuSettings.SpeedShuttle then
-    Obj.max_speed = ChoGGi.CheatMenuSettings.SpeedShuttle
+  local speed = ChoGGi.CheatMenuSettings.SpeedShuttle
+  if speed then
+    Obj.max_speed = speed
   end
 end
 
 function OnMsg.SpawnedDrone(Obj)
-  if ChoGGi.CheatMenuSettings.GravityDrone then
-    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
+  local grav = ChoGGi.CheatMenuSettings.GravityDrone
+  if grav then
+    Obj:SetGravity(grav)
   end
-  if ChoGGi.CheatMenuSettings.SpeedDrone then
-    Obj:SetMoveSpeed(ChoGGi.CheatMenuSettings.SpeedDrone)
+  local speed = ChoGGi.CheatMenuSettings.SpeedDrone
+  if speed then
+    Obj:SetMoveSpeed(speed)
   end
 end
 
 local function RCCreated(Obj)
   if ChoGGi.CheatMenuSettings.SpeedRC then
     Obj:SetMoveSpeed(ChoGGi.CheatMenuSettings.SpeedRC)
+  end
+  if ChoGGi.CheatMenuSettings.GravityRC then
+    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
   end
 end
 function OnMsg.SpawnedRCTransport(Obj)
@@ -720,7 +712,7 @@ function OnMsg.SpawnedExplorerRover(Obj)
   RCCreated(Obj)
 end
 
---if building placed outside of dome, attach it to nearest dome
+--if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 function OnMsg.SpawnedResidence(Obj)
   ChoGGi.AttachToNearestDome(Obj)
 end
@@ -729,23 +721,59 @@ function OnMsg.SpawnedWorkplace(Obj)
 end
 
 --make sure they use with our new values
-function OnMsg.SpawnedProducerElectricity(Obj)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
-    Obj.electricity_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
+local function SetProd(Obj,sType)
+  local prod = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id]
+  if prod and prod.production then
+    Obj[sType] = prod.production
   end
+end
+function OnMsg.SpawnedProducerElectricity(Obj)
+  SetProd(Obj,"electricity_production")
 end
 function OnMsg.SpawnedProducerAir(Obj)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
-    Obj.air_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
-  end
+  SetProd(Obj,"air_production")
 end
 function OnMsg.SpawnedProducerWater(Obj)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id] then
-    Obj.water_production = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.encyclopedia_id]
-  end
+  SetProd(Obj,"water_production")
 end
 function OnMsg.SpawnedProducerSingle(Obj)
-  if ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.parent.encyclopedia_id] then
-    Obj.production_per_day = ChoGGi.CheatMenuSettings.BuildingsProduction[Obj.parent.encyclopedia_id]
+  SetProd(Obj,"production_per_day")
+end
+
+--fired below
+local function CheckForRate(Obj)
+
+  --charge/discharge
+  local value = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id][sType]
+
+  if value then
+    local function SetValue(sType)
+      if value.charge then
+        Obj[sType].max_charge = value.charge
+        Obj["max_" .. sType .. "_charge"] = value.charge
+      end
+      if value.discharge then
+        Obj[sType].max_discharge = value.discharge
+        Obj["max_" .. sType .. "_discharge"] = value.discharge
+      end
+    end
+
+    if Obj.base_air_capacity then
+      SetValue("air")
+    elseif Obj.base_water_capacity then
+      SetValue("water")
+    elseif Obj.electricity and Obj.electricity.storage_capacity then
+      SetValue("electricity")
+    end
+
   end
+end
+
+--waterair tanks, etc
+function OnMsg.SpawnedLifeSupportGridObject(Obj)
+  CheckForRate(Obj)
+end
+--battery
+function OnMsg.SpawnedElectricityStorage(Obj)
+  CheckForRate(Obj)
 end

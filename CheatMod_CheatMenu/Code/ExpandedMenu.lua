@@ -148,19 +148,14 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
 ---------all the fixes
 
   ChoGGi.AddAction(
-    "Expanded CM/Fixes/Clean All Objects",
-    ChoGGi.CleanAllObjects,
+    "Expanded CM/Fixes/Production Amount Refresh",
+    function()
+      ChoGGi.SetProductionToSavedAmt()
+      ChoGGi.MsgPopup("Refreshed production!","Buildings")
+    end,
     nil,
-    "Removes all dust from all objects.",
-    "DisableAOMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Fixes/Fix All Objects",
-    ChoGGi.FixAllObjects,
-    nil,
-    "Fixes all broken objects.",
-    "DisableAOMaps.tga"
+    "Loops through all production buildings and checks that production is set to saved amounts.",
+    "ToggleEnvMap.tga"
   )
 
   ChoGGi.AddAction(

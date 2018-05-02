@@ -1,27 +1,7 @@
 --funcs under Gameplay menu without a separate file
 
-function ChoGGi.CleanAllObjects()
-  for _,Object in ipairs(UICity.labels.Building or empty_table) do
-    Object:SetDust(0,const.DustMaterialExterior)
-  end
-  for _,Object in ipairs(UICity.labels.Unit or empty_table) do
-    Object:SetDust(0,const.DustMaterialExterior)
-  end
-end
-
-function ChoGGi.FixAllObjects()
-  for _,Object in ipairs(UICity.labels.Building or empty_table) do
-    Object:Repair()
-    Object.accumulated_maintenance_points = 0
-  end
-  for _,Object in ipairs(UICity.labels.Rover or empty_table) do
-    Object:Repair()
-    Object.accumulated_maintenance_points = 0
-  end
-  for _,Object in ipairs(UICity.labels.Drone or empty_table) do
-    Object:SetCommand("RepairDrone")
-  end
-end
+local UsualIcon = "UI/Icons/Sections/storage.tga"
+local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
 function ChoGGi.SetDisasterOccurrence(sType)
 
@@ -53,7 +33,7 @@ function ChoGGi.MeteorHealthDamage_Toggle()
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
-   "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
+    "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
 
@@ -79,7 +59,7 @@ function ChoGGi.SetRocketCargoCapacity()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(choice[1].text .. ": I can still see some space",
-       "Rocket","UI/Icons/Sections/spaceship.tga"
+        "Rocket","UI/Icons/Sections/spaceship.tga"
       )
     end
   end
@@ -164,7 +144,7 @@ end
 function ChoGGi.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
     ChoGGi.MsgPopup("You need to select a building that has workers.",
-      "Worker Capacity","UI/Icons/Sections/storage.tga"
+      "Worker Capacity",UsualIcon
     )
     return
   end
@@ -190,9 +170,15 @@ function ChoGGi.SetWorkerCapacity()
     {text = 25000,value = 25000,hint = hint_toolarge},
   }
 
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  end
+
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.BuildingsWorkers[sel.encyclopedia_id] then
-    hint = ChoGGi.CheatMenuSettings.BuildingsWorkers[sel.encyclopedia_id]
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  if setting and setting.workers then
+    hint = tostring(setting.workers)
   end
 
   local CallBackFunc = function(choice)
@@ -206,14 +192,14 @@ function ChoGGi.SetWorkerCapacity()
       end
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].workers = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = value
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].workers = value
       end
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
-        "Worker Capacity","UI/Icons/Sections/storage.tga"
+        "Worker Capacity",UsualIcon
       )
     end
   end
@@ -223,13 +209,13 @@ function ChoGGi.SetWorkerCapacity()
 end
 
 function ChoGGi.SetBuildingCapacity()
-  if not SelectedObj or (not SelectedObj.base_water_capacity and not SelectedObj.base_air_capacity and not SelectedObj.base_capacity) then
+  local sel = SelectedObj
+  if not sel or (not sel.base_water_capacity and not sel.base_air_capacity and not sel.base_capacity) then
     ChoGGi.MsgPopup("You need to select a building that has capacity.",
-      "Building Capacity","UI/Icons/Sections/storage.tga"
+      "Building Capacity",UsualIcon
     )
     return
   end
-  local sel = SelectedObj
   local r = ChoGGi.Consts.ResourceScale
   local hint_toolarge = "Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash)."
 
@@ -276,9 +262,20 @@ function ChoGGi.SetBuildingCapacity()
     {text = 50000,value = 50000,hint = hint_toolarge},
     {text = 100000,value = 100000,hint = hint_toolarge},
   }
+
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  end
+
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
-    hint = ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id]
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  if setting and setting.capacity then
+    if CapType ~= "colonist" then
+      hint = tostring(setting.capacity / r)
+    else
+      hint = tostring(setting.capacity)
+    end
   end
 
   local CallBackFunc = function(choice)
@@ -293,26 +290,28 @@ function ChoGGi.SetBuildingCapacity()
         amount = value * r
       end
 
-      --NewLabel needed to update battery/etc capacity without toggling it?
-      local NewLabel
-      if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
-        NewLabel = "full"
-      else
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = amount
-        NewLabel = "charging"
+      local function StoredAmount(prod,current)
+        if prod:GetStoragePercent() == 0 then
+          return "empty"
+        elseif prod:GetStoragePercent() == 100 then
+          return "full"
+        elseif current == "discharging" then
+          return "discharging"
+        else
+          return "charging"
+        end
       end
-
       --updating time
       if CapType == "electricity" then
         for _,building in ipairs(UICity.labels.Power or empty_table) do
           if building.encyclopedia_id == sel.encyclopedia_id then
             building.capacity = amount
             building[CapType].storage_capacity = amount
-            building[CapType].storage_mode = NewLabel
+            building[CapType].storage_mode = StoredAmount(building[CapType],building[CapType].storage_mode)
             ChoGGi.ToggleWorking(building)
           end
         end
+
 
       elseif CapType == "colonist" then
         for _,building in ipairs(UICity.labels.Residence or empty_table) do
@@ -326,15 +325,21 @@ function ChoGGi.SetBuildingCapacity()
           if building.encyclopedia_id == sel.encyclopedia_id then
             building[CapType .. "_capacity"] = amount
             building[CapType].storage_capacity = amount
-            building[CapType].storage_mode = NewLabel
+            building[CapType].storage_mode = StoredAmount(building[CapType],building[CapType].storage_mode)
             ChoGGi.ToggleWorking(building)
           end
         end
       end
 
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].capacity = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].capacity = amount
+      end
+
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
-        "Buildings","UI/Icons/Sections/storage.tga"
+        "Buildings",UsualIcon
       )
     end
 
@@ -345,13 +350,13 @@ function ChoGGi.SetBuildingCapacity()
 end --SetBuildingCapacity
 
 function ChoGGi.SetVisitorCapacity()
-  if not SelectedObj and not SelectedObj.base_max_visitors then
+  local sel = SelectedObj
+  if not sel or (sel and not sel.base_max_visitors) then
     ChoGGi.MsgPopup("You need to select something that has space for visitors.",
-     "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
+      "Buildings",UsualIcon2
     )
     return
   end
-  local sel = SelectedObj
   local DefaultSetting = sel.base_max_visitors
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -365,9 +370,15 @@ function ChoGGi.SetVisitorCapacity()
     {text = 1000,value = 1000},
   }
 
+  --check if there's an entry for building
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  end
+
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] then
-    hint = ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id]
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  if setting and setting.visitors then
+    hint = tostring(setting.visitors)
   end
 
   local CallBackFunc = function(choice)
@@ -380,14 +391,14 @@ function ChoGGi.SetVisitorCapacity()
       end
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = nil
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].visitors = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingsCapacity[sel.encyclopedia_id] = value
+        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].visitors = value
       end
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
-       "Buildings","UI/Icons/Upgrades/home_collective_04.tga"
+        "Buildings",UsualIcon2
       )
     end
   end
@@ -466,10 +477,7 @@ function ChoGGi.SetStorageDepotSize(sType)
         if value > 1000000000 then
           value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
         end
-        for _,building in ipairs(UICity.labels.MechanizedDepot or empty_table) do
-          building.max_storage_per_resource = value
-        end
-        for _,building in ipairs(UICity.labels.MechanizedDepotMysteryResource or empty_table) do
+        for _,building in ipairs(UICity.labels.MechanizedDepots or empty_table) do
           building.max_storage_per_resource = value
         end
       end
@@ -519,7 +527,7 @@ function ChoGGi.ColonistsFixBlackCube()
     end
   end
   ChoGGi.MsgPopup("Fixed black cubes",
-   "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
+    "Colonists",UsualIcon2
   )
 end
 
@@ -554,7 +562,7 @@ function ChoGGi.CablesAndPipesInstant_Toggle()
   ChoGGi.SetSavedSetting("InstantPipes",Consts.InstantPipes)
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
-   "Cables & Pipes","UI/Icons/Notifications/timer.tga"
+    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
 
@@ -573,7 +581,7 @@ function ChoGGi.RCRoverRadius(Bool)
     end
   end
   ChoGGi.MsgPopup("+25 I can see for miles and miles",
-   "RC","UI/Icons/Upgrades/service_bots_04.tga"
+    "RC","UI/Icons/Upgrades/service_bots_04.tga"
   )
 end
 
@@ -600,7 +608,7 @@ function ChoGGi.CommandCenterRadius(Bool)
     end
   end
   ChoGGi.MsgPopup("I see you there",
-   "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
+    "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
   )
 end
 
@@ -617,7 +625,7 @@ function ChoGGi.TriboelectricScrubberRadius(Bool)
     end
   end
   ChoGGi.MsgPopup("I see you there",
-   "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
+    "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
   )
 end
 --]]
