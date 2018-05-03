@@ -114,7 +114,8 @@ end
 --build and show a list of attachments for changing their colours
 function ChoGGi.CreateObjectListAndAttaches()
   local obj = SelectedObj or SelectionMouseObj()
-  if not obj then
+  if not obj and not obj:IsKindOf("ColorizableObject") then
+    ChoGGi.MsgPopup("Select/mouse over an object (buildings,vehicles,signs,some rocks)","Colour")
     return
   end
   local ItemList = {}
