@@ -347,12 +347,12 @@ end
 function ChoGGi.Settings_ModsLoaded()
 
   --if empty table then new settings file or old settings
-  if next(ChoGGi.CheatMenuSettings.BuildingSettings) == nil then
+  if not next(ChoGGi.CheatMenuSettings.BuildingSettings) then
 
     --used to add old lists to new combined list
     local function AddOldSettings(OldCat,NewName)
       --is there anthing in the table?
-      if ChoGGi.CheatMenuSettings[OldCat] and next(ChoGGi.CheatMenuSettings[OldCat]) then
+      if type(ChoGGi.CheatMenuSettings[OldCat]) == "table" and next(ChoGGi.CheatMenuSettings[OldCat]) then
         --then loop through it
         for BuildingName,Value in pairs(ChoGGi.CheatMenuSettings[OldCat]) do
           --it likely doesn't exist, but check first and add a blank table
@@ -383,7 +383,7 @@ function ChoGGi.Settings_ModsLoaded()
   else
     --remove any empty building tables
     for Key,_ in pairs(ChoGGi.CheatMenuSettings.BuildingSettings) do
-      if next(ChoGGi.CheatMenuSettings.BuildingSettings[Key]) == nil then
+      if not next(ChoGGi.CheatMenuSettings.BuildingSettings[Key]) then
         ChoGGi.CheatMenuSettings.BuildingSettings[Key] = nil
       end
     end

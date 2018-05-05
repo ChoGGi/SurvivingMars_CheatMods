@@ -457,27 +457,6 @@ function ChoGGi.MaintenanceBuildingsFree_Toggle()
   )
 end
 
-function ChoGGi.RemoveBuildingLimits_Toggle()
-  ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
-
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-    ChoGGi.OverrideConstructionLimits = nil
-    ChoGGi.OverrideConstructionLimits_Enable()
-  else
-    ChoGGi.OverrideConstructionLimits = nil
-    ConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.CC_UpdateConstructionStatuses
-    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.TC_UpdateConstructionStatuses
-    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = nil
-    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = nil
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there.",
-    "Buildings",
-    "UI/Icons/Upgrades/zero_space_04.tga"
-  )
-end
-
 function ChoGGi.MoistureVaporatorPenalty_Toggle()
   const.MoistureVaporatorRange = ChoGGi.NumRetBool(const.MoistureVaporatorRange,0,ChoGGi.Consts.MoistureVaporatorRange)
   const.MoistureVaporatorPenaltyPercent = ChoGGi.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,ChoGGi.Consts.MoistureVaporatorPenaltyPercent)
@@ -557,12 +536,35 @@ function ChoGGi.CablesAndPipesNoBreak_Toggle()
   )
 end
 
+function ChoGGi.RemoveBuildingLimits_Toggle()
+  ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
+
+  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+    ChoGGi.OverrideConstructionLimits = nil
+    ChoGGi.OverrideConstructionLimits_Enable()
+  else
+    ChoGGi.OverrideConstructionLimits = nil
+    ConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.CC_UpdateConstructionStatuses
+    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.TC_UpdateConstructionStatuses
+    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = nil
+    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = nil
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there.",
+    "Buildings",
+    "UI/Icons/Upgrades/zero_space_04.tga"
+  )
+end
+
 function ChoGGi.Building_wonder_Toggle()
   ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
-
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-    building.wonder = false
+  if ChoGGi.CheatMenuSettings.Building_wonder then
+    for _,building in ipairs(DataInstances.BuildingTemplate) do
+      building.wonder = false
+    end
   end
+
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_wonder) .. " Unlimited Wonders\n(restart to set disabled)",
     "Buildings",UsualIcon3
@@ -571,9 +573,6 @@ end
 
 function ChoGGi.Building_dome_spot_Toggle()
   ChoGGi.CheatMenuSettings.Building_dome_spot = not ChoGGi.CheatMenuSettings.Building_dome_spot
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-    building.dome_spot = "none"
-  end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
     "Buildings",UsualIcon3
@@ -582,9 +581,6 @@ end
 
 function ChoGGi.Building_instant_build_Toggle()
   ChoGGi.CheatMenuSettings.Building_instant_build = not ChoGGi.CheatMenuSettings.Building_instant_build
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-    building.instant_build = true
-  end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
     "Buildings",UsualIcon3

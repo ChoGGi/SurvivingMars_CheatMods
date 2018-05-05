@@ -450,7 +450,6 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
       Class = "FrameWindow",
       GamepadStrip = false,
       Image = "CommonAssets/UI/Controls/WindowFrame.tga",
-      --Image = ChoGGi.ModPath .. "Images/WindowFrameDark.tga",
       MinSize = point(100, 450),
       Movable = true,
       PatternBottomRight = point(123, 122),

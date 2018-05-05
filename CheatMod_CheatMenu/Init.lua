@@ -1,7 +1,7 @@
 --keep everything stored in
 ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  ModPath = "AppData/Mods/CheatMod_CheatMenu/",
+  ModPath = _G.Mods.ChoGGi_CheatMenu.path,
   StartupMsgs = {},
   OrigFunc = {},
   CheatMenuSettings = {},

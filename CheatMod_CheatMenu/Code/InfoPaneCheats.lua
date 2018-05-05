@@ -10,9 +10,10 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self:SetBase("electricity_consumption", amount)
   end
   function Object.CheatHideSigns(self)
-    for Key,_ in pairs(self.signs or empty_table) do
-      self:AttachSign(false, Key)
-    end
+    self:DestroyAttaches("BuildingSign")
+    --for Key,_ in pairs(self.signs or empty_table) do
+    --  self:AttachSign(false, Key)
+    --end
   end
   function Object.CheatColourRandom(self)
     if self:IsKindOf("ColorizableObject") then

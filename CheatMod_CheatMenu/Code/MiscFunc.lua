@@ -73,7 +73,7 @@ function ChoGGi.ShowAutoUnpinObjectList()
     end
 
     --if it's empty then remove setting
-    if next(ChoGGi.CheatMenuSettings.UnpinObjects) == nil then
+    if not next(ChoGGi.CheatMenuSettings.UnpinObjects) then
       ChoGGi.CheatMenuSettings.UnpinObjects = nil
     end
     ChoGGi.WriteSettings()

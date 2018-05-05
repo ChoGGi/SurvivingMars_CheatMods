@@ -227,16 +227,6 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     end,
     "toggle_post.tga"
   )
-  ChoGGi.AddAction(
-    "Expanded CM/Buildings/Build Spires Outside of Spire Point",
-    ChoGGi.Building_dome_spot_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.CheatMenuSettings.Building_dome_spot and "(Enabled)" or "(Disabled)"
-      return des .. " Wonder build limit (restart game to toggle).\nUse with Remove Building Limits to fill up a dome with spires."
-    end,
-    "toggle_post.tga"
-  )
 
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Show Hidden Buildings",
@@ -250,12 +240,23 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
+    "Expanded CM/Buildings/Build Spires Outside of Spire Point",
+    ChoGGi.Building_dome_spot_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.CheatMenuSettings.Building_dome_spot and "(Enabled)" or "(Disabled)"
+      return des .. " Build spires outside spire point.\nUse with Remove Building Limits to fill up a dome with spires."
+    end,
+    "toggle_post.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Buildings/Instant Build",
     ChoGGi.Building_instant_build_Toggle,
     nil,
     function()
       local des = ChoGGi.CheatMenuSettings.Building_instant_build and "(Enabled)" or "(Disabled)"
-      return des .. " Allow buildings to be built instantly (restart game to toggle).\nDoesn't work with domes."
+      return des .. " Allow buildings to be built instantly.\nDoesn't work with domes."
     end,
     "toggle_post.tga"
   )

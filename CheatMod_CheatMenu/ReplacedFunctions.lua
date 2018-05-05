@@ -22,6 +22,8 @@ Lua\X\Infopanel.lua
   InfopanelObj:CreateCheatActions
   InfopanelDlg:Open
 --]]
+
+--Buildings/Remove Building Limits
 function ChoGGi.OverrideConstructionLimits_Enable()
   if ChoGGi.OverrideConstructionLimits then
     return
@@ -251,6 +253,44 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
+  --remove spire spot limit
+  if not ChoGGi.OrigFunc.CC_UpdateCursor then
+    ChoGGi.OrigFunc.CC_UpdateCursor = ConstructionController.UpdateCursor
+  end
+  function ConstructionController:UpdateCursor(pos, force)
+    local force_override
+
+    if ChoGGi.CheatMenuSettings.Building_instant_build then
+      --instant_build on domes = missing textures on domes
+      if self.template_obj.achievement ~= "FirstDome" then
+        self.template_obj.instant_build = true
+      end
+    else
+      self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
+    end
+
+    if ChoGGi.CheatMenuSettings.Building_dome_spot then
+      self.template_obj.dome_spot = "none"
+      --force_override = true
+    else
+      self.template_obj.dome_spot = self.template_obj:GetDefaultPropertyValue("dome_spot")
+    end
+
+    if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
+      self.template_obj.dome_required = false
+      self.template_obj.dome_forbidden = false
+      force_override = true
+    end
+
+    if force_override then
+      return ChoGGi.OrigFunc.CC_UpdateCursor(self, pos, false)
+    else
+      return ChoGGi.OrigFunc.CC_UpdateCursor(self, pos, force)
+    end
+
+  end
+
+  --drones won't pick up less then their carry amount, unless you force them to (10 = smallest storage amount)
   local ca = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
   if ca and ca > 10 then
     ChoGGi.ForceDronesToEmptyStorage_Enable()

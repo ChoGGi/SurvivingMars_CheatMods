@@ -3,7 +3,7 @@
 local ObjectSpawner_ItemList = {}
 function ChoGGi.ObjectSpawner()
   --if #ObjectSpawner_ItemList == 0 then
-  if next(ObjectSpawner_ItemList) == nil then
+  if not next(ObjectSpawner_ItemList) then
     for Key,_ in pairs(g_Classes) do
       table.insert(ObjectSpawner_ItemList,{
         text = Key,

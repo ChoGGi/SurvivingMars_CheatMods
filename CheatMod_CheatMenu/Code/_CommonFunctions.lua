@@ -930,3 +930,7 @@ function ChoGGi.SetMechanizedDepotTempAmount(Obj,amount)
   io_supply_req:SetAmount(amount)
   io_demand_req:SetAmount(amount)
 end
+
+function ChoGGi.NewThread(Func,...)
+  coroutine.resume(coroutine.create(Func),...)
+end

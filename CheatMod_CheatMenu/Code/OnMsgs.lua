@@ -26,29 +26,6 @@ end --OnMsg
 
 function OnMsg.ModsLoaded()
   ChoGGi.Settings_ModsLoaded()
-
-  --change some building template settings
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-    if ChoGGi.CheatMenuSettings.Building_dome_spot then
-      building.dome_spot = nil
-    end
-    if ChoGGi.CheatMenuSettings.Building_dome_forbidden then
-      building.dome_spot = nil
-    end
-    if ChoGGi.CheatMenuSettings.Building_dome_required then
-      building.dome_spot = nil
-    end
-    if ChoGGi.CheatMenuSettings.Building_is_tall then
-      building.is_tall = nil
-    end
-    if ChoGGi.CheatMenuSettings.Building_instant_build then
-      --instant_build on domes = missing textures on domes
-      if building.achievement ~= "FirstDome" then
-        building.instant_build = true
-      end
-    end
-  end
-
 end
 
 --earlist on-ground objects are loaded?
@@ -124,11 +101,11 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --if #UICity.labels.ElectricityGridElement == 0 then
-  if next(UICity.labels.ElectricityGridElement) == nil then
+  if not next(UICity.labels.ElectricityGridElement) then
     AddToCustomLabels("ElectricityGridElement","electricity")
   end
   --if #UICity.labels.LifeSupportGridElement == 0 then
-  if next(UICity.labels.LifeSupportGridElement) == nil then
+  if not next(UICity.labels.LifeSupportGridElement) then
     AddToCustomLabels("LifeSupportGridElement","air")
     AddToCustomLabels("LifeSupportGridElement","water")
   end
@@ -280,13 +257,6 @@ function OnMsg.LoadingScreenPreClose()
     config.ConsoleDim = 1
   end
 
-  -- This must return true for most (built-in) cheats to function
-  function CheatsEnabled()
-    return true
-  end
-  --add built-in cheat menu items
-  AddCheatsUA()
-
   --load up my menu actions
   ChoGGi.SponsorsMenu_LoadingScreenPreClose()
   ChoGGi.BuildingsMenu_LoadingScreenPreClose()
@@ -298,6 +268,13 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.HelpMenu_LoadingScreenPreClose()
   ChoGGi.MiscMenu_LoadingScreenPreClose()
   ChoGGi.ResourcesMenu_LoadingScreenPreClose()
+
+  -- This must return true for most (built-in) cheats to function
+  function CheatsEnabled()
+    return true
+  end
+  --add built-in cheat menu items (I only use like 5 of these, maybe just add them manually so we don't have large remove list?
+  AddCheatsUA()
 
   --remove some built-in menu items
   UserActions.RemoveActions({
@@ -408,7 +385,7 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
     --clean up
-    ChoGGi.RemoveOldFiles()
+    ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
     --update saved version
     ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
     ChoGGi.WriteSettings()
@@ -647,7 +624,7 @@ ChoGGi.AddMsgToFunc(LifeSupportGridObject.GameInit,"LifeSupportGridObject","Game
 ChoGGi.AddMsgToFunc(PinnableObject.TogglePin,"PinnableObject","TogglePin","TogglePinnableObject")
 ChoGGi.AddMsgToFunc(ResourceStockpileLR.GameInit,"ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
 
---attached resource depots
+--attached temporary resource depots
 function OnMsg.SpawnedResourceStockpileLR(Obj)
   if ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
     ChoGGi.SetMechanizedDepotTempAmount(Obj.parent)
@@ -656,13 +633,25 @@ end
 
 function OnMsg.TogglePinnableObject(Obj)
   local unpin = ChoGGi.CheatMenuSettings.UnpinObjects
-  if next(unpin) then
+  if type(unpin) == "table" and next(unpin) then
     for _,Name in ipairs(unpin) do
       if Obj.class == Name and Obj:IsPinned() then
         Obj:TogglePin()
         break
       end
     end
+  end
+end
+
+--custom UICity.labels lists
+function OnMsg.CreatedGridObject(Obj)
+  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
+    table.insert(UICity.labels.GridElements,Obj)
+  end
+  if Obj.class == "ElectricityGridElement" then
+    table.insert(UICity.labels.ElectricityGridElement,Obj)
+  elseif Obj.class == "LifeSupportGridElement" then
+    table.insert(UICity.labels.LifeSupportGridElement,Obj)
   end
 end
 
@@ -674,17 +663,6 @@ function OnMsg.RemovedGridObject(Obj)
     ChoGGi.RemoveFromLabel("ElectricityGridElement",Obj)
   elseif Obj.class == "LifeSupportGridElement" then
     ChoGGi.RemoveFromLabel("LifeSupportGridElement",Obj)
-  end
-end
-
-function OnMsg.CreatedGridObject(Obj)
-  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
-    table.insert(UICity.labels.GridElements,Obj)
-  end
-  if Obj.class == "ElectricityGridElement" then
-    table.insert(UICity.labels.ElectricityGridElement,Obj)
-  elseif Obj.class == "LifeSupportGridElement" then
-    table.insert(UICity.labels.LifeSupportGridElement,Obj)
   end
 end
 

@@ -32,7 +32,7 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     self.idList.OnLButtonDown = function(selfList,...)
       local ret = origOnLButtonDown(selfList,...)
       local sel = self.idList:GetSelection()
-      if next(sel) then
+      if type(sel) == "table" and next(sel) then
       --if #sel ~= 0 then
         --update selection (select last selected if multisel)
         self.sel = sel[#sel]
