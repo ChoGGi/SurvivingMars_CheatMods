@@ -23,8 +23,8 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
     "[102]Debug/Selection Editor",
     ChoGGi.ShowSelectionEditor,
     nil,
-    "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then use this menu item to make it closeable).",
-    "ToggleCutSmoothTrans.tga"
+    "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable).",
+    "AreaProperties.tga"
   )
 
   ChoGGi.AddAction(
@@ -55,7 +55,7 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
     "[102]Debug/Toggle Editor",
     ChoGGi.Editor_Toggle,
     "Ctrl-Shift-E",
-    "You can move stuff around, but that's all that I know.",
+    "You can move stuff around for now (click+drag for multiple selection).\nIt's not as if domes need to be where you placed them.",
     "SelectionEditor.tga"
   )
 
@@ -112,7 +112,7 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
     ChoGGi.ObjExaminer,
     "F4",
     "Opens the object examiner",
-    "SelectByClassName.tga"
+    "PlayerInfo.tga"
   )
 
   ChoGGi.AddAction(

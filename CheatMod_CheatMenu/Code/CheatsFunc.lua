@@ -1,5 +1,19 @@
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
+function ChoGGi.OpenModEditor()
+  local ModEditor = function()
+    ModEditorOpen()
+  end
+  ChoGGi.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
+end
+
+function ChoGGi.ResetAllResearch()
+  local ResetAllResearch = function()
+    UICity:InitResearch()
+  end
+  ChoGGi.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
+end
+
 function ChoGGi.DisasterTriggerMissle(Amount)
   Amount = Amount or 1
   --(obj, radius, count, delay_min, delay_max)
@@ -329,7 +343,7 @@ function ChoGGi.AddResearchPoints()
     local value = choice[1].value
     if type(value) == "number" then
       UICity:AddResearchPoints(value)
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      ChoGGi.MsgPopup("Added: " .. choice[1].text,
         "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
@@ -392,29 +406,34 @@ end
 function ChoGGi.ShowResearchTechList()
   local ItemList = {}
   table.insert(ItemList,{
-    text = "(Everything)",
+    text = " Everything",
     value = "Everything",
     hint = "All the tech/breakthroughs/mysteries"
   })
   table.insert(ItemList,{
-    text = "(All Tech)",
+    text = " All Tech",
     value = "AllTech",
     hint = "All the regular tech"
   })
   table.insert(ItemList,{
-    text = "(All Breakthroughs)",
+    text = " All Breakthroughs",
     value = "AllBreakthroughs",
     hint = "All the breakthroughs"
   })
   table.insert(ItemList,{
-    text = "(All Mysteries)",
+    text = " All Mysteries",
     value = "AllMysteries",
     hint = "All the mysteries"
   })
   for i = 1, #TechTree do
     for j = 1, #TechTree[i] do
+      local text = _InternalTranslate(TechTree[i][j].display_name)
+      --remove " from that one tech...
+      if text:find("\"") then
+        text = text:gsub("\"","")
+      end
       table.insert(ItemList,{
-        text = _InternalTranslate(TechTree[i][j].display_name),
+        text = text,
         value = TechTree[i][j].id,
         hint = _InternalTranslate(TechTree[i][j].description)
       })

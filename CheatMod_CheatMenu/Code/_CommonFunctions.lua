@@ -867,7 +867,7 @@ function ChoGGi.OpenInObjectManipulator(Object,Parent)
   dlg.obj = Object
 
   local title = tostring(Object)
-  if type(Object) == "table" then
+  if type(Object) == "table" and Object.class then
     title = "Class: " .. Object.class
   end
 

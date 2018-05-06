@@ -147,7 +147,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetShuttleSpeed,
     nil,
     "Change speed of shuttles.",
-    "groups.tga"
+    "move_gizmo.tga"
   )
 
   -------------RCs
@@ -156,7 +156,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetRCMoveSpeed,
     nil,
     "How fast RCs will move.",
-    "ToggleTerrainHeight.tga"
+    "move_gizmo.tga"
   )
 
   ChoGGi.AddAction(
@@ -186,7 +186,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
       return des .. " RC Rover quick Transfer/Gather resources."
     end,
-    "ToggleTerrainHeight.tga"
+    "MeasureTool.tga"
   )
 
   ChoGGi.AddAction(

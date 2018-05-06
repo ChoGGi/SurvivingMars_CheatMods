@@ -32,20 +32,39 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local sel = self.idList.last_selected
-      local text = self.idEditValue:GetText()
-      local value = ChoGGi.RetProperType(text)
+      local sel_idx = self.idList.last_selected
+      --nothing selected
+      if not sel_idx then
+        return
+      end
+      --
+      local edit_text = self.idEditValue:GetText()
+      local edit_value = ChoGGi.RetProperType(edit_text)
+      local edit_type = type(edit_value)
+      local obj_value = self.obj[self.idList.items[sel_idx].text]
+      local obj_type = type(obj_value)
+      --only update strings/numbers/boolean/nil
+      if obj_type == "table" or obj_type == "userdata" or obj_type == "function" or obj_type == "thread" then
+        return
+      end
 
-      --listitem
-      self.idList.items[sel].value = text
-      --stored obj
-      self.idList.item_windows[sel].value:SetText(text)
-
-      --actual object (only update strings/numbers/boolean/nil)
-      local objtype = type(self.obj[self.idList.items[sel].text])
-      if objtype == "string" or objtype == "number" or objtype == "boolean" or objtype == "nil" then
-        --self.obj[self.idList.items[sel].text] = value
-        self.obj[ChoGGi.RetProperType(self.idList.items[sel].text)] = value
+      --if types match then we're fine, or nil if we're removing something
+      if obj_type == edit_type or edit_type == "nil" or
+          --false bools can be made a string or num
+          (obj_value == false and edit_type == "string" or edit_type == "number") or
+          --strings can be numbers or bools
+          (obj_type == "string" and edit_type == "number" or edit_type == "boolean") or
+          --numbers can be false
+          (obj_type ~= "number" and edit_type ~= "boolean") then
+        --list item
+        self.idList.items[sel_idx].value = edit_text
+        --stored obj
+        self.idList.item_windows[sel_idx].value:SetText(edit_text)
+        --actual object
+        local value = self.obj[self.idList.items[sel_idx].text]
+        if value == false or value then
+          self.obj[self.idList.items[sel_idx].text] = edit_value
+        end
       end
     end
 
@@ -67,7 +86,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
             if item.hint then
               hint = hint .. "\n\n" .. item.hint
             end
-            self.parent.parent:SetHint(hint .. "\n\nDouble right-click selected item to open in new manipulator.")
+            self.parent:SetHint(hint .. "\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble right-click selected item to open in new manipulator.")
           end
         end
       end
@@ -90,9 +109,11 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
       --update selection (select last selected if multisel)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-      --update the edit value box
-      self.idEditValue:SetText(self.sel.value)
-      self.idEditValue:SetFocus()
+      if self.sel then
+        --update the edit value box
+        self.idEditValue:SetText(self.sel.value)
+        self.idEditValue:SetFocus()
+      end
 
       --for whatever is expecting a return value
       return ret
@@ -100,7 +121,9 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
     --open editor with whatever is selected
     self.idList.OnRButtonDoubleClick = function()
-      ChoGGi.OpenInObjectManipulator(self.sel.object,self)
+      if self.sel then
+        ChoGGi.OpenInObjectManipulator(self.sel.object,self)
+      end
     end
 
     --close without doing anything
@@ -125,11 +148,11 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
       local CallBackFunc = function(choice)
         --add it to the actual object
-        self.obj[choice[1].value] = ChoGGi.RetProperType(choice[2].value)
+        self.obj[tostring(choice[1].value)] = ChoGGi.RetProperType(choice[2].value)
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,3)
+      ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -260,6 +283,8 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     return format_text, e
   end
 
+  function ObjectManipulator:RetPrettyColours(format_text, e)
+  end
   function ObjectManipulator:evalsmarttable(format_text, e)
     local touched = {}
     local i = 0
@@ -341,18 +366,23 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     local res = {}
     local sort = {}
     local function tableinsert(k,v)
-      local hint
+      --text colours
+      local text
       if type(v) == "table" then
         if v.class then
-          hint = "<color 150 170 250>" .. tostring(v.class) .. "</color>"
+          text = "<color 150 170 150>" .. self:CreateProp(k) .. "</color>"
         else
-          hint = "<color 150 170 150>" .. tostring(v) .. "</color>"
+          text = "<color 150 170 250>" .. self:CreateProp(k) .. "</color>"
         end
+      elseif type(v) == "function" then
+        text = "<color 250 75 75>" .. self:CreateProp(k) .. "</color>"
+      else
+        text = self:CreateProp(k)
       end
       table.insert(res,{
-        text = self:CreateProp(k),
+        sort = self:CreateProp(k),
+        text = text,
         value = self:CreateProp(v),
-        hint = hint,
         object = v
       })
     end
@@ -391,13 +421,13 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     end
 
     table.sort(res, function(a, b)
-      if sort[a.text] and sort[b.text] then
-        return sort[a.text] < sort[b.text]
+      if sort[a.sort] and sort[b.sort] then
+        return sort[a.sort] < sort[b.sort]
       end
-      if sort[a.text] or sort[b.text] then
-        return sort[a.text] and true
+      if sort[a.sort] or sort[b.sort] then
+        return sort[a.sort] and true
       end
-      return CmpLower(a.text, b.text)
+      return CmpLower(a.sort, b.sort)
     end)
 
     if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
@@ -458,7 +488,6 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
       SizeOrg = point(650, 450),
       HorizontalResize = true,
       VerticalResize = true,
-      Hint = "You can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to update list names.",
     },
     subviews = {
       {
@@ -563,8 +592,9 @@ function ChoGGi.ObjectManipulator_ClassesBuilt()
           RolloverFontStyle = "Editor14",
           ScrollBar = true,
           ScrollAutohide = true,
-          SelectionColor = RGB(0, 0, 0),
+          --SelectionColor = RGB(0, 0, 0),
           SelectionFontStyle = "Editor14Bold",
+          SelectionBackground = RGB(100, 100, 100),
           BackgroundColor = RGB(50, 50, 50),
           Spacing = point(8, 2),
           Subview = "default",

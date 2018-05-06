@@ -87,11 +87,9 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
 
     --what happens when you dbl click the list
     self.idList.OnDoubleClick = function()
-      if type(self.CustomType) == "number" then
-        if self.CustomType == 1 then
-        --dblclick to open item
+      --open colour changer
+      if type(self.CustomType) == "number" and (self.CustomType == 1 or self.CustomType == 2) then
         ChoGGi.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
-        end
       else
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -134,7 +132,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
             if item.hint then
               hint = hint .. "\n\n" .. item.hint
             end
-            self.parent.parent:SetHint(hint)
+            --self.parent.parent:SetHint(hint)
+            self.parent:SetHint(hint)
           end
         end
       end
@@ -156,14 +155,14 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     --get sel item(s)
     local items = self.idList:GetSelection()
     --get all items
-    if type(self.CustomType) == "number" then
+    if type(self.CustomType) == "number" and self.CustomType ~= 3 then
       items = self.idList.items
     end
     if #items > 0 then
       for i = 1, #items do
         if i == 1 then
           --always return the custom value (and try to convert it to correct type)
-          items[i].custom = ChoGGi.RetProperType(self.idEditValue:GetText())
+          items[i].editvalue = ChoGGi.RetProperType(self.idEditValue:GetText())
         end
         table.insert(self.choices,items[i])
       end

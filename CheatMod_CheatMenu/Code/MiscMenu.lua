@@ -42,6 +42,22 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
+    "Expanded CM/[999]Misc/Set UI Transparency",
+    ChoGGi.SetTransparencyUI,
+    "Shift-F3",
+    "Change the transparency of UI items.",
+    "set_last_texture.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/[999]Misc/Set UI Transparency Mouseover",
+    ChoGGi.TransparencyUI_Toggle,
+    nil,
+    "Toggle removing transparency on mouseover.",
+    "set_last_texture.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Instant Colony Approval",
     ChoGGi.InstantColonyApproval,
     nil,

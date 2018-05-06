@@ -60,48 +60,43 @@ function ChoGGi.SetFoodPerRocketPassenger()
 end
 
 function ChoGGi.AddPrefabs()
-  local hint = "Use custom value to enter amount of prefabs to add."
   local ItemList = {
-    {text = "Drone",value = "Drone",hint = hint},
-    {text = "Drone Hub",value = "DroneHub",hint = hint},
-    {text = "Electronics Factory",value = "ElectronicsFactory",hint = hint},
-    {text = "Fuel Factory",value = "FuelFactory",hint = hint},
-    {text = "Machine Parts Factory",value = "MachinePartsFactory",hint = hint},
-    {text = "Moisture Vaporator",value = "MoistureVaporator",hint = hint},
-    {text = "Polymer Plant",value = "PolymerPlant",hint = hint},
-    {text = "Stirling Generator",value = "StirlingGenerator",hint = hint},
-    {text = "Spire: Water Reclamation System",value = "WaterReclamationSystem",hint = hint},
-    {text = "Spire: Arcology",value = "Arcology",hint = hint},
-    {text = "Spire: Sanatorium",value = "Sanatorium",hint = hint},
-    {text = "Spire: Network Node",value = "NetworkNode",hint = hint},
-    {text = "Spire: Medical Center",value = "MedicalCenter",hint = hint},
-    {text = "Spire: Hanging Garden",value = "HangingGardens",hint = hint},
-    {text = "Spire: Cloning Vat",value = "CloningVats",hint = hint},
+    {text = "Drone",value = 10},
+    {text = "DroneHub",value = 10},
+    {text = "ElectronicsFactory",value = 10},
+    {text = "FuelFactory",value = 10},
+    {text = "MachinePartsFactory",value = 10},
+    {text = "MoistureVaporator",value = 10},
+    {text = "PolymerPlant",value = 10},
+    {text = "StirlingGenerator",value = 10},
+    {text = "WaterReclamationSystem",value = 10},
+    {text = "Arcology",value = 10},
+    {text = "Sanatorium",value = 10},
+    {text = "Network Node",value = 10},
+    {text = "Medical Center",value = 10},
+    {text = "Hanging Garden",value = 10},
+    {text = "Cloning Vat",value = 10},
   }
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value --name
-    local custom = choice[1].custom --num
+    local text = choice[1].text
+    local value = choice[1].value
 
-    if type(custom) ~= "number" then
-      ChoGGi.MsgPopup("Prefab number is missing from custom value box.",
-        "Error",UsualIcon
-      )
-    else
-      if value == "Drone" then
-        UICity.drone_prefabs = UICity.drone_prefabs + custom
+    if type(value) == "number" then
+      if text == "Drone" then
+        UICity.drone_prefabs = UICity.drone_prefabs + value
       else
-        UICity:AddPrefabs(value,custom)
+        UICity:AddPrefabs(text,value)
       end
       RefreshXBuildMenu()
-      ChoGGi.MsgPopup(custom .. " " .. choice[1].text .. " prefabs have been added.",
+      ChoGGi.MsgPopup(value .. " " .. text .. " prefabs have been added.",
         "Prefabs",UsualIcon
       )
     end
-
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs")
 
+  local hint = "Use edit box to enter amount of prefabs to add."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
 end
 
 function ChoGGi.SetFunding()

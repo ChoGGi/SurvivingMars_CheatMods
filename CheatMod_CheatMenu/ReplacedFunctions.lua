@@ -3,6 +3,8 @@ CommonLua\UI\uiExamine.lua
   Examine:Init
 CommonLua\UI\uiExamine.designer.lua
     ExamineDesigner:Init
+CommonLua\UI\Controls\uiFrameWindow.lua
+  FrameWindow:PostInit
 CommonLua\UI\Dev\uiConsoleLog.lua
   ConsoleLog:ShowBackground
 CommonLua\UI\Dev\uiConsole.lua
@@ -10,6 +12,8 @@ CommonLua\UI\Dev\uiConsole.lua
   Console:TextChanged
   Console:HistoryDown
   Console:HistoryUp
+CommonLua\UI\X\XDialog.lua
+  OpenXDialog
 Lua\Construction.lua
   ConstructionController:UpdateConstructionStatuses
   ConstructionController:CreateCursorObj
@@ -253,6 +257,62 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
+  --set UI transparency:
+  --xdialogs (buildmenu, pins, infopanel)
+  local trans = ChoGGi.CheatMenuSettings.Transparency
+  local function SetTrans(Obj)
+    if Obj.class and trans[Obj.class] then
+      Obj:SetTransparency(trans[Obj.class])
+    end
+  end
+  if not ChoGGi.OrigFunc.OpenXDialog then
+    ChoGGi.OrigFunc.OpenXDialog = OpenXDialog
+  end
+  function OpenXDialog(template, parent, context, reason, id)
+    local ret = ChoGGi.OrigFunc.OpenXDialog(template, parent, context, reason, id)
+    SetTrans(ret)
+    return ret
+  end
+  --"desktop" dialogs (toolbar)
+  if not ChoGGi.OrigFunc.FrameWindow_Init then
+    ChoGGi.OrigFunc.FrameWindow_Init = FrameWindow.Init
+  end
+  function FrameWindow:Init()
+    local ret = ChoGGi.OrigFunc.FrameWindow_Init(self)
+    SetTrans(self)
+    return ret
+  end
+  --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
+  if not ChoGGi.OrigFunc.ShowConsoleLog then
+    ChoGGi.OrigFunc.ShowConsoleLog = ShowConsoleLog
+  end
+  function ShowConsoleLog(toggle)
+    ChoGGi.OrigFunc.ShowConsoleLog(toggle)
+    SetTrans(dlgConsoleLog)
+  end
+
+  --set trans on mouseover
+  if not ChoGGi.OrigFunc.XWindow_OnMouseEnter then
+    ChoGGi.OrigFunc.XWindow_OnMouseEnter = XWindow.OnMouseEnter
+  end
+  function XWindow:OnMouseEnter(pt, child)
+    local ret = ChoGGi.OrigFunc.XWindow_OnMouseEnter(self, pt, child)
+    if ChoGGi.CheatMenuSettings.TransparencyToggle then
+      self:SetTransparency(0)
+    end
+    return ret
+  end
+  if not ChoGGi.OrigFunc.XWindow_OnMouseLeft then
+    ChoGGi.OrigFunc.XWindow_OnMouseLeft = XWindow.OnMouseLeft
+  end
+  function XWindow:OnMouseLeft(pt, child)
+    local ret = ChoGGi.OrigFunc.XWindow_OnMouseLeft(self, pt, child)
+    if ChoGGi.CheatMenuSettings.TransparencyToggle then
+      SetTrans(self)
+    end
+    return ret
+  end
+
   --remove spire spot limit
   if not ChoGGi.OrigFunc.CC_UpdateCursor then
     ChoGGi.OrigFunc.CC_UpdateCursor = ConstructionController.UpdateCursor
@@ -432,12 +492,15 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
       --always on top
       self:SetModal(false)
     end
+    --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
+    SetTrans(self)
   end
 
   --always able to show console
   ChoGGi.OrigFunc.ShowConsole = ShowConsole
   function ShowConsole(visible)
-  --[[remvoed from orig func
+  --[[
+    removed from orig func:
     if not Platform.developer and not ConsoleEnabled then
       return
     end

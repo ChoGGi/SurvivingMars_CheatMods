@@ -1,6 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "Cheat Menu Expanded",
-	"description", "Enables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
+	"title", "Cheat Menu Expanded v3.7",
+	"version", 37,
+	"saved", 1525500000,
+	"description", "\nEnables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
     .. "There's a cheats section in most info panels on the right side of the screen."
     .. "\n\nF2: Toggle the cheats menu.."
     .. "\nF3: Set object opacity."
@@ -11,7 +13,7 @@ return PlaceObj("ModDef", {
     .. "\nF9: Clear the console log."
     .. "\nCtrl+F: Fill resource of object."
     .. "\nEnter or Tilde: Show the console."
-    .. "\nNumber keys to open/close build menu (Shift-*Num for menus above 10)."
+    .. "\nNumber keys: Toggle build menu (Shift-*Num for menus above 10)."
     .. "\nCtrl-Alt-Shift-R: Opens console and places \"restart\" in it."
     .. "\nCtrl-Space: Opens placement mode with the last placed object."
     .. "\nCtrl-Shift-Space: Opens placement mode with selected object (works with deposits)."
@@ -22,16 +24,13 @@ return PlaceObj("ModDef", {
     .. "\nShift-Q: Clone selected object to mouse position."
     .. "\n\nobject = either the selected object or the object under the mouse cursor."
     .. "\n\nFor more info see: https://github.com/ChoGGi/SurvivingMars_CheatMods (or browse the lua files).",
-  "tags", "Cheats",
-  "image","CheatMenu.png",
-  "id", "ChoGGi_CheatMenu",
-  --"steam_id","",
-	"author", "ChoGGi (thanks to chippydip, therealshibe, BoehserOnkel, Fling)",
-	"version", 36,
-  --"lua_revision","",
-	"code", {
-		"Init.lua",
-	},
-  --"loctables","",
-  --"saved","",
+	"image", "CheatMenu.png",
+	"id", "ChoGGi_CheatMenu",
+	"author", "ChoGGi\nWith thanks to chippydip, BoehserOnkel, Fling, and random internet users reporting bugs/requesting features.",
+	"code", {"Init.lua"},
+	"TagGameplay", true,
+	"TagInterface", true,
+	"TagTools", true,
+	"TagOther", true,
+	"TagCheats", true,
 })

@@ -411,6 +411,10 @@ function ChoGGi.SetOutsideWorkplaceRadius()
 end
 
 function ChoGGi.SetDeathAge()
+  local function RetDeathAge(colonist)
+    return colonist.MinAge_Senior + 5 + colonist:Random(10) + colonist:Random(5) + colonist:Random(5)
+  end
+
   local ItemList = {
     {text = " Default",value = "Default",hint = "Uses same code as game to pick death ages."},
     {text = 60,value = 60},
@@ -447,7 +451,7 @@ function ChoGGi.SetDeathAge()
     if value == "Default" or type(amount) == "number" then
       if value == "Default" then
         for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-          colonist.death_age = colonist.MinAge_Senior + 5 + colonist:Random(10) + colonist:Random(5) + colonist:Random(5)
+          colonist.death_age = RetDeathAge(colonist)
         end
       elseif type(amount) == "number" then
         for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
@@ -461,7 +465,8 @@ function ChoGGi.SetDeathAge()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Death Age")
+  local hint = "Usual age is around " .. RetDeathAge(UICity.labels.Colonist[1]) .. ". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Death Age",hint)
 end
 
 function ChoGGi.ColonistsAddSpecializationToAll()
@@ -772,7 +777,8 @@ function ChoGGi.SetColonistsTraits(iType)
   end
 
   local CallBackFunc = function(choice)
-
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
     --create list of traits
     local TraitsListTemp = {}
     for i = 1, #choice do
@@ -812,10 +818,10 @@ function ChoGGi.SetColonistsTraits(iType)
     elseif iType == 2 then
 
       --nothing checked so just return
-      if not choice[1].check1 and not ChoGGi.choice[1].check2 then
+      if not check1 and not check2 then
         ChoGGi.MsgPopup("Pick a checkbox next time...","Colonists",UsualIcon)
         return
-      elseif choice[1].check1 and choice[1].check2 then
+      elseif check1 and check2 then
         ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Colonists",UsualIcon)
         return
       end
@@ -838,9 +844,9 @@ function ChoGGi.SetColonistsTraits(iType)
 
       else
         local Bool
-        if choice[1].check1 then
+        if check1 then
           Bool = true
-        elseif choice[1].check2 then
+        elseif check2 then
           Bool = false
         end
 

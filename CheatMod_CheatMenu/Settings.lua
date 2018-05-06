@@ -32,9 +32,12 @@ ChoGGi.Consts = {
   ShowInterfaceInScreenshots = true,
   NumberKeysBuildMenu = true,
   UseLastOrientation = true,
+  ShowCheatsMenu = true,
 --stores custom settings for each building
   BuildingSettings = {},
+  Transparency = {},
 --false
+  TransparencyToggle = false,
   StorageMechanizedDepotsTemp = false,
   UnlimitedConnectionLength = false,
   SpeedDrone = false,
@@ -346,9 +349,16 @@ end
 
 function ChoGGi.Settings_ModsLoaded()
 
+  --remove empty entries in BuildingSettings
+  if next(ChoGGi.CheatMenuSettings.BuildingSettings) then
+    --remove any empty building tables
+    for Key,_ in pairs(ChoGGi.CheatMenuSettings.BuildingSettings) do
+      if not next(ChoGGi.CheatMenuSettings.BuildingSettings[Key]) then
+        ChoGGi.CheatMenuSettings.BuildingSettings[Key] = nil
+      end
+    end
   --if empty table then new settings file or old settings
-  if not next(ChoGGi.CheatMenuSettings.BuildingSettings) then
-
+  else
     --used to add old lists to new combined list
     local function AddOldSettings(OldCat,NewName)
       --is there anthing in the table?
@@ -380,15 +390,8 @@ function ChoGGi.Settings_ModsLoaded()
     if not AddOldSettings("BuildingsProduction","production") then
       table.insert(ChoGGi.StartupMsgs,errormsg .. "BuildingsProduction")
     end
-  else
-    --remove any empty building tables
-    for Key,_ in pairs(ChoGGi.CheatMenuSettings.BuildingSettings) do
-      if not next(ChoGGi.CheatMenuSettings.BuildingSettings[Key]) then
-        ChoGGi.CheatMenuSettings.BuildingSettings[Key] = nil
-      end
-    end
   end
-
+  --only write for testing, as IO is probably slower then having to redo again
   if ChoGGi.Testing then
     ChoGGi.WriteSettings()
   end

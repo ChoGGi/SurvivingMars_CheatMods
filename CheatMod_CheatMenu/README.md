@@ -23,7 +23,7 @@ F7: Toggle using last building orientation.
 F9: Clear the console log.
 Ctrl+F: Fill resource of object.
 Enter or Tilde: Show the console.
-Number keys to open/close build menu (Shift-*Num for menus above 10).
+Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).

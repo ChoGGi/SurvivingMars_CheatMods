@@ -13,7 +13,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "Cheats/[05]Start Mystery",
     ChoGGi.ShowMysteryList,
     nil,
-    "Pick and start a mystery (instant option).",
+    "Pick and start a mystery (with instant option).",
     "SelectionToObjects.tga"
   )
 
@@ -21,7 +21,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "Cheats/[05]Trigger Disasters",
     ChoGGi.DisastersTrigger,
     nil,
-    "Trigger a disaster.",
+    "Show the trigger disasters list.",
     "ApplyWaterMarkers.tga"
   )
 
@@ -41,6 +41,32 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "TerrainConfigEditor.tga"
   )
 
+----------------------workplaces
+  ChoGGi.AddAction(
+    "Cheats/[05]Workplaces/Toggle All Shifts",
+    CheatToggleAllShifts,
+    nil,
+    "Toggle all workshifts on or off (farms only get one on).",
+    "AlignSel.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[05]Workplaces/Update All Workplaces",
+    CheatUpdateAllWorkplaces,
+    nil,
+    "Updates all colonist's workplaces.",
+    "AlignSel.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[05]Workplaces/Clear Forced Workplaces",
+    CheatClearForcedWorkplaces,
+    nil,
+    "Removes \"user_forced_workplace\" from all colonists.",
+    "AlignSel.tga"
+  )
+
+----------------------research
   ChoGGi.AddAction(
     "Cheats/[04]Research/Research Queue Larger",
     ChoGGi.ResearchQueueLarger_Toggle,
@@ -54,6 +80,22 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
       end
       return des .. " Enable up to 25 items in queue."
     end,
+    "ShowOcclusion.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[04]Research/Reset All Research",
+    ChoGGi.ResetAllResearch,
+    nil,
+    "Resets all research (includes breakthrough tech).",
+    "UnlockCollection.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[04]Research/Research Current Tech",
+    CheatResearchCurrent,
+    nil,
+    "Complete item currently being researched.",
     "ViewArea.tga"
   )
 
@@ -73,7 +115,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
       return des .. " Outsourcing is free to purchase (over n over)."
     end,
-    "ViewArea.tga"
+    "pirate.tga"
   )
 
   ChoGGi.AddAction(
@@ -90,6 +132,38 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     nil,
     "How many breakthroughs are allowed to be unlocked?",
     "AlignSel.tga"
+  )
+----------------------cheats
+  ChoGGi.AddAction(
+    "Cheats/[10]Unpin All Pinned Objects",
+    UnpinAll,
+    nil,
+    "Removes all objects from the \"Pin\" menu.",
+    "CutSceneArea.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[12]Complete wires\\pipes",
+    CheatCompleteAllWiresAndPipes,
+    nil,
+    "Complete all wires and pipes instantly.",
+    "ViewCamPath.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[13]Complete constructions",
+    CheatCompleteAllConstructions,
+    "Alt-B",
+    "Complete all constructions instantly.",
+    "place_custom_object.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[14]Mod Editor",
+    ChoGGi.OpenModEditor,
+    nil,
+    "Switch to the mod editor.",
+    "Action.tga"
   )
 
 end

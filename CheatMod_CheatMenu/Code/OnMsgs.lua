@@ -270,18 +270,15 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.ResourcesMenu_LoadingScreenPreClose()
 
   -- This must return true for most (built-in) cheats to function
-  function CheatsEnabled()
-    return true
-  end
-  --add built-in cheat menu items (I only use like 5 of these, maybe just add them manually so we don't have large remove list?
-  AddCheatsUA()
+  --function CheatsEnabled()
+  --  return true
+  --end
 
   --remove some built-in menu items
   UserActions.RemoveActions({
     --useless without developer tools?
     "BuildingEditor",
-    --these will switch the map without asking to save
-    "G_ModsEditor",
+    --will switch the map without asking to save
     "G_OpenPregameMenu",
     --empty maps
     "ChangeMapEmpty",
@@ -322,10 +319,18 @@ function OnMsg.LoadingScreenPreClose()
     "TriggerDisasterMeteorsSingle",
     "TriggerDisasterMeteorsStorm",
     "TriggerDisasterStop",
+    "G_ToggleAllShifts",
+    "G_CheatUpdateAllWorkplaces",
+    "G_CheatClearForcedWorkplaces",
+    "G_UnpinAll",
+    "G_ModsEditor",
     "G_ToggleInfopanelCheats",
     "G_UnlockAllBuildings",
     "G_AddFunding",
     "G_ResearchAll",
+    "G_ResearchCurrent",
+    "G_CompleteWiresPipes",
+    "G_CompleteConstructions",
     "G_Unlock\208\144ll\208\162ech",
     "UnlockAllBreakthroughs",
     "SpawnColonist1",
@@ -334,15 +339,15 @@ function OnMsg.LoadingScreenPreClose()
     "MapExplorationScan",
     "MapExplorationDeepScan",
   })
+
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
-  if ChoGGi.Testing then
+  if ChoGGi.CheatMenuSettings.ShowCheatsMenu or ChoGGi.Testing then
     --always show on my computer
     if not dlgUAMenu then
       UAMenu.ToggleOpen()
     end
-    --ShowConsole(true)
   end
 
   --remove some uselessish Cheats to clear up space
@@ -668,9 +673,9 @@ end
 
 --shuttle comes out of a hub
 function OnMsg.SpawnedShuttle(Obj)
-  local stor = ChoGGi.CheatMenuSettings.StorageShuttle
-  if stor then
-    Obj.max_shared_storage = stor
+  local storage = ChoGGi.CheatMenuSettings.StorageShuttle
+  if storage then
+    Obj.max_shared_storage = storage
   end
   local speed = ChoGGi.CheatMenuSettings.SpeedShuttle
   if speed then
@@ -679,9 +684,9 @@ function OnMsg.SpawnedShuttle(Obj)
 end
 
 function OnMsg.SpawnedDrone(Obj)
-  local grav = ChoGGi.CheatMenuSettings.GravityDrone
-  if grav then
-    Obj:SetGravity(grav)
+  local gravity = ChoGGi.CheatMenuSettings.GravityDrone
+  if gravity then
+    Obj:SetGravity(gravity)
   end
   local speed = ChoGGi.CheatMenuSettings.SpeedDrone
   if speed then

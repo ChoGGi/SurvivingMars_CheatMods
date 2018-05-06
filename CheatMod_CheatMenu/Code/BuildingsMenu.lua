@@ -37,35 +37,23 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Buildings/Set Charge Rates",
-    function()
-      ChoGGi.SetMaxChangeOrDischarge("charge")
-    end,
-    "Ctrl-Numpad 1",
-    "Change how fast Air/Water/Battery storage capacity changes.",
-    "DisableAOMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Buildings/Set Discharge Rates",
-    function()
-      ChoGGi.SetMaxChangeOrDischarge("discharge")
-    end,
-    "Ctrl-Numpad 2",
+    "Expanded CM/Buildings/Set Charge & Discharge Rates",
+    ChoGGi.SetMaxChangeOrDischarge,
+    "Ctrl-Shift-R",
     "Change how fast Air/Water/Battery storage capacity changes.",
     "DisableAOMaps.tga"
   )
 
   local function UseLastOrientationText()
     local des = ChoGGi.CheatMenuSettings.UseLastOrientation and "(Enabled)" or "(Disabled)"
-    return des  .. " Toggles between saving building placement orientation."
+    return des  .. " Use last building placement orientation."
   end
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Use Last Orientation",
     ChoGGi.UseLastOrientation_Toggle,
     "F7",
     UseLastOrientationText(),
-    "ToggleTerrainHeight.tga"
+    "ToggleMapAreaEditor.tga"
   )
 
   ChoGGi.AddAction(

@@ -35,30 +35,31 @@ function ChoGGi.BuildingPower_Toggle()
     )
     return
   end
+  local id = sel.encyclopedia_id
 
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[id] = {}
   end
 
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[id]
   local amount
   if setting.nopower then
     setting.nopower = nil
-    amount = DataInstances.BuildingTemplate[sel.encyclopedia_id].electricity_consumption
+    amount = DataInstances.BuildingTemplate[id].electricity_consumption
   else
     setting.nopower = true
     amount = 0
   end
 
-  for _,building in ipairs(UICity.labels[sel.encyclopedia_id] or empty_table) do
+  for _,building in ipairs(UICity.labels[id] or empty_table) do
     building:SetBase("electricity_consumption", amount)
   end
 
   ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(sel.encyclopedia_id .. " power consumption: " .. amount,"Buildings")
+  ChoGGi.MsgPopup(id .. " power consumption: " .. amount,"Buildings")
 end
 
-function ChoGGi.SetMaxChangeOrDischarge(sType)
+function ChoGGi.SetMaxChangeOrDischarge()
   local sel = SelectedObj
   if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
     ChoGGi.MsgPopup("You need to select something that has capacity (air/water/elec).",
@@ -66,6 +67,7 @@ function ChoGGi.SetMaxChangeOrDischarge(sType)
     )
     return
   end
+  local id = sel.encyclopedia_id
   local r = ChoGGi.Consts.ResourceScale
 
   --get type of capacity
@@ -83,11 +85,12 @@ function ChoGGi.SetMaxChangeOrDischarge(sType)
   end
 
   --get default amount
-  local template = DataInstances.BuildingTemplate[sel.encyclopedia_id]
-  local DefaultSetting = template["max_" .. CapType .. "_" .. sType] / r
+  local template = DataInstances.BuildingTemplate[id]
+  local DefaultSettingC = template["max_" .. CapType .. "_charge"] / r
+  local DefaultSettingD = template["max_" .. CapType .. "_discharge"] / r
 
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " Defaults",value = 3.1415926535,hint = "Charge: " .. DefaultSettingC .. " / Discharge: " .. DefaultSettingD},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -101,58 +104,96 @@ function ChoGGi.SetMaxChangeOrDischarge(sType)
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[id] = {}
   end
 
-  local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
-  if setting and setting[sType] then
-    hint = tostring(setting[sType] / r)
+  local hint = "charge: " .. DefaultSettingC .. " / discharge: " .. DefaultSettingD
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[id]
+  if setting then
+    if setting.charge and setting.discharge then
+      hint = "charge: " .. tostring(setting.charge / r) .. " / discharge: " .. tostring(setting.discharge / r)
+    elseif setting.charge then
+      hint = tostring(setting.charge / r)
+    elseif setting.discharge then
+      hint = tostring(setting.discharge / r)
+    end
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+
+    if not check1 and not check2 then
+      ChoGGi.MsgPopup("Pick a checkbox or two next time...","Rate",UsualIcon2)
+      return
+    end
+
     if type(value) == "number" then
-      value = value * r
+      local numberC = value * r
+      local numberD = value * r
+
+      if value == 3.1415926535 then
+        if check1 then
+          setting.charge = nil
+          numberC = DefaultSettingC * r
+        end
+        if check2 then
+          setting.discharge = nil
+          numberD = DefaultSettingD * r
+        end
+      else
+        if check1 then
+          setting.charge = numberC
+        end
+        if check2 then
+          setting.discharge = numberD
+        end
+      end
 
       --updating time
       if CapType == "electricity" then
         for _,building in ipairs(UICity.labels.Power or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
-            building[CapType]["max_" .. sType] = value
-            building["max_" .. CapType .. "_" .. sType] = value
+          if building.encyclopedia_id == id then
+            if check1 then
+              building[CapType].max_charge = numberC
+              building["max_" .. CapType .. "_charge"] = numberC
+            end
+            if check2 then
+              building[CapType].max_discharge = numberD
+              building["max_" .. CapType .. "_discharge"] = numberD
+            end
             ChoGGi.ToggleWorking(building)
           end
         end
 
       else --water and air
         for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
-            building[CapType]["max_" .. sType] = value
-            building["max_" .. CapType .. "_" .. sType] = value
+          if building.encyclopedia_id == id then
+            if check1 then
+              building[CapType].max_charge = numberC
+              building["max_" .. CapType .. "_charge"] = numberC
+            end
+            if check2 then
+              building[CapType].max_discharge = numberD
+              building["max_" .. CapType .. "_discharge"] = numberD
+            end
             ChoGGi.ToggleWorking(building)
           end
         end
       end
 
-      if value == DefaultSetting * r then
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id][sType] = nil
-      else
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id][sType] = value
-      end
-
       ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(sel.encyclopedia_id .. " rate is now " .. choice[1].text,
-        "Buildings",UsualIcon2
+      ChoGGi.MsgPopup(id .. " rate is now " .. choice[1].text,
+        "Rate",UsualIcon2
       )
     end
   end
 
   hint = "Current rate: " .. hint
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " " .. sType .. " Rate",hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
 end
-
 
 function ChoGGi.UseLastOrientation_Toggle()
   ChoGGi.CheatMenuSettings.UseLastOrientation = not ChoGGi.CheatMenuSettings.UseLastOrientation
@@ -188,6 +229,7 @@ function ChoGGi.SetProductionAmount()
     )
     return
   end
+  local id = sel.encyclopedia_id
 
   --get type of producer
   local ProdType
@@ -228,12 +270,12 @@ function ChoGGi.SetProductionAmount()
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[id] = {}
   end
 
   local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[id]
   if setting and setting.production then
     hint = tostring(setting.production / r)
   end
@@ -245,7 +287,7 @@ function ChoGGi.SetProductionAmount()
       if ProdType == "electricity" then
         --electricity
         for _,building in ipairs(UICity.labels.Power or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
+          if building.encyclopedia_id == id then
             --current prod
             building[ProdType]:SetProduction(amount)
             --when toggled on n off
@@ -256,7 +298,7 @@ function ChoGGi.SetProductionAmount()
       elseif ProdType == "water" or ProdType == "air" then
         --water/air
         for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
+          if building.encyclopedia_id == id then
             building[ProdType]:SetProduction(amount)
             building[ProdType .. "_production"] = amount
           end
@@ -265,28 +307,28 @@ function ChoGGi.SetProductionAmount()
       else --other prod
         --extractors/factories
         for _,building in ipairs(UICity.labels.Production or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
+          if building.encyclopedia_id == id then
             building.producers[1].production_per_day = amount
             building.production_per_day1 = amount
           end
         end
         --moholemine/theexvacator
         for _,building in ipairs(UICity.labels.Wonders or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
+          if building.encyclopedia_id == id then
             building.producers[1].production_per_day = amount
             building.production_per_day1 = amount
           end
         end
         --farms
-        if sel.encyclopedia_id:find("Farm") then
+        if id:find("Farm") then
           for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
-            if building.encyclopedia_id == sel.encyclopedia_id then
+            if building.encyclopedia_id == id then
               building.producers[1].production_per_day = amount
               building.production_per_day1 = amount
             end
           end
           for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
-            if building.encyclopedia_id == sel.encyclopedia_id then
+            if building.encyclopedia_id == id then
               building.producers[1].production_per_day = amount
               building.production_per_day1 = amount
             end
@@ -296,20 +338,20 @@ function ChoGGi.SetProductionAmount()
 
       if value == DefaultSetting then
         --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].production = nil
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = nil
       else
         --update/create saved setting
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].production = amount
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = amount
       end
     end
 
     ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup(sel.encyclopedia_id .. " Production is now " .. choice[1].text,
+    ChoGGi.MsgPopup(id .. " Production is now " .. choice[1].text,
       "Buildings",UsualIcon2
     )
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Production Amount","Current production: " .. hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Production Amount","Current production: " .. hint)
 end
 
 function ChoGGi.FullyAutomatedBuildings()

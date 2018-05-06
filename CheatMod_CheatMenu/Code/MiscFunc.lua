@@ -1,5 +1,91 @@
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
+function ChoGGi.TransparencyUI_Toggle()
+  ChoGGi.CheatMenuSettings.TransparencyToggle = not ChoGGi.CheatMenuSettings.TransparencyToggle
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("UI Transparency Toggle: " .. tostring(ChoGGi.CheatMenuSettings.TransparencyToggle),
+    "Transparency"
+  )
+end
+
+function ChoGGi.SetTransparencyUI()
+  local desk = terminal.desktop
+  local igi = GetInGameInterface()
+  --sets or gets transparency based on iWhich
+  local function trans(iType,sName,iWhich)
+    local name = ChoGGi.CheatMenuSettings.Transparency[sName]
+    if not iWhich and name then
+      return name
+    end
+
+    local uilist
+    if iType == 1 then
+      uilist = desk
+    else
+      if not igi or not igi:GetVisible() then
+        return 0
+      end
+      uilist = igi
+    end
+    for i = 1, #uilist do
+      local ui = uilist[i]
+      if ui.class == sName then
+        if iWhich then
+          ui:SetTransparency(iWhich)
+        else
+          return ui:GetTransparency()
+        end
+      end
+    end
+    if not iWhich then
+      --didn't find window so return 0 (fully vis)
+      return 0
+    end
+  end
+
+  local ItemList = {
+    {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = "Console text"},
+    {text = "Console",value = trans(1,"Console"),hint = "Console input"},
+    {text = "UAMenu",value = trans(1,"UAMenu"),hint = "Cheat Menu: This uses 255 as visible and 0 as invisible."},
+
+    {text = "HUD",value = trans(2,"HUD"),hint = "Buttons at bottom"},
+    {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = "Build menu"},
+    {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = "Infopanel (selection)"},
+    {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = "Pins"},
+  }
+  --callback
+  local CallBackFunc = function(choice)
+    for i = 1, #choice do
+      local value = choice[i].value
+      local text = choice[i].text
+
+      if type(value) == "number" then
+
+        if text == "UAMenu" or text == "Console" or text == "ConsoleLog" then
+          trans(1,text,value)
+        else
+          trans(2,text,value)
+        end
+
+        --everything but UAMenu uses 255-0 in the opposite manner
+        if value == 0 or (value == 255 and text == "UAMenu") then
+          ChoGGi.CheatMenuSettings.Transparency[text] = nil
+        else
+          ChoGGi.CheatMenuSettings.Transparency[text] = value
+        end
+
+      end
+    end
+
+    ChoGGi.WriteSettings()
+    ChoGGi.MsgPopup("Transparency has been updated.","Transparency")
+  end
+
+  local hint = "For some reason they went opposite day with this one: 255 is invisible and 0 is visible."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Transparency",hint,nil,nil,nil,nil,nil,4)
+end
+
 function ChoGGi.ShowAutoUnpinObjectList()
 
   --build a list
@@ -284,13 +370,14 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
 end
 
 function ChoGGi.SetObjectOpacity()
-  local obj = SelectedObj or SelectionMouseObj()
-  if not obj then
-    ChoGGi.MsgPopup("Nothing selected or moused over","Object")
-    return
-  end
-
+  local sel = SelectedObj or SelectionMouseObj()
   local ItemList = {
+    {text = " Reset: Anomalies",value = "Anomaly",hint = "Loops though and makes all anomalies visible."},
+    {text = " Reset: Buildings",value = "Building",hint = "Loops though and makes all buildings visible."},
+    {text = " Reset: Cables & Pipes",value = "GridElements",hint = "Loops though and makes all pipes and cables visible."},
+    {text = " Reset: Colonists",value = "Colonists",hint = "Loops though and makes all colonists visible."},
+    {text = " Reset: Units",value = "Unit",hint = "Loops though and makes all rovers and drones visible."},
+    {text = " Reset: Deposits",value = "SurfaceDeposit",hint = "Loops though and makes all surface, subsurface, and terrain deposits visible."},
     {text = 0,value = 0},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -302,15 +389,35 @@ function ChoGGi.SetObjectOpacity()
 
     local value = choice[1].value
     if type(value) == "number" then
-      obj:SetOpacity(value)
+      sel:SetOpacity(value)
+    elseif type(value) == "string" then
+      local function SettingOpacity(label)
+        for _,Object in ipairs(UICity.labels[label] or empty_table) do
+          Object:SetOpacity(100)
+        end
+      end
+      SettingOpacity(value)
+      --extra ones
+      if value == "Building" then
+        SettingOpacity("AllRockets")
+      elseif value == "Anomaly" then
+        SettingOpacity("SubsurfaceAnomalyMarker")
+      elseif value == "SurfaceDeposit" then
+        SettingOpacity("SubsurfaceDeposit")
+        SettingOpacity("TerrainDeposit")
+      end
     end
     ChoGGi.MsgPopup("Selected: " .. choice[1].text,
       "Opacity","UI/Icons/Sections/attention.tga"
     )
   end
-  local hint = "Current: " .. obj:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some time :)."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity",hint)
-
+  local hint
+  local name = ""
+  if sel then
+    hint = "Current: " .. sel:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some effort :)."
+    name = sel.encyclopedia_id or sel.class
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
 end
 
 function ChoGGi.DisableTextureCompression_Toggle()
@@ -697,4 +804,3 @@ function ChoGGi.InstantColonyApproval()
   Msg("ColonyApprovalPassed")
   g_ColonyNotViableUntil = -1
 end
-
