@@ -2,6 +2,26 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
+function ChoGGi.SensorTowerSound_Toggle()
+  ChoGGi.CheatMenuSettings.SensorTowerSound = not ChoGGi.CheatMenuSettings.SensorTowerSound
+  if ChoGGi.CheatMenuSettings.SensorTowerSound then
+    FXRules.Working.start.SensorTower.any[3] = nil
+    RemoveFromRules("Object SensorTower Loop")
+  else
+    RebuildFXRules()
+  end
+
+  local tab = UICity.labels.SensorTower or empty_table
+  for i = 1, #tab do
+    ChoGGi.ToggleWorking(tab[i])
+  end
+
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SensorTowerSound) .. ": Stop that bloody bouzouki!",
+    "Sounds"
+  )
+end
+
 function ChoGGi.SetProtectionRadius()
   local sel = SelectedObj or SelectionMouseObj()
   if not sel or not sel.protect_range then

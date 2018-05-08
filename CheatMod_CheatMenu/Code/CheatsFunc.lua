@@ -311,11 +311,11 @@ function ChoGGi.StartMystery(Mystery,Bool)
     local sequence = UICity.mystery.seq_player.seq_list[1]
     for i = 1, #sequence do
       if sequence[i].class == "SA_WaitExpression" then
-        UICity.mystery.seq_player.seq_list[1][i].duration = 0
-        UICity.mystery.seq_player.seq_list[1][i].expression = nil
+        sequence[i].duration = 0
+        sequence[i].expression = nil
       elseif sequence[i].class == "SA_WaitMarsTime" then
-        UICity.mystery.seq_player.seq_list[1][i].duration = 0
-        UICity.mystery.seq_player.seq_list[1][i].rand_duration = 0
+        sequence[i].duration = 0
+        sequence[i].rand_duration = 0
         break
       end
     end

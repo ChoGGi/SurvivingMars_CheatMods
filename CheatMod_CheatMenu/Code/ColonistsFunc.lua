@@ -1,5 +1,53 @@
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
+DeathReasons.ChoGGi_Soylent = "Evil Overlord"
+
+function ChoGGi.TheSoylentOption()
+  local function MeatbagsToSoylent(MeatBag)
+    if MeatBag.dying then
+      return
+    end
+    MeatBag:SetCommand("Die","ChoGGi_Soylent")
+    PlaceResourcePile(MeatBag:GetLogicalPos(), "Food", UICity:Random(1,5) * ChoGGi.Consts.ResourceScale)
+  end
+
+  --one at a time
+  local sel = SelectedObj or SelectionMouseObj()
+  if sel and sel.class == "Colonist"then
+    MeatbagsToSoylent(sel)
+    return
+  end
+
+  --culling the herd
+  local ItemList = {
+    {text = "Homeless",value = "Homeless"},
+    {text = "Unemployed",value = "Unemployed"},
+    {text = "Both",value = "Both"},
+  }
+
+  local CallBackFunc = function(choice)
+    local function Cull(Label)
+      local tab = UICity.labels[Label] or empty_table
+      for i = 1, #tab do
+        MeatbagsToSoylent(tab[i])
+      end
+    end
+    local value = choice[1].value
+    if value == "Both" then
+      Cull("Homeless")
+      Cull("Unemployed")
+    elseif value == "Homeless" or value == "Unemployed" then
+      Cull(value)
+    end
+    ChoGGi.MsgPopup("Monster... " .. choice[1].text,
+      "Snacks","UI/Icons/Sections/Food_1.tga"
+    )
+  end
+
+  local hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint)
+end
+
 function ChoGGi.SetColonistMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedColonist
@@ -111,7 +159,6 @@ function ChoGGi.AddApplicantsToPool()
       local now = GameTime()
       local self = SA_AddApplicants
       for _ = 1, value do
-     -- for i = 1, amount do
         local colonist = GenerateApplicant(now)
         local to_add = self.Trait
         if self.Trait == "random_positive" then
@@ -145,7 +192,8 @@ function ChoGGi.AddApplicantsToPool()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool","Warning: Will take some time for 25K and up.")
+  local hint = "Warning: Will take some time for 25K and up."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool",hint)
 end
 
 function ChoGGi.FireAllColonists()

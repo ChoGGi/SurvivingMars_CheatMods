@@ -3,13 +3,20 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
   local icon = "AlignSel.tga"
 
   ChoGGi.AddAction(
+    "Expanded CM/Colonists/The Soylent Option",
+    ChoGGi.TheSoylentOption,
+    "Ctrl-Numpad 1",
+    "Turns selected/moused over colonist into food (between 1-5), or shows a list with homeless/unemployed.",
+    "Cube.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Colonists/Colonists Move Speed",
     ChoGGi.SetColonistMoveSpeed,
     nil,
     "How fast colonists will move.",
     icon
   )
-
 
   ChoGGi.AddAction(
     "Expanded CM/Colonists/Add Applicants",
