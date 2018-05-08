@@ -3,17 +3,28 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
 --global objects
   function Building.CheatPowerless(self)
+    if self.modifications.electricity_consumption then
+      local mod = self.modifications.electricity_consumption[1]
+      self.ChoGGi_mod_electricity_consumption = {
+        amount = mod.amount,
+        percent = mod.percent
+      }
+      mod:Change(0,0)
+    end
     self:SetBase("electricity_consumption", 0)
   end
   function Building.CheatPowered(self)
+    if self.ChoGGi_mod_electricity_consumption then
+      local mod = self.modifications.electricity_consumption[1]
+      local orig = self.ChoGGi_mod_electricity_consumption
+      mod:Change(orig.amount,orig.percent)
+      self.ChoGGi_mod_electricity_consumption = nil
+    end
     local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
     self:SetBase("electricity_consumption", amount)
   end
   function Object.CheatHideSigns(self)
     self:DestroyAttaches("BuildingSign")
-    --for Key,_ in pairs(self.signs or empty_table) do
-    --  self:AttachSign(false, Key)
-    --end
   end
   function Object.CheatColourRandom(self)
     if self:IsKindOf("ColorizableObject") then
@@ -495,15 +506,17 @@ function ChoGGi.SetInfoPanelCheatHints(win)
   local doublec = ""
   local resetc = ""
   if id then
-    local doublec = "Double the amount of colonist slots for this " .. id .. ".\n\nReselect to update display."
-    local resetc = "Reset the capacity of colonist slots for this " .. id .. " to default.\n\nReselect to update display."
+    doublec = "Double the amount of colonist slots for this " .. id .. ".\n\nReselect to update display."
+    resetc = "Reset the capacity of colonist slots for this " .. id .. " to default.\n\nReselect to update display."
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
     action.ActionName = action.ActionId
     action.RolloverHint = hint
   end
-  for _,action in ipairs(win.actions) do
+  local tab = win.actions
+  for i = 1, #tab do
+    local action = tab[i]
 
   --Colonists
     if action.ActionId == "FillAll" then
@@ -596,7 +609,7 @@ function ChoGGi.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "HideSigns" then
       SetHint(action,"Hides any signs above object (until state is changed).")
     elseif action.ActionId == "ColourRandom" then
-      SetHint(action,"Changes colour of object to random colour.")
+      SetHint(action,"Changes colour of object to random colour (doesn't touch attachments).")
     elseif action.ActionId == "AddDust" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = false

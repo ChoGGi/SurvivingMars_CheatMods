@@ -372,12 +372,6 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
   end
 
-  --drones won't pick up less then their carry amount, unless you force them to (10 = smallest storage amount)
-  local ca = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
-  if ca and ca > 10 then
-    ChoGGi.ForceDronesToEmptyStorage_Enable()
-  end
-
   --if certain panels (cheats/traits/colonists) are too large then hide most of them till mouseover
   ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
   --ex(GetInGameInterface()[6][2][3])
@@ -565,8 +559,8 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
     local ret = ChoGGi.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
 
     local last = ChoGGi.LastPlacedObject
-    if type(last) == "table" and ChoGGi.CheatMenuSettings.UseLastOrientation then
-      --likes to fail, so add a pcall
+    --likes to fail, so add a pcall
+    if ChoGGi.CheatMenuSettings.UseLastOrientation then
       pcall(function()
         ret:SetOrientation(last:GetOrientation())
       end)

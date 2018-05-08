@@ -180,22 +180,11 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/[999]Misc/Show All Traits",
-    ChoGGi.ShowAllTraits_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.CheatMenuSettings.ShowAllTraits and "(Enabled)" or "(Disabled)"
-      return des .. " Shows all appropriate traits in Sanatoriums/Schools."
-    end,
-    "LightArea.tga"
-  )
-
-  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/Scanner Queue Larger",
     ChoGGi.ScannerQueueLarger_Toggle,
     nil,
     function()
-      local des
+      local des = ""
       if const.ExplorationQueueMaxSize == 100 then
         des = "(Enabled)"
       else

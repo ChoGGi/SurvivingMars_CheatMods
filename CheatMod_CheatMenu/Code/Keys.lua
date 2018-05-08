@@ -2,41 +2,32 @@ function ChoGGi.Keys_LoadingScreenPreClose()
 
   --use number keys to activate/hide build menus
   if ChoGGi.CheatMenuSettings.NumberKeysBuildMenu then
+    local function AddMenuKey(Num,Key)
+      ChoGGi.AddAction(nil,
+        function()
+          ChoGGi.ShowBuildMenu(Num)
+        end,
+        Key
+      )
+    end
     local skipped = false
     for i = 1, #BuildCategories do
       if i < 10 then
-        ChoGGi.AddAction(nil,
-          function()
-            ChoGGi.ShowBuildMenu(i)
-          end,
-          tostring(i) --the key has to be a string
-        )
+        --the key has to be a string
+        AddMenuKey(i,tostring(i))
       elseif i == 10 then
-        ChoGGi.AddAction(nil,
-          function()
-            ChoGGi.ShowBuildMenu(i)
-          end,
-          "0"
-        )
+        AddMenuKey(i,"0")
       else
         --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
         if BuildCategories[i].id == "Hidden" then
           skipped = true
         else
           if skipped then
-            ChoGGi.AddAction(nil,
-              function()
-                ChoGGi.ShowBuildMenu(i)
-              end,
-              "Shift-" .. i - 11 -- -1 more for skipping Hidden
-            )
+            -- -1 more for skipping Hidden
+            AddMenuKey(i,"Shift-" .. i - 11)
           else
-            ChoGGi.AddAction(nil,
-              function()
-                ChoGGi.ShowBuildMenu(i)
-              end,
-              "Shift-" .. i - 10 -- -10 since we're doing Shift-*
-            )
+            -- -10 since we're doing Shift-*
+            AddMenuKey(i,"Shift-" .. i - 10)
           end
         end
       end
@@ -92,7 +83,8 @@ function ChoGGi.Keys_LoadingScreenPreClose()
       return
     end
     local bld_template = DataInstances.BuildingTemplate[itemname]
-    local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+    --local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+    local _,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
     --if show then --interferes with building passageramp
       local dlg = GetXDialog("XBuildMenu")

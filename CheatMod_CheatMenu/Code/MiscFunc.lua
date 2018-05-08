@@ -112,8 +112,9 @@ function ChoGGi.ShowAutoUnpinObjectList()
   local EnabledList = ""
   local list = ChoGGi.CheatMenuSettings.UnpinObjects
   if next(list) then
-    for Key,_ in ipairs(list) do
-      EnabledList = EnabledList .. " " .. Key
+    local tab = list
+    for i = 1, #tab do
+      EnabledList = EnabledList .. " " .. i
     end
   end
 
@@ -133,9 +134,9 @@ function ChoGGi.ShowAutoUnpinObjectList()
       local value = choice[i].value
       if check2 then
         local pins = ChoGGi.CheatMenuSettings.UnpinObjects
-        for i = 1, #pins do
-          if pins[i] == value then
-            pins[i] = false
+        for j = 1, #pins do
+          if pins[j] == value then
+            pins[j] = false
           end
         end
       elseif check1 then
@@ -173,27 +174,33 @@ function ChoGGi.ShowAutoUnpinObjectList()
 end
 
 function ChoGGi.CleanAllObjects()
-  for _,Object in ipairs(UICity.labels.Building or empty_table) do
-    Object:SetDust(0,const.DustMaterialExterior)
+  local tab = UICity.labels.Building or empty_table
+  for i = 1, #tab do
+    tab[i]:SetDust(0,const.DustMaterialExterior)
   end
-  for _,Object in ipairs(UICity.labels.Unit or empty_table) do
-    Object:SetDust(0,const.DustMaterialExterior)
+  tab = UICity.labels.Unit or empty_table
+  for i = 1, #tab do
+    tab[i]:SetDust(0,const.DustMaterialExterior)
   end
+
   ChoGGi.MsgPopup("Cleaned all","Objects")
 end
 
 function ChoGGi.FixAllObjects()
-  for _,Object in ipairs(UICity.labels.Building or empty_table) do
-    Object:Repair()
-    Object.accumulated_maintenance_points = 0
+  local function Repair(Label)
+    local tab = UICity.labels[Label] or empty_table
+    for i = 1, #tab do
+      tab[i]:Repair()
+      tab[i].accumulated_maintenance_points = 0
+    end
   end
-  for _,Object in ipairs(UICity.labels.Rover or empty_table) do
-    Object:Repair()
-    Object.accumulated_maintenance_points = 0
+  Repair("Building")
+  Repair("Rover")
+  local tab = UICity.labels.Drone or empty_table
+  for i = 1, #tab do
+    tab[i]:SetCommand("RepairDrone")
   end
-  for _,Object in ipairs(UICity.labels.Drone or empty_table) do
-    Object:SetCommand("RepairDrone")
-  end
+
   ChoGGi.MsgPopup("Fixed all","Objects")
 end
 
@@ -229,7 +236,8 @@ function ChoGGi.CreateObjectListAndAttaches()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local CallBackFunc = function()
+    --we're ignoring the ok button
     return
   end
 
@@ -332,26 +340,27 @@ function ChoGGi.ChangeObjectColour(obj,Parent)
       )
       --All of type checkbox
       if choice[1].check1 then
-        for _,building in ipairs(UICity.labels[Label] or empty_table) do
+        local tab = UICity.labels[Label] or empty_table
+        for i = 1, #tab do
           if Parent then
-            local Attaches = building:GetAttaches()
-            for i = 1, #Attaches do
-              if Attaches[i].class == obj.class then
+            local Attaches = tab[i]:GetAttaches()
+            for j = 1, #Attaches do
+              if Attaches[j].class == obj.class then
                 if choice[1].check2 then
-                  CheckGrid(SetOrigColours,Attaches[i],building)
+                  CheckGrid(SetOrigColours,Attaches[j],tab[i])
                 else
-                  CheckGrid(SetColours,Attaches[i],building)
+                  CheckGrid(SetColours,Attaches[j],tab[i])
                 end
               end
             end
           else --not parent
             if choice[1].check2 then
-              CheckGrid(SetOrigColours,building,building)
+              CheckGrid(SetOrigColours,tab[i],tab[i])
             else
-              CheckGrid(SetColours,building,building)
+              CheckGrid(SetColours,tab[i],tab[i])
             end
           end --Parent
-        end --for
+        end
       else --single building change
         if choice[1].check2 then
           CheckGrid(SetOrigColours,obj,obj)
@@ -392,8 +401,9 @@ function ChoGGi.SetObjectOpacity()
       sel:SetOpacity(value)
     elseif type(value) == "string" then
       local function SettingOpacity(label)
-        for _,Object in ipairs(UICity.labels[label] or empty_table) do
-          Object:SetOpacity(100)
+        local tab = UICity.labels[label] or empty_table
+        for i = 1, #tab do
+          tab[i]:SetOpacity(100)
         end
       end
       SettingOpacity(value)
@@ -710,26 +720,6 @@ function ChoGGi.CameraZoom_Toggle()
 
   end
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
-end
-
-function ChoGGi.ShowAllTraits_Toggle()
-  ChoGGi.CheatMenuSettings.ShowAllTraits = not ChoGGi.CheatMenuSettings.ShowAllTraits
-
-  g_SchoolTraits = ChoGGi.ValueRetOpp(
-    g_SchoolTraits,
-    ChoGGi.PositiveTraits,
-    {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-  )
-  g_SanatoriumTraits = ChoGGi.ValueRetOpp(
-    g_SanatoriumTraits,
-    ChoGGi.NegativeTraits,
-    {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-  )
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ShowAllTraits) .. ": Good for what ails you",
-    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
-  )
 end
 
 function ChoGGi.ScannerQueueLarger_Toggle()

@@ -66,10 +66,12 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.Keys_LoadingScreenPreClose()
   ChoGGi.SponsorsFunc_LoadingScreenPreClose()
 
-  --remove any dialogs we opened
-  ChoGGi.CloseDialogsECM()
+  --drones won't pick up less then their carry amount, unless you force them to
+  if g_Consts.DroneResourceCarryAmount > 1 then
+    ChoGGi.ForceDronesToEmptyStorage_Enable()
+  end
 
-  --add some custom labels
+  --add some custom labels for cables/pipes
   if type(UICity.labels.GridElements) ~= "table" then
     UICity.labels.GridElements = {}
   else
@@ -86,64 +88,58 @@ function OnMsg.LoadingScreenPreClose()
   else
     ChoGGi.RemoveMissingLabelObjects("LifeSupportGridElement")
   end
-  local function AddToCustomLabels(Label,Type)
-    local grids = UICity[Type]
-    for i = 1, #grids do
-      local grid = grids[i].connectors
-      for j = 1, #grid do
-        local gridelement = grid[j].building
-        if gridelement.class == Label then
-          table.insert(UICity.labels.GridElements,gridelement)
-          table.insert(UICity.labels[Label],gridelement)
-        end
+  local function NewGridLabels(Label)
+    if not next(UICity.labels[Label]) then
+      local objs = GetObjects({class=Label})
+      for i = 1, #objs do
+        table.insert(UICity.labels[Label],objs[i])
+        table.insert(UICity.labels.GridElements,objs[i])
       end
     end
   end
-
-  --if #UICity.labels.ElectricityGridElement == 0 then
-  if not next(UICity.labels.ElectricityGridElement) then
-    AddToCustomLabels("ElectricityGridElement","electricity")
-  end
-  --if #UICity.labels.LifeSupportGridElement == 0 then
-  if not next(UICity.labels.LifeSupportGridElement) then
-    AddToCustomLabels("LifeSupportGridElement","air")
-    AddToCustomLabels("LifeSupportGridElement","water")
-  end
+  NewGridLabels("ElectricityGridElement")
+  NewGridLabels("LifeSupportGridElement")
 
   if ChoGGi.CheatMenuSettings.UnlimitedConnectionLength then
     GridConstructionController.max_hex_distance_to_allow_build = 1000
   end
 
+  --gets used a couple times
+  local tab
+
   --not sure why this would be false on a dome
-  for _,Object in ipairs(UICity.labels.Dome or empty_table) do
-    if Object.achievement == "FirstDome" and type(Object.connected_domes) ~= "table" then
-      Object.connected_domes = {}
+  tab = UICity.labels.Dome or empty_table
+  for i = 1, #tab do
+    if tab[i].achievement == "FirstDome" and type(tab[i].connected_domes) ~= "table" then
+      tab[i].connected_domes = {}
     end
   end
 
   --remove any outside buildings i accidentally attached to domes ;)
-  for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-    if building.dome_required == false and building.parent_dome then
+  tab = UICity.labels.BuildingNoDomes or empty_table
+  local sType
+  for i = 1, #tab do
+    if tab[i].dome_required == false and tab[i].parent_dome then
 
+      sType = false
       --remove it from the dome label
-      local sType = false
-      if building.closed_shifts then
+      if tab[i].closed_shifts then
         sType = "Residence"
-      elseif building.colonists then
+      elseif tab[i].colonists then
         sType = "Workplace"
       end
 
       if sType then --get a fucking continue lua
-        if building.parent_dome.labels and building.parent_dome.labels[sType] then
-          local dome = building.parent_dome.labels[sType]
-          for i = 1, #dome do
-            if dome[i].class == building.class then
-              dome[i] = nil
+        if tab[i].parent_dome.labels and tab[i].parent_dome.labels[sType] then
+          local dome = tab[i].parent_dome.labels[sType]
+          for j = 1, #dome do
+            if dome[j].class == tab[i].class then
+              dome[j] = nil
             end
           end
         end
         --remove parent_dome
-        building.parent_dome = nil
+        tab[i].parent_dome = nil
       end
 
     end
@@ -175,70 +171,59 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.SetProductionToSavedAmt()
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
+  tab = UICity.labels.Storages or empty_table
   pcall(function()
-    for _,building in ipairs(UICity.labels.Storages or empty_table) do
-      if building:GetStoredAmount() < 0 then
+    for i = 1, #tab do
+      if tab[i]:GetStoredAmount() < 0 then
         --we have to empty it first (just filling doesn't fix the issue)
-        building:CheatEmpty()
-        building:CheatFill()
+        tab[i]:CheatEmpty()
+        tab[i]:CheatFill()
       end
     end
   end)
 
-  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
-    for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
-      Object.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  local cap = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  if cap then
+    tab = UICity.labels.RCTransport or empty_table
+    for i = 1, #tab do
+      tab[i].max_shared_storage = cap
     end
   end
 
   --drone gravity
-  if ChoGGi.CheatMenuSettings.GravityDrone then
-    for _,Object in ipairs(UICity.labels.Drone or empty_table) do
-      Object:SetGravity(ChoGGi.CheatMenuSettings.GravityDrone)
+  local gravity = ChoGGi.CheatMenuSettings.GravityDrone
+  if gravity then
+    tab = UICity.labels.GravityDrone or empty_table
+    for i = 1, #tab do
+      tab[i]:SetGravity(gravity)
     end
   end
 
   --so we can change the max_amount for concrete
-  for Key,_ in ipairs(TerrainDepositConcrete.properties) do
-    local prop = TerrainDepositConcrete.properties[Key]
-    if prop.id == "max_amount" then
-      prop.read_only = nil
+  tab = TerrainDepositConcrete.properties
+  for i = 1, #tab do
+    if tab[i].id == "max_amount" then
+      tab[i].read_only = nil
     end
   end
 
   --override building templates
-  for _,building in ipairs(DataInstances.BuildingTemplate) do
-
+  tab = DataInstances.BuildingTemplate
+  for i = 1, #tab do
     --make hidden buildings visible
     if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
       BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-      if building.name ~= "LifesupportSwitch" and building.name ~= "ElectricitySwitch" then
-        building.hide_from_build_menu = nil
+      if tab[i].name ~= "LifesupportSwitch" and tab[i].name ~= "ElectricitySwitch" then
+        tab[i].hide_from_build_menu = nil
       end
-      if building.build_category == "Hidden" and building.name ~= "RocketLandingSite" then
-        building.build_category = "HiddenX"
+      if tab[i].build_category == "Hidden" and tab[i].name ~= "RocketLandingSite" then
+        tab[i].build_category = "HiddenX"
       end
     end
 
     if ChoGGi.CheatMenuSettings.Building_wonder then
-      building.wonder = nil
+      tab[i].wonder = nil
     end
-  end
-
-  --show all Mystery Breakthrough buildings
-  if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
-    UnlockBuilding("DefenceTower")
-    UnlockBuilding("CloningVats")
-    UnlockBuilding("BlackCubeDump")
-    UnlockBuilding("BlackCubeSmallMonument")
-    UnlockBuilding("BlackCubeLargeMonument")
-    UnlockBuilding("PowerDecoy")
-    UnlockBuilding("DomeOval")
-  end
-
-  if ChoGGi.CheatMenuSettings.ShowAllTraits then
-    g_SchoolTraits = ChoGGi.PositiveTraits
-    g_SanatoriumTraits = ChoGGi.NegativeTraits
   end
 
   --show cheat pane?
@@ -396,14 +381,19 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.WriteSettings()
   end
 
-  --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
   ChoGGi.NewThread(function()
+
+    --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
     local shown = g_ShownOnScreenNotifications
     for Key,_ in pairs(shown) do
       if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
         shown[Key] = nil
       end
     end
+
+    --remove any dialogs we opened
+    ChoGGi.CloseDialogsECM()
+
   end)
 
 end --OnMsg
@@ -473,34 +463,46 @@ function OnMsg.ConstructionComplete(building)
     building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
   end
 
-  --saved settings for capacity, shuttles
+  --saved building settings
   local setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-  if setting and setting.capacity then
-    setting = setting.capacity
-    if building.base_capacity then
-      building.capacity = setting
-    elseif building.base_air_capacity then
-      building.air_capacity = setting
-    elseif building.base_water_capacity then
-      building.water_capacity = setting
-    elseif building.base_max_shuttles then
-      building.max_shuttles = setting
+  if setting then
+    --saved settings for capacity, shuttles
+    if setting.capacity then
+      if building.base_capacity then
+        building.capacity = setting.capacity
+      elseif building.base_air_capacity then
+        building.air_capacity = setting.capacity
+      elseif building.base_water_capacity then
+        building.water_capacity = setting.capacity
+      elseif building.base_max_shuttles then
+        building.max_shuttles = setting.capacity
+      end
     end
-  end
-  --max visitors
-  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-  if setting and setting.visitors and building.base_max_visitors then
-    building.max_visitors = setting.visitors
-  end
-  --max workers
-  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-  if setting and setting.workers then
-    building.max_workers = setting.workers
-  end
-  --no power needed
-  setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-  if setting and setting.nopower then
-    building:SetBase("electricity_consumption", 0)
+    --max visitors
+    if setting.visitors and building.base_max_visitors then
+      building.max_visitors = setting.visitors
+    end
+    --max workers
+    if setting.workers then
+      building.max_workers = setting.workers
+    end
+    --no power needed
+    if setting.nopower then
+      if building.modifications.electricity_consumption then
+        local mod = building.modifications.electricity_consumption[1]
+        building.ChoGGi_mod_electricity_consumption = {
+          amount = mod.amount,
+          percent = mod.percent
+        }
+        mod:Change(0,0)
+      end
+      building:SetBase("electricity_consumption", 0)
+    end
+    --large protect_range for defence buildings
+    if setting.protect_range then
+      building.protect_range = setting.protect_range
+      building.shoot_range = setting.protect_range * ChoGGi.Consts.guim
+    end
   end
 
 end --OnMsg
@@ -509,8 +511,9 @@ function OnMsg.Demolished(building)
   --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
   if building.achievement == "FirstDome" then
     UICity.labels.Domes_Working = {}
-    for _,object in ipairs(UICity.labels.Dome) do
-      table.insert(UICity.labels.Domes_Working,object)
+    local tab = UICity.labels.Dome or empty_table
+    for i = 1, #tab do
+      table.insert(UICity.labels.Domes_Working,tab[i])
     end
   end
 end --OnMsg
@@ -559,10 +562,11 @@ function OnMsg.NewHour()
   --make them lazy drones stop abusing electricity
   if ChoGGi.DronesOverride then
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    for _,Value in ipairs(UICity.labels.ResourceProducer or empty_table) do
-      ChoGGi.FuckingDrones(Value:GetProducerObj())
-      if Value.wasterock_producer then
-        ChoGGi.FuckingDrones(Value.wasterock_producer)
+    local tab = UICity.labels.ResourceProducer or empty_table
+    for i = 1, #tab do
+      ChoGGi.FuckingDrones(tab[i]:GetProducerObj())
+      if tab[i].wasterock_producer then
+        ChoGGi.FuckingDrones(tab[i].wasterock_producer)
       end
     end
   end
@@ -635,8 +639,9 @@ end
 function OnMsg.TogglePinnableObject(Obj)
   local unpin = ChoGGi.CheatMenuSettings.UnpinObjects
   if type(unpin) == "table" and next(unpin) then
-    for _,Name in ipairs(unpin) do
-      if Obj.class == Name and Obj:IsPinned() then
+    local tab = unpin
+    for i = 1, #tab do
+      if Obj.class == tab[i] and Obj:IsPinned() then
         Obj:TogglePin()
         break
       end

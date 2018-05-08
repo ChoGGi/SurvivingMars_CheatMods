@@ -158,8 +158,9 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     function self.idApplyAll.OnButtonPressed()
       local value = self.sel.value
       if value then
-        for _,Object in ipairs(UICity.labels[self.obj.class] or empty_table) do
-          Object[self.sel.text] = value
+        local tab = UICity.labels[self.obj.class] or empty_table
+        for i = 1, #tab do
+          tab[i][self.sel.text] = value
         end
       end
     end
@@ -183,7 +184,8 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
   end --init
 
-  function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
+  --function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
+  function ObjectManipulator:OnKbdKeyDown(_, virtual_key)
     if virtual_key == const.vkEsc then
       if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
         self.idClose:Press()
@@ -246,11 +248,11 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       value_item:SetBackgroundColor(0)
       value_item:SetId("value")
       value_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
-      local item_spacing = list.item_spacing * list:GetWindowScale() / 100
-      local value_width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
-      local _, value_height = value_item:MeasureText(item.text or "", nil, nil, nil, value_width)
+      --local item_spacing = list.item_spacing * list:GetWindowScale() / 100
+      --local value_width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
+      local _, value_height = value_item:MeasureText(item.text or "", nil, nil, nil, width)
       value_height = Min(720, value_height)
-      value_item:SetSize(point(value_width, value_height))
+      value_item:SetSize(point(width, value_height))
       value_item:SetPos(point(width - 250, value_item:GetY()))
       --newly added
     end
@@ -283,8 +285,6 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     return format_text, e
   end
 
-  function ObjectManipulator:RetPrettyColours(format_text, e)
-  end
   function ObjectManipulator:evalsmarttable(format_text, e)
     local touched = {}
     local i = 0

@@ -1,6 +1,70 @@
 function ChoGGi.SponsorsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
+  --------------------disasters
+  --[[
+  local function DisasterOccurrenceText(Name)
+    local des = mapdata["MapSettings_" .. Name]
+    return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
+  end
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/DustDevils",
+    function()
+      ChoGGi.SetDisasterOccurrence("DustDevils")
+    end,
+    nil,
+    DisasterOccurrenceText("DustDevils"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/ColdWave",
+    function()
+      ChoGGi.SetDisasterOccurrence("ColdWave")
+    end,
+    nil,
+    DisasterOccurrenceText("ColdWave"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/DustStorm",
+    function()
+      ChoGGi.SetDisasterOccurrence("DustStorm")
+    end,
+    nil,
+    DisasterOccurrenceText("DustStorm"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/Meteor",
+    function()
+      ChoGGi.SetDisasterOccurrence("Meteor")
+    end,
+    nil,
+    DisasterOccurrenceText("Meteor"),
+    "RandomMapPresetEditor.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Set Rules",
+    ChoGGi.ChangeRules,
+    nil,
+    "Change the map rules.",
+    "ListCollections.tga"
+  )
+--]]
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/Meteor Damage",
+    ChoGGi.MeteorHealthDamage_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
+      return des .. " Disable Meteor damage (colonists?)."
+    end,
+    "remove_water.tga"
+  )
+
   local bonusinfo = "Applies the good effects only (no drawbacks).\n\n(if value already exists; set to larger amount).\nrestart to set disabled."
 
   ChoGGi.AddAction(
@@ -24,7 +88,7 @@ function ChoGGi.SponsorsMenu_LoadingScreenPreClose()
     ChoGGi.SetSponsorBonus,
     nil,
     bonusinfo,
-    "remove_water.tga"
+    "EV_OpenFromInputBox.tga"
   )
 
   ChoGGi.AddAction(
@@ -40,7 +104,7 @@ function ChoGGi.SponsorsMenu_LoadingScreenPreClose()
     ChoGGi.SetCommanderBonus,
     nil,
     bonusinfo,
-    "remove_water.tga"
+    "EV_OpenFromInputBox.tga"
   )
 
 end

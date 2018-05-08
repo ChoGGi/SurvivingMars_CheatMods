@@ -1,12 +1,29 @@
 function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+  local icon = "Cube.tga"
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Protection Radius",
+    ChoGGi.SetProtectionRadius,
+    nil,
+    "Change threat protection coverage distance.",
+    icon
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Unlock Locked Buildings",
+    ChoGGi.UnlockLockedBuildings,
+    nil,
+    "Gives you a list of buildings you can unlock in the build menu.",
+    "toggle_post.tga"
+  )
 
   ChoGGi.AddAction(
     "Expanded CM/Buildings/Pipes Pillars Spacing",
     ChoGGi.PipesPillarsSpacing_Toggle,
     nil,
     function()
-      local des
+      local des = ""
       if Consts.PipesPillarSpacing == 1000 then
         des = "(Enabled)"
       else
@@ -25,7 +42,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.UnlimitedConnectionLength and "(Enabled)" or "(Disabled)"
       return des .. " No more length limits to pipes, cables, and passages."
     end,
-    "toggle_post.tga"
+    "road_type.tga"
   )
 
   ChoGGi.AddAction(
@@ -33,7 +50,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     ChoGGi.BuildingPower_Toggle,
     nil,
     "Toggle electricity use for selected building type.",
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -41,7 +58,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     ChoGGi.SetMaxChangeOrDischarge,
     "Ctrl-Shift-R",
     "Change how fast Air/Water/Battery storage capacity changes.",
-    "DisableAOMaps.tga"
+    icon
   )
 
   local function UseLastOrientationText()
@@ -61,7 +78,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     ChoGGi.FarmShiftsAllOn,
     nil,
     "Turns on all the farm shifts.",
-    "DisableAOMaps.tga"
+    icon
   )
   --------------------
   ChoGGi.AddAction(
@@ -69,7 +86,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
     ChoGGi.SetProductionAmount,
     "Ctrl-Shift-P",
     "Set production of buildings of selected type, also applies to newly placed ones.\nWorks on any building that produces.",
-    "DisableAOMaps.tga"
+    icon
   )
   --------------------
   ChoGGi.AddAction(
@@ -80,18 +97,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"
       return des  .. " No more colonists needed.\nThanks to BoehserOnkel for the idea."
     end,
-    "DisableAOMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Buildings/Add Mystery & Breakthrough Buildings",
-    ChoGGi.AddMysteryBreakthroughBuildings,
-    nil,
-    function()
-      local des = ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings and "(Enabled)" or "(Disabled)"
-      return des .. " Show all the Mystery and Breakthrough buildings in the build menu."
-    end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -102,7 +108,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.SanatoriumCureAll and "(Enabled)" or "(Disabled)"
       return des .. " Sanatoriums can cure all bad traits."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -113,18 +119,34 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.SchoolTrainAll and "(Enabled)" or "(Disabled)"
       return des .. " Schools can train all good traits."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Buildings/Sanatoriums & Schools Show Full List",
+    "Expanded CM/Buildings/Sanatoriums & Schools: Show All Traits",
+    ChoGGi.ShowAllTraits_Toggle,
+    nil,
+    function()
+      local des = ""
+      if g_SchoolTraits and #g_SchoolTraits == 18 then
+        des = "(Enabled)"
+      else
+        des = "(Disabled)"
+      end
+      return des .. " Shows all appropriate traits in Sanatoriums/Schools popup menu."
+    end,
+    "LightArea.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Buildings/Sanatoriums & Schools: Show Full List",
     ChoGGi.SanatoriumSchoolShowAll,
     nil,
     function()
       local des = ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll and "(Enabled)" or "(Disabled)"
       return des .. " Toggle showing all traits in side pane."
     end,
-    "DisableAOMaps.tga"
+    "LightArea.tga"
   )
 
   ChoGGi.AddAction(
@@ -135,7 +157,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and "(Enabled)" or "(Disabled)"
       return des .. " Buildings don't build up maintenance points."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -146,7 +168,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(const.MoistureVaporatorRange,"(Disabled)","(Enabled)")
       return des .. " Disable penalty when Moisture Vaporators are close to each other."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -157,7 +179,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.CropFailThreshold,"(Disabled)","(Enabled)")
       return des .. " Remove Threshold for failing crops (crops won't fail)."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -168,7 +190,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.rebuild_cost_modifier,"(Disabled)","(Enabled)")
       return des .. " Build with minimal resources."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   ChoGGi.AddAction(
@@ -179,7 +201,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.CrimeEventSabotageBuildingsCount,"(Disabled)","(Enabled)")
       return des .. " Disable damage from renegedes to buildings."
     end,
-    "DisableAOMaps.tga"
+    icon
   )
 
   --------------------
@@ -191,7 +213,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.BreakChanceCablePipe and "(Enabled)" or "(Disabled)"
       return des .. " Cables & pipes will never break."
     end,
-    "DisableAOMaps.tga"
+    "ViewCamPath.tga"
   )
 
   ChoGGi.AddAction(
@@ -202,7 +224,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.InstantCables,"(Enabled)","(Disabled)")
       return des .. " Cables and pipes are built instantly."
     end,
-    "DisableAOMaps.tga"
+    "ViewCamPath.tga"
   )
   --------------------
   ChoGGi.AddAction(
@@ -224,7 +246,7 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.Building_hide_from_build_menu and "(Enabled)" or "(Disabled)"
       return des .. " Show hidden buildings (restart game to toggle)."
     end,
-    "toggle_post.tga"
+    "LightArea.tga"
   )
 
   ChoGGi.AddAction(

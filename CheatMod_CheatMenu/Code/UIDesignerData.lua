@@ -175,7 +175,8 @@ function ChoGGi.UIDesignerData_ClassesGenerate()
     end
   end
 
-  function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+  --function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+  function ListChoiceCustomDialog:OnKbdKeyDown(_, virtual_key)
     if virtual_key == const.vkEsc then
       if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
         self.idClose:Press()

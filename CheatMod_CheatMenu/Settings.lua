@@ -46,7 +46,6 @@ ChoGGi.Consts = {
   DisableHints = false,
   BreakChanceCablePipe = false,
   SanatoriumSchoolShowAll = false,
-  AddMysteryBreakthroughBuildings = false,
   BorderScrollingArea = false,
   Building_dome_spot = false,
   Building_hide_from_build_menu = false,
@@ -67,10 +66,9 @@ ChoGGi.Consts = {
   RemoveMaintenanceBuildUp = false,
   SanatoriumCureAll = false,
   SchoolTrainAll = false,
-  ShowAllTraits = false,
   ShowMysteryMsgs = false,
   WriteLogs = false,
---const. (I don't think these have default values in-game anywhere, so I can't get the defaults. If a mod that changes these loads before then...)
+--const. (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
   RCRoverDefaultRadius = 20,
   RCRoverMaxRadius = 20,
   CommandCenterDefaultRadius = 35,
@@ -85,7 +83,10 @@ ChoGGi.Consts = {
   ResearchQueueSize = 4,
   ResourceScale = 1000,
   ResearchPointsScale = 1000,
---Consts. (Consts. is a prop object, so we get the default with ReadSettingsInGame).
+  guim = 100,
+  SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"},
+  SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"},
+--Consts. (Consts. is a prop object, so we get the default with ReadSettingsInGame). _const.lua
   AvoidWorkplaceSols = false,
   BirthThreshold = false,
   CargoCapacity = false,
@@ -161,15 +162,6 @@ ChoGGi.Consts = {
 
 --set game values to saved values
 function ChoGGi.SetConstsToSaved()
---[[ returns which Consts can be researched, and their research name: ChoGGi. (Consts,Name)
-  for k,_ in pairs(TechDef) do
-    for _,v in ipairs(TechDef[k]) do
-      if v.Label == "Consts" then
-        print(v.Prop .. ": " .. k)
-      end
-    end
-  end
---]]
 --Consts.
   ChoGGi.SetConstsG("AvoidWorkplaceSols",ChoGGi.CheatMenuSettings.AvoidWorkplaceSols)
   ChoGGi.SetConstsG("BirthThreshold",ChoGGi.CheatMenuSettings.BirthThreshold)
@@ -316,15 +308,6 @@ function ChoGGi.Settings_OptionsApply()
   end
 
   --then get the default values for our Consts
-  --[[
-  for _,DefaultValue in ipairs(Consts:GetProperties()) do
-    for SettingName,_ in pairs(ChoGGi.Consts) do
-      if SettingName == DefaultValue.id then
-        ChoGGi.Consts[SettingName] = DefaultValue.default
-      end
-    end
-  end
-  --]]
   for SettingName,_ in pairs(ChoGGi.Consts) do
     local setting = Consts:GetDefaultPropertyValue(SettingName)
     if setting then
@@ -405,12 +388,3 @@ function ChoGGi.Settings_ModsLoaded()
   end
 
 end
-
---[[
-local blah = {}
-for _,DefaultValue in ipairs(CargoShuttle:GetProperties()) do
-  table.insert(blah,DefaultValue.id)
-end
-table.sort(blah)
-ex(blah)
---]]

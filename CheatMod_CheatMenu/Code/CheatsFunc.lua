@@ -59,7 +59,10 @@ function ChoGGi.DisastersStop()
   if g_ColdWave then
     StopColdWave()
   end
-  --[[causes error msgs for next ones (seems to work fine, but still)
+end
+
+function ChoGGi.MeteorsDestroy()
+  --causes error msgs for next ones (seems to work fine, but still)
   while #g_MeteorsPredicted > 0 do
     for i = 1, #g_MeteorsPredicted do
       pcall(function()
@@ -67,12 +70,12 @@ function ChoGGi.DisastersStop()
       end)
     end
   end
-  --]]
 end
 
 function ChoGGi.DisastersTrigger()
   local ItemList = {
     {text = " Stop Most Disasters",value = "Stop",hint = "Can't stop meteors."},
+    {text = " Remove Broken Meteors",value = "MeteorsDestroy",hint = "If you have some continuous spinning meteors. It might put some error msgs in console, but I didn't notice any other issues."},
     {text = "Cold Wave",value = "ColdWave"},
     {text = "Dust Devil Major",value = "DustDevilsMajor"},
     {text = "Dust Devil",value = "DustDevils"},
@@ -93,6 +96,8 @@ function ChoGGi.DisastersTrigger()
       local value = choice[i].value
       if value == "Stop" then
         ChoGGi.DisastersStop()
+      elseif value == "MeteorsDestroy" then
+        ChoGGi.MeteorsDestroy()
       elseif value == "ColdWave" then
         ChoGGi.DisasterTriggerColdWave()
 
@@ -278,18 +283,20 @@ function ChoGGi.StartMystery(Mystery,Bool)
   ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
 
   UICity.mystery_id = Mystery
-  for i = 1, #TechTree do
-    local field = TechTree[i]
+  local tree = TechTree
+  for i = 1, #tree do
+    local field = tree[i]
     local field_id = field.id
     --local costs = field.costs or empty_table
     local list = UICity.tech_field[field_id] or {}
     UICity.tech_field[field_id] = list
-    for _, tech in ipairs(field) do
-      if tech.mystery == Mystery then
-        local tech_id = tech.id
+    local tab = field
+    for j = 1, #tab do
+      if tab[j].mystery == Mystery then
+        local tech_id = tab[j].id
         list[#list + 1] = tech_id
         UICity.tech_status[tech_id] = {points = 0, field = field_id}
-        tech:Initialize(UICity)
+        tab[j]:Initialize(UICity)
       end
     end
   end
@@ -363,12 +370,48 @@ function ChoGGi.OutsourcingFree_Toggle()
   )
 end
 
+local hint_maxa = "Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
+
+function ChoGGi.SetBreakThroughsOmegaTelescope()
+  local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
+  local MaxAmount = #UICity.tech_field.Breakthroughs
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 6,value = 6},
+    {text = 12,value = 12},
+    {text = 24,value = 24},
+    {text = MaxAmount,value = MaxAmount,hint = hint_maxa},
+  }
+
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.OmegaTelescopeBreakthroughsCount then
+    hint = ChoGGi.CheatMenuSettings.OmegaTelescopeBreakthroughsCount
+  end
+
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      const.OmegaTelescopeBreakthroughsCount = value
+      ChoGGi.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(choice[1].text .. ": Research is what I'm doing when I don't know what I'm doing.",
+        "Omega",UsualIcon
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
+end
+
 function ChoGGi.SetBreakThroughsAllowed()
   local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
+  local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 26,value = 26,hint = "Doubled the base amount."},
-    {text = 57,value = 57,hint = "There's only 57 in the list, but you could make the amount larger..."},
+    {text = MaxAmount,value = MaxAmount,hint = hint_maxa},
   }
 
   local hint = DefaultSetting

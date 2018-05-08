@@ -27,8 +27,10 @@ function ChoGGi.SetRoverWorkRadius()
       ChoGGi.SetSavedSetting("RCRoverMaxRadius",value)
       const.RCRoverMaxRadius = value
       ChoGGi.SetSavedSetting("RCRoverDefaultRadius",value)
-      for _,Object in ipairs(UICity.labels.RCRover or empty_table) do
-        Object:SetWorkRadius(value)
+
+      local tab = UICity.labels.RCRover or empty_table
+      for i = 1, #tab do
+        tab[i]:SetWorkRadius(value)
       end
 
       ChoGGi.WriteSettings()
@@ -38,7 +40,8 @@ function ChoGGi.SetRoverWorkRadius()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius","Current: " .. hint)
+  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
 end
 
 function ChoGGi.SetDroneHubWorkRadius()
@@ -65,8 +68,9 @@ function ChoGGi.SetDroneHubWorkRadius()
       ChoGGi.SetSavedSetting("CommandCenterMaxRadius",value)
       const.CommandCenterMaxRadius = value
       ChoGGi.SetSavedSetting("CommandCenterDefaultRadius",value)
-      for _,Object in ipairs(UICity.labels.DroneHub or empty_table) do
-        Object:SetWorkRadius(value)
+      local tab = UICity.labels.DroneHub or empty_table
+      for i = 1, #tab do
+        tab[i]:SetWorkRadius(value)
       end
 
       ChoGGi.WriteSettings()
@@ -76,7 +80,8 @@ function ChoGGi.SetDroneHubWorkRadius()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius","Current: " .. hint)
+  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius",hint)
 end
 
 function ChoGGi.SetRockToConcreteSpeed()
@@ -143,10 +148,12 @@ function ChoGGi.SetDroneMoveSpeed()
 
     local value = choice[1].value
     if type(value) == "number" then
-      for _,Object in ipairs(UICity.labels.Drone or empty_table) do
-        Object:SetMoveSpeed(value)
+      local tab = UICity.labels.Drone or empty_table
+      for i = 1, #tab do
+        tab[i]:SetMoveSpeed(value)
       end
       ChoGGi.SetSavedSetting("SpeedDrone",value)
+
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Selected: " .. choice[1].text,
         "Drones",UsualIcon
@@ -186,9 +193,9 @@ function ChoGGi.SetRCMoveSpeed()
     local value = choice[1].value
     if type(value) == "number" then
       ChoGGi.SetSavedSetting("SpeedRC",value)
-
-      for _,Object in ipairs(UICity.labels.Rover or empty_table) do
-        Object:SetMoveSpeed(value)
+      local tab = UICity.labels.Rover or empty_table
+      for i = 1, #tab do
+        tab[i]:SetMoveSpeed(value)
       end
 
       ChoGGi.WriteSettings()
@@ -278,13 +285,11 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+
     if type(value) == "number" then
-      for _,Object in ipairs(UICity.labels.DroneFactory or empty_table) do
-        Object.performance = value
-      end
-    else
-      for _,Object in ipairs(UICity.labels.DroneFactory or empty_table) do
-        Object.performance = nil
+      local tab = UICity.labels.DroneFactory or empty_table
+      for i = 1, #tab do
+        tab[i].performance = value
       end
     end
     ChoGGi.SetSavedSetting("DroneFactoryBuildSpeed",value)
@@ -529,8 +534,9 @@ function ChoGGi.SetRCTransportStorageCapacity()
         value = 2000000
       end
       --loop through and set all
-      for _,Object in ipairs(UICity.labels.RCTransport or empty_table) do
-        Object.max_shared_storage = value
+      local tab = UICity.labels.RCTransport or empty_table
+      for i = 1, #tab do
+        tab[i].max_shared_storage = value
       end
       ChoGGi.SetSavedSetting("RCTransportStorageCapacity",value)
 
@@ -573,10 +579,10 @@ function ChoGGi.SetShuttleCapacity()
       end
 
       --loop through and set all shuttles
-      for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-        object.max_shared_storage = value
+      local tab = UICity.labels.CargoShuttle or empty_table
+      for i = 1, #tab do
+        tab[i].max_shared_storage = value
       end
-
       ChoGGi.SetSavedSetting("StorageShuttle",value)
 
       ChoGGi.WriteSettings()
@@ -616,8 +622,9 @@ function ChoGGi.SetShuttleSpeed()
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
       --loop through and set all shuttles
-      for _,object in ipairs(UICity.labels.CargoShuttle or empty_table) do
-        object.max_speed = value
+      local tab = UICity.labels.CargoShuttle or empty_table
+      for i = 1, #tab do
+        tab[i].max_speed = value
       end
       ChoGGi.SetSavedSetting("SpeedShuttle",value)
 
@@ -660,12 +667,15 @@ function ChoGGi.SetShuttleHubCapacity()
     local value = choice[1].value
     if type(value) == "number" then
       --loop through and set all shuttles
-      for _,object in ipairs(UICity.labels.ShuttleHub or empty_table) do
-        object.max_shuttles = value
+      local tab = UICity.labels.ShuttleHub or empty_table
+      for i = 1, #tab do
+        tab[i].max_shuttles = value
       end
-      ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = value
-    else
-      ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = nil
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = value
+      end
     end
 
     ChoGGi.WriteSettings()
@@ -704,10 +714,12 @@ function ChoGGi.SetGravityRC()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
-      for _,Object in ipairs(UICity.labels.Rover or empty_table) do
-        Object:SetGravity(value)
+    local value = choice[1].value
+    if type(value) == "number" then
+      local value = value * r
+      local tab = UICity.labels.Rover or empty_table
+      for i = 1, #tab do
+        tab[i]:SetGravity(value)
       end
       ChoGGi.SetSavedSetting("GravityRC",value)
 
@@ -749,8 +761,9 @@ function ChoGGi.SetGravityDrones()
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
       --loop through and set all
-      for _,Object in ipairs(UICity.labels.Drone or empty_table) do
-        Object:SetGravity(value)
+      local tab = UICity.labels.Drone or empty_table
+      for i = 1, #tab do
+        tab[i]:SetGravity(value)
       end
       ChoGGi.SetSavedSetting("GravityDrone",value)
 

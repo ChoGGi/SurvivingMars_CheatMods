@@ -2,66 +2,13 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  --------------------disasters
-  local function DisasterOccurrenceText(Name)
-    local des = mapdata["MapSettings_" .. Name]
-    return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
-  end
-
-  ChoGGi.AddAction(
-    "Expanded CM/Disasters/DustDevils",
-    function()
-      ChoGGi.SetDisasterOccurrence("DustDevils")
-    end,
-    nil,
-    DisasterOccurrenceText("DustDevils"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Disasters/ColdWave",
-    function()
-      ChoGGi.SetDisasterOccurrence("ColdWave")
-    end,
-    nil,
-    DisasterOccurrenceText("ColdWave"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Disasters/DustStorm",
-    function()
-      ChoGGi.SetDisasterOccurrence("DustStorm")
-    end,
-    nil,
-    DisasterOccurrenceText("DustStorm"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Disasters/Meteor",
-    function()
-      ChoGGi.SetDisasterOccurrence("Meteor")
-    end,
-    nil,
-    DisasterOccurrenceText("Meteor"),
-    "RandomMapPresetEditor.tga"
-  )
--------------
-  ChoGGi.AddAction(
-    "Expanded CM/Disasters/Meteor Damage",
-    ChoGGi.MeteorHealthDamage_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.NumRetBool(Consts.MeteorHealthDamage,"(Disabled)","(Enabled)")
-      return des .. " Disable Meteor damage (colonists?)."
-    end,
-    "remove_water.tga"
-  )
   -------------rockets
   ChoGGi.AddAction(
     "Expanded CM/Rocket/Cargo Capacity",
     ChoGGi.SetRocketCargoCapacity,
     nil,
     "Change amount of storage space in rockets.",
-    "EnrichTerrainEditor.tga"
+    "scale_gizmo.tga"
   )
 
   ChoGGi.AddAction(
@@ -89,14 +36,14 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
       local des = ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp and "(Enabled)" or "(Disabled)"
       return des .. " Allow the temporary storage to hold 100 instead of 50 cubes."
     end,
-    "DisableAOMaps.tga"
+    "Cube.tga"
   )
   ChoGGi.AddAction(
     "Expanded CM/Capacity/Worker Capacity",
     ChoGGi.SetWorkerCapacity,
     "Ctrl-Shift-W",
     "Change how many workers per building type.",
-    "DisableAOMaps.tga"
+    "scale_gizmo.tga"
   )
 
   ChoGGi.AddAction(
@@ -104,7 +51,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     ChoGGi.SetBuildingCapacity,
     "Ctrl-Shift-C",
     "Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).",
-    "DisableAOMaps.tga"
+    "scale_gizmo.tga"
   )
 
   ChoGGi.AddAction(
@@ -112,7 +59,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     ChoGGi.SetVisitorCapacity,
     "Ctrl-Shift-V",
     "Set visitors capacity of all buildings of selected type, also applies to newly placed ones.",
-    "DisableAOMaps.tga"
+    "scale_gizmo.tga"
   )
 
   ChoGGi.AddAction(
@@ -122,7 +69,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     nil,
     "Change universal storage depot capacity.",
-    "ToggleTerrainHeight.tga"
+    "MeasureTool.tga"
   )
 
   ChoGGi.AddAction(
@@ -132,7 +79,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     nil,
     "Change other storage depot capacity.",
-    "ToggleTerrainHeight.tga"
+    "MeasureTool.tga"
   )
 
   ChoGGi.AddAction(
@@ -142,7 +89,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     nil,
     "Change waste storage depot capacity.",
-    "ToggleTerrainHeight.tga"
+    "MeasureTool.tga"
   )
 
   ChoGGi.AddAction(
@@ -152,7 +99,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     nil,
     "Change mechanized depot storage capacity.",
-    "ToggleTerrainHeight.tga"
+    "Cube.tga"
   )
 
   --------------------fixes
@@ -164,7 +111,7 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     end,
     nil,
     "Loops through all production buildings and checks that production is set to saved amounts.",
-    "ToggleEnvMap.tga"
+    "reload.tga"
   )
 
   ChoGGi.AddAction(
@@ -188,9 +135,9 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     ChoGGi.CablesAndPipesRepair,
     nil,
     "Instantly repair all broken pipes and cables.",
-    "DisableAOMaps.tga"
+    "ViewCamPath.tga"
   )
-
+--[[
   ChoGGi.AddAction(
     "Expanded CM/Radius/Triboelectric Scrubber Radius...",
     ChoGGi.SetTriboelectricScrubberRadius,
@@ -198,5 +145,5 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     "Change Triboelectric Scrubber radius.",
     "DisableRMMaps.tga"
   )
-
+--]]
 end

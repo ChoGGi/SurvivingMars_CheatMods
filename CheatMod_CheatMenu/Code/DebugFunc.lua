@@ -19,7 +19,7 @@ function ChoGGi.ObjectSpawner()
 
       --[[
       --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
-      for _, prop in ipairs(NewObj:GetProperties()) do
+      for _, prop in iXpairs(NewObj:GetProperties()) do
         NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
       end
       --]]
@@ -147,6 +147,12 @@ function ChoGGi.DeleteObject()
   pcall(function()
     obj:Done()
   end)
+  if obj.sphere then
+    obj.sphere:delete()
+  end
+  if obj.decal then
+    obj.decal:delete()
+  end
 
   --fuck it, I asked nicely
   if obj then
@@ -168,41 +174,36 @@ function ChoGGi.ConsoleHistory_Toggle()
 end
 
 function ChoGGi.ChangeMap()
-  local ineditor = Platform.editor and IsEditorActive()
-  if ineditor then
-    s_OldChangeMapAction()
-  else
-    CreateRealTimeThread(function()
-      local caption = Untranslated("Choose map with settings presets:")
-      local maps = ListMaps()
-      local items = {}
-      for i = 1, #maps do
-        if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
-          table.insert(items, {
-            text = Untranslated(maps[i]),
-            map = maps[i]
-          })
-        end
+  CreateRealTimeThread(function()
+    local caption = Untranslated("Choose map with settings presets:")
+    local maps = ListMaps()
+    local items = {}
+    for i = 1, #maps do
+      if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
+        table.insert(items, {
+          text = Untranslated(maps[i]),
+          map = maps[i]
+        })
       end
-      local default_selection = table.find(maps, GetMapName())
-      local map_settings = {}
-      local class_names = ClassDescendantsList("MapSettings")
-      for i = 1, #class_names do
-        local class = class_names[i]
-        map_settings[class] = mapdata[class]
+    end
+    local default_selection = table.find(maps, GetMapName())
+    local map_settings = {}
+    local class_names = ClassDescendantsList("MapSettings")
+    for i = 1, #class_names do
+      local class = class_names[i]
+      map_settings[class] = mapdata[class]
+    end
+    local sel_idx
+    sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
+    if sel_idx ~= "idCancel" then
+      local map = sel_idx and items[sel_idx].map
+      if not map or map == "" then
+        return
       end
-      local sel_idx
-      sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
-      if sel_idx ~= "idClose" then
-        local map = sel_idx and items[sel_idx].map
-        if not map or map == "" then
-          return
-        end
-        CloseMenuWizards()
-        StartGame(map, map_settings)
-        LocalStorage.last_map = map
-        SaveLocalStorage()
-      end
-    end)
-  end
+      CloseMenuDialogs()
+      StartGame(map, map_settings)
+      LocalStorage.last_map = map
+      SaveLocalStorage()
+    end
+  end)
 end

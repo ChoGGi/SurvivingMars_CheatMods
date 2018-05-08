@@ -26,8 +26,9 @@ function ChoGGi.SetColonistMoveSpeed()
 
     local value = choice[1].value
     if type(value) == "number" then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        Object:SetMoveSpeed(value)
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        tab[i]:SetMoveSpeed(value)
       end
       ChoGGi.SetSavedSetting("SpeedColonist",value)
       ChoGGi.WriteSettings()
@@ -67,10 +68,12 @@ function ChoGGi.SetGravityColonists()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        Object:SetGravity(value)
+    local value = choice[1].value
+    if type(value) == "number" then
+      value = value * r
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        tab[i]:SetGravity(value)
       end
       ChoGGi.SetSavedSetting("GravityColonist",value)
 
@@ -147,8 +150,9 @@ end
 
 function ChoGGi.FireAllColonists()
   local FireAllColonists = function()
-    for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-      Object:GetFired()
+    local tab = UICity.labels.Colonist or empty_table
+    for i = 1, #tab do
+      tab[i]:GetFired()
     end
   end
   ChoGGi.QuestionBox("Are you sure you want to fire everyone?",FireAllColonists,"Yer outta here!")
@@ -168,9 +172,10 @@ function ChoGGi.SetAllWorkShifts()
       shift = {false,false,false}
     end
 
-    for _,Object in ipairs(UICity.labels.ShiftsBuilding or empty_table) do
-      if Object.closed_shifts then
-        Object.closed_shifts = shift
+    local tab = UICity.labels.ShiftsBuilding or empty_table
+    for i = 1, #tab do
+      if tab[i].closed_shifts then
+        tab[i].closed_shifts = shift
       end
     end
 
@@ -240,9 +245,11 @@ function ChoGGi.RenegadeCreation_Toggle()
   )
 end
 function ChoGGi.MakeAllColonistsRenegades()
-  for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-    Object:AddTrait("Renegade",true)
+  local tab = UICity.labels.Colonist or empty_table
+  for i = 1, #tab do
+    tab[i]:AddTrait("Renegade",true)
   end
+
   ChoGGi.MsgPopup("Really? Have you seen a man eat his own head?",
     "Colonists",UsualIcon
   )
@@ -450,12 +457,14 @@ function ChoGGi.SetDeathAge()
 
     if value == "Default" or type(amount) == "number" then
       if value == "Default" then
-        for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-          colonist.death_age = RetDeathAge(colonist)
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          tab[i].death_age = RetDeathAge(tab[i])
         end
       elseif type(amount) == "number" then
-        for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-          colonist.death_age = amount
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          tab[i].death_age = amount
         end
       end
 
@@ -470,11 +479,13 @@ function ChoGGi.SetDeathAge()
 end
 
 function ChoGGi.ColonistsAddSpecializationToAll()
-  for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-    if Object.specialist == "none" then
-      ChoGGi.ColonistUpdateSpecialization(Object,"Random")
+  local tab = UICity.labels.Colonist or empty_table
+  for i = 1, #tab do
+    if tab[i].specialist == "none" then
+      ChoGGi.ColonistUpdateSpecialization(tab[i],"Random")
     end
   end
+
   ChoGGi.MsgPopup("No lazy good fer nuthins round here",
     "Colonists","UI/Icons/Upgrades/home_collective_04.tga"
   )
@@ -530,8 +541,9 @@ function ChoGGi.SetColonistsAge(iType)
 
     --existing
     elseif iType == 2 then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        ChoGGi.ColonistUpdateAge(Object,value)
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        ChoGGi.ColonistUpdateAge(tab[i],value)
       end
     end
 
@@ -590,8 +602,9 @@ function ChoGGi.SetColonistsGender(iType)
       ChoGGi.WriteSettings()
     --existing
     elseif iType == 2 then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        ChoGGi.ColonistUpdateGender(Object,value)
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        ChoGGi.ColonistUpdateGender(tab[i],value)
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
@@ -656,8 +669,9 @@ function ChoGGi.SetColonistsSpecialization(iType)
       ChoGGi.WriteSettings()
     --existing
     elseif iType == 2 then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        ChoGGi.ColonistUpdateSpecialization(Object,value)
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        ChoGGi.ColonistUpdateSpecialization(tab[i],value)
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
@@ -712,8 +726,9 @@ function ChoGGi.SetColonistsRace(iType)
       ChoGGi.WriteSettings()
     --existing
     elseif iType == 2 then
-      for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-        ChoGGi.ColonistUpdateRace(Object,value)
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        ChoGGi.ColonistUpdateRace(tab[i],value)
       end
     end
     ChoGGi.MsgPopup("Nationalsozialistische Rassenhygiene: " .. choice[1].race,
@@ -828,18 +843,19 @@ function ChoGGi.SetColonistsTraits(iType)
 
       --random 3x3
       if choice[1].value == DefaultSetting then
-        for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
           --remove all traits
-          ChoGGi.ColonistUpdateTraits(Object,false,ChoGGi.PositiveTraits)
-          ChoGGi.ColonistUpdateTraits(Object,false,ChoGGi.NegativeTraits)
+          ChoGGi.ColonistUpdateTraits(tab[i],false,ChoGGi.PositiveTraits)
+          ChoGGi.ColonistUpdateTraits(tab[i],false,ChoGGi.NegativeTraits)
           --add random ones
-          Object:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Object:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Object:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Object:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Object:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Object:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Notify(Object,"UpdateMorale")
+          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          Notify(tab[i],"UpdateMorale")
         end
 
       else
@@ -850,12 +866,13 @@ function ChoGGi.SetColonistsTraits(iType)
           Bool = false
         end
 
-        for _,Object in ipairs(UICity.labels.Colonist or empty_table) do
-          for i = 1, #TraitsList do
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          for j = 1, #TraitsList do
             if Bool == true then
-              Object:AddTrait(TraitsList[i],true)
+              tab[i]:AddTrait(TraitsList[j],true)
             else
-              Object:RemoveTrait(TraitsList[i])
+              tab[i]:RemoveTrait(TraitsList[j])
             end
           end
         end
@@ -904,8 +921,9 @@ function ChoGGi.SetStatsOfAllColonists()
       else
         v = fill
       end
-      for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-        colonist[Stat] = v
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        tab[i][Stat] = v
       end
     end
 
@@ -915,11 +933,13 @@ function ChoGGi.SetStatsOfAllColonists()
       elseif value == 2 then
         value = fill
       end
-      for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
-        colonist.stat_morale = value
-        colonist.stat_sanity = value
-        colonist.stat_comfort = value
-        colonist.stat_health = value
+
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        tab[i].stat_morale = value
+        tab[i].stat_sanity = value
+        tab[i].stat_comfort = value
+        tab[i].stat_health = value
       end
 
     elseif value == 3 or value == 4 then

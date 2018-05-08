@@ -72,7 +72,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     ChoGGi.ResearchQueueLarger_Toggle,
     nil,
     function()
-      local des
+      local des = ""
       if const.ResearchQueueSize == 25 then
         des = "(Enabled)"
       else
@@ -131,6 +131,14 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     ChoGGi.SetBreakThroughsAllowed,
     nil,
     "How many breakthroughs are allowed to be unlocked?",
+    "AlignSel.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Cheats/[04]Research/[15]Breakthroughs From OmegaTelescope",
+    ChoGGi.SetBreakThroughsOmegaTelescope,
+    nil,
+    "How many breakthroughs the OmegaTelescope will unlock.",
     "AlignSel.tga"
   )
 ----------------------cheats

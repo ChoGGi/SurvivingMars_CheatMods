@@ -16,11 +16,6 @@ function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
     local id = "ChoGGi_" .. AsyncRand()
-    if ChoGGi.Testing then
-    print(1111111111111)
-    DebugPrint(1111111111111)
-      id = "ChoGGi_" .. Msg .. AsyncRand()
-    end
     local timeout = 8000
     if Size then
       timeout = 15000
@@ -179,14 +174,6 @@ function ChoGGi.DumpObject(Obj,Mode,Funcs)
     --Text = Text .. "\n"
   end
   ChoGGi.Dump(Text,Mode)
---[[
-  tech = ""
-  for k,i in ipairs(Obj) do
-    tech = tech .. ChoGGi.RetTextForDump(k[i]) .. "\n"
-  end
-  tech = tech .. "\n\n\n"
-  ChoGGi.Dump(tech)
---]]
 end
 
 function ChoGGi.RetTextForDump(Obj,Funcs)
@@ -247,13 +234,15 @@ function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
   return Bool and TrueVar or FalseVar
 end
 
---return the opposite
+--return opposite value or first value if neither
 function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
   if Setting == Value1 then
     return Value2
   elseif Setting == Value2 then
     return Value1
   end
+  --just in case
+  return Value1
 end
 
 --return as num
@@ -356,12 +345,14 @@ end
 --ChoGGi.PrintIds(TechTree)
 function ChoGGi.PrintIds(Table)
   local text = ""
-  for i,_ in ipairs(Table) do
+
+  for i = 1, #Table do
     text = text .. "----------------- " .. Table[i].id .. ": " .. i .. "\n"
-    for j,_ in ipairs(Table[i]) do
+    for j = 1, #Table[i] do
       text = text .. Table[i][j].id .. ": " .. j .. "\n"
     end
   end
+
   ChoGGi.Dump(text)
 end
 
@@ -385,20 +376,24 @@ function ChoGGi.RemoveMissingLabelObjects(Label)
   local found = true
   while found do
     found = nil
-    for Key,Object in ipairs(UICity.labels[Label] or empty_table) do
-      if tostring(Object:GetPos()) == "(0, 0, 0)" then
-        table.remove(UICity.labels[Label],Key)
+
+    local tab = UICity.labels[Label] or empty_table
+    for i = 1, #tab do
+      if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
+        table.remove(UICity.labels[Label],i)
         found = true
         break
       end
     end
+
   end
 end
 
 function ChoGGi.RemoveFromLabel(Label,Obj)
-  for Key,Object in ipairs(UICity.labels[Label] or empty_table) do
-    if Object.handle == Obj.handle then
-      table.remove(UICity.labels[Label],Key)
+  local tab = UICity.labels[Label] or empty_table
+  for i = 1, #tab do
+    if tab[i].handle == Obj.handle then
+      table.remove(UICity.labels[Label],i)
     end
   end
 end
@@ -498,7 +493,7 @@ print("\n")
   --UserActions.RejectedActions()
   ChoGGi.UserAddActions({
     --["ChoGGi_" .. AsyncRand()] = {
-    ["ChoGGi_" .. name] = {
+    ["ChoGGi_" .. name .. AsyncRand()] = {
       menu = Menu,
       action = Action,
       key = Key,
@@ -539,9 +534,11 @@ it also returns negative amounts as positive (I prefer num - Amt, not num + NegA
 --]]
 function ChoGGi.ReturnTechAmount(Tech,Prop)
   local techdef = TechDef[Tech]
-  for _,v in ipairs(techdef) do
-    if v.Prop == Prop then
-      Tech = v
+
+  local tab = techdef
+  for i = 1, #tab do
+    if tab[i].Prop == Prop then
+      Tech = tab[i]
       local RetObj = {}
 
       if Tech.Percent then
@@ -602,10 +599,12 @@ end
 function ChoGGi.RetTableNoDupes(Table)
   local tempt = {}
   local dupe = {}
-  for _,Name in ipairs(Table) do
-    if not dupe[Name] then
-      tempt[#tempt+1] = Name
-      dupe[Name] = true
+
+  local tab = Table
+  for i = 1, #tab do
+    if not dupe[tab[i]] then
+      tempt[#tempt+1] = tab[i]
+      dupe[tab[i]] = true
     end
   end
   return tempt

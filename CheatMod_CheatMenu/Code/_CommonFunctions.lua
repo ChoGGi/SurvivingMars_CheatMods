@@ -170,60 +170,40 @@ function ChoGGi.AttachToNearestDome(building)
 end
 
 function ChoGGi.SetProductionToSavedAmt()
-  --electricity
-  for _,building in ipairs(UICity.labels.Power or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      building.electricity:SetProduction(bld.production)
-      building.electricity_production = bld.production
-    end
-  end
-
-  --water/air
-  for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      if building.base_air_production then
-        building.air:SetProduction(bld.production)
-        building.air_production = bld.production
-      elseif building.base_water_production then
-        building.water:SetProduction(bld.production)
-        building.water_production = bld.production
+  local function SetProd(Label,Type)
+    local tab = UICity.labels[Label] or empty_table
+    for i = 1, #tab do
+      local bld = ChoGGi.CheatMenuSettings.BuildingSettings[tab[i].encyclopedia_id]
+      if bld and bld.production and tab[i]["base_" .. Type .. "_production"] then
+        tab[i][Type]:SetProduction(bld.production)
+        tab[i][Type .. "_production"] = bld.production
       end
     end
   end
 
+  local function SetProdOther(Label)
+    local tab = UICity.labels[Label] or empty_table
+    for i = 1, #tab do
+      local bld = ChoGGi.CheatMenuSettings.BuildingSettings[tab[i].encyclopedia_id]
+      if bld and bld.production then
+        tab[i].producers[1].production_per_day = bld.production
+        tab[i].production_per_day1 = bld.production
+      end
+    end
+  end
+
+  --electricity
+  SetProd("Power","electricity")
+  --water/air
+  SetProd("Life-Support","air")
+  SetProd("Life-Support","water")
   --extractors/factories
-  for _,building in ipairs(UICity.labels.Production or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      building.producers[1].production_per_day = bld.production
-      building.production_per_day1 = bld.production
-    end
-  end
+  SetProdOther("Production")
   --moholemine/theexvacator
-  for _,building in ipairs(UICity.labels.Wonders or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      building.producers[1].production_per_day = bld.production
-      building.production_per_day1 = bld.production
-    end
-  end
+  SetProdOther("Wonders")
   --farms
-  for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      building.producers[1].production_per_day = bld.production
-      building.production_per_day1 = bld.production
-    end
-  end
-  for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
-    local bld = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
-    if bld and bld.production then
-      building.producers[1].production_per_day = bld.production
-      building.production_per_day1 = bld.production
-    end
-  end
+  SetProdOther("BaseFarm")
+  SetProdOther("FungalFarm")
 end
 
 --toggle working status
@@ -313,30 +293,22 @@ function ChoGGi.RemoveOldFiles()
       "FuncDebug",
       "FuncGame",
     }
-    for _,Value in ipairs(Table) do
-      AsyncFileDelete(ChoGGi.ModPath .. Value .. ".lua")
+    local tab = Table or empty_table
+    for i = 1, #tab do
+      AsyncFileDelete(ChoGGi.ModPath .. tab[i] .. ".lua")
     end
     AsyncFileDelete(ChoGGi.ModPath .. "libs")
 
-    --and old settings that aren't used anymore
-    ChoGGi.CheatMenuSettings.NewColonistSex = nil
-    ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
-    ChoGGi.CheatMenuSettings.ShuttleStorage = nil
+    --old settings that aren't used anymore
+    ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings = nil
     ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
     ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
     ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
-    ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
-    ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
-    ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
-    ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
-    ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
-    ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
-    ChoGGi.CheatMenuSettings.developer = nil
-    ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
+    ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
     ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
     ChoGGi.CheatMenuSettings.Building_dome_required = nil
     ChoGGi.CheatMenuSettings.Building_is_tall = nil
-    ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
+    ChoGGi.CheatMenuSettings.CapacityShuttle = nil
     ChoGGi.CheatMenuSettings.CommanderAstrogeologist = nil
     ChoGGi.CheatMenuSettings.CommanderAuthor = nil
     ChoGGi.CheatMenuSettings.CommanderDoctor = nil
@@ -345,6 +317,15 @@ function ChoGGi.RemoveOldFiles()
     ChoGGi.CheatMenuSettings.CommanderInventor = nil
     ChoGGi.CheatMenuSettings.CommanderOligarch = nil
     ChoGGi.CheatMenuSettings.CommanderPolitician = nil
+    ChoGGi.CheatMenuSettings.developer = nil
+    ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
+    ChoGGi.CheatMenuSettings.NewColonistSex = nil
+    ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
+    ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
+    ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
+    ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
+    ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
+    ChoGGi.CheatMenuSettings.ShuttleStorage = nil
     ChoGGi.CheatMenuSettings.SponsorBlueSun = nil
     ChoGGi.CheatMenuSettings.SponsorCNSA = nil
     ChoGGi.CheatMenuSettings.SponsorESA = nil
@@ -354,7 +335,8 @@ function ChoGGi.RemoveOldFiles()
     ChoGGi.CheatMenuSettings.SponsorParadox = nil
     ChoGGi.CheatMenuSettings.SponsorRoscosmos = nil
     ChoGGi.CheatMenuSettings.SponsorSpaceY = nil
-    ChoGGi.CheatMenuSettings.CapacityShuttle = nil
+    ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
+    ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
   end)
 end
 
@@ -540,10 +522,10 @@ function ChoGGi.SetCommanderBonuses(sType)
   local currentname = g_CurrentMissionParams.idCommanderProfile
   local comm = MissionParams.idCommanderProfile.items[currentname]
   local bonus = Presets.CommanderProfilePreset.Default[sType]
-
-  for _,Value in ipairs(bonus or empty_table) do
+  local tab = bonus or empty_table
+  for i = 1, #tab do
     CreateRealTimeThread(function()
-      table.insert(comm,Value)
+      table.insert(comm,tab[i])
     end)
   end
 end
@@ -935,4 +917,17 @@ end
 
 function ChoGGi.NewThread(Func,...)
   coroutine.resume(coroutine.create(Func),...)
+end
+
+function ChoGGi.BuildMenu_Toggle()
+  local dlg = GetXDialog("XBuildMenu")
+  if not dlg then
+    return
+  end
+
+  CreateRealTimeThread(function()
+    CloseXBuildMenu()
+    Sleep(250)
+    OpenXBuildMenu()
+  end)
 end

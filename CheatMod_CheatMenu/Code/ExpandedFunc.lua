@@ -10,9 +10,9 @@ function ChoGGi.StorageMechanizedDepotsTemp_Toggle()
   if not ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp then
     amount = 5
   end
-
-  for _,building in ipairs(UICity.labels.MechanizedDepots or empty_table) do
-    ChoGGi.SetMechanizedDepotTempAmount(building,amount)
+  local tab = UICity.labels.MechanizedDepots or empty_table
+  for i = 1, #tab do
+    ChoGGi.SetMechanizedDepotTempAmount(tab[i],amount)
   end
 
   ChoGGi.WriteSettings()
@@ -20,40 +20,6 @@ function ChoGGi.StorageMechanizedDepotsTemp_Toggle()
     "Storage",UsualIcon
   )
 
-end
-
-function ChoGGi.SetDisasterOccurrence(sType)
-
-  local ItemList = {}
-  local data = DataInstances["MapSettings_" .. sType]
-
-  for i = 1, #data do
-    table.insert(ItemList,{
-      text = data[i].name,
-      value = data[i].name
-    })
-  end
-
-  local CallBackFunc = function(choice)
-    mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
-    --apply it?
-    UICity:ApplyModificationsFromProperties()
-
-    ChoGGi.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
-      "Disaster","UI/Icons/Sections/attention.tga"
-    )
-  end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
-end
-
-function ChoGGi.MeteorHealthDamage_Toggle()
-  ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
-  ChoGGi.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
-    "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
-  )
 end
 
 function ChoGGi.SetRocketCargoCapacity()
@@ -204,9 +170,10 @@ function ChoGGi.SetWorkerCapacity()
     local value = choice[1].value
     if type(value) == "number" then
 
-      for _,building in ipairs(UICity.labels.Workplace or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.max_workers = value
+      local tab = UICity.labels.Workplace or empty_table
+      for i = 1, #tab do
+        if tab[i].encyclopedia_id == sel.encyclopedia_id then
+          tab[i].max_workers = value
         end
       end
 
@@ -322,30 +289,32 @@ function ChoGGi.SetBuildingCapacity()
       end
       --updating time
       if CapType == "electricity" then
-        for _,building in ipairs(UICity.labels.Power or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
-            building.capacity = amount
-            building[CapType].storage_capacity = amount
-            building[CapType].storage_mode = StoredAmount(building[CapType],building[CapType].storage_mode)
-            ChoGGi.ToggleWorking(building)
+        local tab = UICity.labels.Power or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+            tab[i].capacity = amount
+            tab[i][CapType].storage_capacity = amount
+            tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
+            ChoGGi.ToggleWorking(tab[i])
           end
         end
 
-
       elseif CapType == "colonist" then
-        for _,building in ipairs(UICity.labels.Residence or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
-            building.capacity = amount
+        local tab = UICity.labels.Residence or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+            tab[i].capacity = amount
           end
         end
 
       else --water and air
-        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-          if building.encyclopedia_id == sel.encyclopedia_id then
-            building[CapType .. "_capacity"] = amount
-            building[CapType].storage_capacity = amount
-            building[CapType].storage_mode = StoredAmount(building[CapType],building[CapType].storage_mode)
-            ChoGGi.ToggleWorking(building)
+        local tab = UICity.labels["Life-Support"] or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+            tab[i][CapType .. "_capacity"] = amount
+            tab[i][CapType].storage_capacity = amount
+            tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
+            ChoGGi.ToggleWorking(tab[i])
           end
         end
       end
@@ -403,9 +372,10 @@ function ChoGGi.SetVisitorCapacity()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-        if building.encyclopedia_id == sel.encyclopedia_id then
-          building.max_visitors = value
+      local tab = UICity.labels.BuildingNoDomes or empty_table
+      for i = 1, #tab do
+        if tab[i].encyclopedia_id == sel.encyclopedia_id then
+          tab[i].max_visitors = value
         end
       end
 
@@ -453,51 +423,56 @@ function ChoGGi.SetStorageDepotSize(sType)
     if type(choice[1].value) == "number" then
 
       local value = choice[1].value * r
-      local entity
-      local function otherdepot(label,res)
-        for _,building in ipairs(UICity.labels[label] or empty_table) do
-          building[res] = value
-        end
-      end
       if sType == "StorageWasteDepot" then
         --limit amounts so saving with a full load doesn't delete your game
         if value > 1000000000 then
           value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
         end
         --loop through and change all existing
-        for _,building in ipairs(UICity.labels.WasteRockDumpSite or empty_table) do
-          building.max_amount_WasteRock = value
-          if building:GetStoredAmount() < 0 then
-            building:CheatEmpty()
-            building:CheatFill()
+
+        local tab = UICity.labels.WasteRockDumpSite or empty_table
+        for i = 1, #tab do
+          tab[i].max_amount_WasteRock = value
+          if tab[i]:GetStoredAmount() < 0 then
+            tab[i]:CheatEmpty()
+            tab[i]:CheatFill()
           end
         end
       elseif sType == "StorageOtherDepot" then
         if value > 20000000 then
           value = 20000000
         end
-        for _,building in ipairs(UICity.labels.UniversalStorageDepot or empty_table) do
-          if building.entity ~= "StorageDepot" then
-            building.max_storage_per_resource = value
+        local tab = UICity.labels.UniversalStorageDepot or empty_table
+        for i = 1, #tab do
+          if tab[i].entity ~= "StorageDepot" then
+            tab[i].max_storage_per_resource = value
           end
         end
-        otherdepot("MysteryResource","max_storage_per_resource")
-        otherdepot("BlackCubeDumpSite","max_amount_BlackCube")
+        local function OtherDepot(label,res)
+          local tab = UICity.labels[label] or empty_table
+          for i = 1, #tab do
+            tab[i][res] = value
+          end
+        end
+        OtherDepot("MysteryResource","max_storage_per_resource")
+        OtherDepot("BlackCubeDumpSite","max_amount_BlackCube")
       elseif sType == "StorageUniversalDepot" then
         if value > 2500000 then
           value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
         end
-        for _,building in ipairs(UICity.labels.UniversalStorageDepot or empty_table) do
-          if building.entity == "StorageDepot" then
-            building.max_storage_per_resource = value
+        local tab = UICity.labels.UniversalStorageDepot or empty_table
+        for i = 1, #tab do
+          if tab[i].entity == "StorageDepot" then
+            tab[i].max_storage_per_resource = value
           end
         end
       elseif sType == "StorageMechanizedDepot" then
         if value > 1000000000 then
           value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
         end
-        for _,building in ipairs(UICity.labels.MechanizedDepots or empty_table) do
-          building.max_storage_per_resource = value
+        local tab = UICity.labels.MechanizedDepots or empty_table
+        for i = 1, #tab do
+          tab[i].max_storage_per_resource = value
         end
       end
       --for new buildings
@@ -515,19 +490,24 @@ end
 ---------all the fixes funcs
 
 function ChoGGi.AttachBuildingsToNearestWorkingDome()
-  for _,building in ipairs(UICity.labels.Residence or empty_table) do
-    ChoGGi.AttachToNearestDome(building)
+  local tab = UICity.labels.Residence or empty_table
+  for i = 1, #tab do
+    ChoGGi.AttachToNearestDome(tab[i])
   end
-  for _,building in ipairs(UICity.labels.Workplace or empty_table) do
-    ChoGGi.AttachToNearestDome(building)
+  tab = UICity.labels.Workplace or empty_table
+  for i = 1, #tab do
+    ChoGGi.AttachToNearestDome(tab[i])
   end
+
   ChoGGi.MsgPopup("Buildings attached.",
     "Buildings","UI/Icons/Sections/basic.tga"
   )
 end
 
 function ChoGGi.ColonistsFixBlackCube()
-  for _,colonist in ipairs(UICity.labels.Colonist or empty_table) do
+  local tab = UICity.labels.Colonist or empty_table
+  for i = 1, #tab do
+    local colonist = tab[i]
     if colonist.entity:find("Child",1,true) then
       colonist.specialist = "none"
 
@@ -587,7 +567,7 @@ end
 
 --[[
 function ChoGGi.TriboelectricScrubberRadius(Bool)
-  for _,building in ipairs(UICity.labels.TriboelectricScrubber) do
+  for _,building in iXpairs(UICity.labels.TriboelectricScrubber) do
     local prop_meta = building:GetPropertyMetadata("UIRange")
     if prop_meta then
       if Bool == true then

@@ -2,6 +2,89 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
+function ChoGGi.SetProtectionRadius()
+  local sel = SelectedObj or SelectionMouseObj()
+  if not sel or not sel.protect_range then
+    ChoGGi.MsgPopup("Select something with a protect_range (MDSLaser/DefenceTower).",
+      "Protect",UsualIcon
+    )
+    return
+  end
+  local id = sel.encyclopedia_id
+  local DefaultSetting = _G[id]:GetDefaultPropertyValue("protect_range")
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 40,value = 40},
+    {text = 80,value = 80},
+    {text = 160,value = 160},
+    {text = 320,value = 320,hint = "Cover the entire map from the centre."},
+    {text = 640,value = 640,hint = "Cover the entire map from a corner."},
+  }
+
+  if not ChoGGi.CheatMenuSettings.BuildingSettings[id] then
+    ChoGGi.CheatMenuSettings.BuildingSettings[id] = {}
+  end
+
+  local hint = DefaultSetting
+  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[id]
+  if setting and setting.protect_range then
+    hint = tostring(setting.protect_range)
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      local tab = UICity.labels[id] or empty_table
+      for i = 1, #tab do
+        tab[i].protect_range = value
+        tab[i].shoot_range = value * ChoGGi.Consts.guim
+      end
+
+      if value == DefaultSetting then
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].protect_range = nil
+      else
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].protect_range = value
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(id .. " range is now " .. choice[1].text,
+        "Protect",UsualIcon
+      )
+    end
+  end
+
+  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
+end
+
+function ChoGGi.UnlockLockedBuildings()
+  local ItemList = {}
+  for Key,_ in pairs(DataInstances.BuildingTemplate) do
+    if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
+      table.insert(ItemList,{
+        text = _InternalTranslate(DataInstances.BuildingTemplate[Key].display_name),
+        value = Key
+      })
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    for i = 1, #choice do
+      pcall(function()
+        UnlockBuilding(choice[i].value)
+      end)
+    end
+    ChoGGi.BuildMenu_Toggle()
+    ChoGGi.MsgPopup("Buildings unlocked: " .. #choice,
+      "Unlocked",UsualIcon
+    )
+  end
+
+  local hint = "Pick the buildings you want to unlock (use Ctrl/Shift for multiple)."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Unlock Buildings",hint,true)
+end
+
 function ChoGGi.PipesPillarsSpacing_Toggle()
   ChoGGi.SetConstsG("PipesPillarSpacing",ChoGGi.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
   ChoGGi.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
@@ -24,7 +107,6 @@ function ChoGGi.UnlimitedConnectionLength_Toggle()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.UnlimitedConnectionLength) .. ": Is that a rocket in your pocket?",
     "Buildings"
   )
-
 end
 
 function ChoGGi.BuildingPower_Toggle()
@@ -51,8 +133,28 @@ function ChoGGi.BuildingPower_Toggle()
     amount = 0
   end
 
-  for _,building in ipairs(UICity.labels[id] or empty_table) do
-    building:SetBase("electricity_consumption", amount)
+  local tab = UICity.labels[id] or empty_table
+  for i = 1, #tab do
+    if tab[i].modifications.electricity_consumption then
+      if amount == 0 then
+      if tab[i].modifications.electricity_consumption then
+        local mod = tab[i].modifications.electricity_consumption[1]
+        tab[i].ChoGGi_mod_electricity_consumption = {
+          amount = mod.amount,
+          percent = mod.percent
+        }
+      mod:Change(0,0)
+    end
+      else
+        if tab[i].ChoGGi_mod_electricity_consumption then
+          local mod = tab[i].modifications.electricity_consumption[1]
+          local orig = tab[i].ChoGGi_mod_electricity_consumption
+          mod:Change(orig.amount,orig.percent)
+          tab[i].ChoGGi_mod_electricity_consumption = nil
+        end
+      end
+    end
+    tab[i]:SetBase("electricity_consumption", amount)
   end
 
   ChoGGi.WriteSettings()
@@ -154,32 +256,33 @@ function ChoGGi.SetMaxChangeOrDischarge()
 
       --updating time
       if CapType == "electricity" then
-        for _,building in ipairs(UICity.labels.Power or empty_table) do
-          if building.encyclopedia_id == id then
+        local tab = UICity.labels.Power or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == id then
             if check1 then
-              building[CapType].max_charge = numberC
-              building["max_" .. CapType .. "_charge"] = numberC
+              tab[i][CapType].max_charge = numberC
+              tab[i]["max_" .. CapType .. "_charge"] = numberC
             end
             if check2 then
-              building[CapType].max_discharge = numberD
-              building["max_" .. CapType .. "_discharge"] = numberD
+              tab[i][CapType].max_discharge = numberD
+              tab[i]["max_" .. CapType .. "_discharge"] = numberD
             end
-            ChoGGi.ToggleWorking(building)
+            ChoGGi.ToggleWorking(tab[i])
           end
         end
-
       else --water and air
-        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-          if building.encyclopedia_id == id then
+        local tab = UICity.labels["Life-Support"] or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == id then
             if check1 then
-              building[CapType].max_charge = numberC
-              building["max_" .. CapType .. "_charge"] = numberC
+              tab[i][CapType].max_charge = numberC
+              tab[i]["max_" .. CapType .. "_charge"] = numberC
             end
             if check2 then
-              building[CapType].max_discharge = numberD
-              building["max_" .. CapType .. "_discharge"] = numberD
+              tab[i][CapType].max_discharge = numberD
+              tab[i]["max_" .. CapType .. "_discharge"] = numberD
             end
-            ChoGGi.ToggleWorking(building)
+            ChoGGi.ToggleWorking(tab[i])
           end
         end
       end
@@ -205,17 +308,20 @@ function ChoGGi.UseLastOrientation_Toggle()
 end
 
 function ChoGGi.FarmShiftsAllOn()
-  for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
-    building.closed_shifts[1] = false
-    building.closed_shifts[2] = false
-    building.closed_shifts[3] = false
+  local tab = UICity.labels.BaseFarm or empty_table
+  for i = 1, #tab do
+    tab[i].closed_shifts[1] = false
+    tab[i].closed_shifts[2] = false
+    tab[i].closed_shifts[3] = false
   end
   --BaseFarm doesn't include FungalFarm...
-  for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
-    building.closed_shifts[1] = false
-    building.closed_shifts[2] = false
-    building.closed_shifts[3] = false
+  tab = UICity.labels.FungalFarm or empty_table
+  for i = 1, #tab do
+    tab[i].closed_shifts[1] = false
+    tab[i].closed_shifts[2] = false
+    tab[i].closed_shifts[3] = false
   end
+
   ChoGGi.MsgPopup("Well, I been working in a coal mine\nGoing down, down\nWorking in a coal mine\nWhew, about to slip down",
     "Farms","UI/Icons/Sections/Food_2.tga",true
   )
@@ -284,55 +390,40 @@ function ChoGGi.SetProductionAmount()
     local value = choice[1].value
     if type(value) == "number" then
       local amount = value * r
+      local function SetProd(Label)
+        local tab = UICity.labels[Label] or empty_table
+        for i = 1, #tab do
+          if tab[i].encyclopedia_id == id then
+            tab[i][ProdType]:SetProduction(amount)
+            tab[i][ProdType .. "_production"] = amount
+          end
+        end
+      end
       if ProdType == "electricity" then
         --electricity
-        for _,building in ipairs(UICity.labels.Power or empty_table) do
-          if building.encyclopedia_id == id then
-            --current prod
-            building[ProdType]:SetProduction(amount)
-            --when toggled on n off
-            building[ProdType .. "_production"] = amount
-          end
-        end
-
+        SetProd("Power")
       elseif ProdType == "water" or ProdType == "air" then
         --water/air
-        for _,building in ipairs(UICity.labels["Life-Support"] or empty_table) do
-          if building.encyclopedia_id == id then
-            building[ProdType]:SetProduction(amount)
-            building[ProdType .. "_production"] = amount
-          end
-        end
-
+        SetProd("Life-Support")
       else --other prod
+
+        local function SetProdOther(Label)
+          local tab = UICity.labels[Label] or empty_table
+          for i = 1, #tab do
+            if tab[i].encyclopedia_id == id then
+              tab[i].producers[1].production_per_day = amount
+              tab[i].production_per_day1 = amount
+            end
+          end
+        end
         --extractors/factories
-        for _,building in ipairs(UICity.labels.Production or empty_table) do
-          if building.encyclopedia_id == id then
-            building.producers[1].production_per_day = amount
-            building.production_per_day1 = amount
-          end
-        end
+        SetProdOther("Production")
         --moholemine/theexvacator
-        for _,building in ipairs(UICity.labels.Wonders or empty_table) do
-          if building.encyclopedia_id == id then
-            building.producers[1].production_per_day = amount
-            building.production_per_day1 = amount
-          end
-        end
+        SetProdOther("Wonders")
         --farms
         if id:find("Farm") then
-          for _,building in ipairs(UICity.labels.BaseFarm or empty_table) do
-            if building.encyclopedia_id == id then
-              building.producers[1].production_per_day = amount
-              building.production_per_day1 = amount
-            end
-          end
-          for _,building in ipairs(UICity.labels.FungalFarm or empty_table) do
-            if building.encyclopedia_id == id then
-              building.producers[1].production_per_day = amount
-              building.production_per_day1 = amount
-            end
-          end
+          SetProdOther("BaseFarm")
+          SetProdOther("FungalFarm")
         end
       end
 
@@ -375,22 +466,28 @@ function ChoGGi.FullyAutomatedBuildings()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-        if building.base_max_workers then
-          building.max_workers = 0
-          building.automation = 1
-          building.auto_performance = value
+
+      local tab = UICity.labels.BuildingNoDomes or empty_table
+      for i = 1, #tab do
+        if tab[i].base_max_workers then
+          tab[i].max_workers = 0
+          tab[i].automation = 1
+          tab[i].auto_performance = value
         end
       end
+
       ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = value
     else
-      for _,building in ipairs(UICity.labels.BuildingNoDomes or empty_table) do
-        if building.base_max_workers then
-          building.max_workers = nil
-          building.automation = nil
-          building.auto_performance = nil
+
+      local tab = UICity.labels.BuildingNoDomes or empty_table
+      for i = 1, #tab do
+        if tab[i].base_max_workers then
+          tab[i].max_workers = nil
+          tab[i].automation = nil
+          tab[i].auto_performance = nil
         end
       end
+
       ChoGGi.CheatMenuSettings.FullyAutomatedBuildings = false
     end
 
@@ -401,29 +498,6 @@ function ChoGGi.FullyAutomatedBuildings()
   end
 
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
-end
-
-function ChoGGi.AddMysteryBreakthroughBuildings()
-  ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings = not ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings
-  if ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings then
-    UnlockBuilding("CloningVats")
-    UnlockBuilding("BlackCubeDump")
-    UnlockBuilding("BlackCubeSmallMonument")
-    UnlockBuilding("BlackCubeLargeMonument")
-    UnlockBuilding("PowerDecoy")
-    UnlockBuilding("DomeOval")
-  else
-    LockBuilding("CloningVats")
-    LockBuilding("BlackCubeDump")
-    LockBuilding("BlackCubeSmallMonument")
-    LockBuilding("BlackCubeLargeMonument")
-    LockBuilding("PowerDecoy")
-    LockBuilding("DomeOval")
-  end
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings) .. "\nI'm sorry, I'm simply not at liberty to say.",
-    "Buildings","UI/Icons/Anomaly_Tech.tga",true
-  )
 end
 
 --used to add or remove traits from schools/sanitariums
@@ -467,6 +541,20 @@ function ChoGGi.SanatoriumCureAll_Toggle()
   )
 end
 
+function ChoGGi.ShowAllTraits_Toggle()
+  if #g_SchoolTraits == 18 then
+    g_SchoolTraits = ChoGGi.Consts.SchoolTraits
+    g_SanatoriumTraits = ChoGGi.Consts.SanatoriumTraits
+  else
+    g_SchoolTraits = ChoGGi.PositiveTraits
+    g_SanatoriumTraits = ChoGGi.NegativeTraits
+  end
+
+  ChoGGi.MsgPopup(#g_SchoolTraits .. ": Good for what ails you",
+    "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
+  )
+end
+
 function ChoGGi.SanatoriumSchoolShowAll()
   ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll = not ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll
 
@@ -480,14 +568,15 @@ function ChoGGi.SanatoriumSchoolShowAll()
 end
 
 function ChoGGi.MaintenanceBuildingsFree_Toggle()
-
   ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp = not ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp
-  for _,object in ipairs(UICity.labels.Building or empty_table) do
-    if object.base_maintenance_build_up_per_hr then
+  local tab = UICity.labels.Building or empty_table
+  for i = 1, #tab do
+
+    if tab[i].base_maintenance_build_up_per_hr then
       if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp then
-        object.maintenance_build_up_per_hr = -10000
+        tab[i].maintenance_build_up_per_hr = -10000
       else
-        object.maintenance_build_up_per_hr = nil
+        tab[i].maintenance_build_up_per_hr = nil
       end
     end
   end
@@ -602,8 +691,9 @@ end
 function ChoGGi.Building_wonder_Toggle()
   ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
   if ChoGGi.CheatMenuSettings.Building_wonder then
-    for _,building in ipairs(DataInstances.BuildingTemplate) do
-      building.wonder = false
+    local tab = DataInstances.BuildingTemplate
+    for i = 1, #tab do
+      tab[i].wonder = false
     end
   end
 
