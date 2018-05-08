@@ -830,8 +830,11 @@ function ChoGGi.GetPalette(Obj)
 end
 
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
-  local sel = SelectedObj or SelectionMouseObj()
-  Object = Object or sel
+  --selected self
+  if Object.key == "F5" then
+    Object = SelectedObj or SelectionMouseObj()
+  end
+
   if not Object then
     return
   end

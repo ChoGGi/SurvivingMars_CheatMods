@@ -158,9 +158,9 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     function self.idApplyAll.OnButtonPressed()
       local value = self.sel.value
       if value then
-        local tab = UICity.labels[self.obj.class] or empty_table
-        for i = 1, #tab do
-          tab[i][self.sel.text] = value
+        local objs = GetObjects({class=self.obj.class})
+        for i = 1, #objs do
+          objs[i][self.sel.text] = ChoGGi.RetProperType(value)
         end
       end
     end
