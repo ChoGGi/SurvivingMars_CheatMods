@@ -3,13 +3,10 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   local icon = "Cube.tga"
 
   ChoGGi.AddAction(
-    "Expanded CM/Buildings/Sensor Tower Sound",
-    ChoGGi.SensorTowerSound_Toggle,
+    "Expanded CM/Buildings/Annoying Sounds",
+    ChoGGi.AnnoyingSounds_Toggle,
     nil,
-    function()
-      local des = ChoGGi.CheatMenuSettings.SensorTowerSound and "(Enabled)" or "(Disabled)"
-      return des .. " Toggle the sensor tower working sound."
-    end,
+    "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
     icon
   )
 

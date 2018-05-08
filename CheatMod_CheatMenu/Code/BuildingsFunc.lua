@@ -2,24 +2,54 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
-function ChoGGi.SensorTowerSound_Toggle()
-  ChoGGi.CheatMenuSettings.SensorTowerSound = not ChoGGi.CheatMenuSettings.SensorTowerSound
-  if ChoGGi.CheatMenuSettings.SensorTowerSound then
-    FXRules.Working.start.SensorTower.any[3] = nil
-    RemoveFromRules("Object SensorTower Loop")
-  else
-    RebuildFXRules()
+function ChoGGi.AnnoyingSounds_Toggle()
+
+  --make a list
+  local ItemList = {
+    {text = "Reset",value = "Reset"},
+    {text = "SensorTower",value = "SensorTower"},
+    {text = "MirrorSphere",value = "MirrorSphere"},
+  }
+
+  --callback
+  local CallBackFunc = function(choice)
+    local function MirrorSphere_Toggle()
+      local tab = UICity.labels.MirrorSpheres or empty_table
+      for i = 1, #tab do
+        PlayFX("Freeze", "end", tab[i])
+        PlayFX("Freeze", "start", tab[i])
+      end
+    end
+    local function SensorTower_Toggle()
+      local tab = UICity.labels.SensorTower or empty_table
+      for i = 1, #tab do
+        ChoGGi.ToggleWorking(tab[i])
+      end
+    end
+
+    local value = choice[1].value
+    if value == "SensorTower" then
+      FXRules.Working.start.SensorTower.any[3] = nil
+      RemoveFromRules("Object SensorTower Loop")
+      SensorTower_Toggle()
+    elseif value == "MirrorSphere" then
+      FXRules.Freeze.start.MirrorSphere.any[2] = nil
+      FXRules.Freeze.start.any = nil
+      RemoveFromRules("Freeze")
+      MirrorSphere_Toggle()
+    elseif value == "Reset" then
+      RebuildFXRules()
+      MirrorSphere_Toggle()
+      SensorTower_Toggle()
+    end
+
+    ChoGGi.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
+      "Sounds"
+    )
   end
 
-  local tab = UICity.labels.SensorTower or empty_table
-  for i = 1, #tab do
-    ChoGGi.ToggleWorking(tab[i])
-  end
-
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SensorTowerSound) .. ": Stop that bloody bouzouki!",
-    "Sounds"
-  )
+  local hint = "You can only reset all sounds back."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
 end
 
 function ChoGGi.SetProtectionRadius()
