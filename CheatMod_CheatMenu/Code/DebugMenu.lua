@@ -11,9 +11,7 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
 
   ChoGGi.AddAction(
     "[102]Debug/Object Manipulator",
-    function()
-      ChoGGi.OpenInObjectManipulator(SelectedObj or SelectionMouseObj())
-    end,
+    ChoGGi.OpenInObjectManipulator,
     "F5",
     "Manipulate objects (selected or under mouse cursor)",
     "SaveMapEntityList.tga"
@@ -118,7 +116,7 @@ function ChoGGi.DebugMenu_LoadingScreenPreClose()
   ChoGGi.AddAction(
     "[102]Debug/Change Map",
     ChoGGi.ChangeMap,
-    "F12",
+    nil,
     "Change Map",
     "load_city.tga"
     --toolbar = "01_File/01_ChangeMap",

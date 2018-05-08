@@ -123,12 +123,14 @@ Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
 Set Death Age
 Set New Colonists Age,Sex
 Set Shadow Map Size
+Set Transparency of UI items
+Set Opacity of objects
 Show All Traits in Sanatorium/School
 Show Hidden Buildings
 ShuttleHub Shuttles Increase
 Spacing between Pipe Pillars
 Start Mysteries (mysteries don't start till after you have 100 colonists, and an amount of time has passed. they stack up, so I wouldn't start too many)
-Storage Depot / Waste Dump increase
+Storage Depot / Waste Dump capacity increase
 Toggle Editor (you can move stuff around: if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
 Toggle Infopanel Cheats
 Traits: Add/Remove All Negative or Positive

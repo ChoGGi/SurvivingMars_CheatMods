@@ -2,6 +2,22 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.AddAction(
+    "Expanded CM/Drones/Work Radius RC Rover",
+    ChoGGi.SetRoverWorkRadius,
+    nil,
+    "Change RC drone radius.",
+    "DisableRMMaps.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Drones/Work Radius DroneHub",
+    ChoGGi.SetDroneHubWorkRadius,
+    nil,
+    "Change DroneHub drone radius.",
+    "DisableRMMaps.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Drones/Drone Rock To Concrete Speed",
     ChoGGi.SetRockToConcreteSpeed,
     nil,

@@ -11,25 +11,29 @@ print(socket._VERSION)
 
 function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
-    Msg = Msg or "Empty"
-    --returns translated text corresponding to number if we don't do this
-    if type(Msg) == "number" then
-      Msg = tostring(Msg)
-    end
+    --returns translated text corresponding to number if we don't do tostring for numbers
+    Msg = tostring(Msg)
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
     local id = "ChoGGi_" .. AsyncRand()
-    local delay = 8000
+    if ChoGGi.Testing then
+    print(1111111111111)
+    DebugPrint(1111111111111)
+      id = "ChoGGi_" .. Msg .. AsyncRand()
+    end
+    local timeout = 8000
     if Size then
-      delay = 15000
+      timeout = 15000
     end
     if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
       CreateRealTimeThread(function()
         AddCustomOnScreenNotification(
-          --nil=callback
-          id,Title,Msg,Icon,nil,{expiration=delay}
+          id,Title,Msg,Icon,nil,{expiration=timeout}
           --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
         )
+        --since I use AsyncRand for the id, I don't want this getting too large.
+        g_ShownOnScreenNotifications[id] = nil
+        --large amount of text option
         if Size then
           --add some custom settings this way, till i figure out hwo to add them as params
           local osDlg = GetXDialog("OnScreenNotificationsDlg")[1]
@@ -463,6 +467,11 @@ function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDe
   if Menu then
     Menu = "/" .. tostring(Menu)
   end
+  local name = "NOFUNC"
+  if Action then
+    local debug_info = debug.getinfo(Action, "Sn")
+    name = string.gsub(tostring(debug_info.short_src .. "(" .. debug_info.linedefined .. ")"),ChoGGi.ModPath,"")
+  end
 
 --[[
 --TEST menu items
@@ -488,7 +497,8 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.UserAddActions({
-    ["ChoGGi_" .. AsyncRand()] = {
+    --["ChoGGi_" .. AsyncRand()] = {
+    ["ChoGGi_" .. name] = {
       menu = Menu,
       action = Action,
       key = Key,

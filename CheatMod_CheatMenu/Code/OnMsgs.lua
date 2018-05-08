@@ -396,14 +396,24 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.WriteSettings()
   end
 
+  --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
+  ChoGGi.NewThread(function()
+    local shown = g_ShownOnScreenNotifications
+    for Key,_ in pairs(shown) do
+      if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
+        shown[Key] = nil
+      end
+    end
+  end)
+
 end --OnMsg
 
-function OnMsg.BuildingPlaced(Object)
-  ChoGGi.LastPlacedObject = Object
+function OnMsg.BuildingPlaced(Obj)
+  ChoGGi.LastPlacedObject = Obj
 end --OnMsg
 
-function OnMsg.ConstructionSitePlaced(Object)
-  ChoGGi.LastPlacedObject = Object
+function OnMsg.ConstructionSitePlaced(Obj)
+  ChoGGi.LastPlacedObject = Obj
 end --OnMsg
 
 --this gets called before buildings are completely initialized (no air/water/elec attached)
@@ -540,23 +550,8 @@ end --OnMsg
 function OnMsg.SelectionAdded(Obj)
   --update selection shortcut
   s = Obj
-end
---[[
-function OnMsg.SelectedObjChange(Obj)
-  s = Obj
-end
---]]
-
-function OnMsg.NewDay()
-
-  --clean up my old notifications
-  local shown = g_ShownOnScreenNotifications
-  for Key,_ in pairs(shown) do
-    if tostring(Key):find("ChoGGi_") then
-      shown[Key] = nil
-    end
-  end
-
+  --
+  ChoGGi.LastPlacedObject = Obj
 end
 
 function OnMsg.NewHour()
@@ -628,6 +623,7 @@ ChoGGi.AddMsgToFunc(ElectricityStorage.GameInit,"ElectricityStorage","GameInit",
 ChoGGi.AddMsgToFunc(LifeSupportGridObject.GameInit,"LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
 ChoGGi.AddMsgToFunc(PinnableObject.TogglePin,"PinnableObject","TogglePin","TogglePinnableObject")
 ChoGGi.AddMsgToFunc(ResourceStockpileLR.GameInit,"ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
+ChoGGi.AddMsgToFunc(DroneHub.GameInit,"DroneHub","GameInit","SpawnedDroneHub")
 
 --attached temporary resource depots
 function OnMsg.SpawnedResourceStockpileLR(Obj)
@@ -709,10 +705,19 @@ function OnMsg.SpawnedRCTransport(Obj)
   RCCreated(Obj)
 end
 function OnMsg.SpawnedRCRover(Obj)
+  if ChoGGi.CheatMenuSettings.RCRoverDefaultRadius then
+    Obj:SetWorkRadius()
+  end
   RCCreated(Obj)
 end
 function OnMsg.SpawnedExplorerRover(Obj)
   RCCreated(Obj)
+end
+
+function OnMsg.SpawnedDroneHub(Obj)
+  if ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius then
+    Obj:SetWorkRadius()
+  end
 end
 
 --if an inside building is placed outside of dome, attach it to nearest dome (if there is one)

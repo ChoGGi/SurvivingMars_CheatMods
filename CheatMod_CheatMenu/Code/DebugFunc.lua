@@ -131,9 +131,6 @@ function ChoGGi.DeleteObject()
 
   --clean up
   pcall(function()
-    obj:ReturnStockpiledResources()
-  end)
-  pcall(function()
     obj:SetDome(false)
   end)
   pcall(function()
@@ -146,6 +143,9 @@ function ChoGGi.DeleteObject()
     obj:StopFX()
     PlayFX("Spawn", "end", obj)
     obj:SetHolder(false)
+  end)
+  pcall(function()
+    obj:Done()
   end)
 
   --fuck it, I asked nicely

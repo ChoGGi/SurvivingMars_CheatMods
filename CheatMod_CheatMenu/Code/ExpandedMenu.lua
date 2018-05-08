@@ -191,71 +191,12 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
     "DisableAOMaps.tga"
   )
 
-  --[[
-  not working
-
   ChoGGi.AddAction(
-    "Expanded CM/Radius/[0]These don't really work for now...",
-    function()
-      return
-    end,
+    "Expanded CM/Radius/Triboelectric Scrubber Radius...",
+    ChoGGi.SetTriboelectricScrubberRadius,
     nil,
-    "keeps resetting...",
-    "ToggleEnvMap.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/RC Rover Radius + 25",
-    function()
-      ChoGGi.RCRoverRadius(true)
-    end,
-    nil,
-    "Increase drone radius of each Rover.",
+    "Change Triboelectric Scrubber radius.",
     "DisableRMMaps.tga"
   )
 
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/RC Rover Radius Default",
-    ChoGGi.RCRoverRadius,
-    nil,
-    "Default drone radius to each Rover.",
-    "DisableRMMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/Command Center Radius + 25",
-    function()
-      ChoGGi.CommandCenterRadius(true)
-    end,
-    nil,
-    "Increase Drone radius of drone hubs.",
-    "DisableRMMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/Command Center Radius Default",
-    ChoGGi.CommandCenterRadius,
-    nil,
-    "Default Drone radius of drone hubs.",
-    "DisableRMMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/Triboelectric Scrubber Radius + 25",
-    function()
-      ChoGGi.TriboelectricScrubberRadius(true)
-    end,
-    nil,
-    "Increase radius of Triboelectric Scrubber.",
-    "DisableRMMaps.tga"
-  )
-
-  ChoGGi.AddAction(
-    "Expanded CM/Radius/Triboelectric Scrubber Radius Default",
-    "Default radius of Triboelectric Scrubber.",,
-    nil,
-    ChoGGi.TriboelectricScrubberRadius
-    "DisableRMMaps.tga"
-  )
-  --]]
 end

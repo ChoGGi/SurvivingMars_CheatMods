@@ -257,14 +257,36 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   --so we can call it from other places
   ChoGGi.OverrideConstructionLimits_Enable()
 
+  --larger drone work radius
+  local function SetRadius(OrigFunc,Setting,self,radius)
+    local rad = ChoGGi.CheatMenuSettings[Setting]
+    if rad then
+      OrigFunc(self,rad)
+    else
+      OrigFunc(self,radius)
+    end
+  end
+  if not ChoGGi.OrigFunc.RCRover_SetWorkRadius then
+    ChoGGi.OrigFunc.RCRover_SetWorkRadius = RCRover.SetWorkRadius
+  end
+  function RCRover:SetWorkRadius(radius)
+    SetRadius(ChoGGi.OrigFunc.RCRover_SetWorkRadius,"RCRoverDefaultRadius",self,radius)
+  end
+  if not ChoGGi.OrigFunc.DroneHub_SetWorkRadius then
+    ChoGGi.OrigFunc.DroneHub_SetWorkRadius = DroneHub.SetWorkRadius
+  end
+  function DroneHub:SetWorkRadius(radius)
+    SetRadius(ChoGGi.OrigFunc.DroneHub_SetWorkRadius,"CommandCenterDefaultRadius",self,radius)
+  end
+
   --set UI transparency:
-  --xdialogs (buildmenu, pins, infopanel)
   local trans = ChoGGi.CheatMenuSettings.Transparency
   local function SetTrans(Obj)
     if Obj.class and trans[Obj.class] then
       Obj:SetTransparency(trans[Obj.class])
     end
   end
+  --xdialogs (buildmenu, pins, infopanel)
   if not ChoGGi.OrigFunc.OpenXDialog then
     ChoGGi.OrigFunc.OpenXDialog = OpenXDialog
   end
@@ -282,7 +304,7 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
     SetTrans(self)
     return ret
   end
-  --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
+  --console stuff (it's visible before mods are loaded so I can't use FrameWindow_Init)
   if not ChoGGi.OrigFunc.ShowConsoleLog then
     ChoGGi.OrigFunc.ShowConsoleLog = ShowConsoleLog
   end
@@ -291,7 +313,7 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
     SetTrans(dlgConsoleLog)
   end
 
-  --set trans on mouseover
+  --toggle trans on mouseover
   if not ChoGGi.OrigFunc.XWindow_OnMouseEnter then
     ChoGGi.OrigFunc.XWindow_OnMouseEnter = XWindow.OnMouseEnter
   end
@@ -535,24 +557,22 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
 
-  --SetOrientation of placed objects
+  --set orientation to same as last object
   if not ChoGGi.OrigFunc.CC_ChangeCursorObj then
     ChoGGi.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
   end
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
+    local ret = ChoGGi.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
 
-    local cursor_obj = ChoGGi.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
-
-    --set orientation to last object if same entity (should I just do it for everything)
-    --if ChoGGi.LastPlacedObject and ChoGGi.LastPlacedObject.entity == cursor_obj.entity then
-    if ChoGGi.LastPlacedObject and ChoGGi.CheatMenuSettings.UseLastOrientation then
+    local last = ChoGGi.LastPlacedObject
+    if type(last) == "table" and ChoGGi.CheatMenuSettings.UseLastOrientation then
       --likes to fail, so add a pcall
       pcall(function()
-        cursor_obj:SetOrientation(ChoGGi.LastPlacedObject:GetOrientation())
+        ret:SetOrientation(last:GetOrientation())
       end)
     end
 
-    return cursor_obj
+    return ret
   end
 
   --was giving a nil error in log, I assume devs'll fix it one day (changed it to check if amount is a number/point/box...)

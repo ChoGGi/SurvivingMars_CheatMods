@@ -2,6 +2,83 @@ local UsualIcon = "UI/Icons/IPButtons/drone.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"
 
+function ChoGGi.SetRoverWorkRadius()
+  local DefaultSetting = ChoGGi.Consts.RCRoverDefaultRadius
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 40,value = 40},
+    {text = 80,value = 80},
+    {text = 160,value = 160},
+    {text = 320,value = 320,hint = "Cover the entire map from the centre."},
+    {text = 640,value = 640,hint = "Cover the entire map from a corner."},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.RCRoverDefaultRadius then
+    hint = ChoGGi.CheatMenuSettings.RCRoverDefaultRadius
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      --RCRoverMaxRadius is only needed for the radius during placement
+      ChoGGi.SetSavedSetting("RCRoverMaxRadius",value)
+      const.RCRoverMaxRadius = value
+      ChoGGi.SetSavedSetting("RCRoverDefaultRadius",value)
+      for _,Object in ipairs(UICity.labels.RCRover or empty_table) do
+        Object:SetWorkRadius(value)
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverDefaultRadius) .. ": I can see for miles and miles",
+        "RC","UI/Icons/Upgrades/service_bots_04.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius","Current: " .. hint)
+end
+
+function ChoGGi.SetDroneHubWorkRadius()
+  local DefaultSetting = ChoGGi.Consts.CommandCenterDefaultRadius
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 40,value = 40},
+    {text = 80,value = 80},
+    {text = 160,value = 160},
+    {text = 320,value = 320,hint = "Cover the entire map from the centre."},
+    {text = 640,value = 640,hint = "Cover the entire map from a corner."},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius then
+    hint = ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      ChoGGi.SetSavedSetting("CommandCenterMaxRadius",value)
+      const.CommandCenterMaxRadius = value
+      ChoGGi.SetSavedSetting("CommandCenterDefaultRadius",value)
+      for _,Object in ipairs(UICity.labels.DroneHub or empty_table) do
+        Object:SetWorkRadius(value)
+      end
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius) .. ": I can see for miles and miles",
+        "DroneHub","UI/Icons/Upgrades/service_bots_04.tga"
+      )
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius","Current: " .. hint)
+end
+
 function ChoGGi.SetRockToConcreteSpeed()
   local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
   local ItemList = {

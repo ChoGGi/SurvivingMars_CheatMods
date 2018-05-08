@@ -848,6 +848,8 @@ function ChoGGi.GetPalette(Obj)
 end
 
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
+  local sel = SelectedObj or SelectionMouseObj()
+  Object = Object or sel
   if not Object then
     return
   end

@@ -585,52 +585,7 @@ function ChoGGi.CablesAndPipesInstant_Toggle()
   )
 end
 
---TESTING
 --[[
-function ChoGGi.RCRoverRadius(Bool)
-  for _,rcvehicle in ipairs(UICity.labels.RCRover or empty_table) do
-    local prop_meta = rcvehicle:GetPropertyMetadata("UIWorkRadius")
-    if prop_meta then
-      if Bool == true then
-        local radius = rcvehicle:GetProperty(prop_meta.id)
-        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-      else
-        rcvehicle:SetProperty(prop_meta.id, Max(prop_meta.max,ChoGGi.Consts.RCRoverMaxRadius))
-      end
-    end
-  end
-  ChoGGi.MsgPopup("+25 I can see for miles and miles",
-    "RC","UI/Icons/Upgrades/service_bots_04.tga"
-  )
-end
-
-function ChoGGi.CommandCenterRadius(Bool)
-  for _,building in ipairs(UICity.labels.DroneHub) do
-    local prop_meta = building:GetPropertyMetadata("UIWorkRadius")
-    if prop_meta then
-      if Bool == true then
-        const.CommandCenterDefaultRadius = const.CommandCenterDefaultRadius + 25
-        const.CommandCenterMaxRadius = const.CommandCenterMaxRadius + 25
-        const.CommandCenterMinRadius = const.CommandCenterMinRadius + 25
-        local radius = building:GetProperty(prop_meta.id)
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-        building:SetProperty(prop_meta.id, Default(prop_meta.default, radius + 25))
-        building:SetProperty(prop_meta.id, Min(prop_meta.min, radius + 25))
-      else
-        const.CommandCenterDefaultRadius = ChoGGi.Consts.CommandCenterDefaultRadius
-        const.CommandCenterMaxRadius = ChoGGi.Consts.CommandCenterMaxRadius
-        const.CommandCenterMinRadius = ChoGGi.Consts.CommandCenterMinRadius
-        building:SetProperty(prop_meta.id, Default(prop_meta.default, const.CommandCenterDefaultRadius))
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, const.CommandCenterMaxRadius))
-        building:SetProperty(prop_meta.id, Min(prop_meta.min, const.CommandCenterMinRadius))
-      end
-    end
-  end
-  ChoGGi.MsgPopup("I see you there",
-    "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
-  )
-end
-
 function ChoGGi.TriboelectricScrubberRadius(Bool)
   for _,building in ipairs(UICity.labels.TriboelectricScrubber) do
     local prop_meta = building:GetPropertyMetadata("UIRange")

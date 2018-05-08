@@ -70,8 +70,13 @@ ChoGGi.Consts = {
   ShowAllTraits = false,
   ShowMysteryMsgs = false,
   WriteLogs = false,
---const. (I don't think these have default values in-game anywhere, so I can't get the defaults)
+--const. (I don't think these have default values in-game anywhere, so I can't get the defaults. If a mod that changes these loads before then...)
+  RCRoverDefaultRadius = 20,
+  RCRoverMaxRadius = 20,
+  CommandCenterDefaultRadius = 35,
+  CommandCenterMaxRadius = 35,
   BreakThroughTechsPerGame = 13,
+  OmegaTelescopeBreakthroughsCount = 3,
   ExplorationQueueMaxSize = 10,
   fastGameSpeed = 5,
   mediumGameSpeed = 3,
@@ -248,8 +253,11 @@ function ChoGGi.SetConstsToSaved()
   setconst("fastGameSpeed")
   setconst("mediumGameSpeed")
   setconst("MoistureVaporatorPenaltyPercent")
-  setconst("ResearchQueueSize")
   setconst("MoistureVaporatorRange")
+  setconst("ResearchQueueSize")
+  setconst("RCRoverMaxRadius")
+  setconst("CommandCenterMaxRadius")
+  setconst("OmegaTelescopeBreakthroughsCount")
 end
 
 --called everytime we set a setting in menu
