@@ -489,6 +489,14 @@ end
 
 ---------all the fixes funcs
 
+function ChoGGi.ProjectMorpheusRadarFellDown()
+  local tab = UICity.labels.ProjectMorpheus or empty_table
+  for i = 1, #tab do
+    tab[i]:ChangeWorkingStateAnim(false)
+    tab[i]:ChangeWorkingStateAnim(true)
+  end
+end
+
 function ChoGGi.AttachBuildingsToNearestWorkingDome()
   local tab = UICity.labels.Residence or empty_table
   for i = 1, #tab do

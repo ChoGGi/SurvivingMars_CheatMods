@@ -291,6 +291,10 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
   --set UI transparency:
   local trans = ChoGGi.CheatMenuSettings.Transparency
+  if not ChoGGi.CheatMenuSettings.Transparency then
+    ChoGGi.CheatMenuSettings.Transparency = {}
+  end
+
   local function SetTrans(Obj)
     if Obj.class and trans[Obj.class] then
       Obj:SetTransparency(trans[Obj.class])

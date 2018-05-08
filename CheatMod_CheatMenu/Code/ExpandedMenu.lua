@@ -115,6 +115,14 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
+    "Expanded CM/Fixes/Project Morpheus Radar Fell Down",
+    ChoGGi.ProjectMorpheusRadarFellDown,
+    nil,
+    "Sometimes the blue radar thingy falls off.",
+    "ReportBug.tga"
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Fixes/Fix Black Cube Colonists",
     ChoGGi.ColonistsFixBlackCube,
     nil,
