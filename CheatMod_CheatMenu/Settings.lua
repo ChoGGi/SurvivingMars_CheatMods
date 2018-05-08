@@ -19,6 +19,8 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
+ChoGGi.Defaults.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+ChoGGi.Defaults.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
 
 --stores defaults and constants
 ChoGGi.Consts = {
@@ -84,8 +86,6 @@ ChoGGi.Consts = {
   ResourceScale = 1000,
   ResearchPointsScale = 1000,
   guim = 100,
-  SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"},
-  SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"},
 --Consts. (Consts. is a prop object, so we get the default with ReadSettingsInGame). _const.lua
   AvoidWorkplaceSols = false,
   BirthThreshold = false,

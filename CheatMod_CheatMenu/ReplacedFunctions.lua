@@ -60,7 +60,9 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
   if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
 
     --so we can build without (as many) limits
-    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+    if not ChoGGi.OrigFunc.CC_UpdateConstructionStatuses then
+      ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+    end
     function ConstructionController:UpdateConstructionStatuses(dont_finalize)
 
       --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
@@ -117,7 +119,9 @@ unit_direction_internal_use_only = UnitDirectionModeDialog
     end --ConstructionController:UpdateConstructionStatuses
 
     --so we can do long spaced tunnels
-    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+    if not ChoGGi.OrigFunc.TC_UpdateConstructionStatuses then
+      ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+    end
     function TunnelConstructionController:UpdateConstructionStatuses()
       local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
       --[[
@@ -138,7 +142,9 @@ function ChoGGi.ForceDronesToEmptyStorage_Enable()
   ChoGGi.DronesOverride = true
 
   --checks whenever something is produced, if you have an insane production amount then it messes up (so we also check every hour (in OnMsg))
-  ChoGGi.OrigFunc.SingleResourceProducer_OnProduce = SingleResourceProducer.OnProduce
+  if not ChoGGi.OrigFunc.SingleResourceProducer_OnProduce then
+    ChoGGi.OrigFunc.SingleResourceProducer_OnProduce = SingleResourceProducer.OnProduce
+  end
   function SingleResourceProducer:OnProduce(amount_to_produce)
     local ret = ChoGGi.OrigFunc.SingleResourceProducer_OnProduce(self,amount_to_produce)
     ChoGGi.FuckingDrones(self)
@@ -156,7 +162,9 @@ dumpl(classdefs)
 --]]
 
   --so we can add hints to info pane cheats
-  ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+  if not ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions then
+    ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+  end
   function InfopanelObj:CreateCheatActions(win)
     local ret = ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
     ChoGGi.SetInfoPanelCheatHints(GetActionsHost(win))
@@ -166,7 +174,9 @@ dumpl(classdefs)
   end
 
   --add dump button to Examine windows
-  ChoGGi.OrigFunc.ExamineDesigner_Init = ExamineDesigner.Init
+  if not ChoGGi.OrigFunc.ExamineDesigner_Init then
+    ChoGGi.OrigFunc.ExamineDesigner_Init = ExamineDesigner.Init
+  end
   function ExamineDesigner:Init()
     self:SetMinSize(point(309, 53))
     self:SetSize(point(372, 459))
@@ -373,7 +383,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --if certain panels (cheats/traits/colonists) are too large then hide most of them till mouseover
-  ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
+  if not ChoGGi.OrigFunc.InfopanelDlg_Open then
+    ChoGGi.OrigFunc.InfopanelDlg_Open = InfopanelDlg.Open
+  end
   --ex(GetInGameInterface()[6][2][3])
   -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
   function InfopanelDlg:Open(...)
@@ -422,7 +434,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --make the background hide when console not visible (instead of after a second or two)
-  ChoGGi.OrigFunc.ConsoleLog_ShowBackground = ConsoleLog.ShowBackground
+  if not ChoGGi.OrigFunc.ConsoleLog_ShowBackground then
+    ChoGGi.OrigFunc.ConsoleLog_ShowBackground = ConsoleLog.ShowBackground
+  end
   function ConsoleLog:ShowBackground(visible, immediate)
     DeleteThread(self.background_thread)
     if visible or immediate then
@@ -433,7 +447,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --add dump buttons/etc
-  ChoGGi.OrigFunc.Examine_Init = Examine.Init
+  if not ChoGGi.OrigFunc.Examine_Init then
+    ChoGGi.OrigFunc.Examine_Init = Examine.Init
+  end
   function Examine:Init()
     ChoGGi.OrigFunc.Examine_Init(self)
 
@@ -491,7 +507,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end --Examine:Init
 
   --make sure console is focused even when construction is opened
-  ChoGGi.OrigFunc.Console_Show = Console.Show
+  if not ChoGGi.OrigFunc.Console_Show then
+    ChoGGi.OrigFunc.Console_Show = Console.Show
+  end
   function Console:Show(show)
     local was_visible = self:GetVisible()
     self:SetVisible(show)
@@ -513,7 +531,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --always able to show console
-  ChoGGi.OrigFunc.ShowConsole = ShowConsole
+  if not ChoGGi.OrigFunc.ShowConsole then
+    ChoGGi.OrigFunc.ShowConsole = ShowConsole
+  end
   function ShowConsole(visible)
   --[[
     removed from orig func:
@@ -530,7 +550,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --ugly way of making sure console doesn't include ` when using tilde to open console
-  ChoGGi.OrigFunc.Console_TextChanged = Console.TextChanged
+  if not ChoGGi.OrigFunc.Console_TextChanged then
+    ChoGGi.OrigFunc.Console_TextChanged = Console.TextChanged
+  end
   function Console:TextChanged()
     ChoGGi.OrigFunc.Console_TextChanged(self)
     if self.idEdit:GetText() == "`" then
@@ -539,13 +561,16 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --make it so it goes to the end of the text when you use history
-  ChoGGi.OrigFunc.Console_HistoryDown = Console.HistoryDown
+  if not ChoGGi.OrigFunc.Console_HistoryDown then
+    ChoGGi.OrigFunc.Console_HistoryDown = Console.HistoryDown
+  end
   function Console:HistoryDown()
     ChoGGi.OrigFunc.Console_HistoryDown(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
-
-  ChoGGi.OrigFunc.Console_HistoryUp = Console.HistoryUp
+  if not ChoGGi.OrigFunc.Console_HistoryUp then
+    ChoGGi.OrigFunc.Console_HistoryUp = Console.HistoryUp
+  end
   function Console:HistoryUp()
     ChoGGi.OrigFunc.Console_HistoryUp(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
@@ -570,7 +595,9 @@ function ChoGGi.ReplacedFunctions_ClassesBuilt()
   end
 
   --was giving a nil error in log, I assume devs'll fix it one day (changed it to check if amount is a number/point/box...)
-  ChoGGi.OrigFunc.RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
+  if not ChoGGi.OrigFunc.RequiresMaintenance_AddDust then
+    ChoGGi.OrigFunc.RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
+  end
   function RequiresMaintenance:AddDust(amount)
     --(dev check)
     if type(amount) == "number" or luadebugger and (luadebugger:Type(amount) == "Point" or luadebugger:Type(amount) == "Box") then

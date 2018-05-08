@@ -514,7 +514,7 @@ function ChoGGi.SetInfoPanelCheatHints(win)
     action.ActionName = action.ActionId
     action.RolloverHint = hint
   end
-  local tab = win.actions
+  local tab = win.actions or empty_table
   for i = 1, #tab do
     local action = tab[i]
 

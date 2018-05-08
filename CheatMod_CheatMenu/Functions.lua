@@ -535,7 +535,7 @@ it also returns negative amounts as positive (I prefer num - Amt, not num + NegA
 function ChoGGi.ReturnTechAmount(Tech,Prop)
   local techdef = TechDef[Tech]
 
-  local tab = techdef
+  local tab = techdef or empty_table
   for i = 1, #tab do
     if tab[i].Prop == Prop then
       Tech = tab[i]
@@ -600,7 +600,7 @@ function ChoGGi.RetTableNoDupes(Table)
   local tempt = {}
   local dupe = {}
 
-  local tab = Table
+  local tab = Table or empty_table
   for i = 1, #tab do
     if not dupe[tab[i]] then
       tempt[#tempt+1] = tab[i]

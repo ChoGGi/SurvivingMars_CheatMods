@@ -290,7 +290,7 @@ function ChoGGi.StartMystery(Mystery,Bool)
     --local costs = field.costs or empty_table
     local list = UICity.tech_field[field_id] or {}
     UICity.tech_field[field_id] = list
-    local tab = field
+    local tab = field or empty_table
     for j = 1, #tab do
       if tab[j].mystery == Mystery then
         local tech_id = tab[j].id

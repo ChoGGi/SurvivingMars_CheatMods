@@ -90,7 +90,7 @@ function OnMsg.LoadingScreenPreClose()
   end
   local function NewGridLabels(Label)
     if not next(UICity.labels[Label]) then
-      local objs = GetObjects({class=Label})
+      local objs = GetObjects({class=Label}) or empty_table
       for i = 1, #objs do
         table.insert(UICity.labels[Label],objs[i])
         table.insert(UICity.labels.GridElements,objs[i])
@@ -639,7 +639,7 @@ end
 function OnMsg.TogglePinnableObject(Obj)
   local unpin = ChoGGi.CheatMenuSettings.UnpinObjects
   if type(unpin) == "table" and next(unpin) then
-    local tab = unpin
+    local tab = unpin or empty_table
     for i = 1, #tab do
       if Obj.class == tab[i] and Obj:IsPinned() then
         Obj:TogglePin()

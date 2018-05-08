@@ -593,8 +593,8 @@ end
 
 function ChoGGi.ShowAllTraits_Toggle()
   if #g_SchoolTraits == 18 then
-    g_SchoolTraits = ChoGGi.Consts.SchoolTraits
-    g_SanatoriumTraits = ChoGGi.Consts.SanatoriumTraits
+    g_SchoolTraits = ChoGGi.Defaults.SchoolTraits
+    g_SanatoriumTraits = ChoGGi.Defaults.SanatoriumTraits
   else
     g_SchoolTraits = ChoGGi.PositiveTraits
     g_SanatoriumTraits = ChoGGi.NegativeTraits
@@ -741,7 +741,7 @@ end
 function ChoGGi.Building_wonder_Toggle()
   ChoGGi.CheatMenuSettings.Building_wonder = not ChoGGi.CheatMenuSettings.Building_wonder
   if ChoGGi.CheatMenuSettings.Building_wonder then
-    local tab = DataInstances.BuildingTemplate
+    local tab = DataInstances.BuildingTemplate or empty_table
     for i = 1, #tab do
       tab[i].wonder = false
     end

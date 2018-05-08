@@ -4,7 +4,8 @@ ChoGGi = {
   ModPath = _G.Mods.ChoGGi_CheatMenu.path,
   StartupMsgs = {},
   OrigFunc = {},
-  CheatMenuSettings = {},
+  Defaults = {},
+  CheatMenuSettings = {BuildingSettings = {},Transparency = {}},
 }
 
 --used to let me know if we're on my computer
@@ -24,6 +25,10 @@ dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
 dofile(ChoGGi.ModPath .. "Functions.lua")
 --load all my other files
 dofolder_files(ChoGGi.ModPath .. "Code")
+
+if ChoGGi.Testing then
+  ChoGGi.CheatMenuSettings.WriteLogs = true
+end
 
 --if writelogs option
 if ChoGGi.CheatMenuSettings.WriteLogs == true then
@@ -67,3 +72,5 @@ ModsLoaded
 EntitiesLoaded
 BinAssetsLoaded
 --]]
+
+  print(22222222)

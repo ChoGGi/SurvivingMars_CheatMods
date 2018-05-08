@@ -112,7 +112,7 @@ function ChoGGi.ShowAutoUnpinObjectList()
   local EnabledList = ""
   local list = ChoGGi.CheatMenuSettings.UnpinObjects
   if next(list) then
-    local tab = list
+    local tab = list or empty_table
     for i = 1, #tab do
       EnabledList = EnabledList .. " " .. i
     end
