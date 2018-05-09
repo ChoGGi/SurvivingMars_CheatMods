@@ -489,6 +489,14 @@ end
 
 ---------all the fixes funcs
 
+function ChoGGi.DroneResourceCarryAmountFix_Toggle()
+  ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix = not ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix
+  ChoGGi.WriteSettings()
+  ChoGGi.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix),
+    "Drones","UI/Icons/IPButtons/drone.tga"
+  )
+end
+
 function ChoGGi.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do

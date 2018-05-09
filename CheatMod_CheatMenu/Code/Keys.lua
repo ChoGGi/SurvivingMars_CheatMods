@@ -1,5 +1,20 @@
 function ChoGGi.Keys_LoadingScreenPreClose()
 
+  ChoGGi.AddAction(
+    nil,
+    function()
+      ChoGGi.ObjectColourRandom(SelectedObj or SelectionMouseObj())
+    end,
+    "Shift-F6"
+  )
+  ChoGGi.AddAction(
+    nil,
+    function()
+      ChoGGi.ObjectColourDefault(SelectedObj or SelectionMouseObj())
+    end,
+    "Ctrl-F6"
+  )
+
   --use number keys to activate/hide build menus
   if ChoGGi.CheatMenuSettings.NumberKeysBuildMenu then
     local function AddMenuKey(Num,Key)

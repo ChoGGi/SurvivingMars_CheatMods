@@ -72,5 +72,3 @@ ModsLoaded
 EntitiesLoaded
 BinAssetsLoaded
 --]]
-
-  print(22222222)

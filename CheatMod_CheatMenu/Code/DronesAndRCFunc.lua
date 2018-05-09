@@ -390,8 +390,7 @@ end
 function ChoGGi.SetDroneCarryAmount()
   --retrieve default
   local DefaultSetting = ChoGGi.GetDroneResourceCarryAmount()
-  --local hinttoolarge = "Warning: If you set this amount larger then a building's \"Stored\" amount drones will NOT empty those buildings."
-  local hinttoolarge = "If you set this amount larger then a building's \"Stored\" amount then it'll use my method for removing storage. If you have an insane production amount set then it'll take an (in-game) hour between calling drones."
+  local hinttoolarge = "If you set this amount larger then a building's \"Storage\" amount then the drones will NOT pick up storage (See: Fixes>Drone Carry Amount)."
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 5,value = 5},
@@ -420,7 +419,6 @@ function ChoGGi.SetDroneCarryAmount()
       ChoGGi.SetConstsG("DroneResourceCarryAmount",value)
       UpdateDroneResourceUnits()
       ChoGGi.SetSavedSetting("DroneResourceCarryAmount",value)
-      ChoGGi.ForceDronesToEmptyStorage_Enable()
 
       ChoGGi.WriteSettings()
       ChoGGi.MsgPopup("Drones can carry: " .. choice[1].text .. " items.",

@@ -104,14 +104,14 @@ function ChoGGi.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   ChoGGi.AddAction(
-    "Expanded CM/Fixes/Production Amount Refresh",
-    function()
-      ChoGGi.SetProductionToSavedAmt()
-      ChoGGi.MsgPopup("Refreshed production!","Buildings")
-    end,
+    "Expanded CM/Fixes/Drone Carry Amount",
+    ChoGGi.DroneResourceCarryAmountFix_Toggle,
     nil,
-    "Loops through all production buildings and checks that production is set to saved amounts.",
-    "reload.tga"
+    function()
+      local des = ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
+      return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount (this forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
+    end,
+    "ReportBug.tga"
   )
 
   ChoGGi.AddAction(

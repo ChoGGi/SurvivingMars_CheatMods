@@ -39,6 +39,7 @@ ChoGGi.Consts = {
   BuildingSettings = {},
   Transparency = {},
 --false
+  DroneResourceCarryAmountFix = false,
   TransparencyToggle = false,
   StorageMechanizedDepotsTemp = false,
   UnlimitedConnectionLength = false,

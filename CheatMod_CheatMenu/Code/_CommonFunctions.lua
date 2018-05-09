@@ -169,43 +169,6 @@ function ChoGGi.AttachToNearestDome(building)
   end
 end
 
-function ChoGGi.SetProductionToSavedAmt()
-  local function SetProd(Label,Type)
-    local tab = UICity.labels[Label] or empty_table
-    for i = 1, #tab do
-      local bld = ChoGGi.CheatMenuSettings.BuildingSettings[tab[i].encyclopedia_id]
-      if bld and bld.production and tab[i]["base_" .. Type .. "_production"] then
-        tab[i][Type]:SetProduction(bld.production)
-        tab[i][Type .. "_production"] = bld.production
-      end
-    end
-  end
-
-  local function SetProdOther(Label)
-    local tab = UICity.labels[Label] or empty_table
-    for i = 1, #tab do
-      local bld = ChoGGi.CheatMenuSettings.BuildingSettings[tab[i].encyclopedia_id]
-      if bld and bld.production then
-        tab[i].producers[1].production_per_day = bld.production
-        tab[i].production_per_day1 = bld.production
-      end
-    end
-  end
-
-  --electricity
-  SetProd("Power","electricity")
-  --water/air
-  SetProd("Life-Support","air")
-  SetProd("Life-Support","water")
-  --extractors/factories
-  SetProdOther("Production")
-  --moholemine/theexvacator
-  SetProdOther("Wonders")
-  --farms
-  SetProdOther("BaseFarm")
-  SetProdOther("FungalFarm")
-end
-
 --toggle working status
 function ChoGGi.ToggleWorking(building)
   CreateRealTimeThread(function()
@@ -784,15 +747,44 @@ function ChoGGi.ToggleConsoleLog()
 end
 
 --force drones to pickup from producers even if they have a large carry cap
-function ChoGGi.FuckingDrones(producer)
+function ChoGGi.FuckingDrones(Producer)
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
-
-  local amount = producer:GetAmountStored()
+  if not Producer then
+    return
+  end
+  local amount = Producer:GetAmountStored()
   if amount > 1000 then
-    local drone = FindNearestObject(UICity.labels.Drone,producer.parent)
-    if drone and not drone:GetCarriedResource() then
-      drone:SetCommandUserInteraction("PickUp", producer.stockpiles[1].supply_request, false,producer.resource_produced, amount)
+    local p = Producer.parent
+    local cc = FindNearestObject(p.command_centers,p).drones
+    --i'm looking at you rocket
+    if #cc == 0 then
+      --get a command_center, i'm not sure how to tell nearest to skip an object without drones
+      for i = 1, #p.command_centers do
+        if #p.command_centers[i].drones > 0 then
+          cc = p.command_centers[i].drones
+        end
+      end
+    end
+    --get an idle drone
+    local drone
+    for i = 1, #cc do
+      if cc[i].command == "Idle" then
+        drone = cc[i]
+        break
+      end
+    end
+    if drone then
+      --round to nearest 1000 (don't want uneven stacks)
+      amount = (amount - amount % 1000) / 1000 * 1000
+      --pick that shit up
+      drone:SetCommandUserInteraction(
+        "PickUp",
+        Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
+        false,
+        Producer.resource_produced,
+        amount
+      )
     end
   end
 end
@@ -827,6 +819,44 @@ function ChoGGi.GetPalette(Obj)
   pal.Color3, pal.Roughness3, pal.Metallic3 = g(Obj, 3)
   pal.Color4, pal.Roughness4, pal.Metallic4 = g(Obj, 4)
   return pal
+end
+
+function ChoGGi.ObjectColourRandom(Obj)
+  if Obj:IsKindOf("ColorizableObject") then
+    local SetPal = Obj.SetColorizationMaterial
+    local GetPal = Obj.GetColorizationMaterial
+    local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
+    --likely can only change basecolour
+    if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
+      Obj:SetColorModifier(UICity:Random(-99999999,99999999))
+    else
+      --s,1,Color, Roughness, Metallic
+      if not Obj.ChoGGi_origcolors then
+        Obj.ChoGGi_origcolors = {}
+        table.insert(Obj.ChoGGi_origcolors,{c1})
+        table.insert(Obj.ChoGGi_origcolors,{c2})
+        table.insert(Obj.ChoGGi_origcolors,{c3})
+        table.insert(Obj.ChoGGi_origcolors,{c4})
+      end
+      SetPal(Obj, 1, UICity:Random(-99999999,99999999), 0,0)
+      SetPal(Obj, 2, UICity:Random(-99999999,99999999), 0,0)
+      SetPal(Obj, 3, UICity:Random(-99999999,99999999), 0,0)
+      SetPal(Obj, 4, UICity:Random(-99999999,99999999), 0,0)
+    end
+  end
+end
+function ChoGGi.ObjectColourDefault(Obj)
+  if Obj:IsKindOf("ColorizableObject") then
+    Obj:SetColorModifier(6579300)
+    if Obj.ChoGGi_origcolors then
+      local SetPal = Obj.SetColorizationMaterial
+      local c = Obj.ChoGGi_origcolors
+      SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
+      SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
+      SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
+      SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+    end
+  end
 end
 
 function ChoGGi.OpenInObjectManipulator(Object,Parent)
@@ -908,7 +938,7 @@ end
 function ChoGGi.SetMechanizedDepotTempAmount(Obj,amount)
   amount = amount or 10
   local resource = Obj.resource
-  local io_stockpile = Obj.stockpiles[1]
+  local io_stockpile = Obj.stockpiles[Obj:GetNextStockpileIndex()]
   local io_supply_req = io_stockpile.supply[resource]
   local io_demand_req = io_stockpile.demand[resource]
 

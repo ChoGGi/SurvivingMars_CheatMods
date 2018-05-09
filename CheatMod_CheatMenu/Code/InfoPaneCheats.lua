@@ -3,11 +3,11 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
 --global objects
   function Building.CheatPowerless(self)
-    if self.modifications.electricity_consumption then
-      local mod = self.modifications.electricity_consumption[1]
+    local mod = self.modifications
+    if mod and mod.electricity_consumption then
       self.ChoGGi_mod_electricity_consumption = {
-        amount = mod.amount,
-        percent = mod.percent
+        amount = mod.electricity_consumption[1].amount,
+        percent = mod.electricity_consumption[1].percent
       }
       mod:Change(0,0)
     end
@@ -27,32 +27,10 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self:DestroyAttaches("BuildingSign")
   end
   function Object.CheatColourRandom(self)
-    if self:IsKindOf("ColorizableObject") then
-      local SetPal = self.SetColorizationMaterial
-      local GetPal = self.GetColorizationMaterial
-      --s,1,Color, Roughness, Metallic
-      if not self.ChoGGi_origcolors then
-        self.ChoGGi_origcolors = {}
-        table.insert(self.ChoGGi_origcolors,{GetPal(self,1)})
-        table.insert(self.ChoGGi_origcolors,{GetPal(self,2)})
-        table.insert(self.ChoGGi_origcolors,{GetPal(self,3)})
-        table.insert(self.ChoGGi_origcolors,{GetPal(self,4)})
-      end
-      SetPal(self, 1, UICity:Random(1,99999999), 0,0)
-      SetPal(self, 2, UICity:Random(1,99999999), 0,0)
-      SetPal(self, 3, UICity:Random(1,99999999), 0,0)
-      SetPal(self, 4, UICity:Random(1,99999999), 0,0)
-    end
+    ChoGGi.ObjectColourRandom(self)
   end
   function Object.CheatColourDefault(self)
-    if self.ChoGGi_origcolors then
-      local SetPal = self.SetColorizationMaterial
-      local c = self.ChoGGi_origcolors
-      SetPal(self,1, c[1][1], c[1][2], c[1][3])
-      SetPal(self,2, c[2][1], c[2][2], c[2][3])
-      SetPal(self,3, c[3][1], c[3][2], c[3][3])
-      SetPal(self,4, c[4][1], c[4][2], c[4][3])
-    end
+    ChoGGi.ObjectColourDefault(self)
   end
 --colonists
   function Colonist.CheatFillMorale(self)
@@ -233,84 +211,6 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   SubsurfaceDepositWater.CheatDoubleMaxAmount = CheatDoubleMaxAmount
   SubsurfaceDepositPreciousMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
   SurfaceDepositGroup.CheatDoubleMaxAmount = CheatDoubleMaxAmount
---CheatProdDbl
-  local function CheatProdDblWater(self)
-    self.water_production = self.water.production * 2
-    self.water:SetProduction(self.water_production)
-  end
-  local function CheatProdDefWater(self)
-    self.water_production = self.base_water_production
-    self.water:SetProduction(self.water_production)
-  end
-  MoistureVaporator.CheatProdDbl = CheatProdDblWater
-  MoistureVaporator.CheatProdDef = CheatProdDefWater
-  WaterExtractor.CheatProdDbl = CheatProdDblWater
-  WaterExtractor.CheatProdDef = CheatProdDefWater
-  --
-  local function CheatProdDblElec(self)
-    self.electricity_production = self.electricity.production * 2
-    self.electricity:SetProduction(self.electricity_production)
-  end
-  local function CheatProdDefElec(self)
-    self.electricity_production = self.base_electricity_production
-    self.electricity:SetProduction(self.electricity_production)
-  end
-  FusionReactor.CheatProdDbl = CheatProdDblElec
-  FusionReactor.CheatProdDef = CheatProdDefElec
-  StirlingGenerator.CheatProdDbl = CheatProdDblElec
-  StirlingGenerator.CheatProdDef = CheatProdDefElec
-  WindTurbine.CheatProdDbl = CheatProdDblElec
-  WindTurbine.CheatProdDef = CheatProdDefElec
-  SolarPanel.CheatProdDbl = CheatProdDblElec
-  SolarPanel.CheatProdDef = CheatProdDefElec
-  ArtificialSun.CheatProdDbl = CheatProdDblElec
-  ArtificialSun.CheatProdDef = CheatProdDefElec
-  --
-  function MOXIE.CheatProdDbl(self)
-    self.air_production = self.air.production * 2
-    self.air:SetProduction(self.air_production)
-  end
-  function MOXIE.CheatProdDef(self)
-    self.air_production = self.base_air_production
-    self.air:SetProduction(self.air_production)
-  end
-  --
-  local function CheatProdDblProducer(self)
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-  end
-  local function CheatProdDefProducer(self)
-    self.producers[1].production_per_day = self.base_production_per_day1
-  end
-  RegolithExtractor.CheatProdDbl = CheatProdDblProducer
-  RegolithExtractor.CheatProdDef = CheatProdDefProducer
-  MetalsExtractor.CheatProdDbl = CheatProdDblProducer
-  MetalsExtractor.CheatProdDef = CheatProdDefProducer
-  PreciousMetalsExtractor.CheatProdDbl = CheatProdDblProducer
-  PreciousMetalsExtractor.CheatProdDef = CheatProdDefProducer
-  PolymerPlant.CheatProdDbl = CheatProdDblProducer
-  PolymerPlant.CheatProdDef = CheatProdDefProducer
-  ElectronicsFactory.CheatProdDbl = CheatProdDblProducer
-  ElectronicsFactory.CheatProdDef = CheatProdDefProducer
-  MachinePartsFactory.CheatProdDbl = CheatProdDblProducer
-  MachinePartsFactory.CheatProdDef = CheatProdDefProducer
-  FuelFactory.CheatProdDbl = CheatProdDblProducer
-  FuelFactory.CheatProdDef = CheatProdDefProducer
-  FarmHydroponic.CheatProdDbl = CheatProdDblProducer
-  FarmHydroponic.CheatProdDef = CheatProdDefProducer
-  FungalFarm.CheatProdDbl = CheatProdDblProducer
-  FungalFarm.CheatProdDef = CheatProdDefProducer
-  FarmConventional.CheatProdDbl = CheatProdDblProducer
-  FarmConventional.CheatProdDef = CheatProdDefProducer
-  TheExcavator.CheatProdDbl = CheatProdDblProducer
-  TheExcavator.CheatProdDef = CheatProdDefProducer
-  function MoholeMine:CheatProdDbl()
-    self.producers[1].production_per_day = self.producers[1].production_per_day * 2
-    self.producers[2].production_per_day = self.producers[2].production_per_day * 2
-  end
-  function MoholeMine:CheatProdDef()
-    self.producers[1].production_per_day = self.producers[1].base_production_per_day
-    self.producers[2].production_per_day = self.producers[2].base_production_per_day
-  end
 --CheatCapDbl storage
   function ElectricityStorage:CheatCapDbl()
     self.capacity = self.capacity * 2
@@ -574,10 +474,6 @@ function ChoGGi.SetInfoPanelCheatHints(win)
 
     elseif action.ActionId == "WorkManual" then
       SetHint(action,"Make this " .. id .. " need workers.")
-    elseif action.ActionId == "ProdDbl" then
-      SetHint(action,"Double the production of this " .. id .. " (certain buildings will reset: Wind turbines and such).")
-    elseif action.ActionId == "ProdDef" then
-      SetHint(action,"Reset the production of this " .. id .. " to default.")
     elseif action.ActionId == "CapDbl" then
       SetHint(action,"Double the storage capacity of this " .. id .. ".")
     elseif action.ActionId == "CapDef" then
@@ -607,9 +503,22 @@ function ChoGGi.SetInfoPanelCheatHints(win)
       end
 
     elseif action.ActionId == "HideSigns" then
-      SetHint(action,"Hides any signs above object (until state is changed).")
+      if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
+        action.ActionId = nil
+      else
+        SetHint(action,"Hides any signs above object (until state is changed).")
+      end
+
     elseif action.ActionId == "ColourRandom" then
-      SetHint(action,"Changes colour of object to random colour (doesn't touch attachments).")
+      if obj:IsKindOf("WasteRockDumpSite") then
+        action.ActionId = nil
+      else
+        SetHint(action,"Changes colour of object to random colour (doesn't touch attachments).")
+      end
+    elseif action.ActionId == "ColourDefault" then
+      if obj:IsKindOf("WasteRockDumpSite") then
+        action.ActionId = nil
+      end
     elseif action.ActionId == "AddDust" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = false

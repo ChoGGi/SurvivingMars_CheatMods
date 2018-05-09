@@ -364,19 +364,16 @@ function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
   ChoGGi.OrigFunc[SavedName] = OrigFunc
   --redefine it
   _G[ClassName][FuncName] = function(self,...)
-    local ret = ChoGGi.OrigFunc[SavedName](self,...)
     Msg(sMsg,self)
-    return ret
+    return ChoGGi.OrigFunc[SavedName](self,...)
   end
 end
 
---ex(UICity.labels.GridElements)
-
+--check for and remove broken objects from UICity.labels
 function ChoGGi.RemoveMissingLabelObjects(Label)
   local found = true
   while found do
     found = nil
-
     local tab = UICity.labels[Label] or empty_table
     for i = 1, #tab do
       if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
@@ -385,7 +382,6 @@ function ChoGGi.RemoveMissingLabelObjects(Label)
         break
       end
     end
-
   end
 end
 
@@ -406,12 +402,12 @@ function toboolean(Str)
   end
 end
 
---tries to convert "65" to 65 or "true"/"false" to true/false
+--tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
 function ChoGGi.RetProperType(Value)
   --number?
-  local ret = tonumber(Value)
-  if ret then
-    return ret
+  local num = tonumber(Value)
+  if num then
+    return num
   end
   --stringy boolean
   if Value == "true" then

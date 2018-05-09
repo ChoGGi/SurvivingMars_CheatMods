@@ -440,12 +440,22 @@ function ChoGGi.SetProductionAmount()
     local value = choice[1].value
     if type(value) == "number" then
       local amount = value * r
+
+      --setting we use to actually update prod
+      if value == DefaultSetting then
+        --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = nil
+      else
+        --update/create saved setting
+        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = amount
+      end
+
+      --all this just to update the displayed amount :)
       local function SetProd(Label)
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
           if tab[i].encyclopedia_id == id then
-            tab[i][ProdType]:SetProduction(amount)
-            tab[i][ProdType .. "_production"] = amount
+            tab[i][ProdType]:SetProduction()
           end
         end
       end
@@ -461,8 +471,8 @@ function ChoGGi.SetProductionAmount()
           local tab = UICity.labels[Label] or empty_table
           for i = 1, #tab do
             if tab[i].encyclopedia_id == id then
-              tab[i].producers[1].production_per_day = amount
-              tab[i].production_per_day1 = amount
+              tab[i]:GetProducerObj().production_per_day = amount
+              tab[i]:GetProducerObj():Produce(amount)
             end
           end
         end
@@ -477,13 +487,6 @@ function ChoGGi.SetProductionAmount()
         end
       end
 
-      if value == DefaultSetting then
-        --remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
-        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = nil
-      else
-        --update/create saved setting
-        ChoGGi.CheatMenuSettings.BuildingSettings[id].production = amount
-      end
     end
 
     ChoGGi.WriteSettings()
@@ -720,21 +723,9 @@ end
 function ChoGGi.RemoveBuildingLimits_Toggle()
   ChoGGi.CheatMenuSettings.RemoveBuildingLimits = not ChoGGi.CheatMenuSettings.RemoveBuildingLimits
 
-  if ChoGGi.CheatMenuSettings.RemoveBuildingLimits then
-    ChoGGi.OverrideConstructionLimits = nil
-    ChoGGi.OverrideConstructionLimits_Enable()
-  else
-    ChoGGi.OverrideConstructionLimits = nil
-    ConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.CC_UpdateConstructionStatuses
-    TunnelConstructionController.UpdateConstructionStatuses = ChoGGi.OrigFunc.TC_UpdateConstructionStatuses
-    ChoGGi.OrigFunc.CC_UpdateConstructionStatuses = nil
-    ChoGGi.OrigFunc.TC_UpdateConstructionStatuses = nil
-  end
-
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RemoveBuildingLimits) .. " No no I said over there.",
-    "Buildings",
-    "UI/Icons/Upgrades/zero_space_04.tga"
+    "Buildings","UI/Icons/Upgrades/zero_space_04.tga"
   )
 end
 

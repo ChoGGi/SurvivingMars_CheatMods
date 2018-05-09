@@ -121,6 +121,11 @@ function ChoGGi.DeleteObject()
     return
   end
 
+  --some stuff will leave holes in the world if they're still working
+  if obj.working then
+    obj:ToggleWorking()
+  end
+
   --try nicely first
   pcall(function()
     obj.can_demolish = true
@@ -134,18 +139,18 @@ function ChoGGi.DeleteObject()
     obj:SetDome(false)
   end)
   pcall(function()
-    obj:Gossip("done")
+    obj:RemoveFromLabels()
   end)
   pcall(function()
-    obj:RemoveFromLabels()
+    obj:Done()
+  end)
+  pcall(function()
+    obj:Gossip("done")
   end)
   pcall(function()
     obj:StopFX()
     PlayFX("Spawn", "end", obj)
     obj:SetHolder(false)
-  end)
-  pcall(function()
-    obj:Done()
   end)
   if obj.sphere then
     obj.sphere:delete()
@@ -161,6 +166,8 @@ function ChoGGi.DeleteObject()
     end)
   end
 
+    --so we don't get an error from UseLastOrientation
+  ChoGGi.LastPlacedObject = nil
 end
 
 function ChoGGi.ConsoleHistory_Toggle()

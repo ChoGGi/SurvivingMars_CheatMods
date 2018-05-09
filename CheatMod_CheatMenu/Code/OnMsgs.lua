@@ -66,40 +66,7 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.Keys_LoadingScreenPreClose()
   ChoGGi.SponsorsFunc_LoadingScreenPreClose()
 
-  --drones won't pick up less then their carry amount, unless you force them to
-  if g_Consts.DroneResourceCarryAmount > 1 then
-    ChoGGi.ForceDronesToEmptyStorage_Enable()
-  end
-
-  --add some custom labels for cables/pipes
-  if type(UICity.labels.GridElements) ~= "table" then
-    UICity.labels.GridElements = {}
-  else
-    --remove any broken objects
-    ChoGGi.RemoveMissingLabelObjects("GridElements")
-  end
-  if type(UICity.labels.ElectricityGridElement) ~= "table" then
-    UICity.labels.ElectricityGridElement = {}
-  else
-    ChoGGi.RemoveMissingLabelObjects("ElectricityGridElement")
-  end
-  if type(UICity.labels.LifeSupportGridElement) ~= "table" then
-    UICity.labels.LifeSupportGridElement = {}
-  else
-    ChoGGi.RemoveMissingLabelObjects("LifeSupportGridElement")
-  end
-  local function NewGridLabels(Label)
-    if not next(UICity.labels[Label]) then
-      local objs = GetObjects({class=Label}) or empty_table
-      for i = 1, #objs do
-        table.insert(UICity.labels[Label],objs[i])
-        table.insert(UICity.labels.GridElements,objs[i])
-      end
-    end
-  end
-  NewGridLabels("ElectricityGridElement")
-  NewGridLabels("LifeSupportGridElement")
-
+  --long arsed cables
   if ChoGGi.CheatMenuSettings.UnlimitedConnectionLength then
     GridConstructionController.max_hex_distance_to_allow_build = 1000
   end
@@ -112,36 +79,6 @@ function OnMsg.LoadingScreenPreClose()
   for i = 1, #tab do
     if tab[i].achievement == "FirstDome" and type(tab[i].connected_domes) ~= "table" then
       tab[i].connected_domes = {}
-    end
-  end
-
-  --remove any outside buildings i accidentally attached to domes ;)
-  tab = UICity.labels.BuildingNoDomes or empty_table
-  local sType
-  for i = 1, #tab do
-    if tab[i].dome_required == false and tab[i].parent_dome then
-
-      sType = false
-      --remove it from the dome label
-      if tab[i].closed_shifts then
-        sType = "Residence"
-      elseif tab[i].colonists then
-        sType = "Workplace"
-      end
-
-      if sType then --get a fucking continue lua
-        if tab[i].parent_dome.labels and tab[i].parent_dome.labels[sType] then
-          local dome = tab[i].parent_dome.labels[sType]
-          for j = 1, #dome do
-            if dome[j].class == tab[i].class then
-              dome[j] = nil
-            end
-          end
-        end
-        --remove parent_dome
-        tab[i].parent_dome = nil
-      end
-
     end
   end
 
@@ -167,9 +104,6 @@ function OnMsg.LoadingScreenPreClose()
     )
   end)
 
-  --make sure all buildings are using correct production
-  ChoGGi.SetProductionToSavedAmt()
-
   --something messed up if storage is negative (usually setting an amount then lowering it)
   tab = UICity.labels.Storages or empty_table
   pcall(function()
@@ -182,6 +116,7 @@ function OnMsg.LoadingScreenPreClose()
     end
   end)
 
+--[[
   local cap = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
   if cap then
     tab = UICity.labels.RCTransport or empty_table
@@ -193,11 +128,12 @@ function OnMsg.LoadingScreenPreClose()
   --drone gravity
   local gravity = ChoGGi.CheatMenuSettings.GravityDrone
   if gravity then
-    tab = UICity.labels.GravityDrone or empty_table
+    tab = UICity.labels.Drone or empty_table
     for i = 1, #tab do
       tab[i]:SetGravity(gravity)
     end
   end
+--]]
 
   --so we can change the max_amount for concrete
   tab = TerrainDepositConcrete.properties
@@ -383,6 +319,35 @@ function OnMsg.LoadingScreenPreClose()
 
   ChoGGi.NewThread(function()
 
+      --add some custom labels for cables/pipes
+    if type(UICity.labels.GridElements) ~= "table" then
+      UICity.labels.GridElements = {}
+    else
+      --remove any broken objects
+      ChoGGi.RemoveMissingLabelObjects("GridElements")
+    end
+    if type(UICity.labels.ElectricityGridElement) ~= "table" then
+      UICity.labels.ElectricityGridElement = {}
+    else
+      ChoGGi.RemoveMissingLabelObjects("ElectricityGridElement")
+    end
+    if type(UICity.labels.LifeSupportGridElement) ~= "table" then
+      UICity.labels.LifeSupportGridElement = {}
+    else
+      ChoGGi.RemoveMissingLabelObjects("LifeSupportGridElement")
+    end
+    local function NewGridLabels(Label)
+      if not next(UICity.labels[Label]) then
+        local objs = GetObjects({class=Label}) or empty_table
+        for i = 1, #objs do
+          table.insert(UICity.labels[Label],objs[i])
+          table.insert(UICity.labels.GridElements,objs[i])
+        end
+      end
+    end
+    NewGridLabels("ElectricityGridElement")
+    NewGridLabels("LifeSupportGridElement")
+
     --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
     local shown = g_ShownOnScreenNotifications
     for Key,_ in pairs(shown) do
@@ -393,6 +358,36 @@ function OnMsg.LoadingScreenPreClose()
 
     --remove any dialogs we opened
     ChoGGi.CloseDialogsECM()
+
+    --remove any outside buildings i accidentally attached to domes ;)
+    tab = UICity.labels.BuildingNoDomes or empty_table
+    local sType
+    for i = 1, #tab do
+      if tab[i].dome_required == false and tab[i].parent_dome then
+
+        sType = false
+        --remove it from the dome label
+        if tab[i].closed_shifts then
+          sType = "Residence"
+        elseif tab[i].colonists then
+          sType = "Workplace"
+        end
+
+        if sType then --get a fucking continue lua
+          if tab[i].parent_dome.labels and tab[i].parent_dome.labels[sType] then
+            local dome = tab[i].parent_dome.labels[sType]
+            for j = 1, #dome do
+              if dome[j].class == tab[i].class then
+                dome[j] = nil
+              end
+            end
+          end
+          --remove parent_dome
+          tab[i].parent_dome = nil
+        end
+
+      end
+    end
 
   end)
 
@@ -559,8 +554,8 @@ end
 
 function OnMsg.NewHour()
 
-  --make them lazy drones stop abusing electricity
-  if ChoGGi.DronesOverride then
+  --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+  if ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix then
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
     local tab = UICity.labels.ResourceProducer or empty_table
     for i = 1, #tab do
@@ -570,9 +565,6 @@ function OnMsg.NewHour()
       end
     end
   end
-
-  --make sure all buildings are using correct production
-  ChoGGi.SetProductionToSavedAmt()
 
 end
 
