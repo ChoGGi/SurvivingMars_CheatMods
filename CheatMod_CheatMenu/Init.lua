@@ -1,12 +1,14 @@
 --keep everything stored in
 ChoGGi = {
+  id = "ChoGGi_CheatMenu",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  ModPath = _G.Mods.ChoGGi_CheatMenu.path,
   StartupMsgs = {},
   OrigFunc = {},
   Defaults = {},
   CheatMenuSettings = {BuildingSettings = {},Transparency = {}},
 }
+ChoGGi._VERSION = _G.Mods[ChoGGi.id].version
+ChoGGi.ModPath = _G.Mods[ChoGGi.id].path
 
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")

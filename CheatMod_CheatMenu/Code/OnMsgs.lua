@@ -308,7 +308,6 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --people will likely just copy new mod over old, and I moved stuff around
-  ChoGGi._VERSION = _G.Mods.ChoGGi_CheatMenu.version
   if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
     --clean up
     ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
@@ -587,13 +586,8 @@ end
 
 function OnMsg.ApplicationQuit()
 
-  --defaults goddamnit
-  if ChoGGi.ResetSettings then
-    return
-  end
-
-  --return before it saves settings
-  if ChoGGi.Testing then
+  --my comp or if we're resetting settings
+  if ChoGGi.Testing or ChoGGi.ResetSettings then
     return
   end
 

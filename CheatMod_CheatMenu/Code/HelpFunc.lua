@@ -11,7 +11,7 @@ function ChoGGi.ShowInterfaceInScreenshots_Toggle()
 end
 
 function ChoGGi.TakeScreenshot(Bool)
-  if Bool then
+  if Bool == true then
     CreateRealTimeThread(function()
       WaitNextFrame(3)
       LockCamera("Screenshot")

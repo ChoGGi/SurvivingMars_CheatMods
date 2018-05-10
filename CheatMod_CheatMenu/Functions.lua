@@ -488,7 +488,6 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.UserAddActions({
-    --["ChoGGi_" .. AsyncRand()] = {
     ["ChoGGi_" .. name .. AsyncRand()] = {
       menu = Menu,
       action = Action,

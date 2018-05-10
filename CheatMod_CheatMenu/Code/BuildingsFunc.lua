@@ -3,7 +3,6 @@ local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
 function ChoGGi.AnnoyingSounds_Toggle()
-
   --make a list
   local ItemList = {
     {text = "Reset",value = "Reset"},

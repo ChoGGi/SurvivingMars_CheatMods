@@ -3,12 +3,13 @@ local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 DeathReasons.ChoGGi_Soylent = "Evil Overlord"
 
 function ChoGGi.TheSoylentOption()
-  local function MeatbagsToSoylent(MeatBag)
+  local function MeatbagsToSoylent(MeatBag,res)
     if MeatBag.dying then
       return
     end
+    res = res or "Food"
+    PlaceResourcePile(MeatBag:GetLogicalPos(), res, UICity:Random(1,5) * ChoGGi.Consts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
-    PlaceResourcePile(MeatBag:GetLogicalPos(), "Food", UICity:Random(1,5) * ChoGGi.Consts.ResourceScale)
   end
 
   --one at a time
@@ -26,13 +27,29 @@ function ChoGGi.TheSoylentOption()
   }
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    local check1 = choice[1].check1
+
+    --can't drop BlackCubes
+    local list = {}
+    local all = AllResourcesList
+    for i = 1, #all do
+      if all[i] ~= "BlackCube" then
+        table.insert(list,all[i])
+      end
+    end
+
     local function Cull(Label)
       local tab = UICity.labels[Label] or empty_table
       for i = 1, #tab do
-        MeatbagsToSoylent(tab[i])
+        if check1 then
+          MeatbagsToSoylent(tab[i],list[UICity:Random(1,#list)])
+        else
+          MeatbagsToSoylent(tab[i])
+        end
       end
     end
-    local value = choice[1].value
+
     if value == "Both" then
       Cull("Homeless")
       Cull("Unemployed")
@@ -45,8 +62,10 @@ function ChoGGi.TheSoylentOption()
   end
 
   local hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles)."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint)
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint,nil,"Random resource","Drops random resource instead of food.")
 end
+
+
 
 function ChoGGi.SetColonistMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale

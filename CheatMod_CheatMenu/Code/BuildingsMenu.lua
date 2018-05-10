@@ -3,6 +3,14 @@ function ChoGGi.BuildingsMenu_LoadingScreenPreClose()
   local icon = "Cube.tga"
 
   ChoGGi.AddAction(
+    "Expanded CM/Buildings/Empty Mech Depot",
+    ChoGGi.EmptyMechDepot,
+    nil,
+    "Empties out selected/moused over mech depot into a small depot in front of it.",
+    icon
+  )
+
+  ChoGGi.AddAction(
     "Expanded CM/Buildings/Annoying Sounds",
     ChoGGi.AnnoyingSounds_Toggle,
     nil,

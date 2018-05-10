@@ -1,8 +1,8 @@
---add items to the cheat pane
+--add items to the cheats pane
 function ChoGGi.InfoPaneCheats_ClassesGenerate()
 
 --global objects
-  function Building.CheatPowerless(self)
+  function Building:CheatPowerless()
     local mod = self.modifications
     if mod and mod.electricity_consumption then
       self.ChoGGi_mod_electricity_consumption = {
@@ -13,7 +13,7 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     end
     self:SetBase("electricity_consumption", 0)
   end
-  function Building.CheatPowered(self)
+  function Building:CheatPowered()
     if self.ChoGGi_mod_electricity_consumption then
       local mod = self.modifications.electricity_consumption[1]
       local orig = self.ChoGGi_mod_electricity_consumption
@@ -23,64 +23,64 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
     self:SetBase("electricity_consumption", amount)
   end
-  function Object.CheatHideSigns(self)
+  function Object:CheatHideSigns()
     self:DestroyAttaches("BuildingSign")
   end
-  function Object.CheatColourRandom(self)
+  function Object:CheatColourRandom()
     ChoGGi.ObjectColourRandom(self)
   end
-  function Object.CheatColourDefault(self)
+  function Object:CheatColourDefault()
     ChoGGi.ObjectColourDefault(self)
   end
 --colonists
-  function Colonist.CheatFillMorale(self)
+  function Colonist:CheatFillMorale()
     self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatFillSanity(self)
+  function Colonist:CheatFillSanity()
     self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatFillComfort(self)
+  function Colonist:CheatFillComfort()
     self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatFillHealth(self)
+  function Colonist:CheatFillHealth()
     self.stat_health = 100 * ChoGGi.Consts.ResourceScale
   end
-  function Colonist.CheatFillAll(self)
+  function Colonist:CheatFillAll()
     Colonist.CheatFillSanity(self)
     Colonist.CheatFillComfort(self)
     Colonist.CheatFillHealth(self)
     Colonist.CheatFillMorale(self)
   end
-  function Colonist.CheatRenegade(self)
+  function Colonist:CheatRenegade()
     self:AddTrait("Renegade",true)
   end
-  function Colonist.CheatRenegadeClear(self)
+  function Colonist:CheatRenegadeClear()
     self:RemoveTrait("Renegade")
     CreateRealTimeThread(function()
       Sleep(100)
       Colonist.CheatFillMorale(self)
     end)
   end
-  function Colonist.CheatRandomRace(self)
+  function Colonist:CheatRandomRace()
     self.race = UICity:Random(1,5)
     self:ChooseEntity()
   end
-  function Colonist.CheatRandomSpec(self)
+  function Colonist:CheatRandomSpec()
     --skip children, or they'll be a black cube
     if not self.entity:find("Child",1,true) then
       self:SetSpecialization(ChoGGi.ColonistSpecializations[UICity:Random(1,6)],"init")
     end
   end
-  function Colonist.CheatPrefDbl(self)
+  function Colonist:CheatPrefDbl()
     self.performance = self.performance * 2
   end
-  function Colonist.CheatPrefDef(self)
+  function Colonist:CheatPrefDef()
     self.performance = self.base_performance
   end
-  function Colonist.CheatRandomGender(self)
+  function Colonist:CheatRandomGender()
     ChoGGi.ColonistUpdateGender(self,ChoGGi.ColonistGenders[UICity:Random(1,5)])
   end
-  function Colonist.CheatRandomAge(self)
+  function Colonist:CheatRandomAge()
     ChoGGi.ColonistUpdateAge(self,ChoGGi.ColonistAges[UICity:Random(1,6)])
   end
 --CheatAllShifts
@@ -387,6 +387,9 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   function SecurityStation:CheatReneagadeCapDef()
     self.negated_renegades = self.max_negated_renegades
   end
+  function MechanizedDepot:CheatEmptyDepot()
+    ChoGGi.EmptyMechDepot(self)
+  end
 
 end --OnMsg
 
@@ -418,7 +421,7 @@ function ChoGGi.SetInfoPanelCheatHints(win)
   for i = 1, #tab do
     local action = tab[i]
 
-  --Colonists
+--Colonists
     if action.ActionId == "FillAll" then
       SetHint(action,"Fill all stat bars.")
     elseif action.ActionId == "PrefDbl" then
@@ -428,7 +431,7 @@ function ChoGGi.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "RandomSpecialization" then
       SetHint(action,"Randomly set " .. name .. "'s specialization.")
 
-  --Buildings
+--Buildings
     elseif action.ActionId == "VisitorsDbl" then
       SetHint(action,doublec)
     elseif action.ActionId == "VisitorsDef" then
@@ -478,17 +481,20 @@ function ChoGGi.SetInfoPanelCheatHints(win)
       SetHint(action,"Double the storage capacity of this " .. id .. ".")
     elseif action.ActionId == "CapDef" then
       SetHint(action,"Reset the storage capacity of this " .. id .. " to default.")
-  --Farms
+    elseif action.ActionId == "EmptyDepot" then
+      SetHint(action,"sticks small depot in front of mech depot and moves all resources to it (max of 20 000).")
+
+--Farms
     elseif action.ActionId == "AllShifts" then
       SetHint(action,"Turn on all work shifts.")
 
-  --RC
+--RC
     elseif action.ActionId == "BattCapDbl" then
       SetHint(action,"Double capacity of battery.")
     elseif action.ActionId == "MaxShuttlesDbl" then
       SetHint(action,"Double the shuttles this ShuttleHub can control.")
 
-  --Misc
+--Misc
     elseif action.ActionId == "Powerless" then
       if obj.electricity_consumption then
         SetHint(action,"Change this " .. id .. " so it doesn't need a power connection.")

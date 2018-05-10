@@ -113,12 +113,24 @@ function ChoGGi.Editor_Toggle()
   end
 end
 
-function ChoGGi.DeleteObject()
-  local obj = SelectedObj or SelectionMouseObj()
+function ChoGGi.DeleteObject(obj)
+  if not obj or (obj.key and obj.action and obj.idx) then
+    obj = SelectedObj or SelectionMouseObj()
+  end
 
   --deleting domes will freeze game if they have anything in them.
   if IsKindOf(obj,"Dome") and obj.air then
     return
+  end
+
+  --not sure if i need to delete the attachments (safety first)
+  if obj.GetAttaches then
+    local attach = obj:GetAttaches()
+    if type(attach) == "table" then
+      for i = 1, #attach do
+        ChoGGi.DeleteObject(attach[i])
+      end
+    end
   end
 
   --some stuff will leave holes in the world if they're still working
