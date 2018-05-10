@@ -788,9 +788,3 @@ function ChoGGi.SetGameSpeed()
   local hint = "Current speed: " .. current
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
 end
-
-function ChoGGi.InstantColonyApproval()
-  CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
-  Msg("ColonyApprovalPassed")
-  g_ColonyNotViableUntil = -1
-end

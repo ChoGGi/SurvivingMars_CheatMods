@@ -1,7 +1,7 @@
 --stores default values and some tables
 
 --for increasing school/sanatorium traits and adding/removing traits funcs
-ChoGGi.NegativeTraits = {"Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
+ChoGGi.NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
 ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
 --for mystery menu items
 ChoGGi.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
@@ -19,8 +19,30 @@ ChoGGi.ConstructionNamesListFix = {
   ExplorerRover = "RCExplorerBuilding",
   Rocket = "SupplyRocket"
   }
-ChoGGi.Defaults.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-ChoGGi.Defaults.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+if #const.SchoolTraits ~= 5 then
+  ChoGGi.Defaults.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+else
+  ChoGGi.Defaults.SchoolTraits = const.SchoolTraits
+end
+if #const.SanatoriumTraits ~= 7 then
+  ChoGGi.Defaults.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+else
+  ChoGGi.Defaults.SanatoriumTraits = const.SanatoriumTraits
+end
+if ChoGGi.Testing then
+  local startT = "<color 255 0 0>"
+  local endT = " is different length</color>"
+  if #const.SchoolTraits ~= 5 then
+    table.insert(ChoGGi.StartupMsgs,startT .. "SchoolTraits" .. endT)
+  end
+  if #const.SanatoriumTraits ~= 7 then
+    table.insert(ChoGGi.StartupMsgs,startT .. "SanatoriumTraits" .. endT)
+  end
+  local fulllist = TraitsCombo()
+  if #fulllist ~= 55 then
+    table.insert(ChoGGi.StartupMsgs,startT .. "TraitsCombo" .. endT)
+  end
+end
 
 --stores defaults and constants
 ChoGGi.Consts = {

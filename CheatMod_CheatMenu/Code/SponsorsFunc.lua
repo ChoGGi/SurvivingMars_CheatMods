@@ -13,91 +13,22 @@ function ChoGGi.SponsorsFunc_LoadingScreenPreClose()
   SetBonus("CommanderProfilePreset","Commander",ChoGGi.SetCommanderBonuses)
 end
 
---[[
-function ChoGGi.SetDisasterOccurrence(sType)
-  local ItemList = {}
-  local data = DataInstances["MapSettings_" .. sType]
-
-  for i = 1, #data do
-    table.insert(ItemList,{
-      text = data[i].name,
-      value = data[i].name
-    })
-  end
-
-  local CallBackFunc = function(choice)
-    mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
-
-    ChoGGi.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
-      "Disaster","UI/Icons/Sections/attention.tga"
-    )
-  end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+function ChoGGi.InstantMissionGoal()
+  local goal = UICity.mission_goal
+  local target = GetMissionSponsor().goal_target + 1
+  goal.analyzed = target
+  goal.amount = target
+  goal.researched = target
+  goal.colony_approval_sol = UICity.day
+  ChoGGi.InstantMissionGoal = true
+  ChoGGi.MsgPopup("Mission goal","Goal",UsualIcon)
 end
 
-function ChoGGi.ChangeRules()
-  local ItemList = {}
-  for _,Value in iXpairs(Presets.GameRules.Default) do
-    if Value.id ~= "random" then
-      table.insert(ItemList,{
-        text = _InternalTranslate(Value.display_name),
-        value = Value.id,
-        hint = _InternalTranslate(Value.description) .. "\n" .. _InternalTranslate(Value.flavor)
-      })
-    end
-  end
-
-  local CallBackFunc = function(choice)
-    local check1 = choice[1].check1
-    local check2 = choice[1].check2
-    if not check1 and not check2 then
-      ChoGGi.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
-      return
-    elseif check1 and check2 then
-      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
-      return
-    end
-
-    for i = 1, #ItemList do
-      --check to make sure it isn't a fake name (no sense in saving it)
-        for j = 1, #choice do
-          local value = choice[j].value
-          if ItemList[i].value == value then
-            --new comm
-            if not g_CurrentMissionParams.idGameRules then
-              g_CurrentMissionParams.idGameRules = {}
-            end
-            if check1 then
-              g_CurrentMissionParams.idGameRules[value] = true
-            elseif check2 then
-              g_CurrentMissionParams.idGameRules[value] = nil
-            end
-          end
-        end
-      end
-
-    local rules = GetActiveGameRules()
-    for _, rule_id in iXpairs(rules) do
-      GameRulesMap[rule_id]:OnInitEffect(UICity)
-      GameRulesMap[rule_id]:OnApplyEffect(UICity)
-    end
-    ChoGGi.MsgPopup("Set: " .. #choice,
-      "Rules",UsualIcon
-    )
-  end
-
-  local hint
-  local rules = g_CurrentMissionParams.idGameRules
-  if type(rules) == "table" and next(rules) then
-    hint = "Current:"
-    for Key,_ in pairs(rules) do
-      hint = hint .. " " .. _InternalTranslate(Presets.GameRules.Default[Key].display_name)
-    end
-  end
-
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+function ChoGGi.InstantColonyApproval()
+  CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
+  Msg("ColonyApprovalPassed")
+  g_ColonyNotViableUntil = -1
 end
---]]
 
 function ChoGGi.MeteorHealthDamage_Toggle()
   ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
@@ -349,3 +280,89 @@ function ChoGGi.ChangeGameLogo()
   local hint = "Current: " .. _InternalTranslate(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)
   ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
 end
+
+--[[
+function ChoGGi.SetDisasterOccurrence(sType)
+  local ItemList = {}
+  local data = DataInstances["MapSettings_" .. sType]
+
+  for i = 1, #data do
+    table.insert(ItemList,{
+      text = data[i].name,
+      value = data[i].name
+    })
+  end
+
+  local CallBackFunc = function(choice)
+    mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
+
+    ChoGGi.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
+      "Disaster","UI/Icons/Sections/attention.tga"
+    )
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+end
+
+function ChoGGi.ChangeRules()
+  local ItemList = {}
+  for _,Value in iXpairs(Presets.GameRules.Default) do
+    if Value.id ~= "random" then
+      table.insert(ItemList,{
+        text = _InternalTranslate(Value.display_name),
+        value = Value.id,
+        hint = _InternalTranslate(Value.description) .. "\n" .. _InternalTranslate(Value.flavor)
+      })
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if not check1 and not check2 then
+      ChoGGi.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
+      return
+    elseif check1 and check2 then
+      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
+      return
+    end
+
+    for i = 1, #ItemList do
+      --check to make sure it isn't a fake name (no sense in saving it)
+        for j = 1, #choice do
+          local value = choice[j].value
+          if ItemList[i].value == value then
+            --new comm
+            if not g_CurrentMissionParams.idGameRules then
+              g_CurrentMissionParams.idGameRules = {}
+            end
+            if check1 then
+              g_CurrentMissionParams.idGameRules[value] = true
+            elseif check2 then
+              g_CurrentMissionParams.idGameRules[value] = nil
+            end
+          end
+        end
+      end
+
+    local rules = GetActiveGameRules()
+    for _, rule_id in iXpairs(rules) do
+      GameRulesMap[rule_id]:OnInitEffect(UICity)
+      GameRulesMap[rule_id]:OnApplyEffect(UICity)
+    end
+    ChoGGi.MsgPopup("Set: " .. #choice,
+      "Rules",UsualIcon
+    )
+  end
+
+  local hint
+  local rules = g_CurrentMissionParams.idGameRules
+  if type(rules) == "table" and next(rules) then
+    hint = "Current:"
+    for Key,_ in pairs(rules) do
+      hint = hint .. " " .. _InternalTranslate(Presets.GameRules.Default[Key].display_name)
+    end
+  end
+
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+end
+--]]

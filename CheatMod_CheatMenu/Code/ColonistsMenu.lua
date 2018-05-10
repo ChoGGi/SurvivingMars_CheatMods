@@ -361,9 +361,9 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
 
   ChoGGi.AddAction(
     "Expanded CM/Colonists/Set Stats",
-    ChoGGi.SetStatsOfAllColonists,
+    ChoGGi.SetColonistsStats,
     nil,
-    "Change the stats of all colonists.",
+    "Change the stats of all colonists (health/sanity/comfort/morale).\n\nNot permanent.",
     icon
   )
 

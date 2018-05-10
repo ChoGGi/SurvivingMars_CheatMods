@@ -1,58 +1,21 @@
 function ChoGGi.SponsorsMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  --------------------disasters
-  --[[
-  local function DisasterOccurrenceText(Name)
-    local des = mapdata["MapSettings_" .. Name]
-    return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
-  end
-
   ChoGGi.AddAction(
-    "Expanded CM/Mission/Disasters/DustDevils",
-    function()
-      ChoGGi.SetDisasterOccurrence("DustDevils")
-    end,
+    "Expanded CM/Mission/Instant Mission Goal",
+    ChoGGi.InstantMissionGoal,
     nil,
-    DisasterOccurrenceText("DustDevils"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Mission/Disasters/ColdWave",
-    function()
-      ChoGGi.SetDisasterOccurrence("ColdWave")
-    end,
-    nil,
-    DisasterOccurrenceText("ColdWave"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Mission/Disasters/DustStorm",
-    function()
-      ChoGGi.SetDisasterOccurrence("DustStorm")
-    end,
-    nil,
-    DisasterOccurrenceText("DustStorm"),
-    "RandomMapPresetEditor.tga"
-  )
-  ChoGGi.AddAction(
-    "Expanded CM/Mission/Disasters/Meteor",
-    function()
-      ChoGGi.SetDisasterOccurrence("Meteor")
-    end,
-    nil,
-    DisasterOccurrenceText("Meteor"),
-    "RandomMapPresetEditor.tga"
+    "Mission goals are finished instantly (pretty sure the only difference is preventing a msg).\n\nNeeds to change Sol to update.",
+    "AlignSel.tga"
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/Mission/Set Rules",
-    ChoGGi.ChangeRules,
+    "Expanded CM/Mission/Instant Colony Approval",
+    ChoGGi.InstantColonyApproval,
     nil,
-    "Change the map rules.",
-    "ListCollections.tga"
+    "Make your colony instantly approved (can be called before you summon your first victims).",
+    "AlignSel.tga"
   )
---]]
 
   ChoGGi.AddAction(
     "Expanded CM/Mission/Disasters/Meteor Damage",
@@ -106,5 +69,58 @@ function ChoGGi.SponsorsMenu_LoadingScreenPreClose()
     bonusinfo,
     "EV_OpenFromInputBox.tga"
   )
+
+--[[
+  --------------------disasters
+  local function DisasterOccurrenceText(Name)
+    local des = mapdata["MapSettings_" .. Name]
+    return "Set the occurrence level of " .. Name .. " disasters.\nCurrent: " .. des
+  end
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/DustDevils",
+    function()
+      ChoGGi.SetDisasterOccurrence("DustDevils")
+    end,
+    nil,
+    DisasterOccurrenceText("DustDevils"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/ColdWave",
+    function()
+      ChoGGi.SetDisasterOccurrence("ColdWave")
+    end,
+    nil,
+    DisasterOccurrenceText("ColdWave"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/DustStorm",
+    function()
+      ChoGGi.SetDisasterOccurrence("DustStorm")
+    end,
+    nil,
+    DisasterOccurrenceText("DustStorm"),
+    "RandomMapPresetEditor.tga"
+  )
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Disasters/Meteor",
+    function()
+      ChoGGi.SetDisasterOccurrence("Meteor")
+    end,
+    nil,
+    DisasterOccurrenceText("Meteor"),
+    "RandomMapPresetEditor.tga"
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Mission/Set Rules",
+    ChoGGi.ChangeRules,
+    nil,
+    "Change the map rules.",
+    "ListCollections.tga"
+  )
+--]]
 
 end

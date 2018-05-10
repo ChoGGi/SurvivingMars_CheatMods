@@ -498,8 +498,6 @@ function ChoGGi.SetProductionAmount()
 end
 
 function ChoGGi.FullyAutomatedBuildings()
-
-  --show list of options to pick
   local ItemList = {
     {text = " Disable",value = "disable"},
     {text = 100,value = 100},

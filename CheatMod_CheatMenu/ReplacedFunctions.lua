@@ -32,11 +32,17 @@ Lua\X\Infopanel.lua
 
 function ChoGGi.ReplacedFunctions_ClassesGenerate()
 
---[[
---dumpo(classdefs)
-dumpt(classdefs)
-dumpl(classdefs)
---]]
+  --change dist we can charge from cables
+  if not ChoGGi.OrigFunc.BaseRover_GetCableNearby then
+    ChoGGi.OrigFunc.BaseRover_GetCableNearby = BaseRover.GetCableNearby
+  end
+  function BaseRover:GetCableNearby(rad)
+    local amount = ChoGGi.CheatMenuSettings.RCChargeDist
+    if amount then
+      rad = amount
+    end
+    return ChoGGi.OrigFunc.BaseRover_GetCableNearby(self, rad)
+  end
 
   --so we can add hints to info pane cheats
   if not ChoGGi.OrigFunc.InfopanelObj_CreateCheatActions then
@@ -135,67 +141,30 @@ dumpl(classdefs)
   end
 end --OnMsg
 
-
 function ChoGGi.ReplacedFunctions_ClassesBuilt()
 
---[[
-local stat_scale = const.Scale.Stat
-
-function Colonist:Rest()
-  local holder = self.holder
-  if holder and holder ~= self.residence then
-    self:ExitBuilding(holder, self.residence)
+  --some mission goals check colonist amounts
+  local MG_target = GetMissionSponsor().goal_target + 1
+  if not ChoGGi.OrigFunc.MG_Colonists_GetProgress then
+    ChoGGi.OrigFunc.MG_Colonists_GetProgress = MG_Colonists.GetProgress
   end
-  if IsValid(self.residence) and self.holder ~= self.residence and not self:EnterBuilding(self.residence) then
-    return
-  end
-  self:PushDestructor(function(self)
-    self:ExitBuilding()
-  end)
-  self.last_rest = GameTime()
-  local residence = self.residence
-  local dome = self.dome
-  if residence and residence.working then
-    local is_rapid_sleep = self.city:IsTechResearched("RapidSleep")
-    local rest_duration = is_rapid_sleep and const.HourDuration or residence.rest_duration
-    residence:Service(self, rest_duration)
-    self:ChangeHealth(self.DailyHealthRecover, "rest")
-    local sanity_recover = self.DailySanityRecover + residence.sanity_increase
-    self:ChangeSanity(is_rapid_sleep and 2 * sanity_recover or sanity_recover, "rest")
-    if dome and dome.working then
-      --local commander_profile = GetCommanderProfile()
-      --local psyho = commander_profile.id == "psychologist" and commander_profile.param1 * stat_scale or 0
-      if GetCommanderProfile().id == "psychologist" then
-        self:ChangeSanity(5000, "psychologist")
-      end
-      self:ChangeSanity(dome.DailySanityRecoverDome, "dome")
-    end
-  else
-    if not self.traits.Rugged then
-      self:ChangeComfort(-g_Consts.NoHomeComfort, "no home")
-    end
-    self:Roam(const.HourDuration)
-  end
-  if residence and dome:IsMalfunctioned() then
-    self:ChangeSanity(-g_Consts.MalfunctionedDome, "malfunctioned Dome rest")
-  end
-  local wonder = self.city.labels.ProjectMorpheus or empty_table
-  if not self.traits.Child and #wonder > 0 and wonder[1].working then
-    local count = 0
-    for id, _ in pairs(self.traits) do
-      local trait = DataInstances.Trait[id]
-      if trait and trait.show_in_traits_ui then
-        count = count + 1
-      end
-    end
-    if count < 5 and self:Random(100) <= g_Consts.ProjectMorphiousPositiveTraitChance then
-      wonder[1]:AddTrait(self)
+  function MG_Colonists:GetProgress()
+    if ChoGGi.InstantMissionGoal then
+      return MG_target
+    else
+      return ChoGGi.OrigFunc.MG_Colonists_GetProgress(self)
     end
   end
-  self:PopAndCallDestructor()
-end
---]]
-
+  if not ChoGGi.OrigFunc.MG_Martianborn_GetProgress then
+    ChoGGi.OrigFunc.MG_Martianborn_GetProgress = MG_Martianborn.GetProgress
+  end
+  function MG_Martianborn:GetProgress()
+    if ChoGGi.InstantMissionGoal then
+      return MG_target
+    else
+      return ChoGGi.OrigFunc.MG_Martianborn_GetProgress(self)
+    end
+  end
 
   --keep prod at saved values for grid producers (air/water/elec)
   if not ChoGGi.OrigFunc.SupplyGridElement_SetProduction then

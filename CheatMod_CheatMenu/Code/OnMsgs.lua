@@ -41,6 +41,8 @@ end
 --OnMsg.NewMapLoaded()
 function OnMsg.CityStart()
   ChoGGi.IsGameLoaded = false
+  --reset my mystery msgs to hidden
+  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = nil
 end
 
 --fired as late as we can

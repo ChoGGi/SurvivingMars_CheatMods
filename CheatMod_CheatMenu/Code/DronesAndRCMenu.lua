@@ -1,7 +1,8 @@
 function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
 
-  local icon = "ShowAll.tga"
+  local iconD = "ShowAll.tga"
+  local iconRC = "HostGame.tga"
 
   ChoGGi.AddAction(
     "Expanded CM/Drones/Work Radius RC Rover",
@@ -24,7 +25,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetRockToConcreteSpeed,
     nil,
     "How long it takes drones to convert rock to concrete.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -32,7 +33,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDroneMoveSpeed,
     nil,
     "How fast drones will move.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -40,7 +41,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDroneAmountDroneHub,
     "Shift-D",
     "Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -48,7 +49,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDroneFactoryBuildSpeed,
     nil,
     "Change how fast drone factories build drones.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -56,7 +57,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetGravityDrones,
     nil,
     "Change gravity of Drones.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -67,7 +68,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,"(Disabled)","(Enabled)")
       return des .. " Drone Battery Infinite."
     end,
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -83,7 +84,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       end
       return des .. " Instant build/repair when resources are ready."
     end,
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -94,7 +95,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,"(Disabled)","(Enabled)")
       return des .. " Drones will not malfunction when close to a meteor impact site."
     end,
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -105,7 +106,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.DroneRechargeTime,"(Disabled)","(Enabled)")
       return des .. " Faster Drone Recharge."
     end,
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -116,7 +117,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
       local des = ChoGGi.NumRetBool(Consts.DroneRepairSupplyLeak,"(Disabled)","(Enabled)")
       return des .. " Faster Drone fix supply leak."
     end,
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -124,7 +125,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDroneCarryAmount,
     nil,
     "Change amount drones can carry.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -132,7 +133,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDronesPerDroneHub,
     nil,
     "Change amount of drones Drone Hubs will command.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -140,7 +141,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetDronesPerRCRover,
     nil,
     "Change amount of drones RC Rovers will command.",
-    icon
+    iconD
   )
 
   -------------Shuttles
@@ -149,7 +150,7 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
     ChoGGi.SetShuttleHubCapacity,
     nil,
     "Change amount of shuttles per shuttlehub.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
@@ -170,7 +171,15 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
 
   -------------RCs
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Move Speed",
+    "Expanded CM/Rovers/Set Charging Distance",
+    ChoGGi.SetRoverChargeRadius,
+    nil,
+    "Distance from power lines that rovers can charge.",
+    iconRC
+  )
+
+  ChoGGi.AddAction(
+    "Expanded CM/Rovers/RC Move Speed",
     ChoGGi.SetRCMoveSpeed,
     nil,
     "How fast RCs will move.",
@@ -178,37 +187,37 @@ function ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Gravity",
+    "Expanded CM/Rovers/RC Gravity",
     ChoGGi.SetGravityRC,
     nil,
     "Change gravity of RCs.",
-    icon
+    iconD
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Rover Drone Recharge Free",
+    "Expanded CM/Rovers/RC Rover Drone Recharge Free",
     ChoGGi.RCRoverDroneRechargeFree_Toggle,
     nil,
     function()
       local des = ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
       return des .. " No more draining Rover Battery when recharging drones."
     end,
-    "ToggleTerrainHeight.tga"
+    iconRC
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Transport Instant Transfer",
+    "Expanded CM/Rovers/RC Transport Instant Transfer",
     ChoGGi.RCTransportInstantTransfer_Toggle,
     nil,
     function()
       local des = ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
       return des .. " RC Rover quick Transfer/Gather resources."
     end,
-    "light_model.tga"
+    "Mirror.tga"
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/RC/RC Transport Storage Capacity",
+    "Expanded CM/Rovers/RC Transport Storage Capacity",
     ChoGGi.SetRCTransportStorageCapacity,
     nil,
     "Change amount of resources RC Transports can carry.",

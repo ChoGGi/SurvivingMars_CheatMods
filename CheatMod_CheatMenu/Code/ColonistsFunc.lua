@@ -67,92 +67,6 @@ end
 
 
 
-function ChoGGi.SetColonistMoveSpeed()
-  local r = ChoGGi.Consts.ResourceScale
-  local DefaultSetting = ChoGGi.Consts.SpeedColonist
-  local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = 5,value = 5 * r},
-    {text = 10,value = 10 * r},
-    {text = 15,value = 15 * r},
-    {text = 25,value = 25 * r},
-    {text = 50,value = 50 * r},
-    {text = 100,value = 100 * r},
-    {text = 1000,value = 1000 * r},
-    {text = 10000,value = 10000 * r},
-  }
-
-  --other hint type
-  local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.SpeedColonist then
-    hint = ChoGGi.CheatMenuSettings.SpeedColonist
-  end
-
-  --callback
-  local CallBackFunc = function(choice)
-
-    local value = choice[1].value
-    if type(value) == "number" then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        tab[i]:SetMoveSpeed(value)
-      end
-      ChoGGi.SetSavedSetting("SpeedColonist",value)
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
-        "Colonists",UsualIcon
-      )
-    end
-  end
-
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint)
-end
-
-function ChoGGi.SetGravityColonists()
-  --retrieve default
-  local DefaultSetting = ChoGGi.Consts.GravityColonist
-  local r = ChoGGi.Consts.ResourceScale
-  local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = 1,value = 1},
-    {text = 2,value = 2},
-    {text = 3,value = 3},
-    {text = 4,value = 4},
-    {text = 5,value = 5},
-    {text = 10,value = 10},
-    {text = 15,value = 15},
-    {text = 25,value = 25},
-    {text = 50,value = 50},
-    {text = 75,value = 75},
-    {text = 100,value = 100},
-    {text = 250,value = 250},
-    {text = 500,value = 500},
-  }
-
-  local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.GravityColonist then
-    hint = ChoGGi.CheatMenuSettings.GravityColonist / r
-  end
-
-  local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if type(value) == "number" then
-      value = value * r
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        tab[i]:SetGravity(value)
-      end
-      ChoGGi.SetSavedSetting("GravityColonist",value)
-
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Colonist gravity is now: " .. choice[1].text,
-        "Colonists",UsualIcon
-      )
-    end
-  end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint)
-end
-
 function ChoGGi.AddApplicantsToPool()
   local ItemList = {
     {text = 1,value = 1},
@@ -451,7 +365,6 @@ function ChoGGi.PerformancePenaltyNonSpecialist_Toggle()
 end
 
 function ChoGGi.SetOutsideWorkplaceRadius()
-  --show list of options to pick
   local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -564,7 +477,7 @@ local function IsChild(value)
   end
 end
 function ChoGGi.SetColonistsAge(iType)
-  --show list of options to pick
+  local sel = SelectedObj
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistAge"
@@ -600,8 +513,12 @@ function ChoGGi.SetColonistsAge(iType)
   end
 
   local CallBackFunc = function(choice)
-    --new
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     local value = choice[1].value
+    --new
     if iType == 1 then
       ChoGGi.SetSavedSetting("NewColonistAge",value)
       ChoGGi.WriteSettings()
@@ -610,7 +527,13 @@ function ChoGGi.SetColonistsAge(iType)
     elseif iType == 2 then
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        ChoGGi.ColonistUpdateAge(tab[i],value)
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            ChoGGi.ColonistUpdateAge(tab[i],value)
+          end
+        else
+          ChoGGi.ColonistUpdateAge(tab[i],value)
+        end
       end
     end
 
@@ -618,11 +541,18 @@ function ChoGGi.SetColonistsAge(iType)
       "Colonists",UsualIcon
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint)
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint,nil,Check1,Check1Hint)
 end
 
 function ChoGGi.SetColonistsGender(iType)
-  --show list of options to pick
+  local sel = SelectedObj
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistGender"
@@ -662,6 +592,10 @@ function ChoGGi.SetColonistsGender(iType)
   end
 
   local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     --new
     local value = choice[1].value
     if iType == 1 then
@@ -671,18 +605,31 @@ function ChoGGi.SetColonistsGender(iType)
     elseif iType == 2 then
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        ChoGGi.ColonistUpdateGender(tab[i],value)
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            ChoGGi.ColonistUpdateGender(tab[i],value)
+          end
+        else
+          ChoGGi.ColonistUpdateGender(tab[i],value)
+        end
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
       "Colonists",UsualIcon
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint)
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint,nil,Check1,Check1Hint)
 end
 
 function ChoGGi.SetColonistsSpecialization(iType)
-  --show list of options to pick
+  local sel = SelectedObj
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistSpecialization"
@@ -729,6 +676,10 @@ function ChoGGi.SetColonistsSpecialization(iType)
   end
 
   local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     --new
     local value = choice[1].value
     if iType == 1 then
@@ -738,18 +689,31 @@ function ChoGGi.SetColonistsSpecialization(iType)
     elseif iType == 2 then
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        ChoGGi.ColonistUpdateSpecialization(tab[i],value)
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            ChoGGi.ColonistUpdateSpecialization(tab[i],value)
+          end
+        else
+          ChoGGi.ColonistUpdateSpecialization(tab[i],value)
+        end
       end
     end
     ChoGGi.MsgPopup(sType .. "olonists: " .. choice[1].text,
       "Colonists",UsualIcon
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint)
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint,nil,Check1,Check1Hint)
 end
 
 function ChoGGi.SetColonistsRace(iType)
-  --show list of options to pick
+  local sel = SelectedObj
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistRace"
@@ -786,6 +750,10 @@ function ChoGGi.SetColonistsRace(iType)
   end
 
   local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     --new
     local value = choice[1].value
     if iType == 1 then
@@ -795,18 +763,31 @@ function ChoGGi.SetColonistsRace(iType)
     elseif iType == 2 then
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        ChoGGi.ColonistUpdateRace(tab[i],value)
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            ChoGGi.ColonistUpdateRace(tab[i],value)
+          end
+        else
+          ChoGGi.ColonistUpdateRace(tab[i],value)
+        end
       end
     end
     ChoGGi.MsgPopup("Nationalsozialistische Rassenhygiene: " .. choice[1].race,
       "Colonists",UsualIcon
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint)
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint,nil,Check1,Check1Hint)
 end
 
 function ChoGGi.SetColonistsTraits(iType)
-  --show list of options to pick
+  local sel = SelectedObj
   local DefaultSetting = " Default"
   local sSetting = "NewColonistTraits"
   local sType = "New C"
@@ -826,12 +807,13 @@ function ChoGGi.SetColonistsTraits(iType)
     sType = "C"
     DefaultSetting = " Random"
   end
-  hint = hint .. "\n\nCheck Add or Remove, and use Shift or Ctrl to select multiple traits."
+  hint = hint .. "\n\nDefaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits."
 
   local ItemList = {
       {text = " " .. DefaultSetting,value = DefaultSetting,hint = "Use game defaults"},
       {text = " All Positive Traits",value = "PositiveTraits",hint = "All the positive traits..."},
       {text = " All Negative Traits",value = "NegativeTraits",hint = "All the negative traits..."},
+      {text = " All Traits",value = "AllTraits",hint = "All the traits..."},
     }
 
   if iType == 2 then
@@ -859,22 +841,32 @@ function ChoGGi.SetColonistsTraits(iType)
   end
 
   local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     --create list of traits
     local TraitsListTemp = {}
+    local function AddToTable(List,Table)
+      for x = 1, #List do
+        table.insert(Table,List[x])
+      end
+      return Table
+    end
     for i = 1, #choice do
       if choice[i].value == "NegativeTraits" then
-        for j = 1, #ChoGGi.NegativeTraits do
-          table.insert(TraitsListTemp,ChoGGi.NegativeTraits[j])
-        end
+        TraitsListTemp = AddToTable(ChoGGi.NegativeTraits,TraitsListTemp)
       elseif choice[i].value == "PositiveTraits" then
-        for j = 1, #ChoGGi.PositiveTraits do
-          table.insert(TraitsListTemp,ChoGGi.PositiveTraits[j])
-        end
+        TraitsListTemp = AddToTable(ChoGGi.PositiveTraits,TraitsListTemp)
+      elseif choice[i].value == "AllTraits" then
+        TraitsListTemp = AddToTable(ChoGGi.PositiveTraits,TraitsListTemp)
+        TraitsListTemp = AddToTable(ChoGGi.NegativeTraits,TraitsListTemp)
+        ex(TraitsListTemp)
       else
         if choice[i].value then
-          table.insert(TraitsListTemp,choice[i].value)
+          TraitsListTemp = AddToTable(choice[i].value,TraitsListTemp)
         end
       end
     end
@@ -899,47 +891,54 @@ function ChoGGi.SetColonistsTraits(iType)
 
     elseif iType == 2 then
 
-      --nothing checked so just return
-      if not check1 and not check2 then
-        ChoGGi.MsgPopup("Pick a checkbox next time...","Colonists",UsualIcon)
-        return
-      elseif check1 and check2 then
-        ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Colonists",UsualIcon)
-        return
-      end
-
       --random 3x3
       if choice[1].value == DefaultSetting then
+        local function RandomTraits(Obj)
+          --remove all traits
+          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.PositiveTraits)
+          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.NegativeTraits)
+          --add random ones
+          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          Notify(Obj,"UpdateMorale")
+        end
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
-          --remove all traits
-          ChoGGi.ColonistUpdateTraits(tab[i],false,ChoGGi.PositiveTraits)
-          ChoGGi.ColonistUpdateTraits(tab[i],false,ChoGGi.NegativeTraits)
-          --add random ones
-          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          tab[i]:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          tab[i]:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Notify(tab[i],"UpdateMorale")
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              RandomTraits(tab[i])
+            end
+          else
+            RandomTraits(tab[i])
+          end
         end
 
       else
-        local Bool
-        if check1 then
-          Bool = true
-        elseif check2 then
+        local Bool = true
+        if check2 then
           Bool = false
+        end
+        local function SetNewTraits(List,Obj)
+          if Bool == true then
+            Obj:AddTrait(List,true)
+          else
+            Obj:RemoveTrait(List)
+          end
         end
 
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           for j = 1, #TraitsList do
-            if Bool == true then
-              tab[i]:AddTrait(TraitsList[j],true)
+            if dome then
+              if tab[i].dome and tab[i].dome.handle == dome then
+                SetNewTraits(TraitsList[j],tab[i])
+              end
             else
-              tab[i]:RemoveTrait(TraitsList[j])
+              SetNewTraits(TraitsList[j],tab[i])
             end
           end
         end
@@ -951,15 +950,23 @@ function ChoGGi.SetColonistsTraits(iType)
       "Colonists",UsualIcon
     )
   end
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+
   if iType == 1 then
     ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true)
   elseif iType == 2 then
-    ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true,"Add","Check to add traits","Remove","Check to remove traits")
+    ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true,Check1,Check1Hint,"Remove","Check to remove traits")
   end
 end
 
-function ChoGGi.SetStatsOfAllColonists()
-
+function ChoGGi.SetColonistsStats()
+  local sel = SelectedObj
 	local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
     {text = "All Stats Max",value = 1},
@@ -976,9 +983,11 @@ function ChoGGi.SetStatsOfAllColonists()
     {text = "Comfort Fill",value = 9},
   }
 
-  --show list of options to pick
   local CallBackFunc = function(choice)
-
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
     local max = 100000 * r
     local fill = 100 * r
     local value = choice[1].value
@@ -990,7 +999,13 @@ function ChoGGi.SetStatsOfAllColonists()
       end
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        tab[i][Stat] = v
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            tab[i][Stat] = v
+          end
+        else
+          tab[i][Stat] = v
+        end
       end
     end
 
@@ -1003,10 +1018,19 @@ function ChoGGi.SetStatsOfAllColonists()
 
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
-        tab[i].stat_morale = value
-        tab[i].stat_sanity = value
-        tab[i].stat_comfort = value
-        tab[i].stat_health = value
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            tab[i].stat_morale = value
+            tab[i].stat_sanity = value
+            tab[i].stat_comfort = value
+            tab[i].stat_health = value
+          end
+        else
+          tab[i].stat_morale = value
+          tab[i].stat_sanity = value
+          tab[i].stat_comfort = value
+          tab[i].stat_health = value
+        end
       end
 
     elseif value == 3 or value == 4 then
@@ -1021,5 +1045,132 @@ function ChoGGi.SetStatsOfAllColonists()
 
     ChoGGi.MsgPopup(choice[1].text,"Colonists",UsualIcon)
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Stats Of All Colonists","Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else...")
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  local hint = "Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else..."
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Stats Of All Colonists",hint,nil,Check1,Check1Hint)
+end
+
+function ChoGGi.SetColonistMoveSpeed()
+  local sel = SelectedObj
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.Consts.SpeedColonist
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
+    {text = 5,value = 5 * r},
+    {text = 10,value = 10 * r},
+    {text = 15,value = 15 * r},
+    {text = 25,value = 25 * r},
+    {text = 50,value = 50 * r},
+    {text = 100,value = 100 * r},
+    {text = 1000,value = 1000 * r},
+    {text = 10000,value = 10000 * r},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.SpeedColonist then
+    hint = ChoGGi.CheatMenuSettings.SpeedColonist
+  end
+
+  --callback
+  local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
+    local value = choice[1].value
+    if type(value) == "number" then
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            tab[i]:SetMoveSpeed(value)
+          end
+        else
+          tab[i]:SetMoveSpeed(value)
+        end
+      end
+      ChoGGi.SetSavedSetting("SpeedColonist",value)
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+        "Colonists",UsualIcon
+      )
+    end
+  end
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint,nil,Check1,Check1Hint)
+end
+
+function ChoGGi.SetGravityColonists()
+  local sel = SelectedObj
+  local DefaultSetting = ChoGGi.Consts.GravityColonist
+  local r = ChoGGi.Consts.ResourceScale
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 1,value = 1},
+    {text = 2,value = 2},
+    {text = 3,value = 3},
+    {text = 4,value = 4},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+  }
+
+  local hint = DefaultSetting
+  if ChoGGi.CheatMenuSettings.GravityColonist then
+    hint = ChoGGi.CheatMenuSettings.GravityColonist / r
+  end
+
+  local CallBackFunc = function(choice)
+    local dome
+    if choice[1].check1 then
+      dome = sel.dome.handle
+    end
+    local value = choice[1].value
+    if type(value) == "number" then
+      value = value * r
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        if dome then
+          if tab[i].dome and tab[i].dome.handle == dome then
+            tab[i]:SetGravity(value)
+          end
+        else
+          tab[i]:SetGravity(value)
+        end
+      end
+      ChoGGi.SetSavedSetting("GravityColonist",value)
+
+      ChoGGi.WriteSettings()
+      ChoGGi.MsgPopup("Colonist gravity is now: " .. choice[1].text,
+        "Colonists",UsualIcon
+      )
+    end
+  end
+
+  local Check1
+  local Check1Hint
+  if sel and sel.dome then
+    Check1 = "Dome Only"
+    Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  end
+  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint,nil,Check1,Check1Hint)
 end

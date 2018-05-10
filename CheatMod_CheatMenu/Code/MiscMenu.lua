@@ -58,14 +58,6 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.AddAction(
-    "Expanded CM/[999]Misc/Instant Colony Approval",
-    ChoGGi.InstantColonyApproval,
-    nil,
-    "Make your colony instantly approved (can be called before you summon your first victims).",
-    "AlignSel.tga"
-  )
-
-  ChoGGi.AddAction(
     "Expanded CM/[999]Misc/[2]Render/Shadow Map",
     ChoGGi.SetShadowmapSize,
     nil,
