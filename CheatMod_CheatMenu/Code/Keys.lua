@@ -88,7 +88,7 @@ function ChoGGi.Keys_LoadingScreenPreClose()
       CloseXBuildMenu()
     end)
     --fix up some names
-    local fixed = ChoGGi.ConstructionNamesListFix[itemname]
+    local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
     if fixed then
       itemname = fixed
     end

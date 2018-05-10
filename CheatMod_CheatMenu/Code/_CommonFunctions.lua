@@ -255,6 +255,11 @@ function ChoGGi.RemoveOldFiles()
       --third
       "FuncDebug",
       "FuncGame",
+      --fourth
+      "ReplacedFunctions",
+      "Code/SponsorsFunc",
+      "Code/SponsorsMenu",
+      "Code/UIDesignerData",
     }
     local tab = Table or empty_table
     for i = 1, #tab do
@@ -322,7 +327,7 @@ end
 
 function ChoGGi.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
-    Age = ChoGGi.ColonistAges[UICity:Random(1,6)]
+    Age = ChoGGi.Tables.ColonistAges[UICity:Random(1,6)]
   end
   --remove all age traits
   Colonist:RemoveTrait("Child")
@@ -367,9 +372,9 @@ end
 
 function ChoGGi.ColonistUpdateGender(Colonist,Gender,Cloned)
   if Gender == "Random" then
-    Gender = ChoGGi.ColonistGenders[UICity:Random(1,5)]
+    Gender = ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)]
   elseif Gender == "MaleOrFemale" then
-    Gender = ChoGGi.ColonistGenders[UICity:Random(4,5)]
+    Gender = ChoGGi.Tables.ColonistGenders[UICity:Random(4,5)]
   end
   --remove all gender traits
   Colonist:RemoveTrait("OtherGender")
@@ -402,7 +407,7 @@ end
 function ChoGGi.ColonistUpdateSpecialization(Colonist,Spec)
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
-      Spec = ChoGGi.ColonistSpecializations[UICity:Random(1,6)]
+      Spec = ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)]
     end
     Colonist:SetSpecialization(Spec,"init")
     Colonist:ChooseEntity()
@@ -1030,4 +1035,17 @@ function ChoGGi.EmptyMechDepot(oldobj)
     --clean out old depot
     oldobj:CheatEmpty()
   end)
+end
+
+--used to check for some SM objects (Points/Boxes)
+function ChoGGi.RetType(Obj)
+  local meta = getmetatable(Obj)
+  if meta then
+    if IsPoint(Obj) then
+      return "Point"
+    end
+    if IsBox(Obj) then
+      return "Box"
+    end
+  end
 end

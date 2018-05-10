@@ -1,34 +1,38 @@
 --stores default values and some tables
 
---for increasing school/sanatorium traits and adding/removing traits funcs
-ChoGGi.NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"}
-ChoGGi.PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"}
---for mystery menu items
-ChoGGi.MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071}
-ChoGGi.MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070}
-ChoGGi.ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"}
-ChoGGi.ColonistGenders = {"OtherGender","Android","Clone","Male","Female"}
-ChoGGi.ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"}
---display names only! (stored as numbers, not names like the rest; which is why i guessed)
-ChoGGi.ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian"}
---Some names need to be fixed when doing construction placement
-ChoGGi.ConstructionNamesListFix = {
-  RCRover = "RCRoverBuilding",
-  RCDesireTransport = "RCDesireTransportBuilding",
-  RCTransport = "RCTransportBuilding",
-  ExplorerRover = "RCExplorerBuilding",
-  Rocket = "SupplyRocket"
-  }
+--useful lists
+ChoGGi.Tables = {
+  --for increasing school/sanatorium traits and adding/removing traits funcs
+  NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"},
+  PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"},
+  --for mystery menu items
+  MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071},
+  MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070},
+  ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"},
+  ColonistGenders = {"OtherGender","Android","Clone","Male","Female"},
+  ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic"},
+  --display names only! (stored as numbers, not names like the rest; which is why i guessed)
+  ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian"},
+  --Some names need to be fixed when doing construction placement
+  ConstructionNamesListFix = {
+    RCRover = "RCRoverBuilding",
+    RCDesireTransport = "RCDesireTransportBuilding",
+    RCTransport = "RCTransportBuilding",
+    ExplorerRover = "RCExplorerBuilding",
+    Rocket = "SupplyRocket"
+  },
+  SchoolTraits = const.SchoolTraits,
+  SanatoriumTraits = const.SanatoriumTraits,
+}
+
 if #const.SchoolTraits ~= 5 then
-  ChoGGi.Defaults.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-else
-  ChoGGi.Defaults.SchoolTraits = const.SchoolTraits
+  ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
 end
 if #const.SanatoriumTraits ~= 7 then
-  ChoGGi.Defaults.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-else
-  ChoGGi.Defaults.SanatoriumTraits = const.SanatoriumTraits
+  ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
 end
+
+--tell me if traits are different
 if ChoGGi.Testing then
   local startT = "<color 255 0 0>"
   local endT = " is different length</color>"

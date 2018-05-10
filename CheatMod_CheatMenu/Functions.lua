@@ -59,6 +59,7 @@ function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
+
 function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil
@@ -294,9 +295,8 @@ function ChoGGi.CompareTableNames(a,b,sName)
   end
 end
 
-
-function ChoGGi.WriteLogs_Toggle(Bool)
-  if Bool == true then
+function ChoGGi.WriteLogs_Toggle(Enable)
+  if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
     AsyncFileDelete(logs .. "ConsoleLog.log")
@@ -305,40 +305,27 @@ function ChoGGi.WriteLogs_Toggle(Bool)
     AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
 
     --redirect functions
-    ChoGGi.OrigFunc.AddConsoleLog = AddConsoleLog
-    AddConsoleLog = function(...)
-      ChoGGi.PrintFiles("ConsoleLog",ChoGGi.OrigFunc.AddConsoleLog,nil,...)
+    local function ReplaceFunc(Name,Type)
+      ChoGGi.SaveOrigFunc(Name)
+      _G[Name] = function(...)
+        ChoGGi.PrintFiles(Type,ChoGGi.OrigFunc[Name],nil,...)
+      end
     end
-    ChoGGi.OrigFunc.printf = printf
-    printf = function(...)
-      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.printf,nil,...)
-    end
-    --these only show up in the usual log afer you exit the game (or maybe never if it crashes)
-    ChoGGi.OrigFunc.DebugPrint = DebugPrint
-    DebugPrint = function(...)
-      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.DebugPrint,nil,...)
-    end
-    ChoGGi.OrigFunc.OutputDebugString = OutputDebugString
-    OutputDebugString = function(...)
-      ChoGGi.PrintFiles("DebugLog",ChoGGi.OrigFunc.OutputDebugString,nil,...)
-    end
+    ReplaceFunc("AddConsoleLog","ConsoleLog")
+    ReplaceFunc("printf","DebugLog")
+    ReplaceFunc("DebugPrint","DebugLog")
+    ReplaceFunc("OutputDebugString","DebugLog")
   else
-    if ChoGGi.OrigFunc.AddConsoleLog then
-      AddConsoleLog = ChoGGi.OrigFunc.AddConsoleLog
-      ChoGGi.OrigFunc.AddConsoleLog = nil
+    local function ResetFunc(Name)
+      if ChoGGi.OrigFunc[Name] then
+        _G[Name] = ChoGGi.OrigFunc[Name]
+        ChoGGi.OrigFunc[Name] = nil
+      end
     end
-    if ChoGGi.OrigFunc.printf then
-      printf = ChoGGi.OrigFunc.printf
-      ChoGGi.OrigFunc.printf = nil
-    end
-    if ChoGGi.OrigFunc.DebugPrint then
-      DebugPrint = ChoGGi.OrigFunc.DebugPrint
-      ChoGGi.OrigFunc.DebugPrint = nil
-    end
-    if ChoGGi.OrigFunc.OutputDebugString then
-      OutputDebugString = ChoGGi.OrigFunc.OutputDebugString
-      ChoGGi.OrigFunc.OutputDebugString = nil
-    end
+    ResetFunc("AddConsoleLog")
+    ResetFunc("printf")
+    ResetFunc("DebugPrint")
+    ResetFunc("OutputDebugString")
   end
 end
 
@@ -357,15 +344,27 @@ function ChoGGi.PrintIds(Table)
 end
 
 --changes a function to also post a Msg for use with OnMsg
---AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
-function ChoGGi.AddMsgToFunc(OrigFunc,ClassName,FuncName,sMsg)
-  local SavedName = ClassName .. FuncName
+--AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
+function ChoGGi.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
-  ChoGGi.OrigFunc[SavedName] = OrigFunc
+  ChoGGi.SaveOrigFunc(FuncName,ClassName)
   --redefine it
   _G[ClassName][FuncName] = function(self,...)
     Msg(sMsg,self)
-    return ChoGGi.OrigFunc[SavedName](self,...)
+    return ChoGGi.OrigFunc[ClassName .. "_" .. FuncName](self,...)
+  end
+end
+
+function ChoGGi.SaveOrigFunc(Name,Class)
+  if Class then
+    local newname = Class .. "_" .. Name
+    if not ChoGGi.OrigFunc[newname] then
+      ChoGGi.OrigFunc[newname] = _G[Class][Name]
+    end
+  else
+    if not ChoGGi.OrigFunc[Name] then
+      ChoGGi.OrigFunc[Name] = _G[Name]
+    end
   end
 end
 

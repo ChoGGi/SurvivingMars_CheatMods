@@ -568,9 +568,9 @@ end
 function ChoGGi.SchoolTrainAll_Toggle()
   ChoGGi.CheatMenuSettings.SchoolTrainAll = not ChoGGi.CheatMenuSettings.SchoolTrainAll
   if ChoGGi.CheatMenuSettings.SchoolTrainAll then
-    ChoGGi.BuildingsSetAll_Traits("School",ChoGGi.PositiveTraits)
+    ChoGGi.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits)
   else
-    ChoGGi.BuildingsSetAll_Traits("School",ChoGGi.PositiveTraits,true)
+    ChoGGi.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits,true)
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SchoolTrainAll) .. "\nYou keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?",
@@ -581,9 +581,9 @@ end
 function ChoGGi.SanatoriumCureAll_Toggle()
   ChoGGi.CheatMenuSettings.SanatoriumCureAll = not ChoGGi.CheatMenuSettings.SanatoriumCureAll
   if ChoGGi.CheatMenuSettings.SanatoriumCureAll then
-    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits)
+    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits)
   else
-    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.NegativeTraits,true)
+    ChoGGi.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits,true)
   end
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumCureAll) .. "\nThere's more vodka in this piss than there is piss.",
@@ -593,11 +593,11 @@ end
 
 function ChoGGi.ShowAllTraits_Toggle()
   if #g_SchoolTraits == 18 then
-    g_SchoolTraits = ChoGGi.Defaults.SchoolTraits
-    g_SanatoriumTraits = ChoGGi.Defaults.SanatoriumTraits
+    g_SchoolTraits = ChoGGi.Tables.SchoolTraits
+    g_SanatoriumTraits = ChoGGi.Tables.SanatoriumTraits
   else
-    g_SchoolTraits = ChoGGi.PositiveTraits
-    g_SanatoriumTraits = ChoGGi.NegativeTraits
+    g_SchoolTraits = ChoGGi.Tables.PositiveTraits
+    g_SanatoriumTraits = ChoGGi.Tables.NegativeTraits
   end
 
   ChoGGi.MsgPopup(#g_SchoolTraits .. ": Good for what ails you",
@@ -608,8 +608,8 @@ end
 function ChoGGi.SanatoriumSchoolShowAll()
   ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll = not ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll
 
-	Sanatorium.max_traits = ChoGGi.ValueRetOpp(Sanatorium.max_traits,3,#ChoGGi.NegativeTraits)
-	School.max_traits = ChoGGi.ValueRetOpp(School.max_traits,3,#ChoGGi.PositiveTraits)
+	Sanatorium.max_traits = ChoGGi.ValueRetOpp(Sanatorium.max_traits,3,#ChoGGi.Tables.NegativeTraits)
+	School.max_traits = ChoGGi.ValueRetOpp(School.max_traits,3,#ChoGGi.Tables.PositiveTraits)
 
   ChoGGi.WriteSettings()
   ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",

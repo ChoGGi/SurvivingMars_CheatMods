@@ -3,14 +3,14 @@ function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
   ChoGGi.ReplacedFunctions_ClassesGenerate()
   ChoGGi.InfoPaneCheats_ClassesGenerate()
-  ChoGGi.UIDesignerData_ClassesGenerate()
+  ChoGGi.ListChoiceCustom_ClassesGenerate()
   ChoGGi.ObjectManipulator_ClassesGenerate()
 end --OnMsg
 
 function OnMsg.ClassesBuilt()
 
   ChoGGi.ReplacedFunctions_ClassesBuilt()
-  ChoGGi.UIDesignerData_ClassesBuilt()
+  ChoGGi.ListChoiceCustom_ClassesBuilt()
   ChoGGi.ObjectManipulator_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
@@ -288,8 +288,8 @@ function OnMsg.LoadingScreenPreClose()
 
   --show all traits
   if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #ChoGGi.NegativeTraits
-    School.max_traits = #ChoGGi.PositiveTraits
+    Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
+    School.max_traits = #ChoGGi.Tables.PositiveTraits
   end
 
   --unbreakable cables/pipes
@@ -439,13 +439,13 @@ function OnMsg.ConstructionComplete(building)
     building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
 
   elseif ChoGGi.CheatMenuSettings.SchoolTrainAll and building.class == "School" then
-    for i = 1, #ChoGGi.PositiveTraits do
-      building:SetTrait(i,ChoGGi.PositiveTraits[i])
+    for i = 1, #ChoGGi.Tables.PositiveTraits do
+      building:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
     end
 
   elseif ChoGGi.CheatMenuSettings.SanatoriumCureAll and building.class == "Sanatorium" then
-    for i = 1, #ChoGGi.NegativeTraits do
-      building:SetTrait(i,ChoGGi.NegativeTraits[i])
+    for i = 1, #ChoGGi.Tables.NegativeTraits do
+      building:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
     end
   end
 
@@ -598,24 +598,24 @@ function OnMsg.ApplicationQuit()
 end
 
 --custom OnMsgs, these aren't part of the base game, so without this mod they don't work
-ChoGGi.AddMsgToFunc(CargoShuttle.GameInit,"CargoShuttle","GameInit","SpawnedShuttle")
-ChoGGi.AddMsgToFunc(Drone.GameInit,"Drone","GameInit","SpawnedDrone")
-ChoGGi.AddMsgToFunc(RCTransport.GameInit,"RCTransport","GameInit","SpawnedRCTransport")
-ChoGGi.AddMsgToFunc(RCRover.GameInit,"RCRover","GameInit","SpawnedRCRover")
-ChoGGi.AddMsgToFunc(ExplorerRover.GameInit,"ExplorerRover","GameInit","SpawnedExplorerRover")
-ChoGGi.AddMsgToFunc(Residence.GameInit,"Residence","GameInit","SpawnedResidence")
-ChoGGi.AddMsgToFunc(Workplace.GameInit,"Workplace","GameInit","SpawnedWorkplace")
-ChoGGi.AddMsgToFunc(GridObject.ApplyToGrids,"GridObject","ApplyToGrids","CreatedGridObject")
-ChoGGi.AddMsgToFunc(GridObject.RemoveFromGrids,"GridObject","RemoveFromGrids","RemovedGridObject")
-ChoGGi.AddMsgToFunc(ElectricityProducer.CreateElectricityElement,"ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
-ChoGGi.AddMsgToFunc(AirProducer.CreateLifeSupportElements,"AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
-ChoGGi.AddMsgToFunc(WaterProducer.CreateLifeSupportElements,"WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
-ChoGGi.AddMsgToFunc(SingleResourceProducer.Init,"SingleResourceProducer","Init","SpawnedProducerSingle")
-ChoGGi.AddMsgToFunc(ElectricityStorage.GameInit,"ElectricityStorage","GameInit","SpawnedElectricityStorage")
-ChoGGi.AddMsgToFunc(LifeSupportGridObject.GameInit,"LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
-ChoGGi.AddMsgToFunc(PinnableObject.TogglePin,"PinnableObject","TogglePin","TogglePinnableObject")
-ChoGGi.AddMsgToFunc(ResourceStockpileLR.GameInit,"ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
-ChoGGi.AddMsgToFunc(DroneHub.GameInit,"DroneHub","GameInit","SpawnedDroneHub")
+ChoGGi.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
+ChoGGi.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
+ChoGGi.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
+ChoGGi.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
+ChoGGi.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
+ChoGGi.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
+ChoGGi.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
+ChoGGi.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
+ChoGGi.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
+ChoGGi.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
+ChoGGi.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
+ChoGGi.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
+ChoGGi.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
+ChoGGi.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
+ChoGGi.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
+ChoGGi.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
+ChoGGi.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
+ChoGGi.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
 
 --attached temporary resource depots
 function OnMsg.SpawnedResourceStockpileLR(Obj)

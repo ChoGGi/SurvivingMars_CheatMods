@@ -495,11 +495,11 @@ function ChoGGi.SetColonistsAge(iType)
     text = DefaultSetting,
     value = DefaultSetting,
   })
-  for i = 1, #ChoGGi.ColonistAges do
+  for i = 1, #ChoGGi.Tables.ColonistAges do
     table.insert(ItemList,{
-      text = ChoGGi.ColonistAges[i],
-      value = ChoGGi.ColonistAges[i],
-      hint = IsChild(ChoGGi.ColonistAges[i]),
+      text = ChoGGi.Tables.ColonistAges[i],
+      value = ChoGGi.Tables.ColonistAges[i],
+      hint = IsChild(ChoGGi.Tables.ColonistAges[i]),
     })
   end
 
@@ -575,10 +575,10 @@ function ChoGGi.SetColonistsGender(iType)
     value = "MaleOrFemale",
     hint = "Only set as male or female",
   })
-  for i = 1, #ChoGGi.ColonistGenders do
+  for i = 1, #ChoGGi.Tables.ColonistGenders do
     table.insert(ItemList,{
-      text = ChoGGi.ColonistGenders[i],
-      value = ChoGGi.ColonistGenders[i],
+      text = ChoGGi.Tables.ColonistGenders[i],
+      value = ChoGGi.Tables.ColonistGenders[i],
     })
   end
 
@@ -659,10 +659,10 @@ function ChoGGi.SetColonistsSpecialization(iType)
     value = "none",
     hint = "Removes specializations",
   })
-  for i = 1, #ChoGGi.ColonistSpecializations do
+  for i = 1, #ChoGGi.Tables.ColonistSpecializations do
     table.insert(ItemList,{
-      text = ChoGGi.ColonistSpecializations[i],
-      value = ChoGGi.ColonistSpecializations[i],
+      text = ChoGGi.Tables.ColonistSpecializations[i],
+      value = ChoGGi.Tables.ColonistSpecializations[i],
     })
   end
 
@@ -732,9 +732,9 @@ function ChoGGi.SetColonistsRace(iType)
     race = DefaultSetting,
   })
   local race = {"Herrenvolk","Schwarzvolk","Asiatischvolk","Indischvolk","Südost Asiatischvolk"}
-  for i = 1, #ChoGGi.ColonistRaces do
+  for i = 1, #ChoGGi.Tables.ColonistRaces do
     table.insert(ItemList,{
-      text = ChoGGi.ColonistRaces[i],
+      text = ChoGGi.Tables.ColonistRaces[i],
       value = i,
       race = race[i],
     })
@@ -820,16 +820,16 @@ function ChoGGi.SetColonistsTraits(iType)
     ItemList[1].hint = "Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six)."
   end
 
-  for i = 1, #ChoGGi.NegativeTraits do
+  for i = 1, #ChoGGi.Tables.NegativeTraits do
     table.insert(ItemList,{
-      text = ChoGGi.NegativeTraits[i],
-      value = ChoGGi.NegativeTraits[i],
+      text = ChoGGi.Tables.NegativeTraits[i],
+      value = ChoGGi.Tables.NegativeTraits[i],
     })
   end
-  for i = 1, #ChoGGi.PositiveTraits do
+  for i = 1, #ChoGGi.Tables.PositiveTraits do
     table.insert(ItemList,{
-      text = ChoGGi.PositiveTraits[i],
-      value = ChoGGi.PositiveTraits[i],
+      text = ChoGGi.Tables.PositiveTraits[i],
+      value = ChoGGi.Tables.PositiveTraits[i],
     })
   end
   --add hint descriptions
@@ -845,7 +845,6 @@ function ChoGGi.SetColonistsTraits(iType)
     if choice[1].check1 then
       dome = sel.dome.handle
     end
-    local check1 = choice[1].check1
     local check2 = choice[1].check2
     --create list of traits
     local TraitsListTemp = {}
@@ -857,12 +856,12 @@ function ChoGGi.SetColonistsTraits(iType)
     end
     for i = 1, #choice do
       if choice[i].value == "NegativeTraits" then
-        TraitsListTemp = AddToTable(ChoGGi.NegativeTraits,TraitsListTemp)
+        TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
       elseif choice[i].value == "PositiveTraits" then
-        TraitsListTemp = AddToTable(ChoGGi.PositiveTraits,TraitsListTemp)
+        TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
       elseif choice[i].value == "AllTraits" then
-        TraitsListTemp = AddToTable(ChoGGi.PositiveTraits,TraitsListTemp)
-        TraitsListTemp = AddToTable(ChoGGi.NegativeTraits,TraitsListTemp)
+        TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
+        TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
         ex(TraitsListTemp)
       else
         if choice[i].value then
@@ -895,15 +894,15 @@ function ChoGGi.SetColonistsTraits(iType)
       if choice[1].value == DefaultSetting then
         local function RandomTraits(Obj)
           --remove all traits
-          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.PositiveTraits)
-          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.NegativeTraits)
+          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.PositiveTraits)
+          ChoGGi.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.NegativeTraits)
           --add random ones
-          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.PositiveTraits[UICity:Random(1,#ChoGGi.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.NegativeTraits[UICity:Random(1,#ChoGGi.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
           Notify(Obj,"UpdateMorale")
         end
         local tab = UICity.labels.Colonist or empty_table
@@ -918,15 +917,11 @@ function ChoGGi.SetColonistsTraits(iType)
         end
 
       else
-        local Bool = true
-        if check2 then
-          Bool = false
-        end
         local function SetNewTraits(List,Obj)
-          if Bool == true then
-            Obj:AddTrait(List,true)
-          else
+          if check2 then
             Obj:RemoveTrait(List)
+          else
+            Obj:AddTrait(List,true)
           end
         end
 

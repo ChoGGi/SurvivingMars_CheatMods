@@ -258,9 +258,9 @@ function ChoGGi.ShowMysteryList()
   local ItemList = {}
   ClassDescendantsList("MysteryBase",function(class)
     table.insert(ItemList,{
-      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({ChoGGi.MysteryDifficulty[class]})) or "Missing Name"),
+      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({ChoGGi.Tables.MysteryDifficulty[class]})) or "Missing Name"),
       value = class,
-      hint = (_InternalTranslate(T({ChoGGi.MysteryDescription[class]})) or "Missing Description")
+      hint = (_InternalTranslate(T({ChoGGi.Tables.MysteryDescription[class]})) or "Missing Description")
     })
   end)
 

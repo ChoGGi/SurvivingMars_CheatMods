@@ -4,7 +4,7 @@ ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   StartupMsgs = {},
   OrigFunc = {},
-  Defaults = {},
+  --Defaults = {},
   CheatMenuSettings = {BuildingSettings = {},Transparency = {}},
 }
 ChoGGi._VERSION = _G.Mods[ChoGGi.id].version
@@ -21,8 +21,6 @@ dofile(ChoGGi.ModPath .. "Settings.lua")
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.ReadSettings()
 
---function overrides / shortened func names
-dofile(ChoGGi.ModPath .. "ReplacedFunctions.lua")
 --functions needed for before Code/ is loaded
 dofile(ChoGGi.ModPath .. "Functions.lua")
 --load all my other files
@@ -50,6 +48,8 @@ if ChoGGi.Init_WriteSettings then
   ChoGGi.WriteSettings()
 end
 
+--be nice to get a remote debugger working
+--[[
 Platform.editor = true
 config.LuaDebugger = true
 GlobalVar("outputSocket", false)
@@ -59,6 +59,7 @@ dofile("CommonLua/Core/luaDebuggerOutput.lua")
 dofile("CommonLua/Core/ProjectSync.lua")
 config.LuaDebugger = false
 Platform.editor = false
+--]]
 --fixes UpdateInterface nil value in editor mode
 Platform.developer = true
 editor.LoadPlaceObjConfig()
