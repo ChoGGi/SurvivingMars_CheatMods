@@ -11,15 +11,39 @@ ConstructionNamesListFix = {
 }
 
 --for orientation
-function OnMsg.BuildingPlaced(Object)
-  ChoGGiX.LastPlacedObject = Object
+function OnMsg.BuildingPlaced(Obj)
+  if IsKindOf(Obj,"Building") then
+    ChoGGiX.LastPlacedObject = Obj
+  end
 end
-function OnMsg.ConstructionSitePlaced(Object)
-  ChoGGiX.LastPlacedObject = Object
+function OnMsg.ConstructionSitePlaced(Obj)
+  if IsKindOf(Obj,"Building") then
+    ChoGGiX.LastPlacedObject = Obj
+  end
 end
 --for ctrl-space
-function OnMsg.ConstructionComplete(building)
-  ChoGGiX.LastPlacedBuildingObj = building
+function OnMsg.ConstructionComplete(Obj)
+  if IsKindOf(Obj,"Building") then
+    ChoGGiX.LastPlacedObject = Obj
+  end
+end
+
+function ChoGGiX.FilterFromTable(Table,ExcludeList,Type)
+  return FilterObjects({
+      filter = function(o)
+        if not ExcludeList[o[Type]] then
+          return o
+        end
+      end
+    },Table)
+end
+
+function ChoGGiX.SelObject()
+  local _,ret = pcall(function()
+    local objs = ChoGGiX.FilterFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1},"class")
+    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
+  end)
+  return ret
 end
 
 function OnMsg.LoadGame()
@@ -29,17 +53,16 @@ function OnMsg.LoadGame()
   end
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
 
-    local cursor_obj = ChoGGiX.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
+    local ret = ChoGGiX.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
 
-    --set orientation to last object if same entity (should I just do it for everything)
-    --if ChoGGiX.LastPlacedObject and ChoGGiX.LastPlacedObject.entity == cursor_obj.entity then
-    if ChoGGiX.LastPlacedObject then
+    local last = ChoGGiX.LastPlacedObject
+    if last then
       pcall(function()
-        cursor_obj:SetOrientation(ChoGGiX.LastPlacedObject:GetOrientation())
+        ret:SetAngle(last:GetAngle())
       end)
     end
 
-    return cursor_obj
+    return ret
   end
 
   --spawn and fill a deposit at mouse pos
@@ -83,24 +106,24 @@ function OnMsg.LoadGame()
       return
     end
     local bld_template = DataInstances.BuildingTemplate[itemname]
-    local show,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+    local _,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
-    if show then
-      local dlg = GetXDialog("XBuildMenu")
-      if action then
-        action(dlg,{
-          enabled = can_build,
-          name = bld_template.name,
-          construction_mode = bld_template.construction_mode
-        })
-      else
-        igi:SetMode("construction",{
-          template = bld_template.name,
-          selected_dome = dlg and dlg.context.selected_dome
-        })
-      end
-      CloseXBuildMenu()
+    --if show then
+    local dlg = GetXDialog("XBuildMenu")
+    if action then
+      action(dlg,{
+        enabled = can_build,
+        name = bld_template.name,
+        construction_mode = bld_template.construction_mode
+      })
+    else
+      igi:SetMode("construction",{
+        template = bld_template.name,
+        selected_dome = dlg and dlg.context.selected_dome
+      })
     end
+    CloseXBuildMenu()
+    --end
   end
 
   --change some annoying stuff about UserActions.AddActions()
@@ -169,7 +192,7 @@ function OnMsg.LoadGame()
   --goes to placement mode with SelectedObj
   ChoGGiX.AddAction(nil,
     function()
-      local sel = SelectedObj or SelectionMouseObj()
+      local sel = ChoGGiX.SelObject()
       if sel then
         ChoGGiX.LastPlacedObject = sel
         ChoGGiX.ConstructionModeNameClean(ValueToLuaCode(sel))

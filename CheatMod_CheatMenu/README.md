@@ -18,7 +18,7 @@ F2: Toggle the cheats menu.
 F3: Set object opacity.
 F4: Open object examiner.
 F5: Open object manipulator (or use edit button in examiner).
-F6: Change building colour.
+F6: Change building colour (Shift or Ctrl to apply random/default).
 F7: Toggle using last building orientation.
 F9: Clear the console log.
 Ctrl+F: Fill resource of object.
