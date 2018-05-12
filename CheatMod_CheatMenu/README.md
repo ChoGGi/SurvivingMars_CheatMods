@@ -178,15 +178,15 @@ end
 
 some functions I added that may be useful for modders:
 
-ChoGGi.Funcs.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
+ChoGGi.ComFuncs.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
 TechTree[6][46] = Breakthroughs>PrefabCompression
 
-ChoGGi.Funcs.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
+ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
 see: Data/TechTree.lua, or ex(TechTree) ex(TechDef)
 
-ChoGGi.Funcs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10
-ChoGGi.Funcs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+ChoGGi.ComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
 ^ returns 0.7
 
 it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
