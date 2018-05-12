@@ -29,7 +29,7 @@ Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
 Ctrl-Shift-F: Follow Camera (follow an object around).
 Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff).
-Ctrl-Shift-E: Toggle editor mode.
+Ctrl-Shift-E: Toggle editor mode (select object then hold ctrl/shift/alt and drag mouse).
 Ctrl-Alt-Shift-D: Delete object.
 Shift-Q: Clone selected object to mouse position.
 More shortcut keys are available, see menu items.
@@ -175,15 +175,15 @@ end
 
 some functions I added that may be useful for modders:
 
-ChoGGi.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
+ChoGGi.Funcs.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
 TechTree[6][46] = Breakthroughs>PrefabCompression
 
-ChoGGi.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
+ChoGGi.Funcs.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
 see: Data/TechTree.lua, or ex(TechTree) ex(TechDef)
 
-ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+ChoGGi.Funcs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10
-ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+ChoGGi.Funcs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
 ^ returns 0.7
 
 it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)

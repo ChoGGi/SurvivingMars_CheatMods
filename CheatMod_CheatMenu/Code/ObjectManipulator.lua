@@ -1,5 +1,5 @@
 --
-function ChoGGi.ObjectManipulator_ClassesGenerate()
+function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   DefineClass.ObjectManipulator = {
     __parents = {
@@ -39,7 +39,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       end
       --
       local edit_text = self.idEditValue:GetText()
-      local edit_value = ChoGGi.RetProperType(edit_text)
+      local edit_value = ChoGGi.Funcs.RetProperType(edit_text)
       local edit_type = type(edit_value)
       local obj_value = self.obj[self.idList.items[sel_idx].text]
       local obj_type = type(obj_value)
@@ -122,7 +122,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
     --open editor with whatever is selected
     self.idList.OnRButtonDoubleClick = function()
       if self.sel then
-        ChoGGi.OpenInObjectManipulator(self.sel.object,self)
+        ChoGGi.Funcs.OpenInObjectManipulator(self.sel.object,self)
       end
     end
 
@@ -148,11 +148,11 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
       local CallBackFunc = function(choice)
         --add it to the actual object
-        self.obj[tostring(choice[1].value)] = ChoGGi.RetProperType(choice[2].value)
+        self.obj[tostring(choice[1].value)] = ChoGGi.Funcs.RetProperType(choice[2].value)
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
+      ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -160,7 +160,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       if value then
         local objs = GetObjects({class=self.obj.class})
         for i = 1, #objs do
-          objs[i][self.sel.text] = ChoGGi.RetProperType(value)
+          objs[i][self.sel.text] = ChoGGi.Funcs.RetProperType(value)
         end
       end
     end
@@ -329,13 +329,13 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
         local res = {}
         for i = 1, Min(#o, 3) do
-          table.insert(res, {
+          res[#res+1] = {
             text = i,
             value = self:CreateProp(o[i])
-          })
+          }
         end
         if #o > 3 then
-          table.insert(res, {text = "..."})
+          res[#res+1] = {text = "..."}
         end
         return "objlist" .. "{" .. table.concat(res, ", ") .. "}"
       end
@@ -379,12 +379,12 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
       else
         text = self:CreateProp(k)
       end
-      table.insert(res,{
+      res[#res+1] = {
         sort = self:CreateProp(k),
         text = text,
         value = self:CreateProp(v),
         object = v
-      })
+      }
     end
 
     if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
@@ -400,7 +400,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
         while true do
           info = debug.getinfo(o, level, "Slfun")
           if info then
-            table.insert(res,{text = info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")})
+            res[#res+1] = {text = info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")}
             level = level + 1
             else
               if type(o) == "function" then
@@ -445,7 +445,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
                 else
                   t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
                 end
-                table.insert(res,{text =  t .. "<vspace 8>"})
+                res[#res+1] = {text =  t .. "<vspace 8>"}
               end
             end
           end
@@ -461,7 +461,7 @@ function ChoGGi.ObjectManipulator_ClassesGenerate()
 
 end --ClassesGenerate
 
-function ChoGGi.ObjectManipulator_ClassesBuilt()
+function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
   --dialog layout
   --[[
   DesignResolution

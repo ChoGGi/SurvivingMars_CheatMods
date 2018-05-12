@@ -1,80 +1,82 @@
-function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
-  --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
+  --ChoGGi.Funcs.AddAction(Menu,Action,Key,Des,Icon)
   local icon = "AlignSel.tga"
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/The Soylent Option",
-    ChoGGi.TheSoylentOption,
+    ChoGGi.MenuFuncs.TheSoylentOption,
     "Ctrl-Numpad 1",
     "Turns selected/moused over colonist into food (between 1-5), or shows a list with homeless/unemployed.",
     "Cube.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Colonists Move Speed",
-    ChoGGi.SetColonistMoveSpeed,
+    ChoGGi.MenuFuncs.SetColonistMoveSpeed,
     nil,
     "How fast colonists will move.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Add Applicants",
-    ChoGGi.AddApplicantsToPool,
+    ChoGGi.MenuFuncs.AddApplicantsToPool,
     nil,
     "Add random applicants to the passenger pool.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Colonists Gravity",
-    ChoGGi.SetGravityColonists,
+    ChoGGi.MenuFuncs.SetGravityColonists,
     nil,
     "Change gravity of Colonists.",
     icon
   )
 
-  ChoGGi.AddAction(
+-------------------------------work
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Fire All Colonists!",
-    ChoGGi.FireAllColonists,
+    ChoGGi.MenuFuncs.FireAllColonists,
     nil,
     "Fires everyone from every job.",
     "ToggleEnvMap.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Set All Work Shifts",
-    ChoGGi.SetAllWorkShifts,
+    ChoGGi.MenuFuncs.SetAllWorkShifts,
     nil,
     "Set all shifts on or off (able to cancel).",
     "ToggleEnvMap.tga"
   )
 
-  ChoGGi.AddAction(
+-------------------------------stats
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Min Comfort Birth",
-    ChoGGi.SetMinComfortBirth,
+    ChoGGi.MenuFuncs.SetMinComfortBirth,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.MinComfortBirth,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.MinComfortBirth,"(Disabled)","(Enabled)")
       return des .. " Change the limit on birthing comfort (more/less babies)."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Visit Fail Penalty",
-    ChoGGi.VisitFailPenalty_Toggle,
+    ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.VisitFailPenalty,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.VisitFailPenalty,"(Disabled)","(Enabled)")
       return des .. " Disable comfort penalty when failing to satisfy a need via a visit."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Renegade Creation Toggle",
-    ChoGGi.RenegadeCreation_Toggle,
+    ChoGGi.MenuFuncs.RenegadeCreation_Toggle,
     nil,
     function()
       local des = ""
@@ -88,83 +90,83 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.AddAction(
-    "Expanded CM/Colonists/[1]Stats/Make All Colonists Renegades",
-    ChoGGi.MakeAllColonistsRenegades,
+  ChoGGi.Funcs.AddAction(
+    "Expanded CM/Colonists/[1]Stats/Set Renegade Status",
+    ChoGGi.MenuFuncs.SetRenegadeStatus,
     nil,
     "I'm afraid it could be 9/11 times 1,000.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Morale Always Max",
-    ChoGGi.ColonistsMoraleAlwaysMax_Toggle,
+    ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.HighStatLevel,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.HighStatLevel,"(Disabled)","(Enabled)")
       return des .. " Colonists always max morale (will effect birthing rates).\nOnly works on colonists that have yet to spawn (maybe)."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/See Dead Sanity Damage",
-    ChoGGi.SeeDeadSanityDamage_Toggle,
+    ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.SeeDeadSanity,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.SeeDeadSanity,"(Disabled)","(Enabled)")
       return des .. " Disable colonists taking sanity damage from seeing dead.\nWorks after in-game hour."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/No Home Comfort Damage",
-    ChoGGi.NoHomeComfortDamage_Toggle,
+    ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.NoHomeComfort,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.NoHomeComfort,"(Disabled)","(Enabled)")
       return des .. " Disable colonists taking comfort damage from not having a home.\nWorks after in-game hour."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Chance Of Sanity Damage",
-    ChoGGi.ChanceOfSanityDamage_Toggle,
+    ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.DustStormSanityDamage,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.DustStormSanityDamage,"(Disabled)","(Enabled)")
       return des .. " Disable colonists taking sanity damage from certain events.\nWorks after in-game hour."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[2]Traits/Chance Of Negative Trait",
-    ChoGGi.ChanceOfNegativeTrait_Toggle,
+    ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.LowSanityNegativeTraitChance,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.LowSanityNegativeTraitChance,"(Disabled)","(Enabled)")
       return des .. " Disable chance of getting a negative trait when Sanity reaches zero.\nWorks after colonist idle."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[1]Stats/Chance Of Suicide",
-    ChoGGi.ColonistsChanceOfSuicide_Toggle,
+    ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.LowSanitySuicideChance,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.LowSanitySuicideChance,"(Disabled)","(Enabled)")
       return des .. " Disable chance of suicide when Sanity reaches zero.\nWorks after colonist idle."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Colonists Suffocate",
-    ChoGGi.ColonistsSuffocate_Toggle,
+    ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle,
     nil,
     function()
       local des = ""
@@ -178,9 +180,9 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Colonists Starve",
-    ChoGGi.ColonistsStarve_Toggle,
+    ChoGGi.MenuFuncs.ColonistsStarve_Toggle,
     nil,
     function()
       local des = ""
@@ -194,20 +196,20 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Colonists Avoid Fired Workplace",
-    ChoGGi.AvoidWorkplace_Toggle,
+    ChoGGi.MenuFuncs.AvoidWorkplace_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.AvoidWorkplaceSols,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.AvoidWorkplaceSols,"(Disabled)","(Enabled)")
       return des .. " After being fired, Colonists won't avoid that Workplace searching for a Workplace.\nWorks after colonist idle."
     end,
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[2]Traits/Positive Playground",
-    ChoGGi.PositivePlayground_Toggle,
+    ChoGGi.MenuFuncs.PositivePlayground_Toggle,
     nil,
     function()
       local des = ""
@@ -221,9 +223,9 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[2]Traits/Project Morpheus Positive Trait",
-    ChoGGi.ProjectMorpheusPositiveTrait_Toggle,
+    ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,
     nil,
     function()
       local des = ""
@@ -237,12 +239,12 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Performance Penalty Non-Specialist",
-    ChoGGi.PerformancePenaltyNonSpecialist_Toggle,
+    ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.NonSpecialistPerformancePenalty,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.NonSpecialistPerformancePenalty,"(Disabled)","(Enabled)")
       return des .. " Disable performance penalty for non-Specialists.\nActivated when colonist changes job."
     end,
     icon
@@ -252,105 +254,105 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
     local des = Consts.DefaultOutsideWorkplacesRadius
     return "Change how many hexes colonists search outside their dome when looking for a Workplace.\nCurrent: " .. des
   end
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Outside Workplace Radius",
-    ChoGGi.SetOutsideWorkplaceRadius,
+    ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
     nil,
     OutsideWorkplaceRadiusText(),
     icon
   )
   -------------------
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Age New",
     function()
-      ChoGGi.SetColonistsAge(1)
+      ChoGGi.MenuFuncs.SetColonistsAge(1)
     end,
     nil,
     "This will make all newly arrived and born colonists a certain age.",
     icon
   )
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Age",
     function()
-      ChoGGi.SetColonistsAge(2)
+      ChoGGi.MenuFuncs.SetColonistsAge(2)
     end,
     nil,
     "This will make all colonists a certain age.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Gender New",
     function()
-      ChoGGi.SetColonistsGender(1)
+      ChoGGi.MenuFuncs.SetColonistsGender(1)
     end,
     nil,
     "This will make all newly arrived and born colonists a certain gender.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Gender",
     function()
-      ChoGGi.SetColonistsGender(2)
+      ChoGGi.MenuFuncs.SetColonistsGender(2)
     end,
     nil,
     "This will make all colonists a certain gender.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Specialization New",
     function()
-      ChoGGi.SetColonistsSpecialization(1)
+      ChoGGi.MenuFuncs.SetColonistsSpecialization(1)
     end,
     nil,
     "This will make all newly arrived and born colonists a certain specialization.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Specialization",
     function()
-      ChoGGi.SetColonistsSpecialization(2)
+      ChoGGi.MenuFuncs.SetColonistsSpecialization(2)
     end,
     nil,
     "This will make all colonists a certain specialization.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Race New",
     function()
-      ChoGGi.SetColonistsRace(1)
+      ChoGGi.MenuFuncs.SetColonistsRace(1)
     end,
     nil,
     "This will make all newly arrived and born colonists a certain race.",
     icon
   )
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Race",
     function()
-      ChoGGi.SetColonistsRace(2)
+      ChoGGi.MenuFuncs.SetColonistsRace(2)
     end,
     nil,
     "This will make all colonists a certain race.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Traits New",
     function()
-      ChoGGi.SetColonistsTraits(1)
+      ChoGGi.MenuFuncs.SetColonistsTraits(1)
     end,
     nil,
     "This will make all newly arrived and born colonists have certain traits.",
     icon
   )
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Traits",
     function()
-      ChoGGi.SetColonistsTraits(2)
+      ChoGGi.MenuFuncs.SetColonistsTraits(2)
     end,
     nil,
     "Choose traits for all colonists.",
@@ -359,25 +361,25 @@ function ChoGGi.ColonistsMenu_LoadingScreenPreClose()
 
   -------------------
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Set Stats",
-    ChoGGi.SetColonistsStats,
+    ChoGGi.MenuFuncs.SetColonistsStats,
     nil,
     "Change the stats of all colonists (health/sanity/comfort/morale).\n\nNot permanent.",
     icon
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/Colonists Death Age",
-    ChoGGi.SetDeathAge,
+    ChoGGi.MenuFuncs.SetDeathAge,
     nil,
     "Change the age at which colonists die.",
     icon
   )
   --------------------
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/Colonists/[3]Work/Add Specialization To All",
-    ChoGGi.ColonistsAddSpecializationToAll,
+    ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll,
     nil,
     "If Colonist has no Specialization then add a random one",
     icon

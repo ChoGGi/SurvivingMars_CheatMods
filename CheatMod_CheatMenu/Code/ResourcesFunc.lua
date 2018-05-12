@@ -1,7 +1,7 @@
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
-function ChoGGi.AddOrbitalProbes()
+function ChoGGi.MenuFuncs.AddOrbitalProbes()
   local ItemList = {
     {text = 5,value = 5},
     {text = 10,value = 10},
@@ -20,10 +20,10 @@ function ChoGGi.AddOrbitalProbes()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
 end
 
-function ChoGGi.SetFoodPerRocketPassenger()
+function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
   local ItemList = {
@@ -39,27 +39,27 @@ function ChoGGi.SetFoodPerRocketPassenger()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.FoodPerRocketPassenger then
-    hint = ChoGGi.CheatMenuSettings.FoodPerRocketPassenger / r
+  if ChoGGi.UserSettings.FoodPerRocketPassenger then
+    hint = ChoGGi.UserSettings.FoodPerRocketPassenger / r
   end
 
   local CallBackFunc = function(choice)
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
-      ChoGGi.SetConstsG("FoodPerRocketPassenger",value)
-      ChoGGi.SetSavedSetting("FoodPerRocketPassenger",value)
+      ChoGGi.Funcs.SetConstsG("FoodPerRocketPassenger",value)
+      ChoGGi.Funcs.SetSavedSetting("FoodPerRocketPassenger",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(choice[1].text .. ": om nom nom nom nom",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(choice[1].text .. ": om nom nom nom nom",
         "Passengers","UI/Icons/Sections/Food_4.tga"
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
 
-function ChoGGi.AddPrefabs()
+function ChoGGi.MenuFuncs.AddPrefabs()
   local ItemList = {
     {text = "Drone",value = 10},
     {text = "DroneHub",value = 10},
@@ -89,17 +89,17 @@ function ChoGGi.AddPrefabs()
         UICity:AddPrefabs(text,value)
       end
       RefreshXBuildMenu()
-      ChoGGi.MsgPopup(value .. " " .. text .. " prefabs have been added.",
+      ChoGGi.Funcs.MsgPopup(value .. " " .. text .. " prefabs have been added.",
         "Prefabs",UsualIcon
       )
     end
   end
 
   local hint = "Use edit box to enter amount of prefabs to add."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
 end
 
-function ChoGGi.SetFunding()
+function ChoGGi.MenuFuncs.SetFunding()
   --list to display and list with values
   local DefaultSetting = "(Reset to 500 M)"
   local hint = "If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting
@@ -121,22 +121,22 @@ function ChoGGi.SetFunding()
       --and add the new amount
       ChangeFunding(value)
 
-      ChoGGi.MsgPopup(choice[1].text,
+      ChoGGi.Funcs.MsgPopup(choice[1].text,
         "Funding",UsualIcon2
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
 end
 
-function ChoGGi.FillResource()
-  local sel = SelectedObj or SelectionMouseObj()
+function ChoGGi.MenuFuncs.FillResource()
+  local sel = SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject()
   if not sel then
     return
   end
 
   --need the msg here, as i made it return if it succeeds
-  ChoGGi.MsgPopup("Resouce Filled",
+  ChoGGi.Funcs.MsgPopup("Resouce Filled",
     "Resource",UsualIcon2
   )
 

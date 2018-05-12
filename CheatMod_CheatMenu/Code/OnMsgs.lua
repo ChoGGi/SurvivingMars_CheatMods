@@ -1,31 +1,31 @@
 
 function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
-  ChoGGi.ReplacedFunctions_ClassesGenerate()
-  ChoGGi.InfoPaneCheats_ClassesGenerate()
-  ChoGGi.ListChoiceCustom_ClassesGenerate()
-  ChoGGi.ObjectManipulator_ClassesGenerate()
+  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
+  ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
+  ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
+  ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 end --OnMsg
 
 function OnMsg.ClassesBuilt()
 
-  ChoGGi.ReplacedFunctions_ClassesBuilt()
-  ChoGGi.ListChoiceCustom_ClassesBuilt()
-  ChoGGi.ObjectManipulator_ClassesBuilt()
+  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+  ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
+  ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
-  if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
-    table.insert(BuildCategories,{id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",})
+  if ChoGGi.UserSettings.Building_hide_from_build_menu then
+    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
 
 end --OnMsg
 
 function OnMsg.OptionsApply()
-  ChoGGi.Settings_OptionsApply()
+  ChoGGi.MsgFuncs.Settings_OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
-  ChoGGi.Settings_ModsLoaded()
+  ChoGGi.MsgFuncs.Settings_ModsLoaded()
 end
 
 --earlist on-ground objects are loaded?
@@ -42,7 +42,7 @@ end
 function OnMsg.CityStart()
   ChoGGi.IsGameLoaded = false
   --reset my mystery msgs to hidden
-  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = nil
+  ChoGGi.UserSettings.ShowMysteryMsgs = nil
 end
 
 --fired as late as we can
@@ -60,17 +60,66 @@ function OnMsg.LoadingScreenPreClose()
   ChoGGi.IsGameLoaded = true
 
   --late enough that I can set g_Consts.
-  ChoGGi.SetConstsToSaved()
+  ChoGGi.Funcs.SetConstsToSaved()
   --needed for DroneResourceCarryAmount?
   UpdateDroneResourceUnits()
 
-  ChoGGi.RenderSettings_LoadingScreenPreClose()
-  ChoGGi.Keys_LoadingScreenPreClose()
-  ChoGGi.SponsorsFunc_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
+
+  --menu actions
+  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
+
+  --default only saved 20 items in console history
+  const.nConsoleHistoryMaxSize = 100
 
   --long arsed cables
-  if ChoGGi.CheatMenuSettings.UnlimitedConnectionLength then
+  if ChoGGi.UserSettings.UnlimitedConnectionLength then
     GridConstructionController.max_hex_distance_to_allow_build = 1000
+  end
+
+  --on by default, you know all them martian trees (might make a cpu difference, probably not)
+  hr.TreeWind = 0
+
+  if ChoGGi.UserSettings.DisableTextureCompression then
+    --uses more vram (1 toggles it, not sure what 0 does...)
+    hr.TR_ToggleTextureCompression = 1
+  end
+
+  if ChoGGi.UserSettings.ShadowmapSize then
+    hr.ShadowmapSize = ChoGGi.UserSettings.ShadowmapSize
+  end
+
+  if ChoGGi.UserSettings.HigherRenderDist then
+    --lot of lag for some small rocks in distance
+    --hr.DistanceModifier = 260 --default 130
+    --hr.AutoFadeDistanceScale = 2200 --def 2200
+    --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
+    if type(ChoGGi.UserSettings.HigherRenderDist) == "number" then
+      hr.LODDistanceModifier = ChoGGi.UserSettings.HigherRenderDist
+    else
+      hr.LODDistanceModifier = 600 --def 120
+    end
+  end
+
+  if ChoGGi.UserSettings.HigherShadowDist then
+    if type(ChoGGi.UserSettings.HigherShadowDist) == "number" then
+      hr.ShadowRangeOverride = ChoGGi.UserSettings.HigherShadowDist
+    else
+    --shadow cutoff dist
+    hr.ShadowRangeOverride = 1000000 --def 0
+    end
+    --no shadow fade out when zooming
+    hr.ShadowFadeOutRangePercent = 0 --def 30
   end
 
   --gets used a couple times
@@ -92,7 +141,7 @@ function OnMsg.LoadingScreenPreClose()
     if map then
       rawset(_G, map, rawget(_G, map) or {})
     end
-    ChoGGi.AddAction(
+    ChoGGi.Funcs.AddAction(
       "Presets/" .. name,
       function()
         OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
@@ -119,7 +168,7 @@ function OnMsg.LoadingScreenPreClose()
   end)
 
 --[[
-  local cap = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  local cap = ChoGGi.UserSettings.RCTransportStorageCapacity
   if cap then
     tab = UICity.labels.RCTransport or empty_table
     for i = 1, #tab do
@@ -128,7 +177,7 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --drone gravity
-  local gravity = ChoGGi.CheatMenuSettings.GravityDrone
+  local gravity = ChoGGi.UserSettings.GravityDrone
   if gravity then
     tab = UICity.labels.Drone or empty_table
     for i = 1, #tab do
@@ -149,7 +198,7 @@ function OnMsg.LoadingScreenPreClose()
   tab = DataInstances.BuildingTemplate
   for i = 1, #tab do
     --make hidden buildings visible
-    if ChoGGi.CheatMenuSettings.Building_hide_from_build_menu then
+    if ChoGGi.UserSettings.Building_hide_from_build_menu then
       BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
       if tab[i].name ~= "LifesupportSwitch" and tab[i].name ~= "ElectricitySwitch" then
         tab[i].hide_from_build_menu = nil
@@ -159,38 +208,26 @@ function OnMsg.LoadingScreenPreClose()
       end
     end
 
-    if ChoGGi.CheatMenuSettings.Building_wonder then
+    if ChoGGi.UserSettings.Building_wonder then
       tab[i].wonder = nil
     end
   end
 
   --show cheat pane?
-  if ChoGGi.CheatMenuSettings.InfopanelCheats then
+  if ChoGGi.UserSettings.InfopanelCheats then
     config.BuildingInfopanelCheats = true
     ReopenSelectionXInfopanel()
   end
 
   --show console log history
-  if ChoGGi.CheatMenuSettings.ConsoleToggleHistory then
+  if ChoGGi.UserSettings.ConsoleToggleHistory then
     ShowConsoleLog(true)
   end
 
   --dim that console bg
-  if ChoGGi.CheatMenuSettings.ConsoleDim then
+  if ChoGGi.UserSettings.ConsoleDim then
     config.ConsoleDim = 1
   end
-
-  --load up my menu actions
-  ChoGGi.SponsorsMenu_LoadingScreenPreClose()
-  ChoGGi.BuildingsMenu_LoadingScreenPreClose()
-  ChoGGi.CheatsMenu_LoadingScreenPreClose()
-  ChoGGi.ColonistsMenu_LoadingScreenPreClose()
-  ChoGGi.DebugMenu_LoadingScreenPreClose()
-  ChoGGi.DronesAndRCMenu_LoadingScreenPreClose()
-  ChoGGi.ExpandedMenu_LoadingScreenPreClose()
-  ChoGGi.HelpMenu_LoadingScreenPreClose()
-  ChoGGi.MiscMenu_LoadingScreenPreClose()
-  ChoGGi.ResourcesMenu_LoadingScreenPreClose()
 
   -- This must return true for most (built-in) cheats to function
   --function CheatsEnabled()
@@ -266,7 +303,7 @@ function OnMsg.LoadingScreenPreClose()
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
-  if ChoGGi.CheatMenuSettings.ShowCheatsMenu or ChoGGi.Testing then
+  if ChoGGi.UserSettings.ShowCheatsMenu or ChoGGi.Testing then
     --always show on my computer
     if not dlgUAMenu then
       UAMenu.ToggleOpen()
@@ -274,75 +311,76 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --remove some uselessish Cheats to clear up space
-  if ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane then
-    ChoGGi.InfopanelCheatsCleanup()
+  if ChoGGi.UserSettings.CleanupCheatsInfoPane then
+    ChoGGi.Funcs.InfopanelCheatsCleanup()
   end
 
   --default to showing interface in ss
-  if ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots then
+  if ChoGGi.UserSettings.ShowInterfaceInScreenshots then
     hr.InterfaceInScreenshot = 1
   end
 
   --set zoom/border scrolling
-  ChoGGi.SetCameraSettings()
+  ChoGGi.Funcs.SetCameraSettings()
 
   --show all traits
-  if ChoGGi.CheatMenuSettings.SanatoriumSchoolShowAll then
+  if ChoGGi.UserSettings.SanatoriumSchoolShowAll then
     Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
     School.max_traits = #ChoGGi.Tables.PositiveTraits
   end
 
   --unbreakable cables/pipes
-  if ChoGGi.CheatMenuSettings.BreakChanceCablePipe then
+  if ChoGGi.UserSettings.BreakChanceCablePipe then
     const.BreakChanceCable = 10000000
     const.BreakChancePipe = 10000000
   end
 
-  if ChoGGi.CheatMenuSettings.DisableHints then
+  if ChoGGi.UserSettings.DisableHints then
     mapdata.DisableHints = true
     HintsEnabled = false
   end
 
   --print startup msgs to console log
-  for i = 1, #ChoGGi.StartupMsgs do
-    AddConsoleLog(ChoGGi.StartupMsgs[i],true)
+  local msgs = ChoGGi.StartupMsgs
+  for i = 1, #msgs do
+    AddConsoleLog(msgs[i],true)
     --ConsolePrint(ChoGGi.StartupMsgs[i])
   end
 
   --people will likely just copy new mod over old, and I moved stuff around
-  if ChoGGi._VERSION ~= ChoGGi.CheatMenuSettings._VERSION then
+  if ChoGGi._VERSION ~= ChoGGi.UserSettings._VERSION then
     --clean up
-    ChoGGi.NewThread(ChoGGi.RemoveOldFiles)
+    ChoGGi.Funcs.NewThread(ChoGGi.Funcs.RemoveOldFiles)
     --update saved version
-    ChoGGi.CheatMenuSettings._VERSION = ChoGGi._VERSION
-    ChoGGi.WriteSettings()
+    ChoGGi.UserSettings._VERSION = ChoGGi._VERSION
+    ChoGGi.Funcs.WriteSettings()
   end
 
-  ChoGGi.NewThread(function()
+  ChoGGi.Funcs.NewThread(function()
 
       --add some custom labels for cables/pipes
     if type(UICity.labels.GridElements) ~= "table" then
       UICity.labels.GridElements = {}
     else
       --remove any broken objects
-      ChoGGi.RemoveMissingLabelObjects("GridElements")
+      ChoGGi.Funcs.RemoveMissingLabelObjects("GridElements")
     end
     if type(UICity.labels.ElectricityGridElement) ~= "table" then
       UICity.labels.ElectricityGridElement = {}
     else
-      ChoGGi.RemoveMissingLabelObjects("ElectricityGridElement")
+      ChoGGi.Funcs.RemoveMissingLabelObjects("ElectricityGridElement")
     end
     if type(UICity.labels.LifeSupportGridElement) ~= "table" then
       UICity.labels.LifeSupportGridElement = {}
     else
-      ChoGGi.RemoveMissingLabelObjects("LifeSupportGridElement")
+      ChoGGi.Funcs.RemoveMissingLabelObjects("LifeSupportGridElement")
     end
     local function NewGridLabels(Label)
       if not next(UICity.labels[Label]) then
         local objs = GetObjects({class=Label}) or empty_table
         for i = 1, #objs do
-          table.insert(UICity.labels[Label],objs[i])
-          table.insert(UICity.labels.GridElements,objs[i])
+          UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
+          UICity.labels.GridElements[#UICity.labels.GridElements+1] = objs[i]
         end
       end
     end
@@ -358,7 +396,7 @@ function OnMsg.LoadingScreenPreClose()
     end
 
     --remove any dialogs we opened
-    ChoGGi.CloseDialogsECM()
+    ChoGGi.Funcs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
     tab = UICity.labels.BuildingNoDomes or empty_table
@@ -411,56 +449,68 @@ function OnMsg.ConstructionComplete(building)
   end
 
   --print(building.encyclopedia_id) print(building.class)
-  if ChoGGi.CheatMenuSettings.StorageMechanizedDepot and building.class:find("MechanizedDepot") then
-    building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageMechanizedDepot
+  local StorageMechanizedDepot = ChoGGi.UserSettings.StorageMechanizedDepot
+  local StorageUniversalDepot = ChoGGi.UserSettings.StorageUniversalDepot
+  local StorageOtherDepot = ChoGGi.UserSettings.StorageOtherDepot
+  local StorageWasteDepot = ChoGGi.UserSettings.StorageWasteDepot
+  local DroneFactoryBuildSpeed = ChoGGi.UserSettings.DroneFactoryBuildSpeed
+  local ShuttleHubFuelStorage = ChoGGi.UserSettings.ShuttleHubFuelStorage
 
-  elseif building.class == "UniversalStorageDepot" then
-    if ChoGGi.CheatMenuSettings.StorageUniversalDepot and building.entity == "StorageDepot" then
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageUniversalDepot
+  if building.class == "UniversalStorageDepot" then
+    if StorageUniversalDepot and building.entity == "StorageDepot" then
+      building.max_storage_per_resource = StorageUniversalDepot
     --other
-    elseif ChoGGi.CheatMenuSettings.StorageOtherDepot and building.entity ~= "StorageDepot" then
-      building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
+    elseif StorageOtherDepot and building.entity ~= "StorageDepot" then
+      building.max_storage_per_resource = StorageOtherDepot
     end
 
-  elseif ChoGGi.CheatMenuSettings.StorageWasteDepot and building.class == "WasteRockDumpSite" then
-    building.max_amount_WasteRock = ChoGGi.CheatMenuSettings.StorageWasteDepot
+  elseif StorageMechanizedDepot and building.class:find("MechanizedDepot") then
+    building.max_storage_per_resource = StorageMechanizedDepot
+
+  elseif StorageWasteDepot and building.class == "WasteRockDumpSite" then
+    building.max_amount_WasteRock = StorageWasteDepot
     if building:GetStoredAmount() < 0 then
       building:CheatEmpty()
       building:CheatFill()
     end
 
-  elseif building.class == "MysteryDepot" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
-    building.max_storage_per_resource = ChoGGi.CheatMenuSettings.StorageOtherDepot
+  elseif StorageOtherDepot and building.class == "MysteryDepot" then
+    building.max_storage_per_resource = StorageOtherDepot
 
-  elseif building.class == "BlackCubeDumpSite" and ChoGGi.CheatMenuSettings.StorageOtherDepot then
-    building.max_amount_BlackCube = ChoGGi.CheatMenuSettings.StorageOtherDepot
+  elseif StorageOtherDepot and building.class == "BlackCubeDumpSite" then
+    building.max_amount_BlackCube = StorageOtherDepot
 
-  elseif ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed and building.class == "DroneFactory" then
-    building.performance = ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed
+  elseif DroneFactoryBuildSpeed and building.class == "DroneFactory" then
+    building.performance = DroneFactoryBuildSpeed
 
-  elseif ChoGGi.CheatMenuSettings.SchoolTrainAll and building.class == "School" then
+  elseif ShuttleHubFuelStorage and building.class:find("ShuttleHub") then
+    building.consumption_max_storage = ShuttleHubFuelStorage
+
+  elseif ChoGGi.UserSettings.SchoolTrainAll and building.class == "School" then
     for i = 1, #ChoGGi.Tables.PositiveTraits do
       building:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
     end
 
-  elseif ChoGGi.CheatMenuSettings.SanatoriumCureAll and building.class == "Sanatorium" then
+  elseif ChoGGi.UserSettings.SanatoriumCureAll and building.class == "Sanatorium" then
     for i = 1, #ChoGGi.Tables.NegativeTraits do
       building:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
     end
-  end
 
-  if ChoGGi.CheatMenuSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
+  end --end of elseifs
+
+  if ChoGGi.UserSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
     building.maintenance_build_up_per_hr = -10000
   end
 
-  if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings and building.base_max_workers then
+  local FullyAutomatedBuildings = ChoGGi.UserSettings.FullyAutomatedBuildings
+  if FullyAutomatedBuildings and building.base_max_workers then
     building.max_workers = 0
     building.automation = 1
-    building.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+    building.auto_performance = FullyAutomatedBuildings
   end
 
   --saved building settings
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[building.encyclopedia_id]
+  local setting = ChoGGi.UserSettings.BuildingSettings[building.encyclopedia_id]
   if setting then
     --saved settings for capacity, shuttles
     if setting.capacity then
@@ -509,32 +559,39 @@ function OnMsg.Demolished(building)
     UICity.labels.Domes_Working = {}
     local tab = UICity.labels.Dome or empty_table
     for i = 1, #tab do
-      table.insert(UICity.labels.Domes_Working,tab[i])
+      UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = tab[i]
     end
   end
 end --OnMsg
 
 local function ColonistCreated(Obj)
-  if ChoGGi.CheatMenuSettings.GravityColonist then
-    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityColonist)
+  local GravityColonist = ChoGGi.UserSettings.GravityColonist
+  if GravityColonist then
+    Obj:SetGravity(GravityColonist)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistGender then
-    ChoGGi.ColonistUpdateGender(Obj,ChoGGi.CheatMenuSettings.NewColonistGender)
+  local NewColonistGender = ChoGGi.UserSettings.NewColonistGender
+  if NewColonistGender then
+    ChoGGi.Funcs.ColonistUpdateGender(Obj,NewColonistGender)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistAge then
-    ChoGGi.ColonistUpdateAge(Obj,ChoGGi.CheatMenuSettings.NewColonistAge)
+  local NewColonistAge = ChoGGi.UserSettings.NewColonistAge
+  if NewColonistAge then
+    ChoGGi.Funcs.ColonistUpdateAge(Obj,NewColonistAge)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistSpecialization then
-    ChoGGi.ColonistUpdateSpecialization(Obj,ChoGGi.CheatMenuSettings.NewColonistSpecialization)
+  local NewColonistSpecialization = ChoGGi.UserSettings.NewColonistSpecialization
+  if NewColonistSpecialization then
+    ChoGGi.Funcs.ColonistUpdateSpecialization(Obj,NewColonistSpecialization)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistRace then
-    ChoGGi.ColonistUpdateRace(Obj,ChoGGi.CheatMenuSettings.NewColonistRace)
+  local NewColonistRace = ChoGGi.UserSettings.NewColonistRace
+  if NewColonistRace then
+    ChoGGi.Funcs.ColonistUpdateRace(Obj,NewColonistRace)
   end
-  if ChoGGi.CheatMenuSettings.NewColonistTraits then
-    ChoGGi.ColonistUpdateTraits(Obj,true,ChoGGi.CheatMenuSettings.NewColonistTraits)
+  local NewColonistTraits = ChoGGi.UserSettings.NewColonistTraits
+  if NewColonistTraits then
+    ChoGGi.Funcs.ColonistUpdateTraits(Obj,true,NewColonistTraits)
   end
-  if ChoGGi.CheatMenuSettings.SpeedColonist then
-    Obj:SetMoveSpeed(ChoGGi.CheatMenuSettings.SpeedColonist)
+  local SpeedColonist = ChoGGi.UserSettings.SpeedColonist
+  if SpeedColonist then
+    Obj:SetMoveSpeed(SpeedColonist)
   end
 end
 
@@ -553,16 +610,20 @@ function OnMsg.SelectionAdded(Obj)
   ChoGGi.LastPlacedObject = Obj
 end
 
+function OnMsg.SelectionRemoved()
+  s = false
+end
+
 function OnMsg.NewHour()
 
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
-  if ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix then
+  if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
     local tab = UICity.labels.ResourceProducer or empty_table
     for i = 1, #tab do
-      ChoGGi.FuckingDrones(tab[i]:GetProducerObj())
+      ChoGGi.Funcs.FuckingDrones(tab[i]:GetProducerObj())
       if tab[i].wasterock_producer then
-        ChoGGi.FuckingDrones(tab[i].wasterock_producer)
+        ChoGGi.Funcs.FuckingDrones(tab[i].wasterock_producer)
       end
     end
   end
@@ -571,18 +632,18 @@ end
 
 --if you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()
-  if ChoGGi.CheatMenuSettings.ShowMysteryMsgs then
-    ChoGGi.MsgPopup("You've started a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+  if ChoGGi.UserSettings.ShowMysteryMsgs then
+    ChoGGi.Funcs.MsgPopup("You've started a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 function OnMsg.MysteryChosen()
-  if ChoGGi.CheatMenuSettings.ShowMysteryMsgs then
-    ChoGGi.MsgPopup("You've chosen a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+  if ChoGGi.UserSettings.ShowMysteryMsgs then
+    ChoGGi.Funcs.MsgPopup("You've chosen a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 function OnMsg.MysteryEnd(Outcome)
-  if ChoGGi.CheatMenuSettings.ShowMysteryMsgs then
-    ChoGGi.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
+  if ChoGGi.UserSettings.ShowMysteryMsgs then
+    ChoGGi.Funcs.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 
@@ -594,40 +655,40 @@ function OnMsg.ApplicationQuit()
   end
 
   --save any unsaved settings on exit
-  ChoGGi.WriteSettings()
+  ChoGGi.Funcs.WriteSettings()
 end
 
 --custom OnMsgs, these aren't part of the base game, so without this mod they don't work
-ChoGGi.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
-ChoGGi.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
-ChoGGi.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
-ChoGGi.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
-ChoGGi.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
-ChoGGi.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
-ChoGGi.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
-ChoGGi.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
-ChoGGi.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
-ChoGGi.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
-ChoGGi.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
-ChoGGi.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
-ChoGGi.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
-ChoGGi.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
-ChoGGi.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
-ChoGGi.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
-ChoGGi.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
-ChoGGi.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
+ChoGGi.Funcs.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
+ChoGGi.Funcs.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
+ChoGGi.Funcs.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
+ChoGGi.Funcs.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
+ChoGGi.Funcs.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
+ChoGGi.Funcs.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
+ChoGGi.Funcs.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
+ChoGGi.Funcs.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
+ChoGGi.Funcs.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
+ChoGGi.Funcs.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
+ChoGGi.Funcs.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
+ChoGGi.Funcs.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
+ChoGGi.Funcs.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
+ChoGGi.Funcs.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
+ChoGGi.Funcs.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
+ChoGGi.Funcs.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
+ChoGGi.Funcs.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
+ChoGGi.Funcs.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
 
 --attached temporary resource depots
 function OnMsg.SpawnedResourceStockpileLR(Obj)
-  if ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
-    ChoGGi.SetMechanizedDepotTempAmount(Obj.parent)
+  if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
+    ChoGGi.Funcs.SetMechanizedDepotTempAmount(Obj.parent)
   end
 end
 
 function OnMsg.TogglePinnableObject(Obj)
-  local unpin = ChoGGi.CheatMenuSettings.UnpinObjects
-  if type(unpin) == "table" and next(unpin) then
-    local tab = unpin or empty_table
+  local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
+  if type(UnpinObjects) == "table" and next(UnpinObjects) then
+    local tab = UnpinObjects or empty_table
     for i = 1, #tab do
       if Obj.class == tab[i] and Obj:IsPinned() then
         Obj:TogglePin()
@@ -639,67 +700,63 @@ end
 
 --custom UICity.labels lists
 function OnMsg.CreatedGridObject(Obj)
+  local city = UICity.labels
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
-    table.insert(UICity.labels.GridElements,Obj)
-  end
-  if Obj.class == "ElectricityGridElement" then
-    table.insert(UICity.labels.ElectricityGridElement,Obj)
-  elseif Obj.class == "LifeSupportGridElement" then
-    table.insert(UICity.labels.LifeSupportGridElement,Obj)
+    city.GridElements[#city.GridElements+1] = Obj
+    city[Obj.class][#city[Obj.class]+1] = Obj
   end
 end
-
 function OnMsg.RemovedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
-    ChoGGi.RemoveFromLabel("GridElements",Obj)
-  end
-  if Obj.class == "ElectricityGridElement" then
-    ChoGGi.RemoveFromLabel("ElectricityGridElement",Obj)
-  elseif Obj.class == "LifeSupportGridElement" then
-    ChoGGi.RemoveFromLabel("LifeSupportGridElement",Obj)
+    ChoGGi.Funcs.RemoveFromLabel("GridElements",Obj)
+    ChoGGi.Funcs.RemoveFromLabel(Obj.class,Obj)
   end
 end
 
 --shuttle comes out of a hub
 function OnMsg.SpawnedShuttle(Obj)
-  local storage = ChoGGi.CheatMenuSettings.StorageShuttle
-  if storage then
-    Obj.max_shared_storage = storage
+
+  local StorageShuttle = ChoGGi.UserSettings.StorageShuttle
+  if StorageShuttle then
+    Obj.max_shared_storage = StorageShuttle
   end
-  local speed = ChoGGi.CheatMenuSettings.SpeedShuttle
-  if speed then
-    Obj.max_speed = speed
+  local SpeedShuttle = ChoGGi.UserSettings.SpeedShuttle
+  if SpeedShuttle then
+    Obj.max_speed = SpeedShuttle
   end
 end
 
 function OnMsg.SpawnedDrone(Obj)
-  local gravity = ChoGGi.CheatMenuSettings.GravityDrone
-  if gravity then
-    Obj:SetGravity(gravity)
+  local GravityDrone = ChoGGi.UserSettings.GravityDrone
+  if GravityDrone then
+    Obj:SetGravity(GravityDrone)
   end
-  local speed = ChoGGi.CheatMenuSettings.SpeedDrone
-  if speed then
-    Obj:SetMoveSpeed(speed)
+  local SpeedDrone = ChoGGi.UserSettings.SpeedDrone
+  if SpeedDrone then
+    Obj:SetMoveSpeed(SpeedDrone)
   end
 end
 
 local function RCCreated(Obj)
-  if ChoGGi.CheatMenuSettings.SpeedRC then
-    Obj:SetMoveSpeed(ChoGGi.CheatMenuSettings.SpeedRC)
+  local SpeedRC = ChoGGi.UserSettings.SpeedRC
+  if SpeedRC then
+    Obj:SetMoveSpeed(SpeedRC)
   end
-  if ChoGGi.CheatMenuSettings.GravityRC then
-    Obj:SetGravity(ChoGGi.CheatMenuSettings.GravityRC)
+  local GravityRC = ChoGGi.UserSettings.GravityRC
+  if GravityRC then
+    Obj:SetGravity(GravityRC)
   end
 end
 function OnMsg.SpawnedRCTransport(Obj)
-  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
-    Obj.max_shared_storage = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity
+  local RCTransportStorageCapacity = ChoGGi.UserSettings.RCTransportStorageCapacity
+  if RCTransportStorageCapacity then
+    Obj.max_shared_storage = RCTransportStorageCapacity
   end
   RCCreated(Obj)
 end
 function OnMsg.SpawnedRCRover(Obj)
-  if ChoGGi.CheatMenuSettings.RCRoverDefaultRadius then
-    Obj:SetWorkRadius()
+  if ChoGGi.UserSettings.RCRoverMaxRadius then
+    Obj:SetWorkRadius() -- I override the func so no need to send a value here
   end
   RCCreated(Obj)
 end
@@ -708,22 +765,22 @@ function OnMsg.SpawnedExplorerRover(Obj)
 end
 
 function OnMsg.SpawnedDroneHub(Obj)
-  if ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius then
+  if ChoGGi.UserSettings.CommandCenterMaxRadius then
     Obj:SetWorkRadius()
   end
 end
 
 --if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 function OnMsg.SpawnedResidence(Obj)
-  ChoGGi.AttachToNearestDome(Obj)
+  ChoGGi.Funcs.AttachToNearestDome(Obj)
 end
 function OnMsg.SpawnedWorkplace(Obj)
-  ChoGGi.AttachToNearestDome(Obj)
+  ChoGGi.Funcs.AttachToNearestDome(Obj)
 end
 
 --make sure they use with our new values
 local function SetProd(Obj,sType)
-  local prod = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id]
+  local prod = ChoGGi.UserSettings.BuildingSettings[Obj.encyclopedia_id]
   if prod and prod.production then
     Obj[sType] = prod.production
   end
@@ -741,11 +798,19 @@ function OnMsg.SpawnedProducerSingle(Obj)
   SetProd(Obj,"production_per_day")
 end
 
---fired below
+--water/air tanks
+function OnMsg.SpawnedLifeSupportGridObject(Obj)
+  CheckForRate(Obj)
+end
+--battery
+function OnMsg.SpawnedElectricityStorage(Obj)
+  CheckForRate(Obj)
+end
+
 local function CheckForRate(Obj)
 
   --charge/discharge
-  local value = ChoGGi.CheatMenuSettings.BuildingSettings[Obj.encyclopedia_id]
+  local value = ChoGGi.UserSettings.BuildingSettings[Obj.encyclopedia_id]
 
   if value then
     local function SetValue(sType)
@@ -759,22 +824,13 @@ local function CheckForRate(Obj)
       end
     end
 
-    if Obj.base_air_capacity then
+    if type(Obj.GetStoredAir) == "function" then
       SetValue("air")
-    elseif Obj.base_water_capacity then
+    elseif type(Obj.GetStoredWater) == "function" then
       SetValue("water")
-    elseif Obj.electricity and Obj.electricity.storage_capacity then
+    elseif type(Obj.GetStoredPower) == "function" then
       SetValue("electricity")
     end
 
   end
-end
-
---waterair tanks, etc
-function OnMsg.SpawnedLifeSupportGridObject(Obj)
-  CheckForRate(Obj)
-end
---battery
-function OnMsg.SpawnedElectricityStorage(Obj)
-  CheckForRate(Obj)
 end

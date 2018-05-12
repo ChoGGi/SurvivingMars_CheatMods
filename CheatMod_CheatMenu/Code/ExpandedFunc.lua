@@ -3,27 +3,27 @@
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
-function ChoGGi.StorageMechanizedDepotsTemp_Toggle()
-  ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp = not ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp
+function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
+  ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 
   local amount
-  if not ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp then
+  if not ChoGGi.UserSettings.StorageMechanizedDepotsTemp then
     amount = 5
   end
   local tab = UICity.labels.MechanizedDepots or empty_table
   for i = 1, #tab do
-    ChoGGi.SetMechanizedDepotTempAmount(tab[i],amount)
+    ChoGGi.Funcs.SetMechanizedDepotTempAmount(tab[i],amount)
   end
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Temp Storage: " .. tostring(ChoGGi.CheatMenuSettings.StorageMechanizedDepotsTemp),
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup("Temp Storage: " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
     "Storage",UsualIcon
   )
 
 end
 
-function ChoGGi.SetRocketCargoCapacity()
-  local DefaultSetting = ChoGGi.GetCargoCapacity()
+function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
+  local DefaultSetting = ChoGGi.Funcs.GetCargoCapacity()
   local ItemList = {
     {text = " Default: " .. DefaultSetting .. " kg",value = DefaultSetting},
     {text = "50 000 kg",value = 50000},
@@ -39,23 +39,22 @@ function ChoGGi.SetRocketCargoCapacity()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetConstsG("CargoCapacity",value)
-      ChoGGi.SetSavedSetting("CargoCapacity",value)
+      ChoGGi.Funcs.SetConstsG("CargoCapacity",value)
+      ChoGGi.Funcs.SetSavedSetting("CargoCapacity",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(choice[1].text .. ": I can still see some space",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(choice[1].text .. ": I can still see some space",
         "Rocket","UI/Icons/Sections/spaceship.tga"
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
 end
 
-function ChoGGi.SetRocketTravelTime()
-
+function ChoGGi.MenuFuncs.SetRocketTravelTime()
   local r = ChoGGi.Consts.ResourceScale
-  local DefaultSetting = ChoGGi.GetTravelTimeEarthMars() / r
+  local DefaultSetting = ChoGGi.Funcs.GetTravelTimeEarthMars() / r
   local ItemList = {
     {text = " Instant",value = 0},
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -74,30 +73,31 @@ function ChoGGi.SetRocketTravelTime()
 
   --other hint type
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.TravelTimeEarthMars then
-    hint = ChoGGi.CheatMenuSettings.TravelTimeEarthMars / r
+  if ChoGGi.UserSettings.TravelTimeEarthMars then
+    hint = ChoGGi.UserSettings.TravelTimeEarthMars / r
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
     if type(value) == "number" then
-      local value = choice[1].value * r
-      ChoGGi.SetConstsG("TravelTimeEarthMars",value)
-      ChoGGi.SetConstsG("TravelTimeMarsEarth",value)
-      ChoGGi.SetSavedSetting("TravelTimeEarthMars",value)
-      ChoGGi.SetSavedSetting("TravelTimeMarsEarth",value)
+      local value = value * r
+      ChoGGi.Funcs.SetConstsG("TravelTimeEarthMars",value)
+      ChoGGi.Funcs.SetConstsG("TravelTimeMarsEarth",value)
+      ChoGGi.Funcs.SetSavedSetting("TravelTimeEarthMars",value)
+      ChoGGi.Funcs.SetSavedSetting("TravelTimeMarsEarth",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("88 MPH: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("88 MPH: " .. choice[1].text,
         "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
 end
 
-function ChoGGi.SetColonistsPerRocket()
-  local DefaultSetting = ChoGGi.GetMaxColonistsPerRocket()
+function ChoGGi.MenuFuncs.SetColonistsPerRocket()
+  local DefaultSetting = ChoGGi.Funcs.GetMaxColonistsPerRocket()
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -113,22 +113,22 @@ function ChoGGi.SetColonistsPerRocket()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetConstsG("MaxColonistsPerRocket",value)
-      ChoGGi.SetSavedSetting("MaxColonistsPerRocket",value)
+      ChoGGi.Funcs.SetConstsG("MaxColonistsPerRocket",value)
+      ChoGGi.Funcs.SetSavedSetting("MaxColonistsPerRocket",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(choice[1].text .. ": Long pig sardines",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(choice[1].text .. ": Long pig sardines",
         "Rocket","UI/Icons/Notifications/colonist.tga"
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
 
-function ChoGGi.SetWorkerCapacity()
+function ChoGGi.MenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
-    ChoGGi.MsgPopup("You need to select a building that has workers.",
+    ChoGGi.Funcs.MsgPopup("You need to select a building that has workers.",
       "Worker Capacity",UsualIcon
     )
     return
@@ -156,12 +156,12 @@ function ChoGGi.SetWorkerCapacity()
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
   end
 
   local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
   if setting and setting.workers then
     hint = tostring(setting.workers)
   end
@@ -178,26 +178,26 @@ function ChoGGi.SetWorkerCapacity()
       end
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].workers = nil
+        ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].workers = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].workers = value
+        ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].workers = value
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
         "Worker Capacity",UsualIcon
       )
     end
   end
 
   hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
 end
 
-function ChoGGi.SetBuildingCapacity()
+function ChoGGi.MenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
-  if not sel or (not sel.base_water_capacity and not sel.base_air_capacity and not sel.base_capacity) then
-    ChoGGi.MsgPopup("You need to select a building that has capacity.",
+  if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
+    ChoGGi.Funcs.MsgPopup("You need to select a building that has capacity.",
       "Building Capacity",UsualIcon
     )
     return
@@ -207,13 +207,13 @@ function ChoGGi.SetBuildingCapacity()
 
   --get type of capacity
   local CapType
-  if sel.base_air_capacity then
+  if type(sel.GetStoredAir) == "function" then
     CapType = "air"
-  elseif sel.base_water_capacity then
+  elseif type(sel.GetStoredWater) == "function" then
     CapType = "water"
-  elseif sel.electricity and sel.electricity.storage_capacity then
+  elseif type(sel.GetStoredPower) == "function" then
     CapType = "electricity"
-  elseif sel.colonists then
+  elseif type(sel.GetUIResidentsCount) == "function" then
     CapType = "colonist"
   end
 
@@ -250,12 +250,12 @@ function ChoGGi.SetBuildingCapacity()
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
   end
 
   local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
   if setting and setting.capacity then
     if CapType ~= "colonist" then
       hint = tostring(setting.capacity / r)
@@ -295,7 +295,7 @@ function ChoGGi.SetBuildingCapacity()
             tab[i].capacity = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-            ChoGGi.ToggleWorking(tab[i])
+            ChoGGi.Funcs.ToggleWorking(tab[i])
           end
         end
 
@@ -314,19 +314,19 @@ function ChoGGi.SetBuildingCapacity()
             tab[i][CapType .. "_capacity"] = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-            ChoGGi.ToggleWorking(tab[i])
+            ChoGGi.Funcs.ToggleWorking(tab[i])
           end
         end
       end
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].capacity = nil
+        setting.capacity = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].capacity = amount
+        setting.capacity = amount
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
         "Buildings",UsualIcon
       )
     end
@@ -334,13 +334,13 @@ function ChoGGi.SetBuildingCapacity()
   end
 
   hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
 
-function ChoGGi.SetVisitorCapacity()
+function ChoGGi.MenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
-    ChoGGi.MsgPopup("You need to select something that has space for visitors.",
+    ChoGGi.Funcs.MsgPopup("You need to select something that has space for visitors.",
       "Buildings",UsualIcon2
     )
     return
@@ -359,12 +359,12 @@ function ChoGGi.SetVisitorCapacity()
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] then
-    ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id] = {}
+  if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
+    ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
   end
 
   local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id]
+  local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
   if setting and setting.visitors then
     hint = tostring(setting.visitors)
   end
@@ -380,22 +380,22 @@ function ChoGGi.SetVisitorCapacity()
       end
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].visitors = nil
+        ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].visitors = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingSettings[sel.encyclopedia_id].visitors = value
+        ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].visitors = value
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
         "Buildings",UsualIcon2
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.SetStorageDepotSize(sType)
+function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts[sType] / r
   local hint_max = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000"
@@ -415,8 +415,8 @@ function ChoGGi.SetStorageDepotSize(sType)
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings[sType] then
-    hint = ChoGGi.CheatMenuSettings[sType] / r
+  if ChoGGi.UserSettings[sType] then
+    hint = ChoGGi.UserSettings[sType] / r
   end
 
   local CallBackFunc = function(choice)
@@ -476,28 +476,38 @@ function ChoGGi.SetStorageDepotSize(sType)
         end
       end
       --for new buildings
-      ChoGGi.SetSavedSetting(sType,value)
+      ChoGGi.Funcs.SetSavedSetting(sType,value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(sType .. ": " ..  choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(sType .. ": " ..  choice[1].text,
         "Storage","UI/Icons/Sections/basic.tga"
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
 end
 
 ---------all the fixes funcs
+function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+  local tab = GetObjects({class="GridTile"})
+  if tab[1] and tab[1].class and tab[1].class == "GridTile" then
+    for i = 1, #tab do
+      ChoGGi.MenuFuncs.DeleteObject(tab[i])
+    end
+  end
 
-function ChoGGi.DroneResourceCarryAmountFix_Toggle()
-  ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix = not ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.CheatMenuSettings.DroneResourceCarryAmountFix),
+  ChoGGi.Funcs.MsgPopup("Grid marks removed","Grid")
+end
+
+function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
+  ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
 
-function ChoGGi.ProjectMorpheusRadarFellDown()
+function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
     tab[i]:ChangeWorkingStateAnim(false)
@@ -505,22 +515,22 @@ function ChoGGi.ProjectMorpheusRadarFellDown()
   end
 end
 
-function ChoGGi.AttachBuildingsToNearestWorkingDome()
+function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   local tab = UICity.labels.Residence or empty_table
   for i = 1, #tab do
-    ChoGGi.AttachToNearestDome(tab[i])
+    ChoGGi.Funcs.AttachToNearestDome(tab[i])
   end
   tab = UICity.labels.Workplace or empty_table
   for i = 1, #tab do
-    ChoGGi.AttachToNearestDome(tab[i])
+    ChoGGi.Funcs.AttachToNearestDome(tab[i])
   end
 
-  ChoGGi.MsgPopup("Buildings attached.",
+  ChoGGi.Funcs.MsgPopup("Buildings attached.",
     "Buildings","UI/Icons/Sections/basic.tga"
   )
 end
 
-function ChoGGi.ColonistsFixBlackCube()
+function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
   local tab = UICity.labels.Colonist or empty_table
   for i = 1, #tab do
     local colonist = tab[i]
@@ -541,12 +551,12 @@ function ChoGGi.ColonistsFixBlackCube()
       colonist:UpdateResidence()
     end
   end
-  ChoGGi.MsgPopup("Fixed black cubes",
+  ChoGGi.Funcs.MsgPopup("Fixed black cubes",
     "Colonists",UsualIcon2
   )
 end
 
-function ChoGGi.RepairBrokenShit(BrokenShit)
+function ChoGGi.MenuFuncs.RepairBrokenShit(BrokenShit)
   local JustInCase = 0
   while #BrokenShit > 0 do
 
@@ -564,25 +574,13 @@ function ChoGGi.RepairBrokenShit(BrokenShit)
   end
 end
 
-function ChoGGi.CablesAndPipesRepair()
-  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
-  ChoGGi.RepairBrokenShit(g_BrokenSupplyGridElements.water)
-end
-
-function ChoGGi.CablesAndPipesInstant_Toggle()
-  ChoGGi.SetConstsG("InstantCables",ChoGGi.ToggleBoolNum(Consts.InstantCables))
-  ChoGGi.SetConstsG("InstantPipes",ChoGGi.ToggleBoolNum(Consts.InstantPipes))
-
-  ChoGGi.SetSavedSetting("InstantCables",Consts.InstantCables)
-  ChoGGi.SetSavedSetting("InstantPipes",Consts.InstantPipes)
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
-    "Cables & Pipes","UI/Icons/Notifications/timer.tga"
-  )
+function ChoGGi.MenuFuncs.CablesAndPipesRepair()
+  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
+  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
 end
 
 --[[
-function ChoGGi.TriboelectricScrubberRadius(Bool)
+function ChoGGi.MenuFuncs.SetTriboelectricScrubberRadius(Bool)
   for _,building in iXpairs(UICity.labels.TriboelectricScrubber) do
     local prop_meta = building:GetPropertyMetadata("UIRange")
     if prop_meta then
@@ -594,7 +592,7 @@ function ChoGGi.TriboelectricScrubberRadius(Bool)
       end
     end
   end
-  ChoGGi.MsgPopup("I see you there",
+  ChoGGi.Funcs.MsgPopup("I see you there",
     "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
   )
 end

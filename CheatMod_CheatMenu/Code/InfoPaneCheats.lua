@@ -1,5 +1,5 @@
 --add items to the cheats pane
-function ChoGGi.InfoPaneCheats_ClassesGenerate()
+function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 
 --global objects
   function Building:CheatPowerless()
@@ -27,10 +27,10 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self:DestroyAttaches("BuildingSign")
   end
   function Object:CheatColourRandom()
-    ChoGGi.ObjectColourRandom(self)
+    ChoGGi.Funcs.ObjectColourRandom(self)
   end
   function Object:CheatColourDefault()
-    ChoGGi.ObjectColourDefault(self)
+    ChoGGi.Funcs.ObjectColourDefault(self)
   end
 --colonists
   function Colonist:CheatFillMorale()
@@ -78,10 +78,10 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self.performance = self.base_performance
   end
   function Colonist:CheatRandomGender()
-    ChoGGi.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)])
+    ChoGGi.Funcs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)])
   end
   function Colonist:CheatRandomAge()
-    ChoGGi.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[UICity:Random(1,6)])
+    ChoGGi.Funcs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[UICity:Random(1,6)])
   end
 --CheatAllShifts
   local function CheatAllShiftsOn(self)
@@ -102,18 +102,18 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   local function CheatWorkAuto(self)
     self.max_workers = 0
     self.automation = 1
-    if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
-      self.auto_performance = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+    if ChoGGi.UserSettings.FullyAutomatedBuildings then
+      self.auto_performance = ChoGGi.UserSettings.FullyAutomatedBuildings
     else
       self.auto_performance = 150
     end
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   local function CheatWorkManual(self)
     self.max_workers = nil
     self.automation = nil
     self.auto_performance = nil
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   DroneFactory.CheatWorkAuto = CheatWorkAuto
   DroneFactory.CheatWorkManual = CheatWorkManual
@@ -216,39 +216,39 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self.capacity = self.capacity * 2
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "charging"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   function ElectricityStorage:CheatCapDef()
     self.capacity = self.base_capacity
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "full"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   --
   function WaterTank:CheatCapDbl()
     self.water_capacity = self.water_capacity * 2
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "charging"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   function WaterTank:CheatCapDef()
     self.water_capacity = self.base_water_capacity
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "full"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   --
   function OxygenTank:CheatCapDbl()
     self.air_capacity = self.air_capacity * 2
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "charging"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   function OxygenTank:CheatCapDef()
     self.air_capacity = self.base_air_capacity
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "full"
-    ChoGGi.ToggleWorking(self)
+    ChoGGi.Funcs.ToggleWorking(self)
   end
   --
 --CheatCapDbl people
@@ -346,11 +346,14 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
   Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
   Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
   local function CheatBattRefill(self)
-    self:ApplyBatteryChange(self.battery_max)
+    self.battery_current = self.battery_max
   end
   ExplorerRover.CheatBattRefill = CheatBattRefill
   RCTransport.CheatBattRefill = CheatBattRefill
-  Drone.CheatBattRefill = CheatBattRefill
+  RCRover.CheatBattRefill = CheatBattRefill
+  function Drone:CheatBattRefill()
+    self.battery = self.battery_max
+  end
 --CheatCleanAndFix
   local function CheatCleanAndFix(self)
     self:CheatMalfunction()
@@ -388,21 +391,27 @@ function ChoGGi.InfoPaneCheats_ClassesGenerate()
     self.negated_renegades = self.max_negated_renegades
   end
   function MechanizedDepot:CheatEmptyDepot()
-    ChoGGi.EmptyMechDepot(self)
+    ChoGGi.Funcs.EmptyMechDepot(self)
   end
-
+  --[[
+  function SupplyRocket:CheatCapDbl()
+    self.max_export_storage = self.max_export_storage * 2
+  end
+  function SupplyRocket:CheatCapDef()
+    self.max_export_storage = self.base_max_export_storage
+  end
+--]]
 end --OnMsg
 
-function ChoGGi.InfopanelCheatsCleanup()
+function ChoGGi.Funcs.InfopanelCheatsCleanup()
   Building.CheatAddMaintenancePnts = nil
   Building.CheatMakeSphereTarget = nil
-  Building.CheatMalfunction = nil
   Building.CheatSpawnWorker = nil
   Building.CheatSpawnVisitor = nil
+  --Building.CheatMalfunction = nil
 end
 
-
-function ChoGGi.SetInfoPanelCheatHints(win)
+function ChoGGi.Funcs.SetInfoPanelCheatHints(win)
   local obj = win.context
   local name = _InternalTranslate(obj.name)
   local id = obj.encyclopedia_id
@@ -468,8 +477,8 @@ function ChoGGi.SetInfoPanelCheatHints(win)
       end
     elseif action.ActionId == "WorkAuto" then
       local perf
-      if ChoGGi.CheatMenuSettings.FullyAutomatedBuildings then
-        perf = ChoGGi.CheatMenuSettings.FullyAutomatedBuildings
+      if ChoGGi.UserSettings.FullyAutomatedBuildings then
+        perf = ChoGGi.UserSettings.FullyAutomatedBuildings
       else
         perf = 150
       end
@@ -478,7 +487,11 @@ function ChoGGi.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "WorkManual" then
       SetHint(action,"Make this " .. id .. " need workers.")
     elseif action.ActionId == "CapDbl" then
-      SetHint(action,"Double the storage capacity of this " .. id .. ".")
+      if obj:IsKindOf("SupplyRocket") then
+        SetHint(action,"Double the export storage capacity of this " .. id .. ".")
+      else
+        SetHint(action,"Double the storage capacity of this " .. id .. ".")
+      end
     elseif action.ActionId == "CapDef" then
       SetHint(action,"Reset the storage capacity of this " .. id .. " to default.")
     elseif action.ActionId == "EmptyDepot" then

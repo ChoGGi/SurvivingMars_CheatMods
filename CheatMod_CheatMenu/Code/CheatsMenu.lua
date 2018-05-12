@@ -1,48 +1,48 @@
-function ChoGGi.CheatsMenu_LoadingScreenPreClose()
-  --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
+  --ChoGGi.Funcs.AddAction(Menu,Action,Key,Des,Icon)
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[01]Map Exploration",
-    ChoGGi.ShowScanAndMapOptions,
+    ChoGGi.MenuFuncs.ShowScanAndMapOptions,
     nil,
     "Scanning, deep scanning, core mines, and alien imprints.",
     "LightArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Start Mystery",
-    ChoGGi.ShowMysteryList,
+    ChoGGi.MenuFuncs.ShowMysteryList,
     nil,
     "Pick and start a mystery (with instant option).",
     "SelectionToObjects.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Trigger Disasters",
-    ChoGGi.DisastersTrigger,
+    ChoGGi.MenuFuncs.DisastersTrigger,
     nil,
     "Show the trigger disasters list.",
     "ApplyWaterMarkers.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Spawn Colonists",
-    ChoGGi.SpawnColonists,
+    ChoGGi.MenuFuncs.SpawnColonists,
     nil,
     "Spawn certain amount of colonists.",
     "UncollectObjects.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[10]Unlock all buildings",
-    ChoGGi.UnlockAllBuildings,
+    ChoGGi.MenuFuncs.UnlockAllBuildings,
     nil,
     "Unlock all buildings for construction.",
     "TerrainConfigEditor.tga"
   )
 
 ----------------------workplaces
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Workplaces/Toggle All Shifts",
     CheatToggleAllShifts,
     nil,
@@ -50,7 +50,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Workplaces/Update All Workplaces",
     CheatUpdateAllWorkplaces,
     nil,
@@ -58,7 +58,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[05]Workplaces/Clear Forced Workplaces",
     CheatClearForcedWorkplaces,
     nil,
@@ -67,9 +67,9 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
   )
 
 ----------------------research
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Research Queue Larger",
-    ChoGGi.ResearchQueueLarger_Toggle,
+    ChoGGi.MenuFuncs.ResearchQueueLarger_Toggle,
     nil,
     function()
       local des = ""
@@ -83,15 +83,15 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "ShowOcclusion.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Reset All Research",
-    ChoGGi.ResetAllResearch,
+    ChoGGi.MenuFuncs.ResetAllResearch,
     nil,
     "Resets all research (includes breakthrough tech).",
     "UnlockCollection.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Research Current Tech",
     CheatResearchCurrent,
     nil,
@@ -99,50 +99,50 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "ViewArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Add Research Points",
-    ChoGGi.AddResearchPoints,
+    ChoGGi.MenuFuncs.AddResearchPoints,
     nil,
     "Add a specified amount of research points.",
     "pirate.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Outsourcing For Free",
-    ChoGGi.OutsourcingFree_Toggle,
+    ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
     nil,
     function()
-      local des = ChoGGi.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
+      local des = ChoGGi.Funcs.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
       return des .. " Outsourcing is free to purchase (over n over)."
     end,
     "pirate.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/Research Tech",
-    ChoGGi.ShowResearchTechList,
+    ChoGGi.MenuFuncs.ShowResearchTechList,
     nil,
     "Pick what you want to unlock/research.",
     "ViewArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/[14]Set Amount Of Breakthroughs Allowed",
-    ChoGGi.SetBreakThroughsAllowed,
+    ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
     nil,
     "How many breakthroughs are allowed to be unlocked?",
     "AlignSel.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[04]Research/[15]Breakthroughs From OmegaTelescope",
-    ChoGGi.SetBreakThroughsOmegaTelescope,
+    ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
     nil,
     "How many breakthroughs the OmegaTelescope will unlock.",
     "AlignSel.tga"
   )
 ----------------------cheats
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[10]Unpin All Pinned Objects",
     UnpinAll,
     nil,
@@ -150,7 +150,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "CutSceneArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[12]Complete wires\\pipes",
     CheatCompleteAllWiresAndPipes,
     nil,
@@ -158,7 +158,7 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "ViewCamPath.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[13]Complete constructions",
     CheatCompleteAllConstructions,
     "Alt-B",
@@ -166,9 +166,9 @@ function ChoGGi.CheatsMenu_LoadingScreenPreClose()
     "place_custom_object.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Cheats/[14]Mod Editor",
-    ChoGGi.OpenModEditor,
+    ChoGGi.MenuFuncs.OpenModEditor,
     nil,
     "Switch to the mod editor.",
     "Action.tga"

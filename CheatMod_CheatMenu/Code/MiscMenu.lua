@@ -1,157 +1,157 @@
-function ChoGGi.MiscMenu_LoadingScreenPreClose()
-  --ChoGGi.AddAction(Menu,Action,Key,Des,Icon)
+function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
+  --ChoGGi.Funcs.AddAction(Menu,Action,Key,Des,Icon)
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Auto Unpin Objects",
-    ChoGGi.ShowAutoUnpinObjectList,
+    ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
     nil,
     "Will automagically stop any of these objects from being added to the pinned list.",
     "CutSceneArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Clean All Objects",
-    ChoGGi.CleanAllObjects,
+    ChoGGi.MenuFuncs.CleanAllObjects,
     nil,
     "Removes all dust from all objects.",
     "DisableAOMaps.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Fix All Objects",
-    ChoGGi.FixAllObjects,
+    ChoGGi.MenuFuncs.FixAllObjects,
     nil,
     "Fixes all broken objects.",
     "DisableAOMaps.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Change Colour",
-    ChoGGi.CreateObjectListAndAttaches,
+    ChoGGi.MenuFuncs.CreateObjectListAndAttaches,
     "F6",
     "Select/mouse over an object to change the colours.",
     "toggle_dtm_slots.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Set Opacity",
-    ChoGGi.SetObjectOpacity,
+    ChoGGi.MenuFuncs.SetObjectOpacity,
     "F3",
     "Change the opacity of objects.",
     "set_last_texture.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Set UI Transparency",
-    ChoGGi.SetTransparencyUI,
+    ChoGGi.MenuFuncs.SetTransparencyUI,
     "Shift-F3",
     "Change the transparency of UI items.",
     "set_last_texture.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Set UI Transparency Mouseover",
-    ChoGGi.TransparencyUI_Toggle,
+    ChoGGi.MenuFuncs.TransparencyUI_Toggle,
     nil,
     "Toggle removing transparency on mouseover.",
     "set_last_texture.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[2]Render/Shadow Map",
-    ChoGGi.SetShadowmapSize,
+    ChoGGi.MenuFuncs.SetShadowmapSize,
     nil,
     function()
-      local des = "Current: " .. tostring(ChoGGi.CheatMenuSettings.ShadowmapSize)
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.ShadowmapSize)
       return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096."
     end,
     "DisableEyeSpec.tga"
   )
 
   --------------------
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[2]Render/Disable Texture Compression",
-    ChoGGi.DisableTextureCompression_Toggle,
+    ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.DisableTextureCompression and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.DisableTextureCompression and "(Enabled)" or "(Disabled)"
       return des .. " Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram)."
     end,
     "ExportImageSequence.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[2]Render/Higher Render Distance",
-    ChoGGi.HigherRenderDist_Toggle,
+    ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.HigherRenderDist and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.HigherRenderDist and "(Enabled)" or "(Disabled)"
       return des .. " Renders model from further away.\nNot noticeable unless using higher zoom."
     end,
     "CameraEditor.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[2]Render/Higher Shadow Distance",
-    ChoGGi.HigherShadowDist_Toggle,
+    ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.HigherShadowDist and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.HigherShadowDist and "(Enabled)" or "(Disabled)"
       return des .. " Renders shadows from further away.\nNot noticeable unless using higher zoom."
     end,
     "toggle_post.tga"
   )
 
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[1]Camera/Toggle Free Camera",
-    ChoGGi.CameraFree_Toggle,
+    ChoGGi.MenuFuncs.CameraFree_Toggle,
     "Shift-C",
     "I believe I can fly.",
     "NewCamera.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[1]Camera/Toggle Follow Camera",
-    ChoGGi.CameraFollow_Toggle,
+    ChoGGi.MenuFuncs.CameraFollow_Toggle,
     "Ctrl-Shift-F",
     "Select (or mouse over) an object to follow.",
     "Shot.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[1]Camera/Toggle Cursor",
-    ChoGGi.CursorVisible_Toggle,
+    ChoGGi.MenuFuncs.CursorVisible_Toggle,
     "Ctrl-Alt-F",
     "Toggle between moving camera and selecting objects.",
     "select_objects.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[1]Camera/Border Scrolling",
-    ChoGGi.SetBorderScrolling,
+    ChoGGi.MenuFuncs.SetBorderScrolling,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
       return des .. " Set size of activation for mouse border scrolling."
     end,
     "CameraToggle.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[1]Camera/Zoom Distance",
-    ChoGGi.CameraZoom_Toggle,
+    ChoGGi.MenuFuncs.CameraZoom_Toggle,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.CameraZoomToggle and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.CameraZoomToggle and "(Enabled)" or "(Disabled)"
       return des .. " Further zoom distance."
     end,
     "MoveUpCamera.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[-1]Infopanel Cheats",
-    ChoGGi.InfopanelCheats_Toggle,
+    ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
     nil,
     function()
       local des = config.BuildingInfopanelCheats and "(Enabled)" or "(Disabled)"
@@ -160,20 +160,20 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
     "toggle_dtm_slots.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/[-1]Infopanel Cheats Cleanup",
-    ChoGGi.InfopanelCheatsCleanup_Toggle,
+    ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
     nil,
     function()
-      local des = ChoGGi.CheatMenuSettings.CleanupCheatsInfoPane and "(Enabled)" or "(Disabled)"
+      local des = ChoGGi.UserSettings.CleanupCheatsInfoPane and "(Enabled)" or "(Disabled)"
       return des .. " Remove some entries from the cheat pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
     end,
     "toggle_dtm_slots.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Scanner Queue Larger",
-    ChoGGi.ScannerQueueLarger_Toggle,
+    ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
     nil,
     function()
       local des = ""
@@ -187,9 +187,9 @@ function ChoGGi.MiscMenu_LoadingScreenPreClose()
     "ViewArea.tga"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     "Expanded CM/[999]Misc/Game Speed",
-    ChoGGi.SetGameSpeed,
+    ChoGGi.MenuFuncs.SetGameSpeed,
     nil,
     "Change the game speed (only for medium/fast, normal is normal).",
     "SelectionToTemplates.tga"

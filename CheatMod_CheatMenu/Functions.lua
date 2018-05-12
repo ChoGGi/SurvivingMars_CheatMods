@@ -9,7 +9,7 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
-function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
+function ChoGGi.Funcs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
@@ -60,7 +60,7 @@ function ChoGGi.MsgPopup(Msg,Title,Icon,Size)
 end
 
 
-function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
+function ChoGGi.Funcs.Dump(Obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil
   else
@@ -76,14 +76,14 @@ function ChoGGi.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
+      ChoGGi.Funcs.MsgPopup("Dumped: " .. tostring(Obj),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
   end
 end
 
-function ChoGGi.DumpLua(Value)
+function ChoGGi.Funcs.DumpLua(Value)
   local which = "TupleToLuaCode"
   if type(Value) == "table" then
     which = "TableToLuaCode"
@@ -92,17 +92,17 @@ function ChoGGi.DumpLua(Value)
   elseif type(Value) == "userdata" then
     which = "ValueToLuaCode"
   end
-  ChoGGi.Dump("\r\n" .. _G[which](Value),nil,"DumpedLua","lua")
+  ChoGGi.Funcs.Dump("\r\n" .. _G[which](Value),nil,"DumpedLua","lua")
 end
 
 --[[
 Mode = -1 to append or nil to overwrite (default: -1)
 Funcs = true to dump functions as well (default: false)
-ChoGGi.DumpTable(TechTree)
+ChoGGi.Funcs.DumpTable(TechTree)
 --]]
-function ChoGGi.DumpTable(Obj,Mode,Funcs)
+function ChoGGi.Funcs.DumpTable(Obj,Mode,Funcs)
   if not Obj then
-    ChoGGi.MsgPopup("Can't dump nothing",
+    ChoGGi.Funcs.MsgPopup("Can't dump nothing",
       "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
     )
     return
@@ -110,15 +110,15 @@ function ChoGGi.DumpTable(Obj,Mode,Funcs)
   Mode = Mode or "-1"
   --make sure it's empty
   ChoGGi.TextFile = ""
-  ChoGGi.DumpTableFunc(Obj,nil,Funcs)
+  ChoGGi.Funcs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.MsgPopup("Dumped: " .. tostring(Obj),
+  ChoGGi.Funcs.MsgPopup("Dumped: " .. tostring(Obj),
     "AppData/logs/DumpedText.txt","UI/Icons/Upgrades/magnetic_filtering_04.tga"
   )
 end
 
-function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
+function ChoGGi.Funcs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   if (hierarchyLevel == nil) then
     hierarchyLevel = 0
   elseif (hierarchyLevel == 4) then
@@ -132,7 +132,7 @@ function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   if (type(Obj) == "table") then
     for k,v in pairs(Obj) do
       if (type(v) == "table") then
-        ChoGGi.DumpTableFunc(v, hierarchyLevel+1)
+        ChoGGi.Funcs.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
           ChoGGi.TextFile = ChoGGi.TextFile .. "\n" .. tostring(k) .. " = "
@@ -141,8 +141,8 @@ function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
 --make it add the table index #
 --Value: table: 0000000005FD3470
         if v ~= nil then
-          ChoGGi.TextFile = ChoGGi.TextFile .. tostring(ChoGGi.RetTextForDump(v,Funcs))
-          --ChoGGi.TextFile:write(tostring(ChoGGi.RetTextForDump(v,Funcs)))
+          ChoGGi.TextFile = ChoGGi.TextFile .. tostring(ChoGGi.Funcs.RetTextForDump(v,Funcs))
+          --ChoGGi.TextFile:write(tostring(ChoGGi.Funcs.RetTextForDump(v,Funcs)))
         end
         ChoGGi.TextFile = ChoGGi.TextFile .. "\n"
         --ChoGGi.TextFile:write("\n")
@@ -152,13 +152,13 @@ function ChoGGi.DumpTableFunc(Obj,hierarchyLevel,Funcs)
 end
 
 --[[
-ChoGGi.DumpObject(Consts)
-ChoGGi.DumpObject(const)
+ChoGGi.Funcs.DumpObject(Consts)
+ChoGGi.Funcs.DumpObject(const)
 if you want to dump functions as well DumpObject(object,true)
 --]]
-function ChoGGi.DumpObject(Obj,Mode,Funcs)
+function ChoGGi.Funcs.DumpObject(Obj,Mode,Funcs)
   if not Obj then
-    ChoGGi.MsgPopup("Can't dump nothing",
+    ChoGGi.Funcs.MsgPopup("Can't dump nothing",
       "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
     )
     return
@@ -170,14 +170,14 @@ function ChoGGi.DumpObject(Obj,Mode,Funcs)
       Text = Text .. "\n" .. tostring(k) .. " = "
     end
     if v ~= nil then
-      Text = Text .. tostring(ChoGGi.RetTextForDump(v,Funcs))
+      Text = Text .. tostring(ChoGGi.Funcs.RetTextForDump(v,Funcs))
     end
     --Text = Text .. "\n"
   end
-  ChoGGi.Dump(Text,Mode)
+  ChoGGi.Funcs.Dump(Text,Mode)
 end
 
-function ChoGGi.RetTextForDump(Obj,Funcs)
+function ChoGGi.Funcs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
     return function()
       _InternalTranslate(Obj)
@@ -191,19 +191,19 @@ function ChoGGi.RetTextForDump(Obj,Funcs)
   end
 end
 
-function ChoGGi.PrintFiles(Filename,Function,Text,...)
+function ChoGGi.Funcs.PrintFiles(Filename,Function,Text,...)
   Text = Text or ""
   --pass ... onto pcall function
   local Vararg = ...
   pcall(function()
-    ChoGGi.Dump(Text .. Vararg .. "\r\n","a",Filename,"log",true)
+    ChoGGi.Funcs.Dump(Text .. Vararg .. "\r\n","a",Filename,"log",true)
   end)
   if type(Function) == "function" then
     Function(...)
   end
 end
 
-function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
+function ChoGGi.Funcs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     Msg = Msg or "Empty"
     Ok = Ok or "Ok"
@@ -223,8 +223,8 @@ function ChoGGi.QuestionBox(Msg,Function,Title,Ok,Cancel)
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
----Consts.XXX = ChoGGi.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
-function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
+---Consts.XXX = ChoGGi.Funcs.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
+function ChoGGi.Funcs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
   end
@@ -236,7 +236,7 @@ function ChoGGi.NumRetBool(Num,TrueVar,FalseVar)
 end
 
 --return opposite value or first value if neither
-function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
+function ChoGGi.Funcs.ValueRetOpp(Setting,Value1,Value2)
   if Setting == Value1 then
     return Value2
   elseif Setting == Value2 then
@@ -247,7 +247,7 @@ function ChoGGi.ValueRetOpp(Setting,Value1,Value2)
 end
 
 --return as num
-function ChoGGi.BoolRetNum(Bool)
+function ChoGGi.Funcs.BoolRetNum(Bool)
   if Bool == true then
     return 1
   end
@@ -255,7 +255,7 @@ function ChoGGi.BoolRetNum(Bool)
 end
 
 --toggle 0/1
-function ChoGGi.ToggleBoolNum(Num)
+function ChoGGi.Funcs.ToggleBoolNum(Num)
   if Num == 0 then
     return 1
   end
@@ -263,7 +263,7 @@ function ChoGGi.ToggleBoolNum(Num)
 end
 
 --return equal or higher amount
-function ChoGGi.CompareAmounts(iAmtA,iAmtB)
+function ChoGGi.Funcs.CompareAmounts(iAmtA,iAmtB)
   --if ones missing then just return the other
   if not iAmtA then
     return iAmtB
@@ -287,7 +287,15 @@ end
     end
     return CmpLower(a, b)
 --]]
-function ChoGGi.CompareTableNames(a,b,sName)
+
+--[[
+  table.sort(Items,
+    function(a,b)
+      return ChoGGi.Funcs.CompareTableNames(a,b,"text")
+    end
+  )
+--]]
+function ChoGGi.Funcs.CompareTableNames(a,b,sName)
   if type(a[sName]) == type(b[sName]) then
     return a[sName] < b[sName]
   else
@@ -295,7 +303,7 @@ function ChoGGi.CompareTableNames(a,b,sName)
   end
 end
 
-function ChoGGi.WriteLogs_Toggle(Enable)
+function ChoGGi.Funcs.WriteLogs_Toggle(Enable)
   if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
@@ -306,9 +314,9 @@ function ChoGGi.WriteLogs_Toggle(Enable)
 
     --redirect functions
     local function ReplaceFunc(Name,Type)
-      ChoGGi.SaveOrigFunc(Name)
+      ChoGGi.Funcs.SaveOrigFunc(Name)
       _G[Name] = function(...)
-        ChoGGi.PrintFiles(Type,ChoGGi.OrigFunc[Name],nil,...)
+        ChoGGi.Funcs.PrintFiles(Type,ChoGGi.OrigFuncs[Name],nil,...)
       end
     end
     ReplaceFunc("AddConsoleLog","ConsoleLog")
@@ -317,9 +325,9 @@ function ChoGGi.WriteLogs_Toggle(Enable)
     ReplaceFunc("OutputDebugString","DebugLog")
   else
     local function ResetFunc(Name)
-      if ChoGGi.OrigFunc[Name] then
-        _G[Name] = ChoGGi.OrigFunc[Name]
-        ChoGGi.OrigFunc[Name] = nil
+      if ChoGGi.OrigFuncs[Name] then
+        _G[Name] = ChoGGi.OrigFuncs[Name]
+        ChoGGi.OrigFuncs[Name] = nil
       end
     end
     ResetFunc("AddConsoleLog")
@@ -329,8 +337,8 @@ function ChoGGi.WriteLogs_Toggle(Enable)
   end
 end
 
---ChoGGi.PrintIds(TechTree)
-function ChoGGi.PrintIds(Table)
+--ChoGGi.Funcs.PrintIds(TechTree)
+function ChoGGi.Funcs.PrintIds(Table)
   local text = ""
 
   for i = 1, #Table do
@@ -340,36 +348,36 @@ function ChoGGi.PrintIds(Table)
     end
   end
 
-  ChoGGi.Dump(text)
+  ChoGGi.Funcs.Dump(text)
 end
 
 --changes a function to also post a Msg for use with OnMsg
 --AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
-function ChoGGi.AddMsgToFunc(ClassName,FuncName,sMsg)
+function ChoGGi.Funcs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
-  ChoGGi.SaveOrigFunc(FuncName,ClassName)
+  ChoGGi.Funcs.SaveOrigFunc(FuncName,ClassName)
   --redefine it
   _G[ClassName][FuncName] = function(self,...)
     Msg(sMsg,self)
-    return ChoGGi.OrigFunc[ClassName .. "_" .. FuncName](self,...)
+    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](self,...)
   end
 end
 
-function ChoGGi.SaveOrigFunc(Name,Class)
+function ChoGGi.Funcs.SaveOrigFunc(Name,Class)
   if Class then
     local newname = Class .. "_" .. Name
-    if not ChoGGi.OrigFunc[newname] then
-      ChoGGi.OrigFunc[newname] = _G[Class][Name]
+    if not ChoGGi.OrigFuncs[newname] then
+      ChoGGi.OrigFuncs[newname] = _G[Class][Name]
     end
   else
-    if not ChoGGi.OrigFunc[Name] then
-      ChoGGi.OrigFunc[Name] = _G[Name]
+    if not ChoGGi.OrigFuncs[Name] then
+      ChoGGi.OrigFuncs[Name] = _G[Name]
     end
   end
 end
 
 --check for and remove broken objects from UICity.labels
-function ChoGGi.RemoveMissingLabelObjects(Label)
+function ChoGGi.Funcs.RemoveMissingLabelObjects(Label)
   local found = true
   while found do
     found = nil
@@ -384,7 +392,7 @@ function ChoGGi.RemoveMissingLabelObjects(Label)
   end
 end
 
-function ChoGGi.RemoveFromLabel(Label,Obj)
+function ChoGGi.Funcs.RemoveFromLabel(Label,Obj)
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
     if tab[i].handle == Obj.handle then
@@ -402,7 +410,7 @@ function toboolean(Str)
 end
 
 --tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
-function ChoGGi.RetProperType(Value)
+function ChoGGi.Funcs.RetProperType(Value)
   --number?
   local num = tonumber(Value)
   if num then
@@ -423,7 +431,7 @@ end
 
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
-function ChoGGi.UserAddActions(ActionsToAdd)
+function ChoGGi.Funcs.UserAddActions(ActionsToAdd)
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
@@ -453,7 +461,7 @@ function ChoGGi.UserAddActions(ActionsToAdd)
   UserActions.SetMode(UserActions.mode)
 end
 
-function ChoGGi.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+function ChoGGi.Funcs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   if Menu then
     Menu = "/" .. tostring(Menu)
   end
@@ -486,7 +494,7 @@ print("\n")
   --_InternalTranslate(T({Number from Game.csv}))
   --UserActions.AddActions({
   --UserActions.RejectedActions()
-  ChoGGi.UserAddActions({
+  ChoGGi.Funcs.UserAddActions({
     ["ChoGGi_" .. name .. AsyncRand()] = {
       menu = Menu,
       action = Action,
@@ -501,8 +509,8 @@ print("\n")
   })
 end
 
---while ChoGGi.CheckForTypeInList(terminal.desktop,"Examine") do
-function ChoGGi.CheckForTypeInList(List,Type)
+--while ChoGGi.Funcs.CheckForTypeInList(terminal.desktop,"Examine") do
+function ChoGGi.Funcs.CheckForTypeInList(List,Type)
   local ret = false
   for i = 1, #List do
     if IsKindOf(List[i],Type) then
@@ -513,20 +521,20 @@ function ChoGGi.CheckForTypeInList(List,Type)
 end
 
 --[[
-ChoGGi.ReturnTechAmount(Tech,Prop)
+ChoGGi.Funcs.ReturnTechAmount(Tech,Prop)
 returns number from TechTree (so you know how much it changes)
 see: Data/TechTree.lua, or examine(TechTree)
 
-ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+ChoGGi.Funcs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10
-ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+ChoGGi.Funcs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
 ^ returns 0.7
 
 it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
 ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
-function ChoGGi.ReturnTechAmount(Tech,Prop)
+function ChoGGi.Funcs.ReturnTechAmount(Tech,Prop)
   local techdef = TechDef[Tech]
 
   local tab = techdef or empty_table
@@ -565,13 +573,13 @@ end
   --need to see if research is unlocked
   if IsResearched and UICity:IsTechResearched(IsResearched) then
     --boolean consts
-    Value = ChoGGi.ReturnTechAmount(IsResearched,Name)
+    Value = ChoGGi.Funcs.ReturnTechAmount(IsResearched,Name)
     --amount
     Consts["TravelTimeMarsEarth"] = Value
   end
 --]]
---function ChoGGi.SetConstsG(Name,Value,IsResearched)
-function ChoGGi.SetConstsG(Name,Value)
+--function ChoGGi.Funcs.SetConstsG(Name,Value,IsResearched)
+function ChoGGi.Funcs.SetConstsG(Name,Value)
   --we only want to change it if user set value
   if Value then
     --some mods change Consts or g_Consts, so we'll just do both to be sure
@@ -581,16 +589,16 @@ function ChoGGi.SetConstsG(Name,Value)
 end
 
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function ChoGGi.SetSavedSetting(Setting,Value)
+function ChoGGi.Funcs.SetSavedSetting(Setting,Value)
   --if setting is the same as the default then make it false
   if ChoGGi.Consts[Setting] == Value then
-    ChoGGi.CheatMenuSettings[Setting] = false
+    ChoGGi.UserSettings[Setting] = false
   else
-    ChoGGi.CheatMenuSettings[Setting] = Value
+    ChoGGi.UserSettings[Setting] = Value
   end
 end
 
-function ChoGGi.RetTableNoDupes(Table)
+function ChoGGi.Funcs.RetTableNoDupes(Table)
   local tempt = {}
   local dupe = {}
 
@@ -602,4 +610,29 @@ function ChoGGi.RetTableNoDupes(Table)
     end
   end
   return tempt
+end
+
+--RemoveFromTable(sometable,"class","SelectionArrow")
+function ChoGGi.Funcs.RemoveFromTable(Table,Type,Text)
+  local tempt = {}
+
+  local tab = Table or empty_table
+  for i = 1, #tab do
+    if tab[i][Type] ~= Text then
+      tempt[#tempt+1] = tab[i]
+    end
+  end
+  return tempt
+end
+
+--ex(NearestObject(GetTerrainCursor(),temptable),20000)
+--RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1,ResourceStockpile=1},"class")
+function ChoGGi.Funcs.RemoveFromTable(Table,ExcludeList,Type)
+  return FilterObjects({
+      filter = function(o)
+        if not ExcludeList[o[Type]] then
+          return o
+        end
+      end
+    },Table)
 end

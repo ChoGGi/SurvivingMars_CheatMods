@@ -1,16 +1,16 @@
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
-function ChoGGi.ShowInterfaceInScreenshots_Toggle()
+function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
-  ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots = not ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots
+  ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.CheatMenuSettings.ShowInterfaceInScreenshots),
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     "Interface",UsualIcon
   )
 end
 
-function ChoGGi.TakeScreenshot(Bool)
+function ChoGGi.MenuFuncs.TakeScreenshot(Bool)
   if Bool == true then
     CreateRealTimeThread(function()
       WaitNextFrame(3)
@@ -23,7 +23,7 @@ function ChoGGi.TakeScreenshot(Bool)
   end
 end
 
-function ChoGGi.ResetECMSettings()
+function ChoGGi.MenuFuncs.ResetECMSettings()
   local file = ChoGGi.SettingsFile
   local old = file .. ".old"
 
@@ -38,47 +38,47 @@ function ChoGGi.ResetECMSettings()
     AsyncFileDelete(ChoGGi.SettingsFile)
     ThreadUnlockKey(file)
 
-    ChoGGi.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
+    ChoGGi.Funcs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 
   end
 
-  ChoGGi.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old,ResetSettings,"Reset!")
+  ChoGGi.Funcs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
 end
 
-function ChoGGi.SignsInterface_Toggle()
+function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  ChoGGi.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
+  ChoGGi.Funcs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
     "Signs",UsualIcon,true
   )
 end
 
-function ChoGGi.OnScreenHints_Toggle()
+function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  ChoGGi.MsgPopup(HintsEnabled,"Hints",UsualIcon)
+  ChoGGi.Funcs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
 end
 
-function ChoGGi.OnScreenHints_Reset()
+function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  ChoGGi.MsgPopup("Hints Reset!","Hints",UsualIcon)
+  ChoGGi.Funcs.MsgPopup("Hints Reset!","Hints",UsualIcon)
 end
 
-function ChoGGi.NeverShowHints_Toggle()
-  ChoGGi.CheatMenuSettings.DisableHints = not ChoGGi.CheatMenuSettings.DisableHints
-  if ChoGGi.CheatMenuSettings.DisableHints then
+function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
+  ChoGGi.UserSettings.DisableHints = not ChoGGi.UserSettings.DisableHints
+  if ChoGGi.UserSettings.DisableHints then
     mapdata.DisableHints = true
     HintsEnabled = false
   else
     mapdata.DisableHints = false
     HintsEnabled = true
   end
-  ChoGGi.WriteSettings()
+  ChoGGi.Funcs.WriteSettings()
 
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
 end
 
-function ChoGGi.MenuHelp_ReportBug()
+function ChoGGi.MenuFuncs.MenuHelp_ReportBug()
   if Platform.ged then
     return
   end
@@ -87,7 +87,7 @@ function ChoGGi.MenuHelp_ReportBug()
   end)
 end
 
-function ChoGGi.MenuHelp_About()
+function ChoGGi.MenuFuncs.MenuHelp_About()
   CreateRealTimeThread(
     WaitCustomPopupNotification,
     "Help",

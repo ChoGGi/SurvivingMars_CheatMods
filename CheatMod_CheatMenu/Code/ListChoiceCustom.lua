@@ -1,4 +1,5 @@
-function ChoGGi.ListChoiceCustom_ClassesGenerate()
+
+function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
   DefineClass.ListChoiceCustomDialog = {
     __parents = {
@@ -64,7 +65,7 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local value = ChoGGi.RetProperType(self.idEditValue:GetValue())
+      local value = ChoGGi.Funcs.RetProperType(self.idEditValue:GetValue())
 
       if type(self.CustomType) == "number" then
         self.idList.items[self.idList.last_selected].value = value
@@ -89,7 +90,7 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
     self.idList.OnDoubleClick = function()
       --open colour changer
       if type(self.CustomType) == "number" and (self.CustomType == 1 or self.CustomType == 2) then
-        ChoGGi.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+        ChoGGi.Funcs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
       else
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -104,7 +105,7 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
       end
       local SetPal = self.obj.SetColorizationMaterial
       local items = self.idList.items
-      ChoGGi.SaveOldPalette(self.obj)
+      ChoGGi.Funcs.SaveOldPalette(self.obj)
       for i = 1, 4 do
         local Color = items[i].value
         local Metallic = items[i+4].value
@@ -143,7 +144,7 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
 
   --update colour
   function ListChoiceCustomDialog:UpdateColourPicker()
-    local num = ChoGGi.RetProperType(self.idEditValue:GetText())
+    local num = ChoGGi.Funcs.RetProperType(self.idEditValue:GetText())
     self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
     self.idColorHSV:InitHSVPtPos()
     self.idColorHSV:Invalidate()
@@ -162,9 +163,9 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
       for i = 1, #items do
         if i == 1 then
           --always return the custom value (and try to convert it to correct type)
-          items[i].editvalue = ChoGGi.RetProperType(self.idEditValue:GetText())
+          items[i].editvalue = ChoGGi.Funcs.RetProperType(self.idEditValue:GetText())
         end
-        table.insert(self.choices,items[i])
+        self.choices[#self.choices+1] = items[i]
       end
       --add checkbox statuses
       self.choices[1].check1 = self.idCheckBox1:GetToggled()
@@ -195,7 +196,7 @@ function ChoGGi.ListChoiceCustom_ClassesGenerate()
 
 end --ClassesGenerate
 
-function ChoGGi.ListChoiceCustom_ClassesBuilt()
+function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
 
   --dialog layout
   --[[

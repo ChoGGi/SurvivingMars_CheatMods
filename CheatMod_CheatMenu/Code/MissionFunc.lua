@@ -1,55 +1,57 @@
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
-function ChoGGi.SponsorsFunc_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
   local function SetBonus(Preset,Type,Func)
     local tab = Presets[Preset].Default or empty_table
     for i = 1, #tab do
-      if ChoGGi.CheatMenuSettings[Type .. tab[i].id] then
+      if ChoGGi.UserSettings[Type .. tab[i].id] then
         Func(tab[i].id)
       end
     end
   end
-  SetBonus("MissionSponsorPreset","Sponsor",ChoGGi.SetSponsorBonuses)
-  SetBonus("CommanderProfilePreset","Commander",ChoGGi.SetCommanderBonuses)
+  SetBonus("MissionSponsorPreset","Sponsor",ChoGGi.Funcs.SetSponsorBonuses)
+  SetBonus("CommanderProfilePreset","Commander",ChoGGi.Funcs.SetCommanderBonuses)
 end
 
-function ChoGGi.InstantMissionGoal()
+function ChoGGi.MenuFuncs.InstantMissionGoal()
   local goal = UICity.mission_goal
   local target = GetMissionSponsor().goal_target + 1
+  --different goals use different targets, we'll just set them all
   goal.analyzed = target
   goal.amount = target
   goal.researched = target
+  --
   goal.colony_approval_sol = UICity.day
-  ChoGGi.InstantMissionGoal = true
-  ChoGGi.MsgPopup("Mission goal","Goal",UsualIcon)
+  ChoGGi.Temp.InstantMissionGoal = true
+  ChoGGi.Funcs.MsgPopup("Mission goal","Goal",UsualIcon)
 end
 
-function ChoGGi.InstantColonyApproval()
+function ChoGGi.MenuFuncs.InstantColonyApproval()
   CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
   Msg("ColonyApprovalPassed")
   g_ColonyNotViableUntil = -1
 end
 
-function ChoGGi.MeteorHealthDamage_Toggle()
-  ChoGGi.SetConstsG("MeteorHealthDamage",ChoGGi.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
-  ChoGGi.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
+function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
+  ChoGGi.Funcs.SetConstsG("MeteorHealthDamage",ChoGGi.Funcs.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
+  ChoGGi.Funcs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
     "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
 
-function ChoGGi.ChangeSponsor()
+function ChoGGi.MenuFuncs.ChangeSponsor()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
     if tab[i].id ~= "random" then
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = _InternalTranslate(tab[i].display_name),
         value = tab[i].id,
         hint = _InternalTranslate(tab[i].effect)
-      })
+      }
     end
   end
 
@@ -68,7 +70,7 @@ function ChoGGi.ChangeSponsor()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.MsgPopup("Sponsor for this save is now " .. choice[1].text,
+        ChoGGi.Funcs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
           "Sponsor",UsualIcon
         )
         break
@@ -77,20 +79,20 @@ function ChoGGi.ChangeSponsor()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
 end
 
 --set just the bonus effects
-function ChoGGi.SetSponsorBonus()
+function ChoGGi.MenuFuncs.SetSponsorBonus()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
     if tab[i].id ~= "random" then
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = _InternalTranslate(tab[i].display_name),
         value = tab[i].id,
-        hint = _InternalTranslate(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.CheatMenuSettings["Sponsor" .. tab[i].id])
-      })
+        hint = _InternalTranslate(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Sponsor" .. tab[i].id])
+      }
     end
   end
 
@@ -100,7 +102,7 @@ function ChoGGi.SetSponsorBonus()
         local value = ItemList[i].value
         if type(value) == "string" then
           value = "Sponsor" .. value
-          ChoGGi.CheatMenuSettings[value] = nil
+          ChoGGi.UserSettings[value] = nil
         end
       end
     else
@@ -111,20 +113,20 @@ function ChoGGi.SetSponsorBonus()
           if ItemList[j].value == value and type(value) == "string" then
             local name = "Sponsor" .. value
             if choice[1].check1 then
-              ChoGGi.CheatMenuSettings[name] = nil
+              ChoGGi.UserSettings[name] = nil
             else
-              ChoGGi.CheatMenuSettings[name] = true
+              ChoGGi.UserSettings[name] = true
             end
-            if ChoGGi.CheatMenuSettings[name] then
-              ChoGGi.SetSponsorBonuses(value)
+            if ChoGGi.UserSettings[name] then
+              ChoGGi.Funcs.SetSponsorBonuses(value)
             end
           end
         end
       end
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Bonuses: " .. #choice,"Sponsor")
+    ChoGGi.Funcs.WriteSettings()
+    ChoGGi.Funcs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
@@ -132,19 +134,19 @@ function ChoGGi.SetSponsorBonus()
     .. "\n\nModded ones are mostly ignored for now (just cargo space/research points)."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
-function ChoGGi.ChangeCommander()
+function ChoGGi.MenuFuncs.ChangeCommander()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
     if tab[i].id ~= "random" then
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = _InternalTranslate(tab[i].display_name),
         value = tab[i].id,
         hint = _InternalTranslate(tab[i].effect)
-      })
+      }
     end
   end
 
@@ -163,7 +165,7 @@ function ChoGGi.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.MsgPopup("Commander for this save is now " .. choice[1].text,
+        ChoGGi.Funcs.MsgPopup("Commander for this save is now " .. choice[1].text,
           "Commander",UsualIcon
         )
         break
@@ -172,20 +174,20 @@ function ChoGGi.ChangeCommander()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
 end
 
 --set just the bonus effects
-function ChoGGi.SetCommanderBonus()
+function ChoGGi.MenuFuncs.SetCommanderBonus()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
     if tab[i].id ~= "random" then
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = _InternalTranslate(tab[i].display_name),
         value = tab[i].id,
-        hint = _InternalTranslate(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.CheatMenuSettings["Commander" .. tab[i].id])
-      })
+        hint = _InternalTranslate(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Commander" .. tab[i].id])
+      }
     end
   end
 
@@ -195,7 +197,7 @@ function ChoGGi.SetCommanderBonus()
         local value = ItemList[i].value
         if type(value) == "string" then
           value = "Commander" .. value
-          ChoGGi.CheatMenuSettings[value] = nil
+          ChoGGi.UserSettings[value] = nil
         end
       end
     else
@@ -206,38 +208,38 @@ function ChoGGi.SetCommanderBonus()
           if ItemList[j].value == value and type(value) == "string" then
             local name = "Commander" .. value
             if choice[1].check1 then
-              ChoGGi.CheatMenuSettings[name] = nil
+              ChoGGi.UserSettings[name] = nil
             else
-              ChoGGi.CheatMenuSettings[name] = true
+              ChoGGi.UserSettings[name] = true
             end
-            if ChoGGi.CheatMenuSettings[name] then
-              ChoGGi.SetCommanderBonuses(value)
+            if ChoGGi.UserSettings[name] then
+              ChoGGi.Funcs.SetCommanderBonuses(value)
             end
           end
         end
       end
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Bonuses: " .. #choice,"Commander")
+    ChoGGi.Funcs.WriteSettings()
+    ChoGGi.Funcs.MsgPopup("Bonuses: " .. #choice,"Commander")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
     .. "\n\nUse Ctrl/Shift for multiple bonuses."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
 --pick a logo
-function ChoGGi.ChangeGameLogo()
+function ChoGGi.MenuFuncs.ChangeGameLogo()
   local ItemList = {}
   local tab = Presets.MissionLogoPreset.Default or empty_table
   for i = 1, #tab do
-    table.insert(ItemList,{
+    ItemList[#ItemList+1] = {
       text = _InternalTranslate(tab[i].display_name),
       value = tab[i].id,
-    })
+    }
   end
 
   local CallBackFunc = function(choice)
@@ -270,7 +272,7 @@ function ChoGGi.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        ChoGGi.MsgPopup("Logo: " .. choice[1].text,
+        ChoGGi.Funcs.MsgPopup("Logo: " .. choice[1].text,
           "Logo",UsualIcon
         )
       end
@@ -278,40 +280,41 @@ function ChoGGi.ChangeGameLogo()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
 end
 
 --[[
-function ChoGGi.SetDisasterOccurrence(sType)
+figure out where this is stored in-game
+function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
   local ItemList = {}
   local data = DataInstances["MapSettings_" .. sType]
 
   for i = 1, #data do
-    table.insert(ItemList,{
+    ItemList[#ItemList+1] = {
       text = data[i].name,
       value = data[i].name
-    })
+    }
   end
 
   local CallBackFunc = function(choice)
     mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
 
-    ChoGGi.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
+    ChoGGi.Funcs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
       "Disaster","UI/Icons/Sections/attention.tga"
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
 end
 
 function ChoGGi.ChangeRules()
   local ItemList = {}
   for _,Value in iXpairs(Presets.GameRules.Default) do
     if Value.id ~= "random" then
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = _InternalTranslate(Value.display_name),
         value = Value.id,
         hint = _InternalTranslate(Value.description) .. "\n" .. _InternalTranslate(Value.flavor)
-      })
+      }
     end
   end
 
@@ -319,10 +322,10 @@ function ChoGGi.ChangeRules()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if not check1 and not check2 then
-      ChoGGi.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
+      ChoGGi.Funcs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
       return
     elseif check1 and check2 then
-      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
+      ChoGGi.Funcs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
       return
     end
 
@@ -349,7 +352,7 @@ function ChoGGi.ChangeRules()
       GameRulesMap[rule_id]:OnInitEffect(UICity)
       GameRulesMap[rule_id]:OnApplyEffect(UICity)
     end
-    ChoGGi.MsgPopup("Set: " .. #choice,
+    ChoGGi.Funcs.MsgPopup("Set: " .. #choice,
       "Rules",UsualIcon
     )
   end
@@ -363,6 +366,6 @@ function ChoGGi.ChangeRules()
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
 end
 --]]

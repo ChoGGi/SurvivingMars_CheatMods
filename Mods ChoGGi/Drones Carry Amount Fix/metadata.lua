@@ -7,8 +7,6 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_DronesCarryAmountFix",
   "author", "ChoGGi",
   "code", {
-    "_CommonFunctions.lua",
-    "OnMsgs.lua",
-    "ReplacedFunctions.lua",
+    "Script.lua",
   },
 })

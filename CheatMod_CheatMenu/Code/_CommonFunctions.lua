@@ -5,14 +5,14 @@ function console(...)ConsolePrint(tostring(...))end
 function examine(Obj)OpenExamine(Obj)end
 function ex(Obj)OpenExamine(Obj)end
 function con(...)console(...)end
-function dump(...)ChoGGi.Dump(...)end
-function dumpobject(...)ChoGGi.DumpObject(...)end
-function dumplua(...)ChoGGi.DumpLua(...)end
-function dumptable(...)ChoGGi.DumpTable(...)end
-function dumpo(...)ChoGGi.DumpObject(...)end
-function dumpl(...)ChoGGi.DumpLua(...)end
-function dumpt(...)ChoGGi.DumpTable(...)end
-function alert(...)ChoGGi.MsgPopup(...)end
+function dump(...)ChoGGi.Funcs.Dump(...)end
+function dumpobject(...)ChoGGi.Funcs.DumpObject(...)end
+function dumplua(...)ChoGGi.Funcs.DumpLua(...)end
+function dumptable(...)ChoGGi.Funcs.DumpTable(...)end
+function dumpo(...)ChoGGi.Funcs.DumpObject(...)end
+function dumpl(...)ChoGGi.Funcs.DumpLua(...)end
+function dumpt(...)ChoGGi.Funcs.DumpTable(...)end
+function alert(...)ChoGGi.Funcs.MsgPopup(...)end
 function restart()quit("restart")end
 s = false --used to store SelectedObj
 reboot = restart
@@ -25,56 +25,56 @@ c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
 
 --check if tech is researched before we set these consts (activated from menu items)
-function ChoGGi.GetSpeedDrone()
+function ChoGGi.Funcs.GetSpeedDrone()
   local MoveSpeed = ChoGGi.Consts.SpeedDrone
 
   if UICity and UICity:IsTechResearched("LowGDrive") then
-    local p = ChoGGi.ReturnTechAmount("LowGDrive","move_speed")
+    local p = ChoGGi.Funcs.ReturnTechAmount("LowGDrive","move_speed")
     MoveSpeed = MoveSpeed + MoveSpeed * p
   end
   if UICity and UICity:IsTechResearched("AdvancedDroneDrive") then
-    local p = ChoGGi.ReturnTechAmount("AdvancedDroneDrive","move_speed")
+    local p = ChoGGi.Funcs.ReturnTechAmount("AdvancedDroneDrive","move_speed")
     MoveSpeed = MoveSpeed + MoveSpeed * p
   end
 
   return MoveSpeed
 end
 
-function ChoGGi.GetSpeedRC()
+function ChoGGi.Funcs.GetSpeedRC()
   if UICity and UICity:IsTechResearched("LowGDrive") then
-    local p = ChoGGi.ReturnTechAmount("LowGDrive","move_speed")
+    local p = ChoGGi.Funcs.ReturnTechAmount("LowGDrive","move_speed")
     return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
   end
   return ChoGGi.Consts.SpeedRC
 end
 
-function ChoGGi.GetCargoCapacity()
+function ChoGGi.Funcs.GetCargoCapacity()
   if UICity and UICity:IsTechResearched("FuelCompression") then
-    local a = ChoGGi.ReturnTechAmount("FuelCompression","CargoCapacity")
+    local a = ChoGGi.Funcs.ReturnTechAmount("FuelCompression","CargoCapacity")
     return ChoGGi.Consts.CargoCapacity + a
   end
   return ChoGGi.Consts.CargoCapacity
 end
 --
-function ChoGGi.GetCommandCenterMaxDrones()
+function ChoGGi.Funcs.GetCommandCenterMaxDrones()
   if UICity and UICity:IsTechResearched("DroneSwarm") then
-    local a = ChoGGi.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+    local a = ChoGGi.Funcs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
     return ChoGGi.Consts.CommandCenterMaxDrones + a
   end
   return ChoGGi.Consts.CommandCenterMaxDrones
 end
 --
-function ChoGGi.GetDroneResourceCarryAmount()
+function ChoGGi.Funcs.GetDroneResourceCarryAmount()
   if UICity and UICity:IsTechResearched("ArtificialMuscles") then
-    local a = ChoGGi.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+    local a = ChoGGi.Funcs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
     return ChoGGi.Consts.DroneResourceCarryAmount + a
   end
   return ChoGGi.Consts.DroneResourceCarryAmount
 end
 --
-function ChoGGi.GetLowSanityNegativeTraitChance()
+function ChoGGi.Funcs.GetLowSanityNegativeTraitChance()
   if UICity and UICity:IsTechResearched("SupportiveCommunity") then
-    local p = ChoGGi.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+    local p = ChoGGi.Funcs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
     --[[
     LowSanityNegativeTraitChance = 30%
     SupportiveCommunity = -70%
@@ -85,68 +85,68 @@ function ChoGGi.GetLowSanityNegativeTraitChance()
   return ChoGGi.Consts.LowSanityNegativeTraitChance
 end
 --
-function ChoGGi.GetMaxColonistsPerRocket()
+function ChoGGi.Funcs.GetMaxColonistsPerRocket()
   local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
   if UICity and UICity:IsTechResearched("CompactPassengerModule") then
-    local a = ChoGGi.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+    local a = ChoGGi.Funcs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
     PerRocket = PerRocket + a
   end
   if UICity and UICity:IsTechResearched("CryoSleep") then
-    local a = ChoGGi.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    local a = ChoGGi.Funcs.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
     PerRocket = PerRocket + a
   end
   return PerRocket
 end
 --
-function ChoGGi.GetNonSpecialistPerformancePenalty()
+function ChoGGi.Funcs.GetNonSpecialistPerformancePenalty()
   if UICity and UICity:IsTechResearched("GeneralTraining") then
-    local a = ChoGGi.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+    local a = ChoGGi.Funcs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
     return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
   end
   return ChoGGi.Consts.NonSpecialistPerformancePenalty
 end
 --
-function ChoGGi.GetRCRoverMaxDrones()
+function ChoGGi.Funcs.GetRCRoverMaxDrones()
   if UICity and UICity:IsTechResearched("RoverCommandAI") then
-    local a = ChoGGi.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+    local a = ChoGGi.Funcs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
     return ChoGGi.Consts.RCRoverMaxDrones + a
   end
   return ChoGGi.Consts.RCRoverMaxDrones
 end
 --
-function ChoGGi.GetRCTransportGatherResourceWorkTime()
+function ChoGGi.Funcs.GetRCTransportGatherResourceWorkTime()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local p = ChoGGi.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+    local p = ChoGGi.Funcs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
     return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
   end
   return ChoGGi.Consts.RCTransportGatherResourceWorkTime
 end
 --
-function ChoGGi.GetRCTransportStorageCapacity()
+function ChoGGi.Funcs.GetRCTransportStorageCapacity()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local a = ChoGGi.ReturnTechAmount("TransportOptimization","max_shared_storage")
+    local a = ChoGGi.Funcs.ReturnTechAmount("TransportOptimization","max_shared_storage")
     return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
   end
   return ChoGGi.Consts.RCTransportStorageCapacity
 end
 --
-function ChoGGi.GetTravelTimeEarthMars()
+function ChoGGi.Funcs.GetTravelTimeEarthMars()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+    local p = ChoGGi.Funcs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
     return ChoGGi.Consts.TravelTimeEarthMars * p
   end
   return ChoGGi.Consts.TravelTimeEarthMars
 end
 --
-function ChoGGi.GetTravelTimeMarsEarth()
+function ChoGGi.Funcs.GetTravelTimeMarsEarth()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = ChoGGi.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+    local p = ChoGGi.Funcs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
     return ChoGGi.Consts.TravelTimeMarsEarth * p
   end
   return ChoGGi.Consts.TravelTimeMarsEarth
 end
 
-function ChoGGi.AttachToNearestDome(building)
+function ChoGGi.Funcs.AttachToNearestDome(building)
   --ignore outdoor buildings, and if there aren't any domes
   local work = UICity.labels.Domes_Working
   if building.dome_required ~= true or not work or (work and next(work) == nil) then
@@ -161,16 +161,16 @@ function ChoGGi.AttachToNearestDome(building)
       building.parent_dome = dome
       --which type is it (check for getlabels or some such)
       if building.closed_shifts then
-        table.insert(dome.labels.Workplace,building)
+        dome.labels.Workplace[#dome.labels.Workplace+1] = building
       elseif building.colonists then
-        table.insert(dome.labels.Residence,building)
+        dome.labels.Workplace[#dome.labels.Residence+1] = building
       end
     end
   end
 end
 
 --toggle working status
-function ChoGGi.ToggleWorking(building)
+function ChoGGi.Funcs.ToggleWorking(building)
   CreateRealTimeThread(function()
     building:ToggleWorking()
     Sleep(5)
@@ -178,12 +178,13 @@ function ChoGGi.ToggleWorking(building)
   end)
 end
 
-function ChoGGi.SetCameraSettings()
+function ChoGGi.Funcs.SetCameraSettings()
 --cameraRTS.GetProperties(1)
 
   --size of activation area for border scrolling
-  if ChoGGi.CheatMenuSettings.BorderScrollingArea then
-    cameraRTS.SetProperties(1,{ScrollBorder = ChoGGi.CheatMenuSettings.BorderScrollingArea})
+  local BorderScrollingArea = ChoGGi.UserSettings.BorderScrollingArea
+  if BorderScrollingArea then
+    cameraRTS.SetProperties(1,{ScrollBorder = BorderScrollingArea})
   else
     --default
     cameraRTS.SetProperties(1,{ScrollBorder = 5})
@@ -192,9 +193,10 @@ function ChoGGi.SetCameraSettings()
   --zoom
   --camera.GetFovY()
   --camera.GetFovX()
-  if ChoGGi.CheatMenuSettings.CameraZoomToggle then
-    if type(ChoGGi.CheatMenuSettings.CameraZoomToggle) == "number" then
-      cameraRTS.SetZoomLimits(0,ChoGGi.CheatMenuSettings.CameraZoomToggle)
+  local CameraZoomToggle = ChoGGi.UserSettings.CameraZoomToggle
+  if CameraZoomToggle then
+    if type(CameraZoomToggle) == "number" then
+      cameraRTS.SetZoomLimits(0,CameraZoomToggle)
     else
       cameraRTS.SetZoomLimits(0,24000)
     end
@@ -212,10 +214,10 @@ function ChoGGi.SetCameraSettings()
   --cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
-function ChoGGi.RemoveOldFiles()
+function ChoGGi.Funcs.RemoveOldFiles()
   CreateRealTimeThread(function()
     local Table = {
-      "CheatMenuSettings",
+      "UserSettings",
       "ConsoleExec",
       "FuncsCheats",
       "FuncsDebug",
@@ -268,47 +270,47 @@ function ChoGGi.RemoveOldFiles()
     AsyncFileDelete(ChoGGi.ModPath .. "libs")
 
     --old settings that aren't used anymore
-    ChoGGi.CheatMenuSettings.AddMysteryBreakthroughBuildings = nil
-    ChoGGi.CheatMenuSettings.AirWaterAddAmount = nil
-    ChoGGi.CheatMenuSettings.AirWaterBatteryAddAmount = nil
-    ChoGGi.CheatMenuSettings.BatteryAddAmount = nil
-    ChoGGi.CheatMenuSettings.BorderScrollingToggle = nil
-    ChoGGi.CheatMenuSettings.Building_dome_forbidden = nil
-    ChoGGi.CheatMenuSettings.Building_dome_required = nil
-    ChoGGi.CheatMenuSettings.Building_is_tall = nil
-    ChoGGi.CheatMenuSettings.CapacityShuttle = nil
-    ChoGGi.CheatMenuSettings.CommanderAstrogeologist = nil
-    ChoGGi.CheatMenuSettings.CommanderAuthor = nil
-    ChoGGi.CheatMenuSettings.CommanderDoctor = nil
-    ChoGGi.CheatMenuSettings.CommanderEcologist = nil
-    ChoGGi.CheatMenuSettings.CommanderHydroEngineer = nil
-    ChoGGi.CheatMenuSettings.CommanderInventor = nil
-    ChoGGi.CheatMenuSettings.CommanderOligarch = nil
-    ChoGGi.CheatMenuSettings.CommanderPolitician = nil
-    ChoGGi.CheatMenuSettings.developer = nil
-    ChoGGi.CheatMenuSettings.FullyAutomatedBuildingsPerf = nil
-    ChoGGi.CheatMenuSettings.NewColonistSex = nil
-    ChoGGi.CheatMenuSettings.ProductionAddAmount = nil
-    ChoGGi.CheatMenuSettings.ResidenceAddAmount = nil
-    ChoGGi.CheatMenuSettings.ResidenceMaxHeight = nil
-    ChoGGi.CheatMenuSettings.ShuttleAddAmount = nil
-    ChoGGi.CheatMenuSettings.ShuttleSpeed = nil
-    ChoGGi.CheatMenuSettings.ShuttleStorage = nil
-    ChoGGi.CheatMenuSettings.SponsorBlueSun = nil
-    ChoGGi.CheatMenuSettings.SponsorCNSA = nil
-    ChoGGi.CheatMenuSettings.SponsorESA = nil
-    ChoGGi.CheatMenuSettings.SponsorISRO = nil
-    ChoGGi.CheatMenuSettings.SponsorNASA = nil
-    ChoGGi.CheatMenuSettings.SponsorNewArk = nil
-    ChoGGi.CheatMenuSettings.SponsorParadox = nil
-    ChoGGi.CheatMenuSettings.SponsorRoscosmos = nil
-    ChoGGi.CheatMenuSettings.SponsorSpaceY = nil
-    ChoGGi.CheatMenuSettings.ToggleInfopanelCheats = nil
-    ChoGGi.CheatMenuSettings.TrainersAddAmount = nil
+    ChoGGi.UserSettings.AddMysteryBreakthroughBuildings = nil
+    ChoGGi.UserSettings.AirWaterAddAmount = nil
+    ChoGGi.UserSettings.AirWaterBatteryAddAmount = nil
+    ChoGGi.UserSettings.BatteryAddAmount = nil
+    ChoGGi.UserSettings.BorderScrollingToggle = nil
+    ChoGGi.UserSettings.Building_dome_forbidden = nil
+    ChoGGi.UserSettings.Building_dome_required = nil
+    ChoGGi.UserSettings.Building_is_tall = nil
+    ChoGGi.UserSettings.CapacityShuttle = nil
+    ChoGGi.UserSettings.CommanderAstrogeologist = nil
+    ChoGGi.UserSettings.CommanderAuthor = nil
+    ChoGGi.UserSettings.CommanderDoctor = nil
+    ChoGGi.UserSettings.CommanderEcologist = nil
+    ChoGGi.UserSettings.CommanderHydroEngineer = nil
+    ChoGGi.UserSettings.CommanderInventor = nil
+    ChoGGi.UserSettings.CommanderOligarch = nil
+    ChoGGi.UserSettings.CommanderPolitician = nil
+    ChoGGi.UserSettings.developer = nil
+    ChoGGi.UserSettings.FullyAutomatedBuildingsPerf = nil
+    ChoGGi.UserSettings.NewColonistSex = nil
+    ChoGGi.UserSettings.ProductionAddAmount = nil
+    ChoGGi.UserSettings.ResidenceAddAmount = nil
+    ChoGGi.UserSettings.ResidenceMaxHeight = nil
+    ChoGGi.UserSettings.ShuttleAddAmount = nil
+    ChoGGi.UserSettings.ShuttleSpeed = nil
+    ChoGGi.UserSettings.ShuttleStorage = nil
+    ChoGGi.UserSettings.SponsorBlueSun = nil
+    ChoGGi.UserSettings.SponsorCNSA = nil
+    ChoGGi.UserSettings.SponsorESA = nil
+    ChoGGi.UserSettings.SponsorISRO = nil
+    ChoGGi.UserSettings.SponsorNASA = nil
+    ChoGGi.UserSettings.SponsorNewArk = nil
+    ChoGGi.UserSettings.SponsorParadox = nil
+    ChoGGi.UserSettings.SponsorRoscosmos = nil
+    ChoGGi.UserSettings.SponsorSpaceY = nil
+    ChoGGi.UserSettings.ToggleInfopanelCheats = nil
+    ChoGGi.UserSettings.TrainersAddAmount = nil
   end)
 end
 
-function ChoGGi.ShowBuildMenu(iWhich)
+function ChoGGi.Funcs.ShowBuildMenu(iWhich)
   local dlg = GetXDialog("XBuildMenu")
 
   if dlg then
@@ -325,7 +327,7 @@ function ChoGGi.ShowBuildMenu(iWhich)
   dlg:SelectCategory(BuildCategories[iWhich])
 end
 
-function ChoGGi.ColonistUpdateAge(Colonist,Age)
+function ChoGGi.Funcs.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
     Age = ChoGGi.Tables.ColonistAges[UICity:Random(1,6)]
   end
@@ -370,7 +372,7 @@ function ChoGGi.ColonistUpdateAge(Colonist,Age)
   Colonist:TryToEmigrate()
 end
 
-function ChoGGi.ColonistUpdateGender(Colonist,Gender,Cloned)
+function ChoGGi.Funcs.ColonistUpdateGender(Colonist,Gender,Cloned)
   if Gender == "Random" then
     Gender = ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)]
   elseif Gender == "MaleOrFemale" then
@@ -404,7 +406,7 @@ function ChoGGi.ColonistUpdateGender(Colonist,Gender,Cloned)
   Colonist:ChooseEntity()
 end
 
-function ChoGGi.ColonistUpdateSpecialization(Colonist,Spec)
+function ChoGGi.Funcs.ColonistUpdateSpecialization(Colonist,Spec)
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
       Spec = ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)]
@@ -416,17 +418,17 @@ function ChoGGi.ColonistUpdateSpecialization(Colonist,Spec)
   end
 end
 
-function ChoGGi.ColonistUpdateTraits(Colonist,Bool,Traits)
+function ChoGGi.Funcs.ColonistUpdateTraits(Colonist,Bool,Traits)
+  local Type = "RemoveTrait"
+  if Bool == true then
+    Type = "AddTrait"
+  end
   for i = 1, #Traits do
-    if Bool == true then
-      Colonist:AddTrait(Traits[i],true)
-    else
-      Colonist:RemoveTrait(Traits[i])
-    end
+    Colonist[Type](Colonist,Traits[i],true)
   end
 end
 
-function ChoGGi.ColonistUpdateRace(Colonist,Race)
+function ChoGGi.Funcs.ColonistUpdateRace(Colonist,Race)
   if Race == "Random" then
     Race = UICity:Random(1,5)
   end
@@ -434,194 +436,142 @@ function ChoGGi.ColonistUpdateRace(Colonist,Race)
   Colonist:ChooseEntity()
 end
 
---hex rings
-do
-  local build_grid_debug_range = 10
-  GlobalVar("build_grid_debug_objs", false)
-  GlobalVar("build_grid_debug_thread", false)
-  function ChoGGi.debug_build_grid()
-    if build_grid_debug_thread then
-      DeleteThread(build_grid_debug_thread)
-      build_grid_debug_thread = false
-      if build_grid_debug_objs then
-        for i = 1, #build_grid_debug_objs do
-          DoneObject(build_grid_debug_objs[i])
-        end
-        build_grid_debug_objs = false
-      end
-    else
-      build_grid_debug_objs = {}
-      build_grid_debug_thread = CreateRealTimeThread(function()
-        local last_q, last_r
-        while build_grid_debug_objs do
-          local q, r = WorldToHex(GetTerrainCursor())
-          if last_q ~= q or last_r ~= r then
-            local z = -q - r
-            local idx = 1
-            for q_i = q - build_grid_debug_range, q + build_grid_debug_range do
-              for r_i = r - build_grid_debug_range, r + build_grid_debug_range do
-                for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
-                  if q_i + r_i + z_i == 0 then
-                    local c = build_grid_debug_objs[idx] or Circle:new()
-                    c:SetRadius(const.GridSpacing / 2)
-                    c:SetPos(point(HexToWorld(q_i, r_i)))
-                    if HexGridGetObject(ObjectGrid, q_i, r_i) then
-                      c:SetColor(RGBA(255, 0, 0, 0))
-                    else
-                      c:SetColor(RGBA(0, 255, 0, 0))
-                    end
-                    build_grid_debug_objs[idx] = c
-                    idx = idx + 1
-                  end
-                end
-              end
-            end
-            last_q = q
-            last_r = r
-          end
-          Sleep(50)
-        end
-      end)
-    end
-  end
-end
-
-function ChoGGi.SetCommanderBonuses(sType)
+function ChoGGi.Funcs.SetCommanderBonuses(sType)
   local currentname = g_CurrentMissionParams.idCommanderProfile
   local comm = MissionParams.idCommanderProfile.items[currentname]
   local bonus = Presets.CommanderProfilePreset.Default[sType]
   local tab = bonus or empty_table
   for i = 1, #tab do
     CreateRealTimeThread(function()
-      table.insert(comm,tab[i])
+      comm[#comm+1] = tab[i]
     end)
   end
 end
 
-function ChoGGi.SetSponsorBonuses(sType)
+function ChoGGi.Funcs.SetSponsorBonuses(sType)
   local currentname = g_CurrentMissionParams.idMissionSponsor
   local sponsor = MissionParams.idMissionSponsor.items[currentname]
   local bonus = Presets.MissionSponsorPreset.Default[sType]
   --bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
   if sponsor.cargo then
-    sponsor.cargo = ChoGGi.CompareAmounts(sponsor.cargo,bonus.cargo)
+    sponsor.cargo = ChoGGi.Funcs.CompareAmounts(sponsor.cargo,bonus.cargo)
   end
   if sponsor.additional_research_points then
-    sponsor.additional_research_points = ChoGGi.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+    sponsor.additional_research_points = ChoGGi.Funcs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
   end
 
   if sType == "IMM" then
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","FoodPerRocketPassenger",
       "Amount",9000
-    }))
+    })
   elseif sType == "NASA" then
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","SponsorFundingPerInterval",
       "Amount",500
-    }))
+    })
   elseif sType == "BlueSun" then
-    sponsor.rocket_price = ChoGGi.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
-    sponsor.applicants_price = ChoGGi.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
-    table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    sponsor.rocket_price = ChoGGi.Funcs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+    sponsor.applicants_price = ChoGGi.Funcs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Physics",
       "Research","DeepMetalExtraction"
-    }))
+    })
   elseif sType == "CNSA" then
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","ApplicantGenerationInterval",
       "Percent",-50
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","MaxColonistsPerRocket",
       "Amount",10
-    }))
+    })
   elseif sType == "ISRO" then
-    table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Engineering",
       "Research","LowGEngineering"
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","Concrete_cost_modifier",
       "Percent",-20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","Electronics_cost_modifier",
       "Percent",-20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","MachineParts_cost_modifier",
       "Percent",-20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","ApplicantsPoolStartingSize",
       "Percent",50
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","Metals_cost_modifier",
       "Percent",-20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","Polymers_cost_modifier",
       "Percent",-20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","PreciousMetals_cost_modifier",
       "Percent",-20
-    }))
+    })
   elseif sType == "ESA" then
-    sponsor.funding_per_tech = ChoGGi.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
-    sponsor.funding_per_breakthrough = ChoGGi.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+    sponsor.funding_per_tech = ChoGGi.Funcs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+    sponsor.funding_per_breakthrough = ChoGGi.Funcs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
   elseif sType == "SpaceY" then
-    sponsor.modifier_name1 = ChoGGi.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = ChoGGi.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-    sponsor.modifier_name2 = ChoGGi.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
-    sponsor.modifier_value2 = ChoGGi.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
-    sponsor.modifier_name3 = ChoGGi.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
-    sponsor.modifier_value3 = ChoGGi.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    sponsor.modifier_name1 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name2 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
+    sponsor.modifier_value2 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+    sponsor.modifier_name3 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+    sponsor.modifier_value3 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","CommandCenterMaxDrones",
       "Percent",20
-    }))
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","starting_drones",
       "Percent",4
-    }))
+    })
   elseif sType == "NewArk" then
-    table.insert(sponsor,PlaceObj("TechEffect_ModifyLabel",{
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","BirthThreshold",
       "Percent",-50
-    }))
+    })
   elseif sType == "Roscosmos" then
-    sponsor.modifier_name1 = ChoGGi.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = ChoGGi.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-    table.insert(sponsor,PlaceObj("TechEffect_GrantTech",{
+    sponsor.modifier_name1 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.Funcs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Robotics",
       "Research","FueledExtractors"
-    }))
+    })
   elseif sType == "Paradox" then
-    sponsor.applicants_per_breakthrough = ChoGGi.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
-    sponsor.anomaly_bonus_breakthrough = ChoGGi.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
+    sponsor.applicants_per_breakthrough = ChoGGi.Funcs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+    sponsor.anomaly_bonus_breakthrough = ChoGGi.Funcs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end
 
 --called from FireFuncAfterChoice
 
-function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+function ChoGGi.Funcs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
   local dlg = ListChoiceCustomDialog:new()
 
   if not dlg then
@@ -702,7 +652,7 @@ function ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hi
   return dlg:Wait()
 end
 
-function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+function ChoGGi.Funcs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
   if not Func or not Items then
     return
   end
@@ -710,18 +660,18 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
   --sort table by display text
   table.sort(Items,
     function(a,b)
-      return ChoGGi.CompareTableNames(a,b,"text")
+      return ChoGGi.Funcs.CompareTableNames(a,b,"text")
     end
   )
 
   --only insert blank item if we aren't updating other items with it
   if not CustomType then
     --insert blank item for adding custom value
-    table.insert(Items,{text = "",hint = "",value = false})
+    Items[#Items+1] = {text = "",hint = "",value = false}
   end
 
   CreateRealTimeThread(function()
-    local option = ChoGGi.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+    local option = ChoGGi.Funcs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
     if option ~= "idClose" then
       Func(option)
     end
@@ -729,7 +679,7 @@ function ChoGGi.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Chec
 end
 
 --some dev removed this from the Spirit update... (harumph)
-function ChoGGi.AddConsolePrompt(text)
+function ChoGGi.Funcs.AddConsolePrompt(text)
   if dlgConsole then
     local self = dlgConsole
     self:Show(true)
@@ -739,7 +689,7 @@ function ChoGGi.AddConsolePrompt(text)
 end
 
 --toggle visiblity of console log
-function ChoGGi.ToggleConsoleLog()
+function ChoGGi.Funcs.ToggleConsoleLog()
   if dlgConsoleLog then
     if dlgConsoleLog:GetVisible() then
       dlgConsoleLog:SetVisible(false)
@@ -752,14 +702,15 @@ function ChoGGi.ToggleConsoleLog()
 end
 
 --force drones to pickup from producers even if they have a large carry cap
-function ChoGGi.FuckingDrones(Producer)
+function ChoGGi.Funcs.FuckingDrones(Producer)
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
   if not Producer then
     return
   end
+  local r = ChoGGi.Consts.ResourceScale
   local amount = Producer:GetAmountStored()
-  if amount > 1000 then
+  if amount > r then
     local p = Producer.parent
     local cc = FindNearestObject(p.command_centers,p).drones
     --i'm looking at you rocket
@@ -780,8 +731,13 @@ function ChoGGi.FuckingDrones(Producer)
       end
     end
     if drone then
-      --round to nearest 1000 (don't want uneven stacks)
-      amount = (amount - amount % 1000) / 1000 * 1000
+      local saved = ChoGGi.UserSettings.DroneResourceCarryAmount
+      if saved then
+        amount = saved * r
+      else
+        --round to nearest 1000 (don't want uneven stacks)
+        amount = (amount - amount % r) / r * r
+      end
       --pick that shit up
       drone:SetCommandUserInteraction(
         "PickUp",
@@ -794,29 +750,29 @@ function ChoGGi.FuckingDrones(Producer)
   end
 end
 
-function ChoGGi.SaveOldPalette(obj)
-  local GetPal = obj.GetColorizationMaterial
-  if not obj.ChoGGi_origcolors then
-    obj.ChoGGi_origcolors = {}
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,1)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,2)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,3)})
-    table.insert(obj.ChoGGi_origcolors,{GetPal(obj,4)})
+function ChoGGi.Funcs.SaveOldPalette(Obj)
+  local GetPal = Obj.GetColorizationMaterial
+  if not Obj.ChoGGi_origcolors then
+    Obj.ChoGGi_origcolors = {}
+    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,1)}
+    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,2)}
+    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,3)}
+    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,4)}
   end
 end
-function ChoGGi.RestoreOldPalette(obj)
-  if obj.ChoGGi_origcolors then
-    local c = obj.ChoGGi_origcolors
-    local SetPal = obj.SetColorizationMaterial
-    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
-    obj.ChoGGi_origcolors = nil
+function ChoGGi.Funcs.RestoreOldPalette(Obj)
+  if Obj.ChoGGi_origcolors then
+    local c = Obj.ChoGGi_origcolors
+    local SetPal = Obj.SetColorizationMaterial
+    SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+    Obj.ChoGGi_origcolors = nil
   end
 end
 
-function ChoGGi.GetPalette(Obj)
+function ChoGGi.Funcs.GetPalette(Obj)
   local g = Obj.GetColorizationMaterial
   local pal = {}
   pal.Color1, pal.Roughness1, pal.Metallic1 = g(Obj, 1)
@@ -826,31 +782,27 @@ function ChoGGi.GetPalette(Obj)
   return pal
 end
 
-function ChoGGi.ObjectColourRandom(Obj)
+function ChoGGi.Funcs.ObjectColourRandom(Obj)
   if Obj:IsKindOf("ColorizableObject") then
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
     local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
     --likely can only change basecolour
     if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
-      Obj:SetColorModifier(UICity:Random(-99999999,99999999))
+      Obj:SetColorModifier(RandColor())
     else
-      --s,1,Color, Roughness, Metallic
       if not Obj.ChoGGi_origcolors then
-        Obj.ChoGGi_origcolors = {}
-        table.insert(Obj.ChoGGi_origcolors,{c1})
-        table.insert(Obj.ChoGGi_origcolors,{c2})
-        table.insert(Obj.ChoGGi_origcolors,{c3})
-        table.insert(Obj.ChoGGi_origcolors,{c4})
+        ChoGGi.Funcs.SaveOldPalette(Obj)
       end
-      SetPal(Obj, 1, UICity:Random(-99999999,99999999), 0,0)
-      SetPal(Obj, 2, UICity:Random(-99999999,99999999), 0,0)
-      SetPal(Obj, 3, UICity:Random(-99999999,99999999), 0,0)
-      SetPal(Obj, 4, UICity:Random(-99999999,99999999), 0,0)
+      --s,1,Color, Roughness, Metallic
+      SetPal(Obj, 1, RandColor(), 0,0)
+      SetPal(Obj, 2, RandColor(), 0,0)
+      SetPal(Obj, 3, RandColor(), 0,0)
+      SetPal(Obj, 4, RandColor(), 0,0)
     end
   end
 end
-function ChoGGi.ObjectColourDefault(Obj)
+function ChoGGi.Funcs.ObjectColourDefault(Obj)
   if Obj:IsKindOf("ColorizableObject") then
     Obj:SetColorModifier(6579300)
     if Obj.ChoGGi_origcolors then
@@ -864,10 +816,10 @@ function ChoGGi.ObjectColourDefault(Obj)
   end
 end
 
-function ChoGGi.OpenInObjectManipulator(Object,Parent)
+function ChoGGi.Funcs.OpenInObjectManipulator(Object,Parent)
   --nil or selected self
   if not Object or (Object.action and Object.idx) then
-    Object = SelectedObj or SelectionMouseObj()
+    Object = SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject()
   end
 
   if not Object then
@@ -923,8 +875,8 @@ function ChoGGi.OpenInObjectManipulator(Object,Parent)
 
 end
 
-local function RemoveOldDialogs(Dialog,win)
-  while ChoGGi.CheckForTypeInList(win,Dialog) do
+function ChoGGi.Funcs.RemoveOldDialogs(Dialog,win)
+  while ChoGGi.Funcs.CheckForTypeInList(win,Dialog) do
     for i = 1, #win do
       if IsKindOf(win[i],Dialog) then
         win[i]:delete()
@@ -933,14 +885,14 @@ local function RemoveOldDialogs(Dialog,win)
   end
 end
 
-function ChoGGi.CloseDialogsECM()
+function ChoGGi.Funcs.CloseDialogsECM()
   local win = terminal.desktop
-  RemoveOldDialogs("Examine",win)
-  RemoveOldDialogs("ObjectManipulator",win)
-  RemoveOldDialogs("ListChoiceCustomDialog",win)
+  ChoGGi.Funcs.RemoveOldDialogs("Examine",win)
+  ChoGGi.Funcs.RemoveOldDialogs("ObjectManipulator",win)
+  ChoGGi.Funcs.RemoveOldDialogs("ListChoiceCustomDialog",win)
 end
 
-function ChoGGi.SetMechanizedDepotTempAmount(Obj,amount)
+function ChoGGi.Funcs.SetMechanizedDepotTempAmount(Obj,amount)
   amount = amount or 10
   local resource = Obj.resource
   local io_stockpile = Obj.stockpiles[Obj:GetNextStockpileIndex()]
@@ -953,11 +905,11 @@ function ChoGGi.SetMechanizedDepotTempAmount(Obj,amount)
   io_demand_req:SetAmount(amount)
 end
 
-function ChoGGi.NewThread(Func,...)
+function ChoGGi.Funcs.NewThread(Func,...)
   coroutine.resume(coroutine.create(Func),...)
 end
 
-function ChoGGi.BuildMenu_Toggle()
+function ChoGGi.Funcs.BuildMenu_Toggle()
   local dlg = GetXDialog("XBuildMenu")
   if not dlg then
     return
@@ -971,10 +923,10 @@ function ChoGGi.BuildMenu_Toggle()
 end
 
 --sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.EmptyMechDepot(oldobj)
+function ChoGGi.Funcs.EmptyMechDepot(oldobj)
 
   if not oldobj or not IsKindOf(oldobj,"MechanizedDepot") then
-    oldobj = SelectedObj or SelectionMouseObj()
+    oldobj = SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject()
   end
   if not IsKindOf(oldobj,"MechanizedDepot") then
     return
@@ -1038,7 +990,7 @@ function ChoGGi.EmptyMechDepot(oldobj)
 end
 
 --used to check for some SM objects (Points/Boxes)
-function ChoGGi.RetType(Obj)
+function ChoGGi.Funcs.RetType(Obj)
   local meta = getmetatable(Obj)
   if meta then
     if IsPoint(Obj) then
@@ -1049,3 +1001,144 @@ function ChoGGi.RetType(Obj)
     end
   end
 end
+function ChoGGi.Funcs.ChangeObjectColour(obj,Parent)
+  if not obj and not obj:IsKindOf("ColorizableObject") then
+    ChoGGi.Funcs.MsgPopup("Can't colour object","Colour")
+    return
+  end
+  --SetPal(Obj,i,Color,Roughness,Metallic)
+  local SetPal = obj.SetColorizationMaterial
+  local pal = ChoGGi.Funcs.GetPalette(obj)
+
+  local ItemList = {}
+  for i = 1, 4 do
+    ItemList[#ItemList+1] = {
+      text = "Colour " .. i,
+      value = pal["Color" .. i],
+      hint = "Use the colour picker (dbl-click for instant change).",
+    }
+    ItemList[#ItemList+1] = {
+      text = "Metallic " .. i,
+      value = pal["Metallic" .. i],
+      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
+    }
+    ItemList[#ItemList+1] = {
+      text = "Roughness " .. i,
+      value = pal["Roughness" .. i],
+      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
+    }
+  end
+  ItemList[#ItemList+1] = {
+    text = "X_BaseColour",
+    value = 6579300,
+    obj = obj,
+    hint = "single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).",
+  }
+
+  --callback
+  local CallBackFunc = function(choice)
+    if #choice == 13 then
+      --keep original colours as part of object
+      local base = choice[13].value
+      --used to check for grid connections
+      local CheckAir = choice[1].checkair
+      local CheckWater = choice[1].checkwater
+      local CheckElec = choice[1].checkelec
+      --needed to set attachment colours
+      local Label = obj.class
+      local FakeParent
+      if Parent then
+        Label = Parent.class
+        FakeParent = Parent
+      else
+        FakeParent = obj.parentobj
+      end
+      if not FakeParent then
+        FakeParent = obj
+      end
+      --they get called a few times so
+      local function SetOrigColours(Object)
+        ChoGGi.Funcs.RestoreOldPalette(Object)
+        --6579300 = reset base color
+        Object:SetColorModifier(6579300)
+      end
+      local function SetColours(Object)
+        ChoGGi.Funcs.SaveOldPalette(Object)
+        for i = 1, 4 do
+          local Color = choice[i].value
+          local Metallic = choice[i+4].value
+          local Roughness = choice[i+8].value
+          SetPal(Object,i,Color,Roughness,Metallic)
+        end
+        Object:SetColorModifier(base)
+      end
+      --make sure we're in the same grid
+      local function CheckGrid(Func,Object,Building)
+        if CheckAir and Building.air and FakeParent.air and Building.air.grid.elements[1].building.handle == FakeParent.air.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if CheckWater and Building.water and FakeParent.water and Building.water.grid.elements[1].building.handle == FakeParent.water.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if CheckElec and Building.electricity and FakeParent.electricity and Building.electricity.grid.elements[1].building.handle == FakeParent.electricity.grid.elements[1].building.handle then
+          Func(Object)
+        end
+        if not CheckAir and not CheckWater and not CheckElec then
+          Func(Object)
+        end
+      end
+
+      --store table so it's the same as was displayed
+      table.sort(choice,
+        function(a,b)
+          return ChoGGi.Funcs.CompareTableNames(a,b,"text")
+        end
+      )
+      --All of type checkbox
+      if choice[1].check1 then
+        local tab = UICity.labels[Label] or empty_table
+        for i = 1, #tab do
+          if Parent then
+            local Attaches = tab[i]:GetAttaches()
+            for j = 1, #Attaches do
+              if Attaches[j].class == obj.class then
+                if choice[1].check2 then
+                  CheckGrid(SetOrigColours,Attaches[j],tab[i])
+                else
+                  CheckGrid(SetColours,Attaches[j],tab[i])
+                end
+              end
+            end
+          else --not parent
+            if choice[1].check2 then
+              CheckGrid(SetOrigColours,tab[i],tab[i])
+            else
+              CheckGrid(SetColours,tab[i],tab[i])
+            end
+          end --Parent
+        end
+      else --single building change
+        if choice[1].check2 then
+          CheckGrid(SetOrigColours,obj,obj)
+        else
+          CheckGrid(SetColours,obj,obj)
+        end
+      end
+
+      ChoGGi.Funcs.MsgPopup("Colour is set on " .. obj.class,"Colour")
+    end
+  end
+  local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
+  local hint_check1 = "Change all objects of the same type."
+  local hint_check2 = "if they're there; resets to default colours."
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
+end
+
+function ChoGGi.Funcs.CursorNearestHex()
+  return HexGetNearestCenter(GetTerrainCursor())
+end
+function ChoGGi.Funcs.CursorNearestObject()
+  local objs = ChoGGi.Funcs.RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1},"class")
+  return NearestObject(GetTerrainCursor(),objs,500)
+end
+

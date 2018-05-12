@@ -2,7 +2,7 @@ local UsualIcon = "UI/Icons/IPButtons/drone.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"
 
-function ChoGGi.SetRoverChargeRadius()
+function ChoGGi.MenuFuncs.SetRoverChargeRadius()
   local DefaultSetting = 0
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -21,8 +21,8 @@ function ChoGGi.SetRoverChargeRadius()
 
   --other hint type
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.RCChargeDist then
-    hint = ChoGGi.CheatMenuSettings.RCChargeDist
+  if ChoGGi.UserSettings.RCChargeDist then
+    hint = ChoGGi.UserSettings.RCChargeDist
   end
 
   local CallBackFunc = function(choice)
@@ -31,24 +31,24 @@ function ChoGGi.SetRoverChargeRadius()
     if type(value) == "number" then
 
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.RCChargeDist = nil
+        ChoGGi.UserSettings.RCChargeDist = nil
       else
-        ChoGGi.CheatMenuSettings.RCChargeDist = value
+        ChoGGi.UserSettings.RCChargeDist = value
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Selected: " .. choice[1].text,
         "RC",UsualIcon2
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
 
 end
 
-function ChoGGi.SetRoverWorkRadius()
-  local DefaultSetting = ChoGGi.Consts.RCRoverDefaultRadius
+function ChoGGi.MenuFuncs.SetRoverWorkRadius()
+  local DefaultSetting = ChoGGi.Consts.RCRoverMaxRadius
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 40,value = 40},
@@ -60,37 +60,36 @@ function ChoGGi.SetRoverWorkRadius()
 
   --other hint type
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.RCRoverDefaultRadius then
-    hint = ChoGGi.CheatMenuSettings.RCRoverDefaultRadius
+  if ChoGGi.UserSettings.RCRoverMaxRadius then
+    hint = ChoGGi.UserSettings.RCRoverMaxRadius
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
 
-      --RCRoverMaxRadius is only needed for the radius during placement
-      ChoGGi.SetSavedSetting("RCRoverMaxRadius",value)
+      ChoGGi.Funcs.SetSavedSetting("RCRoverMaxRadius",value)
+      --we need to set this so the hex grid during placement is enlarged
       const.RCRoverMaxRadius = value
-      ChoGGi.SetSavedSetting("RCRoverDefaultRadius",value)
 
       local tab = UICity.labels.RCRover or empty_table
       for i = 1, #tab do
         tab[i]:SetWorkRadius(value)
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverDefaultRadius) .. ": I can see for miles and miles",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.RCRoverMaxRadius) .. ": I can see for miles and miles",
         "RC","UI/Icons/Upgrades/service_bots_04.tga"
       )
     end
   end
 
   hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
 end
 
-function ChoGGi.SetDroneHubWorkRadius()
-  local DefaultSetting = ChoGGi.Consts.CommandCenterDefaultRadius
+function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
+  local DefaultSetting = ChoGGi.Consts.CommandCenterMaxRadius
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 40,value = 40},
@@ -102,34 +101,35 @@ function ChoGGi.SetDroneHubWorkRadius()
 
   --other hint type
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius then
-    hint = ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius
+  if ChoGGi.UserSettings.CommandCenterMaxRadius then
+    hint = ChoGGi.UserSettings.CommandCenterMaxRadius
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
 
-      ChoGGi.SetSavedSetting("CommandCenterMaxRadius",value)
+      ChoGGi.Funcs.SetSavedSetting("CommandCenterMaxRadius",value)
+      --we need to set this so the hex grid during placement is enlarged
       const.CommandCenterMaxRadius = value
-      ChoGGi.SetSavedSetting("CommandCenterDefaultRadius",value)
+
       local tab = UICity.labels.DroneHub or empty_table
       for i = 1, #tab do
         tab[i]:SetWorkRadius(value)
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.CommandCenterDefaultRadius) .. ": I can see for miles and miles",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.CommandCenterMaxRadius) .. ": I can see for miles and miles",
         "DroneHub","UI/Icons/Upgrades/service_bots_04.tga"
       )
     end
   end
 
   hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius",hint)
 end
 
-function ChoGGi.SetRockToConcreteSpeed()
+function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
   local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -144,8 +144,8 @@ function ChoGGi.SetRockToConcreteSpeed()
 
   --other hint type
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileAmount then
-    hint = ChoGGi.CheatMenuSettings.DroneTransformWasteRockObstructorToStockpileAmount
+  if ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount then
+    hint = ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount
   end
 
   --callback
@@ -153,22 +153,22 @@ function ChoGGi.SetRockToConcreteSpeed()
 
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
+      ChoGGi.Funcs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
 
-      ChoGGi.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      ChoGGi.Funcs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
+      ChoGGi.Funcs.MsgPopup("Selected: " .. choice[1].text,
         "Drones",UsualIcon
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Rock To Concrete Speed","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Rock To Concrete Speed","Current: " .. hint)
 end
 
-function ChoGGi.SetDroneMoveSpeed()
+function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedDrone
-  local UpgradedSetting = ChoGGi.GetSpeedDrone()
+  local UpgradedSetting = ChoGGi.Funcs.GetSpeedDrone()
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
     {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
@@ -184,8 +184,8 @@ function ChoGGi.SetDroneMoveSpeed()
 
   --other hint type
   local hint = UpgradedSetting
-  if ChoGGi.CheatMenuSettings.SpeedDrone then
-    hint = ChoGGi.CheatMenuSettings.SpeedDrone
+  if ChoGGi.UserSettings.SpeedDrone then
+    hint = ChoGGi.UserSettings.SpeedDrone
   end
 
   --callback
@@ -195,24 +195,25 @@ function ChoGGi.SetDroneMoveSpeed()
     if type(value) == "number" then
       local tab = UICity.labels.Drone or empty_table
       for i = 1, #tab do
-        tab[i]:SetMoveSpeed(value)
+        --tab[i]:SetMoveSpeed(value)
+        pf.SetStepLen(tab[i],value)
       end
-      ChoGGi.SetSavedSetting("SpeedDrone",value)
+      ChoGGi.Funcs.SetSavedSetting("SpeedDrone",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Selected: " .. choice[1].text,
         "Drones",UsualIcon
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Move Speed","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Move Speed","Current: " .. hint)
 end
 
-function ChoGGi.SetRCMoveSpeed()
+function ChoGGi.MenuFuncs.SetRCMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedRC
-  local UpgradedSetting = ChoGGi.GetSpeedRC()
+  local UpgradedSetting = ChoGGi.Funcs.GetSpeedRC()
   local ItemList = {
     {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
     {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
@@ -228,8 +229,8 @@ function ChoGGi.SetRCMoveSpeed()
 
   --other hint type
   local hint = UpgradedSetting
-  if ChoGGi.CheatMenuSettings.SpeedRC then
-    hint = ChoGGi.CheatMenuSettings.SpeedRC
+  if ChoGGi.UserSettings.SpeedRC then
+    hint = ChoGGi.UserSettings.SpeedRC
   end
 
   --callback
@@ -237,24 +238,25 @@ function ChoGGi.SetRCMoveSpeed()
 
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetSavedSetting("SpeedRC",value)
+      ChoGGi.Funcs.SetSavedSetting("SpeedRC",value)
       local tab = UICity.labels.Rover or empty_table
       for i = 1, #tab do
-        tab[i]:SetMoveSpeed(value)
+        --tab[i]:SetMoveSpeed(value)
+        pf.SetStepLen(tab[i],value)
       end
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Selected: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Selected: " .. choice[1].text,
         "RCs",UsualIcon2
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"RC Move Speed","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"RC Move Speed","Current: " .. hint)
 end
 
-function ChoGGi.SetDroneAmountDroneHub()
-  local sel = SelectedObj or SelectionMouseObj()
+function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
+  local sel = SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject()
   if not sel then
     return
   end
@@ -276,10 +278,10 @@ function ChoGGi.SetDroneAmountDroneHub()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if not check1 and not check2 then
-      ChoGGi.MsgPopup("Pick a checkbox next time...","Drones")
+      ChoGGi.Funcs.MsgPopup("Pick a checkbox next time...","Drones")
       return
     elseif check1 and check2 then
-      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Drones")
+      ChoGGi.Funcs.MsgPopup("Don't pick both checkboxes next time...","Drones")
       return
     end
 
@@ -296,15 +298,15 @@ function ChoGGi.SetDroneAmountDroneHub()
         end
       end
 
-      ChoGGi.MsgPopup("Drones: " .. choice[1].text,"Drones")
+      ChoGGi.Funcs.MsgPopup("Drones: " .. choice[1].text,"Drones")
     end
   end
 
   local hint = "Drones in hub: " .. CurrentAmount .. "\nDrone prefabs: " .. UICity.drone_prefabs
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,"Add","Check this to add drones to hub","Dismantle","Check this to dismantle drones in hub")
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,"Add","Check this to add drones to hub","Dismantle","Check this to dismantle drones in hub")
 end
 
-function ChoGGi.SetDroneFactoryBuildSpeed()
+function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
   local DefaultSetting = ChoGGi.Consts.DroneFactoryBuildSpeed
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -324,8 +326,8 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed then
-    hint = tostring(ChoGGi.CheatMenuSettings.DroneFactoryBuildSpeed)
+  if ChoGGi.UserSettings.DroneFactoryBuildSpeed then
+    hint = tostring(ChoGGi.UserSettings.DroneFactoryBuildSpeed)
   end
 
   local CallBackFunc = function(choice)
@@ -337,104 +339,104 @@ function ChoGGi.SetDroneFactoryBuildSpeed()
         tab[i].performance = value
       end
     end
-    ChoGGi.SetSavedSetting("DroneFactoryBuildSpeed",value)
+    ChoGGi.Funcs.SetSavedSetting("DroneFactoryBuildSpeed",value)
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Build Speed: " .. choice[1].text,
+    ChoGGi.Funcs.WriteSettings()
+    ChoGGi.Funcs.MsgPopup("Build Speed: " .. choice[1].text,
       "Drones",UsualIcon
     )
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Factory Build Speed","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Factory Build Speed","Current: " .. hint)
 end
 
-function ChoGGi.DroneBatteryInfinite_Toggle()
-  ChoGGi.SetConstsG("DroneMoveBatteryUse",ChoGGi.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse))
-  ChoGGi.SetConstsG("DroneCarryBatteryUse",ChoGGi.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse))
-  ChoGGi.SetConstsG("DroneConstructBatteryUse",ChoGGi.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse))
-  ChoGGi.SetConstsG("DroneBuildingRepairBatteryUse",ChoGGi.NumRetBool(Consts.DroneBuildingRepairBatteryUse,0,ChoGGi.Consts.DroneBuildingRepairBatteryUse))
-  ChoGGi.SetConstsG("DroneDeconstructBatteryUse",ChoGGi.NumRetBool(Consts.DroneDeconstructBatteryUse,0,ChoGGi.Consts.DroneDeconstructBatteryUse))
-  ChoGGi.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.NumRetBool(Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,0,ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse))
-  ChoGGi.SetSavedSetting("DroneMoveBatteryUse",Consts.DroneMoveBatteryUse)
-  ChoGGi.SetSavedSetting("DroneCarryBatteryUse",Consts.DroneCarryBatteryUse)
-  ChoGGi.SetSavedSetting("DroneConstructBatteryUse",Consts.DroneConstructBatteryUse)
-  ChoGGi.SetSavedSetting("DroneBuildingRepairBatteryUse",Consts.DroneBuildingRepairBatteryUse)
-  ChoGGi.SetSavedSetting("DroneDeconstructBatteryUse",Consts.DroneDeconstructBatteryUse)
-  ChoGGi.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileBatteryUse",Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse)
+function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
+  ChoGGi.Funcs.SetConstsG("DroneMoveBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse))
+  ChoGGi.Funcs.SetConstsG("DroneCarryBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse))
+  ChoGGi.Funcs.SetConstsG("DroneConstructBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse))
+  ChoGGi.Funcs.SetConstsG("DroneBuildingRepairBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneBuildingRepairBatteryUse,0,ChoGGi.Consts.DroneBuildingRepairBatteryUse))
+  ChoGGi.Funcs.SetConstsG("DroneDeconstructBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneDeconstructBatteryUse,0,ChoGGi.Consts.DroneDeconstructBatteryUse))
+  ChoGGi.Funcs.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.Funcs.NumRetBool(Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,0,ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse))
+  ChoGGi.Funcs.SetSavedSetting("DroneMoveBatteryUse",Consts.DroneMoveBatteryUse)
+  ChoGGi.Funcs.SetSavedSetting("DroneCarryBatteryUse",Consts.DroneCarryBatteryUse)
+  ChoGGi.Funcs.SetSavedSetting("DroneConstructBatteryUse",Consts.DroneConstructBatteryUse)
+  ChoGGi.Funcs.SetSavedSetting("DroneBuildingRepairBatteryUse",Consts.DroneBuildingRepairBatteryUse)
+  ChoGGi.Funcs.SetSavedSetting("DroneDeconstructBatteryUse",Consts.DroneDeconstructBatteryUse)
+  ChoGGi.Funcs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileBatteryUse",Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneMoveBatteryUse) .. ": What happens when the drones get into your Jolt Cola supply...",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DroneMoveBatteryUse) .. ": What happens when the drones get into your Jolt Cola supply...",
     "Drones",UsualIcon
   )
 end
 
-function ChoGGi.DroneBuildSpeed_Toggle()
-  ChoGGi.SetConstsG("DroneConstructAmount",ChoGGi.ValueRetOpp(Consts.DroneConstructAmount,999900,ChoGGi.Consts.DroneConstructAmount))
-  ChoGGi.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ValueRetOpp(Consts.DroneBuildingRepairAmount,999900,ChoGGi.Consts.DroneBuildingRepairAmount))
-  ChoGGi.SetSavedSetting("DroneConstructAmount",Consts.DroneConstructAmount)
-  ChoGGi.SetSavedSetting("DroneBuildingRepairAmount",Consts.DroneBuildingRepairAmount)
+function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
+  ChoGGi.Funcs.SetConstsG("DroneConstructAmount",ChoGGi.Funcs.ValueRetOpp(Consts.DroneConstructAmount,999900,ChoGGi.Consts.DroneConstructAmount))
+  ChoGGi.Funcs.SetConstsG("DroneBuildingRepairAmount",ChoGGi.Funcs.ValueRetOpp(Consts.DroneBuildingRepairAmount,999900,ChoGGi.Consts.DroneBuildingRepairAmount))
+  ChoGGi.Funcs.SetSavedSetting("DroneConstructAmount",Consts.DroneConstructAmount)
+  ChoGGi.Funcs.SetSavedSetting("DroneBuildingRepairAmount",Consts.DroneBuildingRepairAmount)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneConstructAmount) .. ": What happens when the drones get into your Jolt Cola supply... and drink it",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DroneConstructAmount) .. ": What happens when the drones get into your Jolt Cola supply... and drink it",
     "Drones",UsualIcon
   )
 end
 
-function ChoGGi.RCRoverDroneRechargeFree_Toggle()
-  ChoGGi.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost))
-  ChoGGi.SetSavedSetting("RCRoverDroneRechargeCost",Consts.RCRoverDroneRechargeCost)
+function ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle()
+  ChoGGi.Funcs.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.Funcs.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost))
+  ChoGGi.Funcs.SetSavedSetting("RCRoverDroneRechargeCost",Consts.RCRoverDroneRechargeCost)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverDroneRechargeCost) .. ": More where that came from",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.RCRoverDroneRechargeCost) .. ": More where that came from",
     "RCs",UsualIcon2
   )
 end
 
-function ChoGGi.RCTransportInstantTransfer_Toggle()
-  ChoGGi.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
-  ChoGGi.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.GetRCTransportGatherResourceWorkTime()))
-  ChoGGi.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
-  ChoGGi.SetSavedSetting("RCTransportGatherResourceWorkTime",Consts.RCTransportGatherResourceWorkTime)
+function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
+  ChoGGi.Funcs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.Funcs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
+  ChoGGi.Funcs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.Funcs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.Funcs.GetRCTransportGatherResourceWorkTime()))
+  ChoGGi.Funcs.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
+  ChoGGi.Funcs.SetSavedSetting("RCTransportGatherResourceWorkTime",Consts.RCTransportGatherResourceWorkTime)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.RCRoverTransferResourceWorkTime) .. ": Slight of hand",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime) .. ": Slight of hand",
     "RCs","UI/Icons/IPButtons/resources_section.tga"
   )
 end
 
-function ChoGGi.DroneMeteorMalfunction_Toggle()
-  ChoGGi.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance))
-  ChoGGi.SetSavedSetting("DroneMeteorMalfunctionChance",Consts.DroneMeteorMalfunctionChance)
+function ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle()
+  ChoGGi.Funcs.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.Funcs.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance))
+  ChoGGi.Funcs.SetSavedSetting("DroneMeteorMalfunctionChance",Consts.DroneMeteorMalfunctionChance)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneMeteorMalfunctionChance) .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling.",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DroneMeteorMalfunctionChance) .. ": I'm singing in the rain. Just singin' in the rain. What a glorious feeling.",
     "Drones","UI/Icons/Notifications/meteor_storm.tga"
   )
 end
 
-function ChoGGi.DroneRechargeTime_Toggle()
-  ChoGGi.SetConstsG("DroneRechargeTime",ChoGGi.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
-  ChoGGi.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
+function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
+  ChoGGi.Funcs.SetConstsG("DroneRechargeTime",ChoGGi.Funcs.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
+  ChoGGi.Funcs.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneRechargeTime) .. "\nWell, if jacking on'll make strangers think I'm cool, I'll do it!",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DroneRechargeTime) .. "\nWell, if jacking on'll make strangers think I'm cool, I'll do it!",
     "Drones","UI/Icons/Notifications/low_battery.tga",true
   )
 end
 
-function ChoGGi.DroneRepairSupplyLeak_Toggle()
-  ChoGGi.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
-  ChoGGi.SetSavedSetting("DroneRepairSupplyLeak",Consts.DroneRepairSupplyLeak)
+function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
+  ChoGGi.Funcs.SetConstsG("DroneRepairSupplyLeak",ChoGGi.Funcs.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
+  ChoGGi.Funcs.SetSavedSetting("DroneRepairSupplyLeak",Consts.DroneRepairSupplyLeak)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.DroneRepairSupplyLeak) .. ": You know what they say about leaky pipes",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.DroneRepairSupplyLeak) .. ": You know what they say about leaky pipes",
     "Drones",UsualIcon
   )
 end
 
-function ChoGGi.SetDroneCarryAmount()
+function ChoGGi.MenuFuncs.SetDroneCarryAmount()
   --retrieve default
-  local DefaultSetting = ChoGGi.GetDroneResourceCarryAmount()
+  local DefaultSetting = ChoGGi.Funcs.GetDroneResourceCarryAmount()
   local hinttoolarge = "If you set this amount larger then a building's \"Storage\" amount then the drones will NOT pick up storage (See: Fixes>Drone Carry Amount)."
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -450,8 +452,8 @@ function ChoGGi.SetDroneCarryAmount()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.DroneResourceCarryAmount then
-    hint = ChoGGi.CheatMenuSettings.DroneResourceCarryAmount
+  if ChoGGi.UserSettings.DroneResourceCarryAmount then
+    hint = ChoGGi.UserSettings.DroneResourceCarryAmount
   end
 
   local CallBackFunc = function(choice)
@@ -461,23 +463,23 @@ function ChoGGi.SetDroneCarryAmount()
       if value > 1000 then
         value = 1000
       end
-      ChoGGi.SetConstsG("DroneResourceCarryAmount",value)
+      ChoGGi.Funcs.SetConstsG("DroneResourceCarryAmount",value)
       UpdateDroneResourceUnits()
-      ChoGGi.SetSavedSetting("DroneResourceCarryAmount",value)
+      ChoGGi.Funcs.SetSavedSetting("DroneResourceCarryAmount",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Drones can carry: " .. choice[1].text .. " items.",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Drones can carry: " .. choice[1].text .. " items.",
         "Drones",UsualIcon
       )
     end
   end
 
   hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge .. "\n\nMax: 1000."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Carry Capacity",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Carry Capacity",hint)
 end
 
-function ChoGGi.SetDronesPerDroneHub()
-  local DefaultSetting = ChoGGi.GetCommandCenterMaxDrones()
+function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
+  local DefaultSetting = ChoGGi.Funcs.GetCommandCenterMaxDrones()
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 5,value = 5},
@@ -492,28 +494,28 @@ function ChoGGi.SetDronesPerDroneHub()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.CommandCenterMaxDrones then
-    hint = ChoGGi.CheatMenuSettings.CommandCenterMaxDrones
+  if ChoGGi.UserSettings.CommandCenterMaxDrones then
+    hint = ChoGGi.UserSettings.CommandCenterMaxDrones
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetConstsG("CommandCenterMaxDrones",value)
-      ChoGGi.SetSavedSetting("CommandCenterMaxDrones",value)
+      ChoGGi.Funcs.SetConstsG("CommandCenterMaxDrones",value)
+      ChoGGi.Funcs.SetSavedSetting("CommandCenterMaxDrones",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("DroneHubs can control: " .. choice[1].text .. " drones.",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("DroneHubs can control: " .. choice[1].text .. " drones.",
         "RCs",UsualIcon
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Drone Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Drone Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.SetDronesPerRCRover()
-  local DefaultSetting = ChoGGi.GetRCRoverMaxDrones()
+function ChoGGi.MenuFuncs.SetDronesPerRCRover()
+  local DefaultSetting = ChoGGi.Funcs.GetRCRoverMaxDrones()
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 5,value = 5},
@@ -528,31 +530,31 @@ function ChoGGi.SetDronesPerRCRover()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.RCRoverMaxDrones then
-    hint = ChoGGi.CheatMenuSettings.RCRoverMaxDrones
+  if ChoGGi.UserSettings.RCRoverMaxDrones then
+    hint = ChoGGi.UserSettings.RCRoverMaxDrones
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.SetConstsG("RCRoverMaxDrones",value)
-      ChoGGi.SetSavedSetting("RCRoverMaxDrones",value)
+      ChoGGi.Funcs.SetConstsG("RCRoverMaxDrones",value)
+      ChoGGi.Funcs.SetSavedSetting("RCRoverMaxDrones",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("RC Rovers can control: " .. choice[1].text .. " drones.",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("RC Rovers can control: " .. choice[1].text .. " drones.",
         "RCs",UsualIcon2
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Rover Drone Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Rover Drone Capacity","Current capacity: " .. hint)
 end
 
---somewhere above 2000 it will fuck the save
-function ChoGGi.SetRCTransportStorageCapacity()
+--somewhere above 2000 it will fuck the save (different amounts depending on the unit type (is it a height thing?)
+function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
   --retrieve default
   local r = ChoGGi.Consts.ResourceScale
-  local DefaultSetting = ChoGGi.GetRCTransportStorageCapacity() / r
+  local DefaultSetting = ChoGGi.Funcs.GetRCTransportStorageCapacity() / r
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
@@ -565,8 +567,8 @@ function ChoGGi.SetRCTransportStorageCapacity()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.RCTransportStorageCapacity then
-    hint = ChoGGi.CheatMenuSettings.RCTransportStorageCapacity / r
+  if ChoGGi.UserSettings.RCTransportStorageCapacity then
+    hint = ChoGGi.UserSettings.RCTransportStorageCapacity / r
   end
 
   local CallBackFunc = function(choice)
@@ -581,18 +583,18 @@ function ChoGGi.SetRCTransportStorageCapacity()
       for i = 1, #tab do
         tab[i].max_shared_storage = value
       end
-      ChoGGi.SetSavedSetting("RCTransportStorageCapacity",value)
+      ChoGGi.Funcs.SetSavedSetting("RCTransportStorageCapacity",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("RC Transport capacity is now: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("RC Transport capacity is now: " .. choice[1].text,
         "RCs","UI/Icons/bmc_building_storages_shine.tga"
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Transport Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Transport Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.SetShuttleCapacity()
+function ChoGGi.MenuFuncs.SetShuttleCapacity()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.StorageShuttle / r
   local ItemList = {
@@ -609,8 +611,8 @@ function ChoGGi.SetShuttleCapacity()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.StorageShuttle then
-    hint = ChoGGi.CheatMenuSettings.StorageShuttle / r
+  if ChoGGi.UserSettings.StorageShuttle then
+    hint = ChoGGi.UserSettings.StorageShuttle / r
   end
 
   local CallBackFunc = function(choice)
@@ -626,18 +628,18 @@ function ChoGGi.SetShuttleCapacity()
       for i = 1, #tab do
         tab[i].max_shared_storage = value
       end
-      ChoGGi.SetSavedSetting("StorageShuttle",value)
+      ChoGGi.Funcs.SetSavedSetting("StorageShuttle",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Shuttle storage is now: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Shuttle storage is now: " .. choice[1].text,
         "Shuttle",UsualIcon3
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.SetShuttleSpeed()
+function ChoGGi.MenuFuncs.SetShuttleSpeed()
   --retrieve default
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedShuttle / r
@@ -657,8 +659,8 @@ function ChoGGi.SetShuttleSpeed()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.SpeedShuttle then
-    hint = ChoGGi.CheatMenuSettings.SpeedShuttle / r
+  if ChoGGi.UserSettings.SpeedShuttle then
+    hint = ChoGGi.UserSettings.SpeedShuttle / r
   end
 
   local CallBackFunc = function(choice)
@@ -668,21 +670,22 @@ function ChoGGi.SetShuttleSpeed()
       local tab = UICity.labels.CargoShuttle or empty_table
       for i = 1, #tab do
         tab[i].max_speed = value
+        --pf.SetStepLen(tab[i],value)
       end
-      ChoGGi.SetSavedSetting("SpeedShuttle",value)
+      ChoGGi.Funcs.SetSavedSetting("SpeedShuttle",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("Shuttle speed is now: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("Shuttle speed is now: " .. choice[1].text,
         "Shuttle",UsualIcon3
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Speed","Current speed: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Speed","Current speed: " .. hint)
 end
 
-function ChoGGi.SetShuttleHubCapacity()
+function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
   --retrieve default
-  local DefaultSetting = ChoGGi.Consts.ShuttleHubCapacity
+  local DefaultSetting = ChoGGi.Consts.ShuttleHubShuttleCapacity
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -695,12 +698,12 @@ function ChoGGi.SetShuttleHubCapacity()
   }
 
   --check if there's an entry for building
-  if not ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub then
-    ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub = {}
+  if not ChoGGi.UserSettings.BuildingSettings.ShuttleHub then
+    ChoGGi.UserSettings.BuildingSettings.ShuttleHub = {}
   end
 
   local hint = DefaultSetting
-  local setting = ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub
+  local setting = ChoGGi.UserSettings.BuildingSettings.ShuttleHub
   if setting and setting.shuttles then
     hint = tostring(setting.shuttles)
   end
@@ -715,22 +718,22 @@ function ChoGGi.SetShuttleHubCapacity()
         tab[i].max_shuttles = value
       end
       if value == DefaultSetting then
-        ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = nil
+        ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles = nil
       else
-        ChoGGi.CheatMenuSettings.BuildingSettings.ShuttleHub.shuttles = value
+        ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles = value
       end
     end
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("ShuttleHub shuttle capacity is now: " .. choice[1].text,
+    ChoGGi.Funcs.WriteSettings()
+    ChoGGi.Funcs.MsgPopup("ShuttleHub shuttle capacity is now: " .. choice[1].text,
       "Shuttle",UsualIcon3
     )
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set ShuttleHub Shuttle Capacity","Current capacity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set ShuttleHub Shuttle Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.SetGravityRC()
+function ChoGGi.MenuFuncs.SetGravityRC()
   --retrieve default
   local DefaultSetting = ChoGGi.Consts.GravityRC
   local r = ChoGGi.Consts.ResourceScale
@@ -752,8 +755,8 @@ function ChoGGi.SetGravityRC()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.GravityRC then
-    hint = ChoGGi.CheatMenuSettings.GravityRC / r
+  if ChoGGi.UserSettings.GravityRC then
+    hint = ChoGGi.UserSettings.GravityRC / r
   end
 
   local CallBackFunc = function(choice)
@@ -764,18 +767,18 @@ function ChoGGi.SetGravityRC()
       for i = 1, #tab do
         tab[i]:SetGravity(value)
       end
-      ChoGGi.SetSavedSetting("GravityRC",value)
+      ChoGGi.Funcs.SetSavedSetting("GravityRC",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("RC gravity is now: " .. choice[1].text,
         "RCs",UsualIcon2
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Gravity","Current gravity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Gravity","Current gravity: " .. hint)
 end
 
-function ChoGGi.SetGravityDrones()
+function ChoGGi.MenuFuncs.SetGravityDrones()
   --retrieve default
   local DefaultSetting = ChoGGi.Consts.GravityDrone
   local r = ChoGGi.Consts.ResourceScale
@@ -797,8 +800,8 @@ function ChoGGi.SetGravityDrones()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.GravityDrone then
-    hint = ChoGGi.CheatMenuSettings.GravityDrone / r
+  if ChoGGi.UserSettings.GravityDrone then
+    hint = ChoGGi.UserSettings.GravityDrone / r
   end
   local CallBackFunc = function(choice)
     if type(choice[1].value) == "number" then
@@ -808,13 +811,13 @@ function ChoGGi.SetGravityDrones()
       for i = 1, #tab do
         tab[i]:SetGravity(value)
       end
-      ChoGGi.SetSavedSetting("GravityDrone",value)
+      ChoGGi.Funcs.SetSavedSetting("GravityDrone",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup("RC gravity is now: " .. choice[1].text,
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup("RC gravity is now: " .. choice[1].text,
         "RCs",UsualIcon2
       )
     end
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Gravity","Current gravity: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Gravity","Current gravity: " .. hint)
 end

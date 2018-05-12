@@ -1,55 +1,55 @@
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
-function ChoGGi.OpenModEditor()
+function ChoGGi.MenuFuncs.OpenModEditor()
   local ModEditor = function()
     ModEditorOpen()
   end
-  ChoGGi.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
+  ChoGGi.Funcs.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
 end
 
-function ChoGGi.ResetAllResearch()
+function ChoGGi.MenuFuncs.ResetAllResearch()
   local ResetAllResearch = function()
     UICity:InitResearch()
   end
-  ChoGGi.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
+  ChoGGi.Funcs.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
 end
 
-function ChoGGi.DisasterTriggerMissle(Amount)
+function ChoGGi.MenuFuncs.DisasterTriggerMissle(Amount)
   Amount = Amount or 1
   --(obj, radius, count, delay_min, delay_max)
   StartBombard(
-    SelectedObj or SelectionMouseObj() or GetTerrainCursor(),
+    SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject() or GetTerrainCursor(),
     0,
     Amount
   )
 end
-function ChoGGi.DisasterTriggerColdWave()
+function ChoGGi.MenuFuncs.DisasterTriggerColdWave()
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_ColdWave
     local descr = data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
     StartColdWave(descr)
   end)
 end
-function ChoGGi.DisasterTriggerDustStorm(storm_type)
+function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(storm_type)
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_DustStorm
     local descr = data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
     StartDustStorm(storm_type,descr)
   end)
 end
-function ChoGGi.DisasterTriggerDustDevils(major)
+function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(major)
   local data = DataInstances.MapSettings_DustDevils
   local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
   GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
 end
-function ChoGGi.DisasterTriggerMeteor(meteors_type)
+function ChoGGi.MenuFuncs.DisasterTriggerMeteor(meteors_type)
   local data = DataInstances.MapSettings_Meteor
   local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   CreateGameTimeThread(function()
     MeteorsDisaster(descr, meteors_type, GetTerrainCursor())
   end)
 end
-function ChoGGi.DisastersStop()
+function ChoGGi.MenuFuncs.DisastersStop()
   for Key,_ in pairs(g_IncomingMissiles or empty_table) do
     Key:ExplodeInAir()
   end
@@ -61,7 +61,7 @@ function ChoGGi.DisastersStop()
   end
 end
 
-function ChoGGi.MeteorsDestroy()
+function ChoGGi.MenuFuncs.MeteorsDestroy()
   --causes error msgs for next ones (seems to work fine, but still)
   while #g_MeteorsPredicted > 0 do
     for i = 1, #g_MeteorsPredicted do
@@ -72,7 +72,7 @@ function ChoGGi.MeteorsDestroy()
   end
 end
 
-function ChoGGi.DisastersTrigger()
+function ChoGGi.MenuFuncs.DisastersTrigger()
   local ItemList = {
     {text = " Stop Most Disasters",value = "Stop",hint = "Can't stop meteors."},
     {text = " Remove Broken Meteors",value = "MeteorsDestroy",hint = "If you have some continuous spinning meteors. It might put some error msgs in console, but I didn't notice any other issues."},
@@ -95,49 +95,49 @@ function ChoGGi.DisastersTrigger()
     for i = 1, #choice do
       local value = choice[i].value
       if value == "Stop" then
-        ChoGGi.DisastersStop()
+        ChoGGi.MenuFuncs.DisastersStop()
       elseif value == "MeteorsDestroy" then
-        ChoGGi.MeteorsDestroy()
+        ChoGGi.MenuFuncs.MeteorsDestroy()
       elseif value == "ColdWave" then
-        ChoGGi.DisasterTriggerColdWave()
+        ChoGGi.MenuFuncs.DisasterTriggerColdWave()
 
       elseif value == "DustDevilsMajor" then
-        ChoGGi.DisasterTriggerDustDevils("major")
+        ChoGGi.MenuFuncs.DisasterTriggerDustDevils("major")
       elseif value == "DustDevils" then
-        ChoGGi.DisasterTriggerDustDevils()
+        ChoGGi.MenuFuncs.DisasterTriggerDustDevils()
 
       elseif value == "DustStormElectrostatic" then
-        ChoGGi.DisasterTriggerDustStorm("electrostatic")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("electrostatic")
       elseif value == "DustStormGreat" then
-        ChoGGi.DisasterTriggerDustStorm("great")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("great")
       elseif value == "DustStorm" then
-        ChoGGi.DisasterTriggerDustStorm("normal")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("normal")
 
       elseif value == "MeteorStorm" then
-        ChoGGi.DisasterTriggerMeteor("storm")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor("storm")
       elseif value == "MeteorMultiSpawn" then
-        ChoGGi.DisasterTriggerMeteor("multispawn")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor("multispawn")
       elseif value == "Meteor" then
-        ChoGGi.DisasterTriggerMeteor("single")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor("single")
 
       elseif value == "Missle1" then
-        ChoGGi.DisasterTriggerMissle(1)
+        ChoGGi.MenuFuncs.DisasterTriggerMissle(1)
       elseif value == "Missle10" then
-        ChoGGi.DisasterTriggerMissle(10)
+        ChoGGi.MenuFuncs.DisasterTriggerMissle(10)
       elseif value == "Missle100" then
-        ChoGGi.DisasterTriggerMissle(100)
+        ChoGGi.MenuFuncs.DisasterTriggerMissle(100)
       elseif value == "Missle500" then
-        ChoGGi.DisasterTriggerMissle(500)
+        ChoGGi.MenuFuncs.DisasterTriggerMissle(500)
       end
-      ChoGGi.MsgPopup(choice[i].text,"Disasters")
+      ChoGGi.Funcs.MsgPopup(choice[i].text,"Disasters")
     end
   end
 
   local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select)."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
 end
 
-function ChoGGi.ShowScanAndMapOptions()
+function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   local hint_core = "Core: Repeatable"
   local hint_deep = "Deep: Toggleable"
   local ItemList = {
@@ -159,10 +159,10 @@ function ChoGGi.ShowScanAndMapOptions()
 
   local CallBackFunc = function(choice)
     local function deep()
-      ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
-      ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
-      ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
-      ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+      ChoGGi.Funcs.SetConstsG("DeepScanAvailable",ChoGGi.Funcs.ToggleBoolNum(Consts.DeepScanAvailable))
+      ChoGGi.Funcs.SetConstsG("IsDeepWaterExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+      ChoGGi.Funcs.SetConstsG("IsDeepMetalsExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+      ChoGGi.Funcs.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
     end
     local function core()
       Msg("TechResearched","CoreWater", UICity)
@@ -188,13 +188,13 @@ function ChoGGi.ShowScanAndMapOptions()
       elseif value == 3 then
         core()
       elseif value == 4 then
-        ChoGGi.SetConstsG("DeepScanAvailable",ChoGGi.ToggleBoolNum(Consts.DeepScanAvailable))
+        ChoGGi.Funcs.SetConstsG("DeepScanAvailable",ChoGGi.Funcs.ToggleBoolNum(Consts.DeepScanAvailable))
       elseif value == 5 then
-        ChoGGi.SetConstsG("IsDeepWaterExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+        ChoGGi.Funcs.SetConstsG("IsDeepWaterExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
       elseif value == 6 then
-        ChoGGi.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+        ChoGGi.Funcs.SetConstsG("IsDeepMetalsExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
       elseif value == 7 then
-        ChoGGi.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+        ChoGGi.Funcs.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.Funcs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
       elseif value == 8 then
         Msg("TechResearched","CoreWater", UICity)
       elseif value == 9 then
@@ -211,20 +211,20 @@ function ChoGGi.ShowScanAndMapOptions()
         scan()
       end
     end
-    ChoGGi.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
-    ChoGGi.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
-    ChoGGi.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
-    ChoGGi.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+    ChoGGi.Funcs.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
+    ChoGGi.Funcs.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
+    ChoGGi.Funcs.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
+    ChoGGi.Funcs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
 
-    ChoGGi.WriteSettings()
-    ChoGGi.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
+    ChoGGi.Funcs.WriteSettings()
+    ChoGGi.Funcs.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
       "Scanner","UI/Icons/Notifications/scan.tga",true
     )
   end
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes","You can select multiple items.",true)
 end
 
-function ChoGGi.SpawnColonists()
+function ChoGGi.MenuFuncs.SpawnColonists()
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},
@@ -244,43 +244,43 @@ function ChoGGi.SpawnColonists()
     local value = choice[1].value
     if type(value) == "number" then
       CheatSpawnNColonists(value)
-      ChoGGi.MsgPopup("Spawned: " .. choice[1].text,
+      ChoGGi.Funcs.MsgPopup("Spawned: " .. choice[1].text,
         "Colonists","UI/Icons/Sections/colonist.tga"
       )
     end
   end
 
   local hint = "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
 end
 
-function ChoGGi.ShowMysteryList()
+function ChoGGi.MenuFuncs.ShowMysteryList()
   local ItemList = {}
   ClassDescendantsList("MysteryBase",function(class)
-    table.insert(ItemList,{
+    ItemList[#ItemList+1] = {
       text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({ChoGGi.Tables.MysteryDifficulty[class]})) or "Missing Name"),
       value = class,
       hint = (_InternalTranslate(T({ChoGGi.Tables.MysteryDescription[class]})) or "Missing Description")
-    })
+    }
   end)
 
   local CallBackFunc = function(choice)
     if choice[1].check1 then
       --instant
-      ChoGGi.StartMystery(choice[1].value,true)
+      ChoGGi.MenuFuncs.StartMystery(choice[1].value,true)
     else
-      ChoGGi.StartMystery(choice[1].value)
+      ChoGGi.MenuFuncs.StartMystery(choice[1].value)
     end
   end
 
   local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries."
   local checkmarkhint = "May take up to one Sol to \"instantly\" activate mystery."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
 end
 
-function ChoGGi.StartMystery(Mystery,Bool)
+function ChoGGi.MenuFuncs.StartMystery(Mystery,Bool)
   --inform people of actions, so they don't add a bunch of them
-  ChoGGi.CheatMenuSettings.ShowMysteryMsgs = true
+  ChoGGi.UserSettings.ShowMysteryMsgs = true
 
   UICity.mystery_id = Mystery
   local tree = TechTree
@@ -323,15 +323,15 @@ function ChoGGi.StartMystery(Mystery,Bool)
   end
 end
 
-function ChoGGi.UnlockAllBuildings()
+function ChoGGi.MenuFuncs.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
-  ChoGGi.MsgPopup("Unlocked all buildings for construction.",
+  ChoGGi.Funcs.MsgPopup("Unlocked all buildings for construction.",
     "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
 
-function ChoGGi.AddResearchPoints()
+function ChoGGi.MenuFuncs.AddResearchPoints()
   local ItemList = {
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -350,29 +350,28 @@ function ChoGGi.AddResearchPoints()
     local value = choice[1].value
     if type(value) == "number" then
       UICity:AddResearchPoints(value)
-      ChoGGi.MsgPopup("Added: " .. choice[1].text,
+      ChoGGi.Funcs.MsgPopup("Added: " .. choice[1].text,
         "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
   end
 
   local hint = "If you need a little boost (or a lotta boost) in research."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
 end
 
-function ChoGGi.OutsourcingFree_Toggle()
-  ChoGGi.SetConstsG("OutsourceResearchCost",ChoGGi.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
+function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
+  ChoGGi.Funcs.SetConstsG("OutsourceResearchCost",ChoGGi.Funcs.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
 
-  ChoGGi.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
+  ChoGGi.Funcs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
     "Research","UI/Icons/Sections/research_1.tga",true
   )
 end
 
 local hint_maxa = "Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
-
-function ChoGGi.SetBreakThroughsOmegaTelescope()
+function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
   local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
@@ -384,8 +383,8 @@ function ChoGGi.SetBreakThroughsOmegaTelescope()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.OmegaTelescopeBreakthroughsCount then
-    hint = ChoGGi.CheatMenuSettings.OmegaTelescopeBreakthroughsCount
+  if ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount then
+    hint = ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount
   end
 
   local CallBackFunc = function(choice)
@@ -393,19 +392,19 @@ function ChoGGi.SetBreakThroughsOmegaTelescope()
     local value = choice[1].value
     if type(value) == "number" then
       const.OmegaTelescopeBreakthroughsCount = value
-      ChoGGi.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
+      ChoGGi.Funcs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(choice[1].text .. ": Research is what I'm doing when I don't know what I'm doing.",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(choice[1].text .. ": Research is what I'm doing when I don't know what I'm doing.",
         "Omega",UsualIcon
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
 end
 
-function ChoGGi.SetBreakThroughsAllowed()
+function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
   local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
@@ -415,8 +414,8 @@ function ChoGGi.SetBreakThroughsAllowed()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame then
-    hint = ChoGGi.CheatMenuSettings.BreakThroughTechsPerGame
+  if ChoGGi.UserSettings.BreakThroughTechsPerGame then
+    hint = ChoGGi.UserSettings.BreakThroughTechsPerGame
   end
 
   local CallBackFunc = function(choice)
@@ -424,50 +423,50 @@ function ChoGGi.SetBreakThroughsAllowed()
     local value = choice[1].value
     if type(value) == "number" then
       const.BreakThroughTechsPerGame = value
-      ChoGGi.SetSavedSetting("BreakThroughTechsPerGame",value)
+      ChoGGi.Funcs.SetSavedSetting("BreakThroughTechsPerGame",value)
 
-      ChoGGi.WriteSettings()
-      ChoGGi.MsgPopup(choice[1].text .. ": S M R T",
+      ChoGGi.Funcs.WriteSettings()
+      ChoGGi.Funcs.MsgPopup(choice[1].text .. ": S M R T",
         "Research",UsualIcon
       )
     end
   end
 
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
 end
 
-function ChoGGi.ResearchQueueLarger_Toggle()
-  const.ResearchQueueSize = ChoGGi.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
-  ChoGGi.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
+function ChoGGi.MenuFuncs.ResearchQueueLarger_Toggle()
+  const.ResearchQueueSize = ChoGGi.Funcs.ValueRetOpp(const.ResearchQueueSize,25,ChoGGi.Consts.ResearchQueueSize)
+  ChoGGi.Funcs.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
 
-  ChoGGi.WriteSettings()
-  ChoGGi.MsgPopup(tostring(ChoGGi.CheatMenuSettings.ResearchQueueSize) .. ": Nerdgasm",
+  ChoGGi.Funcs.WriteSettings()
+  ChoGGi.Funcs.MsgPopup(tostring(ChoGGi.UserSettings.ResearchQueueSize) .. ": Nerdgasm",
     "Research",UsualIcon
   )
 end
 
-function ChoGGi.ShowResearchTechList()
+function ChoGGi.MenuFuncs.ShowResearchTechList()
   local ItemList = {}
-  table.insert(ItemList,{
+  ItemList[#ItemList+1] = {
     text = " Everything",
     value = "Everything",
     hint = "All the tech/breakthroughs/mysteries"
-  })
-  table.insert(ItemList,{
+  }
+  ItemList[#ItemList+1] = {
     text = " All Tech",
     value = "AllTech",
     hint = "All the regular tech"
-  })
-  table.insert(ItemList,{
+  }
+  ItemList[#ItemList+1] = {
     text = " All Breakthroughs",
     value = "AllBreakthroughs",
     hint = "All the breakthroughs"
-  })
-  table.insert(ItemList,{
+  }
+  ItemList[#ItemList+1] = {
     text = " All Mysteries",
     value = "AllMysteries",
     hint = "All the mysteries"
-  })
+  }
   for i = 1, #TechTree do
     for j = 1, #TechTree[i] do
       local text = _InternalTranslate(TechTree[i][j].display_name)
@@ -475,11 +474,11 @@ function ChoGGi.ShowResearchTechList()
       if text:find("\"") then
         text = text:gsub("\"","")
       end
-      table.insert(ItemList,{
+      ItemList[#ItemList+1] = {
         text = text,
         value = TechTree[i][j].id,
         hint = _InternalTranslate(TechTree[i][j].description)
-      })
+      }
     end
   end
 
@@ -488,10 +487,10 @@ function ChoGGi.ShowResearchTechList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      ChoGGi.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
+      ChoGGi.Funcs.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
       return
     elseif check1 and check2 then
-      ChoGGi.MsgPopup("Don't pick both checkboxes next time...","Research",UsualIcon)
+      ChoGGi.Funcs.MsgPopup("Don't pick both checkboxes next time...","Research",UsualIcon)
       return
     end
 
@@ -511,21 +510,21 @@ function ChoGGi.ShowResearchTechList()
     for i = 1, #choice do
       local value = choice[i].value
       if value == "Everything" then
-        ChoGGi.SetTech_EveryMystery(sType)
-        ChoGGi.SetTech_EveryBreakthrough(sType)
-        ChoGGi.SetTech_EveryTech(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
       elseif value == "AllTech" then
-        ChoGGi.SetTech_EveryTech(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
       elseif value == "AllBreakthroughs" then
-        ChoGGi.SetTech_EveryBreakthrough(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
       elseif value == "AllMysteries" then
-        ChoGGi.SetTech_EveryMystery(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
       else
         _G[sType](value)
       end
     end
 
-    ChoGGi.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
+    ChoGGi.Funcs.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
       "Research",UsualIcon
     )
   end
@@ -533,7 +532,7 @@ function ChoGGi.ShowResearchTechList()
   local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select)."
   local checkhint1 = "Just unlocks in the tree"
   local checkhint2 = "Unlocks and researchs."
-  ChoGGi.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
+  ChoGGi.Funcs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
 end
 
 local function listfields(sType,field)
@@ -546,15 +545,15 @@ local function listfields(sType,field)
   end
 end
 
-function ChoGGi.SetTech_EveryMystery(sType)
+function ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
   listfields(sType,"Mysteries")
 end
 
-function ChoGGi.SetTech_EveryBreakthrough(sType)
+function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
   listfields(sType,"Breakthroughs")
 end
 
-function ChoGGi.SetTech_EveryTech(sType)
+function ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
   listfields(sType,"Biotech")
   listfields(sType,"Engineering")
   listfields(sType,"Physics")

@@ -1,26 +1,27 @@
-function ChoGGi.Keys_LoadingScreenPreClose()
 
-  ChoGGi.AddAction(
+function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
+
+  ChoGGi.Funcs.AddAction(
     nil,
     function()
-      ChoGGi.ObjectColourRandom(SelectedObj or SelectionMouseObj())
+      ChoGGi.Funcs.ObjectColourRandom(SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject())
     end,
     "Shift-F6"
   )
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     nil,
     function()
-      ChoGGi.ObjectColourDefault(SelectedObj or SelectionMouseObj())
+      ChoGGi.Funcs.ObjectColourDefault(SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject())
     end,
     "Ctrl-F6"
   )
 
   --use number keys to activate/hide build menus
-  if ChoGGi.CheatMenuSettings.NumberKeysBuildMenu then
+  if ChoGGi.UserSettings.NumberKeysBuildMenu then
     local function AddMenuKey(Num,Key)
-      ChoGGi.AddAction(nil,
+      ChoGGi.Funcs.AddAction(nil,
         function()
-          ChoGGi.ShowBuildMenu(Num)
+          ChoGGi.Funcs.ShowBuildMenu(Num)
         end,
         Key
       )
@@ -50,10 +51,10 @@ function ChoGGi.Keys_LoadingScreenPreClose()
   end
 
   --spawn and fill a deposit at mouse pos
-  function ChoGGi.AddDeposit(sType)
+  function ChoGGi.MenuFuncs.AddDeposit(sType)
 
     local obj = PlaceObj(sType, {
-      "Pos", GetTerrainCursor(),
+      "Pos", ChoGGi.Funcs.CursorNearestHex(),
       "max_amount", UICity:Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
       "revealed", true,
     })
@@ -63,7 +64,7 @@ function ChoGGi.Keys_LoadingScreenPreClose()
   end
 
   --fixup name we get from Object
-  function ChoGGi.ConstructionModeNameClean(itemname)
+  function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname)
 
     --we want template_name or we have to guess from the placeobj name
     local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
@@ -73,15 +74,15 @@ function ChoGGi.Keys_LoadingScreenPreClose()
 
     --print(tempname)
     if tempname:find("Deposit") then
-      ChoGGi.AddDeposit(tempname)
+      ChoGGi.MenuFuncs.AddDeposit(tempname)
     else
-      ChoGGi.ConstructionModeSet(tempname)
+      ChoGGi.MenuFuncs.ConstructionModeSet(tempname)
     end
 
   end
 
   --place item under the mouse for construction
-  function ChoGGi.ConstructionModeSet(itemname)
+  function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
 
     --make sure it's closed so we don't mess up selection
     pcall(function()
@@ -120,14 +121,14 @@ function ChoGGi.Keys_LoadingScreenPreClose()
   end
 
   --show console
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
     "~"
   )
 
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
@@ -135,39 +136,39 @@ function ChoGGi.Keys_LoadingScreenPreClose()
   )
 
   --show console with restart
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
       ShowConsole(true)
-      ChoGGi.AddConsolePrompt("restart")
+      ChoGGi.Funcs.AddConsolePrompt("restart")
     end,
     "Ctrl-Alt-Shift-R"
   )
 
   --goes to placement mode with last built object
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
       local last = UICity.LastConstructedBuilding
       if last.entity then
-        ChoGGi.ConstructionModeSet(last.encyclopedia_id or last.entity)
+        ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id or last.entity)
       end
     end,
     "Ctrl-Space"
   )
 
   --goes to placement mode with SelectedObj
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
-      local sel = SelectedObj or SelectionMouseObj()
+      local sel = SelectedObj or SelectionMouseObj() or ChoGGi.Funcs.CursorNearestObject()
       if sel then
         ChoGGi.LastPlacedObject = sel
-        ChoGGi.ConstructionModeNameClean(ValueToLuaCode(sel))
+        ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
       end
     end,
     "Ctrl-Shift-Space"
   )
 
   --object cloner
-  ChoGGi.AddAction(nil,
+  ChoGGi.Funcs.AddAction(nil,
     function()
       local sel = SelectedObj
       local NewObj = g_Classes[sel.class]:new()
@@ -177,8 +178,7 @@ function ChoGGi.Keys_LoadingScreenPreClose()
         NewObj[Key] = Value
       end
       --]]
-      --NewObj:SetPos(point(GetTerrainCursor():x(),GetTerrainCursor():y()))
-      NewObj:SetPos(GetTerrainCursor())
+      NewObj:SetPos(ChoGGi.Funcs.CursorNearestHex())
       --if it's a deposit then make max_amount random and add
       --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
       --if ObjName:find("SubsurfaceDeposit") then
@@ -194,8 +194,8 @@ function ChoGGi.Keys_LoadingScreenPreClose()
         NewObj.infopanel_icon = sel.infopanel_icon
         NewObj.inner_entity = sel.inner_entity
         NewObj.pin_icon = sel.pin_icon
-        ChoGGi.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
-        ChoGGi.ColonistUpdateAge(NewObj,sel.age_trait)
+        ChoGGi.Funcs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
+        ChoGGi.Funcs.ColonistUpdateAge(NewObj,sel.age_trait)
         NewObj:SetSpecialization(sel.specialist,"init")
         NewObj.age = sel.age
         NewObj:ChooseEntity()
@@ -204,17 +204,17 @@ function ChoGGi.Keys_LoadingScreenPreClose()
     "Shift-Q"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     nil,
     function()
-      ChoGGi.CheatMenuSettings.ShowCheatsMenu = not ChoGGi.CheatMenuSettings.ShowCheatsMenu
-      ChoGGi.WriteSettings()
+      ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
+      ChoGGi.Funcs.WriteSettings()
       UAMenu.ToggleOpen()
     end,
     "F2"
   )
 
-  ChoGGi.AddAction(
+  ChoGGi.Funcs.AddAction(
     nil,
     function()
       quit("restart")

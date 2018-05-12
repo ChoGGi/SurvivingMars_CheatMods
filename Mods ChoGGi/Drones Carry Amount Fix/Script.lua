@@ -1,4 +1,4 @@
-ChoGGiX = { OrigFunc = {} }
+ChoGGiX = { }
 
 --force drones to pickup from producers even if they have a large carry cap
 function ChoGGiX.FuckingDrones(Producer)
@@ -41,4 +41,33 @@ function ChoGGiX.FuckingDrones(Producer)
       )
     end
   end
+end
+
+function OnMsg.ClassesBuilt()
+  if not ChoGGiX.OrigFunc_SingleResourceProducer_Produce then
+    ChoGGiX.OrigFunc_SingleResourceProducer_Produce = SingleResourceProducer.Produce
+  end
+  function SingleResourceProducer:Produce(amount_to_produce)
+    pcall(function()
+      ChoGGiX.FuckingDrones(self)
+    end)
+
+    return ChoGGiX.OrigFunc_SingleResourceProducer_Produce(self, amount_to_produce)
+  end
+end
+
+function OnMsg.NewHour()
+
+  --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+  pcall(function()
+    --Hey. Do I preach at you when you're lying stoned in the gutter? No!
+    local tab = UICity.labels.ResourceProducer or empty_table
+    for i = 1, #tab do
+      ChoGGiX.FuckingDrones(tab[i]:GetProducerObj())
+      if tab[i].wasterock_producer then
+        ChoGGiX.FuckingDrones(tab[i].wasterock_producer)
+      end
+    end
+  end)
+
 end
