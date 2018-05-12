@@ -34,11 +34,14 @@ Ctrl-Alt-Shift-D: Delete object.
 Shift-Q: Clone selected object to mouse position.
 More shortcut keys are available, see menu items.
 
-When I say object that means either the selected object or the object under the mouse cursor
+When I say object that means either the selected object or the object under the mouse cursor.
 
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>Gameplay>QoL>Infopanel Cheats (on by default)
-Hover over menu items for a description (will say if enabled or disabled)
+Hover over menu items for a description (will say if enabled or disabled).
+
+To edit and use files from Files.hpk, use HPK archiver to extract them into the mod folder.
+If Defaults.lua is in the same place as Init.lua you did it correctly.
 ```
 
 ##### List of some stuff added (not up to date)
@@ -199,9 +202,6 @@ Going above 4096 capacity will make certain buildings laggy (houses/schools), an
 If you increase a number high enough it'll go negative.
   >Don't go too high or use the menu to reset to default (if it's still broken send me your save).
 
-Production will reset when the production changes (Solar panels, Wind turbines, etc).
-  >You can use Buildings>Production Amount Refresh to reset to saved amounts.
-
 You can't cheat fill concrete deposits.
   >Got me.
 ```
@@ -209,4 +209,5 @@ You can't cheat fill concrete deposits.
 ##### Thanks
 ```
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
+HPK archiver: https://github.com/nickelc/hpk
 ```

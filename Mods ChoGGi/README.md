@@ -2,14 +2,14 @@
 
 See also: [nexus mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files)
 
+### These are all included in CheatMod_CheatMenu, but if you want them then...
+
 ##### OutdoorDomeBuildings
 ```
 Add dome buildings outdoors (dome service buildings still need to be near domes).
 doesn't mean they'll work properly, but they look nice.
 Made Spires buildable in other spaces in domes (can't build them in spire place)< Thank you BoehserOnkel
 ```
-
-### All the rest are included in CheatMod_CheatMenu, but if you want them then...
 
 ##### DefensiveTurret
 ```
