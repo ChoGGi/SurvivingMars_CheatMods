@@ -1,3 +1,10 @@
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
+
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
 function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
@@ -23,7 +30,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoal()
   --
   goal.colony_approval_sol = UICity.day
   ChoGGi.Temp.InstantMissionGoal = true
-  ChoGGi.ComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
+  CComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
 end
 
 function ChoGGi.MenuFuncs.InstantColonyApproval()
@@ -33,11 +40,11 @@ function ChoGGi.MenuFuncs.InstantColonyApproval()
 end
 
 function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
-  ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage",ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
-  ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
+  CComFuncs.SetConstsG("MeteorHealthDamage",CComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,CConsts.MeteorHealthDamage))
+  CComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
     "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
@@ -70,7 +77,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
+        CComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
           "Sponsor",UsualIcon
         )
         break
@@ -79,7 +86,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
 end
 
 --set just the bonus effects
@@ -125,8 +132,8 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
       end
     end
 
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
+    CSettingFuncs.WriteSettings()
+    CComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
@@ -134,7 +141,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     .. "\n\nModded ones are mostly ignored for now (just cargo space/research points)."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
 function ChoGGi.MenuFuncs.ChangeCommander()
@@ -165,7 +172,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
+        CComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
           "Commander",UsualIcon
         )
         break
@@ -174,7 +181,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
 end
 
 --set just the bonus effects
@@ -220,15 +227,15 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
       end
     end
 
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
+    CSettingFuncs.WriteSettings()
+    CComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
     .. "\n\nUse Ctrl/Shift for multiple bonuses."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
 --pick a logo
@@ -272,7 +279,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        ChoGGi.ComFuncs.MsgPopup("Logo: " .. choice[1].text,
+        CComFuncs.MsgPopup("Logo: " .. choice[1].text,
           "Logo",UsualIcon
         )
       end
@@ -280,7 +287,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
 end
 
 function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
@@ -301,10 +308,10 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
   local bonus = Presets.MissionSponsorPreset.Default[sType]
   --bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
   if sponsor.cargo then
-    sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
+    sponsor.cargo = CComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
   end
   if sponsor.additional_research_points then
-    sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+    sponsor.additional_research_points = CComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
   end
 
   if sType == "IMM" then
@@ -320,8 +327,8 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
       "Amount",500
     })
   elseif sType == "BlueSun" then
-    sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
-    sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+    sponsor.rocket_price = CComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+    sponsor.applicants_price = CComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Physics",
       "Research","DeepMetalExtraction"
@@ -378,15 +385,15 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
       "Percent",-20
     })
   elseif sType == "ESA" then
-    sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
-    sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+    sponsor.funding_per_tech = CComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+    sponsor.funding_per_breakthrough = CComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
   elseif sType == "SpaceY" then
-    sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-    sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
-    sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
-    sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
-    sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+    sponsor.modifier_name1 = CComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = CComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name2 = CComFuncs.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
+    sponsor.modifier_value2 = CComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+    sponsor.modifier_name3 = CComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+    sponsor.modifier_value3 = CComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","CommandCenterMaxDrones",
@@ -404,15 +411,15 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
       "Percent",-50
     })
   elseif sType == "Roscosmos" then
-    sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name1 = CComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = CComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Robotics",
       "Research","FueledExtractors"
     })
   elseif sType == "Paradox" then
-    sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
-    sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
+    sponsor.applicants_per_breakthrough = CComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+    sponsor.anomaly_bonus_breakthrough = CComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end
 
@@ -432,11 +439,11 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
   local CallBackFunc = function(choice)
     mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
 
-    ChoGGi.ComFuncs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
+    CComFuncs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
       "Disaster","UI/Icons/Sections/attention.tga"
     )
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
 end
 
 function ChoGGi.ChangeRules()
@@ -455,10 +462,10 @@ function ChoGGi.ChangeRules()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if not check1 and not check2 then
-      ChoGGi.ComFuncs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
+      CComFuncs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
       return
     elseif check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
+      CComFuncs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
       return
     end
 
@@ -485,7 +492,7 @@ function ChoGGi.ChangeRules()
       GameRulesMap[rule_id]:OnInitEffect(UICity)
       GameRulesMap[rule_id]:OnApplyEffect(UICity)
     end
-    ChoGGi.ComFuncs.MsgPopup("Set: " .. #choice,
+    CComFuncs.MsgPopup("Set: " .. #choice,
       "Rules",UsualIcon
     )
   end
@@ -499,6 +506,6 @@ function ChoGGi.ChangeRules()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
 end
 --]]

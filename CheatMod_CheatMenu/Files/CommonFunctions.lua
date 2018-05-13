@@ -1,3 +1,5 @@
+local CConsts = ChoGGi.Consts
+
 --[[
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
@@ -223,7 +225,7 @@ function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
----Consts.XXX = ChoGGi.ComFuncs.NumRetBool(Consts.XXX,0,ChoGGi.Consts.XXX)
+---CConsts.XXX = ChoGGi.ComFuncs.NumRetBool(CConsts.XXX,0,CConsts.XXX)
 function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
@@ -291,12 +293,19 @@ end
 --[[
   table.sort(Items,
     function(a,b)
-      return ChoGGi.ComFuncs.CompareTableNames(a,b,"text")
+      return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
     end
   )
 --]]
-function ChoGGi.ComFuncs.CompareTableNames(a,b,sName)
+function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
   if type(a[sName]) == type(b[sName]) then
+    return a[sName] < b[sName]
+  else
+    return tostring(a[sName]) < tostring(b[sName])
+  end
+end
+function ChoGGi.ComFuncs.CompareTablePos(a,b,sName)
+  if a:GetPos() ==  b:GetPos() then
     return a[sName] < b[sName]
   else
     return tostring(a[sName]) < tostring(b[sName])
@@ -395,7 +404,7 @@ end
 function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
-    if tab[i].handle == Obj.handle then
+    if tab[i] and tab[i].handle and tab[i].handle == Obj.handle then
       table.remove(UICity.labels[Label],i)
     end
   end
@@ -591,7 +600,7 @@ end
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
 function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
   --if setting is the same as the default then remove it
-  if ChoGGi.Consts[Setting] == Value then
+  if CConsts[Setting] == Value then
     ChoGGi.UserSettings[Setting] = nil
   else
     ChoGGi.UserSettings[Setting] = Value
@@ -635,4 +644,3 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,Type)
       end
     },Table)
 end
-

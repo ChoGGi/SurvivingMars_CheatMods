@@ -1,48 +1,56 @@
-function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
-  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+local CMenuFuncs = ChoGGi.MenuFuncs
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
 
-  ChoGGi.ComFuncs.AddAction(
+function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
+  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+
+  CComFuncs.AddAction(
     "Cheats/[01]Map Exploration",
-    ChoGGi.MenuFuncs.ShowScanAndMapOptions,
+    CMenuFuncs.ShowScanAndMapOptions,
     nil,
     "Scanning, deep scanning, core mines, and alien imprints.",
     "LightArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Start Mystery",
-    ChoGGi.MenuFuncs.ShowMysteryList,
+    CMenuFuncs.ShowMysteryList,
     nil,
     "Pick and start a mystery (with instant option).",
     "SelectionToObjects.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Trigger Disasters",
-    ChoGGi.MenuFuncs.DisastersTrigger,
+    CMenuFuncs.DisastersTrigger,
     nil,
     "Show the trigger disasters list.",
     "ApplyWaterMarkers.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Spawn Colonists",
-    ChoGGi.MenuFuncs.SpawnColonists,
+    CMenuFuncs.SpawnColonists,
     nil,
     "Spawn certain amount of colonists.",
     "UncollectObjects.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[10]Unlock all buildings",
-    ChoGGi.MenuFuncs.UnlockAllBuildings,
+    CMenuFuncs.UnlockAllBuildings,
     nil,
     "Unlock all buildings for construction.",
     "TerrainConfigEditor.tga"
   )
 
 ----------------------workplaces
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Workplaces/Toggle All Shifts",
     CheatToggleAllShifts,
     nil,
@@ -50,7 +58,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Workplaces/Update All Workplaces",
     CheatUpdateAllWorkplaces,
     nil,
@@ -58,7 +66,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[05]Workplaces/Clear Forced Workplaces",
     CheatClearForcedWorkplaces,
     nil,
@@ -67,9 +75,9 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
 ----------------------research
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Research Queue Larger",
-    ChoGGi.MenuFuncs.ResearchQueueLarger_Toggle,
+    CMenuFuncs.ResearchQueueLarger_Toggle,
     nil,
     function()
       local des = ""
@@ -83,15 +91,15 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ShowOcclusion.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Reset All Research",
-    ChoGGi.MenuFuncs.ResetAllResearch,
+    CMenuFuncs.ResetAllResearch,
     nil,
     "Resets all research (includes breakthrough tech).",
     "UnlockCollection.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Research Current Tech",
     CheatResearchCurrent,
     nil,
@@ -99,50 +107,50 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ViewArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Add Research Points",
-    ChoGGi.MenuFuncs.AddResearchPoints,
+    CMenuFuncs.AddResearchPoints,
     nil,
     "Add a specified amount of research points.",
     "pirate.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Outsourcing For Free",
-    ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
+    CMenuFuncs.OutsourcingFree_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
       return des .. " Outsourcing is free to purchase (over n over)."
     end,
     "pirate.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/Research Tech",
-    ChoGGi.MenuFuncs.ShowResearchTechList,
+    CMenuFuncs.ShowResearchTechList,
     nil,
     "Pick what you want to unlock/research.",
     "ViewArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/[14]Set Amount Of Breakthroughs Allowed",
-    ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
+    CMenuFuncs.SetBreakThroughsAllowed,
     nil,
     "How many breakthroughs are allowed to be unlocked?",
     "AlignSel.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[04]Research/[15]Breakthroughs From OmegaTelescope",
-    ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
+    CMenuFuncs.SetBreakThroughsOmegaTelescope,
     nil,
     "How many breakthroughs the OmegaTelescope will unlock.",
     "AlignSel.tga"
   )
 ----------------------cheats
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[10]Unpin All Pinned Objects",
     UnpinAll,
     nil,
@@ -150,7 +158,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "CutSceneArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[12]Complete wires\\pipes",
     CheatCompleteAllWiresAndPipes,
     nil,
@@ -158,7 +166,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ViewCamPath.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[13]Complete constructions",
     CheatCompleteAllConstructions,
     "Alt-B",
@@ -166,9 +174,9 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "place_custom_object.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Cheats/[14]Mod Editor",
-    ChoGGi.MenuFuncs.OpenModEditor,
+    CMenuFuncs.OpenModEditor,
     nil,
     "Switch to the mod editor.",
     "Action.tga"

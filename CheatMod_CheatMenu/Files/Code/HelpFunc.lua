@@ -1,11 +1,18 @@
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
+
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     "Interface",UsualIcon
   )
 end
@@ -38,16 +45,16 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
     AsyncFileDelete(ChoGGi.SettingsFile)
     ThreadUnlockKey(file)
 
-    ChoGGi.ComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
+    CComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 
   end
 
-  ChoGGi.ComFuncs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
+  CComFuncs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
 end
 
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  ChoGGi.ComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
+  CComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
     "Signs",UsualIcon,true
   )
 end
@@ -55,13 +62,13 @@ end
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
+  CComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
+  CComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
@@ -73,9 +80,9 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
     mapdata.DisableHints = false
     HintsEnabled = true
   end
-  ChoGGi.SettingFuncs.WriteSettings()
+  CSettingFuncs.WriteSettings()
 
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
 end
 
 function ChoGGi.MenuFuncs.MenuHelp_ReportBug()

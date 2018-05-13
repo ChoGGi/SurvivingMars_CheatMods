@@ -1,10 +1,155 @@
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
+
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
+
+--add button to import model
+function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
+  local ItemList = {}
+  local LightmodelDefaults = Lightmodel:GetProperties()
+
+  --always load defaults, then override with custom so list is always full
+  local Table = LightmodelDefaults
+  for i = 1, #Table do
+    if Table[i].editor ~= "image" and Table[i].editor ~= "dropdownlist" and Table[i].editor ~= "combo" and type(Table[i].value) ~= "userdata" then
+      ItemList[#ItemList+1] = {
+        text = Table[i].editor == "color" and "<color 175 175 255>" .. Table[i].id .. "</color>" or Table[i].id,
+        sort = Table[i].id,
+        --text = Table[i].id,
+        value = Table[i].default,
+        default = Table[i].default,
+        editor = Table[i].editor,
+        hint = "" .. (Table[i].name or "") .. "\nhelp: " .. (Table[i].help or "") .. "\n\ndefault: " .. (tostring(Table[i].default) or "") .. " min: " .. (Table[i].min or "") .. " max: " .. (Table[i].max or "") .. " scale: " .. (Table[i].scale or ""),
+      }
+    end
+  end
+
+  --custom settings
+  local Table = ChoGGi.Temp.LightmodelCustom
+  --or loading style from presets
+  if type(Name) == "string" then
+    Table = DataInstances.Lightmodel[Name]
+  end
+  for i = 1, #ItemList do
+    if Table[ItemList[i].sort] then
+      ItemList[i].value = Table[ItemList[i].sort]
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    local model_table = {}
+    for i = 1, #choice do
+      local value = choice[i].value
+      if value ~= choice[i].default then
+        model_table[#model_table+1] = {
+          id = choice[i].sort,
+          value = value,
+        }
+      end
+    end
+
+    --save the custom lightmodel
+    ChoGGi.UserSettings.LightmodelCustom = PropToLuaCode(CCodeFuncs.LightmodelBuild(model_table))
+    if choice[1].check1 then
+      SetLightmodelOverride(1,"ChoGGi_Custom")
+    else
+      SetLightmodel(1,"ChoGGi_Custom")
+    end
+
+    CSettingFuncs.WriteSettings()
+  end
+
+  local hint = "Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj)."
+  local Check1 = "Semi-Permanent"
+  local Check1Hint = "Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent)."
+  local Check2 = "Presets"
+  local Check2Hint = "Opens up the list of premade styles so you can start with the settings from one."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Custom Lightmodel",hint,nil,Check1,Check1Hint,Check2,Check2Hint,5)
+end
+
+function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
+  --if it gets opened by menu then has object so easy way to do this
+  local Browse
+  if Mode == true then
+    Browse = Mode
+  end
+
+  local ItemList = {}
+  if not Browse then
+    ItemList[#ItemList+1] = {
+      text = " Default",
+      value = "ChoGGi_Default",
+      hint = "Choose to this remove Permanent setting.",
+    }
+    ItemList[#ItemList+1] = {
+      text = " Custom",
+      value = "ChoGGi_Custom",
+      hint = "Custom Lightmodel made with \"Change Light Model Custom\"",
+    }
+  end
+  local Table = DataInstances.Lightmodel
+  for i = 1, #Table do
+    ItemList[#ItemList+1] = {
+      text = Table[i].name,
+      value = Table[i].name,
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "string" then
+      if Browse or choice[1].check2 then
+        ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
+      else
+        if value == "ChoGGi_Default" then
+          ChoGGi.UserSettings.Lightmodel = nil
+          SetLightmodelOverride(1)
+        else
+          if choice[1].check1 then
+            ChoGGi.UserSettings.Lightmodel = value
+            SetLightmodelOverride(1,value)
+          else
+            SetLightmodelOverride(1)
+            SetLightmodel(1,value)
+          end
+        end
+
+        CSettingFuncs.WriteSettings()
+        CComFuncs.MsgPopup("Selected: " .. choice[1].text,"Lighting")
+      end
+    end
+  end
+
+  local hint
+  local Check1
+  local Check1Hint
+  local Check2
+  local Check2Hint
+  local title = "Select Lightmodel Preset"
+  if not Browse then
+    title = "Change Lightmodel"
+    hint = "If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game)."
+    local Lightmodel = ChoGGi.UserSettings.Lightmodel
+    if Lightmodel then
+      hint = hint .. "\n\nPermanent: " .. Lightmodel
+    end
+    Check1 = "Permanent"
+    Check1Hint = "Make it stay at selected light model all the time (including reboots)."
+    Check2 = "Edit"
+    Check2Hint = "Open this style in \"Change Light Model Custom\"."
+  end
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,title,hint,nil,Check1,Check1Hint,Check2,Check2Hint,3)
+end
 
 function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
   ChoGGi.UserSettings.TransparencyToggle = not ChoGGi.UserSettings.TransparencyToggle
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("UI Transparency Toggle: " .. tostring(ChoGGi.UserSettings.TransparencyToggle),
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup("UI Transparency Toggle: " .. tostring(ChoGGi.UserSettings.TransparencyToggle),
     "Transparency"
   )
 end
@@ -78,12 +223,12 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
       end
     end
 
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Transparency has been updated.","Transparency")
+    CSettingFuncs.WriteSettings()
+    CComFuncs.MsgPopup("Transparency has been updated.","Transparency")
   end
 
   local hint = "For some reason they went opposite day with this one: 255 is invisible and 0 is visible."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Transparency",hint,nil,nil,nil,nil,nil,4)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Transparency",hint,nil,nil,nil,nil,nil,4)
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
@@ -121,10 +266,10 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      ChoGGi.ComFuncs.MsgPopup("Pick a checkbox next time...","Pins")
+      CComFuncs.MsgPopup("Pick a checkbox next time...","Pins")
       return
     elseif check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Pins")
+      CComFuncs.MsgPopup("Don't pick both checkboxes next time...","Pins")
       return
     end
 
@@ -143,7 +288,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     end
 
     --remove dupes
-    ChoGGi.UserSettings.UnpinObjects = ChoGGi.ComFuncs.RetTableNoDupes(ChoGGi.UserSettings.UnpinObjects)
+    ChoGGi.UserSettings.UnpinObjects = CComFuncs.RetTableNoDupes(ChoGGi.UserSettings.UnpinObjects)
 
     local found = true
     while found do
@@ -161,14 +306,14 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     if not next(ChoGGi.UserSettings.UnpinObjects) then
       ChoGGi.UserSettings.UnpinObjects = nil
     end
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Toggled: " .. #choice .. " pinnable objects.","Pins")
+    CSettingFuncs.WriteSettings()
+    CComFuncs.MsgPopup("Toggled: " .. #choice .. " pinnable objects.","Pins")
   end
 
   local hint = "Auto Unpinned:" .. EnabledList .. "\nEnter a class name (s.class) to add a custom entry."
   local hint_check1 = "Add these items to the unpin list."
   local hint_check2 = "Remove these items from the unpin list."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Auto Remove Items From Pin List",hint,true,"Add to list",hint_check1,"Remove from list",hint_check2)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Auto Remove Items From Pin List",hint,true,"Add to list",hint_check1,"Remove from list",hint_check2)
 end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
@@ -181,7 +326,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
     tab[i]:SetDust(0,const.DustMaterialExterior)
   end
 
-  ChoGGi.ComFuncs.MsgPopup("Cleaned all","Objects")
+  CComFuncs.MsgPopup("Cleaned all","Objects")
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
@@ -199,21 +344,21 @@ function ChoGGi.MenuFuncs.FixAllObjects()
     tab[i]:SetCommand("RepairDrone")
   end
 
-  ChoGGi.ComFuncs.MsgPopup("Fixed all","Objects")
+  CComFuncs.MsgPopup("Fixed all","Objects")
 end
 
 --build and show a list of attachments for changing their colours
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
-  local obj = ChoGGi.CodeFuncs.SelObject()
+  local obj = CCodeFuncs.SelObject()
   if not obj and not obj:IsKindOf("ColorizableObject") then
-    ChoGGi.ComFuncs.MsgPopup("Select/mouse over an object (buildings,vehicles,signs,some rocks)","Colour")
+    CComFuncs.MsgPopup("Select/mouse over an object (buildings,vehicles,signs,some rocks)","Colour")
     return
   end
   local ItemList = {}
 
   --has no Attaches so just open as is
   if obj:GetNumAttaches() == 0 then
-    ChoGGi.CodeFuncs.ChangeObjectColour(obj)
+    CCodeFuncs.ChangeObjectColour(obj)
     return
   else
     ItemList[#ItemList+1] = {
@@ -240,11 +385,11 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
   end
 
   local hint = "Double click to open object/attachment to edit."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
-  local sel = ChoGGi.CodeFuncs.SelObject()
+  local sel = CCodeFuncs.SelObject()
   local ItemList = {
     {text = " Reset: Anomalies",value = "Anomaly",hint = "Loops though and makes all anomalies visible."},
     {text = " Reset: Buildings",value = "Building",hint = "Loops though and makes all buildings visible."},
@@ -282,7 +427,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
         SettingOpacity("TerrainDeposit")
       end
     end
-    ChoGGi.ComFuncs.MsgPopup("Selected: " .. choice[1].text,
+    CComFuncs.MsgPopup("Selected: " .. choice[1].text,
       "Opacity","UI/Icons/Sections/attention.tga"
     )
   end
@@ -292,15 +437,15 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
     hint = "Current: " .. sel:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some effort :)."
     name = sel.encyclopedia_id or sel.class
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
 end
 
 function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   ChoGGi.UserSettings.DisableTextureCompression = not ChoGGi.UserSettings.DisableTextureCompression
   hr.TR_ToggleTextureCompression = 1
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Texture Compression: " .. tostring(ChoGGi.UserSettings.DisableTextureCompression),
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup("Texture Compression: " .. tostring(ChoGGi.UserSettings.DisableTextureCompression),
     "Video",UsualIcon
   )
 end
@@ -326,35 +471,35 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
       else
         hr.ShadowmapSize = value
       end
-      ChoGGi.ComFuncs.SetSavedSetting("ShadowmapSize",value)
+      CComFuncs.SetSavedSetting("ShadowmapSize",value)
     else
       ChoGGi.UserSettings.ShadowmapSize = false
     end
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup("ShadowmapSize: " .. choice[1].text,
+      CSettingFuncs.WriteSettings()
+      CComFuncs.MsgPopup("ShadowmapSize: " .. choice[1].text,
         "Video",UsualIcon
       )
   end
   local hint = "Current: " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\nMax set to 16384."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size",hint)
 end
 
 function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
   ChoGGi.UserSettings.HigherShadowDist = not ChoGGi.UserSettings.HigherShadowDist
 
-  hr.ShadowRangeOverride = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowRangeOverride,0,1000000)
-  hr.ShadowFadeOutRangePercent = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowFadeOutRangePercent,30,0)
+  hr.ShadowRangeOverride = CComFuncs.ValueRetOpp(hr.ShadowRangeOverride,0,1000000)
+  hr.ShadowFadeOutRangePercent = CComFuncs.ValueRetOpp(hr.ShadowFadeOutRangePercent,30,0)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.UserSettings.HigherShadowDist),
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup("Higher Shadow Render Dist: " .. tostring(ChoGGi.UserSettings.HigherShadowDist),
     "Video",UsualIcon
   )
 end
 
 function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 
-  local DefaultSetting = ChoGGi.Consts.HigherRenderDist
+  local DefaultSetting = CConsts.HigherRenderDist
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 240,value = 240,hint = "Minimal FPS hit on large base"},
@@ -378,16 +523,16 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
     local value = choice[1].value
     if type(value) == "number" then
       hr.LODDistanceModifier = value
-      ChoGGi.ComFuncs.SetSavedSetting("HigherRenderDist",value)
+      CComFuncs.SetSavedSetting("HigherRenderDist",value)
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.UserSettings.HigherRenderDist),
+      CSettingFuncs.WriteSettings()
+      CComFuncs.MsgPopup("Higher Render Dist: " .. tostring(ChoGGi.UserSettings.HigherRenderDist),
         "Video",UsualIcon
       )
     end
 
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Higher Render Dist","Current: " .. hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Higher Render Dist","Current: " .. hint)
 end
 
 --CameraObj
@@ -411,7 +556,7 @@ function ChoGGi.MenuFuncs.CameraFree_Toggle()
     print("Camera Fly")
   end
   --resets zoom so...
-  ChoGGi.CodeFuncs.SetCameraSettings()
+  CCodeFuncs.SetCameraSettings()
 end
 
 function ChoGGi.MenuFuncs.CameraFollow_Toggle()
@@ -419,7 +564,7 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
   if not mapdata.GameLogic then
     return
   end
-  local obj = ChoGGi.CodeFuncs.SelObject()
+  local obj = CCodeFuncs.SelObject()
 
   --turn it off?
   if camera3p.IsActive() then
@@ -434,10 +579,10 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
     --show log again if it was hidden
     if ChoGGi.UserSettings.ConsoleToggleHistory then
       cls() --if it's going to spam the log, might as well clear it
-      ChoGGi.CodeFuncs.ToggleConsoleLog()
+      CCodeFuncs.ToggleConsoleLog()
     end
     --reset camera zoom settings
-    ChoGGi.CodeFuncs.SetCameraSettings()
+    CCodeFuncs.SetCameraSettings()
     return
   --crashes game if we attach to "false"
   elseif not obj then
@@ -472,7 +617,7 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
 
   --toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
   if ChoGGi.UserSettings.ConsoleToggleHistory then
-    ChoGGi.CodeFuncs.ToggleConsoleLog()
+    CCodeFuncs.ToggleConsoleLog()
   end
 
   --if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
@@ -497,10 +642,10 @@ end
 function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
-  ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
+  CComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats) .. ": HAXOR",
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats) .. ": HAXOR",
     "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
@@ -509,11 +654,11 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
   ChoGGi.UserSettings.CleanupCheatsInfoPane = not ChoGGi.UserSettings.CleanupCheatsInfoPane
 
   if ChoGGi.UserSettings.CleanupCheatsInfoPane then
-    ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+    CInfoFuncs.InfopanelCheatsCleanup()
   end
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane) .. ": Cleanup",
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane) .. ": Cleanup",
     "Cheats","UI/Icons/Anomaly_Tech.tga"
   )
 end
@@ -541,22 +686,22 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.ComFuncs.SetSavedSetting("BorderScrollingArea",value)
-      ChoGGi.CodeFuncs.SetCameraSettings()
+      CComFuncs.SetSavedSetting("BorderScrollingArea",value)
+      CCodeFuncs.SetCameraSettings()
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].value .. ": Mouse Border Scrolling",
+      CSettingFuncs.WriteSettings()
+      CComFuncs.MsgPopup(choice[1].value .. ": Mouse Border Scrolling",
         "BorderScrolling","UI/Icons/IPButtons/status_effects.tga"
       )
     end
 
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
 
 end
 
 function ChoGGi.MenuFuncs.CameraZoom_Toggle()
-  local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
+  local DefaultSetting = CConsts.CameraZoomToggle
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 16000,value = 16000},
@@ -576,25 +721,25 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 
     local value = choice[1].value
     if type(value) == "number" then
-      ChoGGi.ComFuncs.SetSavedSetting("CameraZoomToggle",value)
-      ChoGGi.CodeFuncs.SetCameraSettings()
+      CComFuncs.SetSavedSetting("CameraZoomToggle",value)
+      CCodeFuncs.SetCameraSettings()
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Camera Zoom",
+      CSettingFuncs.WriteSettings()
+      CComFuncs.MsgPopup(choice[1].text .. ": Camera Zoom",
         "Camera","UI/Icons/IPButtons/status_effects.tga"
       )
     end
 
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
 end
 
 function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
-  const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
-  ChoGGi.ComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
+  const.ExplorationQueueMaxSize = CComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,CConsts.ExplorationQueueMaxSize)
+  CComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize) .. ": scans at a time.",
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize) .. ": scans at a time.",
     "Scanner","UI/Icons/Notifications/scan.tga"
   )
 end
@@ -636,8 +781,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
-      const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
+      const.mediumGameSpeed = CConsts.mediumGameSpeed * value
+      const.fastGameSpeed = CConsts.fastGameSpeed * value
       --so it changes the speed
       ChangeGameSpeedState(-1)
       ChangeGameSpeedState(1)
@@ -645,13 +790,13 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
       ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
       ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": I think I can...",
+      CSettingFuncs.WriteSettings()
+      CComFuncs.MsgPopup(choice[1].text .. ": I think I can...",
         "Speed","UI/Icons/Notifications/timer.tga"
       )
     end
   end
 
   local hint = "Current speed: " .. current
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
 end

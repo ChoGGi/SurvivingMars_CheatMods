@@ -1,42 +1,50 @@
+local CMenuFuncs = ChoGGi.MenuFuncs
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
+
 function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
-  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
   local icon = "Cube.tga"
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Empty Mech Depot",
-    ChoGGi.CodeFuncs.EmptyMechDepot,
+    CCodeFuncs.EmptyMechDepot,
     nil,
     "Empties out selected/moused over mech depot into a small depot in front of it.",
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Annoying Sounds",
-    ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
+    CMenuFuncs.AnnoyingSounds_Toggle,
     nil,
     "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Protection Radius",
-    ChoGGi.MenuFuncs.SetProtectionRadius,
+    CMenuFuncs.SetProtectionRadius,
     nil,
     "Change threat protection coverage distance.",
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Unlock Locked Buildings",
-    ChoGGi.MenuFuncs.UnlockLockedBuildings,
+    CMenuFuncs.UnlockLockedBuildings,
     nil,
     "Gives you a list of buildings you can unlock in the build menu.",
     "toggle_post.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Pipes Pillars Spacing",
-    ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle,
+    CMenuFuncs.PipesPillarsSpacing_Toggle,
     nil,
     function()
       local des = ""
@@ -50,9 +58,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "ViewCamPath.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Unlimited Connection Length",
-    ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
+    CMenuFuncs.UnlimitedConnectionLength_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.UnlimitedConnectionLength and "(Enabled)" or "(Disabled)"
@@ -61,17 +69,17 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "road_type.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Powerless Building",
-    ChoGGi.MenuFuncs.BuildingPower_Toggle,
+    CMenuFuncs.BuildingPower_Toggle,
     nil,
     "Toggle electricity use for selected building type.",
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Set Charge & Discharge Rates",
-    ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
+    CMenuFuncs.SetMaxChangeOrDischarge,
     "Ctrl-Shift-R",
     "Change how fast Air/Water/Battery storage capacity changes.",
     icon
@@ -81,33 +89,33 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     local des = ChoGGi.UserSettings.UseLastOrientation and "(Enabled)" or "(Disabled)"
     return des  .. " Use last building placement orientation."
   end
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Use Last Orientation",
-    ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
+    CMenuFuncs.UseLastOrientation_Toggle,
     "F7",
     UseLastOrientationText(),
     "ToggleMapAreaEditor.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Farm Shifts All On",
-    ChoGGi.MenuFuncs.FarmShiftsAllOn,
+    CMenuFuncs.FarmShiftsAllOn,
     nil,
     "Turns on all the farm shifts.",
     icon
   )
   --------------------
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Production Amount Set",
-    ChoGGi.MenuFuncs.SetProductionAmount,
+    CMenuFuncs.SetProductionAmount,
     "Ctrl-Shift-P",
     "Set production of buildings of selected type, also applies to newly placed ones.\nWorks on any building that produces.",
     icon
   )
   --------------------
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Fully Automated Buildings",
-    ChoGGi.MenuFuncs.FullyAutomatedBuildings,
+    CMenuFuncs.FullyAutomatedBuildings,
     nil,
     function()
       local des = ChoGGi.UserSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"
@@ -116,9 +124,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Sanatoriums Cure All",
-    ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
+    CMenuFuncs.SanatoriumCureAll_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.SanatoriumCureAll and "(Enabled)" or "(Disabled)"
@@ -127,9 +135,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Schools Train All",
-    ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
+    CMenuFuncs.SchoolTrainAll_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.SchoolTrainAll and "(Enabled)" or "(Disabled)"
@@ -138,9 +146,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Sanatoriums & Schools: Show All Traits",
-    ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
+    CMenuFuncs.ShowAllTraits_Toggle,
     nil,
     function()
       local des = ""
@@ -154,9 +162,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "LightArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Sanatoriums & Schools: Show Full List",
-    ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
+    CMenuFuncs.SanatoriumSchoolShowAll,
     nil,
     function()
       local des = ChoGGi.UserSettings.SanatoriumSchoolShowAll and "(Enabled)" or "(Disabled)"
@@ -165,9 +173,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "LightArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Maintenance Free",
-    ChoGGi.MenuFuncs.MaintenanceBuildingsFree_Toggle,
+    CMenuFuncs.MaintenanceBuildingsFree_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.RemoveMaintenanceBuildUp and "(Enabled)" or "(Disabled)"
@@ -176,54 +184,54 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Moisture Vaporator Penalty",
-    ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
+    CMenuFuncs.MoistureVaporatorPenalty_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(const.MoistureVaporatorRange,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(const.MoistureVaporatorRange,"(Disabled)","(Enabled)")
       return des .. " Disable penalty when Moisture Vaporators are close to each other."
     end,
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Crop Fail Threshold",
-    ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
+    CMenuFuncs.CropFailThreshold_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.CropFailThreshold,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.CropFailThreshold,"(Disabled)","(Enabled)")
       return des .. " Remove Threshold for failing crops (crops won't fail)."
     end,
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Cheap Construction",
-    ChoGGi.MenuFuncs.CheapConstruction_Toggle,
+    CMenuFuncs.CheapConstruction_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.rebuild_cost_modifier,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.rebuild_cost_modifier,"(Disabled)","(Enabled)")
       return des .. " Build with minimal resources."
     end,
     icon
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Building Damage Crime",
-    ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle,
+    CMenuFuncs.BuildingDamageCrime_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.CrimeEventSabotageBuildingsCount,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.CrimeEventSabotageBuildingsCount,"(Disabled)","(Enabled)")
       return des .. " Disable damage from renegedes to buildings."
     end,
     icon
   )
 
   --------------------
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Cables & Pipes: No Chance Of Break",
-    ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
+    CMenuFuncs.CablesAndPipesNoBreak_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.BreakChanceCablePipe and "(Enabled)" or "(Disabled)"
@@ -232,20 +240,20 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "ViewCamPath.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Cables & Pipes: Instant Build",
-    ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
+    CMenuFuncs.CablesAndPipesInstant_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.InstantCables,"(Enabled)","(Disabled)")
+      local des = CComFuncs.NumRetBool(Consts.InstantCables,"(Enabled)","(Disabled)")
       return des .. " Cables and pipes are built instantly."
     end,
     "ViewCamPath.tga"
   )
   --------------------
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Unlimited Wonders",
-    ChoGGi.MenuFuncs.Building_wonder_Toggle,
+    CMenuFuncs.Building_wonder_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.Building_wonder and "(Enabled)" or "(Disabled)"
@@ -254,9 +262,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "toggle_post.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Show Hidden Buildings",
-    ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,
+    CMenuFuncs.Building_hide_from_build_menu_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.Building_hide_from_build_menu and "(Enabled)" or "(Disabled)"
@@ -265,9 +273,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "LightArea.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Build Spires Outside of Spire Point",
-    ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
+    CMenuFuncs.Building_dome_spot_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.Building_dome_spot and "(Enabled)" or "(Disabled)"
@@ -276,9 +284,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "toggle_post.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Instant Build",
-    ChoGGi.MenuFuncs.Building_instant_build_Toggle,
+    CMenuFuncs.Building_instant_build_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.Building_instant_build and "(Enabled)" or "(Disabled)"
@@ -287,9 +295,9 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     "toggle_post.tga"
   )
   --------------------
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Buildings/Remove Building Limits",
-    ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,
+    CMenuFuncs.RemoveBuildingLimits_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.RemoveBuildingLimits and "(Enabled)" or "(Disabled)"

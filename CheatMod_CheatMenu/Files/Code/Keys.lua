@@ -1,17 +1,22 @@
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CTables = ChoGGi.Tables
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
 
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     nil,
     function()
-      ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
+      CCodeFuncs.ObjectColourRandom(CCodeFuncs.SelObject())
     end,
     "Shift-F6"
   )
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     nil,
     function()
-      ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
+      CCodeFuncs.ObjectColourDefault(CCodeFuncs.SelObject())
     end,
     "Ctrl-F6"
   )
@@ -19,9 +24,9 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   --use number keys to activate/hide build menus
   if ChoGGi.UserSettings.NumberKeysBuildMenu then
     local function AddMenuKey(Num,Key)
-      ChoGGi.ComFuncs.AddAction(nil,
+      CComFuncs.AddAction(nil,
         function()
-          ChoGGi.CodeFuncs.ShowBuildMenu(Num)
+          CCodeFuncs.ShowBuildMenu(Num)
         end,
         Key
       )
@@ -54,8 +59,8 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   function ChoGGi.MenuFuncs.AddDeposit(sType)
 
     local obj = PlaceObj(sType, {
-      "Pos", ChoGGi.CodeFuncs.CursorNearestHex(),
-      "max_amount", UICity:Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
+      "Pos", CCodeFuncs.CursorNearestHex(),
+      "max_amount", UICity:Random(1000 * CConsts.ResourceScale,100000 * CConsts.ResourceScale),
       "revealed", true,
     })
     obj:CheatRefill()
@@ -89,7 +94,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
       CloseXBuildMenu()
     end)
     --fix up some names
-    local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
+    local fixed = CTables.ConstructionNamesListFix[itemname]
     if fixed then
       itemname = fixed
     end
@@ -121,14 +126,14 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --show console
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
     "~"
   )
 
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
@@ -136,16 +141,16 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   )
 
   --show console with restart
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
-      ChoGGi.CodeFuncs.AddConsolePrompt("restart")
+      CCodeFuncs.AddConsolePrompt("restart")
     end,
     "Ctrl-Alt-Shift-R"
   )
 
   --goes to placement mode with last built object
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
       local last = UICity.LastConstructedBuilding
       if last.entity then
@@ -156,11 +161,11 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   )
 
   --goes to placement mode with SelectedObj
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
-      local sel = ChoGGi.CodeFuncs.SelObject()
+      local sel = CCodeFuncs.SelObject()
       if sel then
-        ChoGGi.LastPlacedObject = sel
+        ChoGGi.Temp.LastPlacedObject = sel
         ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
       end
     end,
@@ -168,7 +173,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   )
 
   --object cloner
-  ChoGGi.ComFuncs.AddAction(nil,
+  CComFuncs.AddAction(nil,
     function()
       local sel = SelectedObj
       local NewObj = g_Classes[sel.class]:new()
@@ -178,11 +183,11 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
         NewObj[Key] = Value
       end
       --]]
-      NewObj:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
+      NewObj:SetPos(CCodeFuncs.CursorNearestHex())
       --if it's a deposit then make max_amount random and add
       --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
       --if ObjName:find("SubsurfaceDeposit") then
-      --NewObj.max_amount = UICity:Random(1000 * ChoGGi.Consts.ResourceScale,5000 * ChoGGi.Consts.ResourceScale)
+      --NewObj.max_amount = UICity:Random(1000 * CConsts.ResourceScale,5000 * CConsts.ResourceScale)
       if NewObj.max_amount then
         NewObj.amount = NewObj.max_amount
       elseif NewObj.base_death_age then
@@ -194,8 +199,8 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
         NewObj.infopanel_icon = sel.infopanel_icon
         NewObj.inner_entity = sel.inner_entity
         NewObj.pin_icon = sel.pin_icon
-        ChoGGi.CodeFuncs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
-        ChoGGi.CodeFuncs.ColonistUpdateAge(NewObj,sel.age_trait)
+        CCodeFuncs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
+        CCodeFuncs.ColonistUpdateAge(NewObj,sel.age_trait)
         NewObj:SetSpecialization(sel.specialist,"init")
         NewObj.age = sel.age
         NewObj:ChooseEntity()
@@ -204,17 +209,17 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
     "Shift-Q"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     nil,
     function()
       ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
-      ChoGGi.SettingFuncs.WriteSettings()
+      CSettingFuncs.WriteSettings()
       UAMenu.ToggleOpen()
     end,
     "F2"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     nil,
     function()
       quit("restart")

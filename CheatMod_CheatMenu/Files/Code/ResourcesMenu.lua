@@ -1,41 +1,49 @@
-function ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
-  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+local CMenuFuncs = ChoGGi.MenuFuncs
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
 
-  ChoGGi.ComFuncs.AddAction(
+function ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
+  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+
+  CComFuncs.AddAction(
     "Expanded CM/Resources/Add Orbital Probes",
-    ChoGGi.MenuFuncs.AddOrbitalProbes,
+    CMenuFuncs.AddOrbitalProbes,
     nil,
     "Add more probes.",
     "ToggleTerrainHeight.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Resources/Food Per Rocket Passenger",
-    ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
+    CMenuFuncs.SetFoodPerRocketPassenger,
     nil,
     "Change the amount of Food supplied with each Colonist arrival.",
     "ToggleTerrainHeight.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Resources/Add Prefabs",
-    ChoGGi.MenuFuncs.AddPrefabs,
+    CMenuFuncs.AddPrefabs,
     nil,
     "Adds prefabs.",
     "gear.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Resources/Add Funding",
-    ChoGGi.MenuFuncs.SetFunding,
+    CMenuFuncs.SetFunding,
     "Ctrl-Shift-0",
     "Add more funding (or reset back to 500 M).",
     "pirate.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Resources/Fill Selected Resource",
-    ChoGGi.MenuFuncs.FillResource,
+    CMenuFuncs.FillResource,
     "Ctrl-F",
     "Fill the selected/moused over object's resource(s)",
     "Cube.tga"

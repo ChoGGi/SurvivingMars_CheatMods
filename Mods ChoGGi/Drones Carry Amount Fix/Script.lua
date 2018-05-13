@@ -29,8 +29,15 @@ function ChoGGiX.FuckingDrones(Producer)
       end
     end
     if drone then
+
+      local carry = g_Consts.DroneResourceCarryAmount * 1000
       --round to nearest 1000 (don't want uneven stacks)
       amount = (amount - amount % 1000) / 1000 * 1000
+      --if carry is smaller then amount then fine
+      if carry < amount then
+        amount = carry
+      end
+
       --pick that shit up
       drone:SetCommandUserInteraction(
         "PickUp",

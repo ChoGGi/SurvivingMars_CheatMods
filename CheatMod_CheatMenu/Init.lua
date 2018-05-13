@@ -2,8 +2,6 @@
 ChoGGi = {
   id = "ChoGGi_CheatMenu",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  --store some msgs till game is loaded
-  StartupMsgs = {},
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua
@@ -19,7 +17,7 @@ ChoGGi = {
   --Defaults.lua
   SettingFuncs = {},
   --temporary settings that aren't saved to SettingsFile
-  Temp = {},
+  Temp = {StartupMsgs = {}},
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }
@@ -66,7 +64,7 @@ if ChoGGi.Testing then
   ChoGGi.UserSettings.WriteLogs = true
 end
 
-local msgs = ChoGGi.StartupMsgs
+local msgs = ChoGGi.Temp.StartupMsgs
 
 --if writelogs option
 if ChoGGi.UserSettings.WriteLogs == true then
@@ -78,12 +76,7 @@ end
 if ChoGGi.UserSettings.FirstRun ~= false then
   msgs[#msgs+1] = "<color 255 255 255>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
   ChoGGi.UserSettings.FirstRun = false
-  ChoGGi.Init_WriteSettings = 1
-end
-
---make sure to save anything we changed above
-if ChoGGi.Init_WriteSettings then
-  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.Temp.WriteSettings = true
 end
 
 --be nice to get a remote debugger working

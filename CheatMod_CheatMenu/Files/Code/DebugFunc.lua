@@ -1,3 +1,9 @@
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
 
 local flag_height = 50
 local function ShowWaypoints(waypoints,color,obj)
@@ -12,7 +18,6 @@ local function ShowWaypoints(waypoints,color,obj)
 
   for i = 1, #waypoints do
     local w = waypoints[i]
-    local z = terrain.GetSurfaceHeight(w)
     local p = PlaceObject("WayPoint")
 
     pcall(function()
@@ -30,7 +35,7 @@ local function ShowWaypoints(waypoints,color,obj)
 end
 
 function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
-  local rand = ChoGGi.CodeFuncs.ObjectColourRandom
+  local rand = CCodeFuncs.ObjectColourRandom
   local function SetWaypoint(obj)
     if not obj.ChoGGi_PathAdded then
       obj.ChoGGi_PathAdded = obj:GetColorModifier()
@@ -125,12 +130,12 @@ function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
 
   local Check1 = "Remove Waypoints"
   local Check1Hint = "Remove waypoints from the map and reset colours (You need to select any object)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",nil,nil,Check1,Check1Hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",nil,nil,Check1,Check1Hint)
 end
 
 local function ShowAnimDebug(obj, color1, color2)
   if not obj or (obj.action and obj.idx) then
-    obj = ChoGGi.CodeFuncs.SelObject()
+    obj = CCodeFuncs.SelObject()
   end
   if not obj then
     return
@@ -168,7 +173,7 @@ local function LoopObjects(Class,Which)
   end
 end
 
-function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle(obj, color1, color2)
+function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
   ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
   LoopObjects("Building",ChoGGi.Temp.ShowAnimDebug)
   LoopObjects("Unit",ChoGGi.Temp.ShowAnimDebug)
@@ -190,7 +195,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if g_Classes[value] then
-      PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
+      PlaceObj(value,{"Pos",CCodeFuncs.CursorNearestHex()})
 
       --[[
       --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
@@ -199,12 +204,12 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
       --]]
 
-      ChoGGi.ComFuncs.MsgPopup("Spawned: " .. choice[1].text,"Object")
+      CComFuncs.MsgPopup("Spawned: " .. choice[1].text,"Object")
     end
   end
 
   local hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
 end
 
 function ChoGGi.MenuFuncs.ShowSelectionEditor()
@@ -226,16 +231,16 @@ end
 
 function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.UserSettings.WriteLogs = not ChoGGi.UserSettings.WriteLogs
-  ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+  CComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.UserSettings.WriteLogs),
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.UserSettings.WriteLogs),
     "Logging","UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
 
 function ChoGGi.MenuFuncs.ObjExaminer()
-  local obj = ChoGGi.CodeFuncs.SelObject()
+  local obj = CCodeFuncs.SelObject()
   --OpenExamine(SelectedObj)
   if not obj then
     return ClearShowMe()
@@ -297,7 +302,7 @@ function ChoGGi.MenuFuncs.DeleteObjects(obj)
         ChoGGi.MenuFuncs.DeleteObject(objs[i])
       end
     else
-      obj = ChoGGi.CodeFuncs.SelObject()
+      obj = CCodeFuncs.SelObject()
     end
   end
 
@@ -318,61 +323,52 @@ function ChoGGi.MenuFuncs.DeleteObjects(obj)
     end
   end
 
-  --some stuff will leave holes in the world if they're still working
-  if obj.working then
-    obj:ToggleWorking()
+  local function TryFunc(Name,Param)
+    if obj[Name] then
+      obj[Name](obj,Param)
+    end
   end
+
+  --some stuff will leave holes in the world if they're still working
+  TryFunc("ToggleWorking")
 
   --try nicely first
-  pcall(function()
-    obj.can_demolish = true
-    obj.indestructible = false
-    DestroyBuildingImmediate(obj)
-    obj:Destroy()
-  end)
+  obj.can_demolish = true
+  obj.indestructible = false
 
-  --clean up
-  pcall(function()
-    obj:SetDome(false)
-  end)
-  pcall(function()
-    obj:RemoveFromLabels()
-  end)
-  pcall(function()
-    obj:Done()
-  end)
-  pcall(function()
-    obj:Gossip("done")
-  end)
-  pcall(function()
-    obj:StopFX()
-    PlayFX("Spawn", "end", obj)
-    obj:SetHolder(false)
-  end)
-  if obj.sphere then
-    obj.sphere:delete()
+  if obj.DoDemolish then
+    DestroyBuildingImmediate(obj)
   end
-  if obj.decal then
-    obj.decal:delete()
+
+  TryFunc("Destroy")
+  TryFunc("SetDome",false)
+  TryFunc("RemoveFromLabels")
+  TryFunc("Done")
+  TryFunc("Gossip","done")
+  TryFunc("SetHolder",false)
+  local function TryFunc2(Name)
+    if obj[Name] then
+      obj[Name]:delete()
+    end
   end
+  TryFunc2("sphere")
+  TryFunc2("decal")
 
   --fuck it, I asked nicely
   if obj then
-    pcall(function()
-      obj:delete()
-    end)
+    TryFunc("delete")
   end
 
     --so we don't get an error from UseLastOrientation
-  ChoGGi.LastPlacedObject = nil
+  ChoGGi.Temp.LastPlacedObject = nil
 end
 
 function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
   ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
+  CSettingFuncs.WriteSettings()
+  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
     "Console","UI/Icons/Sections/workshifts.tga"
   )
 end

@@ -1,3 +1,5 @@
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
 
 function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
@@ -20,38 +22,15 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     self.choices = false
     self.sel = false
     self.obj = false
-    self.CustomType = nil
+    self.CustomType = 0
     self.colorpicker = nil
 
     --have to do it for each item?
-    self.idList:SetHSizing("Resize")
+    --self.idList:SetHSizing("Resize")
 
     --add some padding before the text
     --self.idEditValue.DisplacementPos = 0
     --self.idEditValue.DisplacementWidth = 10
-
-    --do stuff on selection
-    local origOnLButtonDown = self.idList.OnLButtonDown
-    self.idList.OnLButtonDown = function(selfList,...)
-      local ret = origOnLButtonDown(selfList,...)
-      local sel = self.idList:GetSelection()
-      if type(sel) == "table" and next(sel) then
-      --if #sel ~= 0 then
-        --update selection (select last selected if multisel)
-        self.sel = sel[#sel]
-        --update the custom value box
-        self.idEditValue:SetText(tostring(self.sel.value))
-        if type(self.CustomType) == "number" then
-          --2 = showing the colour picker
-          if self.CustomType == 2 then
-            self:UpdateColourPicker()
-          end
-        end
-      end
-
-      --for whatever is expecting a return value
-      return ret
-    end
 
     --update custom value when dbl right
     self.OnColorChanged = function(color)
@@ -61,15 +40,11 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       self.idEditValue:SetText(tostring(color))
     end
 
-    self.idList.OnRButtonDoubleClick = function()
-      self.idEditValue:SetText(self.sel.text)
-    end
-
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
+      local value = CComFuncs.RetProperType(self.idEditValue:GetValue())
 
-      if type(self.CustomType) == "number" then
+      if self.CustomType > 0 then
         self.idList.items[self.idList.last_selected].value = value
       else
         self.idList:SetItem(#self.idList.items,{
@@ -88,33 +63,96 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       self:delete(self.choices)
     end
 
+
+    --make checkbox work like a button
+    local children = self.idCheckBox2.children
+    for i = 1, #children do
+      if children[i].class == "Button" then
+        local but = children[i]
+        function but.OnButtonPressed()
+          --show lightmodel lists and lets you pick one to use in new window
+          if self.CustomType == 5 then
+            ChoGGi.MenuFuncs.ChangeLightmodel(true)
+          end
+        end
+      end
+    end
+
+    --do stuff on selection
+    local origOnLButtonDown = self.idList.OnLButtonDown
+    self.idList.OnLButtonDown = function(selfList,...)
+      local ret = origOnLButtonDown(selfList,...)
+      local sel = self.idList:GetSelection()
+      if type(sel) == "table" and next(sel) then
+      --if #sel ~= 0 then
+        --update selection (select last selected if multisel)
+        self.sel = sel[#sel]
+        --update the custom value box
+        self.idEditValue:SetText(tostring(self.sel.value))
+        if self.CustomType > 0 then
+          --2 = showing the colour picker
+          if self.CustomType == 2 then
+            self:UpdateColourPicker()
+          --don't show picker unless it's a colour setting
+          elseif self.CustomType == 5 then
+            if self.CustomType == 5 and self.sel.editor == "color" then
+              self:UpdateColourPicker()
+              self.idColorHSV:SetVisible(true)
+              self:SetWidth(800)
+            else
+              self.idColorHSV:SetVisible(false)
+              --self:SetWidth(400)
+            end
+          end
+        end
+      end
+
+      --for whatever is expecting a return value
+      return ret
+    end
+
     --what happens when you dbl click the list
-    self.idList.OnDoubleClick = function()
+    self.idList.OnLButtonDoubleClick = function()
       --open colour changer
-      if type(self.CustomType) == "number" and (self.CustomType == 1 or self.CustomType == 2) then
-        ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
-      else
+      if self.CustomType == 1 or self.CustomType == 2 then
+        CCodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+      elseif self.CustomType ~= 5 then
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
       end
     end
 
+    self.idList.OnRButtonDoubleClick = function()
+      --applies the lightmodel without closing dialog,
+      if self.CustomType == 5 then
+        self:BuildAndApplyLightmodel()
+      else
+        self.idEditValue:SetText(self.sel.text)
+      end
+    end
+
     --stop idColorHSV from closing on dblclick
     self.idColorHSV.OnLButtonDoubleClick = function()
-      if not self.obj then
-        --grab the object from the last list item
-        self.obj = self.idList.items[#self.idList.items].obj
+    end
+    self.idColorHSV.OnRButtonDoubleClick = function()
+      if self.CustomType == 2 then
+        if not self.obj then
+          --grab the object from the last list item
+          self.obj = self.idList.items[#self.idList.items].obj
+        end
+        local SetPal = self.obj.SetColorizationMaterial
+        local items = self.idList.items
+        CCodeFuncs.SaveOldPalette(self.obj)
+        for i = 1, 4 do
+          local Color = items[i].value
+          local Metallic = items[i+4].value
+          local Roughness = items[i+8].value
+          SetPal(self.obj,i,Color,Roughness,Metallic)
+        end
+        self.obj:SetColorModifier(self.idList.items[#self.idList.items].value)
+      elseif self.CustomType == 5 then
+        self:BuildAndApplyLightmodel()
       end
-      local SetPal = self.obj.SetColorizationMaterial
-      local items = self.idList.items
-      ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
-      for i = 1, 4 do
-        local Color = items[i].value
-        local Metallic = items[i+4].value
-        local Roughness = items[i+8].value
-        SetPal(self.obj,i,Color,Roughness,Metallic)
-      end
-      self.obj:SetColorModifier(self.idList.items[#self.idList.items].value)
     end
 
     --hook into SetContent so we can add OnSetState to each list item to show hints
@@ -130,7 +168,11 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
           if rollovered or selected then
             local hint = item.text
             if item.value then
-              hint = hint .. ": " .. item.value
+              if type(item.value) == "userdata" then
+                hint = hint .. ": " .. _InternalTranslate(item.value)
+              else
+                hint = hint .. ": " .. tostring(item.value)
+              end
             end
             if item.hint then
               hint = hint .. "\n\n" .. item.hint
@@ -142,59 +184,83 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       end
     end
 
-  end --init
-
-  --update colour
-  function ListChoiceCustomDialog:UpdateColourPicker()
-    local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
-    self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
-    self.idColorHSV:InitHSVPtPos()
-    self.idColorHSV:Invalidate()
-  end
-
-  function ListChoiceCustomDialog:GetAllItems()
-    --always start with blank choices
-    self.choices = {}
-    --get sel item(s)
-    local items = self.idList:GetSelection()
-    --get all items
-    if type(self.CustomType) == "number" and self.CustomType ~= 3 then
-      items = self.idList.items
-    end
-    if #items > 0 then
-      for i = 1, #items do
-        if i == 1 then
-          --always return the custom value (and try to convert it to correct type)
-          items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
+    function self:BuildAndApplyLightmodel()
+      --update list item settings table
+      self:GetAllItems()
+      --remove defaults
+      local model_table = {}
+      for i = 1, #self.choices do
+        local value = self.choices[i].value
+        if value ~= self.choices[i].default then
+          model_table[#model_table+1] = {
+            id = self.choices[i].sort,
+            value = value,
+          }
         end
-        self.choices[#self.choices+1] = items[i]
       end
-      --add checkbox statuses
-      self.choices[1].check1 = self.idCheckBox1:GetToggled()
-      self.choices[1].check2 = self.idCheckBox2:GetToggled()
-      self.choices[1].checkair = self.idColorCheckAir:GetToggled()
-      self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
-      self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
+      --rebuild it
+      CCodeFuncs.LightmodelBuild(model_table)
+      --and temp apply
+      SetLightmodel(1,"ChoGGi_Custom")
     end
-  end
 
-  --function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
-  function ListChoiceCustomDialog:OnKbdKeyDown(_, virtual_key)
-    if virtual_key == const.vkEsc then
-      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-        self.idClose:Press()
-      end
-      self:SetFocus()
-      return "break"
-    elseif virtual_key == const.vkEnter then
-      self.idOK:Press()
-      return "break"
-    elseif virtual_key == const.vkSpace then
-      self.idCheckBox1:SetToggled(not self.idCheckBox1:GetToggled())
-      return "break"
+    --update colour
+    function self:UpdateColourPicker()
+      pcall(function()
+        local num = CComFuncs.RetProperType(self.idEditValue:GetText())
+        self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
+        self.idColorHSV:InitHSVPtPos()
+        self.idColorHSV:Invalidate()
+      end)
     end
-    return "continue"
-  end
+
+    function self:GetAllItems()
+      --always start with blank choices
+      self.choices = {}
+      --get sel item(s)
+      local items = self.idList:GetSelection()
+      --get all items
+      if self.CustomType > 0 and self.CustomType ~= 3 then
+        items = self.idList.items
+      end
+      if #items > 0 then
+        for i = 1, #items do
+          if i == 1 then
+            --always return the custom value (and try to convert it to correct type)
+            items[i].editvalue = CComFuncs.RetProperType(self.idEditValue:GetText())
+          end
+          self.choices[#self.choices+1] = items[i]
+        end
+        --add checkbox statuses
+        self.choices[1].check1 = self.idCheckBox1:GetToggled()
+        self.choices[1].check2 = self.idCheckBox2:GetToggled()
+        self.choices[1].checkair = self.idColorCheckAir:GetToggled()
+        self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
+        self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
+      end
+    end
+
+    --function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+    function self:OnKbdKeyDown(_, virtual_key)
+      if virtual_key == const.vkEsc then
+        if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
+          self.idClose:Press()
+        end
+        self:SetFocus()
+        return "break"
+        --[[
+      elseif virtual_key == const.vkEnter then
+        self.idOK:Press()
+        return "break"
+      elseif virtual_key == const.vkSpace then
+        self.idCheckBox1:SetToggled(not self.idCheckBox1:GetToggled())
+        return "break"
+        --]]
+      end
+      return "continue"
+    end
+
+  end --init
 
 end --ClassesGenerate
 
@@ -241,8 +307,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Subview = "default",
           PosOrg = point(105, 101),
           SizeOrg = point(390, 22),
-          HSizing = "0, 1, 0",
-          VSizing = "0, 1, 0"
+          HSizing = "Resize",
+          VSizing = "Resize"
         },
 
         {
@@ -259,22 +325,22 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Spacing = point(8, 2),
           Subview = "default",
           SizeOrg = point(390, 335),
-          HSizing = "0, 1, 0",
-          VSizing = "0, 1, 0"
+          HSizing = "Resize",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idEditValue",
           Class = "SingleLineEdit",
           AutoSelectAll = true,
-          NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
+          --NegFilter = "`!@#$^&_|\\;:\<>.?",
           FontStyle = "Editor14Bold",
           Subview = "default",
           PosOrg = point(110, 465),
           SizeOrg = point(375, 24),
           TextVAlign = "center",
           Hint = "You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.",
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
+          HSizing = "Resize",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idCheckBox1",
@@ -285,8 +351,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           PosOrg = point(110, 440),
           SizeOrg = point(200, 17),
           Subview = "default",
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
+          HSizing = "AnchorToMidline",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idCheckBox2",
@@ -297,8 +363,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           PosOrg = point(300, 440),
           SizeOrg = point(200, 17),
           Subview = "default",
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
+          HSizing = "AnchorToMidline",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idOK",
@@ -310,8 +376,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Hint = "Apply and close dialog (Arrow keys and Enter/Esc can also be used).",
           PosOrg = point(110, 500),
           SizeOrg = point(129, 34),
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
+          HSizing = "AnchorToMidline",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idClose",
@@ -324,8 +390,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Text = T({1000430, "Cancel"}),
           PosOrg = point(353, 500),
           SizeOrg = point(132, 34),
-          HSizing = "1, 0, 1",
-          VSizing = "1, 0, 0"
+          HSizing = "AnchorToMidline",
+          VSizing = "AnchorToBottom"
         },
         {
           Id = "idColorHSV",
@@ -333,7 +399,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Visible = false,
           PosOrg = point(500, 115),
           SizeOrg = point(300, 300),
-          Hint = "Double-click to set colour without closing dialog.",
+          Hint = "Double right click to set without closing dialog.",
         },
         {
           Id = "idColorCheckAir",

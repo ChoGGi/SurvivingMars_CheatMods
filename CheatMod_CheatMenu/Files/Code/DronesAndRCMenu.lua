@@ -1,79 +1,87 @@
+local CMenuFuncs = ChoGGi.MenuFuncs
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+local CConsts = ChoGGi.Consts
+local CInfoFuncs = ChoGGi.InfoFuncs
+local CSettingFuncs = ChoGGi.SettingFuncs
+local CTables = ChoGGi.Tables
+
 function ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
-  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   local iconD = "ShowAll.tga"
   local iconRC = "HostGame.tga"
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Work Radius RC Rover",
-    ChoGGi.MenuFuncs.SetRoverWorkRadius,
+    CMenuFuncs.SetRoverWorkRadius,
     nil,
     "Change RC drone radius.",
     "DisableRMMaps.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Work Radius DroneHub",
-    ChoGGi.MenuFuncs.SetDroneHubWorkRadius,
+    CMenuFuncs.SetDroneHubWorkRadius,
     nil,
     "Change DroneHub drone radius.",
     "DisableRMMaps.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Rock To Concrete Speed",
-    ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed,
+    CMenuFuncs.SetDroneRockToConcreteSpeed,
     nil,
     "How long it takes drones to convert rock to concrete.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Move Speed",
-    ChoGGi.MenuFuncs.SetDroneMoveSpeed,
+    CMenuFuncs.SetDroneMoveSpeed,
     nil,
     "How fast drones will move.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Change Amount Of Drones In Hub",
-    ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
+    CMenuFuncs.SetDroneAmountDroneHub,
     "Shift-D",
     "Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/DroneFactory Build Speed",
-    ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed,
+    CMenuFuncs.SetDroneFactoryBuildSpeed,
     nil,
     "Change how fast drone factories build drones.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Gravity",
-    ChoGGi.MenuFuncs.SetGravityDrones,
+    CMenuFuncs.SetGravityDrones,
     nil,
     "Change gravity of Drones.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Battery Infinite",
-    ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle,
+    CMenuFuncs.DroneBatteryInfinite_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.DroneMoveBatteryUse,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.DroneMoveBatteryUse,"(Disabled)","(Enabled)")
       return des .. " Drone Battery Infinite."
     end,
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Build Speed",
-    ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
+    CMenuFuncs.DroneBuildSpeed_Toggle,
     nil,
     function()
       local des = ""
@@ -87,138 +95,138 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Meteor Malfunction",
-    ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle,
+    CMenuFuncs.DroneMeteorMalfunction_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.DroneMeteorMalfunctionChance,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.DroneMeteorMalfunctionChance,"(Disabled)","(Enabled)")
       return des .. " Drones will not malfunction when close to a meteor impact site."
     end,
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Recharge Time",
-    ChoGGi.MenuFuncs.DroneRechargeTime_Toggle,
+    CMenuFuncs.DroneRechargeTime_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.DroneRechargeTime,"(Disabled)","(Enabled)")
       return des .. " Faster Drone Recharge."
     end,
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Repair Supply Leak Speed",
-    ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle,
+    CMenuFuncs.DroneRepairSupplyLeak_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.DroneRepairSupplyLeak,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.DroneRepairSupplyLeak,"(Disabled)","(Enabled)")
       return des .. " Faster Drone fix supply leak."
     end,
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drone Carry Amount",
-    ChoGGi.MenuFuncs.SetDroneCarryAmount,
+    CMenuFuncs.SetDroneCarryAmount,
     nil,
     "Change amount drones can carry.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drones Per Drone Hub",
-    ChoGGi.MenuFuncs.SetDronesPerDroneHub,
+    CMenuFuncs.SetDronesPerDroneHub,
     nil,
     "Change amount of drones Drone Hubs will command.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Drones/Drones Per RC Rover",
-    ChoGGi.MenuFuncs.SetDronesPerRCRover,
+    CMenuFuncs.SetDronesPerRCRover,
     nil,
     "Change amount of drones RC Rovers will command.",
     iconD
   )
 
   -------------Shuttles
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Shuttles/Set ShuttleHub Shuttle Capacity",
-    ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
+    CMenuFuncs.SetShuttleHubShuttleCapacity,
     nil,
     "Change amount of shuttles per shuttlehub.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Shuttles/Set Capacity",
-    ChoGGi.MenuFuncs.SetShuttleCapacity,
+    CMenuFuncs.SetShuttleCapacity,
     nil,
     "Change capacity of shuttles.",
     "scale_gizmo.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Shuttles/Set Speed",
-    ChoGGi.MenuFuncs.SetShuttleSpeed,
+    CMenuFuncs.SetShuttleSpeed,
     nil,
     "Change speed of shuttles.",
     "move_gizmo.tga"
   )
 
   -------------RCs
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/Set Charging Distance",
-    ChoGGi.MenuFuncs.SetRoverChargeRadius,
+    CMenuFuncs.SetRoverChargeRadius,
     nil,
     "Distance from power lines that rovers can charge.",
     iconRC
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/RC Move Speed",
-    ChoGGi.MenuFuncs.SetRCMoveSpeed,
+    CMenuFuncs.SetRCMoveSpeed,
     nil,
     "How fast RCs will move.",
     "move_gizmo.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/RC Gravity",
-    ChoGGi.MenuFuncs.SetGravityRC,
+    CMenuFuncs.SetGravityRC,
     nil,
     "Change gravity of RCs.",
     iconD
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/RC Rover Drone Recharge Free",
-    ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle,
+    CMenuFuncs.RCRoverDroneRechargeFree_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.RCRoverDroneRechargeCost,"(Disabled)","(Enabled)")
       return des .. " No more draining Rover Battery when recharging drones."
     end,
     iconRC
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/RC Transport Instant Transfer",
-    ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle,
+    CMenuFuncs.RCTransportInstantTransfer_Toggle,
     nil,
     function()
-      local des = ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
+      local des = CComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,"(Disabled)","(Enabled)")
       return des .. " RC Rover quick Transfer/Gather resources."
     end,
     "Mirror.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
+  CComFuncs.AddAction(
     "Expanded CM/Rovers/RC Transport Storage Capacity",
-    ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,
+    CMenuFuncs.SetRCTransportStorageCapacity,
     nil,
     "Change amount of resources RC Transports can carry.",
     "scale_gizmo.tga"

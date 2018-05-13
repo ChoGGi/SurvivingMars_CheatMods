@@ -1,4 +1,6 @@
---
+local CCodeFuncs = ChoGGi.CodeFuncs
+local CComFuncs = ChoGGi.ComFuncs
+
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   DefineClass.ObjectManipulator = {
@@ -40,7 +42,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       end
       --
       local edit_text = self.idEditValue:GetText()
-      local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
+      local edit_value = CComFuncs.RetProperType(edit_text)
       local edit_type = type(edit_value)
       local obj_value = self.obj[self.idList.items[sel_idx].text]
       local obj_type = type(obj_value)
@@ -123,7 +125,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     --open editor with whatever is selected
     self.idList.OnLButtonDoubleClick = function()
       if self.sel then
-        ChoGGi.CodeFuncs.OpenInObjectManipulator(self.sel.object,self)
+        CCodeFuncs.OpenInObjectManipulator(self.sel.object,self)
       end
     end
 
@@ -149,11 +151,11 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
       local CallBackFunc = function(choice)
         --add it to the actual object
-        self.obj[tostring(choice[1].value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
+        self.obj[tostring(choice[1].value)] = CComFuncs.RetProperType(choice[2].value)
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
+      CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -161,7 +163,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       if value then
         local objs = GetObjects({class=self.obj.class})
         for i = 1, #objs do
-          objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+          objs[i][self.sel.text] = CComFuncs.RetProperType(value)
         end
       end
     end
@@ -514,7 +516,6 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
           --FontStyle = "Editor14Bold",
           Image = "CommonAssets/UI/Controls/Button/Close.tga",
           Hint = "Closes dialog.",
-          --ImageType = "aaaaa",
           HSizing = "AnchorToRight",
           Subview = "default",
           PosOrg = point(729, 103),
@@ -528,7 +529,6 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
           TextVAlign = "center",
           ButtonSize = point(16, 16),
           Image = "CommonAssets/UI/Controls/Button/CheckButton.tga",
-          --ImageType = "aaaaa",
           Text = "Auto-Refresh",
           Hint = "Auto-refresh list every second (turn off to edit values).",
           Subview = "default",
@@ -610,7 +610,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
           Class = "SingleLineEdit",
           AutoSelectAll = true,
           MaxLen = 500,
-          NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
+          --NegFilter = "`~!@#$%^&()_={}[]|\\;:'\"<,>.?",
           FontStyle = "Editor14Bold",
           Subview = "default",
           Spacing = 10,

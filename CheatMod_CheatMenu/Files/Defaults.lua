@@ -1,3 +1,5 @@
+local CComFuncs = ChoGGi.ComFuncs
+
 --stores default values and some tables
 
 --useful lists
@@ -34,7 +36,7 @@ end
 
 --tell me if traits are different
 if ChoGGi.Testing then
-  local msgs = ChoGGi.StartupMsgs
+  local msgs = ChoGGi.Temp.StartupMsgs
   local startT = "<color 255 0 0>"
   local endT = " is different length</color>"
   if #const.SchoolTraits ~= 5 then
@@ -105,6 +107,8 @@ ChoGGi.Defaults = {
 
 --and constants
 ChoGGi.Consts = {
+	LightmodelCustom = "PlaceObj('Lightmodel', {\n\t'name', \"ChoGGi_Custom\",\n\t'pp_bloom_strength', 100,\n\t'pp_bloom_threshold', 25,\n\t'pp_bloom_contrast', 75,\n\t'pp_bloom_colorization', 65,\n\t'pp_bloom_inner_tint', RGBA(187, 23, 146, 255),\n\t'pp_bloom_mip2_radius', 8,\n\t'pp_bloom_mip3_radius', 10,\n\t'pp_bloom_mip4_radius', 27,\n\t'exposure', -100,\n\t'gamma', RGBA(76, 76, 166, 255),\n})",
+
 --const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
   RCRoverMaxRadius = 20,
   CommandCenterMaxRadius = 35,
@@ -192,14 +196,14 @@ ChoGGi.Consts = {
   TravelTimeMarsEarth = false,
   VisitFailPenalty = false,
 }
+local CConsts = ChoGGi.Consts
 
 --set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
   local UserSettings = ChoGGi.UserSettings
 --Consts.
-  local setg = ChoGGi.ComFuncs.SetConstsG
   local function SetConstsG(Name)
-    setg(Name,UserSettings[Name])
+    CComFuncs.SetConstsG(Name,UserSettings[Name])
   end
   SetConstsG("AvoidWorkplaceSols")
   SetConstsG("BirthThreshold")
@@ -346,7 +350,7 @@ function ChoGGi.MsgFuncs.Settings_OptionsApply()
   end
   --[[
   --and add as false
-  for Key,Value in pairs(ChoGGi.Consts) do
+  for Key,Value in pairs(CConsts) do
     if type(ChoGGi.UserSettings[Key]) == "nil" then
       ChoGGi.UserSettings[Key] = false
     end
@@ -354,34 +358,34 @@ function ChoGGi.MsgFuncs.Settings_OptionsApply()
   --]]
 
   --get the default values for our Consts
-  for SettingName,_ in pairs(ChoGGi.Consts) do
+  for SettingName,_ in pairs(CConsts) do
     local setting = Consts:GetDefaultPropertyValue(SettingName)
     if setting then
-      ChoGGi.Consts[SettingName] = setting
+      CConsts[SettingName] = setting
     end
   end
 
   --get other defaults not stored in Consts
-  ChoGGi.Consts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
-  ChoGGi.Consts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-  ChoGGi.Consts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
-  ChoGGi.Consts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
-  ChoGGi.Consts.GravityColonist = 0
-  ChoGGi.Consts.GravityDrone = 0
-  ChoGGi.Consts.GravityRC = 0
-  ChoGGi.Consts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
-  ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
-  --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-  ChoGGi.Consts.StorageWasteDepot = 70 * ChoGGi.Consts.ResourceScale --^ that has 45000 as default...
-  ChoGGi.Consts.StorageOtherDepot = 180 * ChoGGi.Consts.ResourceScale
-  ChoGGi.Consts.StorageMechanizedDepot = 3950 * ChoGGi.Consts.ResourceScale
+  CConsts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
+  CConsts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+  CConsts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
+  CConsts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+  CConsts.GravityColonist = 0
+  CConsts.GravityDrone = 0
+  CConsts.GravityRC = 0
+  CConsts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
+  CConsts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
+  CConsts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
+  CConsts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  CConsts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+  --CConsts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+  CConsts.StorageWasteDepot = 70 * CConsts.ResourceScale --^ that has 45000 as default...
+  CConsts.StorageOtherDepot = 180 * CConsts.ResourceScale
+  CConsts.StorageMechanizedDepot = 3950 * CConsts.ResourceScale
   --^ they're all UniversalStorageDepot
 
-  ChoGGi.Consts.CameraZoomToggle = 8000
-  ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
+  CConsts.CameraZoomToggle = 8000
+  CConsts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
 function ChoGGi.MsgFuncs.Settings_ModsLoaded()
@@ -419,7 +423,7 @@ function ChoGGi.MsgFuncs.Settings_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local msgs = ChoGGi.StartupMsgs
+    local msgs = ChoGGi.Temp.StartupMsgs
     local errormsg = "Error: Couldn't convert old settings to new settings: "
     if not AddOldSettings("BuildingsCapacity","capacity") then
       msgs[#msgs+1] = errormsg .. "BuildingsCapacity"
