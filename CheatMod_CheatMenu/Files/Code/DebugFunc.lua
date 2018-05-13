@@ -461,7 +461,7 @@ function ChoGGi.MenuFuncs.debug_build_grid(Pass)
                   end
                   c:SetOpacity(0)
                   c:SetPos(point(HexToWorld(q_i, r_i)))
-                  c:SetOpacity(50)
+                  c:SetOpacity(10)
                   build_grid_debug_objs[idx] = c
                   idx = idx + 1
                 end

@@ -612,7 +612,7 @@ function ChoGGi.CodeFuncs.FuckingDrones(Producer)
     --get an idle drone
     local drone
     for i = 1, #cc do
-      if cc[i].command == "Idle" then
+      if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
         drone = cc[i]
         break
       end

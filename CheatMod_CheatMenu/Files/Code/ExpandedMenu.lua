@@ -112,6 +112,14 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   CComFuncs.AddAction(
+    "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks",
+    CMenuFuncs.DronesKeepTryingBlockedRocks,
+    nil,
+    "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
+    "ReportBug.tga"
+  )
+
+  CComFuncs.AddAction(
     "Expanded CM/Fixes/Align All Buildings To Hex Grid",
     CMenuFuncs.AlignAllBuildingsToHexGrid,
     nil,

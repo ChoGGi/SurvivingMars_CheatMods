@@ -494,7 +494,25 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
 end
 
----------all the fixes funcs
+---------fixes
+function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
+  local function ResetPriorityQueue(Class)
+    local Hubs = GetObjects({class=Class}) or empty_table
+    for i = 1, #Hubs do
+      Hubs[i].priority_queue = {}
+      for priority = -1, const.MaxBuildingPriority do
+        Hubs[i].priority_queue[priority] = {}
+      end
+      Hubs[i]:AddBuilding(FindNearestObject(GetObjects({class="ConstructionSite"}),Hubs[i]))
+    end
+  end
+  ResetPriorityQueue("SupplyRocket")
+  ResetPriorityQueue("RCRover")
+  ResetPriorityQueue("DroneHub")
+
+  CComFuncs.MsgPopup("Hubs reset","Rocks")
+end
+
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
   local Table = GetObjects({class="Building"})
   if Table[1] and Table[1].class then
@@ -505,21 +523,22 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
   end
 end
 
-local function RemoveUnreachable(Class)
-  local Table = GetObjects({class=Class}) or empty_table
-  for i = 1, #Table do
-    for Bld,_ in pairs(Table[i].unreachable_buildings or empty_table) do
-      if IsKindOf(Bld,"ConstructionSite") then
-        Bld:Cancel()
+function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+  local function RemoveUnreachable(Class)
+    local Table = GetObjects({class=Class}) or empty_table
+    for i = 1, #Table do
+      for Bld,_ in pairs(Table[i].unreachable_buildings or empty_table) do
+        if IsKindOf(Bld,"ConstructionSite") then
+          Bld:Cancel()
+        end
       end
     end
   end
-end
 
-function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
+  CComFuncs.MsgPopup("Removed unreachable","Sites")
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
