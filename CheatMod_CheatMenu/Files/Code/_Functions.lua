@@ -19,6 +19,7 @@ function dumpt(...)CComFuncs.DumpTable(...)end
 function alert(...)CComFuncs.MsgPopup(...)end
 function restart()quit("restart")end
 s = false --used to store SelectedObj
+function so()return ChoGGi.CodeFuncs.SelObject()end
 reboot = restart
 exit = quit
 trans = _InternalTranslate
@@ -27,6 +28,10 @@ mc = GetPreciseCursorObj
 m = SelectionMouseObj
 c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
+
+if ChoGGi.Testing then
+  info = debug.getinfo
+end
 
 --check if tech is researched before we set these consts (activated from menu items)
 function ChoGGi.CodeFuncs.GetSpeedDrone()
@@ -672,12 +677,12 @@ end
 
 function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
   if Obj:IsKindOf("ColorizableObject") then
-    local color = RandColor()
+    local color = Base or RandColor()
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
     local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
     --likely can only change basecolour
-    if Base or c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
+    if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
       Obj:SetColorModifier(color)
     else
       if not Obj.ChoGGi_origcolors then

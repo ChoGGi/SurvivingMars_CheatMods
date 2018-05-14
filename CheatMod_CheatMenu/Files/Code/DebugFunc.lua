@@ -4,44 +4,136 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
+--default height of waypoints
 local flag_height = 50
-local function ShowWaypoints(waypoints,color,obj)
-  flag_height = flag_height + 1
-  color = color or RandColor()
-  local work_step = const.PrefabWorkRatio * terrain.TypeTileSize()
-  --connect the first line to the object
-  local line = PlaceTerrainLine(obj:GetVisualPos(), waypoints[#waypoints], color, work_step, obj:GetObjectBBox():sizez() / 2)
-  line.ChoGGi_TerrainLine = true
-  line:SetDepthTest(true)
-  --line:SetPrimType(4)
+--store all objects for easy removal
+local stored_waypoints = {}
 
+--check stored_waypoints length and see if we can find out how many = flickering
+local function ShowWaypoints(waypoints, color, obj, single, skipflags)
+
+  color = color or RandColor()
+  --also used for line height
+  flag_height = flag_height + 4
+  local height = flag_height
+  local objpos = obj:GetVisualPos()
+  local objterr = terrain.GetHeight(objpos)
+  local objheight = obj:GetObjectBBox():sizez() / 2
+  local shuttle
+  if obj.class == "CargoShuttle" then
+    shuttle = obj:GetPos():z()
+  end
+  --some objects don't have pos as waypoint
+  if waypoints[#waypoints] ~= objpos then
+    waypoints[#waypoints+1] = objpos
+  end
+
+  --make sure there's always a line from the obj to first WayPoint
+  --local work_step = const.PrefabWorkRatio * terrain.TypeTileSize()
+  local spawnline = PlaceTerrainLine(
+    objpos,
+    waypoints[#waypoints],
+    color,
+    nil, --work_step
+    shuttle and shuttle - objterr or objheight --shuttle z always puts it too high?
+  )
+  stored_waypoints[#stored_waypoints+1] = spawnline
+  spawnline:SetDepthTest(true)
+  local sphereheight = 266 + height - 50
+  --line:SetPrimType(4)
+  if not single then
+    --spawn a sphere at the obj pos
+    local spherestart = PlaceObject("Sphere")
+    stored_waypoints[#stored_waypoints+1] = spherestart
+    spherestart:SetPos(point(objpos:x(),objpos:y(),(shuttle and shuttle + 500) or objterr + sphereheight))
+    spherestart:SetDepthTest(true)
+    spherestart:SetColor(color)
+    spherestart:SetRadius(35)
+  end
+  --and another at the end
+  --[[
+  local sphereend = PlaceObject("Sphere")
+  stored_waypoints[#stored_waypoints+1] = sphereend
+  local w = waypoints[1]
+  sphereend:SetPos(w)
+  sphereend:SetZ(((w:z() or terrain.GetHeight(w)) + 10 * guic) + sphereheight)
+  sphereend:SetDepthTest(true)
+  sphereend:SetColor(color)
+  sphereend:SetRadius(25)
+  --]]
+
+  --list is sent dest>pos order
   for i = 1, #waypoints do
     local w = waypoints[i]
-    local p = PlaceObject("WayPoint")
+    local pos = w:SetZ((w:z() or terrain.GetHeight(w)) + 10 * guic)
+    pos = point(pos:x(),pos:y(),shuttle or pos:z())
 
-    pcall(function()
-      local wn = waypoints[i+1]
-      if wn then
-        local l = PlaceTerrainLine(w, wn, color, work_step, flag_height)
-        l.ChoGGi_TerrainLine = true
-        l:SetDepthTest(true)
+    if skipflags ~= true then
+      local p
+      if single and i == #waypoints then
+        p = PlaceObject("GreenMan")
+        p:SetScale(200)
+      else
+        p = PlaceObject("WayPoint")
       end
-    end)
+      stored_waypoints[#stored_waypoints+1] = p
+      p:SetColorModifier(color)
+      p:SetPos(pos)
+    end
 
-    p:SetColorModifier(color)
-    p:SetPos(w:SetZ((w:z() or terrain.GetHeight(w)) + 10 * guic))
+    --add text to last wp
+    if i == 1 then
+      local endp = PlaceText(obj.class .. ": " .. obj.handle, pos)
+      stored_waypoints[#stored_waypoints+1] = endp
+      endp:SetColor(color)
+      endp:SetZ(endp:GetZ() + 250 + height)
+      --endp:SetFontId("Editor32Bold")
+    end
+
+    local wn = waypoints[i+1]
+    if wn then
+      local l = PlaceTerrainLine(
+        pos,
+        wn,
+        color,
+        nil,
+        shuttle and shuttle - objterr or height
+      )
+      stored_waypoints[#stored_waypoints+1] = l
+      l:SetDepthTest(true)
+    end
   end
 end
 
-function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
-  local rand = CCodeFuncs.ObjectColourRandom
-  local function SetWaypoint(obj)
-    if not obj.ChoGGi_PathAdded then
-      obj.ChoGGi_PathAdded = obj:GetColorModifier()
+local randcolors = {}
+local function RemoveWPDupePos(Class)
+  local wppos = {}
+  for i = 1, #stored_waypoints do
+    local wp = stored_waypoints[i]
+    if wp.class == Class then
+      local pos = type(wp.GetPos) == "function" and wp:GetPos()
+      if pos then
+        pos = tostring(pos)
+        if wppos[pos] then
+          local Table = wp:GetAttaches() or empty_table
+          for i = 1, #Table do
+            Table[i]:delete()
+          end
+          wp:delete()
+        else
+          wppos[pos] = true
+        end
+      end
     end
+  end
+end
+local function SetWaypoint(obj,single,skipflags)
+  --need to add a Sleep for RandColor as there's a delay on how quickly it updates
+  CreateRealTimeThread(function()
     local path
-    --need to build a path for shuttles
+    --we need to build a path for shuttles (and figure out a way to get their dest properly...)
     if obj.class == "CargoShuttle" then
       path = {}
       if obj.dest_dome then
@@ -57,18 +149,36 @@ function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
       end
       path[#path+1] = obj:GetPos()
     else
-      path = obj:GetPath()
+      path = type(obj.GetPath) == "function" and obj:GetPath()
     end
     if path then
-      CreateRealTimeThread(function()
-        Sleep(25)
-        ShowWaypoints(path,rand(obj,true),obj)
-      end)
+      --used to reset the colour later on
+      if not obj.ChoGGi_WaypointPathAdded then
+        obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
+      end
+      --we want to make sure all waypoints are a different colour (or at least slightly diff), do i want to round them for more slightly?
+      local color = RandColor()
+      if randcolors[color] then
+        while true do
+          color = RandColor()
+          if not randcolors[color] then
+            randcolors[color] = color
+            ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,randcolors[color]),obj,single,skipflags)
+            break
+          end
+          Sleep(50)
+        end
+      else
+        randcolors[color] = color
+        ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,randcolors[color]),obj,single,skipflags)
+      end
     end
-  end
+  end)
+end
+function CMenuFuncs.SetVisiblePathMarkers()
   local sel = SelectedObj
   if sel then
-    SetWaypoint(sel)
+    SetWaypoint(sel,true)
     return
   end
   local ItemList = {
@@ -76,37 +186,32 @@ function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
     {text = "Colonists",value = "Colonist"},
     {text = "Drones",value = "Drone"},
     {text = "Rovers",value = "BaseRover"},
-    {text = "Shuttles",value = "CargoShuttle",hint = "Doesn't work that well, if it isn't a colonist dest."},
-    {text = "Units",value = "Unit",hint = "Drones and Rovers"},
+    {text = "Shuttles",value = "CargoShuttle",hint = "Doesn't work that well; if it isn't a colonist dest."},
   }
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     --remove wp/lines and reset colours
     if choice[1].check1 then
-      local function DeleteMarkers(Class,Test)
-        local Table = GetObjects({class=Class}) or empty_table
-        for i = 1, #Table do
-          if Test then
-            if Table[i][Test] then
-              Table[i]:delete()
-            end
-          else
-            Table[i]:delete()
-          end
-        end
-      end
-      DeleteMarkers("WayPoint")
-      DeleteMarkers("Polyline","ChoGGi_TerrainLine")
 
+      --remove all the waypoints
+      for i = 1, #stored_waypoints do
+        stored_waypoints[i]:delete()
+      end
+      stored_waypoints = {}
+      --reset the random colors table
+      randcolors = {}
+      --reset all the base colours
       local function ClearColour(Class)
-        local Table = GetObjects({class=Class}) or empty_table
-        for i = 1, #Table do
-          if Table[i].ChoGGi_PathAdded then
-            Table[i]:SetColorModifier(Table[i].ChoGGi_PathAdded)
-            Table[i].ChoGGi_PathAdded = nil
+        ForEach({
+          class = Class,
+          exec = function(Obj)
+            if Obj.ChoGGi_WaypointPathAdded then
+              Obj:SetColorModifier(Obj.ChoGGi_WaypointPathAdded)
+              Obj.ChoGGi_WaypointPathAdded = nil
+            end
           end
-        end
+        })
       end
       ClearColour("CargoShuttle")
       ClearColour("Unit")
@@ -114,10 +219,12 @@ function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
       flag_height = 50
     else
       local function swp(Class)
-        local Table = GetObjects({class=Class}) or empty_table
-        for i = 1, #Table do
-          SetWaypoint(Table[i])
-        end
+        ForEach({
+          class = Class,
+          exec = function(Obj)
+            SetWaypoint(Obj,nil,choice[1].check2)
+          end
+        })
       end
       if value == "All" then
         swp("Unit")
@@ -125,12 +232,19 @@ function ChoGGi.MenuFuncs.SetVisiblePathMarkers()
       else
         swp(value)
       end
+
+      --remove any waypoints in the same pos
+      RemoveWPDupePos("WayPoint")
+      RemoveWPDupePos("Sphere")
     end
   end
 
+  local hint = "Use HandleToObject[handle] to get object handle"
   local Check1 = "Remove Waypoints"
   local Check1Hint = "Remove waypoints from the map and reset colours (You need to select any object)."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",nil,nil,Check1,Check1Hint)
+  local Check2 = "Skip Flags"
+  local Check2Hint = "Doesn't add the little flags, just lines and spheres (good for larger maps)."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 local function ShowAnimDebug(obj, color1, color2)
@@ -157,23 +271,25 @@ end
 local function HideAnimDebug(obj)
   local Table = obj:GetAttaches() or empty_table
   for i = 1, #Table do
-    if Table[i].ChoGGi_AnimDebug == true then
+    if Table[i].ChoGGi_AnimDebug then
       Table[i]:delete()
     end
   end
 end
 local function LoopObjects(Class,Which)
-  local Table = GetObjects({class=Class}) or empty_table
-  for i = 1, #Table do
-    if Which then
-      ShowAnimDebug(Table[i])
-    else
-      HideAnimDebug(Table[i])
+  ForEach({
+    class = Class,
+    exec = function(Obj)
+      if Which then
+        ShowAnimDebug(Obj)
+      else
+        HideAnimDebug(Obj)
+      end
     end
-  end
+  })
 end
 
-function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
+function CMenuFuncs.ShowAnimDebug_Toggle()
   ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
   LoopObjects("Building",ChoGGi.Temp.ShowAnimDebug)
   LoopObjects("Unit",ChoGGi.Temp.ShowAnimDebug)
@@ -181,7 +297,7 @@ end
 
 --no sense in building the list more then once
 local ObjectSpawner_ItemList = {}
-function ChoGGi.MenuFuncs.ObjectSpawner()
+function CMenuFuncs.ObjectSpawner()
   --if #ObjectSpawner_ItemList == 0 then
   if not next(ObjectSpawner_ItemList) then
     for Key,_ in pairs(g_Classes) do
@@ -212,7 +328,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
 end
 
-function ChoGGi.MenuFuncs.ShowSelectionEditor()
+function CMenuFuncs.ShowSelectionEditor()
   --check for any opened windows and kill them
   for i = 1, #terminal.desktop do
     if IsKindOf(terminal.desktop[i],"ObjectsStatsDlg") then
@@ -229,7 +345,7 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
-function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
+function CMenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.UserSettings.WriteLogs = not ChoGGi.UserSettings.WriteLogs
   CComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
@@ -239,7 +355,7 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ObjExaminer()
+function CMenuFuncs.ObjExaminer()
   local obj = CCodeFuncs.SelObject()
   --OpenExamine(SelectedObj)
   if not obj then
@@ -250,7 +366,7 @@ function ChoGGi.MenuFuncs.ObjExaminer()
   ex:SetObj(obj)
 end
 
-function ChoGGi.MenuFuncs.Editor_Toggle()
+function CMenuFuncs.Editor_Toggle()
   --keep menu opened if visible
   local showmenu
   if dlgUAMenu then
@@ -293,13 +409,13 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
   end
 end
 
-function ChoGGi.MenuFuncs.DeleteObjects(obj)
+function CMenuFuncs.DeleteObjects(obj)
   if not obj or (obj.key and obj.action and obj.idx) then
     --multiple selection from editor mode
     local objs = editor:GetSel()
     if next(objs) then
       for i = 1, #objs do
-        ChoGGi.MenuFuncs.DeleteObject(objs[i])
+        CMenuFuncs.DeleteObject(objs[i])
       end
     else
       obj = CCodeFuncs.SelObject()
@@ -317,7 +433,7 @@ function ChoGGi.MenuFuncs.DeleteObjects(obj)
     if type(attach) == "table" then
       for i = 1, #attach do
         pcall(function()
-          ChoGGi.MenuFuncs.DeleteObject(attach[i])
+          CMenuFuncs.DeleteObject(attach[i])
         end)
       end
     end
@@ -363,7 +479,7 @@ function ChoGGi.MenuFuncs.DeleteObjects(obj)
   ChoGGi.Temp.LastPlacedObject = nil
 end
 
-function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
+function CMenuFuncs.ConsoleHistory_Toggle()
   ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 
@@ -373,7 +489,7 @@ function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ChangeMap()
+function CMenuFuncs.ChangeMap()
   CreateRealTimeThread(function()
     local caption = Untranslated("Choose map with settings presets:")
     local maps = ListMaps()
@@ -412,7 +528,7 @@ end
 local build_grid_debug_range = 10
 GlobalVar("build_grid_debug_objs", false)
 GlobalVar("build_grid_debug_thread", false)
-function ChoGGi.MenuFuncs.debug_build_grid(Pass)
+function CMenuFuncs.debug_build_grid(Type)
   if type(ChoGGi.UserSettings.DebugGridSize) == "number" then
     build_grid_debug_range = ChoGGi.UserSettings.DebugGridSize
   end
@@ -444,15 +560,23 @@ function ChoGGi.MenuFuncs.debug_build_grid(Pass)
                     template = ClassTemplates.Building.FountainSmall,
                     auto_attach_at_init = false
                   })
-                  if Pass == true then
-                    if terrain.IsSCell(point(HexToWorld(q_i, r_i))) or terrain.IsPassable(point(HexToWorld(q_i, r_i))) then
+                  if Type == 1 then
+                    if (terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
                       --green
                       c:SetColorModifier(-16711936)
                     else
                       --red
                       c:SetColorModifier(-65536)
                     end
-                  else
+                  elseif Type == 2 then
+                    if terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i)) then
+                      --green
+                      c:SetColorModifier(-16711936)
+                    else
+                      --red
+                      c:SetColorModifier(-65536)
+                    end
+                  elseif Type == 3 then
                     if HexGridGetObject(ObjectGrid, q_i, r_i) then
                       c:SetColorModifier(-65536)
                     else

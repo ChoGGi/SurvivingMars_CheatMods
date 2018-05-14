@@ -67,7 +67,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   CComFuncs.AddAction(
     "Expanded CM/[999]Misc/Set UI Transparency",
     CMenuFuncs.SetTransparencyUI,
-    "Shift-F3",
+    "Ctrl-F3",
     "Change the transparency of UI items.",
     "set_last_texture.tga"
   )

@@ -3,6 +3,7 @@ local CComFuncs = ChoGGi.ComFuncs
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CConsts = ChoGGi.Consts
 local COrigFuncs = ChoGGi.OrigFuncs
+local CMsgFuncs = ChoGGi.MsgFuncs
 
 --[[
 CommonLua\UI\uiExamine.lua
@@ -35,7 +36,7 @@ Lua\X\Infopanel.lua
   InfopanelDlg:Open
 --]]
 
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
+function CMsgFuncs.ReplacedFunctions_ClassesGenerate()
 --dofolder_files("CommonLua/UI/UIDesignerData")
 
   --change dist we can charge from cables
@@ -115,17 +116,18 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 end --OnMsg
 
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+function CMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
-  --actually disable hints
-  --[[
-  CComFuncs.SaveOrigFunc("HintTrigger")
-  function HintTrigger(id, force)
-    if not ChoGGi.UserSettings.DisableHints then
-      COrigFuncs.HintTrigger(self, id, force)
-    end
+if ChoGGi.Testing then
+  CComFuncs.SaveOrigFunc("ChangeMap")
+  function ChangeMap(map)
+    print("---------------------")
+    print(map)
+    COrigFuncs.ChangeMap(map)
   end
+end
 
+  --[[
   CComFuncs.SaveOrigFunc("_InternalTranslate")
   function _InternalTranslate(T, context_obj, check)
     local ret = COrigFuncs._InternalTranslate(T, context_obj, check)
@@ -135,7 +137,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
     return ret
   end
-
   --]]
 
   --convert popups to console text
@@ -371,21 +372,61 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
   CComFuncs.SaveOrigFunc("Open","InfopanelDlg")
-  --ex(GetInGameInterface()[6][2][3])
+  --ex(GetInGameInterface()[6][2])
   -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
   function InfopanelDlg:Open(...)
     --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
     local ret = COrigFuncs.InfopanelDlg_Open(self,...)
-
     CreateRealTimeThread(function()
-      self = self.idContent
-      if self then
-        for i = 1, #self do
-          local section = self[i]
+      local TGetID = TGetID
+      local c = self.idContent
+
+if ChoGGi.Testing then
+      if self.context.class == "Colonist" then
+        local con = c[2].idContent
+        --con[#con+1] = XText:new()
+        con = con[#con]
+        --con.text = con.text .. "age: "
+        ex(con)
+      end
+end
+
+      --probably don't need this...
+      if c then
+        --this limits height of traits you can choose to 3 till mouse over
+        --7422="Select A Trait"
+        if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422 then
+          --sanitarium
+          local idx = 18
+          --school
+          if TGetID(c[20].idSectionTitle.Text) == 7422 then
+            idx = 20
+          end
+          local function ToggleVis(v,h)
+            for i = 6, idx do
+              c[i]:SetVisible(v)
+              c[i]:SetMaxHeight(h)
+            end
+          end
+          --init set to hidden
+          ToggleVis(false,0)
+
+          self.OnMouseEnter = function()
+            ToggleVis(true)
+          end
+          self.OnMouseLeft = function()
+            ToggleVis(false,0)
+          end
+        end
+
+        --loop all the sections
+        for i = 1, #c do
+          local section = c[i]
           if section.class == "XSection" then
-            local title = section.idSectionTitle.text
+            local title = section.idSectionTitle.Text
             local content = section.idContent[2]
-            if section.idWorkers and (#section.idWorkers > 14 and title == "") then
+            --if section.idWorkers and #section.idWorkers > 14 and title == "" then
+            if section.idWorkers and #section.idWorkers > 14 then
               --sets height
                 content:SetMaxHeight(32)
 
@@ -397,19 +438,30 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
                 content:SetLayoutMethod("HList")
                 content:SetMaxHeight(32)
               end
-            elseif title and (title == "Traits" or title == "Cheats" or title:find("Residents")) then
+
+              --[[
+              27=Cheats
+              235=Traits
+              702480492408=Residents
+              TranslationTable[27]
+              --]]
+            elseif TGetID(title) == 27 or TGetID(title) == 235 or TGetID(title) == 702480492408 then
+
               --hides overflow
               content:SetClip(true)
               --sets height
               content:SetMaxHeight(168)
 
               section.OnMouseEnter = function()
+                content:SetClip(false)
                 content:SetMaxHeight()
               end
               section.OnMouseLeft = function()
+                content:SetClip(true)
                 content:SetMaxHeight(168)
               end
             end
+
           end --if XSection
         end
       end
@@ -643,6 +695,13 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       self:FinalizeStatusGathering(old_t)
     else
       return COrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
+    end
+  end
+
+  --stops confirmation dialog about missing mods (still lets you know they're missing)
+  if ChoGGi.Testing then
+    function GetMissingMods()
+      return "", false
     end
   end
 

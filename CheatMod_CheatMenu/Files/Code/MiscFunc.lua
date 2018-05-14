@@ -4,11 +4,12 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
 --add button to import model
-function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
+function CMenuFuncs.ChangeLightmodelCustom(Name)
   local ItemList = {}
   local LightmodelDefaults = Lightmodel:GetProperties()
 
@@ -71,7 +72,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Custom Lightmodel",hint,nil,Check1,Check1Hint,Check2,Check2Hint,5)
 end
 
-function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
+function CMenuFuncs.ChangeLightmodel(Mode)
   --if it gets opened by menu then has object so easy way to do this
   local Browse
   if Mode == true then
@@ -103,7 +104,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     local value = choice[1].value
     if type(value) == "string" then
       if Browse or choice[1].check2 then
-        ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
+        CMenuFuncs.ChangeLightmodelCustom(value)
       else
         if value == "ChoGGi_Default" then
           ChoGGi.UserSettings.Lightmodel = nil
@@ -145,7 +146,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,title,hint,nil,Check1,Check1Hint,Check2,Check2Hint,3)
 end
 
-function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
+function CMenuFuncs.TransparencyUI_Toggle()
   ChoGGi.UserSettings.TransparencyToggle = not ChoGGi.UserSettings.TransparencyToggle
 
   CSettingFuncs.WriteSettings()
@@ -154,7 +155,7 @@ function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.SetTransparencyUI()
+function CMenuFuncs.SetTransparencyUI()
   local desk = terminal.desktop
   local igi = GetInGameInterface()
   --sets or gets transparency based on iWhich
@@ -231,7 +232,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Transparency",hint,nil,nil,nil,nil,nil,4)
 end
 
-function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
+function CMenuFuncs.ShowAutoUnpinObjectList()
   local ItemList = {
     {text = "RC Rover",value = "RCRover"},
     {text = "RC Explorer",value = "RCExplorer"},
@@ -316,7 +317,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Auto Remove Items From Pin List",hint,true,"Add to list",hint_check1,"Remove from list",hint_check2)
 end
 
-function ChoGGi.MenuFuncs.CleanAllObjects()
+function CMenuFuncs.CleanAllObjects()
   local tab = UICity.labels.Building or empty_table
   for i = 1, #tab do
     tab[i]:SetDust(0,const.DustMaterialExterior)
@@ -329,7 +330,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
   CComFuncs.MsgPopup("Cleaned all","Objects")
 end
 
-function ChoGGi.MenuFuncs.FixAllObjects()
+function CMenuFuncs.FixAllObjects()
   local function Repair(Label)
     local tab = UICity.labels[Label] or empty_table
     for i = 1, #tab do
@@ -348,7 +349,7 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 end
 
 --build and show a list of attachments for changing their colours
-function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
+function CMenuFuncs.CreateObjectListAndAttaches()
   local obj = CCodeFuncs.SelObject()
   if not obj and not obj:IsKindOf("ColorizableObject") then
     CComFuncs.MsgPopup("Select/mouse over an object (buildings,vehicles,signs,some rocks)","Colour")
@@ -388,7 +389,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
 end
 
-function ChoGGi.MenuFuncs.SetObjectOpacity()
+function CMenuFuncs.SetObjectOpacity()
   local sel = CCodeFuncs.SelObject()
   local ItemList = {
     {text = " Reset: Anomalies",value = "Anomaly",hint = "Loops though and makes all anomalies visible."},
@@ -440,7 +441,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
 end
 
-function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
+function CMenuFuncs.DisableTextureCompression_Toggle()
   ChoGGi.UserSettings.DisableTextureCompression = not ChoGGi.UserSettings.DisableTextureCompression
   hr.TR_ToggleTextureCompression = 1
 
@@ -450,7 +451,7 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.SetShadowmapSize()
+function CMenuFuncs.SetShadowmapSize()
   local hint_highest = "Warning: Highest uses vram (one gig for starter base, a couple for large base)."
   local ItemList = {
     {text = " Default",value = false,hint = "restart to enable"},
@@ -485,7 +486,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size",hint)
 end
 
-function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
+function CMenuFuncs.HigherShadowDist_Toggle()
   ChoGGi.UserSettings.HigherShadowDist = not ChoGGi.UserSettings.HigherShadowDist
 
   hr.ShadowRangeOverride = CComFuncs.ValueRetOpp(hr.ShadowRangeOverride,0,1000000)
@@ -497,7 +498,7 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
+function CMenuFuncs.HigherRenderDist_Toggle()
 
   local DefaultSetting = CConsts.HigherRenderDist
   local ItemList = {
@@ -537,7 +538,7 @@ end
 
 --CameraObj
 
-function ChoGGi.MenuFuncs.CameraFree_Toggle()
+function CMenuFuncs.CameraFree_Toggle()
   if not mapdata.GameLogic then
     return
   end
@@ -559,7 +560,7 @@ function ChoGGi.MenuFuncs.CameraFree_Toggle()
   CCodeFuncs.SetCameraSettings()
 end
 
-function ChoGGi.MenuFuncs.CameraFollow_Toggle()
+function CMenuFuncs.CameraFollow_Toggle()
   --it was on the free camera so
   if not mapdata.GameLogic then
     return
@@ -627,7 +628,7 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
 end
 
 --LogCameraPos(print)
-function ChoGGi.MenuFuncs.CursorVisible_Toggle()
+function CMenuFuncs.CursorVisible_Toggle()
   if IsMouseCursorHidden() then
     engineShowMouseCursor()
     SetMouseDeltaMode(false)
@@ -639,7 +640,7 @@ function ChoGGi.MenuFuncs.CursorVisible_Toggle()
   end
 end
 
-function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
+function CMenuFuncs.InfopanelCheats_Toggle()
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
   CComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
@@ -650,7 +651,7 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
+function CMenuFuncs.InfopanelCheatsCleanup_Toggle()
   ChoGGi.UserSettings.CleanupCheatsInfoPane = not ChoGGi.UserSettings.CleanupCheatsInfoPane
 
   if ChoGGi.UserSettings.CleanupCheatsInfoPane then
@@ -663,7 +664,7 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.SetBorderScrolling()
+function CMenuFuncs.SetBorderScrolling()
   local DefaultSetting = 5
   local hint_down = "Down scrolling may not work (dependant on aspect ratio?)."
   local ItemList = {
@@ -700,7 +701,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
 end
 
-function ChoGGi.MenuFuncs.CameraZoom_Toggle()
+function CMenuFuncs.CameraZoom_Toggle()
   local DefaultSetting = CConsts.CameraZoomToggle
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -734,7 +735,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
+function CMenuFuncs.ScannerQueueLarger_Toggle()
   const.ExplorationQueueMaxSize = CComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,CConsts.ExplorationQueueMaxSize)
   CComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
@@ -745,7 +746,7 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 end
 
 --SetTimeFactor(1000) = normal speed
-function ChoGGi.MenuFuncs.SetGameSpeed()
+function CMenuFuncs.SetGameSpeed()
   local ItemList = {
     {text = " Default",value = 1},
     {text = "1 Double",value = 2},

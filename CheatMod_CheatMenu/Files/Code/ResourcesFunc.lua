@@ -4,11 +4,12 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
-function ChoGGi.MenuFuncs.AddOrbitalProbes()
+function CMenuFuncs.AddOrbitalProbes()
   local ItemList = {
     {text = 5,value = 5},
     {text = 10,value = 10},
@@ -30,7 +31,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
 end
 
-function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
+function CMenuFuncs.SetFoodPerRocketPassenger()
   local r = CConsts.ResourceScale
   local DefaultSetting = CConsts.FoodPerRocketPassenger / r
   local ItemList = {
@@ -66,7 +67,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.AddPrefabs()
+function CMenuFuncs.AddPrefabs()
   local ItemList = {
     {text = "Drone",value = 10},
     {text = "DroneHub",value = 10},
@@ -106,7 +107,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
 end
 
-function ChoGGi.MenuFuncs.SetFunding()
+function CMenuFuncs.SetFunding()
   --list to display and list with values
   local DefaultSetting = "(Reset to 500 M)"
   local hint = "If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting
@@ -136,7 +137,7 @@ function ChoGGi.MenuFuncs.SetFunding()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
 end
 
-function ChoGGi.MenuFuncs.FillResource()
+function CMenuFuncs.FillResource()
   local sel = CCodeFuncs.SelObject()
   if not sel then
     return

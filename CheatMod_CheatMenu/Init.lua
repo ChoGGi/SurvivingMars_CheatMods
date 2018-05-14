@@ -21,36 +21,41 @@ ChoGGi = {
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }
+local ChoGGi = ChoGGi
 ChoGGi._VERSION = _G.Mods[ChoGGi.id].version
 ChoGGi.ModPath = _G.Mods[ChoGGi.id].path
+local CTemp = ChoGGi.Temp
+local CModPath = ChoGGi.ModPath
+local COrigFuncs = ChoGGi.OrigFuncs
 
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
   ChoGGi.Testing = true
 end
+local CTesting = ChoGGi.Testing
 
-if ChoGGi.Testing then
+if CTesting then
   --get saved settings for this mod
-  dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
+  dofile(CModPath .. "Files/Defaults.lua")
   --functions needed for before Code/ is loaded
-  dofile(ChoGGi.ModPath .. "Files/CommonFunctions.lua")
+  dofile(CModPath .. "Files/CommonFunctions.lua")
   --load all the other files
-  dofolder_files(ChoGGi.ModPath .. "Files/Code")
+  dofolder_files(CModPath .. "Files/Code")
 else
   --if file exists then we'll ignore Files.hpk (user likely unpacked the files)
-  local file_error, _ = AsyncFileToString(ChoGGi.ModPath .. "/Defaults.lua")
+  local file_error, _ = AsyncFileToString(CModPath .. "/Defaults.lua")
   if not file_error then
     --get saved settings for this mod
-    dofile(ChoGGi.ModPath .. "/Defaults.lua")
+    dofile(CModPath .. "/Defaults.lua")
     --functions needed for before Code/ is loaded
-    dofile(ChoGGi.ModPath .. "/CommonFunctions.lua")
+    dofile(CModPath .. "/CommonFunctions.lua")
     --load all the other files
-    dofolder_files(ChoGGi.ModPath .. "/Code")
+    dofolder_files(CModPath .. "/Code")
   else
     local MountName = "ChoGGi_Mount"
     --load up the hpk
-    AsyncMountPack(MountName,ChoGGi.ModPath .. "/Files.hpk")
+    AsyncMountPack(MountName,CModPath .. "/Files.hpk")
     dofile(MountName .. "/Defaults.lua")
     dofile(MountName .. "/CommonFunctions.lua")
     dofolder_files(MountName .. "/Code")
@@ -59,24 +64,23 @@ end
 
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()
+local CUserSettings = ChoGGi.UserSettings
 
-if ChoGGi.Testing then
-  ChoGGi.UserSettings.WriteLogs = true
+if CTesting then
+  CUserSettings.WriteLogs = true
 end
 
-local msgs = ChoGGi.Temp.StartupMsgs
-
 --if writelogs option
-if ChoGGi.UserSettings.WriteLogs == true then
-  msgs[#msgs+1] = "<color 255 255 255>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
-  ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+if CUserSettings.WriteLogs == true then
+  CTemp.StartupMsgs[#CTemp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
+  ChoGGi.ComFuncs.WriteLogs_Toggle(CUserSettings.WriteLogs)
 end
 
 --first time run info
-if ChoGGi.UserSettings.FirstRun ~= false then
-  msgs[#msgs+1] = "<color 255 255 255>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
-  ChoGGi.UserSettings.FirstRun = false
-  ChoGGi.Temp.WriteSettings = true
+if CUserSettings.FirstRun ~= false then
+  CTemp.StartupMsgs[#CTemp.StartupMsgs+1] = "<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
+  CUserSettings.FirstRun = false
+  CTemp.WriteSettings = true
 end
 
 --be nice to get a remote debugger working
@@ -106,3 +110,14 @@ ModsLoaded
 EntitiesLoaded
 BinAssetsLoaded
 --]]
+
+if CTesting then
+  config.TraceEnable = true
+  Platform.editor = true
+  config.LuaDebugger = true
+  GlobalVar("outputSocket", false)
+  dofile("CommonLua/Core/luasocket.lua")
+  dofile("CommonLua/Core/luadebugger.lua")
+  dofile("CommonLua/Core/luaDebuggerOutput.lua")
+  dofile("CommonLua/Core/ProjectSync.lua")
+end

@@ -4,12 +4,13 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 DeathReasons.ChoGGi_Soylent = "Evil Overlord"
 
-function ChoGGi.MenuFuncs.TheSoylentOption()
+function CMenuFuncs.TheSoylentOption()
   --can't drop BlackCubes
   local list = {}
   local all = AllResourcesList
@@ -89,7 +90,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
-function ChoGGi.MenuFuncs.AddApplicantsToPool()
+function CMenuFuncs.AddApplicantsToPool()
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},
@@ -151,7 +152,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool",hint)
 end
 
-function ChoGGi.MenuFuncs.FireAllColonists()
+function CMenuFuncs.FireAllColonists()
   local FireAllColonists = function()
     local tab = UICity.labels.Colonist or empty_table
     for i = 1, #tab do
@@ -161,7 +162,7 @@ function ChoGGi.MenuFuncs.FireAllColonists()
   CComFuncs.QuestionBox("Are you sure you want to fire everyone?",FireAllColonists,"Yer outta here!")
 end
 
-function ChoGGi.MenuFuncs.SetAllWorkShifts()
+function CMenuFuncs.SetAllWorkShifts()
   local ItemList = {
     {text = "Turn On All Shifts",value = 0},
     {text = "Turn Off All Shifts",value = 3.1415926535},
@@ -189,7 +190,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shifts","Are you sure you want to change all shifts?")
 end
 
-function ChoGGi.MenuFuncs.SetMinComfortBirth()
+function CMenuFuncs.SetMinComfortBirth()
 
   local r = CConsts.ResourceScale
   local DefaultSetting = CConsts.MinComfortBirth / r
@@ -228,7 +229,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"MinComfortBirth","Current: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
+function CMenuFuncs.VisitFailPenalty_Toggle()
   CComFuncs.SetConstsG("VisitFailPenalty",CComFuncs.NumRetBool(Consts.VisitFailPenalty,0,CConsts.VisitFailPenalty))
 
   CComFuncs.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
@@ -238,7 +239,7 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
+function CMenuFuncs.RenegadeCreation_Toggle()
   CComFuncs.SetConstsG("RenegadeCreation",CComFuncs.ValueRetOpp(Consts.RenegadeCreation,9999900,CConsts.RenegadeCreation))
 
   CComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
@@ -247,7 +248,7 @@ function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
     "Colonists",UsualIcon
   )
 end
-function ChoGGi.MenuFuncs.SetRenegadeStatus()
+function CMenuFuncs.SetRenegadeStatus()
   local ItemList = {
     {text = "Make All Renegades",value = "Make"},
     {text = "Remove All Renegades",value = "Remove"},
@@ -287,7 +288,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Make Renegades",nil,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
+function CMenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
   -- was -100
   CComFuncs.SetConstsG("HighStatLevel",CComFuncs.NumRetBool(Consts.HighStatLevel,0,CConsts.HighStatLevel))
   CComFuncs.SetConstsG("LowStatLevel",CComFuncs.NumRetBool(Consts.LowStatLevel,0,CConsts.LowStatLevel))
@@ -301,7 +302,7 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
+function CMenuFuncs.SeeDeadSanityDamage_Toggle()
   CComFuncs.SetConstsG("SeeDeadSanity",CComFuncs.NumRetBool(Consts.SeeDeadSanity,0,CConsts.SeeDeadSanity))
   CComFuncs.SetSavedSetting("SeeDeadSanity",Consts.SeeDeadSanity)
   CSettingFuncs.WriteSettings()
@@ -310,7 +311,7 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
+function CMenuFuncs.NoHomeComfortDamage_Toggle()
   CComFuncs.SetConstsG("NoHomeComfort",CComFuncs.NumRetBool(Consts.NoHomeComfort,0,CConsts.NoHomeComfort))
   CComFuncs.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   CSettingFuncs.WriteSettings()
@@ -319,7 +320,7 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
+function CMenuFuncs.ChanceOfSanityDamage_Toggle()
   CComFuncs.SetConstsG("DustStormSanityDamage",CComFuncs.NumRetBool(Consts.DustStormSanityDamage,0,CConsts.DustStormSanityDamage))
   CComFuncs.SetConstsG("MysteryDreamSanityDamage",CComFuncs.NumRetBool(Consts.MysteryDreamSanityDamage,0,CConsts.MysteryDreamSanityDamage))
   CComFuncs.SetConstsG("ColdWaveSanityDamage",CComFuncs.NumRetBool(Consts.ColdWaveSanityDamage,0,CConsts.ColdWaveSanityDamage))
@@ -335,7 +336,7 @@ function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
+function CMenuFuncs.ChanceOfNegativeTrait_Toggle()
   CComFuncs.SetConstsG("LowSanityNegativeTraitChance",CComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,CCodeFuncs.GetLowSanityNegativeTraitChance()))
 
   CComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
@@ -345,7 +346,7 @@ function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
+function CMenuFuncs.ColonistsChanceOfSuicide_Toggle()
   CComFuncs.SetConstsG("LowSanitySuicideChance",CComFuncs.ToggleBoolNum(Consts.LowSanitySuicideChance))
 
   CComFuncs.SetSavedSetting("LowSanitySuicideChance",Consts.LowSanitySuicideChance)
@@ -355,7 +356,7 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
+function CMenuFuncs.ColonistsSuffocate_Toggle()
   CComFuncs.SetConstsG("OxygenMaxOutsideTime",CComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime,99999900,CConsts.OxygenMaxOutsideTime))
 
   CComFuncs.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
@@ -365,7 +366,7 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
+function CMenuFuncs.ColonistsStarve_Toggle()
   CComFuncs.SetConstsG("TimeBeforeStarving",CComFuncs.ValueRetOpp(Consts.TimeBeforeStarving,99999900,CConsts.TimeBeforeStarving))
 
   CComFuncs.SetSavedSetting("TimeBeforeStarving",Consts.TimeBeforeStarving)
@@ -375,7 +376,7 @@ function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
+function CMenuFuncs.AvoidWorkplace_Toggle()
   CComFuncs.SetConstsG("AvoidWorkplaceSols",CComFuncs.NumRetBool(Consts.AvoidWorkplaceSols,0,CConsts.AvoidWorkplaceSols))
 
   CComFuncs.SetSavedSetting("AvoidWorkplaceSols",Consts.AvoidWorkplaceSols)
@@ -385,7 +386,7 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
+function CMenuFuncs.PositivePlayground_Toggle()
   CComFuncs.SetConstsG("positive_playground_chance",CComFuncs.ValueRetOpp(Consts.positive_playground_chance,101,CConsts.positive_playground_chance))
 
   CComFuncs.SetSavedSetting("positive_playground_chance",Consts.positive_playground_chance)
@@ -395,7 +396,7 @@ function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
+function CMenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
   CComFuncs.SetConstsG("ProjectMorphiousPositiveTraitChance",CComFuncs.ValueRetOpp(Consts.ProjectMorphiousPositiveTraitChance,100,CConsts.ProjectMorphiousPositiveTraitChance))
 
   CComFuncs.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
@@ -405,7 +406,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
+function CMenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
   CComFuncs.SetConstsG("NonSpecialistPerformancePenalty",CComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,CCodeFuncs.GetNonSpecialistPerformancePenalty()))
 
   CComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
@@ -415,7 +416,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
+function CMenuFuncs.SetOutsideWorkplaceRadius()
   local DefaultSetting = CConsts.DefaultOutsideWorkplacesRadius
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -448,7 +449,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Outside Workplace Radius","Current distance: " .. hint .. "\n\nYou may not want to make it too far away unless you turned off suffocation.")
 end
 
-function ChoGGi.MenuFuncs.SetDeathAge()
+function CMenuFuncs.SetDeathAge()
   local function RetDeathAge(colonist)
     return colonist.MinAge_Senior + 5 + colonist:Random(10) + colonist:Random(5) + colonist:Random(5)
   end
@@ -509,7 +510,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Death Age",hint)
 end
 
-function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
+function CMenuFuncs.ColonistsAddSpecializationToAll()
   local tab = UICity.labels.Colonist or empty_table
   for i = 1, #tab do
     if tab[i].specialist == "none" then
@@ -527,7 +528,7 @@ local function IsChild(value)
     return "Warning: Child will remove specialization."
   end
 end
-function ChoGGi.MenuFuncs.SetColonistsAge(iType)
+function CMenuFuncs.SetColonistsAge(iType)
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistAge"
@@ -598,7 +599,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistsGender(iType)
+function CMenuFuncs.SetColonistsGender(iType)
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistGender"
@@ -671,7 +672,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
+function CMenuFuncs.SetColonistsSpecialization(iType)
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistSpecialization"
@@ -751,7 +752,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistsRace(iType)
+function CMenuFuncs.SetColonistsRace(iType)
   local DefaultSetting = " Default"
   local sType = ""
   local sSetting = "NewColonistRace"
@@ -821,7 +822,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
+function CMenuFuncs.SetColonistsTraits(iType)
   local DefaultSetting = " Default"
   local sSetting = "NewColonistTraits"
   local sType = "New C"
@@ -985,7 +986,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   end
 end
 
-function ChoGGi.MenuFuncs.SetColonistsStats()
+function CMenuFuncs.SetColonistsStats()
 	local r = CConsts.ResourceScale
   local ItemList = {
     {text = "All Stats Max",value = 1},
@@ -1072,7 +1073,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Stats Of All Colonists",hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
+function CMenuFuncs.SetColonistMoveSpeed()
   local r = CConsts.ResourceScale
   local DefaultSetting = CConsts.SpeedColonist
   local ItemList = {
@@ -1127,7 +1128,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint,nil,Check1,Check1Hint)
 end
 
-function ChoGGi.MenuFuncs.SetGravityColonists()
+function CMenuFuncs.SetGravityColonists()
   local DefaultSetting = CConsts.GravityColonist
   local r = CConsts.ResourceScale
   local ItemList = {

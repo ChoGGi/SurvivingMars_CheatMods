@@ -4,6 +4,7 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
@@ -16,11 +17,11 @@ function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
       end
     end
   end
-  SetBonus("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
-  SetBonus("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
+  SetBonus("MissionSponsorPreset","Sponsor",CMenuFuncs.SetSponsorBonuses)
+  SetBonus("CommanderProfilePreset","Commander",CMenuFuncs.SetCommanderBonuses)
 end
 
-function ChoGGi.MenuFuncs.InstantMissionGoal()
+function CMenuFuncs.InstantMissionGoal()
   local goal = UICity.mission_goal
   local target = GetMissionSponsor().goal_target + 1
   --different goals use different targets, we'll just set them all
@@ -33,13 +34,13 @@ function ChoGGi.MenuFuncs.InstantMissionGoal()
   CComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
 end
 
-function ChoGGi.MenuFuncs.InstantColonyApproval()
+function CMenuFuncs.InstantColonyApproval()
   CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
   Msg("ColonyApprovalPassed")
   g_ColonyNotViableUntil = -1
 end
 
-function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
+function CMenuFuncs.MeteorHealthDamage_Toggle()
   CComFuncs.SetConstsG("MeteorHealthDamage",CComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,CConsts.MeteorHealthDamage))
   CComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
@@ -49,7 +50,7 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ChangeSponsor()
+function CMenuFuncs.ChangeSponsor()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
@@ -90,7 +91,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 end
 
 --set just the bonus effects
-function ChoGGi.MenuFuncs.SetSponsorBonus()
+function CMenuFuncs.SetSponsorBonus()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
@@ -125,7 +126,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
               ChoGGi.UserSettings[name] = true
             end
             if ChoGGi.UserSettings[name] then
-              ChoGGi.MenuFuncs.SetSponsorBonuses(value)
+              CMenuFuncs.SetSponsorBonuses(value)
             end
           end
         end
@@ -144,7 +145,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
-function ChoGGi.MenuFuncs.ChangeCommander()
+function CMenuFuncs.ChangeCommander()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -185,7 +186,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 end
 
 --set just the bonus effects
-function ChoGGi.MenuFuncs.SetCommanderBonus()
+function CMenuFuncs.SetCommanderBonus()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -220,7 +221,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
               ChoGGi.UserSettings[name] = true
             end
             if ChoGGi.UserSettings[name] then
-              ChoGGi.MenuFuncs.SetCommanderBonuses(value)
+              CMenuFuncs.SetCommanderBonuses(value)
             end
           end
         end
@@ -239,7 +240,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 end
 
 --pick a logo
-function ChoGGi.MenuFuncs.ChangeGameLogo()
+function CMenuFuncs.ChangeGameLogo()
   local ItemList = {}
   local tab = Presets.MissionLogoPreset.Default or empty_table
   for i = 1, #tab do
@@ -290,7 +291,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
 end
 
-function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
+function CMenuFuncs.SetCommanderBonuses(sType)
   local currentname = g_CurrentMissionParams.idCommanderProfile
   local comm = MissionParams.idCommanderProfile.items[currentname]
   local bonus = Presets.CommanderProfilePreset.Default[sType]
@@ -302,7 +303,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
   end
 end
 
-function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
+function CMenuFuncs.SetSponsorBonuses(sType)
   local currentname = g_CurrentMissionParams.idMissionSponsor
   local sponsor = MissionParams.idMissionSponsor.items[currentname]
   local bonus = Presets.MissionSponsorPreset.Default[sType]
@@ -424,8 +425,12 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
 end
 
 --[[
+    mapdata:ApplyMapData()
+    AtmosphericParticlesUpdate()
+
+
 figure out where this is stored in-game
-function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
+function CMenuFuncs.SetDisasterOccurrence(sType)
   local ItemList = {}
   local data = DataInstances["MapSettings_" .. sType]
 

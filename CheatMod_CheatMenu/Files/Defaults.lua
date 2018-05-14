@@ -1,5 +1,4 @@
 local CComFuncs = ChoGGi.ComFuncs
-
 --stores default values and some tables
 
 --useful lists
@@ -26,28 +25,29 @@ ChoGGi.Tables = {
   SchoolTraits = const.SchoolTraits,
   SanatoriumTraits = const.SanatoriumTraits,
 }
-
+local CTables = ChoGGi.Tables
 if #const.SchoolTraits ~= 5 then
-  ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+  CTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
 end
 if #const.SanatoriumTraits ~= 7 then
-  ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+  CTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
 end
 
 --tell me if traits are different
 if ChoGGi.Testing then
-  local msgs = ChoGGi.Temp.StartupMsgs
+  local StartupMsgs = ChoGGi.Temp.StartupMsgs
+  local const = const
   local startT = "<color 255 0 0>"
   local endT = " is different length</color>"
   if #const.SchoolTraits ~= 5 then
-    msgs[#msgs+1] = startT .. "SchoolTraits" .. endT
+    StartupMsgs[#StartupMsgs+1] = startT .. "SchoolTraits" .. endT
   end
   if #const.SanatoriumTraits ~= 7 then
-    msgs[#msgs+1] = startT .. "SanatoriumTraits" .. endT
+    StartupMsgs[#StartupMsgs+1] = startT .. "SanatoriumTraits" .. endT
   end
   local fulllist = TraitsCombo()
   if #fulllist ~= 55 then
-    msgs[#msgs+1] = startT .. "TraitsCombo" .. endT
+    StartupMsgs[#StartupMsgs+1] = startT .. "TraitsCombo" .. endT
   end
 end
 
@@ -79,7 +79,6 @@ ChoGGi.Defaults = {
   SpeedColonist = false,
   DisableHints = false,
   BreakChanceCablePipe = false,
-  SanatoriumSchoolShowAll = false,
   BorderScrollingArea = false,
   Building_dome_spot = false,
   Building_hide_from_build_menu = false,
@@ -104,6 +103,7 @@ ChoGGi.Defaults = {
   WriteLogs = false,
   --]]
 }
+local CDefaults = ChoGGi.Defaults
 
 --and constants
 ChoGGi.Consts = {
@@ -277,6 +277,7 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
   SetConstsG("TravelTimeMarsEarth")
   SetConstsG("VisitFailPenalty")
 --const.
+  local const = const
   local function SetConst(Name)
     if UserSettings[Name] then
       const[Name] = UserSettings[Name]
@@ -305,6 +306,7 @@ function ChoGGi.SettingFuncs.WriteSettings()
     ThreadUnlockKey(bak)
 
     ThreadLockKey(file)
+    table.sort(ChoGGi.UserSettings)
     local err = AsyncStringToFile(file,TableToLuaCode(ChoGGi.UserSettings))
     ThreadUnlockKey(file)
     if err then
@@ -341,9 +343,11 @@ end
 
 --OptionsApply is the earliest we can call Consts:GetProperties()
 function ChoGGi.MsgFuncs.Settings_OptionsApply()
+  local ChoGGi = ChoGGi
+  local Consts = Consts
 
   --if setting doesn't exist then make it default
-  for Key,Value in pairs(ChoGGi.Defaults) do
+  for Key,Value in pairs(CDefaults) do
     if type(ChoGGi.UserSettings[Key]) == "nil" then
       ChoGGi.UserSettings[Key] = Value
     end
@@ -423,13 +427,13 @@ function ChoGGi.MsgFuncs.Settings_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local msgs = ChoGGi.Temp.StartupMsgs
+    local StartupMsgs = ChoGGi.Temp.StartupMsgs
     local errormsg = "Error: Couldn't convert old settings to new settings: "
     if not AddOldSettings("BuildingsCapacity","capacity") then
-      msgs[#msgs+1] = errormsg .. "BuildingsCapacity"
+      StartupMsgs[#StartupMsgs+1] = errormsg .. "BuildingsCapacity"
     end
     if not AddOldSettings("BuildingsProduction","production") then
-      msgs[#msgs+1] = errormsg .. "BuildingsProduction"
+      StartupMsgs[#StartupMsgs+1] = errormsg .. "BuildingsProduction"
     end
   end
   --only write for testing, as IO is probably slower then having to redo again

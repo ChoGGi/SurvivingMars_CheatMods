@@ -4,13 +4,14 @@ local CConsts = ChoGGi.Consts
 local CInfoFuncs = ChoGGi.InfoFuncs
 local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
+local CMenuFuncs = ChoGGi.MenuFuncs
 
 --funcs under Gameplay menu without a separate file
 
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
-function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
+function CMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 
   local amount
@@ -29,7 +30,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 
 end
 
-function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
+function CMenuFuncs.SetRocketCargoCapacity()
   local DefaultSetting = CCodeFuncs.GetCargoCapacity()
   local ItemList = {
     {text = " Default: " .. DefaultSetting .. " kg",value = DefaultSetting},
@@ -59,7 +60,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
 end
 
-function ChoGGi.MenuFuncs.SetRocketTravelTime()
+function CMenuFuncs.SetRocketTravelTime()
   local r = CConsts.ResourceScale
   local DefaultSetting = CCodeFuncs.GetTravelTimeEarthMars() / r
   local ItemList = {
@@ -103,7 +104,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.SetColonistsPerRocket()
+function CMenuFuncs.SetColonistsPerRocket()
   local DefaultSetting = CCodeFuncs.GetMaxColonistsPerRocket()
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -133,7 +134,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
 
-function ChoGGi.MenuFuncs.SetWorkerCapacity()
+function CMenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
     CComFuncs.MsgPopup("You need to select a building that has workers.",
       "Worker Capacity",UsualIcon
@@ -201,7 +202,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
 end
 
-function ChoGGi.MenuFuncs.SetBuildingCapacity()
+function CMenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
   if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
     CComFuncs.MsgPopup("You need to select a building that has capacity.",
@@ -344,7 +345,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
 
-function ChoGGi.MenuFuncs.SetVisitorCapacity()
+function CMenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
     CComFuncs.MsgPopup("You need to select something that has space for visitors.",
@@ -402,7 +403,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
+function CMenuFuncs.SetStorageDepotSize(sType)
   local r = CConsts.ResourceScale
   local DefaultSetting = CConsts[sType] / r
   local hint_max = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000"
@@ -495,7 +496,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
-function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
+function CMenuFuncs.DronesKeepTryingBlockedRocks()
   local function ResetPriorityQueue(Class)
     local Hubs = GetObjects({class=Class}) or empty_table
     for i = 1, #Hubs do
@@ -513,7 +514,7 @@ function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
   CComFuncs.MsgPopup("Hubs reset","Rocks")
 end
 
-function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
+function CMenuFuncs.AlignAllBuildingsToHexGrid()
   local Table = GetObjects({class="Building"})
   if Table[1] and Table[1].class then
     for i = 1, #Table do
@@ -523,7 +524,7 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
   end
 end
 
-function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+function CMenuFuncs.RemoveUnreachableConstructionSites()
   local function RemoveUnreachable(Class)
     local Table = GetObjects({class=Class}) or empty_table
     for i = 1, #Table do
@@ -541,7 +542,7 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   CComFuncs.MsgPopup("Removed unreachable","Sites")
 end
 
-function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+function CMenuFuncs.RemoveYellowGridMarks()
   local Table = GetObjects({class="GridTile"})
   if Table[1] and Table[1].class and Table[1].class == "GridTile" then
     for i = 1, #Table do
@@ -551,7 +552,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   CComFuncs.MsgPopup("Grid marks removed","Grid")
 end
 
-function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
+function CMenuFuncs.DroneResourceCarryAmountFix_Toggle()
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
   CSettingFuncs.WriteSettings()
   CComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
@@ -559,7 +560,7 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
+function CMenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
     tab[i]:ChangeWorkingStateAnim(false)
@@ -567,7 +568,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
   end
 end
 
-function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
+function CMenuFuncs.AttachBuildingsToNearestWorkingDome()
   local tab = UICity.labels.Residence or empty_table
   for i = 1, #tab do
     CCodeFuncs.AttachToNearestDome(tab[i])
@@ -582,7 +583,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   )
 end
 
-function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
+function CMenuFuncs.ColonistsFixBlackCube()
   local tab = UICity.labels.Colonist or empty_table
   for i = 1, #tab do
     local colonist = tab[i]
@@ -608,7 +609,7 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
   )
 end
 
-function ChoGGi.MenuFuncs.RepairBrokenShit(BrokenShit)
+function CMenuFuncs.RepairBrokenShit(BrokenShit)
   local JustInCase = 0
   while #BrokenShit > 0 do
 
@@ -626,13 +627,13 @@ function ChoGGi.MenuFuncs.RepairBrokenShit(BrokenShit)
   end
 end
 
-function ChoGGi.MenuFuncs.CablesAndPipesRepair()
-  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
-  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
+function CMenuFuncs.CablesAndPipesRepair()
+  CMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
+  CMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
 end
 
 --[[
-function ChoGGi.MenuFuncs.SetTriboelectricScrubberRadius(Bool)
+function CMenuFuncs.SetTriboelectricScrubberRadius(Bool)
   for _,building in iXpairs(UICity.labels.TriboelectricScrubber) do
     local prop_meta = building:GetPropertyMetadata("UIRange")
     if prop_meta then

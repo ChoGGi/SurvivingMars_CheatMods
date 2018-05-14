@@ -114,20 +114,32 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   CComFuncs.AddAction(
-    "[102]Debug/[09]Toggle Hex Build Grid Visibility",
-    CMenuFuncs.debug_build_grid,
-    "Ctrl-F3",
-    "Shows a hex grid with green for buildable (ignores uneven terrain).",
+    "[102]Debug/[09]Toggle Hex Build + Passability Grid Visibility",
+    function()
+      CMenuFuncs.debug_build_grid(1)
+    end,
+    "Shift-F1",
+    "Shows a hex grid with green for buildable/walkable.",
     "CollisionGeometry.tga"
   )
 
   CComFuncs.AddAction(
-    "[102]Debug/[09]Toggle Hex Passability Grid Visibility",
+    "[102]Debug/[10]Toggle Hex Passability Grid Visibility",
     function()
-      CMenuFuncs.debug_build_grid(true)
+      CMenuFuncs.debug_build_grid(2)
     end,
-    "Ctrl-F2",
+    "Shift-F2",
     "Shows a hex grid with green for walkable terrain.",
+    "CollisionGeometry.tga"
+  )
+
+  CComFuncs.AddAction(
+    "[102]Debug/[11]Toggle Hex Build Grid Visibility",
+    function()
+      CMenuFuncs.debug_build_grid(3)
+    end,
+    "Shift-F3",
+    "Shows a hex grid with green for buildable (ignores uneven terrain).",
     "CollisionGeometry.tga"
   )
 

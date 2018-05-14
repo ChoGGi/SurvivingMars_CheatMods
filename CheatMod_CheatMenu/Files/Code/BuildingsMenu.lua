@@ -130,7 +130,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = ChoGGi.UserSettings.SanatoriumCureAll and "(Enabled)" or "(Disabled)"
-      return des .. " Sanatoriums can cure all bad traits."
+      return des .. " Toggle curing all traits (use \"Show All Traits\" & \"Show Full List\" to manually set)."
     end,
     icon
   )
@@ -141,7 +141,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = ChoGGi.UserSettings.SchoolTrainAll and "(Enabled)" or "(Disabled)"
-      return des .. " Schools can train all good traits."
+      return des .. " Toggle curing all traits (use \"Show All Traits\" & \"Show Full List\" to manually set)."
     end,
     icon
   )
@@ -157,7 +157,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
       else
         des = "(Disabled)"
       end
-      return des .. " Shows all appropriate traits in Sanatoriums/Schools popup menu."
+      return des .. " Shows all appropriate traits in Sanatoriums/Schools side panel popup menu."
     end,
     "LightArea.tga"
   )
@@ -168,7 +168,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = ChoGGi.UserSettings.SanatoriumSchoolShowAll and "(Enabled)" or "(Disabled)"
-      return des .. " Toggle showing all traits in side pane."
+      return des .. " Toggle showing full list of trait selectors in side pane."
     end,
     "LightArea.tga"
   )
@@ -179,7 +179,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = ChoGGi.UserSettings.RemoveMaintenanceBuildUp and "(Enabled)" or "(Disabled)"
-      return des .. " Buildings don't build up maintenance points."
+      return des .. " Building maintenance points reverse (takes away instead of adding)."
     end,
     icon
   )
