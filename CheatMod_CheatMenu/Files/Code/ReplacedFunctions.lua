@@ -387,7 +387,7 @@ if ChoGGi.Testing then
         --con[#con+1] = XText:new()
         con = con[#con]
         --con.text = con.text .. "age: "
-        ex(con)
+        --ex(con)
       end
 end
 

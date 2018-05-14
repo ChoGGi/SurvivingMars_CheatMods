@@ -6,15 +6,22 @@ local CSettingFuncs = ChoGGi.SettingFuncs
 local CTables = ChoGGi.Tables
 local CMenuFuncs = ChoGGi.MenuFuncs
 
+--pick a random model for start of path if doing single object
+local models = {}
+models[1] = "GreenMan"
+models[2] = "Lama"
 --default height of waypoints
 local flag_height = 50
 --store all objects for easy removal
 local stored_waypoints = {}
 
---check stored_waypoints length and see if we can find out how many = flickering
 local function ShowWaypoints(waypoints, color, obj, single, skipflags)
+  --check stored_waypoints length and see if we can find out how many = flickering
+  --if #stored_waypoints == 500 then
+  --  return
+  --end
 
-  color = color or RandColor()
+  color = tonumber(color) or CodeFuncs.RandomColour()
   --also used for line height
   flag_height = flag_height + 4
   local height = flag_height
@@ -67,16 +74,23 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
   --list is sent dest>pos order
   for i = 1, #waypoints do
     local w = waypoints[i]
+    local wpn = waypoints[i+1]
     local pos = w:SetZ((w:z() or terrain.GetHeight(w)) + 10 * guic)
     pos = point(pos:x(),pos:y(),shuttle or pos:z())
 
     if skipflags ~= true then
       local p
       if single and i == #waypoints then
-        p = PlaceObject("GreenMan")
-        p:SetScale(200)
+        p = PlaceObject(models[UICity:Random(1,2)])
+        --p:SetAngle(obj:GetAngle())
       else
+        --1 == end #wp = start
         p = PlaceObject("WayPoint")
+        if i > 1 then
+          p:SetAngle(obj:GetAngle())
+        else
+          p:SetAngle(p:AngleToPoint(stored_waypoints[#stored_waypoints-1]))
+        end
       end
       stored_waypoints[#stored_waypoints+1] = p
       p:SetColorModifier(color)
@@ -88,15 +102,16 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
       local endp = PlaceText(obj.class .. ": " .. obj.handle, pos)
       stored_waypoints[#stored_waypoints+1] = endp
       endp:SetColor(color)
+      --endp:SetColor2()
       endp:SetZ(endp:GetZ() + 250 + height)
-      --endp:SetFontId("Editor32Bold")
+      --endp:SetShadowOffset(3)
+      endp:SetFontId(UIL.GetFontID("droid, 14, bold"))
     end
 
-    local wn = waypoints[i+1]
-    if wn then
+    if wpn then
       local l = PlaceTerrainLine(
         pos,
-        wn,
+        wpn,
         color,
         nil,
         shuttle and shuttle - objterr or height
@@ -104,34 +119,43 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
       stored_waypoints[#stored_waypoints+1] = l
       l:SetDepthTest(true)
     end
+
   end
 end
 
-local randcolors = {}
 local function RemoveWPDupePos(Class)
+  --remove dupe pos
   local wppos = {}
   for i = 1, #stored_waypoints do
     local wp = stored_waypoints[i]
     if wp.class == Class then
-      local pos = type(wp.GetPos) == "function" and wp:GetPos()
-      if pos then
-        pos = tostring(pos)
-        if wppos[pos] then
-          local Table = wp:GetAttaches() or empty_table
-          for i = 1, #Table do
-            Table[i]:delete()
-          end
-          wp:delete()
-        else
-          wppos[pos] = true
-        end
+      local pos = tostring(wp:GetPos())
+      if wppos[pos] then
+        wppos[pos]:SetColorModifier(6579300)
+        wp:delete()
+      else
+        wppos[pos] = stored_waypoints[i]
+      end
+    end
+  end
+  --remove removed
+  local found = true
+  while found do
+    found = nil
+    for i = 1, #stored_waypoints do
+      if not IsValid(stored_waypoints[i]) then
+        table.remove(stored_waypoints,i)
+        found = true
+        break
       end
     end
   end
 end
-local function SetWaypoint(obj,single,skipflags)
-  --need to add a Sleep for RandColor as there's a delay on how quickly it updates
-  CreateRealTimeThread(function()
+
+local randcolours = {}
+local colourcount = 0
+function CMenuFuncs.SetVisiblePathMarkers()
+  local function SetWaypoint(obj,single,skipflags)
     local path
     --we need to build a path for shuttles (and figure out a way to get their dest properly...)
     if obj.class == "CargoShuttle" then
@@ -156,28 +180,13 @@ local function SetWaypoint(obj,single,skipflags)
       if not obj.ChoGGi_WaypointPathAdded then
         obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
       end
-      --we want to make sure all waypoints are a different colour (or at least slightly diff), do i want to round them for more slightly?
-      local color = RandColor()
-      if randcolors[color] then
-        while true do
-          color = RandColor()
-          if not randcolors[color] then
-            randcolors[color] = color
-            ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,randcolors[color]),obj,single,skipflags)
-            break
-          end
-          Sleep(50)
-        end
-      else
-        randcolors[color] = color
-        ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,randcolors[color]),obj,single,skipflags)
-      end
+      --we want to make sure all waypoints are a different colour (or at least slightly diff)
+      ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,table.remove(randcolours,#randcolours)),obj,single,skipflags)
     end
-  end)
-end
-function CMenuFuncs.SetVisiblePathMarkers()
+  end
   local sel = SelectedObj
   if sel then
+    randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
     SetWaypoint(sel,true)
     return
   end
@@ -200,42 +209,49 @@ function CMenuFuncs.SetVisiblePathMarkers()
       end
       stored_waypoints = {}
       --reset the random colors table
-      randcolors = {}
+      randcolours = {}
       --reset all the base colours
       local function ClearColour(Class)
-        ForEach({
-          class = Class,
-          exec = function(Obj)
-            if Obj.ChoGGi_WaypointPathAdded then
-              Obj:SetColorModifier(Obj.ChoGGi_WaypointPathAdded)
-              Obj.ChoGGi_WaypointPathAdded = nil
-            end
+        local objs = GetObjects({class = Class}) or empty_table
+        for i = 1, #objs do
+          if objs[i].ChoGGi_WaypointPathAdded then
+            objs[i]:SetColorModifier(objs[i].ChoGGi_WaypointPathAdded)
+            objs[i].ChoGGi_WaypointPathAdded = nil
           end
-        })
+        end
       end
       ClearColour("CargoShuttle")
       ClearColour("Unit")
 
       flag_height = 50
+      colourcount = 0
     else
-      local function swp(Class)
-        ForEach({
-          class = Class,
-          exec = function(Obj)
-            SetWaypoint(Obj,nil,choice[1].check2)
+      --need to add a Sleep for RandColor as there's a delay on how quickly it updates
+      CreateRealTimeThread(function()
+        local function swp(Class,Table)
+          for i = 1, #Table do
+            SetWaypoint(Table[i],nil,choice[1].check2)
           end
-        })
-      end
-      if value == "All" then
-        swp("Unit")
-        swp("CargoShuttle")
-      else
-        swp(value)
-      end
+        end
+        if value == "All" then
+          local Table1 = GetObjects({class = "Unit"}) or empty_table
+          local Table2 = GetObjects({class = "CargoShuttle"}) or empty_table
+          colourcount = colourcount + #Table1
+          colourcount = colourcount + #Table2
+          randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
+          swp("Unit",Table1)
+          swp("CargoShuttle",Table2)
+        else
+          local Table = GetObjects({class = value}) or empty_table
+          colourcount = colourcount + #Table
+          randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
+          swp(value,Table)
+        end
 
-      --remove any waypoints in the same pos
-      RemoveWPDupePos("WayPoint")
-      RemoveWPDupePos("Sphere")
+        --remove any waypoints in the same pos
+        RemoveWPDupePos("WayPoint")
+        RemoveWPDupePos("Sphere")
+      end)
     end
   end
 
@@ -247,52 +263,49 @@ function CMenuFuncs.SetVisiblePathMarkers()
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
-local function ShowAnimDebug(obj, color1, color2)
-  if not obj or (obj.action and obj.idx) then
-    obj = CCodeFuncs.SelObject()
+local function AnimDebug_Show(Class)
+  local objs = GetObjects({class = Class}) or empty_table
+  for i = 1, #objs do
+    local text = PlaceObject("Text")
+    text:SetDepthTest(true)
+    text:SetColor(CodeFuncs.RandomColour())
+    text:SetFontId(UIL.GetFontID("droid, 14, bold"))
+
+    text.ChoGGi_AnimDebug = true
+    objs[i]:Attach(text)
+    text:SetAttachOffset(point(0,0,objs[i]:GetObjectBBox():sizez() + 100))
+    CreateRealTimeThread(function()
+      while IsValid(text) do
+        text:SetText(string.format("%d. %s\n", 1, objs[i]:GetAnimDebug(1)))
+        WaitNextFrame()
+      end
+    end)
   end
-  if not obj then
-    return
-  end
-  local text = PlaceObject("Text")
-  text:SetDepthTest(true)
-  text:SetColor1(color1 or text.color1)
-  text:SetColor2(color2 or text.color2)
-  text.ChoGGi_AnimDebug = true
-  obj:Attach(text)
-  CreateRealTimeThread(function()
-    while IsValid(text) do
-      text:SetText(string.format("%d. %s\n", 1, obj:GetAnimDebug(1)))
-      WaitNextFrame()
-    end
-  end)
 end
 
-local function HideAnimDebug(obj)
-  local Table = obj:GetAttaches() or empty_table
-  for i = 1, #Table do
-    if Table[i].ChoGGi_AnimDebug then
-      Table[i]:delete()
-    end
-  end
-end
-local function LoopObjects(Class,Which)
-  ForEach({
-    class = Class,
-    exec = function(Obj)
-      if Which then
-        ShowAnimDebug(Obj)
-      else
-        HideAnimDebug(Obj)
+local function AnimDebug_Hide(Class)
+  local objs = GetObjects({class = Class}) or empty_table
+  for i = 1, #objs do
+    local att = objs[i]:GetAttaches() or empty_table
+    for i = 1, #att do
+      if att[i].ChoGGi_AnimDebug then
+        att[i]:delete()
       end
     end
-  })
+  end
 end
 
 function CMenuFuncs.ShowAnimDebug_Toggle()
   ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
-  LoopObjects("Building",ChoGGi.Temp.ShowAnimDebug)
-  LoopObjects("Unit",ChoGGi.Temp.ShowAnimDebug)
+  if ChoGGi.Temp.ShowAnimDebug then
+    AnimDebug_Show("Building")
+    AnimDebug_Show("Unit")
+    AnimDebug_Show("CargoShuttle")
+  else
+    AnimDebug_Hide("Building")
+    AnimDebug_Hide("Unit")
+    AnimDebug_Hide("CargoShuttle")
+  end
 end
 
 --no sense in building the list more then once

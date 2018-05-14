@@ -577,16 +577,23 @@ function CMenuFuncs.SetColonistsAge(iType)
 
     --existing
     elseif iType == 2 then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          CCodeFuncs.ColonistUpdateAge(sel,value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              CCodeFuncs.ColonistUpdateAge(tab[i],value)
+            end
+          else
             CCodeFuncs.ColonistUpdateAge(tab[i],value)
           end
-        else
-          CCodeFuncs.ColonistUpdateAge(tab[i],value)
         end
       end
+
     end
 
     CComFuncs.MsgPopup(sType .. "olonists: " .. choice[1].text,
@@ -596,7 +603,9 @@ function CMenuFuncs.SetColonistsAge(iType)
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 function CMenuFuncs.SetColonistsGender(iType)
@@ -651,16 +660,23 @@ function CMenuFuncs.SetColonistsGender(iType)
       CSettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          CCodeFuncs.ColonistUpdateGender(sel,value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              CCodeFuncs.ColonistUpdateGender(tab[i],value)
+            end
+          else
             CCodeFuncs.ColonistUpdateGender(tab[i],value)
           end
-        else
-          CCodeFuncs.ColonistUpdateGender(tab[i],value)
         end
       end
+
     end
     CComFuncs.MsgPopup(sType .. "olonists: " .. choice[1].text,
       "Colonists",UsualIcon
@@ -669,7 +685,9 @@ function CMenuFuncs.SetColonistsGender(iType)
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 function CMenuFuncs.SetColonistsSpecialization(iType)
@@ -731,16 +749,23 @@ function CMenuFuncs.SetColonistsSpecialization(iType)
       CSettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          CCodeFuncs.ColonistUpdateSpecialization(sel,value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              CCodeFuncs.ColonistUpdateSpecialization(tab[i],value)
+            end
+          else
             CCodeFuncs.ColonistUpdateSpecialization(tab[i],value)
           end
-        else
-          CCodeFuncs.ColonistUpdateSpecialization(tab[i],value)
         end
       end
+
     end
     CComFuncs.MsgPopup(sType .. "olonists: " .. choice[1].text,
       "Colonists",UsualIcon
@@ -749,7 +774,9 @@ function CMenuFuncs.SetColonistsSpecialization(iType)
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 function CMenuFuncs.SetColonistsRace(iType)
@@ -801,16 +828,23 @@ function CMenuFuncs.SetColonistsRace(iType)
       CSettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          CCodeFuncs.ColonistUpdateRace(sel,value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              CCodeFuncs.ColonistUpdateRace(tab[i],value)
+            end
+          else
             CCodeFuncs.ColonistUpdateRace(tab[i],value)
           end
-        else
-          CCodeFuncs.ColonistUpdateRace(tab[i],value)
         end
       end
+
     end
     CComFuncs.MsgPopup("Nationalsozialistische Rassenhygiene: " .. choice[1].race,
       "Colonists",UsualIcon
@@ -819,7 +853,9 @@ function CMenuFuncs.SetColonistsRace(iType)
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 function CMenuFuncs.SetColonistsTraits(iType)
@@ -921,10 +957,9 @@ function CMenuFuncs.SetColonistsTraits(iType)
         ChoGGi.UserSettings.NewColonistTraits = TraitsList
       end
       CSettingFuncs.WriteSettings()
+
     --existing
-
     elseif iType == 2 then
-
       --random 3x3
       if choice[1].value == DefaultSetting then
         local function RandomTraits(Obj)
@@ -979,10 +1014,12 @@ function CMenuFuncs.SetColonistsTraits(iType)
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
+  local Check2 = "Remove"
+  local Check2Hint = "Check to remove traits"
   if iType == 1 then
     CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true)
   elseif iType == 2 then
-    CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true,Check1,Check1Hint,"Remove","Check to remove traits")
+    CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true,Check1,Check1Hint,Check2,Check2Hint)
   end
 end
 
@@ -1103,18 +1140,25 @@ function CMenuFuncs.SetColonistMoveSpeed()
     end
     local value = choice[1].value
     if type(value) == "number" then
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          pf.SetStepLen(sel,value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              --tab[i]:SetMoveSpeed(value)
+              pf.SetStepLen(tab[i],value)
+            end
+          else
             --tab[i]:SetMoveSpeed(value)
             pf.SetStepLen(tab[i],value)
           end
-        else
-          --tab[i]:SetMoveSpeed(value)
-          pf.SetStepLen(tab[i],value)
         end
       end
+
       CComFuncs.SetSavedSetting("SpeedColonist",value)
       CSettingFuncs.WriteSettings()
       CComFuncs.MsgPopup("Selected: " .. choice[1].text,
@@ -1125,10 +1169,12 @@ function CMenuFuncs.SetColonistMoveSpeed()
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
-function CMenuFuncs.SetGravityColonists()
+function CMenuFuncs.SetColonistsGravity()
   local DefaultSetting = CConsts.GravityColonist
   local r = CConsts.ResourceScale
   local ItemList = {
@@ -1162,16 +1208,23 @@ function CMenuFuncs.SetGravityColonists()
     local value = choice[1].value
     if type(value) == "number" then
       value = value * r
-      local tab = UICity.labels.Colonist or empty_table
-      for i = 1, #tab do
-        if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+      if choice[1].check2 then
+        if sel then
+          sel:SetGravity(value)
+        end
+      else
+        local tab = UICity.labels.Colonist or empty_table
+        for i = 1, #tab do
+          if dome then
+            if tab[i].dome and tab[i].dome.handle == dome then
+              tab[i]:SetGravity(value)
+            end
+          else
             tab[i]:SetGravity(value)
           end
-        else
-          tab[i]:SetGravity(value)
         end
       end
+
       CComFuncs.SetSavedSetting("GravityColonist",value)
 
       CSettingFuncs.WriteSettings()
@@ -1183,6 +1236,7 @@ function CMenuFuncs.SetGravityColonists()
 
   local Check1 = "Dome Only"
   local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint,nil,Check1,Check1Hint)
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected colonist."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
-

@@ -371,25 +371,29 @@ function OnMsg.LoadingScreenPreClose()
 
   CCodeFuncs.NewThread(function()
     local labels = UICity.labels
-    local RemoveMissingLabelObjects = CComFuncs.RemoveMissingLabelObjects
 
       --add some custom labels for cables/pipes
+      --[[
     if type(labels.GridElements) ~= "table" then
       labels.GridElements = {}
     else
       --remove any broken objects
-      RemoveMissingLabelObjects("GridElements")
+      CComFuncs.RemoveMissingLabelObjects("GridElements")
     end
     if type(labels.ElectricityGridElement) ~= "table" then
       labels.ElectricityGridElement = {}
     else
-      RemoveMissingLabelObjects("ElectricityGridElement")
+      CComFuncs.RemoveMissingLabelObjects("ElectricityGridElement")
     end
     if type(labels.LifeSupportGridElement) ~= "table" then
       labels.LifeSupportGridElement = {}
     else
-      RemoveMissingLabelObjects("LifeSupportGridElement")
+      CComFuncs.RemoveMissingLabelObjects("LifeSupportGridElement")
     end
+    --]]
+    labels.GridElements = {}
+    labels.ElectricityGridElement = {}
+    labels.LifeSupportGridElement = {}
     local function NewGridLabels(Label)
       if not next(labels[Label]) then
         local objs = GetObjects({class=Label}) or empty_table

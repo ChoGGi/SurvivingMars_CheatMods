@@ -675,9 +675,26 @@ function ChoGGi.CodeFuncs.GetPalette(Obj)
   return pal
 end
 
+function ChoGGi.CodeFuncs.RandomColour(Amount)
+  if not Amount then
+    return AsyncRand(16777216) * -1
+  end
+  local randcolors = {}
+  local RetTableNoDupes = CComFuncs.RetTableNoDupes
+  local AsyncRand = AsyncRand
+  while true do
+    randcolors[#randcolors+1] = AsyncRand(16777216) * -1
+    randcolors = RetTableNoDupes(randcolors)
+    if #randcolors == Amount then
+      return randcolors
+    end
+  end
+end
+
 function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
   if Obj:IsKindOf("ColorizableObject") then
-    local color = Base or RandColor()
+    local RandomColour = ChoGGi.CodeFuncs.RandomColour
+    local color = Base or RandomColour
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
     local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
@@ -689,10 +706,10 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
         ChoGGi.CodeFuncs.SaveOldPalette(Obj)
       end
       --s,1,Color, Roughness, Metallic
-      SetPal(Obj, 1, RandColor(), 0,0)
-      SetPal(Obj, 2, RandColor(), 0,0)
-      SetPal(Obj, 3, RandColor(), 0,0)
-      SetPal(Obj, 4, RandColor(), 0,0)
+      SetPal(Obj, 1, RandomColour, 0,0)
+      SetPal(Obj, 2, RandomColour, 0,0)
+      SetPal(Obj, 3, RandomColour, 0,0)
+      SetPal(Obj, 4, RandomColour, 0,0)
     end
     return color
   end

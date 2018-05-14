@@ -124,8 +124,10 @@ function CMenuFuncs.SetFunding()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      --reset money back to 0
-      UICity.funding = 0
+      if value == 500 then
+        --reset money back to 0
+        UICity.funding = 0
+      end
       --and add the new amount
       ChangeFunding(value)
 

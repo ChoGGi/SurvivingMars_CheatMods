@@ -36,7 +36,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
 
   CComFuncs.AddAction(
     "Expanded CM/Colonists/Colonists Gravity",
-    CMenuFuncs.SetGravityColonists,
+    CMenuFuncs.SetColonistsGravity,
     nil,
     "Change gravity of Colonists.",
     icon

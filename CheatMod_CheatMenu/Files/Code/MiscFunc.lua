@@ -801,3 +801,190 @@ function CMenuFuncs.SetGameSpeed()
   local hint = "Current speed: " .. current
   CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
 end
+
+local entity_table = {}
+local function SetEntity(Obj,Entity)
+  --backup orig
+  if not Obj.ChoGGi_OrigEntity then
+    Obj.ChoGGi_OrigEntity = Obj.entity
+  end
+  if Entity == "Default" and Obj.ChoGGi_OrigEntity then
+    Obj.entity = Obj.ChoGGi_OrigEntity
+    Obj:ChangeEntity(Obj.ChoGGi_OrigEntity)
+    Obj.ChoGGi_OrigEntity = nil
+  else
+    Obj.entity = Entity
+    Obj:ChangeEntity(Entity)
+  end
+end
+function CMenuFuncs.SetEntity()
+  local sel = ChoGGi.CodeFuncs.SelObject()
+  if not sel then
+    CComFuncs.MsgPopup("You need to select an object.","Entity")
+    return
+  end
+
+  local hint_noanim = "No animation."
+  if #entity_table == 0 then
+    entity_table = {
+      {text = " Default",value = "Default"},
+      {text = "Kosmonavt",value = "Kosmonavt"},
+      {text = "Lama",value = "Lama",hint = hint_noanim},
+      {text = "GreenMan",value = "GreenMan",hint = hint_noanim},
+      {text = "PlanetMars",value = "PlanetMars",hint = hint_noanim},
+      {text = "PlanetEarth",value = "PlanetEarth",hint = hint_noanim},
+      {text = "RocketUI",value = "RocketUI",hint = hint_noanim},
+      {text = "Rocket",value = "Rocket",hint = hint_noanim},
+      {text = "PumpStationDemo",value = "PumpStationDemo",hint = hint_noanim},
+    }
+    local Table = EntityData or empty_table
+    for Key,_ in pairs(Table) do
+      if Key:find("Unit_") then
+        entity_table[#entity_table+1] = {text = Key,value = Key}
+      end
+    end
+    Table = DataInstances.BuildingTemplate
+    for i = 1, #Table do
+      entity_table[#entity_table+1] = {
+        text = Table[i].entity,
+        value = Table[i].entity,
+        hint = hint_noanim
+      }
+    end
+  end
+  local ItemList = entity_table
+
+  local CallBackFunc = function(choice)
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if check1 and check2 then
+      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Entity")
+      return
+    end
+
+    local dome
+    if sel.dome and check1 then
+      dome = sel.dome.handle
+    end
+    local value = choice[1].value
+    if EntityData[value] or value == "Default" then
+
+      if check2 then
+        SetEntity(sel,value)
+      else
+        local objs = GetObjects({class = sel.class}) or empty_table
+        for i = 1, #objs do
+          if dome then
+            if objs[i].dome and objs[i].dome.handle == dome then
+              SetEntity(objs[i],value)
+            end
+          else
+            SetEntity(objs[i],value)
+          end
+        end
+      end
+      CComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,"Entity")
+    end
+  end
+
+  local Check1 = "Dome Only"
+  local Check1Hint = "Will only apply to objects in the same dome as selected object."
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected object."
+  local hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to see list).\n\nNot permanent for colonists after they exit buildings (for now)."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Entity For " .. sel.class,hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+end
+
+local function SetScale(Obj,Scale)
+  local CUserSettings = ChoGGi.UserSettings
+  Obj:SetScale(Scale)
+  --changing entity to a static one and changing scale can make things not move so re-apply speeds.
+  CreateRealTimeThread(function()
+    --and it needs a slight delay
+    Sleep(500)
+    if Obj.class == "Drone" then
+      if CUserSettings.SpeedDrone then
+        pf.SetStepLen(Obj,CUserSettings.SpeedDrone)
+      else
+        Obj:SetMoveSpeed(CCodeFuncs.GetSpeedDrone())
+      end
+    elseif Obj.class == "CargoShuttle" then
+      if CUserSettings.SpeedShuttle then
+        Obj.max_speed = CConsts.SpeedShuttle
+      else
+        Obj.max_speed = CConsts.SpeedShuttle
+      end
+    elseif Obj.class == "Colonist" then
+      if CUserSettings.SpeedColonist then
+        pf.SetStepLen(Obj,CUserSettings.SpeedColonist)
+      else
+        Obj:SetMoveSpeed(CConsts.SpeedColonist)
+      end
+    elseif IsKindOf(s,"BaseRover") then
+      if CUserSettings.SpeedRC then
+        pf.SetStepLen(Obj,CUserSettings.SpeedRC)
+      else
+        Obj:SetMoveSpeed(CCodeFuncs.GetSpeedRC())
+      end
+    end
+  end)
+end
+function CMenuFuncs.SetEntityScale()
+  local sel = ChoGGi.CodeFuncs.SelObject()
+  if not sel then
+    CComFuncs.MsgPopup("You need to select an object.","Scale")
+    return
+  end
+
+  local ItemList = {
+    {text = " Default",value = 100},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 10000,value = 10000},
+  }
+
+  local CallBackFunc = function(choice)
+ex(choice)
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if check1 and check2 then
+      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Scale")
+      return
+    end
+
+    local dome
+    if sel.dome and check1 then
+      dome = sel.dome.handle
+    end
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      if check2 then
+        SetScale(sel,value)
+      else
+        local objs = GetObjects({class = sel.class}) or empty_table
+        for i = 1, #objs do
+          if dome then
+            if objs[i].dome and objs[i].dome.handle == dome then
+              SetScale(objs[i],value)
+            end
+          else
+            SetScale(objs[i],value)
+          end
+        end
+      end
+      CComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,"Scale")
+    end
+  end
+
+  local Check1 = "Dome Only"
+  local Check1Hint = "Will only apply to objects in the same dome as selected object."
+  local Check2 = "Selected Only"
+  local Check2Hint = "Will only apply to selected object."
+  local hint = "Current object: " .. sel:GetScale() .. "\nIf you don't pick a checkbox it will change all of selected type."
+  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Entity For " .. sel.class,hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+end

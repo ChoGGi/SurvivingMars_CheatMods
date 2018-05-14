@@ -17,6 +17,22 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   CComFuncs.AddAction(
+    "Expanded CM/[999]Misc/Change Entity",
+    CMenuFuncs.SetEntity,
+    nil,
+    "Changes the entity of selected object, all of same type or all of same type in selected object's dome.",
+    "ConvertEnvironment.tga"
+  )
+
+  CComFuncs.AddAction(
+    "Expanded CM/[999]Misc/Change Entity Scale",
+    CMenuFuncs.SetEntityScale,
+    nil,
+    "You want big, you want them small.",
+    "scale_gizmo.tga"
+  )
+
+  CComFuncs.AddAction(
     "Expanded CM/[999]Misc/Change Light Model Custom",
     CMenuFuncs.ChangeLightmodelCustom,
     nil,

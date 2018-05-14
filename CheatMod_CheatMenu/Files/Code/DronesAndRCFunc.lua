@@ -178,8 +178,8 @@ function CMenuFuncs.SetDroneMoveSpeed()
   local DefaultSetting = CConsts.SpeedDrone
   local UpgradedSetting = CCodeFuncs.GetSpeedDrone()
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting,hint = "base speed"},
+    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting,hint = "apply tech unlocks"},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},
@@ -223,8 +223,8 @@ function CMenuFuncs.SetRCMoveSpeed()
   local DefaultSetting = CConsts.SpeedRC
   local UpgradedSetting = CCodeFuncs.GetSpeedRC()
   local ItemList = {
-    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting},
-    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting},
+    {text = " Default: " .. DefaultSetting / r,value = DefaultSetting,hint = "base speed"},
+    {text = " Upgraded: " .. UpgradedSetting / r,value = UpgradedSetting,hint = "apply tech unlocks"},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},

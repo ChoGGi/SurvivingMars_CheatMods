@@ -336,10 +336,12 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   Drone.CheatBattCapDef = CheatBattCapDef
 --CheatMoveSpeedDbl
   local function CheatMoveSpeedDbl(self)
-    self:SetMoveSpeed(self:GetMoveSpeed() * 2)
+    --self:SetMoveSpeed(self:GetMoveSpeed() * 2)
+    pf.SetStepLen(Obj,self:GetMoveSpeed() * 2)
   end
   local function CheatMoveSpeedDef(self)
-    self:SetMoveSpeed(self.base_move_speed)
+    --self:SetMoveSpeed(self.base_move_speed)
+    pf.SetStepLen(Obj,self.base_move_speed)
   end
   ExplorerRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
   ExplorerRover.CheatMoveSpeedDef = CheatMoveSpeedDef

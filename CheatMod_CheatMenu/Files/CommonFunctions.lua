@@ -17,7 +17,8 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     Msg = tostring(Msg)
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
-    local id = "ChoGGi_" .. AsyncRand()
+    --local id = "ChoGGi_" .. AsyncRand()
+    local id = AsyncRand()
     local timeout = 8000
     if Size then
       timeout = 15000
@@ -392,7 +393,8 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
     found = nil
     local tab = UICity.labels[Label] or empty_table
     for i = 1, #tab do
-      if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
+      if not IsValid(tab[i]) then
+      --if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
         table.remove(UICity.labels[Label],i)
         found = true
         break
@@ -611,11 +613,10 @@ function ChoGGi.ComFuncs.RetTableNoDupes(Table)
   local tempt = {}
   local dupe = {}
 
-  local tab = Table or empty_table
-  for i = 1, #tab do
-    if not dupe[tab[i]] then
-      tempt[#tempt+1] = tab[i]
-      dupe[tab[i]] = true
+  for i = 1, #Table do
+    if not dupe[Table[i]] then
+      tempt[#tempt+1] = Table[i]
+      dupe[Table[i]] = true
     end
   end
   return tempt
