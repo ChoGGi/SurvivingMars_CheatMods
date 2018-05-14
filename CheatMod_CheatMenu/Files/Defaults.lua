@@ -1,4 +1,4 @@
-local CComFuncs = ChoGGi.ComFuncs
+local cComFuncs = ChoGGi.ComFuncs
 --stores default values and some tables
 
 --useful lists
@@ -25,12 +25,12 @@ ChoGGi.Tables = {
   SchoolTraits = const.SchoolTraits,
   SanatoriumTraits = const.SanatoriumTraits,
 }
-local CTables = ChoGGi.Tables
+local cTables = ChoGGi.Tables
 if #const.SchoolTraits ~= 5 then
-  CTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+  cTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
 end
 if #const.SanatoriumTraits ~= 7 then
-  CTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+  cTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
 end
 
 --tell me if traits are different
@@ -196,14 +196,14 @@ ChoGGi.Consts = {
   TravelTimeMarsEarth = false,
   VisitFailPenalty = false,
 }
-local CConsts = ChoGGi.Consts
+local cConsts = ChoGGi.Consts
 
 --set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
   local UserSettings = ChoGGi.UserSettings
 --Consts.
   local function SetConstsG(Name)
-    CComFuncs.SetConstsG(Name,UserSettings[Name])
+    cComFuncs.SetConstsG(Name,UserSettings[Name])
   end
   SetConstsG("AvoidWorkplaceSols")
   SetConstsG("BirthThreshold")
@@ -354,7 +354,7 @@ function ChoGGi.MsgFuncs.Settings_OptionsApply()
   end
   --[[
   --and add as false
-  for Key,Value in pairs(CConsts) do
+  for Key,Value in pairs(cConsts) do
     if type(ChoGGi.UserSettings[Key]) == "nil" then
       ChoGGi.UserSettings[Key] = false
     end
@@ -362,34 +362,34 @@ function ChoGGi.MsgFuncs.Settings_OptionsApply()
   --]]
 
   --get the default values for our Consts
-  for SettingName,_ in pairs(CConsts) do
+  for SettingName,_ in pairs(cConsts) do
     local setting = Consts:GetDefaultPropertyValue(SettingName)
     if setting then
-      CConsts[SettingName] = setting
+      cConsts[SettingName] = setting
     end
   end
 
   --get other defaults not stored in Consts
-  CConsts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
-  CConsts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-  CConsts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
-  CConsts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
-  CConsts.GravityColonist = 0
-  CConsts.GravityDrone = 0
-  CConsts.GravityRC = 0
-  CConsts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
-  CConsts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
-  CConsts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
-  CConsts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
-  CConsts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
-  --CConsts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-  CConsts.StorageWasteDepot = 70 * CConsts.ResourceScale --^ that has 45000 as default...
-  CConsts.StorageOtherDepot = 180 * CConsts.ResourceScale
-  CConsts.StorageMechanizedDepot = 3950 * CConsts.ResourceScale
+  cConsts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
+  cConsts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+  cConsts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
+  cConsts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+  cConsts.GravityColonist = 0
+  cConsts.GravityDrone = 0
+  cConsts.GravityRC = 0
+  cConsts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
+  cConsts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
+  cConsts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
+  cConsts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  cConsts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+  --cConsts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+  cConsts.StorageWasteDepot = 70 * cConsts.ResourceScale --^ that has 45000 as default...
+  cConsts.StorageOtherDepot = 180 * cConsts.ResourceScale
+  cConsts.StorageMechanizedDepot = 3950 * cConsts.ResourceScale
   --^ they're all UniversalStorageDepot
 
-  CConsts.CameraZoomToggle = 8000
-  CConsts.HigherRenderDist = 120 --hr.LODDistanceModifier
+  cConsts.CameraZoomToggle = 8000
+  cConsts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
 function ChoGGi.MsgFuncs.Settings_ModsLoaded()

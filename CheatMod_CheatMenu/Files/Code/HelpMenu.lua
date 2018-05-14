@@ -1,36 +1,36 @@
-local CMenuFuncs = ChoGGi.MenuFuncs
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
 
 function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
-  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   --------------------screenshot
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[2]Screenshot/Screenshot",
-    CMenuFuncs.TakeScreenshot,
+    cMenuFuncs.TakeScreenshot,
     "-PrtScr",
     "Write screenshot",
     "light_model.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[2]Screenshot/Screenshot Upsampled",
     function()
-      CMenuFuncs.TakeScreenshot(true)
+      cMenuFuncs.TakeScreenshot(true)
     end,
     "-Ctrl-PrtScr",
     "Write screenshot upsampled",
     "light_model.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[2]Screenshot/Show Interface in Screenshots",
-    CMenuFuncs.ShowInterfaceInScreenshots_Toggle,
+    cMenuFuncs.ShowInterfaceInScreenshots_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.ShowInterfaceInScreenshots and "(Enabled)" or "(Disabled)"
@@ -40,7 +40,7 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
   )
 
   --------------------Interface
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[1]Interface/Toggle Interface",
     function()
       hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
@@ -50,33 +50,33 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
     "ToggleSelectionOcclusion.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[1]Interface/Toggle Signs",
-    CMenuFuncs.SignsInterface_Toggle,
+    cMenuFuncs.SignsInterface_Toggle,
     "Ctrl-Alt-S",
     "Concrete, metal deposits, not working, etc...",
     "ToggleMarkers.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[1]Interface/[16]Toggle on-screen hints",
-    CMenuFuncs.OnScreenHints_Toggle,
+    cMenuFuncs.OnScreenHints_Toggle,
     nil,
     "Don't show hints for this game",
     "HideUnselected.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[1]Interface/[17]Reset on-screen hints",
-    CMenuFuncs.OnScreenHints_Reset,
+    cMenuFuncs.OnScreenHints_Reset,
     nil,
     "Just in case you wanted to see them again.",
     "HideSelected.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[1]Interface/[18]Never Show Hints",
-    CMenuFuncs.NeverShowHints_Toggle,
+    cMenuFuncs.NeverShowHints_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.DisableHints and "(Enabled)" or "(Disabled)"
@@ -85,25 +85,25 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
     "set_debug_texture.tga"
   )
   --------------------help
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/About ECM",
-    CMenuFuncs.MenuHelp_About,
+    cMenuFuncs.MenuHelp_About,
     nil,
     "Expanded Cheat Menu info dialog.",
     "help.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/Report Bug",
-    CMenuFuncs.MenuHelp_ReportBug,
+    cMenuFuncs.MenuHelp_ReportBug,
     "Ctrl-F1",
     "Report Bug\n\nThis doesn't go to ECM author, if you have a bug with ECM; see Help>About.",
     "ReportBug.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "[999]Help/[999]Reset ECM Settings",
-    CMenuFuncs.ResetECMSettings,
+    cMenuFuncs.ResetECMSettings,
     nil,
     "Reset all settings to default (restart to enable).",
     "ToggleEnvMap.tga"

@@ -1,17 +1,17 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 --funcs under Gameplay menu without a separate file
 
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
-function CMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
+function cMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 
   local amount
@@ -20,18 +20,18 @@ function CMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   end
   local tab = UICity.labels.MechanizedDepots or empty_table
   for i = 1, #tab do
-    CCodeFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
+    cCodeFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
   end
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup("Temp Storage: " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Temp Storage: " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
     "Storage",UsualIcon
   )
 
 end
 
-function CMenuFuncs.SetRocketCargoCapacity()
-  local DefaultSetting = CCodeFuncs.GetCargoCapacity()
+function cMenuFuncs.SetRocketCargoCapacity()
+  local DefaultSetting = cCodeFuncs.GetCargoCapacity()
   local ItemList = {
     {text = " Default: " .. DefaultSetting .. " kg",value = DefaultSetting},
     {text = "50 000 kg",value = 50000},
@@ -47,22 +47,22 @@ function CMenuFuncs.SetRocketCargoCapacity()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      CComFuncs.SetConstsG("CargoCapacity",value)
-      CComFuncs.SetSavedSetting("CargoCapacity",value)
+      cComFuncs.SetConstsG("CargoCapacity",value)
+      cComFuncs.SetSavedSetting("CargoCapacity",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(choice[1].text .. ": I can still see some space",
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(choice[1].text .. ": I can still see some space",
         "Rocket","UI/Icons/Sections/spaceship.tga"
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
 end
 
-function CMenuFuncs.SetRocketTravelTime()
-  local r = CConsts.ResourceScale
-  local DefaultSetting = CCodeFuncs.GetTravelTimeEarthMars() / r
+function cMenuFuncs.SetRocketTravelTime()
+  local r = cConsts.ResourceScale
+  local DefaultSetting = cCodeFuncs.GetTravelTimeEarthMars() / r
   local ItemList = {
     {text = " Instant",value = 0},
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -89,23 +89,23 @@ function CMenuFuncs.SetRocketTravelTime()
     local value = choice[1].value
     if type(value) == "number" then
       local value = value * r
-      CComFuncs.SetConstsG("TravelTimeEarthMars",value)
-      CComFuncs.SetConstsG("TravelTimeMarsEarth",value)
-      CComFuncs.SetSavedSetting("TravelTimeEarthMars",value)
-      CComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
+      cComFuncs.SetConstsG("TravelTimeEarthMars",value)
+      cComFuncs.SetConstsG("TravelTimeMarsEarth",value)
+      cComFuncs.SetSavedSetting("TravelTimeEarthMars",value)
+      cComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup("88 MPH: " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup("88 MPH: " .. choice[1].text,
         "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
 end
 
-function CMenuFuncs.SetColonistsPerRocket()
-  local DefaultSetting = CCodeFuncs.GetMaxColonistsPerRocket()
+function cMenuFuncs.SetColonistsPerRocket()
+  local DefaultSetting = cCodeFuncs.GetMaxColonistsPerRocket()
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -121,22 +121,22 @@ function CMenuFuncs.SetColonistsPerRocket()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      CComFuncs.SetConstsG("MaxColonistsPerRocket",value)
-      CComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
+      cComFuncs.SetConstsG("MaxColonistsPerRocket",value)
+      cComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(choice[1].text .. ": Long pig sardines",
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(choice[1].text .. ": Long pig sardines",
         "Rocket","UI/Icons/Notifications/colonist.tga"
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
 end
 
-function CMenuFuncs.SetWorkerCapacity()
+function cMenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
-    CComFuncs.MsgPopup("You need to select a building that has workers.",
+    cComFuncs.MsgPopup("You need to select a building that has workers.",
       "Worker Capacity",UsualIcon
     )
     return
@@ -191,26 +191,26 @@ function CMenuFuncs.SetWorkerCapacity()
         ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].workers = value
       end
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
         "Worker Capacity",UsualIcon
       )
     end
   end
 
   hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
 end
 
-function CMenuFuncs.SetBuildingCapacity()
+function cMenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
   if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
-    CComFuncs.MsgPopup("You need to select a building that has capacity.",
+    cComFuncs.MsgPopup("You need to select a building that has capacity.",
       "Building Capacity",UsualIcon
     )
     return
   end
-  local r = CConsts.ResourceScale
+  local r = cConsts.ResourceScale
   local hint_toolarge = "Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash)."
 
   --get type of capacity
@@ -303,7 +303,7 @@ function CMenuFuncs.SetBuildingCapacity()
             tab[i].capacity = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-            CCodeFuncs.ToggleWorking(tab[i])
+            cCodeFuncs.ToggleWorking(tab[i])
           end
         end
 
@@ -322,7 +322,7 @@ function CMenuFuncs.SetBuildingCapacity()
             tab[i][CapType .. "_capacity"] = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-            CCodeFuncs.ToggleWorking(tab[i])
+            cCodeFuncs.ToggleWorking(tab[i])
           end
         end
       end
@@ -333,8 +333,8 @@ function CMenuFuncs.SetBuildingCapacity()
         setting.capacity = amount
       end
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
         "Buildings",UsualIcon
       )
     end
@@ -342,13 +342,13 @@ function CMenuFuncs.SetBuildingCapacity()
   end
 
   hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
 end --SetBuildingCapacity
 
-function CMenuFuncs.SetVisitorCapacity()
+function cMenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
-    CComFuncs.MsgPopup("You need to select something that has space for visitors.",
+    cComFuncs.MsgPopup("You need to select something that has space for visitors.",
       "Buildings",UsualIcon2
     )
     return
@@ -393,19 +393,19 @@ function CMenuFuncs.SetVisitorCapacity()
         ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].visitors = value
       end
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
         "Buildings",UsualIcon2
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
 end
 
-function CMenuFuncs.SetStorageDepotSize(sType)
-  local r = CConsts.ResourceScale
-  local DefaultSetting = CConsts[sType] / r
+function cMenuFuncs.SetStorageDepotSize(sType)
+  local r = cConsts.ResourceScale
+  local DefaultSetting = cConsts[sType] / r
   local hint_max = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000"
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -484,19 +484,19 @@ function CMenuFuncs.SetStorageDepotSize(sType)
         end
       end
       --for new buildings
-      CComFuncs.SetSavedSetting(sType,value)
+      cComFuncs.SetSavedSetting(sType,value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(sType .. ": " ..  choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(sType .. ": " ..  choice[1].text,
         "Storage","UI/Icons/Sections/basic.tga"
       )
     end
   end
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
 end
 
 ---------fixes
-function CMenuFuncs.DronesKeepTryingBlockedRocks()
+function cMenuFuncs.DronesKeepTryingBlockedRocks()
   local function ResetPriorityQueue(Class)
     local Hubs = GetObjects({class=Class}) or empty_table
     for i = 1, #Hubs do
@@ -511,20 +511,20 @@ function CMenuFuncs.DronesKeepTryingBlockedRocks()
   ResetPriorityQueue("RCRover")
   ResetPriorityQueue("DroneHub")
 
-  CComFuncs.MsgPopup("Hubs reset","Rocks")
+  cComFuncs.MsgPopup("Hubs reset","Rocks")
 end
 
-function CMenuFuncs.AlignAllBuildingsToHexGrid()
+function cMenuFuncs.AlignAllBuildingsToHexGrid()
   local Table = GetObjects({class="Building"})
   if Table[1] and Table[1].class then
     for i = 1, #Table do
       Table[i]:SetPos(HexGetNearestCenter(Table[i]:GetPos()))
     end
-    CComFuncs.MsgPopup("Buildings aligned to grid.","Grid")
+    cComFuncs.MsgPopup("Buildings aligned to grid.","Grid")
   end
 end
 
-function CMenuFuncs.RemoveUnreachableConstructionSites()
+function cMenuFuncs.RemoveUnreachableConstructionSites()
   local function RemoveUnreachable(Class)
     local Table = GetObjects({class=Class}) or empty_table
     for i = 1, #Table do
@@ -539,28 +539,28 @@ function CMenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
-  CComFuncs.MsgPopup("Removed unreachable","Sites")
+  cComFuncs.MsgPopup("Removed unreachable","Sites")
 end
 
-function CMenuFuncs.RemoveYellowGridMarks()
+function cMenuFuncs.RemoveYellowGridMarks()
   local Table = GetObjects({class="GridTile"})
   if Table[1] and Table[1].class and Table[1].class == "GridTile" then
     for i = 1, #Table do
       Table[i]:delete()
     end
   end
-  CComFuncs.MsgPopup("Grid marks removed","Grid")
+  cComFuncs.MsgPopup("Grid marks removed","Grid")
 end
 
-function CMenuFuncs.DroneResourceCarryAmountFix_Toggle()
+function cMenuFuncs.DroneResourceCarryAmountFix_Toggle()
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
     "Drones","UI/Icons/IPButtons/drone.tga"
   )
 end
 
-function CMenuFuncs.ProjectMorpheusRadarFellDown()
+function cMenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
     tab[i]:ChangeWorkingStateAnim(false)
@@ -568,22 +568,22 @@ function CMenuFuncs.ProjectMorpheusRadarFellDown()
   end
 end
 
-function CMenuFuncs.AttachBuildingsToNearestWorkingDome()
+function cMenuFuncs.AttachBuildingsToNearestWorkingDome()
   local tab = UICity.labels.Residence or empty_table
   for i = 1, #tab do
-    CCodeFuncs.AttachToNearestDome(tab[i])
+    cCodeFuncs.AttachToNearestDome(tab[i])
   end
   tab = UICity.labels.Workplace or empty_table
   for i = 1, #tab do
-    CCodeFuncs.AttachToNearestDome(tab[i])
+    cCodeFuncs.AttachToNearestDome(tab[i])
   end
 
-  CComFuncs.MsgPopup("Buildings attached.",
+  cComFuncs.MsgPopup("Buildings attached.",
     "Buildings","UI/Icons/Sections/basic.tga"
   )
 end
 
-function CMenuFuncs.ColonistsFixBlackCube()
+function cMenuFuncs.ColonistsFixBlackCube()
   local tab = UICity.labels.Colonist or empty_table
   for i = 1, #tab do
     local colonist = tab[i]
@@ -604,12 +604,12 @@ function CMenuFuncs.ColonistsFixBlackCube()
       colonist:UpdateResidence()
     end
   end
-  CComFuncs.MsgPopup("Fixed black cubes",
+  cComFuncs.MsgPopup("Fixed black cubes",
     "Colonists",UsualIcon2
   )
 end
 
-function CMenuFuncs.RepairBrokenShit(BrokenShit)
+function cMenuFuncs.RepairBrokenShit(BrokenShit)
   local JustInCase = 0
   while #BrokenShit > 0 do
 
@@ -627,13 +627,13 @@ function CMenuFuncs.RepairBrokenShit(BrokenShit)
   end
 end
 
-function CMenuFuncs.CablesAndPipesRepair()
-  CMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
-  CMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
+function cMenuFuncs.CablesAndPipesRepair()
+  cMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
+  cMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
 end
 
 --[[
-function CMenuFuncs.SetTriboelectricScrubberRadius(Bool)
+function cMenuFuncs.SetTriboelectricScrubberRadius(Bool)
   for _,building in iXpairs(UICity.labels.TriboelectricScrubber) do
     local prop_meta = building:GetPropertyMetadata("UIRange")
     if prop_meta then
@@ -645,7 +645,7 @@ function CMenuFuncs.SetTriboelectricScrubberRadius(Bool)
       end
     end
   end
-  CComFuncs.MsgPopup("I see you there",
+  cComFuncs.MsgPopup("I see you there",
     "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
   )
 end

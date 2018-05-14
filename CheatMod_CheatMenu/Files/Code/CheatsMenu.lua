@@ -1,56 +1,56 @@
-local CMenuFuncs = ChoGGi.MenuFuncs
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
 
 function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
-  --CComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[01]Map Exploration",
-    CMenuFuncs.ShowScanAndMapOptions,
+    cMenuFuncs.ShowScanAndMapOptions,
     nil,
     "Scanning, deep scanning, core mines, and alien imprints.",
     "LightArea.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Start Mystery",
-    CMenuFuncs.ShowMysteryList,
+    cMenuFuncs.ShowMysteryList,
     nil,
     "Pick and start a mystery (with instant option).",
     "SelectionToObjects.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Trigger Disasters",
-    CMenuFuncs.DisastersTrigger,
+    cMenuFuncs.DisastersTrigger,
     nil,
     "Show the trigger disasters list.",
     "ApplyWaterMarkers.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Spawn Colonists",
-    CMenuFuncs.SpawnColonists,
+    cMenuFuncs.SpawnColonists,
     nil,
     "Spawn certain amount of colonists.",
     "UncollectObjects.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[10]Unlock all buildings",
-    CMenuFuncs.UnlockAllBuildings,
+    cMenuFuncs.UnlockAllBuildings,
     nil,
     "Unlock all buildings for construction.",
     "TerrainConfigEditor.tga"
   )
 
 ----------------------workplaces
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Workplaces/Toggle All Shifts",
     CheatToggleAllShifts,
     nil,
@@ -58,7 +58,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Workplaces/Update All Workplaces",
     CheatUpdateAllWorkplaces,
     nil,
@@ -66,7 +66,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "AlignSel.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[05]Workplaces/Clear Forced Workplaces",
     CheatClearForcedWorkplaces,
     nil,
@@ -75,9 +75,9 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
 ----------------------research
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Research Queue Larger",
-    CMenuFuncs.ResearchQueueLarger_Toggle,
+    cMenuFuncs.ResearchQueueLarger_Toggle,
     nil,
     function()
       local des = ""
@@ -91,15 +91,15 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ShowOcclusion.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Reset All Research",
-    CMenuFuncs.ResetAllResearch,
+    cMenuFuncs.ResetAllResearch,
     nil,
     "Resets all research (includes breakthrough tech).",
     "UnlockCollection.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Research Current Tech",
     CheatResearchCurrent,
     nil,
@@ -107,50 +107,50 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ViewArea.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Add Research Points",
-    CMenuFuncs.AddResearchPoints,
+    cMenuFuncs.AddResearchPoints,
     nil,
     "Add a specified amount of research points.",
     "pirate.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Outsourcing For Free",
-    CMenuFuncs.OutsourcingFree_Toggle,
+    cMenuFuncs.OutsourcingFree_Toggle,
     nil,
     function()
-      local des = CComFuncs.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
+      local des = cComFuncs.NumRetBool(Consts.OutsourceResearchCost,"(Disabled)","(Enabled)")
       return des .. " Outsourcing is free to purchase (over n over)."
     end,
     "pirate.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/Research Tech",
-    CMenuFuncs.ShowResearchTechList,
+    cMenuFuncs.ShowResearchTechList,
     nil,
     "Pick what you want to unlock/research.",
     "ViewArea.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/[14]Set Amount Of Breakthroughs Allowed",
-    CMenuFuncs.SetBreakThroughsAllowed,
+    cMenuFuncs.SetBreakThroughsAllowed,
     nil,
     "How many breakthroughs are allowed to be unlocked?",
     "AlignSel.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[04]Research/[15]Breakthroughs From OmegaTelescope",
-    CMenuFuncs.SetBreakThroughsOmegaTelescope,
+    cMenuFuncs.SetBreakThroughsOmegaTelescope,
     nil,
     "How many breakthroughs the OmegaTelescope will unlock.",
     "AlignSel.tga"
   )
 ----------------------cheats
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[10]Unpin All Pinned Objects",
     UnpinAll,
     nil,
@@ -158,7 +158,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "CutSceneArea.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[12]Complete wires\\pipes",
     CheatCompleteAllWiresAndPipes,
     nil,
@@ -166,7 +166,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "ViewCamPath.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[13]Complete constructions",
     CheatCompleteAllConstructions,
     "Alt-B",
@@ -174,9 +174,9 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "place_custom_object.tga"
   )
 
-  CComFuncs.AddAction(
+  cComFuncs.AddAction(
     "Cheats/[14]Mod Editor",
-    CMenuFuncs.OpenModEditor,
+    cMenuFuncs.OpenModEditor,
     nil,
     "Switch to the mod editor.",
     "Action.tga"

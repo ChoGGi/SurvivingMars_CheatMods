@@ -1,10 +1,10 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 --pick a random model for start of path if doing single object
 local models = {}
@@ -154,7 +154,7 @@ end
 
 local randcolours = {}
 local colourcount = 0
-function CMenuFuncs.SetVisiblePathMarkers()
+function cMenuFuncs.SetVisiblePathMarkers()
   local function SetWaypoint(obj,single,skipflags)
     local path
     --we need to build a path for shuttles (and figure out a way to get their dest properly...)
@@ -181,12 +181,12 @@ function CMenuFuncs.SetVisiblePathMarkers()
         obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
       end
       --we want to make sure all waypoints are a different colour (or at least slightly diff)
-      ShowWaypoints(path,CCodeFuncs.ObjectColourRandom(obj,table.remove(randcolours,#randcolours)),obj,single,skipflags)
+      ShowWaypoints(path,cCodeFuncs.ObjectColourRandom(obj,table.remove(randcolours,#randcolours)),obj,single,skipflags)
     end
   end
   local sel = SelectedObj
   if sel then
-    randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
+    randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
     SetWaypoint(sel,true)
     return
   end
@@ -228,7 +228,7 @@ function CMenuFuncs.SetVisiblePathMarkers()
     else
       --need to add a Sleep for RandColor as there's a delay on how quickly it updates
       CreateRealTimeThread(function()
-        local function swp(Class,Table)
+        local function swp(Table)
           for i = 1, #Table do
             SetWaypoint(Table[i],nil,choice[1].check2)
           end
@@ -238,14 +238,14 @@ function CMenuFuncs.SetVisiblePathMarkers()
           local Table2 = GetObjects({class = "CargoShuttle"}) or empty_table
           colourcount = colourcount + #Table1
           colourcount = colourcount + #Table2
-          randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
-          swp("Unit",Table1)
-          swp("CargoShuttle",Table2)
+          randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
+          swp(Table1)
+          swp(Table2)
         else
           local Table = GetObjects({class = value}) or empty_table
           colourcount = colourcount + #Table
-          randcolours = CCodeFuncs.RandomColour(#randcolours + 1)
-          swp(value,Table)
+          randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
+          swp(Table)
         end
 
         --remove any waypoints in the same pos
@@ -260,7 +260,7 @@ function CMenuFuncs.SetVisiblePathMarkers()
   local Check1Hint = "Remove waypoints from the map and reset colours (You need to select any object)."
   local Check2 = "Skip Flags"
   local Check2Hint = "Doesn't add the little flags, just lines and spheres (good for larger maps)."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 local function AnimDebug_Show(Class)
@@ -268,7 +268,7 @@ local function AnimDebug_Show(Class)
   for i = 1, #objs do
     local text = PlaceObject("Text")
     text:SetDepthTest(true)
-    text:SetColor(CodeFuncs.RandomColour())
+    text:SetColor(cCodeFuncs.RandomColour())
     text:SetFontId(UIL.GetFontID("droid, 14, bold"))
 
     text.ChoGGi_AnimDebug = true
@@ -287,15 +287,15 @@ local function AnimDebug_Hide(Class)
   local objs = GetObjects({class = Class}) or empty_table
   for i = 1, #objs do
     local att = objs[i]:GetAttaches() or empty_table
-    for i = 1, #att do
-      if att[i].ChoGGi_AnimDebug then
-        att[i]:delete()
+    for j = 1, #att do
+      if att[j].ChoGGi_AnimDebug then
+        att[j]:delete()
       end
     end
   end
 end
 
-function CMenuFuncs.ShowAnimDebug_Toggle()
+function cMenuFuncs.ShowAnimDebug_Toggle()
   ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
   if ChoGGi.Temp.ShowAnimDebug then
     AnimDebug_Show("Building")
@@ -310,7 +310,7 @@ end
 
 --no sense in building the list more then once
 local ObjectSpawner_ItemList = {}
-function CMenuFuncs.ObjectSpawner()
+function cMenuFuncs.ObjectSpawner()
   --if #ObjectSpawner_ItemList == 0 then
   if not next(ObjectSpawner_ItemList) then
     for Key,_ in pairs(g_Classes) do
@@ -324,7 +324,7 @@ function CMenuFuncs.ObjectSpawner()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if g_Classes[value] then
-      PlaceObj(value,{"Pos",CCodeFuncs.CursorNearestHex()})
+      PlaceObj(value,{"Pos",cCodeFuncs.CursorNearestHex()})
 
       --[[
       --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
@@ -333,15 +333,15 @@ function CMenuFuncs.ObjectSpawner()
       end
       --]]
 
-      CComFuncs.MsgPopup("Spawned: " .. choice[1].text,"Object")
+      cComFuncs.MsgPopup("Spawned: " .. choice[1].text,"Object")
     end
   end
 
   local hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
 end
 
-function CMenuFuncs.ShowSelectionEditor()
+function cMenuFuncs.ShowSelectionEditor()
   --check for any opened windows and kill them
   for i = 1, #terminal.desktop do
     if IsKindOf(terminal.desktop[i],"ObjectsStatsDlg") then
@@ -358,18 +358,18 @@ function CMenuFuncs.ShowSelectionEditor()
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
-function CMenuFuncs.SetWriteLogs_Toggle()
+function cMenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.UserSettings.WriteLogs = not ChoGGi.UserSettings.WriteLogs
-  CComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+  cComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.UserSettings.WriteLogs),
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.UserSettings.WriteLogs),
     "Logging","UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
 
-function CMenuFuncs.ObjExaminer()
-  local obj = CCodeFuncs.SelObject()
+function cMenuFuncs.ObjExaminer()
+  local obj = cCodeFuncs.SelObject()
   --OpenExamine(SelectedObj)
   if not obj then
     return ClearShowMe()
@@ -379,7 +379,7 @@ function CMenuFuncs.ObjExaminer()
   ex:SetObj(obj)
 end
 
-function CMenuFuncs.Editor_Toggle()
+function cMenuFuncs.Editor_Toggle()
   --keep menu opened if visible
   local showmenu
   if dlgUAMenu then
@@ -422,16 +422,16 @@ function CMenuFuncs.Editor_Toggle()
   end
 end
 
-function CMenuFuncs.DeleteObjects(obj)
+function cMenuFuncs.DeleteObjects(obj)
   if not obj or (obj.key and obj.action and obj.idx) then
     --multiple selection from editor mode
     local objs = editor:GetSel()
     if next(objs) then
       for i = 1, #objs do
-        CMenuFuncs.DeleteObject(objs[i])
+        cMenuFuncs.DeleteObject(objs[i])
       end
     else
-      obj = CCodeFuncs.SelObject()
+      obj = cCodeFuncs.SelObject()
     end
   end
 
@@ -446,7 +446,7 @@ function CMenuFuncs.DeleteObjects(obj)
     if type(attach) == "table" then
       for i = 1, #attach do
         pcall(function()
-          CMenuFuncs.DeleteObject(attach[i])
+          cMenuFuncs.DeleteObject(attach[i])
         end)
       end
     end
@@ -492,17 +492,17 @@ function CMenuFuncs.DeleteObjects(obj)
   ChoGGi.Temp.LastPlacedObject = nil
 end
 
-function CMenuFuncs.ConsoleHistory_Toggle()
+function cMenuFuncs.ConsoleHistory_Toggle()
   ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
   ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
     "Console","UI/Icons/Sections/workshifts.tga"
   )
 end
 
-function CMenuFuncs.ChangeMap()
+function cMenuFuncs.ChangeMap()
   CreateRealTimeThread(function()
     local caption = Untranslated("Choose map with settings presets:")
     local maps = ListMaps()
@@ -541,7 +541,7 @@ end
 local build_grid_debug_range = 10
 GlobalVar("build_grid_debug_objs", false)
 GlobalVar("build_grid_debug_thread", false)
-function CMenuFuncs.debug_build_grid(Type)
+function cMenuFuncs.debug_build_grid(Type)
   if type(ChoGGi.UserSettings.DebugGridSize) == "number" then
     build_grid_debug_range = ChoGGi.UserSettings.DebugGridSize
   end

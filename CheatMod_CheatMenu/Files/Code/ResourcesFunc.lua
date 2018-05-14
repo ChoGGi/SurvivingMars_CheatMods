@@ -1,15 +1,15 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
-function CMenuFuncs.AddOrbitalProbes()
+function cMenuFuncs.AddOrbitalProbes()
   local ItemList = {
     {text = 5,value = 5},
     {text = 10,value = 10},
@@ -28,12 +28,12 @@ function CMenuFuncs.AddOrbitalProbes()
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
 end
 
-function CMenuFuncs.SetFoodPerRocketPassenger()
-  local r = CConsts.ResourceScale
-  local DefaultSetting = CConsts.FoodPerRocketPassenger / r
+function cMenuFuncs.SetFoodPerRocketPassenger()
+  local r = cConsts.ResourceScale
+  local DefaultSetting = cConsts.FoodPerRocketPassenger / r
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
@@ -54,20 +54,20 @@ function CMenuFuncs.SetFoodPerRocketPassenger()
   local CallBackFunc = function(choice)
     if type(choice[1].value) == "number" then
       local value = choice[1].value * r
-      CComFuncs.SetConstsG("FoodPerRocketPassenger",value)
-      CComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
+      cComFuncs.SetConstsG("FoodPerRocketPassenger",value)
+      cComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(choice[1].text .. ": om nom nom nom nom",
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(choice[1].text .. ": om nom nom nom nom",
         "Passengers","UI/Icons/Sections/Food_4.tga"
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
 end
 
-function CMenuFuncs.AddPrefabs()
+function cMenuFuncs.AddPrefabs()
   local ItemList = {
     {text = "Drone",value = 10},
     {text = "DroneHub",value = 10},
@@ -97,17 +97,17 @@ function CMenuFuncs.AddPrefabs()
         UICity:AddPrefabs(text,value)
       end
       RefreshXBuildMenu()
-      CComFuncs.MsgPopup(value .. " " .. text .. " prefabs have been added.",
+      cComFuncs.MsgPopup(value .. " " .. text .. " prefabs have been added.",
         "Prefabs",UsualIcon
       )
     end
   end
 
   local hint = "Use edit box to enter amount of prefabs to add."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
 end
 
-function CMenuFuncs.SetFunding()
+function cMenuFuncs.SetFunding()
   --list to display and list with values
   local DefaultSetting = "(Reset to 500 M)"
   local hint = "If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting
@@ -131,22 +131,22 @@ function CMenuFuncs.SetFunding()
       --and add the new amount
       ChangeFunding(value)
 
-      CComFuncs.MsgPopup(choice[1].text,
+      cComFuncs.MsgPopup(choice[1].text,
         "Funding",UsualIcon2
       )
     end
   end
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
 end
 
-function CMenuFuncs.FillResource()
-  local sel = CCodeFuncs.SelObject()
+function cMenuFuncs.FillResource()
+  local sel = cCodeFuncs.SelObject()
   if not sel then
     return
   end
 
   --need the msg here, as i made it return if it succeeds
-  CComFuncs.MsgPopup("Resouce Filled",
+  cComFuncs.MsgPopup("Resouce Filled",
     "Resource",UsualIcon2
   )
 

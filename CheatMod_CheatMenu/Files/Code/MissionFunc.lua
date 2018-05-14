@@ -1,10 +1,10 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
@@ -17,11 +17,11 @@ function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
       end
     end
   end
-  SetBonus("MissionSponsorPreset","Sponsor",CMenuFuncs.SetSponsorBonuses)
-  SetBonus("CommanderProfilePreset","Commander",CMenuFuncs.SetCommanderBonuses)
+  SetBonus("MissionSponsorPreset","Sponsor",cMenuFuncs.SetSponsorBonuses)
+  SetBonus("CommanderProfilePreset","Commander",cMenuFuncs.SetCommanderBonuses)
 end
 
-function CMenuFuncs.InstantMissionGoal()
+function cMenuFuncs.InstantMissionGoal()
   local goal = UICity.mission_goal
   local target = GetMissionSponsor().goal_target + 1
   --different goals use different targets, we'll just set them all
@@ -31,26 +31,26 @@ function CMenuFuncs.InstantMissionGoal()
   --
   goal.colony_approval_sol = UICity.day
   ChoGGi.Temp.InstantMissionGoal = true
-  CComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
+  cComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
 end
 
-function CMenuFuncs.InstantColonyApproval()
+function cMenuFuncs.InstantColonyApproval()
   CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
   Msg("ColonyApprovalPassed")
   g_ColonyNotViableUntil = -1
 end
 
-function CMenuFuncs.MeteorHealthDamage_Toggle()
-  CComFuncs.SetConstsG("MeteorHealthDamage",CComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,CConsts.MeteorHealthDamage))
-  CComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
+function cMenuFuncs.MeteorHealthDamage_Toggle()
+  cComFuncs.SetConstsG("MeteorHealthDamage",cComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,cConsts.MeteorHealthDamage))
+  cComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
     "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
 
-function CMenuFuncs.ChangeSponsor()
+function cMenuFuncs.ChangeSponsor()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
@@ -78,7 +78,7 @@ function CMenuFuncs.ChangeSponsor()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        CComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
+        cComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
           "Sponsor",UsualIcon
         )
         break
@@ -87,11 +87,11 @@ function CMenuFuncs.ChangeSponsor()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
 end
 
 --set just the bonus effects
-function CMenuFuncs.SetSponsorBonus()
+function cMenuFuncs.SetSponsorBonus()
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
@@ -126,15 +126,15 @@ function CMenuFuncs.SetSponsorBonus()
               ChoGGi.UserSettings[name] = true
             end
             if ChoGGi.UserSettings[name] then
-              CMenuFuncs.SetSponsorBonuses(value)
+              cMenuFuncs.SetSponsorBonuses(value)
             end
           end
         end
       end
     end
 
-    CSettingFuncs.WriteSettings()
-    CComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
+    cSettingFuncs.WriteSettings()
+    cComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
@@ -142,10 +142,10 @@ function CMenuFuncs.SetSponsorBonus()
     .. "\n\nModded ones are mostly ignored for now (just cargo space/research points)."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
-function CMenuFuncs.ChangeCommander()
+function cMenuFuncs.ChangeCommander()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -173,7 +173,7 @@ function CMenuFuncs.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        CComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
+        cComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
           "Commander",UsualIcon
         )
         break
@@ -182,11 +182,11 @@ function CMenuFuncs.ChangeCommander()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
 end
 
 --set just the bonus effects
-function CMenuFuncs.SetCommanderBonus()
+function cMenuFuncs.SetCommanderBonus()
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -221,26 +221,26 @@ function CMenuFuncs.SetCommanderBonus()
               ChoGGi.UserSettings[name] = true
             end
             if ChoGGi.UserSettings[name] then
-              CMenuFuncs.SetCommanderBonuses(value)
+              cMenuFuncs.SetCommanderBonuses(value)
             end
           end
         end
       end
     end
 
-    CSettingFuncs.WriteSettings()
-    CComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
+    cSettingFuncs.WriteSettings()
+    cComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
     .. "\n\nUse Ctrl/Shift for multiple bonuses."
   local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
   local hint_check2 = "Turns off all bonuses."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
 end
 
 --pick a logo
-function CMenuFuncs.ChangeGameLogo()
+function cMenuFuncs.ChangeGameLogo()
   local ItemList = {}
   local tab = Presets.MissionLogoPreset.Default or empty_table
   for i = 1, #tab do
@@ -280,7 +280,7 @@ function CMenuFuncs.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        CComFuncs.MsgPopup("Logo: " .. choice[1].text,
+        cComFuncs.MsgPopup("Logo: " .. choice[1].text,
           "Logo",UsualIcon
         )
       end
@@ -288,10 +288,10 @@ function CMenuFuncs.ChangeGameLogo()
   end
 
   local hint = "Current: " .. _InternalTranslate(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
 end
 
-function CMenuFuncs.SetCommanderBonuses(sType)
+function cMenuFuncs.SetCommanderBonuses(sType)
   local currentname = g_CurrentMissionParams.idCommanderProfile
   local comm = MissionParams.idCommanderProfile.items[currentname]
   local bonus = Presets.CommanderProfilePreset.Default[sType]
@@ -303,16 +303,16 @@ function CMenuFuncs.SetCommanderBonuses(sType)
   end
 end
 
-function CMenuFuncs.SetSponsorBonuses(sType)
+function cMenuFuncs.SetSponsorBonuses(sType)
   local currentname = g_CurrentMissionParams.idMissionSponsor
   local sponsor = MissionParams.idMissionSponsor.items[currentname]
   local bonus = Presets.MissionSponsorPreset.Default[sType]
   --bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
   if sponsor.cargo then
-    sponsor.cargo = CComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
+    sponsor.cargo = cComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
   end
   if sponsor.additional_research_points then
-    sponsor.additional_research_points = CComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+    sponsor.additional_research_points = cComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
   end
 
   if sType == "IMM" then
@@ -328,8 +328,8 @@ function CMenuFuncs.SetSponsorBonuses(sType)
       "Amount",500
     })
   elseif sType == "BlueSun" then
-    sponsor.rocket_price = CComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
-    sponsor.applicants_price = CComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+    sponsor.rocket_price = cComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+    sponsor.applicants_price = cComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Physics",
       "Research","DeepMetalExtraction"
@@ -386,15 +386,15 @@ function CMenuFuncs.SetSponsorBonuses(sType)
       "Percent",-20
     })
   elseif sType == "ESA" then
-    sponsor.funding_per_tech = CComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
-    sponsor.funding_per_breakthrough = CComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+    sponsor.funding_per_tech = cComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+    sponsor.funding_per_breakthrough = cComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
   elseif sType == "SpaceY" then
-    sponsor.modifier_name1 = CComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = CComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-    sponsor.modifier_name2 = CComFuncs.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
-    sponsor.modifier_value2 = CComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
-    sponsor.modifier_name3 = CComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
-    sponsor.modifier_value3 = CComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+    sponsor.modifier_name1 = cComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = cComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name2 = cComFuncs.CompareAmounts(sponsor.modifier_name2,bonusmodifier_name2)
+    sponsor.modifier_value2 = cComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+    sponsor.modifier_name3 = cComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+    sponsor.modifier_value3 = cComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
       "Label","Consts",
       "Prop","CommandCenterMaxDrones",
@@ -412,15 +412,15 @@ function CMenuFuncs.SetSponsorBonuses(sType)
       "Percent",-50
     })
   elseif sType == "Roscosmos" then
-    sponsor.modifier_name1 = CComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-    sponsor.modifier_value1 = CComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name1 = cComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = cComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
     sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
       "Field","Robotics",
       "Research","FueledExtractors"
     })
   elseif sType == "Paradox" then
-    sponsor.applicants_per_breakthrough = CComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
-    sponsor.anomaly_bonus_breakthrough = CComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
+    sponsor.applicants_per_breakthrough = cComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+    sponsor.anomaly_bonus_breakthrough = cComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end
 
@@ -430,7 +430,7 @@ end
 
 
 figure out where this is stored in-game
-function CMenuFuncs.SetDisasterOccurrence(sType)
+function cMenuFuncs.SetDisasterOccurrence(sType)
   local ItemList = {}
   local data = DataInstances["MapSettings_" .. sType]
 
@@ -444,11 +444,11 @@ function CMenuFuncs.SetDisasterOccurrence(sType)
   local CallBackFunc = function(choice)
     mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
 
-    CComFuncs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
+    cComFuncs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
       "Disaster","UI/Icons/Sections/attention.tga"
     )
   end
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
 end
 
 function ChoGGi.ChangeRules()
@@ -467,10 +467,10 @@ function ChoGGi.ChangeRules()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if not check1 and not check2 then
-      CComFuncs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
+      cComFuncs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
       return
     elseif check1 and check2 then
-      CComFuncs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
+      cComFuncs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
       return
     end
 
@@ -497,7 +497,7 @@ function ChoGGi.ChangeRules()
       GameRulesMap[rule_id]:OnInitEffect(UICity)
       GameRulesMap[rule_id]:OnApplyEffect(UICity)
     end
-    CComFuncs.MsgPopup("Set: " .. #choice,
+    cComFuncs.MsgPopup("Set: " .. #choice,
       "Rules",UsualIcon
     )
   end
@@ -511,6 +511,6 @@ function ChoGGi.ChangeRules()
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
 end
 --]]

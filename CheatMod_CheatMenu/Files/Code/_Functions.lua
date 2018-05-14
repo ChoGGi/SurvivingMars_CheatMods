@@ -1,6 +1,6 @@
-local CTables = ChoGGi.Tables
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
+local cTables = ChoGGi.Tables
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
 
 --any funcs called from Code/*.lua
 
@@ -9,14 +9,14 @@ function console(...)ConsolePrint(tostring(...))end
 function examine(Obj)OpenExamine(Obj)end
 function ex(Obj)OpenExamine(Obj)end
 function con(...)console(...)end
-function dump(...)CComFuncs.Dump(...)end
-function dumpobject(...)CComFuncs.DumpObject(...)end
-function dumplua(...)CComFuncs.DumpLua(...)end
-function dumptable(...)CComFuncs.DumpTable(...)end
-function dumpo(...)CComFuncs.DumpObject(...)end
-function dumpl(...)CComFuncs.DumpLua(...)end
-function dumpt(...)CComFuncs.DumpTable(...)end
-function alert(...)CComFuncs.MsgPopup(...)end
+function dump(...)cComFuncs.Dump(...)end
+function dumpobject(...)cComFuncs.DumpObject(...)end
+function dumplua(...)cComFuncs.DumpLua(...)end
+function dumptable(...)cComFuncs.DumpTable(...)end
+function dumpo(...)cComFuncs.DumpObject(...)end
+function dumpl(...)cComFuncs.DumpLua(...)end
+function dumpt(...)cComFuncs.DumpTable(...)end
+function alert(...)cComFuncs.MsgPopup(...)end
 function restart()quit("restart")end
 s = false --used to store SelectedObj
 function so()return ChoGGi.CodeFuncs.SelObject()end
@@ -35,14 +35,14 @@ end
 
 --check if tech is researched before we set these consts (activated from menu items)
 function ChoGGi.CodeFuncs.GetSpeedDrone()
-  local MoveSpeed = CConsts.SpeedDrone
+  local MoveSpeed = cConsts.SpeedDrone
 
   if UICity and UICity:IsTechResearched("LowGDrive") then
-    local p = CComFuncs.ReturnTechAmount("LowGDrive","move_speed")
+    local p = cComFuncs.ReturnTechAmount("LowGDrive","move_speed")
     MoveSpeed = MoveSpeed + MoveSpeed * p
   end
   if UICity and UICity:IsTechResearched("AdvancedDroneDrive") then
-    local p = CComFuncs.ReturnTechAmount("AdvancedDroneDrive","move_speed")
+    local p = cComFuncs.ReturnTechAmount("AdvancedDroneDrive","move_speed")
     MoveSpeed = MoveSpeed + MoveSpeed * p
   end
 
@@ -51,57 +51,57 @@ end
 
 function ChoGGi.CodeFuncs.GetSpeedRC()
   if UICity and UICity:IsTechResearched("LowGDrive") then
-    local p = CComFuncs.ReturnTechAmount("LowGDrive","move_speed")
-    return CConsts.SpeedRC + CConsts.SpeedRC * p
+    local p = cComFuncs.ReturnTechAmount("LowGDrive","move_speed")
+    return cConsts.SpeedRC + cConsts.SpeedRC * p
   end
-  return CConsts.SpeedRC
+  return cConsts.SpeedRC
 end
 
 function ChoGGi.CodeFuncs.GetCargoCapacity()
   if UICity and UICity:IsTechResearched("FuelCompression") then
-    local a = CComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
-    return CConsts.CargoCapacity + a
+    local a = cComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
+    return cConsts.CargoCapacity + a
   end
-  return CConsts.CargoCapacity
+  return cConsts.CargoCapacity
 end
 --
 function ChoGGi.CodeFuncs.GetCommandCenterMaxDrones()
   if UICity and UICity:IsTechResearched("DroneSwarm") then
-    local a = CComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
-    return CConsts.CommandCenterMaxDrones + a
+    local a = cComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+    return cConsts.CommandCenterMaxDrones + a
   end
-  return CConsts.CommandCenterMaxDrones
+  return cConsts.CommandCenterMaxDrones
 end
 --
 function ChoGGi.CodeFuncs.GetDroneResourceCarryAmount()
   if UICity and UICity:IsTechResearched("ArtificialMuscles") then
-    local a = CComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
-    return CConsts.DroneResourceCarryAmount + a
+    local a = cComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+    return cConsts.DroneResourceCarryAmount + a
   end
-  return CConsts.DroneResourceCarryAmount
+  return cConsts.DroneResourceCarryAmount
 end
 --
 function ChoGGi.CodeFuncs.GetLowSanityNegativeTraitChance()
   if UICity and UICity:IsTechResearched("SupportiveCommunity") then
-    local p = CComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+    local p = cComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
     --[[
     LowSanityNegativeTraitChance = 30%
     SupportiveCommunity = -70%
     --]]
-    local LowSan = CConsts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
+    local LowSan = cConsts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
     return p*LowSan/100*100
   end
-  return CConsts.LowSanityNegativeTraitChance
+  return cConsts.LowSanityNegativeTraitChance
 end
 --
 function ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
-  local PerRocket = CConsts.MaxColonistsPerRocket
+  local PerRocket = cConsts.MaxColonistsPerRocket
   if UICity and UICity:IsTechResearched("CompactPassengerModule") then
-    local a = CComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+    local a = cComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
     PerRocket = PerRocket + a
   end
   if UICity and UICity:IsTechResearched("CryoSleep") then
-    local a = CComFuncs.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+    local a = cComFuncs.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
     PerRocket = PerRocket + a
   end
   return PerRocket
@@ -109,50 +109,50 @@ end
 --
 function ChoGGi.CodeFuncs.GetNonSpecialistPerformancePenalty()
   if UICity and UICity:IsTechResearched("GeneralTraining") then
-    local a = CComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
-    return CConsts.NonSpecialistPerformancePenalty - a
+    local a = cComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+    return cConsts.NonSpecialistPerformancePenalty - a
   end
-  return CConsts.NonSpecialistPerformancePenalty
+  return cConsts.NonSpecialistPerformancePenalty
 end
 --
 function ChoGGi.CodeFuncs.GetRCRoverMaxDrones()
   if UICity and UICity:IsTechResearched("RoverCommandAI") then
-    local a = CComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
-    return CConsts.RCRoverMaxDrones + a
+    local a = cComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+    return cConsts.RCRoverMaxDrones + a
   end
-  return CConsts.RCRoverMaxDrones
+  return cConsts.RCRoverMaxDrones
 end
 --
 function ChoGGi.CodeFuncs.GetRCTransportGatherResourceWorkTime()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local p = CComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
-    return CConsts.RCTransportGatherResourceWorkTime * p
+    local p = cComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+    return cConsts.RCTransportGatherResourceWorkTime * p
   end
-  return CConsts.RCTransportGatherResourceWorkTime
+  return cConsts.RCTransportGatherResourceWorkTime
 end
 --
 function ChoGGi.CodeFuncs.GetRCTransportStorageCapacity()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
-    local a = CComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
-    return CConsts.RCTransportStorageCapacity + (a * CConsts.ResourceScale)
+    local a = cComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
+    return cConsts.RCTransportStorageCapacity + (a * cConsts.ResourceScale)
   end
-  return CConsts.RCTransportStorageCapacity
+  return cConsts.RCTransportStorageCapacity
 end
 --
 function ChoGGi.CodeFuncs.GetTravelTimeEarthMars()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = CComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
-    return CConsts.TravelTimeEarthMars * p
+    local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+    return cConsts.TravelTimeEarthMars * p
   end
-  return CConsts.TravelTimeEarthMars
+  return cConsts.TravelTimeEarthMars
 end
 --
 function ChoGGi.CodeFuncs.GetTravelTimeMarsEarth()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
-    local p = CComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
-    return CConsts.TravelTimeMarsEarth * p
+    local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+    return cConsts.TravelTimeMarsEarth * p
   end
-  return CConsts.TravelTimeMarsEarth
+  return cConsts.TravelTimeMarsEarth
 end
 
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
@@ -341,7 +341,7 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
-    Age = CTables.ColonistAges[UICity:Random(1,6)]
+    Age = cTables.ColonistAges[UICity:Random(1,6)]
   end
   --remove all age traits
   Colonist:RemoveTrait("Child")
@@ -386,9 +386,9 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
   if Gender == "Random" then
-    Gender = CTables.ColonistGenders[UICity:Random(1,5)]
+    Gender = cTables.ColonistGenders[UICity:Random(1,5)]
   elseif Gender == "MaleOrFemale" then
-    Gender = CTables.ColonistGenders[UICity:Random(4,5)]
+    Gender = cTables.ColonistGenders[UICity:Random(4,5)]
   end
   --remove all gender traits
   Colonist:RemoveTrait("OtherGender")
@@ -421,7 +421,7 @@ end
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
-      Spec = CTables.ColonistSpecializations[UICity:Random(1,6)]
+      Spec = cTables.ColonistSpecializations[UICity:Random(1,6)]
     end
     Colonist:SetSpecialization(Spec,"init")
     Colonist:ChooseEntity()
@@ -552,7 +552,7 @@ function ChoGGi.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,C
   end
   table.sort(Items,
     function(a,b)
-      return CComFuncs.CompareTableValue(a,b,sortby)
+      return cComFuncs.CompareTableValue(a,b,sortby)
     end
   )
 
@@ -624,9 +624,9 @@ function ChoGGi.CodeFuncs.FuckingDrones(Producer)
     end
     if drone then
 
-      local carry = g_Consts.DroneResourceCarryAmount * CConsts.ResourceScale
+      local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
       --round to nearest 1000 (don't want uneven stacks)
-      amount = (amount - amount % CConsts.ResourceScale) / CConsts.ResourceScale * CConsts.ResourceScale
+      amount = (amount - amount % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
       --if carry is smaller then amount then fine
       if carry < amount then
         amount = carry
@@ -680,7 +680,7 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
     return AsyncRand(16777216) * -1
   end
   local randcolors = {}
-  local RetTableNoDupes = CComFuncs.RetTableNoDupes
+  local RetTableNoDupes = cComFuncs.RetTableNoDupes
   local AsyncRand = AsyncRand
   while true do
     randcolors[#randcolors+1] = AsyncRand(16777216) * -1
@@ -791,7 +791,7 @@ function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
 end
 
 function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
-  while CComFuncs.CheckForTypeInList(win,Dialog) do
+  while cComFuncs.CheckForTypeInList(win,Dialog) do
     for i = 1, #win do
       if IsKindOf(win[i],Dialog) then
         win[i]:delete()
@@ -815,7 +815,7 @@ function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
   local io_demand_req = io_stockpile.demand[resource]
 
   io_stockpile.max_z = amount
-  amount = (amount * 10) * CConsts.ResourceScale
+  amount = (amount * 10) * cConsts.ResourceScale
   io_supply_req:SetAmount(amount)
   io_demand_req:SetAmount(amount)
 end
@@ -918,7 +918,7 @@ function ChoGGi.CodeFuncs.RetType(Obj)
 end
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   if not obj and not obj:IsKindOf("ColorizableObject") then
-    CComFuncs.MsgPopup("Can't colour object","Colour")
+    cComFuncs.MsgPopup("Can't colour object","Colour")
     return
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
@@ -1006,7 +1006,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       --store table so it's the same as was displayed
       table.sort(choice,
         function(a,b)
-          return CComFuncs.CompareTableValue(a,b,"text")
+          return cComFuncs.CompareTableValue(a,b,"text")
         end
       )
       --All of type checkbox
@@ -1040,7 +1040,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      CComFuncs.MsgPopup("Colour is set on " .. obj.class,"Colour")
+      cComFuncs.MsgPopup("Colour is set on " .. obj.class,"Colour")
     end
   end
   local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
@@ -1059,7 +1059,7 @@ function ChoGGi.CodeFuncs.SelObject()
   local _,ret = pcall(function()
     --#GetObjects({class="CObject"})
     --#GetObjects({class="PropertyObject"})
-    local objs = CComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
+    local objs = cComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
     return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
   end)
   return ret

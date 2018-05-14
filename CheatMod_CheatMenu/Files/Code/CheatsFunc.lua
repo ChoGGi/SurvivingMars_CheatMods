@@ -1,63 +1,63 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
-function CMenuFuncs.OpenModEditor()
+function cMenuFuncs.OpenModEditor()
   local ModEditor = function()
     ModEditorOpen()
   end
-  CComFuncs.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
+  cComFuncs.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
 end
 
-function CMenuFuncs.ResetAllResearch()
+function cMenuFuncs.ResetAllResearch()
   local ResetAllResearch = function()
     UICity:InitResearch()
   end
-  CComFuncs.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
+  cComFuncs.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
 end
 
-function CMenuFuncs.DisasterTriggerMissle(Amount)
+function cMenuFuncs.DisasterTriggerMissle(Amount)
   Amount = Amount or 1
   --(obj, radius, count, delay_min, delay_max)
   StartBombard(
-    CCodeFuncs.SelObject() or GetTerrainCursor(),
+    cCodeFuncs.SelObject() or GetTerrainCursor(),
     0,
     Amount
   )
 end
-function CMenuFuncs.DisasterTriggerColdWave()
+function cMenuFuncs.DisasterTriggerColdWave()
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_ColdWave
     local descr = data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
     StartColdWave(descr)
   end)
 end
-function CMenuFuncs.DisasterTriggerDustStorm(storm_type)
+function cMenuFuncs.DisasterTriggerDustStorm(storm_type)
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_DustStorm
     local descr = data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
     StartDustStorm(storm_type,descr)
   end)
 end
-function CMenuFuncs.DisasterTriggerDustDevils(major)
+function cMenuFuncs.DisasterTriggerDustDevils(major)
   local data = DataInstances.MapSettings_DustDevils
   local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
   GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
 end
-function CMenuFuncs.DisasterTriggerMeteor(meteors_type)
+function cMenuFuncs.DisasterTriggerMeteor(meteors_type)
   local data = DataInstances.MapSettings_Meteor
   local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   CreateGameTimeThread(function()
     MeteorsDisaster(descr, meteors_type, GetTerrainCursor())
   end)
 end
-function CMenuFuncs.DisastersStop()
+function cMenuFuncs.DisastersStop()
   for Key,_ in pairs(g_IncomingMissiles or empty_table) do
     Key:ExplodeInAir()
   end
@@ -69,7 +69,7 @@ function CMenuFuncs.DisastersStop()
   end
 end
 
-function CMenuFuncs.MeteorsDestroy()
+function cMenuFuncs.MeteorsDestroy()
   --causes error msgs for next ones (seems to work fine, but still)
   while #g_MeteorsPredicted > 0 do
     for i = 1, #g_MeteorsPredicted do
@@ -80,7 +80,7 @@ function CMenuFuncs.MeteorsDestroy()
   end
 end
 
-function CMenuFuncs.DisastersTrigger()
+function cMenuFuncs.DisastersTrigger()
   local ItemList = {
     {text = " Stop Most Disasters",value = "Stop",hint = "Can't stop meteors."},
     {text = " Remove Broken Meteors",value = "MeteorsDestroy",hint = "If you have some continuous spinning meteors. It might put some error msgs in console, but I didn't notice any other issues."},
@@ -103,49 +103,49 @@ function CMenuFuncs.DisastersTrigger()
     for i = 1, #choice do
       local value = choice[i].value
       if value == "Stop" then
-        CMenuFuncs.DisastersStop()
+        cMenuFuncs.DisastersStop()
       elseif value == "MeteorsDestroy" then
-        CMenuFuncs.MeteorsDestroy()
+        cMenuFuncs.MeteorsDestroy()
       elseif value == "ColdWave" then
-        CMenuFuncs.DisasterTriggerColdWave()
+        cMenuFuncs.DisasterTriggerColdWave()
 
       elseif value == "DustDevilsMajor" then
-        CMenuFuncs.DisasterTriggerDustDevils("major")
+        cMenuFuncs.DisasterTriggerDustDevils("major")
       elseif value == "DustDevils" then
-        CMenuFuncs.DisasterTriggerDustDevils()
+        cMenuFuncs.DisasterTriggerDustDevils()
 
       elseif value == "DustStormElectrostatic" then
-        CMenuFuncs.DisasterTriggerDustStorm("electrostatic")
+        cMenuFuncs.DisasterTriggerDustStorm("electrostatic")
       elseif value == "DustStormGreat" then
-        CMenuFuncs.DisasterTriggerDustStorm("great")
+        cMenuFuncs.DisasterTriggerDustStorm("great")
       elseif value == "DustStorm" then
-        CMenuFuncs.DisasterTriggerDustStorm("normal")
+        cMenuFuncs.DisasterTriggerDustStorm("normal")
 
       elseif value == "MeteorStorm" then
-        CMenuFuncs.DisasterTriggerMeteor("storm")
+        cMenuFuncs.DisasterTriggerMeteor("storm")
       elseif value == "MeteorMultiSpawn" then
-        CMenuFuncs.DisasterTriggerMeteor("multispawn")
+        cMenuFuncs.DisasterTriggerMeteor("multispawn")
       elseif value == "Meteor" then
-        CMenuFuncs.DisasterTriggerMeteor("single")
+        cMenuFuncs.DisasterTriggerMeteor("single")
 
       elseif value == "Missle1" then
-        CMenuFuncs.DisasterTriggerMissle(1)
+        cMenuFuncs.DisasterTriggerMissle(1)
       elseif value == "Missle10" then
-        CMenuFuncs.DisasterTriggerMissle(10)
+        cMenuFuncs.DisasterTriggerMissle(10)
       elseif value == "Missle100" then
-        CMenuFuncs.DisasterTriggerMissle(100)
+        cMenuFuncs.DisasterTriggerMissle(100)
       elseif value == "Missle500" then
-        CMenuFuncs.DisasterTriggerMissle(500)
+        cMenuFuncs.DisasterTriggerMissle(500)
       end
-      CComFuncs.MsgPopup(choice[i].text,"Disasters")
+      cComFuncs.MsgPopup(choice[i].text,"Disasters")
     end
   end
 
   local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select)."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
 end
 
-function CMenuFuncs.ShowScanAndMapOptions()
+function cMenuFuncs.ShowScanAndMapOptions()
   local hint_core = "Core: Repeatable, exploit core resources."
   local hint_deep = "Deep: Toggleable, exploit deep resources."
   local ItemList = {
@@ -166,10 +166,10 @@ function CMenuFuncs.ShowScanAndMapOptions()
 
   local CallBackFunc = function(choice)
     local function deep()
-      CComFuncs.SetConstsG("DeepScanAvailable",CComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
-      CComFuncs.SetConstsG("IsDeepWaterExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
-      CComFuncs.SetConstsG("IsDeepMetalsExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
-      CComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+      cComFuncs.SetConstsG("DeepScanAvailable",cComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+      cComFuncs.SetConstsG("IsDeepWaterExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+      cComFuncs.SetConstsG("IsDeepMetalsExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+      cComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
     end
     local function core()
       Msg("TechResearched","CoreWater", UICity)
@@ -191,13 +191,13 @@ function CMenuFuncs.ShowScanAndMapOptions()
       elseif value == 3 then
         core()
       elseif value == 4 then
-        CComFuncs.SetConstsG("DeepScanAvailable",CComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+        cComFuncs.SetConstsG("DeepScanAvailable",cComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
       elseif value == 5 then
-        CComFuncs.SetConstsG("IsDeepWaterExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+        cComFuncs.SetConstsG("IsDeepWaterExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
       elseif value == 6 then
-        CComFuncs.SetConstsG("IsDeepMetalsExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+        cComFuncs.SetConstsG("IsDeepMetalsExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
       elseif value == 7 then
-        CComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",CComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+        cComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",cComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
       elseif value == 8 then
         Msg("TechResearched","CoreWater", UICity)
       elseif value == 9 then
@@ -212,22 +212,22 @@ function CMenuFuncs.ShowScanAndMapOptions()
         CheatMapExplore("deep scanned")
       end
     end
-    CComFuncs.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
-    CComFuncs.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
-    CComFuncs.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
-    CComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+    cComFuncs.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
+    cComFuncs.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
+    cComFuncs.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
+    cComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
 
-    CSettingFuncs.WriteSettings()
-    CComFuncs.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
+    cSettingFuncs.WriteSettings()
+    cComFuncs.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
       "Scanner","UI/Icons/Notifications/scan.tga",true
     )
   end
 
   local hint = "You can select multiple items."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Scan Map",hint,true)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Scan Map",hint,true)
 end
 
-function CMenuFuncs.SpawnColonists()
+function cMenuFuncs.SpawnColonists()
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},
@@ -247,41 +247,41 @@ function CMenuFuncs.SpawnColonists()
     local value = choice[1].value
     if type(value) == "number" then
       CheatSpawnNColonists(value)
-      CComFuncs.MsgPopup("Spawned: " .. choice[1].text,
+      cComFuncs.MsgPopup("Spawned: " .. choice[1].text,
         "Colonists","UI/Icons/Sections/colonist.tga"
       )
     end
   end
 
   local hint = "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
 end
 
-function CMenuFuncs.ShowMysteryList()
+function cMenuFuncs.ShowMysteryList()
   local ItemList = {}
   ClassDescendantsList("MysteryBase",function(class)
     ItemList[#ItemList+1] = {
-      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({CTables.MysteryDifficulty[class]})) or "Missing Name"),
+      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[class]})) or "Missing Name"),
       value = class,
-      hint = (_InternalTranslate(T({CTables.MysteryDescription[class]})) or "Missing Description")
+      hint = (_InternalTranslate(T({cTables.MysteryDescription[class]})) or "Missing Description")
     }
   end)
 
   local CallBackFunc = function(choice)
     if choice[1].check1 then
       --instant
-      CMenuFuncs.StartMystery(choice[1].value,true)
+      cMenuFuncs.StartMystery(choice[1].value,true)
     else
-      CMenuFuncs.StartMystery(choice[1].value)
+      cMenuFuncs.StartMystery(choice[1].value)
     end
   end
 
   local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries."
   local checkmarkhint = "May take up to one Sol to \"instantly\" activate mystery."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
 end
 
-function CMenuFuncs.StartMystery(Mystery,Bool)
+function cMenuFuncs.StartMystery(Mystery,Bool)
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.UserSettings.ShowMysteryMsgs = true
 
@@ -326,15 +326,15 @@ function CMenuFuncs.StartMystery(Mystery,Bool)
   end
 end
 
-function CMenuFuncs.UnlockAllBuildings()
+function cMenuFuncs.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
-  CComFuncs.MsgPopup("Unlocked all buildings for construction.",
+  cComFuncs.MsgPopup("Unlocked all buildings for construction.",
     "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
 
-function CMenuFuncs.AddResearchPoints()
+function cMenuFuncs.AddResearchPoints()
   local ItemList = {
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -353,29 +353,29 @@ function CMenuFuncs.AddResearchPoints()
     local value = choice[1].value
     if type(value) == "number" then
       UICity:AddResearchPoints(value)
-      CComFuncs.MsgPopup("Added: " .. choice[1].text,
+      cComFuncs.MsgPopup("Added: " .. choice[1].text,
         "Research","UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
   end
 
   local hint = "If you need a little boost (or a lotta boost) in research."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
 end
 
-function CMenuFuncs.OutsourcingFree_Toggle()
-  CComFuncs.SetConstsG("OutsourceResearchCost",CComFuncs.NumRetBool(Consts.OutsourceResearchCost) and 0 or CConsts.OutsourceResearchCost)
+function cMenuFuncs.OutsourcingFree_Toggle()
+  cComFuncs.SetConstsG("OutsourceResearchCost",cComFuncs.NumRetBool(Consts.OutsourceResearchCost) and 0 or cConsts.OutsourceResearchCost)
 
-  CComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
+  cComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.OutsourceResearchCost) .. "\nBest hope you picked India as your Mars sponsor",
     "Research","UI/Icons/Sections/research_1.tga",true
   )
 end
 
 local hint_maxa = "Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
-function CMenuFuncs.SetBreakThroughsOmegaTelescope()
-  local DefaultSetting = CConsts.OmegaTelescopeBreakthroughsCount
+function cMenuFuncs.SetBreakThroughsOmegaTelescope()
+  local DefaultSetting = cConsts.OmegaTelescopeBreakthroughsCount
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -395,20 +395,20 @@ function CMenuFuncs.SetBreakThroughsOmegaTelescope()
     local value = choice[1].value
     if type(value) == "number" then
       const.OmegaTelescopeBreakthroughsCount = value
-      CComFuncs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
+      cComFuncs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(choice[1].text .. ": Research is what I'm doing when I don't know what I'm doing.",
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(choice[1].text .. ": Research is what I'm doing when I don't know what I'm doing.",
         "Omega",UsualIcon
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
 end
 
-function CMenuFuncs.SetBreakThroughsAllowed()
-  local DefaultSetting = CConsts.BreakThroughTechsPerGame
+function cMenuFuncs.SetBreakThroughsAllowed()
+  local DefaultSetting = cConsts.BreakThroughTechsPerGame
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -426,29 +426,29 @@ function CMenuFuncs.SetBreakThroughsAllowed()
     local value = choice[1].value
     if type(value) == "number" then
       const.BreakThroughTechsPerGame = value
-      CComFuncs.SetSavedSetting("BreakThroughTechsPerGame",value)
+      cComFuncs.SetSavedSetting("BreakThroughTechsPerGame",value)
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(choice[1].text .. ": S M R T",
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(choice[1].text .. ": S M R T",
         "Research",UsualIcon
       )
     end
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
 end
 
-function CMenuFuncs.ResearchQueueLarger_Toggle()
-  const.ResearchQueueSize = CComFuncs.ValueRetOpp(const.ResearchQueueSize,25,CConsts.ResearchQueueSize)
-  CComFuncs.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
+function cMenuFuncs.ResearchQueueLarger_Toggle()
+  const.ResearchQueueSize = cComFuncs.ValueRetOpp(const.ResearchQueueSize,25,cConsts.ResearchQueueSize)
+  cComFuncs.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ResearchQueueSize) .. ": Nerdgasm",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ResearchQueueSize) .. ": Nerdgasm",
     "Research",UsualIcon
   )
 end
 
-function CMenuFuncs.ShowResearchTechList()
+function cMenuFuncs.ShowResearchTechList()
   local ItemList = {}
   ItemList[#ItemList+1] = {
     text = " Everything",
@@ -490,10 +490,10 @@ function CMenuFuncs.ShowResearchTechList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      CComFuncs.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
+      cComFuncs.MsgPopup("Pick a checkbox next time...","Research",UsualIcon)
       return
     elseif check1 and check2 then
-      CComFuncs.MsgPopup("Don't pick both checkboxes next time...","Research",UsualIcon)
+      cComFuncs.MsgPopup("Don't pick both checkboxes next time...","Research",UsualIcon)
       return
     end
 
@@ -513,21 +513,21 @@ function CMenuFuncs.ShowResearchTechList()
     for i = 1, #choice do
       local value = choice[i].value
       if value == "Everything" then
-        CMenuFuncs.SetTech_EveryMystery(sType)
-        CMenuFuncs.SetTech_EveryBreakthrough(sType)
-        CMenuFuncs.SetTech_EveryTech(sType)
+        cMenuFuncs.SetTech_EveryMystery(sType)
+        cMenuFuncs.SetTech_EveryBreakthrough(sType)
+        cMenuFuncs.SetTech_EveryTech(sType)
       elseif value == "AllTech" then
-        CMenuFuncs.SetTech_EveryTech(sType)
+        cMenuFuncs.SetTech_EveryTech(sType)
       elseif value == "AllBreakthroughs" then
-        CMenuFuncs.SetTech_EveryBreakthrough(sType)
+        cMenuFuncs.SetTech_EveryBreakthrough(sType)
       elseif value == "AllMysteries" then
-        CMenuFuncs.SetTech_EveryMystery(sType)
+        cMenuFuncs.SetTech_EveryMystery(sType)
       else
         _G[sType](value)
       end
     end
 
-    CComFuncs.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
+    cComFuncs.MsgPopup(Which .. ": Unleash your inner Black Monolith Mystery.",
       "Research",UsualIcon
     )
   end
@@ -535,7 +535,7 @@ function CMenuFuncs.ShowResearchTechList()
   local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select)."
   local checkhint1 = "Just unlocks in the tree"
   local checkhint2 = "Unlocks and researchs."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
 end
 
 local function listfields(sType,field)
@@ -548,15 +548,15 @@ local function listfields(sType,field)
   end
 end
 
-function CMenuFuncs.SetTech_EveryMystery(sType)
+function cMenuFuncs.SetTech_EveryMystery(sType)
   listfields(sType,"Mysteries")
 end
 
-function CMenuFuncs.SetTech_EveryBreakthrough(sType)
+function cMenuFuncs.SetTech_EveryBreakthrough(sType)
   listfields(sType,"Breakthroughs")
 end
 
-function CMenuFuncs.SetTech_EveryTech(sType)
+function cMenuFuncs.SetTech_EveryTech(sType)
   listfields(sType,"Biotech")
   listfields(sType,"Engineering")
   listfields(sType,"Physics")

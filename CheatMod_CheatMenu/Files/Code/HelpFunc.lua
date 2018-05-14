@@ -1,24 +1,24 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
-function CMenuFuncs.ShowInterfaceInScreenshots_Toggle()
+function cMenuFuncs.ShowInterfaceInScreenshots_Toggle()
   hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     "Interface",UsualIcon
   )
 end
 
-function CMenuFuncs.TakeScreenshot(Bool)
+function cMenuFuncs.TakeScreenshot(Bool)
   if Bool == true then
     CreateRealTimeThread(function()
       WaitNextFrame(3)
@@ -31,7 +31,7 @@ function CMenuFuncs.TakeScreenshot(Bool)
   end
 end
 
-function CMenuFuncs.ResetECMSettings()
+function cMenuFuncs.ResetECMSettings()
   local file = ChoGGi.SettingsFile
   local old = file .. ".old"
 
@@ -46,33 +46,33 @@ function CMenuFuncs.ResetECMSettings()
     AsyncFileDelete(ChoGGi.SettingsFile)
     ThreadUnlockKey(file)
 
-    CComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
+    cComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 
   end
 
-  CComFuncs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
+  cComFuncs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
 end
 
-function CMenuFuncs.SignsInterface_Toggle()
+function cMenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  CComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
+  cComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
     "Signs",UsualIcon,true
   )
 end
 
-function CMenuFuncs.OnScreenHints_Toggle()
+function cMenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  CComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
+  cComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
 end
 
-function CMenuFuncs.OnScreenHints_Reset()
+function cMenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  CComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
+  cComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
 end
 
-function CMenuFuncs.NeverShowHints_Toggle()
+function cMenuFuncs.NeverShowHints_Toggle()
   ChoGGi.UserSettings.DisableHints = not ChoGGi.UserSettings.DisableHints
   if ChoGGi.UserSettings.DisableHints then
     mapdata.DisableHints = true
@@ -81,12 +81,12 @@ function CMenuFuncs.NeverShowHints_Toggle()
     mapdata.DisableHints = false
     HintsEnabled = true
   end
-  CSettingFuncs.WriteSettings()
+  cSettingFuncs.WriteSettings()
 
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
 end
 
-function CMenuFuncs.MenuHelp_ReportBug()
+function cMenuFuncs.MenuHelp_ReportBug()
   if Platform.ged then
     return
   end
@@ -95,7 +95,7 @@ function CMenuFuncs.MenuHelp_ReportBug()
   end)
 end
 
-function CMenuFuncs.MenuHelp_About()
+function cMenuFuncs.MenuHelp_About()
   CreateRealTimeThread(
     WaitCustomPopupNotification,
     "Help",

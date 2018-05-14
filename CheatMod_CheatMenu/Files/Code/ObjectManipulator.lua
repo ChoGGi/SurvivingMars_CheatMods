@@ -1,5 +1,5 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
 
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
@@ -42,7 +42,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       end
       --
       local edit_text = self.idEditValue:GetText()
-      local edit_value = CComFuncs.RetProperType(edit_text)
+      local edit_value = cComFuncs.RetProperType(edit_text)
       local edit_type = type(edit_value)
       local obj_value = self.obj[self.idList.items[sel_idx].text]
       local obj_type = type(obj_value)
@@ -125,7 +125,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     --open editor with whatever is selected
     self.idList.OnLButtonDoubleClick = function()
       if self.sel then
-        CCodeFuncs.OpenInObjectManipulator(self.sel.object,self)
+        cCodeFuncs.OpenInObjectManipulator(self.sel.object,self)
       end
     end
 
@@ -151,11 +151,11 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
       local CallBackFunc = function(choice)
         --add it to the actual object
-        self.obj[tostring(choice[1].value)] = CComFuncs.RetProperType(choice[2].value)
+        self.obj[tostring(choice[1].value)] = cComFuncs.RetProperType(choice[2].value)
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
+      cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -163,7 +163,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       if value then
         local objs = GetObjects({class=self.obj.class})
         for i = 1, #objs do
-          objs[i][self.sel.text] = CComFuncs.RetProperType(value)
+          objs[i][self.sel.text] = cComFuncs.RetProperType(value)
         end
       end
     end

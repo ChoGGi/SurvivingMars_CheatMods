@@ -1,4 +1,4 @@
-local CConsts = ChoGGi.Consts
+local cConsts = ChoGGi.Consts
 
 --[[
 Surviving Mars comes with
@@ -15,8 +15,8 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
-    Title = Title or "Placeholder"
-    Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
+    Title = tostring(Title)
+    Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
     --local id = "ChoGGi_" .. AsyncRand()
     local id = AsyncRand()
     local timeout = 8000
@@ -50,7 +50,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
           popup.idTitle.Margins = box(0,-20,0,0)
           --image
           Sleep(0)
-          popup[1].scale = point(2800,2500)
+          popup[1].scale = point(2800,2600)
           popup[1].Margins = box(-5,-30,0,-5)
           --update dialog
           popup:InvalidateMeasure()
@@ -226,7 +226,7 @@ function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
----CConsts.XXX = ChoGGi.ComFuncs.NumRetBool(CConsts.XXX,0,CConsts.XXX)
+---cConsts.XXX = ChoGGi.ComFuncs.NumRetBool(cConsts.XXX,0,cConsts.XXX)
 function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
@@ -602,7 +602,7 @@ end
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
 function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
   --if setting is the same as the default then remove it
-  if CConsts[Setting] == Value then
+  if cConsts[Setting] == Value then
     ChoGGi.UserSettings[Setting] = nil
   else
     ChoGGi.UserSettings[Setting] = Value

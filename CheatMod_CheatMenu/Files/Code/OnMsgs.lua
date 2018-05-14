@@ -1,23 +1,23 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CMsgFuncs = ChoGGi.MsgFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cMsgFuncs = ChoGGi.MsgFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
 
 function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
-  CMsgFuncs.ReplacedFunctions_ClassesGenerate()
-  CMsgFuncs.InfoPaneCheats_ClassesGenerate()
-  CMsgFuncs.ListChoiceCustom_ClassesGenerate()
-  CMsgFuncs.ObjectManipulator_ClassesGenerate()
+  cMsgFuncs.ReplacedFunctions_ClassesGenerate()
+  cMsgFuncs.InfoPaneCheats_ClassesGenerate()
+  cMsgFuncs.ListChoiceCustom_ClassesGenerate()
+  cMsgFuncs.ObjectManipulator_ClassesGenerate()
 end --OnMsg
 
 function OnMsg.ClassesBuilt()
-  CMsgFuncs.ReplacedFunctions_ClassesBuilt()
-  CMsgFuncs.ListChoiceCustom_ClassesBuilt()
-  CMsgFuncs.ObjectManipulator_ClassesBuilt()
+  cMsgFuncs.ReplacedFunctions_ClassesBuilt()
+  cMsgFuncs.ListChoiceCustom_ClassesBuilt()
+  cMsgFuncs.ObjectManipulator_ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
@@ -27,11 +27,11 @@ function OnMsg.ClassesBuilt()
 end --OnMsg
 
 function OnMsg.OptionsApply()
-  CMsgFuncs.Settings_OptionsApply()
+  cMsgFuncs.Settings_OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
-  CMsgFuncs.Settings_ModsLoaded()
+  cMsgFuncs.Settings_ModsLoaded()
 end
 
 --earlist on-ground objects are loaded?
@@ -71,24 +71,24 @@ function OnMsg.LoadingScreenPreClose()
   local UserSettings = ChoGGi.UserSettings
 
   --late enough that I can set g_Consts.
-  CSettingFuncs.SetConstsToSaved()
+  cSettingFuncs.SetConstsToSaved()
   --needed for DroneResourceCarryAmount?
   UpdateDroneResourceUnits()
 
-  CMsgFuncs.Keys_LoadingScreenPreClose()
-  CMsgFuncs.MissionFunc_LoadingScreenPreClose()
+  cMsgFuncs.Keys_LoadingScreenPreClose()
+  cMsgFuncs.MissionFunc_LoadingScreenPreClose()
 
   --menu actions
-  CMsgFuncs.MissionMenu_LoadingScreenPreClose()
-  CMsgFuncs.BuildingsMenu_LoadingScreenPreClose()
-  CMsgFuncs.CheatsMenu_LoadingScreenPreClose()
-  CMsgFuncs.ColonistsMenu_LoadingScreenPreClose()
-  CMsgFuncs.DebugMenu_LoadingScreenPreClose()
-  CMsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
-  CMsgFuncs.ExpandedMenu_LoadingScreenPreClose()
-  CMsgFuncs.HelpMenu_LoadingScreenPreClose()
-  CMsgFuncs.MiscMenu_LoadingScreenPreClose()
-  CMsgFuncs.ResourcesMenu_LoadingScreenPreClose()
+  cMsgFuncs.MissionMenu_LoadingScreenPreClose()
+  cMsgFuncs.BuildingsMenu_LoadingScreenPreClose()
+  cMsgFuncs.CheatsMenu_LoadingScreenPreClose()
+  cMsgFuncs.ColonistsMenu_LoadingScreenPreClose()
+  cMsgFuncs.DebugMenu_LoadingScreenPreClose()
+  cMsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
+  cMsgFuncs.ExpandedMenu_LoadingScreenPreClose()
+  cMsgFuncs.HelpMenu_LoadingScreenPreClose()
+  cMsgFuncs.MiscMenu_LoadingScreenPreClose()
+  cMsgFuncs.ResourcesMenu_LoadingScreenPreClose()
 
   --add custom lightmodel
   local data = DataInstances.Lightmodel
@@ -97,13 +97,13 @@ function OnMsg.LoadingScreenPreClose()
   end
   local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
   if not LightmodelCustom then
-    _,LightmodelCustom = LuaCodeToTuple(CConsts.LightmodelCustom)
+    _,LightmodelCustom = LuaCodeToTuple(cConsts.LightmodelCustom)
   end
 
   if LightmodelCustom then
     data.ChoGGi_Custom = LightmodelCustom
   else
-    LightmodelCustom = CConsts.LightmodelCustom
+    LightmodelCustom = cConsts.LightmodelCustom
     UserSettings.LightmodelCustom = LightmodelCustom
     data.ChoGGi_Custom = LightmodelCustom
     Temp.WriteSettings = true
@@ -178,7 +178,7 @@ function OnMsg.LoadingScreenPreClose()
     if map then
       rawset(_G, map, rawget(_G, map) or {})
     end
-    CComFuncs.AddAction(
+    cComFuncs.AddAction(
       "Presets/" .. name,
       function()
         OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
@@ -325,7 +325,7 @@ function OnMsg.LoadingScreenPreClose()
 
   --remove some uselessish Cheats to clear up space
   if UserSettings.CleanupCheatsInfoPane then
-    CInfoFuncs.InfopanelCheatsCleanup()
+    cInfoFuncs.InfopanelCheatsCleanup()
   end
 
   --default to showing interface in ss
@@ -334,12 +334,12 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --set zoom/border scrolling
-  CCodeFuncs.SetCameraSettings()
+  cCodeFuncs.SetCameraSettings()
 
   --show all traits
   if UserSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #CTables.NegativeTraits
-    School.max_traits = #CTables.PositiveTraits
+    Sanatorium.max_traits = #cTables.NegativeTraits
+    School.max_traits = #cTables.PositiveTraits
   end
 
   --unbreakable cables/pipes
@@ -363,13 +363,13 @@ function OnMsg.LoadingScreenPreClose()
   --people will likely just copy new mod over old, and I moved stuff around
   if ChoGGi._VERSION ~= UserSettings._VERSION then
     --clean up
-    CCodeFuncs.NewThread(CCodeFuncs.RemoveOldFiles)
+    cCodeFuncs.NewThread(cCodeFuncs.RemoveOldFiles)
     --update saved version
     UserSettings._VERSION = ChoGGi._VERSION
     Temp.WriteSettings = true
   end
 
-  CCodeFuncs.NewThread(function()
+  cCodeFuncs.NewThread(function()
     local labels = UICity.labels
 
       --add some custom labels for cables/pipes
@@ -378,17 +378,17 @@ function OnMsg.LoadingScreenPreClose()
       labels.GridElements = {}
     else
       --remove any broken objects
-      CComFuncs.RemoveMissingLabelObjects("GridElements")
+      cComFuncs.RemoveMissingLabelObjects("GridElements")
     end
     if type(labels.ElectricityGridElement) ~= "table" then
       labels.ElectricityGridElement = {}
     else
-      CComFuncs.RemoveMissingLabelObjects("ElectricityGridElement")
+      cComFuncs.RemoveMissingLabelObjects("ElectricityGridElement")
     end
     if type(labels.LifeSupportGridElement) ~= "table" then
       labels.LifeSupportGridElement = {}
     else
-      CComFuncs.RemoveMissingLabelObjects("LifeSupportGridElement")
+      cComFuncs.RemoveMissingLabelObjects("LifeSupportGridElement")
     end
     --]]
     labels.GridElements = {}
@@ -415,7 +415,7 @@ function OnMsg.LoadingScreenPreClose()
     end
 
     --remove any dialogs we opened
-    CCodeFuncs.CloseDialogsECM()
+    cCodeFuncs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
     tab = UICity.labels.BuildingNoDomes or empty_table
@@ -451,7 +451,7 @@ function OnMsg.LoadingScreenPreClose()
 
   --make sure to save anything we changed above
   if Temp.WriteSettings then
-    CSettingFuncs.WriteSettings()
+    cSettingFuncs.WriteSettings()
     Temp.WriteSettings = nil
   end
 
@@ -510,13 +510,13 @@ function OnMsg.ConstructionComplete(building)
     building.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
   elseif UserSettings.SchoolTrainAll and building.class == "School" then
-    for i = 1, #CTables.PositiveTraits do
-      building:SetTrait(i,CTables.PositiveTraits[i])
+    for i = 1, #cTables.PositiveTraits do
+      building:SetTrait(i,cTables.PositiveTraits[i])
     end
 
   elseif UserSettings.SanatoriumCureAll and building.class == "Sanatorium" then
-    for i = 1, #CTables.NegativeTraits do
-      building:SetTrait(i,CTables.NegativeTraits[i])
+    for i = 1, #cTables.NegativeTraits do
+      building:SetTrait(i,cTables.NegativeTraits[i])
     end
 
   end --end of elseifs
@@ -570,7 +570,7 @@ function OnMsg.ConstructionComplete(building)
     --large protect_range for defence buildings
     if setting.protect_range then
       building.protect_range = setting.protect_range
-      building.shoot_range = setting.protect_range * CConsts.guim
+      building.shoot_range = setting.protect_range * cConsts.guim
     end
   end
 
@@ -594,19 +594,19 @@ local function ColonistCreated(Obj)
     Obj:SetGravity(UserSettings.GravityColonist)
   end
   if UserSettings.NewColonistGender then
-    CCodeFuncs.ColonistUpdateGender(Obj,UserSettings.NewColonistGender)
+    cCodeFuncs.ColonistUpdateGender(Obj,UserSettings.NewColonistGender)
   end
   if UserSettings.NewColonistAge then
-    CCodeFuncs.ColonistUpdateAge(Obj,UserSettings.NewColonistAge)
+    cCodeFuncs.ColonistUpdateAge(Obj,UserSettings.NewColonistAge)
   end
   if UserSettings.NewColonistSpecialization then
-    CCodeFuncs.ColonistUpdateSpecialization(Obj,UserSettings.NewColonistSpecialization)
+    cCodeFuncs.ColonistUpdateSpecialization(Obj,UserSettings.NewColonistSpecialization)
   end
   if UserSettings.NewColonistRace then
-    CCodeFuncs.ColonistUpdateRace(Obj,UserSettings.NewColonistRace)
+    cCodeFuncs.ColonistUpdateRace(Obj,UserSettings.NewColonistRace)
   end
   if UserSettings.NewColonistTraits then
-    CCodeFuncs.ColonistUpdateTraits(Obj,true,UserSettings.NewColonistTraits)
+    cCodeFuncs.ColonistUpdateTraits(Obj,true,UserSettings.NewColonistTraits)
   end
   if UserSettings.SpeedColonist then
     Obj:SetMoveSpeed(UserSettings.SpeedColonist)
@@ -640,9 +640,9 @@ function OnMsg.NewHour()
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
     local tab = UICity.labels.ResourceProducer or empty_table
     for i = 1, #tab do
-      CCodeFuncs.FuckingDrones(tab[i]:GetProducerObj())
+      cCodeFuncs.FuckingDrones(tab[i]:GetProducerObj())
       if tab[i].wasterock_producer then
-        CCodeFuncs.FuckingDrones(tab[i].wasterock_producer)
+        cCodeFuncs.FuckingDrones(tab[i].wasterock_producer)
       end
     end
   end
@@ -652,17 +652,17 @@ end
 --if you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    CComFuncs.MsgPopup("You've started a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+    cComFuncs.MsgPopup("You've started a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 function OnMsg.MysteryChosen()
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    CComFuncs.MsgPopup("You've chosen a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+    cComFuncs.MsgPopup("You've chosen a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 function OnMsg.MysteryEnd(Outcome)
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    CComFuncs.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
+    cComFuncs.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
   end
 end
 
@@ -674,33 +674,33 @@ function OnMsg.ApplicationQuit()
   end
 
   --save any unsaved settings on exit
-  CSettingFuncs.WriteSettings()
+  cSettingFuncs.WriteSettings()
 end
 
 --custom OnMsgs, these aren't part of the base game, so without this mod they don't work
-CComFuncs.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
-CComFuncs.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
-CComFuncs.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
-CComFuncs.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
-CComFuncs.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
-CComFuncs.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
-CComFuncs.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
-CComFuncs.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
-CComFuncs.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
-CComFuncs.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
-CComFuncs.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
-CComFuncs.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
-CComFuncs.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
-CComFuncs.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
-CComFuncs.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
-CComFuncs.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
-CComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
-CComFuncs.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
+cComFuncs.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
+cComFuncs.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
+cComFuncs.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
+cComFuncs.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
+cComFuncs.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
+cComFuncs.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
+cComFuncs.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
+cComFuncs.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
+cComFuncs.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
+cComFuncs.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
+cComFuncs.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
+cComFuncs.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
+cComFuncs.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
+cComFuncs.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
+cComFuncs.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
+cComFuncs.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
+cComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
+cComFuncs.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
 
 --attached temporary resource depots
 function OnMsg.SpawnedResourceStockpileLR(Obj)
   if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
-    CCodeFuncs.SetMechanizedDepotTempAmount(Obj.parent)
+    cCodeFuncs.SetMechanizedDepotTempAmount(Obj.parent)
   end
 end
 
@@ -727,8 +727,8 @@ function OnMsg.CreatedGridObject(Obj)
 end
 function OnMsg.RemovedGridObject(Obj)
   if Obj.class and (Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement") then
-    CComFuncs.RemoveFromLabel("GridElements",Obj)
-    CComFuncs.RemoveFromLabel(Obj.class,Obj)
+    cComFuncs.RemoveFromLabel("GridElements",Obj)
+    cComFuncs.RemoveFromLabel(Obj.class,Obj)
   end
 end
 
@@ -787,10 +787,10 @@ end
 
 --if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 function OnMsg.SpawnedResidence(Obj)
-  CCodeFuncs.AttachToNearestDome(Obj)
+  cCodeFuncs.AttachToNearestDome(Obj)
 end
 function OnMsg.SpawnedWorkplace(Obj)
-  CCodeFuncs.AttachToNearestDome(Obj)
+  cCodeFuncs.AttachToNearestDome(Obj)
 end
 
 --make sure they use with our new values

@@ -1,16 +1,33 @@
-local CCodeFuncs = ChoGGi.CodeFuncs
-local CComFuncs = ChoGGi.ComFuncs
-local CConsts = ChoGGi.Consts
-local CInfoFuncs = ChoGGi.InfoFuncs
-local CSettingFuncs = ChoGGi.SettingFuncs
-local CTables = ChoGGi.Tables
-local CMenuFuncs = ChoGGi.MenuFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+local cComFuncs = ChoGGi.ComFuncs
+local cConsts = ChoGGi.Consts
+local cInfoFuncs = ChoGGi.InfoFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cTables = ChoGGi.Tables
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
-function CMenuFuncs.AnnoyingSounds_Toggle()
+function cMenuFuncs.AlwaysDustyBuildings_Toggle()
+  ChoGGi.UserSettings.AlwaysDustyBuildings = not ChoGGi.UserSettings.AlwaysDustyBuildings
+  if not ChoGGi.UserSettings.AlwaysDustyBuildings then
+    ChoGGi.UserSettings.AlwaysDustyBuildings = nil
+    --dust clean up
+    local objs = GetObjects({class = "Building"}) or empty_table
+    for i = 1, #objs do
+      objs[i].ChoGGi_AlwaysDust = nil
+    end
+  end
+
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.AlwaysDustyBuildings) .. "\nI must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.\nI will face my fear. I will permit it to pass over me and through me.\nAnd when it has gone past I will turn the inner eye to see its path.\nWhere the fear has gone there will be nothing. Only I will remain.",
+    "Buildings",nil,true
+  )
+end
+
+function cMenuFuncs.AnnoyingSounds_Toggle()
   --make a list
   local ItemList = {
     {text = "Reset",value = "Reset"},
@@ -30,7 +47,7 @@ function CMenuFuncs.AnnoyingSounds_Toggle()
     local function SensorTower_Toggle()
       local tab = UICity.labels.SensorTower or empty_table
       for i = 1, #tab do
-        CCodeFuncs.ToggleWorking(tab[i])
+        cCodeFuncs.ToggleWorking(tab[i])
       end
     end
 
@@ -50,19 +67,19 @@ function CMenuFuncs.AnnoyingSounds_Toggle()
       SensorTower_Toggle()
     end
 
-    CComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
+    cComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
       "Sounds"
     )
   end
 
   local hint = "You can only reset all sounds back."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
 end
 
-function CMenuFuncs.SetProtectionRadius()
-  local sel = CCodeFuncs.SelObject()
+function cMenuFuncs.SetProtectionRadius()
+  local sel = cCodeFuncs.SelObject()
   if not sel or not sel.protect_range then
-    CComFuncs.MsgPopup("Select something with a protect_range (MDSLaser/DefenceTower).",
+    cComFuncs.MsgPopup("Select something with a protect_range (MDSLaser/DefenceTower).",
       "Protect",UsualIcon
     )
     return
@@ -95,7 +112,7 @@ function CMenuFuncs.SetProtectionRadius()
       local tab = UICity.labels[id] or empty_table
       for i = 1, #tab do
         tab[i].protect_range = value
-        tab[i].shoot_range = value * CConsts.guim
+        tab[i].shoot_range = value * cConsts.guim
       end
 
       if value == DefaultSetting then
@@ -104,18 +121,18 @@ function CMenuFuncs.SetProtectionRadius()
         ChoGGi.UserSettings.BuildingSettings[id].protect_range = value
       end
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(id .. " range is now " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(id .. " range is now " .. choice[1].text,
         "Protect",UsualIcon
       )
     end
   end
 
   hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
 end
 
-function CMenuFuncs.UnlockLockedBuildings()
+function cMenuFuncs.UnlockLockedBuildings()
   local ItemList = {}
   for Key,_ in pairs(DataInstances.BuildingTemplate) do
     if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
@@ -132,44 +149,45 @@ function CMenuFuncs.UnlockLockedBuildings()
         UnlockBuilding(choice[i].value)
       end)
     end
-    CCodeFuncs.BuildMenu_Toggle()
-    CComFuncs.MsgPopup("Buildings unlocked: " .. #choice,
+    cCodeFuncs.BuildMenu_Toggle()
+    cComFuncs.MsgPopup("Buildings unlocked: " .. #choice,
       "Unlocked",UsualIcon
     )
   end
 
   local hint = "Pick the buildings you want to unlock (use Ctrl/Shift for multiple)."
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Unlock Buildings",hint,true)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Unlock Buildings",hint,true)
 end
 
-function CMenuFuncs.PipesPillarsSpacing_Toggle()
-  CComFuncs.SetConstsG("PipesPillarSpacing",CComFuncs.ValueRetOpp(Consts.PipesPillarSpacing,1000,CConsts.PipesPillarSpacing))
-  CComFuncs.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
+function cMenuFuncs.PipesPillarsSpacing_Toggle()
+  cComFuncs.SetConstsG("PipesPillarSpacing",cComFuncs.ValueRetOpp(Consts.PipesPillarSpacing,1000,cConsts.PipesPillarSpacing))
+  cComFuncs.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.PipesPillarSpacing) .. ": Is that a rocket in your pocket?",
     "Buildings"
   )
 end
 
-function CMenuFuncs.UnlimitedConnectionLength_Toggle()
+function cMenuFuncs.UnlimitedConnectionLength_Toggle()
   ChoGGi.UserSettings.UnlimitedConnectionLength = not ChoGGi.UserSettings.UnlimitedConnectionLength
   if ChoGGi.UserSettings.UnlimitedConnectionLength then
     GridConstructionController.max_hex_distance_to_allow_build = 1000
   else
+    ChoGGi.UserSettings.UnlimitedConnectionLength = nil
     GridConstructionController.max_hex_distance_to_allow_build = 20
   end
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.UnlimitedConnectionLength) .. ": Is that a rocket in your pocket?",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.UnlimitedConnectionLength) .. ": Is that a rocket in your pocket?",
     "Buildings"
   )
 end
 
-function CMenuFuncs.BuildingPower_Toggle()
+function cMenuFuncs.BuildingPower_Toggle()
   local sel = SelectedObj
   if not sel or not sel.electricity_consumption then
-    CComFuncs.MsgPopup("You need to select something that uses electricity.",
+    cComFuncs.MsgPopup("You need to select something that uses electricity.",
       "Buildings",UsualIcon
     )
     return
@@ -214,20 +232,20 @@ function CMenuFuncs.BuildingPower_Toggle()
     tab[i]:SetBase("electricity_consumption", amount)
   end
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(id .. " power consumption: " .. amount,"Buildings")
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(id .. " power consumption: " .. amount,"Buildings")
 end
 
-function CMenuFuncs.SetMaxChangeOrDischarge()
+function cMenuFuncs.SetMaxChangeOrDischarge()
   local sel = SelectedObj
   if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
-    CComFuncs.MsgPopup("You need to select something that has capacity (air/water/elec).",
+    cComFuncs.MsgPopup("You need to select something that has capacity (air/water/elec).",
       "Buildings",UsualIcon
     )
     return
   end
   local id = sel.encyclopedia_id
-  local r = CConsts.ResourceScale
+  local r = cConsts.ResourceScale
 
   --get type of capacity
   local CapType
@@ -285,7 +303,7 @@ function CMenuFuncs.SetMaxChangeOrDischarge()
     local check2 = choice[1].check2
 
     if not check1 and not check2 then
-      CComFuncs.MsgPopup("Pick a checkbox or two next time...","Rate",UsualIcon2)
+      cComFuncs.MsgPopup("Pick a checkbox or two next time...","Rate",UsualIcon2)
       return
     end
 
@@ -324,7 +342,7 @@ function CMenuFuncs.SetMaxChangeOrDischarge()
               tab[i][CapType].max_discharge = numberD
               tab[i]["max_" .. CapType .. "_discharge"] = numberD
             end
-            CCodeFuncs.ToggleWorking(tab[i])
+            cCodeFuncs.ToggleWorking(tab[i])
           end
         end
       else --water and air
@@ -339,32 +357,32 @@ function CMenuFuncs.SetMaxChangeOrDischarge()
               tab[i][CapType].max_discharge = numberD
               tab[i]["max_" .. CapType .. "_discharge"] = numberD
             end
-            CCodeFuncs.ToggleWorking(tab[i])
+            cCodeFuncs.ToggleWorking(tab[i])
           end
         end
       end
 
-      CSettingFuncs.WriteSettings()
-      CComFuncs.MsgPopup(id .. " rate is now " .. choice[1].text,
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(id .. " rate is now " .. choice[1].text,
         "Rate",UsualIcon2
       )
     end
   end
 
   hint = "Current rate: " .. hint
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
 end
 
-function CMenuFuncs.UseLastOrientation_Toggle()
+function cMenuFuncs.UseLastOrientation_Toggle()
   ChoGGi.UserSettings.UseLastOrientation = not ChoGGi.UserSettings.UseLastOrientation
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.UseLastOrientation) .. " Building Orientation",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.UseLastOrientation) .. " Building Orientation",
     "Buildings"
   )
 end
 
-function CMenuFuncs.FarmShiftsAllOn()
+function cMenuFuncs.FarmShiftsAllOn()
   local tab = UICity.labels.BaseFarm or empty_table
   for i = 1, #tab do
     tab[i].closed_shifts[1] = false
@@ -379,15 +397,15 @@ function CMenuFuncs.FarmShiftsAllOn()
     tab[i].closed_shifts[3] = false
   end
 
-  CComFuncs.MsgPopup("Well, I been working in a coal mine\nGoing down, down\nWorking in a coal mine\nWhew, about to slip down",
+  cComFuncs.MsgPopup("Well, I been working in a coal mine\nGoing down, down\nWorking in a coal mine\nWhew, about to slip down",
     "Farms","UI/Icons/Sections/Food_2.tga",true
   )
 end
 
-function CMenuFuncs.SetProductionAmount()
+function cMenuFuncs.SetProductionAmount()
   local sel = SelectedObj
   if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
-    CComFuncs.MsgPopup("Select something that produces (air,water,electricity,other).",
+    cComFuncs.MsgPopup("Select something that produces (air,water,electricity,other).",
       "Buildings",UsualIcon2
     )
     return
@@ -407,7 +425,7 @@ function CMenuFuncs.SetProductionAmount()
   end
 
   --get base amount
-  local r = CConsts.ResourceScale
+  local r = cConsts.ResourceScale
   local DefaultSetting
   if ProdType == "other" then
     DefaultSetting = sel.base_production_per_day1 / r
@@ -496,16 +514,16 @@ function CMenuFuncs.SetProductionAmount()
 
     end
 
-    CSettingFuncs.WriteSettings()
-    CComFuncs.MsgPopup(id .. " Production is now " .. choice[1].text,
+    cSettingFuncs.WriteSettings()
+    cComFuncs.MsgPopup(id .. " Production is now " .. choice[1].text,
       "Buildings",UsualIcon2
     )
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Production Amount","Current production: " .. hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Production Amount","Current production: " .. hint)
 end
 
-function CMenuFuncs.FullyAutomatedBuildings()
+function cMenuFuncs.FullyAutomatedBuildings()
   local ItemList = {
     {text = " Disable",value = "disable"},
     {text = 100,value = 100},
@@ -549,17 +567,17 @@ function CMenuFuncs.FullyAutomatedBuildings()
       ChoGGi.UserSettings.FullyAutomatedBuildings = false
     end
 
-    CSettingFuncs.WriteSettings()
-    CComFuncs.MsgPopup(choice[1].text .. "\nI presume the PM's in favour of the scheme because it'll reduce unemployment.",
+    cSettingFuncs.WriteSettings()
+    cComFuncs.MsgPopup(choice[1].text .. "\nI presume the PM's in favour of the scheme because it'll reduce unemployment.",
       "Buildings",UsualIcon,true
     )
   end
 
-  CCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
 end
 
 --used to add or remove traits from schools/sanitariums
-function CMenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
+function cMenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
   local Buildings = UICity.labels[Building] or 0
   for i = 1,#Buildings do
     local Obj = Buildings[i]
@@ -573,63 +591,64 @@ function CMenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
   end
 end
 
-function CMenuFuncs.SchoolTrainAll_Toggle()
+function cMenuFuncs.SchoolTrainAll_Toggle()
   ChoGGi.UserSettings.SchoolTrainAll = not ChoGGi.UserSettings.SchoolTrainAll
   if ChoGGi.UserSettings.SchoolTrainAll then
-    CMenuFuncs.BuildingsSetAll_Traits("School",CTables.PositiveTraits)
+    cMenuFuncs.BuildingsSetAll_Traits("School",cTables.PositiveTraits)
   else
-    CMenuFuncs.BuildingsSetAll_Traits("School",CTables.PositiveTraits,true)
+    ChoGGi.UserSettings.SchoolTrainAll = nil
+    cMenuFuncs.BuildingsSetAll_Traits("School",cTables.PositiveTraits,true)
   end
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SchoolTrainAll) .. "\nYou keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SchoolTrainAll) .. "\nYou keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?",
     "School",UsualIcon,true
   )
 end
 
-function CMenuFuncs.SanatoriumCureAll_Toggle()
+function cMenuFuncs.SanatoriumCureAll_Toggle()
   ChoGGi.UserSettings.SanatoriumCureAll = not ChoGGi.UserSettings.SanatoriumCureAll
   if ChoGGi.UserSettings.SanatoriumCureAll then
-    CMenuFuncs.BuildingsSetAll_Traits("Sanatorium",CTables.NegativeTraits)
+    cMenuFuncs.BuildingsSetAll_Traits("Sanatorium",cTables.NegativeTraits)
   else
-    CMenuFuncs.BuildingsSetAll_Traits("Sanatorium",CTables.NegativeTraits,true)
+    ChoGGi.UserSettings.SanatoriumCureAll = nil
+    cMenuFuncs.BuildingsSetAll_Traits("Sanatorium",cTables.NegativeTraits,true)
   end
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumCureAll) .. "\nThere's more vodka in this piss than there is piss.",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumCureAll) .. "\nThere's more vodka in this piss than there is piss.",
     "Sanatorium",UsualIcon,true
   )
 end
 
-function CMenuFuncs.ShowAllTraits_Toggle()
+function cMenuFuncs.ShowAllTraits_Toggle()
   if #g_SchoolTraits == 18 then
-    g_SchoolTraits = CTables.SchoolTraits
-    g_SanatoriumTraits = CTables.SanatoriumTraits
+    g_SchoolTraits = cTables.SchoolTraits
+    g_SanatoriumTraits = cTables.SanatoriumTraits
   else
-    g_SchoolTraits = CTables.PositiveTraits
-    g_SanatoriumTraits = CTables.NegativeTraits
+    g_SchoolTraits = cTables.PositiveTraits
+    g_SanatoriumTraits = cTables.NegativeTraits
   end
 
-  CComFuncs.MsgPopup(#g_SchoolTraits .. ": Good for what ails you",
+  cComFuncs.MsgPopup(#g_SchoolTraits .. ": Good for what ails you",
     "Traits","UI/Icons/Upgrades/factory_ai_04.tga"
   )
 end
 
-function CMenuFuncs.SanatoriumSchoolShowAll()
+function cMenuFuncs.SanatoriumSchoolShowAll()
   ChoGGi.UserSettings.SanatoriumSchoolShowAll = not ChoGGi.UserSettings.SanatoriumSchoolShowAll
 
-	Sanatorium.max_traits = CComFuncs.ValueRetOpp(Sanatorium.max_traits,3,#CTables.NegativeTraits)
-	School.max_traits = CComFuncs.ValueRetOpp(School.max_traits,3,#CTables.PositiveTraits)
+	Sanatorium.max_traits = cComFuncs.ValueRetOpp(Sanatorium.max_traits,3,#cTables.NegativeTraits)
+	School.max_traits = cComFuncs.ValueRetOpp(School.max_traits,3,#cTables.PositiveTraits)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumSchoolShowAll) .. " Good for what ails you",
     "Buildings","UI/Icons/Upgrades/superfungus_03.tga"
   )
 end
 
-function CMenuFuncs.MaintenanceBuildingsFree_Toggle()
+function cMenuFuncs.MaintenanceBuildingsFree_Toggle()
   ChoGGi.UserSettings.RemoveMaintenanceBuildUp = not ChoGGi.UserSettings.RemoveMaintenanceBuildUp
   local tab = UICity.labels.Building or empty_table
   for i = 1, #tab do
-
     if tab[i].base_maintenance_build_up_per_hr then
       if ChoGGi.UserSettings.RemoveMaintenanceBuildUp then
         tab[i].maintenance_build_up_per_hr = -10000
@@ -639,102 +658,102 @@ function CMenuFuncs.MaintenanceBuildingsFree_Toggle()
     end
   end
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RemoveMaintenanceBuildUp) .. " The spice must flow!",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RemoveMaintenanceBuildUp) .. " The spice must flow!",
     "Buildings",
     "UI/Icons/Sections/dust.tga"
   )
 end
 
-function CMenuFuncs.MoistureVaporatorPenalty_Toggle()
-  const.MoistureVaporatorRange = CComFuncs.NumRetBool(const.MoistureVaporatorRange,0,CConsts.MoistureVaporatorRange)
-  const.MoistureVaporatorPenaltyPercent = CComFuncs.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,CConsts.MoistureVaporatorPenaltyPercent)
-  CComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorRange)
-  CComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorPenaltyPercent)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MoistureVaporatorRange) .. ": All right, pussy, pussy, pussy! Come on in pussy lovers! Here at the Titty Twister we're slashing pussy in half! Give us an offer on our vast selection of pussy, this is a pussy blow out! All right, we got white pussy, black pussy, Spanish pussy, yellow pussy, we got hot pussy, cold pussy, we got wet pussy, we got... smelly pussy, we got hairy pussy, bloody pussy, we got snappin' pussy, we got silk pussy, velvet pussy, Naugahyde pussy, we even got horse pussy, dog pussy, chicken pussy! Come on, you want pussy, come on in, pussy lovers! If we don't got it, you don't want it! Come on in, pussy lovers!",
+function cMenuFuncs.MoistureVaporatorPenalty_Toggle()
+  const.MoistureVaporatorRange = cComFuncs.NumRetBool(const.MoistureVaporatorRange,0,cConsts.MoistureVaporatorRange)
+  const.MoistureVaporatorPenaltyPercent = cComFuncs.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,cConsts.MoistureVaporatorPenaltyPercent)
+  cComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorRange)
+  cComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorPenaltyPercent)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MoistureVaporatorRange) .. ": All right, pussy, pussy, pussy! Come on in pussy lovers! Here at the Titty Twister we're slashing pussy in half! Give us an offer on our vast selection of pussy, this is a pussy blow out! All right, we got white pussy, black pussy, Spanish pussy, yellow pussy, we got hot pussy, cold pussy, we got wet pussy, we got... smelly pussy, we got hairy pussy, bloody pussy, we got snappin' pussy, we got silk pussy, velvet pussy, Naugahyde pussy, we even got horse pussy, dog pussy, chicken pussy! Come on, you want pussy, come on in, pussy lovers! If we don't got it, you don't want it! Come on in, pussy lovers!",
     "Buildings","UI/Icons/Upgrades/zero_space_04.tga",true
   )
 end
 
-function CMenuFuncs.CropFailThreshold_Toggle()
-  Consts.CropFailThreshold = CComFuncs.NumRetBool(Consts.CropFailThreshold,0,CConsts.CropFailThreshold)
-  CComFuncs.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CropFailThreshold) .. "\nSo, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings, it is a friendship greeting from the children of our small but great planet of Potatoho.",
+function cMenuFuncs.CropFailThreshold_Toggle()
+  Consts.CropFailThreshold = cComFuncs.NumRetBool(Consts.CropFailThreshold,0,cConsts.CropFailThreshold)
+  cComFuncs.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CropFailThreshold) .. "\nSo, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings, it is a friendship greeting from the children of our small but great planet of Potatoho.",
     "Buildings","UI/Icons/Sections/Food_1.tga",true
   )
 end
 
-function CMenuFuncs.CheapConstruction_Toggle()
+function cMenuFuncs.CheapConstruction_Toggle()
 
-  CComFuncs.SetConstsG("Metals_cost_modifier",CComFuncs.ValueRetOpp(Consts.Metals_cost_modifier,-100,CConsts.Metals_cost_modifier))
-  CComFuncs.SetConstsG("Metals_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.Metals_dome_cost_modifier,-100,CConsts.Metals_dome_cost_modifier))
-  CComFuncs.SetConstsG("PreciousMetals_cost_modifier",CComFuncs.ValueRetOpp(Consts.PreciousMetals_cost_modifier,-100,CConsts.PreciousMetals_cost_modifier))
-  CComFuncs.SetConstsG("PreciousMetals_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.PreciousMetals_dome_cost_modifier,-100,CConsts.PreciousMetals_dome_cost_modifier))
-  CComFuncs.SetConstsG("Concrete_cost_modifier",CComFuncs.ValueRetOpp(Consts.Concrete_cost_modifier,-100,CConsts.Concrete_cost_modifier))
-  CComFuncs.SetConstsG("Concrete_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.Concrete_dome_cost_modifier,-100,CConsts.Concrete_dome_cost_modifier))
-  CComFuncs.SetConstsG("Polymers_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.Polymers_dome_cost_modifier,-100,CConsts.Polymers_dome_cost_modifier))
-  CComFuncs.SetConstsG("Polymers_cost_modifier",CComFuncs.ValueRetOpp(Consts.Polymers_cost_modifier,-100,CConsts.Polymers_cost_modifier))
-  CComFuncs.SetConstsG("Electronics_cost_modifier",CComFuncs.ValueRetOpp(Consts.Electronics_cost_modifier,-100,CConsts.Electronics_cost_modifier))
-  CComFuncs.SetConstsG("Electronics_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.Electronics_dome_cost_modifier,-100,CConsts.Electronics_dome_cost_modifier))
-  CComFuncs.SetConstsG("MachineParts_cost_modifier",CComFuncs.ValueRetOpp(Consts.MachineParts_cost_modifier,-100,CConsts.MachineParts_cost_modifier))
-  CComFuncs.SetConstsG("MachineParts_dome_cost_modifier",CComFuncs.ValueRetOpp(Consts.MachineParts_dome_cost_modifier,-100,CConsts.MachineParts_dome_cost_modifier))
-  CComFuncs.SetConstsG("rebuild_cost_modifier",CComFuncs.ValueRetOpp(Consts.rebuild_cost_modifier,-100,CConsts.rebuild_cost_modifier))
+  cComFuncs.SetConstsG("Metals_cost_modifier",cComFuncs.ValueRetOpp(Consts.Metals_cost_modifier,-100,cConsts.Metals_cost_modifier))
+  cComFuncs.SetConstsG("Metals_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.Metals_dome_cost_modifier,-100,cConsts.Metals_dome_cost_modifier))
+  cComFuncs.SetConstsG("PreciousMetals_cost_modifier",cComFuncs.ValueRetOpp(Consts.PreciousMetals_cost_modifier,-100,cConsts.PreciousMetals_cost_modifier))
+  cComFuncs.SetConstsG("PreciousMetals_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.PreciousMetals_dome_cost_modifier,-100,cConsts.PreciousMetals_dome_cost_modifier))
+  cComFuncs.SetConstsG("Concrete_cost_modifier",cComFuncs.ValueRetOpp(Consts.Concrete_cost_modifier,-100,cConsts.Concrete_cost_modifier))
+  cComFuncs.SetConstsG("Concrete_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.Concrete_dome_cost_modifier,-100,cConsts.Concrete_dome_cost_modifier))
+  cComFuncs.SetConstsG("Polymers_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.Polymers_dome_cost_modifier,-100,cConsts.Polymers_dome_cost_modifier))
+  cComFuncs.SetConstsG("Polymers_cost_modifier",cComFuncs.ValueRetOpp(Consts.Polymers_cost_modifier,-100,cConsts.Polymers_cost_modifier))
+  cComFuncs.SetConstsG("Electronics_cost_modifier",cComFuncs.ValueRetOpp(Consts.Electronics_cost_modifier,-100,cConsts.Electronics_cost_modifier))
+  cComFuncs.SetConstsG("Electronics_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.Electronics_dome_cost_modifier,-100,cConsts.Electronics_dome_cost_modifier))
+  cComFuncs.SetConstsG("MachineParts_cost_modifier",cComFuncs.ValueRetOpp(Consts.MachineParts_cost_modifier,-100,cConsts.MachineParts_cost_modifier))
+  cComFuncs.SetConstsG("MachineParts_dome_cost_modifier",cComFuncs.ValueRetOpp(Consts.MachineParts_dome_cost_modifier,-100,cConsts.MachineParts_dome_cost_modifier))
+  cComFuncs.SetConstsG("rebuild_cost_modifier",cComFuncs.ValueRetOpp(Consts.rebuild_cost_modifier,-100,cConsts.rebuild_cost_modifier))
 
-  CComFuncs.SetSavedSetting("Metals_cost_modifier",Consts.Metals_cost_modifier)
-  CComFuncs.SetSavedSetting("Metals_dome_cost_modifier",Consts.Metals_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("PreciousMetals_cost_modifier",Consts.PreciousMetals_cost_modifier)
-  CComFuncs.SetSavedSetting("PreciousMetals_dome_cost_modifier",Consts.PreciousMetals_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("Concrete_cost_modifier",Consts.Concrete_cost_modifier)
-  CComFuncs.SetSavedSetting("Concrete_dome_cost_modifier",Consts.Concrete_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("Polymers_cost_modifier",Consts.Polymers_cost_modifier)
-  CComFuncs.SetSavedSetting("Polymers_dome_cost_modifier",Consts.Polymers_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("Electronics_cost_modifier",Consts.Electronics_cost_modifier)
-  CComFuncs.SetSavedSetting("Electronics_dome_cost_modifier",Consts.Electronics_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("MachineParts_cost_modifier",Consts.MachineParts_cost_modifier)
-  CComFuncs.SetSavedSetting("MachineParts_dome_cost_modifier",Consts.MachineParts_dome_cost_modifier)
-  CComFuncs.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Metals_cost_modifier) .. ": Get yourself a beautiful showhome (even if it falls apart after you move in)",
+  cComFuncs.SetSavedSetting("Metals_cost_modifier",Consts.Metals_cost_modifier)
+  cComFuncs.SetSavedSetting("Metals_dome_cost_modifier",Consts.Metals_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("PreciousMetals_cost_modifier",Consts.PreciousMetals_cost_modifier)
+  cComFuncs.SetSavedSetting("PreciousMetals_dome_cost_modifier",Consts.PreciousMetals_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("Concrete_cost_modifier",Consts.Concrete_cost_modifier)
+  cComFuncs.SetSavedSetting("Concrete_dome_cost_modifier",Consts.Concrete_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("Polymers_cost_modifier",Consts.Polymers_cost_modifier)
+  cComFuncs.SetSavedSetting("Polymers_dome_cost_modifier",Consts.Polymers_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("Electronics_cost_modifier",Consts.Electronics_cost_modifier)
+  cComFuncs.SetSavedSetting("Electronics_dome_cost_modifier",Consts.Electronics_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("MachineParts_cost_modifier",Consts.MachineParts_cost_modifier)
+  cComFuncs.SetSavedSetting("MachineParts_dome_cost_modifier",Consts.MachineParts_dome_cost_modifier)
+  cComFuncs.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Metals_cost_modifier) .. ": Get yourself a beautiful showhome (even if it falls apart after you move in)",
     "Buildings","UI/Icons/Upgrades/build_2.tga"
   )
 end
 
-function CMenuFuncs.BuildingDamageCrime_Toggle()
-  CComFuncs.SetConstsG("CrimeEventSabotageBuildingsCount",CComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
-  CComFuncs.SetConstsG("CrimeEventDestroyedBuildingsCount",CComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
+function cMenuFuncs.BuildingDamageCrime_Toggle()
+  cComFuncs.SetConstsG("CrimeEventSabotageBuildingsCount",cComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
+  cComFuncs.SetConstsG("CrimeEventDestroyedBuildingsCount",cComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
 
-  CComFuncs.SetSavedSetting("CrimeEventSabotageBuildingsCount",Consts.CrimeEventSabotageBuildingsCount)
-  CComFuncs.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount) .. "\nWe were all feeling a bit shagged and fagged and fashed, it having been an evening of some small energy expenditure, O my brothers. So we got rid of the auto and stopped off at the Korova for a nightcap.",
+  cComFuncs.SetSavedSetting("CrimeEventSabotageBuildingsCount",Consts.CrimeEventSabotageBuildingsCount)
+  cComFuncs.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount) .. "\nWe were all feeling a bit shagged and fagged and fashed, it having been an evening of some small energy expenditure, O my brothers. So we got rid of the auto and stopped off at the Korova for a nightcap.",
     "Buildings","UI/Icons/Notifications/fractured_dome.tga",true
   )
 end
 
-function CMenuFuncs.CablesAndPipesNoBreak_Toggle()
+function cMenuFuncs.CablesAndPipesNoBreak_Toggle()
   ChoGGi.UserSettings.BreakChanceCablePipe = not ChoGGi.UserSettings.BreakChanceCablePipe
 
-  const.BreakChanceCable = CComFuncs.ValueRetOpp(const.BreakChanceCable,600,10000000)
-  const.BreakChancePipe = CComFuncs.ValueRetOpp(const.BreakChancePipe,600,10000000)
+  const.BreakChanceCable = cComFuncs.ValueRetOpp(const.BreakChanceCable,600,10000000)
+  const.BreakChancePipe = cComFuncs.ValueRetOpp(const.BreakChancePipe,600,10000000)
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.BreakChanceCablePipe) .. " Aliens? We gotta deal with aliens too?",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.BreakChanceCablePipe) .. " Aliens? We gotta deal with aliens too?",
     "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
 
-function CMenuFuncs.RemoveBuildingLimits_Toggle()
+function cMenuFuncs.RemoveBuildingLimits_Toggle()
   ChoGGi.UserSettings.RemoveBuildingLimits = not ChoGGi.UserSettings.RemoveBuildingLimits
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RemoveBuildingLimits) .. " No no I said over there.",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RemoveBuildingLimits) .. " No no I said over there.",
     "Buildings","UI/Icons/Upgrades/zero_space_04.tga"
   )
 end
 
-function CMenuFuncs.Building_wonder_Toggle()
+function cMenuFuncs.Building_wonder_Toggle()
   ChoGGi.UserSettings.Building_wonder = not ChoGGi.UserSettings.Building_wonder
   if ChoGGi.UserSettings.Building_wonder then
     local tab = DataInstances.BuildingTemplate or empty_table
@@ -743,43 +762,43 @@ function CMenuFuncs.Building_wonder_Toggle()
     end
   end
 
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_wonder) .. " Unlimited Wonders\n(restart to set disabled)",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_wonder) .. " Unlimited Wonders\n(restart to set disabled)",
     "Buildings",UsualIcon3
   )
 end
 
-function CMenuFuncs.Building_dome_spot_Toggle()
+function cMenuFuncs.Building_dome_spot_Toggle()
   ChoGGi.UserSettings.Building_dome_spot = not ChoGGi.UserSettings.Building_dome_spot
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
     "Buildings",UsualIcon3
   )
 end
 
-function CMenuFuncs.Building_instant_build_Toggle()
+function cMenuFuncs.Building_instant_build_Toggle()
   ChoGGi.UserSettings.Building_instant_build = not ChoGGi.UserSettings.Building_instant_build
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
     "Buildings",UsualIcon3
   )
 end
 
-function CMenuFuncs.Building_hide_from_build_menu_Toggle()
+function cMenuFuncs.Building_hide_from_build_menu_Toggle()
   ChoGGi.UserSettings.Building_hide_from_build_menu = not ChoGGi.UserSettings.Building_hide_from_build_menu
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu) .. " Buildings hidden\n(restart to toggle).",
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu) .. " Buildings hidden\n(restart to toggle).",
     "Buildings",UsualIcon3
   )
 end
-function CMenuFuncs.CablesAndPipesInstant_Toggle()
-  CComFuncs.SetConstsG("InstantCables",CComFuncs.ToggleBoolNum(Consts.InstantCables))
-  CComFuncs.SetConstsG("InstantPipes",CComFuncs.ToggleBoolNum(Consts.InstantPipes))
+function cMenuFuncs.CablesAndPipesInstant_Toggle()
+  cComFuncs.SetConstsG("InstantCables",cComFuncs.ToggleBoolNum(Consts.InstantCables))
+  cComFuncs.SetConstsG("InstantPipes",cComFuncs.ToggleBoolNum(Consts.InstantPipes))
 
-  CComFuncs.SetSavedSetting("InstantCables",Consts.InstantCables)
-  CComFuncs.SetSavedSetting("InstantPipes",Consts.InstantPipes)
-  CSettingFuncs.WriteSettings()
-  CComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
+  cComFuncs.SetSavedSetting("InstantCables",Consts.InstantCables)
+  cComFuncs.SetSavedSetting("InstantPipes",Consts.InstantPipes)
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
     "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
 end
