@@ -96,13 +96,11 @@ function cMenuFuncs.MenuHelp_ReportBug()
 end
 
 function cMenuFuncs.MenuHelp_About()
-  CreateRealTimeThread(
-    WaitCustomPopupNotification,
-    "Help",
+  ChoGGi.ComFuncs.MsgWait(
     "Hover mouse over menu item to get description and enabled status" ..
-      "\nIf there isn't a status then it's likely a list of options to choose from" ..
-      "\n\nFor any issues; please report them to my github/nexusmods page, or email ECM@choggi.org",
-    {"OK"}
+    "\nIf there isn't a status then it's likely a list of options to choose from" ..
+    "\n\nFor any issues; please report them to my github/nexusmods page, or email ECM@choggi.org",
+    "Help"
   )
 end
 

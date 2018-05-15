@@ -9,17 +9,26 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
 function cMenuFuncs.OpenModEditor()
-  local ModEditor = function()
+  local CallBackFunc = function()
     ModEditorOpen()
   end
-  cComFuncs.QuestionBox("Warning!\nSave your game.\nThis will switch to a new map.",ModEditor,"Warning: Mod Editor","Okay (change map)")
+  cComFuncs.QuestionBox(
+    "Warning!\nSave your game.\nThis will switch to a new map.",
+    CallBackFunc,
+    "Warning: Mod Editor",
+    "Okay (change map)"
+  )
 end
 
 function cMenuFuncs.ResetAllResearch()
-  local ResetAllResearch = function()
+  local CallBackFunc = function()
     UICity:InitResearch()
   end
-  cComFuncs.QuestionBox("Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",ResetAllResearch,"Warning!")
+  cComFuncs.QuestionBox(
+    "Warning!\nAre you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.",
+    CallBackFunc,
+    "Warning!"
+  )
 end
 
 function cMenuFuncs.DisasterTriggerMissle(Amount)
@@ -264,72 +273,235 @@ function cMenuFuncs.SpawnColonists()
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
 end
 
+--ex(s_SeqListPlayers)
 function cMenuFuncs.ShowMysteryList()
   local ItemList = {}
   ClassDescendantsList("MysteryBase",function(class)
     ItemList[#ItemList+1] = {
-      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[class]})) or "Missing Name"),
+      text = (g_Classes[class].scenario_name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[class]}))) or "Missing Name",
       value = class,
-      hint = (_InternalTranslate(T({cTables.MysteryDescription[class]})) or "Missing Description")
+      hint = (_InternalTranslate(T({cTables.MysteryDescription[class]}))) or "Missing Description"
     }
   end)
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
     if choice[1].check1 then
       --instant
-      cMenuFuncs.StartMystery(choice[1].value,true)
+      cMenuFuncs.StartMystery(value,true)
     else
-      cMenuFuncs.StartMystery(choice[1].value)
+      cMenuFuncs.StartMystery(value)
     end
   end
 
   local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries."
-  local checkmarkhint = "May take up to one Sol to \"instantly\" activate mystery."
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,"Instant Start",checkmarkhint)
+  local Check1 = "Instant Start"
+  local Check1Hint = "May take up to one Sol to \"instantly\" activate mystery."
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,Check1,Check1Hint)
 end
 
-function cMenuFuncs.StartMystery(Mystery,Bool)
+function cMenuFuncs.StartMystery(Mystery,Instant)
+  local city = UICity
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.UserSettings.ShowMysteryMsgs = true
 
-  UICity.mystery_id = Mystery
+  city.mystery_id = Mystery
   local tree = TechTree
   for i = 1, #tree do
     local field = tree[i]
     local field_id = field.id
     --local costs = field.costs or empty_table
-    local list = UICity.tech_field[field_id] or {}
-    UICity.tech_field[field_id] = list
+    local list = city.tech_field[field_id] or {}
+    city.tech_field[field_id] = list
     local tab = field or empty_table
     for j = 1, #tab do
       if tab[j].mystery == Mystery then
         local tech_id = tab[j].id
         list[#list + 1] = tech_id
-        UICity.tech_status[tech_id] = {points = 0, field = field_id}
-        tab[j]:Initialize(UICity)
+        city.tech_status[tech_id] = {points = 0, field = field_id}
+        tab[j]:Initialize(city)
       end
     end
   end
-  UICity:InitMystery()
+  city:InitMystery()
   --might help
-  if UICity.mystery then
-    UICity.mystery_id = UICity.mystery.class
-    UICity.mystery:ApplyMysteryResourceProperties()
+  if city.mystery then
+    city.mystery_id = city.mystery.class
+    city.mystery:ApplyMysteryResourceProperties()
   end
+
   --instant start
-  if Bool == true then
-    local sequence = UICity.mystery.seq_player.seq_list[1]
-    for i = 1, #sequence do
-      if sequence[i].class == "SA_WaitExpression" then
-        sequence[i].duration = 0
-        sequence[i].expression = nil
-      elseif sequence[i].class == "SA_WaitMarsTime" then
-        sequence[i].duration = 0
-        sequence[i].rand_duration = 0
+  if Instant then
+    local seqs = city.mystery.seq_player.seq_list[1]
+    for i = 1, #seqs do
+      local seq = seqs[i]
+      if seq.class == "SA_WaitExpression" then
+        seq.duration = 0
+        seq.expression = nil
+      elseif seq.class == "SA_WaitMarsTime" then
+        seq.duration = 0
+        seq.rand_duration = 0
         break
       end
     end
-    UICity.mystery.seq_player:AutostartSequences()
+  end
+
+  --needed to start mystery
+  city.mystery.seq_player:AutostartSequences()
+end
+
+function cMenuFuncs.ShowStartedMysteryList()
+  local ItemList = {}
+  local PlayerList = s_SeqListPlayers
+  for i = 1, #PlayerList do
+    --1 is always there from map loading
+    if i > 1 then
+      local info = PlayerList[i].seq_list
+      local totalparts = #info[1]
+      local ip
+      if PlayerList[i].seq_states.Start then
+        ip = PlayerList[i].seq_states.Start.ip
+      elseif PlayerList[i].seq_states.Trigger then
+        ip = PlayerList[i].seq_states.Trigger.ip
+      end
+
+      ItemList[#ItemList+1] = {
+        text = info.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficultyNum[info.file_name]})),
+        value = info.file_name,
+        index = i,
+        hint = _InternalTranslate(T({cTables.MysteryDescriptionNum[info.file_name]})) .. "\nTotal parts: " .. totalparts .. " On part: " .. ip
+      }
+    end
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if choice[1].check2 then
+      --remove all
+      for i = #PlayerList, 1, -1 do
+        if i > 1 then
+          PlayerList[i]:delete()
+        end
+      end
+      cComFuncs.MsgPopup("Removed all!","Mystery")
+    elseif choice[1].check1 and choice[1].index then
+      --remove sequence
+      cComFuncs.MsgPopup("Mystery: " .. choice[1].text .. " Removed!","Mystery")
+    elseif value then
+      --next step
+      cMenuFuncs.NextMysterySeq(value,PlayerList)
+    end
+
+  end
+
+  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type)."
+  local Check1 = "Remove"
+  local Check1Hint = "This will remove the sequence, if you start it again; it'll be back to the start."
+  local Check2 = "Remove All"
+  local Check2Hint = "Warning: This will remove all the mysteries!"
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+end
+
+function cMenuFuncs.NextMysterySeq(Mystery,PlayerList)
+  local city = UICity
+ex(PlayerList)
+
+  for i = 1, #PlayerList do
+    if i > 1 then
+
+      local player = PlayerList[i]
+      local list = PlayerList[i].seq_list
+      local state = player.seq_states
+
+      if list.file_name == Mystery then
+        local seqtype
+        if state.Start then
+          seqtype = "Start"
+        elseif state.Trigger then
+          seqtype = "Trigger"
+        end
+        list = state[seqtype].action.meta.sequence
+        local ip = state[seqtype].ip
+        local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficultyNum[Mystery]})) or "Missing Name"
+
+        for j = 1, #list do
+          --skip till we're at the right place
+          if j >= ip then
+            local seq = list[j]
+            if seq.class == "SA_WaitExpression" then
+print("SA_WaitExpression")
+              seq.duration = 0
+
+              local CallBackFunc = function()
+                --seq.expression = nil
+                --ip = ip + 1
+                state[seqtype].action.meta.finished = true
+                player:UpdateCurrentIP(list)
+              end
+              cComFuncs.QuestionBox(
+                "You must do this to advance:\n" .. tostring(seq.expression) .. "\n\nClick Ok to skip this (may cause issues later on, untested).",
+                CallBackFunc,
+                name,
+                "Okay (Skip this)"
+              )
+              break
+            elseif seq.class == "SA_WaitMarsTime" then
+print("SA_WaitMarsTime")
+              ChoGGi.Temp.SkipNext_Sequence = ip
+              seq.duration = 0
+              seq.rand_duration = 0
+              --[[
+              seq.wait_type = "Hours"
+              print(j)
+              print(meta.ip)
+              --local seq = meta.sequence[meta.ip]
+              seq.wait_type = "Hours"
+              seq.duration = 1
+              seq.rand_duration = 1
+              seq.target_hour = 0
+              seq.target_sol = 0
+
+              seq.wait_type = "Specific Hour"
+              seq.rand_duration = 0
+              seq.loops = false
+              seq.target_sol = nil
+              seq.target_workshift = nil
+              --seq.duration = 1
+              --seq.duration = 0
+              seq.duration = const.HourDuration
+              --SA_WaitMarsTime:StopWait():
+              --Specific Hour
+              meta.start_time = -meta.start_time + -GameTime() --self.target_hour == city.hour or GameTime() - self.meta.start_time >= const.DayDuration
+              --Specific Sol
+              seq.target_sol = city.day - 2 --.target_sol <= city.day
+              --Daytime
+              seq.target_sol = city.day - 1 --self.target_hour == city.hour or GameTime() - self.meta.start_time >= const.DayDuration
+print("===========")
+              print(Mystery)
+              ex(seq)
+
+
+
+--find out what it checks for waittime?, replkace this function maybe?
+
+
+
+
+--GameTime() - self.meta.start_time >= const.DayDuration
+
+
+              meta.finished = true
+              --state[seqtype].action:EndWait(state[seqtype].action, true)
+              --]]
+              player:UpdateCurrentIP(list)
+              ex(seq)
+              cComFuncs.MsgPopup("Timer delay removed, wait till next Sol.",name)
+              break
+            end
+          end
+        end
+      end
+    end
   end
 end
 
@@ -540,9 +712,11 @@ function cMenuFuncs.ShowResearchTechList()
   end
 
   local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select)."
-  local checkhint1 = "Just unlocks in the tree"
-  local checkhint2 = "Unlocks and researchs."
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,"Unlock",checkhint1,"Research",checkhint2)
+  local Check1 = "Unlock"
+  local Check1Hint = "Just unlocks in the tree"
+  local Check2 = "Research"
+  local Check2Hint = "Unlocks and researchs."
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,Check1,Check1Hint,Check2,Check2Hint)
 end
 
 local function listfields(sType,field)

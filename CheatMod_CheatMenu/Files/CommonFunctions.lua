@@ -15,7 +15,8 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
-    Title = tostring(Title)
+    --Title = tostring(Title)
+    Title = type(Title) == "string" and Title or _InternalTranslate(T({1000016}))
     Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
     --local id = "ChoGGi_" .. AsyncRand()
     local id = AsyncRand()
@@ -59,6 +60,39 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
         end
       end)
     end
+  end)
+end
+
+function ChoGGi.ComFuncs.MsgWait(Msg,Title,Ok,Cancel)
+  Msg = tostring(Msg)
+  Title = tostring(Title)
+  Ok = type(Ok) == "string" and Ok or _InternalTranslate(T({1000616}))
+  Cancel = type(Ok) == "string" and Cancel or _InternalTranslate(T({1000246}))
+
+  CreateRealTimeThread(
+    WaitCustomPopupNotification,
+    Title,
+    Msg,
+    {Ok,Cancel}
+  )
+end
+
+function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
+  pcall(function()
+    Msg = Msg or "Empty"
+    Ok = Ok or "Ok"
+    Cancel = Cancel or "Cancel"
+    Title = Title or "Placeholder"
+    CreateRealTimeThread(function()
+      if "ok" == WaitQuestion(nil,
+        Title,
+        Msg,
+        Ok,
+        Cancel)
+      then
+        Function()
+      end
+    end)
   end)
 end
 
@@ -206,25 +240,6 @@ function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
   end
 end
 
-function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
-  pcall(function()
-    Msg = Msg or "Empty"
-    Ok = Ok or "Ok"
-    Cancel = Cancel or "Cancel"
-    Title = Title or "Placeholder"
-    CreateRealTimeThread(function()
-      if "ok" == WaitQuestion(nil,
-        Title,
-        Msg,
-        Ok,
-        Cancel)
-      then
-        Function()
-      end
-    end)
-  end)
-end
-
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
 ---cConsts.XXX = ChoGGi.ComFuncs.NumRetBool(cConsts.XXX,0,cConsts.XXX)
 function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
@@ -365,7 +380,7 @@ end
 --AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
 function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
-  ChoGGi.ComFuncs.SaveOrigFunc(FuncName,ClassName)
+  ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
   _G[ClassName][FuncName] = function(self,...)
     Msg(sMsg,self)
@@ -373,15 +388,15 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   end
 end
 
-function ChoGGi.ComFuncs.SaveOrigFunc(Name,Class)
-  if Class then
-    local newname = Class .. "_" .. Name
+function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  if Func then
+    local newname = ClassOrFunc .. "_" .. Func
     if not ChoGGi.OrigFuncs[newname] then
-      ChoGGi.OrigFuncs[newname] = _G[Class][Name]
+      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
   else
-    if not ChoGGi.OrigFuncs[Name] then
-      ChoGGi.OrigFuncs[Name] = _G[Name]
+    if not ChoGGi.OrigFuncs[ClassOrFunc] then
+      ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
     end
   end
 end

@@ -17,11 +17,21 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "LightArea.tga"
   )
 
+if ChoGGi.Testing then
+  cComFuncs.AddAction(
+    "Cheats/[05]Manage Mysteries",
+    cMenuFuncs.ShowStartedMysteryList,
+    nil,
+    "Advance to next part or remove mysteries.",
+    "SelectionToObjects.tga"
+  )
+end
+
   cComFuncs.AddAction(
     "Cheats/[05]Start Mystery",
     cMenuFuncs.ShowMysteryList,
     nil,
-    "Pick and start a mystery (with instant option).",
+    "Pick and start a mystery (with instant start option).",
     "SelectionToObjects.tga"
   )
 
@@ -34,7 +44,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[05]Spawn Colonists",
+    "Cheats/[06]Spawn Colonists",
     cMenuFuncs.SpawnColonists,
     nil,
     "Spawn certain amount of colonists.",
@@ -76,7 +86,15 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
 
 ----------------------research
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Research Queue Larger",
+    "Cheats/[04]Research/Research Tech",
+    cMenuFuncs.ShowResearchTechList,
+    nil,
+    "Pick what you want to unlock/research.",
+    "ViewArea.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Cheats/[04]Research/[0]Research Queue Larger",
     cMenuFuncs.ResearchQueueLarger_Toggle,
     nil,
     function()
@@ -92,7 +110,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Reset All Research",
+    "Cheats/[04]Research/[0]Reset All Research",
     cMenuFuncs.ResetAllResearch,
     nil,
     "Resets all research (includes breakthrough tech).",
@@ -100,7 +118,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Research Current Tech",
+    "Cheats/[04]Research/[0]Research Current Tech",
     CheatResearchCurrent,
     nil,
     "Complete item currently being researched.",
@@ -108,7 +126,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Add Research Points",
+    "Cheats/[04]Research/[0]Add Research Points",
     cMenuFuncs.AddResearchPoints,
     nil,
     "Add a specified amount of research points.",
@@ -116,7 +134,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Outsourcing For Free",
+    "Cheats/[04]Research/[0]Outsourcing For Free",
     cMenuFuncs.OutsourcingFree_Toggle,
     nil,
     function()
@@ -127,15 +145,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/Research Tech",
-    cMenuFuncs.ShowResearchTechList,
-    nil,
-    "Pick what you want to unlock/research.",
-    "ViewArea.tga"
-  )
-
-  cComFuncs.AddAction(
-    "Cheats/[04]Research/[14]Set Amount Of Breakthroughs Allowed",
+    "Cheats/[04]Research/[1]Set Amount Of Breakthroughs Allowed",
     cMenuFuncs.SetBreakThroughsAllowed,
     nil,
     "How many breakthroughs are allowed to be unlocked?",
@@ -143,7 +153,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/[15]Breakthroughs From OmegaTelescope",
+    "Cheats/[04]Research/[2]Breakthroughs From OmegaTelescope",
     cMenuFuncs.SetBreakThroughsOmegaTelescope,
     nil,
     "How many breakthroughs the OmegaTelescope will unlock.",
