@@ -146,6 +146,34 @@ Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
 ```
 
+
+
+##### Fixes
+```
+Menu>ECM>Fixes>
+Drones Keep Trying Blocked Rocks:
+If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.
+
+Idle Drones Won't Build When Resources Available
+If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
+This removes any of those (resources won't be touched).
+
+Remove Yellow Grid Marks
+If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them
+
+Drone Carry Amount
+Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
+This forces them to pick up whenever there's more then one resource).
+If you have an insane production amount set then it'll take an (in-game) hour between calling drones.
+
+Project Morpheus Radar Fell Down
+Sometimes the blue radar thingy falls off.
+
+Cables & Pipes: Instant Repair
+Instantly repair all broken pipes and cables.
+
+```
+
 ##### Console
 ```
 Toggle showing history/results on-screen (Menu>Debug, it's on by default)
@@ -175,23 +203,6 @@ for i = 1, #templates do
   local building = templates[i]
 	print(building.name)
 end
-
-some functions I added that may be useful for modders:
-
-ChoGGi.ComFuncs.PrintIds(TechTree) : Dumps table names+number (access with TechTree[6][46])
-TechTree[6][46] = Breakthroughs>PrefabCompression
-
-ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop) : returns number from TechTree (so you know how much it changes)
-see: Data/TechTree.lua, or ex(TechTree) ex(TechDef)
-
-ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
-^returns 10
-ChoGGi.ComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
-^ returns 0.7
-
-it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
-ie: SupportiveCommunity is -70 this returns it as 0.7
-it also returns negative amounts as positive (I prefer num - PositiveAmt, not num + NegativeAmt)
 ```
 
 ##### Known issues
