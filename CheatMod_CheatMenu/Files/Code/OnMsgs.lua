@@ -7,6 +7,8 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 
 function OnMsg.ClassesGenerate()
+
+
   --i like keeping all my OnMsgs. in one file
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cMsgFuncs.InfoPaneCheats_ClassesGenerate()
@@ -218,6 +220,7 @@ function OnMsg.LoadingScreenPreClose()
     --make hidden buildings visible
     if UserSettings.Building_hide_from_build_menu then
       BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+      BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
       if tab[i].name ~= "LifesupportSwitch" and tab[i].name ~= "ElectricitySwitch" then
         tab[i].hide_from_build_menu = nil
       end
@@ -634,6 +637,7 @@ function OnMsg.SelectionRemoved()
   s = false
 end
 
+--function OnMsg.NewDay() --newsol
 function OnMsg.NewHour()
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then

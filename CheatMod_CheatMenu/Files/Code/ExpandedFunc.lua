@@ -500,16 +500,23 @@ function cMenuFuncs.DronesKeepTryingBlockedRocks()
   local function ResetPriorityQueue(Class)
     local Hubs = GetObjects({class=Class}) or empty_table
     for i = 1, #Hubs do
+      --clears out the queues
       Hubs[i].priority_queue = {}
       for priority = -1, const.MaxBuildingPriority do
         Hubs[i].priority_queue[priority] = {}
       end
-      Hubs[i]:AddBuilding(FindNearestObject(GetObjects({class="ConstructionSite"}),Hubs[i]))
+      --wakes them up (spawning a buiding or toggling a site also works (toggling construction site is probably better incase nearest is far away?)
+      --Hubs[i]:AddBuilding(FindNearestObject(GetObjects({class="ConstructionSite"}),Hubs[i]))
     end
   end
   ResetPriorityQueue("SupplyRocket")
   ResetPriorityQueue("RCRover")
   ResetPriorityQueue("DroneHub")
+  --toggle working state on all ConstructionSites (wakes up drones else they'll just wait at hub till user does this)
+  local Sites = GetObjects({class="ConstructionSite"}) or empty_table
+  for i = 1, #Sites do
+    ChoGGi.CodeFuncs.ToggleWorking(Sites[i])
+  end
 
   cComFuncs.MsgPopup("Hubs reset","Rocks")
 end
