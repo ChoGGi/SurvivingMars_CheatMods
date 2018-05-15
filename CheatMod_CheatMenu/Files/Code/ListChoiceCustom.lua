@@ -248,10 +248,10 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         end
         self:SetFocus()
         return "break"
-        --[[
       elseif virtual_key == const.vkEnter then
         self.idOK:Press()
         return "break"
+        --[[
       elseif virtual_key == const.vkSpace then
         self.idCheckBox1:SetToggled(not self.idCheckBox1:GetToggled())
         return "break"

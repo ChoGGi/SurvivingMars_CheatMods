@@ -17,7 +17,7 @@ ChoGGi = {
   --Defaults.lua
   SettingFuncs = {},
   --temporary settings that aren't saved to SettingsFile
-  Temp = {StartupMsgs = {}},
+  Temp = {StartupMsgs = {}, RocketFiredDustDevil = {}},
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }

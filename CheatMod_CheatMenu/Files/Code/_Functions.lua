@@ -1092,3 +1092,10 @@ function ChoGGi.CodeFuncs.LightmodelBuild(Table)
   ChoGGi.Temp.LightmodelCustom = data.ChoGGi_Custom
   return data.ChoGGi_Custom
 end
+
+function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
+  local Attaches = Obj:GetAttaches()
+  for i = #Attaches, 1, -1 do
+    Attaches[i]:delete()
+  end
+end

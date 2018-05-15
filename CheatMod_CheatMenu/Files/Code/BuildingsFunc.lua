@@ -10,6 +10,16 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
+function cMenuFuncs.DefenceTowersAttackDustDevils_Toggle()
+  ChoGGi.UserSettings.DefenceTowersAttackDustDevils = not ChoGGi.UserSettings.DefenceTowersAttackDustDevils
+
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DefenceTowersAttackDustDevils) .. "\nDust? What dust?",
+    "Defence"
+  )
+
+end
+
 function cMenuFuncs.AlwaysDustyBuildings_Toggle()
   ChoGGi.UserSettings.AlwaysDustyBuildings = not ChoGGi.UserSettings.AlwaysDustyBuildings
   if not ChoGGi.UserSettings.AlwaysDustyBuildings then

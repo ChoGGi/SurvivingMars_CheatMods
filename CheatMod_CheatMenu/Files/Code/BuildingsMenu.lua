@@ -11,6 +11,17 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   local icon = "Cube.tga"
 
   cComFuncs.AddAction(
+    "Expanded CM/Buildings/Defence Towers Attack DustDevils",
+    cMenuFuncs.DefenceTowersAttackDustDevils_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.DefenceTowersAttackDustDevils and "(Enabled)" or "(Disabled)"
+      return des .. " Defence towers will attack dustdevils."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Buildings/Always Dusty",
     cMenuFuncs.AlwaysDustyBuildings_Toggle,
     nil,

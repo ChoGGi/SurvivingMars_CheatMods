@@ -70,11 +70,18 @@ function cMenuFuncs.DisastersStop()
 end
 
 function cMenuFuncs.MeteorsDestroy()
+
+
   --causes error msgs for next ones (seems to work fine, but still)
-  while #g_MeteorsPredicted > 0 do
-    for i = 1, #g_MeteorsPredicted do
+
+
+  local mp = g_MeteorsPredicted
+  while #mp > 0 do
+    for i = 1, #mp do
       pcall(function()
-        g_MeteorsPredicted[i]:ExplodeInAir()
+        --Msg("MeteorIntercepted", mp[i], MeteorInterceptRocket.shooter)
+        Msg("MeteorIntercepted", mp[i])
+        mp[i]:ExplodeInAir()
       end)
     end
   end
