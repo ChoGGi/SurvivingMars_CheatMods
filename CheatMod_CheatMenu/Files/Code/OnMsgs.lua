@@ -685,7 +685,7 @@ end
 
 --custom UICity.labels lists
 function OnMsg.ChoGGi_CreatedGridObject(Obj)
-  if Obj.class and (Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement") then
+  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     local labels = UICity.labels
     labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
     local label = labels["ChoGGi_" .. Obj.class]
@@ -693,7 +693,7 @@ function OnMsg.ChoGGi_CreatedGridObject(Obj)
   end
 end
 function OnMsg.ChoGGi_RemovedGridObject(Obj)
-  if Obj.class and (Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement") then
+  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     cComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
     cComFuncs.RemoveFromLabel("ChoGGi_" .. Obj.class,Obj)
   end

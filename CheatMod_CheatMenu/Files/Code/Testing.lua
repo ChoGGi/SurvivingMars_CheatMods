@@ -1,6 +1,6 @@
 --stuff only loaded when ChoGGi.Temp.Testing = true
 
-ChoGGi.Temp.Testing = false
+--ChoGGi.Temp.Testing = false
 
 local cCodeFuncs = ChoGGi.CodeFuncs
 local cComFuncs = ChoGGi.ComFuncs

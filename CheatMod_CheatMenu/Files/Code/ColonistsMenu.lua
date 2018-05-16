@@ -151,6 +151,17 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
+    "Expanded CM/Colonists/[2]Traits/University Grad Remove Idiot",
+    cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait and "(Enabled)" or "(Disabled)"
+      return des .. " When colonist graduates this will remove idiot trait."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Colonists/[2]Traits/Chance Of Negative Trait",
     cMenuFuncs.ChanceOfNegativeTrait_Toggle,
     nil,

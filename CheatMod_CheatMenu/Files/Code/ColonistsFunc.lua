@@ -8,8 +8,18 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
-DeathReasons.ChoGGi_Soylent = "Evil Overlord"
 
+function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
+  ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait = not ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait
+
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(
+    tostring(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
+    "Idiots"
+  )
+end
+
+DeathReasons.ChoGGi_Soylent = "Evil Overlord"
 function cMenuFuncs.TheSoylentOption()
   --can't drop BlackCubes
   local list = {}

@@ -530,7 +530,29 @@ function cMenuFuncs.ChangeMap()
         return
       end
       CloseMenuDialogs()
-      StartGame(map, map_settings)
+
+  Pause()
+  OpenMapLoadingScreen(map)
+  WaitRenderMode("ui")
+  WaitInitialDlcLoad()
+  CurrentMap = map
+  CurrentMapFolder = GetMapFolder(map)
+  mapdata = MapData[map] or {}
+  mapdata.MapType = "game"
+  PreloadMap(map)
+  config.NoPassability = mapdata.NoTerrain and 1 or 0
+  hr.RenderTerrain = mapdata.NoTerrain and 0 or 1
+  EngineChangeMap(CurrentMapFolder, mapdata)
+  if map ~= "" then
+    AsyncLoadGrass(CurrentMapFolder .. "grass.bin")
+    LoadMap()
+    WaitRenderMode("scene")
+    PrepareMinimap()
+  end
+  WaitOneMsGameTime()
+  CloseMapLoadingScreen(map)
+  Resume()
+
       LocalStorage.last_map = map
       SaveLocalStorage()
     end

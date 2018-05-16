@@ -159,6 +159,14 @@ end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  cComFuncs.SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
+  function MartianUniversity:OnTrainingCompleted(unit)
+    if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
+      unit:RemoveTrait("Idiot")
+    end
+    cOrigFuncs.MartianUniversity_OnTrainingCompleted(self, unit)
+  end
+
   --used to skip mystery sequences
   cComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
   function SA_WaitMarsTime:StopWait()
