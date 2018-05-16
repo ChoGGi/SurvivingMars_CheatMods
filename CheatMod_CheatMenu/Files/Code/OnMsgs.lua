@@ -124,6 +124,28 @@ function OnMsg.LoadingScreenPreClose()
   cMsgFuncs.MiscMenu_LoadingScreenPreClose()
   cMsgFuncs.ResourcesMenu_LoadingScreenPreClose()
 
+  --add preset menu items
+  ClassDescendantsList("Preset", function(name, class)
+    local preset_class = class.PresetClass or name
+    Presets[preset_class] = Presets[preset_class] or {}
+    local map = class.GlobalMap
+    if map then
+      rawset(_G, map, rawget(_G, map) or {})
+    end
+    cComFuncs.AddAction(
+      "Presets/" .. name,
+      function()
+        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+          PresetClass = name,
+          SingleFile = class.SingleFile
+        })
+      end,
+      class.EditorShortcut or nil,
+      "Open a preset in the editor.",
+      class.EditorIcon or "CollectionsEditor.tga"
+    )
+  end)
+
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
@@ -206,28 +228,6 @@ function OnMsg.LoadingScreenPreClose()
       tab[i].connected_domes = {}
     end
   end
-
-  --add preset menu items
-  ClassDescendantsList("Preset", function(name, class)
-    local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or {}
-    local map = class.GlobalMap
-    if map then
-      rawset(_G, map, rawget(_G, map) or {})
-    end
-    cComFuncs.AddAction(
-      "Presets/" .. name,
-      function()
-        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-          PresetClass = name,
-          SingleFile = class.SingleFile
-        })
-      end,
-      class.EditorShortcut or nil,
-      "Open a preset in the editor.",
-      class.EditorIcon or "CollectionsEditor.tga"
-    )
-  end)
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
   tab = city.labels.Storages or empty_table
@@ -317,14 +317,7 @@ function OnMsg.LoadingScreenPreClose()
     const.BreakChancePipe = 10000000
   end
 
-  --print startup msgs to console log
-  local msgs = ChoGGi.Temp.StartupMsgs
-  for i = 1, #msgs do
-    AddConsoleLog(msgs[i],true)
-    --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
-  end
-
-  --people will likely just copy new mod over old, and I moved stuff around
+  --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
   if ChoGGi._VERSION ~= UserSettings._VERSION then
     --clean up
     cCodeFuncs.NewThread(cCodeFuncs.RemoveOldFiles)
@@ -361,7 +354,7 @@ function OnMsg.LoadingScreenPreClose()
     end
 
     --remove any dialogs we opened
-    cCodeFuncs.CloseDialogsECM()
+    ChoGGi.CodeFuncs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
     tab = city.labels.BuildingNoDomes or empty_table
@@ -393,12 +386,22 @@ function OnMsg.LoadingScreenPreClose()
       end
     end
 
+    --make the change map dialog movable
+    DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
+    DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
   end)
 
   --make sure to save anything we changed above
   if Temp.WriteSettings then
     cSettingFuncs.WriteSettings()
     Temp.WriteSettings = nil
+  end
+
+  --print startup msgs to console log
+  local msgs = Temp.StartupMsgs
+  for i = 1, #msgs do
+    AddConsoleLog(msgs[i],true)
+    --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
   end
 
 end --OnMsg
@@ -584,19 +587,33 @@ end
 
 function OnMsg.NewDay() --newsol
 
-  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-  local labels = UICity.labels
-  local function ValidGridElements(Label)
-    local Table = labels[Label]
-    for i = #Table, 1, -1 do
-      if not IsValid(Table[i]) then
-        table.remove(Table,i)
-      end
+  --sorts cc list by dist to building
+  if ChoGGi.UserSettings.SortCommandCenterDist then
+    local blds = GetObjects({class="Building"})
+    for i = 1, #blds do
+      table.sort(blds[i].command_centers,
+        function(a,b)
+          return cComFuncs.CompareTableFuncs(a,b,"GetDist2D",blds[i])
+        end
+      )
     end
   end
-  ValidGridElements("ChoGGi_GridElements")
-  ValidGridElements("ChoGGi_LifeSupportGridElement")
-  ValidGridElements("ChoGGi_ElectricityGridElement")
+
+  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
+  local labels = UICity.labels
+  if UICity.labels.ChoGGi_GridElements then
+    local function ValidGridElements(Label)
+      local Table = labels[Label]
+      for i = #Table, 1, -1 do
+        if not IsValid(Table[i]) then
+          table.remove(Table,i)
+        end
+      end
+    end
+    ValidGridElements("ChoGGi_GridElements")
+    ValidGridElements("ChoGGi_LifeSupportGridElement")
+    ValidGridElements("ChoGGi_ElectricityGridElement")
+  end
 
 end
 

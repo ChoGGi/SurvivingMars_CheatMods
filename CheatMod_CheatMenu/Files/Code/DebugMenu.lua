@@ -163,162 +163,19 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "[102]Debug/Change Map",
     cMenuFuncs.ChangeMap,
     nil,
-    "Change Map",
+    "Change map (options to pick commander, sponsor, etc...\n\nAttention: The first change usually screws up with some yellow ground (ideas?).\nThe map disaster settings don't do jack.",
     "load_city.tga"
-    --toolbar = "01_File/01_ChangeMap",
-  )
-
-  --[[
-  cComFuncs.AddAction(
-    "[203]Editors/ReloadStaticClasses()",
-    ReloadStaticClasses,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
   )
 
   cComFuncs.AddAction(
-    "[203]Editors/ReloadTexture()",
-    ReloadTexture,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/ReloadEntity()",
-    ReloadEntity,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/InitSourceController()",
-    InitSourceController,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/CNSProcess()",
-    CNSProcess,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/ParticlesReload()",
-    ParticlesReload,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/ReloadShaders()",
-    hr.ReloadShaders,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[2]Toggle Buildable Grid",
-    DbgToggleBuildableGrid,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[3]Draw Min Circles",
-    PrefabDbgDrawMinCircles,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[4]Draw Max Circles",
-    PrefabDbgDrawMaxCircles,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[5]Draw Decor Circles",
-    PrefabDbgDrawDecorCircles,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[6]Draw Prefab Pos",
-    PrefabDbgDrawPos,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[7]Draw Resource Clusters",
-    PrefabDbgDrawResourceClusters,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[8]Draw Features",
-    PrefabDbgDrawFeatures,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/[2]Debug/[9]Editor Objects",
-    PrefabEditorObjectsToggle,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/Resave All Prefabs",
-    ResaveAllPrefabs,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/Resave All Blank Maps",
-    ResaveAllBlankMaps,
-    nil,
-    nil,
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[203]Editors/[02]Random Map/Recover Game Revision",
+    "[102]Debug/ParticlesReload",
     function()
-      local gen = GetRandomMapGenerator() or GetRandomMapGeneratorHolder()
-      if gen then
-        CreateRealTimeThread(function(gen)
-          gen:RecoverRevision()
-        end, gen)
-      end
+      LoadStreamParticlesFromDir("Data/Particles")
+      ParticlesReload("", true)
     end,
     nil,
     nil,
     "CollisionGeometry.tga"
-    --mode = "Editor",
   )
-  --]]
+
 end

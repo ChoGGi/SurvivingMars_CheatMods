@@ -322,11 +322,18 @@ function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
     return tostring(a[sName]) < tostring(b[sName])
   end
 end
-function ChoGGi.ComFuncs.CompareTablePos(a,b,sName)
-  if a:GetPos() ==  b:GetPos() then
-    return a[sName] < b[sName]
+--[[
+table.sort(s.command_centers,
+  function(a,b)
+    return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",s)
+  end
+)
+--]]
+function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
+  if Obj then
+    return Obj[sFunc](Obj,a) < Obj[sFunc](Obj,b)
   else
-    return tostring(a[sName]) < tostring(b[sName])
+    return a[sFunc](a,b) < b[sFunc](b,a)
   end
 end
 
@@ -457,6 +464,15 @@ function ChoGGi.ComFuncs.RetProperType(Value)
   end
   --then it's a string (probably)
   return Value
+end
+
+--takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
+function ChoGGi.ComFuncs.StringToTable(String)
+  local Table = {}
+  for i in String:gmatch("%S+") do
+    Table[#Table+1] = i
+  end
+  return Table
 end
 
 --change some annoying stuff about UserActions.AddActions()
@@ -677,10 +693,12 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
 end
 
 --RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1,ResourceStockpile=1},"class")
-function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,Type)
+function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
       filter = function(o)
         if not ExcludeList[o[Type]] then
+          return o
+        elseif IncludeList[o[Type]] then
           return o
         end
       end

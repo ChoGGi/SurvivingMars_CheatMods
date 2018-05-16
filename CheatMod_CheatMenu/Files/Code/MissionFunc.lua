@@ -71,12 +71,13 @@ function cMenuFuncs.ChangeSponsor()
         --new comm
         g_CurrentMissionParams.idMissionSponsor = value
         -- apply tech from new sponsor
-        GetMissionSponsor():game_apply(UICity)
-        GetMissionSponsor():OnApplyEffect(UICity)
-        UICity:ApplyModificationsFromProperties()
-
+        local city = UICity
+        local sponsor = GetMissionSponsor()
+        city:ModifyGlobalConstsFromProperties(sponsor)
+        sponsor:game_apply(city)
+        sponsor:OnApplyEffect(city)
         --and bonuses
-        UICity:InitMissionBonuses()
+        city:InitMissionBonuses()
 
         cComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
           "Sponsor",UsualIcon
@@ -167,11 +168,13 @@ function cMenuFuncs.ChangeCommander()
         g_CurrentMissionParams.idCommanderProfile = value
 
         -- apply tech from new commmander
-        GetCommanderProfile():game_apply(UICity)
-        GetCommanderProfile():OnApplyEffect(UICity)
-        UICity:ApplyModificationsFromProperties()
+        local city = UICity
+        local commander = GetMissionSponsor()
+        commander:game_apply(city)
+        commander:OnApplyEffect(city)
+        city:ApplyModificationsFromProperties()
         --and bonuses
-        UICity:InitMissionBonuses()
+        city:InitMissionBonuses()
 
         cComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
           "Commander",UsualIcon

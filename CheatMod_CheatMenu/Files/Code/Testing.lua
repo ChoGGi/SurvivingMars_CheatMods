@@ -55,7 +55,7 @@ if ChoGGi.Temp.Testing then
   end
 
 ---------
-  print("ChoGGi.Temp.Testing")
+  print("if ChoGGi.Temp.Testing")
 end --Testing
 
 function cMsgFuncs.Testing_ClassesGenerate()

@@ -112,6 +112,17 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   cComFuncs.AddAction(
+    "Expanded CM/Fixes/Sort Command Center Dist",
+    cMenuFuncs.SortCommandCenterDist_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.SortCommandCenterDist and "(Enabled)" or "(Disabled)"
+      return des .. " Each Sol goes through all buildings and sorts their cc list by nearest.\n\nTakes less then a second on a map with 3616 buildings and 54 drone hubs."
+    end,
+    "Axis.tga"
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks",
     cMenuFuncs.DronesKeepTryingBlockedRocks,
     nil,

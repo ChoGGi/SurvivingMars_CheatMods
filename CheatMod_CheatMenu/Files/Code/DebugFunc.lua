@@ -370,10 +370,12 @@ end
 
 function cMenuFuncs.ObjExaminer()
   local obj = cCodeFuncs.SelObject()
-  --OpenExamine(SelectedObj)
   if not obj then
-    return ClearShowMe()
+    return
+    --return ClearShowMe()
   end
+  --OpenExamine(SelectedObj)
+  --open and move to where the cursor is
   local ex = Examine:new()
   ex:SetPos(terminal.GetMousePos())
   ex:SetObj(obj)
@@ -503,6 +505,51 @@ function cMenuFuncs.ConsoleHistory_Toggle()
 end
 
 function cMenuFuncs.ChangeMap()
+  local NewMissionParams = {}
+
+  --open a list dialog to set g_CurrentMissionParams
+  local ItemList = {
+    {text = "idMissionSponsor",value = "IMM"},
+    {text = "idCommanderProfile",value = "rocketscientist"},
+    {text = "idMystery",value = "random"},
+    {text = "idGameRules",value = ""},
+  }
+
+  local CallBackFunc = function(choice)
+    if type(choice) ~= "table" then
+      return
+    end
+    for i = 1, #choice do
+      local text = choice[i].text
+      local value = choice[i].value
+
+      if text == "idMissionSponsor" then
+        NewMissionParams.idMissionSponsor = value
+      elseif text == "idCommanderProfile" then
+        NewMissionParams.idCommanderProfile = value
+      elseif text == "idMystery" then
+        NewMissionParams.idMystery = value
+      elseif text == "idGameRules" then
+        NewMissionParams.idGameRules = {}
+        if value:find(" ") then
+          for i in value:gmatch("%S+") do
+            NewMissionParams.idGameRules[i] = true
+          end
+        elseif value ~= "" then
+          NewMissionParams.idGameRules[value] = true
+        end
+      end
+    end
+
+  end
+
+  local hint = "Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none)."
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set MissionParams NewMap",hint,nil,nil,nil,nil,nil,4)
+
+  --shows the mission params for people to look at
+  OpenExamine(MissionParams)
+
+  --map list dialog
   CreateRealTimeThread(function()
     local caption = Untranslated("Choose map with settings presets:")
     local maps = ListMaps()
@@ -515,6 +562,7 @@ function cMenuFuncs.ChangeMap()
         }
       end
     end
+
     local default_selection = table.find(maps, GetMapName())
     local map_settings = {}
     local class_names = ClassDescendantsList("MapSettings")
@@ -522,6 +570,7 @@ function cMenuFuncs.ChangeMap()
       local class = class_names[i]
       map_settings[class] = mapdata[class]
     end
+
     local sel_idx
     sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
     if sel_idx ~= "idCancel" then
@@ -531,28 +580,33 @@ function cMenuFuncs.ChangeMap()
       end
       CloseMenuDialogs()
 
-  Pause()
-  OpenMapLoadingScreen(map)
-  WaitRenderMode("ui")
-  WaitInitialDlcLoad()
-  CurrentMap = map
-  CurrentMapFolder = GetMapFolder(map)
-  mapdata = MapData[map] or {}
-  mapdata.MapType = "game"
-  PreloadMap(map)
-  config.NoPassability = mapdata.NoTerrain and 1 or 0
-  hr.RenderTerrain = mapdata.NoTerrain and 0 or 1
-  EngineChangeMap(CurrentMapFolder, mapdata)
-  if map ~= "" then
-    AsyncLoadGrass(CurrentMapFolder .. "grass.bin")
-    LoadMap()
-    WaitRenderMode("scene")
-    PrepareMinimap()
-  end
-  WaitOneMsGameTime()
-  CloseMapLoadingScreen(map)
-  Resume()
+      --cleans out missions params
+      InitNewGameMissionParams()
 
+      --select new MissionParams
+      g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
+      g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
+      g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
+      g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or {}
+      g_CurrentMissionParams.GameSessionID = srp.random_encode64(96)
+
+      --items in spawn rocket
+      GenerateRocketCargo()
+
+      --landing spot/rocket name / resource amounts?, see g_CurrentMapParams
+      GenerateRandomMapParams()
+
+      --and change the map
+      local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
+      local gen = RandomMapGenerator:new()
+      gen:SetProperties(props)
+      FillRandomMapProps(gen)
+      gen.BlankMap = map
+
+      --generates/loads map
+      gen:Generate(nil, nil, nil, nil, map_settings)
+
+      --update local store
       LocalStorage.last_map = map
       SaveLocalStorage()
     end

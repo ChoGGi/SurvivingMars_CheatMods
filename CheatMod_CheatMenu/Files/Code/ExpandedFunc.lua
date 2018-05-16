@@ -11,6 +11,14 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
+function cMenuFuncs.SortCommandCenterDist_Toggle()
+  ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Sorting cc dist: " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
+    "Buildings"
+  )
+end
+
 function cMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 

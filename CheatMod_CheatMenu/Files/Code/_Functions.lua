@@ -589,7 +589,70 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
     dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
   end
 end
+--force drones to pickup from producers even if they have a large carry cap
+function ChoGGi.CodeFuncs.FuckingDrones(Producer)
 
+  --Come on, Bender. Grab a jack. I told these guys you were cool.
+  --Well, if jacking on will make strangers think I'm cool, I'll do it.
+
+  if not Producer then
+    return
+  end
+  local amount = Producer:GetAmountStored()
+  --only fire if more then one resource
+  if amount > 1000 then
+    local p = Producer.parent
+
+    --check if nearest cc has idle drones, or run though list of cc till we find one
+    local cc = FindNearestObject(p.command_centers,p)
+    if cc:GetIdleDronesCount() > 0 then
+      cc = cc.drones
+    else
+      --sort by nearest dist
+      table.sort(p.command_centers,
+        function(a,b)
+          return cComFuncs.CompareTableFuncs(a,b,"GetDist2D",p.command_centers)
+        end
+      )
+      --get a command_center with idle drones
+      for i = 1, #p.command_centers do
+        if p.command_centers[i]:GetIdleDronesCount() > 0 then
+          cc = p.command_centers[i].drones
+          break
+        end
+      end
+    end
+    --get an idle drone
+    local drone
+    for i = 1, #cc do
+      if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
+        drone = cc[i]
+        break
+      end
+    end
+
+    --if we don't have an idle drone then give up till next time
+    if drone then
+      local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
+      --round to nearest 1000 (don't want uneven stacks)
+      amount = (amount - amount % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
+      --if carry is smaller then amount then fine
+      if carry < amount then
+        amount = carry
+      end
+      drone:SetCommandUserInteraction(
+        "PickUp",
+        Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
+        false,
+        Producer.resource_produced,
+        amount
+      )
+    end
+
+  end
+end
+
+--[[
 --force drones to pickup from producers even if they have a large carry cap
 function ChoGGi.CodeFuncs.FuckingDrones(Producer)
   --Come on, Bender. Grab a jack. I told these guys you were cool.
@@ -639,6 +702,7 @@ function ChoGGi.CodeFuncs.FuckingDrones(Producer)
     end
   end
 end
+--]]
 
 function ChoGGi.CodeFuncs.SaveOldPalette(Obj)
   local GetPal = Obj.GetColorizationMaterial
