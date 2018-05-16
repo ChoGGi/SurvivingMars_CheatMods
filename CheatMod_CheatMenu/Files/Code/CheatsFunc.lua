@@ -355,20 +355,16 @@ function cMenuFuncs.ShowStartedMysteryList()
   for i = 1, #PlayerList do
     --1 is always there from map loading
     if i > 1 then
-      local info = PlayerList[i].seq_list
-      local totalparts = #info[1]
-      local ip
-      if PlayerList[i].seq_states.Start then
-        ip = PlayerList[i].seq_states.Start.ip
-      elseif PlayerList[i].seq_states.Trigger then
-        ip = PlayerList[i].seq_states.Trigger.ip
-      end
+      local seq_list = PlayerList[i].seq_list
+      local totalparts = #seq_list[1]
+      local id = seq_list.file_name
+      local ip = PlayerList[i].seq_states[seq_list[1].name].ip
 
       ItemList[#ItemList+1] = {
-        text = info.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[info.file_name]})),
-        value = info.file_name,
+        text = seq_list.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[id]})),
+        value = id,
         index = i,
-        hint = _InternalTranslate(T({cTables.MysteryDescription[info.file_name]})) .. "\n\nTotal parts: " .. totalparts .. " On part: " .. ip
+        hint = _InternalTranslate(T({cTables.MysteryDescription[id]})) .. "\n\nTotal parts: " .. totalparts .. " On part: " .. ip
       }
     end
   end
@@ -410,24 +406,19 @@ ex(PlayerList)
     if i > 1 then
 
       local player = PlayerList[i]
-      local list = PlayerList[i].seq_list
       local state = player.seq_states
 
-      if list.file_name == Mystery then
-        local seqtype
-        if state.Start then
-          seqtype = "Start"
-        elseif state.Trigger then
-          seqtype = "Trigger"
-        end
-        list = state[seqtype].action.meta.sequence
-        local ip = state[seqtype].ip
+      if player.seq_list.file_name == Mystery then
+        --current seq_list
+        local seq_list = state[player.seq_list[1].name].action.meta.sequence
+
+        local ip = state[seq_list.name].ip
         local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficulty[Mystery]})) or "Missing Name"
 
-        for j = 1, #list do
+        for j = 1, #seq_list do
           --skip till we're at the right place
           if j >= ip then
-            local seq = list[j]
+            local seq = seq_list[j]
             if seq.class == "SA_WaitExpression" then
 print("SEQ: SA_WaitExpression")
 print(Mystery)
@@ -437,8 +428,8 @@ print(Mystery)
                 ChoGGi.Temp.SkipNext_SA_Wait = Mystery
                 --seq.expression = nil
                 --ip = ip + 1
-                state[seqtype].action.meta.finished = true
-                player:UpdateCurrentIP(list)
+                state[seq_list.name].action.meta.finished = true
+                player:UpdateCurrentIP(seq_list)
               end
               cComFuncs.QuestionBox(
                 "You must do this to advance:\n" .. tostring(seq.expression) .. "\n\nClick Ok to skip this (Warning: may cause issues later on, untested).\nTime duration is still set to 0 (once you complete the requirements).",
@@ -494,9 +485,9 @@ print("===========")
 
 
               meta.finished = true
-              --state[seqtype].action:EndWait(state[seqtype].action, true)
+              --state[seq_list.name].action:EndWait(state[seq_list.name].action, true)
               --]]
-              player:UpdateCurrentIP(list)
+              player:UpdateCurrentIP(seq_list)
               --ex(seq)
               cComFuncs.MsgPopup("Timer delay removed, wait till next Sol.",name)
               break

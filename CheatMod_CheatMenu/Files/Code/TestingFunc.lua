@@ -8,6 +8,7 @@ local cInfoFuncs = ChoGGi.InfoFuncs
 local cMsgFuncs = ChoGGi.MsgFuncs
 local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
+local cOrigFuncs = ChoGGi.OrigFuncs
 
 if ChoGGi.Temp.Testing then
   info = debug.getinfo
@@ -122,4 +123,13 @@ end
 end
 
 function cMsgFuncs.TestingFunc_LoadingScreenPreClose()
+
+  cComFuncs.AddAction(
+    "Cheats/[05]Manage Mysteries",
+    cMenuFuncs.ShowStartedMysteryList,
+    nil,
+    "Advance to next part or remove mysteries.",
+    "SelectionToObjects.tga"
+  )
+
 end
