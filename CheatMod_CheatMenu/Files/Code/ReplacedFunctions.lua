@@ -159,6 +159,37 @@ end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --used to skip mystery sequences
+  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
+  function SA_WaitMarsTime:StopWait()
+    local cTemp = ChoGGi.Temp
+
+    if cTemp.SA_WaitMarsTime_StopWait and self.meta.player and cTemp.SA_WaitMarsTime_StopWait.id == self.meta.player.seq_list.file_name then
+
+      --inform user, or if it's a dbl then skip
+      if cTemp.SA_WaitMarsTime_StopWait.skipmsg then
+        cTemp.SA_WaitMarsTime_StopWait.skipmsg = nil
+      else
+        cComFuncs.MsgPopup("Timer delay skipped","Mystery")
+      end
+
+      --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
+      if cTemp.SA_WaitMarsTime_StopWait.again == true then
+        cTemp.SA_WaitMarsTime_StopWait.again = nil
+        cTemp.SA_WaitMarsTime_StopWait.skipmsg = true
+      else
+        --reset it for next time
+        cTemp.SA_WaitMarsTime_StopWait.id = false
+        cTemp.SA_WaitMarsTime_StopWait.again = false
+      end
+
+      --skip
+      return 1
+    end
+
+    return cOrigFuncs.SA_WaitMarsTime_StopWait(self)
+  end
+
   cComFuncs.SaveOrigFunc("DefenceTower","DefenceTick")
   function DefenceTower:DefenceTick()
 

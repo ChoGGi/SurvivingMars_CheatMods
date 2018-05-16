@@ -88,10 +88,12 @@ function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
         Title,
         Msg,
         Ok,
-        Cancel)
+        Cancel
+      )
       then
         Function()
       end
+
     end)
   end)
 end
@@ -383,11 +385,10 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
   _G[ClassName][FuncName] = function(...)
-    local Args = {...}
     --I just care about adding self to the msgs
-    Msg(sMsg,select(1,Args))
+    Msg(sMsg,select(1,...))
     --pass on args to orig func
-    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](table.unpack(Args))
+    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](...)
   end
 end
 

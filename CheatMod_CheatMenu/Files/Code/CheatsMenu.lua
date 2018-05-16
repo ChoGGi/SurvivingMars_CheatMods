@@ -18,6 +18,13 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
+    "Cheats/[05]Manage Mysteries",
+    cMenuFuncs.ShowStartedMysteryList,
+    nil,
+    "Advance to next part or remove mysteries.",
+    "SelectionToObjects.tga"
+  )
+  cComFuncs.AddAction(
     "Cheats/[05]Start Mystery",
     cMenuFuncs.ShowMysteryList,
     nil,

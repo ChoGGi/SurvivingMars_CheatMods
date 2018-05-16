@@ -80,9 +80,10 @@ end
 --fired as late as we can
 --function OnMsg.Resume()
 function OnMsg.LoadingScreenPreClose()
+  local city = UICity
 
   --for new games
-  if not UICity then
+  if not city then
     return
   end
 
@@ -199,7 +200,7 @@ function OnMsg.LoadingScreenPreClose()
   local tab
 
   --not sure why this would be false on a dome
-  tab = UICity.labels.Dome or empty_table
+  tab = city.labels.Dome or empty_table
   for i = 1, #tab do
     if tab[i].achievement == "FirstDome" and type(tab[i].connected_domes) ~= "table" then
       tab[i].connected_domes = {}
@@ -229,7 +230,7 @@ function OnMsg.LoadingScreenPreClose()
   end)
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
-  tab = UICity.labels.Storages or empty_table
+  tab = city.labels.Storages or empty_table
   pcall(function()
     for i = 1, #tab do
       if tab[i]:GetStoredAmount() < 0 then
@@ -333,41 +334,23 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   cCodeFuncs.NewThread(function()
-    local labels = UICity.labels
-
-      --add some custom labels for cables/pipes
-      --[[
-    if type(labels.GridElements) ~= "table" then
-      labels.GridElements = {}
-    else
-      --remove any broken objects
-      cComFuncs.RemoveMissingLabelObjects("GridElements")
-    end
-    if type(labels.ElectricityGridElement) ~= "table" then
-      labels.ElectricityGridElement = {}
-    else
-      cComFuncs.RemoveMissingLabelObjects("ElectricityGridElement")
-    end
-    if type(labels.LifeSupportGridElement) ~= "table" then
-      labels.LifeSupportGridElement = {}
-    else
-      cComFuncs.RemoveMissingLabelObjects("LifeSupportGridElement")
-    end
-    --]]
-    labels.GridElements = {}
-    labels.ElectricityGridElement = {}
-    labels.LifeSupportGridElement = {}
-    local function NewGridLabels(Label)
-      if not next(labels[Label]) then
-        local objs = GetObjects({class=Label}) or empty_table
-        for i = 1, #objs do
-          labels[Label][#labels[Label]+1] = objs[i]
-          labels.GridElements[#labels.GridElements+1] = objs[i]
+    --add custom labels for cables/pipes
+    local labels = city.labels
+    local function CheckLabel(Label)
+      if not labels[Label] then
+        city:InitEmptyLabel(Label)
+        if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
+          local objs = GetObjects({class=Label:gsub("ChoGGi_","")}) or empty_table
+          for i = 1, #objs do
+            labels[Label][#labels[Label]+1] = objs[i]
+            labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = objs[i]
+          end
         end
       end
     end
-    NewGridLabels("ElectricityGridElement")
-    NewGridLabels("LifeSupportGridElement")
+    CheckLabel("ChoGGi_GridElements")
+    CheckLabel("ChoGGi_ElectricityGridElement")
+    CheckLabel("ChoGGi_LifeSupportGridElement")
 
     --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
     local shown = g_ShownOnScreenNotifications
@@ -381,7 +364,7 @@ function OnMsg.LoadingScreenPreClose()
     cCodeFuncs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
-    tab = UICity.labels.BuildingNoDomes or empty_table
+    tab = city.labels.BuildingNoDomes or empty_table
     local sType
     for i = 1, #tab do
       if tab[i].dome_required == false and tab[i].parent_dome then
@@ -542,10 +525,12 @@ end --OnMsg
 function OnMsg.Demolished(building)
   --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
   if building.achievement == "FirstDome" then
-    UICity.labels.Domes_Working = {}
-    local tab = UICity.labels.Dome or empty_table
+    local city = building.city or UICity
+    city.labels.Domes_Working = nil
+    city:InitEmptyLabel("Domes_Working")
+    local tab = city.labels.Dome or empty_table
     for i = 1, #tab do
-      UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = tab[i]
+      city.labels.Domes_Working[#city.labels.Domes_Working+1] = tab[i]
     end
   end
 end --OnMsg
@@ -597,7 +582,24 @@ function OnMsg.SelectionRemoved()
   s = false
 end
 
---function OnMsg.NewDay() --newsol
+function OnMsg.NewDay() --newsol
+
+  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
+  local labels = UICity.labels
+  local function ValidGridElements(Label)
+    local Table = labels[Label]
+    for i = #Table, 1, -1 do
+      if not IsValid(Table[i]) then
+        table.remove(Table,i)
+      end
+    end
+  end
+  ValidGridElements("ChoGGi_GridElements")
+  ValidGridElements("ChoGGi_LifeSupportGridElement")
+  ValidGridElements("ChoGGi_ElectricityGridElement")
+
+end
+
 function OnMsg.NewHour()
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
@@ -641,34 +643,34 @@ function OnMsg.ApplicationQuit()
   cSettingFuncs.WriteSettings()
 end
 
---custom OnMsgs, these aren't part of the base game, so without this mod they don't work
-cComFuncs.AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
-cComFuncs.AddMsgToFunc("Drone","GameInit","SpawnedDrone")
-cComFuncs.AddMsgToFunc("RCTransport","GameInit","SpawnedRCTransport")
-cComFuncs.AddMsgToFunc("RCRover","GameInit","SpawnedRCRover")
-cComFuncs.AddMsgToFunc("ExplorerRover","GameInit","SpawnedExplorerRover")
-cComFuncs.AddMsgToFunc("Residence","GameInit","SpawnedResidence")
-cComFuncs.AddMsgToFunc("Workplace","GameInit","SpawnedWorkplace")
-cComFuncs.AddMsgToFunc("GridObject","ApplyToGrids","CreatedGridObject")
-cComFuncs.AddMsgToFunc("GridObject","RemoveFromGrids","RemovedGridObject")
-cComFuncs.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","SpawnedProducerElectricity")
-cComFuncs.AddMsgToFunc("AirProducer","CreateLifeSupportElements","SpawnedProducerAir")
-cComFuncs.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","SpawnedProducerWater")
-cComFuncs.AddMsgToFunc("SingleResourceProducer","Init","SpawnedProducerSingle")
-cComFuncs.AddMsgToFunc("ElectricityStorage","GameInit","SpawnedElectricityStorage")
-cComFuncs.AddMsgToFunc("LifeSupportGridObject","GameInit","SpawnedLifeSupportGridObject")
-cComFuncs.AddMsgToFunc("PinnableObject","TogglePin","TogglePinnableObject")
-cComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","SpawnedResourceStockpileLR")
-cComFuncs.AddMsgToFunc("DroneHub","GameInit","SpawnedDroneHub")
+--custom OnMsgs
+cComFuncs.AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
+cComFuncs.AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
+cComFuncs.AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
+cComFuncs.AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
+cComFuncs.AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
+cComFuncs.AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
+cComFuncs.AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
+cComFuncs.AddMsgToFunc("GridObject","ApplyToGrids","ChoGGi_CreatedGridObject")
+cComFuncs.AddMsgToFunc("GridObject","RemoveFromGrids","ChoGGi_RemovedGridObject")
+cComFuncs.AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
+cComFuncs.AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
+cComFuncs.AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
+cComFuncs.AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
+cComFuncs.AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
+cComFuncs.AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
+cComFuncs.AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+cComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
+cComFuncs.AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
 
 --attached temporary resource depots
-function OnMsg.SpawnedResourceStockpileLR(Obj)
+function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
   if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
     cCodeFuncs.SetMechanizedDepotTempAmount(Obj.parent)
   end
 end
 
-function OnMsg.TogglePinnableObject(Obj)
+function OnMsg.ChoGGi_TogglePinnableObject(Obj)
   local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
   if type(UnpinObjects) == "table" and next(UnpinObjects) then
     local tab = UnpinObjects or empty_table
@@ -682,22 +684,23 @@ function OnMsg.TogglePinnableObject(Obj)
 end
 
 --custom UICity.labels lists
-function OnMsg.CreatedGridObject(Obj)
-  local city = UICity.labels
+function OnMsg.ChoGGi_CreatedGridObject(Obj)
   if Obj.class and (Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement") then
-    city.GridElements[#city.GridElements+1] = Obj
-    city[Obj.class][#city[Obj.class]+1] = Obj
+    local labels = UICity.labels
+    labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
+    local label = labels["ChoGGi_" .. Obj.class]
+    label[#label+1] = Obj
   end
 end
-function OnMsg.RemovedGridObject(Obj)
+function OnMsg.ChoGGi_RemovedGridObject(Obj)
   if Obj.class and (Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement") then
-    cComFuncs.RemoveFromLabel("GridElements",Obj)
-    cComFuncs.RemoveFromLabel(Obj.class,Obj)
+    cComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
+    cComFuncs.RemoveFromLabel("ChoGGi_" .. Obj.class,Obj)
   end
 end
 
 --shuttle comes out of a hub
-function OnMsg.SpawnedShuttle(Obj)
+function OnMsg.ChoGGi_SpawnedShuttle(Obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.StorageShuttle then
     Obj.max_shared_storage = UserSettings.StorageShuttle
@@ -707,7 +710,7 @@ function OnMsg.SpawnedShuttle(Obj)
   end
 end
 
-function OnMsg.SpawnedDrone(Obj)
+function OnMsg.ChoGGi_SpawnedDrone(Obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.GravityDrone then
     Obj:SetGravity(UserSettings.GravityDrone)
@@ -726,34 +729,34 @@ local function RCCreated(Obj)
     Obj:SetGravity(UserSettings.GravityRC)
   end
 end
-function OnMsg.SpawnedRCTransport(Obj)
+function OnMsg.ChoGGi_SpawnedRCTransport(Obj)
   local RCTransportStorageCapacity = ChoGGi.UserSettings.RCTransportStorageCapacity
   if RCTransportStorageCapacity then
     Obj.max_shared_storage = RCTransportStorageCapacity
   end
   RCCreated(Obj)
 end
-function OnMsg.SpawnedRCRover(Obj)
+function OnMsg.ChoGGi_SpawnedRCRover(Obj)
   if ChoGGi.UserSettings.RCRoverMaxRadius then
     Obj:SetWorkRadius() -- I override the func so no need to send a value here
   end
   RCCreated(Obj)
 end
-function OnMsg.SpawnedExplorerRover(Obj)
+function OnMsg.ChoGGi_SpawnedExplorerRover(Obj)
   RCCreated(Obj)
 end
 
-function OnMsg.SpawnedDroneHub(Obj)
+function OnMsg.ChoGGi_SpawnedDroneHub(Obj)
   if ChoGGi.UserSettings.CommandCenterMaxRadius then
     Obj:SetWorkRadius()
   end
 end
 
 --if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
-function OnMsg.SpawnedResidence(Obj)
+function OnMsg.ChoGGi_SpawnedResidence(Obj)
   cCodeFuncs.AttachToNearestDome(Obj)
 end
-function OnMsg.SpawnedWorkplace(Obj)
+function OnMsg.ChoGGi_SpawnedWorkplace(Obj)
   cCodeFuncs.AttachToNearestDome(Obj)
 end
 
@@ -764,16 +767,16 @@ local function SetProd(Obj,sType)
     Obj[sType] = prod.production
   end
 end
-function OnMsg.SpawnedProducerElectricity(Obj)
+function OnMsg.ChoGGi_SpawnedProducerElectricity(Obj)
   SetProd(Obj,"electricity_production")
 end
-function OnMsg.SpawnedProducerAir(Obj)
+function OnMsg.ChoGGi_SpawnedProducerAir(Obj)
   SetProd(Obj,"air_production")
 end
-function OnMsg.SpawnedProducerWater(Obj)
+function OnMsg.ChoGGi_SpawnedProducerWater(Obj)
   SetProd(Obj,"water_production")
 end
-function OnMsg.SpawnedProducerSingle(Obj)
+function OnMsg.ChoGGi_SpawnedProducerSingle(Obj)
   SetProd(Obj,"production_per_day")
 end
 
@@ -806,10 +809,10 @@ local function CheckForRate(Obj)
 end
 
 --water/air tanks
-function OnMsg.SpawnedLifeSupportGridObject(Obj)
+function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(Obj)
   CheckForRate(Obj)
 end
 --battery
-function OnMsg.SpawnedElectricityStorage(Obj)
+function OnMsg.ChoGGi_SpawnedElectricityStorage(Obj)
   CheckForRate(Obj)
 end

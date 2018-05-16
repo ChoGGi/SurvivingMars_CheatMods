@@ -394,7 +394,7 @@ function cMenuFuncs.SetObjectOpacity()
   local ItemList = {
     {text = " Reset: Anomalies",value = "Anomaly",hint = "Loops though and makes all anomalies visible."},
     {text = " Reset: Buildings",value = "Building",hint = "Loops though and makes all buildings visible."},
-    {text = " Reset: Cables & Pipes",value = "GridElements",hint = "Loops though and makes all pipes and cables visible."},
+    {text = " Reset: Cables & Pipes",value = "ChoGGi_GridElements",hint = "Loops though and makes all pipes and cables visible."},
     {text = " Reset: Colonists",value = "Colonists",hint = "Loops though and makes all colonists visible."},
     {text = " Reset: Units",value = "Unit",hint = "Loops though and makes all rovers and drones visible."},
     {text = " Reset: Deposits",value = "SurfaceDeposit",hint = "Loops though and makes all surface, subsurface, and terrain deposits visible."},

@@ -316,7 +316,7 @@ function cMenuFuncs.StartMystery(Mystery,Instant)
     for j = 1, #tab do
       if tab[j].mystery == Mystery then
         local tech_id = tab[j].id
-        list[#list + 1] = tech_id
+        list[#list+1] = tech_id
         city.tech_status[tech_id] = {points = 0, field = field_id}
         tab[j]:Initialize(city)
       end
@@ -364,7 +364,7 @@ function cMenuFuncs.ShowStartedMysteryList()
         text = seq_list.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[id]})),
         value = id,
         index = i,
-        hint = _InternalTranslate(T({cTables.MysteryDescription[id]})) .. "\n\nTotal parts: " .. totalparts .. " On part: " .. ip
+        hint = _InternalTranslate(T({cTables.MysteryDescription[id]})) .. "\n\n<color 255 75 75>Total parts</color>: " .. totalparts .. " <color 255 75 75>Current part</color>: " .. (ip or "done?")
       }
     end
   end
@@ -389,114 +389,127 @@ function cMenuFuncs.ShowStartedMysteryList()
 
   end
 
-  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type)."
+  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).\n\nSequence part may have more then one check, you may have to skip twice or more."
   local Check1 = "Remove"
   local Check1Hint = "This will remove the sequence, if you start it again; it'll be back to the start."
   local Check2 = "Remove All"
   local Check2Hint = "Warning: This will remove all the mysteries!"
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
-
---ex(s_SeqListPlayers)
-function cMenuFuncs.NextMysterySeq(Mystery,PlayerList)
-  local city = UICity
-ex(PlayerList)
-
-  for i = 1, #PlayerList do
-    if i > 1 then
-
-      local player = PlayerList[i]
-      local state = player.seq_states
-
-      if player.seq_list.file_name == Mystery then
-        --current seq_list
-        local seq_list = state[player.seq_list[1].name].action.meta.sequence
-
-        local ip = state[seq_list.name].ip
-        local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficulty[Mystery]})) or "Missing Name"
-
-        for j = 1, #seq_list do
-          --skip till we're at the right place
-          if j >= ip then
-            local seq = seq_list[j]
-            if seq.class == "SA_WaitExpression" then
-print("SEQ: SA_WaitExpression")
-print(Mystery)
-              seq.duration = 0
-
-              local CallBackFunc = function()
-                ChoGGi.Temp.SkipNext_SA_Wait = Mystery
-                --seq.expression = nil
-                --ip = ip + 1
-                state[seq_list.name].action.meta.finished = true
-                player:UpdateCurrentIP(seq_list)
-              end
-              cComFuncs.QuestionBox(
-                "You must do this to advance:\n" .. tostring(seq.expression) .. "\n\nClick Ok to skip this (Warning: may cause issues later on, untested).\nTime duration is still set to 0 (once you complete the requirements).",
-                CallBackFunc,
-                name
-              )
-              break
-            elseif seq.class == "SA_WaitMarsTime" then
-print("SEQ: SA_WaitMarsTime")
-print(Mystery)
-              --ChoGGi.Temp.SkipNext_Sequence = ip
-              ChoGGi.Temp.SkipNext_SA_Wait = Mystery
-              seq.duration = 0
-              seq.rand_duration = 0
-              --[[
-              seq.wait_type = "Hours"
-              print(j)
-              print(meta.ip)
-              --local seq = meta.sequence[meta.ip]
-              seq.wait_type = "Hours"
-              seq.duration = 1
-              seq.rand_duration = 1
-              seq.target_hour = 0
-              seq.target_sol = 0
-
-              seq.wait_type = "Specific Hour"
-              seq.rand_duration = 0
-              seq.loops = false
-              seq.target_sol = nil
-              seq.target_workshift = nil
-              --seq.duration = 1
-              --seq.duration = 0
-              seq.duration = const.HourDuration
-              --SA_WaitMarsTime:StopWait():
-              --Specific Hour
-              meta.start_time = -meta.start_time + -GameTime() --self.target_hour == city.hour or GameTime() - self.meta.start_time >= const.DayDuration
-              --Specific Sol
-              seq.target_sol = city.day - 2 --.target_sol <= city.day
-              --Daytime
-              seq.target_sol = city.day - 1 --self.target_hour == city.hour or GameTime() - self.meta.start_time >= const.DayDuration
-print("===========")
-              print(Mystery)
-              ex(seq)
-
-
-
---find out what it checks for waittime?, replkace this function maybe?
-
-
-
-
---GameTime() - self.meta.start_time >= const.DayDuration
-
-
-              meta.finished = true
-              --state[seq_list.name].action:EndWait(state[seq_list.name].action, true)
-              --]]
-              player:UpdateCurrentIP(seq_list)
-              --ex(seq)
-              cComFuncs.MsgPopup("Timer delay removed, wait till next Sol.",name)
-              break
-            end
-          end
-        end
-      end
+--[[
+  local idx = 0
+  for Thread in pairs(ThreadsMessageToThreads) do
+    if Thread.thread and IsValidThread(Thread.thread) then
+      idx = idx + 1
+      print("idx " .. idx)
     end
   end
+--]]
+--ex(s_SeqListPlayers)
+function cMenuFuncs.NextMysterySeq(Mystery)
+  local city = UICity
+  local warning = "\n\nClick \"Ok\" to skip requirements (Warning: may cause issues later on, untested)."
+  local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficulty[Mystery]})) or "Missing Name"
+
+  for Thread in pairs(ThreadsMessageToThreads) do
+    if Thread.player and Thread.player.seq_list.file_name == Mystery then
+
+      if Thread.finished == true then
+        print("delete")
+        DeleteThread(Thread.thread)
+      end
+
+      local Player = Thread.player
+      local seq_list = Thread.sequence
+      local state = Player.seq_states
+      local ip = state[seq_list.name].ip
+
+      for i = 1, #seq_list do
+        --skip older seqs
+        if i >= ip then
+          local seq = seq_list[i]
+
+          --seqs that add delays/tasks
+          if seq.class == "SA_WaitMarsTime" then
+            ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery}
+            --we don't want to wait
+            local SA_WaitMarsTime = SA_WaitMarsTime
+            seq.wait_type = SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
+            seq.wait_subtype = SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
+            seq.loops = SA_WaitMarsTime:GetDefaultPropertyValue("loops")
+            seq.duration = 1
+            seq.rand_duration = 1
+            local wait = Thread.action
+            wait.wait_type = SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
+            wait.wait_subtype = SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
+            wait.loops = SA_WaitMarsTime:GetDefaultPropertyValue("loops")
+            wait.duration = 1
+            wait.rand_duration = 1
+
+            Thread.finished = true
+            --Thread.action:EndWait(Thread)
+            --may not be needed
+            Player:UpdateCurrentIP(seq_list)
+            --let them know
+            cComFuncs.MsgPopup("Timer delay removed (may take upto a Sol).",name .. " Part: " .. ip)
+            break
+
+          elseif seq.class == "SA_WaitExpression" then
+            seq.duration = 0
+            local CallBackFunc = function()
+              seq.expression = nil
+              --the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
+              if i == 1 or i == 2 then
+                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery,again = true}
+              else
+                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery}
+              end
+
+              Thread.finished = true
+              Player:UpdateCurrentIP(seq_list)
+            end
+            cComFuncs.QuestionBox(
+              "Advancement requires: " .. tostring(seq.expression) .. "\n\nTime duration has been set to 0 (you still need to complete the requirements).\n\nWait for a Sol or two for it to update (should give a popup msg)." .. warning,
+              CallBackFunc,
+              name .. " Part: " .. ip
+            )
+            break
+
+          elseif seq.class == "SA_WaitMsg" then
+            local CallBackFunc = function()
+              ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery,again = true}
+              --send fake msg (ok it's real, but it hasn't happened)
+              Msg(seq.msg)
+              Player:UpdateCurrentIP(seq_list)
+            end
+            cComFuncs.QuestionBox(
+              "Advancement requires: " .. tostring(seq.msg) .. warning,
+              CallBackFunc,
+              name .. " Part: " .. ip
+            )
+            break
+
+          elseif seq.class == "SA_WaitResearch" then
+            local CallBackFunc = function()
+              GrantTech(seq.Research)
+
+              Thread.finished = true
+              Player:UpdateCurrentIP(seq_list)
+            end
+            cComFuncs.QuestionBox(
+              "Advancement requires: " .. tostring(seq.Research).. warning,
+              CallBackFunc,
+              name .. " Part: " .. ip
+            )
+
+          end -- if seq type
+
+        end --if i >= ip
+      end --for seq_list
+
+    end --if mystery thread
+  end --for Thread
+
 end
 
 function cMenuFuncs.UnlockAllBuildings()
