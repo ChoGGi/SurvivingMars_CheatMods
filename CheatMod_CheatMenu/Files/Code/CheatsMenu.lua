@@ -17,7 +17,6 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
     "LightArea.tga"
   )
 
-if ChoGGi.Testing then
   cComFuncs.AddAction(
     "Cheats/[05]Manage Mysteries",
     cMenuFuncs.ShowStartedMysteryList,
@@ -25,7 +24,6 @@ if ChoGGi.Testing then
     "Advance to next part or remove mysteries.",
     "SelectionToObjects.tga"
   )
-end
 
   cComFuncs.AddAction(
     "Cheats/[05]Start Mystery",

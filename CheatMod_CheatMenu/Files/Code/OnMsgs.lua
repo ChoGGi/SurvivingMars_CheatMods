@@ -5,21 +5,26 @@ local cInfoFuncs = ChoGGi.InfoFuncs
 local cMsgFuncs = ChoGGi.MsgFuncs
 local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
+local cTesting = ChoGGi.Temp.Testing
 
 function OnMsg.ClassesGenerate()
-
-
   --i like keeping all my OnMsgs. in one file
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cMsgFuncs.InfoPaneCheats_ClassesGenerate()
   cMsgFuncs.ListChoiceCustom_ClassesGenerate()
   cMsgFuncs.ObjectManipulator_ClassesGenerate()
+  if cTesting then
+    cMsgFuncs.TestingFunc_ClassesGenerate()
+  end
 end --OnMsg
 
 function OnMsg.ClassesBuilt()
   cMsgFuncs.ReplacedFunctions_ClassesBuilt()
   cMsgFuncs.ListChoiceCustom_ClassesBuilt()
   cMsgFuncs.ObjectManipulator_ClassesBuilt()
+  if cTesting then
+    cMsgFuncs.TestingFunc_ClassesBuilt()
+  end
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
@@ -64,23 +69,30 @@ function OnMsg.LoadingScreenPreClose()
 
   local ChoGGi = ChoGGi
   local Temp = ChoGGi.Temp
+  local UserSettings = ChoGGi.UserSettings
 
   if Temp.IsGameLoaded == true then
     return
   end
   Temp.IsGameLoaded = true
 
-  local UserSettings = ChoGGi.UserSettings
-
   --late enough that I can set g_Consts.
   cSettingFuncs.SetConstsToSaved()
   --needed for DroneResourceCarryAmount?
   UpdateDroneResourceUnits()
 
+  --remove all built-in actions
+  UserActions.ClearGlobalTables()
+  UserActions.Actions = {}
+  UserActions.RejectedActions = {}
+
   cMsgFuncs.Keys_LoadingScreenPreClose()
   cMsgFuncs.MissionFunc_LoadingScreenPreClose()
+  if cTesting then
+    cMsgFuncs.TestingFunc_LoadingScreenPreClose()
+  end
 
-  --menu actions
+  --add custom actions
   cMsgFuncs.MissionMenu_LoadingScreenPreClose()
   cMsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   cMsgFuncs.CheatsMenu_LoadingScreenPreClose()
@@ -91,6 +103,9 @@ function OnMsg.LoadingScreenPreClose()
   cMsgFuncs.HelpMenu_LoadingScreenPreClose()
   cMsgFuncs.MiscMenu_LoadingScreenPreClose()
   cMsgFuncs.ResourcesMenu_LoadingScreenPreClose()
+
+  --update menu
+  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
   --add custom lightmodel
   local data = DataInstances.Lightmodel
@@ -250,76 +265,7 @@ function OnMsg.LoadingScreenPreClose()
     config.ConsoleDim = 1
   end
 
-  --remove some built-in menu items
-  UserActions.RemoveActions({
-    --useless without developer tools?
-    "BuildingEditor",
-    --will switch the map without asking to save
-    "G_OpenPregameMenu",
-    --empty maps
-    "ChangeMapEmpty",
-    "ChangeMapPocMapAlt1",
-    "ChangeMapPocMapAlt2",
-    "ChangeMapPocMapAlt3",
-    "ChangeMapPocMapAlt4",
-    --broken, I've re-added them
-    "StartMysteryAIUprisingMystery",
-    "StartMysteryBlackCubeMystery",
-    "StartMysteryDiggersMystery",
-    "StartMysteryDreamMystery",
-    "StartMysteryMarsgateMystery",
-    "StartMysteryMirrorSphereMystery",
-    "StartMysteryTheMarsBug",
-    "StartMysteryUnitedEarthMystery",
-    "StartMysteryWorldWar3",
-    --moved them to help menu
-    "DE_Screenshot",
-    "UpsampledScreenshot",
-    "DE_UpsampledScreenshot",
-    "DE_ToggleScreenshotInterface",
-    "DisableUIL",
-    "G_ToggleInGameInterface",
-    "FreeCamera",
-    "G_ToggleSigns",
-    "G_ToggleOnScreenHints",
-    "G_ResetOnScreenHints",
-    "DE_BugReport",
-    --re-added
-    "TriggerDisasterColdWave",
-    "TriggerDisasterDustDevil",
-    "TriggerDisasterDustDevilMajor",
-    "TriggerDisasterDustStormElectrostatic",
-    "TriggerDisasterDustStormGreat",
-    "TriggerDisasterDustStormNormal",
-    "TriggerDisasterMeteorsMultiSpawn",
-    "TriggerDisasterMeteorsSingle",
-    "TriggerDisasterMeteorsStorm",
-    "TriggerDisasterStop",
-    "G_ToggleAllShifts",
-    "G_CheatUpdateAllWorkplaces",
-    "G_CheatClearForcedWorkplaces",
-    "G_UnpinAll",
-    "G_ModsEditor",
-    "G_ToggleInfopanelCheats",
-    "G_UnlockAllBuildings",
-    "G_AddFunding",
-    "G_ResearchAll",
-    "G_ResearchCurrent",
-    "G_CompleteWiresPipes",
-    "G_CompleteConstructions",
-    "G_Unlock\208\144ll\208\162ech",
-    "UnlockAllBreakthroughs",
-    "SpawnColonist1",
-    "SpawnColonist10",
-    "SpawnColonist100",
-    "MapExplorationScan",
-    "MapExplorationDeepScan",
-  })
-
-  --update menu
-  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
-
-  if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
+  if UserSettings.ShowCheatsMenu or cTesting then
     --always show on my computer
     if not dlgUAMenu then
       UAMenu.ToggleOpen()
@@ -673,7 +619,7 @@ end
 function OnMsg.ApplicationQuit()
 
   --my comp or if we're resetting settings
-  if ChoGGi.Testing or ChoGGi.ResetSettings then
+  if ChoGGi.Temp.ResetSettings or cTesting then
     return
   end
 

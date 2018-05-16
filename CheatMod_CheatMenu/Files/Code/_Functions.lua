@@ -1,6 +1,7 @@
 local cTables = ChoGGi.Tables
 local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
+local cTesting = ChoGGi.Temp.Testing
 
 --any funcs called from Code/*.lua
 
@@ -28,10 +29,6 @@ mc = GetPreciseCursorObj
 m = SelectionMouseObj
 c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
-
-if ChoGGi.Testing then
-  info = debug.getinfo
-end
 
 --check if tech is researched before we set these consts (activated from menu items)
 function ChoGGi.CodeFuncs.GetSpeedDrone()
@@ -464,7 +461,7 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check
     return
   end
 
-  if ChoGGi.Testing then
+  if cTesting then
     --easier to fiddle with it
     ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   end
@@ -747,7 +744,7 @@ function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
     return
   end
 
-  if ChoGGi.Testing then
+  if cTesting then
     --easier to fiddle with it
     ChoGGi.ObjectManipulator_Dlg = dlg
   end
@@ -1056,6 +1053,7 @@ end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
 function ChoGGi.CodeFuncs.SelObject()
+--function IsPointOverObject()
   local _,ret = pcall(function()
     --#GetObjects({class="CObject"})
     --#GetObjects({class="PropertyObject"})

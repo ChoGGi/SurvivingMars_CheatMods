@@ -492,9 +492,13 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
     Menu = "/" .. tostring(Menu)
   end
   local name = "NOFUNC"
+  --add name to action id
   if Action then
     local debug_info = debug.getinfo(Action, "Sn")
-    name = string.gsub(tostring(debug_info.short_src .. "(" .. debug_info.linedefined .. ")"),ChoGGi.ModPath,"")
+    local text = tostring(debug_info.short_src .. "(" .. debug_info.linedefined .. ")")
+    name = text:gsub(ChoGGi.ModPath,"")
+    name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
+    name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
   end
 
 --[[
@@ -521,11 +525,11 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
-    ["ChoGGi_" .. name .. AsyncRand()] = {
+    ["ChoGGi_" .. name .. "-" .. AsyncRand()] = {
       menu = Menu,
       action = Action,
       key = Key,
-      description = Des or "",
+      description = Des or "", --errors if not a string
       icon = Icon,
       toolbar = Toolbar,
       mode = Mode,
@@ -632,6 +636,24 @@ function ChoGGi.ComFuncs.RetTableNoDupes(Table)
     if not dupe[Table[i]] then
       tempt[#tempt+1] = Table[i]
       dupe[Table[i]] = true
+    end
+  end
+  return tempt
+end
+
+function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
+  table.sort(Table,
+    function(a,b)
+      return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
+    end
+  )
+  local tempt = {}
+  local dupe = {}
+
+  for i = 1, #Table do
+    if not dupe[Table[i].class] then
+      tempt[#tempt+1] = Table[i]
+      dupe[Table[i].class] = true
     end
   end
   return tempt

@@ -7,9 +7,9 @@ local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
 --pick a random model for start of path if doing single object
-local models = {}
-models[1] = "GreenMan"
-models[2] = "Lama"
+local SpawnModels = {}
+SpawnModels[1] = "GreenMan"
+SpawnModels[2] = "Lama"
 --default height of waypoints
 local flag_height = 50
 --store all objects for easy removal
@@ -81,7 +81,7 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
     if skipflags ~= true then
       local p
       if single and i == #waypoints then
-        p = PlaceObject(models[UICity:Random(1,2)])
+        p = PlaceObject(SpawnModels[UICity:Random(1,2)])
         --p:SetAngle(obj:GetAngle())
       else
         --1 == end #wp = start

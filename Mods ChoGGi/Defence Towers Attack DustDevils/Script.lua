@@ -1,3 +1,5 @@
+--I don't want to make it too different from ECM, so if I update it there I can pretty much just copy and paste
+
 --keep everything stored in
 ChoGGiX = {
   --orig funcs that we replace
@@ -10,16 +12,16 @@ ChoGGiX = {
   Temp = {RocketFiredDustDevil = {}},
 }
 
---functions used
-function ChoGGiX.ComFuncs.SaveOrigFunc(Name,Class)
-  if Class then
-    local newname = Class .. "_" .. Name
+--function(s) used
+function ChoGGiX.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  if Func then
+    local newname = ClassOrFunc .. "_" .. Func
     if not ChoGGiX.OrigFuncs[newname] then
-      ChoGGiX.OrigFuncs[newname] = _G[Class][Name]
+      ChoGGiX.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
   else
-    if not ChoGGiX.OrigFuncs[Name] then
-      ChoGGiX.OrigFuncs[Name] = _G[Name]
+    if not ChoGGiX.OrigFuncs[ClassOrFunc] then
+      ChoGGiX.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
     end
   end
 end
@@ -29,10 +31,11 @@ local cComFuncs = ChoGGiX.ComFuncs
 local cOrigFuncs = ChoGGiX.OrigFuncs
 
 
---replace orig func with mine
 function OnMsg.ClassesBuilt()
 
-  cComFuncs.SaveOrigFunc("DefenceTick","DefenceTower")
+  --save orig func
+  cComFuncs.SaveOrigFunc("DefenceTower","DefenceTick")
+  --replace orig func with mine
   function DefenceTower:DefenceTick()
 
     --place at end of function to have it protect dustdevils before meteors
@@ -45,14 +48,14 @@ function OnMsg.ClassesBuilt()
       end
       --list of devil handles we attacked
       local devils = ChoGGiX.Temp.RocketFiredDustDevil
+      --list of dustdevils on map
       local hostile = g_DustDevils or empty_table
       for i = 1, #hostile do
         local obj = hostile[i]
 
         --get dist (added * 10 as it didn't see to target at the range of it's hex grid)
-        if obj and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
-          --should probably stop this from aiming at devils it can't shoot at, but it's cute so fuck it
-          self:OrientPlatform(obj:GetVisualPos(), 7200)
+        --it could be from me increasing protection radius, or just how it targets meteors
+        if IsValid(obj) and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
           --check if tower is working
           if not IsValid(self) or not self.working or self.destroyed then
             return
@@ -60,6 +63,9 @@ function OnMsg.ClassesBuilt()
 
           --follow = skip small ones attached to majors
           if (not obj.follow and not devils[obj.handle]) then
+            --aim the tower at the dustdevil
+            self:OrientPlatform(obj:GetVisualPos(), 7200)
+            --fire in the hole
             local rocket = self:FireRocket(nil, obj)
             --store handle so we only launch one per devil
             devils[obj.handle] = obj.handle
@@ -100,3 +106,17 @@ function OnMsg.ClassesBuilt()
   end
 
 end
+
+--[[
+--spawn a bunch of dustdevils to test
+for _ = 1, 15 do
+  local data = DataInstances.MapSettings_DustDevils
+  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  GenerateDustDevil(GetTerrainCursor(), descr, nil, "major"):Start()
+end
+for _ = 1, 15 do
+  local data = DataInstances.MapSettings_DustDevils
+  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  GenerateDustDevil(GetTerrainCursor(), descr, nil):Start()
+end
+--]]

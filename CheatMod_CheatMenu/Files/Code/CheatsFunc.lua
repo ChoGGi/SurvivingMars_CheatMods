@@ -273,7 +273,6 @@ function cMenuFuncs.SpawnColonists()
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
 end
 
---ex(s_SeqListPlayers)
 function cMenuFuncs.ShowMysteryList()
   local ItemList = {}
   ClassDescendantsList("MysteryBase",function(class)
@@ -366,10 +365,10 @@ function cMenuFuncs.ShowStartedMysteryList()
       end
 
       ItemList[#ItemList+1] = {
-        text = info.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficultyNum[info.file_name]})),
+        text = info.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[info.file_name]})),
         value = info.file_name,
         index = i,
-        hint = _InternalTranslate(T({cTables.MysteryDescriptionNum[info.file_name]})) .. "\nTotal parts: " .. totalparts .. " On part: " .. ip
+        hint = _InternalTranslate(T({cTables.MysteryDescription[info.file_name]})) .. "\n\nTotal parts: " .. totalparts .. " On part: " .. ip
       }
     end
   end
@@ -402,6 +401,7 @@ function cMenuFuncs.ShowStartedMysteryList()
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
+--ex(s_SeqListPlayers)
 function cMenuFuncs.NextMysterySeq(Mystery,PlayerList)
   local city = UICity
 ex(PlayerList)
@@ -422,32 +422,35 @@ ex(PlayerList)
         end
         list = state[seqtype].action.meta.sequence
         local ip = state[seqtype].ip
-        local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficultyNum[Mystery]})) or "Missing Name"
+        local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficulty[Mystery]})) or "Missing Name"
 
         for j = 1, #list do
           --skip till we're at the right place
           if j >= ip then
             local seq = list[j]
             if seq.class == "SA_WaitExpression" then
-print("SA_WaitExpression")
+print("SEQ: SA_WaitExpression")
+print(Mystery)
               seq.duration = 0
 
               local CallBackFunc = function()
+                ChoGGi.Temp.SkipNext_SA_Wait = Mystery
                 --seq.expression = nil
                 --ip = ip + 1
                 state[seqtype].action.meta.finished = true
                 player:UpdateCurrentIP(list)
               end
               cComFuncs.QuestionBox(
-                "You must do this to advance:\n" .. tostring(seq.expression) .. "\n\nClick Ok to skip this (may cause issues later on, untested).",
+                "You must do this to advance:\n" .. tostring(seq.expression) .. "\n\nClick Ok to skip this (Warning: may cause issues later on, untested).\nTime duration is still set to 0 (once you complete the requirements).",
                 CallBackFunc,
-                name,
-                "Okay (Skip this)"
+                name
               )
               break
             elseif seq.class == "SA_WaitMarsTime" then
-print("SA_WaitMarsTime")
-              ChoGGi.Temp.SkipNext_Sequence = ip
+print("SEQ: SA_WaitMarsTime")
+print(Mystery)
+              --ChoGGi.Temp.SkipNext_Sequence = ip
+              ChoGGi.Temp.SkipNext_SA_Wait = Mystery
               seq.duration = 0
               seq.rand_duration = 0
               --[[
@@ -494,7 +497,7 @@ print("===========")
               --state[seqtype].action:EndWait(state[seqtype].action, true)
               --]]
               player:UpdateCurrentIP(list)
-              ex(seq)
+              --ex(seq)
               cComFuncs.MsgPopup("Timer delay removed, wait till next Sol.",name)
               break
             end

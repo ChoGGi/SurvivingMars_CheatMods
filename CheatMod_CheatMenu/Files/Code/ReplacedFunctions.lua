@@ -4,6 +4,7 @@ local cInfoFuncs = ChoGGi.InfoFuncs
 local cConsts = ChoGGi.Consts
 local cOrigFuncs = ChoGGi.OrigFuncs
 local cMsgFuncs = ChoGGi.MsgFuncs
+local cTesting = ChoGGi.Temp.Testing
 
 --[[
 add files for:
@@ -47,6 +48,7 @@ Lua\X\Infopanel.lua
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
 --dofolder_files("CommonLua/UI/UIDesignerData")
 
+
 --[[
   cComFuncs.SaveOrigFunc("SA_WaitMarsTime","Setfake_dur")
   function SA_WaitMarsTime:Setfake_dur(val)
@@ -55,30 +57,12 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
     self.duration = 0
     return ret
   end
-
-
   cComFuncs.SaveOrigFunc("SA_WaitMarsTime","EvalParams")
   function SA_WaitMarsTime:EvalParams()
     print("EvalParams")
     local ret = cOrigFuncs.SA_WaitMarsTime_EvalParams(self)
     self.duration = 0
     return ret
-  end
-
-  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
-  function SA_WaitMarsTime:StopWait()
-    print("StopWait")
-    print(ChoGGi.Temp.SkipNext_SA_WaitMarsTime_StopWait)
-    local skipnext = ChoGGi.Temp.SkipNext_SA_WaitMarsTime_StopWait
-    if skipnext and skipnext == self.meta.player.seq_list.file_name then
-      --list.file_name
-      skipnext = nil
-      ex(ChoGGi.Temp.SkipNext_SA_WaitMarsTime_StopWait)
-      return 1
-      --return true
-    end
-
-    return cOrigFuncs.SA_WaitMarsTime_StopWait(self)
   end
   --]]
 
@@ -175,20 +159,6 @@ end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
-function SequenceListPlayer:UpdateCurrentIP(seq)
-
-  local seq_state = self.seq_states[seq.name]
-  local action = seq_state and seq_state.action
-  if action then
-    local new_ip = table.find(seq, action) or table.find(seq, getmetatable(action))
-    seq_state.ip = new_ip or seq_state.ip - 1
-  end
-  if type(ChoGGi.Temp.SkipNext_Sequence) == "number" then
-    seq_state.ip = ChoGGi.Temp.SkipNext_Sequence
-    ChoGGi.Temp.SkipNext_Sequence = nil
-  end
-end
-
   cComFuncs.SaveOrigFunc("DefenceTower","DefenceTick")
   function DefenceTower:DefenceTick()
 
@@ -202,14 +172,14 @@ end
       end
       --list of devil handles we attacked
       local devils = ChoGGi.Temp.RocketFiredDustDevil
+      --list of dustdevils on map
       local hostile = g_DustDevils or empty_table
       for i = 1, #hostile do
         local obj = hostile[i]
 
         --get dist (added * 10 as it didn't see to target at the range of it's hex grid)
-        if obj and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
-          --should probably stop this from aiming at devils it can't shoot at, but it's cute so fuck it
-          self:OrientPlatform(obj:GetVisualPos(), 7200)
+        --it could be from me increasing protection radius, or just how it targets meteors
+        if IsValid(obj) and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
           --check if tower is working
           if not IsValid(self) or not self.working or self.destroyed then
             return
@@ -217,6 +187,9 @@ end
 
           --follow = skip small ones attached to majors
           if (not obj.follow and not devils[obj.handle]) then
+            --aim the tower at the dustdevil
+            self:OrientPlatform(obj:GetVisualPos(), 7200)
+            --fire in the hole
             local rocket = self:FireRocket(nil, obj)
             --store handle so we only launch one per devil
             devils[obj.handle] = obj.handle
@@ -256,27 +229,6 @@ end
     --end of function
   end
 
-  if ChoGGi.Testing then
-    cComFuncs.SaveOrigFunc("ChangeMap")
-    function ChangeMap(map)
-      print("---------------------")
-      print(map)
-      cOrigFuncs.ChangeMap(map)
-    end
-  end
-
-  --[[
-  cComFuncs.SaveOrigFunc("_InternalTranslate")
-  function _InternalTranslate(T, context_obj, check)
-    local ret = cOrigFuncs._InternalTranslate(T, context_obj, check)
-    --if ChoGGi.Temp.IsGameLoaded and context_obj and context_obj.class and s and s.class and context_obj.class ~= s.class then
-    if ChoGGi.Temp.IsGameLoaded and context_obj then
-      ex(context_obj)
-    end
-    return ret
-  end
-  --]]
-
   --convert popups to console text
   cComFuncs.SaveOrigFunc("ShowPopupNotification")
   function ShowPopupNotification(preset, params, bPersistable, parent)
@@ -285,7 +237,7 @@ end
       return
     end
 
-    if ChoGGi.Testing == 3.143465 then
+    if cTesting == 3.143465 then
     --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
       if not pcall(function()
         local function ColourText(Text,Bool)
@@ -520,7 +472,7 @@ end
       local TGetID = TGetID
       local c = self.idContent
 
-if ChoGGi.Testing then
+if cTesting then
       if self.context.class == "Colonist" then
         local con = c[2].idContent
         --con[#con+1] = XText:new()
@@ -834,13 +786,6 @@ end
       self:FinalizeStatusGathering(old_t)
     else
       return cOrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
-    end
-  end
-
-  --stops confirmation dialog about missing mods (still lets you know they're missing)
-  if ChoGGi.Testing then
-    function GetMissingMods()
-      return "", false
     end
   end
 

@@ -7,11 +7,10 @@ ChoGGi.Tables = {
   NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"},
   PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"},
   --for mystery menu items
-  MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071},
-  MysteryDescriptionNum = {Mystery_1 = 1165,Mystery_2 = 1171,Mystery_3 = 1185,Mystery_4 = 1181,Mystery_5 = 1163,Mystery_6 = 7306,Mystery_7 = 8073,Mystery_8 = 8068,Mystery_9 = 8071},
+  MysteryDescription = {BlackCubeMystery = 1165,DiggersMystery = 1171,MirrorSphereMystery = 1185,DreamMystery = 1181,AIUprisingMystery = 1163,MarsgateMystery = 7306,WorldWar3 = 8073,TheMarsBug = 8068,UnitedEarthMystery = 8071,Mystery_1 = 1165,Mystery_2 = 1171,Mystery_3 = 1185,Mystery_4 = 1181,Mystery_5 = 1163,Mystery_6 = 7306,Mystery_7 = 8073,Mystery_8 = 8068,Mystery_9 = 8071},
   --name + diff
-  MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070},
-  MysteryDifficultyNum = {Mystery_1 = 1164,Mystery_2 = 1170,Mystery_3 = 1184,Mystery_4 = 1180,Mystery_5 = 1162,Mystery_6 = 8063,Mystery_7 = 8072,Mystery_8 = 8067,Mystery_9 = 8070},
+  MysteryDifficulty = {BlackCubeMystery = 1164,DiggersMystery = 1170,MirrorSphereMystery = 1184,DreamMystery = 1180,AIUprisingMystery = 1162,MarsgateMystery = 8063,WorldWar3 = 8072,TheMarsBug = 8067,UnitedEarthMystery = 8070,Mystery_1 = 1164,Mystery_2 = 1170,Mystery_3 = 1184,Mystery_4 = 1180,Mystery_5 = 1162,Mystery_6 = 8063,Mystery_7 = 8072,Mystery_8 = 8067,Mystery_9 = 8070},
+  --it's stored as sometimes BlackCubeMystery or Mystery_1
   MysteryTrans = {Mystery_1 = "BlackCubeMystery",Mystery_2 = "DiggersMystery",Mystery_3 = "MirrorSphereMystery",Mystery_4 = "DreamMystery",Mystery_5 = "AIUprisingMystery",Mystery_6 = "MarsgateMystery",Mystery_7 = "WorldWar3",Mystery_8 = "TheMarsBug",Mystery_9 = "UnitedEarthMystery",BlackCubeMystery = "Mystery_1",DiggersMystery = "Mystery_2",MirrorSphereMystery = "Mystery_3",DreamMystery = "Mystery_4",AIUprisingMystery = "Mystery_5",MarsgateMystery = "Mystery_6",WorldWar3 = "Mystery_7",TheMarsBug = "Mystery_8",UnitedEarthMystery = "Mystery_9"},
   ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree"},
   ColonistGenders = {"OtherGender","Android","Clone","Male","Female"},
@@ -35,24 +34,6 @@ if #const.SchoolTraits ~= 5 then
 end
 if #const.SanatoriumTraits ~= 7 then
   cTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-end
-
---tell me if traits are different
-if ChoGGi.Testing then
-  local StartupMsgs = ChoGGi.Temp.StartupMsgs
-  local const = const
-  local startT = "<color 255 0 0>"
-  local endT = " is different length</color>"
-  if #const.SchoolTraits ~= 5 then
-    StartupMsgs[#StartupMsgs+1] = startT .. "SchoolTraits" .. endT
-  end
-  if #const.SanatoriumTraits ~= 7 then
-    StartupMsgs[#StartupMsgs+1] = startT .. "SanatoriumTraits" .. endT
-  end
-  local fulllist = TraitsCombo()
-  if #fulllist ~= 55 then
-    StartupMsgs[#StartupMsgs+1] = startT .. "TraitsCombo" .. endT
-  end
 end
 
 --stores defaults and constants
@@ -439,10 +420,6 @@ function ChoGGi.MsgFuncs.Settings_ModsLoaded()
     if not AddOldSettings("BuildingsProduction","production") then
       StartupMsgs[#StartupMsgs+1] = errormsg .. "BuildingsProduction"
     end
-  end
-  --only write for testing, as IO is probably slower then having to redo again
-  if ChoGGi.Testing then
-    ChoGGi.SettingFuncs.WriteSettings()
   end
 
 end

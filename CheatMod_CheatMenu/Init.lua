@@ -29,9 +29,9 @@ local cModPath = ChoGGi.ModPath
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
-  ChoGGi.Testing = true
+  ChoGGi.Temp.Testing = true
 end
-local cTesting = ChoGGi.Testing
+local cTesting = ChoGGi.Temp.Testing
 
 if cTesting then
   --get saved settings for this mod
