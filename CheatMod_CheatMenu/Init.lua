@@ -8,7 +8,7 @@ ChoGGi = {
   ComFuncs = {},
   --/Code/_Functions.lua
   CodeFuncs = {},
-  --funcs used by *Menu.lua / *Func.lua
+  --/Code/*Menu.lua and /Code/*Func.lua
   MenuFuncs = {},
   --OnMsgs.lua
   MsgFuncs = {},
@@ -21,6 +21,7 @@ ChoGGi = {
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }
+local ChoGGi = ChoGGi
 ChoGGi._VERSION = _G.Mods[ChoGGi.id].version
 ChoGGi.ModPath = _G.Mods[ChoGGi.id].path
 local cTemp = ChoGGi.Temp
@@ -29,14 +30,14 @@ local cModPath = ChoGGi.ModPath
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
-  ChoGGi.Temp.Testing = true
+  cTemp.Testing = true
 end
-local cTesting = ChoGGi.Temp.Testing
+local cTesting = cTemp.Testing
 
 if cTesting then
   --get saved settings for this mod
   dofile(cModPath .. "Files/Defaults.lua")
-  --functions needed for before Code/ is loaded
+  --functions needed before Code/ is loaded
   dofile(cModPath .. "Files/CommonFunctions.lua")
   --load all the other files
   dofolder_files(cModPath .. "Files/Code")
@@ -81,6 +82,11 @@ if CUserSettings.FirstRun ~= false then
   cTemp.WriteSettings = true
 end
 
+--fixes UpdateInterface nil value in editor mode
+Platform.developer = true
+editor.LoadPlaceObjConfig()
+Platform.developer = false
+
 --be nice to get a remote debugger working
 --[[
 Platform.editor = true
@@ -93,10 +99,6 @@ dofile("CommonLua/Core/ProjectSync.lua")
 config.LuaDebugger = false
 Platform.editor = false
 --]]
---fixes UpdateInterface nil value in editor mode
-Platform.developer = true
-editor.LoadPlaceObjConfig()
-Platform.developer = false
 --[[
 ClassesGenerate
 ClassesPreprocess
@@ -109,13 +111,3 @@ EntitiesLoaded
 BinAssetsLoaded
 --]]
 
-if cTesting then
-  config.TraceEnable = true
-  Platform.editor = true
-  config.LuaDebugger = true
-  GlobalVar("outputSocket", false)
-  dofile("CommonLua/Core/luasocket.lua")
-  dofile("CommonLua/Core/luadebugger.lua")
-  dofile("CommonLua/Core/luaDebuggerOutput.lua")
-  dofile("CommonLua/Core/ProjectSync.lua")
-end

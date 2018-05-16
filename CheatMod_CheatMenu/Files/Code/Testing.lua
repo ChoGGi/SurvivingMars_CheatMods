@@ -9,8 +9,63 @@ local cMsgFuncs = ChoGGi.MsgFuncs
 local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cOrigFuncs = ChoGGi.OrigFuncs
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 if ChoGGi.Temp.Testing then
+
+  ChoGGi.Temp.GameTimeThread = {}
+  ChoGGi.Temp.RealTimeThread = {}
+  ChoGGi.Temp.DeleteThread = {}
+
+  --[[
+test1("111",2,3)
+test1(1,2,nil,3)
+
+  function test1(...)
+  test2(table.unpack({...}))
+  print(#{...})
+  end
+
+  function test2(...)
+  print(#{...})
+  end
+--]]
+  local gt = ChoGGi.Temp.GameTimeThread
+  cComFuncs.SaveOrigFunc("CreateGameTimeThread")
+  function CreateGameTimeThread(...)
+    local Args = {...}
+    if #Args == 1 then
+      gt[#gt+1] = select(1,Args)
+    else
+      gt[#gt+1] = {}
+      for i=1, #Args do
+        gt[#gt][#gt[#gt]+1] = select(i,Args)
+      end
+    end
+    return cOrigFuncs.CreateGameTimeThread(table.unpack{...})
+  end
+  local rt = ChoGGi.Temp.GameTimeThread
+  cComFuncs.SaveOrigFunc("CreateRealTimeThread")
+  function CreateRealTimeThread(...)
+    rt[#rt+1] = {...}
+    return cOrigFuncs.CreateRealTimeThread(table.unpack{...})
+  end
+  local gtd = ChoGGi.Temp.DeleteThread
+  cComFuncs.SaveOrigFunc("DeleteThread")
+  function DeleteThread(...)
+    gtd[#gtd+1] = {...}
+    return cOrigFuncs.DeleteThread(table.unpack{...})
+  end
+
+  config.TraceEnable = true
+  Platform.editor = true
+  config.LuaDebugger = true
+  GlobalVar("outputSocket", false)
+  dofile("CommonLua/Core/luasocket.lua")
+  dofile("CommonLua/Core/luadebugger.lua")
+  dofile("CommonLua/Core/luaDebuggerOutput.lua")
+  dofile("CommonLua/Core/ProjectSync.lua")
+
   info = debug.getinfo
 
   --tell me if traits are different
@@ -29,12 +84,19 @@ if ChoGGi.Temp.Testing then
     StartupMsgs[#StartupMsgs+1] = startT .. "TraitsCombo" .. endT
   end
 
-end
+end --Testing
 
-function cMsgFuncs.TestingFunc_ClassesGenerate()
-end
+function cMsgFuncs.Testing_ClassesGenerate()
+end --ClassesGenerate
 
-function cMsgFuncs.TestingFunc_ClassesBuilt()
+function cMsgFuncs.Testing_ClassesPreprocess()
+end --ClassesPreprocess
+
+function cMsgFuncs.Testing_ClassesPostprocess()
+end --ClassesPostprocess
+
+function cMsgFuncs.Testing_ClassesBuilt()
+
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()
     return "", false
@@ -120,10 +182,9 @@ function SequenceListPlayer:UpdateCurrentIP(seq)
   end
 end
 --]]
-end
+end --ClassesBuilt
 
-function cMsgFuncs.TestingFunc_LoadingScreenPreClose()
-
+function cMsgFuncs.Testing_LoadingScreenPreClose()
   cComFuncs.AddAction(
     "Cheats/[05]Manage Mysteries",
     cMenuFuncs.ShowStartedMysteryList,
@@ -132,4 +193,4 @@ function cMsgFuncs.TestingFunc_LoadingScreenPreClose()
     "SelectionToObjects.tga"
   )
 
-end
+end --LoadingScreenPreClose

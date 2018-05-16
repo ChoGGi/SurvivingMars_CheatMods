@@ -382,9 +382,12 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
-  _G[ClassName][FuncName] = function(self,...)
-    Msg(sMsg,self)
-    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](self,...)
+  _G[ClassName][FuncName] = function(...)
+    local Args = {...}
+    --I just care about adding self to the msgs
+    Msg(sMsg,select(1,Args))
+    --pass on args to orig func
+    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](table.unpack(Args))
   end
 end
 

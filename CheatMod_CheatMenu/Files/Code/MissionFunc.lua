@@ -428,8 +428,13 @@ end
     mapdata:ApplyMapData()
     AtmosphericParticlesUpdate()
 
+mapdata.MapSettings_Meteor
+
 
 figure out where this is stored in-game
+maybe it just needs to be set as early as poss
+
+
 function cMenuFuncs.SetDisasterOccurrence(sType)
   local ItemList = {}
   local data = DataInstances["MapSettings_" .. sType]

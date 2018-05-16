@@ -7,6 +7,12 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cTesting = ChoGGi.Temp.Testing
 
+--fired as early as possible (excluding Init.lua of course, but i like to keep that simple)
+if ChoGGi.UserSettings.DisableHints then
+  mapdata.DisableHints = true
+  HintsEnabled = false
+end
+
 function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
@@ -14,16 +20,29 @@ function OnMsg.ClassesGenerate()
   cMsgFuncs.ListChoiceCustom_ClassesGenerate()
   cMsgFuncs.ObjectManipulator_ClassesGenerate()
   if cTesting then
-    cMsgFuncs.TestingFunc_ClassesGenerate()
+    cMsgFuncs.Testing_ClassesGenerate()
   end
 end --OnMsg
+
+function OnMsg.ClassesPreprocess()
+  if cTesting then
+    cMsgFuncs.Testing_ClassesPreprocess()
+  end
+end
+
+--where we add new BuildingTemplates
+function OnMsg.ClassesPostprocess()
+  if cTesting then
+    cMsgFuncs.Testing_ClassesPostprocess()
+  end
+end
 
 function OnMsg.ClassesBuilt()
   cMsgFuncs.ReplacedFunctions_ClassesBuilt()
   cMsgFuncs.ListChoiceCustom_ClassesBuilt()
   cMsgFuncs.ObjectManipulator_ClassesBuilt()
   if cTesting then
-    cMsgFuncs.TestingFunc_ClassesBuilt()
+    cMsgFuncs.Testing_ClassesBuilt()
   end
 
   --add HiddenX cat for Hidden items
@@ -89,7 +108,7 @@ function OnMsg.LoadingScreenPreClose()
   cMsgFuncs.Keys_LoadingScreenPreClose()
   cMsgFuncs.MissionFunc_LoadingScreenPreClose()
   if cTesting then
-    cMsgFuncs.TestingFunc_LoadingScreenPreClose()
+    cMsgFuncs.Testing_LoadingScreenPreClose()
   end
 
   --add custom actions
@@ -295,11 +314,6 @@ function OnMsg.LoadingScreenPreClose()
   if UserSettings.BreakChanceCablePipe then
     const.BreakChanceCable = 10000000
     const.BreakChancePipe = 10000000
-  end
-
-  if UserSettings.DisableHints then
-    mapdata.DisableHints = true
-    HintsEnabled = false
   end
 
   --print startup msgs to console log
