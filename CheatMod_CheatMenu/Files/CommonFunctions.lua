@@ -316,6 +316,9 @@ end
   )
 --]]
 function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
+  if not a and not b then
+    return
+  end
   if type(a[sName]) == type(b[sName]) then
     return a[sName] < b[sName]
   else
@@ -330,6 +333,9 @@ table.sort(s.command_centers,
 )
 --]]
 function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
+  if not a and not b then
+    return
+  end
   if Obj then
     return Obj[sFunc](Obj,a) < Obj[sFunc](Obj,b)
   else

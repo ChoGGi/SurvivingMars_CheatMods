@@ -589,23 +589,32 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
     dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
   end
 end
---force drones to pickup from producers even if they have a large carry cap
-function ChoGGi.CodeFuncs.FuckingDrones(Producer)
+--force drones to pickup from producers/blackcube stockpiles even if they have a large carry cap
+function ChoGGi.CodeFuncs.FuckingDrones(Producer,Stockpile)
 
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
 
-  if not Producer then
+  if not Producer and not Stockpile then
     return
   end
-  local amount = Producer:GetAmountStored()
+
+  local amount
+  local p
+  if Producer then
+    p = Producer.parent
+    amount = Producer:GetAmountStored()
+  elseif Stockpile then
+    p = Stockpile
+    amount = Stockpile:GetStoredAmount()
+  end
+
   --only fire if more then one resource
   if amount > 1000 then
-    local p = Producer.parent
 
     --check if nearest cc has idle drones, or run though list of cc till we find one
     local cc = FindNearestObject(p.command_centers,p)
-    if cc:GetIdleDronesCount() > 0 then
+    if cc and cc:GetIdleDronesCount() > 0 then
       cc = cc.drones
     else
       --sort by nearest dist
@@ -622,6 +631,10 @@ function ChoGGi.CodeFuncs.FuckingDrones(Producer)
         end
       end
     end
+    if not cc then
+      return
+    end
+
     --get an idle drone
     local drone
     for i = 1, #cc do
@@ -640,68 +653,33 @@ function ChoGGi.CodeFuncs.FuckingDrones(Producer)
       if carry < amount then
         amount = carry
       end
-      drone:SetCommandUserInteraction(
-        "PickUp",
-        Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
-        false,
-        Producer.resource_produced,
-        amount
-      )
+      if Producer then
+        drone:SetCommandUserInteraction(
+          "PickUp",
+          Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
+          false,
+          Producer.resource_produced,
+          amount
+        )
+      else
+        drone:SetCommandUserInteraction(
+          "PickUp",
+          Stockpile.supply_request,
+          false,
+          Stockpile.resource,
+          amount
+        )
+      end
     end
 
   end
 end
 
 --[[
---force drones to pickup from producers even if they have a large carry cap
-function ChoGGi.CodeFuncs.FuckingDrones(Producer)
-  --Come on, Bender. Grab a jack. I told these guys you were cool.
-  --Well, if jacking on will make strangers think I'm cool, I'll do it.
-  if not Producer then
-    return
-  end
-  local amount = Producer:GetAmountStored()
-  if amount > 1000 then
-    local p = Producer.parent
-    local cc = FindNearestObject(p.command_centers,p).drones
-    --i'm looking at you rocket
-    if #cc == 0 then
-      --get a command_center, i'm not sure how to tell nearest to skip an object without drones
-      for i = 1, #p.command_centers do
-        if #p.command_centers[i].drones > 0 then
-          cc = p.command_centers[i].drones
-        end
-      end
+    local tab = UICity.labels.BlackCubeStockpiles or empty_table
+    for i = 1, #tab do
+      ChoGGi.CodeFuncs.FuckingDrones(nil,tab[i])
     end
-
-    --get an idle drone
-    local drone
-    for i = 1, #cc do
-      if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
-        drone = cc[i]
-        break
-      end
-    end
-    if drone then
-
-      local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
-      --round to nearest 1000 (don't want uneven stacks)
-      amount = (amount - amount % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
-      --if carry is smaller then amount then fine
-      if carry < amount then
-        amount = carry
-      end
-
-      drone:SetCommandUserInteraction(
-        "PickUp",
-        Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
-        false,
-        Producer.resource_produced,
-        amount
-      )
-    end
-  end
-end
 --]]
 
 function ChoGGi.CodeFuncs.SaveOldPalette(Obj)

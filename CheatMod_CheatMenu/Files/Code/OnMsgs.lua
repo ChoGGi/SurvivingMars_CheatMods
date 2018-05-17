@@ -506,8 +506,12 @@ function OnMsg.ConstructionComplete(building)
     end
     --no power needed
     if setting.nopower then
-      if building.modifications.electricity_consumption then
-        local mod = building.modifications.electricity_consumption[1]
+      local mods = building.modifications
+      if mods and mods.electricity_consumption then
+        local mod = building.modifications.electricity_consumption
+        if mod[1] then
+          mod = mod[1]
+        end
         building.ChoGGi_mod_electricity_consumption = {
           amount = mod.amount,
           percent = mod.percent
@@ -620,13 +624,18 @@ end
 function OnMsg.NewHour()
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+    local city = UICity
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local tab = UICity.labels.ResourceProducer or empty_table
+    local tab = city.labels.ResourceProducer or empty_table
     for i = 1, #tab do
       cCodeFuncs.FuckingDrones(tab[i]:GetProducerObj())
       if tab[i].wasterock_producer then
         cCodeFuncs.FuckingDrones(tab[i].wasterock_producer)
       end
+    end
+    tab = city.labels.BlackCubeStockpiles or empty_table
+    for i = 1, #tab do
+      cCodeFuncs.FuckingDrones(nil,tab[i])
     end
   end
 

@@ -378,8 +378,23 @@ function cMenuFuncs.ShowStartedMysteryList()
           PlayerList[i]:delete()
         end
       end
+      for Thread in pairs(ThreadsMessageToThreads) do
+        if Thread.player and Thread.player.seq_list.file_name then
+          DeleteThread(Thread.thread)
+        end
+      end
       cComFuncs.MsgPopup("Removed all!","Mystery")
     elseif choice[1].check1 and choice[1].index then
+      for i = #PlayerList, 1, -1 do
+        if PlayerList[i].seq_list.file_name == value then
+          PlayerList[i]:delete()
+        end
+      end
+      for Thread in pairs(ThreadsMessageToThreads) do
+        if Thread.player and Thread.player.seq_list.file_name == value then
+          DeleteThread(Thread.thread)
+        end
+      end
       --remove sequence
       cComFuncs.MsgPopup("Mystery: " .. choice[1].text .. " Removed!","Mystery")
     elseif value then
@@ -415,7 +430,7 @@ function cMenuFuncs.NextMysterySeq(Mystery)
     if Thread.player and Thread.player.seq_list.file_name == Mystery then
 
       if Thread.finished == true then
-        print("delete")
+        --print("Thread.thread")
         DeleteThread(Thread.thread)
       end
 
@@ -430,7 +445,7 @@ function cMenuFuncs.NextMysterySeq(Mystery)
           local seq = seq_list[i]
 
           --seqs that add delays/tasks
-          if seq.class == "SA_WaitMarsTime" then
+          if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
             ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery}
             --we don't want to wait
             local SA_WaitMarsTime = SA_WaitMarsTime

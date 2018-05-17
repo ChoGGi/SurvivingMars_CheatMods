@@ -220,24 +220,33 @@ function cMenuFuncs.BuildingPower_Toggle()
 
   local tab = UICity.labels[id] or empty_table
   for i = 1, #tab do
-    if tab[i].modifications.electricity_consumption then
+    local mods = tab[i].modifications
+    if mods and mods.electricity_consumption then
+
       if amount == 0 then
-      if tab[i].modifications.electricity_consumption then
-        local mod = tab[i].modifications.electricity_consumption[1]
-        tab[i].ChoGGi_mod_electricity_consumption = {
-          amount = mod.amount,
-          percent = mod.percent
-        }
-      mod:Change(0,0)
-    end
+        local mod = tab[i].modifications.electricity_consumption
+        if mod then
+          if mod[1] then
+            mod = mod[1]
+          end
+          tab[i].ChoGGi_mod_electricity_consumption = {
+            amount = mod.amount,
+            percent = mod.percent
+          }
+          mod:Change(0,0)
+        end
       else
-        if tab[i].ChoGGi_mod_electricity_consumption then
-          local mod = tab[i].modifications.electricity_consumption[1]
+        local mod = tab[i].modifications.electricity_consumption
+        if mod then
+          if mod[1] then
+            mod = mod[1]
+          end
           local orig = tab[i].ChoGGi_mod_electricity_consumption
           mod:Change(orig.amount,orig.percent)
           tab[i].ChoGGi_mod_electricity_consumption = nil
         end
       end
+
     end
     tab[i]:SetBase("electricity_consumption", amount)
   end

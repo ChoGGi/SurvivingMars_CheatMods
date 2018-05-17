@@ -9,9 +9,14 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function Building:CheatPowerless()
     local mod = self.modifications
     if mod and mod.electricity_consumption then
+      mod = mod.electricity_consumption
+      if mod[1] then
+        mod = mod[1]
+      end
+
       self.ChoGGi_mod_electricity_consumption = {
-        amount = mod.electricity_consumption[1].amount,
-        percent = mod.electricity_consumption[1].percent
+        amount = mod.amount,
+        percent = mod.percent
       }
       mod:Change(0,0)
     end
@@ -19,7 +24,10 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   end
   function Building:CheatPowered()
     if self.ChoGGi_mod_electricity_consumption then
-      local mod = self.modifications.electricity_consumption[1]
+      local mod = self.modifications.electricity_consumption
+      if mod[1] then
+        mod = mod[1]
+      end
       local orig = self.ChoGGi_mod_electricity_consumption
       mod:Change(orig.amount,orig.percent)
       self.ChoGGi_mod_electricity_consumption = nil

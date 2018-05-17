@@ -9,6 +9,14 @@ local cTables = ChoGGi.Tables
 function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
   cComFuncs.AddAction(
+    "Expanded CM/[999]Misc/Change Terrain Type",
+    cMenuFuncs.ChangeTerrainType,
+    nil,
+    "Green or Icy mars? Coming right up!",
+    "prefabs.tga"
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/[999]Misc/Change Light Model",
     cMenuFuncs.ChangeLightmodel,
     nil,

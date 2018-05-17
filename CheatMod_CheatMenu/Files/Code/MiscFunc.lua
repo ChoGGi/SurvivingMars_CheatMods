@@ -8,6 +8,33 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
+function cMenuFuncs.ChangeTerrainType()
+
+  local ItemList = {}
+  local Table = DepositionTypes
+  for i = 1, #Table do
+    ItemList[#ItemList+1] = {
+      text = Table[i]:gsub("_mesh.mtl",""):gsub("Terrain",""),
+      value = i,
+    }
+  end
+
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+      terrain.SetTerrainType({type = value})
+
+      ChoGGi.ComFuncs.MsgPopup("Terrain: " .. choice[1].text,
+        "Terrain"
+      )
+    end
+  end
+
+  local hint = "Map default: " .. mapdata.BaseLayer
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Terrain Texture",hint)
+end
+
 --add button to import model
 function cMenuFuncs.ChangeLightmodelCustom(Name)
   local ItemList = {}

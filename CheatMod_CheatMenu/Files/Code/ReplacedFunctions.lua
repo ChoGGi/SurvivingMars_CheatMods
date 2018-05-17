@@ -48,24 +48,6 @@ Lua\X\Infopanel.lua
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
 --dofolder_files("CommonLua/UI/UIDesignerData")
 
-
---[[
-  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","Setfake_dur")
-  function SA_WaitMarsTime:Setfake_dur(val)
-    print("Setfake_dur")
-    local ret = cOrigFuncs.SA_WaitMarsTime_Setfake_dur(self,val)
-    self.duration = 0
-    return ret
-  end
-  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","EvalParams")
-  function SA_WaitMarsTime:EvalParams()
-    print("EvalParams")
-    local ret = cOrigFuncs.SA_WaitMarsTime_EvalParams(self)
-    self.duration = 0
-    return ret
-  end
-  --]]
-
   --set amount of dust applied
   cComFuncs.SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
   function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
@@ -168,12 +150,10 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --used to skip mystery sequences
-  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
-  function SA_WaitMarsTime:StopWait()
+  local function SkipMystStep(self,MystFunc)
     local cTemp = ChoGGi.Temp
 
     if cTemp.SA_WaitMarsTime_StopWait and self.meta.player and cTemp.SA_WaitMarsTime_StopWait.id == self.meta.player.seq_list.file_name then
-
       --inform user, or if it's a dbl then skip
       if cTemp.SA_WaitMarsTime_StopWait.skipmsg then
         cTemp.SA_WaitMarsTime_StopWait.skipmsg = nil
@@ -195,7 +175,16 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
       return 1
     end
 
-    return cOrigFuncs.SA_WaitMarsTime_StopWait(self)
+    return cOrigFuncs[MystFunc](self)
+  end
+
+  cComFuncs.SaveOrigFunc("SA_WaitTime","StopWait")
+  function SA_WaitTime:StopWait()
+    SkipMystStep(self,"SA_WaitTime_StopWait")
+  end
+  cComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
+  function SA_WaitMarsTime:StopWait()
+    SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
 
   cComFuncs.SaveOrigFunc("DefenceTower","DefenceTick")
