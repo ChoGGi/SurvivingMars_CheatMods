@@ -956,6 +956,7 @@ local function SetScale(Obj,Scale)
     end
   end)
 end
+
 function cMenuFuncs.SetEntityScale()
   local sel = cCodeFuncs.SelObject()
   if not sel then
@@ -975,7 +976,6 @@ function cMenuFuncs.SetEntityScale()
   }
 
   local CallBackFunc = function(choice)
-ex(choice)
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then
