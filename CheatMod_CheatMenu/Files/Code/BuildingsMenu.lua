@@ -196,8 +196,19 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
+    "Expanded CM/Buildings/Maintenance Free Inside",
+    cMenuFuncs.MaintenanceFreeBuildingsInside_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.InsideBuildingsNoMaintenance and "(Enabled)" or "(Disabled)"
+      return des .. " Buildings inside domes don't build maintenance points (takes away instead of adding)."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Buildings/Maintenance Free",
-    cMenuFuncs.MaintenanceBuildingsFree_Toggle,
+    cMenuFuncs.MaintenanceFreeBuildings_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.RemoveMaintenanceBuildUp and "(Enabled)" or "(Disabled)"

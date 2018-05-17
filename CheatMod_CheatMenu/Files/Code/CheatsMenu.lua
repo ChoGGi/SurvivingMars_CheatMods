@@ -91,17 +91,17 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Cheats/[04]Research/[0]Research Queue Larger",
-    cMenuFuncs.ResearchQueueLarger_Toggle,
+    "Cheats/[04]Research/[0]Research Queue Size",
+    cMenuFuncs.SetResearchQueueSize,
     nil,
     function()
       local des = ""
-      if const.ResearchQueueSize == 25 then
+      if const.ResearchQueueSize > 4 then
         des = "(Enabled)"
       else
         des = "(Disabled)"
       end
-      return des .. " Enable up to 25 items in queue."
+      return des .. " Allow more items in queue."
     end,
     "ShowOcclusion.tga"
   )

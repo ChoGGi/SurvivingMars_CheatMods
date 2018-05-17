@@ -639,14 +639,42 @@ function cMenuFuncs.SetBreakThroughsAllowed()
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
 end
 
-function cMenuFuncs.ResearchQueueLarger_Toggle()
-  const.ResearchQueueSize = cComFuncs.ValueRetOpp(const.ResearchQueueSize,25,cConsts.ResearchQueueSize)
-  cComFuncs.SetSavedSetting("ResearchQueueSize",const.ResearchQueueSize)
+function cMenuFuncs.SetResearchQueueSize()
+  --make a list
+  local DefaultSetting = cConsts.ResearchQueueSize
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 5,value = 5},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+  }
 
-  cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ResearchQueueSize) .. ": Nerdgasm",
-    "Research",UsualIcon
-  )
+  --other hint type
+  local hint = DefaultSetting
+  local ResearchQueueSize = ChoGGi.UserSettings.ResearchQueueSize
+  if ResearchQueueSize then
+    hint = ResearchQueueSize
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      const.ResearchQueueSize = value
+      cComFuncs.SetSavedSetting("ResearchQueueSize",value)
+
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ResearchQueueSize) .. ": Nerdgasm",
+        "Research",UsualIcon
+      )
+    end
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Queue Size","Current: " .. hint)
 end
 
 function cMenuFuncs.ShowResearchTechList()

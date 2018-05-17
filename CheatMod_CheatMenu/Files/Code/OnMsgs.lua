@@ -470,7 +470,13 @@ function OnMsg.ConstructionComplete(building)
 
   end --end of elseifs
 
+  if UserSettings.InsideBuildingsNoMaintenance and building.dome_required then
+    building.ChoGGi_InsideBuildingsNoMaintenance = true
+    building.maintenance_build_up_per_hr = -10000
+  end
+
   if UserSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
+    building.ChoGGi_RemoveMaintenanceBuildUp = true
     building.maintenance_build_up_per_hr = -10000
   end
 

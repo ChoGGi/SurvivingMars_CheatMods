@@ -664,14 +664,40 @@ function cMenuFuncs.SanatoriumSchoolShowAll()
   )
 end
 
-function cMenuFuncs.MaintenanceBuildingsFree_Toggle()
+function cMenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
+  ChoGGi.UserSettings.InsideBuildingsNoMaintenance = not ChoGGi.UserSettings.InsideBuildingsNoMaintenance
+
+  local tab = UICity.labels.InsideBuildings or empty_table
+  for i = 1, #tab do
+    if tab[i].base_maintenance_build_up_per_hr then
+      if ChoGGi.UserSettings.InsideBuildingsNoMaintenance then
+        tab[i].ChoGGi_InsideBuildingsNoMaintenance = true
+        tab[i].maintenance_build_up_per_hr = -10000
+      else
+        if not tab[i].ChoGGi_RemoveMaintenanceBuildUp then
+          tab[i].maintenance_build_up_per_hr = nil
+        end
+        tab[i].ChoGGi_InsideBuildingsNoMaintenance = nil
+      end
+    end
+  end
+
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.InsideBuildingsNoMaintenance) .. " The spice must flow!",
+    "Buildings","UI/Icons/Sections/dust.tga"
+  )
+end
+
+function cMenuFuncs.MaintenanceFreeBuildings_Toggle()
   ChoGGi.UserSettings.RemoveMaintenanceBuildUp = not ChoGGi.UserSettings.RemoveMaintenanceBuildUp
   local tab = UICity.labels.Building or empty_table
   for i = 1, #tab do
     if tab[i].base_maintenance_build_up_per_hr then
       if ChoGGi.UserSettings.RemoveMaintenanceBuildUp then
+        tab[i].ChoGGi_RemoveMaintenanceBuildUp = true
         tab[i].maintenance_build_up_per_hr = -10000
-      else
+      elseif not tab[i].ChoGGi_InsideBuildingsNoMaintenance then
+        tab[i].ChoGGi_RemoveMaintenanceBuildUp = nil
         tab[i].maintenance_build_up_per_hr = nil
       end
     end
@@ -679,8 +705,7 @@ function cMenuFuncs.MaintenanceBuildingsFree_Toggle()
 
   cSettingFuncs.WriteSettings()
   cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RemoveMaintenanceBuildUp) .. " The spice must flow!",
-    "Buildings",
-    "UI/Icons/Sections/dust.tga"
+    "Buildings","UI/Icons/Sections/dust.tga"
   )
 end
 
