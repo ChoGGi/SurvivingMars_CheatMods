@@ -504,6 +504,34 @@ function cMenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
+
+  local objs = GetObjects({class = "ParSystem"}) or empty_table
+  for i = 1, #objs do
+    cCodeFuncs.DeleteObjects(objs[i])
+  end
+
+function cMenuFuncs.RemoveMissingClassObjects()
+  local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
+  for i = 1, #objs do
+    cCodeFuncs.DeleteObjects(objs[i])
+  end
+end
+
+function cMenuFuncs.MirrorSphereStuck()
+  local objs = GetObjects({class = "MirrorSphere"}) or empty_table
+  for i = 1, #objs do
+    if not IsValid(objs[i].target) then
+      cCodeFuncs.DeleteObjects(objs[i])
+    end
+  end
+  objs = GetObjects({class = "ParSystem"}) or empty_table
+  for i = 1, #objs do
+    if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" then
+      cCodeFuncs.DeleteObjects(objs[i])
+    end
+  end
+end
+
 function cMenuFuncs.StutterWithHighFPS()
   local objs = GetObjects({class = "Unit"}) or empty_table
   --CargoShuttle

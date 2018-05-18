@@ -112,6 +112,22 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   cComFuncs.AddAction(
+    "Expanded CM/Fixes/Remove Missing Class Objects",
+    cMenuFuncs.RemoveMissingClassObjects,
+    nil,
+    "Probably from mods that were removed.",
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Mirror Sphere Stuck",
+    cMenuFuncs.MirrorSphereStuck,
+    nil,
+    "If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)",
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Fixes/Stutter With High FPS",
     cMenuFuncs.StutterWithHighFPS,
     nil,
