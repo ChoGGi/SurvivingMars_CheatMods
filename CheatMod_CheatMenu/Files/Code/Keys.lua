@@ -172,43 +172,6 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
     "Ctrl-Shift-Space"
   )
 
-  --object cloner
-  cComFuncs.AddAction(nil,
-    function()
-      local sel = SelectedObj
-      local NewObj = g_Classes[sel.class]:new()
-      NewObj:CopyProperties(sel)
-      --[[find out which ones we shouldn't copy
-      for Key,Value in pairs(sel or empty_table) do
-        NewObj[Key] = Value
-      end
-      --]]
-      NewObj:SetPos(cCodeFuncs.CursorNearestHex())
-      --if it's a deposit then make max_amount random and add
-      --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
-      --if ObjName:find("SubsurfaceDeposit") then
-      --NewObj.max_amount = UICity:Random(1000 * cConsts.ResourceScale,5000 * cConsts.ResourceScale)
-      if NewObj.max_amount then
-        NewObj.amount = NewObj.max_amount
-      elseif NewObj.base_death_age then
-        --it seems CopyProperties is only some properties
-        NewObj.traits = {}
-        NewObj.race = sel.race
-        NewObj.fx_actor_class = sel.fx_actor_class
-        NewObj.entity = sel.entity
-        NewObj.infopanel_icon = sel.infopanel_icon
-        NewObj.inner_entity = sel.inner_entity
-        NewObj.pin_icon = sel.pin_icon
-        cCodeFuncs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
-        cCodeFuncs.ColonistUpdateAge(NewObj,sel.age_trait)
-        NewObj:SetSpecialization(sel.specialist,"init")
-        NewObj.age = sel.age
-        NewObj:ChooseEntity()
-      end
-    end,
-    "Shift-Q"
-  )
-
   cComFuncs.AddAction(
     nil,
     function()

@@ -504,6 +504,18 @@ function cMenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
+function cMenuFuncs.StutterWithHighFPS()
+  local objs = GetObjects({class = "Unit"}) or empty_table
+  --CargoShuttle
+  for i = 1, #objs do
+    -- 102 is from :GetMoveAnim(), 0 is stopped or idle?
+    if objs[i]:GetAnim() > 0 and objs[i]:GetPathLen() == 0 then
+      --trying to move with no path = lag
+      objs[i]:InterruptCommand()
+    end
+  end
+end
+
 function cMenuFuncs.DronesKeepTryingBlockedRocks()
   local function ResetPriorityQueue(Class)
     local Hubs = GetObjects({class=Class}) or empty_table

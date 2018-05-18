@@ -349,6 +349,44 @@ function cMenuFuncs.StartMystery(Mystery,Instant)
   city.mystery.seq_player:AutostartSequences()
 end
 
+
+
+local function ShowMysteryLog(Myst)
+  local msgs = {Myst.id .. "\n\nTo play back speech use \"Code Exec\" button and type in\ng_Voice:Play(CurObject.speech)\n"}
+  local idx = 0
+  for Thread in pairs(ThreadsMessageToThreads) do
+    if Thread.player and Thread.player.seed == Myst.seed then
+      local seq_list = Thread.sequence
+      for i = 1, #seq_list do
+        --don't show msgs past current step
+        if i == Thread.ip then
+          break
+        end
+        if seq_list[i].class == "SA_WaitMessage" then
+          local trans = _InternalTranslate(seq_list[i].title)
+          local title
+          idx = idx + 1
+          if idx < 10 then
+            title = 0 .. idx .. ": " .. trans
+          else
+            title = idx .. ": " .. trans
+          end
+          --add to msg list
+          msgs[title] = {
+            a_speech = _InternalTranslate(seq_list[i].voiced_text),
+            b_text = _InternalTranslate(seq_list[i].text),
+            speech = seq_list[i].voiced_text,
+          }
+        end
+      end
+    end
+  end
+  --display to user
+  local ex = Examine:new()
+  ex:SetPos(point(550,100))
+  ex:SetObj(msgs)
+end
+
 function cMenuFuncs.ShowStartedMysteryList()
   local ItemList = {}
   local PlayerList = s_SeqListPlayers
@@ -363,7 +401,8 @@ function cMenuFuncs.ShowStartedMysteryList()
       ItemList[#ItemList+1] = {
         text = seq_list.name .. ": " .. _InternalTranslate(T({cTables.MysteryDifficulty[id]})),
         value = id,
-        index = i,
+        func = {seed = PlayerList[i].seed, id = id},
+        seed = PlayerList[i].seed,
         hint = _InternalTranslate(T({cTables.MysteryDescription[id]})) .. "\n\n<color 255 75 75>Total parts</color>: " .. totalparts .. " <color 255 75 75>Current part</color>: " .. (ip or "done?")
       }
     end
@@ -371,6 +410,7 @@ function cMenuFuncs.ShowStartedMysteryList()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    local seed = choice[1].seed
     if choice[1].check2 then
       --remove all
       for i = #PlayerList, 1, -1 do
@@ -384,32 +424,32 @@ function cMenuFuncs.ShowStartedMysteryList()
         end
       end
       cComFuncs.MsgPopup("Removed all!","Mystery")
-    elseif choice[1].check1 and choice[1].index then
+    elseif choice[1].check1 then
+      --remove mystery
       for i = #PlayerList, 1, -1 do
-        if PlayerList[i].seq_list.file_name == value then
+        if PlayerList[i].seed == seed then
           PlayerList[i]:delete()
         end
       end
       for Thread in pairs(ThreadsMessageToThreads) do
-        if Thread.player and Thread.player.seq_list.file_name == value then
+        if Thread.player and Thread.player.seed == seed then
           DeleteThread(Thread.thread)
         end
       end
-      --remove sequence
       cComFuncs.MsgPopup("Mystery: " .. choice[1].text .. " Removed!","Mystery")
     elseif value then
       --next step
-      cMenuFuncs.NextMysterySeq(value,PlayerList)
+      cMenuFuncs.NextMysterySeq(value,seed)
     end
 
   end
 
-  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).\n\nSequence part may have more then one check, you may have to skip twice or more."
+  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).\n\nSequence part may have more then one check, you may have to skip twice or more.\n\nDouble right-click selected mystery to review past messages."
   local Check1 = "Remove"
-  local Check1Hint = "This will remove the sequence, if you start it again; it'll be back to the start."
+  local Check1Hint = "This will remove the mystery, if you start it again; it'll be back to the start."
   local Check2 = "Remove All"
   local Check2Hint = "Warning: This will remove all the mysteries!"
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint,6,ShowMysteryLog)
 end
 --[[
   local idx = 0
@@ -421,13 +461,13 @@ end
   end
 --]]
 --ex(s_SeqListPlayers)
-function cMenuFuncs.NextMysterySeq(Mystery)
+function cMenuFuncs.NextMysterySeq(Mystery,seed)
   local city = UICity
   local warning = "\n\nClick \"Ok\" to skip requirements (Warning: may cause issues later on, untested)."
   local name = "Mystery: " .. _InternalTranslate(T({cTables.MysteryDifficulty[Mystery]})) or "Missing Name"
 
   for Thread in pairs(ThreadsMessageToThreads) do
-    if Thread.player and Thread.player.seq_list.file_name == Mystery then
+    if Thread.player and Thread.player.seed == seed then
 
       --only remove finished waittime threads, can cause issues removing other threads
       if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime") then
@@ -446,7 +486,7 @@ function cMenuFuncs.NextMysterySeq(Mystery)
 
           --seqs that add delays/tasks
           if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
-            ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery}
+            ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
             --we don't want to wait
             local SA_WaitMarsTime = SA_WaitMarsTime
             seq.wait_type = SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
@@ -475,9 +515,9 @@ function cMenuFuncs.NextMysterySeq(Mystery)
               seq.expression = nil
               --the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
               if i == 1 or i == 2 then
-                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery,again = true}
+                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
               else
-                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery}
+                ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
               end
 
               Thread.finished = true
@@ -492,7 +532,7 @@ function cMenuFuncs.NextMysterySeq(Mystery)
 
           elseif seq.class == "SA_WaitMsg" then
             local CallBackFunc = function()
-              ChoGGi.Temp.SA_WaitMarsTime_StopWait = {id = Mystery,again = true}
+              ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
               --send fake msg (ok it's real, but it hasn't happened)
               Msg(seq.msg)
               Player:UpdateCurrentIP(seq_list)

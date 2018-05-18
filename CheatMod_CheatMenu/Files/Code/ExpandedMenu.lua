@@ -112,7 +112,26 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Sort Command Center Dist",
+    "Expanded CM/Fixes/Stutter With High FPS",
+    cMenuFuncs.StutterWithHighFPS,
+    nil,
+    "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).",
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Drone Carry Amount",
+    cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
+      return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
+    end,
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Sort Command Center Dist",
     cMenuFuncs.SortCommandCenterDist_Toggle,
     nil,
     function()
@@ -151,17 +170,6 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     cMenuFuncs.RemoveYellowGridMarks,
     nil,
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
-    "ReportBug.tga"
-  )
-
-  cComFuncs.AddAction(
-    "Expanded CM/Fixes/Drone Carry Amount",
-    cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
-      return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
-    end,
     "ReportBug.tga"
   )
 

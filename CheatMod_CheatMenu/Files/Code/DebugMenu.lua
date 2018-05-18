@@ -9,6 +9,14 @@ local cTables = ChoGGi.Tables
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
+  --object cloner
+  cComFuncs.AddAction(
+    "[102]Debug/Object Cloner",
+    cMenuFuncs.ObjectCloner,
+    "Shift-Q",
+    "Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item)."
+  )
+
   cComFuncs.AddAction(
     "[102]Debug/Toggle Showing Anim Debug",
     cMenuFuncs.ShowAnimDebug_Toggle,

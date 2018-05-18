@@ -24,7 +24,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     self.obj = false
     self.CustomType = 0
     self.colorpicker = nil
-
+    self.Func = false
     --have to do it for each item?
     --self.idList:SetHSizing("Resize")
 
@@ -126,6 +126,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       --applies the lightmodel without closing dialog,
       if self.CustomType == 5 then
         self:BuildAndApplyLightmodel()
+      elseif self.CustomType == 6 and self.Func then
+        self.Func(self.sel.func)
       else
         self.idEditValue:SetText(self.sel.text)
       end

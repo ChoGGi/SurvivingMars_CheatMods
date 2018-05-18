@@ -455,8 +455,9 @@ CustomType=2 : colour selector
 CustomType=3 : updates selected item with custom value type, and sends back selected item.
 CustomType=4 : updates selected item with custom value type, and sends back all items
 CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
+CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
 --]]
-function cCodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+function cCodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
   local dlg = ChoGGi_ListChoiceCustomDialog:new()
 
   if not dlg then
@@ -490,6 +491,10 @@ function cCodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Chec
         dlg.idColorCheckElec:SetVisible(true)
       end
     end
+  end
+
+  if CustomFunc then
+    dlg.Func = CustomFunc
   end
 
   if MultiSel then
@@ -539,7 +544,7 @@ function cCodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Chec
   return dlg:Wait()
 end
 
-function cCodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+function cCodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
   if not Func or not Items then
     return
   end
@@ -562,7 +567,7 @@ function cCodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,
   end
 
   CreateRealTimeThread(function()
-    local option = ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+    local option = ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
     if option ~= "idClose" then
       Func(option)
     end
@@ -797,26 +802,24 @@ function cCodeFuncs.RandomColour(Amount)
   end
 end
 
-function cCodeFuncs.ObjectColourRandom(Obj,Base)
+function cCodeFuncs.ObjectColourRandom(Obj)
   if Obj:IsKindOf("ColorizableObject") then
-    local cCodeFuncs = ChoGGi.CodeFuncs
-    local RandomColour = cCodeFuncs.RandomColour
-    local color = Base or RandomColour
+    --local cCodeFuncs = ChoGGi.CodeFuncs
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
     local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
     --likely can only change basecolour
-    if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
-      Obj:SetColorModifier(color)
+    if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
+      Obj:SetColorModifier(cCodeFuncs.RandomColour())
     else
       if not Obj.ChoGGi_origcolors then
         cCodeFuncs.SaveOldPalette(Obj)
       end
       --s,1,Color, Roughness, Metallic
-      SetPal(Obj, 1, RandomColour, 0,0)
-      SetPal(Obj, 2, RandomColour, 0,0)
-      SetPal(Obj, 3, RandomColour, 0,0)
-      SetPal(Obj, 4, RandomColour, 0,0)
+      SetPal(Obj, 1, cCodeFuncs.RandomColour(), 0,0)
+      SetPal(Obj, 2, cCodeFuncs.RandomColour(), 0,0)
+      SetPal(Obj, 3, cCodeFuncs.RandomColour(), 0,0)
+      SetPal(Obj, 4, cCodeFuncs.RandomColour(), 0,0)
     end
     return color
   end

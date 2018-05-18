@@ -131,12 +131,14 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
     obj:SetText("Edit")
     obj:SetHint("Opens object in Object Manipulator.")
 
+if cTesting then
     obj = Button:new(self)
     obj:SetId("idCodeExec")
     obj:SetPos(point(520, 304))
     obj:SetSize(point(75, 26))
     obj:SetText("Code Exec")
     obj:SetHint("Opens a text box you can execute lua code in. CurObject is whatever object is opened in examiner")
+end
 
     self:InitChildrenSizing()
 
@@ -158,25 +160,29 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --used to skip mystery sequences
   local function SkipMystStep(self,MystFunc)
-    local cTemp = ChoGGi.Temp
+    local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
+    local p = self.meta.player
 
-    if cTemp.SA_WaitMarsTime_StopWait and self.meta.player and cTemp.SA_WaitMarsTime_StopWait.id == self.meta.player.seq_list.file_name then
+    if StopWait and p and StopWait.seed == p.seed then
       --inform user, or if it's a dbl then skip
-      if cTemp.SA_WaitMarsTime_StopWait.skipmsg then
-        cTemp.SA_WaitMarsTime_StopWait.skipmsg = nil
+      if StopWait.skipmsg then
+        StopWait.skipmsg = nil
       else
         cComFuncs.MsgPopup("Timer delay skipped","Mystery")
       end
 
       --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
-      if cTemp.SA_WaitMarsTime_StopWait.again == true then
-        cTemp.SA_WaitMarsTime_StopWait.again = nil
-        cTemp.SA_WaitMarsTime_StopWait.skipmsg = true
+      if StopWait.again == true then
+        StopWait.again = nil
+        StopWait.skipmsg = true
       else
         --reset it for next time
-        cTemp.SA_WaitMarsTime_StopWait.id = false
-        cTemp.SA_WaitMarsTime_StopWait.again = false
+        StopWait.seed = false
+        StopWait.again = false
       end
+
+print(ChoGGi.Temp.SA_WaitMarsTime_StopWait.seed)
+print(ChoGGi.Temp.SA_WaitMarsTime_StopWait.again)
 
       --skip
       return 1
@@ -418,7 +424,7 @@ end
   --set UI transparency:
   local trans = ChoGGi.UserSettings.Transparency
   local function SetTrans(Obj)
-    if type(trans) == "table" and Obj.class and trans[Obj.class] then
+    if type(trans) == "table" and Obj and Obj.class and trans[Obj.class] then
       Obj:SetTransparency(trans[Obj.class])
     end
   end
@@ -634,9 +640,11 @@ end
     function self.idEdit.OnButtonPressed()
       cCodeFuncs.OpenInObjectManipulator(self.obj,self)
     end
+if cTesting then
     function self.idCodeExec.OnButtonPressed()
       cCodeFuncs.OpenInExecCodeDlg(self.obj,self)
     end
+end
 
   function self.idFilter.OnKbdKeyDown(_, char, vk)
     local text = self.idFilter

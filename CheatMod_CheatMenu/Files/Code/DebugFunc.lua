@@ -21,7 +21,7 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
   --  return
   --end
 
-  color = tonumber(color) or CodeFuncs.RandomColour()
+  color = tonumber(color) or cCodeFuncs.RandomColour()
   --also used for line height
   flag_height = flag_height + 4
   local height = flag_height
@@ -84,12 +84,12 @@ local function ShowWaypoints(waypoints, color, obj, single, skipflags)
         p = PlaceObject(SpawnModels[UICity:Random(1,2)])
         --p:SetAngle(obj:GetAngle())
       else
-        --1 == end #wp = start
+        -- 1 == start #wp = dist
         p = PlaceObject("WayPoint")
         if i > 1 then
-          p:SetAngle(obj:GetAngle())
+          p:SetAngle(p:AngleToPoint(waypoints[#waypoints-1]))
         else
-          p:SetAngle(p:AngleToPoint(stored_waypoints[#stored_waypoints-1]))
+          p:SetAngle(obj:GetAngle())
         end
       end
       stored_waypoints[#stored_waypoints+1] = p
@@ -173,15 +173,28 @@ function cMenuFuncs.SetVisiblePathMarkers()
       end
       path[#path+1] = obj:GetPos()
     else
-      path = type(obj.GetPath) == "function" and obj:GetPath()
+      if not pcall(function()
+        path = type(obj.GetPath) == "function" and obj:GetPath()
+      end) then
+        ex(obj)
+        print("Warning: This " .. obj and (obj.class or obj.entity or "\"No class/entity\"") .. " doesn't have GetPath function, something is probably borked.")
+      end
     end
     if path then
       --used to reset the colour later on
       if not obj.ChoGGi_WaypointPathAdded then
         obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
       end
-      --we want to make sure all waypoints are a different colour (or at least slightly diff)
-      ShowWaypoints(path,cCodeFuncs.ObjectColourRandom(obj,table.remove(randcolours,#randcolours)),obj,single,skipflags)
+      --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
+      local colour = table.remove(randcolours)
+      obj:SetColorModifier(colour)
+      ShowWaypoints(
+        path,
+        cCodeFuncs.ObjectColourRandom(obj,colour),
+        obj,
+        single,
+        skipflags
+      )
     end
   end
   local sel = SelectedObj
@@ -261,6 +274,43 @@ function cMenuFuncs.SetVisiblePathMarkers()
   local Check2 = "Skip Flags"
   local Check2Hint = "Doesn't add the little flags, just lines and spheres (good for larger maps)."
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+end
+
+function cMenuFuncs.ObjectCloner(sel)
+  --the menu item sends itself
+  if sel and not sel.class then
+    sel = cCodeFuncs.SelObject()
+  end
+
+  local NewObj = g_Classes[sel.class]:new()
+  NewObj:CopyProperties(sel)
+  --[[find out which ones we shouldn't copy
+  for Key,Value in pairs(sel or empty_table) do
+    NewObj[Key] = Value
+  end
+  --]]
+  NewObj:SetPos(cCodeFuncs.CursorNearestHex())
+  --if it's a deposit then make max_amount random and add
+  --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
+  --if ObjName:find("SubsurfaceDeposit") then
+  --NewObj.max_amount = UICity:Random(1000 * cConsts.ResourceScale,5000 * cConsts.ResourceScale)
+  if NewObj.max_amount then
+    NewObj.amount = NewObj.max_amount
+  elseif IsKindOf(NewObj,"Colonist") then
+    --it seems CopyProperties is only some properties
+    NewObj.traits = {}
+    NewObj.race = sel.race
+    NewObj.fx_actor_class = sel.fx_actor_class
+    NewObj.entity = sel.entity
+    NewObj.infopanel_icon = sel.infopanel_icon
+    NewObj.inner_entity = sel.inner_entity
+    NewObj.pin_icon = sel.pin_icon
+    cCodeFuncs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
+    cCodeFuncs.ColonistUpdateAge(NewObj,sel.age_trait)
+    NewObj:SetSpecialization(sel.specialist,"init")
+    NewObj.age = sel.age
+    NewObj:ChooseEntity()
+  end
 end
 
 local function AnimDebug_Show(Class)

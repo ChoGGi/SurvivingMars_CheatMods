@@ -13,7 +13,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
     "Expanded CM/[999]Misc/Find Nearest Resource",
     cCodeFuncs.FindNearestResource,
     nil,
-    "Select an object then click this for a list of resources.",
+    "Select an object and click this to display a list of resources.",
     "EV_OpenFirst.tga"
   )
 
