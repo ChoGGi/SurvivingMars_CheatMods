@@ -9,13 +9,34 @@ local cTables = ChoGGi.Tables
 function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
   local icon = "AlignSel.tga"
+  local icon2 = "Cube.tga"
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/Traits: Restrict For Selected Building Type",
+    function()
+      cMenuFuncs.SetBuildingTraits("restricttraits")
+    end,
+    nil,
+    "Select a building and use this to only allow workers with certain traits to work there (block overrides).",
+    icon2
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/Traits: Block For Selected Building Type",
+    function()
+      cMenuFuncs.SetBuildingTraits("blocktraits")
+    end,
+    nil,
+    "Select a building and use this to block workers with certain traits from working there (overrides restrict).",
+    icon2
+  )
 
   cComFuncs.AddAction(
     "Expanded CM/Colonists/The Soylent Option",
     cMenuFuncs.TheSoylentOption,
     "Ctrl-Numpad 1",
     "Turns selected/moused over colonist into food (between 1-5), or shows a list with homeless/unemployed.",
-    "Cube.tga"
+    icon2
   )
 
   cComFuncs.AddAction(
@@ -57,6 +78,49 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
     nil,
     "Set all shifts on or off (able to cancel).",
     "ToggleEnvMap.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/[3]Work/Colonists Avoid Fired Workplace",
+    cMenuFuncs.AvoidWorkplace_Toggle,
+    nil,
+    function()
+      local des = cComFuncs.NumRetBool(Consts.AvoidWorkplaceSols,"(Disabled)","(Enabled)")
+      return des .. " After being fired, Colonists won't avoid that Workplace searching for a Workplace.\nWorks after colonist idle."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/[3]Work/Performance Penalty Non-Specialist",
+    cMenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
+    nil,
+    function()
+      local des = cComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,"(Disabled)","(Enabled)")
+      return des .. " Disable performance penalty for non-Specialists.\nActivated when colonist changes job."
+    end,
+    icon
+  )
+
+  local function OutsideWorkplaceRadiusText()
+    local des = Consts.DefaultOutsideWorkplacesRadius
+    return "Change how many hexes colonists search outside their dome when looking for a Workplace.\nCurrent: " .. des
+  end
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/[3]Work/Outside Workplace Radius",
+    cMenuFuncs.SetOutsideWorkplaceRadius,
+    nil,
+    OutsideWorkplaceRadiusText(),
+    icon
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Colonists/[3]Work/Add Specialization To All",
+    cMenuFuncs.ColonistsAddSpecializationToAll,
+    nil,
+    "If Colonist has no Specialization then add a random one",
+    icon
   )
 
 -------------------------------stats
@@ -216,17 +280,6 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Colonists/[3]Work/Colonists Avoid Fired Workplace",
-    cMenuFuncs.AvoidWorkplace_Toggle,
-    nil,
-    function()
-      local des = cComFuncs.NumRetBool(Consts.AvoidWorkplaceSols,"(Disabled)","(Enabled)")
-      return des .. " After being fired, Colonists won't avoid that Workplace searching for a Workplace.\nWorks after colonist idle."
-    end,
-    icon
-  )
-
-  cComFuncs.AddAction(
     "Expanded CM/Colonists/[2]Traits/Positive Playground",
     cMenuFuncs.PositivePlayground_Toggle,
     nil,
@@ -258,28 +311,6 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
     icon
   )
 
-  cComFuncs.AddAction(
-    "Expanded CM/Colonists/[3]Work/Performance Penalty Non-Specialist",
-    cMenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
-    nil,
-    function()
-      local des = cComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,"(Disabled)","(Enabled)")
-      return des .. " Disable performance penalty for non-Specialists.\nActivated when colonist changes job."
-    end,
-    icon
-  )
-
-  local function OutsideWorkplaceRadiusText()
-    local des = Consts.DefaultOutsideWorkplacesRadius
-    return "Change how many hexes colonists search outside their dome when looking for a Workplace.\nCurrent: " .. des
-  end
-  cComFuncs.AddAction(
-    "Expanded CM/Colonists/[3]Work/Outside Workplace Radius",
-    cMenuFuncs.SetOutsideWorkplaceRadius,
-    nil,
-    OutsideWorkplaceRadiusText(),
-    icon
-  )
   -------------------
   cComFuncs.AddAction(
     "Expanded CM/Colonists/Set Age New",
@@ -393,14 +424,6 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
     cMenuFuncs.SetDeathAge,
     nil,
     "Change the age at which colonists die.",
-    icon
-  )
-  --------------------
-  cComFuncs.AddAction(
-    "Expanded CM/Colonists/[3]Work/Add Specialization To All",
-    cMenuFuncs.ColonistsAddSpecializationToAll,
-    nil,
-    "If Colonist has no Specialization then add a random one",
     icon
   )
 end

@@ -50,6 +50,7 @@ ChoGGi.Defaults = {
   UseLastOrientation = true,
   ShowCheatsMenu = true,
   DebugGridSize = 10,
+  DebugGridOpacity = 15,
 --stores custom settings for each building
   BuildingSettings = {},
   Transparency = {},

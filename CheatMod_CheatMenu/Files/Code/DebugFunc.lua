@@ -6,6 +6,14 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
+function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
+  --wanted this as simple as possible for hexgrids
+  DefineClass.ChoGGi_CursorBuilding = {
+    __parents = {"CObject"},
+    entity = "GridTile"
+  }
+end
+
 --pick a random model for start of path if doing single object
 local SpawnModels = {}
 SpawnModels[1] = "GreenMan"
@@ -14,7 +22,6 @@ SpawnModels[2] = "Lama"
 local flag_height = 50
 --store all objects for easy removal
 local stored_waypoints = {}
-
 local function ShowWaypoints(waypoints, color, obj, single, skipflags)
   --check stored_waypoints length and see if we can find out how many = flickering
   --if #stored_waypoints == 500 then
@@ -595,11 +602,30 @@ end
 
 --hex rings
 local build_grid_debug_range = 10
-GlobalVar("build_grid_debug_objs", false)
-GlobalVar("build_grid_debug_thread", false)
+local opacity = 15
+local build_grid_debug_objs = false
+local build_grid_debug_thread = false
 function cMenuFuncs.debug_build_grid(Type)
-  if type(ChoGGi.UserSettings.DebugGridSize) == "number" then
-    build_grid_debug_range = ChoGGi.UserSettings.DebugGridSize
+  --make everything local
+  local t = terrain
+  local IsSCell = t.IsSCell
+  local IsPassable = t.IsPassable
+  local HexGridGetObject = HexGridGetObject
+  local HexToWorld = HexToWorld
+  local ObjectGrid = ObjectGrid
+  local Sleep = Sleep
+  local GetTerrainCursor = GetTerrainCursor
+  local CursorBuilding = ChoGGi_CursorBuilding
+  local UserSettings = ChoGGi.UserSettings
+  if type(UserSettings.DebugGridSize) == "number" then
+    build_grid_debug_range = UserSettings.DebugGridSize
+  end
+  -- 150 = 67951 objects (had a crash at 250, and not like you need one this big)
+  if build_grid_debug_range > 150 then
+    build_grid_debug_range = 150
+  end
+  if type(UserSettings.DebugGridOpacity) == "number" then
+    opacity = UserSettings.DebugGridOpacity
   end
   if build_grid_debug_thread then
     DeleteThread(build_grid_debug_thread)
@@ -624,27 +650,26 @@ function cMenuFuncs.debug_build_grid(Type)
               for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
                 if q_i + r_i + z_i == 0 then
                   --CursorBuilding is from construct controller, but it works nicely along with GridTile for filling each grid
-                  local c = build_grid_debug_objs[idx] or CursorBuilding:new({
-                    entity = "GridTile",
-                    template = ClassTemplates.Building.FountainSmall,
-                    auto_attach_at_init = false
-                  })
+                  local c = build_grid_debug_objs[idx] or CObject.new(CursorBuilding)
+                  --both
                   if Type == 1 then
-                    if (terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+                    if (IsSCell(HexToWorld(q_i, r_i)) or IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
                       --green
                       c:SetColorModifier(-16711936)
                     else
                       --red
                       c:SetColorModifier(-65536)
                     end
+                  --passable
                   elseif Type == 2 then
-                    if terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i)) then
+                    if IsSCell(HexToWorld(q_i, r_i)) or IsPassable(HexToWorld(q_i, r_i)) then
                       --green
                       c:SetColorModifier(-16711936)
                     else
                       --red
                       c:SetColorModifier(-65536)
                     end
+                  --buildable
                   elseif Type == 3 then
                     if HexGridGetObject(ObjectGrid, q_i, r_i) then
                       c:SetColorModifier(-65536)
@@ -652,9 +677,9 @@ function cMenuFuncs.debug_build_grid(Type)
                       c:SetColorModifier(-16711936)
                     end
                   end
-                  c:SetOpacity(0)
+                  --c:SetOpacity(0)
                   c:SetPos(point(HexToWorld(q_i, r_i)))
-                  c:SetOpacity(10)
+                  c:SetOpacity(opacity)
                   build_grid_debug_objs[idx] = c
                   idx = idx + 1
                 end

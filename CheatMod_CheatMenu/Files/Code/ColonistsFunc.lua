@@ -10,11 +10,12 @@ local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 
 function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
-  ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait = not ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait
+  local cUserSettings = ChoGGi.UserSettings
+  cUserSettings.UniversityGradRemoveIdiotTrait = not cUserSettings.UniversityGradRemoveIdiotTrait
 
   cSettingFuncs.WriteSettings()
   cComFuncs.MsgPopup(
-    tostring(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
+    tostring(cUserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
     "Idiots"
   )
 end
@@ -1249,4 +1250,100 @@ function cMenuFuncs.SetColonistsGravity()
   local Check2 = "Selected Only"
   local Check2Hint = "Will only apply to selected colonist."
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+end
+
+function cMenuFuncs.SetBuildingTraits(sType)
+  local sel = cCodeFuncs.SelObject()
+  if not sel or not IsKindOf(sel,"Workplace") then
+    cComFuncs.MsgPopup("Select a workplace.",
+      "Workplace",UsualIcon
+    )
+    return
+  end
+  local id = sel.encyclopedia_id
+  local name = _InternalTranslate(sel.display_name)
+  local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
+  if not BuildingSettings[id] then
+    BuildingSettings[id] = {restricttraits = {},blocktraits = {},}
+  end
+
+  local ItemList = {}
+  for i = 1, #cTables.NegativeTraits do
+    ItemList[#ItemList+1] = {
+      text = cTables.NegativeTraits[i],
+      value = cTables.NegativeTraits[i],
+      hint = type(BuildingSettings[id][sType][cTables.NegativeTraits[i]]) == "boolean" and "true" or "false",
+    }
+  end
+  for i = 1, #cTables.PositiveTraits do
+    ItemList[#ItemList+1] = {
+      text = cTables.PositiveTraits[i],
+      value = cTables.PositiveTraits[i],
+      hint = type(BuildingSettings[id][sType][cTables.PositiveTraits[i]]) == "boolean" and "true" or "false",
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    local check1 = choice[1].check1
+    for i = 1, #choice do
+      local value = choice[i].value
+
+      if BuildingSettings[id][sType][value] then
+        BuildingSettings[id][sType][value] = nil
+      else
+        BuildingSettings[id][sType][value] = true
+      end
+    end
+
+    if check1 then
+      local objs = GetObjects({class=sel.class})
+      --all buildings
+      for i = 1, #objs do
+        local workplace = objs[i]
+        --all three shifts
+        for j = 1, #workplace.workers do
+          --workers in shifts (go through table backwards for when someone gets fired)
+          for k = #workplace.workers[j], 1, -1 do
+
+            local worker = workplace.workers[j][k]
+            local block,restrict = cCodeFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
+
+            if block or not restrict then
+              table.remove_entry(workplace.workers[j], worker)
+              --table.remove(workplace.workers[j],k)
+              workplace:SetWorkplaceWorking()
+              workplace:StopWorkCycle(worker)
+              if worker:IsInWorkCommand() then
+                worker:InterruptCommand()
+              end
+              workplace:UpdateAttachedSigns()
+            end
+
+          end
+        end
+
+      end
+    end
+
+    --remove empty tables
+    if not next(BuildingSettings[id].restricttraits) and not next(BuildingSettings[id].blocktraits) then
+      BuildingSettings[id].restricttraits = nil
+      BuildingSettings[id].blocktraits = nil
+    end
+
+    cSettingFuncs.WriteSettings()
+
+    cComFuncs.MsgPopup("Toggled traits: " .. #choice .. (check1 and " Fired workers" or ""),
+      "Workplace"
+    )
+  end
+
+  local hint = ""
+  if BuildingSettings[id] and BuildingSettings[id][sType] then
+    hint = "Current: " .. table.concat(BuildingSettings[id][sType],",")
+  end
+  hint = hint .. "\n\nSelect traits and click Ok to toggle status."
+  local Check1 = "Fire Workers"
+  local Check1Hint = "Will also fire workers with the traits from all " .. name .. "."
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Toggle " .. sType .. " For " .. name,hint,true,Check1,Check1Hint)
 end

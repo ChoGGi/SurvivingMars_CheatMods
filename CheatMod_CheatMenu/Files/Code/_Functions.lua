@@ -1452,3 +1452,29 @@ function cCodeFuncs.DeleteObjects(obj)
     --so we don't get an error from UseLastOrientation
   ChoGGi.Temp.LastPlacedObject = nil
 end
+
+function cCodeFuncs.RetBuildingPermissions(traits,settings)
+  local block = false
+  local restrict = false
+
+  local rtotal = 0
+  for temp,_ in pairs(settings.restricttraits) do
+    rtotal = rtotal + 1
+  end
+
+  local rcount = 0
+  for trait,_ in pairs(traits) do
+    if settings.restricttraits[trait] then
+      rcount = rcount + 1
+    end
+    if settings.blocktraits[trait] then
+      block = true
+    end
+  end
+  --restrict is empty so allow all or since we're restricting then they need to be the same
+  if not next(settings.restricttraits) or rcount == rtotal then
+    restrict = true
+  end
+
+  return block,restrict
+end

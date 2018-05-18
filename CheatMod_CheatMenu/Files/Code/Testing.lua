@@ -14,6 +14,8 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 --stuff that never happens, fuck comments (like this one)
 if ChoGGi.Temp.Testing == 3.14 then
+  dofolder_files("CommonLua/UI/UIDesignerData")
+
   for message, threads in pairs(ThreadsMessageToThreads) do
     --print(message)
     --print(threads)

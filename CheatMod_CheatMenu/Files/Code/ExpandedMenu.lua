@@ -112,6 +112,14 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   --------------------fixes
   cComFuncs.AddAction(
+    "Expanded CM/Fixes/Remove Particles With Null Polylines",
+    cMenuFuncs.ParticlesWithNullPolylines,
+    nil,
+    "It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Missing Class Objects",
     cMenuFuncs.RemoveMissingClassObjects,
     nil,

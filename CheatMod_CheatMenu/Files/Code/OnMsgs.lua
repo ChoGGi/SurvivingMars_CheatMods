@@ -15,6 +15,7 @@ end
 
 function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
+  cMsgFuncs.DebugFunc_ClassesGenerate()
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cMsgFuncs.InfoPaneCheats_ClassesGenerate()
   --custom dialogs
@@ -496,7 +497,7 @@ function OnMsg.ConstructionComplete(building)
 
   --saved building settings
   local setting = UserSettings.BuildingSettings[building.encyclopedia_id]
-  if setting then
+  if setting and next(setting) then
     --saved settings for capacity, shuttles
     if setting.capacity then
       if building.base_capacity then
@@ -538,6 +539,8 @@ function OnMsg.ConstructionComplete(building)
       building.protect_range = setting.protect_range
       building.shoot_range = setting.protect_range * cConsts.guim
     end
+  else
+    UserSettings.BuildingSettings[building.encyclopedia_id] = nil
   end
 
 end --OnMsg

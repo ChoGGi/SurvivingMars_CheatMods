@@ -504,6 +504,15 @@ function cMenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
+function cMenuFuncs.ParticlesWithNullPolylines()
+  local objs = GetObjects({class = "ParSystem"}) or empty_table
+  for i = 1, #objs do
+    if type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
+      objs[i]:delete()
+    end
+  end
+end
+
 function cMenuFuncs.RemoveMissingClassObjects()
   local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
   for i = 1, #objs do
@@ -521,7 +530,7 @@ function cMenuFuncs.MirrorSphereStuck()
   objs = GetObjects({class = "ParSystem"}) or empty_table
   for i = 1, #objs do
     if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" then
-      cCodeFuncs.DeleteObjects(objs[i])
+      objs[i]:delete()
     end
   end
 end

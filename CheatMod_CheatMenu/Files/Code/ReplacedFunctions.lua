@@ -46,7 +46,32 @@ Lua\X\Infopanel.lua
 --]]
 
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
---dofolder_files("CommonLua/UI/UIDesignerData")
+
+  --block certain traits from workplaces
+  cComFuncs.SaveOrigFunc("Workplace","AddWorker")
+  function Workplace:AddWorker(worker, shift)
+    local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+    --check that the tables contain at least one trait
+    local bt = s and s.blocktraits and type(s.blocktraits) == "table" and next(s.blocktraits) and s.blocktraits
+    local rt = s and s.restricttraits and type(s.restricttraits) == "table" and next(s.restricttraits) and s.restricttraits
+    if bt or rt then
+
+      local block,restrict = cCodeFuncs.RetBuildingPermissions(worker.traits,s)
+      if block then
+        return
+      end
+      if restrict then
+        self.workers[shift] = self.workers[shift] or {}
+        table.insert(self.workers[shift], worker)
+        self:UpdatePerformance()
+        self:SetWorkplaceWorking()
+        self:UpdateAttachedSigns()
+      end
+
+    else
+      return cOrigFuncs.Workplace_AddWorker(self, worker, shift)
+    end
+  end
 
   --set amount of dust applied
   cComFuncs.SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
