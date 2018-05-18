@@ -701,12 +701,12 @@ end
 --RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1,ResourceStockpile=1},"class")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
-      filter = function(o)
-        if not ExcludeList[o[Type]] then
-          return o
-        elseif IncludeList[o[Type]] then
-          return o
-        end
+    filter = function(Obj)
+      if not ExcludeList[Obj[Type]] then
+        return Obj
+      elseif IncludeList[Obj[Type]] then
+        return Obj
       end
-    },Table)
+    end
+  },Table)
 end

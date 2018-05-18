@@ -425,12 +425,13 @@ function cMenuFuncs.Editor_Toggle()
 end
 
 function cMenuFuncs.DeleteObjects(obj)
-  if not obj or (obj.key and obj.action and obj.idx) then
+  --the menu item sends itself
+  if obj and not obj.class then
     --multiple selection from editor mode
     local objs = editor:GetSel()
     if next(objs) then
       for i = 1, #objs do
-        cMenuFuncs.DeleteObject(objs[i])
+        cMenuFuncs.DeleteObjects(objs[i])
       end
     else
       obj = cCodeFuncs.SelObject()
@@ -448,7 +449,7 @@ function cMenuFuncs.DeleteObjects(obj)
     if type(attach) == "table" then
       for i = 1, #attach do
         pcall(function()
-          cMenuFuncs.DeleteObject(attach[i])
+          cMenuFuncs.DeleteObjects(attach[i])
         end)
       end
     end

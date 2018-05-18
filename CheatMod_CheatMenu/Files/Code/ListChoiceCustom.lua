@@ -3,7 +3,7 @@ local cComFuncs = ChoGGi.ComFuncs
 
 function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
-  DefineClass.ListChoiceCustomDialog = {
+  DefineClass.ChoGGi_ListChoiceCustomDialog = {
     __parents = {
       "FrameWindow"
     }
@@ -12,9 +12,9 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
   --ex(ChoGGi.ListChoiceCustomDialog_Dlg)
   --ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
-  function ListChoiceCustomDialog:Init()
+  function ChoGGi_ListChoiceCustomDialog:Init()
     --init stuff?
-    DataInstances.UIDesignerData.ListChoiceCustomDialog:InitDialogFromView(self, "Default")
+    DataInstances.UIDesignerData.ChoGGi_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     self:SetZOrder(20000)
     --set some values...
@@ -240,7 +240,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       end
     end
 
-    --function ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+    --function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     function self:OnKbdKeyDown(_, virtual_key)
       if virtual_key == const.vkEsc then
         if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
@@ -277,8 +277,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
     DesignOrigin = point(100, 100),
     DesignResolution = point(300, 450),
     HGE = true,
-    file_name = "ListChoiceCustomDialog",
-    name = "ListChoiceCustomDialog",
+    file_name = "ChoGGi_ListChoiceCustomDialog",
+    name = "ChoGGi_ListChoiceCustomDialog",
     parent_control = {
       CaptionHeight = 32,
       Class = "FrameWindow",

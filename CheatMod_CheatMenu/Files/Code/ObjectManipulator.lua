@@ -3,7 +3,7 @@ local cComFuncs = ChoGGi.ComFuncs
 
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
-  DefineClass.ObjectManipulator = {
+  DefineClass.ChoGGi_ObjectManipulator = {
     __parents = {
       "FrameWindow",
       --"PauseGameDialog"
@@ -12,9 +12,9 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   --ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
   --ex(ChoGGi.ObjectManipulator_Dlg)
-  function ObjectManipulator:Init()
+  function ChoGGi_ObjectManipulator:Init()
     --init stuff?
-    DataInstances.UIDesignerData.ObjectManipulator:InitDialogFromView(self, "Default")
+    DataInstances.UIDesignerData.ChoGGi_ObjectManipulator:InitDialogFromView(self, "Default")
 
     self:SetZOrder(20000)
     --set some values...
@@ -188,7 +188,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
   end --init
 
   --function ObjectManipulator:OnKbdKeyDown(char, virtual_key)
-  function ObjectManipulator:OnKbdKeyDown(_, virtual_key)
+  function ChoGGi_ObjectManipulator:OnKbdKeyDown(_, virtual_key)
     if virtual_key == const.vkEsc then
       if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
         self.idClose:Press()
@@ -204,7 +204,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     return "continue"
   end
 
-  function ObjectManipulator:UpdateListContent(obj)
+  function ChoGGi_ObjectManipulator:UpdateListContent(obj)
     --check for scroll pos
     local scrollpos = self.idList.vscrollbar:GetPosition()
     --create prop list for list
@@ -220,14 +220,12 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     self.idList.vscrollbar:SetPosition(scrollpos)
   end
 
-  function ObjectManipulator:ViewObject(obj)
-    ShowMe(obj)
-    ClearShowMe()
-    SelectObj(obj)
+  function ChoGGi_ObjectManipulator:ViewObject(obj)
+    cCodeFuncs.ViewAndSelectObject(Obj)
   end
 
   --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
-  function ObjectManipulator:OnCreate(item,list)
+  function ChoGGi_ObjectManipulator:OnCreate(item,list)
     local data_instance = item.ItemDataInstance or list:GetItemDataInstance()
     local view_name = item and item.ItemSubview or list:GetItemSubview()
     if data_instance ~= "" and view_name ~= "" then
@@ -273,7 +271,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     end
   end
 
-  function ObjectManipulator:filtersmarttable(e)
+  function ChoGGi_ObjectManipulator:filtersmarttable(e)
     local format_text = tostring(e[2])
     local t = string.match(format_text, "^%[(.*)%]")
     if t then
@@ -288,7 +286,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     return format_text, e
   end
 
-  function ObjectManipulator:evalsmarttable(format_text, e)
+  function ChoGGi_ObjectManipulator:evalsmarttable(format_text, e)
     local touched = {}
     local i = 0
     format_text = string.gsub(format_text, "{(%d-)}", function(s)
@@ -309,7 +307,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     return format_text
   end
 
-  function ObjectManipulator:CreateProp(o)
+  function ChoGGi_ObjectManipulator:CreateProp(o)
     if type(o) == "function" then
       local debug_info = debug.getinfo(o, "Sn")
       return tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
@@ -365,7 +363,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   end
 
-  function ObjectManipulator:CreatePropList(o)
+  function ChoGGi_ObjectManipulator:CreatePropList(o)
     local res = {}
     local sort = {}
     local function tableinsert(k,v)
@@ -476,8 +474,8 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
     DesignResolution = point(650, 450),
     --HGE = true,
     Translate = false,
-    file_name = "ObjectManipulator",
-    name = "ObjectManipulator",
+    file_name = "ChoGGi_ObjectManipulator",
+    name = "ChoGGi_ObjectManipulator",
     parent_control = {
       CaptionHeight = 32,
       Class = "FrameWindow",

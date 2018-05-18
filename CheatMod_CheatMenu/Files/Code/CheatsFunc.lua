@@ -429,8 +429,8 @@ function cMenuFuncs.NextMysterySeq(Mystery)
   for Thread in pairs(ThreadsMessageToThreads) do
     if Thread.player and Thread.player.seq_list.file_name == Mystery then
 
-      if Thread.finished == true then
-        --print("Thread.thread")
+      --only remove finished waittime threads, can cause issues removing other threads
+      if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime") then
         DeleteThread(Thread.thread)
       end
 

@@ -3,6 +3,8 @@ local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
 local cTesting = ChoGGi.Temp.Testing
 
+local cCodeFuncs = ChoGGi.CodeFuncs
+
 --any funcs called from Code/*.lua
 
 --make some easy to type names
@@ -31,7 +33,7 @@ c = GetTerrainCursor
 cs = terminal.GetMousePos --pos on screen, not map
 
 --check if tech is researched before we set these consts (activated from menu items)
-function ChoGGi.CodeFuncs.GetSpeedDrone()
+function cCodeFuncs.GetSpeedDrone()
   local MoveSpeed = cConsts.SpeedDrone
 
   if UICity and UICity:IsTechResearched("LowGDrive") then
@@ -46,7 +48,7 @@ function ChoGGi.CodeFuncs.GetSpeedDrone()
   return MoveSpeed
 end
 
-function ChoGGi.CodeFuncs.GetSpeedRC()
+function cCodeFuncs.GetSpeedRC()
   if UICity and UICity:IsTechResearched("LowGDrive") then
     local p = cComFuncs.ReturnTechAmount("LowGDrive","move_speed")
     return cConsts.SpeedRC + cConsts.SpeedRC * p
@@ -54,7 +56,7 @@ function ChoGGi.CodeFuncs.GetSpeedRC()
   return cConsts.SpeedRC
 end
 
-function ChoGGi.CodeFuncs.GetCargoCapacity()
+function cCodeFuncs.GetCargoCapacity()
   if UICity and UICity:IsTechResearched("FuelCompression") then
     local a = cComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
     return cConsts.CargoCapacity + a
@@ -62,7 +64,7 @@ function ChoGGi.CodeFuncs.GetCargoCapacity()
   return cConsts.CargoCapacity
 end
 --
-function ChoGGi.CodeFuncs.GetCommandCenterMaxDrones()
+function cCodeFuncs.GetCommandCenterMaxDrones()
   if UICity and UICity:IsTechResearched("DroneSwarm") then
     local a = cComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
     return cConsts.CommandCenterMaxDrones + a
@@ -70,7 +72,7 @@ function ChoGGi.CodeFuncs.GetCommandCenterMaxDrones()
   return cConsts.CommandCenterMaxDrones
 end
 --
-function ChoGGi.CodeFuncs.GetDroneResourceCarryAmount()
+function cCodeFuncs.GetDroneResourceCarryAmount()
   if UICity and UICity:IsTechResearched("ArtificialMuscles") then
     local a = cComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
     return cConsts.DroneResourceCarryAmount + a
@@ -78,7 +80,7 @@ function ChoGGi.CodeFuncs.GetDroneResourceCarryAmount()
   return cConsts.DroneResourceCarryAmount
 end
 --
-function ChoGGi.CodeFuncs.GetLowSanityNegativeTraitChance()
+function cCodeFuncs.GetLowSanityNegativeTraitChance()
   if UICity and UICity:IsTechResearched("SupportiveCommunity") then
     local p = cComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
     --[[
@@ -91,7 +93,7 @@ function ChoGGi.CodeFuncs.GetLowSanityNegativeTraitChance()
   return cConsts.LowSanityNegativeTraitChance
 end
 --
-function ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
+function cCodeFuncs.GetMaxColonistsPerRocket()
   local PerRocket = cConsts.MaxColonistsPerRocket
   if UICity and UICity:IsTechResearched("CompactPassengerModule") then
     local a = cComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
@@ -104,7 +106,7 @@ function ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
   return PerRocket
 end
 --
-function ChoGGi.CodeFuncs.GetNonSpecialistPerformancePenalty()
+function cCodeFuncs.GetNonSpecialistPerformancePenalty()
   if UICity and UICity:IsTechResearched("GeneralTraining") then
     local a = cComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
     return cConsts.NonSpecialistPerformancePenalty - a
@@ -112,7 +114,7 @@ function ChoGGi.CodeFuncs.GetNonSpecialistPerformancePenalty()
   return cConsts.NonSpecialistPerformancePenalty
 end
 --
-function ChoGGi.CodeFuncs.GetRCRoverMaxDrones()
+function cCodeFuncs.GetRCRoverMaxDrones()
   if UICity and UICity:IsTechResearched("RoverCommandAI") then
     local a = cComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
     return cConsts.RCRoverMaxDrones + a
@@ -120,7 +122,7 @@ function ChoGGi.CodeFuncs.GetRCRoverMaxDrones()
   return cConsts.RCRoverMaxDrones
 end
 --
-function ChoGGi.CodeFuncs.GetRCTransportGatherResourceWorkTime()
+function cCodeFuncs.GetRCTransportGatherResourceWorkTime()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
     local p = cComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
     return cConsts.RCTransportGatherResourceWorkTime * p
@@ -128,7 +130,7 @@ function ChoGGi.CodeFuncs.GetRCTransportGatherResourceWorkTime()
   return cConsts.RCTransportGatherResourceWorkTime
 end
 --
-function ChoGGi.CodeFuncs.GetRCTransportStorageCapacity()
+function cCodeFuncs.GetRCTransportStorageCapacity()
   if UICity and UICity:IsTechResearched("TransportOptimization") then
     local a = cComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
     return cConsts.RCTransportStorageCapacity + (a * cConsts.ResourceScale)
@@ -136,7 +138,7 @@ function ChoGGi.CodeFuncs.GetRCTransportStorageCapacity()
   return cConsts.RCTransportStorageCapacity
 end
 --
-function ChoGGi.CodeFuncs.GetTravelTimeEarthMars()
+function cCodeFuncs.GetTravelTimeEarthMars()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
     local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
     return cConsts.TravelTimeEarthMars * p
@@ -144,7 +146,7 @@ function ChoGGi.CodeFuncs.GetTravelTimeEarthMars()
   return cConsts.TravelTimeEarthMars
 end
 --
-function ChoGGi.CodeFuncs.GetTravelTimeMarsEarth()
+function cCodeFuncs.GetTravelTimeMarsEarth()
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
     local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
     return cConsts.TravelTimeMarsEarth * p
@@ -152,7 +154,7 @@ function ChoGGi.CodeFuncs.GetTravelTimeMarsEarth()
   return cConsts.TravelTimeMarsEarth
 end
 
-function ChoGGi.CodeFuncs.AttachToNearestDome(building)
+function cCodeFuncs.AttachToNearestDome(building)
   --ignore outdoor buildings, and if there aren't any domes
   local work = UICity.labels.Domes_Working
   if building.dome_required ~= true or not work or (work and next(work) == nil) then
@@ -176,7 +178,7 @@ function ChoGGi.CodeFuncs.AttachToNearestDome(building)
 end
 
 --toggle working status
-function ChoGGi.CodeFuncs.ToggleWorking(building)
+function cCodeFuncs.ToggleWorking(building)
   CreateRealTimeThread(function()
     building:ToggleWorking()
     Sleep(5)
@@ -184,7 +186,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
   end)
 end
 
-function ChoGGi.CodeFuncs.SetCameraSettings()
+function cCodeFuncs.SetCameraSettings()
 --cameraRTS.GetProperties(1)
 
   --size of activation area for border scrolling
@@ -220,7 +222,7 @@ function ChoGGi.CodeFuncs.SetCameraSettings()
   --cameraRTS.SetProperties(1,{HeightInertia = 0})
 end
 
-function ChoGGi.CodeFuncs.RemoveOldFiles()
+function cCodeFuncs.RemoveOldFiles()
   --using a pack file now so we can skip most of this
   local Files = {
     --[[
@@ -319,7 +321,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
   ChoGGi.UserSettings.TrainersAddAmount = nil
 end
 
-function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
+function cCodeFuncs.ShowBuildMenu(iWhich)
   local dlg = GetXDialog("XBuildMenu")
 
   if dlg then
@@ -336,7 +338,7 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
   dlg:SelectCategory(BuildCategories[iWhich])
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
+function cCodeFuncs.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
     Age = cTables.ColonistAges[UICity:Random(1,6)]
   end
@@ -381,7 +383,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   Colonist:TryToEmigrate()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
+function cCodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
   if Gender == "Random" then
     Gender = cTables.ColonistGenders[UICity:Random(1,5)]
   elseif Gender == "MaleOrFemale" then
@@ -415,7 +417,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
   Colonist:ChooseEntity()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
+function cCodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
       Spec = cTables.ColonistSpecializations[UICity:Random(1,6)]
@@ -427,7 +429,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateTraits(Colonist,Bool,Traits)
+function cCodeFuncs.ColonistUpdateTraits(Colonist,Bool,Traits)
   local Type = "RemoveTrait"
   if Bool == true then
     Type = "AddTrait"
@@ -437,7 +439,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateTraits(Colonist,Bool,Traits)
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateRace(Colonist,Race)
+function cCodeFuncs.ColonistUpdateRace(Colonist,Race)
   if Race == "Random" then
     Race = UICity:Random(1,5)
   end
@@ -454,8 +456,8 @@ CustomType=3 : updates selected item with custom value type, and sends back sele
 CustomType=4 : updates selected item with custom value type, and sends back all items
 CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 --]]
-function ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
-  local dlg = ListChoiceCustomDialog:new()
+function cCodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+  local dlg = ChoGGi_ListChoiceCustomDialog:new()
 
   if not dlg then
     return
@@ -537,7 +539,7 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check
   return dlg:Wait()
 end
 
-function ChoGGi.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
+function cCodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType)
   if not Func or not Items then
     return
   end
@@ -568,7 +570,7 @@ function ChoGGi.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,C
 end
 
 --some dev removed this from the Spirit update... (harumph)
-function ChoGGi.CodeFuncs.AddConsolePrompt(text)
+function cCodeFuncs.AddConsolePrompt(text)
   if dlgConsole then
     local self = dlgConsole
     self:Show(true)
@@ -578,7 +580,7 @@ function ChoGGi.CodeFuncs.AddConsolePrompt(text)
 end
 
 --toggle visiblity of console log
-function ChoGGi.CodeFuncs.ToggleConsoleLog()
+function cCodeFuncs.ToggleConsoleLog()
   if dlgConsoleLog then
     if dlgConsoleLog:GetVisible() then
       dlgConsoleLog:SetVisible(false)
@@ -589,100 +591,165 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
     dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
   end
 end
---force drones to pickup from producers/blackcube stockpiles even if they have a large carry cap
-function ChoGGi.CodeFuncs.FuckingDrones(Producer,Stockpile)
 
-  --Come on, Bender. Grab a jack. I told these guys you were cool.
-  --Well, if jacking on will make strangers think I'm cool, I'll do it.
-
-  if not Producer and not Stockpile then
+--[[
+    local unit_count = 1 + self.max_export_storage / (const.ResourceScale * 10)
+    self.export_requests = {
+      self:AddDemandRequest("PreciousMetals", self.max_export_storage, 0, unit_count)
+    }
+local max_storage = Rocket.max_export_storage
+local stored = Rocket:GetStoredExportResourceAmount()
+function cCodeFuncs.ForceIdleDronesFillRockets(Rocket)
+  if not Rocket then
     return
   end
 
-  local amount
-  local p
-  if Producer then
-    p = Producer.parent
-    amount = Producer:GetAmountStored()
-  elseif Stockpile then
-    p = Stockpile
-    amount = Stockpile:GetStoredAmount()
-  end
 
-  --only fire if more then one resource
-  if amount > 1000 then
 
-    --check if nearest cc has idle drones, or run though list of cc till we find one
-    local cc = FindNearestObject(p.command_centers,p)
-    if cc and cc:GetIdleDronesCount() > 0 then
-      cc = cc.drones
-    else
-      --sort by nearest dist
-      table.sort(p.command_centers,
-        function(a,b)
-          return cComFuncs.CompareTableFuncs(a,b,"GetDist2D",p.command_centers)
-        end
-      )
-      --get a command_center with idle drones
-      for i = 1, #p.command_centers do
-        if p.command_centers[i]:GetIdleDronesCount() > 0 then
-          cc = p.command_centers[i].drones
-          break
-        end
-      end
-    end
-    if not cc then
-      return
-    end
+  local resource = "PreciousMetals"
+  local labels = UICity.labels
+  local request = Rocket.export_requests and Rocket.export_requests[1]
 
-    --get an idle drone
-    local drone
-    for i = 1, #cc do
-      if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
-        drone = cc[i]
-        break
-      end
-    end
-
-    --if we don't have an idle drone then give up till next time
+  local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
+  while Rocket.max_export_storage < Rocket:GetStoredExportResourceAmount() do
+    local drone = ChoGGi.CodeFuncs.GetNearestIdleDrone(p)
     if drone then
-      local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
-      --round to nearest 1000 (don't want uneven stacks)
-      amount = (amount - amount % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
-      --if carry is smaller then amount then fine
-      if carry < amount then
-        amount = carry
+      --get nearest stockpiles to drone
+      local mechstockpile = FindNearestObject(labels.MechanizedDepotRareMetals,drone)
+      local stockpile = FindNearestObject(labels.StorageRareMetals,drone)
+      local nearest = stockpile
+      local stored = stockpile:GetStoredAmount()
+      if mechstockpile:GetDist2D() < stockpile:GetDist2D() then
+        nearest = mechstockpile
+        stored = mechstockpile:GetStored_PreciousMetals()
       end
-      if Producer then
-        drone:SetCommandUserInteraction(
-          "PickUp",
-          Producer.stockpiles[Producer:GetNextStockpileIndex()].supply_request,
-          false,
-          Producer.resource_produced,
-          amount
-        )
-      else
-        drone:SetCommandUserInteraction(
-          "PickUp",
-          Stockpile.supply_request,
-          false,
-          Stockpile.resource,
-          amount
-        )
+      --round off to nearest 1000
+      stored = (stored - stored % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
+      --if carry is smaller then stored then they may not pickup (depends on storage)
+      if carry < stored or
+        --no picking up more then they can carry
+        stored > carry then
+          stored = carry
       end
-    end
+      --pretend it's the user doing it (for more priority?)
+      drone:SetCommandUserInteraction(
+        "PickUp",
+        request,
+        false,
+        resource,
+        stored
+      )
 
+    end
+    Sleep(1000)
+  print("max_storage < stored")
   end
+
+  print("max_storage >= stored")
+
 end
+--]]
 
 --[[
     local tab = UICity.labels.BlackCubeStockpiles or empty_table
     for i = 1, #tab do
-      ChoGGi.CodeFuncs.FuckingDrones(nil,tab[i])
+      ChoGGi.CodeFuncs.FuckingDrones(tab[i])
     end
 --]]
+--force drones to pickup from object even if they have a large carry cap
+function cCodeFuncs.FuckingDrones(Obj)
 
-function ChoGGi.CodeFuncs.SaveOldPalette(Obj)
+  --Come on, Bender. Grab a jack. I told these guys you were cool.
+  --Well, if jacking on will make strangers think I'm cool, I'll do it.
+
+  if not Obj then
+    return
+  end
+
+  local stored
+  local p
+  local request
+  local resource
+  --mines/farms/factories
+  if Obj.class == "SingleResourceProducer" then
+    p = Obj.parent
+    stored = Obj:GetAmountStored()
+    request = Obj.stockpiles[Obj:GetNextStockpileIndex()].supply_request
+    resource = Obj.resource_produced
+  elseif Obj.class == "BlackCubeStockpile" then
+    p = Obj
+    stored = Obj:GetStoredAmount()
+    request = Obj.supply_request
+    resource = Obj.resource
+  end
+
+  --only fire if more then one resource
+  if stored > 1000 then
+    local drone = ChoGGi.CodeFuncs.GetNearestIdleDrone(p)
+    if not drone then
+      return
+    end
+
+    local carry = g_Consts.DroneResourceCarryAmount * cConsts.ResourceScale
+    --round to nearest 1000 (don't want uneven stacks)
+    stored = (stored - stored % cConsts.ResourceScale) / cConsts.ResourceScale * cConsts.ResourceScale
+    --if carry is smaller then stored then they may not pickup (depends on storage)
+    if carry < stored or
+      --no picking up more then they can carry
+      stored > carry then
+        stored = carry
+    end
+    --pretend it's the user doing it (for more priority?)
+    drone:SetCommandUserInteraction(
+      "PickUp",
+      request,
+      false,
+      resource,
+      stored
+    )
+  end
+end
+
+function cCodeFuncs.GetNearestIdleDrone(Bld)
+  if not Bld or (Bld and not Bld.command_centers) then
+    return
+  end
+
+  --check if nearest cc has idle drones
+  local cc = FindNearestObject(Bld.command_centers,Bld)
+  if cc and cc:GetIdleDronesCount() > 0 then
+    cc = cc.drones
+  else
+    --sort command_centers by nearest dist
+    table.sort(Bld.command_centers,
+      function(a,b)
+        return cComFuncs.CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
+      end
+    )
+    --get command_center with idle drones
+    for i = 1, #Bld.command_centers do
+      if Bld.command_centers[i]:GetIdleDronesCount() > 0 then
+        cc = Bld.command_centers[i].drones
+        break
+      end
+    end
+  end
+  --it happens...
+  if not cc then
+    return
+  end
+
+  --get an idle drone
+  local drone
+  for i = 1, #cc do
+    if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
+      return cc[i]
+      --break
+    end
+  end
+end
+
+function cCodeFuncs.SaveOldPalette(Obj)
   local GetPal = Obj.GetColorizationMaterial
   if not Obj.ChoGGi_origcolors then
     Obj.ChoGGi_origcolors = {}
@@ -692,7 +759,7 @@ function ChoGGi.CodeFuncs.SaveOldPalette(Obj)
     Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,4)}
   end
 end
-function ChoGGi.CodeFuncs.RestoreOldPalette(Obj)
+function cCodeFuncs.RestoreOldPalette(Obj)
   if Obj.ChoGGi_origcolors then
     local c = Obj.ChoGGi_origcolors
     local SetPal = Obj.SetColorizationMaterial
@@ -704,7 +771,7 @@ function ChoGGi.CodeFuncs.RestoreOldPalette(Obj)
   end
 end
 
-function ChoGGi.CodeFuncs.GetPalette(Obj)
+function cCodeFuncs.GetPalette(Obj)
   local g = Obj.GetColorizationMaterial
   local pal = {}
   pal.Color1, pal.Roughness1, pal.Metallic1 = g(Obj, 1)
@@ -714,7 +781,7 @@ function ChoGGi.CodeFuncs.GetPalette(Obj)
   return pal
 end
 
-function ChoGGi.CodeFuncs.RandomColour(Amount)
+function cCodeFuncs.RandomColour(Amount)
   if not Amount then
     return AsyncRand(16777216) * -1
   end
@@ -730,9 +797,10 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
   end
 end
 
-function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
+function cCodeFuncs.ObjectColourRandom(Obj,Base)
   if Obj:IsKindOf("ColorizableObject") then
-    local RandomColour = ChoGGi.CodeFuncs.RandomColour
+    local cCodeFuncs = ChoGGi.CodeFuncs
+    local RandomColour = cCodeFuncs.RandomColour
     local color = Base or RandomColour
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
@@ -742,7 +810,7 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
       Obj:SetColorModifier(color)
     else
       if not Obj.ChoGGi_origcolors then
-        ChoGGi.CodeFuncs.SaveOldPalette(Obj)
+        cCodeFuncs.SaveOldPalette(Obj)
       end
       --s,1,Color, Roughness, Metallic
       SetPal(Obj, 1, RandomColour, 0,0)
@@ -753,7 +821,7 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
     return color
   end
 end
-function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
+function cCodeFuncs.ObjectColourDefault(Obj)
   if Obj:IsKindOf("ColorizableObject") then
     Obj:SetColorModifier(6579300)
     if Obj.ChoGGi_origcolors then
@@ -767,12 +835,61 @@ function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
   end
 end
 
-function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
+function cCodeFuncs.OpenInExecCodeDlg(Object,Parent)
+  if not Object then
+    return
+  end
+
+  local dlg = ChoGGi_ExecCodeDlg:new()
+
+  if not dlg then
+    return
+  end
+
+  if cTesting then
+    --easier to fiddle with it
+    ChoGGi.ExecCodeDlg_Dlg = dlg
+  end
+
+  --update internal object
+  dlg.obj = Object
+
+  local title = tostring(Object)
+  if type(Object) == "table" and Object.class then
+    title = "Class: " .. Object.class
+  end
+
+  --title text
+  if type(Object) == "table" then
+    if Object.entity then
+      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
+    else
+      dlg.idCaption:SetText(Object.class)
+    end
+  else
+    dlg.idCaption:SetText(tostring(Object))
+  end
+
+  --set pos
+  if Parent then
+    local pos = Parent:GetPos()
+    if not pos then
+      dlg:SetPos(terminal.GetMousePos())
+    else
+      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
+    end
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+
+end
+
+function cCodeFuncs.OpenInObjectManipulator(Object,Parent)
   if type(Object) ~= "table" then
     return
   end
-  --nil or selected self
-  if not Object or (Object.action and Object.idx) then
+  --nothing selected or menu item
+  if not Object or (Object and not Object.class) then
     Object = ChoGGi.CodeFuncs.SelObject()
   end
 
@@ -780,7 +897,7 @@ function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
     return
   end
 
-  local dlg = ObjectManipulator:new()
+  local dlg = ChoGGi_ObjectManipulator:new()
 
   if not dlg then
     return
@@ -829,7 +946,7 @@ function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
 
 end
 
-function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
+function cCodeFuncs.RemoveOldDialogs(Dialog,win)
   while cComFuncs.CheckForTypeInList(win,Dialog) do
     for i = 1, #win do
       if IsKindOf(win[i],Dialog) then
@@ -839,14 +956,15 @@ function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
   end
 end
 
-function ChoGGi.CodeFuncs.CloseDialogsECM()
+function cCodeFuncs.CloseDialogsECM()
   local win = terminal.desktop
-  ChoGGi.CodeFuncs.RemoveOldDialogs("Examine",win)
-  ChoGGi.CodeFuncs.RemoveOldDialogs("ObjectManipulator",win)
-  ChoGGi.CodeFuncs.RemoveOldDialogs("ListChoiceCustomDialog",win)
+  local cCodeFuncs = ChoGGi.CodeFuncs
+  cCodeFuncs.RemoveOldDialogs("Examine",win)
+  cCodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator",win)
+  cCodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog",win)
 end
 
-function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
+function cCodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
   amount = amount or 10
   local resource = Obj.resource
   local io_stockpile = Obj.stockpiles[Obj:GetNextStockpileIndex()]
@@ -859,11 +977,11 @@ function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
   io_demand_req:SetAmount(amount)
 end
 
-function ChoGGi.CodeFuncs.NewThread(Func,...)
+function cCodeFuncs.NewThread(Func,...)
   coroutine.resume(coroutine.create(Func),...)
 end
 
-function ChoGGi.CodeFuncs.BuildMenu_Toggle()
+function cCodeFuncs.BuildMenu_Toggle()
   local dlg = GetXDialog("XBuildMenu")
   if not dlg then
     return
@@ -877,7 +995,7 @@ function ChoGGi.CodeFuncs.BuildMenu_Toggle()
 end
 
 --sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
+function cCodeFuncs.EmptyMechDepot(oldobj)
 
   if not oldobj or not IsKindOf(oldobj,"MechanizedDepot") then
     oldobj = ChoGGi.CodeFuncs.SelObject()
@@ -944,7 +1062,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 end
 
 --used to check for some SM objects (Points/Boxes)
-function ChoGGi.CodeFuncs.RetType(Obj)
+function cCodeFuncs.RetType(Obj)
   local meta = getmetatable(Obj)
   if meta then
     if IsPoint(Obj) then
@@ -955,14 +1073,15 @@ function ChoGGi.CodeFuncs.RetType(Obj)
     end
   end
 end
-function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
+function cCodeFuncs.ChangeObjectColour(obj,Parent)
   if not obj and not obj:IsKindOf("ColorizableObject") then
     cComFuncs.MsgPopup("Can't colour object","Colour")
     return
   end
+  local cCodeFuncs = ChoGGi.CodeFuncs
   --SetPal(Obj,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
-  local pal = ChoGGi.CodeFuncs.GetPalette(obj)
+  local pal = cCodeFuncs.GetPalette(obj)
 
   local ItemList = {}
   for i = 1, 4 do
@@ -1012,12 +1131,12 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       end
       --they get called a few times so
       local function SetOrigColours(Object)
-        ChoGGi.CodeFuncs.RestoreOldPalette(Object)
+        cCodeFuncs.RestoreOldPalette(Object)
         --6579300 = reset base color
         Object:SetColorModifier(6579300)
       end
       local function SetColours(Object)
-        ChoGGi.CodeFuncs.SaveOldPalette(Object)
+        cCodeFuncs.SaveOldPalette(Object)
         for i = 1, 4 do
           local Color = choice[i].value
           local Metallic = choice[i+4].value
@@ -1085,16 +1204,16 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
   local hint_check1 = "Change all objects of the same type."
   local hint_check2 = "if they're there; resets to default colours."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
 end
 
 --returns the near hex grid for object placement
-function ChoGGi.CodeFuncs.CursorNearestHex()
+function cCodeFuncs.CursorNearestHex()
   return HexGetNearestCenter(GetTerrainCursor())
 end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
-function ChoGGi.CodeFuncs.SelObject()
+function cCodeFuncs.SelObject()
 --function IsPointOverObject()
   local _,ret = pcall(function()
     --#GetObjects({class="CObject"})
@@ -1105,7 +1224,7 @@ function ChoGGi.CodeFuncs.SelObject()
   return ret
 end
 
-function ChoGGi.CodeFuncs.LightmodelBuild(Table)
+function cCodeFuncs.LightmodelBuild(Table)
   local data = DataInstances.Lightmodel
   --always start with blank lightmodel
   --[[
@@ -1133,9 +1252,129 @@ function ChoGGi.CodeFuncs.LightmodelBuild(Table)
   return data.ChoGGi_Custom
 end
 
-function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
+function cCodeFuncs.DeleteAllAttaches(Obj)
   local Attaches = Obj:GetAttaches()
   for i = #Attaches, 1, -1 do
     Attaches[i]:delete()
   end
+end
+
+local function GetStockpile(Label,Type,Object)
+  --check if there's actually a label and that it has anything in it
+  if type(Label) == "table" and #Label > 0 then
+
+    --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
+    local pile = false
+    --if it's a stockpile list then remove all stockpiles of a different type
+    if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
+      pile = true
+      Label = FilterObjects({
+        filter = function(Obj)
+          if Obj.resource == Type then
+            return Obj
+          end
+        end
+      },Label)
+    end
+
+    local GetStored = "GetStored_" .. Type
+    --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
+    if #Label == 1 and
+      (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
+      pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
+        return Label[1]
+    else
+      --otherwise filter out empty stockpiles and (and ones for other resources)
+      Label = FilterObjects({
+        filter = function(Obj)
+          if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
+            pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
+              return Obj
+          end
+        end
+      },Label)
+      --and return nearest
+      return FindNearestObject(Label,Object)
+    end
+  end
+end
+
+function cCodeFuncs.FindNearestResource(Object)
+  --local cCodeFuncs = ChoGGi.CodeFuncs
+  if Object and not Object.class then
+    Object = cCodeFuncs.SelObject()
+  end
+  if not Object then
+    cComFuncs.MsgPopup("Nothing selected","Find Resource")
+    return
+  end
+
+  local ItemList = {
+    {text = "Metals",value = "Metals"},
+    {text = "BlackCube",value = "BlackCube"},
+    {text = "MysteryResource",value = "MysteryResource"},
+    {text = "Concrete",value = "Concrete"},
+    {text = "Food",value = "Food"},
+    {text = "PreciousMetals",value = "RareMetals"},
+    {text = "Polymers",value = "Polymers"},
+    {text = "Electronics",value = "Electronics"},
+    {text = "Fuel",value = "Fuel"},
+    {text = "MachineParts",value = "MachineParts"},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "string" then
+
+      --get nearest stockpiles to object
+      local labels = UICity.labels
+      local mechstockpile = GetStockpile(labels["MechanizedDepot" .. value],value,Object)
+      local stockpile
+      local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object)
+      if value == "BlackCube" then
+        stockpile = GetStockpile(labels[value .. "DumpSite"],value,Object)
+      elseif value == "MysteryResource" then
+        stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
+      else
+        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object)
+      end
+
+      local piles = {
+        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
+        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
+        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
+      }
+
+      local nearest
+      local nearestdist
+      --now we can compare the dists
+      for i = 1, #piles do
+        local p = piles[i]
+        if p.obj then
+          --we need something to compare
+          if not nearest then
+            nearest = p.obj
+            nearestdist = p.dist
+          elseif p.dist < nearestdist then
+            nearest = p.obj
+            nearestdist = p.dist
+          end
+        end
+      end
+      --if there's no resources then "nearest" doesn't exist
+      if nearest then
+        cCodeFuncs.ViewAndSelectObject(nearest)
+      else
+        cComFuncs.MsgPopup("Error: Cannot find any " .. choice[1].text,"Resource")
+      end
+    end
+  end
+
+  local hint = "Select a resource to find"
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Find Nearest Resource " .. Object.class,hint)
+end
+
+function cCodeFuncs.ViewAndSelectObject(Obj)
+  ViewPos(Obj:GetVisualPos())
+  SelectObj(Obj)
 end

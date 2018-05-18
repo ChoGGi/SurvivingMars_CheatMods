@@ -35,15 +35,22 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
     self:SetBase("electricity_consumption", amount)
   end
-  function Object:CheatHideSigns()
+
+  local function CheatHideSigns(self)
     self:DestroyAttaches("BuildingSign")
   end
-  function Object:CheatColourRandom()
+  local function CheatColourRandom(self)
     cCodeFuncs.ObjectColourRandom(self)
   end
-  function Object:CheatColourDefault()
+  local function CheatColourDefault(self)
     cCodeFuncs.ObjectColourDefault(self)
   end
+  Unit.CheatHideSigns = CheatHideSigns
+  Unit.CheatColourRandom = CheatColourRandom
+  Unit.CheatColourDefault = CheatColourDefault
+  Building.CheatHideSigns = CheatHideSigns
+  Building.CheatColourRandom = CheatColourRandom
+  Building.CheatColourDefault = CheatColourDefault
 --colonists
   function Colonist:CheatFillMorale()
     self.stat_morale = 100 * cConsts.ResourceScale
@@ -368,6 +375,12 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function Drone:CheatBattRefill()
     self.battery = self.battery_max
   end
+  local function CheatFindResource(self)
+    cCodeFuncs.FindNearestResource(self)
+  end
+  RCTransport.CheatFindResource = CheatFindResource
+  Drone.CheatFindResource = CheatFindResource
+
 --CheatCleanAndFix
   local function CheatCleanAndFix(self)
     self:CheatMalfunction()
@@ -520,6 +533,8 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       SetHint(action,"Double capacity of battery.")
     elseif action.ActionId == "MaxShuttlesDbl" then
       SetHint(action,"Double the shuttles this ShuttleHub can control.")
+    elseif action.ActionId == "FindResource" then
+      SetHint(action,"Selects nearest storage containing specified resource (shows list of resources).")
 
 --Misc
     elseif action.ActionId == "Powerless" then

@@ -8,6 +8,15 @@ local cTables = ChoGGi.Tables
 
 function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+
+  cComFuncs.AddAction(
+    "Expanded CM/[999]Misc/Find Nearest Resource",
+    cCodeFuncs.FindNearestResource,
+    nil,
+    "Select an object then click this for a list of resources.",
+    "EV_OpenFirst.tga"
+  )
+
   cComFuncs.AddAction(
     "Expanded CM/[999]Misc/Change Terrain Type",
     cMenuFuncs.ChangeTerrainType,

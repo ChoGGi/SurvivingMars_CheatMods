@@ -17,8 +17,12 @@ function OnMsg.ClassesGenerate()
   --i like keeping all my OnMsgs. in one file
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cMsgFuncs.InfoPaneCheats_ClassesGenerate()
+  --custom dialogs
+  cMsgFuncs.uiMultiLineEdit_ClassesGenerate()
   cMsgFuncs.ListChoiceCustom_ClassesGenerate()
   cMsgFuncs.ObjectManipulator_ClassesGenerate()
+  cMsgFuncs.ExecCodeDlg_ClassesGenerate()
+
   if cTesting then
     cMsgFuncs.Testing_ClassesGenerate()
   end
@@ -39,8 +43,11 @@ end
 
 function OnMsg.ClassesBuilt()
   cMsgFuncs.ReplacedFunctions_ClassesBuilt()
+
+  --custom dialogs
   cMsgFuncs.ListChoiceCustom_ClassesBuilt()
   cMsgFuncs.ObjectManipulator_ClassesBuilt()
+  cMsgFuncs.ExecCodeDlg_ClassesBuilt()
   if cTesting then
     cMsgFuncs.Testing_ClassesBuilt()
   end
@@ -641,7 +648,7 @@ function OnMsg.NewHour()
     end
     tab = city.labels.BlackCubeStockpiles or empty_table
     for i = 1, #tab do
-      cCodeFuncs.FuckingDrones(nil,tab[i])
+      cCodeFuncs.FuckingDrones(tab[i])
     end
   end
 

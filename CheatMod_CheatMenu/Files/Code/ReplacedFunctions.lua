@@ -131,6 +131,13 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
     obj:SetText("Edit")
     obj:SetHint("Opens object in Object Manipulator.")
 
+    obj = Button:new(self)
+    obj:SetId("idCodeExec")
+    obj:SetPos(point(520, 304))
+    obj:SetSize(point(75, 26))
+    obj:SetText("Code Exec")
+    obj:SetHint("Opens a text box you can execute lua code in. CurObject is whatever object is opened in examiner")
+
     self:InitChildrenSizing()
 
     --have to size children before doing these:
@@ -375,6 +382,13 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
       self.production_per_day = amount.production
     end
 
+--[[
+function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
+  if resource == self.resource_produced and self.parent and self.parent ~= self then
+    self.parent:DroneUnloadResource(drone, request, resource, amount)
+  end
+end
+--]]
     --get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
     if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
       cCodeFuncs.FuckingDrones(self)
@@ -619,6 +633,9 @@ end
 
     function self.idEdit.OnButtonPressed()
       cCodeFuncs.OpenInObjectManipulator(self.obj,self)
+    end
+    function self.idCodeExec.OnButtonPressed()
+      cCodeFuncs.OpenInExecCodeDlg(self.obj,self)
     end
 
   function self.idFilter.OnKbdKeyDown(_, char, vk)
