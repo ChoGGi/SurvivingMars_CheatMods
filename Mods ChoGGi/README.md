@@ -2,7 +2,7 @@
 
 See also: [nexus mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files)
 
-### These are all included in CheatMod_CheatMenu, but if you want them then...
+### These are all included in Expanded Cheat Menu, but if you want them...
 
 ##### OutdoorDomeBuildings
 ```

@@ -18,7 +18,7 @@ PlaceObj('ModItemRadioStation', {
     if err or not next(files) then
       CreateRealTimeThread(WaitCustomPopupNotification,
         "Help",
-        "See AppData/CheatMod_CheatMenu/metadata.lua for info on playing custom music.",
+        "See metadata.lua for info on playing custom music.",
         {"OK"}
       )
       return

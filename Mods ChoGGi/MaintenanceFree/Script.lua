@@ -25,7 +25,7 @@ end
 function OnMsg.LoadGame(metadata)
   for _,object in ipairs(UICity.labels.Building or empty_table) do
     if object.base_maintenance_build_up_per_hr then
-        object.maintenance_build_up_per_hr = 0
+        object.maintenance_build_up_per_hr = -10000
     end
   end
 end
