@@ -504,12 +504,6 @@ function cMenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
-
-  local objs = GetObjects({class = "ParSystem"}) or empty_table
-  for i = 1, #objs do
-    cCodeFuncs.DeleteObjects(objs[i])
-  end
-
 function cMenuFuncs.RemoveMissingClassObjects()
   local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
   for i = 1, #objs do
