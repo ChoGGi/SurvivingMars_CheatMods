@@ -193,6 +193,17 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
 ---------------------------toggles
   cComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Psychologist Resting Bonus",
+    cMenuFuncs.NoRestingBonusPsychologistFix_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.NoRestingBonusPsychologistFix and "(Enabled)" or "(Disabled)"
+      return des .. " The Psychologist profile is supposed to give a +5 sanity bonus to colonists during rest (now it will)."
+    end,
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Drone Carry Amount",
     cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
     nil,

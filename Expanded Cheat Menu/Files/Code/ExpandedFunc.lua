@@ -687,18 +687,42 @@ function cMenuFuncs.CablesAndPipesRepair()
 end
 
 ------------------------- toggles
-function cMenuFuncs.SortCommandCenterDist_Toggle()
-  ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
+
+function cMenuFuncs.NoRestingBonusPsychologistFix_Toggle()
+  local UserSettings = ChoGGi.UserSettings
+  UserSettings.NoRestingBonusPsychologistFix = not UserSettings.NoRestingBonusPsychologistFix
+
+  local commander_profile = GetCommanderProfile()
+  if UserSettings.NoRestingBonusPsychologistFix then
+    if commander_profile.id == "psychologist" then
+      commander_profile.param1 = 5
+    end
+  else --don't know why you'd want to disable the bonus
+    if commander_profile.id == "psychologist" then
+      commander_profile.param1 = 0
+    end
+  end
+
   cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup("Sorting cc dist: " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
-    "Buildings"
+  cComFuncs.MsgPopup("No resting bonus psychologist: " .. tostring(UserSettings.NoRestingBonusPsychologistFix),
+    "Psychologist"
   )
 end
 
 function cMenuFuncs.DroneResourceCarryAmountFix_Toggle()
-  ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
+  local UserSettings = ChoGGi.UserSettings
+  UserSettings.DroneResourceCarryAmountFix = not UserSettings.DroneResourceCarryAmountFix
   cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+  cComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(UserSettings.DroneResourceCarryAmountFix),
     "Drones","UI/Icons/IPButtons/drone.tga"
+  )
+end
+
+function cMenuFuncs.SortCommandCenterDist_Toggle()
+  local UserSettings = ChoGGi.UserSettings
+  UserSettings.SortCommandCenterDist = not UserSettings.SortCommandCenterDist
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Sorting cc dist: " .. tostring(UserSettings.SortCommandCenterDist),
+    "Buildings"
   )
 end

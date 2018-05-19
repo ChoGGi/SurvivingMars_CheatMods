@@ -277,6 +277,13 @@ function OnMsg.LoadingScreenPreClose()
     end
   end
 
+  if UserSettings.NoRestingBonusPsychologistFix then
+    local commander_profile = GetCommanderProfile()
+    if commander_profile.id == "psychologist" then
+      commander_profile.param1 = 5
+    end
+  end
+
   --show cheat pane?
   if UserSettings.InfopanelCheats then
     config.BuildingInfopanelCheats = true
