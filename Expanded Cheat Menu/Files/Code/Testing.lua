@@ -11,9 +11,10 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cOrigFuncs = ChoGGi.OrigFuncs
 local cMenuFuncs = ChoGGi.MenuFuncs
+local cTesting = ChoGGi.Temp.Testing
 
 --stuff that never happens, fuck comments (like this one)
-if ChoGGi.Temp.Testing == 3.14 then
+if cTesting == 3.14 then
   dofolder_files("CommonLua/UI/UIDesignerData")
 
   for message, threads in pairs(ThreadsMessageToThreads) do
@@ -28,7 +29,7 @@ if ChoGGi.Temp.Testing == 3.14 then
   end
 end
 
-if ChoGGi.Temp.Testing then
+if cTesting then
   config.TraceEnable = true
   Platform.editor = true
   config.LuaDebugger = true

@@ -11,6 +11,32 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   local icon = "Cube.tga"
 
   cComFuncs.AddAction(
+    "Expanded CM/Buildings/Triboelectric Scrubber Radius",
+    function()
+      cMenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber","\nLadies and gentlemen, this is your captain speaking. We have a small problem.\nAll four engines have stopped. We are doing our damnedest to get them going again.\nI trust you are not in too much distress.")
+    end,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.TriboelectricScrubberRadius and "(Enabled)" or "(Disabled)"
+      return des .. " Extend the range of the scrubber."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Buildings/SubsurfaceHeater Radius",
+    function()
+      cMenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\nSome smart quip about heating?")
+    end,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.SubsurfaceHeaterRadius and "(Enabled)" or "(Disabled)"
+      return des .. " Extend the range of the heater."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Buildings/Defence Towers Attack DustDevils",
     cMenuFuncs.DefenceTowersAttackDustDevils_Toggle,
     nil,

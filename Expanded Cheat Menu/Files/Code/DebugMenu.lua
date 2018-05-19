@@ -114,41 +114,11 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "[102]Debug/[09]Toggle Terrain Deposit Grid",
-    ToggleTerrainDepositGrid,
-    "Ctrl-F4",
-    "Shows a grid around concrete.",
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[102]Debug/[09]Toggle Hex Build + Passability Grid Visibility",
-    function()
-      cMenuFuncs.debug_build_grid(1)
-    end,
-    "Shift-F1",
-    "Shows a hex grid with green for buildable/walkable.",
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[102]Debug/[10]Toggle Hex Passability Grid Visibility",
-    function()
-      cMenuFuncs.debug_build_grid(2)
-    end,
-    "Shift-F2",
-    "Shows a hex grid with green for walkable terrain.",
-    "CollisionGeometry.tga"
-  )
-
-  cComFuncs.AddAction(
-    "[102]Debug/[11]Toggle Hex Build Grid Visibility",
-    function()
-      cMenuFuncs.debug_build_grid(3)
-    end,
-    "Shift-F3",
-    "Shows a hex grid with green for buildable (ignores uneven terrain).",
-    "CollisionGeometry.tga"
+    "[102]Debug/Delete All Of Selected Object",
+    cMenuFuncs.DeleteAllSelectedObjects,
+    nil,
+    "Will ask for confirmation beforehand (will not delete domes).",
+    "delete_objects.tga"
   )
 
   cComFuncs.AddAction(
@@ -176,14 +146,52 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "[102]Debug/ParticlesReload",
+    "[102]Debug/Particles Reload",
     function()
       LoadStreamParticlesFromDir("Data/Particles")
       ParticlesReload("", true)
     end,
     nil,
-    nil,
+    "Reloads particles from \"Data/Particles\"...",
+    "place_particles.tga"
+  )
+
+  cComFuncs.AddAction(
+    "[102]Debug/[08]Toggle Terrain Deposit Grid",
+    ToggleTerrainDepositGrid,
+    "Ctrl-F4",
+    "Shows a grid around concrete.",
+    "ToggleBlockPass.tga"
+  )
+
+  cComFuncs.AddAction(
+    "[102]Debug/[09]Toggle Hex Build + Passability Grid Visibility",
+    function()
+      cMenuFuncs.debug_build_grid(1)
+    end,
+    "Shift-F1",
+    "Shows a hex grid with green for buildable/walkable.",
+    "ToggleOcclusion.tga"
+  )
+
+  cComFuncs.AddAction(
+    "[102]Debug/[10]Toggle Hex Passability Grid Visibility",
+    function()
+      cMenuFuncs.debug_build_grid(2)
+    end,
+    "Shift-F2",
+    "Shows a hex grid with green for walkable terrain.",
     "CollisionGeometry.tga"
+  )
+
+  cComFuncs.AddAction(
+    "[102]Debug/[11]Toggle Hex Build Grid Visibility",
+    function()
+      cMenuFuncs.debug_build_grid(3)
+    end,
+    "Shift-F3",
+    "Shows a hex grid with green for buildable (ignores uneven terrain).",
+    "ToggleCollisions.tga"
   )
 
 end

@@ -7,29 +7,22 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 
 --global objects
   function Building:CheatPowerless()
-    local mod = self.modifications
-    if mod and mod.electricity_consumption then
-      mod = mod.electricity_consumption
-      if mod[1] then
-        mod = mod[1]
-      end
-
-      self.ChoGGi_mod_electricity_consumption = {
-        amount = mod.amount,
-        percent = mod.percent
-      }
-      mod:Change(0,0)
-    end
-    self:SetBase("electricity_consumption", 0)
+    cCodeFuncs.RemoveBuildingElecConsump(self)
   end
   function Building:CheatPowered()
+    --if this is here we know it has what we need so no need to check for mod/consump
     if self.ChoGGi_mod_electricity_consumption then
       local mod = self.modifications.electricity_consumption
       if mod[1] then
         mod = mod[1]
       end
       local orig = self.ChoGGi_mod_electricity_consumption
-      mod:Change(orig.amount,orig.percent)
+      if IsKindOf(mod,"ObjectModifier") then
+        mod:Change(orig.amount,orig.percent)
+      else
+        mod.amount = orig.amount
+        mod.percent = orig.percent
+      end
       self.ChoGGi_mod_electricity_consumption = nil
     end
     local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption

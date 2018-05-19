@@ -47,8 +47,9 @@ function cMenuFuncs.SetFoodPerRocketPassenger()
   }
 
   local hint = DefaultSetting
-  if ChoGGi.UserSettings.FoodPerRocketPassenger then
-    hint = ChoGGi.UserSettings.FoodPerRocketPassenger / r
+  local FoodPerRocketPassenger = ChoGGi.UserSettings.FoodPerRocketPassenger
+  if FoodPerRocketPassenger then
+    hint = FoodPerRocketPassenger / r
   end
 
   local CallBackFunc = function(choice)

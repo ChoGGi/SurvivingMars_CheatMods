@@ -1,5 +1,6 @@
 --keep everything stored in
 ChoGGi = {
+  email = "ECM@choggi.org",
   id = "ChoGGi_CheatMenu",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   --orig funcs that we replace
@@ -82,10 +83,14 @@ if CUserSettings.FirstRun ~= false then
   cTemp.WriteSettings = true
 end
 
---fixes UpdateInterface nil value in editor mode
 Platform.developer = true
+Platform.editor = true
+--fixes UpdateInterface nil value in editor mode
 editor.LoadPlaceObjConfig()
+--some error it gives about missing table
+GlobalVar("g_revision_map",{})
 Platform.developer = false
+Platform.editor = false
 
 --be nice to get a remote debugger working
 --[[

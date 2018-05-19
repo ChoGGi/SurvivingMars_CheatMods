@@ -1,3 +1,17 @@
+function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
+  local ChoGGi = ChoGGi
+  local function SetBonus(Preset,Type,Func)
+    local tab = Presets[Preset].Default or empty_table
+    for i = 1, #tab do
+      if ChoGGi.UserSettings[Type .. tab[i].id] then
+        Func(tab[i].id)
+      end
+    end
+  end
+  SetBonus("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
+  SetBonus("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
+end
+
 local cCodeFuncs = ChoGGi.CodeFuncs
 local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
@@ -8,20 +22,8 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
-function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
-  local function SetBonus(Preset,Type,Func)
-    local tab = Presets[Preset].Default or empty_table
-    for i = 1, #tab do
-      if ChoGGi.UserSettings[Type .. tab[i].id] then
-        Func(tab[i].id)
-      end
-    end
-  end
-  SetBonus("MissionSponsorPreset","Sponsor",cMenuFuncs.SetSponsorBonuses)
-  SetBonus("CommanderProfilePreset","Commander",cMenuFuncs.SetCommanderBonuses)
-end
-
 function cMenuFuncs.InstantMissionGoal()
+  local UICity = UICity
   local goal = UICity.mission_goal
   local target = GetMissionSponsor().goal_target + 1
   --different goals use different targets, we'll just set them all

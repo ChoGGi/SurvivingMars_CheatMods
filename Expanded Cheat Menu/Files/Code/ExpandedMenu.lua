@@ -110,7 +110,15 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "Cube.tga"
   )
 
-  --------------------fixes
+-------------------------fixes
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/ Fire All Fixes",
+    cMenuFuncs.FireAllFixes,
+    nil,
+    "Fires all the non-toggle fixes (nuke 'em from orbit and all that).\n\nDoesn't include ECM ones.",
+    "ReportBug.tga"
+  )
+
   cComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Particles With Null Polylines",
     cMenuFuncs.ParticlesWithNullPolylines,
@@ -123,7 +131,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "Expanded CM/Fixes/Remove Missing Class Objects",
     cMenuFuncs.RemoveMissingClassObjects,
     nil,
-    "Probably from mods that were removed.",
+    "Probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
     "ReportBug.tga"
   )
 
@@ -144,40 +152,10 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Drone Carry Amount",
-    cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
-      return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
-    end,
-    "ReportBug.tga"
-  )
-
-  cComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Sort Command Center Dist",
-    cMenuFuncs.SortCommandCenterDist_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.UserSettings.SortCommandCenterDist and "(Enabled)" or "(Disabled)"
-      return des .. " Each Sol goes through all buildings and sorts their cc list by nearest.\n\nTakes less then a second on a map with 3616 buildings and 54 drone hubs."
-    end,
-    "Axis.tga"
-  )
-
-  cComFuncs.AddAction(
     "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks",
     cMenuFuncs.DronesKeepTryingBlockedRocks,
     nil,
     "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
-    "ReportBug.tga"
-  )
-
-  cComFuncs.AddAction(
-    "Expanded CM/Fixes/Align All Buildings To Hex Grid",
-    cMenuFuncs.AlignAllBuildingsToHexGrid,
-    nil,
-    "If you have any buildings that aren't aligned to the hex grids use this.",
     "ReportBug.tga"
   )
 
@@ -206,7 +184,46 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Fix Black Cube Colonists",
+    "Expanded CM/Fixes/Cables & Pipes: Instant Repair",
+    cMenuFuncs.CablesAndPipesRepair,
+    nil,
+    "Instantly repair all broken pipes and cables.",
+    "ViewCamPath.tga"
+  )
+
+---------------------------toggles
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Drone Carry Amount",
+    cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
+      return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
+    end,
+    "ReportBug.tga"
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Sort Command Center Dist",
+    cMenuFuncs.SortCommandCenterDist_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.SortCommandCenterDist and "(Enabled)" or "(Disabled)"
+      return des .. " Each Sol goes through all buildings and sorts their cc list by nearest.\n\nTakes less then a second on a map with 3616 buildings and 54 drone hubs."
+    end,
+    "Axis.tga"
+  )
+
+-----------------------ECM fixes
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/[99]ECM Whoopsies/See tooltip",
+    nil,
+    "Skip",
+    "Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed."
+  )
+
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Fix Black Cube Colonists",
     cMenuFuncs.ColonistsFixBlackCube,
     nil,
     "If any colonists are black cubes click this.",
@@ -214,7 +231,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome",
+    "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Attach Buildings To Nearest Working Dome",
     cMenuFuncs.AttachBuildingsToNearestWorkingDome,
     nil,
     "If you placed inside buildings outside and removed the dome they're attached to; use this.",
@@ -222,19 +239,11 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Cables & Pipes: Instant Repair",
-    cMenuFuncs.CablesAndPipesRepair,
+    "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Align All Buildings To Hex Grid",
+    cMenuFuncs.AlignAllBuildingsToHexGrid,
     nil,
-    "Instantly repair all broken pipes and cables.",
-    "ViewCamPath.tga"
+    "If you have any buildings that aren't aligned to the hex grids use this.",
+    "ReportBug.tga"
   )
---[[
-  cComFuncs.AddAction(
-    "Expanded CM/Radius/Triboelectric Scrubber Radius...",
-    cMenuFuncs.SetTriboelectricScrubberRadius,
-    nil,
-    "Change Triboelectric Scrubber radius.",
-    "DisableRMMaps.tga"
-  )
---]]
+
 end

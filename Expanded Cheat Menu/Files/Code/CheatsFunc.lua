@@ -351,23 +351,36 @@ end
 
 
 
-local function ShowMysteryLog(Myst)
-  local msgs = {Myst.id .. "\n\nTo play back speech use \"Code Exec\" button and type in\ng_Voice:Play(CurObject.speech)\n"}
-  for Thread in pairs(ThreadsMessageToThreads) do
-    if Thread.player and Thread.player.seed == Myst.seed then
-      local seq_list = Thread.sequence
-      for i = 1, #seq_list do
-        --don't show msgs past current step
-        if i == Thread.ip then
-          break
-        end
-        if seq_list[i].class == "SA_WaitMessage" then
-          --add to msg list
-          msgs[#msgs+1] = {
-            [" "] = "Speech: " .. cCodeFuncs.Trans(seq_list[i].voiced_text) .. "\n\n\n\nMessage: " .. cCodeFuncs.Trans(seq_list[i].text),
-            speech = seq_list[i].voiced_text,
-            class = cCodeFuncs.Trans(seq_list[i].title)
-          }
+--loops through all the sequence and adds the logs we've already seen
+local function ShowMysteryLog(MystName)
+  local msgs = {MystName .. "\n\nTo play back speech use \"Code Exec\" button and type in\ng_Voice:Play(CurObject.speech)\n"}
+  local Players = s_SeqListPlayers or empty_table
+  -- 1 is some default map thing
+  if #Players == 1 then
+    return
+  end
+  for i = 1, #Players do
+    if i > 1 then
+      local seq_list = Players[i].seq_list
+      if seq_list.name == MystName then
+        for j = 1, #seq_list do
+          local scenarios = seq_list[j]
+          local state = Players[i].seq_states[scenarios.name]
+          --have we started this seq yet?
+          if state then
+            local ip = state and (state.ip or state.end_ip or 10000)
+            for k = 1, #scenarios do
+              local seq = scenarios[k]
+              if seq.class == "SA_WaitMessage" then
+                --add to msg list
+                msgs[#msgs+1] = {
+                  [" "] = "Speech: " .. cCodeFuncs.Trans(seq.voiced_text) .. "\n\n\n\nMessage: " .. cCodeFuncs.Trans(seq.text),
+                  speech = seq.voiced_text,
+                  class = cCodeFuncs.Trans(seq.title)
+                }
+              end
+            end
+          end
         end
       end
     end
@@ -392,7 +405,7 @@ function cMenuFuncs.ShowStartedMysteryList()
       ItemList[#ItemList+1] = {
         text = id .. ": " .. cTables.Mystery[id].name,
         value = id,
-        func = {seed = PlayerList[i].seed, id = id},
+        func = id,
         seed = PlayerList[i].seed,
         hint = cTables.Mystery[id].description .. "\n\n<color 255 75 75>Total parts</color>: " .. totalparts .. " <color 255 75 75>Current part</color>: " .. (ip or "done?")
       }
@@ -461,7 +474,7 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
     if Thread.player and Thread.player.seed == seed then
 
       --only remove finished waittime threads, can cause issues removing other threads
-      if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime") then
+      if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime" or Thread.action.class == "SA_RunSequence") then
         DeleteThread(Thread.thread)
       end
 
@@ -474,6 +487,7 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
         --skip older seqs
         if i >= ip then
           local seq = seq_list[i]
+          local title = name .. " Part: " .. ip
 
           --seqs that add delays/tasks
           if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
@@ -497,7 +511,7 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
             --may not be needed
             Player:UpdateCurrentIP(seq_list)
             --let them know
-            cComFuncs.MsgPopup("Timer delay removed (may take upto a Sol).",name .. " Part: " .. ip)
+            cComFuncs.MsgPopup("Timer delay removed (may take upto a Sol).",title)
             break
 
           elseif seq.class == "SA_WaitExpression" then
@@ -517,7 +531,7 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
             cComFuncs.QuestionBox(
               "Advancement requires: " .. tostring(seq.expression) .. "\n\nTime duration has been set to 0 (you still need to complete the requirements).\n\nWait for a Sol or two for it to update (should give a popup msg)." .. warning,
               CallBackFunc,
-              name .. " Part: " .. ip
+              title
             )
             break
 
@@ -531,7 +545,7 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
             cComFuncs.QuestionBox(
               "Advancement requires: " .. tostring(seq.msg) .. warning,
               CallBackFunc,
-              name .. " Part: " .. ip
+              title
             )
             break
 
@@ -545,7 +559,19 @@ function cMenuFuncs.NextMysterySeq(Mystery,seed)
             cComFuncs.QuestionBox(
               "Advancement requires: " .. tostring(seq.Research).. warning,
               CallBackFunc,
-              name .. " Part: " .. ip
+              title
+            )
+
+          elseif seq.class == "SA_RunSequence" then
+            local CallBackFunc = function()
+              seq.wait = false
+              Thread.finished = true
+              Player:UpdateCurrentIP(seq_list)
+            end
+            cComFuncs.QuestionBox(
+              "Waiting for " .. seq.sequence .. " to finish.\n\nSkip it?",
+              CallBackFunc,
+              title
             )
 
           end -- if seq type

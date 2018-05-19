@@ -282,36 +282,29 @@ function cMenuFuncs.SetDroneAmountDroneHub()
   }
 
   local CallBackFunc = function(choice)
-    --nothing checked so just return
-    local check1 = choice[1].check1
-    local check2 = choice[1].check2
-    if not check1 and not check2 then
-      cComFuncs.MsgPopup("Pick a checkbox next time...","Drones")
-      return
-    elseif check1 and check2 then
-      cComFuncs.MsgPopup("Don't pick both checkboxes next time...","Drones")
-      return
-    end
-
     local value = choice[1].value
     if type(value) == "number" then
 
-      if check1 then
-        for _ = 1, value do
-          sel:UseDronePrefab()
-        end
-      elseif check2 then
+      local change = " added: "
+      if choice[1].check1 then
+        change = " dismantled: "
         for _ = 1, value do
           sel:ConvertDroneToPrefab()
         end
+      else
+        for _ = 1, value do
+          sel:UseDronePrefab()
+        end
       end
 
-      cComFuncs.MsgPopup("Drones: " .. choice[1].text,"Drones")
+      cComFuncs.MsgPopup("Drones" .. change .. choice[1].text,"Drones")
     end
   end
 
   local hint = "Drones in hub: " .. CurrentAmount .. "\nDrone prefabs: " .. UICity.drone_prefabs
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,"Add","Check this to add drones to hub","Dismantle","Check this to dismantle drones in hub")
+  local Check1 = "Dismantle"
+  local Check1Hint = "Check this to dismantle drones in hub"
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,Check1,Check1Hint)
 end
 
 function cMenuFuncs.SetDroneFactoryBuildSpeed()

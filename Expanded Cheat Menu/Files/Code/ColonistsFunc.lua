@@ -8,7 +8,6 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
-
 function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
   local cUserSettings = ChoGGi.UserSettings
   cUserSettings.UniversityGradRemoveIdiotTrait = not cUserSettings.UniversityGradRemoveIdiotTrait
@@ -164,13 +163,17 @@ function cMenuFuncs.AddApplicantsToPool()
 end
 
 function cMenuFuncs.FireAllColonists()
-  local FireAllColonists = function()
+  local CallBackFunc = function()
     local tab = UICity.labels.Colonist or empty_table
     for i = 1, #tab do
       tab[i]:GetFired()
     end
   end
-  cComFuncs.QuestionBox("Are you sure you want to fire everyone?",FireAllColonists,"Yer outta here!")
+  cComFuncs.QuestionBox(
+    "Are you sure you want to fire everyone?",
+    CallBackFunc,
+    "Yer outta here!"
+  )
 end
 
 function cMenuFuncs.SetAllWorkShifts()

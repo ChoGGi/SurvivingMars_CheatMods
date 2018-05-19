@@ -821,7 +821,6 @@ function cCodeFuncs.ObjectColourRandom(Obj)
       SetPal(Obj, 3, cCodeFuncs.RandomColour(), 0,0)
       SetPal(Obj, 4, cCodeFuncs.RandomColour(), 0,0)
     end
-    return color
   end
 end
 function cCodeFuncs.ObjectColourDefault(Obj)
@@ -1401,18 +1400,6 @@ function cCodeFuncs.DeleteObjects(obj)
     return
   end
 
-  --not sure if i need to delete the attachments (safety first)
-  if not IsKindOf(obj,"Building") and obj.GetAttaches then
-    local attach = obj:GetAttaches()
-    if type(attach) == "table" then
-      for i = 1, #attach do
-        pcall(function()
-          cCodeFuncs.DeleteObjects(attach[i])
-        end)
-      end
-    end
-  end
-
   local function TryFunc(Name,Param)
     if obj[Name] then
       obj[Name](obj,Param)
@@ -1486,4 +1473,24 @@ function cCodeFuncs.Trans(...)
   else
     return _InternalTranslate(T({...}))
   end
+end
+
+function cCodeFuncs.RemoveBuildingElecConsump(Obj)
+  local mods = Obj.modifications
+  if mods and mods.electricity_consumption then
+    local mod = Obj.modifications.electricity_consumption
+    if mod[1] then
+      mod = mod[1]
+    end
+    if not Obj.ChoGGi_mod_electricity_consumption then
+      Obj.ChoGGi_mod_electricity_consumption = {
+        amount = mod.amount,
+        percent = mod.percent
+      }
+    end
+    if IsKindOf(mod,"ObjectModifier") then
+      mod:Change(0,0)
+    end
+  end
+  Obj:SetBase("electricity_consumption", 0)
 end

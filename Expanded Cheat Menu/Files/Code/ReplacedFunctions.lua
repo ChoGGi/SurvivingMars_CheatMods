@@ -47,6 +47,16 @@ Lua\X\Infopanel.lua
 
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
 
+  --larger trib/subsurfheater radius
+  cComFuncs.SaveOrigFunc("UIRangeBuilding","SetUIRange")
+  function UIRangeBuilding:SetUIRange(radius)
+    local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+    if rad and rad.uirange then
+      radius = rad.uirange
+    end
+    return cOrigFuncs.UIRangeBuilding_SetUIRange(self, radius)
+  end
+
   --block certain traits from workplaces
   cComFuncs.SaveOrigFunc("Workplace","AddWorker")
   function Workplace:AddWorker(worker, shift)
@@ -175,6 +185,24 @@ end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --make sure heater keeps the powerless setting
+  cComFuncs.SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
+  function SubsurfaceHeater:UpdatElectricityConsumption()
+    cOrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
+    if self.ChoGGi_mod_electricity_consumption then
+      cCodeFuncs.RemoveBuildingElecConsump(self)
+    end
+  end
+  --same for tribby
+  cComFuncs.SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
+  function TriboelectricScrubber:OnPostChangeRange()
+    cOrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
+    if self.ChoGGi_mod_electricity_consumption then
+      cCodeFuncs.RemoveBuildingElecConsump(self)
+    end
+  end
+
+  --remove idiot trait from uni grads (hah!)
   cComFuncs.SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
   function MartianUniversity:OnTrainingCompleted(unit)
     if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
@@ -205,9 +233,6 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
         StopWait.seed = false
         StopWait.again = false
       end
-
-print(ChoGGi.Temp.SA_WaitMarsTime_StopWait.seed)
-print(ChoGGi.Temp.SA_WaitMarsTime_StopWait.again)
 
       --skip
       return 1
@@ -429,21 +454,20 @@ end
   end
 
   --larger drone work radius
-  local function SetDroneRadius(OrigFunc,Setting,Obj,OrigRadius)
+  local function SetHexRadius(OrigFunc,Setting,Obj,OrigRadius)
     local rad = ChoGGi.UserSettings[Setting]
     if rad then
-      cOrigFuncs[OrigFunc .. "_SetWorkRadius"](Obj,rad)
-    else
-      cOrigFuncs[OrigFunc .. "_SetWorkRadius"](Obj,OrigRadius)
+      return cOrigFuncs[OrigFunc](Obj,rad)
     end
+    return cOrigFuncs[OrigFunc](Obj,OrigRadius)
   end
   cComFuncs.SaveOrigFunc("RCRover","SetWorkRadius")
   function RCRover:SetWorkRadius(radius)
-    SetDroneRadius("RCRover","RCRoverMaxRadius",self,radius)
+    SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
   end
   cComFuncs.SaveOrigFunc("DroneHub","SetWorkRadius")
   function DroneHub:SetWorkRadius(radius)
-    SetDroneRadius("DroneHub","CommandCenterMaxRadius",self,radius)
+    SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
   end
 
   --set UI transparency:
@@ -499,8 +523,9 @@ end
       self.template_obj[Name] = self.template_obj:GetDefaultPropertyValue(Name)
     end
     local force_override
+    local UserSettings = ChoGGi.UserSettings
 
-    if ChoGGi.UserSettings.Building_instant_build then
+    if UserSettings.Building_instant_build then
       --instant_build on domes = missing textures on domes
       if self.template_obj.achievement ~= "FirstDome" then
         self.template_obj.instant_build = true
@@ -510,14 +535,14 @@ end
       --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
     end
 
-    if ChoGGi.UserSettings.Building_dome_spot then
+    if UserSettings.Building_dome_spot then
       self.template_obj.dome_spot = "none"
       --force_override = true
     else
       SetDefault("dome_spot")
     end
 
-    if ChoGGi.UserSettings.RemoveBuildingLimits then
+    if UserSettings.RemoveBuildingLimits then
       self.template_obj.dome_required = false
       self.template_obj.dome_forbidden = false
       force_override = true
@@ -546,7 +571,7 @@ end
       local c = self.idContent
 
 if cTesting then
-      if self.context.class == "Colonist" then
+      if self.context and self.context.class == "Colonist" then
         local con = c[2].idContent
         --con[#con+1] = XText:new()
         con = con[#con]

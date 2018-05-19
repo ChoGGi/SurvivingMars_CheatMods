@@ -11,14 +11,6 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
-function cMenuFuncs.SortCommandCenterDist_Toggle()
-  ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
-  cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup("Sorting cc dist: " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
-    "Buildings"
-  )
-end
-
 function cMenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 
@@ -504,6 +496,18 @@ function cMenuFuncs.SetStorageDepotSize(sType)
 end
 
 ---------fixes
+function cMenuFuncs.FireAllFixes()
+  cMenuFuncs.StutterWithHighFPS()
+  cMenuFuncs.RemoveMissingClassObjects()
+  cMenuFuncs.DronesKeepTryingBlockedRocks()
+  cMenuFuncs.RemoveUnreachableConstructionSites()
+  cMenuFuncs.RemoveYellowGridMarks()
+  cMenuFuncs.RepairBrokenShit(BrokenShit)
+  cMenuFuncs.ParticlesWithNullPolylines()
+  cMenuFuncs.MirrorSphereStuck()
+  cMenuFuncs.ProjectMorpheusRadarFellDown()
+end
+
 function cMenuFuncs.ParticlesWithNullPolylines()
   local objs = GetObjects({class = "ParSystem"}) or empty_table
   for i = 1, #objs do
@@ -610,14 +614,6 @@ function cMenuFuncs.RemoveYellowGridMarks()
   cComFuncs.MsgPopup("Grid marks removed","Grid")
 end
 
-function cMenuFuncs.DroneResourceCarryAmountFix_Toggle()
-  ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
-  cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-    "Drones","UI/Icons/IPButtons/drone.tga"
-  )
-end
-
 function cMenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
@@ -690,21 +686,19 @@ function cMenuFuncs.CablesAndPipesRepair()
   cMenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
 end
 
---[[
-function cMenuFuncs.SetTriboelectricScrubberRadius(Bool)
-  for _,building in iXpairs(UICity.labels.TriboelectricScrubber) do
-    local prop_meta = building:GetPropertyMetadata("UIRange")
-    if prop_meta then
-      if Bool == true then
-        local radius = building:GetProperty(prop_meta.id)
-        building:SetProperty(prop_meta.id, Max(prop_meta.max, radius + 25))
-      else
-        building:SetProperty(prop_meta.id, Max(prop_meta.max,5)) --figure out default const to put here
-      end
-    end
-  end
-  cComFuncs.MsgPopup("I see you there",
-    "Buildings","UI/Icons/Upgrades/polymer_blades_04.tga"
+------------------------- toggles
+function cMenuFuncs.SortCommandCenterDist_Toggle()
+  ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Sorting cc dist: " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
+    "Buildings"
   )
 end
---]]
+
+function cMenuFuncs.DroneResourceCarryAmountFix_Toggle()
+  ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+    "Drones","UI/Icons/IPButtons/drone.tga"
+  )
+end

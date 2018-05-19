@@ -203,12 +203,13 @@ function cMenuFuncs.BuildingPower_Toggle()
     return
   end
   local id = sel.encyclopedia_id
+  local UserSettings = ChoGGi.UserSettings
 
-  if not ChoGGi.UserSettings.BuildingSettings[id] then
-    ChoGGi.UserSettings.BuildingSettings[id] = {}
+  if not UserSettings.BuildingSettings[id] then
+    UserSettings.BuildingSettings[id] = {}
   end
 
-  local setting = ChoGGi.UserSettings.BuildingSettings[id]
+  local setting = UserSettings.BuildingSettings[id]
   local amount
   if setting.nopower then
     setting.nopower = nil
@@ -220,31 +221,31 @@ function cMenuFuncs.BuildingPower_Toggle()
 
   local tab = UICity.labels[id] or empty_table
   for i = 1, #tab do
+
     local mods = tab[i].modifications
     if mods and mods.electricity_consumption then
+      local mod = tab[i].modifications.electricity_consumption
+      if mod and mod[1] then
+        mod = mod[1]
+      end
 
       if amount == 0 then
-        local mod = tab[i].modifications.electricity_consumption
-        if mod then
-          if mod[1] then
-            mod = mod[1]
-          end
-          tab[i].ChoGGi_mod_electricity_consumption = {
-            amount = mod.amount,
-            percent = mod.percent
-          }
+        tab[i].ChoGGi_mod_electricity_consumption = {
+          amount = mod.amount,
+          percent = mod.percent
+        }
+        if IsKindOf(mod,"ObjectModifier") then
           mod:Change(0,0)
         end
       else
-        local mod = tab[i].modifications.electricity_consumption
-        if mod then
-          if mod[1] then
-            mod = mod[1]
-          end
-          local orig = tab[i].ChoGGi_mod_electricity_consumption
+        local orig = tab[i].ChoGGi_mod_electricity_consumption
+        if IsKindOf(mod,"ObjectModifier") then
           mod:Change(orig.amount,orig.percent)
-          tab[i].ChoGGi_mod_electricity_consumption = nil
+        else
+          mod.amount = orig.amount
+          mod.percent = orig.percent
         end
+        tab[i].ChoGGi_mod_electricity_consumption = nil
       end
 
     end
@@ -845,4 +846,61 @@ function cMenuFuncs.CablesAndPipesInstant_Toggle()
   cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.InstantCables) .. " Aliens? We gotta deal with aliens too?",
     "Cables & Pipes","UI/Icons/Notifications/timer.tga"
   )
+end
+
+function cMenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
+  local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
+  local UserSettings = ChoGGi.UserSettings
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+  }
+
+  if not UserSettings.BuildingSettings[id] then
+    UserSettings.BuildingSettings[id] = {}
+  end
+
+  local hint = DefaultSetting
+  if UserSettings.BuildingSettings[id].uirange then
+    hint = UserSettings.BuildingSettings[id].uirange
+  end
+
+  local CallBackFunc = function(choice)
+
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      if value == DefaultSetting then
+        UserSettings.BuildingSettings[id].uirange = nil
+      else
+        UserSettings.BuildingSettings[id].uirange = value
+      end
+
+      --find a better way to update radius...
+      local sel = SelectedObj
+      local SelectObj = SelectObj
+      CreateRealTimeThread(function()
+        local objs = UICity.labels[id] or empty_table
+        for i = 1, #objs do
+          objs[i]:SetUIRange(value)
+          SelectObj(objs[i])
+          Sleep(1)
+        end
+        SelectObj(sel)
+      end)
+
+      cSettingFuncs.WriteSettings()
+      cComFuncs.MsgPopup("Radius: " .. choice[1].text .. msgpopup,
+        id,"UI/Icons/Upgrades/polymer_blades_04.tga",true
+      )
+    end
+  end
+
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Radius","Current: " .. hint)
 end

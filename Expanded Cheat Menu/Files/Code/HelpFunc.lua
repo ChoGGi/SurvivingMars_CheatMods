@@ -46,13 +46,17 @@ function cMenuFuncs.ResetECMSettings()
     ThreadUnlockKey(file)
 
     --so we don't save file on exit
-    ChoGGi.Temp.ResetSettings = true
+    ChoGGi.Temp.CallBackFunc = true
 
     cComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 
   end
 
-  cComFuncs.QuestionBox("Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",ResetSettings,"Reset!")
+  cComFuncs.QuestionBox(
+    "Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",
+    CallBackFunc,
+    "Reset!"
+  )
 end
 
 function cMenuFuncs.SignsInterface_Toggle()
@@ -101,7 +105,7 @@ function cMenuFuncs.MenuHelp_About()
   ChoGGi.ComFuncs.MsgWait(
     "Hover mouse over menu item to get description and enabled status" ..
     "\nIf there isn't a status then it's likely a list of options to choose from" ..
-    "\n\nFor any issues; please report them to my github/nexusmods page, or email ECM@choggi.org",
+    "\n\nFor any issues; please report them to my github/nexusmods page, or email " .. ChoGGi.email,
     "Help"
   )
 end

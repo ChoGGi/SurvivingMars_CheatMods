@@ -520,19 +520,7 @@ function OnMsg.ConstructionComplete(building)
     end
     --no power needed
     if setting.nopower then
-      local mods = building.modifications
-      if mods and mods.electricity_consumption then
-        local mod = building.modifications.electricity_consumption
-        if mod[1] then
-          mod = mod[1]
-        end
-        building.ChoGGi_mod_electricity_consumption = {
-          amount = mod.amount,
-          percent = mod.percent
-        }
-        mod:Change(0,0)
-      end
-      building:SetBase("electricity_consumption", 0)
+      cCodeFuncs.RemoveBuildingElecConsump(building)
     end
     --large protect_range for defence buildings
     if setting.protect_range then
