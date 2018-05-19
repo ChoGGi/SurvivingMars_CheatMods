@@ -121,45 +121,54 @@ function cMenuFuncs.AddApplicantsToPool()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
-    if type(value) == "number" then
-      local now = GameTime()
-      local self = SA_AddApplicants
-      for _ = 1, value do
-        local colonist = GenerateApplicant(now)
-        local to_add = self.Trait
-        if self.Trait == "random_positive" then
-          to_add = GetRandomTrait(colonist.traits, {}, {}, "Positive", "base")
-        elseif self.Trait == "random_negative" then
-          to_add = GetRandomTrait(colonist.traits, {}, {}, "Negative", "base")
-        elseif self.Trait == "random_rare" then
-          to_add = GetRandomTrait(colonist.traits, {}, {}, "Rare", "base")
-        elseif self.Trait == "random_common" then
-          to_add = GetRandomTrait(colonist.traits, {}, {}, "Common", "base")
-        elseif self.Trait == "random" then
-          to_add = GenerateTraits(colonist, false, 1)
-        else
-          to_add = self.Trait
-        end
-        if type(to_add) == "table" then
-          for trait in pairs(to_add) do
-            colonist.traits[trait] = true
-          end
-        else
-          colonist.traits[to_add] = true
-        end
-        if self.Specialization ~= "any" then
-          colonist.traits[self.Specialization] = true
-          colonist.specialist = self.Specialization
-        end
-      end
-      cComFuncs.MsgPopup("Added applicants: " .. choice[1].text,
+    if choice[1].check1 then
+      g_ApplicantPool = {}
+      cComFuncs.MsgPopup("Emptied applicants pool.",
         "Applicants",UsualIcon
       )
+    else
+      if type(value) == "number" then
+        local now = GameTime()
+        local self = SA_AddApplicants
+        for _ = 1, value do
+          local colonist = GenerateApplicant(now)
+          local to_add = self.Trait
+          if self.Trait == "random_positive" then
+            to_add = GetRandomTrait(colonist.traits, {}, {}, "Positive", "base")
+          elseif self.Trait == "random_negative" then
+            to_add = GetRandomTrait(colonist.traits, {}, {}, "Negative", "base")
+          elseif self.Trait == "random_rare" then
+            to_add = GetRandomTrait(colonist.traits, {}, {}, "Rare", "base")
+          elseif self.Trait == "random_common" then
+            to_add = GetRandomTrait(colonist.traits, {}, {}, "Common", "base")
+          elseif self.Trait == "random" then
+            to_add = GenerateTraits(colonist, false, 1)
+          else
+            to_add = self.Trait
+          end
+          if type(to_add) == "table" then
+            for trait in pairs(to_add) do
+              colonist.traits[trait] = true
+            end
+          else
+            colonist.traits[to_add] = true
+          end
+          if self.Specialization ~= "any" then
+            colonist.traits[self.Specialization] = true
+            colonist.specialist = self.Specialization
+          end
+        end
+        cComFuncs.MsgPopup("Added applicants: " .. choice[1].text,
+          "Applicants",UsualIcon
+        )
+      end
     end
   end
 
   local hint = "Warning: Will take some time for 25K and up."
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool",hint)
+  local Check1 = "Clear Applicant Pool"
+  local Check1Hint = "Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size: " .. #g_ApplicantPool
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool",hint,nil,Check1,Check1Hint)
 end
 
 function cMenuFuncs.FireAllColonists()

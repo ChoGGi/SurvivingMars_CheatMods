@@ -48,10 +48,10 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "Expanded CM/Colonists/Add Applicants",
+    "Expanded CM/Colonists/Add Or Remove Applicants",
     cMenuFuncs.AddApplicantsToPool,
     nil,
-    "Add random applicants to the passenger pool.",
+    "Add random applicants to the passenger pool (has option to remove all).",
     icon
   )
 

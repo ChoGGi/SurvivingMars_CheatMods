@@ -580,7 +580,6 @@ function cComFuncs.CheckForTypeInList(List,Type)
   end
   return ret
 end
-
 --[[
 ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
 returns number from TechTree (so you know how much it changes)

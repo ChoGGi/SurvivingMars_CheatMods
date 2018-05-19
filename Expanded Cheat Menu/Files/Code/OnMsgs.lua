@@ -66,6 +66,7 @@ end --OnMsg
 
 function OnMsg.ModsLoaded()
   cMsgFuncs.Defaults_ModsLoaded()
+  terminal.SetOSWindowTitle(cCodeFuncs.Trans(1079) .. ": " .. Mods[ChoGGi.id].title)
 end
 
 --earlist on-ground objects are loaded?
@@ -88,21 +89,28 @@ end
 --fired as late as we can
 --function OnMsg.Resume()
 function OnMsg.LoadingScreenPreClose()
-  local city = UICity
+  local UICity = UICity
 
   --for new games
-  if not city then
+  if not UICity then
     return
   end
 
   local ChoGGi = ChoGGi
   local Temp = ChoGGi.Temp
-  local UserSettings = ChoGGi.UserSettings
 
   if Temp.IsGameLoaded == true then
     return
   end
   Temp.IsGameLoaded = true
+
+  local UserSettings = ChoGGi.UserSettings
+  local Presets = Presets
+  local UAMenu = UAMenu
+  local DataInstances = DataInstances
+  local const = const
+  local hr = hr
+  local config = config
 
   --late enough that I can set g_Consts.
   cSettingFuncs.SetConstsToSaved()
@@ -110,6 +118,7 @@ function OnMsg.LoadingScreenPreClose()
   UpdateDroneResourceUnits()
 
   --remove all built-in actions
+  local UserActions = UserActions
   UserActions.ClearGlobalTables()
   UserActions.Actions = {}
   UserActions.RejectedActions = {}
@@ -153,7 +162,12 @@ function OnMsg.LoadingScreenPreClose()
       class.EditorIcon or "CollectionsEditor.tga"
     )
   end)
-
+  --broken ass shit
+  local mod = Mods[ChoGGi.id]
+  local text = ""
+  for _,bv in pairs(mod) do
+    text = text .. tostring(bv)
+  end
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
@@ -227,56 +241,56 @@ function OnMsg.LoadingScreenPreClose()
   end
 
   --gets used a couple times
-  local tab
+  local Table
 
   --not sure why this would be false on a dome
-  tab = city.labels.Dome or empty_table
-  for i = 1, #tab do
-    if tab[i].achievement == "FirstDome" and type(tab[i].connected_domes) ~= "table" then
-      tab[i].connected_domes = {}
+  Table = UICity.labels.Dome or empty_table
+  for i = 1, #Table do
+    if Table[i].achievement == "FirstDome" and type(Table[i].connected_domes) ~= "table" then
+      Table[i].connected_domes = {}
     end
   end
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
-  tab = city.labels.Storages or empty_table
+  Table = UICity.labels.Storages or empty_table
   pcall(function()
-    for i = 1, #tab do
-      if tab[i]:GetStoredAmount() < 0 then
+    for i = 1, #Table do
+      if Table[i]:GetStoredAmount() < 0 then
         --we have to empty it first (just filling doesn't fix the issue)
-        tab[i]:CheatEmpty()
-        tab[i]:CheatFill()
+        Table[i]:CheatEmpty()
+        Table[i]:CheatFill()
       end
     end
   end)
 
   --so we can change the max_amount for concrete
-  tab = TerrainDepositConcrete.properties
-  for i = 1, #tab do
-    if tab[i].id == "max_amount" then
-      tab[i].read_only = nil
+  Table = TerrainDepositConcrete.properties
+  for i = 1, #Table do
+    if Table[i].id == "max_amount" then
+      Table[i].read_only = nil
     end
   end
 
   --override building templates
-  tab = DataInstances.BuildingTemplate
-  for i = 1, #tab do
+  Table = DataInstances.BuildingTemplate
+  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
+  for i = 1, #Table do
     --make hidden buildings visible
     if UserSettings.Building_hide_from_build_menu then
       BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
       BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
-      if tab[i].name ~= "LifesupportSwitch" and tab[i].name ~= "ElectricitySwitch" then
-        tab[i].hide_from_build_menu = nil
+      if Table[i].name ~= "LifesupportSwitch" and Table[i].name ~= "ElectricitySwitch" then
+        Table[i].hide_from_build_menu = nil
       end
-      if tab[i].build_category == "Hidden" and tab[i].name ~= "RocketLandingSite" then
-        tab[i].build_category = "HiddenX"
+      if Table[i].build_category == "Hidden" and Table[i].name ~= "RocketLandingSite" then
+        Table[i].build_category = "HiddenX"
       end
     end
 
     if UserSettings.Building_wonder then
-      tab[i].wonder = nil
+      Table[i].wonder = nil
     end
   end
-
   if UserSettings.NoRestingBonusPsychologistFix then
     local commander_profile = GetCommanderProfile()
     if commander_profile.id == "psychologist" then
@@ -343,15 +357,14 @@ function OnMsg.LoadingScreenPreClose()
 
   cCodeFuncs.NewThread(function()
     --add custom labels for cables/pipes
-    local labels = city.labels
     local function CheckLabel(Label)
-      if not labels[Label] then
-        city:InitEmptyLabel(Label)
+      if not UICity.labels[Label] then
+        UICity:InitEmptyLabel(Label)
         if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
           local objs = GetObjects({class=Label:gsub("ChoGGi_","")}) or empty_table
           for i = 1, #objs do
-            labels[Label][#labels[Label]+1] = objs[i]
-            labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = objs[i]
+            UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
+            UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]
           end
         end
       end
@@ -372,30 +385,30 @@ function OnMsg.LoadingScreenPreClose()
     ChoGGi.CodeFuncs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
-    tab = city.labels.BuildingNoDomes or empty_table
+    Table = UICity.labels.BuildingNoDomes or empty_table
     local sType
-    for i = 1, #tab do
-      if tab[i].dome_required == false and tab[i].parent_dome then
+    for i = 1, #Table do
+      if Table[i].dome_required == false and Table[i].parent_dome then
 
         sType = false
         --remove it from the dome label
-        if tab[i].closed_shifts then
+        if Table[i].closed_shifts then
           sType = "Residence"
-        elseif tab[i].colonists then
+        elseif Table[i].colonists then
           sType = "Workplace"
         end
 
         if sType then --get a fucking continue lua
-          if tab[i].parent_dome.labels and tab[i].parent_dome.labels[sType] then
-            local dome = tab[i].parent_dome.labels[sType]
+          if Table[i].parent_dome.labels and Table[i].parent_dome.labels[sType] then
+            local dome = Table[i].parent_dome.labels[sType]
             for j = 1, #dome do
-              if dome[j].class == tab[i].class then
+              if dome[j].class == Table[i].class then
                 dome[j] = nil
               end
             end
           end
           --remove parent_dome
-          tab[i].parent_dome = nil
+          Table[i].parent_dome = nil
         end
 
       end
@@ -417,6 +430,22 @@ function OnMsg.LoadingScreenPreClose()
   for i = 1, #msgs do
     AddConsoleLog(msgs[i],true)
     --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
+  end
+
+  local dickhead
+  local nofile,file = AsyncFileToString(ChoGGi.ModPath .. "/LICENSE")
+  if nofile then
+    --some dickhead removed the LICENSE
+    dickhead = true
+  elseif abs(xxhash(0,AsyncFileToString(ChoGGi.ModPath .. "/LICENSE"))) ~= 299860815 then
+    --LICENSE exists, but was changed
+    dickhead = true
+  end
+  --look ma; a LICENSE!
+  if dickhead then
+    print("MIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
+    print("\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
+    terminal.SetOSWindowTitle("Zombie baby Jesus eats babies of LICENSE removers.")
   end
 
 end --OnMsg
@@ -543,12 +572,12 @@ end --OnMsg
 function OnMsg.Demolished(building)
   --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
   if building.achievement == "FirstDome" then
-    local city = building.city or UICity
-    city.labels.Domes_Working = nil
-    city:InitEmptyLabel("Domes_Working")
-    local tab = city.labels.Dome or empty_table
-    for i = 1, #tab do
-      city.labels.Domes_Working[#city.labels.Domes_Working+1] = tab[i]
+    local UICity = building.city or UICity
+    UICity.labels.Domes_Working = nil
+    UICity:InitEmptyLabel("Domes_Working")
+    local Table = UICity.labels.Dome or empty_table
+    for i = 1, #Table do
+      UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = Table[i]
     end
   end
 end --OnMsg
@@ -637,16 +666,16 @@ function OnMsg.NewHour()
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
     local city = UICity
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local tab = city.labels.ResourceProducer or empty_table
-    for i = 1, #tab do
-      cCodeFuncs.FuckingDrones(tab[i]:GetProducerObj())
-      if tab[i].wasterock_producer then
-        cCodeFuncs.FuckingDrones(tab[i].wasterock_producer)
+    local Table = city.labels.ResourceProducer or empty_table
+    for i = 1, #Table do
+      cCodeFuncs.FuckingDrones(Table[i]:GetProducerObj())
+      if Table[i].wasterock_producer then
+        cCodeFuncs.FuckingDrones(Table[i].wasterock_producer)
       end
     end
-    tab = city.labels.BlackCubeStockpiles or empty_table
-    for i = 1, #tab do
-      cCodeFuncs.FuckingDrones(tab[i])
+    Table = city.labels.BlackCubeStockpiles or empty_table
+    for i = 1, #Table do
+      cCodeFuncs.FuckingDrones(Table[i])
     end
   end
 
@@ -710,9 +739,9 @@ end
 function OnMsg.ChoGGi_TogglePinnableObject(Obj)
   local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
   if type(UnpinObjects) == "table" and next(UnpinObjects) then
-    local tab = UnpinObjects or empty_table
-    for i = 1, #tab do
-      if Obj.class == tab[i] and Obj:IsPinned() then
+    local Table = UnpinObjects or empty_table
+    for i = 1, #Table do
+      if Obj.class == Table[i] and Obj:IsPinned() then
         Obj:TogglePin()
         break
       end
@@ -767,9 +796,9 @@ local function RCCreated(Obj)
   end
 end
 function OnMsg.ChoGGi_SpawnedRCTransport(Obj)
-  local RCTransportStorageCapacity = ChoGGi.UserSettings.RCTransportStorageCapacity
-  if RCTransportStorageCapacity then
-    Obj.max_shared_storage = RCTransportStorageCapacity
+  local UserSettings = ChoGGi.UserSettings
+  if UserSettings.RCTransportStorageCapacity then
+    Obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
   end
   RCCreated(Obj)
 end

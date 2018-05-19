@@ -23,42 +23,43 @@ ChoGGi = {
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }
 local ChoGGi = ChoGGi
-ChoGGi._VERSION = _G.Mods[ChoGGi.id].version
-ChoGGi.ModPath = _G.Mods[ChoGGi.id].path
-local cTemp = ChoGGi.Temp
-local cModPath = ChoGGi.ModPath
+local Mods = Mods
+ChoGGi._VERSION = Mods[ChoGGi.id].version
+ChoGGi.ModPath = Mods[ChoGGi.id].path
 
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
-  cTemp.Testing = true
+  ChoGGi.Temp.Testing = true
 end
-local cTesting = cTemp.Testing
+local cTesting = ChoGGi.Temp.Testing
 
 if cTesting then
   --get saved settings for this mod
-  dofile(cModPath .. "Files/Defaults.lua")
+  dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
   --functions needed before Code/ is loaded
-  dofile(cModPath .. "Files/CommonFunctions.lua")
+  dofile(ChoGGi.ModPath .. "Files/CommonFunctions.lua")
   --load all the other files
-  dofolder_files(cModPath .. "Files/Code")
+  dofolder_files(ChoGGi.ModPath .. "Files/Code")
 else
   --if file exists then we'll ignore Files.hpk (user likely unpacked the files)
-  local file_error, _ = AsyncFileToString(cModPath .. "/Defaults.lua")
+  local file_error, _ = AsyncFileToString(ChoGGi.ModPath .. "/Defaults.lua")
   if not file_error then
     --get saved settings for this mod
-    dofile(cModPath .. "/Defaults.lua")
+    dofile(ChoGGi.ModPath .. "/Defaults.lua")
     --functions needed for before Code/ is loaded
-    dofile(cModPath .. "/CommonFunctions.lua")
+    dofile(ChoGGi.ModPath .. "/CommonFunctions.lua")
     --load all the other files
-    dofolder_files(cModPath .. "/Code")
+    dofolder_files(ChoGGi.ModPath .. "/Code")
   else
     local MountName = "ChoGGi_Mount"
     --load up the hpk
-    AsyncMountPack(MountName,cModPath .. "/Files.hpk")
+    AsyncMountPack(MountName,ChoGGi.ModPath .. "/Files.hpk")
     dofile(MountName .. "/Defaults.lua")
     dofile(MountName .. "/CommonFunctions.lua")
     dofolder_files(MountName .. "/Code")
+    --and unload it
+    Unmount(MountName)
   end
 end
 
@@ -72,15 +73,15 @@ end
 
 --if writelogs option
 if CUserSettings.WriteLogs == true then
-  cTemp.StartupMsgs[#cTemp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
+  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
   ChoGGi.ComFuncs.WriteLogs_Toggle(CUserSettings.WriteLogs)
 end
 
 --first time run info
 if CUserSettings.FirstRun ~= false then
-  cTemp.StartupMsgs[#cTemp.StartupMsgs+1] = "<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
+  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
   CUserSettings.FirstRun = false
-  cTemp.WriteSettings = true
+  ChoGGi.Temp.WriteSettings = true
 end
 
 Platform.developer = true
