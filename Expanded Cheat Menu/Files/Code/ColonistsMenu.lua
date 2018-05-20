@@ -12,6 +12,17 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   local icon2 = "Cube.tga"
 
   cComFuncs.AddAction(
+    "Expanded CM/Colonists/No More Earthsick",
+    cMenuFuncs.NoMoreEarthsick_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.NoMoreEarthsick and "(Enabled)" or "(Disabled)"
+      return des .. " Colonists will never become Earthsick (and removes any when you enable this)."
+    end,
+    icon2
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Colonists/Traits: Restrict For Selected Building Type",
     function()
       cMenuFuncs.SetBuildingTraits("restricttraits")

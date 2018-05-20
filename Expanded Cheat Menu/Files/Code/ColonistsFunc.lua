@@ -8,13 +8,32 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
-function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
-  local cUserSettings = ChoGGi.UserSettings
-  cUserSettings.UniversityGradRemoveIdiotTrait = not cUserSettings.UniversityGradRemoveIdiotTrait
+function cMenuFuncs.NoMoreEarthsick_Toggle()
+  local UserSettings = ChoGGi.UserSettings
+  UserSettings.NoMoreEarthsick = not UserSettings.NoMoreEarthsick
+  if UserSettings.NoMoreEarthsick then
+    local Table = UICity.labels.Colonist or empty_table
+    for i = 1, #Table do
+      if Table[i].status_effects.StatusEffect_Earthsick then
+        Table[i]:Affect("StatusEffect_Earthsick", false)
+      end
+    end
+  end
 
   cSettingFuncs.WriteSettings()
   cComFuncs.MsgPopup(
-    tostring(cUserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
+    tostring(UserSettings.NoMoreEarthsick) .. ": Whoops somebody broke the rocket, guess you're stuck on mars.",
+    "Colonists"
+  )
+end
+
+function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
+  local UserSettings = ChoGGi.UserSettings
+  UserSettings.UniversityGradRemoveIdiotTrait = not UserSettings.UniversityGradRemoveIdiotTrait
+
+  cSettingFuncs.WriteSettings()
+  cComFuncs.MsgPopup(
+    tostring(UserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
     "Idiots"
   )
 end

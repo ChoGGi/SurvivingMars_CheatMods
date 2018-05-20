@@ -185,6 +185,15 @@ end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --removes earthsick effect
+  cComFuncs.SaveOrigFunc("Colonist","ChangeComfort")
+  function Colonist:ChangeComfort(amount, reason)
+    cOrigFuncs.Colonist_ChangeComfort(self, amount, reason)
+    if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
+      self:Affect("StatusEffect_Earthsick", false)
+    end
+  end
+
   --make sure heater keeps the powerless setting
   cComFuncs.SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
   function SubsurfaceHeater:UpdatElectricityConsumption()

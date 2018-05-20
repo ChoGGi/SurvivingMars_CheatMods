@@ -193,7 +193,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
 ---------------------------toggles
   cComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Psychologist Resting Bonus",
+    "Expanded CM/Fixes/Toggle: Psychologist Resting Bonus Doesn't Work",
     cMenuFuncs.NoRestingBonusPsychologistFix_Toggle,
     nil,
     function()
