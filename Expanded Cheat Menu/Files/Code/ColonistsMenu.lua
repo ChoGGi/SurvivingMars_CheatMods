@@ -19,7 +19,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
       local des = ChoGGi.UserSettings.NoMoreEarthsick and "(Enabled)" or "(Disabled)"
       return des .. " Colonists will never become Earthsick (and removes any when you enable this)."
     end,
-    icon2
+    icon
   )
 
   cComFuncs.AddAction(

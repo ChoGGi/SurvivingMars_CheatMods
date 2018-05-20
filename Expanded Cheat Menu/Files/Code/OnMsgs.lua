@@ -315,22 +315,28 @@ function OnMsg.LoadingScreenPreClose()
   Table = DataInstances.BuildingTemplate
   local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
   for i = 1, #Table do
+    local temp = Table[i]
+
     --make hidden buildings visible
     if UserSettings.Building_hide_from_build_menu then
       BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
       BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
-      if Table[i].name ~= "LifesupportSwitch" and Table[i].name ~= "ElectricitySwitch" then
-        Table[i].hide_from_build_menu = nil
+      if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
+        temp.hide_from_build_menu = nil
       end
-      if Table[i].build_category == "Hidden" and Table[i].name ~= "RocketLandingSite" then
-        Table[i].build_category = "HiddenX"
+      if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
+        temp.build_category = "HiddenX"
       end
     end
 
+    --wonder building limit
     if UserSettings.Building_wonder then
-      Table[i].wonder = nil
+      temp.wonder = nil
     end
+
   end
+
+  --get the +5 bonus from phsy profile
   if UserSettings.NoRestingBonusPsychologistFix then
     local commander_profile = GetCommanderProfile()
     if commander_profile.id == "psychologist" then
@@ -768,6 +774,8 @@ cComFuncs.AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSup
 cComFuncs.AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
 cComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
 cComFuncs.AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
+cComFuncs.AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
+cComFuncs.AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
 
 --attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
@@ -864,6 +872,18 @@ function OnMsg.ChoGGi_SpawnedResidence(Obj)
 end
 function OnMsg.ChoGGi_SpawnedWorkplace(Obj)
   cCodeFuncs.AttachToNearestDome(Obj)
+end
+function OnMsg.ChoGGi_SpawnedDinerGrocery(Obj)
+  local ChoGGi = ChoGGi
+  local UserSettings = ChoGGi.UserSettings
+
+  --more food for diner/grocery
+  if UserSettings.ServiceWorkplaceFoodStorage then
+    --for some reason InitConsumptionRequest always adds 5 to it
+    local storedv = UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
+    Obj.consumption_stored_resources = storedv
+    Obj.consumption_max_storage = UserSettings.ServiceWorkplaceFoodStorage
+  end
 end
 
 --make sure they use with our new values

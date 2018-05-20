@@ -10,6 +10,61 @@ local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
+function cMenuFuncs.SetStorageAmountOfDinerGrocery()
+  --make a list
+  local DefaultSetting = 5
+  local UserSettings = ChoGGi.UserSettings
+  local r = cConsts.ResourceScale
+  local ItemList = {
+    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+    {text = 20,value = 20},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if UserSettings.ServiceWorkplaceFoodStorage then
+    hint = UserSettings.ServiceWorkplaceFoodStorage
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      value = value * r
+
+      if value == DefaultSetting * r then
+        UserSettings.ServiceWorkplaceFoodStorage = nil
+      else
+        UserSettings.ServiceWorkplaceFoodStorage = value
+      end
+
+      local function SetStor(Class)
+        local objs = GetObjects({class = Class}) or empty_table
+        for i = 1, #objs do
+          objs[i].consumption_stored_resources = value
+          objs[i].consumption_max_storage = value
+        end
+      end
+      SetStor("Diner")
+      SetStor("Grocery")
+
+      cSettingFuncs.WriteSettings()
+      ChoGGi.ComFuncs.MsgPopup("Food Storage: " .. choice[1].text,
+        "Food"
+      )
+    end
+  end
+
+  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Storage","Current: " .. hint)
+end
+
 function cMenuFuncs.DefenceTowersAttackDustDevils_Toggle()
   ChoGGi.UserSettings.DefenceTowersAttackDustDevils = not ChoGGi.UserSettings.DefenceTowersAttackDustDevils
 
@@ -17,7 +72,6 @@ function cMenuFuncs.DefenceTowersAttackDustDevils_Toggle()
   cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DefenceTowersAttackDustDevils) .. "\nDust? What dust?",
     "Defence"
   )
-
 end
 
 function cMenuFuncs.AlwaysDustyBuildings_Toggle()

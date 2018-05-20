@@ -11,6 +11,17 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   local icon = "Cube.tga"
 
   cComFuncs.AddAction(
+    "Expanded CM/Buildings/Storage Amount Of Diner & Grocery",
+    cMenuFuncs.SetStorageAmountOfDinerGrocery,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage and "(Enabled)" or "(Disabled)"
+      return des .. " Change how much food is stored in them (less chance of starving colonists when busy)."
+    end,
+    icon
+  )
+
+  cComFuncs.AddAction(
     "Expanded CM/Buildings/Triboelectric Scrubber Radius",
     function()
       cMenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber","\nLadies and gentlemen, this is your captain speaking. We have a small problem.\nAll four engines have stopped. We are doing our damnedest to get them going again.\nI trust you are not in too much distress.")

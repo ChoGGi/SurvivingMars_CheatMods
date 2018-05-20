@@ -144,7 +144,11 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   cComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
-      cCodeFuncs.AddConsolePrompt("restart")
+      if dlgConsole then
+        local dlg = dlgConsole
+        dlg.idEdit:SetText("restart")
+      end
+      --cCodeFuncs.AddConsolePrompt("restart")
     end,
     "Ctrl-Alt-Shift-R"
   )
