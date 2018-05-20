@@ -1,4 +1,4 @@
-###Adding hidden Milestones:
+### Adding hidden Milestones:
 
 ```
 --Use this to when it gets completed (I'm using UICity to store as it's saved per-game)
@@ -60,7 +60,7 @@ function OnMsg.LoadGame()
 end
 ```
 
-##### To show user completed milestone
+#### To show user completed milestone
 ```
 --if you do want the little notification popup then call it like this instead
 Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
