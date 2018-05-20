@@ -77,7 +77,7 @@ function cMenuFuncs.TheSoylentOption()
   local ItemList = {
     {text = " Homeless",value = "Homeless"},
     {text = " Unemployed",value = "Unemployed"},
-    {text = " Renegade",value = "Renegade"},
+    {text = " Renegades",value = "Renegade"},
     {text = "Specialization: none",value = "none"},
   }
 
@@ -116,6 +116,20 @@ function cMenuFuncs.TheSoylentOption()
         end
       end
     end
+    local function CullTrait(Trait)
+      Table = UICity.labels.Colonist or empty_table
+      for i = #Table, 1, -1 do
+        if Table[i].traits[Trait] then
+          if dome then
+            if Table[i].dome and Table[i].dome.handle == dome then
+              MeatbagsToSoylent(Table[i],check1)
+            end
+          else
+            MeatbagsToSoylent(Table[i],check1)
+          end
+        end
+      end
+    end
     local function Cull(Trait,TraitType,Race)
       --only race is stored as number (maybe there's a cock^?^?^?^?CoC around)
       Trait = Race or Trait
@@ -138,15 +152,15 @@ function cMenuFuncs.TheSoylentOption()
     elseif cTables.ColonistSpecializations[value] or value == "none" then
       CullLabel(value)
     elseif cTables.ColonistAges[value] then
-      Cull(value,"age_trait")
+      CullTrait(value)
     elseif cTables.ColonistBirthplaces[value] then
       Cull(value,"birthplace")
     elseif cTables.ColonistGenders[value] then
-      Cull(value,"gender")
+      CullTrait(value)
     elseif cTables.ColonistRaces[value] then
       Cull(value,"race",choice[1].idx)
     elseif value == "Renegade" then
-      Cull("traits",value)
+      CullTrait(value)
     end
 
     if value == "Child" then
