@@ -573,7 +573,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 --Shuttles
     elseif action.ActionId == "ShuttleFollower" then
-      SetHint(action,"Spawns a Shuttle that will follow your cursor, scan nearby anomalies for you, attack nearby dustdevils, and (one day) pick up resources you've selected.")
+      SetHint(action,"Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and (one day) pick up resources you've selected.\nPin it and right-click the pin to have it come to your position.")
     elseif action.ActionId == "ShuttleReturnF" then
       SetHint(action,"Make all followers return home.")
 --RC
