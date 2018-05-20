@@ -119,7 +119,7 @@ function cMenuFuncs.TheSoylentOption()
     local dome
     sel = SelectedObj
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check2 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
 
     local Table
@@ -127,7 +127,7 @@ function cMenuFuncs.TheSoylentOption()
       Table = UICity.labels[Label] or empty_table
       for i = #Table, 1, -1 do
         if dome then
-          if Table[i].dome and Table[i].dome.handle == dome then
+          if Table[i].dome and Table[i].dome == dome then
             MeatbagsToSoylent(Table[i],check1)
           end
         else
@@ -140,7 +140,7 @@ function cMenuFuncs.TheSoylentOption()
       for i = #Table, 1, -1 do
         if Table[i].traits[Trait] then
           if dome then
-            if Table[i].dome and Table[i].dome.handle == dome then
+            if Table[i].dome and Table[i].dome == dome then
               MeatbagsToSoylent(Table[i],check1)
             end
           else
@@ -156,7 +156,7 @@ function cMenuFuncs.TheSoylentOption()
       for i = #Table, 1, -1 do
         if Table[i][TraitType] == Trait then
           if dome then
-            if Table[i].dome and Table[i].dome.handle == dome then
+            if Table[i].dome and Table[i].dome == dome then
               MeatbagsToSoylent(Table[i],check1)
             end
           else
@@ -392,7 +392,7 @@ function cMenuFuncs.SetRenegadeStatus()
     local dome
     local sel = SelectedObj
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local Type
     local value = choice[1].value
@@ -405,7 +405,7 @@ function cMenuFuncs.SetRenegadeStatus()
     local tab = UICity.labels.Colonist or empty_table
     for i = 1, #tab do
       if dome then
-        if tab[i].dome and tab[i].dome.handle == dome then
+        if tab[i].dome and tab[i].dome == dome then
           tab[i][Type](tab[i],"Renegade")
         end
       else
@@ -701,7 +701,7 @@ function cMenuFuncs.SetColonistsAge(iType)
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local value = choice[1].value
     --new
@@ -719,7 +719,7 @@ function cMenuFuncs.SetColonistsAge(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               cCodeFuncs.ColonistUpdateAge(tab[i],value)
             end
           else
@@ -785,7 +785,7 @@ function cMenuFuncs.SetColonistsGender(iType)
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     --new
     local value = choice[1].value
@@ -802,7 +802,7 @@ function cMenuFuncs.SetColonistsGender(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               cCodeFuncs.ColonistUpdateGender(tab[i],value)
             end
           else
@@ -874,7 +874,7 @@ function cMenuFuncs.SetColonistsSpecialization(iType)
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     --new
     local value = choice[1].value
@@ -891,7 +891,7 @@ function cMenuFuncs.SetColonistsSpecialization(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               cCodeFuncs.ColonistUpdateSpecialization(tab[i],value)
             end
           else
@@ -953,7 +953,7 @@ function cMenuFuncs.SetColonistsRace(iType)
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     --new
     local value = choice[1].value
@@ -970,7 +970,7 @@ function cMenuFuncs.SetColonistsRace(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               cCodeFuncs.ColonistUpdateRace(tab[i],value)
             end
           else
@@ -1056,7 +1056,7 @@ function cMenuFuncs.SetColonistsTraits(iType)
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     --create list of traits
     local TraitsListTemp = {}
@@ -1119,7 +1119,7 @@ function cMenuFuncs.SetColonistsTraits(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               RandomTraits(tab[i])
             end
           else
@@ -1136,7 +1136,7 @@ function cMenuFuncs.SetColonistsTraits(iType)
         for i = 1, #tab do
           for j = 1, #TraitsList do
             if dome then
-              if tab[i].dome and tab[i].dome.handle == dome then
+              if tab[i].dome and tab[i].dome == dome then
                 tab[i][Type](tab[i],TraitsList[j],true)
               end
             else
@@ -1185,7 +1185,7 @@ function cMenuFuncs.SetColonistsStats()
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local max = 100000 * r
     local fill = 100 * r
@@ -1199,7 +1199,7 @@ function cMenuFuncs.SetColonistsStats()
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+          if tab[i].dome and tab[i].dome == dome then
             tab[i][Stat] = v
           end
         else
@@ -1218,7 +1218,7 @@ function cMenuFuncs.SetColonistsStats()
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
+          if tab[i].dome and tab[i].dome == dome then
             tab[i].stat_morale = value
             tab[i].stat_sanity = value
             tab[i].stat_comfort = value
@@ -1277,7 +1277,7 @@ function cMenuFuncs.SetColonistMoveSpeed()
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local value = choice[1].value
     if type(value) == "number" then
@@ -1289,7 +1289,7 @@ function cMenuFuncs.SetColonistMoveSpeed()
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               --tab[i]:SetMoveSpeed(value)
               pf.SetStepLen(tab[i],value)
             end
@@ -1344,7 +1344,7 @@ function cMenuFuncs.SetColonistsGravity()
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local value = choice[1].value
     if type(value) == "number" then
@@ -1357,7 +1357,7 @@ function cMenuFuncs.SetColonistsGravity()
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome.handle == dome then
+            if tab[i].dome and tab[i].dome == dome then
               tab[i]:SetGravity(value)
             end
           else

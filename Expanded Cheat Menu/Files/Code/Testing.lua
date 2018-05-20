@@ -14,9 +14,18 @@ local cMenuFuncs = ChoGGi.MenuFuncs
 local cTesting = ChoGGi.Temp.Testing
 
 --stuff that never happens, fuck comments (like this one)
-if cTesting == 3.14 then
+if type(cTesting) == "function" then
   dofolder_files("CommonLua/UI/UIDesignerData")
-
+--[[
+  cComFuncs.SaveOrigFunc("CargoShuttle","Idle")
+  function CargoShuttle:Idle()
+  print(self.command)
+    if self.ChoGGi_FollowMouseShuttle and self.command == "Home" or self.command == "Idle" then
+      self:SetCommand("ChoGGi_FollowMouse")
+    end
+    return cOrigFuncs.CargoShuttle_Idle(self)
+  end
+--]]
   for message, threads in pairs(ThreadsMessageToThreads) do
     --print(message)
     --print(threads)

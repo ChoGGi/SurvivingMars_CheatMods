@@ -891,7 +891,7 @@ function cMenuFuncs.SetEntity()
 
     local dome
     if sel.dome and check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local value = choice[1].value
     if EntityData[value] or value == "Default" then
@@ -902,7 +902,7 @@ function cMenuFuncs.SetEntity()
         local objs = GetObjects({class = sel.class}) or empty_table
         for i = 1, #objs do
           if dome then
-            if objs[i].dome and objs[i].dome.handle == dome then
+            if objs[i].dome and objs[i].dome == dome then
               SetEntity(objs[i],value)
             end
           else
@@ -985,7 +985,7 @@ function cMenuFuncs.SetEntityScale()
 
     local dome
     if sel.dome and check1 then
-      dome = sel.dome.handle
+      dome = sel.dome
     end
     local value = choice[1].value
     if type(value) == "number" then
@@ -996,7 +996,7 @@ function cMenuFuncs.SetEntityScale()
         local objs = GetObjects({class = sel.class}) or empty_table
         for i = 1, #objs do
           if dome then
-            if objs[i].dome and objs[i].dome.handle == dome then
+            if objs[i].dome and objs[i].dome == dome then
               SetScale(objs[i],value)
             end
           else

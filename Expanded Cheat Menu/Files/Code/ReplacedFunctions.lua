@@ -6,6 +6,13 @@ local cOrigFuncs = ChoGGi.OrigFuncs
 local cMsgFuncs = ChoGGi.MsgFuncs
 local cTesting = ChoGGi.Temp.Testing
 
+local PlayFX = PlayFX
+local NearestObject = NearestObject
+local Sleep = Sleep
+local GetTerrainCursor = GetTerrainCursor
+local GameTime = GameTime
+local GetObjects = GetObjects
+
 --[[
 add files for:
   ("DefenceTower","DefenceTick")
@@ -46,6 +53,47 @@ Lua\X\Infopanel.lua
 --]]
 
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
+
+  cComFuncs.SaveOrigFunc("DefenceTower","GameInit")
+  function DefenceTower:GameInit()
+    print("DefenceTower_GameInit")
+    local ChoGGi = ChoGGi
+    --self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
+    self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
+      while IsValid(self) and not self.destroyed do
+        if self.working then
+          if not self:DefenceTick_ChoGGi_Dust(ChoGGi) then
+            Sleep(1000)
+          end
+        else
+          Sleep(1000)
+        end
+      end
+    end)
+    return cOrigFuncs.DefenceTower_GameInit(self)
+  end
+
+  --meteor targeting
+  cComFuncs.SaveOrigFunc("CargoShuttle","GameInit")
+  function CargoShuttle:GameInit()
+    local ChoGGi = ChoGGi
+    self.ChoGGi_FollowMouseShuttle = true
+    self.shoot_range = 25 * cConsts.guim
+    self.reload_time = const.HourDuration
+    self.track_thread = false
+    self.defence_threadD = CreateGameTimeThread(function()
+      while IsValid(self) and not self.destroyed do
+        if self.working then
+          if not self:ChoGGi_DefenceTickD(ChoGGi) then
+            Sleep(1000)
+          end
+        else
+          Sleep(1000)
+        end
+      end
+    end)
+    return cOrigFuncs.CargoShuttle_GameInit(self)
+  end
 
   --larger trib/subsurfheater radius
   cComFuncs.SaveOrigFunc("UIRangeBuilding","SetUIRange")
@@ -110,9 +158,9 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   --so we can add hints to info pane cheats
   cComFuncs.SaveOrigFunc("InfopanelObj","CreateCheatActions")
   function InfopanelObj:CreateCheatActions(win)
-    local ret = cOrigFuncs.InfopanelObj_CreateCheatActions(self,win)
+    local ret = {cOrigFuncs.InfopanelObj_CreateCheatActions(self,win)}
     cInfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
-    return ret
+    return table.unpack(ret)
   end
 
   --add dump button to Examine windows
@@ -184,6 +232,37 @@ end
 end --OnMsg
 
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
+
+  --gives an error when we spawn shuttle since i'm using a fake task
+  cComFuncs.SaveOrigFunc("CargoShuttle","OnTaskAssigned")
+  function CargoShuttle:OnTaskAssigned()
+    if self.ChoGGi_FollowMouseShuttle then
+      return true
+    else
+      return cOrigFuncs.CargoShuttle_OnTaskAssigned(self)
+    end
+  end
+
+  --add a call shuttle action on rightclick
+  cComFuncs.SaveOrigFunc("PinsDlg","InitPinButton")
+  function PinsDlg:InitPinButton(button)
+    local ret = {cOrigFuncs.PinsDlg_InitPinButton(self, button)}
+      for i = 1, #self do
+        local pin = self[i]
+        if pin.Icon == "UI/Icons/Buildings/res_shuttle.tga" then
+          function pin:OnMouseButtonDown(pt, button)
+            if button == "R" then
+              CreateRealTimeThread(function()
+                --give it a bit for user to move mouse away from pinsdlg so shuttle doesn't fly there
+                Sleep(1500)
+                self.context:SetCommand("ChoGGi_FollowMouse",GetTerrainCursor())
+              end)
+            end
+          end
+        end
+      end
+    return table.unpack(ret)
+  end
 
   --removes earthsick effect
   cComFuncs.SaveOrigFunc("Colonist","ChangeComfort")
@@ -259,76 +338,6 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
     SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
 
-  cComFuncs.SaveOrigFunc("DefenceTower","DefenceTick")
-  function DefenceTower:DefenceTick()
-
-    --place at end of function to have it protect dustdevils before meteors
-    cOrigFuncs.DefenceTower_DefenceTick(self)
-
-    if ChoGGi.UserSettings.DefenceTowersAttackDustDevils then
-      --copied from orig func
-      if IsValidThread(self.track_thread) then
-        return
-      end
-      --list of devil handles we attacked
-      local devils = ChoGGi.Temp.RocketFiredDustDevil
-      --list of dustdevils on map
-      local hostile = g_DustDevils or empty_table
-      for i = 1, #hostile do
-        local obj = hostile[i]
-
-        --get dist (added * 10 as it didn't see to target at the range of it's hex grid)
-        --it could be from me increasing protection radius, or just how it targets meteors
-        if IsValid(obj) and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
-          --check if tower is working
-          if not IsValid(self) or not self.working or self.destroyed then
-            return
-          end
-
-          --follow = skip small ones attached to majors
-          if (not obj.follow and not devils[obj.handle]) then
-            --aim the tower at the dustdevil
-            self:OrientPlatform(obj:GetVisualPos(), 7200)
-            --fire in the hole
-            local rocket = self:FireRocket(nil, obj)
-            --store handle so we only launch one per devil
-            devils[obj.handle] = obj.handle
-            --seems like safe bets to set
-            self.meteor = obj
-            self.is_firing = true
-            --sleep till rocket explodes
-            CreateRealTimeThread(function()
-              while rocket.move_thread do
-                Sleep(500)
-              end
-              --make it pretty
-              PlayFX("AirExplosion", "start", obj, obj:GetAttaches()[1], obj:GetPos())
-              --kill the devil object
-              obj:delete()
-              self.meteor = false
-              self.is_firing = false
-            end)
-            --back to the usual stuff
-            Sleep(self.reload_time)
-            return true
-          end
-        end
-      end
-      --remove only remove devil handles if they're actually gone
-      if #devils > 0 then
-        CreateRealTimeThread(function()
-          for i = 1, #devils do
-            if not IsValid(HandleToObject[devils[i]]) then
-              devils[i] = nil
-            end
-          end
-        end)
-      end
-    end --if active
-
-    --end of function
-  end
-
   --convert popups to console text
   cComFuncs.SaveOrigFunc("ShowPopupNotification")
   function ShowPopupNotification(preset, params, bPersistable, parent)
@@ -337,7 +346,7 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
       return
     end
 
-    if cTesting == 3.143465 then
+    if type(cTesting) == "function" then
     --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
       if not pcall(function()
         local function ColourText(Text,Bool)
@@ -489,16 +498,16 @@ end
   --xdialogs (buildmenu, pins, infopanel)
   cComFuncs.SaveOrigFunc("OpenXDialog")
   function OpenXDialog(template, parent, context, reason, id)
-    local ret = cOrigFuncs.OpenXDialog(template, parent, context, reason, id)
+    local ret = {cOrigFuncs.OpenXDialog(template, parent, context, reason, id)}
     SetTrans(ret)
-    return ret
+    return table.unpack(ret)
   end
   --"desktop" dialogs (toolbar)
   cComFuncs.SaveOrigFunc("FrameWindow","Init")
   function FrameWindow:Init()
-    local ret = cOrigFuncs.FrameWindow_Init(self)
+    local ret = {cOrigFuncs.FrameWindow_Init(self)}
     SetTrans(self)
-    return ret
+    return table.unpack(ret)
   end
   --console stuff (it's visible before mods are loaded so I can't use FrameWindow_Init)
   cComFuncs.SaveOrigFunc("ShowConsoleLog")
@@ -510,19 +519,19 @@ end
   --toggle trans on mouseover
   cComFuncs.SaveOrigFunc("XWindow","OnMouseEnter")
   function XWindow:OnMouseEnter(pt, child)
-    local ret = cOrigFuncs.XWindow_OnMouseEnter(self, pt, child)
+    local ret = {cOrigFuncs.XWindow_OnMouseEnter(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       self:SetTransparency(0)
     end
-    return ret
+    return table.unpack(ret)
   end
   cComFuncs.SaveOrigFunc("XWindow","OnMouseLeft")
   function XWindow:OnMouseLeft(pt, child)
-    local ret = cOrigFuncs.XWindow_OnMouseLeft(self, pt, child)
+    local ret = {cOrigFuncs.XWindow_OnMouseLeft(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       SetTrans(self)
     end
-    return ret
+    return table.unpack(ret)
   end
 
   --remove spire spot limit, and other limits on placing buildings
@@ -574,7 +583,7 @@ end
   -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
   function InfopanelDlg:Open(...)
     --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
-    local ret = cOrigFuncs.InfopanelDlg_Open(self,...)
+    local ret = {cOrigFuncs.InfopanelDlg_Open(self,...)}
     CreateRealTimeThread(function()
       local TGetID = TGetID
       local c = self.idContent
@@ -665,7 +674,7 @@ end
       end
     end)
 
-    return ret
+    return table.unpack(ret)
   end
 
   --make the background hide when console not visible (instead of after a second or two)
@@ -816,20 +825,19 @@ end
   --set orientation to same as last object
   cComFuncs.SaveOrigFunc("ConstructionController","CreateCursorObj")
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
-    local ret = cOrigFuncs.ConstructionController_CreateCursorObj(self, alternative_entity, template_obj, override_palette)
+    local ret = {cOrigFuncs.ConstructionController_CreateCursorObj(self, alternative_entity, template_obj, override_palette)}
 
     local last = ChoGGi.Temp.LastPlacedObject
     if last and ChoGGi.UserSettings.UseLastOrientation then
       --shouldn't fail anymore, but we'll still pcall for now
       pcall(function()
-        ret:SetAngle(last:GetAngle())
+        ret[1]:SetAngle(last:GetAngle())
         --ret:SetOrientation(last:GetOrientation())
-
         --check if angle is slightly off?
       end)
     end
 
-    return ret
+    return table.unpack(ret)
   end
 
   --so we can build without (as many) limits

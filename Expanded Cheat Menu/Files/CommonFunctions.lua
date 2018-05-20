@@ -439,7 +439,7 @@ end
 function cComFuncs.RemoveFromLabel(Label,Obj)
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
-    if tab[i] and tab[i].handle and tab[i].handle == Obj.handle then
+    if tab[i] and tab[i].handle and tab[i] == Obj then
       table.remove(UICity.labels[Label],i)
     end
   end
