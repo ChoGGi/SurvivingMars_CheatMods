@@ -2,6 +2,7 @@
 
 --ChoGGi.Temp.Testing = false
 
+
 local cCodeFuncs = ChoGGi.CodeFuncs
 local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
@@ -13,8 +14,58 @@ local cOrigFuncs = ChoGGi.OrigFuncs
 local cMenuFuncs = ChoGGi.MenuFuncs
 local cTesting = ChoGGi.Temp.Testing
 
+
+
 --stuff that never happens, fuck comments (like this one)
 if type(cTesting) == "function" then
+
+function ChoGGi.ReplaceDome(dome)
+  if not dome then
+    return
+  end
+  local olddome = {}
+  for Key,Value in pairs(dome) do
+    olddome[Key] = Value
+  end
+  local pos = dome:GetPos()
+  dome:delete()
+
+  local newdome = PlaceObj('GeoscapeDome', {
+    'template_name', "GeoscapeDome",
+    'Pos', pos,
+  })
+  for Key,Value in pairs(olddome) do
+    if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "encyclopedia_id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
+      newdome[Key] = Value
+    end
+  end
+  newdome:Init()
+  newdome:GameInit()
+  newdome:InitResourceSpots()
+  newdome:InitPassageTables()
+
+  newdome:Rebuild()
+  newdome:ApplyToGrids()
+  newdome:AddOutskirtBuildings()
+  newdome:GenerateWalkablePoints()
+  newdome:InitAttaches()
+end
+
+local Table = GetObjects({class="Destlock"})
+for i = 1, #Table do
+
+local wp = PlaceObject("WayPoint")
+wp:SetPos(Table[i]:GetPos())
+
+end
+
+local Table = GetObjects({class="ParSystem"})
+for i = 1, #Table do
+  Table[i]:delete()
+end
+
+
+
   dofolder_files("CommonLua/UI/UIDesignerData")
 --[[
   cComFuncs.SaveOrigFunc("CargoShuttle","Idle")
@@ -71,6 +122,7 @@ if cTesting then
 end --Testing
 
 function cMsgFuncs.Testing_ClassesGenerate()
+
   ------
   print("Testing_ClassesGenerate")
 end

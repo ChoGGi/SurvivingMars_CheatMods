@@ -743,7 +743,7 @@ function cCodeFuncs.GetPalette(Obj)
 end
 
 function cCodeFuncs.RandomColour(Amount)
-  if not Amount then
+  if not Amount or type(Amount) ~= "number" then
     return AsyncRand(16777216) * -1
   end
   local randcolors = {}
@@ -753,9 +753,10 @@ function cCodeFuncs.RandomColour(Amount)
     randcolors[#randcolors+1] = AsyncRand(16777216) * -1
     randcolors = RetTableNoDupes(randcolors)
     if #randcolors == Amount then
-      return randcolors
+      break
     end
   end
+  return randcolors
 end
 
 function cCodeFuncs.ObjectColourRandom(Obj)

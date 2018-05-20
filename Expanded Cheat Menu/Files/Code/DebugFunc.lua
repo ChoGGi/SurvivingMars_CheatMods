@@ -14,6 +14,12 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
+function cMenuFuncs.ReloadLua()
+  ReloadLua()
+  WaitDelayedLoadEntities()
+  ReloadClassEntities()
+end
+
 function cMenuFuncs.DeleteAllSelectedObjects(s)
   --the menu item sends itself
   if s and not s.class then
@@ -563,13 +569,13 @@ do --path markers
 
       --add text to last wp
       if i == 1 then
-        local endp = PlaceText(obj.class .. ": " .. obj.handle, pos)
-        stored_waypoints[#stored_waypoints+1] = endp
-        endp:SetColor(color)
+        local endwp = PlaceText(obj.class .. ": " .. obj.handle, pos)
+        stored_waypoints[#stored_waypoints+1] = endwp
+        endwp:SetColor(color)
         --endp:SetColor2()
-        endp:SetZ(endp:GetZ() + 250 + height)
+        endwp:SetZ(endwp:GetZ() + 250 + height)
         --endp:SetShadowOffset(3)
-        endp:SetFontId(UIL.GetFontID("droid, 14, bold"))
+        endwp:SetFontId(UIL.GetFontID("droid, 14, bold"))
       end
 
       if wpn then
@@ -685,8 +691,6 @@ do --path markers
           stored_waypoints[i]:delete()
         end
         stored_waypoints = {}
-        --reset the random colors table
-        randcolours = {}
         --reset all the base colours
         local function ClearColour(Class)
           local objs = GetObjects({class = Class}) or empty_table
@@ -700,35 +704,34 @@ do --path markers
         ClearColour("CargoShuttle")
         ClearColour("Unit")
 
+        --reset stuff
         flag_height = 50
+        randcolours = {}
         colourcount = 0
       else
-        --need to add a Sleep for RandColor as there's a delay on how quickly it updates
-        CreateRealTimeThread(function()
-          local function swp(Table)
-            for i = 1, #Table do
-              SetWaypoint(Table[i],nil,choice[1].check2)
-            end
+        local function swp(Table)
+          for i = 1, #Table do
+            SetWaypoint(Table[i],nil,choice[1].check2)
           end
-          if value == "All" then
-            local Table1 = GetObjects({class = "Unit"}) or empty_table
-            local Table2 = GetObjects({class = "CargoShuttle"}) or empty_table
-            colourcount = colourcount + #Table1
-            colourcount = colourcount + #Table2
-            randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
-            swp(Table1)
-            swp(Table2)
-          else
-            local Table = GetObjects({class = value}) or empty_table
-            colourcount = colourcount + #Table
-            randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
-            swp(Table)
-          end
+        end
+        if value == "All" then
+          local Table1 = GetObjects({class = "Unit"}) or empty_table
+          local Table2 = GetObjects({class = "CargoShuttle"}) or empty_table
+          colourcount = colourcount + #Table1
+          colourcount = colourcount + #Table2
+          randcolours = cCodeFuncs.RandomColour(colourcount + 1)
+          swp(Table1)
+          swp(Table2)
+        else
+          local Table = GetObjects({class = value}) or empty_table
+          colourcount = colourcount + #Table
+          randcolours = cCodeFuncs.RandomColour(colourcount + 1)
+          swp(Table)
+        end
 
-          --remove any waypoints in the same pos
-          RemoveWPDupePos("WayPoint")
-          RemoveWPDupePos("Sphere")
-        end)
+        --remove any waypoints in the same pos
+        RemoveWPDupePos("WayPoint")
+        RemoveWPDupePos("Sphere")
       end
     end
 

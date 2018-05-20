@@ -9,6 +9,13 @@ local cTables = ChoGGi.Tables
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
+  cComFuncs.AddAction(
+    "[102]Debug/Reload Lua",
+    cMenuFuncs.ReloadLua,
+    nil,
+    "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it)."
+  )
+
   --object cloner
   cComFuncs.AddAction(
     "[102]Debug/Object Cloner",

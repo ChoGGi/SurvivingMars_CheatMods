@@ -657,7 +657,7 @@ end
               --hides overflow
               content:SetClip(true)
               --sets height
-              content:SetMaxHeight(168)
+              content:SetMaxHeight(256)
 
               section.OnMouseEnter = function()
                 content:SetClip(false)
@@ -665,7 +665,7 @@ end
               end
               section.OnMouseLeft = function()
                 content:SetClip(true)
-                content:SetMaxHeight(168)
+                content:SetMaxHeight(256)
               end
             end
 
