@@ -65,8 +65,10 @@ end
 #### To show user completed milestone
 ```
 --if you do want the little notification popup then call it like this instead
+local Msg = Msg
 Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
 Msg("SomethingUnique_WubbaLubbaDubDub")
+local MilestoneThreads = MilestoneThreads
 CreateRealTimeThread(function()
   local id = "WubbaLubbaDubDub"
   DeleteThread(MilestoneThreads[id])
