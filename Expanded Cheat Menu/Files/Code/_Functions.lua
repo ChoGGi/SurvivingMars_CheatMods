@@ -1174,7 +1174,7 @@ function cCodeFuncs.ChangeObjectColour(obj,Parent)
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
           if Parent then
-            local Attaches = tab[i]:GetAttaches()
+            local Attaches = tab[i].GetAttaches and tab[i]:GetAttaches() or empty_table
             for j = 1, #Attaches do
               if Attaches[j].class == obj.class then
                 if choice[1].check2 then
@@ -1255,7 +1255,7 @@ function cCodeFuncs.LightmodelBuild(Table)
 end
 
 function cCodeFuncs.DeleteAllAttaches(Obj)
-  local Attaches = Obj:GetAttaches()
+  local Attaches = Obj.GetAttaches and Obj:GetAttaches() or empty_table
   for i = #Attaches, 1, -1 do
     Attaches[i]:delete()
   end
@@ -1381,14 +1381,14 @@ function cCodeFuncs.ViewAndSelectObject(Obj)
   SelectObj(Obj)
 end
 
-function cCodeFuncs.DeleteObjects(obj)
+function cCodeFuncs.DeleteObject(obj)
   --the menu item sends itself
   if obj and not obj.class then
     --multiple selection from editor mode
     local objs = editor:GetSel()
     if next(objs) then
       for i = 1, #objs do
-        cCodeFuncs.DeleteObjects(objs[i])
+        cCodeFuncs.DeleteObject(objs[i])
       end
     else
       obj = cCodeFuncs.SelObject()

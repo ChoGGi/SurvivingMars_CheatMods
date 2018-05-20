@@ -62,7 +62,6 @@ if cTesting then
 end --Testing
 
 function cMsgFuncs.Testing_ClassesGenerate()
-
   ------
   print("Testing_ClassesGenerate")
 end
@@ -73,8 +72,8 @@ function cMsgFuncs.Testing_ClassesPreprocess()
   print("Testing_ClassesPreprocess")
 end --ClassesPreprocess
 
+--where we add new BuildingTemplates
 function cMsgFuncs.Testing_ClassesPostprocess()
-
   ------
   print("Testing_ClassesPostprocess")
 end

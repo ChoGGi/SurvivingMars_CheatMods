@@ -123,7 +123,7 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
 
   cComFuncs.AddAction(
     "[102]Debug/Delete Object(s)",
-    cCodeFuncs.DeleteObjects,
+    cCodeFuncs.DeleteObject,
     "Ctrl-Alt-Shift-D",
     "Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion.",
     "delete_objects.tga"

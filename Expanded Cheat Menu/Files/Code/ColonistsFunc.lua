@@ -19,14 +19,34 @@ function cMenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
   )
 end
 
+local function BringOutYourDead()
+  CreateRealTimeThread(function()
+    --gotta wait for a tad else log gets spammed with changepath and other stuff
+    Sleep(100)
+    local Table = GetObjects({class="Colonist"}) or empty_table
+    for i = 1, #Table do
+      if Table[i].ChoGGi_Soylent then
+        Table[i]:Done()
+        --Table[i]:PopAndCallDestructor()
+        ChoGGi.CodeFuncs.DeleteObject(Table[i])
+      end
+    end
+  end)
+end
+
 DeathReasons.ChoGGi_Soylent = "Evil Overlord"
+NaturalDeathReasons.ChoGGi_Soylent = true
 function cMenuFuncs.TheSoylentOption()
-  --can't drop BlackCubes
-  local list = {}
+  local UICity = UICity
+  local ChoGGi = ChoGGi
+  local DoneObject = DoneObject
+
+  --don't drop BlackCube/MysteryResource
+  local reslist = {}
   local all = AllResourcesList
   for i = 1, #all do
-    if all[i] ~= "BlackCube" then
-      list[#list+1] = all[i]
+    if all[i] ~= "BlackCube" and all[i] ~= "MysteryResource" then
+      reslist[#reslist+1] = all[i]
     end
   end
 
@@ -36,16 +56,17 @@ function cMenuFuncs.TheSoylentOption()
     end
 
     if res then
-      res = list[UICity:Random(1,#list)]
+      res = reslist[UICity:Random(1,#reslist)]
     else
       res = "Food"
     end
     PlaceResourcePile(MeatBag:GetVisualPos(), res, UICity:Random(1,5) * cConsts.ResourceScale)
-    --PlaceResourcePile(MeatBag:GetLogicalPos(), res, UICity:Random(1,5) * cConsts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
+    MeatBag.ChoGGi_Soylent = true
+    BringOutYourDead()
   end
 
-  --one at a time
+  --one meatbag at a time
   local sel = cCodeFuncs.SelObject()
   if sel and sel.class == "Colonist"then
     MeatbagsToSoylent(sel)
@@ -54,10 +75,24 @@ function cMenuFuncs.TheSoylentOption()
 
   --culling the herd
   local ItemList = {
-    {text = "Homeless",value = "Homeless"},
-    {text = "Unemployed",value = "Unemployed"},
-    {text = "Both",value = "Both"},
+    {text = " Homeless",value = "Homeless"},
+    {text = " Unemployed",value = "Unemployed"},
+    {text = " Renegade",value = "Renegade"},
+    {text = "Specialization: none",value = "none"},
   }
+
+  local function AddToList(Table,Text)
+    for i = 1, #Table do
+      ItemList[#ItemList+1] = {
+        text = Text .. Table[i],value = Table[i],idx = i,
+      }
+    end
+  end
+  AddToList(cTables.ColonistAges,"Age: ")
+  AddToList(cTables.ColonistBirthplaces,"Birthplace: ")
+  AddToList(cTables.ColonistGenders,"Gender: ")
+  AddToList(cTables.ColonistRaces,"Race: ")
+  AddToList(cTables.ColonistSpecializations,"Specialization: ")
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
@@ -68,35 +103,78 @@ function cMenuFuncs.TheSoylentOption()
       dome = sel.dome.handle
     end
 
-    local function Cull(Label)
-      local tab = UICity.labels[Label] or empty_table
-      for i = 1, #tab do
+    local Table
+    local function CullLabel(Label)
+      Table = UICity.labels[Label] or empty_table
+      for i = #Table, 1, -1 do
         if dome then
-          if tab[i].dome and tab[i].dome.handle == dome then
-            MeatbagsToSoylent(Obj,check1)
+          if Table[i].dome and Table[i].dome.handle == dome then
+            MeatbagsToSoylent(Table[i],check1)
           end
         else
-          MeatbagsToSoylent(Obj,check1)
+          MeatbagsToSoylent(Table[i],check1)
+        end
+      end
+    end
+    local function Cull(Trait,TraitType,Race)
+      --only race is stored as number (maybe there's a cock^?^?^?^?CoC around)
+      Trait = Race or Trait
+      Table = UICity.labels.Colonist or empty_table
+      for i = #Table, 1, -1 do
+        if Table[i][TraitType] == Trait then
+          if dome then
+            if Table[i].dome and Table[i].dome.handle == dome then
+              MeatbagsToSoylent(Table[i],check1)
+            end
+          else
+            MeatbagsToSoylent(Table[i],check1)
+          end
         end
       end
     end
 
-    if value == "Both" then
-      Cull("Homeless")
-      Cull("Unemployed")
-    elseif value == "Homeless" or value == "Unemployed" then
-      Cull(value)
+    if value == "Homeless" or value == "Unemployed" then
+      CullLabel(value)
+    elseif cTables.ColonistSpecializations[value] or value == "none" then
+      CullLabel(value)
+    elseif cTables.ColonistAges[value] then
+      Cull(value,"age_trait")
+    elseif cTables.ColonistBirthplaces[value] then
+      Cull(value,"birthplace")
+    elseif cTables.ColonistGenders[value] then
+      Cull(value,"gender")
+    elseif cTables.ColonistRaces[value] then
+      Cull(value,"race",choice[1].idx)
+    elseif value == "Renegade" then
+      Cull("traits",value)
     end
-    cComFuncs.MsgPopup("Monster... " .. choice[1].text,
-      "Snacks","UI/Icons/Sections/Food_1.tga"
-    )
+
+    if value == "Child" then
+      --wonder why they never added this to fallout 3?
+      cComFuncs.MsgPopup(
+        "Congratulations: You've been awarded the Childkiller title.\n\n\n\nI think somebody has been playing too much Fallout...",
+        "Childkiller",
+        "UI/Icons/Logos/logo_09.tga",
+        true
+      )
+      if not UICity.ChoGGi.Childkiller then
+        Msg("ChoGGi_Childkiller")
+        UICity.ChoGGi.Childkiller = true
+      end
+    else
+      cComFuncs.MsgPopup(
+        "Wholesale slaughter: " .. choice[1].text,
+        "Snacks",
+        "UI/Icons/Sections/Food_1.tga"
+      )
+    end
   end
 
   local Check1 = "Random resource"
   local Check1Hint = "Drops random resource instead of food."
   local Check2 = "Dome Only"
   local Check2Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles)."
+  local hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles).\n\nThis will not effect your applicants/game failure (genocide without reprisal)."
   cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
@@ -869,6 +947,13 @@ function cMenuFuncs.SetColonistsRace(iType)
       end
 
     end
+    if value then
+      if not UICity.ChoGGi.DaddysLittleHitler then
+        Msg("ChoGGi_DaddysLittleHitler")
+        UICity.ChoGGi.DaddysLittleHitler = true
+      end
+    end
+
     cComFuncs.MsgPopup("Nationalsozialistische Rassenhygiene: " .. choice[1].race,
       "Colonists",UsualIcon
     )

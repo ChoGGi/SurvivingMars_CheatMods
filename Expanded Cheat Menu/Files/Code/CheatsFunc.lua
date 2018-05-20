@@ -235,7 +235,7 @@ function cMenuFuncs.ShowScanAndMapOptions()
 
     cSettingFuncs.WriteSettings()
     cComFuncs.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
-      "Scanner","UI/Icons/Notifications/scan.tga",true
+      "Scanner","UI/Achievements/TheRabbitHole.tga",true
     )
   end
 

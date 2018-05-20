@@ -31,7 +31,7 @@ function cMenuFuncs.DeleteAllSelectedObjects(s)
   local CallBackFunc = function()
     CreateRealTimeThread(function()
       for i = 1, #objs do
-        cCodeFuncs.DeleteObjects(objs[i])
+        cCodeFuncs.DeleteObject(objs[i])
       end
     end)
   end

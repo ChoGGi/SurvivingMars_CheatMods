@@ -21,9 +21,9 @@ function cComFuncs.MsgPopup(Msg,Title,Icon,Size)
     Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
     --local id = "ChoGGi_" .. AsyncRand()
     local id = AsyncRand()
-    local timeout = 8000
+    local timeout = 10000
     if Size then
-      timeout = 15000
+      timeout = 25000
     end
     if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
       CreateRealTimeThread(function()

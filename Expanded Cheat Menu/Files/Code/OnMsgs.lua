@@ -96,6 +96,11 @@ function OnMsg.LoadingScreenPreClose()
     return
   end
 
+  --place to store per-game values
+  if not UICity.ChoGGi then
+    UICity.ChoGGi = {}
+  end
+
   local ChoGGi = ChoGGi
   local Temp = ChoGGi.Temp
 
@@ -170,6 +175,41 @@ function OnMsg.LoadingScreenPreClose()
   end
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
+
+-------------------do the above stuff before
+
+  --show completed hidden milestones
+  if UICity.ChoGGi.DaddysLittleHitler then
+    PlaceObj("Milestone", {
+      SortKey = 0,
+      base_score = -2,
+      bonus_score = 0,
+      bonus_score_expiration = 0,
+      display_name = "Deutsche Gesellschaft fur Rassenhygiene",
+      group = "Default",
+      id = "DaddysLittleHitler"
+    })
+    --just in case (gotta make sure that -30 shows up)
+    if not MilestoneCompleted.DaddysLittleHitler then
+      MilestoneCompleted.DaddysLittleHitler = GameTime()
+    end
+  end
+  if UICity.ChoGGi.Childkiller then
+    PlaceObj("Milestone", {
+      SortKey = 0,
+      base_score = -67,
+      -- -67 = -30 : MulDivRound(base_score, ChallengeRating, 100)
+      bonus_score = 0,
+      bonus_score_expiration = 0,
+      display_name = "Childkiller (You evil, evil person.)",
+      group = "Default",
+      id = "Childkiller"
+    })
+    --just in case (gotta make sure that -30 shows up)
+    if not MilestoneCompleted.Childkiller then
+      MilestoneCompleted.Childkiller = GameTime()
+    end
+  end
 
   --add custom lightmodel
   local data = DataInstances.Lightmodel
@@ -881,4 +921,35 @@ end
 --battery
 function OnMsg.ChoGGi_SpawnedElectricityStorage(Obj)
   CheckForRate(Obj)
+end
+
+--hidden milestones
+function OnMsg.ChoGGi_DaddysLittleHitler()
+  PlaceObj("Milestone", {
+    SortKey = 0,
+    base_score = -2,
+    bonus_score = 0,
+    bonus_score_expiration = 0,
+    display_name = "Deutsche Gesellschaft fur Rassenhygiene",
+    group = "Default",
+    id = "DaddysLittleHitler"
+  })
+  if not MilestoneCompleted.DaddysLittleHitler then
+    MilestoneCompleted.DaddysLittleHitler = GameTime()
+  end
+end
+
+function OnMsg.ChoGGi_Childkiller()
+  PlaceObj("Milestone", {
+    SortKey = 0,
+    base_score = -67,
+    bonus_score = 0,
+    bonus_score_expiration = 0,
+    display_name = "Childkiller (You evil, evil person.)",
+    group = "Default",
+    id = "Childkiller"
+  })
+  if not MilestoneCompleted.Childkiller then
+    MilestoneCompleted.Childkiller = GameTime()
+  end
 end

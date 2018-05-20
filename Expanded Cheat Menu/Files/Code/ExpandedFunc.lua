@@ -520,7 +520,7 @@ end
 function cMenuFuncs.RemoveMissingClassObjects()
   local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
   for i = 1, #objs do
-    cCodeFuncs.DeleteObjects(objs[i])
+    cCodeFuncs.DeleteObject(objs[i])
   end
 end
 
@@ -528,7 +528,7 @@ function cMenuFuncs.MirrorSphereStuck()
   local objs = GetObjects({class = "MirrorSphere"}) or empty_table
   for i = 1, #objs do
     if not IsValid(objs[i].target) then
-      cCodeFuncs.DeleteObjects(objs[i])
+      cCodeFuncs.DeleteObject(objs[i])
     end
   end
   objs = GetObjects({class = "ParSystem"}) or empty_table
