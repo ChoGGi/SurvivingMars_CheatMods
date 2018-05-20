@@ -703,12 +703,30 @@ function cComFuncs.RemoveFromTable(Table,Type,Text)
 end
 
 --RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1,ResourceStockpile=1},"class")
+--RemoveFromTable(GetObjects({class="PropertyObject"}),nil,nil,"working")
 function cComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
-      if not ExcludeList[Obj[Type]] then
-        return Obj
-      elseif IncludeList[Obj[Type]] then
+      if ExcludeList or IncludeList then
+        if not ExcludeList[Obj[Type]] then
+          return Obj
+        elseif IncludeList[Obj[Type]] then
+          return Obj
+        end
+      else
+        if Obj[Type] then
+          return Obj
+        end
+      end
+    end
+  },Table)
+end
+
+--FilterFromTableFunc(GetObjects({class="PropertyObject"}),"IsKindOf","Residence")
+function cComFuncs.FilterFromTableFunc(Table,Func,Value)
+  return FilterObjects({
+    filter = function(Obj)
+      if Obj[Func](Obj,Value) then
         return Obj
       end
     end

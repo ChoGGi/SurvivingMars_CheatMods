@@ -621,15 +621,10 @@ function cMenuFuncs.ProjectMorpheusRadarFellDown()
     tab[i]:ChangeWorkingStateAnim(true)
   end
 end
-
 function cMenuFuncs.AttachBuildingsToNearestWorkingDome()
-  local tab = UICity.labels.Residence or empty_table
-  for i = 1, #tab do
-    cCodeFuncs.AttachToNearestDome(tab[i])
-  end
-  tab = UICity.labels.Workplace or empty_table
-  for i = 1, #tab do
-    cCodeFuncs.AttachToNearestDome(tab[i])
+  local Table = UICity.labels.InsideBuildings or empty_table
+  for i = 1, #Table do
+    cCodeFuncs.AttachToNearestDome(Table[i])
   end
 
   cComFuncs.MsgPopup("Buildings attached.",

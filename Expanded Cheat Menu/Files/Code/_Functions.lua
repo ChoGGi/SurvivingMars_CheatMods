@@ -155,23 +155,19 @@ function cCodeFuncs.GetTravelTimeMarsEarth()
 end
 
 function cCodeFuncs.AttachToNearestDome(building)
-  --ignore outdoor buildings, and if there aren't any domes
-  local work = UICity.labels.Domes_Working
-  if building.dome_required ~= true or not work or (work and next(work) == nil) then
-    return
-  end
-
-  --check for domes and dome ruins don't have air/water/elec
-  if (building.parent_dome and not building.parent_dome.air) or not building.parent_dome then
-    --find the nearest working dome
-    local dome = FindNearestObject(work,building)
+  local workingdomes = cComFuncs.FilterFromTable(GetObjects({class="Dome"}),nil,nil,"working")
+  --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
+  if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and workingdomes and #workingdomes > 0 then
+    --find the nearest dome
+    local dome = FindNearestObject(workingdomes,building)
     if dome and dome.labels then
       building.parent_dome = dome
-      --which type is it (check for getlabels or some such)
-      if building.closed_shifts then
-        dome.labels.Workplace[#dome.labels.Workplace+1] = building
-      elseif building.colonists then
-        dome.labels.Workplace[#dome.labels.Residence+1] = building
+      --add to dome labels
+      dome:AddToLabel("InsideBuildings", building)
+      if IsKindOf(building,"Workplace") then
+        dome:AddToLabel("Workplace", building)
+      elseif IsKindOf(building,"Residence") then
+        dome:AddToLabel("Residence", building)
       end
     end
   end
