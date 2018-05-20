@@ -4,6 +4,7 @@
 --Use this to when it gets completed (I'm using UICity to store as it's saved per-game)
 --local is faster then global if you call it more then once
 local UICity = UICity
+local Msg = Msg
 --check if it's already been enabled
 if not UICity.SomethingUnique_WubbaLubbaDubDub then
   UICity.SomethingUnique_WubbaLubbaDubDub = true
@@ -32,8 +33,9 @@ function OnMsg.SomethingUnique_WubbaLubbaDubDub_OnMsg()
     id = "WubbaLubbaDubDub"
   })
   --shows the green checkmark in milestone dialog, and the date next to it
-  if not MilestoneCompleted.WubbaLubbaDubDub then
-    MilestoneCompleted.WubbaLubbaDubDub = 479000000 --sol 666
+  local mc = MilestoneCompleted
+  if not mc.WubbaLubbaDubDub then
+    mc.WubbaLubbaDubDub = 479000000 --sol 666
   end
 end
 ```
@@ -41,7 +43,6 @@ end
 ```
 --this one is used after milestone is unlocked and the game loads
 function OnMsg.LoadGame()
-
   if UICity.ChoGGi.WubbaLubbaDubDub then
     PlaceObj("Milestone", {
       --no need for "Complete" as it's already done
@@ -53,8 +54,9 @@ function OnMsg.LoadGame()
       id = "WubbaLubbaDubDub"
     })
     --it doesn't hurt
-    if not MilestoneCompleted.WubbaLubbaDubDub then
-      MilestoneCompleted.WubbaLubbaDubDub = 479000000
+    local mc = MilestoneCompleted
+    if not mc.WubbaLubbaDubDub then
+      mc.WubbaLubbaDubDub = 479000000
     end
   end
 end
