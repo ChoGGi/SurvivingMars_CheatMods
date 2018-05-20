@@ -36,6 +36,7 @@ function OnMsg.ClassesGenerate()
     __parents = {"InitDone"},
     state = "new",
     shuttle = false,
+    scanning = false,
     dest_pos = false
   }
 
@@ -80,8 +81,8 @@ function OnMsg.ClassesBuilt()
   end
   --
   function CargoShuttle:ChoGGi_DefenceTickD(ChoGGi)
-    if self.ChoGGi_FollowMouseShuttle then
-      return cCodeFuncs.DefenceTick(self,ChoGGi.Temp.ShuttleRocketDD,10000)
+    if self.ChoGGi_FollowMouseShuttle and ChoGGi.Temp.CargoShuttleThreads[self.handle] then
+      return cCodeFuncs.DefenceTick(self,ChoGGi.Temp.ShuttleRocketDD)
     end
   end
 
@@ -105,10 +106,10 @@ function OnMsg.ClassesBuilt()
       local dest = GetTerrainCursor()
       local x = pos:x()
       local y = pos:y()
-      if x ~= dest:x() or y ~= dest:y() then
+      --if x ~= dest:x() or y ~= dest:y() then
         --don't try to fly if pos or dest aren't different (spams log)
         local path = self:CalcPath(pos, dest)
-        local destp = path[#path][#path[#path]]
+        local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
         --check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
         --and if we move when we're too close it's jerky
         local dist = point(x,y):Dist(destp) < 50000 and point(x,y):Dist(destp) > 2000
@@ -116,7 +117,8 @@ function OnMsg.ClassesBuilt()
           self.hover_height = 0
           --rest on ground
           if idle > 50 and pos:z() ~= terrain.GetHeight(pos) then
-            self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000)))
+            --self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-5000,5000),y+UICity:Random(-5000,5000))))
+            self:FollowPathCmd(self:CalcPath(pos, point(x+500,y+500)))
             --this may not have been set so make sure we turn off dust
             self.ChoGGi_Landed = true
             self.ChoGGi_DustOn = nil
@@ -127,7 +129,7 @@ function OnMsg.ClassesBuilt()
             --reset idle count
             idle = 0
             --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
-            self.hover_height = 2000
+            self.hover_height = 1000
             --from pinsdlg
             if newpos then
               path = self:CalcPath(pos, newpos)
@@ -139,19 +141,18 @@ function OnMsg.ClassesBuilt()
             end
             self:FollowPathCmd(path)
             --re-add the dust after a bit
-            CreateRealTimeThread(function()
-              Sleep(250)
-              duston(self)
-            end)
+            Sleep(250)
+            duston(self)
           end
         end
         if sel and sel ~= self then
           if IsKindOf(sel,"SubsurfaceAnomaly") then
             --scan nearby SubsurfaceAnomaly
             local anomaly = NearestObject(pos,GetObjects({class="SubsurfaceAnomaly"}),2000)
-            if anomaly and sel == anomaly then
-              --duston(self)
+            --make sure it's the right one, and not already being scanned by another
+            if anomaly and sel == anomaly and not ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
               PlayFX("ArtificialSunCharge", "start", anomaly)
+              ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
               cCodeFuncs.AnalyzeAnomaly(self, anomaly)
               PlayFX("ArtificialSunCharge", "end", anomaly)
             end
@@ -178,16 +179,13 @@ function OnMsg.ClassesBuilt()
               self:PickUp()
             end
           end
-        end
+        --end
       end
       --so shuttle follows the mouse after awhile if shuttle is too far away
       idle = idle + 1
       Sleep(300 + idle)
     --about 4 sols then send it back home
     until GameTime() - timenow > 2000000
-  end
-  function CargoShuttle:Analyze(anomaly)
-    cCodeFuncs.AnalyzeAnomaly(self,anomaly)
   end
   function CargoShuttle:FireRocket(spot, target, rocket_class, luaobj)
     local pos = self:GetSpotPos(1)
@@ -432,6 +430,15 @@ function OnMsg.SelectionRemoved()
 end
 
 function OnMsg.NewDay() --newsol
+  local ChoGGi = ChoGGi
+  local UICity = UICity
+
+  --clean up old handles
+  for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
+    if not IsValid(HandleToObject[h]) then
+      ChoGGi.Temp.CargoShuttleThreads[h] = nil
+    end
+  end
 
   --sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
@@ -446,10 +453,9 @@ function OnMsg.NewDay() --newsol
   end
 
   --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-  local labels = UICity.labels
   if UICity.labels.ChoGGi_GridElements then
     local function ValidGridElements(Label)
-      local Table = labels[Label]
+      local Table = UICity.labels[Label]
       for i = #Table, 1, -1 do
         if not IsValid(Table[i]) then
           table.remove(Table,i)

@@ -332,13 +332,13 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function ShuttleHub:CheatShuttleReturnF()
     for _, s_i in pairs(self.shuttle_infos) do
       local shuttle = s_i.shuttle_obj
-      if shuttle and shuttle.ChoGGi_FollowMouse then
+      if shuttle and shuttle.ChoGGi_FollowMouseShuttle then
         shuttle.ChoGGi_FollowMouseShuttle = nil
         shuttle:SetCommand("Home")
       end
     end
   end
-  function ShuttleHub:CheatShuttleFollower()
+  local function CheatShuttleSpawn(self,which)
     for _, s_i in pairs(self.shuttle_infos) do
       if s_i:CanLaunch() then
         --ShuttleInfo:Launch(task)
@@ -359,22 +359,36 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
         local slot = hub:ReserveLandingSpot(shuttle)
         shuttle:SetPos(slot.pos)
         --CargoShuttle:Launch()
-        shuttle:PushDestructor(function(self)
-          self.hub:ShuttleLeadOut(self)
-          self.hub:FreeLandingSpot(self)
+        shuttle:PushDestructor(function(s)
+          s.hub:ShuttleLeadOut(s)
+          s.hub:FreeLandingSpot(s)
         end)
-        --shuttle:WaitingStart()
-        --shuttle:SetState("fly")
+        --do we attack dustdevils?
+        if which then
+          ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = true
+          shuttle:SetColor1(-1)
+          shuttle:SetColor2(1)
+          shuttle:SetColor3(-13892861)
+        else
+          ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = false
+          shuttle:SetColor1(-16711941)
+          shuttle:SetColor2(-16760065)
+          shuttle:SetColor3(-1)
+        end
+        shuttle.ChoGGi_FollowMouseShuttle = true
         --follow that cursor little minion
         shuttle:SetCommand("ChoGGi_FollowMouse")
-        CreateRealTimeThread(function()
-          Sleep(2000)
-          SelectObj(shuttle)
-        end)
         --since we found a shuttle break the loop
         break
       end
     end
+  end
+
+  function ShuttleHub:CheatShuttleAttacker()
+    CheatShuttleSpawn(self,true)
+  end
+  function ShuttleHub:CheatShuttleFriend()
+    CheatShuttleSpawn(self)
   end
 --CheatBattCapDbl
   local function CheatBattCapDbl(self)
@@ -572,8 +586,10 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       SetHint(action,"Turn on all work shifts.")
 
 --Shuttles
-    elseif action.ActionId == "ShuttleFollower" then
+    elseif action.ActionId == "ShuttleAttacker" then
       SetHint(action,"Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and (one day) pick up resources you've selected.\nPin it and right-click the pin to have it come to your position.")
+    elseif action.ActionId == "ShuttleFriend" then
+      SetHint(action,"Same as Attacker, but doesn't attack dustdevils.")
     elseif action.ActionId == "ShuttleReturnF" then
       SetHint(action,"Make all followers return home.")
 --RC

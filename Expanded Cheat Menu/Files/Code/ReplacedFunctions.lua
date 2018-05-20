@@ -56,7 +56,6 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
 
   cComFuncs.SaveOrigFunc("DefenceTower","GameInit")
   function DefenceTower:GameInit()
-    print("DefenceTower_GameInit")
     local ChoGGi = ChoGGi
     --self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
     self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
@@ -77,21 +76,23 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cComFuncs.SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
     local ChoGGi = ChoGGi
-    self.ChoGGi_FollowMouseShuttle = true
-    self.shoot_range = 25 * cConsts.guim
-    self.reload_time = const.HourDuration
-    self.track_thread = false
-    self.defence_threadD = CreateGameTimeThread(function()
-      while IsValid(self) and not self.destroyed do
-        if self.working then
-          if not self:ChoGGi_DefenceTickD(ChoGGi) then
+    --if it's an attack shuttle
+    if ChoGGi.Temp.CargoShuttleThreads[self.handle] then
+      self.shoot_range = 25 * cConsts.guim
+      self.reload_time = const.HourDuration
+      self.track_thread = false
+      self.ChoGGi_defence_threadD = CreateGameTimeThread(function()
+        while IsValid(self) and not self.destroyed do
+          if self.working then
+            if not self:ChoGGi_DefenceTickD(ChoGGi) then
+              Sleep(1000)
+            end
+          else
             Sleep(1000)
           end
-        else
-          Sleep(1000)
         end
-      end
-    end)
+      end)
+    end
     return cOrigFuncs.CargoShuttle_GameInit(self)
   end
 
@@ -255,7 +256,9 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
               CreateRealTimeThread(function()
                 --give it a bit for user to move mouse away from pinsdlg so shuttle doesn't fly there
                 Sleep(1500)
-                self.context:SetCommand("ChoGGi_FollowMouse",GetTerrainCursor())
+                if not self.context.scanning then
+                  self.context:SetCommand("ChoGGi_FollowMouse",GetTerrainCursor())
+                end
               end)
             end
           end
@@ -831,7 +834,7 @@ end
     if last and ChoGGi.UserSettings.UseLastOrientation then
       --shouldn't fail anymore, but we'll still pcall for now
       pcall(function()
-        ret[1]:SetAngle(last:GetAngle())
+        ret[1]:SetAngle(last.GetAngle and last:GetAngle() or 0)
         --ret:SetOrientation(last:GetOrientation())
         --check if angle is slightly off?
       end)

@@ -18,10 +18,17 @@ ChoGGi = {
   --Defaults.lua
   SettingFuncs = {},
   --temporary settings that aren't saved to SettingsFile
-  Temp = {StartupMsgs = {}, DefenceTowerRocketDD = {}, ShuttleRocketDD = {}},
+  Temp = {
+    StartupMsgs = {},
+    DefenceTowerRocketDD = {},
+    ShuttleRocketDD = {},
+    CargoShuttleThreads = {},
+    CargoShuttleScanningAnomaly = {},
+  },
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
 }
+
 local ChoGGi = ChoGGi
 local Mods = Mods
 ChoGGi._VERSION = Mods[ChoGGi.id].version

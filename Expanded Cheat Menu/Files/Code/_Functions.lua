@@ -1029,7 +1029,7 @@ function cCodeFuncs.RetType(Obj)
   end
 end
 function cCodeFuncs.ChangeObjectColour(obj,Parent)
-  if not obj and not obj:IsKindOf("ColorizableObject") then
+  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     cComFuncs.MsgPopup("Can't colour object","Colour")
     return
   end
@@ -1490,12 +1490,17 @@ function cCodeFuncs.AnalyzeAnomaly(self,anomaly)
     end
   end
   self:PopAndCallDestructor()
+  ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = nil
 end
 function cCodeFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
 function cCodeFuncs.DefenceTick(self,AlreadyFired)
+  if type(AlreadyFired) ~= "table" then
+    print("Error: ShuttleRocketDD isn't a table")
+  end
+
   --list of dustdevils on map
   local hostiles = g_DustDevils or empty_table
   if IsValidThread(self.track_thread) then
@@ -1554,7 +1559,6 @@ function cCodeFuncs.DefenceTick(self,AlreadyFired)
   --remove only remove devil handles if they're actually gone
   if #AlreadyFired > 0 then
     CreateRealTimeThread(function()
-      --for i = 1, #AlreadyFired do
       for i = #AlreadyFired, 1, -1 do
         if not IsValid(AlreadyFired[i]) then
           AlreadyFired[i] = nil
