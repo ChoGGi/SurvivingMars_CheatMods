@@ -12,6 +12,7 @@ local Sleep = Sleep
 local GetTerrainCursor = GetTerrainCursor
 local GameTime = GameTime
 local GetObjects = GetObjects
+local CreateGameTimeThread = CreateGameTimeThread
 
 --[[
 add files for:
@@ -50,6 +51,39 @@ Lua\Buildings\SupplyGrid.lua
 Lua\X\Infopanel.lua
   InfopanelObj:CreateCheatActions
   InfopanelDlg:Open
+--]]
+
+--[[
+fix one bug in Drone Build Failure.savegame
+https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-drone-build-failure.1099375/
+function TaskRequester:ConnectToCommandCenters()
+	local dome = IsObjInDome(self)
+	if dome then
+		for i = 1, #(dome.command_centers or "") do
+			local cc = dome.command_centers[i]
+			self:AddCommandCenter(cc)
+		end
+	else
+		command_center_search.area = self
+		ForEach(command_center_search, self)
+		command_center_search.area = false
+	end
+end
+
+function TaskRequester:ConnectToOtherBuildingCommandCenters(other_building)
+	local dome = IsObjInDome(other_building) --if other bld is in dome connect to dome's cc's instead.
+
+	if dome then
+		for i = 1, #(dome.command_centers or "") do
+			local cc = dome.command_centers[i]
+			self:AddCommandCenter(cc)
+		end
+	else
+		command_center_search.area = other_building
+		ForEach(command_center_search, self, other_building)
+		command_center_search.area = false
+	end
+end
 --]]
 
 function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
@@ -232,7 +266,38 @@ end
   end
 end --OnMsg
 
+function cMsgFuncs.ReplacedFunctions_ClassesPreprocess()
+
+  --fix the arcology dome spot
+  function SpireBase:GameInit()
+    print("SpireBase")
+    local dome = IsObjInDome(self)
+    if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
+      local frame = PlaceObject("Shapeshifter")
+      frame:ChangeEntity(self.spire_frame_entity)
+      local spot = dome:GetNearestSpot("idle", "Spireframe", self)
+
+      --local pos = dome:GetSpotPos(spot)
+      local pos = self:GetSpotPos(1)
+      frame:SetAttachOffset(pos - self:GetPos())
+      self:Attach(frame, self:GetSpotBeginIndex("Origin"))
+    end
+  end
+
+end
+
 function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
+
+  cComFuncs.SaveOrigFunc("PinsDlg","GetPinConditionImage")
+  function PinsDlg:GetPinConditionImage(obj)
+    local ret = cOrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
+    if obj.command == "Dead" and not obj.working then
+      print(obj.class)
+      return "UI/Icons/pin_not_working.tga"
+    else
+      return ret
+    end
+  end
 
   --gives an error when we spawn shuttle since i'm using a fake task
   cComFuncs.SaveOrigFunc("CargoShuttle","OnTaskAssigned")
@@ -253,7 +318,7 @@ function cMsgFuncs.ReplacedFunctions_ClassesBuilt()
         if pin.Icon == "UI/Icons/Buildings/res_shuttle.tga" then
           function pin:OnMouseButtonDown(pt, button)
             if button == "R" then
-              CreateRealTimeThread(function()
+              CreateGameTimeThread(function()
                 --give it a bit for user to move mouse away from pinsdlg so shuttle doesn't fly there
                 Sleep(1500)
                 if not self.context.scanning then
@@ -587,7 +652,7 @@ end
   function InfopanelDlg:Open(...)
     --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
     local ret = {cOrigFuncs.InfopanelDlg_Open(self,...)}
-    CreateRealTimeThread(function()
+    CreateGameTimeThread(function()
       local TGetID = TGetID
       local c = self.idContent
 

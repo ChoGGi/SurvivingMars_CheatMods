@@ -8,7 +8,6 @@ local cTables = ChoGGi.Tables
 
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-
   cComFuncs.AddAction(
     "[102]Debug/Reload Lua",
     cMenuFuncs.ReloadLua,
@@ -33,8 +32,16 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   cComFuncs.AddAction(
-    "[102]Debug/Visible Path Markers",
-    cMenuFuncs.SetVisiblePathMarkers,
+    "[102]Debug/Path Markers Real Time",
+    cMenuFuncs.SetPathMarkersGameTime,
+    "Ctrl-Numpad .",
+    "Maps paths in realtime.",
+    "ViewCamPath.tga"
+  )
+
+  cComFuncs.AddAction(
+    "[102]Debug/Path Markers Visible",
+    cMenuFuncs.SetPathMarkersVisible,
     "Ctrl-Numpad 0",
     "Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.",
     "ViewCamPath.tga"

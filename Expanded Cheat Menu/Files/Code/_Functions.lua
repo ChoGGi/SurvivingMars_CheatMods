@@ -2,8 +2,40 @@ local cTables = ChoGGi.Tables
 local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
 local cTesting = ChoGGi.Temp.Testing
-
 local cCodeFuncs = ChoGGi.CodeFuncs
+--functions only
+local CreateGameTimeThread = CreateGameTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
+local Sleep = Sleep
+local GetObjects = GetObjects
+local FindNearestObject = FindNearestObject
+local NearestObject = NearestObject
+local IsKindOf = IsKindOf
+local AsyncFileDelete = AsyncFileDelete
+local GetInGameInterface = GetInGameInterface
+local OpenXBuildMenu = OpenXBuildMenu
+local CloseXDialog = CloseXDialog
+local point = point
+local AsyncRand = AsyncRand
+local HexGetNearestCenter = HexGetNearestCenter
+local IsBox = IsBox
+local empty_table = empty_table
+local FilterObjects = FilterObjects
+local ViewPos = ViewPos
+local SelectObj = SelectObj
+local DestroyBuildingImmediate = DestroyBuildingImmediate
+local _InternalTranslate = _InternalTranslate
+local T = T
+local IsValid = IsValid
+local MulDivRound = MulDivRound
+local GameTime = GameTime
+local RebuildInfopanel = RebuildInfopanel
+local Msg = Msg
+local IsValidThread = IsValidThread
+local PlayFX = PlayFX
+--classes, but we only set
+local editor = editor
+local cameraRTS = cameraRTS
 
 --any funcs called from Code/*.lua
 
@@ -34,6 +66,7 @@ cs = terminal.GetMousePos --pos on screen, not map
 
 --check if tech is researched before we set these consts (activated from menu items)
 function cCodeFuncs.GetSpeedDrone()
+  local UICity = UICity
   local MoveSpeed = cConsts.SpeedDrone
 
   if UICity and UICity:IsTechResearched("LowGDrive") then
@@ -49,6 +82,7 @@ function cCodeFuncs.GetSpeedDrone()
 end
 
 function cCodeFuncs.GetSpeedRC()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("LowGDrive") then
     local p = cComFuncs.ReturnTechAmount("LowGDrive","move_speed")
     return cConsts.SpeedRC + cConsts.SpeedRC * p
@@ -57,6 +91,7 @@ function cCodeFuncs.GetSpeedRC()
 end
 
 function cCodeFuncs.GetCargoCapacity()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("FuelCompression") then
     local a = cComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
     return cConsts.CargoCapacity + a
@@ -65,6 +100,7 @@ function cCodeFuncs.GetCargoCapacity()
 end
 --
 function cCodeFuncs.GetCommandCenterMaxDrones()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("DroneSwarm") then
     local a = cComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
     return cConsts.CommandCenterMaxDrones + a
@@ -73,6 +109,7 @@ function cCodeFuncs.GetCommandCenterMaxDrones()
 end
 --
 function cCodeFuncs.GetDroneResourceCarryAmount()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("ArtificialMuscles") then
     local a = cComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
     return cConsts.DroneResourceCarryAmount + a
@@ -81,6 +118,7 @@ function cCodeFuncs.GetDroneResourceCarryAmount()
 end
 --
 function cCodeFuncs.GetLowSanityNegativeTraitChance()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("SupportiveCommunity") then
     local p = cComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
     --[[
@@ -94,6 +132,7 @@ function cCodeFuncs.GetLowSanityNegativeTraitChance()
 end
 --
 function cCodeFuncs.GetMaxColonistsPerRocket()
+  local UICity = UICity
   local PerRocket = cConsts.MaxColonistsPerRocket
   if UICity and UICity:IsTechResearched("CompactPassengerModule") then
     local a = cComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
@@ -107,6 +146,7 @@ function cCodeFuncs.GetMaxColonistsPerRocket()
 end
 --
 function cCodeFuncs.GetNonSpecialistPerformancePenalty()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("GeneralTraining") then
     local a = cComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
     return cConsts.NonSpecialistPerformancePenalty - a
@@ -115,6 +155,7 @@ function cCodeFuncs.GetNonSpecialistPerformancePenalty()
 end
 --
 function cCodeFuncs.GetRCRoverMaxDrones()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("RoverCommandAI") then
     local a = cComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
     return cConsts.RCRoverMaxDrones + a
@@ -123,6 +164,7 @@ function cCodeFuncs.GetRCRoverMaxDrones()
 end
 --
 function cCodeFuncs.GetRCTransportGatherResourceWorkTime()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("TransportOptimization") then
     local p = cComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
     return cConsts.RCTransportGatherResourceWorkTime * p
@@ -131,6 +173,7 @@ function cCodeFuncs.GetRCTransportGatherResourceWorkTime()
 end
 --
 function cCodeFuncs.GetRCTransportStorageCapacity()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("TransportOptimization") then
     local a = cComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
     return cConsts.RCTransportStorageCapacity + (a * cConsts.ResourceScale)
@@ -139,6 +182,7 @@ function cCodeFuncs.GetRCTransportStorageCapacity()
 end
 --
 function cCodeFuncs.GetTravelTimeEarthMars()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
     local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
     return cConsts.TravelTimeEarthMars * p
@@ -147,6 +191,7 @@ function cCodeFuncs.GetTravelTimeEarthMars()
 end
 --
 function cCodeFuncs.GetTravelTimeMarsEarth()
+  local UICity = UICity
   if UICity and UICity:IsTechResearched("PlasmaRocket") then
     local p = cComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
     return cConsts.TravelTimeMarsEarth * p
@@ -175,15 +220,18 @@ end
 
 --toggle working status
 function cCodeFuncs.ToggleWorking(building)
-  CreateRealTimeThread(function()
-    building:ToggleWorking()
-    Sleep(5)
-    building:ToggleWorking()
-  end)
+  if IsValid(building) then
+    CreateGameTimeThread(function()
+      building:ToggleWorking()
+      Sleep(5)
+      building:ToggleWorking()
+    end)
+  end
 end
 
 function cCodeFuncs.SetCameraSettings()
 --cameraRTS.GetProperties(1)
+local camera = camera
 
   --size of activation area for border scrolling
   local BorderScrollingArea = ChoGGi.UserSettings.BorderScrollingArea
@@ -319,13 +367,14 @@ end
 
 function cCodeFuncs.ShowBuildMenu(iWhich)
   --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, have to check for a msg to use)
+  local BuildCategories = BuildCategories
   local igi = GetInGameInterface()
   if not igi or not igi:GetVisible() then
     return
   end
   local pinsdlg = false
   for i = 1, #igi do
-    if igi.class == "PinsDlg" then
+    if igi[i].class == "PinsDlg" then
       pinsdlg = true
     end
   end
@@ -697,11 +746,9 @@ function cCodeFuncs.GetNearestIdleDrone(Bld)
   end
 
   --get an idle drone
-  local drone
   for i = 1, #cc do
     if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
       return cc[i]
-      --break
     end
   end
 end
@@ -744,7 +791,6 @@ function cCodeFuncs.RandomColour(Amount)
   end
   local randcolors = {}
   local RetTableNoDupes = cComFuncs.RetTableNoDupes
-  local AsyncRand = AsyncRand
   while true do
     randcolors[#randcolors+1] = AsyncRand(16777216) * -1
     randcolors = RetTableNoDupes(randcolors)
@@ -758,12 +804,13 @@ end
 function cCodeFuncs.ObjectColourRandom(Obj)
   if Obj:IsKindOf("ColorizableObject") then
     --local cCodeFuncs = ChoGGi.CodeFuncs
+    local colour = cCodeFuncs.RandomColour()
     local SetPal = Obj.SetColorizationMaterial
     local GetPal = Obj.GetColorizationMaterial
     local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
     --likely can only change basecolour
     if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
-      Obj:SetColorModifier(cCodeFuncs.RandomColour())
+      Obj:SetColorModifier(colour)
     else
       if not Obj.ChoGGi_origcolors then
         cCodeFuncs.SaveOldPalette(Obj)
@@ -774,6 +821,7 @@ function cCodeFuncs.ObjectColourRandom(Obj)
       SetPal(Obj, 3, cCodeFuncs.RandomColour(), 0,0)
       SetPal(Obj, 4, cCodeFuncs.RandomColour(), 0,0)
     end
+    return colour
   end
 end
 function cCodeFuncs.ObjectColourDefault(Obj)
@@ -942,7 +990,7 @@ function cCodeFuncs.BuildMenu_Toggle()
     return
   end
 
-  CreateRealTimeThread(function()
+  CreateGameTimeThread(function()
     CloseXBuildMenu()
     Sleep(250)
     OpenXBuildMenu()
@@ -991,9 +1039,14 @@ function cCodeFuncs.EmptyMechDepot(oldobj)
   end
   local oldpos = stock:GetPos()
   local newpos = point(oldpos:x() + newx,oldpos:y() + newy,oldpos:z())
+  --yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
+  local res2 = res
+  if res == "PreciousMetals" then
+    res2 = "RareMetals"
+  end
   --create new depot, and set max amount to stored amount of old depot
   local newobj = PlaceObj("UniversalStorageDepot", {
-    "template_name", "Storage" .. res,
+    "template_name", "Storage" .. res2,
     "resource", {res},
     "stockpiled_amount", {},
     "max_storage_per_resource", amount,
@@ -1169,7 +1222,6 @@ end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
 function cCodeFuncs.SelObject()
---function IsPointOverObject()
   local _,ret = pcall(function()
     --#GetObjects({class="CObject"})
     --#GetObjects({class="PropertyObject"})
@@ -1182,20 +1234,6 @@ end
 function cCodeFuncs.LightmodelBuild(Table)
   local data = DataInstances.Lightmodel
   --always start with blank lightmodel
-  --[[
-  local Table = DataInstances.Lightmodel.ChoGGi_Custom[Name]
-  for Key,Value in pairs(Table or empty_table) do
-    local defitem = GetInfo(Key)
-    ItemList[#ItemList+1] = {
-      text = defitem.editor == "color" and "<color 175 175 255>" .. Key .. "</color>" or Key,
-      sort = Key,
-      value = Value,
-      default = defitem.default,
-      editor = defitem.editor,
-      hint = "" .. (defitem.name or "") .. "\nhelp: " .. (defitem.help or "") .. "\n\ndefault: " .. (tostring(defitem.default) or "") .. " min: " .. (defitem.min or "") .. " max: " .. (defitem.max or "") .. " scale: " .. (defitem.scale or ""),
-    }
-  end
---]]
   data.ChoGGi_Custom:delete()
   data.ChoGGi_Custom = Lightmodel:new()
   data.ChoGGi_Custom.name = "ChoGGi_Custom"
@@ -1398,7 +1436,7 @@ function cCodeFuncs.RetBuildingPermissions(traits,settings)
   local restrict = false
 
   local rtotal = 0
-  for temp,_ in pairs(settings.restricttraits) do
+  for _,_ in pairs(settings.restricttraits) do
     rtotal = rtotal + 1
   end
 
@@ -1451,6 +1489,7 @@ end
 
 --pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
 function cCodeFuncs.AnalyzeAnomaly(self,anomaly)
+  local SelectedObj = SelectedObj
   if not IsValid(self) then
     return
   end
@@ -1532,7 +1571,7 @@ function cCodeFuncs.DefenceTick(self,AlreadyFired)
         self.meteor = obj
         self.is_firing = true
         --sleep till rocket explodes
-        CreateRealTimeThread(function()
+        CreateGameTimeThread(function()
           while rocket.move_thread do
             Sleep(500)
           end
@@ -1558,7 +1597,7 @@ function cCodeFuncs.DefenceTick(self,AlreadyFired)
   end
   --remove only remove devil handles if they're actually gone
   if #AlreadyFired > 0 then
-    CreateRealTimeThread(function()
+    CreateGameTimeThread(function()
       for i = #AlreadyFired, 1, -1 do
         if not IsValid(AlreadyFired[i]) then
           AlreadyFired[i] = nil

@@ -1,3 +1,4 @@
+local CreateGameTimeThread = CreateGameTimeThread
 function ChoGGi.MsgFuncs.uiMultiLineEdit_ClassesGenerate()
   DefineClass.ChoGGi_uiMultiLineEdit = {
     __parents = {
@@ -880,7 +881,7 @@ function ChoGGi.MsgFuncs.uiMultiLineEdit_ClassesGenerate()
   function ChoGGi_uiMultiLineEdit:CreateCursorBlinkThread(delay)
     delay = delay or 0
     if not self.blink_cursor_thread then
-      self.blink_cursor_thread = CreateRealTimeThread(function()
+      self.blink_cursor_thread = CreateGameTimeThread(function()
         while true do
           Sleep(delay)
           self.show_cursor = self.stop_blink or not self.show_cursor

@@ -1,4 +1,18 @@
 local cComFuncs = ChoGGi.ComFuncs
+local cSettingFuncs = ChoGGi.SettingFuncs
+local cMsgFuncs = ChoGGi.MsgFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+
+local ThreadLockKey = ThreadLockKey
+local AsyncCopyFile = AsyncCopyFile
+local ThreadUnlockKey = ThreadUnlockKey
+local AsyncStringToFile = AsyncStringToFile
+local AsyncFileToString = AsyncFileToString
+local TableToLuaCode = TableToLuaCode
+local LuaCodeToTuple = LuaCodeToTuple
+local DebugPrint = DebugPrint
+local CreateRealTimeThread = CreateRealTimeThread
+
 --stores default values and some tables
 
 --useful lists
@@ -26,18 +40,21 @@ ChoGGi.Tables = {
   Mystery = {}
 }
 local cTables = ChoGGi.Tables
---build tables
-local Table = Nations
-for i = 1, #Table do
-  cTables.ColonistBirthplaces[#cTables.ColonistBirthplaces+1] = Table[i].value
-  cTables.ColonistBirthplaces[Table[i].value] = true
-end
---maybe a mod removed them?
-if #const.SchoolTraits < 5 then
-  cTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-end
-if #const.SanatoriumTraits < 7 then
-  cTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+do
+  --build tables
+  local Nations = Nations
+  for i = 1, #Nations do
+    cTables.ColonistBirthplaces[#cTables.ColonistBirthplaces+1] = Nations[i].value
+    cTables.ColonistBirthplaces[Nations[i].value] = true
+  end
+  local const = const
+  --maybe a mod removed them?
+  if #const.SchoolTraits < 5 then
+    cTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+  end
+  if #const.SanatoriumTraits < 7 then
+    cTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+  end
 end
 
 --stores defaults and constants
@@ -93,7 +110,6 @@ ChoGGi.Defaults = {
   WriteLogs = false,
   --]]
 }
-local CDefaults = ChoGGi.Defaults
 
 --and constants
 ChoGGi.Consts = {
@@ -186,10 +202,9 @@ ChoGGi.Consts = {
   TravelTimeMarsEarth = false,
   VisitFailPenalty = false,
 }
-local cConsts = ChoGGi.Consts
 
 --set game values to saved values
-function ChoGGi.SettingFuncs.SetConstsToSaved()
+function cSettingFuncs.SetConstsToSaved()
   local UserSettings = ChoGGi.UserSettings
 --Consts.
   local function SetConstsG(Name)
@@ -286,8 +301,15 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 end
 
 --called everytime we set a setting in menu
-function ChoGGi.SettingFuncs.WriteSettings()
-
+function cSettingFuncs.WriteSettings()
+  local ChoGGi = ChoGGi
+  --piss off if we're in the middle of a save?
+  --probably be better to read file afterwards and check if it matches
+  if ChoGGi.Temp.SavingSettings then
+    return
+  end
+  CreateRealTimeThread(function()
+    ChoGGi.Temp.SavingSettings = true
     local file = ChoGGi.SettingsFile
     local bak = file .. ".bak"
 
@@ -303,11 +325,13 @@ function ChoGGi.SettingFuncs.WriteSettings()
       print("once", "Failed to save a settings to", file, ":", err)
       return false, err
     end
-
+    ChoGGi.Temp.SavingSettings = nil
+  end)
 end
 
 --read saved settings from file
-function ChoGGi.SettingFuncs.ReadSettings()
+function cSettingFuncs.ReadSettings()
+  local ChoGGi = ChoGGi
   local errormsg = "\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n"
 
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
@@ -332,57 +356,52 @@ function ChoGGi.SettingFuncs.ReadSettings()
 end
 
 --OptionsApply is the earliest we can call Consts:GetProperties()
-function ChoGGi.MsgFuncs.Defaults_OptionsApply()
+function cMsgFuncs.Defaults_OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts
 
   --if setting doesn't exist then make it default
-  for Key,Value in pairs(CDefaults) do
+  for Key,Value in pairs(ChoGGi.Defaults) do
     if type(ChoGGi.UserSettings[Key]) == "nil" then
       ChoGGi.UserSettings[Key] = Value
     end
   end
-  --[[
-  --and add as false
-  for Key,Value in pairs(cConsts) do
-    if type(ChoGGi.UserSettings[Key]) == "nil" then
-      ChoGGi.UserSettings[Key] = false
-    end
-  end
-  --]]
 
   --get the default values for our Consts
-  for SettingName,_ in pairs(cConsts) do
+  for SettingName,_ in pairs(ChoGGi.Consts) do
     local setting = Consts:GetDefaultPropertyValue(SettingName)
     if setting then
-      cConsts[SettingName] = setting
+      ChoGGi.Consts[SettingName] = setting
     end
   end
 
   --get other defaults not stored in Consts
-  cConsts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
-  cConsts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-  cConsts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
-  cConsts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
-  cConsts.GravityColonist = 0
-  cConsts.GravityDrone = 0
-  cConsts.GravityRC = 0
-  cConsts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
-  cConsts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
-  cConsts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
-  cConsts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
-  cConsts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
-  --cConsts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-  cConsts.StorageWasteDepot = 70 * cConsts.ResourceScale --^ that has 45000 as default...
-  cConsts.StorageOtherDepot = 180 * cConsts.ResourceScale
-  cConsts.StorageMechanizedDepot = 3950 * cConsts.ResourceScale
+  ChoGGi.Consts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
+  local CargoShuttle = CargoShuttle
+  ChoGGi.Consts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
+  ChoGGi.Consts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+  ChoGGi.Consts.GravityColonist = 0
+  ChoGGi.Consts.GravityDrone = 0
+  ChoGGi.Consts.GravityRC = 0
+  ChoGGi.Consts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+  --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+  ChoGGi.Consts.StorageWasteDepot = 70 * ChoGGi.Consts.ResourceScale --^ that has 45000 as default...
+  ChoGGi.Consts.StorageOtherDepot = 180 * ChoGGi.Consts.ResourceScale
+  ChoGGi.Consts.StorageMechanizedDepot = 3950 * ChoGGi.Consts.ResourceScale
   --^ they're all UniversalStorageDepot
 
-  cConsts.CameraZoomToggle = 8000
-  cConsts.HigherRenderDist = 120 --hr.LODDistanceModifier
+  ChoGGi.Consts.CameraZoomToggle = 8000
+  ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
-function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
+function cMsgFuncs.Defaults_ModsLoaded()
+  local ChoGGi = ChoGGi
+  local DataInstances = DataInstances
   --remove empty entries in BuildingSettings
   if next(ChoGGi.UserSettings.BuildingSettings) then
     --remove any empty building tables
@@ -398,16 +417,16 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
       --is there anthing in the table?
       if type(ChoGGi.UserSettings[OldCat]) == "table" and next(ChoGGi.UserSettings[OldCat]) then
         --then loop through it
-        for BuildingName,Value in pairs(ChoGGi.UserSettings[OldCat]) do
+        for Key,Value in pairs(ChoGGi.UserSettings[OldCat]) do
           --it likely doesn't exist, but check first and add a blank table
-          if not ChoGGi.UserSettings.BuildingSettings[BuildingName] then
-            ChoGGi.UserSettings.BuildingSettings[BuildingName] = {}
+          if not ChoGGi.UserSettings.BuildingSettings[Key] then
+            ChoGGi.UserSettings.BuildingSettings[Key] = {}
           end
           --add it to vistors list?
-          if NewName == "capacity" and DataInstances.BuildingTemplate[BuildingName].max_visitors then
-            ChoGGi.UserSettings.BuildingSettings[BuildingName].visitors = Value
+          if NewName == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
+            ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
           else
-            ChoGGi.UserSettings.BuildingSettings[BuildingName][NewName] = Value
+            ChoGGi.UserSettings.BuildingSettings[Key][NewName] = Value
           end
         end
       end
@@ -417,20 +436,18 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local StartupMsgs = ChoGGi.Temp.StartupMsgs
+    local msgs = ChoGGi.Temp.StartupMsgs
     local errormsg = "Error: Couldn't convert old settings to new settings: "
     if not AddOldSettings("BuildingsCapacity","capacity") then
-      StartupMsgs[#StartupMsgs+1] = errormsg .. "BuildingsCapacity"
+      msgs[#msgs+1] = errormsg .. "BuildingsCapacity"
     end
     if not AddOldSettings("BuildingsProduction","production") then
-      StartupMsgs[#StartupMsgs+1] = errormsg .. "BuildingsProduction"
+      msgs[#msgs+1] = errormsg .. "BuildingsProduction"
     end
   end
 
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
   local g = g_Classes
-  local cCodeFuncs = ChoGGi.CodeFuncs
-  local cTables = ChoGGi.Tables
   ClassDescendantsList("MysteryBase",function(class)
     local scenario_name = g[class].scenario_name or "Missing Scenario Name"
     local display_name = cCodeFuncs.Trans(g[class].display_name) or "Missing Name"

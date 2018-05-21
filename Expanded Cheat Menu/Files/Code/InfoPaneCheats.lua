@@ -1,6 +1,7 @@
 local cCodeFuncs = ChoGGi.CodeFuncs
 local cTables = ChoGGi.Tables
 local cConsts = ChoGGi.Consts
+local CreateRealTimeThread = CreateRealTimeThread
 
 --add items to the cheats pane
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()

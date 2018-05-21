@@ -72,7 +72,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   cComFuncs.AddAction(
     "Expanded CM/Buildings/Empty Mech Depot",
     cCodeFuncs.EmptyMechDepot,
-    "Ctrl-Shift-Numpad 2",
+    "Ctrl-Alt-Numpad 2",
     "Empties out selected/moused over mech depot into a small depot in front of it.",
     icon
   )

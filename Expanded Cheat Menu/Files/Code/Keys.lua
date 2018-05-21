@@ -3,6 +3,7 @@ local cCodeFuncs = ChoGGi.CodeFuncs
 local cTables = ChoGGi.Tables
 local cComFuncs = ChoGGi.ComFuncs
 local cConsts = ChoGGi.Consts
+local cMenuFuncs = ChoGGi.MenuFuncs
 
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
@@ -32,7 +33,8 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
       )
     end
     local skipped = false
-    for i = 1, #BuildCategories do
+    local Table = BuildCategories
+    for i = 1, #Table do
       if i < 10 then
         --the key has to be a string
         AddMenuKey(i,tostring(i))
@@ -40,7 +42,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
         AddMenuKey(i,"0")
       else
         --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
-        if BuildCategories[i].id == "Hidden" then
+        if Table[i].id == "Hidden" then
           skipped = true
         else
           if skipped then
@@ -56,8 +58,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --spawn and fill a deposit at mouse pos
-  function ChoGGi.MenuFuncs.AddDeposit(sType)
-
+  function cMenuFuncs.AddDeposit(sType)
     local obj = PlaceObj(sType, {
       "Pos", cCodeFuncs.CursorNearestHex(),
       "max_amount", UICity:Random(1000 * cConsts.ResourceScale,100000 * cConsts.ResourceScale),
@@ -69,8 +70,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --fixup name we get from Object
-  function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname)
-
+  function cMenuFuncs.ConstructionModeNameClean(itemname)
     --we want template_name or we have to guess from the placeobj name
     local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
     if not tempname then
@@ -83,11 +83,11 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
     else
       ChoGGi.MenuFuncs.ConstructionModeSet(tempname)
     end
-
   end
 
   --place item under the mouse for construction
-  function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
+  function cMenuFuncs.ConstructionModeSet(itemname)
+    local CloseXBuildMenu = CloseXBuildMenu
 
     --make sure it's closed so we don't mess up selection
     pcall(function()
@@ -167,7 +167,8 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   --goes to placement mode with SelectedObj
   cComFuncs.AddAction(nil,
     function()
-      local sel = cCodeFuncs.SelObject()
+      local ChoGGi = ChoGGi
+      local sel = ChoGGi.CodeFuncs.SelObject()
       if sel then
         ChoGGi.Temp.LastPlacedObject = sel
         ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
@@ -179,8 +180,9 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   cComFuncs.AddAction(
     nil,
     function()
+      local ChoGGi = ChoGGi
       ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
-      cSettingFuncs.WriteSettings()
+      ChoGGi.SettingFuncs.WriteSettings()
       UAMenu.ToggleOpen()
     end,
     "F2"

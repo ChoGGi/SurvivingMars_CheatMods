@@ -24,6 +24,7 @@ ChoGGi = {
     ShuttleRocketDD = {},
     CargoShuttleThreads = {},
     CargoShuttleScanningAnomaly = {},
+    PathingHandles = {},
   },
   --settings that are saved to SettingsFile
   UserSettings = {BuildingSettings = {},Transparency = {}},
@@ -34,14 +35,19 @@ local Mods = Mods
 ChoGGi._VERSION = Mods[ChoGGi.id].version
 ChoGGi.ModPath = Mods[ChoGGi.id].path
 
+--if we use global func more then once: make them local for that small bit o' speed
+local AsyncFileToString = AsyncFileToString
+local dofolder_files = dofolder_files
+local Platform = Platform
+local GlobalVar = GlobalVar
+
 --used to let me know if we're on my computer
 local file_error, _ = AsyncFileToString("AppData/ChoGGi.lua")
 if not file_error then
   ChoGGi.Temp.Testing = true
 end
-local cTesting = ChoGGi.Temp.Testing
 
-if cTesting then
+if ChoGGi.Temp.Testing then
   --get saved settings for this mod
   dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
   --functions needed before Code/ is loaded
@@ -74,7 +80,7 @@ end
 ChoGGi.SettingFuncs.ReadSettings()
 local CUserSettings = ChoGGi.UserSettings
 
-if cTesting then
+if ChoGGi.Temp.Testing then
   CUserSettings.WriteLogs = true
 end
 
@@ -123,4 +129,3 @@ ModsLoaded
 EntitiesLoaded
 BinAssetsLoaded
 --]]
-

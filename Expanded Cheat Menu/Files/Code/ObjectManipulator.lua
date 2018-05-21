@@ -1,5 +1,6 @@
 local cCodeFuncs = ChoGGi.CodeFuncs
 local cComFuncs = ChoGGi.ComFuncs
+local CreateGameTimeThread = CreateGameTimeThread
 
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
@@ -175,7 +176,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
         local but = children[i]
         function but.OnButtonPressed()
           self.refreshing = self.idAutoRefresh:GetState()
-          CreateRealTimeThread(function()
+          CreateGameTimeThread(function()
             while self.refreshing do
               self:UpdateListContent(self.obj)
               Sleep(1000)

@@ -1,3 +1,5 @@
+local CreateRealTimeThread = CreateRealTimeThread
+
 function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
   local ChoGGi = ChoGGi
   local function SetBonus(Preset,Type,Func)

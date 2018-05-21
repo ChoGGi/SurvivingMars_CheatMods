@@ -533,7 +533,8 @@ function cMenuFuncs.MirrorSphereStuck()
   end
   objs = GetObjects({class = "ParSystem"}) or empty_table
   for i = 1, #objs do
-    if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" then
+    if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
+        type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
       objs[i]:delete()
     end
   end

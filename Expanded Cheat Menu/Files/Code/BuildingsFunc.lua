@@ -6,6 +6,9 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
+local CreateGameTimeThread = CreateGameTimeThread
+local empty_table = empty_table
+
 local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
@@ -939,7 +942,7 @@ function cMenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
       --find a better way to update radius...
       local sel = SelectedObj
       local SelectObj = SelectObj
-      CreateRealTimeThread(function()
+      CreateGameTimeThread(function()
         local objs = UICity.labels[id] or empty_table
         for i = 1, #objs do
           objs[i]:SetUIRange(value)

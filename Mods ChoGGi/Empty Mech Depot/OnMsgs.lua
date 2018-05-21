@@ -84,15 +84,22 @@ function ChoGGiX.EmptyMechDepot(oldobj)
   end
   local oldpos = stock:GetPos()
   local newpos = point(oldpos:x() + newx,oldpos:y() + newy,oldpos:z())
+
+  --yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
+  local res2 = res
+  if res == "PreciousMetals" then
+    res2 = "RareMetals"
+  end
   --create new depot, and set max amount to stored amount of old depot
   local newobj = PlaceObj("UniversalStorageDepot", {
-    "template_name", "Storage" .. res,
+    "template_name", "Storage" .. res2,
     "resource", {res},
     "stockpiled_amount", {},
     "max_storage_per_resource", amount,
     --make sure it's on a hex point after we moved it in front
     "Pos", HexGetNearestCenter(newpos),
   })
+
   --make it align with the depot
   newobj:SetAngle(angle)
   --give it a bit before filling

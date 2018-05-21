@@ -1,5 +1,22 @@
 local cConsts = ChoGGi.Consts
 local cComFuncs = ChoGGi.ComFuncs
+local cCodeFuncs = ChoGGi.CodeFuncs
+
+local IsKindOf = IsKindOf
+local AsyncRand = AsyncRand
+local AddCustomOnScreenNotification = AddCustomOnScreenNotification
+local CreateRealTimeThread = CreateRealTimeThread
+local WaitCustomPopupNotification = WaitCustomPopupNotification
+local WaitQuestion = WaitQuestion
+local GetXDialog = GetXDialog
+local Sleep = Sleep
+local ThreadLockKey = ThreadLockKey
+local AsyncStringToFile = AsyncStringToFile
+local ThreadUnlockKey = ThreadUnlockKey
+local AsyncFileDelete = AsyncFileDelete
+local AsyncFileRename = AsyncFileRename
+local Msg = Msg
+local empty_table = empty_table
 
 --[[
 Surviving Mars comes with
@@ -90,11 +107,9 @@ function cComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
         Msg,
         Ok,
         Cancel
-      )
-      then
-        Function()
+      ) then
+          Function()
       end
-
     end)
   end)
 end
@@ -141,6 +156,7 @@ Funcs = true to dump functions as well (default: false)
 ChoGGi.ComFuncs.DumpTable(TechTree)
 --]]
 function cComFuncs.DumpTable(Obj,Mode,Funcs)
+  local ChoGGi = ChoGGi
   if not Obj then
     ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
       "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
@@ -159,6 +175,7 @@ function cComFuncs.DumpTable(Obj,Mode,Funcs)
 end
 
 function cComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
+  local ChoGGi = ChoGGi
   if (hierarchyLevel == nil) then
     hierarchyLevel = 0
   elseif (hierarchyLevel == 4) then
@@ -197,6 +214,7 @@ ChoGGi.ComFuncs.DumpObject(const)
 if you want to dump functions as well DumpObject(object,true)
 --]]
 function cComFuncs.DumpObject(Obj,Mode,Funcs)
+  local ChoGGi = ChoGGi
   if not Obj then
     ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
       "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
@@ -243,8 +261,10 @@ function cComFuncs.PrintFiles(Filename,Function,Text,...)
   end
 end
 
--- positive or 1 return TrueVar || negative or 0 return FalseVar
----cConsts.XXX = ChoGGi.ComFuncs.NumRetBool(cConsts.XXX,0,cConsts.XXX)
+--[[
+positive or 1 return TrueVar || negative or 0 return FalseVar
+cConsts.XXX = ChoGGi.ComFuncs.NumRetBool(cConsts.XXX,0,cConsts.XXX)
+--]]
 function cComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
@@ -345,6 +365,7 @@ function cComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
 end
 
 function cComFuncs.WriteLogs_Toggle(Enable)
+  local ChoGGi = ChoGGi
   if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
@@ -395,6 +416,7 @@ end
 --changes a function to also post a Msg for use with OnMsg
 --AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
 function cComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
+  local ChoGGi = ChoGGi
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
@@ -407,6 +429,7 @@ function cComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 end
 
 function cComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  local ChoGGi = ChoGGi
   if Func then
     local newname = ClassOrFunc .. "_" .. Func
     if not ChoGGi.OrigFuncs[newname] then
@@ -421,6 +444,7 @@ end
 
 --check for and remove broken objects from UICity.labels
 function cComFuncs.RemoveMissingLabelObjects(Label)
+  local UICity = UICity
   local found = true
   while found do
     found = nil
@@ -437,6 +461,7 @@ function cComFuncs.RemoveMissingLabelObjects(Label)
 end
 
 function cComFuncs.RemoveFromLabel(Label,Obj)
+  local UICity = UICity
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
     if tab[i] and tab[i].handle and tab[i] == Obj then
@@ -485,6 +510,7 @@ end
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function cComFuncs.UserAddActions(ActionsToAdd)
+  local UserActions = UserActions
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
@@ -515,12 +541,12 @@ function cComFuncs.UserAddActions(ActionsToAdd)
 end
 
 function cComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+  local ChoGGi = ChoGGi
   if Menu then
     Menu = "/" .. tostring(Menu)
   end
   local name = "NOFUNC"
   --add name to action id
-  local ChoGGi = ChoGGi
   local Temp = ChoGGi.Temp
   if Action then
     local debug_info = debug.getinfo(Action, "Sn")
@@ -672,6 +698,7 @@ function cComFuncs.RetTableNoDupes(Table)
 end
 
 function cComFuncs.RetTableNoClassDupes(Table)
+  local ChoGGi = ChoGGi
   table.sort(Table,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
@@ -702,8 +729,8 @@ function cComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
---RemoveFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1,ResourceStockpile=1},"class")
---RemoveFromTable(GetObjects({class="PropertyObject"}),nil,nil,"working")
+--RemoveFromTable(GetObjects({class="CObject"}),{ParSystem=1,ResourceStockpile=1},"class")
+--RemoveFromTable(GetObjects({class="CObject"}),nil,nil,"working")
 function cComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
@@ -722,7 +749,7 @@ function cComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
---FilterFromTableFunc(GetObjects({class="PropertyObject"}),"IsKindOf","Residence")
+--FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
 function cComFuncs.FilterFromTableFunc(Table,Func,Value)
   return FilterObjects({
     filter = function(Obj)

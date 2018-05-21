@@ -6,6 +6,8 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
+local CreateGameTimeThread = CreateGameTimeThread
+
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
 function cMenuFuncs.OpenModEditor()

@@ -6,6 +6,8 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
+local CreateRealTimeThread = CreateRealTimeThread
+
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
 function cMenuFuncs.ShowInterfaceInScreenshots_Toggle()

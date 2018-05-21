@@ -12,7 +12,10 @@ local cConsts = ChoGGi.Consts
 local cInfoFuncs = ChoGGi.InfoFuncs
 local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
+
 local cMenuFuncs = ChoGGi.MenuFuncs
+local CreateGameTimeThread = CreateGameTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
 
 function cMenuFuncs.ReloadLua()
   ReloadLua()
@@ -98,7 +101,7 @@ local function AnimDebug_Show(Class)
     text.ChoGGi_AnimDebug = true
     objs[i]:Attach(text)
     text:SetAttachOffset(point(0,0,objs[i]:GetObjectBBox():sizez() + 100))
-    CreateRealTimeThread(function()
+    CreateGameTimeThread(function()
       while IsValid(text) do
         text:SetText(string.format("%d. %s\n", 1, objs[i]:GetAnimDebug(1)))
         WaitNextFrame()
@@ -377,7 +380,7 @@ do --hex rings
   local opacity = 15
   local build_grid_debug_objs = false
   local build_grid_debug_thread = false
-  function cMenuFuncs.debug_build_grid(iType)
+  function ChoGGi.MenuFuncs.debug_build_grid(iType)
     --make everything local (every little bit helps)
     local HexGridGetObject = HexGridGetObject
     local HexToWorld = HexToWorld
@@ -416,7 +419,7 @@ do --hex rings
       end
     else
       build_grid_debug_objs = {}
-      build_grid_debug_thread = CreateRealTimeThread(function()
+      build_grid_debug_thread = CreateGameTimeThread(function()
         local last_q, last_r
         while build_grid_debug_objs do
           local q, r = WorldToHex(GetTerrainCursor())
@@ -483,17 +486,12 @@ do --path markers
   SpawnModels[2] = "Lama"
   --default height of waypoints
   local flag_height = 50
-  --store all objects for easy removal
-  local stored_waypoints = {}
-  local function ShowWaypoints(waypoints, color, obj, single, skipflags)
-    --check stored_waypoints length and see if we can find out how many = flickering
-    --if #stored_waypoints == 500 then
-    --  return
-    --end
-
-    color = tonumber(color) or cCodeFuncs.RandomColour()
+  local function ShowWaypoints(waypoints, colour, obj, single, skipflags, skipheight)
+    colour = tonumber(colour) or cCodeFuncs.RandomColour()
     --also used for line height
-    flag_height = flag_height + 4
+    if not skipheight then
+      flag_height = flag_height + 4
+    end
     local height = flag_height
     local objpos = obj:GetVisualPos()
     local objterr = terrain.GetHeight(objpos)
@@ -512,32 +510,32 @@ do --path markers
     local spawnline = PlaceTerrainLine(
       objpos,
       waypoints[#waypoints],
-      color,
+      colour,
       nil, --work_step
       shuttle and shuttle - objterr or objheight --shuttle z always puts it too high?
     )
-    stored_waypoints[#stored_waypoints+1] = spawnline
+    obj.stored_waypoints[#obj.stored_waypoints+1] = spawnline
     spawnline:SetDepthTest(true)
     local sphereheight = 266 + height - 50
     --line:SetPrimType(4)
     if not single then
       --spawn a sphere at the obj pos
       local spherestart = PlaceObject("Sphere")
-      stored_waypoints[#stored_waypoints+1] = spherestart
+      obj.stored_waypoints[#obj.stored_waypoints+1] = spherestart
       spherestart:SetPos(point(objpos:x(),objpos:y(),(shuttle and shuttle + 500) or objterr + sphereheight))
       spherestart:SetDepthTest(true)
-      spherestart:SetColor(color)
+      spherestart:SetColor(colour)
       spherestart:SetRadius(35)
     end
     --and another at the end
     --[[
     local sphereend = PlaceObject("Sphere")
-    stored_waypoints[#stored_waypoints+1] = sphereend
+    obj.stored_waypoints[#obj.stored_waypoints+1] = sphereend
     local w = waypoints[1]
     sphereend:SetPos(w)
     sphereend:SetZ(((w:z() or terrain.GetHeight(w)) + 10 * guic) + sphereheight)
     sphereend:SetDepthTest(true)
-    sphereend:SetColor(color)
+    sphereend:SetColor(colour)
     sphereend:SetRadius(25)
     --]]
 
@@ -562,16 +560,16 @@ do --path markers
             p:SetAngle(obj:GetAngle())
           end
         end
-        stored_waypoints[#stored_waypoints+1] = p
-        p:SetColorModifier(color)
+        obj.stored_waypoints[#obj.stored_waypoints+1] = p
+        p:SetColorModifier(colour)
         p:SetPos(pos)
       end
 
       --add text to last wp
       if i == 1 then
         local endwp = PlaceText(obj.class .. ": " .. obj.handle, pos)
-        stored_waypoints[#stored_waypoints+1] = endwp
-        endwp:SetColor(color)
+        obj.stored_waypoints[#obj.stored_waypoints+1] = endwp
+        endwp:SetColor(colour)
         --endp:SetColor2()
         endwp:SetZ(endwp:GetZ() + 250 + height)
         --endp:SetShadowOffset(3)
@@ -582,29 +580,144 @@ do --path markers
         local l = PlaceTerrainLine(
           pos,
           wpn,
-          color,
+          colour,
           nil,
           shuttle and shuttle - objterr or height
         )
-        stored_waypoints[#stored_waypoints+1] = l
+        obj.stored_waypoints[#obj.stored_waypoints+1] = l
         l:SetDepthTest(true)
       end
 
     end
   end
 
-  local function RemoveWPDupePos(Class)
+  local randcolours = {}
+  local colourcount = 0
+  function ChoGGi.MenuFuncs.ClearColour(Class)
+    local objs = GetObjects({class = Class}) or empty_table
+    for i = 1, #objs do
+      if objs[i] and objs[i].ChoGGi_WaypointPathAdded then
+        pcall(function()
+          objs[i]:SetColorModifier(objs[i].ChoGGi_WaypointPathAdded)
+          objs[i].ChoGGi_WaypointPathAdded = nil
+        end)
+      end
+    end
+  end
+
+  function cMenuFuncs.SetWaypoint(obj,single,skipflags,setcolour,skipheight)
+    local path
+    --we need to build a path for shuttles (and figure out a way to get their dest properly...)
+    if obj.class == "CargoShuttle" then
+      path = {}
+      if obj.dest_dome then
+        path[1] = obj.dest_dome:GetPos()
+      else
+        path[1] = obj:GetDestination()
+      end
+      local Table = obj.current_spline
+      if Table then
+        for i = #Table, 1, -1 do
+          path[#path+1] = Table[i]
+        end
+      end
+      path[#path+1] = obj:GetPos()
+    else
+      if not pcall(function()
+        path = type(obj.GetPath) == "function" and obj:GetPath()
+      end) then
+        ex(obj)
+        print("Warning: This " .. obj and (obj.class or obj.entity or "\"No class/entity\"") .. " doesn't have GetPath function, something is probably borked.")
+      end
+    end
+    if path then
+      local colour
+      if setcolour then
+        colour = setcolour
+      else
+        local randomcolour = cCodeFuncs.RandomColour()
+        if single then
+          colour = randomcolour
+        else
+          if #randcolours < 1 then
+            colour = randomcolour
+          else
+            --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
+            colour = table.remove(randcolours)
+          end
+        end
+      end
+
+      if not obj.stored_waypoints then
+        obj.stored_waypoints = {}
+      end
+
+      if not obj.ChoGGi_WaypointPathAdded then
+        --used to reset the colour later on
+        obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
+      end
+      --colour it up
+      obj:SetColorModifier(colour)
+      --send path off to make wp
+      ShowWaypoints(
+        path,
+        colour,
+        obj,
+        single,
+        skipflags,
+        skipheight
+      )
+    end
+  end
+
+  function cMenuFuncs.MapPath(sel,ChoGGi)
+    local colour = cCodeFuncs.RandomColour()
+    repeat
+      if not IsValid(sel) or sel and type(sel.GetPath) == "function" and sel:GetPath() then
+        break
+      end
+      ChoGGi.MenuFuncs.SetWaypoint(sel,true,true,colour,true)
+      Sleep(750)
+      local count = #sel.stored_waypoints
+      for i = count, 1, -1 do
+        sel.stored_waypoints[i]:delete()
+      end
+      sel.stored_waypoints = {}
+    until ChoGGi.Temp.PathingHandles[sel.handle] == false
+    ChoGGi.MenuFuncs.ClearColour(sel.class)
+  end
+  function cMenuFuncs.SetPathMarkersGameTime(sel)
+    local ChoGGi = ChoGGi
+    --the menu item sends itself
+    if sel and not sel.class then
+      sel = cCodeFuncs.SelObject()
+    elseif not sel then
+      ChoGGi.Temp.PathingHandles = {}
+    end
+    if ChoGGi.Temp.PathingHandles[sel.handle] then
+      --already exists return for now
+      ChoGGi.Temp.PathingHandles[sel.handle] = false
+      --return
+    else
+      ChoGGi.Temp.PathingHandles[sel.handle] = true
+      CreateGameTimeThread(function()
+        ChoGGi.MenuFuncs.MapPath(sel,ChoGGi)
+      end)
+   end
+  end
+
+  function cMenuFuncs.RemoveWPDupePos(Class,obj)
     --remove dupe pos
     local wppos = {}
-    for i = 1, #stored_waypoints do
-      local wp = stored_waypoints[i]
+    for i = 1, #obj.stored_waypoints do
+      local wp = obj.stored_waypoints[i]
       if wp.class == Class then
         local pos = tostring(wp:GetPos())
         if wppos[pos] then
           wppos[pos]:SetColorModifier(6579300)
           wp:delete()
         else
-          wppos[pos] = stored_waypoints[i]
+          wppos[pos] = obj.stored_waypoints[i]
         end
       end
     end
@@ -612,9 +725,9 @@ do --path markers
     local found = true
     while found do
       found = nil
-      for i = 1, #stored_waypoints do
-        if not IsValid(stored_waypoints[i]) then
-          table.remove(stored_waypoints,i)
+      for i = 1, #obj.stored_waypoints do
+        if not IsValid(obj.stored_waypoints[i]) then
+          table.remove(obj.stored_waypoints,i)
           found = true
           break
         end
@@ -622,55 +735,14 @@ do --path markers
     end
   end
 
-  local randcolours = {}
-  local colourcount = 0
-  function cMenuFuncs.SetVisiblePathMarkers()
-    local function SetWaypoint(obj,single,skipflags)
-      local path
-      --we need to build a path for shuttles (and figure out a way to get their dest properly...)
-      if obj.class == "CargoShuttle" then
-        path = {}
-        if obj.dest_dome then
-          path[1] = obj.dest_dome:GetPos()
-        else
-          path[1] = obj:GetDestination()
-        end
-        local Table = obj.current_spline
-        if Table then
-          for i = #Table, 1, -1 do
-            path[#path+1] = Table[i]
-          end
-        end
-        path[#path+1] = obj:GetPos()
-      else
-        if not pcall(function()
-          path = type(obj.GetPath) == "function" and obj:GetPath()
-        end) then
-          ex(obj)
-          print("Warning: This " .. obj and (obj.class or obj.entity or "\"No class/entity\"") .. " doesn't have GetPath function, something is probably borked.")
-        end
-      end
-      if path then
-        --used to reset the colour later on
-        if not obj.ChoGGi_WaypointPathAdded then
-          obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
-        end
-        --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-        local colour = table.remove(randcolours)
-        obj:SetColorModifier(colour)
-        ShowWaypoints(
-          path,
-          cCodeFuncs.ObjectColourRandom(obj,colour),
-          obj,
-          single,
-          skipflags
-        )
-      end
-    end
+  function cMenuFuncs.SetPathMarkersVisible()
     local sel = SelectedObj
     if sel then
       randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
-      SetWaypoint(sel,true)
+      ChoGGi.MenuFuncs.SetWaypoint(sel,true)
+      return
+    end
+    if not sel then
       return
     end
     local ItemList = {
@@ -687,22 +759,13 @@ do --path markers
       if choice[1].check1 then
 
         --remove all the waypoints
-        for i = 1, #stored_waypoints do
-          stored_waypoints[i]:delete()
+        for i = #sel.stored_waypoints, 1, -1 do
+          sel.stored_waypoints[i]:delete()
         end
-        stored_waypoints = {}
+        sel.stored_waypoints = {}
         --reset all the base colours
-        local function ClearColour(Class)
-          local objs = GetObjects({class = Class}) or empty_table
-          for i = 1, #objs do
-            if objs[i].ChoGGi_WaypointPathAdded then
-              objs[i]:SetColorModifier(objs[i].ChoGGi_WaypointPathAdded)
-              objs[i].ChoGGi_WaypointPathAdded = nil
-            end
-          end
-        end
-        ClearColour("CargoShuttle")
-        ClearColour("Unit")
+        ChoGGi.MenuFuncs.ClearColour("CargoShuttle")
+        ChoGGi.MenuFuncs.ClearColour("Unit")
 
         --reset stuff
         flag_height = 50
@@ -711,7 +774,7 @@ do --path markers
       else
         local function swp(Table)
           for i = 1, #Table do
-            SetWaypoint(Table[i],nil,choice[1].check2)
+            ChoGGi.MenuFuncs.SetWaypoint(Table[i],nil,choice[1].check2)
           end
         end
         if value == "All" then
@@ -730,8 +793,18 @@ do --path markers
         end
 
         --remove any waypoints in the same pos
-        RemoveWPDupePos("WayPoint")
-        RemoveWPDupePos("Sphere")
+       local function ClearAllDupeWP(Class)
+          local objs = GetObjects({class = Class}) or empty_table
+          for i = 1, #objs do
+            if objs[i] and objs[i].ChoGGi_WaypointPathAdded then
+              ChoGGi.MenuFuncs.RemoveWPDupePos("WayPoint",objs[i])
+              ChoGGi.MenuFuncs.RemoveWPDupePos("Sphere",objs[i])
+            end
+          end
+        end
+        ClearAllDupeWP("CargoShuttle")
+        ClearAllDupeWP("Unit")
+
       end
     end
 
