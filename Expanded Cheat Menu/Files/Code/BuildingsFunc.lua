@@ -7,6 +7,8 @@ local cTables = ChoGGi.Tables
 local cMenuFuncs = ChoGGi.MenuFuncs
 
 local CreateGameTimeThread = CreateGameTimeThread
+local RemoveFromRules = RemoveFromRules
+local PlayFX = PlayFX
 local empty_table = empty_table
 
 local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
@@ -94,53 +96,78 @@ function cMenuFuncs.AlwaysDustyBuildings_Toggle()
   )
 end
 
-function cMenuFuncs.AnnoyingSounds_Toggle()
-  --make a list
-  local ItemList = {
-    {text = "Reset",value = "Reset"},
-    {text = "SensorTower",value = "SensorTower"},
-    {text = "MirrorSphere",value = "MirrorSphere"},
-  }
-
-  --callback
-  local CallBackFunc = function(choice)
-    local function MirrorSphere_Toggle()
-      local tab = UICity.labels.MirrorSpheres or empty_table
-      for i = 1, #tab do
-        PlayFX("Freeze", "end", tab[i])
-        PlayFX("Freeze", "start", tab[i])
-      end
+do
+  local function MirrorSphere_Toggle()
+    local tab = UICity.labels.MirrorSpheres or empty_table
+    for i = 1, #tab do
+      PlayFX("Freeze", "end", tab[i])
+      PlayFX("Freeze", "start", tab[i])
     end
-    local function SensorTower_Toggle()
-      local tab = UICity.labels.SensorTower or empty_table
-      for i = 1, #tab do
-        cCodeFuncs.ToggleWorking(tab[i])
-      end
-    end
-
-    local value = choice[1].value
-    if value == "SensorTower" then
-      FXRules.Working.start.SensorTower.any[3] = nil
-      RemoveFromRules("Object SensorTower Loop")
-      SensorTower_Toggle()
-    elseif value == "MirrorSphere" then
-      FXRules.Freeze.start.MirrorSphere.any[2] = nil
-      FXRules.Freeze.start.any = nil
-      RemoveFromRules("Freeze")
-      MirrorSphere_Toggle()
-    elseif value == "Reset" then
-      RebuildFXRules()
-      MirrorSphere_Toggle()
-      SensorTower_Toggle()
-    end
-
-    cComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
-      "Sounds"
-    )
   end
 
-  local hint = "You can only reset all sounds back."
-  cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
+  local function SensorTower_Toggle()
+    local tab = UICity.labels.SensorTower or empty_table
+    for i = 1, #tab do
+      cCodeFuncs.ToggleWorking(tab[i])
+    end
+  end
+
+  local function RCRover_Toggle()
+    local tab = UICity.labels.RCRover or empty_table
+    for i = 1, #tab do
+      PlayFX("RoverDeploy", "end", tab[i])
+      PlayFX("RoverDeploy", "start", tab[i])
+    end
+  end
+  function cMenuFuncs.AnnoyingSounds_Toggle()
+    --make a list
+    local ItemList = {
+      {text = " Reset",value = "Reset"},
+      {text = "Sensor Tower Beeping",value = "SensorTowerWorking"},
+      {text = "RC Rover Drones Deployed",value = "RCRoverAntenna"},
+      {text = "Mirror Sphere Crackling",value = "MirrorSphereFreeze"},
+    }
+
+    --callback
+    local CallBackFunc = function(choice)
+      local value = choice[1].value
+      if value == "SensorTowerWorking" then
+        --FXRules.Working.start.SensorTower.any[3] = nil
+        table.remove(FXRules.Working.start.SensorTower.any,3)
+        RemoveFromRules("Object SensorTower Loop")
+        SensorTower_Toggle()
+
+      elseif value == "MirrorSphereFreeze" then
+        --FXRules.Freeze.start.MirrorSphere.any[2] = nil
+        table.remove(FXRules.Freeze.start.MirrorSphere.any,2)
+        FXRules.Freeze.start.any = nil
+        RemoveFromRules("Freeze")
+        MirrorSphere_Toggle()
+
+      elseif value == "RCRoverAntenna" then
+        --FXRules.RoverDeploy.start.RCRover.any[3] = nil
+        --FXRules.RoverDeploy.start.RCRover.any[2] = nil
+        table.remove(FXRules.RoverDeploy.start.RCRover.any,2)
+        table.remove(FXRules.RoverDeploy.start.RCRover.any,3)
+        RemoveFromRules("Unit Rover DeployWork")
+        RemoveFromRules("Unit Rover DeployAntennaON")
+        RCRover_Toggle()
+
+      elseif value == "Reset" then
+        RebuildFXRules()
+        MirrorSphere_Toggle()
+        SensorTower_Toggle()
+        RCRover_Toggle()
+      end
+
+      cComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
+        "Sounds"
+      )
+    end
+
+    local hint = "You can only reset all sounds back."
+    cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
+  end
 end
 
 function cMenuFuncs.SetProtectionRadius()
