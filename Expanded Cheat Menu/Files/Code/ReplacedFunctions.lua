@@ -209,7 +209,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     self.idFilter:SetHint("Scrolls to text entered")
     self.idFilter:SetTextHAlign("center")
     self.idFilter:SetTextVAlign("center")
-    self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 50))
+    self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
     self.idFilter.display_text = "Goto text"
 
     self.idClose:SetPos(point(629, 194))
@@ -835,10 +835,10 @@ end
     end
 
     function self.idEdit.OnButtonPressed()
-      ChoGGi.CodeFuncs.OpenInObjectManipulator(self.obj,self)
+      ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
     end
     function self.idCodeExec.OnButtonPressed()
-      ChoGGi.CodeFuncs.OpenInExecCodeDlg(self.obj,self)
+      ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
     end
 
   function self.idFilter.OnKbdKeyDown(_, char, vk)

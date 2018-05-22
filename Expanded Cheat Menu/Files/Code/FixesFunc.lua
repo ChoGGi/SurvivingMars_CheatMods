@@ -1,7 +1,7 @@
 local empty_table = empty_table
 local GetObjects = GetObjects
 ---------fixes
-function ChoGGi.MenuFuncs.FireAllFixes()
+function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.RemoveMissingClassObjects()
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
@@ -19,7 +19,9 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
   local FindNearestObject = FindNearestObject
   local GenerateColonistData = GenerateColonistData
   local Msg = Msg
-  local function SpawnColonist(old_c,rocket)
+  local DoneObject = DoneObject
+
+  local function SpawnColonist(old_c,rocket,pos)
     local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or rocket)
     if not dome then
       return
@@ -46,35 +48,37 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
       colonist = GenerateColonistData(UICity)
     end
 
-
     colonist.dome = dome
     colonist.current_dome = dome
     Colonist:new(colonist)
     Msg("ColonistBorn", colonist)
-    colonist:SetPos(old_c and old_c:GetPos() or dome:PickColonistSpawnPt())
+    colonist:SetPos(pos or dome:PickColonistSpawnPt())
     dome:UpdateUI()
     return colonist
   end
 
   local rockets = GetObjects({class="SupplyRocket"})
+  local pos
   for i = 1, #rockets do
+    pos = rockets[i]:GetPos()
     local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches() or empty_table
-    for i = #Attaches, 1, -1 do
-      local c = Attaches[i]
-      if c.class == "Colonist" then
+    Attaches = ChoGGi.ComFuncs.FilterFromTable(Attaches,nil,{Colonist=true},"class")
+    if #Attaches > 0 then
+      for j = #Attaches, 1, -1 do
+        local c = Attaches[j]
         if not pcall(function()
           c:Detach()
-          SpawnColonist(c,Attaches[i])
-        print(1111)
+          pos = type(c.GetPos) == "function" and c:GetPos() or pos
+          SpawnColonist(c,rockets[i],pos)
         end) then
-          SpawnColonist(nil,Attaches[i])
+          SpawnColonist(nil,rockets[i],pos)
           --something messed up with so just spawn random colonist
         end
-        c:Done()
-        c:delete()
-        Attaches[i] = false
+        if type(c.Done) == "function" then
+          c:Done()
+        end
+        DoneObject(c)
       end
-
     end
   end
 

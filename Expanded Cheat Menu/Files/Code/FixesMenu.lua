@@ -3,24 +3,23 @@ local icon = "ReportBug.tga"
 function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/ Fire All Fixes",
-    ChoGGi.MenuFuncs.FireAllFixes,
+    "Expanded CM/Fixes/ Fire Most Fixes",
+    ChoGGi.MenuFuncs.FireMostFixes,
     nil,
-    "Fires all the non-toggle fixes (nuke 'em from orbit and all that).\n\nDoesn't include ECM ones.",
+    "Fires most of the non-toggle fixes (nuke 'em from orbit and all that).\n\nFires ones with * on the name.",
     icon
   )
-if ChoGGi.Temp.Testing then
-    ChoGGi.ComFuncs.AddAction(
-      "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
-      ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
-      nil,
-      "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will copy will do a little copy n paste.",
-      icon
-    )
-end
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Particles With Null Polylines",
+    "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
+    ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
+    nil,
+    "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will copy will do a little copy n paste.",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/Remove Particles With Null Polylines *",
     ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
     nil,
     "It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
@@ -28,7 +27,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Missing Class Objects",
+    "Expanded CM/Fixes/Remove Missing Class Objects *",
     ChoGGi.MenuFuncs.RemoveMissingClassObjects,
     nil,
     "Probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
@@ -36,7 +35,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Mirror Sphere Stuck",
+    "Expanded CM/Fixes/Mirror Sphere Stuck *",
     ChoGGi.MenuFuncs.MirrorSphereStuck,
     nil,
     "If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)",
@@ -44,7 +43,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Stutter With High FPS",
+    "Expanded CM/Fixes/Stutter With High FPS *",
     ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
     "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).",
@@ -52,7 +51,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks",
+    "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks *",
     ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks,
     nil,
     "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
@@ -60,7 +59,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Idle Drones Won't Build When Resources Available",
+    "Expanded CM/Fixes/Idle Drones Won't Build When Resources Available *",
     ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
     nil,
     "If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).",
@@ -68,7 +67,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Yellow Grid Marks",
+    "Expanded CM/Fixes/Remove Yellow Grid Marks *",
     ChoGGi.MenuFuncs.RemoveYellowGridMarks,
     nil,
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
@@ -76,7 +75,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Project Morpheus Radar Fell Down",
+    "Expanded CM/Fixes/Project Morpheus Radar Fell Down *",
     ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
     nil,
     "Sometimes the blue radar thingy falls off.",
@@ -84,11 +83,19 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Cables & Pipes: Instant Repair",
+    "Expanded CM/Fixes/Cables & Pipes: Instant Repair *",
     ChoGGi.MenuFuncs.CablesAndPipesRepair,
     nil,
     "Instantly repair all broken pipes and cables.",
     "ViewCamPath.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome *",
+    ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
+    nil,
+    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
+    icon
   )
 
 ---------------------------toggles
@@ -123,14 +130,6 @@ end
       return des .. " Each Sol goes through all buildings and sorts their cc list by nearest.\n\nTakes less then a second on a map with 3616 buildings and 54 drone hubs."
     end,
     "Axis.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome",
-    ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
-    nil,
-    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
-    icon
   )
 
 -----------------------ECM fixes

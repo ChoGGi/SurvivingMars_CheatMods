@@ -698,7 +698,7 @@ function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   return tempt
 end
 
---RemoveFromTable(sometable,"class","SelectionArrow")
+--ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   local tempt = {}
 
@@ -711,16 +711,26 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
---RemoveFromTable(GetObjects({class="CObject"}),{ParSystem=1,ResourceStockpile=1},"class")
---RemoveFromTable(GetObjects({class="CObject"}),nil,nil,"working")
+--ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=true,ResourceStockpile=true},nil,"class")
+--ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
       if ExcludeList or IncludeList then
-        if not ExcludeList[Obj[Type]] then
-          return Obj
-        elseif IncludeList[Obj[Type]] then
-          return Obj
+        if ExcludeList and IncludeList then
+          if not ExcludeList[Obj[Type]] then
+            return Obj
+          elseif IncludeList[Obj[Type]] then
+            return Obj
+          end
+        elseif ExcludeList then
+          if not ExcludeList[Obj[Type]] then
+            return Obj
+          end
+        elseif IncludeList then
+          if IncludeList[Obj[Type]] then
+            return Obj
+          end
         end
       else
         if Obj[Type] then
@@ -753,4 +763,132 @@ function ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
     ex:SetPos(terminal.GetMousePos())
   end
   return ex
+end
+function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
+  if not Table then
+    return
+  end
+  local ChoGGi = ChoGGi
+
+  local dlg = ChoGGi_MonitorInfoDlg:new()
+
+  if not dlg then
+    return
+  end
+
+  --update internal
+  dlg.object = Table
+  dlg.tables = Table.tables
+  dlg.values = Table.values
+
+  dlg.idCaption:SetText(Table.title)
+
+  --set pos
+  if Parent then
+    local pos = Parent:GetPos()
+    if not pos then
+      dlg:SetPos(terminal.GetMousePos())
+    else
+      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=height of header
+    end
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+end
+
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
+  if not Object then
+    return
+  end
+  local ChoGGi = ChoGGi
+
+  local dlg = ChoGGi_ExecCodeDlg:new()
+
+  if not dlg then
+    return
+  end
+
+  --update internal object
+  dlg.obj = Object
+
+  local title = tostring(Object)
+  if type(Object) == "table" and Object.class then
+    title = "Class: " .. Object.class
+  end
+
+  --title text
+  if type(Object) == "table" then
+    dlg.idCaption:SetText("Exec Code on: " .. (Object.class or tostring(Object)))
+  end
+
+  --set pos
+  if Parent then
+    local pos = Parent:GetPos()
+    if not pos then
+      dlg:SetPos(terminal.GetMousePos())
+    else
+      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
+    end
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+
+end
+
+function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
+  if type(Object) ~= "table" then
+    return
+  end
+  local ChoGGi = ChoGGi
+  --nothing selected or menu item
+  if not Object or (Object and not Object.class) then
+    Object = ChoGGi.CodeFuncs.SelObject()
+  end
+
+  if not Object then
+    return
+  end
+
+  local dlg = ChoGGi_ObjectManipulator:new()
+
+  if not dlg then
+    return
+  end
+
+  --update internal object
+  dlg.obj = Object
+
+  local title = tostring(Object)
+  if type(Object) == "table" and Object.class then
+    title = "Class: " .. Object.class
+  end
+
+  --update the add button hint
+  dlg.idAddNew:SetHint(dlg.idAddNew:GetHint() .. title .. ".")
+
+  --title text
+  if type(Object) == "table" then
+    if Object.entity then
+      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
+    else
+      dlg.idCaption:SetText(Object.class)
+    end
+  else
+    dlg.idCaption:SetText(tostring(Object))
+  end
+
+  --set pos
+  if Parent then
+    local pos = Parent:GetPos()
+    if not pos then
+      dlg:SetPos(terminal.GetMousePos())
+    else
+      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
+    end
+  else
+    dlg:SetPos(terminal.GetMousePos())
+  end
+  --update item list
+  dlg:UpdateListContent(Object)
+
 end

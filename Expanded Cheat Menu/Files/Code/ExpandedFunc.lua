@@ -3,7 +3,25 @@
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
+function ChoGGi.MenuFuncs.MonitorInfo()
+  local ChoGGi = ChoGGi
+  local ItemList = {
+    {text = "Grids: Air",value = "Air"},
+    {text = "Grids: Electricity",value = "Electricity"},
+    {text = "Grids: Water",value = "Water"},
+    {text = "Grids: Air/Electricity/Water",value = "Grids"},
+    {text = "City",value = "City"},
+  }
+  local CallBackFunc = function(choice)
+    ChoGGi.MenuFuncs.DisplayMonitorList(choice[1].value)
+  end
+
+  local hint = "Select something to monitor."
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Monitor Info",hint,nil,nil,nil,nil,nil,7)
+end
+
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.StorageMechanizedDepotsTemp = not ChoGGi.UserSettings.StorageMechanizedDepotsTemp
 
   local amount

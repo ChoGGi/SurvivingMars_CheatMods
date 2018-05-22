@@ -4,7 +4,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Annoying Sounds",
+    "Expanded CM/[98]Misc/Annoying Sounds",
     ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
     nil,
     "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
@@ -12,7 +12,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Find Nearest Resource",
+    "Expanded CM/[98]Misc/Find Nearest Resource",
     ChoGGi.CodeFuncs.FindNearestResource,
     nil,
     "Select an object and click this to display a list of resources.",
@@ -20,7 +20,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Terrain Type",
+    "Expanded CM/[98]Misc/Change Terrain Type",
     ChoGGi.MenuFuncs.ChangeTerrainType,
     nil,
     "Green or Icy mars? Coming right up!",
@@ -28,7 +28,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Light Model",
+    "Expanded CM/[98]Misc/Change Light Model",
     ChoGGi.MenuFuncs.ChangeLightmodel,
     nil,
     "Changes the lighting mode (temporary or permanent).",
@@ -36,7 +36,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Entity",
+    "Expanded CM/[98]Misc/Change Entity",
     ChoGGi.MenuFuncs.SetEntity,
     nil,
     "Changes the entity of selected object, all of same type or all of same type in selected object's dome.",
@@ -44,7 +44,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Entity Scale",
+    "Expanded CM/[98]Misc/Change Entity Scale",
     ChoGGi.MenuFuncs.SetEntityScale,
     nil,
     "You want big, you want them small.",
@@ -52,7 +52,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Light Model Custom",
+    "Expanded CM/[98]Misc/Change Light Model Custom",
     ChoGGi.MenuFuncs.ChangeLightmodelCustom,
     nil,
     "Make a custom lightmodel and save it to settings. You still need to use \"Change Light Model\" for permanent.",
@@ -60,7 +60,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Auto Unpin Objects",
+    "Expanded CM/[98]Misc/Auto Unpin Objects",
     ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
     nil,
     "Will automagically stop any of these objects from being added to the pinned list.",
@@ -68,7 +68,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Clean All Objects",
+    "Expanded CM/[98]Misc/Clean All Objects",
     ChoGGi.MenuFuncs.CleanAllObjects,
     nil,
     "Removes all dust from all objects.",
@@ -76,7 +76,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Fix All Objects",
+    "Expanded CM/[98]Misc/Fix All Objects",
     ChoGGi.MenuFuncs.FixAllObjects,
     nil,
     "Fixes all broken objects.",
@@ -84,7 +84,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Change Colour",
+    "Expanded CM/[98]Misc/Change Colour",
     ChoGGi.MenuFuncs.CreateObjectListAndAttaches,
     "F6",
     "Select/mouse over an object to change the colours.",
@@ -92,7 +92,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Set Opacity",
+    "Expanded CM/[98]Misc/Set Opacity",
     ChoGGi.MenuFuncs.SetObjectOpacity,
     "F3",
     "Change the opacity of objects.",
@@ -100,7 +100,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Set UI Transparency",
+    "Expanded CM/[98]Misc/Set UI Transparency",
     ChoGGi.MenuFuncs.SetTransparencyUI,
     "Ctrl-F3",
     "Change the transparency of UI items.",
@@ -108,7 +108,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Set UI Transparency Mouseover",
+    "Expanded CM/[98]Misc/Set UI Transparency Mouseover",
     ChoGGi.MenuFuncs.TransparencyUI_Toggle,
     nil,
     "Toggle removing transparency on mouseover.",
@@ -116,7 +116,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[2]Render/Shadow Map",
+    "Expanded CM/[98]Misc/[2]Render/Shadow Map",
     ChoGGi.MenuFuncs.SetShadowmapSize,
     nil,
     function()
@@ -128,7 +128,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
 
   --------------------
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[2]Render/Disable Texture Compression",
+    "Expanded CM/[98]Misc/[2]Render/Disable Texture Compression",
     ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
     nil,
     function()
@@ -139,7 +139,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[2]Render/Higher Render Distance",
+    "Expanded CM/[98]Misc/[2]Render/Higher Render Distance",
     ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
     nil,
     function()
@@ -150,7 +150,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[2]Render/Higher Shadow Distance",
+    "Expanded CM/[98]Misc/[2]Render/Higher Shadow Distance",
     ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
     nil,
     function()
@@ -162,7 +162,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
 
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[1]Camera/Toggle Free Camera",
+    "Expanded CM/[98]Misc/[1]Camera/Toggle Free Camera",
     ChoGGi.MenuFuncs.CameraFree_Toggle,
     "Shift-C",
     "I believe I can fly.",
@@ -170,7 +170,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[1]Camera/Toggle Follow Camera",
+    "Expanded CM/[98]Misc/[1]Camera/Toggle Follow Camera",
     ChoGGi.MenuFuncs.CameraFollow_Toggle,
     "Ctrl-Shift-F",
     "Select (or mouse over) an object to follow.",
@@ -178,7 +178,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[1]Camera/Toggle Cursor",
+    "Expanded CM/[98]Misc/[1]Camera/Toggle Cursor",
     ChoGGi.MenuFuncs.CursorVisible_Toggle,
     "Ctrl-Alt-F",
     "Toggle between moving camera and selecting objects.",
@@ -186,7 +186,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[1]Camera/Border Scrolling",
+    "Expanded CM/[98]Misc/[1]Camera/Border Scrolling",
     ChoGGi.MenuFuncs.SetBorderScrolling,
     nil,
     function()
@@ -197,7 +197,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[1]Camera/Zoom Distance",
+    "Expanded CM/[98]Misc/[1]Camera/Zoom Distance",
     ChoGGi.MenuFuncs.CameraZoom_Toggle,
     nil,
     function()
@@ -208,7 +208,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[-1]Infopanel Cheats",
+    "Expanded CM/[98]Misc/[-1]Infopanel Cheats",
     ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
     "Ctrl-F2",
     function()
@@ -219,7 +219,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/[-1]Infopanel Cheats Cleanup",
+    "Expanded CM/[98]Misc/[-1]Infopanel Cheats Cleanup",
     ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
     nil,
     function()
@@ -230,7 +230,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Scanner Queue Larger",
+    "Expanded CM/[98]Misc/Scanner Queue Larger",
     ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
     nil,
     function()
@@ -246,7 +246,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[999]Misc/Game Speed",
+    "Expanded CM/[98]Misc/Game Speed",
     ChoGGi.MenuFuncs.SetGameSpeed,
     nil,
     "Change the game speed (only for medium/fast, normal is normal).",

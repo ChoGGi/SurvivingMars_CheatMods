@@ -51,7 +51,7 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Object Manipulator",
-    ChoGGi.CodeFuncs.OpenInObjectManipulator,
+    ChoGGi.ComFuncs.OpenInObjectManipulator,
     "F5",
     "Manipulate objects (selected or under mouse cursor)",
     "SaveMapEntityList.tga"

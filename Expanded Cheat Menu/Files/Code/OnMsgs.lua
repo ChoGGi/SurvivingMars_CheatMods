@@ -12,6 +12,7 @@ function OnMsg.ClassesGenerate(classdefs)
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
   ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
+  ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
 
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesGenerate()
@@ -52,6 +53,7 @@ function OnMsg.ClassesBuilt()
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
   ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
+  ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesBuilt()
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
@@ -1022,7 +1024,8 @@ function OnMsg.ChoGGi_Loaded()
   if nofile then
     --some dickhead removed the LICENSE
     dickhead = true
-  elseif abs(xxhash(0,AsyncFileToString(ChoGGi.ModPath .. "/LICENSE"))) ~= 299860815 then
+  elseif string.len(file) ~= 1245 then
+  --elseif xxhash(0,file) ~= 299860815 then
     --LICENSE exists, but was changed (again dickhead)
     dickhead = true
   end
@@ -1030,9 +1033,9 @@ function OnMsg.ChoGGi_Loaded()
   --look ma; a LICENSE!
   if dickhead then
     --i mean you gotta be compliant after all...
-    print("MIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
+    print("All of my code is licensed under the MIT License as follows:\n\nMIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
     print("\n\n\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
-    terminal.SetOSWindowTitle("Zombie baby Jesus eats babies of LICENSE removers.")
+    terminal.SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
   end
 
 end --OnMsg

@@ -6,6 +6,14 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
   -------------rockets
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[99]Monitor Info",
+    ChoGGi.MenuFuncs.MonitorInfo,
+    nil,
+    "Shows a list of updated information about your city.",
+    "EV_OpenFirst.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Rocket/Cargo Capacity",
     ChoGGi.MenuFuncs.SetRocketCargoCapacity,
     nil,

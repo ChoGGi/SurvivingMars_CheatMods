@@ -123,7 +123,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     --open editor with whatever is selected
     self.idList.OnLButtonDoubleClick = function()
       if self.sel then
-        ChoGGi.CodeFuncs.OpenInObjectManipulator(self.sel.object,self)
+        ChoGGi.ComFuncs.OpenInObjectManipulator(self.sel.object,self)
       end
     end
 

@@ -840,118 +840,11 @@ function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
   end
 end
 
-function ChoGGi.CodeFuncs.OpenInExecCodeDlg(Object,Parent)
-  if not Object then
-    return
-  end
-  local ChoGGi = ChoGGi
-
-  local dlg = ChoGGi_ExecCodeDlg:new()
-
-  if not dlg then
-    return
-  end
-
-  if ChoGGi.Temp.Testing then
-    --easier to fiddle with it
-    ChoGGi.ExecCodeDlg_Dlg = dlg
-  end
-
-  --update internal object
-  dlg.obj = Object
-
-  local title = tostring(Object)
-  if type(Object) == "table" and Object.class then
-    title = "Class: " .. Object.class
-  end
-
-  --title text
-  if type(Object) == "table" then
-    dlg.idCaption:SetText("Exec Code on: " .. (Object.class or tostring(Object)))
-  end
-
-  --set pos
-  if Parent then
-    local pos = Parent:GetPos()
-    if not pos then
-      dlg:SetPos(terminal.GetMousePos())
-    else
-      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
-    end
-  else
-    dlg:SetPos(terminal.GetMousePos())
-  end
-
-end
-
-function ChoGGi.CodeFuncs.OpenInObjectManipulator(Object,Parent)
-  if type(Object) ~= "table" then
-    return
-  end
-  local ChoGGi = ChoGGi
-  --nothing selected or menu item
-  if not Object or (Object and not Object.class) then
-    Object = ChoGGi.CodeFuncs.SelObject()
-  end
-
-  if not Object then
-    return
-  end
-
-  local dlg = ChoGGi_ObjectManipulator:new()
-
-  if not dlg then
-    return
-  end
-
-  if ChoGGi.Temp.Testing then
-    --easier to fiddle with it
-    ChoGGi.ObjectManipulator_Dlg = dlg
-  end
-
-  --update internal object
-  dlg.obj = Object
-
-  local title = tostring(Object)
-  if type(Object) == "table" and Object.class then
-    title = "Class: " .. Object.class
-  end
-
-  --update the add button hint
-  dlg.idAddNew:SetHint(dlg.idAddNew:GetHint() .. title .. ".")
-
-  --title text
-  if type(Object) == "table" then
-    if Object.entity then
-      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
-    else
-      dlg.idCaption:SetText(Object.class)
-    end
-  else
-    dlg.idCaption:SetText(tostring(Object))
-  end
-
-  --set pos
-  if Parent then
-    local pos = Parent:GetPos()
-    if not pos then
-      dlg:SetPos(terminal.GetMousePos())
-    else
-      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
-    end
-  else
-    dlg:SetPos(terminal.GetMousePos())
-  end
-  --update item list
-  dlg:UpdateListContent(Object)
-
-end
-
 do --CloseDialogsECM
   local ChoGGi = ChoGGi
   function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
     while ChoGGi.ComFuncs.CheckForTypeInList(win,Dialog) do
-      for i = 1, #win do
+      for i = #win, 1, -1 do
         if win[i]:IsKindOf(Dialog) then
           win[i]:delete()
         end
@@ -964,6 +857,8 @@ do --CloseDialogsECM
     ChoGGi.CodeFuncs.RemoveOldDialogs("Examine",win)
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator",win)
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog",win)
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg",win)
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg",win)
   end
 end
 
@@ -1665,4 +1560,75 @@ function ChoGGi.CodeFuncs.ReturnAllNearby(Radius)
     )
   end
   return list
+end
+
+function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
+  local UICity = UICity
+  local info
+  local function AddGrid(Name,info)
+    for i = 1, #UICity[Name] do
+      info.tables[#info.tables+1] = UICity[Name][i]
+    end
+  end
+  --0=value,1=#table,2=list table values
+  local info_grid = {
+    title = value,
+    tables = {},
+    values = {
+      {name="connectors",kind=1},
+      {name="consumers",kind=1},
+      {name="producers",kind=1},
+      {name="storages",kind=1},
+      {name="all_consumers_supplied",kind=0},
+      {name="charge",kind=0},
+      {name="discharge",kind=0},
+      {name="current_consumption",kind=0},
+      {name="current_production",kind=0},
+      {name="current_reserve",kind=0},
+      {name="current_storage",kind=0},
+      {name="current_storage_change",kind=0},
+      {name="current_throttled_production",kind=0},
+      {name="current_waste",kind=0},
+    }
+  }
+  if value == "Grids" then
+    info = info_grid
+    AddGrid("air",info)
+    AddGrid("electricity",info)
+    AddGrid("water",info)
+  elseif value == "Air" then
+    info = info_grid
+    AddGrid("air",info)
+  elseif value == "Electricity" then
+    info = info_grid
+    AddGrid("electricity",info)
+  elseif value == "Water" then
+    info = info_grid
+    AddGrid("water",info)
+  elseif value == "City" then
+    info = {
+      title = "City",
+      tables = {UICity},
+      values = {
+        {name="rand_state",kind=0},
+        {name="day",kind=0},
+        {name="hour",kind=0},
+        {name="minute",kind=0},
+        {name="total_export",kind=0},
+        {name="total_export_funding",kind=0},
+        {name="funding",kind=0},
+        {name="research_queue",kind=1},
+        {name="consumption_resources_consumed_today",kind=2},
+        {name="maintenance_resources_consumed_today",kind=2},
+        {name="gathered_resources_today",kind=2},
+        {name="consumption_resources_consumed_yesterday",kind=2},
+        {name="maintenance_resources_consumed_yesterday",kind=2},
+        {name="gathered_resources_yesterday",kind=2},
+         --{name="unlocked_upgrades",kind=2},
+      }
+    }
+  end
+  if info then
+    ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info,parent)
+  end
 end

@@ -61,7 +61,6 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       self:delete(self.choices)
     end
 
-
     --make checkbox work like a button
     local children = self.idCheckBox2.children
     for i = 1, #children do
@@ -114,6 +113,9 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       --open colour changer
       if self.CustomType == 1 or self.CustomType == 2 then
         ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+      elseif self.CustomType == 7 then
+        --open it in monitor list
+        ChoGGi.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
       elseif self.CustomType ~= 5 then
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
