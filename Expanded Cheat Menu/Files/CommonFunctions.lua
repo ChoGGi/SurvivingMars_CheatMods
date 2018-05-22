@@ -768,7 +768,7 @@ function cComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
   else
     --i want to open it at mouse pos
     local ex = Examine:new()
-    ex:SetObj(Obj,ObjPos)
+    ex:SetObj(Obj)
     ex:SetPos(terminal.GetMousePos())
   end
   return ex
