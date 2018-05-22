@@ -14,6 +14,7 @@ function ChoGGi.MenuFuncs.ReloadLua()
 end
 
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
+  local ChoGGi = ChoGGi
   --the menu item sends itself
   if s and not s.class then
     s = ChoGGi.CodeFuncs.SelObject()
@@ -707,7 +708,7 @@ do --path markers
         Obj.stored_waypoints[i]:delete()
       end
       Obj.stored_waypoints = {}
-    until ChoGGi.Temp.PathingHandles[Obj.handle] == false
+    until ChoGGi.Temp.UnitPathingHandles[Obj.handle] == false
     ChoGGi.MenuFuncs.ClearColourAndWP(Obj.class)
   end
 
@@ -717,16 +718,16 @@ do --path markers
     if Obj and not Obj.class then
       Obj = ChoGGi.CodeFuncs.SelObject()
     elseif not Obj then
-      ChoGGi.Temp.PathingHandles = {}
+      ChoGGi.Temp.UnitPathingHandles = {}
     end
 
     if Obj.handle then
-      if ChoGGi.Temp.PathingHandles[Obj.handle] then
+      if ChoGGi.Temp.UnitPathingHandles[Obj.handle] then
         --already exists so remove thread
-        DeleteThread(ChoGGi.Temp.PathingHandles[Obj.handle])
-        ChoGGi.Temp.PathingHandles[Obj.handle] = nil
+        DeleteThread(ChoGGi.Temp.UnitPathingHandles[Obj.handle])
+        ChoGGi.Temp.UnitPathingHandles[Obj.handle] = nil
       elseif IsValid(Obj) and type(Obj.GetPath) == "function" then
-        ChoGGi.Temp.PathingHandles[Obj.handle] = CreateGameTimeThread(function()
+        ChoGGi.Temp.UnitPathingHandles[Obj.handle] = CreateGameTimeThread(function()
           ChoGGi.MenuFuncs.MapPath(Obj,ChoGGi)
         end)
       end

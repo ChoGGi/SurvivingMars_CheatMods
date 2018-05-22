@@ -190,10 +190,11 @@ ChoGGi.Consts = {
 
 --set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
-  local UserSettings = ChoGGi.UserSettings
+  local ChoGGi = ChoGGi
+  local const = const
 --Consts.
   local function SetConstsG(Name)
-    ChoGGi.ComFuncs.SetConstsG(Name,UserSettings[Name])
+    ChoGGi.ComFuncs.SetConstsG(Name,ChoGGi.UserSettings[Name])
   end
   SetConstsG("AvoidWorkplaceSols")
   SetConstsG("BirthThreshold")
@@ -267,10 +268,9 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
   SetConstsG("TravelTimeMarsEarth")
   SetConstsG("VisitFailPenalty")
 --const.
-  local const = const
   local function SetConst(Name)
-    if UserSettings[Name] then
-      const[Name] = UserSettings[Name]
+    if ChoGGi.UserSettings[Name] then
+      const[Name] = ChoGGi.UserSettings[Name]
     end
   end
   SetConst("BreakThroughTechsPerGame")
@@ -288,42 +288,47 @@ end
 --called everytime we set a setting in menu
 function ChoGGi.SettingFuncs.WriteSettings()
   local ChoGGi = ChoGGi
-  local CreateRealTimeThread = CreateRealTimeThread
   local ThreadLockKey = ThreadLockKey
   local ThreadUnlockKey = ThreadUnlockKey
-  --piss off if we're in the middle of a save?
-  --probably be better to read file afterwards and check if it matches
-  if ChoGGi.Temp.SavingSettings then
+
+  --piss off if we're saving (probably be better to read file afterwards and check if it matches)
+  if ChoGGi.Temp.SavingSettingsFile then
+    print("Slow arsed hard drive, or something is wrong...")
     return
   end
-  CreateRealTimeThread(function()
-    ChoGGi.Temp.SavingSettings = true
-    local file = ChoGGi.SettingsFile
-    local bak = file .. ".bak"
 
+  CreateRealTimeThread(function()
+    ChoGGi.Temp.SavingSettingsFile = true
+
+    local bak = ChoGGi.SettingsFile .. ".bak"
+    --locks the file while we write (i mean it says thread, ah well can't hurt)?
     ThreadLockKey(bak)
-    AsyncCopyFile(file,bak)
+    AsyncCopyFile(ChoGGi.SettingsFile,bak)
     ThreadUnlockKey(bak)
 
-    ThreadLockKey(file)
+    ThreadLockKey(ChoGGi.SettingsFile)
     table.sort(ChoGGi.UserSettings)
-    local err = AsyncStringToFile(file,TableToLuaCode(ChoGGi.UserSettings))
-    ThreadUnlockKey(file)
-    if err then
-      print("once", "Failed to save a settings to", file, ":", err)
-      return false, err
+    --and write it to disk
+    local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.UserSettings))
+    ThreadUnlockKey(ChoGGi.SettingsFile)
+
+    if DoneFuckedUp then
+      print("once", "Failed to save a settings to", ChoGGi.SettingsFile, ":", err)
+      return false, DoneFuckedUp
     end
-    ChoGGi.Temp.SavingSettings = nil
+
+    ChoGGi.Temp.SavingSettingsFile = nil
   end)
+
 end
 
 --read saved settings from file
 function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
-  local DebugPrint = DebugPrint
   local AsyncFileToString = AsyncFileToString
   local errormsg = "\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n"
 
+  --try to read settings
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
 	if file_error then
     file_error = ""
@@ -331,15 +336,15 @@ function ChoGGi.SettingFuncs.ReadSettings()
     ChoGGi.SettingFuncs.WriteSettings()
     file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
     if file_error then
-      DebugPrint(errormsg)
+      print(errormsg)
       return file_error
     end
 	end
-
+  --and convert it to lua
   local code_error
   code_error, ChoGGi.UserSettings = LuaCodeToTuple(Settings)
 	if code_error then
-    DebugPrint(errormsg)
+    print(errormsg)
 		return code_error
 	end
 
@@ -367,7 +372,7 @@ function ChoGGi.MsgFuncs.Defaults_OptionsApply()
 
   --get other defaults not stored in Consts
   ChoGGi.Consts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
-  local CargoShuttle = CargoShuttle
+  local CargoShuttle = CargoShuttle --any globals called more then once = local
   ChoGGi.Consts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
   ChoGGi.Consts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
   ChoGGi.Consts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
@@ -392,6 +397,7 @@ end
 function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
+  local g_Classes = g_Classes
   --remove empty entries in BuildingSettings
   if next(ChoGGi.UserSettings.BuildingSettings) then
     --remove any empty building tables
@@ -436,11 +442,10 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   end
 
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
-  local g = g_Classes
   ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g[class].scenario_name or "Missing Scenario Name"
-    local display_name = ChoGGi.CodeFuncs.Trans(g[class].display_name) or "Missing Name"
-    local description = ChoGGi.CodeFuncs.Trans(g[class].rollover_text) or "Missing Description"
+    local scenario_name = g_Classes[class].scenario_name or "Missing Scenario Name"
+    local display_name = ChoGGi.CodeFuncs.Trans(g_Classes[class].display_name) or "Missing Name"
+    local description = ChoGGi.CodeFuncs.Trans(g_Classes[class].rollover_text) or "Missing Description"
 
     local temptable = {
       class = class,

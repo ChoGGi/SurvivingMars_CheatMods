@@ -141,6 +141,10 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 end
 
 function ChoGGi.MenuFuncs.ChangeCommander()
+  local Presets = Presets
+  local g_CurrentMissionParams = g_CurrentMissionParams
+  local UICity = UICity
+
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -162,13 +166,12 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         g_CurrentMissionParams.idCommanderProfile = value
 
         -- apply tech from new commmander
-        local city = UICity
         local commander = GetMissionSponsor()
-        commander:game_apply(city)
-        commander:OnApplyEffect(city)
-        city:ApplyModificationsFromProperties()
+        commander:game_apply(UICity)
+        commander:OnApplyEffect(UICity)
+        UICity:ApplyModificationsFromProperties()
         --and bonuses
-        city:InitMissionBonuses()
+        UICity:InitMissionBonuses()
 
         ChoGGi.ComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
           "Commander",UsualIcon

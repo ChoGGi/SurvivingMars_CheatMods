@@ -1,417 +1,9 @@
---fired as early as possible (excluding Init.lua of course, but i like to keep that simple)
-if ChoGGi.UserSettings.DisableHints then
-  mapdata.DisableHints = true
-  HintsEnabled = false
-end
+--i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
-function OnMsg.ChoGGi_Loaded()
-  local UICity = UICity
-  --for new games
-  if not UICity then
-    return
-  end
-
-  --place to store per-game values
-  if not UICity.ChoGGi then
-    UICity.ChoGGi = {}
-  end
-
-  local ChoGGi = ChoGGi
-  local Temp = ChoGGi.Temp
-
-  if Temp.IsGameLoaded == true then
-    return
-  end
-  Temp.IsGameLoaded = true
-
-  local UserSettings = ChoGGi.UserSettings
-  local Presets = Presets
-  local UAMenu = UAMenu
-  local DataInstances = DataInstances
-  local const = const
-  local hr = hr
-  local config = config
-
-  --late enough that I can set g_Consts.
-  ChoGGi.SettingFuncs.SetConstsToSaved()
-  --needed for DroneResourceCarryAmount?
-  UpdateDroneResourceUnits()
-
-  --remove all built-in actions
-  local UserActions = UserActions
-  UserActions.ClearGlobalTables()
-  UserActions.Actions = {}
-  UserActions.RejectedActions = {}
-
-  ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
-  if ChoGGi.Temp.Testing then
-    ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
-  end
-
-  --add custom actions
-  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
-
-  --add preset menu items
-  ClassDescendantsList("Preset", function(name, class)
-    local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or {}
-    local map = class.GlobalMap
-    if map then
-      rawset(_G, map, rawget(_G, map) or {})
-    end
-    ChoGGi.ComFuncs.AddAction(
-      "Presets/" .. name,
-      function()
-        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-          PresetClass = name,
-          SingleFile = class.SingleFile
-        })
-      end,
-      class.EditorShortcut or nil,
-      "Open a preset in the editor.",
-      class.EditorIcon or "CollectionsEditor.tga"
-    )
-  end)
-  --broken ass shit
-  local mod = Mods[ChoGGi.id]
-  local text = ""
-  for _,bv in pairs(mod) do
-    text = text .. tostring(bv)
-  end
-  --update menu
-  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
-
--------------------do the above stuff before
-
-  --show completed hidden milestones
-  if UICity.ChoGGi.DaddysLittleHitler then
-    PlaceObj("Milestone", {
-      SortKey = 0,
-      base_score = 0,
-      bonus_score = 0,
-      bonus_score_expiration = 0,
-      display_name = "Deutsche Gesellschaft fur Rassenhygiene",
-      group = "Default",
-      id = "DaddysLittleHitler"
-    })
-    if not MilestoneCompleted.DaddysLittleHitler then
-      MilestoneCompleted.DaddysLittleHitler = 3025359200000
-    end
-  end
-  if UICity.ChoGGi.Childkiller then
-    PlaceObj("Milestone", {
-      SortKey = 0,
-      base_score = 0,
-      bonus_score = 0,
-      bonus_score_expiration = 0,
-      display_name = "Childkiller (You evil, evil person.)",
-      group = "Default",
-      id = "Childkiller"
-    })
-    --it doesn't hurt
-    if not MilestoneCompleted.Childkiller then
-      MilestoneCompleted.Childkiller = 479000000
-    end
-  end
-
-  --add custom lightmodel
-  local data = DataInstances.Lightmodel
-  if data.ChoGGi_Custom then
-    data.ChoGGi_Custom:delete()
-  end
-  local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
-  if not LightmodelCustom then
-    _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Consts.LightmodelCustom)
-  end
-
-  if LightmodelCustom then
-    data.ChoGGi_Custom = LightmodelCustom
-  else
-    LightmodelCustom = ChoGGi.Consts.LightmodelCustom
-    UserSettings.LightmodelCustom = LightmodelCustom
-    data.ChoGGi_Custom = LightmodelCustom
-    Temp.WriteSettings = true
-  end
-  Temp.LightmodelCustom = LightmodelCustom
-
-  --if there's a lightmodel name saved
-  local LightModel = UserSettings.LightModel
-  if LightModel then
-    SetLightmodelOverride(1,LightModel)
-  end
-
-  --default only saved 20 items in console history
-  const.nConsoleHistoryMaxSize = 100
-
-  --long arsed cables
-  if UserSettings.UnlimitedConnectionLength then
-    GridConstructionController.max_hex_distance_to_allow_build = 1000
-  end
-
-  --on by default, you know all them martian trees (might make a cpu difference, probably not)
-  hr.TreeWind = 0
-
-  if UserSettings.DisableTextureCompression then
-    --uses more vram (1 toggles it, not sure what 0 does...)
-    hr.TR_ToggleTextureCompression = 1
-  end
-
-  if UserSettings.ShadowmapSize then
-    hr.ShadowmapSize = UserSettings.ShadowmapSize
-  end
-
-  if UserSettings.HigherRenderDist then
-    --lot of lag for some small rocks in distance
-    --hr.DistanceModifier = 260 --default 130
-    --hr.AutoFadeDistanceScale = 2200 --def 2200
-    --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
-    if type(UserSettings.HigherRenderDist) == "number" then
-      hr.LODDistanceModifier = UserSettings.HigherRenderDist
-    else
-      hr.LODDistanceModifier = 600 --def 120
-    end
-  end
-
-  if UserSettings.HigherShadowDist then
-    if type(UserSettings.HigherShadowDist) == "number" then
-      hr.ShadowRangeOverride = UserSettings.HigherShadowDist
-    else
-    --shadow cutoff dist
-    hr.ShadowRangeOverride = 1000000 --def 0
-    end
-    --no shadow fade out when zooming
-    hr.ShadowFadeOutRangePercent = 0 --def 30
-  end
-
-  --gets used a couple times
-  local Table
-
-  --not sure why this would be false on a dome
-  Table = UICity.labels.Dome or empty_table
-  for i = 1, #Table do
-    if Table[i].achievement == "FirstDome" and type(Table[i].connected_domes) ~= "table" then
-      Table[i].connected_domes = {}
-    end
-  end
-
-  --something messed up if storage is negative (usually setting an amount then lowering it)
-  Table = UICity.labels.Storages or empty_table
-  pcall(function()
-    for i = 1, #Table do
-      if Table[i]:GetStoredAmount() < 0 then
-        --we have to empty it first (just filling doesn't fix the issue)
-        Table[i]:CheatEmpty()
-        Table[i]:CheatFill()
-      end
-    end
-  end)
-
-  --so we can change the max_amount for concrete
-  Table = TerrainDepositConcrete.properties
-  for i = 1, #Table do
-    if Table[i].id == "max_amount" then
-      Table[i].read_only = nil
-    end
-  end
-
-  --override building templates
-  Table = DataInstances.BuildingTemplate
-  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-  for i = 1, #Table do
-    local temp = Table[i]
-
-    --make hidden buildings visible
-    if UserSettings.Building_hide_from_build_menu then
-      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-      BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
-      if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
-        temp.hide_from_build_menu = nil
-      end
-      if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
-        temp.build_category = "HiddenX"
-      end
-    end
-
-    --wonder building limit
-    if UserSettings.Building_wonder then
-      temp.wonder = nil
-    end
-
-  end
-
-  --get the +5 bonus from phsy profile
-  if UserSettings.NoRestingBonusPsychologistFix then
-    local commander_profile = GetCommanderProfile()
-    if commander_profile.id == "psychologist" then
-      commander_profile.param1 = 5
-    end
-  end
-
-  --show cheat pane?
-  if UserSettings.InfopanelCheats then
-    config.BuildingInfopanelCheats = true
-    ReopenSelectionXInfopanel()
-  end
-
-  --show console log history
-  if UserSettings.ConsoleToggleHistory then
-    ShowConsoleLog(true)
-  end
-
-  --dim that console bg
-  if UserSettings.ConsoleDim then
-    config.ConsoleDim = 1
-  end
-
-  if UserSettings.ShowCheatsMenu or ChoGGi.Temp.Testing then
-    --always show on my computer
-    if not dlgUAMenu then
-      UAMenu.ToggleOpen()
-    end
-  end
-
-  --remove some uselessish Cheats to clear up space
-  if UserSettings.CleanupCheatsInfoPane then
-    ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-  end
-
-  --default to showing interface in ss
-  if UserSettings.ShowInterfaceInScreenshots then
-    hr.InterfaceInScreenshot = 1
-  end
-
-  --set zoom/border scrolling
-  ChoGGi.CodeFuncs.SetCameraSettings()
-
-  --show all traits
-  if UserSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
-    School.max_traits = #ChoGGi.Tables.PositiveTraits
-  end
-
-  --unbreakable cables/pipes
-  if UserSettings.BreakChanceCablePipe then
-    const.BreakChanceCable = 10000000
-    const.BreakChancePipe = 10000000
-  end
-
-  --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
-  if ChoGGi._VERSION ~= UserSettings._VERSION then
-    --clean up
-    CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
-    --update saved version
-    UserSettings._VERSION = ChoGGi._VERSION
-    Temp.WriteSettings = true
-  end
-
-  CreateRealTimeThread(function()
-    --add custom labels for cables/pipes
-    local function CheckLabel(Label)
-      if not UICity.labels[Label] then
-        UICity:InitEmptyLabel(Label)
-        if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
-          local objs = GetObjects({class=Label:gsub("ChoGGi_","")}) or empty_table
-          for i = 1, #objs do
-            UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
-            UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]
-          end
-        end
-      end
-    end
-    CheckLabel("ChoGGi_GridElements")
-    CheckLabel("ChoGGi_ElectricityGridElement")
-    CheckLabel("ChoGGi_LifeSupportGridElement")
-
-    --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-    local shown = g_ShownOnScreenNotifications
-    for Key,_ in pairs(shown) do
-      if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
-        shown[Key] = nil
-      end
-    end
-
-    --remove any dialogs we opened
-    ChoGGi.CodeFuncs.CloseDialogsECM()
-
-    --remove any outside buildings i accidentally attached to domes ;)
-    Table = UICity.labels.BuildingNoDomes or empty_table
-    local sType
-    for i = 1, #Table do
-      if Table[i].dome_required == false and Table[i].parent_dome then
-
-        sType = false
-        --remove it from the dome label
-        if Table[i].closed_shifts then
-          sType = "Residence"
-        elseif Table[i].colonists then
-          sType = "Workplace"
-        end
-
-        if sType then --get a fucking continue lua
-          if Table[i].parent_dome.labels and Table[i].parent_dome.labels[sType] then
-            local dome = Table[i].parent_dome.labels[sType]
-            for j = 1, #dome do
-              if dome[j].class == Table[i].class then
-                dome[j] = nil
-              end
-            end
-          end
-          --remove parent_dome
-          Table[i].parent_dome = nil
-        end
-
-      end
-    end
-
-    --make the change map dialog movable
-    DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
-    DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
-  end)
-
-  --make sure to save anything we changed above
-  if Temp.WriteSettings then
-    ChoGGi.SettingFuncs.WriteSettings()
-    Temp.WriteSettings = nil
-  end
-
-  --print startup msgs to console log
-  local msgs = Temp.StartupMsgs
-  for i = 1, #msgs do
-    AddConsoleLog(msgs[i],true)
-    --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
-  end
-
-  local dickhead
-  local nofile,file = AsyncFileToString(ChoGGi.ModPath .. "/LICENSE")
-  if nofile then
-    --some dickhead removed the LICENSE
-    dickhead = true
-  elseif abs(xxhash(0,AsyncFileToString(ChoGGi.ModPath .. "/LICENSE"))) ~= 299860815 then
-    --LICENSE exists, but was changed
-    dickhead = true
-  end
-  --look ma; a LICENSE!
-  if dickhead then
-    print("MIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
-    print("\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
-    terminal.SetOSWindowTitle("Zombie baby Jesus eats babies of LICENSE removers.")
-  end
-
-end --OnMsg
 
 --use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate(classdefs)
-  --i like keeping all my OnMsgs. in one file
+  local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
@@ -436,6 +28,7 @@ end --OnMsg
 
 --use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
+  local ChoGGi = ChoGGi
 
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
 
@@ -453,6 +46,7 @@ end
 --where we can add new BuildingTemplates
 --use this message to make modifications to the built classes (before they are declared final)
 function OnMsg.ClassesPostprocess()
+  local ChoGGi = ChoGGi
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   end
@@ -460,6 +54,7 @@ end
 
 --use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
+  local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   --custom dialogs
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
@@ -488,8 +83,16 @@ function OnMsg.ClassesBuilt()
       shut.ChoGGi_DustOn = true
     end
   end
+
   --get shuttle to follow mouse
   function CargoShuttle:ChoGGi_FollowMouse(newpos)
+    local point = point
+    local PlayFX = PlayFX
+    local terrain = terrain
+    local Sleep = Sleep
+    local GetObjects = GetObjects
+    local NearestObject = NearestObject
+    local GameTime = GameTime
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
     local timenow = GameTime()
     local idle = 0
@@ -608,6 +211,7 @@ function OnMsg.OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
+  local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   terminal.SetOSWindowTitle(ChoGGi.CodeFuncs.Trans(1079) .. ": " .. Mods[ChoGGi.id].title)
 end
@@ -625,6 +229,7 @@ end
 --for new games
 --OnMsg.NewMapLoaded()
 function OnMsg.CityStart()
+  local ChoGGi = ChoGGi
   ChoGGi.Temp.IsGameLoaded = false
   --reset my mystery msgs to hidden
   ChoGGi.UserSettings.ShowMysteryMsgs = nil
@@ -664,6 +269,7 @@ function OnMsg.ConstructionComplete(building)
   if building.class == "RocketLandingSite" then
     return
   end
+  local ChoGGi = ChoGGi
   local UserSettings = ChoGGi.UserSettings
 
   --print(building.encyclopedia_id) print(building.class)
@@ -765,6 +371,7 @@ function OnMsg.ConstructionComplete(building)
 end --OnMsg
 
 function OnMsg.Demolished(building)
+  local UICity = UICity
   --update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
   if building.achievement == "FirstDome" then
     local UICity = building.city or UICity
@@ -815,7 +422,7 @@ end --OnMsg
 function OnMsg.SelectionAdded(Obj)
   --update selection shortcut
   s = Obj
-  --
+  --update last placed (or selected)
   if Obj:IsKindOf("Building") then
     ChoGGi.Temp.LastPlacedObject = Obj
   end
@@ -825,59 +432,64 @@ function OnMsg.SelectionRemoved()
   s = false
 end
 
-function OnMsg.NewDay() --newsol
-  local ChoGGi = ChoGGi
-  local UICity = UICity
-
-  --clean up old handles
-  for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
-    if not IsValid(HandleToObject[h]) then
-      ChoGGi.Temp.CargoShuttleThreads[h] = nil
-    end
-  end
-
-  --sorts cc list by dist to building
-  if ChoGGi.UserSettings.SortCommandCenterDist then
-    local blds = GetObjects({class="Building"})
-    for i = 1, #blds do
-      table.sort(blds[i].command_centers,
-        function(a,b)
-          return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",blds[i])
-        end
-      )
-    end
-  end
-
-  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-  if UICity.labels.ChoGGi_GridElements then
-    local function ValidGridElements(Label)
-      local Table = UICity.labels[Label]
-      for i = #Table, 1, -1 do
-        if not IsValid(Table[i]) then
-          table.remove(Table,i)
-        end
+do
+  local IsValid = IsValid
+  local function ValidGridElements(Label,UICity)
+    local Table = UICity.labels[Label]
+    for i = #Table, 1, -1 do
+      if not IsValid(Table[i]) then
+        table.remove(Table,i)
       end
     end
-    ValidGridElements("ChoGGi_GridElements")
-    ValidGridElements("ChoGGi_LifeSupportGridElement")
-    ValidGridElements("ChoGGi_ElectricityGridElement")
   end
+  function OnMsg.NewDay() --newsol
+    local ChoGGi = ChoGGi
+    local UICity = UICity
 
+    --clean up old handles
+    for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
+      if not IsValid(HandleToObject[h]) then
+        ChoGGi.Temp.CargoShuttleThreads[h] = nil
+      end
+    end
+
+    --sorts cc list by dist to building
+    if ChoGGi.UserSettings.SortCommandCenterDist then
+      local blds = GetObjects({class="Building"})
+      for i = 1, #blds do
+        table.sort(blds[i].command_centers,
+          function(a,b)
+            return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",blds[i])
+          end
+        )
+      end
+    end
+
+    --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
+    if UICity.labels.ChoGGi_GridElements then
+      ValidGridElements("ChoGGi_GridElements",UICity)
+      ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
+      ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
+    end
+
+  end
 end
 
 function OnMsg.NewHour()
+  local ChoGGi = ChoGGi
+  local empty_table = empty_table
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-    local city = UICity
+    local UICity = UICity
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local Table = city.labels.ResourceProducer or empty_table
+    local Table = UICity.labels.ResourceProducer or empty_table
     for i = 1, #Table do
       ChoGGi.CodeFuncs.FuckingDrones(Table[i]:GetProducerObj())
       if Table[i].wasterock_producer then
         ChoGGi.CodeFuncs.FuckingDrones(Table[i].wasterock_producer)
       end
     end
-    Table = city.labels.BlackCubeStockpiles or empty_table
+    Table = UICity.labels.BlackCubeStockpiles or empty_table
     for i = 1, #Table do
       ChoGGi.CodeFuncs.FuckingDrones(Table[i])
     end
@@ -917,7 +529,7 @@ function OnMsg.ApplicationQuit()
 end
 
 --custom OnMsgs
-do
+do --AddMsgToFunc
   local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
   ChoGGi.ComFuncs.AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
@@ -1144,3 +756,420 @@ function OnMsg.ChoGGi_Childkiller()
     MilestoneCompleted.Childkiller = 479000000
   end
 end
+
+--fired when game is loaded
+function OnMsg.ChoGGi_Loaded()
+  local UICity = UICity
+  --for new games
+  if not UICity then
+    return
+  end
+
+  --place to store per-game values
+  if not UICity.ChoGGi then
+    UICity.ChoGGi = {}
+  end
+
+  local ChoGGi = ChoGGi
+
+  if ChoGGi.Temp.IsGameLoaded == true then
+    return
+  end
+  ChoGGi.Temp.IsGameLoaded = true
+
+  local UserSettings = ChoGGi.UserSettings
+  local Presets = Presets
+  local UAMenu = UAMenu
+  local DataInstances = DataInstances
+  local const = const
+  local hr = hr
+  local config = config
+  local UserActions = UserActions
+  local OpenGedApp = OpenGedApp
+  local g_Classes = g_Classes
+  local Presets = Presets
+  local PlaceObj = PlaceObj
+  local LuaCodeToTuple = LuaCodeToTuple
+  local empty_table = empty_table
+  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
+  local AsyncFileToString = AsyncFileToString
+  --gets used a few times
+  local Table
+
+  --late enough that I can set g_Consts.
+  ChoGGi.SettingFuncs.SetConstsToSaved()
+  --needed for DroneResourceCarryAmount?
+  UpdateDroneResourceUnits()
+
+  --remove all built-in actions
+  UserActions.ClearGlobalTables()
+  UserActions.Actions = {}
+  UserActions.RejectedActions = {}
+
+  ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
+  if ChoGGi.Temp.Testing then
+    ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
+  end
+
+  --add custom actions
+  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
+
+  --add preset menu items
+  ClassDescendantsList("Preset", function(name, class)
+    local preset_class = class.PresetClass or name
+    Presets[preset_class] = Presets[preset_class] or {}
+    local map = class.GlobalMap
+    if map then
+      rawset(_G, map, rawget(_G, map) or {})
+    end
+    ChoGGi.ComFuncs.AddAction(
+      "Presets/" .. name,
+      function()
+        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+          PresetClass = name,
+          SingleFile = class.SingleFile
+        })
+      end,
+      class.EditorShortcut or nil,
+      "Open a preset in the editor.",
+      class.EditorIcon or "CollectionsEditor.tga"
+    )
+  end)
+  --broken ass shit
+  local mod = Mods[ChoGGi.id]
+  local text = ""
+  for _,bv in pairs(mod) do
+    text = text .. tostring(bv)
+  end
+  --update menu
+  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
+
+-------------------do the above stuff before
+
+  --show completed hidden milestones
+  if UICity.ChoGGi.DaddysLittleHitler then
+    PlaceObj("Milestone", {
+      SortKey = 0,
+      base_score = 0,
+      bonus_score = 0,
+      bonus_score_expiration = 0,
+      display_name = "Deutsche Gesellschaft fur Rassenhygiene",
+      group = "Default",
+      id = "DaddysLittleHitler"
+    })
+    if not MilestoneCompleted.DaddysLittleHitler then
+      MilestoneCompleted.DaddysLittleHitler = 3025359200000
+    end
+  end
+  if UICity.ChoGGi.Childkiller then
+    PlaceObj("Milestone", {
+      SortKey = 0,
+      base_score = 0,
+      bonus_score = 0,
+      bonus_score_expiration = 0,
+      display_name = "Childkiller (You evil, evil person.)",
+      group = "Default",
+      id = "Childkiller"
+    })
+    --it doesn't hurt
+    if not MilestoneCompleted.Childkiller then
+      MilestoneCompleted.Childkiller = 479000000
+    end
+  end
+
+  --add custom lightmodel
+  if DataInstances.Lightmodel.ChoGGi_Custom then
+    DataInstances.Lightmodel.ChoGGi_Custom:delete()
+  end
+  local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
+  if not LightmodelCustom then
+    _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Consts.LightmodelCustom)
+  end
+
+  if LightmodelCustom then
+    DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+  else
+    LightmodelCustom = ChoGGi.Consts.LightmodelCustom
+    UserSettings.LightmodelCustom = LightmodelCustom
+    DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+    ChoGGi.Temp.WriteSettings = true
+  end
+  ChoGGi.Temp.LightmodelCustom = LightmodelCustom
+
+  --if there's a lightmodel name saved
+  local LightModel = UserSettings.LightModel
+  if LightModel then
+    SetLightmodelOverride(1,LightModel)
+  end
+
+  --default only saved 20 items in console history
+  const.nConsoleHistoryMaxSize = 100
+
+  --long arsed cables
+  if UserSettings.UnlimitedConnectionLength then
+    GridConstructionController.max_hex_distance_to_allow_build = 1000
+  end
+
+  --on by default, you know all them martian trees (might make a cpu difference, probably not)
+  hr.TreeWind = 0
+
+  if UserSettings.DisableTextureCompression then
+    --uses more vram (1 toggles it, not sure what 0 does...)
+    hr.TR_ToggleTextureCompression = 1
+  end
+
+  if UserSettings.ShadowmapSize then
+    hr.ShadowmapSize = UserSettings.ShadowmapSize
+  end
+
+  if UserSettings.HigherRenderDist then
+    --lot of lag for some small rocks in distance
+    --hr.DistanceModifier = 260 --default 130
+    --hr.AutoFadeDistanceScale = 2200 --def 2200
+    --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
+    if type(UserSettings.HigherRenderDist) == "number" then
+      hr.LODDistanceModifier = UserSettings.HigherRenderDist
+    else
+      hr.LODDistanceModifier = 600 --def 120
+    end
+  end
+
+  if UserSettings.HigherShadowDist then
+    if type(UserSettings.HigherShadowDist) == "number" then
+      hr.ShadowRangeOverride = UserSettings.HigherShadowDist
+    else
+    --shadow cutoff dist
+    hr.ShadowRangeOverride = 1000000 --def 0
+    end
+    --no shadow fade out when zooming
+    hr.ShadowFadeOutRangePercent = 0 --def 30
+  end
+
+
+  --not sure why this would be false on a dome
+  Table = UICity.labels.Dome or empty_table
+  for i = 1, #Table do
+    if Table[i].achievement == "FirstDome" and type(Table[i].connected_domes) ~= "table" then
+      Table[i].connected_domes = {}
+    end
+  end
+
+  --something messed up if storage is negative (usually setting an amount then lowering it)
+  Table = UICity.labels.Storages or empty_table
+  pcall(function()
+    for i = 1, #Table do
+      if Table[i]:GetStoredAmount() < 0 then
+        --we have to empty it first (just filling doesn't fix the issue)
+        Table[i]:CheatEmpty()
+        Table[i]:CheatFill()
+      end
+    end
+  end)
+
+  --so we can change the max_amount for concrete
+  Table = TerrainDepositConcrete.properties
+  for i = 1, #Table do
+    if Table[i].id == "max_amount" then
+      Table[i].read_only = nil
+    end
+  end
+
+  --override building templates
+  Table = DataInstances.BuildingTemplate
+  for i = 1, #Table do
+    local temp = Table[i]
+
+    --make hidden buildings visible
+    if UserSettings.Building_hide_from_build_menu then
+      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+      BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
+      if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
+        temp.hide_from_build_menu = nil
+      end
+      if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
+        temp.build_category = "HiddenX"
+      end
+    end
+
+    --wonder building limit
+    if UserSettings.Building_wonder then
+      temp.wonder = nil
+    end
+
+  end
+
+  --get the +5 bonus from phsy profile
+  if UserSettings.NoRestingBonusPsychologistFix then
+    local commander_profile = GetCommanderProfile()
+    if commander_profile.id == "psychologist" then
+      commander_profile.param1 = 5
+    end
+  end
+
+  --show cheat pane?
+  if UserSettings.InfopanelCheats then
+    config.BuildingInfopanelCheats = true
+    ReopenSelectionXInfopanel()
+  end
+
+  --show console log history
+  if UserSettings.ConsoleToggleHistory then
+    ShowConsoleLog(true)
+  end
+
+  --dim that console bg
+  if UserSettings.ConsoleDim then
+    config.ConsoleDim = 1
+  end
+
+  if UserSettings.ShowCheatsMenu or ChoGGi.Temp.Testing then
+    --always show on my computer
+    if not dlgUAMenu then
+      UAMenu.ToggleOpen()
+    end
+  end
+
+  --remove some uselessish Cheats to clear up space
+  if UserSettings.CleanupCheatsInfoPane then
+    ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+  end
+
+  --default to showing interface in ss
+  if UserSettings.ShowInterfaceInScreenshots then
+    hr.InterfaceInScreenshot = 1
+  end
+
+  --set zoom/border scrolling
+  ChoGGi.CodeFuncs.SetCameraSettings()
+
+  --show all traits
+  if UserSettings.SanatoriumSchoolShowAll then
+    Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
+    School.max_traits = #ChoGGi.Tables.PositiveTraits
+  end
+
+  --unbreakable cables/pipes
+  if UserSettings.BreakChanceCablePipe then
+    const.BreakChanceCable = 10000000
+    const.BreakChancePipe = 10000000
+  end
+
+  --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
+  if ChoGGi._VERSION ~= UserSettings._VERSION then
+    --clean up
+    CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
+    --update saved version
+    UserSettings._VERSION = ChoGGi._VERSION
+    ChoGGi.Temp.WriteSettings = true
+  end
+
+  CreateRealTimeThread(function()
+    --add custom labels for cables/pipes
+    local function CheckLabel(Label)
+      if not UICity.labels[Label] then
+        UICity:InitEmptyLabel(Label)
+        if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
+          local objs = GetObjects({class=Label:gsub("ChoGGi_","")}) or empty_table
+          for i = 1, #objs do
+            UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
+            UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]
+          end
+        end
+      end
+    end
+    CheckLabel("ChoGGi_GridElements")
+    CheckLabel("ChoGGi_ElectricityGridElement")
+    CheckLabel("ChoGGi_LifeSupportGridElement")
+
+    --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
+    local shown = g_ShownOnScreenNotifications
+    for Key,_ in pairs(shown) do
+      if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
+        shown[Key] = nil
+      end
+    end
+
+    --remove any dialogs we opened
+    ChoGGi.CodeFuncs.CloseDialogsECM()
+
+    --remove any outside buildings i accidentally attached to domes ;)
+    Table = UICity.labels.BuildingNoDomes or empty_table
+    local sType
+    for i = 1, #Table do
+      if Table[i].dome_required == false and Table[i].parent_dome then
+
+        sType = false
+        --remove it from the dome label
+        if Table[i].closed_shifts then
+          sType = "Residence"
+        elseif Table[i].colonists then
+          sType = "Workplace"
+        end
+
+        if sType then --get a fucking continue lua
+          if Table[i].parent_dome.labels and Table[i].parent_dome.labels[sType] then
+            local dome = Table[i].parent_dome.labels[sType]
+            for j = 1, #dome do
+              if dome[j].class == Table[i].class then
+                dome[j] = nil
+              end
+            end
+          end
+          --remove parent_dome
+          Table[i].parent_dome = nil
+        end
+
+      end
+    end
+
+    --make the change map dialog movable
+    DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
+    DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
+  end)
+
+  --make sure to save anything we changed above
+  if ChoGGi.Temp.WriteSettings then
+    ChoGGi.SettingFuncs.WriteSettings()
+    ChoGGi.Temp.WriteSettings = nil
+  end
+
+  --print startup msgs to console log
+  local msgs = ChoGGi.Temp.StartupMsgs
+  for i = 1, #msgs do
+    print(msgs[i])
+    --AddConsoleLog(msgs[i],true)
+    --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
+  end
+
+  --someone doesn't like LICENSE files...
+  local dickhead
+  local nofile,file = AsyncFileToString(ChoGGi.ModPath .. "/LICENSE")
+
+  if nofile then
+    --some dickhead removed the LICENSE
+    dickhead = true
+  elseif abs(xxhash(0,AsyncFileToString(ChoGGi.ModPath .. "/LICENSE"))) ~= 299860815 then
+    --LICENSE exists, but was changed (again dickhead)
+    dickhead = true
+  end
+
+  --look ma; a LICENSE!
+  if dickhead then
+    --i mean you gotta be compliant after all...
+    print("MIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
+    print("\n\n\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
+    terminal.SetOSWindowTitle("Zombie baby Jesus eats babies of LICENSE removers.")
+  end
+
+end --OnMsg

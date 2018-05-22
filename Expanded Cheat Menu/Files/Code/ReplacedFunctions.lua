@@ -1,3 +1,5 @@
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+
 --[[
 add files for:
   ("DefenceTower","DefenceTick")
@@ -72,9 +74,11 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 
-  ChoGGi.ComFuncs.SaveOrigFunc("DefenceTower","GameInit")
+  SaveOrigFunc("DefenceTower","GameInit")
   function DefenceTower:GameInit()
     local ChoGGi = ChoGGi
+    local Sleep = Sleep
+    local IsValid = IsValid
     self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
       while IsValid(self) and not self.destroyed do
         if self.working then
@@ -90,9 +94,11 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --meteor targeting
-  ChoGGi.ComFuncs.SaveOrigFunc("CargoShuttle","GameInit")
+  SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
     local ChoGGi = ChoGGi
+    local IsValid = IsValid
+    local Sleep = Sleep
     --if it's an attack shuttle
     if ChoGGi.Temp.CargoShuttleThreads[self.handle] then
       self.shoot_range = 25 * ChoGGi.Consts.guim
@@ -114,8 +120,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --larger trib/subsurfheater radius
-  ChoGGi.ComFuncs.SaveOrigFunc("UIRangeBuilding","SetUIRange")
+  SaveOrigFunc("UIRangeBuilding","SetUIRange")
   function UIRangeBuilding:SetUIRange(radius)
+    local ChoGGi = ChoGGi
     local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
     if rad and rad.uirange then
       radius = rad.uirange
@@ -124,8 +131,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --block certain traits from workplaces
-  ChoGGi.ComFuncs.SaveOrigFunc("Workplace","AddWorker")
+  SaveOrigFunc("Workplace","AddWorker")
   function Workplace:AddWorker(worker, shift)
+    local ChoGGi = ChoGGi
     local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
     --check that the tables contain at least one trait
     local bt = s and s.blocktraits and type(s.blocktraits) == "table" and next(s.blocktraits) and s.blocktraits
@@ -150,7 +158,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --set amount of dust applied
-  ChoGGi.ComFuncs.SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
+  SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
   function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
     if ChoGGi.UserSettings.AlwaysDustyBuildings then
       if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
@@ -164,25 +172,26 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --change dist we can charge from cables
-  ChoGGi.ComFuncs.SaveOrigFunc("BaseRover","GetCableNearby")
+  SaveOrigFunc("BaseRover","GetCableNearby")
   function BaseRover:GetCableNearby(rad)
-    local amount = ChoGGi.UserSettings.RCChargeDist
-    if amount then
-      rad = amount
+    local ChoGGi = ChoGGi
+    if ChoGGi.UserSettings.RCChargeDist then
+      rad = ChoGGi.UserSettings.RCChargeDist
     end
     return ChoGGi.OrigFuncs.BaseRover_GetCableNearby(self, rad)
   end
 
   --so we can add hints to info pane cheats
-  ChoGGi.ComFuncs.SaveOrigFunc("InfopanelObj","CreateCheatActions")
+  SaveOrigFunc("InfopanelObj","CreateCheatActions")
   function InfopanelObj:CreateCheatActions(win)
+    local ChoGGi = ChoGGi
     local ret = {ChoGGi.OrigFuncs.InfopanelObj_CreateCheatActions(self,win)}
     ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
     return table.unpack(ret)
   end
 
   --add dump button to Examine windows
-  ChoGGi.ComFuncs.SaveOrigFunc("ExamineDesigner","Init")
+  SaveOrigFunc("ExamineDesigner","Init")
   function ExamineDesigner:Init()
     ChoGGi.OrigFuncs.ExamineDesigner_Init(self)
 
@@ -247,10 +256,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     obj:SetHint("Opens attachments in new examine window.")
 
     self:InitChildrenSizing()
-
     --have to size children before doing these:
     self:SetPos(point(50,150))
     self:SetSize(point(500,600))
+
   end
 end --OnMsg
 
@@ -258,7 +267,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
 
   --fix the arcology dome spot
   function SpireBase:GameInit()
-    print("SpireBase")
     local dome = IsObjInDome(self)
     if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
       local frame = PlaceObject("Shapeshifter")
@@ -266,7 +274,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
       local spot = dome:GetNearestSpot("idle", "Spireframe", self)
 
       --local pos = dome:GetSpotPos(spot)
-      local pos = self:GetSpotPos(1)
+      local pos = self:GetSpotPos(spot or 1)
       frame:SetAttachOffset(pos - self:GetPos())
       self:Attach(frame, self:GetSpotBeginIndex("Origin"))
     end
@@ -276,7 +284,7 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
-  ChoGGi.ComFuncs.SaveOrigFunc("PinsDlg","GetPinConditionImage")
+  SaveOrigFunc("PinsDlg","GetPinConditionImage")
   function PinsDlg:GetPinConditionImage(obj)
     local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
     if obj.command == "Dead" and not obj.working then
@@ -288,7 +296,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --gives an error when we spawn shuttle since i'm using a fake task
-  ChoGGi.ComFuncs.SaveOrigFunc("CargoShuttle","OnTaskAssigned")
+  SaveOrigFunc("CargoShuttle","OnTaskAssigned")
   function CargoShuttle:OnTaskAssigned()
     if self.ChoGGi_FollowMouseShuttle then
       return true
@@ -298,7 +306,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --add a call shuttle action on rightclick
-  ChoGGi.ComFuncs.SaveOrigFunc("PinsDlg","InitPinButton")
+  SaveOrigFunc("PinsDlg","InitPinButton")
   function PinsDlg:InitPinButton(button)
     local ret = {ChoGGi.OrigFuncs.PinsDlg_InitPinButton(self, button)}
       for i = 1, #self do
@@ -321,8 +329,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --removes earthsick effect
-  ChoGGi.ComFuncs.SaveOrigFunc("Colonist","ChangeComfort")
+  SaveOrigFunc("Colonist","ChangeComfort")
   function Colonist:ChangeComfort(amount, reason)
+    local ChoGGi = ChoGGi
     ChoGGi.OrigFuncs.Colonist_ChangeComfort(self, amount, reason)
     if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
       self:Affect("StatusEffect_Earthsick", false)
@@ -330,16 +339,18 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --make sure heater keeps the powerless setting
-  ChoGGi.ComFuncs.SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
+  SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
   function SubsurfaceHeater:UpdatElectricityConsumption()
+    local ChoGGi = ChoGGi
     ChoGGi.OrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
     if self.ChoGGi_mod_electricity_consumption then
       ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
     end
   end
   --same for tribby
-  ChoGGi.ComFuncs.SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
+  SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
   function TriboelectricScrubber:OnPostChangeRange()
+    local ChoGGi = ChoGGi
     ChoGGi.OrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
     if self.ChoGGi_mod_electricity_consumption then
       ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
@@ -347,8 +358,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --remove idiot trait from uni grads (hah!)
-  ChoGGi.ComFuncs.SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
+  SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
   function MartianUniversity:OnTrainingCompleted(unit)
+    local ChoGGi = ChoGGi
     if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
       unit:RemoveTrait("Idiot")
     end
@@ -357,6 +369,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --used to skip mystery sequences
   local function SkipMystStep(self,MystFunc)
+    local ChoGGi = ChoGGi
     local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
     local p = self.meta.player
 
@@ -385,18 +398,19 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     return ChoGGi.OrigFuncs[MystFunc](self)
   end
 
-  ChoGGi.ComFuncs.SaveOrigFunc("SA_WaitTime","StopWait")
+  SaveOrigFunc("SA_WaitTime","StopWait")
   function SA_WaitTime:StopWait()
     SkipMystStep(self,"SA_WaitTime_StopWait")
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("SA_WaitMarsTime","StopWait")
+  SaveOrigFunc("SA_WaitMarsTime","StopWait")
   function SA_WaitMarsTime:StopWait()
     SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
 
   --convert popups to console text
-  ChoGGi.ComFuncs.SaveOrigFunc("ShowPopupNotification")
+  SaveOrigFunc("ShowPopupNotification")
   function ShowPopupNotification(preset, params, bPersistable, parent)
+    local ChoGGi = ChoGGi
     --actually actually disable hints
     if ChoGGi.UserSettings.DisableHints and preset == "SuggestedBuildingConcreteExtractor" then
       return
@@ -464,16 +478,18 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --some mission goals check colonist amounts
   local MG_target = GetMissionSponsor().goal_target + 1
-  ChoGGi.ComFuncs.SaveOrigFunc("MG_Colonists","GetProgress")
+  SaveOrigFunc("MG_Colonists","GetProgress")
   function MG_Colonists:GetProgress()
+    local ChoGGi = ChoGGi
     if ChoGGi.Temp.InstantMissionGoal then
       return MG_target
     else
       return ChoGGi.OrigFuncs.MG_Colonists_GetProgress(self)
     end
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("MG_Martianborn","GetProgress")
+  SaveOrigFunc("MG_Martianborn","GetProgress")
   function MG_Martianborn:GetProgress()
+    local ChoGGi = ChoGGi
     if ChoGGi.Temp.InstantMissionGoal then
       return MG_target
     else
@@ -482,8 +498,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --keep prod at saved values for grid producers (air/water/elec)
-  ChoGGi.ComFuncs.SaveOrigFunc("SupplyGridElement","SetProduction")
+  SaveOrigFunc("SupplyGridElement","SetProduction")
   function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
+    local ChoGGi = ChoGGi
     local amount = ChoGGi.UserSettings.BuildingSettings[self.building.encyclopedia_id]
     if amount and amount.production then
       --set prod
@@ -501,9 +518,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --and for regular producers (factories/extractors)
-  ChoGGi.ComFuncs.SaveOrigFunc("SingleResourceProducer","Produce")
+  SaveOrigFunc("SingleResourceProducer","Produce")
   function SingleResourceProducer:Produce(amount_to_produce)
-
+    local ChoGGi = ChoGGi
     local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.encyclopedia_id]
     if amount and amount.production then
       --set prod
@@ -529,17 +546,17 @@ end
 
   --larger drone work radius
   local function SetHexRadius(OrigFunc,Setting,Obj,OrigRadius)
-    local rad = ChoGGi.UserSettings[Setting]
-    if rad then
-      return ChoGGi.OrigFuncs[OrigFunc](Obj,rad)
+    local ChoGGi = ChoGGi
+    if ChoGGi.UserSettings[Setting] then
+      return ChoGGi.OrigFuncs[OrigFunc](Obj,ChoGGi.UserSettings[Setting])
     end
     return ChoGGi.OrigFuncs[OrigFunc](Obj,OrigRadius)
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("RCRover","SetWorkRadius")
+  SaveOrigFunc("RCRover","SetWorkRadius")
   function RCRover:SetWorkRadius(radius)
     SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("DroneHub","SetWorkRadius")
+  SaveOrigFunc("DroneHub","SetWorkRadius")
   function DroneHub:SetWorkRadius(radius)
     SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
   end
@@ -552,37 +569,39 @@ end
     end
   end
   --xdialogs (buildmenu, pins, infopanel)
-  ChoGGi.ComFuncs.SaveOrigFunc("OpenXDialog")
+  SaveOrigFunc("OpenXDialog")
   function OpenXDialog(template, parent, context, reason, id)
     local ret = {ChoGGi.OrigFuncs.OpenXDialog(template, parent, context, reason, id)}
     SetTrans(ret)
     return table.unpack(ret)
   end
   --"desktop" dialogs (toolbar)
-  ChoGGi.ComFuncs.SaveOrigFunc("FrameWindow","Init")
+  SaveOrigFunc("FrameWindow","Init")
   function FrameWindow:Init()
     local ret = {ChoGGi.OrigFuncs.FrameWindow_Init(self)}
     SetTrans(self)
     return table.unpack(ret)
   end
   --console stuff (it's visible before mods are loaded so I can't use FrameWindow_Init)
-  ChoGGi.ComFuncs.SaveOrigFunc("ShowConsoleLog")
+  SaveOrigFunc("ShowConsoleLog")
   function ShowConsoleLog(toggle)
     ChoGGi.OrigFuncs.ShowConsoleLog(toggle)
     SetTrans(dlgConsoleLog)
   end
 
   --toggle trans on mouseover
-  ChoGGi.ComFuncs.SaveOrigFunc("XWindow","OnMouseEnter")
+  SaveOrigFunc("XWindow","OnMouseEnter")
   function XWindow:OnMouseEnter(pt, child)
+    local ChoGGi = ChoGGi
     local ret = {ChoGGi.OrigFuncs.XWindow_OnMouseEnter(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       self:SetTransparency(0)
     end
     return table.unpack(ret)
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("XWindow","OnMouseLeft")
+  SaveOrigFunc("XWindow","OnMouseLeft")
   function XWindow:OnMouseLeft(pt, child)
+    local ChoGGi = ChoGGi
     local ret = {ChoGGi.OrigFuncs.XWindow_OnMouseLeft(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       SetTrans(self)
@@ -591,15 +610,15 @@ end
   end
 
   --remove spire spot limit, and other limits on placing buildings
-  ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","UpdateCursor")
+  SaveOrigFunc("ConstructionController","UpdateCursor")
   function ConstructionController:UpdateCursor(pos, force)
+    local ChoGGi = ChoGGi
     local function SetDefault(Name)
       self.template_obj[Name] = self.template_obj:GetDefaultPropertyValue(Name)
     end
     local force_override
-    local UserSettings = ChoGGi.UserSettings
 
-    if UserSettings.Building_instant_build then
+    if ChoGGi.UserSettings.Building_instant_build then
       --instant_build on domes = missing textures on domes
       if self.template_obj.achievement ~= "FirstDome" then
         self.template_obj.instant_build = true
@@ -609,14 +628,14 @@ end
       --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
     end
 
-    if UserSettings.Building_dome_spot then
+    if ChoGGi.UserSettings.Building_dome_spot then
       self.template_obj.dome_spot = "none"
       --force_override = true
     else
       SetDefault("dome_spot")
     end
 
-    if UserSettings.RemoveBuildingLimits then
+    if ChoGGi.UserSettings.RemoveBuildingLimits then
       self.template_obj.dome_required = false
       self.template_obj.dome_forbidden = false
       force_override = true
@@ -634,7 +653,7 @@ end
   end
 
   --add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
-  ChoGGi.ComFuncs.SaveOrigFunc("InfopanelDlg","Open")
+  SaveOrigFunc("InfopanelDlg","Open")
   --ex(GetInGameInterface()[6][2])
   -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
   function InfopanelDlg:Open(...)
@@ -767,7 +786,7 @@ end
   end
 
   --make the background hide when console not visible (instead of after a second or two)
-  ChoGGi.ComFuncs.SaveOrigFunc("ConsoleLog","ShowBackground")
+  SaveOrigFunc("ConsoleLog","ShowBackground")
   function ConsoleLog:ShowBackground(visible, immediate)
     if config.ConsoleDim ~= 0 then
       DeleteThread(self.background_thread)
@@ -780,7 +799,7 @@ end
   end
 
   --update attaches button with attaches amount
-  ChoGGi.ComFuncs.SaveOrigFunc("Examine","SetObj")
+  SaveOrigFunc("Examine","SetObj")
   function Examine:SetObj(o)
     ChoGGi.OrigFuncs.Examine_SetObj(self,o)
     local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
@@ -790,7 +809,7 @@ end
   end
 
   --add functions for dump buttons/etc
-  ChoGGi.ComFuncs.SaveOrigFunc("Examine","Init")
+  SaveOrigFunc("Examine","Init")
   function Examine:Init()
     ChoGGi.OrigFuncs.Examine_Init(self)
 
@@ -861,7 +880,7 @@ end
   end --Examine:Init
 
   --make sure console is focused even when construction is opened
-  ChoGGi.ComFuncs.SaveOrigFunc("Console","Show")
+  SaveOrigFunc("Console","Show")
   function Console:Show(show)
     ChoGGi.OrigFuncs.Console_Show(self, show)
     local was_visible = self:GetVisible()
@@ -878,7 +897,7 @@ end
   end
 
   --always able to show console
-  ChoGGi.ComFuncs.SaveOrigFunc("ShowConsole")
+  SaveOrigFunc("ShowConsole")
   function ShowConsole(visible)
   --[[
     removed from orig func:
@@ -895,7 +914,7 @@ end
   end
 
   --kind of an ugly way of making sure console doesn't include ` when using tilde to open console
-  ChoGGi.ComFuncs.SaveOrigFunc("Console","TextChanged")
+  SaveOrigFunc("Console","TextChanged")
   function Console:TextChanged()
     ChoGGi.OrigFuncs.Console_TextChanged(self)
     if self.idEdit:GetText() == "`" then
@@ -904,21 +923,22 @@ end
   end
 
   --make it so caret is at the end of the text when you use history
-  ChoGGi.ComFuncs.SaveOrigFunc("Console","HistoryDown")
+  SaveOrigFunc("Console","HistoryDown")
   function Console:HistoryDown()
     ChoGGi.OrigFuncs.Console_HistoryDown(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
-  ChoGGi.ComFuncs.SaveOrigFunc("Console","HistoryUp")
+  SaveOrigFunc("Console","HistoryUp")
   function Console:HistoryUp()
     ChoGGi.OrigFuncs.Console_HistoryUp(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
 
   --was giving a nil error in log, I assume devs'll fix it one day (changed it to check if amount is a number/point/box...)
-  ChoGGi.ComFuncs.SaveOrigFunc("RequiresMaintenance","AddDust")
+  SaveOrigFunc("RequiresMaintenance","AddDust")
   function RequiresMaintenance:AddDust(amount)
-    --(dev check)
+    local ChoGGi = ChoGGi
+    --this wasn't checking if it was a number so errors in log, now it does
     if type(amount) == "number" or ChoGGi.CodeFuncs.RetType(amount) == "Point" or ChoGGi.CodeFuncs.RetType(amount) == "Box" then
       if self:IsKindOf("Building") then
         amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
@@ -930,8 +950,9 @@ end
   end
 
   --set orientation to same as last object
-  ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","CreateCursorObj")
+  SaveOrigFunc("ConstructionController","CreateCursorObj")
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
+    local ChoGGi = ChoGGi
     local ret = {ChoGGi.OrigFuncs.ConstructionController_CreateCursorObj(self, alternative_entity, template_obj, override_palette)}
 
     local last = ChoGGi.Temp.LastPlacedObject
@@ -948,9 +969,9 @@ end
   end
 
   --so we can build without (as many) limits
-  ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
+  SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
   function ConstructionController:UpdateConstructionStatuses(dont_finalize)
-
+    local ChoGGi = ChoGGi
     if ChoGGi.UserSettings.RemoveBuildingLimits then
       --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
       ChoGGi.OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
@@ -1006,8 +1027,9 @@ end
   end --ConstructionController:UpdateConstructionStatuses
 
   --so we can do long spaced tunnels
-  ChoGGi.ComFuncs.SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
+  SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
   function TunnelConstructionController:UpdateConstructionStatuses()
+    local ChoGGi = ChoGGi
     if ChoGGi.UserSettings.RemoveBuildingLimits then
       local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
       self:FinalizeStatusGathering(old_t)

@@ -847,14 +847,15 @@ function ChoGGi.MenuFuncs.SetEntity()
   if #entity_table == 0 then
     entity_table = {
       {text = " Default",value = "Default"},
-      {text = "Kosmonavt",value = "Kosmonavt"},
-      {text = "Lama",value = "Lama",hint = hint_noanim},
-      {text = "GreenMan",value = "GreenMan",hint = hint_noanim},
-      {text = "PlanetMars",value = "PlanetMars",hint = hint_noanim},
-      {text = "PlanetEarth",value = "PlanetEarth",hint = hint_noanim},
-      {text = "RocketUI",value = "RocketUI",hint = hint_noanim},
-      {text = "Rocket",value = "Rocket",hint = hint_noanim},
-      {text = "PumpStationDemo",value = "PumpStationDemo",hint = hint_noanim},
+      {text = " Kosmonavt",value = "Kosmonavt"},
+      {text = " Lama",value = "Lama",hint = hint_noanim},
+      {text = " GreenMan",value = "GreenMan",hint = hint_noanim},
+      {text = " PlanetMars",value = "PlanetMars",hint = hint_noanim},
+      {text = " PlanetEarth",value = "PlanetEarth",hint = hint_noanim},
+      {text = " RocketUI",value = "RocketUI",hint = hint_noanim},
+      {text = " Rocket",value = "Rocket",hint = hint_noanim},
+      {text = " CombatRover",value = "CombatRover",hint = hint_noanim},
+      {text = " PumpStationDemo",value = "PumpStationDemo",hint = hint_noanim},
     }
     local Table = EntityData or empty_table
     for Key,_ in pairs(Table) do
@@ -910,7 +911,7 @@ function ChoGGi.MenuFuncs.SetEntity()
   local Check1Hint = "Will only apply to objects in the same dome as selected object."
   local Check2 = "Selected Only"
   local Check2Hint = "Will only apply to selected object."
-  local hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to see list).\n\nNot permanent for colonists after they exit buildings (for now)."
+  local hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now)."
   ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Entity For " .. sel.class,hint,nil,Check1,Check1Hint,Check2,Check2Hint)
 end
 
