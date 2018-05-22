@@ -26,6 +26,7 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
     self.idEditValue:SetFocus()
     self.idEditValue:SetCursorPos(#self.idEditValue:GetText())
 
+    --just exec
     function self.idOK.OnButtonPressed()
       ChoGGi.CurObj = self.obj
       --use console to exec code so we can show results in it
@@ -33,12 +34,22 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
       dlgConsole:Exec(self.idEditValue:GetText())
     end
 
+    --return text and close
     local function Close()
       --send back code (could be useful)
       self:delete(self.idEditValue:GetText())
     end
     self.idClose.OnButtonPressed = Close
     self.idCloseX.OnButtonPressed = Close
+
+    --insert text at caret
+    function self.idInsertObj.OnButtonPressed()
+      local pos = self.idEditValue:GetCursorPos()
+      local text = self.idEditValue:GetText()
+      self.idEditValue:SetText(text:sub(1,pos) .. "ChoGGi.CurObj" .. text:sub(pos+1))
+      --
+      self.idEditValue:SetCursorPos(pos+13)
+    end
 
     --make checkbox work like a button
     --[[
@@ -149,11 +160,11 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
           Id = "idOK",
           Class = "Button",
           FontStyle = "Editor14Bold",
-          GamepadButton = "ButtonA",
           Subview = "default",
           Text = "Exec",
           Hint = "Exec and close dialog (Enter can also be used).",
           PosOrg = point(110, 155),
+          TextPrefix = "<center>",
           SizeOrg = point(45, 25),
           HSizing = "AnchorToLeft",
           VSizing = "AnchorToBottom",
@@ -163,12 +174,26 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
           Class = "Button",
           CloseDialog = true,
           FontStyle = "Editor14Bold",
-          GamepadButton = "ButtonB",
           Hint = "Cancel without changing anything.",
           Subview = "default",
           Text = T({1000430, "Cancel"}),
           PosOrg = point(190, 155),
+          TextPrefix = "<center>",
           SizeOrg = point(65, 25),
+          HSizing = "AnchorToLeft",
+          VSizing = "AnchorToBottom",
+        },
+        {
+          Id = "idInsertObj",
+          Class = "Button",
+          CloseDialog = true,
+          FontStyle = "Editor14Bold",
+          Hint = "At caret position inserts: ChoGGi.CurObj",
+          TextPrefix = "<center>",
+          Subview = "default",
+          Text = "Insert Obj",
+          PosOrg = point(300, 155),
+          SizeOrg = point(90, 25),
           HSizing = "AnchorToLeft",
           VSizing = "AnchorToBottom",
         },
