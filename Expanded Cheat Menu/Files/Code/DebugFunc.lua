@@ -205,9 +205,7 @@ function cMenuFuncs.ObjExaminer()
   end
   --OpenExamine(SelectedObj)
   --open and move to where the cursor is
-  local ex = Examine:new()
-  ex:SetPos(terminal.GetMousePos())
-  ex:SetObj(obj)
+  cComFuncs.OpenExamineAtExPosOrMouse(obj)
 end
 
 function cMenuFuncs.Editor_Toggle()

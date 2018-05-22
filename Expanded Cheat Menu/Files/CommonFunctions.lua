@@ -760,3 +760,16 @@ function cComFuncs.FilterFromTableFunc(Table,Func,Value)
     end
   },Table)
 end
+
+function cComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
+  --examine will offset to ObjPos
+  if ObjPos then
+    OpenExamine(Obj,ObjPos)
+  else
+    --i want to open it at mouse pos
+    local ex = Examine:new()
+    ex:SetObj(Obj,ObjPos)
+    ex:SetPos(terminal.GetMousePos())
+  end
+  return ex
+end

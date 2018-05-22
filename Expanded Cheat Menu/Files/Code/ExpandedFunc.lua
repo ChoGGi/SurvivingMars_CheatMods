@@ -497,13 +497,14 @@ end
 
 ---------fixes
 function cMenuFuncs.FireAllFixes()
-  cMenuFuncs.StutterWithHighFPS()
   cMenuFuncs.RemoveMissingClassObjects()
-  cMenuFuncs.DronesKeepTryingBlockedRocks()
   cMenuFuncs.RemoveUnreachableConstructionSites()
+  cMenuFuncs.ParticlesWithNullPolylines()
+
+  cMenuFuncs.AttachBuildingsToNearestWorkingDome()
+  cMenuFuncs.DronesKeepTryingBlockedRocks()
   cMenuFuncs.RemoveYellowGridMarks()
   cMenuFuncs.CablesAndPipesRepair()
-  cMenuFuncs.ParticlesWithNullPolylines()
   cMenuFuncs.MirrorSphereStuck()
   cMenuFuncs.ProjectMorpheusRadarFellDown()
 end

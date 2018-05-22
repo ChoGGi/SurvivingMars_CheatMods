@@ -33,6 +33,7 @@ local RebuildInfopanel = RebuildInfopanel
 local Msg = Msg
 local IsValidThread = IsValidThread
 local PlayFX = PlayFX
+local OpenExamine = OpenExamine
 --classes, but we only set
 local editor = editor
 local cameraRTS = cameraRTS

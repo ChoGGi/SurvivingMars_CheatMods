@@ -255,8 +255,16 @@ if cTesting then
     obj:SetPos(point(520, 304))
     obj:SetSize(point(75, 26))
     obj:SetText("Code Exec")
-    obj:SetHint("Opens a text box you can execute lua code in. CurObject is whatever object is opened in examiner")
+    obj:SetHint("Opens a text box you can execute lua code in. CurObject is whatever object is opened in examiner.")
 end
+
+    obj = Button:new(self)
+    obj:SetId("idExamineAttaches")
+    obj:SetPos(point(600, 304))
+    obj:SetSize(point(75, 26))
+    obj:SetText("Attaches")
+    obj:SetHint("Opens attachments in new examine window.")
+
 
     self:InitChildrenSizing()
 
@@ -758,6 +766,15 @@ end
     end
   end
 
+  --update attaches button with attaches amount
+  cComFuncs.SaveOrigFunc("Examine","SetObj")
+  function Examine:SetObj(o)
+    cOrigFuncs.Examine_SetObj(self,o)
+    local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
+    local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
+    self.idExamineAttaches:SetHint(self.idExamineAttaches:GetHint() .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
+  end
+
   --add functions for dump buttons/etc
   cComFuncs.SaveOrigFunc("Examine","Init")
   function Examine:Init()
@@ -773,14 +790,20 @@ end
       cComFuncs.Dump("\r\n" .. ValueToLuaCode(self.obj),nil,"DumpedExamineObject","lua")
     end
 
+    function self.idExamineAttaches.OnButtonPressed()
+      if type(self.obj) == "table" and self.obj.GetAttaches then
+        cComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
+      else
+        print("Zero attachments means zero...")
+      end
+    end
+
     function self.idEdit.OnButtonPressed()
       cCodeFuncs.OpenInObjectManipulator(self.obj,self)
     end
-if cTesting then
     function self.idCodeExec.OnButtonPressed()
       cCodeFuncs.OpenInExecCodeDlg(self.obj,self)
     end
-end
 
   function self.idFilter.OnKbdKeyDown(_, char, vk)
     local text = self.idFilter

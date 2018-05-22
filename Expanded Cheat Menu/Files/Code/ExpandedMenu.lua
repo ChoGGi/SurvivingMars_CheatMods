@@ -225,6 +225,14 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "Axis.tga"
   )
 
+  cComFuncs.AddAction(
+    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome",
+    cMenuFuncs.AttachBuildingsToNearestWorkingDome,
+    nil,
+    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
+    "ReportBug.tga"
+  )
+
 -----------------------ECM fixes
   cComFuncs.AddAction(
     "Expanded CM/Fixes/[99]ECM Whoopsies/See tooltip",
@@ -238,14 +246,6 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     cMenuFuncs.ColonistsFixBlackCube,
     nil,
     "If any colonists are black cubes click this.",
-    "ReportBug.tga"
-  )
-
-  cComFuncs.AddAction(
-    "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Attach Buildings To Nearest Working Dome",
-    cMenuFuncs.AttachBuildingsToNearestWorkingDome,
-    nil,
-    "If you placed inside buildings outside and removed the dome they're attached to; use this.",
     "ReportBug.tga"
   )
 
