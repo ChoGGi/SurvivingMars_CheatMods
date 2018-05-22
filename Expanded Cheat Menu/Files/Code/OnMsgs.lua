@@ -431,7 +431,8 @@ function OnMsg.ChoGGi_Loaded()
 
 end --OnMsg
 
-function OnMsg.ClassesGenerate()
+--use this message to mess with the classdefs (before classes are built)
+function OnMsg.ClassesGenerate(classdefs)
   --i like keeping all my OnMsgs. in one file
   cMsgFuncs.DebugFunc_ClassesGenerate()
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
@@ -456,6 +457,7 @@ function OnMsg.ClassesGenerate()
   end
 end --OnMsg
 
+--use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
 
   cMsgFuncs.ReplacedFunctions_ClassesPreprocess()
@@ -472,12 +474,14 @@ function OnMsg.ClassesPreprocess()
 end
 
 --where we can add new BuildingTemplates
+--use this message to make modifications to the built classes (before they are declared final)
 function OnMsg.ClassesPostprocess()
   if cTesting then
     cMsgFuncs.Testing_ClassesPostprocess()
   end
 end
 
+--use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
   cMsgFuncs.ReplacedFunctions_ClassesBuilt()
   --custom dialogs
@@ -952,6 +956,7 @@ cComFuncs.AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceS
 cComFuncs.AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
 cComFuncs.AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
 cComFuncs.AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
+cComFuncs.AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
 
 --attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
@@ -1048,6 +1053,10 @@ function OnMsg.ChoGGi_SpawnedResidence(Obj)
 end
 function OnMsg.ChoGGi_SpawnedWorkplace(Obj)
   cCodeFuncs.AttachToNearestDome(Obj)
+end
+function OnMsg.ChoGGi_SpawnedSpireBase(Obj)
+print("attached")
+  --cCodeFuncs.AttachToNearestDome(Obj)
 end
 function OnMsg.ChoGGi_SpawnedDinerGrocery(Obj)
   local ChoGGi = ChoGGi

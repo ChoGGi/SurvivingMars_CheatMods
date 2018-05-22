@@ -428,6 +428,7 @@ function cComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   end
 end
 
+--backup orginal function for later use (checks if we already have a backup, or else problems)
 function cComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then

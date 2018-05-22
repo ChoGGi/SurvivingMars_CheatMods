@@ -14,6 +14,7 @@ local cSettingFuncs = ChoGGi.SettingFuncs
 local cTables = ChoGGi.Tables
 
 local cMenuFuncs = ChoGGi.MenuFuncs
+
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -21,6 +22,7 @@ function cMenuFuncs.ReloadLua()
   ReloadLua()
   WaitDelayedLoadEntities()
   ReloadClassEntities()
+  print("ReloadLua done")
 end
 
 function cMenuFuncs.DeleteAllSelectedObjects(s)

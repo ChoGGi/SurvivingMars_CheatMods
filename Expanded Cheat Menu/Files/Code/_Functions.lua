@@ -209,10 +209,17 @@ function cCodeFuncs.AttachToNearestDome(building)
       building.parent_dome = dome
       --add to dome labels
       dome:AddToLabel("InsideBuildings", building)
+      --work/res
       if IsKindOf(building,"Workplace") then
         dome:AddToLabel("Workplace", building)
       elseif IsKindOf(building,"Residence") then
         dome:AddToLabel("Residence", building)
+      end
+      --spires
+      if IsKindOf(building,"WaterReclamationSpire") then
+        dome:AddToLabel("WaterReclamationSpires", building)
+      elseif IsKindOf(building,"NetworkNode") then
+        building.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", building.modifier)
       end
     end
   end
@@ -221,11 +228,16 @@ end
 --toggle working status
 function cCodeFuncs.ToggleWorking(building)
   if IsValid(building) then
-    CreateGameTimeThread(function()
-      building:ToggleWorking()
-      Sleep(5)
-      building:ToggleWorking()
-    end)
+    if not pcall(function()
+      CreateGameTimeThread(function()
+        building:ToggleWorking()
+        Sleep(5)
+        building:ToggleWorking()
+      end)
+    end) then
+      print("Error borked building: " .. building.class)
+      OpenExamine(building)
+    end
   end
 end
 
