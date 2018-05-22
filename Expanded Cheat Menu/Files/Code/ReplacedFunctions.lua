@@ -805,7 +805,8 @@ end
     local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
     local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
     local hint = "Opens attachments in new examine window."
-    self.idAttaches:SetHint(hint .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
+    local name = type(o) == "table" and o.class
+    self.idAttaches:SetHint(hint .. "\nThis " .. (name or "\"Missing\"") .. " has: " .. amount)
   end
 
   --add functions for dump buttons/etc
@@ -957,11 +958,12 @@ end
 
     local last = ChoGGi.Temp.LastPlacedObject
     if last and ChoGGi.UserSettings.UseLastOrientation then
-      --shouldn't fail anymore, but we'll still pcall for now
+      --shouldn't fail anymore, but we'll still pcall
       pcall(function()
-        ret[1]:SetAngle(last.GetAngle and last:GetAngle() or 0)
-        --ret:SetOrientation(last:GetOrientation())
-        --check if angle is slightly off?
+        local angle = type(last.GetAngle) == "function" and last:GetAngle()
+        if angle and type(ret[1].SetAngle) == "function" then
+          ret[1]:SetAngle(angle)
+        end
       end)
     end
 

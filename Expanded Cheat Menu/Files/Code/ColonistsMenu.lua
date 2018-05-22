@@ -1,7 +1,8 @@
+local icon = "AlignSel.tga"
+local icon2 = "Cube.tga"
+
 function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-  local icon = "AlignSel.tga"
-  local icon2 = "Cube.tga"
 
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Colonists/No More Earthsick",

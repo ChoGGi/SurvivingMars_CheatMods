@@ -108,14 +108,12 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.max_workers = self.base_max_workers
   end
   local function CheatWorkAuto(self)
+    local ChoGGi = ChoGGi
     self.max_workers = 0
     self.automation = 1
-    local FullyAutomatedBuildings = ChoGGi.UserSettings.FullyAutomatedBuildings
-    if FullyAutomatedBuildings then
-      self.auto_performance = FullyAutomatedBuildings
-    else
-      self.auto_performance = 150
-    end
+    local bs = ChoGGi.UserSettings.BuildingSettings
+    bs = bs and bs[self.encyclopedia_id] and bs[self.encyclopedia_id].performance or 150
+    self.auto_performance = bs
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   local function CheatWorkManual(self)
@@ -556,13 +554,9 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       end
     elseif action.ActionId == "WorkAuto" then
       local perf
-      local FullyAutomatedBuildings = ChoGGi.UserSettings.FullyAutomatedBuildings
-      if FullyAutomatedBuildings then
-        perf = FullyAutomatedBuildings
-      else
-        perf = 150
-      end
-      SetHint(action,"Make this " .. id .. " not need workers (performance: " .. perf .. ").")
+      local bs = ChoGGi.UserSettings.BuildingSettings
+      bs = bs and bs[id] and bs[id].performance or 150
+      SetHint(action,"Make this " .. id .. " not need workers (performance: " .. bs .. ").")
 
     elseif action.ActionId == "WorkManual" then
       SetHint(action,"Make this " .. id .. " need workers.")

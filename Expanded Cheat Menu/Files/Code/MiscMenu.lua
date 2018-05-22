@@ -1,3 +1,5 @@
+local icon = "new_city.tga"
+
 function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
@@ -6,7 +8,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
     nil,
     "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
-    icon
+    "ToggleCutSmoothTrans.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(

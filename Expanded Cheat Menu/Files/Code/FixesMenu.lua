@@ -1,3 +1,5 @@
+local icon = "ReportBug.tga"
+
 function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(
@@ -5,15 +7,24 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.FireAllFixes,
     nil,
     "Fires all the non-toggle fixes (nuke 'em from orbit and all that).\n\nDoesn't include ECM ones.",
-    "ReportBug.tga"
+    icon
   )
+if ChoGGi.Temp.Testing then
+    ChoGGi.ComFuncs.AddAction(
+      "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
+      ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
+      nil,
+      "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will copy will do a little copy n paste.",
+      icon
+    )
+end
 
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Particles With Null Polylines",
     ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
     nil,
     "It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -21,7 +32,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.RemoveMissingClassObjects,
     nil,
     "Probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -29,7 +40,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.MirrorSphereStuck,
     nil,
     "If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -37,7 +48,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
     "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -45,7 +56,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks,
     nil,
     "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -53,7 +64,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
     nil,
     "If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -61,7 +72,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.RemoveYellowGridMarks,
     nil,
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -69,7 +80,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
     nil,
     "Sometimes the blue radar thingy falls off.",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -89,7 +100,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
       local des = ChoGGi.UserSettings.NoRestingBonusPsychologistFix and "(Enabled)" or "(Disabled)"
       return des .. " The Psychologist profile is supposed to give a +5 sanity bonus to colonists during rest (now it will)."
     end,
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -100,7 +111,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
       local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
       return des .. " Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
     end,
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -119,7 +130,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
     nil,
     "If you placed inside buildings outside and removed the dome they're attached to; use this.",
-    "ReportBug.tga"
+    icon
   )
 
 -----------------------ECM fixes
@@ -135,7 +146,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.ColonistsFixBlackCube,
     nil,
     "If any colonists are black cubes click this.",
-    "ReportBug.tga"
+    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -143,6 +154,6 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
     nil,
     "If you have any buildings that aren't aligned to the hex grids use this.",
-    "ReportBug.tga"
+    icon
   )
 end

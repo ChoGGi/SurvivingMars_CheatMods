@@ -60,40 +60,6 @@ ChoGGi.Defaults = {
 --stores custom settings for each building
   BuildingSettings = {},
   Transparency = {},
---false
---[[
-  DroneResourceCarryAmountFix = false,
-  TransparencyToggle = false,
-  StorageMechanizedDepotsTemp = false,
-  UnlimitedConnectionLength = false,
-  SpeedDrone = false,
-  SpeedRC = false,
-  SpeedColonist = false,
-  DisableHints = false,
-  BreakChanceCablePipe = false,
-  BorderScrollingArea = false,
-  Building_dome_spot = false,
-  Building_hide_from_build_menu = false,
-  Building_instant_build = false,
-  Building_wonder = false,
-  CameraZoomToggle = false,
-  FullyAutomatedBuildings = false,
-  DisableTextureCompression = false,
-  ShadowmapSize = false,
-  HigherRenderDist = false,
-  HigherShadowDist = false,
-  NewColonistAge = false,
-  NewColonistGender = false,
-  NewColonistRace = false,
-  NewColonistSpecialization = false,
-  NewColonistTraits = false,
-  RemoveBuildingLimits = false,
-  RemoveMaintenanceBuildUp = false,
-  SanatoriumCureAll = false,
-  SchoolTrainAll = false,
-  ShowMysteryMsgs = false,
-  WriteLogs = false,
-  --]]
 }
 
 --and constants

@@ -654,7 +654,7 @@ local function IsChild(value)
   end
 end
 function ChoGGi.MenuFuncs.SetColonistsAge(iType)
-  local DefaultSetting = " Default"
+  local DefaultSetting = "Default"
   local sType = ""
   local sSetting = "NewColonistAge"
 
@@ -662,13 +662,13 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     sType = "New C"
   elseif iType == 2 then
     sType = "C"
-    DefaultSetting = " Random"
+    DefaultSetting = "Random"
     sSetting = nil
   end
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = DefaultSetting,
+    text = " " .. DefaultSetting,
     value = DefaultSetting,
   }
   for i = 1, #ChoGGi.Tables.ColonistAges do
@@ -697,7 +697,11 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     local value = choice[1].value
     --new
     if iType == 1 then
-      ChoGGi.ComFuncs.SetSavedSetting("NewColonistAge",value)
+      if value == "Default" then
+        ChoGGi.UserSettings.NewColonistAge = nil
+      else
+        ChoGGi.ComFuncs.SetSavedSetting("NewColonistAge",value)
+      end
       ChoGGi.SettingFuncs.WriteSettings()
 
     --existing
@@ -734,20 +738,20 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsGender(iType)
-  local DefaultSetting = " Default"
+  local DefaultSetting = "Default"
   local sType = ""
   local sSetting = "NewColonistGender"
   if iType == 1 then
     sType = "New C"
   elseif iType == 2 then
     sType = "C"
-    DefaultSetting = " Random"
+    DefaultSetting = "Random"
     sSetting = nil
   end
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = DefaultSetting,
+    text = " " .. DefaultSetting,
     value = DefaultSetting,
     hint = "How the game normally works",
   }
@@ -781,7 +785,11 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
     --new
     local value = choice[1].value
     if iType == 1 then
-      ChoGGi.ComFuncs.SetSavedSetting("NewColonistGender",value)
+      if value == "Default" then
+        ChoGGi.UserSettings.NewColonistGender = nil
+      else
+        ChoGGi.ComFuncs.SetSavedSetting("NewColonistGender",value)
+      end
       ChoGGi.SettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
@@ -816,14 +824,14 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
-  local DefaultSetting = " Default"
+  local DefaultSetting = "Default"
   local sType = ""
   local sSetting = "NewColonistSpecialization"
   if iType == 1 then
     sType = "New C"
   elseif iType == 2 then
     sType = "C"
-    DefaultSetting = " Random"
+    DefaultSetting = "Random"
     sSetting = nil
   end
 
@@ -870,7 +878,11 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
     --new
     local value = choice[1].value
     if iType == 1 then
-      ChoGGi.ComFuncs.SetSavedSetting("NewColonistSpecialization",value)
+      if value == "Default" then
+        ChoGGi.UserSettings.NewColonistSpecialization = nil
+      else
+        ChoGGi.ComFuncs.SetSavedSetting("NewColonistSpecialization",value)
+      end
       ChoGGi.SettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
@@ -905,20 +917,20 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsRace(iType)
-  local DefaultSetting = " Default"
+  local DefaultSetting = "Default"
   local sType = ""
   local sSetting = "NewColonistRace"
   if iType == 1 then
     sType = "New C"
   elseif iType == 2 then
     sType = "C"
-    DefaultSetting = " Random"
+    DefaultSetting = "Random"
     sSetting = nil
   end
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = DefaultSetting,
+    text = " " .. DefaultSetting,
     value = DefaultSetting,
     race = DefaultSetting,
   }
@@ -949,7 +961,11 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     --new
     local value = choice[1].value
     if iType == 1 then
-      ChoGGi.ComFuncs.SetSavedSetting("NewColonistRace",value)
+      if value == "Default" then
+        ChoGGi.UserSettings.NewColonistRace = nil
+      else
+        ChoGGi.ComFuncs.SetSavedSetting("NewColonistRace",value)
+      end
       ChoGGi.SettingFuncs.WriteSettings()
     --existing
     elseif iType == 2 then
@@ -971,7 +987,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
       end
 
     end
-    if value then
+    if value and value ~= "Random" then
       if not UICity.ChoGGi.DaddysLittleHitler then
         Msg("ChoGGi_DaddysLittleHitler")
         UICity.ChoGGi.DaddysLittleHitler = true
@@ -991,7 +1007,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
-  local DefaultSetting = " Default"
+  local DefaultSetting = "Default"
   local sSetting = "NewColonistTraits"
   local sType = "New C"
 
@@ -1008,7 +1024,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     hint = "Current: " .. hint
   elseif iType == 2 then
     sType = "C"
-    DefaultSetting = " Random"
+    DefaultSetting = "Random"
   end
   hint = hint .. "\n\nDefaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits."
 

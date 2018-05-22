@@ -273,6 +273,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     return
   end
   local id = sel.encyclopedia_id
+  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
   local r = ChoGGi.Consts.ResourceScale
 
   --get type of capacity
@@ -398,7 +399,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   end
 
   hint = "Current rate: " .. hint
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. name .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
 end
 
 function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
@@ -442,6 +443,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     return
   end
   local id = sel.encyclopedia_id
+  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
 
   --get type of producer
   local ProdType
@@ -551,11 +553,21 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Production Amount","Current production: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. name .. " Production Amount","Current production: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.FullyAutomatedBuildings()
+function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
   local ChoGGi = ChoGGi
+  local sel = SelectedObj
+  if not sel or sel and not sel:IsKindOf("Workplace") then
+    ChoGGi.ComFuncs.MsgPopup("Select a building with workers.",
+      "Buildings",UsualIcon2
+    )
+    return
+  end
+  local id = sel.encyclopedia_id
+  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
+
   local ItemList = {
     {text = " Disable",value = "disable"},
     {text = 100,value = 100},
@@ -573,30 +585,31 @@ function ChoGGi.MenuFuncs.FullyAutomatedBuildings()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    local function SetPerf(a,b)
+      if choice[1].check then
+        sel.max_workers = a
+        sel.automation = b
+        sel.auto_performance = value
+        ChoGGi.CodeFuncs.ToggleWorking(sel)
+      else
+        local tab = UICity.labels.BuildingNoDomes or empty_table
+        for i = 1, #tab do
+          if tab[i].base_max_workers then
+            tab[i].max_workers = a
+            tab[i].automation = b
+            tab[i].auto_performance = value
+            ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+         end
+        end
+      end
+
+      ChoGGi.UserSettings.BuildingSettings[id].performance = value
+    end
+
     if type(value) == "number" then
-
-      local tab = UICity.labels.BuildingNoDomes or empty_table
-      for i = 1, #tab do
-        if tab[i].base_max_workers then
-          tab[i].max_workers = 0
-          tab[i].automation = 1
-          tab[i].auto_performance = value
-        end
-      end
-
-      ChoGGi.UserSettings.FullyAutomatedBuildings = value
-    else
-
-      local tab = UICity.labels.BuildingNoDomes or empty_table
-      for i = 1, #tab do
-        if tab[i].base_max_workers then
-          tab[i].max_workers = nil
-          tab[i].automation = nil
-          tab[i].auto_performance = nil
-        end
-      end
-
-      ChoGGi.UserSettings.FullyAutomatedBuildings = false
+      SetPerf(0,1)
+    elseif value == "disable" then
+      SetPerf()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
@@ -605,7 +618,21 @@ function ChoGGi.MenuFuncs.FullyAutomatedBuildings()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Fully Automated Buildings: performance","Sets performance of all automated buildings")
+  --check if there's an entry for building
+  if not ChoGGi.UserSettings.BuildingSettings[id] then
+    ChoGGi.UserSettings.BuildingSettings[id] = {}
+  end
+
+  local hint = "none"
+  local setting = ChoGGi.UserSettings.BuildingSettings[id]
+  if setting and setting.performance then
+    hint = tostring(setting.performance)
+  end
+
+  local hint = "Sets performance of all automated buildings\nCurrent: " .. hint
+  local Check1 = "Selected"
+  local Check1Hint = "Only apply to selected object instead of all " .. name
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,name .. ": Automated Performance",hint,nil,Check1,Check1Hint)
 end
 
 --used to add or remove traits from schools/sanitariums
@@ -888,7 +915,6 @@ end
 function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   local ChoGGi = ChoGGi
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
-  local UserSettings = ChoGGi.UserSettings
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
@@ -899,6 +925,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     {text = 250,value = 250},
     {text = 500,value = 500},
   }
+  local UserSettings = ChoGGi.UserSettings
 
   if not UserSettings.BuildingSettings[id] then
     UserSettings.BuildingSettings[id] = {}

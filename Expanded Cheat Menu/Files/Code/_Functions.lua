@@ -325,6 +325,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
   ChoGGi.UserSettings.CommanderPolitician = nil
   ChoGGi.UserSettings.developer = nil
   ChoGGi.UserSettings.FullyAutomatedBuildingsPerf = nil
+  ChoGGi.UserSettings.FullyAutomatedBuildings = nil
   ChoGGi.UserSettings.NewColonistSex = nil
   ChoGGi.UserSettings.ProductionAddAmount = nil
   ChoGGi.UserSettings.ResidenceAddAmount = nil
@@ -419,7 +420,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   --and (hopefully) prod them into finding a new residence
   Colonist:UpdateWorkplace()
   Colonist:UpdateResidence()
-  Colonist:TryToEmigrate()
+  --Colonist:TryToEmigrate()
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
@@ -466,7 +467,8 @@ function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
     Colonist:SetSpecialization(Spec,"init")
     Colonist:ChooseEntity()
     Colonist:UpdateWorkplace()
-    Colonist:TryToEmigrate()
+    --randomly fails on colonists from rockets
+    --Colonist:TryToEmigrate()
   end
 end
 
@@ -947,7 +949,7 @@ end
 
 do --CloseDialogsECM
   local ChoGGi = ChoGGi
-  function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win,ChoGGi)
+  function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
     while ChoGGi.ComFuncs.CheckForTypeInList(win,Dialog) do
       for i = 1, #win do
         if win[i]:IsKindOf(Dialog) then
@@ -1258,9 +1260,11 @@ function ChoGGi.CodeFuncs.LightmodelBuild(Table)
 end
 
 function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
-  local Attaches = Obj.GetAttaches and Obj:GetAttaches() or empty_table
-  for i = #Attaches, 1, -1 do
-    Attaches[i]:delete()
+  if type(Obj.GetAttaches) == "function" then
+    local Attaches =  Obj:GetAttaches() or empty_table
+    for i = #Attaches, 1, -1 do
+      Attaches[i]:delete()
+    end
   end
 end
 
@@ -1629,4 +1633,36 @@ function ChoGGi.CodeFuncs.DefenceTick(self,AlreadyFired)
       end
     end)
   end
+end
+--get all objects, then get nearest in radius, remove from list repeat till none in radius, return list
+--OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
+function ChoGGi.CodeFuncs.ReturnAllNearby(Radius)
+  Radius = Radius or 5000
+  local pos = GetTerrainCursor()
+  --get pretty much all objects (18K on a new map)
+  local all = GetObjects({class="CObject"})
+  --we only want stuff within *Radius*
+  local list = FilterObjects({
+    filter = function(Obj)
+      if Obj:GetDist2D(pos) <= Radius then
+        return Obj
+      end
+    end
+  },all)
+  --sort list custom
+  if Sort then
+    table.sort(list,
+      function(a,b)
+        return a[Sort] < b[Sort]
+      end
+    )
+  else
+    --sort nearest
+    table.sort(list,
+      function(a,b)
+        return a:GetDist2D(pos) < b:GetDist2D(pos)
+      end
+    )
+  end
+  return list
 end

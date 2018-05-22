@@ -14,6 +14,72 @@ function ChoGGi.MenuFuncs.FireAllFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+  local UICity = UICity
+  local FindNearestObject = FindNearestObject
+  local GenerateColonistData = GenerateColonistData
+  local Msg = Msg
+  local function SpawnColonist(old_c,rocket)
+    local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or rocket)
+    if not dome then
+      return
+    end
+
+    local colonist
+    if old_c then
+      colonist = GenerateColonistData(UICity, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+      --we set all the set gen doesn't (it's more for random gen after all
+      colonist.birthplace = old_c.birthplace
+      colonist.death_age = old_c.death_age
+      colonist.name = old_c.name
+      colonist.race = old_c.race
+      colonist.specialist = old_c.specialist
+      for trait_id, _ in pairs(old_c.traits) do
+        if trait_id and trait_id ~= "" then
+          colonist:AddTrait(trait_id,true)
+        end
+      end
+      --if spec is different then updates to new entity
+      colonist:ChooseEntity()
+    else
+      --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
+      colonist = GenerateColonistData(UICity)
+    end
+
+
+    colonist.dome = dome
+    colonist.current_dome = dome
+    Colonist:new(colonist)
+    Msg("ColonistBorn", colonist)
+    colonist:SetPos(old_c and old_c:GetPos() or dome:PickColonistSpawnPt())
+    dome:UpdateUI()
+    return colonist
+  end
+
+  local rockets = GetObjects({class="SupplyRocket"})
+  for i = 1, #rockets do
+    local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches() or empty_table
+    for i = #Attaches, 1, -1 do
+      local c = Attaches[i]
+      if c.class == "Colonist" then
+        if not pcall(function()
+          c:Detach()
+          SpawnColonist(c,Attaches[i])
+        print(1111)
+        end) then
+          SpawnColonist(nil,Attaches[i])
+          --something messed up with so just spawn random colonist
+        end
+        c:Done()
+        c:delete()
+        Attaches[i] = false
+      end
+
+    end
+  end
+
+end
+
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
   local objs = GetObjects({class = "ParSystem"}) or empty_table
   for i = 1, #objs do

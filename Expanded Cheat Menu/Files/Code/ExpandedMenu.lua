@@ -1,3 +1,5 @@
+local icon = "new_city.tga"
+
 function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)

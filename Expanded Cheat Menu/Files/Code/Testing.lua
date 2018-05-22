@@ -4,38 +4,23 @@
 --stuff that never happens, fuck comments (like this one)
 if type(ChoGGi.Temp.Testing) == "function" then
 
---get all objects, then get nearest in radius, remove from list repeat till none in radius, return list
-function ChoGGi.ReturnAllNearby(Radius)
-  Radius = Radius or 5000
-  local pos = GetTerrainCursor()
-  --get pretty much all objects (18K on a new map)
-  local all = GetObjects({class="CObject"})
-  --we only want stuff within *Radius*
-  local list = FilterObjects({
-    filter = function(Obj)
-      if Obj:GetDist2D(pos) <= Radius then
-        return Obj
-      end
-    end
-  },all)
-  --sort list custom
-  if Sort then
-    table.sort(list,
-      function(a,b)
-        return a[Sort] < b[Sort]
-      end
-    )
-  else
-    --sort nearest
-    table.sort(list,
-      function(a,b)
-        return a:GetDist2D(pos) < b:GetDist2D(pos)
-      end
-    )
+OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
+ChoGGi.CurObj:SetPos(GetTerrainCursor())
+
+local Attaches = s.GetAttaches and s:GetAttaches() or empty_table
+for i = #Attaches, 1, -1 do
+  local Colonist = Attaches[i]
+  if Colonist.class == "Colonist" then
+  print(111)
+    Attaches[i]:Detach()
+    Attaches[i]:SetState("idle")
+    Attaches[i].city:AddToLabel("Arrivals", Attaches[i])
+    Attaches[i].arriving = nil
+    Attaches[i]:OnArrival()
+
+    --Attaches[i]:Arrive()
   end
-  return list
 end
-OpenExamine(ChoGGi.ReturnAllNearby())
 
 
 function ChoGGi.ReplaceDome(dome)

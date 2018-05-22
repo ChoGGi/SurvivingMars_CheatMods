@@ -1,8 +1,8 @@
+local iconD = "ShowAll.tga"
+local iconRC = "HostGame.tga"
+
 function ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-
-  local iconD = "ShowAll.tga"
-  local iconRC = "HostGame.tga"
 
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Drones/Work Radius RC Rover",

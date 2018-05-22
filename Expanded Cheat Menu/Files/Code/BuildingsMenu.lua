@@ -1,6 +1,7 @@
+local icon = "Cube.tga"
+
 function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-  local icon = "Cube.tga"
 
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Buildings/Storage Amount Of Diner & Grocery",
@@ -157,13 +158,10 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   )
   --------------------
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Buildings/Fully Automated Buildings",
-    ChoGGi.MenuFuncs.FullyAutomatedBuildings,
+    "Expanded CM/Buildings/Fully Automated Building",
+    ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
     nil,
-    function()
-      local des = ChoGGi.UserSettings.FullyAutomatedBuildings and "(Enabled)" or "(Disabled)"
-      return des  .. " No more colonists needed.\nThanks to BoehserOnkel for the idea."
-    end,
+    "Work without workers (select a building and this will apply to all of type or selected).\nThanks to BoehserOnkel for the idea.",
     icon
   )
 

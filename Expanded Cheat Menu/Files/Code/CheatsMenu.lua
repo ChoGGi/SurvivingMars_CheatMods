@@ -1,3 +1,5 @@
+local icon = "new_city.tga"
+
 function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
