@@ -661,6 +661,7 @@ end
       local TGetID = TGetID
       local c = self.idContent
 
+      --see about adding age to colonist info
 if cTesting then
       if self.context and self.context.class == "Colonist" then
         local con = c[2].idContent
@@ -719,13 +720,26 @@ end
                 content:SetMaxHeight(32)
               end
 
-              --[[
-              27=Cheats
+            --Cheats
+            elseif TGetID(title) == 27 then
+              --hides overflow
+              content:SetClip(true)
+              --sets height
+              content:SetMaxHeight(0)
+
+              section.OnMouseEnter = function()
+                content:SetMaxHeight()
+              end
+              section.OnMouseLeft = function()
+                content:SetMaxHeight(1)
+              end
+
+            --[[
               235=Traits
               702480492408=Residents
               TranslationTable[27]
               --]]
-            elseif TGetID(title) == 27 or TGetID(title) == 235 or TGetID(title) == 702480492408 then
+            elseif TGetID(title) == 235 or TGetID(title) == 702480492408 then
 
               --hides overflow
               content:SetClip(true)
