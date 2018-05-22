@@ -1,14 +1,9 @@
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cTables = ChoGGi.Tables
-local cConsts = ChoGGi.Consts
-local CreateRealTimeThread = CreateRealTimeThread
-
 --add items to the cheats pane
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 
 --global objects
   function Building:CheatPowerless()
-    cCodeFuncs.RemoveBuildingElecConsump(self)
+    ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
   end
   function Building:CheatPowered()
     --if this is here we know it has what we need so no need to check for mod/consump
@@ -18,7 +13,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
         mod = mod[1]
       end
       local orig = self.ChoGGi_mod_electricity_consumption
-      if IsKindOf(mod,"ObjectModifier") then
+      if mod:IsKindOf("ObjectModifier") then
         mod:Change(orig.amount,orig.percent)
       else
         mod.amount = orig.amount
@@ -34,10 +29,10 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self:DestroyAttaches("BuildingSign")
   end
   local function CheatColourRandom(self)
-    cCodeFuncs.ObjectColourRandom(self)
+    ChoGGi.CodeFuncs.ObjectColourRandom(self)
   end
   local function CheatColourDefault(self)
-    cCodeFuncs.ObjectColourDefault(self)
+    ChoGGi.CodeFuncs.ObjectColourDefault(self)
   end
   Unit.CheatHideSigns = CheatHideSigns
   Unit.CheatColourRandom = CheatColourRandom
@@ -47,16 +42,16 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   Building.CheatColourDefault = CheatColourDefault
 --colonists
   function Colonist:CheatFillMorale()
-    self.stat_morale = 100 * cConsts.ResourceScale
+    self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
   end
   function Colonist:CheatFillSanity()
-    self.stat_sanity = 100 * cConsts.ResourceScale
+    self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
   end
   function Colonist:CheatFillComfort()
-    self.stat_comfort = 100 * cConsts.ResourceScale
+    self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
   end
   function Colonist:CheatFillHealth()
-    self.stat_health = 100 * cConsts.ResourceScale
+    self.stat_health = 100 * ChoGGi.Consts.ResourceScale
   end
   function Colonist:CheatFillAll()
     Colonist.CheatFillSanity(self)
@@ -81,7 +76,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function Colonist:CheatRandomSpec()
     --skip children, or they'll be a black cube
     if not self.entity:find("Child",1,true) then
-      self:SetSpecialization(cTables.ColonistSpecializations[UICity:Random(1,6)],"init")
+      self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)],"init")
     end
   end
   function Colonist:CheatPrefDbl()
@@ -91,10 +86,10 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.performance = self.base_performance
   end
   function Colonist:CheatRandomGender()
-    cCodeFuncs.ColonistUpdateGender(self,cTables.ColonistGenders[UICity:Random(1,5)])
+    ChoGGi.CodeFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)])
   end
   function Colonist:CheatRandomAge()
-    cCodeFuncs.ColonistUpdateAge(self,cTables.ColonistAges[UICity:Random(1,6)])
+    ChoGGi.CodeFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[UICity:Random(1,6)])
   end
 --CheatAllShifts
   local function CheatAllShiftsOn(self)
@@ -121,13 +116,13 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     else
       self.auto_performance = 150
     end
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   local function CheatWorkManual(self)
     self.max_workers = nil
     self.automation = nil
     self.auto_performance = nil
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   DroneFactory.CheatWorkAuto = CheatWorkAuto
   DroneFactory.CheatWorkManual = CheatWorkManual
@@ -230,39 +225,39 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.capacity = self.capacity * 2
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "charging"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   function ElectricityStorage:CheatCapDef()
     self.capacity = self.base_capacity
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "full"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   --
   function WaterTank:CheatCapDbl()
     self.water_capacity = self.water_capacity * 2
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "charging"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   function WaterTank:CheatCapDef()
     self.water_capacity = self.base_water_capacity
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "full"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   --
   function OxygenTank:CheatCapDbl()
     self.air_capacity = self.air_capacity * 2
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "charging"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   function OxygenTank:CheatCapDef()
     self.air_capacity = self.base_air_capacity
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "full"
-    cCodeFuncs.ToggleWorking(self)
+    ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   --
 --CheatCapDbl people
@@ -433,7 +428,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.battery = self.battery_max
   end
   local function CheatFindResource(self)
-    cCodeFuncs.FindNearestResource(self)
+    ChoGGi.CodeFuncs.FindNearestResource(self)
   end
   RCTransport.CheatFindResource = CheatFindResource
   Drone.CheatFindResource = CheatFindResource
@@ -475,7 +470,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.negated_renegades = self.max_negated_renegades
   end
   function MechanizedDepot:CheatEmptyDepot()
-    cCodeFuncs.EmptyMechDepot(self)
+    ChoGGi.CodeFuncs.EmptyMechDepot(self)
   end
   --[[
   function SupplyRocket:CheatCapDbl()
@@ -497,7 +492,7 @@ end
 
 function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local obj = win.context
-  local name = cCodeFuncs.Trans(obj.name)
+  local name = ChoGGi.CodeFuncs.Trans(obj.name)
   local id = obj.encyclopedia_id
   local doublec = ""
   local resetc = ""
@@ -539,23 +534,23 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       SetHint(action,resetc)
 
     elseif action.ActionId == "Upgrade1" then
-      local tempname = cCodeFuncs.Trans(obj.upgrade1_display_name)
+      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. cCodeFuncs.Trans(obj.upgrade1_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade1_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade2" then
-      local tempname = cCodeFuncs.Trans(obj.upgrade2_display_name)
+      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. cCodeFuncs.Trans(obj.upgrade2_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade2_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade3" then
-      local tempname = cCodeFuncs.Trans(obj.upgrade3_display_name)
+      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. cCodeFuncs.Trans(obj.upgrade3_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade3_description))
       else
         action.ActionId = nil
       end

@@ -1,44 +1,36 @@
-local cMenuFuncs = ChoGGi.MenuFuncs
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-local cConsts = ChoGGi.Consts
-local cInfoFuncs = ChoGGi.InfoFuncs
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cTables = ChoGGi.Tables
-
 function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
-  --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   -------------rockets
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Rocket/Cargo Capacity",
-    cMenuFuncs.SetRocketCargoCapacity,
+    ChoGGi.MenuFuncs.SetRocketCargoCapacity,
     nil,
     "Change amount of storage space in rockets.",
     "scale_gizmo.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Rocket/Travel Time",
-    cMenuFuncs.SetRocketTravelTime,
+    ChoGGi.MenuFuncs.SetRocketTravelTime,
     nil,
     "Change how long to take to travel between planets.",
     "place_particles.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Rocket/Colonists Per Rocket",
-    cMenuFuncs.SetColonistsPerRocket,
+    ChoGGi.MenuFuncs.SetColonistsPerRocket,
     nil,
     "Change how many colonists can arrive on Mars in a single Rocket.",
     "ToggleMarkers.tga"
   )
 
   --------------------capacity
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Storage Mechanized Depots Temp",
-    cMenuFuncs.StorageMechanizedDepotsTemp_Toggle,
+    ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.StorageMechanizedDepotsTemp and "(Enabled)" or "(Disabled)"
@@ -46,64 +38,64 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     end,
     "Cube.tga"
   )
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Worker Capacity",
-    cMenuFuncs.SetWorkerCapacity,
+    ChoGGi.MenuFuncs.SetWorkerCapacity,
     "Ctrl-Shift-W",
     "Change how many workers per building type.",
     "scale_gizmo.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Building Capacity",
-    cMenuFuncs.SetBuildingCapacity,
+    ChoGGi.MenuFuncs.SetBuildingCapacity,
     "Ctrl-Shift-C",
     "Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).",
     "scale_gizmo.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Building Visitor Capacity",
-    cMenuFuncs.SetVisitorCapacity,
+    ChoGGi.MenuFuncs.SetVisitorCapacity,
     "Ctrl-Shift-V",
     "Set visitors capacity of all buildings of selected type, also applies to newly placed ones.",
     "scale_gizmo.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Storage Universal Depot",
     function()
-      cMenuFuncs.SetStorageDepotSize("StorageUniversalDepot")
+      ChoGGi.MenuFuncs.SetStorageDepotSize("StorageUniversalDepot")
     end,
     nil,
     "Change universal storage depot capacity.",
     "MeasureTool.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Storage Other Depot",
     function()
-      cMenuFuncs.SetStorageDepotSize("StorageOtherDepot")
+      ChoGGi.MenuFuncs.SetStorageDepotSize("StorageOtherDepot")
     end,
     nil,
     "Change other storage depot capacity.",
     "MeasureTool.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Storage Waste Depot",
     function()
-      cMenuFuncs.SetStorageDepotSize("StorageWasteDepot")
+      ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
     end,
     nil,
     "Change waste storage depot capacity.",
     "MeasureTool.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Capacity/Storage Mechanized Depots",
     function()
-      cMenuFuncs.SetStorageDepotSize("StorageMechanizedDepot")
+      ChoGGi.MenuFuncs.SetStorageDepotSize("StorageMechanizedDepot")
     end,
     nil,
     "Change mechanized depot storage capacity.",
@@ -111,90 +103,90 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   )
 
 -------------------------fixes
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/ Fire All Fixes",
-    cMenuFuncs.FireAllFixes,
+    ChoGGi.MenuFuncs.FireAllFixes,
     nil,
     "Fires all the non-toggle fixes (nuke 'em from orbit and all that).\n\nDoesn't include ECM ones.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Particles With Null Polylines",
-    cMenuFuncs.ParticlesWithNullPolylines,
+    ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
     nil,
     "It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Missing Class Objects",
-    cMenuFuncs.RemoveMissingClassObjects,
+    ChoGGi.MenuFuncs.RemoveMissingClassObjects,
     nil,
     "Probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Mirror Sphere Stuck",
-    cMenuFuncs.MirrorSphereStuck,
+    ChoGGi.MenuFuncs.MirrorSphereStuck,
     nil,
     "If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Stutter With High FPS",
-    cMenuFuncs.StutterWithHighFPS,
+    ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
     "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks",
-    cMenuFuncs.DronesKeepTryingBlockedRocks,
+    ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks,
     nil,
     "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Idle Drones Won't Build When Resources Available",
-    cMenuFuncs.RemoveUnreachableConstructionSites,
+    ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
     nil,
     "If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Yellow Grid Marks",
-    cMenuFuncs.RemoveYellowGridMarks,
+    ChoGGi.MenuFuncs.RemoveYellowGridMarks,
     nil,
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Project Morpheus Radar Fell Down",
-    cMenuFuncs.ProjectMorpheusRadarFellDown,
+    ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
     nil,
     "Sometimes the blue radar thingy falls off.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Cables & Pipes: Instant Repair",
-    cMenuFuncs.CablesAndPipesRepair,
+    ChoGGi.MenuFuncs.CablesAndPipesRepair,
     nil,
     "Instantly repair all broken pipes and cables.",
     "ViewCamPath.tga"
   )
 
 ---------------------------toggles
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Psychologist Resting Bonus Doesn't Work",
-    cMenuFuncs.NoRestingBonusPsychologistFix_Toggle,
+    ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.NoRestingBonusPsychologistFix and "(Enabled)" or "(Disabled)"
@@ -203,9 +195,9 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Drone Carry Amount",
-    cMenuFuncs.DroneResourceCarryAmountFix_Toggle,
+    ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.DroneResourceCarryAmountFix and "(Enabled)" or "(Disabled)"
@@ -214,9 +206,9 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Sort Command Center Dist",
-    cMenuFuncs.SortCommandCenterDist_Toggle,
+    ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.SortCommandCenterDist and "(Enabled)" or "(Disabled)"
@@ -225,33 +217,33 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "Axis.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome",
-    cMenuFuncs.AttachBuildingsToNearestWorkingDome,
+    ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
     nil,
     "If you placed inside buildings outside and removed the dome they're attached to; use this.",
     "ReportBug.tga"
   )
 
 -----------------------ECM fixes
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/[99]ECM Whoopsies/See tooltip",
     nil,
     "Skip",
     "Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed."
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Fix Black Cube Colonists",
-    cMenuFuncs.ColonistsFixBlackCube,
+    ChoGGi.MenuFuncs.ColonistsFixBlackCube,
     nil,
     "If any colonists are black cubes click this.",
     "ReportBug.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/[99]ECM Whoopsies/[1]Align All Buildings To Hex Grid",
-    cMenuFuncs.AlignAllBuildingsToHexGrid,
+    ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
     nil,
     "If you have any buildings that aren't aligned to the hex grids use this.",
     "ReportBug.tga"

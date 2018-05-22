@@ -1,7 +1,3 @@
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-local CreateGameTimeThread = CreateGameTimeThread
-
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   DefineClass.ChoGGi_ObjectManipulator = {
@@ -44,7 +40,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       end
       --
       local edit_text = self.idEditValue:GetText()
-      local edit_value = cComFuncs.RetProperType(edit_text)
+      local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
       local edit_type = type(edit_value)
       local obj_value = self.obj[self.idList.items[sel_idx].text]
       local obj_type = type(obj_value)
@@ -127,7 +123,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     --open editor with whatever is selected
     self.idList.OnLButtonDoubleClick = function()
       if self.sel then
-        cCodeFuncs.OpenInObjectManipulator(self.sel.object,self)
+        ChoGGi.CodeFuncs.OpenInObjectManipulator(self.sel.object,self)
       end
     end
 
@@ -153,11 +149,11 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
       local CallBackFunc = function(choice)
         --add it to the actual object
-        self.obj[tostring(choice[1].value)] = cComFuncs.RetProperType(choice[2].value)
+        self.obj[tostring(choice[1].value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      cCodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
+      ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()
@@ -165,7 +161,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
       if value then
         local objs = GetObjects({class=self.obj.class})
         for i = 1, #objs do
-          objs[i][self.sel.text] = cComFuncs.RetProperType(value)
+          objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
         end
       end
     end
@@ -177,7 +173,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
         local but = children[i]
         function but.OnButtonPressed()
           self.refreshing = self.idAutoRefresh:GetState()
-          CreateGameTimeThread(function()
+          CreateRealTimeThread(function()
             while self.refreshing do
               self:UpdateListContent(self.obj)
               Sleep(1000)
@@ -223,7 +219,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
   end
 
   function ChoGGi_ObjectManipulator:ViewObject(obj)
-    cCodeFuncs.ViewAndSelectObject(Obj)
+    ChoGGi.CodeFuncs.ViewAndSelectObject(Obj)
   end
 
   --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
@@ -354,7 +350,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
     if type(o) == "table" then
       if IsT(o) then
-        return "T{\"" .. cCodeFuncs.Trans(o) .. "\"}"
+        return "T{\"" .. ChoGGi.CodeFuncs.Trans(o) .. "\"}"
       else
         local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
         return text

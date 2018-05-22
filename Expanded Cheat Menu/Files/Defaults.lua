@@ -1,18 +1,3 @@
-local cComFuncs = ChoGGi.ComFuncs
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cMsgFuncs = ChoGGi.MsgFuncs
-local cCodeFuncs = ChoGGi.CodeFuncs
-
-local ThreadLockKey = ThreadLockKey
-local AsyncCopyFile = AsyncCopyFile
-local ThreadUnlockKey = ThreadUnlockKey
-local AsyncStringToFile = AsyncStringToFile
-local AsyncFileToString = AsyncFileToString
-local TableToLuaCode = TableToLuaCode
-local LuaCodeToTuple = LuaCodeToTuple
-local DebugPrint = DebugPrint
-local CreateRealTimeThread = CreateRealTimeThread
-
 --stores default values and some tables
 
 --useful lists
@@ -39,21 +24,21 @@ ChoGGi.Tables = {
   --for mystery menu items (added below after mods load)
   Mystery = {}
 }
-local cTables = ChoGGi.Tables
 do
   --build tables
+  local ChoGGi = ChoGGi
   local Nations = Nations
   for i = 1, #Nations do
-    cTables.ColonistBirthplaces[#cTables.ColonistBirthplaces+1] = Nations[i].value
-    cTables.ColonistBirthplaces[Nations[i].value] = true
+    ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
+    ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
   end
   local const = const
   --maybe a mod removed them?
   if #const.SchoolTraits < 5 then
-    cTables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+    ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
   end
   if #const.SanatoriumTraits < 7 then
-    cTables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+    ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
   end
 end
 
@@ -204,11 +189,11 @@ ChoGGi.Consts = {
 }
 
 --set game values to saved values
-function cSettingFuncs.SetConstsToSaved()
+function ChoGGi.SettingFuncs.SetConstsToSaved()
   local UserSettings = ChoGGi.UserSettings
 --Consts.
   local function SetConstsG(Name)
-    cComFuncs.SetConstsG(Name,UserSettings[Name])
+    ChoGGi.ComFuncs.SetConstsG(Name,UserSettings[Name])
   end
   SetConstsG("AvoidWorkplaceSols")
   SetConstsG("BirthThreshold")
@@ -301,8 +286,11 @@ function cSettingFuncs.SetConstsToSaved()
 end
 
 --called everytime we set a setting in menu
-function cSettingFuncs.WriteSettings()
+function ChoGGi.SettingFuncs.WriteSettings()
   local ChoGGi = ChoGGi
+  local CreateRealTimeThread = CreateRealTimeThread
+  local ThreadLockKey = ThreadLockKey
+  local ThreadUnlockKey = ThreadUnlockKey
   --piss off if we're in the middle of a save?
   --probably be better to read file afterwards and check if it matches
   if ChoGGi.Temp.SavingSettings then
@@ -330,8 +318,10 @@ function cSettingFuncs.WriteSettings()
 end
 
 --read saved settings from file
-function cSettingFuncs.ReadSettings()
+function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
+  local DebugPrint = DebugPrint
+  local AsyncFileToString = AsyncFileToString
   local errormsg = "\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n"
 
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
@@ -356,7 +346,7 @@ function cSettingFuncs.ReadSettings()
 end
 
 --OptionsApply is the earliest we can call Consts:GetProperties()
-function cMsgFuncs.Defaults_OptionsApply()
+function ChoGGi.MsgFuncs.Defaults_OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts
 
@@ -399,7 +389,7 @@ function cMsgFuncs.Defaults_OptionsApply()
   ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
-function cMsgFuncs.Defaults_ModsLoaded()
+function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
   --remove empty entries in BuildingSettings
@@ -436,13 +426,12 @@ function cMsgFuncs.Defaults_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local msgs = ChoGGi.Temp.StartupMsgs
     local errormsg = "Error: Couldn't convert old settings to new settings: "
     if not AddOldSettings("BuildingsCapacity","capacity") then
-      msgs[#msgs+1] = errormsg .. "BuildingsCapacity"
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = errormsg .. "BuildingsCapacity"
     end
     if not AddOldSettings("BuildingsProduction","production") then
-      msgs[#msgs+1] = errormsg .. "BuildingsProduction"
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = errormsg .. "BuildingsProduction"
     end
   end
 
@@ -450,8 +439,8 @@ function cMsgFuncs.Defaults_ModsLoaded()
   local g = g_Classes
   ClassDescendantsList("MysteryBase",function(class)
     local scenario_name = g[class].scenario_name or "Missing Scenario Name"
-    local display_name = cCodeFuncs.Trans(g[class].display_name) or "Missing Name"
-    local description = cCodeFuncs.Trans(g[class].rollover_text) or "Missing Description"
+    local display_name = ChoGGi.CodeFuncs.Trans(g[class].display_name) or "Missing Name"
+    local description = ChoGGi.CodeFuncs.Trans(g[class].rollover_text) or "Missing Description"
 
     local temptable = {
       class = class,
@@ -460,9 +449,9 @@ function cMsgFuncs.Defaults_ModsLoaded()
       description = description
     }
     --we want to be able to access by for loop, Mystery 7, and WorldWar3
-    cTables.Mystery[scenario_name] = temptable
-    cTables.Mystery[class] = temptable
-    cTables.Mystery[#cTables.Mystery+1] = temptable
+    ChoGGi.Tables.Mystery[scenario_name] = temptable
+    ChoGGi.Tables.Mystery[class] = temptable
+    ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
   end)
 
 end

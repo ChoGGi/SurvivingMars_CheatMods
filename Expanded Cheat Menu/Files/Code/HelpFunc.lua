@@ -1,26 +1,16 @@
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-local cConsts = ChoGGi.Consts
-local cInfoFuncs = ChoGGi.InfoFuncs
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cTables = ChoGGi.Tables
-local cMenuFuncs = ChoGGi.MenuFuncs
-
-local CreateRealTimeThread = CreateRealTimeThread
-
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
-function cMenuFuncs.ShowInterfaceInScreenshots_Toggle()
+function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
-  cSettingFuncs.WriteSettings()
-  cComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Interface in screenshots: " .. tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     "Interface",UsualIcon
   )
 end
 
-function cMenuFuncs.TakeScreenshot(Bool)
+function ChoGGi.MenuFuncs.TakeScreenshot(Bool)
   if Bool == true then
     CreateRealTimeThread(function()
       WaitNextFrame(3)
@@ -33,7 +23,7 @@ function cMenuFuncs.TakeScreenshot(Bool)
   end
 end
 
-function cMenuFuncs.ResetECMSettings()
+function ChoGGi.MenuFuncs.ResetECMSettings()
   local file = ChoGGi.SettingsFile
   local old = file .. ".old"
 
@@ -50,37 +40,37 @@ function cMenuFuncs.ResetECMSettings()
     --so we don't save file on exit
     ChoGGi.Temp.CallBackFunc = true
 
-    cComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
+    ChoGGi.ComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 
   end
 
-  cComFuncs.QuestionBox(
+  ChoGGi.ComFuncs.QuestionBox(
     "Are you sure you want to reset ECM settings?\n\nOld settings are saved as " .. old .. "\n\nRestart to take effect.",
     CallBackFunc,
     "Reset!"
   )
 end
 
-function cMenuFuncs.SignsInterface_Toggle()
+function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  cComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
+  ChoGGi.ComFuncs.MsgPopup("Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?",
     "Signs",UsualIcon,true
   )
 end
 
-function cMenuFuncs.OnScreenHints_Toggle()
+function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  cComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
+  ChoGGi.ComFuncs.MsgPopup(HintsEnabled,"Hints",UsualIcon)
 end
 
-function cMenuFuncs.OnScreenHints_Reset()
+function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  cComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
+  ChoGGi.ComFuncs.MsgPopup("Hints Reset!","Hints",UsualIcon)
 end
 
-function cMenuFuncs.NeverShowHints_Toggle()
+function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
   ChoGGi.UserSettings.DisableHints = not ChoGGi.UserSettings.DisableHints
   if ChoGGi.UserSettings.DisableHints then
     mapdata.DisableHints = true
@@ -89,12 +79,12 @@ function cMenuFuncs.NeverShowHints_Toggle()
     mapdata.DisableHints = false
     HintsEnabled = true
   end
-  cSettingFuncs.WriteSettings()
+  ChoGGi.SettingFuncs.WriteSettings()
 
-  cComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DisableHints) .. ": Bye bye hints","Hints","UI/Icons/Sections/attention.tga")
 end
 
-function cMenuFuncs.MenuHelp_ReportBug()
+function ChoGGi.MenuFuncs.MenuHelp_ReportBug()
   if Platform.ged then
     return
   end
@@ -103,7 +93,7 @@ function cMenuFuncs.MenuHelp_ReportBug()
   end)
 end
 
-function cMenuFuncs.MenuHelp_About()
+function ChoGGi.MenuFuncs.MenuHelp_About()
   ChoGGi.ComFuncs.MsgWait(
     "Hover mouse over menu item to get description and enabled status" ..
     "\nIf there isn't a status then it's likely a list of options to choose from" ..

@@ -1,6 +1,3 @@
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-
 function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
   DefineClass.ChoGGi_ListChoiceCustomDialog = {
@@ -43,7 +40,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local value = cComFuncs.RetProperType(self.idEditValue:GetValue())
+      local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
 
       if self.CustomType > 0 then
         self.idList.items[self.idList.last_selected].value = value
@@ -116,7 +113,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     self.idList.OnLButtonDoubleClick = function()
       --open colour changer
       if self.CustomType == 1 or self.CustomType == 2 then
-        cCodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+        ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
       elseif self.CustomType ~= 5 then
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -145,7 +142,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         end
         local SetPal = self.obj.SetColorizationMaterial
         local items = self.idList.items
-        cCodeFuncs.SaveOldPalette(self.obj)
+        ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
         for i = 1, 4 do
           local Color = items[i].value
           local Metallic = items[i+4].value
@@ -172,7 +169,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
             local hint = item.text
             if item.value then
               if type(item.value) == "userdata" then
-                hint = hint .. ": " .. cCodeFuncs.Trans(item.value)
+                hint = hint .. ": " .. ChoGGi.CodeFuncs.Trans(item.value)
               else
                 hint = hint .. ": " .. tostring(item.value)
               end
@@ -202,7 +199,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         end
       end
       --rebuild it
-      cCodeFuncs.LightmodelBuild(model_table)
+      ChoGGi.CodeFuncs.LightmodelBuild(model_table)
       --and temp apply
       SetLightmodel(1,"ChoGGi_Custom")
     end
@@ -210,7 +207,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     --update colour
     function self:UpdateColourPicker()
       pcall(function()
-        local num = cComFuncs.RetProperType(self.idEditValue:GetText())
+        local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
         self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
         self.idColorHSV:InitHSVPtPos()
         self.idColorHSV:Invalidate()
@@ -230,7 +227,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         for i = 1, #items do
           if i == 1 then
             --always return the custom value (and try to convert it to correct type)
-            items[i].editvalue = cComFuncs.RetProperType(self.idEditValue:GetText())
+            items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
           end
           self.choices[#self.choices+1] = items[i]
         end

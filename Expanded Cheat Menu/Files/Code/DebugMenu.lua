@@ -1,85 +1,77 @@
-local cMenuFuncs = ChoGGi.MenuFuncs
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-local cConsts = ChoGGi.Consts
-local cInfoFuncs = ChoGGi.InfoFuncs
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cTables = ChoGGi.Tables
-
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
-  --cComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-  cComFuncs.AddAction(
+  --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Reload Lua",
-    cMenuFuncs.ReloadLua,
+    ChoGGi.MenuFuncs.ReloadLua,
     nil,
     "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it)."
   )
 
   --object cloner
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Object Cloner",
-    cMenuFuncs.ObjectCloner,
+    ChoGGi.MenuFuncs.ObjectCloner,
     "Shift-Q",
     "Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item)."
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Toggle Showing Anim Debug",
-    cMenuFuncs.ShowAnimDebug_Toggle,
+    ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
     nil,
     "Attaches text to each object showing animation info.",
     "CameraEditor.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Path Markers Real Time",
-    cMenuFuncs.SetPathMarkersGameTime,
+    ChoGGi.MenuFuncs.SetPathMarkersGameTime,
     "Ctrl-Numpad .",
     "Maps paths in realtime.",
     "ViewCamPath.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Path Markers Visible",
-    cMenuFuncs.SetPathMarkersVisible,
+    ChoGGi.MenuFuncs.SetPathMarkersVisible,
     "Ctrl-Numpad 0",
     "Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.",
     "ViewCamPath.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Close Dialogs",
-    cCodeFuncs.CloseDialogsECM,
+    ChoGGi.CodeFuncs.CloseDialogsECM,
     nil,
     "Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)",
     "remove_water.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Object Manipulator",
-    cCodeFuncs.OpenInObjectManipulator,
+    ChoGGi.CodeFuncs.OpenInObjectManipulator,
     "F5",
     "Manipulate objects (selected or under mouse cursor)",
     "SaveMapEntityList.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Selection Editor",
-    cMenuFuncs.ShowSelectionEditor,
+    ChoGGi.MenuFuncs.ShowSelectionEditor,
     nil,
     "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable).",
     "AreaProperties.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Object Spawner",
-    cMenuFuncs.ObjectSpawner,
+    ChoGGi.MenuFuncs.ObjectSpawner,
     "Ctrl-Shift-S",
     "Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use Delete Selected Object ",
     "add_water.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Console Clear Display",
     cls,
     "F9",
@@ -87,27 +79,27 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "Voice.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Toggle Editor",
-    cMenuFuncs.Editor_Toggle,
+    ChoGGi.MenuFuncs.Editor_Toggle,
     "Ctrl-Shift-E",
     "Select object(s) then hold ctrl/shift/alt and drag mouse.\nclick+drag for multiple selection.\n\nIt's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).",
     "SelectionEditor.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Open In Ged Editor",
     function()
-      OpenGedGameObjectEditor(cCodeFuncs.SelObject())
+      OpenGedGameObjectEditor(ChoGGi.CodeFuncs.SelObject())
     end,
     nil,
     "It edits stuff?",
     "SelectionEditor.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Write Logs",
-    cMenuFuncs.SetWriteLogs_Toggle,
+    ChoGGi.MenuFuncs.SetWriteLogs_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.WriteLogs and "(Enabled)" or "(Disabled)"
@@ -116,9 +108,9 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "save_city.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Console Toggle History",
-    cMenuFuncs.ConsoleHistory_Toggle,
+    ChoGGi.MenuFuncs.ConsoleHistory_Toggle,
     nil,
     function()
       local des = ChoGGi.UserSettings.ConsoleToggleHistory and "(Enabled)" or "(Disabled)"
@@ -127,39 +119,39 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "Voice.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Delete All Of Selected Object",
-    cMenuFuncs.DeleteAllSelectedObjects,
+    ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
     nil,
     "Will ask for confirmation beforehand (will not delete domes).",
     "delete_objects.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Delete Object(s)",
-    cCodeFuncs.DeleteObject,
+    ChoGGi.CodeFuncs.DeleteObject,
     "Ctrl-Alt-Shift-D",
     "Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion.",
     "delete_objects.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Examine Current Obj",
-    cMenuFuncs.ObjExaminer,
+    ChoGGi.MenuFuncs.ObjExaminer,
     "F4",
     "Opens the object examiner",
     "PlayerInfo.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Change Map",
-    cMenuFuncs.ChangeMap,
+    ChoGGi.MenuFuncs.ChangeMap,
     nil,
     "Change map (options to pick commander, sponsor, etc...\n\nAttention: The first change usually screws up with some yellow ground (ideas?).\nThe map disaster settings don't do jack.",
     "load_city.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Particles Reload",
     function()
       LoadStreamParticlesFromDir("Data/Particles")
@@ -170,7 +162,7 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "place_particles.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/[08]Toggle Terrain Deposit Grid",
     ToggleTerrainDepositGrid,
     "Ctrl-F4",
@@ -178,30 +170,30 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "ToggleBlockPass.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/[09]Toggle Hex Build + Passability Grid Visibility",
     function()
-      cMenuFuncs.debug_build_grid(1)
+      ChoGGi.MenuFuncs.debug_build_grid(1)
     end,
     "Shift-F1",
     "Shows a hex grid with green for buildable/walkable.",
     "ToggleOcclusion.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/[10]Toggle Hex Passability Grid Visibility",
     function()
-      cMenuFuncs.debug_build_grid(2)
+      ChoGGi.MenuFuncs.debug_build_grid(2)
     end,
     "Shift-F2",
     "Shows a hex grid with green for walkable terrain.",
     "CollisionGeometry.tga"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/[11]Toggle Hex Build Grid Visibility",
     function()
-      cMenuFuncs.debug_build_grid(3)
+      ChoGGi.MenuFuncs.debug_build_grid(3)
     end,
     "Shift-F3",
     "Shows a hex grid with green for buildable (ignores uneven terrain).",

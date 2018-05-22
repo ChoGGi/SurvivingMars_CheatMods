@@ -1,23 +1,8 @@
 --stuff only loaded when ChoGGi.Temp.Testing = true
 
 --ChoGGi.Temp.Testing = false
-
-
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cComFuncs = ChoGGi.ComFuncs
-local cConsts = ChoGGi.Consts
-local cInfoFuncs = ChoGGi.InfoFuncs
-local cMsgFuncs = ChoGGi.MsgFuncs
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cTables = ChoGGi.Tables
-local cOrigFuncs = ChoGGi.OrigFuncs
-local cMenuFuncs = ChoGGi.MenuFuncs
-local cTesting = ChoGGi.Temp.Testing
-
-
-
 --stuff that never happens, fuck comments (like this one)
-if type(cTesting) == "function" then
+if type(ChoGGi.Temp.Testing) == "function" then
 
 function ChoGGi.ReplaceDome(dome)
   if not dome then
@@ -68,13 +53,13 @@ end
 
   dofolder_files("CommonLua/UI/UIDesignerData")
 --[[
-  cComFuncs.SaveOrigFunc("CargoShuttle","Idle")
+  ChoGGi.ComFuncs.SaveOrigFunc("CargoShuttle","Idle")
   function CargoShuttle:Idle()
   print(self.command)
     if self.ChoGGi_FollowMouseShuttle and self.command == "Home" or self.command == "Idle" then
       self:SetCommand("ChoGGi_FollowMouse")
     end
-    return cOrigFuncs.CargoShuttle_Idle(self)
+    return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
   end
 --]]
   for message, threads in pairs(ThreadsMessageToThreads) do
@@ -89,7 +74,7 @@ end
   end
 end
 
-if cTesting then
+if ChoGGi.Temp.Testing then
   config.TraceEnable = true
   Platform.editor = true
   config.LuaDebugger = true
@@ -121,25 +106,25 @@ if cTesting then
   print("if ChoGGi.Temp.Testing")
 end --Testing
 
-function cMsgFuncs.Testing_ClassesGenerate()
+function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
 
   ------
   print("Testing_ClassesGenerate")
 end
 
-function cMsgFuncs.Testing_ClassesPreprocess()
+function ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
 
   ------
   print("Testing_ClassesPreprocess")
 end --ClassesPreprocess
 
 --where we add new BuildingTemplates
-function cMsgFuncs.Testing_ClassesPostprocess()
+function ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   ------
   print("Testing_ClassesPostprocess")
 end
 
-function cMsgFuncs.Testing_ClassesBuilt()
+function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()
@@ -150,7 +135,7 @@ function cMsgFuncs.Testing_ClassesBuilt()
   print("Testing_ClassesBuilt")
 end
 
-function cMsgFuncs.Testing_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
 
   ------
   print("Testing_LoadingScreenPreClose")

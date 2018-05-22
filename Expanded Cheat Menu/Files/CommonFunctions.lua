@@ -1,23 +1,3 @@
-local cConsts = ChoGGi.Consts
-local cComFuncs = ChoGGi.ComFuncs
-local cCodeFuncs = ChoGGi.CodeFuncs
-
-local IsKindOf = IsKindOf
-local AsyncRand = AsyncRand
-local AddCustomOnScreenNotification = AddCustomOnScreenNotification
-local CreateRealTimeThread = CreateRealTimeThread
-local WaitCustomPopupNotification = WaitCustomPopupNotification
-local WaitQuestion = WaitQuestion
-local GetXDialog = GetXDialog
-local Sleep = Sleep
-local ThreadLockKey = ThreadLockKey
-local AsyncStringToFile = AsyncStringToFile
-local ThreadUnlockKey = ThreadUnlockKey
-local AsyncFileDelete = AsyncFileDelete
-local AsyncFileRename = AsyncFileRename
-local Msg = Msg
-local empty_table = empty_table
-
 --[[
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
@@ -29,12 +9,12 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
-function cComFuncs.MsgPopup(Msg,Title,Icon,Size)
+function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
     --Title = tostring(Title)
-    Title = type(Title) == "string" and Title or cCodeFuncs.Trans(1000016)
+    Title = type(Title) == "string" and Title or ChoGGi.CodeFuncs.Trans(1000016)
     Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
     --local id = "ChoGGi_" .. AsyncRand()
     local id = AsyncRand()
@@ -81,11 +61,11 @@ function cComFuncs.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
-function cComFuncs.MsgWait(Msg,Title,Ok,Cancel)
+function ChoGGi.ComFuncs.MsgWait(Msg,Title,Ok,Cancel)
   Msg = tostring(Msg)
   Title = tostring(Title)
-  Ok = type(Ok) == "string" and Ok or cCodeFuncs.Trans(1000616)
-  Cancel = type(Ok) == "string" and Cancel or cCodeFuncs.Trans(1000246)
+  Ok = type(Ok) == "string" and Ok or ChoGGi.CodeFuncs.Trans(1000616)
+  Cancel = type(Ok) == "string" and Cancel or ChoGGi.CodeFuncs.Trans(1000246)
 
   CreateRealTimeThread(
     WaitCustomPopupNotification,
@@ -95,7 +75,7 @@ function cComFuncs.MsgWait(Msg,Title,Ok,Cancel)
   )
 end
 
-function cComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
+function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     Msg = Msg or "Empty"
     Ok = Ok or "Ok"
@@ -115,7 +95,7 @@ function cComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
 end
 
 
-function cComFuncs.Dump(Obj,Mode,File,Ext,Skip)
+function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil
   else
@@ -138,7 +118,7 @@ function cComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   end
 end
 
-function cComFuncs.DumpLua(Value)
+function ChoGGi.ComFuncs.DumpLua(Value)
   local which = "TupleToLuaCode"
   if type(Value) == "table" then
     which = "TableToLuaCode"
@@ -155,7 +135,7 @@ Mode = -1 to append or nil to overwrite (default: -1)
 Funcs = true to dump functions as well (default: false)
 ChoGGi.ComFuncs.DumpTable(TechTree)
 --]]
-function cComFuncs.DumpTable(Obj,Mode,Funcs)
+function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
     ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
@@ -174,7 +154,7 @@ function cComFuncs.DumpTable(Obj,Mode,Funcs)
   )
 end
 
-function cComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
+function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   local ChoGGi = ChoGGi
   if (hierarchyLevel == nil) then
     hierarchyLevel = 0
@@ -213,7 +193,7 @@ ChoGGi.ComFuncs.DumpObject(Consts)
 ChoGGi.ComFuncs.DumpObject(const)
 if you want to dump functions as well DumpObject(object,true)
 --]]
-function cComFuncs.DumpObject(Obj,Mode,Funcs)
+function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
     ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
@@ -235,10 +215,10 @@ function cComFuncs.DumpObject(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.Dump(Text,Mode)
 end
 
-function cComFuncs.RetTextForDump(Obj,Funcs)
+function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
     return function()
-      cCodeFuncs.Trans(Obj)
+      ChoGGi.CodeFuncs.Trans(Obj)
     end
   elseif Funcs and type(Obj) == "function" then
     return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
@@ -249,7 +229,7 @@ function cComFuncs.RetTextForDump(Obj,Funcs)
   end
 end
 
-function cComFuncs.PrintFiles(Filename,Function,Text,...)
+function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
   Text = Text or ""
   --pass ... onto pcall function
   local Vararg = ...
@@ -263,9 +243,9 @@ end
 
 --[[
 positive or 1 return TrueVar || negative or 0 return FalseVar
-cConsts.XXX = ChoGGi.ComFuncs.NumRetBool(cConsts.XXX,0,cConsts.XXX)
+ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
 --]]
-function cComFuncs.NumRetBool(Num,TrueVar,FalseVar)
+function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
   end
@@ -277,7 +257,7 @@ function cComFuncs.NumRetBool(Num,TrueVar,FalseVar)
 end
 
 --return opposite value or first value if neither
-function cComFuncs.ValueRetOpp(Setting,Value1,Value2)
+function ChoGGi.ComFuncs.ValueRetOpp(Setting,Value1,Value2)
   if Setting == Value1 then
     return Value2
   elseif Setting == Value2 then
@@ -288,7 +268,7 @@ function cComFuncs.ValueRetOpp(Setting,Value1,Value2)
 end
 
 --return as num
-function cComFuncs.BoolRetNum(Bool)
+function ChoGGi.ComFuncs.BoolRetNum(Bool)
   if Bool == true then
     return 1
   end
@@ -296,7 +276,7 @@ function cComFuncs.BoolRetNum(Bool)
 end
 
 --toggle 0/1
-function cComFuncs.ToggleBoolNum(Num)
+function ChoGGi.ComFuncs.ToggleBoolNum(Num)
   if Num == 0 then
     return 1
   end
@@ -304,7 +284,7 @@ function cComFuncs.ToggleBoolNum(Num)
 end
 
 --return equal or higher amount
-function cComFuncs.CompareAmounts(iAmtA,iAmtB)
+function ChoGGi.ComFuncs.CompareAmounts(iAmtA,iAmtB)
   --if ones missing then just return the other
   if not iAmtA then
     return iAmtB
@@ -336,7 +316,7 @@ end
     end
   )
 --]]
-function cComFuncs.CompareTableValue(a,b,sName)
+function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
   if not a and not b then
     return
   end
@@ -353,7 +333,7 @@ table.sort(s.command_centers,
   end
 )
 --]]
-function cComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
+function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
   if not a and not b then
     return
   end
@@ -364,7 +344,7 @@ function cComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
   end
 end
 
-function cComFuncs.WriteLogs_Toggle(Enable)
+function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   local ChoGGi = ChoGGi
   if Enable == true then
     --remove old logs
@@ -400,7 +380,7 @@ function cComFuncs.WriteLogs_Toggle(Enable)
 end
 
 --ChoGGi.ComFuncs.PrintIds(TechTree)
-function cComFuncs.PrintIds(Table)
+function ChoGGi.ComFuncs.PrintIds(Table)
   local text = ""
 
   for i = 1, #Table do
@@ -415,7 +395,7 @@ end
 
 --changes a function to also post a Msg for use with OnMsg
 --AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
-function cComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
+function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   local ChoGGi = ChoGGi
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
@@ -429,7 +409,7 @@ function cComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 end
 
 --backup orginal function for later use (checks if we already have a backup, or else problems)
-function cComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then
     local newname = ClassOrFunc .. "_" .. Func
@@ -444,7 +424,7 @@ function cComFuncs.SaveOrigFunc(ClassOrFunc,Func)
 end
 
 --check for and remove broken objects from UICity.labels
-function cComFuncs.RemoveMissingLabelObjects(Label)
+function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   local UICity = UICity
   local found = true
   while found do
@@ -461,7 +441,7 @@ function cComFuncs.RemoveMissingLabelObjects(Label)
   end
 end
 
-function cComFuncs.RemoveFromLabel(Label,Obj)
+function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local UICity = UICity
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
@@ -480,7 +460,7 @@ function toboolean(Str)
 end
 
 --tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
-function cComFuncs.RetProperType(Value)
+function ChoGGi.ComFuncs.RetProperType(Value)
   --number?
   local num = tonumber(Value)
   if num then
@@ -500,7 +480,7 @@ function cComFuncs.RetProperType(Value)
 end
 
 --takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
-function cComFuncs.StringToTable(String)
+function ChoGGi.ComFuncs.StringToTable(String)
   local Table = {}
   for i in String:gmatch("%S+") do
     Table[#Table+1] = i
@@ -510,7 +490,7 @@ end
 
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
-function cComFuncs.UserAddActions(ActionsToAdd)
+function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
   local UserActions = UserActions
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
@@ -541,7 +521,7 @@ function cComFuncs.UserAddActions(ActionsToAdd)
   UserActions.SetMode(UserActions.mode)
 end
 
-function cComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   local ChoGGi = ChoGGi
   if Menu then
     Menu = "/" .. tostring(Menu)
@@ -579,7 +559,7 @@ function cComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,Toolba
 print("\n")
 --]]
 
-  --cCodeFuncs.Trans(Number from Game.csv)
+  --ChoGGi.CodeFuncs.Trans(Number from Game.csv)
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
@@ -598,10 +578,10 @@ print("\n")
 end
 
 --while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
-function cComFuncs.CheckForTypeInList(List,Type)
+function ChoGGi.ComFuncs.CheckForTypeInList(List,Type)
   local ret = false
   for i = 1, #List do
-    if IsKindOf(List[i],Type) then
+    if List[i]:IsKindOf(Type) then
       ret = true
     end
   end
@@ -621,7 +601,7 @@ it returns percentages in decimal for ease of mathing (SM removed the math.funct
 ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
-function cComFuncs.ReturnTechAmount(Tech,Prop)
+function ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
   local techdef = TechDef[Tech]
 
   local tab = techdef or empty_table
@@ -666,7 +646,7 @@ end
   end
 --]]
 --function ChoGGi.ComFuncs.SetConstsG(Name,Value,IsResearched)
-function cComFuncs.SetConstsG(Name,Value)
+function ChoGGi.ComFuncs.SetConstsG(Name,Value)
   --we only want to change it if user set value
   if Value then
     --some mods change Consts or g_Consts, so we'll just do both to be sure
@@ -676,16 +656,16 @@ function cComFuncs.SetConstsG(Name,Value)
 end
 
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function cComFuncs.SetSavedSetting(Setting,Value)
+function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
   --if setting is the same as the default then remove it
-  if cConsts[Setting] == Value then
+  if ChoGGi.Consts[Setting] == Value then
     ChoGGi.UserSettings[Setting] = nil
   else
     ChoGGi.UserSettings[Setting] = Value
   end
 end
 
-function cComFuncs.RetTableNoDupes(Table)
+function ChoGGi.ComFuncs.RetTableNoDupes(Table)
   local tempt = {}
   local dupe = {}
 
@@ -698,7 +678,7 @@ function cComFuncs.RetTableNoDupes(Table)
   return tempt
 end
 
-function cComFuncs.RetTableNoClassDupes(Table)
+function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   local ChoGGi = ChoGGi
   table.sort(Table,
     function(a,b)
@@ -718,7 +698,7 @@ function cComFuncs.RetTableNoClassDupes(Table)
 end
 
 --RemoveFromTable(sometable,"class","SelectionArrow")
-function cComFuncs.RemoveFromTable(Table,Type,Text)
+function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   local tempt = {}
 
   local tab = Table or empty_table
@@ -732,7 +712,7 @@ end
 
 --RemoveFromTable(GetObjects({class="CObject"}),{ParSystem=1,ResourceStockpile=1},"class")
 --RemoveFromTable(GetObjects({class="CObject"}),nil,nil,"working")
-function cComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
+function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
       if ExcludeList or IncludeList then
@@ -751,7 +731,7 @@ function cComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
 end
 
 --FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
-function cComFuncs.FilterFromTableFunc(Table,Func,Value)
+function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value)
   return FilterObjects({
     filter = function(Obj)
       if Obj[Func](Obj,Value) then
@@ -761,7 +741,7 @@ function cComFuncs.FilterFromTableFunc(Table,Func,Value)
   },Table)
 end
 
-function cComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
+function ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
   --examine will offset to ObjPos
   if ObjPos then
     OpenExamine(Obj,ObjPos)

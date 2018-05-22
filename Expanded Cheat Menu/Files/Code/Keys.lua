@@ -1,23 +1,16 @@
-local cSettingFuncs = ChoGGi.SettingFuncs
-local cCodeFuncs = ChoGGi.CodeFuncs
-local cTables = ChoGGi.Tables
-local cComFuncs = ChoGGi.ComFuncs
-local cConsts = ChoGGi.Consts
-local cMenuFuncs = ChoGGi.MenuFuncs
-
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     nil,
     function()
-      cCodeFuncs.ObjectColourRandom(cCodeFuncs.SelObject())
+      ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
     end,
     "Shift-F6"
   )
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     nil,
     function()
-      cCodeFuncs.ObjectColourDefault(cCodeFuncs.SelObject())
+      ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
     end,
     "Ctrl-F6"
   )
@@ -25,9 +18,9 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   --use number keys to activate/hide build menus
   if ChoGGi.UserSettings.NumberKeysBuildMenu then
     local function AddMenuKey(Num,Key)
-      cComFuncs.AddAction(nil,
+      ChoGGi.ComFuncs.AddAction(nil,
         function()
-          cCodeFuncs.ShowBuildMenu(Num)
+          ChoGGi.CodeFuncs.ShowBuildMenu(Num)
         end,
         Key
       )
@@ -58,10 +51,10 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --spawn and fill a deposit at mouse pos
-  function cMenuFuncs.AddDeposit(sType)
+  function ChoGGi.MenuFuncs.AddDeposit(sType)
     local obj = PlaceObj(sType, {
-      "Pos", cCodeFuncs.CursorNearestHex(),
-      "max_amount", UICity:Random(1000 * cConsts.ResourceScale,100000 * cConsts.ResourceScale),
+      "Pos", ChoGGi.CodeFuncs.CursorNearestHex(),
+      "max_amount", UICity:Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
       "revealed", true,
     })
     obj:CheatRefill()
@@ -70,7 +63,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --fixup name we get from Object
-  function cMenuFuncs.ConstructionModeNameClean(itemname)
+  function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname)
     --we want template_name or we have to guess from the placeobj name
     local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
     if not tempname then
@@ -86,7 +79,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --place item under the mouse for construction
-  function cMenuFuncs.ConstructionModeSet(itemname)
+  function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
     local CloseXBuildMenu = CloseXBuildMenu
 
     --make sure it's closed so we don't mess up selection
@@ -94,7 +87,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
       CloseXBuildMenu()
     end)
     --fix up some names
-    local fixed = cTables.ConstructionNamesListFix[itemname]
+    local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
     if fixed then
       itemname = fixed
     end
@@ -126,14 +119,14 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   end
 
   --show console
-  cComFuncs.AddAction(nil,
+  ChoGGi.ComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
     "~"
   )
 
-  cComFuncs.AddAction(nil,
+  ChoGGi.ComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
@@ -141,20 +134,20 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   )
 
   --show console with restart
-  cComFuncs.AddAction(nil,
+  ChoGGi.ComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
       if dlgConsole then
         local dlg = dlgConsole
         dlg.idEdit:SetText("restart")
       end
-      --cCodeFuncs.AddConsolePrompt("restart")
+      --ChoGGi.CodeFuncs.AddConsolePrompt("restart")
     end,
     "Ctrl-Alt-Shift-R"
   )
 
   --goes to placement mode with last built object
-  cComFuncs.AddAction(nil,
+  ChoGGi.ComFuncs.AddAction(nil,
     function()
       local last = UICity.LastConstructedBuilding
       if last.entity then
@@ -165,7 +158,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   )
 
   --goes to placement mode with SelectedObj
-  cComFuncs.AddAction(nil,
+  ChoGGi.ComFuncs.AddAction(nil,
     function()
       local ChoGGi = ChoGGi
       local sel = ChoGGi.CodeFuncs.SelObject()
@@ -177,7 +170,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
     "Ctrl-Shift-Space"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     nil,
     function()
       local ChoGGi = ChoGGi
@@ -188,7 +181,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
     "F2"
   )
 
-  cComFuncs.AddAction(
+  ChoGGi.ComFuncs.AddAction(
     nil,
     function()
       quit("restart")
