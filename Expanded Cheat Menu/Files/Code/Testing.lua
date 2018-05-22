@@ -8,8 +8,9 @@ if type(ChoGGi.Temp.Testing) == "function" then
 function ChoGGi.ReturnAllNearby(Radius)
   Radius = Radius or 5000
   local pos = GetTerrainCursor()
-  --we only want stuff within radius
+  --get pretty much all objects (18K on a new map)
   local all = GetObjects({class="CObject"})
+  --we only want stuff within *Radius*
   local list = FilterObjects({
     filter = function(Obj)
       if Obj:GetDist2D(pos) <= Radius then
@@ -17,12 +18,21 @@ function ChoGGi.ReturnAllNearby(Radius)
       end
     end
   },all)
-  --sort list by nearest (change :GetDist2D to .class to return by class)
-  table.sort(list,
-    function(a,b)
-      return a:GetDist2D(pos) < b:GetDist2D(pos)
-    end
-  )
+  --sort list custom
+  if Sort then
+    table.sort(list,
+      function(a,b)
+        return a[Sort] < b[Sort]
+      end
+    )
+  else
+    --sort nearest
+    table.sort(list,
+      function(a,b)
+        return a:GetDist2D(pos) < b:GetDist2D(pos)
+      end
+    )
+  end
   return list
 end
 OpenExamine(ChoGGi.ReturnAllNearby())
