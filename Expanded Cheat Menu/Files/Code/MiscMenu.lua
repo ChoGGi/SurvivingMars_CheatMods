@@ -208,7 +208,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   cComFuncs.AddAction(
     "Expanded CM/[999]Misc/[-1]Infopanel Cheats",
     cMenuFuncs.InfopanelCheats_Toggle,
-    nil,
+    "Ctrl-F2",
     function()
       local des = config.BuildingInfopanelCheats and "(Enabled)" or "(Disabled)"
       return des .. " Show the cheat pane in the info panel."

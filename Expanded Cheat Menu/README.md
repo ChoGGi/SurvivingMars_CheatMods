@@ -30,7 +30,7 @@ Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits
 Ctrl-Shift-F: Follow Camera (follow an object around).
 Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff).
 Ctrl-Shift-E: Toggle editor mode (select object then hold ctrl/shift/alt and drag mouse).
-Ctrl-Alt-Shift-D: Delete object.
+Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 More shortcut keys are available, see menu items.
 
