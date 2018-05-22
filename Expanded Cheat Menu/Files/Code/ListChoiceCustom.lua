@@ -16,8 +16,9 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     --init stuff?
     DataInstances.UIDesignerData.ChoGGi_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
+    --make sure we're always above examiner dialogs
     self:SetZOrder(20000)
-    --set some values...
+    --defaults
     self.idEditValue.display_text = "Add Custom Value"
     self.choices = false
     self.sel = false
@@ -286,7 +287,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
       Class = "FrameWindow",
       GamepadStrip = false,
       Image = "CommonAssets/UI/Controls/WindowFrame.tga",
-      MinSize = point(400, 450),
+      MinSize = point(24, 24),
       Movable = true,
       PatternBottomRight = point(123, 122),
       PatternTopLeft = point(4, 24),

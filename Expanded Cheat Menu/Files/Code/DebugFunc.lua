@@ -593,7 +593,7 @@ do --path markers
 
   local randcolours = {}
   local colourcount = 0
-  function ChoGGi.MenuFuncs.ClearColour(Class)
+  function cMenuFuncs.ClearColour(Class)
     local objs = GetObjects({class = Class}) or empty_table
     for i = 1, #objs do
       if objs[i] and objs[i].ChoGGi_WaypointPathAdded then
@@ -736,13 +736,10 @@ do --path markers
   end
 
   function cMenuFuncs.SetPathMarkersVisible()
-    local sel = SelectedObj
+    local sel = cCodeFuncs.SelObject()
     if sel then
       randcolours = cCodeFuncs.RandomColour(#randcolours + 1)
       ChoGGi.MenuFuncs.SetWaypoint(sel,true)
-      return
-    end
-    if not sel then
       return
     end
     local ItemList = {

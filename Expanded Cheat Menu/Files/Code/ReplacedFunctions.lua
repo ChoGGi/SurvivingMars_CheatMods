@@ -249,22 +249,19 @@ function cMsgFuncs.ReplacedFunctions_ClassesGenerate()
     obj:SetText("Edit")
     obj:SetHint("Opens object in Object Manipulator.")
 
-if cTesting then
     obj = Button:new(self)
     obj:SetId("idCodeExec")
     obj:SetPos(point(520, 304))
-    obj:SetSize(point(75, 26))
-    obj:SetText("Code Exec")
-    obj:SetHint("Opens a text box you can execute lua code in. CurObject is whatever object is opened in examiner.")
-end
+    obj:SetSize(point(50, 26))
+    obj:SetText("Exec")
+    obj:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
 
     obj = Button:new(self)
-    obj:SetId("idExamineAttaches")
-    obj:SetPos(point(600, 304))
+    obj:SetId("idAttaches")
+    obj:SetPos(point(575, 304))
     obj:SetSize(point(75, 26))
     obj:SetText("Attaches")
     obj:SetHint("Opens attachments in new examine window.")
-
 
     self:InitChildrenSizing()
 
@@ -772,7 +769,7 @@ end
     cOrigFuncs.Examine_SetObj(self,o)
     local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
     local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
-    self.idExamineAttaches:SetHint(self.idExamineAttaches:GetHint() .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
+    self.idAttaches:SetHint(self.idAttaches:GetHint() .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
   end
 
   --add functions for dump buttons/etc
@@ -790,7 +787,7 @@ end
       cComFuncs.Dump("\r\n" .. ValueToLuaCode(self.obj),nil,"DumpedExamineObject","lua")
     end
 
-    function self.idExamineAttaches.OnButtonPressed()
+    function self.idAttaches.OnButtonPressed()
       if type(self.obj) == "table" and self.obj.GetAttaches then
         cComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
       else

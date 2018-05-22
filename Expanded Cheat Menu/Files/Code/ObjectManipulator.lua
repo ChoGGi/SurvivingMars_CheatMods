@@ -17,6 +17,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     --init stuff?
     DataInstances.UIDesignerData.ChoGGi_ObjectManipulator:InitDialogFromView(self, "Default")
 
+    --make sure we're always above examiner dialogs
     self:SetZOrder(20000)
     --set some values...
     self.idEditValue.display_text = "Edit Value"
@@ -482,7 +483,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
       Class = "FrameWindow",
       GamepadStrip = false,
       Image = "CommonAssets/UI/Controls/WindowFrame.tga",
-      MinSize = point(100, 450),
+      MinSize = point(24, 24),
       Movable = true,
       PatternBottomRight = point(123, 122),
       PatternTopLeft = point(4, 24),

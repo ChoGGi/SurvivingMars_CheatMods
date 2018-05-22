@@ -438,7 +438,6 @@ function OnMsg.ClassesGenerate(classdefs)
   cMsgFuncs.ReplacedFunctions_ClassesGenerate()
   cMsgFuncs.InfoPaneCheats_ClassesGenerate()
   --custom dialogs
-  cMsgFuncs.uiMultiLineEdit_ClassesGenerate()
   cMsgFuncs.ListChoiceCustom_ClassesGenerate()
   cMsgFuncs.ObjectManipulator_ClassesGenerate()
   cMsgFuncs.ExecCodeDlg_ClassesGenerate()

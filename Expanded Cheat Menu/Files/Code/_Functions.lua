@@ -877,13 +877,7 @@ function cCodeFuncs.OpenInExecCodeDlg(Object,Parent)
 
   --title text
   if type(Object) == "table" then
-    if Object.entity then
-      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
-    else
-      dlg.idCaption:SetText(Object.class)
-    end
-  else
-    dlg.idCaption:SetText(tostring(Object))
+    dlg.idCaption:SetText("Exec Code on: " .. (Object.class or tostring(Object)))
   end
 
   --set pos

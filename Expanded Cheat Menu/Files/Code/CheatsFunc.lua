@@ -355,7 +355,7 @@ end
 
 --loops through all the sequence and adds the logs we've already seen
 local function ShowMysteryLog(MystName)
-  local msgs = {MystName .. "\n\nTo play back speech use \"Code Exec\" button and type in\ng_Voice:Play(CurObject.speech)\n"}
+  local msgs = {MystName .. "\n\nTo play back speech use \"Exec\" button and type in\ng_Voice:Play(ChoGGi.CurObj.speech)\n"}
   local Players = s_SeqListPlayers or empty_table
   -- 1 is some default map thing
   if #Players == 1 then
