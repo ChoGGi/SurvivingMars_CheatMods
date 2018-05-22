@@ -1,9 +1,9 @@
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
-  local UserSettings = ChoGGi.UserSettings
-  UserSettings.NoMoreEarthsick = not UserSettings.NoMoreEarthsick
-  if UserSettings.NoMoreEarthsick then
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.NoMoreEarthsick = not ChoGGi.UserSettings.NoMoreEarthsick
+  if ChoGGi.UserSettings.NoMoreEarthsick then
     local Table = UICity.labels.Colonist or empty_table
     for i = 1, #Table do
       if Table[i].status_effects.StatusEffect_Earthsick then
@@ -14,35 +14,19 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(
-    tostring(UserSettings.NoMoreEarthsick) .. ": Whoops somebody broke the rocket, guess you're stuck on mars.",
+    tostring(ChoGGi.UserSettings.NoMoreEarthsick) .. ": Whoops somebody broke the rocket, guess you're stuck on mars.",
     "Colonists"
   )
 end
 
 function ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
-  local UserSettings = ChoGGi.UserSettings
-  UserSettings.UniversityGradRemoveIdiotTrait = not UserSettings.UniversityGradRemoveIdiotTrait
+  ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait = not ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait
 
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(
-    tostring(UserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
+    tostring(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait) .. "Water? Like out of the toilet?",
     "Idiots"
   )
-end
-
-local function BringOutYourDead()
-  CreateRealTimeThread(function()
-    --gotta wait for a tad else log gets spammed with changepath and other stuff
-    Sleep(100)
-    local Table = GetObjects({class="Colonist"}) or empty_table
-    for i = 1, #Table do
-      if Table[i].ChoGGi_Soylent then
-        Table[i]:Done()
-        --Table[i]:PopAndCallDestructor()
-        ChoGGi.CodeFuncs.DeleteObject(Table[i])
-      end
-    end
-  end)
 end
 
 DeathReasons.ChoGGi_Soylent = "Evil Overlord"
@@ -51,6 +35,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
   local UICity = UICity
   local ChoGGi = ChoGGi
   local DoneObject = DoneObject
+  local CreateRealTimeThread = CreateRealTimeThread
 
   --don't drop BlackCube/MysteryResource
   local reslist = {}
@@ -74,7 +59,18 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     PlaceResourcePile(MeatBag:GetVisualPos(), res, UICity:Random(1,5) * ChoGGi.Consts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
     MeatBag.ChoGGi_Soylent = true
-    BringOutYourDead()
+    CreateRealTimeThread(function()
+      --gotta wait for a tad else log gets spammed with changepath and other stuff
+      Sleep(100)
+      local Table = GetObjects({class="Colonist"}) or empty_table
+      for i = 1, #Table do
+        if Table[i].ChoGGi_Soylent then
+          Table[i]:Done()
+          --Table[i]:PopAndCallDestructor()
+          ChoGGi.CodeFuncs.DeleteObject(Table[i])
+        end
+      end
+    end)
   end
 
   --one meatbag at a time
@@ -91,7 +87,6 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     {text = " Renegades",value = "Renegade"},
     {text = "Specialization: none",value = "none"},
   }
-
   local function AddToList(Table,Text)
     for i = 1, #Table do
       ItemList[#ItemList+1] = {
@@ -204,6 +199,10 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 end
 
 function ChoGGi.MenuFuncs.AddApplicantsToPool()
+  local ChoGGi = ChoGGi
+  local GetRandomTrait = GetRandomTrait
+  local GenerateApplicant = GenerateApplicant
+  local GenerateTraits = GenerateTraits
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},

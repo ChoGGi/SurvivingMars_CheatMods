@@ -450,6 +450,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
+  --children don't have spec models so they get black cube
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
       Spec = ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)]
@@ -1219,119 +1220,123 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
   end
 end
 
-local function GetStockpile(Label,Type,Object)
-  --check if there's actually a label and that it has anything in it
-  if type(Label) == "table" and #Label > 0 then
+do
+  local FindNearestObject = FindNearestObject
+  local FilterObjects = FilterObjects
+  local function GetStockpile(Label,Type,Object)
+    --check if there's actually a label and that it has anything in it
+    if type(Label) == "table" and #Label > 0 then
 
-    --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
-    local pile = false
-    --if it's a stockpile list then remove all stockpiles of a different type
-    if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
-      pile = true
-      Label = FilterObjects({
-        filter = function(Obj)
-          if Obj.resource == Type then
-            return Obj
-          end
-        end
-      },Label)
-    end
-
-    local GetStored = "GetStored_" .. Type
-    --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
-    if #Label == 1 and
-      (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
-      pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
-        return Label[1]
-    else
-      --otherwise filter out empty stockpiles and (and ones for other resources)
-      Label = FilterObjects({
-        filter = function(Obj)
-          if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
-            pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
+      --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
+      local pile = false
+      --if it's a stockpile list then remove all stockpiles of a different type
+      if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
+        pile = true
+        Label = FilterObjects({
+          filter = function(Obj)
+            if Obj.resource == Type then
               return Obj
+            end
           end
-        end
-      },Label)
-      --and return nearest
-      return FindNearestObject(Label,Object)
-    end
-  end
-end
-
-function ChoGGi.CodeFuncs.FindNearestResource(Object)
-  local ChoGGi = ChoGGi
-  if Object and not Object.class then
-    Object = ChoGGi.CodeFuncs.SelObject()
-  end
-  if not Object then
-    ChoGGi.ComFuncs.MsgPopup("Nothing selected","Find Resource")
-    return
-  end
-
-  local ItemList = {
-    {text = "Metals",value = "Metals"},
-    {text = "BlackCube",value = "BlackCube"},
-    {text = "MysteryResource",value = "MysteryResource"},
-    {text = "Concrete",value = "Concrete"},
-    {text = "Food",value = "Food"},
-    {text = "PreciousMetals",value = "RareMetals"},
-    {text = "Polymers",value = "Polymers"},
-    {text = "Electronics",value = "Electronics"},
-    {text = "Fuel",value = "Fuel"},
-    {text = "MachineParts",value = "MachineParts"},
-  }
-
-  local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if type(value) == "string" then
-
-      --get nearest stockpiles to object
-      local labels = UICity.labels
-      local mechstockpile = GetStockpile(labels["MechanizedDepot" .. value],value,Object)
-      local stockpile
-      local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object)
-      if value == "BlackCube" then
-        stockpile = GetStockpile(labels[value .. "DumpSite"],value,Object)
-      elseif value == "MysteryResource" then
-        stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
-      else
-        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object)
+        },Label)
       end
 
-      local piles = {
-        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
-        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
-        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
-      }
-
-      local nearest
-      local nearestdist
-      --now we can compare the dists
-      for i = 1, #piles do
-        local p = piles[i]
-        if p.obj then
-          --we need something to compare
-          if not nearest then
-            nearest = p.obj
-            nearestdist = p.dist
-          elseif p.dist < nearestdist then
-            nearest = p.obj
-            nearestdist = p.dist
-          end
-        end
-      end
-      --if there's no resources then "nearest" doesn't exist
-      if nearest then
-        ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
+      local GetStored = "GetStored_" .. Type
+      --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
+      if #Label == 1 and
+        (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
+        pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
+          return Label[1]
       else
-        ChoGGi.ComFuncs.MsgPopup("Error: Cannot find any " .. choice[1].text,"Resource")
+        --otherwise filter out empty stockpiles and (and ones for other resources)
+        Label = FilterObjects({
+          filter = function(Obj)
+            if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
+              pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
+                return Obj
+            end
+          end
+        },Label)
+        --and return nearest
+        return FindNearestObject(Label,Object)
       end
     end
   end
 
-  local hint = "Select a resource to find"
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Find Nearest Resource " .. Object.class,hint)
+  function ChoGGi.CodeFuncs.FindNearestResource(Object)
+    local ChoGGi = ChoGGi
+    if Object and not Object.class then
+      Object = ChoGGi.CodeFuncs.SelObject()
+    end
+    if not Object then
+      ChoGGi.ComFuncs.MsgPopup("Nothing selected","Find Resource")
+      return
+    end
+
+    local ItemList = {
+      {text = "Metals",value = "Metals"},
+      {text = "BlackCube",value = "BlackCube"},
+      {text = "MysteryResource",value = "MysteryResource"},
+      {text = "Concrete",value = "Concrete"},
+      {text = "Food",value = "Food"},
+      {text = "PreciousMetals",value = "RareMetals"},
+      {text = "Polymers",value = "Polymers"},
+      {text = "Electronics",value = "Electronics"},
+      {text = "Fuel",value = "Fuel"},
+      {text = "MachineParts",value = "MachineParts"},
+    }
+
+    local CallBackFunc = function(choice)
+      local value = choice[1].value
+      if type(value) == "string" then
+
+        --get nearest stockpiles to object
+        local labels = UICity.labels
+        local mechstockpile = GetStockpile(labels["MechanizedDepot" .. value],value,Object,FindNearestObject)
+        local stockpile
+        local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object,FindNearestObject)
+        if value == "BlackCube" then
+          stockpile = GetStockpile(labels[value .. "DumpSite"],value,Object,FindNearestObject)
+        elseif value == "MysteryResource" then
+          stockpile = GetStockpile(labels["MysteryDepot"],value,Object,FindNearestObject)
+        else
+          stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object,FindNearestObject)
+        end
+
+        local piles = {
+          {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
+          {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
+          {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
+        }
+
+        local nearest
+        local nearestdist
+        --now we can compare the dists
+        for i = 1, #piles do
+          local p = piles[i]
+          if p.obj then
+            --we need something to compare
+            if not nearest then
+              nearest = p.obj
+              nearestdist = p.dist
+            elseif p.dist < nearestdist then
+              nearest = p.obj
+              nearestdist = p.dist
+            end
+          end
+        end
+        --if there's no resources then "nearest" doesn't exist
+        if nearest then
+          ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
+        else
+          ChoGGi.ComFuncs.MsgPopup("Error: Cannot find any " .. choice[1].text,"Resource")
+        end
+      end
+    end
+
+    local hint = "Select a resource to find"
+    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Find Nearest Resource " .. Object.class,hint)
+  end
 end
 
 function ChoGGi.CodeFuncs.ViewAndSelectObject(Obj)

@@ -777,7 +777,7 @@ function OnMsg.Demolished(building)
   end
 end --OnMsg
 
-local function ColonistCreated(Obj)
+local function ColonistCreated(Obj,Skip)
   local UserSettings = ChoGGi.UserSettings
 
   if UserSettings.GravityColonist then
@@ -789,7 +789,8 @@ local function ColonistCreated(Obj)
   if UserSettings.NewColonistAge then
     ChoGGi.CodeFuncs.ColonistUpdateAge(Obj,UserSettings.NewColonistAge)
   end
-  if UserSettings.NewColonistSpecialization then
+  --children don't have spec models so they get black cube
+  if UserSettings.NewColonistSpecialization and not Skip then
     ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Obj,UserSettings.NewColonistSpecialization)
   end
   if UserSettings.NewColonistRace then
@@ -808,7 +809,7 @@ function OnMsg.ColonistArrived(Obj)
 end --OnMsg
 
 function OnMsg.ColonistBorn(Obj)
-  ColonistCreated(Obj)
+  ColonistCreated(Obj,true)
 end --OnMsg
 
 function OnMsg.SelectionAdded(Obj)

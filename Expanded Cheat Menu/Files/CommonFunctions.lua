@@ -426,6 +426,7 @@ end
 --check for and remove broken objects from UICity.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   local UICity = UICity
+  local IsValid = IsValid
   local found = true
   while found do
     found = nil

@@ -248,7 +248,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   end
 
   local hint = "For some reason they went opposite day with this one: 255 is invisible and 0 is visible."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Transparency",hint,nil,nil,nil,nil,nil,4)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set UI Transparency",hint,nil,nil,nil,nil,nil,4)
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
@@ -455,7 +455,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
   local name = ""
   if sel then
     hint = "Current: " .. sel:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some effort :)."
-    name = ChoGGi.CodeFuncs.Trans(obj.display_name) or sel.encyclopedia_id or sel.class
+    name = ChoGGi.CodeFuncs.Trans(sel.display_name) or sel.encyclopedia_id or sel.class
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
 end

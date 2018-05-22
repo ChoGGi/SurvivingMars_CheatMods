@@ -785,7 +785,8 @@ end
     ChoGGi.OrigFuncs.Examine_SetObj(self,o)
     local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
     local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
-    self.idAttaches:SetHint(self.idAttaches:GetHint() .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
+    local hint = "Opens attachments in new examine window."
+    self.idAttaches:SetHint(hint .. "\nThis " .. (o.class or "table") .. " has: " .. amount)
   end
 
   --add functions for dump buttons/etc
@@ -804,8 +805,10 @@ end
     end
 
     function self.idAttaches.OnButtonPressed()
-      if type(self.obj) == "table" and self.obj.GetAttaches then
-        ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
+      if type(self.obj) == "table" then
+        if self.obj.GetAttaches then
+          ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
+        end
       else
         print("Zero attachments means zero...")
       end

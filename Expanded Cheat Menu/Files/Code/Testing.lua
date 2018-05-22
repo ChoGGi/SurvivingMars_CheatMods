@@ -4,6 +4,30 @@
 --stuff that never happens, fuck comments (like this one)
 if type(ChoGGi.Temp.Testing) == "function" then
 
+--get all objects, then get nearest in radius, remove from list repeat till none in radius, return list
+function ChoGGi.ReturnAllNearby(Radius)
+  Radius = Radius or 5000
+  local pos = GetTerrainCursor()
+  --we only want stuff within radius
+  local all = GetObjects({class="CObject"})
+  local list = FilterObjects({
+    filter = function(Obj)
+      if Obj:GetDist2D(pos) <= Radius then
+        return Obj
+      end
+    end
+  },all)
+  --sort list by nearest (change :GetDist2D to .class to return by class)
+  table.sort(list,
+    function(a,b)
+      return a:GetDist2D(pos) < b:GetDist2D(pos)
+    end
+  )
+  return list
+end
+OpenExamine(ChoGGi.ReturnAllNearby())
+
+
 function ChoGGi.ReplaceDome(dome)
   if not dome then
     return
@@ -36,17 +60,17 @@ function ChoGGi.ReplaceDome(dome)
   newdome:InitAttaches()
 end
 
-local Table = GetObjects({class="Destlock"})
-for i = 1, #Table do
+local Table1 = GetObjects({class="Destlock"})
+for i = 1, #Table1 do
 
 local wp = PlaceObject("WayPoint")
 wp:SetPos(Table[i]:GetPos())
 
 end
 
-local Table = GetObjects({class="ParSystem"})
-for i = 1, #Table do
-  Table[i]:delete()
+local Table2 = GetObjects({class="ParSystem"})
+for i = 1, #Table2 do
+  Table2[i]:delete()
 end
 
 

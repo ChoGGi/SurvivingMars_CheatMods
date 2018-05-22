@@ -85,6 +85,7 @@ function ChoGGi.MenuFuncs.MeteorsDestroy()
 end
 
 function ChoGGi.MenuFuncs.DisastersTrigger()
+  local ChoGGi = ChoGGi
   local ItemList = {
     {text = " Stop Most Disasters",value = "Stop",hint = "Can't stop meteors."},
     {text = " Remove Broken Meteors",value = "MeteorsDestroy",hint = "If you have some continuous spinning meteors. It might put some error msgs in console, but I didn't notice any other issues."},
@@ -150,6 +151,9 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
 end
 
 function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
+  local ChoGGi = ChoGGi
+  local Msg = Msg
+  local UICity = UICity
   local hint_core = "Core: Repeatable, exploit core resources."
   local hint_deep = "Deep: Toggleable, exploit deep resources."
   local ItemList = {
@@ -232,6 +236,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
 end
 
 function ChoGGi.MenuFuncs.SpawnColonists()
+  local ChoGGi = ChoGGi
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},
@@ -262,6 +267,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 end
 
 function ChoGGi.MenuFuncs.ShowMysteryList()
+  local ChoGGi = ChoGGi
   local ItemList = {}
   for i = 1, #ChoGGi.Tables.Mystery do
     ItemList[#ItemList+1] = {
@@ -288,38 +294,39 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
 end
 
 function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
-  local city = UICity
+  local ChoGGi = ChoGGi
+  local UICity = UICity
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.UserSettings.ShowMysteryMsgs = true
 
-  city.mystery_id = Mystery
+  UICity.mystery_id = Mystery
   local tree = TechTree
   for i = 1, #tree do
     local field = tree[i]
     local field_id = field.id
     --local costs = field.costs or empty_table
-    local list = city.tech_field[field_id] or {}
-    city.tech_field[field_id] = list
+    local list = UICity.tech_field[field_id] or {}
+    UICity.tech_field[field_id] = list
     local tab = field or empty_table
     for j = 1, #tab do
       if tab[j].mystery == Mystery then
         local tech_id = tab[j].id
         list[#list+1] = tech_id
-        city.tech_status[tech_id] = {points = 0, field = field_id}
-        tab[j]:Initialize(city)
+        UICity.tech_status[tech_id] = {points = 0, field = field_id}
+        tab[j]:Initialize(UICity)
       end
     end
   end
-  city:InitMystery()
+  UICity:InitMystery()
   --might help
-  if city.mystery then
-    city.mystery_id = city.mystery.class
-    city.mystery:ApplyMysteryResourceProperties()
+  if UICity.mystery then
+    UICity.mystery_id = UICity.mystery.class
+    UICity.mystery:ApplyMysteryResourceProperties()
   end
 
   --instant start
   if Instant then
-    local seqs = city.mystery.seq_player.seq_list[1]
+    local seqs = UICity.mystery.seq_player.seq_list[1]
     for i = 1, #seqs do
       local seq = seqs[i]
       if seq.class == "SA_WaitExpression" then
@@ -334,13 +341,14 @@ function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
   end
 
   --needed to start mystery
-  city.mystery.seq_player:AutostartSequences()
+  UICity.mystery.seq_player:AutostartSequences()
 end
 
 
 
 --loops through all the sequence and adds the logs we've already seen
 local function ShowMysteryLog(MystName)
+  local ChoGGi = ChoGGi
   local msgs = {MystName .. "\n\nTo play back speech use \"Exec\" button and type in\ng_Voice:Play(ChoGGi.CurObj.speech)\n"}
   local Players = s_SeqListPlayers or empty_table
   -- 1 is some default map thing
@@ -380,6 +388,7 @@ local function ShowMysteryLog(MystName)
 end
 
 function ChoGGi.MenuFuncs.ShowStartedMysteryList()
+  local ChoGGi = ChoGGi
   local ItemList = {}
   local PlayerList = s_SeqListPlayers
   for i = 1, #PlayerList do
@@ -454,7 +463,13 @@ end
 --]]
 --ex(s_SeqListPlayers)
 function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
-  local city = UICity
+  local ChoGGi = ChoGGi
+  local UICity = UICity
+  local ThreadsMessageToThreads = ThreadsMessageToThreads
+  local DeleteThread = DeleteThread
+  local SA_WaitMarsTime = SA_WaitMarsTime
+  local Msg = Msg
+
   local warning = "\n\nClick \"Ok\" to skip requirements (Warning: may cause issues later on, untested)."
   local name = "Mystery: " .. ChoGGi.Tables.Mystery[Mystery].name
 
@@ -481,7 +496,6 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
           if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
             ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
             --we don't want to wait
-            local SA_WaitMarsTime = SA_WaitMarsTime
             seq.wait_type = SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
             seq.wait_subtype = SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
             seq.loops = SA_WaitMarsTime:GetDefaultPropertyValue("loops")
@@ -581,6 +595,7 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings()
 end
 
 function ChoGGi.MenuFuncs.AddResearchPoints()
+  local ChoGGi = ChoGGi
   local ItemList = {
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -610,6 +625,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 end
 
 function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost",ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
 
   ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
@@ -621,6 +637,7 @@ end
 
 local hint_maxa = "Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
 function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
@@ -654,6 +671,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
 end
 
 function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
@@ -685,7 +703,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
 end
 
 function ChoGGi.MenuFuncs.SetResearchQueueSize()
-  --make a list
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.ResearchQueueSize
   local ItemList = {
     {text = " Default: " .. DefaultSetting,value = DefaultSetting},
@@ -723,6 +741,8 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
 end
 
 function ChoGGi.MenuFuncs.ShowResearchTechList()
+  local ChoGGi = ChoGGi
+  local TechTree = TechTree
   local ItemList = {}
   ItemList[#ItemList+1] = {
     text = " Everything",
@@ -815,6 +835,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 end
 
 local function listfields(sType,field)
+  local TechTree = TechTree
   for i = 1, #TechTree do
     if TechTree[i].id == field then
       for j = 1, #TechTree[i] do

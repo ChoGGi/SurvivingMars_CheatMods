@@ -360,7 +360,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
       ChoGGi.MenuFuncs.SetColonistsSpecialization(1)
     end,
     nil,
-    "This will make all newly arrived and born colonists a certain specialization.",
+    "This will make all newly arrived colonists a certain specialization (children and spec = black cube).",
     icon
   )
 

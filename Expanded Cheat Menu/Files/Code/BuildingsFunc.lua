@@ -4,6 +4,7 @@ local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   --make a list
+  local ChoGGi = ChoGGi
   local DefaultSetting = 5
   local UserSettings = ChoGGi.UserSettings
   local r = ChoGGi.Consts.ResourceScale
@@ -58,6 +59,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 end
 
 function ChoGGi.MenuFuncs.DefenceTowersAttackDustDevils_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DefenceTowersAttackDustDevils = not ChoGGi.UserSettings.DefenceTowersAttackDustDevils
 
   ChoGGi.SettingFuncs.WriteSettings()
@@ -67,6 +69,7 @@ function ChoGGi.MenuFuncs.DefenceTowersAttackDustDevils_Toggle()
 end
 
 function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.AlwaysDustyBuildings = not ChoGGi.UserSettings.AlwaysDustyBuildings
   if not ChoGGi.UserSettings.AlwaysDustyBuildings then
     ChoGGi.UserSettings.AlwaysDustyBuildings = nil
@@ -84,6 +87,9 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
 end
 
 do
+  local ChoGGi = ChoGGi
+  local UICity = UICity
+  local RemoveFromRules = RemoveFromRules
   local function MirrorSphere_Toggle()
     local tab = UICity.labels.MirrorSpheres or empty_table
     for i = 1, #tab do
@@ -158,6 +164,7 @@ do
 end
 
 function ChoGGi.MenuFuncs.SetProtectionRadius()
+  local ChoGGi = ChoGGi
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel or not sel.protect_range then
     ChoGGi.ComFuncs.MsgPopup("Select something with a protect_range (MDSLaser/DefenceTower).",
@@ -214,11 +221,14 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 end
 
 function ChoGGi.MenuFuncs.UnlockLockedBuildings()
+  local ChoGGi = ChoGGi
+  local GetBuildingTechsStatus = GetBuildingTechsStatus
+  local data = DataInstances.BuildingTemplate
   local ItemList = {}
-  for Key,_ in pairs(DataInstances.BuildingTemplate) do
+  for Key,_ in pairs(data) do
     if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(DataInstances.BuildingTemplate[Key].display_name),
+        text = ChoGGi.CodeFuncs.Trans(data[Key].display_name),
         value = Key
       }
     end
@@ -241,6 +251,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 end
 
 function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("PipesPillarSpacing",ChoGGi.ComFuncs.ValueRetOpp(Consts.PipesPillarSpacing,1000,ChoGGi.Consts.PipesPillarSpacing))
   ChoGGi.ComFuncs.SetSavedSetting("PipesPillarSpacing",Consts.PipesPillarSpacing)
 
@@ -251,6 +262,7 @@ function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
 end
 
 function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.UnlimitedConnectionLength = not ChoGGi.UserSettings.UnlimitedConnectionLength
   if ChoGGi.UserSettings.UnlimitedConnectionLength then
     GridConstructionController.max_hex_distance_to_allow_build = 1000
@@ -266,6 +278,7 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
 end
 
 function ChoGGi.MenuFuncs.BuildingPower_Toggle()
+  local ChoGGi = ChoGGi
   local sel = SelectedObj
   if not sel or not sel.electricity_consumption then
     ChoGGi.ComFuncs.MsgPopup("You need to select something that uses electricity.",
@@ -328,6 +341,7 @@ function ChoGGi.MenuFuncs.BuildingPower_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
+  local ChoGGi = ChoGGi
   local sel = SelectedObj
   if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
     ChoGGi.ComFuncs.MsgPopup("You need to select something that has capacity (air/water/elec).",
@@ -465,6 +479,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 end
 
 function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.UseLastOrientation = not ChoGGi.UserSettings.UseLastOrientation
 
   ChoGGi.SettingFuncs.WriteSettings()
@@ -474,6 +489,7 @@ function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
 end
 
 function ChoGGi.MenuFuncs.FarmShiftsAllOn()
+  local ChoGGi = ChoGGi
   local tab = UICity.labels.BaseFarm or empty_table
   for i = 1, #tab do
     tab[i].closed_shifts[1] = false
@@ -494,6 +510,7 @@ function ChoGGi.MenuFuncs.FarmShiftsAllOn()
 end
 
 function ChoGGi.MenuFuncs.SetProductionAmount()
+  local ChoGGi = ChoGGi
   local sel = SelectedObj
   if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
     ChoGGi.ComFuncs.MsgPopup("Select something that produces (air,water,electricity,other).",
@@ -615,6 +632,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 end
 
 function ChoGGi.MenuFuncs.FullyAutomatedBuildings()
+  local ChoGGi = ChoGGi
   local ItemList = {
     {text = " Disable",value = "disable"},
     {text = 100,value = 100},
@@ -669,6 +687,7 @@ end
 
 --used to add or remove traits from schools/sanitariums
 function ChoGGi.MenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
+  local ChoGGi = ChoGGi
   local Buildings = UICity.labels[Building] or 0
   for i = 1,#Buildings do
     local Obj = Buildings[i]
@@ -683,6 +702,7 @@ function ChoGGi.MenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
 end
 
 function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SchoolTrainAll = not ChoGGi.UserSettings.SchoolTrainAll
   if ChoGGi.UserSettings.SchoolTrainAll then
     ChoGGi.MenuFuncs.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits)
@@ -697,6 +717,7 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SanatoriumCureAll = not ChoGGi.UserSettings.SanatoriumCureAll
   if ChoGGi.UserSettings.SanatoriumCureAll then
     ChoGGi.MenuFuncs.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits)
@@ -711,6 +732,9 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
+  local ChoGGi = ChoGGi
+  local g_SchoolTraits = g_SchoolTraits
+  local g_SanatoriumTraits = g_SanatoriumTraits
   if #g_SchoolTraits == 18 then
     g_SchoolTraits = ChoGGi.Tables.SchoolTraits
     g_SanatoriumTraits = ChoGGi.Tables.SanatoriumTraits
@@ -725,6 +749,9 @@ function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
+  local ChoGGi = ChoGGi
+  local School = School
+  local Sanatorium = Sanatorium
   ChoGGi.UserSettings.SanatoriumSchoolShowAll = not ChoGGi.UserSettings.SanatoriumSchoolShowAll
 
 	Sanatorium.max_traits = ChoGGi.ComFuncs.ValueRetOpp(Sanatorium.max_traits,3,#ChoGGi.Tables.NegativeTraits)
@@ -737,6 +764,7 @@ function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
 end
 
 function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.InsideBuildingsNoMaintenance = not ChoGGi.UserSettings.InsideBuildingsNoMaintenance
 
   local tab = UICity.labels.InsideBuildings or empty_table
@@ -761,6 +789,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
 end
 
 function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RemoveMaintenanceBuildUp = not ChoGGi.UserSettings.RemoveMaintenanceBuildUp
   local tab = UICity.labels.Building or empty_table
   for i = 1, #tab do
@@ -782,6 +811,8 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
 end
 
 function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
+  local ChoGGi = ChoGGi
+  local const = const
   const.MoistureVaporatorRange = ChoGGi.ComFuncs.NumRetBool(const.MoistureVaporatorRange,0,ChoGGi.Consts.MoistureVaporatorRange)
   const.MoistureVaporatorPenaltyPercent = ChoGGi.ComFuncs.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,ChoGGi.Consts.MoistureVaporatorPenaltyPercent)
   ChoGGi.ComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorRange)
@@ -793,6 +824,8 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
 end
 
 function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
+  local ChoGGi = ChoGGi
+  local Consts = Consts
   Consts.CropFailThreshold = ChoGGi.ComFuncs.NumRetBool(Consts.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
   ChoGGi.ComFuncs.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
   ChoGGi.SettingFuncs.WriteSettings()
@@ -802,7 +835,8 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 end
 
 function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
-
+  local ChoGGi = ChoGGi
+  local Consts = Consts
   ChoGGi.ComFuncs.SetConstsG("Metals_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Metals_cost_modifier,-100,ChoGGi.Consts.Metals_cost_modifier))
   ChoGGi.ComFuncs.SetConstsG("Metals_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Metals_dome_cost_modifier,-100,ChoGGi.Consts.Metals_dome_cost_modifier))
   ChoGGi.ComFuncs.SetConstsG("PreciousMetals_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.PreciousMetals_cost_modifier,-100,ChoGGi.Consts.PreciousMetals_cost_modifier))
@@ -837,6 +871,7 @@ function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
 end
 
 function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("CrimeEventSabotageBuildingsCount",ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
   ChoGGi.ComFuncs.SetConstsG("CrimeEventDestroyedBuildingsCount",ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
 
@@ -849,6 +884,8 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
 end
 
 function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
+  local ChoGGi = ChoGGi
+  local const = const
   ChoGGi.UserSettings.BreakChanceCablePipe = not ChoGGi.UserSettings.BreakChanceCablePipe
 
   const.BreakChanceCable = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChanceCable,600,10000000)
@@ -861,6 +898,7 @@ function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
 end
 
 function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RemoveBuildingLimits = not ChoGGi.UserSettings.RemoveBuildingLimits
 
   ChoGGi.SettingFuncs.WriteSettings()
@@ -870,6 +908,7 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 end
 
 function ChoGGi.MenuFuncs.Building_wonder_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_wonder = not ChoGGi.UserSettings.Building_wonder
   if ChoGGi.UserSettings.Building_wonder then
     local tab = DataInstances.BuildingTemplate or empty_table
@@ -885,6 +924,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 end
 
 function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_dome_spot = not ChoGGi.UserSettings.Building_dome_spot
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_dome_spot) .. " Freedom for spires!\n(restart to set disabled)",
@@ -893,6 +933,7 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 end
 
 function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_instant_build = not ChoGGi.UserSettings.Building_instant_build
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_instant_build) .. " Building Instant Build\n(restart to set disabled).",
@@ -901,6 +942,7 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
 end
 
 function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_hide_from_build_menu = not ChoGGi.UserSettings.Building_hide_from_build_menu
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu) .. " Buildings hidden\n(restart to toggle).",
@@ -908,6 +950,7 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   )
 end
 function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("InstantCables",ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantCables))
   ChoGGi.ComFuncs.SetConstsG("InstantPipes",ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantPipes))
 
@@ -920,6 +963,7 @@ function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
+  local ChoGGi = ChoGGi
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
   local UserSettings = ChoGGi.UserSettings
   local ItemList = {
