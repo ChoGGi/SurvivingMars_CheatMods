@@ -1,4 +1,12 @@
-### Returns all objects within "Radius" (default 5000), sorted by nearest (Sort by class by making Sort "Class")
+### Returns all objects within "Radius" (default 5000), sorted by nearest
+##### sort by class by making Sort "class"
+
+```
+--objects within 10000 radius
+OpenExamine(ReturnAllNearby(10000)
+--objects within 5000 radius sorted by class
+OpenExamine(ReturnAllNearby(nil,"class"))
+```
 
 ```
 local function ReturnAllNearby(Radius,Sort)
@@ -29,9 +37,4 @@ local function ReturnAllNearby(Radius,Sort)
   end
   return list
 end
-
---objects within 10000 radius
-OpenExamine(ReturnAllNearby(10000)
---objects within 5000 radius sorted by class
-OpenExamine(ReturnAllNearby(nil,"class"))
 ```
