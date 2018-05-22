@@ -2,6 +2,14 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[999]Misc/Annoying Sounds",
+    ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
+    nil,
+    "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[999]Misc/Find Nearest Resource",
     ChoGGi.CodeFuncs.FindNearestResource,
     nil,

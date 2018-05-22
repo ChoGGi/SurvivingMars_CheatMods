@@ -70,14 +70,6 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Buildings/Annoying Sounds",
-    ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
-    nil,
-    "Toggle annoying sounds (Sensor Tower, Mirror Sphere).",
-    icon
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Buildings/Protection Radius",
     ChoGGi.MenuFuncs.SetProtectionRadius,
     nil,
