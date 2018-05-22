@@ -846,24 +846,19 @@ function ChoGGi.MenuFuncs.SetEntity()
   local hint_noanim = "No animation."
   if #entity_table == 0 then
     entity_table = {
-      {text = " Default",value = "Default"},
+      {text = "  Default Entity",value = "Default"},
       {text = " Kosmonavt",value = "Kosmonavt"},
       {text = " Lama",value = "Lama",hint = hint_noanim},
       {text = " GreenMan",value = "GreenMan",hint = hint_noanim},
       {text = " PlanetMars",value = "PlanetMars",hint = hint_noanim},
       {text = " PlanetEarth",value = "PlanetEarth",hint = hint_noanim},
-      {text = " RocketUI",value = "RocketUI",hint = hint_noanim},
-      {text = " Rocket",value = "Rocket",hint = hint_noanim},
+      {text = " Rocket Small",value = "RocketUI",hint = hint_noanim},
+      {text = " Rocket Regular",value = "Rocket",hint = hint_noanim},
       {text = " CombatRover",value = "CombatRover",hint = hint_noanim},
       {text = " PumpStationDemo",value = "PumpStationDemo",hint = hint_noanim},
     }
-    local Table = EntityData or empty_table
-    for Key,_ in pairs(Table) do
-      if Key:find("Unit_") then
-        entity_table[#entity_table+1] = {text = Key,value = Key}
-      end
-    end
-    Table = DataInstances.BuildingTemplate
+    --EntityData
+    local Table = DataInstances.BuildingTemplate
     for i = 1, #Table do
       entity_table[#entity_table+1] = {
         text = Table[i].entity,
