@@ -302,7 +302,6 @@ function ChoGGi.SettingFuncs.ReadSettings()
     ChoGGi.SettingFuncs.WriteSettings()
     file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
     if file_error then
-      print(errormsg)
       return file_error
     end
 	end
