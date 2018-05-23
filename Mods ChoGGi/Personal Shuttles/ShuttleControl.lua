@@ -1,6 +1,6 @@
-function ChoGGi.MsgFuncs.ShuttleControl_ClassesGenerate()
+function ChoGGiX.MsgFuncs.ShuttleControl_ClassesGenerate()
   --custom shuttletask
-  DefineClass.ChoGGi_ShuttleFollowTask = {
+  DefineClass.ChoGGiX_ShuttleFollowTask = {
     __parents = {"InitDone"},
     state = "new",
     shuttle = false,
@@ -9,17 +9,17 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesGenerate()
   }
 end
 
-function ChoGGi.MsgFuncs.ShuttleControl_ClassesPreprocess()
+function ChoGGiX.MsgFuncs.ShuttleControl_ClassesPreprocess()
   local c = CargoShuttle
   c.__parents[#c.__parents] = "PinnableObject"
-  c.ChoGGi_DefenceTickD = false
+  c.ChoGGiX_DefenceTickD = false
 end
 
-function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
+function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
 
-  if ChoGGi.UserSettings.ShowShuttleControls then
+  if ChoGGiX.UserSettings.ShowShuttleControls then
     --pick/drop button for shuttle
-    if not table.find(XTemplates.ipShuttle[1], "ChoGGi_ipShuttle", "ChoGGi_ShuttleResButtons") then
+    if not table.find(XTemplates.ipShuttle[1], "ChoGGiX_ipShuttle", "ChoGGiX_ShuttleResButtons") then
       table.insert(XTemplates.ipShuttle[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "CargoShuttle",
@@ -31,7 +31,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           "RolloverHint", "Follower Shuttles: Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (hopefully) next to it.",
           "OnContextUpdate",
             function(self, context)
-              if not context.ChoGGi_PickUp_Toggle then
+              if not context.ChoGGiX_PickUp_Toggle then
                 --carrying res
                 self:SetTitle("Drop Item")
                 self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
@@ -41,7 +41,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
               end
             end,
-            "ChoGGi_ipShuttle", "ChoGGi_ShuttleResButtons"
+            "ChoGGiX_ipShuttle", "ChoGGiX_ShuttleResButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -50,8 +50,8 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               end,
             "func", function(self, context)
                 -- ignore self, as it's always going to be selected
-                if context.ChoGGi_FollowMouseShuttle then
-                  context.ChoGGi_PickUp_Toggle = not context.ChoGGi_PickUp_Toggle
+                if context.ChoGGiX_FollowMouseShuttle then
+                  context.ChoGGiX_PickUp_Toggle = not context.ChoGGiX_PickUp_Toggle
                   ObjModified(context)
                 end
               end
@@ -60,7 +60,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
       )
     end
     --spawn shuttle buttons for hub and return shuttle button
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubAttacker", "ChoGGi_ShuttleHubSpawnButtons") then
+    if not table.find(XTemplates.customShuttleHub[1], "ChoGGiX_ShuttleHubAttacker", "ChoGGiX_ShuttleHubSpawnButtons") then
       table.insert(XTemplates.customShuttleHub[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "ShuttleHub",
@@ -76,7 +76,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               self:SetTitle("Spawn Attacker")
               self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
             end,
-            "ChoGGi_ShuttleHubAttacker", "ChoGGi_ShuttleHubSpawnButtons"
+            "ChoGGiX_ShuttleHubAttacker", "ChoGGiX_ShuttleHubSpawnButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -84,13 +84,13 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                ChoGGi.CodeFuncs.SpawnShuttle(context,true)
+                ChoGGiX.CodeFuncs.SpawnShuttle(context,true)
               end
           })
         })
       )
     end
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubFriend", "ChoGGi_ShuttleHubSpawnButtons") then
+    if not table.find(XTemplates.customShuttleHub[1], "ChoGGiX_ShuttleHubFriend", "ChoGGiX_ShuttleHubSpawnButtons") then
       table.insert(XTemplates.customShuttleHub[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "ShuttleHub",
@@ -106,7 +106,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               self:SetTitle("Spawn Friend")
               self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
             end,
-            "ChoGGi_ShuttleHubFriend", "ChoGGi_ShuttleHubSpawnButtons"
+            "ChoGGiX_ShuttleHubFriend", "ChoGGiX_ShuttleHubSpawnButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -114,13 +114,13 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                ChoGGi.CodeFuncs.SpawnShuttle(context)
+                ChoGGiX.CodeFuncs.SpawnShuttle(context)
               end
           })
         })
       )
     end
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubRecall", "ChoGGi_ShuttleHubSpawnButtons") then
+    if not table.find(XTemplates.customShuttleHub[1], "ChoGGiX_ShuttleHubRecall", "ChoGGiX_ShuttleHubSpawnButtons") then
       table.insert(XTemplates.customShuttleHub[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "ShuttleHub",
@@ -136,7 +136,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               self:SetTitle("Recall Shuttles")
               self:SetIcon("UI/Icons/Sections/shuttle_4.tga")
             end,
-            "ChoGGi_ShuttleHubRecall", "ChoGGi_ShuttleHubSpawnButtons"
+            "ChoGGiX_ShuttleHubRecall", "ChoGGiX_ShuttleHubSpawnButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -144,7 +144,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                ChoGGi.CodeFuncs.RecallShuttlesHub(context)
+                ChoGGiX.CodeFuncs.RecallShuttlesHub(context)
               end
           })
         })
@@ -152,7 +152,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     end
     --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
-    if not table.find(XTemplates.ipResourcePile[1], "ChoGGi_MarkForPickup1", "ChoGGi_MarkForPickupButtons") then
+    if not table.find(XTemplates.ipResourcePile[1], "ChoGGiX_MarkForPickup1", "ChoGGiX_MarkForPickupButtons") then
       table.insert(XTemplates.ipResourcePile[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "ResourceStockpile",
@@ -164,7 +164,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           "RolloverHint", hint_mark,
           "OnContextUpdate",
             function(self, context)
-              if not context.ChoGGi_PickUpItem then
+              if not context.ChoGGiX_PickUpItem then
                 self:SetTitle("Ignore Item")
                 self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
               else
@@ -173,7 +173,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
               end
             end,
-            "ChoGGi_MarkForPickup1", "ChoGGi_MarkForPickupButtons"
+            "ChoGGiX_MarkForPickup1", "ChoGGiX_MarkForPickupButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -181,7 +181,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+                context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
                 ObjModified(context)
               end
           })
@@ -189,7 +189,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
       )
     end
 
-    if not table.find(XTemplates.ipRover[1], "ChoGGi_MarkForPickup3", "ChoGGi_MarkForPickupButtons") then
+    if not table.find(XTemplates.ipRover[1], "ChoGGiX_MarkForPickup3", "ChoGGiX_MarkForPickupButtons") then
       table.insert(XTemplates.ipRover[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "InfopanelObj",
@@ -201,7 +201,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           "RolloverHint", hint_mark,
           "OnContextUpdate",
             function(self, context)
-              if not context.ChoGGi_PickUpItem then
+              if not context.ChoGGiX_PickUpItem then
                 --carrying res
                 self:SetTitle("Ignore Item")
                 self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
@@ -211,7 +211,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
               end
             end,
-            "ChoGGi_MarkForPickup3", "ChoGGi_MarkForPickupButtons"
+            "ChoGGiX_MarkForPickup3", "ChoGGiX_MarkForPickupButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -219,14 +219,14 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+                context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
                 ObjModified(context)
               end
           })
         })
       )
     end
-    if not table.find(XTemplates.ipDrone[1], "ChoGGi_MarkForPickup4", "ChoGGi_MarkForPickupButtons") then
+    if not table.find(XTemplates.ipDrone[1], "ChoGGiX_MarkForPickup4", "ChoGGiX_MarkForPickupButtons") then
       table.insert(XTemplates.ipDrone[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "InfopanelObj",
@@ -238,7 +238,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           "RolloverHint", "Change this to Pick, then select a spawned shuttle and have it come on by.",
           "OnContextUpdate",
             function(self, context)
-              if not context.ChoGGi_PickUpItem then
+              if not context.ChoGGiX_PickUpItem then
                 --carrying res
                 self:SetTitle("Ignore Item")
                 self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
@@ -248,7 +248,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
               end
             end,
-            "ChoGGi_MarkForPickup4", "ChoGGi_MarkForPickupButtons"
+            "ChoGGiX_MarkForPickup4", "ChoGGiX_MarkForPickupButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -256,14 +256,14 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+                context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
                 ObjModified(context)
               end
           })
         })
       )
     end
-  if not table.find(XTemplates.sectionStorage[1], "ChoGGi_MarkForPickup5", "ChoGGi_MarkForPickupButtons") then
+  if not table.find(XTemplates.sectionStorage[1], "ChoGGiX_MarkForPickup5", "ChoGGiX_MarkForPickupButtons") then
     table.insert(XTemplates.sectionStorage[1],
       PlaceObj("XTemplateTemplate", {
         "__context_of_kind", "InfopanelObj",
@@ -275,7 +275,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         "RolloverHint", "Change this to Pick, then select a spawned shuttle and have it come on by.",
         "OnContextUpdate",
           function(self, context)
-            if not context.ChoGGi_PickUpItem then
+            if not context.ChoGGiX_PickUpItem then
               --carrying res
               self:SetTitle("Ignore Item")
               self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
@@ -285,7 +285,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
             end
           end,
-          "ChoGGi_MarkForPickup5", "ChoGGi_MarkForPickupButtons"
+          "ChoGGiX_MarkForPickup5", "ChoGGiX_MarkForPickupButtons"
     }, {
         PlaceObj("XTemplateFunc", {
           "name", "OnActivate(self, context)",
@@ -293,7 +293,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               return parent.parent
             end,
           "func", function(self, context)
-              context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+              context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
               ObjModified(context)
             end
         })
@@ -302,7 +302,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   end
   --adds to the bottom of every selection :) :(
   --[[
-  if not table.find(XTemplates.Infopanel[1], "ChoGGi_MarkForPickupX", "ChoGGi_MarkForPickupButtons") then
+  if not table.find(XTemplates.Infopanel[1], "ChoGGiX_MarkForPickupX", "ChoGGiX_MarkForPickupButtons") then
     table.insert(XTemplates.Infopanel[1],
       PlaceObj("XTemplateTemplate", {
         "__context_of_kind", "InfopanelObj",
@@ -314,7 +314,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         "RolloverHint", "Toggle this, then select a spawned shuttle and have it come on by.",
         "OnContextUpdate",
           function(self, context)
-            if not context.ChoGGi_PickUpItem then
+            if not context.ChoGGiX_PickUpItem then
               --carrying res
               self:SetTitle("Drop")
               self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
@@ -324,7 +324,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
             end
           end,
-          "ChoGGi_MarkForPickupX", "ChoGGi_MarkForPickupButtons"
+          "ChoGGiX_MarkForPickupX", "ChoGGiX_MarkForPickupButtons"
     }, {
         PlaceObj("XTemplateFunc", {
           "name", "OnActivate(self, context)",
@@ -332,7 +332,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
               return parent.parent
             end,
           "func", function(self, context)
-              context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+              context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
               ObjModified(context)
             end
         })
@@ -341,7 +341,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   end
 
    --figure out how to move groups of res
-    if not table.find(XTemplates.ipSurfaceDeposit[1], "ChoGGi_MarkForPickup2", "ChoGGi_MarkForPickupButtons") then
+    if not table.find(XTemplates.ipSurfaceDeposit[1], "ChoGGiX_MarkForPickup2", "ChoGGiX_MarkForPickupButtons") then
       table.insert(XTemplates.ipSurfaceDeposit[1],
         PlaceObj("XTemplateTemplate", {
           "__context_of_kind", "SurfaceDepositGroup",
@@ -353,7 +353,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           "RolloverHint", hint_mark,
           "OnContextUpdate",
             function(self, context)
-              if not context.ChoGGi_PickUpItem then
+              if not context.ChoGGiX_PickUpItem then
                 --carrying res
                 self:SetTitle("Drop Res")
                 self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
@@ -363,7 +363,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
               end
             end,
-            "ChoGGi_MarkForPickup2", "ChoGGi_MarkForPickupButtons"
+            "ChoGGiX_MarkForPickup2", "ChoGGiX_MarkForPickupButtons"
       }, {
           PlaceObj("XTemplateFunc", {
             "name", "OnActivate(self, context)",
@@ -371,7 +371,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
                 return parent.parent
               end,
             "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+                context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
                 ObjModified(context)
               end
           })
@@ -383,17 +383,17 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
 end
 
   --dustdevil thread for rockets
-  function CargoShuttle:ChoGGi_DefenceTickD(ChoGGi)
-    if self.ChoGGi_FollowMouseShuttle and ChoGGi.Temp.CargoShuttleThreads[self.handle] then
-      return ChoGGi.CodeFuncs.DefenceTick(self,ChoGGi.Temp.ShuttleRocketDD)
+  function CargoShuttle:ChoGGiX_DefenceTickD(ChoGGiX)
+    if self.ChoGGiX_FollowMouseShuttle and ChoGGiX.Temp.CargoShuttleThreads[self.handle] then
+      return ChoGGiX.CodeFuncs.DefenceTick(self,ChoGGiX.Temp.ShuttleRocketDD)
     end
   end
 
 --				Movable.Goto(drone, pt) -- Unit.Goto is a command, use this instead for direct control
 
   --get shuttle to follow mouse
-  function CargoShuttle:ChoGGi_FollowMouse(newpos)
-    if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
+  function CargoShuttle:ChoGGiX_FollowMouse(newpos)
+    if not type(ChoGGiX.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
       return
     end
     local point = point
@@ -407,7 +407,7 @@ end
     local timenow = GameTime()
     local idle = 0
     --always start it off as pickup
-    self.ChoGGi_PickUp_Toggle = true
+    self.ChoGGiX_PickUp_Toggle = true
     repeat
       local sel = SelectedObj
       local pos = self:GetVisualPos()
@@ -426,14 +426,14 @@ end
         --rest on ground
         --if idle is ticking up
         if idle > 250 then
-          if not self.ChoGGi_Landed then
+          if not self.ChoGGiX_Landed then
             PlayFX("Land", "start", self)
             PlayFX("Dust", "start", self)
 
             --self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-3500,3500),y+UICity:Random(-3500,3500))))
             self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-1500,1500),y+UICity:Random(-1500,1500))))
             --self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000)))
-            self.ChoGGi_Landed = self:GetPos()
+            self.ChoGGiX_Landed = self:GetPos()
             PlayFX("Dust", "end", self)
             PlayFX("Land", "end", self)
          elseif z ~= terrain.GetHeight(pos) then
@@ -460,8 +460,8 @@ end
             --)
             newpos = nil
           end
-          if self.ChoGGi_Landed then
-            self.ChoGGi_Landed = nil
+          if self.ChoGGiX_Landed then
+            self.ChoGGiX_Landed = nil
             PlayFX("DomeExplosion", "start", self)
           end
           self:FollowPathCmd(path)
@@ -474,51 +474,50 @@ end
           --scan nearby SubsurfaceAnomaly
           local anomaly = NearestObject(pos,GetObjects({class="SubsurfaceAnomaly"}),2000)
           --make sure it's the right one, and not already being scanned by another
-          if anomaly and sel == anomaly and not ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
+          if anomaly and sel == anomaly and not ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
             PlayFX("ArtificialSunCharge", "start", anomaly)
-            ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
-            ChoGGi.CodeFuncs.AnalyzeAnomaly(self, anomaly)
+            ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
+            ChoGGiX.CodeFuncs.AnalyzeAnomaly(self, anomaly)
             PlayFX("ArtificialSunCharge", "end", anomaly)
           end
         --resource moving
 
         --are we carrying?
-        elseif self.ChoGGi_carriedObj and self.ChoGGi_PickUp_Toggle == false then
+        elseif self.ChoGGiX_carriedObj and self.ChoGGiX_PickUp_Toggle == false then
           --we want to drop obj next to sel
 
           self.hover_height = 100
-          local carried = self.ChoGGi_carriedObj
+          local carried = self.ChoGGiX_carriedObj
 
           --local pass = GetPassablePointNearby(dest)
           self:FollowPathCmd(self:CalcPath(pos,dest))
           --move it
 
           carried:SetPos(HexGetNearestCenter(dest))
-          --carried:SetPos(HexGetNearestCenter(pass))
           carried:SetCommand("Idle")
 
-          self.ChoGGi_carriedObj = nil
+          self.ChoGGiX_carriedObj = nil
           self.hover_height = 1000
 
         --PICKUP
         --elseif sel:IsKindOfClasses("ResourceStockpile", "SurfaceDepositGroup", "ResourcePile", "Unit") then
         elseif sel:IsKindOfClasses("ResourceStockpile", "ResourcePile", "Unit", "StorageDepot") then
           --if not and it's marked for pickup and shuttle is set to pickup then grab it
-          if sel.ChoGGi_PickUpItem and self.ChoGGi_PickUp_Toggle then
+          if sel.ChoGGiX_PickUpItem and self.ChoGGiX_PickUp_Toggle then
 
             --goto item
             self.hover_height = 100
             self:FollowPathCmd(self:CalcPath(pos,sel:GetVisualPos()))
 
             --remove pickup mark from it
-            sel.ChoGGi_PickUpItem = nil
+            sel.ChoGGiX_PickUpItem = nil
             --PlayFX of beaming, transport one i think
             Sleep(1000)
 
             --"pick it up" (move it below the ground so it isn't visible and save the object locally)
             sel:SetPos(point(0,0,0))
             --make sure we know we have cargo
-            self.ChoGGi_carriedObj = sel
+            self.ChoGGiX_carriedObj = sel
             self.hover_height = 1000
           end
         end
@@ -528,9 +527,9 @@ end
       idle = idle + 10
       Sleep(250 + idle)
     --about 4 sols then send it back home (or if we recalled it)
-    until (GameTime() - timenow > 2000000) or type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) ~= "boolean"
+    until (GameTime() - timenow > 2000000) or type(ChoGGiX.Temp.CargoShuttleThreads[self.handle]) ~= "boolean"
     --so it can set the GoHome command (we block it)
-    ChoGGi.Temp.CargoShuttleThreads[self.handle] = nil
+    ChoGGiX.Temp.CargoShuttleThreads[self.handle] = nil
 
     self:SetCommand("GoHome")
   end

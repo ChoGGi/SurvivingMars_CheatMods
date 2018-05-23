@@ -278,7 +278,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-
 end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()

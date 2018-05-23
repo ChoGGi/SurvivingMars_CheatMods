@@ -6,7 +6,7 @@ return {
     'FileName', "_Functions.lua",
   }),
   PlaceObj('ModItemCode', {
-    'FileName', "InfoPaneCheats.lua",
+    'FileName', "ShuttleControl.lua",
   }),
   PlaceObj('ModItemCode', {
     'FileName', "OnMsgs.lua",

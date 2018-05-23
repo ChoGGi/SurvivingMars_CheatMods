@@ -1636,7 +1636,6 @@ end
 
 
 
---self ==shuttlehub
 function ChoGGi.CodeFuncs.RecallShuttlesHub(hub)
   for _, s_i in pairs(hub.shuttle_infos) do
     local shuttle = s_i.shuttle_obj

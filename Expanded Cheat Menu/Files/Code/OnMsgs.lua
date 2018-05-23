@@ -23,10 +23,8 @@ function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
 
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
+  ChoGGi.MsgFuncs.ShuttleControl_ClassesPreprocess()
 
-  local c = CargoShuttle
-  c.__parents[#c.__parents] = "PinnableObject"
-  c.ChoGGi_DefenceTickD = false
   --dustdevil attack thread
   DefenceTower.defence_thread_ChoGGi_Dust = false
 

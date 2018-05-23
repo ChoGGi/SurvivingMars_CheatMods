@@ -1,7 +1,5 @@
-local cCodeFuncs = ChoGGiX.CodeFuncs
-
 --pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
-function cCodeFuncs.AnalyzeAnomaly(self,anomaly)
+function ChoGGiX.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   if not IsValid(self) then
     return
   end
@@ -15,7 +13,7 @@ function cCodeFuncs.AnalyzeAnomaly(self,anomaly)
   RebuildInfopanel(self)
   self:PushDestructor(function(self)
     if IsValid(anomaly) then
-      anomaly.scanning_progress = cCodeFuncs.GetScanAnomalyProgress(self)
+      anomaly.scanning_progress = ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
       if anomaly.scanning_progress >= 100 then
         self:Gossip("ScanAnomaly", anomaly.class, anomaly.handle)
         anomaly:ScanCompleted(self)
@@ -35,18 +33,18 @@ function cCodeFuncs.AnalyzeAnomaly(self,anomaly)
   while time > 0 and IsValid(self) and IsValid(anomaly) do
     Sleep(1000)
     time = time - 1000
-    anomaly.scanning_progress = cCodeFuncs.GetScanAnomalyProgress(self)
+    anomaly.scanning_progress = ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
     if anomaly == SelectedObj then
       Msg("UIPropertyChanged", anomaly)
     end
   end
   self:PopAndCallDestructor()
 end
-function cCodeFuncs.GetScanAnomalyProgress(self)
+function ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
-function cCodeFuncs.DefenceTick(self,AlreadyFired)
+function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
   --list of dustdevils on map
   local hostiles = g_DustDevils or empty_table
   if IsValidThread(self.track_thread) then
@@ -112,5 +110,83 @@ function cCodeFuncs.DefenceTick(self,AlreadyFired)
         end
       end
     end)
+  end
+end
+
+function ChoGGiX.CodeFuncs.RecallShuttlesHub(hub)
+  for _, s_i in pairs(hub.shuttle_infos) do
+    local shuttle = s_i.shuttle_obj
+    if shuttle then
+
+      if type(ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle]) == "boolean" then
+        ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = nil
+      end
+      if shuttle.ChoGGiX_FollowMouseShuttle then
+        shuttle.ChoGGiX_FollowMouseShuttle = nil
+        shuttle:SetCommand("Idle")
+      end
+
+    end
+  end
+end
+--which true=attack,false=friend
+function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
+  local ChoGGiX = ChoGGiX
+  for _, s_i in pairs(hub.shuttle_infos) do
+    if s_i:CanLaunch() then
+      --ShuttleInfo:Launch(task)
+      local hub = s_i.hub
+      if not hub or not hub.has_free_landing_slots then
+        return false
+      end
+      --LRManagerInstance
+      local shuttle = CargoShuttle:new({
+        hub = hub,
+        transport_task = ChoGGiX_ShuttleFollowTask:new({
+          state = "ready_to_follow",
+          dest_pos = GetTerrainCursor() or GetRandomPassable()
+        }),
+        info_obj = s_i
+      })
+      s_i.shuttle_obj = shuttle
+      local slot = hub:ReserveLandingSpot(shuttle)
+      shuttle:SetPos(slot.pos)
+      --CargoShuttle:Launch()
+      shuttle:PushDestructor(function(s)
+        s.hub:ShuttleLeadOut(s)
+        s.hub:FreeLandingSpot(s)
+      end)
+      local amount = 0
+      for _ in pairs(ChoGGiX.Temp.CargoShuttleThreads) do
+        amount = amount + 1
+      end
+      if amount <= 50 then
+        --do we attack dustdevils?
+        if which then
+          ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = true
+          shuttle:SetColor1(-9624026)
+          shuttle:SetColor2(1)
+          shuttle:SetColor3(-13892861)
+        else
+          ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = false
+          shuttle:SetColor1(-16711941)
+          shuttle:SetColor2(-16760065)
+          shuttle:SetColor3(-1)
+        end
+        shuttle.ChoGGiX_FollowMouseShuttle = true
+        --follow that cursor little minion
+        shuttle:SetCommand("ChoGGiX_FollowMouse")
+        --return it so we can do viewpos on it for menu item
+        return shuttle
+      else
+      --or the crash is from all the dust i have going :)
+        ChoGGiX.ComFuncs.MsgPopup(
+          "Max of 50 (above 50 and below 100 it crashes).",
+          "Shuttle"
+        )
+      end
+      --since we found a shuttle break the loop
+      break
+    end
   end
 end
