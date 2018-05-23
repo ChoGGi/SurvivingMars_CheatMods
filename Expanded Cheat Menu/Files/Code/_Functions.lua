@@ -1713,3 +1713,32 @@ function ChoGGi.CodeFuncs.SpawnShuttle(hub,which)
     end
   end
 end
+
+--only add unique template names
+function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT)
+  if not Name or Template or Table then
+    return
+  end
+  XT = XT or XTemplates
+  if not XT[Template][Name] then
+    XT[Template][Name] = true
+    XT[Template][#XT[Template]+1] = PlaceObj("XTemplateTemplate", {
+      "__context_of_kind", Table.__context_of_kind or "InfopanelObj",
+      "__template", Table.__template or "InfopanelActiveSection",
+      "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+      "Title", Table.Title or "Placeholder",
+      "RolloverText", Table.RolloverText or "Info",
+      "RolloverTitle", Table.RolloverTitle or "Title",
+      "RolloverHint", Table.RolloverHint or "Hint",
+      "OnContextUpdate", Table.OnContextUpdate
+    }, {
+      PlaceObj("XTemplateFunc", {
+      "name", "OnActivate(self, context)",
+      "parent", function(parent, context)
+          return parent.parent
+        end,
+      "func", Table.func
+      })
+    })
+  end
+end

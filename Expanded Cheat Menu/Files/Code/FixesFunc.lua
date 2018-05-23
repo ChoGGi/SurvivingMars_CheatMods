@@ -1,7 +1,6 @@
 local GetObjects = GetObjects
 ---------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()
-  ChoGGi.MenuFuncs.RemoveMissingClassObjects()
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 

@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Cheat Menu Expanded v4.7",
-	"version", 47,
+	"title", "Cheat Menu Expanded v4.8 Test",
+	"version", 48,
 	"saved", 1527076800,
 	"description", "\nEnables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
     .. "There's a cheats section in most info panels on the right side of the screen."

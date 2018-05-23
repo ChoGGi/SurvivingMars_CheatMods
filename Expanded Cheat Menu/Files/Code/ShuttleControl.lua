@@ -18,369 +18,186 @@ end
 function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
 
   if ChoGGi.UserSettings.ShowShuttleControls then
-    --pick/drop button for shuttle
-    if not table.find(XTemplates.ipShuttle[1], "ChoGGi_ipShuttle", "ChoGGi_ShuttleResButtons") then
-      table.insert(XTemplates.ipShuttle[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "CargoShuttle",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_1.tga",
-          "Title", "Pickup/Drop Item",
-          "RolloverText", "Info",
-          "RolloverTitle", "Pickup/Drop Item",
-          "RolloverHint", "Follower Shuttles: Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (hopefully) next to it.",
-          "OnContextUpdate",
-            function(self, context)
-              if not context.ChoGGi_PickUp_Toggle then
-                --carrying res
-                self:SetTitle("Drop Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
-              else
-                --empty res we can pick up
-                self:SetTitle("Pickup Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-              end
-            end,
-            "ChoGGi_ipShuttle", "ChoGGi_ShuttleResButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                -- ignore self, as it's always going to be selected
-                if context.ChoGGi_FollowMouseShuttle then
-                  context.ChoGGi_PickUp_Toggle = not context.ChoGGi_PickUp_Toggle
-                  ObjModified(context)
-                end
-              end
-          })
-        })
-      )
-    end
-    --spawn shuttle buttons for hub and return shuttle button
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubAttacker", "ChoGGi_ShuttleHubSpawnButtons") then
-      table.insert(XTemplates.customShuttleHub[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "ShuttleHub",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_3.tga",
-          "Title", "SpawnAttacker",
-          "RolloverText", "Info",
-          "RolloverTitle", "Spawn Attacker",
-          "RolloverHint", "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
-          "OnContextUpdate",
-            function(self, context)
-              --carrying res
-              self:SetTitle("Spawn Attacker")
-              self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
-            end,
-            "ChoGGi_ShuttleHubAttacker", "ChoGGi_ShuttleHubSpawnButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                ChoGGi.CodeFuncs.SpawnShuttle(context,true)
-              end
-          })
-        })
-      )
-    end
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubFriend", "ChoGGi_ShuttleHubSpawnButtons") then
-      table.insert(XTemplates.customShuttleHub[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "ShuttleHub",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_2.tga",
-          "Title", "SpawnFriend",
-          "RolloverText", "Info",
-          "RolloverTitle", "Spawn Friend",
-          "RolloverHint", "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
-          "OnContextUpdate",
-            function(self, context)
-              --carrying res
-              self:SetTitle("Spawn Friend")
-              self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-            end,
-            "ChoGGi_ShuttleHubFriend", "ChoGGi_ShuttleHubSpawnButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                ChoGGi.CodeFuncs.SpawnShuttle(context)
-              end
-          })
-        })
-      )
-    end
-    if not table.find(XTemplates.customShuttleHub[1], "ChoGGi_ShuttleHubRecall", "ChoGGi_ShuttleHubSpawnButtons") then
-      table.insert(XTemplates.customShuttleHub[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "ShuttleHub",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_4.tga",
-          "Title", "RecallShuttles",
-          "RolloverText", "Info",
-          "RolloverTitle", "Recall Shuttles",
-          "RolloverHint", "Recalls all shuttles you've spawned at this ShuttleHub.",
-          "OnContextUpdate",
-            function(self, context)
-              --carrying res
-              self:SetTitle("Recall Shuttles")
-              self:SetIcon("UI/Icons/Sections/shuttle_4.tga")
-            end,
-            "ChoGGi_ShuttleHubRecall", "ChoGGi_ShuttleHubSpawnButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                ChoGGi.CodeFuncs.RecallShuttlesHub(context)
-              end
-          })
-        })
-      )
-    end
-    --add mark for pickup buttons to certain resource piles
+    local XTemplates = XTemplates
+--pick/drop button for shuttle
+    local Table = {
+      __context_of_kind = "CargoShuttle",
+      Icon = "UI/Icons/Sections/shuttle_1.tga",
+      Title = "Pickup/Drop Item",
+      RolloverTitle = "Pickup/Drop Item",
+      RolloverHint = "Follower Shuttles: Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (hopefully) next to it.",
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUp_Toggle then
+          self:SetTitle("Drop Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
+        else
+          self:SetTitle("Pickup Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        end
+      end,
+      func = function(self, context)
+        if context.ChoGGi_FollowMouseShuttle then
+          context.ChoGGi_PickUp_Toggle = not context.ChoGGi_PickUp_Toggle
+          ObjModified(context)
+        end
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipShuttle",Table,XTemplates)
+--spawn shuttle buttons for hub and return shuttle button
+    Table = {
+      __context_of_kind = "ShuttleHub",
+      Icon = "UI/Icons/Sections/shuttle_3.tga",
+      Title = "SpawnAttacker",
+      RolloverTitle = "Spawn Attacker",
+      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
+      OnContextUpdate = function(self, context)
+        self:SetTitle("Spawn Attacker")
+        self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
+      end,
+      func = function(self, context)
+        ChoGGi.CodeFuncs.SpawnShuttle(context,true)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","customShuttleHub",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "ShuttleHub",
+      Icon = "UI/Icons/Sections/shuttle_2.tga",
+      Title = "SpawnFriend",
+      RolloverTitle = "Spawn Friend",
+      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
+      OnContextUpdate = function(self, context)
+        self:SetTitle("Spawn Friend")
+        self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+      end,
+      func = function(self, context)
+        ChoGGi.CodeFuncs.SpawnShuttle(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","customShuttleHub",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "ShuttleHub",
+      Icon = "UI/Icons/Sections/shuttle_4.tga",
+      Title = "RecallShuttles",
+      RolloverTitle = "Recall Shuttles",
+      RolloverHint = "Recalls all shuttles you've spawned at this ShuttleHub.",
+      OnContextUpdate = function(self, context)
+        --carrying res
+        self:SetTitle("Recall Shuttles")
+        self:SetIcon("UI/Icons/Sections/shuttle_4.tga")
+      end,
+      func = function(self, context)
+        ChoGGi.CodeFuncs.RecallShuttlesHub(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","customShuttleHub",Table,XTemplates)
+--add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
-    if not table.find(XTemplates.ipResourcePile[1], "ChoGGi_MarkForPickup1", "ChoGGi_MarkForPickupButtons") then
-      table.insert(XTemplates.ipResourcePile[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "ResourceStockpile",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_1.tga",
-          "Title", "MarkForPickup",
-          "RolloverText", "Info",
-          "RolloverTitle", "Mark For Pickup",
-          "RolloverHint", hint_mark,
-          "OnContextUpdate",
-            function(self, context)
-              if not context.ChoGGi_PickUpItem then
-                self:SetTitle("Ignore Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
-              else
-                --empty res we can pick up
-                self:SetTitle("Pickup Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-              end
-            end,
-            "ChoGGi_MarkForPickup1", "ChoGGi_MarkForPickupButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-                ObjModified(context)
-              end
-          })
-        })
-      )
-    end
-
-    if not table.find(XTemplates.ipRover[1], "ChoGGi_MarkForPickup3", "ChoGGi_MarkForPickupButtons") then
-      table.insert(XTemplates.ipRover[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "InfopanelObj",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_1.tga",
-          "Title", "MarkForPickup",
-          "RolloverText", "Info",
-          "RolloverTitle", "Mark For Pickup",
-          "RolloverHint", hint_mark,
-          "OnContextUpdate",
-            function(self, context)
-              if not context.ChoGGi_PickUpItem then
-                --carrying res
-                self:SetTitle("Ignore Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
-              else
-                --empty res we can pick up
-                self:SetTitle("Pickup Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-              end
-            end,
-            "ChoGGi_MarkForPickup3", "ChoGGi_MarkForPickupButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-                ObjModified(context)
-              end
-          })
-        })
-      )
-    end
-    if not table.find(XTemplates.ipDrone[1], "ChoGGi_MarkForPickup4", "ChoGGi_MarkForPickupButtons") then
-      table.insert(XTemplates.ipDrone[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "InfopanelObj",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_1.tga",
-          "Title", "MarkForPickup",
-          "RolloverText", "Info",
-          "RolloverTitle", "Mark For Pickup",
-          "RolloverHint", "Change this to Pick, then select a spawned shuttle and have it come on by.",
-          "OnContextUpdate",
-            function(self, context)
-              if not context.ChoGGi_PickUpItem then
-                --carrying res
-                self:SetTitle("Ignore Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
-              else
-                --empty res we can pick up
-                self:SetTitle("Pickup Item")
-                self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-              end
-            end,
-            "ChoGGi_MarkForPickup4", "ChoGGi_MarkForPickupButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-                ObjModified(context)
-              end
-          })
-        })
-      )
-    end
-  if not table.find(XTemplates.sectionStorage[1], "ChoGGi_MarkForPickup5", "ChoGGi_MarkForPickupButtons") then
-    table.insert(XTemplates.sectionStorage[1],
-      PlaceObj("XTemplateTemplate", {
-        "__context_of_kind", "InfopanelObj",
-        "__template", "InfopanelActiveSection",
-        "Icon", "UI/Icons/Sections/shuttle_1.tga",
-        "Title", "MarkForPickup",
-        "RolloverText", "Info",
-        "RolloverTitle", "Mark For Pickup",
-        "RolloverHint", "Change this to Pick, then select a spawned shuttle and have it come on by.",
-        "OnContextUpdate",
-          function(self, context)
-            if not context.ChoGGi_PickUpItem then
-              --carrying res
-              self:SetTitle("Ignore Item")
-              self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
-            else
-              --empty res we can pick up
-              self:SetTitle("Pickup Item")
-              self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-            end
-          end,
-          "ChoGGi_MarkForPickup5", "ChoGGi_MarkForPickupButtons"
-    }, {
-        PlaceObj("XTemplateFunc", {
-          "name", "OnActivate(self, context)",
-          "parent", function(parent, context)
-              return parent.parent
-            end,
-          "func", function(self, context)
-              context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-              ObjModified(context)
-            end
-        })
-      })
-    )
+    Table = {
+      __context_of_kind = "ResourceStockpile",
+      Icon = "UI/Icons/Sections/shuttle_1.tga",
+      Title = "MarkForPickup",
+      RolloverTitle = "Mark For Pickup",
+      RolloverHint = hint_mark,
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUpItem then
+          self:SetTitle("Ignore Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+        else
+          --empty res we can pick up
+          self:SetTitle("Pickup Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        end
+      end,
+      func = function(self, context)
+        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+        ObjModified(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourcePile",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "InfopanelObj",
+      Icon = "UI/Icons/Sections/shuttle_1.tga",
+      Title = "MarkForPickup",
+      RolloverTitle = "Mark For Pickup",
+      RolloverHint = hint_mark,
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUpItem then
+          --carrying res
+          self:SetTitle("Ignore Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+        else
+          --empty res we can pick up
+          self:SetTitle("Pickup Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        end
+      end,
+      func = function(self, context)
+        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+        ObjModified(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","ipRover",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "InfopanelObj",
+      Icon = "UI/Icons/Sections/shuttle_1.tga",
+      Title = "MarkForPickup",
+      RolloverTitle = "Mark For Pickup",
+      RolloverHint = hint_mark,
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUpItem then
+          --carrying res
+          self:SetTitle("Ignore Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+        else
+          --empty res we can pick up
+          self:SetTitle("Pickup Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        end
+      end,
+      func = function(self, context)
+        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+        ObjModified(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","ipDrone",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "InfopanelObj",
+      Icon = "UI/Icons/Sections/shuttle_1.tga",
+      Title = "MarkForPickup",
+      RolloverTitle = "Mark For Pickup",
+      RolloverHint = hint_mark,
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUpItem then
+          --carrying res
+          self:SetTitle("Ignore Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+        else
+          --empty res we can pick up
+          self:SetTitle("Pickup Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        end
+      end,
+      func = function(self, context)
+        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+        ObjModified(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane4","sectionStorage",Table,XTemplates)
   end
-  --adds to the bottom of every selection :) :(
   --[[
-  if not table.find(XTemplates.Infopanel[1], "ChoGGi_MarkForPickupX", "ChoGGi_MarkForPickupButtons") then
-    table.insert(XTemplates.Infopanel[1],
-      PlaceObj("XTemplateTemplate", {
-        "__context_of_kind", "InfopanelObj",
-        "__template", "InfopanelActiveSection",
-        "Icon", "UI/Icons/Sections/shuttle_1.tga",
-        "Title", "MarkForPickup",
-        "RolloverText", "Info",
-        "RolloverTitle", "Mark For Pickup",
-        "RolloverHint", "Toggle this, then select a spawned shuttle and have it come on by.",
-        "OnContextUpdate",
-          function(self, context)
-            if not context.ChoGGi_PickUpItem then
-              --carrying res
-              self:SetTitle("Drop")
-              self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
-            else
-              --empty res we can pick up
-              self:SetTitle("Pickup")
-              self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-            end
-          end,
-          "ChoGGi_MarkForPickupX", "ChoGGi_MarkForPickupButtons"
-    }, {
-        PlaceObj("XTemplateFunc", {
-          "name", "OnActivate(self, context)",
-          "parent", function(parent, context)
-              return parent.parent
-            end,
-          "func", function(self, context)
-              context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-              ObjModified(context)
-            end
-        })
-      })
-    )
-  end
+  --adds to the bottom of every selection :) :(
+  Infopanel
 
    --figure out how to move groups of res
-    if not table.find(XTemplates.ipSurfaceDeposit[1], "ChoGGi_MarkForPickup2", "ChoGGi_MarkForPickupButtons") then
-      table.insert(XTemplates.ipSurfaceDeposit[1],
-        PlaceObj("XTemplateTemplate", {
-          "__context_of_kind", "SurfaceDepositGroup",
-          "__template", "InfopanelActiveSection",
-          "Icon", "UI/Icons/Sections/shuttle_1.tga",
-          "Title", "MarkForPickup",
-          "RolloverText", "Info",
-          "RolloverTitle", "Mark For Pickup",
-          "RolloverHint", hint_mark,
-          "OnContextUpdate",
-            function(self, context)
-              if not context.ChoGGi_PickUpItem then
-                --carrying res
-                self:SetTitle("Drop Res")
-                self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
-              else
-                --empty res we can pick up
-                self:SetTitle("Pickup Res")
-                self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-              end
-            end,
-            "ChoGGi_MarkForPickup2", "ChoGGi_MarkForPickupButtons"
-      }, {
-          PlaceObj("XTemplateFunc", {
-            "name", "OnActivate(self, context)",
-            "parent", function(parent, context)
-                return parent.parent
-              end,
-            "func", function(self, context)
-                context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-                ObjModified(context)
-              end
-          })
-        })
-      )
-    end
+  ipSurfaceDeposit
+   --or mech depots
+  sectionStorageMechanized
 --]]
-
-end
 
   --dustdevil thread for rockets
   function CargoShuttle:ChoGGi_DefenceTickD(ChoGGi)

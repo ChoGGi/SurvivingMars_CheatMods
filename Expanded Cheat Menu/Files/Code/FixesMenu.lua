@@ -30,7 +30,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     "Expanded CM/Fixes/Remove Missing Class Objects *",
     ChoGGi.MenuFuncs.RemoveMissingClassObjects,
     nil,
-    "Probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
+    "Warning: May crash game, SAVE FIRST. Theses are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
     icon
   )
 
