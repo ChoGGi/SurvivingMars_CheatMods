@@ -1,3 +1,4 @@
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 --stuff only loaded when ChoGGi.Temp.Testing = true
 
 --ChoGGi.Temp.Testing = false
@@ -132,7 +133,22 @@ function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
 end
 
 function ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
+  --fix the arcology dome spot
+  SaveOrigFunc("SpireBase","GameInit")
+  function SpireBase:GameInit()
+    local dome = IsObjInDome(self)
+    if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
+      local frame = PlaceObject("Shapeshifter")
+      frame:ChangeEntity(self.spire_frame_entity)
+      local spot = dome:GetNearestSpot("idle", "Spireframe", self)
 
+      --local pos = dome:GetSpotPos(spot)
+      local pos = self:GetSpotPos(spot or 1)
+
+      frame:SetAttachOffset(pos - self:GetPos())
+      self:Attach(frame, self:GetSpotBeginIndex("Origin"))
+    end
+  end
   ------
   print("Testing_ClassesPreprocess")
 end --ClassesPreprocess
@@ -144,6 +160,17 @@ function ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
 end
 
 function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
+
+  SaveOrigFunc("PinsDlg","GetPinConditionImage")
+  function PinsDlg:GetPinConditionImage(obj)
+    local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
+    if obj.command == "Dead" and not obj.working then
+      print(obj.class)
+      return "UI/Icons/pin_not_working.tga"
+    else
+      return ret
+    end
+  end
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()

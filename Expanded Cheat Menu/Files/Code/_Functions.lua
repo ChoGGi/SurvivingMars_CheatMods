@@ -1303,12 +1303,12 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   end
 
   --deleting domes will freeze game if they have anything in them.
-  if obj:IsKindOf("Dome") and obj.air then
+  if obj:IsKindOf("Dome") and obj.working then
     return
   end
 
   local function TryFunc(Name,Param)
-    if obj[Name] then
+    if type(obj[Name]) == "function" then
       obj[Name](obj,Param)
     end
   end
@@ -1340,7 +1340,8 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
 
   --fuck it, I asked nicely
   if obj then
-    TryFunc("delete")
+    DoneObject(obj)
+    --TryFunc("delete")
   end
 
     --so we don't get an error from UseLastOrientation
@@ -1630,5 +1631,86 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   end
   if info then
     ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info,parent)
+  end
+end
+
+
+
+--self ==shuttlehub
+function ChoGGi.CodeFuncs.RecallShuttlesHub(hub)
+  for _, s_i in pairs(hub.shuttle_infos) do
+    local shuttle = s_i.shuttle_obj
+    if shuttle then
+
+      if type(ChoGGi.Temp.CargoShuttleThreads[shuttle.handle]) == "boolean" then
+        ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = nil
+      end
+      if shuttle.ChoGGi_FollowMouseShuttle then
+        shuttle.ChoGGi_FollowMouseShuttle = nil
+        shuttle:SetCommand("Idle")
+      end
+
+    end
+  end
+end
+--which true=attack,false=friend
+function ChoGGi.CodeFuncs.SpawnShuttle(hub,which)
+  local ChoGGi = ChoGGi
+  for _, s_i in pairs(hub.shuttle_infos) do
+    if s_i:CanLaunch() then
+      --ShuttleInfo:Launch(task)
+      local hub = s_i.hub
+      if not hub or not hub.has_free_landing_slots then
+        return false
+      end
+      --LRManagerInstance
+      local shuttle = CargoShuttle:new({
+        hub = hub,
+        transport_task = ChoGGi_ShuttleFollowTask:new({
+          state = "ready_to_follow",
+          dest_pos = GetTerrainCursor() or GetRandomPassable()
+        }),
+        info_obj = s_i
+      })
+      s_i.shuttle_obj = shuttle
+      local slot = hub:ReserveLandingSpot(shuttle)
+      shuttle:SetPos(slot.pos)
+      --CargoShuttle:Launch()
+      shuttle:PushDestructor(function(s)
+        s.hub:ShuttleLeadOut(s)
+        s.hub:FreeLandingSpot(s)
+      end)
+      local amount = 0
+      for _ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
+        amount = amount + 1
+      end
+      if amount <= 50 then
+        --do we attack dustdevils?
+        if which then
+          ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = true
+          shuttle:SetColor1(-9624026)
+          shuttle:SetColor2(1)
+          shuttle:SetColor3(-13892861)
+        else
+          ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = false
+          shuttle:SetColor1(-16711941)
+          shuttle:SetColor2(-16760065)
+          shuttle:SetColor3(-1)
+        end
+        shuttle.ChoGGi_FollowMouseShuttle = true
+        --follow that cursor little minion
+        shuttle:SetCommand("ChoGGi_FollowMouse")
+        --return it so we can do viewpos on it for menu item
+        return shuttle
+      else
+      --or the crash is from all the dust i have going :)
+        ChoGGi.ComFuncs.MsgPopup(
+          "Max of 50 (above 50 and below 100 it crashes).",
+          "Shuttle"
+        )
+      end
+      --since we found a shuttle break the loop
+      break
+    end
   end
 end

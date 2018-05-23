@@ -55,6 +55,7 @@ ChoGGi.Defaults = {
   NumberKeysBuildMenu = true,
   UseLastOrientation = true,
   ShowCheatsMenu = true,
+  ShowShuttleControls = true,
   DebugGridSize = 10,
   DebugGridOpacity = 15,
 --stores custom settings for each building

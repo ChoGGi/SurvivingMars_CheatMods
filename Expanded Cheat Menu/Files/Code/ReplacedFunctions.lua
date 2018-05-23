@@ -102,7 +102,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     else
       self:SetCommand("ChoGGi_FollowMouse")
     end
-    Sleep(500)
+    Sleep(250)
   end
 
   --meteor targeting
@@ -279,35 +279,9 @@ end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
 
-  --fix the arcology dome spot
-  function SpireBase:GameInit()
-    local dome = IsObjInDome(self)
-    if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
-      local frame = PlaceObject("Shapeshifter")
-      frame:ChangeEntity(self.spire_frame_entity)
-      local spot = dome:GetNearestSpot("idle", "Spireframe", self)
-
-      --local pos = dome:GetSpotPos(spot)
-      local pos = self:GetSpotPos(spot or 1)
-      frame:SetAttachOffset(pos - self:GetPos())
-      self:Attach(frame, self:GetSpotBeginIndex("Origin"))
-    end
-  end
-
 end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-
-  SaveOrigFunc("PinsDlg","GetPinConditionImage")
-  function PinsDlg:GetPinConditionImage(obj)
-    local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
-    if obj.command == "Dead" and not obj.working then
-      print(obj.class)
-      return "UI/Icons/pin_not_working.tga"
-    else
-      return ret
-    end
-  end
 
   --gives an error when we spawn shuttle since i'm using a fake task
   SaveOrigFunc("CargoShuttle","OnTaskAssigned")

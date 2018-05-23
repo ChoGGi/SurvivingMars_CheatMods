@@ -324,81 +324,13 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   end
 --other shuttle stuff
   function ShuttleHub:CheatShuttleReturnF()
-    for _, s_i in pairs(self.shuttle_infos) do
-      local shuttle = s_i.shuttle_obj
-      if shuttle and shuttle.ChoGGi_FollowMouseShuttle and ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] then
-      --if shuttle and shuttle.ChoGGi_FollowMouseShuttle then
-        shuttle.ChoGGi_FollowMouseShuttle = nil
-        ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = nil
-        shuttle:SetCommand("Idle")
-      end
-    end
+    ChoGGi.CodeFuncs.RecallShuttlesHub(self)
   end
-  local function CheatShuttleSpawn(self,which)
-    local ChoGGi = ChoGGi
-    for _, s_i in pairs(self.shuttle_infos) do
-      if s_i:CanLaunch() then
-        --ShuttleInfo:Launch(task)
-        local hub = s_i.hub
-        if not hub or not hub.has_free_landing_slots then
-          return false
-        end
-        --LRManagerInstance
-        local shuttle = CargoShuttle:new({
-          hub = hub,
-          transport_task = ChoGGi_ShuttleFollowTask:new({
-            state = "ready_to_follow",
-            dest_pos = GetTerrainCursor() or GetRandomPassable()
-          }),
-          info_obj = s_i
-        })
-        s_i.shuttle_obj = shuttle
-        local slot = hub:ReserveLandingSpot(shuttle)
-        shuttle:SetPos(slot.pos)
-        --CargoShuttle:Launch()
-        shuttle:PushDestructor(function(s)
-          s.hub:ShuttleLeadOut(s)
-          s.hub:FreeLandingSpot(s)
-        end)
-        local amount = 0
-        for _ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
-          amount = amount + 1
-        end
-        if amount <= 50 then
-          --do we attack dustdevils?
-          if which then
-            ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = true
-            shuttle:SetColor1(-9624026)
-            shuttle:SetColor2(1)
-            shuttle:SetColor3(-13892861)
-          else
-            ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = false
-            shuttle:SetColor1(-16711941)
-            shuttle:SetColor2(-16760065)
-            shuttle:SetColor3(-1)
-          end
-          shuttle.ChoGGi_FollowMouseShuttle = true
-          --follow that cursor little minion
-          shuttle:SetCommand("ChoGGi_FollowMouse")
-          --since we found a shuttle break the loop
-        else
-        --or the crash is from all the dust i have going :)
-          ChoGGi.ComFuncs.MsgPopup(
-            "Max of 50 (above 50 and below 100 it crashes).",
-            "Shuttle"
-          )
-        end
-        --no sense in looping anymore
-        break
-      end
-    end
-  end
-
   function ShuttleHub:CheatShuttleAttacker()
-    CheatShuttleSpawn(self,true)
+    ChoGGi.CodeFuncs.SpawnShuttle(self,true)
   end
   function ShuttleHub:CheatShuttleFriend()
-    CheatShuttleSpawn(self)
+    ChoGGi.CodeFuncs.SpawnShuttle(self)
   end
 --CheatBattCapDbl
   local function CheatBattCapDbl(self)
@@ -597,7 +529,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "ShuttleFriend" then
       SetHint(action,"Same as Attacker, but doesn't attack dustdevils.")
     elseif action.ActionId == "ShuttleReturnF" then
-      SetHint(action,"Make all followers return home.")
+      SetHint(action,"Make followers from this ShuttleHub return home (Use ECM menu to recall all).")
 --RC
     elseif action.ActionId == "BattCapDbl" then
       SetHint(action,"Double capacity of battery.")
