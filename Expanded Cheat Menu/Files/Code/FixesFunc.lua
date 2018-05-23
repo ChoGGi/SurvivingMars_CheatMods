@@ -1,4 +1,3 @@
-local empty_table = empty_table
 local GetObjects = GetObjects
 ---------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()

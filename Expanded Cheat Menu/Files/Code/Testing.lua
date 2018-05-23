@@ -27,7 +27,7 @@ function ChoGGi.ReplaceDome(dome)
   if not dome then
     return
   end
-  local olddome = {}
+  local olddome = empty_table
   for Key,Value in pairs(dome) do
     olddome[Key] = Value
   end

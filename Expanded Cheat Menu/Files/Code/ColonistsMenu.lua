@@ -38,8 +38,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Colonists/The Soylent Option",
     ChoGGi.MenuFuncs.TheSoylentOption,
-    "Ctrl-Numpad 1",
-    "Turns selected/moused over colonist into food (between 1-5), or shows a list with homeless/unemployed.",
+    "Ctrl-Alt-Numpad 1",
+    "Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.",
     icon2
   )
 

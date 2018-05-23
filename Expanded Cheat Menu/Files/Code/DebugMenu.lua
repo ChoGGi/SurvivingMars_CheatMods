@@ -26,10 +26,30 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Path Markers Real Time",
-    ChoGGi.MenuFuncs.SetPathMarkersGameTime,
+    "[102]Debug/Path Markers Real Time/lines",
+    function()
+      ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true,true)
+    end,
     "Ctrl-Numpad .",
-    "Maps paths in realtime.",
+    "Maps paths in realtime (just lines).",
+    "ViewCamPath.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Path Markers Real Time/lines & flags",
+    function()
+      ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,nil,true)
+    end,
+    "Ctrl-Numpad 3",
+    "Maps paths in realtime (doesn't show label).",
+    "ViewCamPath.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Path Markers Real Time/lines & flags & label",
+    ChoGGi.MenuFuncs.SetPathMarkersGameTime,
+    "Ctrl-Numpad 2",
+    "Maps paths in realtime (shows all).",
     "ViewCamPath.tga"
   )
 

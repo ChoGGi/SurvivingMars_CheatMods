@@ -741,11 +741,16 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
---FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
-function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value)
+--ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
+--ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}),"IsValid",nil,true)
+function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
     filter = function(Obj)
-      if Obj[Func](Obj,Value) then
+      if IsBool then
+        if _G[Func](Obj) then
+          return Obj
+        end
+      elseif Obj[Func](Obj,Value) then
         return Obj
       end
     end

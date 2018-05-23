@@ -1,6 +1,5 @@
 --i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
-
 --use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate(classdefs)
   local ChoGGi = ChoGGi
@@ -339,10 +338,29 @@ do
 
   end
 end
-
+--[[
+local function ClearPathingThreads(Class,GetObjects,empty_table)
+  local ChoGGi = ChoGGi
+  local DeleteThread = DeleteThread
+  local IsValid = IsValid
+  local Objs = GetObjects({class = Class}) or empty_table
+  for i = 1, #Objs do
+    local obj = ChoGGi.Temp.UnitPathingHandles[Objs[i].handle]
+    --thread exists and obj doesn't
+    if obj and not IsValid(obj.obj) then
+      DeleteThread(ChoGGi.Temp.UnitPathingHandles[Objs[i].handle].thread)
+      ChoGGi.Temp.UnitPathingHandles[Objs[i].handle] = nil
+    end
+  end
+end
+--]]
 function OnMsg.NewHour()
   local ChoGGi = ChoGGi
+  --local GetObjects = GetObjects
   local empty_table = empty_table
+  --ClearPathingThreads("CargoShuttle",GetObjects,empty_table)
+  --ClearPathingThreads("Unit",GetObjects,empty_table)
+
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
     local UICity = UICity

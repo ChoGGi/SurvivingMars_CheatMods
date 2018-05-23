@@ -1529,9 +1529,9 @@ function ChoGGi.CodeFuncs.DefenceTick(self,AlreadyFired)
     end)
   end
 end
---get all objects, then get nearest in radius, remove from list repeat till none in radius, return list
---OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
-function ChoGGi.CodeFuncs.ReturnAllNearby(Radius)
+--get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
+--OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000),"class")
+function ChoGGi.CodeFuncs.ReturnAllNearby(Radius,Sort)
   Radius = Radius or 5000
   local pos = GetTerrainCursor()
   --get pretty much all objects (18K on a new map)
