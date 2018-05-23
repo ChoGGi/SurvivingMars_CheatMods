@@ -25,7 +25,7 @@ ChoGGi = {
     DefenceTowerRocketDD = {},
     --same
     ShuttleRocketDD = {},
-    --controllable shuttle handles launched
+    --controllable shuttle handles launched (true = attacker, false = friend)
     CargoShuttleThreads = {},
     --we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
     CargoShuttleScanningAnomaly = {},

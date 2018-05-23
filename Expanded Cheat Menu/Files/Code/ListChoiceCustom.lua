@@ -328,7 +328,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           Subview = "default",
           SizeOrg = point(390, 335),
           HSizing = "Resize",
-          VSizing = "AnchorToBottom"
+          --VSizing = "AnchorToBottom"
+          VSizing = "Resize"
         },
         {
           Id = "idEditValue",

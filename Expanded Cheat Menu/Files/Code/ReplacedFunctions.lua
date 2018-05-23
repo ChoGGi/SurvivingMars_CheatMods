@@ -93,6 +93,18 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     return ChoGGi.OrigFuncs.DefenceTower_GameInit(self)
   end
 
+  --if it idles it'll go home, so we return my command till we remove thread
+  SaveOrigFunc("CargoShuttle","Idle")
+  function CargoShuttle:Idle()
+    local ChoGGi = ChoGGi
+    if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
+      return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
+    else
+      self:SetCommand("ChoGGi_FollowMouse")
+    end
+    Sleep(500)
+  end
+
   --meteor targeting
   SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
@@ -104,7 +116,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
       self.shoot_range = 25 * ChoGGi.Consts.guim
       self.reload_time = const.HourDuration
       self.track_thread = false
-      self.ChoGGi_defence_threadD = CreateGameTimeThread(function()
+
+      self.defence_thread_DD = CreateGameTimeThread(function()
         while IsValid(self) and not self.destroyed do
           if self.working then
             if not self:ChoGGi_DefenceTickD(ChoGGi) then
@@ -115,6 +128,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
           end
         end
       end)
+
     end
     return ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
   end
@@ -406,7 +420,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   function SA_WaitMarsTime:StopWait()
     SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
-
+--[[
   --convert popups to console text
   SaveOrigFunc("ShowPopupNotification")
   function ShowPopupNotification(preset, params, bPersistable, parent)
@@ -444,7 +458,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
           context.async_signal = {}
         end
         local text = ChoGGi.CodeFuncs.Trans(presettext.text,context,true)
-        --[[
+
+
         text = ReplaceParam("number1",text)
         text = ReplaceParam("number2",text)
         text = ReplaceParam("effect",text)
@@ -456,7 +471,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         text = ReplaceParam("count",text)
         text = ReplaceParam("sponsor_name",text)
         text = ReplaceParam("commander_name",text)
-        --]]
 
         --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(" .. ChoGGi.CodeFuncs.Trans(params.colonist)) .. ")>")
 
@@ -470,8 +484,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
     end
     --return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
-
   end
+--]]
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
   --ChoGGi.CodeFuncs.Trans(temp.text,s)

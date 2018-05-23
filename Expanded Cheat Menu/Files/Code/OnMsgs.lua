@@ -6,8 +6,8 @@ function OnMsg.ClassesGenerate(classdefs)
   ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-  --custom dialogs
   ChoGGi.MsgFuncs.ShuttleControl_ClassesGenerate()
+  --custom dialogs
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
   ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
@@ -48,6 +48,7 @@ end
 function OnMsg.ClassesBuilt()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+  ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   --custom dialogs
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
@@ -684,6 +685,13 @@ function OnMsg.ChoGGi_Loaded()
   --needed for DroneResourceCarryAmount?
   UpdateDroneResourceUnits()
 
+  --clear out Temp settings
+  ChoGGi.Temp.DefenceTowerRocketDD = {}
+  ChoGGi.Temp.ShuttleRocketDD = {}
+  ChoGGi.Temp.CargoShuttleThreads = {}
+  ChoGGi.Temp.CargoShuttleScanningAnomaly = {}
+  ChoGGi.Temp.UnitPathingHandles = {}
+
   --remove all built-in actions
   UserActions.ClearGlobalTables()
   UserActions.Actions = {}
@@ -738,7 +746,11 @@ function OnMsg.ChoGGi_Loaded()
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
--------------------do the above stuff before
+
+
+-------------------do the above stuff before the below stuff
+
+
 
   --show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then
