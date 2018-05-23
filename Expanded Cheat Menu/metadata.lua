@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Cheat Menu Expanded v4.6 Test",
+	"title", "Cheat Menu Expanded v4.6",
 	"version", 46,
-	"saved", 1526817600,
+	"saved", 1526990400,
 	"description", "\nEnables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
     .. "There's a cheats section in most info panels on the right side of the screen."
     .. "\n\nF2: Toggle the cheats menu.."
@@ -22,6 +22,7 @@ return PlaceObj("ModDef", {
     .. "\nCtrl-Shift-E: Toggle editor mode."
     .. "\nCtrl-Alt-Shift-D: Delete object."
     .. "\nShift-Q: Clone selected object to mouse position."
+    .. "\nCtrl-Numpad . 2 3 enable gametime pathing markers on selected object, use Ctrl-Numpad 0 to remove."
     .. "\n\nobject = either the selected object or the object under the mouse cursor."
     .. "\n\nFor more info see: https://github.com/ChoGGi/SurvivingMars_CheatMods.",
 	"image", "CheatMenu.png",

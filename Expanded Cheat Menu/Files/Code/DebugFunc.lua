@@ -747,6 +747,8 @@ do --path markers
         end)
 
       end
+    else
+      ChoGGi.ComFuncs.MsgPopup("Select a moving object to see path.","Pathing")
     end
   end
 
