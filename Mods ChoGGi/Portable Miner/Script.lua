@@ -23,11 +23,26 @@ function OnMsg.ClassesGenerate()
     --color of bands
     custom_color = -13031651,
 
+    --custom_entity = "Lama",
+    --custom_entity = "Kosmonavt",
+    --custom_scale = 500, --100 is default size
+    --custom_anim = "playBasketball", --object:GetStates()
+    --custom_anim = "playTaiChi", --takes quite awhile, may want to increase mined amount or set limit on time
+    --custom_anim_idle = "layDying",
+
+    --set to false to use length of animation (these are in game time (i think at normal speed 1 is 1 millisecond)
+    --anim_time = false,
+    --idle_time = false,
+    anim_time = 1000,
+    idle_time = 1500,
+
+    --if you want the battery to drain
+    battery_hourly_drain_rate = 0,
+    --stuff for mining
     UpdateUI = BuildingDepositExploiterComponent.UpdateUI,
     last_serviced_time = 0,
     resource = "Metals",
     nearby_deposits = false,
-    battery_hourly_drain_rate = 0,
     accumulate_dust = true,
     notworking_sign = false,
     pooper_shooter = "Droneentrance",
@@ -40,10 +55,26 @@ function OnMsg.ClassesGenerate()
     rover_class = "PortableMiner",
   }
 
-
   function PortableMiner:GameInit()
     --give it a groundy looking colour
     self:SetColor3(self.custom_color)
+    if self.custom_entity then
+      self:ChangeEntity(self.custom_entity)
+    end
+    if self.custom_scale then
+      self:SetScale(self.custom_scale)
+    end
+    if self.custom_anim then
+      self.default_anim = self.custom_anim
+    else
+      self.default_anim = "attackIdle"
+    end
+    if self.custom_anim_idle then
+      self.default_anim_idle = self.custom_anim_idle
+    else
+      self.default_anim_idle = 0
+    end
+
     --dunno it was in attackrover
     self.name = self.display_name
 
@@ -151,7 +182,9 @@ function OnMsg.ClassesGenerate()
         --remove the sign
         self:ShowNotWorkingSign()
         --up n down n up n down
-        self:SetStateText("attackIdle")
+        self:SetStateText(self.default_anim)
+        Sleep(self.anim_time or self:TimeToAnimEnd())
+
         local mined
         --mine some shit
         if self.resource == "Concrete" then
@@ -172,12 +205,11 @@ function OnMsg.ClassesGenerate()
       end
     end
 
-    Sleep(1000)
     --if not idle state then make idle state
     if self:GetState() ~= 0 then
-      self:SetState("idle")
+      self:SetState(self.default_anim_idle)
     end
-    Sleep(1000)
+    Sleep(self.idle_time or self:TimeToAnimEnd())
     --self:SetCommand("Idle")
   end
 
