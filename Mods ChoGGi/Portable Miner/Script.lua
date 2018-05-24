@@ -5,7 +5,6 @@ function OnMsg.ClassesGenerate()
       "PinnableObject",
       "ComponentAttach",
       "Demolishable",
-
       "ResourceStockpileBase",
       "Constructable",
       --mining
@@ -87,11 +86,12 @@ function OnMsg.ClassesGenerate()
   function PortableMiner:ShowNotWorkingSign(bool)
     if bool then
       self.notworking_sign = true
-      self:AttachSign(true, "SignNotWorking")
+      --self:AttachSign(true, "SignNotWorking")
+      self:Attach(PlaceObject("SignNotWorking", nil, const.cfComponentAttach), self:GetSpotBeginIndex("Origin"))
       self:UpdateWorking(false)
     else
       self.notworking_sign = false
-      self:DestroyAttaches("BuildingSign")
+      self:DetachAllSigns()
       self:UpdateWorking(true)
     end
   end
@@ -101,21 +101,17 @@ function OnMsg.ClassesGenerate()
       --get to work
       self:SetCommand("Load")
       return true
-    else
+    elseif not self.ui_working and
       --check if stockpile is existing and full
-      if not self.ui_working and
-          (self:GetDist2D(self.stockpile) >= 5000 or
-          self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
-        self.ui_working = true
-      end
+        (self:GetDist2D(self.stockpile) >= 5000 or
+        self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
+      self.ui_working = true
       self:ShowNotWorkingSign()
     end
   end
 
   --called it Load so it uses the load resource icon in pins
   function PortableMiner:Load()
-    --stop wheels from turning, and little jerky movement
-    self:SetState("idle")
 
     if self.nearby_deposits then
       --remove removed stockpile
@@ -128,7 +124,7 @@ function OnMsg.ClassesGenerate()
           self.stockpile and self.stockpile.resource ~= self.resource then
         local stockpile = NearestObject(self:GetPos(),GetObjects({class="ResourceStockpile"}),5000)
 
-        if not stockpile or stockpile and stockpile.resource == self.resource then
+        if not stockpile or stockpile and stockpile.resource ~= self.resource then
           --plunk down a new res stockpile
           stockpile = PlaceObj("ResourceStockpile", {
             --time to get all humping robot on christmas
@@ -153,7 +149,7 @@ function OnMsg.ClassesGenerate()
         local mined
         --mine some shit
         if self.resource == "Concrete" then
-          mined = s:DigErUpConcrete(s.mine_amount)
+          mined = self:DigErUpConcrete(self.mine_amount)
         elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
           mined = self:DigErUpMetals(self.mine_amount)
         end
@@ -169,8 +165,11 @@ function OnMsg.ClassesGenerate()
         end
       end
     end
+
     Sleep(1000)
-    self:SetCommand("Idle")
+    self:SetState("idle")
+    Sleep(1000)
+    --self:SetCommand("Idle")
   end
 
   function PortableMiner:DigErUpMetals(amount)
@@ -226,7 +225,8 @@ function OnMsg.ClassesGenerate()
     return self.resource
   end
   function PortableMiner:GetExtractionShape()
-    return GetEntityCombinedShape("QuarryClosedShape")
+    --there's QuarryExcavator,QuarryClosedShape, and Quarry. but that won't get the whole thing from the center
+    return GetEntityCombinedShape("DomeMega")
   end
 
 end --ClassesGenerate
