@@ -86,7 +86,6 @@ function OnMsg.ClassesGenerate()
   function PortableMiner:ShowNotWorkingSign(bool)
     if bool then
       self.notworking_sign = true
-      --self:AttachSign(true, "SignNotWorking")
       self:Attach(PlaceObject("SignNotWorking", nil, const.cfComponentAttach), self:GetSpotBeginIndex("Origin"))
       self:UpdateWorking(false)
     else
@@ -121,10 +120,10 @@ function OnMsg.ClassesGenerate()
       --add new stockpile if none
       if not self.stockpile or
           self:GetDist2D(self.stockpile) >= 5000 or
-          self.stockpile and self.stockpile.resource ~= self.resource then
+          self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.Miner_Handle ~= self.handle) then
         local stockpile = NearestObject(self:GetPos(),GetObjects({class="ResourceStockpile"}),5000)
 
-        if not stockpile or stockpile and stockpile.resource ~= self.resource then
+        if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
           --plunk down a new res stockpile
           stockpile = PlaceObj("ResourceStockpile", {
             --time to get all humping robot on christmas
@@ -137,6 +136,7 @@ function OnMsg.ClassesGenerate()
         end
         --why doesn't this work in PlaceObj? needs happen after GameInit maybe?
         stockpile.max_z = 10
+        stockpile.Miner_Handle = self.handle
         self.stockpile = stockpile
       end
       --stops at 100 per stockpile
