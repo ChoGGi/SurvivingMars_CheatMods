@@ -1715,14 +1715,14 @@ function ChoGGi.CodeFuncs.SpawnShuttle(hub,which)
 end
 
 --only add unique template names
-function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,Parent,XT)
+function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT)
   if not (Name or Template or Table) then
     return
   end
   XT = XT or XTemplates
-  if not XT[Template][Name] or not XT[Template][Parent][Name] then
-    local temp = PlaceObj("XTemplateTemplate", {
-      "__context_of_kind", Table.__context_of_kind or "InfopanelObj",
+  if not XT[Template][1][Name] then
+    XT[Template][1][#XT[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+      --"__context_of_kind", Table.__context_of_kind or "InfopanelObj",
       "__template", Table.__template or "InfopanelActiveSection",
       "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
       "Title", Table.Title or "Placeholder",
@@ -1740,13 +1740,8 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,Parent,XT)
       })
     })
 
-    if Parent then
-      XT[Template][Parent][#XT[Template][Parent]+1] = temp
-      XT[Template][Parent][Name] = true
-    else
-      XT[Template][#XT[Template]+1] = temp
-      XT[Template][Name] = true
-    end
+    XT[Template][1][Name] = true
+    --temp.__context_of_kind = nil
 
 
   end

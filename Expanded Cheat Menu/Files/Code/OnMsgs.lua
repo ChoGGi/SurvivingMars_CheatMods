@@ -81,7 +81,7 @@ function OnMsg.ClassesBuilt()
 
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourceOverview",Table,1,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourceOverview",Table,XTemplates)
   end
 
   --part of dustdevil defence

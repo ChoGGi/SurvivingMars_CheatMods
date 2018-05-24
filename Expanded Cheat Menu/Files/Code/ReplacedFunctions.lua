@@ -74,6 +74,15 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 
+  SaveOrigFunc("Dome_Entrance","TraverseTunnel")
+  function Dome_Entrance:TraverseTunnel(unit, start_point, end_point, direction)
+
+    if self:GetParent().ChoGGi_EmptyColonists and unit.class == "Colonist" and direction == 1 then
+      return false
+    end
+    return ChoGGi.OrigFuncs.Dome_Entrance_TraverseTunnel(self, unit, start_point, end_point, direction)
+  end
+
   SaveOrigFunc("DefenceTower","GameInit")
   function DefenceTower:GameInit()
     local ChoGGi = ChoGGi
@@ -97,22 +106,23 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("CargoShuttle","Idle")
   function CargoShuttle:Idle()
     local ChoGGi = ChoGGi
-    if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
-      return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
-    else
+    if type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
       self:SetCommand("ChoGGi_FollowMouse")
+      Sleep(250)
+    else
+      return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
     end
-    Sleep(250)
   end
 
   --meteor targeting
   SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
     local ChoGGi = ChoGGi
-    local IsValid = IsValid
-    local Sleep = Sleep
+
     --if it's an attack shuttle
     if ChoGGi.Temp.CargoShuttleThreads[self.handle] then
+      local IsValid = IsValid
+      local Sleep = Sleep
       self.shoot_range = 25 * ChoGGi.Consts.guim
       self.reload_time = const.HourDuration
       self.track_thread = false
@@ -128,9 +138,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
           end
         end
       end)
-
     end
-    return ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
+
+    ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
   end
 
   --larger trib/subsurfheater radius
