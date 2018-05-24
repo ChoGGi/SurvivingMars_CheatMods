@@ -243,24 +243,24 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
       --and if we move when we're too close it's jerky
       local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
       if newpos or dist or idle > 250 then
-        self.hover_height = 0
         --rest on ground
+        self.hover_height = 0
+
         --if idle is ticking up
         if idle > 250 then
           if not self.ChoGGi_Landed then
-            PlayFX("Land", "start", self)
             PlayFX("Dust", "start", self)
-
-            --self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-3500,3500),y+UICity:Random(-3500,3500))))
             self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-1500,1500),y+UICity:Random(-1500,1500))))
-            --self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000)))
             self.ChoGGi_Landed = self:GetPos()
+            Sleep(750)
             PlayFX("Dust", "end", self)
-            PlayFX("Land", "end", self)
-         elseif z ~= terrain.GetHeight(pos) then
-            --print("-------------z: " .. z .. " gt: " .. terrain.GetHeight(pos))
-            --check if shuttle is resting above ground
-            self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000)))
+          --10000 = flat ground (shuttle h and ground h and different below, so ignore)
+          elseif z >= 10000 and z ~= terrain.GetSurfaceHeight(pos) then
+            --if shuttle is resting above ground
+            PlayFX("Dust", "start", self)
+            self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000,0)))
+            Sleep(750)
+            PlayFX("Dust", "end", self)
           end
           Sleep(500+idle)
         end
@@ -270,15 +270,18 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           --reset idle count
           idle = 0
           --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
-          self.hover_height = 1000
+          self.hover_height = 1500
           --from pinsdlg
           if newpos then
-            path = self:CalcPath(pos, newpos)
             --want to be kinda random (when there's lots of shuttles about)
-            --path = self:CalcPath(
-            --  point(x+UICity:Random(-2500,2500),y+UICity:Random(-2500,2500),1000),
-            --  point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1000)
-            --)
+            if #ChoGGi.Temp.CargoShuttleThreads > 10 then
+              path = self:CalcPath(
+                pos,
+                point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1500)
+              )
+            else
+              path = self:CalcPath(pos, newpos)
+            end
             newpos = nil
           end
           if self.ChoGGi_Landed then
@@ -319,7 +322,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           carried:SetCommand("Idle")
 
           self.ChoGGi_carriedObj = nil
-          self.hover_height = 1000
+          self.hover_height = 1500
 
         --PICKUP
         --elseif sel:IsKindOfClasses("ResourceStockpile", "SurfaceDepositGroup", "ResourcePile", "Unit") then
@@ -340,7 +343,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
             sel:SetPos(point(0,0,0))
             --make sure we know we have cargo
             self.ChoGGi_carriedObj = sel
-            self.hover_height = 1000
+            self.hover_height = 1500
           end
         end
       end --scanning/resource

@@ -84,7 +84,7 @@ function OnMsg.ClassesBuilt()
     ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourceOverview",Table,XTemplates)
   end
 
-  --part of dustdevil defence
+  --defence towers attack dustdevils
   function DefenceTower:DefenceTick_ChoGGi_Dust(ChoGGi)
     if ChoGGi.UserSettings.DefenceTowersAttackDustDevils then
       return ChoGGi.CodeFuncs.DefenceTick(self,ChoGGi.Temp.DefenceTowerRocketDD)
@@ -341,6 +341,7 @@ do
     for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
       if not IsValid(HandleToObject[h]) then
         ChoGGi.Temp.CargoShuttleThreads[h] = nil
+        table.remove(ChoGGi.Temp.CargoShuttleThreads)
       end
     end
 
@@ -357,40 +358,21 @@ do
     end
 
     --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-    if UICity.labels.ChoGGi_GridElements then
-      ValidGridElements("ChoGGi_GridElements",UICity)
-      ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
-      ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
-    end
+    ValidGridElements("ChoGGi_GridElements",UICity)
+    ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
+    ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
 
   end
 end
---[[
-local function ClearPathingThreads(Class,GetObjects,empty_table)
-  local ChoGGi = ChoGGi
-  local DeleteThread = DeleteThread
-  local IsValid = IsValid
-  local Objs = GetObjects({class = Class}) or empty_table
-  for i = 1, #Objs do
-    local obj = ChoGGi.Temp.UnitPathingHandles[Objs[i].handle]
-    --thread exists and obj doesn't
-    if obj and not IsValid(obj.obj) then
-      DeleteThread(ChoGGi.Temp.UnitPathingHandles[Objs[i].handle].thread)
-      ChoGGi.Temp.UnitPathingHandles[Objs[i].handle] = nil
-    end
-  end
-end
---]]
+
 function OnMsg.NewHour()
-  local ChoGGi = ChoGGi
-  --local GetObjects = GetObjects
-  local empty_table = empty_table
-  --ClearPathingThreads("CargoShuttle",GetObjects,empty_table)
-  --ClearPathingThreads("Unit",GetObjects,empty_table)
 
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+    local ChoGGi = ChoGGi
     local UICity = UICity
+    local empty_table = empty_table
+
     --Hey. Do I preach at you when you're lying stoned in the gutter? No!
     local Table = UICity.labels.ResourceProducer or empty_table
     for i = 1, #Table do

@@ -1643,6 +1643,7 @@ function ChoGGi.CodeFuncs.RecallShuttlesHub(hub)
 
       if type(ChoGGi.Temp.CargoShuttleThreads[shuttle.handle]) == "boolean" then
         ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = nil
+        table.remove(ChoGGi.Temp.CargoShuttleThreads)
       end
       if shuttle.ChoGGi_FollowMouseShuttle then
         shuttle.ChoGGi_FollowMouseShuttle = nil
@@ -1687,11 +1688,14 @@ function ChoGGi.CodeFuncs.SpawnShuttle(hub,which)
         --do we attack dustdevils?
         if which then
           ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = true
+          --easy way to get amount of shuttles about
+          ChoGGi.Temp.CargoShuttleThreads[#ChoGGi.Temp.CargoShuttleThreads+1] = true
           shuttle:SetColor1(-9624026)
           shuttle:SetColor2(1)
           shuttle:SetColor3(-13892861)
         else
           ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = false
+          ChoGGi.Temp.CargoShuttleThreads[#ChoGGi.Temp.CargoShuttleThreads+1] = true
           shuttle:SetColor1(-16711941)
           shuttle:SetColor2(-16760065)
           shuttle:SetColor3(-1)

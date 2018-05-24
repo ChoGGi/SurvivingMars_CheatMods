@@ -598,20 +598,10 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 end
 
 function ChoGGi.MenuFuncs.SpawnShuttleRecall()
+  local ChoGGi = ChoGGi
   local hubs = GetObjects({class="ShuttleHub"}) or empty_table
   for i = 1, #hubs do
-    for _, s_i in pairs(hubs[i].shuttle_infos) do
-      local shuttle = s_i.shuttle_obj
-      if shuttle then
-        if type(ChoGGi.Temp.CargoShuttleThreads[shuttle.handle]) == "boolean" then
-          ChoGGi.Temp.CargoShuttleThreads[shuttle.handle] = nil
-        end
-        if shuttle.ChoGGi_FollowMouseShuttle then
-          shuttle.ChoGGi_FollowMouseShuttle = nil
-        end
-        shuttle:SetCommand("Idle")
-      end
-    end
+    ChoGGi.CodeFuncs.RecallShuttlesHub(hubs[i])
   end
 end
 

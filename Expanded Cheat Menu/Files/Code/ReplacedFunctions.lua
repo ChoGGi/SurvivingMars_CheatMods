@@ -74,15 +74,7 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 
-  SaveOrigFunc("Dome_Entrance","TraverseTunnel")
-  function Dome_Entrance:TraverseTunnel(unit, start_point, end_point, direction)
-
-    if self:GetParent().ChoGGi_EmptyColonists and unit.class == "Colonist" and direction == 1 then
-      return false
-    end
-    return ChoGGi.OrigFuncs.Dome_Entrance_TraverseTunnel(self, unit, start_point, end_point, direction)
-  end
-
+  --add anti dust devil functions to defence tower
   SaveOrigFunc("DefenceTower","GameInit")
   function DefenceTower:GameInit()
     local ChoGGi = ChoGGi
@@ -140,7 +132,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
       end)
     end
 
-    ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
+    return ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
   end
 
   --larger trib/subsurfheater radius
@@ -288,6 +280,60 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
+
+  --gives error when we make shuttles a pinnable object (Modifiable and PinnableObject don't like each other...)
+  SaveOrigFunc("LabelContainer","RemoveFromLabel")
+  function LabelContainer:RemoveFromLabel(label, obj, leave_modifiers)
+    --one-liner ifs: ewww
+    if not label or not obj then
+      return
+    end
+    local label_list = self.labels[label]
+    if label_list and table.remove_entry(label_list, obj) then
+      if not leave_modifiers then
+        local modifiers = self.label_modifiers[label]
+        if modifiers then
+          for id, mod in pairs(modifiers) do
+            --added to check for pinnable shuttles
+            if type(obj.UpdateModifier) == "function" then
+              obj:UpdateModifier("remove", mod, - mod.amount, - mod.percent)
+            end
+          end
+        end
+      end
+      return true
+    end
+  end
+  SaveOrigFunc("LabelContainer","AddToLabel")
+  function LabelContainer:AddToLabel(label, obj)
+    if not label or not obj then
+      return
+    end
+    local label_list = self.labels[label]
+    if label_list then
+      if not table.find(label_list, obj) then
+        --insert into label
+        label_list[#label_list + 1] = obj
+      else
+        --obj alraedy in label
+        --exit so we don't modify properties multiple times
+        return
+      end
+    else
+      label_list = { obj }
+      self.labels[label] = label_list
+    end
+    local modifiers = self.label_modifiers[label]
+    if modifiers then
+      for id, mod in pairs(modifiers) do
+        if type(obj.UpdateModifier) == "function" then
+          obj:UpdateModifier("add", mod, mod.amount, mod.percent)
+        end
+      end
+    end
+    return true
+  end
+
 end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
