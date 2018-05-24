@@ -13,13 +13,19 @@ function OnMsg.ClassesGenerate()
       "TerrainDepositExtractor",
 
     },
-    UpdateUI = BuildingDepositExploiterComponent.UpdateUI,
 
-    last_serviced_time = 0, --(TODO: is still needed?) moment the mine was last serviced by a working drone, or turned on
+    --how much to mine
+    mine_amount = 1 * const.ResourceScale,
+    --how much to store in res pile
+    max_res_amount = 100 * const.ResourceScale,
+    --mine once an hour
     building_update_time = const.HourDuration,
+    --color of bands
+    custom_color = -13031651,
+
+    UpdateUI = BuildingDepositExploiterComponent.UpdateUI,
+    last_serviced_time = 0,
     resource = "Metals",
-    mine_amount = 1000,
-    max_res_amount = 100000,
     nearby_deposits = false,
     battery_hourly_drain_rate = 0,
     accumulate_dust = true,
@@ -37,7 +43,7 @@ function OnMsg.ClassesGenerate()
 
   function PortableMiner:GameInit()
     --give it a groundy looking colour
-    self:SetColor3(-13031651)
+    self:SetColor3(self.custom_color)
     --dunno it was in attackrover
     self.name = self.display_name
 
