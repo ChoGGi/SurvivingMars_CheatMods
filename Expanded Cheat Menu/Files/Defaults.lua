@@ -44,7 +44,6 @@ end
 
 --stores defaults and constants
 ChoGGi.Defaults = {
-  --defaults:
   _VERSION = 0,
   ConsoleDim = true,
   ConsoleToggleHistory = true,
@@ -56,6 +55,7 @@ ChoGGi.Defaults = {
   UseLastOrientation = true,
   ShowCheatsMenu = true,
   ShowShuttleControls = true,
+  ShowCallRocket = true,
   DebugGridSize = 10,
   DebugGridOpacity = 15,
 --stores custom settings for each building
@@ -321,7 +321,7 @@ function ChoGGi.MsgFuncs.Defaults_OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts
 
-  --if setting doesn't exist then make it default
+  --if setting doesn't exist then add default
   for Key,Value in pairs(ChoGGi.Defaults) do
     if type(ChoGGi.UserSettings[Key]) == "nil" then
       ChoGGi.UserSettings[Key] = Value

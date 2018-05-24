@@ -42,7 +42,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipShuttle",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipShuttle",Table,nil,XTemplates)
 --spawn shuttle buttons for hub and return shuttle button
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -58,7 +58,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ChoGGi.CodeFuncs.SpawnShuttle(context,true)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","customShuttleHub",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","customShuttleHub",Table,nil,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -74,7 +74,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ChoGGi.CodeFuncs.SpawnShuttle(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","customShuttleHub",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","customShuttleHub",Table,nil,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -91,7 +91,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ChoGGi.CodeFuncs.RecallShuttlesHub(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","customShuttleHub",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","customShuttleHub",Table,nil,XTemplates)
 --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
     Table = {
@@ -115,7 +115,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ObjModified(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourcePile",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourcePile",Table,nil,XTemplates)
     --
     Table = {
       __context_of_kind = "InfopanelObj",
@@ -139,7 +139,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ObjModified(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","ipRover",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","ipRover",Table,nil,XTemplates)
     --
     Table = {
       __context_of_kind = "InfopanelObj",
@@ -163,7 +163,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ObjModified(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","ipDrone",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","ipDrone",Table,nil,XTemplates)
     --
     Table = {
       __context_of_kind = "InfopanelObj",
@@ -187,7 +187,7 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         ObjModified(context)
       end
     }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane4","sectionStorage",Table,XTemplates)
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane4","sectionStorage",Table,nil,XTemplates)
   end
   --[[
   --adds to the bottom of every selection :) :(

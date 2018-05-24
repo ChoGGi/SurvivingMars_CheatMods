@@ -27,7 +27,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
   local file = ChoGGi.SettingsFile
   local old = file .. ".old"
 
-  local ResetSettings = function()
+  local CallBackFunc = function()
 
     ThreadLockKey(old)
     AsyncCopyFile(file,old)
@@ -38,7 +38,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
     ThreadUnlockKey(file)
 
     --so we don't save file on exit
-    ChoGGi.Temp.CallBackFunc = true
+    ChoGGi.Temp.ResetSettings = true
 
     ChoGGi.ComFuncs.MsgPopup("Restart to take effect.","Reset!",UsualIcon)
 

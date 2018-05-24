@@ -44,6 +44,7 @@ end
 
 --use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
+
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
@@ -54,6 +55,33 @@ function OnMsg.ClassesBuilt()
   ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesBuilt()
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
+  end
+
+  --add a call rocket button to resource overview
+  if ChoGGi.UserSettings.ShowCallRocket then
+    local Table = {
+      __context_of_kind = "ResourceOverview",
+      __template = "InfopanelSection",
+      Icon = "UI/Icons/Sections/spaceship.tga",
+      Title = "Call Empty Rocket",
+      RolloverTitle = "Calls an empty rocket to Mars.",
+      RolloverHint = "If you want a rocket, but you don't want any cargo along with it.",
+      func = function()
+
+        local CallBackFunc = function()
+          UICity:OrderLanding()
+        end
+
+        ChoGGi.ComFuncs.QuestionBox(
+          "Are you sure you want to launch a rocket?",
+          CallBackFunc,
+          "Launch rocket to Mars.",
+          "Yamato Hasshin!"
+        )
+
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourceOverview",Table,1,XTemplates)
   end
 
   --part of dustdevil defence
