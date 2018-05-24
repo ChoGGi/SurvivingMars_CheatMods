@@ -167,7 +167,10 @@ function OnMsg.ClassesGenerate()
     end
 
     Sleep(1000)
-    self:SetState("idle")
+    --if not idle state then make idle state
+    if self:GetState() ~= 0 then
+      self:SetState("idle")
+    end
     Sleep(1000)
     --self:SetCommand("Idle")
   end

@@ -126,6 +126,17 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
       objs[i]:InterruptCommand()
     end
   end
+
+  objs = UICity.labels.Colonist or empty_table
+  for i = 1, #objs do
+    --only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
+    if objs[i]:IsValidPos() and not objs[i]:GetPath() then
+      --too close and they keep doing the human centipede
+      local x,y,_ = objs[i]:GetVisualPosXYZ()
+      objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+5000,y+5000)))
+    end
+  end
+
 end
 
 function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
