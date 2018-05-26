@@ -1,6 +1,6 @@
-Adds a new building called Solaria Telepresence, remote control factories and mines (with reduced production).
+### Adds a new building called Solaria Telepresence, remote control factories and mines (with reduced production).
 
-Buttons added to Solaria Telepresence:
+##### Buttons added to Solaria Telepresence:
 
 Control Building
 >Shows list of buildings for telepresence viewing.
@@ -14,7 +14,7 @@ Attached Building
 >View controlled building.
 
 
-Production amounts (not upgraded, workers have no specializations):
+##### Production amounts (not upgraded, workers have no specializations):
 
 Metal extractor
 12
