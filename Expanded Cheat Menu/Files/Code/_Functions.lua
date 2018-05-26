@@ -19,7 +19,7 @@ do --for those that don't know do*end is a way of keeping "local" local to the d
   function restart()quit("restart")end
   reboot = restart
   exit = quit
-  trans = ChoGGi.CodeFuncs.Trans
+  trans = ChoGGi.CodeFuncs.Trans --works with userdata or index (like _InternalTranslate should?)
   mh = GetTerrainCursorObjSel
   mc = GetPreciseCursorObj
   m = SelectionMouseObj
@@ -1076,7 +1076,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
           if Parent then
-            local Attaches = tab[i].GetAttaches and tab[i]:GetAttaches() or empty_table
+            local Attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches() or empty_table
             for j = 1, #Attaches do
               if Attaches[j].class == obj.class then
                 if choice[1].check2 then

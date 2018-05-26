@@ -111,7 +111,7 @@ function OnMsg.ClassesBuilt()
     })
 
     --this adds a button to the resource overview that only shows when hour is over 10
-    --it needs the [1] or it takes over the whole screen (it's only needed for ipResourceOverview not the section ones)
+    --it needs the [1] or it takes over the whole screen (it's usually only needed for ipResourceOverview not the section ones)
     XTemplates.ipResourceOverview[1][#XTemplates.ipResourceOverview[1]+1] = PlaceObj("XTemplateTemplate", {
 
       --added to the resource overview panel

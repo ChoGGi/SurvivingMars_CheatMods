@@ -15,9 +15,10 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesPreprocess()
   local c = CargoShuttle
   c.ChoGGi_DefenceTickD = false
 
-  --causes error in log :(
-  --[LUA ERROR] Mars/Lua/LabelContainer.lua:36: attempt to call a nil value (method 'UpdateModifier')
   c.__parents[#c.__parents] = "PinnableObject"
+  --c.__parents[#c.__parents] = "Vehicle"
+  --c.__parents[#c.__parents] = "CityObject"
+  --c.__parents[#c.__parents] = "NightLightObject"
 
 end
 
@@ -213,110 +214,53 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   end
 
   --set control to follow mouse click
-  function CargoShuttle:OnSelected()
-    self:SetCommand("ChoGGi_FollowMouseClick")
-  end
+  if type(ChoGGi.Temp.Testing) == "function" then
+    function CargoShuttle:OnSelected()
+      ChoGGi.Temp.ShuttleClickerControl = true
+      self:SetCommand("ChoGGi_FollowMouseClick")
+    end
 
-  function CargoShuttle:ChoGGi_FollowMouseClick()
-    self:ChoGGi_IsFollower()
-    local Sleep = Sleep
-    local point = point
-    repeat
-      local sel = SelectedObj
-      local pos = self:GetVisualPos()
-      local dest = GetTerrainCursor()
-      local x = pos:x()
-      local y = pos:y()
-      local z = pos:z()
-      --don't try to fly if pos or dest aren't different (spams log)
-      local path = self:CalcPath(pos, dest)
-      local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
-      Sleep(1000)
-    until (GameTime() - self.timenow > 2000000) or not self.ChoGGi_FollowMouseShuttle
+    function CargoShuttle:ChoGGi_FollowMouseClick()
+      --not one of mine
+      self:ChoGGi_IsFollower()
+    print("ChoGGi_FollowMouseClick")
+
+      local PlayFX = PlayFX
+      local Sleep = Sleep
+      local ChoGGi = ChoGGi
+      local terrain = terrain
+      repeat
+        local x,y,z = self:GetVisualPosXYZ()
+        local dest = GetTerrainCursor()
+
+        self:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+        Sleep(1000)
+      until (GameTime() - self.timenow > 2000000) or not self.ChoGGi_FollowMouseShuttle
+    end
   end
 
 --	Movable.Goto(object, pt) -- Unit.Goto is a command, use this instead for direct control
 
   --get shuttle to follow mouse
   function CargoShuttle:ChoGGi_FollowMouse(newpos)
-    --not one of mine
     self:ChoGGi_IsFollower()
 
-    local point = point
+    local ChoGGi = ChoGGi
     local PlayFX = PlayFX
-    local terrain = terrain
     local Sleep = Sleep
-    local GetObjects = GetObjects
-    local NearestObject = NearestObject
     local GameTime = GameTime
+    local terrain = terrain
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
     local idle = 0
     --always start it off as pickup
     self.ChoGGi_PickUp_Toggle = true
     repeat
-      local sel = SelectedObj
-      local pos = self:GetVisualPos()
+      local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
-      local x = pos:x()
-      local y = pos:y()
-      local z = pos:z()
-      --don't try to fly if pos or dest aren't different (spams log)
-      local path = self:CalcPath(pos, dest)
-      local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
-      --check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
-      --and if we move when we're too close it's jerky
-      local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
-      if newpos or dist or idle > 250 then
-        --rest on ground
-        self.hover_height = 0
 
-        --if idle is ticking up
-        if idle > 250 then
-          if not self.ChoGGi_Landed then
-            PlayFX("Dust", "start", self)
-            self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-1500,1500),y+UICity:Random(-1500,1500))))
-            self.ChoGGi_Landed = self:GetPos()
-            Sleep(750)
-            PlayFX("Dust", "end", self)
-          --10000 = flat ground (shuttle h and ground h and different below, so ignore)
-          elseif z >= 10000 and z ~= terrain.GetSurfaceHeight(pos) then
-            --if shuttle is resting above ground
-            PlayFX("Dust", "start", self)
-            self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000,0)))
-            Sleep(750)
-            PlayFX("Dust", "end", self)
-          end
-          Sleep(500+idle)
-        end
-        --mouse moved far enough then wake up and fly
-        if newpos or dist then
-          --print("fly S")
-          --reset idle count
-          idle = 0
-          --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
-          self.hover_height = 1500
-          --from pinsdlg
-          if newpos then
-            --want to be kinda random (when there's lots of shuttles about)
-            if #ChoGGi.Temp.CargoShuttleThreads > 10 then
-              path = self:CalcPath(
-                pos,
-                point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1500)
-              )
-            else
-              path = self:CalcPath(pos, newpos)
-            end
-            newpos = nil
-          end
-          if self.ChoGGi_Landed then
-            self.ChoGGi_Landed = nil
-            PlayFX("DomeExplosion", "start", self)
-          end
-          self:FollowPathCmd(path)
-        end
-      end
+      self:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,point(x,y,z),x,y,z,dest,idle,newpos)
       --scanning/resource
-      self:SelectedObject(ChoGGi,sel)
+      self:ChoGGi_SelectedObject(ChoGGi,SelectedObj)
       --idle = idle + 1
       idle = idle + 10
       Sleep(250 + idle)
@@ -328,7 +272,68 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:SelectedObject(ChoGGi,sel)
+  function CargoShuttle:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+    if not dest then
+      return
+    end
+    --don't try to fly if pos or dest aren't different (spams log)
+    local path = self:CalcPath(pos, dest)
+    local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
+    --check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
+    --and if we move when we're too close it's jerky
+    local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
+    if newpos or dist or idle > 250 then
+      --rest on ground
+      self.hover_height = 0
+
+      --if idle is ticking up
+      if idle > 250 then
+        if not self.ChoGGi_Landed then
+          PlayFX("Dust", "start", self)
+          self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-1500,1500),y+UICity:Random(-1500,1500))))
+          self.ChoGGi_Landed = self:GetPos()
+          Sleep(750)
+          PlayFX("Dust", "end", self)
+        --10000 = flat ground (shuttle h and ground h and different below, so ignore)
+        elseif z >= 10000 and z ~= terrain.GetSurfaceHeight(pos) then
+          --if shuttle is resting above ground
+          PlayFX("Dust", "start", self)
+          self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000,0)))
+          Sleep(750)
+          PlayFX("Dust", "end", self)
+        end
+        Sleep(500+idle)
+      end
+      --mouse moved far enough then wake up and fly
+      if newpos or dist then
+        --print("fly S")
+        --reset idle count
+        idle = 0
+        --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
+        self.hover_height = 1500
+        --from pinsdlg
+        if newpos then
+          --want to be kinda random (when there's lots of shuttles about)
+          if #ChoGGi.Temp.CargoShuttleThreads > 10 then
+            path = self:CalcPath(
+              pos,
+              point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1500)
+            )
+          else
+            path = self:CalcPath(pos, newpos)
+          end
+          newpos = nil
+        end
+        if self.ChoGGi_Landed then
+          self.ChoGGi_Landed = nil
+          PlayFX("DomeExplosion", "start", self)
+        end
+        self:FollowPathCmd(path)
+      end
+    end
+  end
+
+  function CargoShuttle:ChoGGi_SelectedObject(ChoGGi,sel)
     if sel and sel ~= self then
       --Anomaly scanning
       if sel:IsKindOf("SubsurfaceAnomaly") then

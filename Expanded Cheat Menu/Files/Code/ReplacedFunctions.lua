@@ -340,6 +340,21 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  if type(ChoGGi.Temp.Testing) == "function" then
+    SaveOrigFunc("terminal","MouseEvent")
+    function terminal.MouseEvent(event, ...)
+      --local ChoGGi = ChoGGi
+      if ChoGGi.Temp.ShuttleClickerControl then
+        local _, button = ...
+        --that's a rightclick
+        if event == "OnMouseButtonDown" and button == "R" then
+          ChoGGi.Temp.ShuttleClickerPos = GetTerrainCursor()
+        end
+      end
+      return ChoGGi.OrigFuncs.terminal_MouseEvent(event, ...)
+    end
+  end
+
   --gives an error when we spawn shuttle since i'm using a fake task
   SaveOrigFunc("CargoShuttle","OnTaskAssigned")
   function CargoShuttle:OnTaskAssigned()
@@ -847,7 +862,7 @@ end
   SaveOrigFunc("Examine","SetObj")
   function Examine:SetObj(o)
     ChoGGi.OrigFuncs.Examine_SetObj(self,o)
-    local attaches = type(o) == "table" and o.GetAttaches and o:GetAttaches()
+    local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
     local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
     local hint = "Opens attachments in new examine window."
     local name = type(o) == "table" and o.class
@@ -871,7 +886,7 @@ end
 
     function self.idAttaches.OnButtonPressed()
       if type(self.obj) == "table" then
-        if self.obj.GetAttaches then
+        if type(self.obj.GetAttaches) == "function" then
           ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
         end
       else

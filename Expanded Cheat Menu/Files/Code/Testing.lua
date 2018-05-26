@@ -10,7 +10,7 @@ if type(ChoGGi.Temp.Testing) == "function" then
 OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
 ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-local Attaches = s.GetAttaches and s:GetAttaches() or empty_table
+local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches() or empty_table
 for i = #Attaches, 1, -1 do
   local Colonist = Attaches[i]
   if Colonist.class == "Colonist" then

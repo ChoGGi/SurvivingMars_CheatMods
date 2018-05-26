@@ -294,36 +294,40 @@ function OnMsg.SelectionAdded(Obj)
   end
 end
 
+--remove selected obj when nothing selected
 function OnMsg.SelectionRemoved()
   s = false
 end
 
-do
-  local IsValid = IsValid
-  local function ValidGridElements(Label,UICity)
-    local Table = UICity.labels[Label]
-    for i = #Table, 1, -1 do
-      if not IsValid(Table[i]) then
-        table.remove(Table,i)
-      end
+local function ValidGridElements(Label,UICity,IsValid)
+  Label = UICity.labels[Label]
+  for i = #Label, 1, -1 do
+    if not IsValid(Label[i]) then
+      table.remove(Label,i)
     end
   end
-  function OnMsg.NewDay() --newsol
-    local ChoGGi = ChoGGi
-    local UICity = UICity
+end
 
-    --clean up old handles
+function OnMsg.NewDay() --NewSol...
+  local ChoGGi = ChoGGi
+  local UICity = UICity
+  local IsValid = IsValid
+
+  --clean up old handles
+  if next(ChoGGi.Temp.CargoShuttleThreads) then
     for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
       if not IsValid(HandleToObject[h]) then
         ChoGGi.Temp.CargoShuttleThreads[h] = nil
-        table.remove(ChoGGi.Temp.CargoShuttleThreads)
       end
     end
+  end
 
-    --sorts cc list by dist to building
-    if ChoGGi.UserSettings.SortCommandCenterDist then
-      local blds = GetObjects({class="Building"})
-      for i = 1, #blds do
+  --sorts cc list by dist to building
+  if ChoGGi.UserSettings.SortCommandCenterDist then
+    local blds = GetObjects({class="Building"})
+    for i = 1, #blds do
+      --no sense in doing it with only one center
+      if #blds[i].command_centers > 1 then
         table.sort(blds[i].command_centers,
           function(a,b)
             return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",blds[i])
@@ -331,13 +335,13 @@ do
         )
       end
     end
-
-    --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-    ValidGridElements("ChoGGi_GridElements",UICity)
-    ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
-    ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
-
   end
+
+  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
+  ValidGridElements("ChoGGi_GridElements",UICity,IsValid)
+  ValidGridElements("ChoGGi_LifeSupportGridElement",UICity,IsValid)
+  ValidGridElements("ChoGGi_ElectricityGridElement",UICity,IsValid)
+
 end
 
 function OnMsg.NewHour()
