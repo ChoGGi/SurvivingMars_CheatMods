@@ -1,18 +1,58 @@
-### Adds a new building called Solaria Telepresence, remote control factories and mines (with reduced production).
+### Adds a new building called Solaria Telepresence; remote control factories and mines (with reduced production).
+```
+Currently it can control:
+Drone Factory
+Fungal Farm
+Fusion Reactor
+Metals Extractor
+Precious Metals Extractor
+
+Unfortunately Comcast was choosen as the offical internet of Mars:
+Performance and production take awhile to update.
+
+I could make it update faster, but this way seems better.
+I would've used Telus, but I think more people have heard of Comcast.
+
+This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
+```
 
 ##### Buttons added to Solaria Telepresence:
-
 ```
-Control Building
->Shows list of buildings for telepresence viewing.
->Double-click to enable remote control with this building, Double-right to view.
-Remove Controller
->Shows prompt asking to remove control
-Attached Buildings
->Shows list of all controlled buildings (for removing telepresence control).
->Double-right to view.
-Attached Building
->View controlled building.
+Remote Control Building:
+> Shows list of buildings for telepresence viewing.
+> Double-click to enable remote control with this building, Double-right to view.
+Remove Remote Control:
+> Shows prompt asking to remove control
+All Attached Buildings:
+> Shows list of all controlled buildings (for removing telepresence control).
+> Double-right to view.
+"Name of controlled building":
+> View controlled building.
+Solaria Telepresence:
+> View Solaria controlling selected building.
+```
+
+##### How to use:
+```
+Place building you want to control somewhere (next to a mine for example).
+Place a Solaria Telepresence inside of a dome.
+
+Click the Solaria, and select Remote Control Building.
+You'll now see a list of buildings to control.
+
+Double-right click to select and view building.
+Double-click to activate remote control.
+
+Set shifts on the remote building (the Solaria will use those to toggle its own shifts).
+
+That's it!
+
+There will now be a "Solaria Telepresence" button added to the controlled building.
+Use it to view the Solaria controlling it.
+
+If you want to remove control, select the Solaria controller, and click the "Remove Remote Control" button.
+
+All Solaria buildings also have a "All Attached Buildings" button, you can use this to remove or view.
 ```
 
 ##### Production amounts:
@@ -28,4 +68,12 @@ Telepresence
 2
 
 numbers do vary, but only by a few points
+```
+
+##### Known issues
+```
+
+This error in log whenever you take control of a building:
+[LUA ERROR] UIL.PushInterpolation: Invalid parameter table
+
 ```

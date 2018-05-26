@@ -135,7 +135,7 @@ function OnMsg.ClassesGenerate()
     self.ChoGGi_Remote_Controller = {
 		  building = Obj,
 		  handle = Obj.handle,
-		  workers = Obj.max_workers,
+		  workers = Obj.max_workers
     }
     self.max_workers = Obj.max_workers
 
@@ -144,14 +144,18 @@ function OnMsg.ClassesGenerate()
     --needed for not needing any workers
     Obj.max_workers = 0
     Obj.automation = 1
+
     --lower base prod to 0 (no workers no prod
-    Obj:GetProducerObj().production_per_day = 0
+    if type(Obj.GetProducerObj) == "function" then
+      Obj:GetProducerObj().production_per_day = 0
+    elseif Obj.electricity.production then
+      Obj.electricity.production = 0
+    end
 
     --turn them on if off
     RebuildInfopanel(self)
     self:SetUIWorking(true)
     Obj:SetUIWorking(true)
-
 
     ChoGGiX.ComFuncs.MsgPopup("Viewing: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
       "Solaria","UI/Icons/Upgrades/holographic_scanner_04.tga"
@@ -177,8 +181,14 @@ function OnMsg.ClassesGenerate()
       --update controlled building
       Obj.ChoGGi_Remote_Controlled = nil
       Obj.production_per_day = nil
-      local prod = Obj:GetProducerObj()
-      prod.production_per_day = prod.base_production_per_day
+
+      if type(Obj.GetProducerObj) == "function" then
+        local prod = Obj:GetProducerObj()
+        prod.production_per_day = prod.base_production_per_day
+      elseif Obj.electricity.production then
+        Obj.electricity.production = Obj.base_electricity_production
+      end
+
       Obj.max_workers = nil
       Obj.automation = nil
       Obj.auto_performance = nil
@@ -204,19 +214,34 @@ function OnMsg.ClassesGenerate()
         self.max_workers = nil
         return
       end
+
       --get amount of workers for shifts
       local shift = self.current_shift
       --if shift is closed then 0
       local workers = 0
+      --toggle Solaria shift based on controlled building
+      if Obj.closed_shifts[shift] then
+        self.closed_shifts[shift] = true
+      else
+        self.closed_shifts[shift] = false
+      end
+      --update perf for controlled
       if not self.closed_shifts[shift] then
         workers = #self.workers[shift]
         --amount of workers * perf_per_viewer = amount of perf (even idiots can do this job, make a filter for only idiots?)
         Obj.auto_performance = workers * self.perf_per_viewer
       else
+        --no workers no perf
         Obj.auto_performance = 0
       end
-      local prod = Obj:GetProducerObj()
-      prod.production_per_day = workers * (prod.base_production_per_day / 4)
+      --update prod
+      if type(Obj.GetProducerObj) == "function" then
+        local prod = Obj:GetProducerObj()
+        prod.production_per_day = workers * (prod.base_production_per_day / 4)
+      elseif Obj.electricity.production then
+        Obj.electricity.production = workers * (Obj.base_electricity_production / 4)
+      end
+
     --turn off Solaria if it isn't controlling
     elseif self.working then
       self:ToggleWorking()
@@ -228,7 +253,9 @@ function OnMsg.ClassesGenerate()
       self:RemoveBuilding()
     end
     Workplace.OnDestroyed(self)
-  end --ClassesGenerate
+  end
+
+end --ClassesGenerate
 
 function OnMsg.ClassesPostprocess()
   --add building to building template list
@@ -309,7 +336,7 @@ function OnMsg.ClassesBuilt()
               context:RemoveBuilding(building)
             end
             ChoGGiX.ComFuncs.QuestionBox(
-              "Are you sure you want to remove telepresence viewing from " .. ChoGGiX.CodeFuncs.Trans(building.display_name) .. " located at " .. tostring(building:GetVisualPos()),
+              "Are you sure you want to remove telepresence viewing from " .. context:BuildingName(building) .. " located at " .. tostring(building:GetVisualPos()),
               CallBackFunc,
               "Solaria Telepresence"
             )
@@ -356,7 +383,7 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "Workplace",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Anomaly_Event.tga",
-      "Title", "Telepresence Viewing",
+      "Title", "",
       "RolloverText", "",
       "RolloverTitle", "Telepresence",
       "RolloverHint",  "<left_click> Viewing",
@@ -364,9 +391,11 @@ function OnMsg.ClassesBuilt()
         --only show if on correct building and remote control is enabled
         if context.ChoGGi_Remote_Controller or context.ChoGGi_Remote_Controlled then
           if context.ChoGGi_Remote_Controller then
+            self:SetTitle(context:BuildingName(context.ChoGGi_Remote_Controller.building))
             self:SetRolloverText("Select and view controlled building.")
           elseif context.ChoGGi_Remote_Controlled then
-            self:SetRolloverText("Select and view controller building.")
+            self:SetTitle("Solaria Telepresence")
+            self:SetRolloverText("Select and view Solaria controller.")
           end
           self:SetVisible(true)
           self:SetMaxHeight()
@@ -397,11 +426,9 @@ function OnMsg.ClassesBuilt()
 end --ClassesBuilt
 
 function OnMsg.LoadGame()
-
   --store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
   local UICity = UICity
   if UICity and not UICity.ChoGGi_RemoteControlledBuildings then
     UICity.ChoGGi_RemoteControlledBuildings = 0
   end
-
 end
