@@ -38,14 +38,14 @@ function OnMsg.ClassesGenerate()
 
   --build and show a list of viable buildings
   function Solaria:ListBuildings(Which)
-  --maybe add Solaria to top of list for ease of ViewPos back
     local ChoGGiX = ChoGGiX
     local Table = UICity.labels.OutsideBuildings
-    local hint = "Double-click to " .. Which .. " remote control. Double-right click to view the building."
+    local hint = "\n\nDouble-right click to view selected list item building."
     local ItemList = {}
 
     --show list to add controller
     if Which == "activate" then
+      hint = "Double-click to remotely control building." .. hint
       --remove any we already control
       Table = FilterObjects({
         filter = function(Obj)
@@ -64,7 +64,7 @@ function OnMsg.ClassesGenerate()
       )
     --show controlled for remove list
     elseif Which == "remove" then
-      hint = hint .. "\n\nYou can remove control by either the building or the controlling Solaria."
+      hint = "Double-click to remove control of building." .. hint
       Table = FilterObjects({
         filter = function(Obj)
           if Obj.ChoGGiX_Remote_Controlled then
@@ -82,7 +82,7 @@ function OnMsg.ClassesGenerate()
         value = Table[i].handle, --probably don't need it...
         obj = Table[i], --same
         hint = pos, --something to provide a slight reference
-        func = pos, --for ViewPos func
+        func = Table[i], --for viewing object
       }
     end
 
@@ -93,11 +93,11 @@ function OnMsg.ClassesGenerate()
 
     --add controller for ease of movement
     ItemList[#ItemList+1] = {
-      text = " Solaria",
+      text = " Solaria Controller",
       value = self.handle,
       obj = self,
-      hint = "Solaria building",
-      func = self:GetVisualPos(),
+      hint = "Solaria control building.\nYou can't remove... Only view (or maybe seeing would be a better term).",
+      func = self,
     }
 
     --callback
@@ -113,7 +113,7 @@ function OnMsg.ClassesGenerate()
     end
 
     --CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
-    ChoGGiX.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Solaria Telepresence","Current: " .. hint,nil,nil,nil,nil,nil,6,ViewPos)
+    ChoGGiX.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Solaria Telepresence",hint,nil,nil,nil,nil,nil,6,ChoGGiX.CodeFuncs.ViewAndSelectObject)
   end
 
   --Obj bld being controlled, self = controller
@@ -125,6 +125,8 @@ function OnMsg.ClassesGenerate()
     if not IsValid(Obj) or Obj.handle == self.handle then
       return
     end
+    local UICity = UICity
+    UICity.ChoGGi_RemoteControlledBuildings = UICity.ChoGGi_RemoteControlledBuildings + 1
 
     --setup controller
     self.ChoGGiX_Remote_Controller = {
@@ -148,7 +150,7 @@ function OnMsg.ClassesGenerate()
     Obj:SetUIWorking(true)
 
 
-    ChoGGiX.ComFuncs.MsgPopup("Telepresence Viewing: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
+    ChoGGiX.ComFuncs.MsgPopup("Viewing: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
       "Solaria","UI/Icons/Upgrades/holographic_scanner_04.tga"
     )
   end
@@ -157,6 +159,9 @@ function OnMsg.ClassesGenerate()
     if not IsValid(Obj) or Obj.handle == self.handle then
       return
     end
+    local UICity = UICity
+    UICity.ChoGGi_RemoteControlledBuildings = UICity.ChoGGi_RemoteControlledBuildings - 1
+
     --update Solaria
     self.ChoGGiX_Remote_Controller = false
     self.max_workers = nil
@@ -172,7 +177,7 @@ function OnMsg.ClassesGenerate()
     Obj.automation = nil
     Obj.auto_performance = nil
 
-    ChoGGiX.ComFuncs.MsgPopup("Telepresence Removed: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
+    ChoGGiX.ComFuncs.MsgPopup("Removed: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
       "Solaria","UI/Icons/Upgrades/holographic_scanner_03.tga"
     )
   end
@@ -228,7 +233,7 @@ function OnMsg.ClassesPostprocess()
     'display_name_pl', "Solaria Telepresence",
     'description', "A telepresence VR building, remote control factories and mines (with reduced production).\nWorker amount is dependent on controlled building.\n\nTelepresence control may take up to a shift to propagate to controlled building.",
     'build_category', "Dome Services",
-    'display_icon', ChoGGiX.ModPath .. "/SolariaTelepresence.tga",
+    'display_icon', ChoGGiX.ModPath .. "/TheIncal.tga",
     'build_pos', 12,
     --'encyclopedia_image', "UI/Encyclopedia/VRWorkshop.tga",
     'label1', "InsideBuildings",
@@ -246,7 +251,6 @@ function OnMsg.ClassesPostprocess()
 end --ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
-  local ChoGGiX = ChoGGiX
   local XT = XTemplates
   local ObjModified = ObjModified
   XT = XT or XTemplates
@@ -256,18 +260,20 @@ function OnMsg.ClassesBuilt()
     XT.sectionWorkplace[#XT.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
-      "Icon", "UI/Icons/Upgrades/factory_ai_02.tga",
-      "Title", "Control Building",
-      "RolloverText", "Shows list of buildings for telepresence viewing.\nDouble-click to enable remote control with this building, Double-right to view.",
-      "RolloverTitle", "Info",
-      "RolloverHint",  "<left_click> Toggle setting",
+      "Icon", "",
+      "Title", "",
+      "RolloverText", "",
+      "RolloverTitle", "Telepresence",
+      "RolloverHint",  "",
       "OnContextUpdate", function(self, context)
         ---
         if context.ChoGGiX_Remote_Controller then
-          self:SetTitle("Remove Controller")
+          self:SetRolloverText("Remove the control of outside building from this building.")
+          self:SetTitle("Remove Remote Control")
           self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
         else
-          self:SetTitle("Control Building")
+          self:SetRolloverText("Shows list of buildings for telepresence control (Double-right click in list to select and view).")
+          self:SetTitle("Remote Control Building")
           self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
         end
         ---
@@ -288,7 +294,7 @@ function OnMsg.ClassesBuilt()
               context:RemoveBuilding(building)
             end
             ChoGGiX.ComFuncs.QuestionBox(
-              "Are you sure you want to remove telepresence viewing from " .. ChoGGiX.CodeFuncs.Trans(building.display_name),
+              "Are you sure you want to remove telepresence viewing from " .. ChoGGiX.CodeFuncs.Trans(building.display_name) .. " located at " .. tostring(building:GetVisualPos()),
               CallBackFunc,
               "Solaria Telepresence"
             )
@@ -304,10 +310,19 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Upgrades/build_2.tga",
-      "Title", "Attached Buildings",
-      "RolloverText", "Shows list of all controlled buildings (for removing telepresence control).\nDouble-right to view.",
-      "RolloverTitle", "Info",
+      "Title", "All Attached Buildings",
+      "RolloverText", "Shows list of all controlled buildings (for removal of telepresence control).\n\nDouble-right click list item to select and view.",
+      "RolloverTitle", "Telepresence",
       "RolloverHint",  "<left_click> Remove telepresence",
+      "OnContextUpdate", function(self, context)
+        if UICity.ChoGGi_RemoteControlledBuildings > 0 then
+          self:SetVisible(true)
+          self:SetMaxHeight()
+        else
+          self:SetVisible(false)
+          self:SetMaxHeight(0)
+        end
+      end,
     }, {
       PlaceObj("XTemplateFunc", {
         "name", "OnActivate(self, context)",
@@ -321,15 +336,30 @@ function OnMsg.ClassesBuilt()
       })
     })
 
-    --goto controlled building
+    --go to controlled/controller building
     XT.sectionWorkplace[#XT.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-      "__context_of_kind", "Solaria",
+      "__context_of_kind", "Workplace",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Anomaly_Event.tga",
-      "Title", "See Controlled Building",
-      "RolloverText", "Moves camera to controlled building.",
-      "RolloverTitle", "Info",
+      "Title", "Telepresence Viewing",
+      "RolloverText", "",
+      "RolloverTitle", "Telepresence",
       "RolloverHint",  "<left_click> Viewing",
+      "OnContextUpdate", function(self, context)
+        --only show if on correct building and remote control is enabled
+        if context.ChoGGiX_Remote_Controller or context.ChoGGiX_Remote_Controlled then
+          if context.ChoGGiX_Remote_Controller then
+            self:SetRolloverText("Select and view controlled building.")
+          elseif context.ChoGGiX_Remote_Controlled then
+            self:SetRolloverText("Select and view controller building.")
+          end
+          self:SetVisible(true)
+          self:SetMaxHeight()
+        else
+          self:SetVisible(false)
+          self:SetMaxHeight(0)
+        end
+      end,
     }, {
       PlaceObj("XTemplateFunc", {
         "name", "OnActivate(self, context)",
@@ -337,20 +367,26 @@ function OnMsg.ClassesBuilt()
           return parent.parent
         end,
         "func", function(self, context)
-          local con = context.ChoGGiX_Remote_Controller
-          if con then
-            ViewPos(con.building:GetVisualPos())
-          else
-            ChoGGiX.ComFuncs.MsgPopup("Nothing to view.","Solaria")
+          if context.ChoGGiX_Remote_Controller then
+            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGiX_Remote_Controller.building)
+          elseif context.ChoGGiX_Remote_Controlled then
+            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGiX_Remote_Controlled)
           end
+
         end
       })
     })
 
-  end
+  end --XTemplates
 
 end --ClassesBuilt
 
+function OnMsg.LoadGame()
 
+  --store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
+  local UICity = UICity
+  if UICity and not UICity.ChoGGi_RemoteControlledBuildings then
+    UICity.ChoGGi_RemoteControlledBuildings = 0
+  end
 
-
+end

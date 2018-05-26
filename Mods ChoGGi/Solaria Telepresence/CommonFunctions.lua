@@ -1,6 +1,6 @@
 --keep everything stored in
 ChoGGiX = {
-  email = "ECM@ChoGGiX.org",
+  email = "SolariaTelepresence@choggi.org",
   id = "ChoGGi_SolariaTelepresence",
   --orig funcs that we replace
   OrigFuncs = {},
@@ -19,14 +19,27 @@ ChoGGiX = {
   --temporary settings that aren't saved to SettingsFile
   Temp = {},
   --settings that are saved to SettingsFile
-  --[[
   UserSettings = {
-    BuildingSettings = {},
-    Transparency = {},
+    RemoveBuildingLimits = true
   },
-  --]]
 }
+
 ChoGGiX.ModPath = Mods[ChoGGiX.id].path
+
+--backup orginal function for later use (checks if we already have a backup, or else problems)
+function ChoGGiX.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  local ChoGGiX = ChoGGiX
+  if Func then
+    local newname = ClassOrFunc .. "_" .. Func
+    if not ChoGGiX.OrigFuncs[newname] then
+      ChoGGiX.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+    end
+  else
+    if not ChoGGiX.OrigFuncs[ClassOrFunc] then
+      ChoGGiX.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    end
+  end
+end
 
 function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()

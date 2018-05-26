@@ -51,6 +51,19 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 
 end
 
+function ChoGGi.MenuFuncs.LaunchEmptyRocket()
+  local CallBackFunc = function()
+    UICity:OrderLanding()
+  end
+
+  ChoGGi.ComFuncs.QuestionBox(
+    "Are you sure you want to launch an empty rocket?",
+    CallBackFunc,
+    "Launch rocket to Mars.",
+    "Yamato Hasshin!"
+  )
+end
+
 function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
   local DefaultSetting = ChoGGi.CodeFuncs.GetCargoCapacity()
   local ItemList = {

@@ -170,18 +170,11 @@ function OnMsg.ClassesGenerate()
           if rollovered or selected then
             local hint = item.text
             if item.value then
-              if type(item.value) == "userdata" then
-                hint = hint .. ": " .. ChoGGiX.CodeFuncs.Trans(item.value)
-              elseif item.value then
-                hint = hint .. ": " .. tostring(item.value)
-              end
+              hint = hint .. ": " .. tostring(item.value)
             end
-            if type(item.hint) == "userdata" then
-              hint = hint .. "\n\n" .. ChoGGiX.CodeFuncs.Trans(item.hint)
-            elseif item.hint then
-              hint = hint .. "\n\n" .. item.hint
+            if item.hint then
+              hint = hint .. "\n\n" .. tostring(item.hint)
             end
-            --self.parent.parent:SetHint(hint)
             self.parent:SetHint(hint)
           end
         end

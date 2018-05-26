@@ -10,6 +10,7 @@ return PlaceObj("ModDef", {
   "code", {
   "CommonFunctions.lua",
   "_Functions.lua",
+  "ReplacedFunctions.lua",
   "ListChoiceCustom.lua",
   "Work-WorkVRWorkshop.lua",
   "WorkVRWorkshop.lua",

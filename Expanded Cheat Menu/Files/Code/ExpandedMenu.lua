@@ -4,13 +4,21 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   --menus under Gameplay menu without a separate file
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
-  -------------rockets
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[99]Monitor Info",
     ChoGGi.MenuFuncs.MonitorInfo,
     nil,
     "Shows a list of updated information about your city.",
     "EV_OpenFirst.tga"
+  )
+
+  -------------rockets
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Rocket/Launch Empty Rocket",
+    ChoGGi.MenuFuncs.LaunchEmptyRocket,
+    nil,
+    "Launches an empty rocket to Mars.",
+    "change_height_up.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(

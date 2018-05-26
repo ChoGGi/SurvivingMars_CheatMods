@@ -1,3 +1,8 @@
+function ChoGGiX.CodeFuncs.ViewAndSelectObject(Obj)
+  ViewPos(Obj:GetVisualPos())
+  SelectObj(Obj)
+end
+
 function ChoGGiX.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
   local ChoGGiX = ChoGGiX
   local dlg = ChoGGiX_ListChoiceCustomDialog:new()
