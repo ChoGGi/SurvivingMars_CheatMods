@@ -28,6 +28,10 @@ All Attached Buildings:
 > Double-right to view.
 "Name of controlled building":
 > View controlled building.
+```
+
+##### Button added to controlled buildings:
+```
 Solaria Telepresence:
 > View Solaria controlling selected building.
 ```

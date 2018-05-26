@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --keep everything stored in
 ChoGGi = {
   email = "ECM@choggi.org",

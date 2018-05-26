@@ -71,12 +71,53 @@ function OnMsg.ClassesBuilt()
       PlaceObj("XTemplateTemplate", {
         "__template", "InfopanelSlider",
         "BindTo", "max_workers",
+        "Max", 25,
+        "min", 5,
+				"StepSize", 5, --change 5 per movement
+        "OnContextUpdate", function(self, context)
+          self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+        end
+      }),
+      PlaceObj("XTemplateTemplate", {
+        "__template", "InfopanelSlider",
+        "BindTo", "max_workers",
         --not sure how to limit amount?
 				"StepSize", 5, --change 5 per movement
         "OnContextUpdate", function(self, context)
           self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
         end
-      })
+      }),
+    })
+
+    --two sliders, one header
+    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+      "__context_of_kind", "Workplace",
+      "__template", "InfopanelSection",
+      "RolloverText", "Look ma it slides!",
+      "RolloverHintGamepad", "",
+      "RolloverTitle", " ",
+      "Title", " ", --updated below, can't be blank
+      "Icon", "UI/Icons/Sections/facility.tga",
+    }, {
+      PlaceObj("XTemplateTemplate", {
+        "__template", "InfopanelSlider",
+        "BindTo", "max_workers",
+        "Max", 25,
+        "min", 5,
+				"StepSize", 5, --change 5 per movement
+        "OnContextUpdate", function(self, context)
+          self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+        end
+      }),
+      PlaceObj("XTemplateTemplate", {
+        "__template", "InfopanelSlider",
+        "BindTo", "max_workers",
+        --not sure how to limit amount?
+				"StepSize", 5, --change 5 per movement
+        "OnContextUpdate", function(self, context)
+          self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+        end
+      }),
     })
 
     --this adds a button to the resource overview that only shows when hour is over 10

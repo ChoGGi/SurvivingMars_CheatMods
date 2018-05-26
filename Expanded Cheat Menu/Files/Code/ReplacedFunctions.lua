@@ -100,7 +100,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("CargoShuttle","Idle")
   function CargoShuttle:Idle()
     local ChoGGi = ChoGGi
-    if type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
+    if self.ChoGGi_FollowMouseShuttle then
       self:SetCommand("ChoGGi_FollowMouse")
       Sleep(250)
     else

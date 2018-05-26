@@ -28,17 +28,26 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
 --pick/drop button for shuttle
     local Table = {
       __context_of_kind = "CargoShuttle",
-      Icon = "UI/Icons/Sections/shuttle_1.tga",
-      Title = "Pickup/Drop Item",
+      Icon = "",
+      Title = "",
       RolloverTitle = "Pickup/Drop Item",
-      RolloverHint = "Follower Shuttles: Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (hopefully) next to it.",
+      RolloverHint = "Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (somewhat) next to it.",
       OnContextUpdate = function(self, context)
-        if not context.ChoGGi_PickUp_Toggle then
-          self:SetTitle("Drop Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
+        --only show when it's one of our shuttles
+        if context.ChoGGi_FollowMouseShuttle then
+          self:SetVisible(true)
+          self:SetMaxHeight()
         else
+          self:SetVisible(false)
+          self:SetMaxHeight(0)
+        end
+        --set title and icon
+        if context.ChoGGi_PickUp_Toggle then
           self:SetTitle("Pickup Item")
           self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+        else
+          self:SetTitle("Drop Item")
+          self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
         end
       end,
       func = function(self, context)
@@ -53,13 +62,9 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     Table = {
       __context_of_kind = "ShuttleHub",
       Icon = "UI/Icons/Sections/shuttle_3.tga",
-      Title = "SpawnAttacker",
+      Title = "Spawn Attacker",
       RolloverTitle = "Spawn Attacker",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
-      OnContextUpdate = function(self, context)
-        self:SetTitle("Spawn Attacker")
-        self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
-      end,
       func = function(self, context)
         ChoGGi.CodeFuncs.SpawnShuttle(context,true)
       end
@@ -69,13 +74,9 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     Table = {
       __context_of_kind = "ShuttleHub",
       Icon = "UI/Icons/Sections/shuttle_2.tga",
-      Title = "SpawnFriend",
+      Title = "Spawn Friend",
       RolloverTitle = "Spawn Friend",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
-      OnContextUpdate = function(self, context)
-        self:SetTitle("Spawn Friend")
-        self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-      end,
       func = function(self, context)
         ChoGGi.CodeFuncs.SpawnShuttle(context)
       end
@@ -85,14 +86,9 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     Table = {
       __context_of_kind = "ShuttleHub",
       Icon = "UI/Icons/Sections/shuttle_4.tga",
-      Title = "RecallShuttles",
+      Title = "Recall Shuttles",
       RolloverTitle = "Recall Shuttles",
       RolloverHint = "Recalls all shuttles you've spawned at this ShuttleHub.",
-      OnContextUpdate = function(self, context)
-        --carrying res
-        self:SetTitle("Recall Shuttles")
-        self:SetIcon("UI/Icons/Sections/shuttle_4.tga")
-      end,
       func = function(self, context)
         ChoGGi.CodeFuncs.RecallShuttlesHub(context)
       end
@@ -100,20 +96,25 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","customShuttleHub",Table,XTemplates)
 --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
+    local title1 = "Ignore Item"
+    local title2 = "Pickup Item"
+    local icon1 = "UI/Icons/Sections/shuttle_1.tga"
+    local icon2 = "UI/Icons/Sections/shuttle_2.tga"
+    local hint_marktitle1 = "Mark For Pickup"
+    local hint_marktitle2 = "Marked For Pickup"
     Table = {
       __context_of_kind = "ResourceStockpile",
-      Icon = "UI/Icons/Sections/shuttle_1.tga",
-      Title = "MarkForPickup",
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
         if not context.ChoGGi_PickUpItem then
-          self:SetTitle("Ignore Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+          self:SetTitle(title1)
+          self:SetRolloverTitle(hint_marktitle1)
+          self:SetIcon(icon1)
         else
-          --empty res we can pick up
-          self:SetTitle("Pickup Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+          self:SetTitle(title2)
+          self:SetRolloverTitle(hint_marktitle2)
+          self:SetIcon(icon2)
         end
       end,
       func = function(self, context)
@@ -124,44 +125,18 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane1","ipResourcePile",Table,XTemplates)
     --
     Table = {
-      __context_of_kind = "InfopanelObj",
-      Icon = "UI/Icons/Sections/shuttle_1.tga",
-      Title = "MarkForPickup",
+      __context_of_kind = "Drone",
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
         if not context.ChoGGi_PickUpItem then
-          --carrying res
-          self:SetTitle("Ignore Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+          self:SetTitle(title1)
+          self:SetRolloverTitle(hint_marktitle1)
+          self:SetIcon(icon1)
         else
-          --empty res we can pick up
-          self:SetTitle("Pickup Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
-        end
-      end,
-      func = function(self, context)
-        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
-        ObjModified(context)
-      end
-    }
-    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane2","ipRover",Table,XTemplates)
-    --
-    Table = {
-      __context_of_kind = "InfopanelObj",
-      Icon = "UI/Icons/Sections/shuttle_1.tga",
-      Title = "MarkForPickup",
-      RolloverTitle = "Mark For Pickup",
-      RolloverHint = hint_mark,
-      OnContextUpdate = function(self, context)
-        if not context.ChoGGi_PickUpItem then
-          --carrying res
-          self:SetTitle("Ignore Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
-        else
-          --empty res we can pick up
-          self:SetTitle("Pickup Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+          self:SetTitle(title2)
+          self:SetRolloverTitle(hint_marktitle2)
+          self:SetIcon(icon2)
         end
       end,
       func = function(self, context)
@@ -172,20 +147,40 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","ipDrone",Table,XTemplates)
     --
     Table = {
-      __context_of_kind = "InfopanelObj",
-      Icon = "UI/Icons/Sections/shuttle_1.tga",
-      Title = "MarkForPickup",
+      __context_of_kind = "BaseRover",
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
         if not context.ChoGGi_PickUpItem then
-          --carrying res
-          self:SetTitle("Ignore Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+          self:SetTitle(title1)
+          self:SetRolloverTitle(hint_marktitle1)
+          self:SetIcon(icon1)
         else
-          --empty res we can pick up
-          self:SetTitle("Pickup Item")
-          self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+          self:SetTitle(title2)
+          self:SetRolloverTitle(hint_marktitle2)
+          self:SetIcon(icon2)
+        end
+      end,
+      func = function(self, context)
+        context.ChoGGi_PickUpItem = not context.ChoGGi_PickUpItem
+        ObjModified(context)
+      end
+    }
+    ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane3","ipRover",Table,XTemplates)
+    --
+    Table = {
+      __context_of_kind = "UniversalStorageDepot",
+      RolloverTitle = "",
+      RolloverHint = hint_mark,
+      OnContextUpdate = function(self, context)
+        if not context.ChoGGi_PickUpItem then
+          self:SetTitle(title1)
+          self:SetRolloverTitle(hint_marktitle1)
+          self:SetIcon(icon1)
+        else
+          self:SetTitle(title2)
+          self:SetRolloverTitle(hint_marktitle2)
+          self:SetIcon(icon2)
         end
       end,
       func = function(self, context)
@@ -194,16 +189,14 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
       end
     }
     ChoGGi.CodeFuncs.AddXTemplate("ChoGGi_CustomPane4","sectionStorage",Table,XTemplates)
-  end
   --[[
   --adds to the bottom of every selection :) :(
   Infopanel
 
    --figure out how to move groups of res
   ipSurfaceDeposit
-   --or mech depots
-  sectionStorageMechanized
 --]]
+  end --if
 
   --dustdevil thread for rockets
   function CargoShuttle:ChoGGi_DefenceTickD(ChoGGi)
@@ -212,13 +205,43 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     end
   end
 
---				Movable.Goto(drone, pt) -- Unit.Goto is a command, use this instead for direct control
+  function CargoShuttle:ChoGGi_IsFollower()
+    --if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
+    if not self.ChoGGi_FollowMouseShuttle then
+      self:SetCommand("Idle")
+    end
+  end
+
+  --set control to follow mouse click
+  function CargoShuttle:OnSelected()
+    self:SetCommand("ChoGGi_FollowMouseClick")
+  end
+
+  function CargoShuttle:ChoGGi_FollowMouseClick()
+    self:ChoGGi_IsFollower()
+    local Sleep = Sleep
+    local point = point
+    repeat
+      local sel = SelectedObj
+      local pos = self:GetVisualPos()
+      local dest = GetTerrainCursor()
+      local x = pos:x()
+      local y = pos:y()
+      local z = pos:z()
+      --don't try to fly if pos or dest aren't different (spams log)
+      local path = self:CalcPath(pos, dest)
+      local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
+      Sleep(1000)
+    until (GameTime() - self.timenow > 2000000) or not self.ChoGGi_FollowMouseShuttle
+  end
+
+--	Movable.Goto(object, pt) -- Unit.Goto is a command, use this instead for direct control
 
   --get shuttle to follow mouse
   function CargoShuttle:ChoGGi_FollowMouse(newpos)
-    if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
-      return
-    end
+    --not one of mine
+    self:ChoGGi_IsFollower()
+
     local point = point
     local PlayFX = PlayFX
     local terrain = terrain
@@ -227,7 +250,6 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     local NearestObject = NearestObject
     local GameTime = GameTime
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
-    local timenow = GameTime()
     local idle = 0
     --always start it off as pickup
     self.ChoGGi_PickUp_Toggle = true
@@ -294,73 +316,85 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end
       --scanning/resource
-      if sel and sel ~= self then
-        --Anomaly scanning
-        if sel:IsKindOf("SubsurfaceAnomaly") then
-          --scan nearby SubsurfaceAnomaly
-          local anomaly = NearestObject(pos,GetObjects({class="SubsurfaceAnomaly"}),2000)
-          --make sure it's the right one, and not already being scanned by another
-          if anomaly and sel == anomaly and not ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
-            PlayFX("ArtificialSunCharge", "start", anomaly)
-            ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
-            ChoGGi.CodeFuncs.AnalyzeAnomaly(self, anomaly)
-            PlayFX("ArtificialSunCharge", "end", anomaly)
-          end
-        --resource moving
-
-        --are we carrying?
-        elseif self.ChoGGi_carriedObj and self.ChoGGi_PickUp_Toggle == false then
-          --we want to drop obj next to sel
-
-          self.hover_height = 100
-          local carried = self.ChoGGi_carriedObj
-
-          --local pass = GetPassablePointNearby(dest)
-          self:FollowPathCmd(self:CalcPath(pos,dest))
-          --move it
-
-          carried:SetPos(HexGetNearestCenter(dest))
-          --carried:SetPos(HexGetNearestCenter(pass))
-          carried:SetCommand("Idle")
-
-          self.ChoGGi_carriedObj = nil
-          self.hover_height = 1500
-
-        --PICKUP
-        --elseif sel:IsKindOfClasses("ResourceStockpile", "SurfaceDepositGroup", "ResourcePile", "Unit") then
-        elseif sel:IsKindOfClasses("ResourceStockpile", "ResourcePile", "Unit", "StorageDepot") then
-          --if not and it's marked for pickup and shuttle is set to pickup then grab it
-          if sel.ChoGGi_PickUpItem and self.ChoGGi_PickUp_Toggle then
-
-            --goto item
-            self.hover_height = 100
-            self:FollowPathCmd(self:CalcPath(pos,sel:GetVisualPos()))
-
-            --remove pickup mark from it
-            sel.ChoGGi_PickUpItem = nil
-            --PlayFX of beaming, transport one i think
-            Sleep(1000)
-
-            --"pick it up" (move it below the ground so it isn't visible and save the object locally)
-            sel:SetPos(point(0,0,0))
-            --make sure we know we have cargo
-            self.ChoGGi_carriedObj = sel
-            self.hover_height = 1500
-          end
-        end
-      end --scanning/resource
-
+      self:SelectedObject(ChoGGi,sel)
       --idle = idle + 1
       idle = idle + 10
       Sleep(250 + idle)
     --about 4 sols then send it back home (or if we recalled it)
-    until (GameTime() - timenow > 2000000) or type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) ~= "boolean"
-    --so it can set the GoHome command (we block it)
-    ChoGGi.Temp.CargoShuttleThreads[self.handle] = nil
-
+    until (GameTime() - self.timenow > 2000000) or not self.ChoGGi_FollowMouseShuttle
+    --so it can set the GoHome command (we normally blocked it)
+    self.ChoGGi_FollowMouseShuttle = nil
+    --buh-bye little flying companion
     self:SetCommand("GoHome")
   end
 
+  function CargoShuttle:SelectedObject(ChoGGi,sel)
+    if sel and sel ~= self then
+      --Anomaly scanning
+      if sel:IsKindOf("SubsurfaceAnomaly") then
+        --scan nearby SubsurfaceAnomaly
+        local anomaly = NearestObject(pos,GetObjects({class="SubsurfaceAnomaly"}),2000)
+        --make sure it's the right one, and not already being scanned by another
+        if anomaly and sel == anomaly and not ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
+          PlayFX("ArtificialSunCharge", "start", anomaly)
+          ChoGGi.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
+          ChoGGi.CodeFuncs.AnalyzeAnomaly(self, anomaly)
+          PlayFX("ArtificialSunCharge", "end", anomaly)
+        end
+      --resource moving
+
+      --are we carrying?
+      elseif self.ChoGGi_carriedObj and self.ChoGGi_PickUp_Toggle == false then
+        --we want to drop obj next to sel
+
+        self.hover_height = 100
+        local carried = self.ChoGGi_carriedObj
+
+        --local pass = GetPassablePointNearby(dest)
+        self:FollowPathCmd(self:CalcPath(pos,dest))
+        --move it
+
+        --carried:SetPos(HexGetNearestCenter(dest))
+        carried:Detach()
+
+        --carried:SetPos(HexGetNearestCenter(pass))
+        if type(carried.Idle) == "function" then
+          carried:SetCommand("Idle")
+        end
+
+        self.ChoGGi_carriedObj = nil
+        --make it able to pick up again without having to press the button
+        self.ChoGGi_PickUp_Toggle = true
+        self.hover_height = 1500
+
+      --PICKUP
+      else
+        --if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
+        if sel.ChoGGi_PickUpItem and self.ChoGGi_PickUp_Toggle and not self.ChoGGi_carriedObj then
+
+          --goto item
+          self.hover_height = 100
+          self:FollowPathCmd(self:CalcPath(pos,sel:GetVisualPos()))
+
+          --remove pickup mark from it
+          sel.ChoGGi_PickUpItem = nil
+          --PlayFX of beaming, transport one i think
+          Sleep(1000)
+
+          --"pick it up" (move it below the ground so it isn't visible and save the object locally)
+          --sel:SetPos(point(0,0,0))
+          --actually picks it up woot!
+          self:Attach(sel,self:GetSpotBeginIndex("Top"))
+
+          --make sure we know we have cargo
+          self.ChoGGi_carriedObj = sel
+          self.hover_height = 1500
+        end
+      end
+    end --scanning/resource
+  end
+
+  --no ChoGGi_ prefix as defencetower also fires a rocket and uses this function name
   function CargoShuttle:FireRocket(_, target, rocket_class, luaobj)
     local pos = self:GetSpotPos(1)
     local angle, axis = self:GetSpotRotation(1)
