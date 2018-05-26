@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Sections/storage.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/rare_metals.tga"
 

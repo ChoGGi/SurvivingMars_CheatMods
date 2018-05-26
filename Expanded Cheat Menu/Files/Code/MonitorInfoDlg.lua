@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
 
   DefineClass.ChoGGi_MonitorInfoDlg = {

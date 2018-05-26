@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 --stuff only loaded when ChoGGi.Temp.Testing = true
 

@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --funcs under Gameplay menu without a separate file
 
 local UsualIcon = "UI/Icons/Sections/storage.tga"

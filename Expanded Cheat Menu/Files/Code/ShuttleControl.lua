@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.ShuttleControl_ClassesGenerate()
   --custom shuttletask
   DefineClass.ChoGGi_ShuttleFollowTask = {

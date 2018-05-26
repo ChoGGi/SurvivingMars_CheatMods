@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   --simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, also some local vars)
   DefineClass.ChoGGi_CursorBuilding = {

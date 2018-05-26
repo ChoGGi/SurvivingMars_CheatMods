@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(

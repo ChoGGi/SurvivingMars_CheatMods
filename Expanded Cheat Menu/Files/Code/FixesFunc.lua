@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local GetObjects = GetObjects
 ---------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()

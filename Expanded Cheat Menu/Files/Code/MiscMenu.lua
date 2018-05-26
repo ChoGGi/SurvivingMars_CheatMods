@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local icon = "new_city.tga"
 
 function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()

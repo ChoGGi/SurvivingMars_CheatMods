@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
   DefineClass.ChoGGi_ObjectManipulator = {

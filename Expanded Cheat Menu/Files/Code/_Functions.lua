@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --any funcs called from Code/*
 
 do --for those that don't know do*end is a way of keeping "local" local to the do

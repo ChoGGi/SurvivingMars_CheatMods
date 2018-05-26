@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --stores default values and some tables
 
 --useful lists

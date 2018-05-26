@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local icon = "ReportBug.tga"
 
 function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()

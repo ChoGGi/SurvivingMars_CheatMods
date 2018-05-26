@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
 function ChoGGi.MenuFuncs.OpenModEditor()

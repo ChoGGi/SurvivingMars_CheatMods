@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
 local UsualIcon2 = "UI/Icons/Sections/storage.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"

@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/IPButtons/drone.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"

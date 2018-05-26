@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
 function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()

@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
 
   DefineClass.ChoGGi_ExecCodeDlg = {

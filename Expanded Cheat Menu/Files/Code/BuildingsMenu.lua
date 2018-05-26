@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local icon = "Cube.tga"
 
 function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()

@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()

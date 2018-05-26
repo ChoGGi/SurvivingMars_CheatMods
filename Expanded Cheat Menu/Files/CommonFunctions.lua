@@ -1,3 +1,6 @@
+--See LICENSE for terms
+
+
 --[[
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)

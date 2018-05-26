@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
   DefineClass.ChoGGi_ListChoiceCustomDialog = {

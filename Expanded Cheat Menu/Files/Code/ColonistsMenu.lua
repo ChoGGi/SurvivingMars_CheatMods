@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local icon = "AlignSel.tga"
 local icon2 = "Cube.tga"
 

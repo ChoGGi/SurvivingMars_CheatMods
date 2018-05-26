@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local iconD = "ShowAll.tga"
 local iconRC = "HostGame.tga"
 

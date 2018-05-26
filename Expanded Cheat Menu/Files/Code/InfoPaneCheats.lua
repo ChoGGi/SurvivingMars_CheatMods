@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --add items to the cheats pane
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 

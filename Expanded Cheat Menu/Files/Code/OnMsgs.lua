@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 --i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
 --use this message to mess with the classdefs (before classes are built)

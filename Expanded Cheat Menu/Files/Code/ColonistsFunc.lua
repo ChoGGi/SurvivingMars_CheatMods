@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
