@@ -33,9 +33,12 @@ function OnMsg.NewDay() --newsol
   local UICity = UICity
 
   --clean up old handles
-  for h,_ in pairs(ChoGGiX.Temp.CargoShuttleThreads) do
-    if not IsValid(HandleToObject[h]) then
-      ChoGGiX.Temp.CargoShuttleThreads[h] = nil
+  if next(ChoGGiX.Temp.CargoShuttleThreads) then
+    for h,_ in pairs(ChoGGiX.Temp.CargoShuttleThreads) do
+      if not IsValid(HandleToObject[h]) then
+        ChoGGiX.Temp.CargoShuttleThreads[h] = nil
+      end
     end
   end
+
 end

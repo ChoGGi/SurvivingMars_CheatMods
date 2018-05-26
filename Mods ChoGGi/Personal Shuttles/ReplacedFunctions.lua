@@ -1,26 +1,28 @@
 local SaveOrigFunc = ChoGGiX.ComFuncs.SaveOrigFunc
 
 function ChoGGiX.MsgFuncs.ReplacedFunctions_ClassesGenerate()
+
   --if it idles it'll go home, so we return my command till we remove thread
   SaveOrigFunc("CargoShuttle","Idle")
   function CargoShuttle:Idle()
     local ChoGGiX = ChoGGiX
-    if not type(ChoGGiX.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
-      return ChoGGiX.OrigFuncs.CargoShuttle_Idle(self)
+    if self.ChoGGiX_FollowMouseShuttle then
+      self:SetCommand("ChoGGi_FollowMouse")
+      Sleep(250)
     else
-      self:SetCommand("ChoGGiX_FollowMouse")
+      return ChoGGiX.OrigFuncs.CargoShuttle_Idle(self)
     end
-    Sleep(250)
   end
 
   --meteor targeting
   SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
     local ChoGGiX = ChoGGiX
-    local IsValid = IsValid
-    local Sleep = Sleep
+
     --if it's an attack shuttle
     if ChoGGiX.Temp.CargoShuttleThreads[self.handle] then
+      local IsValid = IsValid
+      local Sleep = Sleep
       self.shoot_range = 25 * ChoGGiX.Consts.guim
       self.reload_time = const.HourDuration
       self.track_thread = false
@@ -36,10 +38,11 @@ function ChoGGiX.MsgFuncs.ReplacedFunctions_ClassesGenerate()
           end
         end
       end)
-
     end
+
     return ChoGGiX.OrigFuncs.CargoShuttle_GameInit(self)
   end
+
 end
 
 function ChoGGiX.MsgFuncs.ReplacedFunctions_ClassesBuilt()

@@ -39,12 +39,20 @@ function ChoGGiX.CodeFuncs.AnalyzeAnomaly(self,anomaly)
     end
   end
   self:PopAndCallDestructor()
+  ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = nil
 end
 function ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
 function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
+  local CreateGameTimeThread = CreateGameTimeThread
+  local Sleep = Sleep
+  local PlayFX = PlayFX
+
+  if type(AlreadyFired) ~= "table" then
+    print("Error: ShuttleRocketDD isn't a table")
+  end
   --list of dustdevils on map
   local hostiles = g_DustDevils or empty_table
   if IsValidThread(self.track_thread) then
@@ -76,11 +84,11 @@ function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
         self.meteor = obj
         self.is_firing = true
         --sleep till rocket explodes
-        CreateRealTimeThread(function()
+        CreateGameTimeThread(function()
           while rocket.move_thread do
             Sleep(500)
           end
-          if IsKindOf(obj,"BaseMeteor") then
+          if obj:IsKindOf("BaseMeteor") then
             --make it pretty
             PlayFX("AirExplosion", "start", obj, nil, obj:GetPos())
             Msg("MeteorIntercepted", obj)
@@ -102,7 +110,7 @@ function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
   end
   --remove only remove devil handles if they're actually gone
   if #AlreadyFired > 0 then
-    CreateRealTimeThread(function()
+    CreateGameTimeThread(function()
       --for i = 1, #AlreadyFired do
       for i = #AlreadyFired, 1, -1 do
         if not IsValid(AlreadyFired[i]) then
@@ -173,9 +181,13 @@ function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
           shuttle:SetColor2(-16760065)
           shuttle:SetColor3(-1)
         end
+        --easy way to get amount of shuttles about
+        ChoGGiX.Temp.CargoShuttleThreads[#ChoGGiX.Temp.CargoShuttleThreads+1] = true
         shuttle.ChoGGiX_FollowMouseShuttle = true
         --follow that cursor little minion
         shuttle:SetCommand("ChoGGiX_FollowMouse")
+        --we only allow it to fly for a certain amount (about 4 sols)
+        shuttle.timenow = GameTime()
         --return it so we can do viewpos on it for menu item
         return shuttle
       else
@@ -192,30 +204,57 @@ function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
 end
 
 --only add unique template names
-function ChoGGiX.CodeFuncs.AddXTemplate(Name,Template,Table,XT)
-  if not Name or Template or Table then
+function ChoGGiX.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
+  if not (Name or Template or Table) then
     return
   end
   XT = XT or XTemplates
-  if not XT[Template][Name] then
-    XT[Template][Name] = true
-    XT[Template][#XT[Template]+1] = PlaceObj("XTemplateTemplate", {
-      "__context_of_kind", Table.__context_of_kind or "InfopanelObj",
-      "__template", Table.__template or "InfopanelActiveSection",
-      "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-      "Title", Table.Title or "Placeholder",
-      "RolloverText", Table.RolloverText or "Info",
-      "RolloverTitle", Table.RolloverTitle or "Title",
-      "RolloverHint", Table.RolloverHint or "Hint",
-      "OnContextUpdate", Table.OnContextUpdate
-    }, {
-      PlaceObj("XTemplateFunc", {
-      "name", "OnActivate(self, context)",
-      "parent", function(parent, context)
-          return parent.parent
-        end,
-      "func", Table.func
+
+  if not InnerTable then
+    if not XT[Template][1][Name] then
+      XT[Template][1][Name] = true
+
+      XT[Template][1][#XT[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+        "__context_of_kind", Table.__context_of_kind or "Infopanel",
+        "__template", Table.__template or "InfopanelSection",
+        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+        "Title", Table.Title or "Placeholder",
+        "RolloverText", Table.RolloverText or "Info",
+        "RolloverTitle", Table.RolloverTitle or "Title",
+        "RolloverHint", Table.RolloverHint or "Hint",
+        "OnContextUpdate", Table.OnContextUpdate
+      }, {
+        PlaceObj("XTemplateFunc", {
+        "name", "OnActivate(self, context)",
+        "parent", function(parent, context)
+            return parent.parent
+          end,
+        "func", Table.func or "function() return end"
+        })
       })
-    })
+    end
+  else
+    if not XT[Template][Name] then
+      XT[Template][Name] = true
+
+      XT[Template][#XT[Template]+1] = PlaceObj("XTemplateTemplate", {
+        "__context_of_kind", Table.__context_of_kind or "Infopanel",
+        "__template", Table.__template or "InfopanelSection",
+        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+        "Title", Table.Title or "Placeholder",
+        "RolloverText", Table.RolloverText or "Info",
+        "RolloverTitle", Table.RolloverTitle or "Title",
+        "RolloverHint", Table.RolloverHint or "Hint",
+        "OnContextUpdate", Table.OnContextUpdate
+      }, {
+        PlaceObj("XTemplateFunc", {
+        "name", "OnActivate(self, context)",
+        "parent", function(parent, context)
+            return parent.parent
+          end,
+        "func", Table.func or "function() return end"
+        })
+      })
+    end
   end
 end

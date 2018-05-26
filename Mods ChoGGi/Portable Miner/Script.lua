@@ -1,3 +1,13 @@
+local MovePointAway = MovePointAway
+local PlaceObj = PlaceObj
+local Sleep = Sleep
+local GetObjects = GetObjects
+local NearestObject = NearestObject
+local Msg = Msg
+local GetEntityCombinedShape = GetEntityCombinedShape
+local DoneObject = DoneObject
+local PlaceObj = PlaceObj
+
 function OnMsg.ClassesGenerate()
   DefineClass.PortableMiner = {
     __parents = {
@@ -11,7 +21,6 @@ function OnMsg.ClassesGenerate()
       "ResourceProducer",
       "BuildingDepositExploiterComponent",
       "TerrainDepositExtractor",
-
     },
 
     --how much to mine
@@ -35,6 +44,9 @@ function OnMsg.ClassesGenerate()
     --idle_time = false,
     anim_time = 1000,
     idle_time = 1500,
+
+    --how close to the mine do we need to be
+    mine_dist = 1500,
 
     --if you want the battery to drain
     battery_hourly_drain_rate = 0,
@@ -100,8 +112,22 @@ function OnMsg.ClassesGenerate()
     self:SetCommand("Idle")
   end
 
+  function PortableMiner:IsReloading()
+    if self.ui_working and self:DepositNearby() then
+      --get to work
+      self:SetCommand("Load")
+      return true
+    elseif not self.ui_working and
+      --check if stockpile is existing and full
+        (self:GetDist2D(self.stockpile) >= 5000 or
+        self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
+      self.ui_working = true
+      self:ShowNotWorkingSign()
+    end
+  end
+
   function PortableMiner:DepositNearby()
-    local res = NearestObject(self:GetVisualPos(),GetObjects({class="Deposit"}),1500)
+    local res = NearestObject(self:GetVisualPos(),GetObjects({class="Deposit"}),self.mine_dist)
     if not res or res and (res:IsKindOf("SubsurfaceAnomaly") or res:IsKindOf("SubsurfaceDepositWater")) then
       self.nearby_deposits = false
       return false
@@ -132,20 +158,6 @@ function OnMsg.ClassesGenerate()
     end
   end
 
-  function PortableMiner:IsReloading()
-    if self.ui_working and self:DepositNearby() then
-      --get to work
-      self:SetCommand("Load")
-      return true
-    elseif not self.ui_working and
-      --check if stockpile is existing and full
-        (self:GetDist2D(self.stockpile) >= 5000 or
-        self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
-      self.ui_working = true
-      self:ShowNotWorkingSign()
-    end
-  end
-
   --called it Load so it uses the load resource icon in pins
   function PortableMiner:Load()
 
@@ -163,8 +175,10 @@ function OnMsg.ClassesGenerate()
         if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
           --plunk down a new res stockpile
           stockpile = PlaceObj("ResourceStockpile", {
+
             --time to get all humping robot on christmas
-            "Pos", self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)),
+            "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
+            --"Pos", ScalePoint(pt, scalex, scaley, scalez)(self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)),1000,1000),
             --find a way to get angle so we can move it back a bit
             "Angle", self:GetAngle(),
             "resource", self.resource,
@@ -236,7 +250,9 @@ function OnMsg.ClassesGenerate()
     end
 
     local info = self:GetRessourceInfo()
-    local shape = self:GetExtractionShape()
+    --local shape = self:GetExtractionShape()
+    --there's QuarryExcavator,QuarryClosedShape, and Quarry. but those won't get the whole thing from the center
+    local shape = GetEntityCombinedShape("DomeMega")
     if not info or not shape then
       return
     end
@@ -265,10 +281,9 @@ function OnMsg.ClassesGenerate()
   function PortableMiner:GetDepositResource()
     return self.resource
   end
-  function PortableMiner:GetExtractionShape()
-    --there's QuarryExcavator,QuarryClosedShape, and Quarry. but that won't get the whole thing from the center
-    return GetEntityCombinedShape("DomeMega")
-  end
+  --function PortableMiner:GetExtractionShape()
+  --  return GetEntityCombinedShape("DomeMega")
+  --end
 
 end --ClassesGenerate
 
@@ -277,21 +292,21 @@ function OnMsg.ClassesPostprocess()
   PlaceObj("BuildingTemplate",{
     "name","PortableMinerBuilding",
     "template_class","PortableMinerBuilding",
+    --pricey
     "construction_cost_Metals",40000,
     "construction_cost_MachineParts",40000,
     "construction_cost_Electronics",20000,
+
     "dome_forbidden",true,
-    "display_name","RC Portable Miner",
-    "display_name_pl","RC Portable Miner",
+    "display_name","RC Miner",
+    "display_name_pl","RC Miner",
     "description","Will slowly mine Metal or Concrete into a resource pile.",
     "build_category","Infrastructure",
     "display_icon","UI/Icons/Buildings/rover_combat.tga",
-    "build_pos",2,
-    --since attackrover doesn't have an entity use transport
-    "entity","RoverTransportBuilding",
     "encyclopedia_exclude",true,
     "on_off_button",false,
     "prio_button",false,
+    "entity","CombatRover",
     "palettes","AttackRoverBlue"
   })
 

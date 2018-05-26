@@ -207,7 +207,6 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   end
 
   function CargoShuttle:ChoGGi_IsFollower()
-    --if not type(ChoGGi.Temp.CargoShuttleThreads[self.handle]) == "boolean" then
     if not self.ChoGGi_FollowMouseShuttle then
       self:SetCommand("Idle")
     end
@@ -250,17 +249,26 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     local Sleep = Sleep
     local GameTime = GameTime
     local terrain = terrain
+    local DeleteThread = DeleteThread
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
     local idle = 0
     --always start it off as pickup
     self.ChoGGi_PickUp_Toggle = true
+    local dest_orig = false
+    local dest_orig_temp = false
+    local flightthread = false
     repeat
+
       local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
 
-      self:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,point(x,y,z),x,y,z,dest,idle,newpos)
+      idle,dest_orig_temp = self:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,DeleteThread,flightthread,point(x,y,z),x,y,z,dest,dest_orig,idle,newpos)
+      if dest_orig_temp then
+        dest_orig = dest_orig_temp
+      end
+
       --scanning/resource
-      self:ChoGGi_SelectedObject(ChoGGi,SelectedObj)
+      self:ChoGGi_SelectedObject(ChoGGi,PlayFX,SelectedObj,point(x,y,z),dest)
       --idle = idle + 1
       idle = idle + 10
       Sleep(250 + idle)
@@ -272,16 +280,24 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+  function CargoShuttle:ChoGGi_Goto(ChoGGi,PlayFX,terrain,Sleep,DeleteThread,flightthread,pos,x,y,z,dest,dest_orig,idle,newpos)
     if not dest then
-      return
+      return idle
     end
+    --too quick and it's jerky *or* mouse making small movements
+    if self.ChoGGi_InFlight then
+      if idle < 100 or point(dest_orig:x(),dest_orig:y()):Dist2D(point(dest:x(),dest:y())) < 1000 then
+        return idle
+      elseif idle > 100 then
+      end
+    end
+
     --don't try to fly if pos or dest aren't different (spams log)
     local path = self:CalcPath(pos, dest)
-    local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
     --check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
     --and if we move when we're too close it's jerky
-    local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
+    --local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
+    local dist = point(x,y):Dist2D(point(dest:x(),dest:y())) > 5000
     if newpos or dist or idle > 250 then
       --rest on ground
       self.hover_height = 0
@@ -306,11 +322,11 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
       end
       --mouse moved far enough then wake up and fly
       if newpos or dist then
-        --print("fly S")
         --reset idle count
         idle = 0
         --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
         self.hover_height = 1500
+
         --from pinsdlg
         if newpos then
           --want to be kinda random (when there's lots of shuttles about)
@@ -324,16 +340,39 @@ function ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
           end
           newpos = nil
         end
+
         if self.ChoGGi_Landed then
           self.ChoGGi_Landed = nil
           PlayFX("DomeExplosion", "start", self)
         end
-        self:FollowPathCmd(path)
+        --abort previous flight if dest is different
+        if self.ChoGGi_InFlight and dest ~= dest_orig then
+          dest_orig = dest
+          self.ChoGGi_InFlight = nil
+          DeleteThread(flightthread)
+          DeleteThread(FlyingObjs[self])
+        --we don't want to start a new flight if we're flying and the dest isn't different
+        elseif not self.ChoGGi_InFlight then
+          --the actual flight
+          flightthread = CreateGameTimeThread(function()
+            self.ChoGGi_InFlight = true
+            self:FollowPathCmd(path)
+            self.ChoGGi_InFlight = nil
+          end)
+        end
       end
+    end
+    return idle,dest
+  end
+
+  function CargoShuttle:ChoGGi_OnGround(pos)
+    local z = pos:z()
+    if z < 10000 or (z >= 10000 and z == terrain.GetSurfaceHeight(pos)) then
+      return true
     end
   end
 
-  function CargoShuttle:ChoGGi_SelectedObject(ChoGGi,sel)
+  function CargoShuttle:ChoGGi_SelectedObject(ChoGGi,PlayFX,sel,pos,dest)
     if sel and sel ~= self then
       --Anomaly scanning
       if sel:IsKindOf("SubsurfaceAnomaly") then

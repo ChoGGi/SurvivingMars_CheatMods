@@ -85,7 +85,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
       while IsValid(self) and not self.destroyed do
         if self.working then
-          if not self:DefenceTick_ChoGGi_Dust(ChoGGi) then
+          --if mod is uninstalled
+          if type(self.DefenceTick_ChoGGi_Dust) == "function" and not self:DefenceTick_ChoGGi_Dust(ChoGGi) then
             Sleep(1000)
           end
         else

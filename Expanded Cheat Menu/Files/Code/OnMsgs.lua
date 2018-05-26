@@ -1041,8 +1041,8 @@ function OnMsg.ChoGGi_Loaded()
   if nofile then
     --some dickhead removed the LICENSE
     dickhead = true
-  elseif string.len(file) ~= 1245 then
-  --elseif xxhash(0,file) ~= 299860815 then
+  --elseif string.len(file) ~= 1245 then
+  elseif file:Find("ChoGGi") then
     --LICENSE exists, but was changed (again dickhead)
     dickhead = true
   end
