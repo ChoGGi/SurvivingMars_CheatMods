@@ -15,11 +15,6 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesPreprocess()
   local c = CargoShuttle
   c.PersonalShuttles_DefenceTickD = false
 
-  c.__parents[#c.__parents] = "PinnableObject"
-  --c.__parents[#c.__parents] = "Vehicle"
-  --c.__parents[#c.__parents] = "CityObject"
-  --c.__parents[#c.__parents] = "NightLightObject"
-
 end
 
 function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
@@ -84,7 +79,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
       Icon = "UI/Icons/Sections/shuttle_3.tga",
       Title = "Spawn Attacker",
       RolloverTitle = "Spawn Attacker",
-      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
+      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.",
       func = function(self, context)
         PersonalShuttles.CodeFuncs.SpawnShuttle(context,true)
       end
@@ -96,7 +91,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
       Icon = "UI/Icons/Sections/shuttle_2.tga",
       Title = "Spawn Friend",
       RolloverTitle = "Spawn Friend",
-      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
+      RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.",
       func = function(self, context)
         PersonalShuttles.CodeFuncs.SpawnShuttle(context)
       end
@@ -250,7 +245,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
         local x,y,z = self:GetVisualPosXYZ()
         local dest = GetTerrainCursor()
 
-        self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+        self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,pos,x,y,z,dest,idle)
         Sleep(1000)
       until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
     end
@@ -259,7 +254,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
 --	Movable.Goto(object, pt) -- Unit.Goto is a command, use this instead for direct control
 
   --get shuttle to follow mouse
-  function CargoShuttle:PersonalShuttles_FollowMouse(newpos)
+  function CargoShuttle:PersonalShuttles_FollowMouse()
     self:PersonalShuttles_IsFollower()
 
     local PersonalShuttles = PersonalShuttles
@@ -282,7 +277,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
       local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
 
-      self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,point(x,y,z),x,y,z,dest,newpos)
+      self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,point(x,y,z),x,y,z,dest)
 
       --scanning/resource
       self:PersonalShuttles_SelectedObject(PersonalShuttles,SelectedObj,point(x,y,z),dest)
@@ -296,7 +291,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,pos,x,y,z,dest,newpos)
+  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,pos,x,y,z,dest)
     if not dest then
       return
     end
@@ -323,7 +318,7 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
     --and if we move when we're too close it's jerky
     --local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
     local dist = point(x,y):Dist2D(point(dest:x(),dest:y())) > 5000
-    if newpos or dist or self.PersonalShuttles_IdleTime > 250 then
+    if dist or self.PersonalShuttles_IdleTime > 250 then
       --rest on ground
       self.hover_height = 0
 
@@ -353,24 +348,20 @@ function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
       end
 
       --mouse moved far enough then wake up and fly
-      if newpos or dist then
+      if dist then
         --reset idle count
         self.PersonalShuttles_IdleTime = 0
         --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
         self.hover_height = 1500
 
-        --from pinsdlg
-        if newpos then
-          --want to be kinda random (when there's lots of shuttles about)
-          if #UICity.PersonalShuttles.CargoShuttleThreads > 10 then
-            path = self:CalcPath(
-              pos,
-              point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1500)
-            )
-          else
-            path = self:CalcPath(pos, newpos)
-          end
-          newpos = nil
+        --want to be kinda random (when there's lots of shuttles about)
+        if #UICity.PersonalShuttles.CargoShuttleThreads > 10 then
+          path = self:CalcPath(
+            pos,
+            point(dest:x()+UICity:Random(-2500,2500),dest:y()+UICity:Random(-2500,2500),1500)
+          )
+        else
+          path = self:CalcPath(pos, dest)
         end
 
         if self.PersonalShuttles_Landed then
