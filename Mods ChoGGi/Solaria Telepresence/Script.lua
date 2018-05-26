@@ -243,7 +243,7 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Upgrades/factory_ai_02.tga",
-      "Title", "Telepresence Viewing",
+      "Title", "Control Building",
       "RolloverText", "Shows list of buildings for telepresence viewing.\nDouble-click to enable remote control with this building, Double-right to view.",
       "RolloverTitle", "Info",
       "RolloverHint",  "<left_click> Toggle setting",
@@ -291,7 +291,7 @@ function OnMsg.ClassesBuilt()
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Upgrades/build_2.tga",
       "Title", "Attached Buildings",
-      "RolloverText", "Shows list of all controlled buildings (remove telepresence control).",
+      "RolloverText", "Shows list of all controlled buildings (for removing telepresence control).\nDouble-right to view.",
       "RolloverTitle", "Info",
       "RolloverHint",  "<left_click> Remove telepresence",
     }, {
