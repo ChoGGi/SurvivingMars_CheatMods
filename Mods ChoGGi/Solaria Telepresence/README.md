@@ -15,9 +15,9 @@ Attached Building
 >View controlled building.
 ```
 
-##### Production amounts (not upgraded, workers have no specializations):
+##### Production amounts:
 ```
-Metal extractor
+Metal extractor (not upgraded, workers have no specializations)
 12
 Telepresence (worker type doesn't matter for prod, only amount)
 8
