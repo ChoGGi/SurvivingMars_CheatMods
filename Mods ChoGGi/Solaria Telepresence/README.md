@@ -2,6 +2,7 @@
 
 ##### Buttons added to Solaria Telepresence:
 
+```
 Control Building
 >Shows list of buildings for telepresence viewing.
 >Double-click to enable remote control with this building, Double-right to view.
@@ -12,10 +13,10 @@ Attached Buildings
 >Double-right to view.
 Attached Building
 >View controlled building.
-
+```
 
 ##### Production amounts (not upgraded, workers have no specializations):
-
+```
 Metal extractor
 12
 Telepresence (worker type doesn't matter for prod, only amount)
@@ -27,3 +28,4 @@ Telepresence
 2
 
 numbers do vary, but only by a few points
+```
