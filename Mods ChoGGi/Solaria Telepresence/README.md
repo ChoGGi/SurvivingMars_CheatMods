@@ -70,10 +70,9 @@ Telepresence
 numbers do vary, but only by a few points
 ```
 
-##### Known issues
+##### Thanks
 ```
+Kevin Bagust for the mod idea.
 
-This error in log whenever you take control of a building:
-[LUA ERROR] UIL.PushInterpolation: Invalid parameter table
-
+Isaac Asimov for the actual idea.
 ```
