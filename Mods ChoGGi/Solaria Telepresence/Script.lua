@@ -14,7 +14,7 @@ function OnMsg.ClassesGenerate()
     --how much performance does each worker add? this'll add bonus prod on top
     perf_per_viewer = 12.5,
     --stores table of controlled obj, handle and worker amount
-    ChoGGiX_Remote_Controller = false,
+    ChoGGi_Remote_Controller = false,
   }
 
   function Solaria:GameInit()
@@ -49,7 +49,7 @@ function OnMsg.ClassesGenerate()
       --remove any we already control
       Table = FilterObjects({
         filter = function(Obj)
-          if not Obj.ChoGGiX_Remote_Controlled then
+          if not Obj.ChoGGi_Remote_Controlled then
             return Obj
           end
         end
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
       Table = ChoGGiX.ComFuncs.FilterFromTable(
         Table,
         nil,
-        {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PolymerPlant=true,PreciousMetalsExtractor=true},
+        {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PreciousMetalsExtractor=true},
         "class"
       )
     --show controlled for remove list
@@ -67,7 +67,7 @@ function OnMsg.ClassesGenerate()
       hint = "Double-click to remove control of building." .. hint
       Table = FilterObjects({
         filter = function(Obj)
-          if Obj.ChoGGiX_Remote_Controlled then
+          if Obj.ChoGGi_Remote_Controlled then
             return Obj
           end
         end
@@ -86,8 +86,11 @@ function OnMsg.ClassesGenerate()
       }
     end
 
-    --if list is empty that means no controlled buildings so return (msg as well?)
+    --if list is empty that means no controlled/able buildings so return
     if #ItemList == 0 then
+      ChoGGiX.ComFuncs.MsgPopup("Nothing to control.",
+        "Solaria","UI/Icons/Upgrades/holographic_scanner_04.tga"
+      )
       return
     end
 
@@ -129,7 +132,7 @@ function OnMsg.ClassesGenerate()
     UICity.ChoGGi_RemoteControlledBuildings = UICity.ChoGGi_RemoteControlledBuildings + 1
 
     --setup controller
-    self.ChoGGiX_Remote_Controller = {
+    self.ChoGGi_Remote_Controller = {
 		  building = Obj,
 		  handle = Obj.handle,
 		  workers = Obj.max_workers,
@@ -137,7 +140,7 @@ function OnMsg.ClassesGenerate()
     self.max_workers = Obj.max_workers
 
     --controlled
-		Obj.ChoGGiX_Remote_Controlled = self
+		Obj.ChoGGi_Remote_Controlled = self
     --needed for not needing any workers
     Obj.max_workers = 0
     Obj.automation = 1
@@ -156,26 +159,33 @@ function OnMsg.ClassesGenerate()
   end
 
   function Solaria:RemoveBuilding(Obj)
-    if not IsValid(Obj) or Obj.handle == self.handle then
+    if Obj.handle == self.handle then
       return
     end
-    local UICity = UICity
-    UICity.ChoGGi_RemoteControlledBuildings = UICity.ChoGGi_RemoteControlledBuildings - 1
 
+    Obj = Obj or self.ChoGGi_Remote_Controller.building
     --update Solaria
-    self.ChoGGiX_Remote_Controller = false
+    self.ChoGGi_Remote_Controller = false
     self.max_workers = nil
     if self.working then
       self:ToggleWorking()
     end
-    --update controlled building
-		Obj.ChoGGiX_Remote_Controlled = nil
-    Obj.production_per_day = nil
-    local prod = Obj:GetProducerObj()
-    prod.production_per_day = prod.base_production_per_day
-    Obj.max_workers = nil
-    Obj.automation = nil
-    Obj.auto_performance = nil
+
+    pcall(function()
+      --shouldn't happen as RemoveBuilding gets called when buildings are removed
+      DebugPrint("Solaria: Controlled building was removed without removing control.")
+      --update controlled building
+      Obj.ChoGGi_Remote_Controlled = nil
+      Obj.production_per_day = nil
+      local prod = Obj:GetProducerObj()
+      prod.production_per_day = prod.base_production_per_day
+      Obj.max_workers = nil
+      Obj.automation = nil
+      Obj.auto_performance = nil
+    end)
+
+    local UICity = UICity
+    UICity.ChoGGi_RemoteControlledBuildings = UICity.ChoGGi_RemoteControlledBuildings - 1
 
     ChoGGiX.ComFuncs.MsgPopup("Removed: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
       "Solaria","UI/Icons/Upgrades/holographic_scanner_03.tga"
@@ -186,11 +196,11 @@ function OnMsg.ClassesGenerate()
   function Solaria:StartWorkCycle(unit)
     Workplace.StartWorkCycle(self, unit)
     --only update if Solaria is controlling a building
-    if self.ChoGGiX_Remote_Controller then
-      local Obj = self.ChoGGiX_Remote_Controller.building
+    if self.ChoGGi_Remote_Controller then
+      local Obj = self.ChoGGi_Remote_Controller.building
       --controlled building was removed
       if not IsValid(Obj) then
-        self.ChoGGiX_Remote_Controller = false
+        self.ChoGGi_Remote_Controller = false
         self.max_workers = nil
         return
       end
@@ -213,7 +223,12 @@ function OnMsg.ClassesGenerate()
     end
   end
 
-end --ClassesGenerate
+  function Workplace:OnDestroyed()
+    if self.ChoGGi_Remote_Controlled then
+      self:RemoveBuilding()
+    end
+    Workplace.OnDestroyed(self)
+  end --ClassesGenerate
 
 function OnMsg.ClassesPostprocess()
   --add building to building template list
@@ -267,7 +282,7 @@ function OnMsg.ClassesBuilt()
       "RolloverHint",  "",
       "OnContextUpdate", function(self, context)
         ---
-        if context.ChoGGiX_Remote_Controller then
+        if context.ChoGGi_Remote_Controller then
           self:SetRolloverText("Remove the control of outside building from this building.")
           self:SetTitle("Remove Remote Control")
           self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
@@ -286,10 +301,10 @@ function OnMsg.ClassesBuilt()
         end,
         "func", function(self, context)
           ---
-          if not context.ChoGGiX_Remote_Controller then
+          if not context.ChoGGi_Remote_Controller then
             context:ListBuildings("activate")
           else
-            local building = context.ChoGGiX_Remote_Controller.building
+            local building = context.ChoGGi_Remote_Controller.building
             local CallBackFunc = function()
               context:RemoveBuilding(building)
             end
@@ -347,10 +362,10 @@ function OnMsg.ClassesBuilt()
       "RolloverHint",  "<left_click> Viewing",
       "OnContextUpdate", function(self, context)
         --only show if on correct building and remote control is enabled
-        if context.ChoGGiX_Remote_Controller or context.ChoGGiX_Remote_Controlled then
-          if context.ChoGGiX_Remote_Controller then
+        if context.ChoGGi_Remote_Controller or context.ChoGGi_Remote_Controlled then
+          if context.ChoGGi_Remote_Controller then
             self:SetRolloverText("Select and view controlled building.")
-          elseif context.ChoGGiX_Remote_Controlled then
+          elseif context.ChoGGi_Remote_Controlled then
             self:SetRolloverText("Select and view controller building.")
           end
           self:SetVisible(true)
@@ -367,10 +382,10 @@ function OnMsg.ClassesBuilt()
           return parent.parent
         end,
         "func", function(self, context)
-          if context.ChoGGiX_Remote_Controller then
-            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGiX_Remote_Controller.building)
-          elseif context.ChoGGiX_Remote_Controlled then
-            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGiX_Remote_Controlled)
+          if context.ChoGGi_Remote_Controller then
+            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGi_Remote_Controller.building)
+          elseif context.ChoGGi_Remote_Controlled then
+            ChoGGiX.CodeFuncs.ViewAndSelectObject(context.ChoGGi_Remote_Controlled)
           end
 
         end
