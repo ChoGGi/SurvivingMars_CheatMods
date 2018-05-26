@@ -51,10 +51,10 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Drones Keep Trying Blocked Rocks *",
-    ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks,
+    "Expanded CM/Fixes/Drones Keep Trying Blocked Areas *",
+    ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas,
     nil,
-    "If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.",
+    "If you have a certain dronehub who's drones keep trying to get somewhere they can't reach, try this.",
     icon
   )
 

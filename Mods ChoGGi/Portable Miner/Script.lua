@@ -30,7 +30,7 @@ function OnMsg.ClassesGenerate()
     --custom_anim = "playTaiChi", --takes quite awhile, may want to increase mined amount or set limit on time
     --custom_anim_idle = "layDying",
 
-    --set to false to use length of animation (these are in game time (i think at normal speed 1 is 1 millisecond)
+    --set to false to use length of animation (these are in game times, i think at normal speed 1 is 1 millisecond)
     --anim_time = false,
     --idle_time = false,
     anim_time = 1000,

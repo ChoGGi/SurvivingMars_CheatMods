@@ -6,14 +6,25 @@ local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 function ChoGGi.MenuFuncs.MonitorInfo()
   local ChoGGi = ChoGGi
   local ItemList = {
+    {text = " Something you'd like to see added?",value = "New"},
     {text = "Grids: Air",value = "Air"},
     {text = "Grids: Electricity",value = "Electricity"},
     {text = "Grids: Water",value = "Water"},
     {text = "Grids: Air/Electricity/Water",value = "Grids"},
     {text = "City",value = "City"},
+    --{text = "Research",value = "Research"}
   }
+  if ChoGGi.Temp.Testing then
+    ItemList[#ItemList+1] = {text = "Research",value = "Research"}
+  end
+
   local CallBackFunc = function(choice)
-    ChoGGi.MenuFuncs.DisplayMonitorList(choice[1].value)
+    local value = choice[1].value
+    if value == "New" then
+      ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email)
+    else
+      ChoGGi.CodeFuncs.DisplayMonitorList(value)
+    end
   end
 
   local hint = "Select something to monitor."

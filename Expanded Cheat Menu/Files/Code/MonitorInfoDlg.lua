@@ -46,7 +46,9 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
     end
 
     function self.idRefresh.OnButtonPressed()
-    ex(self.object)
+      if ChoGGi.Temp.Testing then
+        ex(self.object)
+      end
       self:UpdateText()
     end
 
@@ -74,36 +76,46 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
         texttable[#texttable+1] = " "
         texttable[#texttable+1] = i
         texttable[#texttable+1] = ":\n"
-        for Key,Value in pairs(self.values) do
-          name = monitort[Value.name]
-          if name or type(name) == "boolean" then
-            texttable[#texttable+1] = Value.name
-            if Value.kind == 0 then
-              --0 = value
-              texttable[#texttable+1] = ": "
-              texttable[#texttable+1] = tostring(name)
-              texttable[#texttable+1] = "\n"
-            elseif Value.kind == 1 then
-              --1=table
-              texttable[#texttable+1] = ": "
-              texttable[#texttable+1] = #name
-              texttable[#texttable+1] = "\n"
-            elseif Value.kind == 2 then
-            --2=list table values
-              texttable[#texttable+1] = ":\n"
-              for t_name,t_value in pairs(name) do
+        if self.object.listtype == "all" then
+          print("all")
+          ex(self.tables[i])
+          ex(self.values)
+          for SecName,SecValue in pairs(self.tables[i]) do
+          --goes through all tables
+
+            --goes through each table
+            texttable[#texttable+1] = SecName
+            texttable[#texttable+1] = "\n"
+            for Key,Value in pairs(SecValue) do
+
+              if self.values[Key] then
+                for j = 1, #self.values do
+                  local v = self.values[i]
+                  --name = monitort[SecName.name]
+                  texttable[#texttable+1] = "\t"
+                  texttable[#texttable+1] = v.name
+                  self:BuildValue(Value,0)
+                end
+              elseif Key == "field" then
                 texttable[#texttable+1] = "\t"
-                texttable[#texttable+1] = t_name
+                texttable[#texttable+1] = Value
                 texttable[#texttable+1] = ": "
-                texttable[#texttable+1] = tostring(t_value)
-                texttable[#texttable+1] = "\n"
               end
-              texttable[#texttable+1] = "\n"
+
+            end
+
+          end
+        else
+          for Key,Value in pairs(self.values) do
+            name = monitort[Value.name]
+            if name or type(name) == "boolean" then
+              texttable[#texttable+1] = Value.name
+              self:BuildValue(name,Value.kind)
             end
           end
-        end
-        texttable[#texttable+1] = "\n"
-      end
+        end --for
+      end --if
+      texttable[#texttable+1] = "\n"
       --less .. is better
       text = table.concat(texttable)
 
@@ -117,6 +129,33 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
       --and scroll to saved pos
       self.idText.scroll:SetPosition(scrollpos)
     end
+
+    function self:BuildValue(name,kind)
+      --0 = value
+      if kind == 0 then
+        texttable[#texttable+1] = ": "
+        texttable[#texttable+1] = tostring(name)
+        texttable[#texttable+1] = "\n"
+      --1=table
+      elseif kind == 1 then
+        texttable[#texttable+1] = ": "
+        texttable[#texttable+1] = #name
+        texttable[#texttable+1] = "\n"
+      --2=list table values
+      elseif kind == 2 then
+        texttable[#texttable+1] = ":\n"
+        for t_name,t_value in pairs(name) do
+          texttable[#texttable+1] = "\t"
+          texttable[#texttable+1] = t_name
+          texttable[#texttable+1] = ": "
+          texttable[#texttable+1] = tostring(t_value)
+          texttable[#texttable+1] = "\n"
+        end
+        texttable[#texttable+1] = "\n"
+      end
+      --just the three for now
+    end
+
 
     --esc removes focus,shift+esc closes, enter executes code
     function self:OnKbdKeyDown(_, virtual_key)

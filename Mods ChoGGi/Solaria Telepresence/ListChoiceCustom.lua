@@ -1,17 +1,17 @@
-function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
+function OnMsg.ClassesGenerate()
 
-  DefineClass.ChoGGi_ListChoiceCustomDialog = {
+  DefineClass.ChoGGiX_ListChoiceCustomDialog = {
     __parents = {
       "FrameWindow"
     }
 
   }
 
-  --ex(ChoGGi.ListChoiceCustomDialog_Dlg)
-  --ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
-  function ChoGGi_ListChoiceCustomDialog:Init()
+  --ex(ChoGGiX.ListChoiceCustomDialog_Dlg)
+  --ChoGGiX.ListChoiceCustomDialog_Dlg.colorpicker
+  function ChoGGiX_ListChoiceCustomDialog:Init()
     --init stuff?
-    DataInstances.UIDesignerData.ChoGGi_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
+    DataInstances.UIDesignerData.ChoGGiX_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     --make sure we're always above examiner dialogs
     self:SetZOrder(20000)
@@ -40,7 +40,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
+      local value = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetValue())
 
       if self.CustomType > 0 then
         self.idList.items[self.idList.last_selected].value = value
@@ -69,7 +69,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         function but.OnButtonPressed()
           --show lightmodel lists and lets you pick one to use in new window
           if self.CustomType == 5 then
-            ChoGGi.MenuFuncs.ChangeLightmodel(true)
+            ChoGGiX.MenuFuncs.ChangeLightmodel(true)
           end
         end
       end
@@ -112,10 +112,10 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     self.idList.OnLButtonDoubleClick = function()
       --open colour changer
       if self.CustomType == 1 or self.CustomType == 2 then
-        ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+        ChoGGiX.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
       elseif self.CustomType == 7 then
         --open it in monitor list
-        ChoGGi.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
+        ChoGGiX.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
       elseif self.CustomType ~= 5 then
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -144,7 +144,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         end
         local SetPal = self.obj.SetColorizationMaterial
         local items = self.idList.items
-        ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
+        ChoGGiX.CodeFuncs.SaveOldPalette(self.obj)
         for i = 1, 4 do
           local Color = items[i].value
           local Metallic = items[i+4].value
@@ -171,13 +171,13 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
             local hint = item.text
             if item.value then
               if type(item.value) == "userdata" then
-                hint = hint .. ": " .. ChoGGi.CodeFuncs.Trans(item.value)
+                hint = hint .. ": " .. ChoGGiX.CodeFuncs.Trans(item.value)
               elseif item.value then
                 hint = hint .. ": " .. tostring(item.value)
               end
             end
             if type(item.hint) == "userdata" then
-              hint = hint .. "\n\n" .. ChoGGi.CodeFuncs.Trans(item.hint)
+              hint = hint .. "\n\n" .. ChoGGiX.CodeFuncs.Trans(item.hint)
             elseif item.hint then
               hint = hint .. "\n\n" .. item.hint
             end
@@ -203,15 +203,15 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         end
       end
       --rebuild it
-      ChoGGi.CodeFuncs.LightmodelBuild(model_table)
+      ChoGGiX.CodeFuncs.LightmodelBuild(model_table)
       --and temp apply
-      SetLightmodel(1,"ChoGGi_Custom")
+      SetLightmodel(1,"ChoGGiX_Custom")
     end
 
     --update colour
     function self:UpdateColourPicker()
       pcall(function()
-        local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
+        local num = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetText())
         self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
         self.idColorHSV:InitHSVPtPos()
         self.idColorHSV:Invalidate()
@@ -234,7 +234,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
         for i = 1, #items do
           if i == 1 then
             --always return the custom value (and try to convert it to correct type)
-            items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
+            items[i].editvalue = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetText())
           end
           self.choices[#self.choices+1] = items[i]
         end
@@ -247,7 +247,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
       end
     end
 
-    --function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+    --function ChoGGiX_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     function self:OnKbdKeyDown(_, virtual_key)
       if virtual_key == const.vkEsc then
         if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
@@ -271,7 +271,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
 
 end --ClassesGenerate
 
-function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
+function OnMsg.ClassesBuilt()
 
   --dialog layout
   --[[
@@ -284,8 +284,8 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
     DesignOrigin = point(100, 100),
     DesignResolution = point(300, 450),
     HGE = true,
-    file_name = "ChoGGi_ListChoiceCustomDialog",
-    name = "ChoGGi_ListChoiceCustomDialog",
+    file_name = "ChoGGiX_ListChoiceCustomDialog",
+    name = "ChoGGiX_ListChoiceCustomDialog",
     parent_control = {
       CaptionHeight = 32,
       Class = "FrameWindow",

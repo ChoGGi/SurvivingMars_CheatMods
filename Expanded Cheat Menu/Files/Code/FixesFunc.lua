@@ -5,7 +5,7 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
-  ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
+  ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   ChoGGi.MenuFuncs.CablesAndPipesRepair()
   ChoGGi.MenuFuncs.MirrorSphereStuck()
@@ -139,7 +139,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
 
 end
 
-function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
+function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   local ChoGGi = ChoGGi
   local function ResetPriorityQueue(Class)
     local Hubs = GetObjects({class=Class}) or empty_table
@@ -149,20 +149,16 @@ function ChoGGi.MenuFuncs.DronesKeepTryingBlockedRocks()
       for priority = -1, const.MaxBuildingPriority do
         Hubs[i].priority_queue[priority] = {}
       end
-      --wakes them up (spawning a buiding or toggling a site also works (toggling construction site is probably better incase nearest is far away?)
-      --Hubs[i]:AddBuilding(FindNearestObject(GetObjects({class="ConstructionSite"}),Hubs[i]))
     end
   end
   ResetPriorityQueue("SupplyRocket")
   ResetPriorityQueue("RCRover")
   ResetPriorityQueue("DroneHub")
-  --toggle working state on all ConstructionSites (wakes up drones else they'll just wait at hub till user does this)
+  --toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
   local Sites = GetObjects({class="ConstructionSite"}) or empty_table
   for i = 1, #Sites do
     ChoGGi.CodeFuncs.ToggleWorking(Sites[i])
   end
-
-  ChoGGi.ComFuncs.MsgPopup("Hubs reset","Rocks")
 end
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()

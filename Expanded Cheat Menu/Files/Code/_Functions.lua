@@ -500,7 +500,7 @@ CustomType=4 : updates selected item with custom value type, and sends back all 
 CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
 
-okay, maybe a few too many args, probably should send it as a table, but that means refactoring)
+okay, maybe a few too many args, probably should send it as a table, but that means refactoring :(
 --]]
 function ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
   local ChoGGi = ChoGGi
@@ -508,11 +508,6 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check
 
   if not dlg then
     return
-  end
-
-  if ChoGGi.Temp.Testing then
-    --easier to fiddle with it
-    ChoGGi.ListChoiceCustomDialog_Dlg = dlg
   end
 
   --title text
@@ -1564,6 +1559,12 @@ function ChoGGi.CodeFuncs.ReturnAllNearby(Radius,Sort)
 end
 
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
+  if value == "New" then
+    local ChoGGi = ChoGGi
+    ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email)
+    return
+  end
+
   local UICity = UICity
   local info
   local function AddGrid(Name,info)
@@ -1606,6 +1607,15 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   elseif value == "Water" then
     info = info_grid
     AddGrid("water",info)
+  elseif value == "Research" then
+    info = {
+      title = "Research",
+      listtype = "all",
+      tables = {UICity.tech_status},
+      values = {
+        researched = true
+      }
+    }
   elseif value == "City" then
     info = {
       title = "City",

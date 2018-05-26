@@ -94,7 +94,6 @@ function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   end)
 end
 
-
 function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil

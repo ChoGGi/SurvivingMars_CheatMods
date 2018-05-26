@@ -93,17 +93,20 @@ end
 
 function ChoGGiX.MsgPopup(Msg,Title,Icon)
   pcall(function()
-    Msg = Msg or "Empty"
-    --returns translated text corresponding to number if we don't do this
-    if type(Msg) == "number" then
-      Msg = tostring(Msg)
-    end
+    --returns translated text corresponding to number if we don't do tostring for numbers
+    Msg = tostring(Msg)
     Title = Title or "Placeholder"
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
-    if type(AddCustomOnScreenNotification) == "function" then --incase we called it where there ain't no UI
-      CreateRealTimeThread(AddCustomOnScreenNotification(
-        AsyncRand(),Title,Msg,Icon,nil,{expiration=5000}
-      ))
+    local id = AsyncRand()
+    local timeout = 8000
+    if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
+      CreateRealTimeThread(function()
+        AddCustomOnScreenNotification(
+          id,Title,Msg,Icon,nil,{expiration=timeout}
+        )
+        --since I use AsyncRand for the id, I don't want this getting too large.
+        g_ShownOnScreenNotifications[id] = nil
+      end)
     end
   end)
 end
