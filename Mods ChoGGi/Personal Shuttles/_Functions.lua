@@ -1,5 +1,18 @@
+function PersonalShuttles.CodeFuncs.Trans(...)
+  local data = select(1,...)
+  if type(data) == "userdata" then
+    return _InternalTranslate(...)
+  end
+  return _InternalTranslate(T({...}))
+end
+
 --pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
-function ChoGGiX.CodeFuncs.AnalyzeAnomaly(self,anomaly)
+function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
+  local PersonalShuttles = PersonalShuttles
+  local IsValid = IsValid
+  local Sleep = Sleep
+  local Msg = Msg
+
   if not IsValid(self) then
     return
   end
@@ -13,7 +26,7 @@ function ChoGGiX.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   RebuildInfopanel(self)
   self:PushDestructor(function(self)
     if IsValid(anomaly) then
-      anomaly.scanning_progress = ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
+      anomaly.scanning_progress = PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
       if anomaly.scanning_progress >= 100 then
         self:Gossip("ScanAnomaly", anomaly.class, anomaly.handle)
         anomaly:ScanCompleted(self)
@@ -33,19 +46,20 @@ function ChoGGiX.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   while time > 0 and IsValid(self) and IsValid(anomaly) do
     Sleep(1000)
     time = time - 1000
-    anomaly.scanning_progress = ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
+    anomaly.scanning_progress = PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
     if anomaly == SelectedObj then
       Msg("UIPropertyChanged", anomaly)
     end
   end
   self:PopAndCallDestructor()
-  ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = nil
+  UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] = nil
 end
-function ChoGGiX.CodeFuncs.GetScanAnomalyProgress(self)
+
+function PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
-function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
+function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
   local CreateGameTimeThread = CreateGameTimeThread
   local Sleep = Sleep
   local PlayFX = PlayFX
@@ -53,6 +67,7 @@ function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
   if type(AlreadyFired) ~= "table" then
     print("Error: ShuttleRocketDD isn't a table")
   end
+
   --list of dustdevils on map
   local hostiles = g_DustDevils or empty_table
   if IsValidThread(self.track_thread) then
@@ -111,7 +126,6 @@ function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
   --remove only remove devil handles if they're actually gone
   if #AlreadyFired > 0 then
     CreateGameTimeThread(function()
-      --for i = 1, #AlreadyFired do
       for i = #AlreadyFired, 1, -1 do
         if not IsValid(AlreadyFired[i]) then
           AlreadyFired[i] = nil
@@ -121,16 +135,16 @@ function ChoGGiX.CodeFuncs.DefenceTick(self,AlreadyFired)
   end
 end
 
-function ChoGGiX.CodeFuncs.RecallShuttlesHub(hub)
+function PersonalShuttles.CodeFuncs.RecallShuttlesHub(hub)
   for _, s_i in pairs(hub.shuttle_infos) do
     local shuttle = s_i.shuttle_obj
     if shuttle then
 
-      if type(ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle]) == "boolean" then
-        ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = nil
+      if type(UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle]) == "boolean" then
+        UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle] = nil
       end
-      if shuttle.ChoGGiX_FollowMouseShuttle then
-        shuttle.ChoGGiX_FollowMouseShuttle = nil
+      if shuttle.PersonalShuttles_FollowMouseShuttle then
+        shuttle.PersonalShuttles_FollowMouseShuttle = nil
         shuttle:SetCommand("Idle")
       end
 
@@ -138,8 +152,8 @@ function ChoGGiX.CodeFuncs.RecallShuttlesHub(hub)
   end
 end
 --which true=attack,false=friend
-function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
-  local ChoGGiX = ChoGGiX
+function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
+  local PersonalShuttles = PersonalShuttles
   for _, s_i in pairs(hub.shuttle_infos) do
     if s_i:CanLaunch() then
       --ShuttleInfo:Launch(task)
@@ -150,7 +164,7 @@ function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
       --LRManagerInstance
       local shuttle = CargoShuttle:new({
         hub = hub,
-        transport_task = ChoGGiX_ShuttleFollowTask:new({
+        transport_task = PersonalShuttles_ShuttleFollowTask:new({
           state = "ready_to_follow",
           dest_pos = GetTerrainCursor() or GetRandomPassable()
         }),
@@ -165,34 +179,34 @@ function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
         s.hub:FreeLandingSpot(s)
       end)
       local amount = 0
-      for _ in pairs(ChoGGiX.Temp.CargoShuttleThreads) do
+      for _ in pairs(UICity.PersonalShuttles.CargoShuttleThreads) do
         amount = amount + 1
       end
       if amount <= 50 then
         --do we attack dustdevils?
         if which then
-          ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = true
+          UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle] = true
           shuttle:SetColor1(-9624026)
           shuttle:SetColor2(1)
           shuttle:SetColor3(-13892861)
         else
-          ChoGGiX.Temp.CargoShuttleThreads[shuttle.handle] = false
+          UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle] = false
           shuttle:SetColor1(-16711941)
           shuttle:SetColor2(-16760065)
           shuttle:SetColor3(-1)
         end
         --easy way to get amount of shuttles about
-        ChoGGiX.Temp.CargoShuttleThreads[#ChoGGiX.Temp.CargoShuttleThreads+1] = true
-        shuttle.ChoGGiX_FollowMouseShuttle = true
+        UICity.PersonalShuttles.CargoShuttleThreads[#UICity.PersonalShuttles.CargoShuttleThreads+1] = true
+        shuttle.PersonalShuttles_FollowMouseShuttle = true
         --follow that cursor little minion
-        shuttle:SetCommand("ChoGGiX_FollowMouse")
+        shuttle:SetCommand("PersonalShuttles_FollowMouse")
         --we only allow it to fly for a certain amount (about 4 sols)
         shuttle.timenow = GameTime()
         --return it so we can do viewpos on it for menu item
         return shuttle
       else
       --or the crash is from all the dust i have going :)
-        ChoGGiX.ComFuncs.MsgPopup(
+        PersonalShuttles.ComFuncs.MsgPopup(
           "Max of 50 (above 50 and below 100 it crashes).",
           "Shuttle"
         )
@@ -204,7 +218,7 @@ function ChoGGiX.CodeFuncs.SpawnShuttle(hub,which)
 end
 
 --only add unique template names
-function ChoGGiX.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
+function PersonalShuttles.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
   if not (Name or Template or Table) then
     return
   end

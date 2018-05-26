@@ -4,7 +4,6 @@ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 --[[
 add files for:
-  ("DefenceTower","DefenceTick")
   ("ShowPopupNotification")
   ("MG_Colonists","GetProgress")
   ("MG_Martianborn","GetProgress")
@@ -75,68 +74,6 @@ end
 --]]
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
-
-  --add anti dust devil functions to defence tower
-  SaveOrigFunc("DefenceTower","GameInit")
-  function DefenceTower:GameInit()
-    local ChoGGi = ChoGGi
-    local Sleep = Sleep
-    local IsValid = IsValid
-    self.defence_thread_ChoGGi_Dust = CreateGameTimeThread(function()
-      while IsValid(self) and not self.destroyed do
-        if self.working then
-          --if mod is uninstalled
-          if type(self.DefenceTick_ChoGGi_Dust) == "function" and not self:DefenceTick_ChoGGi_Dust(ChoGGi) then
-            Sleep(1000)
-          end
-        else
-          Sleep(1000)
-        end
-      end
-    end)
-    return ChoGGi.OrigFuncs.DefenceTower_GameInit(self)
-  end
-
-  --if it idles it'll go home, so we return my command till we remove thread
-  SaveOrigFunc("CargoShuttle","Idle")
-  function CargoShuttle:Idle()
-    local ChoGGi = ChoGGi
-    if self.ChoGGi_FollowMouseShuttle then
-      self:SetCommand("ChoGGi_FollowMouse")
-      Sleep(250)
-    else
-      return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
-    end
-  end
-
-  --meteor targeting
-  SaveOrigFunc("CargoShuttle","GameInit")
-  function CargoShuttle:GameInit()
-    local ChoGGi = ChoGGi
-
-    --if it's an attack shuttle
-    if ChoGGi.Temp.CargoShuttleThreads[self.handle] then
-      local IsValid = IsValid
-      local Sleep = Sleep
-      self.shoot_range = 25 * ChoGGi.Consts.guim
-      self.reload_time = const.HourDuration
-      self.track_thread = false
-
-      self.defence_thread_DD = CreateGameTimeThread(function()
-        while IsValid(self) and not self.destroyed do
-          if self.working then
-            if not self:ChoGGi_DefenceTickD(ChoGGi) then
-              Sleep(1000)
-            end
-          else
-            Sleep(1000)
-          end
-        end
-      end)
-    end
-
-    return ChoGGi.OrigFuncs.CargoShuttle_GameInit(self)
-  end
 
   --larger trib/subsurfheater radius
   SaveOrigFunc("UIRangeBuilding","SetUIRange")
@@ -283,111 +220,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-
-  --gives error when we make shuttles a pinnable object (Modifiable and PinnableObject don't like each other...)
-  SaveOrigFunc("LabelContainer","RemoveFromLabel")
-  function LabelContainer:RemoveFromLabel(label, obj, leave_modifiers)
-    --one-liner ifs: ewww
-    if not label or not obj then
-      return
-    end
-    local label_list = self.labels[label]
-    if label_list and table.remove_entry(label_list, obj) then
-      if not leave_modifiers then
-        local modifiers = self.label_modifiers[label]
-        if modifiers then
-          for id, mod in pairs(modifiers) do
-            --added to check for pinnable shuttles
-            if type(obj.UpdateModifier) == "function" then
-              obj:UpdateModifier("remove", mod, - mod.amount, - mod.percent)
-            end
-          end
-        end
-      end
-      return true
-    end
-  end
-  SaveOrigFunc("LabelContainer","AddToLabel")
-  function LabelContainer:AddToLabel(label, obj)
-    if not label or not obj then
-      return
-    end
-    local label_list = self.labels[label]
-    if label_list then
-      if not table.find(label_list, obj) then
-        --insert into label
-        label_list[#label_list + 1] = obj
-      else
-        --obj alraedy in label
-        --exit so we don't modify properties multiple times
-        return
-      end
-    else
-      label_list = { obj }
-      self.labels[label] = label_list
-    end
-    local modifiers = self.label_modifiers[label]
-    if modifiers then
-      for id, mod in pairs(modifiers) do
-        if type(obj.UpdateModifier) == "function" then
-          obj:UpdateModifier("add", mod, mod.amount, mod.percent)
-        end
-      end
-    end
-    return true
-  end
-
 end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-
-  if type(ChoGGi.Temp.Testing) == "function" then
-    SaveOrigFunc("terminal","MouseEvent")
-    function terminal.MouseEvent(event, ...)
-      --local ChoGGi = ChoGGi
-      if ChoGGi.Temp.ShuttleClickerControl then
-        local _, button = ...
-        --that's a rightclick
-        if event == "OnMouseButtonDown" and button == "R" then
-          ChoGGi.Temp.ShuttleClickerPos = GetTerrainCursor()
-        end
-      end
-      return ChoGGi.OrigFuncs.terminal_MouseEvent(event, ...)
-    end
-  end
-
-  --gives an error when we spawn shuttle since i'm using a fake task
-  SaveOrigFunc("CargoShuttle","OnTaskAssigned")
-  function CargoShuttle:OnTaskAssigned()
-    if self.ChoGGi_FollowMouseShuttle then
-      return true
-    else
-      return ChoGGi.OrigFuncs.CargoShuttle_OnTaskAssigned(self)
-    end
-  end
-
-  --add a call shuttle action on rightclick
-  SaveOrigFunc("PinsDlg","InitPinButton")
-  function PinsDlg:InitPinButton(button)
-    local ret = {ChoGGi.OrigFuncs.PinsDlg_InitPinButton(self, button)}
-      for i = 1, #self do
-        local pin = self[i]
-        if pin.Icon == "UI/Icons/Buildings/res_shuttle.tga" then
-          function pin:OnMouseButtonDown(pt, button)
-            if button == "R" then
-              CreateGameTimeThread(function()
-                --give it a bit for user to move mouse away from pinsdlg so shuttle doesn't fly there
-                Sleep(1500)
-                if not self.context.scanning then
-                  self.context:SetCommand("ChoGGi_FollowMouse",GetTerrainCursor())
-                end
-              end)
-            end
-          end
-        end
-      end
-    return table.unpack(ret)
-  end
 
   --removes earthsick effect
   SaveOrigFunc("Colonist","ChangeComfort")

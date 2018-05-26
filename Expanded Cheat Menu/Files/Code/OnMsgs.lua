@@ -8,7 +8,6 @@ function OnMsg.ClassesGenerate(classdefs)
   ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-  ChoGGi.MsgFuncs.ShuttleControl_ClassesGenerate()
   --custom dialogs
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
@@ -25,10 +24,6 @@ function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
 
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-  ChoGGi.MsgFuncs.ShuttleControl_ClassesPreprocess()
-
-  --dustdevil attack thread
-  DefenceTower.defence_thread_ChoGGi_Dust = false
 
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
@@ -49,7 +44,6 @@ function OnMsg.ClassesBuilt()
 
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  ChoGGi.MsgFuncs.ShuttleControl_ClassesBuilt()
   --custom dialogs
   ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
   ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
@@ -57,13 +51,6 @@ function OnMsg.ClassesBuilt()
   ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesBuilt()
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
-  end
-
-  --defence towers attack dustdevils
-  function DefenceTower:DefenceTick_ChoGGi_Dust(ChoGGi)
-    if ChoGGi.UserSettings.DefenceTowersAttackDustDevils then
-      return ChoGGi.CodeFuncs.DefenceTick(self,ChoGGi.Temp.DefenceTowerRocketDD)
-    end
   end
 
   --add HiddenX cat for Hidden items
@@ -312,15 +299,6 @@ function OnMsg.NewDay() --NewSol...
   local ChoGGi = ChoGGi
   local UICity = UICity
   local IsValid = IsValid
-
-  --clean up old handles
-  if next(ChoGGi.Temp.CargoShuttleThreads) then
-    for h,_ in pairs(ChoGGi.Temp.CargoShuttleThreads) do
-      if not IsValid(HandleToObject[h]) then
-        ChoGGi.Temp.CargoShuttleThreads[h] = nil
-      end
-    end
-  end
 
   --sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
@@ -673,10 +651,6 @@ function OnMsg.ChoGGi_Loaded()
   UpdateDroneResourceUnits()
 
   --clear out Temp settings
-  ChoGGi.Temp.DefenceTowerRocketDD = {}
-  ChoGGi.Temp.ShuttleRocketDD = {}
-  ChoGGi.Temp.CargoShuttleThreads = {}
-  ChoGGi.Temp.CargoShuttleScanningAnomaly = {}
   ChoGGi.Temp.UnitPathingHandles = {}
 
   --remove all built-in actions
@@ -1042,7 +1016,7 @@ function OnMsg.ChoGGi_Loaded()
     --some dickhead removed the LICENSE
     dickhead = true
   --elseif string.len(file) ~= 1245 then
-  elseif file:Find("ChoGGi") then
+  elseif not file:find("ChoGGi") then
     --LICENSE exists, but was changed (again dickhead)
     dickhead = true
   end
@@ -1050,7 +1024,7 @@ function OnMsg.ChoGGi_Loaded()
   --look ma; a LICENSE!
   if dickhead then
     --i mean you gotta be compliant after all...
-    print("All of my code is licensed under the MIT License as follows:\n\nMIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
+    print("Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE\n\nAll of my code is licensed under the MIT License as follows:\n\nMIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
     print("\n\n\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
     terminal.SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
   end

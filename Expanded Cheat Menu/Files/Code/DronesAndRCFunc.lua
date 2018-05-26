@@ -4,16 +4,6 @@ local UsualIcon = "UI/Icons/IPButtons/drone.tga"
 local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
 local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"
 
-function ChoGGi.MenuFuncs.ShuttleControls_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.ShowShuttleControls = not ChoGGi.UserSettings.ShowShuttleControls
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Shuttle Controls: " .. tostring(ChoGGi.UserSettings.ShowShuttleControls),
-    "Shuttles",UsualIcon3
-  )
-end
-
 function ChoGGi.MenuFuncs.SetRoverChargeRadius()
   local DefaultSetting = 0
   local ItemList = {
@@ -597,40 +587,6 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
     end
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Transport Capacity","Current capacity: " .. hint)
-end
-
-function ChoGGi.MenuFuncs.SpawnShuttleRecall()
-  local ChoGGi = ChoGGi
-  local hubs = GetObjects({class="ShuttleHub"}) or empty_table
-  for i = 1, #hubs do
-    ChoGGi.CodeFuncs.RecallShuttlesHub(hubs[i])
-  end
-end
-
-function ChoGGi.MenuFuncs.SpawnShuttleType(Type)
-  local ChoGGi = ChoGGi
-  local pos = GetTerrainCursor()
-  --get list of hubs
-  local hubs = GetObjects({class="ShuttleHub"}) or empty_table
-  --filter out ones without idle shuttles
-  hubs = FilterObjects({
-    filter = function(Obj)
-      if Obj:GetIdleShuttles() > 0 then
-        return Obj
-      end
-    end
-  },hubs)
-  --sort hubs by nearest dist
-  table.sort(hubs,
-    function(a,b)
-      if not a and not b then
-        return
-      end
-      return a:GetDist2D(pos) < b:GetDist2D(pos)
-    end
-  )
-  --spawn shuttle at nearest and focus on it
-  ChoGGi.CodeFuncs.ViewAndSelectObject(ChoGGi.CodeFuncs.SpawnShuttle(hubs[1],Type))
 end
 
 function ChoGGi.MenuFuncs.SetShuttleCapacity()

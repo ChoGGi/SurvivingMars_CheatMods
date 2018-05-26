@@ -43,17 +43,6 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Buildings/Defence Towers Attack DustDevils",
-    ChoGGi.MenuFuncs.DefenceTowersAttackDustDevils_Toggle,
-    nil,
-    function()
-      local des = ChoGGi.UserSettings.DefenceTowersAttackDustDevils and "(Enabled)" or "(Disabled)"
-      return des .. " Defence towers will attack dustdevils."
-    end,
-    icon
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Buildings/Always Dusty",
     ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle,
     nil,

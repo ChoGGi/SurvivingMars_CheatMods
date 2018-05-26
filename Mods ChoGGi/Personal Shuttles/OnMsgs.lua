@@ -1,14 +1,14 @@
 function OnMsg.ClassesGenerate()
-  ChoGGiX.MsgFuncs.ShuttleControl_ClassesGenerate()
+  PersonalShuttles.MsgFuncs.ShuttleControl_ClassesGenerate()
 end
 
 function OnMsg.ClassesPreprocess()
-  ChoGGiX.MsgFuncs.ShuttleControl_ClassesPreprocess()
+  PersonalShuttles.MsgFuncs.ShuttleControl_ClassesPreprocess()
 end
 
 function OnMsg.ClassesBuilt()
-  ChoGGiX.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
+  PersonalShuttles.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+  PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
 end
 
 function OnMsg.LoadingScreenPreClose()
@@ -18,25 +18,38 @@ function OnMsg.LoadingScreenPreClose()
   if not UICity then
     return
   end
+  --place to store per-game values
+  if not UICity.PersonalShuttles then
+    UICity.PersonalShuttles = {}
+  end
+  --objects carried by shuttles
+  if not UICity.PersonalShuttles.CargoShuttleCarried then
+    UICity.PersonalShuttles.CargoShuttleCarried = {}
+  end
+  --controllable shuttle handles launched (true = attacker, false = friend)
+  if not UICity.PersonalShuttles.CargoShuttleThreads then
+    UICity.PersonalShuttles.CargoShuttleThreads = {}
+  end
+  --we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
+  if not UICity.PersonalShuttles.CargoShuttleScanningAnomaly then
+    UICity.PersonalShuttles.CargoShuttleScanningAnomaly = {}
+  end
 
   --clear out Temp settings
-  ChoGGiX.Temp.DefenceTowerRocketDD = {}
-  ChoGGiX.Temp.ShuttleRocketDD = {}
-  ChoGGiX.Temp.CargoShuttleThreads = {}
-  ChoGGiX.Temp.CargoShuttleScanningAnomaly = {}
-  ChoGGiX.Temp.UnitPathingHandles = {}
+  PersonalShuttles.Temp.ShuttleRocketDD = {}
+  PersonalShuttles.Temp.UnitPathingHandles = {}
 
 end
 
 function OnMsg.NewDay() --newsol
-  local ChoGGiX = ChoGGiX
+  local PersonalShuttles = PersonalShuttles
   local UICity = UICity
 
   --clean up old handles
-  if next(ChoGGiX.Temp.CargoShuttleThreads) then
-    for h,_ in pairs(ChoGGiX.Temp.CargoShuttleThreads) do
+  if next(UICity.PersonalShuttles.CargoShuttleThreads) then
+    for h,_ in pairs(UICity.PersonalShuttles.CargoShuttleThreads) do
       if not IsValid(HandleToObject[h]) then
-        ChoGGiX.Temp.CargoShuttleThreads[h] = nil
+        UICity.PersonalShuttles.CargoShuttleThreads[h] = nil
       end
     end
   end

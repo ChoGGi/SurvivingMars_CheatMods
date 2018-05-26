@@ -1,6 +1,6 @@
 --keep everything stored in
-ChoGGiX = {
-  email = "ECM@ChoGGi.org",
+PersonalShuttles = {
+  email = "ECM@PersonalShuttles.org",
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua
@@ -17,34 +17,24 @@ ChoGGiX = {
   Temp = {
     --collect msgs to be displayed when game is loaded
     StartupMsgs = {},
-    --list of dustdevil handles we've shot at
-    DefenceTowerRocketDD = {},
-    --same
-    ShuttleRocketDD = {},
-    --controllable shuttle handles launched (true = attacker, false = friend)
-    CargoShuttleThreads = {},
-    --we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
-    CargoShuttleScanningAnomaly = {},
-    --handles of units we're placing waypoints for (keys=handles,values=threads)
-    UnitPathingHandles = {},
   },
   UserSettings = {ShowShuttleControls=true},
 }
 
-function ChoGGiX.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
-  local ChoGGiX = ChoGGiX
+function PersonalShuttles.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  local PersonalShuttles = PersonalShuttles
   if Func then
     local newname = ClassOrFunc .. "_" .. Func
-    if not ChoGGiX.OrigFuncs[newname] then
-      ChoGGiX.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+    if not PersonalShuttles.OrigFuncs[newname] then
+      PersonalShuttles.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
   else
-    if not ChoGGiX.OrigFuncs[ClassOrFunc] then
-      ChoGGiX.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    if not PersonalShuttles.OrigFuncs[ClassOrFunc] then
+      PersonalShuttles.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
     end
   end
 end
-function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon)
+function PersonalShuttles.ComFuncs.MsgPopup(Msg,Title,Icon)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)

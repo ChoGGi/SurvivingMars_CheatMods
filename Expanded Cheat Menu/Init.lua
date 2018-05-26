@@ -23,16 +23,6 @@ ChoGGi = {
   Temp = {
     --collect msgs to be displayed when game is loaded
     StartupMsgs = {},
-    --list of dustdevil handles we've shot at
-    DefenceTowerRocketDD = {},
-    --same
-    ShuttleRocketDD = {},
-    --controllable shuttle handles launched (true = attacker, false = friend)
-    CargoShuttleThreads = {},
-    --we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
-    CargoShuttleScanningAnomaly = {},
-    --handles of units we're placing waypoints for (keys=handles,values=threads)
-    UnitPathingHandles = {},
   },
   --settings that are saved to SettingsFile
   UserSettings = {

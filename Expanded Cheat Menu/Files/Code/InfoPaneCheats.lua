@@ -324,16 +324,6 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function ShuttleHub:CheatMaxShuttlesDef()
     self.max_shuttles = self.base_max_shuttles
   end
---other shuttle stuff
-  function ShuttleHub:CheatShuttleReturnF()
-    ChoGGi.CodeFuncs.RecallShuttlesHub(self)
-  end
-  function ShuttleHub:CheatShuttleAttacker()
-    ChoGGi.CodeFuncs.SpawnShuttle(self,true)
-  end
-  function ShuttleHub:CheatShuttleFriend()
-    ChoGGi.CodeFuncs.SpawnShuttle(self)
-  end
 --CheatBattCapDbl
   local function CheatBattCapDbl(self)
     self.battery_max = self.battery_max * 2
@@ -525,13 +515,6 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "AllShifts" then
       SetHint(action,"Turn on all work shifts.")
 
---Shuttles
-    elseif action.ActionId == "ShuttleAttacker" then
-      SetHint(action,"Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and (one day) pick up resources you've selected.\nPin it and right-click the pin to have it come to your position.")
-    elseif action.ActionId == "ShuttleFriend" then
-      SetHint(action,"Same as Attacker, but doesn't attack dustdevils.")
-    elseif action.ActionId == "ShuttleReturnF" then
-      SetHint(action,"Make followers from this ShuttleHub return home (Use ECM menu to recall all).")
 --RC
     elseif action.ActionId == "BattCapDbl" then
       SetHint(action,"Double capacity of battery.")

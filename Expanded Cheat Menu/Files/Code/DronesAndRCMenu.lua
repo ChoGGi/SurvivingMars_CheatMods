@@ -148,50 +148,6 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
 
   -------------Shuttles
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Shuttles/Show Shuttle Controls",
-    ChoGGi.MenuFuncs.ShuttleControls_Toggle,
-    nil,
-    function()
-      local des = ""
-      if ChoGGi.UserSettings.ShowShuttleControls then
-        des = "(Enabled)"
-      else
-        des = "(Disabled)"
-      end
-      return des .. " Toggle showing the Spawn Shuttle/Pickup/Drop item options that are added to Shuttles/ShuttleHubs/Units/Resources (restart to toggle)."
-    end,
-    "DisableAOMaps.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Shuttles/Spawn Shuttle Attacker",
-    function()
-      ChoGGi.MenuFuncs.SpawnShuttleType(true)
-    end,
-    nil,
-    "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and (one day) pick up resources you've selected.\nPin it and right-click the pin to have it come to your position.",
-    "JumpCamera.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Shuttles/Spawn Shuttle Friend",
-    function()
-      ChoGGi.MenuFuncs.SpawnShuttleType()
-    end,
-    nil,
-    "Spawn a friend shuttle (see Attacker hint for more info).\nIt's the same as attacker, but it doesn't attack.",
-    "JumpCamera.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Shuttles/Spawned Shuttles Recall",
-    ChoGGi.MenuFuncs.SpawnShuttleRecall,
-    nil,
-    "Recalls all spawned shuttles.",
-    "CollectObjects.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Shuttles/Set ShuttleHub Shuttle Capacity",
     ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
     nil,

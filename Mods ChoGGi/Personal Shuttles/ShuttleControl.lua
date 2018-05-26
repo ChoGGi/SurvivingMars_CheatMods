@@ -1,6 +1,8 @@
-function ChoGGiX.MsgFuncs.ShuttleControl_ClassesGenerate()
+--See LICENSE for terms
+
+function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesGenerate()
   --custom shuttletask
-  DefineClass.ChoGGiX_ShuttleFollowTask = {
+  DefineClass.PersonalShuttles_ShuttleFollowTask = {
     __parents = {"InitDone"},
     state = "new",
     shuttle = false,
@@ -9,26 +11,29 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesGenerate()
   }
 end
 
-function ChoGGiX.MsgFuncs.ShuttleControl_ClassesPreprocess()
+function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesPreprocess()
   local c = CargoShuttle
-  c.ChoGGiX_DefenceTickD = false
+  c.PersonalShuttles_DefenceTickD = false
+
   c.__parents[#c.__parents] = "PinnableObject"
+  --c.__parents[#c.__parents] = "Vehicle"
+  --c.__parents[#c.__parents] = "CityObject"
+  --c.__parents[#c.__parents] = "NightLightObject"
+
 end
 
-function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
+function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
 
-  if ChoGGiX.UserSettings.ShowShuttleControls then
+  if PersonalShuttles.UserSettings.ShowShuttleControls then
     local XTemplates = XTemplates
 --pick/drop button for shuttle
     local Table = {
       __context_of_kind = "CargoShuttle",
-      Icon = "",
-      Title = "",
       RolloverTitle = "Pickup/Drop Item",
       RolloverHint = "Change to Pickup and select resource pile you've previously marked for pickup.\nToggle it back to \"Drop Item\" and select an object: it'll drop it (somewhat) next to it.",
       OnContextUpdate = function(self, context)
         --only show when it's one of our shuttles
-        if context.ChoGGiX_FollowMouseShuttle then
+        if context.PersonalShuttles_FollowMouseShuttle then
           self:SetVisible(true)
           self:SetMaxHeight()
         else
@@ -36,7 +41,7 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
           self:SetMaxHeight(0)
         end
         --set title and icon
-        if context.ChoGGiX_PickUp_Toggle then
+        if context.PersonalShuttles_PickUp_Toggle then
           self:SetTitle("Pickup Item")
           self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
         else
@@ -45,13 +50,34 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end,
       func = function(self, context)
-        if context.ChoGGiX_FollowMouseShuttle then
-          context.ChoGGiX_PickUp_Toggle = not context.ChoGGiX_PickUp_Toggle
+        if context.PersonalShuttles_FollowMouseShuttle then
+          context.PersonalShuttles_PickUp_Toggle = not context.PersonalShuttles_PickUp_Toggle
           ObjModified(context)
         end
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane1","ipShuttle",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipShuttle",Table,XTemplates)
+--info showing carried item
+    Table = {
+      __context_of_kind = "CargoShuttle",
+      --__template = "InfopanelSection",
+      RolloverTitle = "Carried object",
+      RolloverHint = "Shows name of carried object.",
+      Icon = "UI/Icons/Sections/shuttle_4.tga",
+      OnContextUpdate = function(self, context)
+        local Obj = context.PersonalShuttles_carriedObj
+        if Obj then
+          self:SetVisible(true)
+          self:SetMaxHeight()
+          self:SetTitle("Carried: " .. PersonalShuttles.CodeFuncs.Trans(Obj.display_name))
+        else
+          self:SetVisible(false)
+          self:SetMaxHeight(0)
+        end
+      end,
+      func = function()end
+      }
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","ipShuttle",Table,XTemplates)
 --spawn shuttle buttons for hub and return shuttle button
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -60,10 +86,10 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
       RolloverTitle = "Spawn Attacker",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
       func = function(self, context)
-        ChoGGiX.CodeFuncs.SpawnShuttle(context,true)
+        PersonalShuttles.CodeFuncs.SpawnShuttle(context,true)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane1","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -72,10 +98,10 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
       RolloverTitle = "Spawn Friend",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.\nPin it and right-click the pin to have it come to your position.",
       func = function(self, context)
-        ChoGGiX.CodeFuncs.SpawnShuttle(context)
+        PersonalShuttles.CodeFuncs.SpawnShuttle(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane2","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -84,10 +110,10 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
       RolloverTitle = "Recall Shuttles",
       RolloverHint = "Recalls all shuttles you've spawned at this ShuttleHub.",
       func = function(self, context)
-        ChoGGiX.CodeFuncs.RecallShuttlesHub(context)
+        PersonalShuttles.CodeFuncs.RecallShuttlesHub(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane3","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","customShuttleHub",Table,XTemplates)
 --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
     local title1 = "Ignore Item"
@@ -101,7 +127,7 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
-        if not context.ChoGGiX_PickUpItem then
+        if not context.PersonalShuttles_PickUpItem then
           self:SetTitle(title1)
           self:SetRolloverTitle(hint_marktitle1)
           self:SetIcon(icon1)
@@ -112,18 +138,18 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end,
       func = function(self, context)
-        context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
+        context.PersonalShuttles_PickUpItem = not context.PersonalShuttles_PickUpItem
         ObjModified(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane1","ipResourcePile",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipResourcePile",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "Drone",
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
-        if not context.ChoGGiX_PickUpItem then
+        if not context.PersonalShuttles_PickUpItem then
           self:SetTitle(title1)
           self:SetRolloverTitle(hint_marktitle1)
           self:SetIcon(icon1)
@@ -134,18 +160,18 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end,
       func = function(self, context)
-        context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
+        context.PersonalShuttles_PickUpItem = not context.PersonalShuttles_PickUpItem
         ObjModified(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane3","ipDrone",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipDrone",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "BaseRover",
       RolloverTitle = "Mark For Pickup",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
-        if not context.ChoGGiX_PickUpItem then
+        if not context.PersonalShuttles_PickUpItem then
           self:SetTitle(title1)
           self:SetRolloverTitle(hint_marktitle1)
           self:SetIcon(icon1)
@@ -156,18 +182,18 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end,
       func = function(self, context)
-        context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
+        context.PersonalShuttles_PickUpItem = not context.PersonalShuttles_PickUpItem
         ObjModified(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane3","ipRover",Table,XTemplates)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipRover",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "UniversalStorageDepot",
       RolloverTitle = "",
       RolloverHint = hint_mark,
       OnContextUpdate = function(self, context)
-        if not context.ChoGGiX_PickUpItem then
+        if not context.PersonalShuttles_PickUpItem then
           self:SetTitle(title1)
           self:SetRolloverTitle(hint_marktitle1)
           self:SetIcon(icon1)
@@ -178,100 +204,165 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
         end
       end,
       func = function(self, context)
-        context.ChoGGiX_PickUpItem = not context.ChoGGiX_PickUpItem
+        context.PersonalShuttles_PickUpItem = not context.PersonalShuttles_PickUpItem
         ObjModified(context)
       end
     }
-    ChoGGiX.CodeFuncs.AddXTemplate("ChoGGiX_CustomPane4","sectionStorage",Table,XTemplates)
-  end
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane4","sectionStorage",Table,XTemplates)
+  --[[
+  --adds to the bottom of every selection :) :(
+  Infopanel
+
+   --figure out how to move groups of res
+  ipSurfaceDeposit
+--]]
+  end --if
 
   --dustdevil thread for rockets
-  function CargoShuttle:ChoGGiX_DefenceTickD(ChoGGiX)
-    if self.ChoGGiX_FollowMouseShuttle and ChoGGiX.Temp.CargoShuttleThreads[self.handle] then
-      return ChoGGiX.CodeFuncs.DefenceTick(self,ChoGGiX.Temp.ShuttleRocketDD)
+  function CargoShuttle:PersonalShuttles_DefenceTickD(PersonalShuttles)
+    if self.PersonalShuttles_FollowMouseShuttle and UICity.PersonalShuttles.CargoShuttleThreads[self.handle] then
+      return PersonalShuttles.CodeFuncs.DefenceTick(self,PersonalShuttles.Temp.ShuttleRocketDD)
     end
   end
 
-  function CargoShuttle:ChoGGiX_IsFollower()
-    if not self.ChoGGiX_FollowMouseShuttle then
+  function CargoShuttle:PersonalShuttles_IsFollower()
+    if not self.PersonalShuttles_FollowMouseShuttle then
       self:SetCommand("Idle")
     end
   end
 
-  --get shuttle to follow mouse
-  function CargoShuttle:ChoGGiX_FollowMouse(newpos)
-    self:ChoGGiX_IsFollower()
+  --set control to follow mouse click
+  if type(PersonalShuttles.Temp.Testing) == "function" then
+    function CargoShuttle:OnSelected()
+      PersonalShuttles.Temp.ShuttleClickerControl = true
+      self:SetCommand("PersonalShuttles_FollowMouseClick")
+    end
 
-    local ChoGGiX = ChoGGiX
-    local PlayFX = PlayFX
+    function CargoShuttle:PersonalShuttles_FollowMouseClick()
+      --not one of mine
+      self:PersonalShuttles_IsFollower()
+    print("PersonalShuttles_FollowMouseClick")
+
+      local Sleep = Sleep
+      local PersonalShuttles = PersonalShuttles
+      local terrain = terrain
+      repeat
+        local x,y,z = self:GetVisualPosXYZ()
+        local dest = GetTerrainCursor()
+
+        self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+        Sleep(1000)
+      until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
+    end
+  end
+
+--	Movable.Goto(object, pt) -- Unit.Goto is a command, use this instead for direct control
+
+  --get shuttle to follow mouse
+  function CargoShuttle:PersonalShuttles_FollowMouse(newpos)
+    self:PersonalShuttles_IsFollower()
+
+    local PersonalShuttles = PersonalShuttles
     local Sleep = Sleep
     local GameTime = GameTime
     local terrain = terrain
+    local DeleteThread = DeleteThread
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
     local idle = 0
     --always start it off as pickup
-    self.ChoGGiX_PickUp_Toggle = true
+    self.PersonalShuttles_PickUp_Toggle = true
+    self.PersonalShuttles_IdleTime = 0
+
+    self.PersonalShuttles_OldDest = false
+    local dest_orig_temp = false
+    self.PersonalShuttles_flightthread = false
+    self.PersonalShuttles_FirstIdle = 0
     repeat
+
       local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
 
-      self:ChoGGiX_Goto(ChoGGiX,PlayFX,terrain,Sleep,point(x,y,z),x,y,z,dest,idle,newpos)
+      self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,point(x,y,z),x,y,z,dest,newpos)
+
       --scanning/resource
-      self:ChoGGiX_SelectedObject(ChoGGiX,PlayFX,SelectedObj,point(x,y,z),dest)
-      --idle = idle + 1
-      idle = idle + 10
-      Sleep(250 + idle)
+      self:PersonalShuttles_SelectedObject(PersonalShuttles,SelectedObj,point(x,y,z),dest)
+      self.PersonalShuttles_IdleTime = self.PersonalShuttles_IdleTime + 10
+      Sleep(250 + self.PersonalShuttles_IdleTime)
     --about 4 sols then send it back home (or if we recalled it)
-    until (GameTime() - self.timenow > 2000000) or not self.ChoGGiX_FollowMouseShuttle
+    until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
     --so it can set the GoHome command (we normally blocked it)
-    self.ChoGGiX_FollowMouseShuttle = nil
+    self.PersonalShuttles_FollowMouseShuttle = nil
     --buh-bye little flying companion
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:ChoGGiX_Goto(ChoGGiX,PlayFX,terrain,Sleep,pos,x,y,z,dest,idle,newpos)
+  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,pos,x,y,z,dest,newpos)
     if not dest then
       return
     end
+    --too quick and it's jerky *or* mouse making small movements
+    if self.PersonalShuttles_InFlight then
+      if self.PersonalShuttles_IdleTime < 100 then
+        return
+      elseif self.PersonalShuttles_IdleTime > 100 and self.PersonalShuttles_OldPos == pos then
+      --
+      else
+        if self.PersonalShuttles_OldDest and point(self.PersonalShuttles_OldDest:x(),self.PersonalShuttles_OldDest:y()):Dist2D(point(dest:x(),dest:y())) < 1000 then
+          if self.PersonalShuttles_FirstIdle < 25 then
+            self.PersonalShuttles_FirstIdle = self.PersonalShuttles_FirstIdle + 1
+            return self.PersonalShuttles_IdleTime
+          end
+        end
+      end
+    end
+    self.PersonalShuttles_FirstIdle = 0
+
     --don't try to fly if pos or dest aren't different (spams log)
     local path = self:CalcPath(pos, dest)
-    local destp = path[#path][#path[#path]] or path[#path][#path][#path] or pos
     --check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
     --and if we move when we're too close it's jerky
-    local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
-    if newpos or dist or idle > 250 then
+    --local dist = point(x,y):Dist(destp) < 100000 and point(x,y):Dist(destp) > 6000
+    local dist = point(x,y):Dist2D(point(dest:x(),dest:y())) > 5000
+    if newpos or dist or self.PersonalShuttles_IdleTime > 250 then
       --rest on ground
       self.hover_height = 0
 
       --if idle is ticking up
-      if idle > 250 then
-        if not self.ChoGGiX_Landed then
-          PlayFX("Dust", "start", self)
-          self:FollowPathCmd(self:CalcPath(pos, point(x+UICity:Random(-1500,1500),y+UICity:Random(-1500,1500))))
-          self.ChoGGiX_Landed = self:GetPos()
+      if self.PersonalShuttles_IdleTime > 250 then
+        if not self.PersonalShuttles_Landed then
+          self:SetState("fly")
+          Sleep(250)
+          --self:PersonalShuttles_LandIt(UICity,Sleep,terrain,x,y,pos)
+          self:PlayFX("Dust", "start")
+          self:PlayFX("Waiting", "start")
+          local land = point(x+UICity:Random(-2500,2500),y+UICity:Random(-2500,2500)):SetZ(terrain.GetSurfaceHeight(pos))
+          self:FlyingFace(land, 2500)
+          self:SetPos(land, 4000)
           Sleep(750)
-          PlayFX("Dust", "end", self)
+          self.PersonalShuttles_Landed = self:GetPos()
+          self:PlayFX("Dust", "end")
+          self:PlayFX("Waiting", "end")
+          self:SetState("idle")
+
         --10000 = flat ground (shuttle h and ground h and different below, so ignore)
-        elseif z >= 10000 and z ~= terrain.GetSurfaceHeight(pos) then
-          --if shuttle is resting above ground
-          PlayFX("Dust", "start", self)
-          self:FollowPathCmd(self:CalcPath(pos, point(x+1000,y+1000,0)))
-          Sleep(750)
-          PlayFX("Dust", "end", self)
+        --elseif z ~= terrain.GetSurfaceHeight(pos) then
+        --  print("never?")
+        --  self:PersonalShuttles_LandIt(UICity,Sleep,terrain,x,y,pos)
         end
-        Sleep(500+idle)
+        Sleep(500+self.PersonalShuttles_IdleTime)
       end
+
       --mouse moved far enough then wake up and fly
       if newpos or dist then
-        --print("fly S")
         --reset idle count
-        idle = 0
+        self.PersonalShuttles_IdleTime = 0
         --we don't want to skim the ground (default is 3, but this one likes living life on the edge)
         self.hover_height = 1500
+
         --from pinsdlg
         if newpos then
           --want to be kinda random (when there's lots of shuttles about)
-          if #ChoGGiX.Temp.CargoShuttleThreads > 10 then
+          if #UICity.PersonalShuttles.CargoShuttleThreads > 10 then
             path = self:CalcPath(
               pos,
               point(newpos:x()+UICity:Random(-2500,2500),newpos:y()+UICity:Random(-2500,2500),1500)
@@ -281,36 +372,56 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
           end
           newpos = nil
         end
-        if self.ChoGGiX_Landed then
-          self.ChoGGiX_Landed = nil
-          PlayFX("DomeExplosion", "start", self)
+
+        if self.PersonalShuttles_Landed then
+          self.PersonalShuttles_Landed = nil
+          self:PlayFX("DomeExplosion", "start")
+          --self:PersonalShuttles_TakeOff()
         end
-        self:FollowPathCmd(path)
+        --abort previous flight if dest is different
+        if self.PersonalShuttles_InFlight and dest ~= self.PersonalShuttles_OldDest then
+          self.PersonalShuttles_OldDest = dest
+          self.PersonalShuttles_InFlight = nil
+          DeleteThread(self.PersonalShuttles_flightthread)
+          DeleteThread(FlyingObjs[self])
+        --we don't want to start a new flight if we're flying and the dest isn't different
+        elseif not self.PersonalShuttles_InFlight then
+          --the actual flight
+          self.PersonalShuttles_flightthread = CreateGameTimeThread(function()
+            self.PersonalShuttles_InFlight = true
+            self:FollowPathCmd(path)
+            self.PersonalShuttles_InFlight = nil
+          end)
+        end
       end
+          self:SetState("idle")
+
     end
+    self.PersonalShuttles_OldPos = pos
+    self.PersonalShuttles_OldDest = dest
   end
 
-  function CargoShuttle:ChoGGiX_SelectedObject(ChoGGiX,PlayFX,sel,pos,dest)
+  function CargoShuttle:PersonalShuttles_SelectedObject(PersonalShuttles,sel,pos,dest)
     if sel and sel ~= self then
       --Anomaly scanning
       if sel:IsKindOf("SubsurfaceAnomaly") then
         --scan nearby SubsurfaceAnomaly
         local anomaly = NearestObject(pos,GetObjects({class="SubsurfaceAnomaly"}),2000)
         --make sure it's the right one, and not already being scanned by another
-        if anomaly and sel == anomaly and not ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] then
-          PlayFX("ArtificialSunCharge", "start", anomaly)
-          ChoGGiX.Temp.CargoShuttleScanningAnomaly[anomaly.handle] = true
-          ChoGGiX.CodeFuncs.AnalyzeAnomaly(self, anomaly)
-          PlayFX("ArtificialSunCharge", "end", anomaly)
+        if anomaly and sel == anomaly and not UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] then
+          PlayFX("ArtificialSunCharge", "start",anomaly)
+          UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] = true
+          PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self, anomaly)
+          PlayFX("ArtificialSunCharge", "end",anomaly)
         end
       --resource moving
 
       --are we carrying?
-      elseif self.ChoGGiX_carriedObj and self.ChoGGiX_PickUp_Toggle == false then
+      elseif self.PersonalShuttles_carriedObj and self.PersonalShuttles_PickUp_Toggle == false then
         --we want to drop obj next to sel
 
         self.hover_height = 100
-        local carried = self.ChoGGiX_carriedObj
+        local carried = self.PersonalShuttles_carriedObj
 
         --local pass = GetPassablePointNearby(dest)
         self:FollowPathCmd(self:CalcPath(pos,dest))
@@ -324,38 +435,43 @@ function ChoGGiX.MsgFuncs.ShuttleControl_ClassesBuilt()
           carried:SetCommand("Idle")
         end
 
-        self.ChoGGiX_carriedObj = nil
+        self.PersonalShuttles_carriedObj = nil
         --make it able to pick up again without having to press the button
-        self.ChoGGiX_PickUp_Toggle = true
+        self.PersonalShuttles_PickUp_Toggle = true
+
+        UICity.PersonalShuttles.CargoShuttleCarried[carried.handle] = nil
+
         self.hover_height = 1500
 
       --PICKUP
       else
         --if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
-        if sel.ChoGGiX_PickUpItem and self.ChoGGiX_PickUp_Toggle and not self.ChoGGiX_carriedObj then
+        if sel.PersonalShuttles_PickUpItem and self.PersonalShuttles_PickUp_Toggle and not self.PersonalShuttles_carriedObj then
 
           --goto item
           self.hover_height = 100
           self:FollowPathCmd(self:CalcPath(pos,sel:GetVisualPos()))
 
           --remove pickup mark from it
-          sel.ChoGGiX_PickUpItem = nil
+          sel.PersonalShuttles_PickUpItem = nil
           --PlayFX of beaming, transport one i think
           Sleep(1000)
 
-          --"pick it up" (move it below the ground so it isn't visible and save the object locally)
-          --sel:SetPos(point(0,0,0))
-          --actually picks it up woot!
-          self:Attach(sel,self:GetSpotBeginIndex("Top"))
+          if not UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] then
+            UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] = true
+            --pick it up
+            self:Attach(sel,self:GetSpotBeginIndex("Top"))
+            --and remember not to pick up more than one
+            self.PersonalShuttles_carriedObj = sel
+          end
 
-          --make sure we know we have cargo
-          self.ChoGGiX_carriedObj = sel
           self.hover_height = 1500
         end
       end
     end --scanning/resource
   end
 
+  --no PersonalShuttles_ prefix as defencetower also fires a rocket and uses this function name
   function CargoShuttle:FireRocket(_, target, rocket_class, luaobj)
     local pos = self:GetSpotPos(1)
     local angle, axis = self:GetSpotRotation(1)

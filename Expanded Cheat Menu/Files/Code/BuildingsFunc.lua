@@ -60,16 +60,6 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Storage","Current: " .. hint)
 end
 
-function ChoGGi.MenuFuncs.DefenceTowersAttackDustDevils_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.DefenceTowersAttackDustDevils = not ChoGGi.UserSettings.DefenceTowersAttackDustDevils
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DefenceTowersAttackDustDevils) .. "\nDust? What dust?",
-    "Defence"
-  )
-end
-
 function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.AlwaysDustyBuildings = not ChoGGi.UserSettings.AlwaysDustyBuildings
