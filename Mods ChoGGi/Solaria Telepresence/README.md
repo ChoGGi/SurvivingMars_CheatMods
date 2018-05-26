@@ -7,7 +7,7 @@ Fusion Reactor
 Metals Extractor
 Precious Metals Extractor
 
-Unfortunately Comcast was choosen as the offical internet of Mars:
+Unfortunately Comcast was chosen as the official internet of Mars:
 Performance and production take awhile to update.
 
 I could make it update faster, but this way seems better.
@@ -57,7 +57,7 @@ All Solaria buildings also have a "All Attached Buildings" button, you can use t
 
 ##### Production amounts:
 ```
-Metal extractor (not upgraded, workers have no specializations)
+Metal extractor (not upgraded, workers have no specialisations)
 12
 Telepresence (worker type doesn't matter for prod, only amount)
 8
