@@ -21,6 +21,19 @@ function OnMsg.ClassesGenerate()
     Workplace.GameInit(self)
     --always leave it turned off, so it doesn't use resources till user turns it on
     self:ToggleWorking()
+    --brown/yellow seems a good choice for a vr workplace
+    self:SetColor1(-10991554)
+    self:SetColor2(-7963804)
+    self:SetColor3(-10263981)
+    --it's a workplace after all
+    self:DestroyAttaches("VRWorkshopHologram")
+    self:DestroyAttaches("DecorInt_02")
+    local att = self:GetAttaches()
+    for i = 1, #att do
+      if att[i].class:find("Door") then
+        att[i]:SetColorModifier(1)
+      end
+    end
   end
 
   --build and show a list of viable buildings
@@ -144,8 +157,13 @@ function OnMsg.ClassesGenerate()
     if not IsValid(Obj) or Obj.handle == self.handle then
       return
     end
+    --update Solaria
     self.ChoGGiX_Remote_Controller = false
     self.max_workers = nil
+    if self.working then
+      self:ToggleWorking()
+    end
+    --update controlled building
 		Obj.ChoGGiX_Remote_Controlled = nil
     Obj.production_per_day = nil
     local prod = Obj:GetProducerObj()
@@ -159,21 +177,18 @@ function OnMsg.ClassesGenerate()
     )
   end
 
-  --update performance on controlled building
+  --update performance on controlled building (fires when worker starts work)
   function Solaria:StartWorkCycle(unit)
     Workplace.StartWorkCycle(self, unit)
-    RebuildInfopanel(self)
-    --ignore if we don't have attached building
+    --only update if Solaria is controlling a building
     if self.ChoGGiX_Remote_Controller then
       local Obj = self.ChoGGiX_Remote_Controller.building
       --controlled building was removed
       if not IsValid(Obj) then
         self.ChoGGiX_Remote_Controller = false
+        self.max_workers = nil
         return
       end
-      --set working
-      RebuildInfopanel(self)
-			self:SetUIWorking(true)
       --get amount of workers for shifts
       local shift = self.current_shift
       --if shift is closed then 0
@@ -187,17 +202,16 @@ function OnMsg.ClassesGenerate()
       end
       local prod = Obj:GetProducerObj()
       prod.production_per_day = workers * (prod.base_production_per_day / 4)
-    else
-			self:SetUIWorking(false)
-      Sleep(1000)
+    --turn off Solaria if it isn't controlling
+    elseif self.working then
+      self:ToggleWorking()
     end
   end
-
 
 end --ClassesGenerate
 
 function OnMsg.ClassesPostprocess()
-
+  --add building to building template list
   PlaceObj('BuildingTemplate', {
     'name', "Solaria",
     'template_class', "Solaria",
@@ -312,8 +326,8 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Anomaly_Event.tga",
-      "Title", "Attached Building",
-      "RolloverText", "View controlled building.",
+      "Title", "See Controlled Building",
+      "RolloverText", "Moves camera to controlled building.",
       "RolloverTitle", "Info",
       "RolloverHint",  "<left_click> Viewing",
     }, {
@@ -323,7 +337,12 @@ function OnMsg.ClassesBuilt()
           return parent.parent
         end,
         "func", function(self, context)
-          ViewPos(context.ChoGGiX_Remote_Controller.building:GetVisualPos())
+          local con = context.ChoGGiX_Remote_Controller
+          if con then
+            ViewPos(con.building:GetVisualPos())
+          else
+            ChoGGiX.ComFuncs.MsgPopup("Nothing to view.","Solaria")
+          end
         end
       })
     })
