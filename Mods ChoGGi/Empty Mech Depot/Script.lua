@@ -1,50 +1,5 @@
---add items to the cheats pane
-function OnMsg.ClassesGenerate()
-
-  --so we can add hints to info pane cheats
-  if not ChoGGiX.OrigFunc.InfopanelObj_CreateCheatActions then
-    ChoGGiX.OrigFunc.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-  end
-  function InfopanelObj:CreateCheatActions(win)
-    local ret = ChoGGiX.OrigFunc.InfopanelObj_CreateCheatActions(self,win)
-    ChoGGiX.SetInfoPanelCheatHints(GetActionsHost(win))
-    return ret
-  end
-
-  function MechanizedDepot:CheatEmptyDepot()
-    ChoGGiX.EmptyMechDepot(self)
-  end
-
-end --OnMsg
-
-function OnMsg.LoadGame()
-  ChoGGiX.AddAction(
-    "Expanded CM/Buildings/Empty Mech Depot",
-    ChoGGiX.EmptyMechDepot,
-    "Ctrl-Shift-E",
-    "Empties out selected/moused over mech depot into a small depot in front of it.",
-    "Cube.tga"
-  )
-
-  --update menu
-  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
-
-end
-
-function ChoGGiX.SetInfoPanelCheatHints(win)
-  local tab = win.actions or empty_table
-  for i = 1, #tab do
-    if tab[i].ActionId == "EmptyDepot" then
-      --name has to be set to make the hint show up
-      tab[i].ActionName = tab[i].ActionId
-      tab[i].RolloverHint = "sticks small depot in front of mech depot and moves all resources to it (max of 20 000)."
-    end
-  end
-
-end
-
 --sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGiX.EmptyMechDepot(oldobj)
+local function EmptyMechDepot(oldobj)
   if not oldobj or not IsKindOf(oldobj,"MechanizedDepot") then
     oldobj = SelectedObj or SelectionMouseObj()
   end
@@ -114,4 +69,42 @@ function ChoGGiX.EmptyMechDepot(oldobj)
     --clean out old depot
     oldobj:CheatEmpty()
   end)
+end
+
+function OnMsg.ClassesBuilt()
+  local XT = XTemplates
+  --add button to side panel
+  if not XT.sectionStorageMechanized.ChoGGiEmpty then
+    XT.sectionStorageMechanized.ChoGGiEmpty = true
+
+    XT.sectionStorageMechanized[#XT.sectionStorageMechanized+1] = PlaceObj("XTemplateTemplate", {
+      "__context_of_kind", "MechanizedDepot",
+      "__template", "InfopanelActiveSection",
+      "Icon", "UI/Icons/Sections/storage.tga",
+      "Title", "Empty Depot",
+      "RolloverText", "Info",
+      "RolloverTitle", "Empty Mech Depot",
+      "RolloverHint", "Empties depot into a new resource pile in front of it.",
+      "OnContextUpdate", function(self, context)
+        if context.stockpiled_amount > 0 then
+          self:SetVisible(true)
+          self:SetMaxHeight()
+        else
+          self:SetVisible(false)
+          self:SetMaxHeight(0)
+        end
+      end
+    }, {
+      PlaceObj("XTemplateFunc", {
+      "name", "OnActivate(self, context)",
+      "parent", function(parent, context)
+          return parent.parent
+        end,
+      "func", function()
+        EmptyMechDepot(context)
+      end
+      })
+    })
+  end
+
 end

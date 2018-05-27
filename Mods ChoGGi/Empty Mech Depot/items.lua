@@ -1,8 +1,3 @@
 return {
-  PlaceObj('ModItemCode', {
-    'FileName', "Functions.lua",
-  }),
-  PlaceObj('ModItemCode', {
-    'FileName', "OnMsgs.lua",
-  }),
+  PlaceObj("ModItemCode",{"FileName","Script.lua"})
 }
