@@ -45,8 +45,10 @@ function OnMsg.ClassesGenerate()
     anim_time = 1000,
     idle_time = 1500,
 
-    --how close to the mine do we need to be
+    --how close to the resource icon do we need to be
     mine_dist = 1500,
+    --area around it to mine for concrete
+    mine_area = "DomeMega",
 
     --if you want the battery to drain
     battery_hourly_drain_rate = 0,
@@ -252,7 +254,7 @@ function OnMsg.ClassesGenerate()
     local info = self:GetRessourceInfo()
     --local shape = self:GetExtractionShape()
     --there's QuarryExcavator,QuarryClosedShape, and Quarry. but those won't get the whole thing from the center
-    local shape = GetEntityCombinedShape("DomeMega")
+    local shape = GetEntityCombinedShape(self.mine_area)
     if not info or not shape then
       return
     end
