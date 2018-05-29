@@ -1,6 +1,6 @@
 --keep everything stored in
 PersonalShuttles = {
-  email = "ECM@PersonalShuttles.org",
+  email = "ECM@choggi.org",
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua

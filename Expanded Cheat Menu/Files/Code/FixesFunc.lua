@@ -3,8 +3,10 @@
 local GetObjects = GetObjects
 ---------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()
+  local ChoGGi = ChoGGi
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
+  ChoGGi.MenuFuncs.StutterWithHighFPS()
 
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()

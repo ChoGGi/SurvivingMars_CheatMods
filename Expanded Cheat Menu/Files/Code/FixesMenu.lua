@@ -16,7 +16,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
     ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
     nil,
-    "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will copy will do a little copy n paste.",
+    "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will do a little copy n paste.",
     icon
   )
 
@@ -45,10 +45,10 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Stutter With High FPS *",
+    "Expanded CM/Fixes/Stutter With High FPS or Human Centipede *",
     ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
-    "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).",
+    "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).\n\nThis also works for colonists practicing the human centipede.",
     icon
   )
 
