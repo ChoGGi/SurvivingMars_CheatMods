@@ -1300,7 +1300,8 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   end
 
   --deleting domes will freeze game if they have anything in them.
-  if obj:IsKindOf("Dome") and obj.working then
+  --if obj:IsKindOf("Dome") and obj.working then
+  if obj:IsKindOf("Dome") and obj.air then
     return
   end
 

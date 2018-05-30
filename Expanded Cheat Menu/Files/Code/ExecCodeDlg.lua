@@ -4,8 +4,8 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
 
   DefineClass.ChoGGi_ExecCodeDlg = {
     __parents = {
-      "FrameWindow"
-    }
+      "FrameWindow",
+    },
 
   }
 
@@ -146,6 +146,7 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
         {
           Id = "idEditValue",
           Class = "SingleLineEdit",
+          --Class = "XMultiLineEdit",
           --AutoSelectAll = true,
           FontStyle = "Editor14Bold",
           Subview = "default",

@@ -176,17 +176,23 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 end
 
 function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+  local Table
   local function RemoveUnreachable(Class)
-    local Table = GetObjects({class=Class}) or empty_table
+    Table = GetObjects({class=Class}) or empty_table
     for i = 1, #Table do
       for Bld,_ in pairs(Table[i].unreachable_buildings or empty_table) do
         if Bld:IsKindOf("ConstructionSite") then
           Bld:Cancel()
         end
       end
+      Table[i].unreachable_buildings = empty_table
     end
   end
 
+  Table = GetObjects({class="Drone"}) or empty_table
+  for i = 1, #Table do
+    Table[i]:CleanUnreachables()
+  end
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
@@ -209,6 +215,16 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
     tab[i]:ChangeWorkingStateAnim(false)
     tab[i]:ChangeWorkingStateAnim(true)
   end
+end
+
+function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
+	ForEach({
+		class = "Dome",
+		exec = function(d)
+      d.walkable_points = false
+      d:GenerateWalkablePoints()
+		end
+	})
 end
 
 function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()

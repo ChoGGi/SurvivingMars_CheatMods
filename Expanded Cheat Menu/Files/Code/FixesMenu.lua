@@ -13,6 +13,14 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/Rebuild Walkable Points In Domes",
+    ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
+    nil,
+    "Might help for dome areas that drones can't get to",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
     ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
     nil,

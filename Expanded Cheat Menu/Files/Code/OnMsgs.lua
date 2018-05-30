@@ -642,6 +642,7 @@ function OnMsg.ChoGGi_Loaded()
   local empty_table = empty_table
   local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
   local AsyncFileToString = AsyncFileToString
+  local dlgConsole = dlgConsole
   --gets used a few times
   local Table
 
@@ -712,6 +713,29 @@ function OnMsg.ChoGGi_Loaded()
 -------------------do the above stuff before the below stuff
 
 
+  --add Scripts button to console
+  if not dlgConsole.ChoGGi_MenuAdded then
+    dlgConsole.ChoGGi_MenuAdded = true
+    --make some space for the button
+    dlgConsole.idEdit:SetMargins(box(65, 5, 5, 5))
+
+    XMenuBar:new({
+      Id = "idMenu",
+      HAlign = "left",
+      LayoutMethod = "VList",
+      Margins = box(5, 5, 0, -32),
+      MenuEntries = "Menu",
+      Dock = "bottom",
+    }, dlgConsole)
+
+    XAction:new({
+      ActionId = "ChoGGi_Scripts",
+      ActionMenubar = "Menu",
+      ActionName = "Scripts",
+      OnActionEffect = "popup"
+    }, dlgConsole)
+
+  end
 
   --show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then

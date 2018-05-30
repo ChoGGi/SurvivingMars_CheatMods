@@ -224,6 +224,60 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --make it so the script button on the console shows above the button/consolelog, and builds our scripts menu listing
+  SaveOrigFunc("XPopupMenu","RebuildActions")
+  function XPopupMenu:RebuildActions(host)
+    local ischoggi
+    local menu = self.MenuEntries
+
+    --clear out old scripts
+    for i = #host.actions, 1, -1 do
+        local action = host.actions[i]
+      if action.ActionMenubar == "ChoGGi_Scripts" and host:FilterAction(action) then
+        ischoggi = true
+        action:delete()
+        table.remove(host.actions,i)
+      end
+    end
+    if ischoggi then
+      --rebuild list of scripts
+      ChoGGi.ComFuncs.ListScriptFiles()
+    end
+
+    local context = host.context
+    local ShowIcons = self.ShowIcons
+    self.idContainer:DeleteChildren()
+    for i = 1, #host.actions do
+      local action = host.actions[i]
+      if action.ActionMenubar == menu and host:FilterAction(action) then
+        local entry = XMenuEntry:new({
+          OnPress = function(this, gamepad)
+            host:OnAction(action, self)
+            if action.OnActionEffect ~= "popup" then
+              self:Close(action.ActionId)
+            end
+          end
+        }, self.idContainer, context)
+        entry:SetFontProps(self)
+        entry:SetTranslate(action.ActionTranslate)
+        entry:SetText(action.ActionName)
+        if ShowIcons then
+          entry:SetIcon(action.ActionIcon)
+        end
+        entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+        entry:Open()
+
+      end --if
+    end --for
+
+    if ischoggi then
+      --make the menu start above the button
+      self:SetMargins(box(0, 0, 0, 32))
+      -- 1 above consolelog
+      self:SetZOrder(2000001)
+    end
+  end
+
   --removes earthsick effect
   SaveOrigFunc("Colonist","ChangeComfort")
   function Colonist:ChangeComfort(amount, reason)
@@ -737,43 +791,42 @@ end
       ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
     end
 
-  function self.idFilter.OnKbdKeyDown(_, char, vk)
-    local text = self.idFilter
-    if vk == const.vkEnter then
-      self:FindNext(text:GetText())
-      return "break"
-    elseif vk == const.vkBackspace or vk == const.vkDelete then
-      local selection_min_pos = text.cursor_pos - 1
-      local selection_max_pos = text.cursor_pos
-      if vk == const.vkDelete then
-        selection_min_pos = text.cursor_pos
-        selection_max_pos = text.cursor_pos + 1
+    function self.idFilter.OnKbdKeyDown(_, char, vk)
+      local text = self.idFilter
+      if vk == const.vkEnter then
+        self:FindNext(text:GetText())
+        return "break"
+      elseif vk == const.vkBackspace or vk == const.vkDelete then
+        local selection_min_pos = text.cursor_pos - 1
+        local selection_max_pos = text.cursor_pos
+        if vk == const.vkDelete then
+          selection_min_pos = text.cursor_pos
+          selection_max_pos = text.cursor_pos + 1
+        end
+        text:Replace(selection_min_pos, selection_max_pos, "")
+        text:SetCursorPos(selection_min_pos, true)
+        return "break"
+      elseif vk == const.vkRight then
+        text:SetCursorPos(text.cursor_pos + 1, true)
+        return "break"
+      elseif vk == const.vkLeft then
+        text:SetCursorPos(text.cursor_pos + -1, true)
+        return "break"
+      elseif vk == const.vkHome then
+        text:SetCursorPos(0, true)
+        return "break"
+      elseif vk == const.vkEnd then
+        text:SetCursorPos(#text.display_text, true)
+        return "break"
+      elseif vk == const.vkEsc then
+        if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
+          self.idClose:Press()
+        end
+        self:SetFocus()
+        return "break"
       end
-      text:Replace(selection_min_pos, selection_max_pos, "")
-      text:SetCursorPos(selection_min_pos, true)
-      return "break"
-    elseif vk == const.vkRight then
-      text:SetCursorPos(text.cursor_pos + 1, true)
-      return "break"
-    elseif vk == const.vkLeft then
-      text:SetCursorPos(text.cursor_pos + -1, true)
-      return "break"
-    elseif vk == const.vkHome then
-      text:SetCursorPos(0, true)
-      return "break"
-    elseif vk == const.vkEnd then
-      text:SetCursorPos(#text.display_text, true)
-      return "break"
-    elseif vk == const.vkEsc then
-      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-        self.idClose:Press()
-      end
-      self:SetFocus()
-      return "break"
+      StaticText.OnKbdKeyDown(self, char, vk)
     end
-    StaticText.OnKbdKeyDown(self, char, vk)
-  end
-
   end --Examine:Init
 
   --make sure console is focused even when construction is opened

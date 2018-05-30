@@ -899,3 +899,46 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   dlg:UpdateListContent(Object)
 
 end
+
+--used to add files to Script menu
+function ChoGGi.ComFuncs.ListScriptFiles()
+  local script_path = "AppData/ECM Scripts"
+  --creates if not existing
+  AsyncCreatePath(script_path)
+  local err, scripts = AsyncListFiles(script_path, "*.lua")
+  if err then
+    return err
+  end
+  if #scripts > 0 then
+    for i = 1, #scripts do
+      local name = scripts[i]:gsub("AppData/ECM Scripts/","")
+      XAction:new({
+        ActionId = name,
+        ActionMenubar = "ChoGGi_Scripts",
+        ActionName = name,
+        ActionIcon = "CommonAssets/UI/Ged/new.tga",
+        OnAction = function()
+          local file_error, script = AsyncFileToString(scripts[i])
+          if not file_error then
+            --print(scripts[i])
+            --make sure log is showing
+            ShowConsoleLog(true)
+            dlgConsole:Exec(script)
+          end
+        end
+      }, dlgConsole)
+    end
+  else
+    AsyncStringToFile("AppData/ECM Scripts/readme.txt","Any .lua files in here will be part of a list that you can execute in-game (open the console).")
+    XAction:new({
+      ActionId = "Help",
+      ActionMenubar = "ChoGGi_Scripts",
+      ActionName = "Help",
+      ActionIcon = "CommonAssets/UI/Ged/new.tga",
+      OnAction = function()
+        --readfile and exec in consoleexec
+        print("Place .lua files in \"AppData/ECM Scripts\" to have them show up in the \"Scripts\" list, you can then use the list to execute them.")
+      end
+    }, dlgConsole)
+  end
+end
