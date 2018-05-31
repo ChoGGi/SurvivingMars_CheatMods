@@ -647,6 +647,126 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   )
 end
 
+function ChoGGi.MenuFuncs.SetLightsRadius()
+  local ItemList = {
+    {text = " Default",value = false,hint = "restart to enable"},
+    {text = "1 Lowest (25)",value = 25},
+    {text = "2 Lower (50)",value = 50},
+    {text = "3 Low (90) < Menu Option",value = 90},
+    {text = "4 Medium (95) < Menu Option",value = 95},
+    {text = "5 High (100) < Menu Option",value = 100},
+    {text = "6 Ultra (200)",value = 200},
+    {text = "7 Ultra-er (400)",value = 400},
+    {text = "8 Ultra-er (600)",value = 600},
+    {text = "9 Ultra-er (1000)",value = 1000},
+    {text = "10 Laggy (10000)",value = 10000},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      if value > 100000 then
+        value = 100000
+      end
+      hr.LightsRadiusModifier = value
+      ChoGGi.ComFuncs.SetSavedSetting("LightsRadius",value)
+    else
+      ChoGGi.UserSettings.LightsRadius = nil
+    end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      ChoGGi.ComFuncs.MsgPopup("Lights Radius: " .. choice[1].text,
+        "Video",UsualIcon
+      )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Lights Radius",
+    hint = "Current: " .. hr.LightsRadiusModifier .. "\n\nTurns up the radius for light bleedout, doesn't seem to hurt FPS much.",
+  })
+end
+
+function ChoGGi.MenuFuncs.SetTerrainDetail()
+  local ItemList = {
+    {text = " Default",value = false,hint = "restart to enable"},
+    {text = "1 Lowest (25)",value = 25},
+    {text = "2 Lower (50)",value = 50},
+    {text = "3 Low (100) < Menu Option",value = 100},
+    {text = "4 Medium (150) < Menu Option",value = 150},
+    {text = "5 High (100) < Menu Option",value = 100},
+    {text = "6 Ultra (200) < Menu Option",value = 200},
+    {text = "7 Ultra-er (400)",value = 400},
+    {text = "8 Ultra-er (600)",value = 600},
+    {text = "9 Ultra-er (1000)",value = 1000},
+    {text = "10 Ultra-er (2000)",value = 2000},
+    {text = "11 It goes to 11 (6000)",value = 6000},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      if value > 6000 then
+        value = 6000
+      end
+      hr.TR_MaxChunks = value
+      ChoGGi.ComFuncs.SetSavedSetting("TerrainDetail",value)
+    else
+      ChoGGi.UserSettings.TerrainDetail = nil
+    end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      ChoGGi.ComFuncs.MsgPopup("Terrain Detail: " .. choice[1].text,
+        "Video",UsualIcon
+      )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Terrain Detail",
+    hint = "Current: " .. hr.TR_MaxChunks .. "\nDoesn't seem to use much CPU, but load times will probably increase. I've limited max to 6000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.\n\nAnd yes Medium is using a higher setting than High...",
+  })
+end
+
+function ChoGGi.MenuFuncs.SetVideoMemory()
+  local ItemList = {
+    {text = " Default",value = false,hint = "restart to enable"},
+    {text = "1 Crap (32)",value = 32},
+    {text = "2 Crap (64)",value = 64},
+    {text = "3 Crap (128)",value = 128},
+    {text = "4 Low (256) < Menu Option",value = 256},
+    {text = "5 Medium (512) < Menu Option",value = 512},
+    {text = "6 High (1024) < Menu Option",value = 1024},
+    {text = "7 Ultra (2048) < Menu Option",value = 2048},
+    {text = "8 Ultra-er (4096)",value = 4096},
+    {text = "9 Ultra-er-er (8192)",value = 8192},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+      hr.DTM_VideoMemory = value
+      ChoGGi.ComFuncs.SetSavedSetting("VideoMemory",value)
+    else
+      ChoGGi.UserSettings.VideoMemory = nil
+    end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      ChoGGi.ComFuncs.MsgPopup("Video Memory: " .. choice[1].text,
+        "Video",UsualIcon
+      )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Video Memory Use",
+    hint = "Current: " .. hr.DTM_VideoMemory,
+  })
+end
+
 function ChoGGi.MenuFuncs.SetShadowmapSize()
   local hint_highest = "Warning: Highest uses vram (one gig for starter base, a couple for large base)."
   local ItemList = {
@@ -664,13 +784,12 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     local value = choice[1].value
     if type(value) == "number" then
       if value > 16384 then
-        hr.ShadowmapSize = 16384
-      else
-        hr.ShadowmapSize = value
+        value = 16384
       end
+      hr.ShadowmapSize = value
       ChoGGi.ComFuncs.SetSavedSetting("ShadowmapSize",value)
     else
-      ChoGGi.UserSettings.ShadowmapSize = false
+      ChoGGi.UserSettings.ShadowmapSize = nil
     end
 
       ChoGGi.SettingFuncs.WriteSettings()

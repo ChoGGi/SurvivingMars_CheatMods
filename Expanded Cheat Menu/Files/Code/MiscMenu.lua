@@ -140,6 +140,39 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/[2]Render/Lights Radius",
+    ChoGGi.MenuFuncs.SetLightsRadius,
+    nil,
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.LightsRadius)
+      return des .. "\nSets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?"
+    end,
+    "LightArea.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/[2]Render/Terrain Detail",
+    ChoGGi.MenuFuncs.SetTerrainDetail,
+    nil,
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.TerrainDetail)
+      return des .. "\nSets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu)."
+    end,
+    "selslope.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/[2]Render/Video Memory",
+    ChoGGi.MenuFuncs.SetVideoMemory,
+    nil,
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.VideoMemory)
+      return des .. "\nSets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048."
+    end,
+    "CountPointLights.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[98]Misc/[2]Render/Shadow Map",
     ChoGGi.MenuFuncs.SetShadowmapSize,
     nil,

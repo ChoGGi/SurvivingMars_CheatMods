@@ -3,7 +3,7 @@ function OnMsg.Autorun()
   --if the menu order gets changed this won't work
   XTemplates.PGMenu[1][2][3][5].__condition = function(parent, context)
     --return Platform.steam or Platform.pc
-    return true
+    return Platform.steam or Platform.pc or Platform.linux or Platform.osx
   end
 
 end
