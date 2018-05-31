@@ -712,7 +712,6 @@ function OnMsg.ChoGGi_Loaded()
 
 -------------------do the above stuff before the below stuff
 
-
   --add Scripts button to console
   if not dlgConsole.ChoGGi_MenuAdded then
     dlgConsole.ChoGGi_MenuAdded = true

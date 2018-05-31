@@ -2,6 +2,15 @@
 
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
+function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
+  ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Cheats hover toggle: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),
+    "Menu"
+  )
+end
+
 do
   local ChoGGi = ChoGGi
   local UICity = UICity
@@ -356,7 +365,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   if next(list) then
     local tab = list or empty_table
     for i = 1, #tab do
-      EnabledList = EnabledList .. " " .. i
+      EnabledList = EnabledList .. " " .. tab[i]
     end
   end
 

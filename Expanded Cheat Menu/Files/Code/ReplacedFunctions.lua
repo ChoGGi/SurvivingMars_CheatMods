@@ -224,6 +224,35 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --limit width of cheats menu till hover
+  do
+    local cheats_width = 450
+    if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
+      cheats_width = 80
+      local thread
+      SaveOrigFunc("UAMenu","OnMouseEnter")
+      function UAMenu:OnMouseEnter(...)
+        ChoGGi.OrigFuncs.UAMenu_OnMouseEnter(self,...)
+        DeleteThread(thread)
+        self:SetSize(point(450,self:GetSize():y()))
+      end
+      SaveOrigFunc("UAMenu","OnMouseLeft")
+      function UAMenu:OnMouseLeft(...)
+        ChoGGi.OrigFuncs.UAMenu_OnMouseLeft(self,...)
+        thread = CreateRealTimeThread(function()
+          Sleep(2500)
+        self:SetSize(point(80,self:GetSize():y()))
+        end)
+      end
+    end
+    --default menu width
+    SaveOrigFunc("UAMenu","SetBtns")
+    function UAMenu:SetBtns()
+      ChoGGi.OrigFuncs.UAMenu_SetBtns(self)
+      self:SetSize(point(cheats_width,self:GetSize():y()))
+    end
+  end
+
   --make it so the script button on the console shows above the button/consolelog, and builds our scripts menu listing
   SaveOrigFunc("XPopupMenu","RebuildActions")
   function XPopupMenu:RebuildActions(host)
@@ -643,7 +672,7 @@ end
           end
           --init set to hidden
           ToggleVis(false,0)
-          local expandthread
+          local visthread
 
           self.OnMouseEnter = function()
             DeleteThread(visthread)
@@ -654,8 +683,8 @@ end
               Sleep(1000)
               ToggleVis(false,0)
             end)
-
           end
+
         end
 
         --loop all the sections

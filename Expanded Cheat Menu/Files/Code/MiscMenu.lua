@@ -6,6 +6,17 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/Toggle Width Of Cheats Menu On Hover",
+    ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
+    nil,
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)
+      return des .. " Makes the cheats menu just show Cheats till mouseover (restart to take effect)."
+    end,
+    "select_objects.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[98]Misc/Annoying Sounds",
     ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
     nil,
@@ -105,7 +116,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
     "Expanded CM/[98]Misc/Set UI Transparency",
     ChoGGi.MenuFuncs.SetTransparencyUI,
     "Ctrl-F3",
-    "Change the transparency of UI items.",
+    "Change the transparency of UI items (info panel, menu, pins).",
     "set_last_texture.tga"
   )
 
@@ -113,7 +124,10 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
     "Expanded CM/[98]Misc/Set UI Transparency Mouseover",
     ChoGGi.MenuFuncs.TransparencyUI_Toggle,
     nil,
-    "Toggle removing transparency on mouseover.",
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.TransparencyToggle)
+      return des .. " Toggle removing transparency on mouseover."
+    end,
     "set_last_texture.tga"
   )
 
