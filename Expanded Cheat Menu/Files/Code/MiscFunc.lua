@@ -2,6 +2,49 @@
 
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
+function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
+  local GetObjects = GetObjects
+  local function ChangeEntity(Class,Entity,Random)
+    local objs = GetObjects({class = Class}) or empty_table
+    for i = 1, #objs do
+      if Random then
+        objs[i]:ChangeEntity(Entity .. UICity:Random(1,Random))
+      else
+        objs[i]:ChangeEntity(Entity)
+      end
+    end
+  end
+
+  local ItemList = {
+    {text = "Enable",value = "Enable",hint = "Changes signs to materials."},
+    {text = "Disable",value = "Disable",hint = "Changes materials to signs."},
+  }
+
+  local CallBackFunc = function(choice)
+    if choice[1].value == "Enable" then
+      ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
+      ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
+      ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
+      ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
+      ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
+      ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
+      ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+    else
+      ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
+      ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
+      ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
+      ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
+      ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
+      ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
+      ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
+      ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
+      ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
+    end
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Surface Signs")
+end
+
 function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
   ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
 

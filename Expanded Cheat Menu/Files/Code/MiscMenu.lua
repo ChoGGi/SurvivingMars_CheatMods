@@ -6,6 +6,14 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/Change Surface Signs To Materials",
+    ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
+    nil,
+    "Changes all the ugly immersion breaking signs to materials (reversible).",
+    "SelectByClassName.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[98]Misc/Toggle Width Of Cheats Menu On Hover",
     ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
     nil,
