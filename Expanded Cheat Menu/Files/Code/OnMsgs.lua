@@ -817,6 +817,14 @@ function OnMsg.ChoGGi_Loaded()
     hr.DTM_VideoMemory = UserSettings.VideoMemory
   end
 
+  if UserSettings.TerrainDetail then
+    hr.TR_MaxChunks = UserSettings.TerrainDetail
+  end
+
+  if UserSettings.LightsRadius then
+    hr.LightsRadiusModifier = UserSettings.LightsRadius
+  end
+
   if UserSettings.HigherRenderDist then
     --lot of lag for some small rocks in distance
     --hr.DistanceModifier = 260 --ultra=150
