@@ -1,23 +1,6 @@
 --See LICENSE for terms
 
-function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesGenerate()
-  --custom shuttletask
-  DefineClass.PersonalShuttles_ShuttleFollowTask = {
-    __parents = {"InitDone"},
-    state = "new",
-    shuttle = false,
-    scanning = false, --from explorer code for AnalyzeAnomaly
-    dest_pos = false, --there isn't one, but adding one prevents log spam
-  }
-end
-
-function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesPreprocess()
-  local c = CargoShuttle
-  c.PersonalShuttles_DefenceTickD = false
-
-end
-
-function PersonalShuttles.MsgFuncs.ShuttleControl_ClassesBuilt()
+function OnMsg.ClassesBuilt()
 
   if PersonalShuttles.UserSettings.ShowShuttleControls then
     local XTemplates = XTemplates

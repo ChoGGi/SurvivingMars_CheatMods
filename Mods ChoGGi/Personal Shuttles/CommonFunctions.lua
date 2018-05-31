@@ -1,6 +1,6 @@
 --keep everything stored in
 PersonalShuttles = {
-  email = "ECM@choggi.org",
+  email = "PersonalShuttles@choggi.org",
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua
@@ -34,6 +34,7 @@ function PersonalShuttles.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
     end
   end
 end
+
 function PersonalShuttles.ComFuncs.MsgPopup(Msg,Title,Icon)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers

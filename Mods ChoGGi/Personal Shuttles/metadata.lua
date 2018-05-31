@@ -9,8 +9,7 @@ return PlaceObj("ModDef", {
   "code", {
     "CommonFunctions.lua",
     "_Functions.lua",
-    "ShuttleControl.lua",
     "OnMsgs.lua",
-    "ReplacedFunctions.lua",
+    "ShuttleControl.lua",
   },
 })

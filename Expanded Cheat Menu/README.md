@@ -193,8 +193,8 @@ GetTerrainCursorObjSel() : or mh, just the handle
 GetTerrainCursor() : or c, position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
 terminal.GetMousePos : or cs, mouse pos on screen, not map
 
-If you want to overwrite instead of append text: dumpobject(TechTree,"w")
-If you want to dump functions as well: dumptable(TechTree,nil,true)
+If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
+If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
 If you want to save the console text: Debug>Write Logs (very helpful for examining an object)
 
 you can paste chunks of scripts to test out:

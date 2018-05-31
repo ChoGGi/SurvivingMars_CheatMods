@@ -6,12 +6,9 @@ return {
     'FileName', "_Functions.lua",
   }),
   PlaceObj('ModItemCode', {
-    'FileName', "ShuttleControl.lua",
-  }),
-  PlaceObj('ModItemCode', {
     'FileName', "OnMsgs.lua",
   }),
   PlaceObj('ModItemCode', {
-    'FileName', "ReplacedFunctions.lua",
+    'FileName', "ShuttleControl.lua",
   }),
 }

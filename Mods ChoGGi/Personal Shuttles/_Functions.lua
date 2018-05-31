@@ -59,12 +59,12 @@ function PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
-function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
+function PersonalShuttles.CodeFuncs.DefenceTick(self,already_fired)
   local CreateGameTimeThread = CreateGameTimeThread
   local Sleep = Sleep
   local PlayFX = PlayFX
 
-  if type(AlreadyFired) ~= "table" then
+  if type(already_fired) ~= "table" then
     print("Error: ShuttleRocketDD isn't a table")
   end
 
@@ -85,8 +85,8 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
       end
 
       --follow = small ones attached to majors
-      if not obj.follow and not AlreadyFired[obj.handle] then
-      --if not AlreadyFired[obj.handle] then
+      if not obj.follow and not already_fired[obj.handle] then
+      --if not already_fired[obj.handle] then
         --aim the tower at the dustdevil
         if self.class == "DefenceTower" then
           self:OrientPlatform(obj:GetVisualPos(), 7200)
@@ -94,7 +94,7 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
         --fire in the hole
         local rocket = self:FireRocket(nil, obj)
         --store handle so we only launch one per devil
-        AlreadyFired[obj.handle] = obj
+        already_fired[obj.handle] = obj
         --seems like safe bets to set
         self.meteor = obj
         self.is_firing = true
@@ -124,11 +124,11 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
     end
   end
   --remove only remove devil handles if they're actually gone
-  if #AlreadyFired > 0 then
+  if #already_fired > 0 then
     CreateGameTimeThread(function()
-      for i = #AlreadyFired, 1, -1 do
-        if not IsValid(AlreadyFired[i]) then
-          AlreadyFired[i] = nil
+      for i = #already_fired, 1, -1 do
+        if not IsValid(already_fired[i]) then
+          already_fired[i] = nil
         end
       end
     end)
@@ -136,6 +136,7 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,AlreadyFired)
 end
 
 function PersonalShuttles.CodeFuncs.RecallShuttlesHub(hub)
+  local UICity = UICity
   for _, s_i in pairs(hub.shuttle_infos) do
     local shuttle = s_i.shuttle_obj
     if shuttle then
@@ -151,16 +152,14 @@ function PersonalShuttles.CodeFuncs.RecallShuttlesHub(hub)
     end
   end
 end
+
 --which true=attack,false=friend
 function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
   local PersonalShuttles = PersonalShuttles
   for _, s_i in pairs(hub.shuttle_infos) do
-    if s_i:CanLaunch() then
+    if s_i:CanLaunch() and s_i.hub and s_i.hub.has_free_landing_slots then
       --ShuttleInfo:Launch(task)
       local hub = s_i.hub
-      if not hub or not hub.has_free_landing_slots then
-        return false
-      end
       --LRManagerInstance
       local shuttle = CargoShuttle:new({
         hub = hub,
@@ -175,8 +174,8 @@ function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
       shuttle:SetPos(slot.pos)
       --CargoShuttle:Launch()
       shuttle:PushDestructor(function(s)
-        s.hub:ShuttleLeadOut(s)
-        s.hub:FreeLandingSpot(s)
+        hub:ShuttleLeadOut(s)
+        hub:FreeLandingSpot(s)
       end)
       local amount = 0
       for _ in pairs(UICity.PersonalShuttles.CargoShuttleThreads) do
@@ -205,9 +204,11 @@ function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
         --return it so we can do viewpos on it for menu item
         return shuttle
       else
-      --or the crash is from all the dust i have going :)
+        --remove amount added above
+        amount = amount - 1
+        --or the crash is from all the dust i have going :)
         PersonalShuttles.ComFuncs.MsgPopup(
-          "Max of 50 (above 50 and below 100 it crashes).",
+          "Max of 50 (somewhere above 50 and below 100 it crashes).",
           "Shuttle"
         )
       end
