@@ -396,6 +396,7 @@ do --hex rings
     local Sleep = Sleep
     local HexGridGetObject = HexGridGetObject
     local HexToWorld = HexToWorld
+    local WorldToHex = WorldToHex
     local ObjectGrid = ObjectGrid
     local GetTerrainCursor = GetTerrainCursor
     local terrain = terrain

@@ -1,73 +1,65 @@
 --See LICENSE for terms
 
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-
 --[[
-add files for:
-  ("ShowPopupNotification")
-  ("MG_Colonists","GetProgress")
-  ("MG_Martianborn","GetProgress")
-  ("BuildingVisualDustComponent","SetDustVisuals")
-  ("BaseRover","GetCableNearby")
+files to check after update:
 
+CommonLua\Classes\Sequences\SequenceAction.lua
+  SA_WaitBase>SA_WaitTime:StopWait
+  SA_WaitBase>SA_WaitMarsTime:StopWait
+CommonLua\UI\uiUAMenu.lua
+  UAMenu:SetBtns
 CommonLua\UI\Controls\uiFrameWindow.lua
   FrameWindow:PostInit
-CommonLua\UI\Dev\uiConsoleLog.lua
-  ConsoleLog:ShowBackground
+  UAMenu>FrameWindow:OnMouseEnter
+  UAMenu>FrameWindow:OnMouseLeft
 CommonLua\UI\Dev\uiConsole.lua
   Console:Show
   Console:TextChanged
   Console:HistoryDown
   Console:HistoryUp
+CommonLua\UI\Dev\uiConsoleLog.lua
+  ConsoleLog:ShowBackground
 CommonLua\UI\X\XDialog.lua
   OpenXDialog
+CommonLua\X\XMenu.lua
+  XPopupMenu:RebuildActions
+
 Lua\Construction.lua
   ConstructionController:UpdateConstructionStatuses
   ConstructionController:CreateCursorObj
   TunnelConstructionController:UpdateConstructionStatuses
+Lua\Heat.lua
+  SubsurfaceHeater:UpdatElectricityConsumption
+Lua\MissionGoals.lua
+  MG_Colonists:GetProgress
+  MG_Martianborn:GetProgress
 Lua\RequiresMaintenance.lua
   RequiresMaintenance:AddDust
-Lua\Buildings\BuildingComponents.lua
-  SingleResourceProducer:Produce
-Lua\Buildings\SupplyGrid.lua
+Lua\SupplyGrid.lua
   SupplyGridElement:SetProduction
+Lua\Buildings\BaseRover.lua
+  BaseRover:GetCableNearby
+Lua\Buildings\BuildingComponents.lua
+  BuildingVisualDustComponent:SetDustVisuals
+  SingleResourceProducer:Produce
+Lua\Buildings\MartianUniversity.lua
+  MartianUniversity:OnTrainingCompleted
+Lua\Buildings\TriboelectricScrubber.lua
+  TriboelectricScrubber:OnPostChangeRange
+Lua\Buildings\UIRangeBuilding.lua
+  UIRangeBuilding:SetUIRange
+Lua\Buildings\Workplace.lua
+  Workplace:AddWorker
+Lua\UI\PopupNotification.lua
+  ShowPopupNotification
+Lua\Units\Colonist.lua
+  Colonist:ChangeComfort
 Lua\X\Infopanel.lua
   InfopanelObj:CreateCheatActions
   InfopanelDlg:Open
 --]]
 
---[[
-fix one bug in Drone Build Failure.savegame
-https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-drone-build-failure.1099375/
-function TaskRequester:ConnectToCommandCenters()
-	local dome = IsObjInDome(self)
-	if dome then
-		for i = 1, #(dome.command_centers or "") do
-			local cc = dome.command_centers[i]
-			self:AddCommandCenter(cc)
-		end
-	else
-		command_center_search.area = self
-		ForEach(command_center_search, self)
-		command_center_search.area = false
-	end
-end
-
-function TaskRequester:ConnectToOtherBuildingCommandCenters(other_building)
-	local dome = IsObjInDome(other_building) --if other bld is in dome connect to dome's cc's instead.
-
-	if dome then
-		for i = 1, #(dome.command_centers or "") do
-			local cc = dome.command_centers[i]
-			self:AddCommandCenter(cc)
-		end
-	else
-		command_center_search.area = other_building
-		ForEach(command_center_search, self, other_building)
-		command_center_search.area = false
-	end
-end
---]]
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 
@@ -146,6 +138,8 @@ end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
 end
+function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
+end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
@@ -193,10 +187,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         table.remove(host.actions,i)
       end
     end
-    if ischoggi then
-      --rebuild list of scripts
-      ChoGGi.ComFuncs.ListScriptFiles()
-    end
+    --rebuild list of scripts
+    ChoGGi.ComFuncs.ListScriptFiles()
 
     local context = host.context
     local ShowIcons = self.ShowIcons
@@ -568,7 +560,7 @@ end
       local c = self.idContent
 
       --see about adding age to colonist info
-if ChoGGi.Temp.Testing then
+if type(ChoGGi.Temp.Testing) == "function" then
       if self.context and self.context.class == "Colonist" then
         local con = c[2].idContent
         --con[#con+1] = XText:new()
@@ -792,6 +784,7 @@ end
     return table.unpack(ret)
   end
 
+
   --so we can build without (as many) limits
   SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
   function ConstructionController:UpdateConstructionStatuses(dont_finalize)
@@ -822,7 +815,8 @@ end
           --UnevenTerrain < causes issues when placing buildings (martian ground viagra)
           --ResourceRequired < no point in building an extractor when there's nothing to extract
           --BlockingObjects < place buildings in each other
-
+--NoPlaceForSpire
+--PassageTooCloseToLifeSupport
           --PassageAngleToSteep might be needed?
           elseif status[i] == ConstructionStatus.UnevenTerrain then
             statusNew[#statusNew+1] = status[i]

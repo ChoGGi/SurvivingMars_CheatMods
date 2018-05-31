@@ -1,9 +1,9 @@
 --See LICENSE for terms
 
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 --stuff only loaded when ChoGGi.Temp.Testing = true
 
---ChoGGi.Temp.Testing = false
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+
 --stuff that never happens, fuck comments (like this one)
 if type(ChoGGi.Temp.Testing) == "function" then
 
@@ -163,6 +163,7 @@ end
 
 function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
 
+  --add an overlay for dead rover
   SaveOrigFunc("PinsDlg","GetPinConditionImage")
   function PinsDlg:GetPinConditionImage(obj)
     local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)

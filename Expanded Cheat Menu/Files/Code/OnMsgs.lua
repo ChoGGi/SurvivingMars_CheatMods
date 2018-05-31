@@ -34,6 +34,9 @@ end
 --use this message to make modifications to the built classes (before they are declared final)
 function OnMsg.ClassesPostprocess()
   local ChoGGi = ChoGGi
+
+  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
+
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   end
