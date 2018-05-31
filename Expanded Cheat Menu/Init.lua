@@ -31,57 +31,52 @@ ChoGGi = {
   },
 }
 
-do
-  local ChoGGi = ChoGGi
-  local Mods = Mods
-  ChoGGi._VERSION = Mods[ChoGGi.id].version
-  ChoGGi.ModPath = Mods[ChoGGi.id].path
+local ChoGGi = ChoGGi
+local Mods = Mods
+ChoGGi._VERSION = Mods[ChoGGi.id].version
+ChoGGi.ModPath = Mods[ChoGGi.id].path
 
-  --if we use global func more then once: make them local for that small bit o' speed
-  local AsyncFileToString = AsyncFileToString
-  local dofolder_files = dofolder_files
+--if we use global func more then once: make them local for that small bit o' speed
+local AsyncFileToString = AsyncFileToString
+local dofolder_files = dofolder_files
 
-  --used to let me know if we're on my computer
-  local file_error, _ = AsyncFileToString("AppData/ChoGGi")
+--used to let me know if we're on my computer
+local file_error, _ = AsyncFileToString("AppData/ChoGGi")
+if not file_error then
+  ChoGGi.Temp.Testing = true
+end
+
+if ChoGGi.Temp.Testing then
+  --get saved settings for this mod
+  dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
+  --functions needed before Code/ is loaded
+  dofile(ChoGGi.ModPath .. "Files/CommonFunctions.lua")
+  --load all the other files
+  dofolder_files(ChoGGi.ModPath .. "Files/Code")
+else
+  --if file exists then we'll ignore Files.hpk (user likely unpacked the files)
+  local file_error, _ = AsyncFileToString(ChoGGi.ModPath .. "/Defaults.lua")
   if not file_error then
-    ChoGGi.Temp.Testing = true
-  end
-
-  if ChoGGi.Temp.Testing then
     --get saved settings for this mod
-    dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
-    --functions needed before Code/ is loaded
-    dofile(ChoGGi.ModPath .. "Files/CommonFunctions.lua")
+    dofile(ChoGGi.ModPath .. "/Defaults.lua")
+    --functions needed for before Code/ is loaded
+    dofile(ChoGGi.ModPath .. "/CommonFunctions.lua")
     --load all the other files
-    dofolder_files(ChoGGi.ModPath .. "Files/Code")
+    dofolder_files(ChoGGi.ModPath .. "/Code")
   else
-    --if file exists then we'll ignore Files.hpk (user likely unpacked the files)
-    local file_error, _ = AsyncFileToString(ChoGGi.ModPath .. "/Defaults.lua")
-    if not file_error then
-      --get saved settings for this mod
-      dofile(ChoGGi.ModPath .. "/Defaults.lua")
-      --functions needed for before Code/ is loaded
-      dofile(ChoGGi.ModPath .. "/CommonFunctions.lua")
-      --load all the other files
-      dofolder_files(ChoGGi.ModPath .. "/Code")
-    else
-      local MountName = "ChoGGi_Mount"
-      --load up the hpk
-      AsyncMountPack(MountName,ChoGGi.ModPath .. "/Files.hpk")
-      dofile(MountName .. "/Defaults.lua")
-      dofile(MountName .. "/CommonFunctions.lua")
-      dofolder_files(MountName .. "/Code")
-      --and unload it
-      Unmount(MountName)
-    end
+    local MountName = "ChoGGi_Mount"
+    --load up the hpk
+    AsyncMountPack(MountName,ChoGGi.ModPath .. "/Files.hpk")
+    dofile(MountName .. "/Defaults.lua")
+    dofile(MountName .. "/CommonFunctions.lua")
+    dofolder_files(MountName .. "/Code")
+    --and unload it
+    Unmount(MountName)
   end
 end
 
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()
-
---okay i doubt i'm using local correctly
-local ChoGGi = ChoGGi
 
 --bloody hint popups
 if ChoGGi.UserSettings.DisableHints then
