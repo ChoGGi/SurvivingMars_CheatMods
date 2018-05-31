@@ -593,3 +593,6 @@ function ShowCircle(pt, r, color)
     end
   end)
 end
+local OpenExamine = OpenExamine
+function examine(Obj)OpenExamine(Obj)end
+function ex(Obj)OpenExamine(Obj)end

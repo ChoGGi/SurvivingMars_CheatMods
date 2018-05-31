@@ -16,6 +16,7 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
     local CreateRealTimeThread = CreateRealTimeThread
     local terminal = terminal
     local const = const
+    local OpenExamine = OpenExamine
 
     self.refreshing = false
     --make sure we're always above examiner dialogs
@@ -49,7 +50,7 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
 
     function self.idRefresh.OnButtonPressed()
       if ChoGGi.Temp.Testing then
-        ex(self.object)
+        OpenExamine(self.object)
       end
       self:UpdateText()
     end

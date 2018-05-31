@@ -5,9 +5,6 @@
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
   local ChoGGi = ChoGGi
-  local OpenExamine = OpenExamine
-  function examine(Obj)OpenExamine(Obj)end
-  function ex(Obj)OpenExamine(Obj)end
   function dump(...)ChoGGi.ComFuncs.Dump(...)end
   function dumpobject(...)ChoGGi.ComFuncs.DumpObject(...)end
   function dumplua(...)ChoGGi.ComFuncs.DumpLua(...)end
