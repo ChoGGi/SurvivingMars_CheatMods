@@ -10,10 +10,6 @@ add files for:
   ("BuildingVisualDustComponent","SetDustVisuals")
   ("BaseRover","GetCableNearby")
 
-CommonLua\UI\uiExamine.lua
-  Examine:Init
-CommonLua\UI\uiExamine.designer.lua
-    ExamineDesigner:Init
 CommonLua\UI\Controls\uiFrameWindow.lua
   FrameWindow:PostInit
 CommonLua\UI\Dev\uiConsoleLog.lua
@@ -146,77 +142,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     return table.unpack(ret)
   end
 
-  --add dump button to Examine windows
-  SaveOrigFunc("ExamineDesigner","Init")
-  function ExamineDesigner:Init()
-    ChoGGi.OrigFuncs.ExamineDesigner_Init(self)
-
-    --change already added elements
-    self.idNext:SetHint("Scrolls down one or scrolls between text in \"Goto text\".")
-    self.idNext:SetPos(point(715, 304))
-
-    self.idText:SetScrollAutohide(true)
-    self.idText:SetBackgroundColor(RGBA(0, 0, 0, 50))
-    self.idText:SetPos(point(283, 332))
-    self.idText:SetSize(point(362, 310))
-
-    self.idFilter:SetPos(point(288, 275))
-    self.idFilter:SetSize(point(350, 26))
-    self.idFilter:SetHint("Scrolls to text entered")
-    self.idFilter:SetTextHAlign("center")
-    self.idFilter:SetTextVAlign("center")
-    self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
-    self.idFilter.display_text = "Goto text"
-
-    self.idClose:SetPos(point(629, 194))
-    self.idClose:SetSize(point(18, 18))
-    self.idClose:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-    self.idClose:SetHint("Good bye")
-    self.idClose:SetText("")
-
-    --add some more
-    local obj
-    obj = Button:new(self)
-    obj:SetId("idDump")
-    obj:SetPos(point(290, 304))
-    obj:SetSize(point(75, 26))
-    obj:SetText("Dump Text")
-    obj:SetHint("Dumps text to AppData/DumpedExamine.lua")
-
-    obj = Button:new(self)
-    obj:SetId("idDumpObj")
-    obj:SetPos(point(375, 304))
-    obj:SetSize(point(75, 26))
-    obj:SetText("Dump Obj")
-    obj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
-
-    obj = Button:new(self)
-    obj:SetId("idEdit")
-    obj:SetPos(point(460, 304))
-    obj:SetSize(point(53, 26))
-    obj:SetText("Edit")
-    obj:SetHint("Opens object in Object Manipulator.")
-
-    obj = Button:new(self)
-    obj:SetId("idCodeExec")
-    obj:SetPos(point(520, 304))
-    obj:SetSize(point(50, 26))
-    obj:SetText("Exec")
-    obj:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
-
-    obj = Button:new(self)
-    obj:SetId("idAttaches")
-    obj:SetPos(point(575, 304))
-    obj:SetSize(point(75, 26))
-    obj:SetText("Attaches")
-    obj:SetHint("Opens attachments in new examine window.")
-
-    self:InitChildrenSizing()
-    --have to size children before doing these:
-    self:SetPos(point(50,150))
-    self:SetSize(point(500,600))
-
-  end
 end --OnMsg
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
@@ -776,87 +701,6 @@ end
       end
     end
   end
-
-  --update attaches button with attaches amount
-  SaveOrigFunc("Examine","SetObj")
-  function Examine:SetObj(o)
-    ChoGGi.OrigFuncs.Examine_SetObj(self,o)
-    local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
-    local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
-    local hint = "Opens attachments in new examine window."
-    local name = type(o) == "table" and o.class
-    self.idAttaches:SetHint(hint .. "\nThis " .. (name or "\"Missing\"") .. " has: " .. amount)
-  end
-
-  --add functions for dump buttons/etc
-  SaveOrigFunc("Examine","Init")
-  function Examine:Init()
-    ChoGGi.OrigFuncs.Examine_Init(self)
-
-    function self.idDump.OnButtonPressed()
-      local String = self:totextex(self.obj)
-      --remove html tags
-      String = String:gsub("<[/%s%a%d]*>","")
-      ChoGGi.ComFuncs.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
-    end
-    function self.idDumpObj.OnButtonPressed()
-      ChoGGi.ComFuncs.Dump("\r\n" .. ValueToLuaCode(self.obj),nil,"DumpedExamineObject","lua")
-    end
-
-    function self.idAttaches.OnButtonPressed()
-      if type(self.obj) == "table" then
-        if type(self.obj.GetAttaches) == "function" then
-          ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
-        end
-      else
-        print("Zero attachments means zero...")
-      end
-    end
-
-    function self.idEdit.OnButtonPressed()
-      ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-    end
-    function self.idCodeExec.OnButtonPressed()
-      ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
-    end
-
-    function self.idFilter.OnKbdKeyDown(_, char, vk)
-      local text = self.idFilter
-      if vk == const.vkEnter then
-        self:FindNext(text:GetText())
-        return "break"
-      elseif vk == const.vkBackspace or vk == const.vkDelete then
-        local selection_min_pos = text.cursor_pos - 1
-        local selection_max_pos = text.cursor_pos
-        if vk == const.vkDelete then
-          selection_min_pos = text.cursor_pos
-          selection_max_pos = text.cursor_pos + 1
-        end
-        text:Replace(selection_min_pos, selection_max_pos, "")
-        text:SetCursorPos(selection_min_pos, true)
-        return "break"
-      elseif vk == const.vkRight then
-        text:SetCursorPos(text.cursor_pos + 1, true)
-        return "break"
-      elseif vk == const.vkLeft then
-        text:SetCursorPos(text.cursor_pos + -1, true)
-        return "break"
-      elseif vk == const.vkHome then
-        text:SetCursorPos(0, true)
-        return "break"
-      elseif vk == const.vkEnd then
-        text:SetCursorPos(#text.display_text, true)
-        return "break"
-      elseif vk == const.vkEsc then
-        if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-          self.idClose:Press()
-        end
-        self:SetFocus()
-        return "break"
-      end
-      StaticText.OnKbdKeyDown(self, char, vk)
-    end
-  end --Examine:Init
 
   --make sure console is focused even when construction is opened
   SaveOrigFunc("Console","Show")
