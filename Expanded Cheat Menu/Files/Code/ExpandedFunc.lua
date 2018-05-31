@@ -29,8 +29,13 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     end
   end
 
-  local hint = "Select something to monitor."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Monitor Info",hint,nil,nil,nil,nil,nil,7)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Monitor Info",
+    hint = "Select something to monitor.",
+    custom_type = 7,
+  })
 end
 
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
@@ -93,7 +98,12 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rocket Cargo Capacity","Current capacity: " .. Consts.CargoCapacity)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Rocket Cargo Capacity",
+    hint = "Current capacity: " .. Consts.CargoCapacity,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetRocketTravelTime()
@@ -137,7 +147,12 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Rocket Travel Time","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Rocket Travel Time",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsPerRocket()
@@ -167,7 +182,12 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Capacity","Current capacity: " .. Consts.MaxColonistsPerRocket)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Colonist Capacity",
+    hint = "Current capacity: " .. Consts.MaxColonistsPerRocket,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
@@ -234,8 +254,12 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
     end
   end
 
-  hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Worker Capacity",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sel.encyclopedia_id .. " Worker Capacity",
+    hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetBuildingCapacity()
@@ -377,8 +401,12 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
   end
 
-  hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Capacity",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sel.encyclopedia_id .. " Capacity",
+    hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge,
+  })
 end --SetBuildingCapacity
 
 function ChoGGi.MenuFuncs.SetVisitorCapacity()
@@ -436,7 +464,12 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sel.encyclopedia_id .. " Visitor Capacity","Current capacity: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sel.encyclopedia_id .. " Visitor Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
@@ -528,5 +561,11 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Size","Current capacity: " .. hint .. "\n\n" .. hint_max)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. " Size",
+    hint = "Current capacity: " .. hint .. "\n\n" .. hint_max,
+  })
 end

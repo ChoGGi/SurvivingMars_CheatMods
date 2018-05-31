@@ -10,7 +10,7 @@ function ChoGGi.MenuFuncs.FireMostFixes()
 
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-  ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+  --ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   ChoGGi.MenuFuncs.CablesAndPipesRepair()
   ChoGGi.MenuFuncs.MirrorSphereStuck()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -199,6 +199,8 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   ChoGGi.ComFuncs.MsgPopup("Removed unreachable","Sites")
 end
 
+--[[
+fixed in curiosity?
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   local Table = GetObjects({class="GridTile"})
   if Table[1] and Table[1].class and Table[1].class == "GridTile" then
@@ -208,7 +210,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   end
   ChoGGi.ComFuncs.MsgPopup("Grid marks removed","Grid")
 end
-
+--]]
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
@@ -291,6 +293,9 @@ function ChoGGi.MenuFuncs.CablesAndPipesRepair()
 end
 
 ------------------------- toggles
+--[[
+fixed in curiosity
+
 function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.NoRestingBonusPsychologistFix = not ChoGGi.UserSettings.NoRestingBonusPsychologistFix
@@ -311,6 +316,7 @@ function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
     "Psychologist"
   )
 end
+--]]
 
 function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi

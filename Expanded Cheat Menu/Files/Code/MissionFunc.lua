@@ -83,8 +83,12 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
     end
   end
 
-  local hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Sponsor",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Sponsor",
+    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),
+  })
 end
 
 --set just the bonus effects
@@ -134,12 +138,19 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
   end
 
-  local hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-    .. "\n\nUse Ctrl/Shift for multiple bonuses."
-    .. "\n\nModded ones are mostly ignored for now (just cargo space/research points)."
-  local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
-  local hint_check2 = "Turns off all bonuses."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Sponsor Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Sponsor Bonuses",
+    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
+      .. "\n\nUse Ctrl/Shift for multiple bonuses."
+      .. "\n\nModded ones are mostly ignored for now (just cargo space/research points).",
+    multisel = true,
+    check1 = "Turn Off",
+    check1_hint = "Turn off selected bonuses (defaults to turning on).",
+    check2 = "Turn All Off",
+    check2_hint = "Turns off all bonuses.",
+  })
 end
 
 function ChoGGi.MenuFuncs.ChangeCommander()
@@ -183,8 +194,12 @@ function ChoGGi.MenuFuncs.ChangeCommander()
     end
   end
 
-  local hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Commander",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Commander",
+    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),
+  })
 end
 
 --set just the bonus effects
@@ -234,11 +249,18 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
   end
 
-  local hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-    .. "\n\nUse Ctrl/Shift for multiple bonuses."
-  local hint_check1 = "Turn off selected bonuses (defaults to turning on)."
-  local hint_check2 = "Turns off all bonuses."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Commander Bonuses",hint,true,"Turn Off",hint_check1,"Turn All Off",hint_check2)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Commander Bonuses",
+    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
+      .. "\n\nUse Ctrl/Shift for multiple bonuses.",
+    multisel = true,
+    check1 = "Turn Off",
+    check1_hint = "Turn off selected bonuses (defaults to turning on).",
+    check2 = "Turn All Off",
+    check2_hint = "Turns off all bonuses.",
+  })
 end
 
 --pick a logo
@@ -289,8 +311,12 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     end
   end
 
-  local hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set New Logo",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set New Logo",
+    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name),
+  })
 end
 
 function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
@@ -455,7 +481,13 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
       "Disaster","UI/Icons/Sections/attention.tga"
     )
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. " Disaster Occurrences","Current: " .. mapdata["MapSettings_" .. sType])
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. " Disaster Occurrences",
+    hint = "Current: " .. mapdata["MapSettings_" .. sType],
+  })
 end
 
 function ChoGGi.ChangeRules()
@@ -518,6 +550,16 @@ function ChoGGi.ChangeRules()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rules",hint,true,"Add","Add selected rules","Remove","Remove selected rules")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Rules",
+    hint = hint,
+    multisel = true,
+    check1 = "Add",
+    check1_hint = "Add selected rules",
+    check2 = "Remove",
+    check2_hint = "Remove selected rules",
+  })
 end
 --]]

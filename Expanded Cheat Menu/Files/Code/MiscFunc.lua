@@ -42,7 +42,11 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Surface Signs")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Change Surface Signs",
+  })
 end
 
 function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
@@ -54,85 +58,86 @@ function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
   )
 end
 
-do
+--AnnoyingSounds_Toggle
+local function MirrorSphere_Toggle()
+  local tab = UICity.labels.MirrorSpheres or empty_table
+  for i = 1, #tab do
+    PlayFX("Freeze", "end", tab[i])
+    PlayFX("Freeze", "start", tab[i])
+  end
+end
+local function SensorTower_Toggle()
   local ChoGGi = ChoGGi
-  local UICity = UICity
-  local RemoveFromRules = RemoveFromRules
-  local function MirrorSphere_Toggle()
-    local tab = UICity.labels.MirrorSpheres or empty_table
-    for i = 1, #tab do
-      PlayFX("Freeze", "end", tab[i])
-      PlayFX("Freeze", "start", tab[i])
-    end
+  local tab = UICity.labels.SensorTower or empty_table
+  for i = 1, #tab do
+    ChoGGi.CodeFuncs.ToggleWorking(tab[i])
   end
-
-  local function SensorTower_Toggle()
-    local tab = UICity.labels.SensorTower or empty_table
-    for i = 1, #tab do
-      ChoGGi.CodeFuncs.ToggleWorking(tab[i])
-    end
-  end
-
-  local function RCRover_Toggle()
-    local tab = UICity.labels.RCRover or empty_table
-    for i = 1, #tab do
-      PlayFX("RoverDeploy", "end", tab[i])
-      PlayFX("RoverDeploy", "start", tab[i])
-    end
-  end
-  function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
-    --make a list
-    local ItemList = {
-      {text = " Reset",value = "Reset"},
-      {text = "Sensor Tower Beeping",value = "SensorTowerWorking"},
-      {text = "RC Rover Drones Deployed",value = "RCRoverAntenna"},
-      {text = "Mirror Sphere Crackling",value = "MirrorSphereFreeze"},
-    }
-
-    --callback
-    local CallBackFunc = function(choice)
-      local value = choice[1].value
-      if value == "SensorTowerWorking" then
-        --FXRules.Working.start.SensorTower.any[3] = nil
-        table.remove(FXRules.Working.start.SensorTower.any,3)
-        RemoveFromRules("Object SensorTower Loop")
-        SensorTower_Toggle()
-
-      elseif value == "MirrorSphereFreeze" then
-        --FXRules.Freeze.start.MirrorSphere.any[2] = nil
-        table.remove(FXRules.Freeze.start.MirrorSphere.any,2)
-        FXRules.Freeze.start.any = nil
-        RemoveFromRules("Freeze")
-        MirrorSphere_Toggle()
-
-      elseif value == "RCRoverAntenna" then
-        --FXRules.RoverDeploy.start.RCRover.any[3] = nil
-        --FXRules.RoverDeploy.start.RCRover.any[2] = nil
-        table.remove(FXRules.RoverDeploy.start.RCRover.any,2)
-        table.remove(FXRules.RoverDeploy.start.RCRover.any,3)
-        RemoveFromRules("Unit Rover DeployWork")
-        RemoveFromRules("Unit Rover DeployAntennaON")
-        RCRover_Toggle()
-
-      elseif value == "Reset" then
-        RebuildFXRules()
-        MirrorSphere_Toggle()
-        SensorTower_Toggle()
-        RCRover_Toggle()
-      end
-
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
-        "Sounds"
-      )
-    end
-
-    local hint = "You can only reset all sounds at once."
-    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Annoying Sounds",hint)
+end
+local function RCRover_Toggle()
+  local ChoGGi = ChoGGi
+  local tab = UICity.labels.RCRover or empty_table
+  for i = 1, #tab do
+    PlayFX("RoverDeploy", "end", tab[i])
+    PlayFX("RoverDeploy", "start", tab[i])
   end
 end
 
-function ChoGGi.MenuFuncs.ChangeTerrainType()
+function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
+  --make a list
+  local ItemList = {
+    {text = " Reset",value = "Reset"},
+    {text = "Sensor Tower Beeping",value = "SensorTowerWorking"},
+    {text = "RC Rover Drones Deployed",value = "RCRoverAntenna"},
+    {text = "Mirror Sphere Crackling",value = "MirrorSphereFreeze"},
+  }
 
+  --callback
+  local CallBackFunc = function(choice)
+    local RemoveFromRules = RemoveFromRules
+    local value = choice[1].value
+    if value == "SensorTowerWorking" then
+      --FXRules.Working.start.SensorTower.any[3] = nil
+      table.remove(FXRules.Working.start.SensorTower.any,3)
+      RemoveFromRules("Object SensorTower Loop")
+      SensorTower_Toggle()
+
+    elseif value == "MirrorSphereFreeze" then
+      --FXRules.Freeze.start.MirrorSphere.any[2] = nil
+      table.remove(FXRules.Freeze.start.MirrorSphere.any,2)
+      FXRules.Freeze.start.any = nil
+      RemoveFromRules("Freeze")
+      MirrorSphere_Toggle()
+
+    elseif value == "RCRoverAntenna" then
+      --FXRules.RoverDeploy.start.RCRover.any[3] = nil
+      --FXRules.RoverDeploy.start.RCRover.any[2] = nil
+      table.remove(FXRules.RoverDeploy.start.RCRover.any,2)
+      table.remove(FXRules.RoverDeploy.start.RCRover.any,3)
+      RemoveFromRules("Unit Rover DeployWork")
+      RemoveFromRules("Unit Rover DeployAntennaON")
+      RCRover_Toggle()
+
+    elseif value == "Reset" then
+      RebuildFXRules()
+      MirrorSphere_Toggle()
+      SensorTower_Toggle()
+      RCRover_Toggle()
+    end
+
+    ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
+      "Sounds"
+    )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Annoying Sounds",
+    hint = "You can only reset all sounds at once.",
+  })
+end
+
+function ChoGGi.MenuFuncs.ChangeTerrainType()
   local ItemList = {}
   local Table = DepositionTypes
   for i = 1, #Table do
@@ -154,8 +159,12 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
     end
   end
 
-  local hint = "Map default: " .. mapdata.BaseLayer
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Terrain Texture",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Change Terrain Texture",
+    hint = "Map default: " .. mapdata.BaseLayer,
+  })
 end
 
 --add button to import model
@@ -214,12 +223,17 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     ChoGGi.SettingFuncs.WriteSettings()
   end
 
-  local hint = "Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj)."
-  local Check1 = "Semi-Permanent"
-  local Check1Hint = "Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent)."
-  local Check2 = "Presets"
-  local Check2Hint = "Opens up the list of premade styles so you can start with the settings from one."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Custom Lightmodel",hint,nil,Check1,Check1Hint,Check2,Check2Hint,5)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Custom Lightmodel",
+    hint = "Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj).",
+    check1 = "Semi-Permanent",
+    check1_hint = "Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).",
+    check2 = "Presets",
+    check2_hint = "Opens up the list of premade styles so you can start with the settings from one.",
+    custom_type = 5,
+  })
 end
 
 function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
@@ -293,7 +307,18 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     Check2 = "Edit"
     Check2Hint = "Open this style in \"Change Light Model Custom\"."
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,title,hint,nil,Check1,Check1Hint,Check2,Check2Hint,3)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = title,
+    hint = hint,
+    check1 = Check1,
+    check1_hint = Check1Hint,
+    check2 = Check2,
+    check2_hint = Check2Hint,
+    custom_type = 3,
+  })
 end
 
 function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
@@ -378,8 +403,13 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
     ChoGGi.ComFuncs.MsgPopup("Transparency has been updated.","Transparency")
   end
 
-  local hint = "For some reason they went opposite day with this one: 255 is invisible and 0 is visible."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set UI Transparency",hint,nil,nil,nil,nil,nil,4)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set UI Transparency",
+    hint = "For some reason they went opposite day with this one: 255 is invisible and 0 is visible.",
+    custom_type = 4,
+  })
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
@@ -461,10 +491,17 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     ChoGGi.ComFuncs.MsgPopup("Toggled: " .. #choice .. " pinnable objects.","Pins")
   end
 
-  local hint = "Auto Unpinned:" .. EnabledList .. "\nEnter a class name (s.class) to add a custom entry."
-  local hint_check1 = "Add these items to the unpin list."
-  local hint_check2 = "Remove these items from the unpin list."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Auto Remove Items From Pin List",hint,true,"Add to list",hint_check1,"Remove from list",hint_check2)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Auto Remove Items From Pin List",
+    hint = "Auto Unpinned:" .. EnabledList .. "\nEnter a class name (s.class) to add a custom entry.",
+    multisel = true,
+    check1 = "Add to list",
+    check1_hint = "Add these items to the unpin list.",
+    check2 = "Remove from list",
+    check2_hint = "Remove these items from the unpin list.",
+  })
 end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
@@ -535,8 +572,13 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
     return
   end
 
-  local hint = "Double click to open object/attachment to edit."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Change Colour: " .. ChoGGi.CodeFuncs.RetName(obj),
+    hint = "Double click to open object/attachment to edit.",
+    custom_type = 1,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
@@ -582,13 +624,17 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
       "Opacity","UI/Icons/Sections/attention.tga"
     )
   end
-  local hint
-  local name = ""
+  local hint = "You can still select items after making them invisible (0), but it may take some effort :)."
   if sel then
-    hint = "Current: " .. sel:GetOpacity() .. "\n\nYou can still select items after making them invisible (0), but it may take some effort :)."
-    name = ChoGGi.CodeFuncs.Trans(sel.display_name) or sel.encyclopedia_id or sel.class
+    hint = "Current: " .. sel:GetOpacity() .. "\n\n" .. hint
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Opacity: " .. name,hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Opacity: " .. ChoGGi.CodeFuncs.RetName(sel),
+    hint = hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
@@ -632,8 +678,13 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
         "Video",UsualIcon
       )
   end
-  local hint = "Current: " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\nMax set to 16384."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shadowmap Size",hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Shadowmap Size",
+    hint = "Current: " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\nMax limited to 16384 (or crashing).",
+  })
 end
 
 function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
@@ -681,9 +732,14 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
         "Video",UsualIcon
       )
     end
-
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Higher Render Dist","Current: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Higher Render Dist",
+    hint = "Current: " .. hint,
+  })
 end
 
 --CameraObj
@@ -847,8 +903,13 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
     end
 
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
 
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Border Scrolling",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.CameraZoom_Toggle()
@@ -882,7 +943,13 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
     end
 
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Camera Zoom","Current: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Camera Zoom",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
@@ -948,8 +1015,12 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     end
   end
 
-  local hint = "Current speed: " .. current
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Game Speed",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Game Speed",
+    hint = "Current speed: " .. current,
+  })
 end
 
 local entity_table = {}
@@ -1033,12 +1104,16 @@ function ChoGGi.MenuFuncs.SetEntity()
     end
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to objects in the same dome as selected object."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected object."
-  local hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Entity For " .. sel.class,hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Entity For " .. ChoGGi.CodeFuncs.RetName(sel),
+    hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now).",
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to objects in the same dome as selected object.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected object.",
+  })
 end
 
 local function SetScale(Obj,Scale)
@@ -1127,10 +1202,14 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     end
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to objects in the same dome as selected object."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected object."
-  local hint = "Current object: " .. sel:GetScale() .. "\nIf you don't pick a checkbox it will change all of selected type."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Entity For " .. sel.class,hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Entity Scale For " .. ChoGGi.CodeFuncs.RetName(sel),
+    hint = "Current object: " .. sel:GetScale() .. "\nIf you don't pick a checkbox it will change all of selected type.",
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to objects in the same dome as selected object.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected object.",
+  })
 end

@@ -45,8 +45,12 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"TitleBar","Current: " .. hint)
-
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Rover Charge Radius",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetRoverWorkRadius()
@@ -86,8 +90,12 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
     end
   end
 
-  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Rover Work Radius",
+    hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
@@ -127,8 +135,12 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
     end
   end
 
-  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Work Radius",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set DroneHub Work Radius",
+    hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
@@ -164,7 +176,12 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Rock To Concrete Speed","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Drone Rock To Concrete Speed",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
@@ -209,7 +226,12 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Drone Move Speed","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Drone Move Speed",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetRCMoveSpeed()
@@ -254,7 +276,12 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"RC Move Speed","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "RC Move Speed",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
@@ -295,10 +322,14 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
     end
   end
 
-  local hint = "Drones in hub: " .. CurrentAmount .. "\nDrone prefabs: " .. UICity.drone_prefabs
-  local Check1 = "Dismantle"
-  local Check1Hint = "Check this to dismantle drones in hub"
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Amount Of Drones",hint,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Change Amount Of Drones",
+    hint = "Drones in hub: " .. CurrentAmount .. "\nDrone prefabs: " .. UICity.drone_prefabs,
+    check1 = "Dismantle",
+    check1_hint = "Check this to dismantle drones in hub",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
@@ -342,7 +373,12 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Factory Build Speed","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Drone Factory Build Speed",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
@@ -469,8 +505,12 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
     end
   end
 
-  hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge .. "\n\nMax: 1000."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Carry Capacity",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Drone Carry Capacity",
+    hint = "Current capacity: " .. hint .. "\n\n" .. hinttoolarge .. "\n\nMax: 1000.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
@@ -506,7 +546,12 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set DroneHub Drone Capacity","Current capacity: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set DroneHub Drone Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDronesPerRCRover()
@@ -542,7 +587,12 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Rover Drone Capacity","Current capacity: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set RC Rover Drone Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 --somewhere above 2000 it will fuck the save (different amounts depending on the unit type (is it a height thing?)
@@ -586,7 +636,13 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Transport Capacity","Current capacity: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set RC Transport Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetShuttleCapacity()
@@ -631,7 +687,13 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Capacity","Current capacity: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Cargo Shuttle Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetShuttleSpeed()
@@ -675,7 +737,13 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Cargo Shuttle Speed","Current speed: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Cargo Shuttle Speed",
+    hint = "Current speed: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
@@ -725,7 +793,12 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set ShuttleHub Shuttle Capacity","Current capacity: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set ShuttleHub Shuttle Capacity",
+    hint = "Current capacity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetGravityRC()
@@ -770,7 +843,13 @@ function ChoGGi.MenuFuncs.SetGravityRC()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set RC Gravity","Current gravity: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set RC Gravity",
+    hint = "Current gravity: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetGravityDrones()
@@ -814,5 +893,11 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Drone Gravity","Current gravity: " .. hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Drone Gravity",
+    hint = "Current gravity: " .. hint,
+  })
 end

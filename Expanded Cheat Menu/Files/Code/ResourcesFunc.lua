@@ -22,7 +22,11 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Probes")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Add Probes",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
@@ -59,7 +63,12 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Per Rocket Passenger","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Food Per Rocket Passenger",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.AddPrefabs()
@@ -98,8 +107,13 @@ function ChoGGi.MenuFuncs.AddPrefabs()
     end
   end
 
-  local hint = "Use edit box to enter amount of prefabs to add."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Prefabs",hint,nil,nil,nil,nil,nil,3)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Add Prefabs",
+    hint = "Use edit box to enter amount of prefabs to add.",
+    custom_type = 3,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetFunding()
@@ -131,7 +145,13 @@ function ChoGGi.MenuFuncs.SetFunding()
       )
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Funding",hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Add Funding",
+    hint = hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.FillResource()

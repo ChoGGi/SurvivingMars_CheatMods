@@ -57,7 +57,12 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Food Storage","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Food Storage",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
@@ -131,8 +136,12 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     end
   end
 
-  hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Rover Work Radius",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Rover Work Radius",
+    hint = "Current: " .. hint .. "\n\nToggle selection to update visible hex grid.",
+  })
 end
 
 function ChoGGi.MenuFuncs.UnlockLockedBuildings()
@@ -161,8 +170,13 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     )
   end
 
-  local hint = "Pick the buildings you want to unlock (use Ctrl/Shift for multiple)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Unlock Buildings",hint,true)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Unlock Buildings",
+    hint = "Pick the buildings you want to unlock (use Ctrl/Shift for multiple).",
+    multisel = true,
+  })
 end
 
 function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
@@ -390,8 +404,16 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     end
   end
 
-  hint = "Current rate: " .. hint
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. name .. " Dis/Charge Rates",hint,nil,"Charge","Change charge rate","Discharge","Change discharge rate")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. name .. " Dis/Charge Rates",
+    hint = "Current rate: " .. hint,
+    check1 = "Charge",
+    check1_hint = "Change charge rate",
+    check2 = "Discharge",
+    check2_hint = "Change discharge rate",
+  })
 end
 
 function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
@@ -545,7 +567,12 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. name .. " Production Amount","Current production: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. name .. " Production Amount",
+    hint = "Current production: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
@@ -621,10 +648,14 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     hint = tostring(setting.performance)
   end
 
-  local hint = "Sets performance of all automated buildings\nCurrent: " .. hint
-  local Check1 = "Selected"
-  local Check1Hint = "Only apply to selected object instead of all " .. name
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,name .. ": Automated Performance",hint,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = name .. ": Automated Performance",
+    hint = "Sets performance of all automated buildings\nCurrent: " .. hint,
+    check1 = "Selected",
+    check1_hint = "Only apply to selected object instead of all " .. name,
+  })
 end
 
 --used to add or remove traits from schools/sanitariums
@@ -959,5 +990,10 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. id .. " Radius","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. id .. " Radius",
+    hint = "Current: " .. hint,
+  })
 end

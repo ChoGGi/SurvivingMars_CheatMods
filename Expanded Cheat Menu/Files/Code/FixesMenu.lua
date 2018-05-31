@@ -75,6 +75,8 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     "If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).",
     icon
   )
+--[[
+fixed in curiosity
 
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Remove Yellow Grid Marks *",
@@ -83,7 +85,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
     icon
   )
-
+--]]
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Project Morpheus Radar Fell Down *",
     ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
@@ -109,6 +111,9 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
 ---------------------------toggles
+--[[
+fixed in curiosity
+
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Psychologist Resting Bonus Doesn't Work",
     ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle,
@@ -119,7 +124,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
     end,
     icon
   )
-
+--]]
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Drone Carry Amount",
     ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,

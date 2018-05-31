@@ -192,12 +192,16 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     end
   end
 
-  local Check1 = "Random resource"
-  local Check1Hint = "Drops random resource instead of food."
-  local Check2 = "Dome Only"
-  local Check2Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles).\n\nThis will not effect your applicants/game failure (genocide without reprisal)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"The Soylent Option",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "The Soylent Option",
+    hint = "Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles).\n\nThis will not effect your applicants/game failure (genocide without reprisal).",
+    check1 = "Random resource",
+    check1_hint = "Drops random resource instead of food.",
+    check2 = "Dome Only",
+    check2_hint = "Will only apply to colonists in the same dome as selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.AddApplicantsToPool()
@@ -269,10 +273,14 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     end
   end
 
-  local hint = "Warning: Will take some time for 25K and up."
-  local Check1 = "Clear Applicant Pool"
-  local Check1Hint = "Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size: " .. #g_ApplicantPool
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Applicants To Pool",hint,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Add Applicants To Pool",
+    hint = "Warning: Will take some time for 25K and up.",
+    check1 = "Clear Applicant Pool",
+    check1_hint = "Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size: " .. #g_ApplicantPool,
+  })
 end
 
 function ChoGGi.MenuFuncs.FireAllColonists()
@@ -314,7 +322,13 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
       "Shifts",UsualIcon
     )
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Shifts","Are you sure you want to change all shifts?")
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Shifts",
+    hint = "This will change ALL shifts.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetMinComfortBirth()
@@ -353,7 +367,12 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"MinComfortBirth","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set the minimum comfort needed for birth",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
@@ -375,6 +394,7 @@ function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
     "Colonists",UsualIcon
   )
 end
+
 function ChoGGi.MenuFuncs.SetRenegadeStatus()
   local ItemList = {
     {text = "Make All Renegades",value = "Make"},
@@ -405,14 +425,18 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
         tab[i][Type](tab[i],"Renegade")
       end
     end
-    ChoGGi.ComFuncs.MsgPopup("OK, a limosine that can fly. Now I have seen everything.\nReally? Have you seen a man eat his own head?\nNo.\nSo then, you haven't seen everything.",
+    ChoGGi.ComFuncs.MsgPopup("OK, a limousine that can fly. Now I have seen everything.\nReally? Have you seen a man eat his own head?\nNo.\nSo then, you haven't seen everything.",
       "Colonists",UsualIcon,true
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Make Renegades",nil,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Make Renegades",
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
@@ -573,7 +597,12 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Outside Workplace Radius","Current distance: " .. hint .. "\n\nYou may not want to make it too far away unless you turned off suffocation.")
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Outside Workplace Radius",
+    hint = "Current distance: " .. hint .. "\n\nYou may not want to make it too far away unless you turned off suffocation.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetDeathAge()
@@ -633,8 +662,12 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     end
   end
 
-  local hint = "Usual age is around " .. RetDeathAge(UICity.labels.Colonist[1]) .. ". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Death Age",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Death Age",
+    hint = "Usual age is around " .. RetDeathAge(UICity.labels.Colonist[1]) .. ". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).",
+  })
 end
 
 function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
@@ -732,11 +765,16 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Age",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. "olonist Age",
+    hint = hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsGender(iType)
@@ -818,11 +856,16 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Gender",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. "olonist Gender",
+    hint = hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
@@ -911,11 +954,16 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Specialization",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. "olonist Specialization",
+    hint = hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsRace(iType)
@@ -1001,11 +1049,16 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Race",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set " .. sType .. "olonist Race",
+    hint = hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
@@ -1162,14 +1215,26 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     )
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Remove"
-  local Check2Hint = "Check to remove traits"
   if iType == 1 then
-    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true)
+    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+      callback = CallBackFunc,
+      items = ItemList,
+      title = "Set " .. sType .. "olonist Traits",
+      hint = hint,
+      multisel = true,
+    })
   elseif iType == 2 then
-    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set " .. sType .. "olonist Traits",hint,true,Check1,Check1Hint,Check2,Check2Hint)
+    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+      callback = CallBackFunc,
+      items = ItemList,
+      title = "Set " .. sType .. "olonist Traits",
+      hint = hint,
+      multisel = true,
+      check1 = "Dome Only",
+      check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+      check2 = "Remove",
+      check2_hint = "Check to remove traits",
+    })
   end
 end
 
@@ -1254,10 +1319,14 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
     ChoGGi.ComFuncs.MsgPopup(choice[1].text,"Colonists",UsualIcon)
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local hint = "Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else..."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Stats Of All Colonists",hint,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Stats Of All Colonists",
+    hint = "Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else...",
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
@@ -1317,11 +1386,16 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
     end
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Colonist Move Speed","Current: " .. hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Colonist Move Speed",
+    hint = hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsGravity()
@@ -1384,11 +1458,16 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
     end
   end
 
-  local Check1 = "Dome Only"
-  local Check1Hint = "Will only apply to colonists in the same dome as selected colonist."
-  local Check2 = "Selected Only"
-  local Check2Hint = "Will only apply to selected colonist."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Colonist Gravity","Current gravity: " .. hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Colonist Gravity",
+    hint = "Current gravity: " .. hint,
+    check1 = "Dome Only",
+    check1_hint = "Will only apply to colonists in the same dome as selected colonist.",
+    check2 = "Selected Only",
+    check2_hint = "Will only apply to selected colonist.",
+  })
 end
 
 function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
@@ -1481,8 +1560,14 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
   if BuildingSettings[id] and BuildingSettings[id][sType] then
     hint = "Current: " .. table.concat(BuildingSettings[id][sType],",")
   end
-  hint = hint .. "\n\nSelect traits and click Ok to toggle status."
-  local Check1 = "Fire Workers"
-  local Check1Hint = "Will also fire workers with the traits from all " .. name .. "."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Toggle " .. sType .. " For " .. name,hint,true,Check1,Check1Hint)
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Toggle " .. sType .. " For " .. name,
+    hint = hint .. "\n\nSelect traits and click Ok to toggle status.",
+    multisel = true,
+    check1 = "Fire Workers",
+    check1_hint = "Will also fire workers with the traits from all " .. name .. ".",
+  })
 end

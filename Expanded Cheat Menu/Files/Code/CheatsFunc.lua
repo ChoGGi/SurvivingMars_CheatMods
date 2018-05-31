@@ -148,8 +148,13 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     end
   end
 
-  local hint = "Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Trigger Disaster",hint,true)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Trigger Disaster",
+    hint = "Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).",
+    multisel = true,
+  })
 end
 
 function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
@@ -233,8 +238,13 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     )
   end
 
-  local hint = "You can select multiple items."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Scan Map",hint,true)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Scan Map",
+    hint = "You can select multiple items.",
+    multisel = true,
+  })
 end
 
 function ChoGGi.MenuFuncs.SpawnColonists()
@@ -264,8 +274,12 @@ function ChoGGi.MenuFuncs.SpawnColonists()
     end
   end
 
-  local hint = "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Spawn Colonists",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Spawn Colonists",
+    hint = "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.",
+  })
 end
 
 function ChoGGi.MenuFuncs.ShowMysteryList()
@@ -289,10 +303,14 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
     end
   end
 
-  local hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries."
-  local Check1 = "Instant Start"
-  local Check1Hint = "May take up to one Sol to \"instantly\" activate mystery."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Start A Mystery",hint,nil,Check1,Check1Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Start A Mystery",
+    hint = "Warning: Adding a mystery is cumulative, this will NOT replace existing mysteries.",
+    check1 = "Instant Start",
+    check1_hint = "May take up to one Sol to \"instantly\" activate mystery.",
+  })
 end
 
 function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
@@ -447,12 +465,18 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
 
   end
 
-  local hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).\n\nSequence part may have more then one check, you may have to skip twice or more.\n\nDouble right-click selected mystery to review past messages."
-  local Check1 = "Remove"
-  local Check1Hint = "This will remove the mystery, if you start it again; it'll be back to the start."
-  local Check2 = "Remove All"
-  local Check2Hint = "Warning: This will remove all the mysteries!"
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Manage",hint,nil,Check1,Check1Hint,Check2,Check2Hint,6,ShowMysteryLog)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Manage",
+    hint = "Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).\n\nSequence part may have more then one check, you may have to skip twice or more.\n\nDouble right-click selected mystery to review past messages.",
+    check1 = "Remove",
+    check1_hint = "This will remove the mystery, if you start it again; it'll be back to the start.",
+    check2 = "Remove All",
+    check2_hint = "Warning: This will remove all the mysteries!",
+    custom_type = 6,
+    custom_func = ShowMysteryLog,
+  })
 end
 --[[
   local idx = 0
@@ -622,8 +646,12 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
     end
   end
 
-  local hint = "If you need a little boost (or a lotta boost) in research."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Add Research Points",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Add Research Points",
+    hint = "If you need a little boost (or a lotta boost) in research.",
+  })
 end
 
 function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
@@ -669,7 +697,12 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs From Omega","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "BreakThroughs From Omega",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
@@ -701,7 +734,12 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"BreakThroughs Allowed","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "BreakThroughs Allowed",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.SetResearchQueueSize()
@@ -739,7 +777,12 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Queue Size","Current: " .. hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Research Queue Size",
+    hint = "Current: " .. hint,
+  })
 end
 
 function ChoGGi.MenuFuncs.ShowResearchTechList()
@@ -828,12 +871,17 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     )
   end
 
-  local hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select)."
-  local Check1 = "Unlock"
-  local Check1Hint = "Just unlocks in the tree"
-  local Check2 = "Research"
-  local Check2Hint = "Unlocks and researchs."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Research Unlock",hint,true,Check1,Check1Hint,Check2,Check2Hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Research Unlock",
+    hint = "Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).",
+    multisel = true,
+    check1 = "Unlock",
+    check1_hint = "Just unlocks in the research tree.",
+    check2 = "Research",
+    check2_hint = "Unlocks and researchs.",
+  })
 end
 
 local function listfields(sType,field)

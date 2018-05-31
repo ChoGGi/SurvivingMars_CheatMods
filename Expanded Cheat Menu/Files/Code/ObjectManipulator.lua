@@ -155,7 +155,12 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
         --refresh list
         self:UpdateListContent(self.obj)
       end
-      ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"New Entry",nil,nil,nil,nil,nil,nil,4)
+      ChoGGi.CodeFuncs.FireFuncAfterChoice({
+        callback = CallBackFunc,
+        items = ItemList,
+        title = "New Entry",
+        custom_type = 4,
+      })
     end
     --idApplyAll
     function self.idApplyAll.OnButtonPressed()

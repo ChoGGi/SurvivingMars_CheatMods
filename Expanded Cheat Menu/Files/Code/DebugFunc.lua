@@ -21,7 +21,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   if s and not s.class then
     s = ChoGGi.CodeFuncs.SelObject()
   end
-  local name = (s.display_name and ChoGGi.CodeFuncs.Trans(s.display_name)) or s.encyclopedia_id or s.class
+  local name = ChoGGi.CodeFuncs.RetName(s)
   if not name then
     ChoGGi.ComFuncs.MsgPopup("Error: " .. tostring(s) .. "isn't an object?\nSounds like a broked save; send me the file and I'll take a look: " .. ChoGGi.email,
       "Error",nil,true
@@ -164,8 +164,12 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
     end
   end
 
-  local hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ObjectSpawner_ItemList,"Object Spawner",hint)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Object Spawner",
+    hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object).",
+  })
 end
 
 function ChoGGi.MenuFuncs.ShowSelectionEditor()
@@ -305,8 +309,13 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
   end
 
-  local hint = "Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none)."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set MissionParams NewMap",hint,nil,nil,nil,nil,nil,4)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set MissionParams NewMap",
+    hint = "Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none).",
+    custom_type = 4,
+  })
 
   --shows the mission params for people to look at
   OpenExamine(MissionParams)
@@ -878,11 +887,15 @@ do --path markers
       end
     end
 
-    local hint = "Use HandleToObject[handle] to get object handle"
-    local Check1 = "Remove Waypoints"
-    local Check1Hint = "Remove waypoints from the map and reset colours (You need to select any object)."
-    local Check2 = "Skip Flags"
-    local Check2Hint = "Doesn't add the little flags, just lines and spheres (good for larger maps)."
-    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Set Visible Path Markers",hint,nil,Check1,Check1Hint,Check2,Check2Hint)
+    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+      callback = CallBackFunc,
+      items = ItemList,
+      title = "Set Visible Path Markers",
+      hint = "Use HandleToObject[handle] to get object handle",
+      check1 = "Remove Waypoints",
+      check1_hint = "Remove waypoints from the map and reset colours (You need to select any object).",
+      check2 = "Skip Flags",
+      check2_hint = "Doesn't add the little flags, just lines and spheres (good for larger maps).",
+    })
   end
 end
