@@ -1,10 +1,10 @@
-function ChoGGiX.CodeFuncs.ViewAndSelectObject(Obj)
+function SolariaTelepresence.CodeFuncs.ViewAndSelectObject(Obj)
   ViewPos(Obj:GetVisualPos())
   SelectObj(Obj)
 end
 
-function ChoGGiX.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
-  local dlg = ChoGGiX_ListChoiceCustomDialog:new()
+function SolariaTelepresence.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
+  local dlg = SolariaTelepresence_ListChoiceCustomDialog:new()
 
   if not dlg then
     return
@@ -85,8 +85,8 @@ function ChoGGiX.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Chec
   return dlg:Wait()
 end
 
-function ChoGGiX.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
-  local ChoGGiX = ChoGGiX
+function SolariaTelepresence.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
+  local SolariaTelepresence = SolariaTelepresence
   if not Func or not Items then
     return
   end
@@ -98,7 +98,7 @@ function ChoGGiX.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,
   end
   table.sort(Items,
     function(a,b)
-      return ChoGGiX.ComFuncs.CompareTableValue(a,b,sortby)
+      return SolariaTelepresence.ComFuncs.CompareTableValue(a,b,sortby)
     end
   )
 
@@ -109,14 +109,14 @@ function ChoGGiX.CodeFuncs.FireFuncAfterChoice(Func,Items,Caption,Hint,MultiSel,
   end
 
   CreateRealTimeThread(function()
-    local option = ChoGGiX.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
+    local option = SolariaTelepresence.CodeFuncs.WaitListChoiceCustom(Items,Caption,Hint,MultiSel,Check1,Check1Hint,Check2,Check2Hint,CustomType,CustomFunc)
     if option ~= "idClose" then
       Func(option)
     end
   end)
 end
 
-function ChoGGiX.CodeFuncs.Trans(...)
+function SolariaTelepresence.CodeFuncs.Trans(...)
   local data = select(1,...)
   if type(data) == "userdata" then
     return _InternalTranslate(...)

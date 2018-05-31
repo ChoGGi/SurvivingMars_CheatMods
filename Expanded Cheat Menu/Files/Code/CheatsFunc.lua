@@ -319,25 +319,25 @@ function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
   --inform people of actions, so they don't add a bunch of them
   ChoGGi.UserSettings.ShowMysteryMsgs = true
 
-  UICity.mystery_id = Mystery
-  local tree = TechTree
-  for i = 1, #tree do
-    local field = tree[i]
+  UICity.mystery_id = mystery_id
+  local fields = Presets.TechFieldPreset.Default
+  for i = 1, #fields do
+    local field = fields[i]
     local field_id = field.id
-    --local costs = field.costs or empty_table
+    local costs = field.costs or empty_table
     local list = UICity.tech_field[field_id] or {}
     UICity.tech_field[field_id] = list
-    local tab = field or empty_table
-    for j = 1, #tab do
-      if tab[j].mystery == Mystery then
-        local tech_id = tab[j].id
-        list[#list+1] = tech_id
+    for _, tech in ipairs(Presets.TechPreset[field_id]) do
+      if tech.mystery == mystery_id then
+        local tech_id = tech.id
+        list[#list + 1] = tech_id
         UICity.tech_status[tech_id] = {points = 0, field = field_id}
-        tab[j]:Initialize(UICity)
+        tech:EffectsInit(UICity)
       end
     end
   end
   UICity:InitMystery()
+
   --might help
   if UICity.mystery then
     UICity.mystery_id = UICity.mystery.class
@@ -787,7 +787,7 @@ end
 
 function ChoGGi.MenuFuncs.ShowResearchTechList()
   local ChoGGi = ChoGGi
-  local TechTree = TechTree
+  local Presets = Presets
   local ItemList = {}
   ItemList[#ItemList+1] = {
     text = " Everything",
@@ -809,17 +809,18 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     value = "AllMysteries",
     hint = "All the mysteries"
   }
-  for i = 1, #TechTree do
-    for j = 1, #TechTree[i] do
-      local text = ChoGGi.CodeFuncs.Trans(TechTree[i][j].display_name)
+
+  for i = 1, #Presets.TechPreset do
+    for j = 1, #Presets.TechPreset[i] do
+      local text = ChoGGi.CodeFuncs.Trans(Presets.TechPreset[i][j].display_name)
       --remove " from that one tech...
       if text:find("\"") then
         text = text:gsub("\"","")
       end
       ItemList[#ItemList+1] = {
         text = text,
-        value = TechTree[i][j].id,
-        hint = ChoGGi.CodeFuncs.Trans(TechTree[i][j].description)
+        value = Presets.TechPreset[i][j].id,
+        hint = ChoGGi.CodeFuncs.Trans(Presets.TechPreset[i][j].description)
       }
     end
   end
@@ -885,11 +886,11 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 end
 
 local function listfields(sType,field)
-  local TechTree = TechTree
-  for i = 1, #TechTree do
-    if TechTree[i].id == field then
-      for j = 1, #TechTree[i] do
-        _G[sType](TechTree[i][j].id)
+  local Presets = Presets
+  for i = 1, #Presets.TechPreset do
+    if Presets.TechPreset[i].id == field then
+      for j = 1, #Presets.TechPreset[i] do
+        _G[sType](Presets.TechPreset[i][j].id)
       end
     end
   end

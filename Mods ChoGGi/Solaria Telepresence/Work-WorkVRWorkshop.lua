@@ -1,3 +1,5 @@
+-- ========== THIS IS AN AUTOMATICALLY GENERATED FILE! ==========
+
 local _slots = {
 	{
 		flags_missing = 4,

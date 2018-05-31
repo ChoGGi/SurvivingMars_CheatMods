@@ -1,17 +1,17 @@
 function OnMsg.ClassesGenerate()
 
-  DefineClass.ChoGGiX_ListChoiceCustomDialog = {
+  DefineClass.SolariaTelepresence_ListChoiceCustomDialog = {
     __parents = {
       "FrameWindow"
     }
 
   }
 
-  --ex(ChoGGiX.ListChoiceCustomDialog_Dlg)
-  --ChoGGiX.ListChoiceCustomDialog_Dlg.colorpicker
-  function ChoGGiX_ListChoiceCustomDialog:Init()
+  --ex(SolariaTelepresence.ListChoiceCustomDialog_Dlg)
+  --SolariaTelepresence.ListChoiceCustomDialog_Dlg.colorpicker
+  function SolariaTelepresence_ListChoiceCustomDialog:Init()
     --init stuff?
-    DataInstances.UIDesignerData.ChoGGiX_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
+    DataInstances.UIDesignerData.SolariaTelepresence_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     --make sure we're always above examiner dialogs
     self:SetZOrder(20000)
@@ -40,7 +40,7 @@ function OnMsg.ClassesGenerate()
 
     --update custom value list item
     function self.idEditValue.OnValueChanged()
-      local value = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetValue())
+      local value = SolariaTelepresence.ComFuncs.RetProperType(self.idEditValue:GetValue())
 
       if self.CustomType > 0 then
         self.idList.items[self.idList.last_selected].value = value
@@ -69,7 +69,7 @@ function OnMsg.ClassesGenerate()
         function but.OnButtonPressed()
           --show lightmodel lists and lets you pick one to use in new window
           if self.CustomType == 5 then
-            ChoGGiX.MenuFuncs.ChangeLightmodel(true)
+            SolariaTelepresence.MenuFuncs.ChangeLightmodel(true)
           end
         end
       end
@@ -112,10 +112,10 @@ function OnMsg.ClassesGenerate()
     self.idList.OnLButtonDoubleClick = function()
       --open colour changer
       if self.CustomType == 1 or self.CustomType == 2 then
-        ChoGGiX.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+        SolariaTelepresence.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
       elseif self.CustomType == 7 then
         --open it in monitor list
-        ChoGGiX.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
+        SolariaTelepresence.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
       elseif self.CustomType ~= 5 then
         --dblclick to close and ret item
         self.idOK.OnButtonPressed()
@@ -144,7 +144,7 @@ function OnMsg.ClassesGenerate()
         end
         local SetPal = self.obj.SetColorizationMaterial
         local items = self.idList.items
-        ChoGGiX.CodeFuncs.SaveOldPalette(self.obj)
+        SolariaTelepresence.CodeFuncs.SaveOldPalette(self.obj)
         for i = 1, 4 do
           local Color = items[i].value
           local Metallic = items[i+4].value
@@ -196,15 +196,15 @@ function OnMsg.ClassesGenerate()
         end
       end
       --rebuild it
-      ChoGGiX.CodeFuncs.LightmodelBuild(model_table)
+      SolariaTelepresence.CodeFuncs.LightmodelBuild(model_table)
       --and temp apply
-      SetLightmodel(1,"ChoGGiX_Custom")
+      SetLightmodel(1,"SolariaTelepresence_Custom")
     end
 
     --update colour
     function self:UpdateColourPicker()
       pcall(function()
-        local num = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetText())
+        local num = SolariaTelepresence.ComFuncs.RetProperType(self.idEditValue:GetText())
         self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
         self.idColorHSV:InitHSVPtPos()
         self.idColorHSV:Invalidate()
@@ -227,7 +227,7 @@ function OnMsg.ClassesGenerate()
         for i = 1, #items do
           if i == 1 then
             --always return the custom value (and try to convert it to correct type)
-            items[i].editvalue = ChoGGiX.ComFuncs.RetProperType(self.idEditValue:GetText())
+            items[i].editvalue = SolariaTelepresence.ComFuncs.RetProperType(self.idEditValue:GetText())
           end
           self.choices[#self.choices+1] = items[i]
         end
@@ -240,7 +240,7 @@ function OnMsg.ClassesGenerate()
       end
     end
 
-    --function ChoGGiX_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
+    --function SolariaTelepresence_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
     function self:OnKbdKeyDown(_, virtual_key)
       if virtual_key == const.vkEsc then
         if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
@@ -277,8 +277,8 @@ function OnMsg.ClassesBuilt()
     DesignOrigin = point(100, 100),
     DesignResolution = point(300, 450),
     HGE = true,
-    file_name = "ChoGGiX_ListChoiceCustomDialog",
-    name = "ChoGGiX_ListChoiceCustomDialog",
+    file_name = "SolariaTelepresence_ListChoiceCustomDialog",
+    name = "SolariaTelepresence_ListChoiceCustomDialog",
     parent_control = {
       CaptionHeight = 32,
       Class = "FrameWindow",

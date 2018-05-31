@@ -1,5 +1,5 @@
 --keep everything stored in
-ChoGGiX = {
+SolariaTelepresence = {
   email = "SolariaTelepresence@choggi.org",
   id = "ChoGGi_SolariaTelepresence",
   --orig funcs that we replace
@@ -18,37 +18,33 @@ ChoGGiX = {
   SettingFuncs = {},
   --temporary settings that aren't saved to SettingsFile
   Temp = {},
-  --settings that are saved to SettingsFile
-  UserSettings = {
-    RemoveBuildingLimits = true
-  },
 }
 
-ChoGGiX.ModPath = Mods[ChoGGiX.id].path
+SolariaTelepresence.ModPath = Mods[SolariaTelepresence.id].path
 
 --backup orginal function for later use (checks if we already have a backup, or else problems)
-function ChoGGiX.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
-  local ChoGGiX = ChoGGiX
+function SolariaTelepresence.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  local SolariaTelepresence = SolariaTelepresence
   if Func then
     local newname = ClassOrFunc .. "_" .. Func
-    if not ChoGGiX.OrigFuncs[newname] then
-      ChoGGiX.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+    if not SolariaTelepresence.OrigFuncs[newname] then
+      SolariaTelepresence.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
   else
-    if not ChoGGiX.OrigFuncs[ClassOrFunc] then
-      ChoGGiX.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    if not SolariaTelepresence.OrigFuncs[ClassOrFunc] then
+      SolariaTelepresence.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
     end
   end
 end
 
-function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
+function SolariaTelepresence.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
     --Title = tostring(Title)
-    Title = type(Title) == "string" and Title or ChoGGiX.CodeFuncs.Trans(1000016)
+    Title = type(Title) == "string" and Title or SolariaTelepresence.CodeFuncs.Trans(1000016)
     Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
-    --local id = "ChoGGiX_" .. AsyncRand()
+    --local id = "SolariaTelepresence_" .. AsyncRand()
     local id = AsyncRand()
     local timeout = 10000
     if Size then
@@ -93,7 +89,7 @@ function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
-function ChoGGiX.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
+function SolariaTelepresence.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     Msg = Msg or "Empty"
     Ok = Ok or "Ok"
@@ -112,7 +108,7 @@ function ChoGGiX.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   end)
 end
 
-function ChoGGiX.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
+function SolariaTelepresence.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
       if ExcludeList or IncludeList then
@@ -140,7 +136,7 @@ function ChoGGiX.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
-function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon)
+function SolariaTelepresence.ComFuncs.MsgPopup(Msg,Title,Icon)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
@@ -159,7 +155,7 @@ function ChoGGiX.ComFuncs.MsgPopup(Msg,Title,Icon)
     end
   end)
 end
-function ChoGGiX.ComFuncs.CompareTableValue(a,b,sName)
+function SolariaTelepresence.ComFuncs.CompareTableValue(a,b,sName)
   if not a and not b then
     return
   end
@@ -171,7 +167,7 @@ function ChoGGiX.ComFuncs.CompareTableValue(a,b,sName)
 end
 
 --tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
-function ChoGGiX.ComFuncs.RetProperType(Value)
+function SolariaTelepresence.ComFuncs.RetProperType(Value)
   --number?
   local num = tonumber(Value)
   if num then

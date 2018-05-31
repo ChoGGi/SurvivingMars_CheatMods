@@ -1589,8 +1589,12 @@ end
 --i thought i made this func already?
 function ChoGGi.CodeFuncs.RetName(Obj)
   --translated name
-  if Obj.display_name then
-    return ChoGGi.CodeFuncs.Trans(Obj.display_name)
+  if type(Obj) == "table" then
+    if Obj.display_name then
+      return ChoGGi.CodeFuncs.Trans(Obj.display_name)
+    else
+      return Obj.encyclopedia_id or Obj.class or tostring(Obj)
+    end
   end
-  return Obj.encyclopedia_id or Obj.class or tostring(Obj)
+  return tostring(Obj)
 end

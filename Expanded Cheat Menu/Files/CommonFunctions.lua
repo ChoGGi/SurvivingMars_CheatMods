@@ -135,7 +135,7 @@ end
 --[[
 Mode = -1 to append or nil to overwrite (default: -1)
 Funcs = true to dump functions as well (default: false)
-ChoGGi.ComFuncs.DumpTable(TechTree)
+ChoGGi.ComFuncs.DumpTable(Object)
 --]]
 function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
@@ -381,7 +381,7 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   end
 end
 
---ChoGGi.ComFuncs.PrintIds(TechTree)
+--ChoGGi.ComFuncs.PrintIds(Object)
 function ChoGGi.ComFuncs.PrintIds(Table)
   local text = ""
 
@@ -396,7 +396,6 @@ function ChoGGi.ComFuncs.PrintIds(Table)
 end
 
 --changes a function to also post a Msg for use with OnMsg
---AddMsgToFunc("CargoShuttle","GameInit","SpawnedShuttle")
 function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   local ChoGGi = ChoGGi
   --save orig
@@ -448,7 +447,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local UICity = UICity
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
-    if tab[i] and tab[i].handle and tab[i] == Obj then
+    if tab[i] and tab[i].handle and tab[i] == Obj.handle then
       table.remove(UICity.labels[Label],i)
     end
   end
@@ -592,8 +591,8 @@ function ChoGGi.ComFuncs.CheckForTypeInList(List,Type)
 end
 --[[
 ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
-returns number from TechTree (so you know how much it changes)
-see: Data/TechTree.lua, or examine(TechTree)
+returns number from Object (so you know how much it changes)
+see: Data/Object.lua, or examine(Object)
 
 ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10

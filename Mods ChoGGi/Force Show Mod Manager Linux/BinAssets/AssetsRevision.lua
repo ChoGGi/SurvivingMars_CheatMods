@@ -9,4 +9,4 @@ function OnMsg.Autorun()
 end
 
 --return revision, or else you get a blank map on new game
-return 18637
+return 19673

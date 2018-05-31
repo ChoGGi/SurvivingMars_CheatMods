@@ -74,10 +74,10 @@ function Examine:Init()
   end
 
   function self.idAttaches.OnButtonPressed()
-    if type(self.obj) == "table" then
-      if type(self.obj.GetAttaches) == "function" then
-        ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
-      end
+    local attaches = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
+
+    if attaches and #attaches > 0 then
+      ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
     else
       print("Zero attachments means zero...")
     end
@@ -490,11 +490,13 @@ function Examine:SetObj(o)
   self.idMenu:SetText(self:menu(o))
 
   --update attaches button with attaches amount
+  --local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
-  local amount = type(attaches) == "table" and #attaches or "scraping the barrel (0)"
+  local amount = attaches and #attaches or 0
   local hint = "Opens attachments in new examine window."
-  local name = type(o) == "table" and o.class
-  self.idAttaches:SetHint(hint .. "\nThis " .. (name or "\"Missing\"") .. " has: " .. amount)
+  local name = ChoGGi.CodeFuncs.RetName(o)
+  --local name = type(o) == "table" and o.class
+  self.idAttaches:SetHint(hint .. "\nThis " .. name .. " has: " .. amount)
 end
 
 function Examine:SetText(text)
@@ -594,5 +596,9 @@ function ShowCircle(pt, r, color)
   end)
 end
 local OpenExamine = OpenExamine
-function examine(Obj)OpenExamine(Obj)end
-function ex(Obj)OpenExamine(Obj)end
+function examine(o)
+  OpenExamine(o)
+end
+function ex(o)
+  OpenExamine(o)
+end

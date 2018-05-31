@@ -1,7 +1,7 @@
 --I don't want to make it too different from ECM, so if I update it there I can pretty much just copy and paste
 
 --keep everything stored in
-ChoGGiX = {
+DTADD = {
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua
@@ -13,22 +13,22 @@ ChoGGiX = {
 }
 
 --function(s) used
-function ChoGGiX.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+function DTADD.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   if Func then
     local newname = ClassOrFunc .. "_" .. Func
-    if not ChoGGiX.OrigFuncs[newname] then
-      ChoGGiX.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+    if not DTADD.OrigFuncs[newname] then
+      DTADD.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
   else
-    if not ChoGGiX.OrigFuncs[ClassOrFunc] then
-      ChoGGiX.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    if not DTADD.OrigFuncs[ClassOrFunc] then
+      DTADD.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
     end
   end
 end
 
-local cCodeFuncs = ChoGGiX.CodeFuncs
-local cComFuncs = ChoGGiX.ComFuncs
-local cOrigFuncs = ChoGGiX.OrigFuncs
+local cCodeFuncs = DTADD.CodeFuncs
+local cComFuncs = DTADD.ComFuncs
+local cOrigFuncs = DTADD.OrigFuncs
 
 
 function OnMsg.ClassesBuilt()
@@ -41,13 +41,13 @@ function OnMsg.ClassesBuilt()
     --place at end of function to have it protect dustdevils before meteors
     cOrigFuncs.DefenceTower_DefenceTick(self)
 
-    --if ChoGGiX.UserSettings.DefenceTowersAttackDustDevils then
+    --if DTADD.UserSettings.DefenceTowersAttackDustDevils then
       --copied from orig func
       if IsValidThread(self.track_thread) then
         return
       end
       --list of devil handles we attacked
-      local devils = ChoGGiX.Temp.RocketFiredDustDevil
+      local devils = DTADD.Temp.RocketFiredDustDevil
       --list of dustdevils on map
       local hostile = g_DustDevils or empty_table
       for i = 1, #hostile do
