@@ -143,6 +143,29 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --remove annoying msg that happens everytime you click anything (nice)
+  SaveOrigFunc("XWindow","SetId")
+  function XWindow:SetId(id)
+    local node = self.parent
+    while node and not node.IdNode do
+      node = node.parent
+    end
+    if node then
+      local old_id = self.Id
+      if old_id ~= "" then
+        rawset(node, old_id, nil)
+      end
+      if id ~= "" then
+        --local win = rawget(node, id)
+        --if win and win ~= self then
+        --  printf("[UI WARNING] Assigning window id '%s' of %s to %s", tostring(id), win.class, self.class)
+        --end
+        rawset(node, id, self)
+      end
+    end
+    self.Id = id
+  end
+
   --limit width of cheats menu till hover
   do
     local cheats_width = 450
