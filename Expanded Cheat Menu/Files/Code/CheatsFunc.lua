@@ -834,15 +834,16 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 
   for i = 1, #Presets.TechPreset do
     for j = 1, #Presets.TechPreset[i] do
-      local text = ChoGGi.CodeFuncs.Trans(Presets.TechPreset[i][j].display_name)
+      local tech = Presets.TechPreset[i][j]
+      local text = ChoGGi.CodeFuncs.Trans(tech.display_name)
       --remove " from that one tech...
       if text:find("\"") then
         text = text:gsub("\"","")
       end
       ItemList[#ItemList+1] = {
         text = text,
-        value = Presets.TechPreset[i][j].id,
-        hint = ChoGGi.CodeFuncs.Trans(Presets.TechPreset[i][j].description)
+        value = tech.id,
+        hint = ChoGGi.CodeFuncs.Trans(tech.description) .. "\n\nCategory: " .. tech.group
       }
     end
   end
@@ -909,12 +910,8 @@ end
 
 local function listfields(sType,field)
   local Presets = Presets
-  for i = 1, #Presets.TechPreset do
-    if Presets.TechPreset[i].id == field then
-      for j = 1, #Presets.TechPreset[i] do
-        _G[sType](Presets.TechPreset[i][j].id)
-      end
-    end
+  for i = 1, #Presets.TechPreset[field] do
+    _G[sType](Presets.TechPreset[field][i].id)
   end
 end
 

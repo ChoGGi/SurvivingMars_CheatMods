@@ -35,10 +35,11 @@ end
 --add button to import model
 function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   local ItemList = {}
-  local LightmodelDefaults = Lightmodel:GetProperties()
+  local SetLightmodelOverride = SetLightmodelOverride
+  local SetLightmodel = SetLightmodel
 
-  --always load defaults, then override with custom so list is always full
-  local def = LightmodelDefaults
+  --always load defaults, then override with custom settings so list is always full
+  local def = Lightmodel:GetProperties()
   for i = 1, #def do
     if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
       ItemList[#ItemList+1] = {
@@ -78,7 +79,9 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     end
 
     --save the custom lightmodel
-    ChoGGi.UserSettings.LightmodelCustom = PropToLuaCode(ChoGGi.CodeFuncs.LightmodelBuild(model_table))
+    local lm = ChoGGi.CodeFuncs.LightmodelBuild(model_table)
+    lm.name = "ChoGGi_Custom"
+    ChoGGi.UserSettings.LightmodelCustom = PropToLuaCode(lm)
     if choice[1].check1 then
       SetLightmodelOverride(1,"ChoGGi_Custom")
     else
@@ -126,6 +129,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     ItemList[#ItemList+1] = {
       text = Table[i].name,
       value = Table[i].name,
+      func = Table[i].name,
     }
   end
 
@@ -177,12 +181,16 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     callback = CallBackFunc,
     items = ItemList,
     title = title,
-    hint = hint,
+    hint = hint .. "\n\nDouble right-click to preview lightmodel without closing dialog.",
     check1 = Check1,
     check1_hint = Check1Hint,
     check2 = Check2,
     check2_hint = Check2Hint,
-    custom_type = 3,
+    --custom_type = 3,
+    custom_type = 6,
+    custom_func = function(value)
+      SetLightmodel(1,value)
+    end,
   })
 end
 
