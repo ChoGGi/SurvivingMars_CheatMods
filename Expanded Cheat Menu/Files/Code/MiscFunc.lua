@@ -650,15 +650,15 @@ end
 function ChoGGi.MenuFuncs.SetLightsRadius()
   local ItemList = {
     {text = " Default",value = false,hint = "restart to enable"},
-    {text = "1 Lowest (25)",value = 25},
-    {text = "2 Lower (50)",value = 50},
-    {text = "3 Low (90) < Menu Option",value = 90},
-    {text = "4 Medium (95) < Menu Option",value = 95},
-    {text = "5 High (100) < Menu Option",value = 100},
-    {text = "6 Ultra (200)",value = 200},
-    {text = "7 Ultra-er (400)",value = 400},
-    {text = "8 Ultra-er (600)",value = 600},
-    {text = "9 Ultra-er (1000)",value = 1000},
+    {text = "01 Lowest (25)",value = 25},
+    {text = "02 Lower (50)",value = 50},
+    {text = "03 Low (90) < Menu Option",value = 90},
+    {text = "04 Medium (95) < Menu Option",value = 95},
+    {text = "05 High (100) < Menu Option",value = 100},
+    {text = "06 Ultra (200)",value = 200},
+    {text = "07 Ultra-er (400)",value = 400},
+    {text = "08 Ultra-er (600)",value = 600},
+    {text = "09 Ultra-er (1000)",value = 1000},
     {text = "10 Laggy (10000)",value = 10000},
   }
 
@@ -689,19 +689,20 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
+  local hint_warn = "\nAbove 1000 will add a long delay to loading."
   local ItemList = {
     {text = " Default",value = false,hint = "restart to enable"},
-    {text = "1 Lowest (25)",value = 25},
-    {text = "2 Lower (50)",value = 50},
-    {text = "3 Low (100) < Menu Option",value = 100},
-    {text = "4 Medium (150) < Menu Option",value = 150},
-    {text = "5 High (100) < Menu Option",value = 100},
-    {text = "6 Ultra (200) < Menu Option",value = 200},
-    {text = "7 Ultra-er (400)",value = 400},
-    {text = "8 Ultra-er (600)",value = 600},
-    {text = "9 Ultra-er (1000)",value = 1000},
-    {text = "10 Ultra-er (2000)",value = 2000},
-    {text = "11 It goes to 11 (6000)",value = 6000},
+    {text = "01 Lowest (25)",value = 25},
+    {text = "02 Lower (50)",value = 50},
+    {text = "03 Low (100) < Menu Option",value = 100},
+    {text = "04 Medium (150) < Menu Option",value = 150},
+    {text = "05 High (100) < Menu Option",value = 100},
+    {text = "06 Ultra (200) < Menu Option",value = 200},
+    {text = "07 Ultra-er (400)",value = 400},
+    {text = "08 Ultra-er (600)",value = 600},
+    {text = "09 Ultra-er (1000)",value = 1000,hint = hint_warn},
+    {text = "10 Ultra-er (2000)",value = 2000,hint = hint_warn},
+    {text = "11 It goes to 11 (6000)",value = 6000,hint = hint_warn},
   }
 
   local CallBackFunc = function(choice)
@@ -863,10 +864,11 @@ end
 
 --CameraObj
 
+--use hr.FarZ = 7000000 for viewing full map with 128K zoom
 function ChoGGi.MenuFuncs.CameraFree_Toggle()
-  if not mapdata.GameLogic then
-    return
-  end
+  --if not mapdata.GameLogic then
+  --  return
+  --end
   if cameraFly.IsActive() then
     SetMouseDeltaMode(false)
     ShowMouseCursor("InGameCursor")

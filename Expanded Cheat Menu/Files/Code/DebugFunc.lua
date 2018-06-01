@@ -306,7 +306,6 @@ function ChoGGi.MenuFuncs.ChangeMap()
         end
       end
     end
-
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
