@@ -7,6 +7,14 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/[98]Misc/Find Nearest Resource",
+    ChoGGi.CodeFuncs.FindNearestResource,
+    nil,
+    "Select an object and click this to display a list of resources.",
+    "EV_OpenFirst.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[99]Monitor Info",
     ChoGGi.MenuFuncs.MonitorInfo,
     nil,

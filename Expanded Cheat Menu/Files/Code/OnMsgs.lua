@@ -682,6 +682,7 @@ function OnMsg.ChoGGi_Loaded()
   ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
 

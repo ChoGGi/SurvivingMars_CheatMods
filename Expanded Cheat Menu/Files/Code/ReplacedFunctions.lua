@@ -167,7 +167,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --limit width of cheats menu till hover
-  local UAMenu_cheats_width = 450
+  local UAMenu_cheats_width = 520
   if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
     UAMenu_cheats_width = 80
     local thread
@@ -175,7 +175,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     function UAMenu:OnMouseEnter(...)
       ChoGGi.OrigFuncs.UAMenu_OnMouseEnter(self,...)
       DeleteThread(thread)
-      self:SetSize(point(450,self:GetSize():y()))
+      self:SetSize(point(520,self:GetSize():y()))
     end
     SaveOrigFunc("UAMenu","OnMouseLeft")
     function UAMenu:OnMouseLeft(...)
