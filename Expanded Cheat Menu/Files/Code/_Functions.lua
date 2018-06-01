@@ -970,23 +970,6 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end)
 end
 
---used to check for some SM objects (Points/Boxes)
-do --RetType
-  local IsPoint = IsPoint
-  local IsBox = IsBox
-  function ChoGGi.CodeFuncs.RetType(Obj)
-    local meta = getmetatable(Obj)
-    if meta then
-      if IsPoint(Obj) then
-        return "Point"
-      end
-      if IsBox(Obj) then
-        return "Box"
-      end
-    end
-  end
-end
-
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then

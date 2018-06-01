@@ -481,6 +481,23 @@ function ChoGGi.ComFuncs.RetProperType(Value)
   return Value
 end
 
+--used to check for some SM objects (Points/Boxes)
+do --RetType
+  local IsPoint = IsPoint
+  local IsBox = IsBox
+  function ChoGGi.CodeFuncs.RetType(Obj)
+    local meta = getmetatable(Obj)
+    if meta then
+      if IsPoint(Obj) then
+        return "Point"
+      end
+      if IsBox(Obj) then
+        return "Box"
+      end
+    end
+  end
+end
+
 --takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
 function ChoGGi.ComFuncs.StringToTable(String)
   local Table = {}

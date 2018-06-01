@@ -14,17 +14,6 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/[98]Misc/Toggle Width Of Cheats Menu On Hover",
-    ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
-    nil,
-    function()
-      local des = "Current: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)
-      return des .. " Makes the cheats menu just show Cheats till mouseover (restart to take effect)."
-    end,
-    "select_objects.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/[98]Misc/Annoying Sounds",
     ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
     nil,

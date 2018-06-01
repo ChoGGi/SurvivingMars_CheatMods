@@ -6,6 +6,28 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "Cheats/[999]Toggle Width Of Cheats Menu On Hover",
+    ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
+    nil,
+    function()
+      local des = "Current: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)
+      return des .. " Makes the cheats menu just show Cheats till mouseover (restart to take effect)."
+    end,
+    "select_objects.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Cheats/[999]Keep Cheats Menu Position",
+    ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.KeepCheatsMenuPosition and "(Enabled)" or "(Disabled)"
+      return des .. " This menu will stay where you drag it."
+    end,
+    "CollectionsEditor.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Cheats/[01]Map Exploration",
     ChoGGi.MenuFuncs.ShowScanAndMapOptions,
     nil,

@@ -49,15 +49,6 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   })
 end
 
-function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
-  ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Cheats hover toggle: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),
-    "Menu"
-  )
-end
-
 --AnnoyingSounds_Toggle
 local function MirrorSphere_Toggle()
   local tab = UICity.labels.MirrorSpheres or empty_table

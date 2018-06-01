@@ -2,6 +2,28 @@
 
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
+function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
+  ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Cheats hover toggle: " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),
+    "Menu"
+  )
+end
+
+function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.KeepCheatsMenuPosition = not ChoGGi.UserSettings.KeepCheatsMenuPosition
+  if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
+  end
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Cheats menu save position: " .. tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition),
+    "Menu"
+  )
+end
+
 function ChoGGi.MenuFuncs.OpenModEditor()
   local CallBackFunc = function()
     ModEditorOpen()

@@ -167,33 +167,120 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --limit width of cheats menu till hover
-  do
-    local cheats_width = 450
-    if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
-      cheats_width = 80
-      local thread
-      SaveOrigFunc("UAMenu","OnMouseEnter")
-      function UAMenu:OnMouseEnter(...)
-        ChoGGi.OrigFuncs.UAMenu_OnMouseEnter(self,...)
-        DeleteThread(thread)
-        self:SetSize(point(450,self:GetSize():y()))
-      end
-      SaveOrigFunc("UAMenu","OnMouseLeft")
-      function UAMenu:OnMouseLeft(...)
-        ChoGGi.OrigFuncs.UAMenu_OnMouseLeft(self,...)
-        thread = CreateRealTimeThread(function()
-          Sleep(2500)
-        self:SetSize(point(80,self:GetSize():y()))
-        end)
-      end
+  local UAMenu_cheats_width = 450
+  if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
+    UAMenu_cheats_width = 80
+    local thread
+    SaveOrigFunc("UAMenu","OnMouseEnter")
+    function UAMenu:OnMouseEnter(...)
+      ChoGGi.OrigFuncs.UAMenu_OnMouseEnter(self,...)
+      DeleteThread(thread)
+      self:SetSize(point(450,self:GetSize():y()))
     end
-    --default menu width
-    SaveOrigFunc("UAMenu","SetBtns")
-    function UAMenu:SetBtns()
-      ChoGGi.OrigFuncs.UAMenu_SetBtns(self)
-      self:SetSize(point(cheats_width,self:GetSize():y()))
+    SaveOrigFunc("UAMenu","OnMouseLeft")
+    function UAMenu:OnMouseLeft(...)
+      ChoGGi.OrigFuncs.UAMenu_OnMouseLeft(self,...)
+      thread = CreateRealTimeThread(function()
+        Sleep(2500)
+      self:SetSize(point(80,self:GetSize():y()))
+      end)
     end
   end
+
+  local box = box
+  local point = point
+  local RGB = RGB
+  local menuButtons_selected_color = RGB(153, 204, 255)
+  local menuButtons_rollover_color = RGB(0, 0, 0)
+
+  --go through and make all the buttons open their menus where the menu is, not at the top left
+  SaveOrigFunc("UAMenu","CreateBtn")
+  function UAMenu:CreateBtn(text, path)
+    local entry = ChoGGi.OrigFuncs.UAMenu_CreateBtn(self, text, path)
+    entry:SetFontStyle("Editor14Bold")
+    function entry.OnLButtonDown()
+      local p = entry:GetPos()
+      local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
+      if self.MenuOpen == text then
+        self:CloseMenu()
+      else
+        self:CloseMenu()
+        self.MenuOpen = text
+        entry:SetTextColor(menuButtons_rollover_color)
+        entry:SetBackgroundColor(menuButtons_selected_color)
+        self.current_pos = pos
+        self:SetMenuPath(path)
+      end
+      return "break"
+    end
+
+    function entry.OnMouseEnter()
+      local p = entry:GetPos()
+      local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
+      if self.MenuOpen then
+        self:CloseMenu()
+        self.MenuOpen = text
+        entry:SetTextColor(menuButtons_rollover_color)
+        entry:SetBackgroundColor(menuButtons_selected_color)
+        self.current_pos = pos
+        self:SetMenuPath(path)
+      else
+        entry:SetTextColor(menuButtons_rollover_color)
+      end
+    end
+
+    return entry
+  end
+
+  --default menu width/draggable menu
+  SaveOrigFunc("UAMenu","SetBtns")
+  function UAMenu:SetBtns()
+    local ret = {ChoGGi.OrigFuncs.UAMenu_SetBtns(self)}
+    --shrink the width
+    self:SetSize(point(UAMenu_cheats_width,self:GetSize():y()))
+    --make the menu draggable
+    self:SetMovable(true)
+    return table.unpack(ret)
+  end --func
+
+  --set menu position
+  SaveOrigFunc("UAMenu","ToggleOpen")
+  function UAMenu.ToggleOpen()
+    local ChoGGi = ChoGGi
+    ChoGGi.OrigFuncs.UAMenu_ToggleOpen()
+    if dlgUAMenu and ChoGGi.UserSettings.KeepCheatsMenuPosition and ChoGGi.CodeFuncs.RetType(ChoGGi.UserSettings.KeepCheatsMenuPosition) == "Point" then
+      dlgUAMenu:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
+    end
+  end
+
+  --keep buttons/pos of menu when alt-tabbing
+  SaveOrigFunc("UAMenu","OnDesktopSize")
+  function UAMenu:OnDesktopSize()
+    local pos = dlgUAMenu:GetPos()
+    local ret = {ChoGGi.OrigFuncs.UAMenu_OnDesktopSize(self)}
+    --if opened then toggle close and open to restore the menu items (not sure why alt-tabbing removes them when i make it movable...)
+    if dlgUAMenu then
+      UAMenu.ToggleOpen()
+      UAMenu.ToggleOpen()
+    end
+    --and restore pos
+    dlgUAMenu:SetPos(pos)
+
+
+    return table.unpack(ret)
+  end --func
+
+--[[
+  SaveOrigFunc("UAMenu","CreateBtn")
+  function UAMenu:CreateBtn(text, path)
+    if UICity then
+      print(text)
+      print(path)
+    end
+    return ChoGGi.OrigFuncs.UAMenu_CreateBtn(self,text, path)
+
+  end
+--]]
 
   --make it so the script button on the console shows above the button/consolelog, and builds our scripts menu listing
   SaveOrigFunc("XPopupMenu","RebuildActions")

@@ -371,6 +371,12 @@ end
 
 function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
+
+  --save menu pos
+  if ChoGGi.UserSettings.KeepCheatsMenuPosition and dlgUAMenu then
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
+  end
+
   --my comp or if we're resetting settings
   if ChoGGi.Temp.ResetSettings or ChoGGi.Temp.Testing then
     return
@@ -712,6 +718,8 @@ function OnMsg.ChoGGi_Loaded()
 
 
 -------------------do the above stuff before the below stuff
+
+
 
   --add Scripts button to console
   if not dlgConsole.ChoGGi_MenuAdded then

@@ -55,7 +55,6 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   ChoGGi.ComFuncs.MsgPopup("Temp Storage: " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
     "Storage",UsualIcon
   )
-
 end
 
 function ChoGGi.MenuFuncs.LaunchEmptyRocket()
