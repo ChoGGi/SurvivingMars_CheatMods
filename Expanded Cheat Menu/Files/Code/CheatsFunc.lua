@@ -908,26 +908,27 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   })
 end
 
-local function listfields(sType,field)
-  local Presets = Presets
-  for i = 1, #Presets.TechPreset[field] do
-    _G[sType](Presets.TechPreset[field][i].id)
+--sType = DiscoverTech/GrantTech
+local function ListFields(sType,field,tech)
+  for i = 1, #tech[field] do
+    _G[sType](tech[field][i].id)
   end
 end
 
 function ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
-  listfields(sType,"Mysteries")
+  ListFields(sType,"Mysteries",Presets.TechPreset)
 end
 
 function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
-  listfields(sType,"Breakthroughs")
+  ListFields(sType,"Breakthroughs",Presets.TechPreset)
 end
 
 function ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
-  listfields(sType,"Biotech")
-  listfields(sType,"Engineering")
-  listfields(sType,"Physics")
-  listfields(sType,"Robotics")
-  listfields(sType,"Social")
+  local tech = Presets.TechPreset
+  ListFields(sType,"Biotech",tech)
+  ListFields(sType,"Engineering",tech)
+  ListFields(sType,"Physics",tech)
+  ListFields(sType,"Robotics",tech)
+  ListFields(sType,"Social",tech)
 end
 
