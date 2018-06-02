@@ -10,7 +10,7 @@ function ChoGGi.MenuFuncs.FireMostFixes()
 
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-  --ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+  ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   ChoGGi.MenuFuncs.CablesAndPipesRepair()
   ChoGGi.MenuFuncs.MirrorSphereStuck()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -199,8 +199,6 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   ChoGGi.ComFuncs.MsgPopup("Removed unreachable","Sites")
 end
 
---[[
-fixed in curiosity?
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   local Table = GetObjects({class="GridTile"})
   if Table[1] and Table[1].class and Table[1].class == "GridTile" then
@@ -210,7 +208,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
   end
   ChoGGi.ComFuncs.MsgPopup("Grid marks removed","Grid")
 end
---]]
+
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
   local tab = UICity.labels.ProjectMorpheus or empty_table
   for i = 1, #tab do
