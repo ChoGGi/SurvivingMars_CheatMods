@@ -1,5 +1,6 @@
 function OnMsg.ClassesBuilt()
-  --local is faster then global
+
+  --local is faster then global (assuming you call it more then once)
   local XTemplates = XTemplates
   local ObjModified = ObjModified
   local PlaceObj = PlaceObj
@@ -53,7 +54,7 @@ function OnMsg.ClassesBuilt()
 
           --if you modified a value then use this, if not remove
           ObjModified(context)
-
+          ---
         end
       })
     })
@@ -84,6 +85,10 @@ function OnMsg.ClassesBuilt()
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Workplace",
       "__template", "InfopanelSection",
+
+      --only show up for buildings that require main
+      "__condition", function (parent, context) return context:DoesRequireMaintenance() end,
+
       "RolloverText", "Look ma it slides!",
       "RolloverHintGamepad", "",
       "RolloverTitle", " ",
@@ -138,3 +143,5 @@ function OnMsg.ClassesBuilt()
   end --if
 
 end
+
+--ipBuilding/"__context_of_kind", "Building",  < all buildings

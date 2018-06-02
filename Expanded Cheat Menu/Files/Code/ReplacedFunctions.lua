@@ -804,56 +804,53 @@ end
     end
   end
 
-  --re-add ~object to examine object
-  local ConsoleRules = {
-    {
-      "^!$",
-      "ClearShowMe()"
-    },
-    {
-      "^!(.*)",
-      "ShowMe('%s')"
-    },
-    {
-      "^~(.*)",
-      "OpenExamine((%s))"
-    },
-    {
-      "^:%s*(.*)",
-      "NetPrintRfc('rpcChatMsg', '%s')"
-    },
-    {
-      "^*r%s*(.*)",
-      "CreateRealTimeThread(function() %s end) return"
-    },
-    {
-      "^*g%s*(.*)",
-      "CreateGameTimeThread(function() %s end) return"
-    },
-    {
-      "^(%a[%w.]*)$",
-      "ConsolePrint(print_format(__run(%s)))"
-    },
-    {
-      "(.*)",
-      "ConsolePrint(print_format(%s))"
-    },
-    {"(.*)", "%s"},
-    {
-      "^SSA?A?0%d+ (.*)",
-      "ViewShot([[%s]])"
+  do --add a bunch of rules to console input
+    local ConsoleRules = {
+      {
+        "^!(.*)",
+        "ChoGGi.CodeFuncs.ViewAndSelectObject((%s))"
+      },
+      {
+        "^~(.*)",
+        "OpenExamine((%s))"
+      },
+      {
+        "^@(.*)",
+        "debug.getinfo((%s))"
+      },
+      {
+        "^*r%s*(.*)",
+        "CreateRealTimeThread(function() %s end) return"
+      },
+      {
+        "^*g%s*(.*)",
+        "CreateGameTimeThread(function() %s end) return"
+      },
+      {
+        "^(%a[%w.]*)$",
+        "ConsolePrint(print_format(__run(%s)))"
+      },
+      {
+        "(.*)",
+        "ConsolePrint(print_format(%s))"
+      },
+
+      {"(.*)", "%s"}
     }
-  }
-  SaveOrigFunc("Console","Exec")
-  function Console:Exec(text)
-    self:AddHistory(text)
-    AddConsoleLog("> ", true)
-    AddConsoleLog(text, false)
-    local err = ConsoleExec(text, ConsoleRules)
-    if err then
-      ConsolePrint(err)
+    local ConsolePrint = ConsolePrint
+    local AddConsoleLog = AddConsoleLog
+    local ConsoleExec = ConsoleExec
+    SaveOrigFunc("Console","Exec")
+    function Console:Exec(text)
+      self:AddHistory(text)
+      AddConsoleLog("> ", true)
+      AddConsoleLog(text, false)
+      local err = ConsoleExec(text, ConsoleRules)
+      if err then
+        ConsolePrint(err)
+      end
     end
-  end
+  end --do
 
   --make sure console is focused even when construction is opened
   SaveOrigFunc("Console","Show")
