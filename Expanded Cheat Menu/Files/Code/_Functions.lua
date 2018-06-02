@@ -1431,7 +1431,7 @@ end
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email)
+    ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email,"Request")
     return
   end
 

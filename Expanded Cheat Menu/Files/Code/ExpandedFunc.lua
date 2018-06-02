@@ -23,7 +23,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if value == "New" then
-      ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email)
+      ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email,"Request")
     else
       ChoGGi.CodeFuncs.DisplayMonitorList(value)
     end

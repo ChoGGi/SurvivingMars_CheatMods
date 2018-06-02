@@ -1,6 +1,5 @@
 --See LICENSE for terms
 
-
 --[[
 Surviving Mars comes with
 print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
@@ -64,17 +63,14 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
-function ChoGGi.ComFuncs.MsgWait(Msg,Title,Ok,Cancel)
+function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   Msg = tostring(Msg)
   Title = tostring(Title)
-  Ok = type(Ok) == "string" and Ok or ChoGGi.CodeFuncs.Trans(1000616)
-  Cancel = type(Ok) == "string" and Cancel or ChoGGi.CodeFuncs.Trans(1000246)
 
   CreateRealTimeThread(
-    WaitCustomPopupNotification,
-    Title,
-    Msg,
-    {Ok,Cancel}
+    WaitPopupNotification,
+    false,
+    {title = Title, text = Msg}
   )
 end
 
