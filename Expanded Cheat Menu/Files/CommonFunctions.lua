@@ -12,53 +12,49 @@ print(socket._VERSION)
 --]]
 
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
-  pcall(function()
-    --returns translated text corresponding to number if we don't do tostring for numbers
-    Msg = tostring(Msg)
-    --Title = tostring(Title)
-    Title = type(Title) == "string" and Title or ChoGGi.CodeFuncs.Trans(1000016)
-    Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
-    --local id = "ChoGGi_" .. AsyncRand()
-    local id = AsyncRand()
-    local timeout = 10000
+  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
+  --we only use the id to remove it below (don't want a big 'ol list in g_ShownOnScreenNotifications)
+  local id = AsyncRand()
+  local timeout = 10000
+  if Size then
+    timeout = 30000
+  end
+  if type(AddCustomOnScreenNotification) ~= "function" then --if we called it where there ain't no UI
+    return
+  end
+  CreateRealTimeThread(function()
+    AddCustomOnScreenNotification(
+      --Msg: returns translated text corresponding to number if we don't do tostring for numbers
+      id,tostring(Title or ""),tostring(Msg),Icon,nil,{expiration=timeout}
+      --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
+    )
+    --since I use AsyncRand for the id, I don't want this getting too large.
+    g_ShownOnScreenNotifications[id] = nil
+    --large amount of text option
     if Size then
-      timeout = 25000
-    end
-    if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
-      CreateRealTimeThread(function()
-        AddCustomOnScreenNotification(
-          id,Title,Msg,Icon,nil,{expiration=timeout}
-          --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
-        )
-        --since I use AsyncRand for the id, I don't want this getting too large.
-        g_ShownOnScreenNotifications[id] = nil
-        --large amount of text option
-        if Size then
-          --add some custom settings this way, till i figure out hwo to add them as params
-          local osDlg = GetXDialog("OnScreenNotificationsDlg")[1]
-          local popup
-          for i = 1, #osDlg do
-            if osDlg[i].notification_id == id then
-              popup = osDlg[i]
-              break
-            end
-          end
-          --remove text limit
-          --popup.idText.Shorten = false
-          --popup.idText.MaxHeight = nil
-          popup.idText.Margins = box(0,0,0,-500)
-          --resize
-          popup.idTitle.Margins = box(0,-20,0,0)
-          --image
-          Sleep(0)
-          popup[1].scale = point(2800,2600)
-          popup[1].Margins = box(-5,-30,0,-5)
-          --update dialog
-          popup:InvalidateMeasure()
-  --parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
-  --osn GetXDialog("OnScreenNotificationsDlg")[1][1]
+      --add some custom settings this way, till i figure out hwo to add them as params
+      local osDlg = GetXDialog("OnScreenNotificationsDlg")[1]
+      local popup
+      for i = 1, #osDlg do
+        if osDlg[i].notification_id == id then
+          popup = osDlg[i]
+          break
         end
-      end)
+      end
+      --remove text limit
+      --popup.idText.Shorten = false
+      --popup.idText.MaxHeight = nil
+      popup.idText.Margins = box(0,0,0,-500)
+      --resize
+      popup.idTitle.Margins = box(0,-20,0,0)
+      --image
+      Sleep(0)
+      popup[1].scale = point(2800,2600)
+      popup[1].Margins = box(-5,-30,0,-5)
+      --update dialog
+      popup:InvalidateMeasure()
+--parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
+--osn GetXDialog("OnScreenNotificationsDlg")[1][1]
     end
   end)
 end
@@ -74,16 +70,17 @@ end
 
 function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
-    Msg = Msg or "Empty"
-    Ok = Ok or "Ok"
-    Cancel = Cancel or "Cancel"
-    Title = Title or "Placeholder"
+    Msg = Msg or ""
+    Ok = Ok or ChoGGi.CodeFuncs.Trans(1000616)
+    Cancel = Cancel or ChoGGi.CodeFuncs.Trans(1000246)
+    Title = Title or ""
     CreateRealTimeThread(function()
+      --fire callback if user clicks ok
       if "ok" == WaitQuestion(nil,
-        Title,
-        Msg,
-        Ok,
-        Cancel
+        tostring(Title),
+        tostring(Msg),
+        tostring(Ok),
+        tostring(Cancel)
       ) then
           Function()
       end
