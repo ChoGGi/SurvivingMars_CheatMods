@@ -64,13 +64,10 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
 end
 
 function ChoGGi.ComFuncs.MsgWait(Msg,Title)
-  Msg = tostring(Msg)
-  Title = tostring(Title)
-
   CreateRealTimeThread(
     WaitPopupNotification,
     false,
-    {title = Title, text = Msg}
+    {title = tostring(Title), text = tostring(Msg)}
   )
 end
 
