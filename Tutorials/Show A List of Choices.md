@@ -17,4 +17,4 @@ CreateRealTimeThread(function()
 end)
 ```
 
-##### See [ListChoiceCustom](https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Files/Code/ListChoiceCustom.lua) for how to implement a custom one
+##### See [ListChoiceCustom](https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Files/Code/ListChoiceCustom.lua) for how to implement a custom dialog
