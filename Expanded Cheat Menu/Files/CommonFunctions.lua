@@ -909,6 +909,7 @@ end
 
 --used to add files to Script menu
 function ChoGGi.ComFuncs.ListScriptFiles()
+
   local script_path = "AppData/ECM Scripts"
   --creates if not existing
   AsyncCreatePath(script_path)
@@ -948,4 +949,9 @@ function ChoGGi.ComFuncs.ListScriptFiles()
       end
     }, dlgConsole)
   end
+end
+
+--i keep forgetting this so, i'm adding it here
+function ChoGGi.ComFuncs.HandleToObject(h)
+  return HandleToObject[h]
 end

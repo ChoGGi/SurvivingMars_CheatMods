@@ -816,7 +816,7 @@ end
       },
       {
         "^@(.*)",
-        "ConsolePrint(debug.getinfo((%s)))"
+        "print(debug.getinfo((%s)))"
       },
       {
         "^*r%s*(.*)",

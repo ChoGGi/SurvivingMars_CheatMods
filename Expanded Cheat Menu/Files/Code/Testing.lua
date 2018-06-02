@@ -7,69 +7,69 @@ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 --stuff that never happens, fuck comments (like this one)
 if type(ChoGGi.Temp.Testing) == "function" then
 
-OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
-ChoGGi.CurObj:SetPos(GetTerrainCursor())
+  OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
+  ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches() or empty_table
-for i = #Attaches, 1, -1 do
-  local Colonist = Attaches[i]
-  if Colonist.class == "Colonist" then
-  print(111)
-    Attaches[i]:Detach()
-    Attaches[i]:SetState("idle")
-    Attaches[i].city:AddToLabel("Arrivals", Attaches[i])
-    Attaches[i].arriving = nil
-    Attaches[i]:OnArrival()
+  local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches() or empty_table
+  for i = #Attaches, 1, -1 do
+    local Colonist = Attaches[i]
+    if Colonist.class == "Colonist" then
+    print(111)
+      Attaches[i]:Detach()
+      Attaches[i]:SetState("idle")
+      Attaches[i].city:AddToLabel("Arrivals", Attaches[i])
+      Attaches[i].arriving = nil
+      Attaches[i]:OnArrival()
 
-    --Attaches[i]:Arrive()
-  end
-end
-
-
-function ChoGGi.ReplaceDome(dome)
-  if not dome then
-    return
-  end
-  local olddome = empty_table
-  for Key,Value in pairs(dome) do
-    olddome[Key] = Value
-  end
-  local pos = dome:GetPos()
-  dome:delete()
-
-  local newdome = PlaceObj('GeoscapeDome', {
-    'template_name', "GeoscapeDome",
-    'Pos', pos,
-  })
-  for Key,Value in pairs(olddome) do
-    if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "encyclopedia_id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
-      newdome[Key] = Value
+      --Attaches[i]:Arrive()
     end
   end
-  newdome:Init()
-  newdome:GameInit()
-  newdome:InitResourceSpots()
-  newdome:InitPassageTables()
 
-  newdome:Rebuild()
-  newdome:ApplyToGrids()
-  newdome:AddOutskirtBuildings()
-  newdome:GenerateWalkablePoints()
-  newdome:InitAttaches()
-end
 
-local Table1 = GetObjects({class="Destlock"})
-for i = 1, #Table1 do
+  function ChoGGi.Temp.ReplaceDome(dome)
+    if not dome then
+      return
+    end
+    local olddome = empty_table
+    for Key,Value in pairs(dome) do
+      olddome[Key] = Value
+    end
+    local pos = dome:GetPos()
+    dome:delete()
 
-local wp = PlaceObject("WayPoint")
-wp:SetPos(Table[i]:GetPos())
+    local newdome = PlaceObj('GeoscapeDome', {
+      'template_name', "GeoscapeDome",
+      'Pos', pos,
+    })
+    for Key,Value in pairs(olddome) do
+      if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "encyclopedia_id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
+        newdome[Key] = Value
+      end
+    end
+    newdome:Init()
+    newdome:GameInit()
+    newdome:InitResourceSpots()
+    newdome:InitPassageTables()
 
-end
+    newdome:Rebuild()
+    newdome:ApplyToGrids()
+    newdome:AddOutskirtBuildings()
+    newdome:GenerateWalkablePoints()
+    newdome:InitAttaches()
+  end
 
-local Table2 = GetObjects({class="ParSystem"})
-for i = 1, #Table2 do
-  Table2[i]:delete()
-end
+  local Table1 = GetObjects({class="Destlock"})
+  for i = 1, #Table1 do
+
+  local wp = PlaceObject("WayPoint")
+  wp:SetPos(Table[i]:GetPos())
+
+  end
+
+  local Table2 = GetObjects({class="ParSystem"})
+  for i = 1, #Table2 do
+    Table2[i]:delete()
+  end
 
 
 
@@ -97,6 +97,7 @@ end
 end
 
 if ChoGGi.Temp.Testing then
+
   config.TraceEnable = true
   Platform.editor = true
   config.LuaDebugger = true
@@ -130,7 +131,7 @@ end --Testing
 
 function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
 
-  ------
+ ------
   print("Testing_ClassesGenerate")
 end
 
