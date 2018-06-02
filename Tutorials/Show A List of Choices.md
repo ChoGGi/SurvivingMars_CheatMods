@@ -3,25 +3,18 @@
 ```
 CreateRealTimeThread(function()
   local choice = WaitListChoice({
-    {text="Tons of countries Asia"},
-    {text="Tons of countries Africa"},
-    {text="Tons of countries Europe"},
-    {text="Tons of countries North America"},
-    {text="Tons of countries South America"},
-    {text="Tons of countries Oceania"},
+    {text="Choice 1"},
+    {text="Choice 2"},
+    {text="Choice 3"},
   }, "I have abandoned this mod")
   if choice == 1 then
-    OpenUrl("http://steamcommunity.com", true)
+    print("choice " .. choice)
   elseif choice == 2 then
-    OpenUrl("http://steamcommunity.com", true)
+    print("choice " .. choice)
   elseif choice == 3 then
-    OpenUrl("http://steamcommunity.com", true)
-  elseif choice == 4 then
-    OpenUrl("http://steamcommunity.com", true)
-  elseif choice == 5 then
-    OpenUrl("http://steamcommunity.com", true)
-  elseif choice == 6 then
-    OpenUrl("http://steamcommunity.com", true)
+    print("choice " .. choice)
   end
 end)
 ```
+
+##### See [ListChoiceCustom](https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Files/Code/ListChoiceCustom.lua) for how to implement a custom one
