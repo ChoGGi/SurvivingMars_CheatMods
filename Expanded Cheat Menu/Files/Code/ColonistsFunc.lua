@@ -38,6 +38,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
   local ChoGGi = ChoGGi
   local DoneObject = DoneObject
   local CreateRealTimeThread = CreateRealTimeThread
+  local Random = Random
 
   --don't drop BlackCube/MysteryResource
   local reslist = {}
@@ -54,11 +55,11 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     end
 
     if res then
-      res = reslist[UICity:Random(1,#reslist)]
+      res = reslist[Random(1,#reslist)]
     else
       res = "Food"
     end
-    PlaceResourcePile(MeatBag:GetVisualPos(), res, UICity:Random(1,5) * ChoGGi.Consts.ResourceScale)
+    PlaceResourcePile(MeatBag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
     MeatBag.ChoGGi_Soylent = true
     CreateRealTimeThread(function()
@@ -1062,6 +1063,8 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
+  local Random = Random
+  local ChoGGi = ChoGGi
   local DefaultSetting = "Default"
   local sSetting = "NewColonistTraits"
   local sType = "New C"
@@ -1170,12 +1173,12 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
           ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.PositiveTraits)
           ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.NegativeTraits)
           --add random ones
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[UICity:Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[UICity:Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
           Notify(Obj,"UpdateMorale")
         end
         local tab = UICity.labels.Colonist or empty_table

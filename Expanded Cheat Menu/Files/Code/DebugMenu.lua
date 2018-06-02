@@ -4,11 +4,39 @@ local icon = "new_city.tga"
 
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+
+  ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Measure Tool",
+    function()
+      ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
+    end,
+    "Ctrl-M",
+    "Measures stuff (Use Ctrl-Shift-M to remove the lines).",
+    "MeasureTool.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    nil,
+    function()
+      ChoGGi.MenuFuncs.MeasureTool_Toggle()
+    end,
+    "Ctrl-Shift-M"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Set Anim State",
+    ChoGGi.MenuFuncs.SetAnimState,
+    nil,
+    "Make object dance on command.",
+    "UnlockCamera.tga"
+  )
+
   ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Reload Lua",
     ChoGGi.MenuFuncs.ReloadLua,
     nil,
-    "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it)."
+    "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).",
+    "EV_OpenFirst.tga"
   )
 
   --object cloner
@@ -16,7 +44,8 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "[102]Debug/Object Cloner",
     ChoGGi.MenuFuncs.ObjectCloner,
     "Shift-Q",
-    "Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item)."
+    "Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).",
+    "EnrichTerrainEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(

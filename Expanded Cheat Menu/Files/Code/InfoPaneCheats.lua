@@ -72,13 +72,13 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     end)
   end
   function Colonist:CheatRandomRace()
-    self.race = UICity:Random(1,5)
+    self.race = Random(1,5)
     self:ChooseEntity()
   end
   function Colonist:CheatRandomSpec()
     --skip children, or they'll be a black cube
     if not self.entity:find("Child",1,true) then
-      self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)],"init")
+      self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,6)],"init")
     end
   end
   function Colonist:CheatPrefDbl()
@@ -88,10 +88,10 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.performance = self.base_performance
   end
   function Colonist:CheatRandomGender()
-    ChoGGi.CodeFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)])
+    ChoGGi.CodeFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,5)])
   end
   function Colonist:CheatRandomAge()
-    ChoGGi.CodeFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[UICity:Random(1,6)])
+    ChoGGi.CodeFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,6)])
   end
 --CheatAllShifts
   local function CheatAllShiftsOn(self)

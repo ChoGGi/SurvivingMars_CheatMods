@@ -379,7 +379,7 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   if Age == "Random" then
-    Age = ChoGGi.Tables.ColonistAges[UICity:Random(1,6)]
+    Age = ChoGGi.Tables.ColonistAges[Random(1,6)]
   end
   --remove all age traits
   Colonist:RemoveTrait("Child")
@@ -423,11 +423,12 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
+  local Random = Random
   local ChoGGi = ChoGGi
   if Gender == "Random" then
-    Gender = ChoGGi.Tables.ColonistGenders[UICity:Random(1,5)]
+    Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
   elseif Gender == "MaleOrFemale" then
-    Gender = ChoGGi.Tables.ColonistGenders[UICity:Random(4,5)]
+    Gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
   end
   --remove all gender traits
   Colonist:RemoveTrait("OtherGender")
@@ -446,7 +447,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
     if Cloned then
       Colonist.entity_gender = Cloned
     else
-      if UICity:Random(1,2) == 1 then
+      if Random(1,2) == 1 then
         Colonist.entity_gender = "Male"
       else
         Colonist.entity_gender = "Female"
@@ -461,7 +462,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
   --children don't have spec models so they get black cube
   if not Colonist.entity:find("Child",1,true) then
     if Spec == "Random" then
-      Spec = ChoGGi.Tables.ColonistSpecializations[UICity:Random(1,6)]
+      Spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
     end
     Colonist:SetSpecialization(Spec,"init")
     Colonist:ChooseEntity()
@@ -483,7 +484,7 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateRace(Colonist,Race)
   if Race == "Random" then
-    Race = UICity:Random(1,5)
+    Race = Random(1,5)
   end
   Colonist.race = Race
   Colonist:ChooseEntity()
@@ -599,7 +600,8 @@ end
 
 function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
   local ChoGGi = ChoGGi
-  if not Table.callback or not Table.items then
+  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
+    ChoGGi.ComFuncs.MsgPopup("FireFuncAfterChoice: This shouldn't happen.","Error")
     return
   end
 
@@ -784,88 +786,93 @@ end
 
 function ChoGGi.CodeFuncs.RandomColour(Amount)
   local ChoGGi = ChoGGi
-  local AsyncRand = AsyncRand
+  local Random = Random
+  --local AsyncRand = AsyncRand
+  --AsyncRand(16777216) * -1
 
   --no amount return single colour
   if type(Amount) ~= "number" then
-    return AsyncRand(16777216) * -1
+    return Random(-16777216,-1)
   end
   local randcolors = {}
   --populate list with amount we want
   for _ = 1, Amount do
-    randcolors[#randcolors+1] = AsyncRand(16777216) * -1
+    randcolors[#randcolors+1] = Random(-16777216,-1)
   end
   --now remove all dupes and add more till we hit amount
   while true do
-    --loop missing amount
-    for _ = 1, Amount - #randcolors do
-      randcolors[#randcolors+1] = AsyncRand(16777216) * -1
-    end
-    --then remove dupes
+    --remove dupes
     randcolors = ChoGGi.ComFuncs.RetTableNoDupes(randcolors)
     if #randcolors == Amount then
       break
+    end
+    --then loop missing amount
+    for _ = 1, Amount - #randcolors do
+      randcolors[#randcolors+1] = Random(-16777216,-1)
     end
   end
   return randcolors
 end
 
 function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
-  if Obj:IsKindOf("ColorizableObject") then
-    local ChoGGi = ChoGGi
-    local colour = ChoGGi.CodeFuncs.RandomColour()
-    local SetPal = Obj.SetColorizationMaterial
-    local GetPal = Obj.GetColorizationMaterial
-    local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
-    --likely can only change basecolour
-    if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
-      Obj:SetColorModifier(colour)
-    else
-      if not Obj.ChoGGi_origcolors then
-        ChoGGi.CodeFuncs.SaveOldPalette(Obj)
-      end
-      --s,1,Color, Roughness, Metallic
-      SetPal(Obj, 1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      SetPal(Obj, 2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      SetPal(Obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      SetPal(Obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    end
-    return colour
+  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+    return
   end
-end
-function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
-  if Obj:IsKindOf("ColorizableObject") then
-    Obj:SetColorModifier(6579300)
-    if Obj.ChoGGi_origcolors then
-      local SetPal = Obj.SetColorizationMaterial
-      local c = Obj.ChoGGi_origcolors
-      SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
-      SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
-      SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
-      SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+  local ChoGGi = ChoGGi
+  local colour = ChoGGi.CodeFuncs.RandomColour()
+  local SetPal = Obj.SetColorizationMaterial
+  local GetPal = Obj.GetColorizationMaterial
+  local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
+  --likely can only change basecolour
+  if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
+    Obj:SetColorModifier(colour)
+  else
+    if not Obj.ChoGGi_origcolors then
+      ChoGGi.CodeFuncs.SaveOldPalette(Obj)
     end
+    --s,1,Color, Roughness, Metallic
+    SetPal(Obj, 1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(Obj, 2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(Obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(Obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+  end
+  return colour
+end
+
+function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
+  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+    return
+  end
+  Obj:SetColorModifier(6579300)
+  if Obj.ChoGGi_origcolors then
+    local SetPal = Obj.SetColorizationMaterial
+    local c = Obj.ChoGGi_origcolors
+    SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
   end
 end
 
 do --CloseDialogsECM
   local ChoGGi = ChoGGi
-  function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog,win)
-    while ChoGGi.ComFuncs.CheckForTypeInList(win,Dialog) do
+  local term = terminal.desktop
+  function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog)
+    while ChoGGi.ComFuncs.CheckForTypeInList(term,Dialog) do
       for i = #win, 1, -1 do
-        if win[i]:IsKindOf(Dialog) then
-          win[i]:delete()
+        if term[i]:IsKindOf(Dialog) then
+          term[i]:delete()
         end
       end
     end
   end
 
   function ChoGGi.CodeFuncs.CloseDialogsECM()
-    local win = terminal.desktop
-    ChoGGi.CodeFuncs.RemoveOldDialogs("Examine",win)
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator",win)
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog",win)
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg",win)
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg",win)
+    ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")
   end
 end
 
@@ -1098,10 +1105,18 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       ChoGGi.ComFuncs.MsgPopup("Colour is set on " .. obj.class,"Colour")
     end
   end
-  local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
-  local hint_check1 = "Change all objects of the same type."
-  local hint_check2 = "if they're there; resets to default colours."
-  ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Change Colour: " .. ChoGGi.CodeFuncs.RetName(obj),
+    hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).",
+    multisel = true,
+    custom_type = 2,
+    check1 = "All of type",
+    check1_hint = "Change all objects of the same type.",
+    check2 = "Default Colour",
+    check2_hint = "if they're there; resets to default colours.",
+  })
 end
 
 --returns the near hex grid for object placement
@@ -1267,8 +1282,12 @@ do --FindNearestResource
       end
     end
 
-    local hint = "Select a resource to find"
-    ChoGGi.CodeFuncs.FireFuncAfterChoice(CallBackFunc,ItemList,"Find Nearest Resource " .. Object.class,hint)
+    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+      callback = CallBackFunc,
+      items = ItemList,
+      title = "Find Nearest Resource " .. ChoGGi.CodeFuncs.RetName(Object),
+      hint = "Select a resource to find",
+    })
   end
 end
 

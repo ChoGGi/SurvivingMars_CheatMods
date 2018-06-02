@@ -56,7 +56,7 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   function ChoGGi.MenuFuncs.AddDeposit(sType)
     local obj = PlaceObj(sType, {
       "Pos", ChoGGi.CodeFuncs.CursorNearestHex(),
-      "max_amount", UICity:Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
+      "max_amount", Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
       "revealed", true,
     })
     obj:CheatRefill()

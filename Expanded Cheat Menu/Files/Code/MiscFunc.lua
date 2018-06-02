@@ -4,11 +4,11 @@ local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
 function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   local GetObjects = GetObjects
-  local function ChangeEntity(Class,Entity,Random)
+  local function ChangeEntity(Class,Entity,random)
     local objs = GetObjects({class = Class}) or empty_table
     for i = 1, #objs do
-      if Random then
-        objs[i]:ChangeEntity(Entity .. UICity:Random(1,Random))
+      if random then
+        objs[i]:ChangeEntity(Entity .. Random(1,random))
       else
         objs[i]:ChangeEntity(Entity)
       end
@@ -254,7 +254,7 @@ end
 --build and show a list of attachments for changing their colours
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
   local obj = ChoGGi.CodeFuncs.SelObject()
-  if not obj and not obj:IsKindOf("ColorizableObject") then
+  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     ChoGGi.ComFuncs.MsgPopup("Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).","Colour")
     return
   end
@@ -278,7 +278,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
         value = Attaches[i].class,
         parentobj = obj,
         obj = Attaches[i],
-        hint = "Change colours of a part of an object."
+        hint = "Change colours of an attached object."
       }
     end
   end

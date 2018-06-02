@@ -8,6 +8,44 @@ function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   }
 end
 
+function ChoGGi.MenuFuncs.SetAnimState()
+  local sel = ChoGGi.CodeFuncs.SelObject()
+  local ItemList = {}
+  local Table = sel:GetStates()
+
+  for Key,State in pairs(Table) do
+    ItemList[#ItemList+1] = {
+      text = "Name: " .. State .. " Idx: " .. Key,
+      value = State,
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    sel:SetStateText(choice[1].value)
+    ChoGGi.ComFuncs.MsgPopup("State: " .. choice[1].text,
+      "Anim State"
+    )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Anim State",
+    hint = "Current State: " .. sel:GetState(),
+  })
+
+end
+
+function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
+  if which then
+    MeasureTool.enabled = true
+    MeasureTool.OnLButtonDown(GetTerrainCursor())
+  else
+    DoneObject(MeasureTool.object)
+    MeasureTool.enabled = false
+  end
+end
+
 function ChoGGi.MenuFuncs.ReloadLua()
   ReloadLua()
   WaitDelayedLoadEntities()
@@ -63,7 +101,7 @@ function ChoGGi.MenuFuncs.ObjectCloner(sel)
   --if it's a deposit then make max_amount random and add
   --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
   --if ObjName:find("SubsurfaceDeposit") then
-  --NewObj.max_amount = UICity:Random(1000 * ChoGGi.Consts.ResourceScale,5000 * ChoGGi.Consts.ResourceScale)
+  --NewObj.max_amount = Random(1000 * ChoGGi.Consts.ResourceScale,5000 * ChoGGi.Consts.ResourceScale)
   if NewObj.max_amount then
     NewObj.amount = NewObj.max_amount
   elseif NewObj:IsKindOf("Colonist") then
@@ -503,6 +541,7 @@ do --path markers
   --default height of waypoints
   local flag_height = 50
   local function ShowWaypoints(waypoints, colour, Obj, single, skipflags, skipheight, skiptext, skipstart)
+    local Random = Random
     local PlaceTerrainLine = PlaceTerrainLine
     local PlaceText = PlaceText
     local PlaceObject = PlaceObject
@@ -571,7 +610,7 @@ do --path markers
       if skipflags ~= true then
         local p
         if single and i == #waypoints and not skipstart then
-          p = PlaceObject(SpawnModels[UICity:Random(1,2)])
+          p = PlaceObject(SpawnModels[Random(1,2)])
           p:SetScale(50)
           --p:SetAngle(Obj:GetAngle())
         else

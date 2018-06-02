@@ -7,7 +7,6 @@ Obj:GetStatesTextTable() --same as above, but not arranged alphabetically.
 
 --change to animation
 Obj:SetStateText("deployIdle")
-Obj:SetState("deployIdle" or 0)
 
 --numbered state (not sure how to translate numbers to text)
 Obj:GetState()
