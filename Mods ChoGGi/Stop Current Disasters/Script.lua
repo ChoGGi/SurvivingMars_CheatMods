@@ -10,4 +10,15 @@ function OnMsg.LoadGame()
     StopColdWave()
   end
 
+  local mp = g_MeteorsPredicted
+  while #mp > 0 do
+    for i = 1, #mp do
+      pcall(function()
+        --Msg("MeteorIntercepted", mp[i], MeteorInterceptRocket.shooter)
+        Msg("MeteorIntercepted", mp[i])
+        mp[i]:ExplodeInAir()
+      end)
+    end
+  end
+
 end
