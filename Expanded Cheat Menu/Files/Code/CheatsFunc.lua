@@ -335,7 +335,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
   })
 end
 
-function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
+function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
   local ChoGGi = ChoGGi
   local UICity = UICity
   --inform people of actions, so they don't add a bunch of them
@@ -367,7 +367,7 @@ function ChoGGi.MenuFuncs.StartMystery(Mystery,Instant)
   end
 
   --instant start
-  if Instant then
+  if instant then
     local seqs = UICity.mystery.seq_player.seq_list[1]
     for i = 1, #seqs do
       local seq = seqs[i]
@@ -931,4 +931,3 @@ function ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
   ListFields(sType,"Robotics",tech)
   ListFields(sType,"Social",tech)
 end
-

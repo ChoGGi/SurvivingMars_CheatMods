@@ -131,15 +131,6 @@ function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
   dofile("CommonLua/Core/luaDebuggerOutput.lua")
   dofile("CommonLua/Core/ProjectSync.lua")
 
-  --dofolder_files("CommonLua/Ged")
-  --dofolder_files("CommonLua/Ged/XTemplates")
-  --dofolder_files("CommonLua/Ged/Apps")
-  Platform.ged = true
-  dofile("CommonLua/Core/Terrain.lua")
-  --dofile("CommonLua/Ged/stubs.lua")
-  dofolder("CommonLua/Ged")
-  dofolder("CommonLua/Editor")
-
  ------
   print("Testing_ClassesGenerate")
 end
