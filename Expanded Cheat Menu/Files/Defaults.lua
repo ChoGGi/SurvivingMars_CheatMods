@@ -58,9 +58,10 @@ ChoGGi.Defaults = {
   ShowCheatsMenu = true,
   DebugGridSize = 10,
   DebugGridOpacity = 15,
---stores custom settings for each building
+  --stores custom settings for each building
   BuildingSettings = {},
-  Transparency = {},
+  --transparent UI
+	Transparency = {UAMenu = 150},
 
   --remove after they fix it
   RoverInfiniteLoopCuriosity = true,

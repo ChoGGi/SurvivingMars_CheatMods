@@ -8,6 +8,17 @@ function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   }
 end
 
+function ChoGGi.MenuFuncs.AttachSpots_Toggle()
+  local sel = SelectedObj
+  if sel.ChoGGi_ShowAttachSpots then
+    sel:HideSpots()
+    sel.ChoGGi_ShowAttachSpots = nil
+  else
+    sel:ShowSpots()
+    sel.ChoGGi_ShowAttachSpots = true
+  end
+end
+
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true

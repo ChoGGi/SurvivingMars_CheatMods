@@ -80,8 +80,8 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
   local pos
   for i = 1, #rockets do
     pos = rockets[i]:GetPos()
-    local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches() or empty_table
-    Attaches = ChoGGi.ComFuncs.FilterFromTable(Attaches,nil,{Colonist=true},"class")
+    local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches("Colonist") or empty_table
+    --Attaches = ChoGGi.ComFuncs.FilterFromTable(Attaches,nil,{Colonist=true},"class")
     if #Attaches > 0 then
       for j = #Attaches, 1, -1 do
         local c = Attaches[j]

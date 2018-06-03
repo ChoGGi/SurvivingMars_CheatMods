@@ -246,103 +246,14 @@ end
 
 function ChoGGi.CodeFuncs.RemoveOldFiles()
   local ChoGGi = ChoGGi
-  --using a pack file now so we can skip most of this
-  local Files = {
-    --[[
-    "UserSettings",
-    "ConsoleExec",
-    "FuncsCheats",
-    "FuncsDebug",
-    "FuncsGameplayBuildings",
-    "FuncsGameplayColonists",
-    "FuncsGameplayDronesAndRC",
-    "FuncsGameplayMisc",
-    "FuncsResources",
-    "FuncsToggles",
-    "MenuGameplayBuildings",
-    "MenuGameplayColonists",
-    "MenuGameplayDronesAndRC",
-    "MenuGameplayMisc",
-    "MenuToggles",
-    "MenuTogglesFunc",
-    "Script",
-    --second files change :)
-    "Keys",
-    "MenuBuildings",
-    "MenuBuildingsFunc",
-    "MenuCheats",
-    "MenuCheatsFunc",
-    "MenuColonists",
-    "MenuColonistsFunc",
-    "MenuDebug",
-    "MenuDebugFunc",
-    "MenuDronesAndRC",
-    "MenuDronesAndRCFunc",
-    "MenuHelp",
-    "MenuMisc",
-    "MenuMiscFunc",
-    "MenuResources",
-    "MenuResourcesFunc",
-    "OnMsgs",
-    "libs/ReplacedFunctions",
-    "libs/ExamineDialog",
-    --third
-    "FuncDebug",
-    "FuncGame",
-    --fourth
-    "ReplacedFunctions",
-    "Code/SponsorsFunc",
-    "Code/SponsorsMenu",
-    "Code/UIDesignerData",
-    --]]
-    --fifth
+  local files = {
+    --from before we used Files.hpk
     "Functions",
     "Settings",
   }
-  for i = 1, #Files do
-    AsyncFileDelete(ChoGGi.ModPath .. "/" .. Files[i] .. ".lua")
+  for i = 1, #files do
+    AsyncFileDelete(ChoGGi.ModPath .. "/" .. files[i] .. ".lua")
   end
-  --AsyncFileDelete(ChoGGi.ModPath .. "/libs")
-
-  --old settings that aren't used anymore
-  ChoGGi.UserSettings.AddMysteryBreakthroughBuildings = nil
-  ChoGGi.UserSettings.AirWaterAddAmount = nil
-  ChoGGi.UserSettings.AirWaterBatteryAddAmount = nil
-  ChoGGi.UserSettings.BatteryAddAmount = nil
-  ChoGGi.UserSettings.BorderScrollingToggle = nil
-  ChoGGi.UserSettings.Building_dome_forbidden = nil
-  ChoGGi.UserSettings.Building_dome_required = nil
-  ChoGGi.UserSettings.Building_is_tall = nil
-  ChoGGi.UserSettings.CapacityShuttle = nil
-  ChoGGi.UserSettings.CommanderAstrogeologist = nil
-  ChoGGi.UserSettings.CommanderAuthor = nil
-  ChoGGi.UserSettings.CommanderDoctor = nil
-  ChoGGi.UserSettings.CommanderEcologist = nil
-  ChoGGi.UserSettings.CommanderHydroEngineer = nil
-  ChoGGi.UserSettings.CommanderInventor = nil
-  ChoGGi.UserSettings.CommanderOligarch = nil
-  ChoGGi.UserSettings.CommanderPolitician = nil
-  ChoGGi.UserSettings.developer = nil
-  ChoGGi.UserSettings.FullyAutomatedBuildingsPerf = nil
-  ChoGGi.UserSettings.FullyAutomatedBuildings = nil
-  ChoGGi.UserSettings.NewColonistSex = nil
-  ChoGGi.UserSettings.ProductionAddAmount = nil
-  ChoGGi.UserSettings.ResidenceAddAmount = nil
-  ChoGGi.UserSettings.ResidenceMaxHeight = nil
-  ChoGGi.UserSettings.ShuttleAddAmount = nil
-  ChoGGi.UserSettings.ShuttleSpeed = nil
-  ChoGGi.UserSettings.ShuttleStorage = nil
-  ChoGGi.UserSettings.SponsorBlueSun = nil
-  ChoGGi.UserSettings.SponsorCNSA = nil
-  ChoGGi.UserSettings.SponsorESA = nil
-  ChoGGi.UserSettings.SponsorISRO = nil
-  ChoGGi.UserSettings.SponsorNASA = nil
-  ChoGGi.UserSettings.SponsorNewArk = nil
-  ChoGGi.UserSettings.SponsorParadox = nil
-  ChoGGi.UserSettings.SponsorRoscosmos = nil
-  ChoGGi.UserSettings.SponsorSpaceY = nil
-  ChoGGi.UserSettings.ToggleInfopanelCheats = nil
-  ChoGGi.UserSettings.TrainersAddAmount = nil
 end
 
 function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
@@ -890,10 +801,6 @@ function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
   io_demand_req:SetAmount(amount)
 end
 
-function ChoGGi.CodeFuncs.NewThread(Func,...)
-  coroutine.resume(coroutine.create(Func),...)
-end
-
 function ChoGGi.CodeFuncs.BuildMenu_Toggle()
   local dlg = GetXDialog("XBuildMenu")
   if not dlg then
@@ -1077,15 +984,15 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
           if Parent then
-            local Attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches() or empty_table
+            local Attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches(obj.class) or empty_table
             for j = 1, #Attaches do
-              if Attaches[j].class == obj.class then
+              --if Attaches[j].class == obj.class then
                 if choice[1].check2 then
                   CheckGrid(SetOrigColours,Attaches[j],tab[i])
                 else
                   CheckGrid(SetColours,Attaches[j],tab[i])
                 end
-              end
+              --end
             end
           else --not parent
             if choice[1].check2 then

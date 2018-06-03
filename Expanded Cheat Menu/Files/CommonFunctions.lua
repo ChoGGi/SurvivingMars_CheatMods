@@ -963,3 +963,7 @@ function ChoGGi.ComFuncs.Trans(...)
   end
   return _InternalTranslate(T({...}))
 end
+
+function ChoGGi.CodeFuncs.NewThread(Func,...)
+  coroutine.resume(coroutine.create(Func),...)
+end

@@ -6,6 +6,14 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Attach Spots Toggle",
+    ChoGGi.MenuFuncs.AttachSpots_Toggle,
+    nil,
+    "Toggle showing attachment spots on selected object.",
+    "ShowAll.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Measure Tool",
     function()
       ChoGGi.MenuFuncs.MeasureTool_Toggle(true)

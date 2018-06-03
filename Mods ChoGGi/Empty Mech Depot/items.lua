@@ -1,3 +1,3 @@
 return {
-  PlaceObj("ModItemCode",{"FileName","Script.lua"})
+  PlaceObj("ModItemCode", {"FileName", "Script.lua"}),
 }

@@ -281,14 +281,14 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     local function ChangeLogo(Label,Name)
       local tab = UICity.labels[Label] or empty_table
       for i = 1, #tab do
-        local tab2 = tab[i]:GetAttaches() or empty_table
+        local tab2 = tab[i]:GetAttaches("Logo") or empty_table
         for j = 1, #tab2 do
-          if tab2[j].class == "Logo" then
+          --if tab2[j].class == "Logo" then
             local tempLogo = tab2[j]
             if tempLogo then
               tempLogo:ChangeEntity(Name)
             end
-          end
+          --end
         end
       end
     end
