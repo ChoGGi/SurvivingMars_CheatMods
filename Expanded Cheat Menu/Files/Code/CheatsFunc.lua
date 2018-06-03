@@ -860,15 +860,15 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
       return
     end
 
-    local sType
+    local tech_func
     local Which
     --add
     if check1 then
-      sType = "DiscoverTech"
+      tech_func = "DiscoverTech"
       Which = "Unlocked"
     --remove
     elseif check2 then
-      sType = "GrantTech"
+      tech_func = "GrantTech"
       Which = "Researched"
     end
 
@@ -876,17 +876,17 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     for i = 1, #choice do
       local value = choice[i].value
       if value == "Everything" then
-        ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
-        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
-        ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryMystery(tech_func)
+        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(tech_func)
+        ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
       elseif value == "AllTech" then
-        ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
       elseif value == "AllBreakthroughs" then
-        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(tech_func)
       elseif value == "AllMysteries" then
-        ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
+        ChoGGi.MenuFuncs.SetTech_EveryMystery(tech_func)
       else
-        _G[sType](value)
+        _G[tech_func](value)
       end
     end
 
@@ -908,26 +908,26 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   })
 end
 
---sType = DiscoverTech/GrantTech
-local function ListFields(sType,field,tech)
+--tech_func = DiscoverTech/GrantTech
+local function ListFields(tech_func,field,tech)
   for i = 1, #tech[field] do
-    _G[sType](tech[field][i].id)
+    _G[tech_func](tech[field][i].id)
   end
 end
 
-function ChoGGi.MenuFuncs.SetTech_EveryMystery(sType)
-  ListFields(sType,"Mysteries",Presets.TechPreset)
+function ChoGGi.MenuFuncs.SetTech_EveryMystery(tech_func)
+  ListFields(tech_func,"Mysteries",Presets.TechPreset)
 end
 
-function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(sType)
-  ListFields(sType,"Breakthroughs",Presets.TechPreset)
+function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(tech_func)
+  ListFields(tech_func,"Breakthroughs",Presets.TechPreset)
 end
 
-function ChoGGi.MenuFuncs.SetTech_EveryTech(sType)
+function ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
   local tech = Presets.TechPreset
-  ListFields(sType,"Biotech",tech)
-  ListFields(sType,"Engineering",tech)
-  ListFields(sType,"Physics",tech)
-  ListFields(sType,"Robotics",tech)
-  ListFields(sType,"Social",tech)
+  ListFields(tech_func,"Biotech",tech)
+  ListFields(tech_func,"Engineering",tech)
+  ListFields(tech_func,"Physics",tech)
+  ListFields(tech_func,"Robotics",tech)
+  ListFields(tech_func,"Social",tech)
 end
