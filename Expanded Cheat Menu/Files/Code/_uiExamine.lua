@@ -77,7 +77,7 @@ function Examine:Init()
     local attaches = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
 
     if attaches and #attaches > 0 then
-      ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.obj:GetAttaches(),self)
+      ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(attaches,self)
     else
       print("Zero attachments means zero...")
     end

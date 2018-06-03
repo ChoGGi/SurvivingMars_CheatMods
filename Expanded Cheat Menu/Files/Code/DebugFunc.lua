@@ -10,6 +10,9 @@ end
 
 function ChoGGi.MenuFuncs.AttachSpots_Toggle()
   local sel = SelectedObj
+  if not sel then
+    return
+  end
   if sel.ChoGGi_ShowAttachSpots then
     sel:HideSpots()
     sel.ChoGGi_ShowAttachSpots = nil
@@ -122,12 +125,6 @@ local function AnimDebug_Show(Obj,Colour)
 end
 
 local function AnimDebug_ShowAll(Class)
-  local CreateGameTimeThread = CreateGameTimeThread
-  local GetObjects = GetObjects
-  local IsValid = IsValid
-  local PlaceObject = PlaceObject
-  local WaitNextFrame = WaitNextFrame
-
   local objs = GetObjects({class = Class}) or empty_table
   for i = 1, #objs do
     AnimDebug_Show(objs[i])
@@ -178,6 +175,9 @@ end
 
 function ChoGGi.MenuFuncs.SetAnimState()
   local sel = ChoGGi.CodeFuncs.SelObject()
+  if not sel then
+    return
+  end
   local ItemList = {}
   local Table = sel:GetStates()
 
@@ -208,7 +208,8 @@ local ObjectSpawner_ItemList = {}
 function ChoGGi.MenuFuncs.ObjectSpawner()
   --if #ObjectSpawner_ItemList == 0 then
   if not next(ObjectSpawner_ItemList) then
-    for Key,_ in pairs(g_Classes) do
+    --for Key,_ in pairs(g_Classes) do
+    for Key,_ in pairs(EntityData) do
       ObjectSpawner_ItemList[#ObjectSpawner_ItemList+1] = {
         text = Key,
         value = Key
@@ -219,8 +220,20 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if g_Classes[value] then
-      PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
 
+      local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
+      --NewObj.__parents[#NewObj.__parents] = "Building"
+      NewObj.__parents[#NewObj.__parents] = "InfopanelObj"
+      NewObj.ip_template = "ipEverything"
+      NewObj.ChoGGi_Spawned = true
+      NewObj:GetEnumFlags(const.efSelectable)
+
+      --so we know something is selected
+      NewObj.OnSelected = function()
+        SelectionArrowAdd(NewObj)
+      end
+
+      ObjModified(NewObj)
       --[[
       be nice to populate with default values, but causes issues
       --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
@@ -235,8 +248,8 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
-    items = ItemList,
-    title = "Object Spawner",
+    items = ObjectSpawner_ItemList,
+    title = "Object Spawner (EntityData list)",
     hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object).",
   })
 end
@@ -271,14 +284,14 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ObjExaminer()
-  local obj = ChoGGi.CodeFuncs.SelObject()
-  if not obj then
+  local sel = ChoGGi.CodeFuncs.SelObject()
+  if not sel then
     return
     --return ClearShowMe()
   end
   --OpenExamine(SelectedObj)
   --open and move to where the cursor is
-  ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(obj)
+  ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(sel)
 end
 
 function ChoGGi.MenuFuncs.Editor_Toggle()
@@ -896,6 +909,7 @@ do --path markers
       ChoGGi.MenuFuncs.SetWaypoint(Obj,true)
       return
     end
+
     local ItemList = {
       {text = "All",value = "All"},
       {text = "Colonists",value = "Colonist"},

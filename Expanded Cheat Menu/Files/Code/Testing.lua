@@ -98,6 +98,30 @@ end
 
 if ChoGGi.Temp.Testing then
 
+  info = debug.getinfo
+
+  --tell me if traits are different
+  local ChoGGi = ChoGGi
+  local const = const
+  local textstart = "<color 255 0 0>"
+  local textend = " is different length</color>"
+  if #const.SchoolTraits ~= 5 then
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "SchoolTraits" .. textend
+  end
+  if #const.SanatoriumTraits ~= 7 then
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "SanatoriumTraits" .. textend
+  end
+  local fulllist = TraitsCombo()
+  if #fulllist ~= 55 then
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "TraitsCombo" .. textend
+  end
+
+---------
+  print("if ChoGGi.Temp.Testing")
+end --Testing
+
+function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
+
   config.TraceEnable = true
   Platform.editor = true
   config.LuaDebugger = true
@@ -107,29 +131,14 @@ if ChoGGi.Temp.Testing then
   dofile("CommonLua/Core/luaDebuggerOutput.lua")
   dofile("CommonLua/Core/ProjectSync.lua")
 
-  info = debug.getinfo
-
-  --tell me if traits are different
-  local StartupMsgs = ChoGGi.Temp.StartupMsgs
-  local const = const
-  local textstart = "<color 255 0 0>"
-  local textend = " is different length</color>"
-  if #const.SchoolTraits ~= 5 then
-    StartupMsgs[#StartupMsgs+1] = textstart .. "SchoolTraits" .. textend
-  end
-  if #const.SanatoriumTraits ~= 7 then
-    StartupMsgs[#StartupMsgs+1] = textstart .. "SanatoriumTraits" .. textend
-  end
-  local fulllist = TraitsCombo()
-  if #fulllist ~= 55 then
-    StartupMsgs[#StartupMsgs+1] = textstart .. "TraitsCombo" .. textend
-  end
-
----------
-  print("if ChoGGi.Temp.Testing")
-end --Testing
-
-function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
+  --dofolder_files("CommonLua/Ged")
+  --dofolder_files("CommonLua/Ged/XTemplates")
+  --dofolder_files("CommonLua/Ged/Apps")
+  Platform.ged = true
+  dofile("CommonLua/Core/Terrain.lua")
+  --dofile("CommonLua/Ged/stubs.lua")
+  dofolder("CommonLua/Ged")
+  dofolder("CommonLua/Editor")
 
  ------
   print("Testing_ClassesGenerate")
@@ -137,6 +146,7 @@ end
 
 function ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
   --fix the arcology dome spot
+  --[[
   SaveOrigFunc("SpireBase","GameInit")
   function SpireBase:GameInit()
     local dome = IsObjInDome(self)
@@ -145,13 +155,13 @@ function ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
       frame:ChangeEntity(self.spire_frame_entity)
       local spot = dome:GetNearestSpot("idle", "Spireframe", self)
 
-      --local pos = dome:GetSpotPos(spot)
       local pos = self:GetSpotPos(spot or 1)
 
       frame:SetAttachOffset(pos - self:GetPos())
       self:Attach(frame, self:GetSpotBeginIndex("Origin"))
     end
   end
+  --]]
   ------
   print("Testing_ClassesPreprocess")
 end --ClassesPreprocess
@@ -165,6 +175,7 @@ end
 function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
 
   --add an overlay for dead rover
+  --[[
   SaveOrigFunc("PinsDlg","GetPinConditionImage")
   function PinsDlg:GetPinConditionImage(obj)
     local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
@@ -175,6 +186,7 @@ function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
       return ret
     end
   end
+  --]]
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()

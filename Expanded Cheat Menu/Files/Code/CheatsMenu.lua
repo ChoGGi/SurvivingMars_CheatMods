@@ -184,7 +184,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Cheats/[12]Complete wires\\pipes",
+    "Cheats/[12]Complete Wires & Pipes",
     CheatCompleteAllWiresAndPipes,
     nil,
     "Complete all wires and pipes instantly.",
@@ -192,7 +192,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Cheats/[13]Complete constructions",
+    "Cheats/[13]Complete Constructions",
     CheatCompleteAllConstructions,
     "Alt-B",
     "Complete all constructions instantly.",

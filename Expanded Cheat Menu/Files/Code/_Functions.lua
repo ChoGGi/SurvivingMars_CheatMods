@@ -13,7 +13,26 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   function dumpl(...)ChoGGi.ComFuncs.DumpLua(...)end
   function dumpt(...)ChoGGi.ComFuncs.DumpTable(...)end
   function alert(...)ChoGGi.ComFuncs.MsgPopup(...)end
-  function restart()quit("restart")end
+  local function RemoveLast(str)
+    --remove restart as the last cmd so we don't hit it by accident
+    local dlgConsole = dlgConsole
+    if dlgConsole.history_queue[1] == str then
+      table.remove(dlgConsole.history_queue,1)
+      --and save it?
+      if rawget(_G, "dlgConsole") then
+        Console.StoreHistory(dlgConsole)
+      end
+    end
+  end
+  local orig_quit = quit
+  function quit(...)
+    orig_quit(...)
+    RemoveLast("quit")
+  end
+  function restart()
+    quit("restart")
+    RemoveLast("restart")
+  end
   reboot = restart
   exit = quit
   trans = ChoGGi.ComFuncs.Trans --works with userdata or index (like _InternalTranslate should?)

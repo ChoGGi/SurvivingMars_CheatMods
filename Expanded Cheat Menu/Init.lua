@@ -103,14 +103,16 @@ if ChoGGi.UserSettings.FirstRun ~= false then
 end
 
 local Platform = Platform
+local d_before = Platform.developer
+local e_before = Platform.editor
 Platform.developer = true
 Platform.editor = true
 --fixes UpdateInterface nil value in editor mode
 editor.LoadPlaceObjConfig()
 --some error it gives about missing table
 GlobalVar("g_revision_map",{})
-Platform.developer = false
-Platform.editor = false
+Platform.developer = d_before
+Platform.editor = e_before
 
 --be nice to get a remote debugger working
 --[[

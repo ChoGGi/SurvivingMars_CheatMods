@@ -143,6 +143,16 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --larger and blacker font for Scripts menu items
+  SaveOrigFunc("XMenuEntry","Open")
+  function XMenuEntry:Open(...)
+    ChoGGi.OrigFuncs.XMenuEntry_Open(self,...)
+    if self.parent.parent.MenuEntries == "ChoGGi_Scripts" then
+      self:SetTextFont("Editor16Bold")
+      self:SetTextColor(RGB(0,0,0))
+    end
+  end
+
   --function from github as the actual function has an inf loop (whoopsie)
   if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity then
     function RCRover:ExitAllDrones()
@@ -301,6 +311,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     --and restore pos
     dlgUAMenu:SetPos(pos)
 
+    --if console is visible then focus on it
+    if dlgConsole.visible then
+      dlgConsole.idEdit:SetFocus()
+    end
 
     return table.unpack(ret)
   end --func
@@ -352,6 +366,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         entry:SetFontProps(self)
         entry:SetTranslate(action.ActionTranslate)
         entry:SetText(action.ActionName)
+
         if ShowIcons then
           entry:SetIcon(action.ActionIcon)
         end
@@ -363,7 +378,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
     if ischoggi then
       --make the menu start above the button
-      self:SetMargins(box(0, 0, 0, 32))
+      self:SetMargins(box(0, 0, 0, 40))
       -- 1 above consolelog
       self:SetZOrder(2000001)
     end
@@ -1012,6 +1027,10 @@ end
         "^@(.*)",
         "print(debug.getinfo(%s))"
       },
+      {
+        "^@@(.*)",
+        "print(type(%s))"
+      },
       --do something
       {
         "^!(.*)",
@@ -1020,6 +1039,10 @@ end
       {
         "^~(.*)",
         "OpenExamine(%s)"
+      },
+      {
+        "^!!(.*)",
+        "local o = (%s) local attaches = type(o) == 'table' and type(o.GetAttaches) == 'function' and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(attaches) end"
       },
       --built-in
       {

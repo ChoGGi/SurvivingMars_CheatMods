@@ -131,9 +131,7 @@ ChoGGi.ComFuncs.DumpTable(Object)
 function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
-      "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
-    )
+    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing","Dump")
     return
   end
   Mode = Mode or "-1"
@@ -142,9 +140,7 @@ function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.ComFuncs.MsgPopup("Dumped: " .. tostring(Obj),
-    "AppData/logs/DumpedText.txt","UI/Icons/Upgrades/magnetic_filtering_04.tga"
-  )
+  ChoGGi.ComFuncs.MsgPopup("Dumped: " .. tostring(Obj),"AppData/logs/DumpedText.txt")
 end
 
 function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
@@ -189,9 +185,7 @@ if you want to dump functions as well DumpObject(object,true)
 function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing",
-      "Dump","UI/Icons/Upgrades/magnetic_filtering_04.tga"
-    )
+    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing","Dump")
     return
   end
 
@@ -919,7 +913,7 @@ function ChoGGi.ComFuncs.ListScriptFiles()
   end
   if #scripts > 0 then
     for i = 1, #scripts do
-      local name = scripts[i]:gsub("AppData/ECM Scripts/","")
+      local name = string.gsub(scripts[i]:gsub("AppData/ECM Scripts/",""),".lua","")
       XAction:new({
         ActionId = name,
         ActionMenubar = "ChoGGi_Scripts",
@@ -938,6 +932,8 @@ function ChoGGi.ComFuncs.ListScriptFiles()
     end
   else
     AsyncStringToFile("AppData/ECM Scripts/readme.txt","Any .lua files in here will be part of a list that you can execute in-game (open the console).")
+    AsyncStringToFile("AppData/ECM Scripts/InGameInterface.lua","OpenExamine(GetInGameInterface())")
+    AsyncStringToFile("AppData/ECM Scripts/terminal.desktop","OpenExamine(terminal.desktop)")
     XAction:new({
       ActionId = "Help",
       ActionMenubar = "ChoGGi_Scripts",

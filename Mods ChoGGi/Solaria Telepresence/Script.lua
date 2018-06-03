@@ -295,7 +295,6 @@ end --ClassesPostprocess
 function OnMsg.ClassesBuilt()
   local XT = XTemplates
   local ObjModified = ObjModified
-  XT = XT or XTemplates
 
   if not XT.sectionWorkplace.SolariaTelepresence_Solaria then
     XT.sectionWorkplace.SolariaTelepresence_Solaria = true
