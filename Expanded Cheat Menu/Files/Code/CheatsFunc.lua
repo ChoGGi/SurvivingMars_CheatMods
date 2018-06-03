@@ -412,9 +412,9 @@ local function ShowMysteryLog(MystName)
               if seq.class == "SA_WaitMessage" then
                 --add to msg list
                 msgs[#msgs+1] = {
-                  [" "] = "Speech: " .. ChoGGi.CodeFuncs.Trans(seq.voiced_text) .. "\n\n\n\nMessage: " .. ChoGGi.CodeFuncs.Trans(seq.text),
+                  [" "] = "Speech: " .. ChoGGi.ComFuncs.Trans(seq.voiced_text) .. "\n\n\n\nMessage: " .. ChoGGi.ComFuncs.Trans(seq.text),
                   speech = seq.voiced_text,
-                  class = ChoGGi.CodeFuncs.Trans(seq.title)
+                  class = ChoGGi.ComFuncs.Trans(seq.title)
                 }
               end
             end
@@ -835,7 +835,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   for i = 1, #Presets.TechPreset do
     for j = 1, #Presets.TechPreset[i] do
       local tech = Presets.TechPreset[i][j]
-      local text = ChoGGi.CodeFuncs.Trans(tech.display_name)
+      local text = ChoGGi.ComFuncs.Trans(tech.display_name)
       --remove " from that one tech...
       if text:find("\"") then
         text = text:gsub("\"","")
@@ -843,7 +843,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
       ItemList[#ItemList+1] = {
         text = text,
         value = tech.id,
-        hint = ChoGGi.CodeFuncs.Trans(tech.description) .. "\n\nCategory: " .. tech.group
+        hint = ChoGGi.ComFuncs.Trans(tech.description) .. "\n\nCategory: " .. tech.group
       }
     end
   end

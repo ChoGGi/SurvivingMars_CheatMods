@@ -37,10 +37,10 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Missing Class Objects *",
+    "Expanded CM/Fixes/Remove Missing Class Objects (Warning)",
     ChoGGi.MenuFuncs.RemoveMissingClassObjects,
     nil,
-    "Warning: May crash game, SAVE FIRST. Theses are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
+    "Warning: May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
     icon
   )
 
@@ -123,6 +123,17 @@ fixed in curiosity
     icon
   )
 --]]
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/Toggle: Rover Infinite Loop In Curiosity Update",
+    ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.RoverInfiniteLoopCuriosity and "(Enabled)" or "(Disabled)"
+      return des .. " If everything freezes, but you can still move the camera around after moving a rover (enabled by default, restart to toggle)."
+    end,
+    icon
+  )
+
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Toggle: Drone Carry Amount",
     ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,

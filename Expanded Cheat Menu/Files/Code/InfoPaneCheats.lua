@@ -430,7 +430,7 @@ end
 
 function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local obj = win.context
-  local name = ChoGGi.CodeFuncs.Trans(obj.name)
+  local name = ChoGGi.ComFuncs.Trans(obj.name)
   local id = obj.encyclopedia_id
   local doublec = ""
   local resetc = ""
@@ -446,6 +446,10 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local tab = win.actions or empty_table
   for i = 1, #tab do
     local action = tab[i]
+
+    if type(action.ActionId) == "boolean" then
+      action.ActionId = ""
+    end
 
 --Colonists
     if action.ActionId == "FillAll" then
@@ -472,23 +476,23 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       SetHint(action,resetc)
 
     elseif action.ActionId == "Upgrade1" then
-      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade1_display_name)
+      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade1_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade1_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade2" then
-      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade2_display_name)
+      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade2_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade2_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade3" then
-      local tempname = ChoGGi.CodeFuncs.Trans(obj.upgrade3_display_name)
+      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.CodeFuncs.Trans(obj.upgrade3_description))
+        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade3_description))
       else
         action.ActionId = nil
       end
@@ -591,4 +595,6 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     end
 
   end --for
+
+  return win
 end

@@ -173,13 +173,13 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
             local hint = item.text
             if item.value then
               if type(item.value) == "userdata" then
-                hint = hint .. ": " .. ChoGGi.CodeFuncs.Trans(item.value)
+                hint = hint .. ": " .. ChoGGi.ComFuncs.Trans(item.value)
               elseif item.value then
                 hint = hint .. ": " .. tostring(item.value)
               end
             end
             if type(item.hint) == "userdata" then
-              hint = hint .. "\n\n" .. ChoGGi.CodeFuncs.Trans(item.hint)
+              hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(item.hint)
             elseif item.hint then
               hint = hint .. "\n\n" .. item.hint
             end

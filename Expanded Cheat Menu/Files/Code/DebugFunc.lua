@@ -8,34 +8,6 @@ function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   }
 end
 
-function ChoGGi.MenuFuncs.SetAnimState()
-  local sel = ChoGGi.CodeFuncs.SelObject()
-  local ItemList = {}
-  local Table = sel:GetStates()
-
-  for Key,State in pairs(Table) do
-    ItemList[#ItemList+1] = {
-      text = "Name: " .. State .. " Idx: " .. Key,
-      value = State,
-    }
-  end
-
-  local CallBackFunc = function(choice)
-    sel:SetStateText(choice[1].value)
-    ChoGGi.ComFuncs.MsgPopup("State: " .. choice[1].text,
-      "Anim State"
-    )
-  end
-
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
-    callback = CallBackFunc,
-    items = ItemList,
-    title = "Set Anim State",
-    hint = "Current State: " .. sel:GetState(),
-  })
-
-end
-
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true
@@ -121,59 +93,106 @@ function ChoGGi.MenuFuncs.ObjectCloner(sel)
   end
 end
 
-local function AnimDebug_Show(Class)
+local function AnimDebug_Show(Obj,Colour)
+  local text = PlaceObject("Text")
+  text:SetDepthTest(true)
+  text:SetColor(Colour or ChoGGi.CodeFuncs.RandomColour())
+  text:SetFontId(UIL.GetFontID("droid, 14, bold"))
+
+  text.ChoGGi_AnimDebug = true
+  Obj:Attach(text)
+  text:SetAttachOffset(point(0,0,Obj:GetObjectBBox():sizez() + 100))
+  CreateGameTimeThread(function()
+    while IsValid(text) do
+      text:SetText(string.format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
+      WaitNextFrame()
+    end
+  end)
+end
+
+local function AnimDebug_ShowAll(Class)
   local CreateGameTimeThread = CreateGameTimeThread
   local GetObjects = GetObjects
   local IsValid = IsValid
   local PlaceObject = PlaceObject
   local WaitNextFrame = WaitNextFrame
+
   local objs = GetObjects({class = Class}) or empty_table
   for i = 1, #objs do
-    local text = PlaceObject("Text")
-    text:SetDepthTest(true)
-    text:SetColor(ChoGGi.CodeFuncs.RandomColour())
-    text:SetFontId(UIL.GetFontID("droid, 14, bold"))
-
-    text.ChoGGi_AnimDebug = true
-    objs[i]:Attach(text)
-    text:SetAttachOffset(point(0,0,objs[i]:GetObjectBBox():sizez() + 100))
-    CreateGameTimeThread(function()
-      while IsValid(text) do
-        text:SetText(string.format("%d. %s\n", 1, objs[i]:GetAnimDebug(1)))
-        WaitNextFrame()
-      end
-    end)
+    AnimDebug_Show(objs[i])
   end
 end
 
-local function AnimDebug_Hide(Class)
-  local DoneObject = DoneObject
-  local empty_table = empty_table
-  local objs = GetObjects({class = Class}) or empty_table
-  for i = 1, #objs do
-    local att = objs[i]:GetAttaches() or empty_table
-    for j = 1, #att do
-      if att[j].ChoGGi_AnimDebug then
-        DoneObject(att[j]) --:delete()
-      end
+local function AnimDebug_Hide(Obj)
+  local att = Obj:GetAttaches() or empty_table
+  for i = 1, #att do
+    if att[i].ChoGGi_AnimDebug then
+      DoneObject(att[i]) --:delete()
     end
   end
 end
 
-function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
-  ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
-  if ChoGGi.Temp.ShowAnimDebug then
-    AnimDebug_Show("Building")
-    AnimDebug_Show("Unit")
-    AnimDebug_Show("CargoShuttle")
-  else
-    AnimDebug_Hide("Building")
-    AnimDebug_Hide("Unit")
-    AnimDebug_Hide("CargoShuttle")
+local function AnimDebug_HideAll(Class)
+  local DoneObject = DoneObject
+  local empty_table = empty_table
+  local objs = GetObjects({class = Class}) or empty_table
+  for i = 1, #objs do
+    AnimDebug_Hide(objs[i])
   end
 end
 
---no sense in building the list more then once
+function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
+  if SelectedObj then
+    local sel = SelectedObj
+    if sel.ChoGGi_ShowAnimDebug then
+      sel.ChoGGi_ShowAnimDebug = nil
+      AnimDebug_Hide(sel)
+    else
+      sel.ChoGGi_ShowAnimDebug = true
+      AnimDebug_Show(sel,white)
+    end
+  else
+    ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+    if ChoGGi.Temp.ShowAnimDebug then
+      AnimDebug_ShowAll("Building")
+      AnimDebug_ShowAll("Unit")
+      AnimDebug_ShowAll("CargoShuttle")
+    else
+      AnimDebug_HideAll("Building")
+      AnimDebug_HideAll("Unit")
+      AnimDebug_HideAll("CargoShuttle")
+    end
+  end
+end
+
+function ChoGGi.MenuFuncs.SetAnimState()
+  local sel = ChoGGi.CodeFuncs.SelObject()
+  local ItemList = {}
+  local Table = sel:GetStates()
+
+  for Key,State in pairs(Table) do
+    ItemList[#ItemList+1] = {
+      text = "Name: " .. State .. " Idx: " .. Key,
+      value = State,
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    sel:SetStateText(choice[1].value)
+    ChoGGi.ComFuncs.MsgPopup("State: " .. choice[1].text,
+      "Anim State"
+    )
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = "Set Anim State",
+    hint = "Current State: " .. sel:GetState(),
+  })
+end
+
+--no sense in building the list more then once (it's a big list)
 local ObjectSpawner_ItemList = {}
 function ChoGGi.MenuFuncs.ObjectSpawner()
   --if #ObjectSpawner_ItemList == 0 then
@@ -192,6 +211,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
 
       --[[
+      be nice to populate with default values, but causes issues
       --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
       for _, prop in iXpairs(NewObj:GetProperties()) do
         NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
@@ -652,7 +672,7 @@ do --path markers
     end
 
     --if #Obj.ChoGGi_Stored_Waypoints > 150 then
-    --  print(ChoGGi.CodeFuncs.Trans(Obj.display_name or Obj.class) .. " (handle: " .. Obj.handle .. ") has over 150 waypoints.")
+    --  print(ChoGGi.ComFuncs.Trans(Obj.display_name or Obj.class) .. " (handle: " .. Obj.handle .. ") has over 150 waypoints.")
     --end
   end --end of ShowWaypoints
 

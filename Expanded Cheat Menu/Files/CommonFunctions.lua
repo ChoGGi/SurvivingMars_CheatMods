@@ -71,8 +71,8 @@ end
 function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     Msg = Msg or ""
-    Ok = Ok or ChoGGi.CodeFuncs.Trans(1000616)
-    Cancel = Cancel or ChoGGi.CodeFuncs.Trans(1000246)
+    Ok = Ok or ChoGGi.ComFuncs.Trans(1000616)
+    Cancel = Cancel or ChoGGi.ComFuncs.Trans(1000246)
     Title = Title or ""
     CreateRealTimeThread(function()
       --fire callback if user clicks ok
@@ -211,7 +211,7 @@ end
 function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
     return function()
-      ChoGGi.CodeFuncs.Trans(Obj)
+      ChoGGi.ComFuncs.Trans(Obj)
     end
   elseif Funcs and type(Obj) == "function" then
     return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
@@ -569,7 +569,7 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
 print("\n")
 --]]
 
-  --ChoGGi.CodeFuncs.Trans(Number from Game.csv)
+  --ChoGGi.ComFuncs.Trans(Number from Game.csv)
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
@@ -954,4 +954,12 @@ end
 --i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
+end
+
+function ChoGGi.ComFuncs.Trans(...)
+  local data = select(1,...)
+  if type(data) == "userdata" then
+    return _InternalTranslate(...)
+  end
+  return _InternalTranslate(T({...}))
 end

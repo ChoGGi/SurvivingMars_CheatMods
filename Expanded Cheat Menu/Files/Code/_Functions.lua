@@ -16,7 +16,7 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   function restart()quit("restart")end
   reboot = restart
   exit = quit
-  trans = ChoGGi.CodeFuncs.Trans --works with userdata or index (like _InternalTranslate should?)
+  trans = ChoGGi.ComFuncs.Trans --works with userdata or index (like _InternalTranslate should?)
   mh = GetTerrainCursorObjSel
   mc = GetPreciseCursorObj
   m = SelectionMouseObj
@@ -859,7 +859,7 @@ do --CloseDialogsECM
   local term = terminal.desktop
   function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog)
     while ChoGGi.ComFuncs.CheckForTypeInList(term,Dialog) do
-      for i = #win, 1, -1 do
+      for i = #term, 1, -1 do
         if term[i]:IsKindOf(Dialog) then
           term[i]:delete()
         end
@@ -1384,14 +1384,6 @@ function ChoGGi.CodeFuncs.RetBuildingPermissions(traits,settings)
   return block,restrict
 end
 
-function ChoGGi.CodeFuncs.Trans(...)
-  local data = select(1,...)
-  if type(data) == "userdata" then
-    return _InternalTranslate(...)
-  end
-  return _InternalTranslate(T({...}))
-end
-
 function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(Obj)
   local mods = Obj.modifications
   if mods and mods.electricity_consumption then
@@ -1593,7 +1585,7 @@ function ChoGGi.CodeFuncs.RetName(Obj)
   --translated name
   if type(Obj) == "table" then
     if Obj.display_name then
-      return ChoGGi.CodeFuncs.Trans(Obj.display_name)
+      return ChoGGi.ComFuncs.Trans(Obj.display_name)
     else
       return Obj.encyclopedia_id or Obj.class or tostring(Obj)
     end

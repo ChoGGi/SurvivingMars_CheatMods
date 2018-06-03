@@ -70,7 +70,7 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal.SetOSWindowTitle(ChoGGi.CodeFuncs.Trans(1079) .. ": " .. Mods[ChoGGi.id].title)
+  terminal.SetOSWindowTitle(ChoGGi.ComFuncs.Trans(1079) .. ": " .. Mods[ChoGGi.id].title)
 end
 
 --earlist on-ground objects are loaded?

@@ -316,6 +316,15 @@ function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
 end
 --]]
 
+function ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.RoverInfiniteLoopCuriosity = not ChoGGi.UserSettings.RoverInfiniteLoopCuriosity
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Rover Infinite Loop: " .. tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity),
+    "Rovers"
+  )
+end
+
 function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix

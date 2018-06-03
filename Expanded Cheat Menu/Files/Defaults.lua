@@ -61,6 +61,9 @@ ChoGGi.Defaults = {
 --stores custom settings for each building
   BuildingSettings = {},
   Transparency = {},
+
+  --remove after they fix it
+  RoverInfiniteLoopCuriosity = true,
 }
 
 --and constants
@@ -410,8 +413,8 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
   ClassDescendantsList("MysteryBase",function(class)
     local scenario_name = g_Classes[class].scenario_name or "Missing Scenario Name"
-    local display_name = ChoGGi.CodeFuncs.Trans(g_Classes[class].display_name) or "Missing Name"
-    local description = ChoGGi.CodeFuncs.Trans(g_Classes[class].rollover_text) or "Missing Description"
+    local display_name = ChoGGi.ComFuncs.Trans(g_Classes[class].display_name) or "Missing Name"
+    local description = ChoGGi.ComFuncs.Trans(g_Classes[class].rollover_text) or "Missing Description"
 
     local temptable = {
       class = class,

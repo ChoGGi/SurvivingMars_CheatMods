@@ -15,7 +15,6 @@ function OnMsg.ClassesBuilt()
   --local is faster then global (assuming you call it more then once)
   local XT = XTemplates
   local PlaceObj = PlaceObj
-  local ObjModified = ObjModified
 
   --don't add if button already added
   if not XT.ipBuilding.ChoGGi_DisableMaintenance then

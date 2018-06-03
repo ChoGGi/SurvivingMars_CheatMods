@@ -52,9 +52,9 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(tab[i].display_name),
+        text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.CodeFuncs.Trans(tab[i].effect)
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect)
       }
     end
   end
@@ -87,7 +87,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
     callback = CallBackFunc,
     items = ItemList,
     title = "Set Sponsor",
-    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),
+    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),
   })
 end
 
@@ -98,9 +98,9 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(tab[i].display_name),
+        text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.CodeFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Sponsor" .. tab[i].id])
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Sponsor" .. tab[i].id])
       }
     end
   end
@@ -142,7 +142,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     callback = CallBackFunc,
     items = ItemList,
     title = "Sponsor Bonuses",
-    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
+    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
       .. "\n\nUse Ctrl/Shift for multiple bonuses."
       .. "\n\nModded ones are mostly ignored for now (just cargo space/research points).",
     multisel = true,
@@ -163,9 +163,9 @@ function ChoGGi.MenuFuncs.ChangeCommander()
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(tab[i].display_name),
+        text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.CodeFuncs.Trans(tab[i].effect)
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect)
       }
     end
   end
@@ -198,7 +198,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
     callback = CallBackFunc,
     items = ItemList,
     title = "Set Commander",
-    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),
+    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),
   })
 end
 
@@ -209,9 +209,9 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(tab[i].display_name),
+        text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.CodeFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Commander" .. tab[i].id])
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Commander" .. tab[i].id])
       }
     end
   end
@@ -253,7 +253,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     callback = CallBackFunc,
     items = ItemList,
     title = "Commander Bonuses",
-    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
+    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
       .. "\n\nUse Ctrl/Shift for multiple bonuses.",
     multisel = true,
     check1 = "Turn Off",
@@ -269,7 +269,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   local tab = Presets.MissionLogoPreset.Default or empty_table
   for i = 1, #tab do
     ItemList[#ItemList+1] = {
-      text = ChoGGi.CodeFuncs.Trans(tab[i].display_name),
+      text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
       value = tab[i].id,
     }
   end
@@ -315,7 +315,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     callback = CallBackFunc,
     items = ItemList,
     title = "Set New Logo",
-    hint = "Current: " .. ChoGGi.CodeFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name),
+    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name),
   })
 end
 
@@ -495,9 +495,9 @@ function ChoGGi.ChangeRules()
   for _,Value in iXpairs(Presets.GameRules.Default) do
     if Value.id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(Value.display_name),
+        text = ChoGGi.ComFuncs.Trans(Value.display_name),
         value = Value.id,
-        hint = ChoGGi.CodeFuncs.Trans(Value.description) .. "\n" .. ChoGGi.CodeFuncs.Trans(Value.flavor)
+        hint = ChoGGi.ComFuncs.Trans(Value.description) .. "\n" .. ChoGGi.ComFuncs.Trans(Value.flavor)
       }
     end
   end
@@ -546,7 +546,7 @@ function ChoGGi.ChangeRules()
   if type(rules) == "table" and next(rules) then
     hint = "Current:"
     for Key,_ in pairs(rules) do
-      hint = hint .. " " .. ChoGGi.CodeFuncs.Trans(Presets.GameRules.Default[Key].display_name)
+      hint = hint .. " " .. ChoGGi.ComFuncs.Trans(Presets.GameRules.Default[Key].display_name)
     end
   end
 

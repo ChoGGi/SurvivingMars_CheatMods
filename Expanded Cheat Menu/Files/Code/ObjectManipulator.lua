@@ -357,7 +357,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
 
     if type(o) == "table" then
       if IsT(o) then
-        return "T{\"" .. ChoGGi.CodeFuncs.Trans(o) .. "\"}"
+        return "T{\"" .. ChoGGi.ComFuncs.Trans(o) .. "\"}"
       else
         local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
         return text

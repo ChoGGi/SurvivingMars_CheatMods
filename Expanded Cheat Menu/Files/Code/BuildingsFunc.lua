@@ -152,7 +152,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   for Key,_ in pairs(data) do
     if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
       ItemList[#ItemList+1] = {
-        text = ChoGGi.CodeFuncs.Trans(data[Key].display_name),
+        text = ChoGGi.ComFuncs.Trans(data[Key].display_name),
         value = Key
       }
     end
@@ -279,7 +279,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     return
   end
   local id = sel.encyclopedia_id
-  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
+  local name = ChoGGi.ComFuncs.Trans(sel.display_name)
   local r = ChoGGi.Consts.ResourceScale
 
   --get type of capacity
@@ -457,7 +457,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     return
   end
   local id = sel.encyclopedia_id
-  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
+  local name = ChoGGi.ComFuncs.Trans(sel.display_name)
 
   --get type of producer
   local ProdType
@@ -585,7 +585,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     return
   end
   local id = sel.encyclopedia_id
-  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
+  local name = ChoGGi.ComFuncs.Trans(sel.display_name)
 
   local ItemList = {
     {text = " Disable",value = "disable"},

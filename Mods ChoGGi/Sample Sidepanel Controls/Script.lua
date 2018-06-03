@@ -19,9 +19,9 @@ function OnMsg.ClassesBuilt()
       "__template", "InfopanelSection",
 
       --you can set these here or in OnContextUpdate below
-      "Icon", " ",
-      "Title", " ",
-      "RolloverText", " ",
+      --"Icon", "",
+      --"Title", "",
+      --"RolloverText", "",
 
       "RolloverTitle", "Hello, this needs to have something here for the hint to showup",
       "RolloverHint",  "",
@@ -63,6 +63,10 @@ function OnMsg.ClassesBuilt()
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Workplace",
       "__template", "InfopanelSection",
+
+      --only show up for buildings that need maintenance
+      "__condition", function (parent, context) return context:DoesRequireMaintenance() end,
+
       "RolloverText", "Look ma it slides!",
       "RolloverHintGamepad", "",
       "RolloverTitle", " ",
@@ -92,7 +96,7 @@ function OnMsg.ClassesBuilt()
       "RolloverText", "Look ma it slides!",
       "RolloverHintGamepad", "",
       "RolloverTitle", " ",
-      "Title", " ", --updated below, can't be blank
+      "Title", " ", --updated below, can't be blank as it isn't updated auto
       "Icon", "UI/Icons/Sections/facility.tga",
     }, {
       PlaceObj("XTemplateTemplate", {

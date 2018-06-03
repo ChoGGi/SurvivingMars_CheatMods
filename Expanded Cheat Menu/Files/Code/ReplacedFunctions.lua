@@ -129,9 +129,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("InfopanelObj","CreateCheatActions")
   function InfopanelObj:CreateCheatActions(win)
     local ChoGGi = ChoGGi
-    local ret = {ChoGGi.OrigFuncs.InfopanelObj_CreateCheatActions(self,win)}
-    ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
-    return table.unpack(ret)
+    --something is making the actionId boolean, so we call my func first to set it to a blank string
+    local ret = ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+    return ChoGGi.OrigFuncs.InfopanelObj_CreateCheatActions(self,ret)
   end
 
 end --OnMsg
@@ -142,6 +142,41 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
 end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+
+  --function from github as the actual function has an inf loop (whoopsie)
+  if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity then
+    function RCRover:ExitAllDrones()
+      if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
+        DeleteThread(self.exit_drones_thread)
+        self.exit_drones_thread = CurrentThread()
+      end
+
+      while #self.attached_drones > 0 and self.siege_state_name == "Siege" do
+        local drone = self.attached_drones[#self.attached_drones]
+        if IsValid(drone) then
+          if drone.command_center ~= self then
+            --damage control, this should never happen
+            assert(false, "Rover has foreign drones attached")
+            drone:Detach()
+            assert(drone == table.remove(self.attached_drones))
+          else
+            while self.guided_drone or #self.embarking_drones > 0 do
+              Sleep(1000)
+            end
+            if IsValid(drone) then
+              self.guided_drone = drone
+              drone:SetCommand("ExitRover", self)
+              while not WaitWakeup(10000) do end
+            end
+          end
+        end
+      end
+
+      if self.exit_drones_thread and self.exit_drones_thread == CurrentThread() then
+        self.exit_drones_thread = false
+      end
+    end
+  end
 
   --remove annoying msg that happens everytime you click anything (nice)
   SaveOrigFunc("XWindow","SetId")
@@ -437,11 +472,11 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
           if not Text:find(SearchName) then
             return Text
           end
-          return Text:gsub(SearchName,ColourText(ChoGGi.CodeFuncs.Trans(params[Name])))
+          return Text:gsub(SearchName,ColourText(ChoGGi.ComFuncs.Trans(params[Name])))
         end
         --show popups in console log
         local presettext = DataInstances.PopupNotificationPreset[preset]
-        --print(ColourText("Title: ",true) .. ColourText(ChoGGi.CodeFuncs.Trans(presettext.title)))
+        --print(ColourText("Title: ",true) .. ColourText(ChoGGi.ComFuncs.Trans(presettext.title)))
         local context = _GetPopupNotificationContext(preset, params or {}, bPersistable)
         context.parent = parent
         if bPersistable then
@@ -449,7 +484,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         else
           context.async_signal = {}
         end
-        local text = ChoGGi.CodeFuncs.Trans(presettext.text,context,true)
+        local text = ChoGGi.ComFuncs.Trans(presettext.text,context,true)
 
 
         text = ReplaceParam("number1",text)
@@ -464,10 +499,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         text = ReplaceParam("sponsor_name",text)
         text = ReplaceParam("commander_name",text)
 
-        --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(" .. ChoGGi.CodeFuncs.Trans(params.colonist)) .. ")>")
+        --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(" .. ChoGGi.ComFuncs.Trans(params.colonist)) .. ")>")
 
         --print(ColourText("Text: ",true) .. text)
-        --print(ColourText("Voiced Text: ",true) .. ChoGGi.CodeFuncs.Trans(presettext.voiced_text))
+        --print(ColourText("Voiced Text: ",true) .. ChoGGi.ComFuncs.Trans(presettext.voiced_text))
       end) then
         print("<color 255 0 0>Encountered an error trying to convert popup to console msg; showing popup instead (please let me know which popup it is).</color>")
         return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
@@ -480,7 +515,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --]]
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
-  --ChoGGi.CodeFuncs.Trans(temp.text,s)
+  --ChoGGi.ComFuncs.Trans(temp.text,s)
 
   --some mission goals check colonist amounts
   local MG_target = GetMissionSponsor().goal_target + 1
@@ -804,54 +839,6 @@ end
     end
   end
 
-  do --add a bunch of rules to console input
-    local ConsoleRules = {
-      {
-        "^!(.*)",
-        "ChoGGi.CodeFuncs.ViewAndSelectObject((%s))"
-      },
-      {
-        "^~(.*)",
-        "OpenExamine((%s))"
-      },
-      {
-        "^@(.*)",
-        "print(debug.getinfo((%s)))"
-      },
-      {
-        "^*r%s*(.*)",
-        "CreateRealTimeThread(function() %s end) return"
-      },
-      {
-        "^*g%s*(.*)",
-        "CreateGameTimeThread(function() %s end) return"
-      },
-      {
-        "^(%a[%w.]*)$",
-        "ConsolePrint(print_format(__run(%s)))"
-      },
-      {
-        "(.*)",
-        "ConsolePrint(print_format(%s))"
-      },
-
-      {"(.*)", "%s"}
-    }
-    local ConsolePrint = ConsolePrint
-    local AddConsoleLog = AddConsoleLog
-    local ConsoleExec = ConsoleExec
-    SaveOrigFunc("Console","Exec")
-    function Console:Exec(text)
-      self:AddHistory(text)
-      AddConsoleLog("> ", true)
-      AddConsoleLog(text, false)
-      local err = ConsoleExec(text, ConsoleRules)
-      if err then
-        ConsolePrint(err)
-      end
-    end
-  end --do
-
   --make sure console is focused even when construction is opened
   SaveOrigFunc("Console","Show")
   function Console:Show(show)
@@ -1013,5 +1000,60 @@ end
       return ChoGGi.OrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
     end
   end
+
+  do --add a bunch of rules to console input
+    local ConsoleRules = {
+      --print info in log
+      {
+        "^$(.*)",
+        "print(ChoGGi.ComFuncs.Trans(%s))"
+      },
+      {
+        "^@(.*)",
+        "print(debug.getinfo(%s))"
+      },
+      --do something
+      {
+        "^!(.*)",
+        "ChoGGi.CodeFuncs.ViewAndSelectObject(%s)"
+      },
+      {
+        "^~(.*)",
+        "OpenExamine(%s)"
+      },
+      --built-in
+      {
+        "^*r%s*(.*)",
+        "CreateRealTimeThread(function() %s end) return"
+      },
+      {
+        "^*g%s*(.*)",
+        "CreateGameTimeThread(function() %s end) return"
+      },
+      {
+        "^(%a[%w.]*)$",
+        "ConsolePrint(print_format(__run(%s)))"
+      },
+      {
+        "(.*)",
+        "ConsolePrint(print_format(%s))"
+      },
+
+      {"(.*)", "%s"}
+    }
+    local ConsolePrint = ConsolePrint
+    local AddConsoleLog = AddConsoleLog
+    local ConsoleExec = ConsoleExec
+    SaveOrigFunc("Console","Exec")
+    function Console:Exec(text)
+      self:AddHistory(text)
+      AddConsoleLog("> ", true)
+      AddConsoleLog(text, false)
+      local err = ConsoleExec(text, ConsoleRules)
+      if err then
+        ConsolePrint(err)
+      end
+    end
+  end --do
 
 end --OnMsg

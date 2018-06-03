@@ -24,14 +24,6 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Set Anim State",
-    ChoGGi.MenuFuncs.SetAnimState,
-    nil,
-    "Make object dance on command.",
-    "UnlockCamera.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Reload Lua",
     ChoGGi.MenuFuncs.ReloadLua,
     nil,
@@ -39,7 +31,6 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
     "EV_OpenFirst.tga"
   )
 
-  --object cloner
   ChoGGi.ComFuncs.AddAction(
     "[102]Debug/Object Cloner",
     ChoGGi.MenuFuncs.ObjectCloner,
@@ -49,10 +40,18 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Toggle Showing Anim Debug",
+    "[102]Debug/Anim State Set",
+    ChoGGi.MenuFuncs.SetAnimState,
+    nil,
+    "Make object dance on command.",
+    "UnlockCamera.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "[102]Debug/Anim Debug Toggle",
     ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
     nil,
-    "Attaches text to each object showing animation info.",
+    "Attaches text to each object showing animation info (or just to selected object).",
     "CameraEditor.tga"
   )
 

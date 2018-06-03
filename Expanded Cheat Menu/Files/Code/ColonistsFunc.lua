@@ -1113,7 +1113,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   for i = 1, #ItemList do
     local hinttemp = DataInstances.Trait[ItemList[i].text]
     if hinttemp then
-      ItemList[i].hint = ": " .. ChoGGi.CodeFuncs.Trans(hinttemp.description)
+      ItemList[i].hint = ": " .. ChoGGi.ComFuncs.Trans(hinttemp.description)
     end
   end
 
@@ -1482,7 +1482,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
     return
   end
   local id = sel.encyclopedia_id
-  local name = ChoGGi.CodeFuncs.Trans(sel.display_name)
+  local name = ChoGGi.ComFuncs.Trans(sel.display_name)
   local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
   if not BuildingSettings[id] then
     BuildingSettings[id] = {restricttraits = {},blocktraits = {},}
