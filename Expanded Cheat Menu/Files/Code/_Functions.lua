@@ -790,14 +790,15 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
   --local AsyncRand = AsyncRand
   --AsyncRand(16777216) * -1
 
-  --no amount return single colour
+  --amount isn't a number so return a single colour
   if type(Amount) ~= "number" then
-    return Random(-16777216,-1)
+    return Random(-16777216,0) --24bit colour
   end
+
   local randcolors = {}
   --populate list with amount we want
   for _ = 1, Amount do
-    randcolors[#randcolors+1] = Random(-16777216,-1)
+    randcolors[#randcolors+1] = Random(-16777216,0)
   end
   --now remove all dupes and add more till we hit amount
   while true do
@@ -808,7 +809,7 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
     end
     --then loop missing amount
     for _ = 1, Amount - #randcolors do
-      randcolors[#randcolors+1] = Random(-16777216,-1)
+      randcolors[#randcolors+1] = Random(-16777216,0)
     end
   end
   return randcolors

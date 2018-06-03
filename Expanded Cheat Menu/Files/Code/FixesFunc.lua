@@ -8,6 +8,7 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
   ChoGGi.MenuFuncs.StutterWithHighFPS()
 
+  ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   ChoGGi.MenuFuncs.RemoveYellowGridMarks()
@@ -16,48 +17,64 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
-function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local UICity = UICity
-  local FindNearestObject = FindNearestObject
-  local GenerateColonistData = GenerateColonistData
-  local Msg = Msg
+local function SpawnColonist(old_c,building,pos)
+  local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or building)
+  if not dome then
+    return
+  end
+
+  local colonist
+  if old_c then
+    --colonist = GenerateColonistData(UICity, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+    colonist = GenerateColonistData(UICity, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+    --we set all the set gen doesn't (it's more for random gen after all
+    colonist.birthplace = old_c.birthplace
+    colonist.death_age = old_c.death_age
+    colonist.name = old_c.name
+    colonist.race = old_c.race
+    colonist.specialist = old_c.specialist
+    for trait_id, _ in pairs(old_c.traits) do
+      if trait_id and trait_id ~= "" then
+        colonist.traits[trait_id] = true
+        --colonist:AddTrait(trait_id,true)
+      end
+    end
+  else
+    --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
+    colonist = GenerateColonistData(UICity)
+  end
+
+  colonist.dome = dome
+  colonist.current_dome = dome
+  Colonist:new(colonist)
+  Msg("ColonistBorn", colonist)
+  colonist:SetPos(pos or dome:PickColonistSpawnPt())
+  --dome:UpdateUI()
+  --if spec is different then updates to new entity
+  colonist:ChooseEntity()
+  return colonist
+end
+
+function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   local DoneObject = DoneObject
 
-  local function SpawnColonist(old_c,rocket,pos)
-    local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or rocket)
-    if not dome then
-      return
-    end
-
-    local colonist
-    if old_c then
-      colonist = GenerateColonistData(UICity, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
-      --we set all the set gen doesn't (it's more for random gen after all
-      colonist.birthplace = old_c.birthplace
-      colonist.death_age = old_c.death_age
-      colonist.name = old_c.name
-      colonist.race = old_c.race
-      colonist.specialist = old_c.specialist
-      for trait_id, _ in pairs(old_c.traits) do
-        if trait_id and trait_id ~= "" then
-          colonist:AddTrait(trait_id,true)
-        end
+  local objs = GetObjects({class = "Colonist"}) or empty_table
+  for i = 1, #objs do
+    local c = objs[i]
+    if c:GetStateText() == "movePlanet" then
+      local rocket = FindNearestObject(GetObjects({class="SupplyRocket"}),c)
+      SpawnColonist(c,rocket,c:GetVisualPos())
+      if type(c.Done) == "function" then
+        c:Done()
       end
-      --if spec is different then updates to new entity
-      colonist:ChooseEntity()
-    else
-      --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
-      colonist = GenerateColonistData(UICity)
+      DoneObject(c)
     end
-
-    colonist.dome = dome
-    colonist.current_dome = dome
-    Colonist:new(colonist)
-    Msg("ColonistBorn", colonist)
-    colonist:SetPos(pos or dome:PickColonistSpawnPt())
-    dome:UpdateUI()
-    return colonist
   end
+end
+
+function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+  local UICity = UICity
+  local DoneObject = DoneObject
 
   local rockets = GetObjects({class="SupplyRocket"})
   local pos

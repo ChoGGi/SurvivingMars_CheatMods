@@ -13,10 +13,18 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/Colonists Trying To Board Rocket Freezes Game *",
+    ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame,
+    nil,
+    "Doesn't fix the underlying cause, but it works.",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Fixes/Rebuild Walkable Points In Domes",
     ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
     nil,
-    "Might help for dome areas that drones can't get to",
+    "Might help for dome areas that drones can't get to.",
     icon
   )
 
