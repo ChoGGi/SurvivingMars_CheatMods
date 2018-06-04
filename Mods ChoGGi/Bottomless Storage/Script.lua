@@ -20,7 +20,8 @@ function OnMsg.ClassesGenerate()
 
   --om nom nom nom nom
   function BottomlessStorage:DroneUnloadResource(drone, request, resource, amount)
-    ResourceStockpileBase.DroneUnloadResource(self, drone, request, resource, amount)
+    UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, amount)
+    --ResourceStockpileBase.DroneUnloadResource(self, drone, request, resource, amount)
     self:ClearAllResources()
     RebuildInfopanel(self)
   end
@@ -34,11 +35,10 @@ function OnMsg.ClassesPostprocess()
     "template_class", "BottomlessStorage",
     "instant_build", true,
     "dome_forbidden", true,
-    "display_name", "Bottomless Depot",
-    "display_name_pl", "Bottomless Depot",
-    "description", T{5305, --[[BuildingTemplate UniversalStorageDepot description]] "Stores <resource(max_storage_per_resource)> units of each transportable resource. Some resources will be transported to other depots within Drone range."},
+    "display_name", "Bottomless Storage",
+    "display_name_pl", "Bottomless Storage",
+    "description", "Anything added to this depot will disappear.",
     "build_category", "Storages",
-    --"display_icon", "UI/Icons/Buildings/universal_storage.tga",
     "display_icon", Mods.ChoGGi_BottomlessStorage.path .. "/universal_storage.tga",
     "entity", "StorageDepot",
     "on_off_button", false,

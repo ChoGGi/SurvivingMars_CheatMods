@@ -20,7 +20,7 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
 
     self.refreshing = false
     --make sure we're always above examiner dialogs
-    self:SetZOrder(20000)
+    self:SetZOrder(3000000)
     --defaults
     self.object = false
     self.values = false
@@ -38,6 +38,16 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
             while self.refreshing do
               self:UpdateText()
               Sleep(self.delay)
+              --check for missing table objects
+              if self.object.title:find("Grids") then
+                self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables,"elements")
+                --break if there's none left
+                if #self.tables == 0 then
+                  --fire once more to show the nothing here text
+                  self:UpdateText()
+                  break
+                end
+              end
             end
           end)
         end
@@ -72,52 +82,57 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
       local scrollpos = self.idText.scroll:GetPosition()
       --create prop list for list
       texttable = {[1]=""}
-      for i = 1, #self.tables do
-        monitort = self.tables[i]
-        texttable[#texttable+1] = "----- "
-        texttable[#texttable+1] = monitort.class
-        texttable[#texttable+1] = " "
-        texttable[#texttable+1] = i
-        texttable[#texttable+1] = ":\n"
-        if self.object.listtype == "all" then
-          print("all")
-          ex(self.tables[i])
-          ex(self.values)
-          for SecName,SecValue in pairs(self.tables[i]) do
-          --goes through all tables
+      if #self.tables > 0 then
+        for i = 1, #self.tables do
+          monitort = self.tables[i]
+          texttable[#texttable+1] = "----- "
+          texttable[#texttable+1] = i
+          texttable[#texttable+1] = ". "
+          texttable[#texttable+1] = monitort.class
+          texttable[#texttable+1] = ":\n"
+          if self.object.listtype == "all" then
+            print("all")
+            ex(self.tables[i])
+            ex(self.values)
+            for SecName,SecValue in pairs(self.tables[i]) do
+            --goes through all tables
 
-            --goes through each table
-            texttable[#texttable+1] = SecName
-            texttable[#texttable+1] = "\n"
-            for Key,Value in pairs(SecValue) do
+              --goes through each table
+              texttable[#texttable+1] = SecName
+              texttable[#texttable+1] = "\n"
+              for Key,Value in pairs(SecValue) do
 
-              if self.values[Key] then
-                for j = 1, #self.values do
-                  local v = self.values[i]
-                  --name = monitort[SecName.name]
+                if self.values[Key] then
+                  for j = 1, #self.values do
+                    local v = self.values[i]
+                    --name = monitort[SecName.name]
+                    texttable[#texttable+1] = "\t"
+                    texttable[#texttable+1] = v.name
+                    self:BuildValue(Value,0)
+                  end
+                elseif Key == "field" then
                   texttable[#texttable+1] = "\t"
-                  texttable[#texttable+1] = v.name
-                  self:BuildValue(Value,0)
+                  texttable[#texttable+1] = Value
+                  texttable[#texttable+1] = ": "
                 end
-              elseif Key == "field" then
-                texttable[#texttable+1] = "\t"
-                texttable[#texttable+1] = Value
-                texttable[#texttable+1] = ": "
+
               end
 
             end
-
-          end
-        else
-          for Key,Value in pairs(self.values) do
-            name = monitort[Value.name]
-            if name or type(name) == "boolean" then
-              texttable[#texttable+1] = Value.name
-              self:BuildValue(name,Value.kind)
+          else
+            for Key,Value in pairs(self.values) do
+              name = monitort[Value.name]
+              if name or type(name) == "boolean" then
+                texttable[#texttable+1] = Value.name
+                self:BuildValue(name,Value.kind)
+              end
             end
-          end
-        end --for
-      end --if
+          end --for
+        end --if
+      else
+        texttable[#texttable+1] = "Nothing left"
+      end --if #self.tables > 0
+
       texttable[#texttable+1] = "\n"
       --less .. is better
       text = table.concat(texttable)
@@ -209,6 +224,7 @@ function ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesBuilt()
           BackgroundColor = 0,
           FontStyle = "Editor14Bold",
           HandleMouse = false,
+          SingleLine = true,
           Subview = "default",
           PosOrg = point(50, 101),
           SizeOrg = point(390, 22),

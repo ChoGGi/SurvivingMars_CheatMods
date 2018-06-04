@@ -14,6 +14,8 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     {text = "Grids: Water",value = "Water"},
     {text = "Grids: Air/Electricity/Water",value = "Grids"},
     {text = "City",value = "City"},
+    {text = "Colonists",value = "Colonists",hint = "Laggy with lots of colonists."},
+    {text = "Rockets",value = "Rockets"},
     --{text = "Research",value = "Research"}
   }
   if ChoGGi.Temp.Testing then

@@ -16,7 +16,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
     DataInstances.UIDesignerData.ChoGGi_ListChoiceCustomDialog:InitDialogFromView(self, "Default")
 
     --make sure we're always above examiner dialogs
-    self:SetZOrder(20000)
+    self:SetZOrder(3000000)
     --defaults
     self.idEditValue.display_text = "Add Custom Value"
     self.choices = false
@@ -313,6 +313,7 @@ function ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
           BackgroundColor = 0,
           FontStyle = "Editor14Bold",
           HandleMouse = false,
+          SingleLine = true,
           Subview = "default",
           PosOrg = point(105, 101),
           SizeOrg = point(390, 22),

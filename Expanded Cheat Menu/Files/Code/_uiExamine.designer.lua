@@ -13,8 +13,21 @@ function ExamineDesigner:Init()
   self:SetMinSize(point(309, 53))
   self:SetMovable(true)
   self:SetSize(point(372, 459))
-  self:SetZOrder(10000)
+  -- 1 above console log
+  self:SetZOrder(2000001)
   local obj
+
+  obj = StaticText:new(self)
+  obj:SetId("idCaption")
+  obj:SetPos(point(325, 195))
+  obj:SetSize(point(300, 22))
+  obj:SetHSizing("Resize")
+  obj:SetVSizing("Resize")
+  obj:SetBackgroundColor(0)
+  obj:SetFontStyle("Editor14Bold")
+  obj:SetTextPrefix("Object Examiner: ")
+  obj.SingleLine = true
+  obj.HandleMouse = false
 
   obj = StaticText:new(self)
   obj:SetId("idText")

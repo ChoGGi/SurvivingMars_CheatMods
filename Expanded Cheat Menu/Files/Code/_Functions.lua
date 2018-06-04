@@ -1424,6 +1424,51 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
         researched = true
       }
     }
+  elseif value == "Colonists" then
+    info = {
+      title = "Colonists",
+      tables = UICity.labels.Colonist,
+      values = {
+        {name="handle",kind=0},
+        {name="command",kind=0},
+        {name="goto_target",kind=0},
+        {name="age",kind=0},
+        {name="age_trait",kind=0},
+        {name="death_age",kind=0},
+        {name="race",kind=0},
+        {name="gender",kind=0},
+        {name="birthplace",kind=0},
+        {name="specialist",kind=0},
+        {name="sols",kind=0},
+        --{name="workplace",kind=0},
+        {name="workplace_shift",kind=0},
+        --{name="residence",kind=0},
+        --{name="current_dome",kind=0},
+        {name="daily_interest",kind=0},
+        {name="daily_interest_fail",kind=0},
+        {name="dome_enter_fails",kind=0},
+        {name="traits",kind=2},
+      }
+    }
+  elseif value == "Rockets" then
+    info = {
+      title = "Rockets",
+      tables = UICity.labels.AllRockets,
+      values = {
+        {name="name",kind=0},
+        {name="handle",kind=0},
+        {name="command",kind=0},
+        {name="status",kind=0},
+        {name="priority",kind=0},
+        {name="working",kind=0},
+        {name="charging_progress",kind=0},
+        {name="charging_time_left",kind=0},
+        {name="landed",kind=0},
+        {name="drones",kind=1},
+        --{name="units",kind=1},
+        {name="unreachable_buildings",kind=0},
+      }
+    }
   elseif value == "City" then
     info = {
       title = "City",

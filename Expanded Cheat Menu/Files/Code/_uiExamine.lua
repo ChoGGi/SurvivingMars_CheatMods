@@ -4,7 +4,8 @@ DefineClass.Examine = {
   __parents = {
     "ExamineDesigner"
   },
-  ZOrder = 9
+  -- 1 above console log
+  ZOrder = 2000001
 }
 markers = rawget(_G, "markers") or {}
 transp_mode = rawget(_G, "transp_mode") or false
@@ -489,14 +490,28 @@ function Examine:SetObj(o)
   self.idText:SetText(self:totextex(o))
   self.idMenu:SetText(self:menu(o))
 
+  local name = ChoGGi.CodeFuncs.RetName(o)
+
   --update attaches button with attaches amount
   --local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
-  local hint = "Opens attachments in new examine window."
-  local name = ChoGGi.CodeFuncs.RetName(o)
+  local hint = {"Opens attachments in new examine window."}
+  hint[#hint+1] = "\nThis "
+  hint[#hint+1] = name
+  hint[#hint+1] = " has: "
+  hint[#hint+1] = amount
+
   --local name = type(o) == "table" and o.class
-  self.idAttaches:SetHint(hint .. "\nThis " .. name .. " has: " .. amount)
+  self.idAttaches:SetHint(table.concat(hint))
+
+  --add object name to title
+  local title = {name}
+  if type(o.handle) == "number" then
+    title[#title+1] = " "
+    title[#title+1] = o.handle
+  end
+  self.idCaption:SetText(table.concat(title))
 end
 
 function Examine:SetText(text)

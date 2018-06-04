@@ -428,6 +428,29 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   end
 end
 
+function ChoGGi.ComFuncs.RemoveMissingTableObjects(Table,TObject)
+  local IsValid = IsValid
+  local found = true
+  while found do
+    found = nil
+    for i = 1, #Table do
+      if TObject then
+        if #Table[i][TObject] == 0 then
+          table.remove(Table,i)
+          found = true
+          break
+        end
+      elseif not IsValid(Table[i]) then
+        --placed objects
+        table.remove(Table,i)
+        found = true
+        break
+      end
+    end
+  end
+  return Table
+end
+
 function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local UICity = UICity
   local tab = UICity.labels[Label] or empty_table

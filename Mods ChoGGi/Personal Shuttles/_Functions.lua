@@ -105,12 +105,14 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,already_fired)
           end
           if obj:IsKindOf("BaseMeteor") then
             --make it pretty
-            PlayFX("AirExplosion", "start", obj, nil, obj:GetPos())
+            --PlayFX("AirExplosion", "start", obj, nil, obj:GetPos())
+            PlayFX("FuelExplosion", "start", obj, nil, obj:GetPos())
             Msg("MeteorIntercepted", obj)
             obj:ExplodeInAir()
           else
             --make it pretty
-            PlayFX("AirExplosion", "start", obj, obj:GetAttaches()[1], obj:GetPos())
+            --PlayFX("AirExplosion", "start", obj, obj:GetAttaches()[1], obj:GetPos())
+            PlayFX("FuelExplosion", "start", obj, obj:GetAttaches()[1], obj:GetPos())
             --kill the devil object
             obj:delete()
           end

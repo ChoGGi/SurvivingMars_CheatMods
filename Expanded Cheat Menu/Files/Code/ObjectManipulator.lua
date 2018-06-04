@@ -16,7 +16,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
     DataInstances.UIDesignerData.ChoGGi_ObjectManipulator:InitDialogFromView(self, "Default")
 
     --make sure we're always above examiner dialogs
-    self:SetZOrder(20000)
+    self:SetZOrder(3000000)
     --set some values...
     self.idEditValue.display_text = "Edit Value"
     self.choices = {}
@@ -506,6 +506,7 @@ function ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
           BackgroundColor = 0,
           FontStyle = "Editor14Bold",
           HandleMouse = false,
+          SingleLine = true,
           Subview = "default",
           HSizing = "Resize",
           VSizing = "Resize",

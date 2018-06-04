@@ -19,7 +19,7 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
     local const = const
 
     --make sure we're always above examiner dialogs
-    self:SetZOrder(20000)
+    self:SetZOrder(3000000)
     --defaults
     self.code = false
     self.obj = false
@@ -125,6 +125,7 @@ function ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
           BackgroundColor = 0,
           FontStyle = "Editor14Bold",
           HandleMouse = false,
+          SingleLine = true,
           Subview = "default",
           PosOrg = point(50, 101),
           SizeOrg = point(390, 22),

@@ -113,11 +113,14 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
+  ForEach({class = "UnpersistedMissingClass", action = "delete"})
+--[[
   local ChoGGi = ChoGGi
   local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
   for i = 1, #objs do
     ChoGGi.CodeFuncs.DeleteObject(objs[i])
   end
+  --]]
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
@@ -217,12 +220,15 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+  ForEach({class = "GridTile", action = "delete"})
+--[[
   local Table = GetObjects({class="GridTile"})
   if Table[1] and Table[1].class and Table[1].class == "GridTile" then
     for i = 1, #Table do
       Table[i]:delete()
     end
   end
+  --]]
   ChoGGi.ComFuncs.MsgPopup("Grid marks removed","Grid")
 end
 
