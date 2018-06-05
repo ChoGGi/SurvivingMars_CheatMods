@@ -593,9 +593,10 @@ end
 
 function Examine:SetObj(o)
   if type(o) ~= "table" then
+    print("Not a table object")
     self:delete()
+    return
   end
-
   self.onclick_handles = {}
   self.obj = o
   self.idText:SetText(self:totextex(o))

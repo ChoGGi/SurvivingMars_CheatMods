@@ -143,6 +143,15 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --if user clicks somewhere that isn't a SingleLineEdit then we set focus to it (the game doesn't like removing focus from our dialogs)
+  SaveOrigFunc("XDesktop","MouseEvent")
+  function XDesktop:MouseEvent(event, pt, button, time)
+    if button == "L" and event == "OnMouseButtonDown" and not self.focus_log[#self.focus_log-1]:IsKindOf("SingleLineEdit") then
+      self:SetFocus()
+    end
+    return ChoGGi.OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
+  end
+
   --make sure consolelog uses our margin whenever it's visible
   SaveOrigFunc("ConsoleLog","SetVisible")
   function ConsoleLog:SetVisible(visible)
