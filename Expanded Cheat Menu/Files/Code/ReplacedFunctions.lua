@@ -314,11 +314,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   local menuButtons_selected_color = RGB(153, 204, 255)
   local menuButtons_rollover_color = RGB(0, 0, 0)
 
-  --go through and make all the buttons open their menus where the menu is, not at the top left
+  --make the buttons open their menus where the menu is, not at the top left
   SaveOrigFunc("UAMenu","CreateBtn")
   function UAMenu:CreateBtn(text, path)
     local entry = ChoGGi.OrigFuncs.UAMenu_CreateBtn(self, text, path)
     entry:SetFontStyle("Editor14Bold")
+    --higher than the "Move" element
+    entry:SetZOrder(9)
+
     function entry.OnLButtonDown()
       local p = entry:GetPos()
       local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
@@ -356,11 +359,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   --default menu width/draggable menu
   SaveOrigFunc("UAMenu","SetBtns")
   function UAMenu:SetBtns()
+    local ChoGGi = ChoGGi
     local ret = {ChoGGi.OrigFuncs.UAMenu_SetBtns(self)}
     --shrink the width
     self:SetSize(point(UAMenu_cheats_width,self:GetSize():y()))
     --make the menu draggable
-    self:SetMovable(true)
+    if ChoGGi.UserSettings.DraggableCheatsMenu then
+      self:SetMovable(true)
+    end
     return table.unpack(ret)
   end --func
 
@@ -374,38 +380,28 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
   end
 
-  --keep buttons/pos of menu when alt-tabbing
-  SaveOrigFunc("UAMenu","OnDesktopSize")
-  function UAMenu:OnDesktopSize()
-    local pos = dlgUAMenu:GetPos()
-    local ret = {ChoGGi.OrigFuncs.UAMenu_OnDesktopSize(self)}
-    --if opened then toggle close and open to restore the menu items (not sure why alt-tabbing removes them when i make it movable...)
-    if dlgUAMenu then
-      UAMenu.ToggleOpen()
-      UAMenu.ToggleOpen()
+  if ChoGGi.UserSettings.DraggableCheatsMenu then
+    --keep buttons/pos of menu when alt-tabbing
+    SaveOrigFunc("UAMenu","OnDesktopSize")
+    function UAMenu:OnDesktopSize()
+      local pos = dlgUAMenu:GetPos()
+      local ret = {ChoGGi.OrigFuncs.UAMenu_OnDesktopSize(self)}
+      --if opened then toggle close and open to restore the menu items (not sure why alt-tabbing removes them when i make it movable...)
+      if dlgUAMenu then
+        UAMenu.ToggleOpen()
+        UAMenu.ToggleOpen()
+      end
+      --and restore pos
+      dlgUAMenu:SetPos(pos)
+
+      --if console is visible then focus on it
+      if dlgConsole.visible then
+        dlgConsole.idEdit:SetFocus()
+      end
+
+      return table.unpack(ret)
     end
-    --and restore pos
-    dlgUAMenu:SetPos(pos)
-
-    --if console is visible then focus on it
-    if dlgConsole.visible then
-      dlgConsole.idEdit:SetFocus()
-    end
-
-    return table.unpack(ret)
-  end --func
-
---[[
-  SaveOrigFunc("UAMenu","CreateBtn")
-  function UAMenu:CreateBtn(text, path)
-    if UICity then
-      print(text)
-      print(path)
-    end
-    return ChoGGi.OrigFuncs.UAMenu_CreateBtn(self,text, path)
-
   end
---]]
 
   --removes earthsick effect
   SaveOrigFunc("Colonist","ChangeComfort")

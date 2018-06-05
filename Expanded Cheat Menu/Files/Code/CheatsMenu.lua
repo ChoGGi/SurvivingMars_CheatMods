@@ -17,6 +17,17 @@ function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
+    "Cheats/[999]Menu/Draggable Cheats Menu",
+    ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
+    nil,
+    function()
+      local des = ChoGGi.UserSettings.DraggableCheatsMenu and "(Enabled)" or "(Disabled)"
+      return des .. " Cheats menu can be moved (restart to toggle)."
+    end,
+    "select_objects.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     "Cheats/[999]Menu/Keep Cheats Menu Position",
     ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
     nil,

@@ -2,6 +2,15 @@
 
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
+function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
+  ChoGGi.UserSettings.DraggableCheatsMenu = not ChoGGi.UserSettings.DraggableCheatsMenu
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup("Draggable cheats menu: " .. tostring(ChoGGi.UserSettings.DraggableCheatsMenu),
+    "Menu"
+  )
+end
+
 function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
   ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
 
