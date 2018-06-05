@@ -1,13 +1,16 @@
+local oldTableConcat = oldTableConcat
+
+--ex(ChoGGi.ListChoiceCustomDialog_Dlg)
+--ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
+
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_ListChoiceCustomDialog_Designer = {
-  __parents = {
-    "FrameWindow"
-  }
+DefineClass.ChoGGi_ListChoiceCustomDialog_Defaults = {
+  __parents = {"FrameWindow"}
 }
 
-function ChoGGi_ListChoiceCustomDialog_Designer:Init()
+function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   local ChoGGi = ChoGGi
 
   self:SetPos(point(100, 100))
@@ -16,150 +19,136 @@ function ChoGGi_ListChoiceCustomDialog_Designer:Init()
   self:SetTranslate(false)
   self:SetMovable(true)
   self:SetZOrder(zorder)
-
-  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(105, 101),size = point(390, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self,point(479, 103))
-
-  local obj
-
-  obj = List:new(self)
-  obj:SetId("idList")
-  obj:SetShowPartialItems(true)
-  obj:SetSelectionColor(RGB(0, 0, 0))
-  obj:SetSelectionFontStyle("Editor14")
-  obj:SetRolloverFontStyle("Editor14")
-  obj:SetFontStyle("Editor14")
-  obj:SetPos(point(105, 123))
-  obj:SetSize(point(390, 335))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("Resize")
-  obj:SetSpacing(point(8, 2))
-  obj:SetScrollBar(true)
-  obj:SetScrollAutohide(true)
-
-  obj = SingleLineEdit:new(self)
-  obj:SetId("idEditValue")
-  obj:SetAutoSelectAll(true)
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetPos(point(110, 465))
-  obj:SetSize(point(375, 24))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetHint("You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.")
-  obj:SetTextVAlign("center")
-
-  obj = CheckButton:new(self)
-  obj:SetId("idCheckBox1")
-  obj:SetPos(point(110, 440))
-  obj:SetSize(point(200, 17))
-  obj:SetText(T({588, "Empty"}))
-  obj:SetButtonSize(point(16, 16))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetHSizing("AnchorToMidline")
-  obj:SetVSizing("AnchorToBottom")
-
-  obj = CheckButton:new(self)
-  obj:SetId("idCheckBox2")
-  obj:SetText(T({588, "Empty"}))
-  obj:SetPos(point(300, 440))
-  obj:SetSize(point(200, 17))
-  obj:SetButtonSize(point(16, 16))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetHSizing("AnchorToMidline")
-  obj:SetVSizing("AnchorToBottom")
-
-  obj = Button:new(self)
-  obj:SetId("idOK")
-  obj:SetPos(point(110, 500))
-  obj:SetSize(point(129, 34))
-  obj:SetHSizing("AnchorToMidline")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText(T({1000429, "OK"}))
-  obj:SetHint("Apply and close dialog (Arrow keys and Enter/Esc can also be used).")
-
-  obj = Button:new(self)
-  obj:SetId("idClose")
-  obj:SetPos(point(353, 500))
-  obj:SetSize(point(132, 34))
-  obj:SetHSizing("AnchorToMidline")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetHint("Cancel without changing anything.")
-  obj:SetText(T({1000430, "Cancel"}))
-
-  obj = ColorHSVControl:new(self)
-  obj:SetId("idColorHSV")
-  obj:SetPos(point(500, 115))
-  obj:SetSize(point(300, 300))
-  obj:SetVisible(false)
-  obj:SetHint("Double right click to set without closing dialog.")
-
-  local hint_connectedgrid = "Check this for \"All of type\" to only apply to connected grid."
-
-  obj = CheckButton:new(self)
-  obj:SetId("idColorCheckAir")
-  obj:SetPos(point(525, 400))
-  obj:SetSize(point(50, 17))
-  obj:SetVisible(false)
-  obj:SetButtonSize(point(16, 16))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetText(T({891, "Air"}))
-  obj:SetHint(hint_connectedgrid)
-
-  obj = CheckButton:new(self)
-  obj:SetId("idColorCheckWater")
-  obj:SetPos(point(575, 400))
-  obj:SetSize(point(60, 17))
-  obj:SetVisible(false)
-  obj:SetButtonSize(point(16, 16))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetText(T({681, "Water"}))
-  obj:SetHint(hint_connectedgrid)
-
-  obj = CheckButton:new(self)
-  obj:SetId("idColorCheckElec")
-  obj:SetPos(point(645, 400))
-  obj:SetSize(point(85, 17))
-  obj:SetVisible(false)
-  obj:SetButtonSize(point(16, 16))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetText("Electricity")
-  obj:SetHint(hint_connectedgrid)
-
-  --so elements move when dialog re-sizes
-  self:InitChildrenSizing()
-
-  self:SetPos(point(100, 100))
-  self:SetSize(point(400, 450))
-end
-
-DefineClass.ChoGGi_ListChoiceCustomDialog = {
-  __parents = {
-    "ChoGGi_ListChoiceCustomDialog_Designer"
-  },
-  ZOrder = zorder
-}
-
---ex(ChoGGi.ListChoiceCustomDialog_Dlg)
---ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
-function ChoGGi_ListChoiceCustomDialog:Init()
-
-  --defaults
-  self.idEditValue.display_text = "Add Custom Value"
   self.choices = false
   self.sel = false
   self.obj = false
   self.CustomType = 0
   self.colorpicker = nil
   self.Func = false
-  --have to do it for each item?
-  --self.idList:SetHSizing("Resize")
 
-  --add some padding before the text
-  --self.idEditValue.DisplacementPos = 0
-  --self.idEditValue.DisplacementWidth = 10
+  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(105, 101),size = point(390, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self)
 
+
+  self.idList = List:new(self)
+  self.idList:SetShowPartialItems(true)
+  self.idList:SetSelectionColor(RGB(0, 0, 0))
+  self.idList:SetSelectionFontStyle("Editor14")
+  self.idList:SetRolloverFontStyle("Editor14")
+  self.idList:SetFontStyle("Editor14")
+  self.idList:SetPos(point(105, 123))
+  self.idList:SetSize(point(390, 335))
+  self.idList:SetHSizing("Resize")
+  self.idList:SetVSizing("Resize")
+  self.idList:SetSpacing(point(8, 2))
+  self.idList:SetScrollBar(true)
+  self.idList:SetScrollAutohide(true)
+  --hook into SetContent so we can add OnSetState to each list item to show hints
+  self.idList.orig_SetContent = self.idList.SetContent
+  function self.idList:SetContent(items)
+    self.orig_SetContent(self,items)
+    local listitems = self.item_windows
+    for i = 1, #listitems do
+      local listitem = listitems[i]
+      listitem.orig_OnSetState = listitem.OnSetState
+      function listitem:OnSetState(list, item, rollovered, selected)
+        self.orig_OnSetState(self,list, item, rollovered, selected)
+        if rollovered or selected then
+          local hint = {item.text}
+          if item.value then
+            if type(item.value) == "userdata" then
+              hint[#hint+1] = ": "
+              hint[#hint+1] = ChoGGi.ComFuncs.Trans(item.value)
+            elseif item.value then
+              hint[#hint+1] = ": "
+              hint[#hint+1] = tostring(item.value)
+            end
+          end
+          if type(item.hint) == "userdata" then
+            hint[#hint+1] = "\n\n"
+            hint[#hint+1] = ChoGGi.ComFuncs.Trans(item.hint)
+          elseif item.hint then
+            hint[#hint+1] = "\n\n"
+            hint[#hint+1] = item.hint
+          end
+          --self.parent.parent:SetHint(hint)
+          self.parent:SetHint(oldTableConcat(hint))
+        end
+      end
+    end
+  end
+  --do stuff on selection
+  local orig_OnLButtonDown = self.idList.OnLButtonDown
+  function self.idList:OnLButtonDown(...)
+    local ret = {orig_OnLButtonDown(self,...)}
+    local sel = self:GetSelection()
+    self = self.parent
+    if type(sel) == "table" and next(sel) then
+    --if #sel ~= 0 then
+      --update selection (select last selected if multisel)
+      self.sel = sel[#sel]
+      --update the custom value box
+      self.idEditValue:SetText(tostring(self.sel.value))
+      if self.CustomType > 0 then
+        --2 = showing the colour picker
+        if self.CustomType == 2 then
+          self:UpdateColourPicker()
+        --don't show picker unless it's a colour setting
+        elseif self.CustomType == 5 then
+          if self.CustomType == 5 and self.sel.editor == "color" then
+            self:UpdateColourPicker()
+            self:SetWidth(750)
+            self.idColorHSV:SetVisible(true)
+            self.idColorHSV:SetPos(point(500, 125))
+          else
+            self.idColorHSV:SetVisible(false)
+            --self:SetWidth(400)
+          end
+        end
+      end
+    end
+
+    --for whatever is expecting a return value
+    return table.unpack(ret)
+  end
+  --what happens when you dbl click the list
+  function self.idList.OnLButtonDoubleClick()
+    if not self.sel then
+      return
+    end
+    --open colour changer
+    if self.CustomType == 1 or self.CustomType == 2 then
+      ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
+    elseif self.CustomType == 7 then
+      --open it in monitor list
+      ChoGGi.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
+    elseif self.CustomType ~= 5 then
+      --dblclick to close and ret item
+      self.idOK.OnButtonPressed()
+    end
+  end
+  --what happens when you dbl r-click the list
+  function self.idList.OnRButtonDoubleClick()
+    --applies the lightmodel without closing dialog,
+    if self.CustomType == 5 then
+      self:BuildAndApplyLightmodel()
+    elseif self.CustomType == 6 and self.Func then
+      self.Func(self.sel.func)
+    else
+      self.idEditValue:SetText(self.sel.text)
+    end
+  end
+
+  self.idEditValue = SingleLineEdit:new(self)
+  self.idEditValue:SetAutoSelectAll(true)
+  self.idEditValue:SetFontStyle("Editor14Bold")
+  self.idEditValue:SetPos(point(110, 465))
+  self.idEditValue:SetSize(point(375, 24))
+  self.idEditValue:SetHSizing("Resize")
+  self.idEditValue:SetVSizing("AnchorToBottom")
+  self.idEditValue:SetHint("You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.")
+  self.idEditValue:SetTextVAlign("center")
+  self.idEditValue.display_text = "Add Custom Value"
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
@@ -175,21 +164,24 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     end
   end
 
-  --return values
-  function self.idOK.OnButtonPressed()
-    --item list
-    self:GetAllItems()
-    --send selection back
-    self:delete(self.choices)
-  end
 
-  --close without doing anything
-  local function Close()
-    self:delete()
-  end
-  self.idClose.OnButtonPressed = Close
-  self.idCloseX.OnButtonPressed = Close
+  self.idCheckBox1 = CheckButton:new(self)
+  self.idCheckBox1:SetPos(point(110, 440))
+  self.idCheckBox1:SetSize(point(200, 17))
+  self.idCheckBox1:SetText(T({588, "Empty"}))
+  self.idCheckBox1:SetButtonSize(point(16, 16))
+  self.idCheckBox1:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idCheckBox1:SetHSizing("AnchorToMidline")
+  self.idCheckBox1:SetVSizing("AnchorToBottom")
 
+  self.idCheckBox2 = CheckButton:new(self)
+  self.idCheckBox2:SetText(T({588, "Empty"}))
+  self.idCheckBox2:SetPos(point(300, 440))
+  self.idCheckBox2:SetSize(point(200, 17))
+  self.idCheckBox2:SetButtonSize(point(16, 16))
+  self.idCheckBox2:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idCheckBox2:SetHSizing("AnchorToMidline")
+  self.idCheckBox2:SetVSizing("AnchorToBottom")
   --make checkbox work like a button
   local children = self.idCheckBox2.children
   for i = 1, #children do
@@ -204,69 +196,42 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     end
   end
 
-  --do stuff on selection
-  local origOnLButtonDown = self.idList.OnLButtonDown
-  self.idList.OnLButtonDown = function(selfList,...)
-    local ret = origOnLButtonDown(selfList,...)
-    local sel = self.idList:GetSelection()
-    if type(sel) == "table" and next(sel) then
-    --if #sel ~= 0 then
-      --update selection (select last selected if multisel)
-      self.sel = sel[#sel]
-      --update the custom value box
-      self.idEditValue:SetText(tostring(self.sel.value))
-      if self.CustomType > 0 then
-        --2 = showing the colour picker
-        if self.CustomType == 2 then
-          self:UpdateColourPicker()
-        --don't show picker unless it's a colour setting
-        elseif self.CustomType == 5 then
-          if self.CustomType == 5 and self.sel.editor == "color" then
-            self:UpdateColourPicker()
-            self.idColorHSV:SetVisible(true)
-            self:SetWidth(800)
-            self.idColorHSV:SetPos(point(500, 115))
-          else
-            self.idColorHSV:SetVisible(false)
-            --self:SetWidth(400)
-          end
-        end
-      end
-    end
-
-    --for whatever is expecting a return value
-    return ret
+  self.idOK = Button:new(self)
+  self.idOK:SetPos(point(110, 500))
+  self.idOK:SetSize(point(129, 34))
+  self.idOK:SetHSizing("AnchorToMidline")
+  self.idOK:SetVSizing("AnchorToBottom")
+  self.idOK:SetFontStyle("Editor14Bold")
+  self.idOK:SetText(T({1000429, "OK"}))
+  self.idOK:SetHint("Apply and close dialog (Arrow keys and Enter/Esc can also be used).")
+  --return values
+  function self.idOK.OnButtonPressed()
+    --item list
+    self:GetAllItems()
+    --send selection back
+    self:delete(self.choices)
   end
 
-  --what happens when you dbl click the list
-  self.idList.OnLButtonDoubleClick = function()
-    --open colour changer
-    if self.CustomType == 1 or self.CustomType == 2 then
-      ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
-    elseif self.CustomType == 7 then
-      --open it in monitor list
-      ChoGGi.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
-    elseif self.CustomType ~= 5 then
-      --dblclick to close and ret item
-      self.idOK.OnButtonPressed()
-    end
-  end
+  self.idClose = Button:new(self)
+  self.idClose:SetPos(point(353, 500))
+  self.idClose:SetSize(point(132, 34))
+  self.idClose:SetHSizing("AnchorToMidline")
+  self.idClose:SetVSizing("AnchorToBottom")
+  self.idClose:SetFontStyle("Editor14Bold")
+  self.idClose:SetHint("Cancel without changing anything.")
+  self.idClose:SetText(T({1000430, "Cancel"}))
+  self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
-  self.idList.OnRButtonDoubleClick = function()
-    --applies the lightmodel without closing dialog,
-    if self.CustomType == 5 then
-      self:BuildAndApplyLightmodel()
-    elseif self.CustomType == 6 and self.Func then
-      self.Func(self.sel.func)
-    else
-      self.idEditValue:SetText(self.sel.text)
-    end
-  end
-
+  self.idColorHSV = ColorHSVControl:new(self)
+  self.idColorHSV:SetPos(point(500, 125)) --for some reason this is ignored till visible, unlike checkmarks
+  self.idColorHSV:SetSize(point(300, 300))
+  self.idColorHSV:SetHSizing("AnchorToRight")
+  self.idColorHSV:SetVisible(false)
+  self.idColorHSV:SetHint("Double right-click to set without closing dialog.")
   --stop idColorHSV from closing on dblclick
-  self.idColorHSV.OnLButtonDoubleClick = function()
+  function self.idColorHSV.OnLButtonDoubleClick()
   end
-  self.idColorHSV.OnRButtonDoubleClick = function()
+  function self.idColorHSV.OnRButtonDoubleClick()
     if self.CustomType == 2 then
       if not self.obj then
         --grab the object from the last list item
@@ -286,7 +251,6 @@ function ChoGGi_ListChoiceCustomDialog:Init()
       self:BuildAndApplyLightmodel()
     end
   end
-
   --update custom value when dbl right
   function self.OnColorChanged(color)
     --update item
@@ -295,37 +259,45 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     self.idEditValue:SetText(tostring(color))
   end
 
-  --hook into SetContent so we can add OnSetState to each list item to show hints
-  self.idList.Orig_SetContent = self.idList.SetContent
-  function self.idList:SetContent(items)
-    self.Orig_SetContent(self,items)
-    local listitems = self.item_windows
-    for i = 1, #listitems do
-      local listitem = listitems[i]
-      listitem.Orig_OnSetState = listitem.OnSetState
-      function listitem:OnSetState(list, item, rollovered, selected)
-        self.Orig_OnSetState(self,list, item, rollovered, selected)
-        if rollovered or selected then
-          local hint = item.text
-          if item.value then
-            if type(item.value) == "userdata" then
-              hint = hint .. ": " .. ChoGGi.ComFuncs.Trans(item.value)
-            elseif item.value then
-              hint = hint .. ": " .. tostring(item.value)
-            end
-          end
-          if type(item.hint) == "userdata" then
-            hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(item.hint)
-          elseif item.hint then
-            hint = hint .. "\n\n" .. item.hint
-          end
-          --self.parent.parent:SetHint(hint)
-          self.parent:SetHint(hint)
-        end
-      end
-    end
-  end
-end --init
+  local hint_connectedgrid = "Check this for \"All of type\" to only apply to connected grid."
+
+  self.idColorCheckAir = CheckButton:new(self)
+  self.idColorCheckAir:SetPos(point(525, 400))
+  self.idColorCheckAir:SetSize(point(50, 17))
+  self.idColorCheckAir:SetVisible(false)
+  self.idColorCheckAir:SetButtonSize(point(16, 16))
+  self.idColorCheckAir:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idColorCheckAir:SetText(T({891, "Air"}))
+  self.idColorCheckAir:SetHint(hint_connectedgrid)
+
+  self.idColorCheckWater = CheckButton:new(self)
+  self.idColorCheckWater:SetPos(point(575, 400))
+  self.idColorCheckWater:SetSize(point(60, 17))
+  self.idColorCheckWater:SetVisible(false)
+  self.idColorCheckWater:SetButtonSize(point(16, 16))
+  self.idColorCheckWater:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idColorCheckWater:SetText(T({681, "Water"}))
+  self.idColorCheckWater:SetHint(hint_connectedgrid)
+
+  self.idColorCheckElec = CheckButton:new(self)
+  self.idColorCheckElec:SetPos(point(645, 400))
+  self.idColorCheckElec:SetSize(point(85, 17))
+  self.idColorCheckElec:SetVisible(false)
+  self.idColorCheckElec:SetButtonSize(point(16, 16))
+  self.idColorCheckElec:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idColorCheckElec:SetText("Electricity")
+  self.idColorCheckElec:SetHint(hint_connectedgrid)
+
+  --so elements move when dialog re-sizes
+  self:InitChildrenSizing()
+end
+
+DefineClass.ChoGGi_ListChoiceCustomDialog = {
+  __parents = {
+    "ChoGGi_ListChoiceCustomDialog_Defaults"
+  },
+  ZOrder = zorder
+}
 
 function ChoGGi_ListChoiceCustomDialog:BuildAndApplyLightmodel()
   --update list item settings table
@@ -389,10 +361,7 @@ end
 --function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
 function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, virtual_key)
   if virtual_key == const.vkEsc then
-    if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-      self.idClose:Press()
-    end
-    self:SetFocus()
+    self.idCloseX:Press()
     return "break"
   elseif virtual_key == const.vkEnter then
     self.idOK:Press()

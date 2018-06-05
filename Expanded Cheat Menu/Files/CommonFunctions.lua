@@ -1,3 +1,5 @@
+local oldTableConcat = oldTableConcat
+
 --See LICENSE for terms
 
 --[[
@@ -96,7 +98,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   end
   Ext = Ext or "txt"
   File = File or "DumpedText"
-  local Filename = "AppData/logs/" .. File .. "." .. Ext
+  local Filename = oldTableConcat({"AppData/logs/",File,".",Ext})
 
   if pcall(function()
     ThreadLockKey(Filename)
@@ -104,7 +106,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.ComFuncs.MsgPopup("Dumped: " .. tostring(Obj),
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Dumped: ",tostring(Obj)}),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
@@ -120,7 +122,7 @@ function ChoGGi.ComFuncs.DumpLua(Value)
   elseif type(Value) == "userdata" then
     which = "ValueToLuaCode"
   end
-  ChoGGi.ComFuncs.Dump("\r\n" .. _G[which](Value),nil,"DumpedLua","lua")
+  ChoGGi.ComFuncs.Dump(oldTableConcat({"\r\n",_G[which](Value)}),nil,"DumpedLua","lua")
 end
 
 --[[
@@ -140,7 +142,7 @@ function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.ComFuncs.MsgPopup("Dumped: " .. tostring(Obj),"AppData/logs/DumpedText.txt")
+  ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Dumped: ",tostring(Obj)}),"AppData/logs/DumpedText.txt")
 end
 
 function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
@@ -152,8 +154,7 @@ function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   end
 
   if Obj.id then
-    ChoGGi.TextFile = ChoGGi.TextFile .. "\n-----------------Obj.id: " .. Obj.id .. " :"
-    --ChoGGi.TextFile:write()
+    ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n-----------------Obj.id: ",Obj.id," :"})
   end
   if (type(Obj) == "table") then
     for k,v in pairs(Obj) do
@@ -161,17 +162,12 @@ function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
         ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
-          ChoGGi.TextFile = ChoGGi.TextFile .. "\n" .. tostring(k) .. " = "
-          --ChoGGi.TextFile:write("\n" .. tostring(k) .. " = ")
+          ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n",tostring(k)," = "})
         end
---make it add the table index #
---Value: table: 0000000005FD3470
         if v ~= nil then
-          ChoGGi.TextFile = ChoGGi.TextFile .. tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))
-          --ChoGGi.TextFile:write(tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs)))
+          ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))})
         end
-        ChoGGi.TextFile = ChoGGi.TextFile .. "\n"
-        --ChoGGi.TextFile:write("\n")
+        ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n"})
       end
     end
   end
@@ -192,12 +188,11 @@ function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local Text = ""
   for k,v in pairs(Obj) do
     if k ~= nil then
-      Text = Text .. "\n" .. tostring(k) .. " = "
+      Text = oldTableConcat({Text,"\n",tostring(k)," = "})
     end
     if v ~= nil then
-      Text = Text .. tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))
+      Text = oldTableConcat({Text,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))})
     end
-    --Text = Text .. "\n"
   end
   ChoGGi.ComFuncs.Dump(Text,Mode)
 end
@@ -208,9 +203,9 @@ function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
       ChoGGi.ComFuncs.Trans(Obj)
     end
   elseif Funcs and type(Obj) == "function" then
-    return "Func: \n\n" .. string.dump(Obj) .. "\n\n"
+    return oldTableConcat({"Func: \n\n",string.dump(Obj),"\n\n"})
   elseif type(Obj) == "table" then
-    return tostring(Obj) .. " len: " .. #Obj
+    return oldTableConcat({tostring(Obj)," len: ",#Obj})
   else
     return tostring(Obj)
   end
@@ -219,9 +214,9 @@ end
 function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
   Text = Text or ""
   --pass ... onto pcall function
-  local Vararg = ...
+  local vararg = ...
   pcall(function()
-    ChoGGi.ComFuncs.Dump(Text .. Vararg .. "\r\n","a",Filename,"log",true)
+    ChoGGi.ComFuncs.Dump(oldTableConcat({Text,vararg,"\r\n"}),Filename,"log",true)
   end)
   if type(Function) == "function" then
     Function(...)
@@ -336,10 +331,10 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
-    AsyncFileDelete(logs .. "ConsoleLog.log")
-    AsyncFileDelete(logs .. "DebugLog.log")
-    AsyncFileRename(logs .. "ConsoleLog.log",logs .. "ConsoleLog.previous.log")
-    AsyncFileRename(logs .. "DebugLog.log",logs .. "DebugLog.previous.log")
+    AsyncFileDelete(oldTableConcat({logs,"ConsoleLog.log"}))
+    AsyncFileDelete(oldTableConcat({logs,"DebugLog.log"}))
+    AsyncFileRename(oldTableConcat({logs,"ConsoleLog.log"}),oldTableConcat({logs,"ConsoleLog.previous.log"}))
+    AsyncFileRename(oldTableConcat({logs,"DebugLog.log"}),oldTableConcat({logs,"DebugLog.previous.log"}))
 
     --redirect functions
     local function ReplaceFunc(Name,Type)
@@ -371,9 +366,9 @@ function ChoGGi.ComFuncs.PrintIds(Table)
   local text = ""
 
   for i = 1, #Table do
-    text = text .. "----------------- " .. Table[i].id .. ": " .. i .. "\n"
+    text = oldTableConcat({text,"----------------- ",Table[i].id,": ",i,"\n"})
     for j = 1, #Table[i] do
-      text = text .. Table[i][j].id .. ": " .. j .. "\n"
+      text = oldTableConcat({text,Table[i][j].id,": ",j,"\n"})
     end
   end
 
@@ -390,7 +385,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
     --I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
     --pass on args to orig func
-    return ChoGGi.OrigFuncs[ClassName .. "_" .. FuncName](...)
+    return ChoGGi.OrigFuncs[oldTableConcat({ClassName,"_",FuncName})](...)
   end
 end
 
@@ -398,7 +393,7 @@ end
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then
-    local newname = ClassOrFunc .. "_" .. Func
+    local newname = oldTableConcat({ClassOrFunc,"_",Func})
     if not ChoGGi.OrigFuncs[newname] then
       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
     end
@@ -527,14 +522,14 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
           if #keys <= 0 then
             v.description = ""
           else
-            v.description = v.description .. " (" .. keys[1]
+            v.description = oldTableConcat({v.description," (",keys[1]})
             for i = 2, #keys do
-              v.description = v.description .. " or " .. keys[i]
+              v.description = oldTableConcat({v.description," or ",keys[i]})
             end
-            v.description = v.description .. ")"
+            v.description = oldTableConcat({v.description,")"})
           end
         else
-          v.description = tostring(v.description) .. " (" .. v.key .. ")"
+          v.description = oldTableConcat({tostring(v.description)," (",v.key,")"})
         end
       end
       v.id = k
@@ -551,19 +546,19 @@ end
 function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   local ChoGGi = ChoGGi
   if Menu then
-    Menu = "/" .. tostring(Menu)
+    Menu = oldTableConcat({"/",tostring(Menu)})
   end
   local name = "NOFUNC"
   --add name to action id
   local Temp = ChoGGi.Temp
   if Action then
     local debug_info = debug.getinfo(Action, "Sn")
-    local text = tostring(debug_info.short_src .. "(" .. debug_info.linedefined .. ")")
+    local text = tostring(oldTableConcat({debug_info.short_src,"(",debug_info.linedefined,")"}))
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
   elseif Temp.Testing and Key ~= "Skip" then
-    Temp.StartupMsgs[#Temp.StartupMsgs+1] = "<color 255 100 100>ECM</color><color 0 0 0>: </color><color 128 255 128>BROKEN FUNCTION: </color>" .. Menu
+    Temp.StartupMsgs[#Temp.StartupMsgs+1] = oldTableConcat({"<color 255 100 100>ECM</color><color 0 0 0>: </color><color 128 255 128>BROKEN FUNCTION: </color>",Menu})
   end
 
 --[[
@@ -590,7 +585,7 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
-    ["ChoGGi_" .. name .. "-" .. AsyncRand()] = {
+    [oldTableConcat({"ChoGGi_",name,"-",AsyncRand()})] = {
       menu = Menu,
       action = Action,
       key = Key,
@@ -844,12 +839,12 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
 
   local title = tostring(Object)
   if type(Object) == "table" and Object.class then
-    title = "Class: " .. Object.class
+    title = oldTableConcat({"Class: ",Object.class})
   end
 
   --title text
   if type(Object) == "table" then
-    dlg.idCaption:SetText("Exec Code on: " .. (Object.class or tostring(Object)))
+    dlg.idCaption:SetText(oldTableConcat({"Exec Code on: ",(Object.class or tostring(Object))}))
   end
 
   --set pos
@@ -891,16 +886,16 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
 
   local title = tostring(Object)
   if type(Object) == "table" and Object.class then
-    title = "Class: " .. Object.class
+    title = oldTableConcat({"Class: ",Object.class})
   end
 
   --update the add button hint
-  dlg.idAddNew:SetHint("Add new entry to " .. title .. " (Defaults to name/value of selected item).")
+  dlg.idAddNew:SetHint(oldTableConcat({"Add new entry to ",title," (Defaults to name/value of selected item)."}))
 
   --title text
   if type(Object) == "table" then
     if Object.entity then
-      dlg.idCaption:SetText(Object.entity .. " - " .. Object.class)
+      dlg.idCaption:SetText(oldTableConcat({Object.entity," - ",Object.class}))
     else
       dlg.idCaption:SetText(Object.class)
     end
@@ -926,10 +921,10 @@ end
 
 --returns table with list of files without path or ext and path, or exclude ext to return all files
 function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
-  local err, files = AsyncListFiles(Folder,Ext and "*" .. Ext or "*")
+  local err, files = AsyncListFiles(Folder,Ext and oldTableConcat({"*",Ext}) or "*")
   if not err and #files > 0 then
     local table_path = {}
-    local path = Folder .. "/"
+    local path = oldTableConcat({Folder,"/"})
     for i = 1, #files do
       local name
       if Ext then
@@ -979,11 +974,8 @@ function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
   local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
   if folders then
     for i = 1, #folders do
-      local Table = {}
-      Table[#Table+1] = "ChoGGi_"
-      Table[#Table+1] = folders[i].name
       XAction:new({
-        ActionId = table.concat(Table),
+        ActionId = oldTableConcat({"ChoGGi_",folders[i].name}),
         ActionMenubar = "Menu",
         ActionName = folders[i].name,
         OnActionEffect = "popup",
@@ -998,7 +990,7 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
   local err, folders = AsyncListFiles(Folder,"*","folders")
   if not err and #folders > 0 then
     local table_path = {}
-    local temp_path = Folder .. "/"
+    local temp_path = oldTableConcat({Folder,"/"})
     for i = 1, #folders do
       table_path[#table_path+1] = {
         path = folders[i],
@@ -1020,17 +1012,17 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
   if main and AsyncFileOpen(script_path) ~= "Access Denied" then
     AsyncCreatePath(script_path)
     --print some info
-    print("Place .lua files in " .. script_path .. " to have them show up in the \"Scripts\" list, you can then use the list to execute them (you can also create folders for sorting).")
+    print(oldTableConcat({"Place .lua files in ",script_path," to have them show up in the \"Scripts\" list, you can then use the list to execute them (you can also create folders for sorting)."}))
     --add some example files and a readme
-    AsyncStringToFile(script_path .. "/readme.txt","Any .lua files in here will be part of a list that you can execute in-game from the console menu.")
-    AsyncStringToFile(script_path .. "/Help.lua","Place .lua files in " .. script_path .. " to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).")
-    AsyncCreatePath(script_path .. "/Examine")
-    AsyncStringToFile(script_path .. "/Examine/DataInstances.lua","OpenExamine(DataInstances)")
-    AsyncStringToFile(script_path .. "/Examine/InGameInterface.lua","OpenExamine(GetInGameInterface())")
-    AsyncStringToFile(script_path .. "/Examine/terminal.desktop.lua","OpenExamine(terminal.desktop)")
-    AsyncCreatePath(script_path .. "/Functions")
-    AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua","#GetObjects({class=\"Colonist\"})")
-    AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua","SelectedObj:ToggleWorking()")
+    AsyncStringToFile(oldTableConcat({script_path,"/readme.txt","Any .lua files in here will be part of a list that you can execute in-game from the console menu."}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Help.lua","Place .lua files in ",script_path," to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting)."}))
+    AsyncCreatePath(oldTableConcat({script_path,"/Examine"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/DataInstances.lua","OpenExamine(DataInstances)"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/InGameInterface.lua","OpenExamine(GetInGameInterface())"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/terminal.desktop.lua","OpenExamine(terminal.desktop)"}))
+    AsyncCreatePath(oldTableConcat({script_path,"/Functions"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Amount of colonists.lua","#GetObjects({class=\"Colonist\"})"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Toggle Working SelectedObj.lua","SelectedObj:ToggleWorking()"}))
     --rebuild toolbar
     ChoGGi.ComFuncs.RebuildConsoleToolbar()
   end
@@ -1075,26 +1067,27 @@ function ChoGGi.ComFuncs.NewThread(Func,...)
   coroutine.resume(coroutine.create(Func),...)
 end
 
-function ChoGGi.ComFuncs.DialogAddCaption(Table)
-  local obj = StaticText:new(Table.self)
-  obj:SetId("idCaption")
-  obj:SetPos(Table.pos)
-  obj:SetSize(Table.size)
-  obj:SetHSizing("AnchorToLeft")
-  --obj:SetVSizing("Resize")
-  obj:SetBackgroundColor(0)
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetTextPrefix(Table.prefix or "<center>")
-  obj.HandleMouse = false
-  --obj.SingleLine = true
+function ChoGGi.ComFuncs.DialogAddCaption(self,Table)
+  self.idCaption = StaticText:new(self)
+  self.idCaption:SetPos(Table.pos)
+  self.idCaption:SetSize(Table.size)
+  self.idCaption:SetHSizing("AnchorToLeft")
+  --self.idCaption:SetVSizing("Resize")
+  self.idCaption:SetBackgroundColor(0)
+  self.idCaption:SetFontStyle("Editor14Bold")
+  self.idCaption:SetTextPrefix(Table.prefix or "<center>")
+  self.idCaption.HandleMouse = false
+  --self.idCaption.SingleLine = true
 end
 
-function ChoGGi.ComFuncs.DialogAddCloseX(self,pos)
-  local obj = Button:new(self)
-  obj:SetId("idCloseX")
-  obj:SetPos(pos)
-  obj:SetSize(point(18, 18))
-  obj:SetHSizing("AnchorToRight")
-  obj:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-  obj:SetHint(T({1011, "Close"}))
+function ChoGGi.ComFuncs.DialogAddCloseX(self,func)
+  self.idCloseX = Button:new(self)
+  self.idCloseX:SetHSizing("AnchorToRight")
+  self.idCloseX:SetPos(self:GetPos() + point(self:GetSize():x() - 21, 3))
+  self.idCloseX:SetSize(point(18, 18))
+  self.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+  self.idCloseX:SetHint(T({1011, "Close"}))
+  self.idCloseX.OnButtonPressed = func or function()
+    self:delete()
+  end
 end

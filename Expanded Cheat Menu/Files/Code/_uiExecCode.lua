@@ -1,12 +1,13 @@
+local oldTableConcat = oldTableConcat
+
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_ExecCodeDlg_Designer = {
-  __parents = {
-    "FrameWindow"
-  }
+DefineClass.ChoGGi_ExecCodeDlg_Defaults = {
+  __parents = {"FrameWindow"}
 }
-function ChoGGi_ExecCodeDlg_Designer:Init()
+
+function ChoGGi_ExecCodeDlg_Defaults:Init()
   local ChoGGi = ChoGGi
 
   self:SetPos(point(100, 100))
@@ -15,54 +16,74 @@ function ChoGGi_ExecCodeDlg_Designer:Init()
   self:SetTranslate(false)
   self:SetMovable(true)
   self:SetZOrder(zorder)
+  local ShowConsoleLog = ShowConsoleLog
+  local dlgConsole = dlgConsole
+  local terminal = terminal
+  local const = const
 
-  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(50, 101),size = point(390, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self,point(679, 103))
+  --defaults
+  self.code = false
+  self.obj = false
 
-  local obj
+  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(50, 101),size = point(390, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self,function() self:delete(self.idEditValue:GetText()) end)
 
-  obj = SingleLineEdit:new(self)
-  obj:SetId("idEditValue")
-  obj:SetPos(point(110, 125))
-  obj:SetSize(point(585, 24))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("Resize")
-  obj:SetTextHAlign("center")
-  obj:SetTextVAlign("center")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText("ChoGGi.CurObj") --start off with this as code (maybe just update s instead?)
-  obj:SetHint("Paste or type code to be executed here.")
-  obj:SetMaxLen(-1)
+  self.idEditValue = SingleLineEdit:new(self)
+  self.idEditValue:SetPos(point(110, 125))
+  self.idEditValue:SetSize(point(585, 24))
+  self.idEditValue:SetHSizing("Resize")
+  self.idEditValue:SetVSizing("Resize")
+  self.idEditValue:SetTextHAlign("center")
+  self.idEditValue:SetTextVAlign("center")
+  self.idEditValue:SetFontStyle("Editor14Bold")
+  self.idEditValue:SetText("ChoGGi.CurObj") --start off with this as code (maybe just update s instead?)
+  self.idEditValue:SetHint("Paste or type code to be executed here.")
+  self.idEditValue:SetMaxLen(-1)
+  --focus on textbox and move cursor to end of text
+  self.idEditValue:SetFocus()
+  self.idEditValue:SetCursorPos(#self.idEditValue:GetText())
 
-  obj = Button:new(self)
-  obj:SetId("idOK")
-  obj:SetPos(point(110, 155))
-  obj:SetSize(point(45, 25))
-  obj:SetHSizing("AnchorToLeft")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText("Exec")
-  obj:SetHint("Exec and close dialog (Enter can also be used).")
+  self.idOK = Button:new(self)
+  self.idOK:SetPos(point(110, 155))
+  self.idOK:SetSize(point(45, 25))
+  self.idOK:SetHSizing("AnchorToLeft")
+  self.idOK:SetVSizing("AnchorToBottom")
+  self.idOK:SetFontStyle("Editor14Bold")
+  self.idOK:SetText("Exec")
+  self.idOK:SetHint("Exec and close dialog (Enter can also be used).")
+  --just exec instead of also closing dialog
+  function self.idOK.OnButtonPressed()
+    ChoGGi.CurObj = self.obj
+    --use console to exec code so we can show results in it
+    ShowConsoleLog(true)
+    dlgConsole:Exec(self.idEditValue:GetText())
+  end
 
-  obj = Button:new(self)
-  obj:SetId("idClose")
-  obj:SetPos(point(190, 155))
-  obj:SetSize(point(65, 25))
-  obj:SetHSizing("AnchorToLeft")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText(T({1000430, "Cancel"}))
-  obj:SetHint("Cancel without changing anything.")
+  self.idClose = Button:new(self)
+  self.idClose:SetPos(point(190, 155))
+  self.idClose:SetSize(point(65, 25))
+  self.idClose:SetHSizing("AnchorToLeft")
+  self.idClose:SetVSizing("AnchorToBottom")
+  self.idClose:SetFontStyle("Editor14Bold")
+  self.idClose:SetText(T({1000430, "Cancel"}))
+  self.idClose:SetHint("Cancel without changing anything.")
+  self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
-  obj = Button:new(self)
-  obj:SetId("idInsertObj")
-  obj:SetPos(point(300, 155))
-  obj:SetSize(point(90, 25))
-  obj:SetHSizing("AnchorToLeft")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText("Insert Obj")
-  obj:SetHint("At caret position inserts: ChoGGi.CurObj")
+  self.idInsertObj = Button:new(self)
+  self.idInsertObj:SetPos(point(300, 155))
+  self.idInsertObj:SetSize(point(90, 25))
+  self.idInsertObj:SetHSizing("AnchorToLeft")
+  self.idInsertObj:SetVSizing("AnchorToBottom")
+  self.idInsertObj:SetFontStyle("Editor14Bold")
+  self.idInsertObj:SetText("Insert Obj")
+  self.idInsertObj:SetHint("At caret position inserts: ChoGGi.CurObj")
+  --insert text at caret
+  function self.idInsertObj.OnButtonPressed()
+    local pos = self.idEditValue:GetCursorPos()
+    local text = self.idEditValue:GetText()
+    self.idEditValue:SetText(oldTableConcat({text:sub(1,pos),"ChoGGi.CurObj",text:sub(pos+1)}))
+    self.idEditValue:SetCursorPos(pos+13)
+  end
 
   --so elements move when dialog re-sizes
   self:InitChildrenSizing()
@@ -73,74 +94,15 @@ end
 
 DefineClass.ChoGGi_ExecCodeDlg = {
   __parents = {
-    "ChoGGi_ExecCodeDlg_Designer",
+    "ChoGGi_ExecCodeDlg_Defaults",
   },
   ZOrder = zorder
 }
 
-function ChoGGi_ExecCodeDlg:Init()
-
-  local ChoGGi = ChoGGi
-  local ShowConsoleLog = ShowConsoleLog
-  local dlgConsole = dlgConsole
-  local terminal = terminal
-  local const = const
-
-  --defaults
-  self.code = false
-  self.obj = false
-
-  --focus and textbox and move cursor to end of text
-  self.idEditValue:SetFocus()
-  self.idEditValue:SetCursorPos(#self.idEditValue:GetText())
-
-  --just exec
-  function self.idOK.OnButtonPressed()
-    ChoGGi.CurObj = self.obj
-    --use console to exec code so we can show results in it
-    ShowConsoleLog(true)
-    dlgConsole:Exec(self.idEditValue:GetText())
-  end
-
-  --return text and close
-  local function Close()
-    --send back code (could be useful)
-    self:delete(self.idEditValue:GetText())
-  end
-  self.idClose.OnButtonPressed = Close
-  self.idCloseX.OnButtonPressed = Close
-
-  --insert text at caret
-  function self.idInsertObj.OnButtonPressed()
-    local pos = self.idEditValue:GetCursorPos()
-    local text = self.idEditValue:GetText()
-    self.idEditValue:SetText(text:sub(1,pos) .. "ChoGGi.CurObj" .. text:sub(pos+1))
-    --
-    self.idEditValue:SetCursorPos(pos+13)
-  end
-
-  --make checkbox work like a button
-  --[[
-  local children = self.idCheckBox2.children
-  for i = 1, #children do
-    if children[i].class == "Button" then
-      local but = children[i]
-      function but.OnButtonPressed()
-        dosomething()
-      end
-    end
-  end
-  --]]
-
-end --init
-
 --esc removes focus,shift+esc closes, enter executes code
 function ChoGGi_ExecCodeDlg:OnKbdKeyDown(_, virtual_key)
   if virtual_key == const.vkEsc then
-    if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-      self.idClose:Press()
-    end
-    self:SetFocus()
+    self.idCloseX:Press()
     return "break"
   elseif virtual_key == const.vkEnter then
     self.idOK:Press()

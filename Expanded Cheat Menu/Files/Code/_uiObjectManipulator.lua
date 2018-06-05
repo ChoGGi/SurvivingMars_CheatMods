@@ -1,12 +1,16 @@
+local oldTableConcat = oldTableConcat
+
+--ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
+--ex(ChoGGi.ObjectManipulator_Dlg)
+
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_ObjectManipulator_Designer = {
-  __parents = {
-    "FrameWindow"
-  }
+DefineClass.ChoGGi_ObjectManipulator_Defaults = {
+  __parents = {"FrameWindow"}
 }
-function ChoGGi_ObjectManipulator_Designer:Init()
+
+function ChoGGi_ObjectManipulator_Defaults:Init()
   local ChoGGi = ChoGGi
 
   self:SetPos(point(100, 100))
@@ -15,97 +19,7 @@ function ChoGGi_ObjectManipulator_Designer:Init()
   self:SetTranslate(false)
   self:SetMovable(true)
   self:SetZOrder(zorder)
-
-  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(250, 101),size = point(390, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self,point(729, 103))
-
-  local obj
-
-  obj = CheckButton:new(self)
-  obj:SetId("idAutoRefresh")
-  obj:SetPos(point(115, 128))
-  obj:SetSize(point(164, 17))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetText("Auto-Refresh")
-  obj:SetHint("Auto-refresh list every second (turn off to edit values).")
-  obj:SetButtonSize(point(16, 16))
-
-  obj = Button:new(self)
-  obj:SetId("idRefresh")
-  obj:SetPos(point(115, 150))
-  obj:SetSize(point(65, 26))
-  obj:SetText(T({1000220, "Refresh"}))
-  obj:SetHint("Refresh list.")
-
-  obj = Button:new(self)
-  obj:SetId("idGoto")
-  obj:SetPos(point(185, 150))
-  obj:SetSize(point(75, 26))
-  obj:SetText("Goto Obj")
-  obj:SetHint("View object on map.")
-
-  obj = Button:new(self)
-  obj:SetId("idAddNew")
-  obj:SetPos(point(265, 150))
-  obj:SetSize(point(60, 26))
-  obj:SetText(T({398847925160, "New"}))
-
-  obj = Button:new(self)
-  obj:SetId("idApplyAll")
-  obj:SetPos(point(450, 150))
-  obj:SetSize(point(90, 26))
-  obj:SetText("Apply To All")
-  obj:SetHint("Apply selected value to all objects of the same type.")
-
-  obj = List:new(self)
-  obj:SetId("idList")
-  obj:SetPos(point(104, 180))
-  obj:SetSize(point(642, 330))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("Resize")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetRolloverFontStyle("Editor14")
-  obj:SetSelectionFontStyle("Editor14Bold")
-  obj:SetShowPartialItems(true)
-  obj:SetScrollBar(true)
-  obj:SetScrollAutohide(true)
-  obj:SetSpacing(point(8, 2))
-  obj:SetSelectionBackground(RGB(100, 100, 100))
-  obj:SetBackgroundColor(RGB(50, 50, 50))
-
-  obj = SingleLineEdit:new(self)
-  obj:SetId("idEditValue")
-  obj:SetPos(point(106, 514))
-  obj:SetSize(point(640, 28))
-  obj:SetTextVAlign("center")
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("AnchorToBottom")
-  obj:SetHint("Use to change values of selected list item.")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetAutoSelectAll(true)
-  obj:SetMaxLen(-1)
-
-  --so elements move when dialog re-sizes
-  self:InitChildrenSizing()
-
-  self:SetPos(point(100, 100))
-  self:SetSize(point(650, 450))
-end
-
-DefineClass.ChoGGi_ObjectManipulator = {
-  __parents = {
-    "ChoGGi_ObjectManipulator_Designer",
-  },
-  ZOrder = zorder
-}
-
---ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
---ex(ChoGGi.ObjectManipulator_Dlg)
-function ChoGGi_ObjectManipulator:Init()
-
-  local ChoGGi = ChoGGi
   --set some values...
-  self.idEditValue.display_text = "Edit Value"
   self.choices = {}
   self.sel = false
   self.obj = false
@@ -113,13 +27,188 @@ function ChoGGi_ObjectManipulator:Init()
   self.page = 1
   self.show_times = "relative"
 
-  --have to do it for each item?
-  --self.idList.single = false
+  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(250, 101),size = point(390, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self)
 
-  --add some padding before the text
-  --self.idEditValue.DisplacementPos = 0
-  --self.idEditValue.DisplacementWidth = 10
+  self.idAutoRefresh = CheckButton:new(self)
+  self.idAutoRefresh:SetPos(point(115, 128))
+  self.idAutoRefresh:SetSize(point(164, 17))
+  self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idAutoRefresh:SetText("Auto-Refresh")
+  self.idAutoRefresh:SetHint("Auto-refresh list every second (turn off to edit values).")
+  self.idAutoRefresh:SetButtonSize(point(16, 16))
+  --add check for auto-refresh
+  local children = self.idAutoRefresh.children
+  for i = 1, #children or empty_table do
+    if children[i].class == "Button" then
+      local but = children[i]
+      function but.OnButtonPressed()
+        self.refreshing = self.idAutoRefresh:GetState()
+        CreateRealTimeThread(function()
+          while self.refreshing do
+            self:UpdateListContent(self.obj)
+            Sleep(1000)
+          end
+        end)
+      end
+    end
+  end
 
+  self.idRefresh = Button:new(self)
+  self.idRefresh:SetPos(point(115, 150))
+  self.idRefresh:SetSize(point(65, 26))
+  self.idRefresh:SetText(T({1000220, "Refresh"}))
+  self.idRefresh:SetHint("Refresh list.")
+  --refresh the list...
+  function self.idRefresh.OnButtonPressed()
+    self:UpdateListContent(self.obj)
+  end
+
+  self.idGoto = Button:new(self)
+  self.idGoto:SetPos(point(185, 150))
+  self.idGoto:SetSize(point(75, 26))
+  self.idGoto:SetText("Goto Obj")
+  self.idGoto:SetHint("View object on map.")
+  --move viewpoint to obj
+  function self.idGoto.OnButtonPressed()
+    ChoGGi.CodeFuncs.ViewAndSelectObject(self.obj)
+  end
+
+  self.idAddNew = Button:new(self)
+  self.idAddNew:SetPos(point(265, 150))
+  self.idAddNew:SetSize(point(60, 26))
+  self.idAddNew:SetText(T({398847925160, "New"}))
+  --open dialog to get new name
+  function self.idAddNew.OnButtonPressed()
+    local sel_name
+    local sel_value
+    if self.sel then
+      sel_name = self.sel.text
+      sel_value = self.sel.value
+    else
+      sel_name = "BLANK"
+      sel_value = false
+    end
+    local ItemList = {
+      {text = "New Entry",value = sel_name,hint = "Enter the name of the new entry to be added."},
+      {text = "New Value",value = sel_value,hint = "Set the value of the new entry to be added."},
+    }
+
+    local CallBackFunc = function(choice)
+      --add it to the actual object
+      self.obj[tostring(choice[1].value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
+      --refresh list
+      self:UpdateListContent(self.obj)
+    end
+    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+      callback = CallBackFunc,
+      items = ItemList,
+      title = "New Entry",
+      custom_type = 4,
+    })
+  end
+
+  self.idApplyAll = Button:new(self)
+  self.idApplyAll:SetPos(point(450, 150))
+  self.idApplyAll:SetSize(point(90, 26))
+  self.idApplyAll:SetText("Apply To All")
+  self.idApplyAll:SetHint("Apply selected value to all objects of the same type.")
+  --idApplyAll
+  function self.idApplyAll.OnButtonPressed()
+    if not self.sel then
+      return
+    end
+    local value = self.sel.value
+    if value then
+      local objs = GetObjects({class=self.obj.class})
+      for i = 1, #objs do
+        objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+      end
+    end
+  end
+
+  self.idList = List:new(self)
+  self.idList:SetPos(point(104, 180))
+  self.idList:SetSize(point(642, 330))
+  self.idList:SetHSizing("Resize")
+  self.idList:SetVSizing("Resize")
+  self.idList:SetFontStyle("Editor14Bold")
+  self.idList:SetRolloverFontStyle("Editor14")
+  self.idList:SetSelectionFontStyle("Editor14Bold")
+  self.idList:SetShowPartialItems(true)
+  self.idList:SetScrollBar(true)
+  self.idList:SetScrollAutohide(true)
+  self.idList:SetSpacing(point(8, 2))
+  self.idList:SetSelectionBackground(RGB(100, 100, 100))
+  self.idList:SetBackgroundColor(RGB(50, 50, 50))
+  --hook into SetContent so we can add OnSetState to each listitem to show hints
+  self.idList.orig_SetContent = self.idList.SetContent
+  function self.idList:SetContent(items)
+    self.orig_SetContent(self,items)
+    local listitems = self.item_windows
+    for i = 1, #listitems do
+      local listitem = listitems[i]
+      listitem.orig_OnSetState = listitem.OnSetState
+      function listitem:OnSetState(list, item, rollovered, selected)
+        self.orig_OnSetState(self,list, item, rollovered, selected)
+        if rollovered or selected then
+          local hint = {item.text}
+          if item.value then
+            hint[#hint+1] = ": "
+            hint[#hint+1] = item.value
+          end
+          if item.hint then
+            hint[#hint+1] = "\n\n"
+            hint[#hint+1] = item.hint
+          end
+          hint[#hint+1] = "\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator."
+          self.parent:SetHint(oldTableConcat(hint))
+        end
+      end
+    end
+  end
+  --override ListItem:OnCreate
+  function self.idList:ItemCreate(item_window, item)
+    if not item_window then
+      return
+    end
+    self.parent.OnCreate(item_window,item,self)
+  end
+  --do stuff on selection
+  local orig_OnLButtonDown = self.idList.OnLButtonDown
+  function self.idList:OnLButtonDown(...)
+    local ret = {orig_OnLButtonDown(self,...)}
+    self = self.parent
+
+    --update selection (select last selected if multisel)
+    self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+    if self.sel then
+      --update the edit value box
+      self.idEditValue:SetText(self.sel.value)
+      self.idEditValue:SetFocus()
+    end
+
+    --for whatever is expecting a return value
+    return table.unpack(ret)
+  end
+  --open editor with whatever is selected
+  function self.idList.OnLButtonDoubleClick()
+    if self.sel then
+      ChoGGi.ComFuncs.OpenInObjectManipulator(self.sel.object,self)
+    end
+  end
+
+  self.idEditValue = SingleLineEdit:new(self)
+  self.idEditValue:SetPos(point(106, 514))
+  self.idEditValue:SetSize(point(640, 28))
+  self.idEditValue:SetTextVAlign("center")
+  self.idEditValue:SetHSizing("Resize")
+  self.idEditValue:SetVSizing("AnchorToBottom")
+  self.idEditValue:SetHint("Use to change values of selected list item.")
+  self.idEditValue:SetFontStyle("Editor14Bold")
+  self.idEditValue:SetAutoSelectAll(true)
+  self.idEditValue:SetMaxLen(-1)
+  self.idEditValue.display_text = "Edit Value"
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local sel_idx = self.idList.last_selected
@@ -158,146 +247,25 @@ function ChoGGi_ObjectManipulator:Init()
     end
   end
 
-  --hook into SetContent so we can add OnSetState to each listitem to show hints
-  self.idList.Orig_SetContent = self.idList.SetContent
-  function self.idList:SetContent(items)
-    self.Orig_SetContent(self,items)
-    local listitems = self.item_windows
-    for i = 1, #listitems do
-      local listitem = listitems[i]
-      listitem.Orig_OnSetState = listitem.OnSetState
-      function listitem:OnSetState(list, item, rollovered, selected)
-        self.Orig_OnSetState(self,list, item, rollovered, selected)
-        if rollovered or selected then
-          local hint = item.text
-          if item.value then
-            hint = hint .. ": " .. item.value
-          end
-          if item.hint then
-            hint = hint .. "\n\n" .. item.hint
-          end
-          self.parent:SetHint(hint .. "\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.")
-        end
-      end
-    end
-  end
 
-  --override ListItem:OnCreate
-  function self.idList:ItemCreate(item_window, item)
-    if not item_window then
-      return
-    end
-    self.parent.OnCreate(item_window,item,self)
-  end
+  --so elements move when dialog re-sizes
+  self:InitChildrenSizing()
 
-----click actions
+  self:SetPos(point(100, 100))
+  self:SetSize(point(650, 450))
+end
 
-  --do stuff on selection
-  local origOnLButtonDown = self.idList.OnLButtonDown
-  self.idList.OnLButtonDown = function(selfList,...)
-    local ret = origOnLButtonDown(selfList,...)
-
-    --update selection (select last selected if multisel)
-    self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-    if self.sel then
-      --update the edit value box
-      self.idEditValue:SetText(self.sel.value)
-      self.idEditValue:SetFocus()
-    end
-
-    --for whatever is expecting a return value
-    return ret
-  end
-
-  --open editor with whatever is selected
-  self.idList.OnLButtonDoubleClick = function()
-    if self.sel then
-      ChoGGi.ComFuncs.OpenInObjectManipulator(self.sel.object,self)
-    end
-  end
-
-  --close without doing anything
-  function self.idCloseX.OnButtonPressed()
-    self:delete()
-  end
-
-  --refresh the list...
-  function self.idRefresh.OnButtonPressed()
-    self:UpdateListContent(self.obj)
-  end
-  --move viewpoint to obj
-  function self.idGoto.OnButtonPressed()
-    ChoGGi.CodeFuncs.ViewAndSelectObject(self.obj)
-  end
-  --open dialog to get new name
-  function self.idAddNew.OnButtonPressed()
-    local sel_name
-    local sel_value
-    if self.sel then
-      sel_name = self.sel.text
-      sel_value = self.sel.value
-    else
-      sel_name = "BLANK"
-      sel_value = false
-    end
-    local ItemList = {
-      {text = "New Entry",value = sel_name,hint = "Enter the name of the new entry to be added."},
-      {text = "New Value",value = sel_value,hint = "Set the value of the new entry to be added."},
-    }
-
-    local CallBackFunc = function(choice)
-      --add it to the actual object
-      self.obj[tostring(choice[1].value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
-      --refresh list
-      self:UpdateListContent(self.obj)
-    end
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
-      callback = CallBackFunc,
-      items = ItemList,
-      title = "New Entry",
-      custom_type = 4,
-    })
-  end
-  --idApplyAll
-  function self.idApplyAll.OnButtonPressed()
-    if not self.sel then
-      return
-    end
-    local value = self.sel.value
-    if value then
-      local objs = GetObjects({class=self.obj.class})
-      for i = 1, #objs do
-        objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
-      end
-    end
-  end
-
-  --add check for auto-refresh
-  local children = self.idAutoRefresh.children
-  for i = 1, #children or empty_table do
-    if children[i].class == "Button" then
-      local but = children[i]
-      function but.OnButtonPressed()
-        self.refreshing = self.idAutoRefresh:GetState()
-        CreateRealTimeThread(function()
-          while self.refreshing do
-            self:UpdateListContent(self.obj)
-            Sleep(1000)
-          end
-        end)
-      end
-    end
-  end
-
-end --init
+DefineClass.ChoGGi_ObjectManipulator = {
+  __parents = {
+    "ChoGGi_ObjectManipulator_Defaults",
+  },
+  ZOrder = zorder
+}
 
 --function ChoGGi_ObjectManipulator:OnKbdKeyDown(char, virtual_key)
 function ChoGGi_ObjectManipulator:OnKbdKeyDown(_, virtual_key)
   if virtual_key == const.vkEsc then
-    if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-      self.idClose:Press()
-    end
-    self:SetFocus()
+    self.idCloseX:Press()
     return "break"
   elseif virtual_key == const.vkEnter then
     local origsel = self.idList.last_selected
@@ -317,7 +285,7 @@ function ChoGGi_ObjectManipulator:UpdateListContent(obj)
   --create prop list for list
   local list = self:CreatePropList(obj)
   if not list then
-    local err = "Error opening" .. tostring(obj)
+    local err = oldTableConcat({"Error opening",tostring(obj)})
     self.idList:SetContent({{text=err,value=err}})
     return
   end
@@ -400,11 +368,11 @@ function ChoGGi_ObjectManipulator:evalsmarttable(format_text, e)
       i = tonumber(s)
     end
     touched[i + 1] = true
-    return "<color 255 255 128>" .. self:CreateProp(e[i + 2]) .. "</color>"
+    return oldTableConcat({"<color 255 255 128>",self:CreateProp(e[i + 2]),"</color>"})
   end)
   for i = 2, #e do
     if not touched[i] then
-      format_text = format_text .. " <color 255 255 128>[" .. self:CreateProp(e[i]) .. "]</color>"
+      format_text = oldTableConcat({format_text," <color 255 255 128>[",self:CreateProp(e[i]),"]</color>"})
     end
   end
   return format_text
@@ -413,11 +381,11 @@ end
 function ChoGGi_ObjectManipulator:CreateProp(o)
   if type(o) == "function" then
     local debug_info = debug.getinfo(o, "Sn")
-    return tostring(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")"
+    return oldTableConcat({tostring(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")"})
   end
 
   if IsValid(o) then
-    return o.class .. "@" .. self:CreateProp(o:GetPos())
+    return oldTableConcat({o.class,"@",self:CreateProp(o:GetPos())})
   end
 
   if IsPoint(o) then
@@ -426,7 +394,7 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
       o:y(),
       o:z()
     }
-    return "(" .. table.concat(res, ",") .. ")"
+    return oldTableConcat({"(",oldTableConcat(res, ","),")"})
   end
   --if some value is fucked, this just lets us ignore whatever value is fucked.
   pcall(function()
@@ -441,7 +409,7 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
       if #o > 3 then
         res[#res+1] = {text = "..."}
       end
-      return "objlist" .. "{" .. table.concat(res, ", ") .. "}"
+      return oldTableConcat({"objlist","{",oldTableConcat(res, ", "),"}"})
     end
   end)
 
@@ -455,9 +423,9 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
 
   if type(o) == "table" then
     if IsT(o) then
-      return "T{\"" .. ChoGGi.ComFuncs.Trans(o) .. "\"}"
+      return oldTableConcat({"T{\"",ChoGGi.ComFuncs.Trans(o),"\"}"})
     else
-      local text = ObjectClass(o) or tostring(o) .. "(len:" .. #o .. ")"
+      local text = oldTableConcat({ObjectClass(o) or tostring(o),"(len:",#o,")"})
       return text
     end
   end
@@ -474,12 +442,12 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
     local text
     if type(v) == "table" then
       if v.class then
-        text = "<color 150 170 150>" .. self:CreateProp(k) .. "</color>"
+        text = oldTableConcat({"<color 150 170 150>",self:CreateProp(k),"</color>"})
       else
-        text = "<color 150 170 250>" .. self:CreateProp(k) .. "</color>"
+        text = oldTableConcat({"<color 150 170 250>",self:CreateProp(k),"</color>"})
       end
     elseif type(v) == "function" then
-      text = "<color 250 75 75>" .. self:CreateProp(k) .. "</color>"
+      text = oldTableConcat({"<color 250 75 75>",self:CreateProp(k),"</color>"})
     else
       text = self:CreateProp(k)
     end
@@ -504,7 +472,7 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
       while true do
         info = debug.getinfo(o, level, "Slfun")
         if info then
-          res[#res+1] = {text = info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name")}
+          res[#res+1] = {text = oldTableConcat({info.short_src,"(",info.currentline,") ",(info.name or info.name_what or "unknown name")})}
           level = level + 1
           else
             if type(o) == "function" then
@@ -545,11 +513,11 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
             local t = self:evalsmarttable(format_text, e)
             if t then
               if self.show_times ~= "relative" then
-                t = "<color 255 255 0>" .. tostring(e[1]) .. "</color>:" .. t
+                t = oldTableConcat({"<color 255 255 0>",tostring(e[1]),"</color>:",t})
               else
-                t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
+                t = oldTableConcat({"<color 255 255 0>",tostring(e[1] - GameTime()),"</color>:",t})
               end
-              res[#res+1] = {text =  t .. "<vspace 8>"}
+              res[#res+1] = {text = oldTableConcat({t,"<vspace 8>"})}
             end
           end
         end
@@ -558,5 +526,5 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
   end
 
   return res
-  --return Untranslated(table.concat(res, "\n"))
+  --return Untranslated(oldTableConcat(res, "\n"))
 end

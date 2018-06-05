@@ -527,7 +527,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
           if tab[i].encyclopedia_id == id then
-            tab[i][ProdType]:SetProduction()
+            tab[i][ProdType]:SetProduction(amount)
           end
         end
       end

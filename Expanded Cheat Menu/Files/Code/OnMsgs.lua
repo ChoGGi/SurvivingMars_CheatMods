@@ -1,3 +1,5 @@
+local oldTableConcat = oldTableConcat
+
 --See LICENSE for terms
 
 --i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
@@ -110,7 +112,7 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal.SetOSWindowTitle(ChoGGi.ComFuncs.Trans(1079) .. ": " .. Mods[ChoGGi.id].title)
+  terminal.SetOSWindowTitle(oldTableConcat({ChoGGi.ComFuncs.Trans(1079),": ",Mods[ChoGGi.id].title}))
 end
 
 --earlist on-ground objects are loaded?
@@ -476,7 +478,7 @@ function OnMsg.ChoGGi_CreatedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     local labels = UICity.labels
     labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
-    local label = labels["ChoGGi_" .. Obj.class]
+    local label = labels[oldTableConcat({"ChoGGi_",Obj.class})]
     label[#label+1] = Obj
   end
 end
@@ -484,7 +486,7 @@ function OnMsg.ChoGGi_RemovedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
-    ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_" .. Obj.class,Obj)
+    ChoGGi.ComFuncs.RemoveFromLabel(oldTableConcat({"ChoGGi_",Obj.class}),Obj)
   end
 end
 
@@ -590,11 +592,11 @@ local function CheckForRate(Obj)
     local function SetValue(sType)
       if value.charge then
         Obj[sType].max_charge = value.charge
-        Obj["max_" .. sType .. "_charge"] = value.charge
+        Obj[oldTableConcat({"max_",sType,"_charge"})] = value.charge
       end
       if value.discharge then
         Obj[sType].max_discharge = value.discharge
-        Obj["max_" .. sType .. "_discharge"] = value.discharge
+        Obj[oldTableConcat({"max_",sType,"_discharge"})] = value.discharge
       end
     end
 
@@ -736,7 +738,7 @@ function OnMsg.ChoGGi_Loaded()
       rawset(_G, map, rawget(_G, map) or {})
     end
     ChoGGi.ComFuncs.AddAction(
-      "Presets/" .. name,
+      oldTableConcat({"Presets/",name}),
       function()
         OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
           PresetClass = name,
@@ -748,12 +750,16 @@ function OnMsg.ChoGGi_Loaded()
       class.EditorIcon or "CollectionsEditor.tga"
     )
   end)
-  --broken ass shit
+
+  --broken ass shit (not sure what this is for...)
+  --[[
   local mod = Mods[ChoGGi.id]
-  local text = ""
+  local text
   for _,bv in pairs(mod) do
-    text = text .. tostring(bv)
+    text = oldTableConcat({tostring(bv)})
   end
+  --]]
+
   --update menu
   UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
 
@@ -1096,7 +1102,7 @@ function OnMsg.ChoGGi_Loaded()
 
   --someone doesn't like LICENSE files...
   local dickhead
-  local nofile,file = AsyncFileToString(ChoGGi.ModPath .. "/LICENSE")
+  local nofile,file = AsyncFileToString(oldTableConcat({ChoGGi.ModPath,"/LICENSE"}))
 
   if nofile then
     --some dickhead removed the LICENSE

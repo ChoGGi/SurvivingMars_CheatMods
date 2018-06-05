@@ -1,3 +1,5 @@
+local oldTableConcat = oldTableConcat
+
 --See LICENSE for terms
 
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
@@ -42,10 +44,10 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
         else
           if skipped then
             -- -1 more for skipping Hidden
-            AddMenuKey(i,"Shift-" .. i - 11)
+            AddMenuKey(i,oldTableConcat({"Shift-",i - 11}))
           else
             -- -10 since we're doing Shift-*
-            AddMenuKey(i,"Shift-" .. i - 10)
+            AddMenuKey(i,oldTableConcat({"Shift-",i - 10}))
           end
         end
       end

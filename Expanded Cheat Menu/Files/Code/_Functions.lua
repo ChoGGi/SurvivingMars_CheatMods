@@ -1,3 +1,5 @@
+local oldTableConcat = oldTableConcat
+
 --See LICENSE for terms
 
 --any funcs called from Code/*
@@ -220,7 +222,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
         building:ToggleWorking()
       end)
     end) then
-      print("Error borked building: " .. building.class)
+      print(oldTableConcat({"Error borked building: ",building.class}))
       OpenExamine(building)
     end
   end
@@ -271,7 +273,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
     "Settings",
   }
   for i = 1, #files do
-    AsyncFileDelete(ChoGGi.ModPath .. "/" .. files[i] .. ".lua")
+    AsyncFileDelete(oldTableConcat({ChoGGi.ModPath,"/",files[i],".lua"}))
   end
 end
 
@@ -329,7 +331,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   if Age == "Retiree" then
     Colonist.age = 65 --why isn't there a base_MinAge_Retiree...
   else
-    Colonist.age = Colonist["base_MinAge_" .. Age]
+    Colonist.age = Colonist[oldTableConcat({"base_MinAge_",Age})]
   end
 
   if Age == "Child" then
@@ -434,7 +436,7 @@ ChoGGi.CodeFuncs.FireFuncAfterChoice({
   callback = CallBackFunc,
   items = ItemList,
   title = "TitleBar",
-  hint = "Current: " .. hint,
+  hint = oldTableConcat({"Current: ",hint}),
   multisel = MultiSel,
   custom_type = CustomType,
   custom_func = CustomFunc,
@@ -468,8 +470,9 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
       dlg.idEditValue:SetText(tostring(dlg.sel.value))
       dlg:UpdateColourPicker()
       if Table.custom_type == 2 then
-        dlg:SetWidth(800)
+        dlg:SetWidth(750)
         dlg.idColorHSV:SetVisible(true)
+        dlg.idColorHSV:SetPos(point(500, 125))
         dlg.idColorCheckAir:SetVisible(true)
         dlg.idColorCheckWater:SetVisible(true)
         dlg.idColorCheckElec:SetVisible(true)
@@ -521,7 +524,7 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
   --are we showing a hint?
   if Table.hint then
     dlg.idList:SetHint(Table.hint)
-    dlg.idOK:SetHint(dlg.idOK:GetHint() .. "\n\n\n" .. Table.hint)
+    dlg.idOK:SetHint(oldTableConcat({dlg.idOK:GetHint(),"\n\n\n",Table.hint}))
   end
 
   --waiting for choice
@@ -843,7 +846,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end
 
   local res = oldobj.resource
-  local amount = oldobj["GetStored_" .. res](oldobj)
+  local amount = oldobj[oldTableConcat({"GetStored_",res})](oldobj)
   --not good to be larger then this when game is saved
   if amount > 20000000 then
     amount = amount
@@ -881,7 +884,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end
   --create new depot, and set max amount to stored amount of old depot
   local newobj = PlaceObj("UniversalStorageDepot", {
-    "template_name", "Storage" .. res2,
+    "template_name", oldTableConcat({"Storage",res2}),
     "resource", {res},
     "stockpiled_amount", {},
     "max_storage_per_resource", amount,
@@ -916,19 +919,22 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
 
   local ItemList = {}
   for i = 1, 4 do
+    local text = oldTableConcat({"Colour",i})
     ItemList[#ItemList+1] = {
-      text = "Colour " .. i,
-      value = pal["Color" .. i],
+      text = text,
+      value = pal[text],
       hint = "Use the colour picker (dbl right-click for instant change).",
     }
+    text = oldTableConcat({"Metallic",i})
     ItemList[#ItemList+1] = {
-      text = "Metallic " .. i,
-      value = pal["Metallic" .. i],
+      text = text,
+      value = pal[text],
       hint = "Don't use the colour picker: Numbers range from -255 to 255.",
     }
+    text = oldTableConcat({"Roughness",i})
     ItemList[#ItemList+1] = {
-      text = "Roughness " .. i,
-      value = pal["Roughness" .. i],
+      text = text,
+      value = pal[text],
       hint = "Don't use the colour picker: Numbers range from -255 to 255.",
     }
   end
@@ -1029,13 +1035,13 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup("Colour is set on " .. obj.class,"Colour")
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Colour is set on ",obj.class}),"Colour")
     end
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Change Colour: " .. ChoGGi.CodeFuncs.RetName(obj),
+    title = oldTableConcat({"Change Colour: ",ChoGGi.CodeFuncs.RetName(obj)}),
     hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).",
     multisel = true,
     custom_type = 2,
@@ -1116,7 +1122,7 @@ do --FindNearestResource
         },Label)
       end
 
-      local GetStored = "GetStored_" .. Type
+      local GetStored = oldTableConcat({"GetStored_",Type})
       --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
       if #Label == 1 and
         (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
@@ -1167,11 +1173,11 @@ do --FindNearestResource
 
         --get nearest stockpiles to object
         local labels = UICity.labels
-        local mechstockpile = GetStockpile(labels["MechanizedDepot" .. value],value,Object)
+        local mechstockpile = GetStockpile(labels[oldTableConcat({"MechanizedDepot",value})],value,Object)
         local stockpile
         local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object)
         if value == "BlackCube" then
-          stockpile = GetStockpile(labels[value .. "DumpSite"],value,Object)
+          stockpile = GetStockpile(labels[oldTableConcat({value,"DumpSite"})],value,Object)
         elseif value == "MysteryResource" then
           stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
         else
@@ -1204,7 +1210,7 @@ do --FindNearestResource
         if nearest then
           ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
         else
-          ChoGGi.ComFuncs.MsgPopup("Error: Cannot find any " .. choice[1].text,"Resource")
+          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Error: Cannot find any ",choice[1].text}),"Resource")
         end
       end
     end
@@ -1212,7 +1218,7 @@ do --FindNearestResource
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = "Find Nearest Resource " .. ChoGGi.CodeFuncs.RetName(Object),
+      title = oldTableConcat({"Find Nearest Resource ",ChoGGi.CodeFuncs.RetName(Object)}),
       hint = "Select a resource to find",
     })
   end
@@ -1369,7 +1375,7 @@ end
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email,"Request")
+    ChoGGi.ComFuncs.MsgWait(oldTableConcat({"Post a request on Nexus or Github or send an email to ",ChoGGi.email}),"Request")
     return
   end
 
@@ -1558,9 +1564,8 @@ function ChoGGi.CodeFuncs.RetName(Obj)
   if type(Obj) == "table" then
     if Obj.display_name then
       return ChoGGi.ComFuncs.Trans(Obj.display_name)
-    else
-      return Obj.encyclopedia_id or Obj.class or tostring(Obj)
     end
+    return Obj.encyclopedia_id or Obj.class or tostring(Obj)
   end
   return tostring(Obj)
 end

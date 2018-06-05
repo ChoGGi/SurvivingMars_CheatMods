@@ -264,8 +264,8 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     ChoGGi.ComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Alice thought to herself \"Now you will see a film... made for children... perhaps... \" But, I nearly forgot... you must... close your eyes... otherwise... you won't see anything.",
-      "Scanner","UI/Achievements/TheRabbitHole.tga",true
+    ChoGGi.ComFuncs.MsgPopup("Alice thought to herself.\n\"Now you will see a film made for children\".\nPerhaps.\nBut I nearly forgot! You must close your eyes.\nOtherwise you won't see anything.",
+      "Map","UI/Achievements/TheRabbitHole.tga",true
     )
   end
 

@@ -1,3 +1,5 @@
+local oldTableConcat = oldTableConcat
+
 --See LICENSE for terms
 
 --[[
@@ -143,11 +145,13 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
-  --if user clicks somewhere that isn't a SingleLineEdit then we set focus to it (the game doesn't like removing focus from our dialogs)
+  --no more stuck focus on SingleLineEdits
   SaveOrigFunc("XDesktop","MouseEvent")
   function XDesktop:MouseEvent(event, pt, button, time)
-    if button == "L" and event == "OnMouseButtonDown" and not self.focus_log[#self.focus_log-1]:IsKindOf("SingleLineEdit") then
-      self:SetFocus()
+    if button == "L" and event == "OnMouseButtonDown" then
+      if self.keyboard_focus:IsKindOf("SingleLineEdit") then
+        self.focus_log[#self.focus_log-1]:SetFocus()
+      end
     end
     return ChoGGi.OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
   end
@@ -187,18 +191,13 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
           ActionName = "Clear Log",
           OnAction = function()
             ShowConsoleLog(true)
-            dlgConsole:Exec("cls")
+            dlgConsole:Exec("cls()")
           end
         }, dlgConsole)
         ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,ChoGGi.scripts,true)
       else
         local name = self.MenuEntries:gsub("ChoGGi_","")
-        local Table = {
-          [1] = ChoGGi.scripts,
-          [2] = "/",
-          [3] = name,
-        }
-        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,table.concat(Table))
+        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,oldTableConcat({ChoGGi.scripts,"/",name}))
       end
 
       --build history list menu
@@ -490,7 +489,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   function SA_WaitMarsTime:StopWait()
     SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
---[[
   --convert popups to console text
   SaveOrigFunc("ShowPopupNotification")
   function ShowPopupNotification(preset, params, bPersistable, parent)
@@ -500,18 +498,19 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       return
     end
 
+--[[
     if type(ChoGGi.Temp.Testing) == "function" then
     --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
       if not pcall(function()
         local function ColourText(Text,Bool)
           if Bool == true then
-            return "<color 200 200 200>" .. Text .. "</color>"
+            return oldTableConcat({"<color 200 200 200>",Text,"</color>"})
           else
-            return "<color 75 255 75>" .. Text .. "</color>"
+            return oldTableConcat({"<color 75 255 75>",Text,"</color>"})
           end
         end
         local function ReplaceParam(Name,Text,SearchName)
-          SearchName = SearchName or "<" .. Name .. ">"
+          SearchName = SearchName or oldTableConcat({"<",Name,">"})
           if not Text:find(SearchName) then
             return Text
           end
@@ -554,8 +553,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
     end
     --return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
-  end
 --]]
+  end
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
   --ChoGGi.ComFuncs.Trans(temp.text,s)

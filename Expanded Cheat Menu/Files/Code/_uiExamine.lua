@@ -1,12 +1,16 @@
---Haemimont Games code (mostly)
---why would they remove such a useful modding tool from a game that relies on mods this much?
+local oldTableConcat = oldTableConcat
 
-DefineClass.ExamineDesigner = {
-  __parents = {
-    "FrameWindow"
-  }
+--Haemimont Games code (mostly)
+--why would they remove such a useful modding tool from a game that relies on mods this much? sigh.
+
+-- 1 above console log
+local zorder = 2000001
+
+DefineClass.ChoGGi_ExamineDlg_Defaults = {
+  __parents = {"FrameWindow"}
 }
-function ExamineDesigner:Init()
+
+function ChoGGi_ExamineDlg_Defaults:Init()
   local ChoGGi = ChoGGi
 
   self:SetPos(point(278, 191))
@@ -14,119 +18,35 @@ function ExamineDesigner:Init()
   self:SetTranslate(false)
   self:SetMinSize(point(309, 53))
   self:SetMovable(true)
-  -- 1 above console log
-  self:SetZOrder(2000001)
-
-  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(325, 195),size = point(300, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self,point(629, 194))
-
-  local obj
-
-  obj = StaticText:new(self)
-  obj:SetId("idText")
-  obj:SetPos(point(283, 332))
-  obj:SetSize(point(362, 310))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("Resize")
-  obj:SetBackgroundColor(RGBA(0, 0, 0, 50))
-  obj:SetFontStyle("Editor12Bold")
-  obj:SetScrollBar(true)
-  obj:SetScrollAutohide(true)
-
-  obj = StaticText:new(self)
-  obj:SetId("idMenu")
-  obj:SetPos(point(283, 217))
-  obj:SetSize(point(362, 52))
-  obj:SetHSizing("Resize")
-  obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
-  obj:SetFontStyle("Editor12Bold")
-
-  --todo: better text control (fix weird ass text controls)
-  obj = SingleLineEdit:new(self)
-  obj:SetId("idFilter")
-  obj:SetPos(point(288, 275))
-  obj:SetSize(point(350, 26))
-  obj:SetHSizing("Resize")
-  obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
-  obj:SetFontStyle("Editor12Bold")
-  obj:SetHint("Scrolls to text entered")
-  obj:SetTextHAlign("center")
-  obj:SetTextVAlign("center")
-  obj:SetBackgroundColor(RGBA(0, 0, 0, 100))
-  obj.display_text = "Goto text"
-
-  obj = Button:new(self)
-  obj:SetId("idNext")
-  obj:SetPos(point(590, 304))
-  obj:SetSize(point(53, 26))
-  obj:SetText(T({1000232, "Next"}))
-  obj:SetTextColorDisabled(RGBA(127, 127, 127, 255))
-  obj:SetHSizing("AnchorToRight")
-  obj:SetHint("Scrolls down one or scrolls between text in \"Goto text\".")
-
-  --needs moar buttons
-  obj = Button:new(self)
-  obj:SetId("idDump")
-  obj:SetPos(point(290, 304))
-  obj:SetSize(point(75, 26))
-  obj:SetText("Dump Text")
-  obj:SetHint("Dumps text to AppData/DumpedExamine.lua")
-
-  obj = Button:new(self)
-  obj:SetId("idDumpObj")
-  obj:SetPos(point(375, 304))
-  obj:SetSize(point(75, 26))
-  obj:SetText("Dump Obj")
-  obj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
-
-  obj = Button:new(self)
-  obj:SetId("idEdit")
-  obj:SetPos(point(460, 304))
-  obj:SetSize(point(53, 26))
-  obj:SetText(T({327465361219, "Edit"}))
-  obj:SetHint("Opens object in Object Manipulator.")
-
-  obj = Button:new(self)
-  obj:SetId("idCodeExec")
-  obj:SetPos(point(520, 304))
-  obj:SetSize(point(50, 26))
-  obj:SetText("Exec")
-  obj:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
-
-  obj = Button:new(self)
-  obj:SetId("idAttaches")
-  obj:SetPos(point(575, 304))
-  obj:SetSize(point(75, 26))
-  obj:SetText("Attaches")
-  obj:SetHint("Opens attachments in new examine window.")
-
-  --so elements move when dialog re-sizes
-  self:InitChildrenSizing()
-
-  self:SetPos(point(50,150))
-  self:SetSize(point(500,600))
-end
-
-DefineClass.Examine = {
-  __parents = {
-    "ExamineDesigner"
-  },
-  -- 1 above console log
-  ZOrder = 2000001
-}
-markers = rawget(_G, "markers") or {}
-transp_mode = rawget(_G, "transp_mode") or false
-local HLEnd = "</h></color>"
-function Examine:Init()
-
-  local ChoGGi = ChoGGi
-
   self.onclick_handles = {}
   self.obj = false
   self.show_times = "relative"
   self.offset = 1
   self.page = 1
-  self.transp_mode = transp_mode
+  -- 1 above console log
+  self:SetZOrder(zorder)
+
+  function self:OnKbdKeyDown(char, vk)
+  print("sdsfsdf")
+    if vk == const.vkEsc then
+      self.idCloseX:Press()
+      return "break"
+    end
+    return "continue"
+  end
+
+  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(250, 195),size = point(300, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self)
+
+  self.idText = StaticText:new(self)
+  self.idText:SetPos(point(283, 332))
+  self.idText:SetSize(point(362, 310))
+  self.idText:SetHSizing("Resize")
+  self.idText:SetVSizing("Resize")
+  self.idText:SetBackgroundColor(RGBA(0, 0, 0, 50))
+  self.idText:SetFontStyle("Editor12Bold")
+  self.idText:SetScrollBar(true)
+  self.idText:SetScrollAutohide(true)
   function self.idText.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)
   end
@@ -135,6 +55,13 @@ function Examine:Init()
     startValue = 255,
     flags = const.intfIgnoreParent
   })
+
+  self.idMenu = StaticText:new(self)
+  self.idMenu:SetPos(point(283, 217))
+  self.idMenu:SetSize(point(362, 52))
+  self.idMenu:SetHSizing("Resize")
+  self.idMenu:SetBackgroundColor(RGBA(0, 0, 0, 16))
+  self.idMenu:SetFontStyle("Editor12Bold")
   function self.idMenu.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)
   end
@@ -143,9 +70,19 @@ function Examine:Init()
     startValue = 255,
     flags = const.intfIgnoreParent
   })
-  function self.idNext.OnButtonPressed()
-    self:FindNext(self.idFilter:GetText())
-  end
+
+  --todo: better text control (fix weird ass text controls)
+  self.idFilter = SingleLineEdit:new(self)
+  self.idFilter:SetPos(point(288, 275))
+  self.idFilter:SetSize(point(350, 26))
+  self.idFilter:SetHSizing("Resize")
+  self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
+  self.idFilter:SetFontStyle("Editor12Bold")
+  self.idFilter:SetHint("Scrolls to text entered")
+  self.idFilter:SetTextHAlign("center")
+  self.idFilter:SetTextVAlign("center")
+  self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
+  self.idFilter.display_text = "Goto text"
   self.idFilter:AddInterpolation({
     type = const.intAlpha,
     startValue = 255,
@@ -154,33 +91,91 @@ function Examine:Init()
   function self.idFilter.OnValueChanged(this, value)
     self:FindNext(value)
   end
-  --[[
-  re-added below
-  function self.idFilter.OnKbdKeyDown(_, char, virtual_key)
-    if virtual_key == const.vkEnter then
-      self:FindNext(self.idFilter:GetText())
+  --improved text handling
+  function self.idFilter:OnKbdKeyDown(char, vk)
+    if vk == const.vkEnter then
+      self.parent:FindNext(self:GetText())
       return "break"
+    elseif vk == const.vkEsc then
+      self.parent.idCloseX:Press()
+      return "break"
+    else
+      SingleLineEdit.OnKbdKeyDown(self, char, vk)
     end
-    StaticText.OnKbdKeyDown(self, char, virtual_key)
   end
-  --]]
 
-  function self.idCloseX.OnButtonPressed()
-    self:delete()
+  self.idNext = Button:new(self)
+  self.idNext:SetPos(point(590, 304))
+  self.idNext:SetSize(point(53, 26))
+  self.idNext:SetText(T({1000232, "Next"}))
+  self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+  self.idNext:SetHSizing("AnchorToRight")
+  self.idNext:SetHint("Scrolls down one or scrolls between text in \"Goto text\".")
+  function self.idNext.OnButtonPressed()
+    self:FindNext(self.idFilter:GetText())
   end
-  self:SetTranspMode(self.transp_mode)
 
-  --added:
+  --needs moar buttons
+  self.idDump = Button:new(self)
+  self.idDump:SetPos(point(290, 304))
+  self.idDump:SetSize(point(75, 26))
+  self.idDump:SetText("Dump Text")
+  self.idDump:SetHint("Dumps text to AppData/DumpedExamine.lua")
   function self.idDump.OnButtonPressed()
+    --[[
     local String = self:totextex(self.obj)
     --remove html tags
     String = String:gsub("<[/%s%a%d]*>","")
     ChoGGi.ComFuncs.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
-  end
-  function self.idDumpObj.OnButtonPressed()
-    ChoGGi.ComFuncs.Dump("\r\n" .. ValueToLuaCode(self.obj),nil,"DumpedExamineObject","lua")
+    --]]
+    self.idActionMenu = FramedList:new(self)
+    self.idActionMenu:SetPos(point(290, 304))
+    self.idActionMenu:SetSize(point(75, 26))
+    self.idActionMenu.list:SetAutosize(true)
+    self.idActionMenu:SetBackgroundColor(RGBA(0, 0, 0, 0))
+    self.idActionMenu:SetSelectionBackground(RGBA(0, 0, 0, 0))
+    self.idActionMenu.frame:SetCenterRectangle(box(16, 16, 32, 32))
+    self.idActionMenu.list:SetTextColor(RGB(0, 0, 0))
+    self.idActionMenu.list.OnClick = function()
+      print("sdfds")
+    end
+
+    self.idActionMenu.list:SetContent({text="sdfgfdg",value="dddd"})
   end
 
+
+  self.idDumpObj = Button:new(self)
+  self.idDumpObj:SetPos(point(375, 304))
+  self.idDumpObj:SetSize(point(75, 26))
+  self.idDumpObj:SetText("Dump Obj")
+  self.idDumpObj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
+  function self.idDumpObj.OnButtonPressed()
+    ChoGGi.ComFuncs.Dump(oldTableConcat({"\r\n",ValueToLuaCode(self.obj)}),nil,"DumpedExamineObject","lua")
+  end
+
+  self.idEdit = Button:new(self)
+  self.idEdit:SetPos(point(460, 304))
+  self.idEdit:SetSize(point(53, 26))
+  self.idEdit:SetText(T({327465361219, "Edit"}))
+  self.idEdit:SetHint("Opens object in Object Manipulator.")
+  function self.idEdit.OnButtonPressed()
+    ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
+  end
+
+  self.idCodeExec = Button:new(self)
+  self.idCodeExec:SetPos(point(520, 304))
+  self.idCodeExec:SetSize(point(50, 26))
+  self.idCodeExec:SetText("Exec")
+  self.idCodeExec:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
+  function self.idCodeExec.OnButtonPressed()
+    ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
+  end
+
+  self.idAttaches = Button:new(self)
+  self.idAttaches:SetPos(point(575, 304))
+  self.idAttaches:SetSize(point(75, 26))
+  self.idAttaches:SetText("Attaches")
+  self.idAttaches:SetHint("Opens attachments in new examine window.")
   function self.idAttaches.OnButtonPressed()
     local attaches = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
 
@@ -191,52 +186,30 @@ function Examine:Init()
     end
   end
 
-  function self.idEdit.OnButtonPressed()
-    ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-  end
-  function self.idCodeExec.OnButtonPressed()
-    ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
-  end
+  --so elements move when dialog re-sizes
+  self:InitChildrenSizing()
 
-  --improve text handling
-  function self.idFilter.OnKbdKeyDown(_, char, vk)
-    local text = self.idFilter
-    if vk == const.vkEnter then
-      self:FindNext(text:GetText())
-      return "break"
-    elseif vk == const.vkBackspace or vk == const.vkDelete then
-      local selection_min_pos = text.cursor_pos - 1
-      local selection_max_pos = text.cursor_pos
-      if vk == const.vkDelete then
-        selection_min_pos = text.cursor_pos
-        selection_max_pos = text.cursor_pos + 1
-      end
-      text:Replace(selection_min_pos, selection_max_pos, "")
-      text:SetCursorPos(selection_min_pos, true)
-      return "break"
-    elseif vk == const.vkRight then
-      text:SetCursorPos(text.cursor_pos + 1, true)
-      return "break"
-    elseif vk == const.vkLeft then
-      text:SetCursorPos(text.cursor_pos + -1, true)
-      return "break"
-    elseif vk == const.vkHome then
-      text:SetCursorPos(0, true)
-      return "break"
-    elseif vk == const.vkEnd then
-      text:SetCursorPos(#text.display_text, true)
-      return "break"
-    elseif vk == const.vkEsc then
-      if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-        self.idCloseX:Press()
-      end
-      self:SetFocus()
-      return "break"
-    end
-    StaticText.OnKbdKeyDown(self, char, vk)
-  end
-
+  self:SetPos(point(50,150))
+  self:SetSize(point(500,600))
 end
+
+--probably best not to change this class name?
+DefineClass.Examine = {
+  __parents = {
+    "ChoGGi_ExamineDlg_Defaults"
+  },
+  -- 1 above console log
+  ZOrder = zorder
+}
+
+markers = rawget(_G, "markers") or {}
+transp_mode = rawget(_G, "transp_mode") or false
+local HLEnd = "</h></color>"
+function Examine:Init()
+  self.transp_mode = transp_mode
+  self:SetTranspMode(self.transp_mode)
+end
+
 function Examine:FindNext(filter)
   local drawBuffer = self.idText.draw_cache
   local current_y = -self.idText.text_offset:y()
@@ -289,10 +262,10 @@ function Examine:valuetotextex(o)
   end
   if type(o) == "function" then
     local debug_info = debug.getinfo(o, "Sn")
-    return self:HyperLink(Examine) .. self:ToString(debug_info.name or debug_info.name_what or "unknown name") .. "@" .. debug_info.short_src .. "(" .. debug_info.linedefined .. ")" .. HLEnd
+    return oldTableConcat({self:HyperLink(Examine),self:ToString(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")",HLEnd})
   end
   if IsValid(o) then
-    return self:HyperLink(Examine) .. o.class .. HLEnd .. "@" .. self:valuetotextex(o:GetPos())
+    return oldTableConcat({self:HyperLink(Examine),o.class,HLEnd,"@",self:valuetotextex(o:GetPos())})
   end
   if IsPoint(o) then
     local res = {
@@ -300,37 +273,37 @@ function Examine:valuetotextex(o)
       o:y(),
       o:z()
     }
-    return self:HyperLink(ShowPoint) .. "(" .. table.concat(res, ",") .. ")" .. HLEnd
+    return oldTableConcat({self:HyperLink(ShowPoint),"(",oldTableConcat(res, ","),")",HLEnd})
   end
   if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
     local res = {}
     for i = 1, Min(#o, 3) do
-      table.insert(res, i .. " = " .. self:valuetotextex(o[i]))
+      table.insert(res,oldTableConcat({i," = ",self:valuetotextex(o[i])}))
     end
     if #o > 3 then
       table.insert(res, "...")
     end
-    return self:HyperLink(Examine) .. "objlist" .. HLEnd .. "{" .. table.concat(res, ", ") .. "}"
+    return oldTableConcat({self:HyperLink(Examine),"objlist",HLEnd,"{",oldTableConcat(res, ", "),"}"})
   end
   if type(o) == "thread" then
-    return self:HyperLink(Examine) .. self:ToString(o) .. HLEnd
+    return oldTableConcat({self:HyperLink(Examine),self:ToString(o),HLEnd})
   end
   if type(o) == "string" then
-    return "<tags off>'" .. o .. "'<tags on>"
+    return oldTableConcat({"<tags off>'",o,"'<tags on>"})
   end
   if type(o) == "table" then
     if IsT(o) then
-      return self:HyperLink(Examine) .. "T{\"" .. TDevModeGetEnglishText(o, true) .. "\"}" .. HLEnd
+      return oldTableConcat({self:HyperLink(Examine),"T{\"",TDevModeGetEnglishText(o, true),"\"}",HLEnd})
     else
-      local text = ObjectClass(o) or self:ToString(o) .. "(len:" .. #o .. ")"
-      return self:HyperLink(Examine) .. text .. HLEnd
+      local text = oldTableConcat({ObjectClass(o) or self:ToString(o),"(len:",#o,")"})
+      return oldTableConcat({self:HyperLink(Examine),text,HLEnd})
     end
   end
   return self:ToString(o)
 end
 function Examine:HyperLink(f, custom_color)
   table.insert(self.onclick_handles, f)
-  return (custom_color or "<color 150 170 250>") .. "<h " .. #self.onclick_handles .. " 230 195 50>"
+  return oldTableConcat({(custom_color or "<color 150 170 250>"),"<h ",#self.onclick_handles," 230 195 50>"})
 end
 local filters = {
   Short = {
@@ -367,11 +340,11 @@ function Examine:evalsmarttable(format_text, e)
       i = tonumber(s)
     end
     touched[i + 1] = true
-    return "<color 255 255 128>" .. self:valuetotextex(e[i + 2]) .. "</color>"
+    return oldTableConcat({"<color 255 255 128>",self:valuetotextex(e[i + 2]),"</color>"})
   end)
   for i = 2, #e do
     if not touched[i] then
-      format_text = format_text .. " <color 255 255 128>[" .. self:valuetotextex(e[i]) .. "]</color>"
+      format_text = oldTableConcat({format_text," <color 255 255 128>[",self:valuetotextex(e[i]),"]</color>"})
     end
   end
   return format_text
@@ -390,7 +363,7 @@ function Examine:totextex(o)
     for i = 1, info.nups do
       local name, val = debug.getupvalue(info.func, i)
       if name ~= nil and val ~= nil then
-        data[name .. "(up)"] = val
+        data[oldTableConcat({name,"(up)"})] = val
       end
     end
     return function()
@@ -407,7 +380,7 @@ function Examine:totextex(o)
   local sort = {}
   if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
     for k, v in pairs(o) do
-      table.insert(res, self:valuetotextex(k) .. " = " .. self:valuetotextex(v))
+      table.insert(res,oldTableConcat({self:valuetotextex(k)," = ",self:valuetotextex(v)}))
       if type(k) == "number" then
         sort[res[#res]] = k
       end
@@ -418,7 +391,7 @@ function Examine:totextex(o)
       while true do
         info = debug.getinfo(o, level, "Slfun")
         if info then
-          table.insert(res, self:HyperLink(ExamineThreadLevel(level, info)) .. info.short_src .. "(" .. info.currentline .. ") " .. (info.name or info.name_what or "unknown name") .. HLEnd)
+          table.insert(res, oldTableConcat({self:HyperLink(ExamineThreadLevel(level, info)),info.short_src,"(",info.currentline,") ",(info.name or info.name_what or "unknown name"),HLEnd}))
           level = level + 1
           else
             if type(o) == "function" then
@@ -426,7 +399,7 @@ function Examine:totextex(o)
               while true do
                 local k, v = debug.getupvalue(o, i)
                 if k ~= nil then
-                  table.insert(res, self:valuetotextex(k) .. " = " .. self:valuetotextex(v))
+                  table.insert(res, oldTableConcat({self:valuetotextex(k)," = ",self:valuetotextex(v)}))
                   i = i + 1
                   elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
                     table.insert(res, self:valuetotextex(o))
@@ -457,11 +430,11 @@ function Examine:totextex(o)
             local t = self:evalsmarttable(format_text, e)
             if t then
               if self.show_times ~= "relative" then
-                t = "<color 255 255 0>" .. tostring(e[1]) .. "</color>:" .. t
+                t = oldTableConcat({"<color 255 255 0>",tostring(e[1]),"</color>:",t})
               else
-                t = "<color 255 255 0>" .. tostring(e[1] - GameTime()) .. "</color>:" .. t
+                t = oldTableConcat({"<color 255 255 0>",tostring(e[1] - GameTime()),"</color>:",t})
               end
-              table.insert(res, t .. "<vspace 8>")
+              table.insert(res, oldTableConcat({t,"<vspace 8>"}))
             end
           end
         end
@@ -469,13 +442,12 @@ function Examine:totextex(o)
     end
   end
   if IsValid(o) and IsKindOf(o, "CObject") then
-    table.insert(res, 1, "<center>--" .. self:HyperLink(Examine(getmetatable(o))) .. o.class .. HLEnd .. "@" .. self:valuetotextex(o:GetPos()) .. "--<vspace 6>")
+    table.insert(res, 1,oldTableConcat({"<center>--",self:HyperLink(Examine(getmetatable(o))),o.class,HLEnd,"@",self:valuetotextex(o:GetPos()),"--<vspace 6>"}))
     if o:IsValidPos() and IsValidEntity(o:GetEntity()) and 0 < o:GetAnimDuration() then
       local pos = o:GetVisualPos() + o:GetStepVector() * o:TimeToAnimEnd() / o:GetAnimDuration()
-      table.insert(res, 2, "<center>" .. GetStateName(o:GetState()) .. ", step:" .. self:HyperLink(function()
+      table.insert(res, 2, oldTableConcat({"<center>",GetStateName(o:GetState()),", step:",self:HyperLink(function()
         ShowMe(pos)
-      end) .. tostring(o:GetStepVector(o:GetState(), 0)) .. HLEnd)
-    else
+      end),tostring(o:GetStepVector(o:GetState(), 0)),HLEnd}))
     end
   elseif type(o) == "table" and getmetatable(o) then
     if getmetatable(o) == g_traceMeta then
@@ -484,10 +456,10 @@ function Examine:totextex(o)
         table.insert(res, 1, "<center>-- relative times --<vspace 6>")
       end
     else
-      table.insert(res, 1, "<center>--metatable: " .. self:valuetotextex(getmetatable(o)) .. "--<vspace 6><left>")
+      table.insert(res, 1, oldTableConcat({"<center>--metatable: ",self:valuetotextex(getmetatable(o)),"--<vspace 6><left>"}))
     end
   end
-  return Untranslated(table.concat(res, "\n"))
+  return Untranslated(oldTableConcat(res, "\n"))
 end
 function Examine:menu(o)
   local res = {}
@@ -539,17 +511,17 @@ function Examine:menu(o)
     end
   end
   if IsValid(o) and type(o) == "table" then
-    table.insert(res, self:HyperLink(Show) .. "[ShowIt]" .. HLEnd)
+    table.insert(res, oldTableConcat({self:HyperLink(Show),"[ShowIt]",HLEnd}))
   end
-  table.insert(res, self:HyperLink(ClearShowMe) .. "[Clear Markers]" .. HLEnd)
+  table.insert(res, oldTableConcat({self:HyperLink(ClearShowMe),"[Clear Markers]",HLEnd}))
   if IsValid(o) then
-    table.insert(res, self:HyperLink(Destroy) .. "[Destroy It!]" .. HLEnd)
+    table.insert(res, oldTableConcat({self:HyperLink(Destroy),"[Destroy It!]",HLEnd}))
     if o:HasMember("trace_log") then
-      table.insert(res, self:HyperLink(ShowLog) .. "[Log]" .. HLEnd)
+      table.insert(res, oldTableConcat({self:HyperLink(ShowLog),"[Log]",HLEnd}))
     end
   end
   if type(o) == "table" and getmetatable(o) == g_traceMeta then
-    table.insert(res, self:HyperLink(ShowTime) .. "[Times]" .. HLEnd)
+    table.insert(res, oldTableConcat({self:HyperLink(ShowTime),"[Times]",HLEnd}))
   end
   local Refresh = function()
     if self.obj then
@@ -560,8 +532,8 @@ function Examine:menu(o)
     self.transp_mode = not self.transp_mode
     self:SetTranspMode(self.transp_mode)
   end
-  table.insert(res, "\n" .. self:HyperLink(Refresh) .. "[Refresh]" .. HLEnd)
-  table.insert(res, self:HyperLink(SetTransp) .. "[Transp]" .. HLEnd)
+  table.insert(res, oldTableConcat({"\n",self:HyperLink(Refresh),"[Refresh]",HLEnd}))
+  table.insert(res, oldTableConcat({self:HyperLink(SetTransp),"[Transp]",HLEnd}))
   if type(o) == "table" and getmetatable(o) == g_traceMeta then
     local Switch = function(t)
       return function()
@@ -578,17 +550,17 @@ function Examine:menu(o)
       self.page = self.page + 1
       self:SetObj(self.obj)
     end
-    table.insert(res, "\n" .. self:HyperLink(Switch("Short")) .. "[Short]</color>" .. HLEnd .. " " .. self:HyperLink(Switch("Long")) .. "[Long]</color>" .. HLEnd .. " " .. self:HyperLink(Switch("TraceCall")) .. "[TraceCall]</color>" .. HLEnd .. " " .. self:HyperLink(Switch(false)) .. "[General]</color>" .. HLEnd .. " " .. self:HyperLink(Prev) .. "[-]" .. HLEnd .. self.page .. self:HyperLink(Next) .. "[+]" .. HLEnd)
+    table.insert(res, oldTableConcat({"\n",self:HyperLink(Switch("Short")),"[Short]</color>",HLEnd," ",self:HyperLink(Switch("Long")),"[Long]</color>",HLEnd," ",self:HyperLink(Switch("TraceCall")),"[TraceCall]</color>",HLEnd," ",self:HyperLink(Switch(false)),"[General]</color>",HLEnd," ",self:HyperLink(Prev),"[-]",HLEnd,self.page,self:HyperLink(Next),"[+]",HLEnd}))
   else
     table.insert(res, [[
 
 Assign to]])
     for i = 1, 3 do
-      local name = "o" .. i
-      table.insert(res, self:HyperLink(Assign(name), rawget(_G, name) == o and "<color 0 255 0>") .. "[" .. name .. "]" .. HLEnd .. "</color> ")
+      local name = oldTableConcat({"o",i})
+      table.insert(res, oldTableConcat({self:HyperLink(Assign(name), rawget(_G, name) == o and "<color 0 255 0>"),"[",name,"]",HLEnd,"</color> "}))
     end
   end
-  return Untranslated(table.concat(res, "  "))
+  return Untranslated(oldTableConcat(res, "  "))
 end
 
 function Examine:SetObj(o)
@@ -608,22 +580,17 @@ function Examine:SetObj(o)
   --local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
-  local hint = {"Opens attachments in new examine window."}
-  hint[#hint+1] = "\nThis "
-  hint[#hint+1] = name
-  hint[#hint+1] = " has: "
-  hint[#hint+1] = amount
-
-  --local name = type(o) == "table" and o.class
-  self.idAttaches:SetHint(table.concat(hint))
+  local hint = {"Opens attachments in new examine window.\nThis ",name," has: ",amount}
+  self.idAttaches:SetHint(oldTableConcat(hint))
 
   --add object name to title
   local title = {name}
   if type(o.handle) == "number" then
-    title[#title+1] = " "
+    title[#title+1] = " ("
     title[#title+1] = o.handle
+    title[#title+1] = ")"
   end
-  self.idCaption:SetText(table.concat(title))
+  self.idCaption:SetText(oldTableConcat(title))
 end
 
 function Examine:SetText(text)

@@ -1,12 +1,13 @@
+local oldTableConcat = oldTableConcat
+
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_MonitorInfoDlg_Designer = {
-  __parents = {
-    "FrameWindow"
-  }
+DefineClass.ChoGGi_MonitorInfoDlg_Defaults = {
+  __parents = {"FrameWindow"}
 }
-function ChoGGi_MonitorInfoDlg_Designer:Init()
+
+function ChoGGi_MonitorInfoDlg_Defaults:Init()
   local ChoGGi = ChoGGi
 
   self:SetPos(point(100, 100))
@@ -16,70 +17,6 @@ function ChoGGi_MonitorInfoDlg_Designer:Init()
   self:SetMovable(true)
   self:SetZOrder(zorder)
 
-  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(50, 101),size = point(390, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self,point(478, 103))
-
-  local obj
-
-  obj = CheckButton:new(self)
-  obj:SetId("idAutoRefresh")
-  obj:SetPos(point(115, 128))
-  obj:SetSize(point(100, 17))
-  obj:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  obj:SetText("Auto-Refresh")
-  obj:SetHint("Auto-refresh list every \"Amount\".")
-  obj:SetButtonSize(point(16, 16))
-
-  obj = Button:new(self)
-  obj:SetId("idRefresh")
-  obj:SetPos(point(225, 128))
-  obj:SetSize(point(55, 17))
-  obj:SetText(T({1000220, "Refresh"}))
-  obj:SetHint("Manually refresh the list.")
-  obj:SetTextPrefix("<center>")
-
-  obj = SingleLineEdit:new(self)
-  obj:SetId("idTimerAmount")
-  obj:SetPos(point(290, 126))
-  obj:SetSize(point(200, 24))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("AnchorToTop")
-  obj:SetFontStyle("Editor14Bold")
-  obj:SetText(1000)
-  obj:SetHint("Refresh delay in ms")
-  obj:SetTextVAlign("center")
-  obj:SetMaxLen(-1)
-
-  obj = StaticText:new(self)
-  obj:SetId("idText")
-  obj:SetPos(point(110, 152))
-  obj:SetSize(point(385, 537))
-  obj:SetHSizing("Resize")
-  obj:SetVSizing("Resize")
-  obj:SetFontStyle("Editor12Bold")
-  obj:SetHint("Double right-click to open list of objects.")
-  obj:SetMaxLen(-1)
-  obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
-  obj:SetScrollBar(true)
-  obj:SetScrollAutohide(true)
-
-  --so elements move when dialog re-sizes
-  self:InitChildrenSizing()
-
-  self:SetPos(point(100, 100))
-  self:SetSize(point(400, 600))
-end
-
-DefineClass.ChoGGi_MonitorInfoDlg = {
-  __parents = {
-    "ChoGGi_MonitorInfoDlg_Designer",
-  },
-  ZOrder = zorder
-}
-
-function ChoGGi_MonitorInfoDlg:Init()
-
-  local ChoGGi = ChoGGi
   local Sleep = Sleep
   local CreateRealTimeThread = CreateRealTimeThread
   local terminal = terminal
@@ -93,6 +30,17 @@ function ChoGGi_MonitorInfoDlg:Init()
   self.tables = false
   self.delay = 1000
 
+
+  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(50, 101),size = point(390, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self)
+
+  self.idAutoRefresh = CheckButton:new(self)
+  self.idAutoRefresh:SetPos(point(115, 128))
+  self.idAutoRefresh:SetSize(point(100, 17))
+  self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idAutoRefresh:SetText("Auto-Refresh")
+  self.idAutoRefresh:SetHint("Auto-refresh list every \"Amount\".")
+  self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   local children = self.idAutoRefresh.children
   for i = 1, #children do
@@ -120,10 +68,11 @@ function ChoGGi_MonitorInfoDlg:Init()
     end
   end
 
-  self.idText.OnRButtonDoubleClick = function()
-    ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.tables)
-  end
-
+  self.idRefresh = Button:new(self)
+  self.idRefresh:SetPos(point(225, 128))
+  self.idRefresh:SetSize(point(55, 17))
+  self.idRefresh:SetText(T({1000220, "Refresh"}))
+  self.idRefresh:SetHint("Manually refresh the list.")
   function self.idRefresh.OnButtonPressed()
     if ChoGGi.Temp.Testing then
       OpenExamine(self.object)
@@ -131,6 +80,16 @@ function ChoGGi_MonitorInfoDlg:Init()
     self:UpdateText()
   end
 
+  self.idTimerAmount = SingleLineEdit:new(self)
+  self.idTimerAmount:SetPos(point(290, 126))
+  self.idTimerAmount:SetSize(point(200, 24))
+  self.idTimerAmount:SetHSizing("Resize")
+  self.idTimerAmount:SetVSizing("AnchorToTop")
+  self.idTimerAmount:SetFontStyle("Editor14Bold")
+  self.idTimerAmount:SetText("1000")
+  self.idTimerAmount:SetHint("Refresh delay in ms")
+  self.idTimerAmount:SetTextVAlign("center")
+  self.idTimerAmount:SetMaxLen(-1)
   function self.idTimerAmount.OnValueChanged()
     local delay = ChoGGi.ComFuncs.RetProperType(self.idTimerAmount:GetText())
     if type(delay) == "number" and delay > 0 then
@@ -138,14 +97,33 @@ function ChoGGi_MonitorInfoDlg:Init()
     end
   end
 
-  --close without doing anything
-  local function Close()
-    self:delete()
+  self.idText = StaticText:new(self)
+  self.idText:SetPos(point(110, 152))
+  self.idText:SetSize(point(385, 537))
+  self.idText:SetHSizing("Resize")
+  self.idText:SetVSizing("Resize")
+  self.idText:SetFontStyle("Editor12Bold")
+  self.idText:SetHint("Double right-click to open list of objects.")
+  self.idText:SetBackgroundColor(RGBA(0, 0, 0, 16))
+  self.idText:SetScrollBar(true)
+  self.idText:SetScrollAutohide(true)
+  function self.idText.OnRButtonDoubleClick()
+    ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.tables)
   end
-  self.idClose.OnButtonPressed = Close
-  self.idCloseX.OnButtonPressed = Close
 
-end --init
+  --so elements move when dialog re-sizes
+  self:InitChildrenSizing()
+
+  self:SetPos(point(100, 100))
+  self:SetSize(point(400, 600))
+end
+
+DefineClass.ChoGGi_MonitorInfoDlg = {
+  __parents = {
+    "ChoGGi_MonitorInfoDlg_Defaults",
+  },
+  ZOrder = zorder
+}
 
 local texttable
 local text
@@ -210,11 +188,10 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 
   texttable[#texttable+1] = "\n"
   --less .. is better
-  text = table.concat(texttable)
+  text = oldTableConcat(texttable)
 
   if text == "" then
-    local err = "Error opening" .. tostring(self.object)
-    self.idText:SetText(err)
+    self.idText:SetText(oldTableConcat({"Error opening",tostring(self.object)}))
     return
   end
   --populate it
@@ -253,10 +230,7 @@ end
 --esc removes focus,shift+esc closes, enter executes code
 function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, virtual_key)
   if virtual_key == const.vkEsc then
-    if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-      self.idClose:Press()
-    end
-    self:SetFocus()
+    self.idCloseX:Press()
     return "break"
   end
   return "continue"
