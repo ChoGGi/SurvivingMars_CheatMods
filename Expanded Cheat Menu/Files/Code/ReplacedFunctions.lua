@@ -143,11 +143,87 @@ end
 
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
+  --make sure consolelog uses our margin whenever it's visible
+  SaveOrigFunc("ConsoleLog","SetVisible")
+  function ConsoleLog:SetVisible(visible)
+    local ret = {ChoGGi.OrigFuncs.ConsoleLog_SetVisible(self,visible)}
+    if visible then
+      self:SetMargins(box(0, 0, 0, 25))
+    end
+    return table.unpack(ret)
+  end
+
+  --rebuild menu items for console script buttons
+  SaveOrigFunc("XPopupMenu","Open")
+  function XPopupMenu:Open(...)
+    if not self then
+      return
+    end
+
+    local ChoGGi = ChoGGi
+    local is_choggi = self.MenuEntries:find("ChoGGi_")
+
+    if is_choggi then
+      local dlgConsole = dlgConsole
+      local XAction = XAction
+      local host = self.desktop
+      --clear out old items
+      ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
+
+      --build list of script files
+      if self.MenuEntries == "ChoGGi_Scripts" then
+        XAction:new({
+          ActionId = "ClearLog",
+          ActionMenubar = "ChoGGi_Scripts",
+          ActionName = "Clear Log",
+          OnAction = function()
+            ShowConsoleLog(true)
+            dlgConsole:Exec("cls")
+          end
+        }, dlgConsole)
+        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,ChoGGi.scripts,true)
+      else
+        local name = self.MenuEntries:gsub("ChoGGi_","")
+        local Table = {
+          [1] = ChoGGi.scripts,
+          [2] = "/",
+          [3] = name,
+        }
+        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,table.concat(Table))
+      end
+
+      --build history list menu
+      if #dlgConsole.history_queue > 0 then
+        local history = dlgConsole.history_queue
+        for i = 1, #history do
+          --these can get long so keep 'em short
+          local name = tostring(history[i]):sub(1,25)
+          XAction:new({
+            ActionId = name,
+            ActionMenubar = "ChoGGi_History",
+            ActionName = name,
+            OnAction = function()
+              ShowConsoleLog(true)
+              dlgConsole:Exec(history[i])
+            end
+          }, dlgConsole)
+        end
+      end
+
+      --make the menu start above the button
+      self:SetMargins(box(3, 0, 0, 68))
+      -- 1 above consolelog
+      self:SetZOrder(2000001)
+    end
+
+    return ChoGGi.OrigFuncs.XPopupMenu_Open(self, ...)
+  end
+
   --larger and blacker font for Scripts menu items
   SaveOrigFunc("XMenuEntry","Open")
   function XMenuEntry:Open(...)
     ChoGGi.OrigFuncs.XMenuEntry_Open(self,...)
-    if self.parent.parent.MenuEntries == "ChoGGi_Scripts" then
+    if self.parent.parent.MenuEntries:find("ChoGGi_") then
       self:SetTextFont("Editor16Bold")
       self:SetTextColor(RGB(0,0,0))
     end
@@ -330,59 +406,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   end
 --]]
-
-  --make it so the script button on the console shows above the button/consolelog, and builds our scripts menu listing
-  SaveOrigFunc("XPopupMenu","RebuildActions")
-  function XPopupMenu:RebuildActions(host)
-    local ischoggi
-    local menu = self.MenuEntries
-
-    --clear out old scripts
-    for i = #host.actions, 1, -1 do
-        local action = host.actions[i]
-      if action.ActionMenubar == "ChoGGi_Scripts" and host:FilterAction(action) then
-        ischoggi = true
-        action:delete()
-        table.remove(host.actions,i)
-      end
-    end
-    --rebuild list of scripts
-    ChoGGi.ComFuncs.ListScriptFiles()
-
-    local context = host.context
-    local ShowIcons = self.ShowIcons
-    self.idContainer:DeleteChildren()
-    for i = 1, #host.actions do
-      local action = host.actions[i]
-      if action.ActionMenubar == menu and host:FilterAction(action) then
-        local entry = XMenuEntry:new({
-          OnPress = function(this, gamepad)
-            host:OnAction(action, self)
-            if action.OnActionEffect ~= "popup" then
-              self:Close(action.ActionId)
-            end
-          end
-        }, self.idContainer, context)
-        entry:SetFontProps(self)
-        entry:SetTranslate(action.ActionTranslate)
-        entry:SetText(action.ActionName)
-
-        if ShowIcons then
-          entry:SetIcon(action.ActionIcon)
-        end
-        entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-        entry:Open()
-
-      end --if
-    end --for
-
-    if ischoggi then
-      --make the menu start above the button
-      self:SetMargins(box(0, 0, 0, 40))
-      -- 1 above consolelog
-      self:SetZOrder(2000001)
-    end
-  end
 
   --removes earthsick effect
   SaveOrigFunc("Colonist","ChangeComfort")

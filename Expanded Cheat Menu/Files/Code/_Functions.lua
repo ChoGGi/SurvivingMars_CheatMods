@@ -554,7 +554,7 @@ function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
 
   CreateRealTimeThread(function()
     local option = ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
-    if option ~= "idClose" then
+    if option and #option > 0 then
       Table.callback(option)
     end
   end)
@@ -919,7 +919,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     ItemList[#ItemList+1] = {
       text = "Colour " .. i,
       value = pal["Color" .. i],
-      hint = "Use the colour picker (dbl-click for instant change).",
+      hint = "Use the colour picker (dbl right-click for instant change).",
     }
     ItemList[#ItemList+1] = {
       text = "Metallic " .. i,

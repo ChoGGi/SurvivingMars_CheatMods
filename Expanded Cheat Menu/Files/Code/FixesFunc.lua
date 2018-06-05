@@ -17,6 +17,49 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+local function AttachmentsCollisionToggle(sel,which)
+  local att = sel:GetAttaches()
+  if att and #att > 0 then
+    --are we disabling col or enabling
+    local flag
+    if which then
+      flag = "ClearEnumFlags"
+    else
+      flag = "SetEnumFlags"
+    end
+    --and loop through all the attach
+    for i = 1, #att do
+      att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
+    end
+  end
+end
+
+function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
+  local sel = SelectedObj
+  if not sel then
+    ChoGGi.ComFuncs.MsgPopup("Nothing selected.","Collisions")
+    return
+  end
+
+  local which
+  if sel.ChoGGi_CollisionsDisabled then
+    sel:SetEnumFlags(const.efCollision + const.efApplyToGrids)
+    AttachmentsCollisionToggle(sel,false)
+    sel.ChoGGi_CollisionsDisabled = nil
+    which = "enabled"
+  else
+    sel:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+    AttachmentsCollisionToggle(sel,true)
+    sel.ChoGGi_CollisionsDisabled = true
+    which = "disabled"
+  end
+
+  ChoGGi.ComFuncs.MsgPopup(
+    "Collisions " .. which .. " on " .. ChoGGi.CodeFuncs.RetName(sel),
+    "Collisions"
+  )
+end
+
 local function SpawnColonist(old_c,building,pos)
   local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or building)
   if not dome then

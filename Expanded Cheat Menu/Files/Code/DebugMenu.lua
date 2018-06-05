@@ -132,7 +132,7 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Console Clear Display",
+    "[102]Debug/Console: Clear Log",
     cls,
     "F9",
     "Clears console history display.",
@@ -169,7 +169,7 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Console Toggle History",
+    "[102]Debug/Console: Toggle History",
     ChoGGi.MenuFuncs.ConsoleHistory_Toggle,
     nil,
     function()

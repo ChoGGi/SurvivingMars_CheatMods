@@ -12,15 +12,15 @@ print(socket._VERSION)
 --]]
 
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
+  if type(AddCustomOnScreenNotification) ~= "function" then --if we called it where there ain't no UI
+    return
+  end
   Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
   --we only use the id to remove it below (don't want a big 'ol list in g_ShownOnScreenNotifications)
   local id = AsyncRand()
   local timeout = 10000
   if Size then
     timeout = 30000
-  end
-  if type(AddCustomOnScreenNotification) ~= "function" then --if we called it where there ain't no UI
-    return
   end
   CreateRealTimeThread(function()
     AddCustomOnScreenNotification(
@@ -895,7 +895,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   end
 
   --update the add button hint
-  dlg.idAddNew:SetHint(dlg.idAddNew:GetHint() .. title .. ".")
+  dlg.idAddNew:SetHint("Add new entry to " .. title .. " (Defaults to name/value of selected item).")
 
   --title text
   if type(Object) == "table" then
@@ -924,26 +924,127 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
 
 end
 
---used to add files to Script menu
-function ChoGGi.ComFuncs.ListScriptFiles()
-
-  local script_path = "AppData/ECM Scripts"
-  --creates if not existing
-  AsyncCreatePath(script_path)
-  local err, scripts = AsyncListFiles(script_path, "*.lua")
-  if err then
-    return err
+--returns table with list of files without path or ext and path, or exclude ext to return all files
+function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
+  local err, files = AsyncListFiles(Folder,Ext and "*" .. Ext or "*")
+  if not err and #files > 0 then
+    local table_path = {}
+    local path = Folder .. "/"
+    for i = 1, #files do
+      local name
+      if Ext then
+        name = string.gsub(files[i]:gsub(path,""),Ext,"")
+      else
+        name = files[i]:gsub(path,"")
+      end
+      table_path[#table_path+1] = {
+        path = files[i],
+        name = name,
+      }
+    end
+    return table_path
   end
-  if #scripts > 0 then
-    for i = 1, #scripts do
-      local name = string.gsub(scripts[i]:gsub("AppData/ECM Scripts/",""),".lua","")
+end
+
+--rebuild menu toolbar buttons
+function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
+  local XAction = XAction
+  host = host or terminal.desktop
+
+  --clear out old menu/toolbar items
+  for i = #host.actions, 1, -1 do
+    if host.actions[i].ChoGGi_ConsoleAction or
+        host:FilterAction(host.actions[i]) and host.actions[i].ActionMenubar:find("ChoGGi_") then
+      host.actions[i]:delete()
+      table.remove(host.actions,i)
+    end
+  end
+
+  XAction:new({
+    ActionId = "ChoGGi_Scripts",
+    ActionMenubar = "Menu",
+    ActionName = "Scripts",
+    OnActionEffect = "popup",
+    ChoGGi_ConsoleAction = true,
+  }, dlgConsole)
+
+  XAction:new({
+    ActionId = "ChoGGi_History",
+    ActionMenubar = "Menu",
+    ActionName = "History",
+    OnActionEffect = "popup",
+    ChoGGi_ConsoleAction = true,
+  }, dlgConsole)
+
+  local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
+  if folders then
+    for i = 1, #folders do
+      local Table = {}
+      Table[#Table+1] = "ChoGGi_"
+      Table[#Table+1] = folders[i].name
       XAction:new({
-        ActionId = name,
-        ActionMenubar = "ChoGGi_Scripts",
-        ActionName = name,
-        ActionIcon = "CommonAssets/UI/Ged/new.tga",
+        ActionId = table.concat(Table),
+        ActionMenubar = "Menu",
+        ActionName = folders[i].name,
+        OnActionEffect = "popup",
+        ChoGGi_ConsoleAction = true,
+      }, dlgConsole)
+    end
+  end
+end
+
+function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
+  --local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
+  local err, folders = AsyncListFiles(Folder,"*","folders")
+  if not err and #folders > 0 then
+    local table_path = {}
+    local temp_path = Folder .. "/"
+    for i = 1, #folders do
+      table_path[#table_path+1] = {
+        path = folders[i],
+        name = folders[i]:gsub(temp_path,""),
+      }
+    end
+    return table_path
+  end
+end
+
+--used to add files to Script menu
+function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
+
+  local ChoGGi = ChoGGi
+  local AsyncFileToString = AsyncFileToString
+  local XAction = XAction
+
+  --create folder and some example scripts if folder doesn't exist
+  if main and AsyncFileOpen(script_path) ~= "Access Denied" then
+    AsyncCreatePath(script_path)
+    --print some info
+    print("Place .lua files in " .. script_path .. " to have them show up in the \"Scripts\" list, you can then use the list to execute them (you can also create folders for sorting).")
+    --add some example files and a readme
+    AsyncStringToFile(script_path .. "/readme.txt","Any .lua files in here will be part of a list that you can execute in-game from the console menu.")
+    AsyncStringToFile(script_path .. "/Help.lua","Place .lua files in " .. script_path .. " to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).")
+    AsyncCreatePath(script_path .. "/Examine")
+    AsyncStringToFile(script_path .. "/Examine/DataInstances.lua","OpenExamine(DataInstances)")
+    AsyncStringToFile(script_path .. "/Examine/InGameInterface.lua","OpenExamine(GetInGameInterface())")
+    AsyncStringToFile(script_path .. "/Examine/terminal.desktop.lua","OpenExamine(terminal.desktop)")
+    AsyncCreatePath(script_path .. "/Functions")
+    AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua","#GetObjects({class=\"Colonist\"})")
+    AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua","SelectedObj:ToggleWorking()")
+    --rebuild toolbar
+    ChoGGi.ComFuncs.RebuildConsoleToolbar()
+  end
+
+  local scripts = ChoGGi.ComFuncs.RetFilesInFolder(script_path,".lua")
+  if scripts then
+    for i = 1, #scripts do
+      XAction:new({
+        ActionId = scripts[i].name,
+        ActionMenubar = menu_name,
+        ActionName = scripts[i].name,
+        --ActionIcon = "CommonAssets/UI/Ged/new.tga",
         OnAction = function()
-          local file_error, script = AsyncFileToString(scripts[i])
+          local file_error, script = AsyncFileToString(scripts[i].path)
           if not file_error then
             --print(scripts[i])
             --make sure log is showing
@@ -953,21 +1054,8 @@ function ChoGGi.ComFuncs.ListScriptFiles()
         end
       }, dlgConsole)
     end
-  else
-    AsyncStringToFile("AppData/ECM Scripts/readme.txt","Any .lua files in here will be part of a list that you can execute in-game (open the console).")
-    AsyncStringToFile("AppData/ECM Scripts/InGameInterface.lua","OpenExamine(GetInGameInterface())")
-    AsyncStringToFile("AppData/ECM Scripts/terminal.desktop","OpenExamine(terminal.desktop)")
-    XAction:new({
-      ActionId = "Help",
-      ActionMenubar = "ChoGGi_Scripts",
-      ActionName = "Help",
-      ActionIcon = "CommonAssets/UI/Ged/new.tga",
-      OnAction = function()
-        --readfile and exec in consoleexec
-        print("Place .lua files in \"AppData/ECM Scripts\" to have them show up in the \"Scripts\" list, you can then use the list to execute them.")
-      end
-    }, dlgConsole)
   end
+
 end
 
 --i keep forgetting this so, i'm adding it here
@@ -983,6 +1071,30 @@ function ChoGGi.ComFuncs.Trans(...)
   return _InternalTranslate(T({...}))
 end
 
-function ChoGGi.CodeFuncs.NewThread(Func,...)
+function ChoGGi.ComFuncs.NewThread(Func,...)
   coroutine.resume(coroutine.create(Func),...)
+end
+
+function ChoGGi.ComFuncs.DialogAddCaption(Table)
+  local obj = StaticText:new(Table.self)
+  obj:SetId("idCaption")
+  obj:SetPos(Table.pos)
+  obj:SetSize(Table.size)
+  obj:SetHSizing("AnchorToLeft")
+  --obj:SetVSizing("Resize")
+  obj:SetBackgroundColor(0)
+  obj:SetFontStyle("Editor14Bold")
+  obj:SetTextPrefix(Table.prefix or "<center>")
+  obj.HandleMouse = false
+  --obj.SingleLine = true
+end
+
+function ChoGGi.ComFuncs.DialogAddCloseX(self,pos)
+  local obj = Button:new(self)
+  obj:SetId("idCloseX")
+  obj:SetPos(pos)
+  obj:SetSize(point(18, 18))
+  obj:SetHSizing("AnchorToRight")
+  obj:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+  obj:SetHint(T({1011, "Close"}))
 end

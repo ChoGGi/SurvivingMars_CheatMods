@@ -5,39 +5,55 @@ local icon = "ReportBug.tga"
 function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/ Fire Most Fixes",
-    ChoGGi.MenuFuncs.FireMostFixes,
+    "Expanded CM/Fixes/[9]Toggle Collisions On Selected Object",
+    ChoGGi.MenuFuncs.CollisionsObject_Toggle,
     nil,
-    "Fires most of the non-toggle fixes (nuke 'em from orbit and all that).\n\nFires ones with * on the name.",
+    "Just in case you get something stuck somewhere.",
     icon
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Colonists Trying To Board Rocket Freezes Game *",
+    "Expanded CM/Fixes/[9]Rebuild Walkable Points In Domes",
+    ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
+    nil,
+    "Useful? who knows, won't hurt.",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/[9]Colonists Stuck Outside Rocket",
+    ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
+    nil,
+    "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will do a little copy n paste fix (they'll keep the same traits/whatnot).",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/[9]Remove Missing Class Objects (Warning)",
+    ChoGGi.MenuFuncs.RemoveMissingClassObjects,
+    nil,
+    "Warning: May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
+    icon
+  )
+
+---------------------------------most
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/[0] Fire Most Fixes",
+    ChoGGi.MenuFuncs.FireMostFixes,
+    nil,
+    "Fires all the fixes in the \"Most\" menu (nuke 'em from orbit and all that).",
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    "Expanded CM/Fixes/[0]Most/Colonists Trying To Board Rocket Freezes Game",
     ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame,
     nil,
     "Doesn't fix the underlying cause, but it works.",
     icon
   )
-
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Rebuild Walkable Points In Domes",
-    ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
-    nil,
-    "Might help for dome areas that drones can't get to.",
-    icon
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Colonists Stuck Outside Rocket",
-    ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
-    nil,
-    "If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will do a little copy n paste.",
-    icon
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Particles With Null Polylines *",
+    "Expanded CM/Fixes/[0]Most/Remove Particles With Null Polylines",
     ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
     nil,
     "It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
@@ -45,15 +61,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Missing Class Objects (Warning)",
-    ChoGGi.MenuFuncs.RemoveMissingClassObjects,
-    nil,
-    "Warning: May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
-    icon
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Mirror Sphere Stuck *",
+    "Expanded CM/Fixes/[0]Most/Mirror Sphere Stuck",
     ChoGGi.MenuFuncs.MirrorSphereStuck,
     nil,
     "If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)",
@@ -61,7 +69,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Stutter With High FPS or Human Centipede *",
+    "Expanded CM/Fixes/[0]Most/Stutter With High FPS or Human Centipede",
     ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
     "If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).\n\nThis also works for colonists practicing the human centipede.",
@@ -69,7 +77,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Drones Keep Trying Blocked Areas *",
+    "Expanded CM/Fixes/[0]Most/Drones Keep Trying Blocked Areas",
     ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas,
     nil,
     "If you have a certain dronehub who's drones keep trying to get somewhere they can't reach, try this.",
@@ -77,7 +85,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Idle Drones Won't Build When Resources Available *",
+    "Expanded CM/Fixes/[0]Most/Idle Drones Won't Build When Resources Available",
     ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
     nil,
     "If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).",
@@ -85,7 +93,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Remove Yellow Grid Marks *",
+    "Expanded CM/Fixes/[0]Most/Remove Yellow Grid Marks",
     ChoGGi.MenuFuncs.RemoveYellowGridMarks,
     nil,
     "If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.",
@@ -93,7 +101,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Project Morpheus Radar Fell Down *",
+    "Expanded CM/Fixes/[0]Most/Project Morpheus Radar Fell Down",
     ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
     nil,
     "Sometimes the blue radar thingy falls off.",
@@ -101,7 +109,7 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Cables & Pipes: Instant Repair *",
+    "Expanded CM/Fixes/[0]Most/Cables & Pipes: Instant Repair",
     ChoGGi.MenuFuncs.CablesAndPipesRepair,
     nil,
     "Instantly repair all broken pipes and cables.",
@@ -109,13 +117,12 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Attach Buildings To Nearest Working Dome *",
+    "Expanded CM/Fixes/[0]Most/Attach Buildings To Nearest Working Dome",
     ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
     nil,
     "If you placed inside buildings outside and removed the dome they're attached to; use this.",
     icon
   )
-
 ---------------------------toggles
 --[[
 fixed in curiosity
@@ -132,7 +139,7 @@ fixed in curiosity
   )
 --]]
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Rover Infinite Loop In Curiosity Update",
+    "Expanded CM/Fixes/[6]Toggles/Toggle: Rover Infinite Loop In Curiosity Update",
     ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle,
     nil,
     function()
@@ -143,7 +150,7 @@ fixed in curiosity
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Drone Carry Amount",
+    "Expanded CM/Fixes/[6]Toggles/Toggle: Drone Carry Amount",
     ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
     nil,
     function()
@@ -154,7 +161,7 @@ fixed in curiosity
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Expanded CM/Fixes/Toggle: Sort Command Center Dist",
+    "Expanded CM/Fixes/[6]Toggles/Toggle: Sort Command Center Dist",
     ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
     nil,
     function()

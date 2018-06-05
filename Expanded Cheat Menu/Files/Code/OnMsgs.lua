@@ -8,11 +8,6 @@ function OnMsg.ClassesGenerate(classdefs)
   ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-  --custom dialogs
-  ChoGGi.MsgFuncs.ListChoiceCustom_ClassesGenerate()
-  ChoGGi.MsgFuncs.ObjectManipulator_ClassesGenerate()
-  ChoGGi.MsgFuncs.ExecCodeDlg_ClassesGenerate()
-  ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesGenerate()
 
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesGenerate()
@@ -47,11 +42,7 @@ function OnMsg.ClassesBuilt()
 
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  --custom dialogs
-  ChoGGi.MsgFuncs.ListChoiceCustom_ClassesBuilt()
-  ChoGGi.MsgFuncs.ObjectManipulator_ClassesBuilt()
-  ChoGGi.MsgFuncs.ExecCodeDlg_ClassesBuilt()
-  ChoGGi.MsgFuncs.MonitorInfoDlg_ClassesBuilt()
+
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
@@ -699,6 +690,7 @@ function OnMsg.ChoGGi_Loaded()
   local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
   local AsyncFileToString = AsyncFileToString
   local dlgConsole = dlgConsole
+  local dlgConsoleLog = dlgConsoleLog
   --gets used a few times
   local Table
 
@@ -772,28 +764,23 @@ function OnMsg.ChoGGi_Loaded()
 
 
   --add Scripts button to console
-  if not dlgConsole.ChoGGi_MenuAdded then
+  if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
     dlgConsole.ChoGGi_MenuAdded = true
     --make some space for the button
-    dlgConsole.idEdit:SetMargins(box(80, 5, 5, 5))
+    dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
 
-    XMenuBar:new({
+    local toolbar = XMenuBar:new({
       Id = "idMenu",
       HAlign = "left",
-      LayoutMethod = "VList",
-      Margins = box(5, 5, 0, -32),
+      Margins = box(15, 0, 0, 3),
       MenuEntries = "Menu",
       Dock = "bottom",
       TextFont = "Editor16Bold",
-      TextColor = RGB(0,0,0),
+      TextColor = black,
+      ChoGGi_ConsoleToolbar = true,
     }, dlgConsole)
 
-    XAction:new({
-      ActionId = "ChoGGi_Scripts",
-      ActionMenubar = "Menu",
-      ActionName = "Scripts",
-      OnActionEffect = "popup"
-    }, dlgConsole)
+    ChoGGi.ComFuncs.RebuildConsoleToolbar()
 
   end
 
@@ -809,7 +796,7 @@ function OnMsg.ChoGGi_Loaded()
       id = "DaddysLittleHitler"
     })
     if not MilestoneCompleted.DaddysLittleHitler then
-      MilestoneCompleted.DaddysLittleHitler = 3025359200000
+      MilestoneCompleted.DaddysLittleHitler = 3025359200000 --hitler's birthday
     end
   end
   if UICity.ChoGGi.Childkiller then
@@ -824,7 +811,7 @@ function OnMsg.ChoGGi_Loaded()
     })
     --it doesn't hurt
     if not MilestoneCompleted.Childkiller then
-      MilestoneCompleted.Childkiller = 479000000
+      MilestoneCompleted.Childkiller = 479000000 --666
     end
   end
 

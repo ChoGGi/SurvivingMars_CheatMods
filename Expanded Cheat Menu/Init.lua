@@ -4,6 +4,7 @@
 ChoGGi = {
   email = "ECM@choggi.org",
   id = "ChoGGi_CheatMenu",
+  scripts = "AppData/ECM Scripts",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   --orig funcs that we replace
   OrigFuncs = {},
@@ -90,8 +91,8 @@ if ChoGGi.Temp.Testing then
 end
 
 --if writelogs option
-if ChoGGi.UserSettings.WriteLogs == true then
-  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
+if ChoGGi.UserSettings.WriteLogs then
+  --ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
   ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 end
 

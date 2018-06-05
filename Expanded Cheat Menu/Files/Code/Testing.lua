@@ -191,5 +191,6 @@ end
 function ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
 
   ------
-  print("Testing_LoadingScreenPreClose")
+  print("<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Testing Enabled</color>")
+
 end

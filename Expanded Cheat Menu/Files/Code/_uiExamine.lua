@@ -1,4 +1,111 @@
 --Haemimont Games code (mostly)
+--why would they remove such a useful modding tool from a game that relies on mods this much?
+
+DefineClass.ExamineDesigner = {
+  __parents = {
+    "FrameWindow"
+  }
+}
+function ExamineDesigner:Init()
+  local ChoGGi = ChoGGi
+
+  self:SetPos(point(278, 191))
+  self:SetSize(point(372, 459))
+  self:SetTranslate(false)
+  self:SetMinSize(point(309, 53))
+  self:SetMovable(true)
+  -- 1 above console log
+  self:SetZOrder(2000001)
+
+  ChoGGi.ComFuncs.DialogAddCaption({self = self,pos = point(325, 195),size = point(300, 22)})
+  ChoGGi.ComFuncs.DialogAddCloseX(self,point(629, 194))
+
+  local obj
+
+  obj = StaticText:new(self)
+  obj:SetId("idText")
+  obj:SetPos(point(283, 332))
+  obj:SetSize(point(362, 310))
+  obj:SetHSizing("Resize")
+  obj:SetVSizing("Resize")
+  obj:SetBackgroundColor(RGBA(0, 0, 0, 50))
+  obj:SetFontStyle("Editor12Bold")
+  obj:SetScrollBar(true)
+  obj:SetScrollAutohide(true)
+
+  obj = StaticText:new(self)
+  obj:SetId("idMenu")
+  obj:SetPos(point(283, 217))
+  obj:SetSize(point(362, 52))
+  obj:SetHSizing("Resize")
+  obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
+  obj:SetFontStyle("Editor12Bold")
+
+  --todo: better text control (fix weird ass text controls)
+  obj = SingleLineEdit:new(self)
+  obj:SetId("idFilter")
+  obj:SetPos(point(288, 275))
+  obj:SetSize(point(350, 26))
+  obj:SetHSizing("Resize")
+  obj:SetBackgroundColor(RGBA(0, 0, 0, 16))
+  obj:SetFontStyle("Editor12Bold")
+  obj:SetHint("Scrolls to text entered")
+  obj:SetTextHAlign("center")
+  obj:SetTextVAlign("center")
+  obj:SetBackgroundColor(RGBA(0, 0, 0, 100))
+  obj.display_text = "Goto text"
+
+  obj = Button:new(self)
+  obj:SetId("idNext")
+  obj:SetPos(point(590, 304))
+  obj:SetSize(point(53, 26))
+  obj:SetText(T({1000232, "Next"}))
+  obj:SetTextColorDisabled(RGBA(127, 127, 127, 255))
+  obj:SetHSizing("AnchorToRight")
+  obj:SetHint("Scrolls down one or scrolls between text in \"Goto text\".")
+
+  --needs moar buttons
+  obj = Button:new(self)
+  obj:SetId("idDump")
+  obj:SetPos(point(290, 304))
+  obj:SetSize(point(75, 26))
+  obj:SetText("Dump Text")
+  obj:SetHint("Dumps text to AppData/DumpedExamine.lua")
+
+  obj = Button:new(self)
+  obj:SetId("idDumpObj")
+  obj:SetPos(point(375, 304))
+  obj:SetSize(point(75, 26))
+  obj:SetText("Dump Obj")
+  obj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
+
+  obj = Button:new(self)
+  obj:SetId("idEdit")
+  obj:SetPos(point(460, 304))
+  obj:SetSize(point(53, 26))
+  obj:SetText(T({327465361219, "Edit"}))
+  obj:SetHint("Opens object in Object Manipulator.")
+
+  obj = Button:new(self)
+  obj:SetId("idCodeExec")
+  obj:SetPos(point(520, 304))
+  obj:SetSize(point(50, 26))
+  obj:SetText("Exec")
+  obj:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
+
+  obj = Button:new(self)
+  obj:SetId("idAttaches")
+  obj:SetPos(point(575, 304))
+  obj:SetSize(point(75, 26))
+  obj:SetText("Attaches")
+  obj:SetHint("Opens attachments in new examine window.")
+
+  --so elements move when dialog re-sizes
+  self:InitChildrenSizing()
+
+  self:SetPos(point(50,150))
+  self:SetSize(point(500,600))
+end
 
 DefineClass.Examine = {
   __parents = {
@@ -58,7 +165,7 @@ function Examine:Init()
   end
   --]]
 
-  function self.idClose.OnButtonPressed()
+  function self.idCloseX.OnButtonPressed()
     self:delete()
   end
   self:SetTranspMode(self.transp_mode)
@@ -121,7 +228,7 @@ function Examine:Init()
       return "break"
     elseif vk == const.vkEsc then
       if terminal.IsKeyPressed(const.vkControl) or terminal.IsKeyPressed(const.vkShift) then
-        self.idClose:Press()
+        self.idCloseX:Press()
       end
       self:SetFocus()
       return "break"
@@ -485,6 +592,10 @@ Assign to]])
 end
 
 function Examine:SetObj(o)
+  if type(o) ~= "table" then
+    self:delete()
+  end
+
   self.onclick_handles = {}
   self.obj = o
   self.idText:SetText(self:totextex(o))
