@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local oldTableConcat = oldTableConcat
 
 -- 1 above console log, 1000 above examine
@@ -38,8 +40,8 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
   self.idAutoRefresh:SetPos(point(115, 128))
   self.idAutoRefresh:SetSize(point(100, 17))
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idAutoRefresh:SetText("Auto-Refresh")
-  self.idAutoRefresh:SetHint("Auto-refresh list every \"Amount\".")
+  self.idAutoRefresh:SetText(ChoGGi.ComFuncs.Trans(302535920000084,"Auto-Refresh"))
+  self.idAutoRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000085,"Auto-refresh list every \"Amount\"."))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   local children = self.idAutoRefresh.children
@@ -71,8 +73,8 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
   self.idRefresh = Button:new(self)
   self.idRefresh:SetPos(point(225, 128))
   self.idRefresh:SetSize(point(55, 17))
-  self.idRefresh:SetText(T({1000220, "Refresh"}))
-  self.idRefresh:SetHint("Manually refresh the list.")
+  self.idRefresh:SetText(ChoGGi.ComFuncs.Trans(1000220,"Refresh"))
+  self.idRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000086,"Manually refresh the list."))
   function self.idRefresh.OnButtonPressed()
     if ChoGGi.Temp.Testing then
       OpenExamine(self.object)
@@ -87,7 +89,7 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
   self.idTimerAmount:SetVSizing("AnchorToTop")
   self.idTimerAmount:SetFontStyle("Editor14Bold")
   self.idTimerAmount:SetText("1000")
-  self.idTimerAmount:SetHint("Refresh delay in ms")
+  self.idTimerAmount:SetHint(ChoGGi.ComFuncs.Trans(302535920000087,"Refresh delay in ms"))
   self.idTimerAmount:SetTextVAlign("center")
   self.idTimerAmount:SetMaxLen(-1)
   function self.idTimerAmount.OnValueChanged()
@@ -103,7 +105,7 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
   self.idText:SetHSizing("Resize")
   self.idText:SetVSizing("Resize")
   self.idText:SetFontStyle("Editor12Bold")
-  self.idText:SetHint("Double right-click to open list of objects.")
+  self.idText:SetHint(ChoGGi.ComFuncs.Trans(302535920000088,"Double right-click to open list of objects."))
   self.idText:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idText:SetScrollBar(true)
   self.idText:SetScrollAutohide(true)
@@ -183,7 +185,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
       end --for
     end --if
   else
-    texttable[#texttable+1] = "Nothing left"
+    texttable[#texttable+1] = ChoGGi.ComFuncs.Trans(302535920000089,"Nothing left")
   end --if #self.tables > 0
 
   texttable[#texttable+1] = "\n"
@@ -191,7 +193,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
   text = oldTableConcat(texttable)
 
   if text == "" then
-    self.idText:SetText(oldTableConcat({"Error opening",tostring(self.object)}))
+    self.idText:SetText(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000090,"Error opening"),tostring(self.object)}))
     return
   end
   --populate it

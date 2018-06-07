@@ -188,7 +188,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
         XAction:new({
           ActionId = "ClearLog",
           ActionMenubar = "ChoGGi_Scripts",
-          ActionName = "Clear Log",
+          ActionName = ChoGGi.ComFuncs.Trans(302535920000734,"Clear Log"),
           OnAction = function()
             ShowConsoleLog(true)
             dlgConsole:Exec("cls()")
@@ -461,7 +461,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       if StopWait.skipmsg then
         StopWait.skipmsg = nil
       else
-        ChoGGi.ComFuncs.MsgPopup("Timer delay skipped","Mystery")
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000735,"Timer delay skipped"),ChoGGi.ComFuncs.Trans(3486,"Mystery"))
       end
 
       --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
@@ -552,8 +552,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     else
       return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
     end
-    --return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
 --]]
+    return ChoGGi.OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
   end
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath

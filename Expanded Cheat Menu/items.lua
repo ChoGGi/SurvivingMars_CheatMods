@@ -1,1 +1,3 @@
-return {PlaceObj("ModItemCode",{"FileName","Init.lua"})}
+return {
+  PlaceObj("ModItemCode",{"FileName","Init.lua"})
+}

@@ -5,169 +5,169 @@ local icon = "new_city.tga"
 function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/Change Terrain Type",
+    "Game/" .. ChoGGi.ComFuncs.Trans(302535920000623,"Change Terrain Type"),
     ChoGGi.MenuFuncs.ChangeTerrainType,
     nil,
-    "Green or Icy mars? Coming right up!",
+    ChoGGi.ComFuncs.Trans(302535920000624,"Green or Icy mars? Coming right up!\n(don't forget a light model)"),
     "prefabs.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/Change Light Model",
+    "Game/" .. ChoGGi.ComFuncs.Trans(302535920000625,"Change Light Model"),
     ChoGGi.MenuFuncs.ChangeLightmodel,
     nil,
-    "Changes the lighting mode (temporary or permanent).",
+    ChoGGi.ComFuncs.Trans(302535920000626,"Changes the lighting mode (temporary or permanent)."),
     "light_model.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/Change Light Model Custom",
+    "Game/" .. ChoGGi.ComFuncs.Trans(302535920000627,"Change Light Model Custom"),
     ChoGGi.MenuFuncs.ChangeLightmodelCustom,
     nil,
-    "Make a custom lightmodel and save it to settings. You still need to use \"Change Light Model\" for permanent.",
+    ChoGGi.ComFuncs.Trans(302535920000628,"Make a custom lightmodel and save it to settings. You still need to use \"Change Light Model\" for permanent."),
     "light_model.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/Set UI Transparency",
+    "Game/" .. ChoGGi.ComFuncs.Trans(302535920000629,"Set UI Transparency"),
     ChoGGi.MenuFuncs.SetTransparencyUI,
     "Ctrl-F3",
-    "Change the transparency of UI items (info panel, menu, pins).",
+    ChoGGi.ComFuncs.Trans(302535920000630,"Change the transparency of UI items (info panel, menu, pins)."),
     "set_last_texture.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/Set UI Transparency Mouseover",
+    "Game/" .. ChoGGi.ComFuncs.Trans(302535920000631,"Set UI Transparency Mouseover"),
     ChoGGi.MenuFuncs.TransparencyUI_Toggle,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.TransparencyToggle)
-      return des .. " Toggle removing transparency on mouseover."
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000632,"Toggle removing transparency on mouseover.")
     end,
     "set_last_texture.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Lights Radius",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000633,"Lights Radius"),
     ChoGGi.MenuFuncs.SetLightsRadius,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.LightsRadius)
-      return des .. "\nSets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?"
+      return des .. ChoGGi.ComFuncs.Trans(302535920000634,"\nSets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?")
     end,
     "LightArea.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Terrain Detail",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000635,"Terrain Detail"),
     ChoGGi.MenuFuncs.SetTerrainDetail,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.TerrainDetail)
-      return des .. "\nSets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu)."
+      return des .. ChoGGi.ComFuncs.Trans(302535920000636,"\nSets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).")
     end,
     "selslope.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Video Memory",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000637,"Video Memory"),
     ChoGGi.MenuFuncs.SetVideoMemory,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.VideoMemory)
-      return des .. "\nSets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048."
+      return des .. ChoGGi.ComFuncs.Trans(302535920000638,"\nSets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.")
     end,
     "CountPointLights.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Shadow Map",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000639,"Shadow Map"),
     ChoGGi.MenuFuncs.SetShadowmapSize,
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.ShadowmapSize)
-      return des .. "\nSets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096."
+      return des .. ChoGGi.ComFuncs.Trans(302535920000640,"\nSets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.")
     end,
     "DisableEyeSpec.tga"
   )
 
   --------------------
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Disable Texture Compression",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000641,"Disable Texture Compression"),
     ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.DisableTextureCompression and "(Enabled)" or "(Disabled)"
-      return des .. " Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram)."
+      local des = ChoGGi.UserSettings.DisableTextureCompression and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000642,"Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).")
     end,
     "ExportImageSequence.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Higher Render Distance",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000643,"Higher Render Distance"),
     ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.HigherRenderDist and "(Enabled)" or "(Disabled)"
-      return des .. " Renders model from further away.\nNot noticeable unless using higher zoom."
+      local des = ChoGGi.UserSettings.HigherRenderDist and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000644,"Renders model from further away.\nNot noticeable unless using higher zoom.")
     end,
     "CameraEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[2]Render/Higher Shadow Distance",
+    "Game/[2]Render/" .. ChoGGi.ComFuncs.Trans(302535920000645,"Higher Shadow Distance"),
     ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.HigherShadowDist and "(Enabled)" or "(Disabled)"
-      return des .. " Renders shadows from further away.\nNot noticeable unless using higher zoom."
+      local des = ChoGGi.UserSettings.HigherShadowDist and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000646,"Renders shadows from further away.\nNot noticeable unless using higher zoom.")
     end,
     "toggle_post.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[1]Camera/Border Scrolling",
+    "Game/[1]Camera/" .. ChoGGi.ComFuncs.Trans(302535920000647,"Border Scrolling"),
     ChoGGi.MenuFuncs.SetBorderScrolling,
     nil,
     function()
-      local des = ChoGGi.UserSettings.BorderScrollingToggle and "(Enabled)" or "(Disabled)"
-      return des .. " Set size of activation for mouse border scrolling."
+      local des = ChoGGi.UserSettings.BorderScrollingToggle and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000648,"Set size of activation for mouse border scrolling.")
     end,
     "CameraToggle.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[1]Camera/Zoom Distance",
+    "Game/[1]Camera/" .. ChoGGi.ComFuncs.Trans(302535920000649,"Zoom Distance"),
     ChoGGi.MenuFuncs.CameraZoom_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.CameraZoomToggle and "(Enabled)" or "(Disabled)"
-      return des .. " Further zoom distance."
+      local des = ChoGGi.UserSettings.CameraZoomToggle and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000650,"Further zoom distance.")
     end,
     "MoveUpCamera.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[1]Camera/Toggle Free Camera",
+    "Game/[1]Camera/" .. ChoGGi.ComFuncs.Trans(302535920000651,"Toggle Free Camera"),
     ChoGGi.MenuFuncs.CameraFree_Toggle,
     "Shift-C",
-    "I believe I can fly.",
+    ChoGGi.ComFuncs.Trans(302535920000652,"I believe I can fly."),
     "NewCamera.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[1]Camera/Toggle Follow Camera",
+    "Game/[1]Camera/" .. ChoGGi.ComFuncs.Trans(302535920000653,"Toggle Follow Camera"),
     ChoGGi.MenuFuncs.CameraFollow_Toggle,
     "Ctrl-Shift-F",
-    "Select (or mouse over) an object to follow.",
+    ChoGGi.ComFuncs.Trans(302535920000654,"Select (or mouse over) an object to follow."),
     "Shot.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "Game/[1]Camera/Toggle Cursor",
+    "Game/[1]Camera/" .. ChoGGi.ComFuncs.Trans(302535920000655,"Toggle Cursor"),
     ChoGGi.MenuFuncs.CursorVisible_Toggle,
     "Ctrl-Alt-F",
-    "Toggle between moving camera and selecting objects.",
+    ChoGGi.ComFuncs.Trans(302535920000656,"Toggle between moving camera and selecting objects."),
     "select_objects.tga"
   )
 

@@ -25,7 +25,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Add Probes",
+    title = ChoGGi.ComFuncs.Trans(302535920001187,"Add Probes"),
   })
 end
 
@@ -33,7 +33,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -57,8 +57,8 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
       ChoGGi.ComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": om nom nom nom nom",
-        "Passengers","UI/Icons/Sections/Food_4.tga"
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920001188,": om nom nom nom nom"),
+        ChoGGi.ComFuncs.Trans(302535920001189,"Passengers"),"UI/Icons/Sections/Food_4.tga"
       )
     end
   end
@@ -66,8 +66,8 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Food Per Rocket Passenger",
-    hint = "Current: " .. hint,
+    title = ChoGGi.ComFuncs.Trans(302535920001190,"Set Food Per Rocket Passenger"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint,
   })
 end
 
@@ -84,10 +84,10 @@ function ChoGGi.MenuFuncs.AddPrefabs()
     {text = "WaterReclamationSystem",value = 10},
     {text = "Arcology",value = 10},
     {text = "Sanatorium",value = 10},
-    {text = "Network Node",value = 10},
-    {text = "Medical Center",value = 10},
-    {text = "Hanging Garden",value = 10},
-    {text = "Cloning Vat",value = 10},
+    {text = "NetworkNode",value = 10},
+    {text = "MedicalCenter",value = 10},
+    {text = "HangingGarden",value = 10},
+    {text = "CloningVat",value = 10},
   }
 
   local CallBackFunc = function(choice)
@@ -101,8 +101,8 @@ function ChoGGi.MenuFuncs.AddPrefabs()
         UICity:AddPrefabs(text,value)
       end
       RefreshXBuildMenu()
-      ChoGGi.ComFuncs.MsgPopup(value .. " " .. text .. " prefabs have been added.",
-        "Prefabs",UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(value .. " " .. text .. " " .. ChoGGi.ComFuncs.Trans(302535920001191,"prefabs have been added."),
+        ChoGGi.ComFuncs.Trans(302535920001192,"Prefabs"),UsualIcon
       )
     end
   end
@@ -110,16 +110,16 @@ function ChoGGi.MenuFuncs.AddPrefabs()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Add Prefabs",
-    hint = "Use edit box to enter amount of prefabs to add.",
+    title = ChoGGi.ComFuncs.Trans(302535920000723,"Add Prefabs"),
+    hint = ChoGGi.ComFuncs.Trans(302535920001194,"Use edit box to enter amount of prefabs to add."),
     custom_type = 3,
   })
 end
 
 function ChoGGi.MenuFuncs.SetFunding()
   --list to display and list with values
-  local DefaultSetting = "(Reset to 500 M)"
-  local hint = "If your funds are a negative value, then you added too much.\n\nFix with: " .. DefaultSetting
+  local DefaultSetting = ChoGGi.ComFuncs.Trans(302535920001195,"(Reset to 500 M)")
+  local hint = ChoGGi.ComFuncs.Trans(302535920001196,"If your funds are a negative value, then you added too much.\n\nFix with") .. ": " .. DefaultSetting
   local ItemList = {
     {text = DefaultSetting,value = 500},
     {text = "100 M",value = 100,hint = hint},
@@ -141,7 +141,7 @@ function ChoGGi.MenuFuncs.SetFunding()
       ChangeFunding(value)
 
       ChoGGi.ComFuncs.MsgPopup(choice[1].text,
-        "Funding",UsualIcon2
+        ChoGGi.ComFuncs.Trans(3613,"Funding"),UsualIcon2
       )
     end
   end
@@ -149,7 +149,7 @@ function ChoGGi.MenuFuncs.SetFunding()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Add Funding",
+    title = ChoGGi.ComFuncs.Trans(302535920000725,"Add Funding"),
     hint = hint,
   })
 end
@@ -161,8 +161,8 @@ function ChoGGi.MenuFuncs.FillResource()
   end
 
   --need the msg here, as i made it return if it succeeds
-  ChoGGi.ComFuncs.MsgPopup("Resouce Filled",
-    "Resource",UsualIcon2
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001198,"Resouce Filled"),
+    ChoGGi.ComFuncs.Trans(15,"Resource"),UsualIcon2
   )
 
   if pcall(function()

@@ -27,7 +27,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoal()
   --
   goal.colony_approval_sol = UICity.day
   ChoGGi.Temp.InstantMissionGoal = true
-  ChoGGi.ComFuncs.MsgPopup("Mission goal","Goal",UsualIcon)
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001158,"Mission goal"),ChoGGi.ComFuncs.Trans(302535920001159,"Goal"),UsualIcon)
 end
 
 function ChoGGi.MenuFuncs.InstantColonyApproval()
@@ -41,8 +41,8 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.",
-    "Colonists","UI/Icons/Notifications/meteor_storm.tga",true
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. ChoGGi.ComFuncs.Trans(302535920001160,"\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."),
+    ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
 
@@ -75,8 +75,8 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
         --and bonuses
         city:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup("Sponsor for this save is now " .. choice[1].text,
-          "Sponsor",UsualIcon
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001161,"Sponsor for this save is now") .. " " .. choice[1].text,
+          ChoGGi.ComFuncs.Trans(302535920001162,"Sponsor"),UsualIcon
         )
         break
       end
@@ -86,8 +86,8 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Sponsor",
-    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),
+    title = ChoGGi.ComFuncs.Trans(302535920001163,"Set Sponsor"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),
   })
 end
 
@@ -100,7 +100,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
       ItemList[#ItemList+1] = {
         text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Sponsor" .. tab[i].id])
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001165,"Enabled Status") .. ": " .. tostring(ChoGGi.UserSettings["Sponsor" .. tab[i].id])
       }
     end
   end
@@ -135,21 +135,20 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Sponsor")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001166,"Bonuses") .. ": " .. #choice,ChoGGi.ComFuncs.Trans(302535920001162,"Sponsor"))
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Sponsor Bonuses",
-    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-      .. "\n\nUse Ctrl/Shift for multiple bonuses."
-      .. "\n\nModded ones are mostly ignored for now (just cargo space/research points).",
+    title = ChoGGi.ComFuncs.Trans(302535920001162,"Sponsor") .. " " .. ChoGGi.ComFuncs.Trans(302535920001166,"Bonuses"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
+      .. ChoGGi.ComFuncs.Trans(302535920001167,"\n\nUse Ctrl/Shift for multiple bonuses.") .. ChoGGi.ComFuncs.Trans(302535920001168,"\n\nModded ones are mostly ignored for now (just cargo space/research points)."),
     multisel = true,
-    check1 = "Turn Off",
-    check1_hint = "Turn off selected bonuses (defaults to turning on).",
-    check2 = "Turn All Off",
-    check2_hint = "Turns off all bonuses.",
+    check1 = ChoGGi.ComFuncs.Trans(302535920001169,"Turn Off"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920001170,"Turn off selected bonuses (defaults to turning on)."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920001171,"Turn All Off"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920001172,"Turns off all bonuses."),
   })
 end
 
@@ -186,8 +185,8 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup("Commander for this save is now " .. choice[1].text,
-          "Commander",UsualIcon
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001173,"Commander for this save is now") .. " " .. choice[1].text,
+          ChoGGi.ComFuncs.Trans(302535920001174,"Commander"),UsualIcon
         )
         break
       end
@@ -197,8 +196,8 @@ function ChoGGi.MenuFuncs.ChangeCommander()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Commander",
-    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),
+    title = ChoGGi.ComFuncs.Trans(302535920001175,"Set Commander"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),
   })
 end
 
@@ -211,7 +210,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
       ItemList[#ItemList+1] = {
         text = ChoGGi.ComFuncs.Trans(tab[i].display_name),
         value = tab[i].id,
-        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\nEnabled Status: " .. tostring(ChoGGi.UserSettings["Commander" .. tab[i].id])
+        hint = ChoGGi.ComFuncs.Trans(tab[i].effect) .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001176,"Enabled Status") .. ": " .. tostring(ChoGGi.UserSettings["Commander" .. tab[i].id])
       }
     end
   end
@@ -246,20 +245,20 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Bonuses: " .. #choice,"Commander")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001166,"Bonuses") .. ": " .. #choice,ChoGGi.ComFuncs.Trans(302535920001174,"Commander"))
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Commander Bonuses",
-    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
-      .. "\n\nUse Ctrl/Shift for multiple bonuses.",
+    title = ChoGGi.ComFuncs.Trans(302535920001174,"Commander") .. " " .. ChoGGi.ComFuncs.Trans(302535920001166,"Bonuses"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)
+      .. ChoGGi.ComFuncs.Trans(302535920001167,"\n\nUse Ctrl/Shift for multiple bonuses."),
     multisel = true,
-    check1 = "Turn Off",
-    check1_hint = "Turn off selected bonuses (defaults to turning on).",
-    check2 = "Turn All Off",
-    check2_hint = "Turns off all bonuses.",
+    check1 = ChoGGi.ComFuncs.Trans(302535920001169,"Turn Off"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920001170,"Turn off selected bonuses (defaults to turning on)."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920001171,"Turn All Off"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920001172,"Turns off all bonuses."),
   })
 end
 
@@ -304,8 +303,8 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        ChoGGi.ComFuncs.MsgPopup("Logo: " .. choice[1].text,
-          "Logo",UsualIcon
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001177,"Logo") .. ": " .. choice[1].text,
+          ChoGGi.ComFuncs.Trans(302535920001177,"Logo"),UsualIcon
         )
       end
     end
@@ -314,8 +313,8 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set New Logo",
-    hint = "Current: " .. ChoGGi.ComFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name),
+    title = ChoGGi.ComFuncs.Trans(302535920001178,"Set New Logo"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name),
   })
 end
 
@@ -453,16 +452,6 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
 end
 
 --[[
-    mapdata:ApplyMapData()
-    AtmosphericParticlesUpdate()
-
-mapdata.MapSettings_Meteor
-
-
-figure out where this is stored in-game
-maybe it just needs to be set as early as poss
-
-
 function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
   local ItemList = {}
   local data = DataInstances["MapSettings_" .. sType]
@@ -477,16 +466,16 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
   local CallBackFunc = function(choice)
     mapdata["MapSettings_" .. sType] = sType .. "_" .. choice[1].value
 
-    ChoGGi.ComFuncs.MsgPopup(sType .. " occurrence is now: " .. choice[1].value,
-      "Disaster","UI/Icons/Sections/attention.tga"
+    ChoGGi.ComFuncs.MsgPopup(sType .. " " .. ChoGGi.ComFuncs.Trans(302535920001179,"occurrence is now") .. ": " .. choice[1].value,
+      ChoGGi.ComFuncs.Trans(3983,"Disasters"),"UI/Icons/Sections/attention.tga"
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set " .. sType .. " Disaster Occurrences",
-    hint = "Current: " .. mapdata["MapSettings_" .. sType],
+    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. " " .. ChoGGi.ComFuncs.Trans(302535920001180,"Disaster Occurrences"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. mapdata["MapSettings_" .. sType],
   })
 end
 
@@ -506,10 +495,10 @@ function ChoGGi.ChangeRules()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if not check1 and not check2 then
-      ChoGGi.ComFuncs.MsgPopup("Pick a checkbox next time...","Rules",UsualIcon)
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000038,"Pick a checkbox next time..."),ChoGGi.ComFuncs.Trans(302535920001181,"Rules"),UsualIcon)
       return
     elseif check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Rules",UsualIcon)
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000039,"Don't pick both checkboxes next time..."),ChoGGi.ComFuncs.Trans(302535920001181,"Rules"),UsualIcon)
       return
     end
 
@@ -536,15 +525,15 @@ function ChoGGi.ChangeRules()
       GameRulesMap[rule_id]:OnInitEffect(UICity)
       GameRulesMap[rule_id]:OnApplyEffect(UICity)
     end
-    ChoGGi.ComFuncs.MsgPopup("Set: " .. #choice,
-      "Rules",UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. ": " .. #choice,
+      ChoGGi.ComFuncs.Trans(302535920001181,"Rules"),UsualIcon
     )
   end
 
   local hint
   local rules = g_CurrentMissionParams.idGameRules
   if type(rules) == "table" and next(rules) then
-    hint = "Current:"
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ":"
     for Key,_ in pairs(rules) do
       hint = hint .. " " .. ChoGGi.ComFuncs.Trans(Presets.GameRules.Default[Key].display_name)
     end
@@ -553,13 +542,13 @@ function ChoGGi.ChangeRules()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Rules",
+    title = ChoGGi.ComFuncs.Trans(302535920001182,"Set Rules"),
     hint = hint,
     multisel = true,
-    check1 = "Add",
-    check1_hint = "Add selected rules",
-    check2 = "Remove",
-    check2_hint = "Remove selected rules",
+    check1 = ChoGGi.ComFuncs.Trans(302535920001183,"Add"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920001185,"Add selected rules"),
+    check2 = ChoGGi.ComFuncs.Trans(302535920001184,"Remove"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920001186,"Remove selected rules"),
   })
 end
 --]]

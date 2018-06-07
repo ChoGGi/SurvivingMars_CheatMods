@@ -36,7 +36,7 @@ function ChoGGi.MenuFuncs.ReloadLua()
   ReloadLua()
   WaitDelayedLoadEntities()
   ReloadClassEntities()
-  print("ReloadLua done")
+  print(ChoGGi.ComFuncs.Trans(302535920000850,"Reload lua done"))
 end
 
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
@@ -47,8 +47,8 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   end
   local name = ChoGGi.CodeFuncs.RetName(s)
   if not name then
-    ChoGGi.ComFuncs.MsgPopup("Error: " .. tostring(s) .. "isn't an object?\nSounds like a broked save; send me the file and I'll take a look: " .. ChoGGi.email,
-      "Error",nil,true
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(6774,"Error") .. ": " .. tostring(s) .. ChoGGi.ComFuncs.Trans(302535920000851,"isn't an object?\nSounds like a broked save; send me the file and I'll take a look: ") .. ChoGGi.email,
+      ChoGGi.ComFuncs.Trans(6774,"Error"),nil,true
     )
     return
   end
@@ -62,11 +62,11 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
     end)
   end
   ChoGGi.ComFuncs.QuestionBox(
-    "Warning!\nThis will delete all " .. #objs .. " of " .. name .. "\n\nTakes about thirty seconds for 12 000 objects.",
+    ChoGGi.ComFuncs.Trans(302535920000852,"Warning!\nThis will delete all ") .. #objs .. " " .. ChoGGi.ComFuncs.Trans(302535920000853,"of") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920000854,"\n\nTakes about thirty seconds for 12 000 objects."),
     CallBackFunc,
-    "Warning: Last chance before deletion!",
-    "Yes, I want to delete all " .. name,
-    "No, I need to backup my save (like I should've done before clicking something called delete all)."
+    ChoGGi.ComFuncs.Trans(302535920000855,"Warning: Last chance before deletion!"),
+    ChoGGi.ComFuncs.Trans(302535920000856,"Yes, I want to delete all ") .. name,
+    ChoGGi.ComFuncs.Trans(302535920000857,"No, I need to backup my save (like I should've done before clicking something called delete all).")
   )
 end
 
@@ -183,23 +183,23 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
   for Key,State in pairs(Table) do
     ItemList[#ItemList+1] = {
-      text = "Name: " .. State .. " Idx: " .. Key,
+      text = ChoGGi.ComFuncs.Trans(1000037,"Name") .. ": " .. State .. " " .. ChoGGi.ComFuncs.Trans(302535920000858,"Idx") .. ": " .. Key,
       value = State,
     }
   end
 
   local CallBackFunc = function(choice)
     sel:SetStateText(choice[1].value)
-    ChoGGi.ComFuncs.MsgPopup("State: " .. choice[1].text,
-      "Anim State"
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(3722,"State") .. ": " .. choice[1].text,
+      ChoGGi.ComFuncs.Trans(302535920000859,"Anim State")
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Anim State",
-    hint = "Current State: " .. sel:GetState(),
+    title = ChoGGi.ComFuncs.Trans(302535920000860,"Set Anim State"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000861,"Current State") .. ": " .. sel:GetState(),
   })
 end
 
@@ -242,15 +242,15 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
       --]]
 
-      ChoGGi.ComFuncs.MsgPopup("Spawned: " .. choice[1].text,"Object")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000014,"Spawned") .. ": " .. choice[1].text,ChoGGi.ComFuncs.Trans(298035641454,"Object"))
     end
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ObjectSpawner_ItemList,
-    title = "Object Spawner (EntityData list)",
-    hint = "Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object).",
+    title = ChoGGi.ComFuncs.Trans(302535920000862,"Object Spawner (EntityData list)"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000863,"Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."),
   })
 end
 
@@ -278,8 +278,8 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Write debug/console logs: " .. tostring(ChoGGi.UserSettings.WriteLogs),
-    "Logging","UI/Icons/Anomaly_Breakthrough.tga"
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000864,"Write debug/console logs: ") .. tostring(ChoGGi.UserSettings.WriteLogs),
+    ChoGGi.ComFuncs.Trans(1000113,"Debug"),"UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
 
@@ -347,8 +347,8 @@ function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
   ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ": Those who cannot remember the past are condemned to repeat it.",
-    "Console","UI/Icons/Sections/workshifts.tga"
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ChoGGi.ComFuncs.Trans(302535920000865,": Those who cannot remember the past are condemned to repeat it."),
+    ChoGGi.ComFuncs.Trans(1000113,"Debug"),"UI/Icons/Sections/workshifts.tga"
   )
 end
 
@@ -357,10 +357,10 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
   --open a list dialog to set g_CurrentMissionParams
   local ItemList = {
-    {text = "idMissionSponsor",value = "IMM"},
-    {text = "idCommanderProfile",value = "rocketscientist"},
-    {text = "idMystery",value = "random"},
-    {text = "idGameRules",value = ""},
+    {text = ChoGGi.ComFuncs.Trans(3474,"Mission Sponsor"),value = "IMM"},
+    {text = ChoGGi.ComFuncs.Trans(3478,"Commander Profile"),value = "rocketscientist"},
+    {text = ChoGGi.ComFuncs.Trans(3486,"Mystery"),value = "random"},
+    {text = ChoGGi.ComFuncs.Trans(8800,"Game Rules"),value = ""},
   }
 
   local CallBackFunc = function(choice)
@@ -371,13 +371,13 @@ function ChoGGi.MenuFuncs.ChangeMap()
       local text = choice[i].text
       local value = choice[i].value
 
-      if text == "idMissionSponsor" then
+      if text == ChoGGi.ComFuncs.Trans(3474,"Mission Sponsor") then
         NewMissionParams.idMissionSponsor = value
-      elseif text == "idCommanderProfile" then
+      elseif text == ChoGGi.ComFuncs.Trans(3478,"Commander Profile") then
         NewMissionParams.idCommanderProfile = value
-      elseif text == "idMystery" then
+      elseif text == ChoGGi.ComFuncs.Trans(3486,"Mystery") then
         NewMissionParams.idMystery = value
-      elseif text == "idGameRules" then
+      elseif text == ChoGGi.ComFuncs.Trans(8800,"Game Rules") then
         NewMissionParams.idGameRules = {}
         if value:find(" ") then
           for i in value:gmatch("%S+") do
@@ -393,8 +393,8 @@ function ChoGGi.MenuFuncs.ChangeMap()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set MissionParams NewMap",
-    hint = "Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none).",
+    title = ChoGGi.ComFuncs.Trans(302535920000866,"Set MissionParams NewMap"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000867,"Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none)."),
     custom_type = 4,
   })
 
@@ -403,7 +403,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
   --map list dialog
   CreateRealTimeThread(function()
-    local caption = Untranslated("Choose map with settings presets:")
+    local caption = ChoGGi.ComFuncs.Trans(302535920000868,"Choose map with settings presets:")
     local maps = ListMaps()
     local items = {}
     for i = 1, #maps do
@@ -731,7 +731,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print("Warning: This " .. Obj and (Obj.class or Obj.entity or "\"No class/entity\"") .. " doesn't have GetPath function, something is probably borked.")
+        print(ChoGGi.ComFuncs.Trans(302535920000869,"Warning: This") .. " " .. Obj and ChoGGi.CodeFuncs.RetName(Obj) .. " " .. ChoGGi.ComFuncs.Trans(302535920000870,"doesn't have GetPath function, something is probably borked."))
       end
     end
     if path then
@@ -842,7 +842,7 @@ do --path markers
 
       end
     else
-      ChoGGi.ComFuncs.MsgPopup("Select a moving object to see path.","Pathing")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000871,"Select a moving object to see path."),ChoGGi.ComFuncs.Trans(302535920000872,"Pathing"))
     end
   end
 
@@ -911,11 +911,11 @@ do --path markers
     end
 
     local ItemList = {
-      {text = "All",value = "All"},
-      {text = "Colonists",value = "Colonist"},
-      {text = "Drones",value = "Drone"},
-      {text = "Rovers",value = "BaseRover"},
-      {text = "Shuttles",value = "CargoShuttle",hint = "Doesn't work that well; if it isn't a colonist dest."},
+      {text = ChoGGi.ComFuncs.Trans(4493,"All"),value = "All"},
+      {text = ChoGGi.ComFuncs.Trans(547,"Colonists"),value = "Colonist"},
+      {text = ChoGGi.ComFuncs.Trans(517,"Drones"),value = "Drone"},
+      {text = ChoGGi.ComFuncs.Trans(5438,"Rovers"),value = "BaseRover"},
+      {text = ChoGGi.ComFuncs.Trans(745,"Shuttles"),value = "CargoShuttle",hint = ChoGGi.ComFuncs.Trans(302535920000873,"Doesn't work that well.")},
     }
 
     local CallBackFunc = function(choice)
@@ -974,12 +974,12 @@ do --path markers
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = "Set Visible Path Markers",
-      hint = "Use HandleToObject[handle] to get object handle",
-      check1 = "Remove Waypoints",
-      check1_hint = "Remove waypoints from the map and reset colours (You need to select any object).",
-      check2 = "Skip Flags",
-      check2_hint = "Doesn't add the little flags, just lines and spheres (good for larger maps).",
+      title = ChoGGi.ComFuncs.Trans(302535920000874,"Set Visible Path Markers"),
+      hint = ChoGGi.ComFuncs.Trans(302535920000875,"Use HandleToObject[handle] to get object handle"),
+      check1 = ChoGGi.ComFuncs.Trans(302535920000876,"Remove Waypoints"),
+      check1_hint = ChoGGi.ComFuncs.Trans(302535920000877,"Remove waypoints from the map and reset colours (You need to select any object)."),
+      check2 = ChoGGi.ComFuncs.Trans(302535920000878,"Skip Flags"),
+      check2_hint = ChoGGi.ComFuncs.Trans(302535920000879,"Doesn't add the little flags, just lines and spheres (good for larger maps)."),
     })
   end
 end

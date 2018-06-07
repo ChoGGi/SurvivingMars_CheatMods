@@ -1,5 +1,7 @@
 --See LICENSE for terms
 
+local oldTableConcat = oldTableConcat
+
 --keep everything stored in
 ChoGGi = {
   email = "ECM@choggi.org",
@@ -36,45 +38,46 @@ local ChoGGi = ChoGGi
 local Mods = Mods
 ChoGGi._VERSION = Mods[ChoGGi.id].version
 ChoGGi.ModPath = Mods[ChoGGi.id].path
+ChoGGi.MountPath = ChoGGi.ModPath
 
 --if we use global func more then once: make them local for that small bit o' speed
 local AsyncFileToString = AsyncFileToString
 local dofolder_files = dofolder_files
 
 --used to let me know if we're on my computer
-local file_error, _ = AsyncFileToString("AppData/ChoGGi")
-if not file_error then
+local _,test = AsyncFileToString("AppData/ChoGGi")
+if test then
   ChoGGi.Temp.Testing = true
 end
 
-if ChoGGi.Temp.Testing then
-  --get saved settings for this mod
-  dofile(ChoGGi.ModPath .. "Files/Defaults.lua")
-  --functions needed before Code/ is loaded
-  dofile(ChoGGi.ModPath .. "Files/CommonFunctions.lua")
-  --load all the other files
-  dofolder_files(ChoGGi.ModPath .. "Files/Code")
-else
-  --if file exists then we'll ignore Files.hpk (user likely unpacked the files)
-  local file_error, _ = AsyncFileToString(ChoGGi.ModPath .. "/Defaults.lua")
-  if not file_error then
-    --get saved settings for this mod
-    dofile(ChoGGi.ModPath .. "/Defaults.lua")
-    --functions needed for before Code/ is loaded
-    dofile(ChoGGi.ModPath .. "/CommonFunctions.lua")
-    --load all the other files
-    dofolder_files(ChoGGi.ModPath .. "/Code")
-  else
-    local MountName = "ChoGGi_Mount"
-    --load up the hpk
-    AsyncMountPack(MountName,ChoGGi.ModPath .. "/Files.hpk")
-    dofile(MountName .. "/Defaults.lua")
-    dofile(MountName .. "/CommonFunctions.lua")
-    dofolder_files(MountName .. "/Code")
-    --and unload it
-    Unmount(MountName)
-  end
+--if file exists then user likely unpacked the files, so we'll ignore Files.hpk
+local _,file = AsyncFileToString(oldTableConcat({ChoGGi.ModPath,"Defaults.lua"}))
+if file then
+  --load up the hpk
+  AsyncMountPack("ChoGGi_Mount",oldTableConcat({ChoGGi.ModPath,"Files.hpk"}))
+  ChoGGi.MountPath = "ChoGGi_Mount"
 end
+
+if ChoGGi.Temp.Testing then
+  ChoGGi.MountPath = oldTableConcat({ChoGGi.MountPath,"Files/"})
+end
+
+--get saved settings for this mod
+dofile(oldTableConcat({ChoGGi.MountPath,"Defaults.lua"}))
+--functions needed before Code/ is loaded
+dofile(oldTableConcat({ChoGGi.MountPath,"CommonFunctions.lua"}))
+--load all the other files
+dofolder_files(oldTableConcat({ChoGGi.MountPath,"Code"}))
+
+--load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+local locale_file = oldTableConcat({ChoGGi.ModPath,"Locales/",GetLanguage(),".csv"})
+local _,locale = AsyncFileToString(locale_file)
+if locale then
+  LoadTranslationTableFile(locale_file)
+else
+  LoadTranslationTableFile(oldTableConcat({ChoGGi.ModPath,"Locales/","English.csv"}))
+end
+Msg("TranslationChanged")
 
 --read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()
@@ -98,7 +101,7 @@ end
 
 --first time run info
 if ChoGGi.UserSettings.FirstRun ~= false then
-  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n"
+  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = ChoGGi.ComFuncs.Trans(302535920000001,"<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n")
   ChoGGi.UserSettings.FirstRun = false
   ChoGGi.Temp.WriteSettings = true
 end
@@ -114,6 +117,9 @@ editor.LoadPlaceObjConfig()
 GlobalVar("g_revision_map",{})
 Platform.developer = d_before
 Platform.editor = e_before
+
+-- what does this do with examine?
+--config.TraceEnabled = true
 
 --be nice to get a remote debugger working
 --[[

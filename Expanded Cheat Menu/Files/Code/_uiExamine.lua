@@ -1,7 +1,8 @@
-local oldTableConcat = oldTableConcat
-
 --Haemimont Games code (mostly)
 --why would they remove such a useful modding tool from a game that relies on mods this much? sigh.
+
+local oldTableConcat = oldTableConcat
+local Untranslated = Untranslated
 
 -- 1 above console log
 local zorder = 2000001
@@ -25,15 +26,6 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.page = 1
   -- 1 above console log
   self:SetZOrder(zorder)
-
-  function self:OnKbdKeyDown(char, vk)
-  print("sdsfsdf")
-    if vk == const.vkEsc then
-      self.idCloseX:Press()
-      return "break"
-    end
-    return "continue"
-  end
 
   ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(250, 195),size = point(300, 22)})
   ChoGGi.ComFuncs.DialogAddCloseX(self)
@@ -78,11 +70,11 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idFilter:SetHSizing("Resize")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idFilter:SetFontStyle("Editor12Bold")
-  self.idFilter:SetHint("Scrolls to text entered")
+  self.idFilter:SetHint(ChoGGi.ComFuncs.Trans(302535920000043,"Scrolls to text entered"))
   self.idFilter:SetTextHAlign("center")
   self.idFilter:SetTextVAlign("center")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
-  self.idFilter.display_text = "Goto text"
+  self.idFilter.display_text = ChoGGi.ComFuncs.Trans(302535920000044,"Goto text")
   self.idFilter:AddInterpolation({
     type = const.intAlpha,
     startValue = 255,
@@ -110,7 +102,7 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idNext:SetText(T({1000232, "Next"}))
   self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
   self.idNext:SetHSizing("AnchorToRight")
-  self.idNext:SetHint("Scrolls down one or scrolls between text in \"Goto text\".")
+  self.idNext:SetHint(ChoGGi.ComFuncs.Trans(302535920000045,"Scrolls down one or scrolls between text in \"Goto text\"."))
   function self.idNext.OnButtonPressed()
     self:FindNext(self.idFilter:GetText())
   end
@@ -119,14 +111,14 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idDump = Button:new(self)
   self.idDump:SetPos(point(290, 304))
   self.idDump:SetSize(point(75, 26))
-  self.idDump:SetText("Dump Text")
-  self.idDump:SetHint("Dumps text to AppData/DumpedExamine.lua")
+  self.idDump:SetText(ChoGGi.ComFuncs.Trans(302535920000046,"Dump Text"))
+  self.idDump:SetHint(ChoGGi.ComFuncs.Trans(302535920000047,"Dumps text to AppData/DumpedExamine.lua"))
   function self.idDump.OnButtonPressed()
     --[[
     local String = self:totextex(self.obj)
     --remove html tags
     String = String:gsub("<[/%s%a%d]*>","")
-    ChoGGi.ComFuncs.Dump("\r\n" .. String,nil,"DumpedExamine","lua")
+    ChoGGi.ComFuncs.Dump(oldTableConcat({"\r\n",String}),nil,"DumpedExamine","lua")
     --]]
     self.idActionMenu = FramedList:new(self)
     self.idActionMenu:SetPos(point(290, 304))
@@ -147,8 +139,8 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idDumpObj = Button:new(self)
   self.idDumpObj:SetPos(point(375, 304))
   self.idDumpObj:SetSize(point(75, 26))
-  self.idDumpObj:SetText("Dump Obj")
-  self.idDumpObj:SetHint("Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable")
+  self.idDumpObj:SetText(ChoGGi.ComFuncs.Trans(302535920000048,"Dump Obj"))
+  self.idDumpObj:SetHint(ChoGGi.ComFuncs.Trans(302535920000049,"Dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable"))
   function self.idDumpObj.OnButtonPressed()
     ChoGGi.ComFuncs.Dump(oldTableConcat({"\r\n",ValueToLuaCode(self.obj)}),nil,"DumpedExamineObject","lua")
   end
@@ -157,7 +149,7 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idEdit:SetPos(point(460, 304))
   self.idEdit:SetSize(point(53, 26))
   self.idEdit:SetText(T({327465361219, "Edit"}))
-  self.idEdit:SetHint("Opens object in Object Manipulator.")
+  self.idEdit:SetHint(ChoGGi.ComFuncs.Trans(302535920000050,"Opens object in Object Manipulator."))
   function self.idEdit.OnButtonPressed()
     ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
   end
@@ -165,8 +157,8 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idCodeExec = Button:new(self)
   self.idCodeExec:SetPos(point(520, 304))
   self.idCodeExec:SetSize(point(50, 26))
-  self.idCodeExec:SetText("Exec")
-  self.idCodeExec:SetHint("Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.")
+  self.idCodeExec:SetText(ChoGGi.ComFuncs.Trans(302535920000051,"Exec"))
+  self.idCodeExec:SetHint(ChoGGi.ComFuncs.Trans(302535920000052,"Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console."))
   function self.idCodeExec.OnButtonPressed()
     ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
   end
@@ -174,15 +166,15 @@ function ChoGGi_ExamineDlg_Defaults:Init()
   self.idAttaches = Button:new(self)
   self.idAttaches:SetPos(point(575, 304))
   self.idAttaches:SetSize(point(75, 26))
-  self.idAttaches:SetText("Attaches")
-  self.idAttaches:SetHint("Opens attachments in new examine window.")
+  self.idAttaches:SetText(ChoGGi.ComFuncs.Trans(302535920000053,"Attaches"))
+  self.idAttaches:SetHint(ChoGGi.ComFuncs.Trans(302535920000054,"Opens attachments in new examine window."))
   function self.idAttaches.OnButtonPressed()
     local attaches = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
 
     if attaches and #attaches > 0 then
       ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(attaches,self)
     else
-      print("Zero attachments means zero...")
+      print(ChoGGi.ComFuncs.Trans(302535920000055,"Zero attachments means zero..."))
     end
   end
 
@@ -262,7 +254,7 @@ function Examine:valuetotextex(o)
   end
   if type(o) == "function" then
     local debug_info = debug.getinfo(o, "Sn")
-    return oldTableConcat({self:HyperLink(Examine),self:ToString(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")",HLEnd})
+    return oldTableConcat({self:HyperLink(Examine),self:ToString(debug_info.name or debug_info.name_what or ChoGGi.ComFuncs.Trans(302535920000063,"unknown name")),"@",debug_info.short_src,"(",debug_info.linedefined,")",HLEnd})
   end
   if IsValid(o) then
     return oldTableConcat({self:HyperLink(Examine),o.class,HLEnd,"@",self:valuetotextex(o:GetPos())})
@@ -391,7 +383,7 @@ function Examine:totextex(o)
       while true do
         info = debug.getinfo(o, level, "Slfun")
         if info then
-          table.insert(res, oldTableConcat({self:HyperLink(ExamineThreadLevel(level, info)),info.short_src,"(",info.currentline,") ",(info.name or info.name_what or "unknown name"),HLEnd}))
+          table.insert(res, oldTableConcat({self:HyperLink(ExamineThreadLevel(level, info)),info.short_src,"(",info.currentline,") ",(info.name or info.name_what or ChoGGi.ComFuncs.Trans(302535920000063,"unknown name")),HLEnd}))
           level = level + 1
           else
             if type(o) == "function" then
@@ -451,9 +443,9 @@ function Examine:totextex(o)
     end
   elseif type(o) == "table" and getmetatable(o) then
     if getmetatable(o) == g_traceMeta then
-      table.insert(res, 1, "<center>--Trace Log--<vspace 6>")
+      table.insert(res, 1, oldTableConcat({"<center>--",ChoGGi.ComFuncs.Trans(302535920000056,"Trace Log"),"--<vspace 6>"}))
       if self.show_times == "relative" then
-        table.insert(res, 1, "<center>-- relative times --<vspace 6>")
+        table.insert(res, 1, oldTableConcat({"<center>--",ChoGGi.ComFuncs.Trans(302535920000057,"relative times"),"--<vspace 6>"}))
       end
     else
       table.insert(res, 1, oldTableConcat({"<center>--metatable: ",self:valuetotextex(getmetatable(o)),"--<vspace 6><left>"}))
@@ -511,29 +503,29 @@ function Examine:menu(o)
     end
   end
   if IsValid(o) and type(o) == "table" then
-    table.insert(res, oldTableConcat({self:HyperLink(Show),"[ShowIt]",HLEnd}))
+    table.insert(res, oldTableConcat({self:HyperLink(Show),ChoGGi.ComFuncs.Trans(302535920000058,"[ShowIt]"),HLEnd}))
   end
-  table.insert(res, oldTableConcat({self:HyperLink(ClearShowMe),"[Clear Markers]",HLEnd}))
+  table.insert(res, oldTableConcat({self:HyperLink(ClearShowMe),ChoGGi.ComFuncs.Trans(302535920000059,"[Clear Markers]"),HLEnd}))
   if IsValid(o) then
-    table.insert(res, oldTableConcat({self:HyperLink(Destroy),"[Destroy It!]",HLEnd}))
+    table.insert(res, oldTableConcat({self:HyperLink(Destroy),ChoGGi.ComFuncs.Trans(302535920000060,"[Destroy It!]"),HLEnd}))
     if o:HasMember("trace_log") then
-      table.insert(res, oldTableConcat({self:HyperLink(ShowLog),"[Log]",HLEnd}))
+      table.insert(res, oldTableConcat({self:HyperLink(ShowLog),ChoGGi.ComFuncs.Trans(302535920000061,"[Log]"),HLEnd}))
     end
   end
   if type(o) == "table" and getmetatable(o) == g_traceMeta then
-    table.insert(res, oldTableConcat({self:HyperLink(ShowTime),"[Times]",HLEnd}))
+    table.insert(res, oldTableConcat({self:HyperLink(ShowTime),ChoGGi.ComFuncs.Trans(302535920000062,"[Times]"),HLEnd}))
   end
   local Refresh = function()
-    if self.obj then
+    --if self.obj then
       self:SetObj(self.obj)
-    end
+    --end
   end
   local SetTransp = function()
     self.transp_mode = not self.transp_mode
     self:SetTranspMode(self.transp_mode)
   end
-  table.insert(res, oldTableConcat({"\n",self:HyperLink(Refresh),"[Refresh]",HLEnd}))
-  table.insert(res, oldTableConcat({self:HyperLink(SetTransp),"[Transp]",HLEnd}))
+  table.insert(res, oldTableConcat({"\n",self:HyperLink(Refresh),"[",ChoGGi.ComFuncs.Trans(1000220,"Refresh"),"]",HLEnd}))
+  table.insert(res, oldTableConcat({self:HyperLink(SetTransp),ChoGGi.ComFuncs.Trans(302535920000064,"[Transp]"),HLEnd}))
   if type(o) == "table" and getmetatable(o) == g_traceMeta then
     local Switch = function(t)
       return function()
@@ -544,13 +536,37 @@ function Examine:menu(o)
     end
     local Prev = function()
       self.page = Max(1, self.page - 1)
-      self:SetObj(self.obj)
+      --self:SetObj(self.obj)
     end
     local Next = function()
       self.page = self.page + 1
-      self:SetObj(self.obj)
+      --self:SetObj(self.obj)
     end
-    table.insert(res, oldTableConcat({"\n",self:HyperLink(Switch("Short")),"[Short]</color>",HLEnd," ",self:HyperLink(Switch("Long")),"[Long]</color>",HLEnd," ",self:HyperLink(Switch("TraceCall")),"[TraceCall]</color>",HLEnd," ",self:HyperLink(Switch(false)),"[General]</color>",HLEnd," ",self:HyperLink(Prev),"[-]",HLEnd,self.page,self:HyperLink(Next),"[+]",HLEnd}))
+
+    table.insert(res, oldTableConcat({
+        "\n",
+        self:HyperLink(Switch("Short")),
+        "[",
+        ChoGGi.ComFuncs.Trans(302535920000065,"Short"),
+        "]</color>",
+        HLEnd," ",
+        self:HyperLink(Switch("Long")),
+        "[",ChoGGi.ComFuncs.Trans(302535920000066,"Long"),
+        "]</color>",HLEnd," ",
+        self:HyperLink(Switch("TraceCall")),
+        "[",
+        ChoGGi.ComFuncs.Trans(302535920000067,"TraceCall"),
+        "]</color>",HLEnd," ",
+        self:HyperLink(Switch(false)),
+        "[",
+        ChoGGi.ComFuncs.Trans(1000111,"General"),
+        "]</color>",HLEnd," ",
+        self:HyperLink(Prev),
+        "[-]",HLEnd,
+        self.page,self:HyperLink(Next),
+        "[+]",HLEnd
+      })
+    )
   else
     table.insert(res, [[
 
@@ -564,33 +580,31 @@ Assign to]])
 end
 
 function Examine:SetObj(o)
-  if type(o) ~= "table" then
-    print("Not a table object")
+  if type(o) == "thread" then
+    print(ChoGGi.ComFuncs.Trans(302535920000068,"No Examining this object kthxbye"))
     self:delete()
     return
   end
   self.onclick_handles = {}
   self.obj = o
+  local name = ChoGGi.CodeFuncs.RetName(o)
   self.idText:SetText(self:totextex(o))
   self.idMenu:SetText(self:menu(o))
 
-  local name = ChoGGi.CodeFuncs.RetName(o)
+  local is_table = (o) == "table"
 
   --update attaches button with attaches amount
-  --local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
-  local attaches = type(o) == "table" and type(o.GetAttaches) == "function" and o:GetAttaches()
+  local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
-  local hint = {"Opens attachments in new examine window.\nThis ",name," has: ",amount}
+  local hint = {ChoGGi.ComFuncs.Trans(302535920000070,"Opens attachments in new examine window.\nThis "),name," ",ChoGGi.ComFuncs.Trans(302535920000071,"has"),": ",amount}
   self.idAttaches:SetHint(oldTableConcat(hint))
 
   --add object name to title
-  local title = {name}
-  if type(o.handle) == "number" then
-    title[#title+1] = " ("
-    title[#title+1] = o.handle
-    title[#title+1] = ")"
+  if is_table and type(o.handle) == "number" then
+    self.idCaption:SetText(oldTableConcat({name," (",o.handle,")"}))
+  else
+    self.idCaption:SetText(name)
   end
-  self.idCaption:SetText(oldTableConcat(title))
 end
 
 function Examine:SetText(text)

@@ -1,6 +1,6 @@
-local oldTableConcat = oldTableConcat
-
 --See LICENSE for terms
+
+local oldTableConcat = oldTableConcat
 
 --[[
 Surviving Mars comes with
@@ -14,10 +14,13 @@ print(socket._VERSION)
 --]]
 
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
-  if type(AddCustomOnScreenNotification) ~= "function" then --if we called it where there ain't no UI
+  local AddCustomOnScreenNotification = AddCustomOnScreenNotification
+  --if we called it where there ain't no UI
+  if type(AddCustomOnScreenNotification) ~= "function" then
     return
   end
-  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or "UI/Icons/Notifications/placeholder.tga"
+  local ChoGGi = ChoGGi
+  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or oldTableConcat({ChoGGi.MountPath,"TheIncal.tga"})
   --we only use the id to remove it below (don't want a big 'ol list in g_ShownOnScreenNotifications)
   local id = AsyncRand()
   local timeout = 10000
@@ -27,7 +30,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   CreateRealTimeThread(function()
     AddCustomOnScreenNotification(
       --Msg: returns translated text corresponding to number if we don't do tostring for numbers
-      id,tostring(Title or ""),tostring(Msg),Icon,nil,{expiration=timeout}
+      id,tostring(Title or ""),tostring(Msg or ChoGGi.ComFuncs.Trans(3718,"NONE")),Icon,nil,{expiration=timeout}
       --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
     )
     --since I use AsyncRand for the id, I don't want this getting too large.
@@ -61,6 +64,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
+--centred msgbox with Ok
 function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   Title = Title or ""
   CreateRealTimeThread(
@@ -70,19 +74,16 @@ function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   )
 end
 
+--well that's the question isn't it?
 function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
-    Msg = Msg or ""
-    Ok = Ok or ChoGGi.ComFuncs.Trans(1000616)
-    Cancel = Cancel or ChoGGi.ComFuncs.Trans(1000246)
-    Title = Title or ""
     CreateRealTimeThread(function()
       --fire callback if user clicks ok
       if "ok" == WaitQuestion(nil,
-        tostring(Title),
-        tostring(Msg),
-        tostring(Ok),
-        tostring(Cancel)
+        tostring(Title or ""),
+        tostring(Msg or ""),
+        tostring(Ok or ChoGGi.ComFuncs.Trans(6878,"OK")),
+        tostring(Cancel or ChoGGi.ComFuncs.Trans(6879,"Cancel"))
       ) then
           Function()
       end
@@ -106,7 +107,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Dumped: ",tostring(Obj)}),
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped: "),tostring(Obj)}),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
@@ -133,7 +134,7 @@ ChoGGi.ComFuncs.DumpTable(Object)
 function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing","Dump")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000003,"Can't dump nothing"),ChoGGi.ComFuncs.Trans(302535920000004,"Dump"))
     return
   end
   Mode = Mode or "-1"
@@ -199,9 +200,7 @@ end
 
 function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
-    return function()
-      ChoGGi.ComFuncs.Trans(Obj)
-    end
+    return ChoGGi.ComFuncs.Trans(Obj)
   elseif Funcs and type(Obj) == "function" then
     return oldTableConcat({"Func: \n\n",string.dump(Obj),"\n\n"})
   elseif type(Obj) == "table" then
@@ -1057,10 +1056,20 @@ end
 
 function ChoGGi.ComFuncs.Trans(...)
   local data = select(1,...)
-  if type(data) == "userdata" then
-    return _InternalTranslate(...)
+  local trans
+  local vararg = {...}
+  pcall(function()
+    if type(data) == "userdata" then
+       trans = _InternalTranslate(table.unpack(vararg))
+    else
+      trans = _InternalTranslate(T({table.unpack(vararg)}))
+    end
+  end)
+  --just incase
+  if type(trans) ~= "string" then
+    return type(vararg[2]) == "string" and vararg[2] or "ERROR"
   end
-  return _InternalTranslate(T({...}))
+  return trans
 end
 
 function ChoGGi.ComFuncs.NewThread(Func,...)

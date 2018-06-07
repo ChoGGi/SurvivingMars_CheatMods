@@ -1,8 +1,7 @@
-local oldTableConcat = oldTableConcat
-
 --See LICENSE for terms
-
 --any funcs called from Code/*
+
+local oldTableConcat = oldTableConcat
 
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
@@ -222,7 +221,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
         building:ToggleWorking()
       end)
     end) then
-      print(oldTableConcat({"Error borked building: ",building.class}))
+      print(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000012,"Error borked building") .. ": " .. ChoGGi.CodeFuncs.RetName(building)}))
       OpenExamine(building)
     end
   end
@@ -534,7 +533,7 @@ end
 function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
   local ChoGGi = ChoGGi
   if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    ChoGGi.ComFuncs.MsgPopup("FireFuncAfterChoice: This shouldn't happen.","Error")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000013,"FireFuncAfterChoice: This shouldn't happen."),ChoGGi.ComFuncs.Trans(6774,"Error"))
     return
   end
 
@@ -910,7 +909,7 @@ end
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    ChoGGi.ComFuncs.MsgPopup("Can't colour object","Colour")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000015,"Can't colour object"),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
     return
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
@@ -923,26 +922,26 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = "Use the colour picker (dbl right-click for instant change).",
+      hint = ChoGGi.ComFuncs.Trans(302535920000017,"Use the colour picker (dbl right-click for instant change)."),
     }
     text = oldTableConcat({"Metallic",i})
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
+      hint = ChoGGi.ComFuncs.Trans(302535920000018,"Don't use the colour picker: Numbers range from -255 to 255."),
     }
     text = oldTableConcat({"Roughness",i})
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = "Don't use the colour picker: Numbers range from -255 to 255.",
+      hint = ChoGGi.ComFuncs.Trans(302535920000018,"Don't use the colour picker: Numbers range from -255 to 255."),
     }
   end
   ItemList[#ItemList+1] = {
     text = "X_BaseColour",
     value = 6579300,
     obj = obj,
-    hint = "single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).",
+    hint = ChoGGi.ComFuncs.Trans(302535920000019,"single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones)."),
   }
 
   --callback
@@ -1035,20 +1034,20 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Colour is set on ",obj.class}),"Colour")
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000020,"Colour is set on "),obj.class}),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
     end
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = oldTableConcat({"Change Colour: ",ChoGGi.CodeFuncs.RetName(obj)}),
-    hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).",
+    title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000021,"Change Colour: "),ChoGGi.CodeFuncs.RetName(obj)}),
+    hint = ChoGGi.ComFuncs.Trans(302535920000022,"If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."),
     multisel = true,
     custom_type = 2,
-    check1 = "All of type",
-    check1_hint = "Change all objects of the same type.",
-    check2 = "Default Colour",
-    check2_hint = "if they're there; resets to default colours.",
+    check1 = ChoGGi.ComFuncs.Trans(302535920000023,"All of type"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000024,"Change all objects of the same type."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920000025,"Default Colour"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920000026,"if they're there; resets to default colours."),
   })
 end
 
@@ -1150,21 +1149,21 @@ do --FindNearestResource
       Object = ChoGGi.CodeFuncs.SelObject()
     end
     if not Object then
-      ChoGGi.ComFuncs.MsgPopup("Nothing selected","Find Resource")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000027,"Nothing selected"),ChoGGi.ComFuncs.Trans(302535920000028,"Find Resource"))
       return
     end
 
     local ItemList = {
-      {text = "Metals",value = "Metals"},
-      {text = "BlackCube",value = "BlackCube"},
-      {text = "MysteryResource",value = "MysteryResource"},
-      {text = "Concrete",value = "Concrete"},
-      {text = "Food",value = "Food"},
-      {text = "PreciousMetals",value = "RareMetals"},
-      {text = "Polymers",value = "Polymers"},
-      {text = "Electronics",value = "Electronics"},
-      {text = "Fuel",value = "Fuel"},
-      {text = "MachineParts",value = "MachineParts"},
+      {text = ChoGGi.ComFuncs.Trans(3514),value = "Metals"},
+      {text = ChoGGi.ComFuncs.Trans(4764),value = "BlackCube"},
+      {text = ChoGGi.ComFuncs.Trans(8064),value = "MysteryResource"},
+      {text = ChoGGi.ComFuncs.Trans(3513),value = "Concrete"},
+      {text = ChoGGi.ComFuncs.Trans(1022),value = "Food"},
+      {text = ChoGGi.ComFuncs.Trans(4139),value = "RareMetals"},
+      {text = ChoGGi.ComFuncs.Trans(3515),value = "Polymers"},
+      {text = ChoGGi.ComFuncs.Trans(3517),value = "Electronics"},
+      {text = ChoGGi.ComFuncs.Trans(4765),value = "Fuel"},
+      {text = ChoGGi.ComFuncs.Trans(3516),value = "MachineParts"},
     }
 
     local CallBackFunc = function(choice)
@@ -1210,7 +1209,7 @@ do --FindNearestResource
         if nearest then
           ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
         else
-          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Error: Cannot find any ",choice[1].text}),"Resource")
+          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000029,"Error: Cannot find any "),choice[1].text}),ChoGGi.ComFuncs.Trans(15,"Resource"))
         end
       end
     end
@@ -1218,8 +1217,8 @@ do --FindNearestResource
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = oldTableConcat({"Find Nearest Resource ",ChoGGi.CodeFuncs.RetName(Object)}),
-      hint = "Select a resource to find",
+      title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000031,"Find Nearest Resource "),ChoGGi.CodeFuncs.RetName(Object)}),
+      hint = ChoGGi.ComFuncs.Trans(302535920000032,"Select a resource to find"),
     })
   end
 end
@@ -1375,7 +1374,7 @@ end
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait(oldTableConcat({"Post a request on Nexus or Github or send an email to ",ChoGGi.email}),"Request")
+    ChoGGi.ComFuncs.MsgWait(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000033,"Post a request on Nexus or Github or send an email to "),ChoGGi.email}),ChoGGi.ComFuncs.Trans(302535920000034,"Request"))
     return
   end
 
@@ -1388,7 +1387,6 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   end
   --0=value,1=#table,2=list table values
   local info_grid = {
-    title = value,
     tables = {},
     values = {
       {name="connectors",kind=1},
@@ -1409,21 +1407,25 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   }
   if value == "Grids" then
     info = info_grid
+    info_grid.title = ChoGGi.ComFuncs.Trans(302535920000035,"Grids")
     AddGrid("air",info)
     AddGrid("electricity",info)
     AddGrid("water",info)
   elseif value == "Air" then
     info = info_grid
+    info_grid.title = ChoGGi.ComFuncs.Trans(891,"Air")
     AddGrid("air",info)
   elseif value == "Electricity" then
     info = info_grid
+    info_grid.title = ChoGGi.ComFuncs.Trans(302535920000037,"Electricity")
     AddGrid("electricity",info)
   elseif value == "Water" then
     info = info_grid
+    info_grid.title = ChoGGi.ComFuncs.Trans(681,"Water")
     AddGrid("water",info)
   elseif value == "Research" then
     info = {
-      title = "Research",
+      title = ChoGGi.ComFuncs.Trans(311,"Research"),
       listtype = "all",
       tables = {UICity.tech_status},
       values = {
@@ -1432,7 +1434,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Colonists" then
     info = {
-      title = "Colonists",
+      title = ChoGGi.ComFuncs.Trans(547,"Colonists"),
       tables = UICity.labels.Colonist,
       values = {
         {name="handle",kind=0},
@@ -1458,7 +1460,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Rockets" then
     info = {
-      title = "Rockets",
+      title = ChoGGi.ComFuncs.Trans(5238,"Rockets"),
       tables = UICity.labels.AllRockets,
       values = {
         {name="name",kind=0},
@@ -1477,7 +1479,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "City" then
     info = {
-      title = "City",
+      title = ChoGGi.ComFuncs.Trans(302535920000042,"City"),
       tables = {UICity},
       values = {
         {name="rand_state",kind=0},
@@ -1518,10 +1520,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or "Placeholder",
-        "RolloverText", Table.RolloverText or "Info",
-        "RolloverTitle", Table.RolloverTitle or "Title",
-        "RolloverHint", Table.RolloverHint or "Hint",
+        "Title", Table.Title or ChoGGi.ComFuncs.Trans(3718,"NONE"),
+        "RolloverText", Table.RolloverText or ChoGGi.ComFuncs.Trans(126095410863,"unknown name"),
+        "RolloverTitle", Table.RolloverTitle or ChoGGi.ComFuncs.Trans(1000016,"Title"),
+        "RolloverHint", Table.RolloverHint or ChoGGi.ComFuncs.Trans(4248,"Hints"),
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {
@@ -1541,10 +1543,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or "Placeholder",
-        "RolloverText", Table.RolloverText or "Info",
-        "RolloverTitle", Table.RolloverTitle or "Title",
-        "RolloverHint", Table.RolloverHint or "Hint",
+        "Title", Table.Title or ChoGGi.ComFuncs.Trans(3718),
+        "RolloverText", Table.RolloverText or ChoGGi.ComFuncs.Trans(126095410863,"unknown name"),
+        "RolloverTitle", Table.RolloverTitle or ChoGGi.ComFuncs.Trans(1000016,"Title"),
+        "RolloverHint", Table.RolloverHint or ChoGGi.ComFuncs.Trans(4248,"Hints"),
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {

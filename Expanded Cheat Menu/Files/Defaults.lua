@@ -1,6 +1,7 @@
 --See LICENSE for terms
-
 --stores default values and some tables
+
+local oldTableConcat = oldTableConcat
 
 --useful lists
 ChoGGi.Tables = {
@@ -61,7 +62,7 @@ ChoGGi.Defaults = {
   --stores custom settings for each building
   BuildingSettings = {},
   --transparent UI
-	Transparency = {UAMenu = 150},
+	Transparency = {},
 
   --remove after they fix it
   RoverInfiniteLoopCuriosity = true,
@@ -264,14 +265,14 @@ function ChoGGi.SettingFuncs.WriteSettings()
 
   --piss off if we're saving (probably be better to read file afterwards and check if it matches)
   if ChoGGi.Temp.SavingSettingsFile then
-    print("Slow arsed hard drive, or something is wrong...")
+    print(ChoGGi.ComFuncs.Trans(302535920000005,"Slow arsed hard drive, or something is wrong..."))
     return
   end
 
   CreateRealTimeThread(function()
     ChoGGi.Temp.SavingSettingsFile = true
 
-    local bak = ChoGGi.SettingsFile .. ".bak"
+    local bak = oldTableConcat({ChoGGi.SettingsFile,".bak"})
     --locks the file while we write (i mean it says thread, ah well can't hurt)?
     ThreadLockKey(bak)
     AsyncCopyFile(ChoGGi.SettingsFile,bak)
@@ -284,7 +285,7 @@ function ChoGGi.SettingFuncs.WriteSettings()
     ThreadUnlockKey(ChoGGi.SettingsFile)
 
     if DoneFuckedUp then
-      print("once", "Failed to save a settings to", ChoGGi.SettingsFile, ":", err)
+      print(ChoGGi.ComFuncs.Trans(302535920000006,"Failed to save a settings to")," ",ChoGGi.SettingsFile,":",err)
       return false, DoneFuckedUp
     end
 
@@ -297,7 +298,7 @@ end
 function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
   local AsyncFileToString = AsyncFileToString
-  local errormsg = "\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n"
+  local errormsg = ChoGGi.ComFuncs.Trans(302535920000007,"\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n")
 
   --try to read settings
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
@@ -402,20 +403,20 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local errormsg = "Error: Couldn't convert old settings to new settings: "
+    local errormsg = ChoGGi.ComFuncs.Trans(302535920000008,"Error: Couldn't convert old settings to new settings: ")
     if not AddOldSettings("BuildingsCapacity","capacity") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = errormsg .. "BuildingsCapacity"
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({errormsg,"BuildingsCapacity"})
     end
     if not AddOldSettings("BuildingsProduction","production") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = errormsg .. "BuildingsProduction"
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({errormsg,"BuildingsProduction"})
     end
   end
 
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
   ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g_Classes[class].scenario_name or "Missing Scenario Name"
-    local display_name = ChoGGi.ComFuncs.Trans(g_Classes[class].display_name) or "Missing Name"
-    local description = ChoGGi.ComFuncs.Trans(g_Classes[class].rollover_text) or "Missing Description"
+    local scenario_name = g_Classes[class].scenario_name or ChoGGi.ComFuncs.Trans(302535920000009,"Missing Scenario Name")
+    local display_name = ChoGGi.ComFuncs.Trans(g_Classes[class].display_name) or ChoGGi.ComFuncs.Trans(302535920000010,"Missing Name")
+    local description = ChoGGi.ComFuncs.Trans(g_Classes[class].rollover_text) or ChoGGi.ComFuncs.Trans(302535920000011,"Missing Description")
 
     local temptable = {
       class = class,

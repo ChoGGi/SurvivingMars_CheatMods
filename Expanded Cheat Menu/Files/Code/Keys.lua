@@ -1,6 +1,6 @@
-local oldTableConcat = oldTableConcat
-
 --See LICENSE for terms
+
+local oldTableConcat = oldTableConcat
 
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 

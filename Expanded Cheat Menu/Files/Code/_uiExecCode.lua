@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local oldTableConcat = oldTableConcat
 
 -- 1 above console log, 1000 above examine
@@ -37,7 +39,7 @@ function ChoGGi_ExecCodeDlg_Defaults:Init()
   self.idEditValue:SetTextVAlign("center")
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetText("ChoGGi.CurObj") --start off with this as code (maybe just update s instead?)
-  self.idEditValue:SetHint("Paste or type code to be executed here.")
+  self.idEditValue:SetHint(ChoGGi.ComFuncs.Trans(302535920000072,"Paste or type code to be executed here."))
   self.idEditValue:SetMaxLen(-1)
   --focus on textbox and move cursor to end of text
   self.idEditValue:SetFocus()
@@ -49,8 +51,8 @@ function ChoGGi_ExecCodeDlg_Defaults:Init()
   self.idOK:SetHSizing("AnchorToLeft")
   self.idOK:SetVSizing("AnchorToBottom")
   self.idOK:SetFontStyle("Editor14Bold")
-  self.idOK:SetText("Exec")
-  self.idOK:SetHint("Exec and close dialog (Enter can also be used).")
+  self.idOK:SetText(ChoGGi.ComFuncs.Trans(302535920000051,"Exec"))
+  self.idOK:SetHint(ChoGGi.ComFuncs.Trans(302535920000073,"Exec and close dialog (Enter can also be used)."))
   --just exec instead of also closing dialog
   function self.idOK.OnButtonPressed()
     ChoGGi.CurObj = self.obj
@@ -66,7 +68,7 @@ function ChoGGi_ExecCodeDlg_Defaults:Init()
   self.idClose:SetVSizing("AnchorToBottom")
   self.idClose:SetFontStyle("Editor14Bold")
   self.idClose:SetText(T({1000430, "Cancel"}))
-  self.idClose:SetHint("Cancel without changing anything.")
+  self.idClose:SetHint(ChoGGi.ComFuncs.Trans(302535920000074,"Cancel without changing anything."))
   self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
   self.idInsertObj = Button:new(self)
@@ -75,8 +77,9 @@ function ChoGGi_ExecCodeDlg_Defaults:Init()
   self.idInsertObj:SetHSizing("AnchorToLeft")
   self.idInsertObj:SetVSizing("AnchorToBottom")
   self.idInsertObj:SetFontStyle("Editor14Bold")
-  self.idInsertObj:SetText("Insert Obj")
-  self.idInsertObj:SetHint("At caret position inserts: ChoGGi.CurObj")
+  self.idInsertObj:SetText(ChoGGi.ComFuncs.Trans(302535920000075,"Insert Obj"))
+  self.idInsertObj:SetHint(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000076,"At caret position inserts: "),"ChoGGi.CurObj"}))
+
   --insert text at caret
   function self.idInsertObj.OnButtonPressed()
     local pos = self.idEditValue:GetCursorPos()

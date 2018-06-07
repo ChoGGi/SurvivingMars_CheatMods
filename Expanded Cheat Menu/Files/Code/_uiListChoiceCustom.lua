@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local oldTableConcat = oldTableConcat
 
 --ex(ChoGGi.ListChoiceCustomDialog_Dlg)
@@ -146,9 +148,9 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   self.idEditValue:SetSize(point(375, 24))
   self.idEditValue:SetHSizing("Resize")
   self.idEditValue:SetVSizing("AnchorToBottom")
-  self.idEditValue:SetHint("You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.")
+  self.idEditValue:SetHint(ChoGGi.ComFuncs.Trans(302535920000077,"You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues."))
   self.idEditValue:SetTextVAlign("center")
-  self.idEditValue.display_text = "Add Custom Value"
+  self.idEditValue.display_text = ChoGGi.ComFuncs.Trans(302535920000078,"Add Custom Value")
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
@@ -159,7 +161,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
       self.idList:SetItem(#self.idList.items,{
         text = value,
         value = value,
-        hint = "< Use custom value"
+        hint = ChoGGi.ComFuncs.Trans(302535920000079,"< Use custom value")
       })
     end
   end
@@ -203,7 +205,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   self.idOK:SetVSizing("AnchorToBottom")
   self.idOK:SetFontStyle("Editor14Bold")
   self.idOK:SetText(T({1000429, "OK"}))
-  self.idOK:SetHint("Apply and close dialog (Arrow keys and Enter/Esc can also be used).")
+  self.idOK:SetHint(ChoGGi.ComFuncs.Trans(302535920000080,"Apply and close dialog (Arrow keys and Enter/Esc can also be used)."))
   --return values
   function self.idOK.OnButtonPressed()
     --item list
@@ -218,7 +220,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   self.idClose:SetHSizing("AnchorToMidline")
   self.idClose:SetVSizing("AnchorToBottom")
   self.idClose:SetFontStyle("Editor14Bold")
-  self.idClose:SetHint("Cancel without changing anything.")
+  self.idClose:SetHint(ChoGGi.ComFuncs.Trans(302535920000074,"Cancel without changing anything."))
   self.idClose:SetText(T({1000430, "Cancel"}))
   self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
@@ -227,7 +229,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   self.idColorHSV:SetSize(point(300, 300))
   self.idColorHSV:SetHSizing("AnchorToRight")
   self.idColorHSV:SetVisible(false)
-  self.idColorHSV:SetHint("Double right-click to set without closing dialog.")
+  self.idColorHSV:SetHint(ChoGGi.ComFuncs.Trans(302535920000081,"Double right-click to set without closing dialog."))
   --stop idColorHSV from closing on dblclick
   function self.idColorHSV.OnLButtonDoubleClick()
   end
@@ -259,7 +261,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
     self.idEditValue:SetText(tostring(color))
   end
 
-  local hint_connectedgrid = "Check this for \"All of type\" to only apply to connected grid."
+  local hint_connectedgrid = ChoGGi.ComFuncs.Trans(302535920000082,"Check this for \"All of type\" to only apply to connected grid.")
 
   self.idColorCheckAir = CheckButton:new(self)
   self.idColorCheckAir:SetPos(point(525, 400))
@@ -285,7 +287,7 @@ function ChoGGi_ListChoiceCustomDialog_Defaults:Init()
   self.idColorCheckElec:SetVisible(false)
   self.idColorCheckElec:SetButtonSize(point(16, 16))
   self.idColorCheckElec:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idColorCheckElec:SetText("Electricity")
+  self.idColorCheckElec:SetText(ChoGGi.ComFuncs.Trans(302535920000037,"Electricity"))
   self.idColorCheckElec:SetHint(hint_connectedgrid)
 
   --so elements move when dialog re-sizes

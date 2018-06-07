@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local oldTableConcat = oldTableConcat
 
 --ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
@@ -34,8 +36,8 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idAutoRefresh:SetPos(point(115, 128))
   self.idAutoRefresh:SetSize(point(164, 17))
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idAutoRefresh:SetText("Auto-Refresh")
-  self.idAutoRefresh:SetHint("Auto-refresh list every second (turn off to edit values).")
+  self.idAutoRefresh:SetText(ChoGGi.ComFuncs.Trans(302535920000084,"Auto-Refresh"))
+  self.idAutoRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000091,"Auto-refresh list every second (turn off to edit values)."))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   local children = self.idAutoRefresh.children
@@ -57,8 +59,8 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idRefresh = Button:new(self)
   self.idRefresh:SetPos(point(115, 150))
   self.idRefresh:SetSize(point(65, 26))
-  self.idRefresh:SetText(T({1000220, "Refresh"}))
-  self.idRefresh:SetHint("Refresh list.")
+  self.idRefresh:SetText(ChoGGi.ComFuncs.Trans(1000220,"Refresh"))
+  self.idRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000092,"Refresh list."))
   --refresh the list...
   function self.idRefresh.OnButtonPressed()
     self:UpdateListContent(self.obj)
@@ -67,8 +69,8 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idGoto = Button:new(self)
   self.idGoto:SetPos(point(185, 150))
   self.idGoto:SetSize(point(75, 26))
-  self.idGoto:SetText("Goto Obj")
-  self.idGoto:SetHint("View object on map.")
+  self.idGoto:SetText(ChoGGi.ComFuncs.Trans(302535920000093,"Goto Obj"))
+  self.idGoto:SetHint(ChoGGi.ComFuncs.Trans(302535920000094,"View object on map."))
   --move viewpoint to obj
   function self.idGoto.OnButtonPressed()
     ChoGGi.CodeFuncs.ViewAndSelectObject(self.obj)
@@ -77,7 +79,7 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idAddNew = Button:new(self)
   self.idAddNew:SetPos(point(265, 150))
   self.idAddNew:SetSize(point(60, 26))
-  self.idAddNew:SetText(T({398847925160, "New"}))
+  self.idAddNew:SetText(ChoGGi.ComFuncs.Trans(398847925160,"New"))
   --open dialog to get new name
   function self.idAddNew.OnButtonPressed()
     local sel_name
@@ -86,12 +88,12 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
       sel_name = self.sel.text
       sel_value = self.sel.value
     else
-      sel_name = "BLANK"
+      sel_name = ChoGGi.ComFuncs.Trans(3718,"NONE")
       sel_value = false
     end
     local ItemList = {
-      {text = "New Entry",value = sel_name,hint = "Enter the name of the new entry to be added."},
-      {text = "New Value",value = sel_value,hint = "Set the value of the new entry to be added."},
+      {text = ChoGGi.ComFuncs.Trans(302535920000095,"New Entry"),value = sel_name,hint = ChoGGi.ComFuncs.Trans(302535920000096,"Enter the name of the new entry to be added.")},
+      {text = ChoGGi.ComFuncs.Trans(302535920000097,"New Value"),value = sel_value,hint = ChoGGi.ComFuncs.Trans(302535920000098,"Set the value of the new entry to be added.")},
     }
 
     local CallBackFunc = function(choice)
@@ -103,7 +105,7 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = "New Entry",
+      title = ChoGGi.ComFuncs.Trans(302535920000095,"New Entry"),
       custom_type = 4,
     })
   end
@@ -111,8 +113,8 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idApplyAll = Button:new(self)
   self.idApplyAll:SetPos(point(450, 150))
   self.idApplyAll:SetSize(point(90, 26))
-  self.idApplyAll:SetText("Apply To All")
-  self.idApplyAll:SetHint("Apply selected value to all objects of the same type.")
+  self.idApplyAll:SetText(ChoGGi.ComFuncs.Trans(302535920000099,"Apply To All"))
+  self.idApplyAll:SetHint(ChoGGi.ComFuncs.Trans(302535920000100,"Apply selected value to all objects of the same type."))
   --idApplyAll
   function self.idApplyAll.OnButtonPressed()
     if not self.sel then
@@ -161,7 +163,7 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
             hint[#hint+1] = "\n\n"
             hint[#hint+1] = item.hint
           end
-          hint[#hint+1] = "\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator."
+          hint[#hint+1] = ChoGGi.ComFuncs.Trans(302535920000101,"\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.")
           self.parent:SetHint(oldTableConcat(hint))
         end
       end
@@ -204,11 +206,11 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
   self.idEditValue:SetTextVAlign("center")
   self.idEditValue:SetHSizing("Resize")
   self.idEditValue:SetVSizing("AnchorToBottom")
-  self.idEditValue:SetHint("Use to change values of selected list item.")
+  self.idEditValue:SetHint(ChoGGi.ComFuncs.Trans(302535920000102,"Use to change values of selected list item."))
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetAutoSelectAll(true)
   self.idEditValue:SetMaxLen(-1)
-  self.idEditValue.display_text = "Edit Value"
+  self.idEditValue.display_text = ChoGGi.ComFuncs.Trans(302535920000103,"Edit Value")
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local sel_idx = self.idList.last_selected
@@ -285,7 +287,7 @@ function ChoGGi_ObjectManipulator:UpdateListContent(obj)
   --create prop list for list
   local list = self:CreatePropList(obj)
   if not list then
-    local err = oldTableConcat({"Error opening",tostring(obj)})
+    local err = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000090,"Error opening"),tostring(obj)})
     self.idList:SetContent({{text=err,value=err}})
     return
   end
@@ -472,7 +474,7 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
       while true do
         info = debug.getinfo(o, level, "Slfun")
         if info then
-          res[#res+1] = {text = oldTableConcat({info.short_src,"(",info.currentline,") ",(info.name or info.name_what or "unknown name")})}
+          res[#res+1] = {text = oldTableConcat({info.short_src,"(",info.currentline,") ",(info.name or info.name_what or ChoGGi.ComFuncs.Trans(302535920000063,"unknown name"))})}
           level = level + 1
           else
             if type(o) == "function" then

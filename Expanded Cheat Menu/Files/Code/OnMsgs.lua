@@ -1,11 +1,11 @@
-local oldTableConcat = oldTableConcat
-
 --See LICENSE for terms
-
 --i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
+local oldTableConcat = oldTableConcat
+
 --use this message to mess with the classdefs (before classes are built)
-function OnMsg.ClassesGenerate(classdefs)
+--function OnMsg.ClassesGenerate(classdefs)
+function OnMsg.ClassesGenerate()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
@@ -64,14 +64,14 @@ function OnMsg.ClassesBuilt()
         '__context_of_kind', "CObject",
         '__condition', function (parent, context) return context.ChoGGi_Spawned end,
         '__template', "Infopanel",
-        'Description', T{313911890683, --[[XTemplate ipSwitch Description]] "<description>"},
+        'Description', ChoGGi.ComFuncs.Trans(313911890683,"<description>"),
       }, {
       PlaceObj('XTemplateTemplate', {
         'comment', "salvage",
         '__template', "InfopanelButton",
-        'RolloverText', T{640016954592, --[[XTemplate ipSwitch RolloverText]] "Remove this switch or valve."},
-        'RolloverTitle', T{3973, --[[XTemplate ipSwitch RolloverTitle]] "Salvage"},
-        'RolloverHintGamepad', T{7657, --[[XTemplate ipSwitch RolloverHintGamepad]] "<ButtonY> Activate"},
+        'RolloverText', ChoGGi.ComFuncs.Trans(640016954592,"Remove this switch or valve."),
+        'RolloverTitle', ChoGGi.ComFuncs.Trans(3973,"Salvage"),
+        'RolloverHintGamepad', ChoGGi.ComFuncs.Trans(7657,"<ButtonY> Activate"),
         'ContextUpdateOnOpen', false,
         'OnPressParam', "Demolish",
         'Icon', "UI/Icons/IPButtons/salvage_1.tga",
@@ -112,7 +112,7 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal.SetOSWindowTitle(oldTableConcat({ChoGGi.ComFuncs.Trans(1079),": ",Mods[ChoGGi.id].title}))
+  terminal.SetOSWindowTitle(oldTableConcat({ChoGGi.ComFuncs.Trans(1079,"Surviving Mars"),": ",Mods[ChoGGi.id].title}))
 end
 
 --earlist on-ground objects are loaded?
@@ -392,22 +392,23 @@ function OnMsg.NewHour()
 end
 
 --if you pick a mystery from the cheat menu
+local logo_13 = "UI/Icons/Logos/logo_13.tga"
 function OnMsg.MysteryBegin()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup("You've started a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000729,"You've started a mystery!"),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
   end
 end
 function OnMsg.MysteryChosen()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup("You've chosen a mystery!","Mystery","UI/Icons/Logos/logo_13.tga")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000730,"You've chosen a mystery!"),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
   end
 end
 function OnMsg.MysteryEnd(Outcome)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(tostring(Outcome),"Mystery","UI/Icons/Logos/logo_13.tga")
+    ChoGGi.ComFuncs.MsgPopup(tostring(Outcome),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
   end
 end
 
@@ -626,11 +627,8 @@ function OnMsg.ChoGGi_DaddysLittleHitler()
       WaitMsg("ChoGGi_DaddysLittleHitler2")
       return true
     end,
-    SortKey = 0,
     base_score = 0,
-    bonus_score = 0,
-    bonus_score_expiration = 0,
-    display_name = "Deutsche Gesellschaft fur Rassenhygiene",
+    display_name = ChoGGi.ComFuncs.Trans(302535920000731,"Deutsche Gesellschaft für Rassenhygiene"),
     group = "Default",
     id = "DaddysLittleHitler"
   })
@@ -642,11 +640,8 @@ end
 function OnMsg.ChoGGi_Childkiller()
   local MilestoneCompleted = MilestoneCompleted
   PlaceObj("Milestone", {
-    SortKey = 0,
     base_score = 0,
-    bonus_score = 0,
-    bonus_score_expiration = 666,
-    display_name = "Childkiller (You evil, evil person.)",
+    display_name = ChoGGi.ComFuncs.Trans(302535920000732,"Childkiller (You evil, evil person.)"),
     group = "Default",
     id = "Childkiller"
   })
@@ -746,7 +741,7 @@ function OnMsg.ChoGGi_Loaded()
         })
       end,
       class.EditorShortcut or nil,
-      "Open a preset in the editor.",
+      ChoGGi.ComFuncs.Trans(302535920000733,"Open a preset in the editor."),
       class.EditorIcon or "CollectionsEditor.tga"
     )
   end)
@@ -793,11 +788,8 @@ function OnMsg.ChoGGi_Loaded()
   --show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then
     PlaceObj("Milestone", {
-      SortKey = 0,
       base_score = 0,
-      bonus_score = 0,
-      bonus_score_expiration = 0,
-      display_name = "Deutsche Gesellschaft fur Rassenhygiene",
+      display_name = ChoGGi.ComFuncs.Trans(302535920000731,"Deutsche Gesellschaft für Rassenhygiene"),
       group = "Default",
       id = "DaddysLittleHitler"
     })
@@ -807,11 +799,8 @@ function OnMsg.ChoGGi_Loaded()
   end
   if UICity.ChoGGi.Childkiller then
     PlaceObj("Milestone", {
-      SortKey = 0,
       base_score = 0,
-      bonus_score = 0,
-      bonus_score_expiration = 0,
-      display_name = "Childkiller (You evil, evil person.)",
+      display_name = ChoGGi.ComFuncs.Trans(302535920000732,"Childkiller (You evil, evil person.)"),
       group = "Default",
       id = "Childkiller"
     })
@@ -957,13 +946,15 @@ function OnMsg.ChoGGi_Loaded()
 
   end
 
-  --get the +5 bonus from phsy profile
+  --get the +5 bonus from phys profile, fixed in curo update
+  --[[
   if UserSettings.NoRestingBonusPsychologistFix then
     local commander_profile = GetCommanderProfile()
     if commander_profile.id == "psychologist" then
       commander_profile.param1 = 5
     end
   end
+  --]]
 
   --show cheat pane?
   if UserSettings.InfopanelCheats then

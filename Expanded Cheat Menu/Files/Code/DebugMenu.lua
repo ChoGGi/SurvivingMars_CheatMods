@@ -6,20 +6,20 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Attach Spots Toggle",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000449,"Attach Spots Toggle"),
     ChoGGi.MenuFuncs.AttachSpots_Toggle,
     nil,
-    "Toggle showing attachment spots on selected object.",
+    ChoGGi.ComFuncs.Trans(302535920000450,"Toggle showing attachment spots on selected object."),
     "ShowAll.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Measure Tool",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000451,"Measure Tool"),
     function()
       ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
     end,
     "Ctrl-M",
-    "Measures stuff (Use Ctrl-Shift-M to remove the lines).",
+    ChoGGi.ComFuncs.Trans(302535920000452,"Measures stuff (Use Ctrl-Shift-M to remove the lines)."),
     "MeasureTool.tga"
   )
 
@@ -32,231 +32,231 @@ function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Reload Lua",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000453,"Reload Lua"),
     ChoGGi.MenuFuncs.ReloadLua,
     nil,
-    "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).",
+    ChoGGi.ComFuncs.Trans(302535920000454,"Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it)."),
     "EV_OpenFirst.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Object Cloner",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000455,"Object Cloner"),
     ChoGGi.MenuFuncs.ObjectCloner,
     "Shift-Q",
-    "Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).",
+    ChoGGi.ComFuncs.Trans(302535920000456,"Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item)."),
     "EnrichTerrainEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Anim State Set",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000457,"Anim State Set"),
     ChoGGi.MenuFuncs.SetAnimState,
     nil,
-    "Make object dance on command.",
+    ChoGGi.ComFuncs.Trans(302535920000458,"Make object dance on command."),
     "UnlockCamera.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Anim Debug Toggle",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000459,"Anim Debug Toggle"),
     ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
     nil,
-    "Attaches text to each object showing animation info (or just to selected object).",
+    ChoGGi.ComFuncs.Trans(302535920000460,"Attaches text to each object showing animation info (or just to selected object)."),
     "CameraEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Path Markers Real Time/lines",
+    "[102]Debug/Path Markers Real Time/" .. ChoGGi.ComFuncs.Trans(302535920000461,"Lines"),
     function()
       ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true,true)
     end,
     "Ctrl-Numpad .",
-    "Maps paths in realtime (just lines).",
+    ChoGGi.ComFuncs.Trans(302535920000462,"Maps paths in realtime (just lines)."),
     "ViewCamPath.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Path Markers Real Time/lines & flags",
+    "[102]Debug/Path Markers Real Time/" .. ChoGGi.ComFuncs.Trans(302535920000463,"Lines & Flags"),
     function()
       ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,nil,true)
     end,
     "Ctrl-Numpad 3",
-    "Maps paths in realtime (doesn't show label).",
+    ChoGGi.ComFuncs.Trans(302535920000464,"Maps paths in realtime (doesn't show label)."),
     "ViewCamPath.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Path Markers Real Time/lines & flags & label",
+    "[102]Debug/Path Markers Real Time/" .. ChoGGi.ComFuncs.Trans(302535920000465,"Lines & Flags & Label"),
     ChoGGi.MenuFuncs.SetPathMarkersGameTime,
     "Ctrl-Numpad 2",
-    "Maps paths in realtime (shows all).",
+    ChoGGi.ComFuncs.Trans(302535920000466,"Maps paths in realtime (shows all)."),
     "ViewCamPath.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Path Markers Visible",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000467,"Path Markers Toggle"),
     ChoGGi.MenuFuncs.SetPathMarkersVisible,
     "Ctrl-Numpad 0",
-    "Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.",
+    ChoGGi.ComFuncs.Trans(302535920000468,"Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles."),
     "ViewCamPath.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Close Dialogs",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000469,"Close Dialogs"),
     ChoGGi.CodeFuncs.CloseDialogsECM,
     nil,
-    "Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)",
+    ChoGGi.ComFuncs.Trans(302535920000470,"Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)"),
     "remove_water.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Object Manipulator",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000471,"Object Manipulator"),
     ChoGGi.ComFuncs.OpenInObjectManipulator,
     "F5",
-    "Manipulate objects (selected or under mouse cursor)",
+    ChoGGi.ComFuncs.Trans(302535920000472,"Manipulate objects (selected or under mouse cursor)"),
     "SaveMapEntityList.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Selection Editor",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000473,"Selection Editor"),
     ChoGGi.MenuFuncs.ShowSelectionEditor,
     nil,
-    "Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable).",
+    ChoGGi.ComFuncs.Trans(302535920000474,"Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable)."),
     "AreaProperties.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Object Spawner",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000475,"Object Spawner"),
     ChoGGi.MenuFuncs.ObjectSpawner,
     "Ctrl-Shift-S",
-    "Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use Delete Selected Object ",
+    ChoGGi.ComFuncs.Trans(302535920000476,"Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use Delete Selected Object"),
     "add_water.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Console: Clear Log",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000477,"Console: Clear Log"),
     cls,
     "F9",
-    "Clears console history display.",
+    ChoGGi.ComFuncs.Trans(302535920000478,"Clears console history display."),
     "Voice.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Toggle Editor",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000479,"Toggle Editor"),
     ChoGGi.MenuFuncs.Editor_Toggle,
     "Ctrl-Shift-E",
-    "Select object(s) then hold ctrl/shift/alt and drag mouse.\nclick+drag for multiple selection.\n\nIt's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).",
+    ChoGGi.ComFuncs.Trans(302535920000480,"Select object(s) then hold ctrl/shift/alt and drag mouse.\nclick+drag for multiple selection.\n\nIt's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."),
     "SelectionEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Open In Ged Editor",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000481,"Open In Ged Editor"),
     function()
       OpenGedGameObjectEditor(ChoGGi.CodeFuncs.SelObject())
     end,
     nil,
-    "It edits stuff?",
+    ChoGGi.ComFuncs.Trans(302535920000482,"It edits stuff?"),
     "SelectionEditor.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Write Logs",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000483,"Write Logs"),
     ChoGGi.MenuFuncs.SetWriteLogs_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.WriteLogs and "(Enabled)" or "(Disabled)"
-      return des .. " Write debug/console logs to AppData/logs."
+      local des = ChoGGi.UserSettings.WriteLogs and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000484,"Write debug/console logs to AppData/logs.")
     end,
     "save_city.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Console: Toggle History",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000485,"Console: Toggle History"),
     ChoGGi.MenuFuncs.ConsoleHistory_Toggle,
     nil,
     function()
-      local des = ChoGGi.UserSettings.ConsoleToggleHistory and "(Enabled)" or "(Disabled)"
-      return des .. " Show console history on screen."
+      local des = ChoGGi.UserSettings.ConsoleToggleHistory and "(" .. ChoGGi.ComFuncs.Trans(302535920000030,"Enabled") .. ")" or "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
+      return des .. " " .. ChoGGi.ComFuncs.Trans(302535920000486,"Show console history on screen.")
     end,
     "Voice.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Delete All Of Selected Object",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000487,"Delete All Of Selected Object"),
     ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
     nil,
-    "Will ask for confirmation beforehand (will not delete domes).",
+    ChoGGi.ComFuncs.Trans(302535920000488,"Will ask for confirmation beforehand (will not delete domes)."),
     "delete_objects.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Delete Object(s)",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000489,"Delete Object(s)"),
     ChoGGi.CodeFuncs.DeleteObject,
     "Ctrl-Alt-Shift-D",
-    "Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion.",
+    ChoGGi.ComFuncs.Trans(302535920000490,"Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion."),
     "delete_objects.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Examine Current Obj",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000491,"Examine Current Obj"),
     ChoGGi.MenuFuncs.ObjExaminer,
     "F4",
-    "Opens the object examiner",
+    ChoGGi.ComFuncs.Trans(302535920000492,"Opens the object examiner"),
     "PlayerInfo.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Change Map",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000493,"Change Map"),
     ChoGGi.MenuFuncs.ChangeMap,
     nil,
-    "Change map (options to pick commander, sponsor, etc...\n\nAttention: The first change usually screws up with some yellow ground (ideas?).\nThe map disaster settings don't do jack.",
+    ChoGGi.ComFuncs.Trans(302535920000494,"Change map (options to pick commander, sponsor, etc...\n\nAttention: If you get yellow ground areas; just load it again.\nThe map disaster settings don't do jack."),
     "load_city.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/Particles Reload",
+    "[102]Debug/" .. ChoGGi.ComFuncs.Trans(302535920000495,"Particles Reload"),
     function()
       LoadStreamParticlesFromDir("Data/Particles")
       ParticlesReload("", true)
     end,
     nil,
-    "Reloads particles from \"Data/Particles\"...",
+    ChoGGi.ComFuncs.Trans(302535920000496,"Reloads particles from \"Data/Particles\"..."),
     "place_particles.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/[08]Toggle Terrain Deposit Grid",
+    "[102]Debug/[08]" .. ChoGGi.ComFuncs.Trans(302535920000497,"Toggle Terrain Deposit Grid"),
     ToggleTerrainDepositGrid,
     "Ctrl-F4",
-    "Shows a grid around concrete.",
+    ChoGGi.ComFuncs.Trans(302535920000498,"Shows a grid around concrete."),
     "ToggleBlockPass.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/[09]Toggle Hex Build + Passability Grid Visibility",
+    "[102]Debug/[09]" .. ChoGGi.ComFuncs.Trans(302535920000499,"Toggle Hex Build + Passability Grid Visibility"),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(1)
     end,
     "Shift-F1",
-    "Shows a hex grid with green for buildable/walkable.",
+    ChoGGi.ComFuncs.Trans(302535920000500,"Shows a hex grid with green for buildable/walkable."),
     "ToggleOcclusion.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/[10]Toggle Hex Passability Grid Visibility",
+    "[102]Debug/[10]" .. ChoGGi.ComFuncs.Trans(302535920000501,"Toggle Hex Passability Grid Visibility"),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(2)
     end,
     "Shift-F2",
-    "Shows a hex grid with green for walkable terrain.",
+    ChoGGi.ComFuncs.Trans(302535920000502,"Shows a hex grid with green for walkable terrain."),
     "CollisionGeometry.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    "[102]Debug/[11]Toggle Hex Build Grid Visibility",
+    "[102]Debug/[11]" .. ChoGGi.ComFuncs.Trans(302535920000503,"Toggle Hex Build Grid Visibility"),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(3)
     end,
     "Shift-F3",
-    "Shows a hex grid with green for buildable (ignores uneven terrain).",
+    ChoGGi.ComFuncs.Trans(302535920000504,"Shows a hex grid with green for buildable (ignores uneven terrain)."),
     "ToggleCollisions.tga"
   )
 

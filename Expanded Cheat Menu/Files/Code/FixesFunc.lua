@@ -37,7 +37,7 @@ end
 function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
   local sel = SelectedObj
   if not sel then
-    ChoGGi.ComFuncs.MsgPopup("Nothing selected.","Collisions")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000967,"Nothing selected."),ChoGGi.ComFuncs.Trans(302535920000968,"Collisions"))
     return
   end
 
@@ -55,8 +55,8 @@ function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
   end
 
   ChoGGi.ComFuncs.MsgPopup(
-    "Collisions " .. which .. " on " .. ChoGGi.CodeFuncs.RetName(sel),
-    "Collisions"
+    ChoGGi.ComFuncs.Trans(302535920000968,"Collisions") .. " " .. which .. " " .. ChoGGi.ComFuncs.Trans(302535920000969,"on") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
+    ChoGGi.ComFuncs.Trans(302535920000968,"Collisions")
   )
 end
 
@@ -234,7 +234,6 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
     for i = 1, #Table do
       Table[i]:SetPos(HexGetNearestCenter(Table[i]:GetPos()))
     end
-    ChoGGi.ComFuncs.MsgPopup("Buildings aligned to grid.","Grid")
   end
 end
 
@@ -259,7 +258,7 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
-  ChoGGi.ComFuncs.MsgPopup("Removed unreachable","Sites")
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000970,"Removed unreachable"),ChoGGi.ComFuncs.Trans(302535920000971,"Sites"))
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
@@ -272,7 +271,6 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
     end
   end
   --]]
-  ChoGGi.ComFuncs.MsgPopup("Grid marks removed","Grid")
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -300,8 +298,8 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
     ChoGGi.CodeFuncs.AttachToNearestDome(Table[i])
   end
 
-  ChoGGi.ComFuncs.MsgPopup("Buildings attached.",
-    "Buildings","UI/Icons/Sections/basic.tga"
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000972,"Buildings attached."),
+    ChoGGi.ComFuncs.Trans(3980,"Buildings"),"UI/Icons/Sections/basic.tga"
   )
 end
 
@@ -326,9 +324,6 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
       colonist:UpdateResidence()
     end
   end
-  ChoGGi.ComFuncs.MsgPopup("Fixed black cubes",
-    "Colonists",UsualIcon2
-  )
 end
 
 function ChoGGi.MenuFuncs.RepairBrokenShit(BrokenShit)
@@ -386,8 +381,8 @@ function ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RoverInfiniteLoopCuriosity = not ChoGGi.UserSettings.RoverInfiniteLoopCuriosity
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Rover Infinite Loop: " .. tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity),
-    "Rovers"
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000964,"Rover Infinite Loop") .. ": " .. tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity),
+    ChoGGi.ComFuncs.Trans(5438,"Rovers")
   )
 end
 
@@ -395,8 +390,8 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Drone Carry Fix: " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-    "Drones","UI/Icons/IPButtons/drone.tga"
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000965,"Drone Carry Fix") .. ": " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+    ChoGGi.ComFuncs.Trans(517,"Drones"),"UI/Icons/IPButtons/drone.tga"
   )
 end
 
@@ -404,7 +399,7 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Sorting cc dist: " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
-    "Buildings"
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000966,"Sorting cc dist") .. ": " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
+    ChoGGi.ComFuncs.Trans(3980,"Buildings")
   )
 end

@@ -16,12 +16,12 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   end
 
   local ItemList = {
-    {text = "Enable",value = "Enable",hint = "Changes signs to materials."},
-    {text = "Disable",value = "Disable",hint = "Changes materials to signs."},
+    {text = ChoGGi.ComFuncs.Trans(302535920001079,"Enable"),value = "Enable",hint = ChoGGi.ComFuncs.Trans(302535920001081,"Changes signs to materials.")},
+    {text = ChoGGi.ComFuncs.Trans(302535920000142,"Disable"),value = "Disable",hint = ChoGGi.ComFuncs.Trans(302535920001082,"Changes materials to signs.")},
   }
 
   local CallBackFunc = function(choice)
-    if choice[1].value == "Enable" then
+    if choice[1].value == ChoGGi.ComFuncs.Trans(302535920001079,"Enable") then
       ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
       ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
       ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
@@ -45,7 +45,7 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Change Surface Signs",
+    title = ChoGGi.ComFuncs.Trans(302535920001083,"Change Surface Signs"),
   })
 end
 
@@ -76,10 +76,10 @@ end
 function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
   --make a list
   local ItemList = {
-    {text = " Reset",value = "Reset"},
-    {text = "Sensor Tower Beeping",value = "SensorTowerWorking"},
-    {text = "RC Rover Drones Deployed",value = "RCRoverAntenna"},
-    {text = "Mirror Sphere Crackling",value = "MirrorSphereFreeze"},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset"),value = "Reset"},
+    {text = ChoGGi.ComFuncs.Trans(302535920001085,"Sensor Tower Beeping"),value = "SensorTowerWorking"},
+    {text = ChoGGi.ComFuncs.Trans(302535920001086,"RC Rover Drones Deployed"),value = "RCRoverAntenna"},
+    {text = ChoGGi.ComFuncs.Trans(302535920001087,"Mirror Sphere Crackling"),value = "MirrorSphereFreeze"},
   }
 
   --callback
@@ -115,33 +115,33 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
       RCRover_Toggle()
     end
 
-    ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Stop that bloody bouzouki!",
-      "Sounds"
+    ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920001088,": Stop that bloody bouzouki!"),
+      ChoGGi.ComFuncs.Trans(3581,"Sounds")
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Annoying Sounds",
-    hint = "You can only reset all sounds at once.",
+    title = ChoGGi.ComFuncs.Trans(302535920000680,"Annoying Sounds"),
+    hint = ChoGGi.ComFuncs.Trans(302535920001090,"You can only reset all sounds at once."),
   })
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   local ItemList = {
-    {text = "RC Rover",value = "RCRover"},
-    {text = "RC Explorer",value = "RCExplorer"},
-    {text = "RC Transport",value = "RCTransport"},
-    {text = "Drone Hub",value = "DroneHub"},
-    {text = "Colonist",value = "Colonist"},
-    {text = "Supply Rocket",value = "SupplyRocket"},
-    {text = "Space Elevator",value = "SpaceElevator"},
-    {text = "Dome Basic",value = "DomeBasic"},
-    {text = "Dome Medium",value = "DomeMedium"},
-    {text = "Dome Mega",value = "DomeMega"},
-    {text = "Dome Oval",value = "DomeOval"},
-    {text = "Dome Geoscape",value = "GeoscapeDome"},
+    {text = ChoGGi.ComFuncs.Trans(1682,"RC Rover"),value = "RCRover"},
+    {text = ChoGGi.ComFuncs.Trans(1684,"RC Explorer"),value = "RCExplorer"},
+    {text = ChoGGi.ComFuncs.Trans(1683,"RC Transport"),value = "RCTransport"},
+    {text = ChoGGi.ComFuncs.Trans(3518,"Drone Hub"),value = "DroneHub"},
+    {text = ChoGGi.ComFuncs.Trans(547,"Colonists"),value = "Colonist"},
+    {text = ChoGGi.ComFuncs.Trans(1685,"Rocket"),value = "SupplyRocket"},
+    {text = ChoGGi.ComFuncs.Trans(1120,"Space Elevator"),value = "SpaceElevator"},
+    {text = ChoGGi.ComFuncs.Trans(5017,"Basic Dome"),value = "DomeBasic"},
+    {text = ChoGGi.ComFuncs.Trans(5146,"Medium Dome"),value = "DomeMedium"},
+    {text = ChoGGi.ComFuncs.Trans(5152,"Mega Dome"),value = "DomeMega"},
+    {text = ChoGGi.ComFuncs.Trans(5188,"Oval Dome"),value = "DomeOval"},
+    {text = ChoGGi.ComFuncs.Trans(5093,"Geoscape Dome"),value = "GeoscapeDome"},
   }
 
   if not ChoGGi.UserSettings.UnpinObjects then
@@ -163,10 +163,10 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      ChoGGi.ComFuncs.MsgPopup("Pick a checkbox next time...","Pins")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001091,"Pick a checkbox next time..."),ChoGGi.ComFuncs.Trans(302535920001092,"Pins"))
       return
     elseif check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Pins")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000039,"Don't pick both checkboxes next time..."),ChoGGi.ComFuncs.Trans(302535920001092,"Pins"))
       return
     end
 
@@ -204,19 +204,19 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
       ChoGGi.UserSettings.UnpinObjects = nil
     end
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup("Toggled: " .. #choice .. " pinnable objects.","Pins")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001093,"Toggled") .. ": " .. #choice .. " " .. ChoGGi.ComFuncs.Trans(302535920001094,"pinnable objects."),ChoGGi.ComFuncs.Trans(302535920001092,"Pins"))
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Auto Remove Items From Pin List",
-    hint = "Auto Unpinned:" .. EnabledList .. "\nEnter a class name (s.class) to add a custom entry.",
+    title = ChoGGi.ComFuncs.Trans(302535920001095,"Auto Remove Items From Pin List"),
+    hint = ChoGGi.ComFuncs.Trans(302535920001096,"Auto Unpinned") .. ":" .. EnabledList .. ChoGGi.ComFuncs.Trans(302535920001097,"\nEnter a class name (s.class) to add a custom entry."),
     multisel = true,
-    check1 = "Add to list",
-    check1_hint = "Add these items to the unpin list.",
-    check2 = "Remove from list",
-    check2_hint = "Remove these items from the unpin list.",
+    check1 = ChoGGi.ComFuncs.Trans(302535920001098,"Add to list"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920001099,"Add these items to the unpin list."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920001100,"Remove from list"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920001101,"Remove these items from the unpin list."),
   })
 end
 
@@ -230,7 +230,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
     tab[i]:SetDust(0,const.DustMaterialExterior)
   end
 
-  ChoGGi.ComFuncs.MsgPopup("Cleaned all","Objects")
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001102,"Cleaned all"),ChoGGi.ComFuncs.Trans(302535920001103,"Objects"))
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
@@ -248,14 +248,14 @@ function ChoGGi.MenuFuncs.FixAllObjects()
     tab[i]:SetCommand("RepairDrone")
   end
 
-  ChoGGi.ComFuncs.MsgPopup("Fixed all","Objects")
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001104,"Fixed all"),ChoGGi.ComFuncs.Trans(302535920001103,"Objects"))
 end
 
 --build and show a list of attachments for changing their colours
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
   local obj = ChoGGi.CodeFuncs.SelObject()
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    ChoGGi.ComFuncs.MsgPopup("Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).","Colour")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001105,"Select/mouse over an object (buildings, vehicles, signs, rocky outcrops)."),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
     return
   end
   local ItemList = {}
@@ -269,7 +269,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
       text = " " .. obj.class,
       value = obj.class,
       obj = obj,
-      hint = "Change main object colours."
+      hint = ChoGGi.ComFuncs.Trans(302535920001106,"Change main object colours.")
     }
     local Attaches = obj:GetAttaches()
     for i = 1, #Attaches do
@@ -278,7 +278,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
         value = Attaches[i].class,
         parentobj = obj,
         obj = Attaches[i],
-        hint = "Change colours of an attached object."
+        hint = ChoGGi.ComFuncs.Trans(302535920001107,"Change colours of an attached object.")
       }
     end
   end
@@ -291,21 +291,25 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Change Colour: " .. ChoGGi.CodeFuncs.RetName(obj),
-    hint = "Double click to open object/attachment to edit.",
+    title = ChoGGi.ComFuncs.Trans(302535920000692,"Change Colour") .. ": " .. ChoGGi.CodeFuncs.RetName(obj),
+    hint = ChoGGi.ComFuncs.Trans(302535920001108,"Double click to open object/attachment to edit."),
     custom_type = 1,
   })
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
   local sel = ChoGGi.CodeFuncs.SelObject()
+  if not sel then
+    return
+  end
+  local hint_loop = ChoGGi.ComFuncs.Trans(302535920001109,"Loops though and makes all") .. " "
   local ItemList = {
-    {text = " Reset: Anomalies",value = "Anomaly",hint = "Loops though and makes all anomalies visible."},
-    {text = " Reset: Buildings",value = "Building",hint = "Loops though and makes all buildings visible."},
-    {text = " Reset: Cables & Pipes",value = "ChoGGi_GridElements",hint = "Loops though and makes all pipes and cables visible."},
-    {text = " Reset: Colonists",value = "Colonists",hint = "Loops though and makes all colonists visible."},
-    {text = " Reset: Units",value = "Unit",hint = "Loops though and makes all rovers and drones visible."},
-    {text = " Reset: Deposits",value = "SurfaceDeposit",hint = "Loops though and makes all surface, subsurface, and terrain deposits visible."},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(3984,"Anomalies"),value = "Anomaly",hint = hint_loop .. ChoGGi.ComFuncs.Trans(302535920001110,"anomalies visible.")},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(3980,"Buildings"),value = "Building",hint = hint_loop .. ChoGGi.ComFuncs.Trans(302535920001111,"buildings visible.")},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(302535920000157,"Cables & Pipes"),value = "ChoGGi_GridElements",hint = hint_loop .. ChoGGi.ComFuncs.Trans(302535920001113,"pipes and cables visible.")},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(547,"Colonists"),value = "Colonists",hint = hint_loop .. ChoGGi.ComFuncs.Trans(302535920001114,"colonists visible.")},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(3981,"Units"),value = "Unit",hint = hint_loop .. ChoGGi.ComFuncs.Trans(302535920001115,"rovers and drones visible.")},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. ": " .. ChoGGi.ComFuncs.Trans(3982,"Deposits"),value = "SurfaceDeposit",hint = hint_loop .. ChoGGi.ComFuncs.Trans("surface, subsurface, and terrain deposits visible.")},
     {text = 0,value = 0},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -336,19 +340,19 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
         SettingOpacity("TerrainDeposit")
       end
     end
-    ChoGGi.ComFuncs.MsgPopup("Selected: " .. choice[1].text,
-      "Opacity","UI/Icons/Sections/attention.tga"
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.Trans(302535920001117,"Opacity"),"UI/Icons/Sections/attention.tga"
     )
   end
-  local hint = "You can still select items after making them invisible (0), but it may take some effort :)."
+  local hint = ChoGGi.ComFuncs.Trans(302535920001118,"You can still select items after making them invisible (0), but it may take some effort :).")
   if sel then
-    hint = "Current: " .. sel:GetOpacity() .. "\n\n" .. hint
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. sel:GetOpacity() .. "\n\n" .. hint
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Opacity: " .. ChoGGi.CodeFuncs.RetName(sel),
+    title = ChoGGi.ComFuncs.Trans(302535920001120,"Set Opacity") .. ": " .. ChoGGi.CodeFuncs.RetName(sel),
     hint = hint,
   })
 end
@@ -358,8 +362,8 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   hr.TR_ToggleTextureCompression = 1
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Texture Compression: " .. tostring(ChoGGi.UserSettings.DisableTextureCompression),
-    "Video",UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001121,"Texture Compression") .. ": " .. tostring(ChoGGi.UserSettings.DisableTextureCompression),
+    ChoGGi.ComFuncs.Trans(302535920001015,"Video"),UsualIcon
   )
 end
 
@@ -369,8 +373,8 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats) .. ": HAXOR",
-    "Cheats","UI/Icons/Anomaly_Tech.tga"
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats) .. ChoGGi.ComFuncs.Trans(302535920001122,": HAXOR"),
+    ChoGGi.ComFuncs.Trans(27,"Cheats"),"UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -382,8 +386,8 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane) .. ": Cleanup",
-    "Cheats","UI/Icons/Anomaly_Tech.tga"
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane) .. ": " .. ChoGGi.ComFuncs.Trans(302535920001123,"Cleanup"),
+    ChoGGi.ComFuncs.Trans(27,"Cheats"),"UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -392,22 +396,22 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize) .. ": scans at a time.",
-    "Scanner","UI/Icons/Notifications/scan.tga"
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize) .. ChoGGi.ComFuncs.Trans(302535920001124,": scans at a time."),
+    ChoGGi.ComFuncs.Trans(302535920001125,"Scanner"),"UI/Icons/Notifications/scan.tga"
   )
 end
 
 --SetTimeFactor(1000) = normal speed
 function ChoGGi.MenuFuncs.SetGameSpeed()
   local ItemList = {
-    {text = " Default",value = 1},
-    {text = "1 Double",value = 2},
-    {text = "2 Triple",value = 3},
-    {text = "3 Quadruple",value = 4},
-    {text = "4 Octuple",value = 8},
-    {text = "5 Sexdecuple",value = 16},
-    {text = "6 Duotriguple",value = 32},
-    {text = "7 Quattuorsexaguple",value = 64},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000793,"Default"),value = 1},
+    {text = "1 " .. ChoGGi.ComFuncs.Trans(302535920001126,"Double"),value = 2},
+    {text = "2 " .. ChoGGi.ComFuncs.Trans(302535920001127,"Triple"),value = 3},
+    {text = "3 " .. ChoGGi.ComFuncs.Trans(302535920001128,"Quadruple"),value = 4},
+    {text = "4 " .. ChoGGi.ComFuncs.Trans(302535920001129,"Octuple"),value = 8},
+    {text = "5 " .. ChoGGi.ComFuncs.Trans(302535920001130,"Sexdecuple"),value = 16},
+    {text = "6 " .. ChoGGi.ComFuncs.Trans(302535920001131,"Duotriguple"),value = 32},
+    {text = "7 " .. ChoGGi.ComFuncs.Trans(302535920001132,"Quattuorsexaguple"),value = 64},
   }
 
   local current = "Default"
@@ -427,7 +431,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     elseif const.mediumGameSpeed == 192 then
       current = "Quattuorsexaguple"
     else
-      current = "Custom: " .. const.mediumGameSpeed .. " < base number 3 multipled by custom amount"
+      current = ChoGGi.ComFuncs.Trans(302535920000982,"Custom") .. ": " .. const.mediumGameSpeed .. " < " .. ChoGGi.ComFuncs.Trans(302535920001134,"base number 3 multipled by custom amount")
     end
   end)
 
@@ -444,8 +448,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
       ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.",
-        "Speed","UI/Icons/Notifications/timer.tga"
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920001135,": Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono."),
+        ChoGGi.ComFuncs.Trans(302535920001136,"Speed"),"UI/Icons/Notifications/timer.tga"
       )
     end
   end
@@ -453,8 +457,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Game Speed",
-    hint = "Current speed: " .. current,
+    title = ChoGGi.ComFuncs.Trans(302535920001137,"Set Game Speed"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000933,"Current speed") .. ": " .. current,
   })
 end
 
@@ -476,23 +480,23 @@ end
 function ChoGGi.MenuFuncs.SetEntity()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
-    ChoGGi.ComFuncs.MsgPopup("You need to select an object.","Entity")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001139,"You need to select an object."),ChoGGi.ComFuncs.Trans(155,"Entity"))
     return
   end
 
-  local hint_noanim = "No animation."
+  local hint_noanim = ChoGGi.ComFuncs.Trans(302535920001140,"No animation.")
   if #entity_table == 0 then
     entity_table = {
-      {text = "  Default Entity",value = "Default"},
-      {text = " Kosmonavt",value = "Kosmonavt"},
-      {text = " Lama",value = "Lama",hint = hint_noanim},
-      {text = " GreenMan",value = "GreenMan",hint = hint_noanim},
-      {text = " PlanetMars",value = "PlanetMars",hint = hint_noanim},
-      {text = " PlanetEarth",value = "PlanetEarth",hint = hint_noanim},
-      {text = " Rocket Small",value = "RocketUI",hint = hint_noanim},
-      {text = " Rocket Regular",value = "Rocket",hint = hint_noanim},
-      {text = " CombatRover",value = "CombatRover",hint = hint_noanim},
-      {text = " PumpStationDemo",value = "PumpStationDemo",hint = hint_noanim},
+      {text = "  " .. ChoGGi.ComFuncs.Trans(302535920001141,"Default Entity"),value = "Default"},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001142,"Kosmonavt"),value = "Kosmonavt"},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001143,"Jama"),value = "Lama"},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001144,"Green Man"),value = "GreenMan"},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001145,"Planet Mars"),value = "PlanetMars",hint = hint_noanim},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001146,"Planet Earth"),value = "PlanetEarth",hint = hint_noanim},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001147,"Rocket Small"),value = "RocketUI",hint = hint_noanim},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001148,"Rocket Regular"),value = "Rocket",hint = hint_noanim},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001149,"Combat Rover"),value = "CombatRover",hint = hint_noanim},
+      {text = " " .. ChoGGi.ComFuncs.Trans(302535920001150,"PumpStation Demo"),value = "PumpStationDemo",hint = hint_noanim},
     }
     --EntityData
     local Table = DataInstances.BuildingTemplate
@@ -510,7 +514,7 @@ function ChoGGi.MenuFuncs.SetEntity()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Entity")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000039,"Don't pick both checkboxes next time..."),ChoGGi.ComFuncs.Trans(155,"Entity"))
       return
     end
 
@@ -535,19 +539,19 @@ function ChoGGi.MenuFuncs.SetEntity()
           end
         end
       end
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,"Entity")
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,ChoGGi.ComFuncs.Trans(155,"Entity"))
     end
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Entity For " .. ChoGGi.CodeFuncs.RetName(sel),
-    hint = "Current: " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now).",
-    check1 = "Dome Only",
-    check1_hint = "Will only apply to objects in the same dome as selected object.",
-    check2 = "Selected Only",
-    check2_hint = "Will only apply to selected object.",
+    title = ChoGGi.ComFuncs.Trans(302535920001151,"Set Entity For") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. (sel.ChoGGi_OrigEntity or sel.entity) .. ChoGGi.ComFuncs.Trans(302535920001153,"\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now)."),
+    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
   })
 end
 
@@ -589,12 +593,12 @@ end
 function ChoGGi.MenuFuncs.SetEntityScale()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
-    ChoGGi.ComFuncs.MsgPopup("You need to select an object.","Scale")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920001154,"You need to select an object."),ChoGGi.ComFuncs.Trans(1000081,"Scale"))
     return
   end
 
   local ItemList = {
-    {text = " Default",value = 100},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000793,"Default"),value = 100},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 100,value = 100},
@@ -608,7 +612,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup("Don't pick both checkboxes next time...","Scale")
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000039,"Don't pick both checkboxes next time..."),ChoGGi.ComFuncs.Trans(1000081,"Scale"))
       return
     end
 
@@ -633,18 +637,18 @@ function ChoGGi.MenuFuncs.SetEntityScale()
           end
         end
       end
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,"Scale")
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": " .. sel.class,ChoGGi.ComFuncs.Trans(1000081,"Scale"))
     end
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Entity Scale For " .. ChoGGi.CodeFuncs.RetName(sel),
-    hint = "Current object: " .. sel:GetScale() .. "\nIf you don't pick a checkbox it will change all of selected type.",
-    check1 = "Dome Only",
-    check1_hint = "Will only apply to objects in the same dome as selected object.",
-    check2 = "Selected Only",
-    check2_hint = "Will only apply to selected object.",
+    title = ChoGGi.ComFuncs.Trans(302535920001155,"Set Entity Scale For") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
+    hint = ChoGGi.ComFuncs.Trans(302535920001156,"Current object") .. ": " .. sel:GetScale() .. ChoGGi.ComFuncs.Trans(302535920001157,"\nIf you don't pick a checkbox it will change all of selected type."),
+    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
+    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
+    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
   })
 end

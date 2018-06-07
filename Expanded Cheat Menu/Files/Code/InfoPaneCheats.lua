@@ -435,8 +435,8 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local doublec = ""
   local resetc = ""
   if id then
-    doublec = "Double the amount of colonist slots for this " .. id .. ".\n\nReselect to update display."
-    resetc = "Reset the capacity of colonist slots for this " .. id .. " to default.\n\nReselect to update display."
+    doublec = ChoGGi.ComFuncs.Trans(302535920001199,"Double the amount of colonist slots for this") .. " " .. id .. ChoGGi.ComFuncs.Trans(302535920001200,".\n\nReselect to update display.")
+    resetc = ChoGGi.ComFuncs.Trans(302535920001201,"Reset the capacity of colonist slots for this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001200,".\n\nReselect to update display.")
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
@@ -453,13 +453,13 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 --Colonists
     if action.ActionId == "FillAll" then
-      SetHint(action,"Fill all stat bars.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001202,"Fill all stat bars."))
     elseif action.ActionId == "PrefDbl" then
-      SetHint(action,"Double " .. name .. "'s performance.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001126,"Double") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001203,"'s performance."))
     elseif action.ActionId == "PrefDef" then
-      SetHint(action,"Reset " .. name .. "'s performance to default.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001204,"'s performance to default."))
     elseif action.ActionId == "RandomSpecialization" then
-      SetHint(action,"Randomly set " .. name .. "'s specialization.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001205,"Randomly set") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001206,"'s specialization."))
 
 --Buildings
     elseif action.ActionId == "VisitorsDbl" then
@@ -478,21 +478,21 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "Upgrade1" then
       local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade1_description))
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade1_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade2" then
       local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade2_description))
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade2_description))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Upgrade3" then
       local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,"Add: " .. tempname .. " to this building.\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade3_description))
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade3_description))
       else
         action.ActionId = nil
       end
@@ -500,43 +500,43 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       local perf
       local bs = ChoGGi.UserSettings.BuildingSettings
       bs = bs and bs[id] and bs[id].performance or 150
-      SetHint(action,"Make this " .. id .. " not need workers (performance: " .. bs .. ").")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001208,"Make this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001209,"not need workers (performance") .. ": " .. bs .. ").")
 
     elseif action.ActionId == "WorkManual" then
-      SetHint(action,"Make this " .. id .. " need workers.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001208,"Make this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001210,"need workers."))
     elseif action.ActionId == "CapDbl" then
       if obj:IsKindOf("SupplyRocket") then
-        SetHint(action,"Double the export storage capacity of this " .. id .. ".")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001211,"Double the export storage capacity of this") .. " " .. id .. ".")
       else
-        SetHint(action,"Double the storage capacity of this " .. id .. ".")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001212,"Double the storage capacity of this") .. " " .. id .. ".")
       end
     elseif action.ActionId == "CapDef" then
-      SetHint(action,"Reset the storage capacity of this " .. id .. " to default.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001213,"Reset the storage capacity of this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001219,"to default."))
     elseif action.ActionId == "EmptyDepot" then
-      SetHint(action,"sticks small depot in front of mech depot and moves all resources to it (max of 20 000).")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001214,"sticks small depot in front of mech depot and moves all resources to it (max of 20 000)."))
 
 --Farms
     elseif action.ActionId == "AllShifts" then
-      SetHint(action,"Turn on all work shifts.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001215,"Turn on all work shifts."))
 
 --RC
     elseif action.ActionId == "BattCapDbl" then
-      SetHint(action,"Double capacity of battery.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001216,"Double the battery capacity."))
     elseif action.ActionId == "MaxShuttlesDbl" then
-      SetHint(action,"Double the shuttles this ShuttleHub can control.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001217,"Double the shuttles this ShuttleHub can control."))
     elseif action.ActionId == "FindResource" then
-      SetHint(action,"Selects nearest storage containing specified resource (shows list of resources).")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001218,"Selects nearest storage containing specified resource (shows list of resources)."))
 
 --Misc
     elseif action.ActionId == "Powerless" then
       if obj.electricity_consumption then
-        SetHint(action,"Change this " .. id .. " so it doesn't need a power connection.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001220,"Change this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001221,"so it doesn't need a power connection."))
       else
         action.ActionId = nil
       end
     elseif action.ActionId == "Powered" then
       if obj.electricity_consumption then
-        SetHint(action,"Change this " .. id .. " so it needs a power connection.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001220,"Change this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001222,"so it needs a power connection."))
       else
         action.ActionId = nil
       end
@@ -545,14 +545,14 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
         action.ActionId = nil
       else
-        SetHint(action,"Hides any signs above object (until state is changed).")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001223,"Hides any signs above object (until state is changed)."))
       end
 
     elseif action.ActionId == "ColourRandom" then
       if obj:IsKindOf("WasteRockDumpSite") then
         action.ActionId = nil
       else
-        SetHint(action,"Changes colour of object to random colour (doesn't touch attachments).")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001224,"Changes colour of object to random colour (doesn't change attachments)."))
       end
     elseif action.ActionId == "ColourDefault" then
       if obj:IsKindOf("WasteRockDumpSite") then
@@ -562,36 +562,36 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = false
       else
-        SetHint(action,"Add visual dust and maintenance points.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001225,"Add visual dust and maintenance points."))
       end
     elseif action.ActionId == "CleanAndFix" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = nil
       else
-        SetHint(action,"You may need to use AddDust before using this to make the building look visually.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001226,"You may need to use AddDust before using this to make the building look visually."))
       end
     elseif action.ActionId == "Destroy" then
       if obj.class == "SupplyRocket" then
         action.ActionId = nil
       else
-        SetHint(action,"Turns object into ruin.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001227,"Turns object into ruin."))
       end
     elseif action.ActionId == "Empty" then
       if obj.class:find("SubsurfaceDeposit") then
-        SetHint(action,"Warning: This will remove the " .. id .. " object from the map.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001228,"Warning: This will remove the") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001229,"object from the map."))
       else
-        SetHint(action,"Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site.")
+        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001230,"Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site."))
       end
     elseif action.ActionId == "Refill" then
-      SetHint(action,"Refill the deposit to full capacity.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001231,"Refill the deposit to full capacity."))
     elseif action.ActionId == "Fill" then
-      SetHint(action,"Fill the storage of this building.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001232,"Fill the storage of this building."))
     elseif action.ActionId == "Launch" then
-      SetHint(action,"Warning: Launches rocket without asking.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001233,"Warning: Launches rocket without asking."))
     elseif action.ActionId == "DoubleMaxAmount" then
-      SetHint(action,"Double the amount this " .. id .. " can hold.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001234,"Double the amount this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001235,"can hold."))
     elseif action.ActionId == "ReneagadeCapDbl" then
-      SetHint(action,"Double amount of reneagades this station can negate (currently: " .. obj.negated_renegades .. ") < Reselect to update amount.")
+      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001236,"Double amount of reneagades this station can negate (currently") .. ": " .. obj.negated_renegades .. ") < " .. ChoGGi.ComFuncs.Trans(302535920001237,"Reselect to update amount."))
     end
 
   end --for

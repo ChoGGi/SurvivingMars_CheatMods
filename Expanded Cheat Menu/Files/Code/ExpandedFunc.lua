@@ -8,24 +8,24 @@ local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 function ChoGGi.MenuFuncs.MonitorInfo()
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = " Something you'd like to see added?",value = "New"},
-    {text = "Grids: Air",value = "Air"},
-    {text = "Grids: Electricity",value = "Electricity"},
-    {text = "Grids: Water",value = "Water"},
-    {text = "Grids: Air/Electricity/Water",value = "Grids"},
-    {text = "City",value = "City"},
-    {text = "Colonists",value = "Colonists",hint = "Laggy with lots of colonists."},
-    {text = "Rockets",value = "Rockets"},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000936,"Something you'd like to see added?"),value = "New"},
+    {text = ChoGGi.ComFuncs.Trans(302535920000035,"Grids") .. ": " .. ChoGGi.ComFuncs.Trans(891,"Air"),value = "Air"},
+    {text = ChoGGi.ComFuncs.Trans(302535920000035,"Grids") .. ": " .. ChoGGi.ComFuncs.Trans(302535920000037,"Electricity"),value = "Electricity"},
+    {text = ChoGGi.ComFuncs.Trans(302535920000035,"Grids") .. ": " .. ChoGGi.ComFuncs.Trans(681,"Water"),value = "Water"},
+    {text = ChoGGi.ComFuncs.Trans(302535920000035,"Grids") .. ": " .. ChoGGi.ComFuncs.Trans(891,"Air") .. "/" .. ChoGGi.ComFuncs.Trans(302535920000037,"Electricity") .. "/" .. ChoGGi.ComFuncs.Trans(681,"Water"),value = "Grids"},
+    {text = ChoGGi.ComFuncs.Trans(302535920000042,"City"),value = "City"},
+    {text = ChoGGi.ComFuncs.Trans(547,"Colonists"),value = "Colonists",hint = ChoGGi.ComFuncs.Trans(302535920000937,"Laggy with lots of colonists.")},
+    {text = ChoGGi.ComFuncs.Trans(5238,"Rockets"),value = "Rockets"},
     --{text = "Research",value = "Research"}
   }
   if ChoGGi.Temp.Testing then
-    ItemList[#ItemList+1] = {text = "Research",value = "Research"}
+    ItemList[#ItemList+1] = {text = ChoGGi.ComFuncs.Trans(311,"Research"),value = "Research"}
   end
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if value == "New" then
-      ChoGGi.ComFuncs.MsgWait("Post a request on Nexus or Github or send an email to " .. ChoGGi.email,"Request")
+      ChoGGi.ComFuncs.MsgWait(ChoGGi.ComFuncs.Trans(302535920000938,"Post a request on Nexus or Github or send an email to") .. " " .. ChoGGi.email,ChoGGi.ComFuncs.Trans(302535920000034,"Request"))
     else
       ChoGGi.CodeFuncs.DisplayMonitorList(value)
     end
@@ -34,8 +34,8 @@ function ChoGGi.MenuFuncs.MonitorInfo()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Monitor Info",
-    hint = "Select something to monitor.",
+    title = ChoGGi.ComFuncs.Trans(302535920000939,"Monitor Info"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000940,"Select something to monitor."),
     custom_type = 7,
   })
 end
@@ -54,8 +54,8 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("Temp Storage: " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
-    "Storage",UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000941,"Temp Storage") .. ": " .. tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
+    ChoGGi.ComFuncs.Trans(519,"Storage"),UsualIcon
   )
 end
 
@@ -65,17 +65,17 @@ function ChoGGi.MenuFuncs.LaunchEmptyRocket()
   end
 
   ChoGGi.ComFuncs.QuestionBox(
-    "Are you sure you want to launch an empty rocket?",
+    ChoGGi.ComFuncs.Trans(302535920000942,"Are you sure you want to launch an empty rocket?"),
     CallBackFunc,
-    "Launch rocket to Mars.",
-    "Yamato Hasshin!"
+    ChoGGi.ComFuncs.Trans(302535920000943,"Launch rocket to Mars."),
+    ChoGGi.ComFuncs.Trans(302535920000944,"Yamato Hasshin!")
   )
 end
 
 function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
   local DefaultSetting = ChoGGi.CodeFuncs.GetCargoCapacity()
   local ItemList = {
-    {text = " Default: " .. DefaultSetting .. " kg",value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting .. " kg",value = DefaultSetting},
     {text = "50 000 kg",value = 50000},
     {text = "100 000 kg",value = 100000},
     {text = "250 000 kg",value = 250000},
@@ -93,8 +93,8 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
       ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": I can still see some space",
-        "Rocket","UI/Icons/Sections/spaceship.tga"
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920000945,": I can still see some space"),
+        ChoGGi.ComFuncs.Trans(5238,"Rockets"),"UI/Icons/Sections/spaceship.tga"
       )
     end
   end
@@ -102,8 +102,8 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Rocket Cargo Capacity",
-    hint = "Current capacity: " .. Consts.CargoCapacity,
+    title = ChoGGi.ComFuncs.Trans(302535920000946,"Set Rocket Cargo Capacity"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. Consts.CargoCapacity,
   })
 end
 
@@ -111,10 +111,10 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.CodeFuncs.GetTravelTimeEarthMars() / r
   local ItemList = {
-    {text = " Instant",value = 0},
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
-    {text = " Original: " .. 750,value = 750},
-    {text = " Half of Original: " .. 375,value = 375},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000947,"Instant"),value = 0},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000948,"Original") .. ": " .. 750,value = 750},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000949,"Half of Original") .. ": " .. 375,value = 375},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -142,8 +142,8 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
       ChoGGi.ComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup("88 MPH: " .. choice[1].text,
-        "Rocket","UI/Upgrades/autoregulator_04/timer.tga"
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000950,"88 MPH") .. ": " .. choice[1].text,
+        ChoGGi.ComFuncs.Trans(5238,"Rockets"),"UI/Upgrades/autoregulator_04/timer.tga"
       )
     end
   end
@@ -151,15 +151,15 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Rocket Travel Time",
-    hint = "Current: " .. hint,
+    title = ChoGGi.ComFuncs.Trans(302535920000951,"Rocket Travel Time"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint,
   })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsPerRocket()
   local DefaultSetting = ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -177,8 +177,8 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
       ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ": Long pig sardines",
-        "Rocket","UI/Icons/Notifications/colonist.tga"
+      ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920000952,": Long pig sardines"),
+        ChoGGi.ComFuncs.Trans(5238,"Rockets"),"UI/Icons/Notifications/colonist.tga"
       )
     end
   end
@@ -186,24 +186,24 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set Colonist Capacity",
-    hint = "Current capacity: " .. Consts.MaxColonistsPerRocket,
+    title = ChoGGi.ComFuncs.Trans(302535920000953,"Set Colonist Capacity"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. Consts.MaxColonistsPerRocket,
   })
 end
 
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
-    ChoGGi.ComFuncs.MsgPopup("You need to select a building that has workers.",
-      "Worker Capacity",UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000954,"You need to select a building that has workers."),
+      ChoGGi.ComFuncs.Trans(302535920000955,"Worker Capacity"),UsualIcon
     )
     return
   end
   local sel = SelectedObj
   local DefaultSetting = sel.base_max_workers
-  local hint_toolarge = "Warning: Above a thousand is laggy (above 60K may crash)."
+  local hint_toolarge = ChoGGi.ComFuncs.Trans(302535920000956,"Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash).")
 
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -249,8 +249,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
-        "Worker Capacity",UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " " .. ChoGGi.ComFuncs.Trans(302535920000957,"Capacity is now") .. ": " .. choice[1].text,
+        ChoGGi.ComFuncs.Trans(302535920000955,"Worker Capacity"),UsualIcon
       )
     end
   end
@@ -258,21 +258,21 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set " .. sel.encyclopedia_id .. " Worker Capacity",
-    hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge,
+    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sel.encyclopedia_id .. " " .. ChoGGi.ComFuncs.Trans(302535920000955,"Worker Capacity"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. hint .. "\n\n" .. hint_toolarge,
   })
 end
 
 function ChoGGi.MenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
   if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
-    ChoGGi.ComFuncs.MsgPopup("You need to select a building that has capacity.",
-      "Building Capacity",UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000958,"You need to select a building that has capacity."),
+      ChoGGi.ComFuncs.Trans(3980,"Buildings"),UsualIcon
     )
     return
   end
   local r = ChoGGi.Consts.ResourceScale
-  local hint_toolarge = "Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash)."
+  local hint_toolarge = ChoGGi.ComFuncs.Trans(302535920000956,"Warning For Colonist Capacity: Above a thousand is laggy (above 60K may crash).")
 
   --get type of capacity
   local CapType
@@ -299,7 +299,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   end
 
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -395,8 +395,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " Capacity is now " .. choice[1].text,
-        "Buildings",UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " " .. ChoGGi.ComFuncs.Trans(302535920000957,"Capacity is now") .. ": " .. choice[1].text,
+        ChoGGi.ComFuncs.Trans(3980,"Buildings"),UsualIcon
       )
     end
 
@@ -405,22 +405,22 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set " .. sel.encyclopedia_id .. " Capacity",
-    hint = "Current capacity: " .. hint .. "\n\n" .. hint_toolarge,
+    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sel.encyclopedia_id .. " " .. ChoGGi.ComFuncs.Trans(109035890389,"Capacity"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. hint .. "\n\n" .. hint_toolarge,
   })
 end --SetBuildingCapacity
 
 function ChoGGi.MenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
-    ChoGGi.ComFuncs.MsgPopup("You need to select something that has space for visitors.",
-      "Buildings",UsualIcon2
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000959,"You need to select something that has space for visitors."),
+      ChoGGi.ComFuncs.Trans(3980,"Buildings"),UsualIcon2
     )
     return
   end
   local DefaultSetting = sel.base_max_visitors
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -459,8 +459,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " visitor capacity is now " .. choice[1].text,
-        "Buildings",UsualIcon2
+      ChoGGi.ComFuncs.MsgPopup(sel.encyclopedia_id .. " " .. ChoGGi.ComFuncs.Trans(302535920000960,"visitor capacity is now") .. ": " .. choice[1].text,
+        ChoGGi.ComFuncs.Trans(3980,"Buildings"),UsualIcon2
       )
     end
   end
@@ -468,17 +468,17 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set " .. sel.encyclopedia_id .. " Visitor Capacity",
-    hint = "Current capacity: " .. hint,
+    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. ChoGGi.CodeFuncs.RetName(sel) .. " " .. ChoGGi.ComFuncs.Trans(302535920000961,"Visitor Capacity"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. hint,
   })
 end
 
 function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts[sType] / r
-  local hint_max = "Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000"
+  local hint_max = ChoGGi.ComFuncs.Trans(302535920000962,"Max capacity limited to:\nUniversal: 2,500\nOther: 20,000\nWaste: 1,000,000\nMechanized: 1,000,000")
   local ItemList = {
-    {text = " Default: " .. DefaultSetting,value = DefaultSetting},
+    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
     {text = 50,value = 50},
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -558,7 +558,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
 
       ChoGGi.SettingFuncs.WriteSettings()
       ChoGGi.ComFuncs.MsgPopup(sType .. ": " ..  choice[1].text,
-        "Storage","UI/Icons/Sections/basic.tga"
+        ChoGGi.ComFuncs.Trans(519,"Storage"),"UI/Icons/Sections/basic.tga"
       )
     end
   end
@@ -566,7 +566,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = "Set " .. sType .. " Size",
-    hint = "Current capacity: " .. hint .. "\n\n" .. hint_max,
+    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. ": " .. sType .. " " .. ChoGGi.ComFuncs.Trans(302535920000963,"Size"),
+    hint = ChoGGi.ComFuncs.Trans(302535920000914,"Current capacity") .. ": " .. hint .. "\n\n" .. hint_max,
   })
 end
