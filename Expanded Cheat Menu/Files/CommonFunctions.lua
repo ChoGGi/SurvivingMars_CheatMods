@@ -13,6 +13,24 @@ socket = require("socket")
 print(socket._VERSION)
 --]]
 
+function ChoGGi.ComFuncs.Trans(...)
+  local data = select(1,...)
+  local trans
+  local vararg = {...}
+  pcall(function()
+    if type(data) == "userdata" then
+       trans = _InternalTranslate(table.unpack(vararg))
+    else
+      trans = _InternalTranslate(T({table.unpack(vararg)}))
+    end
+  end)
+  --just incase
+  if type(trans) ~= "string" then
+    return type(vararg[2]) == "string" and vararg[2] or "ERROR"
+  end
+  return trans
+end
+
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   local AddCustomOnScreenNotification = AddCustomOnScreenNotification
   --if we called it where there ain't no UI
@@ -107,7 +125,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped: "),tostring(Obj)}),
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped"),": ",tostring(Obj)}),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
@@ -143,7 +161,7 @@ function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.ComFuncs.MsgPopup(oldTableConcat({"Dumped: ",tostring(Obj)}),"AppData/logs/DumpedText.txt")
+  ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped"),": ",tostring(Obj)}),"AppData/logs/DumpedText.txt")
 end
 
 function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
@@ -182,7 +200,7 @@ if you want to dump functions as well DumpObject(object,true)
 function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup("Can't dump nothing","Dump")
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000003,"Can't dump nothing"),ChoGGi.ComFuncs.Trans(302535920000004,"Dump"))
     return
   end
 
@@ -523,7 +541,7 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
           else
             v.description = oldTableConcat({v.description," (",keys[1]})
             for i = 2, #keys do
-              v.description = oldTableConcat({v.description," or ",keys[i]})
+              v.description = oldTableConcat({v.description," ",ChoGGi.ComFuncs.Trans(302535920000165,"or")," ",keys[i]})
             end
             v.description = oldTableConcat({v.description,")"})
           end
@@ -556,8 +574,9 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
+    --
   elseif Temp.Testing and Key ~= "Skip" then
-    Temp.StartupMsgs[#Temp.StartupMsgs+1] = oldTableConcat({"<color 255 100 100>ECM</color><color 0 0 0>: </color><color 128 255 128>BROKEN FUNCTION: </color>",Menu})
+    Temp.StartupMsgs[#Temp.StartupMsgs+1] = oldTableConcat({"<color 255 100 100>",ChoGGi.ComFuncs.Trans(302535920000000,"Expanded Cheat Menu"),"</color><color 0 0 0>: </color><color 128 255 128>",ChoGGi.ComFuncs.Trans(302535920000166,"BROKEN FUNCTION"),": </color>",Menu})
   end
 
 --[[
@@ -843,7 +862,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
 
   --title text
   if type(Object) == "table" then
-    dlg.idCaption:SetText(oldTableConcat({"Exec Code on: ",(Object.class or tostring(Object))}))
+    dlg.idCaption:SetText(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000040,"Exec Code on"),": ",(Object.class or tostring(Object))}))
   end
 
   --set pos
@@ -883,24 +902,13 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   --update internal object
   dlg.obj = Object
 
-  local title = tostring(Object)
-  if type(Object) == "table" and Object.class then
-    title = oldTableConcat({"Class: ",Object.class})
-  end
+  local title = ChoGGi.CodeFuncs.RetName(Object)
 
   --update the add button hint
-  dlg.idAddNew:SetHint(oldTableConcat({"Add new entry to ",title," (Defaults to name/value of selected item)."}))
+  dlg.idAddNew:SetHint(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000041,"Add new entry to")," ",title," ",ChoGGi.ComFuncs.Trans(302535920000138,"(Defaults to name/value of selected item).")}))
 
   --title text
-  if type(Object) == "table" then
-    if Object.entity then
-      dlg.idCaption:SetText(oldTableConcat({Object.entity," - ",Object.class}))
-    else
-      dlg.idCaption:SetText(Object.class)
-    end
-  else
-    dlg.idCaption:SetText(tostring(Object))
-  end
+  dlg.idCaption:SetText(title)
 
   --set pos
   if Parent then
@@ -957,7 +965,7 @@ function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
   XAction:new({
     ActionId = "ChoGGi_Scripts",
     ActionMenubar = "Menu",
-    ActionName = "Scripts",
+    ActionName = ChoGGi.ComFuncs.Trans(302535920000353,"Scripts"),
     OnActionEffect = "popup",
     ChoGGi_ConsoleAction = true,
   }, dlgConsole)
@@ -965,7 +973,7 @@ function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
   XAction:new({
     ActionId = "ChoGGi_History",
     ActionMenubar = "Menu",
-    ActionName = "History",
+    ActionName = ChoGGi.ComFuncs.Trans(302535920000793,"History"),
     OnActionEffect = "popup",
     ChoGGi_ConsoleAction = true,
   }, dlgConsole)
@@ -1052,24 +1060,6 @@ end
 --i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
-end
-
-function ChoGGi.ComFuncs.Trans(...)
-  local data = select(1,...)
-  local trans
-  local vararg = {...}
-  pcall(function()
-    if type(data) == "userdata" then
-       trans = _InternalTranslate(table.unpack(vararg))
-    else
-      trans = _InternalTranslate(T({table.unpack(vararg)}))
-    end
-  end)
-  --just incase
-  if type(trans) ~= "string" then
-    return type(vararg[2]) == "string" and vararg[2] or "ERROR"
-  end
-  return trans
 end
 
 function ChoGGi.ComFuncs.NewThread(Func,...)

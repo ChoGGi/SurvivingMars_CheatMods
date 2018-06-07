@@ -51,16 +51,17 @@ if test then
 end
 
 --if file exists then user likely unpacked the files, so we'll ignore Files.hpk
-local _,file = AsyncFileToString(oldTableConcat({ChoGGi.ModPath,"Defaults.lua"}))
-if file then
+local err,_ = AsyncFileToString(oldTableConcat({ChoGGi.ModPath,"Defaults.lua"}))
+if err then
   --load up the hpk
   AsyncMountPack("ChoGGi_Mount",oldTableConcat({ChoGGi.ModPath,"Files.hpk"}))
-  ChoGGi.MountPath = "ChoGGi_Mount"
+  ChoGGi.MountPath = "ChoGGi_Mount/"
 end
 
 if ChoGGi.Temp.Testing then
   ChoGGi.MountPath = oldTableConcat({ChoGGi.MountPath,"Files/"})
 end
+DebugPrint(ChoGGi.MountPath)
 
 --get saved settings for this mod
 dofile(oldTableConcat({ChoGGi.MountPath,"Defaults.lua"}))
@@ -88,7 +89,7 @@ if ChoGGi.UserSettings.DisableHints then
   HintsEnabled = false
 end
 
---why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... it's all about thinking your design decisions through. wrap your file writes in a thread or something, but at least write it during gameplay please and thanks...... some more ... just for good measure, enjoyed the rant?
+--why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you...
 if ChoGGi.Temp.Testing then
   ChoGGi.UserSettings.WriteLogs = true
 end
@@ -101,7 +102,7 @@ end
 
 --first time run info
 if ChoGGi.UserSettings.FirstRun ~= false then
-  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = ChoGGi.ComFuncs.Trans(302535920000001,"<color 200 200 200>\nECM Active<color 0 0 0>:</color></color><color 128 255 128>\nF2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history.</color>\n\n\n")
+  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({"<color 200 200 200>\n",ChoGGi.ComFuncs.Trans(302535920000000,"Expanded Cheat Menu")," ",ChoGGi.ComFuncs.Trans(302535920000201,"Active","<color 0 0 0>:</color></color><color 128 255 128>\n",ChoGGi.ComFuncs.Trans(302535920000001,"F2 to toggle cheats menu\nDebug>Console Toggle History to toggle this console history."),"</color>\n\n\n")})
   ChoGGi.UserSettings.FirstRun = false
   ChoGGi.Temp.WriteSettings = true
 end

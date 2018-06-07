@@ -85,7 +85,7 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
     "[999]Help/" .. ChoGGi.ComFuncs.Trans(302535920000672,"About ECM"),
     ChoGGi.MenuFuncs.MenuHelp_About,
     nil,
-    ChoGGi.ComFuncs.Trans(302535920000673,"Expanded Cheat Menu info dialog."),
+    ChoGGi.ComFuncs.Trans(302535920000000,"Expanded Cheat Menu") .. " " .. ChoGGi.ComFuncs.Trans(302535920000673,"info dialog."),
     "help.tga"
   )
 
