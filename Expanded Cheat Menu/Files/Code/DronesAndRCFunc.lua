@@ -39,7 +39,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(5438,"Rovers"),UsualIcon2
       )
     end
@@ -94,7 +94,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000884,"Set Rover Work Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. ChoGGi.ComFuncs.Trans(302535920000115,"\n\nToggle selection to update visible hex grid."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000115,"Toggle selection to update visible hex grid."),
   })
 end
 
@@ -139,7 +139,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000886,"Set DroneHub Work Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. ChoGGi.ComFuncs.Trans(302535920000115,"\n\nToggle selection to update visible hex grid."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000115,"Toggle selection to update visible hex grid."),
   })
 end
 
@@ -170,7 +170,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
       ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
 
       ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(517,"Drones"),UsualIcon
       )
     end
@@ -220,7 +220,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
       ChoGGi.ComFuncs.SetSavedSetting("SpeedDrone",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(517,"Drones"),UsualIcon
       )
     end
@@ -270,7 +270,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(5438,"Rovers"),UsualIcon2
       )
     end
@@ -326,7 +326,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000895,"Change Amount Of Drones"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000896,"Drones in hub") .. ": " .. CurrentAmount .. ChoGGi.ComFuncs.Trans(302535920000897,"\nDrone prefabs") .. ": " .. UICity.drone_prefabs,
+    hint = ChoGGi.ComFuncs.Trans(302535920000896,"Drones in hub") .. ": " .. CurrentAmount .. " " .. ChoGGi.ComFuncs.Trans(302535920000897,"Drone prefabs") .. ": " .. UICity.drone_prefabs,
     check1 = ChoGGi.ComFuncs.Trans(302535920000898,"Dismantle"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920000899,"Check this to dismantle drones in hub"),
   })
@@ -450,7 +450,7 @@ function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DroneRechargeTime) .. ChoGGi.ComFuncs.Trans(302535920000907,"\nWell, if jacking on'll make strangers think I'm cool, I'll do it!"),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DroneRechargeTime) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000907,"Well, if jacking on'll make strangers think I'm cool, I'll do it!"),
     ChoGGi.ComFuncs.Trans(517,"Drones"),"UI/Icons/Notifications/low_battery.tga",true
   )
 end
@@ -479,7 +479,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
     {text = 100,value = 100,hint = hinttoolarge},
     {text = 250,value = 250,hint = hinttoolarge},
     {text = 500,value = 500,hint = hinttoolarge},
-    {text = 1000,value = 1000,hint = hinttoolarge .. ChoGGi.ComFuncs.Trans(302535920000910,"\n\nsomewhere above 1000 will delete the save (when it's full)")},
+    {text = 1000,value = 1000,hint = hinttoolarge .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000910,"somewhere above 1000 will delete the save (when it's full)")},
   }
 
   local hint = DefaultSetting

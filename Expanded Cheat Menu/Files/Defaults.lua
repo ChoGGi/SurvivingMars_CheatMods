@@ -298,7 +298,7 @@ end
 function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
   local AsyncFileToString = AsyncFileToString
-  local errormsg = ChoGGi.ComFuncs.Trans(302535920000007,"\n\nCheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.\n\n")
+  local errormsg = "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000007,"CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.") .. "\n\n"
 
   --try to read settings
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
@@ -403,7 +403,7 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local errormsg = ChoGGi.ComFuncs.Trans(302535920000008,"Error: Couldn't convert old settings to new settings: ")
+    local errormsg = ChoGGi.ComFuncs.Trans(302535920000008,"Error: Couldn't convert old settings to new settings",": ")
     if not AddOldSettings("BuildingsCapacity","capacity") then
       ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({errormsg,"BuildingsCapacity"})
     end

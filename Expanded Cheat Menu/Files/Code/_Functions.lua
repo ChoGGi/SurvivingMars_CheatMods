@@ -435,7 +435,7 @@ ChoGGi.CodeFuncs.FireFuncAfterChoice({
   callback = CallBackFunc,
   items = ItemList,
   title = "TitleBar",
-  hint = oldTableConcat({"Current: ",hint}),
+  hint = oldTableConcat({"Current",": ",hint}),
   multisel = MultiSel,
   custom_type = CustomType,
   custom_func = CustomFunc,
@@ -1034,13 +1034,13 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000020,"Colour is set on "),obj.class}),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000020,"Colour is set on")," ",obj.class}),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
     end
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000021,"Change Colour: "),ChoGGi.CodeFuncs.RetName(obj)}),
+    title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000021,"Change Colour"),": ",ChoGGi.CodeFuncs.RetName(obj)}),
     hint = ChoGGi.ComFuncs.Trans(302535920000022,"If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."),
     multisel = true,
     custom_type = 2,
@@ -1209,7 +1209,7 @@ do --FindNearestResource
         if nearest then
           ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
         else
-          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000029,"Error: Cannot find any "),choice[1].text}),ChoGGi.ComFuncs.Trans(15,"Resource"))
+          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000029,"Error: Cannot find any")," ",choice[1].text}),ChoGGi.ComFuncs.Trans(15,"Resource"))
         end
       end
     end
@@ -1217,7 +1217,7 @@ do --FindNearestResource
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000031,"Find Nearest Resource "),ChoGGi.CodeFuncs.RetName(Object)}),
+      title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000031,"Find Nearest Resource")," ",ChoGGi.CodeFuncs.RetName(Object)}),
       hint = ChoGGi.ComFuncs.Trans(302535920000032,"Select a resource to find"),
     })
   end
@@ -1374,7 +1374,7 @@ end
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000033,"Post a request on Nexus or Github or send an email to "),ChoGGi.email}),ChoGGi.ComFuncs.Trans(302535920000034,"Request"))
+    ChoGGi.ComFuncs.MsgWait(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000033,"Post a request on Nexus or Github or send an email to")," ",ChoGGi.email}),ChoGGi.ComFuncs.Trans(302535920000034,"Request"))
     return
   end
 

@@ -596,7 +596,7 @@ function Examine:SetObj(o)
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
-  local hint = {ChoGGi.ComFuncs.Trans(302535920000070,"Opens attachments in new examine window.\nThis "),name," ",ChoGGi.ComFuncs.Trans(302535920000071,"has"),": ",amount}
+  local hint = {ChoGGi.ComFuncs.Trans(302535920000070,"Opens attachments in new examine window.\nThis")," ",name," ",ChoGGi.ComFuncs.Trans(302535920000071,"has"),": ",amount}
   self.idAttaches:SetHint(oldTableConcat(hint))
 
   --add object name to title

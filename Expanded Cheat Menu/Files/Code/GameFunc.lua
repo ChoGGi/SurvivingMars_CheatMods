@@ -153,7 +153,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
         end
 
         ChoGGi.SettingFuncs.WriteSettings()
-        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,ChoGGi.ComFuncs.Trans(302535920000984,"Lighting"))
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,ChoGGi.ComFuncs.Trans(302535920000984,"Lighting"))
       end
     end
   end
@@ -181,7 +181,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     callback = CallBackFunc,
     items = ItemList,
     title = title,
-    hint = hint .. ChoGGi.ComFuncs.Trans(302535920000991,"\n\nDouble right-click to preview lightmodel without closing dialog."),
+    hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000991,"Double right-click to preview lightmodel without closing dialog."),
     check1 = Check1,
     check1_hint = Check1Hint,
     check2 = Check2,
@@ -321,12 +321,12 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001016,"Set Lights Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.LightsRadiusModifier .. ChoGGi.ComFuncs.Trans(302535920001017,"\n\nTurns up the radius for light bleedout, doesn't seem to hurt FPS much."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.LightsRadiusModifier .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001017,"Turns up the radius for light bleedout, doesn't seem to hurt FPS much."),
   })
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
-  local hint_warn = ChoGGi.ComFuncs.Trans(302535920001018,"\nAbove 1000 will add a long delay to loading.")
+  local hint_warn = "\n" .. ChoGGi.ComFuncs.Trans(302535920001018,"Above 1000 will add a long delay to loading.")
   local ItemList = {
     {text = " " .. ChoGGi.ComFuncs.Trans(302535920000793,"Default"),value = false,hint = ChoGGi.ComFuncs.Trans(302535920001003,"restart to enable")},
     {text = ChoGGi.ComFuncs.Trans(302535920001004,"01 Lowest (25)"),value = 25},
@@ -364,7 +364,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. ChoGGi.ComFuncs.Trans(302535920000635,"Terrain Detail"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.TR_MaxChunks .. ChoGGi.ComFuncs.Trans(302535920001030,"\nDoesn't seem to use much CPU, but load times will probably increase. I've limited max to 6000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.\n\nAnd yes Medium is using a higher setting than High..."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.TR_MaxChunks .. "\n" .. ChoGGi.ComFuncs.Trans(302535920001030,"Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 6000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.\n\nAnd yes Medium is using a higher setting than High..."),
   })
 end
 
@@ -440,7 +440,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001051,"Set Shadowmap Size"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. ChoGGi.ComFuncs.Trans(302535920001052,"\n\nMax limited to 16384 (or crashing)."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001052,"Max limited to 16384 (or crashing)."),
   })
 end
 

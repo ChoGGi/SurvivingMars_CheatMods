@@ -47,7 +47,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
   end
 
   ChoGGi.ComFuncs.QuestionBox(
-    ChoGGi.ComFuncs.Trans(302535920001072,"Are you sure you want to reset ECM settings?\n\nOld settings are saved as") .. " " .. old .. ChoGGi.ComFuncs.Trans(302535920001073,"\n\nRestart to take effect."),
+    ChoGGi.ComFuncs.Trans(302535920001072,"Are you sure you want to reset ECM settings?\n\nOld settings are saved as") .. " " .. old .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001070,"Restart to take effect."),
     CallBackFunc,
     ChoGGi.ComFuncs.Trans(302535920001071,"Reset!")
   )

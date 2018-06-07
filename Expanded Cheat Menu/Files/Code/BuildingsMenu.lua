@@ -19,7 +19,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Buildings/" .. ChoGGi.ComFuncs.Trans(302535920000168,"Triboelectric Scrubber Radius"),
     function()
-      ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber",ChoGGi.ComFuncs.Trans(302535920000169,"\nLadies and gentlemen, this is your captain speaking. We have a small problem.\nAll four engines have stopped. We are doing our damnedest to get them going again.\nI trust you are not in too much distress."))
+      ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber","\n" .. ChoGGi.ComFuncs.Trans(302535920000169,"Ladies and gentlemen, this is your captain speaking. We have a small problem.\nAll four engines have stopped. We are doing our damnedest to get them going again.\nI trust you are not in too much distress."))
     end,
     nil,
     function()
@@ -32,7 +32,7 @@ function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Buildings/" .. ChoGGi.ComFuncs.Trans(302535920000171,"SubsurfaceHeater Radius"),
     function()
-      ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater",ChoGGi.ComFuncs.Trans(302535920000172,"\nSome smart quip about heating?"))
+      ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\n" .. ChoGGi.ComFuncs.Trans(302535920000172,"Some smart quip about heating?"))
     end,
     nil,
     function()

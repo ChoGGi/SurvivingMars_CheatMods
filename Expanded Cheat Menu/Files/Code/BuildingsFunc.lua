@@ -51,7 +51,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
       SetStor("Grocery")
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000104,"Food Storage: "),choice[1].text}),
+      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000104,"Food Storage"),": ",choice[1].text}),
         ChoGGi.ComFuncs.Trans(1022,"Food")
       )
     end
@@ -78,7 +78,7 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.AlwaysDustyBuildings) .. ChoGGi.ComFuncs.Trans(302535920000107,"\nI must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.\nI will face my fear. I will permit it to pass over me and through me.\nAnd when it has gone past I will turn the inner eye to see its path.\nWhere the fear has gone there will be nothing. Only I will remain."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.AlwaysDustyBuildings) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000107,"I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.\nI will face my fear. I will permit it to pass over me and through me.\nAnd when it has gone past I will turn the inner eye to see its path.\nWhere the fear has gone there will be nothing. Only I will remain."),
     ChoGGi.ComFuncs.Trans(3980,"Buildings"),nil,true
   )
 end
@@ -140,7 +140,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000114,"Set Rover Work Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. ChoGGi.ComFuncs.Trans(302535920000115,"\n\nToggle selection to update visible hex grid."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000115,"Toggle selection to update visible hex grid."),
   })
 end
 
@@ -165,7 +165,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
       end)
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000116,"Buildings unlocked: ") .. #choice,
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000116,"Buildings unlocked") .. ": " .. #choice,
       ChoGGi.ComFuncs.Trans(8690,"Protect"),UsualIcon
     )
   end
@@ -408,7 +408,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. name .. " " .. ChoGGi.ComFuncs.Trans(302535920000130,"Dis/Charge Rates"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000131,"Current rate: ") .. hint,
+    hint = ChoGGi.ComFuncs.Trans(302535920000131,"Current rate") .. ": " .. hint,
     check1 = ChoGGi.ComFuncs.Trans(302535920000124,"Charge"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920000132,"Change charge rate"),
     check2 = ChoGGi.ComFuncs.Trans(302535920000125,"Discharge"),
@@ -632,7 +632,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(000,"\nI presume the PM's in favour of the scheme because it'll reduce unemployment."),
+    ChoGGi.ComFuncs.MsgPopup(choice[1].text .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000143,"\nI presume the PM's in favour of the scheme because it'll reduce unemployment."),
       ChoGGi.ComFuncs.Trans(3980,"Buildings"),UsualIcon,true
     )
   end
@@ -652,9 +652,9 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     callback = CallBackFunc,
     items = ItemList,
     title = name .. ": " .. ChoGGi.ComFuncs.Trans(302535920000144,"Automated Performance"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000145,"Sets performance of all automated buildings\nCurrent: ") .. hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000146,"Selected"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000147,"Only apply to selected object instead of all ") .. name,
+    hint = ChoGGi.ComFuncs.Trans(302535920000145,"Sets performance of all automated buildings\nCurrent") .. ": " .. hint,
+    check1 = ChoGGi.ComFuncs.Trans(302535920000769,"Selected"),
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000147,"Only apply to selected object instead of all") .. " " .. name,
   })
 end
 
@@ -684,7 +684,7 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
     ChoGGi.MenuFuncs.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits,true)
   end
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SchoolTrainAll) .. ChoGGi.ComFuncs.Trans(302535920000148,"\nYou keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?"),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SchoolTrainAll) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000148,"You keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?"),
     ChoGGi.ComFuncs.Trans(5247,"School"),UsualIcon,true
   )
 end
@@ -699,7 +699,7 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
     ChoGGi.MenuFuncs.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits,true)
   end
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumCureAll) .. ChoGGi.ComFuncs.Trans(302535920000149,"\nThere's more vodka in this piss than there is piss."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SanatoriumCureAll) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000149,"There's more vodka in this piss than there is piss."),
     ChoGGi.ComFuncs.Trans(3540,"Sanatorium"),UsualIcon,true
   )
 end
@@ -802,7 +802,7 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
   Consts.CropFailThreshold = ChoGGi.ComFuncs.NumRetBool(Consts.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
   ChoGGi.ComFuncs.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CropFailThreshold) .. ChoGGi.ComFuncs.Trans(302535920000153,"\nSo, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings, it is a friendship greeting from the children of our small but great planet of Potatoho."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CropFailThreshold) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000153,"So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings, it is a friendship greeting from the children of our small but great planet of Potatoho."),
     ChoGGi.ComFuncs.Trans(3980,"Buildings"),"UI/Icons/Sections/Food_1.tga",true
   )
 end
@@ -851,7 +851,7 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("CrimeEventSabotageBuildingsCount",Consts.CrimeEventSabotageBuildingsCount)
   ChoGGi.ComFuncs.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount) .. ChoGGi.ComFuncs.Trans(302535920000155,"\nWe were all feeling a bit shagged and fagged and fashed, it having been an evening of some small energy expenditure, O my brothers. So we got rid of the auto and stopped off at the Korova for a nightcap."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000155,"We were all feeling a bit shagged and fagged and fashed, it having been an evening of some small energy expenditure, O my brothers. So we got rid of the auto and stopped off at the Korova for a nightcap."),
     ChoGGi.ComFuncs.Trans(3980,"Buildings"),"UI/Icons/Notifications/fractured_dome.tga",true
   )
 end

@@ -78,7 +78,7 @@ function ChoGGi_ExecCodeDlg_Defaults:Init()
   self.idInsertObj:SetVSizing("AnchorToBottom")
   self.idInsertObj:SetFontStyle("Editor14Bold")
   self.idInsertObj:SetText(ChoGGi.ComFuncs.Trans(302535920000075,"Insert Obj"))
-  self.idInsertObj:SetHint(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000076,"At caret position inserts: "),"ChoGGi.CurObj"}))
+  self.idInsertObj:SetHint(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000076,"At caret position inserts"),": ","ChoGGi.CurObj"}))
 
   --insert text at caret
   function self.idInsertObj.OnButtonPressed()

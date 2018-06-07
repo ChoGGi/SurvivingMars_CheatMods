@@ -108,7 +108,7 @@ function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
       else
         des = "(" .. ChoGGi.ComFuncs.Trans(302535920000036,"Disabled") .. ")"
       end
-      return des .. ChoGGi.ComFuncs.Trans(302535920000701,"Queue up to 100 squares (default: ") .. ChoGGi.Consts.ExplorationQueueMaxSize .. ")."
+      return des .. ChoGGi.ComFuncs.Trans(302535920000701,"Queue up to 100 squares (default") .. ": " .. ChoGGi.Consts.ExplorationQueueMaxSize .. ")."
     end,
     "ViewArea.tga"
   )

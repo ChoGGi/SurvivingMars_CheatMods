@@ -163,7 +163,7 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
             hint[#hint+1] = "\n\n"
             hint[#hint+1] = item.hint
           end
-          hint[#hint+1] = ChoGGi.ComFuncs.Trans(302535920000101,"\n\nYou can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.")
+          hint[#hint+1] = "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000101,"You can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.")
           self.parent:SetHint(oldTableConcat(hint))
         end
       end

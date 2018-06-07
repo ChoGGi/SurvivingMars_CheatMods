@@ -211,7 +211,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001095,"Auto Remove Items From Pin List"),
-    hint = ChoGGi.ComFuncs.Trans(302535920001096,"Auto Unpinned") .. ":" .. EnabledList .. ChoGGi.ComFuncs.Trans(302535920001097,"\nEnter a class name (s.class) to add a custom entry."),
+    hint = ChoGGi.ComFuncs.Trans(302535920001096,"Auto Unpinned") .. ":" .. EnabledList .. "\n" .. ChoGGi.ComFuncs.Trans(302535920001097,"Enter a class name (s.class) to add a custom entry."),
     multisel = true,
     check1 = ChoGGi.ComFuncs.Trans(302535920001098,"Add to list"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920001099,"Add these items to the unpin list."),
@@ -340,7 +340,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
         SettingOpacity("TerrainDeposit")
       end
     end
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
       ChoGGi.ComFuncs.Trans(302535920001117,"Opacity"),"UI/Icons/Sections/attention.tga"
     )
   end
@@ -547,7 +547,7 @@ function ChoGGi.MenuFuncs.SetEntity()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001151,"Set Entity For") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. (sel.ChoGGi_OrigEntity or sel.entity) .. ChoGGi.ComFuncs.Trans(302535920001153,"\nIf you don't pick a checkbox it will change all of selected type.\n\nPost a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now)."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. (sel.ChoGGi_OrigEntity or sel.entity) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920001157,"If you don't pick a checkbox it will change all of selected type.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001153,"Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now)."),
     check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
     check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
@@ -645,7 +645,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001155,"Set Entity Scale For") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
-    hint = ChoGGi.ComFuncs.Trans(302535920001156,"Current object") .. ": " .. sel:GetScale() .. ChoGGi.ComFuncs.Trans(302535920001157,"\nIf you don't pick a checkbox it will change all of selected type."),
+    hint = ChoGGi.ComFuncs.Trans(302535920001156,"Current object") .. ": " .. sel:GetScale() .. "\n" .. ChoGGi.ComFuncs.Trans(302535920001157,"If you don't pick a checkbox it will change all of selected type."),
     check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
     check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),

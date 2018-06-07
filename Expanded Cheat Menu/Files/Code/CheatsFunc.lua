@@ -6,7 +6,7 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
   ChoGGi.UserSettings.DraggableCheatsMenu = not ChoGGi.UserSettings.DraggableCheatsMenu
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000232,"Draggable cheats menu: ") .. tostring(ChoGGi.UserSettings.DraggableCheatsMenu),
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000232,"Draggable cheats menu") .. ": " .. tostring(ChoGGi.UserSettings.DraggableCheatsMenu),
     ChoGGi.ComFuncs.Trans(1000162,"Menu")
   )
 end
@@ -15,7 +15,7 @@ function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
   ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000233,"Cheats hover toggle: ") .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000233,"Cheats hover toggle") .. ": " .. tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),
     ChoGGi.ComFuncs.Trans(1000162,"Menu")
   )
 end
@@ -28,7 +28,7 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000234,"Cheats menu save position: ") .. tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition),
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000234,"Cheats menu save position") .. ": " .. tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition),
     ChoGGi.ComFuncs.Trans(1000162,"Menu")
   )
 end
@@ -207,13 +207,13 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   }
 
   local CallBackFunc = function(choice)
-    local function deep()
+    local function ExploreDeep()
       ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
       ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
       ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
       ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
     end
-    local function core()
+    local function ExploreCore()
       Msg("TechResearched","CoreWater", UICity)
       Msg("TechResearched","CoreMetals", UICity)
       Msg("TechResearched","CoreRareMetals", UICity)
@@ -223,15 +223,14 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     local value
     for i=1,#choice do
       value = choice[i].value
-      print(value)
       if value == 1 then
         CheatMapExplore("deep scanned")
-        deep()
-        core()
+        ExploreDeep()
+        ExploreCore()
       elseif value == 2 then
-        deep()
+        ExploreDeep()
       elseif value == 3 then
-        core()
+        ExploreCore()
       elseif value == 4 then
         ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
       elseif value == 5 then
@@ -396,7 +395,7 @@ end
 --loops through all the sequence and adds the logs we've already seen
 local function ShowMysteryLog(MystName)
   local ChoGGi = ChoGGi
-  local msgs = {MystName .. ChoGGi.ComFuncs.Trans(302535920000272,"\n\nTo play back speech use \"Exec\" button and type in\ng_Voice:Play(ChoGGi.CurObj.speech)\n")}
+  local msgs = {MystName .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000272,"To play back speech use \"Exec\" button and type in\ng_Voice:Play(ChoGGi.CurObj.speech)") .. "\n"}
   local Players = s_SeqListPlayers or empty_table
   -- 1 is some default map thing
   if #Players == 1 then
@@ -523,7 +522,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
   local SA_WaitMarsTime = SA_WaitMarsTime
   local Msg = Msg
 
-  local warning = ChoGGi.ComFuncs.Trans(302535920000285,"\n\nClick \"Ok\" to skip requirements (Warning: may cause issues later on, untested).")
+  local warning = "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000285,"Click \"Ok\" to skip requirements (Warning: may cause issues later on, untested).")
   local name = ChoGGi.ComFuncs.Trans(3486,"Mystery") .. ": " .. ChoGGi.Tables.Mystery[Mystery].name
 
   for Thread in pairs(ThreadsMessageToThreads) do
@@ -584,7 +583,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
               Player:UpdateCurrentIP(seq_list)
             end
             ChoGGi.ComFuncs.QuestionBox(
-              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires: ") .. tostring(seq.expression) .. ChoGGi.ComFuncs.Trans(302535920000290,"\n\nTime duration has been set to 0 (you still need to complete the requirements).\n\nWait for a Sol or two for it to update (should give a popup msg).") .. warning,
+              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires") .. ": " .. tostring(seq.expression) .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000290,"Time duration has been set to 0 (you still need to complete the requirements).\n\nWait for a Sol or two for it to update (should give a popup msg).") .. warning,
               CallBackFunc,
               title
             )
@@ -598,7 +597,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
               Player:UpdateCurrentIP(seq_list)
             end
             ChoGGi.ComFuncs.QuestionBox(
-              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires: ") .. tostring(seq.msg) .. warning,
+              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires") .. ": " .. tostring(seq.msg) .. warning,
               CallBackFunc,
               title
             )
@@ -612,7 +611,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
               Player:UpdateCurrentIP(seq_list)
             end
             ChoGGi.ComFuncs.QuestionBox(
-              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires: ") .. tostring(seq.Research).. warning,
+              ChoGGi.ComFuncs.Trans(302535920000288,"Advancement requires") .. ": " .. tostring(seq.Research).. warning,
               CallBackFunc,
               title
             )
@@ -687,7 +686,7 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.OutsourceResearchCost) .. ChoGGi.ComFuncs.Trans(302535920000297,"\nBest hope you picked India as your Mars sponsor"),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.OutsourceResearchCost) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000297,"Best hope you picked India as your Mars sponsor"),
     ChoGGi.ComFuncs.Trans(311,"Research"),"UI/Icons/Sections/research_1.tga",true
   )
 end

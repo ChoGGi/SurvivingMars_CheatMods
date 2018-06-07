@@ -188,7 +188,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       end
     else
       ChoGGi.ComFuncs.MsgPopup(
-        ChoGGi.ComFuncs.Trans(302535920000744,"Wholesale slaughter: ") .. choice[1].text,
+        ChoGGi.ComFuncs.Trans(302535920000744,"Wholesale slaughter") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(302535920000745,"Snacks"),
         "UI/Icons/Sections/Food_1.tga"
       )
@@ -269,7 +269,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
             colonist.specialist = self.Specialization
           end
         end
-        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000756,"Added applicants: ") .. choice[1].text,
+        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000756,"Added applicants") .. ": " .. choice[1].text,
           ChoGGi.ComFuncs.Trans(302535920000755,"Applicants"),UsualIcon
         )
       end
@@ -282,7 +282,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     title = ChoGGi.ComFuncs.Trans(302535920000757,"Add Applicants To Pool"),
     hint = ChoGGi.ComFuncs.Trans(302535920000758,"Warning: Will take some time for 25K and up."),
     check1 = ChoGGi.ComFuncs.Trans(302535920000759,"Clear Applicant Pool"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000760,"Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size: ") .. #g_ApplicantPool,
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000760,"Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size") .. ": " .. #g_ApplicantPool,
   })
 end
 
@@ -364,7 +364,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
       ChoGGi.ComFuncs.SetSavedSetting("MinComfortBirth",Consts.MinComfortBirth)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text .. ChoGGi.ComFuncs.Trans(302535920000770,"\nLook at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed."),
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000770,"Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed."),
         ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
       )
     end
@@ -383,7 +383,7 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.VisitFailPenalty) .. ChoGGi.ComFuncs.Trans(302535920000772,"\nThe mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.VisitFailPenalty) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000772,"The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."),
     ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
   )
 end
@@ -485,7 +485,7 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
   ChoGGi.ComFuncs.SetConstsG("NoHomeComfort",ChoGGi.ComFuncs.NumRetBool(Consts.NoHomeComfort,0,ChoGGi.Consts.NoHomeComfort))
   ChoGGi.ComFuncs.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NoHomeComfort) .. ChoGGi.ComFuncs.Trans(302535920000780,"\nOh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,"),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NoHomeComfort) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000780,"Oh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,"),
     ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
   )
 end
@@ -545,7 +545,7 @@ function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("positive_playground_chance",Consts.positive_playground_chance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.positive_playground_chance) .. ChoGGi.ComFuncs.Trans(302535920000786,"\nWe've all seen them, on the playground, at the store, walking on the streets."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.positive_playground_chance) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000786,"We've all seen them, on the playground, at the store, walking on the streets."),
     ChoGGi.ComFuncs.Trans(235,"Traits"),"UI/Icons/Upgrades/home_collective_02.tga",true
   )
 end
@@ -555,7 +555,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance) .. ChoGGi.ComFuncs.Trans(302535920000787,"\nSay, \"Small umbrella, small umbrella.\""),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000787,"Say, \"Small umbrella, small umbrella.\""),
     ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
   )
 end
@@ -565,7 +565,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty) .. ChoGGi.ComFuncs.Trans(302535920000788,"\nYou never know what you're gonna get."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000788,"You never know what you're gonna get."),
     "Penalty",UsualIcon,true
   )
 end
@@ -604,7 +604,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000790,"Set Outside Workplace Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000791,"Current distance: ") .. hint .. ChoGGi.ComFuncs.Trans(302535920000792,"\n\nYou may not want to make it too far away unless you turned off suffocation."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000791,"Current distance") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000792,"You may not want to make it too far away unless you turned off suffocation."),
   })
 end
 
@@ -659,7 +659,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000800,"Death age: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000800,"Death age") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(547,"Colonists")
       )
     end
@@ -669,7 +669,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000801,"Set Death Age"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000802,"Usual age is around ") .. RetDeathAge(UICity.labels.Colonist[1]) .. ChoGGi.ComFuncs.Trans(302535920000803,". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour)."),
+    hint = ChoGGi.ComFuncs.Trans(302535920000802,"Usual age is around") .. " " .. RetDeathAge(UICity.labels.Colonist[1]) .. ChoGGi.ComFuncs.Trans(302535920000803,". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour)."),
   })
 end
 
@@ -763,7 +763,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 
     end
 
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists: ") .. choice[1].text,
+    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. ": " .. choice[1].text,
       ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
     )
   end
@@ -854,7 +854,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists: ") .. choice[1].text,
+    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. choice[1].text,
       ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
     )
   end
@@ -952,7 +952,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists: ") .. choice[1].text,
+    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. choice[1].text,
       ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
     )
   end
@@ -1215,7 +1215,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000830,"olonists traits set: ") .. #TraitsList,
+    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000830,"olonists traits set") .. ": " .. #TraitsList,
       ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
     )
   end
@@ -1385,7 +1385,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 
       ChoGGi.ComFuncs.SetSavedSetting("SpeedColonist",value)
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
       )
     end
@@ -1457,7 +1457,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
       ChoGGi.ComFuncs.SetSavedSetting("GravityColonist",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000839,"Colonist gravity is now: ") .. choice[1].text,
+      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000839,"Colonist gravity is now") .. ": " .. choice[1].text,
         ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
       )
     end
@@ -1570,9 +1570,9 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
     callback = CallBackFunc,
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920000845,"Toggle") .. " " .. sType .. " " .. ChoGGi.ComFuncs.Trans(302535920000846,"For") .. " " .. name,
-    hint = hint .. ChoGGi.ComFuncs.Trans(302535920000847,"\n\nSelect traits and click Ok to toggle status."),
+    hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000847,"Select traits and click Ok to toggle status."),
     multisel = true,
     check1 = ChoGGi.ComFuncs.Trans(302535920000848,"Fire Workers"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000849,"Will also fire workers with the traits from all ") .. name .. ".",
+    check1_hint = ChoGGi.ComFuncs.Trans(302535920000849,"Will also fire workers with the traits from all") .. " " .. name .. ".",
   })
 end

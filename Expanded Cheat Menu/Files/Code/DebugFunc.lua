@@ -47,7 +47,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   end
   local name = ChoGGi.CodeFuncs.RetName(s)
   if not name then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(6774,"Error") .. ": " .. tostring(s) .. ChoGGi.ComFuncs.Trans(302535920000851,"isn't an object?\nSounds like a broked save; send me the file and I'll take a look: ") .. ChoGGi.email,
+    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(6774,"Error") .. ": " .. tostring(s) .. ChoGGi.ComFuncs.Trans(302535920000851,"isn't an object?\nSounds like a broked save; send me the file and I'll take a look") .. ": " .. ChoGGi.email,
       ChoGGi.ComFuncs.Trans(6774,"Error"),nil,true
     )
     return
@@ -62,11 +62,11 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
     end)
   end
   ChoGGi.ComFuncs.QuestionBox(
-    ChoGGi.ComFuncs.Trans(302535920000852,"Warning!\nThis will delete all ") .. #objs .. " " .. ChoGGi.ComFuncs.Trans(302535920000853,"of") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920000854,"\n\nTakes about thirty seconds for 12 000 objects."),
+    ChoGGi.ComFuncs.Trans(302535920000852,"Warning!\nThis will delete all") .. " " .. #objs .. " " .. ChoGGi.ComFuncs.Trans(302535920000853,"of") .. " " .. name .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000854,"Takes about thirty seconds for 12 000 objects."),
     CallBackFunc,
     ChoGGi.ComFuncs.Trans(302535920000855,"Warning: Last chance before deletion!"),
-    ChoGGi.ComFuncs.Trans(302535920000856,"Yes, I want to delete all ") .. name,
-    ChoGGi.ComFuncs.Trans(302535920000857,"No, I need to backup my save (like I should've done before clicking something called delete all).")
+    ChoGGi.ComFuncs.Trans(302535920000856,"Yes, I want to delete all") .. ": " .. name,
+    ChoGGi.ComFuncs.Trans(302535920000857,"No, I need to backup my save first (like I should've done before clicking something called 'Delete All').")
   )
 end
 
@@ -278,7 +278,7 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000864,"Write debug/console logs: ") .. tostring(ChoGGi.UserSettings.WriteLogs),
+  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000864,"Write debug/console logs") .. ": " .. tostring(ChoGGi.UserSettings.WriteLogs),
     ChoGGi.ComFuncs.Trans(1000113,"Debug"),"UI/Icons/Anomaly_Breakthrough.tga"
   )
 end

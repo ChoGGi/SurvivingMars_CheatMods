@@ -41,7 +41,7 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. ChoGGi.ComFuncs.Trans(302535920001160,"\nDamage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."),
+  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.MeteorHealthDamage) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920001160,"Damage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."),
     ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
@@ -143,7 +143,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     items = ItemList,
     title = ChoGGi.ComFuncs.Trans(302535920001162,"Sponsor") .. " " .. ChoGGi.ComFuncs.Trans(302535920001166,"Bonuses"),
     hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. ChoGGi.ComFuncs.Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)
-      .. ChoGGi.ComFuncs.Trans(302535920001167,"\n\nUse Ctrl/Shift for multiple bonuses.") .. ChoGGi.ComFuncs.Trans(302535920001168,"\n\nModded ones are mostly ignored for now (just cargo space/research points)."),
+      .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001167,"Use Ctrl/Shift for multiple bonuses.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920001168,"Modded ones are mostly ignored for now (just cargo space/research points)."),
     multisel = true,
     check1 = ChoGGi.ComFuncs.Trans(302535920001169,"Turn Off"),
     check1_hint = ChoGGi.ComFuncs.Trans(302535920001170,"Turn off selected bonuses (defaults to turning on)."),

@@ -1019,17 +1019,19 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
   if main and AsyncFileOpen(script_path) ~= "Access Denied" then
     AsyncCreatePath(script_path)
     --print some info
-    print(oldTableConcat({"Place .lua files in ",script_path," to have them show up in the \"Scripts\" list, you can then use the list to execute them (you can also create folders for sorting)."}))
+    local help = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000881,"Place .lua files in")," ",script_path," ",ChoGGi.ComFuncs.Trans(302535920000882,"to have them show up in the '",ChoGGi.ComFuncs.Trans(302535920000353,"Scripts"),"' list, you can then use the list to execute them (you can also create folders for sorting).")})
+    print(help)
     --add some example files and a readme
-    AsyncStringToFile(oldTableConcat({script_path,"/readme.txt","Any .lua files in here will be part of a list that you can execute in-game from the console menu."}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Help.lua","Place .lua files in ",script_path," to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting)."}))
+    AsyncStringToFile(oldTableConcat({script_path,"/readme.txt"}),ChoGGi.ComFuncs.Trans(302535920000888,"Any .lua files in here will be part of a list that you can execute in-game from the console menu."))
+    AsyncStringToFile(oldTableConcat({script_path,"/Help.lua"}),help)
     AsyncCreatePath(oldTableConcat({script_path,"/Examine"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/DataInstances.lua","OpenExamine(DataInstances)"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/InGameInterface.lua","OpenExamine(GetInGameInterface())"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/terminal.desktop.lua","OpenExamine(terminal.desktop)"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/DataInstances.lua"}),"OpenExamine(DataInstances)")
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/InGameInterface.lua"}),"OpenExamine(GetInGameInterface())")
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/terminal.desktop.lua"}),"OpenExamine(terminal.desktop)")
+    AsyncStringToFile(oldTableConcat({script_path,"/Examine/ChoGGi.lua"}),"OpenExamine(ChoGGi)")
     AsyncCreatePath(oldTableConcat({script_path,"/Functions"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Amount of colonists.lua","#GetObjects({class=\"Colonist\"})"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Toggle Working SelectedObj.lua","SelectedObj:ToggleWorking()"}))
+    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Amount of colonists.lua"}),"#GetObjects({class=\"Colonist\"})")
+    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Toggle Working SelectedObj.lua"}),"SelectedObj:ToggleWorking()")
     --rebuild toolbar
     ChoGGi.ComFuncs.RebuildConsoleToolbar()
   end

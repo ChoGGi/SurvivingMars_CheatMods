@@ -53,7 +53,7 @@ function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.LightsRadius)
-      return des .. ChoGGi.ComFuncs.Trans(302535920000634,"\nSets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?")
+      return des .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000634,"Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?")
     end,
     "LightArea.tga"
   )
@@ -64,7 +64,7 @@ function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.TerrainDetail)
-      return des .. ChoGGi.ComFuncs.Trans(302535920000636,"\nSets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).")
+      return des .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000636,"Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).")
     end,
     "selslope.tga"
   )
@@ -75,7 +75,7 @@ function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.VideoMemory)
-      return des .. ChoGGi.ComFuncs.Trans(302535920000638,"\nSets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.")
+      return des .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000638,"Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.")
     end,
     "CountPointLights.tga"
   )
@@ -86,7 +86,7 @@ function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
     nil,
     function()
       local des = "Current: " .. tostring(ChoGGi.UserSettings.ShadowmapSize)
-      return des .. ChoGGi.ComFuncs.Trans(302535920000640,"\nSets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.")
+      return des .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000640,"Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.")
     end,
     "DisableEyeSpec.tga"
   )

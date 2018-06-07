@@ -59,9 +59,8 @@ if err then
 end
 
 if ChoGGi.Temp.Testing then
-  ChoGGi.MountPath = oldTableConcat({ChoGGi.MountPath,"Files/"})
+  ChoGGi.MountPath = oldTableConcat({ChoGGi.ModPath,"Files/"})
 end
-DebugPrint(ChoGGi.MountPath)
 
 --get saved settings for this mod
 dofile(oldTableConcat({ChoGGi.MountPath,"Defaults.lua"}))

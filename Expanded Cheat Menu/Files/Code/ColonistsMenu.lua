@@ -110,7 +110,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
 
   local function OutsideWorkplaceRadius_Text()
     local des = Consts.DefaultOutsideWorkplacesRadius
-    return ChoGGi.ComFuncs.Trans(302535920000391,"Change how many hexes colonists search outside their dome when looking for a Workplace.\nCurrent: ") .. des
+    return ChoGGi.ComFuncs.Trans(302535920000391,"Change how many hexes colonists search outside their dome when looking for a Workplace.\nCurrent") .. ": " .. des
   end
   ChoGGi.ComFuncs.AddAction(
     "Expanded CM/Colonists/[3]Work/" .. ChoGGi.ComFuncs.Trans(302535920000392,"Outside Workplace Radius"),
