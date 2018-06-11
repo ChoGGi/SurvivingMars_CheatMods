@@ -99,3 +99,5 @@ end
 --DebugPrintNL(table.concat(debug_output))
 DebugPrintNL("\r\nEnd: LoadCSV()")
 ```
+
+This'll work a lot better if you have ECM and Write Logs enabled.
