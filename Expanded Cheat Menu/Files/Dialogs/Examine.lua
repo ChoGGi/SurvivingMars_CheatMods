@@ -201,13 +201,33 @@ function Examine:Init()
 
     end
   end
-  --it defaults to selecting the top item, so make it something that does jack shit
-  ChoGGi.ComFuncs.DialogAddMenuItem(" ",self.idToolsMenu," ")
-  ChoGGi.ComFuncs.DialogAddMenuItem(T(302535920000046--[[Dump Text--]]),self.idToolsMenu,T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua--]]))
-  ChoGGi.ComFuncs.DialogAddMenuItem(T(302535920000048--[[Dump Object--]]),self.idToolsMenu,T(302535920000049--[[View text, and optionally dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable--]]))
-  ChoGGi.ComFuncs.DialogAddMenuItem(" ",self.idToolsMenu," ")
-  ChoGGi.ComFuncs.DialogAddMenuItem(Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]])),self.idToolsMenu,T(302535920000050--[[Opens object in Object Manipulator.--]]))
-  ChoGGi.ComFuncs.DialogAddMenuItem(T(302535920000323--[[Exec Code--]]),self.idToolsMenu,T(302535920000052--[[Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.--]]))
+  --setup menu items
+  self.idToolsMenu:SetContent({
+    {
+      text = Concat("   ---- ",T(302535920000239--[[Tools--]])),
+      rollover = "-"
+    },
+    {
+      text = T(302535920000046--[[Dump Text--]]),
+      rollover = T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua--]]),
+    },
+    {
+      text = T(302535920000048--[[Dump Object--]]),
+      rollover = T(302535920000049--[[View text, and optionally dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable--]]),
+    },
+    {
+      text = "   ---- ",
+      rollover = "-",
+    },
+    {
+      text = Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]])),
+      rollover = T(302535920000050--[[Opens object in Object Manipulator.--]]),
+    },
+    {
+      text = T(302535920000323--[[Exec Code--]]),
+      rollover = T(302535920000052--[[Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.--]]),
+    },
+  }, true)
 
   element_x = 10 + self.idTools:GetPos():x() + self.idTools:GetSize():x()
   title = T(302535920000520--[[Parents--]])
@@ -241,8 +261,6 @@ function Examine:Init()
       end
     end
   end
-  --it defaults to selecting the top item, so make it something that does jack shit
-  ChoGGi.ComFuncs.DialogAddMenuItem(Concat("   ---- ",T(302535920000520--[[Parents--]])),self.idParentsMenu)
 
   element_x = 10 + self.idParents:GetPos():x() + self.idParents:GetSize():x()
 
@@ -277,8 +295,6 @@ function Examine:Init()
       end
     end
   end
-  --it defaults to selecting the top item, so make it something that does jack shit
-  ChoGGi.ComFuncs.DialogAddMenuItem(" ",self.idAttachesMenu," ")
 
 
   title = T(1000232--[[Next--]])
@@ -952,35 +968,48 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
     local list = o.__parents
     if list then
       list = ChoGGi.ComFuncs.RetSortTextAssTable(list)
+      local list_items = {{text = Concat("   ---- ",T(302535920000520--[[Parents--]]))}}
       for i = 1, #list do
-        ChoGGi.ComFuncs.DialogAddMenuItem(list[i],self.idParentsMenu)
+        list_items[#list_items+1] = {
+          text = list[i]
+        }
       end
-      ChoGGi.ComFuncs.DialogAddMenuItem(Concat("   ---- ",T(302535920000525--[[Ancestors--]])),self.idParentsMenu)
+      list_items[#list_items+1] = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
       list = ChoGGi.ComFuncs.RetSortTextAssTable(o.__ancestors,true)
       for i = 1, #list do
-        ChoGGi.ComFuncs.DialogAddMenuItem(list[i],self.idParentsMenu)
+        list_items[#list_items+1] = {
+          text = list[i]
+        }
       end
+      self.idParentsMenu:SetContent(list_items, true)
     end
     --i suppose i could do some type checking, ah well
     if not pcall(function()
       --attaches menu
       list = type(o) == "table" and o:GetAttaches()
-
       if list and #list > 0 then
-        for i = 1, #list do
 
+        local list_items = {
+          {
+            text = Concat("   ---- ",T(302535920000053--[[Attaches--]])),
+            rollover = T(302535920000053--[[Attaches--]])
+          }
+        }
+
+        for i = 1, #list do
           local hint = list[i].handle or type(list[i].GetPos) == "function" and Concat("Pos: ",list[i]:GetPos())
           if type(hint) == "number" then
             hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
           end
-
-          ChoGGi.ComFuncs.DialogAddMenuItem(
-            ChoGGi.ComFuncs.RetName(list[i]),
-            self.idAttachesMenu,
-            hint or list[i].class,
-            list[i]
-          )
+          list_items[#list_items+1] = {
+            text = ChoGGi.ComFuncs.RetName(list[i]),
+            rollover = hint or list[i].class,
+            obj = list[i],
+          }
         end
+
+        self.idAttachesMenu:SetContent(list_items, true)
+
       else
         self.idAttaches:SetVisible(false)
       end

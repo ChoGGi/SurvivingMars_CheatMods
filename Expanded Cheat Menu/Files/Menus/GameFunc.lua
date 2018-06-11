@@ -156,7 +156,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
   local ItemList = {}
   if not Browse then
     ItemList[#ItemList+1] = {
-      text = Concat(" ",T(302535920000793--[[Default--]])),
+      text = Concat(" ",T(302535920000110--[[Default--]])),
       value = "ChoGGi_Default",
       hint = T(302535920000981--[[Choose to this remove Permanent setting.--]]),
     }
@@ -335,7 +335,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
 end
 function ChoGGi.MenuFuncs.SetLightsRadius()
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
     {text = T(302535920001004--[[01 Lowest (25)--]]),value = 25},
     {text = T(302535920001005--[[02 Lower (50)--]]),value = 50},
     {text = Concat(T(302535920001006--[[03 Low (90)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 90},
@@ -377,7 +377,7 @@ end
 function ChoGGi.MenuFuncs.SetTerrainDetail()
   local hint_warn = Concat("\n",T(302535920001018--[[Above 1000 will add a long delay to loading.--]]))
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
     {text = T(302535920001004--[[01 Lowest (25)--]]),value = 25},
     {text = T(302535920001005--[[02 Lower (50)--]]),value = 50},
     {text = Concat(T(302535920001021--[[03 Low (100)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 100},
@@ -419,7 +419,7 @@ end
 
 function ChoGGi.MenuFuncs.SetVideoMemory()
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
     {text = T(302535920001031--[[1 Crap (32)--]]),value = 32},
     {text = T(302535920001032--[[2 Crap (64)--]]),value = 64},
     {text = T(302535920001033--[[3 Crap (128)--]]),value = 128},
@@ -457,7 +457,7 @@ end
 function ChoGGi.MenuFuncs.SetShadowmapSize()
   local hint_highest = Concat(T(6779--[[Warning--]]),": ",T(302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]))
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
     {text = T(302535920001043--[[1 Crap (256)--]]),value = 256},
     {text = T(302535920001044--[[2 Lower (512)--]]),value = 512},
     {text = Concat(T(302535920001045--[[3 Low (1536)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 1536},
@@ -659,7 +659,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
   local DefaultSetting = 5
   local hint_down = T(302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]])
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = DefaultSetting},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = DefaultSetting},
     {text = 0,value = 0,hint = T(302535920001063--[[disable mouse border scrolling, WASD still works fine.--]])},
     {text = 1,value = 1,hint = hint_down},
     {text = 2,value = 2,hint = hint_down},

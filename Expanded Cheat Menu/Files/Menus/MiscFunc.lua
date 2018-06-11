@@ -462,7 +462,7 @@ end
 function ChoGGi.MenuFuncs.SetGameSpeed()
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = 1},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = 1},
     {text = Concat("1 ",T(302535920001126--[[Double--]])),value = 2},
     {text = Concat("2 ",T(302535920001127--[[Triple--]])),value = 3},
     {text = Concat("3 ",T(302535920001128--[[Quadruple--]])),value = 4},
@@ -660,7 +660,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
   end
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = 100},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = 100},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 100,value = 100},

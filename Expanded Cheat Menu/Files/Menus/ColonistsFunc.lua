@@ -628,7 +628,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
   end
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000793--[[Default--]])),value = "Default",hint = T(302535920000794--[[Uses same code as game to pick death ages.--]])},
+    {text = Concat(" ",T(302535920000110--[[Default--]])),value = "Default",hint = T(302535920000794--[[Uses same code as game to pick death ages.--]])},
     {text = 60,value = 60},
     {text = 75,value = 75},
     {text = 100,value = 100},

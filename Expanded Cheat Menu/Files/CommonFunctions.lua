@@ -1409,14 +1409,6 @@ function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
   }, parent)
 end
 
-function ChoGGi.ComFuncs.DialogAddMenuItem(name,parent,hint,obj)
-  local item = g_Classes.StaticText:new(parent)
-  item:SetText(name)
-  item.rollover = hint
-  item.obj = obj
-  parent:AddItem(item)
-end
-
 function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
   parent:CreateDropdownBox()
 
