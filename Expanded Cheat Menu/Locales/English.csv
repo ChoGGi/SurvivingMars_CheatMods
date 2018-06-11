@@ -1,9 +1,7 @@
 ID,Text,Translation
-302535920000292,"XWindowInspector Toggle",
-302535920001014,"Allows you to use XWindowInspector (sorry non-windows users), see Console after restart.
-Messes up the fonts for now.
-
-Restart to toggle.",
+302535920000292,,
+302535920000882,,
+302535920001014,,
 302535920001019,,
 302535920001020,,
 302535920001023,,
@@ -121,8 +119,7 @@ Restart to toggle.",
 302535920000166,"BROKEN FUNCTION",
 302535920000353,"Scripts",
 302535920000793,"History",
-302535920000881,"Place .lua files in",
-302535920000882,"to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).",
+302535920000881,"Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).",
 302535920000888,"Any .lua files in here will be part of a list that you can execute in-game from the console menu.",
 0,"Defaults.lua",
 302535920000005,"Slow arsed hard drive, or something is wrong...",

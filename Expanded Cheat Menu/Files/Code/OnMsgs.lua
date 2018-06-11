@@ -1106,7 +1106,7 @@ function OnMsg.ChoGGi_Loaded()
 
   --someone doesn't like LICENSE files...
   local dickhead
-  local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"/LICENSE"))
+  local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"LICENSE"))
 
   if nofile then
     --some dickhead removed the LICENSE

@@ -93,29 +93,6 @@ function ChoGGi.MenuFuncs.AttachSpots_Toggle()
   end
 end
 
---~ local OpenGedApp = OpenGedApp
---~ OpenGedApp("XWindowInspector", dialog_object)
---~ OpenGedApp("GedInspector", s)
---~ OpenGedApp("GedObjectEditor", objectlist)
-
-function ChoGGi.MenuFuncs.GedToolsMode_Toggle()
-  local ChoGGi = ChoGGi
-  if ChoGGi.UserSettings.GedToolsMode then
-    ChoGGi.UserSettings.GedToolsMode = nil
-  else
-    local file = Concat(ChoGGi.scripts,"/XWindowInspector.lua")
-    if not ChoGGi.ComFuncs.FileExists(file) then
-      AsyncStringToFile(file,"OpenGedApp(\"XWindowInspector\", terminal.desktop)")
-    end
-    ChoGGi.UserSettings.GedToolsMode = true
-  end
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000292--[[XWindowInspector Toggle--]]),": ",tostring(ChoGGi.UserSettings.GedToolsMode)),
-    T(8080--[[Restart--]]),UsualIcon
-  )
-end
-
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true

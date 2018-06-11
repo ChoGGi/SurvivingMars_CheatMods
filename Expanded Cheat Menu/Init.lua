@@ -9,7 +9,6 @@
 --~ dofile("CommonLua/Core/luaDebuggerOutput.lua")
 --~ dofile("CommonLua/Core/ProjectSync.lua")
 --~ config.LuaDebugger = false
---~ Platform.editor = false
 
 --hello
 ChoGGi = {
@@ -180,32 +179,17 @@ if ChoGGi.UserSettings.FirstRun ~= false then
   ChoGGi.Temp.WriteSettings = true
 end
 
---if we're in fake editor mode (probably should fix that large font/ui scale issue)
-if ChoGGi.UserSettings.GedToolsMode then
-  --hopefully stops most people from wondering wtf
-  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color> ",T(302535920000201--[[Active--]]),"<color 0 0 0>:</color>\n<color 128 255 128>",T(302535920000292--[[Ged Tools Mode Toggle--]]),"</color>")
-
-  function OnMsg.ClassesGenerate()
-    Platform.editor = true
---~     Platform.ged = true
---~     dofile("CommonLua/Core/Terrain.lua")
-    --dofile("CommonLua/Ged/stubs.lua")
-    dofolder("CommonLua/Ged")
-    dofolder("CommonLua/Editor")
-  end
-end
-
 local Platform = Platform
-local d_before = Platform.developer
-local e_before = Platform.editor
-Platform.developer = true
+
 Platform.editor = true
+
+local d_before = Platform.developer
+Platform.developer = true
 --fixes UpdateInterface nil value in editor mode
 editor.LoadPlaceObjConfig()
 --some error it gives about missing table
 GlobalVar("g_revision_map",{})
 Platform.developer = d_before
-Platform.editor = e_before
 
 --~ ClassesGenerate
 --~ ClassesPreprocess

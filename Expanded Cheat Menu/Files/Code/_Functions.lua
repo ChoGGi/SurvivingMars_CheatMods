@@ -309,7 +309,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
     "Settings",
   }
   for i = 1, #files do
-    AsyncFileDelete(Concat(ChoGGi.ModPath,"/",files[i],".lua"))
+    AsyncFileDelete(Concat(ChoGGi.ModPath,files[i],".lua"))
   end
 end
 

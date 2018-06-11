@@ -1146,90 +1146,90 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 
   CreateRealTimeThread(function()
 --~     local option = ChoGGi.ComFuncs.OpenInListChoice(Table)
-    local option = function()
-      local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
+    local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
 
-      if not dlg then
-        return
-      end
-
-      --title text
-      dlg.idCaption:SetText(Table.title)
-      --list
-      dlg.idList:SetContent(Table.items)
-
-      --fiddling with custom value
-      if Table.custom_type then
-        dlg.idEditValue.auto_select_all = false
-        dlg.CustomType = Table.custom_type
-        if Table.custom_type == 2 or Table.custom_type == 5 then
-          dlg.idList:SetSelection(1, true)
-          dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-          dlg.idEditValue:SetText(tostring(dlg.sel.value))
-          dlg:UpdateColourPicker()
-          if Table.custom_type == 2 then
-            dlg:SetWidth(750)
-            dlg.idColorHSV:SetVisible(true)
-            dlg.idColorCheckAir:SetVisible(true)
-            dlg.idColorCheckWater:SetVisible(true)
-            dlg.idColorCheckElec:SetVisible(true)
-          end
-        end
-      end
-
-      if Table.custom_func then
-        dlg.Func = Table.custom_func
-      end
-
-      if Table.multisel then
-        dlg.idList.multiple_selection = true
-        if type(Table.multisel) == "number" then
-          --select all of number
-          for i = 1, Table.multisel do
-            dlg.idList:SetSelection(i, true)
-          end
-        end
-      end
-
-      --setup checkboxes
-      if not Table.check1 and not Table.check2 then
-        dlg.idCheckBox1:SetVisible(false)
-        dlg.idCheckBox2:SetVisible(false)
-      else
-        dlg.idList:SetSize(point(390, 310))
-
-        if Table.check1 then
-          dlg.idCheckBox1:SetText(Table.check1)
-          dlg.idCheckBox1:SetHint(Table.check1_hint)
-        else
-          dlg.idCheckBox1:SetVisible(false)
-        end
-        if Table.check2 then
-          dlg.idCheckBox2:SetText(Table.check2)
-          dlg.idCheckBox2:SetHint(Table.check2_hint)
-        else
-          dlg.idCheckBox2:SetVisible(false)
-        end
-      end
-      --where to position dlg
-      dlg:SetPos(terminal_GetMousePos())
-
-      --focus on list
-      dlg.idList:SetFocus()
-      --dlg.idList:SetSelection(1, true)
-
-      --are we showing a hint?
-      if Table.hint then
-        dlg.idList:SetHint(Table.hint)
-        dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
-      end
-
-      --waiting for choice
-      return dlg:Wait()
+    if not dlg then
+      return
     end
+
+    --title text
+    dlg.idCaption:SetText(Table.title)
+    --list
+    dlg.idList:SetContent(Table.items)
+
+    --fiddling with custom value
+    if Table.custom_type then
+      dlg.idEditValue.auto_select_all = false
+      dlg.CustomType = Table.custom_type
+      if Table.custom_type == 2 or Table.custom_type == 5 then
+        dlg.idList:SetSelection(1, true)
+        dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
+        dlg.idEditValue:SetText(tostring(dlg.sel.value))
+        dlg:UpdateColourPicker()
+        if Table.custom_type == 2 then
+          dlg:SetWidth(750)
+          dlg.idColorHSV:SetVisible(true)
+          dlg.idColorCheckAir:SetVisible(true)
+          dlg.idColorCheckWater:SetVisible(true)
+          dlg.idColorCheckElec:SetVisible(true)
+        end
+      end
+    end
+
+    if Table.custom_func then
+      dlg.Func = Table.custom_func
+    end
+
+    if Table.multisel then
+      dlg.idList.multiple_selection = true
+      if type(Table.multisel) == "number" then
+        --select all of number
+        for i = 1, Table.multisel do
+          dlg.idList:SetSelection(i, true)
+        end
+      end
+    end
+
+    --setup checkboxes
+    if not Table.check1 and not Table.check2 then
+      dlg.idCheckBox1:SetVisible(false)
+      dlg.idCheckBox2:SetVisible(false)
+    else
+      dlg.idList:SetSize(point(390, 310))
+
+      if Table.check1 then
+        dlg.idCheckBox1:SetText(Table.check1)
+        dlg.idCheckBox1:SetHint(Table.check1_hint)
+      else
+        dlg.idCheckBox1:SetVisible(false)
+      end
+      if Table.check2 then
+        dlg.idCheckBox2:SetText(Table.check2)
+        dlg.idCheckBox2:SetHint(Table.check2_hint)
+      else
+        dlg.idCheckBox2:SetVisible(false)
+      end
+    end
+    --where to position dlg
+    dlg:SetPos(terminal_GetMousePos())
+
+    --focus on list
+    dlg.idList:SetFocus()
+    --dlg.idList:SetSelection(1, true)
+
+    --are we showing a hint?
+    if Table.hint then
+      dlg.idList:SetHint(Table.hint)
+      dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
+    end
+
+    --waiting for choice
+    local option = dlg:Wait()
+
     if option and #option > 0 then
       Table.callback(option)
     end
+
   end)
 end
 
@@ -1325,22 +1325,24 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
   if main and AsyncFileOpen(script_path) ~= "Access Denied" then
     AsyncCreatePath(script_path)
     --print some info
-    local help = Concat(T(302535920000881--[[Place .lua files in--]])," ",script_path," ",T(302535920000882--[[to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]))
+    local help = string.format(T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]),script_path)
     print(help)
     --add some example files and a readme
     AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
-    AsyncStringToFile(Concat(script_path,"/Help.lua"),help)
+    AsyncStringToFile(Concat(script_path,"/Help.lua"),[[local ChoGGi = ChoGGi
+ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),ChoGGi.scripts))]])
     AsyncCreatePath(Concat(script_path,"/Examine"))
-    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),"OpenExamine(ChoGGi)")
-    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),"OpenExamine(DataInstances)")
-    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),"OpenExamine(GetInGameInterface())")
-    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),"OpenExamine(MsgThreads)\n--includes ThreadsRegister")
-    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),"OpenExamine(Presets)")
-    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),"OpenExamine(terminal.desktop)")
-    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),"OpenExamine(XTemplates)")
+    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
+    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
+    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
     AsyncCreatePath(Concat(script_path,"/Functions"))
-    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),"#GetObjects({class=\"Colonist\")")
-    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),"SelectedObj:ToggleWorking()")
+    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects({class="Colonist")]])
+    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
     --rebuild toolbar
     ChoGGi.ComFuncs.RebuildConsoleToolbar()
   end
