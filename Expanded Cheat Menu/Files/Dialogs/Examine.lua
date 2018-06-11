@@ -300,7 +300,7 @@ function Examine:Init()
   title = T(1000232--[[Next--]])
   self.idNext = g_Classes.Button:new(self)
   self.idNext:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
-  self.idNext:SetPos(point(dialog_width-53-border, element_y))
+  self.idNext:SetPos(point(dialog_width-60-border, element_y))
   self.idNext:SetText(title)
   --self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
   self.idNext:SetHSizing("AnchorToRight")
@@ -477,7 +477,7 @@ function Examine:valuetotextex(o)
       self:HyperLink(function(_,_,button)
         Examine_valuetotextex(_,_,button,o,self)
       end),
-      ChoGGi.ComFuncs.RetName(o),
+      Concat(ChoGGi.ComFuncs.RetName(o)," (len:",#o,")"),
       HLEnd
     )
   end
