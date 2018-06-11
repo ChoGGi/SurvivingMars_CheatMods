@@ -1,6 +1,23 @@
 --See LICENSE for terms
 
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+
+local pairs,pcall,type,tostring = pairs,pcall,type,tostring
+
+local DoneObject = DoneObject
+local FindNearestObject = FindNearestObject
+local ForEach = ForEach
+local GenerateColonistData = GenerateColonistData
 local GetObjects = GetObjects
+local GetPassablePointNearby = GetPassablePointNearby
+local HexGetNearestCenter = HexGetNearestCenter
+local IsValid = IsValid
+local Msg = Msg
+local point = point
+
+local g_Classes = g_Classes
+
 ---------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()
   local ChoGGi = ChoGGi
@@ -28,6 +45,7 @@ local function AttachmentsCollisionToggle(sel,which)
       flag = "SetEnumFlags"
     end
     --and loop through all the attach
+    local const = const
     for i = 1, #att do
       att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
     end
@@ -37,7 +55,7 @@ end
 function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
   local sel = SelectedObj
   if not sel then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000967,"Nothing selected."),ChoGGi.ComFuncs.Trans(302535920000968,"Collisions"))
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
     return
   end
 
@@ -54,22 +72,21 @@ function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
     which = "disabled"
   end
 
-  ChoGGi.ComFuncs.MsgPopup(
-    ChoGGi.ComFuncs.Trans(302535920000968,"Collisions") .. " " .. which .. " " .. ChoGGi.ComFuncs.Trans(302535920000969,"on") .. " " .. ChoGGi.CodeFuncs.RetName(sel),
-    ChoGGi.ComFuncs.Trans(302535920000968,"Collisions")
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000968--[[Collisions--]])," ",which," ",T(302535920000969--[[on--]])," ",ChoGGi.ComFuncs.RetName(sel)),
+    T(302535920000968--[[Collisions--]])
   )
 end
 
-local function SpawnColonist(old_c,building,pos)
-  local dome = FindNearestObject(UICity.labels.Dome or empty_table,old_c or building)
+local function SpawnColonist(old_c,building,pos,city)
+  local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
   if not dome then
     return
   end
 
   local colonist
   if old_c then
-    --colonist = GenerateColonistData(UICity, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
-    colonist = GenerateColonistData(UICity, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+    --colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+    colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
     --we set all the set gen doesn't (it's more for random gen after all
     colonist.birthplace = old_c.birthplace
     colonist.death_age = old_c.death_age
@@ -84,12 +101,12 @@ local function SpawnColonist(old_c,building,pos)
     end
   else
     --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
-    colonist = GenerateColonistData(UICity)
+    colonist = GenerateColonistData(city)
   end
 
   colonist.dome = dome
   colonist.current_dome = dome
-  Colonist:new(colonist)
+  g_Classes.Colonist:new(colonist)
   Msg("ColonistBorn", colonist)
   colonist:SetPos(pos or dome:PickColonistSpawnPt())
   --dome:UpdateUI()
@@ -99,14 +116,13 @@ local function SpawnColonist(old_c,building,pos)
 end
 
 function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-  local DoneObject = DoneObject
-
+  local UICity = UICity
   local objs = GetObjects({class = "Colonist"}) or empty_table
   for i = 1, #objs do
     local c = objs[i]
     if c:GetStateText() == "movePlanet" then
       local rocket = FindNearestObject(GetObjects({class="SupplyRocket"}),c)
-      SpawnColonist(c,rocket,c:GetVisualPos())
+      SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
       if type(c.Done) == "function" then
         c:Done()
       end
@@ -116,9 +132,6 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
 end
 
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local UICity = UICity
-  local DoneObject = DoneObject
-
   local rockets = GetObjects({class="SupplyRocket"})
   local pos
   for i = 1, #rockets do
@@ -258,7 +271,7 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000970,"Removed unreachable"),ChoGGi.ComFuncs.Trans(302535920000971,"Sites"))
+  ChoGGi.ComFuncs.MsgPopup(T(302535920000970--[[Removed unreachable--]]),T(302535920000971--[[Sites--]]))
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
@@ -298,8 +311,8 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
     ChoGGi.CodeFuncs.AttachToNearestDome(Table[i])
   end
 
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000972,"Buildings attached."),
-    ChoGGi.ComFuncs.Trans(3980,"Buildings"),"UI/Icons/Sections/basic.tga"
+  ChoGGi.ComFuncs.MsgPopup(T(302535920000972--[[Buildings attached.--]]),
+    T(3980--[[Buildings--]]),"UI/Icons/Sections/basic.tga"
   )
 end
 
@@ -371,7 +384,7 @@ function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup("No resting bonus psychologist: " .. tostring(UserSettings.NoRestingBonusPsychologistFix),
+  ChoGGi.ComFuncs.MsgPopup(Concat("No resting bonus psychologist: ",tostring(UserSettings.NoRestingBonusPsychologistFix)),
     "Psychologist"
   )
 end
@@ -381,8 +394,8 @@ function ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RoverInfiniteLoopCuriosity = not ChoGGi.UserSettings.RoverInfiniteLoopCuriosity
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000964,"Rover Infinite Loop") .. ": " .. tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity),
-    ChoGGi.ComFuncs.Trans(5438,"Rovers")
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000964--[[Rover Infinite Loop--]]),": ",tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity)),
+    T(5438--[[Rovers--]])
   )
 end
 
@@ -390,8 +403,8 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000965,"Drone Carry Fix") .. ": " .. tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-    ChoGGi.ComFuncs.Trans(517,"Drones"),"UI/Icons/IPButtons/drone.tga"
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
+    T(517--[[Drones--]]),"UI/Icons/IPButtons/drone.tga"
   )
 end
 
@@ -399,7 +412,7 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000966,"Sorting cc dist") .. ": " .. tostring(ChoGGi.UserSettings.SortCommandCenterDist),
-    ChoGGi.ComFuncs.Trans(3980,"Buildings")
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
+    T(3980--[[Buildings--]])
   )
 end

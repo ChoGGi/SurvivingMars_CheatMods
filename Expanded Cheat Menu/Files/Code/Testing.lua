@@ -1,13 +1,23 @@
 --See LICENSE for terms
-
 --stuff only loaded when ChoGGi.Temp.Testing = true
+
+local Concat = ChoGGi.ComFuncs.Concat
 
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 --stuff that never happens, fuck comments (like this one)
 if type(ChoGGi.Temp.Testing) == "function" then
 
-  OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000))
+  --for ingame editor
+  SaveOrigFunc("GedApp","Init")
+  function GedApp:Init(parent, context)
+    ChoGGi_OrigFuncs.GedApp_Init(self, parent, context)
+    ex(self)
+    ex(self.connection)
+  end
+
+
+  OpenExamine(ChoGGi.ComFuncs.ReturnAllNearby(1000))
   ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
   local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches("Colonist") or empty_table
@@ -106,14 +116,14 @@ if ChoGGi.Temp.Testing then
   local textstart = "<color 255 0 0>"
   local textend = " is different length</color>"
   if #const.SchoolTraits ~= 5 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "SchoolTraits" .. textend
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SchoolTraits",textend)
   end
   if #const.SanatoriumTraits ~= 7 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "SanatoriumTraits" .. textend
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SanatoriumTraits",textend)
   end
   local fulllist = TraitsCombo()
   if #fulllist ~= 55 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = textstart .. "TraitsCombo" .. textend
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"TraitsCombo",textend)
   end
 
 ---------

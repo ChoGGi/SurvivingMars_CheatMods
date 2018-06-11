@@ -1,69 +1,249 @@
 --See LICENSE for terms
 
-local oldTableConcat = oldTableConcat
+--~ Surviving Mars comes with
+--~ print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
+--~ though SM has a bunch of AsyncFile* functions that should probably be used instead (as you can use AppData with them to specify the profile folder)
+
+--~ lpeg v0.10 : lpeg.version()
+--~ require("leg.grammar") --LPeg grammar manipulation
+--~ require("leg.parser") --LPeg Lua parser
+
+--~ socket = require("socket")
+--~ print(socket._VERSION)
 
 --[[
-Surviving Mars comes with
-print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
-though SM has a bunch of AsyncFile* functions that should probably be used instead (as you can use AppData with them to specify the profile folder)
-lpeg v0.10
-
-
-socket = require("socket")
-print(socket._VERSION)
+local function MemoizeTextTESTING(func)
+  local stored_queries = {}
+  setmetatable(stored_queries, {__mode = "kv"})
+  return function(...)
+    local ret = stored_queries[...]
+    if ret == nil then
+      ret = func(...)
+      stored_queries[...] = ret
+    end
+    print("\nMemoizeTextTESTING: ",ret,"\n")
+    return ret
+  end
+end
 --]]
 
+local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
+
+local getmetatable,setmetatable = getmetatable,setmetatable
+local next,pairs,print,type,select = next,pairs,print,type,select
+local pcall,tonumber,tostring = pcall,tonumber,tostring
+
+local table,string = table,string
+local table_remove,table_sort,table_unpack,table_set_defaults = table.remove,table.sort,table.unpack,table.set_defaults
+local debug_getinfo,string_dump,string_gsub = debug.getinfo,string.dump,string.gsub
+
+local _InternalTranslate = _InternalTranslate
+local AsyncCreatePath = AsyncCreatePath
+local AsyncFileDelete = AsyncFileDelete
+local AsyncFileOpen = AsyncFileOpen
+local AsyncFileRename = AsyncFileRename
+local AsyncFileToString = AsyncFileToString
+local AsyncListFiles = AsyncListFiles
+local AsyncRand = AsyncRand
+local AsyncStringToFile = AsyncStringToFile
+local box = box
+local CreateGameTimeThread = CreateGameTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
+local CreateRolloverWindow = CreateRolloverWindow
+local DoneObject = DoneObject
+local FilterObjects = FilterObjects
+local GetInGameInterface = GetInGameInterface
+local GetObjects = GetObjects
+local GetTerrainCursor = GetTerrainCursor
+local GetXDialog = GetXDialog
+local HandleToObject = HandleToObject
+local IsBox = IsBox
+local IsObjlist = IsObjlist
+local IsPoint = IsPoint
+local IsValid = IsValid
+local Msg = Msg
+local OnScreenNotificationPreset = OnScreenNotificationPreset
+local OpenXDialog = OpenXDialog
+local point = point
+local RGB = RGB
+local ShowConsoleLog = ShowConsoleLog
+local Sleep = Sleep
+local TechDef = TechDef
+local ThreadLockKey = ThreadLockKey
+local ThreadUnlockKey = ThreadUnlockKey
+local ViewPos = ViewPos
+local WaitMarsQuestion = WaitMarsQuestion
+local WaitPopupNotification = WaitPopupNotification
+
+local T = T --T replaced below
+local guic = guic
+
+local UserActions_SetMode = UserActions.SetMode
+local terminal_GetMousePos = terminal.GetMousePos
+local UIL_MeasureText = UIL.MeasureText
+local terrain_IsPointInBounds = terrain.IsPointInBounds
+
+local g_Classes = g_Classes
+
+local memoize = {
+  _VERSION     = 'memoize v2.0',
+  _DESCRIPTION = 'Memoized functions in Lua',
+  _URL         = 'https://github.com/kikito/memoize.lua',
+  _LICENSE     = [[
+    MIT LICENSE
+
+    Copyright (c) 2018 Enrique Garc??ota
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  ]]
+}
+-- Inspired by http://stackoverflow.com/questions/129877/how-do-i-write-a-generic-memoize-function
+
+-- private stuff
+
+local function is_callable(f)
+  local tf = type(f)
+  if tf == 'function' then return true end
+  if tf == 'table' then
+    local mt = getmetatable(f)
+    return type(mt) == 'table' and is_callable(mt.__call)
+  end
+  return false
+end
+
+local function cache_get(cache, params)
+  local node = cache
+  for i=1, #params do
+    node = node.children and node.children[params[i]]
+    if not node then return nil end
+  end
+  return node.results
+end
+
+local function cache_put(cache, params, results)
+  local node = cache
+  local param
+  for i=1, #params do
+    param = params[i]
+    node.children = node.children or {}
+    node.children[param] = node.children[param] or {}
+    node = node.children[param]
+  end
+  node.results = results
+end
+
+-- public function
+
+function memoize.memoize(f, cache)
+  cache = cache or {}
+
+  if not is_callable(f) then
+    print(string.format(
+            "If you get this msg contact me, thanks.\n\nOnly functions and callable tables are memoizable. Received %s (a %s)",
+             tostring(f), type(f)))
+  end
+  return function (...)
+    local params = {...}
+
+    local results = cache_get(cache, params)
+    if not results then
+      results = { f(...) }
+      cache_put(cache, params, results)
+    end
+
+    return table_unpack(results)
+  end
+end
+setmetatable(memoize, { __call = function(_, ...) return memoize.memoize(...) end })
+ChoGGi.ComFuncs.MemoizeText = memoize.memoize
+local MemoizeText = memoize.memoize
+
+--cache translation strings (doesn't work well with _InternalTranslate)
+IsT = MemoizeText(IsT)
+T = MemoizeText(T)
+TDevModeGetEnglishText = MemoizeText(TDevModeGetEnglishText)
+
+--I want a translate func to always return a string
 function ChoGGi.ComFuncs.Trans(...)
-  local data = select(1,...)
   local trans
   local vararg = {...}
+  --just incase a
   pcall(function()
-    if type(data) == "userdata" then
-       trans = _InternalTranslate(table.unpack(vararg))
+    if type(vararg[1]) == "userdata" then
+      trans = _InternalTranslate(table_unpack(vararg))
     else
-      trans = _InternalTranslate(T({table.unpack(vararg)}))
+      trans = _InternalTranslate(T(vararg))
     end
   end)
-  --just incase
+  --just incase b
   if type(trans) ~= "string" then
-    return type(vararg[2]) == "string" and vararg[2] or "ERROR"
+    if type(vararg[2]) == "string" then
+      return vararg[2]
+    end
+    return Concat("ERROR",AsyncRand())
   end
   return trans
 end
+ChoGGi.ComFuncs.Trans = MemoizeText(ChoGGi.ComFuncs.Trans)
+local T = ChoGGi.ComFuncs.Trans
 
+--shows a popup msg with the rest of the notifications
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
-  local AddCustomOnScreenNotification = AddCustomOnScreenNotification
-  --if we called it where there ain't no UI
-  if type(AddCustomOnScreenNotification) ~= "function" then
-    return
-  end
   local ChoGGi = ChoGGi
-  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or oldTableConcat({ChoGGi.MountPath,"TheIncal.tga"})
-  --we only use the id to remove it below (don't want a big 'ol list in g_ShownOnScreenNotifications)
+  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
+  --eh, it needs something for the id, so I can fiddle with it later
   local id = AsyncRand()
+  --build our popup
   local timeout = 10000
   if Size then
     timeout = 30000
   end
+  local params = {
+    expiration=timeout, --{expiration=99999999999999999}
+    --dismissable=false,
+  }
+  local cycle_objs = params.cycle_objs
+  local dlg = GetXDialog("OnScreenNotificationsDlg")
+  if not dlg then
+    if not GetInGameInterface() then
+      return
+    end
+    dlg = OpenXDialog("OnScreenNotificationsDlg", GetInGameInterface())
+  end
+  local data = {
+    id = id,
+    --name = id,
+    title = tostring(Title or ""),
+    text = tostring(Msg or T(3718--[[NONE--]])),
+    image = Icon
+  }
+  table_set_defaults(data, params)
+  table_set_defaults(data, OnScreenNotificationPreset)
+
   CreateRealTimeThread(function()
-    AddCustomOnScreenNotification(
-      --Msg: returns translated text corresponding to number if we don't do tostring for numbers
-      id,tostring(Title or ""),tostring(Msg or ChoGGi.ComFuncs.Trans(3718,"NONE")),Icon,nil,{expiration=timeout}
-      --id,Title,Msg,Icon,nil,{expiration=99999999999999999}
-    )
-    --since I use AsyncRand for the id, I don't want this getting too large.
-    g_ShownOnScreenNotifications[id] = nil
+		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
+		popup:FillData(data, nil, params, cycle_objs)
+		popup:Open()
+		dlg:ResolveRelativeFocusOrder()
     --large amount of text option
     if Size then
-      --add some custom settings this way, till i figure out hwo to add them as params
-      local osDlg = GetXDialog("OnScreenNotificationsDlg")[1]
-      local popup
-      for i = 1, #osDlg do
-        if osDlg[i].notification_id == id then
-          popup = osDlg[i]
-          break
-        end
-      end
       --remove text limit
       --popup.idText.Shorten = false
       --popup.idText.MaxHeight = nil
@@ -78,6 +258,11 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
       popup:InvalidateMeasure()
 --parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
 --osn GetXDialog("OnScreenNotificationsDlg")[1][1]
+      --[[
+      if type(params.fx_action) == "string" and params.fx_action ~= "" then
+        PlayFX(params.fx_action)
+      end
+      --]]
     end
   end)
 end
@@ -97,13 +282,16 @@ function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     CreateRealTimeThread(function()
       --fire callback if user clicks ok
-      if "ok" == WaitQuestion(nil,
+      local answer = WaitMarsQuestion(nil,
         tostring(Title or ""),
         tostring(Msg or ""),
-        tostring(Ok or ChoGGi.ComFuncs.Trans(6878,"OK")),
-        tostring(Cancel or ChoGGi.ComFuncs.Trans(6879,"Cancel"))
-      ) then
-          Function()
+        tostring(Ok or T(6878--[[OK--]])),
+        tostring(Cancel or T(6879--[[Cancel--]]))
+      )
+      if answer == "ok" then
+        Function(true)
+      else
+        Function()
       end
     end)
   end)
@@ -117,7 +305,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   end
   Ext = Ext or "txt"
   File = File or "DumpedText"
-  local Filename = oldTableConcat({"AppData/logs/",File,".",Ext})
+  local Filename = Concat("AppData/logs/",File,".",Ext)
 
   if pcall(function()
     ThreadLockKey(Filename)
@@ -125,7 +313,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped"),": ",tostring(Obj)}),
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",tostring(Obj)),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
@@ -141,7 +329,7 @@ function ChoGGi.ComFuncs.DumpLua(Value)
   elseif type(Value) == "userdata" then
     which = "ValueToLuaCode"
   end
-  ChoGGi.ComFuncs.Dump(oldTableConcat({"\r\n",_G[which](Value)}),nil,"DumpedLua","lua")
+  ChoGGi.ComFuncs.Dump(Concat("\r\n",_G[which](Value)),nil,"DumpedLua","lua")
 end
 
 --[[
@@ -152,7 +340,7 @@ ChoGGi.ComFuncs.DumpTable(Object)
 function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000003,"Can't dump nothing"),ChoGGi.ComFuncs.Trans(302535920000004,"Dump"))
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
     return
   end
   Mode = Mode or "-1"
@@ -161,7 +349,9 @@ function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000002,"Dumped"),": ",tostring(Obj)}),"AppData/logs/DumpedText.txt")
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(Obj)),
+    "AppData/logs/DumpedText.txt"
+  )
 end
 
 function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
@@ -173,7 +363,7 @@ function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
   end
 
   if Obj.id then
-    ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n-----------------Obj.id: ",Obj.id," :"})
+    ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n-----------------Obj.id: ",Obj.id," :")
   end
   if (type(Obj) == "table") then
     for k,v in pairs(Obj) do
@@ -181,12 +371,12 @@ function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
         ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
-          ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n",tostring(k)," = "})
+          ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n",tostring(k)," = ")
         end
         if v ~= nil then
-          ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))})
+          ChoGGi.TextFile = Concat(ChoGGi.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs)))
         end
-        ChoGGi.TextFile = oldTableConcat({ChoGGi.TextFile,"\n"})
+        ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n")
       end
     end
   end
@@ -200,17 +390,17 @@ if you want to dump functions as well DumpObject(object,true)
 function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000003,"Can't dump nothing"),ChoGGi.ComFuncs.Trans(302535920000004,"Dump"))
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
     return
   end
 
   local Text = ""
   for k,v in pairs(Obj) do
     if k ~= nil then
-      Text = oldTableConcat({Text,"\n",tostring(k)," = "})
+      Text = Concat(Text,"\n",tostring(k)," = ")
     end
     if v ~= nil then
-      Text = oldTableConcat({Text,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs))})
+      Text = Concat(Text,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs)))
     end
   end
   ChoGGi.ComFuncs.Dump(Text,Mode)
@@ -218,11 +408,11 @@ end
 
 function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
-    return ChoGGi.ComFuncs.Trans(Obj)
+    return T(Obj)
   elseif Funcs and type(Obj) == "function" then
-    return oldTableConcat({"Func: \n\n",string.dump(Obj),"\n\n"})
+    return Concat("Func: \n\n",string_dump(Obj),"\n\n")
   elseif type(Obj) == "table" then
-    return oldTableConcat({tostring(Obj)," len: ",#Obj})
+    return Concat(tostring(Obj)," len: ",#Obj)
   else
     return tostring(Obj)
   end
@@ -233,7 +423,7 @@ function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
   --pass ... onto pcall function
   local vararg = ...
   pcall(function()
-    ChoGGi.ComFuncs.Dump(oldTableConcat({Text,vararg,"\r\n"}),Filename,"log",true)
+    ChoGGi.ComFuncs.Dump(Concat(Text,vararg,"\r\n"),nil,Filename,"log",true)
   end)
   if type(Function) == "function" then
     Function(...)
@@ -309,7 +499,7 @@ end
 --]]
 
 --[[
-  table.sort(Items,
+  table_sort(Items,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
     end
@@ -325,8 +515,9 @@ function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
     return tostring(a[sName]) < tostring(b[sName])
   end
 end
+
 --[[
-table.sort(s.command_centers,
+table_sort(s.command_centers,
   function(a,b)
     return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",s)
   end
@@ -343,38 +534,39 @@ function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
   end
 end
 
+--write logs funcs
+local function ReplaceFunc(Name,Type,ChoGGi)
+  ChoGGi.ComFuncs.SaveOrigFunc(Name)
+  _G[Name] = function(...)
+    ChoGGi.ComFuncs.PrintFiles(Type,ChoGGi.OrigFuncs[Name],nil,...)
+  end
+end
+local function ResetFunc(Name,ChoGGi)
+  if ChoGGi.OrigFuncs[Name] then
+    _G[Name] = ChoGGi.OrigFuncs[Name]
+    ChoGGi.OrigFuncs[Name] = nil
+  end
+end
 function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   local ChoGGi = ChoGGi
   if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
-    AsyncFileDelete(oldTableConcat({logs,"ConsoleLog.log"}))
-    AsyncFileDelete(oldTableConcat({logs,"DebugLog.log"}))
-    AsyncFileRename(oldTableConcat({logs,"ConsoleLog.log"}),oldTableConcat({logs,"ConsoleLog.previous.log"}))
-    AsyncFileRename(oldTableConcat({logs,"DebugLog.log"}),oldTableConcat({logs,"DebugLog.previous.log"}))
+    AsyncFileDelete(Concat(logs,"ConsoleLog.log"))
+    AsyncFileDelete(Concat(logs,"DebugLog.log"))
+    AsyncFileRename(Concat(logs,"ConsoleLog.log"),Concat(logs,"ConsoleLog.previous.log"))
+    AsyncFileRename(Concat(logs,"DebugLog.log"),Concat(logs,"DebugLog.previous.log"))
 
     --redirect functions
-    local function ReplaceFunc(Name,Type)
-      ChoGGi.ComFuncs.SaveOrigFunc(Name)
-      _G[Name] = function(...)
-        ChoGGi.ComFuncs.PrintFiles(Type,ChoGGi.OrigFuncs[Name],nil,...)
-      end
-    end
-    ReplaceFunc("AddConsoleLog","ConsoleLog")
-    ReplaceFunc("printf","DebugLog")
-    ReplaceFunc("DebugPrint","DebugLog")
-    ReplaceFunc("OutputDebugString","DebugLog")
+    ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
+    ReplaceFunc("printf","DebugLog",ChoGGi)
+    ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
+    ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
   else
-    local function ResetFunc(Name)
-      if ChoGGi.OrigFuncs[Name] then
-        _G[Name] = ChoGGi.OrigFuncs[Name]
-        ChoGGi.OrigFuncs[Name] = nil
-      end
-    end
-    ResetFunc("AddConsoleLog")
-    ResetFunc("printf")
-    ResetFunc("DebugPrint")
-    ResetFunc("OutputDebugString")
+    ResetFunc("AddConsoleLog",ChoGGi)
+    ResetFunc("printf",ChoGGi)
+    ResetFunc("DebugPrint",ChoGGi)
+    ResetFunc("OutputDebugString",ChoGGi)
   end
 end
 
@@ -383,9 +575,9 @@ function ChoGGi.ComFuncs.PrintIds(Table)
   local text = ""
 
   for i = 1, #Table do
-    text = oldTableConcat({text,"----------------- ",Table[i].id,": ",i,"\n"})
+    text = Concat(text,"----------------- ",Table[i].id,": ",i,"\n")
     for j = 1, #Table[i] do
-      text = oldTableConcat({text,Table[i][j].id,": ",j,"\n"})
+      text = Concat(text,Table[i][j].id,": ",j,"\n")
     end
   end
 
@@ -402,7 +594,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
     --I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
     --pass on args to orig func
-    return ChoGGi.OrigFuncs[oldTableConcat({ClassName,"_",FuncName})](...)
+    return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
   end
 end
 
@@ -410,9 +602,10 @@ end
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then
-    local newname = oldTableConcat({ClassOrFunc,"_",Func})
+    local newname = Concat(ClassOrFunc,"_",Func)
     if not ChoGGi.OrigFuncs[newname] then
-      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+--~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
     end
   else
     if not ChoGGi.OrigFuncs[ClassOrFunc] then
@@ -424,7 +617,6 @@ end
 --check for and remove broken objects from UICity.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   local UICity = UICity
-  local IsValid = IsValid
   local found = true
   while found do
     found = nil
@@ -432,7 +624,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
     for i = 1, #tab do
       if not IsValid(tab[i]) then
       --if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
-        table.remove(UICity.labels[Label],i)
+        table_remove(UICity.labels[Label],i)
         found = true
         break
       end
@@ -441,20 +633,19 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
 end
 
 function ChoGGi.ComFuncs.RemoveMissingTableObjects(Table,TObject)
-  local IsValid = IsValid
   local found = true
   while found do
     found = nil
     for i = 1, #Table do
       if TObject then
         if #Table[i][TObject] == 0 then
-          table.remove(Table,i)
+          table_remove(Table,i)
           found = true
           break
         end
       elseif not IsValid(Table[i]) then
         --placed objects
-        table.remove(Table,i)
+        table_remove(Table,i)
         found = true
         break
       end
@@ -468,7 +659,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
     if tab[i] and tab[i].handle and tab[i] == Obj.handle then
-      table.remove(UICity.labels[Label],i)
+      table_remove(UICity.labels[Label],i)
     end
   end
 end
@@ -502,26 +693,22 @@ function ChoGGi.ComFuncs.RetProperType(Value)
 end
 
 --used to check for some SM objects (Points/Boxes)
-do --RetType
-  local IsPoint = IsPoint
-  local IsBox = IsBox
-  function ChoGGi.CodeFuncs.RetType(Obj)
-    local meta = getmetatable(Obj)
-    if meta then
-      if IsPoint(Obj) then
-        return "Point"
-      end
-      if IsBox(Obj) then
-        return "Box"
-      end
+function ChoGGi.ComFuncs.RetType(Obj)
+  local meta = getmetatable(Obj)
+  if meta then
+    if IsPoint(Obj) then
+      return "Point"
+    end
+    if IsBox(Obj) then
+      return "Box"
     end
   end
 end
 
 --takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
-function ChoGGi.ComFuncs.StringToTable(String)
+function ChoGGi.ComFuncs.StringToTable(str)
   local Table = {}
-  for i in String:gmatch("%S+") do
+  for i in str:gmatch("%S+") do
     Table[#Table+1] = i
   end
   return Table
@@ -530,7 +717,11 @@ end
 --change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
-  local UserActions = UserActions
+if ChoGGi.Temp.Testing then
+  if type(ActionsToAdd) == "string" then
+    print("ActionsToAdd",ActionsToAdd)
+  end
+end
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
@@ -539,14 +730,14 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
           if #keys <= 0 then
             v.description = ""
           else
-            v.description = oldTableConcat({v.description," (",keys[1]})
+            v.description = Concat(v.description," (",keys[1])
             for i = 2, #keys do
-              v.description = oldTableConcat({v.description," ",ChoGGi.ComFuncs.Trans(302535920000165,"or")," ",keys[i]})
+              v.description = Concat(v.description," ",T(302535920000165--[[or--]])," ",keys[i])
             end
-            v.description = oldTableConcat({v.description,")"})
+            v.description = Concat(v.description,")")
           end
         else
-          v.description = oldTableConcat({tostring(v.description)," (",v.key,")"})
+          v.description = Concat(tostring(v.description)," (",v.key,")")
         end
       end
       v.id = k
@@ -557,26 +748,25 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
       UserActions.RejectedActions[k] = v
     end
   end
-  UserActions.SetMode(UserActions.mode)
+  UserActions_SetMode(UserActions.mode)
 end
 
 function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   local ChoGGi = ChoGGi
   if Menu then
-    Menu = oldTableConcat({"/",tostring(Menu)})
+    Menu = Concat("/",tostring(Menu))
   end
   local name = "NOFUNC"
   --add name to action id
-  local Temp = ChoGGi.Temp
   if Action then
-    local debug_info = debug.getinfo(Action, "Sn")
-    local text = tostring(oldTableConcat({debug_info.short_src,"(",debug_info.linedefined,")"}))
+    local debug_info = debug_getinfo(Action, "Sn")
+    local text = tostring(Concat(debug_info.short_src,"(",debug_info.linedefined,")"))
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
     --
-  elseif Temp.Testing and Key ~= "Skip" then
-    Temp.StartupMsgs[#Temp.StartupMsgs+1] = oldTableConcat({"<color 255 100 100>",ChoGGi.ComFuncs.Trans(302535920000000,"Expanded Cheat Menu"),"</color><color 0 0 0>: </color><color 128 255 128>",ChoGGi.ComFuncs.Trans(302535920000166,"BROKEN FUNCTION"),": </color>",Menu})
+  elseif ChoGGi.Temp.Testing and Key ~= "Skip" then
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>: </color><color 128 255 128>",T(302535920000166--[[BROKEN FUNCTION--]]),": </color>",Menu)
   end
 
 --[[
@@ -599,11 +789,11 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
 print("\n")
 --]]
 
-  --ChoGGi.ComFuncs.Trans(Number from Game.csv)
+  --T(Number from Game.csv)
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
-    [oldTableConcat({"ChoGGi_",name,"-",AsyncRand()})] = {
+    [Concat("ChoGGi_",name,"-",AsyncRand())] = {
       menu = Menu,
       action = Action,
       key = Key,
@@ -627,6 +817,7 @@ function ChoGGi.ComFuncs.CheckForTypeInList(List,Type)
   end
   return ret
 end
+
 --[[
 ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
 returns number from Object (so you know how much it changes)
@@ -642,12 +833,10 @@ ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
 function ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
-  local techdef = TechDef[Tech]
-
-  local tab = techdef or empty_table
-  for i = 1, #tab do
-    if tab[i].Prop == Prop then
-      Tech = tab[i]
+  local techdef = TechDef[Tech] or empty_table
+  for i = 1, #techdef do
+    if techdef[i].Prop == Prop then
+      Tech = techdef[i]
       local RetObj = {}
 
       if Tech.Percent then
@@ -697,6 +886,7 @@ end
 
 --if value is the same as stored then make it false instead of default value, so it doesn't apply next time
 function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
+  local ChoGGi = ChoGGi
   --if setting is the same as the default then remove it
   if ChoGGi.Consts[Setting] == Value then
     ChoGGi.UserSettings[Setting] = nil
@@ -720,7 +910,7 @@ end
 
 function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   local ChoGGi = ChoGGi
-  table.sort(Table,
+  table_sort(Table,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
     end
@@ -740,11 +930,10 @@ end
 --ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   local tempt = {}
-
-  local tab = Table or empty_table
-  for i = 1, #tab do
-    if tab[i][Type] ~= Text then
-      tempt[#tempt+1] = tab[i]
+  Table = Table or empty_table
+  for i = 1, #Table do
+    if Table[i][Type] ~= Text then
+      tempt[#tempt+1] = Table[i]
     end
   end
   return tempt
@@ -796,25 +985,12 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   },Table)
 end
 
-function ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(Obj,ObjPos)
-  --examine will offset to ObjPos
-  if ObjPos then
-    OpenExamine(Obj,ObjPos)
-  else
-    --i want to open it at mouse pos
-    local ex = Examine:new()
-    ex:SetObj(Obj)
-    ex:SetPos(terminal.GetMousePos())
-  end
-  return ex
-end
 function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
-  if not Table then
+  if type(Table) ~= "table" then
     return
   end
-  local ChoGGi = ChoGGi
 
-  local dlg = ChoGGi_MonitorInfoDlg:new()
+  local dlg = g_Classes.ChoGGi_MonitorInfoDlg:new()
 
   if not dlg then
     return
@@ -831,12 +1007,12 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
   if Parent then
     local pos = Parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal.GetMousePos())
+      dlg:SetPos(terminal_GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=height of header
     end
   else
-    dlg:SetPos(terminal.GetMousePos())
+    dlg:SetPos(terminal_GetMousePos())
   end
 end
 
@@ -844,9 +1020,8 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
   if not Object then
     return
   end
-  local ChoGGi = ChoGGi
 
-  local dlg = ChoGGi_ExecCodeDlg:new()
+  local dlg = g_Classes.ChoGGi_ExecCodeDlg:new()
 
   if not dlg then
     return
@@ -855,26 +1030,18 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
   --update internal object
   dlg.obj = Object
 
-  local title = tostring(Object)
-  if type(Object) == "table" and Object.class then
-    title = oldTableConcat({"Class: ",Object.class})
-  end
-
-  --title text
-  if type(Object) == "table" then
-    dlg.idCaption:SetText(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000040,"Exec Code on"),": ",(Object.class or tostring(Object))}))
-  end
+  dlg.idCaption:SetText(ChoGGi.ComFuncs.RetName(Object))
 
   --set pos
   if Parent then
     local pos = Parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal.GetMousePos())
+      dlg:SetPos(terminal_GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
     end
   else
-    dlg:SetPos(terminal.GetMousePos())
+    dlg:SetPos(terminal_GetMousePos())
   end
 
 end
@@ -893,7 +1060,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
     return
   end
 
-  local dlg = ChoGGi_ObjectManipulator:new()
+  local dlg = g_Classes.ChoGGi_ObjectManipulator:new()
 
   if not dlg then
     return
@@ -902,10 +1069,10 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   --update internal object
   dlg.obj = Object
 
-  local title = ChoGGi.CodeFuncs.RetName(Object)
+  local title = ChoGGi.ComFuncs.RetName(Object)
 
   --update the add button hint
-  dlg.idAddNew:SetHint(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000041,"Add new entry to")," ",title," ",ChoGGi.ComFuncs.Trans(302535920000138,"(Defaults to name/value of selected item).")}))
+  dlg.idAddNew:SetHint(Concat(T(302535920000041--[[Add new entry to--]])," ",title," ",T(302535920000138--[[(Defaults to name/value of selected item).--]])))
 
   --title text
   dlg.idCaption:SetText(title)
@@ -914,12 +1081,12 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   if Parent then
     local pos = Parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal.GetMousePos())
+      dlg:SetPos(terminal_GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
     end
   else
-    dlg:SetPos(terminal.GetMousePos())
+    dlg:SetPos(terminal_GetMousePos())
   end
   --update item list
   dlg:UpdateListContent(Object)
@@ -928,14 +1095,14 @@ end
 
 --returns table with list of files without path or ext and path, or exclude ext to return all files
 function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
-  local err, files = AsyncListFiles(Folder,Ext and oldTableConcat({"*",Ext}) or "*")
+  local err, files = AsyncListFiles(Folder,Ext and Concat("*",Ext) or "*")
   if not err and #files > 0 then
     local table_path = {}
-    local path = oldTableConcat({Folder,"/"})
+    local path = Concat(Folder,"/")
     for i = 1, #files do
       local name
       if Ext then
-        name = string.gsub(files[i]:gsub(path,""),Ext,"")
+        name = string_gsub(files[i]:gsub(path,""),Ext,"")
       else
         name = files[i]:gsub(path,"")
       end
@@ -950,30 +1117,31 @@ end
 
 --rebuild menu toolbar buttons
 function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
-  local XAction = XAction
   host = host or terminal.desktop
+  local ChoGGi = ChoGGi
+  local dlgConsole = dlgConsole
 
   --clear out old menu/toolbar items
   for i = #host.actions, 1, -1 do
     if host.actions[i].ChoGGi_ConsoleAction or
         host:FilterAction(host.actions[i]) and host.actions[i].ActionMenubar:find("ChoGGi_") then
       host.actions[i]:delete()
-      table.remove(host.actions,i)
+      table_remove(host.actions,i)
     end
   end
 
-  XAction:new({
+  g_Classes.XAction:new({
     ActionId = "ChoGGi_Scripts",
     ActionMenubar = "Menu",
-    ActionName = ChoGGi.ComFuncs.Trans(302535920000353,"Scripts"),
+    ActionName = T(302535920000353--[[Scripts--]]),
     OnActionEffect = "popup",
     ChoGGi_ConsoleAction = true,
   }, dlgConsole)
 
-  XAction:new({
+  g_Classes.XAction:new({
     ActionId = "ChoGGi_History",
     ActionMenubar = "Menu",
-    ActionName = ChoGGi.ComFuncs.Trans(302535920000793,"History"),
+    ActionName = T(302535920000793--[[History--]]),
     OnActionEffect = "popup",
     ChoGGi_ConsoleAction = true,
   }, dlgConsole)
@@ -981,8 +1149,8 @@ function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
   local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
   if folders then
     for i = 1, #folders do
-      XAction:new({
-        ActionId = oldTableConcat({"ChoGGi_",folders[i].name}),
+      g_Classes.XAction:new({
+        ActionId = Concat("ChoGGi_",folders[i].name),
         ActionMenubar = "Menu",
         ActionName = folders[i].name,
         OnActionEffect = "popup",
@@ -997,7 +1165,7 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
   local err, folders = AsyncListFiles(Folder,"*","folders")
   if not err and #folders > 0 then
     local table_path = {}
-    local temp_path = oldTableConcat({Folder,"/"})
+    local temp_path = Concat(Folder,"/")
     for i = 1, #folders do
       table_path[#table_path+1] = {
         path = folders[i],
@@ -1010,28 +1178,27 @@ end
 
 --used to add files to Script menu
 function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
-
   local ChoGGi = ChoGGi
-  local AsyncFileToString = AsyncFileToString
-  local XAction = XAction
+  local dlgConsole = dlgConsole
 
   --create folder and some example scripts if folder doesn't exist
   if main and AsyncFileOpen(script_path) ~= "Access Denied" then
     AsyncCreatePath(script_path)
     --print some info
-    local help = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000881,"Place .lua files in")," ",script_path," ",ChoGGi.ComFuncs.Trans(302535920000882,"to have them show up in the '",ChoGGi.ComFuncs.Trans(302535920000353,"Scripts"),"' list, you can then use the list to execute them (you can also create folders for sorting).")})
+    local help = Concat(T(302535920000881--[[Place .lua files in--]])," ",script_path," ",T(302535920000882--[[to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]))
     print(help)
     --add some example files and a readme
-    AsyncStringToFile(oldTableConcat({script_path,"/readme.txt"}),ChoGGi.ComFuncs.Trans(302535920000888,"Any .lua files in here will be part of a list that you can execute in-game from the console menu."))
-    AsyncStringToFile(oldTableConcat({script_path,"/Help.lua"}),help)
-    AsyncCreatePath(oldTableConcat({script_path,"/Examine"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/DataInstances.lua"}),"OpenExamine(DataInstances)")
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/InGameInterface.lua"}),"OpenExamine(GetInGameInterface())")
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/terminal.desktop.lua"}),"OpenExamine(terminal.desktop)")
-    AsyncStringToFile(oldTableConcat({script_path,"/Examine/ChoGGi.lua"}),"OpenExamine(ChoGGi)")
-    AsyncCreatePath(oldTableConcat({script_path,"/Functions"}))
-    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Amount of colonists.lua"}),"#GetObjects({class=\"Colonist\"})")
-    AsyncStringToFile(oldTableConcat({script_path,"/Functions/Toggle Working SelectedObj.lua"}),"SelectedObj:ToggleWorking()")
+    AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
+    AsyncStringToFile(Concat(script_path,"/Help.lua"),help)
+    AsyncCreatePath(Concat(script_path,"/Examine"))
+    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),"OpenExamine(XTemplates)")
+    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),"OpenExamine(DataInstances)")
+    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),"OpenExamine(GetInGameInterface())")
+    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),"OpenExamine(terminal.desktop)")
+    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),"OpenExamine(ChoGGi)")
+    AsyncCreatePath(Concat(script_path,"/Functions"))
+    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),"#GetObjects({class=\"Colonist\")")
+    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),"SelectedObj:ToggleWorking()")
     --rebuild toolbar
     ChoGGi.ComFuncs.RebuildConsoleToolbar()
   end
@@ -1039,7 +1206,7 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
   local scripts = ChoGGi.ComFuncs.RetFilesInFolder(script_path,".lua")
   if scripts then
     for i = 1, #scripts do
-      XAction:new({
+      g_Classes.XAction:new({
         ActionId = scripts[i].name,
         ActionMenubar = menu_name,
         ActionName = scripts[i].name,
@@ -1056,7 +1223,6 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
       }, dlgConsole)
     end
   end
-
 end
 
 --i keep forgetting this so, i'm adding it here
@@ -1064,31 +1230,391 @@ function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
 end
 
-function ChoGGi.ComFuncs.NewThread(Func,...)
-  coroutine.resume(coroutine.create(Func),...)
+function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
+  parent.idCaption = g_Classes.StaticText:new(parent)
+  parent.idCaption:SetPos(Table.pos)
+  parent.idCaption:SetSize(Table.size)
+  parent.idCaption:SetHSizing("AnchorToLeft")
+  parent.idCaption:SetBackgroundColor(0)
+  parent.idCaption:SetFontStyle("Editor14Bold")
+  parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
+  parent.idCaption.HandleMouse = false
 end
 
-function ChoGGi.ComFuncs.DialogAddCaption(self,Table)
-  self.idCaption = StaticText:new(self)
-  self.idCaption:SetPos(Table.pos)
-  self.idCaption:SetSize(Table.size)
-  self.idCaption:SetHSizing("AnchorToLeft")
-  --self.idCaption:SetVSizing("Resize")
-  self.idCaption:SetBackgroundColor(0)
-  self.idCaption:SetFontStyle("Editor14Bold")
-  self.idCaption:SetTextPrefix(Table.prefix or "<center>")
-  self.idCaption.HandleMouse = false
-  --self.idCaption.SingleLine = true
-end
-
-function ChoGGi.ComFuncs.DialogAddCloseX(self,func)
-  self.idCloseX = Button:new(self)
-  self.idCloseX:SetHSizing("AnchorToRight")
-  self.idCloseX:SetPos(self:GetPos() + point(self:GetSize():x() - 21, 3))
-  self.idCloseX:SetSize(point(18, 18))
-  self.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-  self.idCloseX:SetHint(T({1011, "Close"}))
-  self.idCloseX.OnButtonPressed = func or function()
-    self:delete()
+function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
+  parent.idCloseX = g_Classes.Button:new(parent)
+  parent.idCloseX:SetHSizing("AnchorToRight")
+  parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
+  parent.idCloseX:SetSize(point(18, 18))
+  parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+  parent.idCloseX:SetHint(T(1011--[[Close--]]))
+  parent.idCloseX.OnButtonPressed = func or function()
+    parent:delete()
   end
+end
+function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
+  g_Classes.XTextButton:new({
+    RolloverTemplate = "Rollover",
+    RolloverText = hint or "",
+    RolloverTitle = T(126095410863--[[Info--]]),
+    MinWidth = 60,
+    Text = text or T(1000616--[[OK--]]),
+    OnPress = onpress,
+    --center text
+    LayoutMethod = "VList",
+  }, parent)
+end
+
+function ChoGGi.ComFuncs.DialogAddMenuItem(name,parent,hint,obj)
+  local item = g_Classes.StaticText:new(parent)
+  item:SetText(name)
+  item.rollover = hint
+  item.obj = obj
+  parent:AddItem(item)
+end
+
+function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
+  parent:CreateDropdownBox()
+
+  local list = parent.list
+  list:SetBackgroundColor(RGB(125,125,125))
+
+  --of course combomenu sets the scrollbar images to blank, why not...
+  list:SetScrollBackImage("CommonAssets/UI/Controls/ScrollBar/scroll_back_vertical.tga")
+  list:SetScrollButtonImage("CommonAssets/UI/Controls/ScrollBar/scroll_buttons_vertical.tga")
+  list:SetScrollThumbImage("CommonAssets/UI/Controls/ScrollBar/scroll_thumb_vertical.tga")
+
+  --loop through and set hints (sure would be nice to have List do that for you)
+  local windows = list.item_windows
+  for i = 1, #windows do
+    windows[i].orig_OnSetState = windows[i].OnSetState
+    windows[i].OnSetState = function(self, list, item, rollovered, selected)
+      if self.RolloverText ~= "" and (selected or rollovered) then
+        CreateRolloverWindow(self.parent, self.RolloverText)
+      end
+      return self.orig_OnSetState(self,list, item, rollovered, selected)
+    end
+  end
+end
+
+--return a string setting/text for menus
+function ChoGGi.ComFuncs.SettingState(setting,msg_or_id)
+
+  if setting == false or type(setting) == "nil" then
+    setting = "false"
+--~   elseif setting == true then
+--~     setting = "true"
+  elseif type(setting) == "number" or type(setting) == "string" then
+    setting = setting
+  else
+    setting = "true"
+  end
+
+  return Concat(setting,": ",T(msg_or_id))
+end
+
+--Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
+function ChoGGi.ComFuncs.VarDump(value, depth, key)
+  local ChoGGi = ChoGGi
+  local linePrefix = ""
+  local spaces = ""
+  if key ~= nil then
+    linePrefix = "["..key.."] = "
+  end
+  if depth == nil then
+    depth = 0
+  else
+    depth = depth + 1
+    for _ = 1, depth do
+      spaces = Concat(spaces," ")
+    end
+  end
+  if type(value) == "table" then
+    local mTable = getmetatable(value)
+    if mTable == nil then
+      print(Concat(spaces,linePrefix,"(table) "))
+    else
+      print(Concat(spaces,"(metatable) "))
+      value = mTable
+    end
+    for tableKey, tableValue in pairs(value) do
+      ChoGGi.ComFuncs.VarDump(tableValue, depth, tableKey)
+    end
+  elseif type(value) == "function"
+    or type(value) == "thread"
+    or type(value) == "userdata"
+    or value == nil
+    then
+      print(Concat(spaces,tostring(value)))
+  else
+    print(Concat(spaces,linePrefix,"(",type(value),") ",tostring(value)))
+  end
+end
+
+
+function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
+  local block = false
+  local restrict = false
+
+  local rtotal = 0
+  for _,_ in pairs(settings.restricttraits) do
+    rtotal = rtotal + 1
+  end
+
+  local rcount = 0
+  for trait,_ in pairs(traits) do
+    if settings.restricttraits[trait] then
+      rcount = rcount + 1
+    end
+    if settings.blocktraits[trait] then
+      block = true
+    end
+  end
+  --restrict is empty so allow all or since we're restricting then they need to be the same
+  if not next(settings.restricttraits) or rcount == rtotal then
+    restrict = true
+  end
+
+  return block,restrict
+end
+
+--get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
+--OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
+function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
+  Radius = Radius or 5000
+  local pos = GetTerrainCursor()
+
+  --get pretty much all objects (18K on a new map)
+  local all = GetObjects({class="CObject"})
+  --we only want stuff within *Radius*
+  local list = FilterObjects({
+    filter = function(Obj)
+      if Obj:GetDist2D(pos) <= Radius then
+        return Obj
+      end
+    end
+  },all)
+
+  --sort list custom
+  if Sort then
+    table_sort(list,
+      function(a,b)
+        return a[Sort] < b[Sort]
+      end
+    )
+  else
+    --sort nearest
+    table_sort(list,
+      function(a,b)
+        return a:GetDist2D(pos) < b:GetDist2D(pos)
+      end
+    )
+  end
+  return list
+end
+
+--returns object name or at least always some string
+function ChoGGi.ComFuncs.RetName(obj)
+  if obj == _G then
+    return "_G"
+  end
+  local is_table = type(obj) == "table"
+  local name
+  --translated name
+  if is_table then
+    if obj.display_name then
+      return T(obj.display_name)
+    elseif IsObjlist(obj) then
+      return "objlist"
+    end
+    name = obj.encyclopedia_id or obj.class
+  end
+
+  if type(name) == "string" then
+    return name
+  end
+
+  --falling back baby (lags the shit outta kansas if this is a large objlist)
+  return tostring(obj)
+end
+ChoGGi.ComFuncs.RetName = MemoizeText(ChoGGi.ComFuncs.RetName)
+
+local temp_table = {}
+function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
+  --clean out old table instead of making a new one
+  for i = #temp_table, 1, -1 do
+    temp_table[i] = nil
+  end
+  --add
+  if for_type then
+    for k,_ in pairs(list) do
+      temp_table[#temp_table+1] = k
+    end
+  else
+    for _,v in pairs(list) do
+      temp_table[#temp_table+1] = v
+    end
+  end
+  table_sort(temp_table)
+  --and send back sorted
+  return temp_table
+end
+
+function ChoGGi.ComFuncs.RetButtonTextSize(text,font)
+  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
+  local x,y = UIL_MeasureText(text or "", font)
+  return point(x + 24,y + 4) --button padding
+end
+ChoGGi.ComFuncs.RetButtonTextSize = MemoizeText(ChoGGi.ComFuncs.RetButtonTextSize)
+
+function ChoGGi.ComFuncs.RetCheckTextSize(text,font)
+  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
+  local x,_ = UIL_MeasureText(text or "", font)
+  return point(x + 24,17) --button padding
+end
+ChoGGi.ComFuncs.RetCheckTextSize = MemoizeText(ChoGGi.ComFuncs.RetCheckTextSize)
+
+--Haemimont Games code from examine.lua (moved here for local)
+function OpenExamine(o, from)
+  local ChoGGi = ChoGGi
+  if o == nil then
+    return ChoGGi.ComFuncs.ClearShowMe()
+  end
+
+  local ex = g_Classes.Examine:new()
+  if from then
+    --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
+    --so i use a thread in Init to re-pos it, which of course messes this up, so we make sure this is called later
+    CreateRealTimeThread(function()
+      Sleep(1)
+      if IsPoint(from) then
+        ex:SetPos(from)
+
+      elseif from.class == "Examine"  then
+        ex:SetPos(from:GetPos() + point(0, 20))
+        ex:SetSize(from:GetSize())
+
+      else
+        ex:SetPos(terminal_GetMousePos())
+
+      end
+    end)
+  end
+  ex:SetObj(o)
+end
+
+local OpenExamine = OpenExamine
+function ex(o, from)
+  OpenExamine(o, from)
+end
+function ChoGGi.ComFuncs.ClearShowMe()
+  for k, v in pairs(markers) do
+    if IsValid(k) then
+      if v == "point" then
+        DoneObject(k)
+      else
+--~         if v == 65280 then --marker green
+--~           k:SetColorModifier(6579300)
+--~         else
+          k:SetColorModifier(v)
+--~         end
+      end
+    end
+  end
+--~   if Platform.developer then
+--~     ClearTextTrackers()
+--~   end
+end
+--~ local lm = false
+markers = {}
+function ChoGGi.ComFuncs.ShowMe(o, color, time)
+  if not o then
+    return ChoGGi.ComFuncs.ClearShowMe()
+  end
+  if type(o) == "table" and #o == 2 then
+    if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
+      local m = g_Classes.Vector:new()
+      m:Set(o[1], o[2], color)
+      markers[m] = "vector"
+      o = m
+    end
+  elseif IsPoint(o) then
+    if terrain_IsPointInBounds(o) then
+      local m = g_Classes.Sphere:new()
+      m:SetPos(o)
+      m:SetRadius(50 * guic)
+      m:SetColor(color or RGB(0, 255, 0))
+      markers[m] = "point"
+      if not time then
+        ViewPos(o)
+      end
+      o = m
+    end
+  elseif IsValid(o) then
+    markers[o] = markers[o] or o:GetColorModifier()
+    o:SetColorModifier(color or RGB(0, 255, 0))
+    local pos = o:GetVisualPos()
+    if not time and terrain_IsPointInBounds(pos) then
+      ViewPos(pos)
+    end
+--~   elseif not markers[o] then
+--~     AddTrackerText(false, o)
+  end
+--~   lm = o
+
+  --never gets called
+--~   if time then
+--~     CreateGameTimeThread(function()
+--~       Sleep(time)
+--~       local v = markers[o]
+--~       if IsValid(o) then
+--~         if v == "point" or v == "vector" then
+--~           DoneObject(o)
+--~         else
+--~           o:SetColorModifier(v)
+--~         end
+--~       end
+--~       if Platform.developer then
+--~         ClearTextTrackers(o)
+--~       end
+--~     end)
+--~   end
+
+end
+function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
+  local c = g_Classes.Circle:new()
+  c:SetPos(pt:SetTerrainZ(10 * guic))
+  c:SetRadius(r)
+  c:SetColor(color or RGB(255, 255, 255))
+  CreateGameTimeThread(function()
+    Sleep(7000)
+    if IsValid(c) then
+--~       c:delete()
+      DoneObject(c)
+    end
+  end)
+end
+function ChoGGi.ComFuncs.StartDebugger()
+  config.Haerald = {
+    platform = GetDebuggeePlatform(),
+    ip = "localhost",
+    RemoteRoot = "",
+    ProjectFolder = "",
+  }
+  SetupRemoteDebugger(
+    config.Haerald.ip,
+    config.Haerald.RemoteRoot,
+    config.Haerald.ProjectFolder
+  )
+  StartDebugger()
+--~   ProjectSync()
+end
+
+local times = {}
+function ChoGGi.ComFuncs.TickStart(id)
+  times[id] = GetPreciseTicks()
+end
+function ChoGGi.ComFuncs.TickEnd(id)
+  print(id,": ",GetPreciseTicks() - times[id])
+  times[id] = nil
 end

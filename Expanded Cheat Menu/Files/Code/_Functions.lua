@@ -1,7 +1,48 @@
 --See LICENSE for terms
 --any funcs called from Code/*
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+
+local pcall,print,rawget,tostring,type,table = pcall,print,rawget,tostring,type,table
+
+local table_remove = table.remove
+local table_sort = table.sort
+
+local AsyncFileDelete = AsyncFileDelete
+local CloseXBuildMenu = CloseXBuildMenu
+local CloseXDialog = CloseXDialog
+local CreateRealTimeThread = CreateRealTimeThread
+local DestroyBuildingImmediate = DestroyBuildingImmediate
+local DoneObject = DoneObject
+local FilterObjects = FilterObjects
+local FindNearestObject = FindNearestObject
+local GetInGameInterface = GetInGameInterface
+local GetObjects = GetObjects
+local GetPreciseCursorObj = GetPreciseCursorObj
+local GetTerrainCursor = GetTerrainCursor
+local GetTerrainCursorObjSel = GetTerrainCursorObjSel
+local GetXDialog = GetXDialog
+local HexGetNearestCenter = HexGetNearestCenter
+local IsValid = IsValid
+local NearestObject = NearestObject
+local OpenXBuildMenu = OpenXBuildMenu
+local PlaceObj = PlaceObj
+local point = point
+local Random = Random
+local SelectionMouseObj = SelectionMouseObj
+local SelectObj = SelectObj
+local Sleep = Sleep
+local ViewPos = ViewPos
+
+local terminal_GetMousePos = terminal.GetMousePos
+local UIL_GetScreenSize = UIL.GetScreenSize
+local cameraRTS_SetProperties = cameraRTS.SetProperties
+local cameraRTS_SetZoomLimits = cameraRTS.SetZoomLimits
+local camera_SetFovY = camera.SetFovY
+local camera_SetFovX = camera.SetFovX
+
+local g_Classes = g_Classes
 
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
@@ -18,10 +59,10 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
     --remove restart as the last cmd so we don't hit it by accident
     local dlgConsole = dlgConsole
     if dlgConsole.history_queue[1] == str then
-      table.remove(dlgConsole.history_queue,1)
+      table_remove(dlgConsole.history_queue,1)
       --and save it?
       if rawget(_G, "dlgConsole") then
-        Console.StoreHistory(dlgConsole)
+        g_Classes.Console.StoreHistory(dlgConsole)
       end
     end
   end
@@ -41,7 +82,7 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   mc = GetPreciseCursorObj
   m = SelectionMouseObj
   c = GetTerrainCursor --cursor position on map
-  cs = terminal.GetMousePos --cursor pos on screen
+  cs = terminal_GetMousePos --cursor pos on screen
   s = false --used to store SelectedObj
   function so()return ChoGGi.CodeFuncs.SelObject()end
 end
@@ -221,7 +262,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
         building:ToggleWorking()
       end)
     end) then
-      print(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000012,"Error borked building") .. ": " .. ChoGGi.CodeFuncs.RetName(building)}))
+      print(Concat(T(302535920000012--[[Error borked building--]]),": ",ChoGGi.ComFuncs.RetName(building)))
       OpenExamine(building)
     end
   end
@@ -229,16 +270,14 @@ end
 
 function ChoGGi.CodeFuncs.SetCameraSettings()
   local ChoGGi = ChoGGi
-  local camera = camera
-  local cameraRTS = cameraRTS
   --cameraRTS.GetProperties(1)
 
   --size of activation area for border scrolling
   if ChoGGi.UserSettings.BorderScrollingArea then
-    cameraRTS.SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
+    cameraRTS_SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
   else
     --default
-    cameraRTS.SetProperties(1,{ScrollBorder = 5})
+    cameraRTS_SetProperties(1,{ScrollBorder = 5})
   end
 
   --zoom
@@ -246,22 +285,22 @@ function ChoGGi.CodeFuncs.SetCameraSettings()
   --camera.GetFovX()
   if ChoGGi.UserSettings.CameraZoomToggle then
     if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
-      cameraRTS.SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
+      cameraRTS_SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
     else
-      cameraRTS.SetZoomLimits(0,24000)
+      cameraRTS_SetZoomLimits(0,24000)
     end
 
     --5760x1080 doesn't get the correct zoom size till after zooming out
-    if UIL.GetScreenSize():x() == 5760 then
-      camera.SetFovY(2580)
-      camera.SetFovX(7745)
+    if UIL_GetScreenSize():x() == 5760 then
+      camera_SetFovY(2580)
+      camera_SetFovX(7745)
     end
   else
     --default
-    cameraRTS.SetZoomLimits(400,15000)
+    cameraRTS_SetZoomLimits(400,15000)
   end
 
-  --cameraRTS.SetProperties(1,{HeightInertia = 0})
+  --cameraRTS_SetProperties(1,{HeightInertia = 0})
 end
 
 function ChoGGi.CodeFuncs.RemoveOldFiles()
@@ -272,7 +311,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
     "Settings",
   }
   for i = 1, #files do
-    AsyncFileDelete(oldTableConcat({ChoGGi.ModPath,"/",files[i],".lua"}))
+    AsyncFileDelete(Concat(ChoGGi.ModPath,"/",files[i],".lua"))
   end
 end
 
@@ -330,7 +369,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
   if Age == "Retiree" then
     Colonist.age = 65 --why isn't there a base_MinAge_Retiree...
   else
-    Colonist.age = Colonist[oldTableConcat({"base_MinAge_",Age})]
+    Colonist.age = Colonist[Concat("base_MinAge_",Age)]
   end
 
   if Age == "Child" then
@@ -435,7 +474,7 @@ ChoGGi.CodeFuncs.FireFuncAfterChoice({
   callback = CallBackFunc,
   items = ItemList,
   title = "TitleBar",
-  hint = oldTableConcat({"Current",": ",hint}),
+  hint = Concat("Current",": ",hint),
   multisel = MultiSel,
   custom_type = CustomType,
   custom_func = CustomFunc,
@@ -447,8 +486,7 @@ ChoGGi.CodeFuncs.FireFuncAfterChoice({
 
 --]]
 function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
-  local ChoGGi = ChoGGi
-  local dlg = ChoGGi_ListChoiceCustomDialog:new()
+  local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
 
   if not dlg then
     return
@@ -471,7 +509,6 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
       if Table.custom_type == 2 then
         dlg:SetWidth(750)
         dlg.idColorHSV:SetVisible(true)
-        dlg.idColorHSV:SetPos(point(500, 125))
         dlg.idColorCheckAir:SetVisible(true)
         dlg.idColorCheckWater:SetVisible(true)
         dlg.idColorCheckElec:SetVisible(true)
@@ -514,7 +551,7 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
     end
   end
   --where to position dlg
-  dlg:SetPos(terminal.GetMousePos())
+  dlg:SetPos(terminal_GetMousePos())
 
   --focus on list
   dlg.idList:SetFocus()
@@ -523,7 +560,7 @@ function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
   --are we showing a hint?
   if Table.hint then
     dlg.idList:SetHint(Table.hint)
-    dlg.idOK:SetHint(oldTableConcat({dlg.idOK:GetHint(),"\n\n\n",Table.hint}))
+    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
   end
 
   --waiting for choice
@@ -533,7 +570,7 @@ end
 function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
   local ChoGGi = ChoGGi
   if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000013,"FireFuncAfterChoice: This shouldn't happen."),ChoGGi.ComFuncs.Trans(6774,"Error"))
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000013--[[FireFuncAfterChoice: This shouldn't happen.--]]),T(6774--[[Error--]]))
     return
   end
 
@@ -542,7 +579,7 @@ function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
   if Table.custom_type == 5 then
     sortby = "sort"
   end
-  table.sort(Table.items,
+  table_sort(Table.items,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
     end
@@ -582,7 +619,7 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
       dlgConsoleLog:SetVisible(true)
     end
   else
-    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+    dlgConsoleLog = g_Classes.ConsoleLog:new({}, terminal.desktop)
   end
 end
 
@@ -658,7 +695,7 @@ function ChoGGi.CodeFuncs.GetNearestIdleDrone(Bld)
     cc = cc.drones
   else
     --sort command_centers by nearest dist
-    table.sort(Bld.command_centers,
+    table_sort(Bld.command_centers,
       function(a,b)
         return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
       end
@@ -806,6 +843,7 @@ do --CloseDialogsECM
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MultiLineText")
   end
 end
 
@@ -845,7 +883,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end
 
   local res = oldobj.resource
-  local amount = oldobj[oldTableConcat({"GetStored_",res})](oldobj)
+  local amount = oldobj[Concat("GetStored_",res)](oldobj)
   --not good to be larger then this when game is saved
   if amount > 20000000 then
     amount = amount
@@ -883,7 +921,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end
   --create new depot, and set max amount to stored amount of old depot
   local newobj = PlaceObj("UniversalStorageDepot", {
-    "template_name", oldTableConcat({"Storage",res2}),
+    "template_name", Concat("Storage",res2),
     "resource", {res},
     "stockpiled_amount", {},
     "max_storage_per_resource", amount,
@@ -909,7 +947,7 @@ end
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000015,"Can't colour object"),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000015--[[Can't colour object--]]),T(302535920000016--[[Colour--]]))
     return
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
@@ -918,30 +956,30 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
 
   local ItemList = {}
   for i = 1, 4 do
-    local text = oldTableConcat({"Colour",i})
+    local text = Concat("Colour",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = ChoGGi.ComFuncs.Trans(302535920000017,"Use the colour picker (dbl right-click for instant change)."),
+      hint = T(302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]),
     }
-    text = oldTableConcat({"Metallic",i})
+    text = Concat("Metallic",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = ChoGGi.ComFuncs.Trans(302535920000018,"Don't use the colour picker: Numbers range from -255 to 255."),
+      hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]),
     }
-    text = oldTableConcat({"Roughness",i})
+    text = Concat("Roughness",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = ChoGGi.ComFuncs.Trans(302535920000018,"Don't use the colour picker: Numbers range from -255 to 255."),
+      hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]),
     }
   end
   ItemList[#ItemList+1] = {
     text = "X_BaseColour",
     value = 6579300,
     obj = obj,
-    hint = ChoGGi.ComFuncs.Trans(302535920000019,"single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones)."),
+    hint = T(302535920000019--[[single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).--]]),
   }
 
   --callback
@@ -998,7 +1036,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       end
 
       --store table so it's the same as was displayed
-      table.sort(choice,
+      table_sort(choice,
         function(a,b)
           return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
         end
@@ -1034,54 +1072,42 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000020,"Colour is set on")," ",obj.class}),ChoGGi.ComFuncs.Trans(302535920000016,"Colour"))
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
     end
   end
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000021,"Change Colour"),": ",ChoGGi.CodeFuncs.RetName(obj)}),
-    hint = ChoGGi.ComFuncs.Trans(302535920000022,"If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."),
+    title = Concat(T(302535920000021--[[Change Colour--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
+    hint = T(302535920000022--[[If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).--]]),
     multisel = true,
     custom_type = 2,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000023,"All of type"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000024,"Change all objects of the same type."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000025,"Default Colour"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000026,"if they're there; resets to default colours."),
+    check1 = T(302535920000023--[[All of type--]]),
+    check1_hint = T(302535920000024--[[Change all objects of the same type.--]]),
+    check2 = T(302535920000025--[[Default Colour--]]),
+    check2_hint = T(302535920000026--[[if they're there; resets to default colours.--]]),
   })
 end
 
 --returns the near hex grid for object placement
-do --CursorNearestHex
-  local HexGetNearestCenter = HexGetNearestCenter
-  local GetTerrainCursor = GetTerrainCursor
-  function ChoGGi.CodeFuncs.CursorNearestHex()
-    return HexGetNearestCenter(GetTerrainCursor())
-  end
+function ChoGGi.CodeFuncs.CursorNearestHex()
+  return HexGetNearestCenter(GetTerrainCursor())
 end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
-do --SelObject
-  local GetObjects = GetObjects
-  local NearestObject = NearestObject
-  local SelectionMouseObj = SelectionMouseObj
-  local GetTerrainCursor = GetTerrainCursor
-  --#GetObjects({class="CObject"})
-  --#GetObjects({class="PropertyObject"})
-  function ChoGGi.CodeFuncs.SelObject()
-    local _,ret = pcall(function()
-      local objs = ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
-      return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
-    end)
-    return ret
-  end
+function ChoGGi.CodeFuncs.SelObject()
+  local _,ret = pcall(function()
+    local objs = ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
+    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
+  end)
+  return ret
 end
 
 function ChoGGi.CodeFuncs.LightmodelBuild(Table)
   local data = DataInstances.Lightmodel
   --always start with blank lightmodel
   data.ChoGGi_Custom:delete()
-  data.ChoGGi_Custom = Lightmodel:new()
+  data.ChoGGi_Custom = g_Classes.Lightmodel:new()
   data.ChoGGi_Custom.name = "ChoGGi_Custom"
 
   for i = 1, #Table do
@@ -1100,128 +1126,125 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
   end
 end
 
-do --FindNearestResource
-  local FindNearestObject = FindNearestObject
-  local FilterObjects = FilterObjects
-  local function GetStockpile(Label,Type,Object)
-    --check if there's actually a label and that it has anything in it
-    if type(Label) == "table" and #Label > 0 then
+local function GetStockpile(Label,Type,Object)
+  --check if there's actually a label and that it has anything in it
+  if type(Label) == "table" and #Label > 0 then
 
-      --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
-      local pile = false
-      --if it's a stockpile list then remove all stockpiles of a different type
-      if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
-        pile = true
-        Label = FilterObjects({
-          filter = function(Obj)
-            if Obj.resource == Type then
+    --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
+    local pile = false
+    --if it's a stockpile list then remove all stockpiles of a different type
+    if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
+      pile = true
+      Label = FilterObjects({
+        filter = function(Obj)
+          if Obj.resource == Type then
+            return Obj
+          end
+        end
+      },Label)
+    end
+
+    local GetStored = Concat("GetStored_",Type)
+    --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
+    if #Label == 1 and
+      (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
+      pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
+        return Label[1]
+    else
+      --otherwise filter out empty stockpiles and (and ones for other resources)
+      Label = FilterObjects({
+        filter = function(Obj)
+          if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
+            pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
               return Obj
-            end
-          end
-        },Label)
-      end
-
-      local GetStored = oldTableConcat({"GetStored_",Type})
-      --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
-      if #Label == 1 and
-        (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
-        pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
-          return Label[1]
-      else
-        --otherwise filter out empty stockpiles and (and ones for other resources)
-        Label = FilterObjects({
-          filter = function(Obj)
-            if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
-              pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
-                return Obj
-            end
-          end
-        },Label)
-        --and return nearest
-        return FindNearestObject(Label,Object)
-      end
-    end
-  end
-
-  function ChoGGi.CodeFuncs.FindNearestResource(Object)
-    local ChoGGi = ChoGGi
-    if Object and not Object.class then
-      Object = ChoGGi.CodeFuncs.SelObject()
-    end
-    if not Object then
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000027,"Nothing selected"),ChoGGi.ComFuncs.Trans(302535920000028,"Find Resource"))
-      return
-    end
-
-    local ItemList = {
-      {text = ChoGGi.ComFuncs.Trans(3514),value = "Metals"},
-      {text = ChoGGi.ComFuncs.Trans(4764),value = "BlackCube"},
-      {text = ChoGGi.ComFuncs.Trans(8064),value = "MysteryResource"},
-      {text = ChoGGi.ComFuncs.Trans(3513),value = "Concrete"},
-      {text = ChoGGi.ComFuncs.Trans(1022),value = "Food"},
-      {text = ChoGGi.ComFuncs.Trans(4139),value = "RareMetals"},
-      {text = ChoGGi.ComFuncs.Trans(3515),value = "Polymers"},
-      {text = ChoGGi.ComFuncs.Trans(3517),value = "Electronics"},
-      {text = ChoGGi.ComFuncs.Trans(4765),value = "Fuel"},
-      {text = ChoGGi.ComFuncs.Trans(3516),value = "MachineParts"},
-    }
-
-    local CallBackFunc = function(choice)
-      local value = choice[1].value
-      if type(value) == "string" then
-
-        --get nearest stockpiles to object
-        local labels = UICity.labels
-        local mechstockpile = GetStockpile(labels[oldTableConcat({"MechanizedDepot",value})],value,Object)
-        local stockpile
-        local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object)
-        if value == "BlackCube" then
-          stockpile = GetStockpile(labels[oldTableConcat({value,"DumpSite"})],value,Object)
-        elseif value == "MysteryResource" then
-          stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
-        else
-          stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object)
-        end
-
-        local piles = {
-          {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
-          {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
-          {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
-        }
-
-        local nearest
-        local nearestdist
-        --now we can compare the dists
-        for i = 1, #piles do
-          local p = piles[i]
-          if p.obj then
-            --we need something to compare
-            if not nearest then
-              nearest = p.obj
-              nearestdist = p.dist
-            elseif p.dist < nearestdist then
-              nearest = p.obj
-              nearestdist = p.dist
-            end
           end
         end
-        --if there's no resources then "nearest" doesn't exist
-        if nearest then
-          ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
-        else
-          ChoGGi.ComFuncs.MsgPopup(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000029,"Error: Cannot find any")," ",choice[1].text}),ChoGGi.ComFuncs.Trans(15,"Resource"))
-        end
-      end
+      },Label)
+      --and return nearest
+      return FindNearestObject(Label,Object)
     end
-
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
-      callback = CallBackFunc,
-      items = ItemList,
-      title = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000031,"Find Nearest Resource")," ",ChoGGi.CodeFuncs.RetName(Object)}),
-      hint = ChoGGi.ComFuncs.Trans(302535920000032,"Select a resource to find"),
-    })
   end
 end
+
+function ChoGGi.CodeFuncs.FindNearestResource(Object)
+  local ChoGGi = ChoGGi
+  if Object and not Object.class then
+    Object = ChoGGi.CodeFuncs.SelObject()
+  end
+  if not Object then
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000027--[[Nothing selected--]]),T(302535920000028--[[Find Resource--]]))
+    return
+  end
+
+  local ItemList = {
+    {text = T(3514),value = "Metals"},
+    {text = T(4764),value = "BlackCube"},
+    {text = T(8064),value = "MysteryResource"},
+    {text = T(3513),value = "Concrete"},
+    {text = T(1022),value = "Food"},
+    {text = T(4139),value = "RareMetals"},
+    {text = T(3515),value = "Polymers"},
+    {text = T(3517),value = "Electronics"},
+    {text = T(4765),value = "Fuel"},
+    {text = T(3516),value = "MachineParts"},
+  }
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "string" then
+
+      --get nearest stockpiles to object
+      local labels = UICity.labels
+      local mechstockpile = GetStockpile(labels[Concat("MechanizedDepot",value)],value,Object)
+      local stockpile
+      local resourcepile = GetStockpile(GetObjects({class="ResourceStockpile"}),value,Object)
+      if value == "BlackCube" then
+        stockpile = GetStockpile(labels[Concat(value,"DumpSite")],value,Object)
+      elseif value == "MysteryResource" then
+        stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
+      else
+        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object)
+      end
+
+      local piles = {
+        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
+        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
+        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
+      }
+
+      local nearest
+      local nearestdist
+      --now we can compare the dists
+      for i = 1, #piles do
+        local p = piles[i]
+        if p.obj then
+          --we need something to compare
+          if not nearest then
+            nearest = p.obj
+            nearestdist = p.dist
+          elseif p.dist < nearestdist then
+            nearest = p.obj
+            nearestdist = p.dist
+          end
+        end
+      end
+      --if there's no resources then "nearest" doesn't exist
+      if nearest then
+        ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
+      else
+        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000029--[[Error: Cannot find any--]])," ",choice[1].text),T(15--[[Resource--]]))
+      end
+    end
+  end
+
+  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",ChoGGi.ComFuncs.RetName(Object)),
+    hint = T(302535920000032--[[Select a resource to find--]]),
+  })
+end
+
 
 function ChoGGi.CodeFuncs.ViewAndSelectObject(Obj)
   ViewPos(Obj:GetVisualPos())
@@ -1233,8 +1256,8 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   --the menu item sends itself
   if obj and not obj.class then
     --multiple selection from editor mode
-    local objs = editor:GetSel()
-    if next(objs) then
+    local objs = editor:GetSel() or empty_table
+    if #objs > 0 then
       for i = 1, #objs do
         ChoGGi.CodeFuncs.DeleteObject(objs[i])
       end
@@ -1290,32 +1313,6 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   ChoGGi.Temp.LastPlacedObject = nil
 end
 
-function ChoGGi.CodeFuncs.RetBuildingPermissions(traits,settings)
-  local block = false
-  local restrict = false
-
-  local rtotal = 0
-  for _,_ in pairs(settings.restricttraits) do
-    rtotal = rtotal + 1
-  end
-
-  local rcount = 0
-  for trait,_ in pairs(traits) do
-    if settings.restricttraits[trait] then
-      rcount = rcount + 1
-    end
-    if settings.blocktraits[trait] then
-      block = true
-    end
-  end
-  --restrict is empty so allow all or since we're restricting then they need to be the same
-  if not next(settings.restricttraits) or rcount == rtotal then
-    restrict = true
-  end
-
-  return block,restrict
-end
-
 function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(Obj)
   local mods = Obj.modifications
   if mods and mods.electricity_consumption then
@@ -1336,45 +1333,10 @@ function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(Obj)
   Obj:SetBase("electricity_consumption", 0)
 end
 
---get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
---OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000),"class")
-function ChoGGi.CodeFuncs.ReturnAllNearby(Radius,Sort)
-  Radius = Radius or 5000
-  local pos = GetTerrainCursor()
-
-  --get pretty much all objects (18K on a new map)
-  local all = GetObjects({class="CObject"})
-  --we only want stuff within *Radius*
-  local list = FilterObjects({
-    filter = function(Obj)
-      if Obj:GetDist2D(pos) <= Radius then
-        return Obj
-      end
-    end
-  },all)
-
-  --sort list custom
-  if Sort then
-    table.sort(list,
-      function(a,b)
-        return a[Sort] < b[Sort]
-      end
-    )
-  else
-    --sort nearest
-    table.sort(list,
-      function(a,b)
-        return a:GetDist2D(pos) < b:GetDist2D(pos)
-      end
-    )
-  end
-  return list
-end
-
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000033,"Post a request on Nexus or Github or send an email to")," ",ChoGGi.email}),ChoGGi.ComFuncs.Trans(302535920000034,"Request"))
+    ChoGGi.ComFuncs.MsgWait(Concat(T(302535920000033--[[Post a request on Nexus or Github or send an email to--]])," ",ChoGGi.email),T(302535920000034--[[Request--]]))
     return
   end
 
@@ -1407,25 +1369,25 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   }
   if value == "Grids" then
     info = info_grid
-    info_grid.title = ChoGGi.ComFuncs.Trans(302535920000035,"Grids")
+    info_grid.title = T(302535920000035--[[Grids--]])
     AddGrid("air",info)
     AddGrid("electricity",info)
     AddGrid("water",info)
   elseif value == "Air" then
     info = info_grid
-    info_grid.title = ChoGGi.ComFuncs.Trans(891,"Air")
+    info_grid.title = T(891--[[Air--]])
     AddGrid("air",info)
   elseif value == "Electricity" then
     info = info_grid
-    info_grid.title = ChoGGi.ComFuncs.Trans(302535920000037,"Electricity")
+    info_grid.title = T(302535920000037--[[Electricity--]])
     AddGrid("electricity",info)
   elseif value == "Water" then
     info = info_grid
-    info_grid.title = ChoGGi.ComFuncs.Trans(681,"Water")
+    info_grid.title = T(681--[[Water--]])
     AddGrid("water",info)
   elseif value == "Research" then
     info = {
-      title = ChoGGi.ComFuncs.Trans(311,"Research"),
+      title = T(311--[[Research--]]),
       listtype = "all",
       tables = {UICity.tech_status},
       values = {
@@ -1434,7 +1396,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Colonists" then
     info = {
-      title = ChoGGi.ComFuncs.Trans(547,"Colonists"),
+      title = T(547--[[Colonists--]]),
       tables = UICity.labels.Colonist,
       values = {
         {name="handle",kind=0},
@@ -1460,7 +1422,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Rockets" then
     info = {
-      title = ChoGGi.ComFuncs.Trans(5238,"Rockets"),
+      title = T(5238--[[Rockets--]]),
       tables = UICity.labels.AllRockets,
       values = {
         {name="name",kind=0},
@@ -1479,7 +1441,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "City" then
     info = {
-      title = ChoGGi.ComFuncs.Trans(302535920000042,"City"),
+      title = T(302535920000042--[[City--]]),
       tables = {UICity},
       values = {
         {name="rand_state",kind=0},
@@ -1520,10 +1482,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or ChoGGi.ComFuncs.Trans(3718,"NONE"),
-        "RolloverText", Table.RolloverText or ChoGGi.ComFuncs.Trans(126095410863,"unknown name"),
-        "RolloverTitle", Table.RolloverTitle or ChoGGi.ComFuncs.Trans(1000016,"Title"),
-        "RolloverHint", Table.RolloverHint or ChoGGi.ComFuncs.Trans(4248,"Hints"),
+        "Title", Table.Title or T(588--[[Empty--]]),
+        "RolloverText", Table.RolloverText or T(126095410863--[[unknown name--]]),
+        "RolloverTitle", Table.RolloverTitle or T(1000016--[[Title--]]),
+        "RolloverHint", Table.RolloverHint or T(4248--[[Hints--]]),
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {
@@ -1543,10 +1505,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or ChoGGi.ComFuncs.Trans(3718),
-        "RolloverText", Table.RolloverText or ChoGGi.ComFuncs.Trans(126095410863,"unknown name"),
-        "RolloverTitle", Table.RolloverTitle or ChoGGi.ComFuncs.Trans(1000016,"Title"),
-        "RolloverHint", Table.RolloverHint or ChoGGi.ComFuncs.Trans(4248,"Hints"),
+        "Title", Table.Title or T(588--[[Empty--]]),
+        "RolloverText", Table.RolloverText or T(126095410863--[[unknown name--]]),
+        "RolloverTitle", Table.RolloverTitle or T(1000016--[[Title--]]),
+        "RolloverHint", Table.RolloverHint or T(4248--[[Hints--]]),
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {
@@ -1559,15 +1521,4 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
       })
     end
   end
-end
---i thought i made this func already?
-function ChoGGi.CodeFuncs.RetName(Obj)
-  --translated name
-  if type(Obj) == "table" then
-    if Obj.display_name then
-      return ChoGGi.ComFuncs.Trans(Obj.display_name)
-    end
-    return Obj.encyclopedia_id or Obj.class or tostring(Obj)
-  end
-  return tostring(Obj)
 end

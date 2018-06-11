@@ -1,6 +1,29 @@
 --See LICENSE for terms
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+local TConcat = ChoGGi.ComFuncs.TableConcat
+local T = ChoGGi.ComFuncs.Trans
+
+local pairs,pcall,tostring,type,getmetatable = pairs,pcall,tostring,type,getmetatable
+local debug,string,table,tonumber = debug,string,table,tonumber
+
+local CmpLower = CmpLower
+local CreateRealTimeThread = CreateRealTimeThread
+local CreateRolloverWindow = CreateRolloverWindow
+--~ local GameTime = GameTime
+local GetObjects = GetObjects
+local InDesigner = InDesigner
+local IsPoint = IsPoint
+local IsT = IsT
+local IsValid = IsValid
+local Min = Min
+local ObjectClass = ObjectClass
+local point = point
+local RGB = RGB
+local Sleep = Sleep
+
+local g_traceMeta = g_traceMeta
+local g_Classes = g_Classes
 
 --ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
 --ex(ChoGGi.ObjectManipulator_Dlg)
@@ -8,40 +31,62 @@ local oldTableConcat = oldTableConcat
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_ObjectManipulator_Defaults = {
-  __parents = {"FrameWindow"}
+DefineClass.ChoGGi_ObjectManipulator = {
+  __parents = {"FrameWindow"},
+  ZOrder = zorder,
+  choices = {},
+  sel = false,
+  obj = false,
+  --
+  refreshing = false,
+  page = 1,
+  show_times = "relative",
 }
 
-function ChoGGi_ObjectManipulator_Defaults:Init()
+function ChoGGi_ObjectManipulator:Init()
   local ChoGGi = ChoGGi
 
-  self:SetPos(point(100, 100))
-  self:SetSize(point(650, 450))
+  --element pos is based on
+  self:SetPos(point(0,0))
+
+  local dialog_width = 650
+  local dialog_height = 450
+  self:SetSize(point(dialog_width, dialog_height))
   self:SetMinSize(point(50, 50))
-  self:SetTranslate(false)
   self:SetMovable(true)
-  self:SetZOrder(zorder)
-  --set some values...
-  self.choices = {}
-  self.sel = false
-  self.obj = false
-  self.refreshing = false
-  self.page = 1
-  self.show_times = "relative"
+  self:SetTranslate(false)
 
-  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(250, 101),size = point(390, 22)})
-  ChoGGi.ComFuncs.DialogAddCloseX(self)
+  local border = 4
+  local element_y
+  local element_x
+  dialog_width = dialog_width - border * 2
+  local dialog_left = border
 
-  self.idAutoRefresh = CheckButton:new(self)
-  self.idAutoRefresh:SetPos(point(115, 128))
-  self.idAutoRefresh:SetSize(point(164, 17))
+  ChoGGi.ComFuncs.DialogAddCloseX(
+    self,
+    function()
+      self:delete(self.idEditValue:GetText())
+    end
+  )
+  ChoGGi.ComFuncs.DialogAddCaption(self,{
+    prefix = Concat(T(302535920000471--[[Object Manipulator--]]),": "),
+    pos = point(25, border),
+    size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
+  })
+
+  element_y = border / 2 + self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
+
+  local title = T(302535920000084--[[Auto-Refresh--]])
+  self.idAutoRefresh = g_Classes.CheckButton:new(self)
+  self.idAutoRefresh:SetPos(point(dialog_left, element_y))
+  self.idAutoRefresh:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idAutoRefresh:SetText(ChoGGi.ComFuncs.Trans(302535920000084,"Auto-Refresh"))
-  self.idAutoRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000091,"Auto-refresh list every second (turn off to edit values)."))
+  self.idAutoRefresh:SetText(title)
+  self.idAutoRefresh:SetHint(T(302535920000091--[[Auto-refresh list every second (turn off to edit values).--]]))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
-  local children = self.idAutoRefresh.children
-  for i = 1, #children or empty_table do
+  local children = self.idAutoRefresh.children or empty_table
+  for i = 1, #children do
     if children[i].class == "Button" then
       local but = children[i]
       function but.OnButtonPressed()
@@ -56,30 +101,39 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
     end
   end
 
-  self.idRefresh = Button:new(self)
-  self.idRefresh:SetPos(point(115, 150))
-  self.idRefresh:SetSize(point(65, 26))
-  self.idRefresh:SetText(ChoGGi.ComFuncs.Trans(1000220,"Refresh"))
-  self.idRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000092,"Refresh list."))
+  element_y = border / 2 + self.idAutoRefresh:GetPos():y() + self.idAutoRefresh:GetSize():y()
+
+  title = T(1000220--[[Refresh--]])
+  self.idRefresh = g_Classes.Button:new(self)
+  self.idRefresh:SetPos(point(dialog_left, element_y))
+  self.idRefresh:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idRefresh:SetText(title)
+  self.idRefresh:SetHint(T(302535920000092--[[Refresh list.--]]))
   --refresh the list...
   function self.idRefresh.OnButtonPressed()
     self:UpdateListContent(self.obj)
   end
 
-  self.idGoto = Button:new(self)
-  self.idGoto:SetPos(point(185, 150))
-  self.idGoto:SetSize(point(75, 26))
-  self.idGoto:SetText(ChoGGi.ComFuncs.Trans(302535920000093,"Goto Obj"))
-  self.idGoto:SetHint(ChoGGi.ComFuncs.Trans(302535920000094,"View object on map."))
+  element_x = border * 2 + self.idRefresh:GetPos():x() + self.idRefresh:GetSize():x()
+
+  title = T(302535920000093--[[Goto Obj--]])
+  self.idGoto = g_Classes.Button:new(self)
+  self.idGoto:SetPos(point(element_x, element_y))
+  self.idGoto:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idGoto:SetText(title)
+  self.idGoto:SetHint(T(302535920000094--[[View object on map.--]]))
   --move viewpoint to obj
   function self.idGoto.OnButtonPressed()
     ChoGGi.CodeFuncs.ViewAndSelectObject(self.obj)
   end
 
-  self.idAddNew = Button:new(self)
-  self.idAddNew:SetPos(point(265, 150))
-  self.idAddNew:SetSize(point(60, 26))
-  self.idAddNew:SetText(ChoGGi.ComFuncs.Trans(398847925160,"New"))
+  element_x = border * 2 + self.idGoto:GetPos():x() + self.idGoto:GetSize():x()
+
+  title = T(398847925160--[[New--]])
+  self.idAddNew = g_Classes.Button:new(self)
+  self.idAddNew:SetPos(point(element_x, element_y))
+  self.idAddNew:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idAddNew:SetText(title)
   --open dialog to get new name
   function self.idAddNew.OnButtonPressed()
     local sel_name
@@ -88,12 +142,12 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
       sel_name = self.sel.text
       sel_value = self.sel.value
     else
-      sel_name = ChoGGi.ComFuncs.Trans(3718,"NONE")
+      sel_name = T(3718--[[NONE--]])
       sel_value = false
     end
     local ItemList = {
-      {text = ChoGGi.ComFuncs.Trans(302535920000095,"New Entry"),value = sel_name,hint = ChoGGi.ComFuncs.Trans(302535920000096,"Enter the name of the new entry to be added.")},
-      {text = ChoGGi.ComFuncs.Trans(302535920000097,"New Value"),value = sel_value,hint = ChoGGi.ComFuncs.Trans(302535920000098,"Set the value of the new entry to be added.")},
+      {text = T(302535920000095--[[New Entry--]]),value = sel_name,hint = T(302535920000096--[[Enter the name of the new entry to be added.--]])},
+      {text = T(302535920000097--[[New Value--]]),value = sel_value,hint = T(302535920000098--[[Set the value of the new entry to be added.--]])},
     }
 
     local CallBackFunc = function(choice)
@@ -105,16 +159,19 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = ChoGGi.ComFuncs.Trans(302535920000095,"New Entry"),
+      title = T(302535920000095--[[New Entry--]]),
       custom_type = 4,
     })
   end
 
-  self.idApplyAll = Button:new(self)
-  self.idApplyAll:SetPos(point(450, 150))
-  self.idApplyAll:SetSize(point(90, 26))
-  self.idApplyAll:SetText(ChoGGi.ComFuncs.Trans(302535920000099,"Apply To All"))
-  self.idApplyAll:SetHint(ChoGGi.ComFuncs.Trans(302535920000100,"Apply selected value to all objects of the same type."))
+  element_x = border * 2 + self.idAddNew:GetPos():x() + self.idAddNew:GetSize():x()
+
+  title = T(302535920000099--[[Apply To All--]])
+  self.idApplyAll = g_Classes.Button:new(self)
+  self.idApplyAll:SetPos(point(element_x, element_y))
+  self.idApplyAll:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idApplyAll:SetText(title)
+  self.idApplyAll:SetHint(T(302535920000100--[[Apply selected value to all objects of the same type.--]]))
   --idApplyAll
   function self.idApplyAll.OnButtonPressed()
     if not self.sel then
@@ -129,9 +186,11 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
     end
   end
 
-  self.idList = List:new(self)
-  self.idList:SetPos(point(104, 180))
-  self.idList:SetSize(point(642, 330))
+  element_y = border / 2 + self.idApplyAll:GetPos():y() + self.idApplyAll:GetSize():y()
+
+  self.idList = g_Classes.List:new(self)
+  self.idList:SetPos(point(dialog_left, element_y))
+  self.idList:SetSize(point(dialog_width,dialog_height - element_y - border - 28))
   self.idList:SetHSizing("Resize")
   self.idList:SetVSizing("Resize")
   self.idList:SetFontStyle("Editor14Bold")
@@ -163,8 +222,10 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
             hint[#hint+1] = "\n\n"
             hint[#hint+1] = item.hint
           end
-          hint[#hint+1] = "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000101,"You can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.")
-          self.parent:SetHint(oldTableConcat(hint))
+          hint[#hint+1] = "\n\n"
+          hint[#hint+1] = T(302535920000101--[[You can only change strings/numbers/booleans (to remove set value to nil).\nValue is updated while typing.\nPress Enter to refresh list (update names).\n\nDouble click selected item to open in new manipulator.--]])
+          self.parent:SetHint(TConcat(hint))
+          CreateRolloverWindow(self.parent, TConcat(hint), true)
         end
       end
     end
@@ -200,17 +261,19 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
     end
   end
 
-  self.idEditValue = SingleLineEdit:new(self)
-  self.idEditValue:SetPos(point(106, 514))
-  self.idEditValue:SetSize(point(640, 28))
+  element_y = border / 2 + self.idList:GetPos():y() + self.idList:GetSize():y()
+
+  self.idEditValue = g_Classes.SingleLineEdit:new(self)
+  self.idEditValue:SetPos(point(dialog_left, element_y))
+  self.idEditValue:SetSize(point(dialog_width, 28))
   self.idEditValue:SetTextVAlign("center")
   self.idEditValue:SetHSizing("Resize")
   self.idEditValue:SetVSizing("AnchorToBottom")
-  self.idEditValue:SetHint(ChoGGi.ComFuncs.Trans(302535920000102,"Use to change values of selected list item."))
+  self.idEditValue:SetHint(T(302535920000102--[[Use to change values of selected list item.--]]))
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetAutoSelectAll(true)
   self.idEditValue:SetMaxLen(-1)
-  self.idEditValue.display_text = ChoGGi.ComFuncs.Trans(302535920000103,"Edit Value")
+  self.idEditValue.display_text = T(302535920000103--[[Edit Value--]])
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local sel_idx = self.idList.last_selected
@@ -252,20 +315,12 @@ function ChoGGi_ObjectManipulator_Defaults:Init()
 
   --so elements move when dialog re-sizes
   self:InitChildrenSizing()
-
-  self:SetPos(point(100, 100))
-  self:SetSize(point(650, 450))
 end
 
-DefineClass.ChoGGi_ObjectManipulator = {
-  __parents = {
-    "ChoGGi_ObjectManipulator_Defaults",
-  },
-  ZOrder = zorder
-}
 
 --function ChoGGi_ObjectManipulator:OnKbdKeyDown(char, virtual_key)
 function ChoGGi_ObjectManipulator:OnKbdKeyDown(_, virtual_key)
+  local const = const
   if virtual_key == const.vkEsc then
     self.idCloseX:Press()
     return "break"
@@ -287,8 +342,9 @@ function ChoGGi_ObjectManipulator:UpdateListContent(obj)
   --create prop list for list
   local list = self:CreatePropList(obj)
   if not list then
-    local err = oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000090,"Error opening"),tostring(obj)})
-    self.idList:SetContent({{text=err,value=err}})
+    local err = Concat(T(302535920000090--[[Error opening--]]),tostring(obj))
+    --self.idList:SetContent({{text=err,value=err}})
+    self.idList:SetContent({text=err,value=err})
     return
   end
   --populate it
@@ -308,7 +364,7 @@ function ChoGGi_ObjectManipulator:OnCreate(item,list)
       self:SetSize(point(25, 25))
     end
   else
-    local text_item = StaticText:new(self)
+    local text_item = g_Classes.StaticText:new(self)
     text_item:SetBackgroundColor(0)
     text_item:SetId("text")
     text_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
@@ -318,7 +374,7 @@ function ChoGGi_ObjectManipulator:OnCreate(item,list)
     height = Min(720, height)
     text_item:SetSize(point(width, height))
     --newly added
-    local value_item = StaticText:new(self)
+    local value_item = g_Classes.StaticText:new(self)
     value_item:SetBackgroundColor(0)
     value_item:SetId("value")
     value_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
@@ -344,50 +400,50 @@ function ChoGGi_ObjectManipulator:OnCreate(item,list)
   end
 end
 
-function ChoGGi_ObjectManipulator:filtersmarttable(e)
-  local format_text = tostring(e[2])
-  local t = string.match(format_text, "^%[(.*)%]")
-  if t then
-    if LocalStorage.trace_config ~= nil then
-      local filter = filters[LocalStorage.trace_config] or filters.General
-      if not table.find(filter, t) then
-        return false
-      end
-    end
-    format_text = string.sub(format_text, 3 + #t)
-  end
-  return format_text, e
-end
+--~ function ChoGGi_ObjectManipulator:filtersmarttable(e)
+--~   local format_text = tostring(e[2])
+--~   local t = string.match(format_text, "^%[(.*)%]")
+--~   if t then
+--~     if LocalStorage.trace_config ~= nil then
+--~       local filter = filters[LocalStorage.trace_config] or filters.General
+--~       if not table.find(filter, t) then
+--~         return false
+--~       end
+--~     end
+--~     format_text = string.sub(format_text, 3 + #t)
+--~   end
+--~   return format_text, e
+--~ end
 
-function ChoGGi_ObjectManipulator:evalsmarttable(format_text, e)
-  local touched = {}
-  local i = 0
-  format_text = string.gsub(format_text, "{(%d-)}", function(s)
-    if next(s) == nil then
-    --if #s == 0 then
-      i = i + 1
-    else
-      i = tonumber(s)
-    end
-    touched[i + 1] = true
-    return oldTableConcat({"<color 255 255 128>",self:CreateProp(e[i + 2]),"</color>"})
-  end)
-  for i = 2, #e do
-    if not touched[i] then
-      format_text = oldTableConcat({format_text," <color 255 255 128>[",self:CreateProp(e[i]),"]</color>"})
-    end
-  end
-  return format_text
-end
+--~ function ChoGGi_ObjectManipulator:evalsmarttable(format_text, e)
+--~   local touched = {}
+--~   local i = 0
+--~   format_text = string.gsub(format_text, "{(%d-)}", function(s)
+--~     if #s == 0 then
+--~       i = i + 1
+--~     else
+--~       i = tonumber(s)
+--~     end
+--~     touched[i + 1] = true
+--~     return Concat("<color 255 255 128>",self:CreateProp(e[i + 2]),"</color>")
+--~   end)
+--~   for i = 2, #e do
+--~     if not touched[i] then
+--~       format_text = Concat(format_text," <color 255 255 128>[",self:CreateProp(e[i]),"]</color>")
+--~     end
+--~   end
+--~   return format_text
+--~ end
 
 function ChoGGi_ObjectManipulator:CreateProp(o)
+  local objlist = objlist
   if type(o) == "function" then
     local debug_info = debug.getinfo(o, "Sn")
-    return oldTableConcat({tostring(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")"})
+    return Concat(tostring(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")")
   end
 
   if IsValid(o) then
-    return oldTableConcat({o.class,"@",self:CreateProp(o:GetPos())})
+    return Concat(o.class,"@",self:CreateProp(o:GetPos()))
   end
 
   if IsPoint(o) then
@@ -396,7 +452,7 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
       o:y(),
       o:z()
     }
-    return oldTableConcat({"(",oldTableConcat(res, ","),")"})
+    return Concat("(",Concat(res, ","),")")
   end
   --if some value is fucked, this just lets us ignore whatever value is fucked.
   pcall(function()
@@ -411,7 +467,7 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
       if #o > 3 then
         res[#res+1] = {text = "..."}
       end
-      return oldTableConcat({"objlist","{",oldTableConcat(res, ", "),"}"})
+      return Concat("objlist","{",Concat(res, ", "),"}")
     end
   end)
 
@@ -425,9 +481,9 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
 
   if type(o) == "table" then
     if IsT(o) then
-      return oldTableConcat({"T{\"",ChoGGi.ComFuncs.Trans(o),"\"}"})
+      return Concat("T{\"",T(o),"\"}")
     else
-      local text = oldTableConcat({ObjectClass(o) or tostring(o),"(len:",#o,")"})
+      local text = Concat(ObjectClass(o) or tostring(o),"(len:",#o,")")
       return text
     end
   end
@@ -444,12 +500,12 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
     local text
     if type(v) == "table" then
       if v.class then
-        text = oldTableConcat({"<color 150 170 150>",self:CreateProp(k),"</color>"})
+        text = Concat("<color 150 170 150>",self:CreateProp(k),"</color>")
       else
-        text = oldTableConcat({"<color 150 170 250>",self:CreateProp(k),"</color>"})
+        text = Concat("<color 150 170 250>",self:CreateProp(k),"</color>")
       end
     elseif type(v) == "function" then
-      text = oldTableConcat({"<color 250 75 75>",self:CreateProp(k),"</color>"})
+      text = Concat("<color 250 75 75>",self:CreateProp(k),"</color>")
     else
       text = self:CreateProp(k)
     end
@@ -468,30 +524,6 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
         sort[res[#res]] = k
       end
     end
-  else
-    if type(o) == "thread" then
-      local info, level, _ = true, 0, nil
-      while true do
-        info = debug.getinfo(o, level, "Slfun")
-        if info then
-          res[#res+1] = {text = oldTableConcat({info.short_src,"(",info.currentline,") ",(info.name or info.name_what or ChoGGi.ComFuncs.Trans(302535920000063,"unknown name"))})}
-          level = level + 1
-          else
-            if type(o) == "function" then
-              local i = 1
-              while true do
-                local k, v = debug.getupvalue(o, i)
-                if k ~= nil then
-                  tableinsert(k,v,res)
-                  i = i + 1
-                  elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
-                    tableinsert(k,v,res)
-                  end
-                end
-              end
-          end
-        end
-      end
   end
 
   table.sort(res, function(a, b)
@@ -504,29 +536,28 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
     return CmpLower(a.sort, b.sort)
   end)
 
-  if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
-    local items = 1
-    for i = 1, #o do
-      if not (items >= self.page * 150) then
-        local format_text, e = self:filtersmarttable(o[i])
-        if format_text then
-          items = items + 1
-          if items >= (self.page - 1) * 150 then
-            local t = self:evalsmarttable(format_text, e)
-            if t then
-              if self.show_times ~= "relative" then
-                t = oldTableConcat({"<color 255 255 0>",tostring(e[1]),"</color>:",t})
-              else
-                t = oldTableConcat({"<color 255 255 0>",tostring(e[1] - GameTime()),"</color>:",t})
-              end
-              res[#res+1] = {text = oldTableConcat({t,"<vspace 8>"})}
-            end
-          end
-        end
-      end
-    end
-  end
+--~   if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
+--~     local items = 1
+--~     for i = 1, #o do
+--~       if not (items >= self.page * 150) then
+--~         local format_text, e = self:filtersmarttable(o[i])
+--~         if format_text then
+--~           items = items + 1
+--~           if items >= (self.page - 1) * 150 then
+--~             local t = self:evalsmarttable(format_text, e)
+--~             if t then
+--~               if self.show_times ~= "relative" then
+--~                 t = Concat("<color 255 255 0>",tostring(e[1]),"</color>:",t)
+--~               else
+--~                 t = Concat("<color 255 255 0>",tostring(e[1] - GameTime()),"</color>:",t)
+--~               end
+--~               res[#res+1] = {text = Concat(t,"<vspace 8>")}
+--~             end
+--~           end
+--~         end
+--~       end
+--~     end
+--~   end
 
   return res
-  --return Untranslated(oldTableConcat(res, "\n"))
 end

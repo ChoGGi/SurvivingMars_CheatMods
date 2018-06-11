@@ -1,47 +1,68 @@
 --See LICENSE for terms
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+local TConcat = ChoGGi.ComFuncs.TableConcat
+local T = ChoGGi.ComFuncs.Trans
+
+local pairs,type,tostring = pairs,type,tostring
+
+local Sleep = Sleep
+local CreateRealTimeThread = CreateRealTimeThread
+local OpenExamine = OpenExamine
+local point = point
+local RGBA = RGBA
+
+local g_Classes = g_Classes
 
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_MonitorInfoDlg_Defaults = {
-  __parents = {"FrameWindow"}
+DefineClass.ChoGGi_MonitorInfoDlg = {
+  __parents = {"FrameWindow"},
+  ZOrder = zorder,
+  --defaults
+  refreshing = false,
+  object = false,
+  values = false,
+  tables = false,
+  delay = 1000,
 }
 
-function ChoGGi_MonitorInfoDlg_Defaults:Init()
+function ChoGGi_MonitorInfoDlg:Init()
   local ChoGGi = ChoGGi
 
-  self:SetPos(point(100, 100))
-  self:SetSize(point(400, 600))
+  --element pos is based on
+  self:SetPos(point(0,0))
+
+  local dialog_width = 400
+  local dialog_height = 600
+  self:SetSize(point(dialog_width, dialog_height))
   self:SetMinSize(point(50, 50))
-  self:SetTranslate(false)
   self:SetMovable(true)
-  self:SetZOrder(zorder)
+  self:SetTranslate(false)
 
-  local Sleep = Sleep
-  local CreateRealTimeThread = CreateRealTimeThread
-  local terminal = terminal
-  local const = const
-  local OpenExamine = OpenExamine
+  local border = 4
+  local element_y
+  local element_x
+  dialog_width = dialog_width - border * 2
+  local dialog_left = border
 
-  self.refreshing = false
-  --defaults
-  self.object = false
-  self.values = false
-  self.tables = false
-  self.delay = 1000
-
-
-  ChoGGi.ComFuncs.DialogAddCaption(self,{pos = point(50, 101),size = point(390, 22)})
   ChoGGi.ComFuncs.DialogAddCloseX(self)
+  ChoGGi.ComFuncs.DialogAddCaption(self,{
+    prefix = Concat(T(302535920000555--[[Monitor Info--]]),": "),
+    pos = point(25, border),
+    size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
+  })
 
-  self.idAutoRefresh = CheckButton:new(self)
-  self.idAutoRefresh:SetPos(point(115, 128))
-  self.idAutoRefresh:SetSize(point(100, 17))
+  element_y = border / 2 + self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
+
+  local title = T(302535920000084--[[Auto-Refresh--]])
+  self.idAutoRefresh = g_Classes.CheckButton:new(self)
+  self.idAutoRefresh:SetPos(point(dialog_left, element_y))
+  self.idAutoRefresh:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idAutoRefresh:SetText(ChoGGi.ComFuncs.Trans(302535920000084,"Auto-Refresh"))
-  self.idAutoRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000085,"Auto-refresh list every \"Amount\"."))
+  self.idAutoRefresh:SetText(title)
+  self.idAutoRefresh:SetHint(T(302535920000085--[[Auto-refresh list every \"Amount\".--]]))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   local children = self.idAutoRefresh.children
@@ -70,11 +91,15 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
     end
   end
 
-  self.idRefresh = Button:new(self)
-  self.idRefresh:SetPos(point(225, 128))
-  self.idRefresh:SetSize(point(55, 17))
-  self.idRefresh:SetText(ChoGGi.ComFuncs.Trans(1000220,"Refresh"))
-  self.idRefresh:SetHint(ChoGGi.ComFuncs.Trans(302535920000086,"Manually refresh the list."))
+
+  element_x = border * 2 + self.idAutoRefresh:GetPos():x() + self.idAutoRefresh:GetSize():x()
+
+  title = T(1000220--[[Refresh--]])
+  self.idRefresh = g_Classes.Button:new(self)
+  self.idRefresh:SetPos(point(element_x, element_y))
+  self.idRefresh:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idRefresh:SetText(title)
+  self.idRefresh:SetHint(T(302535920000086--[[Manually refresh the list.--]]))
   function self.idRefresh.OnButtonPressed()
     if ChoGGi.Temp.Testing then
       OpenExamine(self.object)
@@ -82,14 +107,16 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
     self:UpdateText()
   end
 
-  self.idTimerAmount = SingleLineEdit:new(self)
-  self.idTimerAmount:SetPos(point(290, 126))
-  self.idTimerAmount:SetSize(point(200, 24))
+  element_x = border * 2 + self.idRefresh:GetPos():x() + self.idRefresh:GetSize():x()
+
+  self.idTimerAmount = g_Classes.SingleLineEdit:new(self)
+  self.idTimerAmount:SetPos(point(element_x, element_y))
+  self.idTimerAmount:SetSize(point(dialog_width - element_x, 24))
   self.idTimerAmount:SetHSizing("Resize")
   self.idTimerAmount:SetVSizing("AnchorToTop")
   self.idTimerAmount:SetFontStyle("Editor14Bold")
   self.idTimerAmount:SetText("1000")
-  self.idTimerAmount:SetHint(ChoGGi.ComFuncs.Trans(302535920000087,"Refresh delay in ms"))
+  self.idTimerAmount:SetHint(T(302535920000087--[[Refresh delay in ms--]]))
   self.idTimerAmount:SetTextVAlign("center")
   self.idTimerAmount:SetMaxLen(-1)
   function self.idTimerAmount.OnValueChanged()
@@ -99,18 +126,20 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
     end
   end
 
-  self.idText = StaticText:new(self)
-  self.idText:SetPos(point(110, 152))
-  self.idText:SetSize(point(385, 537))
+  element_y = border + self.idRefresh:GetPos():y() + self.idRefresh:GetSize():y()
+
+  self.idText = g_Classes.StaticText:new(self)
+  self.idText:SetPos(point(dialog_left, element_y))
+  self.idText:SetSize(point(dialog_width, dialog_height-element_y - border))
   self.idText:SetHSizing("Resize")
   self.idText:SetVSizing("Resize")
   self.idText:SetFontStyle("Editor12Bold")
-  self.idText:SetHint(ChoGGi.ComFuncs.Trans(302535920000088,"Double right-click to open list of objects."))
+  self.idText:SetHint(T(302535920000088--[[Double right-click to open list of objects.--]]))
   self.idText:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idText:SetScrollBar(true)
   self.idText:SetScrollAutohide(true)
   function self.idText.OnRButtonDoubleClick()
-    ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(self.tables)
+    OpenExamine(self.tables,true)
   end
 
   --so elements move when dialog re-sizes
@@ -120,18 +149,10 @@ function ChoGGi_MonitorInfoDlg_Defaults:Init()
   self:SetSize(point(400, 600))
 end
 
-DefineClass.ChoGGi_MonitorInfoDlg = {
-  __parents = {
-    "ChoGGi_MonitorInfoDlg_Defaults",
-  },
-  ZOrder = zorder
-}
-
 local texttable
 local text
 local monitort
 local name
-local kind
 function ChoGGi_MonitorInfoDlg:UpdateText()
   --check for scroll pos
   local scrollpos = self.idText.scroll:GetPosition()
@@ -159,7 +180,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 
             if self.values[Key] then
               for j = 1, #self.values do
-                local v = self.values[i]
+                local v = self.values[j]
                 --name = monitort[SecName.name]
                 texttable[#texttable+1] = "\t"
                 texttable[#texttable+1] = v.name
@@ -175,7 +196,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 
         end
       else
-        for Key,Value in pairs(self.values) do
+        for _,Value in pairs(self.values) do
           name = monitort[Value.name]
           if name or type(name) == "boolean" then
             texttable[#texttable+1] = Value.name
@@ -185,15 +206,15 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
       end --for
     end --if
   else
-    texttable[#texttable+1] = ChoGGi.ComFuncs.Trans(302535920000089,"Nothing left")
+    texttable[#texttable+1] = T(302535920000089--[[Nothing left--]])
   end --if #self.tables > 0
 
   texttable[#texttable+1] = "\n"
-  --less .. is better
-  text = oldTableConcat(texttable)
+
+  text = TConcat(texttable)
 
   if text == "" then
-    self.idText:SetText(oldTableConcat({ChoGGi.ComFuncs.Trans(302535920000090,"Error opening"),tostring(self.object)}))
+    self.idText:SetText(Concat(T(302535920000090--[[Error opening--]]),tostring(self.object)))
     return
   end
   --populate it

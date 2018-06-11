@@ -1,11 +1,85 @@
 --See LICENSE for terms
 
-function ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
-  --simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, also some local vars)
-  DefineClass.ChoGGi_CursorBuilding = {
-    __parents = {"CObject"},
-    entity = "GridTile"
-  }
+--simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local)
+DefineClass.ChoGGi_CursorBuilding = {
+  __parents = {"CObject"},
+  entity = "GridTile"
+}
+
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+
+local pairs,pcall,print,type,tonumber,tostring = pairs,pcall,print,type,tonumber,tostring
+
+local string,table = string,table
+local string_find = string.find
+local string_format = string.format
+local string_lower = string.lower
+local table_change = table.change
+local table_find = table.find
+local table_remove = table.remove
+local table_restore = table.restore
+
+local ClassDescendantsList = ClassDescendantsList
+local CloseMenuDialogs = CloseMenuDialogs
+local CreateGameTimeThread = CreateGameTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
+local DeleteThread = DeleteThread
+local DoneObject = DoneObject
+local EditorState = EditorState
+local FillRandomMapProps = FillRandomMapProps
+local GenerateRandomMapParams = GenerateRandomMapParams
+local GenerateRocketCargo = GenerateRocketCargo
+local GetCamera = GetCamera
+local GetEditorInterface = GetEditorInterface
+local GetMapName = GetMapName
+local GetModifiedProperties = GetModifiedProperties
+local GetObjects = GetObjects
+local GetTerrainCursor = GetTerrainCursor
+local HexGridGetObject = HexGridGetObject
+local HexToWorld = HexToWorld
+local InitNewGameMissionParams = InitNewGameMissionParams
+local IsEditorActive = IsEditorActive
+local IsValid = IsValid
+local ListMaps = ListMaps
+local LoadStreamParticlesFromDir = LoadStreamParticlesFromDir
+local ObjModified = ObjModified
+local OpenExamine = OpenExamine
+local ParticlesReload = ParticlesReload
+local PlaceObj = PlaceObj
+local PlaceObject = PlaceObject
+local PlaceTerrainLine = PlaceTerrainLine
+local PlaceText = PlaceText
+local point = point
+local Random = Random
+local ReloadClassEntities = ReloadClassEntities
+local ReloadLua = ReloadLua
+local SaveLocalStorage = SaveLocalStorage
+local SelectionArrowAdd = SelectionArrowAdd
+local ShowConsoleLog = ShowConsoleLog
+local Sleep = Sleep
+local WaitDelayedLoadEntities = WaitDelayedLoadEntities
+local WaitMapSettingsDialog = WaitMapSettingsDialog
+local WaitNextFrame = WaitNextFrame
+local WorldToHex = WorldToHex
+local XShortcutsSetMode = XShortcutsSetMode
+
+local guic = guic
+local white = white
+
+local terminal_GetMousePos = terminal.GetMousePos
+local UIL_GetFontID = UIL.GetFontID
+local camera_IsLocked = camera.IsLocked
+local camera_Unlock = camera.Unlock
+local terrain_IsSCell = terrain.IsSCell
+local terrain_IsPassable = terrain.IsPassable
+local terrain_GetHeight = terrain.GetHeight
+
+local g_Classes = g_Classes
+
+function ChoGGi.MenuFuncs.ParticlesReload()
+  LoadStreamParticlesFromDir("Data/Particles")
+  ParticlesReload("", true)
 end
 
 function ChoGGi.MenuFuncs.AttachSpots_Toggle()
@@ -25,7 +99,7 @@ end
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true
-    MeasureTool.OnLButtonDown(GetTerrainCursor())
+    g_Classes.MeasureTool.OnLButtonDown(GetTerrainCursor())
   else
     DoneObject(MeasureTool.object)
     MeasureTool.enabled = false
@@ -36,7 +110,7 @@ function ChoGGi.MenuFuncs.ReloadLua()
   ReloadLua()
   WaitDelayedLoadEntities()
   ReloadClassEntities()
-  print(ChoGGi.ComFuncs.Trans(302535920000850,"Reload lua done"))
+  print(T(302535920000850--[[Reload lua done--]]))
 end
 
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
@@ -45,28 +119,30 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   if s and not s.class then
     s = ChoGGi.CodeFuncs.SelObject()
   end
-  local name = ChoGGi.CodeFuncs.RetName(s)
+  local name = ChoGGi.ComFuncs.RetName(s)
   if not name then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(6774,"Error") .. ": " .. tostring(s) .. ChoGGi.ComFuncs.Trans(302535920000851,"isn't an object?\nSounds like a broked save; send me the file and I'll take a look") .. ": " .. ChoGGi.email,
-      ChoGGi.ComFuncs.Trans(6774,"Error"),nil,true
+    ChoGGi.ComFuncs.MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(s),T(302535920000851--[[isn't an object?\nSounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
+      T(6774--[[Error--]]),nil,true
     )
     return
   end
 
   local objs = GetObjects({class=s.class})
-  local CallBackFunc = function()
-    CreateRealTimeThread(function()
-      for i = 1, #objs do
-        ChoGGi.CodeFuncs.DeleteObject(objs[i])
-      end
-    end)
+  local function CallBackFunc(answer)
+    if answer then
+      CreateRealTimeThread(function()
+        for i = 1, #objs do
+          ChoGGi.CodeFuncs.DeleteObject(objs[i])
+        end
+      end)
+    end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    ChoGGi.ComFuncs.Trans(302535920000852,"Warning!\nThis will delete all") .. " " .. #objs .. " " .. ChoGGi.ComFuncs.Trans(302535920000853,"of") .. " " .. name .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000854,"Takes about thirty seconds for 12 000 objects."),
+    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000852--[[This will delete all--]])," ",#objs," ",T(302535920000853--[[of--]])," ",name,"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
     CallBackFunc,
-    ChoGGi.ComFuncs.Trans(302535920000855,"Warning: Last chance before deletion!"),
-    ChoGGi.ComFuncs.Trans(302535920000856,"Yes, I want to delete all") .. ": " .. name,
-    ChoGGi.ComFuncs.Trans(302535920000857,"No, I need to backup my save first (like I should've done before clicking something called 'Delete All').")
+    Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
+    Concat(T(302535920000856--[[Yes, I want to delete all--]]),": ",name),
+    T(302535920000857--[[No, I need to backup my save first (like I should've done before clicking something called 'Delete All').--]])
   )
 end
 
@@ -111,14 +187,14 @@ local function AnimDebug_Show(Obj,Colour)
   local text = PlaceObject("Text")
   text:SetDepthTest(true)
   text:SetColor(Colour or ChoGGi.CodeFuncs.RandomColour())
-  text:SetFontId(UIL.GetFontID("droid, 14, bold"))
+  text:SetFontId(UIL_GetFontID("droid, 14, bold"))
 
   text.ChoGGi_AnimDebug = true
   Obj:Attach(text)
   text:SetAttachOffset(point(0,0,Obj:GetObjectBBox():sizez() + 100))
   CreateGameTimeThread(function()
     while IsValid(text) do
-      text:SetText(string.format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
+      text:SetText(string_format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
       WaitNextFrame()
     end
   end)
@@ -141,7 +217,6 @@ local function AnimDebug_Hide(Obj)
 end
 
 local function AnimDebug_HideAll(Class)
-  local DoneObject = DoneObject
   local empty_table = empty_table
   local objs = GetObjects({class = Class}) or empty_table
   for i = 1, #objs do
@@ -183,32 +258,31 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
   for Key,State in pairs(Table) do
     ItemList[#ItemList+1] = {
-      text = ChoGGi.ComFuncs.Trans(1000037,"Name") .. ": " .. State .. " " .. ChoGGi.ComFuncs.Trans(302535920000858,"Idx") .. ": " .. Key,
+      text = Concat(T(1000037--[[Name--]]),": ",State," ",T(302535920000858--[[Idx--]]),": ",Key),
       value = State,
     }
   end
 
   local CallBackFunc = function(choice)
     sel:SetStateText(choice[1].value)
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(3722,"State") .. ": " .. choice[1].text,
-      ChoGGi.ComFuncs.Trans(302535920000859,"Anim State")
+    ChoGGi.ComFuncs.MsgPopup(Concat(T(3722--[[State--]]),": ",choice[1].text),
+      T(302535920000859--[[Anim State--]])
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000860,"Set Anim State"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000861,"Current State") .. ": " .. sel:GetState(),
+    title = T(302535920000860--[[Set Anim State--]]),
+    hint = Concat(T(302535920000861--[[Current State--]]),": ",sel:GetState()),
   })
 end
 
 --no sense in building the list more then once (it's a big list)
 local ObjectSpawner_ItemList = {}
 function ChoGGi.MenuFuncs.ObjectSpawner()
-  --if #ObjectSpawner_ItemList == 0 then
-  if not next(ObjectSpawner_ItemList) then
-    --for Key,_ in pairs(g_Classes) do
+  local EntityData = EntityData
+  if #ObjectSpawner_ItemList == 0 then
     for Key,_ in pairs(EntityData) do
       ObjectSpawner_ItemList[#ObjectSpawner_ItemList+1] = {
         text = Key,
@@ -242,15 +316,17 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
       --]]
 
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000014,"Spawned") .. ": " .. choice[1].text,ChoGGi.ComFuncs.Trans(298035641454,"Object"))
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
+        T(302535920000014--[[Spawned--]])
+      )
     end
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ObjectSpawner_ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000862,"Object Spawner (EntityData list)"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000863,"Warning: Objects are unselectable with mouse cursor (hover mouse over and use Delete Selected Object)."),
+    title = T(302535920000862--[[Object Spawner (EntityData list)--]]),
+    hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]])),
   })
 end
 
@@ -264,11 +340,11 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
     end
   end
   --open a new copy
-  local dlg = ObjectsStatsDlg:new()
+  local dlg = g_Classes.ObjectsStatsDlg:new()
   if not dlg then
     return
   end
-  dlg:SetPos(terminal.GetMousePos())
+  dlg:SetPos(terminal_GetMousePos())
 
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
@@ -278,8 +354,8 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000864,"Write debug/console logs") .. ": " .. tostring(ChoGGi.UserSettings.WriteLogs),
-    ChoGGi.ComFuncs.Trans(1000113,"Debug"),"UI/Icons/Anomaly_Breakthrough.tga"
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000864--[[Write debug/console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
+    T(1000113--[[Debug--]]),"UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
 
@@ -287,14 +363,13 @@ function ChoGGi.MenuFuncs.ObjExaminer()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
     return
-    --return ClearShowMe()
   end
-  --OpenExamine(SelectedObj)
-  --open and move to where the cursor is
-  ChoGGi.ComFuncs.OpenExamineAtExPosOrMouse(sel)
+  --open examine at the object
+  OpenExamine(sel,sel)
 end
 
 function ChoGGi.MenuFuncs.Editor_Toggle()
+  local Platform = Platform
   Platform.editor = true
   Platform.developer = true
 
@@ -306,13 +381,13 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
 
   if IsEditorActive() then
     EditorState(0)
-    table.restore(hr, "Editor")
+    table_restore(hr, "Editor")
     editor.SavedDynRes = false
     XShortcutsSetMode("Game")
     Platform.editor = false
     Platform.developer = false
   else
-    table.change(hr, "Editor", {
+    table_change(hr, "Editor", {
       ResolutionPercent = 100,
       SceneWidth = 0,
       SceneHeight = 0,
@@ -327,8 +402,8 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     editor.OldCameraType = {
       GetCamera()
     }
-    editor.CameraWasLocked = camera.IsLocked(1)
-    camera.Unlock(1)
+    editor.CameraWasLocked = camera_IsLocked(1)
+    camera_Unlock(1)
 
     GetEditorInterface():SetVisible(true)
     GetEditorInterface():ShowSidebar(true)
@@ -336,7 +411,7 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     --GetEditorInterface():SetMinimapVisible(true)
     --CreateEditorPlaceObjectsDlg()
     if showmenu then
-      UAMenu.ToggleOpen()
+      g_Classes.UAMenu.ToggleOpen()
     end
   end
 
@@ -347,8 +422,8 @@ function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
   ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ConsoleToggleHistory) .. ChoGGi.ComFuncs.Trans(302535920000865,": Those who cannot remember the past are condemned to repeat it."),
-    ChoGGi.ComFuncs.Trans(1000113,"Debug"),"UI/Icons/Sections/workshifts.tga"
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.ConsoleToggleHistory),T(302535920000865--[[: Those who cannot remember the past are condemned to repeat it.--]])),
+    T(1000113--[[Debug--]]),"UI/Icons/Sections/workshifts.tga"
   )
 end
 
@@ -357,10 +432,10 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
   --open a list dialog to set g_CurrentMissionParams
   local ItemList = {
-    {text = ChoGGi.ComFuncs.Trans(3474,"Mission Sponsor"),value = "IMM"},
-    {text = ChoGGi.ComFuncs.Trans(3478,"Commander Profile"),value = "rocketscientist"},
-    {text = ChoGGi.ComFuncs.Trans(3486,"Mystery"),value = "random"},
-    {text = ChoGGi.ComFuncs.Trans(8800,"Game Rules"),value = ""},
+    {text = T(3474--[[Mission Sponsor--]]),value = "IMM"},
+    {text = T(3478--[[Commander Profile--]]),value = "rocketscientist"},
+    {text = T(3486--[[Mystery--]]),value = "random"},
+    {text = T(8800--[[Game Rules--]]),value = ""},
   }
 
   local CallBackFunc = function(choice)
@@ -371,13 +446,13 @@ function ChoGGi.MenuFuncs.ChangeMap()
       local text = choice[i].text
       local value = choice[i].value
 
-      if text == ChoGGi.ComFuncs.Trans(3474,"Mission Sponsor") then
+      if text == T(3474--[[Mission Sponsor--]]) then
         NewMissionParams.idMissionSponsor = value
-      elseif text == ChoGGi.ComFuncs.Trans(3478,"Commander Profile") then
+      elseif text == T(3478--[[Commander Profile--]]) then
         NewMissionParams.idCommanderProfile = value
-      elseif text == ChoGGi.ComFuncs.Trans(3486,"Mystery") then
+      elseif text == T(3486--[[Mystery--]]) then
         NewMissionParams.idMystery = value
-      elseif text == ChoGGi.ComFuncs.Trans(8800,"Game Rules") then
+      elseif text == T(8800--[[Game Rules--]]) then
         NewMissionParams.idGameRules = {}
         if value:find(" ") then
           for i in value:gmatch("%S+") do
@@ -393,8 +468,8 @@ function ChoGGi.MenuFuncs.ChangeMap()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000866,"Set MissionParams NewMap"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000867,"Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none)."),
+    title = T(302535920000866--[[Set MissionParams NewMap--]]),
+    hint = T(302535920000867--[[Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none).--]]),
     custom_type = 4,
   })
 
@@ -403,29 +478,31 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
   --map list dialog
   CreateRealTimeThread(function()
-    local caption = ChoGGi.ComFuncs.Trans(302535920000868,"Choose map with settings presets:")
+    local caption = T(302535920000868--[[Choose map with settings presets:--]])
     local maps = ListMaps()
     local items = {}
     for i = 1, #maps do
-      if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
+      if not string_find(string_lower(maps[i]), "^prefab") and not string_find(maps[i], "^__") then
         items[#items+1] = {
-          text = Untranslated(maps[i]),
+--~           text = Untranslated(maps[i]),
+          text = maps[i],
           map = maps[i]
         }
       end
     end
 
-    local default_selection = table.find(maps, GetMapName())
+    local default_selection = table_find(maps, GetMapName())
     local map_settings = {}
+    local mapdata = mapdata
     local class_names = ClassDescendantsList("MapSettings")
     for i = 1, #class_names do
-      local class = class_names[i]
-      map_settings[class] = mapdata[class]
+      map_settings[class_names[i]] = mapdata[class_names[i]]
     end
 
     local sel_idx
     sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
     if sel_idx ~= "idCancel" then
+      local g_CurrentMissionParams = g_CurrentMissionParams
       local map = sel_idx and items[sel_idx].map
       if not map or map == "" then
         return
@@ -439,8 +516,8 @@ function ChoGGi.MenuFuncs.ChangeMap()
       g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
       g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
       g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
-      g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or {}
-      g_CurrentMissionParams.GameSessionID = srp.random_encode64(96)
+      g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or empty_table
+      g_CurrentMissionParams.GameSessionID = g_Classes.srp.random_encode64(96)
 
       --items in spawn rocket
       GenerateRocketCargo()
@@ -450,7 +527,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
       --and change the map
       local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
-      local gen = RandomMapGenerator:new()
+      local gen = g_Classes.RandomMapGenerator:new()
       gen:SetProperties(props)
       FillRandomMapProps(gen)
       gen.BlankMap = map
@@ -472,19 +549,7 @@ do --hex rings
   local build_grid_debug_thread = false
 
   function ChoGGi.MenuFuncs.debug_build_grid(iType)
-    --local everything for speed
-    local CreateRealTimeThread = CreateRealTimeThread
-    local Sleep = Sleep
-    local HexGridGetObject = HexGridGetObject
-    local HexToWorld = HexToWorld
-    local WorldToHex = WorldToHex
     local ObjectGrid = ObjectGrid
-    local GetTerrainCursor = GetTerrainCursor
-    local terrain = terrain
-    local DoneObject = DoneObject
-    local DeleteThread = DeleteThread
-
-    local ChoGGi_CursorBuilding = ChoGGi_CursorBuilding
     local UserSettings = ChoGGi.UserSettings
     if type(UserSettings.DebugGridSize) == "number" then
       build_grid_debug_range = UserSettings.DebugGridSize
@@ -526,10 +591,10 @@ do --hex rings
                 for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
                   if q_i + r_i + z_i == 0 then
                     --CursorBuilding is from construct controller, but it works nicely along with GridTile for filling each grid
-                    local c = build_grid_debug_objs[idx] or ChoGGi_CursorBuilding:new()
+                    local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_CursorBuilding:new()
                     --both
                     if iType == 1 then
-                      if (terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+                      if (terrain_IsSCell(HexToWorld(q_i, r_i)) or terrain_IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
                         --green
                         c:SetColorModifier(-16711936)
                       else
@@ -538,7 +603,7 @@ do --hex rings
                       end
                     --passable
                     elseif iType == 2 then
-                      if terrain.IsSCell(HexToWorld(q_i, r_i)) or terrain.IsPassable(HexToWorld(q_i, r_i)) then
+                      if terrain_IsSCell(HexToWorld(q_i, r_i)) or terrain_IsPassable(HexToWorld(q_i, r_i)) then
                         --green
                         c:SetColorModifier(-16711936)
                       else
@@ -585,13 +650,6 @@ do --path markers
   --default height of waypoints
   local flag_height = 50
   local function ShowWaypoints(waypoints, colour, Obj, single, skipflags, skipheight, skiptext, skipstart)
-    local Random = Random
-    local PlaceTerrainLine = PlaceTerrainLine
-    local PlaceText = PlaceText
-    local PlaceObject = PlaceObject
-    local UICity = UICity
-    local terrain = terrain
-
     colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
     --also used for line height
     if not skipheight then
@@ -599,7 +657,7 @@ do --path markers
     end
     local height = flag_height
     local Objpos = Obj:GetVisualPos()
-    local Objterr = terrain.GetHeight(Objpos)
+    local Objterr = terrain_GetHeight(Objpos)
     local Objheight = Obj:GetObjectBBox():sizez() / 2
     local shuttle
     if Obj.class == "CargoShuttle" then
@@ -638,7 +696,7 @@ do --path markers
     Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = sphereend
     local w = waypoints[1]
     sphereend:SetPos(w)
-    sphereend:SetZ(((w:z() or terrain.GetHeight(w)) + 10 * guic) + sphereheight)
+    sphereend:SetZ(((w:z() or terrain_GetHeight(w)) + 10 * guic) + sphereheight)
     sphereend:SetDepthTest(true)
     sphereend:SetColor(colour)
     sphereend:SetRadius(25)
@@ -648,7 +706,7 @@ do --path markers
     for i = 1, #waypoints do
       local w = waypoints[i]
       local wpn = waypoints[i+1]
-      local pos = w:SetZ((w:z() or terrain.GetHeight(w)) + 10 * guic)
+      local pos = w:SetZ((w:z() or terrain_GetHeight(w)) + 10 * guic)
       pos = point(pos:x(),pos:y(),shuttle or pos:z())
 
       if skipflags ~= true then
@@ -673,13 +731,13 @@ do --path markers
 
       --add text to last wp
       if i == 1 and not skiptext then
-        local endwp = PlaceText(Obj.class .. ": " .. Obj.handle, pos)
+        local endwp = PlaceText(Concat(Obj.class,": ",Obj.handle), pos)
         Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = endwp
         endwp:SetColor(colour)
         --endp:SetColor2()
         endwp:SetZ(endwp:GetZ() + 250 + height)
         --endp:SetShadowOffset(3)
-        endwp:SetFontId(UIL.GetFontID("droid, 14, bold"))
+        endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
       end
 
       if wpn then
@@ -696,7 +754,7 @@ do --path markers
     end
 
     --if #Obj.ChoGGi_Stored_Waypoints > 150 then
-    --  print(ChoGGi.ComFuncs.Trans(Obj.display_name or Obj.class) .. " (handle: " .. Obj.handle .. ") has over 150 waypoints.")
+    --  print(Concat(ChoGGi.ComFuncs.RetName(Obj)," (handle: ",Obj.handle,") has over 150 waypoints."))
     --end
   end --end of ShowWaypoints
 
@@ -731,7 +789,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print(ChoGGi.ComFuncs.Trans(302535920000869,"Warning: This") .. " " .. Obj and ChoGGi.CodeFuncs.RetName(Obj) .. " " .. ChoGGi.ComFuncs.Trans(302535920000870,"doesn't have GetPath function, something is probably borked."))
+        print(Concat(T(6779--[[Warning--]]),": ",T(302535920000869--[[This--]])," ",Obj and ChoGGi.ComFuncs.RetName(Obj)," ",T(302535920000870--[[doesn't have GetPath function, something is probably borked.--]])))
       end
     end
     if path then
@@ -747,7 +805,7 @@ do --path markers
             colour = randomcolour
           else
             --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-            colour = table.remove(randcolours)
+            colour = table_remove(randcolours)
           end
         end
       end
@@ -806,11 +864,11 @@ do --path markers
           end
           local sleepidx = 0
           --stick a flag over the follower
-          --local endwp = PlaceText(Obj.class .. ": " .. Obj.handle, Obj:GetPos())
+          --local endwp = PlaceText(Concat(Obj.class,": ",Obj.handle), Obj:GetPos())
           --endwp:SetColor(colour)
           --endwp:Attach(Obj)
           --endwp:SetAttachOffset(point(0,0,500))
-          --endwp:SetFontId(UIL.GetFontID("droid, 14, bold"))
+          --endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
           repeat
             --shuttles don't have paths
             if Obj.class ~= "CargoShuttle" and not Obj:GetPath() then
@@ -842,7 +900,7 @@ do --path markers
 
       end
     else
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000871,"Select a moving object to see path."),ChoGGi.ComFuncs.Trans(302535920000872,"Pathing"))
+      ChoGGi.ComFuncs.MsgPopup(T(302535920000871--[[Select a moving object to see path.--]]),T(302535920000872--[[Pathing--]]))
     end
   end
 
@@ -866,7 +924,7 @@ do --path markers
       --remove removed
       for i = #Obj.ChoGGi_Stored_Waypoints, 1, -1 do
         if not IsValid(Obj.ChoGGi_Stored_Waypoints[i]) then
-          table.remove(Obj.ChoGGi_Stored_Waypoints,i)
+          table_remove(Obj.ChoGGi_Stored_Waypoints,i)
         end
       end
     end
@@ -874,9 +932,6 @@ do --path markers
 
   local function ClearColourAndWP(Class)
     local ChoGGi = ChoGGi
-    local DeleteThread = DeleteThread
-    local IsValid = IsValid
-    local DoneObject = DoneObject
     --remove all thread refs so they stop
     ChoGGi.Temp.UnitPathingHandles = {}
     --ChoGGi.Temp.UnitPathingHandles = {}
@@ -901,8 +956,6 @@ do --path markers
 
   function ChoGGi.MenuFuncs.SetPathMarkersVisible()
     local ChoGGi = ChoGGi
-    local GetObjects = GetObjects
-    local IsValid = IsValid
     local Obj = SelectedObj
     if Obj then
       randcolours = ChoGGi.CodeFuncs.RandomColour(#randcolours + 1)
@@ -911,11 +964,11 @@ do --path markers
     end
 
     local ItemList = {
-      {text = ChoGGi.ComFuncs.Trans(4493,"All"),value = "All"},
-      {text = ChoGGi.ComFuncs.Trans(547,"Colonists"),value = "Colonist"},
-      {text = ChoGGi.ComFuncs.Trans(517,"Drones"),value = "Drone"},
-      {text = ChoGGi.ComFuncs.Trans(5438,"Rovers"),value = "BaseRover"},
-      {text = ChoGGi.ComFuncs.Trans(745,"Shuttles"),value = "CargoShuttle",hint = ChoGGi.ComFuncs.Trans(302535920000873,"Doesn't work that well.")},
+      {text = T(4493--[[All--]]),value = "All"},
+      {text = T(547--[[Colonists--]]),value = "Colonist"},
+      {text = T(517--[[Drones--]]),value = "Drone"},
+      {text = T(5438--[[Rovers--]]),value = "BaseRover"},
+      {text = T(745--[[Shuttles--]]),value = "CargoShuttle",hint = T(302535920000873--[[Doesn't work that well.--]])},
     }
 
     local CallBackFunc = function(choice)
@@ -974,12 +1027,12 @@ do --path markers
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = ChoGGi.ComFuncs.Trans(302535920000874,"Set Visible Path Markers"),
-      hint = ChoGGi.ComFuncs.Trans(302535920000875,"Use HandleToObject[handle] to get object handle"),
-      check1 = ChoGGi.ComFuncs.Trans(302535920000876,"Remove Waypoints"),
-      check1_hint = ChoGGi.ComFuncs.Trans(302535920000877,"Remove waypoints from the map and reset colours (You need to select any object)."),
-      check2 = ChoGGi.ComFuncs.Trans(302535920000878,"Skip Flags"),
-      check2_hint = ChoGGi.ComFuncs.Trans(302535920000879,"Doesn't add the little flags, just lines and spheres (good for larger maps)."),
+      title = T(302535920000874--[[Set Visible Path Markers--]]),
+      hint = T(302535920000875--[[Use HandleToObject[handle] to get object handle--]]),
+      check1 = T(302535920000876--[[Remove Waypoints--]]),
+      check1_hint = T(302535920000877--[[Remove waypoints from the map and reset colours (You need to select any object).--]]),
+      check2 = T(302535920000878--[[Skip Flags--]]),
+      check2_hint = T(302535920000879--[[Doesn't add the little flags, just lines and spheres (good for larger maps).--]]),
     })
   end
 end

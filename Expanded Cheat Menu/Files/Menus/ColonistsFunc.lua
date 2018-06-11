@@ -1,11 +1,29 @@
 --See LICENSE for terms
 
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
+
+local tostring,type,pairs,table = tostring,type,pairs,table
+
+local Random = Random
+local GetRandomTrait = GetRandomTrait
+local GenerateApplicant = GenerateApplicant
+local GenerateTraits = GenerateTraits
+local Notify = Notify
+local GameTime = GameTime
+local Msg = Msg
+local Sleep = Sleep
+local GetObjects = GetObjects
+local CreateRealTimeThread = CreateRealTimeThread
+local PlaceResourcePile = PlaceResourcePile
 
 function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.NoMoreEarthsick = not ChoGGi.UserSettings.NoMoreEarthsick
   if ChoGGi.UserSettings.NoMoreEarthsick then
+    ChoGGi.UserSettings.NoMoreEarthsick = nil
+  else
+    ChoGGi.UserSettings.NoMoreEarthsick = true
     local Table = UICity.labels.Colonist or empty_table
     for i = 1, #Table do
       if Table[i].status_effects.StatusEffect_Earthsick then
@@ -16,8 +34,8 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(
-    tostring(ChoGGi.UserSettings.NoMoreEarthsick) .. ChoGGi.ComFuncs.Trans(302535920000736,": Whoops somebody broke the rocket, guess you're stuck on mars."),
-    ChoGGi.ComFuncs.Trans(547,"Colonists")
+    Concat(tostring(ChoGGi.UserSettings.NoMoreEarthsick),T(302535920000736--[[: Whoops somebody broke the rocket, guess you're stuck on mars.--]])),
+    T(547--[[Colonists--]])
   )
 end
 
@@ -26,19 +44,16 @@ function ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(
-    tostring(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait) .. ChoGGi.ComFuncs.Trans(302535920000737,"Water? Like out of the toilet?"),
-    ChoGGi.ComFuncs.Trans(6652,"Idiot")
+    Concat(tostring(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait),T(302535920000737--[[Water? Like out of the toilet?--]])),
+    T(6652--[[Idiot--]])
   )
 end
 
-DeathReasons.ChoGGi_Soylent = ChoGGi.ComFuncs.Trans(302535920000738,"Evil Overlord")
+DeathReasons.ChoGGi_Soylent = T(302535920000738--[[Evil Overlord--]])
 NaturalDeathReasons.ChoGGi_Soylent = true
 function ChoGGi.MenuFuncs.TheSoylentOption()
   local UICity = UICity
   local ChoGGi = ChoGGi
-  local DoneObject = DoneObject
-  local CreateRealTimeThread = CreateRealTimeThread
-  local Random = Random
 
   --don't drop BlackCube/MysteryResource
   local reslist = {}
@@ -85,25 +100,25 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
   --culling the herd
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(7553,"Homeless"),value = "Homeless"},
-    {text = " " .. ChoGGi.ComFuncs.Trans(6859,"Unemployed"),value = "Unemployed"},
-    {text = " " .. ChoGGi.ComFuncs.Trans(7031,"Renegades"),value = "Renegade"},
-    {text = ChoGGi.ComFuncs.Trans(240,"Specialization") .. ": " .. ChoGGi.ComFuncs.Trans(6761,"None"),value = "none"},
+    {text = Concat(" ",T(7553--[[Homeless--]])),value = "Homeless"},
+    {text = Concat(" ",T(6859--[[Unemployed--]])),value = "Unemployed"},
+    {text = Concat(" ",T(7031--[[Renegades--]])),value = "Renegade"},
+    {text = Concat(T(240--[[Specialization--]]),": ",T(6761--[[None--]])),value = "none"},
   }
   local function AddToList(Table,Text)
     for i = 1, #Table do
       ItemList[#ItemList+1] = {
-        text = oldTableConcat({Text,Table[i]}),
+        text = Concat(Text,Table[i]),
         value = Table[i],
         idx = i,
       }
     end
   end
-  AddToList(ChoGGi.Tables.ColonistAges,ChoGGi.ComFuncs.Trans(987289847467,"Age Groups") .. ": ")
-  AddToList(ChoGGi.Tables.ColonistBirthplaces,ChoGGi.ComFuncs.Trans(302535920000739,"Birthplace") .. ": ")
-  AddToList(ChoGGi.Tables.ColonistGenders,ChoGGi.ComFuncs.Trans(302535920000740,"Gender") .. ": ")
-  AddToList(ChoGGi.Tables.ColonistRaces,ChoGGi.ComFuncs.Trans(302535920000741,"Race") .. ": ")
-  AddToList(ChoGGi.Tables.ColonistSpecializations,ChoGGi.ComFuncs.Trans(240,"Specialization") .. ": ")
+  AddToList(ChoGGi.Tables.ColonistAges,Concat(T(987289847467--[[Age Groups--]]),": "))
+  AddToList(ChoGGi.Tables.ColonistBirthplaces,Concat(T(302535920000739--[[Birthplace--]]),": "))
+  AddToList(ChoGGi.Tables.ColonistGenders,Concat(T(302535920000740--[[Gender--]]),": "))
+  AddToList(ChoGGi.Tables.ColonistRaces,Concat(T(302535920000741--[[Race--]]),": "))
+  AddToList(ChoGGi.Tables.ColonistSpecializations,Concat(T(240--[[Specialization--]]),": "))
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
@@ -177,8 +192,8 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     if value == "Child" then
       --wonder why they never added this to fallout 3?
       ChoGGi.ComFuncs.MsgPopup(
-        ChoGGi.ComFuncs.Trans(302535920000742,"Congratulations: You've been awarded the Childkiller title.\n\n\n\nI think somebody has been playing too much Fallout..."),
-        ChoGGi.ComFuncs.Trans(302535920000743,"Childkiller"),
+        T(302535920000742--[[Congratulations: You've been awarded the Childkiller title.\n\n\n\nI think somebody has been playing too much Fallout...--]]),
+        T(302535920000743--[[Childkiller--]]),
         "UI/Icons/Logos/logo_09.tga",
         true
       )
@@ -188,8 +203,8 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       end
     else
       ChoGGi.ComFuncs.MsgPopup(
-        ChoGGi.ComFuncs.Trans(302535920000744,"Wholesale slaughter") .. ": " .. choice[1].text,
-        ChoGGi.ComFuncs.Trans(302535920000745,"Snacks"),
+        Concat(T(302535920000744--[[Wholesale slaughter--]]),": ",choice[1].text),
+        T(302535920000745--[[Snacks--]]),
         "UI/Icons/Sections/Food_1.tga"
       )
     end
@@ -198,20 +213,17 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000746,"The Soylent Option"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000747,"Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles).\n\nThis will not effect your applicants/game failure (genocide without reprisal)."),
-    check1 = ChoGGi.ComFuncs.Trans(302535920000748,"Random resource"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000749,"Drops random resource instead of food."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
+    title = T(302535920000375--[[The Soylent Option--]]),
+    hint = T(302535920000747--[[Convert useless meatbags into productive protein.\n\nCertain colonists may take some time (traveling in shuttles).\n\nThis will not effect your applicants/game failure (genocide without reprisal).--]]),
+    check1 = T(302535920000748--[[Random resource--]]),
+    check1_hint = T(302535920000749--[[Drops random resource instead of food.--]]),
+    check2 = T(302535920000750--[[Dome Only--]]),
+    check2_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
   })
 end
 
 function ChoGGi.MenuFuncs.AddApplicantsToPool()
   local ChoGGi = ChoGGi
-  local GetRandomTrait = GetRandomTrait
-  local GenerateApplicant = GenerateApplicant
-  local GenerateTraits = GenerateTraits
   local ItemList = {
     {text = 1,value = 1},
     {text = 10,value = 10},
@@ -234,8 +246,8 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     local value = choice[1].value
     if choice[1].check1 then
       g_ApplicantPool = {}
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000754,"Emptied applicants pool."),
-        ChoGGi.ComFuncs.Trans(302535920000755,"Applicants"),UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(T(302535920000754--[[Emptied applicants pool.--]]),
+        T(302535920000755--[[Applicants--]]),UsualIcon
       )
     else
       if type(value) == "number" then
@@ -269,8 +281,8 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
             colonist.specialist = self.Specialization
           end
         end
-        ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000756,"Added applicants") .. ": " .. choice[1].text,
-          ChoGGi.ComFuncs.Trans(302535920000755,"Applicants"),UsualIcon
+        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000756--[[Added applicants--]]),": ",choice[1].text),
+          T(302535920000755--[[Applicants--]]),UsualIcon
         )
       end
     end
@@ -279,31 +291,33 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000757,"Add Applicants To Pool"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000758,"Warning: Will take some time for 25K and up."),
-    check1 = ChoGGi.ComFuncs.Trans(302535920000759,"Clear Applicant Pool"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000760,"Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size") .. ": " .. #g_ApplicantPool,
+    title = T(302535920000757--[[Add Applicants To Pool--]]),
+    hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000758--[[Will take some time for 25K and up.--]])),
+    check1 = T(302535920000759--[[Clear Applicant Pool--]]),
+    check1_hint = Concat(T(302535920000760--[[Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size--]]),": ",#g_ApplicantPool),
   })
 end
 
 function ChoGGi.MenuFuncs.FireAllColonists()
-  local CallBackFunc = function()
-    local tab = UICity.labels.Colonist or empty_table
-    for i = 1, #tab do
-      tab[i]:GetFired()
+  local function CallBackFunc(answer)
+    if answer then
+      local tab = UICity.labels.Colonist or empty_table
+      for i = 1, #tab do
+        tab[i]:GetFired()
+      end
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    ChoGGi.ComFuncs.Trans(302535920000761,"Are you sure you want to fire everyone?"),
+    T(302535920000761--[[Are you sure you want to fire everyone?--]]),
     CallBackFunc,
-    ChoGGi.ComFuncs.Trans(302535920000762,"Yer outta here!")
+    T(302535920000762--[[Yer outta here!--]])
   )
 end
 
 function ChoGGi.MenuFuncs.SetAllWorkShifts()
   local ItemList = {
-    {text = ChoGGi.ComFuncs.Trans(302535920000763,"Turn On All Shifts"),value = 0},
-    {text = ChoGGi.ComFuncs.Trans(302535920000764,"Turn Off All Shifts"),value = 3.1415926535},
+    {text = T(302535920000763--[[Turn On All Shifts--]]),value = 0},
+    {text = T(302535920000764--[[Turn Off All Shifts--]]),value = 3.1415926535},
   }
 
   local CallBackFunc = function(choice)
@@ -321,16 +335,16 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
       end
     end
 
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000765,"Early night? Vamos al bar un trago!"),
-      ChoGGi.ComFuncs.Trans(217,"Work Shifts"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000765--[[Early night? Vamos al bar un trago!--]]),
+      T(217--[[Work Shifts--]]),UsualIcon
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(217,"Work Shifts"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000766,"This will change ALL shifts."),
+    title = T(217--[[Work Shifts--]]),
+    hint = T(302535920000766--[[This will change ALL shifts.--]]),
   })
 end
 
@@ -338,10 +352,10 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.MinComfortBirth / r
-  local hint_low = ChoGGi.ComFuncs.Trans(302535920000767,"Lower = more babies")
-  local hint_high = ChoGGi.ComFuncs.Trans(302535920000768,"Higher = less babies")
+  local hint_low = T(302535920000767--[[Lower = more babies--]])
+  local hint_high = T(302535920000768--[[Higher = less babies--]])
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
+    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 0,value = 0,hint = hint_low},
     {text = 35,value = 35,hint = hint_low},
     {text = 140,value = 140,hint = hint_high},
@@ -364,8 +378,8 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
       ChoGGi.ComFuncs.SetSavedSetting("MinComfortBirth",Consts.MinComfortBirth)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000770,"Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed."),
-        ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text,"\n",T(302535920000770--[[Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.--]])),
+        T(547--[[Colonists--]]),UsualIcon,true
       )
     end
   end
@@ -373,8 +387,8 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000771,"Set the minimum comfort needed for birth"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint,
+    title = T(302535920000771--[[Set the minimum comfort needed for birth--]]),
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
   })
 end
 
@@ -383,8 +397,8 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.VisitFailPenalty) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000772,"The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.VisitFailPenalty),"\n",T(302535920000772--[[The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.--]])),
+    T(547--[[Colonists--]]),UsualIcon,true
   )
 end
 
@@ -393,15 +407,15 @@ function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.RenegadeCreation) .. ChoGGi.ComFuncs.Trans(302535920000773,": I just love findin' subversives."),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.RenegadeCreation),T(302535920000773--[[: I just love findin' subversives.--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
 function ChoGGi.MenuFuncs.SetRenegadeStatus()
   local ItemList = {
-    {text = ChoGGi.ComFuncs.Trans(302535920000774,"Make All Renegades"),value = "Make"},
-    {text = ChoGGi.ComFuncs.Trans(302535920000775,"Remove All Renegades"),value = "Remove"},
+    {text = T(302535920000774--[[Make All Renegades--]]),value = "Make"},
+    {text = T(302535920000775--[[Remove All Renegades--]]),value = "Remove"},
   }
 
   local CallBackFunc = function(choice)
@@ -428,17 +442,17 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
         tab[i][Type](tab[i],"Renegade")
       end
     end
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000776,"OK, a limousine that can fly. Now I have seen everything.\nReally? Have you seen a man eat his own head?\nNo.\nSo then, you haven't seen everything."),
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000776--[[OK, a limousine that can fly. Now I have seen everything.\nReally? Have you seen a man eat his own head?\nNo.\nSo then, you haven't seen everything.--]]),
+      T(547--[[Colonists--]]),UsualIcon,true
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000777,"Make Renegades"),
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
+    title = T(302535920000777--[[Make Renegades--]]),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
   })
 end
 
@@ -451,8 +465,8 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("HighStatLevel",Consts.HighStatLevel)
   ChoGGi.ComFuncs.SetSavedSetting("LowStatLevel",Consts.LowStatLevel)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.HighStatMoraleEffect) .. ChoGGi.ComFuncs.Trans(302535920000778,": Happy as a pig in shit"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.HighStatMoraleEffect),T(302535920000778--[[: Happy as a pig in shit--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -467,8 +481,8 @@ function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("ColdWaveSanityDamage",Consts.ColdWaveSanityDamage)
   ChoGGi.ComFuncs.SetSavedSetting("MeteorSanityDamage",Consts.MeteorSanityDamage)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.DustStormSanityDamage) .. ChoGGi.ComFuncs.Trans(302535920000778,": Happy as a pig in shit"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.DustStormSanityDamage),T(302535920000778--[[: Happy as a pig in shit--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -476,8 +490,8 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
   ChoGGi.ComFuncs.SetConstsG("SeeDeadSanity",ChoGGi.ComFuncs.NumRetBool(Consts.SeeDeadSanity,0,ChoGGi.Consts.SeeDeadSanity))
   ChoGGi.ComFuncs.SetSavedSetting("SeeDeadSanity",Consts.SeeDeadSanity)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.SeeDeadSanity) .. ChoGGi.ComFuncs.Trans(302535920000779,": I love me some corpses."),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.SeeDeadSanity),T(302535920000779--[[: I love me some corpses.--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -485,8 +499,8 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
   ChoGGi.ComFuncs.SetConstsG("NoHomeComfort",ChoGGi.ComFuncs.NumRetBool(Consts.NoHomeComfort,0,ChoGGi.Consts.NoHomeComfort))
   ChoGGi.ComFuncs.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NoHomeComfort) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000780,"Oh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon,true
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.NoHomeComfort),"\n",T(302535920000780--[[Oh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,--]])),
+    T(547--[[Colonists--]]),UsualIcon,true
   )
 end
 
@@ -495,8 +509,8 @@ function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.LowSanityNegativeTraitChance) .. ChoGGi.ComFuncs.Trans(302535920000781,": Stupid and happy"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.LowSanityNegativeTraitChance),T(302535920000781--[[: Stupid and happy--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -505,8 +519,8 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("LowSanitySuicideChance",Consts.LowSanitySuicideChance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.LowSanitySuicideChance) .. ChoGGi.ComFuncs.Trans(302535920000782,": Getting away ain't that easy"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.LowSanitySuicideChance),T(302535920000782--[[: Getting away ain't that easy--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -515,8 +529,8 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.OxygenMaxOutsideTime) .. ChoGGi.ComFuncs.Trans(302535920000783,": Free Air"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.OxygenMaxOutsideTime),T(302535920000783--[[: Free Air--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -525,8 +539,8 @@ function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("TimeBeforeStarving",Consts.TimeBeforeStarving)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.TimeBeforeStarving) .. ChoGGi.ComFuncs.Trans(302535920000784,": Free Food"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Sections/Food_2.tga"
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.TimeBeforeStarving),T(302535920000784--[[: Free Food--]])),
+    T(547--[[Colonists--]]),"UI/Icons/Sections/Food_2.tga"
   )
 end
 
@@ -535,8 +549,8 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("AvoidWorkplaceSols",Consts.AvoidWorkplaceSols)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.AvoidWorkplaceSols) .. ChoGGi.ComFuncs.Trans(302535920000785,": No Shame"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.AvoidWorkplaceSols),T(302535920000785--[[: No Shame--]])),
+    T(547--[[Colonists--]]),UsualIcon
   )
 end
 
@@ -545,8 +559,8 @@ function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("positive_playground_chance",Consts.positive_playground_chance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.positive_playground_chance) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000786,"We've all seen them, on the playground, at the store, walking on the streets."),
-    ChoGGi.ComFuncs.Trans(235,"Traits"),"UI/Icons/Upgrades/home_collective_02.tga",true
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.positive_playground_chance),"\n",T(302535920000786--[[We've all seen them, on the playground, at the store, walking on the streets.--]])),
+    T(235--[[Traits--]]),"UI/Icons/Upgrades/home_collective_02.tga",true
   )
 end
 
@@ -555,8 +569,8 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000787,"Say, \"Small umbrella, small umbrella.\""),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance),"\n",T(302535920000787--[[Say, \"Small umbrella, small umbrella.\"--]])),
+    T(547--[[Colonists--]]),"UI/Icons/Upgrades/rejuvenation_treatment_04.tga",true
   )
 end
 
@@ -565,7 +579,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty) .. "\n" .. ChoGGi.ComFuncs.Trans(302535920000788,"You never know what you're gonna get."),
+  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty),"\n",T(302535920000788--[[You never know what you're gonna get.--]])),
     "Penalty",UsualIcon,true
   )
 end
@@ -573,7 +587,7 @@ end
 function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
   local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
+    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 15,value = 15},
     {text = 20,value = 20},
     {text = 25,value = 25},
@@ -594,8 +608,8 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
       ChoGGi.ComFuncs.SetConstsG("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.ComFuncs.SetSavedSetting("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.SettingFuncs.WriteSettings()
-        ChoGGi.ComFuncs.MsgPopup(choice[1].text .. ChoGGi.ComFuncs.Trans(302535920000789,": There's a voice that keeps on calling me\nDown the road is where I'll always be\nMaybe tomorrow, I'll find what I call home\nUntil tomorrow, you know I'm free to roam"),
-          ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Sections/dome.tga",true
+        ChoGGi.ComFuncs.MsgPopup(Concat(choice[1].text,T(302535920000789--[[: There's a voice that keeps on calling me\nDown the road is where I'll always be\nMaybe tomorrow, I'll find what I call home\nUntil tomorrow, you know I'm free to roam--]])),
+          T(547--[[Colonists--]]),"UI/Icons/Sections/dome.tga",true
         )
     end
   end
@@ -603,8 +617,8 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000790,"Set Outside Workplace Radius"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000791,"Current distance") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000792,"You may not want to make it too far away unless you turned off suffocation."),
+    title = T(302535920000790--[[Set Outside Workplace Radius--]]),
+    hint = Concat(T(302535920000791--[[Current distance--]]),": ",hint,"\n\n",T(302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]])),
   })
 end
 
@@ -614,7 +628,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
   end
 
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000793,"Default"),value = "Default",hint = ChoGGi.ComFuncs.Trans(302535920000794,"Uses same code as game to pick death ages.")},
+    {text = Concat(" ",T(302535920000793--[[Default--]])),value = "Default",hint = T(302535920000794--[[Uses same code as game to pick death ages.--]])},
     {text = 60,value = 60},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -622,11 +636,11 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     {text = 500,value = 500},
     {text = 1000,value = 1000},
     {text = 10000,value = 10000},
-    {text = ChoGGi.ComFuncs.Trans(302535920000795,"Logan's Run (Novel)"),value = "LoganNovel"},
-    {text = ChoGGi.ComFuncs.Trans(302535920000796,"Logan's Run (Movie)"),value = "LoganMovie"},
-    {text = ChoGGi.ComFuncs.Trans(302535920000797,"TNG: Half a Life"),value = "TNG"},
-    {text = ChoGGi.ComFuncs.Trans(302535920000798,"The Happy Place"),value = "TheHappyPlace"},
-    {text = ChoGGi.ComFuncs.Trans(302535920000799,"In Time"),value = "InTime"},
+    {text = T(302535920000795--[[Logan's Run (Novel)--]]),value = "LoganNovel"},
+    {text = T(302535920000796--[[Logan's Run (Movie)--]]),value = "LoganMovie"},
+    {text = T(302535920000797--[[TNG: Half a Life--]]),value = "TNG"},
+    {text = T(302535920000798--[[The Happy Place--]]),value = "TheHappyPlace"},
+    {text = T(302535920000799--[[In Time--]]),value = "InTime"},
   }
 
   local CallBackFunc = function(choice)
@@ -659,8 +673,8 @@ function ChoGGi.MenuFuncs.SetDeathAge()
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000800,"Death age") .. ": " .. choice[1].text,
-        ChoGGi.ComFuncs.Trans(547,"Colonists")
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000800--[[Death age--]]),": ",choice[1].text),
+        T(547--[[Colonists--]])
       )
     end
   end
@@ -668,8 +682,8 @@ function ChoGGi.MenuFuncs.SetDeathAge()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000801,"Set Death Age"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000802,"Usual age is around") .. " " .. RetDeathAge(UICity.labels.Colonist[1]) .. ChoGGi.ComFuncs.Trans(302535920000803,". This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour)."),
+    title = T(302535920000801--[[Set Death Age--]]),
+    hint = Concat(T(302535920000802--[[Usual age is around--]])," ",RetDeathAge(UICity.labels.Colonist[1]),T(302535920000803--[[. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]])),
   })
 end
 
@@ -681,14 +695,14 @@ function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
     end
   end
 
-  ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000804,"No lazy good fer nuthins round here"),
-    ChoGGi.ComFuncs.Trans(547,"Colonists"),"UI/Icons/Upgrades/home_collective_04.tga"
+  ChoGGi.ComFuncs.MsgPopup(T(302535920000804--[[No lazy good fer nuthins round here--]]),
+    T(547--[[Colonists--]]),"UI/Icons/Upgrades/home_collective_04.tga"
   )
 end
 
 local function IsChild(value)
   if value == "Child" then
-    return ChoGGi.ComFuncs.Trans(302535920000805,"Warning: Child will remove specialization.")
+    return Concat(T(6779--[[Warning--]]),": ",T(302535920000805--[[Child will remove specialization.--]]))
   end
 end
 function ChoGGi.MenuFuncs.SetColonistsAge(iType)
@@ -706,7 +720,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = " " .. DefaultSetting,
+    text = Concat(" ",DefaultSetting),
     value = DefaultSetting,
   }
   for i = 1, #ChoGGi.Tables.ColonistAges do
@@ -723,7 +737,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     if ChoGGi.UserSettings[sSetting] then
       hint = ChoGGi.UserSettings[sSetting]
     end
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000805,"Warning: Child will remove specialization.")
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint,"\n\n",T(302535920000805--[[Warning: Child will remove specialization.--]]))
   end
 
   local CallBackFunc = function(choice)
@@ -763,20 +777,20 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 
     end
 
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. ": " .. choice[1].text,
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",": ",choice[1].text),
+      T(547--[[Colonists--]]),UsualIcon
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000807,"olonist Age"),
+    title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000807--[[olonist Age--]])),
     hint = hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
@@ -794,14 +808,14 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = " " .. DefaultSetting,
+    text = Concat(" ",DefaultSetting),
     value = DefaultSetting,
-    hint = ChoGGi.ComFuncs.Trans(302535920000808,"How the game normally works"),
+    hint = T(302535920000808--[[How the game normally works--]]),
   }
   ItemList[#ItemList+1] = {
     text = " MaleOrFemale",
     value = "MaleOrFemale",
-    hint = ChoGGi.ComFuncs.Trans(302535920000809,"Only set as male or female"),
+    hint = T(302535920000809--[[Only set as male or female--]]),
   }
   for i = 1, #ChoGGi.Tables.ColonistGenders do
     ItemList[#ItemList+1] = {
@@ -816,7 +830,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
     if ChoGGi.UserSettings[sSetting] then
       hint = ChoGGi.UserSettings[sSetting]
     end
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint)
   end
 
   local CallBackFunc = function(choice)
@@ -854,20 +868,20 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. choice[1].text,
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",choice[1].text),
+      T(547--[[Colonists--]]),UsualIcon
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000810,"olonist Gender"),
+    title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000810--[[olonist Gender--]])),
     hint = hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
@@ -887,19 +901,19 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
   ItemList[#ItemList+1] = {
     text = DefaultSetting,
     value = DefaultSetting,
-    hint = ChoGGi.ComFuncs.Trans(302535920000808,"How the game normally works"),
+    hint = T(302535920000808--[[How the game normally works--]]),
   }
   if iType == 1 then
     ItemList[#ItemList+1] = {
       text = "Random",
       value = "Random",
-      hint = ChoGGi.ComFuncs.Trans(302535920000811,"Everyone gets a spec"),
+      hint = T(302535920000811--[[Everyone gets a spec--]]),
     }
   end
   ItemList[#ItemList+1] = {
     text = "none",
     value = "none",
-    hint = ChoGGi.ComFuncs.Trans(302535920000812,"Removes specializations"),
+    hint = T(302535920000812--[[Removes specializations--]]),
   }
   for i = 1, #ChoGGi.Tables.ColonistSpecializations do
     ItemList[#ItemList+1] = {
@@ -914,7 +928,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
     if ChoGGi.UserSettings[sSetting] then
       hint = ChoGGi.UserSettings[sSetting]
     end
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint)
   end
 
   local CallBackFunc = function(choice)
@@ -952,20 +966,20 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000806,"olonists") .. ": " .. choice[1].text,
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",choice[1].text),
+      T(547--[[Colonists--]]),UsualIcon
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000813,"olonist Specialization"),
+    title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000813--[[olonist Specialization--]])),
     hint = hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
@@ -983,11 +997,11 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = " " .. DefaultSetting,
+    text = Concat(" ",DefaultSetting),
     value = DefaultSetting,
     race = DefaultSetting,
   }
-  local race = {ChoGGi.ComFuncs.Trans(302535920000814,"Herrenvolk"),ChoGGi.ComFuncs.Trans(302535920000815,"Schwarzvolk"),ChoGGi.ComFuncs.Trans(302535920000816,"Asiatischvolk"),ChoGGi.ComFuncs.Trans(302535920000817,"Indischvolk"),ChoGGi.ComFuncs.Trans(302535920000818,"Südost Asiatischvolk")}
+  local race = {T(302535920000814--[[Herrenvolk--]]),T(302535920000815--[[Schwarzvolk--]]),T(302535920000816--[[Asiatischvolk--]]),T(302535920000817--[[Indischvolk--]]),T(302535920000818--[[Südost Asiatischvolk--]])}
   for i = 1, #ChoGGi.Tables.ColonistRaces do
     ItemList[#ItemList+1] = {
       text = ChoGGi.Tables.ColonistRaces[i],
@@ -1002,7 +1016,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     if ChoGGi.UserSettings[sSetting] then
       hint = ChoGGi.UserSettings[sSetting]
     end
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint)
   end
 
   local CallBackFunc = function(choice)
@@ -1047,26 +1061,26 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
       end
     end
 
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000819,"Nationalsozialistische Rassenhygiene") .. ": " .. choice[1].race,
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000819--[[Nationalsozialistische Rassenhygiene--]]),": ",choice[1].race),
+      T(547--[[Colonists--]]),UsualIcon
     )
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000820,"olonist Race"),
+    title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000820--[[olonist Race--]])),
     hint = hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
 function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
-  local Random = Random
   local ChoGGi = ChoGGi
+  local DataInstances = DataInstances
   local DefaultSetting = "Default"
   local sSetting = "NewColonistTraits"
   local sType = "New C"
@@ -1078,25 +1092,25 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     if saved then
       hint = ""
       for i = 1, #saved do
-        hint = hint .. saved[i] .. ","
+        hint = Concat(hint,saved[i],",")
       end
     end
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. hint
+    hint = Concat(T(302535920000106--[[Current--]]),": ",hint)
   elseif iType == 2 then
     sType = "C"
     DefaultSetting = "Random"
   end
-  hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000821,"Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.")
+  hint = Concat(hint,"\n\n",T(302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]))
 
   local ItemList = {
-      {text = " " .. DefaultSetting,value = DefaultSetting,hint = ChoGGi.ComFuncs.Trans(302535920000822,"Use game defaults")},
-      {text = " " .. ChoGGi.ComFuncs.Trans(302535920000823,"All Positive Traits"),value = "PositiveTraits",hint = ChoGGi.ComFuncs.Trans(302535920000824,"All the positive traits...")},
-      {text = " " .. ChoGGi.ComFuncs.Trans(302535920000825,"All Negative Traits"),value = "NegativeTraits",hint = ChoGGi.ComFuncs.Trans(302535920000826,"All the negative traits...")},
-      {text = " " .. ChoGGi.ComFuncs.Trans(302535920000827,"All Traits"),value = "AllTraits",hint = ChoGGi.ComFuncs.Trans(302535920000828,"All the traits...")},
+      {text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = T(302535920000822--[[Use game defaults--]])},
+      {text = Concat(" ",T(302535920000823--[[All Positive Traits--]])),value = "PositiveTraits",hint = T(302535920000824--[[All the positive traits...--]])},
+      {text = Concat(" ",T(302535920000825--[[All Negative Traits--]])),value = "NegativeTraits",hint = T(302535920000826--[[All the negative traits...--]])},
+      {text = Concat(" ",T(652319561018--[[All Traits--]])),value = "AllTraits",hint = T(302535920000828--[[All the traits...--]])},
     }
 
   if iType == 2 then
-    ItemList[1].hint = ChoGGi.ComFuncs.Trans(302535920000829,"Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).")
+    ItemList[1].hint = T(302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]])
   end
 
   for i = 1, #ChoGGi.Tables.NegativeTraits do
@@ -1115,7 +1129,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   for i = 1, #ItemList do
     local hinttemp = DataInstances.Trait[ItemList[i].text]
     if hinttemp then
-      ItemList[i].hint = ": " .. ChoGGi.ComFuncs.Trans(hinttemp.description)
+      ItemList[i].hint = Concat(": ",T(hinttemp.description))
     end
   end
 
@@ -1141,7 +1155,6 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       elseif choice[i].value == "AllTraits" then
         TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
         TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
-        ex(TraitsListTemp)
       else
         if choice[i].value then
           TraitsListTemp = AddToTable(choice[i].value,TraitsListTemp)
@@ -1215,8 +1228,8 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       end
 
     end
-    ChoGGi.ComFuncs.MsgPopup(sType .. ChoGGi.ComFuncs.Trans(302535920000830,"olonists traits set") .. ": " .. #TraitsList,
-      ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+    ChoGGi.ComFuncs.MsgPopup(Concat(sType,T(302535920000830--[[olonists traits set--]]),": ",#TraitsList),
+      T(547--[[Colonists--]]),UsualIcon
     )
   end
 
@@ -1224,7 +1237,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000831,"olonist Traits"),
+      title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000831--[[olonist Traits--]])),
       hint = hint,
       multisel = true,
     })
@@ -1232,13 +1245,13 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     ChoGGi.CodeFuncs.FireFuncAfterChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = ChoGGi.ComFuncs.Trans(302535920000129,"Set") .. " " .. sType .. ChoGGi.ComFuncs.Trans(302535920000831,"olonist Traits"),
+      title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000831--[[olonist Traits--]])),
       hint = hint,
       multisel = true,
-      check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-      check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-      check2 = ChoGGi.ComFuncs.Trans(302535920000281,"Remove"),
-      check2_hint = ChoGGi.ComFuncs.Trans(302535920000832,"Check to remove traits"),
+      check1 = T(302535920000750--[[Dome Only--]]),
+      check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+      check2 = T(302535920000281--[[Remove--]]),
+      check2_hint = T(302535920000832--[[Check to remove traits--]]),
     })
   end
 end
@@ -1246,18 +1259,15 @@ end
 function ChoGGi.MenuFuncs.SetColonistsStats()
 	local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = ChoGGi.ComFuncs.Trans(302535920000833,"All Stats") .. " " .. ChoGGi.ComFuncs.Trans(302535920000834,"Max"),value = 1},
-    {text = ChoGGi.ComFuncs.Trans(302535920000833,"All Stats") .. " " .. ChoGGi.ComFuncs.Trans(302535920000835,"Fill"),value = 2},
-    {text = ChoGGi.ComFuncs.Trans(4291,"Health") .. " " .. ChoGGi.ComFuncs.Trans(302535920000834,"Max"),value = 3},
-    {text = ChoGGi.ComFuncs.Trans(4291,"Health") .. " " .. ChoGGi.ComFuncs.Trans(302535920000835,"Fill"),value = 4},
-
-    {text = ChoGGi.ComFuncs.Trans(4297,"Morale") .. " " .. ChoGGi.ComFuncs.Trans(302535920000835,"Fill"),value = 5},
-
-    {text = ChoGGi.ComFuncs.Trans(4293,"Sanity") .. " " .. ChoGGi.ComFuncs.Trans(302535920000834,"Max"),value = 6},
-    {text = ChoGGi.ComFuncs.Trans(4293,"Sanity") .. " " .. ChoGGi.ComFuncs.Trans(302535920000835,"Fill"),value = 7},
-
-    {text = ChoGGi.ComFuncs.Trans(4295,"Comfort") .. " " .. ChoGGi.ComFuncs.Trans(302535920000834,"Max"),value = 8},
-    {text = ChoGGi.ComFuncs.Trans(4295,"Comfort") .. " " .. ChoGGi.ComFuncs.Trans(302535920000835,"Fill"),value = 9},
+    {text = Concat(T(302535920000833--[[All Stats--]])," ",T(302535920000834--[[Max--]])),value = 1},
+    {text = Concat(T(302535920000833--[[All Stats--]])," ",T(302535920000835--[[Fill--]])),value = 2},
+    {text = Concat(T(4291--[[Health--]])," ",T(302535920000834--[[Max--]])),value = 3},
+    {text = Concat(T(4291--[[Health--]])," ",T(302535920000835--[[Fill--]])),value = 4},
+    {text = Concat(T(4297--[[Morale--]])," ",T(302535920000835--[[Fill--]])),value = 5},
+    {text = Concat(T(4293--[[Sanity--]])," ",T(302535920000834--[[Max--]])),value = 6},
+    {text = Concat(T(4293--[[Sanity--]])," ",T(302535920000835--[[Fill--]])),value = 7},
+    {text = Concat(T(4295--[[Comfort--]])," ",T(302535920000834--[[Max--]])),value = 8},
+    {text = Concat(T(4295--[[Comfort--]])," ",T(302535920000835--[[Fill--]])),value = 9},
   }
 
   local CallBackFunc = function(choice)
@@ -1321,16 +1331,16 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
       SetStat("stat_comfort",value)
     end
 
-    ChoGGi.ComFuncs.MsgPopup(choice[1].text,ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon)
+    ChoGGi.ComFuncs.MsgPopup(choice[1].text,T(547--[[Colonists--]]),UsualIcon)
   end
 
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000836,"Set Stats Of All Colonists"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000837,"Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else..."),
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
+    title = T(302535920000836--[[Set Stats Of All Colonists--]]),
+    hint = T(302535920000837--[[Fill: Stat bar filled to 100\nMax: 100000 (choose fill to reset)\n\nWarning: Disable births or else...--]]),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
   })
 end
 
@@ -1338,7 +1348,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedColonist
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting / r,value = DefaultSetting},
+    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting / r),value = DefaultSetting},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},
@@ -1366,7 +1376,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
     if type(value) == "number" then
       if choice[1].check2 then
         if sel then
-          pf.SetStepLen(sel,value)
+          g_Classes.pf.SetStepLen(sel,value)
         end
       else
         local tab = UICity.labels.Colonist or empty_table
@@ -1374,19 +1384,19 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
           if dome then
             if tab[i].dome and tab[i].dome == dome then
               --tab[i]:SetMoveSpeed(value)
-              pf.SetStepLen(tab[i],value)
+              g_Classes.pf.SetStepLen(tab[i],value)
             end
           else
             --tab[i]:SetMoveSpeed(value)
-            pf.SetStepLen(tab[i],value)
+            g_Classes.pf.SetStepLen(tab[i],value)
           end
         end
       end
 
       ChoGGi.ComFuncs.SetSavedSetting("SpeedColonist",value)
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000769,"Selected") .. ": " .. choice[1].text,
-        ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        T(547--[[Colonists--]]),UsualIcon
       )
     end
   end
@@ -1394,12 +1404,12 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000838,"Colonist Move Speed"),
+    title = T(302535920000838--[[Colonist Move Speed--]]),
     hint = hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
@@ -1407,7 +1417,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
   local DefaultSetting = ChoGGi.Consts.GravityColonist
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = " " .. ChoGGi.ComFuncs.Trans(302535920000110,"Default") .. ": " .. DefaultSetting,value = DefaultSetting},
+    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 2,value = 2},
     {text = 3,value = 3},
@@ -1457,8 +1467,8 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
       ChoGGi.ComFuncs.SetSavedSetting("GravityColonist",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000839,"Colonist gravity is now") .. ": " .. choice[1].text,
-        ChoGGi.ComFuncs.Trans(547,"Colonists"),UsualIcon
+      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000839--[[Colonist gravity is now--]]),": ",choice[1].text),
+        T(547--[[Colonists--]]),UsualIcon
       )
     end
   end
@@ -1466,25 +1476,25 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000840,"Set Colonist Gravity"),
-    hint = ChoGGi.ComFuncs.Trans(302535920000841,"Current gravity") .. ": " .. hint,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000750,"Dome Only"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000751,"Will only apply to colonists in the same dome as selected colonist."),
-    check2 = ChoGGi.ComFuncs.Trans(302535920000752,"Selected Only"),
-    check2_hint = ChoGGi.ComFuncs.Trans(302535920000753,"Will only apply to selected colonist."),
+    title = T(302535920000840--[[Set Colonist Gravity--]]),
+    hint = Concat(T(302535920000841--[[Current gravity--]]),": ",hint),
+    check1 = T(302535920000750--[[Dome Only--]]),
+    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check2 = T(302535920000752--[[Selected Only--]]),
+    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
   })
 end
 
 function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
   local sel = ChoGGi.CodeFuncs.SelObject()
-  if not sel or not sel:IsKindOf(ChoGGi.ComFuncs.Trans(4801,"Workplace")) then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000842,"Select a workplace."),
-      ChoGGi.ComFuncs.Trans(4801,"Workplace"),UsualIcon
+  if not sel or not sel:IsKindOf(T(4801--[[Workplace--]])) then
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000842--[[Select a workplace.--]]),
+      T(4801--[[Workplace--]]),UsualIcon
     )
     return
   end
   local id = sel.encyclopedia_id
-  local name = ChoGGi.ComFuncs.Trans(sel.display_name)
+  local name = T(sel.display_name)
   local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
   if not BuildingSettings[id] then
     BuildingSettings[id] = {restricttraits = {},blocktraits = {},}
@@ -1529,7 +1539,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
           for k = #workplace.workers[j], 1, -1 do
 
             local worker = workplace.workers[j][k]
-            local block,restrict = ChoGGi.CodeFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
+            local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
 
             if block or not restrict then
               table.remove_entry(workplace.workers[j], worker)
@@ -1556,23 +1566,27 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
 
     ChoGGi.SettingFuncs.WriteSettings()
 
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000843,"Toggled traits") .. ": " .. #choice .. (check1 and " " .. ChoGGi.ComFuncs.Trans(302535920000844,"Fired workers") or ""),
-      ChoGGi.ComFuncs.Trans(4801,"Workplace")
+    ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000843--[[Toggled traits--]]),": ",#choice,check1 and " ",T(302535920000844--[[Fired workers--]]) or ""),
+      T(4801--[[Workplace--]])
     )
   end
 
-  local hint = ""
+  local hint = {}
   if BuildingSettings[id] and BuildingSettings[id][sType] then
-    hint = ChoGGi.ComFuncs.Trans(302535920000106,"Current") .. ": " .. table.concat(BuildingSettings[id][sType],",")
+    hint[#hint+1] = T(302535920000106--[[Current--]])
+    hint[#hint+1] = ": "
+    hint[#hint+1] = Concat(BuildingSettings[id][sType],",")
   end
 
+  hint[#hint+1] = "\n\n"
+  hint[#hint+1] = T(302535920000847--[[Select traits and click Ok to toggle status.--]])
   ChoGGi.CodeFuncs.FireFuncAfterChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = ChoGGi.ComFuncs.Trans(302535920000845,"Toggle") .. " " .. sType .. " " .. ChoGGi.ComFuncs.Trans(302535920000846,"For") .. " " .. name,
-    hint = hint .. "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000847,"Select traits and click Ok to toggle status."),
+    title = Concat(T(302535920000146--[[Toggle--]])," ",sType," ",T(302535920000846--[[For--]])," ",name),
+    hint = Concat(hint),
     multisel = true,
-    check1 = ChoGGi.ComFuncs.Trans(302535920000848,"Fire Workers"),
-    check1_hint = ChoGGi.ComFuncs.Trans(302535920000849,"Will also fire workers with the traits from all") .. " " .. name .. ".",
+    check1 = T(302535920000848--[[Fire Workers--]]),
+    check1_hint = Concat(T(302535920000849--[[Will also fire workers with the traits from all--]])," ",name,"."),
   })
 end

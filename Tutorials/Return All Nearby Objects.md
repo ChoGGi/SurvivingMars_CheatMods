@@ -1,32 +1,32 @@
-### Returns all objects within "Radius" (default 5000), sorted by nearest
-##### sort by class by making Sort "class"
+### Returns all objects within "radius" (default 5000) of the mouse cursor, sorted by nearest
+##### Use "sort" if you prefer using class names or something
 
 ```
 --objects within 10000 radius
-OpenExamine(ReturnAllNearby(10000)
---objects within 5000 radius sorted by class
+OpenExamine(ReturnAllNearby(10000))
+--objects within 5000 radius sorted by .class
 OpenExamine(ReturnAllNearby(nil,"class"))
 ```
 
 ```
-local function ReturnAllNearby(Radius,Sort)
-  Radius = Radius or 5000
+local function ReturnAllNearby(radius,sort)
+  radius = radius or 5000
   local pos = GetTerrainCursor()
   --get pretty much all objects (18K on a new map)
   local all = GetObjects({class="CObject"})
-  --we only want stuff within *Radius*
+  --we only want stuff within *radius*
   local list = FilterObjects({
     filter = function(Obj)
-      if Obj:GetDist2D(pos) <= Radius then
+      if Obj:GetDist2D(pos) <= radius then
         return Obj
       end
     end
   },all)
   --sort list custom
-  if Sort then
+  if sort then
     table.sort(list,
       function(a,b)
-        return a[Sort] < b[Sort]
+        return a[sort] < b[sort]
       end
     )
   else

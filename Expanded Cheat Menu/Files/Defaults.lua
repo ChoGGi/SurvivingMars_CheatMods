@@ -1,41 +1,59 @@
 --See LICENSE for terms
 --stores default values and some tables
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+
+local next,pairs,print,type = next,pairs,print,type
+
+local table_sort = table.sort
+
+local AsyncCopyFile = AsyncCopyFile
+local AsyncFileToString = AsyncFileToString
+local AsyncStringToFile = AsyncStringToFile
+local ClassDescendantsList = ClassDescendantsList
+local CreateRealTimeThread = CreateRealTimeThread
+local LuaCodeToTuple = LuaCodeToTuple
+local TableToLuaCode = TableToLuaCode
+local ThreadLockKey = ThreadLockKey
+local ThreadUnlockKey = ThreadUnlockKey
+
+local g_Classes = g_Classes
 
 --useful lists
-ChoGGi.Tables = {
-  --for increasing school/sanatorium traits and adding/removing traits funcs
-  NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"},
-  PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"},
-  ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree",Child = true,Youth = true,Adult = true,["Middle Aged"] = true,Senior = true,Retiree = true},
-  ColonistGenders = {"OtherGender","Android","Clone","Male","Female",OtherGender = true,Android = true,Clone = true,Male = true,Female = true},
-  ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic",scientist = true,engineer = true,security = true,geologist = true,botanist = true,medic = true},
-  ColonistBirthplaces = {},
-  --display names only! (stored as numbers, not names like the rest; which is why i guessed)
-  ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
-  --Some names need to be fixed when doing construction placement
-  ConstructionNamesListFix = {
-    RCRover = "RCRoverBuilding",
-    RCDesireTransport = "RCDesireTransportBuilding",
-    RCTransport = "RCTransportBuilding",
-    ExplorerRover = "RCExplorerBuilding",
-    Rocket = "SupplyRocket"
-  },
-  SchoolTraits = const.SchoolTraits,
-  SanatoriumTraits = const.SanatoriumTraits,
-  --for mystery menu items (added below after mods load)
-  Mystery = {}
-}
 do
-  --build tables
-  local ChoGGi = ChoGGi
   local Nations = Nations
+  local const = const
+  ChoGGi.Tables = {
+    --for increasing school/sanatorium traits and adding/removing traits funcs
+    NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"},
+    PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"},
+    ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree",Child = true,Youth = true,Adult = true,["Middle Aged"] = true,Senior = true,Retiree = true},
+    ColonistGenders = {"OtherGender","Android","Clone","Male","Female",OtherGender = true,Android = true,Clone = true,Male = true,Female = true},
+    ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic",scientist = true,engineer = true,security = true,geologist = true,botanist = true,medic = true},
+    ColonistBirthplaces = {},
+    --display names only! (stored as numbers, not names like the rest; which is why i guessed)
+    ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
+    --Some names need to be fixed when doing construction placement
+    ConstructionNamesListFix = {
+      RCRover = "RCRoverBuilding",
+      RCDesireTransport = "RCDesireTransportBuilding",
+      RCTransport = "RCTransportBuilding",
+      ExplorerRover = "RCExplorerBuilding",
+      Rocket = "SupplyRocket"
+    },
+    SchoolTraits = const.SchoolTraits,
+    SanatoriumTraits = const.SanatoriumTraits,
+    --for mystery menu items (added below after mods load)
+    Mystery = {}
+  }
+
+  local ChoGGi = ChoGGi
+  --build tables
   for i = 1, #Nations do
     ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
     ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
   end
-  local const = const
   --maybe a mod removed them?
   if #const.SchoolTraits < 5 then
     ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
@@ -59,6 +77,8 @@ ChoGGi.Defaults = {
   ShowCheatsMenu = true,
   DebugGridSize = 10,
   DebugGridOpacity = 15,
+  CheatsInfoPanelHideDelay = 1500,
+  ConsoleHistoryMenuLength = 50,
   --stores custom settings for each building
   BuildingSettings = {},
   --transparent UI
@@ -260,32 +280,30 @@ end
 --called everytime we set a setting in menu
 function ChoGGi.SettingFuncs.WriteSettings()
   local ChoGGi = ChoGGi
-  local ThreadLockKey = ThreadLockKey
-  local ThreadUnlockKey = ThreadUnlockKey
 
   --piss off if we're saving (probably be better to read file afterwards and check if it matches)
   if ChoGGi.Temp.SavingSettingsFile then
-    print(ChoGGi.ComFuncs.Trans(302535920000005,"Slow arsed hard drive, or something is wrong..."))
+    print(T(302535920000005--[[Slow arsed hard drive, or something is wrong...--]]))
     return
   end
 
   CreateRealTimeThread(function()
     ChoGGi.Temp.SavingSettingsFile = true
 
-    local bak = oldTableConcat({ChoGGi.SettingsFile,".bak"})
+    local bak = Concat(ChoGGi.SettingsFile,".bak")
     --locks the file while we write (i mean it says thread, ah well can't hurt)?
     ThreadLockKey(bak)
     AsyncCopyFile(ChoGGi.SettingsFile,bak)
     ThreadUnlockKey(bak)
 
     ThreadLockKey(ChoGGi.SettingsFile)
-    table.sort(ChoGGi.UserSettings)
+    table_sort(ChoGGi.UserSettings)
     --and write it to disk
     local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.UserSettings))
     ThreadUnlockKey(ChoGGi.SettingsFile)
 
     if DoneFuckedUp then
-      print(ChoGGi.ComFuncs.Trans(302535920000006,"Failed to save a settings to")," ",ChoGGi.SettingsFile,":",err)
+      print(T(302535920000006--[[Failed to save a settings to--]])," ",ChoGGi.SettingsFile,":",DoneFuckedUp)
       return false, DoneFuckedUp
     end
 
@@ -297,8 +315,7 @@ end
 --read saved settings from file
 function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
-  local AsyncFileToString = AsyncFileToString
-  local errormsg = "\n\n" .. ChoGGi.ComFuncs.Trans(302535920000007,"CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author.") .. "\n\n"
+  local errormsg = Concat("\n\n",T(302535920000007--[[CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author."),"\n\n--]]))
 
   --try to read settings
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
@@ -342,19 +359,18 @@ function ChoGGi.MsgFuncs.Defaults_OptionsApply()
   end
 
   --get other defaults not stored in Consts
-  ChoGGi.Consts.DroneFactoryBuildSpeed = DroneFactory:GetDefaultPropertyValue("performance")
-  local CargoShuttle = CargoShuttle --any globals called more then once = local
-  ChoGGi.Consts.StorageShuttle = CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-  ChoGGi.Consts.SpeedShuttle = CargoShuttle:GetDefaultPropertyValue("max_speed")
-  ChoGGi.Consts.ShuttleHubShuttleCapacity = ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+  ChoGGi.Consts.DroneFactoryBuildSpeed = g_Classes.DroneFactory:GetDefaultPropertyValue("performance")
+  ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_speed")
+  ChoGGi.Consts.ShuttleHubShuttleCapacity = g_Classes.ShuttleHub:GetDefaultPropertyValue("max_shuttles")
   ChoGGi.Consts.GravityColonist = 0
   ChoGGi.Consts.GravityDrone = 0
   ChoGGi.Consts.GravityRC = 0
-  ChoGGi.Consts.SpeedDrone = Drone:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.SpeedRC = RCRover:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.SpeedColonist = Colonist:GetDefaultPropertyValue("move_speed")
-  ChoGGi.Consts.RCTransportStorageCapacity = RCTransport:GetDefaultPropertyValue("max_shared_storage")
-  ChoGGi.Consts.StorageUniversalDepot = UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+  ChoGGi.Consts.SpeedDrone = g_Classes.Drone:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedRC = g_Classes.RCRover:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
+  ChoGGi.Consts.RCTransportStorageCapacity = g_Classes.RCTransport:GetDefaultPropertyValue("max_shared_storage")
+  ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
   --ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
   ChoGGi.Consts.StorageWasteDepot = 70 * ChoGGi.Consts.ResourceScale --^ that has 45000 as default...
   ChoGGi.Consts.StorageOtherDepot = 180 * ChoGGi.Consts.ResourceScale
@@ -368,7 +384,6 @@ end
 function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
-  local g_Classes = g_Classes
   --remove empty entries in BuildingSettings
   if next(ChoGGi.UserSettings.BuildingSettings) then
     --remove any empty building tables
@@ -403,20 +418,20 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
       return true
     end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local errormsg = ChoGGi.ComFuncs.Trans(302535920000008,"Error: Couldn't convert old settings to new settings",": ")
+    local errormsg = Concat(T(302535920000008--[[Error: Couldn't convert old settings to new settings--]]),": ")
     if not AddOldSettings("BuildingsCapacity","capacity") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({errormsg,"BuildingsCapacity"})
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsCapacity")
     end
     if not AddOldSettings("BuildingsProduction","production") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = oldTableConcat({errormsg,"BuildingsProduction"})
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsProduction")
     end
   end
 
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
   ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g_Classes[class].scenario_name or ChoGGi.ComFuncs.Trans(302535920000009,"Missing Scenario Name")
-    local display_name = ChoGGi.ComFuncs.Trans(g_Classes[class].display_name) or ChoGGi.ComFuncs.Trans(302535920000010,"Missing Name")
-    local description = ChoGGi.ComFuncs.Trans(g_Classes[class].rollover_text) or ChoGGi.ComFuncs.Trans(302535920000011,"Missing Description")
+    local scenario_name = g_Classes[class].scenario_name or T(302535920000009--[[Missing Scenario Name--]])
+    local display_name = T(g_Classes[class].display_name) or T(302535920000010--[[Missing Name--]])
+    local description = T(g_Classes[class].rollover_text) or T(302535920000011--[[Missing Description--]])
 
     local temptable = {
       class = class,

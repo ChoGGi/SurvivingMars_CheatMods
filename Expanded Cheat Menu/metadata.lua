@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Cheat Menu Expanded v5.4 Test",
 	"version", 54,
-	"saved", 1528027200,
+	"saved", 1528718400,
 	"description", "\nEnables the game's built-in cheat tools, as well as adding a crapload of custom menu settings. "
     .. "There's a cheats section in most info panels on the right side of the screen."
     .. "\n\nF2: Toggle the cheats menu.."
@@ -27,7 +27,7 @@ return PlaceObj("ModDef", {
     .. "\n\nFor more info see: https://github.com/ChoGGi/SurvivingMars_CheatMods.",
 	"image", "CheatMenu.png",
 	"id", "ChoGGi_CheatMenu",
-	"author", "ChoGGi\nWith thanks to chippydip, BoehserOnkel, Fling, and random internet users reporting bugs/requesting features.",
+	"author", "ChoGGi\nWith thanks to chippydip, BoehserOnkel, Fling, SkiRich, and random internet users reporting bugs/requesting features.",
 	"code", {"Init.lua"},
 	"TagGameplay", true,
 	"TagInterface", true,

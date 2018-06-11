@@ -1,57 +1,111 @@
 --See LICENSE for terms
 --i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+
+local pairs,type,next,tostring,print,getmetatable = pairs,type,next,tostring,print,getmetatable
+
+local AsyncFileToString = AsyncFileToString
+local box = box
+local ClassDescendantsList = ClassDescendantsList
+local CreateRealTimeThread = CreateRealTimeThread
+local GetObjects = GetObjects
+local IsValid = IsValid
+local LuaCodeToTuple = LuaCodeToTuple
+local Msg = Msg
+local OpenGedApp = OpenGedApp
+local PlaceObj = PlaceObj
+local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
+local SetLightmodelOverride = SetLightmodelOverride
+local ShowConsoleLog = ShowConsoleLog
+local UpdateDroneResourceUnits = UpdateDroneResourceUnits
+local WaitMsg = WaitMsg
+
+local black = black
+
+local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
+local UserActions_GetActiveActions = UserActions.GetActiveActions
+local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
+
+local g_Classes = g_Classes
 
 --use this message to mess with the classdefs (before classes are built)
 --function OnMsg.ClassesGenerate(classdefs)
 function OnMsg.ClassesGenerate()
   local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.DebugFunc_ClassesGenerate()
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesGenerate()
   end
+
 end --OnMsg
 
 --use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
-
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
   end
+
 end
 
 --where we can add new BuildingTemplates
 --use this message to make modifications to the built classes (before they are declared final)
 function OnMsg.ClassesPostprocess()
   local ChoGGi = ChoGGi
-
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
-
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   end
+
+  --don't show cheats pane for ResourceOverview
+  XTemplates.sectionCheats[1].__condition = function(parent, context)
+    --no sense in doing anything without cheats pane enabled
+    if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
+      return false
+    end
+    return context:CreateCheatActions(parent)
+  end
+--~   --don't show cheats pane if we don't have any to show
+--~   XTemplates.sectionCheats[1].__condition = function(parent, context)
+--~     --no sense in doing anything without cheats pane enabled
+--~     if not config.BuildingInfopanelCheats then
+--~       return false
+--~     end
+--~     --break on the first cheat we find
+--~     local t = getmetatable(g_Classes[context.class])
+--~     local cheats
+--~     while type(t) == "table" do
+--~       for name, value in pairs(t) do
+--~         if type(name) == "string" and type(value) == "function" and name:starts_with("Cheat") then
+--~           cheats = true
+--~           break
+--~         end
+--~         t = getmetatable(t)
+--~         t = t and t.__index
+--~       end
+--~     end
+--~     if cheats then
+--~       return context:CreateCheatActions(parent)
+--~     end
+--~   end
+
 end
 
 --use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
-
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-
   if ChoGGi.Temp.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
-    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T({1000155, "Hidden"}),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
+    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T(1000155--[[Hidden--]]),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
 
   --Only added to stuff spawned with object spawner
@@ -62,16 +116,16 @@ function OnMsg.ClassesBuilt()
       id = "ipEverything",
       PlaceObj('XTemplateTemplate', {
         '__context_of_kind', "CObject",
-        '__condition', function (parent, context) return context.ChoGGi_Spawned end,
+        '__condition', function (_, context) return context.ChoGGi_Spawned end,
         '__template', "Infopanel",
-        'Description', ChoGGi.ComFuncs.Trans(313911890683,"<description>"),
+        'Description', T(313911890683--[[<description>--]]),
       }, {
       PlaceObj('XTemplateTemplate', {
         'comment', "salvage",
         '__template', "InfopanelButton",
-        'RolloverText', ChoGGi.ComFuncs.Trans(640016954592,"Remove this switch or valve."),
-        'RolloverTitle', ChoGGi.ComFuncs.Trans(3973,"Salvage"),
-        'RolloverHintGamepad', ChoGGi.ComFuncs.Trans(7657,"<ButtonY> Activate"),
+        'RolloverText', T(640016954592--[[Remove this switch or valve.--]]),
+        'RolloverTitle', T(3973--[[Salvage--]]),
+        'RolloverHintGamepad', T(7657--[[<ButtonY> Activate--]]),
         'ContextUpdateOnOpen', false,
         'OnPressParam', "Demolish",
         'Icon', "UI/Icons/IPButtons/salvage_1.tga",
@@ -112,7 +166,7 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal.SetOSWindowTitle(oldTableConcat({ChoGGi.ComFuncs.Trans(1079,"Surviving Mars"),": ",Mods[ChoGGi.id].title}))
+  terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",ChoGGi._TITLE))
 end
 
 --earlist on-ground objects are loaded?
@@ -343,7 +397,6 @@ end
 function OnMsg.NewDay() --NewSol...
   local ChoGGi = ChoGGi
   local UICity = UICity
-  local IsValid = IsValid
 
   --sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
@@ -396,19 +449,19 @@ local logo_13 = "UI/Icons/Logos/logo_13.tga"
 function OnMsg.MysteryBegin()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000729,"You've started a mystery!"),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000729--[[You've started a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
   end
 end
 function OnMsg.MysteryChosen()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(ChoGGi.ComFuncs.Trans(302535920000730,"You've chosen a mystery!"),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000730--[[You've chosen a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
   end
 end
 function OnMsg.MysteryEnd(Outcome)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(tostring(Outcome),ChoGGi.ComFuncs.Trans(3486,"Mystery"),logo_13)
+    ChoGGi.ComFuncs.MsgPopup(tostring(Outcome),T(3486--[[Mystery--]]),logo_13)
   end
 end
 
@@ -416,6 +469,7 @@ function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
   --save menu pos
+  local dlgUAMenu = dlgUAMenu
   if ChoGGi.UserSettings.KeepCheatsMenuPosition and dlgUAMenu then
     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
   end
@@ -479,7 +533,7 @@ function OnMsg.ChoGGi_CreatedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     local labels = UICity.labels
     labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
-    local label = labels[oldTableConcat({"ChoGGi_",Obj.class})]
+    local label = labels[Concat("ChoGGi_",Obj.class)]
     label[#label+1] = Obj
   end
 end
@@ -487,7 +541,7 @@ function OnMsg.ChoGGi_RemovedGridObject(Obj)
   if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
     local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
-    ChoGGi.ComFuncs.RemoveFromLabel(oldTableConcat({"ChoGGi_",Obj.class}),Obj)
+    ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",Obj.class),Obj)
   end
 end
 
@@ -593,11 +647,11 @@ local function CheckForRate(Obj)
     local function SetValue(sType)
       if value.charge then
         Obj[sType].max_charge = value.charge
-        Obj[oldTableConcat({"max_",sType,"_charge"})] = value.charge
+        Obj[Concat("max_",sType,"_charge")] = value.charge
       end
       if value.discharge then
         Obj[sType].max_discharge = value.discharge
-        Obj[oldTableConcat({"max_",sType,"_discharge"})] = value.discharge
+        Obj[Concat("max_",sType,"_discharge")] = value.discharge
       end
     end
 
@@ -628,7 +682,7 @@ function OnMsg.ChoGGi_DaddysLittleHitler()
       return true
     end,
     base_score = 0,
-    display_name = ChoGGi.ComFuncs.Trans(302535920000731,"Deutsche Gesellschaft für Rassenhygiene"),
+    display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]),
     group = "Default",
     id = "DaddysLittleHitler"
   })
@@ -641,7 +695,7 @@ function OnMsg.ChoGGi_Childkiller()
   local MilestoneCompleted = MilestoneCompleted
   PlaceObj("Milestone", {
     base_score = 0,
-    display_name = ChoGGi.ComFuncs.Trans(302535920000732,"Childkiller (You evil, evil person.)"),
+    display_name = T(302535920000732--[[Childkiller (You evil, evil person.)--]]),
     group = "Default",
     id = "Childkiller"
   })
@@ -670,24 +724,16 @@ function OnMsg.ChoGGi_Loaded()
   end
   ChoGGi.Temp.IsGameLoaded = true
 
-  local UserSettings = ChoGGi.UserSettings
-  local Presets = Presets
-  local UAMenu = UAMenu
-  local DataInstances = DataInstances
-  local const = const
-  local hr = hr
-  local config = config
-  local UserActions = UserActions
-  local OpenGedApp = OpenGedApp
-  local g_Classes = g_Classes
-  local Presets = Presets
-  local PlaceObj = PlaceObj
-  local LuaCodeToTuple = LuaCodeToTuple
-  local empty_table = empty_table
   local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-  local AsyncFileToString = AsyncFileToString
+  local config = config
+  local const = const
+  local DataInstances = DataInstances
   local dlgConsole = dlgConsole
-  local dlgConsoleLog = dlgConsoleLog
+  local Presets = Presets
+  local UserActions = UserActions
+  local UserSettings = ChoGGi.UserSettings
+  local hr = hr
+
   --gets used a few times
   local Table
 
@@ -700,7 +746,7 @@ function OnMsg.ChoGGi_Loaded()
   ChoGGi.Temp.UnitPathingHandles = {}
 
   --remove all built-in actions
-  UserActions.ClearGlobalTables()
+  UserActions_ClearGlobalTables()
   UserActions.Actions = {}
   UserActions.RejectedActions = {}
 
@@ -711,29 +757,28 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --add custom actions
-  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
   ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ResourcesMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
 
   --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
     local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or {}
+    Presets[preset_class] = Presets[preset_class] or empty_table
     local map = class.GlobalMap
     if map then
-      rawset(_G, map, rawget(_G, map) or {})
+      rawset(_G, map, rawget(_G, map) or empty_table)
     end
     ChoGGi.ComFuncs.AddAction(
-      oldTableConcat({"Presets/",name}),
+      Concat("Presets/",name),
       function()
         OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
           PresetClass = name,
@@ -741,22 +786,20 @@ function OnMsg.ChoGGi_Loaded()
         })
       end,
       class.EditorShortcut or nil,
-      ChoGGi.ComFuncs.Trans(302535920000733,"Open a preset in the editor."),
+      T(302535920000733--[[Open a preset in the editor.--]]),
       class.EditorIcon or "CollectionsEditor.tga"
     )
   end)
 
   --broken ass shit (not sure what this is for...)
-  --[[
-  local mod = Mods[ChoGGi.id]
-  local text
-  for _,bv in pairs(mod) do
-    text = oldTableConcat({tostring(bv)})
-  end
-  --]]
+--~   local mod = Mods[ChoGGi.id]
+--~   local text
+--~   for _,bv in pairs(mod) do
+--~     text = Concat(tostring(bv))
+--~   end
 
   --update menu
-  UAMenu.UpdateUAMenu(UserActions.GetActiveActions())
+  g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
 
 
 
@@ -770,7 +813,7 @@ function OnMsg.ChoGGi_Loaded()
     --make some space for the button
     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
 
-    local toolbar = XMenuBar:new({
+    g_Classes.XMenuBar:new({
       Id = "idMenu",
       HAlign = "left",
       Margins = box(15, 0, 0, 3),
@@ -782,14 +825,13 @@ function OnMsg.ChoGGi_Loaded()
     }, dlgConsole)
 
     ChoGGi.ComFuncs.RebuildConsoleToolbar()
-
   end
 
   --show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then
     PlaceObj("Milestone", {
       base_score = 0,
-      display_name = ChoGGi.ComFuncs.Trans(302535920000731,"Deutsche Gesellschaft für Rassenhygiene"),
+      display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]),
       group = "Default",
       id = "DaddysLittleHitler"
     })
@@ -800,7 +842,7 @@ function OnMsg.ChoGGi_Loaded()
   if UICity.ChoGGi.Childkiller then
     PlaceObj("Milestone", {
       base_score = 0,
-      display_name = ChoGGi.ComFuncs.Trans(302535920000732,"Childkiller (You evil, evil person.)"),
+      display_name = T(302535920000732--[[Childkiller (You evil, evil person.)--]]),
       group = "Default",
       id = "Childkiller"
     })
@@ -840,7 +882,7 @@ function OnMsg.ChoGGi_Loaded()
 
   --long arsed cables
   if UserSettings.UnlimitedConnectionLength then
-    GridConstructionController.max_hex_distance_to_allow_build = 1000
+    g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000
   end
 
   --on by default, you know all them martian trees (might make a cpu difference, probably not)
@@ -893,6 +935,10 @@ function OnMsg.ChoGGi_Loaded()
     hr.ShadowFadeOutRangePercent = 0 --def 30
   end
 
+  --default to showing interface in ss
+  if UserSettings.ShowInterfaceInScreenshots then
+    hr.InterfaceInScreenshot = 1
+  end
 
   --not sure why this would be false on a dome
   Table = UICity.labels.Dome or empty_table
@@ -915,7 +961,7 @@ function OnMsg.ChoGGi_Loaded()
   end)
 
   --so we can change the max_amount for concrete
-  Table = TerrainDepositConcrete.properties
+  Table = g_Classes.TerrainDepositConcrete.properties
   for i = 1, #Table do
     if Table[i].id == "max_amount" then
       Table[i].read_only = nil
@@ -975,7 +1021,7 @@ function OnMsg.ChoGGi_Loaded()
   if UserSettings.ShowCheatsMenu or ChoGGi.Temp.Testing then
     --always show on my computer
     if not dlgUAMenu then
-      UAMenu.ToggleOpen()
+      g_Classes.UAMenu.ToggleOpen()
     end
   end
 
@@ -984,18 +1030,13 @@ function OnMsg.ChoGGi_Loaded()
     ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
   end
 
-  --default to showing interface in ss
-  if UserSettings.ShowInterfaceInScreenshots then
-    hr.InterfaceInScreenshot = 1
-  end
-
   --set zoom/border scrolling
   ChoGGi.CodeFuncs.SetCameraSettings()
 
   --show all traits
   if UserSettings.SanatoriumSchoolShowAll then
-    Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
-    School.max_traits = #ChoGGi.Tables.PositiveTraits
+    g_Classes.Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
+    g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
   end
 
   --unbreakable cables/pipes
@@ -1087,29 +1128,31 @@ function OnMsg.ChoGGi_Loaded()
   local msgs = ChoGGi.Temp.StartupMsgs
   for i = 1, #msgs do
     print(msgs[i])
-    --AddConsoleLog(msgs[i],true)
-    --ConsolePrint(ChoGGi.Temp.StartupMsgs[i])
   end
 
   --someone doesn't like LICENSE files...
   local dickhead
-  local nofile,file = AsyncFileToString(oldTableConcat({ChoGGi.ModPath,"/LICENSE"}))
+  local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"/LICENSE"))
 
   if nofile then
     --some dickhead removed the LICENSE
     dickhead = true
-  --elseif string.len(file) ~= 1245 then
   elseif not file:find("ChoGGi") then
     --LICENSE exists, but was changed (again dickhead)
     dickhead = true
   end
 
-  --look ma; a LICENSE!
+  --look ma; a LICENSE! oh no wait, just a dickhead
   if dickhead then
-    --i mean you gotta be compliant after all...
-    print("Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE\n\nAll of my code is licensed under the MIT License as follows:\n\nMIT License\n\nCopyright (c) [2018] [ChoGGi]\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n")
-    print("\n\n\n\nSerious?\nI released this mod under the MIT LICENSE, all you gotta do is not delete the LICENSE file.\nIt ain't that hard to do...")
-    terminal.SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
+    --i mean you gotta be compliant somehow...
+    print(ChoGGi._LICENSE)
+    terminal_SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
+  end
+
+  --how long startup takes, maybe add this as an option for other modders to see as well?
+  if ChoGGi.Temp.Testing then
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
+    print(Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>:</color>Startup ticks: ",ChoGGi.Temp.StartupTicks))
   end
 
 end --OnMsg

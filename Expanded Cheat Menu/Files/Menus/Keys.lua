@@ -1,6 +1,19 @@
 --See LICENSE for terms
 
-local oldTableConcat = oldTableConcat
+local Concat = ChoGGi.ComFuncs.Concat
+
+local pcall,tostring = pcall,tostring
+
+local CloseXBuildMenu = CloseXBuildMenu
+local GetInGameInterface = GetInGameInterface
+local GetXDialog = GetXDialog
+local PlaceObj = PlaceObj
+local Random = Random
+local ShowConsole = ShowConsole
+local UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
+local ValueToLuaCode = ValueToLuaCode
+
+local g_Classes = g_Classes
 
 function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
@@ -44,10 +57,10 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
         else
           if skipped then
             -- -1 more for skipping Hidden
-            AddMenuKey(i,oldTableConcat({"Shift-",i - 11}))
+            AddMenuKey(i,Concat("Shift-",i - 11))
           else
             -- -10 since we're doing Shift-*
-            AddMenuKey(i,oldTableConcat({"Shift-",i - 10}))
+            AddMenuKey(i,Concat("Shift-",i - 10))
           end
         end
       end
@@ -84,8 +97,6 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
 
   --place item under the mouse for construction
   function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
-    local CloseXBuildMenu = CloseXBuildMenu
-
     --make sure it's closed so we don't mess up selection
     pcall(function()
       CloseXBuildMenu()
@@ -141,11 +152,10 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
   ChoGGi.ComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
+      local dlgConsole = dlgConsole
       if dlgConsole then
-        local dlg = dlgConsole
-        dlg.idEdit:SetText("restart")
+        dlgConsole.idEdit:SetText("restart")
       end
-      --ChoGGi.CodeFuncs.AddConsolePrompt("restart")
     end,
     "Ctrl-Alt-Shift-R"
   )
@@ -180,17 +190,17 @@ function ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
       local ChoGGi = ChoGGi
       ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
       ChoGGi.SettingFuncs.WriteSettings()
-      UAMenu.ToggleOpen()
+      g_Classes.UAMenu.ToggleOpen()
     end,
     "F2"
   )
 
-  ChoGGi.ComFuncs.AddAction(
-    nil,
-    function()
-      quit("restart")
-    end,
-    "Ctrl-Shift-Alt-Numpad Enter"
-  )
+--~   ChoGGi.ComFuncs.AddAction(
+--~     nil,
+--~     function()
+--~       quit("restart")
+--~     end,
+--~     "Ctrl-Shift-Alt-Numpad Enter"
+--~   )
 
 end --OnMsg

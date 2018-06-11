@@ -180,18 +180,20 @@ Toggle showing history/results on-screen (Menu>Debug, it's on by default)
 type any name in to see it in the console log (ex: Consts)
 exit : or quit
 restart : or reboot
-examine(Consts) : or ex(SelectedObj)
+OpenExamine(Consts) : or ex(SelectedObj) or ~Object
 dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
 dumpobject(SelectedObj) : or dumpo
 dumptable(Consts) : or dumpt
-trans() : translate userdata: ********** to text
+trans() : translate userdata: ********** or 6543256 to text, or use $Object
 SelectedObj : or s
 SelectionMouseObj() : or m, object under mouse cursor
 GetPreciseCursorObj() : or mc, like SelectionMouseObj but compact
 GetTerrainCursorObjSel() : or mh, just the handle
 GetTerrainCursor() : or c, position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
 terminal.GetMousePos : or cs, mouse pos on screen, not map
+
+also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects
 
 If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)

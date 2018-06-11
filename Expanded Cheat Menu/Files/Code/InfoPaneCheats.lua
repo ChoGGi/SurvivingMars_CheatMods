@@ -1,13 +1,72 @@
 --See LICENSE for terms
+--add items/hint to the cheats pane
 
---add items to the cheats pane
+local Concat = ChoGGi.ComFuncs.Concat
+local T = ChoGGi.ComFuncs.Trans
+local ResourceScale = ChoGGi.Consts.ResourceScale
+
+local CreateRealTimeThread = CreateRealTimeThread
+local DestroyBuildingImmediate = DestroyBuildingImmediate
+local IsValid = IsValid
+local Random = Random
+local RebuildInfopanel = RebuildInfopanel
+local Sleep = Sleep
+
+local g_Classes = g_Classes
+
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 
---global objects
-  function Building:CheatPowerless()
+--~ global objects
+  function g_Classes.Building:CheatDestroy()
+    local ChoGGi = ChoGGi
+    local name = ChoGGi.ComFuncs.RetName(self)
+    local obj_type
+    if self:IsKindOf("BaseRover") then
+      obj_type = 7825 --Destroy this Rover.
+    elseif self:IsKindOf("Drone") then
+      obj_type = 7824 --Destroy this Drone.
+    else
+      obj_type = 7822 --Destroy this building.
+    end
+
+    local function CallBackFunc(answer)
+      if answer then
+        self.indestructible = false
+        DestroyBuildingImmediate(self)
+      end
+    end
+    ChoGGi.ComFuncs.QuestionBox(
+      Concat(T(6779--[[Warning--]]),"!\n",T(obj_type),"\n",name),
+      CallBackFunc,
+      Concat(T(6779--[[Warning--]]),": ",T(obj_type)),
+      Concat(T(obj_type)," ",name),
+      T(1176--[[Cancel Destroy--]])
+    )
+  end
+  local function CheatDeleteObject(self)
+    local ChoGGi = ChoGGi
+    local name = ChoGGi.ComFuncs.RetName(self)
+    local function CallBackFunc(answer)
+      if answer then
+        ChoGGi.CodeFuncs.DeleteObject(self)
+      end
+    end
+    ChoGGi.ComFuncs.QuestionBox(
+      Concat(T(6779--[[Warning--]]),"!\n",T(302535920000885--[[Permanently delete this object--]]),"?\n",name),
+      CallBackFunc,
+      Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
+      Concat(T(5451--[[DELETE--]]),": ",name),
+      Concat(T(3687--[[Cancel--]])," ",T(1000287--[[Delete--]]))
+    )
+  end
+  g_Classes.PinnableObject.CheatDeleteObject = CheatDeleteObject
+  g_Classes.Building.CheatDeleteObject = CheatDeleteObject
+  g_Classes.Unit.CheatDeleteObject = CheatDeleteObject
+--~
+  function g_Classes.Building:CheatPowerless()
     ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
   end
-  function Building:CheatPowered()
+  function g_Classes.Building:CheatPowered()
     --if this is here we know it has what we need so no need to check for mod/consump
     if self.ChoGGi_mod_electricity_consumption then
       local mod = self.modifications.electricity_consumption
@@ -26,7 +85,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
     self:SetBase("electricity_consumption", amount)
   end
-
+--~
   local function CheatHideSigns(self)
     self:DestroyAttaches("BuildingSign")
   end
@@ -36,61 +95,61 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   local function CheatColourDefault(self)
     ChoGGi.CodeFuncs.ObjectColourDefault(self)
   end
-  Unit.CheatHideSigns = CheatHideSigns
-  Unit.CheatColourRandom = CheatColourRandom
-  Unit.CheatColourDefault = CheatColourDefault
-  Building.CheatHideSigns = CheatHideSigns
-  Building.CheatColourRandom = CheatColourRandom
-  Building.CheatColourDefault = CheatColourDefault
+  g_Classes.Building.CheatHideSigns = CheatHideSigns
+  g_Classes.Building.CheatColourRandom = CheatColourRandom
+  g_Classes.Building.CheatColourDefault = CheatColourDefault
+  g_Classes.Unit.CheatHideSigns = CheatHideSigns
+  g_Classes.Unit.CheatColourRandom = CheatColourRandom
+  g_Classes.Unit.CheatColourDefault = CheatColourDefault
 --colonists
-  function Colonist:CheatFillMorale()
-    self.stat_morale = 100 * ChoGGi.Consts.ResourceScale
+  function g_Classes.Colonist:CheatFillMorale()
+    self.stat_morale = 100 * ResourceScale
   end
-  function Colonist:CheatFillSanity()
-    self.stat_sanity = 100 * ChoGGi.Consts.ResourceScale
+  function g_Classes.Colonist:CheatFillSanity()
+    self.stat_sanity = 100 * ResourceScale
   end
-  function Colonist:CheatFillComfort()
-    self.stat_comfort = 100 * ChoGGi.Consts.ResourceScale
+  function g_Classes.Colonist:CheatFillComfort()
+    self.stat_comfort = 100 * ResourceScale
   end
-  function Colonist:CheatFillHealth()
-    self.stat_health = 100 * ChoGGi.Consts.ResourceScale
+  function g_Classes.Colonist:CheatFillHealth()
+    self.stat_health = 100 * ResourceScale
   end
-  function Colonist:CheatFillAll()
-    Colonist.CheatFillSanity(self)
-    Colonist.CheatFillComfort(self)
-    Colonist.CheatFillHealth(self)
-    Colonist.CheatFillMorale(self)
+  function g_Classes.Colonist:CheatFillAll()
+    self:CheatFillSanity()
+    self:CheatFillComfort()
+    self:CheatFillHealth()
+    self:CheatFillMorale()
   end
-  function Colonist:CheatRenegade()
+  function g_Classes.Colonist:CheatRenegade()
     self:AddTrait("Renegade",true)
   end
-  function Colonist:CheatRenegadeClear()
+  function g_Classes.Colonist:CheatRenegadeClear()
     self:RemoveTrait("Renegade")
     CreateRealTimeThread(function()
       Sleep(100)
-      Colonist.CheatFillMorale(self)
+      self:CheatFillMorale()
     end)
   end
-  function Colonist:CheatRandomRace()
+  function g_Classes.Colonist:CheatRandomRace()
     self.race = Random(1,5)
     self:ChooseEntity()
   end
-  function Colonist:CheatRandomSpec()
+  function g_Classes.Colonist:CheatRandomSpec()
     --skip children, or they'll be a black cube
     if not self.entity:find("Child",1,true) then
       self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,6)],"init")
     end
   end
-  function Colonist:CheatPrefDbl()
+  function g_Classes.Colonist:CheatPrefDbl()
     self.performance = self.performance * 2
   end
-  function Colonist:CheatPrefDef()
+  function g_Classes.Colonist:CheatPrefDef()
     self.performance = self.base_performance
   end
-  function Colonist:CheatRandomGender()
+  function g_Classes.Colonist:CheatRandomGender()
     ChoGGi.CodeFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,5)])
   end
-  function Colonist:CheatRandomAge()
+  function g_Classes.Colonist:CheatRandomAge()
     ChoGGi.CodeFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,6)])
   end
 --CheatAllShifts
@@ -99,9 +158,9 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.closed_shifts[2] = false
     self.closed_shifts[3] = false
   end
-  FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
-  FarmConventional.CheatAllShiftsOn = CheatAllShiftsOn
-  FarmHydroponic.CheatAllShiftsOn = CheatAllShiftsOn
+  g_Classes.FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
+  g_Classes.FarmConventional.CheatAllShiftsOn = CheatAllShiftsOn
+  g_Classes.FarmHydroponic.CheatAllShiftsOn = CheatAllShiftsOn
 --CheatFullyAuto
   local function CheatWorkersDbl(self)
     self.max_workers = self.max_workers * 2
@@ -124,136 +183,137 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
     self.auto_performance = nil
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
-  DroneFactory.CheatWorkAuto = CheatWorkAuto
-  DroneFactory.CheatWorkManual = CheatWorkManual
-  DroneFactory.CheatWorkersDbl = CheatWorkersDbl
-  DroneFactory.CheatWorkersDef = CheatWorkersDef
-  MedicalCenter.CheatWorkAuto = CheatWorkAuto
-  MedicalCenter.CheatWorkManual = CheatWorkManual
-  MedicalCenter.CheatWorkersDbl = CheatWorkersDbl
-  MedicalCenter.CheatWorkersDef = CheatWorkersDef
-  NetworkNode.CheatWorkAuto = CheatWorkAuto
-  NetworkNode.CheatWorkManual = CheatWorkManual
-  NetworkNode.CheatWorkersDbl = CheatWorkersDbl
-  NetworkNode.CheatWorkersDef = CheatWorkersDef
-  CloningVats.CheatWorkAuto = CheatWorkAuto
-  CloningVats.CheatWorkManual = CheatWorkManual
-  CloningVats.CheatWorkersDbl = CheatWorkersDbl
-  CloningVats.CheatWorkersDef = CheatWorkersDef
-  WaterReclamationSpire.CheatWorkAuto = CheatWorkAuto
-  WaterReclamationSpire.CheatWorkManual = CheatWorkManual
-  WaterReclamationSpire.CheatWorkersDbl = CheatWorkersDbl
-  WaterReclamationSpire.CheatWorkersDef = CheatWorkersDef
-  BaseResearchLab.CheatWorkAuto = CheatWorkAuto
-  BaseResearchLab.CheatWorkManual = CheatWorkManual
-  BaseResearchLab.CheatWorkersDbl = CheatWorkersDbl
-  BaseResearchLab.CheatWorkersDef = CheatWorkersDef
-  SecurityStation.CheatWorkAuto = CheatWorkAuto
-  SecurityStation.CheatWorkManual = CheatWorkManual
-  SecurityStation.CheatWorkersDbl = CheatWorkersDbl
-  SecurityStation.CheatWorkersDef = CheatWorkersDef
-  CasinoComplex.CheatWorkAuto = CheatWorkAuto
-  CasinoComplex.CheatWorkManual = CheatWorkManual
-  CasinoComplex.CheatWorkersDbl = CheatWorkersDbl
-  CasinoComplex.CheatWorkersDef = CheatWorkersDef
-  Spacebar.CheatWorkAuto = CheatWorkAuto
-  Spacebar.CheatWorkManual = CheatWorkManual
-  Spacebar.CheatWorkersDbl = CheatWorkersDbl
-  Spacebar.CheatWorkersDef = CheatWorkersDef
-  ServiceWorkplace.CheatWorkAuto = CheatWorkAuto
-  ServiceWorkplace.CheatWorkManual = CheatWorkManual
-  ServiceWorkplace.CheatWorkersDbl = CheatWorkersDbl
-  ServiceWorkplace.CheatWorkersDef = CheatWorkersDef
-  Diner.CheatWorkAuto = CheatWorkAuto
-  Diner.CheatWorkManual = CheatWorkManual
-  Diner.CheatWorkersDbl = CheatWorkersDbl
-  Diner.CheatWorkersDef = CheatWorkersDef
-  MachinePartsFactory.CheatWorkAuto = CheatWorkAuto
-  MachinePartsFactory.CheatWorkManual = CheatWorkManual
-  MachinePartsFactory.CheatWorkersDbl = CheatWorkersDbl
-  MachinePartsFactory.CheatWorkersDef = CheatWorkersDef
-  ElectronicsFactory.CheatWorkAuto = CheatWorkAuto
-  ElectronicsFactory.CheatWorkManual = CheatWorkManual
-  ElectronicsFactory.CheatWorkersDbl = CheatWorkersDbl
-  ElectronicsFactory.CheatWorkersDef = CheatWorkersDef
-  Infirmary.CheatWorkAuto = CheatWorkAuto
-  Infirmary.CheatWorkManual = CheatWorkManual
-  Infirmary.CheatWorkersDbl = CheatWorkersDbl
-  Infirmary.CheatWorkersDef = CheatWorkersDef
-  Grocery.CheatWorkAuto = CheatWorkAuto
-  Grocery.CheatWorkManual = CheatWorkManual
-  Grocery.CheatWorkersDbl = CheatWorkersDbl
-  Grocery.CheatWorkersDef = CheatWorkersDef
-  FungalFarm.CheatWorkAuto = CheatWorkAuto
-  FungalFarm.CheatWorkManual = CheatWorkManual
-  FungalFarm.CheatWorkersDbl = CheatWorkersDbl
-  FungalFarm.CheatWorkersDef = CheatWorkersDef
-  PolymerPlant.CheatWorkAuto = CheatWorkAuto
-  PolymerPlant.CheatWorkManual = CheatWorkManual
-  PolymerPlant.CheatWorkersDbl = CheatWorkersDbl
-  PolymerPlant.CheatWorkersDef = CheatWorkersDef
-  FarmConventional.CheatWorkAuto = CheatWorkAuto
-  FarmConventional.CheatWorkManual = CheatWorkManual
-  FarmConventional.CheatWorkersDbl = CheatWorkersDbl
-  FarmConventional.CheatWorkersDef = CheatWorkersDef
-  FarmHydroponic.CheatWorkAuto = CheatWorkAuto
-  FarmHydroponic.CheatWorkManual = CheatWorkManual
-  FarmHydroponic.CheatWorkersDbl = CheatWorkersDbl
-  FarmHydroponic.CheatWorkersDef = CheatWorkersDef
-  MetalsExtractor.CheatWorkAuto = CheatWorkAuto
-  MetalsExtractor.CheatWorkManual = CheatWorkManual
-  MetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
-  MetalsExtractor.CheatWorkersDef = CheatWorkersDef
-  PreciousMetalsExtractor.CheatWorkAuto = CheatWorkAuto
-  PreciousMetalsExtractor.CheatWorkManual = CheatWorkManual
-  PreciousMetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
-  PreciousMetalsExtractor.CheatWorkersDef = CheatWorkersDef
-  FusionReactor.CheatWorkAuto = CheatWorkAuto
-  FusionReactor.CheatWorkManual = CheatWorkManual
-  FusionReactor.CheatWorkersDbl = CheatWorkersDbl
-  FusionReactor.CheatWorkersDef = CheatWorkersDef
+  g_Classes.BaseResearchLab.CheatWorkAuto = CheatWorkAuto
+  g_Classes.BaseResearchLab.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.BaseResearchLab.CheatWorkersDef = CheatWorkersDef
+  g_Classes.BaseResearchLab.CheatWorkManual = CheatWorkManual
+  g_Classes.CasinoComplex.CheatWorkAuto = CheatWorkAuto
+  g_Classes.CasinoComplex.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.CasinoComplex.CheatWorkersDef = CheatWorkersDef
+  g_Classes.CasinoComplex.CheatWorkManual = CheatWorkManual
+  g_Classes.CloningVats.CheatWorkAuto = CheatWorkAuto
+  g_Classes.CloningVats.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.CloningVats.CheatWorkersDef = CheatWorkersDef
+  g_Classes.CloningVats.CheatWorkManual = CheatWorkManual
+  g_Classes.Diner.CheatWorkAuto = CheatWorkAuto
+  g_Classes.Diner.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.Diner.CheatWorkersDef = CheatWorkersDef
+  g_Classes.Diner.CheatWorkManual = CheatWorkManual
+  g_Classes.DroneFactory.CheatWorkAuto = CheatWorkAuto
+  g_Classes.DroneFactory.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.DroneFactory.CheatWorkersDef = CheatWorkersDef
+  g_Classes.DroneFactory.CheatWorkManual = CheatWorkManual
+  g_Classes.ElectronicsFactory.CheatWorkAuto = CheatWorkAuto
+  g_Classes.ElectronicsFactory.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.ElectronicsFactory.CheatWorkersDef = CheatWorkersDef
+  g_Classes.ElectronicsFactory.CheatWorkManual = CheatWorkManual
+  g_Classes.FarmConventional.CheatWorkAuto = CheatWorkAuto
+  g_Classes.FarmConventional.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.FarmConventional.CheatWorkersDef = CheatWorkersDef
+  g_Classes.FarmConventional.CheatWorkManual = CheatWorkManual
+  g_Classes.FarmHydroponic.CheatWorkAuto = CheatWorkAuto
+  g_Classes.FarmHydroponic.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.FarmHydroponic.CheatWorkersDef = CheatWorkersDef
+  g_Classes.FarmHydroponic.CheatWorkManual = CheatWorkManual
+  g_Classes.FungalFarm.CheatWorkAuto = CheatWorkAuto
+  g_Classes.FungalFarm.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.FungalFarm.CheatWorkersDef = CheatWorkersDef
+  g_Classes.FungalFarm.CheatWorkManual = CheatWorkManual
+  g_Classes.FusionReactor.CheatWorkAuto = CheatWorkAuto
+  g_Classes.FusionReactor.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.FusionReactor.CheatWorkersDef = CheatWorkersDef
+  g_Classes.FusionReactor.CheatWorkManual = CheatWorkManual
+  g_Classes.Grocery.CheatWorkAuto = CheatWorkAuto
+  g_Classes.Grocery.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.Grocery.CheatWorkersDef = CheatWorkersDef
+  g_Classes.Grocery.CheatWorkManual = CheatWorkManual
+  g_Classes.Infirmary.CheatWorkAuto = CheatWorkAuto
+  g_Classes.Infirmary.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.Infirmary.CheatWorkersDef = CheatWorkersDef
+  g_Classes.Infirmary.CheatWorkManual = CheatWorkManual
+  g_Classes.MachinePartsFactory.CheatWorkAuto = CheatWorkAuto
+  g_Classes.MachinePartsFactory.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.MachinePartsFactory.CheatWorkersDef = CheatWorkersDef
+  g_Classes.MachinePartsFactory.CheatWorkManual = CheatWorkManual
+  g_Classes.MedicalCenter.CheatWorkAuto = CheatWorkAuto
+  g_Classes.MedicalCenter.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.MedicalCenter.CheatWorkersDef = CheatWorkersDef
+  g_Classes.MedicalCenter.CheatWorkManual = CheatWorkManual
+  g_Classes.MetalsExtractor.CheatWorkAuto = CheatWorkAuto
+  g_Classes.MetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.MetalsExtractor.CheatWorkersDef = CheatWorkersDef
+  g_Classes.MetalsExtractor.CheatWorkManual = CheatWorkManual
+  g_Classes.NetworkNode.CheatWorkAuto = CheatWorkAuto
+  g_Classes.NetworkNode.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.NetworkNode.CheatWorkersDef = CheatWorkersDef
+  g_Classes.NetworkNode.CheatWorkManual = CheatWorkManual
+  g_Classes.PolymerPlant.CheatWorkAuto = CheatWorkAuto
+  g_Classes.PolymerPlant.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.PolymerPlant.CheatWorkersDef = CheatWorkersDef
+  g_Classes.PolymerPlant.CheatWorkManual = CheatWorkManual
+  g_Classes.PreciousMetalsExtractor.CheatWorkAuto = CheatWorkAuto
+  g_Classes.PreciousMetalsExtractor.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.PreciousMetalsExtractor.CheatWorkersDef = CheatWorkersDef
+  g_Classes.PreciousMetalsExtractor.CheatWorkManual = CheatWorkManual
+  g_Classes.SecurityStation.CheatWorkAuto = CheatWorkAuto
+  g_Classes.SecurityStation.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.SecurityStation.CheatWorkersDef = CheatWorkersDef
+  g_Classes.SecurityStation.CheatWorkManual = CheatWorkManual
+  g_Classes.ServiceWorkplace.CheatWorkAuto = CheatWorkAuto
+  g_Classes.ServiceWorkplace.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.ServiceWorkplace.CheatWorkersDef = CheatWorkersDef
+  g_Classes.ServiceWorkplace.CheatWorkManual = CheatWorkManual
+  g_Classes.Spacebar.CheatWorkAuto = CheatWorkAuto
+  g_Classes.Spacebar.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.Spacebar.CheatWorkersDef = CheatWorkersDef
+  g_Classes.Spacebar.CheatWorkManual = CheatWorkManual
+  g_Classes.WaterReclamationSpire.CheatWorkAuto = CheatWorkAuto
+  g_Classes.WaterReclamationSpire.CheatWorkersDbl = CheatWorkersDbl
+  g_Classes.WaterReclamationSpire.CheatWorkersDef = CheatWorkersDef
+  g_Classes.WaterReclamationSpire.CheatWorkManual = CheatWorkManual
+
 --CheatDoubleMaxAmount
   local function CheatDoubleMaxAmount(self)
     self.max_amount = self.max_amount * 2
   end
-  SubsurfaceDepositMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
-  SubsurfaceDepositWater.CheatDoubleMaxAmount = CheatDoubleMaxAmount
-  SubsurfaceDepositPreciousMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
-  SurfaceDepositGroup.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  g_Classes.SubsurfaceDepositMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  g_Classes.SubsurfaceDepositWater.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  g_Classes.SubsurfaceDepositPreciousMetals.CheatDoubleMaxAmount = CheatDoubleMaxAmount
+  g_Classes.SurfaceDepositGroup.CheatDoubleMaxAmount = CheatDoubleMaxAmount
 --CheatCapDbl storage
-  function ElectricityStorage:CheatCapDbl()
+  function g_Classes.ElectricityStorage:CheatCapDbl()
     self.capacity = self.capacity * 2
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "charging"
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
-  function ElectricityStorage:CheatCapDef()
+  function g_Classes.ElectricityStorage:CheatCapDef()
     self.capacity = self.base_capacity
     self.electricity.storage_capacity = self.capacity
     self.electricity.storage_mode = "full"
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   --
-  function WaterTank:CheatCapDbl()
+  function g_Classes.WaterTank:CheatCapDbl()
     self.water_capacity = self.water_capacity * 2
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "charging"
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
-  function WaterTank:CheatCapDef()
+  function g_Classes.WaterTank:CheatCapDef()
     self.water_capacity = self.base_water_capacity
     self.water.storage_capacity = self.water_capacity
     self.water.storage_mode = "full"
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
   --
-  function OxygenTank:CheatCapDbl()
+  function g_Classes.OxygenTank:CheatCapDbl()
     self.air_capacity = self.air_capacity * 2
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "charging"
     ChoGGi.CodeFuncs.ToggleWorking(self)
   end
-  function OxygenTank:CheatCapDef()
+  function g_Classes.OxygenTank:CheatCapDef()
     self.air_capacity = self.base_air_capacity
     self.air.storage_capacity = self.air_capacity
     self.air.storage_mode = "full"
@@ -270,16 +330,17 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   local function CheatColonistCapDef(self)
     self.capacity = self.base_capacity
   end
-  Arcology.CheatColonistCapDbl = CheatColonistCapDbl
-  Arcology.CheatColonistCapDef = CheatColonistCapDef
-  SmartHome.CheatColonistCapDbl = CheatColonistCapDbl
-  SmartHome.CheatColonistCapDef = CheatColonistCapDef
-  Nursery.CheatColonistCapDbl = CheatColonistCapDbl
-  Nursery.CheatColonistCapDef = CheatColonistCapDef
-  Apartments.CheatColonistCapDbl = CheatColonistCapDbl
-  Apartments.CheatColonistCapDef = CheatColonistCapDef
-  LivingQuarters.CheatColonistCapDbl = CheatColonistCapDbl
-  LivingQuarters.CheatColonistCapDef = CheatColonistCapDef
+  g_Classes.Apartments.CheatColonistCapDbl = CheatColonistCapDbl
+  g_Classes.Apartments.CheatColonistCapDef = CheatColonistCapDef
+  g_Classes.Arcology.CheatColonistCapDbl = CheatColonistCapDbl
+  g_Classes.Arcology.CheatColonistCapDef = CheatColonistCapDef
+  g_Classes.LivingQuarters.CheatColonistCapDbl = CheatColonistCapDbl
+  g_Classes.LivingQuarters.CheatColonistCapDef = CheatColonistCapDef
+  g_Classes.Nursery.CheatColonistCapDbl = CheatColonistCapDbl
+  g_Classes.Nursery.CheatColonistCapDef = CheatColonistCapDef
+  g_Classes.SmartHome.CheatColonistCapDbl = CheatColonistCapDbl
+  g_Classes.SmartHome.CheatColonistCapDef = CheatColonistCapDef
+
 --CheatVisitorsDbl
   local function CheatVisitorsDbl(self)
     if self.max_visitors == 4096 then
@@ -290,38 +351,38 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   local function CheatVisitorsDef(self)
     self.max_visitors = self.base_max_visitors
   end
-  CasinoComplex.CheatVisitorsDbl = CheatVisitorsDbl
-  CasinoComplex.CheatVisitorsDef = CheatVisitorsDef
-  Diner.CheatVisitorsDbl = CheatVisitorsDbl
-  Diner.CheatVisitorsDef = CheatVisitorsDef
-  Grocery.CheatVisitorsDbl = CheatVisitorsDbl
-  Grocery.CheatVisitorsDef = CheatVisitorsDef
-  HangingGardens.CheatVisitorsDbl = CheatVisitorsDbl
-  HangingGardens.CheatVisitorsDef = CheatVisitorsDef
-  Infirmary.CheatVisitorsDbl = CheatVisitorsDbl
-  Infirmary.CheatVisitorsDef = CheatVisitorsDef
-  MedicalCenter.CheatVisitorsDbl = CheatVisitorsDbl
-  MedicalCenter.CheatVisitorsDef = CheatVisitorsDef
-  OpenAirGym.CheatVisitorsDbl = CheatVisitorsDbl
-  OpenAirGym.CheatVisitorsDef = CheatVisitorsDef
-  Playground.CheatVisitorsDbl = CheatVisitorsDbl
-  Playground.CheatVisitorsDef = CheatVisitorsDef
-  ServiceWorkplace.CheatVisitorsDbl = CheatVisitorsDbl
-  ServiceWorkplace.CheatVisitorsDef = CheatVisitorsDef
-  Spacebar.CheatVisitorsDbl = CheatVisitorsDbl
-  Spacebar.CheatVisitorsDef = CheatVisitorsDef
-  MartianUniversity.CheatVisitorsDbl = CheatVisitorsDbl
-  MartianUniversity.CheatVisitorsDef = CheatVisitorsDef
-  Sanatorium.CheatVisitorsDbl = CheatVisitorsDbl
-  Sanatorium.CheatVisitorsDef = CheatVisitorsDef
-  School.CheatVisitorsDbl = CheatVisitorsDbl
-  School.CheatVisitorsDef = CheatVisitorsDef
-  --
+  g_Classes.CasinoComplex.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.CasinoComplex.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Diner.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Diner.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Grocery.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Grocery.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.HangingGardens.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.HangingGardens.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Infirmary.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Infirmary.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.MartianUniversity.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.MartianUniversity.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.MedicalCenter.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.MedicalCenter.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.OpenAirGym.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.OpenAirGym.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Playground.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Playground.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Sanatorium.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Sanatorium.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.School.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.School.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.ServiceWorkplace.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.ServiceWorkplace.CheatVisitorsDef = CheatVisitorsDef
+  g_Classes.Spacebar.CheatVisitorsDbl = CheatVisitorsDbl
+  g_Classes.Spacebar.CheatVisitorsDef = CheatVisitorsDef
+
 --Double Shuttles
-  function ShuttleHub:CheatMaxShuttlesDbl()
+  function g_Classes.ShuttleHub:CheatMaxShuttlesDbl()
     self.max_shuttles = self.max_shuttles * 2
   end
-  function ShuttleHub:CheatMaxShuttlesDef()
+  function g_Classes.ShuttleHub:CheatMaxShuttlesDef()
     self.max_shuttles = self.base_max_shuttles
   end
 --CheatBattCapDbl
@@ -331,46 +392,45 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   local function CheatBattCapDef(self)
     self.battery_max = const.BaseRoverMaxBattery
   end
-  ExplorerRover.CheatBattCapDbl = CheatBattCapDbl
-  ExplorerRover.CheatBattCapDef = CheatBattCapDef
-  RCTransport.CheatBattCapDbl = CheatBattCapDbl
-  RCTransport.CheatBattCapDef = CheatBattCapDef
-  RCRover.CheatBattCapDbl = CheatBattCapDbl
-  RCRover.CheatBattCapDef = CheatBattCapDef
-  Drone.CheatBattCapDbl = CheatBattCapDbl
-  Drone.CheatBattCapDef = CheatBattCapDef
+  g_Classes.Drone.CheatBattCapDbl = CheatBattCapDbl
+  g_Classes.Drone.CheatBattCapDef = CheatBattCapDef
+  g_Classes.ExplorerRover.CheatBattCapDbl = CheatBattCapDbl
+  g_Classes.ExplorerRover.CheatBattCapDef = CheatBattCapDef
+  g_Classes.RCRover.CheatBattCapDbl = CheatBattCapDbl
+  g_Classes.RCRover.CheatBattCapDef = CheatBattCapDef
+  g_Classes.RCTransport.CheatBattCapDbl = CheatBattCapDbl
+  g_Classes.RCTransport.CheatBattCapDef = CheatBattCapDef
 --CheatMoveSpeedDbl
   local function CheatMoveSpeedDbl(self)
     --self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-    pf.SetStepLen(Obj,self:GetMoveSpeed() * 2)
+    g_Classes.pf.SetStepLen(self,self:GetMoveSpeed() * 2)
   end
   local function CheatMoveSpeedDef(self)
     --self:SetMoveSpeed(self.base_move_speed)
-    pf.SetStepLen(Obj,self.base_move_speed)
+    g_Classes.pf.SetStepLen(self,self.base_move_speed)
   end
-  ExplorerRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
-  ExplorerRover.CheatMoveSpeedDef = CheatMoveSpeedDef
-  RCTransport.CheatMoveSpeedDbl = CheatMoveSpeedDbl
-  RCTransport.CheatMoveSpeedDef = CheatMoveSpeedDef
-  RCRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
-  RCRover.CheatMoveSpeedDef = CheatMoveSpeedDef
-  Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
-  Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
+  g_Classes.Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  g_Classes.Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
+  g_Classes.ExplorerRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  g_Classes.ExplorerRover.CheatMoveSpeedDef = CheatMoveSpeedDef
+  g_Classes.RCRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  g_Classes.RCRover.CheatMoveSpeedDef = CheatMoveSpeedDef
+  g_Classes.RCTransport.CheatMoveSpeedDbl = CheatMoveSpeedDbl
+  g_Classes.RCTransport.CheatMoveSpeedDef = CheatMoveSpeedDef
   local function CheatBattRefill(self)
     self.battery_current = self.battery_max
   end
-  ExplorerRover.CheatBattRefill = CheatBattRefill
-  RCTransport.CheatBattRefill = CheatBattRefill
-  RCRover.CheatBattRefill = CheatBattRefill
-  function Drone:CheatBattRefill()
+  g_Classes.ExplorerRover.CheatBattRefill = CheatBattRefill
+  g_Classes.RCRover.CheatBattRefill = CheatBattRefill
+  g_Classes.RCTransport.CheatBattRefill = CheatBattRefill
+  function g_Classes.Drone:CheatBattRefill()
     self.battery = self.battery_max
   end
   local function CheatFindResource(self)
     ChoGGi.CodeFuncs.FindNearestResource(self)
   end
-  RCTransport.CheatFindResource = CheatFindResource
-  Drone.CheatFindResource = CheatFindResource
-
+  g_Classes.Drone.CheatFindResource = CheatFindResource
+  g_Classes.RCTransport.CheatFindResource = CheatFindResource
 --CheatCleanAndFix
   local function CheatCleanAndFix(self)
     self:CheatMalfunction()
@@ -396,70 +456,63 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
    end)
   end
 
-  ExplorerRover.CheatCleanAndFix = CheatCleanAndFix
-  RCTransport.CheatCleanAndFix = CheatCleanAndFix
-  RCRover.CheatCleanAndFix = CheatCleanAndFix
-  Drone.CheatCleanAndFix = CheatCleanAndFixDrone
+  g_Classes.Drone.CheatCleanAndFix = CheatCleanAndFixDrone
+  g_Classes.ExplorerRover.CheatCleanAndFix = CheatCleanAndFix
+  g_Classes.RCRover.CheatCleanAndFix = CheatCleanAndFix
+  g_Classes.RCTransport.CheatCleanAndFix = CheatCleanAndFix
 --misc
-  function SecurityStation:CheatReneagadeCapDbl()
+  function g_Classes.SecurityStation:CheatReneagadeCapDbl()
     self.negated_renegades = self.negated_renegades * 2
   end
-  function SecurityStation:CheatReneagadeCapDef()
+  function g_Classes.SecurityStation:CheatReneagadeCapDef()
     self.negated_renegades = self.max_negated_renegades
   end
-  function MechanizedDepot:CheatEmptyDepot()
+  function g_Classes.MechanizedDepot:CheatEmptyDepot()
     ChoGGi.CodeFuncs.EmptyMechDepot(self)
   end
-  --[[
-  function SupplyRocket:CheatCapDbl()
-    self.max_export_storage = self.max_export_storage * 2
-  end
-  function SupplyRocket:CheatCapDef()
-    self.max_export_storage = self.base_max_export_storage
-  end
---]]
+--~   function SupplyRocket:CheatCapDbl()
+--~     self.max_export_storage = self.max_export_storage * 2
+--~   end
+--~   function SupplyRocket:CheatCapDef()
+--~     self.max_export_storage = self.base_max_export_storage
+--~   end
 end --OnMsg
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-  Building.CheatAddMaintenancePnts = nil
-  Building.CheatMakeSphereTarget = nil
-  Building.CheatSpawnWorker = nil
-  Building.CheatSpawnVisitor = nil
-  --Building.CheatMalfunction = nil
+  g_Classes.Building.CheatAddMaintenancePnts = nil
+  g_Classes.Building.CheatMakeSphereTarget = nil
+  g_Classes.Building.CheatSpawnWorker = nil
+  g_Classes.Building.CheatSpawnVisitor = nil
 end
 
 function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local obj = win.context
-  local name = ChoGGi.ComFuncs.Trans(obj.name)
+  local name = ChoGGi.ComFuncs.RetName(obj)
   local id = obj.encyclopedia_id
+  --needs to be strings or else!@!$@!
   local doublec = ""
   local resetc = ""
   if id then
-    doublec = ChoGGi.ComFuncs.Trans(302535920001199,"Double the amount of colonist slots for this") .. " " .. id .. ChoGGi.ComFuncs.Trans(302535920001200,".\n\nReselect to update display.")
-    resetc = ChoGGi.ComFuncs.Trans(302535920001201,"Reset the capacity of colonist slots for this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001200,".\n\nReselect to update display.")
+    doublec = Concat(T(302535920001199--[[Double the amount of colonist slots for this--]])," ",name," .\n\n",T(302535920001200--[[Reselect to update display.--]]))
+    resetc = Concat(T(302535920001201--[[Reset the capacity of colonist slots for this--]])," ",name," .\n\n",T(302535920001200--[[Reselect to update display.--]]))
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
     action.ActionName = action.ActionId
     action.RolloverHint = hint
   end
-  local tab = win.actions or empty_table
-  for i = 1, #tab do
-    local action = tab[i]
-
-    if type(action.ActionId) == "boolean" then
-      action.ActionId = ""
-    end
-
+  local Table = win.actions or empty_table
+  for i = 1, #Table do
+    local action = Table[i]
 --Colonists
     if action.ActionId == "FillAll" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001202,"Fill all stat bars."))
+      SetHint(action,T(302535920001202--[[Fill all stat bars.--]]))
     elseif action.ActionId == "PrefDbl" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001126,"Double") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001203,"'s performance."))
+      SetHint(action,Concat(T(302535920001126--[[Double--]])," ",name,T(302535920001203--[['s performance.--]])))
     elseif action.ActionId == "PrefDef" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001084,"Reset") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001204,"'s performance to default."))
+      SetHint(action,Concat(T(302535920001084--[[Reset--]])," ",name,T(302535920001204--[['s performance to default.--]])))
     elseif action.ActionId == "RandomSpecialization" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001205,"Randomly set") .. " " .. name .. ChoGGi.ComFuncs.Trans(302535920001206,"'s specialization."))
+      SetHint(action,Concat(T(302535920001205--[[Randomly set--]])," ",name,T(302535920001206--[['s specialization.--]])))
 
 --Buildings
     elseif action.ActionId == "VisitorsDbl" then
@@ -476,125 +529,132 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       SetHint(action,resetc)
 
     elseif action.ActionId == "Upgrade1" then
-      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade1_display_name)
+      local tempname = T(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade1_description))
+        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade1_description)))
       else
-        action.ActionId = nil
+        action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade2" then
-      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade2_display_name)
+      local tempname = T(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade2_description))
+        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade2_description)))
       else
-        action.ActionId = nil
+        action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade3" then
-      local tempname = ChoGGi.ComFuncs.Trans(obj.upgrade3_display_name)
+      local tempname = T(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001183,"Add") .. ": " .. tempname .. " " .. ChoGGi.ComFuncs.Trans(302535920001207,"to this building.") .. "\n\n" .. ChoGGi.ComFuncs.Trans(obj.upgrade3_description))
+        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade3_description)))
       else
-        action.ActionId = nil
+        action.ActionId = ""
       end
     elseif action.ActionId == "WorkAuto" then
-      local perf
       local bs = ChoGGi.UserSettings.BuildingSettings
       bs = bs and bs[id] and bs[id].performance or 150
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001208,"Make this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001209,"not need workers (performance") .. ": " .. bs .. ").")
+      SetHint(action,Concat(T(302535920001208--[[Make this--]])," ",name," ",T(302535920001209--[[not need workers (performance--]]),": ",bs,")."))
 
     elseif action.ActionId == "WorkManual" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001208,"Make this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001210,"need workers."))
+      SetHint(action,Concat(T(302535920001208--[[Make this--]])," ",name," ",T(302535920001210--[[need workers.--]])))
     elseif action.ActionId == "CapDbl" then
       if obj:IsKindOf("SupplyRocket") then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001211,"Double the export storage capacity of this") .. " " .. id .. ".")
+        SetHint(action,Concat(T(302535920001211--[[Double the export storage capacity of this--]])," ",name,"."))
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001212,"Double the storage capacity of this") .. " " .. id .. ".")
+        SetHint(action,Concat(T(302535920001212--[[Double the storage capacity of this--]])," ",name,"."))
       end
     elseif action.ActionId == "CapDef" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001213,"Reset the storage capacity of this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001219,"to default."))
+      SetHint(action,Concat(T(302535920001213--[[Reset the storage capacity of this--]])," ",name," ",T(302535920001219--[[to default.--]])))
     elseif action.ActionId == "EmptyDepot" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001214,"sticks small depot in front of mech depot and moves all resources to it (max of 20 000)."))
+      SetHint(action,T(302535920001214--[[sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]))
 
 --Farms
     elseif action.ActionId == "AllShifts" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001215,"Turn on all work shifts."))
+      SetHint(action,T(302535920001215--[[Turn on all work shifts.--]]))
 
 --RC
     elseif action.ActionId == "BattCapDbl" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001216,"Double the battery capacity."))
+      SetHint(action,T(302535920001216--[[Double the battery capacity.--]]))
     elseif action.ActionId == "MaxShuttlesDbl" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001217,"Double the shuttles this ShuttleHub can control."))
+      SetHint(action,T(302535920001217--[[Double the shuttles this ShuttleHub can control.--]]))
     elseif action.ActionId == "FindResource" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001218,"Selects nearest storage containing specified resource (shows list of resources)."))
+      SetHint(action,T(302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]))
 
 --Misc
+    elseif action.ActionId == "DeleteObject" then
+      SetHint(action,Concat(T(302535920000885--[[Permanently delete this object--]]),": ",name))
+    elseif action.ActionId == "Malfunction" then
+      if obj.working then
+        SetHint(action,Concat(T(8039--[[Trait: Idiot (can cause a malfunction)--]]),"...\n",T(53--[[Malfunction--]],"?")))
+      else
+        action.ActionId = ""
+      end
     elseif action.ActionId == "Powerless" then
       if obj.electricity_consumption then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001220,"Change this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001221,"so it doesn't need a power connection."))
+        SetHint(action,Concat(T(302535920001220--[[Change this--]])," ",name," ",T(302535920001221--[[so it doesn't need a power connection.--]])))
       else
-        action.ActionId = nil
+        action.ActionId = ""
       end
     elseif action.ActionId == "Powered" then
       if obj.electricity_consumption then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001220,"Change this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001222,"so it needs a power connection."))
+        SetHint(action,Concat(T(302535920001220--[[Change this--]])," ",name," ",T(302535920001222--[[so it needs a power connection.--]])))
       else
-        action.ActionId = nil
+        action.ActionId = ""
       end
 
     elseif action.ActionId == "HideSigns" then
       if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
-        action.ActionId = nil
+        action.ActionId = ""
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001223,"Hides any signs above object (until state is changed)."))
+        SetHint(action,T(302535920001223--[[Hides any signs above object (until state is changed).--]]))
       end
 
     elseif action.ActionId == "ColourRandom" then
       if obj:IsKindOf("WasteRockDumpSite") then
-        action.ActionId = nil
+        action.ActionId = ""
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001224,"Changes colour of object to random colour (doesn't change attachments)."))
+        SetHint(action,T(302535920001224--[[Changes colour of object to random colour (doesn't change attachments).--]]))
       end
     elseif action.ActionId == "ColourDefault" then
       if obj:IsKindOf("WasteRockDumpSite") then
-        action.ActionId = nil
+        action.ActionId = ""
       end
     elseif action.ActionId == "AddDust" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
-        action.ActionId = false
+        action.ActionId = ""
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001225,"Add visual dust and maintenance points."))
+        SetHint(action,T(302535920001225--[[Add visual dust and maintenance points.--]]))
       end
     elseif action.ActionId == "CleanAndFix" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
-        action.ActionId = nil
+        action.ActionId = ""
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001226,"You may need to use AddDust before using this to make the building look visually."))
+        SetHint(action,T(302535920001226--[[You may need to use AddDust before using this to make the building look visually.--]]))
       end
     elseif action.ActionId == "Destroy" then
       if obj.class == "SupplyRocket" then
-        action.ActionId = nil
+        action.ActionId = ""
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001227,"Turns object into ruin."))
+        SetHint(action,T(302535920001227--[[Turns object into ruin.--]]))
       end
     elseif action.ActionId == "Empty" then
       if obj.class:find("SubsurfaceDeposit") then
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001228,"Warning: This will remove the") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001229,"object from the map."))
+        SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001228--[[This will remove the--]])," ",name," ",T(302535920001229--[[object from the map.--]])))
       else
-        SetHint(action,ChoGGi.ComFuncs.Trans(302535920001230,"Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site."))
+        SetHint(action,T(302535920001230--[[Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site.--]]))
       end
     elseif action.ActionId == "Refill" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001231,"Refill the deposit to full capacity."))
+      SetHint(action,T(302535920001231--[[Refill the deposit to full capacity.--]]))
     elseif action.ActionId == "Fill" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001232,"Fill the storage of this building."))
+      SetHint(action,T(302535920001232--[[Fill the storage of this building.--]]))
     elseif action.ActionId == "Launch" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001233,"Warning: Launches rocket without asking."))
+      SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001233--[[Launches rocket without asking.--]])))
     elseif action.ActionId == "DoubleMaxAmount" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001234,"Double the amount this") .. " " .. id .. " " .. ChoGGi.ComFuncs.Trans(302535920001235,"can hold."))
+      SetHint(action,Concat(T(302535920001234--[[Double the amount this--]])," ",name," ",T(302535920001235--[[can hold.--]])))
     elseif action.ActionId == "ReneagadeCapDbl" then
-      SetHint(action,ChoGGi.ComFuncs.Trans(302535920001236,"Double amount of reneagades this station can negate (currently") .. ": " .. obj.negated_renegades .. ") < " .. ChoGGi.ComFuncs.Trans(302535920001237,"Reselect to update amount."))
+      SetHint(action,Concat(T(302535920001236--[[Double amount of reneagades this station can negate (currently--]]),": ",obj.negated_renegades,") < ",T(302535920001237--[[Reselect to update amount.--]])))
     end
 
   end --for
 
-  return win
+  return true
 end
