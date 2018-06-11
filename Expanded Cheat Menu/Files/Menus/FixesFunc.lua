@@ -34,6 +34,65 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+local function SpawnColonist(old_c,building,pos,city)
+  local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
+  if not dome then
+    return
+  end
+
+  local colonist
+  if old_c then
+    --colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+    colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+    --we set all the set gen doesn't (it's more for random gen after all
+    colonist.birthplace = old_c.birthplace
+    colonist.death_age = old_c.death_age
+    colonist.name = old_c.name
+    colonist.race = old_c.race
+    colonist.specialist = old_c.specialist
+    for trait_id, _ in pairs(old_c.traits) do
+      if trait_id and trait_id ~= "" then
+        colonist.traits[trait_id] = true
+        --colonist:AddTrait(trait_id,true)
+      end
+    end
+  else
+    --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
+    colonist = GenerateColonistData(city)
+  end
+
+  colonist.dome = dome
+  colonist.current_dome = dome
+  g_Classes.Colonist:new(colonist)
+  Msg("ColonistBorn", colonist)
+  colonist:SetPos(pos or dome:PickColonistSpawnPt())
+  --dome:UpdateUI()
+  --if spec is different then updates to new entity
+  colonist:ChooseEntity()
+  return colonist
+end
+
+function ChoGGi.MenuFuncs.RedoAllColonists()
+    local function CallBackFunc(answer)
+      if answer then
+        local objs = GetObjects({class = "Colonist"}) or empty_table
+        for i = 1, #objs do
+          local c = objs[i]
+          SpawnColonist(c,something,c:GetVisualPos(),UICity)
+          if type(c.Done) == "function" then
+            c:Done()
+          end
+          DoneObject(c)
+        end
+      end
+    end
+    ChoGGi.ComFuncs.QuestionBox(
+      Concat(T(6779--[[Warning--]]),"!\n",T(302535920000055--[[Reset All Colonists--]]),"\n",T(302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]])),
+      CallBackFunc,
+      Concat(T(6779--[[Warning--]]),": ",T(302535920000055--[[Reset All Colonists--]]))
+    )
+end
+
 local function AttachmentsCollisionToggle(sel,which)
   local att = sel:GetAttaches()
   if att and #att > 0 then
@@ -75,44 +134,6 @@ function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
   ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000968--[[Collisions--]])," ",which," ",T(302535920000969--[[on--]])," ",ChoGGi.ComFuncs.RetName(sel)),
     T(302535920000968--[[Collisions--]])
   )
-end
-
-local function SpawnColonist(old_c,building,pos,city)
-  local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
-  if not dome then
-    return
-  end
-
-  local colonist
-  if old_c then
-    --colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
-    colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
-    --we set all the set gen doesn't (it's more for random gen after all
-    colonist.birthplace = old_c.birthplace
-    colonist.death_age = old_c.death_age
-    colonist.name = old_c.name
-    colonist.race = old_c.race
-    colonist.specialist = old_c.specialist
-    for trait_id, _ in pairs(old_c.traits) do
-      if trait_id and trait_id ~= "" then
-        colonist.traits[trait_id] = true
-        --colonist:AddTrait(trait_id,true)
-      end
-    end
-  else
-    --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
-    colonist = GenerateColonistData(city)
-  end
-
-  colonist.dome = dome
-  colonist.current_dome = dome
-  g_Classes.Colonist:new(colonist)
-  Msg("ColonistBorn", colonist)
-  colonist:SetPos(pos or dome:PickColonistSpawnPt())
-  --dome:UpdateUI()
-  --if spec is different then updates to new entity
-  colonist:ChooseEntity()
-  return colonist
 end
 
 function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
@@ -416,3 +437,41 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
     T(3980--[[Buildings--]])
   )
 end
+
+---------------------------------------------------Testers
+
+--~ DupePos(GetObjects({class = "Colonist"}))
+function ChoGGi.MenuFuncs.DupePos(list)
+  local dupes = {}
+  local positions = {}
+  local pos
+  for i = 1, #list do
+    pos = list[i]:GetPos()
+    pos = tostring(point(pos:x(),pos:y()))
+    if not positions[pos] then
+      positions[pos] = true
+    else
+      dupes[pos] = true
+    end
+  end
+  if #dupes > 0 then
+    table.sort(dupes)
+    OpenExamine(dupes)
+  end
+end
+
+function ChoGGi.MenuFuncs.DeathToObjects(classname)
+  local objs = GetObjects({class = classname}) or empty_table
+  print(#objs," = ",classname)
+  for i = 1, #objs do
+    DoneObject(objs[i])
+  end
+end
+
+--~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
+--~ ChoGGi.MenuFuncs.DeathToObjects("Colonist")
+--~ ChoGGi.MenuFuncs.DeathToObjects("CargoShuttle")
+--~ ChoGGi.MenuFuncs.DeathToObjects("Building")
+--~ ChoGGi.MenuFuncs.DeathToObjects("Drone")
+--~ ChoGGi.MenuFuncs.DeathToObjects("SupplyRocket")
+--~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists

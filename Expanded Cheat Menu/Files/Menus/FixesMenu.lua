@@ -8,6 +8,14 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000055--[[Reset All Colonists--]])),
+    ChoGGi.MenuFuncs.RedoAllColonists,
+    nil,
+    T(302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]]),
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000581--[[Toggle Collisions On Selected Object--]])),
     ChoGGi.MenuFuncs.CollisionsObject_Toggle,
     nil,

@@ -10,10 +10,10 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
 
 --------------------------------top level
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/[98]",T(302535920000555--[[Monitor Info--]])),
-    ChoGGi.MenuFuncs.MonitorInfo,
+    Concat(T(302535920000104--[[Expanded CM--]]),"/[97]",T(302535920000031--[[Find Nearest Resource--]])),
+    ChoGGi.CodeFuncs.FindNearestResource,
     nil,
-    T(302535920000556--[[Shows a list of updated information about your city.--]]),
+    T(302535920000554--[[Select an object and click this to display a list of resources.--]]),
     "EV_OpenFirst.tga"
   )
 
@@ -25,15 +25,15 @@ function ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
     "remove_water.tga"
   )
 
---------------------------------top level
-
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/[97]",T(1000207--[[Misc--]]),"/",T(302535920000031--[[Find Nearest Resource--]])),
-    ChoGGi.CodeFuncs.FindNearestResource,
+    Concat(T(302535920000104--[[Expanded CM--]]),"/[98]",T(302535920000555--[[Monitor Info--]])),
+    ChoGGi.MenuFuncs.MonitorInfo,
     nil,
-    T(302535920000554--[[Select an object and click this to display a list of resources.--]]),
+    T(302535920000556--[[Shows a list of updated information about your city.--]]),
     "EV_OpenFirst.tga"
   )
+
+--------------------------------top level
 
   -------------rockets
   ChoGGi.ComFuncs.AddAction(

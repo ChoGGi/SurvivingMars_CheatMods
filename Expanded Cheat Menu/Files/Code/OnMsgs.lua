@@ -1156,3 +1156,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
 end --OnMsg
+
+function OnMsg.ChangeMap()
+  ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+end
