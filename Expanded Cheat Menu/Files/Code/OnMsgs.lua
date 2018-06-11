@@ -169,39 +169,6 @@ function OnMsg.ModsLoaded()
   terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",ChoGGi._TITLE))
 end
 
---earlist on-ground objects are loaded?
---function OnMsg.PersistLoad()
-
---saved game is loaded
-function OnMsg.LoadGame()
-  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
-  ChoGGi.Temp.IsGameLoaded = false
-  Msg("ChoGGi_Loaded")
-end
-
---for new games
---OnMsg.NewMapLoaded()
-function OnMsg.CityStart()
-  local ChoGGi = ChoGGi
-  ChoGGi.Temp.IsGameLoaded = false
-  --reset my mystery msgs to hidden
-  ChoGGi.UserSettings.ShowMysteryMsgs = nil
-  Msg("ChoGGi_Loaded")
-end
-
-function OnMsg.ReloadLua()
-  --only do it when we're in-game
-  if UICity then
-    ChoGGi.Temp.IsGameLoaded = false
-    Msg("ChoGGi_Loaded")
-  end
-end
-
---fired as late as we can
-function OnMsg.LoadingScreenPreClose()
-  Msg("ChoGGi_Loaded")
-end
-
 --for instant build
 function OnMsg.BuildingPlaced(Obj)
   if Obj:IsKindOf("Building") then
@@ -483,29 +450,7 @@ function OnMsg.ApplicationQuit()
   ChoGGi.SettingFuncs.WriteSettings()
 end
 
---custom OnMsgs
-local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
-AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
-AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
-AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
-AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
-AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
-AddMsgToFunc("GridObject","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("GridObject","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
-AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
-AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
-AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
-AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
-AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
-AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
-AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
-AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
-AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
+----------------------------------------Msgs had to be added in ComFuncs
 
 --attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
@@ -530,19 +475,15 @@ end
 
 --custom UICity.labels lists
 function OnMsg.ChoGGi_CreatedGridObject(Obj)
-  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
-    local labels = UICity.labels
-    labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
-    local label = labels[Concat("ChoGGi_",Obj.class)]
-    label[#label+1] = Obj
-  end
+  local labels = UICity.labels
+  labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
+  local label = labels[Concat("ChoGGi_",Obj.class)]
+  label[#label+1] = Obj
 end
 function OnMsg.ChoGGi_RemovedGridObject(Obj)
-  if Obj.class == "ElectricityGridElement" or Obj.class == "LifeSupportGridElement" then
-    local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
-    ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",Obj.class),Obj)
-  end
+  local ChoGGi = ChoGGi
+  ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
+  ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",Obj.class),Obj)
 end
 
 --shuttle comes out of a hub
@@ -703,6 +644,39 @@ function OnMsg.ChoGGi_Childkiller()
     MilestoneCompleted.Childkiller = 479000000
   end
 end
+
+--earliest on-ground objects are loaded?
+--function OnMsg.PersistLoad()
+
+--saved game is loaded
+function OnMsg.LoadGame()
+  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
+  ChoGGi.Temp.IsGameLoaded = false
+  Msg("ChoGGi_Loaded")
+end
+
+--for new games
+--OnMsg.NewMapLoaded()
+function OnMsg.CityStart()
+  local ChoGGi = ChoGGi
+  ChoGGi.Temp.IsGameLoaded = false
+  --reset my mystery msgs to hidden
+  ChoGGi.UserSettings.ShowMysteryMsgs = nil
+  Msg("ChoGGi_Loaded")
+end
+
+function OnMsg.ReloadLua()
+  --only do it when we're in-game
+  if UICity then
+    ChoGGi.Temp.IsGameLoaded = false
+    Msg("ChoGGi_Loaded")
+  end
+end
+
+--~ --fired as late as we can
+--~ function OnMsg.LoadingScreenPreClose()
+--~   Msg("ChoGGi_Loaded")
+--~ end
 
 --fired when game is loaded
 function OnMsg.ChoGGi_Loaded()

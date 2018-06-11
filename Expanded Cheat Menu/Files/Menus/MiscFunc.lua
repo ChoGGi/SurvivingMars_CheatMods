@@ -4,8 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 
-local next,tostring,type = next,tostring,type
-local table_remove = table.remove
+local next,tostring,type,table = next,tostring,type,table
 
 local ChangeGameSpeedState = ChangeGameSpeedState
 local CreateRealTimeThread = CreateRealTimeThread
@@ -56,7 +55,7 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001083--[[Change Surface Signs--]]),
@@ -117,26 +116,26 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
     local FXRules = FXRules
     local value = choice[1].value
     if value == "SensorTowerWorking" then
-      table_remove(FXRules.Working.start.SensorTower.any,3)
+      table.remove(FXRules.Working.start.SensorTower.any,3)
       RemoveFromRules("Object SensorTower Loop")
       SensorTower_Toggle()
 
     elseif value == "MirrorSphereFreeze" then
-      table_remove(FXRules.Freeze.start.MirrorSphere.any,2)
+      table.remove(FXRules.Freeze.start.MirrorSphere.any,2)
       FXRules.Freeze.start.any = nil
       RemoveFromRules("Freeze")
       MirrorSphere_Toggle()
 
     elseif value == "RCRoverAntenna" then
-      table_remove(FXRules.RoverDeploy.start.RCRover.any,2)
-      table_remove(FXRules.RoverDeploy.start.RCRover.any,3)
+      table.remove(FXRules.RoverDeploy.start.RCRover.any,2)
+      table.remove(FXRules.RoverDeploy.start.RCRover.any,3)
       RemoveFromRules("Unit Rover DeployWork")
       RemoveFromRules("Unit Rover DeployAntennaON")
       RCRoverDeploy_Toggle()
 
     elseif value == "RCRoverEmergencyPower" then
-      table_remove(FXRules.EmergencyPower.start.RCRover.any,2)
-      table_remove(FXRules.EmergencyPower.start.RCRover.any,3)
+      table.remove(FXRules.EmergencyPower.start.RCRover.any,2)
+      table.remove(FXRules.EmergencyPower.start.RCRover.any,3)
       RemoveFromRules("Unit Rover EmergencyPower")
       RemoveFromRules("Unit Rover EmergencyPower")
       RCRoverEmergencyPower_Toggle()
@@ -154,7 +153,7 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000680--[[Annoying Sounds--]]),
@@ -257,7 +256,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 
   EnabledList[#EnabledList+1] = "\n"
   EnabledList[#EnabledList+1] = T(302535920001097--[[Enter a class name (s.class) to add a custom entry.--]])
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001095--[[Auto Remove Items From Pin List--]]),
@@ -336,12 +335,9 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
     end
   end
 
-  local CallBackFunc = function()
-    --we're ignoring the ok button
-    return
-  end
+  local CallBackFunc = function() return end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000021--[[Change Colour--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
@@ -403,7 +399,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
     hint = Concat(T(302535920000106--[[Current--]]),": ",sel:GetOpacity(),"\n\n",hint)
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000694--[[Set Opacity--]]),": ",ChoGGi.ComFuncs.RetName(sel)),
@@ -515,7 +511,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001137--[[Set Game Speed--]]),
@@ -607,7 +603,7 @@ function ChoGGi.MenuFuncs.SetEntity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001151--[[Set Entity For--]])," ",ChoGGi.ComFuncs.RetName(sel)),
@@ -709,7 +705,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001155--[[Set Entity Scale For--]])," ",ChoGGi.ComFuncs.RetName(sel)),

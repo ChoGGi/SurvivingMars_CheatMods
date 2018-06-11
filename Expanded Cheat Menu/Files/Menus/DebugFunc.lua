@@ -9,16 +9,7 @@ DefineClass.ChoGGi_CursorBuilding = {
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local pairs,pcall,print,type,tonumber,tostring = pairs,pcall,print,type,tonumber,tostring
-
-local string,table = string,table
-local string_find = string.find
-local string_format = string.format
-local string_lower = string.lower
-local table_change = table.change
-local table_find = table.find
-local table_remove = table.remove
-local table_restore = table.restore
+local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
 
 local ClassDescendantsList = ClassDescendantsList
 local CloseMenuDialogs = CloseMenuDialogs
@@ -63,17 +54,23 @@ local WaitMapSettingsDialog = WaitMapSettingsDialog
 local WaitNextFrame = WaitNextFrame
 local WorldToHex = WorldToHex
 local XShortcutsSetMode = XShortcutsSetMode
+local MulDivRound = MulDivRound
+local Max = Max
+local Clamp = Clamp
 
+local guim = guim
 local guic = guic
 local white = white
 
-local terminal_GetMousePos = terminal.GetMousePos
-local UIL_GetFontID = UIL.GetFontID
 local camera_IsLocked = camera.IsLocked
 local camera_Unlock = camera.Unlock
+local terminal_GetMousePos = terminal.GetMousePos
+local terrain_HeightTileSize = terrain.HeightTileSize() --intentional
 local terrain_IsSCell = terrain.IsSCell
 local terrain_IsPassable = terrain.IsPassable
 local terrain_GetHeight = terrain.GetHeight
+local terrain_GetMapSize = terrain.GetMapSize
+local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
 
@@ -94,6 +91,29 @@ function ChoGGi.MenuFuncs.AttachSpots_Toggle()
     sel:ShowSpots()
     sel.ChoGGi_ShowAttachSpots = true
   end
+end
+
+--~ local OpenGedApp = OpenGedApp
+--~ OpenGedApp("XWindowInspector", dialog_object)
+--~ OpenGedApp("GedInspector", s)
+--~ OpenGedApp("GedObjectEditor", objectlist)
+
+function ChoGGi.MenuFuncs.GedToolsMode_Toggle()
+  local ChoGGi = ChoGGi
+  if ChoGGi.UserSettings.GedToolsMode then
+    ChoGGi.UserSettings.GedToolsMode = nil
+  else
+    local file = Concat(ChoGGi.scripts,"/XWindowInspector.lua")
+    if not ChoGGi.ComFuncs.FileExists(file) then
+      AsyncStringToFile(file,"OpenGedApp(\"XWindowInspector\", terminal.desktop)")
+    end
+    ChoGGi.UserSettings.GedToolsMode = true
+  end
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000292--[[XWindowInspector Toggle--]]),": ",tostring(ChoGGi.UserSettings.GedToolsMode)),
+    T(8080--[[Restart--]]),UsualIcon
+  )
 end
 
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
@@ -151,36 +171,15 @@ function ChoGGi.MenuFuncs.ObjectCloner(sel)
   if sel and not sel.class then
     sel = ChoGGi.CodeFuncs.SelObject()
   end
-
-  local NewObj = g_Classes[sel.class]:new()
-  NewObj:CopyProperties(sel)
-  --[[find out which ones we shouldn't copy
-  for Key,Value in pairs(sel or empty_table) do
-    NewObj[Key] = Value
+  --clone dome = crashy
+  local new
+  if sel:IsKindOf("Dome") then
+    new = g_Classes[sel.class]:new()
+    new:CopyProperties(sel)
+  else
+    new = sel:Clone()
   end
-  --]]
-  NewObj:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
-  --if it's a deposit then make max_amount random and add
-  --local ObjName = ValueToLuaCode(sel):match("^PlaceObj%('(%a+).+$")
-  --if ObjName:find("SubsurfaceDeposit") then
-  --NewObj.max_amount = Random(1000 * ChoGGi.Consts.ResourceScale,5000 * ChoGGi.Consts.ResourceScale)
-  if NewObj.max_amount then
-    NewObj.amount = NewObj.max_amount
-  elseif NewObj:IsKindOf("Colonist") then
-    --it seems CopyProperties is only some properties
-    NewObj.traits = {}
-    NewObj.race = sel.race
-    NewObj.fx_actor_class = sel.fx_actor_class
-    NewObj.entity = sel.entity
-    NewObj.infopanel_icon = sel.infopanel_icon
-    NewObj.inner_entity = sel.inner_entity
-    NewObj.pin_icon = sel.pin_icon
-    ChoGGi.CodeFuncs.ColonistUpdateGender(NewObj,sel.gender,sel.entity_gender)
-    ChoGGi.CodeFuncs.ColonistUpdateAge(NewObj,sel.age_trait)
-    NewObj:SetSpecialization(sel.specialist,"init")
-    NewObj.age = sel.age
-    NewObj:ChooseEntity()
-  end
+  new:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
 end
 
 local function AnimDebug_Show(Obj,Colour)
@@ -194,7 +193,7 @@ local function AnimDebug_Show(Obj,Colour)
   text:SetAttachOffset(point(0,0,Obj:GetObjectBBox():sizez() + 100))
   CreateGameTimeThread(function()
     while IsValid(text) do
-      text:SetText(string_format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
+      text:SetText(string.format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
       WaitNextFrame()
     end
   end)
@@ -270,7 +269,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000860--[[Set Anim State--]]),
@@ -322,7 +321,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ObjectSpawner_ItemList,
     title = T(302535920000862--[[Object Spawner (EntityData list)--]]),
@@ -369,6 +368,10 @@ function ChoGGi.MenuFuncs.ObjExaminer()
 end
 
 function ChoGGi.MenuFuncs.Editor_Toggle()
+
+  if type(UpdateMapRevision) ~= "function" then
+    function UpdateMapRevision() end
+  end
   local Platform = Platform
   Platform.editor = true
   Platform.developer = true
@@ -381,13 +384,13 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
 
   if IsEditorActive() then
     EditorState(0)
-    table_restore(hr, "Editor")
+    table.restore(hr, "Editor")
     editor.SavedDynRes = false
     XShortcutsSetMode("Game")
     Platform.editor = false
     Platform.developer = false
   else
-    table_change(hr, "Editor", {
+    table.change(hr, "Editor", {
       ResolutionPercent = 100,
       SceneWidth = 0,
       SceneHeight = 0,
@@ -465,7 +468,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000866--[[Set MissionParams NewMap--]]),
@@ -482,7 +485,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
     local maps = ListMaps()
     local items = {}
     for i = 1, #maps do
-      if not string_find(string_lower(maps[i]), "^prefab") and not string_find(maps[i], "^__") then
+      if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
         items[#items+1] = {
 --~           text = Untranslated(maps[i]),
           text = maps[i],
@@ -491,7 +494,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
       end
     end
 
-    local default_selection = table_find(maps, GetMapName())
+    local default_selection = table.find(maps, GetMapName())
     local map_settings = {}
     local mapdata = mapdata
     local class_names = ClassDescendantsList("MapSettings")
@@ -500,7 +503,18 @@ function ChoGGi.MenuFuncs.ChangeMap()
     end
 
     local sel_idx
-    sel_idx, map_settings = WaitMapSettingsDialog(items, caption, nil, default_selection, map_settings)
+    local dlg = CreateMapSettingsDialog(items, caption, nil, map_settings)
+    if default_selection then
+      dlg.idList:SetSelection(default_selection, true)
+    end
+    --QoL
+    dlg.idCaption.HandleMouse = false
+    dlg:SetMovable(true)
+    Sleep(1)
+    dlg.move:SetZOrder(10)
+
+    sel_idx, map_settings = dlg:Wait()
+
     if sel_idx ~= "idCancel" then
       local g_CurrentMissionParams = g_CurrentMissionParams
       local map = sel_idx and items[sel_idx].map
@@ -640,6 +654,32 @@ do --hex rings
 end
 
 do --path markers
+  --from CommonLua\Classes\CodeRenderableObject.lua
+  local function PlaceTerrainLine(pt1, pt2, color, step, offset)
+    step = step or guim
+    offset = offset or guim
+    local diff = pt2 - pt1
+    local steps = Max(2, 1 + diff:Len2D() / step)
+    local mapw, maph = terrain_GetMapSize()
+    local points = {}
+    for i = 1, steps do
+      local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
+      local x, y, z = pos:xy()
+      x = Clamp(x, 0, mapw - terrain_HeightTileSize)
+      y = Clamp(y, 0, maph - terrain_HeightTileSize)
+      z = terrain_GetHeight(x, y) + offset
+      points[#points + 1] = point(x, y, z)
+    end
+    local line = g_Classes.Polyline:new({
+      max_vertices = #points
+    })
+    line:SetMesh(points, color)
+    line:SetDepthTest(true)
+    line:SetPos((pt1 + pt2) / 2)
+--~     line:SetColor(color or white)
+    return line
+  end
+
   local randcolours = {}
   local colourcount = 0
   local dupewppos = {}
@@ -649,6 +689,7 @@ do --path markers
   SpawnModels[2] = "Lama"
   --default height of waypoints
   local flag_height = 50
+
   local function ShowWaypoints(waypoints, colour, Obj, single, skipflags, skipheight, skiptext, skipstart)
     colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
     --also used for line height
@@ -670,6 +711,13 @@ do --path markers
 
     --make sure there's always a line from the obj to first WayPoint
     --local work_step = const.PrefabWorkRatio * terrain.TypeTileSize()
+--~     local spawnline = PlaceTerrainLine(
+--~       Objpos,
+--~       waypoints[#waypoints],
+--~       colour,
+--~       nil, --work_step
+--~       shuttle and shuttle - Objterr or Objheight --shuttle z always puts it too high?
+--~     )
     local spawnline = PlaceTerrainLine(
       Objpos,
       waypoints[#waypoints],
@@ -741,6 +789,7 @@ do --path markers
       end
 
       if wpn then
+--~         local l = PlaceTerrainLine(
         local l = PlaceTerrainLine(
           pos,
           wpn,
@@ -805,7 +854,7 @@ do --path markers
             colour = randomcolour
           else
             --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-            colour = table_remove(randcolours)
+            colour = table.remove(randcolours)
           end
         end
       end
@@ -924,7 +973,7 @@ do --path markers
       --remove removed
       for i = #Obj.ChoGGi_Stored_Waypoints, 1, -1 do
         if not IsValid(Obj.ChoGGi_Stored_Waypoints[i]) then
-          table_remove(Obj.ChoGGi_Stored_Waypoints,i)
+          table.remove(Obj.ChoGGi_Stored_Waypoints,i)
         end
       end
     end
@@ -1024,7 +1073,7 @@ do --path markers
       end
     end
 
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    ChoGGi.ComFuncs.OpenInListChoice({
       callback = CallBackFunc,
       items = ItemList,
       title = T(302535920000874--[[Set Visible Path Markers--]]),

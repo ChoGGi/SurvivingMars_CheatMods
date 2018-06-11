@@ -246,23 +246,7 @@ function Examine:Init()
 
   element_x = 10 + self.idParents:GetPos():x() + self.idParents:GetSize():x()
 
---~   title = T(302535920000053--[[Attaches--]])
---~   self.idAttaches = g_Classes.Button:new(self)
---~   self.idAttaches:SetPos(point(element_x, element_y))
---~   self.idAttaches:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
---~   self.idAttaches:SetText(title)
---~   self.idAttaches:SetHint(T(302535920000054--[[Any objects attached to this object.--]]))
---~   function self.idAttaches.OnButtonPressed()
---~     local attaches = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
-
---~     if attaches and #attaches > 0 then
---~       OpenExamine(attaches,self)
---~     else
---~       print(T(302535920000055--[[Zero attachments means zero...--]]))
---~     end
---~   end
-
-  local title = T(302535920000053--[[Attaches--]])
+  title = T(302535920000053--[[Attaches--]])
   self.idAttaches = g_Classes.Button:new(self)
   self.idAttaches:SetPos(point(element_x, element_y))
   self.idAttaches:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
@@ -344,6 +328,18 @@ function Examine:Init()
     self:SetPos(point(100,100))
   end)
 end
+
+function Examine:OnStartResize()
+print("OnStartResize")
+  self.idText:SetVisible(false)
+  g_Classes.Window.OnStartResize(self)
+end
+function Examine:OnEndResize()
+print("OnEndResize")
+  g_Classes.Window.OnEndResize(self)
+  self.idText:SetVisible(true)
+end
+
 
 function Examine:FindNext(filter)
   local drawBuffer = self.idText.draw_cache
@@ -924,6 +920,7 @@ function Examine:menu(o)
 end
 
 function Examine:SetObj(o)
+ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   local ChoGGi = ChoGGi
   self.onclick_handles = {}
   self.obj = o
@@ -937,7 +934,7 @@ function Examine:SetObj(o)
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
   self.idAttaches:SetHint(Concat(
-    T(302535920000070--[[Opens attachments in new examine window.\nThis--]]),
+    T(302535920000070--[[Shows list of attachments.\nThis--]]),
     " ",name,
     " ",T(302535920000071--[[has--]]),
     ": ",amount
@@ -964,29 +961,38 @@ function Examine:SetObj(o)
         ChoGGi.ComFuncs.DialogAddMenuItem(list[i],self.idParentsMenu)
       end
     end
-    --attaches menu
-    list = type(self.obj) == "table" and type(self.obj.GetAttaches) == "function" and self.obj:GetAttaches()
+    --i suppose i could do some type checking, ah well
+    if not pcall(function()
+      --attaches menu
+      list = type(o) == "table" and o:GetAttaches()
 
-    if list and #list > 0 then
-      for i = 1, #list do
-        local hint
-        if type(list[i]) == "table" then
-          hint = list[i].handle or type(list[i].GetPos) == "function" and list[i]:GetPos() or ChoGGi.ComFuncs.RetName(list[i])
+      if list and #list > 0 then
+        for i = 1, #list do
+
+          local hint = list[i].handle or type(list[i].GetPos) == "function" and Concat("Pos: ",list[i]:GetPos())
+          if type(hint) == "number" then
+            hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
+          end
+
+          ChoGGi.ComFuncs.DialogAddMenuItem(
+            ChoGGi.ComFuncs.RetName(list[i]),
+            self.idAttachesMenu,
+            hint or list[i].class,
+            list[i]
+          )
         end
-        ChoGGi.ComFuncs.DialogAddMenuItem(
-          ChoGGi.ComFuncs.RetName(list[i]),
-          self.idAttachesMenu,
-          hint,
-          list[i]
-        )
+      else
+        self.idAttaches:SetVisible(false)
       end
-    else
-      self.idAttaches:SetVisible(false)
+    end) then
+      DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),name))
     end
 
   else
     self.idCaption:SetText(utf8.sub(name, 1, 50))
   end
+
+ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
 end
 
 function Examine:SetText(text)
@@ -994,7 +1000,18 @@ function Examine:SetText(text)
     print("Examine:SetText(text)",Examine:SetText(text))
   end
   self.onclick_handles = {}
+  --helps nicely for large lists and Concat function
+  if IsObjlist(self.obj) then
+    DoneObject(self.obj)
+  end
   self.obj = false
   self.idText:SetText(text)
   self.idLinks:SetText(self:menu())
+end
+
+function Examine:Done(result)
+  if self.obj and IsObjlist(self.obj) then
+    DoneObject(self.obj)
+  end
+  Dialog.Done(self,result)
 end

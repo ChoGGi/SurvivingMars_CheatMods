@@ -98,7 +98,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000712--[[Set Sponsor--]]),
@@ -155,7 +155,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001162--[[Sponsor--]])," ",T(302535920001166--[[Bonuses--]])),
@@ -209,7 +209,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000716--[[Set Commander--]]),
@@ -266,7 +266,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001174--[[Commander--]])," ",T(302535920001166--[[Bonuses--]])),
@@ -327,7 +327,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001178--[[Set New Logo--]]),
@@ -487,7 +487,7 @@ end
 --~     )
 --~   end
 
---~   ChoGGi.CodeFuncs.FireFuncAfterChoice({
+--~   ChoGGi.ComFuncs.OpenInListChoice({
 --~     callback = CallBackFunc,
 --~     items = ItemList,
 --~     title = Concat(T(302535920000129--[[Set--]])," ",sType," ",T(302535920001180--[[Disaster Occurrences--]])),
@@ -557,7 +557,7 @@ end
 --~     end
 --~   end
 
---~   ChoGGi.CodeFuncs.FireFuncAfterChoice({
+--~   ChoGGi.ComFuncs.OpenInListChoice({
 --~     callback = CallBackFunc,
 --~     items = ItemList,
 --~     title = T(302535920001182--[[Set Rules--]]),

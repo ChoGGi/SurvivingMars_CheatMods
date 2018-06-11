@@ -7,11 +7,21 @@ local T = ChoGGi.ComFuncs.Trans
 local cls = cls
 local OpenGedGameObjectEditor = OpenGedGameObjectEditor
 local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
---~ local OpenGedApp = OpenGedApp
---~ OpenGedApp("XWindowInspector", dialog_object)
 
 function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/[999]",T(302535920000292--[[XWindowInspector Toggle--]])),
+    ChoGGi.MenuFuncs.GedToolsMode_Toggle,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.GedToolsMode,
+        302535920001014 --,"Allows you to use XWindowInspector (sorry non-windows users), see Console after restart.\nMesses up the fonts for now.\n\nRestart to toggle."
+      )
+    end,
+    "toggle_dtm_slots.tga"
+  )
 
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920000449--[[Attach Spots Toggle--]])),

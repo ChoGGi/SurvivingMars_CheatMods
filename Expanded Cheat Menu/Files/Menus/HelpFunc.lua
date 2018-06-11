@@ -29,8 +29,6 @@ function ChoGGi.MenuFuncs.ShowReadmeECM()
       zorder = 2000001,
       wrap = true,
       text = str,
-      hint_ok = T(6294--[[OK--]]),
-      hint_cancel = T(6720--[[Cancel--]]),
     })
     dialog:Open()
 	end

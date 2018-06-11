@@ -189,6 +189,236 @@ function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
   --]]
 
+  --don't expect much, unless you've got a copy of Haerald around
+  function luadebugger:Start()
+  if self.started then
+    print("Already started")
+    return
+  end
+  print("Starting the Lua debugger...")
+  DebuggerInit()
+  DebuggerClearBreakpoints()
+  self.started = true
+  local server = self.server
+  local debugger_port = controller_port + 2
+  controller_host = not Platform.pc and config.Haerald and config.Haerald.ip or "localhost"
+  server:connect(controller_host, debugger_port)
+  server:update()
+  if not server:isconnected() then
+    if Platform.pc then
+      local processes = os.enumprocesses()
+      local running = false
+      for i = 1, #processes do
+        if string.find(processes[i], "Haerald.exe") then
+          running = true
+          break
+        end
+      end
+      if not running then
+        local os_path = ConvertToOSPath(config.LuaDebuggerPath)
+        local exit_code, std_out, std_error = os.exec(os_path)
+        if exit_code ~= 0 then
+          print("Could not launch Haerald Debugger from:", os_path, [[
+
+Exec error:]], std_error)
+          self:Stop()
+          return
+        end
+      end
+    end
+    local total_timeout = 6000
+    local retry_timeout = Platform.pc and 100 or 2000
+    local steps_before_reset = Platform.pc and 10 or 1
+    local num_retries = total_timeout / retry_timeout
+    for i = 1, num_retries do
+      server:update()
+      if not server:isconnected() then
+        if not server:isconnecting() or i % steps_before_reset == 0 then
+          server:close()
+          server:connect(controller_host, debugger_port, retry_timeout)
+        end
+        os.sleep(retry_timeout)
+      end
+    end
+    if not server:isconnected() then
+      print("Could not connect to debugger at " .. controller_host .. ":" .. debugger_port)
+      self:Stop()
+      return
+    end
+  end
+  server.timeout = 5000
+  self.watches = {}
+  self.handle_to_obj = {}
+  self.obj_to_handle = {}
+  local PathRemapping
+  if not Platform.pc then
+    PathRemapping = config.Haerald and config.Haerald.PathRemapping or {}
+  else
+    PathRemapping = config.Haerald and config.Haerald.PathRemapping or {
+      CommonLua = "CommonLua",
+      Lua = Platform.cmdline and "" or "Lua",
+      Data = Platform.cmdline and "" or "Data",
+      Dlc = Platform.cmdline and "" or "Data/../Dlc",
+      HGO = "HGO",
+      Build = "CommonLua/../Tools/Build",
+      Server = "Lua/../Tools/Server/Project",
+      Shaders = "Shaders",
+      ProjectShaders = "ProjectShaders"
+    }
+    for key, value in pairs(PathRemapping) do
+      if value ~= "" then
+        local game_path = value .. "/."
+        local os_path, failed = ConvertToOSPath(game_path)
+        if failed or not io.exists(os_path) then
+          os_path = ""
+        end
+        PathRemapping[key] = os_path
+      end
+    end
+  end
+--~   if not config.Haerald or not config.Haerald.FileDictionaryPath then
+    local FileDictionaryPath = {
+      "CommonLua",
+      "Lua",
+      "Dlc",
+      "HGO",
+      "Server",
+      "Build"
+    }
+--~   end
+--~   if not config.Haerald or not config.Haerald.FileDictionaryExclude then
+    local FileDictionaryExclude = {
+      ".svn",
+      "__load.lua",
+      ".prefab.lua",
+      ".designer.lua",
+      "/UIDesignerData/",
+      "/Storage/"
+    }
+--~   end
+--~   if not config.Haerald or not config.Haerald.FileDictionaryIgnore then
+    local FileDictionaryIgnore = {
+      "^exec$",
+      "^items$",
+      "^filter$",
+      "^action$",
+      "^state$",
+      "^f$",
+      "^func$",
+      "^no_edit$"
+    }
+--~   end
+--~   if not config.Haerald or not config.Haerald.SearchExclude then
+    local SearchExclude = {
+      ".svn",
+      "/Prefabs/",
+      "/Storage/",
+      "/Collections/",
+      "/BuildCache/"
+    }
+--~   end
+  local TablesToKeys = {}
+--~   if not config.Haerald or not config.Haerald.TableDictionary then
+    local TableDictionary = {
+      "const",
+      "config",
+      "hr",
+      "Platform",
+      "EntitySurfaces",
+      "terrain",
+      "ShadingConst",
+      "table",
+      "coroutine",
+      "debug",
+      "io",
+      "os",
+      "string"
+    }
+--~   end
+  for i = 1, #TableDictionary do
+    local name = TableDictionary[i]
+    local t = rawget(_G, name)
+    local keys = type(t) == "table" and table.keys(t) or ""
+    if type(keys) == "table" then
+      local vars = EnumVars(name .. ".")
+      for key in pairs(vars) do
+        keys[#keys + 1] = key
+      end
+      if #keys > 0 then
+        table.sort(keys)
+        TablesToKeys[name] = keys
+      end
+    end
+  end
+  local InitPacket = {
+    Event = "InitPacket",
+    PathRemapping = PathRemapping,
+    ExeFileName = string.gsub(GetExecName(), "/", "\\"),
+    ExePath = string.gsub(GetExecDirectory(), "/", "\\"),
+    CurrentDirectory = Platform.pc and string.gsub(GetCWD(), "/", "\\") or "",
+    FileDictionaryPath = FileDictionaryPath,
+    FileDictionaryExclude = FileDictionaryExclude,
+    FileDictionaryIgnore = FileDictionaryIgnore,
+    SearchExclude = SearchExclude,
+    TablesToKeys = TablesToKeys,
+    ConsoleHistory = rawget(_G, "LocalStorage") and LocalStorage.history_log or {}
+  }
+  InitPacket.Platform = GetDebuggeePlatform()
+--~   if Platform.console or Platform.ios then
+--~     InitPacket.UploadData = "true"
+--~     InitPacket.UploadPartSize = config.Haerald and config.Haerald.UploadPartSize or 2097152
+--~     InitPacket.UploadFolders = config.Haerald and config.Haerald.UploadFolders or {}
+--~   end
+  local project_name = const.HaeraldProjectName
+  if not project_name then
+    local dir, filename, ext = SplitPath(GetExecName())
+    project_name = filename or "unknown"
+  end
+  InitPacket.ProjectName = project_name
+  self:Send(InitPacket)
+  for i = 1, 500 do
+    if self:DebuggerTick() and not self.init_packet_received then
+      os.sleep(10)
+    end
+  end
+--~   if not self.init_packet_received then
+--~     print("Didn't receive initialization packages (maybe Haerald is taking too long to upload the files?)")
+--~     self:Stop()
+--~     return
+--~   end
+  SetThreadDebugHook(DebuggerSetHook)
+  DebuggerSetHook()
+--~   if DebuggerTracingEnabled() then
+    do
+      local coroutine_resume, coroutine_status = coroutine.resume, coroutine.status
+--~       SetThreadResumeFunc(function(thread)
+      CreateRealTimeThread(function(thread)
+        collectgarbage("stop")
+        DebuggerPreThreadResume(thread)
+        local r1, r2 = coroutine.resume(thread)
+        local time = DebuggerPostThreadYield(thread)
+        collectgarbage("restart")
+        if coroutine_status(thread) ~= "suspended" then
+          DebuggerClearThreadHistory(thread)
+        end
+        return r1, r2
+      end)
+    end
+--~   else
+--~   end
+  DeleteThread(self.update_thread)
+  self.update_thread = CreateRealTimeThread(function()
+    print("Debugger connected.")
+    while self:DebuggerTick() do
+      Sleep(25)
+    end
+    self:Stop()
+  end)
+--~   if Platform.console then
+--~     RemoteCompileRequestShaders()
+--~   end
+end
+
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()
     return "", false

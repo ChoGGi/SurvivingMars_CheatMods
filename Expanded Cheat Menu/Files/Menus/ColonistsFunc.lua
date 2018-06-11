@@ -210,7 +210,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000375--[[The Soylent Option--]]),
@@ -288,7 +288,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000757--[[Add Applicants To Pool--]]),
@@ -340,7 +340,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(217--[[Work Shifts--]]),
@@ -384,7 +384,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000771--[[Set the minimum comfort needed for birth--]]),
@@ -447,7 +447,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000777--[[Make Renegades--]]),
@@ -614,7 +614,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000790--[[Set Outside Workplace Radius--]]),
@@ -679,7 +679,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000801--[[Set Death Age--]]),
@@ -782,7 +782,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000807--[[olonist Age--]])),
@@ -873,7 +873,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000810--[[olonist Gender--]])),
@@ -971,7 +971,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000813--[[olonist Specialization--]])),
@@ -1066,7 +1066,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000820--[[olonist Race--]])),
@@ -1234,7 +1234,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   end
 
   if iType == 1 then
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    ChoGGi.ComFuncs.OpenInListChoice({
       callback = CallBackFunc,
       items = ItemList,
       title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000831--[[olonist Traits--]])),
@@ -1242,7 +1242,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       multisel = true,
     })
   elseif iType == 2 then
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    ChoGGi.ComFuncs.OpenInListChoice({
       callback = CallBackFunc,
       items = ItemList,
       title = Concat(T(302535920000129--[[Set--]])," ",sType,T(302535920000831--[[olonist Traits--]])),
@@ -1334,7 +1334,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
     ChoGGi.ComFuncs.MsgPopup(choice[1].text,T(547--[[Colonists--]]),UsualIcon)
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000836--[[Set Stats Of All Colonists--]]),
@@ -1401,7 +1401,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000838--[[Colonist Move Speed--]]),
@@ -1473,7 +1473,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000840--[[Set Colonist Gravity--]]),
@@ -1580,7 +1580,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
 
   hint[#hint+1] = "\n\n"
   hint[#hint+1] = T(302535920000847--[[Select traits and click Ok to toggle status.--]])
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000146--[[Toggle--]])," ",sType," ",T(302535920000846--[[For--]])," ",name),

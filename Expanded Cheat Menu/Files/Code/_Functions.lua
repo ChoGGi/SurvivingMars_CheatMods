@@ -6,9 +6,6 @@ local T = ChoGGi.ComFuncs.Trans
 
 local pcall,print,rawget,tostring,type,table = pcall,print,rawget,tostring,type,table
 
-local table_remove = table.remove
-local table_sort = table.sort
-
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
 local CloseXDialog = CloseXDialog
@@ -59,10 +56,11 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
     --remove restart as the last cmd so we don't hit it by accident
     local dlgConsole = dlgConsole
     if dlgConsole.history_queue[1] == str then
-      table_remove(dlgConsole.history_queue,1)
+      table.remove(dlgConsole.history_queue,1)
       --and save it?
       if rawget(_G, "dlgConsole") then
-        g_Classes.Console.StoreHistory(dlgConsole)
+--~         g_Classes.Console.StoreHistory(dlgConsole)
+        dlgConsole:StoreHistory()
       end
     end
   end
@@ -460,145 +458,6 @@ function ChoGGi.CodeFuncs.ColonistUpdateRace(Colonist,Race)
   Colonist:ChooseEntity()
 end
 
---[[
-called below from FireFuncAfterChoice
-
-CustomType=1 : updates selected item with custom value type, dbl click opens colour changer, and sends back all items
-CustomType=2 : colour selector
-CustomType=3 : updates selected item with custom value type, and sends back selected item.
-CustomType=4 : updates selected item with custom value type, and sends back all items
-CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
-CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
-
-ChoGGi.CodeFuncs.FireFuncAfterChoice({
-  callback = CallBackFunc,
-  items = ItemList,
-  title = "TitleBar",
-  hint = Concat("Current",": ",hint),
-  multisel = MultiSel,
-  custom_type = CustomType,
-  custom_func = CustomFunc,
-  check1 = "Check1",
-  check1_hint = "Check1Hint",
-  check2 = "Check2",
-  check2_hint = "Check2Hint",
-})
-
---]]
-function ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
-  local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
-
-  if not dlg then
-    return
-  end
-
-  --title text
-  dlg.idCaption:SetText(Table.title)
-  --list
-  dlg.idList:SetContent(Table.items)
-
-  --fiddling with custom value
-  if Table.custom_type then
-    dlg.idEditValue.auto_select_all = false
-    dlg.CustomType = Table.custom_type
-    if Table.custom_type == 2 or Table.custom_type == 5 then
-      dlg.idList:SetSelection(1, true)
-      dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-      dlg.idEditValue:SetText(tostring(dlg.sel.value))
-      dlg:UpdateColourPicker()
-      if Table.custom_type == 2 then
-        dlg:SetWidth(750)
-        dlg.idColorHSV:SetVisible(true)
-        dlg.idColorCheckAir:SetVisible(true)
-        dlg.idColorCheckWater:SetVisible(true)
-        dlg.idColorCheckElec:SetVisible(true)
-      end
-    end
-  end
-
-  if Table.custom_func then
-    dlg.Func = Table.custom_func
-  end
-
-  if Table.multisel then
-    dlg.idList.multiple_selection = true
-    if type(Table.multisel) == "number" then
-      --select all of number
-      for i = 1, Table.multisel do
-        dlg.idList:SetSelection(i, true)
-      end
-    end
-  end
-
-  --setup checkboxes
-  if not Table.check1 and not Table.check2 then
-    dlg.idCheckBox1:SetVisible(false)
-    dlg.idCheckBox2:SetVisible(false)
-  else
-    dlg.idList:SetSize(point(390, 310))
-
-    if Table.check1 then
-      dlg.idCheckBox1:SetText(Table.check1)
-      dlg.idCheckBox1:SetHint(Table.check1_hint)
-    else
-      dlg.idCheckBox1:SetVisible(false)
-    end
-    if Table.check2 then
-      dlg.idCheckBox2:SetText(Table.check2)
-      dlg.idCheckBox2:SetHint(Table.check2_hint)
-    else
-      dlg.idCheckBox2:SetVisible(false)
-    end
-  end
-  --where to position dlg
-  dlg:SetPos(terminal_GetMousePos())
-
-  --focus on list
-  dlg.idList:SetFocus()
-  --dlg.idList:SetSelection(1, true)
-
-  --are we showing a hint?
-  if Table.hint then
-    dlg.idList:SetHint(Table.hint)
-    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
-  end
-
-  --waiting for choice
-  return dlg:Wait()
-end
-
-function ChoGGi.CodeFuncs.FireFuncAfterChoice(Table)
-  local ChoGGi = ChoGGi
-  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000013--[[FireFuncAfterChoice: This shouldn't happen.--]]),T(6774--[[Error--]]))
-    return
-  end
-
-  --sort table by display text
-  local sortby = "text"
-  if Table.custom_type == 5 then
-    sortby = "sort"
-  end
-  table_sort(Table.items,
-    function(a,b)
-      return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
-    end
-  )
-
-  --only insert blank item if we aren't updating other items with it
-  if not Table.custom_type then
-    --insert blank item for adding custom value
-    Table.items[#Table.items+1] = {text = "",hint = "",value = false}
-  end
-
-  CreateRealTimeThread(function()
-    local option = ChoGGi.CodeFuncs.WaitListChoiceCustom(Table)
-    if option and #option > 0 then
-      Table.callback(option)
-    end
-  end)
-end
-
 --some dev removed this from the Spirit update... (harumph)
 function ChoGGi.CodeFuncs.AddConsolePrompt(text)
   if dlgConsole then
@@ -695,7 +554,7 @@ function ChoGGi.CodeFuncs.GetNearestIdleDrone(Bld)
     cc = cc.drones
   else
     --sort command_centers by nearest dist
-    table_sort(Bld.command_centers,
+    table.sort(Bld.command_centers,
       function(a,b)
         return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
       end
@@ -952,11 +811,11 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
-  local pal = ChoGGi.CodeFuncs.GetPalette(obj)
+  local pal = ChoGGi.CodeFuncs.GetPalette(s)
 
   local ItemList = {}
   for i = 1, 4 do
-    local text = Concat("Colour",i)
+    local text = Concat("Color",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
@@ -1036,7 +895,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       end
 
       --store table so it's the same as was displayed
-      table_sort(choice,
+      table.sort(choice,
         function(a,b)
           return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
         end
@@ -1075,7 +934,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
     end
   end
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000021--[[Change Colour--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
@@ -1237,7 +1096,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",ChoGGi.ComFuncs.RetName(Object)),

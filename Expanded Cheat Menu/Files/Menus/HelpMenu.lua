@@ -104,7 +104,7 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/[998]",T(302535920000676--[[Reset ECM Settings--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/[997]",T(302535920000676--[[Reset ECM Settings--]])),
     ChoGGi.MenuFuncs.ResetECMSettings,
     nil,
     T(302535920000677--[[Reset all ECM settings to default (restart to enable).--]]),
@@ -112,11 +112,45 @@ function ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/[999]",Concat(T(302535920000887--[[ECM--]])," ",T(487939677892--[[Help--]]))),
+    Concat("[999]",T(487939677892--[[Help--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(487939677892--[[Help--]]))),
     ChoGGi.MenuFuncs.ShowReadmeECM,
     nil,
     nil,
     "help.tga"
   )
+
+  --build text file menu items
+  do
+    local ChoGGi = ChoGGi
+    local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),".txt")
+    local function ReadText(file)
+      local file_error, text = AsyncFileToString(file)
+      if file_error then
+        --close enough, shouldn't happen (unless user is being a user)
+        return T(1000058--[[Missing file <u(src)> referenced in entity--]])
+      else
+        return text
+      end
+    end
+    if folders then
+      for i = 1, #folders do
+      ChoGGi.ComFuncs.AddAction(
+        Concat("[999]",T(487939677892--[[Help--]]),"/[999]",Concat(T(1000145--[[Text--]]),"/",folders[i].name)),
+        function()
+          local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+            zorder = 2000001,
+            wrap = true,
+            text = ReadText(folders[i].path),
+          })
+          dialog:Open()
+        end,
+        nil,
+        nil,
+        "Voice.tga"
+      )
+
+      end
+    end
+  end
 
 end

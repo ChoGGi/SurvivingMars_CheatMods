@@ -4,9 +4,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local next,pairs,print,type = next,pairs,print,type
-
-local table_sort = table.sort
+local next,pairs,print,type,table = next,pairs,print,type,table
 
 local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
@@ -297,7 +295,7 @@ function ChoGGi.SettingFuncs.WriteSettings()
     ThreadUnlockKey(bak)
 
     ThreadLockKey(ChoGGi.SettingsFile)
-    table_sort(ChoGGi.UserSettings)
+    table.sort(ChoGGi.UserSettings)
     --and write it to disk
     local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.UserSettings))
     ThreadUnlockKey(ChoGGi.SettingsFile)

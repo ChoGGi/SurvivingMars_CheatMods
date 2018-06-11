@@ -1,41 +1,9 @@
 --See LICENSE for terms
 
---~ Surviving Mars comes with
---~ print(lfs._VERSION) LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support)
---~ though SM has a bunch of AsyncFile* functions that should probably be used instead (as you can use AppData with them to specify the profile folder)
-
---~ lpeg v0.10 : lpeg.version()
---~ require("leg.grammar") --LPeg grammar manipulation
---~ require("leg.parser") --LPeg Lua parser
-
---~ socket = require("socket")
---~ print(socket._VERSION)
-
---[[
-local function MemoizeTextTESTING(func)
-  local stored_queries = {}
-  setmetatable(stored_queries, {__mode = "kv"})
-  return function(...)
-    local ret = stored_queries[...]
-    if ret == nil then
-      ret = func(...)
-      stored_queries[...] = ret
-    end
-    print("\nMemoizeTextTESTING: ",ret,"\n")
-    return ret
-  end
-end
---]]
-
 local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
 
-local getmetatable,setmetatable = getmetatable,setmetatable
-local next,pairs,print,type,select = next,pairs,print,type,select
-local pcall,tonumber,tostring = pcall,tonumber,tostring
-
-local table,string = table,string
-local table_remove,table_sort,table_unpack,table_set_defaults = table.remove,table.sort,table.unpack,table.set_defaults
-local debug_getinfo,string_dump,string_gsub = debug.getinfo,string.dump,string.gsub
+local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
+local table,debug,string = table,debug,string
 
 local _InternalTranslate = _InternalTranslate
 local AsyncCreatePath = AsyncCreatePath
@@ -85,6 +53,73 @@ local terrain_IsPointInBounds = terrain.IsPointInBounds
 
 local g_Classes = g_Classes
 
+--backup orginal function for later use (checks if we already have a backup, or else problems)
+function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+  local ChoGGi = ChoGGi
+  if Func then
+    local newname = Concat(ClassOrFunc,"_",Func)
+    if not ChoGGi.OrigFuncs[newname] then
+--~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
+    end
+  else
+    if not ChoGGi.OrigFuncs[ClassOrFunc] then
+      ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    end
+  end
+end
+
+--changes a function to also post a Msg for use with OnMsg
+function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
+  local ChoGGi = ChoGGi
+  --save orig
+  ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
+  --redefine it
+  g_Classes[ClassName][FuncName] = function(...)
+--~   _G[ClassName][FuncName] = function(...)
+    --I just care about adding self to the msgs
+    Msg(sMsg,select(1,...))
+
+--~     --use to debug if getting an error
+--~     local params = {...}
+--~     --pass on args to orig func
+--~     if not pcall(function()
+--~       return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](table.unpack(params))
+--~     end) then
+--~       print("Function Error: ",Concat(ClassName,"_",FuncName))
+--~       OpenExamine({params})
+--~     end
+
+    return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
+  end
+end
+
+-- we need to call these here, because of the local g_Classes in the other files
+local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
+AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
+AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
+AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
+AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
+AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
+AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
+AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
+AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
+AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
+AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
+AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
+AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
+AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
+AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
+AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
+AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
+
 local memoize = {
   _VERSION     = 'memoize v2.0',
   _DESCRIPTION = 'Memoized functions in Lua',
@@ -92,7 +127,7 @@ local memoize = {
   _LICENSE     = [[
     MIT LICENSE
 
-    Copyright (c) 2018 Enrique Garc??ota
+    Copyright (c) 2018 Enrique García Cota
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the
@@ -168,17 +203,17 @@ function memoize.memoize(f, cache)
       cache_put(cache, params, results)
     end
 
-    return table_unpack(results)
+    return table.unpack(results)
   end
 end
 setmetatable(memoize, { __call = function(_, ...) return memoize.memoize(...) end })
-ChoGGi.ComFuncs.MemoizeText = memoize.memoize
-local MemoizeText = memoize.memoize
+ChoGGi.ComFuncs.Memoize = memoize.memoize
+local Memoize = memoize.memoize
 
 --cache translation strings (doesn't work well with _InternalTranslate)
-IsT = MemoizeText(IsT)
-T = MemoizeText(T)
-TDevModeGetEnglishText = MemoizeText(TDevModeGetEnglishText)
+IsT = Memoize(IsT)
+T = Memoize(T)
+TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
 
 --I want a translate func to always return a string
 function ChoGGi.ComFuncs.Trans(...)
@@ -187,7 +222,7 @@ function ChoGGi.ComFuncs.Trans(...)
   --just incase a
   pcall(function()
     if type(vararg[1]) == "userdata" then
-      trans = _InternalTranslate(table_unpack(vararg))
+      trans = _InternalTranslate(table.unpack(vararg))
     else
       trans = _InternalTranslate(T(vararg))
     end
@@ -201,7 +236,7 @@ function ChoGGi.ComFuncs.Trans(...)
   end
   return trans
 end
-ChoGGi.ComFuncs.Trans = MemoizeText(ChoGGi.ComFuncs.Trans)
+ChoGGi.ComFuncs.Trans = Memoize(ChoGGi.ComFuncs.Trans)
 local T = ChoGGi.ComFuncs.Trans
 
 --shows a popup msg with the rest of the notifications
@@ -234,8 +269,8 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     text = tostring(Msg or T(3718--[[NONE--]])),
     image = Icon
   }
-  table_set_defaults(data, params)
-  table_set_defaults(data, OnScreenNotificationPreset)
+  table.set_defaults(data, params)
+  table.set_defaults(data, OnScreenNotificationPreset)
 
   CreateRealTimeThread(function()
 		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
@@ -410,7 +445,7 @@ function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
   if type(Obj) == "userdata" then
     return T(Obj)
   elseif Funcs and type(Obj) == "function" then
-    return Concat("Func: \n\n",string_dump(Obj),"\n\n")
+    return Concat("Func: \n\n",string.dump(Obj),"\n\n")
   elseif type(Obj) == "table" then
     return Concat(tostring(Obj)," len: ",#Obj)
   else
@@ -499,7 +534,7 @@ end
 --]]
 
 --[[
-  table_sort(Items,
+  table.sort(Items,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
     end
@@ -517,7 +552,7 @@ function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
 end
 
 --[[
-table_sort(s.command_centers,
+table.sort(s.command_centers,
   function(a,b)
     return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",s)
   end
@@ -584,36 +619,6 @@ function ChoGGi.ComFuncs.PrintIds(Table)
   ChoGGi.ComFuncs.Dump(text)
 end
 
---changes a function to also post a Msg for use with OnMsg
-function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
-  local ChoGGi = ChoGGi
-  --save orig
-  ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
-  --redefine it
-  _G[ClassName][FuncName] = function(...)
-    --I just care about adding self to the msgs
-    Msg(sMsg,select(1,...))
-    --pass on args to orig func
-    return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
-  end
-end
-
---backup orginal function for later use (checks if we already have a backup, or else problems)
-function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
-  local ChoGGi = ChoGGi
-  if Func then
-    local newname = Concat(ClassOrFunc,"_",Func)
-    if not ChoGGi.OrigFuncs[newname] then
---~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
-      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
-    end
-  else
-    if not ChoGGi.OrigFuncs[ClassOrFunc] then
-      ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
-    end
-  end
-end
-
 --check for and remove broken objects from UICity.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   local UICity = UICity
@@ -624,7 +629,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
     for i = 1, #tab do
       if not IsValid(tab[i]) then
       --if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
-        table_remove(UICity.labels[Label],i)
+        table.remove(UICity.labels[Label],i)
         found = true
         break
       end
@@ -639,13 +644,13 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(Table,TObject)
     for i = 1, #Table do
       if TObject then
         if #Table[i][TObject] == 0 then
-          table_remove(Table,i)
+          table.remove(Table,i)
           found = true
           break
         end
       elseif not IsValid(Table[i]) then
         --placed objects
-        table_remove(Table,i)
+        table.remove(Table,i)
         found = true
         break
       end
@@ -659,7 +664,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
   local tab = UICity.labels[Label] or empty_table
   for i = 1, #tab do
     if tab[i] and tab[i].handle and tab[i] == Obj.handle then
-      table_remove(UICity.labels[Label],i)
+      table.remove(UICity.labels[Label],i)
     end
   end
 end
@@ -759,7 +764,7 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   local name = "NOFUNC"
   --add name to action id
   if Action then
-    local debug_info = debug_getinfo(Action, "Sn")
+    local debug_info = debug.getinfo(Action, "Sn")
     local text = tostring(Concat(debug_info.short_src,"(",debug_info.linedefined,")"))
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
@@ -910,7 +915,7 @@ end
 
 function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   local ChoGGi = ChoGGi
-  table_sort(Table,
+  table.sort(Table,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
     end
@@ -1093,6 +1098,141 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
 
 end
 
+--[[
+called below from FireFuncAfterChoice
+
+CustomType=1 : updates selected item with custom value type, dbl click opens colour changer, and sends back all items
+CustomType=2 : colour selector
+CustomType=3 : updates selected item with custom value type, and sends back selected item.
+CustomType=4 : updates selected item with custom value type, and sends back all items
+CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
+CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+
+ChoGGi.ComFuncs.OpenInListChoice({
+  callback = CallBackFunc,
+  items = ItemList,
+  title = "TitleBar",
+  hint = Concat("Current",": ",hint),
+  multisel = MultiSel,
+  custom_type = CustomType,
+  custom_func = CustomFunc,
+  check1 = "Check1",
+  check1_hint = "Check1Hint",
+  check2 = "Check2",
+  check2_hint = "Check2Hint",
+})
+
+--]]
+function ChoGGi.ComFuncs.OpenInListChoice(Table)
+  local ChoGGi = ChoGGi
+  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
+    ChoGGi.ComFuncs.MsgPopup(T(302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]),T(6774--[[Error--]]))
+    return
+  end
+
+  --sort table by display text
+  local sortby = Table.sortby or "text"
+  table.sort(Table.items,
+    function(a,b)
+      return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
+    end
+  )
+
+  --only insert blank item if we aren't updating other items with it
+  if not Table.custom_type then
+    --insert blank item for adding custom value
+    Table.items[#Table.items+1] = {text = "",hint = "",value = false}
+  end
+
+  CreateRealTimeThread(function()
+--~     local option = ChoGGi.ComFuncs.OpenInListChoice(Table)
+    local option = function()
+      local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
+
+      if not dlg then
+        return
+      end
+
+      --title text
+      dlg.idCaption:SetText(Table.title)
+      --list
+      dlg.idList:SetContent(Table.items)
+
+      --fiddling with custom value
+      if Table.custom_type then
+        dlg.idEditValue.auto_select_all = false
+        dlg.CustomType = Table.custom_type
+        if Table.custom_type == 2 or Table.custom_type == 5 then
+          dlg.idList:SetSelection(1, true)
+          dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
+          dlg.idEditValue:SetText(tostring(dlg.sel.value))
+          dlg:UpdateColourPicker()
+          if Table.custom_type == 2 then
+            dlg:SetWidth(750)
+            dlg.idColorHSV:SetVisible(true)
+            dlg.idColorCheckAir:SetVisible(true)
+            dlg.idColorCheckWater:SetVisible(true)
+            dlg.idColorCheckElec:SetVisible(true)
+          end
+        end
+      end
+
+      if Table.custom_func then
+        dlg.Func = Table.custom_func
+      end
+
+      if Table.multisel then
+        dlg.idList.multiple_selection = true
+        if type(Table.multisel) == "number" then
+          --select all of number
+          for i = 1, Table.multisel do
+            dlg.idList:SetSelection(i, true)
+          end
+        end
+      end
+
+      --setup checkboxes
+      if not Table.check1 and not Table.check2 then
+        dlg.idCheckBox1:SetVisible(false)
+        dlg.idCheckBox2:SetVisible(false)
+      else
+        dlg.idList:SetSize(point(390, 310))
+
+        if Table.check1 then
+          dlg.idCheckBox1:SetText(Table.check1)
+          dlg.idCheckBox1:SetHint(Table.check1_hint)
+        else
+          dlg.idCheckBox1:SetVisible(false)
+        end
+        if Table.check2 then
+          dlg.idCheckBox2:SetText(Table.check2)
+          dlg.idCheckBox2:SetHint(Table.check2_hint)
+        else
+          dlg.idCheckBox2:SetVisible(false)
+        end
+      end
+      --where to position dlg
+      dlg:SetPos(terminal_GetMousePos())
+
+      --focus on list
+      dlg.idList:SetFocus()
+      --dlg.idList:SetSelection(1, true)
+
+      --are we showing a hint?
+      if Table.hint then
+        dlg.idList:SetHint(Table.hint)
+        dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
+      end
+
+      --waiting for choice
+      return dlg:Wait()
+    end
+    if option and #option > 0 then
+      Table.callback(option)
+    end
+  end)
+end
+
 --returns table with list of files without path or ext and path, or exclude ext to return all files
 function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
   local err, files = AsyncListFiles(Folder,Ext and Concat("*",Ext) or "*")
@@ -1102,7 +1242,7 @@ function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
     for i = 1, #files do
       local name
       if Ext then
-        name = string_gsub(files[i]:gsub(path,""),Ext,"")
+        name = string.gsub(files[i]:gsub(path,""),Ext,"")
       else
         name = files[i]:gsub(path,"")
       end
@@ -1126,7 +1266,7 @@ function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
     if host.actions[i].ChoGGi_ConsoleAction or
         host:FilterAction(host.actions[i]) and host.actions[i].ActionMenubar:find("ChoGGi_") then
       host.actions[i]:delete()
-      table_remove(host.actions,i)
+      table.remove(host.actions,i)
     end
   end
 
@@ -1191,11 +1331,13 @@ function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
     AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
     AsyncStringToFile(Concat(script_path,"/Help.lua"),help)
     AsyncCreatePath(Concat(script_path,"/Examine"))
-    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),"OpenExamine(XTemplates)")
+    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),"OpenExamine(ChoGGi)")
     AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),"OpenExamine(DataInstances)")
     AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),"OpenExamine(GetInGameInterface())")
+    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),"OpenExamine(MsgThreads)\n--includes ThreadsRegister")
+    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),"OpenExamine(Presets)")
     AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),"OpenExamine(terminal.desktop)")
-    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),"OpenExamine(ChoGGi)")
+    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),"OpenExamine(XTemplates)")
     AsyncCreatePath(Concat(script_path,"/Functions"))
     AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),"#GetObjects({class=\"Colonist\")")
     AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),"SelectedObj:ToggleWorking()")
@@ -1397,14 +1539,14 @@ function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
 
   --sort list custom
   if Sort then
-    table_sort(list,
+    table.sort(list,
       function(a,b)
         return a[Sort] < b[Sort]
       end
     )
   else
     --sort nearest
-    table_sort(list,
+    table.sort(list,
       function(a,b)
         return a:GetDist2D(pos) < b:GetDist2D(pos)
       end
@@ -1418,14 +1560,19 @@ function ChoGGi.ComFuncs.RetName(obj)
   if obj == _G then
     return "_G"
   end
-  local is_table = type(obj) == "table"
   local name
-  --translated name
-  if is_table then
-    if obj.display_name then
+  if type(obj) == "table" then
+    --translated name
+    if type(obj.display_name) == "userdata" then
       return T(obj.display_name)
     elseif IsObjlist(obj) then
       return "objlist"
+      --return the name of the first one?
+--~       return ChoGGi.ComFuncs.RetName(obj[1])
+    end
+    name = getmetatable(obj)
+    if name and type(name.class) == "string" then
+      return name.class
     end
     name = obj.encyclopedia_id or obj.class
   end
@@ -1437,7 +1584,7 @@ function ChoGGi.ComFuncs.RetName(obj)
   --falling back baby (lags the shit outta kansas if this is a large objlist)
   return tostring(obj)
 end
-ChoGGi.ComFuncs.RetName = MemoizeText(ChoGGi.ComFuncs.RetName)
+ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)
 
 local temp_table = {}
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
@@ -1455,7 +1602,7 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
       temp_table[#temp_table+1] = v
     end
   end
-  table_sort(temp_table)
+  table.sort(temp_table)
   --and send back sorted
   return temp_table
 end
@@ -1465,14 +1612,14 @@ function ChoGGi.ComFuncs.RetButtonTextSize(text,font)
   local x,y = UIL_MeasureText(text or "", font)
   return point(x + 24,y + 4) --button padding
 end
-ChoGGi.ComFuncs.RetButtonTextSize = MemoizeText(ChoGGi.ComFuncs.RetButtonTextSize)
+ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
 
 function ChoGGi.ComFuncs.RetCheckTextSize(text,font)
   font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
   local x,_ = UIL_MeasureText(text or "", font)
   return point(x + 24,17) --button padding
 end
-ChoGGi.ComFuncs.RetCheckTextSize = MemoizeText(ChoGGi.ComFuncs.RetCheckTextSize)
+ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
 --Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from)
@@ -1525,6 +1672,7 @@ function ChoGGi.ComFuncs.ClearShowMe()
 --~     ClearTextTrackers()
 --~   end
 end
+
 --~ local lm = false
 markers = {}
 function ChoGGi.ComFuncs.ShowMe(o, color, time)

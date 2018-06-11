@@ -45,7 +45,12 @@ SOFTWARE.]],
   --orig funcs that we replace
   OrigFuncs = {},
   --CommonFunctions.lua
-  ComFuncs = {},
+  ComFuncs = {
+    FileExists = function(name)
+      local _,test = AsyncFileOpen(name)
+      return test
+    end,
+  },
   --/Code/_Functions.lua
   CodeFuncs = {},
   --/Code/*Menu.lua and /Code/*Func.lua
@@ -67,8 +72,6 @@ SOFTWARE.]],
     Transparency = {},
   },
 }
-local ChoGGi = ChoGGi
-local Mods = Mods
 
 --if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,table = dofile,select,tostring,table
@@ -79,17 +82,17 @@ ChoGGi.ComFuncs.TableConcat = TConcat
 local AsyncFileOpen = AsyncFileOpen
 local dofolder_files = dofolder_files
 
+--for ChoGGi.ComFuncs.Concat
 local concat_table = {}
 local concat_value
---instead of a whole bunch of TConcat({}) making new tables we just use one
-local lookup = {string=true,number=true}
+
 function ChoGGi.ComFuncs.Concat(...)
   --reuse old table
   table.iclear(concat_table)
   --build table from args
   for i = 1, select("#",...) do
     concat_value = select(i,...)
-    if lookup[type(concat_value)] then
+      if type(concat_value) == "string" or type(concat_value) == "number" then
       concat_table[i] = concat_value
     else
       concat_table[i] = tostring(concat_value)
@@ -102,24 +105,23 @@ function ChoGGi.ComFuncs.Concat(...)
 --~   but now if i try to concat something that i can't it will :)
 end
 
+local ChoGGi = ChoGGi
+local Mods = Mods
 ChoGGi._VERSION = Mods[ChoGGi.id].version
 ChoGGi._TITLE = Mods[ChoGGi.id].title
 ChoGGi.ModPath = Mods[ChoGGi.id].path
 local Concat = ChoGGi.ComFuncs.Concat
+local FileExists = ChoGGi.ComFuncs.FileExists
 
 --used to let me know if we're on my computer
-local _,test = AsyncFileOpen("AppData/ChoGGi")
-if test then
+if FileExists("AppData/ChoGGi") then
   ChoGGi.Temp.Testing = true
-end
 
-if ChoGGi.Temp.Testing then
   ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
   --from here to the end of OnMsg.ChoGGi_Loaded()
   ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 else
-  local _,extracted = AsyncFileOpen(Concat(ChoGGi.ModPath,"Defaults.lua"))
-  if extracted then
+  if FileExists(Concat(ChoGGi.ModPath,"Defaults.lua")) then
     --if file exists then user likely unpacked the files, and moved them up a dir
     ChoGGi.MountPath = ChoGGi.ModPath
   else
@@ -144,8 +146,7 @@ local T = ChoGGi.ComFuncs.Trans
 
 --load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 local locale_file = Concat(ChoGGi.ModPath,"Locales/",GetLanguage(),".csv")
-local _,locale = AsyncFileOpen(locale_file)
-if locale then
+if FileExists(locale_file) then
   LoadTranslationTableFile(locale_file)
 else
   LoadTranslationTableFile(Concat(ChoGGi.ModPath,"Locales/","English.csv"))
@@ -180,16 +181,17 @@ if ChoGGi.UserSettings.FirstRun ~= false then
 end
 
 --if we're in fake editor mode (probably should fix that large font/ui scale issue)
-if ChoGGi.UserSettings.GedFilesLoaded then
+if ChoGGi.UserSettings.GedToolsMode then
+  --hopefully stops most people from wondering wtf
+  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color> ",T(302535920000201--[[Active--]]),"<color 0 0 0>:</color>\n<color 128 255 128>",T(302535920000292--[[Ged Tools Mode Toggle--]]),"</color>")
+
   function OnMsg.ClassesGenerate()
     Platform.editor = true
-    Platform.ged = true
-    dofile("CommonLua/Core/Terrain.lua")
+--~     Platform.ged = true
+--~     dofile("CommonLua/Core/Terrain.lua")
     --dofile("CommonLua/Ged/stubs.lua")
     dofolder("CommonLua/Ged")
     dofolder("CommonLua/Editor")
-    --dofolder_files("CommonLua/Ged/XTemplates")
-    --dofolder_files("CommonLua/Ged/Apps")
   end
 end
 

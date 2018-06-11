@@ -41,7 +41,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000555--[[Monitor Info--]]),
@@ -110,7 +110,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000946--[[Set Rocket Cargo Capacity--]]),
@@ -159,7 +159,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000951--[[Rocket Travel Time--]]),
@@ -194,7 +194,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000953--[[Set Colonist Capacity--]]),
@@ -266,7 +266,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000567--[[Worker Capacity--]])),
@@ -413,7 +413,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(109035890389--[[Capacity--]])),
@@ -476,7 +476,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000961--[[Visitor Capacity--]])),
@@ -574,7 +574,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]]),": ",sType," ",T(302535920000963--[[Size--]])),
@@ -602,7 +602,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001187--[[Add Probes--]]),
@@ -643,7 +643,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001190--[[Set Food Per Rocket Passenger--]]),
@@ -687,7 +687,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000723--[[Add Prefabs--]]),
@@ -726,7 +726,7 @@ function ChoGGi.MenuFuncs.SetFunding()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000725--[[Add Funding--]]),

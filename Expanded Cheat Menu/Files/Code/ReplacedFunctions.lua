@@ -7,8 +7,6 @@ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local type,next,tostring,rawset,rawget,assert = type,next,tostring,rawset,rawget,assert
 local setmetatable,table = setmetatable,table
 
-local table_unpack,table_remove = table.unpack,table.remove
-
 --probably should be careful about localizing stuff i replace below...
 local AddConsoleLog = AddConsoleLog
 local ApplyToObjAndAttaches = ApplyToObjAndAttaches
@@ -38,7 +36,7 @@ local guim = guim
 
 local UserActions_GetActiveActions = UserActions.GetActiveActions
 
-local g_Classes = g_Classes
+--~ local g_Classes = g_Classes
 
 --set UI transparency:
 local function SetTrans(Obj)
@@ -137,7 +135,7 @@ do
   function OpenXDialog(...)
     local ret = {ChoGGi_OrigFuncs.OpenXDialog(...)}
     SetTrans(ret)
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
   --console stuff (it's visible before mods are loaded so I can't use FrameWindow_Init)
   function ShowConsoleLog(...)
@@ -342,7 +340,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   function g_Classes.FrameWindow:Init(...)
     local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
     SetTrans(self)
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
   --no more pulsating pin motion
@@ -368,7 +366,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     if visible then
       self:SetMargins(box(0, 0, 0, 25))
     end
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
   --rebuild menu items for console script buttons
@@ -483,7 +481,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
             --damage control, this should never happen
             assert(false, "Rover has foreign drones attached")
             drone:Detach()
-            assert(drone == table_remove(self.attached_drones))
+            assert(drone == table.remove(self.attached_drones))
           else
             while self.guided_drone or #self.embarking_drones > 0 do
               Sleep(1000)
@@ -597,7 +595,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     if ChoGGi.UserSettings.DraggableCheatsMenu then
       self:SetMovable(true)
     end
-    return table_unpack(ret)
+    return table.unpack(ret)
   end --func
 
   --set menu position
@@ -643,7 +641,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       end
     end
 
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
   --removes earthsick effect
@@ -794,14 +792,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     if ChoGGi.UserSettings.TransparencyToggle then
       self:SetTransparency(0)
     end
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
   function g_Classes.XWindow:OnMouseLeft(pt, child)
     local ret = {ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       SetTrans(self)
     end
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
   --remove spire spot limit, and other limits on placing buildings
@@ -972,7 +970,7 @@ end
       end
     end)
 
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
   --make the background hide when console not visible (instead of after a second or two)
@@ -1050,7 +1048,7 @@ end
       end)
     end
 
-    return table_unpack(ret)
+    return table.unpack(ret)
   end
 
 
@@ -1179,235 +1177,5 @@ end
       ConsolePrint(err)
     end
   end
-
-  --don't expect much, unless you've got a copy of Haerald
-  function luadebugger:Start()
-  if self.started then
-    print("Already started")
-    return
-  end
-  print("Starting the Lua debugger...")
-  DebuggerInit()
-  DebuggerClearBreakpoints()
-  self.started = true
-  local server = self.server
-  local debugger_port = controller_port + 2
-  controller_host = not Platform.pc and config.Haerald and config.Haerald.ip or "localhost"
-  server:connect(controller_host, debugger_port)
-  server:update()
-  if not server:isconnected() then
-    if Platform.pc then
-      local processes = os.enumprocesses()
-      local running = false
-      for i = 1, #processes do
-        if string.find(processes[i], "Haerald.exe") then
-          running = true
-          break
-        end
-      end
-      if not running then
-        local os_path = ConvertToOSPath(config.LuaDebuggerPath)
-        local exit_code, std_out, std_error = os.exec(os_path)
-        if exit_code ~= 0 then
-          print("Could not launch Haerald Debugger from:", os_path, [[
-
-Exec error:]], std_error)
-          self:Stop()
-          return
-        end
-      end
-    end
-    local total_timeout = 6000
-    local retry_timeout = Platform.pc and 100 or 2000
-    local steps_before_reset = Platform.pc and 10 or 1
-    local num_retries = total_timeout / retry_timeout
-    for i = 1, num_retries do
-      server:update()
-      if not server:isconnected() then
-        if not server:isconnecting() or i % steps_before_reset == 0 then
-          server:close()
-          server:connect(controller_host, debugger_port, retry_timeout)
-        end
-        os.sleep(retry_timeout)
-      end
-    end
-    if not server:isconnected() then
-      print("Could not connect to debugger at " .. controller_host .. ":" .. debugger_port)
-      self:Stop()
-      return
-    end
-  end
-  server.timeout = 5000
-  self.watches = {}
-  self.handle_to_obj = {}
-  self.obj_to_handle = {}
-  local PathRemapping
-  if not Platform.pc then
-    PathRemapping = config.Haerald and config.Haerald.PathRemapping or {}
-  else
-    PathRemapping = config.Haerald and config.Haerald.PathRemapping or {
-      CommonLua = "CommonLua",
-      Lua = Platform.cmdline and "" or "Lua",
-      Data = Platform.cmdline and "" or "Data",
-      Dlc = Platform.cmdline and "" or "Data/../Dlc",
-      HGO = "HGO",
-      Build = "CommonLua/../Tools/Build",
-      Server = "Lua/../Tools/Server/Project",
-      Shaders = "Shaders",
-      ProjectShaders = "ProjectShaders"
-    }
-    for key, value in pairs(PathRemapping) do
-      if value ~= "" then
-        local game_path = value .. "/."
-        local os_path, failed = ConvertToOSPath(game_path)
-        if failed or not io.exists(os_path) then
-          os_path = ""
-        end
-        PathRemapping[key] = os_path
-      end
-    end
-  end
---~   if not config.Haerald or not config.Haerald.FileDictionaryPath then
-    local FileDictionaryPath = {
-      "CommonLua",
-      "Lua",
-      "Dlc",
-      "HGO",
-      "Server",
-      "Build"
-    }
---~   end
---~   if not config.Haerald or not config.Haerald.FileDictionaryExclude then
-    local FileDictionaryExclude = {
-      ".svn",
-      "__load.lua",
-      ".prefab.lua",
-      ".designer.lua",
-      "/UIDesignerData/",
-      "/Storage/"
-    }
---~   end
---~   if not config.Haerald or not config.Haerald.FileDictionaryIgnore then
-    local FileDictionaryIgnore = {
-      "^exec$",
-      "^items$",
-      "^filter$",
-      "^action$",
-      "^state$",
-      "^f$",
-      "^func$",
-      "^no_edit$"
-    }
---~   end
---~   if not config.Haerald or not config.Haerald.SearchExclude then
-    local SearchExclude = {
-      ".svn",
-      "/Prefabs/",
-      "/Storage/",
-      "/Collections/",
-      "/BuildCache/"
-    }
---~   end
-  local TablesToKeys = {}
---~   if not config.Haerald or not config.Haerald.TableDictionary then
-    local TableDictionary = {
-      "const",
-      "config",
-      "hr",
-      "Platform",
-      "EntitySurfaces",
-      "terrain",
-      "ShadingConst",
-      "table",
-      "coroutine",
-      "debug",
-      "io",
-      "os",
-      "string"
-    }
---~   end
-  for i = 1, #TableDictionary do
-    local name = TableDictionary[i]
-    local t = rawget(_G, name)
-    local keys = type(t) == "table" and table.keys(t) or ""
-    if type(keys) == "table" then
-      local vars = EnumVars(name .. ".")
-      for key in pairs(vars) do
-        keys[#keys + 1] = key
-      end
-      if #keys > 0 then
-        table.sort(keys)
-        TablesToKeys[name] = keys
-      end
-    end
-  end
-  local InitPacket = {
-    Event = "InitPacket",
-    PathRemapping = PathRemapping,
-    ExeFileName = string.gsub(GetExecName(), "/", "\\"),
-    ExePath = string.gsub(GetExecDirectory(), "/", "\\"),
-    CurrentDirectory = Platform.pc and string.gsub(GetCWD(), "/", "\\") or "",
-    FileDictionaryPath = FileDictionaryPath,
-    FileDictionaryExclude = FileDictionaryExclude,
-    FileDictionaryIgnore = FileDictionaryIgnore,
-    SearchExclude = SearchExclude,
-    TablesToKeys = TablesToKeys,
-    ConsoleHistory = rawget(_G, "LocalStorage") and LocalStorage.history_log or {}
-  }
-  InitPacket.Platform = GetDebuggeePlatform()
---~   if Platform.console or Platform.ios then
---~     InitPacket.UploadData = "true"
---~     InitPacket.UploadPartSize = config.Haerald and config.Haerald.UploadPartSize or 2097152
---~     InitPacket.UploadFolders = config.Haerald and config.Haerald.UploadFolders or {}
---~   end
-  local project_name = const.HaeraldProjectName
-  if not project_name then
-    local dir, filename, ext = SplitPath(GetExecName())
-    project_name = filename or "unknown"
-  end
-  InitPacket.ProjectName = project_name
-  self:Send(InitPacket)
-  for i = 1, 500 do
-    if self:DebuggerTick() and not self.init_packet_received then
-      os.sleep(10)
-    end
-  end
---~   if not self.init_packet_received then
---~     print("Didn't receive initialization packages (maybe Haerald is taking too long to upload the files?)")
---~     self:Stop()
---~     return
---~   end
-  SetThreadDebugHook(DebuggerSetHook)
-  DebuggerSetHook()
---~   if DebuggerTracingEnabled() then
-    do
-      local coroutine_resume, coroutine_status = coroutine.resume, coroutine.status
---~       SetThreadResumeFunc(function(thread)
-      CreateRealTimeThread(function(thread)
-        collectgarbage("stop")
-        DebuggerPreThreadResume(thread)
-        local r1, r2 = coroutine.resume(thread)
-        local time = DebuggerPostThreadYield(thread)
-        collectgarbage("restart")
-        if coroutine_status(thread) ~= "suspended" then
-          DebuggerClearThreadHistory(thread)
-        end
-        return r1, r2
-      end)
-    end
---~   else
---~   end
-  DeleteThread(self.update_thread)
-  self.update_thread = CreateRealTimeThread(function()
-    print("Debugger connected.")
-    while self:DebuggerTick() do
-      Sleep(25)
-    end
-    self:Stop()
-  end)
---~   if Platform.console then
---~     RemoteCompileRequestShaders()
---~   end
-end
 
 end --OnMsg

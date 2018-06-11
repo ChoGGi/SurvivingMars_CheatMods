@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
-local pairs,tostring,type = pairs,tostring,type
+local pairs,tostring,type,string = pairs,tostring,type,string
 
 local CheatMapExplore = CheatMapExplore
 local CheatSpawnNColonists = CheatSpawnNColonists
@@ -202,7 +202,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000251--[[Trigger Disaster--]]),
@@ -291,7 +291,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000263--[[Scan Map--]]),
@@ -327,7 +327,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000266--[[Spawn--]])," ",T(547--[[Colonists--]])),
@@ -356,7 +356,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000268--[[Start A Mystery--]]),
@@ -517,7 +517,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
 
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000279--[[Manage--]]),
@@ -650,7 +650,8 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              Concat(T(302535920000291--[[Waiting for--]])," ",seq.sequence," ",T(302535920000292--[[to finish.\n\nSkip it?--]])),
+              string.format(T(302535920000291--[[Waiting for %s to finish.\n\nSkip it?--]]),seq.sequence),
+              string.format(T(302535920000291--[[Waiting for %s to finish.\n\nSkip it?--]]),seq.sequence),
               CallBackFunc,
               title
             )
@@ -699,7 +700,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000295--[[Add Research Points--]]),
@@ -750,7 +751,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000300--[[BreakThroughs From Omega--]]),
@@ -787,7 +788,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000303--[[BreakThroughs Allowed--]]),
@@ -830,7 +831,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000305--[[Research Queue Size--]]),
@@ -926,7 +927,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000316--[[Research Unlock--]]),

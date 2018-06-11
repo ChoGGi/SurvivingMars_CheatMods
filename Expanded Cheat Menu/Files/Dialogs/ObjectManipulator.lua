@@ -156,7 +156,7 @@ function ChoGGi_ObjectManipulator:Init()
       --refresh list
       self:UpdateListContent(self.obj)
     end
-    ChoGGi.CodeFuncs.FireFuncAfterChoice({
+    ChoGGi.ComFuncs.OpenInListChoice({
       callback = CallBackFunc,
       items = ItemList,
       title = T(302535920000095--[[New Entry--]]),

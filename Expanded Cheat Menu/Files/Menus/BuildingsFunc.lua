@@ -70,7 +70,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000105--[[Set Food Storage--]]),
@@ -149,7 +149,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000114--[[Set Protection Radius--]]),
@@ -182,7 +182,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000117--[[Unlock Buildings--]]),
@@ -419,7 +419,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000130--[[Dis/Charge Rates--]])),
@@ -582,7 +582,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000139--[[Production Amount--]])),
@@ -663,7 +663,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     hint = tostring(setting.performance)
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(name,": ",T(302535920000144--[[Automated Performance--]])),
@@ -1010,7 +1010,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",id," ",T(302535920000163--[[Radius--]])),

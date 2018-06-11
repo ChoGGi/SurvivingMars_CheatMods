@@ -53,7 +53,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000880--[[Set Rover Charge Radius--]]),
@@ -98,7 +98,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000884--[[Set Rover Work Radius--]]),
@@ -143,7 +143,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000886--[[Set DroneHub Work Radius--]]),
@@ -184,7 +184,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000509--[[Drone Rock To Concrete Speed--]]),
@@ -234,7 +234,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000511--[[Drone Move Speed--]]),
@@ -284,7 +284,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000543--[[RC Move Speed--]]),
@@ -332,7 +332,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000895--[[Change Amount Of Drones--]]),
@@ -383,7 +383,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000901--[[Set Drone Factory Build Speed--]]),
@@ -515,7 +515,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000913--[[Set Drone Carry Capacity--]]),
@@ -556,7 +556,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000918--[[Set DroneHub Drone Capacity--]]),
@@ -597,7 +597,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000924--[[Set RC Rover Drone Capacity--]]),
@@ -647,7 +647,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000927--[[Set RC Transport Capacity--]]),
@@ -698,7 +698,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000930--[[Set Cargo Shuttle Capacity--]]),
@@ -748,7 +748,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000932--[[Set Cargo Shuttle Speed--]]),
@@ -803,7 +803,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
     )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000535--[[Set ShuttleHub Shuttle Capacity--]]),
@@ -854,7 +854,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000920--[[Set RC Gravity--]]),
@@ -904,7 +904,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000923--[[Set Drone Gravity--]]),

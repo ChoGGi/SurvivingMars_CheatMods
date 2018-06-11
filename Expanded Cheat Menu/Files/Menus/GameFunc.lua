@@ -67,7 +67,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000973--[[Change Terrain Texture--]]),
@@ -132,9 +132,10 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     ChoGGi.SettingFuncs.WriteSettings()
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
+    sortby = "sort",
     title = T(302535920000975--[[Custom Lightmodel--]]),
     hint = T(302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj).--]]),
     check1 = T(302535920000977--[[Semi-Permanent--]]),
@@ -225,7 +226,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
 
   hint[#hint+1] = "\n\n"
   hint[#hint+1] = T(302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]])
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = title,
@@ -324,7 +325,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
     ChoGGi.ComFuncs.MsgPopup(T(302535920000999--[[Transparency has been updated.--]]),T(1608--[[Transparency--]]))
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000629--[[Set UI Transparency--]]),
@@ -365,7 +366,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
       )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001016--[[Set Lights Radius--]]),
@@ -408,7 +409,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
       )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",T(302535920000635--[[Terrain Detail--]])),
@@ -445,7 +446,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
       )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001041--[[Set Video Memory Use--]]),
@@ -484,7 +485,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
       )
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001051--[[Set Shadowmap Size--]]),
@@ -541,7 +542,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
     end
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001057--[[Higher Render Dist--]]),
@@ -688,7 +689,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",T(302535920000647--[[Border Scrolling--]])),
@@ -728,7 +729,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 
   end
 
-  ChoGGi.CodeFuncs.FireFuncAfterChoice({
+  ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001058--[[Camera--]])," ",T(302535920001067--[[Zoom--]])),
