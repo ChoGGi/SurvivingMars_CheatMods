@@ -228,7 +228,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
       self.idList:SetItem(#self.idList.items,{
         text = value,
         value = value,
-        hint = T(302535920000079,"< Use custom value")
+        hint = T(302535920000079--[[< Use custom value--]])
       })
     end
   end

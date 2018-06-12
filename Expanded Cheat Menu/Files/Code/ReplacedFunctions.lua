@@ -1,6 +1,7 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
@@ -335,6 +336,94 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  --I don't need to see the help page that much
+  if Platform.editor then
+    function GedOpHelpMod()end
+    if ChoGGi.Temp.Testing then
+      function GedOpUploadMod(socket, root)
+        local mod = root[1]
+        if IsValidThread(ModUploadThread) then
+          socket:ShowMessage(
+            T(1000592--[[Error--]]),
+            T(1000011--[[There is an active Steam upload--]])
+          )
+          return
+        end
+        ModUploadThread = CreateRealTimeThread(function()
+          local err, files
+          if "ok" ~= socket:WaitQuestion(
+            T(1000009--[[Confirmation--]]),
+            T({1000012--[[Mod <ModLabel> will be uploaded to Steam--]],mod})
+          ) then
+            return
+          end
+          if Platform.steam then
+            if mod.steam_id ~= 0 then
+              local exists
+              local appId = SteamGetAppId()
+              local userId = SteamGetUserId64()
+              err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+              if not err and not exists then
+                mod.steam_id = 0
+              end
+            end
+            if not err and mod.steam_id == 0 then
+              local item_id, bShowLegalAgreement
+              err, item_id, bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
+              if not err then
+              else
+              end
+              mod.steam_id = item_id or nil
+            end
+          end
+          local dest = "AppData/ModUpload/"
+          if not err then
+--~             mod:SaveDef()
+--~             mod:SaveItems()
+--~             AsyncDeletePath(dest)
+--~             AsyncCreatePath(dest)
+--~             err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
+--~             if not err then
+--~               for _, file in ipairs(files or empty_table) do
+--~                 local dest_file = dest .. file
+--~                 local dir = SplitPath(dest_file)
+--~                 AsyncCreatePath(dir)
+--~                 err = AsyncCopyFile(mod.path .. file, dest_file, "raw")
+--~                 if not err then
+--~                 end
+--~               end
+--~             end
+          end
+          if not err then
+            local os_dest = ConvertToOSPath(dest)
+            if Platform.steam then
+              err = AsyncSteamWorkshopUpdateItem({
+                item_id = mod.steam_id,
+                title = mod.title,
+                description = mod.description,
+                tags = mod:GetTags(),
+                content_os_folder = os_dest,
+                image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
+              })
+            else
+              err = "no steam"
+            end
+          end
+          local msg, title
+          if err then
+            msg = local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod,err = Untranslated(err)})
+            title = T(1000593--[[Error--]])
+          else
+            msg = local_T({1000014,"Mod <ModLabel> was successfully uploaded to Steam!",mod})
+            title = T(1000015--[[Success--]])
+          end
+          ModLog(msg)
+          socket:ShowMessage(title, msg)
+        end)
+      end
+    end --testing
+  end
 
   --UI transparency "desktop" dialogs (toolbar)
   function g_Classes.FrameWindow:Init(...)

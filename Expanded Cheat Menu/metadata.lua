@@ -24,10 +24,10 @@ return PlaceObj("ModDef", {
     .. "\nShift-Q: Clone selected object to mouse position."
     .. "\nCtrl-Numpad . 2 3 enable gametime pathing markers on selected object, use Ctrl-Numpad 0 to remove."
     .. "\n\nobject = either the selected object or the object under the mouse cursor."
-    .. "\n\nFor more info see: https://github.com/ChoGGi/SurvivingMars_CheatMods.",
+    .. "\n\nFor more info and source code see: https://github.com/ChoGGi/SurvivingMars_CheatMods.",
 	"image", "CheatMenu.png",
 	"id", "ChoGGi_CheatMenu",
-	"author", "ChoGGi\nWith thanks to chippydip, BoehserOnkel, Fling, SkiRich, and random internet users reporting bugs/requesting features.",
+	"author", "ChoGGi\nWith thanks to chippydip, admbraden, SkiRich, BoehserOnkel, Fling, and random internet users reporting bugs/requesting features.",
 	"code", {"Init.lua"},
 	"TagGameplay", true,
 	"TagInterface", true,

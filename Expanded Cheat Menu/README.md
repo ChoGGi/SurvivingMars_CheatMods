@@ -222,5 +222,7 @@ You can't cheat fill concrete deposits.
 ##### Thanks
 ```
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
+admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
+unluac: https://sourceforge.net/projects/unluac/
 ```

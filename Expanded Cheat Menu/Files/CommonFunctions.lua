@@ -289,10 +289,11 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
       Sleep(0)
       popup[1].scale = point(2800,2600)
       popup[1].Margins = box(-5,-30,0,-5)
-      --update dialog
+      --update dialog size
       popup:InvalidateMeasure()
 --parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
 --osn GetXDialog("OnScreenNotificationsDlg")[1][1]
+      --i don't care for sounds
       --[[
       if type(params.fx_action) == "string" and params.fx_action ~= "" then
         PlayFX(params.fx_action)
