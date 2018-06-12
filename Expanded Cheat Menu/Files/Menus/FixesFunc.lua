@@ -5,16 +5,19 @@ local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,type,tostring = pairs,pcall,type,tostring
 
+local CreateRealTimeThread = CreateRealTimeThread
 local DoneObject = DoneObject
 local FindNearestObject = FindNearestObject
 local ForEach = ForEach
 local GenerateColonistData = GenerateColonistData
 local GetObjects = GetObjects
 local GetPassablePointNearby = GetPassablePointNearby
+local GetStateIdx = GetStateIdx
 local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local Msg = Msg
 local point = point
+local Sleep = Sleep
 
 local g_Classes = g_Classes
 
@@ -32,6 +35,41 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.CablesAndPipesRepair()
   ChoGGi.MenuFuncs.MirrorSphereStuck()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
+end
+
+function ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside()
+  CreateRealTimeThread(function()
+    local before_table = {}
+
+    --get all rovers stuck in deployStart with at least one drone
+    ForEach({
+      class = "RCRover",
+      exec = function(rc)
+        local state = rc:GetState() == GetStateIdx("deployIdle")
+        local drones = #rc.attached_drones > 0
+        print("sdfsdfds",state,drones)
+        if state and drones then
+          --store them in a table for later
+          before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+        end
+      end
+    })
+    --wait awhile just to be sure
+    Sleep(5000)
+    for _,rc_table in pairs(before_table) do
+      local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
+      local drones = #rc_table.rc.attached_drones == rc_table.amount
+      if state and drones then
+        for i = 1, #rc_table.rc.attached_drones do
+          DoneObject(rc_table.rc.attached_drones[i])
+        end
+        local pos = rc_table.rc:GetVisualPos()
+        local new = rc_table.rc:Clone()
+        DoneObject(rc_table.rc)
+        new:SetPos(HexGetNearestCenter(pos))
+      end
+    end
+  end)
 end
 
 local function SpawnColonist(old_c,building,pos,city)

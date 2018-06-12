@@ -8,6 +8,14 @@ function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers With Drones Stuck Inside--]])),
+    ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside,
+    nil,
+    T(302535920000882--[["If you have rovers with drones stuck inside them, this will fix them (clone and delete)."--]]),
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000055--[[Reset All Colonists--]])),
     ChoGGi.MenuFuncs.RedoAllColonists,
     nil,
