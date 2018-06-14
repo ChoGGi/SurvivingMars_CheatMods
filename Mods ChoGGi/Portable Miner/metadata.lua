@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
   "tags", "Buildings",
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
+  "steam_id", "1411113412",
   "code", {"Script.lua"},
 })

@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
 
@@ -43,7 +43,7 @@ local ViewPos = ViewPos
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
 
-local T = T --T replaced below
+local T = T -- T replaced below
 local guic = guic
 
 local UserActions_SetMode = UserActions.SetMode
@@ -53,7 +53,7 @@ local terrain_IsPointInBounds = terrain.IsPointInBounds
 
 local g_Classes = g_Classes
 
---backup orginal function for later use (checks if we already have a backup, or else problems)
+-- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then
@@ -69,7 +69,7 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   end
 end
 
---changes a function to also post a Msg for use with OnMsg
+-- changes a function to also post a Msg for use with OnMsg
 function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   local ChoGGi = ChoGGi
   --save orig
@@ -210,16 +210,18 @@ setmetatable(memoize, { __call = function(_, ...) return memoize.memoize(...) en
 ChoGGi.ComFuncs.Memoize = memoize.memoize
 local Memoize = memoize.memoize
 
---cache translation strings (doesn't work well with _InternalTranslate)
+-- cache translation strings (doesn't work well with _InternalTranslate)
 IsT = Memoize(IsT)
 T = Memoize(T)
 TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
 
---I want a translate func to always return a string
+ChoGGi.ComFuncs.TableConcat = Memoize(ChoGGi.ComFuncs.TableConcat)
+
+-- I want a translate func to always return a string
 function ChoGGi.ComFuncs.Trans(...)
   local trans
   local vararg = {...}
-  --just incase a
+  --just in case a
   pcall(function()
     if type(vararg[1]) == "userdata" then
       trans = _InternalTranslate(table.unpack(vararg))
@@ -227,19 +229,20 @@ function ChoGGi.ComFuncs.Trans(...)
       trans = _InternalTranslate(T(vararg))
     end
   end)
-  --just incase b
+  --just in case b
   if type(trans) ~= "string" then
     if type(vararg[2]) == "string" then
       return vararg[2]
     end
-    return Concat("ERROR",AsyncRand())
+    --we don't translate this one (just in case c)
+    return Concat("Missing locale string id: ",vararg[1])
   end
   return trans
 end
 ChoGGi.ComFuncs.Trans = Memoize(ChoGGi.ComFuncs.Trans)
 local T = ChoGGi.ComFuncs.Trans
 
---shows a popup msg with the rest of the notifications
+-- shows a popup msg with the rest of the notifications
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   local ChoGGi = ChoGGi
   Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
@@ -303,7 +306,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   end)
 end
 
---centred msgbox with Ok
+-- centred msgbox with Ok
 function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   Title = Title or ""
   CreateRealTimeThread(
@@ -313,7 +316,7 @@ function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   )
 end
 
---well that's the question isn't it?
+-- well that's the question isn't it?
 function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
   pcall(function()
     CreateRealTimeThread(function()
@@ -466,10 +469,8 @@ function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
   end
 end
 
---[[
-positive or 1 return TrueVar || negative or 0 return FalseVar
-ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
---]]
+-- positive or 1 return TrueVar || negative or 0 return FalseVar
+-- ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
 function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   if type(Num) ~= "number" then
     return
@@ -481,7 +482,7 @@ function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
   return Bool and TrueVar or FalseVar
 end
 
---return opposite value or first value if neither
+-- return opposite value or first value if neither
 function ChoGGi.ComFuncs.ValueRetOpp(Setting,Value1,Value2)
   if Setting == Value1 then
     return Value2
@@ -492,7 +493,7 @@ function ChoGGi.ComFuncs.ValueRetOpp(Setting,Value1,Value2)
   return Value1
 end
 
---return as num
+-- return as num
 function ChoGGi.ComFuncs.BoolRetNum(Bool)
   if Bool == true then
     return 1
@@ -500,7 +501,7 @@ function ChoGGi.ComFuncs.BoolRetNum(Bool)
   return 0
 end
 
---toggle 0/1
+-- toggle 0/1
 function ChoGGi.ComFuncs.ToggleBoolNum(Num)
   if Num == 0 then
     return 1
@@ -508,7 +509,7 @@ function ChoGGi.ComFuncs.ToggleBoolNum(Num)
   return 0
 end
 
---return equal or higher amount
+-- return equal or higher amount
 function ChoGGi.ComFuncs.CompareAmounts(iAmtA,iAmtB)
   --if ones missing then just return the other
   if not iAmtA then
@@ -523,7 +524,7 @@ function ChoGGi.ComFuncs.CompareAmounts(iAmtA,iAmtB)
   end
 end
 
---compares two values, if types are different then makes them both strings
+-- compares two values, if types are different then makes them both strings
 --[[
     if sort[a] and sort[b] then
       return sort[a] < sort[b]
@@ -570,7 +571,7 @@ function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
   end
 end
 
---write logs funcs
+-- write logs funcs
 local function ReplaceFunc(Name,Type,ChoGGi)
   ChoGGi.ComFuncs.SaveOrigFunc(Name)
   _G[Name] = function(...)
@@ -594,19 +595,22 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
     AsyncFileRename(Concat(logs,"DebugLog.log"),Concat(logs,"DebugLog.previous.log"))
 
     --redirect functions
+    if ChoGGi.Temp.Testing then
+      ReplaceFunc("print","ConsoleLog",ChoGGi)
+    end
     ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
     ReplaceFunc("printf","DebugLog",ChoGGi)
     ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
-    ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
+--~     ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
   else
     ResetFunc("AddConsoleLog",ChoGGi)
     ResetFunc("printf",ChoGGi)
     ResetFunc("DebugPrint",ChoGGi)
-    ResetFunc("OutputDebugString",ChoGGi)
+--~     ResetFunc("OutputDebugString",ChoGGi)
   end
 end
 
---ChoGGi.ComFuncs.PrintIds(Object)
+-- ChoGGi.ComFuncs.PrintIds(Object)
 function ChoGGi.ComFuncs.PrintIds(Table)
   local text = ""
 
@@ -620,7 +624,7 @@ function ChoGGi.ComFuncs.PrintIds(Table)
   ChoGGi.ComFuncs.Dump(text)
 end
 
---check for and remove broken objects from UICity.labels
+-- check for and remove broken objects from UICity.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
   local UICity = UICity
   local found = true
@@ -678,7 +682,7 @@ function toboolean(Str)
   end
 end
 
---tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
+-- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
 function ChoGGi.ComFuncs.RetProperType(Value)
   --number?
   local num = tonumber(Value)
@@ -698,7 +702,7 @@ function ChoGGi.ComFuncs.RetProperType(Value)
   return Value
 end
 
---used to check for some SM objects (Points/Boxes)
+-- used to check for some SM objects (Points/Boxes)
 function ChoGGi.ComFuncs.RetType(Obj)
   local meta = getmetatable(Obj)
   if meta then
@@ -711,7 +715,7 @@ function ChoGGi.ComFuncs.RetType(Obj)
   end
 end
 
---takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
+-- takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
 function ChoGGi.ComFuncs.StringToTable(str)
   local Table = {}
   for i in str:gmatch("%S+") do
@@ -720,7 +724,7 @@ function ChoGGi.ComFuncs.StringToTable(str)
   return Table
 end
 
---change some annoying stuff about UserActions.AddActions()
+-- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
 if ChoGGi.Temp.Testing then
@@ -813,7 +817,7 @@ print("\n")
   })
 end
 
---while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
+-- while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
 function ChoGGi.ComFuncs.CheckForTypeInList(List,Type)
   local ret = false
   for i = 1, #List do
@@ -880,7 +884,7 @@ end
     Consts["TravelTimeMarsEarth"] = Value
   end
 --]]
---function ChoGGi.ComFuncs.SetConstsG(Name,Value,IsResearched)
+-- function ChoGGi.ComFuncs.SetConstsG(Name,Value,IsResearched)
 function ChoGGi.ComFuncs.SetConstsG(Name,Value)
   --we only want to change it if user set value
   if Value then
@@ -890,7 +894,7 @@ function ChoGGi.ComFuncs.SetConstsG(Name,Value)
   end
 end
 
---if value is the same as stored then make it false instead of default value, so it doesn't apply next time
+-- if value is the same as stored then make it false instead of default value, so it doesn't apply next time
 function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
   local ChoGGi = ChoGGi
   --if setting is the same as the default then remove it
@@ -933,7 +937,7 @@ function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   return tempt
 end
 
---ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
+-- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   local tempt = {}
   Table = Table or empty_table
@@ -945,8 +949,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
---ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=true,ResourceStockpile=true},nil,"class")
---ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=true,ResourceStockpile=true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
@@ -975,8 +979,8 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
---ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
---ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}),"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}),"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
     filter = function(Obj)
@@ -1102,7 +1106,7 @@ end
 --[[
 called below from FireFuncAfterChoice
 
-CustomType=1 : updates selected item with custom value type, dbl click opens colour changer, and sends back all items
+CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dbl click opens colour changer, and sends back all items
 CustomType=2 : colour selector
 CustomType=3 : updates selected item with custom value type, and sends back selected item.
 CustomType=4 : updates selected item with custom value type, and sends back all items
@@ -1224,6 +1228,12 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
       dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
     end
 
+    --hide ok/cancel buttons as they don't do jack
+    if Table.custom_type == 1 then
+      dlg.idOK:SetVisible(false)
+      dlg.idClose:SetVisible(false)
+    end
+
     --waiting for choice
     local option = dlg:Wait()
 
@@ -1234,7 +1244,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   end)
 end
 
---returns table with list of files without path or ext and path, or exclude ext to return all files
+-- returns table with list of files without path or ext and path, or exclude ext to return all files
 function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
   local err, files = AsyncListFiles(Folder,Ext and Concat("*",Ext) or "*")
   if not err and #files > 0 then
@@ -1256,7 +1266,7 @@ function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
   end
 end
 
---rebuild menu toolbar buttons
+-- rebuild menu toolbar buttons
 function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
   host = host or terminal.desktop
   local ChoGGi = ChoGGi
@@ -1317,7 +1327,7 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
   end
 end
 
---used to add files to Script menu
+-- used to add files to Script menu
 function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
   local ChoGGi = ChoGGi
   local dlgConsole = dlgConsole
@@ -1370,7 +1380,7 @@ ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),Cho
   end
 end
 
---i keep forgetting this so, i'm adding it here
+-- i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
 end
@@ -1434,7 +1444,7 @@ function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
   end
 end
 
---return a string setting/text for menus
+-- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,msg_or_id)
 
   if setting == false or type(setting) == "nil" then
@@ -1450,7 +1460,7 @@ function ChoGGi.ComFuncs.SettingState(setting,msg_or_id)
   return Concat(setting,": ",T(msg_or_id))
 end
 
---Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
+-- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
 function ChoGGi.ComFuncs.VarDump(value, depth, key)
   local ChoGGi = ChoGGi
   local linePrefix = ""
@@ -1515,8 +1525,8 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
   return block,restrict
 end
 
---get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
---OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
+-- get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
+-- OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
 function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
   Radius = Radius or 5000
   local pos = GetTerrainCursor()
@@ -1550,7 +1560,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
   return list
 end
 
---returns object name or at least always some string
+-- returns object name or at least always some string
 function ChoGGi.ComFuncs.RetName(obj)
   if obj == _G then
     return "_G"
@@ -1616,7 +1626,7 @@ function ChoGGi.ComFuncs.RetCheckTextSize(text,font)
 end
 ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
---Haemimont Games code from examine.lua (moved here for local)
+-- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from)
   local ChoGGi = ChoGGi
   if o == nil then

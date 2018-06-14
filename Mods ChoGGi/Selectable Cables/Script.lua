@@ -1,6 +1,9 @@
+local XTemplates,PlaceObj,SelectionArrowAdd = XTemplates,PlaceObj,SelectionArrowAdd
+
+local g_Classes = g_Classes
+
 function OnMsg.ClassesBuilt()
-  local XT = XTemplates
-  if not XT.ipCable then
+  if not XTemplates.ipCable then
     PlaceObj('XTemplate', {
       group = "Infopanel Sections",
       id = "ipCable",
@@ -48,8 +51,8 @@ function OnMsg.ClassesBuilt()
   end --XTemplates
 
   --we need to return our new infopanel (if it isn't another panel)
-  local orig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
-  function ElectricityGridElement:GetInfopanelTemplate()
+  local orig_ElectricityGridElement_GetInfopanelTemplate = g_Classes.ElectricityGridElement.GetInfopanelTemplate
+  function g_Classes.ElectricityGridElement:GetInfopanelTemplate()
     local ret = orig_ElectricityGridElement_GetInfopanelTemplate(self)
     if not ret then
       return "ipCable"
@@ -58,7 +61,7 @@ function OnMsg.ClassesBuilt()
   end
 
   --so we know something is selected
-  function ElectricityGridElement:OnSelected()
+  function g_Classes.ElectricityGridElement:OnSelected()
     SelectionArrowAdd(self)
   end
 

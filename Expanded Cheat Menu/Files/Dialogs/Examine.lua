@@ -1030,17 +1030,17 @@ function Examine:SetText(text)
   end
   self.onclick_handles = {}
   --helps nicely for large lists and Concat function
-  if IsObjlist(self.obj) then
-    DoneObject(self.obj)
-  end
+--~   if IsObjlist(self.obj) then
+--~     DoneObject(self.obj)
+--~   end
   self.obj = false
   self.idText:SetText(text)
   self.idLinks:SetText(self:menu())
 end
 
 function Examine:Done(result)
-  if self.obj and IsObjlist(self.obj) then
-    DoneObject(self.obj)
-  end
+--~   if self.obj and IsObjlist(self.obj) then
+--~     DoneObject(self.obj)
+--~   end
   Dialog.Done(self,result)
 end

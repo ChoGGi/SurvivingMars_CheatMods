@@ -41,7 +41,7 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
-    T(302535920001069--[[Interface--]]),UsualIcon
+    T(302535920001069--[[Interface--]])
   )
 end
 
@@ -90,20 +90,20 @@ end
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
   ChoGGi.ComFuncs.MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?--]]),
-    T(302535920001075--[[Signs--]]),UsualIcon,true
+    T(302535920001075--[[Signs--]]),nil,true
   )
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup(HintsEnabled,T(4248--[[Hints--]]),UsualIcon)
+  ChoGGi.ComFuncs.MsgPopup(HintsEnabled,T(4248--[[Hints--]]))
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup(T(302535920001076--[[Hints Reset!--]]),T(4248--[[Hints--]]),UsualIcon)
+  ChoGGi.ComFuncs.MsgPopup(T(302535920001076--[[Hints Reset!--]]),T(4248--[[Hints--]]))
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()

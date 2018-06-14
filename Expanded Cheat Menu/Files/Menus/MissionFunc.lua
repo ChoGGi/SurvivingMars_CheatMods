@@ -12,7 +12,7 @@ local WaitPopupNotification = WaitPopupNotification
 local Msg = Msg
 local GetMissionSponsor = GetMissionSponsor
 
-function ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
   local ChoGGi = ChoGGi
   local Presets = Presets
   local function SetBonus(Preset,Type,Func)

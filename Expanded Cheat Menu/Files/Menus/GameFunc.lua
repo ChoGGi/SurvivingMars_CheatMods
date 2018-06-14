@@ -375,7 +375,6 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
-  local hint_warn = Concat("\n",T(302535920001018--[[Above 1000 will add a long delay to loading.--]]))
   local ItemList = {
     {text = Concat(" ",T(302535920000110--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
     {text = T(302535920001004--[[01 Lowest (25)--]]),value = 25},
@@ -386,16 +385,14 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
     {text = Concat(T(302535920001024--[[06 Ultra (200)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 200},
     {text = T(302535920001010--[[07 Ultra-er (400)--]]),value = 400},
     {text = T(302535920001011--[[08 Ultra-er (600)--]]),value = 600},
-    {text = T(302535920001012--[[09 Ultra-er (1000)--]]),value = 1000,hint = hint_warn},
-    {text = T(302535920001028--[[10 Ultra-er (2000)--]]),value = 2000,hint = hint_warn},
-    {text = T(302535920001029--[[11 It goes to 11 (6000)--]]),value = 6000,hint = hint_warn},
+    {text = T(302535920001012--[[09 Ultraist (1000)--]]),value = 1000,hint = Concat("\n",T(302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]))},
   }
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
     if type(value) == "number" then
-      if value > 6000 then
-        value = 6000
+      if value > 1000 then
+        value = 1000
       end
       hr.TR_MaxChunks = value
       ChoGGi.ComFuncs.SetSavedSetting("TerrainDetail",value)

@@ -1,4 +1,4 @@
-ChoGGiX = {
+BuildingPlacementOrientation = {
   OrigFunc = {},
 --Some names need to be fixed when doing construction placement
 ConstructionNamesListFix = {
@@ -13,22 +13,22 @@ ConstructionNamesListFix = {
 --for orientation
 function OnMsg.BuildingPlaced(Obj)
   if IsKindOf(Obj,"Building") then
-    ChoGGiX.LastPlacedObject = Obj
+    BuildingPlacementOrientation.LastPlacedObject = Obj
   end
 end
 function OnMsg.ConstructionSitePlaced(Obj)
   if IsKindOf(Obj,"Building") then
-    ChoGGiX.LastPlacedObject = Obj
+    BuildingPlacementOrientation.LastPlacedObject = Obj
   end
 end
 --for ctrl-space
 function OnMsg.ConstructionComplete(Obj)
   if IsKindOf(Obj,"Building") then
-    ChoGGiX.LastPlacedObject = Obj
+    BuildingPlacementOrientation.LastPlacedObject = Obj
   end
 end
 
-function ChoGGiX.FilterFromTable(Table,ExcludeList,Type)
+function BuildingPlacementOrientation.FilterFromTable(Table,ExcludeList,Type)
   return FilterObjects({
       filter = function(o)
         if not ExcludeList[o[Type]] then
@@ -38,24 +38,24 @@ function ChoGGiX.FilterFromTable(Table,ExcludeList,Type)
     },Table)
 end
 
-function ChoGGiX.SelObject()
+function BuildingPlacementOrientation.SelObject()
   local _,ret = pcall(function()
-    local objs = ChoGGiX.FilterFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1},"class")
+    local objs = BuildingPlacementOrientation.FilterFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1},"class")
     return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
   end)
   return ret
 end
 
-function OnMsg.LoadGame()
+local function SomeCode()
   --for setting the orientation
-  if not ChoGGiX.OrigFunc.CC_ChangeCursorObj then
-    ChoGGiX.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
+  if not BuildingPlacementOrientation.OrigFunc.CC_ChangeCursorObj then
+    BuildingPlacementOrientation.OrigFunc.CC_ChangeCursorObj = ConstructionController.CreateCursorObj
   end
   function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
 
-    local ret = ChoGGiX.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
+    local ret = BuildingPlacementOrientation.OrigFunc.CC_ChangeCursorObj(self,alternative_entity, template_obj, override_palette)
 
-    local last = ChoGGiX.LastPlacedObject
+    local last = BuildingPlacementOrientation.LastPlacedObject
     if last then
       pcall(function()
         ret:SetAngle(last:GetAngle())
@@ -66,10 +66,10 @@ function OnMsg.LoadGame()
   end
 
   --spawn and fill a deposit at mouse pos
-  function ChoGGiX.AddDeposit(sType)
+  function BuildingPlacementOrientation.AddDeposit(sType)
     local obj = PlaceObj(sType, {
       "Pos", GetTerrainCursor(),
-      "max_amount", UICity:Random(1000 * ChoGGiX.Consts.ResourceScale,100000 * ChoGGiX.Consts.ResourceScale),
+      "max_amount", UICity:Random(1000 * BuildingPlacementOrientation.Consts.ResourceScale,100000 * BuildingPlacementOrientation.Consts.ResourceScale),
       "revealed", true,
     })
     obj:CheatRefill()
@@ -77,7 +77,7 @@ function OnMsg.LoadGame()
   end
 
   --fixup name we get from Object
-  function ChoGGiX.ConstructionModeNameClean(itemname)
+  function BuildingPlacementOrientation.ConstructionModeNameClean(itemname)
     --we want template_name or we have to guess from the placeobj name
     local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
     if not tempname then
@@ -86,20 +86,20 @@ function OnMsg.LoadGame()
 
     --print(tempname)
     if tempname:find("Deposit") then
-      ChoGGiX.AddDeposit(tempname)
+      BuildingPlacementOrientation.AddDeposit(tempname)
     else
-      ChoGGiX.ConstructionModeSet(tempname)
+      BuildingPlacementOrientation.ConstructionModeSet(tempname)
     end
   end
 
   --place item under the mouse for construction
-  function ChoGGiX.ConstructionModeSet(itemname)
+  function BuildingPlacementOrientation.ConstructionModeSet(itemname)
     --make sure it's closed so we don't mess up selection
     pcall(function()
       CloseXBuildMenu()
     end)
     --fix up some names
-    itemname = pcall(ChoGGiX.ConstructionNamesListFix[itemname]) or itemname
+    itemname = pcall(BuildingPlacementOrientation.ConstructionNamesListFix[itemname]) or itemname
     --n all the rest
     local igi = GetInGameInterface()
     if not igi or not igi:GetVisible() then
@@ -128,7 +128,7 @@ function OnMsg.LoadGame()
 
   --change some annoying stuff about UserActions.AddActions()
   local g_idxAction = 0
-  function ChoGGiX.UserAddActions(ActionsToAdd)
+  function BuildingPlacementOrientation.UserAddActions(ActionsToAdd)
     for k, v in pairs(ActionsToAdd) do
       if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
         if v.key ~= nil and v.key ~= "" then
@@ -158,13 +158,13 @@ function OnMsg.LoadGame()
     UserActions.SetMode(UserActions.mode)
   end
 
-  function ChoGGiX.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+  function BuildingPlacementOrientation.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
     if Menu then
       Menu = "/" .. tostring(Menu)
     end
 
-    ChoGGiX.UserAddActions({
-      ["ChoGGiX_" .. AsyncRand()] = {
+    BuildingPlacementOrientation.UserAddActions({
+      ["BuildingPlacementOrientation_" .. AsyncRand()] = {
         menu = Menu,
         action = Action,
         key = Key,
@@ -179,25 +179,34 @@ function OnMsg.LoadGame()
   end
 
   --goes to placement mode with last built object
-  ChoGGiX.AddAction(nil,
+  BuildingPlacementOrientation.AddAction(nil,
     function()
-      local last = ChoGGiX.LastPlacedBuildingObj
+      local last = BuildingPlacementOrientation.LastPlacedBuildingObj
       if last.entity then
-        ChoGGiX.ConstructionModeSet(last.encyclopedia_id or last.entity)
+        BuildingPlacementOrientation.ConstructionModeSet(last.encyclopedia_id or last.entity)
       end
     end,
     "Ctrl-Space"
   )
 
   --goes to placement mode with SelectedObj
-  ChoGGiX.AddAction(nil,
+  BuildingPlacementOrientation.AddAction(nil,
     function()
-      local sel = ChoGGiX.SelObject()
+      local sel = BuildingPlacementOrientation.SelObject()
       if sel then
-        ChoGGiX.LastPlacedObject = sel
-        ChoGGiX.ConstructionModeNameClean(ValueToLuaCode(sel))
+        BuildingPlacementOrientation.LastPlacedObject = sel
+        BuildingPlacementOrientation.ConstructionModeNameClean(ValueToLuaCode(sel))
       end
     end,
     "Ctrl-Shift-Space"
   )
+
+end
+
+function OnMsg.CityStart()
+  SomeCode()
+end
+
+function OnMsg.LoadGame()
+  SomeCode()
 end

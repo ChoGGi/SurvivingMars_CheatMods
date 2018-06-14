@@ -811,7 +811,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
-  local pal = ChoGGi.CodeFuncs.GetPalette(s)
+  local pal = ChoGGi.CodeFuncs.GetPalette(obj)
 
   local ItemList = {}
   for i = 1, 4 do

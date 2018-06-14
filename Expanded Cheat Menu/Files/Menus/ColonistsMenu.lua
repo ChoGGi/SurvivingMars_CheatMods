@@ -6,7 +6,7 @@ local T = ChoGGi.ComFuncs.Trans
 local icon = "AlignSel.tga"
 local icon2 = "Cube.tga"
 
-function ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

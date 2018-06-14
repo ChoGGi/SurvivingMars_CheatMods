@@ -1,6 +1,6 @@
 --keep everything stored in
 SolariaTelepresence = {
-  email = "SolariaTelepresence@choggi.org",
+  email = "SM_Mods@choggi.org",
   id = "ChoGGi_SolariaTelepresence",
   --orig funcs that we replace
   OrigFuncs = {},

@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
-	"title", "Increased Render Distance",
+	"title", "Increased Render Distance v0.3",
 	"description", "Further shadow, and model rendering\nThis is pretty useless without Increased Zoom Distance.",
 	"tags", "Graphics",
 	"id", "ChoGGi_IncreasedRenderDistance",
 	"author", "ChoGGi",
-	"version", 0.2,
+	"version", 3,
   "image","IncreasedRenderDistance.png",
+  "steam_id", "1411109283",
 	"code", {
 		"Script.lua",
 	},

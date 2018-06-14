@@ -1,6 +1,8 @@
 ### Adds a new building called Solaria Telepresence; remote control factories and mines (with reduced production).
+
+
+##### Currently it can control:
 ```
-Currently it can control:
 Drone Factory
 Fungal Farm
 Fusion Reactor
@@ -11,7 +13,7 @@ Unfortunately Comcast was chosen as the official internet of Mars:
 Performance and production take awhile to update.
 
 I could make it update faster, but this way seems better.
-I would've used Telus, but I think more people have heard of Comcast.
+I also would've used Telus, but I think more people have heard of Comcast.
 
 This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
 ```

@@ -1,25 +1,3 @@
---keep everything stored in
-PersonalShuttles = {
-  email = "PersonalShuttles@choggi.org",
-  --orig funcs that we replace
-  OrigFuncs = {},
-  --CommonFunctions.lua
-  ComFuncs = {},
-  --OnMsgs.lua
-  MsgFuncs = {},
-  --/Code/_Functions.lua
-  CodeFuncs = {},
-  --InfoPaneCheats.lua
-  InfoFuncs = {},
-  --Defaults.lua
-  SettingFuncs = {},
-  --temporary settings that aren't saved to SettingsFile
-  Temp = {
-    --collect msgs to be displayed when game is loaded
-    StartupMsgs = {},
-  },
-  UserSettings = {ShowShuttleControls=true},
-}
 
 function PersonalShuttles.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local PersonalShuttles = PersonalShuttles

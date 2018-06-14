@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 --~ local icon = "new_city.tga"
 
-function ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/",T(302535920000265--[[No More Pulsating Pins--]])),

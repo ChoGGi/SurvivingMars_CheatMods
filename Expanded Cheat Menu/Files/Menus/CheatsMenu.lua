@@ -13,7 +13,7 @@ local CheatToggleAllShifts = CheatToggleAllShifts
 local CheatUpdateAllWorkplaces = CheatUpdateAllWorkplaces
 local UnpinAll = UnpinAll
 
-function ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

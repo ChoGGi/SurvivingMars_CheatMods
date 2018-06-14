@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 --~ local icon = "new_city.tga"
 
-function ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

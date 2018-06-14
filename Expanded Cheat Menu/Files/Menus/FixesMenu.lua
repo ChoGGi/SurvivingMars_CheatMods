@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 local icon = "ReportBug.tga"
 
-function ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

@@ -186,16 +186,17 @@ function ChoGGi_ListChoiceCustomDialog:Init()
       return
     end
     --open colour changer
-    if self.CustomType == 1 or self.CustomType == 2 then
+    if self.CustomType == 1 then
       ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
     elseif self.CustomType == 7 then
       --open it in monitor list
       ChoGGi.CodeFuncs.DisplayMonitorList(self.sel.value,self.sel.parentobj)
-    elseif self.CustomType ~= 5 then
+    elseif self.CustomType ~= 5 and self.CustomType ~= 2 then
       --dblclick to close and ret item
       self.idOK.OnButtonPressed()
     end
   end
+
   --what happens when you dbl r-click the list
   function self.idList.OnRButtonDoubleClick()
     --applies the lightmodel without closing dialog,

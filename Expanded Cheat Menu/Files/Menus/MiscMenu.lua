@@ -6,7 +6,7 @@ local T = ChoGGi.ComFuncs.Trans
 
 --~ local icon = "new_city.tga"
 
-function ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

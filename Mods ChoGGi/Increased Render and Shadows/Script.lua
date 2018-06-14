@@ -1,4 +1,4 @@
-function OnMsg.LoadingScreenPreClose()
+local function SomeCode()
 
   --lot of lag for some small rocks in distance
   --hr.DistanceModifier = 260 --default 130
@@ -16,3 +16,12 @@ function OnMsg.LoadingScreenPreClose()
   hr.ShadowmapSize = 8192
 
 end
+
+function OnMsg.CityStart()
+  SomeCode()
+end
+
+function OnMsg.LoadGame()
+  SomeCode()
+end
+

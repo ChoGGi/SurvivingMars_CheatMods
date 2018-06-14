@@ -1,3 +1,5 @@
+local table = table
+
 function OnMsg.ClassesBuilt()
 
   local orig_ConstructionSite_Complete = ConstructionSite.Complete
@@ -5,11 +7,11 @@ function OnMsg.ClassesBuilt()
     --grab priority before site is removed
     local priority = self.priority
     --the func returns the building, so no need to bother with OnMsg.ConstructionComplete
-    local bld = {orig_ConstructionSite_Complete(self,...)}
+    local ret = {orig_ConstructionSite_Complete(self,...)}
     --and apply it to the new bld
-    bld[1]:SetPriority(priority)
+    ret[1]:SetPriority(priority)
     --i wrapped it in a table, just incase devs add something
-    return table.unpack(bld)
+    return table.unpack(ret)
   end
 
   --domes...
@@ -18,11 +20,11 @@ function OnMsg.ClassesBuilt()
     --grab priority before site is removed
     local priority = self.priority
     --the func returns the building, so no need to bother with OnMsg.ConstructionComplete
-    local bld = {orig_ConstructionSiteWithHeightSurfaces_Complete(self,...)}
+    local ret = {orig_ConstructionSiteWithHeightSurfaces_Complete(self,...)}
     --and apply it to the new bld
-    bld[1]:SetPriority(priority)
+    ret[1]:SetPriority(priority)
     --i wrapped it in a table, just incase devs add something
-    return table.unpack(bld)
+    return table.unpack(ret)
   end
 
 end

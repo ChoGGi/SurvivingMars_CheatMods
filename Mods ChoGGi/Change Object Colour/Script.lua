@@ -1,202 +1,113 @@
-function ChoGGiX.MsgPopup(Msg,Title,Icon)
-  pcall(function()
-    --returns translated text corresponding to number if we don't do tostring for numbers
-    Msg = tostring(Msg)
-    Title = Title or "Placeholder"
-    Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
-    local id = AsyncRand()
-    local timeout = 8000
-    if type(AddCustomOnScreenNotification) == "function" then --if we called it where there ain't no UI
-      CreateRealTimeThread(function()
-        AddCustomOnScreenNotification(
-          id,Title,Msg,Icon,nil,{expiration=timeout}
-        )
-        --since I use AsyncRand for the id, I don't want this getting too large.
-        g_ShownOnScreenNotifications[id] = nil
-      end)
-    end
-  end)
-end
+-- hello
+ChangeObjectColour = {
+  _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
 
-function OnMsg.LoadGame()
+All of my code is licensed under the MIT License as follows:
 
-  --build n show a list of attaches for changing colour
-  function ChoGGiX.CreateObjectListAndAttaches()
-    local obj = SelectedObj or SelectionMouseObj()
-    if not obj then
-      return
-    end
-    local ItemList = {}
+MIT License
 
-    --has no Attaches so just open as is
-    if obj:GetNumAttaches() == 0 then
-      ChoGGiX.ChangeObjectColour(obj)
-      return
+Copyright (c) [2018] [ChoGGi]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.]],
+  email = "SM_Mods@choggi.org",
+  id = "ChoGGi_ChangeObjectColour",
+  -- orig funcs that we replace
+  OrigFuncs = {},
+  -- CommonFunctions.lua
+  ComFuncs = {
+    FileExists = function(name)
+      local _,test = AsyncFileOpen(name)
+      return test
+    end,
+  },
+  -- /Code/_Functions.lua
+  CodeFuncs = {},
+  -- /Code/*Menu.lua and /Code/*Func.lua
+  MenuFuncs = {},
+  -- OnMsgs.lua
+  MsgFuncs = {},
+  -- InfoPaneCheats.lua
+  InfoFuncs = {},
+  -- Defaults.lua
+  SettingFuncs = {},
+  -- temporary settings that aren't saved to SettingsFile
+  Temp = {
+    -- collect msgs to be displayed when game is loaded
+    StartupMsgs = {},
+  },
+  -- settings that are saved to SettingsFile
+  UserSettings = {
+    BuildingSettings = {},
+    Transparency = {},
+  },
+}
+
+-- if we use global func more then once: make them local for that small bit o' speed
+local dofile,select,tostring,table = dofile,select,tostring,table
+-- thanks for replacing concat...
+ChangeObjectColour.ComFuncs.TableConcat = oldTableConcat or table.concat
+local TConcat = ChangeObjectColour.ComFuncs.TableConcat
+
+local AsyncFileOpen = AsyncFileOpen
+local dofolder_files = dofolder_files
+
+-- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
+-- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
+
+-- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit
+-- which means this is faster, and uses less memory
+local concat_table = {}
+local concat_value
+function ChangeObjectColour.ComFuncs.Concat(...)
+  -- reuse old table if it's not that big, else it's quicker to make new one
+  if #concat_table > 1000 then
+    concat_table = {}
+  else
+    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
+  end
+  -- build table from args
+  for i = 1, select("#",...) do
+    concat_value = select(i,...)
+      if type(concat_value) == "string" or type(concat_value) == "number" then
+      concat_table[i] = concat_value
     else
-      table.insert(ItemList,{
-        text = " " .. obj.class,
-        value = obj.class,
-        obj = obj,
-        hint = "Change main object colours."
-      })
-      local Attaches = obj:GetAttaches()
-      for i = 1, #Attaches do
-        table.insert(ItemList,{
-          text = Attaches[i].class,
-          value = Attaches[i].class,
-          parentobj = obj,
-          obj = Attaches[i],
-          hint = "Change colours of a part of an object."
-        })
-      end
+      concat_table[i] = tostring(concat_value)
     end
-
-    local CallBackFunc = function(choice)
-      return
-    end
-
-    local hint = "Double click to open object/attachment to edit."
-    ChoGGiX.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,nil,nil,nil,nil,nil,1)
   end
-
-  function ChoGGiX.ChangeObjectColour(obj,Parent)
-    if not obj and not obj:IsKindOf("ColorizableObject") then
-      ChoGGiX.MsgPopup("Can't colour object","Colour")
-      return
-    end
-    --SetPal(Obj,i,Color,Roughness,Metallic)
-    local SetPal = obj.SetColorizationMaterial
-    local pal = ChoGGiX.GetPalette(obj)
-
-    local ItemList = {}
-    for i = 1, 4 do
-      table.insert(ItemList,{
-        text = "Colour " .. i,
-        value = pal["Color" .. i],
-        hint = "Use the colour picker (dbl-click for instant change).",
-      })
-      table.insert(ItemList,{
-        text = "Metallic " .. i,
-        value = pal["Metallic" .. i],
-        hint = "Don't use the colour picker: Numbers range from -255 to 255.",
-      })
-      table.insert(ItemList,{
-        text = "Roughness " .. i,
-        value = pal["Roughness" .. i],
-        hint = "Don't use the colour picker: Numbers range from -255 to 255.",
-      })
-    end
-    table.insert(ItemList,{
-      text = "X_BaseColour",
-      value = 6579300,
-      obj = obj,
-      hint = "single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).",
-    })
-
-    --callback
-    local CallBackFunc = function(choice)
-      if #choice == 13 then
-        --keep original colours as part of object
-        local base = choice[13].value
-        --used to check for grid connections
-        local CheckAir = ChoGGiX.ListChoiceCustomDialog_ColorCheckAir
-        local CheckWater = ChoGGiX.ListChoiceCustomDialog_ColorCheckWater
-        local CheckElec = ChoGGiX.ListChoiceCustomDialog_ColorCheckElec
-        --needed to set attachment colours
-        local Label = obj.class
-        local FakeParent
-        if Parent then
-          Label = Parent.class
-          FakeParent = Parent
-        else
-          FakeParent = obj.parentobj
-        end
-        if not FakeParent then
-          FakeParent = obj
-        end
-        --they get called a few times so
-        local function SetOrigColours(Object)
-          ChoGGiX.RestoreOldPalette(Object)
-          --6579300 = reset base color
-          Object:SetColorModifier(6579300)
-        end
-        local function SetColours(Object)
-          ChoGGiX.SaveOldPalette(Object)
-          for i = 1, 4 do
-            local Color = choice[i].value
-            local Metallic = choice[i+4].value
-            local Roughness = choice[i+8].value
-            SetPal(Object,i,Color,Roughness,Metallic)
-          end
-          Object:SetColorModifier(base)
-        end
-        --make sure we're in the same grid
-        local function CheckGrid(Func,Object,Building)
-          if CheckAir and Building.air and FakeParent.air and Building.air.grid.elements[1].building.handle == FakeParent.air.grid.elements[1].building.handle then
-            Func(Object)
-          end
-          if CheckWater and Building.water and FakeParent.water and Building.water.grid.elements[1].building.handle == FakeParent.water.grid.elements[1].building.handle then
-            Func(Object)
-          end
-          if CheckElec and Building.electricity and FakeParent.electricity and Building.electricity.grid.elements[1].building.handle == FakeParent.electricity.grid.elements[1].building.handle then
-            Func(Object)
-          end
-          if not CheckAir and not CheckWater and not CheckElec then
-            Func(Object)
-          end
-        end
-
-        --store table so it's the same as was displayed
-        table.sort(choice,
-          function(a,b)
-            return ChoGGiX.CompareTableNames(a,b,"text")
-          end
-        )
-        --All of type checkbox
-        if ChoGGiX.ListChoiceCustomDialog_CheckBox1 then
-          for _,building in ipairs(UICity.labels[Label] or empty_table) do
-            if Parent then
-              local Attaches = building:GetAttaches()
-              for i = 1, #Attaches do
-                if Attaches[i].class == obj.class then
-                  if ChoGGiX.ListChoiceCustomDialog_CheckBox2 then
-                    CheckGrid(SetOrigColours,Attaches[i],building)
-                  else
-                    CheckGrid(SetColours,Attaches[i],building)
-                  end
-                end
-              end
-            else --not parent
-              if ChoGGiX.ListChoiceCustomDialog_CheckBox2 then
-                CheckGrid(SetOrigColours,building,building)
-              else
-                CheckGrid(SetColours,building,building)
-              end
-            end --Parent
-          end --for
-        else --single building change
-          if ChoGGiX.ListChoiceCustomDialog_CheckBox2 then
-            CheckGrid(SetOrigColours,obj,obj)
-          else
-            CheckGrid(SetColours,obj,obj)
-          end
-        end
-
-        ChoGGiX.MsgPopup("Colour is set on " .. obj.class,"Colour")
-      end
-    end
-    local hint = "If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking)."
-    local hint_check1 = "Change all objects of the same type."
-    local hint_check2 = "if they're there; resets to default colours."
-    ChoGGiX.FireFuncAfterChoice(CallBackFunc,ItemList,"Change Colour: " .. obj.class,hint,true,"All of type",hint_check1,"Default Colour",hint_check2,2)
-  end
-
-  ChoGGiX.AddAction(
-    "Expanded CM/Buildings/Change Colour",
-    ChoGGiX.CreateObjectListAndAttaches,
-    "F6",
-    "Select a building to change the colour (of some buildings).",
-    "toggle_dtm_slots.tga"
-  )
-
+  -- and done
+  return TConcat(concat_table)
 end
+
+local ChangeObjectColour = ChangeObjectColour
+local Mods = Mods
+ChangeObjectColour._VERSION = Mods[ChangeObjectColour.id].version
+ChangeObjectColour.ModPath = Mods[ChangeObjectColour.id].path
+local Concat = ChangeObjectColour.ComFuncs.Concat
+local FileExists = ChangeObjectColour.ComFuncs.FileExists
+
+-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+local locale_file = Concat(ChangeObjectColour.ModPath,"Locales/",GetLanguage(),".csv")
+if FileExists(locale_file) then
+  LoadTranslationTableFile(locale_file)
+else
+  LoadTranslationTableFile(Concat(ChangeObjectColour.ModPath,"Locales/","English.csv"))
+end
+Msg("TranslationChanged")
+
+dofolder_files(Concat(ChangeObjectColour.ModPath,"Code"))

@@ -424,11 +424,16 @@ end
     return "", false
   end
 
+  --lets you load saved games that have dlc
+  function IsDlcAvailable()
+    return true
+  end
+
   ------
   print("Testing_ClassesBuilt")
 end
 
-function ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
 
   ------
   print("<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Testing Enabled</color>")

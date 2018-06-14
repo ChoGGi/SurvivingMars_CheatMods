@@ -8,7 +8,7 @@ local cls = cls
 local OpenGedGameObjectEditor = OpenGedGameObjectEditor
 local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
 
-function ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

@@ -1,3 +1,5 @@
+local table = table
+local GetHUD = GetHUD
 
 function OnMsg.ClassesBuilt()
 
@@ -17,8 +19,7 @@ function OnMsg.ClassesBuilt()
 
 end
 
-function OnMsg.LoadGame()
-
+local function SomeCode()
   --make sure there aren't any showing at the moment
   g_HeavyLoadDroneHubs = {}
 
@@ -30,4 +31,12 @@ function OnMsg.LoadGame()
     end
   end
 
+end
+
+function OnMsg.CityStart()
+  SomeCode()
+end
+
+function OnMsg.LoadGame()
+  SomeCode()
 end

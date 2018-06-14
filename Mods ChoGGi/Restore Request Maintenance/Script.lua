@@ -1,3 +1,6 @@
+local T,PlayFX,IsKindOf,XTemplates = T,PlayFX,IsKindOf,XTemplates
+local RebuildInfopanel,IsMassUIModifierPressed = RebuildInfopanel,IsMassUIModifierPressed
+
 function OnMsg.ClassesGenerate(classdefs)
   --removed functions
   function RequiresMaintenance:GetUIRequestMaintenanceStatus()
@@ -19,15 +22,11 @@ end
 
 function OnMsg.ClassesBuilt()
   --restore the button
-  local XT = XTemplates
-  local PlayFX = PlayFX
-  local IsKindOf = IsKindOf
-  local IsMassUIModifierPressed = IsMassUIModifierPressed
 
-  if not XT.ipBuilding.ChoGGi_RestoreMain then
-    XT.ipBuilding.ChoGGi_RestoreMain = true
+  if not XTemplates.ipBuilding.ChoGGi_RestoreMain then
+    XTemplates.ipBuilding.ChoGGi_RestoreMain = true
 
-    XT.ipBuilding[1][1][#XT.ipBuilding[1][1]+1] = PlaceObj("XTemplateTemplate", {
+    XTemplates.ipBuilding[1][1][#XTemplates.ipBuilding[1][1]+1] = PlaceObj("XTemplateTemplate", {
       "__condition", function(parent, context)
         return IsKindOf(context, "RequiresMaintenance") and context:DoesRequireMaintenance()
       end,

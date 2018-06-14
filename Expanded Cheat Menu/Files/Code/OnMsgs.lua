@@ -1,10 +1,11 @@
---See LICENSE for terms
---i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
+--  See LICENSE for terms
+--  i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local pairs,type,next,tostring,print,getmetatable = pairs,type,next,tostring,print,getmetatable
+local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
+local getmetatable,rawget,rawset = getmetatable,rawget,rawset
 
 local AsyncFileToString = AsyncFileToString
 local box = box
@@ -29,10 +30,12 @@ local UserActions_GetActiveActions = UserActions.GetActiveActions
 local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 
 local g_Classes = g_Classes
+local OnMsg = OnMsg
 
 --use this message to mess with the classdefs (before classes are built)
 --function OnMsg.ClassesGenerate(classdefs)
 function OnMsg.ClassesGenerate()
+
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
@@ -166,7 +169,7 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",ChoGGi._TITLE))
+  terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
 end
 
 --for instant build
@@ -650,7 +653,7 @@ end
 
 --saved game is loaded
 function OnMsg.LoadGame()
-  --so LoadingScreenPreClose gets fired only every load, rather than also everytime we save
+  --so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
   ChoGGi.Temp.IsGameLoaded = false
   Msg("ChoGGi_Loaded")
 end
@@ -674,7 +677,7 @@ function OnMsg.ReloadLua()
 end
 
 --~ --fired as late as we can
---~ function OnMsg.LoadingScreenPreClose()
+--~ function OnMsg.ChoGGi_Loaded()
 --~   Msg("ChoGGi_Loaded")
 --~ end
 
@@ -707,14 +710,20 @@ function OnMsg.ChoGGi_Loaded()
   local UserActions = UserActions
   local UserSettings = ChoGGi.UserSettings
   local hr = hr
+  local Platform = Platform
 
   --gets used a few times
   local Table
 
+  local not_ged = not g_gedListener
+
   --late enough that I can set g_Consts.
   ChoGGi.SettingFuncs.SetConstsToSaved()
-  --needed for DroneResourceCarryAmount?
-  UpdateDroneResourceUnits()
+
+  if not_ged then
+    --needed for DroneResourceCarryAmount?
+    UpdateDroneResourceUnits()
+  end
 
   --clear out Temp settings
   ChoGGi.Temp.UnitPathingHandles = {}
@@ -724,24 +733,24 @@ function OnMsg.ChoGGi_Loaded()
   UserActions.Actions = {}
   UserActions.RejectedActions = {}
 
-  ChoGGi.MsgFuncs.Keys_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.MissionFunc_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
   if ChoGGi.Temp.Testing then
-    ChoGGi.MsgFuncs.Testing_LoadingScreenPreClose()
+    ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
   end
 
   --add custom actions
-  ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.CheatsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ColonistsMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.DebugMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.ExpandedMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.FixesMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.GameMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.HelpMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.MiscMenu_LoadingScreenPreClose()
-  ChoGGi.MsgFuncs.MissionMenu_LoadingScreenPreClose()
+  ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
+  ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
 
   --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
@@ -773,9 +782,9 @@ function OnMsg.ChoGGi_Loaded()
 --~   end
 
   --update menu
-  g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-
-
+  if not_ged then
+    g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+  end
 
 -------------------do the above stuff before the below stuff
 
@@ -827,12 +836,13 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --add custom lightmodel
-  if DataInstances.Lightmodel.ChoGGi_Custom then
+  if DataInstances.Lightmodel.ChoGGi_Custom and not_ged then
     DataInstances.Lightmodel.ChoGGi_Custom:delete()
   end
+
   local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
   if not LightmodelCustom then
-    _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Consts.LightmodelCustom)
+    _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Defaults.LightmodelCustom)
   end
 
   if LightmodelCustom then
@@ -935,10 +945,12 @@ function OnMsg.ChoGGi_Loaded()
   end)
 
   --so we can change the max_amount for concrete
-  Table = g_Classes.TerrainDepositConcrete.properties
-  for i = 1, #Table do
-    if Table[i].id == "max_amount" then
-      Table[i].read_only = nil
+  if not_ged then
+    Table = g_Classes.TerrainDepositConcrete.properties
+    for i = 1, #Table do
+      if Table[i].id == "max_amount" then
+        Table[i].read_only = nil
+      end
     end
   end
 
@@ -983,7 +995,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --show console log history
-  if UserSettings.ConsoleToggleHistory then
+  if UserSettings.ConsoleToggleHistory and not_ged then
     ShowConsoleLog(true)
   end
 
@@ -1131,6 +1143,7 @@ function OnMsg.ChoGGi_Loaded()
 
 end --OnMsg
 
+--show how long loading takes
 function OnMsg.ChangeMap()
   ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end

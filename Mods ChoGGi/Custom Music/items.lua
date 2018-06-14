@@ -14,19 +14,22 @@ PlaceObj('ModItemRadioStation', {
 	'display_name',"Custom Music",
 	'silence', 1, --seconds between tracks
 	'play', function (self)
+    local table = table
+    local Music,WaitMsg,Sleep,AsyncRand = Music,WaitMsg,Sleep,AsyncRand
+
     local err, files = AsyncListFiles("AppData/Music")
-    if err or not next(files) then
+    if err or #files < 1 then
       CreateRealTimeThread(WaitCustomPopupNotification,
         "Help",
-        "See metadata.lua for info on playing custom music.",
+        "Place files in AppData/Surviving Mars/Music.\nAs far as I know it only plays opus and wav.",
         {"OK"}
       )
       return
     end
     while true do
       table.permute(files, AsyncRand())           -- shuffle files list, with random seed
-      for _, file in ipairs(files) do
-        Music:PlayTrack({ path = file })        -- start playing one track via the music subsystem
+      for i = 1, #files do
+        Music:PlayTrack({path = files[i]})        -- start playing one track via the music subsystem
         WaitMsg("MusicTrackEnded", 30*60*1000)  -- wait till it ends, or at most 30 minutes
         Sleep(self.silence * 1000)              -- pause for silence
       end

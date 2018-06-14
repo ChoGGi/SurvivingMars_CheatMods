@@ -7,6 +7,7 @@ local Msg = Msg
 local GetEntityCombinedShape = GetEntityCombinedShape
 local DoneObject = DoneObject
 local PlaceObj = PlaceObj
+local OnMsg = OnMsg
 
 function OnMsg.ClassesGenerate()
   DefineClass.PortableMiner = {
@@ -63,9 +64,7 @@ function OnMsg.ClassesGenerate()
   }
 
   DefineClass.PortableMinerBuilding = {
-    __parents = {
-      "BaseRoverBuilding"
-    },
+    __parents = {"BaseRoverBuilding"},
     rover_class = "PortableMiner",
   }
 

@@ -6,7 +6,7 @@ local T = ChoGGi.ComFuncs.Trans
 local iconD = "ShowAll.tga"
 local iconRC = "HostGame.tga"
 
-function ChoGGi.MsgFuncs.DronesAndRCMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

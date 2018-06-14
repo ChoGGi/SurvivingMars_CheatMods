@@ -1,6 +1,6 @@
 BouncyDrones = {}
 
-function OnMsg.LoadGame()
+local function SomeCode()
   --set options
   for _,object in ipairs(UICity.labels.Drone or empty_table) do
     object:SetGravity(BouncyDrones.Gravity or 2000)
@@ -11,6 +11,15 @@ function OnMsg.LoadGame()
   for _,object in ipairs(UICity.labels.Colonist or empty_table) do
     object:SetGravity(BouncyDrones.GravityColonist or 0)
   end
+
+end
+
+function OnMsg.CityStart()
+  SomeCode()
+end
+
+function OnMsg.LoadGame()
+  SomeCode()
 end
 
 function OnMsg.ModConfigReady()

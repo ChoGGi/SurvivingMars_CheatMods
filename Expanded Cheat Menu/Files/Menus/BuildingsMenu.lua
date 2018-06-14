@@ -5,7 +5,7 @@ local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local icon = "Cube.tga"
 
-function ChoGGi.MsgFuncs.BuildingsMenu_LoadingScreenPreClose()
+function ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(

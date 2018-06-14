@@ -5,6 +5,7 @@ return PlaceObj("ModDef", {
   "description", "Pauses the game on new notifications (also removes Drone Heavy Load notification).",
   "id", "ChoGGi_NotificationPause",
   "author", "ChoGGi",
+  "steam_id", "1411111982",
   "code", {
     "Script.lua",
   },
