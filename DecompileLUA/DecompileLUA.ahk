@@ -60,7 +60,7 @@ Loop Files,*.lua,%sConvert%
     File.Close()
   }
 
-MsgBox Files Decompiled
+MsgBox 4096,Done,Files Decompiled
 ExitApp
 
 /*

@@ -5,7 +5,9 @@ return PlaceObj("ModDef", {
 
 Use the "Default" checkbox to reset colours.
 
-You can also use Shift+F6 or Ctrl+F6 for random colours and default colours.]],
+You can also use Shift+F6 or Ctrl+F6 for random colours and default colours.
+
+You don't need this mod if you use Expanded Cheat Menu]],
 	"tags", "Objects",
 	"id", "ChoGGi_ChangeObjectColour",
 	"author", "ChoGGi",

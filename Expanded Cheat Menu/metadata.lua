@@ -26,7 +26,7 @@ Enable with in-game mod manager
 
 ##### Info
 ```
-F2: Toggle the cheats menu.
+F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
 F4: Open object examiner.
 F5: Open object manipulator (or use edit button in examiner).
