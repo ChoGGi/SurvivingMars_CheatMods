@@ -1,4 +1,4 @@
-### Add easy locale support to your mod (wtf is up with all this basestring + 1 I see...)
+### Add easy locale support to your mod (wtf is up with all this StringBase + 1 I see...)
 ```
 In your mod folder create a Locales folder, in that folder create English.csv (or whatever you use).
 

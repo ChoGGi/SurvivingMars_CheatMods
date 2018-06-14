@@ -53,6 +53,24 @@ function OnMsg.ClassesPreprocess()
     ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
   end
 
+--~   InfopanelItems.LayoutMethod = "VList"
+--~   InfopanelItems.MaxWidth = 500
+--~   InfopanelItems.Clip = true
+--~   InfopanelItems.LayoutVSpacing = 50
+--~   InfopanelItems.Margins = box(0,135,-30,0)
+--~   box(left,top, right, bottom)
+
+
+--~   "None",
+--~   "Box",
+--~   "HOverlappingList",
+--~   "VOverlappingList",
+--~   "HList",
+--~   "VList",
+--~   "HPanel",
+--~   "Grid",
+--~   "HWrap",
+--~   "VWrap"
 end
 
 --where we can add new BuildingTemplates

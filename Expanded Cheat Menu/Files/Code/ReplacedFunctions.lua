@@ -456,7 +456,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --no more stuck focus on SingleLineEdits
   function g_Classes.XDesktop:MouseEvent(event, pt, button, time)
-    if button == "L" and event == "OnMouseButtonDown" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
+    if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
       self.focus_log[#self.focus_log-1]:SetFocus()
     end
     return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
@@ -568,8 +568,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
   end
 
-  --function from github as the actual function has an inf loop (whoopsie)
-  if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity then
+  -- function from github as the actual function has a whoopsie, or something does...
+  -- going to be a fix in next version:
+  -- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
+  if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity and LuaRevision <= 231139 then
     function g_Classes.RCRover:ExitAllDrones()
       if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
         DeleteThread(self.exit_drones_thread)
