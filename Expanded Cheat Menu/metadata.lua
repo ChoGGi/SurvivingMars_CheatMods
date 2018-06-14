@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Cheat Menu Expanded v5.4",
-	"version", 54,
+	"title", "Cheat Menu Expanded v6.1 Test",
+	"version", 61,
 	"saved", 1528891200,
 	"description", [[Enables the game's built-in cheat tools, as well as adding a crapload of custom menu settings, I also re-added the Examine Object tool.
 There's a cheats section in most info panels on the right side of the screen.
