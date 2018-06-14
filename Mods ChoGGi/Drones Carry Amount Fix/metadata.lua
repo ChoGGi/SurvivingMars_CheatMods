@@ -3,7 +3,8 @@ return PlaceObj("ModDef", {
 	"title", "Drones Carry Amount Fix v0.4",
 	"version", 4,
 	"saved", 1526126400,
-  "description", [[Drones only pick up resources from buildings when the amount stored is equal or greater compared to their carry amount (this forces them to pick up whenever there's more then one resource).
+  "description", [[Drones normally only pick up resources from buildings when the amount stored is equal or greater to their carry amount.
+This mod forces them to pick up whenever there's more then one resource.
 
 You don't need this mod if you use Expanded Cheat Menu]],
   "tags", "Building",
