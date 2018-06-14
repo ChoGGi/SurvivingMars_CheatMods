@@ -7,6 +7,13 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920001014--[[Hide Cheats Menu--]])),
+    ChoGGi.MenuFuncs.CheatsMenu_Toggle,
+    "F2",
+    T(302535920001019--[[This will hide the Cheats menu, Use F2 to see it again, and use Ctrl-F2 to toggle the Cheats selection panel.--]]),
+    "ToggleEnvMap.tga"
+  )
   --------------------screenshot
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[2]",T(302535920000892--[[Screenshot--]]),"/",T(302535920000657--[[Screenshot--]])),
@@ -89,7 +96,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   --------------------help
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000672--[[About ECM--]])),
-    ChoGGi.MenuFuncs.MenuHelp_About,
+    ChoGGi.MenuFuncs.AboutECM,
     nil,
     Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000673--[[info dialog.--]])),
     "help.tga"
@@ -97,7 +104,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
-    ChoGGi.MenuFuncs.MenuHelp_ReportBug,
+    ChoGGi.MenuFuncs.ReportBugDlg,
     "Ctrl-F1",
     T(302535920000675--[[Report Bug\n\nThis doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     "ReportBug.tga"
@@ -112,7 +119,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(487939677892--[[Help--]]))),
+    Concat("[999]",T(487939677892--[[Help--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]]))),
     ChoGGi.MenuFuncs.ShowReadmeECM,
     nil,
     nil,
@@ -126,29 +133,56 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     local function ReadText(file)
       local file_error, text = AsyncFileToString(file)
       if file_error then
-        --close enough, shouldn't happen (unless user is being a user)
+        --close enough, very unlikely this will ever happen (unless user is really being a user)
         return T(1000058--[[Missing file <u(src)> referenced in entity--]])
       else
         return text
       end
     end
+
+    local info = Concat(T(302535920001028--[[Have a Tutorial, or general info you'd like to add?--]])," : ",ChoGGi.email)
+    ChoGGi.ComFuncs.AddAction(
+      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/*",T(126095410863--[[Info--]]),"*"),
+      function()
+        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+          zorder = 2000001,
+          text = info,
+        })
+        dialog:Open()
+      end,
+      nil,
+      info,
+      "AreaProperties.tga"
+    )
+
+    local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
+    ChoGGi.ComFuncs.AddAction(
+      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/*",T(1575--[[Functionality--]]),"*"),
+      function()
+        OpenExamine({Concat(T(302535920001023--[[This WILL take awhile if you open it in dump text.--]]),"\n\n\n\n",funcs)})
+      end,
+      nil,
+      funcs:sub(1,100),
+      "AreaProperties.tga"
+    )
+
     if folders then
       for i = 1, #folders do
-      ChoGGi.ComFuncs.AddAction(
-        Concat("[999]",T(487939677892--[[Help--]]),"/[999]",Concat(T(1000145--[[Text--]]),"/",folders[i].name)),
-        function()
-          local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-            zorder = 2000001,
-            wrap = true,
-            text = ReadText(folders[i].path),
-          })
-          dialog:Open()
-        end,
-        nil,
-        nil,
-        "Voice.tga"
-      )
-
+        local text = ReadText(folders[i].path)
+        ChoGGi.ComFuncs.AddAction(
+          Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[",i,"]",folders[i].name),
+          function()
+            local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+              zorder = 2000001,
+              wrap = true,
+              text = text,
+            })
+            dialog:Open()
+          end,
+          nil,
+          text:sub(1,100),
+          "Voice.tga"
+        )
       end
     end
   end

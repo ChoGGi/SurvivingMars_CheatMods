@@ -16,14 +16,6 @@ With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
 	"description", [[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
-##### Install help
-```
-Place CheatMod_CheatMenu folder in %AppData%\Surviving Mars\Mods
-(create Mods folder if it doesn't exist)
-Other OS locations: https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_location
-Enable with in-game mod manager
-```
-
 ##### Info
 ```
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
@@ -104,7 +96,7 @@ GetTerrainCursorObjSel() : or mh, just the handle
 GetTerrainCursor() : or c, position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
 terminal.GetMousePos : or cs, mouse pos on screen, not map
 
-also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects
+also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects, *r/*g to wrap code in real/game time threads
 
 If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)

@@ -221,7 +221,7 @@ ChoGGi.ComFuncs.TableConcat = Memoize(ChoGGi.ComFuncs.TableConcat)
 function ChoGGi.ComFuncs.Trans(...)
   local trans
   local vararg = {...}
-  --just in case a
+  -- just in case a
   pcall(function()
     if type(vararg[1]) == "userdata" then
       trans = _InternalTranslate(table.unpack(vararg))
@@ -229,13 +229,13 @@ function ChoGGi.ComFuncs.Trans(...)
       trans = _InternalTranslate(T(vararg))
     end
   end)
-  --just in case b
+  -- just in case b
   if type(trans) ~= "string" then
     if type(vararg[2]) == "string" then
       return vararg[2]
     end
-    --we don't translate this one (just in case c)
-    return Concat("Missing locale string id: ",vararg[1])
+    -- done fucked up (just in case c)
+    return Concat(vararg[1]," < Missing locale string id")
   end
   return trans
 end

@@ -1,3 +1,75 @@
+### Add easy locale support to your mod (wtf is up with all this basestring + 1 I see...)
+```
+In your mod folder create a Locales folder, in that folder create English.csv (or whatever you use).
+
+Mod folder\Locales\English.csv
+
+In English.csv add text like so:
+ID,Text
+11111111110001029,Some text
+11111111110001014,and more text
+
+CHANGE 11111111 to some random arsed number, or use whatever you already have been using in your mod.
+
+At the tippy top of your ModItemCode file add this (or something like it)
+
+local ModPath = Mods[YOUR_MOD_ID].path
+local function FileExists(file)
+  _,file = AsyncFileOpen(file)
+  return file
+end
+
+local locale_file = Concat(ModPath,"Locales/",GetLanguage(),".csv")
+if FileExists(locale_file) then
+  LoadLocale(locale_file)
+else
+  --fallback lang (ie: whatever you used for your filename)
+  LoadLocale(Concat(ModPath,"Locales/","English.csv"))
+end
+Msg("TranslationChanged")
+
+
+
+Now you can use _InternalTranslate(T({11111111110001029--[[optional info showing the string--]]}))
+All a translator needs to do is make a copy of English.csv and rename it to their lang
+and start changing strings, and then send it to you, all you need to do is put it in the Locales folder.
+
+
+
+
+I like to use this function for ease of use (and to make sure I always get a string back):
+
+function Translate(...)
+  local trans
+  local vararg = {...}
+  -- just in case a
+  pcall(function()
+    if type(vararg[1]) == "userdata" then
+      trans = _InternalTranslate(table.unpack(vararg))
+    else
+      trans = _InternalTranslate(T(vararg))
+    end
+  end)
+  -- just in case b
+  if type(trans) ~= "string" then
+    if type(vararg[2]) == "string" then
+      return vararg[2]
+    end
+    -- just in case c
+    return vararg[1] .. " < Missing locale string id"
+  end
+  return trans
+end
+
+Translate(11111111110001029--[[The text from the csv, so I know what it means--]])
+
+
+or use
+local T = Translate
+and it'll work for both T() and T({})
+```
+
+
 ### If you get this totally and completely useful error msg when your locale doesn't load:
 `CommonLua/Core/localization.lua:559: table index is nil`
 

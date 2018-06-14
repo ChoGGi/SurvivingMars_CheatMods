@@ -22,6 +22,15 @@ local UnlockCamera = UnlockCamera
 local LockCamera = LockCamera
 local WaitNextFrame = WaitNextFrame
 
+local g_Classes = g_Classes
+
+function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
+  ChoGGi.SettingFuncs.WriteSettings()
+  g_Classes.UAMenu.ToggleOpen()
+end
+
 function ChoGGi.MenuFuncs.ShowReadmeECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
 	if not file_error then
@@ -126,7 +135,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.MenuHelp_ReportBug()
+function ChoGGi.MenuFuncs.ReportBugDlg()
   --was in orig func, i guess there's never any bugs when modding :)
   if Platform.ged then
     return
@@ -136,7 +145,7 @@ function ChoGGi.MenuFuncs.MenuHelp_ReportBug()
   end)
 end
 
-function ChoGGi.MenuFuncs.MenuHelp_About()
+function ChoGGi.MenuFuncs.AboutECM()
   ChoGGi.ComFuncs.MsgWait(
     Concat(T(302535920001078--[[Hover mouse over menu item to get description and enabled status\nIf there isn't a status then it's likely a list of options to choose from\n\nFor any issues; please report them to my github/nexusmods page, or email--]])," ",ChoGGi.email),
     T(487939677892--[[Help--]])

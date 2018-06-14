@@ -867,9 +867,11 @@ do --path markers
     local DoneObject = DoneObject
     --the menu item sends itself
     if Obj and not Obj.class then
-      Obj = ChoGGi.CodeFuncs.SelObject()
-    else
-      Obj = ChoGGi.CodeFuncs.SelObject()
+      if not Obj.class then
+        Obj = ChoGGi.CodeFuncs.SelObject()
+      else
+        Obj = ChoGGi.CodeFuncs.SelObject()
+      end
     end
     if not ChoGGi.Temp.UnitPathingHandles then
       ChoGGi.Temp.UnitPathingHandles = {}
@@ -1062,3 +1064,10 @@ do --path markers
     })
   end
 end
+
+-- add realtime markers to all of class
+--~ local classname = "Drone"
+--~ local objs = GetObjects({class = classname}) or empty_table
+--~ for i = 1, #objs do
+--~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i],true,true)
+--~ end

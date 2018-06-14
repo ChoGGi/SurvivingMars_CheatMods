@@ -184,23 +184,4 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
     "Ctrl-Shift-Space"
   )
 
-  ChoGGi.ComFuncs.AddAction(
-    nil,
-    function()
-      local ChoGGi = ChoGGi
-      ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
-      ChoGGi.SettingFuncs.WriteSettings()
-      g_Classes.UAMenu.ToggleOpen()
-    end,
-    "F2"
-  )
-
---~   ChoGGi.ComFuncs.AddAction(
---~     nil,
---~     function()
---~       quit("restart")
---~     end,
---~     "Ctrl-Shift-Alt-Numpad Enter"
---~   )
-
 end --OnMsg

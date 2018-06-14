@@ -276,9 +276,9 @@ end --OnMsg
 
 --Pre
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-
-  local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
   SaveOrigFunc("InfopanelObj","CreateCheatActions")
+  local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
   --so we can add hints to info pane cheats
   function g_Classes.InfopanelObj:CreateCheatActions(win)
     --fire orig func to build cheats
@@ -336,16 +336,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
---~ pcall(function()
---~   local appId = SteamGetAppId()
---~   local userId = SteamGetUserId64()
---~   AsyncSteamWorkshopUserOwnsItem(userId,appId,1410284255)
---~ end)
-
---~ AsyncSteamWorkshopCreateItem()
---~ --this also crashes
---~ AsyncSteamWorkshopUpdateItem()
 
   --I don't need to see the help page that much
   if Platform.editor then

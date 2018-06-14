@@ -45,9 +45,9 @@ SOFTWARE.]],
   OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {
-    FileExists = function(name)
-      _,name = AsyncFileOpen(name)
-      return name
+    FileExists = function(file)
+      _,file = AsyncFileOpen(file)
+      return file
     end,
   },
   -- /Code/_Functions.lua
