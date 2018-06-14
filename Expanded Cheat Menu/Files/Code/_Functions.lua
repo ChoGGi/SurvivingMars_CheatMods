@@ -14,7 +14,6 @@ local DestroyBuildingImmediate = DestroyBuildingImmediate
 local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local FindNearestObject = FindNearestObject
-local GetInGameInterface = GetInGameInterface
 local GetObjects = GetObjects
 local GetPreciseCursorObj = GetPreciseCursorObj
 local GetTerrainCursor = GetTerrainCursor
@@ -314,19 +313,10 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
 end
 
 function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
-  --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, have to check for a msg to use)
   local BuildCategories = BuildCategories
-  local igi = GetInGameInterface()
-  if not igi or not igi:GetVisible() then
-    return
-  end
-  local pinsdlg = false
-  for i = 1, #igi do
-    if igi[i].class == "PinsDlg" then
-      pinsdlg = true
-    end
-  end
-  if not pinsdlg then
+
+  --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, check for a msg to use?)
+  if not GetXDialog("PinsDlg") then
     return
   end
 
@@ -391,7 +381,6 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
-  local Random = Random
   local ChoGGi = ChoGGi
   if Gender == "Random" then
     Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
@@ -460,22 +449,22 @@ end
 
 --some dev removed this from the Spirit update... (harumph)
 function ChoGGi.CodeFuncs.AddConsolePrompt(text)
-  if dlgConsole then
-    local self = dlgConsole
-    self:Show(true)
-    self.idEdit:Replace(self.idEdit.cursor_pos, self.idEdit.cursor_pos, text, true)
-    self.idEdit:SetCursorPos(#text)
+  local dlg = dlgConsole
+  if dlg then
+    dlg:Show(true)
+    dlg.idEdit:Replace(dlg.idEdit.cursor_pos, dlg.idEdit.cursor_pos, text, true)
+    dlg.idEdit:SetCursorPos(#text)
   end
 end
 
 --toggle visiblity of console log
 function ChoGGi.CodeFuncs.ToggleConsoleLog()
-  local dlgConsoleLog = dlgConsoleLog
-  if dlgConsoleLog then
-    if dlgConsoleLog:GetVisible() then
-      dlgConsoleLog:SetVisible(false)
+  local log = dlgConsoleLog
+  if log then
+    if log:GetVisible() then
+      log:SetVisible(false)
     else
-      dlgConsoleLog:SetVisible(true)
+      log:SetVisible(true)
     end
   else
     dlgConsoleLog = g_Classes.ConsoleLog:new({}, terminal.desktop)
@@ -614,7 +603,6 @@ end
 
 function ChoGGi.CodeFuncs.RandomColour(Amount)
   local ChoGGi = ChoGGi
-  local Random = Random
   --local AsyncRand = AsyncRand
   --AsyncRand(16777216) * -1
 
@@ -643,8 +631,8 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
   return randcolors
 end
 
-local function SetRandColour(Obj,ChoGGi)
-  local colour = ChoGGi.CodeFuncs.RandomColour()
+local function SetRandColour(Obj,colour,ChoGGi)
+  colour = colour or ChoGGi.CodeFuncs.RandomColour()
   local SetPal = Obj.SetColorizationMaterial
   local GetPal = Obj.GetColorizationMaterial
   local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
@@ -667,11 +655,13 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
   if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
     return
   end
-  local ChoGGi = ChoGGi
-  SetRandColour(Obj,ChoGGi)
   local Attaches = Obj:GetAttaches() or empty_table
+  --random is random after all, so lets try for at least slightly different colours
+  local colours = ChoGGi.CodeFuncs.RandomColour(#Attaches + 1)
+  local ChoGGi = ChoGGi
+  SetRandColour(Obj,colours[1],ChoGGi)
   for i = 1, #Attaches do
-    SetRandColour(Attaches[i],ChoGGi)
+    SetRandColour(Attaches[i],colours[i+1],ChoGGi)
   end
 --~   return colour
 end
@@ -969,13 +959,16 @@ function ChoGGi.CodeFuncs.CursorNearestHex()
   return HexGetNearestCenter(GetTerrainCursor())
 end
 
---returns whatever is selected > moused over > nearest non particle object to cursor
+--returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
 function ChoGGi.CodeFuncs.SelObject()
-  local _,ret = pcall(function()
-    local objs = ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
-    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
-  end)
-  return ret
+  --pcall returns "bool,return" so we select the return, and ignore the bool
+  return select(2,pcall(function()
+    return SelectedObj or SelectionMouseObj() or NearestObject(
+      GetTerrainCursor(),
+      ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class"),
+      500
+    )
+  end))
 end
 
 function ChoGGi.CodeFuncs.LightmodelBuild(Table)

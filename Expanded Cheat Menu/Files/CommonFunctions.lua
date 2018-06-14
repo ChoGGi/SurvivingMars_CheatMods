@@ -589,23 +589,22 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   if Enable == true then
     --remove old logs
     local logs = "AppData/logs/"
-    AsyncFileDelete(Concat(logs,"ConsoleLog.log"))
-    AsyncFileDelete(Concat(logs,"DebugLog.log"))
+    local console = Concat(logs,"ConsoleLog.log")
     AsyncFileRename(Concat(logs,"ConsoleLog.log"),Concat(logs,"ConsoleLog.previous.log"))
-    AsyncFileRename(Concat(logs,"DebugLog.log"),Concat(logs,"DebugLog.previous.log"))
+    AsyncStringToFile(console,"")
 
     --redirect functions
     if ChoGGi.Temp.Testing then
       ReplaceFunc("print","ConsoleLog",ChoGGi)
     end
     ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
-    ReplaceFunc("printf","DebugLog",ChoGGi)
-    ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
+--~     ReplaceFunc("printf","DebugLog",ChoGGi)
+--~     ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
 --~     ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
   else
     ResetFunc("AddConsoleLog",ChoGGi)
-    ResetFunc("printf",ChoGGi)
-    ResetFunc("DebugPrint",ChoGGi)
+--~     ResetFunc("printf",ChoGGi)
+--~     ResetFunc("DebugPrint",ChoGGi)
 --~     ResetFunc("OutputDebugString",ChoGGi)
   end
 end

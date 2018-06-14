@@ -46,8 +46,9 @@ SOFTWARE.]],
   -- CommonFunctions.lua
   ComFuncs = {
     FileExists = function(file)
-      _,file = AsyncFileOpen(file)
-      return file
+--~       _,file = AsyncFileOpen(file)
+--~       return file
+      return not AsyncFileToString(file)
     end,
   },
   -- /Code/_Functions.lua

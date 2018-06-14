@@ -6,7 +6,7 @@ local T = ChoGGi.ComFuncs.Trans
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 local type,next,tostring,rawset,rawget,assert = type,next,tostring,rawset,rawget,assert
-local setmetatable,table = setmetatable,table
+local setmetatable,table,print = setmetatable,table,print
 
 --probably should be careful about localizing stuff i replace below...
 local AddConsoleLog = AddConsoleLog
@@ -362,7 +362,11 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
             local err, files
             if "ok" ~= socket:WaitQuestion(
               T(1000009--[[Confirmation--]]),
-              local_T({1000012,"Mod <ModLabel> will be uploaded to Steam",mod})
+              Concat(
+                local_T({1000012,"Mod <ModLabel> will be uploaded to Steam",mod}),
+                "ModUpload is empty and waiting for insert"
+              )
+
             ) then
               return
             end
@@ -486,6 +490,16 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
       --build list of script files
       if self.MenuEntries == "ChoGGi_Scripts" then
+        g_Classes.XAction:new({
+          ActionId = "ModLogMsgs",
+          ActionMenubar = "ChoGGi_Scripts",
+          ActionName = T(302535920001026--[[Mod Log--]]),
+          OnAction = function()
+            ShowConsoleLog(true)
+            print(ModMessageLog)
+          end
+        }, dlgConsole)
+
         g_Classes.XAction:new({
           ActionId = "ClearLog",
           ActionMenubar = "ChoGGi_Scripts",
