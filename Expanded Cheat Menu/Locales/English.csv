@@ -1,5 +1,4 @@
 ID,Text
-302535920001027,,
 302535920001040,,
 302535920001071,,
 302535920001073,,
@@ -97,6 +96,7 @@ ID,Text
 302535920000146,"Toggle",
 302535920001092,"Pins",
 302535920000471,"Object Manipulator",
+302535920000004,"Dump",
 0,"Init.lua",
 302535920000201,"Active",
 302535920000001,"F2 to toggle cheats menu
@@ -105,7 +105,6 @@ ID,Text
 302535920000013,"This shouldn't happen... Well shit something's bork bork bork.",
 302535920000002,"Dumped",
 302535920000003,"Can't dump nothing",
-302535920000004,"Dump",
 302535920000041,"Add new entry to",
 302535920000138,"(Defaults to name/value of selected item).",
 302535920000165,"or",
@@ -159,12 +158,15 @@ You can copy and paste numbers if you want (click item again after picking).",
 302535920000045,"Scrolls down one line or scrolls between text in ""Goto text"".
 
 Right-click to scroll to top.",
-302535920000046,"Dump Text",
-302535920000047,"View text, and optionally dumps text to AppData/DumpedExamine.lua",
-302535920000048,"Dump Object",
-302535920000049,"View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+302535920000046,"dumps text to AppData/DumpedExamine.lua",
+302535920000047,"View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)",
+302535920000048,"View",
+302535920001027,"dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable",
+302535920000049,"View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the ""Building"" metatable (don't use this option on large text)",
 302535920000050,"Opens object in Object Manipulator.",
 302535920000052,"Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console.",

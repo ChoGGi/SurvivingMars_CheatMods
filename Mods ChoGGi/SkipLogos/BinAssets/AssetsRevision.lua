@@ -3,32 +3,36 @@ function OnMsg.DesktopCreated()
   PlayInitialMovies = nil
 end
 
-function OnMsg.ReloadLua()
+local function ChoGGi_Setup()
   --get rid of mod manager warnings (not the reboot one though)
   ParadoxBuildsModEditorWarning = true
   ParadoxBuildsModManagerWarning = true
+
+  --[[
+    CreateRealTimeThread(function()
+
+      --opens to load game menu
+      OpenPreGameMainMenu("Load")
+
+      --show cheats menu
+      UAMenu.ToggleOpen()
+
+      --stop bugging me about missing mods
+      function GetMissingMods()
+        return "", false
+      end
+
+    end)
+  --]]
 end
 
---[[
+function OnMsg.ReloadLua()
+  ChoGGi_Setup()
+end
 function OnMsg.UASetMode()
-
-  CreateRealTimeThread(function()
-
-    --opens to load game menu
-    OpenPreGameMainMenu("Load")
-
-    --show cheats menu
-    UAMenu.ToggleOpen()
-
-    --stop bugging me about missing mods
-    function GetMissingMods()
-      return "", false
-    end
-
-  end)
-
+  ChoGGi_Setup()
 end
---]]
 
 --return revision, or else you get a blank map on new game
-return 19673
+MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
+return tonumber(dofile("ChoGGi_BinAssets/AssetsRevision.lua")) or 0

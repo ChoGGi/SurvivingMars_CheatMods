@@ -9,4 +9,5 @@ function OnMsg.Autorun()
 end
 
 --return revision, or else you get a blank map on new game
-return 19673
+MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
+return tonumber(dofile("ChoGGi_BinAssets/AssetsRevision.lua")) or 0

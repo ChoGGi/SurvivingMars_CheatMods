@@ -1,0 +1,4 @@
+0.2
+version bump for curo update.
+0.3
+Now retrieves the correct Assets Revision, so no more need for version bumping.

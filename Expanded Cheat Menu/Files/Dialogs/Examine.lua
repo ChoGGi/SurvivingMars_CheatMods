@@ -158,12 +158,19 @@ function Examine:Init()
     self.idToolsMenu.drop_dialog:SetZOrder(zorder+1)
   end
 
+  local menuitem_DumpText = Concat(T(302535920000004--[[Dump--]])," ",T(1000145--[[Text--]]))
+  local menuitem_DumpObject = Concat(T(302535920000004--[[Dump--]])," ",T(298035641454--[[Object--]]))
+  local menuitem_ViewText = Concat(T(302535920000048--[[View--]])," ",T(1000145--[[Text--]]))
+  local menuitem_ViewObject = Concat(T(302535920000048--[[View--]])," ",T(298035641454--[[Object--]]))
+  local menuitem_EditObject = Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]]))
+  local menuitem_ExecCode = T(302535920000323--[[Exec Code--]])
+
   function self.idToolsMenu.OnComboClose(menu,idx)
     --close hint
     XDestroyRolloverWindow(true)
     if self.idToolsMenu.list.rollover then
       local text = menu.items[idx].text
-      if text == T(302535920000046--[[Dump Text--]]) then
+      if text == menuitem_ViewText then
         local str = self:totextex(self.obj)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
@@ -179,7 +186,7 @@ function Examine:Init()
           end,
         })
         dialog:Open()
-      elseif text == T(302535920000048--[[Dump Object--]]) then
+      elseif text == menuitem_ViewObject then
         local str = ValueToLuaCode(self.obj)
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           checkbox = true,
@@ -193,9 +200,17 @@ function Examine:Init()
           end,
         })
         dialog:Open()
-      elseif text == T(327465361219--[[Edit--]]) then
+      elseif text == menuitem_DumpText then
+        local str = self:totextex(self.obj)
+        --remove html tags
+        str = str:gsub("<[/%s%a%d]*>","")
+        ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+      elseif text == menuitem_DumpObject then
+        local str = ValueToLuaCode(self.obj)
+        ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+      elseif text == menuitem_EditObject then
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-      elseif text == T(302535920000323--[[Exec Code--]]) then
+      elseif text == menuitem_ExecCode then
         ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
       end
 
@@ -208,23 +223,36 @@ function Examine:Init()
       rollover = "-"
     },
     {
-      text = T(302535920000046--[[Dump Text--]]),
-      rollover = T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua--]]),
+      text = menuitem_DumpText,
+      rollover = T(302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]),
     },
     {
-      text = T(302535920000048--[[Dump Object--]]),
-      rollover = T(302535920000049--[[View text, and optionally dumps object to AppData/DumpedExamineObject.lua\n\nThis can take time on something like the \"Building\" metatable--]]),
+      text = menuitem_DumpObject,
+      rollover = T(302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the "Building" metatable--]]),
+    },
+
+    {
+      text = menuitem_ViewText,
+      rollover = T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)--]]),
+    },
+    {
+      text = menuitem_ViewObject,
+      rollover = T(302535920000049--[[View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the \"Building\" metatable (don't use this option on large text)--]]),
     },
     {
       text = "   ---- ",
       rollover = "-",
     },
     {
-      text = Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]])),
+      text = menuitem_EditObject,
       rollover = T(302535920000050--[[Opens object in Object Manipulator.--]]),
     },
     {
-      text = T(302535920000323--[[Exec Code--]]),
+      text = menuitem_ExecCode,
       rollover = T(302535920000052--[[Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.--]]),
     },
   }, true)
