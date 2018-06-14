@@ -138,10 +138,14 @@ end
 function OnMsg.ClassesBuilt()
   local XT = XTemplates
   --add button to side panel
-  if not XT.sectionStorageMechanized.ChoGGiEmpty then
-    XT.sectionStorageMechanized.ChoGGiEmpty = true
+--~   if not XT.sectionStorageMechanized.ChoGGiEmpty then
+--~     XT.sectionStorageMechanized.ChoGGiEmpty = true
 
-    XT.sectionStorageMechanized[#XT.sectionStorageMechanized+1] = PlaceObj("XTemplateTemplate", {
+--~     XT.sectionStorageMechanized[#XT.sectionStorageMechanized+1] = PlaceObj("XTemplateTemplate", {
+  if not XT.sectionStorage.ChoGGiEmpty then
+    XT.sectionStorage.ChoGGiEmpty = true
+
+    XT.sectionStorage[1][#XT.sectionStorage[1]+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "MechanizedDepot",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Sections/storage.tga",

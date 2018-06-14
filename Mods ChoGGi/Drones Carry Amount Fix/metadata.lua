@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"image", "Preview.png",
-	"title", "Drones Carry Amount Fix v0.3",
-	"version", 3,
+	"title", "Drones Carry Amount Fix v0.4",
+	"version", 4,
 	"saved", 1526126400,
   "description", [[Drones only pick up resources from buildings when the amount stored is equal or greater compared to their carry amount (this forces them to pick up whenever there's more then one resource).
 

@@ -323,7 +323,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
       obj = obj,
       hint = T(302535920001106--[[Change main object colours.--]])
     }
-    local Attaches = obj:GetAttaches()
+    local Attaches = obj:GetAttaches() or empty_table
     for i = 1, #Attaches do
       ItemList[#ItemList+1] = {
         text = Attaches[i].class,

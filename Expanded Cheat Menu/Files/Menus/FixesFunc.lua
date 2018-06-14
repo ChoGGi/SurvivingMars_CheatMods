@@ -132,7 +132,7 @@ function ChoGGi.MenuFuncs.RedoAllColonists()
 end
 
 local function AttachmentsCollisionToggle(sel,which)
-  local att = sel:GetAttaches()
+  local att = sel:GetAttaches() or empty_table
   if att and #att > 0 then
     --are we disabling col or enabling
     local flag

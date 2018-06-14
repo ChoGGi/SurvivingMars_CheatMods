@@ -114,11 +114,7 @@ function ChangeObjectColour.CodeFuncs.RandomColour(Amount)
   return randcolors
 end
 
-function ChangeObjectColour.CodeFuncs.ObjectColourRandom(Obj,Base)
-  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
-    return
-  end
-  local ChangeObjectColour = ChangeObjectColour
+local function SetRandColour(Obj,ChangeObjectColour)
   local colour = ChangeObjectColour.CodeFuncs.RandomColour()
   local SetPal = Obj.SetColorizationMaterial
   local GetPal = Obj.GetColorizationMaterial
@@ -136,13 +132,22 @@ function ChangeObjectColour.CodeFuncs.ObjectColourRandom(Obj,Base)
     SetPal(Obj, 3, ChangeObjectColour.CodeFuncs.RandomColour(), 0,0)
     SetPal(Obj, 4, ChangeObjectColour.CodeFuncs.RandomColour(), 0,0)
   end
-  return colour
 end
 
-function ChangeObjectColour.CodeFuncs.ObjectColourDefault(Obj)
+function ChangeObjectColour.CodeFuncs.ObjectColourRandom(Obj,Base)
   if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
     return
   end
+  local ChangeObjectColour = ChangeObjectColour
+  SetRandColour(Obj,ChangeObjectColour)
+  local Attaches = Obj:GetAttaches() or empty_table
+  for i = 1, #Attaches do
+    SetRandColour(Attaches[i],ChangeObjectColour)
+  end
+--~   return colour
+end
+
+local function SetDefColour(Obj)
   Obj:SetColorModifier(6579300)
   if Obj.ChangeObjectColour_origcolors then
     local SetPal = Obj.SetColorizationMaterial
@@ -151,6 +156,17 @@ function ChangeObjectColour.CodeFuncs.ObjectColourDefault(Obj)
     SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
     SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
     SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+  end
+end
+
+function ChangeObjectColour.CodeFuncs.ObjectColourDefault(Obj)
+  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+    return
+  end
+  SetDefColour(Obj)
+  local Attaches = Obj:GetAttaches() or empty_table
+  for i = 1, #Attaches do
+    SetDefColour(Attaches[i])
   end
 end
 

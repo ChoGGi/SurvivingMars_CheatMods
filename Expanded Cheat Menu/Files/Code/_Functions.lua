@@ -643,11 +643,7 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
   return randcolors
 end
 
-function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
-  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
-    return
-  end
-  local ChoGGi = ChoGGi
+local function SetRandColour(Obj,ChoGGi)
   local colour = ChoGGi.CodeFuncs.RandomColour()
   local SetPal = Obj.SetColorizationMaterial
   local GetPal = Obj.GetColorizationMaterial
@@ -665,13 +661,22 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
     SetPal(Obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
     SetPal(Obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
   end
-  return colour
 end
 
-function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
+function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
   if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
     return
   end
+  local ChoGGi = ChoGGi
+  SetRandColour(Obj,ChoGGi)
+  local Attaches = Obj:GetAttaches() or empty_table
+  for i = 1, #Attaches do
+    SetRandColour(Attaches[i],ChoGGi)
+  end
+--~   return colour
+end
+
+local function SetDefColour(Obj)
   Obj:SetColorModifier(6579300)
   if Obj.ChoGGi_origcolors then
     local SetPal = Obj.SetColorizationMaterial
@@ -680,6 +685,17 @@ function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
     SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
     SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
     SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+  end
+end
+
+function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
+  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+    return
+  end
+  SetDefColour(Obj)
+  local Attaches = Obj:GetAttaches() or empty_table
+  for i = 1, #Attaches do
+    SetDefColour(Attaches[i])
   end
 end
 
