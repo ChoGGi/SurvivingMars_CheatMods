@@ -31,15 +31,17 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   g_Classes.UAMenu.ToggleOpen()
 end
 
+function ChoGGi.MenuFuncs.ShowChangelogECM()
+	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"changes.log"))
+	if not file_error then
+    OpenExamine({Concat("\n\n",str)})
+	end
+end
+
 function ChoGGi.MenuFuncs.ShowReadmeECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
 	if not file_error then
-    local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-      zorder = 2000001,
-      wrap = true,
-      text = str,
-    })
-    dialog:Open()
+    OpenExamine({Concat("\n\n",str)})
 	end
 end
 

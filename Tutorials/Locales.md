@@ -9,7 +9,7 @@ ID,Text
 11111111110001029,Some text
 11111111110001014,and more text
 
-CHANGE 11111111 to some random arsed number, or use whatever you already have been using in your mod.
+CHANGE 11111111 to some random arsed number, or use whatever you already use in your mod.
 
 At the tippy top of your ModItemCode file add this (or something like it)
 
@@ -30,7 +30,7 @@ Msg("TranslationChanged")
 
 
 
-Now you can use _InternalTranslate(T({11111111110001029--[[optional info showing the string--]]}))
+Now you can use _InternalTranslate(T({11111111110001029--[[optionally showing a string for your sanity--]]}))
 All a translator needs to do is make a copy of English.csv and rename it to their lang
 and start changing strings, and then send it to you, all you need to do is put it in the Locales folder.
 

@@ -7,13 +7,6 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920001014--[[Hide Cheats Menu--]])),
-    ChoGGi.MenuFuncs.CheatsMenu_Toggle,
-    "F2",
-    T(302535920001019--[[This will hide the Cheats menu, Use F2 to see it again, and use Ctrl-F2 to toggle the Cheats selection panel.--]]),
-    "ToggleEnvMap.tga"
-  )
   --------------------screenshot
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[2]",T(302535920000892--[[Screenshot--]]),"/",T(302535920000657--[[Screenshot--]])),
@@ -93,14 +86,6 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     end,
     "set_debug_texture.tga"
   )
-  --------------------help
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000672--[[About ECM--]])),
-    ChoGGi.MenuFuncs.AboutECM,
-    nil,
-    Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000673--[[info dialog.--]])),
-    "help.tga"
-  )
 
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
@@ -110,8 +95,33 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     "ReportBug.tga"
   )
 
+  ----------------------------------ECM
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/[997]",T(302535920000676--[[Reset ECM Settings--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920000672--[[About ECM--]])),
+    ChoGGi.MenuFuncs.AboutECM,
+    nil,
+    Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000673--[[info dialog.--]])),
+    "help.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920001029--[[Change log--]])),
+    ChoGGi.MenuFuncs.ShowChangelogECM,
+    nil,
+    T(4915--[[Good News, Everyone!"--]]),
+    "DisablePostprocess.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920001014--[[Hide Cheats Menu--]])),
+    ChoGGi.MenuFuncs.CheatsMenu_Toggle,
+    "F2",
+    T(302535920001019--[[This will hide the Cheats menu, Use F2 to see it again, and use Ctrl-F2 to toggle the Cheats selection panel.--]]),
+    "ToggleEnvMap.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[997]",T(302535920000676--[[Reset ECM Settings--]])),
     ChoGGi.MenuFuncs.ResetECMSettings,
     nil,
     T(302535920000677--[[Reset all ECM settings to default (restart to enable).--]]),
@@ -119,10 +129,10 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]]))),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]]))),
     ChoGGi.MenuFuncs.ShowReadmeECM,
     nil,
-    nil,
+    T(302535920001025--[[Help! I'm with stupid!--]]),
     "help.tga"
   )
 
@@ -142,7 +152,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
 
     local info = Concat(T(302535920001028--[[Have a Tutorial, or general info you'd like to add?--]])," : ",ChoGGi.email)
     ChoGGi.ComFuncs.AddAction(
-      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/*",T(126095410863--[[Info--]]),"*"),
+      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[-1]*",T(126095410863--[[Info--]]),"*"),
       function()
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           zorder = 2000001,
@@ -157,7 +167,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
 
     local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
     ChoGGi.ComFuncs.AddAction(
-      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/*",T(1575--[[Functionality--]]),"*"),
+      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[0]*",T(1575--[[Functionality--]]),"*"),
       function()
         OpenExamine({Concat(T(302535920001023--[[This WILL take awhile if you open it in dump text.--]]),"\n\n\n\n",funcs)})
       end,
