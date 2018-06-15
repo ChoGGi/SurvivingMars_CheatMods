@@ -966,7 +966,7 @@ function ChoGGi.CodeFuncs.SelObject()
     return SelectedObj or SelectionMouseObj() or NearestObject(
       GetTerrainCursor(),
       ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class"),
-      500
+      1000
     )
   end))
 end

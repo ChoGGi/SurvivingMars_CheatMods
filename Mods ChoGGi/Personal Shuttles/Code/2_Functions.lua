@@ -1,17 +1,17 @@
-function PersonalShuttles.CodeFuncs.Trans(...)
-  local data = select(1,...)
-  if type(data) == "userdata" then
-    return _InternalTranslate(...)
-  end
-  return _InternalTranslate(T({...}))
-end
+local type,select,pairs,print = type,select,pairs,print
+local _InternalTranslate = _InternalTranslate
+local RGBA = RGBA
+local IsValid = IsValid
+local Sleep = Sleep
+local Msg = Msg
+local CreateGameTimeThread = CreateGameTimeThread
+local Sleep = Sleep
+local PlayFX = PlayFX
+local XTemplates = XTemplates
 
 --pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
 function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   local PersonalShuttles = PersonalShuttles
-  local IsValid = IsValid
-  local Sleep = Sleep
-  local Msg = Msg
 
   if not IsValid(self) then
     return
@@ -60,9 +60,6 @@ function PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
 end
 
 function PersonalShuttles.CodeFuncs.DefenceTick(self,already_fired)
-  local CreateGameTimeThread = CreateGameTimeThread
-  local Sleep = Sleep
-  local PlayFX = PlayFX
 
   if type(already_fired) ~= "table" then
     print("Error: ShuttleRocketDD isn't a table")
@@ -183,18 +180,18 @@ function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
       for _ in pairs(UICity.PersonalShuttles.CargoShuttleThreads) do
         amount = amount + 1
       end
-      if amount <= 50 then
+      if amount <= PersonalShuttles.UserSettings.Max_Shuttles or 50 then
         --do we attack dustdevils?
         if which then
           UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle] = true
-          shuttle:SetColor1(-9624026)
-          shuttle:SetColor2(1)
-          shuttle:SetColor3(-13892861)
+          shuttle:SetColor1(PersonalShuttles.UserSettings.Attacker_Color1 or -9624026)
+          shuttle:SetColor2(PersonalShuttles.UserSettings.Attacker_Color2 or 0)
+          shuttle:SetColor3(PersonalShuttles.UserSettings.Attacker_Color3 or -13892861)
         else
           UICity.PersonalShuttles.CargoShuttleThreads[shuttle.handle] = false
-          shuttle:SetColor1(-16711941)
-          shuttle:SetColor2(-16760065)
-          shuttle:SetColor3(-1)
+          shuttle:SetColor1(PersonalShuttles.UserSettings.Friend_Color1 or -16711941)
+          shuttle:SetColor2(PersonalShuttles.UserSettings.Friend_Color2 or -16760065)
+          shuttle:SetColor3(PersonalShuttles.UserSettings.Friend_Color3 or -1)
         end
         --easy way to get amount of shuttles about
         UICity.PersonalShuttles.CargoShuttleThreads[#UICity.PersonalShuttles.CargoShuttleThreads+1] = true
@@ -221,57 +218,31 @@ function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
 end
 
 --only add unique template names
-function PersonalShuttles.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
+function PersonalShuttles.CodeFuncs.AddXTemplate(Name,Template,Table)
   if not (Name or Template or Table) then
     return
   end
-  XT = XT or XTemplates
 
-  if not InnerTable then
-    if not XT[Template][1][Name] then
-      XT[Template][1][Name] = true
+  if not XTemplates[Template][1][Name] then
+    XTemplates[Template][1][Name] = true
 
-      XT[Template][1][#XT[Template][1]+1] = PlaceObj("XTemplateTemplate", {
-        "__context_of_kind", Table.__context_of_kind or "Infopanel",
-        "__template", Table.__template or "InfopanelSection",
-        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or "Placeholder",
-        "RolloverText", Table.RolloverText or "Info",
-        "RolloverTitle", Table.RolloverTitle or "Title",
-        "RolloverHint", Table.RolloverHint or "Hint",
-        "OnContextUpdate", Table.OnContextUpdate
-      }, {
-        PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
-            return parent.parent
-          end,
-        "func", Table.func or "function() return end"
-        })
+    XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+      "__context_of_kind", Table.__context_of_kind or "Infopanel",
+      "__template", Table.__template or "InfopanelSection",
+      "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+      "Title", Table.Title or "Placeholder",
+      "RolloverText", Table.RolloverText or "Info",
+      "RolloverTitle", Table.RolloverTitle or "Title",
+      "RolloverHint", Table.RolloverHint or "Hint",
+      "OnContextUpdate", Table.OnContextUpdate
+    }, {
+      PlaceObj("XTemplateFunc", {
+      "name", "OnActivate(self, context)",
+      "parent", function(parent, context)
+          return parent.parent
+        end,
+      "func", Table.func or "function() return end"
       })
-    end
-  else
-    if not XT[Template][Name] then
-      XT[Template][Name] = true
-
-      XT[Template][#XT[Template]+1] = PlaceObj("XTemplateTemplate", {
-        "__context_of_kind", Table.__context_of_kind or "Infopanel",
-        "__template", Table.__template or "InfopanelSection",
-        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or "Placeholder",
-        "RolloverText", Table.RolloverText or "Info",
-        "RolloverTitle", Table.RolloverTitle or "Title",
-        "RolloverHint", Table.RolloverHint or "Hint",
-        "OnContextUpdate", Table.OnContextUpdate
-      }, {
-        PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
-            return parent.parent
-          end,
-        "func", Table.func or "function() return end"
-        })
-      })
-    end
+    })
   end
 end

@@ -335,6 +335,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","OnMouseEnter")
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
+  SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   --I don't need to see the help page that much
@@ -447,6 +448,13 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
     SetTrans(self)
     return table.unpack(ret)
+  end
+
+  --unbreakable cables/pipes
+  function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
+    if not ChoGGi.UserSettings.BreakChanceCablePipe then
+      return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
+    end
   end
 
   --no more pulsating pin motion

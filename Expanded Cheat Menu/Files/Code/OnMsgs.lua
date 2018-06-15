@@ -1043,12 +1043,6 @@ function OnMsg.ChoGGi_Loaded()
     g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
   end
 
-  --unbreakable cables/pipes
-  if UserSettings.BreakChanceCablePipe then
-    const.BreakChanceCable = 10000000
-    const.BreakChancePipe = 10000000
-  end
-
   --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
   if ChoGGi._VERSION ~= UserSettings._VERSION then
     --clean up

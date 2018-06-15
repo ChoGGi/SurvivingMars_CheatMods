@@ -523,8 +523,7 @@ Works after colonist idle.",
 302535920000389,"Performance Penalty Non-Specialist",
 302535920000390,"Disable performance penalty for non-Specialists.
 Activated when colonist changes job.",
-302535920000391,"Change how many hexes colonists search outside their dome when looking for a Workplace.
-Current",
+302535920000391,"Change how many hexes colonists search outside their dome when looking for a Workplace.",
 302535920000392,"Outside Workplace Radius",
 302535920000393,"Add Specialization To All",
 302535920000394,"If Colonist has no Specialization then add a random one",

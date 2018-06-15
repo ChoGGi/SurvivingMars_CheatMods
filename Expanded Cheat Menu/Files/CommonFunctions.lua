@@ -30,7 +30,6 @@ local IsObjlist = IsObjlist
 local IsPoint = IsPoint
 local IsValid = IsValid
 local Msg = Msg
-local OnScreenNotificationPreset = OnScreenNotificationPreset
 local OpenXDialog = OpenXDialog
 local point = point
 local RGB = RGB
@@ -273,7 +272,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     image = Icon
   }
   table.set_defaults(data, params)
-  table.set_defaults(data, OnScreenNotificationPreset)
+  table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
 
   CreateRealTimeThread(function()
 		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
@@ -1348,6 +1347,7 @@ ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),Cho
     AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
     AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
     AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
     AsyncCreatePath(Concat(script_path,"/Functions"))

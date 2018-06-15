@@ -194,14 +194,14 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
 
 -----------------------ECM fixes
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]])),"/",T(302535920000617--[[See tooltip--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]]),"/",T(302535920000617--[[See tooltip--]])),
     nil,
     "Skip",
     T(302535920000618--[[Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed.--]])
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]])),"/[1]",T(302535920000619--[[Fix Black Cube Colonists--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]]),"/[1]",T(302535920000619--[[Fix Black Cube Colonists--]])),
     ChoGGi.MenuFuncs.ColonistsFixBlackCube,
     nil,
     T(302535920000620--[[If any colonists are black cubes click this.--]]),
@@ -209,7 +209,7 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]])),"/[1]",T(302535920000621--[[Align All Buildings To Hex Grid--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[99]",T(302535920000887--[[ECM--]])," ",T(302535920000922--[[Fixes--]]),"/[1]",T(302535920000621--[[Align All Buildings To Hex Grid--]])),
     ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
     nil,
     T(302535920000622--[[If you have any buildings that aren't aligned to the hex grids use this.--]]),

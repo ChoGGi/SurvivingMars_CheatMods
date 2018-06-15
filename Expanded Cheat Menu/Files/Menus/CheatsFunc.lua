@@ -129,11 +129,19 @@ function ChoGGi.MenuFuncs.DisastersStop()
   for Key,_ in pairs(mis or empty_table) do
     Key:ExplodeInAir()
   end
+
   if g_DustStorm then
     StopDustStorm()
   end
   if g_ColdWave then
     StopColdWave()
+  end
+
+  local g_DustDevils = g_DustDevils
+  if g_DustDevils then
+    for i = #g_DustDevils, 1, -1 do
+      g_DustDevils[i]:delete()
+    end
   end
 
   local mp = g_MeteorsPredicted or empty_table

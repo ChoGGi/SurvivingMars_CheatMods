@@ -725,7 +725,7 @@ function Examine:totextex(o)
     if o:IsValidPos() and IsValidEntity(o:GetEntity()) and 0 < o:GetAnimDuration() then
       local pos = o:GetVisualPos() + o:GetStepVector() * o:TimeToAnimEnd() / o:GetAnimDuration()
       table.insert(res, 2, Concat(
-        "<center>",
+--~         "<center>",
         GetStateName(o:GetState()),
         ", step:",
         self:HyperLink(function()

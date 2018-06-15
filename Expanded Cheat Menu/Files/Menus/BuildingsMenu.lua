@@ -129,39 +129,14 @@ function ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
     icon
   )
 
-  local function UseLastOrientationText()
-    return Concat(ChoGGi.UserSettings.UseLastOrientation and "(",T(302535920000030--[[Enabled--]]),")" or "(",T(302535920000036--[[Disabled--]]),")"," ",T(302535920000190--[[Use last building placement orientation.--]]))
-  end
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000191--[[Use Last Orientation--]])),
     ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
     "F7",
-    UseLastOrientationText(),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UseLastOrientation,
+      302535920000190 --,"Use last building placement orientation."
+    ),
     "ToggleMapAreaEditor.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000192--[[Farm Shifts All On--]])),
-    ChoGGi.MenuFuncs.FarmShiftsAllOn,
-    nil,
-    T(302535920000193--[[Turns on all the farm shifts.--]]),
-    icon
-  )
-  --------------------
-  ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000194--[[Production Amount Set--]])),
-    ChoGGi.MenuFuncs.SetProductionAmount,
-    "Ctrl-Shift-P",
-    T(302535920000195--[[Set production of buildings of selected type, also applies to newly placed ones.\nWorks on any building that produces.--]]),
-    icon
-  )
-  --------------------
-  ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000196--[[Fully Automated Building--]])),
-    ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
-    nil,
-    T(302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).\nThanks to BoehserOnkel for the idea.--]]),
-    icon
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -185,6 +160,30 @@ function ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
         302535920000199 --,"Toggle curing all traits (use \"Show All Traits\" & \"Show Full List\" to manually set)."
       )
     end,
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000192--[[Farm Shifts All On--]])),
+    ChoGGi.MenuFuncs.FarmShiftsAllOn,
+    nil,
+    T(302535920000193--[[Turns on all the farm shifts.--]]),
+    icon
+  )
+  --------------------
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000194--[[Production Amount Set--]])),
+    ChoGGi.MenuFuncs.SetProductionAmount,
+    "Ctrl-Shift-P",
+    T(302535920000195--[[Set production of buildings of selected type, also applies to newly placed ones.\nWorks on any building that produces.--]]),
+    icon
+  )
+  --------------------
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000196--[[Fully Automated Building--]])),
+    ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
+    nil,
+    T(302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).\nThanks to BoehserOnkel for the idea.--]]),
     icon
   )
 

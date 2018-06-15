@@ -129,7 +129,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[998]",Concat(T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]]))),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[998]",T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]])),
     ChoGGi.MenuFuncs.ShowReadmeECM,
     nil,
     T(302535920001025--[[Help! I'm with stupid!--]]),

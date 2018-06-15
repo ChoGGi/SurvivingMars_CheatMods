@@ -1,15 +1,3 @@
---~ -- be nice to get a remote debugger working
---~ Platform.editor = true
---~ config.LuaDebugger = true
---~ GlobalVar("outputSocket", false)
---~ dofile("CommonLua/Core/luasocket.lua")
---~ dofile("CommonLua/Core/luadebugger.lua")
---~ outputSocket = LuaSocket:new()
---~ outputThread = false
---~ dofile("CommonLua/Core/luaDebuggerOutput.lua")
---~ dofile("CommonLua/Core/ProjectSync.lua")
---~ config.LuaDebugger = false
-
 -- hello
 ChoGGi = {
   _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
@@ -44,12 +32,7 @@ SOFTWARE.]],
   -- orig funcs that we replace
   OrigFuncs = {},
   -- CommonFunctions.lua
-  ComFuncs = {
-    FileExists = function(file)
-      return select(2,AsyncFileOpen(file))
---~       return not AsyncFileToString(file)
-    end,
-  },
+  ComFuncs = {},
   -- /Code/_Functions.lua
   CodeFuncs = {},
   -- /Code/*Menu.lua and /Code/*Func.lua
@@ -71,15 +54,24 @@ SOFTWARE.]],
     Transparency = {},
   },
 }
+local ChoGGi = ChoGGi
+local Mods = Mods
+ChoGGi._VERSION = Mods[ChoGGi.id].version
+ChoGGi.ModPath = Mods[ChoGGi.id].path
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,table = dofile,select,tostring,table
+
+local AsyncFileOpen = AsyncFileOpen
+function ChoGGi.ComFuncs.FileExists(file)
+  return select(2,AsyncFileOpen(file))
+end
+
+local dofolder_files = dofolder_files
+
 -- thanks for replacing concat...
 ChoGGi.ComFuncs.TableConcat = oldTableConcat or table.concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
-
-local AsyncFileOpen = AsyncFileOpen
-local dofolder_files = dofolder_files
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
@@ -108,10 +100,6 @@ function ChoGGi.ComFuncs.Concat(...)
   return TConcat(concat_table)
 end
 
-local ChoGGi = ChoGGi
-local Mods = Mods
-ChoGGi._VERSION = Mods[ChoGGi.id].version
-ChoGGi.ModPath = Mods[ChoGGi.id].path
 local Concat = ChoGGi.ComFuncs.Concat
 local FileExists = ChoGGi.ComFuncs.FileExists
 
@@ -172,7 +160,7 @@ if ChoGGi.UserSettings.DisableHints then
   HintsEnabled = false
 end
 
--- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you...
+-- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
 if ChoGGi.Temp.Testing then
   ChoGGi.UserSettings.WriteLogs = true
 end
@@ -191,16 +179,16 @@ if ChoGGi.UserSettings.FirstRun ~= false then
 end
 
 local Platform = Platform
-
 Platform.editor = true
 
+-- fixes UpdateInterface nil value in editor mode
 local d_before = Platform.developer
 Platform.developer = true
--- fixes UpdateInterface nil value in editor mode
 editor.LoadPlaceObjConfig()
--- some error it gives about missing table
-GlobalVar("g_revision_map",{})
 Platform.developer = d_before
+
+-- editor wants a table
+GlobalVar("g_revision_map",{})
 
 --~ ClassesGenerate
 --~ ClassesPreprocess
@@ -211,3 +199,15 @@ Platform.developer = d_before
 --~ ModsLoaded
 --~ EntitiesLoaded
 --~ BinAssetsLoaded
+
+--~ -- be nice to get a remote debugger working
+--~ Platform.editor = true
+--~ config.LuaDebugger = true
+--~ GlobalVar("outputSocket", false)
+--~ dofile("CommonLua/Core/luasocket.lua")
+--~ dofile("CommonLua/Core/luadebugger.lua")
+--~ outputSocket = LuaSocket:new()
+--~ outputThread = false
+--~ dofile("CommonLua/Core/luaDebuggerOutput.lua")
+--~ dofile("CommonLua/Core/ProjectSync.lua")
+--~ config.LuaDebugger = false

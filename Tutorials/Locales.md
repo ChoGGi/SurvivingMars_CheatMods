@@ -31,7 +31,7 @@ Msg("TranslationChanged")
 
 
 Now you can use _InternalTranslate(T({11111111110001029--[[optionally showing a string for your sanity--]]}))
-All a translator needs to do is make a copy of English.csv and rename it to their lang
+All a translator needs to do is make a copy of English.csv and rename it to their lang: OpenExamine(AllLanguages)
 and start changing strings, and then send it to you, all you need to do is put it in the Locales folder.
 
 

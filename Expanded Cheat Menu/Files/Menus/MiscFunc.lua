@@ -303,9 +303,9 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 end
 
 --build and show a list of attachments for changing their colours
-function ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
+function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
   local ChoGGi = ChoGGi
-  local obj = ChoGGi.CodeFuncs.SelObject()
+  obj = obj and obj.class and obj or ChoGGi.CodeFuncs.SelObject()
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     ChoGGi.ComFuncs.MsgPopup(T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]),T(302535920000016--[[Colour--]]))
     return

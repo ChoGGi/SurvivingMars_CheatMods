@@ -13,8 +13,6 @@ local ShowConsole = ShowConsole
 local UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
 local ValueToLuaCode = ValueToLuaCode
 
-local g_Classes = g_Classes
-
 function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
