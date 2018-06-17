@@ -1,10 +1,9 @@
+--local is faster then global (assuming you call it more then once)
+local XTemplates = XTemplates
+local ObjModified = ObjModified
+local PlaceObj = PlaceObj
+
 function OnMsg.ClassesBuilt()
-
-  --local is faster then global (assuming you call it more then once)
-  local XTemplates = XTemplates
-  local ObjModified = ObjModified
-  local PlaceObj = PlaceObj
-
   --check if the buttons were already added (you can have one for each, but meh)
   if not XTemplates.sectionWorkplace.SOMETHINGUNIQUE then
     XTemplates.sectionWorkplace.SOMETHINGUNIQUE = true

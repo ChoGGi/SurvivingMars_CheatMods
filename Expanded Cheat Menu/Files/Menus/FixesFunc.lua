@@ -449,6 +449,15 @@ function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
 end
 --]]
 
+function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = not ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
+    T(5438--[[Rovers--]])
+  )
+end
+
 function ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RoverInfiniteLoopCuriosity = not ChoGGi.UserSettings.RoverInfiniteLoopCuriosity

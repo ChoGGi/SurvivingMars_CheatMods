@@ -16,7 +16,10 @@ With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
 	"description", [[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
-Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Expanded%20Cheat%20Menu
+The only mod a modder needs.
+
+Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Expanded%20Cheat%20Menu\
+Badly outdated list of features: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md#list-of-some-stuff-added-not-up-to-date
 
 ##### Info
 ```

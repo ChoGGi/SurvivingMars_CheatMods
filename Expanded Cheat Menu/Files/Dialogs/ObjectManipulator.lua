@@ -5,7 +5,7 @@ local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,tostring,type,getmetatable = pairs,pcall,tostring,type,getmetatable
-local debug,string,table,tonumber = debug,string,table,tonumber
+local debug,table = debug,table
 
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread

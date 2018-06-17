@@ -4,7 +4,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local pcall,print,rawget,tostring,type,table = pcall,print,rawget,tostring,type,table
+local pcall,print,rawget,type,table = pcall,print,rawget,type,table
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
@@ -651,7 +651,7 @@ local function SetRandColour(Obj,colour,ChoGGi)
   end
 end
 
-function ChoGGi.CodeFuncs.ObjectColourRandom(Obj,Base)
+function ChoGGi.CodeFuncs.ObjectColourRandom(Obj)
   if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
     return
   end

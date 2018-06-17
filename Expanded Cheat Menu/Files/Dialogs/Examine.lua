@@ -13,23 +13,18 @@ local pairs,type,print,tostring,tonumber,getmetatable,rawget,rawset = pairs,type
 local string,table,debug,utf8 = string,table,debug,utf8
 
 local CmpLower = CmpLower
-local DoneObject = DoneObject
-local GameTime = GameTime
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
-local ObjectClass = ObjectClass
 local OpenExamine = OpenExamine
 local point = point
 local SaveLocalStorage = SaveLocalStorage
-local TDevModeGetEnglishText = TDevModeGetEnglishText
 local ValueToLuaCode = ValueToLuaCode
-local ViewPos = ViewPos
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local Max,Min = Max,Min
 local RGBA,RGB = RGBA,RGB
-local Sleep,CreateRealTimeThread = Sleep,CreateRealTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
 
 local terrain_GetHeight = terrain.GetHeight
 
@@ -977,13 +972,8 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local amount = attaches and #attaches or 0
-  self.idAttaches:SetHint(Concat(
-    T(302535920000070--[[Shows list of attachments.\nThis--]]),
-    " ",name,
-    " ",T(302535920000071--[[has--]]),
-    ": ",amount
-  ))
-
+  self.idAttaches:SetHint(string.format(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]),name,amount)
+  )
   --add object name to title
   if is_table then
     if type(o.handle) == "number" then
@@ -1041,8 +1031,9 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
       else
         self.idAttaches:SetVisible(false)
       end
+      return true
     end) then
-      DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),name))
+      DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),"\r\n",name))
     end
 
   else

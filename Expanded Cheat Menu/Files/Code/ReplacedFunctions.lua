@@ -5,13 +5,12 @@ local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
-local type,next,tostring,rawset,rawget,assert = type,next,tostring,rawset,rawget,assert
+local type,next,rawset,rawget,assert = type,next,rawset,rawget,assert
 local setmetatable,table,print = setmetatable,table,print
 
 --probably should be careful about localizing stuff i replace below...
 local AddConsoleLog = AddConsoleLog
 local ApplyToObjAndAttaches = ApplyToObjAndAttaches
-local AsyncRand = AsyncRand
 local box = box
 local ConsoleExec = ConsoleExec
 local ConsolePrint = ConsolePrint
@@ -36,8 +35,6 @@ local WaitWakeup = WaitWakeup
 local guim = guim
 
 local UserActions_GetActiveActions = UserActions.GetActiveActions
-
---~ local g_Classes = g_Classes
 
 --set UI transparency:
 local function SetTrans(Obj)
@@ -168,8 +165,6 @@ CommonLua\UI\Dev\uiConsoleLog.lua
   ConsoleLog:ShowBackground
 CommonLua\UI\X\XDialog.lua
   OpenXDialog
-CommonLua\X\XMenu.lua
-  XPopupMenu:RebuildActions
 
 Lua\Construction.lua
   ConstructionController:UpdateConstructionStatuses
@@ -215,7 +210,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   --larger trib/subsurfheater radius
-  function g_Classes.UIRangeBuilding:SetUIRange(radius)
+  function UIRangeBuilding:SetUIRange(radius)
     local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
     if rad and rad.uirange then
       radius = rad.uirange
@@ -224,7 +219,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --block certain traits from workplaces
-  function g_Classes.Workplace:AddWorker(worker, shift)
+  function Workplace:AddWorker(worker, shift)
     local ChoGGi = ChoGGi
     local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
     --check that the tables contain at least one trait
@@ -251,7 +246,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --set amount of dust applied
-  function g_Classes.BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
+  function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
     if ChoGGi.UserSettings.AlwaysDustyBuildings then
       if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
         self.ChoGGi_AlwaysDust = dust
@@ -264,7 +259,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   end
 
   --change dist we can charge from cables
-  function g_Classes.BaseRover:GetCableNearby(rad)
+  function BaseRover:GetCableNearby(rad)
     local new_rad = ChoGGi.UserSettings.RCChargeDist
     if new_rad then
       rad = new_rad
@@ -280,7 +275,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   --so we can add hints to info pane cheats
-  function g_Classes.InfopanelObj:CreateCheatActions(win)
+  function InfopanelObj:CreateCheatActions(win)
     --fire orig func to build cheats
     if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
       --then we can add some hints to the cheats
@@ -296,6 +291,8 @@ end --OnMsg
 
 --Built
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+  local g_Classes = g_Classes
+
   SaveOrigFunc("Colonist","ChangeComfort")
   SaveOrigFunc("Console","Exec")
   SaveOrigFunc("Console","HistoryDown")
@@ -330,13 +327,35 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("UAMenu","ToggleOpen")
   SaveOrigFunc("XBlinkingButtonWithRMB","SetBlinking")
   SaveOrigFunc("XDesktop","MouseEvent")
-  SaveOrigFunc("XMenuEntry","Open")
-  SaveOrigFunc("XPopupMenu","Open")
   SaveOrigFunc("XWindow","OnMouseEnter")
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
   SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
+--~   SaveOrigFunc("RCRover","LeadIn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+--~   function RCRover:LeadIn(drone)
+--~     self.drone_charged = drone
+
+--~     drone:GotoUnitSpot(self, "Charge", true) --get in pos to charge
+--~     if ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle then
+--~     print("fix")
+--~       drone:Face(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
+--~     else
+--~     print("not")
+--~       drone:SetAngle(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
+--~     end
+
+--~     drone:StartFX("EmergencyRecharge")
+--~     drone:PlayState( "rechargeDroneStart" )
+--~   end
+
+  --unbreakable cables/pipes
+  function g_Classes.SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
+    if not ChoGGi.UserSettings.BreakChanceCablePipe then
+      return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
+    end
+  end
 
   --I don't need to see the help page that much
   if Platform.editor then
@@ -360,7 +379,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
             AsyncCreatePath(dest)
 
             print("ModUploadThread")
-            local err, files
+            local err
             if "ok" ~= socket:WaitQuestion(
               T(1000009--[[Confirmation--]]),
               Concat(
@@ -450,13 +469,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     return table.unpack(ret)
   end
 
-  --unbreakable cables/pipes
-  function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
-    if not ChoGGi.UserSettings.BreakChanceCablePipe then
-      return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
-    end
-  end
-
   --no more pulsating pin motion
   function g_Classes.XBlinkingButtonWithRMB:SetBlinking(...)
     if ChoGGi.UserSettings.DisablePulsatingPinsMotion then
@@ -481,113 +493,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       self:SetMargins(box(0, 0, 0, 25))
     end
     return table.unpack(ret)
-  end
-
-  --rebuild menu items for console script buttons
-  function g_Classes.XPopupMenu:Open(...)
-    if not self then
-      return
-    end
-
-    if self.MenuEntries:find("ChoGGi_") then
-      local ChoGGi = ChoGGi
-      local dlgConsole = dlgConsole
-      local host = self.desktop
-      --clear out old items
-      ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
-
-      --build list of script files
-      if self.MenuEntries == "ChoGGi_Scripts" then
-        g_Classes.XAction:new({
-          ActionId = "ModLogMsgs",
-          ActionMenubar = "ChoGGi_Scripts",
-          ActionName = T(302535920001026--[[Mod Log--]]),
-          OnAction = function()
-            ShowConsoleLog(true)
-            print(ModMessageLog)
-          end
-        }, dlgConsole)
-
-        g_Classes.XAction:new({
-          ActionId = "ClearLog",
-          ActionMenubar = "ChoGGi_Scripts",
-          ActionName = T(302535920000734--[[Clear Log--]]),
-          OnAction = function()
-            ShowConsoleLog(true)
-            dlgConsole:Exec("cls()")
-          end
-        }, dlgConsole)
-
-        g_Classes.XAction:new({
-          ActionId = "ChoGGi_ConsoleText",
-          ActionMenubar = "ChoGGi_Scripts",
-          ActionName = T(302535920000563--[[Copy Log Text--]]),
-          OnAction = function()
-            local dlgConsoleLog = dlgConsoleLog
-            if not dlgConsoleLog then
-              return
-            end
-            local text = dlgConsoleLog.idText:GetText()
-            if text:len() == 0 then
-              print(T(302535920000692--[[Log is blank.--]]))
-              return
-            end
-            local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-              zorder = 2000001,
-              wrap = true,
-              text = text,
-            })
-            dialog:Open()
-
-          end
-        }, dlgConsole)
-
-        g_Classes.XAction:new({
-          ActionId = Concat("ChoGGi_Spacer_",AsyncRand()),
-          ActionMenubar = "ChoGGi_Scripts",
-          ActionName = " - "
-        }, dlgConsole)
-
-        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,ChoGGi.scripts,true)
-      else
-        local name = self.MenuEntries:gsub("ChoGGi_","")
-        ChoGGi.ComFuncs.ListScriptFiles(self.MenuEntries,Concat(ChoGGi.scripts,"/",name))
-      end
-
-      --build history list menu
-      if #dlgConsole.history_queue > 0 then
-        local history = dlgConsole.history_queue
-        for i = 1, #history do
-          --these can get long so keep 'em short
-          local name = tostring(history[i]):sub(1,ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50)
-          g_Classes.XAction:new({
-            ActionId = name,
-            ActionMenubar = "ChoGGi_History",
-            ActionName = name,
-            OnAction = function()
-              ShowConsoleLog(true)
-              dlgConsole:Exec(history[i])
-            end
-          }, dlgConsole)
-        end
-      end
-
-      --make the menu start above the button
-      self:SetMargins(box(3, 0, 0, 68))
-      -- 1 above consolelog
-      self:SetZOrder(2000001)
-    end
-
-    return ChoGGi_OrigFuncs.XPopupMenu_Open(self, ...)
-  end
-
-  --larger and blacker font for Scripts menu items
-  function g_Classes.XMenuEntry:Open(...)
-    ChoGGi_OrigFuncs.XMenuEntry_Open(self,...)
-    if self.parent.parent.MenuEntries:find("ChoGGi_") then
-      self:SetTextFont("Editor16Bold")
-      self:SetTextColor(RGB(0,0,0))
-    end
   end
 
   -- function from github as the actual function has a whoopsie, or something does...
@@ -1125,6 +1030,9 @@ end
     end
     --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
     SetTrans(self)
+
+    --and rebuild my buttons
+    ChoGGi.Console.RebuildConsoleToolbar(self)
   end
 
   --kind of an ugly way of making sure console doesn't include ` when using tilde to open console

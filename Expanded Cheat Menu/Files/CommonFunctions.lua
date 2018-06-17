@@ -6,11 +6,7 @@ local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetat
 local table,debug,string = table,debug,string
 
 local _InternalTranslate = _InternalTranslate
-local AsyncCreatePath = AsyncCreatePath
-local AsyncFileDelete = AsyncFileDelete
-local AsyncFileOpen = AsyncFileOpen
 local AsyncFileRename = AsyncFileRename
-local AsyncFileToString = AsyncFileToString
 local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
 local AsyncStringToFile = AsyncStringToFile
@@ -22,6 +18,7 @@ local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
 local GetObjects = GetObjects
+local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
 local HandleToObject = HandleToObject
@@ -33,7 +30,6 @@ local Msg = Msg
 local OpenXDialog = OpenXDialog
 local point = point
 local RGB = RGB
-local ShowConsoleLog = ShowConsoleLog
 local Sleep = Sleep
 local TechDef = TechDef
 local ThreadLockKey = ThreadLockKey
@@ -42,7 +38,7 @@ local ViewPos = ViewPos
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
 
-local T = T -- T replaced below
+local local_T = T -- T replaced below
 local guic = guic
 
 local UserActions_SetMode = UserActions.SetMode
@@ -58,8 +54,8 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   if Func then
     local newname = Concat(ClassOrFunc,"_",Func)
     if not ChoGGi.OrigFuncs[newname] then
---~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
-      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
+      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+--~       ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
     end
   else
     if not ChoGGi.OrigFuncs[ClassOrFunc] then
@@ -74,8 +70,8 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
-  g_Classes[ClassName][FuncName] = function(...)
---~   _G[ClassName][FuncName] = function(...)
+--~   g_Classes[ClassName][FuncName] = function(...)
+  _G[ClassName][FuncName] = function(...)
     --I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
 
@@ -92,32 +88,6 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
     return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
   end
 end
-
--- we need to call these here, because of the local g_Classes in the other files
-local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
-AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
-AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
-AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
-AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
-AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
-AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
-AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
-AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
-AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
-AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
-AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
-AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
-AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
-AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
-AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
 local memoize = {
   _VERSION     = 'memoize v2.0',
@@ -209,7 +179,8 @@ setmetatable(memoize, { __call = function(_, ...) return memoize.memoize(...) en
 ChoGGi.ComFuncs.Memoize = memoize.memoize
 local Memoize = memoize.memoize
 
--- cache translation strings (doesn't work well with _InternalTranslate)
+-- cache translation strings
+_InternalTranslate = Memoize(_InternalTranslate)
 IsT = Memoize(IsT)
 T = Memoize(T)
 TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
@@ -225,7 +196,7 @@ function ChoGGi.ComFuncs.Trans(...)
     if type(vararg[1]) == "userdata" then
       trans = _InternalTranslate(table.unpack(vararg))
     else
-      trans = _InternalTranslate(T(vararg))
+      trans = _InternalTranslate(local_T(vararg))
     end
   end)
   -- just in case b
@@ -1264,51 +1235,6 @@ function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
   end
 end
 
--- rebuild menu toolbar buttons
-function ChoGGi.ComFuncs.RebuildConsoleToolbar(host)
-  host = host or terminal.desktop
-  local ChoGGi = ChoGGi
-  local dlgConsole = dlgConsole
-
-  --clear out old menu/toolbar items
-  for i = #host.actions, 1, -1 do
-    if host.actions[i].ChoGGi_ConsoleAction or
-        host:FilterAction(host.actions[i]) and host.actions[i].ActionMenubar:find("ChoGGi_") then
-      host.actions[i]:delete()
-      table.remove(host.actions,i)
-    end
-  end
-
-  g_Classes.XAction:new({
-    ActionId = "ChoGGi_Scripts",
-    ActionMenubar = "Menu",
-    ActionName = T(302535920000353--[[Scripts--]]),
-    OnActionEffect = "popup",
-    ChoGGi_ConsoleAction = true,
-  }, dlgConsole)
-
-  g_Classes.XAction:new({
-    ActionId = "ChoGGi_History",
-    ActionMenubar = "Menu",
-    ActionName = T(302535920000793--[[History--]]),
-    OnActionEffect = "popup",
-    ChoGGi_ConsoleAction = true,
-  }, dlgConsole)
-
-  local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
-  if folders then
-    for i = 1, #folders do
-      g_Classes.XAction:new({
-        ActionId = Concat("ChoGGi_",folders[i].name),
-        ActionMenubar = "Menu",
-        ActionName = folders[i].name,
-        OnActionEffect = "popup",
-        ChoGGi_ConsoleAction = true,
-      }, dlgConsole)
-    end
-  end
-end
-
 function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
   --local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
   local err, folders = AsyncListFiles(Folder,"*","folders")
@@ -1322,60 +1248,6 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
       }
     end
     return table_path
-  end
-end
-
--- used to add files to Script menu
-function ChoGGi.ComFuncs.ListScriptFiles(menu_name,script_path,main)
-  local ChoGGi = ChoGGi
-  local dlgConsole = dlgConsole
-
-  --create folder and some example scripts if folder doesn't exist
-  if main and AsyncFileOpen(script_path) ~= "Access Denied" then
-    AsyncCreatePath(script_path)
-    --print some info
-    local help = string.format(T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]),script_path)
-    print(help)
-    --add some example files and a readme
-    AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
-    AsyncStringToFile(Concat(script_path,"/Help.lua"),[[local ChoGGi = ChoGGi
-ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),ChoGGi.scripts))]])
-    AsyncCreatePath(Concat(script_path,"/Examine"))
-    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
-    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
-    AsyncCreatePath(Concat(script_path,"/Functions"))
-    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects({class="Colonist")]])
-    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
-    --rebuild toolbar
-    ChoGGi.ComFuncs.RebuildConsoleToolbar()
-  end
-
-  local scripts = ChoGGi.ComFuncs.RetFilesInFolder(script_path,".lua")
-  if scripts then
-    for i = 1, #scripts do
-      g_Classes.XAction:new({
-        ActionId = scripts[i].name,
-        ActionMenubar = menu_name,
-        ActionName = scripts[i].name,
-        --ActionIcon = "CommonAssets/UI/Ged/new.tga",
-        OnAction = function()
-          local file_error, script = AsyncFileToString(scripts[i].path)
-          if not file_error then
-            --print(scripts[i])
-            --make sure log is showing
-            ShowConsoleLog(true)
-            dlgConsole:Exec(script)
-          end
-        end
-      }, dlgConsole)
-    end
   end
 end
 
@@ -1567,7 +1439,7 @@ function ChoGGi.ComFuncs.RetName(obj)
   local name
   if type(obj) == "table" then
     --translated name
-    if type(obj.display_name) == "userdata" then
+    if type(obj.display_name) == "userdata" or type(obj.display_name) == "string" then
       return T(obj.display_name)
     elseif IsObjlist(obj) then
       return "objlist"
@@ -1612,13 +1484,15 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 end
 
 function ChoGGi.ComFuncs.RetButtonTextSize(text,font)
-  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
+  local FontStyles = FontStyles
+    font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
   local x,y = UIL_MeasureText(text or "", font)
   return point(x + 24,y + 4) --button padding
 end
 ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
 
 function ChoGGi.ComFuncs.RetCheckTextSize(text,font)
+  local FontStyles = FontStyles
   font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
   local x,_ = UIL_MeasureText(text or "", font)
   return point(x + 24,17) --button padding

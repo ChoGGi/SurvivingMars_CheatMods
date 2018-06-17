@@ -45,8 +45,9 @@ function ChoGGi_MultiLineText:Init(parent, context)
     height = 500
   end
 
+  local z = context.zorder or 1
   --so we're ontop of examine
-  local z = context.zorder + 1 or 1
+  z = z + 1
   self:SetZOrder(z)
   self.XRolloverWindow_ZOrder = g_Classes.XRolloverWindow.ZOrder
   g_Classes.XRolloverWindow.ZOrder = z+1

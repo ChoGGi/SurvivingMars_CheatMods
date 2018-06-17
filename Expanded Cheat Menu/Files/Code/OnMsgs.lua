@@ -5,10 +5,9 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
-local getmetatable,rawget,rawset = getmetatable,rawget,rawset
+local rawget,rawset = rawget,rawset
 
 local AsyncFileToString = AsyncFileToString
-local box = box
 local ClassDescendantsList = ClassDescendantsList
 local CreateRealTimeThread = CreateRealTimeThread
 local GetObjects = GetObjects
@@ -22,8 +21,6 @@ local SetLightmodelOverride = SetLightmodelOverride
 local ShowConsoleLog = ShowConsoleLog
 local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 local WaitMsg = WaitMsg
-
-local black = black
 
 local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
 local UserActions_GetActiveActions = UserActions.GetActiveActions
@@ -71,6 +68,9 @@ function OnMsg.ClassesPreprocess()
 --~   "Grid",
 --~   "HWrap",
 --~   "VWrap"
+
+  --changed from 2000000
+  ConsoleLog.ZOrder = 2
 end
 
 --where we can add new BuildingTemplates
@@ -471,7 +471,31 @@ function OnMsg.ApplicationQuit()
   ChoGGi.SettingFuncs.WriteSettings()
 end
 
-----------------------------------------Msgs had to be added in ComFuncs
+-- Custom Msgs
+local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
+AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
+AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
+AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
+AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
+AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
+AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
+AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
+AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
+AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
+AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
+AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
+AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
+AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
+AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
+AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
+AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
 --attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
@@ -728,7 +752,6 @@ function OnMsg.ChoGGi_Loaded()
   local UserActions = UserActions
   local UserSettings = ChoGGi.UserSettings
   local hr = hr
-  local Platform = Platform
 
   --gets used a few times
   local Table
@@ -811,21 +834,11 @@ function OnMsg.ChoGGi_Loaded()
   --add Scripts button to console
   if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
     dlgConsole.ChoGGi_MenuAdded = true
-    --make some space for the button
-    dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
-
-    g_Classes.XMenuBar:new({
-      Id = "idMenu",
-      HAlign = "left",
-      Margins = box(15, 0, 0, 3),
-      MenuEntries = "Menu",
-      Dock = "bottom",
-      TextFont = "Editor16Bold",
-      TextColor = black,
-      ChoGGi_ConsoleToolbar = true,
-    }, dlgConsole)
-
-    ChoGGi.ComFuncs.RebuildConsoleToolbar()
+--~     --make some space for the button
+--~     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
+    ChoGGi.Console.ConsoleControls()
+    --check for and add example scripts/script folder
+    ChoGGi.Console.ListScriptFiles()
   end
 
   --show completed hidden milestones

@@ -29,13 +29,13 @@ SOFTWARE.]],
   id = "ChoGGi_CheatMenu",
   scripts = "AppData/ECM Scripts",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  -- orig funcs that we replace
+  -- orig funcs that get replaced
   OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {},
-  -- /Code/_Functions.lua
+  -- _Functions.lua
   CodeFuncs = {},
-  -- /Code/*Menu.lua and /Code/*Func.lua
+  -- /Menus/*
   MenuFuncs = {},
   -- OnMsgs.lua
   MsgFuncs = {},
@@ -43,7 +43,9 @@ SOFTWARE.]],
   InfoFuncs = {},
   -- Defaults.lua
   SettingFuncs = {},
-  -- temporary settings that aren't saved to SettingsFile
+  -- ConsoleControls.lua
+  Console = {},
+  -- temporary... stuff
   Temp = {
     -- collect msgs to be displayed when game is loaded
     StartupMsgs = {},
@@ -61,33 +63,32 @@ ChoGGi.ModPath = Mods[ChoGGi.id].path
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,table = dofile,select,tostring,table
-
 local AsyncFileOpen = AsyncFileOpen
+local dofolder_files = dofolder_files
+
 function ChoGGi.ComFuncs.FileExists(file)
   return select(2,AsyncFileOpen(file))
 end
 
-local dofolder_files = dofolder_files
-
--- thanks for replacing concat...
+-- thanks for replacing concat... (what's wrong with table.concat2?)
 ChoGGi.ComFuncs.TableConcat = oldTableConcat or table.concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
 
--- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit
--- which means this is faster, and uses less memory
+-- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
 local concat_value
 function ChoGGi.ComFuncs.Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one
+  -- reuse old table if it's not that big, else it's quicker to make new one (should probably bench till i find a good medium rather than just using 1000)
   if #concat_table > 1000 then
     concat_table = {}
   else
-    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
+    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a "lua for loop"
   end
-  -- build table from args
+  -- build table from args (see if devs added a c func to do this?)
+  local select,type,tostring = select,type,tostring --helps speed or not? (check bench)
   for i = 1, select("#",...) do
     concat_value = select(i,...)
       if type(concat_value) == "string" or type(concat_value) == "number" then
@@ -97,14 +98,15 @@ function ChoGGi.ComFuncs.Concat(...)
     end
   end
   -- and done
-  return TConcat(concat_table)
+  return TableConcat(concat_table)
 end
 
 local Concat = ChoGGi.ComFuncs.Concat
 local FileExists = ChoGGi.ComFuncs.FileExists
 
--- used to let me know if we're on my computer
+-- used to let the mod know if we're on my computer
 if FileExists("AppData/ChoGGi") then
+  --mostly just more logs msgs
   ChoGGi.Temp.Testing = true
 
   ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")

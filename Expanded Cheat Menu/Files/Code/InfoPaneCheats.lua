@@ -5,6 +5,8 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 local ResourceScale = ChoGGi.Consts.ResourceScale
 
+local string = string
+
 local CreateRealTimeThread = CreateRealTimeThread
 local DestroyBuildingImmediate = DestroyBuildingImmediate
 local IsValid = IsValid
@@ -493,8 +495,12 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local doublec = ""
   local resetc = ""
   if id then
-    doublec = Concat(T(302535920001199--[[Double the amount of colonist slots for this--]])," ",name," .\n\n",T(302535920001200--[[Reselect to update display.--]]))
-    resetc = Concat(T(302535920001201--[[Reset the capacity of colonist slots for this--]])," ",name," .\n\n",T(302535920001200--[[Reselect to update display.--]]))
+    doublec = string.format(T(302535920001199--[["Double the amount of colonist slots for this %s.
+
+Reselect to update display."--]]),name)
+    resetc = string.format(T(302535920001200--[["Reset the capacity of colonist slots for this %s.
+
+Reselect to update display."--]]),name)
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
@@ -504,15 +510,16 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local Table = win.actions or empty_table
   for i = 1, #Table do
     local action = Table[i]
+
 --Colonists
     if action.ActionId == "FillAll" then
       SetHint(action,T(302535920001202--[[Fill all stat bars.--]]))
     elseif action.ActionId == "PrefDbl" then
-      SetHint(action,Concat(T(302535920001126--[[Double--]])," ",name,T(302535920001203--[['s performance.--]])))
+      SetHint(action,string.format(T(302535920001203--[[Double %s's performance.--]]),name))
     elseif action.ActionId == "PrefDef" then
-      SetHint(action,Concat(T(302535920001084--[[Reset--]])," ",name,T(302535920001204--[['s performance to default.--]])))
+      SetHint(action,string.format(T(302535920001204--[[Reset %s's performance to default.--]]),name))
     elseif action.ActionId == "RandomSpecialization" then
-      SetHint(action,Concat(T(302535920001205--[[Randomly set--]])," ",name,T(302535920001206--[['s specialization.--]])))
+      SetHint(action,string.format(T(302535920001205--[[Randomly set %s's specialization.--]]),name))
 
 --Buildings
     elseif action.ActionId == "VisitorsDbl" then
@@ -531,39 +538,43 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "Upgrade1" then
       local tempname = T(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade1_description)))
+        SetHint(action,string.format(T(302535920001207--[["Add: %s to this building.
+
+%s."--]]),tempname,T(obj.upgrade1_description)))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade2" then
       local tempname = T(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade2_description)))
-      else
+        SetHint(action,string.format(T(302535920001207--[["Add: %s to this building.
+
+%s."--]]),tempname,T(obj.upgrade2_description)))      else
         action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade3" then
       local tempname = T(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,Concat(T(302535920001183--[[Add--]]),": ",tempname," ",T(302535920001207--[[to this building.--]]),"\n\n",T(obj.upgrade3_description)))
+        SetHint(action,string.format(T(302535920001207--[["Add: %s to this building.
+
+%s."--]]),tempname,T(obj.upgrade3_description)))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "WorkAuto" then
       local bs = ChoGGi.UserSettings.BuildingSettings
-      bs = bs and bs[id] and bs[id].performance or 150
-      SetHint(action,Concat(T(302535920001208--[[Make this--]])," ",name," ",T(302535920001209--[[not need workers (performance--]]),": ",bs,")."))
+      SetHint(action,string.format(T(302535920001209--[[Make this %s not need workers (performance: %s).--]]),name,bs and bs[id] and bs[id].performance or 150))
 
     elseif action.ActionId == "WorkManual" then
-      SetHint(action,Concat(T(302535920001208--[[Make this--]])," ",name," ",T(302535920001210--[[need workers.--]])))
+      SetHint(action,string.format(T(302535920001210--[[Make this %s need workers.--]]),name))
     elseif action.ActionId == "CapDbl" then
       if obj:IsKindOf("SupplyRocket") then
-        SetHint(action,Concat(T(302535920001211--[[Double the export storage capacity of this--]])," ",name,"."))
+        SetHint(action,string.format(T(302535920001211--[[302535920001211,Double the export storage capacity of this %s.--]]),name))
       else
-        SetHint(action,Concat(T(302535920001212--[[Double the storage capacity of this--]])," ",name,"."))
+        SetHint(action,string.format(T(302535920001212--[[302535920001212,Double the storage capacity of this %s.--]]),name))
       end
     elseif action.ActionId == "CapDef" then
-      SetHint(action,Concat(T(302535920001213--[[Reset the storage capacity of this--]])," ",name," ",T(302535920001219--[[to default.--]])))
+      SetHint(action,string.format(T(302535920001213--[[Reset the storage capacity of this %s to default.--]]),name))
     elseif action.ActionId == "EmptyDepot" then
       SetHint(action,T(302535920001214--[[sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]))
 
@@ -581,7 +592,8 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 --Misc
     elseif action.ActionId == "DeleteObject" then
-      SetHint(action,Concat(T(302535920000885--[[Permanently delete this object--]]),": ",name))
+      SetHint(action,string.format(T(302535920000885--[[Permanently delete this object: %s--]]),name))
+
     elseif action.ActionId == "Malfunction" then
       if obj.working then
         SetHint(action,Concat(T(8039--[[Trait: Idiot (can cause a malfunction)--]]),"...\n",T(53--[[Malfunction--]],"?")))
@@ -590,13 +602,13 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       end
     elseif action.ActionId == "Powerless" then
       if obj.electricity_consumption then
-        SetHint(action,Concat(T(302535920001220--[[Change this--]])," ",name," ",T(302535920001221--[[so it doesn't need a power connection.--]])))
+        SetHint(action,string.format(T(302535920001220--[[Change this %s so it doesn't need a power source.--]]),name))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "Powered" then
       if obj.electricity_consumption then
-        SetHint(action,Concat(T(302535920001220--[[Change this--]])," ",name," ",T(302535920001222--[[so it needs a power connection.--]])))
+        SetHint(action,string.format(T(302535920001221--[[Change this %s so it needs a power source.--]]),name))
       else
         action.ActionId = ""
       end
@@ -638,7 +650,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
       end
     elseif action.ActionId == "Empty" then
       if obj.class:find("SubsurfaceDeposit") then
-        SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001228--[[This will remove the--]])," ",name," ",T(302535920001229--[[object from the map.--]])))
+        SetHint(action,Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920001228--[[This will remove the %s object from the map.--]]),name)))
       else
         SetHint(action,T(302535920001230--[[Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site.--]]))
       end
@@ -649,9 +661,9 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
     elseif action.ActionId == "Launch" then
       SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001233--[[Launches rocket without asking.--]])))
     elseif action.ActionId == "DoubleMaxAmount" then
-      SetHint(action,Concat(T(302535920001234--[[Double the amount this--]])," ",name," ",T(302535920001235--[[can hold.--]])))
+      SetHint(action,string.format(T(302535920001234--[[Double the amount this %s can hold.--]]),name))
     elseif action.ActionId == "ReneagadeCapDbl" then
-      SetHint(action,Concat(T(302535920001236--[[Double amount of reneagades this station can negate (currently--]]),": ",obj.negated_renegades,") < ",T(302535920001237--[[Reselect to update amount.--]])))
+      SetHint(action,string.format(T(302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]),obj.negated_renegades))
     end
 
   end --for

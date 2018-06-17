@@ -75,10 +75,13 @@ and it'll work for both T() and T({})
 
 ##### This will give you *some* idea of where to start looking (helps when you've got 1000+ strings).
 ##### Search the log first for ERROR:, then if it's still happening you'll have to compare between your locale file and the log output
+##### As this flushes the log every loop it will take some time to load if you have a large locale file (still quicker than a blind mouse).
+##### blind mouse: A badly formed csv will just leave the game "stuck" and no log that you can use.
 
 ```
 --Well I hope you know what this is
 local mod_id = "MOD_ID"
+
 --path to your csv file (assuming it's in MOD_FOLDER/Locales, and called LANG.csv)
 local filename = table.concat({Mods[mod_id].path,"Locales/",GetLanguage(),".csv"})
 
@@ -102,6 +105,9 @@ local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
 local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
 local space = string.byte(" ", 1)
 local RemoveTrailingSpaces = RemoveTrailingSpaces
+local DebugPrintNL = DebugPrintNL
+local FlushLogFile = FlushLogFile
+local table = table
 --local debug_output = {}
 --start of function LoadCSV(filename, data, fields_remap, omit_captions)
 while pos < #str do
@@ -110,6 +116,9 @@ while pos < #str do
   local lf = str:sub(pos, pos) == "\n"
   local crlf = str:sub(pos, pos + 1) == "\r\n"
     while pos < #str and not lf and not crlf do
+      --because this game keeps the log in memory till exit/certain crashes
+      FlushLogFile()
+
       local value, next = field:match(str, pos)
       value = RemoveTrailingSpaces(value)
       if not fields_remap then
@@ -122,27 +131,6 @@ while pos < #str do
       crlf = str:sub(next, next + 1) == "\r\n"
       pos = next + 1
 
-      --[[
-      --DebugPrint seems to have a 2048 limit, so no doing this with just the one table
-      if col > 4 then
-        debug_output[#debug_output+1] = "\r\nERROR: \r\ncol: "
-        debug_output[#debug_output+1] = col or "NO COL"
-        debug_output[#debug_output+1] = " value: "
-        debug_output[#debug_output+1] = value or "NO VALUE"
-        debug_output[#debug_output+1] = " pos: "
-        debug_output[#debug_output+1] = pos or "NO POS"
-        debug_output[#debug_output+1] = "\r\n"
-      end
-      local nextt = field:match(str, pos)
-      if nextt ~= "" and previous ~= nextt then
-        debug_output[#debug_output+1] = "\r\n"
-        debug_output[#debug_output+1] = value or "NO VALUE"
-        debug_output[#debug_output+1] = ","
-        debug_output[#debug_output+1] = nextt or "NO NEXT"
-        debug_output[#debug_output+1] = ","
-      end
-      --]]
-
       --only seems to happen on bad things
       if col > 4 then
         DebugPrintNL(table.concat({"\r\nERROR: \r\ncol: ",col," value: ",value," pos: ",pos}))
@@ -151,9 +139,9 @@ while pos < #str do
       local nextt = field:match(str, pos)
       if nextt ~= "" and previous ~= nextt then
         --outputs as STRING_ID,STRING,
-        DebugPrint(table.concat({"\r\n",value,",",nextt,","}))
+        DebugPrintNL(table.concat({"\r\n",value,",",nextt,","}))
         --shows col and position (not useful for comparing to csv file)
-        --DebugPrint(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
+        --DebugPrintNL(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
       end
 
       previous = nextt
@@ -172,4 +160,18 @@ end
 DebugPrintNL("\r\nEnd: LoadCSV()")
 ```
 
-This'll work a lot better if you have ECM and Write Logs enabled.
+##### you can use this AutoHotkey script to clear out the log a bit for easier side-by-side comparisons
+
+```
+FileRead, temptext, MarsSteam.exe-20180616-15.12.24-5b0fe520.log
+Loop, parse, temptext, `n, `r
+  {
+  If A_LoopField !=
+    {
+    If A_LoopField not contains Lua time
+    output .= A_LoopField "`n"
+    }
+  }
+FileDelete OUTPUT.csv
+FileAppend %output%,OUTPUT.csv
+```

@@ -39,7 +39,6 @@ local OpenExamine = OpenExamine
 local ParticlesReload = ParticlesReload
 local PlaceObj = PlaceObj
 local PlaceObject = PlaceObject
-local PlaceTerrainLine = PlaceTerrainLine
 local PlaceText = PlaceText
 local point = point
 local Random = Random
@@ -50,7 +49,6 @@ local SelectionArrowAdd = SelectionArrowAdd
 local ShowConsoleLog = ShowConsoleLog
 local Sleep = Sleep
 local WaitDelayedLoadEntities = WaitDelayedLoadEntities
-local WaitMapSettingsDialog = WaitMapSettingsDialog
 local WaitNextFrame = WaitNextFrame
 local WorldToHex = WorldToHex
 local XShortcutsSetMode = XShortcutsSetMode
@@ -815,7 +813,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print(Concat(T(6779--[[Warning--]]),": ",T(302535920000869--[[This--]])," ",Obj and ChoGGi.ComFuncs.RetName(Obj)," ",T(302535920000870--[[doesn't have GetPath function, something is probably borked.--]])))
+        print(Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]),ChoGGi.ComFuncs.RetName(Obj))))
       end
     end
     if path then

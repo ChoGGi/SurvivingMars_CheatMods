@@ -276,7 +276,7 @@ function OnMsg.ClassesPostprocess()
     'build_pos', 12,
     --'encyclopedia_image', "UI/Encyclopedia/VRWorkshop.tga",
     'label1', "InsideBuildings",
-    --'label2', "Workshop",
+    'label2', "Workshop",
     'entity', "VRWorkshop",
     'palettes', "VRWorkshop",
     'demolish_sinking', range(5, 10),

@@ -6,7 +6,7 @@ local icon = "ReportBug.tga"
 
 function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-
+if ChoGGi.Temp.Testing then
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers With Drones Stuck Inside--]])),
     ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside,
@@ -14,6 +14,7 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
     T(302535920000882--[["If you have rovers with drones stuck inside them, this will fix them (clone and delete)."--]]),
     icon
   )
+end
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000055--[[Reset All Colonists--]])),
@@ -156,6 +157,18 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
 --~     end,
 --~     icon
 --~   )
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
+    ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle,
+        302535920001071 --,"Drone Charges From Rover Wrong Angle"
+      )
+    end,
+    icon
+  )
+
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000611--[[Rover Infinite Loop In Curiosity Update--]])),
     ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle,
