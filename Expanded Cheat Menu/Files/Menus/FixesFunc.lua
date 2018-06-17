@@ -47,7 +47,7 @@ function ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside()
       exec = function(rc)
         local state = rc:GetState() == GetStateIdx("deployIdle")
         local drones = #rc.attached_drones > 0
-        print("sdfsdfds",state,drones)
+--~         print("sdfsdfds",state,drones)
         if state and drones then
           --store them in a table for later
           before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}

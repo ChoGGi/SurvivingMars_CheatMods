@@ -719,8 +719,10 @@ The map disaster settings don't do jack.",
 302535920000578,Change waste storage depot capacity.,
 302535920000579,Storage Mechanized Depots,
 302535920000580,Change mechanized depot storage capacity.,
-302535920000292,Reset Rovers With Drones Stuck Inside,
-302535920000882,"If you have rovers with drones stuck inside them, this will fix them (clone and delete).",
+302535920000292,Reset Rovers With Drones Stuck,
+302535920000882,"If you have rovers with drones stuck inside/outside them, this will fix them (clone and delete ftw).
+
+You may need to toggle the recall drones button.",
 302535920000939,"Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.",
 302535920000055,Reset All Colonists,
 302535920000581,Toggle Collisions On Selected Object,

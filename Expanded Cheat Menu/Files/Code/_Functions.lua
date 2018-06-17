@@ -241,7 +241,8 @@ function ChoGGi.CodeFuncs.AttachToNearestDome(building)
       end
       --spires
       if building:IsKindOf("WaterReclamationSpire") then
-        dome:AddToLabel("WaterReclamationSpires", building)
+--~         dome:AddToLabel("WaterReclamationSpires", building)
+        building:SetDome(dome)
       elseif building:IsKindOf("NetworkNode") then
         building.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", building.modifier)
       end

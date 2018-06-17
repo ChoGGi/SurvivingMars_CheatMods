@@ -6,15 +6,16 @@ local icon = "ReportBug.tga"
 
 function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
-if ChoGGi.Temp.Testing then
+
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers With Drones Stuck Inside--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers With Drones Stuck--]])),
     ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside,
     nil,
-    T(302535920000882--[["If you have rovers with drones stuck inside them, this will fix them (clone and delete)."--]]),
+    T(302535920000882--[["If you have rovers with drones stuck inside/outside them, this will fix them (clone and delete ftw).
+
+You may need to toggle the recall drones button."--]]),
     icon
   )
-end
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000055--[[Reset All Colonists--]])),

@@ -46,7 +46,7 @@ More shortcut keys are available, see menu items.
 When I say object that means either the selected object or the object under the mouse cursor.
 
 There's a cheats section in most selection panels on the right side of the screen.
-Menu>Gameplay>QoL>Infopanel Cheats (on by default)
+Menu>Misc>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
 To edit and use files from Files.hpk, use HPK archiver to extract them into the mod folder.
@@ -80,6 +80,7 @@ Sometimes the blue radar thingy falls off.
 Cables & Pipes: Instant Repair
 Instantly repair all broken pipes and cables.
 
+And a bunch more (certain crashes with colonists rovers, etc)
 ```
 
 ##### Console
