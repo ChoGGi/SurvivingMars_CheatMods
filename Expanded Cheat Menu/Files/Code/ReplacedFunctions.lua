@@ -1,9 +1,68 @@
 -- See LICENSE for terms
 
+--[[
+needs an update
+
+files to check after update:
+
+CommonLua\Classes\Sequences\SequenceAction.lua
+  SA_WaitBase>SA_WaitTime:StopWait
+  SA_WaitBase>SA_WaitMarsTime:StopWait
+CommonLua\UI\uiUAMenu.lua
+  UAMenu:SetBtns
+CommonLua\UI\Controls\uiFrameWindow.lua
+  FrameWindow:PostInit
+  UAMenu>FrameWindow:OnMouseEnter
+  UAMenu>FrameWindow:OnMouseLeft
+CommonLua\UI\Dev\uiConsole.lua
+  Console:Show
+  Console:TextChanged
+  Console:HistoryDown
+  Console:HistoryUp
+CommonLua\UI\Dev\uiConsoleLog.lua
+  ConsoleLog:ShowBackground
+CommonLua\UI\X\XDialog.lua
+  OpenXDialog
+
+Lua\Construction.lua
+  ConstructionController:UpdateConstructionStatuses
+  ConstructionController:CreateCursorObj
+  TunnelConstructionController:UpdateConstructionStatuses
+Lua\Heat.lua
+  SubsurfaceHeater:UpdatElectricityConsumption
+Lua\MissionGoals.lua
+  MG_Colonists:GetProgress
+  MG_Martianborn:GetProgress
+Lua\RequiresMaintenance.lua
+  RequiresMaintenance:AddDust
+Lua\SupplyGrid.lua
+  SupplyGridElement:SetProduction
+Lua\Buildings\BaseRover.lua
+  BaseRover:GetCableNearby
+Lua\Buildings\BuildingComponents.lua
+  BuildingVisualDustComponent:SetDustVisuals
+  SingleResourceProducer:Produce
+Lua\Buildings\MartianUniversity.lua
+  MartianUniversity:OnTrainingCompleted
+Lua\Buildings\TriboelectricScrubber.lua
+  TriboelectricScrubber:OnPostChangeRange
+Lua\Buildings\UIRangeBuilding.lua
+  UIRangeBuilding:SetUIRange
+Lua\Buildings\Workplace.lua
+  Workplace:AddWorker
+Lua\UI\PopupNotification.lua
+  ShowPopupNotification
+Lua\Units\Colonist.lua
+  Colonist:ChangeComfort
+Lua\X\Infopanel.lua
+  InfopanelObj:CreateCheatActions
+  InfopanelDlg:Open
+--]]
+
 local Concat = ChoGGi.ComFuncs.Concat
 local local_T = T
 local T = ChoGGi.ComFuncs.Trans
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+--~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 local type,next,rawset,rawget,assert = type,next,rawset,rawget,assert
 local setmetatable,table,print = setmetatable,table,print
@@ -36,6 +95,20 @@ local guim = guim
 
 local UserActions_GetActiveActions = UserActions.GetActiveActions
 
+local function SaveOrigFunc(ClassOrFunc,Func)
+  local ChoGGi = ChoGGi
+  if Func then
+    local newname = Concat(ClassOrFunc,"_",Func)
+    if not ChoGGi.OrigFuncs[newname] then
+      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+    end
+  else
+    if not ChoGGi.OrigFuncs[ClassOrFunc] then
+      ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+    end
+  end
+end
+
 --set UI transparency:
 local function SetTrans(Obj)
   local trans = ChoGGi.UserSettings.Transparency
@@ -44,7 +117,7 @@ local function SetTrans(Obj)
   end
 end
 
-do
+do --funcs without a class
   SaveOrigFunc("OpenXDialog")
   SaveOrigFunc("ShowConsole")
   SaveOrigFunc("ShowConsoleLog")
@@ -71,7 +144,7 @@ do
       return
     end
 
---~     if type(ChoGGi.Temp.Testing) == "function" then
+--~     if type(ChoGGi.Testing) == "function" then
 --~     --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
 --~       if not pcall(function()
 --~         local function ColourText(Text,Bool)
@@ -141,67 +214,10 @@ do
     SetTrans(dlgConsoleLog)
   end
 end
---i use ShowConsoleLog below so local it here instead of at the top
+--i edited ShowConsoleLog above and use it below so local it here instead of at the top
 local ShowConsoleLog = ShowConsoleLog
 
---[[
-files to check after update:
-
-CommonLua\Classes\Sequences\SequenceAction.lua
-  SA_WaitBase>SA_WaitTime:StopWait
-  SA_WaitBase>SA_WaitMarsTime:StopWait
-CommonLua\UI\uiUAMenu.lua
-  UAMenu:SetBtns
-CommonLua\UI\Controls\uiFrameWindow.lua
-  FrameWindow:PostInit
-  UAMenu>FrameWindow:OnMouseEnter
-  UAMenu>FrameWindow:OnMouseLeft
-CommonLua\UI\Dev\uiConsole.lua
-  Console:Show
-  Console:TextChanged
-  Console:HistoryDown
-  Console:HistoryUp
-CommonLua\UI\Dev\uiConsoleLog.lua
-  ConsoleLog:ShowBackground
-CommonLua\UI\X\XDialog.lua
-  OpenXDialog
-
-Lua\Construction.lua
-  ConstructionController:UpdateConstructionStatuses
-  ConstructionController:CreateCursorObj
-  TunnelConstructionController:UpdateConstructionStatuses
-Lua\Heat.lua
-  SubsurfaceHeater:UpdatElectricityConsumption
-Lua\MissionGoals.lua
-  MG_Colonists:GetProgress
-  MG_Martianborn:GetProgress
-Lua\RequiresMaintenance.lua
-  RequiresMaintenance:AddDust
-Lua\SupplyGrid.lua
-  SupplyGridElement:SetProduction
-Lua\Buildings\BaseRover.lua
-  BaseRover:GetCableNearby
-Lua\Buildings\BuildingComponents.lua
-  BuildingVisualDustComponent:SetDustVisuals
-  SingleResourceProducer:Produce
-Lua\Buildings\MartianUniversity.lua
-  MartianUniversity:OnTrainingCompleted
-Lua\Buildings\TriboelectricScrubber.lua
-  TriboelectricScrubber:OnPostChangeRange
-Lua\Buildings\UIRangeBuilding.lua
-  UIRangeBuilding:SetUIRange
-Lua\Buildings\Workplace.lua
-  Workplace:AddWorker
-Lua\UI\PopupNotification.lua
-  ShowPopupNotification
-Lua\Units\Colonist.lua
-  Colonist:ChangeComfort
-Lua\X\Infopanel.lua
-  InfopanelObj:CreateCheatActions
-  InfopanelDlg:Open
---]]
-
-
+--Gen
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("UIRangeBuilding","SetUIRange")
   SaveOrigFunc("Workplace","AddWorker")
@@ -266,7 +282,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
     end
     return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
   end
-
 end --OnMsg
 
 --Pre
@@ -295,8 +310,6 @@ end --OnMsg
 
 --Built
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  local g_Classes = g_Classes
-
   SaveOrigFunc("Colonist","ChangeComfort")
   SaveOrigFunc("Console","Exec")
   SaveOrigFunc("Console","HistoryDown")
@@ -355,7 +368,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~   end
 
   --unbreakable cables/pipes
-  function g_Classes.SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
+  function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
     if not ChoGGi.UserSettings.BreakChanceCablePipe then
       return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
     end
@@ -364,7 +377,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   --I don't need to see the help page that much
   if Platform.editor then
     function GedOpHelpMod() end
-    if ChoGGi.Temp.Testing then
+    if ChoGGi.Testing then
       function GedOpUploadMod(socket, root)
         print("GedOpUploadMod")
         pcall(function()
@@ -467,14 +480,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --UI transparency "desktop" dialogs (toolbar)
-  function g_Classes.FrameWindow:Init(...)
+  function FrameWindow:Init(...)
     local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
     SetTrans(self)
     return table.unpack(ret)
   end
 
   --no more pulsating pin motion
-  function g_Classes.XBlinkingButtonWithRMB:SetBlinking(...)
+  function XBlinkingButtonWithRMB:SetBlinking(...)
     if ChoGGi.UserSettings.DisablePulsatingPinsMotion then
       self.blinking = false
     else
@@ -483,7 +496,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --no more stuck focus on SingleLineEdits
-  function g_Classes.XDesktop:MouseEvent(event, pt, button, time)
+  function XDesktop:MouseEvent(event, pt, button, time)
     if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
       self.focus_log[#self.focus_log-1]:SetFocus()
     end
@@ -491,7 +504,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --make sure consolelog uses our margin whenever it's visible
-  function g_Classes.ConsoleLog:SetVisible(visible)
+  function ConsoleLog:SetVisible(visible)
     local ret = {ChoGGi_OrigFuncs.ConsoleLog_SetVisible(self,visible)}
     if visible then
       self:SetMargins(box(0, 0, 0, 25))
@@ -503,7 +516,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   -- going to be a fix in next version:
   -- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
   if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity and LuaRevision <= 231139 then
-    function g_Classes.RCRover:ExitAllDrones()
+    function RCRover:ExitAllDrones()
       if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
         DeleteThread(self.exit_drones_thread)
         self.exit_drones_thread = CurrentThread()
@@ -537,7 +550,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --remove annoying msg that happens everytime you click anything (nice)
-  function g_Classes.XWindow:SetId(id)
+  function XWindow:SetId(id)
     local node = self.parent
     while node and not node.IdNode do
       node = node.parent
@@ -563,12 +576,12 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
     UAMenu_cheats_width = 80
     local thread
-    function g_Classes.UAMenu:OnMouseEnter(...)
+    function UAMenu:OnMouseEnter(...)
       ChoGGi_OrigFuncs.UAMenu_OnMouseEnter(self,...)
       DeleteThread(thread)
       self:SetSize(point(520,self:GetSize():y()))
     end
-    function g_Classes.UAMenu:OnMouseLeft(...)
+    function UAMenu:OnMouseLeft(...)
       ChoGGi_OrigFuncs.UAMenu_OnMouseLeft(self,...)
       thread = CreateRealTimeThread(function()
         Sleep(2500)
@@ -581,7 +594,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   local menuButtons_rollover_color = RGB(0, 0, 0)
 
   --make the buttons open their menus where the menu is, not at the top left
-  function g_Classes.UAMenu:CreateBtn(text, path)
+  function UAMenu:CreateBtn(text, path)
     local entry = ChoGGi_OrigFuncs.UAMenu_CreateBtn(self, text, path)
     entry:SetFontStyle("Editor14Bold")
     --higher than the "Move" element
@@ -622,7 +635,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --default menu width/draggable menu
-  function g_Classes.UAMenu:SetBtns()
+  function UAMenu:SetBtns()
     local ret = {ChoGGi_OrigFuncs.UAMenu_SetBtns(self)}
     --shrink the width
     self:SetSize(point(UAMenu_cheats_width,self:GetSize():y()))
@@ -634,18 +647,18 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end --func
 
   --set menu position
---~   function g_Classes.UAMenu.ToggleOpen()
-  function g_Classes.UAMenu.ToggleOpen()
+--~   function UAMenu.ToggleOpen()
+  function UAMenu.ToggleOpen()
     local UserSettings = ChoGGi.UserSettings
 
     if dlgUAMenu then
       if UserSettings.KeepCheatsMenuPosition then
         UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
       end
-      g_Classes.UAMenu.CloseUAMenu()
+      UAMenu.CloseUAMenu()
     else
-      dlgUAMenu = g_Classes.UAMenu:new(terminal.desktop)
-      g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+      dlgUAMenu = UAMenu:new(terminal.desktop)
+      UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
       if IsPoint(UserSettings.KeepCheatsMenuPosition) then
         dlgUAMenu:SetPos(UserSettings.KeepCheatsMenuPosition)
       end
@@ -653,7 +666,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --keep buttons/pos of menu when alt-tabbing
-  function g_Classes.UAMenu:OnDesktopSize()
+  function UAMenu:OnDesktopSize()
 
     local ret = {ChoGGi_OrigFuncs.UAMenu_OnDesktopSize(self)}
 
@@ -680,7 +693,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --removes earthsick effect
-  function g_Classes.Colonist:ChangeComfort(amount, reason)
+  function Colonist:ChangeComfort(amount, reason)
     ChoGGi_OrigFuncs.Colonist_ChangeComfort(self, amount, reason)
     if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
       self:Affect("StatusEffect_Earthsick", false)
@@ -688,14 +701,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --make sure heater keeps the powerless setting
-  function g_Classes.SubsurfaceHeater:UpdatElectricityConsumption()
+  function SubsurfaceHeater:UpdatElectricityConsumption()
     ChoGGi_OrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
     if self.ChoGGi_mod_electricity_consumption then
       ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
     end
   end
   --same for tribby
-  function g_Classes.TriboelectricScrubber:OnPostChangeRange()
+  function TriboelectricScrubber:OnPostChangeRange()
     ChoGGi_OrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
     if self.ChoGGi_mod_electricity_consumption then
       ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
@@ -703,7 +716,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --remove idiot trait from uni grads (hah!)
-  function g_Classes.MartianUniversity:OnTrainingCompleted(unit)
+  function MartianUniversity:OnTrainingCompleted(unit)
     if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
       unit:RemoveTrait("Idiot")
     end
@@ -741,23 +754,23 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     return ChoGGi_OrigFuncs[MystFunc](self)
   end
 
-  function g_Classes.SA_WaitTime:StopWait()
+  function SA_WaitTime:StopWait()
     SkipMystStep(self,"SA_WaitTime_StopWait")
   end
-  function g_Classes.SA_WaitMarsTime:StopWait()
+  function SA_WaitMarsTime:StopWait()
     SkipMystStep(self,"SA_WaitMarsTime_StopWait")
   end
 
   --some mission goals check colonist amounts
   local MG_target = GetMissionSponsor().goal_target + 1
-  function g_Classes.MG_Colonists:GetProgress()
+  function MG_Colonists:GetProgress()
     if ChoGGi.Temp.InstantMissionGoal then
       return MG_target
     else
       return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
     end
   end
-  function g_Classes.MG_Martianborn:GetProgress()
+  function MG_Martianborn:GetProgress()
     if ChoGGi.Temp.InstantMissionGoal then
       return MG_target
     else
@@ -766,7 +779,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --keep prod at saved values for grid producers (air/water/elec)
-  function g_Classes.SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
+  function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
     local amount = ChoGGi.UserSettings.BuildingSettings[self.building.encyclopedia_id]
     if amount and amount.production then
       --set prod
@@ -784,7 +797,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --and for regular producers (factories/extractors)
-  function g_Classes.SingleResourceProducer:Produce(amount_to_produce)
+  function SingleResourceProducer:Produce(amount_to_produce)
     local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.encyclopedia_id]
     if amount and amount.production then
       --set prod
@@ -814,22 +827,22 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
     return ChoGGi_OrigFuncs[OrigFunc](Obj,OrigRadius)
   end
-  function g_Classes.RCRover:SetWorkRadius(radius)
+  function RCRover:SetWorkRadius(radius)
     SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
   end
-  function g_Classes.DroneHub:SetWorkRadius(radius)
+  function DroneHub:SetWorkRadius(radius)
     SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
   end
 
   --toggle trans on mouseover
-  function g_Classes.XWindow:OnMouseEnter(pt, child)
+  function XWindow:OnMouseEnter(pt, child)
     local ret = {ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       self:SetTransparency(0)
     end
     return table.unpack(ret)
   end
-  function g_Classes.XWindow:OnMouseLeft(pt, child)
+  function XWindow:OnMouseLeft(pt, child)
     local ret = {ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       SetTrans(self)
@@ -838,7 +851,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --remove spire spot limit, and other limits on placing buildings
-  function g_Classes.ConstructionController:UpdateCursor(pos, force)
+  function ConstructionController:UpdateCursor(pos, force)
     local UserSettings = ChoGGi.UserSettings
     local function SetDefault(Name)
       self.template_obj[Name] = self.template_obj:GetDefaultPropertyValue(Name)
@@ -882,17 +895,17 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   --add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
   --ex(GetInGameInterface()[6][2])
   -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
-  function g_Classes.InfopanelDlg:Open(...)
+  function InfopanelDlg:Open(...)
     --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
     local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
     CreateRealTimeThread(function()
       local c = self.idContent
 
       --see about adding age to colonist info
-if type(ChoGGi.Temp.Testing) == "function" then
+if type(ChoGGi.Testing) == "function" then
       if self.context and self.context.class == "Colonist" then
         local con = c[2].idContent
-        --con[#con+1] = g_Classes.XText:new()
+        --con[#con+1] = XText:new()
         con = con[#con]
         --con.text = Concat(con.text,"age: ")
         --ex(con)
@@ -1009,7 +1022,7 @@ end
   end
 
   --make the background hide when console not visible (instead of after a second or two)
-  function g_Classes.ConsoleLog:ShowBackground(visible, immediate)
+  function ConsoleLog:ShowBackground(visible, immediate)
     if config.ConsoleDim ~= 0 then
       DeleteThread(self.background_thread)
       if visible or immediate then
@@ -1021,7 +1034,7 @@ end
   end
 
   --make sure console is focused even when construction is opened
-  function g_Classes.Console:Show(show)
+  function Console:Show(show)
     ChoGGi_OrigFuncs.Console_Show(self, show)
     local was_visible = self:GetVisible()
     if show and not was_visible then
@@ -1040,7 +1053,7 @@ end
   end
 
   --kind of an ugly way of making sure console doesn't include ` when using tilde to open console
-  function g_Classes.Console:TextChanged()
+  function Console:TextChanged()
     ChoGGi_OrigFuncs.Console_TextChanged(self)
     if self.idEdit:GetText() == "`" then
       self.idEdit:SetText("")
@@ -1048,17 +1061,17 @@ end
   end
 
   --make it so caret is at the end of the text when you use history
-  function g_Classes.Console:HistoryDown()
+  function Console:HistoryDown()
     ChoGGi_OrigFuncs.Console_HistoryDown(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
-  function g_Classes.Console:HistoryUp()
+  function Console:HistoryUp()
     ChoGGi_OrigFuncs.Console_HistoryUp(self)
     self.idEdit:SetCursorPos(#self.idEdit:GetText())
   end
 
   --was giving a nil error in log, I assume devs'll fix it one day
-  function g_Classes.RequiresMaintenance:AddDust(amount)
+  function RequiresMaintenance:AddDust(amount)
     --this wasn't checking if it was a number/point/box so errors in log, now it checks
     if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
       if self:IsKindOf("Building") then
@@ -1071,7 +1084,7 @@ end
   end
 
   --set orientation to same as last object
-  function g_Classes.ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
+  function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
     local ChoGGi = ChoGGi
     local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, alternative_entity, template_obj, override_palette)}
 
@@ -1091,7 +1104,7 @@ end
 
 
   --so we can build without (as many) limits
-  function g_Classes.ConstructionController:UpdateConstructionStatuses(dont_finalize)
+  function ConstructionController:UpdateConstructionStatuses(dont_finalize)
     if ChoGGi.UserSettings.RemoveBuildingLimits then
       --send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
       ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
@@ -1149,9 +1162,9 @@ end
   end --ConstructionController:UpdateConstructionStatuses
 
   --so we can do long spaced tunnels
-  function g_Classes.TunnelConstructionController:UpdateConstructionStatuses()
+  function TunnelConstructionController:UpdateConstructionStatuses()
     if ChoGGi.UserSettings.RemoveBuildingLimits then
-      local old_t = g_Classes.ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
+      local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
       self:FinalizeStatusGathering(old_t)
     else
       return ChoGGi_OrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
@@ -1206,7 +1219,7 @@ end
 
     {"(.*)", "%s"}
   }
-  function g_Classes.Console:Exec(text)
+  function Console:Exec(text)
     self:AddHistory(text)
     AddConsoleLog("> ", true)
     AddConsoleLog(text, false)

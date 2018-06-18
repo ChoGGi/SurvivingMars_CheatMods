@@ -37,7 +37,7 @@ function OnMsg.ClassesGenerate()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesGenerate()
   end
 
@@ -47,7 +47,7 @@ end --OnMsg
 function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
   end
 
@@ -79,7 +79,7 @@ end
 function OnMsg.ClassesPostprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   end
 
@@ -121,7 +121,7 @@ end
 function OnMsg.ClassesBuilt()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
 
@@ -458,7 +458,7 @@ function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
   --my comp or if we're resetting settings
-  if ChoGGi.Temp.ResetSettings or ChoGGi.Temp.Testing then
+  if ChoGGi.Temp.ResetSettings or ChoGGi.Testing then
     return
   end
 
@@ -759,7 +759,7 @@ function OnMsg.ChoGGi_Loaded()
 
   ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
   ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
   end
 
@@ -1022,7 +1022,7 @@ function OnMsg.ChoGGi_Loaded()
     config.ConsoleDim = 1
   end
 
-  if UserSettings.ShowCheatsMenu or ChoGGi.Temp.Testing then
+  if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
     --always show on my computer
     if not dlgUAMenu then
       g_Classes.UAMenu.ToggleOpen()
@@ -1148,7 +1148,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --how long startup takes, maybe add this as an option for other modders to see as well?
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
     print(Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>:</color>Startup ticks: ",ChoGGi.Temp.StartupTicks))
   end

@@ -109,7 +109,7 @@ local FileExists = ChoGGi.ComFuncs.FileExists
 -- used to let the mod know if we're on my computer
 if FileExists("AppData/ChoGGi") then
   --mostly just more logs msgs
-  ChoGGi.Temp.Testing = true
+  ChoGGi.Testing = true
 
   ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
   -- from here to the end of OnMsg.ChoGGi_Loaded()
@@ -165,7 +165,7 @@ if ChoGGi.UserSettings.DisableHints then
 end
 
 -- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
-if ChoGGi.Temp.Testing then
+if ChoGGi.Testing then
   ChoGGi.UserSettings.WriteLogs = true
 end
 

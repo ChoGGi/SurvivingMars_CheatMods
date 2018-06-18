@@ -1034,7 +1034,7 @@ ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
 end
 
 function Examine:SetText(text)
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     print("Examine:SetText(text)",Examine:SetText(text))
   end
   self.onclick_handles = {}

@@ -26,7 +26,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     {text = T(5238--[[Rockets--]]),value = "Rockets"},
     --{text = "Research",value = "Research"}
   }
-  if ChoGGi.Temp.Testing then
+  if ChoGGi.Testing then
     ItemList[#ItemList+1] = {text = T(311--[[Research--]]),value = "Research"}
   end
 

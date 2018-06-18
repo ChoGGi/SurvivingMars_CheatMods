@@ -49,7 +49,7 @@ local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
 local FontStyles_GetFontId = FontStyles.GetFontId
 
-local g_Classes = g_Classes
+--~ local g_Classes = g_Classes
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
@@ -57,8 +57,8 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   if Func then
     local newname = Concat(ClassOrFunc,"_",Func)
     if not ChoGGi.OrigFuncs[newname] then
-      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
---~       ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
+--~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
     end
   else
     if not ChoGGi.OrigFuncs[ClassOrFunc] then
@@ -73,8 +73,8 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
---~   g_Classes[ClassName][FuncName] = function(...)
-  _G[ClassName][FuncName] = function(...)
+  g_Classes[ClassName][FuncName] = function(...)
+--~   _G[ClassName][FuncName] = function(...)
     --I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
 
@@ -87,7 +87,6 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 --~       print("Function Error: ",Concat(ClassName,"_",FuncName))
 --~       OpenExamine({params})
 --~     end
-
     return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
   end
 end
@@ -243,6 +242,7 @@ local T = ChoGGi.ComFuncs.Trans
 -- shows a popup msg with the rest of the notifications
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
   Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   --eh, it needs something for the id, so I can fiddle with it later
   local id = AsyncRand()
@@ -592,7 +592,7 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
     AsyncStringToFile(console,"")
 
     --redirect functions
-    if ChoGGi.Temp.Testing then
+    if ChoGGi.Testing then
       ReplaceFunc("print","ConsoleLog",ChoGGi)
     end
     ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
@@ -724,7 +724,7 @@ end
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
-if ChoGGi.Temp.Testing then
+if ChoGGi.Testing then
   if type(ActionsToAdd) == "string" then
     print("ActionsToAdd",ActionsToAdd)
   end
@@ -772,7 +772,7 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
     --
-  elseif ChoGGi.Temp.Testing and Key ~= "Skip" then
+  elseif ChoGGi.Testing and Key ~= "Skip" then
     ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>: </color><color 128 255 128>",T(302535920000166--[[BROKEN FUNCTION--]]),": </color>",Menu)
   end
 
@@ -997,7 +997,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
     return
   end
 
-  local dlg = g_Classes.ChoGGi_MonitorInfoDlg:new()
+  local dlg = ChoGGi_MonitorInfoDlg:new()
 
   if not dlg then
     return
@@ -1028,7 +1028,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
     return
   end
 
-  local dlg = g_Classes.ChoGGi_ExecCodeDlg:new()
+  local dlg = ChoGGi_ExecCodeDlg:new()
 
   if not dlg then
     return
@@ -1067,7 +1067,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
     return
   end
 
-  local dlg = g_Classes.ChoGGi_ObjectManipulator:new()
+  local dlg = ChoGGi_ObjectManipulator:new()
 
   if not dlg then
     return
@@ -1148,7 +1148,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 
   CreateRealTimeThread(function()
 --~     local option = ChoGGi.ComFuncs.OpenInListChoice(Table)
-    local dlg = g_Classes.ChoGGi_ListChoiceCustomDialog:new()
+    local dlg = ChoGGi_ListChoiceCustomDialog:new()
 
     if not dlg then
       return
@@ -1282,42 +1282,6 @@ end
 -- i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
-end
-
-function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
-  parent.idCaption = g_Classes.StaticText:new(parent)
-  parent.idCaption:SetPos(Table.pos)
-  parent.idCaption:SetSize(Table.size)
-  parent.idCaption:SetHSizing("AnchorToLeft")
-  parent.idCaption:SetBackgroundColor(0)
-  parent.idCaption:SetFontStyle("Editor14Bold")
-  parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
-  parent.idCaption:SetText(Table.title or "")
-  parent.idCaption.HandleMouse = false
-end
-
-function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
-  parent.idCloseX = g_Classes.Button:new(parent)
-  parent.idCloseX:SetHSizing("AnchorToRight")
-  parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
-  parent.idCloseX:SetSize(point(18, 18))
-  parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-  parent.idCloseX:SetHint(T(1011--[[Close--]]))
-  parent.idCloseX.OnButtonPressed = func or function()
-    parent:delete()
-  end
-end
-function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
-  g_Classes.XTextButton:new({
-    RolloverTemplate = "Rollover",
-    RolloverText = hint or "",
-    RolloverTitle = T(126095410863--[[Info--]]),
-    MinWidth = 60,
-    Text = text or T(1000616--[[OK--]]),
-    OnPress = onpress,
-    --center text
-    LayoutMethod = "VList",
-  }, parent)
 end
 
 function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
@@ -1536,7 +1500,7 @@ function OpenExamine(o, from)
     return ChoGGi.ComFuncs.ClearShowMe()
   end
 
-  local ex = g_Classes.Examine:new()
+  local ex = Examine:new()
   if from then
     --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
     --so i use a thread in Init to re-pos it, which of course messes this up, so we make sure this is called later
@@ -1589,14 +1553,14 @@ function ChoGGi.ComFuncs.ShowMe(o, color, time)
   end
   if type(o) == "table" and #o == 2 then
     if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
-      local m = g_Classes.Vector:new()
+      local m = Vector:new()
       m:Set(o[1], o[2], color)
       markers[m] = "vector"
       o = m
     end
   elseif IsPoint(o) then
     if terrain_IsPointInBounds(o) then
-      local m = g_Classes.Sphere:new()
+      local m = Sphere:new()
       m:SetPos(o)
       m:SetRadius(50 * guic)
       m:SetColor(color or RGB(0, 255, 0))
@@ -1637,8 +1601,9 @@ function ChoGGi.ComFuncs.ShowMe(o, color, time)
 --~   end
 
 end
+
 function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
-  local c = g_Classes.Circle:new()
+  local c = Circle:new()
   c:SetPos(pt:SetTerrainZ(10 * guic))
   c:SetRadius(r)
   c:SetColor(color or RGB(255, 255, 255))
@@ -1650,6 +1615,7 @@ function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
     end
   end)
 end
+
 function ChoGGi.ComFuncs.StartDebugger()
   config.Haerald = {
     platform = GetDebuggeePlatform(),
@@ -1685,7 +1651,7 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
     print(T(302535920000692--[[Log is blank (well not anymore).--]]))
     return
   end
-  local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+  local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{
   --~                 zorder = 2000001,
     wrap = true,
     text = text,
@@ -1725,5 +1691,43 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
     end
 
   end
+end
 
+do
+  local g_Classes = g_Classes
+  function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
+    parent.idCaption = g_Classes.StaticText:new(parent)
+    parent.idCaption:SetPos(Table.pos)
+    parent.idCaption:SetSize(Table.size)
+    parent.idCaption:SetHSizing("AnchorToLeft")
+    parent.idCaption:SetBackgroundColor(0)
+    parent.idCaption:SetFontStyle("Editor14Bold")
+    parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
+    parent.idCaption:SetText(Table.title or "")
+    parent.idCaption.HandleMouse = false
+  end
+
+  function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
+    parent.idCloseX = g_Classes.Button:new(parent)
+    parent.idCloseX:SetHSizing("AnchorToRight")
+    parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
+    parent.idCloseX:SetSize(point(18, 18))
+    parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+    parent.idCloseX:SetHint(T(1011--[[Close--]]))
+    parent.idCloseX.OnButtonPressed = func or function()
+      parent:delete()
+    end
+  end
+  function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
+    g_Classes.XTextButton:new({
+      RolloverTemplate = "Rollover",
+      RolloverText = hint or "",
+      RolloverTitle = T(126095410863--[[Info--]]),
+      MinWidth = 60,
+      Text = text or T(1000616--[[OK--]]),
+      OnPress = onpress,
+      --center text
+      LayoutMethod = "VList",
+    }, parent)
+  end
 end

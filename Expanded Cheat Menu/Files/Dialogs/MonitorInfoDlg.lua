@@ -97,7 +97,7 @@ function ChoGGi_MonitorInfoDlg:Init()
   self.idRefresh:SetText(title)
   self.idRefresh:SetHint(T(302535920000086--[[Manually refresh the list.--]]))
   function self.idRefresh.OnButtonPressed()
-    if ChoGGi.Temp.Testing then
+    if ChoGGi.Testing then
       OpenExamine(self.object)
     end
     self:UpdateText()

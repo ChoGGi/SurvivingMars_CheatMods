@@ -1,10 +1,10 @@
 -- See LICENSE for terms
---stuff only loaded when ChoGGi.Temp.Testing = true
+--stuff only loaded when ChoGGi.Testing = true
 
 local Concat = ChoGGi.ComFuncs.Concat
 
 --stuff that never happens, fuck comments (like this one)
-if type(ChoGGi.Temp.Testing) == "function" then
+if type(ChoGGi.Testing) == "function" then
 
   --for ingame editor
 
@@ -94,7 +94,7 @@ if type(ChoGGi.Temp.Testing) == "function" then
   end
 end
 
-if ChoGGi.Temp.Testing then
+if ChoGGi.Testing then
 
   --tell me if traits are different
   local ChoGGi = ChoGGi
@@ -113,7 +113,7 @@ if ChoGGi.Temp.Testing then
   end
 
 ---------
-  print("ChoGGi.Temp.Testing")
+  print("ChoGGi.Testing")
 end --Testing
 
 function ChoGGi.MsgFuncs.Testing_ClassesGenerate()

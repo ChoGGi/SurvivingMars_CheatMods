@@ -522,3 +522,16 @@ end
 --~ ChoGGi.MenuFuncs.DeathToObjects("Drone")
 --~ ChoGGi.MenuFuncs.DeathToObjects("SupplyRocket")
 --~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists
+
+--show all elec consumption
+--~ local objs = GetObjects({}) or empty_table
+--~ local amount = 0
+--~ for i = 1, #objs do
+--~   local obj = objs[i]
+--~   if obj.class and obj.electricity and obj.electricity.consumption then
+--~     local temp = obj.electricity.consumption / 1000
+--~     amount = amount + temp
+--~     print(obj.class,": ",temp)
+--~   end
+--~ end
+--~ print(amount)
