@@ -5,7 +5,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"code", {"Init.lua"},
 	"id", "ChoGGi_CheatMenu",
-	"image", "CheatMenu.png",
+	"image", "Preview.png",
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,

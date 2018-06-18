@@ -118,10 +118,12 @@ function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
       T(904--[[Terrain--]]),
       "UI/Icons/Sections/warning.tga"
     )
+--~ local terrain_type = "Grass_01"		-- applied terrain type
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
 
 --~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
 --~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
-    local size = ChoGGi.UserSettings.FlattenSize or 1000
+    local size = ChoGGi.UserSettings.FlattenSize or 2500
     local radius = size * guic
     visual_circle = g_Classes.Circle:new()
     visual_circle:SetRadius(size)
@@ -133,7 +135,7 @@ function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
         local cursor = GetTerrainCursor()
         visual_circle:SetPos(cursor)
         terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
---~         terrain_SetTypeCircle(cursor, radius, terrain.GetTerrainType(cursor))
+--~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
         Sleep(10)
       end
     end)
@@ -1115,3 +1117,13 @@ end
 --~ for i = 1, #objs do
 --~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i],true,true)
 --~ end
+
+--little bit of painting
+--~ local terrain_type = "Grass_01"
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ CreateRealTimeThread(function()
+--~   while true do
+--~     terrain.SetTypeCircle(GetTerrainCursor(), 2500, terrain_type_idx)
+--~     Sleep(5)
+--~   end
+--~ end)
