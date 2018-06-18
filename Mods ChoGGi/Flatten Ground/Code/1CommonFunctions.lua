@@ -2,52 +2,19 @@
 
 local Concat = FlattenGround.ComFuncs.Concat --added in Init.lua
 
-local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
-local table,debug,string = table,debug,string
+local pcall,tostring,pairs,print,type = pcall,tostring,pairs,print,type
+local table,debug = table,debug
 
 local _InternalTranslate = _InternalTranslate
-local AsyncFileToString = AsyncFileToString
-local AsyncFileRename = AsyncFileRename
-local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
-local AsyncStringToFile = AsyncStringToFile
-local box = box
-local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
-local CreateRolloverWindow = CreateRolloverWindow
-local DoneObject = DoneObject
-local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
-local GetLogFile = GetLogFile
-local GetObjects = GetObjects
-local GetPreciseTicks = GetPreciseTicks
-local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
-local HandleToObject = HandleToObject
-local IsBox = IsBox
-local IsObjlist = IsObjlist
-local IsPoint = IsPoint
-local IsValid = IsValid
-local Msg = Msg
 local OpenXDialog = OpenXDialog
-local point = point
-local RGB = RGB
-local Sleep = Sleep
-local TechDef = TechDef
-local ThreadLockKey = ThreadLockKey
-local ThreadUnlockKey = ThreadUnlockKey
-local ViewPos = ViewPos
-local WaitMarsQuestion = WaitMarsQuestion
-local WaitPopupNotification = WaitPopupNotification
 
 local local_T = T -- T replaced below
-local guic = guic
 
 local UserActions_SetMode = UserActions.SetMode
-local terminal_GetMousePos = terminal.GetMousePos
-local UIL_MeasureText = UIL.MeasureText
-local terrain_IsPointInBounds = terrain.IsPointInBounds
-local FontStyles_GetFontId = FontStyles.GetFontId
 
 local g_Classes = g_Classes
 

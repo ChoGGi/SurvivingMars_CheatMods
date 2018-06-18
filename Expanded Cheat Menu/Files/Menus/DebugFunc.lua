@@ -60,7 +60,7 @@ local XShortcutsSetMode = XShortcutsSetMode
 local guim = guim
 local guic = guic
 local white = white
-local TerrainTextures = TerrainTextures
+--~ local TerrainTextures = TerrainTextures
 
 local camera_IsLocked = camera.IsLocked
 local camera_Unlock = camera.Unlock
@@ -71,6 +71,7 @@ local terrain_IsPassable = terrain.IsPassable
 local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
 local terrain_SetHeightCircle = terrain.SetHeightCircle
+--~ local terrain_SetTypeCircle = terrain.SetTypeCircle
 local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
@@ -118,8 +119,8 @@ function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
       "UI/Icons/Sections/warning.tga"
     )
 
-    local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
-    local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+--~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
     local size = ChoGGi.UserSettings.FlattenSize or 1000
     local radius = size * guic
     visual_circle = g_Classes.Circle:new()
@@ -132,7 +133,8 @@ function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
         local cursor = GetTerrainCursor()
         visual_circle:SetPos(cursor)
         terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
-        Sleep(25)
+--~         terrain_SetTypeCircle(cursor, radius, terrain.GetTerrainType(cursor))
+        Sleep(10)
       end
     end)
 

@@ -9,7 +9,7 @@ Ctrl-Space to activate placement mode with the last placed object.
 
 Ctrl-Shift-Space to activate placement mode with the selected object (or object under mouse).
 
-You don't need this mod if you use Expanded Cheat Menu]],
+Included in Expanded Cheat Menu.]],
 	"tags", "Building",
 	"id", "ChoGGi_BuildingPlacementOrientation",
   "steam_id", "1411105601",

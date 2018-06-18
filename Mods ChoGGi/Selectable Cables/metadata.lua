@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"image", "Preview.png",
   "saved", 1527940800,
-  "version", 1,
-  "title", "Selectable Cables v0.1",
+  "version", 2,
+  "title", "Selectable Cables v0.2",
   "description", "Name pretty much says it all.",
   "id", "ChoGGi_SelectableCables",
   "author", "ChoGGi",

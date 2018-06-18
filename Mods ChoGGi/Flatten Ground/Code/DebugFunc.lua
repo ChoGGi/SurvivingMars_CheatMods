@@ -6,7 +6,6 @@ DefineClass.FlattenGround_CursorBuilding = {
   entity = "GridTile"
 }
 
-local Concat = FlattenGround.ComFuncs.Concat
 local T = FlattenGround.ComFuncs.Trans
 
 local CreateRealTimeThread = CreateRealTimeThread
@@ -15,12 +14,13 @@ local DoneObject = DoneObject
 local GetTerrainCursor = GetTerrainCursor
 local RecalcBuildableGrid = RecalcBuildableGrid
 
-local guim = guim
+local guic = guic
 local white = white
-local TerrainTextures = TerrainTextures
+--local TerrainTextures = TerrainTextures
 
 local terrain_GetHeight = terrain.GetHeight
 local terrain_SetHeightCircle = terrain.SetHeightCircle
+local terrain_SetTypeCircle = terrain.SetTypeCircle
 
 local g_Classes = g_Classes
 
@@ -48,13 +48,14 @@ function FlattenGround.MenuFuncs.FlattenTerrain_Toggle()
       "UI/Icons/Sections/warning.tga"
     )
 
-    local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
-    local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+--~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
     local size = FlattenGround.UserSettings.FlattenSize or 2500
     local radius = size * guic
     visual_circle = g_Classes.Circle:new()
     visual_circle:SetRadius(size)
     visual_circle:SetColor(white)
+
 
     are_we_flattening = CreateRealTimeThread(function()
       --thread gets deleted, but just in case
@@ -62,7 +63,9 @@ function FlattenGround.MenuFuncs.FlattenTerrain_Toggle()
         local cursor = GetTerrainCursor()
         visual_circle:SetPos(cursor)
         terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
-        Sleep(25)
+        --uncomment to change the texture
+        --terrain_SetTypeCircle(cursor, radius, terrain.GetTerrainType(cursor))
+        Sleep(10)
       end
     end)
 

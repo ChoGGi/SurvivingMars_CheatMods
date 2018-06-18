@@ -14,7 +14,9 @@ return PlaceObj("ModDef", {
 
 Press Shift-F to lock-in height, move cursor around to flatten ground, press Shift-F again to update buildable area.
 
-Defaults to a radius 2500, see Script.lua to change
+Defaults to a radius of 2500, see Script.lua to change.
 
-Part of Expanded Cheat Menu]],
+There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days).
+
+Included in Expanded Cheat Menu.]],
 })

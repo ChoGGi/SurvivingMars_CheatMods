@@ -5,7 +5,8 @@ return PlaceObj("ModDef", {
 
 Also adds option for instant start.
 
-You don't need this mod if you use Expanded Cheat Menu]],	"tags", "Cheats",
+Included in Expanded Cheat Menu.]],
+	"tags", "Cheats",
 	"id", "ChoGGi_WorkingMysteryMenus",
 	"author", "ChoGGi",
 	"version", 4,

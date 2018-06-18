@@ -3,6 +3,9 @@
 local Concat = FlattenGround.ComFuncs.Concat
 local T = FlattenGround.ComFuncs.Trans
 
+local OnMsg = OnMsg
+local Msg = Msg
+
 function OnMsg.LoadGame()
   Msg("FlattenGround_Loaded")
 end

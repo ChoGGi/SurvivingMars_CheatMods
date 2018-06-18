@@ -13,6 +13,14 @@ function OnMsg.ClassesBuilt()
         '__template', "Infopanel",
         'Description', T{313911890683, --[[XTemplate ipSwitch Description]] "<description>"},
       }, {
+			PlaceObj('XTemplateTemplate', {
+				'__context_of_kind', "ElectricityGridObject",
+				'__context', function (parent, context) return context.electricity end,
+				'__condition', function (parent, context) return context end,
+				'__template', "InfopanelActiveSection",
+				'Text', T{185932970385, --[[XTemplate ipLeak Text]] "Losing <red><power(current_consumption)></red> each hour."},
+			}),
+
       PlaceObj('XTemplateTemplate', {
         'comment', "salvage",
         '__template', "InfopanelButton",
@@ -54,7 +62,7 @@ function OnMsg.ClassesBuilt()
   local orig_ElectricityGridElement_GetInfopanelTemplate = g_Classes.ElectricityGridElement.GetInfopanelTemplate
   function g_Classes.ElectricityGridElement:GetInfopanelTemplate()
     local ret = orig_ElectricityGridElement_GetInfopanelTemplate(self)
-    if not ret then
+    if not ret or ret == "ipLeak" then
       return "ipCable"
     end
     return ret

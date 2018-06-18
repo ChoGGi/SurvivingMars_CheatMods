@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 
 You can change the bounce amount if you have Mod Config installed.
 
-You don't need this mod if you use Expanded Cheat Menu]],
+Included in Expanded Cheat Menu.]],
 	"tags", "Misc",
 	"id", "ChoGGi_BouncyDrones",
 	"author", "ChoGGi",

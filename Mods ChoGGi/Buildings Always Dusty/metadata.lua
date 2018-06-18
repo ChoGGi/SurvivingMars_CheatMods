@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 
 Requested by: LegendGamer
 
-You don't need this mod if you use Expanded Cheat Menu]],
+Included in Expanded Cheat Menu.]],
   "code", {
     "Script.lua",
   },

@@ -2,8 +2,9 @@ return PlaceObj("ModDef", {
   "saved", 1527940800,
   "version", 2,
   "title", "Stop Current Disasters v0.2",
-  "description", [[Stops any running disasters (just duststorms/coldwaves/current meteors for now) when you load a save (you don't need to leave this enabled afterwards).
-You don't need this mod if you use Expanded Cheat Menu]],
+  "description", [[Stops any running disasters (just duststorms, coldwaves, and current meteors/dustdevils for now) when you load a save (you don't need to leave this enabled afterwards).
+
+Included in Expanded Cheat Menu.]],
   "tags", "Cheats",
   "id", "ChoGGi_StopCurrentDisasters",
   "author", "ChoGGi",

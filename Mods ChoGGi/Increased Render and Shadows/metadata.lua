@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"description", [[Further shadow, and model rendering
 This is pretty useless without Increased Zoom Distance.
 
-You don't need this mod if you use Expanded Cheat Menu]],
+Included in Expanded Cheat Menu.]],
 	"tags", "Graphics",
 	"id", "ChoGGi_IncreasedRenderDistance",
 	"author", "ChoGGi",
