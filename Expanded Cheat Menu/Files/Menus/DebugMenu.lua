@@ -12,6 +12,14 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920000485--[[Flatten Terrain Toggle--]])),
+    ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
+    "Shift-F",
+    T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.--]]),
+    "FixUnderwaterEdges.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920000449--[[Attach Spots Toggle--]])),
     ChoGGi.MenuFuncs.AttachSpots_Toggle,
     nil,

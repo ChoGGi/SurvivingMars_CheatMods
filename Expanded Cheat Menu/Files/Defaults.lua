@@ -1,5 +1,6 @@
 -- See LICENSE for terms
---stores default values and some tables
+
+-- stores default values and some tables
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
@@ -73,6 +74,8 @@ ChoGGi.Defaults = {
   NumberKeysBuildMenu = true,
   UseLastOrientation = true,
   ShowCheatsMenu = true,
+  FlushLog = true,
+  FlattenSize = 2500,
   DebugGridSize = 10,
   DebugGridOpacity = 15,
   CheatsInfoPanelHideDelay = 1500,

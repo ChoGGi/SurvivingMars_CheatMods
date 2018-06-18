@@ -11,6 +11,7 @@ local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
 
+local Clamp = Clamp
 local ClassDescendantsList = ClassDescendantsList
 local CloseMenuDialogs = CloseMenuDialogs
 local CreateGameTimeThread = CreateGameTimeThread
@@ -34,6 +35,8 @@ local IsEditorActive = IsEditorActive
 local IsValid = IsValid
 local ListMaps = ListMaps
 local LoadStreamParticlesFromDir = LoadStreamParticlesFromDir
+local Max = Max
+local MulDivRound = MulDivRound
 local ObjModified = ObjModified
 local OpenExamine = OpenExamine
 local ParticlesReload = ParticlesReload
@@ -52,13 +55,11 @@ local WaitDelayedLoadEntities = WaitDelayedLoadEntities
 local WaitNextFrame = WaitNextFrame
 local WorldToHex = WorldToHex
 local XShortcutsSetMode = XShortcutsSetMode
-local MulDivRound = MulDivRound
-local Max = Max
-local Clamp = Clamp
 
 local guim = guim
 local guic = guic
 local white = white
+local TerrainTextures = TerrainTextures
 
 local camera_IsLocked = camera.IsLocked
 local camera_Unlock = camera.Unlock
@@ -68,6 +69,7 @@ local terrain_IsSCell = terrain.IsSCell
 local terrain_IsPassable = terrain.IsPassable
 local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
+local terrain_SetHeightCircle = terrain.SetHeightCircle
 local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
@@ -89,6 +91,52 @@ function ChoGGi.MenuFuncs.AttachSpots_Toggle()
     sel:ShowSpots()
     sel.ChoGGi_ShowAttachSpots = true
   end
+end
+
+local are_we_flattening
+local visual_circle
+function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
+  local ChoGGi = ChoGGi
+
+  if are_we_flattening then
+    are_we_flattening = false
+    DeleteThread(are_we_flattening)
+    DoneObject(visual_circle)
+    ChoGGi.ComFuncs.MsgPopup(
+      T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
+      T(904--[[Terrain--]]),
+      "UI/Icons/Sections/WasteRock_1.tga"
+    )
+    --update uneven terrain checker thingy
+    RecalcBuildableGrid()
+  else
+    local flatten_height = terrain_GetHeight(GetTerrainCursor())
+    ChoGGi.ComFuncs.MsgPopup(
+      string.format(T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]),flatten_height),
+      T(904--[[Terrain--]]),
+      "UI/Icons/Sections/warning.tga"
+    )
+
+    local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+    local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+    local size = ChoGGi.UserSettings.FlattenSize or 1000
+    local radius = size * guic
+    visual_circle = g_Classes.Circle:new()
+    visual_circle:SetRadius(size)
+    visual_circle:SetColor(white)
+
+    are_we_flattening = CreateRealTimeThread(function()
+      --thread gets deleted, but just in case
+      while are_we_flattening do
+        local cursor = GetTerrainCursor()
+        visual_circle:SetPos(cursor)
+        terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
+        Sleep(25)
+      end
+    end)
+
+  end
+
 end
 
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
