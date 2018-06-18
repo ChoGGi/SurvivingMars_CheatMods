@@ -5,7 +5,9 @@ return PlaceObj("ModDef", {
   "description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
 Thanks to Kevin Bagust for the idea (and Asimov of course)."
+
 ### Adds a new building called Solaria Telepresence; remote control factories and mines (with reduced production).
+This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
 
 ##### Currently it can control:
 Drone Factory
@@ -19,24 +21,6 @@ Performance and production take awhile to update.
 
 I could make it update faster, but this way seems better.
 I also would've used Telus, but I think more people have heard of Comcast.
-
-This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
-
-##### Buttons added to Solaria Telepresence:
-Remote Control Building:
-> Shows list of buildings for telepresence viewing.
-> Double-click to enable remote control with this building, Double-right to view.
-Remove Remote Control:
-> Shows prompt asking to remove control
-All Attached Buildings:
-> Shows list of all controlled buildings (for removing telepresence control).
-> Double-right to view.
-"Name of controlled building":
-> View controlled building.
-
-##### Button added to controlled buildings:
-Solaria Telepresence:
-> View Solaria controlling selected building.
 
 ##### How to use:
 Place building you want to control somewhere (next to a mine for example).
@@ -75,8 +59,7 @@ numbers do vary, but only by a few points
 ##### Thanks
 Kevin Bagust for the mod idea.
 
-Isaac Asimov for the actual idea.
-]],
+Isaac Asimov for the actual idea.]],
   "tags", "Buildings",
 	"image", "Preview.png",
   "id", "ChoGGi_SolariaTelepresence",

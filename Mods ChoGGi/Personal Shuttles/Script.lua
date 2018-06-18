@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 --keep everything stored in
 PersonalShuttles = {
   _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE

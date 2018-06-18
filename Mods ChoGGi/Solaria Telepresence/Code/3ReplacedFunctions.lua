@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local rawget,setmetatable,type = rawget,setmetatable,type
 
 function OnMsg.ClassesBuilt()

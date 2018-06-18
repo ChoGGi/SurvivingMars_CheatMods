@@ -1,3 +1,18 @@
+--See LICENSE for terms
+
+local Concat = SolariaTelepresence.ComFuncs.Concat
+
+local type,tostring,pcall = type,tostring,pcall
+
+local DebugPrint = DebugPrint
+local OnMsg = OnMsg
+local FilterObjects = FilterObjects
+local IsValid = IsValid
+local RebuildInfopanel = RebuildInfopanel
+local XTemplates = XTemplates
+local ObjModified = ObjModified
+local PlaceObj = PlaceObj
+
 DefineClass.Solaria = {
   __parents = {
     "ElectricityConsumer",
@@ -16,8 +31,10 @@ DefineClass.Solaria = {
   SolariaTelepresence_Remote_Controller = false,
 }
 
+local g_Classes = g_Classes
+
 function Solaria:GameInit()
-  Workplace.GameInit(self)
+  g_Classes.Workplace.GameInit(self)
   --always leave it turned off, so it doesn't use resources till user turns it on
   self:ToggleWorking()
   --brown/yellow seems a good choice for a vr workplace
@@ -36,6 +53,7 @@ function Solaria:GameInit()
 end
 
 --build and show a list of viable buildings
+local filter_table = {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PreciousMetalsExtractor=true}
 function Solaria:ListBuildings(Which)
   local SolariaTelepresence = SolariaTelepresence
   local Table = UICity.labels.OutsideBuildings or empty_table
@@ -58,7 +76,7 @@ function Solaria:ListBuildings(Which)
     Table = SolariaTelepresence.ComFuncs.FilterFromTable(
       Table,
       nil,
-      {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PreciousMetalsExtractor=true},
+      filter_table,
       "class"
     )
   --show controlled for remove list
@@ -156,7 +174,7 @@ function Solaria:AttachBuilding(Obj)
   self:SetUIWorking(true)
   Obj:SetUIWorking(true)
 
-  SolariaTelepresence.ComFuncs.MsgPopup("Viewing: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
+  SolariaTelepresence.ComFuncs.MsgPopup(Concat("Viewing: ",self:BuildingName(Obj)," pos: ",tostring(Obj:GetVisualPos())),
     "Solaria","UI/Icons/Upgrades/holographic_scanner_04.tga"
   )
 end
@@ -165,6 +183,8 @@ function Solaria:RemoveBuilding(Obj)
   if Obj.handle == self.handle then
     return
   end
+
+  local UICity = UICity
 
   Obj = Obj or self.SolariaTelepresence_Remote_Controller.building
   --update Solaria
@@ -193,17 +213,16 @@ function Solaria:RemoveBuilding(Obj)
     Obj.auto_performance = nil
   end)
 
-  local UICity = UICity
   UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
 
-  SolariaTelepresence.ComFuncs.MsgPopup("Removed: " .. self:BuildingName(Obj) .. " pos: " .. tostring(Obj:GetVisualPos()),
+  SolariaTelepresence.ComFuncs.MsgPopup(Concat("Removed: ",self:BuildingName(Obj)," pos: ",tostring(Obj:GetVisualPos())),
     "Solaria","UI/Icons/Upgrades/holographic_scanner_03.tga"
   )
 end
 
 --update performance on controlled building (fires when worker starts work)
 function Solaria:StartWorkCycle(unit)
-  Workplace.StartWorkCycle(self, unit)
+  g_Classes.Workplace.StartWorkCycle(self, unit)
   --only update if Solaria is controlling a building
   if self.SolariaTelepresence_Remote_Controller then
     local Obj = self.SolariaTelepresence_Remote_Controller.building
@@ -247,11 +266,13 @@ function Solaria:StartWorkCycle(unit)
   end
 end
 
-function Workplace:OnDestroyed()
-  if self.SolariaTelepresence_Remote_Controlled then
-    self:RemoveBuilding()
+function OnMsg.ClassesGenerate()
+  function g_Classes.Workplace:OnDestroyed()
+    if self.SolariaTelepresence_Remote_Controlled then
+      self:RemoveBuilding()
+    end
+    g_Classes.Workplace.OnDestroyed(self)
   end
-  Workplace.OnDestroyed(self)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -274,28 +295,27 @@ function OnMsg.ClassesPostprocess()
     'build_category', "Dome Services",
     'display_icon', SolariaTelepresence.ModPath .. "/TheIncal.tga",
     'build_pos', 12,
-    --'encyclopedia_image', "UI/Encyclopedia/VRWorkshop.tga",
+--~     'encyclopedia_image', "UI/Encyclopedia/VRWorkshop.tga",
     'label1', "InsideBuildings",
-    'label2', "Workshop",
+--~     'label2', "Workshop",
     'entity', "VRWorkshop",
     'palettes', "VRWorkshop",
     'demolish_sinking', range(5, 10),
     'demolish_debris', 80,
     'electricity_consumption', 25000,
-    --'enabled_shift_1', false,
-    --'enabled_shift_3', false,
+--~     'enabled_shift_1', false,
+--~     'enabled_shift_3', false,
     'max_workers', 0, --changed when controlled
   })
 
 end --ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
-  local XT = XTemplates
-  local ObjModified = ObjModified
 
-  if not XT.sectionWorkplace.SolariaTelepresence_Solaria then
-    XT.sectionWorkplace.SolariaTelepresence_Solaria = true
-    XT.sectionWorkplace[#XT.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+  if not XTemplates.sectionWorkplace.SolariaTelepresence_Solaria then
+    XTemplates.sectionWorkplace.SolariaTelepresence_Solaria = true
+
+    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "",
@@ -332,7 +352,7 @@ function OnMsg.ClassesBuilt()
               context:RemoveBuilding(building)
             end
             SolariaTelepresence.ComFuncs.QuestionBox(
-              "Are you sure you want to remove telepresence viewing from " .. context:BuildingName(building) .. " located at " .. tostring(building:GetVisualPos()),
+              Concat("Are you sure you want to remove telepresence viewing from ",context:BuildingName(building)," located at ",tostring(building:GetVisualPos())),
               CallBackFunc,
               "Solaria Telepresence"
             )
@@ -344,7 +364,7 @@ function OnMsg.ClassesBuilt()
     })
 
     --list controlled buildings
-    XT.sectionWorkplace[#XT.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Upgrades/build_2.tga",
@@ -375,7 +395,7 @@ function OnMsg.ClassesBuilt()
     })
 
     --go to controlled/controller building
-    XT.sectionWorkplace[#XT.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "Workplace",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Anomaly_Event.tga",
@@ -419,6 +439,18 @@ function OnMsg.ClassesBuilt()
 
   end --XTemplates
 
+  PlaceObj('TechPreset', {
+    SortKey = 11,
+    description = "New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a vocation building that allows colonists to experiment with virtual reality. Consumes Electronics.\n\n<grey>\"How do you know it's Sci-Fi? VR is commercially viable.\"\n<right>Shams Jorjani</grey><left>",
+    display_name = "Creative Realities Solaria",
+    group = "Physics",
+    icon = "UI/Icons/Research/creative_realities.tga",
+    id = "CreativeRealitiesSolaria",
+    position = range(11, 14),
+    PlaceObj('Effect_TechUnlockBuilding', {
+      Building = "Solaria",
+    }),
+  })
 end --ClassesBuilt
 
 local function SomeCode()
@@ -427,7 +459,6 @@ local function SomeCode()
   if UICity and not UICity.SolariaTelepresence_RemoteControlledBuildings then
     UICity.SolariaTelepresence_RemoteControlledBuildings = 0
   end
-
 end
 
 function OnMsg.CityStart()
@@ -436,4 +467,13 @@ end
 
 function OnMsg.LoadGame()
   SomeCode()
+  local UICity = UICity
+  if not UICity.tech_status.CreativeRealitiesSolaria then
+    UICity.tech_status.CreativeRealitiesSolaria = {
+      cost = 7000,
+      field = "Physics",
+      points = 0
+    }
+    UICity.tech_field.Physics[#UICity.tech_field.Physics+1] = "CreativeRealitiesSolaria"
+  end
 end

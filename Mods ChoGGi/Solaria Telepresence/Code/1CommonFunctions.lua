@@ -1,3 +1,5 @@
+--See LICENSE for terms
+
 local Concat = SolariaTelepresence.ComFuncs.Concat --added in Init.lua
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
