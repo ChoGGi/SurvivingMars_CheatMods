@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "saved", 1527336000,
-  "version", 3,
-  "title", "Portable Miner v0.3",
+  "version", 4,
+  "title", "Portable Miner v0.4",
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
 
 Uses the Attack Rover model.

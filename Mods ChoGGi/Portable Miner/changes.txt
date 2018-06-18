@@ -1,0 +1,9 @@
+v0.4
+Added Idle Extractor popup.
+Now removes empty concrete deposit sign.
+
+v0.3
+Better rear aim.
+
+v0.2
+Made it easier to change entity/scale/time to mine (see near top of Script.lua).

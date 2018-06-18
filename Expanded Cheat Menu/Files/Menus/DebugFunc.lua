@@ -45,6 +45,7 @@ local PlaceObject = PlaceObject
 local PlaceText = PlaceText
 local point = point
 local Random = Random
+local RecalcBuildableGrid = RecalcBuildableGrid
 local ReloadClassEntities = ReloadClassEntities
 local ReloadLua = ReloadLua
 local SaveLocalStorage = SaveLocalStorage

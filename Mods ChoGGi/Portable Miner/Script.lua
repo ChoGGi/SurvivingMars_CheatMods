@@ -1,15 +1,50 @@
-local MovePointAway = MovePointAway
-local PlaceObj = PlaceObj
-local Sleep = Sleep
-local GetObjects = GetObjects
-local NearestObject = NearestObject
-local Msg = Msg
-local GetEntityCombinedShape = GetEntityCombinedShape
-local DoneObject = DoneObject
-local PlaceObj = PlaceObj
-local OnMsg = OnMsg
+-- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local table,select,type,tostring = table,select,type,tostring
+
+local DoneObject = DoneObject
+local GetEntityCombinedShape = GetEntityCombinedShape
+local GetObjects = GetObjects
+local IsValid = IsValid
+local MovePointAway = MovePointAway
+local Msg = Msg
+local NearestObject = NearestObject
+local OnMsg = OnMsg
+local PlaceObj = PlaceObj
+local PlaceObject = PlaceObject
+local Sleep = Sleep
+local TerrainDeposit_Extract = TerrainDeposit_Extract
+local XTemplates = XTemplates
+
+local TConcat = oldTableConcat or table.concat
+
+local concat_table = {}
+local concat_value
+local function Concat(...)
+  -- reuse old table if it's not that big, else it's quicker to make new one
+  if #concat_table > 1000 then
+    concat_table = {}
+  else
+    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
+  end
+  -- build table from args
+  for i = 1, select("#",...) do
+    concat_value = select(i,...)
+      if type(concat_value) == "string" or type(concat_value) == "number" then
+      concat_table[i] = concat_value
+    else
+      concat_table[i] = tostring(concat_value)
+    end
+  end
+  -- and done
+  return TConcat(concat_table)
+end
+
+
+do
+  local BuildingDepositExploiterComponent = BuildingDepositExploiterComponent
+  local DefineClass = DefineClass
+  local const = const
   DefineClass.PortableMiner = {
     __parents = {
       "AttackRover",
@@ -26,8 +61,10 @@ function OnMsg.ClassesGenerate()
 
     --how much to mine
     mine_amount = 1 * const.ResourceScale,
+--~     mine_amount = 100 * const.ResourceScale,
     --how much to store in res pile
-    max_res_amount = 100 * const.ResourceScale,
+    max_res_amount = 100 * const.ResourceScale, --visible is limited to 100
+--~     max_res_amount = 10000 * const.ResourceScale,
     --mine once an hour
     building_update_time = const.HourDuration,
     --color of bands
@@ -61,232 +98,288 @@ function OnMsg.ClassesGenerate()
     accumulate_dust = true,
     notworking_sign = false,
     pooper_shooter = "Droneentrance",
+
+    produced_total = 0,
+    produced_last_deposit = 0,
   }
 
   DefineClass.PortableMinerBuilding = {
     __parents = {"BaseRoverBuilding"},
     rover_class = "PortableMiner",
   }
+end
 
-  function PortableMiner:GameInit()
-    --give it a groundy looking colour
-    self:SetColor3(self.custom_color)
-    if self.custom_entity then
-      self:ChangeEntity(self.custom_entity)
-    end
-    if self.custom_scale then
-      self:SetScale(self.custom_scale)
-    end
-    if self.custom_anim then
-      self.default_anim = self.custom_anim
-    else
-      self.default_anim = "attackIdle"
-    end
-    if self.custom_anim_idle then
-      self.default_anim_idle = self.custom_anim_idle
-    else
-      self.default_anim_idle = 0
-    end
-
-    --dunno it was in attackrover
-    self.name = self.display_name
-
-    self:SetCommand("Roam")
+function PortableMiner:GameInit()
+  --give it a groundy looking colour
+  self:SetColor3(self.custom_color)
+  if self.custom_entity then
+    self:ChangeEntity(self.custom_entity)
+  end
+  if self.custom_scale then
+    self:SetScale(self.custom_scale)
+  end
+  if self.custom_anim then
+    self.default_anim = self.custom_anim
+  else
+    self.default_anim = "attackIdle"
+  end
+  if self.custom_anim_idle then
+    self.default_anim_idle = self.custom_anim_idle
+  else
+    self.default_anim_idle = 0
   end
 
-  local OrigFunc_PortableMiner_Repair
-  function PortableMiner:Repair()
-    OrigFunc_PortableMiner_Repair(self)
-    --orig func calls :DisconnectFromCommandCenters()
-    self:ConnectToCommandCenters()
+  --dunno it was in attackrover (maybe for some fx stuff with rockets or the mystery it's from?)
+  self.name = self.display_name
+
+  self:SetCommand("Roam")
+end
+
+--~   local OrigFunc_PortableMiner_Repair
+function PortableMiner:Repair()
+  AttackRover.Repair(self)
+--~     OrigFunc_PortableMiner_Repair(self)
+  --orig func calls :DisconnectFromCommandCenters()
+  self:ConnectToCommandCenters()
+end
+
+--needed someplace to override it, and roam only happens after it's done what it needs to do and we need a place to add a Sleep
+function PortableMiner:Roam()
+  local city = self.city or UICity
+  city:RemoveFromLabel("HostileAttackRovers", self)
+  city:AddToLabel("Rover", self)
+  self.reclaimed = true
+  --self.affected_by_no_battery_tech = true
+  --needs a very slight delay or something fucks up when you spawn it on a deposit...sigh
+  Sleep(1)
+  self:SetCommand("Idle")
+end
+
+function PortableMiner:IsReloading()
+  if self.ui_working and self:DepositNearby() then
+    --get to work
+    self:SetCommand("Load")
+    return true
+  elseif not self.ui_working and
+    --check if stockpile is existing and full
+      (self:GetDist2D(self.stockpile) >= 5000 or
+      self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
+    self.ui_working = true
+    self:ShowNotWorkingSign()
+  end
+end
+
+function PortableMiner:DepositNearby()
+  local res = NearestObject(self:GetVisualPos(),GetObjects({class="Deposit"}),self.mine_dist)
+  if not res or res and (res:IsKindOf("SubsurfaceAnomaly") or res:IsKindOf("SubsurfaceDepositWater")) then
+    self.nearby_deposits = false
+    return false
   end
 
-  --needed someplace to override it, and roam only happens after it's done what it needs to do and we need a place to add a Sleep
-  function PortableMiner:Roam()
-    local city = self.city or UICity
-    city:RemoveFromLabel("HostileAttackRovers", self)
-    city:AddToLabel("Rover", self)
-    self.reclaimed = true
-    --self.affected_by_no_battery_tech = true
-    --needs a very slight delay or something fucks up when you spawn it on a deposit...sigh
-    Sleep(1)
-    self:SetCommand("Idle")
-  end
-
-  function PortableMiner:IsReloading()
-    if self.ui_working and self:DepositNearby() then
-      --get to work
-      self:SetCommand("Load")
+  if res:IsKindOf("SubsurfaceDeposit") or res:IsKindOf("TerrainDepositConcrete") then
+    self.resource = res.resource
+    self.nearby_deposits = res
+    return true
+  elseif res and res[1] then
+    if not res[1]:IsKindOf("SubsurfaceAnomaly") and not res[1]:IsKindOf("SubsurfaceDepositWater") then
+      self.resource = res[1].resource
+      self.nearby_deposits = res[1]
       return true
-    elseif not self.ui_working and
-      --check if stockpile is existing and full
-        (self:GetDist2D(self.stockpile) >= 5000 or
-        self.stockpile and self.stockpile:GetStoredAmount() < self.max_res_amount) then
+    end
+  end
+end
+
+function PortableMiner:ShowNotWorkingSign(bool)
+  if bool then
+    self.notworking_sign = true
+    self:Attach(PlaceObject("SignNotWorking", nil, const.cfComponentAttach), self:GetSpotBeginIndex("Origin"))
+    self:UpdateWorking(false)
+  else
+    self.notworking_sign = false
+    self:AttachSign(false,"SignNotWorking")
+    self:UpdateWorking(true)
+  end
+end
+
+--called it Load so it uses the load resource icon in pins
+function PortableMiner:Load()
+
+  if self.nearby_deposits then
+    --remove removed stockpile
+    if not IsValid(self.stockpile) then
+      self.stockpile = false
+    end
+    --add new stockpile if none
+    if not self.stockpile or
+        self:GetDist2D(self.stockpile) >= 5000 or
+        self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.Miner_Handle ~= self.handle) then
+      local stockpile = NearestObject(self:GetPos(),GetObjects({class="ResourceStockpile"}),5000)
+
+      if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
+        --plunk down a new res stockpile
+        stockpile = PlaceObj("ResourceStockpile", {
+
+          --time to get all humping robot on christmas
+          "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
+          --"Pos", ScalePoint(pt, scalex, scaley, scalez)(self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)),1000,1000),
+          --find a way to get angle so we can move it back a bit
+          "Angle", self:GetAngle(),
+          "resource", self.resource,
+          "destroy_when_empty", true
+        })
+      end
+      --why doesn't this work in PlaceObj? needs happen after GameInit maybe?
+      stockpile.max_z = 10
+      stockpile.Miner_Handle = self.handle
+      self.stockpile = stockpile
+    end
+    --stops at 100 per stockpile
+    if self.stockpile:GetStoredAmount() < self.max_res_amount then
       self.ui_working = true
+      --remove the sign
       self:ShowNotWorkingSign()
-    end
-  end
+      --up n down n up n down
+      self:SetStateText(self.default_anim)
+      Sleep(self.anim_time or self:TimeToAnimEnd())
 
-  function PortableMiner:DepositNearby()
-    local res = NearestObject(self:GetVisualPos(),GetObjects({class="Deposit"}),self.mine_dist)
-    if not res or res and (res:IsKindOf("SubsurfaceAnomaly") or res:IsKindOf("SubsurfaceDepositWater")) then
-      self.nearby_deposits = false
-      return false
-    end
-
-    if res:IsKindOf("SubsurfaceDeposit") or res:IsKindOf("TerrainDepositConcrete") then
-      self.resource = res.resource
-      self.nearby_deposits = res
-      return true
-    elseif res and res[1] then
-      if not res[1]:IsKindOf("SubsurfaceAnomaly") and not res[1]:IsKindOf("SubsurfaceDepositWater") then
-        self.resource = res[1].resource
-        self.nearby_deposits = res[1]
-        return true
+      local mined
+      --mine some shit
+      if self.resource == "Concrete" then
+        mined = self:DigErUpConcrete(self.mine_amount)
+      elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
+        mined = self:DigErUpMetals(self.mine_amount)
       end
-    end
-  end
-
-  function PortableMiner:ShowNotWorkingSign(bool)
-    if bool then
-      self.notworking_sign = true
-      self:Attach(PlaceObject("SignNotWorking", nil, const.cfComponentAttach), self:GetSpotBeginIndex("Origin"))
-      self:UpdateWorking(false)
+      if mined then
+        --update stockpile
+        self.stockpile:AddResourceAmount(mined)
+        local infoamount = ResourceOverviewObj.data[self.resource]
+        infoamount = infoamount + 1
+        self.produced_total = self.produced_total + mined
+        self.produced_last_deposit = self.produced_last_deposit + mined
+      end
     else
-      self.notworking_sign = false
-      self:DetachAllSigns()
-      self:UpdateWorking(true)
-    end
-  end
-
-  --called it Load so it uses the load resource icon in pins
-  function PortableMiner:Load()
-
-    if self.nearby_deposits then
-      --remove removed stockpile
-      if not IsValid(self.stockpile) then
-        self.stockpile = false
-      end
-      --add new stockpile if none
-      if not self.stockpile or
-          self:GetDist2D(self.stockpile) >= 5000 or
-          self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.Miner_Handle ~= self.handle) then
-        local stockpile = NearestObject(self:GetPos(),GetObjects({class="ResourceStockpile"}),5000)
-
-        if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
-          --plunk down a new res stockpile
-          stockpile = PlaceObj("ResourceStockpile", {
-
-            --time to get all humping robot on christmas
-            "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
-            --"Pos", ScalePoint(pt, scalex, scaley, scalez)(self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)),1000,1000),
-            --find a way to get angle so we can move it back a bit
-            "Angle", self:GetAngle(),
-            "resource", self.resource,
-            "destroy_when_empty", true
-          })
-        end
-        --why doesn't this work in PlaceObj? needs happen after GameInit maybe?
-        stockpile.max_z = 10
-        stockpile.Miner_Handle = self.handle
-        self.stockpile = stockpile
-      end
-      --stops at 100 per stockpile
-      if self.stockpile:GetStoredAmount() < self.max_res_amount then
-        self.ui_working = true
-        --remove the sign
-        self:ShowNotWorkingSign()
-        --up n down n up n down
-        self:SetStateText(self.default_anim)
-        Sleep(self.anim_time or self:TimeToAnimEnd())
-
-        local mined
-        --mine some shit
-        if self.resource == "Concrete" then
-          mined = self:DigErUpConcrete(self.mine_amount)
-        elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
-          mined = self:DigErUpMetals(self.mine_amount)
-        end
-        if mined then
-          --update stockpile
-          self.stockpile:AddResourceAmount(mined)
-        end
-      else
-        self.ui_working = false
-        --no need to keep on re-showing sign (assuming there isn't a check for this, but an if bool is quicker then whatever it does)
-        if not self.notworking_sign then
-          self:ShowNotWorkingSign(true)
-        end
+      self.ui_working = false
+      --no need to keep on re-showing sign (assuming there isn't a check for this, but an if bool is quicker then whatever it does)
+      if not self.notworking_sign then
+        self:ShowNotWorkingSign(true)
       end
     end
-
-    --if not idle state then make idle state
-    if self:GetState() ~= 0 then
-      self:SetState(self.default_anim_idle)
-    end
-    Sleep(self.idle_time or self:TimeToAnimEnd())
-    --self:SetCommand("Idle")
   end
 
-  function PortableMiner:DigErUpMetals(amount)
-    if not IsValid(self.nearby_deposits) then
-      self.nearby_deposits = false
-      return
-    end
+  --if not idle state then make idle state
+  if self:GetState() ~= 0 then
+    self:SetState(self.default_anim_idle)
+  end
+  Sleep(self.idle_time or self:TimeToAnimEnd())
+  --self:SetCommand("Idle")
+end
 
-    amount = self.nearby_deposits:TakeAmount(amount)
-    Msg("ResourceExtracted", self.nearby_deposits.resource, amount)
+function PortableMiner:SetCommand(command,...)
+  if command ~= "Load" then
+    self.produced_last_deposit = 0
+  end
+  CommandObject.SetCommand(self,command, ...)
+end
 
-    if self.nearby_deposits:IsDepleted() then
-      self.nearby_deposits = false
-      self:OnDepositDepleted(self.nearby_deposits)
-    end
-    return amount
+--shoehorn in a way to update global production values
+function PortableMiner:GetResourceProduced()
+  return self.produced_last_deposit
+end
+
+function PortableMiner:DigErUpMetals(amount)
+  if not IsValid(self.nearby_deposits) then
+    self.nearby_deposits = false
+    return
   end
 
-  function PortableMiner:DigErUpConcrete(amount)
-    if not IsValid(self.nearby_deposits) then
-      self.nearby_deposits = false
-      return
-    end
+  amount = self.nearby_deposits:TakeAmount(amount)
+  Msg("ResourceExtracted", self.nearby_deposits.resource, amount)
 
-    local info = self:GetRessourceInfo()
-    --local shape = self:GetExtractionShape()
-    --there's QuarryExcavator,QuarryClosedShape, and Quarry. but those won't get the whole thing from the center
-    local shape = GetEntityCombinedShape(self.mine_area)
-    if not info or not shape then
-      return
-    end
+  if self.nearby_deposits:IsDepleted() then
+    --omg it's isn't doing anythings @!@!#!?
+		table.insert_unique(g_IdleExtractors, self)
+    self:ShowNotWorkingSign(true)
+    self.produced_last_deposit = 0
 
-    local extracted, remaining = TerrainDeposit_Extract(shape, self, TerrainDepositGrid, info, amount)
-    Msg("ResourceExtracted", self.resource, extracted)
-
-    if remaining == 0 then
-      self.nearby_deposits = false
-      assert(not self:CheckDeposit())
-      self.nearby_deposits = false
-      self:OnDepositDepleted()
-      local deposit = self:GetDeposit()
-      if IsValid(deposit) and deposit:GetAmount() < 10 * const.ResourceScale then
-        DoneObject(deposit)
-      end
-    end
-
-    if extracted == 0 then
-      return
-    end
-
-    return extracted
+    self.nearby_deposits = false
+    self:OnDepositDepleted(self.nearby_deposits)
   end
-  --needed for Concrete
-  function PortableMiner:GetDepositResource()
-    return self.resource
-  end
-  --function PortableMiner:GetExtractionShape()
-  --  return GetEntityCombinedShape("DomeMega")
-  --end
+  return amount
+end
 
-end --ClassesGenerate
+function PortableMiner:DigErUpConcrete(amount)
+  if not IsValid(self.nearby_deposits) then
+    self.nearby_deposits = false
+    return
+  end
+
+  local info = self:GetRessourceInfo()
+  --local shape = self:GetExtractionShape()
+  --there's QuarryExcavator,QuarryClosedShape, and Quarry. but those won't get the whole thing from the center
+  local shape = GetEntityCombinedShape(self.mine_area)
+  if not info or not shape then
+    return
+  end
+
+  local extracted, remaining = TerrainDeposit_Extract(shape, self, TerrainDepositGrid, info, amount)
+  Msg("ResourceExtracted", self.resource, extracted)
+
+  if remaining == 0 then
+    --omg it's isn't doing anythings @!@!#!?
+		table.insert_unique(g_IdleExtractors, self)
+    --delete that shit
+    local deposit = self.nearby_deposits
+    self.produced_last_deposit = 0
+    if IsValid(deposit) and deposit:GetAmount() < 10 * const.ResourceScale then
+--~     if IsValid(deposit) then
+      deposit.depleted = true
+      DoneObject(deposit)
+      self.nearby_deposits = false
+    end
+  end
+
+  if extracted == 0 then
+    return
+  end
+
+  return extracted
+end
+
+function PortableMiner:CanExploit(deposit)
+	deposit = deposit or self.nearby_deposits
+	return IsValid(deposit)
+end
+
+function PortableMiner:OnSelected()
+	self:AttachSign(false,"SignNotWorking")
+  table.remove_entry(g_IdleExtractors, self)
+end
+
+--needed for Concrete
+function PortableMiner:GetDepositResource()
+  return self.resource
+end
+--function PortableMiner:GetExtractionShape()
+--  return GetEntityCombinedShape("DomeMega")
+--end
+
+--~ function PortableMiner:GetUISectionMineRollover()
+--~ 	local lines = {
+--~ 		T{466, "Production per Sol (predicted)<right><resource(PredictedDailyProduction, GetResourceProduced)>", self},
+--~ 		T{468, "Lifetime production<right><resource(LifetimeProduction,exploitation_resource)>", self},
+--~ 	}
+--~ 	AvailableDeposits(self, lines)
+
+--~ 	return TConcat(lines, "<newline><left>")
+--~ end
+
+--~ function PortableMiner:GetDepositResource()
+--~ 	return self.resource
+--~ end
+
+--~ function PortableMiner:GetResourceProducedIcon()
+--~ 	return Concat("UI/Icons/Sections/",self.resource,"_2.tga")
+--~ end
 
 function OnMsg.ClassesPostprocess()
 
@@ -312,3 +405,35 @@ function OnMsg.ClassesPostprocess()
   })
 
 end --ClassesPostprocess
+
+--~ function OnMsg.ClassesBuilt()
+
+--~   if not XTemplates.ipAttackRover.ChoGGi_PortableMiner then
+--~     XTemplates.ipAttackRover.ChoGGi_PortableMiner = true
+
+--~     XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplate", {
+--~       group = "Infopanel Sections",
+--~       id = "sectionMine",
+--~       PlaceObj("XTemplateTemplate", {
+--~         "__context_of_kind", "PortableMiner",
+--~         "__template", "InfopanelSection",
+--~         "RolloverText", T{604012311372, --[[XTemplate sectionMine RolloverText]] "<UISectionMineRollover>"},
+--~         "Title", T{80, --[[XTemplate sectionMine Title]] "Production"},
+--~         "Icon", "UI/Icons/Sections/facility.tga",
+--~       }, {
+--~         PlaceObj("XTemplateCode", {
+--~           "run", function (self, parent, context)
+--~             parent.parent:SetIcon(context:GetResourceProducedIcon())
+--~           end,
+--~         }),
+--~         PlaceObj("XTemplateTemplate", {
+--~           "__template", "InfopanelText",
+--~           "Text", T{472, --[[XTemplate sectionMine Text]] "Production per Sol<right><resource(PredictedDailyProduction, GetResourceProduced)>"},
+--~         }),
+--~       }),
+--~     })
+
+
+--~   end --XTemplates
+
+--~ end --ClassesBuilt
