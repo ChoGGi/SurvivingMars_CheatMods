@@ -1,3 +1,22 @@
+Version 6.1
+Added:
+Debug>Flatten Terrain Toggle: Press Shift-F to get terrain height, mouse the circle around to make other terrain the same height, press Shift-F to finish.
+Windowed console log: It'll stay open between sessions, and keep the size/position.
+Examine Object Tools menu>separate menu items added for dump text/object, as view takes way too long on large objects.
+Some game functions to Help>Text.
+Show Mods Log to Console Scripts: No more having to quit to see mod errors (only startup ones).
+
+Changed:
+Moved F2 to Help>Hide Cheats Menu.
+Removed Debug>Toggle showing console log (added as checkbox to Console menu).
+Console>Show File Log: Flushes the stored log to disk and displays it in the console log.
+Stop Disasters will now remove dust devils.
+Write logs just writes console output now, I don't think I've ever seen anything useful in DebugLog.log (if you have let me know I'll add it back).
+Tidied up Help menu.
+
+Fixed:
+Cables & Pipes No Chance Of Break wasn't acutally working (thanks BLAde).
+
 Version 6.0
 Added:
 New default notification icon.
