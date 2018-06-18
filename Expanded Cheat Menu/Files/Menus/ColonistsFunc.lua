@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans

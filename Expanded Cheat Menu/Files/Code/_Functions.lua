@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 --any funcs called from Code/*
 
 local Concat = ChoGGi.ComFuncs.Concat

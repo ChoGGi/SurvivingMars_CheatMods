@@ -39,8 +39,21 @@ local function PopupToggle(parent,popup_id,items)
     }, popup.idContainer)
     button:SetRollover(item.hint)
 
+    --i just love checkmarks
     if item.value then
-      if _G[item.value] then
+      local value = _G[item.value]
+      local is_vis
+      if type(value) == "table" then
+        if value.visible then
+          is_vis = true
+        end
+      else
+        if value then
+          is_vis = true
+        end
+      end
+
+      if is_vis then
         button:SetCheck(true)
       else
         button:SetCheck(false)
@@ -86,7 +99,7 @@ function ChoGGi.Console.ConsoleControls()
         PopupToggle(self,"idConsoleMenu",{
           {
             name = T(302535920001026--[[Show File Log--]]),
-            hint = T(302535920001091--[[Flushs log to disk and displays in console log.--]]),
+            hint = T(302535920001091--[[Flushes log to disk and displays in console log.--]]),
             class = "XTextButton",
             clicked = function(self,pos,button)
               FlushLogFile()
@@ -112,23 +125,7 @@ function ChoGGi.Console.ConsoleControls()
             name = T(302535920000563--[[Copy Log Text--]]),
             hint = T(302535920001154--[[Displays the log text in a window you can copy sections from.--]]),
             class = "XTextButton",
-            clicked = function(self,pos,button)
-              local dlgConsoleLog = dlgConsoleLog
-              if not dlgConsoleLog then
-                return
-              end
-              local text = dlgConsoleLog.idText:GetText()
-              if text:len() == 0 then
-                print(T(302535920000692--[[Log is blank (well not anymore).--]]))
-                return
-              end
-              local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
---~                 zorder = 2000001,
-                wrap = true,
-                text = text,
-              })
-              dialog:Open()
-            end,
+            clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
           },
           {name = " - ",class = "XTextButton"},
           {
@@ -137,16 +134,22 @@ function ChoGGi.Console.ConsoleControls()
             class = "XCheckButton",
             value = "dlgConsoleLog",
             clicked = function(self,pos,button)
-              print("toggle dlgConsoleLog")
+              local ChoGGi = ChoGGi
+              ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
+              ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
+              ChoGGi.SettingFuncs.WriteSettings()
             end,
           },
           {
             name = T(302535920001120--[[Console Log Window--]]),
             hint = T(302535920001133--[[Toggle showing the console log window on screen.--]]),
             class = "XCheckButton",
-            value = "ChoGGi_dlgConsoleLogWin",
+            value = "dlgChoGGi_ConsoleLogWin",
             clicked = function(self,pos,button)
-              print("toggle ChoGGi_dlgConsoleLogWin")
+              local ChoGGi = ChoGGi
+              ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
+              ChoGGi.SettingFuncs.WriteSettings()
+              ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
             end,
           },
         })

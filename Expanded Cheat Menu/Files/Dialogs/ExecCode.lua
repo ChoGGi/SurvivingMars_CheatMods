@@ -1,4 +1,6 @@
---See LICENSE for terms
+-- See LICENSE for terms
+
+-- shows a dialog with a single line edit to execute code in
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans

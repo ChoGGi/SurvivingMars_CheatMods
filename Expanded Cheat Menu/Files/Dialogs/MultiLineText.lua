@@ -1,3 +1,7 @@
+-- See LICENSE for terms
+
+-- displays text in a selectable text box
+
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 

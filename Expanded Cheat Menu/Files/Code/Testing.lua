@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 --stuff only loaded when ChoGGi.Temp.Testing = true
 
 local Concat = ChoGGi.ComFuncs.Concat

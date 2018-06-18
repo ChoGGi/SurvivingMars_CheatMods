@@ -1,4 +1,6 @@
---See LICENSE for terms
+-- See LICENSE for terms
+
+-- used to do minimal editing of objects (or all of same type)
 
 local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
@@ -85,20 +87,14 @@ function ChoGGi_ObjectManipulator:Init()
   self.idAutoRefresh:SetHint(T(302535920000091--[[Auto-refresh list every second (turn off to edit values).--]]))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
-  local children = self.idAutoRefresh.children or empty_table
-  for i = 1, #children do
-    if children[i].class == "Button" then
-      local but = children[i]
-      function but.OnButtonPressed()
-        self.refreshing = self.idAutoRefresh:GetState()
-        CreateRealTimeThread(function()
-          while self.refreshing do
-            self:UpdateListContent(self.obj)
-            Sleep(1000)
-          end
-        end)
+  function self.idAutoRefresh.button.OnButtonPressed()
+    self.refreshing = self.idAutoRefresh:GetState()
+    CreateRealTimeThread(function()
+      while self.refreshing do
+        self:UpdateListContent(self.obj)
+        Sleep(1000)
       end
-    end
+    end)
   end
 
   element_y = border / 2 + self.idAutoRefresh:GetPos():y() + self.idAutoRefresh:GetSize():y()
@@ -318,13 +314,13 @@ function ChoGGi_ObjectManipulator:Init()
 end
 
 
---function ChoGGi_ObjectManipulator:OnKbdKeyDown(char, virtual_key)
-function ChoGGi_ObjectManipulator:OnKbdKeyDown(_, virtual_key)
+--function ChoGGi_ObjectManipulator:OnKbdKeyDown(char, vk)
+function ChoGGi_ObjectManipulator:OnKbdKeyDown(_, vk)
   local const = const
-  if virtual_key == const.vkEsc then
+  if vk == const.vkEsc then
     self.idCloseX:Press()
     return "break"
-  elseif virtual_key == const.vkEnter then
+  elseif vk == const.vkEnter then
     local origsel = self.idList.last_selected
     self:UpdateListContent(self.obj)
     self.idList:SetSelection(origsel, true)

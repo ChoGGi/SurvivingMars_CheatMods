@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 --Haemimont Games code (mostly)
 --why would they remove such a useful modding tool from a game that relies on mods this much? sigh.
 
@@ -367,18 +369,6 @@ This can take time on something like the \"Building\" metatable (don't use this 
     self:SetPos(point(100,100))
   end)
 end
-
-function Examine:OnStartResize()
-print("OnStartResize")
-  self.idText:SetVisible(false)
-  g_Classes.Window.OnStartResize(self)
-end
-function Examine:OnEndResize()
-print("OnEndResize")
-  g_Classes.Window.OnEndResize(self)
-  self.idText:SetVisible(true)
-end
-
 
 function Examine:FindNext(filter)
   local drawBuffer = self.idText.draw_cache

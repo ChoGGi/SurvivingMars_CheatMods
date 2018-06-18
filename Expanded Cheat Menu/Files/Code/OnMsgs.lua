@@ -456,46 +456,28 @@ end
 function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
+  --my comp or if we're resetting settings
+  if ChoGGi.Temp.ResetSettings or ChoGGi.Temp.Testing then
+    return
+  end
+
   --save menu pos
   local dlgUAMenu = dlgUAMenu
   if ChoGGi.UserSettings.KeepCheatsMenuPosition and dlgUAMenu then
     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
   end
 
-  --my comp or if we're resetting settings
-  if ChoGGi.Temp.ResetSettings or ChoGGi.Temp.Testing then
-    return
+  --console log window settings
+  local dlgChoGGi_ConsoleLogWin = dlgChoGGi_ConsoleLogWin
+  print("dlgChoGGi_ConsoleLogWin",dlgChoGGi_ConsoleLogWin)
+  if dlgChoGGi_ConsoleLogWin then
+    ChoGGi.UserSettings.ConsoleLogWin_Pos = dlgChoGGi_ConsoleLogWin:GetPos()
+    ChoGGi.UserSettings.ConsoleLogWin_Size = dlgChoGGi_ConsoleLogWin:GetSize()
   end
 
   --save any unsaved settings on exit
   ChoGGi.SettingFuncs.WriteSettings()
 end
-
--- Custom Msgs
-local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
-AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
-AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
-AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
-AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
-AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
-AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
-AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
-AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
-AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
-AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
-AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
-AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
-AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
-AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
-AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
-AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
 --attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
@@ -1028,6 +1010,10 @@ function OnMsg.ChoGGi_Loaded()
   --show console log history
   if UserSettings.ConsoleToggleHistory and not_ged then
     ShowConsoleLog(true)
+  end
+
+  if UserSettings.ConsoleHistoryWin and not_ged then
+    ChoGGi.ComFuncs.ShowConsoleLogWin(true)
   end
 
   --dim that console bg

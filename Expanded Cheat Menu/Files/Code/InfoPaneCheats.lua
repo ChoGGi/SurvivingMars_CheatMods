@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 --add items/hint to the cheats pane
 
 local Concat = ChoGGi.ComFuncs.Concat

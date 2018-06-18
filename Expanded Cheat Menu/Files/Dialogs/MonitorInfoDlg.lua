@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- shows various information (with auto-refresh)
+
 local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
@@ -22,6 +24,7 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
   ZOrder = zorder,
   --defaults
   refreshing = false,
+  refreshing_thread = false,
   object = false,
   values = false,
   tables = false,
@@ -65,32 +68,25 @@ function ChoGGi_MonitorInfoDlg:Init()
   self.idAutoRefresh:SetHint(T(302535920000085--[[Auto-refresh list every \"Amount\".--]]))
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
-  local children = self.idAutoRefresh.children
-  for i = 1, #children do
-    if children[i].class == "Button" then
-      local but = children[i]
-      function but.OnButtonPressed()
-        self.refreshing = self.idAutoRefresh:GetState()
-        CreateRealTimeThread(function()
-          while self.refreshing do
+  function self.idAutoRefresh.button.OnButtonPressed()
+    self.refreshing = self.idAutoRefresh:GetState()
+    self.refreshing_thread = CreateRealTimeThread(function()
+      while self.refreshing do
+        self:UpdateText()
+        Sleep(self.delay)
+        --check for missing table objects
+        if self.object.title:find("Grids") then
+          self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables,"elements")
+          --break if there's none left
+          if #self.tables == 0 then
+            --fire once more to show the nothing here text
             self:UpdateText()
-            Sleep(self.delay)
-            --check for missing table objects
-            if self.object.title:find("Grids") then
-              self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables,"elements")
-              --break if there's none left
-              if #self.tables == 0 then
-                --fire once more to show the nothing here text
-                self:UpdateText()
-                break
-              end
-            end
+            break
           end
-        end)
+        end
       end
-    end
+    end)
   end
-
 
   element_x = border * 2 + self.idAutoRefresh:GetPos():x() + self.idAutoRefresh:GetSize():x()
 
@@ -250,11 +246,15 @@ function ChoGGi_MonitorInfoDlg:BuildValue(name,kind)
 end
 
 
---esc removes focus,shift+esc closes, enter executes code
-function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, virtual_key)
-  if virtual_key == const.vkEsc then
+--esc closes
+function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, vk)
+  if vk == const.vkEsc then
     self.idCloseX:Press()
     return "break"
   end
   return "continue"
+end
+function ChoGGi_MonitorInfoDlg:Done()
+  self.refreshing = false
+  g_Classes.Window.Done(self)
 end

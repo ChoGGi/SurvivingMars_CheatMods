@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 --stores default values and some tables
 
 local Concat = ChoGGi.ComFuncs.Concat
@@ -280,13 +280,13 @@ function ChoGGi.SettingFuncs.WriteSettings()
   local ChoGGi = ChoGGi
 
   --piss off if we're saving (probably be better to read file afterwards and check if it matches)
-  if ChoGGi.Temp.SavingSettingsFile then
-    print(T(302535920000005--[[Slow arsed hard drive, or something is wrong...--]]))
-    return
-  end
+--~   if ChoGGi.Temp.SavingSettingsFile then
+--~     print(T(302535920000005--[[Slow arsed hard drive, or something is wrong...--]]))
+--~     return
+--~   end
 
-  CreateRealTimeThread(function()
-    ChoGGi.Temp.SavingSettingsFile = true
+--~   CreateRealTimeThread(function()
+--~     ChoGGi.Temp.SavingSettingsFile = true
 
     local bak = Concat(ChoGGi.SettingsFile,".bak")
     --locks the file while we write (i mean it says thread, ah well can't hurt)?
@@ -305,8 +305,8 @@ function ChoGGi.SettingFuncs.WriteSettings()
       return false, DoneFuckedUp
     end
 
-    ChoGGi.Temp.SavingSettingsFile = nil
-  end)
+--~     ChoGGi.Temp.SavingSettingsFile = nil
+--~   end)
 
 end
 

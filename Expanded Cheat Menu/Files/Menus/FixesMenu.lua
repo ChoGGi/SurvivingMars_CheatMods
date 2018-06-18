@@ -158,6 +158,7 @@ You may need to toggle the recall drones button."--]]),
 --~     end,
 --~     icon
 --~   )
+if ChoGGi.Temp.Testing then
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
     ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
@@ -169,6 +170,7 @@ You may need to toggle the recall drones button."--]]),
     end,
     icon
   )
+end
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000611--[[Rover Infinite Loop In Curiosity Update--]])),

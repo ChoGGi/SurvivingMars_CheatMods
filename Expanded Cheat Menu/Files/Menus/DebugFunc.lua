@@ -324,11 +324,16 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
 end
 
 function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
-  ChoGGi.UserSettings.WriteLogs = not ChoGGi.UserSettings.WriteLogs
-  ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+  if ChoGGi.UserSettings.WriteLogs then
+    ChoGGi.UserSettings.WriteLogs = nil
+    ChoGGi.ComFuncs.WriteLogs_Toggle()
+  else
+    ChoGGi.UserSettings.WriteLogs = true
+    ChoGGi.ComFuncs.WriteLogs_Toggle(true)
+  end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000864--[[Write debug/console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000864--[[Write console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
     T(1000113--[[Debug--]]),"UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
@@ -393,16 +398,6 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     end
   end
 
-end
-
-function ChoGGi.MenuFuncs.ConsoleHistory_Toggle()
-  ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
-  ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.ConsoleToggleHistory),T(302535920000865--[[: Those who cannot remember the past are condemned to repeat it.--]])),
-    T(1000113--[[Debug--]]),"UI/Icons/Sections/workshifts.tga"
-  )
 end
 
 function ChoGGi.MenuFuncs.ChangeMap()

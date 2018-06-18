@@ -161,22 +161,10 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.WriteLogs,
-        302535920000484 --,"Write debug/console logs to AppData/logs."
+        302535920000484 --,"Write console logs to AppData/logs (writes immediately)."
       )
     end,
     "save_city.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000485--[[Console: Toggle On-Screen Log--]])),
-    ChoGGi.MenuFuncs.ConsoleHistory_Toggle,
-    nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ConsoleToggleHistory,
-        302535920000486 --,"Show console history on screen."
-      )
-    end,
-    "Voice.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(

@@ -6,6 +6,7 @@ local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetat
 local table,debug,string = table,debug,string
 
 local _InternalTranslate = _InternalTranslate
+local AsyncFileToString = AsyncFileToString
 local AsyncFileRename = AsyncFileRename
 local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
@@ -17,6 +18,7 @@ local CreateRolloverWindow = CreateRolloverWindow
 local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
+local GetLogFile = GetLogFile
 local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
@@ -45,6 +47,7 @@ local UserActions_SetMode = UserActions.SetMode
 local terminal_GetMousePos = terminal.GetMousePos
 local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
+local FontStyles_GetFontId = FontStyles.GetFontId
 
 local g_Classes = g_Classes
 
@@ -54,8 +57,8 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   if Func then
     local newname = Concat(ClassOrFunc,"_",Func)
     if not ChoGGi.OrigFuncs[newname] then
-      ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
---~       ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
+--~       ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+      ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
     end
   else
     if not ChoGGi.OrigFuncs[ClassOrFunc] then
@@ -70,8 +73,8 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   --save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
   --redefine it
---~   g_Classes[ClassName][FuncName] = function(...)
-  _G[ClassName][FuncName] = function(...)
+  g_Classes[ClassName][FuncName] = function(...)
+--~   _G[ClassName][FuncName] = function(...)
     --I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
 
@@ -88,6 +91,31 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
     return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
   end
 end
+-- Custom Msgs
+local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
+AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
+AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
+AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
+AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
+AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
+AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
+AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
+AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
+AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
+AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
+AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
+AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
+AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
+AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
+AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
+AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
+AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
+AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
+AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
 local memoize = {
   _VERSION     = 'memoize v2.0',
@@ -1264,6 +1292,7 @@ function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
   parent.idCaption:SetBackgroundColor(0)
   parent.idCaption:SetFontStyle("Editor14Bold")
   parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
+  parent.idCaption:SetText(Table.title or "")
   parent.idCaption.HandleMouse = false
 end
 
@@ -1483,21 +1512,22 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
   return temp_table
 end
 
-function ChoGGi.ComFuncs.RetButtonTextSize(text,font)
-  local FontStyles = FontStyles
-    font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
+function ChoGGi.ComFuncs.RetButtonTextSize(text,font,width)
+  width = width or 0
+  --if no font or no id for that font then default to 14 bold
+  font = font and FontStyles_GetFontId(font) or FontStyles_GetFontId("Editor14Bold")
   local x,y = UIL_MeasureText(text or "", font)
-  return point(x + 24,y + 4) --button padding
+  return point(x + 24 + width,y + 4) --button padding
 end
-ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
+--~ ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
 
-function ChoGGi.ComFuncs.RetCheckTextSize(text,font)
-  local FontStyles = FontStyles
-  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
+function ChoGGi.ComFuncs.RetCheckTextSize(text,font,width)
+  width = width or 0
+  font = font and FontStyles_GetFontId(font) or FontStyles_GetFontId("Editor14Bold")
   local x,_ = UIL_MeasureText(text or "", font)
-  return point(x + 24,17) --button padding
+  return point(x + 24 + width,17) --button padding
 end
-ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
+--~ ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
 -- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from)
@@ -1643,4 +1673,57 @@ end
 function ChoGGi.ComFuncs.TickEnd(id)
   print(id,": ",GetPreciseTicks() - times[id])
   times[id] = nil
+end
+
+function ChoGGi.ComFuncs.SelectConsoleLogText()
+  local dlgConsoleLog = dlgConsoleLog
+  if not dlgConsoleLog then
+    return
+  end
+  local text = dlgConsoleLog.idText:GetText()
+  if text:len() == 0 then
+    print(T(302535920000692--[[Log is blank (well not anymore).--]]))
+    return
+  end
+  local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+  --~                 zorder = 2000001,
+    wrap = true,
+    text = text,
+  })
+  dialog:Open()
+end
+
+function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+  if visible and not dlgChoGGi_ConsoleLogWin then
+    dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new()
+
+    --update it with console log text
+    local dlg = dlgConsoleLog
+    if dlg then
+      dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
+    else
+      --if for some reason consolelog isn't around, then grab the log file
+      dlgChoGGi_ConsoleLogWin.idText:SetText(select(2,AsyncFileToString(GetLogFile())))
+    end
+
+  end
+  local dlg = dlgChoGGi_ConsoleLogWin
+  if dlg then
+    dlg:SetVisible(visible)
+
+    --size n position
+    local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+    local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
+    --make sure dlg is within screensize
+    if size then
+      dlg:SetSize(size)
+    end
+    if pos then
+      dlg:SetPos(pos)
+    else
+      dlg:SetPos(point(100,100))
+    end
+
+  end
+
 end

@@ -1,4 +1,6 @@
---See LICENSE for terms
+-- See LICENSE for terms
+
+-- all purpose items list
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
@@ -100,16 +102,10 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idCheckBox2:SetHSizing("AnchorToMidline")
   self.idCheckBox2:SetVSizing("AnchorToBottom")
   --make checkbox work like a button
-  local children = self.idCheckBox2.children
-  for i = 1, #children do
-    if children[i].class == "Button" then
-      local but = children[i]
-      function but.OnButtonPressed()
-        --show lightmodel lists and lets you pick one to use in new window
-        if self.CustomType == 5 then
-          ChoGGi.MenuFuncs.ChangeLightmodel(true)
-        end
-      end
+  function self.idCheckBox2.button.OnButtonPressed()
+    --show lightmodel lists and lets you pick one to use in new window
+    if self.CustomType == 5 then
+      ChoGGi.MenuFuncs.ChangeLightmodel(true)
     end
   end
 
@@ -427,16 +423,16 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
   end
 end
 
---function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, virtual_key)
-function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, virtual_key)
+--function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, vk)
+function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, vk)
   local const = const
-  if virtual_key == const.vkEsc then
+  if vk == const.vkEsc then
     self.idCloseX:Press()
     return "break"
-  elseif virtual_key == const.vkEnter then
+  elseif vk == const.vkEnter then
     self.idOK:Press()
     return "break"
---~   elseif virtual_key == const.vkSpace then
+--~   elseif vk == const.vkSpace then
 --~     self.idCheckBox1:SetToggled(not self.idCheckBox1:GetToggled())
 --~     return "break"
   end

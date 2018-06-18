@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local local_T = T
@@ -271,10 +271,14 @@ end --OnMsg
 
 --Pre
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-  SaveOrigFunc("InfopanelObj","CreateCheatActions")
+--~   SaveOrigFunc("InfopanelObj","CreateCheatActions")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   --so we can add hints to info pane cheats
+  if not ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions then
+    ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+  end
+
   function InfopanelObj:CreateCheatActions(win)
     --fire orig func to build cheats
     if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
