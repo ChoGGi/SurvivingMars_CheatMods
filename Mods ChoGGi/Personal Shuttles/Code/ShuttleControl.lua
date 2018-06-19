@@ -6,6 +6,7 @@ local Sleep = Sleep
 local GameTime = GameTime
 local DeleteThread = DeleteThread
 local PlayFX = PlayFX
+local Random = Random
 
 function OnMsg.ClassesBuilt()
 
@@ -315,7 +316,7 @@ function OnMsg.ClassesBuilt()
           --self:PersonalShuttles_LandIt(UICity,Sleep,terrain,x,y,pos)
           self:PlayFX("Dust", "start")
           self:PlayFX("Waiting", "start")
-          local land = point(x+UICity:Random(-2500,2500),y+UICity:Random(-2500,2500)):SetZ(terrain.GetSurfaceHeight(pos))
+          local land = point(x+Random(-2500,2500),y+Random(-2500,2500)):SetZ(terrain.GetSurfaceHeight(pos))
           self:FlyingFace(land, 2500)
           self:SetPos(land, 4000)
           Sleep(750)
@@ -343,7 +344,7 @@ function OnMsg.ClassesBuilt()
         if #UICity.PersonalShuttles.CargoShuttleThreads > 10 then
           path = self:CalcPath(
             pos,
-            point(dest:x()+UICity:Random(-2500,2500),dest:y()+UICity:Random(-2500,2500),1500)
+            point(dest:x()+Random(-2500,2500),dest:y()+Random(-2500,2500),1500)
           )
         else
           path = self:CalcPath(pos, dest)

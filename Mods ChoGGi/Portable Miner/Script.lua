@@ -40,7 +40,6 @@ local function Concat(...)
   return TConcat(concat_table)
 end
 
-
 do
   local BuildingDepositExploiterComponent = BuildingDepositExploiterComponent
   local DefineClass = DefineClass
