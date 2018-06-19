@@ -110,7 +110,7 @@ local function SpawnColonist(old_c,building,pos,city)
   return colonist
 end
 
-function ChoGGi.MenuFuncs.RedoAllColonists()
+function ChoGGi.MenuFuncs.ResetAllColonists()
     local function CallBackFunc(answer)
       if answer then
         local objs = GetObjects({class = "Colonist"}) or empty_table

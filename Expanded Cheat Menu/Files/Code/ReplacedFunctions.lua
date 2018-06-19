@@ -1093,7 +1093,7 @@ end
       --shouldn't fail anymore, but we'll still pcall
       pcall(function()
         local angle = type(last.GetAngle) == "function" and last:GetAngle()
-        if angle and type(ret[1].SetAngle) == "function" then
+        if type(angle) == "number" and type(ret[1].SetAngle) == "function" then
           ret[1]:SetAngle(angle)
         end
       end)

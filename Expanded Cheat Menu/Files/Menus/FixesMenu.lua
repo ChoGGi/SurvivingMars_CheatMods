@@ -19,7 +19,7 @@ You may need to toggle the recall drones button."--]]),
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000055--[[Reset All Colonists--]])),
-    ChoGGi.MenuFuncs.RedoAllColonists,
+    ChoGGi.MenuFuncs.ResetAllColonists,
     nil,
     T(302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]]),
     icon

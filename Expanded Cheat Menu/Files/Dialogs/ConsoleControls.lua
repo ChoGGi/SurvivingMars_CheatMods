@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local T = ChoGGi.ComFuncs.Trans
 
 local rawget,table,string,tostring,print,select = rawget,table,string,tostring,print,select
@@ -12,64 +13,6 @@ local GetLogFile = GetLogFile
 
 local g_Classes = g_Classes
 --~ box(left, top, right, bottom)
-
-local function PopupToggle(parent,popup_id,items)
-  local popup = g_Classes.XPopupList:new({
-    Opened = true,
-    Id = popup_id,
-    ZOrder = 2000001, --1 above consolelog
---~     HAlign = "left",
---~     VAlign = "bottom",
-    Dock = "top",
-    Margins = box(0, 0, 0, 5),
-    LayoutMethod = "VList",
-  }, terminal.desktop)
-
-  for i = 1, #items do
-    local item = items[i]
-    local button = g_Classes[item.class]:new({
-      TextFont = "Editor16Bold",
-      RolloverText = item.hint,
-      RolloverTemplate = "Rollover",
-      Text = item.name,
-      OnMouseButtonDown = item.clicked or function()end,
-      OnMouseButtonUp = function()
-        popup:Close()
-      end,
-    }, popup.idContainer)
-    button:SetRollover(item.hint)
-
-    --i just love checkmarks
-    if item.value then
-      local value = _G[item.value]
-      local is_vis
-      if type(value) == "table" then
-        if value.visible then
-          is_vis = true
-        end
-      else
-        if value then
-          is_vis = true
-        end
-      end
-
-      if is_vis then
-        button:SetCheck(true)
-      else
-        button:SetCheck(false)
-      end
-    end
-  end
-
-  popup:SetAnchor(parent.box)
---~   popup:SetAnchor(Offset(container.box, point(dlgConsole.idEdit:GetCursorX(), 0)))
-  popup:SetAnchorType("top")
-  popup:Open()
---~   popup:SetModal()
-  popup:SetFocus()
-  return popup
-end
---~   popup:SetAnchorType("top")
 
 --fired from OnMsgs
 function ChoGGi.Console.ConsoleControls()
