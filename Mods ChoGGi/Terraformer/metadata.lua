@@ -1,11 +1,9 @@
 return PlaceObj("ModDef", {
-	"title", "Flatten Ground v0.2",
-	"id", "ChoGGi_FlattenGround",
+	"title", "Terraformer v0.2",
+	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
 	"version", 2,
-	"code", {
-		"Script.lua",
-	},
+	"code", {"Script.lua"},
 	"saved", 1529409600,
 	"TagOther", true,
 	"image", "Preview.png",
@@ -16,6 +14,7 @@ Press Shift-F to set height to wherever cursor is, move cursor around to flatten
 
 Defaults to a radius of 2500, Shift Left/Right to change.
 Change height with Shift Up/Down.
+Use Mod Config to change the amount it changes when you press an arrow key.
 
 There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days).
 

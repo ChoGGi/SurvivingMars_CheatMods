@@ -1,0 +1,4 @@
+v0.2
+Shift Left/Right to change radius.
+Shift Up/Down to change height.
+Added Mod Config support for the radius/height diff amount.

@@ -1499,7 +1499,7 @@ end
 -- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from)
   local ChoGGi = ChoGGi
-  if o == nil then
+  if not o then
     return ChoGGi.ComFuncs.ClearShowMe()
   end
 
@@ -1527,96 +1527,24 @@ end
 
 local OpenExamine = OpenExamine
 function ex(o, from)
-  OpenExamine(o, from)
+  if o then
+    OpenExamine(o, from)
+  end
 end
+
+--~ local lm = false
+markers = {}
 function ChoGGi.ComFuncs.ClearShowMe()
   for k, v in pairs(markers) do
     if IsValid(k) then
       if v == "point" then
         DoneObject(k)
       else
---~         if v == 65280 then --marker green
---~           k:SetColorModifier(6579300)
---~         else
-          k:SetColorModifier(v)
---~         end
+        k:SetColorModifier(v)
       end
+      markers[k] = nil
     end
   end
---~   if Platform.developer then
---~     ClearTextTrackers()
---~   end
-end
-
---~ local lm = false
-markers = {}
-function ChoGGi.ComFuncs.ShowMe(o, color, time)
-  if not o then
-    return ChoGGi.ComFuncs.ClearShowMe()
-  end
-  if type(o) == "table" and #o == 2 then
-    if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
-      local m = Vector:new()
-      m:Set(o[1], o[2], color)
-      markers[m] = "vector"
-      o = m
-    end
-  elseif IsPoint(o) then
-    if terrain_IsPointInBounds(o) then
-      local m = Sphere:new()
-      m:SetPos(o)
-      m:SetRadius(50 * guic)
-      m:SetColor(color or RGB(0, 255, 0))
-      markers[m] = "point"
-      if not time then
-        ViewPos(o)
-      end
-      o = m
-    end
-  elseif IsValid(o) then
-    markers[o] = markers[o] or o:GetColorModifier()
-    o:SetColorModifier(color or RGB(0, 255, 0))
-    local pos = o:GetVisualPos()
-    if not time and terrain_IsPointInBounds(pos) then
-      ViewPos(pos)
-    end
---~   elseif not markers[o] then
---~     AddTrackerText(false, o)
-  end
---~   lm = o
-
-  --never gets called
---~   if time then
---~     CreateGameTimeThread(function()
---~       Sleep(time)
---~       local v = markers[o]
---~       if IsValid(o) then
---~         if v == "point" or v == "vector" then
---~           DoneObject(o)
---~         else
---~           o:SetColorModifier(v)
---~         end
---~       end
---~       if Platform.developer then
---~         ClearTextTrackers(o)
---~       end
---~     end)
---~   end
-
-end
-
-function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
-  local c = Circle:new()
-  c:SetPos(pt:SetTerrainZ(10 * guic))
-  c:SetRadius(r)
-  c:SetColor(color or RGB(255, 255, 255))
-  CreateGameTimeThread(function()
-    Sleep(7000)
-    if IsValid(c) then
---~       c:delete()
-      DoneObject(c)
-    end
-  end)
 end
 
 function ChoGGi.ComFuncs.StartDebugger()
@@ -1800,6 +1728,54 @@ do
     popup:Open()
     popup:SetFocus()
     return popup
+  end
+
+  function ChoGGi.ComFuncs.ShowMe(o, color, time)
+    if not o then
+      return ChoGGi.ComFuncs.ClearShowMe()
+    end
+    if type(o) == "table" and #o == 2 then
+      if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
+        local m = g_Classes.Vector:new()
+        m:Set(o[1], o[2], color)
+        markers[m] = "vector"
+        o = m
+      end
+    elseif IsPoint(o) then
+      if terrain_IsPointInBounds(o) then
+        local m = g_Classes.Sphere:new()
+        m:SetPos(o)
+        m:SetRadius(50 * guic)
+        m:SetColor(color or RGB(0, 255, 0))
+        markers[m] = "point"
+        if not time then
+          ViewPos(o)
+        end
+        o = m
+      end
+    elseif IsValid(o) then
+      markers[o] = markers[o] or o:GetColorModifier()
+      o:SetColorModifier(color or RGB(0, 255, 0))
+      local pos = o:GetVisualPos()
+      if not time and terrain_IsPointInBounds(pos) then
+        ViewPos(pos)
+      end
+    end
+  --~   lm = o
+  end
+
+  function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
+    local c = g_Classes.Circle:new()
+    c:SetPos(pt:SetTerrainZ(10 * guic))
+    c:SetRadius(r)
+    c:SetColor(color or RGB(255, 255, 255))
+    CreateGameTimeThread(function()
+      Sleep(7000)
+      if IsValid(c) then
+  --~       c:delete()
+        DoneObject(c)
+      end
+    end)
   end
 
 end

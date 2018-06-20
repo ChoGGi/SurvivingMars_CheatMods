@@ -185,7 +185,7 @@ function OnMsg.ClassesBuilt()
     local x,y,z
 
     local dusty = CreateGameTimeThread(function()
-      while IsValid(self) do
+      while IsValid(self.SpiceHarvester_Harvester) do
         Sleep(1000)
         local pos1 = self:GetVisualPos()
         if pos1:z() - terrain_GetHeight(pos1) < 1500 then
