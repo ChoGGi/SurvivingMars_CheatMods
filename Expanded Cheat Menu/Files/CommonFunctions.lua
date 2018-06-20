@@ -1535,16 +1535,18 @@ end
 --~ local lm = false
 markers = {}
 function ChoGGi.ComFuncs.ClearShowMe()
-  for k, v in pairs(markers) do
-    if IsValid(k) then
-      if v == "point" then
-        DoneObject(k)
-      else
-        k:SetColorModifier(v)
+  pcall(function()
+    for k, v in pairs(markers) do
+      if IsValid(k) then
+        if v == "point" then
+          DoneObject(k)
+        else
+          k:SetColorModifier(v)
+        end
+        markers[k] = nil
       end
-      markers[k] = nil
     end
-  end
+  end)
 end
 
 function ChoGGi.ComFuncs.StartDebugger()
