@@ -1023,7 +1023,7 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
       end
       return true
     end) then
-      DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),"\r\n",name))
+--~       DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),"\r\n",name))
     end
 
   else

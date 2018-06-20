@@ -17,11 +17,14 @@ end
 --fired when game is loaded
 function OnMsg.FlattenGround_Loaded()
 
-  FlattenGround.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000485--[[Flatten Terrain Toggle--]])),
-    FlattenGround.MenuFuncs.FlattenTerrain_Toggle,
-    "Shift-F",
-    T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.--]]),
-    "FixUnderwaterEdges.tga"
-  )
+  UserActions.AddActions({
+    [Concat("FlattenGround-",AsyncRand())] = {
+      menu = Concat("[102]Debug/",T(302535920000485--[[Flatten Terrain Toggle--]])),
+      action = FlattenGround.MenuFuncs.FlattenTerrain_Toggle,
+      key = "Shift-F",
+      description = T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.--]]),
+      icon = "FixUnderwaterEdges.tga"
+    }
+  })
+
 end

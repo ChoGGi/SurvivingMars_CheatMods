@@ -9,6 +9,8 @@ local point = point
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 local XTemplates = XTemplates
+local PlaySound = PlaySound
+local StopSound = StopSound
 
 local terrain_SetTypeCircle = terrain.SetTypeCircle
 local terrain_GetHeight = terrain.GetHeight
@@ -23,6 +25,7 @@ DefineClass.Melanger = {
   },
   hub = false,
   name = false,
+  fake_obj = false,
   shuttles = {},
 }
 
@@ -45,47 +48,59 @@ function Melanger:GameInit()
 
   local shuttle_amount = Random(2,4)
 
-  local hub = ShuttleHub:new({
+  self.hub = ShuttleHub:new({
     starting_shuttles = shuttle_amount,
     ChoGGi_SlotAmount = shuttle_amount,
     ChoGGi_Parent = self,
   })
-  self.hub = hub
-  self:Attach(self.hub)
   self.hub:SetVisible()
+  self:Attach(self.hub)
   self.hub.shuttle_infos = {}
+
+  self.fake_obj = CargoShuttle:new()
+  self:Attach(self.fake_obj)
+  self.fake_obj:SetVisible(true)
+  --needed?
+  self.fake_obj:SetScale(25)
+--~ 	s.fake_obj:PlayFX("TakeOff", "mid")
+--~ 	s.fake_obj:PlayFX("Land", "mid")
 
   self:SetCommand("Roam")
 
-  --needs a slight delay for the shuttlehub to do it's thang
+  --needs a slight delay for the shuttlehub to do it's thing
   CreateRealTimeThread(function()
-    Sleep(1000)
+    Sleep(100)
     for _ = 1, shuttle_amount do
       self.hub.shuttle_infos[#self.hub.shuttle_infos + 1] = ShuttleInfo:new({hub = self.hub})
       self.shuttles[#self.shuttles+1] = SpiceHarvester.CodeFuncs.SpawnShuttle(self.hub)
     end
 
+    Sleep(900)
     local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
     --should be good by now
     Sleep(1500)
---~     local delay = 0
-    while true do
-      if not IsValid(self) then
-        return
-      end
+    local delay = 0
+    local snd
+    while IsValid(self) do
+      local pos = self:GetVisualPos()
       --a slimy trail of sand
-      terrain_SetTypeCircle(self:GetVisualPos(), 1000, terrain_type_idx)
+      terrain_SetTypeCircle(pos, 900, terrain_type_idx)
       Sleep(50)
---~       delay = delay + 1
---~       if delay > 100 then
---~         delay = 0
---~         PlayFX("Dust", "start", self, self)
---~       end
-
+      delay = delay + 1
+      if delay > 125 then
+        delay = 0
+        self.fake_obj:PlayFX("Dust", "start")
+        Sleep(250)
+        snd = PlaySound("Object PreciousExtractor LoopPeaks", "ObjectOneshot", nil, 0, false, self, 50)
+--~         PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
+        Sleep(2250)
+        StopSound(snd)
+        self.fake_obj:PlayFX("Dust", "end")
+      end
     end
   end)
-
 end
+
 
 function OnMsg.ClassesPostprocess()
 
@@ -129,7 +144,7 @@ function OnMsg.ClassesBuilt()
         end,
       "func", function(parent, context)
         DoneObject(context)
---~         PlayFX("GroundExplosion", "start", context)
+        PlayFX("GroundExplosion", "start", context.fake_obj)
       end
       })
     })
@@ -170,15 +185,15 @@ function OnMsg.ClassesBuilt()
     local x,y,z
 
     local dusty = CreateGameTimeThread(function()
-      while true do
+      while IsValid(self) do
         Sleep(1000)
-        local pos = self:GetVisualPos()
-        if pos:z() - terrain_GetHeight(pos) < 1500 then
+        local pos1 = self:GetVisualPos()
+        if pos1:z() - terrain_GetHeight(pos1) < 1500 then
           self:PlayFX("Dust", "start")
           while true do
             Sleep(1000)
-            pos = self:GetVisualPos()
-            if pos:z() - terrain_GetHeight(pos) > 1500 then
+            local pos2 = self:GetVisualPos()
+            if pos2:z() - terrain_GetHeight(pos2) > 1500 then
               break
             end
           end
@@ -188,7 +203,7 @@ function OnMsg.ClassesBuilt()
     end)
 
     repeat
-      self.hover_height = Random(1000,10000)
+      self.hover_height = Random(900,15000)
       if IsValid(self.SpiceHarvester_Harvester) then
         x,y,z = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
         self:FollowPathCmd(self:CalcPath(self:GetVisualPos(), point(x+Random(-25000,25000),y+Random(-25000,25000))))
@@ -198,9 +213,11 @@ function OnMsg.ClassesBuilt()
       end
     until not self.SpiceHarvester_FollowHarvesterShuttle or not self.SpiceHarvester_Harvester
     self:PlayFX("GroundExplosion", "start")
+
     DeleteThread(dusty)
-    self:PlayFX("GroundExplosion", "end")
     self:PlayFX("Dust", "end")
+
+    self:PlayFX("GroundExplosion", "end")
     DoneObject(self)
   end
 

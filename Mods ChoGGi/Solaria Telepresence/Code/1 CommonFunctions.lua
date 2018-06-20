@@ -34,6 +34,7 @@ local OnScreenNotificationPreset = OnScreenNotificationPreset
 local OpenXDialog = OpenXDialog
 local point = point
 local RGB = RGB
+local RGBA = RGBA
 local ShowConsoleLog = ShowConsoleLog
 local Sleep = Sleep
 local TechDef = TechDef
@@ -397,40 +398,6 @@ function SolariaTelepresence.ComFuncs.CompareTableValue(a,b,sName)
   end
 end
 
-function SolariaTelepresence.ComFuncs.DialogAddCaption(parent,Table)
-  parent.idCaption = g_Classes.StaticText:new(parent)
-  parent.idCaption:SetPos(Table.pos)
-  parent.idCaption:SetSize(Table.size)
-  parent.idCaption:SetHSizing("AnchorToLeft")
-  parent.idCaption:SetBackgroundColor(0)
-  parent.idCaption:SetFontStyle("Editor14Bold")
-  parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
-  parent.idCaption.HandleMouse = false
-end
-
-function SolariaTelepresence.ComFuncs.DialogAddCloseX(parent,func)
-  parent.idCloseX = g_Classes.Button:new(parent)
-  parent.idCloseX:SetHSizing("AnchorToRight")
-  parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
-  parent.idCloseX:SetSize(point(18, 18))
-  parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-  parent.idCloseX:SetHint(T(1011--[[Close--]]))
-  parent.idCloseX.OnButtonPressed = func or function()
-    parent:delete()
-  end
-end
-
-function SolariaTelepresence.ComFuncs.RetButtonTextSize(text,font)
-  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
-  local x,y = UIL_MeasureText(text or "", font)
-  return point(x + 24,y + 4) --button padding
-end
-
-function SolariaTelepresence.ComFuncs.RetCheckTextSize(text,font)
-  font = font and FontStyles.GetFontId(font) or FontStyles.GetFontId("Editor14Bold")
-  local x,_ = UIL_MeasureText(text or "", font)
-  return point(x + 24,17) --button padding
-end
 
 function SolariaTelepresence.ComFuncs.RetProperType(Value)
   --number?
@@ -451,13 +418,11 @@ function SolariaTelepresence.ComFuncs.RetProperType(Value)
   return Value
 end
 
-function DisableDroneMaintenance.ComFuncs.PopupToggle(parent,popup_id,items)
+function SolariaTelepresence.ComFuncs.PopupToggle(parent,popup_id,items)
   local popup = g_Classes.XPopupList:new({
     Opened = true,
     Id = popup_id,
     ZOrder = 2000001, --1 above consolelog
---~     HAlign = "left",
---~     VAlign = "bottom",
     Dock = "top",
     Margins = box(0, 0, 0, 5),
     LayoutMethod = "VList",
@@ -471,12 +436,17 @@ function DisableDroneMaintenance.ComFuncs.PopupToggle(parent,popup_id,items)
       RolloverTemplate = "Rollover",
       Text = item.name,
       RolloverBackground = RGBA(40, 163, 255, 128),
+      OnMouseEnter = function()
+        if item.pos then
+          ViewPos(item.pos)
+        end
+      end,
       OnMouseButtonDown = item.clicked or function()end,
       OnMouseButtonUp = function()
         popup:Close()
       end,
     }, popup.idContainer)
-    button:SetRollover(item.hint)
+--~     button:SetRollover(item.hint)
 
     --i just love checkmarks
     if item.value then

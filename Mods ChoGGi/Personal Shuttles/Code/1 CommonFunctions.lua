@@ -7,7 +7,7 @@ local _InternalTranslate = _InternalTranslate
 local AsyncRand = AsyncRand
 local OpenXDialog = OpenXDialog
 
-local g_Classes = g_Classes
+--~ local g_Classes = g_Classes
 
 -- I want a translate func to always return a string
 function PersonalShuttles.ComFuncs.Trans(...)
@@ -39,6 +39,7 @@ function PersonalShuttles.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   if Func then
     local newname = Concat(ClassOrFunc,"_",Func)
     if not PersonalShuttles.OrigFuncs[newname] then
+--~       PersonalShuttles.OrigFuncs[newname] = _G[ClassOrFunc][Func]
       PersonalShuttles.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
     end
   else

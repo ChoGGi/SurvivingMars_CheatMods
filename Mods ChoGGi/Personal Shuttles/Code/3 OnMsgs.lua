@@ -1,4 +1,7 @@
-local SaveOrigFunc = PersonalShuttles.ComFuncs.SaveOrigFunc
+
+local next,pairs = next,pairs
+local IsValid = IsValid
+local Sleep = Sleep
 
 function OnMsg.ClassesGenerate()
   --custom shuttletask
@@ -9,29 +12,36 @@ function OnMsg.ClassesGenerate()
     scanning = false, --from explorer code for AnalyzeAnomaly
     dest_pos = false, --there isn't one, but adding one prevents log spam
   }
-  --if it idles it'll go home, so we return my command till we remove thread
+end
+
+function OnMsg.ClassesPreprocess()
+  CargoShuttle.defence_thread_DD = false
+end
+
+function OnMsg.ClassesBuilt()
+  local SaveOrigFunc = PersonalShuttles.ComFuncs.SaveOrigFunc
+  SaveOrigFunc("CargoShuttle","GameInit")
   SaveOrigFunc("CargoShuttle","Idle")
+  SaveOrigFunc("CargoShuttle","OnTaskAssigned")
+  local PersonalShuttles_OrigFuncs = PersonalShuttles.OrigFuncs
+
+  --if it idles it'll go home, so we return my command till we remove thread
   function CargoShuttle:Idle()
-    local PersonalShuttles = PersonalShuttles
     if self.PersonalShuttles_FollowMouseShuttle then
       self:SetCommand("PersonalShuttles_FollowMouse")
       Sleep(250)
     else
-      return PersonalShuttles.OrigFuncs.CargoShuttle_Idle(self)
+      return PersonalShuttles_OrigFuncs.CargoShuttle_Idle(self)
     end
   end
 
   --meteor targeting
-  SaveOrigFunc("CargoShuttle","GameInit")
   function CargoShuttle:GameInit()
-
     local PersonalShuttles = PersonalShuttles
 
     --if it's an attack shuttle
     if UICity.PersonalShuttles.CargoShuttleThreads[self.handle] then
 
-      local IsValid = IsValid
-      local Sleep = Sleep
       self.shoot_range = 25 * guim
       self.reload_time = const.HourDuration
       self.track_thread = false
@@ -49,40 +59,18 @@ function OnMsg.ClassesGenerate()
       end)
     end
 
-    return PersonalShuttles.OrigFuncs.CargoShuttle_GameInit(self)
+    return PersonalShuttles_OrigFuncs.CargoShuttle_GameInit(self)
   end
-end
-
-function OnMsg.ClassesPreprocess()
-  CargoShuttle.defence_thread_DD = false
-end
-
-function OnMsg.ClassesBuilt()
 
   --gives an error when we spawn shuttle since i'm using a fake task
-  SaveOrigFunc("CargoShuttle","OnTaskAssigned")
   function CargoShuttle:OnTaskAssigned()
     if self.PersonalShuttles_FollowMouseShuttle then
       return true
     else
-      return PersonalShuttles.OrigFuncs.CargoShuttle_OnTaskAssigned(self)
+      return PersonalShuttles_OrigFuncs.CargoShuttle_OnTaskAssigned(self)
     end
   end
 
-  if type(PersonalShuttles.Temp.Testing) == "function" then
-    SaveOrigFunc("terminal","MouseEvent")
-    function terminal.MouseEvent(event, ...)
-      --local PersonalShuttles = PersonalShuttles
-      if PersonalShuttles.Temp.ShuttleClickerControl then
-        local _, button = ...
-        --that's a rightclick
-        if event == "OnMouseButtonDown" and button == "R" then
-          PersonalShuttles.Temp.ShuttleClickerPos = GetTerrainCursor()
-        end
-      end
-      return PersonalShuttles.OrigFuncs.terminal_MouseEvent(event, ...)
-    end
-  end
 end
 
 function OnMsg.LoadingScreenPreClose()
@@ -116,7 +104,6 @@ function OnMsg.LoadingScreenPreClose()
 end
 
 function OnMsg.NewDay() --newsol
-  local IsValid = IsValid
   local UICity = UICity
 
   --clean up old handles

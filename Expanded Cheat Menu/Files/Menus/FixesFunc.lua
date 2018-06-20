@@ -1,6 +1,7 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,type,tostring = pairs,pcall,type,tostring
@@ -228,14 +229,12 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-  ForEach({class = "UnpersistedMissingClass", action = "delete"})
---[[
-  local ChoGGi = ChoGGi
-  local objs = GetObjects({class = "UnpersistedMissingClass"}) or empty_table
-  for i = 1, #objs do
-    ChoGGi.CodeFuncs.DeleteObject(objs[i])
-  end
-  --]]
+  ForEach({
+    class = "UnpersistedMissingClass",
+    exec = function(obj)
+      DeleteObject(obj)
+    end
+  })
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
@@ -243,7 +242,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
   local objs = GetObjects({class = "MirrorSphere"}) or empty_table
   for i = 1, #objs do
     if not IsValid(objs[i].target) then
-      ChoGGi.CodeFuncs.DeleteObject(objs[i])
+      DeleteObject(objs[i])
     end
   end
   objs = GetObjects({class = "ParSystem"}) or empty_table

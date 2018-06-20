@@ -3,6 +3,8 @@ local Concat = DisableDroneMaintenance.ComFuncs.Concat
 local RetName = DisableDroneMaintenance.ComFuncs.RetName
 local PopupToggle = DisableDroneMaintenance.ComFuncs.PopupToggle
 
+local rawget = rawget
+
 local XTemplates = XTemplates
 local PlaceObj = PlaceObj
 local GetObjects = GetObjects
@@ -51,11 +53,11 @@ function OnMsg.ClassesBuilt()
         end,
         "func", function(self, context)
           ---
-          local popup = rawget(terminal.desktop, "idConsoleMenu")
+          local popup = rawget(terminal.desktop, "idDisableDroneMaintenanceMenu")
           if popup then
             popup:Close()
           else
-            PopupToggle(self,"idConsoleMenu",{
+            PopupToggle(self,"idDisableDroneMaintenanceMenu",{
               {
                 name = Concat("Toggle maintenance on this ",RetName(context)," only."),
                 hint = Concat("Toggles maintenance on only this ",RetName(context),"."),

@@ -768,10 +768,11 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   --add name to action id
   if Action then
     local debug_info = debug.getinfo(Action, "Sn")
-    local text = tostring(Concat(debug_info.short_src,"(",debug_info.linedefined,")"))
+    local text = Concat(debug_info.short_src,"(",debug_info.linedefined,")")
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
+    name = name:gsub("...Mods/Expanded Cheat Menu/","")
     --
   elseif ChoGGi.Testing and Key ~= "Skip" then
     ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>: </color><color 128 255 128>",T(302535920000166--[[BROKEN FUNCTION--]]),": </color>",Menu)
@@ -801,7 +802,8 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
-    [Concat("ChoGGi_",name,"-",AsyncRand())] = {
+--~     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
+    [Concat("ChoGGi_",name)] = {
       menu = Menu,
       action = Action,
       key = Key,
@@ -1754,6 +1756,11 @@ do
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
+        end,
+        OnMouseEnter = function()
+          if item.pos then
+            ViewPos(item.pos)
+          end
         end,
       }, popup.idContainer)
       button:SetRollover(item.hint)

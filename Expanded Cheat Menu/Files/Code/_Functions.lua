@@ -1115,9 +1115,9 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
 end
 
 
-function ChoGGi.CodeFuncs.ViewAndSelectObject(Obj)
-  ViewPos(Obj:GetVisualPos())
-  SelectObj(Obj)
+function ChoGGi.CodeFuncs.ViewAndSelectObject(obj)
+  ViewPos(obj:GetVisualPos())
+  SelectObj(obj)
 end
 
 function ChoGGi.CodeFuncs.DeleteObject(obj)

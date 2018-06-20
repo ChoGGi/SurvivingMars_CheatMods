@@ -234,7 +234,7 @@ function OnMsg.ClassesBuilt()
         local x,y,z = self:GetVisualPosXYZ()
         local dest = GetTerrainCursor()
 
-        self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,pos,x,y,z,dest,idle)
+        self:PersonalShuttles_Goto(PersonalShuttles,terrain,pos,x,y,z,dest,idle)
         Sleep(1000)
       until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
     end
@@ -263,7 +263,7 @@ function OnMsg.ClassesBuilt()
       local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
 
-      self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,point(x,y,z),x,y,z,dest)
+      self:PersonalShuttles_Goto(PersonalShuttles,terrain,point(x,y,z),x,y,z,dest)
 
       --scanning/resource
       self:PersonalShuttles_SelectedObject(PersonalShuttles,SelectedObj,point(x,y,z),dest)
@@ -277,7 +277,7 @@ function OnMsg.ClassesBuilt()
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,pos,x,y,z,dest)
+  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,pos,x,y,z,dest)
     if not dest then
       return
     end
@@ -405,6 +405,9 @@ function OnMsg.ClassesBuilt()
         --move it
 
         --carried:SetPos(HexGetNearestCenter(dest))
+        self:PlayFX("ShuttleUnload", "start", self)
+        Sleep(1000)
+        self:PlayFX("ShuttleUnload", "end", self)
         carried:Detach()
 
         --carried:SetPos(HexGetNearestCenter(pass))
@@ -432,7 +435,9 @@ function OnMsg.ClassesBuilt()
           --remove pickup mark from it
           sel.PersonalShuttles_PickUpItem = nil
           --PlayFX of beaming, transport one i think
+          self:PlayFX("ShuttleLoad", "start", self)
           Sleep(1000)
+          self:PlayFX("ShuttleLoad", "end", self)
 
           if not UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] then
             UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] = true
