@@ -193,26 +193,6 @@ function SolariaTelepresence.ComFuncs.CompareTableValue(a,b,sName)
   end
 end
 
---tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
-function SolariaTelepresence.ComFuncs.RetProperType(Value)
-  --number?
-  local num = tonumber(Value)
-  if num then
-    return num
-  end
-  --stringy boolean
-  if Value == "true" then
-    return true
-  elseif Value == "false" then
-    return false
-  end
-  if Value == "nil" then
-    return
-  end
-  --then it's a string (probably)
-  return Value
-end
-
 -- returns object name or at least always some string
 function SolariaTelepresence.ComFuncs.RetName(obj)
   if obj == _G then
@@ -252,25 +232,6 @@ function SolariaTelepresence.ComFuncs.CompareTableValue(a,b,sName)
   else
     return tostring(a[sName]) < tostring(b[sName])
   end
-end
-
-function SolariaTelepresence.ComFuncs.RetProperType(Value)
-  --number?
-  local num = tonumber(Value)
-  if num then
-    return num
-  end
-  --stringy boolean
-  if Value == "true" then
-    return true
-  elseif Value == "false" then
-    return false
-  end
-  if Value == "nil" then
-    return
-  end
-  --then it's a string (probably)
-  return Value
 end
 
 function SolariaTelepresence.ComFuncs.PopupToggle(parent,popup_id,items)

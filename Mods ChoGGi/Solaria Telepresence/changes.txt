@@ -1,0 +1,4 @@
+Removed list boxes for selection, now uses menus (right-click to close the menu).
+Locked building behind a tech unlock.
+Uses 15 instead of 25 power.
+Counts as a Workshop now.
