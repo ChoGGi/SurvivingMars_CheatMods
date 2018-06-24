@@ -244,9 +244,6 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
-  --eh, it needs something for the id, so I can fiddle with it later
-  local id = AsyncRand()
   --build our popup
   local timeout = 10000
   if Size then
@@ -256,7 +253,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     expiration=timeout, --{expiration=99999999999999999}
     --dismissable=false,
   }
-  local cycle_objs = params.cycle_objs
+  ---if there's no interface then we probably shouldn't open the popup
   local dlg = GetXDialog("OnScreenNotificationsDlg")
   if not dlg then
     if not GetInGameInterface() then
@@ -264,43 +261,38 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     end
     dlg = OpenXDialog("OnScreenNotificationsDlg", GetInGameInterface())
   end
+  --build the popup
   local data = {
-    id = id,
-    --name = id,
+    id = AsyncRand(),
     title = tostring(Title or ""),
     text = tostring(Msg or T(3718--[[NONE--]])),
-    image = Icon
+    image = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   }
   table.set_defaults(data, params)
   table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
-
+  --and show the popup
   CreateRealTimeThread(function()
 		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
-		popup:FillData(data, nil, params, cycle_objs)
+		popup:FillData(data, nil, params, params.cycle_objs)
 		popup:Open()
 		dlg:ResolveRelativeFocusOrder()
-    --large amount of text option
+    --large amount of text option (four long lines o' text, or is it five?)
     if Size then
-      --remove text limit
-      --popup.idText.Shorten = false
-      --popup.idText.MaxHeight = nil
+      --larger text limit
       popup.idText.Margins = box(0,0,0,-500)
-      --resize
+      --resize title, or move it?
       popup.idTitle.Margins = box(0,-20,0,0)
-      --image
+      --check if this is doing something
       Sleep(0)
+      --size/pos of background image
       popup[1].scale = point(2800,2600)
       popup[1].Margins = box(-5,-30,0,-5)
       --update dialog size
       popup:InvalidateMeasure()
---parent ex(GetXDialog("OnScreenNotificationsDlg")[1])
---osn GetXDialog("OnScreenNotificationsDlg")[1][1]
       --i don't care for sounds
-      --[[
-      if type(params.fx_action) == "string" and params.fx_action ~= "" then
-        PlayFX(params.fx_action)
-      end
-      --]]
+--~       if type(params.fx_action) == "string" and params.fx_action ~= "" then
+--~         PlayFX(params.fx_action)
+--~       end
     end
   end)
 end
@@ -317,21 +309,19 @@ end
 
 -- well that's the question isn't it?
 function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
-  pcall(function()
-    CreateRealTimeThread(function()
-      --fire callback if user clicks ok
-      local answer = WaitMarsQuestion(nil,
-        tostring(Title or ""),
-        tostring(Msg or ""),
-        tostring(Ok or T(6878--[[OK--]])),
-        tostring(Cancel or T(6879--[[Cancel--]]))
-      )
-      if answer == "ok" then
-        Function(true)
-      else
-        Function()
-      end
-    end)
+  CreateRealTimeThread(function()
+    --fire callback if user clicks ok
+    local answer = WaitMarsQuestion(nil,
+      tostring(Title or ""),
+      tostring(Msg or ""),
+      tostring(Ok or T(6878--[[OK--]])),
+      tostring(Cancel or T(6879--[[Cancel--]]))
+    )
+    if answer == "ok" then
+      Function(true)
+    else
+      Function()
+    end
   end)
 end
 
