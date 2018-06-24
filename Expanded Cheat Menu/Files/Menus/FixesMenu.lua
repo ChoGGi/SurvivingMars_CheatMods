@@ -122,6 +122,14 @@ You may need to toggle the recall drones button."--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]",T(302535920000935--[[Most--]]),"/",T(302535920001193--[[Remove Blue Grid Marks--]])),
+    ChoGGi.MenuFuncs.RemoveBlueGridMarks,
+    nil,
+    T(302535920001197--[[If you have any buildings with the selection grid around it, and you don't have it selected.--]]),
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]",T(302535920000935--[[Most--]]),"/",T(302535920000605--[[Project Morpheus Radar Fell Down--]])),
     ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
     nil,
@@ -160,7 +168,7 @@ You may need to toggle the recall drones button."--]]),
 --~   )
 if ChoGGi.Testing then
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
     ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
     nil,
     function()
@@ -172,20 +180,9 @@ if ChoGGi.Testing then
   )
 end
 
-  ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000611--[[Rover Infinite Loop In Curiosity Update--]])),
-    ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle,
-    nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity,
-        302535920000612 --,"If everything freezes, but you can still move the camera around after moving a rover (enabled by default, restart to toggle)."
-      )
-    end,
-    icon
-  )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000613--[[Drone Carry Amount--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000613--[[Drone Carry Amount--]])),
     ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
     nil,
     function()
@@ -197,7 +194,7 @@ end
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000615--[[Sort Command Center Dist--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000615--[[Sort Command Center Dist--]])),
     ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
     nil,
     function()

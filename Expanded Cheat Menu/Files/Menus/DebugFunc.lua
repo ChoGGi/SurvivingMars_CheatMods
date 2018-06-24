@@ -80,6 +80,14 @@ local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
 
+function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
+  _G[name] = not _G[name]
+
+  ChoGGi.ComFuncs.MsgPopup(Concat(T(trans_id),": ",tostring(_G[name])),
+    T(1000113--[[Debug--]])
+  )
+end
+
 function ChoGGi.MenuFuncs.ParticlesReload()
   LoadStreamParticlesFromDir("Data/Particles")
   ParticlesReload("", true)

@@ -12,6 +12,48 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001175--[[Debug FX--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFX,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "FXEditor.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001184--[[Particles--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFXParticles,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "place_particles.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(4107--[[Sound FX--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFXSound,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "DisableEyeSpec.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920000485--[[Flatten Terrain Toggle--]])),
     ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
     "Shift-F",

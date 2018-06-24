@@ -481,6 +481,7 @@ end
 --force drones to pickup from object even if they have a large carry cap
 function ChoGGi.CodeFuncs.FuckingDrones(Obj)
   local ChoGGi = ChoGGi
+  local r = ChoGGi.Consts.ResourceScale
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
 
@@ -512,9 +513,9 @@ function ChoGGi.CodeFuncs.FuckingDrones(Obj)
       return
     end
 
-    local carry = g_Consts.DroneResourceCarryAmount * ChoGGi.Consts.ResourceScale
+    local carry = g_Consts.DroneResourceCarryAmount * r
     --round to nearest 1000 (don't want uneven stacks)
-    stored = (stored - stored % ChoGGi.Consts.ResourceScale) / ChoGGi.Consts.ResourceScale * ChoGGi.Consts.ResourceScale
+    stored = (stored - stored % r) / r * r
     --if carry is smaller then stored then they may not pickup (depends on storage)
     if carry < stored or
       --no picking up more then they can carry

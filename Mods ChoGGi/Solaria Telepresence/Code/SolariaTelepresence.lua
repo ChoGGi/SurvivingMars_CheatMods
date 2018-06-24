@@ -147,7 +147,7 @@ Right click to view selected list item building.]]
 --~     obj = self,
     class = "XTextButton",
     hint = [[Solaria control building.
-You can't remove... Only view (or maybe seeing would be a better term).]],
+You can't remove... Only view (or maybe See would be a better term).]],
     clicked = function(_,_,button)
       ClickObj(self,obj,button,which)
     end,

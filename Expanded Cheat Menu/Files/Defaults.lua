@@ -62,7 +62,7 @@ do
   end
 end
 
---stores defaults and constants
+--stores defaults
 ChoGGi.Defaults = {
   _VERSION = 0,
   ConsoleDim = true,
@@ -86,9 +86,6 @@ ChoGGi.Defaults = {
   BuildingSettings = {},
   --transparent UI
 	Transparency = {},
-
-  --remove after they fix it
-  RoverInfiniteLoopCuriosity = true,
 }
 
 --and constants

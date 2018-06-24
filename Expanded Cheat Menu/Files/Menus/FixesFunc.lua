@@ -33,6 +33,7 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+  ChoGGi.MenuFuncs.RemoveBlueGridMarks()
   ChoGGi.MenuFuncs.CablesAndPipesRepair()
   ChoGGi.MenuFuncs.MirrorSphereStuck()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -333,15 +334,21 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-  ForEach({class = "GridTile", action = "delete"})
---[[
-  local Table = GetObjects({class="GridTile"})
-  if Table[1] and Table[1].class and Table[1].class == "GridTile" then
-    for i = 1, #Table do
-      Table[i]:delete()
-    end
-  end
-  --]]
+	ForEach({
+		class = "GridTile",
+		exec = function(obj)
+      DoneObject(obj)
+		end
+	})
+end
+
+function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
+	ForEach({
+		class = "RangeHexRadius",
+		exec = function(obj)
+      DoneObject(obj)
+		end
+	})
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -453,15 +460,6 @@ function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = not ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle
   ChoGGi.SettingFuncs.WriteSettings()
   ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
-    T(5438--[[Rovers--]])
-  )
-end
-
-function ChoGGi.MenuFuncs.RoverInfiniteLoopCuriosity_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.RoverInfiniteLoopCuriosity = not ChoGGi.UserSettings.RoverInfiniteLoopCuriosity
-  ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000964--[[Rover Infinite Loop--]]),": ",tostring(ChoGGi.UserSettings.RoverInfiniteLoopCuriosity)),
     T(5438--[[Rovers--]])
   )
 end

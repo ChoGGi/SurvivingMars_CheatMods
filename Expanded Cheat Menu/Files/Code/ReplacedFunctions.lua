@@ -374,9 +374,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
   end
 
-  --I don't need to see the help page that much
   if Platform.editor then
+    --stops the help webpage from showing up every single time
     function GedOpHelpMod() end
+
     if ChoGGi.Testing then
       function GedOpUploadMod(socket, root)
         print("GedOpUploadMod")
@@ -459,7 +460,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
                 err = "no steam"
               end
             end
-
+            if mod and mod.steam_id then
+              print("mod.steam_id: ",mod.steam_id)
+            end
             local msg, title
             if err then
               msg = local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod,err = Untranslated(err)})
@@ -515,7 +518,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   -- function from github as the actual function has a whoopsie, or something does...
   -- going to be a fix in next version:
   -- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
-  if ChoGGi.UserSettings.RoverInfiniteLoopCuriosity and LuaRevision <= 231139 then
+  if LuaRevision <= 231139 then
     function RCRover:ExitAllDrones()
       if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
         DeleteThread(self.exit_drones_thread)

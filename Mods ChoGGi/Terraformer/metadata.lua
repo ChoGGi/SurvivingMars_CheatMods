@@ -12,11 +12,11 @@ return PlaceObj("ModDef", {
 
 Press Shift-F to set height to wherever cursor is, move cursor around to flatten ground, press Shift-F again to update buildable area.
 
-Defaults to a radius of 2500, Shift Left/Right to change.
-Change height with Shift Up/Down.
+Defaults to a radius of 2500, Shift+ Left/Right to change.
+Change height with Shift+ Up/Down.
 Use Mod Config to change the amount it changes when you press an arrow key.
 
-There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days).
+There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days), so I wouldn't bother flattening the border mountains.
 
 Included in Expanded Cheat Menu.]],
 })

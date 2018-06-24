@@ -1,7 +1,13 @@
 return PlaceObj("ModDef", {
-  "saved", 1527768000,
-  "version", 3,
-  "title", "Solaria Telepresence v0.3",
+  "saved", 1529841600,
+  "version", 4,
+  "title", "Solaria Telepresence v0.4",
+  "tags", "Buildings",
+	"image", "Preview.png",
+  "id", "ChoGGi_SolariaTelepresence",
+  "author", "ChoGGi",
+  "steam_id", "1411115080",
+  "code", {"Script.lua"},
   "description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
 Thanks to Kevin Bagust for the idea (and Asimov of course)."
@@ -60,12 +66,4 @@ numbers do vary, but only by a few points
 Kevin Bagust for the mod idea.
 
 Isaac Asimov for the actual idea.]],
-  "tags", "Buildings",
-	"image", "Preview.png",
-  "id", "ChoGGi_SolariaTelepresence",
-  "author", "ChoGGi",
-  "steam_id", "1411115080",
-  "code", {
-  "Script.lua",
-  },
 })
