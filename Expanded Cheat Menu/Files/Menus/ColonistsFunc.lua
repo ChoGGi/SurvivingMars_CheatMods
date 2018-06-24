@@ -18,6 +18,8 @@ local GetObjects = GetObjects
 local CreateRealTimeThread = CreateRealTimeThread
 local PlaceResourcePile = PlaceResourcePile
 
+local pf_SetStepLen = pf.SetStepLen
+
 function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.NoMoreEarthsick then
@@ -1376,7 +1378,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
     if type(value) == "number" then
       if choice[1].check2 then
         if sel then
-          g_Classes.pf.SetStepLen(sel,value)
+          pf_SetStepLen(sel,value)
         end
       else
         local tab = UICity.labels.Colonist or empty_table
@@ -1384,11 +1386,11 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
           if dome then
             if tab[i].dome and tab[i].dome == dome then
               --tab[i]:SetMoveSpeed(value)
-              g_Classes.pf.SetStepLen(tab[i],value)
+              pf_SetStepLen(tab[i],value)
             end
           else
             --tab[i]:SetMoveSpeed(value)
-            g_Classes.pf.SetStepLen(tab[i],value)
+            pf_SetStepLen(tab[i],value)
           end
         end
       end

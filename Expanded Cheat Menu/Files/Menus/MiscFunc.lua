@@ -16,6 +16,8 @@ local RemoveFromRules = RemoveFromRules
 local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
 local Sleep = Sleep
 
+local pf_SetStepLen = pf.SetStepLen
+
 function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   local function ChangeEntity(Class,Entity,random)
     local objs = GetObjects({class = Class}) or empty_table
@@ -625,7 +627,7 @@ local function SetScale(Obj,Scale)
     Sleep(500)
     if Obj.class == "Drone" then
       if cUserSettings.SpeedDrone then
-        g_Classes.pf.SetStepLen(Obj,cUserSettings.SpeedDrone)
+        pf_SetStepLen(Obj,cUserSettings.SpeedDrone)
       else
         Obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
       end
@@ -637,13 +639,13 @@ local function SetScale(Obj,Scale)
       end
     elseif Obj.class == "Colonist" then
       if cUserSettings.SpeedColonist then
-        g_Classes.pf.SetStepLen(Obj,cUserSettings.SpeedColonist)
+        pf_SetStepLen(Obj,cUserSettings.SpeedColonist)
       else
         Obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
       end
     elseif Obj:IsKindOf("BaseRover") then
       if cUserSettings.SpeedRC then
-        g_Classes.pf.SetStepLen(Obj,cUserSettings.SpeedRC)
+        pf_SetStepLen(Obj,cUserSettings.SpeedRC)
       else
         Obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
       end

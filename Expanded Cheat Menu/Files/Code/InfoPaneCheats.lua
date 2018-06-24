@@ -14,6 +14,8 @@ local Random = Random
 local RebuildInfopanel = RebuildInfopanel
 local Sleep = Sleep
 
+local pf_SetStepLen = pf.SetStepLen
+
 local g_Classes = g_Classes
 
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
@@ -405,11 +407,11 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 --CheatMoveSpeedDbl
   local function CheatMoveSpeedDbl(self)
     --self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-    g_Classes.pf.SetStepLen(self,self:GetMoveSpeed() * 2)
+    pf_SetStepLen(self,self:GetMoveSpeed() * 2)
   end
   local function CheatMoveSpeedDef(self)
     --self:SetMoveSpeed(self.base_move_speed)
-    g_Classes.pf.SetStepLen(self,self.base_move_speed)
+    pf_SetStepLen(self,self.base_move_speed)
   end
   g_Classes.Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
   g_Classes.Drone.CheatMoveSpeedDef = CheatMoveSpeedDef

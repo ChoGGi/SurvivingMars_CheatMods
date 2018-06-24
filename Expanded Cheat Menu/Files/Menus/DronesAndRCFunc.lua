@@ -10,6 +10,8 @@ local tostring,type = tostring,type
 
 local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
+local pf_SetStepLen = pf.SetStepLen
+
 local g_Classes = g_Classes
 
 function ChoGGi.MenuFuncs.SetRoverChargeRadius()
@@ -223,7 +225,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
       local tab = UICity.labels.Drone or empty_table
       for i = 1, #tab do
         --tab[i]:SetMoveSpeed(value)
-        g_Classes.pf.SetStepLen(tab[i],value)
+        pf_SetStepLen(tab[i],value)
       end
       ChoGGi.ComFuncs.SetSavedSetting("SpeedDrone",value)
 
@@ -274,7 +276,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
       local tab = UICity.labels.Rover or empty_table
       for i = 1, #tab do
         --tab[i]:SetMoveSpeed(value)
-        g_Classes.pf.SetStepLen(tab[i],value)
+        pf_SetStepLen(tab[i],value)
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
@@ -737,7 +739,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
       local tab = UICity.labels.CargoShuttle or empty_table
       for i = 1, #tab do
         tab[i].max_speed = value
-        --g_Classes.pf.SetStepLen(tab[i],value)
+        --pf_SetStepLen(tab[i],value)
       end
       ChoGGi.ComFuncs.SetSavedSetting("SpeedShuttle",value)
 
