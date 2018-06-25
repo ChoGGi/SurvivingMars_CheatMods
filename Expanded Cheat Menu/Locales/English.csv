@@ -722,10 +722,10 @@ The map disaster settings don't do jack.",
 302535920001197,"If you have any buildings with the selection grid around it, and you don't have it selected.",
 302535920001040,Drone Wrong Angle,
 302535920001071,Drone Charges From Rover Wrong Angle,
-302535920000292,Reset Rovers With Drones Stuck,
-302535920000882,"If you have rovers with drones stuck inside/outside them, this will fix them (clone and delete ftw).
+302535920000292,Reset Rovers,
+302535920000882,"If you have borked rovers, this will probably fix them.
 
-You may need to toggle the recall drones button.",
+You may need to toggle the recall drones button (for certain issues).",
 302535920000939,"Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.",
 302535920000055,Reset All Colonists,
 302535920000581,Toggle Collisions On Selected Object,

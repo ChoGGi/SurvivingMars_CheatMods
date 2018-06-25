@@ -8,12 +8,12 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers With Drones Stuck--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers--]])),
     ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside,
     nil,
-    T(302535920000882--[["If you have rovers with drones stuck inside/outside them, this will fix them (clone and delete ftw).
+    T(302535920000882--[["If you have borked rovers, this will probably fix them.
 
-You may need to toggle the recall drones button."--]]),
+You may need to toggle the recall drones button (for certain issues)."--]]),
     icon
   )
 
