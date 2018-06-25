@@ -100,7 +100,7 @@ ID,Text,Translation
 302535920000734,Clear Log,
 302535920001026,Show File Log,
 302535920001091,Flushes log to disk and displays in console log.,
-302535920001152,Clear out the console log.,
+302535920001152,Clear out the console log (F9 also works).,
 302535920001154,Displays the log text in a window you can copy sections from.,
 302535920000563,Copy Log Text,
 302535920000201,Active,
@@ -619,7 +619,6 @@ If you leave it opened during a game load/save, then click this menu item to mak
 
 Warning: Unable to mouse select items after spawn.
 hover mouse over and use Delete Selected Object.",
-302535920000477,Console: Clear Log,
 302535920000478,Clears console history display.,
 302535920000479,Toggle Editor,
 302535920000480,"Select object(s) then hold ctrl/shift/alt and drag mouse.
@@ -1412,4 +1411,5 @@ Excluding waste rock in something other than a dumping site.",
 302535920000071,Show Mods Log,
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
+302535920000477,Clear out the windowed console log.,
 302535920000865,Toggle Trans,

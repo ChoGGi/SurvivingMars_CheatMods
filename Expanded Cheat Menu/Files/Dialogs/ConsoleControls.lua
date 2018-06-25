@@ -61,7 +61,7 @@ function ChoGGi.Console.ConsoleControls()
           {name = " - ",class = "XTextButton"},
           {
             name = T(302535920000734--[[Clear Log--]]),
-            hint = T(302535920001152--[[Clear out the console log.--]]),
+            hint = T(302535920001152--[[Clear out the console log (F9 also works).--]]),
             class = "XTextButton",
             clicked = cls,
           },

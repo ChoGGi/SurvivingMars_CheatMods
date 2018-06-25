@@ -103,7 +103,7 @@ function ChoGGi_ConsoleLogWin:Init()
   self.idClearLog:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title) + point(-10,5))
   self.idClearLog:SetHSizing("AnchorToLeft")
   self.idClearLog:SetVSizing("AnchorToTop")
-  self.idClearLog:SetHint(T(302535920001152--[[Clear out the console log.--]]))
+  self.idClearLog:SetHint(T(302535920000477--[[Clear out the windowed console log.--]]))
   function self.idClearLog.OnButtonPressed()
     self:ClearText()
   end

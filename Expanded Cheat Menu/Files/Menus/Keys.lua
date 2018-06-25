@@ -17,6 +17,12 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
     nil,
+    cls,
+    "F9"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    nil,
     function()
       ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
     end,

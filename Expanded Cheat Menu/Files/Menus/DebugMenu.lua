@@ -182,14 +182,6 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000477--[[Console: Clear Log--]])),
-    cls,
-    "F9",
-    T(302535920000478--[[Clears console history display.--]]),
-    "Voice.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920000479--[[Toggle Editor--]])),
     ChoGGi.MenuFuncs.Editor_Toggle,
     "Ctrl-Shift-E",
