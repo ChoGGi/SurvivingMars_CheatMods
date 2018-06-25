@@ -1,6 +1,7 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Sections/attention.tga"
 
@@ -51,7 +52,7 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
+  MsgPopup(Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
     T(302535920001069--[[Interface--]])
   )
 end
@@ -86,7 +87,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
       --so we don't save file on exit
       ChoGGi.Temp.ResetSettings = true
 
-      ChoGGi.ComFuncs.MsgPopup(T(302535920001070--[[Restart to take effect.--]]),
+      MsgPopup(T(302535920001070--[[Restart to take effect.--]]),
         Concat(T(302535920001084--[[Reset","!--]])),UsualIcon
       )
     end
@@ -100,7 +101,7 @@ end
 
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  ChoGGi.ComFuncs.MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?--]]),
+  MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?--]]),
     T(302535920001075--[[Signs--]]),nil,true
   )
 end
@@ -108,13 +109,13 @@ end
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup(HintsEnabled,T(4248--[[Hints--]]))
+  MsgPopup(HintsEnabled,T(4248--[[Hints--]]))
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  ChoGGi.ComFuncs.MsgPopup(T(302535920001076--[[Hints Reset!--]]),T(4248--[[Hints--]]))
+  MsgPopup(T(302535920001076--[[Hints Reset!--]]),T(4248--[[Hints--]]))
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
@@ -130,7 +131,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(
+  MsgPopup(
     Concat(tostring(ChoGGi.UserSettings.DisableHints),T(302535920001077--[[: Bye bye hints--]])),
     T(4248--[[Hints--]]),
     "UI/Icons/Sections/attention.tga"

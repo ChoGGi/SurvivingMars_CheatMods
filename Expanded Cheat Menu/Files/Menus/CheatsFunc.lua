@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Notifications/research.tga"
 
@@ -33,7 +34,7 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
   ChoGGi.UserSettings.DraggableCheatsMenu = not ChoGGi.UserSettings.DraggableCheatsMenu
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000232--[[Draggable cheats menu--]]),": ",tostring(ChoGGi.UserSettings.DraggableCheatsMenu)),
+  MsgPopup(Concat(T(302535920000232--[[Draggable cheats menu--]]),": ",tostring(ChoGGi.UserSettings.DraggableCheatsMenu)),
     T(1000162--[[Menu--]])
   )
 end
@@ -43,7 +44,7 @@ function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
   ChoGGi.UserSettings.ToggleWidthOfCheatsHover = not ChoGGi.UserSettings.ToggleWidthOfCheatsHover
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000233--[[Cheats hover toggle--]]),": ",tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)),
+  MsgPopup(Concat(T(302535920000233--[[Cheats hover toggle--]]),": ",tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)),
     T(1000162--[[Menu--]])
   )
 end
@@ -57,7 +58,7 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000234--[[Cheats menu save position--]]),": ",tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition)),
+  MsgPopup(Concat(T(302535920000234--[[Cheats menu save position--]]),": ",tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition)),
     T(1000162--[[Menu--]])
   )
 end
@@ -206,7 +207,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
       elseif value == "Missle500" then
         ChoGGi.MenuFuncs.DisasterTriggerMissle(500)
       end
-      ChoGGi.ComFuncs.MsgPopup(choice[i].text,"Disasters")
+      MsgPopup(choice[i].text,"Disasters")
     end
   end
 
@@ -294,7 +295,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     ChoGGi.ComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000262--[[Alice thought to herself.\n\"Now you will see a film made for children\".\nPerhaps.\nBut I nearly forgot! You must close your eyes.\nOtherwise you won't see anything.--]]),
+    MsgPopup(T(302535920000262--[[Alice thought to herself.\n\"Now you will see a film made for children\".\nPerhaps.\nBut I nearly forgot! You must close your eyes.\nOtherwise you won't see anything.--]]),
       T(1000436--[[Map--]]),"UI/Achievements/TheRabbitHole.tga",true
     )
   end
@@ -329,7 +330,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
     local value = choice[1].value
     if type(value) == "number" then
       CheatSpawnNColonists(value)
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text),
+      MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text),
         T(547--[[Colonists--]]),"UI/Icons/Sections/colonist.tga"
       )
     end
@@ -504,7 +505,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
           DeleteThread(Thread.thread)
         end
       end
-      ChoGGi.ComFuncs.MsgPopup(T(302535920000277--[[Removed all!--]]),T(3486--[[Mystery--]]))
+      MsgPopup(T(302535920000277--[[Removed all!--]]),T(3486--[[Mystery--]]))
     elseif choice[1].check1 then
       --remove mystery
       for i = #PlayerList, 1, -1 do
@@ -517,7 +518,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
           DeleteThread(Thread.thread)
         end
       end
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(3486--[[Mystery--]]),": ",choice[1].text," ",T(302535920000278--[[Removed--]]),"!",T(3486--[[Mystery--]])))
+      MsgPopup(Concat(T(3486--[[Mystery--]]),": ",choice[1].text," ",T(302535920000278--[[Removed--]]),"!",T(3486--[[Mystery--]])))
     elseif value then
       --next step
       ChoGGi.MenuFuncs.NextMysterySeq(value,seed)
@@ -593,7 +594,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
             --may not be needed
             Player:UpdateCurrentIP(seq_list)
             --let them know
-            ChoGGi.ComFuncs.MsgPopup(T(302535920000287--[[Timer delay removed (may take upto a Sol).--]]),title)
+            MsgPopup(T(302535920000287--[[Timer delay removed (may take upto a Sol).--]]),title)
             break
 
           elseif seq.class == "SA_WaitExpression" then
@@ -677,7 +678,7 @@ end
 function ChoGGi.MenuFuncs.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
-  ChoGGi.ComFuncs.MsgPopup(T(302535920000293--[[Unlocked all buildings for construction.--]]),
+  MsgPopup(T(302535920000293--[[Unlocked all buildings for construction.--]]),
     T(3980--[[Buildings--]]),"UI/Icons/Upgrades/build_2.tga"
   )
 end
@@ -702,7 +703,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
     local value = choice[1].value
     if type(value) == "number" then
       UICity:AddResearchPoints(value)
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000294--[[Added--]]),": ",choice[1].text),
+      MsgPopup(Concat(T(302535920000294--[[Added--]]),": ",choice[1].text),
         T(311--[[Research--]]),"UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
@@ -722,7 +723,7 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
 
   ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.OutsourceResearchCost),"\n",T(302535920000297--[[Best hope you picked India as your Mars sponsor--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.OutsourceResearchCost),"\n",T(302535920000297--[[Best hope you picked India as your Mars sponsor--]])),
     T(311--[[Research--]]),"UI/Icons/Sections/research_1.tga",true
   )
 end
@@ -753,7 +754,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
       ChoGGi.ComFuncs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(Concat(choice[1].text,T(302535920000299--[[: Research is what I'm doing when I don't know what I'm doing.--]])),
+      MsgPopup(Concat(choice[1].text,T(302535920000299--[[: Research is what I'm doing when I don't know what I'm doing.--]])),
         T(5182--[[Omega Telescope--]]),UsualIcon
       )
     end
@@ -790,7 +791,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
       ChoGGi.ComFuncs.SetSavedSetting("BreakThroughTechsPerGame",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(Concat(choice[1].text,T(302535920000302--[[: S M R T--]])),
+      MsgPopup(Concat(choice[1].text,T(302535920000302--[[: S M R T--]])),
         T(311--[[Research--]]),UsualIcon
       )
     end
@@ -833,7 +834,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
       ChoGGi.ComFuncs.SetSavedSetting("ResearchQueueSize",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.ResearchQueueSize),T(302535920000304--[[: Nerdgasm--]])),
+      MsgPopup(Concat(tostring(ChoGGi.UserSettings.ResearchQueueSize),T(302535920000304--[[: Nerdgasm--]])),
         T(311--[[Research--]]),UsualIcon
       )
     end
@@ -893,10 +894,10 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      ChoGGi.ComFuncs.MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(311--[[Research--]]),UsualIcon)
+      MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(311--[[Research--]]),UsualIcon)
       return
     elseif check1 and check2 then
-      ChoGGi.ComFuncs.MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(311--[[Research--]]),UsualIcon)
+      MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(311--[[Research--]]),UsualIcon)
       return
     end
 
@@ -930,7 +931,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
       end
     end
 
-    ChoGGi.ComFuncs.MsgPopup(Concat(Which,T(302535920000315--[[: Unleash your inner Black Monolith Mystery.--]])),
+    MsgPopup(Concat(Which,T(302535920000315--[[: Unleash your inner Black Monolith Mystery.--]])),
       T(311--[[Research--]]),UsualIcon
     )
   end

@@ -3,6 +3,7 @@
 --  i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
@@ -438,19 +439,19 @@ local logo_13 = "UI/Icons/Logos/logo_13.tga"
 function OnMsg.MysteryBegin()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000729--[[You've started a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(T(302535920000729--[[You've started a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
   end
 end
 function OnMsg.MysteryChosen()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000730--[[You've chosen a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(T(302535920000730--[[You've chosen a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
   end
 end
 function OnMsg.MysteryEnd(Outcome)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    ChoGGi.ComFuncs.MsgPopup(tostring(Outcome),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(tostring(Outcome),T(3486--[[Mystery--]]),logo_13)
   end
 end
 

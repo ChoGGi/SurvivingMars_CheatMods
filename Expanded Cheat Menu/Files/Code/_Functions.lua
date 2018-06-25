@@ -2,6 +2,7 @@
 --any funcs called from Code/*
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 
 local pcall,print,rawget,type,table = pcall,print,rawget,type,table
@@ -50,7 +51,7 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   function dumpo(...)ChoGGi.ComFuncs.DumpObject(...)end
   function dumpl(...)ChoGGi.ComFuncs.DumpLua(...)end
   function dumpt(...)ChoGGi.ComFuncs.DumpTable(...)end
-  function alert(...)ChoGGi.ComFuncs.MsgPopup(...)end
+  function alert(...)MsgPopup(...)end
   local function RemoveLast(str)
     --remove restart as the last cmd so we don't hit it by accident
     local dlgConsole = dlgConsole
@@ -814,7 +815,7 @@ end
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000015--[[Can't colour object--]]),T(302535920000016--[[Colour--]]))
+    MsgPopup(T(302535920000015--[[Can't colour object--]]),T(302535920000016--[[Colour--]]))
     return
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
@@ -939,7 +940,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
+      MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
     end
   end
   ChoGGi.ComFuncs.OpenInListChoice({
@@ -1042,7 +1043,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
     Object = ChoGGi.CodeFuncs.SelObject()
   end
   if not Object then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000027--[[Nothing selected--]]),T(302535920000028--[[Find Resource--]]))
+    MsgPopup(T(302535920000027--[[Nothing selected--]]),T(302535920000028--[[Find Resource--]]))
     return
   end
 
@@ -1102,7 +1103,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
       if nearest then
         ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
       else
-        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000029--[[Error: Cannot find any--]])," ",choice[1].text),T(15--[[Resource--]]))
+        MsgPopup(Concat(T(302535920000029--[[Error: Cannot find any--]])," ",choice[1].text),T(15--[[Resource--]]))
       end
     end
   end

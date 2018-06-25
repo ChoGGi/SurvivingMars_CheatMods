@@ -7,6 +7,7 @@ DefineClass.ChoGGi_CursorBuilding = {
 }
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
@@ -83,7 +84,7 @@ local g_Classes = g_Classes
 function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
   _G[name] = not _G[name]
 
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(trans_id),": ",tostring(_G[name])),
+  MsgPopup(Concat(T(trans_id),": ",tostring(_G[name])),
     T(1000113--[[Debug--]])
   )
 end
@@ -107,118 +108,120 @@ function ChoGGi.MenuFuncs.AttachSpots_Toggle()
   end
 end
 
-local are_we_flattening
-local visual_circle
-local flatten_height
-local size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
-local radius = size * guic
+do --FlattenGround
+  local are_we_flattening
+  local visual_circle
+  local flatten_height
+  local size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
+  local radius = size * guic
 
-local remove_actions = {
-  FlattenGround_RaiseHeight = true,
-  FlattenGround_LowerHeight = true,
-  FlattenGround_WidenRadius = true,
-  FlattenGround_ShrinkRadius = true,
-}
-local temp_height
-local function ToggleHotkeys(bool)
-  local ChoGGi = ChoGGi
-  if bool then
-    UserActions_AddActions({
-      FlattenGround_RaiseHeight = {
-        key = "Shift-Up",
-        action = function()
-          temp_height = flatten_height + ChoGGi.UserSettings.FlattenGround_HeightDiff or 100
-          --guess i found the ceiling limit
-          if temp_height > 65535 then
-            temp_height = 65535
+  local remove_actions = {
+    FlattenGround_RaiseHeight = true,
+    FlattenGround_LowerHeight = true,
+    FlattenGround_WidenRadius = true,
+    FlattenGround_ShrinkRadius = true,
+  }
+  local temp_height
+  local function ToggleHotkeys(bool)
+    if bool then
+      local us = ChoGGi.UserSettings
+      UserActions_AddActions({
+        FlattenGround_RaiseHeight = {
+          key = "Shift-Up",
+          action = function()
+            temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
+            --guess i found the ceiling limit
+            if temp_height > 65535 then
+              temp_height = 65535
+            end
+            flatten_height = temp_height
           end
-          flatten_height = temp_height
-        end
-      },
-      FlattenGround_LowerHeight = {
-        key = "Shift-Down",
-        action = function()
-          temp_height = flatten_height - ChoGGi.UserSettings.FlattenGround_HeightDiff or 100
-          --and the floor limit (oh look 0 go figure)
-          if temp_height < 0 then
-            temp_height = 0
+        },
+        FlattenGround_LowerHeight = {
+          key = "Shift-Down",
+          action = function()
+            temp_height = flatten_height - us.FlattenGround_HeightDiff or 100
+            --and the floor limit (oh look 0 go figure)
+            if temp_height < 0 then
+              temp_height = 0
+            end
+            flatten_height = temp_height
           end
-          flatten_height = temp_height
+        },
+        FlattenGround_WidenRadius = {
+          key = "Shift-Right",
+          action = function()
+            us.FlattenGround_Radius = us.FlattenGround_Radius + us.FlattenGround_RadiusDiff or 100
+            size = us.FlattenGround_Radius
+            visual_circle:SetRadius(size)
+            radius = size * guic
+          end
+        },
+        FlattenGround_ShrinkRadius = {
+          key = "Shift-Left",
+          action = function()
+            us.FlattenGround_Radius = us.FlattenGround_Radius - us.FlattenGround_RadiusDiff or 100
+            size = us.FlattenGround_Radius
+            visual_circle:SetRadius(size)
+            radius = size * guic
+          end
+        },
+      })
+    else
+      local UserActions = UserActions
+      for k, _ in pairs(UserActions.Actions) do
+        if remove_actions[k] then
+          UserActions.Actions[k] = nil
         end
-      },
-      FlattenGround_WidenRadius = {
-        key = "Shift-Right",
-        action = function()
-          ChoGGi.UserSettings.FlattenGround_Radius = ChoGGi.UserSettings.FlattenGround_Radius + ChoGGi.UserSettings.FlattenGround_RadiusDiff or 100
-          size = ChoGGi.UserSettings.FlattenGround_Radius
-          visual_circle:SetRadius(size)
-          radius = size * guic
-        end
-      },
-      FlattenGround_ShrinkRadius = {
-        key = "Shift-Left",
-        action = function()
-          ChoGGi.UserSettings.FlattenGround_Radius = ChoGGi.UserSettings.FlattenGround_Radius - ChoGGi.UserSettings.FlattenGround_RadiusDiff or 100
-          size = ChoGGi.UserSettings.FlattenGround_Radius
-          visual_circle:SetRadius(size)
-          radius = size * guic
-        end
-      },
-    })
-  else
-    local UserActions = UserActions
-    for k, _ in pairs(UserActions.Actions) do
-      if remove_actions[k] then
-        UserActions.Actions[k] = nil
       end
     end
+
+    UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
   end
 
-  UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
-end
-function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
-  local ChoGGi = ChoGGi
+  function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
+    local ChoGGi = ChoGGi
 
-  if are_we_flattening then
-    ToggleHotkeys()
-    are_we_flattening = false
-    DeleteThread(are_we_flattening)
-    DoneObject(visual_circle)
-    ChoGGi.ComFuncs.MsgPopup(
-      T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
-      T(904--[[Terrain--]]),
-      "UI/Icons/Sections/WasteRock_1.tga"
-    )
-    --update uneven terrain checker thingy
-    RecalcBuildableGrid()
-  else
-    ToggleHotkeys(true)
-    flatten_height = terrain_GetHeight(GetTerrainCursor())
-    ChoGGi.ComFuncs.MsgPopup(
-      string.format(T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]),flatten_height),
-      T(904--[[Terrain--]]),
-      "UI/Icons/Sections/warning.tga"
-    )
---~ local terrain_type = "Grass_01"		-- applied terrain type
---~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+    if are_we_flattening then
+      ToggleHotkeys()
+      are_we_flattening = false
+      DeleteThread(are_we_flattening)
+      DoneObject(visual_circle)
+      MsgPopup(
+        T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
+        T(904--[[Terrain--]]),
+        "UI/Icons/Sections/WasteRock_1.tga"
+      )
+      --update uneven terrain checker thingy
+      RecalcBuildableGrid()
+    else
+      ToggleHotkeys(true)
+      flatten_height = terrain_GetHeight(GetTerrainCursor())
+      MsgPopup(
+        string.format(T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]),flatten_height),
+        T(904--[[Terrain--]]),
+        "UI/Icons/Sections/warning.tga"
+      )
+  --~ local terrain_type = "Grass_01"		-- applied terrain type
+  --~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
 
---~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
---~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
-    visual_circle = g_Classes.Circle:new()
-    visual_circle:SetRadius(size)
-    visual_circle:SetColor(white)
+  --~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+  --~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+      visual_circle = g_Classes.Circle:new()
+      visual_circle:SetRadius(size)
+      visual_circle:SetColor(white)
 
-    are_we_flattening = CreateRealTimeThread(function()
-      --thread gets deleted, but just in case
-      while are_we_flattening do
-        local cursor = GetTerrainCursor()
-        visual_circle:SetPos(cursor)
-        terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
---~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
-        Sleep(10)
-      end
-    end)
-
+      are_we_flattening = CreateRealTimeThread(function()
+        --thread gets deleted, but just in case
+        while are_we_flattening do
+          local cursor = GetTerrainCursor()
+          visual_circle:SetPos(cursor)
+          terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
+  --~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
+          Sleep(10)
+        end
+      end)
+    end
   end
 
 end
@@ -248,7 +251,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   end
   local name = ChoGGi.ComFuncs.RetName(s)
   if not name then
-    ChoGGi.ComFuncs.MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(s),T(302535920000851--[[isn't an object?\nSounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
+    MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(s),T(302535920000851--[[isn't an object?\nSounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
       T(6774--[[Error--]]),nil,true
     )
     return
@@ -371,7 +374,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
   local CallBackFunc = function(choice)
     sel:SetStateText(choice[1].value)
-    ChoGGi.ComFuncs.MsgPopup(Concat(T(3722--[[State--]]),": ",choice[1].text),
+    MsgPopup(Concat(T(3722--[[State--]]),": ",choice[1].text),
       T(302535920000859--[[Anim State--]])
     )
   end
@@ -422,7 +425,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
       --]]
 
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
+      MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
         T(302535920000014--[[Spawned--]])
       )
     end
@@ -465,7 +468,7 @@ function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000864--[[Write console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
+  MsgPopup(Concat(T(302535920000864--[[Write console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
     T(1000113--[[Debug--]]),"UI/Icons/Anomaly_Breakthrough.tga"
   )
 end
@@ -1053,7 +1056,7 @@ do --path markers
 
       end
     else
-      ChoGGi.ComFuncs.MsgPopup(T(302535920000871--[[Select a moving object to see path.--]]),T(302535920000872--[[Pathing--]]))
+      MsgPopup(T(302535920000871--[[Select a moving object to see path.--]]),T(302535920000872--[[Pathing--]]))
     end
   end
 

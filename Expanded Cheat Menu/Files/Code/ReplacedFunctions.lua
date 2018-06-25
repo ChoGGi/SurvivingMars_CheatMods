@@ -60,6 +60,7 @@ Lua\X\Infopanel.lua
 --]]
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 --~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
@@ -737,7 +738,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       if StopWait.skipmsg then
         StopWait.skipmsg = nil
       else
-        ChoGGi.ComFuncs.MsgPopup(T(302535920000735--[[Timer delay skipped--]]),T(3486--[[Mystery--]]))
+        MsgPopup(T(302535920000735--[[Timer delay skipped--]]),T(3486--[[Mystery--]]))
       end
 
       --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...

@@ -32,6 +32,7 @@ function ChoGGi.Console.ConsoleControls()
     TextFont = "Editor16Bold",
     RolloverAnchor = "top",
     RolloverTemplate = "Rollover",
+    RolloverBackground = RGBA(40, 163, 255, 255),
     RolloverText = T(302535920001089--[[Settings & Commands--]]),
     Text = T(302535920001073--[[Console--]]),
     OnPress = function(self)
@@ -103,6 +104,7 @@ function ChoGGi.Console.ConsoleControls()
   --------------------------------History popup
   g_Classes.XTextButton:new({
 --~     Id = "idHistoryMenu",
+    RolloverBackground = RGBA(40, 163, 255, 255),
     RolloverTemplate = "Rollover",
     RolloverAnchor = "top",
     Padding = box(5, 2, 5, 2),
@@ -152,6 +154,7 @@ end
 local function BuildSciptButton(scripts,dlg,folder)
   g_Classes.XTextButton:new({
     Padding = box(5, 2, 5, 2),
+    RolloverBackground = RGBA(40, 163, 255, 255),
     TextFont = "Editor16Bold",
     RolloverAnchor = "top",
     RolloverTemplate = "Rollover",

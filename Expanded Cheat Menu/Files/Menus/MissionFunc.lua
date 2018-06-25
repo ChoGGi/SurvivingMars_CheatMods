@@ -1,6 +1,7 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Sections/spaceship.tga"
 
@@ -39,7 +40,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoal()
   --
   goal.colony_approval_sol = UICity.day
   ChoGGi.Temp.InstantMissionGoal = true
-  ChoGGi.ComFuncs.MsgPopup(T(302535920001158--[[Mission goal--]]),T(8076--[[Goal--]]),UsualIcon)
+  MsgPopup(T(302535920001158--[[Mission goal--]]),T(8076--[[Goal--]]),UsualIcon)
 end
 
 function ChoGGi.MenuFuncs.InstantColonyApproval()
@@ -55,7 +56,7 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(tostring(ChoGGi.UserSettings.MeteorHealthDamage),"\n",T(302535920001160--[[Damage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.MeteorHealthDamage),"\n",T(302535920001160--[[Damage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.--]])),
     T(547--[[Colonists--]]),"UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
@@ -90,7 +91,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
         --and bonuses
         city:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001161--[[Sponsor for this save is now--]])," ",choice[1].text),
+        MsgPopup(Concat(T(302535920001161--[[Sponsor for this save is now--]])," ",choice[1].text),
           T(302535920001162--[[Sponsor--]]),UsualIcon
         )
         break
@@ -150,7 +151,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
+    MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
       T(302535920001162--[[Sponsor--]])
     )
   end
@@ -201,7 +202,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001173--[[Commander for this save is now--]])," ",choice[1].text),
+        MsgPopup(Concat(T(302535920001173--[[Commander for this save is now--]])," ",choice[1].text),
           T(302535920001174--[[Commander--]]),UsualIcon
         )
         break
@@ -261,7 +262,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
+    MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
       T(302535920001174--[[Commander--]])
     )
   end
@@ -320,7 +321,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001177--[[Logo--]]),": ",choice[1].text),
+        MsgPopup(Concat(T(302535920001177--[[Logo--]]),": ",choice[1].text),
           T(302535920001177--[[Logo--]]),UsualIcon
         )
       end
@@ -482,7 +483,7 @@ end
 --~   local CallBackFunc = function(choice)
 --~     mapdata[Concat("MapSettings_",sType})] = Concat(sType,"_",choice[1].value))
 
---~     ChoGGi.ComFuncs.MsgPopup(Concat(sType," ",T(302535920001179--[[occurrence is now--]]),": ",choice[1].value),
+--~     MsgPopup(Concat(sType," ",T(302535920001179--[[occurrence is now--]]),": ",choice[1].value),
 --~       T(3983--[[Disasters--]]),"UI/Icons/Sections/attention.tga"
 --~     )
 --~   end
@@ -511,10 +512,10 @@ end
 --~     local check1 = choice[1].check1
 --~     local check2 = choice[1].check2
 --~     if not check1 and not check2 then
---~       ChoGGi.ComFuncs.MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(302535920001181--[[Rules--]]),UsualIcon)
+--~       MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(302535920001181--[[Rules--]]),UsualIcon)
 --~       return
 --~     elseif check1 and check2 then
---~       ChoGGi.ComFuncs.MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(302535920001181--[[Rules--]]),UsualIcon)
+--~       MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(302535920001181--[[Rules--]]),UsualIcon)
 --~       return
 --~     end
 
@@ -541,7 +542,7 @@ end
 --~       GameRulesMap[rule_id]:OnInitEffect(UICity)
 --~       GameRulesMap[rule_id]:OnApplyEffect(UICity)
 --~     end
---~     ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000129--[[Set--]]),": ",#choice),
+--~     MsgPopup(Concat(T(302535920000129--[[Set--]]),": ",#choice),
 --~       T(302535920001181--[[Rules--]]),UsualIcon
 --~     )
 --~   end

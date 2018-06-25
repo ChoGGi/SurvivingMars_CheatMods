@@ -296,6 +296,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
     end
   end)
 end
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 -- centred msgbox with Ok
 function ChoGGi.ComFuncs.MsgWait(Msg,Title)
@@ -341,7 +342,7 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",tostring(Obj)),
+      MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",tostring(Obj)),
         Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
       )
     end
@@ -368,7 +369,7 @@ ChoGGi.ComFuncs.DumpTable(Object)
 function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
+    MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
     return
   end
   Mode = Mode or "-1"
@@ -377,7 +378,7 @@ function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
 
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(Obj)),
+  MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(Obj)),
     "AppData/logs/DumpedText.txt"
   )
 end
@@ -418,7 +419,7 @@ if you want to dump functions as well DumpObject(object,true)
 function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   local ChoGGi = ChoGGi
   if not Obj then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
+    MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
     return
   end
 
@@ -1119,7 +1120,7 @@ ChoGGi.ComFuncs.OpenInListChoice({
 function ChoGGi.ComFuncs.OpenInListChoice(Table)
   local ChoGGi = ChoGGi
   if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]),T(6774--[[Error--]]))
+    MsgPopup(T(302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]),T(6774--[[Error--]]))
     return
   end
 
@@ -1639,6 +1640,7 @@ do
       parent:delete()
     end
   end
+
   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
     g_Classes.XTextButton:new({
       RolloverTemplate = "Rollover",
@@ -1651,13 +1653,12 @@ do
       LayoutMethod = "VList",
     }, parent)
   end
+
   function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items)
     local popup = g_Classes.XPopupList:new({
       Opened = true,
       Id = popup_id,
       ZOrder = 2000001, --1 above consolelog
-  --~     HAlign = "left",
-  --~     VAlign = "bottom",
       Dock = "top",
       Margins = box(0, 0, 0, 5),
       LayoutMethod = "VList",
@@ -1670,7 +1671,7 @@ do
         RolloverText = item.hint,
         RolloverTemplate = "Rollover",
         Text = item.name,
-        RolloverBackground = RGBA(40, 163, 255, 128),
+--~         RolloverBackground = RGBA(40, 163, 255, 255),
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()

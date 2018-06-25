@@ -7,9 +7,32 @@
 
 --see about hiding list when moving dialog
 
-local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
-local T = ChoGGi.ComFuncs.Trans
+local Concat
+local DialogAddCaption
+local DialogAddCloseX
+local DialogUpdateMenuitems
+local Dump
+local RetButtonTextSize
+local RetName
+local RetSortTextAssTable
+local ShowMe
+local T
+local TConcat
+--now we can local just the funcs, and ignore the settings that may be changed later on (ChoGGi. table)
+do
+  local ChoGGi = ChoGGi
+  Concat = ChoGGi.ComFuncs.Concat
+  DialogAddCaption = ChoGGi.ComFuncs.DialogAddCaption
+  DialogAddCloseX = ChoGGi.ComFuncs.DialogAddCloseX
+  DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
+  Dump = ChoGGi.ComFuncs.Dump
+  RetButtonTextSize = ChoGGi.ComFuncs.RetButtonTextSize
+  RetName = ChoGGi.ComFuncs.RetName
+  RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
+  ShowMe = ChoGGi.ComFuncs.ShowMe
+  T = ChoGGi.ComFuncs.Trans
+  TConcat = ChoGGi.ComFuncs.TableConcat
+end
 
 local pairs,type,print,tostring,tonumber,getmetatable,rawget,rawset = pairs,type,print,tostring,tonumber,getmetatable,rawget,rawset
 local string,table,debug,utf8 = string,table,debug,utf8
@@ -72,8 +95,8 @@ function Examine:Init()
   dialog_width = dialog_width - border * 2
   local dialog_left = border
 
-  ChoGGi.ComFuncs.DialogAddCloseX(self)
-  ChoGGi.ComFuncs.DialogAddCaption(self,{
+  DialogAddCloseX(self)
+  DialogAddCaption(self,{
     prefix = Concat(T(302535920000069--[[Examine--]]),": "),
     pos = point(25, border),
     size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
@@ -138,7 +161,7 @@ function Examine:Init()
   local title = T(302535920000239--[[Tools--]])
   self.idTools = g_Classes.Button:new(self)
   self.idTools:SetPos(point(dialog_left+5, element_y))
-  self.idTools:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idTools:SetSize(RetButtonTextSize(title))
   self.idTools:SetText(title)
   self.idToolsMenu = g_Classes.ComboBox:new(self)
   self.idToolsMenu:SetPos(self.idTools:GetPos() + point(0,10))
@@ -150,7 +173,7 @@ function Examine:Init()
   self.idToolsMenu:SetZOrder(0)
 
   function self.idTools.OnButtonPressed()
-    ChoGGi.ComFuncs.DialogUpdateMenuitems(self.idToolsMenu)
+    DialogUpdateMenuitems(self.idToolsMenu)
     --combo makes this 1000000, we need more to be on top of examine
     self.idToolsMenu.drop_dialog:SetZOrder(zorder+1)
   end
@@ -178,7 +201,7 @@ function Examine:Init()
           hint_ok = T(302535920000047),
           func = function(answer,overwrite)
             if answer then
-              ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+              Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
             end
           end,
         })
@@ -192,7 +215,7 @@ function Examine:Init()
           hint_ok = T(302535920000049),
           func = function(answer,overwrite)
             if answer then
-              ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+              Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
             end
           end,
         })
@@ -201,10 +224,10 @@ function Examine:Init()
         local str = self:totextex(self.obj)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
-        ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+        Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
       elseif text == menuitem_DumpObject then
         local str = ValueToLuaCode(self.obj)
-        ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+        Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
       elseif text == menuitem_EditObject then
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
       elseif text == menuitem_ExecCode then
@@ -258,7 +281,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
   title = T(302535920000520--[[Parents--]])
   self.idParents = g_Classes.Button:new(self)
   self.idParents:SetPos(point(element_x, element_y))
-  self.idParents:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idParents:SetSize(RetButtonTextSize(title))
   self.idParents:SetText(title)
   self.idParents:SetHint(T(302535920000553--[[Examine parent and ancestor objects.--]]))
 
@@ -272,7 +295,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
   self.idParentsMenu:SetZOrder(0)
 
   function self.idParents.OnButtonPressed()
-    ChoGGi.ComFuncs.DialogUpdateMenuitems(self.idParentsMenu)
+    DialogUpdateMenuitems(self.idParentsMenu)
     self.idParentsMenu.drop_dialog:SetZOrder(zorder+1)
   end
 
@@ -292,7 +315,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
   title = T(302535920000053--[[Attaches--]])
   self.idAttaches = g_Classes.Button:new(self)
   self.idAttaches:SetPos(point(element_x, element_y))
-  self.idAttaches:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idAttaches:SetSize(RetButtonTextSize(title))
   self.idAttaches:SetText(title)
   self.idAttaches:SetHint(T(302535920000054--[[Any objects attached to this object.--]]))
   self.idAttachesMenu = g_Classes.ComboBox:new(self)
@@ -305,7 +328,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
   self.idAttachesMenu:SetZOrder(0)
 
   function self.idAttaches.OnButtonPressed()
-    ChoGGi.ComFuncs.DialogUpdateMenuitems(self.idAttachesMenu)
+    DialogUpdateMenuitems(self.idAttachesMenu)
     --combo makes this 1000000, we need more to be on top of examine
     self.idAttachesMenu.drop_dialog:SetZOrder(zorder+1)
   end
@@ -324,7 +347,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
 
   title = T(1000232--[[Next--]])
   self.idNext = g_Classes.Button:new(self)
-  self.idNext:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
+  self.idNext:SetSize(RetButtonTextSize(title))
   self.idNext:SetPos(point(dialog_width-60-border, element_y))
   self.idNext:SetText(title)
   --self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
@@ -413,11 +436,11 @@ local function Examine_valuetotextex(_, _, button,o,self)
   if button == "left" then
     OpenExamine(o, self)
   elseif IsValid(o) then
-    ChoGGi.ComFuncs.ShowMe(o)
+    ShowMe(o)
   end
 end
 local function ShowPoint_valuetotextex(o)
-  ChoGGi.ComFuncs.ShowMe(o)
+  ShowMe(o)
 end
 function Examine:valuetotextex(o)
   local objlist = objlist
@@ -502,7 +525,7 @@ function Examine:valuetotextex(o)
       self:HyperLink(function(_,_,button)
         Examine_valuetotextex(_,_,button,o,self)
       end),
-      Concat(ChoGGi.ComFuncs.RetName(o)," (len:",#o,")"),
+      Concat(RetName(o)," (len:",#o,")"),
       HLEnd
     )
   end
@@ -714,7 +737,7 @@ function Examine:totextex(o)
         GetStateName(o:GetState()),
         ", step:",
         self:HyperLink(function()
-          ChoGGi.ComFuncs.ShowMe(pos)
+          ShowMe(pos)
         end),
         tostring(o:GetStepVector(o:GetState(),0)),
         HLEnd
@@ -749,14 +772,14 @@ end
 --menu
 local function Show_menu(o)
   if IsValid(o) then
-    ChoGGi.ComFuncs.ShowMe(o)
+    ShowMe(o)
   else
     for k, v in pairs(o) do
       if IsPoint(k) or IsValid(k) then
-        ChoGGi.ComFuncs.ShowMe(k)
+        ShowMe(k)
       end
       if IsPoint(v) or IsValid(v) then
-        ChoGGi.ComFuncs.ShowMe(v)
+        ShowMe(v)
       end
     end
   end
@@ -788,7 +811,7 @@ local function Assign_menu(_, _, button,name,o,self)
       rawset(_G, name, o)
       self.idLinks:SetText(self:menu(o))
     elseif button == "right" then
-      ChoGGi.ComFuncs.ShowMe(rawget(_G, name), RGB(0, 0, 255))
+      ShowMe(rawget(_G, name), RGB(0, 0, 255))
       OpenExamine(rawget(_G, name), self)
     end
   end
@@ -957,7 +980,7 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   self.idLinks:SetText(self:menu(o))
 
   local is_table = type(o) == "table"
-  local name = ChoGGi.ComFuncs.RetName(o)
+  local name = RetName(o)
 
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
@@ -975,7 +998,7 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
     --build list of parents, see about a way to toggle showing ancestors (big list)
     local list = o.__parents
     if list then
-      list = ChoGGi.ComFuncs.RetSortTextAssTable(list)
+      list = RetSortTextAssTable(list)
       local list_items = {{text = Concat("   ---- ",T(302535920000520--[[Parents--]]))}}
       for i = 1, #list do
         list_items[#list_items+1] = {
@@ -983,7 +1006,7 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
         }
       end
       list_items[#list_items+1] = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
-      list = ChoGGi.ComFuncs.RetSortTextAssTable(o.__ancestors,true)
+      list = RetSortTextAssTable(o.__ancestors,true)
       for i = 1, #list do
         list_items[#list_items+1] = {
           text = list[i]
@@ -1010,7 +1033,7 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
             hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
           end
           list_items[#list_items+1] = {
-            text = ChoGGi.ComFuncs.RetName(list[i]),
+            text = RetName(list[i]),
             rollover = hint or list[i].class,
             obj = list[i],
           }

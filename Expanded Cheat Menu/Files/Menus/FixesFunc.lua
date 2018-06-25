@@ -1,6 +1,7 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local T = ChoGGi.ComFuncs.Trans
 
@@ -153,7 +154,7 @@ end
 function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
   local sel = SelectedObj
   if not sel then
-    ChoGGi.ComFuncs.MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
+    MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
     return
   end
 
@@ -170,7 +171,7 @@ function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
     which = "disabled"
   end
 
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000968--[[Collisions--]])," ",which," ",T(302535920000969--[[on--]])," ",ChoGGi.ComFuncs.RetName(sel)),
+  MsgPopup(Concat(T(302535920000968--[[Collisions--]])," ",which," ",T(302535920000969--[[on--]])," ",ChoGGi.ComFuncs.RetName(sel)),
     T(302535920000968--[[Collisions--]])
   )
 end
@@ -329,7 +330,7 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
-  ChoGGi.ComFuncs.MsgPopup(T(302535920000970--[[Removed unreachable--]]),T(302535920000971--[[Sites--]]))
+  MsgPopup(T(302535920000970--[[Removed unreachable--]]),T(302535920000971--[[Sites--]]))
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
@@ -375,7 +376,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
     ChoGGi.CodeFuncs.AttachToNearestDome(Table[i])
   end
 
-  ChoGGi.ComFuncs.MsgPopup(T(302535920000972--[[Buildings attached.--]]),
+  MsgPopup(T(302535920000972--[[Buildings attached.--]]),
     T(3980--[[Buildings--]]),"UI/Icons/Sections/basic.tga"
   )
 end
@@ -448,7 +449,7 @@ function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat("No resting bonus psychologist: ",tostring(UserSettings.NoRestingBonusPsychologistFix)),
+  MsgPopup(Concat("No resting bonus psychologist: ",tostring(UserSettings.NoRestingBonusPsychologistFix)),
     "Psychologist"
   )
 end
@@ -458,7 +459,7 @@ function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = not ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
+  MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
     T(5438--[[Rovers--]])
   )
 end
@@ -467,7 +468,7 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
+  MsgPopup(Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
     T(517--[[Drones--]]),"UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -476,7 +477,7 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
   ChoGGi.SettingFuncs.WriteSettings()
-  ChoGGi.ComFuncs.MsgPopup(Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
+  MsgPopup(Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
     T(3980--[[Buildings--]])
   )
 end
