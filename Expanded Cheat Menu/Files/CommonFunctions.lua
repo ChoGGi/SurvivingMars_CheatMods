@@ -1094,8 +1094,6 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
 end
 
 --[[
-called below from FireFuncAfterChoice
-
 CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dbl click opens colour changer, and sends back all items
 CustomType=2 : colour selector
 CustomType=3 : updates selected item with custom value type, and sends back selected item.

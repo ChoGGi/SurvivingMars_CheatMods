@@ -62,7 +62,8 @@ You may need to toggle the recall drones button."--]]),
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]"," ",T(302535920000589--[[Fire Most Fixes--]])),
     ChoGGi.MenuFuncs.FireMostFixes,
     nil,
-    T(302535920000590--[[Fires all the fixes in the \"Most\" menu (nuke 'em from orbit and all that).--]]),
+    T(302535920000590--[[Fires all the fixes in the \"Most\" menu (nuke 'em from orbit and all that).
+Should be safe to use without breaking anything.--]]),
     icon
   )
 

@@ -7,6 +7,18 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(1000435--[[Game--]]),"/",T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
+    ChoGGi.MenuFuncs.AutosavePeriod,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(const.AutosavePeriod,
+        302535920001206 --,"Change how many Sols between autosaving."
+      )
+    end,
+    "save_city.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/",T(302535920000265--[[No More Pulsating Pins--]])),
     ChoGGi.MenuFuncs.PulsatingPins_Toggle,
     nil,

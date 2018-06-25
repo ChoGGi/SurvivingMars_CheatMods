@@ -36,6 +36,52 @@ local terrain_SetTerrainType = terrain.SetTerrainType
 
 local g_Classes = g_Classes
 
+function ChoGGi.MenuFuncs.AutosavePeriod()
+  local ChoGGi = ChoGGi
+  local DefaultSetting = ChoGGi.Consts.AutosavePeriod
+  local UserSettings = ChoGGi.UserSettings
+  local ItemList = {
+    {text = Concat(" Default: ",DefaultSetting),value = DefaultSetting},
+    {text = 1,value = 1},
+    {text = 3,value = 3},
+    {text = 10,value = 10},
+    {text = 15,value = 15},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if UserSettings.AutosavePeriod then
+    hint = UserSettings.AutosavePeriod
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if type(value) == "number" then
+
+      const.AutosavePeriod = value
+      g_NextAutosaveSol = UICity.day + value
+
+      if value == DefaultSetting then
+        UserSettings.AutosavePeriod = nil
+      else
+        UserSettings.AutosavePeriod = value
+      end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      ChoGGi.ComFuncs.MsgPopup(Concat("Selected: ",choice[1].text),
+        Concat(T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]]))
+      )
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice({
+    callback = CallBackFunc,
+    items = ItemList,
+    title = Concat(T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
+    hint = Concat("Current: ",hint),
+  })
+end
+
 function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
   ChoGGi.UserSettings.DisablePulsatingPinsMotion = not ChoGGi.UserSettings.DisablePulsatingPinsMotion
 

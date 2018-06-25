@@ -106,6 +106,7 @@ ChoGGi.Consts = {
   ResourceScale = 1000,
   ResearchPointsScale = 1000,
   guim = 100,
+  AutosavePeriod = 5,
 --Consts.* (Consts is a prop object, so we can get the defaults with ReadSettingsInGame below.) _const.lua
   AvoidWorkplaceSols = false,
   BirthThreshold = false,

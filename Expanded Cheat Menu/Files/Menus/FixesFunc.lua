@@ -22,7 +22,6 @@ local Sleep = Sleep
 
 local g_Classes = g_Classes
 
----------fixes
 function ChoGGi.MenuFuncs.FireMostFixes()
   local ChoGGi = ChoGGi
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
@@ -82,7 +81,7 @@ local function SpawnColonist(old_c,building,pos,city)
 
   local colonist
   if old_c then
-    --colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+--~     colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
     colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
     --we set all the set gen doesn't (it's more for random gen after all
     colonist.birthplace = old_c.birthplace
