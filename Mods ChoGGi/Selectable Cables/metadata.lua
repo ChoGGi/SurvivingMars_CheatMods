@@ -3,11 +3,9 @@ return PlaceObj("ModDef", {
   "saved", 1527940800,
   "version", 2,
   "title", "Selectable Cables v0.2",
-  "description", "Name pretty much says it all.",
   "id", "ChoGGi_SelectableCables",
   "author", "ChoGGi",
   "steam_id", "1411114741",
-  "code", {
-    "Script.lua",
-  },
+  "code", {"Script.lua"},
+  "description", [[Name pretty much says it all.]],
 })

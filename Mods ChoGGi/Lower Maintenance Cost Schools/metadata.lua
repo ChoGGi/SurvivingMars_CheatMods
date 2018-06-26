@@ -1,11 +1,9 @@
 return PlaceObj("ModDef", {
-  "saved", 1527854400,
   "version", 1,
   "title", "Lower Maintenance Cost Schools v0.1",
-  "description", "Schools and Universities.",
+  "saved", 1527854400,
   "id", "ChoGGi_LowerMaintenanceCostSchools",
   "author", "ChoGGi",
-  "code", {
-    "Script.lua",
-  },
+	"code", {"Script.lua"},
+  "description", [[Schools and Universities lower maintenance cost (half).]],
 })

@@ -1,12 +1,10 @@
 return PlaceObj("ModDef", {
-  "saved", 1526385600,
   "version", 1,
-  "title", "Buildable/Controllable AttackRover",
-  "description", "It doesn't do anything, that's your job.",
+  "title", "Buildable/Controllable AttackRover v0.1",
+  "saved", 1526385600,
   "tags", "Buildings",
   "id", "ChoGGi_BuildableAttackRover",
   "author", "ChoGGi",
-  "code", {
-    "Script.lua",
-  },
+	"code", {"Script.lua"},
+  "description", [[It doesn't do anything, that's your job.]],
 })

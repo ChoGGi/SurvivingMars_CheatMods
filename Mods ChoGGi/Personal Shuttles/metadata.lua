@@ -4,12 +4,10 @@ return PlaceObj("ModDef", {
 	"steam_id", "1410892053",
 	"author", "ChoGGi",
 	"version", 3,
-	"code", {
-		"Script.lua",
-	},
 	"saved", 1528918364,
 	"TagOther", true,
 	"image", "Preview.png",
+	"code", {"Script.lua"},
 	"description", [[Adds buttons to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around (just the Drones/RCs/Resource depots/piles).
 
 Spawned shuttles can pick up certain items (storage depots, resource drops, rovers and drones).

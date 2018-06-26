@@ -1,4 +1,7 @@
+local GetObjects = GetObjects
+
 --depth_layer: 2 = deep, 1 = underground
+
 local function LargerDeposits(Class)
   local objs = GetObjects({class = Class}) or empty_table
   for i = 1, #objs do
