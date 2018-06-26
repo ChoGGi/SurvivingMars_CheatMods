@@ -82,37 +82,44 @@ local UIL_GetFontID = UIL.GetFontID
 local g_Classes = g_Classes
 
 do --export colonist data
-  local export_data = {}
-  local skipped_traits = {
-    Child = true,Youth = true,Adult = true,["Middle Aged"] = true,Senior = true,Retiree = true,
-    OtherGender = true,Android = true,Clone = true,Male = true,Female = true,
-    scientist = true,engineer = true,security = true,geologist = true,botanist = true,medic = true,none = true,
-  }
+  local ChoGGi_Tables = ChoGGi.Tables
+  --build list of traits to skip (added as columns, we don't want dupes)
+  local skipped_traits = {}
+  local function AddSkipped(traits,list)
+    for i = 1, #traits do
+      list[traits[i]] = true
+    end
+    return list
+  end
+  skipped_traits = AddSkipped(ChoGGi_Tables.ColonistAges,skipped_traits)
+  skipped_traits = AddSkipped(ChoGGi_Tables.ColonistGenders,skipped_traits)
+  skipped_traits = AddSkipped(ChoGGi_Tables.ColonistSpecializations,skipped_traits)
+
   local ColonistsCSVColumns = {
-    {"name","Name"},
-    {"age","Age"},
-    {"age_trait","Age Trait"},
-    {"birthplace","Birthplace"},
-    {"gender","Gender"},
-    {"race","Race"},
-    {"health","Health"},
-    {"comfort","Comfort"},
-    {"morale","Morale"},
-    {"sanity","Sanity"},
-    {"performance","Performance"},
-    {"handle","Handle"},
-    {"death_age","Death Age"},
-    {"last_meal","Last Meal"},
-    {"last_rest","Last Rest"},
-    {"dome_name","Dome Name"},
-    {"dome_pos","Dome Pos"},
-    {"dome_handle","Dome Handle"},
-    {"residence_name","Residence Name"},
-    {"residence_pos","Residence Pos"},
-    {"residence_dome","Residence Dome"},
-    {"workplace_name","Workplace Name"},
-    {"workplace_pos","Workplace Pos"},
-    {"workplace_dome","Workplace Dome"},
+    {"name",T(1000037--[[Name--]])},
+    {"age",T(302535920001222--[[Age--]])},
+    {"age_trait",Concat(T(302535920001222--[[Age--]])," ",T(3720--[[Trait--]]))},
+    {"birthplace",T(302535920000739--[[Birthplace--]])},
+    {"gender",T(302535920000740--[[Gender--]])},
+    {"race",T(302535920000741--[[Race--]])},
+    {"health",T(4291--[[Health--]])},
+    {"comfort",T(4295--[[Comfort--]])},
+    {"morale",T(4297--[[Morale--]])},
+    {"sanity",T(4293--[[Sanity--]])},
+    {"performance",T(4283--[[Worker performance--]])},
+    {"handle",T(302535920000955--[[Handle--]])},
+    {"death_age",T(4284--[[Age of death--]])},
+    {"last_meal",T(302535920001229--[[Last Meal--]])},
+    {"last_rest",T(302535920001235--[[Last Rest--]])},
+    {"dome_name",Concat(T(1234--[[Dome--]])," ",T(1000037--[[Name--]]))},
+    {"dome_pos",Concat(T(1234--[[Dome--]])," ",T(302535920001237--[[Position--]]))},
+    {"dome_handle",Concat(T(1234--[[Dome--]])," ",T(302535920000955--[[Handle--]]))},
+    {"residence_name",Concat(T(4809--[[Residence--]])," ",T(1000037--[[Name--]]))},
+    {"residence_pos",Concat(T(4809--[[Residence--]])," ",T(302535920001237--[[Position--]]))},
+    {"residence_dome",Concat(T(4809--[[Residence--]])," ",T(1234--[[Dome--]]))},
+    {"workplace_name",Concat(T(4801--[[Workplace--]])," ",T(1000037--[[Name--]]))},
+    {"workplace_pos",Concat(T(4801--[[Workplace--]])," ",T(302535920001237--[[Position--]]))},
+    {"workplace_dome",Concat(T(4801--[[Workplace--]])," ",T(1234--[[Dome--]]))},
   }
   local function AddTraits(traits,list)
     for i = 1, #traits do
@@ -123,10 +130,11 @@ do --export colonist data
     end
     return list
   end
-  ColonistsCSVColumns = AddTraits(ChoGGi.Tables.NegativeTraits,ColonistsCSVColumns)
-  ColonistsCSVColumns = AddTraits(ChoGGi.Tables.PositiveTraits,ColonistsCSVColumns)
+  ColonistsCSVColumns = AddTraits(ChoGGi_Tables.NegativeTraits,ColonistsCSVColumns)
+  ColonistsCSVColumns = AddTraits(ChoGGi_Tables.PositiveTraits,ColonistsCSVColumns)
 
   function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
+    local export_data = {}
     local colonists = UICity.labels.Colonist
 
     for i = 1, #colonists do
@@ -174,23 +182,9 @@ do --export colonist data
           export_data[i][Concat("trait_",trait_id)] = true
         end
       end
-
     end
-
---~   ex(export_data)
-
---~   local data = {}
---~   for i = 1, #DataInstances.BuildingTemplate do
---~     data[i] = {}
---~     for j = 1, #BuildingCSVColumns do
---~       local prop = BuildingCSVColumns[j][1]
---~       data[i][prop] = PropObjHasMember(DataInstances.BuildingTemplate[i], prop) and DataInstances.BuildingTemplate[i][prop] or ""
---~     end
---~   end
---~   ex(BuildingCSVColumns)
---~   ex(data)
-
-  SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
+    --and now we can save it to disk
+    SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
   end
 end
 

@@ -125,19 +125,7 @@ else
   end
 end
 
--- functions that need to be loaded before they get called...
-dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
--- get saved settings for this mod
-dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
--- new ui classes
-dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
--- OnMsgs and functions that don't need to be in CommonFunctions
-dofolder_files(Concat(ChoGGi.MountPath,"Code"))
--- menus... (ok and keys)
-dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
-
-local T = ChoGGi.ComFuncs.Trans
-
+--load up translation strings
 local function LoadLocale(file)
   if not pcall(function()
     LoadTranslationTableFile(file)
@@ -154,6 +142,17 @@ else
   LoadLocale(Concat(ChoGGi.ModPath,"Locales/","English.csv"))
 end
 Msg("TranslationChanged")
+
+-- functions that need to be loaded before they get called...
+dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
+-- get saved settings for this mod
+dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
+-- new ui classes
+dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
+-- OnMsgs and functions that don't need to be in CommonFunctions
+dofolder_files(Concat(ChoGGi.MountPath,"Code"))
+-- menus... (ok and keys)
+dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
 
 -- read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()
@@ -174,6 +173,8 @@ if ChoGGi.UserSettings.WriteLogs then
 --~   ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
   ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 end
+
+local T = ChoGGi.ComFuncs.Trans
 
 -- first time run info
 if ChoGGi.UserSettings.FirstRun ~= false then
