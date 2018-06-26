@@ -1,4 +1,11 @@
-Removed list boxes for selection, now uses menus (right-click to close the menu).
+v0.5
 Locked building behind a tech unlock.
+
+v0.4
+Removed list boxes for selection, now uses menus (right-click to close the menu).
 Uses 15 instead of 25 power.
 Counts as a Workshop now.
+v0.3
+Just updating code to parity with ECM code and steam version.
+v0.2
+Curiosity update

@@ -10,9 +10,6 @@ return PlaceObj("ModDef", {
   "code", {"Script.lua"},
   "description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
-Thanks to Kevin Bagust for the idea (and Asimov of course)."
-
-### Adds a new building called Solaria Telepresence; remote control factories and mines (with reduced production).
 This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
 
 ##### Currently it can control:

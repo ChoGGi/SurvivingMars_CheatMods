@@ -107,12 +107,12 @@ do --export colonist data
     {"dome_name","Dome Name"},
     {"dome_pos","Dome Pos"},
     {"dome_handle","Dome Handle"},
-    {"residence_name","residence_name"},
-    {"residence_pos","residence_pos"},
-    {"residence_dome","residence_dome"},
-    {"workplace_name","workplace_name"},
-    {"workplace_pos","workplace_pos"},
-    {"workplace_dome","workplace_dome"},
+    {"residence_name","Residence Name"},
+    {"residence_pos","Residence Pos"},
+    {"residence_dome","Residence Dome"},
+    {"workplace_name","Workplace Name"},
+    {"workplace_pos","Workplace Pos"},
+    {"workplace_dome","Workplace Dome"},
   }
   local function AddTraits(traits,list)
     for i = 1, #traits do
