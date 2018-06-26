@@ -1423,14 +1423,16 @@ function ChoGGi.ComFuncs.RetName(obj)
   end
   local name
   if type(obj) == "table" then
+    --custom name
+    if obj.name ~= "" then
+      return obj.name
     --translated name
-    if type(obj.display_name) == "userdata" or type(obj.display_name) == "string" then
+    elseif type(obj.display_name) == "userdata" or type(obj.display_name) == "string" then
       return T(obj.display_name)
     elseif IsObjlist(obj) then
       return "objlist"
-      --return the name of the first one?
---~       return ChoGGi.ComFuncs.RetName(obj[1])
     end
+
     name = getmetatable(obj)
     if name and type(name.class) == "string" then
       return name.class

@@ -12,45 +12,11 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001175--[[Debug FX--]])),
-    function()
-      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
-    end,
+    Concat("[102]Debug/",T(302535920001208--[[Export Colonist Data To CSV--]])),
+    ChoGGi.MenuFuncs.ExportColonistDataToCSV,
     nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(DebugFX,
-        302535920001176 --Toggle showing FX debug info in console.
-      )
-    end,
-    "FXEditor.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001184--[[Particles--]])),
-    function()
-      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
-    end,
-    nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(DebugFXParticles,
-        302535920001176 --Toggle showing FX debug info in console.
-      )
-    end,
-    "place_particles.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(4107--[[Sound FX--]])),
-    function()
-      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
-    end,
-    nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(DebugFXSound,
-        302535920001176 --Toggle showing FX debug info in console.
-      )
-    end,
-    "DisableEyeSpec.tga"
+    T(302535920001219--[[Exports data about colonists to AppData/Colonists.csv--]]),
+    "SelectByClassName.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -251,6 +217,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     "place_particles.tga"
   )
 
+  -------------------------------toggle grids
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/[08]",T(302535920000497--[[Toggle Terrain Deposit Grid--]])),
     ToggleTerrainDepositGrid,
@@ -288,5 +255,50 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     T(302535920000504--[[Shows a hex grid with green for buildable (ignores uneven terrain).--]]),
     "ToggleCollisions.tga"
   )
+  -------------------------------toggle grids
+
+  -------------------------------debugfx
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001175--[[Debug FX--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFX,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "FXEditor.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001184--[[Particles--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFXParticles,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "place_particles.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(4107--[[Sound FX--]])),
+    function()
+      ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
+    end,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(DebugFXSound,
+        302535920001176 --Toggle showing FX debug info in console.
+      )
+    end,
+    "DisableEyeSpec.tga"
+  )
+  -------------------------------debugfx
 
 end

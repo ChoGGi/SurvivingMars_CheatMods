@@ -8,6 +8,7 @@ DefineClass.ChoGGi_CursorBuilding = {
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
@@ -49,9 +50,9 @@ local Random = Random
 local RecalcBuildableGrid = RecalcBuildableGrid
 local ReloadClassEntities = ReloadClassEntities
 local ReloadLua = ReloadLua
+local SaveCSV = SaveCSV
 local SaveLocalStorage = SaveLocalStorage
 local SelectionArrowAdd = SelectionArrowAdd
-local ShowConsoleLog = ShowConsoleLog
 local Sleep = Sleep
 local WaitDelayedLoadEntities = WaitDelayedLoadEntities
 local WaitNextFrame = WaitNextFrame
@@ -73,13 +74,125 @@ local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
 local terrain_SetHeightCircle = terrain.SetHeightCircle
 local UserActions_AddActions = UserActions.AddActions
-local UserActions_RemoveActions = UserActions.RemoveActions
 local UserActions_GetActiveActions = UserActions.GetActiveActions
 local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
 --~ local terrain_SetTypeCircle = terrain.SetTypeCircle
 local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
+
+do --export colonist data
+  local export_data = {}
+  local skipped_traits = {
+    Child = true,Youth = true,Adult = true,["Middle Aged"] = true,Senior = true,Retiree = true,
+    OtherGender = true,Android = true,Clone = true,Male = true,Female = true,
+    scientist = true,engineer = true,security = true,geologist = true,botanist = true,medic = true,none = true,
+  }
+  local ColonistsCSVColumns = {
+    {"name","Name"},
+    {"age","Age"},
+    {"age_trait","Age Trait"},
+    {"birthplace","Birthplace"},
+    {"gender","Gender"},
+    {"race","Race"},
+    {"health","Health"},
+    {"comfort","Comfort"},
+    {"morale","Morale"},
+    {"sanity","Sanity"},
+    {"performance","Performance"},
+    {"handle","Handle"},
+    {"death_age","Death Age"},
+    {"last_meal","Last Meal"},
+    {"last_rest","Last Rest"},
+    {"dome_name","Dome Name"},
+    {"dome_pos","Dome Pos"},
+    {"dome_handle","Dome Handle"},
+    {"residence_name","residence_name"},
+    {"residence_pos","residence_pos"},
+    {"residence_dome","residence_dome"},
+    {"workplace_name","workplace_name"},
+    {"workplace_pos","workplace_pos"},
+    {"workplace_dome","workplace_dome"},
+  }
+  local function AddTraits(traits,list)
+    for i = 1, #traits do
+      list[#list+1] = {
+        Concat("trait_",traits[i]),
+        Concat("Trait ",traits[i]),
+      }
+    end
+    return list
+  end
+  ColonistsCSVColumns = AddTraits(ChoGGi.Tables.NegativeTraits,ColonistsCSVColumns)
+  ColonistsCSVColumns = AddTraits(ChoGGi.Tables.PositiveTraits,ColonistsCSVColumns)
+
+  function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
+    local colonists = UICity.labels.Colonist
+
+    for i = 1, #colonists do
+      local c = colonists[i]
+
+      export_data[i] = {
+        name = Concat(T(c.name[1])," ",T(c.name[3])),
+        age = c.age,
+        age_trait = c.age_trait,
+        birthplace = c.birthplace,
+        gender = c.gender,
+        death_age = c.death_age,
+        race = c.race,
+        health = c.stat_health,
+        comfort = c.stat_comfort,
+        morale = c.stat_morale,
+        sanity = c.stat_sanity,
+        performance = c.performance,
+        handle = c.handle,
+        specialist = c.specialist,
+        last_meal = c.last_meal,
+        last_rest = c.last_rest,
+      }
+      --dome
+      if c.dome then
+        export_data[i].dome_name = RetName(c.dome)
+        export_data[i].dome_pos = c.dome:GetVisualPos()
+        export_data[i].dome_handle = c.dome.handle
+      end
+      --residence
+      if c.residence then
+        export_data[i].residence_name = RetName(c.residence)
+        export_data[i].residence_pos = c.residence:GetVisualPos()
+        export_data[i].residence_dome = RetName(c.residence.parent_dome)
+      end
+      --workplace
+      if c.workplace then
+        export_data[i].workplace_name = RetName(c.workplace)
+        export_data[i].workplace_pos = c.workplace:GetVisualPos()
+        export_data[i].workplace_dome = RetName(c.workplace.parent_dome)
+      end
+      --traits
+      for trait_id, _ in pairs(c.traits) do
+        if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
+          export_data[i][Concat("trait_",trait_id)] = true
+        end
+      end
+
+    end
+
+--~   ex(export_data)
+
+--~   local data = {}
+--~   for i = 1, #DataInstances.BuildingTemplate do
+--~     data[i] = {}
+--~     for j = 1, #BuildingCSVColumns do
+--~       local prop = BuildingCSVColumns[j][1]
+--~       data[i][prop] = PropObjHasMember(DataInstances.BuildingTemplate[i], prop) and DataInstances.BuildingTemplate[i][prop] or ""
+--~     end
+--~   end
+--~   ex(BuildingCSVColumns)
+--~   ex(data)
+
+  SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
+  end
+end
 
 function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
   _G[name] = not _G[name]
@@ -180,8 +293,6 @@ do --FlattenGround
   end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
-    local ChoGGi = ChoGGi
-
     if are_we_flattening then
       ToggleHotkeys()
       are_we_flattening = false
@@ -249,7 +360,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
   if s and not s.class then
     s = ChoGGi.CodeFuncs.SelObject()
   end
-  local name = ChoGGi.ComFuncs.RetName(s)
+  local name = RetName(s)
   if not name then
     MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(s),T(302535920000851--[[isn't an object?\nSounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
       T(6774--[[Error--]]),nil,true
@@ -908,7 +1019,7 @@ do --path markers
     end
 
     --if #Obj.ChoGGi_Stored_Waypoints > 150 then
-    --  print(Concat(ChoGGi.ComFuncs.RetName(Obj)," (handle: ",Obj.handle,") has over 150 waypoints."))
+    --  print(Concat(RetName(Obj)," (handle: ",Obj.handle,") has over 150 waypoints."))
     --end
   end --end of ShowWaypoints
 
@@ -943,7 +1054,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print(Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]),ChoGGi.ComFuncs.RetName(Obj))))
+        print(Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]),RetName(Obj))))
       end
     end
     if path then
