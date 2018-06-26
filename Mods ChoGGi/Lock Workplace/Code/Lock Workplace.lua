@@ -81,7 +81,7 @@ function OnMsg.ClassesBuilt()
           self:SetTitle([[Unlock Workers]])
           self:SetIcon("UI/Icons/traits_approve.tga")
         else
-          self:SetRolloverText([[Lock all workers to this workplace.]])
+          self:SetRolloverText([[Lock all workers to this workplace (if more workers are added you'll need to toggle this or lock each of them).]])
           self:SetTitle([[Lock Workers]])
           self:SetIcon("UI/Icons/traits_disapprove.tga")
         end
