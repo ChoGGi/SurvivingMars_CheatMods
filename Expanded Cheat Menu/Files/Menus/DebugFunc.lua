@@ -81,6 +81,19 @@ local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
 
+local function DeleteAllRocks(rock_cls)
+  local objs = GetObjects({class= rock_cls}) or empty_table
+  for i = 1, #objs do
+    DoneObject(objs[i])
+  end
+end
+
+function ChoGGi.MenuFuncs.DeleteAllRocks()
+  DeleteAllRocks("WasteRockObstructor")
+  DeleteAllRocks("WasteRockObstructorSmall")
+  DeleteAllRocks("Deposition")
+end
+
 do --export colonist data
   local ChoGGi_Tables = ChoGGi.Tables
   --build list of traits to skip (added as columns, we don't want dupes)
@@ -362,7 +375,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
     return
   end
 
-  local objs = GetObjects({class=s.class})
+  local objs = GetObjects({class=s.class}) or empty_table
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -1240,15 +1253,15 @@ do --path markers
           end
         end
         if value == "All" then
-          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}),"IsValid",nil,true)
-          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CargoShuttle"}),"IsValid",nil,true)
+          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}) or empty_table,"IsValid",nil,true)
+          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CargoShuttle"}) or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table1
           colourcount = colourcount + #Table2
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table1)
           swp(Table2)
         else
-          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class=value}),"IsValid",nil,true)
+          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class=value}) or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table)

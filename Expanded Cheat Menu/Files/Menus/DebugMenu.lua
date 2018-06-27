@@ -12,6 +12,14 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat("[102]Debug/",T(302535920000864--[[Delete All Rocks--]])),
+    ChoGGi.MenuFuncs.DeleteAllRocks,
+    nil,
+    T(302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]),
+    "selslope.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920001208--[[Export Colonist Data To CSV--]])),
     ChoGGi.MenuFuncs.ExportColonistDataToCSV,
     nil,
