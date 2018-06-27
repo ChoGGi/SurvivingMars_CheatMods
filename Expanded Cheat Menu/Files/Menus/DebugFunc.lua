@@ -563,21 +563,6 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
-function ChoGGi.MenuFuncs.SetWriteLogs_Toggle()
-  if ChoGGi.UserSettings.WriteLogs then
-    ChoGGi.UserSettings.WriteLogs = nil
-    ChoGGi.ComFuncs.WriteLogs_Toggle()
-  else
-    ChoGGi.UserSettings.WriteLogs = true
-    ChoGGi.ComFuncs.WriteLogs_Toggle(true)
-  end
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000864--[[Write console logs--]]),": ",tostring(ChoGGi.UserSettings.WriteLogs)),
-    T(1000113--[[Debug--]]),"UI/Icons/Anomaly_Breakthrough.tga"
-  )
-end
-
 function ChoGGi.MenuFuncs.ObjExaminer()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then

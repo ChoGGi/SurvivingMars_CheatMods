@@ -31,9 +31,11 @@ function OnMsg.ClassesBuilt()
       "OnContextUpdate", function(self, context)
         ---
         -- hide button if not working, and make sure to remove the lock (just in case)
-        if context.workplace then
+        if context.workplace and not context.workplace:IsKindOf("TrainingBuilding") then
           self:SetVisible(true)
+          self:SetMaxHeight()
         else
+          self:SetMaxHeight(0)
           self:SetVisible()
           context.ChoGGi_Lockworkplace = nil
         end

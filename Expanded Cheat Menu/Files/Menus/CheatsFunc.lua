@@ -70,13 +70,16 @@ function ChoGGi.MenuFuncs.OpenModEditor()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000235--[[Save your game.\nThis will switch to a new map.--]])),
+    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000235--[[Save your game.
+This will switch to a new map.--]])),
     CallBackFunc,
     Concat(T(6779--[[Warning--]]),": ",T(302535920000236--[[Mod Editor--]])),
     T(302535920000237--[[Okay (change map)--]])
   )
 end
 
+--~ UICity.tech_status[tech_id].researched = nil
+--~ UICity.tech_status[tech_id].discovered= nil
 function ChoGGi.MenuFuncs.ResetAllResearch()
   local function CallBackFunc(answer)
     if answer then
@@ -84,7 +87,9 @@ function ChoGGi.MenuFuncs.ResetAllResearch()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?\n\nBuildings are still unlocked.--]])),
+    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
+
+Buildings are still unlocked.--]])),
     CallBackFunc,
     Concat(T(6779--[[Warning--]]),"!")
   )

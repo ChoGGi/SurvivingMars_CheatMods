@@ -1688,8 +1688,13 @@ do
 
       --i just love checkmarks
       if item.value then
-        local value = _G[item.value]
         local is_vis
+        local value
+        if type(item.value) == "table" then
+          value = ChoGGi.UserSettings[item.value[1]]
+        else
+          value = _G[item.value]
+        end
         if type(value) == "table" then
           if value.visible then
             is_vis = true
@@ -1699,6 +1704,7 @@ do
             is_vis = true
           end
         end
+
 
         if is_vis then
           button:SetCheck(true)

@@ -1,4 +1,5 @@
 ID,Text,Translation
+302535920000864,,
 302535920001238,,
 302535920001239,,
 302535920001240,,
@@ -623,8 +624,8 @@ click+drag for multiple selection.
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).",
 302535920000481,Open In Ged Object Editor,
 302535920000482,It edits stuff?,
-302535920000483,Write Logs,
-302535920000484,Write console logs to AppData/logs (writes immediately).,
+302535920000483,Write Console Log,
+302535920000484,Write console log to AppData/logs/ConsoleLog.log (writes immediately).,
 302535920000487,Delete All Of Selected Object,
 302535920000488,Will ask for confirmation beforehand (will not delete domes).,
 302535920000489,Delete Object(s),
@@ -1048,7 +1049,6 @@ Sounds like a broked save; send me the file and I'll take a look",
 302535920000861,Current State,
 302535920000862,Object Spawner (EntityData list),
 302535920000863,Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).,
-302535920000864,Write console logs,
 302535920000866,Set MissionParams NewMap,
 302535920000867,"Attention: You must close this dialog for these settings to take effect on new map!
 

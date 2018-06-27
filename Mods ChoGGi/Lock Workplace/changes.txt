@@ -1,2 +1,4 @@
+v0.3
+Stopped button showing up for colonists in training buildings (thanks SkiRich).
 v0.2
 Added a "Lock Workers" button to Workplaces.

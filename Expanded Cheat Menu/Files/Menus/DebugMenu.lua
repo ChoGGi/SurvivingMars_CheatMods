@@ -166,18 +166,6 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000483--[[Write Logs--]])),
-    ChoGGi.MenuFuncs.SetWriteLogs_Toggle,
-    nil,
-    function()
-      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.WriteLogs,
-        302535920000484 --,"Write console logs to AppData/logs (writes immediately)."
-      )
-    end,
-    "save_city.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     Concat("[102]Debug/",T(302535920000487--[[Delete All Of Selected Object--]])),
     ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
     nil,

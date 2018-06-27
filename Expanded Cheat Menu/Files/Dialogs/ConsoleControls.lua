@@ -96,6 +96,22 @@ function ChoGGi.Console.ConsoleControls()
               ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
             end,
           },
+          {
+            name = T(302535920000483--[[Write Console Log--]]),
+            hint = T(302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]]),
+            class = "XCheckButton",
+            value = {"WriteLogs"},
+            clicked = function(self,pos,button)
+              if ChoGGi.UserSettings.WriteLogs then
+                ChoGGi.UserSettings.WriteLogs = nil
+                ChoGGi.ComFuncs.WriteLogs_Toggle()
+              else
+                ChoGGi.UserSettings.WriteLogs = true
+                ChoGGi.ComFuncs.WriteLogs_Toggle(true)
+              end
+              ChoGGi.SettingFuncs.WriteSettings()
+            end,
+          },
         })
       end
     end,
