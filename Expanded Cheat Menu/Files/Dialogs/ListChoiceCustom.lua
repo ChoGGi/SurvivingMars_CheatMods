@@ -2,6 +2,11 @@
 
 -- all purpose items list
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_ListChoiceCustomDialog then
+  return
+end
+
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
@@ -16,8 +21,6 @@ local SetLightmodel = SetLightmodel
 local RGB,RGBA = RGB,RGBA
 
 local UIL_RGBtoHSV = UIL.RGBtoHSV
-
-local g_Classes = g_Classes
 
 --ex(ChoGGi.ListChoiceCustomDialog_Dlg)
 --ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker

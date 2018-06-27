@@ -2,14 +2,16 @@
 
 -- shows a dialog with a single line edit to execute code in
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_ExecCodeDlg then
+  return
+end
+
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
 local ShowConsoleLog = ShowConsoleLog
 local point = point
-
-local g_Classes = g_Classes
-
 
 -- 1 above console log, 1000 above examine
 local zorder = 2001001

@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
---Haemimont Games code (mostly)
---why would they remove such a useful modding tool from a game that relies on mods this much? sigh.
-
---~ ~GetObjects({class="StonesDarkSmall_01"})
+local g_Classes = g_Classes
+if g_Classes.Examine then
+  return
+end
 
 --see about hiding list when moving dialog
 
@@ -18,7 +18,7 @@ local RetSortTextAssTable
 local ShowMe
 local T
 local TConcat
---now we can local just the funcs, and ignore the settings that may be changed later on (ChoGGi. table)
+--now we can local just the funcs, and ignore the settings that may be changed later on (maybe i should have two globals, settings and funcs)
 do
   local ChoGGi = ChoGGi
   Concat = ChoGGi.ComFuncs.Concat
@@ -52,8 +52,6 @@ local RGBA,RGB = RGBA,RGB
 local CreateRealTimeThread = CreateRealTimeThread
 
 local terrain_GetHeight = terrain.GetHeight
-
-local g_Classes = g_Classes
 
 -- 1 above console log
 local zorder = 2000001

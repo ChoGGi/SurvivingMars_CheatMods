@@ -1,9 +1,15 @@
 function OnMsg.Autorun()
 
-  --if the menu order gets changed this won't work
-  XTemplates.PGMenu[1][2][3][5].__condition = function(parent, context)
-    --return Platform.steam or Platform.pc
-    return Platform.steam or Platform.pc or Platform.linux or Platform.osx
+  local p = Platform
+  local buttons = XTemplates.PGMenu[1][2][3]
+  for i = 1, #buttons do
+    if buttons[i].ActionId == "idModManager" then
+      --if the menu order gets changed this won't work
+      buttons[i].__condition = function(parent, context)
+        --return Platform.steam or Platform.pc
+        return p.steam or p.pc or p.linux or p.osx
+      end
+    end
   end
 
 end

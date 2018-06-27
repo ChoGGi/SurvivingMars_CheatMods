@@ -1,4 +1,6 @@
-0.2
-version bump for curo update.
+0.4
+The tutorial button messed it up (won't happen again for new buttons).
 0.3
 Now retrieves the correct Assets Revision, so no more need for version bumping.
+0.2
+version bump for curo update.

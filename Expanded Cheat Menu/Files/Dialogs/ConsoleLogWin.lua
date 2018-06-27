@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_ConsoleLogWin then
+  return
+end
+
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
@@ -10,8 +15,6 @@ local AsyncFileToString = AsyncFileToString
 local RGBA = RGBA
 local point = point
 local GetLogFile = GetLogFile
-
-local g_Classes = g_Classes
 
 -- 1 above console log, 5000 above examine
 local zorder = 2005001

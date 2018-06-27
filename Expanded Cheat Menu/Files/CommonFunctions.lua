@@ -1423,16 +1423,17 @@ function ChoGGi.ComFuncs.RetName(obj)
   end
   local name
   if type(obj) == "table" then
-    --custom name
-    if obj.name ~= "" then
+    --custom name from user
+    if obj.name and obj.name ~= "" then
       return obj.name
     --translated name
-    elseif type(obj.display_name) == "userdata" or type(obj.display_name) == "string" then
+    elseif obj.display_name and obj.display_name ~= "" then
       return T(obj.display_name)
+    --added this here as doing tostring lags the shit outta kansas if this is a large objlist
     elseif IsObjlist(obj) then
       return "objlist"
     end
-
+    --class or encyclopedia_id
     name = getmetatable(obj)
     if name and type(name.class) == "string" then
       return name.class
@@ -1440,11 +1441,13 @@ function ChoGGi.ComFuncs.RetName(obj)
     name = obj.encyclopedia_id or obj.class
   end
 
+  --if .class or .encyclopedia_id worked
   if type(name) == "string" then
     return name
   end
 
-  --falling back baby (lags the shit outta kansas if this is a large objlist)
+  --falling back baby
+--~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
   return tostring(obj)
 end
 ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)

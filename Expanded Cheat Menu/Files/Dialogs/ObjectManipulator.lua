@@ -2,6 +2,11 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_ObjectManipulator then
+  return
+end
+
 local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
@@ -25,7 +30,6 @@ local RGB = RGB
 local Sleep = Sleep
 
 local g_traceMeta = g_traceMeta
-local g_Classes = g_Classes
 
 --ex(ChoGGi.ObjectManipulator_Dlg.idAutoRefresh)
 --ex(ChoGGi.ObjectManipulator_Dlg)

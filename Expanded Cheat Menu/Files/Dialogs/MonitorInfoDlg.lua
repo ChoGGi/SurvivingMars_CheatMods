@@ -2,6 +2,11 @@
 
 -- shows various information (with auto-refresh)
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_MonitorInfoDlg then
+  return
+end
+
 local Concat = ChoGGi.ComFuncs.Concat
 local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
@@ -13,8 +18,6 @@ local CreateRealTimeThread = CreateRealTimeThread
 local OpenExamine = OpenExamine
 local point = point
 local RGBA = RGBA
-
-local g_Classes = g_Classes
 
 -- 1 above console log, 1000 above examine
 local zorder = 2001001

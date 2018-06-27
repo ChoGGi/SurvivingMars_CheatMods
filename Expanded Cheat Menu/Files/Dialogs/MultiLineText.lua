@@ -2,6 +2,11 @@
 
 -- displays text in a selectable text box
 
+local g_Classes = g_Classes
+if g_Classes.ChoGGi_MultiLineText then
+  return
+end
+
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
@@ -14,8 +19,6 @@ local dark_gray = -13158858
 local light_gray = -2368549
 
 local UIL_GetScreenSize = UIL.GetScreenSize
-
-local g_Classes = g_Classes
 
 DefineClass.ChoGGi_MultiLineText = {
   __parents = {"XDialog"},
