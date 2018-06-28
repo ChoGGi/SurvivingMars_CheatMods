@@ -1,5 +1,6 @@
 -- See LICENSE for terms
---add items/hint to the cheats pane
+
+-- add items/hint to the cheats pane
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
@@ -483,10 +484,12 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 end --OnMsg
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-  g_Classes.Building.CheatAddMaintenancePnts = nil
-  g_Classes.Building.CheatMakeSphereTarget = nil
-  g_Classes.Building.CheatSpawnWorker = nil
-  g_Classes.Building.CheatSpawnVisitor = nil
+  if not CurrentMap:find("Tutorial") then
+    g_Classes.Building.CheatAddMaintenancePnts = nil
+    g_Classes.Building.CheatMakeSphereTarget = nil
+    g_Classes.Building.CheatSpawnWorker = nil
+    g_Classes.Building.CheatSpawnVisitor = nil
+  end
 end
 
 function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
@@ -571,9 +574,9 @@ Reselect to update display."--]]),name)
       SetHint(action,string.format(T(302535920001210--[[Make this %s need workers.--]]),name))
     elseif action.ActionId == "CapDbl" then
       if obj:IsKindOf("SupplyRocket") then
-        SetHint(action,string.format(T(302535920001211--[[302535920001211,Double the export storage capacity of this %s.--]]),name))
+        SetHint(action,string.format(T(302535920001211--[[Double the export storage capacity of this %s.--]]),name))
       else
-        SetHint(action,string.format(T(302535920001212--[[302535920001212,Double the storage capacity of this %s.--]]),name))
+        SetHint(action,string.format(T(302535920001212--[[Double the storage capacity of this %s.--]]),name))
       end
     elseif action.ActionId == "CapDef" then
       SetHint(action,string.format(T(302535920001213--[[Reset the storage capacity of this %s to default.--]]),name))
@@ -654,7 +657,9 @@ Reselect to update display."--]]),name)
       if obj.class:find("SubsurfaceDeposit") then
         SetHint(action,Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920001228--[[This will remove the %s object from the map.--]]),name)))
       else
-        SetHint(action,T(302535920001230--[[Empties the storage of this building.\n\nExcluding waste rock in something other than a dumping site.--]]))
+        SetHint(action,T(302535920001230--[[Empties the storage of this building.
+
+Excluding waste rock in something other than a dumping site.--]]))
       end
     elseif action.ActionId == "Refill" then
       SetHint(action,T(302535920001231--[[Refill the deposit to full capacity.--]]))

@@ -170,10 +170,10 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     {text = T(5620--[[Meteor Storm--]]),value = "MeteorStorm"},
     {text = T(302535920000245--[[Meteor Multi-Spawn--]]),value = "MeteorMultiSpawn"},
     {text = T(4251--[[Meteor--]]),value = "Meteor"},
-    {text = T(302535920000246--[[Missle 1--]]),value = "Missle1"},
-    {text = T(302535920000247--[[Missle 10--]]),value = "Missle10"},
-    {text = T(302535920000248--[[Missle 100--]]),value = "Missle100"},
-    {text = T(302535920000249--[[Missle 500--]]),value = "Missle500",hint = T(302535920000250--[[Might be a little laggy--]])},
+    {text = Concat(T(302535920000246--[[Missle--]])," ",1),value = "Missle1"},
+    {text = Concat(T(302535920000246--[[Missle--]])," ",10),value = "Missle10"},
+    {text = Concat(T(302535920000246--[[Missle--]])," ",100),value = "Missle100"},
+    {text = Concat(T(302535920000246--[[Missle--]])," ",500),value = "Missle500",hint = T(302535920000250--[[Might be a little laggy--]])},
   }
 
   local CallBackFunc = function(choice)

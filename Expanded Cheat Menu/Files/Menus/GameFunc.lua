@@ -59,7 +59,9 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
     local value = choice[1].value
     if type(value) == "number" then
 
+      --update const it checks
       const.AutosavePeriod = value
+      --and update current countdown
       g_NextAutosaveSol = UICity.day + value
 
       if value == DefaultSetting then

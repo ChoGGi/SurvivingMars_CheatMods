@@ -5,16 +5,26 @@ function OnMsg.ClassesBuilt()
   --does nothing instead of updating g_HeavyLoadDroneHubs
   function DroneControl:UpdateHeavyLoadNotification() end
 
-  --pause when new notif happens
-  local orig_AddOnScreenNotification = AddOnScreenNotification
-  function AddOnScreenNotification(id, callback, params, cycle_objs)
+  local function PauseGame()
     local hud = GetHUD()
     if hud then
       UICity:SetGameSpeed(0)
       GetHUD().prev_UISpeedState = UISpeedState
       UISpeedState = "pause"
     end
-    orig_AddOnScreenNotification(id, callback, params, cycle_objs)
+  end
+
+  --pause when new notif happens
+  local orig_AddOnScreenNotification = AddOnScreenNotification
+  function AddOnScreenNotification(id, callback, params, cycle_objs)
+    PauseGame()
+    return orig_AddOnScreenNotification(id, callback, params, cycle_objs)
+  end
+
+  local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
+  function AddCustomOnScreenNotification(id, title, text, image, callback, params)
+    PauseGame()
+    return orig_AddCustomOnScreenNotification(id, title, text, image, callback, params)
   end
 
 end

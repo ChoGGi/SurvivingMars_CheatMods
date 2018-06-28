@@ -1341,17 +1341,17 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
 end
 
 --only add unique template names
-function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
+function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable)
   if not (Name or Template or Table) then
     return
   end
-  XT = XT or XTemplates
+  XTemplates = XTemplates or XTemplates
 
   if not InnerTable then
-    if not XT[Template][1][Name] then
-      XT[Template][1][Name] = true
+    if not XTemplates[Template][1][Name] then
+      XTemplates[Template][1][Name] = true
 
-      XT[Template][1][#XT[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+      XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
@@ -1371,10 +1371,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
       })
     end
   else
-    if not XT[Template][Name] then
-      XT[Template][Name] = true
+    if not XTemplates[Template][Name] then
+      XTemplates[Template][Name] = true
 
-      XT[Template][#XT[Template]+1] = PlaceObj("XTemplateTemplate", {
+      XTemplates[Template][#XTemplates[Template]+1] = PlaceObj("XTemplateTemplate", {
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",

@@ -132,8 +132,8 @@ function OnMsg.ClassesBuilt()
   end
 
   --Only added to stuff spawned with object spawner
-  local XT = XTemplates
-  if not XT.ipEverything then
+  local XTemplates = XTemplates
+  if not XTemplates.ipEverything then
     PlaceObj('XTemplate', {
       group = "Infopanel Sections",
       id = "ipEverything",
