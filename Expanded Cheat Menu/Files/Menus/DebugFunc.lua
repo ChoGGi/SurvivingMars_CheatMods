@@ -893,7 +893,7 @@ do --path markers
         path,
         colour,
         Obj,
-        skipheight,
+        skipheight
       )
     end
   end
