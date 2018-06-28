@@ -1,5 +1,6 @@
 
 function OnMsg.ReloadLua()
+
   CreateRealTimeThread(function()
     local p = Platform
     local buttons = XTemplates.PGMenu[1][2][3]
