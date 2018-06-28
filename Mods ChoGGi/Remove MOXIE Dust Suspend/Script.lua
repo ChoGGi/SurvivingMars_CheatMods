@@ -29,17 +29,9 @@ function OnMsg.ClassesPostprocess()
 end
 
 --each time game loads check if tech is researched, if so remove MOXIE from dust suspend
-local function SomeCode()
+function OnMsg.LoadGame()
   local UICity = UICity
   if UICity and UICity:IsTechResearched("ChoGGi_DustyMOXIE") then
     RemoveMoxieFromSuspend()
   end
-end
-
-function OnMsg.CityStart()
-  SomeCode()
-end
-
-function OnMsg.LoadGame()
-  SomeCode()
 end

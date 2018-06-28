@@ -4,7 +4,6 @@ function OnMsg.Autorun()
   local buttons = XTemplates.PGMenu[1][2][3]
   for i = 1, #buttons do
     if buttons[i].ActionId == "idModManager" then
-      --if the menu order gets changed this won't work
       buttons[i].__condition = function(parent, context)
         --return Platform.steam or Platform.pc
         return p.steam or p.pc or p.linux or p.osx
