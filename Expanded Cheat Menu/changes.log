@@ -1,3 +1,20 @@
+v6.2
+Added:
+Game>Autosave Interval: Change how many Sols between autosaving.
+Fixes>Remove Blue Grid Marks: Gets rid of any selection grids for stuff that isn't selected.
+Debug>Delete All Rocks: Some people just don't like rocks.
+Debug>Export Colonist Data To CSV: Makes it easier for spreadsheet players to get their fix.
+Debug>Debug FX: Bunch of hopefully useful info in console log.
+
+Changed:
+Renamed "Reset Rovers With Drones Stuck" to "Reset Rovers": It fixes a number of issues with them so....
+Hover effects for Console buttons.
+Debug>Write Logs: Moved to Console Button.
+Removed Console: Clear Log (F9 still works), I wanted to keep all the console related stuff in the Console menu.
+
+Fixed:
+Broke Drone/Colonist/etc Move Speed (thanks satirawongwan).
+
 v6.1
 Added:
 Debug>Flatten Terrain Toggle: Press Shift-F to get terrain height, mouse the circle around to make other terrain the same height, press Shift-F to finish.

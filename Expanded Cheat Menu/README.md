@@ -220,6 +220,14 @@ You can't cheat fill concrete deposits.
   >Got me.
 ```
 
+##### New locale
+```
+Copy English.csv to the name of the language you want to translate it to.
+Send me the file to include it.
+
+OpenExamine(AllLanguages) for a list of language names (use the "value").
+```
+
 ##### Thanks
 ```
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230

@@ -16,7 +16,6 @@ function OnMsg.ReloadLua()
 
 end
 
-
 --return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
 return tonumber(dofile("ChoGGi_BinAssets/AssetsRevision.lua")) or 0

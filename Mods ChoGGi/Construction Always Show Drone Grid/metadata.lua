@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
   "version", 1,
-  "title", "Always Show Drone Grid In Construction Mode v0.1",
+  "title", "Construction: Always Show Drone Grid v0.1",
   "saved", 1530187200,
-  "id", "ChoGGi_AlwaysShowDroneGridInConstructionMode",
+  "id", "ChoGGi_ConstructionAlwaysShowDroneGrid",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
