@@ -13,5 +13,5 @@ Use the "Default" checkbox to reset colours.
 
 You can also use Shift+F6 or Ctrl+F6 for random colours and default colours.
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

@@ -11,5 +11,5 @@ return PlaceObj("ModDef", {
 
 Also adds option for instant start.
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

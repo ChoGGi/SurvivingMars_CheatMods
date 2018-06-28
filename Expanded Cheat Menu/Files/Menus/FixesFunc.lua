@@ -39,7 +39,16 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
-function ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside()
+local function ResetRover(rc)
+  for i = 1, #rc.attached_drones do
+    DoneObject(rc.attached_drones[i])
+  end
+  local pos = rc:GetVisualPos()
+  local new = rc:Clone()
+  DoneObject(rc)
+  new:SetPos(HexGetNearestCenter(pos))
+end
+function ChoGGi.MenuFuncs.ResetRovers()
   CreateRealTimeThread(function()
     local before_table = {}
 
@@ -47,12 +56,15 @@ function ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside()
     ForEach({
       class = "RCRover",
       exec = function(rc)
-        local state = rc:GetState() == GetStateIdx("deployIdle")
         local drones = #rc.attached_drones > 0
 --~         print("sdfsdfds",state,drones)
-        if state and drones then
-          --store them in a table for later
-          before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+        if drones then
+          if rc:GetState() == GetStateIdx("deployIdle") then
+            --store them in a table for later
+            before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+          elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
+            ResetRover(rc)
+          end
         end
       end
     })
@@ -62,13 +74,7 @@ function ChoGGi.MenuFuncs.ResetRoversWithDronesStuckInside()
       local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
       local drones = #rc_table.rc.attached_drones == rc_table.amount
       if state and drones then
-        for i = 1, #rc_table.rc.attached_drones do
-          DoneObject(rc_table.rc.attached_drones[i])
-        end
-        local pos = rc_table.rc:GetVisualPos()
-        local new = rc_table.rc:Clone()
-        DoneObject(rc_table.rc)
-        new:SetPos(HexGetNearestCenter(pos))
+        ResetRover(rc_table.rc)
       end
     end
   end)

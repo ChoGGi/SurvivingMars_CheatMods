@@ -10,5 +10,5 @@ return PlaceObj("ModDef", {
 	"description", [[Further shadow, and model rendering
 This is pretty useless without Increased Zoom Distance.
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

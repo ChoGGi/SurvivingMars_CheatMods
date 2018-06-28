@@ -14,5 +14,5 @@ Ctrl-Space to activate placement mode with the last placed object.
 
 Ctrl-Shift-Space to activate placement mode with the selected object (or object under mouse).
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

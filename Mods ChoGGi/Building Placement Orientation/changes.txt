@@ -1,0 +1,3 @@
+Version 0.2
+Compatibly with ECM
+May sometimes place buildings not aligned to the hex grid (thanks kajb139).
