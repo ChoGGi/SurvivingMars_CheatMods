@@ -7,6 +7,14 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(1000435--[[Game--]]),"/",T(302535920000493--[[Change Map--]])),
+    ChoGGi.MenuFuncs.ChangeMap,
+    nil,
+    T(302535920000494--[[Change map (options to pick commander, sponsor, etc...\n\nAttention: If you get yellow ground areas; just load it again.\nThe map disaster settings don't do jack.--]]),
+    "load_city.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/",T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
     ChoGGi.MenuFuncs.AutosavePeriod,
     nil,

@@ -390,7 +390,7 @@ function OnMsg.NewDay() --NewSol...
 
   --sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
-    local blds = GetObjects({class="Building"})
+    local blds = GetObjects{class="Building"} or empty_table
     for i = 1, #blds do
       --no sense in doing it with only one center
       if #blds[i].command_centers > 1 then
@@ -1059,7 +1059,7 @@ function OnMsg.ChoGGi_Loaded()
       if not UICity.labels[Label] then
         UICity:InitEmptyLabel(Label)
         if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
-          local objs = GetObjects({class=Label:gsub("ChoGGi_","")}) or empty_table
+          local objs = GetObjects{class=Label:gsub("ChoGGi_","")} or empty_table
           for i = 1, #objs do
             UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
             UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]

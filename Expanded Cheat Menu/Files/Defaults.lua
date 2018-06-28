@@ -11,7 +11,6 @@ local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
 local AsyncStringToFile = AsyncStringToFile
 local ClassDescendantsList = ClassDescendantsList
-local CreateRealTimeThread = CreateRealTimeThread
 local LuaCodeToTuple = LuaCodeToTuple
 local TableToLuaCode = TableToLuaCode
 local ThreadLockKey = ThreadLockKey

@@ -4,7 +4,6 @@ local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 --~ local icon = "new_city.tga"
 
-local cls = cls
 local OpenGedGameObjectEditor = OpenGedGameObjectEditor
 local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
 
@@ -12,7 +11,7 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000864--[[Delete All Rocks--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000864--[[Delete All Rocks--]])),
     ChoGGi.MenuFuncs.DeleteAllRocks,
     nil,
     T(302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]),
@@ -20,7 +19,7 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001208--[[Export Colonist Data To CSV--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920001208--[[Export Colonist Data To CSV--]])),
     ChoGGi.MenuFuncs.ExportColonistDataToCSV,
     nil,
     T(302535920001219--[[Exports data about colonists to AppData/Colonists.csv--]]),
@@ -28,7 +27,7 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000485--[[Flatten Terrain Toggle--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000485--[[Flatten Terrain Toggle--]])),
     ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
     "Shift-F",
     T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
@@ -38,7 +37,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000449--[[Attach Spots Toggle--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000449--[[Attach Spots Toggle--]])),
     ChoGGi.MenuFuncs.AttachSpots_Toggle,
     nil,
     T(302535920000450--[[Toggle showing attachment spots on selected object.--]]),
@@ -46,7 +45,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000451--[[Measure Tool--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000451--[[Measure Tool--]])),
     function()
       ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
     end,
@@ -64,7 +63,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000453--[[Reload Lua--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000453--[[Reload Lua--]])),
     ChoGGi.MenuFuncs.ReloadLua,
     nil,
     T(302535920000454--[[Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).--]]),
@@ -72,7 +71,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000455--[[Object Cloner--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000455--[[Object Cloner--]])),
     ChoGGi.MenuFuncs.ObjectCloner,
     "Shift-Q",
     T(302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).--]]),
@@ -80,7 +79,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000457--[[Anim State Set--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000457--[[Anim State Set--]])),
     ChoGGi.MenuFuncs.SetAnimState,
     nil,
     T(302535920000458--[[Make object dance on command.--]]),
@@ -88,7 +87,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000459--[[Anim Debug Toggle--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000459--[[Anim Debug Toggle--]])),
     ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
     nil,
     T(302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]),
@@ -96,35 +95,15 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/Path Markers Real Time/",T(302535920000461--[[Lines--]])),
-    function()
-      ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true,true)
-    end,
-    "Ctrl-Numpad .",
-    T(302535920000462--[[Maps paths in realtime (just lines).--]]),
-    "ViewCamPath.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/Path Markers Real Time/",T(302535920000463--[[Lines & Flags--]])),
-    function()
-      ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,nil,true)
-    end,
-    "Ctrl-Numpad 3",
-    T(302535920000464--[[Maps paths in realtime (doesn't show label).--]]),
-    "ViewCamPath.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/Path Markers Real Time/",T(302535920000465--[[Lines & Flags & Label--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000467--[[Path Markers--]])," ",T(4099--[[Game Time--]])),
     ChoGGi.MenuFuncs.SetPathMarkersGameTime,
-    "Ctrl-Numpad 2",
-    T(302535920000466--[[Maps paths in realtime (shows all).--]]),
+    "Ctrl-Numpad .",
+    Concat(T(302535920000462--[[Maps paths in real time--]])," ",T(302535920000874--[[(see "Path Markers" to mark more than one at a time)--]]),"."),
     "ViewCamPath.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000467--[[Path Markers Toggle--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000467--[[Path Markers--]])),
     ChoGGi.MenuFuncs.SetPathMarkersVisible,
     "Ctrl-Numpad 0",
     T(302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]),
@@ -132,7 +111,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000471--[[Object Manipulator--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000471--[[Object Manipulator--]])),
     ChoGGi.ComFuncs.OpenInObjectManipulator,
     "F5",
     T(302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]),
@@ -140,7 +119,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000473--[[Selection Editor--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000473--[[Selection Editor--]])),
     ChoGGi.MenuFuncs.ShowSelectionEditor,
     nil,
     T(302535920000474--[[Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable).--]]),
@@ -148,7 +127,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000475--[[Object Spawner--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000475--[[Object Spawner--]])),
     ChoGGi.MenuFuncs.ObjectSpawner,
     "Ctrl-Shift-S",
     T(302535920000476--[[Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use Delete Selected Object--]]),
@@ -156,7 +135,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000479--[[Toggle Editor--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000479--[[Toggle Editor--]])),
     ChoGGi.MenuFuncs.Editor_Toggle,
     "Ctrl-Shift-E",
     T(302535920000480--[[Select object(s) then hold ctrl/shift/alt and drag mouse.\nclick+drag for multiple selection.\n\nIt's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).--]]),
@@ -164,7 +143,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000481--[[Open In Ged Object Editor--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000481--[[Open In Ged Object Editor--]])),
     function()
       OpenGedGameObjectEditor(ChoGGi.CodeFuncs.SelObject())
     end,
@@ -174,7 +153,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000487--[[Delete All Of Selected Object--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000487--[[Delete All Of Selected Object--]])),
     ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
     nil,
     T(302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]),
@@ -182,7 +161,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000489--[[Delete Object(s)--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
     ChoGGi.CodeFuncs.DeleteObject,
     "Ctrl-Alt-Shift-D",
     T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion.--]]),
@@ -190,7 +169,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000491--[[Examine Current Obj--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000491--[[Examine Current Obj--]])),
     ChoGGi.MenuFuncs.ObjExaminer,
     "F4",
     T(302535920000492--[[Opens the object examiner--]]),
@@ -198,15 +177,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000493--[[Change Map--]])),
-    ChoGGi.MenuFuncs.ChangeMap,
-    nil,
-    T(302535920000494--[[Change map (options to pick commander, sponsor, etc...\n\nAttention: If you get yellow ground areas; just load it again.\nThe map disaster settings don't do jack.--]]),
-    "load_city.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920000495--[[Particles Reload--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000495--[[Particles Reload--]])),
     ChoGGi.MenuFuncs.ParticlesReload,
     nil,
     T(302535920000496--[[Reloads particles from \"Data/Particles\"...--]]),
@@ -215,7 +186,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
 
   -------------------------------toggle grids
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/[08]",T(302535920000497--[[Toggle Terrain Deposit Grid--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/[08]",T(302535920000497--[[Toggle Terrain Deposit Grid--]])),
     ToggleTerrainDepositGrid,
     "Ctrl-F4",
     T(302535920000498--[[Shows a grid around concrete.--]]),
@@ -223,7 +194,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/[09]",T(302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/[09]",T(302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]])),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(1)
     end,
@@ -233,7 +204,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/[10]",T(302535920000501--[[Toggle Hex Passability Grid Visibility--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/[10]",T(302535920000501--[[Toggle Hex Passability Grid Visibility--]])),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(2)
     end,
@@ -243,7 +214,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/[11]",T(302535920000503--[[Toggle Hex Build Grid Visibility--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/[11]",T(302535920000503--[[Toggle Hex Build Grid Visibility--]])),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(3)
     end,
@@ -255,7 +226,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
 
   -------------------------------debugfx
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001175--[[Debug FX--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001175--[[Debug FX--]])),
     function()
       ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
     end,
@@ -269,7 +240,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001184--[[Particles--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920001175--[[Debug FX--]]),"/",T(302535920001184--[[Particles--]])),
     function()
       ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
     end,
@@ -283,7 +254,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]Debug/",T(302535920001175--[[Debug FX--]]),"/",T(4107--[[Sound FX--]])),
+    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920001175--[[Debug FX--]]),"/",T(4107--[[Sound FX--]])),
     function()
       ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
     end,

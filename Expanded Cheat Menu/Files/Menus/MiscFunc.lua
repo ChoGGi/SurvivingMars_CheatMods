@@ -22,7 +22,7 @@ local pf_SetStepLen = pf.SetStepLen
 
 function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   local function ChangeEntity(Class,Entity,random)
-    local objs = GetObjects({class = Class}) or empty_table
+    local objs = GetObjects{class = Class} or empty_table
     for i = 1, #objs do
       if random then
         objs[i]:ChangeEntity(Concat(Entity,Random(1,random)))
@@ -590,7 +590,7 @@ function ChoGGi.MenuFuncs.SetEntity()
       if check2 then
         SetEntity(sel,value)
       else
-        local objs = GetObjects({class = sel.class}) or empty_table
+        local objs = GetObjects{class = sel.class} or empty_table
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome == dome then
@@ -692,7 +692,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
       if check2 then
         SetScale(sel,value)
       else
-        local objs = GetObjects({class = sel.class}) or empty_table
+        local objs = GetObjects{class = sel.class} or empty_table
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome == dome then

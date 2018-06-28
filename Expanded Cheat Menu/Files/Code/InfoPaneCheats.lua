@@ -9,6 +9,7 @@ local ResourceScale = ChoGGi.Consts.ResourceScale
 local string = string
 
 local CreateRealTimeThread = CreateRealTimeThread
+local CurrentMap = CurrentMap
 local DestroyBuildingImmediate = DestroyBuildingImmediate
 local IsValid = IsValid
 local Random = Random

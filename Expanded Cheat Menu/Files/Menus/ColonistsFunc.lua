@@ -83,7 +83,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     CreateRealTimeThread(function()
       --gotta wait for a tad else log gets spammed with changepath and other stuff
       Sleep(100)
-      local Table = GetObjects({class="Colonist"}) or empty_table
+      local Table = GetObjects{class="Colonist"} or empty_table
       for i = 1, #Table do
         if Table[i].ChoGGi_Soylent then
           Table[i]:Done()
@@ -1532,7 +1532,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
     end
 
     if check1 then
-      local objs = GetObjects({class=sel.class})
+      local objs = GetObjects{class=sel.class}
       --all buildings
       for i = 1, #objs do
         local workplace = objs[i]

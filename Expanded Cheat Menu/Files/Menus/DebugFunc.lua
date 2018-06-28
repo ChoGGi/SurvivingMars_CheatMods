@@ -14,44 +14,30 @@ local T = ChoGGi.ComFuncs.Trans
 local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
 
 local Clamp = Clamp
-local ClassDescendantsList = ClassDescendantsList
-local CloseMenuDialogs = CloseMenuDialogs
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 local DoneObject = DoneObject
 local EditorState = EditorState
-local FillRandomMapProps = FillRandomMapProps
-local GenerateRandomMapParams = GenerateRandomMapParams
-local GenerateRocketCargo = GenerateRocketCargo
 local GetCamera = GetCamera
 local GetEditorInterface = GetEditorInterface
-local GetMapName = GetMapName
-local GetModifiedProperties = GetModifiedProperties
 local GetObjects = GetObjects
 local GetTerrainCursor = GetTerrainCursor
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
-local InitNewGameMissionParams = InitNewGameMissionParams
 local IsEditorActive = IsEditorActive
 local IsValid = IsValid
-local ListMaps = ListMaps
 local LoadStreamParticlesFromDir = LoadStreamParticlesFromDir
-local Max = Max
-local MulDivRound = MulDivRound
 local ObjModified = ObjModified
 local OpenExamine = OpenExamine
 local ParticlesReload = ParticlesReload
 local PlaceObj = PlaceObj
 local PlaceObject = PlaceObject
-local PlaceText = PlaceText
 local point = point
-local Random = Random
 local RecalcBuildableGrid = RecalcBuildableGrid
 local ReloadClassEntities = ReloadClassEntities
 local ReloadLua = ReloadLua
 local SaveCSV = SaveCSV
-local SaveLocalStorage = SaveLocalStorage
 local SelectionArrowAdd = SelectionArrowAdd
 local Sleep = Sleep
 local WaitDelayedLoadEntities = WaitDelayedLoadEntities
@@ -59,7 +45,6 @@ local WaitNextFrame = WaitNextFrame
 local WorldToHex = WorldToHex
 local XShortcutsSetMode = XShortcutsSetMode
 
-local guim = guim
 local guic = guic
 local white = white
 --~ local TerrainTextures = TerrainTextures
@@ -82,7 +67,7 @@ local UIL_GetFontID = UIL.GetFontID
 local g_Classes = g_Classes
 
 local function DeleteAllRocks(rock_cls)
-  local objs = GetObjects({class= rock_cls}) or empty_table
+  local objs = GetObjects{class= rock_cls} or empty_table
   for i = 1, #objs do
     DoneObject(objs[i])
   end
@@ -375,7 +360,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
     return
   end
 
-  local objs = GetObjects({class=s.class}) or empty_table
+  local objs = GetObjects{class=s.class} or empty_table
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -428,7 +413,7 @@ local function AnimDebug_Show(Obj,Colour)
 end
 
 local function AnimDebug_ShowAll(Class)
-  local objs = GetObjects({class = Class}) or empty_table
+  local objs = GetObjects{class = Class} or empty_table
   for i = 1, #objs do
     AnimDebug_Show(objs[i])
   end
@@ -445,7 +430,7 @@ end
 
 local function AnimDebug_HideAll(Class)
   local empty_table = empty_table
-  local objs = GetObjects({class = Class}) or empty_table
+  local objs = GetObjects{class = Class} or empty_table
   for i = 1, #objs do
     AnimDebug_Hide(objs[i])
   end
@@ -638,132 +623,6 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
 
 end
 
-function ChoGGi.MenuFuncs.ChangeMap()
-  local NewMissionParams = {}
-
-  --open a list dialog to set g_CurrentMissionParams
-  local ItemList = {
-    {text = T(3474--[[Mission Sponsor--]]),value = "IMM"},
-    {text = T(3478--[[Commander Profile--]]),value = "rocketscientist"},
-    {text = T(3486--[[Mystery--]]),value = "random"},
-    {text = T(8800--[[Game Rules--]]),value = ""},
-  }
-
-  local CallBackFunc = function(choice)
-    if type(choice) ~= "table" then
-      return
-    end
-    for i = 1, #choice do
-      local text = choice[i].text
-      local value = choice[i].value
-
-      if text == T(3474--[[Mission Sponsor--]]) then
-        NewMissionParams.idMissionSponsor = value
-      elseif text == T(3478--[[Commander Profile--]]) then
-        NewMissionParams.idCommanderProfile = value
-      elseif text == T(3486--[[Mystery--]]) then
-        NewMissionParams.idMystery = value
-      elseif text == T(8800--[[Game Rules--]]) then
-        NewMissionParams.idGameRules = {}
-        if value:find(" ") then
-          for i in value:gmatch("%S+") do
-            NewMissionParams.idGameRules[i] = true
-          end
-        elseif value ~= "" then
-          NewMissionParams.idGameRules[value] = true
-        end
-      end
-    end
-  end
-
-  ChoGGi.ComFuncs.OpenInListChoice({
-    callback = CallBackFunc,
-    items = ItemList,
-    title = T(302535920000866--[[Set MissionParams NewMap--]]),
-    hint = T(302535920000867--[[Attention: You must close this dialog for these settings to take effect on new map!\n\nSee the list on the left for ids.\n\nFor rules separate with spaces: Hunger Twister (or leave blank for none).--]]),
-    custom_type = 4,
-  })
-
-  --shows the mission params for people to look at
-  OpenExamine(MissionParams)
-
-  --map list dialog
-  CreateRealTimeThread(function()
-    local caption = T(302535920000868--[[Choose map with settings presets:--]])
-    local maps = ListMaps()
-    local items = {}
-    for i = 1, #maps do
-      if not string.find(string.lower(maps[i]), "^prefab") and not string.find(maps[i], "^__") then
-        items[#items+1] = {
---~           text = Untranslated(maps[i]),
-          text = maps[i],
-          map = maps[i]
-        }
-      end
-    end
-
-    local default_selection = table.find(maps, GetMapName())
-    local map_settings = {}
-    local mapdata = mapdata
-    local class_names = ClassDescendantsList("MapSettings")
-    for i = 1, #class_names do
-      map_settings[class_names[i]] = mapdata[class_names[i]]
-    end
-
-    local sel_idx
-    local dlg = CreateMapSettingsDialog(items, caption, nil, map_settings)
-    if default_selection then
-      dlg.idList:SetSelection(default_selection, true)
-    end
-    --QoL
-    dlg.idCaption.HandleMouse = false
-    dlg:SetMovable(true)
-    Sleep(1)
-    dlg.move:SetZOrder(10)
-
-    sel_idx, map_settings = dlg:Wait()
-
-    if sel_idx ~= "idCancel" then
-      local g_CurrentMissionParams = g_CurrentMissionParams
-      local map = sel_idx and items[sel_idx].map
-      if not map or map == "" then
-        return
-      end
-      CloseMenuDialogs()
-
-      --cleans out missions params
-      InitNewGameMissionParams()
-
-      --select new MissionParams
-      g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
-      g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
-      g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
-      g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or empty_table
-      g_CurrentMissionParams.GameSessionID = g_Classes.srp.random_encode64(96)
-
-      --items in spawn rocket
-      GenerateRocketCargo()
-
-      --landing spot/rocket name / resource amounts?, see g_CurrentMapParams
-      GenerateRandomMapParams()
-
-      --and change the map
-      local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
-      local gen = g_Classes.RandomMapGenerator:new()
-      gen:SetProperties(props)
-      FillRandomMapProps(gen)
-      gen.BlankMap = map
-
-      --generates/loads map
-      gen:Generate(nil, nil, nil, nil, map_settings)
-
-      --update local store
-      LocalStorage.last_map = map
-      SaveLocalStorage()
-    end
-  end)
-end
-
 do --hex rings
   local build_grid_debug_range = 10
   local opacity = 15
@@ -863,30 +722,30 @@ end
 
 do --path markers
   --from CommonLua\Classes\CodeRenderableObject.lua
-  local function PlaceTerrainLine(pt1, pt2, color, step, offset)
-    step = step or guim
-    offset = offset or guim
-    local diff = pt2 - pt1
-    local steps = Max(2, 1 + diff:Len2D() / step)
-    local mapw, maph = terrain_GetMapSize()
-    local points = {}
-    for i = 1, steps do
-      local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
-      local x, y, z = pos:xy()
-      x = Clamp(x, 0, mapw - terrain_HeightTileSize)
-      y = Clamp(y, 0, maph - terrain_HeightTileSize)
-      z = terrain_GetHeight(x, y) + offset
-      points[#points + 1] = point(x, y, z)
-    end
-    local line = g_Classes.Polyline:new({
-      max_vertices = #points
-    })
-    line:SetMesh(points, color)
-    line:SetDepthTest(true)
-    line:SetPos((pt1 + pt2) / 2)
+--~   local function PlaceTerrainLine(pt1, pt2, color, step, offset)
+--~     step = step or guim
+--~     offset = offset or guim
+--~     local diff = pt2 - pt1
+--~     local steps = Max(2, 1 + diff:Len2D() / step)
+--~     local mapw, maph = terrain_GetMapSize()
+--~     local points = {}
+--~     for i = 1, steps do
+--~       local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
+--~       local x, y, z = pos:xy()
+--~       x = Clamp(x, 0, mapw - terrain_HeightTileSize)
+--~       y = Clamp(y, 0, maph - terrain_HeightTileSize)
+--~       z = terrain_GetHeight(x, y) + offset
+--~       points[#points + 1] = point(x, y, z)
+--~     end
+--~     local line = g_Classes.Polyline:new({
+--~       max_vertices = #points
+--~     })
+--~     line:SetMesh(points, color)
+--~     line:SetDepthTest(true)
+--~     line:SetPos((pt1 + pt2) / 2)
 --~     line:SetColor(color or white)
-    return line
-  end
+--~     return line
+--~   end
 
   local randcolours = {}
   local colourcount = 0
@@ -895,10 +754,10 @@ do --path markers
   local SpawnModels = {}
   SpawnModels[1] = "GreenMan"
   SpawnModels[2] = "Lama"
-  --default height of waypoints
+  --default height of waypoints (maybe flag_height isn't the best name as no more flags)
   local flag_height = 50
 
-  local function ShowWaypoints(waypoints, colour, Obj, single, skipflags, skipheight, skiptext, skipstart)
+  local function ShowWaypoints(waypoints, colour, Obj, skipheight)
     colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
     --also used for line height
     if not skipheight then
@@ -917,35 +776,45 @@ do --path markers
       waypoints[#waypoints+1] = Objpos
     end
 
-    --make sure there's always a line from the obj to first WayPoint
-    --local work_step = const.PrefabWorkRatio * terrain.TypeTileSize()
---~     local spawnline = PlaceTerrainLine(
---~       Objpos,
---~       waypoints[#waypoints],
---~       colour,
---~       nil, --work_step
---~       shuttle and shuttle - Objterr or Objheight --shuttle z always puts it too high?
---~     )
-    local spawnline = PlaceTerrainLine(
-      Objpos,
-      waypoints[#waypoints],
-      colour,
-      nil, --work_step
-      shuttle and shuttle - Objterr or Objheight --shuttle z always puts it too high?
-    )
-    Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spawnline
-    spawnline:SetDepthTest(true)
-    local sphereheight = 266 + height - 50
-    --line:SetPrimType(4)
-    if not single then
-      --spawn a sphere at the Obj pos
-      local spherestart = PlaceObject("Sphere")
-      Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spherestart
-      spherestart:SetPos(point(Objpos:x(),Objpos:y(),(shuttle and shuttle + 500) or Objterr + sphereheight))
-      spherestart:SetDepthTest(true)
-      spherestart:SetColor(colour)
-      spherestart:SetRadius(35)
+    --build a list of points that aren't high in the sky
+    local points = {}
+    local mapw, maph = terrain_GetMapSize()
+    for i = 1, #waypoints do
+--~       local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
+      local x, y, z = waypoints[i]:xy()
+      x = Clamp(x, 0, mapw - terrain_HeightTileSize)
+      y = Clamp(y, 0, maph - terrain_HeightTileSize)
+      z = terrain_GetHeight(x, y) + (shuttle and shuttle - Objterr or Objheight) + height --shuttle z always puts it too high?
+      points[#points + 1] = point(x, y, z)
     end
+    local last_pos = points[#points]
+    --and spawn the line
+    local spawnline = g_Classes.Polyline:new{max_vertices = #waypoints}
+    spawnline:SetMesh(points, colour)
+    spawnline:SetPos(last_pos)
+    spawnline.ChoGGi_WaypointPath = true
+
+--~     --add text to last wp
+--~     local endwp = PlaceText(Concat(RetName(Obj),": ",Obj.handle), last_pos)
+--~     Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = endwp
+--~     endwp:SetColor(colour)
+--~     endwp:SetZ(endwp:GetZ() + 250)
+--~     --endp:SetShadowOffset(3)
+--~     endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
+
+    Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spawnline
+--~     spawnline:SetDepthTest(true)
+
+--~     local sphereheight = 266 + height - 50
+    --spawn a sphere at the Obj pos
+--~     if not single then
+--~       local spherestart = PlaceObject("Sphere")
+--~       Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spherestart
+--~       spherestart:SetPos(point(Objpos:x(),Objpos:y(),(shuttle and shuttle + 500) or (Objterr + sphereheight)))
+--~       spherestart:SetDepthTest(true)
+--~       spherestart:SetColor(colour)
+--~       spherestart:SetRadius(35)
+--~     end
     --and another at the end
     --[[
     local sphereend = PlaceObject("Sphere")
@@ -958,64 +827,9 @@ do --path markers
     sphereend:SetRadius(25)
     --]]
 
-    --list is sent dest>pos order
-    for i = 1, #waypoints do
-      local w = waypoints[i]
-      local wpn = waypoints[i+1]
-      local pos = w:SetZ((w:z() or terrain_GetHeight(w)) + 10 * guic)
-      pos = point(pos:x(),pos:y(),shuttle or pos:z())
-
-      if skipflags ~= true then
-        local p
-        if single and i == #waypoints and not skipstart then
-          p = PlaceObject(SpawnModels[Random(1,2)])
-          p:SetScale(50)
-          --p:SetAngle(Obj:GetAngle())
-        else
-          -- 1 == start #wp = dist
-          p = PlaceObject("WayPoint")
-          if i > 1 then
-            p:SetAngle(p:AngleToPoint(waypoints[#waypoints-1]))
-          else
-            p:SetAngle(Obj:GetAngle())
-          end
-        end
-        Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = p
-        p:SetColorModifier(colour)
-        p:SetPos(pos)
-      end
-
-      --add text to last wp
-      if i == 1 and not skiptext then
-        local endwp = PlaceText(Concat(Obj.class,": ",Obj.handle), pos)
-        Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = endwp
-        endwp:SetColor(colour)
-        --endp:SetColor2()
-        endwp:SetZ(endwp:GetZ() + 250 + height)
-        --endp:SetShadowOffset(3)
-        endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
-      end
-
-      if wpn then
---~         local l = PlaceTerrainLine(
-        local l = PlaceTerrainLine(
-          pos,
-          wpn,
-          colour,
-          nil,
-          shuttle and shuttle - Objterr or height
-        )
-        Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = l
-        l:SetDepthTest(true)
-      end
-    end
-
-    --if #Obj.ChoGGi_Stored_Waypoints > 150 then
-    --  print(Concat(RetName(Obj)," (handle: ",Obj.handle,") has over 150 waypoints."))
-    --end
   end --end of ShowWaypoints
 
-  function ChoGGi.MenuFuncs.SetWaypoint(Obj,single,skipflags,setcolour,skipheight,skiptext, skipstart)
+  function ChoGGi.MenuFuncs.SetWaypoint(Obj,setcolour,skipheight)
     local path
     --we need to build a path for shuttles (and figure out a way to get their dest properly...)
     if Obj.class == "CargoShuttle" then
@@ -1030,6 +844,7 @@ do --path markers
       --the next four points it's going to
       local Table = Obj.next_spline
       if Table then
+        -- :GetPath() has them backwards so we'll do the same
         for i = #Table, 1, -1 do
           path[#path+1] = Table[i]
         end
@@ -1055,15 +870,11 @@ do --path markers
         colour = setcolour
       else
         local randomcolour = ChoGGi.CodeFuncs.RandomColour()
-        if single then
+        if #randcolours < 1 then
           colour = randomcolour
         else
-          if #randcolours < 1 then
-            colour = randomcolour
-          else
-            --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-            colour = table.remove(randcolours)
-          end
+          --we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
+          colour = table.remove(randcolours)
         end
       end
 
@@ -1082,33 +893,23 @@ do --path markers
         path,
         colour,
         Obj,
-        single,
-        skipflags,
         skipheight,
-        skiptext,
-        skipstart
       )
     end
   end
 
-  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(Obj,skipflags,skiptext)
+  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(Obj)
     local ChoGGi = ChoGGi
-    local IsValid = IsValid
-    local Sleep = Sleep
-    local DoneObject = DoneObject
     --the menu item sends itself
-    if Obj and not Obj.class then
-      if not Obj.class then
-        Obj = ChoGGi.CodeFuncs.SelObject()
-      else
-        Obj = ChoGGi.CodeFuncs.SelObject()
-      end
-    end
-    if not ChoGGi.Temp.UnitPathingHandles then
-      ChoGGi.Temp.UnitPathingHandles = {}
+    if not Obj or Obj and not Obj.class then
+      Obj = ChoGGi.CodeFuncs.SelObject()
     end
 
-    if Obj and Obj.handle then
+    if Obj and Obj:IsKindOfClasses("Movable", "Shuttle") then
+      if not ChoGGi.Temp.UnitPathingHandles then
+        ChoGGi.Temp.UnitPathingHandles = {}
+      end
+
       if ChoGGi.Temp.UnitPathingHandles[Obj.handle] then
         --already exists so remove thread
         --DeleteThread(ChoGGi.Temp.UnitPathingHandles[Obj.handle])
@@ -1139,7 +940,7 @@ do --path markers
             end
             sleepidx = 0
 
-            ChoGGi.MenuFuncs.SetWaypoint(Obj,true,skipflags,colour,true,skiptext,true)
+            ChoGGi.MenuFuncs.SetWaypoint(Obj,colour,true)
             Sleep(750)
 
             --remove old wps
@@ -1159,13 +960,11 @@ do --path markers
 
       end
     else
-      MsgPopup(T(302535920000871--[[Select a moving object to see path.--]]),T(302535920000872--[[Pathing--]]))
+      MsgPopup(T(302535920000871--[[Doesn't seem to be an object that moves.--]]),T(302535920000872--[[Pathing--]]))
     end
   end
 
   local function RemoveWPDupePos(Class,Obj)
-    local IsValid = IsValid
-    local DoneObject = DoneObject
     --remove dupe pos
     if type(Obj.ChoGGi_Stored_Waypoints) == "table" then
       for i = 1, #Obj.ChoGGi_Stored_Waypoints do
@@ -1193,9 +992,8 @@ do --path markers
     local ChoGGi = ChoGGi
     --remove all thread refs so they stop
     ChoGGi.Temp.UnitPathingHandles = {}
-    --ChoGGi.Temp.UnitPathingHandles = {}
     --and waypoints/colour
-    local Objs = GetObjects({class = Class}) or empty_table
+    local Objs = GetObjects{class = Class} or empty_table
     for i = 1, #Objs do
 
       if Objs[i].ChoGGi_WaypointPathAdded then
@@ -1218,7 +1016,7 @@ do --path markers
     local Obj = SelectedObj
     if Obj then
       randcolours = ChoGGi.CodeFuncs.RandomColour(#randcolours + 1)
-      ChoGGi.MenuFuncs.SetWaypoint(Obj,true)
+      ChoGGi.MenuFuncs.SetWaypoint(Obj)
       return
     end
 
@@ -1239,6 +1037,14 @@ do --path markers
         ClearColourAndWP("CargoShuttle")
         ClearColourAndWP("Unit")
 
+        --check for any extra lines
+        local lines = GetObjects{class = "Polyline"}
+        for i = 1, #lines do
+          if lines[i].ChoGGi_WaypointPath then
+            DoneObject(lines[i])
+          end
+        end
+
         --reset stuff
         flag_height = 50
         randcolours = {}
@@ -1248,20 +1054,27 @@ do --path markers
       else --add waypoints
 
         local function swp(Table)
-          for i = 1, #Table do
-            ChoGGi.MenuFuncs.SetWaypoint(Table[i],nil,choice[1].check2)
+          if choice[1].check2 then
+            for i = 1, #Table do
+              ChoGGi.MenuFuncs.SetPathMarkersGameTime(Table[i])
+            end
+          else
+            for i = 1, #Table do
+              ChoGGi.MenuFuncs.SetWaypoint(Table[i])
+            end
           end
         end
+
         if value == "All" then
-          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}) or empty_table,"IsValid",nil,true)
-          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CargoShuttle"}) or empty_table,"IsValid",nil,true)
+          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="Unit"} or empty_table,"IsValid",nil,true)
+          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="CargoShuttle"} or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table1
           colourcount = colourcount + #Table2
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table1)
           swp(Table2)
         else
-          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class=value}) or empty_table,"IsValid",nil,true)
+          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class=value} or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table)
@@ -1269,7 +1082,7 @@ do --path markers
 
         --remove any waypoints in the same pos
         local function ClearAllDupeWP(Class)
-          local objs = GetObjects({class = Class}) or empty_table
+          local objs = GetObjects{class = Class} or empty_table
           for i = 1, #objs do
             if objs[i] and objs[i].ChoGGi_Stored_Waypoints then
               RemoveWPDupePos("WayPoint",objs[i])
@@ -1286,19 +1099,19 @@ do --path markers
     ChoGGi.ComFuncs.OpenInListChoice({
       callback = CallBackFunc,
       items = ItemList,
-      title = T(302535920000874--[[Set Visible Path Markers--]]),
-      hint = T(302535920000875--[[Use HandleToObject[handle] to get object handle--]]),
+      title = T(302535920000467--[[Path Markers--]]),
+--~       hint = T(302535920000875--[[Use HandleToObject[handle] to get object handle--]]),
       check1 = T(302535920000876--[[Remove Waypoints--]]),
-      check1_hint = T(302535920000877--[[Remove waypoints from the map and reset colours (You need to select any object).--]]),
-      check2 = T(302535920000878--[[Skip Flags--]]),
-      check2_hint = T(302535920000879--[[Doesn't add the little flags, just lines and spheres (good for larger maps).--]]),
+      check1_hint = T(302535920000877--[[Remove waypoints from the map and reset colours.--]]),
+      check2 = T(4099--[[Game Time--]]),
+      check2_hint = Concat(T(302535920000462--[[Maps paths in real time--]]),"."),
     })
   end
 end
 
 -- add realtime markers to all of class
 --~ local classname = "Drone"
---~ local objs = GetObjects({class = classname}) or empty_table
+--~ local objs = GetObjects{class = classname} or empty_table
 --~ for i = 1, #objs do
 --~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i],true,true)
 --~ end

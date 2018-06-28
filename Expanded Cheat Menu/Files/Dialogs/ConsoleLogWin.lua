@@ -23,6 +23,7 @@ DefineClass.ChoGGi_ConsoleLogWin = {
   __parents = {"FrameWindow"},
   ZOrder = zorder,
   transp_mode = false,
+  update_thread = false,
 }
 
 function ChoGGi_ConsoleLogWin:Init()
@@ -148,20 +149,6 @@ function ChoGGi_ConsoleLogWin:Init()
   self:InitChildrenSizing()
 end
 
-function ChoGGi_ConsoleLogWin:AddLogText(text, bNewLine)
-  local old_text = self.idText:GetText()
-
-  if bNewLine then
-    text = Concat(old_text,"\n",text)
-  else
-    text = Concat(old_text,text)
-  end
-  self.idText:SetText(text)
-
-  --always scroll to end of text
-  self.idText.scroll:SetPosition(text:len())
-end
-
 function ChoGGi_ConsoleLogWin:ClearText()
   self.idText:SetText("")
 end
@@ -179,9 +166,20 @@ function ChoGGi_ConsoleLogWin:Done(result)
 end
 
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
+
 function OnMsg.ConsoleLine(text, bNewLine)
   local dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
-    dlg:AddLogText(text, bNewLine)
+    local old_text = dlg.idText:GetText()
+
+    if bNewLine then
+      text = Concat(old_text,"\n",text)
+    else
+      text = Concat(old_text,text)
+    end
+    dlg.idText:SetText(text)
+
+    --always scroll to end of text
+    dlg.idText.scroll:SetPosition(text:len())
   end
 end

@@ -13,7 +13,7 @@ local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
 local pf_SetStepLen = pf.SetStepLen
 
-local g_Classes = g_Classes
+--~ local g_Classes = g_Classes
 
 function ChoGGi.MenuFuncs.SetRoverChargeRadius()
   local DefaultSetting = 0

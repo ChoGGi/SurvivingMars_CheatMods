@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local TConcat
 local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
@@ -32,7 +33,6 @@ local Msg = Msg
 local OpenXDialog = OpenXDialog
 local point = point
 local RGB = RGB
-local RGBA = RGBA
 local Sleep = Sleep
 local TechDef = TechDef
 local ThreadLockKey = ThreadLockKey
@@ -214,6 +214,7 @@ T = Memoize(T)
 TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
 
 ChoGGi.ComFuncs.TableConcat = Memoize(ChoGGi.ComFuncs.TableConcat)
+TConcat = ChoGGi.ComFuncs.TableConcat
 
 -- I want a translate func to always return a string
 function ChoGGi.ComFuncs.Trans(...)
@@ -940,8 +941,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=true,ResourceStockpile=true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="CObject"} or empty_table,{ParSystem=true,ResourceStockpile=true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="CObject"} or empty_table,nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
@@ -970,8 +971,8 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="CObject"}),"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects({class="Unit"}),"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="CObject"} or empty_table,"IsKindOf","Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="Unit"} or empty_table,"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
     filter = function(Obj)
@@ -1388,7 +1389,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
   local pos = GetTerrainCursor()
 
   --get pretty much all objects (18K on a new map)
-  local all = GetObjects({class="CObject"})
+  local all = GetObjects{} or empty_table
   --we only want stuff within *Radius*
   local list = FilterObjects({
     filter = function(Obj)
@@ -1423,9 +1424,18 @@ function ChoGGi.ComFuncs.RetName(obj)
   end
   local name
   if type(obj) == "table" then
-    --custom name from user
     if obj.name and obj.name ~= "" then
-      return obj.name
+      --colonist names
+      if type(obj.name) == "table" then
+        name = {}
+        for i = 1, #obj.name do
+          name[i] = T(obj.name[i])
+        end
+        return TConcat(name)
+      --custom name from user (probably)
+      else
+        return obj.name
+      end
     --translated name
     elseif obj.display_name and obj.display_name ~= "" then
       return T(obj.display_name)
@@ -1450,7 +1460,8 @@ function ChoGGi.ComFuncs.RetName(obj)
 --~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
   return tostring(obj)
 end
-ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)
+-- if i memoize and user changes the name to something then it'll return the old one
+--~ ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)
 
 local temp_table = {}
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
@@ -1480,7 +1491,7 @@ function ChoGGi.ComFuncs.RetButtonTextSize(text,font,width)
   local x,y = UIL_MeasureText(text or "", font)
   return point(x + 24 + width,y + 4) --button padding
 end
---~ ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
+ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
 
 function ChoGGi.ComFuncs.RetCheckTextSize(text,font,width)
   width = width or 0
@@ -1488,7 +1499,7 @@ function ChoGGi.ComFuncs.RetCheckTextSize(text,font,width)
   local x,_ = UIL_MeasureText(text or "", font)
   return point(x + 24 + width,17) --button padding
 end
---~ ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
+ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
 -- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from)

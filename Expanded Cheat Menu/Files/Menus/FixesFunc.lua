@@ -121,7 +121,7 @@ end
 function ChoGGi.MenuFuncs.ResetAllColonists()
     local function CallBackFunc(answer)
       if answer then
-        local objs = GetObjects({class = "Colonist"}) or empty_table
+        local objs = GetObjects{class = "Colonist"} or empty_table
         for i = 1, #objs do
           local c = objs[i]
           SpawnColonist(c,something,c:GetVisualPos(),UICity)
@@ -184,11 +184,11 @@ end
 
 function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   local UICity = UICity
-  local objs = GetObjects({class = "Colonist"}) or empty_table
+  local objs = GetObjects{class = "Colonist"} or empty_table
   for i = 1, #objs do
     local c = objs[i]
     if c:GetStateText() == "movePlanet" then
-      local rocket = FindNearestObject(GetObjects({class="SupplyRocket"}),c)
+      local rocket = FindNearestObject(GetObjects{class="SupplyRocket"} or empty_table,c)
       SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
       if type(c.Done) == "function" then
         c:Done()
@@ -199,7 +199,7 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
 end
 
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local rockets = GetObjects({class="SupplyRocket"})
+  local rockets = GetObjects{class="SupplyRocket"} or empty_table
   local pos
   for i = 1, #rockets do
     pos = rockets[i]:GetPos()
@@ -227,7 +227,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
 end
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-  local objs = GetObjects({class = "ParSystem"}) or empty_table
+  local objs = GetObjects{class = "ParSystem"} or empty_table
   for i = 1, #objs do
     if type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
       objs[i]:delete()
@@ -245,14 +245,13 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
-  local ChoGGi = ChoGGi
-  local objs = GetObjects({class = "MirrorSphere"}) or empty_table
+  local objs = GetObjects{class = "MirrorSphere"} or empty_table
   for i = 1, #objs do
     if not IsValid(objs[i].target) then
       DeleteObject(objs[i])
     end
   end
-  objs = GetObjects({class = "ParSystem"}) or empty_table
+  objs = GetObjects{class = "ParSystem"} or empty_table
   for i = 1, #objs do
     if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
         type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
@@ -262,7 +261,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 end
 
 function ChoGGi.MenuFuncs.StutterWithHighFPS()
-  local objs = GetObjects({class = "Unit"}) or empty_table
+  local objs = GetObjects{class = "Unit"} or empty_table
   --CargoShuttle
   for i = 1, #objs do
     -- 102 is from :GetMoveAnim(), 0 is stopped or idle?
@@ -287,7 +286,7 @@ end
 function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   local ChoGGi = ChoGGi
   local function ResetPriorityQueue(Class)
-    local Hubs = GetObjects({class=Class}) or empty_table
+    local Hubs = GetObjects{class=Class} or empty_table
     for i = 1, #Hubs do
       --clears out the queues
       Hubs[i].priority_queue = {}
@@ -300,14 +299,14 @@ function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
   ResetPriorityQueue("RCRover")
   ResetPriorityQueue("DroneHub")
   --toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-  local Sites = GetObjects({class="ConstructionSite"}) or empty_table
+  local Sites = GetObjects{class="ConstructionSite"} or empty_table
   for i = 1, #Sites do
     ChoGGi.CodeFuncs.ToggleWorking(Sites[i])
   end
 end
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
-  local Table = GetObjects({class="Building"})
+  local Table = GetObjects{class="Building"}
   if Table[1] and Table[1].class then
     for i = 1, #Table do
       Table[i]:SetPos(HexGetNearestCenter(Table[i]:GetPos()))
@@ -318,7 +317,7 @@ end
 function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   local Table
   local function RemoveUnreachable(Class)
-    Table = GetObjects({class=Class}) or empty_table
+    Table = GetObjects{class=Class} or empty_table
     for i = 1, #Table do
       for Bld,_ in pairs(Table[i].unreachable_buildings or empty_table) do
         if Bld:IsKindOf("ConstructionSite") then
@@ -329,7 +328,7 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
     end
   end
 
-  Table = GetObjects({class="Drone"}) or empty_table
+  Table = GetObjects{class="Drone"} or empty_table
   for i = 1, #Table do
     Table[i]:CleanUnreachables()
   end
@@ -490,7 +489,7 @@ end
 
 ---------------------------------------------------Testers
 
---~ DupePos(GetObjects({class = "Colonist"}))
+--~ DupePos(GetObjects{class = "Colonist"})
 function ChoGGi.MenuFuncs.DupePos(list)
   local dupes = {}
   local positions = {}
@@ -511,7 +510,7 @@ function ChoGGi.MenuFuncs.DupePos(list)
 end
 
 function ChoGGi.MenuFuncs.DeathToObjects(classname)
-  local objs = GetObjects({class = classname}) or empty_table
+  local objs = GetObjects{class = classname} or empty_table
   print(#objs," = ",classname)
   for i = 1, #objs do
     DoneObject(objs[i])
@@ -527,7 +526,7 @@ end
 --~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists
 
 --show all elec consumption
---~ local objs = GetObjects({}) or empty_table
+--~ local objs = GetObjects{} or empty_table
 --~ local amount = 0
 --~ for i = 1, #objs do
 --~   local obj = objs[i]

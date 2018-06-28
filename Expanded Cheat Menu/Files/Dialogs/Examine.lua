@@ -636,7 +636,8 @@ function Examine:totextex(o)
       end
     end
   else
-    local info, level, s = true, 0, nil
+--~     local info, level, s = true, 0, nil
+    local info, level = true, 0
     if type(o) == "thread" then
       while true do
         info = debug.getinfo(o, level, "Slfun")

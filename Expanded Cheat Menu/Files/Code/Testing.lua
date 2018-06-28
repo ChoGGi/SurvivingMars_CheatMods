@@ -56,7 +56,7 @@ if type(ChoGGi.Testing) == "function" then
     newdome:InitAttaches()
   end
 
-  local Table1 = GetObjects({class="Destlock"})
+  local Table1 = GetObjects{class="Destlock"}
   for i = 1, #Table1 do
 
   local wp = PlaceObject("WayPoint")
@@ -64,7 +64,7 @@ if type(ChoGGi.Testing) == "function" then
 
   end
 
-  local Table2 = GetObjects({class="ParSystem"})
+  local Table2 = GetObjects{class="ParSystem"}
   for i = 1, #Table2 do
     Table2[i]:delete()
   end
