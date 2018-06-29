@@ -189,7 +189,13 @@ end --OnMsg
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-  terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
+
+  --everyone loves a new titlebar, unless they don't
+  if ChoGGi.UserSettings.DontChangeTitle then
+    terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
+  end
+  --genders/ages/traits/specs/birthplaces
+  ChoGGi.ComFuncs.UpdateColonistsTables()
 end
 
 --for instant build

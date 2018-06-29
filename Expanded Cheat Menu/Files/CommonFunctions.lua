@@ -299,6 +299,168 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
 end
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
+do --g_Classes
+  local g_Classes = g_Classes
+  function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
+    parent.idCaption = g_Classes.StaticText:new(parent)
+    parent.idCaption:SetPos(Table.pos)
+    parent.idCaption:SetSize(Table.size)
+    parent.idCaption:SetHSizing("AnchorToLeft")
+    parent.idCaption:SetBackgroundColor(0)
+    parent.idCaption:SetFontStyle("Editor14Bold")
+    parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
+    parent.idCaption:SetText(Table.title or "")
+    parent.idCaption.HandleMouse = false
+  end
+
+  function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
+    parent.idCloseX = g_Classes.Button:new(parent)
+    parent.idCloseX:SetHSizing("AnchorToRight")
+    parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
+    parent.idCloseX:SetSize(point(18, 18))
+    parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+    parent.idCloseX:SetHint(T(1011--[[Close--]]))
+    parent.idCloseX.OnButtonPressed = func or function()
+      parent:delete()
+    end
+  end
+
+  function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
+    g_Classes.XTextButton:new({
+      RolloverTemplate = "Rollover",
+      RolloverText = hint or "",
+      RolloverTitle = T(126095410863--[[Info--]]),
+      MinWidth = 60,
+      Text = text or T(1000616--[[OK--]]),
+      OnPress = onpress,
+      --center text
+      LayoutMethod = "VList",
+    }, parent)
+  end
+
+  function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items)
+    local popup = g_Classes.XPopupList:new({
+      Opened = true,
+      Id = popup_id,
+      ZOrder = 2000001, --1 above consolelog
+      Dock = "top",
+      Margins = box(0, 0, 0, 5),
+      LayoutMethod = "VList",
+    }, terminal.desktop)
+
+    for i = 1, #items do
+      local item = items[i]
+      local button = g_Classes[item.class]:new({
+        TextFont = "Editor16Bold",
+        RolloverText = item.hint,
+        RolloverTemplate = "Rollover",
+        Text = item.name,
+--~         RolloverBackground = RGBA(40, 163, 255, 255),
+        OnMouseButtonDown = item.clicked or function()end,
+        OnMouseButtonUp = function()
+          popup:Close()
+        end,
+        OnMouseEnter = function()
+          if item.pos then
+            ViewPos(item.pos)
+          end
+        end,
+      }, popup.idContainer)
+      button:SetRollover(item.hint)
+
+      --i just love checkmarks
+      if item.value then
+        local is_vis
+        local value
+        if type(item.value) == "table" then
+          value = ChoGGi.UserSettings[item.value[1]]
+        else
+          value = _G[item.value]
+        end
+        if type(value) == "table" then
+          if value.visible then
+            is_vis = true
+          end
+        else
+          if value then
+            is_vis = true
+          end
+        end
+
+
+        if is_vis then
+          button:SetCheck(true)
+        else
+          button:SetCheck(false)
+        end
+      end
+    end
+
+    popup:SetAnchor(parent.box)
+    popup:SetAnchorType("top")
+  --~   "smart",
+  --~   "left",
+  --~   "right",
+  --~   "top",
+  --~   "center-top",
+  --~   "bottom",
+  --~   "mouse"
+
+    popup:Open()
+    popup:SetFocus()
+    return popup
+  end
+
+  function ChoGGi.ComFuncs.ShowMe(o, color, time)
+    if not o then
+      return ChoGGi.ComFuncs.ClearShowMe()
+    end
+    if type(o) == "table" and #o == 2 then
+      if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
+        local m = g_Classes.Vector:new()
+        m:Set(o[1], o[2], color)
+        markers[m] = "vector"
+        o = m
+      end
+    elseif IsPoint(o) then
+      if terrain_IsPointInBounds(o) then
+        local m = g_Classes.Sphere:new()
+        m:SetPos(o)
+        m:SetRadius(50 * guic)
+        m:SetColor(color or RGB(0, 255, 0))
+        markers[m] = "point"
+        if not time then
+          ViewPos(o)
+        end
+        o = m
+      end
+    elseif IsValid(o) then
+      markers[o] = markers[o] or o:GetColorModifier()
+      o:SetColorModifier(color or RGB(0, 255, 0))
+      local pos = o:GetVisualPos()
+      if not time and terrain_IsPointInBounds(pos) then
+        ViewPos(pos)
+      end
+    end
+  --~   lm = o
+  end
+
+  function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
+    local c = g_Classes.Circle:new()
+    c:SetPos(pt:SetTerrainZ(10 * guic))
+    c:SetRadius(r)
+    c:SetColor(color or RGB(255, 255, 255))
+    CreateGameTimeThread(function()
+      Sleep(7000)
+      if IsValid(c) then
+  --~       c:delete()
+        DoneObject(c)
+      end
+    end)
+  end
+
+end
+
 -- centred msgbox with Ok
 function ChoGGi.ComFuncs.MsgWait(Msg,Title)
   Title = Title or ""
@@ -1631,165 +1793,51 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
   end
 end
 
-do
-  local g_Classes = g_Classes
-  function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
-    parent.idCaption = g_Classes.StaticText:new(parent)
-    parent.idCaption:SetPos(Table.pos)
-    parent.idCaption:SetSize(Table.size)
-    parent.idCaption:SetHSizing("AnchorToLeft")
-    parent.idCaption:SetBackgroundColor(0)
-    parent.idCaption:SetFontStyle("Editor14Bold")
-    parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
-    parent.idCaption:SetText(Table.title or "")
-    parent.idCaption.HandleMouse = false
-  end
+function ChoGGi.ComFuncs.UpdateColonistsTables()
+  local ChoGGi = ChoGGi
+  local Nations = Nations
+  local DataInstances = DataInstances
 
-  function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
-    parent.idCloseX = g_Classes.Button:new(parent)
-    parent.idCloseX:SetHSizing("AnchorToRight")
-    parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
-    parent.idCloseX:SetSize(point(18, 18))
-    parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-    parent.idCloseX:SetHint(T(1011--[[Close--]]))
-    parent.idCloseX.OnButtonPressed = func or function()
-      parent:delete()
+  --start off with empty ones
+  ChoGGi.Tables.ColonistBirthplaces = {}
+  ChoGGi.Tables.NegativeTraits = {}
+  ChoGGi.Tables.PositiveTraits = {}
+  ChoGGi.Tables.ColonistAges = {}
+  ChoGGi.Tables.ColonistGenders = {}
+  ChoGGi.Tables.ColonistSpecializations = {}
+
+  local traits = DataInstances.Trait
+  --add as index and associative tables for ease of filtering
+  for i = 1, #traits do
+    local cat = traits[i].category
+    local name = traits[i].name
+    if cat == "Positive" then
+      ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = name
+      ChoGGi.Tables.PositiveTraits[name] = true
+    elseif cat == "Negative" then
+      ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = name
+      ChoGGi.Tables.NegativeTraits[name] = true
+    elseif cat == "Age Group" then
+      ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = name
+      ChoGGi.Tables.ColonistAges[name] = true
+    elseif cat == "Gender" then
+      ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = name
+      ChoGGi.Tables.ColonistGenders[name] = true
+    elseif cat == "Specialization" and name ~= "none" then
+      ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = name
+      ChoGGi.Tables.ColonistSpecializations[name] = true
     end
   end
 
-  function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
-    g_Classes.XTextButton:new({
-      RolloverTemplate = "Rollover",
-      RolloverText = hint or "",
-      RolloverTitle = T(126095410863--[[Info--]]),
-      MinWidth = 60,
-      Text = text or T(1000616--[[OK--]]),
-      OnPress = onpress,
-      --center text
-      LayoutMethod = "VList",
-    }, parent)
+  for i = 1, #Nations do
+    ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
+    ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
   end
 
-  function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items)
-    local popup = g_Classes.XPopupList:new({
-      Opened = true,
-      Id = popup_id,
-      ZOrder = 2000001, --1 above consolelog
-      Dock = "top",
-      Margins = box(0, 0, 0, 5),
-      LayoutMethod = "VList",
-    }, terminal.desktop)
-
-    for i = 1, #items do
-      local item = items[i]
-      local button = g_Classes[item.class]:new({
-        TextFont = "Editor16Bold",
-        RolloverText = item.hint,
-        RolloverTemplate = "Rollover",
-        Text = item.name,
---~         RolloverBackground = RGBA(40, 163, 255, 255),
-        OnMouseButtonDown = item.clicked or function()end,
-        OnMouseButtonUp = function()
-          popup:Close()
-        end,
-        OnMouseEnter = function()
-          if item.pos then
-            ViewPos(item.pos)
-          end
-        end,
-      }, popup.idContainer)
-      button:SetRollover(item.hint)
-
-      --i just love checkmarks
-      if item.value then
-        local is_vis
-        local value
-        if type(item.value) == "table" then
-          value = ChoGGi.UserSettings[item.value[1]]
-        else
-          value = _G[item.value]
-        end
-        if type(value) == "table" then
-          if value.visible then
-            is_vis = true
-          end
-        else
-          if value then
-            is_vis = true
-          end
-        end
-
-
-        if is_vis then
-          button:SetCheck(true)
-        else
-          button:SetCheck(false)
-        end
-      end
-    end
-
-    popup:SetAnchor(parent.box)
-    popup:SetAnchorType("top")
-  --~   "smart",
-  --~   "left",
-  --~   "right",
-  --~   "top",
-  --~   "center-top",
-  --~   "bottom",
-  --~   "mouse"
-
-    popup:Open()
-    popup:SetFocus()
-    return popup
-  end
-
-  function ChoGGi.ComFuncs.ShowMe(o, color, time)
-    if not o then
-      return ChoGGi.ComFuncs.ClearShowMe()
-    end
-    if type(o) == "table" and #o == 2 then
-      if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
-        local m = g_Classes.Vector:new()
-        m:Set(o[1], o[2], color)
-        markers[m] = "vector"
-        o = m
-      end
-    elseif IsPoint(o) then
-      if terrain_IsPointInBounds(o) then
-        local m = g_Classes.Sphere:new()
-        m:SetPos(o)
-        m:SetRadius(50 * guic)
-        m:SetColor(color or RGB(0, 255, 0))
-        markers[m] = "point"
-        if not time then
-          ViewPos(o)
-        end
-        o = m
-      end
-    elseif IsValid(o) then
-      markers[o] = markers[o] or o:GetColorModifier()
-      o:SetColorModifier(color or RGB(0, 255, 0))
-      local pos = o:GetVisualPos()
-      if not time and terrain_IsPointInBounds(pos) then
-        ViewPos(pos)
-      end
-    end
-  --~   lm = o
-  end
-
-  function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
-    local c = g_Classes.Circle:new()
-    c:SetPos(pt:SetTerrainZ(10 * guic))
-    c:SetRadius(r)
-    c:SetColor(color or RGB(255, 255, 255))
-    CreateGameTimeThread(function()
-      Sleep(7000)
-      if IsValid(c) then
-  --~       c:delete()
-        DoneObject(c)
-      end
-    end)
-  end
-
+  table.sort(ChoGGi.Tables.ColonistBirthplaces)
+  table.sort(ChoGGi.Tables.NegativeTraits)
+  table.sort(ChoGGi.Tables.PositiveTraits)
+  table.sort(ChoGGi.Tables.ColonistAges)
+  table.sort(ChoGGi.Tables.ColonistGenders)
+  table.sort(ChoGGi.Tables.ColonistSpecializations)
 end
-

@@ -20,16 +20,12 @@ local g_Classes = g_Classes
 
 --useful lists
 do
+  local ChoGGi = ChoGGi
   local Nations = Nations
   local const = const
+  local DataInstances = DataInstances
+
   ChoGGi.Tables = {
-    --for increasing school/sanatorium traits and adding/removing traits funcs
-    NegativeTraits = {"Vegan","Alcoholic","Glutton","Lazy","Refugee","ChronicCondition","Infected","Idiot","Hypochondriac","Whiner","Renegade","Melancholic","Introvert","Coward","Tourist","Gambler"},
-    PositiveTraits = {"Workaholic","Survivor","Sexy","Composed","Genius","Celebrity","Saint","Religious","Gamer","DreamerPostMystery","Empath","Nerd","Rugged","Fit","Enthusiast","Hippie","Extrovert","Martianborn"},
-    ColonistAges = {"Child","Youth","Adult","Middle Aged","Senior","Retiree",Child = true,Youth = true,Adult = true,["Middle Aged"] = true,Senior = true,Retiree = true},
-    ColonistGenders = {"OtherGender","Android","Clone","Male","Female",OtherGender = true,Android = true,Clone = true,Male = true,Female = true},
-    ColonistSpecializations = {"scientist","engineer","security","geologist","botanist","medic",scientist = true,engineer = true,security = true,geologist = true,botanist = true,medic = true},
-    ColonistBirthplaces = {},
     --display names only! (stored as numbers, not names like the rest; which is why i guessed)
     ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
     --Some names need to be fixed when doing construction placement
@@ -46,13 +42,10 @@ do
     Mystery = {}
   }
 
-  local ChoGGi = ChoGGi
-  --build tables
-  for i = 1, #Nations do
-    ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
-    ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
-  end
-  --maybe a mod removed them?
+  --genders/ages/traits/specs/birthplaces
+  ChoGGi.ComFuncs.UpdateColonistsTables()
+
+  --maybe if a mod removed them?
   if #const.SchoolTraits < 5 then
     ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
   end
@@ -74,6 +67,7 @@ ChoGGi.Defaults = {
   UseLastOrientation = true,
   ShowCheatsMenu = true,
   FlushLog = true,
+  DontChangeTitle = false,
   FlattenGround_Radius = 2500,
   FlattenGround_HeightDiff = 100,
   FlattenGround_RadiusDiff = 100,
