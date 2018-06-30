@@ -11,9 +11,9 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers--]])),
     ChoGGi.MenuFuncs.ResetRovers,
     nil,
-    T(302535920000882--[["If you have borked rovers, this will probably fix them.
+    T(302535920000882--[[If you have borked rovers, this will probably fix them (may take a few seconds to apply).
 
-You may need to toggle the recall drones button (for certain issues)."--]]),
+You may need to toggle the recall drones button (for certain issues).--]]),
     icon
   )
 

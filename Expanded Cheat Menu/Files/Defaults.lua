@@ -68,6 +68,7 @@ ChoGGi.Defaults = {
   ShowCheatsMenu = true,
   FlushLog = true,
   DontChangeTitle = false,
+  HideuiWindowErrorMsg = true,
   FlattenGround_Radius = 2500,
   FlattenGround_HeightDiff = 100,
   FlattenGround_RadiusDiff = 100,

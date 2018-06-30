@@ -244,7 +244,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     {text = T(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
     {text = T(6556--[[Alien Imprints--]]),value = 11,hint = hint_core},
     {text = T(302535920000258--[[Reveal Map--]]),value = 12,hint = T(302535920000259--[[Reveals the map squares--]])},
-    {text = T(302535920000260--[[Reveal Map (Deep)--]]),value = 13,hint = T(302535920000261--[[Reveals the map and \"Deep\" resources--]])},
+    {text = T(302535920000260--[[Reveal Map (Deep)--]]),value = 13,hint = T(302535920000261--[[Reveals the map and unlocks "Deep" resources--]])},
   }
 
   local CallBackFunc = function(choice)
@@ -266,7 +266,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
       value = choice[i].value
       if value == 1 then
         CheatMapExplore("deep scanned")
-        ExploreDeep()
+--~         ExploreDeep()
         ExploreCore()
       elseif value == 2 then
         ExploreDeep()

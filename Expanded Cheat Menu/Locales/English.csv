@@ -380,7 +380,7 @@ Buildings are still unlocked.",
 302535920000258,Reveal Map,
 302535920000259,Reveals the map squares,
 302535920000260,Reveal Map (Deep).,
-302535920000261,"Reveals the map and ""Deep"" resources.",
+302535920000261,"Reveals the map and unlocks ""Deep"" resources.",
 302535920000262,"Alice thought to herself.
 ""Now you will see a film made for children"".
 Perhaps.
@@ -723,7 +723,7 @@ The map disaster settings don't do jack.",
 302535920001040,Drone Wrong Angle,
 302535920001071,Drone Charges From Rover Wrong Angle,
 302535920000292,Reset Rovers,
-302535920000882,"If you have borked rovers, this will probably fix them.
+302535920000882,"If you have borked rovers, this will probably fix them (may take a few seconds to apply).
 
 You may need to toggle the recall drones button (for certain issues).",
 302535920000939,"Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.",

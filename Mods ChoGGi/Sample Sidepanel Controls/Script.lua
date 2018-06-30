@@ -143,6 +143,25 @@ function OnMsg.ClassesBuilt()
       end
     })
 
+    --add an actual button (at the top of the panel)
+    XTemplates.ipSubsurfaceDeposit[1][#XTemplates.ipSubsurfaceDeposit[1]+1] = PlaceObj("XTemplateTemplate", {
+      "__template", "InfopanelButton",
+      "Icon", "UI/Icons/Sections/Metals_2.tga",
+      "Title", "5 Times the amount",
+      "RolloverText", "Clicking this once will add 5 times the amount of stored resources.",
+      "RolloverTitle", "",
+      "RolloverHint",  "",
+      "OnPress", function(self, context)
+        ---
+        local objs = GetObjects{class="SubsurfaceDeposit"} or empty_table
+        for i = 1, #objs do
+          objs[i].max_amount = objs[i].max_amount * 5
+          objs[i]:CheatRefill()
+        end
+        ---
+      end,
+    })
+
   end --if
 
 end
