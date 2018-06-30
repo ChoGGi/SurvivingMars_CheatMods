@@ -1,7 +1,6 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local iconD = "ShowAll.tga"
 local iconRC = "HostGame.tga"
@@ -71,7 +70,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.DroneMoveBatteryUse,
-        302535920000519 --,"Drone Battery Infinite"
+        302535920000519--[[Drone Battery Infinite--]]
       )
     end,
     iconD
@@ -82,14 +81,9 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
     nil,
     function()
-      local des
-      if Consts.DroneConstructAmount == 999900 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000522--[[Instant build/repair when resources are ready.--]])
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.DroneConstructAmount,
+        302535920000522--[[Instant build/repair when resources are ready.--]]
+      )
     end,
     iconD
   )
@@ -100,7 +94,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.DroneMeteorMalfunctionChance,
-        302535920000524 --,"Drones will not malfunction when close to a meteor impact site."
+        302535920000524--[[Drones will not malfunction when close to a meteor impact site.--]]
       )
     end,
     iconD
@@ -112,7 +106,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.DroneRechargeTime,
-        302535920000526 --,"Faster/Slower Drone Recharge."
+        302535920000526--[[Faster/Slower Drone Recharge.--]]
       )
     end,
     iconD
@@ -124,7 +118,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.DroneRepairSupplyLeak,
-        302535920000528 --,"Faster Drone fix supply leak."
+        302535920000528--[[Faster Drone fix supply leak.--]]
       )
     end,
     iconD
@@ -210,7 +204,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.RCRoverDroneRechargeCost,
-        302535920000548 --,"No more draining Rover Battery when recharging drones."
+        302535920000548--[[No more draining Rover Battery when recharging drones.--]]
       )
     end,
     iconRC
@@ -222,7 +216,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.RCRoverTransferResourceWorkTime,
-        302535920000550 --,"RC Rover quick Transfer/Gather resources."
+        302535920000550--[[RC Rover quick Transfer/Gather resources.--]]
       )
     end,
     "Mirror.tga"

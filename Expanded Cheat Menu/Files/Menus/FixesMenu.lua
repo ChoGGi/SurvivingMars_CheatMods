@@ -45,7 +45,9 @@ You may need to toggle the recall drones button (for certain issues)."--]]),
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000585--[[Colonists Stuck Outside Rocket--]])),
     ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
     nil,
-    T(302535920000586--[[If any colonists are stuck AND you don't have any other rockets unloading colonists.\n\nThis will do a little copy n paste fix (they'll keep the same traits/whatnot).--]]),
+    T(302535920000586--[[If any colonists are stuck AND you don't have any other rockets unloading colonists.
+
+This will do a little copy n paste fix (they'll keep the same traits/whatnot).--]]),
     icon
   )
 
@@ -62,7 +64,7 @@ You may need to toggle the recall drones button (for certain issues)."--]]),
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]"," ",T(302535920000589--[[Fire Most Fixes--]])),
     ChoGGi.MenuFuncs.FireMostFixes,
     nil,
-    T(302535920000590--[[Fires all the fixes in the \"Most\" menu (nuke 'em from orbit and all that).
+    T(302535920000590--[[Fires all the fixes in the "Most" menu (nuke 'em from orbit and all that).
 Should be safe to use without breaking anything.--]]),
     icon
   )
@@ -94,7 +96,9 @@ Should be safe to use without breaking anything.--]]),
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]",T(302535920000935--[[Most--]]),"/",T(302535920000597--[[Stutter With High FPS or Human Centipede--]])),
     ChoGGi.MenuFuncs.StutterWithHighFPS,
     nil,
-    T(302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).\n\nThis also works for colonists practicing the human centipede.--]]),
+    T(302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).
+
+This also works for colonists practicing the human centipede.--]]),
     icon
   )
 
@@ -110,7 +114,9 @@ Should be safe to use without breaking anything.--]]),
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[0]",T(302535920000935--[[Most--]]),"/",T(302535920000601--[[Idle Drones Won't Build When Resources Available--]])),
     ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
     nil,
-    T(302535920000602--[[If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.\n\nThis removes any of those (resources won't be touched).--]]),
+    T(302535920000602--[[If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
+
+This removes any of those (resources won't be touched).--]]),
     icon
   )
 
@@ -154,19 +160,7 @@ Should be safe to use without breaking anything.--]]),
     icon
   )
 ---------------------------toggles
---~ fixed in curiosity
 
---~   ChoGGi.ComFuncs.AddAction(
---~     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/",T(302535920000146--[[Toggle--]]),": Psychologist Resting Bonus Doesn't Work"),
---~     ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle,
---~     nil,
---~     function()
---~       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoRestingBonusPsychologistFix,
---~         T()" The Psychologist profile is supposed to give a +5 sanity bonus to colonists during rest (now it will)."
---~       )
---~     end,
---~     icon
---~   )
 if ChoGGi.Testing then
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
@@ -174,7 +168,7 @@ if ChoGGi.Testing then
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle,
-        302535920001071 --,"Drone Charges From Rover Wrong Angle"
+        302535920001071--[[Drone Charges From Rover Wrong Angle--]]
       )
     end,
     icon
@@ -188,7 +182,10 @@ end
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix,
-        302535920000614 --,"Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.\nThis forces them to pick up whenever there's more then one resource).\n\nIf you have an insane production amount set then it'll take an (in-game) hour between calling drones."
+        302535920000614--[[Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
+This forces them to pick up whenever there's more then one resource).
+
+If you have an insane production amount set then it'll take an (in-game) hour between calling drones.--]]
       )
     end,
     icon
@@ -200,7 +197,9 @@ end
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist,
-        302535920000616 --,"Each Sol goes through all buildings and sorts their cc list by nearest.\n\nTakes less then a second on a map with 3600+ buildings and 50+ drone hubs."
+        302535920000616--[[Each Sol goes through all buildings and sorts their cc list by nearest.
+
+Takes less then a second on a map with 3600+ buildings and 50+ drone hubs.--]]
       )
     end,
     "Axis.tga"

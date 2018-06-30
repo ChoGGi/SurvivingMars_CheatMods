@@ -11,7 +11,9 @@ function ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(1635--[[Mission--]]),"/",T(302535920000704--[[Instant Mission Goal--]])),
     ChoGGi.MenuFuncs.InstantMissionGoal,
     nil,
-    T(302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).\n\nNeeds to change Sol to update.--]]),
+    T(302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).
+
+Needs to change Sol to update.--]]),
     "AlignSel.tga"
   )
 
@@ -29,7 +31,7 @@ function ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.MeteorHealthDamage,
-        302535920000709 --,"Disable Meteor damage (colonists?)."
+        302535920000709--[[Disable Meteor damage (colonists?).--]]
       )
     end,
     "remove_water.tga"
@@ -60,7 +62,10 @@ function ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
   )
 
 ------------
-  local bonusinfo = T(302535920000715--[[Applies the good effects only (no drawbacks).\n\n(if value already exists; set to larger amount).\nrestart to set disabled.--]])
+  local bonusinfo = T(302535920000715--[[Applies the good effects only (no drawbacks).
+
+(if value already exists; set to larger amount).
+restart to set disabled.--]])
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(1635--[[Mission--]]),"/[2]",T(302535920000714--[[Set Bonuses Sponsor--]])),
     ChoGGi.MenuFuncs.SetSponsorBonus,

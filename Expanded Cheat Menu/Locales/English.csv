@@ -872,7 +872,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.",
 
 AddMaintenancePnts, MakeSphereTarget, Malfunction, SpawnWorker, SpawnVisitor",
 302535920000700,Scanner Queue Larger,
-302535920000701,Queue up to 100 squares (default,
+302535920000701,Queue up to 100 squares.,
 302535920000702,Game Speed,
 302535920000703,"Change the game speed (only for medium/fast, normal is normal).",
 302535920000704,Instant Mission Goal,

@@ -122,7 +122,9 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000473--[[Selection Editor--]])),
     ChoGGi.MenuFuncs.ShowSelectionEditor,
     nil,
-    T(302535920000474--[[Lets you manipulate objects.\n\nIf you leave it opened during a game load/save, then click this menu item to make it closeable).--]]),
+    T(302535920000474--[[Lets you manipulate objects.
+
+If you leave it opened during a game load/save, then click this menu item to make it closeable).--]]),
     "AreaProperties.tga"
   )
 
@@ -130,7 +132,10 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000475--[[Object Spawner--]])),
     ChoGGi.MenuFuncs.ObjectSpawner,
     "Ctrl-Shift-S",
-    T(302535920000476--[[Shows list of objects, and spawns at mouse cursor.\n\nWarning: Unable to mouse select items after spawn\nhover mouse over and use Delete Selected Object--]]),
+    T(302535920000476--[[Shows list of objects, and spawns at mouse cursor.
+
+Warning: Unable to mouse select items after spawn
+hover mouse over and use Delete Selected Object--]]),
     "add_water.tga"
   )
 
@@ -138,7 +143,10 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000479--[[Toggle Editor--]])),
     ChoGGi.MenuFuncs.Editor_Toggle,
     "Ctrl-Shift-E",
-    T(302535920000480--[[Select object(s) then hold ctrl/shift/alt and drag mouse.\nclick+drag for multiple selection.\n\nIt's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).--]]),
+    T(302535920000480--[[Select object(s) then hold ctrl/shift/alt and drag mouse.
+click+drag for multiple selection.
+
+It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).--]]),
     "SelectionEditor.tga"
   )
 
@@ -164,7 +172,9 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
     ChoGGi.CodeFuncs.DeleteObject,
     "Ctrl-Alt-Shift-D",
-    T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).\n\nUse Editor Mode and mouse drag to select multiple objects for deletion.--]]),
+    T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).
+
+Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
     "delete_objects.tga"
   )
 
@@ -180,7 +190,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000495--[[Particles Reload--]])),
     ChoGGi.MenuFuncs.ParticlesReload,
     nil,
-    T(302535920000496--[[Reloads particles from \"Data/Particles\"...--]]),
+    T(302535920000496--[[Reloads particles from "Data/Particles"...--]]),
     "place_particles.tga"
   )
 
@@ -233,7 +243,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(DebugFX,
-        302535920001176 --Toggle showing FX debug info in console.
+        302535920001176--[[Toggle showing FX debug info in console.--]]
       )
     end,
     "FXEditor.tga"
@@ -247,7 +257,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(DebugFXParticles,
-        302535920001176 --Toggle showing FX debug info in console.
+        302535920001176--[[Toggle showing FX debug info in console.--]]
       )
     end,
     "place_particles.tga"
@@ -261,7 +271,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(DebugFXSound,
-        302535920001176 --Toggle showing FX debug info in console.
+        302535920001176--[[Toggle showing FX debug info in console.--]]
       )
     end,
     "DisableEyeSpec.tga"

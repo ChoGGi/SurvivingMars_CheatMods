@@ -34,7 +34,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowInterfaceInScreenshots,
-        302535920000662 --,"Do you want to see the interface in screenshots?"
+        302535920000662--[[Do you want to see the interface in screenshots?--]]
       )
     end,
     "toggle_dtm_slots.tga"
@@ -81,7 +81,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableHints,
-        302535920000671 --,"No more hints ever."
+        302535920000671--[[No more hints ever.--]]
       )
     end,
     "set_debug_texture.tga"
@@ -91,7 +91,9 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
     ChoGGi.MenuFuncs.ReportBugDlg,
     "Ctrl-F1",
-    T(302535920000675--[[Report Bug\n\nThis doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
+    T(302535920000675--[[Report Bug
+
+This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     "ReportBug.tga"
   )
 
@@ -143,7 +145,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     local function ReadText(file)
       local file_error, text = AsyncFileToString(file)
       if file_error then
-        --close enough, very unlikely this will ever happen (unless user is really being a user)
+        -- close enough, very unlikely this will ever happen (unless user is really being a user)
         return T(1000058--[[Missing file <u(src)> referenced in entity--]])
       else
         return text

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local icon = "AlignSel.tga"
 local icon2 = "Cube.tga"
@@ -15,7 +14,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoMoreEarthsick,
-        302535920000370 --,"Colonists will never become Earthsick (and removes any when you enable this)."
+        302535920000370--[[Colonists will never become Earthsick (and removes any when you enable this).--]]
       )
     end,
     icon
@@ -96,7 +95,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.AvoidWorkplaceSols,
-        302535920000388 --,"After being fired, Colonists won't avoid that Workplace searching for a Workplace.\nWorks after colonist idle."
+        302535920000388--[[After being fired, Colonists won't avoid that Workplace searching for a Workplace.
+Works after colonist idle.--]]
       )
     end,
     icon
@@ -108,7 +108,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.NonSpecialistPerformancePenalty,
-        302535920000390,"Disable performance penalty for non-Specialists.\nActivated when colonist changes job."
+        302535920000390--[[Disable performance penalty for non-Specialists.
+Activated when colonist changes job.--]]
       )
     end,
     icon
@@ -119,7 +120,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
     nil,
     ChoGGi.ComFuncs.SettingState(Consts.DefaultOutsideWorkplacesRadius,
-      302535920000391 --,"Change how many hexes colonists search outside their dome when looking for a Workplace."
+      302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]
     ),
     icon
   )
@@ -139,7 +140,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.MinComfortBirth,
-        302535920000396 --,"Change the limit on birthing comfort (more/less babies)."
+        302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]
       )
     end,
     icon
@@ -151,7 +152,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.VisitFailPenalty,
-        302535920000398 --,"Disable comfort penalty when failing to satisfy a need via a visit."
+        302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]
       )
     end,
     icon
@@ -162,14 +163,10 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.RenegadeCreation_Toggle,
     nil,
     function()
-      local des
-      if Consts.RenegadeCreation == 9999900 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-        des[#des+1] = T(302535920000400--[[Disable creation of renegades.\nWorks after daily update.--]])
-      return Concat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.RenegadeCreation,
+        302535920000400--[[Disable creation of renegades.
+Works after daily update.--]]
+      )
     end,
     icon
   )
@@ -188,7 +185,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.HighStatLevel,
-        302535920000403 --,"Colonists always max morale (will effect birthing rates).\nOnly works on colonists that have yet to spawn (maybe)."
+        302535920000403--[[Colonists always max morale (will effect birthing rates).
+Only works on colonists that have yet to spawn (maybe).--]]
       )
     end,
     icon
@@ -200,7 +198,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.SeeDeadSanity,
-        302535920000405 --,"Disable colonists taking sanity damage from seeing dead.\nWorks after in-game hour."
+        302535920000405--[[Disable colonists taking sanity damage from seeing dead.
+Works after in-game hour.--]]
       )
     end,
     icon
@@ -212,7 +211,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.NoHomeComfort,
-        302535920000407 --,"Disable colonists taking comfort damage from not having a home.\nWorks after in-game hour."
+        302535920000407--[[Disable colonists taking comfort damage from not having a home.
+Works after in-game hour.--]]
       )
     end,
     icon
@@ -224,7 +224,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.DustStormSanityDamage,
-        302535920000409 --,"Disable colonists taking sanity damage from certain events.\nWorks after in-game hour."
+        302535920000409--[[Disable colonists taking sanity damage from certain events.
+Works after in-game hour.--]]
       )
     end,
     icon
@@ -236,7 +237,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait,
-        302535920000411 --,"When colonist graduates this will remove idiot trait."
+        302535920000411--[[When colonist graduates this will remove idiot trait.--]]
       )
     end,
     icon
@@ -248,7 +249,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.LowSanityNegativeTraitChance,
-        302535920000413 --,"Disable chance of getting a negative trait when Sanity reaches zero.\nWorks after colonist idle."
+        302535920000413--[[Disable chance of getting a negative trait when Sanity reaches zero.
+Works after colonist idle.--]]
       )
     end,
     icon
@@ -260,7 +262,8 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.LowSanitySuicideChance,
-        302535920000415 --,"Disable chance of suicide when Sanity reaches zero.\nWorks after colonist idle."
+        302535920000415--[[Disable chance of suicide when Sanity reaches zero.
+Works after colonist idle.--]]
       )
     end,
     icon
@@ -271,14 +274,10 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle,
     nil,
     function()
-      local des
-      if Consts.OxygenMaxOutsideTime == 99999900 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000417--[[Disable colonists suffocating with no oxygen.\nWorks after in-game hour.--]])
-      return Concat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.OxygenMaxOutsideTime,
+        302535920000417--[[Disable colonists suffocating with no oxygen.
+Works after in-game hour.--]]
+      )
     end,
     icon
   )
@@ -288,14 +287,10 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.ColonistsStarve_Toggle,
     nil,
     function()
-      local des
-      if Consts.TimeBeforeStarving == 99999900 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000419--[[Disable colonists starving with no food.\nWorks after colonist idle.--]])
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.TimeBeforeStarving,
+        302535920000419--[[Disable colonists starving with no food.
+Works after colonist idle.--]]
+      )
     end,
     icon
   )
@@ -305,14 +300,9 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.PositivePlayground_Toggle,
     nil,
     function()
-      local des
-      if Consts.positive_playground_chance == 101 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]])
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.positive_playground_chance,
+        302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]
+      )
     end,
     icon
   )
@@ -322,14 +312,9 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,
     nil,
     function()
-      local des
-      if Consts.ProjectMorphiousPositiveTraitChance == 100 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]])
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(Consts.ProjectMorphiousPositiveTraitChance,
+        302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]
+      )
     end,
     icon
   )
@@ -438,7 +423,9 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(547--[[Colonists--]]),"/",T(302535920000444--[[Set Stats--]])),
     ChoGGi.MenuFuncs.SetColonistsStats,
     nil,
-    T(302535920000445--[[Change the stats of all colonists (health/sanity/comfort/morale).\n\nNot permanent.--]]),
+    T(302535920000445--[[Change the stats of all colonists (health/sanity/comfort/morale).
+
+Not permanent.--]]),
     icon
   )
 

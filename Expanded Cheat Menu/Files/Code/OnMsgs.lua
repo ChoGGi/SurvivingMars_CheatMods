@@ -826,8 +826,9 @@ function OnMsg.ChoGGi_Loaded()
     dlgConsole.ChoGGi_MenuAdded = true
 --~     --make some space for the button
 --~     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
+    --build console buttons
     ChoGGi.Console.ConsoleControls()
-    --check for and add example scripts/script folder
+    --check for and create example scripts/script folder
     ChoGGi.Console.ListScriptFiles()
   end
 

@@ -348,6 +348,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","OnMouseEnter")
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
+  SaveOrigFunc("terminal","SysEvent")
   SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
 --~   SaveOrigFunc("RCRover","LeadIn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
@@ -367,6 +368,23 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~     drone:StartFX("EmergencyRecharge")
 --~     drone:PlayState( "rechargeDroneStart" )
 --~   end
+
+  --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
+  function terminal.SysEvent(event, ...)
+    if event == "OnSystemSize" then
+      local targets = terminal.targets
+      for i = 1, #targets do
+        if not targets[i].UAMenu then
+          local result = targets[i]:SysEvent(event, ...)
+          if result == "break" then
+            return "break"
+          end
+        end
+      end
+    else
+      return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
+    end
+  end
 
   --unbreakable cables/pipes
   function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
@@ -1052,7 +1070,7 @@ end
     --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
     SetTrans(self)
 
-    --and rebuild my buttons
+    --and rebuild the console buttons (added by ECM)
     ChoGGi.Console.RebuildConsoleToolbar(self)
   end
 

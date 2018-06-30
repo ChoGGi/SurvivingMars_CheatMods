@@ -1,7 +1,6 @@
 --See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 
 --~ local icon = "new_city.tga"
@@ -95,7 +94,9 @@ function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CleanupCheatsInfoPane,
-        302535920000699 --,"Remove some entries from the cheat pane (restart to re-enable).\n\nAddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor"
+        302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
+
+AddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor--]]
       )
     end,
     "toggle_dtm_slots.tga"
@@ -106,17 +107,9 @@ function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
     nil,
     function()
-      local des
-      if const.ExplorationQueueMaxSize == 100 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000701--[[Queue up to 100 squares (default--]])
-      des[#des+1] = ": "
-      des[#des+1] = ChoGGi.Consts.ExplorationQueueMaxSize
-      des[#des+1] = ")."
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(const.ExplorationQueueMaxSize,
+        302535920000701--[[Queue up to 100 squares.--]]
+      )
     end,
     "ViewArea.tga"
   )

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 --~ local icon = "new_city.tga"
 
@@ -22,7 +21,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,
-        302535920000324 --,"Cheats menu can be moved (restart to toggle)."
+        302535920000324--[[Cheats menu can be moved (restart to toggle).--]]
       )
     end,
     "select_objects.tga"
@@ -34,7 +33,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ToggleWidthOfCheatsHover,
-        302535920000322 --,"Makes the cheats menu just show Cheats till mouseover (restart to take effect)."
+        302535920000322--[[Makes the cheats menu just show Cheats till mouseover (restart to take effect).--]]
       )
     end,
     "select_objects.tga"
@@ -46,7 +45,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition,
-        302535920000326 --,"This menu will stay where you drag it."
+        302535920000326--[[This menu will stay where you drag it.--]]
       )
     end,
     "CollectionsEditor.tga"
@@ -138,14 +137,9 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     ChoGGi.MenuFuncs.SetResearchQueueSize,
     nil,
     function()
-      local des
-      if const.ResearchQueueSize > 4 then
-        des = {T(302535920000030--[[Enabled--]]),": "}
-      else
-        des = {T(302535920000036--[[Disabled--]]),": "}
-      end
-      des[#des+1] = T(302535920000348--[[Allow more items in queue.--]])
-      return TConcat(des)
+      return ChoGGi.ComFuncs.SettingState(const.ResearchQueueSize,
+        302535920000348--[[Allow more items in queue.--]]
+      )
     end,
     "ShowOcclusion.tga"
   )
@@ -180,7 +174,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(Consts.OutsourceResearchCost,
-        302535920000356 --,"Outsourcing is free to purchase (over n over)."
+        302535920000356--[[Outsourcing is free to purchase (over n over).--]]
       )
     end,
     "pirate.tga"
@@ -206,7 +200,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
     Concat(T(27--[[Cheats--]]),"/[10]",T(302535920000361--[[Unpin All Pinned Objects--]])),
     UnpinAll,
     nil,
-    T(302535920000362--[[Removes all objects from the \"Pin\" menu.--]]),
+    T(302535920000362--[[Removes all objects from the "Pin" menu.--]]),
     "CutSceneArea.tga"
   )
 

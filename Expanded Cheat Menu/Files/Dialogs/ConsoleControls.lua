@@ -9,6 +9,7 @@ local rawget,table,string,tostring,print,select = rawget,table,string,tostring,p
 local box = box
 local FlushLogFile = FlushLogFile
 local AsyncFileToString = AsyncFileToString
+local AsyncCreatePath = AsyncCreatePath
 local GetLogFile = GetLogFile
 local ShowConsoleLog = ShowConsoleLog
 local AsyncStringToFile = AsyncStringToFile
@@ -18,11 +19,10 @@ local ModMessageLog = ModMessageLog
 local cls = cls
 local RGBA = RGBA
 
-
 local g_Classes = g_Classes
 --~ box(left, top, right, bottom)
 
---fired from OnMsgs
+-- fired from OnMsgs
 function ChoGGi.Console.ConsoleControls()
   --stick everything in
   local container = g_Classes.XWindow:new({
@@ -210,6 +210,7 @@ local function BuildSciptButton(scripts,dlg,folder)
     end,
   }, scripts)
 end
+
 -- rebuild menu toolbar buttons
 function ChoGGi.Console.RebuildConsoleToolbar(dlg)
   if not dlg then
@@ -248,8 +249,6 @@ end
 
 -- add script files if not there
 function ChoGGi.Console.ListScriptFiles()
-  local AsyncCreatePath = AsyncCreatePath
-
   local script_path = ChoGGi.scripts
   --create folder and some example scripts if folder doesn't exist
   if AsyncFileOpen(script_path) ~= "Access Denied" then

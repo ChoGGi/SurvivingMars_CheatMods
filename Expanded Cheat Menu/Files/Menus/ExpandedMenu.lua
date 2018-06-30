@@ -75,7 +75,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
-        302535920000566 --,"Allow the temporary storage to hold 100 instead of 50 cubes."
+        302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.--]]
       )
     end,
     "Cube.tga"
@@ -145,7 +145,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/Resources/",T(302535920000719--[[Add Orbital Probes--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000719--[[Add Orbital Probes--]])),
     ChoGGi.MenuFuncs.AddOrbitalProbes,
     nil,
     T(302535920000720--[[Add more probes.--]]),
@@ -153,7 +153,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/Resources/",T(4616--[[Food Per Rocket Passenger--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(4616--[[Food Per Rocket Passenger--]])),
     ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
     nil,
     T(302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]),
@@ -161,7 +161,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/Resources/",T(302535920000723--[[Add Prefabs--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000723--[[Add Prefabs--]])),
     ChoGGi.MenuFuncs.AddPrefabs,
     nil,
     T(302535920000724--[[Adds prefabs.--]]),
@@ -169,7 +169,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/Resources/",T(302535920000725--[[Add Funding--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000725--[[Add Funding--]])),
     ChoGGi.MenuFuncs.SetFunding,
     "Ctrl-Shift-0",
     T(302535920000726--[[Add more funding (or reset back to 500 M).--]]),
@@ -177,7 +177,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/Resources/",T(302535920000727--[[Fill Selected Resource--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000727--[[Fill Selected Resource--]])),
     ChoGGi.MenuFuncs.FillResource,
     "Ctrl-F",
     T(302535920000728--[[Fill the selected/moused over object's resource(s)--]]),

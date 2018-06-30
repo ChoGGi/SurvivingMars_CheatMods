@@ -10,7 +10,10 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     Concat(T(1000435--[[Game--]]),"/",T(302535920000493--[[Change Map--]])),
     ChoGGi.MenuFuncs.ChangeMap,
     nil,
-    T(302535920000494--[[Change map (options to pick commander, sponsor, etc...\n\nAttention: If you get yellow ground areas; just load it again.\nThe map disaster settings don't do jack.--]]),
+    T(302535920000494--[[Change map (options to pick commander, sponsor, etc...
+
+Attention: If you get yellow ground areas; just load it again.
+The map disaster settings don't do jack.--]]),
     "load_city.tga"
   )
 
@@ -20,7 +23,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(const.AutosavePeriod,
-        302535920001206 --,"Change how many Sols between autosaving."
+        302535920001206--[[Change how many Sols between autosaving.--]]
       )
     end,
     "save_city.tga"
@@ -32,7 +35,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion,
-        302535920000335 --,"Pins will no longer do the pulsating motion (hover over to stop)."
+        302535920000335--[[Pins will no longer do the pulsating motion (hover over to stop).--]]
       )
     end,
     "JoinGame.tga"
@@ -42,7 +45,8 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     Concat(T(1000435--[[Game--]]),"/",T(302535920000623--[[Change Terrain Type--]])),
     ChoGGi.MenuFuncs.ChangeTerrainType,
     nil,
-    T(302535920000624--[[Green or Icy mars? Coming right up!\n(don't forget a light model)--]]),
+    T(302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]),
     "prefabs.tga"
   )
 
@@ -76,7 +80,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle,
-        302535920000632 --,"Toggle removing transparency on mouseover."
+        302535920000632--[[Toggle removing transparency on mouseover.--]]
       )
     end,
     "set_last_texture.tga"
@@ -88,7 +92,8 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LightsRadius,
-        302535920000634 --,"Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.\nLets you see lights from further away/more bleedout?"
+        302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
+Lets you see lights from further away/more bleedout?--]]
       )
     end,
     "LightArea.tga"
@@ -100,7 +105,8 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TerrainDetail,
-        302535920000636 --,"Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.\nMakes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu)."
+        302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
+Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]
       )
     end,
     "selslope.tga"
@@ -112,7 +118,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.VideoMemory,
-        302535920000638 --,"Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048."
+        302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]
       )
     end,
     "CountPointLights.tga"
@@ -124,7 +130,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShadowmapSize,
-        302535920000640 --,"Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096."
+        302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]
       )
     end,
     "DisableEyeSpec.tga"
@@ -137,7 +143,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression,
-        302535920000642 --,"Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram)."
+        302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]
       )
     end,
     "ExportImageSequence.tga"
@@ -149,7 +155,8 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist,
-        302535920000644 --,"Renders model from further away.\nNot noticeable unless using higher zoom."
+        302535920000644--[[Renders model from further away.
+Not noticeable unless using higher zoom.--]]
       )
     end,
     "CameraEditor.tga"
@@ -161,7 +168,8 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist,
-        302535920000646 --,"Renders shadows from further away.\nNot noticeable unless using higher zoom."
+        302535920000646--[[Renders shadows from further away.
+Not noticeable unless using higher zoom.--]]
       )
     end,
     "toggle_post.tga"
@@ -173,7 +181,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BorderScrollingToggle,
-        302535920000648 --,"Set size of activation for mouse border scrolling."
+        302535920000648--[[Set size of activation for mouse border scrolling.--]]
       )
     end,
     "CameraToggle.tga"
@@ -185,7 +193,7 @@ function ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CameraZoomToggle,
-        302535920000650 --,"Further zoom distance."
+        302535920000650--[[Further zoom distance.--]]
       )
     end,
     "MoveUpCamera.tga"
