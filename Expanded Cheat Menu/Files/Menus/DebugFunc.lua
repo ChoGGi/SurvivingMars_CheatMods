@@ -201,7 +201,7 @@ function ChoGGi.MenuFuncs.ParticlesReload()
 end
 
 function ChoGGi.MenuFuncs.AttachSpots_Toggle()
-  local sel = SelectedObj
+  local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
     return
   end

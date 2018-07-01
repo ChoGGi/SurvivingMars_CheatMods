@@ -101,6 +101,7 @@ ChoGGi.Defaults = {
 	Transparency = {},
   -- shortcut keys
   KeyBindings = {
+--~     AAA_NotUsed = "If using OSX put -Cmd to use it",
     -- Keys.lua
     ClearConsoleLog = "F9",
     ObjectColourRandom = "Shift-F6",
