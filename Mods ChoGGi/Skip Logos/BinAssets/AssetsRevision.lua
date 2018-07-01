@@ -22,6 +22,10 @@ local function ChoGGi_Setup()
         return "", false
       end
 
+      --lets you load saved games that have dlc
+      function IsDlcAvailable()
+        return true
+      end
     end)
   --]]
 end

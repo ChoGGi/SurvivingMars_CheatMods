@@ -1,6 +1,18 @@
-local function ChoGGi_Setup()
-  CreateRealTimeThread(function()
+--[[
+function OnMsg.DesktopCreated()
+  --skip the two logos
+  PlayInitialMovies = nil
+end
+--]]
 
+local function ChoGGi_Setup()
+  --[[
+  --get rid of mod manager warnings (not the reboot one though)
+  ParadoxBuildsModEditorWarning = true
+  ParadoxBuildsModManagerWarning = true
+  --]]
+
+  CreateRealTimeThread(function()
     --stop bugging me about missing mods
     function GetMissingMods()
       return "", false
@@ -10,10 +22,8 @@ local function ChoGGi_Setup()
     function IsDlcAvailable()
       return true
     end
-
   end)
-
-end --OnMsg.UASetMode()
+end
 
 function OnMsg.ReloadLua()
   ChoGGi_Setup()
