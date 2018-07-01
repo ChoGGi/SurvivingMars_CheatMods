@@ -1143,9 +1143,9 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --how long startup takes, maybe add this as an option for other modders to see as well?
-  if ChoGGi.Testing then
+  if ChoGGi.Testing or UserSettings.ShowStartupTicks then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-    print(Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>:</color>Startup ticks: ",ChoGGi.Temp.StartupTicks))
+    print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
   end
 
 end --OnMsg

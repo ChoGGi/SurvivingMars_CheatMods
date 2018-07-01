@@ -285,7 +285,7 @@ do --FlattenGround
     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
   end
 
-  function ChoGGi.MenuFuncs.FlattenTerrain_Toggle()
+  function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
     if are_we_flattening then
       ToggleHotkeys()
       are_we_flattening = false
@@ -314,13 +314,21 @@ do --FlattenGround
       visual_circle = g_Classes.Circle:new()
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
+      local cursor = GetTerrainCursor()
+      local outer
 
       are_we_flattening = CreateRealTimeThread(function()
         --thread gets deleted, but just in case
         while are_we_flattening do
-          local cursor = GetTerrainCursor()
+          cursor = GetTerrainCursor()
           visual_circle:SetPos(cursor)
-          terrain_SetHeightCircle(cursor, radius, radius, flatten_height)
+          if square == true then
+            outer = radius / 2
+          else
+            outer = radius
+          end
+          terrain_SetHeightCircle(cursor, radius, outer, flatten_height)
+          --used to set terrain type (see above)
   --~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
           Sleep(10)
         end

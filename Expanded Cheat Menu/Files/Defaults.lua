@@ -56,29 +56,48 @@ end
 
 -- stores defaults
 ChoGGi.Defaults = {
+  -- oh we'll change it
   _VERSION = 0,
+  --dark background for the console log
   ConsoleDim = true,
+  -- shows the console log on screen
   ConsoleToggleHistory = true,
+  -- shows a msg in the console log (maybe a popup would be better)
   FirstRun = true,
+  -- show Cheats pane in the selection panel
   InfopanelCheats = true,
+  -- removes some useless shit from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
   CleanupCheatsInfoPane = true,
+  -- maybe you don't want to see the interface in screenshots
   ShowInterfaceInScreenshots = true,
+  -- 1-0 + shift+ 1-0 shows the build menus
   NumberKeysBuildMenu = true,
+  -- keep angle of last placed building
   UseLastOrientation = true,
+  -- show the cheats menu...
   ShowCheatsMenu = true,
+  -- dumps the log to disk on startup, and every new Sol (good for certain crashes)
   FlushLog = true,
+  -- okay, maybe some people don't want a mod to change the title of their game
   DontChangeTitle = false,
+  -- msg that shows in the console after tabbing back to the game and "heaven forbid" you have the cheats menu open
   HideuiWindowErrorMsg = true,
+  -- how wide the starting radius, how much to step per press
   FlattenGround_Radius = 2500,
   FlattenGround_HeightDiff = 100,
   FlattenGround_RadiusDiff = 100,
+  -- the build/passibility grid in debug menu
   DebugGridSize = 10,
   DebugGridOpacity = 15,
+  -- how long to wait before hiding the cheats menu
   CheatsInfoPanelHideDelay = 1500,
+  -- how wide the text for the history menu in the Console is
   ConsoleHistoryMenuLength = 50,
+  -- shows how ticks it takes between the start of ECM and when the game loads
+  ShowStartupTicks = false,
   -- stores custom settings for each building
   BuildingSettings = {},
-  -- transparent UI
+  -- transparent UI stored here
 	Transparency = {},
   -- shortcut keys
   KeyBindings = {
