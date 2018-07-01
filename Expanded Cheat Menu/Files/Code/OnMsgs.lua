@@ -417,10 +417,10 @@ function OnMsg.NewDay() --NewSol...
 end
 
 function OnMsg.NewHour()
+  local ChoGGi = ChoGGi
 
   --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-    local ChoGGi = ChoGGi
     local UICity = UICity
     local empty_table = empty_table
 
@@ -436,6 +436,11 @@ function OnMsg.NewHour()
     for i = 1, #Table do
       ChoGGi.CodeFuncs.FuckingDrones(Table[i])
     end
+  end
+
+  --pathing? pathing in domes works great... Watch out for that invisible wall!
+  if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
+    ChoGGi.CodeFuncs.ResetHumanCentipedes()
   end
 
 end

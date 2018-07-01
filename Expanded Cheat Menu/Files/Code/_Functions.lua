@@ -1395,3 +1395,15 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
     end
   end
 end
+
+function ChoGGi.CodeFuncs.ResetHumanCentipedes()
+  local objs = UICity.labels.Colonist or empty_table
+  for i = 1, #objs do
+    --only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
+    if objs[i]:IsValidPos() and not objs[i]:GetPath() then
+      --too close and they keep doing the human centipede
+      local x,y,_ = objs[i]:GetVisualPosXYZ()
+      objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
+    end
+  end
+end

@@ -1,6 +1,4 @@
 ID,Text,Translation
-302535920000248,,
-302535920000249,,
 302535920000461,,
 302535920000463,,
 302535920000464,,
@@ -22,6 +20,7 @@ ID,Text,Translation
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920000248,Colonists Stuck Outside Service Buildings,
 302535920000979,Presets,
 302535920000467,Path Markers,
 302535920000955,Handle,
@@ -718,6 +717,9 @@ The map disaster settings don't do jack.",
 302535920000578,Change waste storage depot capacity.,
 302535920000579,Storage Mechanized Depots,
 302535920000580,Change mechanized depot storage capacity.,
+302535920000249,"Colonists will leave a diner/etc and stop outside of it and not move anymore.
+
+Seems to fix it after a Sol or two, so you shouldn't need to leave this running.",
 302535920001193,Remove Blue Grid Marks,
 302535920001197,"If you have any buildings with the selection grid around it, and you don't have it selected.",
 302535920001040,Drone Wrong Angle,

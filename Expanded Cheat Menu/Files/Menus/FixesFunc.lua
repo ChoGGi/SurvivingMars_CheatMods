@@ -19,7 +19,6 @@ local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local Msg = Msg
 local point = point
-local Random = Random
 local Sleep = Sleep
 
 local g_Classes = g_Classes
@@ -272,16 +271,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
     end
   end
 
-  objs = UICity.labels.Colonist or empty_table
-  for i = 1, #objs do
-    --only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
-    if objs[i]:IsValidPos() and not objs[i]:GetPath() then
-      --too close and they keep doing the human centipede
-      local x,y,_ = objs[i]:GetVisualPosXYZ()
-      objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
-    end
-  end
-
+  ChoGGi.CodeFuncs.ResetHumanCentipedes()
 end
 
 function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
@@ -467,6 +457,21 @@ function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
     T(5438--[[Rovers--]])
+  )
+end
+
+function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
+  local ChoGGi = ChoGGi
+  if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
+    ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = nil
+  else
+    ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = true
+    ChoGGi.CodeFuncs.ResetHumanCentipedes()
+  end
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  MsgPopup(Concat(T(302535920000248--[[Colonists Stuck Outside Service Buildings--]]),": ",tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings)),
+    T(547--[[Colonists--]]),"UI/Icons/IPButtons/colonist_section.tga"
   )
 end
 

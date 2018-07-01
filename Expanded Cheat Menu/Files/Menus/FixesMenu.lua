@@ -163,7 +163,7 @@ This removes any of those (resources won't be touched).--]]),
 
 if ChoGGi.Testing then
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
     ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
     nil,
     function()
@@ -177,7 +177,21 @@ end
 
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000613--[[Drone Carry Amount--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000248--[[Colonists Stuck Outside Service Buildings--]])),
+    ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,
+        302535920000249--[[Colonists will leave a diner/etc and stop outside of it and not move anymore.
+
+Seems to fix it after a Sol or two, so you shouldn't need to leave this running.--]]
+      )
+    end,
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000613--[[Drone Carry Amount--]])),
     ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
     nil,
     function()
@@ -192,7 +206,7 @@ If you have an insane production amount set then it'll take an (in-game) hour be
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000146--[[Toggle--]]),": ",T(302535920000615--[[Sort Command Center Dist--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000615--[[Sort Command Center Dist--]])),
     ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
     nil,
     function()
