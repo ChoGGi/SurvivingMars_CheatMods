@@ -1,0 +1,2 @@
+0.2
+Added the options from Skip Logos (commented out).

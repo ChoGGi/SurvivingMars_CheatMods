@@ -1,3 +1,5 @@
+Version 0.8
+Added the options from Skip Missing Mods & DLC Msgs (commented out).
 Version 0.7
 Now retrieves the correct Assets Revision, so no more need for version bumping.
 Version 0.6

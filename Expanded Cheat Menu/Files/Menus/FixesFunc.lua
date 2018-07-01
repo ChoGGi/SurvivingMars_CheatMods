@@ -19,6 +19,7 @@ local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local Msg = Msg
 local point = point
+local Random = Random
 local Sleep = Sleep
 
 local g_Classes = g_Classes
@@ -277,7 +278,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
     if objs[i]:IsValidPos() and not objs[i]:GetPath() then
       --too close and they keep doing the human centipede
       local x,y,_ = objs[i]:GetVisualPosXYZ()
-      objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+5000,y+5000)))
+      objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
     end
   end
 

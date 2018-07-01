@@ -226,6 +226,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("BaseRover","GetCableNearby")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
+  --fixes error msg from the human centipede bug
+--~   SaveOrigFunc("Unit","Goto")
+--~ function Unit:Goto(...)
+--~   if ... then
+--~     return ChoGGi_OrigFuncs.Unit_Goto(self, ...)
+--~   end
+--~ end
+
   --larger trib/subsurfheater radius
   function UIRangeBuilding:SetUIRange(radius)
     local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
