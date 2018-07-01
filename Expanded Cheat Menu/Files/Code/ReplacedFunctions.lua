@@ -370,19 +370,21 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~   end
 
   --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
-  function terminal.SysEvent(event, ...)
-    if ChoGGi.UserSettings.HideuiWindowErrorMsg and event == "OnSystemSize" then
-      local targets = terminal.targets
-      for i = 1, #targets do
-        if not targets[i].UAMenu then
-          local result = targets[i]:SysEvent(event, ...)
-          if result == "break" then
-            return "break"
+  if ChoGGi.UserSettings.HideuiWindowErrorMsg then
+    function terminal.SysEvent(event, ...)
+      if event == "OnSystemSize" then
+        local targets = terminal.targets
+        for i = 1, #targets do
+          if not targets[i].UAMenu then
+            local result = targets[i]:SysEvent(event, ...)
+            if result == "break" then
+              return "break"
+            end
           end
         end
+      else
+        return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
       end
-    else
-      return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
     end
   end
 

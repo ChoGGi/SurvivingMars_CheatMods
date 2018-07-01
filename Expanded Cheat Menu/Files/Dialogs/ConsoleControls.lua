@@ -6,18 +6,17 @@ local T = ChoGGi.ComFuncs.Trans
 
 local rawget,table,string,tostring,print,select = rawget,table,string,tostring,print,select
 
-local box = box
-local FlushLogFile = FlushLogFile
-local AsyncFileToString = AsyncFileToString
 local AsyncCreatePath = AsyncCreatePath
-local GetLogFile = GetLogFile
-local ShowConsoleLog = ShowConsoleLog
-local AsyncStringToFile = AsyncStringToFile
 local AsyncFileOpen = AsyncFileOpen
-local AsyncCreatePath = AsyncCreatePath
-local ModMessageLog = ModMessageLog
+local AsyncFileToString = AsyncFileToString
+local AsyncStringToFile = AsyncStringToFile
+local box = box
 local cls = cls
+local FlushLogFile = FlushLogFile
+local GetLogFile = GetLogFile
+local ModMessageLog = ModMessageLog
 local RGBA = RGBA
+local ShowConsoleLog = ShowConsoleLog
 
 local g_Classes = g_Classes
 --~ box(left, top, right, bottom)

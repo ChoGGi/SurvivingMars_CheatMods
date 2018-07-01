@@ -43,7 +43,7 @@ function ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(547--[[Colonists--]]),"/",T(302535920000375--[[The Soylent Option--]])),
     ChoGGi.MenuFuncs.TheSoylentOption,
-    "Ctrl-Alt-Numpad 1",
+    ChoGGi.UserSettings.KeyBindings.TheSoylentOption,
     T(302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]),
     icon2
   )

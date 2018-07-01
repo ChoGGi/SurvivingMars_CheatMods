@@ -785,14 +785,8 @@ function OnMsg.ChoGGi_Loaded()
 
   --add preset menu items
   ClassDescendantsList("Preset", function(name, class)
-    local preset_class = class.PresetClass or name
-    Presets[preset_class] = Presets[preset_class] or empty_table
-    local map = class.GlobalMap
-    if map then
-      rawset(_G, map, rawget(_G, map) or empty_table)
-    end
     ChoGGi.ComFuncs.AddAction(
-      Concat("Presets/",name),
+      Concat(T(302535920000979--[[Presets--]]),"/",name),
       function()
         OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
           PresetClass = name,
@@ -804,13 +798,6 @@ function OnMsg.ChoGGi_Loaded()
       class.EditorIcon or "CollectionsEditor.tga"
     )
   end)
-
-  --broken ass shit (not sure what this is for...)
---~   local mod = Mods[ChoGGi.id]
---~   local text
---~   for _,bv in pairs(mod) do
---~     text = Concat(tostring(bv))
---~   end
 
   --update menu
   if not_ged then

@@ -67,7 +67,7 @@ function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/[90]",T(1000207--[[Misc--]]),"/",T(302535920000021--[[Change Colour--]])),
     ChoGGi.MenuFuncs.CreateObjectListAndAttaches,
-    "F6",
+    ChoGGi.UserSettings.KeyBindings.CreateObjectListAndAttaches,
     T(302535920000693--[[Select/mouse over an object to change the colours.--]]),
     "toggle_dtm_slots.tga"
   )
@@ -75,7 +75,7 @@ function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/[90]",T(1000207--[[Misc--]]),"/",T(302535920000694--[[Set Opacity--]])),
     ChoGGi.MenuFuncs.SetObjectOpacity,
-    "F3",
+    ChoGGi.UserSettings.KeyBindings.SetObjectOpacity,
     T(302535920000695--[[Change the opacity of objects.--]]),
     "set_last_texture.tga"
   )
@@ -83,7 +83,7 @@ function ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/[90]",T(1000207--[[Misc--]]),"/[-1]",T(302535920000696--[[Infopanel Cheats--]])),
     ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
-    "Ctrl-F2",
+    ChoGGi.UserSettings.KeyBindings.InfopanelCheats_Toggle,
     T(302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]),
     "toggle_dtm_slots.tga"
   )

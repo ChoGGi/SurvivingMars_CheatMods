@@ -879,11 +879,10 @@ end
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
-if ChoGGi.Testing then
-  if type(ActionsToAdd) == "string" then
+  if ChoGGi.Testing and type(ActionsToAdd) == "string" then
     print("ActionsToAdd",ActionsToAdd)
   end
-end
+
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
@@ -956,8 +955,8 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
---~     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
-    [Concat("ChoGGi_",name)] = {
+    -- AsyncRand needed for items made from same line
+    [Concat("ChoGGi_",name,"-",AsyncRand())] = {
       menu = Menu,
       action = Action,
       key = Key,

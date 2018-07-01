@@ -11,7 +11,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[2]",T(302535920000892--[[Screenshot--]]),"/",T(302535920000657--[[Screenshot--]])),
     ChoGGi.MenuFuncs.TakeScreenshot,
-    "-PrtScr",
+    ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
     T(302535920000658--[[Write screenshot--]]),
     "light_model.tga"
   )
@@ -21,12 +21,10 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     function()
       ChoGGi.MenuFuncs.TakeScreenshot(true)
     end,
-    "-Ctrl-PrtScr",
+    ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
     T(302535920000660--[[Write screenshot upsampled--]]),
     "light_model.tga"
   )
-
-
 
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[2]",T(302535920000892--[[Screenshot--]]),"/",T(302535920000661--[[Show Interface in Screenshots--]])),
@@ -46,7 +44,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     function()
       hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
     end,
-    "Ctrl-Alt-I",
+    ChoGGi.UserSettings.KeyBindings.ToggleInterface,
     nil,
     "ToggleSelectionOcclusion.tga"
   )
@@ -54,7 +52,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[1]",T(302535920000893--[[Interface--]]),"/",T(302535920000664--[[Toggle Signs--]])),
     ChoGGi.MenuFuncs.SignsInterface_Toggle,
-    "Ctrl-Alt-S",
+    ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
     T(302535920000665--[[Concrete, metal deposits, not working, etc...--]]),
     "ToggleMarkers.tga"
   )
@@ -90,7 +88,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
     ChoGGi.MenuFuncs.ReportBugDlg,
-    "Ctrl-F1",
+    ChoGGi.UserSettings.KeyBindings.ReportBugDlg,
     T(302535920000675--[[Report Bug
 
 This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
@@ -117,7 +115,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920001014--[[Hide Cheats Menu--]])),
     ChoGGi.MenuFuncs.CheatsMenu_Toggle,
-    "F2",
+    ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
     T(302535920001019--[[This will hide the Cheats menu, Use F2 to see it again, and use Ctrl-F2 to toggle the Cheats selection panel.--]]),
     "ToggleEnvMap.tga"
   )

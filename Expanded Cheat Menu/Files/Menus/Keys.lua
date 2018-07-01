@@ -18,7 +18,7 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     nil,
     cls,
-    "F9"
+    ChoGGi.UserSettings.KeyBindings.ClearConsoleLog
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -26,14 +26,14 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
     function()
       ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
     end,
-    "Shift-F6"
+    ChoGGi.UserSettings.KeyBindings.ObjectColourRandom
   )
   ChoGGi.ComFuncs.AddAction(
     nil,
     function()
       ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
     end,
-    "Ctrl-F6"
+    ChoGGi.UserSettings.KeyBindings.ObjectColourDefault
   )
 
   --use number keys to activate/hide build menus
@@ -142,14 +142,14 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
     function()
       ShowConsole(true)
     end,
-    "~"
+    ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
   )
 
   ChoGGi.ComFuncs.AddAction(nil,
     function()
       ShowConsole(true)
     end,
-    "Enter"
+    ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter
   )
 
   --show console with restart
@@ -161,7 +161,7 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
         dlgConsole.idEdit:SetText("restart")
       end
     end,
-    "Ctrl-Alt-Shift-R"
+    ChoGGi.UserSettings.KeyBindings.ConsoleRestart
   )
 
   --goes to placement mode with last built object
@@ -172,7 +172,7 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
         ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id or last.entity)
       end
     end,
-    "Ctrl-Space"
+    ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding
   )
 
   --goes to placement mode with SelectedObj
@@ -185,7 +185,7 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
         ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
       end
     end,
-    "Ctrl-Shift-Space"
+    ChoGGi.UserSettings.KeyBindings.LastPlacedObject
   )
 
 end --OnMsg

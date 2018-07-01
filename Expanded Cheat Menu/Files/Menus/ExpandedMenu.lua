@@ -83,7 +83,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000567--[[Worker Capacity--]])),
     ChoGGi.MenuFuncs.SetWorkerCapacity,
-    "Ctrl-Shift-W",
+    ChoGGi.UserSettings.KeyBindings.SetWorkerCapacity,
     T(302535920000568--[[Change how many workers per building type.--]]),
     "scale_gizmo.tga"
   )
@@ -91,7 +91,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000569--[[Building Capacity--]])),
     ChoGGi.MenuFuncs.SetBuildingCapacity,
-    "Ctrl-Shift-C",
+    ChoGGi.UserSettings.KeyBindings.SetBuildingCapacity,
     T(302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]),
     "scale_gizmo.tga"
   )
@@ -99,7 +99,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000571--[[Building Visitor Capacity--]])),
     ChoGGi.MenuFuncs.SetVisitorCapacity,
-    "Ctrl-Shift-V",
+    ChoGGi.UserSettings.KeyBindings.SetVisitorCapacity,
     T(302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]),
     "scale_gizmo.tga"
   )
@@ -171,7 +171,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000725--[[Add Funding--]])),
     ChoGGi.MenuFuncs.SetFunding,
-    "Ctrl-Shift-0",
+    ChoGGi.UserSettings.KeyBindings.SetFunding,
     T(302535920000726--[[Add more funding (or reset back to 500 M).--]]),
     "pirate.tga"
   )
@@ -179,7 +179,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000727--[[Fill Selected Resource--]])),
     ChoGGi.MenuFuncs.FillResource,
-    "Ctrl-F",
+    ChoGGi.UserSettings.KeyBindings.FillResource,
     T(302535920000728--[[Fill the selected/moused over object's resource(s)--]]),
     "Cube.tga"
   )

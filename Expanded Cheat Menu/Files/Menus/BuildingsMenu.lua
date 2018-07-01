@@ -120,7 +120,7 @@ I trust you are not in too much distress.--]])))
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000188--[[Set Charge & Discharge Rates--]])),
     ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
-    "Ctrl-Shift-R",
+    ChoGGi.UserSettings.KeyBindings.SetMaxChangeOrDischarge,
     T(302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]),
     icon
   )
@@ -170,7 +170,7 @@ I trust you are not in too much distress.--]])))
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000194--[[Production Amount Set--]])),
     ChoGGi.MenuFuncs.SetProductionAmount,
-    "Ctrl-Shift-P",
+    ChoGGi.UserSettings.KeyBindings.SetProductionAmount,
     T(302535920000195--[[Set production of buildings of selected type, also applies to newly placed ones.
 Works on any building that produces.--]]),
     icon

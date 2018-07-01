@@ -29,7 +29,7 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000485--[[Flatten Terrain Toggle--]])),
     ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-    "Shift-F",
+    ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
     T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 
 Use Shift + Arrow keys to change the height/radius.--]]),
@@ -49,7 +49,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     function()
       ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
     end,
-    "Ctrl-M",
+    ChoGGi.UserSettings.KeyBindings.MeasureTool_Toggle,
     T(302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]),
     "MeasureTool.tga"
   )
@@ -59,7 +59,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
     function()
       ChoGGi.MenuFuncs.MeasureTool_Toggle()
     end,
-    "Ctrl-Shift-M"
+    ChoGGi.UserSettings.KeyBindings.MeasureTool_Clear
   )
 
   ChoGGi.ComFuncs.AddAction(
@@ -73,7 +73,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000455--[[Object Cloner--]])),
     ChoGGi.MenuFuncs.ObjectCloner,
-    "Shift-Q",
+    ChoGGi.UserSettings.KeyBindings.ObjectCloner,
     T(302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).--]]),
     "EnrichTerrainEditor.tga"
   )
@@ -97,7 +97,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000467--[[Path Markers--]])," ",T(4099--[[Game Time--]])),
     ChoGGi.MenuFuncs.SetPathMarkersGameTime,
-    "Ctrl-Numpad .",
+    ChoGGi.UserSettings.KeyBindings.SetPathMarkersGameTime,
     Concat(T(302535920000462--[[Maps paths in real time--]])," ",T(302535920000874--[[(see "Path Markers" to mark more than one at a time)--]]),"."),
     "ViewCamPath.tga"
   )
@@ -105,7 +105,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000467--[[Path Markers--]])),
     ChoGGi.MenuFuncs.SetPathMarkersVisible,
-    "Ctrl-Numpad 0",
+    ChoGGi.UserSettings.KeyBindings.SetPathMarkersVisible,
     T(302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]),
     "ViewCamPath.tga"
   )
@@ -113,7 +113,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000471--[[Object Manipulator--]])),
     ChoGGi.ComFuncs.OpenInObjectManipulator,
-    "F5",
+    ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
     T(302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]),
     "SaveMapEntityList.tga"
   )
@@ -131,7 +131,7 @@ If you leave it opened during a game load/save, then click this menu item to mak
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000475--[[Object Spawner--]])),
     ChoGGi.MenuFuncs.ObjectSpawner,
-    "Ctrl-Shift-S",
+    ChoGGi.UserSettings.KeyBindings.ObjectSpawner,
     T(302535920000476--[[Shows list of objects, and spawns at mouse cursor.
 
 Warning: Unable to mouse select items after spawn
@@ -142,7 +142,7 @@ hover mouse over and use Delete Selected Object--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000479--[[Toggle Editor--]])),
     ChoGGi.MenuFuncs.Editor_Toggle,
-    "Ctrl-Shift-E",
+    ChoGGi.UserSettings.KeyBindings.Editor_Toggle,
     T(302535920000480--[[Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 
@@ -171,7 +171,7 @@ It's not as if domes need to be where you placed them (people will just ignore i
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
     ChoGGi.CodeFuncs.DeleteObject,
-    "Ctrl-Alt-Shift-D",
+    ChoGGi.UserSettings.KeyBindings.DeleteObject,
     T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).
 
 Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
@@ -181,7 +181,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000491--[[Examine Current Obj--]])),
     ChoGGi.MenuFuncs.ObjExaminer,
-    "F4",
+    ChoGGi.UserSettings.KeyBindings.ObjExaminer,
     T(302535920000492--[[Opens the object examiner--]]),
     "PlayerInfo.tga"
   )
@@ -198,7 +198,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/[08]",T(302535920000497--[[Toggle Terrain Deposit Grid--]])),
     ToggleTerrainDepositGrid,
-    "Ctrl-F4",
+    ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
     T(302535920000498--[[Shows a grid around concrete.--]]),
     "ToggleBlockPass.tga"
   )
@@ -208,7 +208,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(1)
     end,
-    "Shift-F1",
+    ChoGGi.UserSettings.KeyBindings.debug_build_grid_both,
     T(302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]),
     "ToggleOcclusion.tga"
   )
@@ -218,7 +218,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(2)
     end,
-    "Shift-F2",
+    ChoGGi.UserSettings.KeyBindings.debug_build_grid_pass,
     T(302535920000502--[[Shows a hex grid with green for walkable terrain.--]]),
     "CollisionGeometry.tga"
   )
@@ -228,7 +228,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
     function()
       ChoGGi.MenuFuncs.debug_build_grid(3)
     end,
-    "Shift-F3",
+    ChoGGi.UserSettings.KeyBindings.debug_build_grid_build,
     T(302535920000504--[[Shows a hex grid with green for buildable (ignores uneven terrain).--]]),
     "ToggleCollisions.tga"
   )

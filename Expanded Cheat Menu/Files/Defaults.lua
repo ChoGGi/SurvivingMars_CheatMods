@@ -54,7 +54,7 @@ do
   end
 end
 
---stores defaults
+-- stores defaults
 ChoGGi.Defaults = {
   _VERSION = 0,
   ConsoleDim = true,
@@ -76,17 +76,76 @@ ChoGGi.Defaults = {
   DebugGridOpacity = 15,
   CheatsInfoPanelHideDelay = 1500,
   ConsoleHistoryMenuLength = 50,
-  --stores custom settings for each building
+  -- stores custom settings for each building
   BuildingSettings = {},
-  --transparent UI
+  -- transparent UI
 	Transparency = {},
+  -- shortcut keys
+  KeyBindings = {
+    -- Keys.lua
+    ClearConsoleLog = "F9",
+    ObjectColourRandom = "Shift-F6",
+    ObjectColourDefault = "Ctrl-F6",
+    ShowConsoleTilde = "~",
+    ShowConsoleEnter = "Enter",
+    ConsoleRestart = "Ctrl-Alt-Shift-R",
+    LastConstructedBuilding = "Ctrl-Space",
+    LastPlacedObject = "Ctrl-Shift-Space",
+    -- Buildings.lua
+    SetMaxChangeOrDischarge = "Ctrl-Shift-R",
+    SetProductionAmount = "Ctrl-Shift-P",
+    -- CheatsMenu.lua
+    CheatCompleteAllConstructions = "Alt-B",
+    -- ColonistsMenu.lua
+    TheSoylentOption = "Ctrl-Alt-Numpad 1",
+    -- DebugMenu.lua
+    FlattenTerrain_Toggle = "Shift-F",
+    MeasureTool_Toggle = "Ctrl-M",
+    MeasureTool_Clear = "Ctrl-Shift-M",
+    ObjectCloner = "Shift-Q",
+    SetPathMarkersGameTime = "Ctrl-Numpad .",
+    SetPathMarkersVisible = "Ctrl-Numpad 0",
+    OpenInObjectManipulator = "F5",
+    ObjectSpawner = "Ctrl-Shift-S",
+    Editor_Toggle = "Ctrl-Shift-E",
+    DeleteObject = "Ctrl-Alt-Shift-D",
+    ObjExaminer = "F4",
+    ToggleTerrainDepositGrid = "Ctrl-F4",
+    debug_build_grid_both = "Shift-F1",
+    debug_build_grid_pass = "Shift-F2",
+    debug_build_grid_build = "Shift-F3",
+    -- DronesAndRCMenu.lua
+    SetDroneAmountDroneHub = "Shift-D",
+    -- ExpandedMenu
+    SetWorkerCapacity = "Ctrl-Shift-W",
+    SetBuildingCapacity = "Ctrl-Shift-C",
+    SetVisitorCapacity = "Ctrl-Shift-V",
+    SetFunding = "Ctrl-Shift-0",
+    FillResource = "Ctrl-F",
+    -- GameMenu.lua
+    SetTransparencyUI = "Ctrl-F3",
+    CameraFree_Toggle = "Shift-C",
+    CameraFollow_Toggle = "Ctrl-Shift-F",
+    CursorVisible_Toggle = "Ctrl-Alt-F",
+    -- HelpMenu.lua
+    TakeScreenshot = "-PrtScr",
+    TakeScreenshotUpsampled = "-Ctrl-PrtScr",
+    ToggleInterface = "Ctrl-Alt-I",
+    SignsInterface_Toggle = "Ctrl-Alt-S",
+    ReportBugDlg = "Ctrl-F1",
+    CheatsMenu_Toggle = "F2",
+    -- MiscMenu.lua
+    CreateObjectListAndAttaches = "F6",
+    SetObjectOpacity = "F3",
+    InfopanelCheats_Toggle = "Ctrl-F2",
+  },
 }
 
---and constants
+-- and constants
 ChoGGi.Consts = {
 	LightmodelCustom = "PlaceObj('Lightmodel', {\n\t'name', \"ChoGGi_Custom\",\n\t'pp_bloom_strength', 100,\n\t'pp_bloom_threshold', 25,\n\t'pp_bloom_contrast', 75,\n\t'pp_bloom_colorization', 65,\n\t'pp_bloom_inner_tint', RGBA(187, 23, 146, 255),\n\t'pp_bloom_mip2_radius', 8,\n\t'pp_bloom_mip3_radius', 10,\n\t'pp_bloom_mip4_radius', 27,\n\t'exposure', -100,\n\t'gamma', RGBA(76, 76, 166, 255),\n})",
 
---const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
+-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
   RCRoverMaxRadius = 20,
   CommandCenterMaxRadius = 35,
   BreakThroughTechsPerGame = 13,
@@ -310,7 +369,8 @@ end
 --read saved settings from file
 function ChoGGi.SettingFuncs.ReadSettings()
   local ChoGGi = ChoGGi
-  local errormsg = Concat("\n\n",T(302535920000007--[[CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua\nIf you can delete it and still get this error; please send it and this log to the author."),"\n\n--]]))
+  local errormsg = Concat("\n\n",T(302535920000007--[[CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author.--]]),"\n\n")
 
   --try to read settings
 	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)

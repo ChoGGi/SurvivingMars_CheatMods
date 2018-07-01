@@ -43,7 +43,7 @@ function ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000513--[[Change Amount Of Drones In Hub--]])),
     ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
-    "Shift-D",
+    ChoGGi.UserSettings.KeyBindings.SetDroneAmountDroneHub,
     T(302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]),
     iconD
   )

@@ -69,7 +69,7 @@ The map disaster settings don't do jack.--]]),
   ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/",T(302535920000629--[[Set UI Transparency--]])),
     ChoGGi.MenuFuncs.SetTransparencyUI,
-    "Ctrl-F3",
+    ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
     T(302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]),
     "set_last_texture.tga"
   )
@@ -202,7 +202,7 @@ Not noticeable unless using higher zoom.--]]
   ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000651--[[Toggle Free Camera--]])),
     ChoGGi.MenuFuncs.CameraFree_Toggle,
-    "Shift-C",
+    ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
     T(302535920000652--[[I believe I can fly.--]]),
     "NewCamera.tga"
   )
@@ -210,7 +210,7 @@ Not noticeable unless using higher zoom.--]]
   ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000653--[[Toggle Follow Camera--]])),
     ChoGGi.MenuFuncs.CameraFollow_Toggle,
-    "Ctrl-Shift-F",
+    ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
     T(302535920000654--[[Select (or mouse over) an object to follow.--]]),
     "Shot.tga"
   )
@@ -218,7 +218,7 @@ Not noticeable unless using higher zoom.--]]
   ChoGGi.ComFuncs.AddAction(
     Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000655--[[Toggle Cursor--]])),
     ChoGGi.MenuFuncs.CursorVisible_Toggle,
-    "Ctrl-Alt-F",
+    ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
     T(302535920000656--[[Toggle between moving camera and selecting objects.--]]),
     "select_objects.tga"
   )

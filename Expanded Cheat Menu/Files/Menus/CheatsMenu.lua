@@ -215,7 +215,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
   ChoGGi.ComFuncs.AddAction(
     Concat(T(27--[[Cheats--]]),"/[13]",T(302535920000365--[[Complete Constructions--]])),
     CheatCompleteAllConstructions,
-    "Alt-B",
+    ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
     T(302535920000366--[[Complete all constructions instantly.--]]),
     "place_custom_object.tga"
   )
