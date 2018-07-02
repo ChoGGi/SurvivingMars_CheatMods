@@ -1,3 +1,23 @@
+v6.3
+Added:
+Fixes>All Pipe Skins To Default: Large Water Tank + Pipes + Chrome skin = broked looking connections (thanks Akashi Konno).
+Typing &handle in console will open that object in the examiner.
+Fixes>Toggles>Colonists Stuck Outside Service Buildings: Sometimes colonists will keep getting stuck when leaving some buildings.
+
+Changed:
+Added most shortcut keys to settings file (not 1-9 for build menu).
+Misc>Clean/Fix All Objects: They actually clean/fix all objects now.
+Any ECM stuff using Traits/Specs/etc will now also use any mod added ones.
+Somehow missed specialization for exporting colonist CSV data.
+Fixes>Most>High Stutter With High FPS: Made the colonists more random.
+Fixes>Reset Rovers: Updated for another type of broke Rover.
+Debug>Path Markers: Removed flags/text from markers, added real time option to the list.
+Moved Change Map from Debug to Game.
+
+Fixed:
+Cheat Menu menu closing when you tab back in to SM.
+The Presets menu was a little sparse.
+
 v6.2
 Added:
 Game>Autosave Interval: Change how many Sols between autosaving.

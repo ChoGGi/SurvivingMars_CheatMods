@@ -13,5 +13,5 @@ I use straight lines, instead of the angled passages, so it isn't perfect.
 There is a chance that you'll be able to connect a dome that's another 1-3 hexes further away (dependant on the angle).
 I chose to use a safe distance that'll always be close enough to connect.
 
-This also doesn't take into account entrances and corners.]],
+This also doesn't take into account entrances, corners, or stuff already built.]],
 })

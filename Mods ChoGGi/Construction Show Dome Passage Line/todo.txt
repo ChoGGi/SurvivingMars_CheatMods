@@ -1,0 +1,1 @@
+check if there's a building on the hex.
