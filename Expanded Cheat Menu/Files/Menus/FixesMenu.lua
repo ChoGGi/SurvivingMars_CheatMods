@@ -8,6 +8,15 @@ function ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000461--[[All Pipe Skins To Default--]])),
+    ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
+    nil,
+    T(302535920000463--[[Large Water Tank + Pipes + Chrome skin = broked looking connections.
+This resets all pipes to the default skin.--]]),
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000292--[[Reset Rovers--]])),
     ChoGGi.MenuFuncs.ResetRovers,
     nil,

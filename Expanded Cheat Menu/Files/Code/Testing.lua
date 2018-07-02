@@ -162,6 +162,14 @@ function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
   dofile("CommonLua/Core/luaDebuggerOutput.lua")
   dofile("CommonLua/Core/ProjectSync.lua")
 
+  --fixes error msg from the human centipede bug
+--~   SaveOrigFunc("Unit","Goto")
+--~ function Unit:Goto(...)
+--~   if ... then
+--~     return ChoGGi_OrigFuncs.Unit_Goto(self, ...)
+--~   end
+--~ end
+
  ------
   print("Testing_ClassesGenerate")
 end
@@ -210,6 +218,7 @@ function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
   end
   --]]
 
+--[[
   --don't expect much, unless you've got a copy of Haerald around
   function luadebugger:Start()
   if self.started then
@@ -240,8 +249,9 @@ function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
         local exit_code, std_out, std_error = os.exec(os_path)
         if exit_code ~= 0 then
           print("Could not launch Haerald Debugger from:", os_path, [[
-
-Exec error:]], std_error)
+--]]
+--~ Exec error:]], std_error)
+--[[
           self:Stop()
           return
         end
@@ -297,7 +307,6 @@ Exec error:]], std_error)
       end
     end
   end
---~   if not config.Haerald or not config.Haerald.FileDictionaryPath then
     local FileDictionaryPath = {
       "CommonLua",
       "Lua",
@@ -306,8 +315,6 @@ Exec error:]], std_error)
       "Server",
       "Build"
     }
---~   end
---~   if not config.Haerald or not config.Haerald.FileDictionaryExclude then
     local FileDictionaryExclude = {
       ".svn",
       "__load.lua",
@@ -316,8 +323,6 @@ Exec error:]], std_error)
       "/UIDesignerData/",
       "/Storage/"
     }
---~   end
---~   if not config.Haerald or not config.Haerald.FileDictionaryIgnore then
     local FileDictionaryIgnore = {
       "^exec$",
       "^items$",
@@ -328,8 +333,6 @@ Exec error:]], std_error)
       "^func$",
       "^no_edit$"
     }
---~   end
---~   if not config.Haerald or not config.Haerald.SearchExclude then
     local SearchExclude = {
       ".svn",
       "/Prefabs/",
@@ -337,9 +340,7 @@ Exec error:]], std_error)
       "/Collections/",
       "/BuildCache/"
     }
---~   end
   local TablesToKeys = {}
---~   if not config.Haerald or not config.Haerald.TableDictionary then
     local TableDictionary = {
       "const",
       "config",
@@ -355,7 +356,6 @@ Exec error:]], std_error)
       "os",
       "string"
     }
---~   end
   for i = 1, #TableDictionary do
     local name = TableDictionary[i]
     local t = rawget(_G, name)
@@ -439,6 +439,7 @@ Exec error:]], std_error)
 --~     RemoteCompileRequestShaders()
 --~   end
 end
+--]]
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()

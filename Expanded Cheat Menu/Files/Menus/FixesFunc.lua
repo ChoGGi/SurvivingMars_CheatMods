@@ -39,20 +39,39 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
+  CreateRealTimeThread(function()
+    -- so GetPipeConnections ignores the dupe connection error
+    ChoGGi.Temp.FixingPipes = true
+    local grids = UICity.water
+    for i = 1, #grids do
+      grids[i]:ChangeElementSkin("Chrome", true)
+      -- needs a slight delay between changing skins
+      Sleep(100)
+      grids[i]:ChangeElementSkin("Default", true)
+    end
+    ChoGGi.Temp.FixingPipes = nil
+  end)
+end
+
 local function ResetRover(rc)
-  for i = 1, #rc.attached_drones do
-    DoneObject(rc.attached_drones[i])
+  if rc.attached_drones then
+    for i = 1, #rc.attached_drones do
+      DoneObject(rc.attached_drones[i])
+    end
   end
   local pos = rc:GetVisualPos()
   local new = rc:Clone()
   DoneObject(rc)
-  new:SetPos(HexGetNearestCenter(pos))
+--~   new:SetPos(HexGetNearestCenter(pos))
+  -- probably safer then HexGetNearestCenter?
+  new:SetPos(GetPassablePointNearby(pos))
 end
 function ChoGGi.MenuFuncs.ResetRovers()
   CreateRealTimeThread(function()
     local before_table = {}
 
-    --get all rovers stuck in deployStart with at least one drone
+    -- get all rovers stuck in deploy with at least one drone
     ForEach({
       class = "RCRover",
       exec = function(rc)
@@ -60,16 +79,20 @@ function ChoGGi.MenuFuncs.ResetRovers()
 --~         print("sdfsdfds",state,drones)
         if drones then
           if rc:GetState() == GetStateIdx("deployIdle") then
-            --store them in a table for later
+            -- store them in a table for later
             before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+          -- broked, no sense in waiting for later
           elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
             ResetRover(rc)
           end
         end
       end
     })
+    -- let user know something is happening
+    MsgPopup(T(302535920000464--[[Updating Rovers--]]),T(5438--[[Rovers--]]))
     --wait awhile just to be sure
     Sleep(5000)
+    --go through and reset any rovers still doing the same thing
     for _,rc_table in pairs(before_table) do
       local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
       local drones = #rc_table.rc.attached_drones == rc_table.amount

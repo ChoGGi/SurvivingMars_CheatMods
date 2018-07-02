@@ -275,32 +275,28 @@ end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
   local const = const
-  local UICity = UICity
-  local tab = UICity.labels.Building or empty_table
-  for i = 1, #tab do
-    tab[i]:SetDust(0,const.DustMaterialExterior)
-  end
-  tab = UICity.labels.Unit or empty_table
-  for i = 1, #tab do
-    tab[i]:SetDust(0,const.DustMaterialExterior)
+  local objs = GetObjects{} or empty_table
+  for i = 1, #objs do
+    if type(objs[i].SetDust) == "function" then
+      objs[i]:SetDust(0,const.DustMaterialExterior)
+    end
   end
 
   MsgPopup(T(302535920001102--[[Cleaned all--]]),T(302535920001103--[[Objects--]]))
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-  local function Repair(Label)
-    local tab = UICity.labels[Label] or empty_table
-    for i = 1, #tab do
-      tab[i]:Repair()
-      tab[i].accumulated_maintenance_points = 0
+  local objs = GetObjects{} or empty_table
+  for i = 1, #objs do
+    if type(objs[i].Repair) == "function" then
+      objs[i]:Repair()
+      objs[i].accumulated_maintenance_points = 0
     end
   end
-  Repair("Building")
-  Repair("Rover")
-  local tab = UICity.labels.Drone or empty_table
-  for i = 1, #tab do
-    tab[i]:SetCommand("RepairDrone")
+
+  objs = UICity.labels.Drone or empty_table
+  for i = 1, #objs do
+    objs[i]:SetCommand("RepairDrone")
   end
 
   MsgPopup(T(302535920001104--[[Fixed all--]]),T(302535920001103--[[Objects--]]))

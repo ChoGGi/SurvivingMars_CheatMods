@@ -1,7 +1,4 @@
 ID,Text,Translation
-302535920000461,,
-302535920000463,,
-302535920000464,,
 302535920000465,,
 302535920000466,,
 302535920000875,,
@@ -717,6 +714,9 @@ The map disaster settings don't do jack.",
 302535920000578,Change waste storage depot capacity.,
 302535920000579,Storage Mechanized Depots,
 302535920000580,Change mechanized depot storage capacity.,
+302535920000461,All Pipe Skins To Default,
+302535920000463,"Large Water Tank + Pipes + Chrome skin = broked looking connections.
+This resets all pipes to the default skin.",
 302535920000249,"Colonists will leave a diner/etc and stop outside of it and not move anymore.
 
 Seems to fix it after a Sol or two, so you shouldn't need to leave this running.",
@@ -1144,6 +1144,7 @@ Other: 20,000,
 Waste: 1,000,000,
 Mechanized: 1,000,000",
 302535920000963,Size,
+302535920000464,Updating Rovers,
 302535920000964,Rover Infinite Loop,
 302535920000965,Drone Carry Fix,
 302535920000966,Sorting cc dist,

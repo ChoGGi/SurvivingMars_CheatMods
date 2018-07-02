@@ -154,11 +154,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     ChoGGi.ComFuncs.AddAction(
       Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[-1]*",T(126095410863--[[Info--]]),"*"),
       function()
-        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-          zorder = 2000001,
-          text = info,
-        })
-        dialog:Open()
+        OpenExamine({info})
       end,
       nil,
       info,
@@ -182,12 +178,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
         ChoGGi.ComFuncs.AddAction(
           Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[",i,"]",folders[i].name),
           function()
-            local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-              zorder = 2000001,
-              wrap = true,
-              text = text,
-            })
-            dialog:Open()
+            OpenExamine({text})
           end,
           nil,
           text:sub(1,100),

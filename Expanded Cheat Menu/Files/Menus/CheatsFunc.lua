@@ -104,28 +104,28 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(Amount)
     Amount
   )
 end
-function ChoGGi.MenuFuncs.DisasterTriggerColdWave()
+function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_ColdWave
-    local descr = data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
+    local descr = data[severity] or data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
     StartColdWave(descr)
   end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(storm_type)
+function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity,storm_type)
   CreateGameTimeThread(function()
     local data = DataInstances.MapSettings_DustStorm
-    local descr = data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
+    local descr = data[severity] or data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
     StartDustStorm(storm_type,descr)
   end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(major)
+function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
   local data = DataInstances.MapSettings_DustDevils
-  local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+  local descr = data[severity] or data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
   GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMeteor(meteors_type)
+function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
   local data = DataInstances.MapSettings_Meteor
-  local descr = data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+  local descr = data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
   CreateGameTimeThread(function()
     MeteorsDisaster(descr, meteors_type, GetTerrainCursor())
   end)
@@ -176,6 +176,17 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     {text = Concat(T(302535920000246--[[Missle--]])," ",500),value = "Missle500",hint = T(302535920000250--[[Might be a little laggy--]])},
   }
 
+--~   local Table = DataInstances.MapSettings_ColdWave
+--~   local Table = DataInstances.MapSettings_DustStorm
+--~   local Table = DataInstances.MapSettings_DustDevils
+--~   local Table = DataInstances.MapSettings_Meteor
+--~   for i = 1, #Table do
+--~     ItemList[#ItemList+1] = {
+--~       text = Table[i].name,
+--~       value = Table[i].name,
+--~     }
+--~   end
+
   local CallBackFunc = function(choice)
     for i = 1, #choice do
       local value = choice[i].value
@@ -185,23 +196,23 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
         ChoGGi.MenuFuncs.DisasterTriggerColdWave()
 
       elseif value == "DustDevilsMajor" then
-        ChoGGi.MenuFuncs.DisasterTriggerDustDevils("major")
+        ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil,"major")
       elseif value == "DustDevils" then
         ChoGGi.MenuFuncs.DisasterTriggerDustDevils()
 
       elseif value == "DustStormElectrostatic" then
-        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("electrostatic")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"electrostatic")
       elseif value == "DustStormGreat" then
-        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("great")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"great")
       elseif value == "DustStorm" then
-        ChoGGi.MenuFuncs.DisasterTriggerDustStorm("normal")
+        ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"normal")
 
       elseif value == "MeteorStorm" then
-        ChoGGi.MenuFuncs.DisasterTriggerMeteor("storm")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"storm")
       elseif value == "MeteorMultiSpawn" then
-        ChoGGi.MenuFuncs.DisasterTriggerMeteor("multispawn")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"multispawn")
       elseif value == "Meteor" then
-        ChoGGi.MenuFuncs.DisasterTriggerMeteor("single")
+        ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"single")
 
       elseif value == "Missle1" then
         ChoGGi.MenuFuncs.DisasterTriggerMissle(1)

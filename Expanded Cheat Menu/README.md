@@ -46,7 +46,11 @@ If Defaults.lua is in the same place as Init.lua you did it correctly.
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
 Help>Reset Settings will also do the same thing.
+
+You can edit the shortcut keys in the settings file (or blank them to disable).
 ```
+
+
 
 ##### List of some stuff added (not up to date)
 ```
@@ -173,11 +177,14 @@ Sometimes the blue radar thingy falls off.
 Cables & Pipes: Instant Repair
 Instantly repair all broken pipes and cables.
 
+
+A bunch more (certain crashes with colonists rovers, etc)
 ```
 
 ##### Console
 ```
-Toggle showing history/results on-screen (Menu>Debug, it's on by default)
+Press Tilde (~), Enter, or Numpad Enter to show the console
+Toggle showing history/results on-screen (it's on by default)
 type any name in to see it in the console log (ex: Consts)
 exit : or quit
 restart : or reboot
@@ -188,24 +195,26 @@ dumpobject(SelectedObj) : or dumpo
 dumptable(Consts) : or dumpt
 trans() : translate userdata: ********** or 6543256 to text, or use $Object
 SelectedObj : or s
-SelectionMouseObj() : or m, object under mouse cursor
-GetPreciseCursorObj() : or mc, like SelectionMouseObj but compact
-GetTerrainCursorObjSel() : or mh, just the handle
-GetTerrainCursor() : or c, position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
+SelectionMouseObj() : or m(), object under mouse cursor
+GetPreciseCursorObj() : or mc(), like SelectionMouseObj but compact
+GetTerrainCursorObjSel() : or mh(), just the handle
+GetTerrainCursor() : or c(), position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
 terminal.GetMousePos : or cs, mouse pos on screen, not map
 
-also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects, *r/*g to wrap code in real/game time threads
+also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects, &handle to open object in examiner, *r/*g to wrap code in real/game time threads
 
 If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
 If you want to save the console text: Debug>Write Logs (very helpful for examining an object)
 
-you can paste chunks of scripts to test out:
+you can paste chunks of code in the console to test out:
 local templates = DataInstances.BuildingTemplate
 for i = 1, #templates do
   local building = templates[i]
 	print(building.name)
 end
+
+Create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
 
 ##### Known issues

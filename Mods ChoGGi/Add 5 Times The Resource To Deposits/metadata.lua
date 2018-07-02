@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
 	"steam_id", "1427609324",
-	"description", [[Adds a button to water/metal deposits to multiple the amount of ALL deposits by 5.
+	"description", [[Adds a button to water/metal deposits to multiple the amount of ALL (water/metal) deposits by 5.
 
 Requested by Peacemaker.]],
 })
