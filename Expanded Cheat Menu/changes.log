@@ -1,3 +1,7 @@
+v6.4
+Fixed:
+Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).
+
 v6.3
 Added:
 Fixes>All Pipe Skins To Default: Large Water Tank + Pipes + Chrome skin = broked looking connections (thanks Akashi Konno).

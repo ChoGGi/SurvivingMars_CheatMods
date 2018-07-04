@@ -402,6 +402,9 @@ function ChoGGi.MenuFuncs.ObjectCloner(sel)
     new = sel:Clone()
   end
   new:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
+  if type(new.CheatRefill) == "function" then
+    new:CheatRefill()
+  end
 end
 
 local function AnimDebug_Show(Obj,Colour)

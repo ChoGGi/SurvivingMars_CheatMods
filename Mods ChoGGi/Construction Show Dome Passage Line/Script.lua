@@ -1,10 +1,14 @@
+local table = table
+local table_iclear = table.iclear
+local table_sort = table.sort
+
 local DoneObject = DoneObject
 local GetSpotAnnotation = GetSpotAnnotation
 local GetTerrainCursor = GetTerrainCursor
 local PlaceObject = PlaceObject
-local table = table
-local table_iclear = table.iclear
-local table_sort = table.sort
+local HexGridGetObject = HexGridGetObject
+local WorldToHex = WorldToHex
+local point = point
 
 --stores domes with pos of each spot we check
 local table_domes = {}
@@ -14,15 +18,23 @@ local function BuildDomeSpots(dome)
   -- skip if we already added it
   if not table_domes[dome.handle] then
     local spots = {}
+
     local start_id, end_id = dome:GetAllSpots(dome:GetState())
     local name
-    -- loop through all the spots and add any of the grass ones (don't need the rest, as they're further in or outside)
+    local pos
     for i = start_id, end_id do
       name = GetSpotAnnotation(dome:GetEntity(), i)
+      --cursor dome
       if name and name:find("DomeGrass") then
         spots[#spots+1] = dome:GetSpotPos(i)
       end
     end
+
+    -- placed domes
+    if dome.name then
+      table_domes[dome.handle] = spots
+    end
+
     return spots
   end
 end
@@ -31,7 +43,10 @@ end
 local function BuildExistingDomeSpots()
   local domes = UICity.labels.Dome or empty_table
   for i = 1, #domes do
-    table_domes[domes[i].handle] = BuildDomeSpots(domes[i])
+    -- skip ruined domes
+    if domes[i].air then
+      BuildDomeSpots(domes[i])
+    end
   end
 end
 function OnMsg.LoadGame()
@@ -79,15 +94,19 @@ function OnMsg.ClassesGenerate()
       -- loop through all domes and attach a vector line
       local domes = UICity.labels.Dome
       for i = 1, #domes do
-        -- make sure any new domes are added to the table
-        BuildDomeSpots(domes[i])
-        -- temp store dome/vector for the dome
-        dome_lines[i] = {
-          vector = PlaceObject("Vector"),
-          dome = domes[i]
-        }
+        -- skip ruined domes
+        if domes[i].air then
+          -- make sure any new domes are added to the table
+          BuildDomeSpots(domes[i])
+          -- temp store dome/vector for the dome
+          dome_lines[i] = {
+            vector = PlaceObject("Vector"),
+            dome = domes[i]
+          }
+        end
       end
     end
+
     -- orig func
     return orig_CursorBuilding_GameInit(self)
   end
@@ -100,7 +119,7 @@ function OnMsg.ClassesGenerate()
         -- this deletes the line object, leaves the table as is
         DoneObject(dome_lines[i].vector)
       end
-      -- clear out table (slightly faster then just making a new table?)
+      -- clear out table (slightly faster then just making a new table)
       table_iclear(dome_lines)
 --~       dome_lines = {}
     end
@@ -122,9 +141,9 @@ function OnMsg.ClassesGenerate()
         else
           local v = dome_lines[i].vector
           -- get nearest hex from placed dome to cursor
-          local placed_dome_spot = RetNearestSpot(dome_lines[i].dome,self.cursor_obj:GetVisualPos())
+          local placed_dome_spot = RetNearestSpot(dome_lines[i].dome,self.cursor_obj:GetVisualPos()) or point(0,0)
           -- get nearest hex from cursor dome to placed dome
-          local cursor_dome_spot = RetNearestSpot(self.cursor_obj,d_pos)
+          local cursor_dome_spot = RetNearestSpot(self.cursor_obj,d_pos) or point(0,0)
           -- show line if it's close enough
           if placed_dome_spot:Dist2D(cursor_dome_spot) > max_dist then
             -- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
@@ -139,5 +158,11 @@ function OnMsg.ClassesGenerate()
     -- orig func
     return orig_ConstructionController_UpdateCursor(self, pos, force)
   end
+end
 
+function OnMsg.Demolished(building)
+  -- remove demoed domes from the list
+  if table_domes[building.handle] then
+    table_domes[building.handle] = nil
+  end
 end

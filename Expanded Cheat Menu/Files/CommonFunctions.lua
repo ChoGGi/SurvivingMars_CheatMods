@@ -25,6 +25,7 @@ local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
 local HandleToObject = HandleToObject
+local HexGridGetObject = HexGridGetObject
 local IsBox = IsBox
 local IsObjlist = IsObjlist
 local IsPoint = IsPoint
@@ -40,6 +41,7 @@ local ThreadUnlockKey = ThreadUnlockKey
 local ViewPos = ViewPos
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
+local WorldToHex = WorldToHex
 
 local local_T = T -- T replaced below
 local guic = guic
@@ -1543,28 +1545,28 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
   return block,restrict
 end
 
--- get all objects, then filter for ones within *Radius*, returned sorted by dist, or *Sort* for name
+-- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name
 -- OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
-function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
-  Radius = Radius or 5000
-  local pos = GetTerrainCursor()
+function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
+  radius = radius or 5000
+  pos = pos or GetTerrainCursor()
 
-  --get pretty much all objects (18K on a new map)
+  --get all objects (18K+ on a new map)
   local all = GetObjects{} or empty_table
-  --we only want stuff within *Radius*
+  --we only want stuff within *radius*
   local list = FilterObjects({
     filter = function(Obj)
-      if Obj:GetDist2D(pos) <= Radius then
+      if Obj:GetDist2D(pos) <= radius then
         return Obj
       end
     end
   },all)
 
   --sort list custom
-  if Sort then
+  if sort then
     table.sort(list,
       function(a,b)
-        return a[Sort] < b[Sort]
+        return a[sort] < b[sort]
       end
     )
   else
@@ -1576,6 +1578,20 @@ function ChoGGi.ComFuncs.ReturnAllNearby(Radius,Sort)
     )
   end
   return list
+end
+
+function ChoGGi.ComFuncs.RetObjectAtPos(pos,q,r)
+  if pos then
+    q, r = WorldToHex(pos or GetTerrainCursor())
+  end
+  return HexGridGetObject(ObjectGrid, q, r)
+end
+
+function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
+  if pos then
+    q, r = WorldToHex(pos or GetTerrainCursor())
+  end
+  return HexGridGetObjects(ObjectGrid, q, r)
 end
 
 -- returns object name or at least always some string
