@@ -1,6 +1,10 @@
 v6.4
 Fixed:
 Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).
+FlattenGround: Fixed issue with pipes getting marked as uneven terrain (works on broked saves).
+
+Added:
+Help>ECM>Disable ECM: Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in CheatMenuModSettings.lua file.
 
 v6.3
 Added:

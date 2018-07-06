@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "Terraformer v0.2",
+	"title", "Terraformer v0.3",
+	"version", 3,
+	"saved", 1530792000,
 	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
-	"version", 2,
 	"code", {"Script.lua"},
-	"saved", 1529409600,
 	"TagOther", true,
 	"image", "Preview.png",
 	"steam_id", "1415296985",

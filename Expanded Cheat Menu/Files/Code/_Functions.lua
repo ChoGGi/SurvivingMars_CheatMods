@@ -965,13 +965,13 @@ end
 --returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
 function ChoGGi.CodeFuncs.SelObject()
   --pcall returns "bool,return" so we select the return, and ignore the bool
-  return select(2,pcall(function()
-    return SelectedObj or SelectionMouseObj() or NearestObject(
-      GetTerrainCursor(),
-      ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="CObject"},{ParSystem=1},"class"),
-      1000
-    )
-  end))
+--~   return select(2,pcall(function()
+  return SelectedObj or SelectionMouseObj() or NearestObject(
+    GetTerrainCursor(),
+    ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem=1},"class"),
+    1000
+  )
+--~   end))
 end
 
 function ChoGGi.CodeFuncs.LightmodelBuild(Table)
@@ -1405,5 +1405,56 @@ function ChoGGi.CodeFuncs.ResetHumanCentipedes()
       local x,y,_ = objs[i]:GetVisualPosXYZ()
       objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
     end
+  end
+end
+
+local function AttachmentsCollisionToggle(sel,which)
+  local att = sel:GetAttaches() or empty_table
+  if att and #att > 0 then
+    --are we disabling col or enabling
+    local flag
+    if which then
+      flag = "ClearEnumFlags"
+    else
+      flag = "SetEnumFlags"
+    end
+    --and loop through all the attach
+    local const = const
+    for i = 1, #att do
+      att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
+    end
+  end
+end
+
+function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
+  obj = obj or ChoGGi.CodeFuncs.SelObject()
+  --menu item
+  if not obj.class then
+    obj = ChoGGi.CodeFuncs.SelObject()
+  end
+  if not obj then
+    if not skip_msg then
+      MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
+    end
+    return
+  end
+
+  local which
+  if obj.ChoGGi_CollisionsDisabled then
+    obj:SetEnumFlags(const.efCollision + const.efApplyToGrids)
+    AttachmentsCollisionToggle(obj,false)
+    obj.ChoGGi_CollisionsDisabled = nil
+    which = "enabled"
+  else
+    obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+    AttachmentsCollisionToggle(obj,true)
+    obj.ChoGGi_CollisionsDisabled = true
+    which = "disabled"
+  end
+
+  if not skip_msg then
+    MsgPopup(string.format(T(302535920000969--[[Collisions %s on %s--]]),which,ChoGGi.ComFuncs.RetName(obj)),
+      T(302535920000968--[[Collisions--]])
+    )
   end
 end

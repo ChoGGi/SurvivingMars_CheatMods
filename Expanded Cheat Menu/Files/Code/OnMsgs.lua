@@ -764,65 +764,103 @@ function OnMsg.ChoGGi_Loaded()
   --clear out Temp settings
   ChoGGi.Temp.UnitPathingHandles = {}
 
-  --remove all built-in actions
-  UserActions_ClearGlobalTables()
-  UserActions.Actions = {}
-  UserActions.RejectedActions = {}
+  if not UserSettings.DisableECM then
+    --remove all built-in actions
+    UserActions_ClearGlobalTables()
+    UserActions.Actions = {}
+    UserActions.RejectedActions = {}
 
-  ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
-  if ChoGGi.Testing then
-    ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
+
+    if ChoGGi.Testing then
+      ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
+    end
+
+    --add custom actions
+    ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
+    ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
+
+    --add preset menu items
+    ClassDescendantsList("Preset", function(name, class)
+      ChoGGi.ComFuncs.AddAction(
+        Concat(T(302535920000979--[[Presets--]]),"/",name),
+        function()
+          OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+            PresetClass = name,
+            SingleFile = class.SingleFile
+          })
+        end,
+        class.EditorShortcut or nil,
+        T(302535920000733--[[Open a preset in the editor.--]]),
+        class.EditorIcon or "CollectionsEditor.tga"
+      )
+    end)
+
+    --update menu
+    if not_ged then
+      g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+    end
+
+    if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
+      --always show on my computer
+      if not dlgUAMenu then
+        g_Classes.UAMenu.ToggleOpen()
+      end
+    end
+
+    --show cheat pane?
+    if UserSettings.InfopanelCheats then
+      config.BuildingInfopanelCheats = true
+      ReopenSelectionXInfopanel()
+    end
+
+    --show console log history
+    if UserSettings.ConsoleToggleHistory and not_ged then
+      ShowConsoleLog(true)
+    end
+
+    if UserSettings.ConsoleHistoryWin and not_ged then
+      ChoGGi.ComFuncs.ShowConsoleLogWin(true)
+    end
+
+    --dim that console bg
+    if UserSettings.ConsoleDim then
+      config.ConsoleDim = 1
+    end
+
+    --remove some uselessish Cheats to clear up space
+    if UserSettings.CleanupCheatsInfoPane then
+      ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+    end
+
+    --add Scripts button to console
+    if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+      dlgConsole.ChoGGi_MenuAdded = true
+  --~     --make some space for the button
+  --~     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
+      --build console buttons
+      ChoGGi.Console.ConsoleControls()
+      --check for and create example scripts/script folder
+      ChoGGi.Console.ListScriptFiles()
+    end
+
   end
 
-  --add custom actions
-  ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
-  ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
 
-  --add preset menu items
-  ClassDescendantsList("Preset", function(name, class)
-    ChoGGi.ComFuncs.AddAction(
-      Concat(T(302535920000979--[[Presets--]]),"/",name),
-      function()
-        OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-          PresetClass = name,
-          SingleFile = class.SingleFile
-        })
-      end,
-      class.EditorShortcut or nil,
-      T(302535920000733--[[Open a preset in the editor.--]]),
-      class.EditorIcon or "CollectionsEditor.tga"
-    )
-  end)
-
-  --update menu
-  if not_ged then
-    g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-  end
 
 -------------------do the above stuff before the below stuff
 
 
-
-  --add Scripts button to console
-  if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
-    dlgConsole.ChoGGi_MenuAdded = true
---~     --make some space for the button
---~     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
-    --build console buttons
-    ChoGGi.Console.ConsoleControls()
-    --check for and create example scripts/script folder
-    ChoGGi.Console.ListScriptFiles()
-  end
 
   --show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then
@@ -875,7 +913,7 @@ function OnMsg.ChoGGi_Loaded()
     SetLightmodelOverride(1,LightModel)
   end
 
-  --default only saved 20 items in console history
+  --defaults to 20 items
   const.nConsoleHistoryMaxSize = 100
 
   --long arsed cables
@@ -1001,38 +1039,6 @@ function OnMsg.ChoGGi_Loaded()
     end
   end
   --]]
-
-  --show cheat pane?
-  if UserSettings.InfopanelCheats then
-    config.BuildingInfopanelCheats = true
-    ReopenSelectionXInfopanel()
-  end
-
-  --show console log history
-  if UserSettings.ConsoleToggleHistory and not_ged then
-    ShowConsoleLog(true)
-  end
-
-  if UserSettings.ConsoleHistoryWin and not_ged then
-    ChoGGi.ComFuncs.ShowConsoleLogWin(true)
-  end
-
-  --dim that console bg
-  if UserSettings.ConsoleDim then
-    config.ConsoleDim = 1
-  end
-
-  if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
-    --always show on my computer
-    if not dlgUAMenu then
-      g_Classes.UAMenu.ToggleOpen()
-    end
-  end
-
-  --remove some uselessish Cheats to clear up space
-  if UserSettings.CleanupCheatsInfoPane then
-    ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-  end
 
   --set zoom/border scrolling
   ChoGGi.CodeFuncs.SetCameraSettings()

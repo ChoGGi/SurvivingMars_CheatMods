@@ -284,6 +284,11 @@ do --FlattenGround
 
     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
   end
+  local function ToggleCollisions(objs)
+    for i = 1, #objs do
+      ChoGGi.CodeFuncs.CollisionsObject_Toggle(objs[i],true)
+    end
+  end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
     if are_we_flattening then
@@ -296,8 +301,14 @@ do --FlattenGround
         T(904--[[Terrain--]]),
         "UI/Icons/Sections/WasteRock_1.tga"
       )
-      --update uneven terrain checker thingy
+      -- disable collisions on pipes so they don't get marked as uneven terrain
+      local objs = GetObjects{class = "LifeSupportGridElement"} or empty_table
+      ToggleCollisions(objs)
+      -- update uneven terrain checker thingy
       RecalcBuildableGrid()
+      -- turn them back on
+      ToggleCollisions(objs)
+
     else
       ToggleHotkeys(true)
       flatten_height = terrain_GetHeight(GetTerrainCursor())
@@ -1125,7 +1136,7 @@ end
 --~ local classname = "Drone"
 --~ local objs = GetObjects{class = classname} or empty_table
 --~ for i = 1, #objs do
---~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i],true,true)
+--~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i])
 --~ end
 
 --little bit of painting

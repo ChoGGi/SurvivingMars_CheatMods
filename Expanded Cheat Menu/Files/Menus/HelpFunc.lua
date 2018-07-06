@@ -25,6 +25,24 @@ local WaitNextFrame = WaitNextFrame
 
 local g_Classes = g_Classes
 
+function ChoGGi.MenuFuncs.DisableECM()
+  local function CallBackFunc(answer)
+    if answer then
+      local ChoGGi = ChoGGi
+      ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
+      ChoGGi.SettingFuncs.WriteSettings()
+
+      MsgPopup(T(302535920001070--[[Restart to take effect.--]]))
+    end
+  end
+  ChoGGi.ComFuncs.QuestionBox(
+    Concat(T(302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+CheatMenuModSettings.lua > DisableECM to re-enable them."--]]),"\n\n",T(302535920001070--[[Restart to take effect.--]])),
+    CallBackFunc,
+    T(302535920000142--[[Disable--]])
+  )
+end
+
 function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
@@ -93,7 +111,9 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(302535920001072--[[Are you sure you want to reset ECM settings?\n\nOld settings are saved as--]])," ",old,"\n\n",T(302535920001070--[[Restart to take effect.--]])),
+    Concat(T(302535920001072--[[Are you sure you want to reset ECM settings?
+
+Old settings are saved as--]])," ",old,"\n\n",T(302535920001070--[[Restart to take effect.--]])),
     CallBackFunc,
     T(302535920001071--[[Reset!--]])
   )
@@ -101,7 +121,9 @@ end
 
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.\nBlockin' out the scenery, breakin' my mind.\nDo this, don't do that, can't you read the sign?--]]),
+  MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.
+Blockin' out the scenery, breakin' my mind.
+Do this, don't do that, can't you read the sign?--]]),
     T(302535920001075--[[Signs--]]),nil,true
   )
 end
@@ -149,8 +171,12 @@ function ChoGGi.MenuFuncs.ReportBugDlg()
 end
 
 function ChoGGi.MenuFuncs.AboutECM()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.MsgWait(
-    Concat(T(302535920001078--[[Hover mouse over menu item to get description and enabled status\nIf there isn't a status then it's likely a list of options to choose from\n\nFor any issues; please report them to my github/nexusmods page, or email--]])," ",ChoGGi.email),
+    string.format(T(302535920001078--[["Hover mouse over menu item to get description and enabled status
+If there isn't a status then it's likely a list of options to choose from
+
+For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]),ChoGGi.email),
     T(487939677892--[[Help--]])
   )
 end

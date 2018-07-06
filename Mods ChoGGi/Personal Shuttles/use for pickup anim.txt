@@ -1,4 +1,0 @@
-	s:PlayFX("ShuttleLoad", "start", s)
-	s:PlayFX("ShuttleLoad", "end", s)
-	self:PlayFX("ShuttleUnload", "start", dest_dome)
-	self:PlayFX("ShuttleUnload", "nd", dest_dome)

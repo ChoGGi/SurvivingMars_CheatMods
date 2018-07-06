@@ -1,16 +1,9 @@
 --See LICENSE for terms
 
-local Concat = PersonalShuttles.ComFuncs.Concat
-
-local Sleep = Sleep
-local GameTime = GameTime
-local DeleteThread = DeleteThread
-local PlayFX = PlayFX
-local Random = Random
-
 function OnMsg.ClassesBuilt()
 
   if PersonalShuttles.UserSettings.ShowShuttleControls then
+    local XTemplates = XTemplates
 --pick/drop button for shuttle
     local Table = {
       __context_of_kind = "CargoShuttle",
@@ -41,7 +34,7 @@ function OnMsg.ClassesBuilt()
         end
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipShuttle",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipShuttle",Table,XTemplates)
 --info showing carried item
     Table = {
       __context_of_kind = "CargoShuttle",
@@ -54,7 +47,7 @@ function OnMsg.ClassesBuilt()
         if Obj then
           self:SetVisible(true)
           self:SetMaxHeight()
-          self:SetTitle(Concat("Carried: ",PersonalShuttles.CodeFuncs.Trans(Obj.display_name)))
+          self:SetTitle("Carried: " .. PersonalShuttles.CodeFuncs.Trans(Obj.display_name))
         else
           self:SetVisible(false)
           self:SetMaxHeight(0)
@@ -62,7 +55,7 @@ function OnMsg.ClassesBuilt()
       end,
       func = function()end
       }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","ipShuttle",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","ipShuttle",Table,XTemplates)
 --spawn shuttle buttons for hub and return shuttle button
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -74,7 +67,7 @@ function OnMsg.ClassesBuilt()
         PersonalShuttles.CodeFuncs.SpawnShuttle(context,true)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","customShuttleHub",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -86,7 +79,7 @@ function OnMsg.ClassesBuilt()
         PersonalShuttles.CodeFuncs.SpawnShuttle(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","customShuttleHub",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -98,7 +91,7 @@ function OnMsg.ClassesBuilt()
         PersonalShuttles.CodeFuncs.RecallShuttlesHub(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","customShuttleHub",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","customShuttleHub",Table,XTemplates)
 --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
     local title1 = "Ignore Item"
@@ -127,7 +120,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipResourcePile",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipResourcePile",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "Drone",
@@ -149,7 +142,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipDrone",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipDrone",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "BaseRover",
@@ -171,7 +164,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipRover",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipRover",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "UniversalStorageDepot",
@@ -193,7 +186,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane4","sectionStorage",Table)
+    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane4","sectionStorage",Table,XTemplates)
   --[[
   --adds to the bottom of every selection :) :(
   Infopanel
@@ -228,13 +221,14 @@ function OnMsg.ClassesBuilt()
       self:PersonalShuttles_IsFollower()
     print("PersonalShuttles_FollowMouseClick")
 
+      local Sleep = Sleep
       local PersonalShuttles = PersonalShuttles
       local terrain = terrain
       repeat
         local x,y,z = self:GetVisualPosXYZ()
         local dest = GetTerrainCursor()
 
-        self:PersonalShuttles_Goto(PersonalShuttles,terrain,pos,x,y,z,dest,idle)
+        self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,pos,x,y,z,dest,idle)
         Sleep(1000)
       until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
     end
@@ -247,7 +241,10 @@ function OnMsg.ClassesBuilt()
     self:PersonalShuttles_IsFollower()
 
     local PersonalShuttles = PersonalShuttles
+    local Sleep = Sleep
+    local GameTime = GameTime
     local terrain = terrain
+    local DeleteThread = DeleteThread
     --when shuttle isn't moving it gets magical fuel from somewhere so we use a timer
     local idle = 0
     --always start it off as pickup
@@ -263,21 +260,21 @@ function OnMsg.ClassesBuilt()
       local x,y,z = self:GetVisualPosXYZ()
       local dest = GetTerrainCursor()
 
-      self:PersonalShuttles_Goto(PersonalShuttles,terrain,point(x,y,z),x,y,z,dest)
+      self:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,point(x,y,z),x,y,z,dest)
 
       --scanning/resource
       self:PersonalShuttles_SelectedObject(PersonalShuttles,SelectedObj,point(x,y,z),dest)
       self.PersonalShuttles_IdleTime = self.PersonalShuttles_IdleTime + 10
       Sleep(250 + self.PersonalShuttles_IdleTime)
     --about 4 sols then send it back home (or if we recalled it)
-    until (GameTime() - self.timenow > PersonalShuttles.UserSettings.TimeLimit or 2000000) or not self.PersonalShuttles_FollowMouseShuttle
+    until (GameTime() - self.timenow > 2000000) or not self.PersonalShuttles_FollowMouseShuttle
     --so it can set the GoHome command (we normally blocked it)
     self.PersonalShuttles_FollowMouseShuttle = nil
     --buh-bye little flying companion
     self:SetCommand("GoHome")
   end
 
-  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,pos,x,y,z,dest)
+  function CargoShuttle:PersonalShuttles_Goto(PersonalShuttles,terrain,Sleep,DeleteThread,pos,x,y,z,dest)
     if not dest then
       return
     end
@@ -316,7 +313,7 @@ function OnMsg.ClassesBuilt()
           --self:PersonalShuttles_LandIt(UICity,Sleep,terrain,x,y,pos)
           self:PlayFX("Dust", "start")
           self:PlayFX("Waiting", "start")
-          local land = point(x+Random(-2500,2500),y+Random(-2500,2500)):SetZ(terrain.GetSurfaceHeight(pos))
+          local land = point(x+UICity:Random(-2500,2500),y+UICity:Random(-2500,2500)):SetZ(terrain.GetSurfaceHeight(pos))
           self:FlyingFace(land, 2500)
           self:SetPos(land, 4000)
           Sleep(750)
@@ -344,7 +341,7 @@ function OnMsg.ClassesBuilt()
         if #UICity.PersonalShuttles.CargoShuttleThreads > 10 then
           path = self:CalcPath(
             pos,
-            point(dest:x()+Random(-2500,2500),dest:y()+Random(-2500,2500),1500)
+            point(dest:x()+UICity:Random(-2500,2500),dest:y()+UICity:Random(-2500,2500),1500)
           )
         else
           path = self:CalcPath(pos, dest)
@@ -405,9 +402,6 @@ function OnMsg.ClassesBuilt()
         --move it
 
         --carried:SetPos(HexGetNearestCenter(dest))
-        self:PlayFX("ShuttleUnload", "start", self)
-        Sleep(1000)
-        self:PlayFX("ShuttleUnload", "end", self)
         carried:Detach()
 
         --carried:SetPos(HexGetNearestCenter(pass))
@@ -435,9 +429,7 @@ function OnMsg.ClassesBuilt()
           --remove pickup mark from it
           sel.PersonalShuttles_PickUpItem = nil
           --PlayFX of beaming, transport one i think
-          self:PlayFX("ShuttleLoad", "start", self)
           Sleep(1000)
-          self:PlayFX("ShuttleLoad", "end", self)
 
           if not UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] then
             UICity.PersonalShuttles.CargoShuttleCarried[sel.handle] = true

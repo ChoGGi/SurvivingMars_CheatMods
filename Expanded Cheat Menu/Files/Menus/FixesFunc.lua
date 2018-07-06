@@ -162,49 +162,6 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
     )
 end
 
-local function AttachmentsCollisionToggle(sel,which)
-  local att = sel:GetAttaches() or empty_table
-  if att and #att > 0 then
-    --are we disabling col or enabling
-    local flag
-    if which then
-      flag = "ClearEnumFlags"
-    else
-      flag = "SetEnumFlags"
-    end
-    --and loop through all the attach
-    local const = const
-    for i = 1, #att do
-      att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
-    end
-  end
-end
-
-function ChoGGi.MenuFuncs.CollisionsObject_Toggle()
-  local sel = SelectedObj
-  if not sel then
-    MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
-    return
-  end
-
-  local which
-  if sel.ChoGGi_CollisionsDisabled then
-    sel:SetEnumFlags(const.efCollision + const.efApplyToGrids)
-    AttachmentsCollisionToggle(sel,false)
-    sel.ChoGGi_CollisionsDisabled = nil
-    which = "enabled"
-  else
-    sel:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
-    AttachmentsCollisionToggle(sel,true)
-    sel.ChoGGi_CollisionsDisabled = true
-    which = "disabled"
-  end
-
-  MsgPopup(Concat(T(302535920000968--[[Collisions--]])," ",which," ",T(302535920000969--[[on--]])," ",ChoGGi.ComFuncs.RetName(sel)),
-    T(302535920000968--[[Collisions--]])
-  )
-end
-
 function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   local UICity = UICity
   local objs = GetObjects{class = "Colonist"} or empty_table

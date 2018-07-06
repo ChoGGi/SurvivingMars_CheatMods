@@ -5,6 +5,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Add5TimesTheResourceToDeposits",
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
+  "image","Preview.png",
 	"steam_id", "1427609324",
 	"description", [[Adds a button to water/metal deposits to multiple the amount of ALL (water/metal) deposits by 5.
 

@@ -1,5 +1,3 @@
--- See LICENSE for terms
-
 --keep everything stored in
 PersonalShuttles = {
   _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
@@ -49,13 +47,8 @@ SOFTWARE.]],
   UserSettings = {ShowShuttleControls=true},
 }
 
-local PersonalShuttles = PersonalShuttles
-local Mods = Mods
-PersonalShuttles._VERSION = Mods[PersonalShuttles.id].version
-PersonalShuttles.ModPath = Mods[PersonalShuttles.id].path
-
 -- if we use global func more then once: make them local for that small bit o' speed
-local select,tostring,table = select,tostring,table
+local dofile,select,tostring,table = dofile,select,tostring,table
 
 PersonalShuttles.ComFuncs.TableConcat = oldTableConcat or table.concat
 local TConcat = PersonalShuttles.ComFuncs.TableConcat
@@ -84,4 +77,14 @@ function PersonalShuttles.ComFuncs.Concat(...)
   return TConcat(concat_table)
 end
 
-dofolder_files(PersonalShuttles.ComFuncs.Concat(PersonalShuttles.ModPath,"Code/"))
+local PersonalShuttles = PersonalShuttles
+local Mods = Mods
+PersonalShuttles._VERSION = Mods[PersonalShuttles.id].version
+PersonalShuttles.ModPath = Mods[PersonalShuttles.id].path
+
+local Concat = PersonalShuttles.ComFuncs.Concat
+
+dofile(Concat(PersonalShuttles.ModPath,"CommonFunctions.lua"))
+dofile(Concat(PersonalShuttles.ModPath,"_Functions.lua"))
+dofile(Concat(PersonalShuttles.ModPath,"OnMsgs.lua"))
+dofile(Concat(PersonalShuttles.ModPath,"ShuttleControl.lua"))

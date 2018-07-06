@@ -1,11 +1,5 @@
 --See LICENSE for terms
 
---simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local)
-DefineClass.FlattenGround_CursorBuilding = {
-  __parents = {"CObject"},
-  entity = "GridTile"
-}
-
 local T = FlattenGround.ComFuncs.Trans
 
 local CreateRealTimeThread = CreateRealTimeThread
@@ -96,6 +90,11 @@ local function ToggleHotkeys(bool)
 
   UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
 end
+local function ToggleCollisions(objs)
+  for i = 1, #objs do
+    FlattenGround.CodeFuncs.CollisionsObject_Toggle(objs[i],true)
+  end
+end
 
 function FlattenGround.MenuFuncs.FlattenTerrain_Toggle()
   local FlattenGround = FlattenGround
@@ -110,8 +109,14 @@ function FlattenGround.MenuFuncs.FlattenTerrain_Toggle()
       T(904--[[Terrain--]]),
       "UI/Icons/Sections/WasteRock_1.tga"
     )
-    --update uneven terrain checker thingy
+    -- disable collisions on pipes so they don't get marked as uneven terrain
+    local objs = GetObjects{class = "LifeSupportGridElement"} or empty_table
+    ToggleCollisions(objs)
+    -- update uneven terrain checker thingy
     RecalcBuildableGrid()
+    -- turn them back on
+    ToggleCollisions(objs)
+
   else
     ToggleHotkeys(true)
     flatten_height = terrain_GetHeight(GetTerrainCursor())

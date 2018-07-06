@@ -36,7 +36,7 @@ You may need to toggle the recall drones button (for certain issues).--]]),
 
   ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[9]",T(302535920000581--[[Toggle Collisions On Selected Object--]])),
-    ChoGGi.MenuFuncs.CollisionsObject_Toggle,
+    ChoGGi.CodeFuncs.CollisionsObject_Toggle,
     nil,
     T(302535920000582--[[Just in case you get something stuck somewhere.--]]),
     icon

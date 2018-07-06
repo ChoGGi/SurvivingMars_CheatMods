@@ -80,3 +80,30 @@ function FlattenGround.ComFuncs.MsgPopup(Msg,Title,Icon)
   end)
 end
 
+function FlattenGround.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
+  return FilterObjects({
+    filter = function(Obj)
+      if ExcludeList or IncludeList then
+        if ExcludeList and IncludeList then
+          if not ExcludeList[Obj[Type]] then
+            return Obj
+          elseif IncludeList[Obj[Type]] then
+            return Obj
+          end
+        elseif ExcludeList then
+          if not ExcludeList[Obj[Type]] then
+            return Obj
+          end
+        elseif IncludeList then
+          if IncludeList[Obj[Type]] then
+            return Obj
+          end
+        end
+      else
+        if Obj[Type] then
+          return Obj
+        end
+      end
+    end
+  },Table)
+end

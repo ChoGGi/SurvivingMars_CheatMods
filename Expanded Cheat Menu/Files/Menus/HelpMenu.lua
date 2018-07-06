@@ -97,7 +97,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
 
   ----------------------------------ECM
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920000672--[[About ECM--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[1]",T(302535920000672--[[About ECM--]])),
     ChoGGi.MenuFuncs.AboutECM,
     nil,
     Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000673--[[info dialog.--]])),
@@ -105,7 +105,15 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920001029--[[Change log--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[2]",T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]])),
+    ChoGGi.MenuFuncs.ShowReadmeECM,
+    nil,
+    T(302535920001025--[[Help! I'm with stupid!--]]),
+    "help.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[3]",T(302535920001029--[[Change log--]])),
     ChoGGi.MenuFuncs.ShowChangelogECM,
     nil,
     T(4915--[[Good News, Everyone!"--]]),
@@ -113,28 +121,29 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/",T(302535920001014--[[Hide Cheats Menu--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[4]",T(302535920001014--[[Hide Cheats Menu--]])),
     ChoGGi.MenuFuncs.CheatsMenu_Toggle,
     ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
-    T(302535920001019--[[This will hide the Cheats menu, Use F2 to see it again, and use Ctrl-F2 to toggle the Cheats selection panel.--]]),
+    T(302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]),
     "ToggleEnvMap.tga"
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[997]",T(302535920000676--[[Reset ECM Settings--]])),
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[5]",T(302535920000142--[[Disable--]])," ",T(302535920000887--[[ECM--]])),
+    ChoGGi.MenuFuncs.DisableECM,
+    nil,
+    T(302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]]),
+    "ToggleEnvMap.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[6]",T(302535920000676--[[Reset ECM Settings--]])),
     ChoGGi.MenuFuncs.ResetECMSettings,
     nil,
     T(302535920000677--[[Reset all ECM settings to default (restart to enable).--]]),
     "ToggleEnvMap.tga"
   )
 
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[998]",T(302535920000887--[[ECM--]])," ",T(302535920001020--[[Read me--]])),
-    ChoGGi.MenuFuncs.ShowReadmeECM,
-    nil,
-    T(302535920001025--[[Help! I'm with stupid!--]]),
-    "help.tga"
-  )
 
   --build text file menu items
   do
@@ -163,9 +172,9 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
 
     local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
     ChoGGi.ComFuncs.AddAction(
-      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[0]*",T(1575--[[Functionality--]]),"*"),
+      Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[0]*",T(302535920000875--[[Game Functions--]]),"*"),
       function()
-        OpenExamine({Concat(T(302535920001023--[[This WILL take awhile if you open it in dump text.--]]),"\n\n\n\n",funcs)})
+        OpenExamine({Concat(T(302535920001023--[[This WILL take awhile if you open it in View Text.--]]),"\n\n\n\n",funcs)})
       end,
       nil,
       funcs:sub(1,100),
