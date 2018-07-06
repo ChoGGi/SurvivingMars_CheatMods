@@ -72,14 +72,14 @@ ChoGGi.Defaults = {
   ShowInterfaceInScreenshots = true,
   -- 1-0 + shift+ 1-0 shows the build menus
   NumberKeysBuildMenu = true,
-  -- keep angle of last placed building
+  -- keep orientation of last placed building
   UseLastOrientation = true,
   -- show the cheats menu...
   ShowCheatsMenu = true,
-  -- dumps the log to disk on startup, and every new Sol (good for certain crashes)
+  -- dumps the log to disk on startup, and every new Sol (good for some crashes)
   FlushLog = true,
   -- okay, maybe some people don't want a mod to change the title of their game
-  DontChangeTitle = false,
+  ChangeWindowTitle = true,
   -- msg that shows in the console after tabbing back to the game and "heaven forbid" you have the cheats menu open
   HideuiWindowErrorMsg = true,
   -- how wide the starting radius, how much to step per press
@@ -89,11 +89,11 @@ ChoGGi.Defaults = {
   -- the build/passibility grid in debug menu
   DebugGridSize = 10,
   DebugGridOpacity = 15,
-  -- how long to wait before hiding the cheats menu
+  -- how long to wait before hiding the cheats pane in the selection panel
   CheatsInfoPanelHideDelay = 1500,
   -- how wide the text for the history menu in the Console is
   ConsoleHistoryMenuLength = 50,
-  -- shows how ticks it takes between the start of ECM and when the game loads
+  -- shows how many ticks it takes between the start of ECM and when the game loads
   ShowStartupTicks = false,
   -- stores custom settings for each building
   BuildingSettings = {},
@@ -101,7 +101,6 @@ ChoGGi.Defaults = {
 	Transparency = {},
   -- shortcut keys
   KeyBindings = {
---~     AAA_NotUsed = "If using OSX put -Cmd to use it",
     -- Keys.lua
     ClearConsoleLog = "F9",
     ObjectColourRandom = "Shift-F6",

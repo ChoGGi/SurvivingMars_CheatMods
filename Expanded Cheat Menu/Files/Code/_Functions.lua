@@ -417,36 +417,38 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
   Colonist:ChooseEntity()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Colonist,Spec)
+function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(colonist,spec)
   --children don't have spec models so they get black cube
-  if not Colonist.entity:find("Child",1,true) then
-    if Spec == "Random" then
-      Spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
+  if not colonist.entity:find("Child",1,true) then
+    if spec == "Random" then
+      spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
     end
-    Colonist:SetSpecialization(Spec,"init")
-    Colonist:ChooseEntity()
-    Colonist:UpdateWorkplace()
+    colonist:SetSpecialization(spec,"init")
+    colonist:ChooseEntity()
+    colonist:UpdateWorkplace()
     --randomly fails on colonists from rockets
     --Colonist:TryToEmigrate()
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateTraits(Colonist,Bool,Traits)
-  local Type = "RemoveTrait"
-  if Bool == true then
-    Type = "AddTrait"
+function ChoGGi.CodeFuncs.ColonistUpdateTraits(colonist,bool,traits)
+  local which
+  if bool == true then
+    which = "AddTrait"
+  else
+    which = "RemoveTrait"
   end
-  for i = 1, #Traits do
-    Colonist[Type](Colonist,Traits[i],true)
+  for i = 1, #traits do
+    colonist[which](colonist,traits[i],true)
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateRace(Colonist,Race)
-  if Race == "Random" then
-    Race = Random(1,5)
+function ChoGGi.CodeFuncs.ColonistUpdateRace(colonist,race)
+  if race == "Random" then
+    race = Random(1,5)
   end
-  Colonist.race = Race
-  Colonist:ChooseEntity()
+  colonist.race = race
+  colonist:ChooseEntity()
 end
 
 --some dev removed this from the Spirit update... (harumph)

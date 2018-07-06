@@ -1,5 +1,6 @@
 --See LICENSE for terms
 
+local TConcat = SolariaTelepresence.ComFuncs.TableConcat --added in Init.lua
 local Concat = SolariaTelepresence.ComFuncs.Concat --added in Init.lua
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
@@ -200,14 +201,26 @@ function SolariaTelepresence.ComFuncs.RetName(obj)
   end
   local name
   if type(obj) == "table" then
+    if obj.name and obj.name ~= "" then
+      --colonist names
+      if type(obj.name) == "table" then
+        name = {}
+        for i = 1, #obj.name do
+          name[i] = T(obj.name[i])
+        end
+        return TConcat(name)
+      --custom name from user (probably)
+      else
+        return obj.name
+      end
     --translated name
-    if type(obj.display_name) == "userdata" then
+    elseif obj.display_name and obj.display_name ~= "" then
       return T(obj.display_name)
+    --added this here as doing tostring lags the shit outta kansas if this is a large objlist
     elseif IsObjlist(obj) then
       return "objlist"
-      --return the name of the first one?
---~       return SolariaTelepresence.ComFuncs.RetName(obj[1])
     end
+    --class or encyclopedia_id
     name = getmetatable(obj)
     if name and type(name.class) == "string" then
       return name.class
@@ -215,11 +228,13 @@ function SolariaTelepresence.ComFuncs.RetName(obj)
     name = obj.encyclopedia_id or obj.class
   end
 
+  --if .class or .encyclopedia_id worked
   if type(name) == "string" then
     return name
   end
 
-  --falling back baby (lags the shit outta kansas if this is a large objlist)
+  --falling back baby
+--~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
   return tostring(obj)
 end
 

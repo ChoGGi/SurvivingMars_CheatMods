@@ -142,7 +142,7 @@ Right click to view selected list item building.]]
 
   --add controller for ease of movement
   ItemList[#ItemList+1] = {
-    name = " Solaria Controller",
+    name = [[ Solaria Controller]],
     pos = self:GetVisualPos(),
 --~     value = self.handle,
 --~     obj = self,

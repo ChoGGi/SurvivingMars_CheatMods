@@ -191,7 +191,7 @@ function OnMsg.ModsLoaded()
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
 
   --everyone loves a new titlebar, unless they don't
-  if ChoGGi.UserSettings.DontChangeTitle then
+  if ChoGGi.UserSettings.ChangeWindowTitle then
     terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
   end
   --genders/ages/traits/specs/birthplaces
