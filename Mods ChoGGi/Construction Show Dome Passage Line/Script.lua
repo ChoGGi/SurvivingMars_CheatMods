@@ -23,7 +23,8 @@ local function BuildDomeSpots(dome)
     local name
     local pos
     for i = start_id, end_id do
-      name = GetSpotAnnotation(dome:GetEntity(), i)
+--~       name = GetSpotAnnotation(dome.entity, i)
+      name = dome:GetSpotAnnotation(i)
       --cursor dome
       if name and name:find("DomeGrass") then
         spots[#spots+1] = dome:GetSpotPos(i)

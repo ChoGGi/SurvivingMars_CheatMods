@@ -10,11 +10,12 @@ local string = string
 
 local CreateRealTimeThread = CreateRealTimeThread
 local CurrentMap = CurrentMap
+local DelayedCall = DelayedCall
 local DestroyBuildingImmediate = DestroyBuildingImmediate
 local IsValid = IsValid
 local Random = Random
 local RebuildInfopanel = RebuildInfopanel
-local Sleep = Sleep
+--~ local Sleep = Sleep
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -131,8 +132,9 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   end
   function g_Classes.Colonist:CheatRenegadeClear()
     self:RemoveTrait("Renegade")
-    CreateRealTimeThread(function()
-      Sleep(100)
+    DelayedCall(100, function()
+--~     CreateRealTimeThread(function()
+--~       Sleep(100)
       self:CheatFillMorale()
     end)
   end

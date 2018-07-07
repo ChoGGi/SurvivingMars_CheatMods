@@ -442,9 +442,10 @@ local function ShowPoint_valuetotextex(o)
 end
 function Examine:valuetotextex(o)
   local objlist = objlist
-  local is_table = type(o) == "table"
+  local obj_type = type(o)
+  local is_table = obj_type == "table"
 
-  if type(o) == "function" then
+  if obj_type == "function" then
     local debug_info = debug.getinfo(o, "Sn")
     return Concat(
       self:HyperLink(function(_,_,button)
@@ -479,8 +480,8 @@ function Examine:valuetotextex(o)
   end
 
   if is_table then
-
-    if getmetatable(o) and getmetatable(o) == objlist then
+    local is_objlist = getmetatable(o)
+    if is_objlist and is_objlist == objlist then
       local res = {
         self:HyperLink(function(_,_,button)
           Examine_valuetotextex(_,_,button,o,self)
@@ -502,7 +503,7 @@ function Examine:valuetotextex(o)
       return TConcat(res)
     end
 
-  elseif type(o) == "thread" then
+  elseif obj_type == "thread" then
     return Concat(
       self:HyperLink(function(_,_,button)
         Examine_valuetotextex(_,_,button,o,self)
@@ -510,7 +511,7 @@ function Examine:valuetotextex(o)
       tostring(o),
       HLEnd
     )
-  elseif type(o) == "string" then
+  elseif obj_type == "string" then
     return Concat(
       "<tags off>'",
       o,
@@ -622,9 +623,12 @@ end
 function Examine:totextex(o)
   local res = {}
   local sort = {}
-  local is_table = type(o) == "table"
---~   if type(o) == "table" and getmetatable(o) ~= g_traceMeta then
+  local obj_metatable = getmetatable(o)
+  local obj_type = type(o)
+  local is_table = obj_type == "table"
+--~   if obj_type == "table" and obj_metatable ~= g_traceMeta then
   if is_table then
+
     for k, v in pairs(o) do
       res[#res+1] = Concat(
         self:valuetotextex(k),
@@ -635,54 +639,53 @@ function Examine:totextex(o)
         sort[res[#res]] = k
       end
     end
-  else
---~     local info, level, s = true, 0, nil
+
+  elseif obj_type == "thread" then
+
     local info, level = true, 0
-    if type(o) == "thread" then
-      while true do
-        info = debug.getinfo(o, level, "Slfun")
-        if info then
-          res[#res+1] = Concat(
-            self:HyperLink(function(level, info)
-              ExamineThreadLevel_totextex(level, info, o,self)
-            end),
-            self:HyperLink(ExamineThreadLevel_totextex(level, info, o,self)),
-            info.short_src,
-            "(",
-            info.currentline,
-            ") ",
-            (info.name or info.name_what or T(302535920000063--[[unknown name--]])),
-            HLEnd
-          )
-        else
-          break
-        end
-        level = level + 1
+    while true do
+      info = debug.getinfo(o, level, "Slfun")
+      if info then
+        res[#res+1] = Concat(
+          self:HyperLink(function(level, info)
+            ExamineThreadLevel_totextex(level, info, o,self)
+          end),
+          self:HyperLink(ExamineThreadLevel_totextex(level, info, o,self)),
+          info.short_src,
+          "(",
+          info.currentline,
+          ") ",
+          (info.name or info.name_what or T(302535920000063--[[unknown name--]])),
+          HLEnd
+        )
+      else
+        break
       end
-
-    elseif type(o) == "function" then
-
-      local i = 1
---~       while true do
-      while i < 10 do
-
-        local k, v = debug.getupvalue(o, i)
-        if k ~= nil then
-          res[#res+1] = Concat(
-            self:valuetotextex(k),
-            " = ",
-            self:valuetotextex(v)
-          )
-          i = i + 1
-        elseif type(o) ~= "table" or getmetatable(o) ~= g_traceMeta then
-          res[#res+1] = self:valuetotextex(o)
-          break
-        end
-
-      end --while
-
+      level = level + 1
     end
+
+  elseif obj_type == "function" then
+
+    local i = 1
+    while true do
+      local k, v = debug.getupvalue(o, i)
+      if k then
+        res[#res+1] = Concat(
+          self:valuetotextex(k),
+          " = ",
+          self:valuetotextex(v)
+        )
+      elseif obj_type ~= "table" or obj_metatable ~= g_traceMeta then
+        res[#res+1] = self:valuetotextex(o)
+        break
+      else
+        break
+      end
+      i = i + 1
+    end --while
+
   end
+
   table.sort(res, function(a, b)
     if sort[a] and sort[b] then
       return sort[a] < sort[b]
@@ -692,7 +695,8 @@ function Examine:totextex(o)
     end
     return CmpLower(a, b)
   end)
---~   if is_table and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
+
+--~   if is_table and obj_metatable == g_traceMeta and obj_metatable == g_traceMeta then
 --~     local items = 1
 --~     for i = 1, #o do
 --~       if not (items >= self.page * 150) then
@@ -718,10 +722,11 @@ function Examine:totextex(o)
 --~     end
 --~   end
   if IsValid(o) and o:IsKindOf("CObject") then
+
       table.insert(res, 1,Concat(
       "<center>--",
       self:HyperLink(function()
-        Examine_totextex(getmetatable(o),self)
+        Examine_totextex(obj_metatable,self)
       end),
       o.class,
       HLEnd,
@@ -729,10 +734,10 @@ function Examine:totextex(o)
       self:valuetotextex(o:GetPos()),
       "--<vspace 6><left>"
     ))
-    if o:IsValidPos() and IsValidEntity(o:GetEntity()) and 0 < o:GetAnimDuration() then
+--~     if o:IsValidPos() and IsValidEntity(o:GetEntity()) and 0 < o:GetAnimDuration() then
+    if o:IsValidPos() and IsValidEntity(o.entity) and 0 < o:GetAnimDuration() then
       local pos = o:GetVisualPos() + o:GetStepVector() * o:TimeToAnimEnd() / o:GetAnimDuration()
       table.insert(res, 2, Concat(
---~         "<center>",
         GetStateName(o:GetState()),
         ", step:",
         self:HyperLink(function()
@@ -742,8 +747,9 @@ function Examine:totextex(o)
         HLEnd
       ))
     end
-  elseif is_table and getmetatable(o) then
---~     if getmetatable(o) == g_traceMeta then
+
+  elseif is_table and obj_metatable then
+--~     if obj_metatable == g_traceMeta then
 --~       table.insert(res, 1, Concat(
 --~         "<center>--",
 --~         T(302535920000056--[[Trace Log--]]),
@@ -759,7 +765,7 @@ function Examine:totextex(o)
 --~     else
       table.insert(res, 1, Concat(
         "<center>--",
-        self:valuetotextex(getmetatable(o)),
+        self:valuetotextex(obj_metatable),
         ": metatable--<vspace 6><left>"
       ))
 --~     end
@@ -854,6 +860,8 @@ local function Next_menu(o,self)
   --self:SetObj(self.obj)
 end
 function Examine:menu(o)
+  local obj_metatable = getmetatable(o)
+  local obj_type = type(o)
   local res = {"  "}
   res[#res+1] = self:HyperLink(function()
     Refresh_menu(o,self)
@@ -863,7 +871,7 @@ function Examine:menu(o)
   res[#res+1] = "]"
   res[#res+1] = HLEnd
   res[#res+1] = " "
-  if IsValid(o) and type(o) == "table" then
+  if IsValid(o) and obj_type == "table" then
     res[#res+1] = self:HyperLink(function()
       Show_menu(o)
     end)
@@ -897,7 +905,7 @@ function Examine:menu(o)
 --~       res[#res+1] = " "
 --~     end
   end
---~   if type(o) == "table" and getmetatable(o) == g_traceMeta then
+--~   if obj_type == "table" and obj_metatable == g_traceMeta then
 --~     res[#res+1] = self:HyperLink(function()
 --~       ShowTime_menu(o,self)
 --~     end)
@@ -906,7 +914,7 @@ function Examine:menu(o)
 --~     res[#res+1] = " "
 --~   end
   --res[#res+1] = "\n"
---~   if type(o) == "table" and getmetatable(o) == g_traceMeta then
+--~   if obj_type == "table" and obj_metatable == g_traceMeta then
 --~     res[#res+1] = "\n"
 --~     res[#res+1] = self:HyperLink(function()
 --~       Switch_menu("Short",o,self)
@@ -1016,7 +1024,8 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
     --i suppose i could do some type checking, ah well
     if not pcall(function()
       --attaches menu
-      list = type(o) == "table" and o:GetAttaches()
+--~       list = type(o) == "table" and o:GetAttaches()
+      list = is_table and o:GetAttaches()
       if list and #list > 0 then
 
         local list_items = {

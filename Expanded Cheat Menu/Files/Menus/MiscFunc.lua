@@ -9,14 +9,14 @@ local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 local next,tostring,type,table = next,tostring,type,table
 
 local ChangeGameSpeedState = ChangeGameSpeedState
-local CreateRealTimeThread = CreateRealTimeThread
+--~ local CreateRealTimeThread = CreateRealTimeThread
 local GetObjects = GetObjects
 local PlayFX = PlayFX
 local Random = Random
 local RebuildFXRules = RebuildFXRules
 local RemoveFromRules = RemoveFromRules
 local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
-local Sleep = Sleep
+--~ local Sleep = Sleep
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -620,9 +620,10 @@ local function SetScale(Obj,Scale)
   local cUserSettings = ChoGGi.UserSettings
   Obj:SetScale(Scale)
   --changing entity to a static one and changing scale can make things not move so re-apply speeds.
-  CreateRealTimeThread(function()
-    --and it needs a slight delay
-    Sleep(500)
+  --and it needs a slight delay
+	DelayedCall(500, function()
+--~   CreateRealTimeThread(function()
+--~     Sleep(500)
     if Obj.class == "Drone" then
       if cUserSettings.SpeedDrone then
         pf_SetStepLen(Obj,cUserSettings.SpeedDrone)

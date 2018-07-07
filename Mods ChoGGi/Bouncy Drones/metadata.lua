@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"version", 3,
 	"title", "Bouncy Drones v0.3",
-	"tags", "Misc",
+	"saved", 1530878400,
 	"id", "ChoGGi_BouncyDrones",
 	"author", "ChoGGi",
   "image","Preview.png",

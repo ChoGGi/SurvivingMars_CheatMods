@@ -19,6 +19,7 @@ local SetLightmodel = SetLightmodel
 local SetLightmodelOverride = SetLightmodelOverride
 local SetMouseDeltaMode = SetMouseDeltaMode
 local ShowMouseCursor = ShowMouseCursor
+local Sleep = Sleep
 
 local camera_GetFovX = camera.GetFovX
 local camera_SetFovX = camera.SetFovX
@@ -396,7 +397,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     Check1 = T(302535920000988--[[Permanent--]])
     Check1Hint = T(302535920000989--[[Make it stay at selected light model all the time (including reboots).--]])
     Check2 = T(327465361219--[[Edit--]])
-    Check2Hint = T(302535920000990--[[Open this style in \"Change Light Model Custom\".--]])
+    Check2Hint = T(302535920000990--[[Open this style in "Change Light Model Custom".--]])
   end
 
   hint[#hint+1] = "\n\n"

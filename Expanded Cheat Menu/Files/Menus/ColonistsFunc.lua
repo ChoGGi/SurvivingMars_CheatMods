@@ -7,17 +7,18 @@ local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
 local tostring,type,pairs,table = tostring,type,pairs,table
 
-local Random = Random
-local GetRandomTrait = GetRandomTrait
+--~ local CreateRealTimeThread = CreateRealTimeThread
+local DelayedCall = DelayedCall
+local GameTime = GameTime
 local GenerateApplicant = GenerateApplicant
 local GenerateTraits = GenerateTraits
-local Notify = Notify
-local GameTime = GameTime
-local Msg = Msg
-local Sleep = Sleep
 local GetObjects = GetObjects
-local CreateRealTimeThread = CreateRealTimeThread
+local GetRandomTrait = GetRandomTrait
+local Msg = Msg
+local Notify = Notify
 local PlaceResourcePile = PlaceResourcePile
+local Random = Random
+--~ local Sleep = Sleep
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -80,9 +81,10 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     PlaceResourcePile(MeatBag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
     MeatBag.ChoGGi_Soylent = true
-    CreateRealTimeThread(function()
-      --gotta wait for a tad else log gets spammed with changepath and other stuff
-      Sleep(100)
+    --gotta wait for a tad else log gets spammed with changepath and other stuff
+    DelayedCall(100, function()
+--~     CreateRealTimeThread(function()
+--~       Sleep(100)
       local Table = GetObjects{class="Colonist"} or empty_table
       for i = 1, #Table do
         if Table[i].ChoGGi_Soylent then

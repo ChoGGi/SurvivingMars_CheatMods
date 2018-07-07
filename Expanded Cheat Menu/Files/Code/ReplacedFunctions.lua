@@ -694,7 +694,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       ChoGGi_OrigFuncs.UAMenu_OnMouseLeft(self,...)
       thread = CreateRealTimeThread(function()
         Sleep(2500)
-      self:SetSize(point(80,self:GetSize():y()))
+        self:SetSize(point(80,self:GetSize():y()))
       end)
     end
   end

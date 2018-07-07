@@ -16,6 +16,7 @@ local box = box
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 local CreateRolloverWindow = CreateRolloverWindow
+local DelayedCall = DelayedCall
 local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
@@ -452,13 +453,17 @@ do --g_Classes
     c:SetPos(pt:SetTerrainZ(10 * guic))
     c:SetRadius(r)
     c:SetColor(color or RGB(255, 255, 255))
-    CreateGameTimeThread(function()
-      Sleep(7000)
+    DelayedCall(7000, function()
       if IsValid(c) then
-  --~       c:delete()
         DoneObject(c)
       end
     end)
+--~     CreateGameTimeThread(function()
+--~       Sleep(7000)
+--~       if IsValid(c) then
+--~         DoneObject(c)
+--~       end
+--~     end)
   end
 
 end
@@ -857,13 +862,13 @@ function ChoGGi.ComFuncs.RetProperType(Value)
 end
 
 -- used to check for some SM objects (Points/Boxes)
-function ChoGGi.ComFuncs.RetType(Obj)
-  local meta = getmetatable(Obj)
+function ChoGGi.ComFuncs.RetType(obj)
+  local meta = getmetatable(obj)
   if meta then
-    if IsPoint(Obj) then
+    if IsPoint(obj) then
       return "Point"
     end
-    if IsBox(Obj) then
+    if IsBox(obj) then
       return "Box"
     end
   end
@@ -1688,9 +1693,10 @@ function OpenExamine(o, from)
   local ex = Examine:new()
   if from then
     --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
-    --so i use a thread in Init to re-pos it, which of course messes this up, so we make sure this is called later
-    CreateRealTimeThread(function()
-      Sleep(1)
+    --so i use a thread in Init to re-pos it, which messes this up, so we want to make sure this is called later
+    DelayedCall(1, function()
+--~     CreateRealTimeThread(function()
+--~       Sleep(1)
       if IsPoint(from) then
         ex:SetPos(from)
 

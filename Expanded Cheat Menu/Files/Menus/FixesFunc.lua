@@ -523,3 +523,31 @@ end
 --~   end
 --~ end
 --~ print(amount)
+
+
+--~ :IsMalfunctioned()
+--~ local dome = s
+--~ local objs = ChoGGi.ComFuncs.FilterFromTable(ChoGGi.ComFuncs.ReturnAllNearby(1000,nil,dome:GetSpotPos(-1)),nil,{ResourcePile=true},"class")
+--~ if #objs > 0 then
+
+--~   local start_id, end_id = dome:GetAllSpots(dome:GetState())
+--~   local name
+--~   local pos
+--~   for i = start_id, end_id do
+--~     name = dome:GetSpotName(i)
+--~     if name == "Workdrone" then
+--~       pos = dome:GetSpotPos(i)
+--~       if #ChoGGi.ComFuncs.RetObjectsAtPos(pos) < 2 then
+--~         for j = 1, #objs do
+--~           objs[j]:SetPos(pos)
+--~         end
+--~         break
+--~       end
+--~     end
+--~   end
+
+--~   dome:Repair()
+--~   dome:ResetMaintenanceRequests()
+--~   dome:ResetMaintenanceWorkRequest()
+--~   dome:CheatMalfunction()
+--~ end
