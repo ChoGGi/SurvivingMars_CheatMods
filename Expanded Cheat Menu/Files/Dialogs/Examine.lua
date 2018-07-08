@@ -238,13 +238,13 @@ function Examine:Init()
         -- adds class name then list of functions below
         local function BuildFuncList(obj_name)
           local class = _G[obj_name]
---~           menu_list_items[#menu_list_items+1] = Concat("   ---- ",," ----")
           for Key,_ in pairs(class) do
             if type(class[Key]) == "function" then
               menu_list_items[#menu_list_items+1] = Concat(obj_name,".",Key,": ")
               menu_list_items[#menu_list_items+1] = class[Key]
             end
           end
+          menu_list_items[#menu_list_items+1] = "\n\n"
         end
 
         local function ProcessList(list)
