@@ -925,7 +925,8 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_wonder),T(302535920000159--[[: Unlimited Wonders\n(restart to set disabled)--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_wonder),T(302535920000159--[[: Unlimited Wonders
+(restart to set disabled)--]])),
     T(3980--[[Buildings--]]),UsualIcon3
   )
 end
@@ -934,7 +935,8 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_dome_spot = not ChoGGi.UserSettings.Building_dome_spot
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_dome_spot),T(302535920000160--[[: Freedom for spires!\n(restart to set disabled)--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_dome_spot),T(302535920000160--[[: Freedom for spires!
+(restart to set disabled)--]])),
     T(3980--[[Buildings--]]),UsualIcon3
   )
 end
@@ -943,7 +945,8 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_instant_build = not ChoGGi.UserSettings.Building_instant_build
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_instant_build),T(302535920000161--[[: Building Instant Build\n(restart to set disabled).--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_instant_build),T(302535920000161--[[: Building Instant Build
+(restart to set disabled).--]])),
     T(3980--[[Buildings--]]),UsualIcon3
   )
 end
@@ -952,7 +955,8 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.Building_hide_from_build_menu = not ChoGGi.UserSettings.Building_hide_from_build_menu
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu),T(302535920000162--[[: Buildings hidden\n(restart to toggle).--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu),T(302535920000162--[[: Buildings hidden
+(restart to toggle).--]])),
     T(3980--[[Buildings--]]),UsualIcon3
   )
 end

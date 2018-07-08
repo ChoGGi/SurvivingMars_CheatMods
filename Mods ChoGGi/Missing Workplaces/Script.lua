@@ -3,31 +3,30 @@
 local table = table
 local DoneObject = DoneObject
 
-local function Stuff(workplaces)
-	local sum_ui_on = 0
-	local sum_ui_off = 0
---~ 	for i = 1, #workplaces do
-  for i = #workplaces, 1, -1 do
-		local b = workplaces[i]
-    --neither func checks if the class is UnpersistedMissingClass, so easy enough fix
-    if b.class == "UnpersistedMissingClass" then
-      DoneObject(b)
-      table.remove(workplaces,i)
-    elseif not b.destroyed and not b.demolishing then
-      if b.ui_working then
-        sum_ui_on = sum_ui_on + b:GetFreeWorkSlots()
+local cleaned_work
+
+local function CleanWork(city)
+  local work = city.labels.Workplace or empty_table
+  if not cleaned_work then
+    for i = #work, 1, -1 do
+      if work[i].class == "UnpersistedMissingClass" then
+        DoneObject(work[i])
+        table.remove(work,i)
       end
-      sum_ui_off = sum_ui_off + b:GetClosedSlots()
     end
-	end
-	return sum_ui_on, sum_ui_off
+    cleaned_work = true
+  end
 end
 
+local orig_GetFreeWorkplacesAround = GetFreeWorkplacesAround
 function GetFreeWorkplacesAround(dome)
   local city = dome.city or UICity
-  return Stuff(city.labels.Workplace or empty_table)
+  CleanWork(city)
+  return orig_GetFreeWorkplacesAround(city)
 end
 
+local orig_GetFreeWorkplaces = GetFreeWorkplaces
 function GetFreeWorkplaces(city)
-  return Stuff(city.labels.Workplace or empty_table)
+  CleanWork(city)
+  return orig_GetFreeWorkplaces(city)
 end

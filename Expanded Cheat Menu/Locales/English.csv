@@ -1,5 +1,4 @@
 ID,Text,Translation
-302535920001241,,
 302535920001242,,
 302535920001243,,
 302535920001244,,
@@ -281,6 +280,7 @@ It's next to godliness. Isn't that what they say?",
 302535920000162,": Buildings hidden
 (restart to toggle).",
 302535920000163,Radius,
+302535920001241,Instant Build,
 302535920000164,Storage Amount Of Diner & Grocery,
 302535920000167,Change how much food is stored in them (less chance of starving colonists when busy).,
 302535920000168,Triboelectric Scrubber Radius,

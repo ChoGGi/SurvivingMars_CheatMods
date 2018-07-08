@@ -344,7 +344,7 @@ Use with Remove Building Limits to fill up a dome with spires.--]]
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000220--[[Instant Build--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920001241--[[Instant Build--]])),
     ChoGGi.MenuFuncs.Building_instant_build_Toggle,
     nil,
     function()

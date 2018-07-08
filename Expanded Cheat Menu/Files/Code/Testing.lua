@@ -3,8 +3,12 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 
+local table,type,pairs,print,table,dofile = table,type,pairs,print,table,dofile
+
+local DoneObject = DoneObject
+
 --stuff that never happens, fuck comments (like this one)
-if type(ChoGGi.Testing) == "function" then
+if ChoGGi.Testing == 123456789 then
 
   --for ingame editor
 
@@ -96,55 +100,69 @@ end
 
 if ChoGGi.Testing then
 
-  -----------------------------missing workplaces
-  local table = table
-  local DoneObject = DoneObject
+  do -- missing workplaces/residences
+    local cleaned_work
 
-  local function MissingWorkplaces(workplaces)
-    local sum_ui_on = 0
-    local sum_ui_off = 0
-  --~ 	for i = 1, #workplaces do
-    for i = #workplaces, 1, -1 do
-      local b = workplaces[i]
-      --neither func checks if the class is UnpersistedMissingClass, so easy enough fix
-      if b.class == "UnpersistedMissingClass" then
-        DoneObject(b)
-        table.remove(workplaces,i)
-      elseif not b.destroyed and not b.demolishing then
-        if b.ui_working then
-          sum_ui_on = sum_ui_on + b:GetFreeWorkSlots()
+    local function CleanWork(city)
+      local work = city.labels.Workplace or empty_table
+      if not cleaned_work then
+        for i = #work, 1, -1 do
+          if work[i].class == "UnpersistedMissingClass" then
+            DoneObject(work[i])
+            table.remove(work,i)
+          end
         end
-        sum_ui_off = sum_ui_off + b:GetClosedSlots()
+        cleaned_work = true
       end
     end
-    return sum_ui_on, sum_ui_off
+
+    local orig_GetFreeWorkplacesAround = GetFreeWorkplacesAround
+    function GetFreeWorkplacesAround(dome)
+      local city = dome.city or UICity
+      CleanWork(city)
+      return orig_GetFreeWorkplacesAround(city)
+    end
+
+    local orig_GetFreeWorkplaces = GetFreeWorkplaces
+    function GetFreeWorkplaces(city)
+      CleanWork(city)
+      return orig_GetFreeWorkplaces(city)
+    end
+
+    local cleaned_res
+
+    local orig_GetFreeLivingSpace = GetFreeLivingSpace
+    function GetFreeLivingSpace(city, count_children)
+      local res = city.labels.Residence or empty_table
+      if not cleaned_res then
+        for i = #res, 1, -1 do
+          if res[i].class == "UnpersistedMissingClass" then
+            DoneObject(res[i])
+            table.remove(res,i)
+          end
+        end
+        cleaned_res = true
+      end
+
+      return orig_GetFreeLivingSpace(city, count_children)
+    end
   end
 
-  function GetFreeWorkplacesAround(dome)
-    local city = dome.city or UICity
-    return MissingWorkplaces(city.labels.Workplace or empty_table)
-  end
-
-  function GetFreeWorkplaces(city)
-    return MissingWorkplaces(city.labels.Workplace or empty_table)
-  end
-  -----------------------------missing workplaces
-
-
-  --tell me if traits are different
-  local ChoGGi = ChoGGi
-  local const = const
-  local textstart = "<color 255 0 0>"
-  local textend = " is different length</color>"
-  if #const.SchoolTraits ~= 5 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SchoolTraits",textend)
-  end
-  if #const.SanatoriumTraits ~= 7 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SanatoriumTraits",textend)
-  end
-  local fulllist = TraitsCombo()
-  if #fulllist ~= 55 then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"TraitsCombo",textend)
+  do --tell me if traits are different
+    local ChoGGi = ChoGGi
+    local const = const
+    local textstart = "<color 255 0 0>"
+    local textend = " is different length</color>"
+    if #const.SchoolTraits ~= 5 then
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SchoolTraits",textend)
+    end
+    if #const.SanatoriumTraits ~= 7 then
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SanatoriumTraits",textend)
+    end
+    local fulllist = TraitsCombo()
+    if #fulllist ~= 55 then
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"TraitsCombo",textend)
+    end
   end
 
 ---------
