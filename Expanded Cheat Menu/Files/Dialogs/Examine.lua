@@ -182,6 +182,7 @@ function Examine:Init()
   local menuitem_ViewObject = Concat(T(302535920000048--[[View--]])," ",T(298035641454--[[Object--]]))
   local menuitem_EditObject = Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]]))
   local menuitem_ExecCode = T(302535920000323--[[Exec Code--]])
+  local menuitem_Functions = T(302535920001239--[[Functions--]])
 
   function self.idToolsMenu.OnComboClose(menu,idx)
     --close hint
@@ -230,6 +231,35 @@ function Examine:Init()
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
       elseif text == menuitem_ExecCode then
         ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
+      elseif text == menuitem_Functions then
+
+        local menu_added = {}
+        local menu_list_items = {}
+        -- adds class name then list of functions below
+        local function BuildFuncList(obj_name)
+          local class = _G[obj_name]
+--~           menu_list_items[#menu_list_items+1] = Concat("   ---- ",," ----")
+          for Key,_ in pairs(class) do
+            if type(class[Key]) == "function" then
+              menu_list_items[#menu_list_items+1] = Concat(obj_name,".",Key,": ")
+              menu_list_items[#menu_list_items+1] = class[Key]
+            end
+          end
+        end
+
+        local function ProcessList(list)
+          for i = 1, #list do
+            if not menu_added[list[i]] then
+              menu_added[list[i]] = true
+              BuildFuncList(list[i])
+            end
+          end
+        end
+        ProcessList(self.parents)
+        ProcessList(self.ancestors)
+
+        OpenExamine(menu_list_items,self)
+
       end
 
     end
@@ -264,6 +294,10 @@ This can take time on something like the \"Building\" metatable (don't use this 
     {
       text = "   ---- ",
       rollover = "-",
+    },
+    {
+      text = menuitem_Functions,
+      rollover = T(302535920001240--[[Show all functions of this object and parents/ancestors.--]]),
     },
     {
       text = menuitem_EditObject,
@@ -341,7 +375,6 @@ This can take time on something like the \"Building\" metatable (don't use this 
       end
     end
   end
-
 
   title = T(1000232--[[Next--]])
   self.idNext = g_Classes.Button:new(self)
@@ -771,6 +804,11 @@ function Examine:totextex(o)
 --~     end
   end
 
+  -- stick strings/numbers
+  if obj_type == "number" or obj_type == "string" or obj_type == "boolean" then
+    res[#res+1] = tostring(o)
+  end
+
   return TConcat(res,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -979,8 +1017,11 @@ function Examine:menu(o)
 end
 
 function Examine:SetObj(o)
-ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   local ChoGGi = ChoGGi
+
+  if ChoGGi.Testing then
+    ChoGGi.ComFuncs.TickStart("Examine:SetObj")
+  end
   self.onclick_handles = {}
   self.obj = o
   self.idText:SetText(self:totextex(o))
@@ -994,37 +1035,46 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   local amount = attaches and #attaches or 0
   self.idAttaches:SetHint(string.format(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]),name,amount)
   )
-  --add object name to title
   if is_table then
+
+    --add object name to title
     if type(o.handle) == "number" then
       self.idCaption:SetText(Concat(name," (",o.handle,")"))
     else
-      --limit length so we don't cover up close button
+      --limit length so we don't cover up close button (only for objlist, everything else is short enough)
       self.idCaption:SetText(utf8.sub(name, 1, 50))
     end
-    --build list of parents, see about a way to toggle showing ancestors (big list)
+
+    --build parent menus
+    local build_menu
+    local pmenu_list_items
     local list = o.__parents
     if list then
+      build_menu = true
       list = RetSortTextAssTable(list)
-      local list_items = {{text = Concat("   ---- ",T(302535920000520--[[Parents--]]))}}
+      self.parents = list
+      pmenu_list_items = {{text = Concat("   ---- ",T(302535920000520--[[Parents--]]))}}
       for i = 1, #list do
-        list_items[#list_items+1] = {
-          text = list[i]
-        }
+        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
       end
-      list_items[#list_items+1] = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
-      list = RetSortTextAssTable(o.__ancestors,true)
-      for i = 1, #list do
-        list_items[#list_items+1] = {
-          text = list[i]
-        }
-      end
-      self.idParentsMenu:SetContent(list_items, true)
     end
+    list = o.__ancestors
+    if list then
+      build_menu = true
+      list = RetSortTextAssTable(list,true)
+      self.ancestors = list
+      pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
+      for i = 1, #list do
+        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
+      end
+    end
+    if build_menu then
+      self.idParentsMenu:SetContent(pmenu_list_items, true)
+    end
+
     --i suppose i could do some type checking, ah well
-    if not pcall(function()
+    pcall(function()
       --attaches menu
---~       list = type(o) == "table" and o:GetAttaches()
       list = is_table and o:GetAttaches()
       if list and #list > 0 then
 
@@ -1052,16 +1102,15 @@ ChoGGi.ComFuncs.TickStart("Examine:SetObj")
       else
         self.idAttaches:SetVisible(false)
       end
-      return true
-    end) then
---~       DebugPrint(string.format(T(302535920001001--[[Slight issue with %s you may safely ignore the following error or three.--]]),"\r\n",name))
-    end
+    end)
 
   else
     self.idCaption:SetText(utf8.sub(name, 1, 50))
   end
 
-ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
+  if ChoGGi.Testing then
+    ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
+  end
 end
 
 function Examine:SetText(text)

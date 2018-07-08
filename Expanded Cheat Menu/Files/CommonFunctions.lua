@@ -1647,10 +1647,15 @@ end
 
 local temp_table = {}
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
-  --clean out old table instead of making a new one
-  for i = #temp_table, 1, -1 do
-    temp_table[i] = nil
+  if #temp_table > 1000 then
+    temp_table = {}
+  else
+    --clean out old table instead of making a new one
+    for i = #temp_table, 1, -1 do
+      temp_table[i] = nil
+    end
   end
+
   --add
   if for_type then
     for k,_ in pairs(list) do

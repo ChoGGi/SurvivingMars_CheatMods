@@ -1,3 +1,7 @@
+v6.5
+Added:
+Examine>Tools>Functions: Shows a list of all functions.
+
 v6.4
 Fixed:
 Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).

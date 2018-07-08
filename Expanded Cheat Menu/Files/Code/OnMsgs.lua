@@ -187,6 +187,17 @@ function OnMsg.OptionsApply()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
+--~ 	ForEachPreset("Cargo", function(cargo, group, self, props)
+--~     if cargo.id == "RegolithExtractor" then
+--~       -- needed to show it in the menu
+--~       cargo.locked = nil
+--~       cargo.group = "Prefabs"
+--~       -- set weight/price
+--~       cargo.kg = 1234
+--~       cargo.price = 123400000
+--~     end
+--~   end)
+
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.Defaults_ModsLoaded()
 

@@ -754,7 +754,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 
   local res = oldobj.resource
   local amount = oldobj[Concat("GetStored_",res)](oldobj)
-  --not good to be larger then this when game is saved
+  --not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
   if amount > 20000000 then
     amount = amount
   end
