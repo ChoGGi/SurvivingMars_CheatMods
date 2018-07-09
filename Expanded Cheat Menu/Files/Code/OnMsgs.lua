@@ -7,12 +7,12 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
-local rawget,rawset = rawget,rawset
 
 local AsyncFileToString = AsyncFileToString
 local ClassDescendantsList = ClassDescendantsList
 local CreateRealTimeThread = CreateRealTimeThread
 local GetObjects = GetObjects
+local GetPreciseTicks = GetPreciseTicks
 local IsValid = IsValid
 local LuaCodeToTuple = LuaCodeToTuple
 local Msg = Msg
@@ -1170,9 +1170,12 @@ function OnMsg.ChoGGi_Loaded()
     print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
   end
 
+  -- used to check when game has started and it's safe to print() etc
+  ChoGGi.Temp.GameLoaded = true
+
 end --OnMsg
 
---show how long loading takes
+-- show how long loading takes
 function OnMsg.ChangeMap()
   ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end

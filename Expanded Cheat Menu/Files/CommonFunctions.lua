@@ -13,7 +13,6 @@ local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
 local AsyncStringToFile = AsyncStringToFile
 local box = box
-local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 local CreateRolloverWindow = CreateRolloverWindow
 local DelayedCall = DelayedCall
@@ -43,6 +42,7 @@ local ViewPos = ViewPos
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
 local WorldToHex = WorldToHex
+local HexGridGetObjects = HexGridGetObjects
 
 local local_T = T -- T replaced below
 local guic = guic
@@ -1647,7 +1647,7 @@ end
 
 local temp_table = {}
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
-  if #temp_table > 1000 then
+  if #temp_table > 500 then
     temp_table = {}
   else
     --clean out old table instead of making a new one
@@ -1740,22 +1740,6 @@ function ChoGGi.ComFuncs.ClearShowMe()
       end
     end
   end)
-end
-
-function ChoGGi.ComFuncs.StartDebugger()
-  config.Haerald = {
-    platform = GetDebuggeePlatform(),
-    ip = "localhost",
-    RemoteRoot = "",
-    ProjectFolder = "",
-  }
-  SetupRemoteDebugger(
-    config.Haerald.ip,
-    config.Haerald.RemoteRoot,
-    config.Haerald.ProjectFolder
-  )
-  StartDebugger()
---~   ProjectSync()
 end
 
 local times = {}

@@ -64,7 +64,7 @@ ChoGGi._VERSION = Mods[ChoGGi.id].version
 ChoGGi.ModPath = Mods[ChoGGi.id].path
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,table = dofile,select,tostring,table
+local dofile,select,tostring,table,type = dofile,select,tostring,table,type
 local AsyncFileOpen = AsyncFileOpen
 local dofolder_files = dofolder_files
 
@@ -79,21 +79,23 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
 
--- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
+-- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
-local concat_value
 function ChoGGi.ComFuncs.Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one (should probably bench till i find a good medium rather than just using 1000)
-  if #concat_table > 1000 then
+  -- reuse old table if it's not that big, else it's quicker to make new one
+  -- (should probably bench till i find a good medium rather than just using 500)
+  if #concat_table > 500 then
     concat_table = {}
   else
-    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a "lua for loop"
+    -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
+    table.iclear(concat_table)
   end
-  -- build table from args (see if devs added a c func to do this?)
-  local select,type,tostring = select,type,tostring --helps speed or not? (check bench)
+  -- build table from args
   for i = 1, select("#",...) do
-    concat_value = select(i,...)
-      if type(concat_value) == "string" or type(concat_value) == "number" then
+    local concat_value = select(i,...)
+    -- no sense in calling a func more then we need to
+    local concat_type = type(concat_value)
+    if concat_type == "string" or concat_type == "number" then
       concat_table[i] = concat_value
     else
       concat_table[i] = tostring(concat_value)

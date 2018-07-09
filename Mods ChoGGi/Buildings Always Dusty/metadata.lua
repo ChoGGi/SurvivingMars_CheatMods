@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
 	"steam_id", "1411885355",
   "code", {"Script.lua"},
-  "description", [[Buildings will never lose their dust.
+  "description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 
 Requested by: LegendGamer
 

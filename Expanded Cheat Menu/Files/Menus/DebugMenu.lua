@@ -27,16 +27,6 @@ function ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000485--[[Flatten Terrain Toggle--]])),
-    ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-    ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
-    T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
-
-Use Shift + Arrow keys to change the height/radius.--]]),
-    "FixUnderwaterEdges.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000449--[[Attach Spots Toggle--]])),
     ChoGGi.MenuFuncs.AttachSpots_Toggle,
     nil,

@@ -100,6 +100,22 @@ end
 
 if ChoGGi.Testing then
 
+  function ChoGGi.ComFuncs.StartDebugger()
+    config.Haerald = {
+      platform = GetDebuggeePlatform(),
+      ip = "localhost",
+      RemoteRoot = "",
+      ProjectFolder = "",
+    }
+    SetupRemoteDebugger(
+      config.Haerald.ip,
+      config.Haerald.RemoteRoot,
+      config.Haerald.ProjectFolder
+    )
+    StartDebugger()
+  --~   ProjectSync()
+  end
+
   do -- missing workplaces/residences
     local cleaned_work
 

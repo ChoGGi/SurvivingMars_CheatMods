@@ -21,9 +21,7 @@ local g_Classes = g_Classes
 --useful lists
 do
   local ChoGGi = ChoGGi
-  local Nations = Nations
   local const = const
-  local DataInstances = DataInstances
 
   ChoGGi.Tables = {
     --display names only! (stored as numbers, not names like the rest; which is why i guessed)

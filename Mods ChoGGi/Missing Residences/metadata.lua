@@ -12,5 +12,8 @@ return PlaceObj("ModDef", {
 
 This fixes that, and will remove any broked residences.
 
-You can remove this mod after saving your game, or leave it enabled.]],
+You can remove this mod after saving your game, or leave it enabled.
+
+Missing Workplaces:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1416732651]],
 })

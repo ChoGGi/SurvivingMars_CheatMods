@@ -31,6 +31,8 @@ local SelectionMouseObj = SelectionMouseObj
 local SelectObj = SelectObj
 local Sleep = Sleep
 local ViewPos = ViewPos
+local GetPassablePointNearby = GetPassablePointNearby
+local OpenExamine = OpenExamine
 
 local terminal_GetMousePos = terminal.GetMousePos
 local UIL_GetScreenSize = UIL.GetScreenSize
@@ -642,7 +644,8 @@ local function SetRandColour(Obj,colour,ChoGGi)
   local GetPal = Obj.GetColorizationMaterial
   local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
   --likely can only change basecolour
-  if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
+--~ if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
+  if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
     Obj:SetColorModifier(colour)
   else
     if not Obj.ChoGGi_origcolors then

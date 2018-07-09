@@ -5,15 +5,13 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local UsualIcon = "UI/Icons/Notifications/colonist.tga"
 
-local tostring,type,pairs,table = tostring,type,pairs,table
+local tostring,type,table = tostring,type,table
 
 --~ local CreateRealTimeThread = CreateRealTimeThread
 local DelayedCall = DelayedCall
 local GameTime = GameTime
 local GenerateApplicant = GenerateApplicant
-local GenerateTraits = GenerateTraits
 local GetObjects = GetObjects
-local GetRandomTrait = GetRandomTrait
 local Msg = Msg
 local Notify = Notify
 local PlaceResourcePile = PlaceResourcePile
@@ -28,10 +26,10 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
     ChoGGi.UserSettings.NoMoreEarthsick = nil
   else
     ChoGGi.UserSettings.NoMoreEarthsick = true
-    local Table = UICity.labels.Colonist or empty_table
-    for i = 1, #Table do
-      if Table[i].status_effects.StatusEffect_Earthsick then
-        Table[i]:Affect("StatusEffect_Earthsick", false)
+    local c = UICity.labels.Colonist or empty_table
+    for i = 1, #c do
+      if c[i].status_effects.StatusEffect_Earthsick then
+        c[i]:Affect("StatusEffect_Earthsick", false)
       end
     end
   end
@@ -256,36 +254,12 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
       )
     else
       if type(value) == "number" then
-        local now = GameTime()
-        local self = SA_AddApplicants
+        local UICity = UICity
+				local now = GameTime()
         for _ = 1, value do
-          local colonist = GenerateApplicant(now)
-          local to_add = self.Trait
-          if self.Trait == "random_positive" then
-            to_add = GetRandomTrait(colonist.traits, {}, {}, "Positive", "base")
-          elseif self.Trait == "random_negative" then
-            to_add = GetRandomTrait(colonist.traits, {}, {}, "Negative", "base")
-          elseif self.Trait == "random_rare" then
-            to_add = GetRandomTrait(colonist.traits, {}, {}, "Rare", "base")
-          elseif self.Trait == "random_common" then
-            to_add = GetRandomTrait(colonist.traits, {}, {}, "Common", "base")
-          elseif self.Trait == "random" then
-            to_add = GenerateTraits(colonist, false, 1)
-          else
-            to_add = self.Trait
-          end
-          if type(to_add) == "table" then
-            for trait in pairs(to_add) do
-              colonist.traits[trait] = true
-            end
-          else
-            colonist.traits[to_add] = true
-          end
-          if self.Specialization ~= "any" then
-            colonist.traits[self.Specialization] = true
-            colonist.specialist = self.Specialization
-          end
+          GenerateApplicant(now, UICity)
         end
+        g_LastGeneratedApplicantTime = now
         MsgPopup(Concat(T(302535920000756--[[Added applicants--]]),": ",choice[1].text),
           T(302535920000755--[[Applicants--]]),UsualIcon
         )
@@ -299,7 +273,9 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     title = T(302535920000757--[[Add Applicants To Pool--]]),
     hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000758--[[Will take some time for 25K and up.--]])),
     check1 = T(302535920000759--[[Clear Applicant Pool--]]),
-    check1_hint = Concat(T(302535920000760--[[Remove all the applicants currently in the pool (checking this will ignore your list selection).\n\nCurrent Pool Size--]]),": ",#g_ApplicantPool),
+    check1_hint = Concat(T(302535920000760--[[Remove all the applicants currently in the pool (checking this will ignore your list selection).
+
+Current Pool Size--]]),": ",#g_ApplicantPool),
   })
 end
 

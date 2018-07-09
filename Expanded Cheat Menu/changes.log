@@ -2,6 +2,10 @@ v6.5
 Added:
 Examine>Tools>Functions: Shows a list of all functions.
 
+Changes:
+Moved Flatten Terrain Toggle from Debug to Game
+Examine won't show Parents/Attaches buttons if there aren't any.
+
 Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
 

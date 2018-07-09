@@ -8,35 +8,197 @@ local UsualIcon = "UI/Icons/Anomaly_Event.tga"
 local print,type,tostring = print,type,tostring
 
 local cls = cls
+local CreateRealTimeThread = CreateRealTimeThread
+local DeleteThread = DeleteThread
+local DoneObject = DoneObject
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
 local GetInGameInterface = GetInGameInterface
+local GetObjects = GetObjects
+local GetTerrainCursor = GetTerrainCursor
 local HideMouseCursor = HideMouseCursor
 local IsMouseCursorHidden = IsMouseCursorHidden
 local point = point
 local PropToLuaCode = PropToLuaCode
+local RecalcBuildableGrid = RecalcBuildableGrid
+local SaveLocalStorage = SaveLocalStorage
 local SetLightmodel = SetLightmodel
 local SetLightmodelOverride = SetLightmodelOverride
 local SetMouseDeltaMode = SetMouseDeltaMode
 local ShowMouseCursor = ShowMouseCursor
 local Sleep = Sleep
+--change map funcs
+local ClassDescendantsList = ClassDescendantsList
+local CloseMenuDialogs = CloseMenuDialogs
+local CreateMapSettingsDialog = CreateMapSettingsDialog
+local FillRandomMapProps = FillRandomMapProps
+local GenerateRandomMapParams = GenerateRandomMapParams
+local GenerateRocketCargo = GenerateRocketCargo
+local GetMapName = GetMapName
+local GetModifiedProperties = GetModifiedProperties
+local InitNewGameMissionParams = InitNewGameMissionParams
+local ListMaps = ListMaps
+local OpenExamine = OpenExamine
 
 local camera_GetFovX = camera.GetFovX
 local camera_SetFovX = camera.SetFovX
-local cameraRTS_Activate = cameraRTS.Activate
-local cameraRTS_SetZoom = cameraRTS.SetZoom
-local cameraFly_IsActive = cameraFly.IsActive
-local cameraFly_Activate = cameraFly.Activate
-local camera3p_IsActive = camera3p.IsActive
-local camera3p_DetachObject = camera3p.DetachObject
 local camera3p_Activate = camera3p.Activate
 local camera3p_AttachObject = camera3p.AttachObject
-local camera3p_SetLookAtOffset = camera3p.SetLookAtOffset
-local camera3p_SetEyeOffset = camera3p.SetEyeOffset
+local camera3p_DetachObject = camera3p.DetachObject
 local camera3p_EnableMouseControl = camera3p.EnableMouseControl
+local camera3p_IsActive = camera3p.IsActive
+local camera3p_SetEyeOffset = camera3p.SetEyeOffset
+local camera3p_SetLookAtOffset = camera3p.SetLookAtOffset
+local cameraFly_Activate = cameraFly.Activate
+local cameraFly_IsActive = cameraFly.IsActive
+local cameraRTS_Activate = cameraRTS.Activate
+local cameraRTS_SetZoom = cameraRTS.SetZoom
+local terrain_GetHeight = terrain.GetHeight
+local terrain_SetHeightCircle = terrain.SetHeightCircle
 local terrain_SetTerrainType = terrain.SetTerrainType
+--~ local terrain_SetTypeCircle = terrain.SetTypeCircle
+local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
+local UserActions_AddActions = UserActions.AddActions
+local UserActions_GetActiveActions = UserActions.GetActiveActions
 
+local white = white
+local guic = guic
 local g_Classes = g_Classes
+
+do --FlattenGround
+  local are_we_flattening
+  local visual_circle
+  local flatten_height
+  local size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
+  local radius = size * guic
+
+  local remove_actions = {
+    FlattenGround_RaiseHeight = true,
+    FlattenGround_LowerHeight = true,
+    FlattenGround_WidenRadius = true,
+    FlattenGround_ShrinkRadius = true,
+  }
+  local temp_height
+  local function ToggleHotkeys(bool)
+    if bool then
+      local us = ChoGGi.UserSettings
+      UserActions_AddActions({
+        FlattenGround_RaiseHeight = {
+          key = "Shift-Up",
+          action = function()
+            temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
+            --guess i found the ceiling limit
+            if temp_height > 65535 then
+              temp_height = 65535
+            end
+            flatten_height = temp_height
+          end
+        },
+        FlattenGround_LowerHeight = {
+          key = "Shift-Down",
+          action = function()
+            temp_height = flatten_height - us.FlattenGround_HeightDiff or 100
+            --and the floor limit (oh look 0 go figure)
+            if temp_height < 0 then
+              temp_height = 0
+            end
+            flatten_height = temp_height
+          end
+        },
+        FlattenGround_WidenRadius = {
+          key = "Shift-Right",
+          action = function()
+            us.FlattenGround_Radius = us.FlattenGround_Radius + us.FlattenGround_RadiusDiff or 100
+            size = us.FlattenGround_Radius
+            visual_circle:SetRadius(size)
+            radius = size * guic
+          end
+        },
+        FlattenGround_ShrinkRadius = {
+          key = "Shift-Left",
+          action = function()
+            us.FlattenGround_Radius = us.FlattenGround_Radius - us.FlattenGround_RadiusDiff or 100
+            size = us.FlattenGround_Radius
+            visual_circle:SetRadius(size)
+            radius = size * guic
+          end
+        },
+      })
+    else
+      local UserActions = UserActions
+      for k, _ in pairs(UserActions.Actions) do
+        if remove_actions[k] then
+          UserActions.Actions[k] = nil
+        end
+      end
+    end
+
+    UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
+  end
+  local function ToggleCollisions(objs)
+    for i = 1, #objs do
+      ChoGGi.CodeFuncs.CollisionsObject_Toggle(objs[i],true)
+    end
+  end
+
+  function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
+    if are_we_flattening then
+      ToggleHotkeys()
+      are_we_flattening = false
+      DeleteThread(are_we_flattening)
+      DoneObject(visual_circle)
+      MsgPopup(
+        T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
+        T(904--[[Terrain--]]),
+        "UI/Icons/Sections/WasteRock_1.tga"
+      )
+      -- disable collisions on pipes so they don't get marked as uneven terrain
+      local objs = GetObjects{class = "LifeSupportGridElement"} or empty_table
+      ToggleCollisions(objs)
+      -- update uneven terrain checker thingy
+      RecalcBuildableGrid()
+      -- turn them back on
+      ToggleCollisions(objs)
+
+    else
+      ToggleHotkeys(true)
+      flatten_height = terrain_GetHeight(GetTerrainCursor())
+      MsgPopup(
+        string.format(T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]),flatten_height),
+        T(904--[[Terrain--]]),
+        "UI/Icons/Sections/warning.tga"
+      )
+  --~ local terrain_type = "Grass_01"		-- applied terrain type
+  --~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+
+  --~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+  --~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+      visual_circle = g_Classes.Circle:new()
+      visual_circle:SetRadius(size)
+      visual_circle:SetColor(white)
+      local cursor = GetTerrainCursor()
+      local outer
+
+      are_we_flattening = CreateRealTimeThread(function()
+        --thread gets deleted, but just in case
+        while are_we_flattening do
+          cursor = GetTerrainCursor()
+          visual_circle:SetPos(cursor)
+          if square == true then
+            outer = radius / 2
+          else
+            outer = radius
+          end
+          terrain_SetHeightCircle(cursor, radius, outer, flatten_height)
+          --used to set terrain type (see above)
+  --~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
+          Sleep(10)
+        end
+      end)
+    end
+  end
+
+end
 
 function ChoGGi.MenuFuncs.ChangeMap()
   local NewMissionParams = {}

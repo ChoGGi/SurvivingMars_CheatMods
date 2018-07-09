@@ -1045,21 +1045,21 @@ function Examine:SetObj(o)
       self.idCaption:SetText(utf8.sub(name, 1, 50))
     end
 
+    local list = o.__parents
     --build parent menus
     local build_menu
-    local pmenu_list_items
-    local list = o.__parents
-    if list then
+    local pmenu_list_items = {}
+    if list and next(list) then
       build_menu = true
       list = RetSortTextAssTable(list)
       self.parents = list
-      pmenu_list_items = {{text = Concat("   ---- ",T(302535920000520--[[Parents--]]))}}
+      pmenu_list_items = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
       for i = 1, #list do
         pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
       end
     end
     list = o.__ancestors
-    if list then
+    if list and next(list) then
       build_menu = true
       list = RetSortTextAssTable(list,true)
       self.ancestors = list
@@ -1070,39 +1070,39 @@ function Examine:SetObj(o)
     end
     if build_menu then
       self.idParentsMenu:SetContent(pmenu_list_items, true)
+    else
+      --no parents or ancestors, so hide the button
+      self.idParents:SetVisible()
     end
 
-    --i suppose i could do some type checking, ah well
-    pcall(function()
-      --attaches menu
-      list = is_table and o:GetAttaches()
-      if list and #list > 0 then
+    --attaches menu
+    list = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
+    if list and #list > 0 then
 
-        local list_items = {
-          {
-            text = Concat("   ---- ",T(302535920000053--[[Attaches--]])),
-            rollover = T(302535920000053--[[Attaches--]])
-          }
+      local list_items = {
+        {
+          text = Concat("   ---- ",T(302535920000053--[[Attaches--]])),
+          rollover = T(302535920000053--[[Attaches--]])
         }
+      }
 
-        for i = 1, #list do
-          local hint = list[i].handle or type(list[i].GetPos) == "function" and Concat("Pos: ",list[i]:GetPos())
-          if type(hint) == "number" then
-            hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
-          end
-          list_items[#list_items+1] = {
-            text = RetName(list[i]),
-            rollover = hint or list[i].class,
-            obj = list[i],
-          }
+      for i = 1, #list do
+        local hint = list[i].handle or type(list[i].GetPos) == "function" and Concat("Pos: ",list[i]:GetPos())
+        if type(hint) == "number" then
+          hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
         end
-
-        self.idAttachesMenu:SetContent(list_items, true)
-
-      else
-        self.idAttaches:SetVisible(false)
+        list_items[#list_items+1] = {
+          text = RetName(list[i]),
+          rollover = hint or list[i].class,
+          obj = list[i],
+        }
       end
-    end)
+
+      self.idAttachesMenu:SetContent(list_items, true)
+
+    else
+      self.idAttaches:SetVisible()
+    end
 
   else
     self.idCaption:SetText(utf8.sub(name, 1, 50))
