@@ -53,14 +53,14 @@ end
 function ChoGGi.MenuFuncs.ShowChangelogECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"changes.log"))
 	if not file_error then
-    OpenExamine({Concat("\n\n",str)})
+    OpenExamine(str)
 	end
 end
 
 function ChoGGi.MenuFuncs.ShowReadmeECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
 	if not file_error then
-    OpenExamine({Concat("\n\n",str)})
+    OpenExamine(str)
 	end
 end
 

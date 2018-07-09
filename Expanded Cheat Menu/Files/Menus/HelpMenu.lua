@@ -163,7 +163,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     ChoGGi.ComFuncs.AddAction(
       Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[-1]*",T(126095410863--[[Info--]]),"*"),
       function()
-        OpenExamine({info})
+        OpenExamine(info)
       end,
       nil,
       info,
@@ -174,7 +174,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     ChoGGi.ComFuncs.AddAction(
       Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[0]*",T(302535920000875--[[Game Functions--]]),"*"),
       function()
-        OpenExamine({Concat(T(302535920001023--[[This WILL take awhile if you open it in View Text.--]]),"\n\n\n\n",funcs)})
+        OpenExamine(Concat(T(302535920001023--[[This WILL take awhile if you open it in View Text.--]]),"\n\n\n\n",funcs))
       end,
       nil,
       funcs:sub(1,100),
@@ -187,7 +187,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
         ChoGGi.ComFuncs.AddAction(
           Concat("[999]",T(487939677892--[[Help--]]),"/[999]",T(1000145--[[Text--]]),"/[",i,"]",folders[i].name),
           function()
-            OpenExamine({text})
+            OpenExamine(text)
           end,
           nil,
           text:sub(1,100),

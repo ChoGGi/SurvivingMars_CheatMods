@@ -389,7 +389,7 @@ Otherwise you won't see anything.",
 302535920000269,"Adding a mystery is cumulative, this will NOT replace existing mysteries.",
 302535920000270,Instant Start,
 302535920000271,"May take up to one Sol to ""instantly"" activate mystery.",
-302535920000272,"To play back speech use ""Exec"" button and type in
+302535920000272,"To play back speech use ""Tools>Exec"" and type in
 g_Voice:Play(ChoGGi.CurObj.speech)",
 302535920000273,Speech,
 302535920000274,Message,

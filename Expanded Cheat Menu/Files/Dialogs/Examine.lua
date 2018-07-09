@@ -240,11 +240,11 @@ function Examine:Init()
           local class = _G[obj_name]
           for Key,_ in pairs(class) do
             if type(class[Key]) == "function" then
-              menu_list_items[#menu_list_items+1] = Concat(obj_name,".",Key,": ")
-              menu_list_items[#menu_list_items+1] = class[Key]
+              menu_list_items[Concat(obj_name,".",Key,": ")] = class[Key]
+--~               menu_list_items[#menu_list_items+1] =
             end
           end
-          menu_list_items[#menu_list_items+1] = "\n\n"
+          menu_list_items[class.class] = "\n\n"
         end
 
         local function ProcessList(list)
