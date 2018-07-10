@@ -1201,7 +1201,7 @@ end
     if last and ChoGGi.UserSettings.UseLastOrientation then
       --shouldn't fail anymore, but we'll still pcall
       pcall(function()
-        local angle = type(last.GetAngle) == "function" and last:GetAngle()
+        local angle = type(last.GetAngle) == "function" and last:GetAngle() or 0
         if type(angle) == "number" and type(ret[1].SetAngle) == "function" then
           ret[1]:SetAngle(angle)
         end

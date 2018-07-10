@@ -1,0 +1,2 @@
+v0.2
+Smoother dust removal instead of instant poof.
