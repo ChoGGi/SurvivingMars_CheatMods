@@ -5,7 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local next,pairs,print,type,table = next,pairs,print,type,table
+local next,pairs,print,type,table,string = next,pairs,print,type,table,string
 
 local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
@@ -349,65 +349,57 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 end
 
 --called everytime we set a setting in menu
-function ChoGGi.SettingFuncs.WriteSettings()
+function ChoGGi.SettingFuncs.WriteSettings(settings)
   local ChoGGi = ChoGGi
+  settings = settings or ChoGGi.UserSettings
 
-  --piss off if we're saving (probably be better to read file afterwards and check if it matches)
---~   if ChoGGi.Temp.SavingSettingsFile then
---~     print(T(302535920000005--[[Slow arsed hard drive, or something is wrong...--]]))
---~     return
---~   end
+  local bak = Concat(ChoGGi.SettingsFile,".bak")
+  --locks the file while we write (i mean it says thread, ah well can't hurt)?
+  ThreadLockKey(bak)
+  AsyncCopyFile(ChoGGi.SettingsFile,bak)
+  ThreadUnlockKey(bak)
 
---~   CreateRealTimeThread(function()
---~     ChoGGi.Temp.SavingSettingsFile = true
+  ThreadLockKey(ChoGGi.SettingsFile)
+  table.sort(settings)
+  --and write it to disk
+  local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
+  ThreadUnlockKey(ChoGGi.SettingsFile)
 
-    local bak = Concat(ChoGGi.SettingsFile,".bak")
-    --locks the file while we write (i mean it says thread, ah well can't hurt)?
-    ThreadLockKey(bak)
-    AsyncCopyFile(ChoGGi.SettingsFile,bak)
-    ThreadUnlockKey(bak)
-
-    ThreadLockKey(ChoGGi.SettingsFile)
-    table.sort(ChoGGi.UserSettings)
-    --and write it to disk
-    local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(ChoGGi.UserSettings))
-    ThreadUnlockKey(ChoGGi.SettingsFile)
-
-    if DoneFuckedUp then
-      print(T(302535920000006--[[Failed to save a settings to--]])," ",ChoGGi.SettingsFile,":",DoneFuckedUp)
-      return false, DoneFuckedUp
-    end
-
---~     ChoGGi.Temp.SavingSettingsFile = nil
---~   end)
-
+  if DoneFuckedUp then
+    print(string.format(T(302535920000006--[[Failed to save settings to %s : %s--]]),ChoGGi.SettingsFile,DoneFuckedUp))
+    return false, DoneFuckedUp
+  end
 end
 
---read saved settings from file
-function ChoGGi.SettingFuncs.ReadSettings()
+-- read saved settings from file
+function ChoGGi.SettingFuncs.ReadSettings(settings_str)
   local ChoGGi = ChoGGi
-  local errormsg = Concat("\n\n",T(302535920000007--[[CheatMod_CheatMenu: Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+  local errormsg = Concat("\n\n",T(302535920000000--[[Expanded Cheat Menu--]]),": ",T(302535920000007--[[Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
 If you can delete it and still get this error; please send it and this log to the author.--]]),"\n\n")
 
-  --try to read settings
-	local file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
-	if file_error then
-    file_error = ""
-    --no settings file so make a new one
-    ChoGGi.SettingFuncs.WriteSettings()
-    file_error, Settings = AsyncFileToString(ChoGGi.SettingsFile)
+  -- try to read settings
+  if not settings_str then
+    local file_error
+    file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
     if file_error then
-      return file_error
+      -- no settings file so make a new one
+      ChoGGi.SettingFuncs.WriteSettings()
+      file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
+      -- something is definitely wrong so just abort
+      if file_error then
+        return file_error
+      end
     end
-	end
-  --and convert it to lua
+  end
+  -- and convert it to lua / update in-game settings
   local code_error
-  code_error, ChoGGi.UserSettings = LuaCodeToTuple(Settings)
+  code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
 	if code_error then
     print(errormsg)
 		return code_error
 	end
 
+  return settings_str
 end
 
 --OptionsApply is the earliest we can call Consts:GetProperties()

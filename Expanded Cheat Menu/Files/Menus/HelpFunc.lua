@@ -22,8 +22,33 @@ local MovieWriteScreenshot = MovieWriteScreenshot
 local UnlockCamera = UnlockCamera
 local LockCamera = LockCamera
 local WaitNextFrame = WaitNextFrame
+local LuaCodeToTuple = LuaCodeToTuple
 
 local g_Classes = g_Classes
+
+function ChoGGi.MenuFuncs.EditECMSettings()
+  local ChoGGi = ChoGGi
+  -- make sure any changed settings are current
+  ChoGGi.SettingFuncs.WriteSettings()
+  -- load up settings file in the editor
+  local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+    text = ChoGGi.SettingFuncs.ReadSettings(),
+    hint_ok = T(302535920001244--[["Saves settings to file, and applies any changes."--]]),
+    hint_cancel = T(302535920001245--[[Abort without touching anything.--]]),
+    func = function(answer,result,obj)
+      if answer then
+        -- get text and update settings file
+        local err,settings = LuaCodeToTuple(obj.idText:GetText())
+        if not err then
+          ChoGGi.SettingFuncs.WriteSettings(settings)
+          -- then read new settings
+          ChoGGi.SettingFuncs.ReadSettings()
+        end
+      end
+    end,
+  })
+  dialog:Open()
+end
 
 function ChoGGi.MenuFuncs.DisableECM()
   local function CallBackFunc(answer)

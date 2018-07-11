@@ -53,7 +53,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
   end
 
   local z = context.zorder or 1
-  --so we're ontop of examine
+  -- so we're on top of examine
   z = z + 1
   self:SetZOrder(z)
   self.XRolloverWindow_ZOrder = g_Classes.XRolloverWindow.ZOrder
@@ -68,7 +68,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
   g_Classes.XMultiLineEdit:new({
     Id = "idText",
-    TextVAlign = "center",
+--~     TextVAlign = "center",
     MinWidth = width,
     MaxWidth = width,
     MinHeight = height,
@@ -85,8 +85,9 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
     WordWrap = context.wrap,
     MaxLen = 65536, --65536?
-    MaxLines = 15,
+--~     MaxLines = 15,
   }, self.idContainer)
+
   self.idText:SetText(context.text)
 
   g_Classes.XSleekScroll:new({

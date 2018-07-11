@@ -84,6 +84,7 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     end,
     "set_debug_texture.tga"
   )
+  --------------------Interface
 
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
@@ -143,6 +144,15 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
     T(302535920000677--[[Reset all ECM settings to default (restart to enable).--]]),
     "ToggleEnvMap.tga"
   )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000000--[[Expanded Cheat Menu--]]),"/[7]",T(302535920001242--[[Edit ECM Settings File--]])),
+    ChoGGi.MenuFuncs.EditECMSettings,
+    nil,
+    T(302535920001243--[[Manually edit ECM settings.--]]),
+    "UIDesigner.tga"
+  )
+  ----------------------------------ECM
 
 
   --build text file menu items

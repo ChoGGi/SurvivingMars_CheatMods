@@ -197,7 +197,7 @@ function Examine:Init()
           checkbox = true,
           zorder = zorder,
           text = str,
-          hint_ok = T(302535920000047),
+          hint_ok = T(302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]),
           func = function(answer,overwrite)
             if answer then
               Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
@@ -211,7 +211,9 @@ function Examine:Init()
           checkbox = true,
           zorder = zorder,
           text = str,
-          hint_ok = T(302535920000049),
+          hint_ok = T(302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]),
           func = function(answer,overwrite)
             if answer then
               Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")

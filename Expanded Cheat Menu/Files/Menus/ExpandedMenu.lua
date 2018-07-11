@@ -84,7 +84,7 @@ function ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000567--[[Worker Capacity--]])),
     ChoGGi.MenuFuncs.SetWorkerCapacity,
     ChoGGi.UserSettings.KeyBindings.SetWorkerCapacity,
-    T(302535920000568--[[Change how many workers per building type.--]]),
+    T(302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]),
     "scale_gizmo.tga"
   )
 
