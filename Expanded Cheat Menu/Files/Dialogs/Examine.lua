@@ -34,8 +34,7 @@ do
   TConcat = ChoGGi.ComFuncs.TableConcat
 end
 
-local pairs,type,print,tostring,tonumber,getmetatable,rawget,rawset = pairs,type,print,tostring,tonumber,getmetatable,rawget,rawset
-local string,table,debug,utf8 = string,table,debug,utf8
+local pairs,type,print,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8 = pairs,type,print,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8
 
 local CmpLower = CmpLower
 local GetStateName = GetStateName
@@ -44,11 +43,10 @@ local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local OpenExamine = OpenExamine
 local point = point
-local SaveLocalStorage = SaveLocalStorage
 local ValueToLuaCode = ValueToLuaCode
 local XDestroyRolloverWindow = XDestroyRolloverWindow
-local Max,Min = Max,Min
-local RGBA,RGB = RGBA,RGB
+local Min = Min
+local RGBA = RGBA
 local CreateRealTimeThread = CreateRealTimeThread
 
 local terrain_GetHeight = terrain.GetHeight
@@ -225,10 +223,10 @@ This can take time on something like the ""Building"" metatable (don't use this 
         local str = self:totextex(self.obj)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
-        Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+        Dump(Concat("\n",str),"w","DumpedExamine","lua")
       elseif text == menuitem_DumpObject then
         local str = ValueToLuaCode(self.obj)
-        Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+        Dump(Concat("\n",str),"w","DumpedExamineObject","lua")
       elseif text == menuitem_EditObject then
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
       elseif text == menuitem_ExecCode then
@@ -548,9 +546,20 @@ function Examine:valuetotextex(o)
     )
   elseif obj_type == "string" then
     return Concat(
-      "<tags off>'",
+      "'",
       o,
-      "'<tags on>"
+      "'"
+    )
+  elseif obj_type == "userdata" then
+    local str = T(o)
+    -- might as well just return the userdata instead of these
+    if str == "stripped" or str:find("Missing locale string id") then
+      str = o
+    end
+    return Concat(
+      "'",
+      str,
+      "'"
     )
   end
 
@@ -811,6 +820,15 @@ function Examine:totextex(o)
     res[#res+1] = tostring(o)
   end
 
+  if obj_type == "userdata" then
+    local str = T(o)
+    -- might as well just return the userdata instead of these
+    if str == "stripped" or str:find("Missing locale string id") then
+      str = o
+    end
+    res[#res+1] = tostring(str)
+  end
+
   return TConcat(res,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -832,9 +850,9 @@ end
 local function ClearShowMe_menu()
   ChoGGi.ComFuncs.ClearShowMe()
 end
-local function ShowLog_menu(o,self)
-  OpenExamine(o.trace_log, self)
-end
+--~ local function ShowLog_menu(o,self)
+--~   OpenExamine(o.trace_log, self)
+--~ end
 local function Destroy_menu(o,self)
   local z = self.ZOrder
   self:SetZOrder(1)
@@ -850,57 +868,57 @@ local function Destroy_menu(o,self)
     T(697--[[Destroy--]])
   )
 end
-local function Assign_menu(_, _, button,name,o,self)
-  return function(button)
-    if button == "left" then
-      rawset(_G, name, o)
-      self.idLinks:SetText(self:menu(o))
-    elseif button == "right" then
-      ShowMe(rawget(_G, name), RGB(0, 0, 255))
-      OpenExamine(rawget(_G, name), self)
-    end
-  end
-end
-local function ShowTime_menu(o,self)
-  if self.show_times then
-    if self.show_times == "relative" then
-      self.show_times = "absolute"
-    else
-      self.show_times = false
-    end
-  else
-    self.show_times = "relative"
-  end
+--~ local function Assign_menu(_, _, button,name,o,self)
+--~   return function(button)
+--~     if button == "left" then
+--~       rawset(_G, name, o)
+--~       self.idLinks:SetText(self:menu(o))
+--~     elseif button == "right" then
+--~       ShowMe(rawget(_G, name), RGB(0, 0, 255))
+--~       OpenExamine(rawget(_G, name), self)
+--~     end
+--~   end
+--~ end
+--~ local function ShowTime_menu(o,self)
+--~   if self.show_times then
+--~     if self.show_times == "relative" then
+--~       self.show_times = "absolute"
+--~     else
+--~       self.show_times = false
+--~     end
+--~   else
+--~     self.show_times = "relative"
+--~   end
+--~   if self.obj then
+--~     self:SetObj(self.obj)
+--~   end
+--~ end
+local function Refresh_menu(_,self)
   if self.obj then
     self:SetObj(self.obj)
   end
 end
-local function Refresh_menu(o,self)
-  if self.obj then
-    self:SetObj(self.obj)
-  end
-end
-local function SetTransp_menu(o,self)
+local function SetTransp_menu(_,self)
   self.transp_mode = not self.transp_mode
   self:SetTranspMode(self.transp_mode)
 end
-local function Switch_menu(t,o,self)
-  return function()
-    LocalStorage.trace_config = t
-    SaveLocalStorage()
-    self:SetObj(self.obj)
-  end, LocalStorage.trace_config == t and "<color 0 255 0>"
-end
-local function Prev_menu(o,self)
-  self.page = Max(1, self.page - 1)
-  --self:SetObj(self.obj)
-end
-local function Next_menu(o,self)
-  self.page = self.page + 1
-  --self:SetObj(self.obj)
-end
+--~ local function Switch_menu(t,o,self)
+--~   return function()
+--~     LocalStorage.trace_config = t
+--~     SaveLocalStorage()
+--~     self:SetObj(self.obj)
+--~   end, LocalStorage.trace_config == t and "<color 0 255 0>"
+--~ end
+--~ local function Prev_menu(o,self)
+--~   self.page = Max(1, self.page - 1)
+--~   --self:SetObj(self.obj)
+--~ end
+--~ local function Next_menu(o,self)
+--~   self.page = self.page + 1
+--~   --self:SetObj(self.obj)
+--~ end
 function Examine:menu(o)
-  local obj_metatable = getmetatable(o)
+--~   local obj_metatable = getmetatable(o)
   local obj_type = type(o)
   local res = {"  "}
   res[#res+1] = self:HyperLink(function()
@@ -1018,6 +1036,23 @@ function Examine:menu(o)
   return TConcat(res)
 end
 
+-- used to build parents/ancestors menu
+local pmenu_list_items
+local pmenu_skip_dupes
+local function BuildParents(self,list,list_type,title,sort_type)
+  if list and next(list) then
+    list = RetSortTextAssTable(list,sort_type)
+    self[list_type] = list
+    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",T(title))}
+    for i = 1, #list do
+      -- no sense in having an item in parents and ancestors
+      if not pmenu_skip_dupes[list[i]] then
+        pmenu_skip_dupes[list[i]] = true
+        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
+      end
+    end
+  end
+end
 function Examine:SetObj(o)
   local ChoGGi = ChoGGi
 
@@ -1047,30 +1082,14 @@ function Examine:SetObj(o)
       self.idCaption:SetText(utf8.sub(name, 1, 50))
     end
 
-    local list = o.__parents
-    --build parent menus
-    local build_menu
-    local pmenu_list_items = {}
-    if list and next(list) then
-      build_menu = true
-      list = RetSortTextAssTable(list)
-      self.parents = list
-      pmenu_list_items = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
-      for i = 1, #list do
-        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
-      end
-    end
-    list = o.__ancestors
-    if list and next(list) then
-      build_menu = true
-      list = RetSortTextAssTable(list,true)
-      self.ancestors = list
-      pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",T(302535920000525--[[Ancestors--]]))}
-      for i = 1, #list do
-        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
-      end
-    end
-    if build_menu then
+    -- reset menu list
+    pmenu_list_items = {}
+    pmenu_skip_dupes = {}
+    -- build menu list
+    BuildParents(self,o.__parents,"parents",302535920000520--[[Parents--]])
+    BuildParents(self,o.__ancestors,"ancestors",302535920000525--[[Ancestors--]],true)
+    -- if anything was added to the list then add to the menu
+    if #pmenu_list_items > 0 then
       self.idParentsMenu:SetContent(pmenu_list_items, true)
     else
       --no parents or ancestors, so hide the button
@@ -1078,7 +1097,7 @@ function Examine:SetObj(o)
     end
 
     --attaches menu
-    list = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
+    local list = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
     if list and #list > 0 then
 
       local list_items = {
@@ -1130,8 +1149,5 @@ function Examine:SetText(text)
 end
 
 function Examine:Done(result)
---~   if self.obj and IsObjlist(self.obj) then
---~     DoneObject(self.obj)
---~   end
-  Dialog.Done(self,result)
+  g_Classes.Dialog.Done(self,result)
 end

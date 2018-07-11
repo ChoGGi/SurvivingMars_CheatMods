@@ -72,7 +72,7 @@ function ChoGGi.ComFuncs.FileExists(file)
   return select(2,AsyncFileOpen(file))
 end
 
--- thanks for replacing concat... (what's wrong with table.concat2?)
+-- thanks for replacing concat... what's wrong with using table.concat2?
 ChoGGi.ComFuncs.TableConcat = oldTableConcat or table.concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 

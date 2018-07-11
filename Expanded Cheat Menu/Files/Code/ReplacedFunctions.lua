@@ -215,8 +215,6 @@ do --funcs without a class
     SetTrans(dlgConsoleLog)
   end
 end
---i edited ShowConsoleLog above and use it below so local it here instead of at the top
-local ShowConsoleLog = ShowConsoleLog
 
 --Gen
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()

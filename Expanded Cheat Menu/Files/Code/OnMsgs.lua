@@ -486,17 +486,15 @@ function OnMsg.ApplicationQuit()
   end
 
   --save menu pos
-  local dlgUAMenu = dlgUAMenu
-  if ChoGGi.UserSettings.KeepCheatsMenuPosition and dlgUAMenu then
-    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
+  local dlg = dlgUAMenu
+  if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
   end
-
   --console log window settings
-  local dlgChoGGi_ConsoleLogWin = dlgChoGGi_ConsoleLogWin
-  print("dlgChoGGi_ConsoleLogWin",dlgChoGGi_ConsoleLogWin)
-  if dlgChoGGi_ConsoleLogWin then
-    ChoGGi.UserSettings.ConsoleLogWin_Pos = dlgChoGGi_ConsoleLogWin:GetPos()
-    ChoGGi.UserSettings.ConsoleLogWin_Size = dlgChoGGi_ConsoleLogWin:GetSize()
+  dlg = dlgChoGGi_ConsoleLogWin
+  if dlg then
+    ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
+    ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
   end
 
   --save any unsaved settings on exit

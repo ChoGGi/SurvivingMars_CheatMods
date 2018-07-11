@@ -52,7 +52,8 @@ function ChoGGi.Console.ConsoleControls()
             name = T(302535920001026--[[Show File Log--]]),
             hint = T(302535920001091--[[Flushes log to disk and displays in console log.--]]),
             class = "XTextButton",
-            clicked = function(self,pos,button)
+--~             clicked = function(self,pos,button)
+            clicked = function()
               FlushLogFile()
               print(select(2,AsyncFileToString(GetLogFile())))
             end,
@@ -61,7 +62,7 @@ function ChoGGi.Console.ConsoleControls()
             name = T(302535920000071--[[Mods Log,--]]),
             hint = T(302535920000870--[[Shows any errors from loading mods in console log.--]]),
             class = "XTextButton",
-            clicked = function(self,pos,button)
+            clicked = function()
               print(ModMessageLog)
             end,
           },
@@ -84,7 +85,7 @@ function ChoGGi.Console.ConsoleControls()
             hint = T(302535920001119--[[Toggle showing the console log on screen.--]]),
             class = "XCheckButton",
             value = "dlgConsoleLog",
-            clicked = function(self,pos,button)
+            clicked = function()
               local ChoGGi = ChoGGi
               ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
               ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
@@ -96,7 +97,7 @@ function ChoGGi.Console.ConsoleControls()
             hint = T(302535920001133--[[Toggle showing the console log window on screen.--]]),
             class = "XCheckButton",
             value = "dlgChoGGi_ConsoleLogWin",
-            clicked = function(self,pos,button)
+            clicked = function()
               local ChoGGi = ChoGGi
               ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
               ChoGGi.SettingFuncs.WriteSettings()
@@ -108,7 +109,7 @@ function ChoGGi.Console.ConsoleControls()
             hint = T(302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]]),
             class = "XCheckButton",
             value = {"WriteLogs"},
-            clicked = function(self,pos,button)
+            clicked = function()
               if ChoGGi.UserSettings.WriteLogs then
                 ChoGGi.UserSettings.WriteLogs = nil
                 ChoGGi.ComFuncs.WriteLogs_Toggle()
@@ -151,7 +152,7 @@ function ChoGGi.Console.ConsoleControls()
               class = "XTextButton",
               name = name,
               hint = Concat(T(302535920001138--[[Execute this command in the console.--]]),"\n\n",text),
-              clicked = function(self,pos,button)
+              clicked = function()
 --~                 ShowConsoleLog(true)
                 dlgConsole:Exec(text)
               end,
@@ -197,7 +198,7 @@ local function BuildSciptButton(scripts,dlg,folder)
               class = "XTextButton",
               name = scripts[i].name,
               hint = Concat(T(302535920001138--[[Execute this command in the console.--]]),"\n\n",script),
-              clicked = function(self,pos,button)
+              clicked = function()
                 dlg:Exec(script)
               end,
             }

@@ -3,7 +3,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 
-local table,type,pairs,print,table,dofile = table,type,pairs,print,table,dofile
+local table,type,pairs,print,dofile = table,type,pairs,print,dofile
 
 local DoneObject = DoneObject
 
@@ -86,7 +86,7 @@ if ChoGGi.Testing == 123456789 then
     return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
   end
 --]]
-  for message, threads in pairs(ThreadsMessageToThreads) do
+  for message, _ in pairs(ThreadsMessageToThreads) do
     --print(message)
     --print(threads)
     if message.action and message.action.class == "SA_WaitMsg" then

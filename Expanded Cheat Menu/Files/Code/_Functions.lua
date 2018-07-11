@@ -1368,7 +1368,8 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
       }, {
         PlaceObj("XTemplateFunc", {
         "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
+--~         "parent", function(parent, context)
+        "parent", function(parent, _)
             return parent.parent
           end,
         "func", Table.func or "function() return end"
@@ -1391,7 +1392,8 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
       }, {
         PlaceObj("XTemplateFunc", {
         "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
+--~         "parent", function(parent, context)
+        "parent", function(parent, _)
             return parent.parent
           end,
         "func", Table.func or "function() return end"

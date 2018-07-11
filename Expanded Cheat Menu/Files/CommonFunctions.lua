@@ -1471,15 +1471,9 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,msg_or_id)
-
-  if setting == false or type(setting) == "nil" then
-    setting = "false"
---~   elseif setting == true then
---~     setting = "true"
-  elseif type(setting) == "number" or type(setting) == "string" then
-    setting = setting
-  else
-    setting = "true"
+  -- have it return false instead of nil
+  if type(setting) == "nil" then
+    setting = false
   end
 
   return Concat(setting,": ",T(msg_or_id))
