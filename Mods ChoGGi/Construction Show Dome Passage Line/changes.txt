@@ -1,3 +1,6 @@
 v0.2
 Slightly faster for large amounts of domes.
 Ignores dome ruins.
+v0.3
+Added hex markers instead of just an arrow.
+Uses shape data instead of spot names to place markers.

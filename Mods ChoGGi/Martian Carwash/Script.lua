@@ -100,6 +100,7 @@ function Carwash:UpdateAttachedSigns()
 end
 
 function Carwash:Done()
+  self:SetEnumFlags(const.efCollision + const.efApplyToGrids)
   FarmConventional.Done(self)
   if IsValidThread(self.nearby_thread) then
     DeleteThread(self.nearby_thread)

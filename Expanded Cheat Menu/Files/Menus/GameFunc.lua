@@ -68,8 +68,8 @@ do --FlattenGround
   local are_we_flattening
   local visual_circle
   local flatten_height
-  local size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
-  local radius = size * guic
+  local size
+  local radius
 
   local remove_actions = {
     FlattenGround_RaiseHeight = true,
@@ -96,7 +96,7 @@ do --FlattenGround
         FlattenGround_LowerHeight = {
           key = "Shift-Down",
           action = function()
-            temp_height = flatten_height - us.FlattenGround_HeightDiff or 100
+            temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
             --and the floor limit (oh look 0 go figure)
             if temp_height < 0 then
               temp_height = 0
@@ -107,7 +107,7 @@ do --FlattenGround
         FlattenGround_WidenRadius = {
           key = "Shift-Right",
           action = function()
-            us.FlattenGround_Radius = us.FlattenGround_Radius + us.FlattenGround_RadiusDiff or 100
+            us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) + (us.FlattenGround_RadiusDiff or 100)
             size = us.FlattenGround_Radius
             visual_circle:SetRadius(size)
             radius = size * guic
@@ -116,7 +116,7 @@ do --FlattenGround
         FlattenGround_ShrinkRadius = {
           key = "Shift-Left",
           action = function()
-            us.FlattenGround_Radius = us.FlattenGround_Radius - us.FlattenGround_RadiusDiff or 100
+            us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) - (us.FlattenGround_RadiusDiff or 100)
             size = us.FlattenGround_Radius
             visual_circle:SetRadius(size)
             radius = size * guic
@@ -160,6 +160,10 @@ do --FlattenGround
       ToggleCollisions(objs)
 
     else
+      -- have to set it here after settings are loaded or it'll be default radius till user adjusts it
+      size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
+      radius = size * guic
+
       ToggleHotkeys(true)
       flatten_height = terrain_GetHeight(GetTerrainCursor())
       MsgPopup(
@@ -167,28 +171,22 @@ do --FlattenGround
         T(904--[[Terrain--]]),
         "UI/Icons/Sections/warning.tga"
       )
-  --~ local terrain_type = "Grass_01"		-- applied terrain type
-  --~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
-
-  --~     local terrain_type = mapdata.BaseLayer or "SandRed_1"		-- applied terrain type
+  --~     local terrain_type = mapdata.BaseLayer or "Grass_01"		-- applied terrain type
   --~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
       visual_circle = g_Classes.Circle:new()
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
-      local cursor = GetTerrainCursor()
-      local outer
 
       are_we_flattening = CreateRealTimeThread(function()
         --thread gets deleted, but just in case
         while are_we_flattening do
-          cursor = GetTerrainCursor()
+          local cursor = GetTerrainCursor()
           visual_circle:SetPos(cursor)
+          local outer
           if square == true then
             outer = radius / 2
-          else
-            outer = radius
           end
-          terrain_SetHeightCircle(cursor, radius, outer, flatten_height)
+          terrain_SetHeightCircle(cursor, radius, outer or radius, flatten_height)
 --~           terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
           --used to set terrain type (see above)
           Sleep(10)

@@ -1,7 +1,7 @@
 --See LICENSE for terms
 
 --simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local)
-DefineClass.ChoGGi_CursorBuilding = {
+DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},
   entity = "GridTile"
 }
@@ -565,7 +565,7 @@ do --hex rings
                 for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
                   if q_i + r_i + z_i == 0 then
                     --CursorBuilding is from construct controller, but it works nicely along with GridTile for filling each grid
-                    local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_CursorBuilding:new()
+                    local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_HexSpot:new()
                     --both
                     if iType == 1 then
                       if (terrain_IsSCell(HexToWorld(q_i, r_i)) or terrain_IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then

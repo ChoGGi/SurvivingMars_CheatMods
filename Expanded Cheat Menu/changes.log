@@ -12,6 +12,7 @@ Added a confirmation dialog when pressing Delete All Rocks.
 
 Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
+Flatten Ground wasn't using saved radius till after it was adjusted.
 
 v6.4
 Fixed:

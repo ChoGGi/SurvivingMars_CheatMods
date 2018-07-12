@@ -26,6 +26,7 @@ local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
 local HandleToObject = HandleToObject
 local HexGridGetObject = HexGridGetObject
+local HexGridGetObjects = HexGridGetObjects
 local IsBox = IsBox
 local IsObjlist = IsObjlist
 local IsPoint = IsPoint
@@ -42,7 +43,6 @@ local ViewPos = ViewPos
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
 local WorldToHex = WorldToHex
-local HexGridGetObjects = HexGridGetObjects
 
 local local_T = T -- T replaced below
 local guic = guic

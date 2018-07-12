@@ -159,6 +159,7 @@ function ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
       local dlgConsole = dlgConsole
       if dlgConsole then
         dlgConsole.idEdit:SetText("restart")
+        dlgConsole.idEdit:SetFocus()
       end
     end,
     ChoGGi.UserSettings.KeyBindings.ConsoleRestart
