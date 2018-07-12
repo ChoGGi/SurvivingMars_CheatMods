@@ -188,12 +188,12 @@ Toggle showing history/results on-screen (it's on by default)
 type any name in to see it in the console log (ex: Consts)
 exit : or quit
 restart : or reboot
-OpenExamine(Consts) : or ex(SelectedObj) or ~Object
+OpenExamine(Consts) : or ex(SelectedObj)
 dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
 dumpobject(SelectedObj) : or dumpo
 dumptable(Consts) : or dumpt
-trans() : translate userdata: ********** or 6543256 to text, or use $Object
+trans() : translate userdata: ********** or 6543256 to text
 SelectedObj : or s
 SelectionMouseObj() : or m(), object under mouse cursor
 GetPreciseCursorObj() : or mc(), like SelectionMouseObj but compact
@@ -201,7 +201,14 @@ GetTerrainCursorObjSel() : or mh(), just the handle
 GetTerrainCursor() : or c(), position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
 terminal.GetMousePos : or cs, mouse pos on screen, not map
 
-also @ for debug.getinfo(), @@ for type(), ! to select/view, !! to examine attached objects, &handle to open object in examiner, *r/*g to wrap code in real/game time threads
+~example for OpenExamine()
+@function for debug.getinfo()
+@@example for type()
+$example to translate userdata/stringbase
+!example to select/view
+!!example to examine attached objects
+&handle to open object in examiner
+*r/*g to wrap code in real/game time threads
 
 If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
@@ -213,8 +220,7 @@ for i = 1, #templates do
   local building = templates[i]
 	print(building.name)
 end
-
-Create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
+Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
 
 ##### Known issues
@@ -223,18 +229,22 @@ Going above 4096 capacity will make certain buildings laggy (houses/schools), an
   >Don't go too high...
 
 If you increase a number high enough it'll go negative.
-  >Don't go too high or use the menu to reset to default (if it's still broken send me your save).
+  >Don't go too high or you'll need to reset the value to default.
+
+Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
+  >Best I can tell is a height limit of 65536 for any objects.
 
 You can't cheat fill concrete deposits.
-  >Got me.
+  >Just stick with spamming The Excavator.
 ```
 
-##### New locale
+##### New locales
 ```
 Copy English.csv to the name of the language you want to translate it to.
+Translate what you can (I don't expect anyone to bother with 1000+ strings).
 Send me the file to include it.
 
-OpenExamine(AllLanguages) for a list of language names (use the "value").
+OpenExamine(AllLanguages) for a list of language names (use the "value" for the file name).
 ```
 
 ##### Thanks

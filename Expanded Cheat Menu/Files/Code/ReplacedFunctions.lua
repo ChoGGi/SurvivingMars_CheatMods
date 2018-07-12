@@ -65,8 +65,7 @@ local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 --~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
-local type,next,rawset,rawget,assert = type,next,rawset,rawget,assert
-local setmetatable,table,print = setmetatable,table,print
+local type,next,rawset,rawget,assert,setmetatable,table,print = type,next,rawset,rawget,assert,setmetatable,table,print
 
 --probably should be careful about localizing stuff i replace below...
 local AddConsoleLog = AddConsoleLog
@@ -78,6 +77,7 @@ local CreateConsole = CreateConsole
 local CreateRealTimeThread = CreateRealTimeThread
 local CurrentThread = CurrentThread
 local DeleteThread = DeleteThread
+local DoneObject = DoneObject
 local GetActionsHost = GetActionsHost
 local GetMissionSponsor = GetMissionSponsor
 local IsBox = IsBox
@@ -123,7 +123,56 @@ do --funcs without a class
   SaveOrigFunc("ShowConsole")
   SaveOrigFunc("ShowConsoleLog")
   SaveOrigFunc("ShowPopupNotification")
+  SaveOrigFunc("GetFreeWorkplacesAround")
+  SaveOrigFunc("GetFreeWorkplaces")
+  SaveOrigFunc("GetFreeLivingSpace")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- missing workplaces/residences
+  if ChoGGi.UserSettings.MissingWorkplacesResidencesFix then
+    local cleaned_work
+
+    local function CleanWork(city)
+      local work = city.labels.Workplace or empty_table
+      if not cleaned_work then
+        for i = #work, 1, -1 do
+          if work[i].class == "UnpersistedMissingClass" then
+            DoneObject(work[i])
+            table.remove(work,i)
+          end
+        end
+        cleaned_work = true
+      end
+    end
+
+    function GetFreeWorkplacesAround(dome)
+      local city = dome.city or UICity
+      CleanWork(city)
+      return ChoGGi_OrigFuncs.GetFreeWorkplacesAround(city)
+    end
+
+    function GetFreeWorkplaces(city)
+      CleanWork(city)
+      return ChoGGi_OrigFuncs.GetFreeWorkplaces(city)
+    end
+
+    local cleaned_res
+
+    function GetFreeLivingSpace(city, count_children)
+      local res = city.labels.Residence or empty_table
+      if not cleaned_res then
+        for i = #res, 1, -1 do
+          if res[i].class == "UnpersistedMissingClass" then
+            DoneObject(res[i])
+            table.remove(res,i)
+          end
+        end
+        cleaned_res = true
+      end
+
+      return ChoGGi_OrigFuncs.GetFreeLivingSpace(city, count_children)
+    end
+  end
 
   --always able to show console
   function ShowConsole(visible)

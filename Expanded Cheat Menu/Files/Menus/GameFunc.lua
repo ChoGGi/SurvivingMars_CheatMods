@@ -56,7 +56,6 @@ local cameraRTS_SetZoom = cameraRTS.SetZoom
 local terrain_GetHeight = terrain.GetHeight
 local terrain_SetHeightCircle = terrain.SetHeightCircle
 local terrain_SetTerrainType = terrain.SetTerrainType
---~ local terrain_SetTypeCircle = terrain.SetTypeCircle
 local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
 local UserActions_AddActions = UserActions.AddActions
 local UserActions_GetActiveActions = UserActions.GetActiveActions
@@ -190,8 +189,8 @@ do --FlattenGround
             outer = radius
           end
           terrain_SetHeightCircle(cursor, radius, outer, flatten_height)
+--~           terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
           --used to set terrain type (see above)
-  --~         terrain_SetTypeCircle(cursor, radius, terrain_type_idx)
           Sleep(10)
         end
       end)
@@ -199,6 +198,11 @@ do --FlattenGround
   end
 
 end
+
+-- we'll get more concrete one of these days
+--~ local terrain_type = "Regolith"		-- applied terrain type
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
   local NewMissionParams = {}

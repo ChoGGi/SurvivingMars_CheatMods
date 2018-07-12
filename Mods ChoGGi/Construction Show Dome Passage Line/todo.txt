@@ -1,1 +1,2 @@
 figure out a way to centre arrow in hex
+add two hex grids, and just use a regular line to connect them

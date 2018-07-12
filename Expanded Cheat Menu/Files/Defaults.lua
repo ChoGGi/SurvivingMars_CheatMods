@@ -76,6 +76,8 @@ ChoGGi.Defaults = {
   ShowCheatsMenu = true,
   -- dumps the log to disk on startup, and every new Sol (good for some crashes)
   FlushLog = true,
+  -- dumps log to disk every in-game minute
+  FlushLogConstantly = false,
   -- okay, maybe some people don't want a mod to change the title of their game
   ChangeWindowTitle = true,
   -- msg that shows in the console after tabbing back to the game and "heaven forbid" you have the cheats menu open
@@ -93,6 +95,8 @@ ChoGGi.Defaults = {
   ConsoleHistoryMenuLength = 50,
   -- shows how many ticks it takes between the start of ECM and when the game loads
   ShowStartupTicks = false,
+  -- if mod added work/res and user removed removed mod without removing buildings then inf loop
+  MissingWorkplacesResidencesFix = false,
   -- stores custom settings for each building
   BuildingSettings = {},
   -- transparent UI stored here
@@ -157,6 +161,22 @@ ChoGGi.Defaults = {
     InfopanelCheats_Toggle = "Ctrl-F2",
   },
 }
+if ChoGGi.Testing then
+  local ChoGGi = ChoGGi
+  -- add extra debugging defaults for me
+  ChoGGi.Defaults.ShowStartupTicks = true
+  ChoGGi.Defaults.WriteLogs = true
+  ChoGGi.Defaults.MissingWorkplacesResidencesFix = true
+  -- and maybe a bit of class
+  ChoGGi.Defaults.Transparency = {
+		HUD = 50,
+		PinsDlg = 50,
+		UAMenu = 150,
+  }
+  -- probably not useful for anyone who isn't loading up broked saves to test
+  ChoGGi.Defaults.SkipMissingMods = true
+  ChoGGi.Defaults.SkipMissingDLC = true
+end
 
 -- and constants
 ChoGGi.Consts = {

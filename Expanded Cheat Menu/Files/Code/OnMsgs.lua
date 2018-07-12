@@ -11,6 +11,7 @@ local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcal
 local AsyncFileToString = AsyncFileToString
 local ClassDescendantsList = ClassDescendantsList
 local CreateRealTimeThread = CreateRealTimeThread
+local FlushLogFile = FlushLogFile
 local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local IsValid = IsValid
@@ -31,8 +32,8 @@ local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 local g_Classes = g_Classes
 local OnMsg = OnMsg
 
---use this message to mess with the classdefs (before classes are built)
---function OnMsg.ClassesGenerate(classdefs)
+-- use this message to mess with the classdefs (before classes are built)
+-- function OnMsg.ClassesGenerate(classdefs)
 function OnMsg.ClassesGenerate()
 
   local ChoGGi = ChoGGi
@@ -44,7 +45,7 @@ function OnMsg.ClassesGenerate()
 
 end --OnMsg
 
---use this message to do some processing to the already final classdefs (still before classes are built)
+-- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
@@ -75,8 +76,8 @@ function OnMsg.ClassesPreprocess()
   ConsoleLog.ZOrder = 2
 end
 
---where we can add new BuildingTemplates
---use this message to make modifications to the built classes (before they are declared final)
+-- where we can add new BuildingTemplates
+-- use this message to make modifications to the built classes (before they are declared final)
 function OnMsg.ClassesPostprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
@@ -118,7 +119,7 @@ function OnMsg.ClassesPostprocess()
 
 end
 
---use this message to perform post-built actions on the final classes
+-- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
@@ -129,6 +130,20 @@ function OnMsg.ClassesBuilt()
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
     BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T(1000155--[[Hidden--]]),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
+  end
+
+  if ChoGGi.UserSettings.SkipMissingMods then
+    --stops confirmation dialog about missing mods (still lets you know they're missing)
+    function GetMissingMods()
+      return "", false
+    end
+  end
+
+  if ChoGGi.UserSettings.SkipMissingDLC then
+    --lets you load saved games that have dlc
+    function IsDlcAvailable()
+      return true
+    end
   end
 
   --Only added to stuff spawned with object spawner
@@ -209,20 +224,20 @@ function OnMsg.ModsLoaded()
   ChoGGi.ComFuncs.UpdateColonistsTables()
 end
 
---for instant build
+-- for instant build
 function OnMsg.BuildingPlaced(Obj)
   if Obj:IsKindOf("Building") then
     ChoGGi.Temp.LastPlacedObject = Obj
   end
 end --OnMsg
---regular build
+-- regular build
 function OnMsg.ConstructionSitePlaced(Obj)
   if Obj:IsKindOf("Building") then
     ChoGGi.Temp.LastPlacedObject = Obj
   end
 end --OnMsg
 
---this gets called before buildings are completely initialized (no air/water/elec attached)
+-- this gets called before buildings are completely initialized (no air/water/elec attached)
 function OnMsg.ConstructionComplete(building)
 
   --skip rockets
@@ -387,25 +402,25 @@ function OnMsg.SelectionAdded(Obj)
   end
 end
 
---remove selected obj when nothing selected
+-- remove selected obj when nothing selected
 function OnMsg.SelectionRemoved()
   s = false
 end
 
-local function ValidGridElements(Label,UICity,IsValid)
-  Label = UICity.labels[Label]
-  for i = #Label, 1, -1 do
-    if not IsValid(Label[i]) then
-      table.remove(Label,i)
+local function ValidGridElements(label,city)
+  label = city.labels[label]
+  for i = #label, 1, -1 do
+    if not IsValid(label[i]) then
+      table.remove(label,i)
     end
   end
 end
 
-function OnMsg.NewDay() --NewSol...
+function OnMsg.NewDay() -- NewSol...
   local ChoGGi = ChoGGi
   local UICity = UICity
 
-  --sorts cc list by dist to building
+  -- sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
     local blds = GetObjects{class="Building"} or empty_table
     for i = 1, #blds do
@@ -420,40 +435,50 @@ function OnMsg.NewDay() --NewSol...
     end
   end
 
-  --GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-  ValidGridElements("ChoGGi_GridElements",UICity,IsValid)
-  ValidGridElements("ChoGGi_LifeSupportGridElement",UICity,IsValid)
-  ValidGridElements("ChoGGi_ElectricityGridElement",UICity,IsValid)
+  -- GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
+  ValidGridElements("ChoGGi_GridElements",UICity)
+  ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
+  ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
 
+  -- dump log to disk
+  if ChoGGi.UserSettings.FlushLog then
+    FlushLogFile()
+  end
 end
 
 function OnMsg.NewHour()
   local ChoGGi = ChoGGi
 
-  --make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+  -- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
     local UICity = UICity
     local empty_table = empty_table
 
-    --Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local Table = UICity.labels.ResourceProducer or empty_table
-    for i = 1, #Table do
-      ChoGGi.CodeFuncs.FuckingDrones(Table[i]:GetProducerObj())
-      if Table[i].wasterock_producer then
-        ChoGGi.CodeFuncs.FuckingDrones(Table[i].wasterock_producer)
+    -- Hey. Do I preach at you when you're lying stoned in the gutter? No!
+    local prods = UICity.labels.ResourceProducer or empty_table
+    for i = 1, #prods do
+      ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
+      if prods[i].wasterock_producer then
+        ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
       end
     end
-    Table = UICity.labels.BlackCubeStockpiles or empty_table
-    for i = 1, #Table do
-      ChoGGi.CodeFuncs.FuckingDrones(Table[i])
+    prods = UICity.labels.BlackCubeStockpiles or empty_table
+    for i = 1, #prods do
+      ChoGGi.CodeFuncs.FuckingDrones(prods[i])
     end
   end
 
-  --pathing? pathing in domes works great... Watch out for that invisible wall!
+  -- pathing? pathing in domes works great... watch out for that invisible wall!
+  -- update: seems like this is an issue from one of those smarter work ai mods
   if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
     ChoGGi.CodeFuncs.ResetHumanCentipedes()
   end
+end
 
+function OnMsg.NewMinute()
+  if ChoGGi.UserSettings.FlushLogConstantly then
+    FlushLogFile()
+  end
 end
 
 --if you pick a mystery from the cheat menu
@@ -1168,6 +1193,9 @@ function OnMsg.ChoGGi_Loaded()
     print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
   end
 
+  if UserSettings.FlushLog then
+    FlushLogFile()
+  end
   -- used to check when game has started and it's safe to print() etc
   ChoGGi.Temp.GameLoaded = true
 
