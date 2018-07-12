@@ -59,7 +59,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
       end
     end
     ChoGGi.ComFuncs.QuestionBox(
-      Concat(T(6779--[[Warning--]]),"!\n",T(302535920000885--[[Permanently delete this object--]]),"?\n",name),
+      Concat(T(6779--[[Warning--]]),"!\n",string.format(T(302535920000885--[[Permanently delete %s--]]),name),"?"),
       CallBackFunc,
       Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
       Concat(T(5451--[[DELETE--]]),": ",name),
@@ -522,6 +522,8 @@ Reselect to update display."--]]),name)
 --Colonists
     if action.ActionId == "FillAll" then
       SetHint(action,T(302535920001202--[[Fill all stat bars.--]]))
+    elseif action.ActionId == "SpawnColonist" then
+      SetHint(action,T(302535920000005--[[Drops a new colonist in selected dome.--]]))
     elseif action.ActionId == "PrefDbl" then
       SetHint(action,string.format(T(302535920001203--[[Double %s's performance.--]]),name))
     elseif action.ActionId == "PrefDef" then
@@ -600,7 +602,7 @@ Reselect to update display."--]]),name)
 
 --Misc
     elseif action.ActionId == "DeleteObject" then
-      SetHint(action,string.format(T(302535920000885--[[Permanently delete this object: %s--]]),name))
+      SetHint(action,string.format(T(302535920000885--[[Permanently delete %s--]]),name))
 
     elseif action.ActionId == "Malfunction" then
       if obj.working then
@@ -625,18 +627,20 @@ Reselect to update display."--]]),name)
       if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001223--[[Hides any signs above object (until state is changed).--]]))
+        SetHint(action,string.format(T(302535920001223--[[Hides any signs above %s (until state is changed).--]]),name))
       end
 
     elseif action.ActionId == "ColourRandom" then
       if obj:IsKindOf("WasteRockDumpSite") then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001224--[[Changes colour of object to random colour (doesn't change attachments).--]]))
+        SetHint(action,string.format(T(302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).--]]),name))
       end
     elseif action.ActionId == "ColourDefault" then
       if obj:IsKindOf("WasteRockDumpSite") then
         action.ActionId = ""
+      else
+        SetHint(action,string.format(T(302535920001246--[[Changes colour of %s back to default.--]]),name))
       end
     elseif action.ActionId == "AddDust" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
@@ -648,7 +652,7 @@ Reselect to update display."--]]),name)
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001226--[[You may need to use AddDust before using this to make the building look visually.--]]))
+        SetHint(action,T(302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]))
       end
     elseif action.ActionId == "Destroy" then
       if obj.class == "SupplyRocket" then
@@ -662,7 +666,7 @@ Reselect to update display."--]]),name)
       else
         SetHint(action,T(302535920001230--[[Empties the storage of this building.
 
-Excluding waste rock in something other than a dumping site.--]]))
+If this isn't a dumping site then waste rock will not be emptied.--]]))
       end
     elseif action.ActionId == "Refill" then
       SetHint(action,T(302535920001231--[[Refill the deposit to full capacity.--]]))

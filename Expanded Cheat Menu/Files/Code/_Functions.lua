@@ -1127,6 +1127,17 @@ function ChoGGi.CodeFuncs.ViewAndSelectObject(obj)
   SelectObj(obj)
 end
 
+local function DeleteObject_ExecFunc(obj,Name,Param)
+  if type(obj[Name]) == "function" then
+    obj[Name](obj,Param)
+  end
+end
+
+local function DeleteObject_DeleteAttach(obj,Name)
+  if obj[Name] then
+    obj[Name]:delete()
+  end
+end
 function ChoGGi.CodeFuncs.DeleteObject(obj)
   local ChoGGi = ChoGGi
   --the menu item sends itself
@@ -1141,53 +1152,36 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
       obj = ChoGGi.CodeFuncs.SelObject()
     end
   end
-  if not pcall(function()
-    DoneObject(obj)
-  end) then
-    --deleting domes will freeze game if they have anything in them.
-    --if obj:IsKindOf("Dome") and obj.working then
-    if obj:IsKindOf("Dome") and obj.air then
-      return
-    end
 
-    local function TryFunc(Name,Param)
-      if type(obj[Name]) == "function" then
-        obj[Name](obj,Param)
-      end
-    end
-
-    --some stuff will leave holes in the world if they're still working
-    TryFunc("ToggleWorking")
-
-    --try nicely first
-    obj.can_demolish = true
-    obj.indestructible = false
-
-    if obj.DoDemolish then
-      DestroyBuildingImmediate(obj)
-    end
-
-    TryFunc("Destroy")
-    TryFunc("SetDome",false)
-    TryFunc("RemoveFromLabels")
-    TryFunc("Done")
-    TryFunc("Gossip","done")
-    TryFunc("SetHolder",false)
-    local function TryFunc2(Name)
-      if obj[Name] then
-        obj[Name]:delete()
-      end
-    end
-    TryFunc2("sphere")
-    TryFunc2("decal")
-
-    --fuck it, I asked nicely
-    if obj then
-      TryFunc("delete")
-    end
+  --deleting domes will freeze game if they have anything in them.
+  --if obj:IsKindOf("Dome") and obj.working then
+  if obj:IsKindOf("Dome") and obj.air then
+    return
   end
 
-    --so we don't get an error from UseLastOrientation
+  --some stuff will leave holes in the world if they're still working
+  DeleteObject_ExecFunc(obj,"ToggleWorking")
+
+  obj.can_demolish = true
+  obj.indestructible = false
+
+  if obj.DoDemolish then
+    DestroyBuildingImmediate(obj)
+  end
+
+  DeleteObject_ExecFunc(obj,"Destroy")
+  DeleteObject_ExecFunc(obj,"SetDome",false)
+  DeleteObject_ExecFunc(obj,"RemoveFromLabels")
+  DeleteObject_ExecFunc(obj,"Done")
+  DeleteObject_ExecFunc(obj,"Gossip","done")
+  DeleteObject_ExecFunc(obj,"SetHolder",false)
+
+  DeleteObject_DeleteAttach(obj,"sphere")
+  DeleteObject_DeleteAttach(obj,"decal")
+
+  DoneObject(obj)
+
+  -- so we don't get an error from UseLastOrientation
   ChoGGi.Temp.LastPlacedObject = nil
 end
 

@@ -151,24 +151,6 @@ It's not as if domes need to be where you placed them (people will just ignore i
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000487--[[Delete All Of Selected Object--]])),
-    ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
-    nil,
-    T(302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]),
-    "delete_objects.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
-    ChoGGi.CodeFuncs.DeleteObject,
-    ChoGGi.UserSettings.KeyBindings.DeleteObject,
-    T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).
-
-Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
-    "delete_objects.tga"
-  )
-
-  ChoGGi.ComFuncs.AddAction(
     Concat("[102]",T(1000113--[[Debug--]]),"/",T(302535920000491--[[Examine Current Obj--]])),
     ChoGGi.MenuFuncs.ObjExaminer,
     ChoGGi.UserSettings.KeyBindings.ObjExaminer,
@@ -267,5 +249,23 @@ Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
     "DisableEyeSpec.tga"
   )
   -------------------------------debugfx
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]",T(1000113--[[Debug--]]),"/[999]",T(302535920000487--[[Delete All Of Selected Object--]])),
+    ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
+    nil,
+    T(302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]),
+    "delete_objects.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[102]",T(1000113--[[Debug--]]),"/[999]",T(302535920000489--[[Delete Object(s)--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
+    ChoGGi.CodeFuncs.DeleteObject,
+    ChoGGi.UserSettings.KeyBindings.DeleteObject,
+    T(302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).
+
+Use Editor Mode and mouse drag to select multiple objects for deletion.--]]),
+    "delete_objects.tga"
+  )
 
 end

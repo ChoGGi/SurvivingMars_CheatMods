@@ -60,16 +60,27 @@ local UIL_GetFontID = UIL.GetFontID
 local g_Classes = g_Classes
 
 local function DeleteAllRocks(rock_cls)
-  local objs = GetObjects{class= rock_cls} or empty_table
+  local objs = GetObjects{class = rock_cls} or empty_table
   for i = 1, #objs do
-    DoneObject(objs[i])
+    objs[i]:delete()
   end
 end
 
 function ChoGGi.MenuFuncs.DeleteAllRocks()
-  DeleteAllRocks("WasteRockObstructor")
-  DeleteAllRocks("WasteRockObstructorSmall")
-  DeleteAllRocks("Deposition")
+  local function CallBackFunc(answer)
+    if answer then
+      CreateRealTimeThread(function()
+        DeleteAllRocks("WasteRockObstructor")
+        DeleteAllRocks("WasteRockObstructorSmall")
+        DeleteAllRocks("Deposition")
+      end)
+    end
+  end
+  ChoGGi.ComFuncs.QuestionBox(
+    Concat(T(6779--[[Warning--]]),"!\n",T(302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]])),
+    CallBackFunc,
+    Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]]))
+  )
 end
 
 do --export colonist data
@@ -224,21 +235,22 @@ function ChoGGi.MenuFuncs.ReloadLua()
   print(T(302535920000850--[[Reload lua done--]]))
 end
 
-function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
+function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   local ChoGGi = ChoGGi
   --the menu item sends itself
-  if s and not s.class then
-    s = ChoGGi.CodeFuncs.SelObject()
+  if obj and not obj.class then
+    obj = ChoGGi.CodeFuncs.SelObject()
   end
-  local name = RetName(s)
+  local name = RetName(obj)
   if not name then
-    MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(s),T(302535920000851--[[isn't an object?\nSounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
+    MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(obj),T(302535920000851--[[isn't an object?
+Sounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
       T(6774--[[Error--]]),nil,true
     )
     return
   end
 
-  local objs = GetObjects{class=s.class} or empty_table
+  local objs = GetObjects{class=obj.class} or empty_table
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -249,10 +261,10 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(s)
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000852--[[This will delete all--]])," ",#objs," ",T(302535920000853--[[of--]])," ",name,"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
+    Concat(T(6779--[[Warning--]]),"!\n",string.format(T(302535920000852--[[This will delete all %s of %s--]],#objs,name)),"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
     CallBackFunc,
     Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
-    Concat(T(302535920000856--[[Yes, I want to delete all--]]),": ",name),
+    Concat(string.format(T(302535920000856--[[Yes, I want to delete all: %s--]]),name)),
     T(302535920000857--[[No, I need to backup my save first (like I should've done before clicking something called 'Delete All').--]])
   )
 end
