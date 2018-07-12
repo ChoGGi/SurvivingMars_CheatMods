@@ -7,6 +7,8 @@ Changes:
 Moved Flatten Terrain Toggle from Debug to Game
 Examine won't show Parents/Attaches buttons if there aren't any.
 Examine now translates any userdata to strings (if it can).
+Moved Delete Object into a separate folder for less accident prone clicking.
+Added a confirmation dialog when pressing Delete All Rocks.
 
 Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
