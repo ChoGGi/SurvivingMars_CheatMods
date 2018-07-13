@@ -249,10 +249,10 @@ This can take time on something like the ""Building"" metatable (don't use this 
         local str = self:totextex(self.obj)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
-        Dump(Concat("\n",str),"w","DumpedExamine","lua")
+        Dump(Concat("\n",str),nil,"DumpedExamine","lua")
       elseif text == menuitem_DumpObject then
         local str = ValueToLuaCode(self.obj)
-        Dump(Concat("\n",str),"w","DumpedExamineObject","lua")
+        Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
       elseif text == menuitem_EditObject then
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
       elseif text == menuitem_ExecCode then
