@@ -221,12 +221,13 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
   )
 end
 
-function ChoGGi.MenuFuncs.BuildingPower_Toggle()
+local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
   local ChoGGi = ChoGGi
   local sel = SelectedObj
-  if not sel or not sel.electricity_consumption then
-    MsgPopup(T(302535920000120--[[You need to select something that uses electricity.--]]),
-          T(3980--[[Buildings--]]),UsualIcon
+  if not sel or not sel[type1] then
+    MsgPopup(T(str1),
+      T(3980--[[Buildings--]]),
+      UsualIcon
     )
     return
   end
@@ -238,50 +239,57 @@ function ChoGGi.MenuFuncs.BuildingPower_Toggle()
   end
 
   local setting = UserSettings.BuildingSettings[id]
-  local amount
-  if setting.nopower then
-    setting.nopower = nil
-    amount = DataInstances.BuildingTemplate[id].electricity_consumption
+  local which
+  if setting[type2] then
+    setting[type2] = nil
+    which = func1
   else
-    setting.nopower = true
-    amount = 0
+    setting[type2] = true
+    which = func2
   end
 
-  local tab = UICity.labels[id] or empty_table
-  for i = 1, #tab do
-    local mods = tab[i].modifications
-    if mods and mods.electricity_consumption then
-      local mod = tab[i].modifications.electricity_consumption
-      if mod and mod[1] then
-        mod = mod[1]
-      end
-
-      if amount == 0 then
-        tab[i].ChoGGi_mod_electricity_consumption = {
-          amount = mod.amount,
-          percent = mod.percent
-        }
-        if mod:IsKindOf("ObjectModifier") then
-          mod:Change(0,0)
-        end
-      else
-        local orig = tab[i].ChoGGi_mod_electricity_consumption
-        if mod:IsKindOf("ObjectModifier") then
-          mod:Change(orig.amount,orig.percent)
-        else
-          mod.amount = orig.amount
-          mod.percent = orig.percent
-        end
-        tab[i].ChoGGi_mod_electricity_consumption = nil
-      end
-
-    end
-    tab[i]:SetBase("electricity_consumption", amount)
+  local blds = UICity.labels[id] or empty_table
+  for i = 1, #blds do
+    ChoGGi.CodeFuncs[which](blds[i])
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(id," ",T(302535920000121--[[power consumption--]]),": ",amount),
-    T(3980--[[Buildings--]])
+  MsgPopup(Concat(id," ",T(str2)),
+    T(3980--[[Buildings--]]),
+    UsualIcon
+  )
+end
+
+function ChoGGi.MenuFuncs.BuildingPower_Toggle()
+  BuildingConsumption_Toggle(
+    "electricity_consumption",
+    302535920000120--[[You need to select a building that uses electricity.--]],
+    "nopower",
+    "AddBuildingElecConsump",
+    "RemoveBuildingElecConsump",
+    683--[[Power Consumption--]]
+  )
+end
+
+function ChoGGi.MenuFuncs.BuildingWater_Toggle()
+  BuildingConsumption_Toggle(
+    "water_consumption",
+    302535920000121--[[You need to select a building that uses water.--]],
+    "nowater",
+    "AddBuildingWaterConsump",
+    "RemoveBuildingWaterConsump",
+    656--[[Water consumption--]]
+  )
+end
+
+function ChoGGi.MenuFuncs.BuildingAir_Toggle()
+  BuildingConsumption_Toggle(
+    "air_consumption",
+    302535920001250--[[You need to select a building that uses oxygen.--]],
+    "noair",
+    "AddBuildingOxygenConsump",
+    "RemoveBuildingOxygenConsump",
+    657--[[Oxygen Consumption--]]
   )
 end
 

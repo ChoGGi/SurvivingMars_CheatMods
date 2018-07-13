@@ -110,10 +110,24 @@ I trust you are not in too much distress.--]])))
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/",T(302535920000186--[[Powerless Building--]])),
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/[12]",T(302535920000186--[[Power-free Building--]])),
     ChoGGi.MenuFuncs.BuildingPower_Toggle,
     nil,
     T(302535920000187--[[Toggle electricity use for selected building type.--]]),
+    icon
+  )
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/[13]",T(302535920001251--[[Water-free Building--]])),
+    ChoGGi.MenuFuncs.BuildingWater_Toggle,
+    nil,
+    T(302535920001252--[[Toggle water use for selected building type.--]]),
+    icon
+  )
+  ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(3980--[[Buildings--]]),"/[14]",T(302535920001253--[[Oxygen-free Building--]])),
+    ChoGGi.MenuFuncs.BuildingAir_Toggle,
+    nil,
+    T(302535920001254--[[Toggle oxygen use for selected building type.--]]),
     icon
   )
 

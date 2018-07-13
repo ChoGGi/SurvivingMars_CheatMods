@@ -1694,8 +1694,6 @@ function OpenExamine(o, from)
     --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
     --so i use a thread in Init to re-pos it, which messes this up, so we want to make sure this is called later
     DelayedCall(1, function()
---~     CreateRealTimeThread(function()
---~       Sleep(1)
       if IsPoint(from) then
         ex:SetPos(from)
 

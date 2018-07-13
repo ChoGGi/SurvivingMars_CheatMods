@@ -1179,21 +1179,40 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   DeleteObject_DeleteAttach(obj,"sphere")
   DeleteObject_DeleteAttach(obj,"decal")
 
-  DoneObject(obj)
-
-  -- so we don't get an error from UseLastOrientation
-  ChoGGi.Temp.LastPlacedObject = nil
+  -- I did ask nicely
+  if IsValid(obj) then
+    obj:delete()
+  end
 end
 
-function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(Obj)
-  local mods = Obj.modifications
-  if mods and mods.electricity_consumption then
-    local mod = Obj.modifications.electricity_consumption
+local function AddConsumption(obj,name)
+  --if this is here we know it has what we need so no need to check for mod/consump
+  if obj[Concat("ChoGGi_mod_",name)] then
+    local mod = obj.modifications[name]
     if mod[1] then
       mod = mod[1]
     end
-    if not Obj.ChoGGi_mod_electricity_consumption then
-      Obj.ChoGGi_mod_electricity_consumption = {
+    local orig = obj[Concat("ChoGGi_mod_",name)]
+    if mod:IsKindOf("ObjectModifier") then
+      mod:Change(orig.amount,orig.percent)
+    else
+      mod.amount = orig.amount
+      mod.percent = orig.percent
+    end
+    obj[Concat("ChoGGi_mod_",name)] = nil
+  end
+  local amount = DataInstances.BuildingTemplate[obj.encyclopedia_id][name]
+  obj:SetBase(name, amount)
+end
+local function RemoveConsumption(obj,name)
+  local mods = obj.modifications
+  if mods and mods[name] then
+    local mod = obj.modifications[name]
+    if mod[1] then
+      mod = mod[1]
+    end
+    if not obj[Concat("ChoGGi_mod_",name)] then
+      obj[Concat("ChoGGi_mod_",name)] = {
         amount = mod.amount,
         percent = mod.percent
       }
@@ -1202,7 +1221,25 @@ function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(Obj)
       mod:Change(0,0)
     end
   end
-  Obj:SetBase("electricity_consumption", 0)
+  obj:SetBase(name, 0)
+end
+function ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
+  RemoveConsumption(obj,"water_consumption")
+end
+function ChoGGi.CodeFuncs.AddBuildingWaterConsump(obj)
+  AddConsumption(obj,"water_consumption")
+end
+function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
+  RemoveConsumption(obj,"electricity_consumption")
+end
+function ChoGGi.CodeFuncs.AddBuildingElecConsump(obj)
+  AddConsumption(obj,"electricity_consumption")
+end
+function ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
+  RemoveConsumption(obj,"air_consumption")
+end
+function ChoGGi.CodeFuncs.AddBuildingAirConsump(obj)
+  AddConsumption(obj,"air_consumption")
 end
 
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)

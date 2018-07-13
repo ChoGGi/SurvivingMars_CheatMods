@@ -520,18 +520,19 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 end
 
 local entity_table = {}
-local function SetEntity(Obj,Entity)
+local function SetEntity(obj,entity)
   --backup orig
-  if not Obj.ChoGGi_OrigEntity then
-    Obj.ChoGGi_OrigEntity = Obj.entity
+  if not obj.ChoGGi_OrigEntity then
+    obj.ChoGGi_OrigEntity = obj.entity
   end
-  if Entity == "Default" and Obj.ChoGGi_OrigEntity then
-    Obj.entity = Obj.ChoGGi_OrigEntity
-    Obj:ChangeEntity(Obj.ChoGGi_OrigEntity)
-    Obj.ChoGGi_OrigEntity = nil
+  if entity == "Default" then
+    local orig = obj.ChoGGi_OrigEntity or obj:GetDefaultPropertyValue("entity")
+    obj.entity = orig
+    obj:ChangeEntity(orig)
+    obj.ChoGGi_OrigEntity = nil
   else
-    Obj.entity = Entity
-    Obj:ChangeEntity(Entity)
+    obj.entity = entity
+    obj:ChangeEntity(entity)
   end
 end
 function ChoGGi.MenuFuncs.SetEntity()
@@ -589,7 +590,7 @@ function ChoGGi.MenuFuncs.SetEntity()
         local objs = GetObjects{class = sel.class} or empty_table
         for i = 1, #objs do
           if dome then
-            if objs[i].dome and objs[i].dome == dome then
+            if objs[i].dome and objs[i].dome.handle == dome.handle then
               SetEntity(objs[i],value)
             end
           else
@@ -607,11 +608,13 @@ function ChoGGi.MenuFuncs.SetEntity()
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001151--[[Set Entity For--]])," ",RetName(sel)),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",(sel.ChoGGi_OrigEntity or sel.entity),"\n",T(302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]),"\n\n",T(302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).\n\nNot permanent for colonists after they exit buildings (for now).--]])),
+    hint = Concat(T(302535920000106--[[Current--]]),": ",(sel.ChoGGi_OrigEntity or sel.entity),"\n",T(302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]),"\n\n",T(302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+
+Not permanent for colonists after they exit buildings (for now).--]])),
     check1 = T(302535920000750--[[Dome Only--]]),
-    check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
+    check1_hint = T(302535920001255--[[Will only apply to objects in the same dome as selected object.--]]),
     check2 = T(302535920000752--[[Selected Only--]]),
-    check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
+    check2_hint = T(302535920001256--[[Will only apply to selected object.--]]),
   })
 end
 
@@ -692,7 +695,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
         local objs = GetObjects{class = sel.class} or empty_table
         for i = 1, #objs do
           if dome then
-            if objs[i].dome and objs[i].dome == dome then
+            if objs[i].dome and objs[i].dome.handle == dome.handle then
               SetScale(objs[i],value)
             end
           else

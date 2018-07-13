@@ -137,7 +137,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       Table = UICity.labels[Label] or empty_table
       for i = #Table, 1, -1 do
         if dome then
-          if Table[i].dome and Table[i].dome == dome then
+          if Table[i].dome and Table[i].dome.handle == dome.handle then
             MeatbagsToSoylent(Table[i],check1)
           end
         else
@@ -150,7 +150,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       for i = #Table, 1, -1 do
         if Table[i].traits[Trait] then
           if dome then
-            if Table[i].dome and Table[i].dome == dome then
+            if Table[i].dome and Table[i].dome.handle == dome.handle then
               MeatbagsToSoylent(Table[i],check1)
             end
           else
@@ -166,7 +166,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       for i = #Table, 1, -1 do
         if Table[i][TraitType] == Trait then
           if dome then
-            if Table[i].dome and Table[i].dome == dome then
+            if Table[i].dome and Table[i].dome.handle == dome.handle then
               MeatbagsToSoylent(Table[i],check1)
             end
           else
@@ -416,7 +416,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
     local tab = UICity.labels.Colonist or empty_table
     for i = 1, #tab do
       if dome then
-        if tab[i].dome and tab[i].dome == dome then
+        if tab[i].dome and tab[i].dome.handle == dome.handle then
           tab[i][Type](tab[i],"Renegade")
         end
       else
@@ -747,7 +747,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               ChoGGi.CodeFuncs.ColonistUpdateAge(tab[i],value)
             end
           else
@@ -839,7 +839,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               ChoGGi.CodeFuncs.ColonistUpdateGender(tab[i],value)
             end
           else
@@ -937,7 +937,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               ChoGGi.CodeFuncs.ColonistUpdateSpecialization(tab[i],value)
             end
           else
@@ -1025,7 +1025,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               ChoGGi.CodeFuncs.ColonistUpdateRace(tab[i],value)
             end
           else
@@ -1180,7 +1180,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               RandomTraits(tab[i])
             end
           else
@@ -1197,7 +1197,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
         for i = 1, #tab do
           for j = 1, #TraitsList do
             if dome then
-              if tab[i].dome and tab[i].dome == dome then
+              if tab[i].dome and tab[i].dome.handle == dome.handle then
                 tab[i][Type](tab[i],TraitsList[j],true)
               end
             else
@@ -1269,7 +1269,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
-          if tab[i].dome and tab[i].dome == dome then
+          if tab[i].dome and tab[i].dome.handle == dome.handle then
             tab[i][Stat] = v
           end
         else
@@ -1288,7 +1288,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
       local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
-          if tab[i].dome and tab[i].dome == dome then
+          if tab[i].dome and tab[i].dome.handle == dome.handle then
             tab[i].stat_morale = value
             tab[i].stat_sanity = value
             tab[i].stat_comfort = value
@@ -1363,7 +1363,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               --tab[i]:SetMoveSpeed(value)
               pf_SetStepLen(tab[i],value)
             end
@@ -1436,7 +1436,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
         local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
-            if tab[i].dome and tab[i].dome == dome then
+            if tab[i].dome and tab[i].dome.handle == dome.handle then
               tab[i]:SetGravity(value)
             end
           else

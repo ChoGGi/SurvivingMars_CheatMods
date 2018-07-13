@@ -8,14 +8,12 @@ local ResourceScale = ChoGGi.Consts.ResourceScale
 
 local string = string
 
-local CreateRealTimeThread = CreateRealTimeThread
 local CurrentMap = CurrentMap
 local DelayedCall = DelayedCall
 local DestroyBuildingImmediate = DestroyBuildingImmediate
 local IsValid = IsValid
 local Random = Random
 local RebuildInfopanel = RebuildInfopanel
---~ local Sleep = Sleep
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -69,28 +67,26 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   g_Classes.PinnableObject.CheatDeleteObject = CheatDeleteObject
   g_Classes.Building.CheatDeleteObject = CheatDeleteObject
   g_Classes.Unit.CheatDeleteObject = CheatDeleteObject
---~
-  function g_Classes.Building:CheatPowerless()
+
+-- consumption
+  function g_Classes.Building:CheatPowerFree()
     ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
   end
-  function g_Classes.Building:CheatPowered()
-    --if this is here we know it has what we need so no need to check for mod/consump
-    if self.ChoGGi_mod_electricity_consumption then
-      local mod = self.modifications.electricity_consumption
-      if mod[1] then
-        mod = mod[1]
-      end
-      local orig = self.ChoGGi_mod_electricity_consumption
-      if mod:IsKindOf("ObjectModifier") then
-        mod:Change(orig.amount,orig.percent)
-      else
-        mod.amount = orig.amount
-        mod.percent = orig.percent
-      end
-      self.ChoGGi_mod_electricity_consumption = nil
-    end
-    local amount = DataInstances.BuildingTemplate[self.encyclopedia_id].electricity_consumption
-    self:SetBase("electricity_consumption", amount)
+  function g_Classes.Building:CheatPowerNeed()
+    ChoGGi.CodeFuncs.AddBuildingElecConsump(self)
+  end
+  function g_Classes.Building:CheatWaterFree()
+    ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(self)
+  end
+  function g_Classes.Building:CheatWaterNeed()
+    ChoGGi.CodeFuncs.AddBuildingWaterConsump(self)
+  end
+
+  function g_Classes.Building:CheatOxygenFree()
+    ChoGGi.CodeFuncs.RemoveBuildingOxygenConsump(self)
+  end
+  function g_Classes.Building:CheatOxygenNeed()
+    ChoGGi.CodeFuncs.AddBuildingOxygenConsump(self)
   end
 --~
   local function CheatHideSigns(self)
@@ -133,8 +129,6 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   function g_Classes.Colonist:CheatRenegadeClear()
     self:RemoveTrait("Renegade")
     DelayedCall(100, function()
---~     CreateRealTimeThread(function()
---~       Sleep(100)
       self:CheatFillMorale()
     end)
   end
@@ -442,13 +436,13 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 --CheatCleanAndFix
   local function CheatCleanAndFix(self)
     self:CheatMalfunction()
-    CreateRealTimeThread(function()
+    DelayedCall(1, function()
       self:Repair()
    end)
   end
   local function CheatCleanAndFixDrone(self)
     self:CheatMalfunction()
-    CreateRealTimeThread(function()
+    DelayedCall(1, function()
       self.auto_connect = false
       if self.malfunction_end_state then
         self:PlayState(self.malfunction_end_state, 1)
@@ -610,15 +604,41 @@ Reselect to update display."--]]),name)
       else
         action.ActionId = ""
       end
-    elseif action.ActionId == "Powerless" then
+    elseif action.ActionId == "PowerFree" then
       if obj.electricity_consumption then
         SetHint(action,string.format(T(302535920001220--[[Change this %s so it doesn't need a power source.--]]),name))
       else
         action.ActionId = ""
       end
-    elseif action.ActionId == "Powered" then
+    elseif action.ActionId == "PowerNeed" then
       if obj.electricity_consumption then
         SetHint(action,string.format(T(302535920001221--[[Change this %s so it needs a power source.--]]),name))
+      else
+        action.ActionId = ""
+      end
+
+    elseif action.ActionId == "WaterFree" then
+      if obj.electricity_consumption then
+        SetHint(action,string.format(T(302535920000853--[[Change this %s so it doesn't need a water source.--]]),name))
+      else
+        action.ActionId = ""
+      end
+    elseif action.ActionId == "WaterNeed" then
+      if obj.electricity_consumption then
+        SetHint(action,string.format(T(302535920001247--[[Change this %s so it needs a water source.--]]),name))
+      else
+        action.ActionId = ""
+      end
+
+    elseif action.ActionId == "OxygenFree" then
+      if obj.electricity_consumption then
+        SetHint(action,string.format(T(302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]),name))
+      else
+        action.ActionId = ""
+      end
+    elseif action.ActionId == "OxygenNeed" then
+      if obj.electricity_consumption then
+        SetHint(action,string.format(T(302535920001249--[[Change this %s so it needs a oxygen source.--]]),name))
       else
         action.ActionId = ""
       end

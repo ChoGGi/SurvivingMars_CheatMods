@@ -327,6 +327,12 @@ function OnMsg.ConstructionComplete(building)
     if setting.nopower then
       ChoGGi.CodeFuncs.RemoveBuildingElecConsump(building)
     end
+    if setting.noair then
+      ChoGGi.CodeFuncs.RemoveBuildingAirConsump(building)
+    end
+    if setting.nowater then
+      ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(building)
+    end
     --large protect_range for defence buildings
     if setting.protect_range then
       building.protect_range = setting.protect_range

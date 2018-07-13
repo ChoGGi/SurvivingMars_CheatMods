@@ -2,6 +2,7 @@ v6.5
 Added:
 Examine>Tools>Functions: Shows a list of all functions.
 Help>ECM>Edit ECM Settings File: No more having to browse to the AppData folder if you need to change something manually.
+Options to remove water/air consumption (Cheats pane, and Menu>Buildings).
 
 Changes:
 Moved Flatten Terrain Toggle from Debug to Game
@@ -13,6 +14,7 @@ Added a confirmation dialog when pressing Delete All Rocks.
 Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
 Flatten Ground wasn't using saved radius till after it was adjusted.
+Dome Only checkbox didn't work.
 
 v6.4
 Fixed:

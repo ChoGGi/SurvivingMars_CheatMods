@@ -419,13 +419,8 @@ end --OnMsg
 
 --Pre
 function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
---~   SaveOrigFunc("InfopanelObj","CreateCheatActions")
+  SaveOrigFunc("InfopanelObj","CreateCheatActions")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
-  --so we can add hints to info pane cheats
-  if not ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions then
-    ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-  end
 
   function InfopanelObj:CreateCheatActions(win)
     --fire orig func to build cheats
@@ -467,6 +462,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("SingleResourceProducer","Produce")
   SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
   SaveOrigFunc("SupplyGridElement","SetProduction")
+  SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
+  SaveOrigFunc("terminal","SysEvent")
   SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
   SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
   SaveOrigFunc("UAMenu","CreateBtn")
@@ -480,8 +477,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","OnMouseEnter")
   SaveOrigFunc("XWindow","OnMouseLeft")
   SaveOrigFunc("XWindow","SetId")
-  SaveOrigFunc("terminal","SysEvent")
-  SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
 --~   SaveOrigFunc("RCRover","LeadIn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
@@ -1054,19 +1049,10 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   function InfopanelDlg:Open(...)
     --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
     local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
+
+--~     DelayedCall(1, function()
     CreateRealTimeThread(function()
       local c = self.idContent
-
-      --see about adding age to colonist info
-if type(ChoGGi.Testing) == "function" then
-      if self.context and self.context.class == "Colonist" then
-        local con = c[2].idContent
-        --con[#con+1] = XText:new()
-        con = con[#con]
-        --con.text = Concat(con.text,"age: ")
-        --ex(con)
-      end
-end
 
       --probably don't need this...
       if c then
@@ -1087,8 +1073,8 @@ end
           end
           --init set to hidden
           ToggleVis(false,0)
-          local visthread
 
+          local visthread
           self.OnMouseEnter = function()
             DeleteThread(visthread)
             ToggleVis(true)
@@ -1106,14 +1092,14 @@ end
         for i = 1, #c do
           local section = c[i]
           if section.class == "XSection" then
-            local title = section.idSectionTitle.Text
+            local title = TGetID(section.idSectionTitle.Text)
             local content = section.idContent[2]
-            --if section.idWorkers and #section.idWorkers > 14 and title == "" then
+
             if section.idWorkers and #section.idWorkers > 14 then
               --sets height
               content:SetMaxHeight(32)
-              local expandthread
 
+              local expandthread
               section.OnMouseEnter = function()
                 DeleteThread(expandthread)
                 content:SetLayoutMethod("HWrap")
@@ -1128,13 +1114,13 @@ end
               end
 
             --Cheats
-            elseif TGetID(title) == 27 then
+            elseif title == 27 then
               --hides overflow
-              content:SetClip(true)
+              content.Clip = true
               --sets height
               content:SetMaxHeight(0)
-              local expandthread
 
+              local expandthread
               section.OnMouseEnter = function()
                 DeleteThread(expandthread)
                 content:SetMaxHeight()
@@ -1146,17 +1132,13 @@ end
                 end)
               end
 
---~             235=Traits
---~             702480492408=Residents
---~             TranslationTable[27]
-            elseif TGetID(title) == 235 or TGetID(title) == 702480492408 then
+            -- 235=Traits, 702480492408=Residents
+            elseif title == 235 or title == 702480492408 then
 
-              --hides overflow
-              content:SetClip(true)
-              --sets height
+              content.Clip = true
               content:SetMaxHeight(256)
-              local expandthread
 
+              local expandthread
               section.OnMouseEnter = function()
                 DeleteThread(expandthread)
                 content:SetMaxHeight()
@@ -1167,8 +1149,8 @@ end
                   content:SetMaxHeight(256)
                 end)
               end
-            end
 
+            end
           end --if XSection
         end
       end
@@ -1240,24 +1222,19 @@ end
   end
 
   --set orientation to same as last object
-  function ConstructionController:CreateCursorObj(alternative_entity, template_obj, override_palette)
+  function ConstructionController:CreateCursorObj(...)
     local ChoGGi = ChoGGi
-    local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, alternative_entity, template_obj, override_palette)}
+    local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
 
     local last = ChoGGi.Temp.LastPlacedObject
-    if last and ChoGGi.UserSettings.UseLastOrientation then
-      --shouldn't fail anymore, but we'll still pcall
-      pcall(function()
-        local angle = type(last.GetAngle) == "function" and last:GetAngle() or 0
-        if type(angle) == "number" and type(ret[1].SetAngle) == "function" then
-          ret[1]:SetAngle(angle)
-        end
-      end)
+    if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
+      if type(ret[1].SetAngle) == "function" then
+        ret[1]:SetAngle(last:GetAngle() or 0)
+      end
     end
 
     return table.unpack(ret)
   end
-
 
   --so we can build without (as many) limits
   function ConstructionController:UpdateConstructionStatuses(dont_finalize)
