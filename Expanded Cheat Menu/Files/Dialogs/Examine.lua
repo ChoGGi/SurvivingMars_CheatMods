@@ -1104,8 +1104,8 @@ function Examine:SetObj(o)
 
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
-  local amount = attaches and #attaches or 0
-  self.idAttaches:SetHint(string.format(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]),name,amount)
+  local attach_amount = attaches and #attaches or 0
+  self.idAttaches:SetHint(string.format(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]),name,attach_amount)
   )
   if is_table then
 
@@ -1132,8 +1132,7 @@ function Examine:SetObj(o)
     end
 
     --attaches menu
-    local list = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
-    if list and #list > 0 then
+    if attaches and attach_amount > 0 then
 
       local spacer_text = T(302535920000053--[[Attaches--]])
       local list_items = {
@@ -1143,15 +1142,15 @@ function Examine:SetObj(o)
         }
       }
 
-      for i = 1, #list do
-        local hint = list[i].handle or type(list[i].GetPos) == "function" and Concat("Pos: ",list[i]:GetPos())
+      for i = 1, #attaches do
+        local hint = attaches[i].handle or type(attaches[i].GetPos) == "function" and Concat("Pos: ",attaches[i]:GetPos())
         if type(hint) == "number" then
           hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
         end
         list_items[#list_items+1] = {
-          text = RetName(list[i]),
-          rollover = hint or list[i].class,
-          obj = list[i],
+          text = RetName(attaches[i]),
+          rollover = hint or attaches[i].class,
+          obj = attaches[i],
         }
       end
 

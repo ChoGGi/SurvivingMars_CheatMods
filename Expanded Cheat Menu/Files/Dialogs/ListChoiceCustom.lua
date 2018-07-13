@@ -387,14 +387,12 @@ end
 
 --update colour
 function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
---~   pcall(function()
-    local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
-    if type(num) == "number" then
-      self.idColorHSV:SetHSV(UIL_RGBtoHSV(GetRGB(num)))
-      self.idColorHSV:InitHSVPtPos()
-      self.idColorHSV:Invalidate()
-    end
---~   end)
+  local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
+  if type(num) == "number" then
+    self.idColorHSV:SetHSV(UIL_RGBtoHSV(GetRGB(num)))
+    self.idColorHSV:InitHSVPtPos()
+    self.idColorHSV:Invalidate()
+  end
 end
 
 function ChoGGi_ListChoiceCustomDialog:GetAllItems()

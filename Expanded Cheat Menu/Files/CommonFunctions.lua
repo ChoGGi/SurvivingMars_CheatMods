@@ -191,7 +191,9 @@ function memoize.memoize(f, cache)
 
   if not is_callable(f) then
     print(string.format(
-            "If you get this msg contact me, thanks.\n\nOnly functions and callable tables are memoizable. Received %s (a %s)",
+            [[If you get this msg contact me, thanks.
+
+Only functions and callable tables are memoizable. Received %s (a %s)]],
              tostring(f), type(f)))
   end
   return function (...)
@@ -519,16 +521,17 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
   end
 end
 
-function ChoGGi.ComFuncs.DumpLua(Value)
+function ChoGGi.ComFuncs.DumpLua(value)
+  local v_type = type(value)
   local which = "TupleToLuaCode"
-  if type(Value) == "table" then
+  if v_type == "table" then
     which = "TableToLuaCode"
-  elseif type(Value) == "string" then
+  elseif v_type == "string" then
     which = "StringToLuaCode"
-  elseif type(Value) == "userdata" then
+  elseif v_type == "userdata" then
     which = "ValueToLuaCode"
   end
-  ChoGGi.ComFuncs.Dump(Concat("\r\n",_G[which](Value)),nil,"DumpedLua","lua")
+  ChoGGi.ComFuncs.Dump(Concat("\r\n",_G[which](value)),nil,"DumpedLua","lua")
 end
 
 --[[
@@ -883,9 +886,9 @@ end
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
-  if ChoGGi.Testing and type(ActionsToAdd) == "string" then
-    print("ActionsToAdd",ActionsToAdd)
-  end
+--~   if ChoGGi.Testing and type(ActionsToAdd) == "string" then
+--~     print("ActionsToAdd",ActionsToAdd)
+--~   end
 
   for k, v in pairs(ActionsToAdd) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
@@ -1481,6 +1484,7 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
   local ChoGGi = ChoGGi
   local linePrefix = ""
   local spaces = ""
+  local v_type = type(value)
   if key ~= nil then
     linePrefix = "["..key.."] = "
   end
@@ -1492,7 +1496,7 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
       spaces = Concat(spaces," ")
     end
   end
-  if type(value) == "table" then
+  if v_type == "table" then
     local mTable = getmetatable(value)
     if mTable == nil then
       print(Concat(spaces,linePrefix,"(table) "))
@@ -1503,14 +1507,14 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
     for tableKey, tableValue in pairs(value) do
       ChoGGi.ComFuncs.VarDump(tableValue, depth, tableKey)
     end
-  elseif type(value) == "function"
-    or type(value) == "thread"
-    or type(value) == "userdata"
+  elseif v_type == "function"
+    or v_type == "thread"
+    or v_type == "userdata"
     or value == nil
     then
       print(Concat(spaces,tostring(value)))
   else
-    print(Concat(spaces,linePrefix,"(",type(value),") ",tostring(value)))
+    print(Concat(spaces,linePrefix,"(",v_type,") ",tostring(value)))
   end
 end
 

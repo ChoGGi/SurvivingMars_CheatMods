@@ -994,9 +994,8 @@ function OnMsg.ChoGGi_Loaded()
 
   if UserSettings.HigherRenderDist then
     --lot of lag for some small rocks in distance
-    --hr.DistanceModifier = 260 --ultra=150
-    --hr.LODDistanceModifier = 260 --ultra=120
     --hr.AutoFadeDistanceScale = 2200 --def 2200
+
     --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
     if type(UserSettings.HigherRenderDist) == "number" then
       hr.DistanceModifier = UserSettings.HigherRenderDist

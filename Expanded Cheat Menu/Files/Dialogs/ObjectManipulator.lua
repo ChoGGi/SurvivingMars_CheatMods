@@ -437,7 +437,8 @@ end
 
 function ChoGGi_ObjectManipulator:CreateProp(o)
   local objlist = objlist
-  if type(o) == "function" then
+  local obj_type = type(o)
+  if obj_type == "function" then
     local debug_info = debug.getinfo(o, "Sn")
     return Concat(tostring(debug_info.name or debug_info.name_what or "unknown name"),"@",debug_info.short_src,"(",debug_info.linedefined,")")
   end
@@ -456,7 +457,7 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
   end
   --if some value is fucked, this just lets us ignore whatever value is fucked.
   pcall(function()
-    if type(o) == "table" and getmetatable(o) and getmetatable(o) == objlist then
+    if obj_type == "table" and getmetatable(o) and getmetatable(o) == objlist then
       local res = {}
       for i = 1, Min(#o, 3) do
         res[#res+1] = {
@@ -471,15 +472,15 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
     end
   end)
 
-  if type(o) == "thread" then
+  if obj_type == "thread" then
     return tostring(o)
   end
 
-  if type(o) == "string" then
+  if obj_type == "string" then
     return o
   end
 
-  if type(o) == "table" then
+  if obj_type == "table" then
     if IsT(o) then
       return Concat("T{\"",T(o),"\"}")
     else
@@ -498,13 +499,14 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
   local function tableinsert(k,v)
     --text colours
     local text
-    if type(v) == "table" then
+    local v_type = type(v)
+    if v_type == "table" then
       if v.class then
         text = Concat("<color 150 170 150>",self:CreateProp(k),"</color>")
       else
         text = Concat("<color 150 170 250>",self:CreateProp(k),"</color>")
       end
-    elseif type(v) == "function" then
+    elseif v_type == "function" then
       text = Concat("<color 250 75 75>",self:CreateProp(k),"</color>")
     else
       text = self:CreateProp(k)
@@ -535,29 +537,6 @@ function ChoGGi_ObjectManipulator:CreatePropList(o)
     end
     return CmpLower(a.sort, b.sort)
   end)
-
---~   if type(o) == "table" and getmetatable(o) == g_traceMeta and getmetatable(o) == g_traceMeta then
---~     local items = 1
---~     for i = 1, #o do
---~       if not (items >= self.page * 150) then
---~         local format_text, e = self:filtersmarttable(o[i])
---~         if format_text then
---~           items = items + 1
---~           if items >= (self.page - 1) * 150 then
---~             local t = self:evalsmarttable(format_text, e)
---~             if t then
---~               if self.show_times ~= "relative" then
---~                 t = Concat("<color 255 255 0>",tostring(e[1]),"</color>:",t)
---~               else
---~                 t = Concat("<color 255 255 0>",tostring(e[1] - GameTime()),"</color>:",t)
---~               end
---~               res[#res+1] = {text = Concat(t,"<vspace 8>")}
---~             end
---~           end
---~         end
---~       end
---~     end
---~   end
 
   return res
 end
