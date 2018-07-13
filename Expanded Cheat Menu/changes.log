@@ -16,6 +16,7 @@ Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
 Flatten Ground wasn't using saved radius till after it was adjusted.
 Dome Only checkbox didn't work.
+Slightly bypassed a weird bug with clipping the colonist head amount for residences selection panels (Thanks SkiRich).
 
 v6.4
 Fixed:

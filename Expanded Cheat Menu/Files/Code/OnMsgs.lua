@@ -85,14 +85,6 @@ function OnMsg.ClassesPostprocess()
     ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
   end
 
-  --don't show cheats pane for ResourceOverview
-  XTemplates.sectionCheats[1].__condition = function(parent, context)
-    --no sense in doing anything without cheats pane enabled
-    if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
-      return false
-    end
-    return context:CreateCheatActions(parent)
-  end
 --~   --don't show cheats pane if we don't have any to show
 --~   XTemplates.sectionCheats[1].__condition = function(parent, context)
 --~     --no sense in doing anything without cheats pane enabled
@@ -146,8 +138,23 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-  --Only added to stuff spawned with object spawner
   local XTemplates = XTemplates
+
+  -- don't show cheats pane for ResourceOverview
+  XTemplates.sectionCheats[1].__condition = function(parent, context)
+    --no sense in doing anything without cheats pane enabled
+    if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
+      return false
+    end
+    return context:CreateCheatActions(parent)
+  end
+
+  -- limit height of cheats pane and others in the selection panel
+  XTemplates.sectionCheats[1][1].Clip = true
+  XTemplates.sectionCheats[1][1].MaxHeight = 0
+  XTemplates.sectionResidence[1][1].MaxHeight = 256
+
+  -- only added to stuff spawned with object spawner
   if not XTemplates.ipEverything then
     PlaceObj('XTemplate', {
       group = "Infopanel Sections",

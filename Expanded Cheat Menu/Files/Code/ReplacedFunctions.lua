@@ -1055,6 +1055,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
       --probably don't need this...
       if c then
+
         --this limits height of traits you can choose to 3 till mouse over
         --7422="Select A Trait"
         if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422 then
@@ -1114,10 +1115,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
             --Cheats
             elseif title == 27 then
-              --hides overflow
-              content.Clip = true
-              --sets height
-              content:SetMaxHeight(0)
 
               local expandthread
               section.OnMouseEnter = function()
@@ -1134,8 +1131,14 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
             -- 235=Traits, 702480492408=Residents
             elseif title == 235 or title == 702480492408 then
 
-              content.Clip = true
-              content:SetMaxHeight(256)
+              if title == 702480492408 then
+                -- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
+                if self.context.capacity ~= self.context.base_capacity then
+                  content.Clip = true
+                end
+              else
+                content.Clip = true
+              end
 
               local expandthread
               section.OnMouseEnter = function()
