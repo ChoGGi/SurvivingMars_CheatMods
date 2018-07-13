@@ -525,7 +525,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   if Platform.editor then
     --stops the help webpage from showing up every single time
     function GedOpHelpMod() end
-
     if ChoGGi.Testing then
       function GedOpUploadMod(socket, root)
         print("GedOpUploadMod")

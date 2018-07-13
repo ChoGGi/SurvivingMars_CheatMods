@@ -67,6 +67,10 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   g_Classes.PinnableObject.CheatDeleteObject = CheatDeleteObject
   g_Classes.Building.CheatDeleteObject = CheatDeleteObject
   g_Classes.Unit.CheatDeleteObject = CheatDeleteObject
+  g_Classes.SubsurfaceDepositMetals.CheatDeleteObject = CheatDeleteObject
+  g_Classes.SubsurfaceDepositWater.CheatDeleteObject = CheatDeleteObject
+  g_Classes.SubsurfaceDepositPreciousMetals.CheatDeleteObject = CheatDeleteObject
+  g_Classes.SurfaceDepositGroup.CheatDeleteObject = CheatDeleteObject
 
 -- consumption
   function g_Classes.Building:CheatPowerFree()
@@ -104,6 +108,15 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   g_Classes.Unit.CheatHideSigns = CheatHideSigns
   g_Classes.Unit.CheatColourRandom = CheatColourRandom
   g_Classes.Unit.CheatColourDefault = CheatColourDefault
+  g_Classes.SubsurfaceDepositMetals.CheatColourRandom = CheatColourRandom
+  g_Classes.SubsurfaceDepositWater.CheatColourRandom = CheatColourRandom
+  g_Classes.SubsurfaceDepositPreciousMetals.CheatColourRandom = CheatColourRandom
+  g_Classes.SurfaceDepositGroup.CheatColourRandom = CheatColourRandom
+  g_Classes.SubsurfaceDepositMetals.CheatColourDefault = CheatColourDefault
+  g_Classes.SubsurfaceDepositWater.CheatColourDefault = CheatColourDefault
+  g_Classes.SubsurfaceDepositPreciousMetals.CheatColourDefault = CheatColourDefault
+  g_Classes.SurfaceDepositGroup.CheatColourDefault = CheatColourDefault
+
 --colonists
   function g_Classes.Colonist:CheatFillMorale()
     self.stat_morale = 100 * ResourceScale

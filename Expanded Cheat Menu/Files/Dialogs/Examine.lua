@@ -5,7 +5,7 @@ if g_Classes.Examine then
   return
 end
 
---see about hiding list when moving dialog
+-- see about hiding list when moving dialog
 
 local Concat
 local DialogAddCaption
@@ -27,6 +27,7 @@ do
   DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
   Dump = ChoGGi.ComFuncs.Dump
   RetButtonTextSize = ChoGGi.ComFuncs.RetButtonTextSize
+  RetCheckTextSize = ChoGGi.ComFuncs.RetCheckTextSize
   RetName = ChoGGi.ComFuncs.RetName
   RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
   ShowMe = ChoGGi.ComFuncs.ShowMe
@@ -54,12 +55,11 @@ local terrain_GetHeight = terrain.GetHeight
 -- 1 above console log
 local zorder = 2000001
 
-local g_traceMeta = false --figure out how to use traces?
+local g_traceMeta = false -- figure out how to use traces?
 
---~ markers = rawget(_G, "markers") or empty_table --moved to ComFuncs
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
---probably best not to change this class name, if other people use it
+-- probably best not to change this class name (if other people use it)
 DefineClass.Examine = {
   __parents = {"FrameWindow"},
   ZOrder = zorder,
@@ -102,7 +102,6 @@ function Examine:Init()
 
   self.idLinks = g_Classes.StaticText:new(self)
   self.idLinks:SetPos(point(dialog_left, element_y))
---~   self.idLinks:SetSize(point(dialog_width, 34))
   self.idLinks:SetSize(point(dialog_width, 20))
   --~ box(left,top, right, bottom)
   self.idLinks:SetHSizing("Resize")
@@ -117,6 +116,29 @@ function Examine:Init()
     flags = const.intfIgnoreParent
   })
 
+  local title = T(302535920000084--[[Auto-Refresh--]])
+  local button_size = RetCheckTextSize(title)
+  self.idAutoRefresh = g_Classes.CheckButton:new(self)
+  self.idAutoRefresh:SetPos(point(dialog_width - button_size:x() + 20, element_y + 1))
+  self.idAutoRefresh:SetSize(button_size)
+  self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+  self.idAutoRefresh:SetHSizing("AnchorToRight")
+  self.idAutoRefresh:SetText(title)
+  self.idAutoRefresh:SetHint(T(302535920001257--[[Auto-refresh list every second.--]]))
+  self.idAutoRefresh:SetButtonSize(point(16, 16))
+  --add check for auto-refresh
+  function self.idAutoRefresh.button.OnButtonPressed()
+    self.refreshing = self.idAutoRefresh:GetState()
+    CreateRealTimeThread(function()
+      while self.refreshing do
+        if self.obj then
+          self:SetObj(self.obj)
+        end
+        Sleep(1000)
+      end
+    end)
+  end
+
   element_y = border / 2 + self.idLinks:GetPos():y() + self.idLinks:GetSize():y()
 
   --todo: better text control (fix weird ass text controls)
@@ -126,23 +148,27 @@ function Examine:Init()
   self.idFilter:SetHSizing("Resize")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idFilter:SetFontStyle("Editor12Bold")
-  self.idFilter:SetHint(T(302535920000043--[[Scrolls to text entered--]]))
+  self.idFilter:SetHint(T(302535920000043--[[Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top).--]]))
   self.idFilter:SetTextHAlign("center")
   self.idFilter:SetTextVAlign("center")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
   self.idFilter.display_text = T(302535920000044--[[Goto text--]])
-  self.idFilter:AddInterpolation({
-    type = const.intAlpha,
-    startValue = 255,
-    flags = const.intfIgnoreParent
-  })
+  -- blocks the transp toggle
+--~   self.idFilter:AddInterpolation({
+--~     type = const.intAlpha,
+--~     startValue = 255,
+--~     flags = const.intfIgnoreParent
+--~   })
   function self.idFilter.OnValueChanged(_, value)
     self:FindNext(value)
   end
-  --improved text handling
+  --improved text handling (orig used StaticText.OnKbdKeyDown...)
   function self.idFilter:OnKbdKeyDown(char, vk)
     if vk == const.vkEnter then
       self.parent:FindNext(self:GetText())
+      return "break"
+    elseif vk == const.vkUp then
+      self.parent.idText:SetTextOffset(point(0,0))
       return "break"
     elseif vk == const.vkEsc then
       self.parent.idCloseX:Press()
@@ -236,27 +262,34 @@ This can take time on something like the ""Building"" metatable (don't use this 
         local menu_added = {}
         local menu_list_items = {}
         -- adds class name then list of functions below
-        local function BuildFuncList(obj_name)
+        local function BuildFuncList(obj_name,prefix)
+          prefix = prefix or ""
           local class = _G[obj_name]
+          local skip = true
           for Key,_ in pairs(class) do
             if type(class[Key]) == "function" then
-              menu_list_items[Concat(obj_name,".",Key,": ")] = class[Key]
---~               menu_list_items[#menu_list_items+1] =
+              menu_list_items[Concat(prefix,obj_name,".",Key,": ")] = class[Key]
+              skip = false
             end
           end
-          menu_list_items[class.class] = "\n\n"
+          if not skip then
+            menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
+          end
+        end
+        local function ProcessList(list,prefix)
+          for i = 1, #list do
+            -- CObject and Object are pretty much the same (Object has a couple more funcs)
+            if not menu_added[list[i]] and list[i] ~= "CObject" then
+              menu_added[list[i]] = true
+              BuildFuncList(list[i],prefix)
+            end
+          end
         end
 
-        local function ProcessList(list)
-          for i = 1, #list do
-            if not menu_added[list[i]] then
-              menu_added[list[i]] = true
-              BuildFuncList(list[i])
-            end
-          end
-        end
-        ProcessList(self.parents)
-        ProcessList(self.ancestors)
+        ProcessList(self.parents,Concat(" ",T(302535920000520--[[Parents--]]),": "))
+        ProcessList(self.ancestors,Concat(T(302535920000525--[[Ancestors--]]),": "))
+        -- add examiner object with some spaces so it's at the top
+        BuildFuncList(self.obj.class,"  ")
 
         OpenExamine(menu_list_items,self)
 
@@ -377,9 +410,10 @@ This can take time on something like the \"Building\" metatable (don't use this 
   end
 
   title = T(1000232--[[Next--]])
+  button_size = RetCheckTextSize(title)
   self.idNext = g_Classes.Button:new(self)
   self.idNext:SetSize(RetButtonTextSize(title))
-  self.idNext:SetPos(point(dialog_width-60-border, element_y))
+  self.idNext:SetPos(point(dialog_width - button_size:x() - border, element_y))
   self.idNext:SetText(title)
   --self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
   self.idNext:SetHSizing("AnchorToRight")
@@ -559,7 +593,8 @@ function Examine:valuetotextex(o)
     return Concat(
       "'",
       str,
-      "'"
+      -- <left> is needed for descriptions that stick stuff on the right (well needed for the stuff after it)
+      "'<left>"
     )
   end
 
@@ -1100,10 +1135,11 @@ function Examine:SetObj(o)
     local list = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
     if list and #list > 0 then
 
+      local spacer_text = T(302535920000053--[[Attaches--]])
       local list_items = {
         {
-          text = Concat("   ---- ",T(302535920000053--[[Attaches--]])),
-          rollover = T(302535920000053--[[Attaches--]])
+          text = Concat("   ---- ",spacer_text),
+          rollover = spacer_text
         }
       }
 
@@ -1134,19 +1170,15 @@ function Examine:SetObj(o)
   end
 end
 
-function Examine:SetText(text)
-  if ChoGGi.Testing then
-    print("Examine:SetText(text)",Examine:SetText(text))
-  end
-  self.onclick_handles = {}
-  --helps nicely for large lists and Concat function
---~   if IsObjlist(self.obj) then
---~     DoneObject(self.obj)
+--~ function Examine:SetText(text)
+--~   if ChoGGi.Testing then
+--~     print("Examine:SetText(text)",Examine:SetText(text))
 --~   end
-  self.obj = false
-  self.idText:SetText(text)
-  self.idLinks:SetText(self:menu())
-end
+--~   self.onclick_handles = {}
+--~   self.obj = false
+--~   self.idText:SetText(text)
+--~   self.idLinks:SetText(self:menu())
+--~ end
 
 function Examine:Done(result)
   g_Classes.Dialog.Done(self,result)

@@ -536,24 +536,24 @@ Mode = -1 to append or nil to overwrite (default: -1)
 Funcs = true to dump functions as well (default: false)
 ChoGGi.ComFuncs.DumpTable(Object)
 --]]
-function ChoGGi.ComFuncs.DumpTable(Obj,Mode,Funcs)
+function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
   local ChoGGi = ChoGGi
-  if not Obj then
+  if not obj then
     MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
     return
   end
-  Mode = Mode or "-1"
+  mode = mode or "-1"
   --make sure it's empty
-  ChoGGi.TextFile = ""
-  ChoGGi.ComFuncs.DumpTableFunc(Obj,nil,Funcs)
-  AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.TextFile,Mode)
+  ChoGGi.Temp.TextFile = ""
+  ChoGGi.ComFuncs.DumpTableFunc(obj,nil,funcs)
+  AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.Temp.TextFile,mode)
 
-  MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(Obj)),
+  MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
     "AppData/logs/DumpedText.txt"
   )
 end
 
-function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
+function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
   local ChoGGi = ChoGGi
   if (hierarchyLevel == nil) then
     hierarchyLevel = 0
@@ -561,21 +561,21 @@ function ChoGGi.ComFuncs.DumpTableFunc(Obj,hierarchyLevel,Funcs)
     return 0
   end
 
-  if Obj.id then
-    ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n-----------------Obj.id: ",Obj.id," :")
+  if obj.id then
+    ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
   end
-  if (type(Obj) == "table") then
-    for k,v in pairs(Obj) do
+  if (type(obj) == "table") then
+    for k,v in pairs(obj) do
       if (type(v) == "table") then
         ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
-          ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n",tostring(k)," = ")
+          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n",tostring(k)," = ")
         end
         if v ~= nil then
-          ChoGGi.TextFile = Concat(ChoGGi.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs)))
+          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,funcs)))
         end
-        ChoGGi.TextFile = Concat(ChoGGi.TextFile,"\n")
+        ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n")
       end
     end
   end
@@ -605,27 +605,24 @@ function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
   ChoGGi.ComFuncs.Dump(Text,Mode)
 end
 
-function ChoGGi.ComFuncs.RetTextForDump(Obj,Funcs)
-  if type(Obj) == "userdata" then
-    return T(Obj)
-  elseif Funcs and type(Obj) == "function" then
-    return Concat("Func: \n\n",string.dump(Obj),"\n\n")
-  elseif type(Obj) == "table" then
-    return Concat(tostring(Obj)," len: ",#Obj)
+function ChoGGi.ComFuncs.RetTextForDump(obj,funcs)
+  local obj_type = type(obj)
+  if obj_type == "userdata" then
+    return T(obj)
+  elseif funcs and obj_type == "function" then
+    return Concat("Func: \n\n",string.dump(obj),"\n\n")
+  elseif obj_type == "table" then
+    return Concat(tostring(obj)," len: ",#obj)
   else
-    return tostring(Obj)
+    return tostring(obj)
   end
 end
 
-function ChoGGi.ComFuncs.PrintFiles(Filename,Function,Text,...)
-  Text = Text or ""
-  --pass ... onto pcall function
-  local vararg = ...
-  pcall(function()
-    ChoGGi.ComFuncs.Dump(Concat(Text,vararg,"\r\n"),nil,Filename,"log",true)
-  end)
-  if type(Function) == "function" then
-    Function(...)
+function ChoGGi.ComFuncs.PrintFiles(filename,func,text,...)
+  text = text or ""
+  ChoGGi.ComFuncs.Dump(Concat(text,...,"\r\n"),nil,filename,"log",true)
+  if type(func) == "function" then
+    func(...)
   end
 end
 
@@ -1639,16 +1636,8 @@ end
 -- if i memoize and user changes the name to something then it'll return the old one
 --~ ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)
 
-local temp_table = {}
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
-  if #temp_table > 500 then
-    temp_table = {}
-  else
-    --clean out old table instead of making a new one
-    for i = #temp_table, 1, -1 do
-      temp_table[i] = nil
-    end
-  end
+  local temp_table = {}
 
   --add
   if for_type then

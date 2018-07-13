@@ -3,8 +3,9 @@ Added:
 Examine>Tools>Functions: Shows a list of all functions.
 Help>ECM>Edit ECM Settings File: No more having to browse to the AppData folder if you need to change something manually.
 Options to remove water/air consumption (Cheats pane, and Menu>Buildings).
+Auto-refresh toggle in Examine Object.
 
-Changes:
+Changed:
 Moved Flatten Terrain Toggle from Debug to Game
 Examine won't show Parents/Attaches buttons if there aren't any.
 Examine now translates any userdata to strings (if it can).
@@ -676,7 +677,7 @@ Added Orbital Probes to Resources menu.
 Hide certain items in cheatpane (QoL>Infopanel Cheats Cleanup).
 Set occurrence level of disasters.
 
-Changes:
+Changed:
 Removed domes from Instant Build (use Alt-B for them).
 Follow Camera distance is consistent now.
 Hides the console log when using Follow Camera (camera going through glass = spammy log).
@@ -691,7 +692,7 @@ Using Instant Build would make domes not have the bottom texture till you placed
 Restricted Delete Object from deleting domes (can freeze game).
 
 v2.1
-Changes:
+Changed:
 Updated for Spirit update
 Using up/down history in console places cursor at end of text instead of start
 re-added the AddConsolePrompt function (not sure why they removed it...)
