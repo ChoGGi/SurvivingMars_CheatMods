@@ -116,8 +116,8 @@ function ChoGGi.MenuFuncs.ModUpload()
           end
         end
 
-        --update mod on workshop
-        if not err then
+        -- update mod on workshop
+        if not err or blank_mod then
           local os_dest = ConvertToOSPath(dest)
           if Platform.steam then
             err = AsyncSteamWorkshopUpdateItem{
@@ -138,21 +138,27 @@ function ChoGGi.MenuFuncs.ModUpload()
           print(mod.title,": ",T(1000107--[[Mod--]])," ",T(1000021--[[Steam ID--]]),": ",item_id)
         end
         local msg, title
-        if err then
-  --~         msg = local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod.title,err = Untranslated(err)})
+        if err and not blank_mod then
           msg = T(local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod.title,err}))
           title = T(1000593--[[Error--]])
         else
           msg = T(local_T({1000014,"Mod <ModLabel> was successfully uploaded to Steam!",mod.title}))
           title = T(1000015--[[Success--]])
         end
+
+        -- update mod log and print it to console log
         ModLog(msg)
-        print(ModMessageLog)
+        print(T(302535920001265--[[ModMessageLog--]]),": ",ModMessageLog)
+
+        -- let user know if we're good or not
         ChoGGi.ComFuncs.MsgWait(
           msg,
           Concat(title,": ",mod.title),
           "UI/Common/mod_steam_workshop.tga"
         )
+
+        -- remove upload folder
+        AsyncDeletePath(dest)
       end
 
       ChoGGi.ComFuncs.QuestionBox(
