@@ -1,2 +1,2 @@
 v0.2
-Changed it from checking each rc once an hour (in-game) to checking when during load/unload of resources.
+Changed it from checking each RC once an hour (in-game) to checking when during load/unload of resources.
