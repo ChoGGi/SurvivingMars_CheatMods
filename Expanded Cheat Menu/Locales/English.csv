@@ -1,5 +1,4 @@
 ID,Text,Translation
-302535920001265,,
 302535920001266,,
 302535920001267,,
 302535920001268,,
@@ -1274,6 +1273,7 @@ And yes Medium is using a higher setting than High...",
 302535920001066,What used to be the default for this ECM setting,
 302535920001067,Zoom,
 302535920001065,Menu Option,
+302535920001265,ModMessageLog,
 302535920001258,Copy Files,
 302535920001259,"Copies all mod files to AppData/ModUpload, uncheck to copy files manually.",
 302535920001260,Blank Mod,
