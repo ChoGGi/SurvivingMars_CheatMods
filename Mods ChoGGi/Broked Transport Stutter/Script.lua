@@ -1,7 +1,8 @@
 -- See LICENSE for terms
 
-local select,type,getmetatable,tostring,table,string = select,type,getmetatable,tostring,table,string
+local type,tostring,table,string = type,tostring,table,string
 
+local AsyncRand = AsyncRand
 local CreateRealTimeThread = CreateRealTimeThread
 local OpenXDialog = OpenXDialog
 local GetInGameInterface = GetInGameInterface
@@ -9,30 +10,8 @@ local GetXDialog = GetXDialog
 
 local g_Classes = g_Classes
 
-local concat_table = {}
-local concat_value
-local function Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one (should probably bench till i find a good medium rather than just using 500)
-  if #concat_table > 500 then
-    concat_table = {}
-  else
-    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a "lua for loop"
-  end
-  -- build table from args (see if devs added a c func to do this?)
-  for i = 1, select("#",...) do
-    concat_value = select(i,...)
-    if type(concat_value) == "string" or type(concat_value) == "number" then
-      concat_table[i] = concat_value
-    else
-      concat_table[i] = tostring(concat_value)
-    end
-  end
-  -- and done
-  return TableConcat(concat_table)
-end
-
 -- shows a popup msg with the rest of the notifications
-local function MsgPopup(Msg,Title,Icon,Size)
+local function MsgPopup(Msg,Title,Icon)
   --build our popup
   local params = {
     expiration=10000,

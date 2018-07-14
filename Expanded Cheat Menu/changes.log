@@ -1,6 +1,10 @@
 v6.6
 Added:
 Help>Mod Upload: Show list of mods to upload to Steam Workshop.
+Fixes>Toggles>Broked Transport Pathing: RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed). Defaults to enabled.
+
+Changed:
+Examine shows more info about functions/threads.
 
 v6.5
 Added:
@@ -23,12 +27,12 @@ Dome Only checkbox didn't work.
 Slightly bypassed a weird flashing UI bug with clipping the colonist head amount for residence selection panels (Thanks SkiRich).
 
 v6.4
+Added:
+Help>ECM>Disable ECM: Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in CheatMenuModSettings.lua file.
+
 Fixed:
 Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).
 FlattenGround: Fixed issue with pipes getting marked as uneven terrain (works on broked saves).
-
-Added:
-Help>ECM>Disable ECM: Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in CheatMenuModSettings.lua file.
 
 v6.3
 Added:
