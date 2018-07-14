@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Notifications/colonist.tga"
+local default_icon = "UI/Icons/Notifications/colonist.tga"
 
 local tostring,type,table = tostring,type,table
 
@@ -250,7 +250,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     if choice[1].check1 then
       g_ApplicantPool = {}
       MsgPopup(T(302535920000754--[[Emptied applicants pool.--]]),
-        T(302535920000755--[[Applicants--]]),UsualIcon
+        T(302535920000755--[[Applicants--]]),default_icon
       )
     else
       if type(value) == "number" then
@@ -261,7 +261,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
         end
         g_LastGeneratedApplicantTime = now
         MsgPopup(Concat(T(302535920000756--[[Added applicants--]]),": ",choice[1].text),
-          T(302535920000755--[[Applicants--]]),UsualIcon
+          T(302535920000755--[[Applicants--]]),default_icon
         )
       end
     end
@@ -317,7 +317,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
     end
 
     MsgPopup(T(302535920000765--[[Early night? Vamos al bar un trago!--]]),
-      T(217--[[Work Shifts--]]),UsualIcon
+      T(217--[[Work Shifts--]]),default_icon
     )
   end
 
@@ -360,7 +360,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text,"\n",T(302535920000770--[[Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.--]])),
-        T(547--[[Colonists--]]),UsualIcon,true
+        T(547--[[Colonists--]]),default_icon,true
       )
     end
   end
@@ -379,7 +379,7 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.VisitFailPenalty),"\n",T(302535920000772--[[The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments.--]])),
-    T(547--[[Colonists--]]),UsualIcon,true
+    T(547--[[Colonists--]]),default_icon,true
   )
 end
 
@@ -389,7 +389,7 @@ function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.RenegadeCreation),T(302535920000773--[[: I just love findin' subversives.--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -424,7 +424,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
       end
     end
     MsgPopup(T(302535920000776--[[OK, a limousine that can fly. Now I have seen everything.\nReally? Have you seen a man eat his own head?\nNo.\nSo then, you haven't seen everything.--]]),
-      T(547--[[Colonists--]]),UsualIcon,true
+      T(547--[[Colonists--]]),default_icon,true
     )
   end
 
@@ -447,7 +447,7 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("LowStatLevel",Consts.LowStatLevel)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.HighStatMoraleEffect),T(302535920000778--[[: Happy as a pig in shit--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -463,7 +463,7 @@ function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorSanityDamage",Consts.MeteorSanityDamage)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.DustStormSanityDamage),T(302535920000778--[[: Happy as a pig in shit--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -472,7 +472,7 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("SeeDeadSanity",Consts.SeeDeadSanity)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.SeeDeadSanity),T(302535920000779--[[: I love me some corpses.--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -481,7 +481,7 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.NoHomeComfort),"\n",T(302535920000780--[[Oh, give me a home where the Buffalo roam\nWhere the Deer and the Antelope play;\nWhere seldom is heard a discouraging word,--]])),
-    T(547--[[Colonists--]]),UsualIcon,true
+    T(547--[[Colonists--]]),default_icon,true
   )
 end
 
@@ -491,7 +491,7 @@ function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.LowSanityNegativeTraitChance),T(302535920000781--[[: Stupid and happy--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -501,7 +501,7 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("LowSanitySuicideChance",Consts.LowSanitySuicideChance)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.LowSanitySuicideChance),T(302535920000782--[[: Getting away ain't that easy--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -511,7 +511,7 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.OxygenMaxOutsideTime),T(302535920000783--[[: Free Air--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -531,7 +531,7 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("AvoidWorkplaceSols",Consts.AvoidWorkplaceSols)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.AvoidWorkplaceSols),T(302535920000785--[[: No Shame--]])),
-    T(547--[[Colonists--]]),UsualIcon
+    T(547--[[Colonists--]]),default_icon
   )
 end
 
@@ -561,7 +561,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty),"\n",T(302535920000788--[[You never know what you're gonna get.--]])),
-    "Penalty",UsualIcon,true
+    "Penalty",default_icon,true
   )
 end
 
@@ -759,7 +759,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     end
 
     MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",": ",choice[1].text),
-      T(547--[[Colonists--]]),UsualIcon
+      T(547--[[Colonists--]]),default_icon
     )
   end
 
@@ -850,7 +850,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 
     end
     MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",choice[1].text),
-      T(547--[[Colonists--]]),UsualIcon
+      T(547--[[Colonists--]]),default_icon
     )
   end
 
@@ -948,7 +948,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 
     end
     MsgPopup(Concat(sType,T(302535920000806--[[olonists--]]),": ",choice[1].text),
-      T(547--[[Colonists--]]),UsualIcon
+      T(547--[[Colonists--]]),default_icon
     )
   end
 
@@ -1043,7 +1043,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     end
 
     MsgPopup(Concat(T(302535920000819--[[Nationalsozialistische Rassenhygiene--]]),": ",choice[1].race),
-      T(547--[[Colonists--]]),UsualIcon
+      T(547--[[Colonists--]]),default_icon
     )
   end
 
@@ -1210,7 +1210,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 
     end
     MsgPopup(Concat(sType,T(302535920000830--[[olonists traits set--]]),": ",#TraitsList),
-      T(547--[[Colonists--]]),UsualIcon
+      T(547--[[Colonists--]]),default_icon
     )
   end
 
@@ -1312,7 +1312,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
       SetStat("stat_comfort",value)
     end
 
-    MsgPopup(choice[1].text,T(547--[[Colonists--]]),UsualIcon)
+    MsgPopup(choice[1].text,T(547--[[Colonists--]]),default_icon)
   end
 
   ChoGGi.ComFuncs.OpenInListChoice({
@@ -1377,7 +1377,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
       ChoGGi.ComFuncs.SetSavedSetting("SpeedColonist",value)
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-        T(547--[[Colonists--]]),UsualIcon
+        T(547--[[Colonists--]]),default_icon
       )
     end
   end
@@ -1449,7 +1449,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000839--[[Colonist gravity is now--]]),": ",choice[1].text),
-        T(547--[[Colonists--]]),UsualIcon
+        T(547--[[Colonists--]]),default_icon
       )
     end
   end
@@ -1470,7 +1470,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(sType)
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel or not sel:IsKindOf(T(4801--[[Workplace--]])) then
     MsgPopup(T(302535920000842--[[Select a workplace.--]]),
-      T(4801--[[Workplace--]]),UsualIcon
+      T(4801--[[Workplace--]]),default_icon
     )
     return
   end

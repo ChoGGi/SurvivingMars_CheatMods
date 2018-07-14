@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Anomaly_Event.tga"
+local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local print,type,tostring = print,type,tostring
 
@@ -702,7 +702,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000633--[[Lights Radius--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),UsualIcon
+        T(302535920001015--[[Video--]]),default_icon
       )
   end
 
@@ -742,7 +742,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000635--[[Terrain Detail--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),UsualIcon
+        T(302535920001015--[[Video--]]),default_icon
       )
   end
 
@@ -779,7 +779,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000637--[[Video Memory--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),UsualIcon
+        T(302535920001015--[[Video--]]),default_icon
       )
   end
 
@@ -818,7 +818,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920001050--[[ShadowmapSize--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),UsualIcon
+        T(302535920001015--[[Video--]]),default_icon
       )
   end
 
@@ -838,7 +838,7 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(T(302535920001053--[[Higher Shadow Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherShadowDist)),
-    T(302535920001015--[[Video--]]),UsualIcon
+    T(302535920001015--[[Video--]]),default_icon
   )
 end
 
@@ -874,7 +874,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920001057--[[Higher Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherRenderDist)),
-        T(302535920001015--[[Video--]]),UsualIcon
+        T(302535920001015--[[Video--]]),default_icon
       )
     end
   end

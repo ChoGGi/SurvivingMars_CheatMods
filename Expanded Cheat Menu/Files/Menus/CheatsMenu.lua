@@ -221,7 +221,7 @@ function ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
   )
 
   ChoGGi.ComFuncs.AddAction(
-    Concat(T(27--[[Cheats--]]),"/[14]",T(302535920000367--[[Mod Editor--]])),
+    Concat(T(27--[[Cheats--]]),"/[14]",T(302535920000236--[[Mod Editor--]])),
     ChoGGi.MenuFuncs.OpenModEditor,
     nil,
     T(302535920000368--[[Switch to the mod editor.--]]),

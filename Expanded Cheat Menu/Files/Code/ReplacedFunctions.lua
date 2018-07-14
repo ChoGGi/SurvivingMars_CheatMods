@@ -479,6 +479,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("XWindow","SetId")
 --~   SaveOrigFunc("RCRover","LeadIn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+  local UserSettings = ChoGGi.UserSettings
 
 --~   function RCRover:LeadIn(drone)
 --~     self.drone_charged = drone
@@ -497,7 +498,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~   end
 
   --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
-  if ChoGGi.UserSettings.HideuiWindowErrorMsg then
+  if UserSettings.HideuiWindowErrorMsg then
     function terminal.SysEvent(event, ...)
       if event == "OnSystemSize" then
         local targets = terminal.targets
@@ -522,111 +523,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
   end
 
-  if Platform.editor then
-    --stops the help webpage from showing up every single time
+  --stops the help webpage from showing up every single time
+  if Platform.editor and UserSettings.SkipModHelpPage then
     function GedOpHelpMod() end
-    if ChoGGi.Testing then
-      function GedOpUploadMod(socket, root)
-        print("GedOpUploadMod")
-        pcall(function()
-          local mod = root[1]
-          if IsValidThread(ModUploadThread) then
-            socket:ShowMessage(
-              T(1000592--[[Error--]]),
-              T(1000011--[[There is an active Steam upload--]])
-            )
-            return
-          end
-
-          ModUploadThread = CreateRealTimeThread(function()
-            local dest = "AppData/ModUpload/"
-            AsyncDeletePath(dest)
-            AsyncCreatePath(dest)
-
-            print("ModUploadThread")
-            local err
-            if "ok" ~= socket:WaitQuestion(
-              T(1000009--[[Confirmation--]]),
-              Concat(
-                local_T({1000012,"Mod <ModLabel> will be uploaded to Steam",mod}),
-                "ModUpload is empty and waiting for insert"
-              )
-
-            ) then
-              return
-            end
-            if Platform.steam then
-              if mod.steam_id ~= 0 then
-                local exists
-                local appId = SteamGetAppId()
-                local userId = SteamGetUserId64()
-                err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-                if not err and not exists then
-                  mod.steam_id = 0
-                end
-              end
-              if mod.steam_id == 0 then
-                local item_id, bShowLegalAgreement
-                err, item_id, bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
-                mod.steam_id = item_id or nil
-              end
-            end
-
---~             local dest = "AppData/ModUpload/"
-  --[[
-            if not err then
-              mod:SaveDef()
-              mod:SaveItems()
-              AsyncDeletePath(dest)
-              AsyncCreatePath(dest)
-              err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
-              if not err then
-                for _, file in ipairs(files or empty_table) do
-                  local dest_file = dest .. file
-                  local dir = SplitPath(dest_file)
-                  AsyncCreatePath(dir)
-                  err = AsyncCopyFile(mod.path .. file, dest_file, "raw")
-                  if not err then
-                  end
-                end
-              end
-            end
-  --]]
-            if not err then
-              local os_dest = ConvertToOSPath(dest)
-              if Platform.steam then
-                err = AsyncSteamWorkshopUpdateItem({
-                  item_id = mod.steam_id,
-                  title = mod.title,
-                  description = mod.description,
-                  tags = mod:GetTags(),
-                  content_os_folder = os_dest,
-                  image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
-                })
-              else
-                err = "no steam"
-              end
-            end
-            if mod and mod.steam_id then
-              print("mod.steam_id: ",mod.steam_id)
-            end
-            local msg, title
-            if err then
-              msg = local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod,err = Untranslated(err)})
-              title = T(1000593--[[Error--]])
-            else
-              msg = local_T({1000014,"Mod <ModLabel> was successfully uploaded to Steam!",mod})
-              title = T(1000015--[[Success--]])
-            end
-            ModLog(msg)
-            socket:ShowMessage(title, msg)
-            print("ModUploadThread FINISHED")
-
-          end) --rt thread
-
-        end)
-      end --GedOpUploadMod
-    end --testing
   end
 
   --UI transparency "desktop" dialogs (toolbar)
@@ -723,7 +622,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --limit width of cheats menu till hover
   local UAMenu_cheats_width = 520
-  if ChoGGi.UserSettings.ToggleWidthOfCheatsHover then
+  if UserSettings.ToggleWidthOfCheatsHover then
     UAMenu_cheats_width = 80
     local thread
     function UAMenu:OnMouseEnter(...)
@@ -740,48 +639,49 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     end
   end
 
-  local menuButtons_selected_color = RGB(153, 204, 255)
-  local menuButtons_rollover_color = RGB(0, 0, 0)
+  do --UAMenu:CreateBtn
+    local menuButtons_selected_color = RGB(153, 204, 255)
+    local menuButtons_rollover_color = RGB(0, 0, 0)
+    --make the buttons open their menus where the menu is, not at the top left
+    function UAMenu:CreateBtn(text, path)
+      local entry = ChoGGi_OrigFuncs.UAMenu_CreateBtn(self, text, path)
+      entry:SetFontStyle("Editor14Bold")
+      --higher than the "Move" element
+      entry:SetZOrder(9)
 
-  --make the buttons open their menus where the menu is, not at the top left
-  function UAMenu:CreateBtn(text, path)
-    local entry = ChoGGi_OrigFuncs.UAMenu_CreateBtn(self, text, path)
-    entry:SetFontStyle("Editor14Bold")
-    --higher than the "Move" element
-    entry:SetZOrder(9)
-
-    function entry.OnLButtonDown()
-      local p = entry:GetPos()
-      local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
-      if self.MenuOpen == text then
-        self:CloseMenu()
-      else
-        self:CloseMenu()
-        self.MenuOpen = text
-        entry:SetTextColor(menuButtons_rollover_color)
-        entry:SetBackgroundColor(menuButtons_selected_color)
-        self.current_pos = pos
-        self:SetMenuPath(path)
+      function entry.OnLButtonDown()
+        local p = entry:GetPos()
+        local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
+        if self.MenuOpen == text then
+          self:CloseMenu()
+        else
+          self:CloseMenu()
+          self.MenuOpen = text
+          entry:SetTextColor(menuButtons_rollover_color)
+          entry:SetBackgroundColor(menuButtons_selected_color)
+          self.current_pos = pos
+          self:SetMenuPath(path)
+        end
+        return "break"
       end
-      return "break"
-    end
 
-    function entry.OnMouseEnter()
-      local p = entry:GetPos()
-      local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
-      if self.MenuOpen then
-        self:CloseMenu()
-        self.MenuOpen = text
-        entry:SetTextColor(menuButtons_rollover_color)
-        entry:SetBackgroundColor(menuButtons_selected_color)
-        self.current_pos = pos
-        self:SetMenuPath(path)
-      else
-        entry:SetTextColor(menuButtons_rollover_color)
+      function entry.OnMouseEnter()
+        local p = entry:GetPos()
+        local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
+        if self.MenuOpen then
+          self:CloseMenu()
+          self.MenuOpen = text
+          entry:SetTextColor(menuButtons_rollover_color)
+          entry:SetBackgroundColor(menuButtons_selected_color)
+          self.current_pos = pos
+          self:SetMenuPath(path)
+        else
+          entry:SetTextColor(menuButtons_rollover_color)
+        end
       end
-    end
 
-    return entry
+      return entry
+    end
   end
 
   --default menu width/draggable menu
@@ -816,9 +716,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --keep buttons/pos of menu when alt-tabbing
-  function UAMenu:OnDesktopSize()
-
-    local ret = {ChoGGi_OrigFuncs.UAMenu_OnDesktopSize(self)}
+  function UAMenu:OnDesktopSize(...)
+    local ret = {ChoGGi_OrigFuncs.UAMenu_OnDesktopSize(self, ...)}
 
     if ChoGGi.UserSettings.DraggableCheatsMenu then
       local dlgUAMenu = dlgUAMenu
@@ -843,8 +742,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   end
 
   --removes earthsick effect
-  function Colonist:ChangeComfort(amount, reason)
-    ChoGGi_OrigFuncs.Colonist_ChangeComfort(self, amount, reason)
+  function Colonist:ChangeComfort(...)
+    ChoGGi_OrigFuncs.Colonist_ChangeComfort(self, ...)
     if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
       self:Affect("StatusEffect_Earthsick", false)
     end
@@ -956,6 +855,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
       self.production_per_day = amount.production
     end
 
+--see if this gets called less then produce
 --~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
 --~   if resource == self.resource_produced and self.parent and self.parent ~= self then
 --~     self.parent:DroneUnloadResource(drone, request, resource, amount)
@@ -971,9 +871,9 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 
   --larger drone work radius
   local function SetHexRadius(OrigFunc,Setting,Obj,OrigRadius)
-    local set = ChoGGi.UserSettings[Setting]
-    if set then
-      return ChoGGi_OrigFuncs[OrigFunc](Obj,set)
+    local UserSettings = ChoGGi.UserSettings[Setting]
+    if UserSettings then
+      return ChoGGi_OrigFuncs[OrigFunc](Obj,UserSettings)
     end
     return ChoGGi_OrigFuncs[OrigFunc](Obj,OrigRadius)
   end

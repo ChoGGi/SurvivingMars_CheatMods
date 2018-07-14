@@ -3,9 +3,9 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/IPButtons/drone.tga"
-local UsualIcon2 = "UI/Icons/IPButtons/transport_route.tga"
-local UsualIcon3 = "UI/Icons/IPButtons/shuttle.tga"
+local default_icon = "UI/Icons/IPButtons/drone.tga"
+local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
+local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
 
 local tostring,type = tostring,type
 
@@ -51,7 +51,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-        T(5438--[[Rovers--]]),UsualIcon2
+        T(5438--[[Rovers--]]),default_icon2
       )
     end
   end
@@ -182,7 +182,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 
       ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-        T(517--[[Drones--]]),UsualIcon
+        T(517--[[Drones--]]),default_icon
       )
     end
   end
@@ -232,7 +232,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-        T(517--[[Drones--]]),UsualIcon
+        T(517--[[Drones--]]),default_icon
       )
     end
   end
@@ -282,7 +282,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-        T(5438--[[Rovers--]]),UsualIcon2
+        T(5438--[[Rovers--]]),default_icon2
       )
     end
   end
@@ -382,7 +382,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(Concat(T(302535920000900--[[Build Speed--]]),": ",choice[1].text),
-      T(517--[[Drones--]]),UsualIcon
+      T(517--[[Drones--]]),default_icon
     )
   end
 
@@ -410,7 +410,7 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.DroneMoveBatteryUse),T(302535920000902--[[: What happens when the drones get into your Jolt Cola supply...--]])),
-    T(517--[[Drones--]]),UsualIcon
+    T(517--[[Drones--]]),default_icon
   )
 end
 
@@ -422,7 +422,7 @@ function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.DroneConstructAmount),T(302535920000902--[[: What happens when the drones get into your Jolt Cola supply...--]])," ",T(302535920000903--[[and drink it--]])),
-    T(517--[[Drones--]]),UsualIcon
+    T(517--[[Drones--]]),default_icon
   )
 end
 
@@ -432,7 +432,7 @@ function ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.RCRoverDroneRechargeCost),T(302535920000904--[[: More where that came from--]])),
-    T(5438--[[Rovers--]]),UsualIcon2
+    T(5438--[[Rovers--]]),default_icon2
   )
 end
 
@@ -474,7 +474,7 @@ function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.DroneRepairSupplyLeak),T(302535920000908--[[: You know what they say about leaky pipes--]])),
-    T(517--[[Drones--]]),UsualIcon
+    T(517--[[Drones--]]),default_icon
   )
 end
 
@@ -513,7 +513,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000911--[[Drones can carry--]]),": ",choice[1].text," ",T(302535920000912--[[items.--]])),
-        T(517--[[Drones--]]),UsualIcon
+        T(517--[[Drones--]]),default_icon
       )
     end
   end
@@ -554,7 +554,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000916--[[DroneHubs can control--]]),": ",choice[1].text," ",T(302535920000917--[[drones.--]])),
-        T(5438--[[Rovers--]]),UsualIcon
+        T(5438--[[Rovers--]]),default_icon
       )
     end
   end
@@ -595,7 +595,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000921--[[RC Rovers can control--]]),": ",choice[1].text," ",T(302535920000917--[[drones.--]])),
-        T(5438--[[Rovers--]]),UsualIcon2
+        T(5438--[[Rovers--]]),default_icon2
       )
     end
   end
@@ -696,7 +696,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000929--[[Shuttle storage is now--]]),": ",choice[1].text),
-        T(745--[[Shuttles--]]),UsualIcon3
+        T(745--[[Shuttles--]]),default_icon3
       )
     end
   end
@@ -746,7 +746,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000931--[[Shuttle speed is now--]]),": ",choice[1].text),
-        T(745--[[Shuttles--]]),UsualIcon3
+        T(745--[[Shuttles--]]),default_icon3
       )
     end
   end
@@ -802,7 +802,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(Concat(T(302535920000934--[[ShuttleHub shuttle capacity is now--]]),": ",choice[1].text),
-      T(745--[[Shuttles--]]),UsualIcon3
+      T(745--[[Shuttles--]]),default_icon3
     )
   end
 
@@ -852,7 +852,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000919--[[RC gravity is now--]]),": ",choice[1].text),
-        T(5438--[[Rovers--]]),UsualIcon2
+        T(5438--[[Rovers--]]),default_icon2
       )
     end
   end
@@ -902,7 +902,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(T(302535920000919--[[RC gravity is now--]]),": ",choice[1].text),
-        T(5438--[[Rovers--]]),UsualIcon2
+        T(5438--[[Rovers--]]),default_icon2
       )
     end
   end

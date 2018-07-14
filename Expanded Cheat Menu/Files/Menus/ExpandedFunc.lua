@@ -4,9 +4,9 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Sections/storage.tga"
-local UsualIcon2 = "UI/Icons/Upgrades/home_collective_04.tga"
-local UsualIcon3 = "UI/Icons/IPButtons/rare_metals.tga"
+local default_icon = "UI/Icons/Sections/storage.tga"
+local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
+local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
 local type,pcall,tostring = type,pcall,tostring
 
@@ -66,7 +66,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(T(302535920000941--[[Temp Storage--]]),": ",tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)),
-    T(519--[[Storage--]]),UsualIcon
+    T(519--[[Storage--]]),default_icon
   )
 end
 
@@ -206,7 +206,7 @@ end
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
     MsgPopup(T(302535920000954--[[You need to select a building that has workers.--]]),
-      T(302535920000567--[[Worker Capacity--]]),UsualIcon
+      T(302535920000567--[[Worker Capacity--]]),default_icon
     )
     return
   end
@@ -262,7 +262,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000957--[[Capacity is now--]]),": ",choice[1].text),
-        T(302535920000567--[[Worker Capacity--]]),UsualIcon
+        T(302535920000567--[[Worker Capacity--]]),default_icon
       )
     end
   end
@@ -279,7 +279,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
   if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
     MsgPopup(T(302535920000958--[[You need to select a building that has capacity.--]]),
-      T(3980--[[Buildings--]]),UsualIcon
+      T(3980--[[Buildings--]]),default_icon
     )
     return
   end
@@ -408,7 +408,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000957--[[Capacity is now--]]),": ",choice[1].text),
-        T(3980--[[Buildings--]]),UsualIcon
+        T(3980--[[Buildings--]]),default_icon
       )
     end
 
@@ -426,7 +426,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
     MsgPopup(T(302535920000959--[[You need to select something that has space for visitors.--]]),
-      T(3980--[[Buildings--]]),UsualIcon2
+      T(3980--[[Buildings--]]),default_icon2
     )
     return
   end
@@ -472,7 +472,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000960--[[visitor capacity is now--]]),": ",choice[1].text),
-        T(3980--[[Buildings--]]),UsualIcon2
+        T(3980--[[Buildings--]]),default_icon2
       )
     end
   end
@@ -683,7 +683,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
       end
       RefreshXBuildMenu()
       MsgPopup(Concat(value," ",text," ",T(302535920001191--[[prefabs have been added.--]])),
-        T(302535920001192--[[Prefabs--]]),UsualIcon
+        T(302535920001192--[[Prefabs--]]),default_icon
       )
     end
   end
@@ -722,7 +722,7 @@ function ChoGGi.MenuFuncs.SetFunding()
       ChangeFunding(value)
 
       MsgPopup(choice[1].text,
-        T(3613--[[Funding--]]),UsualIcon3
+        T(3613--[[Funding--]]),default_icon3
       )
     end
   end
@@ -743,7 +743,7 @@ function ChoGGi.MenuFuncs.FillResource()
 
   --need the msg here, as i made it return if it succeeds
   MsgPopup(T(302535920001198--[[Resouce Filled--]]),
-    T(15--[[Resource--]]),UsualIcon3
+    T(15--[[Resource--]]),default_icon3
   )
 
   if pcall(function()

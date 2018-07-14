@@ -1,11 +1,12 @@
 -- See LICENSE for terms
 
+local default_icon = "UI/Icons/Upgrades/home_collective_04.tga"
+local default_icon2 = "UI/Icons/Sections/storage.tga"
+local default_icon3 = "UI/Icons/IPButtons/assign_residence.tga"
+
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Upgrades/home_collective_04.tga"
-local UsualIcon2 = "UI/Icons/Sections/storage.tga"
-local UsualIcon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
 local type,tostring,pairs,pcall = type,tostring,pairs,pcall
 
@@ -102,7 +103,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel or not sel.protect_range then
     MsgPopup(T(302535920000108,"Select something with a protect_range (MDSLaser/DefenceTower)."),
-      T(302535920000109--[[Protect--]]),UsualIcon
+      T(302535920000109--[[Protect--]]),default_icon
     )
     return
   end
@@ -145,7 +146,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(id," ",T(302535920000113--[[range is now--]]),"",choice[1].text),
-        T(302535920000109--[[Protect--]]),UsualIcon
+        T(302535920000109--[[Protect--]]),default_icon
       )
     end
   end
@@ -179,7 +180,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(Concat(T(302535920000116--[[Buildings unlocked--]]),": ",#choice),
-      T(8690--[[Protect--]]),UsualIcon
+      T(8690--[[Protect--]]),default_icon
     )
   end
 
@@ -227,7 +228,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
   if not sel or not sel[type1] then
     MsgPopup(T(str1),
       T(3980--[[Buildings--]]),
-      UsualIcon
+      default_icon
     )
     return
   end
@@ -256,7 +257,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(id," ",T(str2)),
     T(3980--[[Buildings--]]),
-    UsualIcon
+    default_icon
   )
 end
 
@@ -298,7 +299,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   local sel = SelectedObj
   if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
     MsgPopup(T(302535920000122--[[You need to select something that has capacity (air/water/elec).--]]),
-      T(3980--[[Buildings--]]),UsualIcon
+      T(3980--[[Buildings--]]),default_icon
     )
     return
   end
@@ -362,7 +363,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     local check2 = choice[1].check2
 
     if not check1 and not check2 then
-      MsgPopup(T(302535920000126--[[Pick a checkbox or two next time...--]]),T(302535920000127--[[Rate--]]),UsualIcon2)
+      MsgPopup(T(302535920000126--[[Pick a checkbox or two next time...--]]),T(302535920000127--[[Rate--]]),default_icon2)
       return
     end
 
@@ -423,7 +424,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(id," ",T(302535920000128--[[rate is now--]])," ",choice[1].text),
-        T(302535920000127--[[Rate--]]),UsualIcon2
+        T(302535920000127--[[Rate--]]),default_icon2
       )
     end
   end
@@ -476,7 +477,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   local sel = SelectedObj
   if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
     MsgPopup(T(302535920000136--[[Select something that produces (air,water,electricity,other).--]]),
-      T(3980--[[Buildings--]]),UsualIcon2
+      T(3980--[[Buildings--]]),default_icon2
     )
     return
   end
@@ -587,7 +588,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(Concat(id," ",T(302535920000137--[[Production is now--]])," ",choice[1].text),
-      T(3980--[[Buildings--]]),UsualIcon2
+      T(3980--[[Buildings--]]),default_icon2
     )
   end
 
@@ -604,7 +605,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
   local sel = SelectedObj
   if not sel or sel and not sel:IsKindOf("Workplace") then
     MsgPopup(T(302535920000141--[[Select a building with workers.--]]),
-      T(3980--[[Buildings--]]),UsualIcon2
+      T(3980--[[Buildings--]]),default_icon2
     )
     return
   end
@@ -657,7 +658,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(Concat(choice[1].text,"\n",T(302535920000143--[[\nI presume the PM's in favour of the scheme because it'll reduce unemployment.--]])),
-      T(3980--[[Buildings--]]),UsualIcon,true
+      T(3980--[[Buildings--]]),default_icon,true
     )
   end
 
@@ -709,7 +710,7 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.SchoolTrainAll),"\n",T(302535920000148,"You keep your work station so clean, Jerome.\nIt's next to godliness. Isn't that what they say?")),
-    T(5247--[[School--]]),UsualIcon,true
+    T(5247--[[School--]]),default_icon,true
   )
 end
 
@@ -725,7 +726,7 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.SanatoriumCureAll),"\n",T(302535920000149--[[There's more vodka in this piss than there is piss.--]])),
-    T(3540--[[Sanatorium--]]),UsualIcon,true
+    T(3540--[[Sanatorium--]]),default_icon,true
   )
 end
 
@@ -935,7 +936,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_wonder),T(302535920000159--[[: Unlimited Wonders
 (restart to set disabled)--]])),
-    T(3980--[[Buildings--]]),UsualIcon3
+    T(3980--[[Buildings--]]),default_icon3
   )
 end
 
@@ -945,7 +946,7 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_dome_spot),T(302535920000160--[[: Freedom for spires!
 (restart to set disabled)--]])),
-    T(3980--[[Buildings--]]),UsualIcon3
+    T(3980--[[Buildings--]]),default_icon3
   )
 end
 
@@ -955,7 +956,7 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_instant_build),T(302535920000161--[[: Building Instant Build
 (restart to set disabled).--]])),
-    T(3980--[[Buildings--]]),UsualIcon3
+    T(3980--[[Buildings--]]),default_icon3
   )
 end
 
@@ -965,7 +966,7 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu),T(302535920000162--[[: Buildings hidden
 (restart to toggle).--]])),
-    T(3980--[[Buildings--]]),UsualIcon3
+    T(3980--[[Buildings--]]),default_icon3
   )
 end
 

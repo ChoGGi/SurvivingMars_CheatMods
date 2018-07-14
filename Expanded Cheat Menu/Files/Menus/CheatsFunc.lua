@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Notifications/research.tga"
+local default_icon = "UI/Icons/Notifications/research.tga"
 
 local pairs,tostring,type,string = pairs,tostring,type,string
 
@@ -772,7 +772,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(choice[1].text,T(302535920000299--[[: Research is what I'm doing when I don't know what I'm doing.--]])),
-        T(5182--[[Omega Telescope--]]),UsualIcon
+        T(5182--[[Omega Telescope--]]),default_icon
       )
     end
   end
@@ -809,7 +809,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(choice[1].text,T(302535920000302--[[: S M R T--]])),
-        T(311--[[Research--]]),UsualIcon
+        T(311--[[Research--]]),default_icon
       )
     end
   end
@@ -852,7 +852,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(Concat(tostring(ChoGGi.UserSettings.ResearchQueueSize),T(302535920000304--[[: Nerdgasm--]])),
-        T(311--[[Research--]]),UsualIcon
+        T(311--[[Research--]]),default_icon
       )
     end
   end
@@ -911,10 +911,10 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     local check2 = choice[1].check2
     --nothing checked so just return
     if not check1 and not check2 then
-      MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(311--[[Research--]]),UsualIcon)
+      MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(311--[[Research--]]),default_icon)
       return
     elseif check1 and check2 then
-      MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(311--[[Research--]]),UsualIcon)
+      MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(311--[[Research--]]),default_icon)
       return
     end
 
@@ -949,7 +949,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     end
 
     MsgPopup(Concat(Which,T(302535920000315--[[: Unleash your inner Black Monolith Mystery.--]])),
-      T(311--[[Research--]]),UsualIcon
+      T(311--[[Research--]]),default_icon
     )
   end
 

@@ -1,6 +1,6 @@
 --See LICENSE for terms
 
---simplest entity object as possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local)
+-- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},
   entity = "GridTile"
@@ -69,11 +69,9 @@ end
 function ChoGGi.MenuFuncs.DeleteAllRocks()
   local function CallBackFunc(answer)
     if answer then
-      CreateRealTimeThread(function()
-        DeleteAllRocks("WasteRockObstructor")
-        DeleteAllRocks("WasteRockObstructorSmall")
-        DeleteAllRocks("Deposition")
-      end)
+      DeleteAllRocks("Deposition")
+      DeleteAllRocks("WasteRockObstructorSmall")
+      DeleteAllRocks("WasteRockObstructor")
     end
   end
   ChoGGi.ComFuncs.QuestionBox(

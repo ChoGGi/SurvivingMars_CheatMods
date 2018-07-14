@@ -1,9 +1,11 @@
 --See LICENSE for terms
 
+local default_icon = "UI/Icons/Sections/attention.tga"
+
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local local_T = T
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Sections/attention.tga"
 
 local tostring = tostring
 
@@ -25,6 +27,156 @@ local WaitNextFrame = WaitNextFrame
 local LuaCodeToTuple = LuaCodeToTuple
 
 local g_Classes = g_Classes
+
+local ModUploadThread
+function ChoGGi.MenuFuncs.ModUpload()
+  local ChoGGi = ChoGGi
+  local ItemList = {}
+  local Mods = Mods
+  for id,mod in pairs(Mods) do
+    ItemList[#ItemList+1] = {
+      text = mod.title,
+      value = id,
+      hint = mod.description,
+      mod = mod,
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    -- abort if upload already happening
+    if IsValidThread(ModUploadThread) then
+      ChoGGi.ComFuncs.MsgWait(
+        T(1000011--[[There is an active Steam upload--]]),
+        T(1000592--[[Error--]]),
+        "UI/Common/mod_steam_workshop.tga"
+      )
+      return
+    end
+
+    local mod = choice[1].mod
+    local copy_files = choice[1].check1
+    local blank_mod = choice[1].check2
+    local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
+
+    ModUploadThread = CreateRealTimeThread(function()
+      -- clear out and create upload folder
+      local dest = "AppData/ModUpload/"
+      AsyncDeletePath(dest)
+      AsyncCreatePath(dest)
+
+      -- build / show confirmation dialog
+      local upload_msg = T(local_T({1000012,"Mod <ModLabel> will be uploaded to Steam",mod.title}))
+      if not copy_files then
+        upload_msg = Concat(upload_msg,"\n",T(302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for insert."--]]))
+      end
+      if diff_author then
+        upload_msg = Concat(upload_msg,"\n\n",T(302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]))
+      end
+
+      local function CallBackFunc(answer)
+        if not answer then
+          return
+        end
+        -- add new mod
+        local err,item_id,bShowLegalAgreement
+        if Platform.steam then
+          if mod.steam_id ~= 0 then
+            local exists
+            local appId = SteamGetAppId()
+            local userId = SteamGetUserId64()
+            err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+            if not err and not exists then
+              mod.steam_id = 0
+            end
+          end
+          if mod.steam_id == 0 then
+            err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
+            mod.steam_id = item_id or nil
+          end
+        end
+
+        -- update mod, and copy files to ModUpload
+        if copy_files and not blank_mod and not err then
+          local files
+          -- I prefer to update this manually
+          if not ChoGGi.Testing then
+            mod:SaveDef()
+          end
+          mod:SaveItems()
+    --~       AsyncDeletePath(dest)
+    --~       AsyncCreatePath(dest)
+          err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
+          if not err then
+            for i = 1, #files or empty_table do
+              local dest_file = Concat(dest,files[i])
+              local dir = SplitPath(dest_file)
+              AsyncCreatePath(dir)
+              err = AsyncCopyFile(Concat(mod.path,files[i]), dest_file, "raw")
+            end
+          end
+        end
+
+        --update mod on workshop
+        if not err then
+          local os_dest = ConvertToOSPath(dest)
+          if Platform.steam then
+            err = AsyncSteamWorkshopUpdateItem{
+              item_id = mod.steam_id,
+              title = mod.title,
+              description = mod.description,
+              tags = mod:GetTags(),
+              content_os_folder = os_dest,
+              image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
+            }
+          else
+            err = "no steam"
+          end
+        end
+
+        -- show id in console (figure out a decent way to add this to metadat.lua)
+        if item_id then
+          print(mod.title,": ",T(1000107--[[Mod--]])," ",T(1000021--[[Steam ID--]]),": ",item_id)
+        end
+        local msg, title
+        if err then
+  --~         msg = local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod.title,err = Untranslated(err)})
+          msg = T(local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod.title,err}))
+          title = T(1000593--[[Error--]])
+        else
+          msg = T(local_T({1000014,"Mod <ModLabel> was successfully uploaded to Steam!",mod.title}))
+          title = T(1000015--[[Success--]])
+        end
+        ModLog(msg)
+        print(ModMessageLog)
+        ChoGGi.ComFuncs.MsgWait(
+          msg,
+          Concat(title,": ",mod.title),
+          "UI/Common/mod_steam_workshop.tga"
+        )
+      end
+
+      ChoGGi.ComFuncs.QuestionBox(
+        upload_msg,
+        CallBackFunc,
+        mod.title,
+        nil,
+        nil,
+        "UI/Common/mod_steam_workshop.tga"
+      )
+    end) -- ModUploadThread
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = T(302535920000367--[[Mod Upload--]]),
+    check1 = T(302535920001258--[[Copy Files--]]),
+    check1_hint = T(302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]]),
+    check1_checked = true,
+    check2 = T(302535920001260--[[Blank Mod--]]),
+    check2_hint = T(302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]]),
+  }
+end
 
 function ChoGGi.MenuFuncs.EditECMSettings()
   local ChoGGi = ChoGGi
@@ -131,7 +283,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
       ChoGGi.Temp.ResetSettings = true
 
       MsgPopup(T(302535920001070--[[Restart to take effect.--]]),
-        Concat(T(302535920001084--[[Reset","!--]])),UsualIcon
+        Concat(T(302535920001084--[[Reset","!--]])),default_icon
       )
     end
   end

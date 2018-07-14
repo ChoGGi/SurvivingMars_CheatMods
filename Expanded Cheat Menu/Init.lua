@@ -132,7 +132,9 @@ local function LoadLocale(file)
   if not pcall(function()
     LoadTranslationTableFile(file)
   end) then
-    DebugPrintNL(Concat("Problem loading locale: ",file,"\n\nPlease send me this log file ",ChoGGi.email))
+    DebugPrintNL(string.format([[Problem loading locale: %s
+
+Please send me latest log file: %s]],file,ChoGGi.email))
   end
 end
 

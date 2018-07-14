@@ -948,7 +948,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
     end
   end
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000021--[[Change Colour--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
@@ -959,7 +959,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     check1_hint = T(302535920000024--[[Change all objects of the same type.--]]),
     check2 = T(302535920000025--[[Default Colour--]]),
     check2_hint = T(302535920000026--[[if they're there; resets to default colours.--]]),
-  })
+  }
 end
 
 --returns the near hex grid for object placement
@@ -1113,12 +1113,12 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",ChoGGi.ComFuncs.RetName(Object)),
     hint = T(302535920000032--[[Select a resource to find--]]),
-  })
+  }
 end
 
 

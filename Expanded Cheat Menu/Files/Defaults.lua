@@ -97,6 +97,8 @@ ChoGGi.Defaults = {
   ShowStartupTicks = false,
   -- if mod added work/res and user removed removed mod without removing buildings then inf loop
   MissingWorkplacesResidencesFix = false,
+  -- Mod Editor shows the help page every single time you open it.
+  SkipModHelpPage = true,
   -- stores custom settings for each building
   BuildingSettings = {},
   -- transparent UI stored here

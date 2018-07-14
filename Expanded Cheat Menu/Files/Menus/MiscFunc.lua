@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
-local UsualIcon = "UI/Icons/Anomaly_Event.tga"
+local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local next,tostring,type,table = next,tostring,type,table
 
@@ -414,7 +414,7 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(Concat(T(302535920001121--[[Texture Compression--]]),": ",tostring(ChoGGi.UserSettings.DisableTextureCompression)),
-    T(302535920001015--[[Video--]]),UsualIcon
+    T(302535920001015--[[Video--]]),default_icon
   )
 end
 

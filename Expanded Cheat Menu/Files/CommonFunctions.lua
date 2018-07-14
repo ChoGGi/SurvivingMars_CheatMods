@@ -471,29 +471,45 @@ do --g_Classes
 end
 
 -- centred msgbox with Ok
-function ChoGGi.ComFuncs.MsgWait(Msg,Title)
-  Title = Title or ""
-  CreateRealTimeThread(
-    WaitPopupNotification,
-    false,
-    {title = tostring(Title), text = tostring(Msg)}
-  )
+function ChoGGi.ComFuncs.MsgWait(msg,title,image)
+  local preset
+  if image then
+    preset = "ChoGGi_TempPopup"
+    local DataInstances = DataInstances
+    DataInstances.PopupNotificationPreset[preset] = {}
+    DataInstances.PopupNotificationPreset[preset].name = preset
+    DataInstances.PopupNotificationPreset[preset].image = image
+  end
+  title = tostring(title) or T(1000016--[[Title--]])
+  CreateRealTimeThread(function()
+    WaitPopupNotification(preset, {title = title, text = tostring(msg)})
+    DataInstances.PopupNotificationPreset[preset] = nil
+  end)
 end
 
 -- well that's the question isn't it?
-function ChoGGi.ComFuncs.QuestionBox(Msg,Function,Title,Ok,Cancel)
+function ChoGGi.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,context,parent)
+  -- thread needed for WaitMarsQuestion
   CreateRealTimeThread(function()
-    --fire callback if user clicks ok
-    local answer = WaitMarsQuestion(nil,
-      tostring(Title or ""),
-      tostring(Msg or ""),
-      tostring(Ok or T(6878--[[OK--]])),
-      tostring(Cancel or T(6879--[[Cancel--]]))
-    )
-    if answer == "ok" then
-      Function(true)
+    if WaitMarsQuestion(
+      parent,
+      tostring(title or ""),
+      tostring(msg or ""),
+      tostring(ok_msg or T(6878--[[OK--]])),
+      tostring(cancel_msg or T(6879--[[Cancel--]])),
+      image,
+      context
+    ) == "ok" then
+      if func then
+        func(true)
+      end
+      return "ok"
     else
-      Function()
+      -- user canceled / closed it
+      if func then
+        func()
+      end
+      return "cancel"
     end
   end)
 end
@@ -1271,20 +1287,21 @@ CustomType=4 : updates selected item with custom value type, and sends back all 
 CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
 
-ChoGGi.ComFuncs.OpenInListChoice({
+ChoGGi.ComFuncs.OpenInListChoice{
   callback = CallBackFunc,
   items = ItemList,
-  title = "TitleBar",
-  hint = Concat("Current",": ",hint),
-  multisel = MultiSel,
+  title = "Title",
+  hint = Concat("Current: ",hint),
+  multisel = true,
   custom_type = CustomType,
   custom_func = CustomFunc,
   check1 = "Check1",
   check1_hint = "Check1Hint",
+  check1_checked = true,
   check2 = "Check2",
   check2_hint = "Check2Hint",
-})
-
+  check2_checked = true,
+}
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(Table)
   local ChoGGi = ChoGGi
@@ -1373,6 +1390,13 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
         dlg.idCheckBox2:SetVisible(false)
       end
     end
+    if Table.check1_checked then
+      dlg.idCheckBox1:SetValue(true)
+    end
+    if Table.check2_checked then
+       dlg.idCheckBox2:SetValue(true)
+   end
+
     --where to position dlg
     dlg:SetPos(terminal_GetMousePos())
 

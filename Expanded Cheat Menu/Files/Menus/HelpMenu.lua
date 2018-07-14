@@ -7,6 +7,24 @@ local T = ChoGGi.ComFuncs.Trans
 function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
   --ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon)
 
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000367--[[Mod Upload--]])),
+    ChoGGi.MenuFuncs.ModUpload,
+    nil,
+    T(302535920001264--[["Show list of mods to upload to Steam Workshop."--]]),
+    "gear.tga"
+  )
+
+  ChoGGi.ComFuncs.AddAction(
+    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
+    ChoGGi.MenuFuncs.ReportBugDlg,
+    ChoGGi.UserSettings.KeyBindings.ReportBugDlg,
+    T(302535920000675--[[Report Bug
+
+This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
+    "ReportBug.tga"
+  )
+
   --------------------screenshot
   ChoGGi.ComFuncs.AddAction(
     Concat("[999]",T(487939677892--[[Help--]]),"/[2]",T(302535920000892--[[Screenshot--]]),"/",T(302535920000657--[[Screenshot--]])),
@@ -85,16 +103,6 @@ function ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
     "set_debug_texture.tga"
   )
   --------------------Interface
-
-  ChoGGi.ComFuncs.AddAction(
-    Concat("[999]",T(487939677892--[[Help--]]),"/",T(302535920000674--[[Report Bug--]])),
-    ChoGGi.MenuFuncs.ReportBugDlg,
-    ChoGGi.UserSettings.KeyBindings.ReportBugDlg,
-    T(302535920000675--[[Report Bug
-
-This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]]),
-    "ReportBug.tga"
-  )
 
   ----------------------------------ECM
   ChoGGi.ComFuncs.AddAction(
