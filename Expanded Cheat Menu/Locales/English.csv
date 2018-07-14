@@ -1,7 +1,4 @@
 ID,Text,Translation
-302535920001266,,
-302535920001267,,
-302535920001268,,
 302535920001269,,
 302535920001270,,
 302535920001271,,
@@ -37,6 +34,7 @@ ID,Text,Translation
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001266,Broked Transport Pathing,
 302535920000367,Mod Upload,
 302535920000236,Mod Editor,
 302535920000248,Colonists Stuck Outside Service Buildings,
@@ -146,6 +144,7 @@ If you can delete it and still get this error; please send it and this log to th
 302535920000009,Missing Scenario Name,
 302535920000010,Missing Name,
 302535920000011,Missing Description,
+302535920001267,%s at position: %s was stopped.,
 302535920000967,Nothing selected.,
 302535920000968,Collisions,
 302535920000969,Collisions %s on %s,
@@ -745,6 +744,9 @@ The map disaster settings don't do jack.",
 302535920000578,Change waste storage depot capacity.,
 302535920000579,Storage Mechanized Depots,
 302535920000580,Change mechanized depot storage capacity.,
+302535920001268,"RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
+
+This'll check for and stop any broked ones (it'll show a popup msg when it stops one).",
 302535920000461,All Pipe Skins To Default,
 302535920000463,"Large Water Tank + Pipes + Chrome skin = broked looking connections.
 This resets all pipes to the default skin.",

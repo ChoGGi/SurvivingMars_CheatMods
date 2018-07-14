@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Broked Transport Stutter v0.1",
-	"version", 1,
-	"saved", 1531580000,
+	"title", "Broked Transport Stutter v0.2",
+	"version", 2,
+	"saved", 1531569600,
 	"steam_id", "1440879916",
 	"id", "ChoGGi_BrokedTransportStutter",
 	"author", "ChoGGi",

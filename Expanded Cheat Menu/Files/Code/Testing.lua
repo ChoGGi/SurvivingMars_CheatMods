@@ -3,11 +3,6 @@
 if ChoGGi.Testing then
   local Concat = ChoGGi.ComFuncs.Concat
 
-  local print,dofile = print,dofile
-
-  local GlobalVar = GlobalVar
-  local TraitsCombo = TraitsCombo
-
   --[[
   --for ingame editor
 
@@ -456,14 +451,13 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
           q, r = WorldToHex(GetTerrainCursor())
         end
         if last_q ~= q or last_r ~= r then
-          local idx = 1
-          for idx = 1, #arr do
-            local q_i, r_i = q + arr[idx]:x(), r + arr[idx]:y()
-            local c = painted_hexes[idx] or ChoGGi_HexSpot:new()
+          for i = 1, #arr do
+            local q_i, r_i = q + arr[i]:x(), r + arr[i]:y()
+            local c = painted_hexes[i] or ChoGGi_HexSpot:new()
             c:SetPos(point(HexToWorld(q_i, r_i)))
 --~ 							c:SetRadius(const.GridSpacing/2)
 --~ 							c:SetColorModifier(RGBA(100, 255, 100, 0))
-            painted_hexes[idx] = c
+            painted_hexes[i] = c
           end
           last_q = q
           last_r = r
@@ -524,7 +518,8 @@ function HexPainterModeDialog:Close(...)
   end
 end
 
-function HexPainterModeDialog:OnMouseButtonDown(pt, button)
+--~ function HexPainterModeDialog:OnMouseButtonDown(pt, button)
+function HexPainterModeDialog:OnMouseButtonDown(_, button)
   if button == "L" then
     local p = point(WorldToHex(GetTerrainCursor()))
     if self.hex_mid_pt then

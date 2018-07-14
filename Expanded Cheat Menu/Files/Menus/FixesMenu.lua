@@ -186,6 +186,20 @@ end
 
 
   ChoGGi.ComFuncs.AddAction(
+    Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920001266--[[Broked Transport Pathing--]])),
+    ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle,
+    nil,
+    function()
+      return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBrokedTransportPath,
+        302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
+
+This'll check for and stop any broked ones (it'll show a popup msg when it stops one)."--]]
+      )
+    end,
+    icon
+  )
+
+  ChoGGi.ComFuncs.AddAction(
     Concat(T(302535920000104--[[Expanded CM--]]),"/",T(302535920000922--[[Fixes--]]),"/[6]",T(302535920000938--[[Toggles--]]),"/",T(302535920000248--[[Colonists Stuck Outside Service Buildings--]])),
     ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
     nil,

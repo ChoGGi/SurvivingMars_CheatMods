@@ -3,19 +3,21 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
-local pcall,print,rawget,type,table = pcall,print,rawget,type,table
+local pcall,print,rawget,type,table,string = pcall,print,rawget,type,table,string
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
 local CloseXDialog = CloseXDialog
 local CreateRealTimeThread = CreateRealTimeThread
+local DelayedCall = DelayedCall
 local DestroyBuildingImmediate = DestroyBuildingImmediate
-local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local FindNearestObject = FindNearestObject
 local GetObjects = GetObjects
+local GetPassablePointNearby = GetPassablePointNearby
 local GetPreciseCursorObj = GetPreciseCursorObj
 local GetTerrainCursor = GetTerrainCursor
 local GetTerrainCursorObjSel = GetTerrainCursorObjSel
@@ -23,6 +25,7 @@ local GetXDialog = GetXDialog
 local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local NearestObject = NearestObject
+local OpenExamine = OpenExamine
 local OpenXBuildMenu = OpenXBuildMenu
 local PlaceObj = PlaceObj
 local point = point
@@ -31,8 +34,6 @@ local SelectionMouseObj = SelectionMouseObj
 local SelectObj = SelectObj
 local Sleep = Sleep
 local ViewPos = ViewPos
-local GetPassablePointNearby = GetPassablePointNearby
-local OpenExamine = OpenExamine
 
 local terminal_GetMousePos = terminal.GetMousePos
 local UIL_GetScreenSize = UIL.GetScreenSize
@@ -263,7 +264,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
         building:ToggleWorking()
       end)
     end) then
-      print(Concat(T(302535920000012--[[Error borked building--]]),": ",ChoGGi.ComFuncs.RetName(building)))
+      print(Concat(T(302535920000012--[[Error borked building--]]),": ",RetName(building)))
       OpenExamine(building)
     end
   end
@@ -951,7 +952,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000021--[[Change Colour--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
+    title = Concat(T(302535920000021--[[Change Colour--]]),": ",RetName(obj)),
     hint = T(302535920000022--[[If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).--]]),
     multisel = true,
     custom_type = 2,
@@ -1116,7 +1117,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",ChoGGi.ComFuncs.RetName(Object)),
+    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",RetName(Object)),
     hint = T(302535920000032--[[Select a resource to find--]]),
   }
 end
@@ -1491,8 +1492,23 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
   end
 
   if not skip_msg then
-    MsgPopup(string.format(T(302535920000969--[[Collisions %s on %s--]]),which,ChoGGi.ComFuncs.RetName(obj)),
+    MsgPopup(string.format(T(302535920000969--[[Collisions %s on %s--]]),which,RetName(obj)),
       T(302535920000968--[[Collisions--]])
     )
   end
+end
+
+function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
+  -- let it sleep for awhile
+  DelayedCall(1000, function()
+    -- 0 means it's stopped, so anything above that and without a path means it's broked (probably)
+    if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
+      obj:InterruptCommand()
+      MsgPopup(
+        string.format(T(302535920001267--[[%s at position: %s was stopped.--]]),RetName(obj),obj:GetVisualPos()),
+        T(302535920001266--[[Broked Transport Pathing--]]),
+        "UI/Icons/IPButtons/transport_route.tga"
+      )
+    end
+  end)
 end

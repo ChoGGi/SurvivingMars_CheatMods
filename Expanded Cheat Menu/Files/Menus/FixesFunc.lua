@@ -39,6 +39,22 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+function ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle()
+  local ChoGGi = ChoGGi
+  if ChoGGi.UserSettings.CheckForBrokedTransportPath then
+    ChoGGi.UserSettings.CheckForBrokedTransportPath = nil
+  else
+    ChoGGi.UserSettings.CheckForBrokedTransportPath = true
+    ChoGGi.MenuFuncs.StutterWithHighFPS(true)
+  end
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  MsgPopup(Concat(T(302535920001266--[[Broked Transport Pathing--]]),": ",tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath)),
+    T(1683--[[RC Transport--]]),
+    "UI/Icons/IPButtons/transport_route.tga"
+  )
+end
+
 function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
   CreateRealTimeThread(function()
     -- so GetPipeConnections ignores the dupe connection error
@@ -240,18 +256,16 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
   end
 end
 
-function ChoGGi.MenuFuncs.StutterWithHighFPS()
+function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
   local objs = GetObjects{class = "Unit"} or empty_table
   --CargoShuttle
   for i = 1, #objs do
-    -- 102 is from :GetMoveAnim(), 0 is stopped or idle?
-    if objs[i]:GetAnim() > 0 and objs[i]:GetPathLen() == 0 then
-      --trying to move with no path = lag
-      objs[i]:InterruptCommand()
-    end
+    ChoGGi.CodeFuncs.CheckForBrokedTransportPath(objs[i])
   end
 
-  ChoGGi.CodeFuncs.ResetHumanCentipedes()
+  if skip ~= true then
+    ChoGGi.CodeFuncs.ResetHumanCentipedes()
+  end
 end
 
 function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()

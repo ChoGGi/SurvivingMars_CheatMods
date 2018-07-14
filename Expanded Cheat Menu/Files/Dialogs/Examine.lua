@@ -13,6 +13,7 @@ local DialogAddCloseX
 local DialogUpdateMenuitems
 local Dump
 local RetButtonTextSize
+local RetCheckTextSize
 local RetName
 local RetSortTextAssTable
 local ShowMe
@@ -35,27 +36,26 @@ do
   TConcat = ChoGGi.ComFuncs.TableConcat
 end
 
-local pairs,type,print,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8 = pairs,type,print,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8
+local pairs,type,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8 = pairs,type,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8
 
 local CmpLower = CmpLower
+local CreateRealTimeThread = CreateRealTimeThread
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
+local Min = Min
 local OpenExamine = OpenExamine
 local point = point
+local RGBA = RGBA
+local Sleep = Sleep
 local ValueToLuaCode = ValueToLuaCode
 local XDestroyRolloverWindow = XDestroyRolloverWindow
-local Min = Min
-local RGBA = RGBA
-local CreateRealTimeThread = CreateRealTimeThread
 
 local terrain_GetHeight = terrain.GetHeight
 
 -- 1 above console log
 local zorder = 2000001
-
-local g_traceMeta = false -- figure out how to use traces?
 
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
@@ -180,7 +180,7 @@ function Examine:Init()
 
   element_y = border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
 
-  local title = T(302535920000239--[[Tools--]])
+  title = T(302535920000239--[[Tools--]])
   self.idTools = g_Classes.Button:new(self)
   self.idTools:SetPos(point(dialog_left+5, element_y))
   self.idTools:SetSize(RetButtonTextSize(title))
@@ -621,57 +621,56 @@ function Examine:HyperLink(f, custom_color)
     " 230 195 50>"
   )
 end
-local filters = {
-  Short = {
-    "StateObject1"
-  },
-  TraceCall = {"Call"},
-  Long = {
-    "StateObject1",
-    "StateObject2"
-  },
-  General = {false}
-}
 
-function Examine:filtersmarttable(e)
-  local LocalStorage = LocalStorage
-  local format_text = tostring(e[2])
-  local t = string.match(format_text, "^%[(.*)%]")
-  if t then
-    if LocalStorage.trace_config ~= nil then
-      local filter = filters[LocalStorage.trace_config] or filters.General
-      if not table.find(filter, t) then
-        return false
-      end
-    end
-    format_text = string.sub(format_text, 3 + #t)
-  end
-  return format_text, e
-end
-
-function Examine:evalsmarttable(format_text, e)
-  local touched = {}
-  local i = 0
-  format_text = string.gsub(format_text, "{(%d-)}", function(s)
-    if #s == 0 then
-      i = i + 1
-    else
-      i = tonumber(s)
-    end
-    touched[i + 1] = true
-    return Concat(
-      "<color 255 255 128>",self:valuetotextex(e[i + 2]),"</color>"
-    )
-  end)
-  for i = 2, #e do
-    if not touched[i] then
-      format_text = Concat(
-        format_text," <color 255 255 128>[",self:valuetotextex(e[i]),"]</color>"
-      )
-    end
-  end
-  return format_text
-end
+--~ local filters = {
+--~   Short = {
+--~     "StateObject1"
+--~   },
+--~   TraceCall = {"Call"},
+--~   Long = {
+--~     "StateObject1",
+--~     "StateObject2"
+--~   },
+--~   General = {false}
+--~ }
+--~ function Examine:filtersmarttable(e)
+--~   local LocalStorage = LocalStorage
+--~   local format_text = tostring(e[2])
+--~   local t = string.match(format_text, "^%[(.*)%]")
+--~   if t then
+--~     if LocalStorage.trace_config ~= nil then
+--~       local filter = filters[LocalStorage.trace_config] or filters.General
+--~       if not table.find(filter, t) then
+--~         return false
+--~       end
+--~     end
+--~     format_text = string.sub(format_text, 3 + #t)
+--~   end
+--~   return format_text, e
+--~ end
+--~ function Examine:evalsmarttable(format_text, e)
+--~   local touched = {}
+--~   local i = 0
+--~   format_text = string.gsub(format_text, "{(%d-)}", function(s)
+--~     if #s == 0 then
+--~       i = i + 1
+--~     else
+--~       i = tonumber(s)
+--~     end
+--~     touched[i + 1] = true
+--~     return Concat(
+--~       "<color 255 255 128>",self:valuetotextex(e[i + 2]),"</color>"
+--~     )
+--~   end)
+--~   for i = 2, #e do
+--~     if not touched[i] then
+--~       format_text = Concat(
+--~         format_text," <color 255 255 128>[",self:valuetotextex(e[i]),"]</color>"
+--~       )
+--~     end
+--~   end
+--~   return format_text
+--~ end
 
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level, info, o,self)
@@ -705,7 +704,7 @@ function Examine:totextex(o)
   local obj_metatable = getmetatable(o)
   local obj_type = type(o)
   local is_table = obj_type == "table"
---~   if obj_type == "table" and obj_metatable ~= g_traceMeta then
+
   if is_table then
 
     for k, v in pairs(o) do
@@ -738,6 +737,14 @@ function Examine:totextex(o)
           HLEnd
         )
       else
+        res[#res+1] = Concat("<color 255 255 255>\nThread info: ",
+          "\nIsValidThread: ",IsValidThread(o),
+          "\nGetThreadStatus: ",GetThreadStatus(o),
+          "\nIsGameTimeThread: ",IsGameTimeThread(o),
+          "\nIsRealTimeThread: ",IsRealTimeThread(o),
+          "\nThreadHasFlags: ",ThreadHasFlags(o),
+          "</color>"
+        )
         break
       end
       level = level + 1
@@ -754,10 +761,8 @@ function Examine:totextex(o)
           " = ",
           self:valuetotextex(v)
         )
-      elseif obj_type ~= "table" or obj_metatable ~= g_traceMeta then
-        res[#res+1] = self:valuetotextex(o)
-        break
       else
+        res[#res+1] = self:valuetotextex(o)
         break
       end
       i = i + 1
@@ -802,7 +807,7 @@ function Examine:totextex(o)
 --~   end
   if IsValid(o) and o:IsKindOf("CObject") then
 
-      table.insert(res, 1,Concat(
+    table.insert(res,1,Concat(
       "<center>--",
       self:HyperLink(function()
         Examine_totextex(obj_metatable,self)
@@ -813,7 +818,7 @@ function Examine:totextex(o)
       self:valuetotextex(o:GetPos()),
       "--<vspace 6><left>"
     ))
---~     if o:IsValidPos() and IsValidEntity(o:GetEntity()) and 0 < o:GetAnimDuration() then
+
     if o:IsValidPos() and IsValidEntity(o.entity) and 0 < o:GetAnimDuration() then
       local pos = o:GetVisualPos() + o:GetStepVector() * o:TimeToAnimEnd() / o:GetAnimDuration()
       table.insert(res, 2, Concat(
@@ -850,19 +855,25 @@ function Examine:totextex(o)
 --~     end
   end
 
-  -- stick strings/numbers
+  -- add strings/numbers to the body
   if obj_type == "number" or obj_type == "string" or obj_type == "boolean" then
     res[#res+1] = tostring(o)
-  end
-
-  if obj_type == "userdata" then
+  elseif obj_type == "userdata" then
     local str = T(o)
     -- might as well just return the userdata instead of these
     if str == "stripped" or str:find("Missing locale string id") then
       str = o
     end
     res[#res+1] = tostring(str)
+  elseif obj_type == "function" then
+    local dbg_value = "\ndebug.getinfo: "
+    local dbg_table = debug.getinfo(o) or empty_table
+    for key,value in pairs(dbg_table) do
+      dbg_value = Concat(dbg_value,"\n",key,": ",value)
+    end
+    res[#res+1] = dbg_value
   end
+
 
   return TConcat(res,"\n")
 end

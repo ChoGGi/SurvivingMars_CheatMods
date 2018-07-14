@@ -61,11 +61,10 @@ Lua\X\Infopanel.lua
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 --~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
-local type,next,rawset,rawget,assert,setmetatable,table,print = type,next,rawset,rawget,assert,setmetatable,table,print
+local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
 
 --probably should be careful about localizing stuff i replace below...
 local AddConsoleLog = AddConsoleLog
@@ -456,6 +455,8 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   SaveOrigFunc("MG_Colonists","GetProgress")
   SaveOrigFunc("MG_Martianborn","GetProgress")
   SaveOrigFunc("RCRover","SetWorkRadius")
+  SaveOrigFunc("RCTransport","TransportRouteLoad")
+  SaveOrigFunc("RCTransport","TransportRouteUnload")
   SaveOrigFunc("RequiresMaintenance","AddDust")
   SaveOrigFunc("SA_WaitMarsTime","StopWait")
   SaveOrigFunc("SA_WaitTime","StopWait")
@@ -496,6 +497,23 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~     drone:StartFX("EmergencyRecharge")
 --~     drone:PlayState( "rechargeDroneStart" )
 --~   end
+
+  -- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
+  if LuaRevision == 231777 then
+    -- check transports for broked paths
+    function RCTransport:TransportRouteLoad()
+      ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
+      if ChoGGi.UserSettings.CheckForBrokedTransportPath then
+        ChoGGi.CodeFuncs.CheckForBrokedTransportPath(self)
+      end
+    end
+    function RCTransport:TransportRouteUnload()
+      ChoGGi_OrigFuncs.RCTransport_TransportRouteUnload(self)
+      if ChoGGi.UserSettings.CheckForBrokedTransportPath then
+        ChoGGi.CodeFuncs.CheckForBrokedTransportPath(self)
+      end
+    end
+  end
 
   --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
   if UserSettings.HideuiWindowErrorMsg then

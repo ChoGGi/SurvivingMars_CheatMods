@@ -162,6 +162,9 @@ ChoGGi.Defaults = {
     SetObjectOpacity = "F3",
     InfopanelCheats_Toggle = "Ctrl-F2",
   },
+
+  -- if transport on a route has a broked route then lag happens (can't set faster game speeds)
+  CheckForBrokedTransportPath = true,
 }
 if ChoGGi.Testing then
   local ChoGGi = ChoGGi
