@@ -110,20 +110,6 @@ function OnMsg.ClassesBuilt()
     BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T(1000155--[[Hidden--]]),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
 
-  if ChoGGi.UserSettings.SkipMissingMods then
-    --stops confirmation dialog about missing mods (still lets you know they're missing)
-    function GetMissingMods()
-      return "", false
-    end
-  end
-
-  if ChoGGi.UserSettings.SkipMissingDLC then
-    --lets you load saved games that have dlc
-    function IsDlcAvailable()
-      return true
-    end
-  end
-
   local XTemplates = XTemplates
 
   -- don't show cheats pane for ResourceOverview
@@ -1186,7 +1172,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --how long startup takes, maybe add this as an option for other modders to see as well?
-  if ChoGGi.Testing or UserSettings.ShowStartupTicks then
+  if UserSettings.ShowStartupTicks then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
     print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
   end

@@ -482,6 +482,20 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
   local UserSettings = ChoGGi.UserSettings
 
+  if UserSettings.SkipMissingMods then
+    --stops confirmation dialog about missing mods (still lets you know they're missing)
+    function GetMissingMods()
+      return "", false
+    end
+  end
+
+  if UserSettings.SkipMissingDLC then
+    --lets you load saved games that have dlc
+    function IsDlcAvailable()
+      return true
+    end
+  end
+
 --~   function RCRover:LeadIn(drone)
 --~     self.drone_charged = drone
 
