@@ -133,7 +133,7 @@ if ChoGGi.Testing then
 ---------
   print("ChoGGi.Testing")
 
-  function ChoGGi.MsgFuncs.Testing_ClassesGenerate()
+  function OnMsg.ClassesGenerate()
     local config = config
 
     config.TraceEnable = true
@@ -154,10 +154,9 @@ if ChoGGi.Testing then
   --~ end
 
    ------
-    print("Testing_ClassesGenerate")
   end
 
-  function ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
+  function OnMsg.ClassesPreprocess()
     --fix the arcology dome spot
     --[[
     SaveOrigFunc("SpireBase","GameInit")
@@ -176,16 +175,14 @@ if ChoGGi.Testing then
     end
     --]]
     ------
-    print("Testing_ClassesPreprocess")
   end --ClassesPreprocess
 
   --where we add new BuildingTemplates
-  function ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
+  function OnMsg.ClassesPostprocess()
     ------
-    print("Testing_ClassesPostprocess")
   end
 
-  function ChoGGi.MsgFuncs.Testing_ClassesBuilt()
+  function OnMsg.ClassesBuilt()
 
     --add an overlay for dead rover
     --[[
@@ -423,7 +420,6 @@ if ChoGGi.Testing then
   --]]
 
     ------
-    print("Testing_ClassesBuilt")
   end
 
   function ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()

@@ -612,11 +612,7 @@ Reselect to update display."--]]),name)
       SetHint(action,string.format(T(302535920000885--[[Permanently delete %s--]]),name))
 
     elseif action.ActionId == "Malfunction" then
-      if obj.working then
-        SetHint(action,Concat(T(8039--[[Trait: Idiot (can cause a malfunction)--]]),"...\n",T(53--[[Malfunction--]],"?")))
-      else
-        action.ActionId = ""
-      end
+      SetHint(action,Concat(T(8039--[[Trait: Idiot (can cause a malfunction)--]]),"...\n",T(53--[[Malfunction--]],"?")))
     elseif action.ActionId == "PowerFree" then
       if obj.electricity_consumption then
         SetHint(action,string.format(T(302535920001220--[[Change this %s so it doesn't need a power source.--]]),name))

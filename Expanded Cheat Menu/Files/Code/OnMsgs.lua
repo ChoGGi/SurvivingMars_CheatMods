@@ -35,23 +35,15 @@ local OnMsg = OnMsg
 -- use this message to mess with the classdefs (before classes are built)
 -- function OnMsg.ClassesGenerate(classdefs)
 function OnMsg.ClassesGenerate()
-
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-  if ChoGGi.Testing then
-    ChoGGi.MsgFuncs.Testing_ClassesGenerate()
-  end
-
 end --OnMsg
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
-  if ChoGGi.Testing then
-    ChoGGi.MsgFuncs.Testing_ClassesPreprocess()
-  end
 
 --~   InfopanelItems.LayoutMethod = "VList"
 --~   InfopanelItems.MaxWidth = 500
@@ -81,9 +73,6 @@ end
 function OnMsg.ClassesPostprocess()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
-  if ChoGGi.Testing then
-    ChoGGi.MsgFuncs.Testing_ClassesPostprocess()
-  end
 
 --~   --don't show cheats pane if we don't have any to show
 --~   XTemplates.sectionCheats[1].__condition = function(parent, context)
@@ -115,9 +104,6 @@ end
 function OnMsg.ClassesBuilt()
   local ChoGGi = ChoGGi
   ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
-  if ChoGGi.Testing then
-    ChoGGi.MsgFuncs.Testing_ClassesBuilt()
-  end
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
