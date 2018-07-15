@@ -155,8 +155,6 @@ dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
 dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
 -- OnMsgs and functions that don't need to be in CommonFunctions
 dofolder_files(Concat(ChoGGi.MountPath,"Code"))
--- menus... (ok and keys)
-dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
 
 -- read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()

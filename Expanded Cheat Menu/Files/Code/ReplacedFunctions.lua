@@ -110,10 +110,10 @@ local function SaveOrigFunc(ClassOrFunc,Func)
 end
 
 --set UI transparency:
-local function SetTrans(Obj)
+local function SetTrans(obj)
   local trans = ChoGGi.UserSettings.Transparency
-  if type(trans) == "table" and Obj and Obj.class and trans[Obj.class] then
-    Obj:SetTransparency(trans[Obj.class])
+  if type(trans) == "table" and type(obj) == "table" and trans[obj.class] then
+    obj:SetTransparency(trans[obj.class])
   end
 end
 

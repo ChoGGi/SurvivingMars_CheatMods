@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+-- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
+DefineClass.ChoGGi_HexSpot = {
+  __parents = {"CObject"},
+  entity = "GridTile"
+}
+
 local TConcat
 local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
 
@@ -702,6 +708,14 @@ function ChoGGi.ComFuncs.ToggleBoolNum(Num)
   return 0
 end
 
+-- toggle true/nil (so it doesn't add setting to file as = false
+function ChoGGi.ComFuncs.ToggleValue(value)
+  if value then
+    return
+  end
+  return true
+end
+
 -- return equal or higher amount
 function ChoGGi.ComFuncs.CompareAmounts(iAmtA,iAmtB)
   --if ones missing then just return the other
@@ -783,19 +797,18 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
     --remove old logs
     local logs = "AppData/logs/"
     local console = Concat(logs,"ConsoleLog.log")
-    AsyncFileRename(Concat(logs,"ConsoleLog.log"),Concat(logs,"ConsoleLog.previous.log"))
+    AsyncFileRename(console,Concat(logs,"ConsoleLog.previous.log"))
     AsyncStringToFile(console,"")
 
     --redirect functions
-    if ChoGGi.Testing then
-      ReplaceFunc("print","ConsoleLog",ChoGGi)
-    end
     ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
+    ReplaceFunc("print","ConsoleLog",ChoGGi)
 --~     ReplaceFunc("printf","DebugLog",ChoGGi)
 --~     ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
 --~     ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
   else
     ResetFunc("AddConsoleLog",ChoGGi)
+    ResetFunc("print","ConsoleLog",ChoGGi)
 --~     ResetFunc("printf",ChoGGi)
 --~     ResetFunc("DebugPrint",ChoGGi)
 --~     ResetFunc("OutputDebugString",ChoGGi)
@@ -957,17 +970,20 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   if Menu then
     Menu = Concat("/",tostring(Menu))
   end
+  -- fallback name if something is broked
   local name = "NOFUNC"
-  --add name to action id
-  if Action then
+  -- tooltip menu item
+  if Action == "blank_function" then
+    Action = function()end
+  -- make the id the func location (filename/linenum)
+  elseif type(Action) == "function" then
     local debug_info = debug.getinfo(Action, "Sn")
     local text = Concat(debug_info.short_src,"(",debug_info.linedefined,")")
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
     name = name:gsub("...Mods/Expanded Cheat Menu/","")
-    --
-  elseif ChoGGi.Testing and Key ~= "Skip" then
+  else
     ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>: </color><color 128 255 128>",T(302535920000166--[[BROKEN FUNCTION--]]),": </color>",Menu)
   end
 
@@ -995,7 +1011,7 @@ print("\n")
   --UserActions.AddActions({
   --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
-    -- AsyncRand needed for items made from same line
+    -- AsyncRand needed for items made from same line (like a loop)
     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
       menu = Menu,
       action = Action,
@@ -1142,8 +1158,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="CObject"} or empty_table,{ParSystem=true,ResourceStockpile=true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="CObject"} or empty_table,nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem = true,ResourceStockpile = true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"} or empty_table,nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
@@ -1172,8 +1188,8 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="CObject"} or empty_table,"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="Unit"} or empty_table,"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{} or empty_table,"IsKindOf","Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"} or empty_table,"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
     filter = function(Obj)

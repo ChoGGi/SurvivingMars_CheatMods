@@ -407,7 +407,7 @@ function OnMsg.NewDay() -- NewSol...
 
   -- sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
-    local blds = GetObjects{class="Building"} or empty_table
+    local blds = GetObjects{class = "Building"} or empty_table
     for i = 1, #blds do
       --no sense in doing it with only one center
       if #blds[i].command_centers > 1 then
@@ -789,25 +789,23 @@ function OnMsg.ChoGGi_Loaded()
     UserActions.Actions = {}
     UserActions.RejectedActions = {}
 
-    ChoGGi.MsgFuncs.Keys_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
-
     if ChoGGi.Testing then
       ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
     end
 
     --add custom actions
-    ChoGGi.MsgFuncs.BuildingsMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.CheatsMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.ColonistsMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.DebugMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.DronesAndRCMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.ExpandedMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.FixesMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.GameMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.HelpMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.MiscMenu_ChoGGi_Loaded()
-    ChoGGi.MsgFuncs.MissionMenu_ChoGGi_Loaded()
+    dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
+
+    local function SetMissionBonuses(Preset,Type,Func)
+      local tab = Presets[Preset].Default or empty_table
+      for i = 1, #tab do
+        if UserSettings[Concat(Type,tab[i].id)] then
+          Func(tab[i].id)
+        end
+      end
+    end
+    SetMissionBonuses("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
+    SetMissionBonuses("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
 
     --add preset menu items
     ClassDescendantsList("Preset", function(name, class)
@@ -1082,7 +1080,7 @@ function OnMsg.ChoGGi_Loaded()
       if not UICity.labels[Label] then
         UICity:InitEmptyLabel(Label)
         if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
-          local objs = GetObjects{class=Label:gsub("ChoGGi_","")} or empty_table
+          local objs = GetObjects{class = Label:gsub("ChoGGi_","")} or empty_table
           for i = 1, #objs do
             UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
             UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]

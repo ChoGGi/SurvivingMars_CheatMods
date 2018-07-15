@@ -13,21 +13,6 @@ local WaitPopupNotification = WaitPopupNotification
 local Msg = Msg
 local GetMissionSponsor = GetMissionSponsor
 
-function ChoGGi.MsgFuncs.MissionFunc_ChoGGi_Loaded()
-  local ChoGGi = ChoGGi
-  local Presets = Presets
-  local function SetBonus(Preset,Type,Func)
-    local tab = Presets[Preset].Default or empty_table
-    for i = 1, #tab do
-      if ChoGGi.UserSettings[Concat(Type,tab[i].id)] then
-        Func(tab[i].id)
-      end
-    end
-  end
-  SetBonus("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
-  SetBonus("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
-end
-
 function ChoGGi.MenuFuncs.InstantMissionGoal()
   local ChoGGi = ChoGGi
   local UICity = UICity
@@ -56,10 +41,13 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.MeteorHealthDamage),"\n",T(302535920001160--[["Damage? Total, sir.
+  MsgPopup(string.format(T(302535920001160--[["%s
+Damage? Total, sir.
 It's what we call a global killer.
-The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]])),
-    T(547--[[Colonists--]]),"UI/Icons/Notifications/meteor_storm.tga",true
+The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]),ChoGGi.UserSettings.MeteorHealthDamage),
+    T(547--[[Colonists--]]),
+    "UI/Icons/Notifications/meteor_storm.tga",
+    true
   )
 end
 
@@ -155,7 +143,8 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
+    MsgPopup(
+      Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
       T(302535920001162--[[Sponsor--]])
     )
   end
@@ -268,7 +257,8 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    MsgPopup(Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
+    MsgPopup(
+      Concat(T(302535920001166--[[Bonuses--]]),": ",#choice),
       T(302535920001174--[[Commander--]])
     )
   end
@@ -327,8 +317,10 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
         --same for any buildings that use the logo
         ChangeLogo("Building",entity_name)
 
-        MsgPopup(Concat(T(302535920001177--[[Logo--]]),": ",choice[1].text),
-          T(302535920001177--[[Logo--]]),default_icon
+        MsgPopup(
+          Concat(T(302535920001177--[[Logo--]]),": ",choice[1].text),
+          T(302535920001177--[[Logo--]]),
+          default_icon
         )
       end
     end

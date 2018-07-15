@@ -7,7 +7,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 
-local tostring = tostring
+local tostring,string = tostring,string
 
 local CreateBugReportDlg = CreateBugReportDlg
 local CreateRealTimeThread = CreateRealTimeThread
@@ -254,7 +254,7 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
+    string.format(T(302535920001068--[[%s: Interface in screenshots.--]]),ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     T(302535920001069--[[Interface--]])
   )
 end
@@ -346,7 +346,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DisableHints),T(302535920001077--[[: Bye bye hints--]])),
+    string.format(T(302535920001077--[[%s: Bye bye hints--]]),ChoGGi.UserSettings.DisableHints),
     T(4248--[[Hints--]]),
     "UI/Icons/Sections/attention.tga"
   )

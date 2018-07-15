@@ -156,12 +156,12 @@ function ChoGGi_ObjectManipulator:Init()
       --refresh list
       self:UpdateListContent(self.obj)
     end
-    ChoGGi.ComFuncs.OpenInListChoice({
+    ChoGGi.ComFuncs.OpenInListChoice{
       callback = CallBackFunc,
       items = ItemList,
       title = T(302535920000095--[[New Entry--]]),
       custom_type = 4,
-    })
+    }
   end
 
   element_x = border * 2 + self.idAddNew:GetPos():x() + self.idAddNew:GetSize():x()
@@ -179,7 +179,7 @@ function ChoGGi_ObjectManipulator:Init()
     end
     local value = self.sel.value
     if value then
-      local objs = GetObjects{class=self.obj.class} or empty_table
+      local objs = GetObjects{class = self.obj.class} or empty_table
       for i = 1, #objs do
         objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
       end

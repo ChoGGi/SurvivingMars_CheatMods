@@ -1,11 +1,5 @@
 --See LICENSE for terms
 
--- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
-DefineClass.ChoGGi_HexSpot = {
-  __parents = {"CObject"},
-  entity = "GridTile"
-}
-
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -193,7 +187,7 @@ function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
   _G[name] = not _G[name]
 
   MsgPopup(
-    Concat(T(trans_id),": ",tostring(_G[name])),
+    Concat(tostring(_G[name]),": ",T(trans_id)),
     T(1000113--[[Debug--]])
   )
 end
@@ -236,12 +230,9 @@ end
 
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   local ChoGGi = ChoGGi
-  --the menu item sends itself
-  if obj and not obj.class then
-    obj = ChoGGi.CodeFuncs.SelObject()
-  end
+  obj = obj or ChoGGi.CodeFuncs.SelObject()
 
-  local objs = GetObjects{class=obj.class} or empty_table
+  local objs = GetObjects{class = obj.class} or empty_table
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -258,22 +249,19 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
     CallBackFunc,
     Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
     Concat(string.format(T(302535920000856--[[Yes, I want to delete all: %s--]]),name)),
-    T(302535920000857--[[No, I need to backup my save first (like I should've done before clicking something called 'Delete All').--]])
+    T(302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]])
   )
 end
 
-function ChoGGi.MenuFuncs.ObjectCloner(sel)
-  --the menu item sends itself
-  if sel and not sel.class then
-    sel = ChoGGi.CodeFuncs.SelObject()
-  end
+function ChoGGi.MenuFuncs.ObjectCloner(obj)
+  obj = obj or ChoGGi.CodeFuncs.SelObject()
   --clone dome = crashy
   local new
-  if sel:IsKindOf("Dome") then
-    new = g_Classes[sel.class]:new()
-    new:CopyProperties(sel)
+  if obj:IsKindOf("Dome") then
+    new = g_Classes[obj.class]:new()
+    new:CopyProperties(obj)
   else
-    new = sel:Clone()
+    new = obj:Clone()
   end
   new:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
   if type(new.CheatRefill) == "function" then
@@ -333,6 +321,7 @@ function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
       AnimDebug_Show(sel,white)
     end
   else
+    local ChoGGi = ChoGGi
     ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
     if ChoGGi.Temp.ShowAnimDebug then
       AnimDebug_ShowAll("Building")
@@ -347,6 +336,7 @@ function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SetAnimState()
+  local ChoGGi = ChoGGi
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
     return
@@ -364,22 +354,23 @@ function ChoGGi.MenuFuncs.SetAnimState()
   local CallBackFunc = function(choice)
     sel:SetStateText(choice[1].value)
     MsgPopup(
-      Concat(T(3722--[[State--]]),": ",choice[1].text),
+      Concat(choice[1].text,": ",T(3722--[[State--]])),
       T(302535920000859--[[Anim State--]])
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000860--[[Set Anim State--]]),
     hint = Concat(T(302535920000861--[[Current State--]]),": ",sel:GetState()),
-  })
+  }
 end
 
 --no sense in building the list more then once (it's a big list)
 local ObjectSpawner_ItemList = {}
 function ChoGGi.MenuFuncs.ObjectSpawner()
+  local ChoGGi = ChoGGi
   local EntityData = EntityData
   if #ObjectSpawner_ItemList == 0 then
     for Key,_ in pairs(EntityData) do
@@ -416,22 +407,21 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       --]]
 
       MsgPopup(
-        Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
+        Concat(choice[1].text,": ",T(302535920000014--[[Spawned--]])," ",T(298035641454--[[Object--]])),
         T(302535920000014--[[Spawned--]])
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ObjectSpawner_ItemList,
     title = T(302535920000862--[[Object Spawner (EntityData list)--]]),
     hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]])),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.ShowSelectionEditor()
-  local DoneObject = DoneObject
   local terminal = terminal
   --check for any opened windows and kill them
   for i = 1, #terminal.desktop do
@@ -459,11 +449,11 @@ function ChoGGi.MenuFuncs.ObjExaminer()
 end
 
 function ChoGGi.MenuFuncs.Editor_Toggle()
+  local Platform = Platform
 
   if type(UpdateMapRevision) ~= "function" then
     function UpdateMapRevision() end
   end
-  local Platform = Platform
   Platform.editor = true
   Platform.developer = true
 
@@ -788,10 +778,7 @@ do --path markers
 
   function ChoGGi.MenuFuncs.SetPathMarkersGameTime(Obj)
     local ChoGGi = ChoGGi
-    --the menu item sends itself
-    if not Obj or Obj and not Obj.class then
-      Obj = ChoGGi.CodeFuncs.SelObject()
-    end
+    Obj = Obj or ChoGGi.CodeFuncs.SelObject()
 
     if Obj and Obj:IsKindOfClasses("Movable", "Shuttle") then
       if not ChoGGi.Temp.UnitPathingHandles then
@@ -932,7 +919,7 @@ do --path markers
         ClearColourAndWP("Unit")
 
         --check for any extra lines
-        local lines = GetObjects{class = "Polyline"}
+        local lines = GetObjects{class = "Polyline"} or empty_table
         for i = 1, #lines do
           if lines[i].ChoGGi_WaypointPath then
             DoneObject(lines[i])
@@ -960,15 +947,15 @@ do --path markers
         end
 
         if value == "All" then
-          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="Unit"} or empty_table,"IsValid",nil,true)
-          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class="CargoShuttle"} or empty_table,"IsValid",nil,true)
+          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"} or empty_table,"IsValid",nil,true)
+          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "CargoShuttle"} or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table1
           colourcount = colourcount + #Table2
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table1)
           swp(Table2)
         else
-          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class=value} or empty_table,"IsValid",nil,true)
+          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = value} or empty_table,"IsValid",nil,true)
           colourcount = colourcount + #Table
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table)
@@ -990,16 +977,15 @@ do --path markers
       end
     end
 
-    ChoGGi.ComFuncs.OpenInListChoice({
+    ChoGGi.ComFuncs.OpenInListChoice{
       callback = CallBackFunc,
       items = ItemList,
       title = T(302535920000467--[[Path Markers--]]),
---~       hint = T(302535920000875--[[Use HandleToObject[handle] to get object handle--]]),
       check1 = T(302535920000876--[[Remove Waypoints--]]),
       check1_hint = T(302535920000877--[[Remove waypoints from the map and reset colours.--]]),
       check2 = T(4099--[[Game Time--]]),
       check2_hint = Concat(T(302535920000462--[[Maps paths in real time--]]),"."),
-    })
+    }
   end
 end
 

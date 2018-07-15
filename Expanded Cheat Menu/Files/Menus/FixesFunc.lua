@@ -18,7 +18,6 @@ local GetStateIdx = GetStateIdx
 local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local Msg = Msg
-local point = point
 local Sleep = Sleep
 
 local g_Classes = g_Classes
@@ -50,13 +49,14 @@ function ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920001266--[[Broked Transport Pathing--]]),": ",tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath)),
+    Concat(tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath),": ",T(302535920001266--[[Broked Transport Pathing--]])),
     T(1683--[[RC Transport--]]),
     "UI/Icons/IPButtons/transport_route.tga"
   )
 end
 
 function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
+  local ChoGGi = ChoGGi
   CreateRealTimeThread(function()
     -- so GetPipeConnections ignores the dupe connection error
     ChoGGi.Temp.FixingPipes = true
@@ -80,10 +80,9 @@ local function ResetRover(rc)
   local pos = rc:GetVisualPos()
   local new = rc:Clone()
   DoneObject(rc)
---~   new:SetPos(HexGetNearestCenter(pos))
-  -- probably safer then HexGetNearestCenter?
   new:SetPos(GetPassablePointNearby(pos))
 end
+
 function ChoGGi.MenuFuncs.ResetRovers()
   CreateRealTimeThread(function()
     local before_table = {}
@@ -185,7 +184,7 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   for i = 1, #objs do
     local c = objs[i]
     if c:GetStateText() == "movePlanet" then
-      local rocket = FindNearestObject(GetObjects{class="SupplyRocket"} or empty_table,c)
+      local rocket = FindNearestObject(GetObjects{class = "SupplyRocket"} or empty_table,c)
       SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
       if type(c.Done) == "function" then
         c:Done()
@@ -196,7 +195,7 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
 end
 
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local rockets = GetObjects{class="SupplyRocket"} or empty_table
+  local rockets = GetObjects{class = "SupplyRocket"} or empty_table
   local pos
   for i = 1, #rockets do
     pos = rockets[i]:GetPos()
@@ -233,12 +232,12 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-  ForEach({
+  ForEach{
     class = "UnpersistedMissingClass",
     exec = function(obj)
       DeleteObject(obj)
     end
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
@@ -258,6 +257,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 end
 
 function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
+  local ChoGGi = ChoGGi
   local objs = GetObjects{class = "Unit"} or empty_table
   --CargoShuttle
   for i = 1, #objs do
@@ -269,54 +269,53 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
   end
 end
 
-function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-  local ChoGGi = ChoGGi
-  local function ResetPriorityQueue(Class)
-    local Hubs = GetObjects{class=Class} or empty_table
-    for i = 1, #Hubs do
-      --clears out the queues
-      Hubs[i].priority_queue = {}
-      for priority = -1, const.MaxBuildingPriority do
-        Hubs[i].priority_queue[priority] = {}
-      end
+local function ResetPriorityQueue(cls_name)
+  local const = const
+  local hubs = GetObjects{class = cls_name} or empty_table
+  for i = 1, #hubs do
+    --clears out the queues
+    hubs[i].priority_queue = {}
+    for priority = -1, const.MaxBuildingPriority do
+      hubs[i].priority_queue[priority] = {}
     end
   end
+end
+function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
+  local ChoGGi = ChoGGi
   ResetPriorityQueue("SupplyRocket")
   ResetPriorityQueue("RCRover")
   ResetPriorityQueue("DroneHub")
   --toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-  local Sites = GetObjects{class="ConstructionSite"} or empty_table
+  local Sites = GetObjects{class = "ConstructionSite"} or empty_table
   for i = 1, #Sites do
     ChoGGi.CodeFuncs.ToggleWorking(Sites[i])
   end
 end
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
-  local Table = GetObjects{class="Building"}
-  if Table[1] and Table[1].class then
-    for i = 1, #Table do
-      Table[i]:SetPos(HexGetNearestCenter(Table[i]:GetPos()))
+  local blds = GetObjects{class = "Building"} or empty_table
+  if blds[1] and blds[1].class then
+    for i = 1, #blds do
+      blds[i]:SetPos(HexGetNearestCenter(blds[i]:GetVisualPos()))
     end
   end
 end
 
-function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-  local Table
-  local function RemoveUnreachable(Class)
-    Table = GetObjects{class=Class} or empty_table
-    for i = 1, #Table do
-      for Bld,_ in pairs(Table[i].unreachable_buildings or empty_table) do
-        if Bld:IsKindOf("ConstructionSite") then
-          Bld:Cancel()
-        end
+local function RemoveUnreachable(cls_name)
+  local objs = GetObjects{class = cls_name} or empty_table
+  for i = 1, #objs do
+    for bld,_ in pairs(objs[i].unreachable_buildings or empty_table) do
+      if bld:IsKindOf("ConstructionSite") then
+        bld:Cancel()
       end
-      Table[i].unreachable_buildings = empty_table
     end
+    objs[i].unreachable_buildings = empty_table
   end
-
-  Table = GetObjects{class="Drone"} or empty_table
-  for i = 1, #Table do
-    Table[i]:CleanUnreachables()
+end
+function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+  local objs = GetObjects{class = "Drone"} or empty_table
+  for i = 1, #objs do
+    objs[i]:CleanUnreachables()
   end
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
@@ -325,46 +324,46 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-	ForEach({
+	ForEach{
 		class = "GridTile",
 		exec = function(obj)
       DoneObject(obj)
 		end
-	})
+	}
 end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-	ForEach({
+	ForEach{
 		class = "RangeHexRadius",
 		exec = function(obj)
       DoneObject(obj)
 		end
-	})
+	}
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
-  local tab = UICity.labels.ProjectMorpheus or empty_table
-  for i = 1, #tab do
-    tab[i]:ChangeWorkingStateAnim(false)
-    tab[i]:ChangeWorkingStateAnim(true)
+  local objs = UICity.labels.ProjectMorpheus or empty_table
+  for i = 1, #objs do
+    objs[i]:ChangeWorkingStateAnim(false)
+    objs[i]:ChangeWorkingStateAnim(true)
   end
 end
 
 function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
-	ForEach({
+	ForEach{
 		class = "Dome",
-		exec = function(d)
-      d.walkable_points = false
-      d:GenerateWalkablePoints()
+		exec = function(dome)
+      dome.walkable_points = false
+      dome:GenerateWalkablePoints()
 		end
-	})
+	}
 end
 
 function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   local ChoGGi = ChoGGi
-  local Table = UICity.labels.InsideBuildings or empty_table
-  for i = 1, #Table do
-    ChoGGi.CodeFuncs.AttachToNearestDome(Table[i])
+  local objs = UICity.labels.InsideBuildings or empty_table
+  for i = 1, #objs do
+    ChoGGi.CodeFuncs.AttachToNearestDome(objs[i])
   end
 
   MsgPopup(
@@ -375,51 +374,51 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
-  local tab = UICity.labels.Colonist or empty_table
-  for i = 1, #tab do
-    local colonist = tab[i]
-    if colonist.entity:find("Child",1,true) then
-      colonist.specialist = "none"
+  local objs = UICity.labels.Colonist or empty_table
+  for i = 1, #objs do
+    local c = objs[i]
+--~     if c.entity:find("Child",1,true) then
+    if c.entity:find("Child",1,true) and c.specialist ~= "none" then
+      c.specialist = "none"
 
-      colonist.traits.Youth = nil
-      colonist.traits.Adult = nil
-      colonist.traits["Middle Aged"] = nil
-      colonist.traits.Senior = nil
-      colonist.traits.Retiree = nil
+      c.traits.Youth = nil
+      c.traits.Adult = nil
+      c.traits["Middle Aged"] = nil
+      c.traits.Senior = nil
+      c.traits.Retiree = nil
 
-      colonist.traits.Child = true
-      colonist.age_trait = "Child"
-      colonist.age = 0
-      colonist:ChooseEntity()
-      colonist:SetResidence(false)
-      colonist:UpdateResidence()
+      c.traits.Child = true
+      c.age_trait = "Child"
+      c.age = 0
+      c:ChooseEntity()
+      c:SetResidence(false)
+      c:UpdateResidence()
     end
   end
 end
 
-function ChoGGi.MenuFuncs.RepairBrokenShit(BrokenShit)
-  local JustInCase = 0
-  while #BrokenShit > 0 do
+local function RepairBrokedShit(broked_shit)
+  local just_in_case = 0
+  while #broked_shit > 0 do
 
-    for i = 1, #BrokenShit do
-      pcall(function()
-        BrokenShit[i]:Repair()
-      end)
+    for i = #broked_shit, 1, -1 do
+      if IsValid(broked_shit[i]) and type(broked_shit[i].Repair) == "function" then
+        broked_shit[i]:Repair()
+      end
     end
 
-    if JustInCase == 10000 then
+    if just_in_case > 25000 then
       break
     end
-    JustInCase = JustInCase + 1
+    just_in_case = just_in_case + 1
 
   end
 end
 
 function ChoGGi.MenuFuncs.CablesAndPipesRepair()
-  local ChoGGi = ChoGGi
   local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
-  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.electricity)
-  ChoGGi.MenuFuncs.RepairBrokenShit(g_BrokenSupplyGridElements.water)
+  RepairBrokedShit(g_BrokenSupplyGridElements.electricity)
+  RepairBrokedShit(g_BrokenSupplyGridElements.water)
 end
 
 ------------------------- toggles
@@ -450,11 +449,12 @@ end
 
 function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = not ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle
+  ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
-    T(5438--[[Rovers--]])
+    Concat(tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
+    T(517--[[Drones--]])
   )
 end
 
@@ -469,7 +469,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920000248--[[Colonists Stuck Outside Service Buildings--]]),": ",tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings)),
+    Concat(tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),": ",T(302535920000248--[[Colonists Stuck Outside Service Buildings--]])),
     T(547--[[Colonists--]]),
     "UI/Icons/IPButtons/colonist_section.tga"
   )
@@ -477,10 +477,11 @@ end
 
 function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
+  ChoGGi.UserSettings.DroneResourceCarryAmountFix = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DroneResourceCarryAmountFix)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
+    Concat(tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),": ",T(302535920000613--[[Drone Carry Amount--]])),
     T(517--[[Drones--]]),
     "UI/Icons/IPButtons/drone.tga"
   )
@@ -488,43 +489,44 @@ end
 
 function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
+  ChoGGi.UserSettings.SortCommandCenterDist = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SortCommandCenterDist)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
+    Concat(tostring(ChoGGi.UserSettings.SortCommandCenterDist),": ",T(302535920000615--[[Sort Command Center Dist--]])),
     T(3980--[[Buildings--]])
   )
 end
 
 ---------------------------------------------------Testers
 
---~ DupePos(GetObjects{class = "Colonist"})
-function ChoGGi.MenuFuncs.DupePos(list)
-  local dupes = {}
-  local positions = {}
-  local pos
-  for i = 1, #list do
-    pos = list[i]:GetPos()
-    pos = tostring(point(pos:x(),pos:y()))
-    if not positions[pos] then
-      positions[pos] = true
-    else
-      dupes[pos] = true
-    end
-  end
-  if #dupes > 0 then
-    table.sort(dupes)
-    OpenExamine(dupes)
-  end
-end
+--~ GetDupePositions(GetObjects{class = "Colonist"})
+--~ function ChoGGi.MenuFuncs.GetDupePositions(list)
+--~   local dupes = {}
+--~   local positions = {}
+--~   local pos
+--~   for i = 1, #list do
+--~     pos = list[i]:GetPos()
+--~     pos = tostring(point(pos:x(),pos:y()))
+--~     if not positions[pos] then
+--~       positions[pos] = true
+--~     else
+--~       dupes[pos] = true
+--~     end
+--~   end
+--~   if #dupes > 0 then
+--~     table.sort(dupes)
+--~     OpenExamine(dupes)
+--~   end
+--~ end
 
-function ChoGGi.MenuFuncs.DeathToObjects(classname)
-  local objs = GetObjects{class = classname} or empty_table
-  print(#objs," = ",classname)
-  for i = 1, #objs do
-    DoneObject(objs[i])
-  end
-end
+--~ function ChoGGi.MenuFuncs.DeathToObjects(classname)
+--~   local objs = GetObjects{class = classname} or empty_table
+--~   print(#objs," = ",classname)
+--~   for i = 1, #objs do
+--~     DoneObject(objs[i])
+--~   end
+--~ end
 
 --~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
 --~ ChoGGi.MenuFuncs.DeathToObjects("Colonist")

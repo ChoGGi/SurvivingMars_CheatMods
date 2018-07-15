@@ -85,7 +85,9 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   c = GetTerrainCursor --cursor position on map
   cs = terminal_GetMousePos --cursor pos on screen
   s = false --used to store SelectedObj
-  function so()return ChoGGi.CodeFuncs.SelObject()end
+  function so()
+    return ChoGGi.CodeFuncs.SelObject()
+  end
 end
 
 --check if tech is researched before we get value
@@ -228,7 +230,7 @@ end
 
 --if building requires a dome and that dome is broked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
-  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(GetObjects{class="Dome"} or empty_table,nil,nil,"working")
+  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "Dome"} or empty_table,nil,nil,"working")
   --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
   if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
     --find the nearest dome
@@ -341,7 +343,7 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
-  if Age == "Random" then
+  if Age == T(3490--[[Random--]]) then
     Age = ChoGGi.Tables.ColonistAges[Random(1,6)]
   end
   --remove all age traits
@@ -387,9 +389,9 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(c,Gender,Cloned)
   local ChoGGi = ChoGGi
-  if Gender == "Random" then
+  if Gender == T(3490--[[Random--]]) then
     Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
-  elseif Gender == "MaleOrFemale" then
+  elseif Gender == T(302535920000800--[[MaleOrFemale--]]) then
     Gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
   end
   --remove all gender traits
@@ -423,7 +425,7 @@ end
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(c,spec)
   --children don't have spec models so they get black cube
   if not c.entity:find("Child",1,true) then
-    if spec == "Random" then
+    if spec == T(3490--[[Random--]]) then
       spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
     end
     c:SetSpecialization(spec,"init")
@@ -447,7 +449,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateTraits(c,bool,traits)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateRace(c,race)
-  if race == "Random" then
+  if race == T(3490--[[Random--]]) then
     race = Random(1,5)
   end
   c.race = race
@@ -983,7 +985,7 @@ function ChoGGi.CodeFuncs.SelObject()
 --~   return select(2,pcall(function()
   return SelectedObj or SelectionMouseObj() or NearestObject(
     GetTerrainCursor(),
-    ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem=1},"class"),
+    ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem = 1},"class"),
     1000
   )
 --~   end))
@@ -1054,9 +1056,7 @@ end
 
 function ChoGGi.CodeFuncs.FindNearestResource(Object)
   local ChoGGi = ChoGGi
-  if Object and not Object.class then
-    Object = ChoGGi.CodeFuncs.SelObject()
-  end
+  Object = Object or ChoGGi.CodeFuncs.SelObject()
   if not Object then
     MsgPopup(
       T(302535920000027--[[Nothing selected--]]),
@@ -1086,7 +1086,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
       local labels = UICity.labels
       local mechstockpile = GetStockpile(labels[Concat("MechanizedDepot",value)],value,Object)
       local stockpile
-      local resourcepile = GetStockpile(GetObjects{class="ResourceStockpile"},value,Object)
+      local resourcepile = GetStockpile(GetObjects{class = "ResourceStockpile"} or empty_table,value,Object)
       if value == "BlackCube" then
         stockpile = GetStockpile(labels[Concat(value,"DumpSite")],value,Object)
       elseif value == "MysteryResource" then
@@ -1264,7 +1264,10 @@ end
 function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait(Concat(T(302535920000033--[[Post a request on Nexus or Github or send an email to--]])," ",ChoGGi.email),T(302535920000034--[[Request--]]))
+    ChoGGi.ComFuncs.MsgWait(
+      string.format(T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]),ChoGGi.email),
+      T(302535920000034--[[Request--]])
+    )
     return
   end
 

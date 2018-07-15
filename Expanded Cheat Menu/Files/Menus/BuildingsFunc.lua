@@ -9,7 +9,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
-local type,tostring,pairs,pcall,string = type,tostring,pairs,pcall,string
+local type,tostring,pairs,string = type,tostring,pairs,string
 
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
@@ -27,7 +27,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   local UserSettings = ChoGGi.UserSettings
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 20,value = 20},
@@ -56,8 +56,8 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
         UserSettings.ServiceWorkplaceFoodStorage = value
       end
 
-      local function SetStor(Class)
-        local objs = GetObjects{class = Class} or empty_table
+      local function SetStor(cls_name)
+        local objs = GetObjects{class = cls_name} or empty_table
         for i = 1, #objs do
           objs[i].consumption_stored_resources = value
           objs[i].consumption_max_storage = value
@@ -68,39 +68,40 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(T(8830--[[Food Storage--]]),": ",choice[1].text),
+        Concat(choice[1].text,": ",T(8830--[[Food Storage--]])),
         T(1022--[[Food--]]),
         "UI/Icons/Sections/Food_1.tga"
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000105--[[Set Food Storage--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.AlwaysDustyBuildings = not ChoGGi.UserSettings.AlwaysDustyBuildings
-  if not ChoGGi.UserSettings.AlwaysDustyBuildings then
+  if ChoGGi.UserSettings.AlwaysDustyBuildings then
     ChoGGi.UserSettings.AlwaysDustyBuildings = nil
     --dust clean up
     local objs = GetObjects{class = "Building"} or empty_table
     for i = 1, #objs do
       objs[i].ChoGGi_AlwaysDust = nil
     end
+  else
+    ChoGGi.UserSettings.AlwaysDustyBuildings = true
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.AlwaysDustyBuildings),T(302535920000107--[[: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
+    string.format(T(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
-Where the fear has gone there will be nothing. Only I will remain.--]])),
+Where the fear has gone there will be nothing. Only I will remain.--]]),ChoGGi.UserSettings.AlwaysDustyBuildings),
     T(3980--[[Buildings--]]),
     nil,
     true
@@ -121,7 +122,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   local id = sel.encyclopedia_id
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("protect_range")
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
@@ -164,12 +165,12 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000114--[[Set Protection Radius--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint,"\n\n",T(302535920000115--[[Toggle selection to update visible hex grid.--]])),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.UnlockLockedBuildings()
@@ -187,25 +188,25 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 
   local CallBackFunc = function(choice)
     for i = 1, #choice do
-      pcall(function()
+--~       pcall(function()
         UnlockBuilding(choice[i].value)
-      end)
+--~       end)
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(
-      string.format(T(302535920000116--[[Buildings unlocked: %s--]]),#choice),
+      string.format(T(302535920000116--[[%s: Buildings unlocked.--]]),#choice),
       T(8690--[[Protect--]]),
       default_icon
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000117--[[Unlock Buildings--]]),
     hint = T(302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]]),
     multisel = true,
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
@@ -215,14 +216,13 @@ function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.PipesPillarSpacing),T(302535920000119--[[: Is that a rocket in your pocket?--]])),
+    string.format(T(302535920000119--[[%s: Is that a rocket in your pocket?--]]),ChoGGi.UserSettings.PipesPillarSpacing),
     T(3980--[[Buildings--]])
   )
 end
 
 function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
   local ChoGGi = ChoGGi
-
   if ChoGGi.UserSettings.UnlimitedConnectionLength then
     ChoGGi.UserSettings.UnlimitedConnectionLength = nil
     GridConstructionController.max_hex_distance_to_allow_build = 20
@@ -231,10 +231,9 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
     GridConstructionController.max_hex_distance_to_allow_build = 1000
   end
 
-
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.UnlimitedConnectionLength),T(302535920000119--[[: Is that a rocket in your pocket?--]])),
+    string.format(T(302535920000119--[[%s: Is that a rocket in your pocket?--]]),ChoGGi.UserSettings.UnlimitedConnectionLength),
     T(3980--[[Buildings--]])
   )
 end
@@ -456,7 +455,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000130--[[Dis/Charge Rates--]])),
@@ -465,12 +464,12 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     check1_hint = T(302535920000132--[[Change charge rate--]]),
     check2 = T(302535920000125--[[Discharge--]]),
     check2_hint = T(302535920000133--[[Change discharge rate--]]),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.UseLastOrientation = not ChoGGi.UserSettings.UseLastOrientation
+  ChoGGi.UserSettings.UseLastOrientation = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UseLastOrientation)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
@@ -542,7 +541,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   end
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -630,12 +629,12 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000139--[[Production Amount--]])),
     hint = Concat(T(302535920000140--[[Current production--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
@@ -698,7 +697,8 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      Concat(choice[1].text,T(302535920000143--[[I presume the PM's in favour of the scheme because it'll reduce unemployment.--]])),
+      string.format(T(302535920000143--[["%s
+I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]),choice[1].text),
       T(3980--[[Buildings--]]),
       default_icon,
       true
@@ -716,7 +716,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     hint = tostring(setting.performance)
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(name,": ",T(302535920000144--[[Automated Performance--]])),
@@ -724,7 +724,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 Current--]]),": ",hint),
     check1 = T(302535920000769--[[Selected--]]),
     check1_hint = Concat(T(302535920000147--[[Only apply to selected object instead of all--]])," ",name),
-  })
+  }
 end
 
 --used to add or remove traits from schools/sanitariums
@@ -754,8 +754,9 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.SchoolTrainAll),T(302535920000148--[[": You keep your work station so clean, Jerome.
-It's next to godliness. Isn't that what they say?"--]])),
+    string.format(T(302535920000148--[["%s:
+You keep your work station so clean, Jerome.
+It's next to godliness. Isn't that what they say?"--]]),ChoGGi.UserSettings.SchoolTrainAll),
     T(5247--[[School--]]),
     default_icon,
     true
@@ -774,7 +775,8 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.SanatoriumCureAll),T(302535920000149--[[: There's more vodka in this piss than there is piss.--]])),
+    string.format(T(302535920000149--[[%s:
+There's more vodka in this piss than there is piss.--]]),ChoGGi.UserSettings.SanatoriumCureAll),
     T(3540--[[Sanatorium--]]),
     default_icon,
     true
@@ -794,7 +796,7 @@ function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
   end
 
   MsgPopup(
-    Concat(#g_SchoolTraits,T(302535920000150--[[: Good for what ails you--]])),
+    string.format(T(302535920000150--[[%s: Good for what ails you--]]),#g_SchoolTraits),
     T(235--[[Traits--]]),
     "UI/Icons/Upgrades/factory_ai_04.tga"
   )
@@ -802,14 +804,14 @@ end
 
 function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.SanatoriumSchoolShowAll = not ChoGGi.UserSettings.SanatoriumSchoolShowAll
+  ChoGGi.UserSettings.SanatoriumSchoolShowAll = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SanatoriumSchoolShowAll)
 
 	g_Classes.Sanatorium.max_traits = ChoGGi.ComFuncs.ValueRetOpp(g_Classes.Sanatorium.max_traits,3,#ChoGGi.Tables.NegativeTraits)
 	g_Classes.School.max_traits = ChoGGi.ComFuncs.ValueRetOpp(g_Classes.School.max_traits,3,#ChoGGi.Tables.PositiveTraits)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.SanatoriumSchoolShowAll),T(302535920000150--[[: Good for what ails you--]])),
+    string.format(T(302535920000150--[[%s: Good for what ails you--]]),ChoGGi.UserSettings.SanatoriumSchoolShowAll),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/superfungus_03.tga"
   )
@@ -817,7 +819,7 @@ end
 
 function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.InsideBuildingsNoMaintenance = not ChoGGi.UserSettings.InsideBuildingsNoMaintenance
+  ChoGGi.UserSettings.InsideBuildingsNoMaintenance = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InsideBuildingsNoMaintenance)
 
   local tab = UICity.labels.InsideBuildings or empty_table
   for i = 1, #tab do
@@ -838,7 +840,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),T(302535920000151--[[: The spice must flow!--]])),
+    string.format(T(302535920000151--[[%s: The spice must flow!--]]),ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/dust.tga"
   )
@@ -846,7 +848,8 @@ end
 
 function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.RemoveMaintenanceBuildUp = not ChoGGi.UserSettings.RemoveMaintenanceBuildUp
+  ChoGGi.UserSettings.RemoveMaintenanceBuildUp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)
+
   local tab = UICity.labels.Building or empty_table
   for i = 1, #tab do
     if tab[i].base_maintenance_build_up_per_hr then
@@ -862,7 +865,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),T(302535920000151--[[: The spice must flow!--]])),
+    string.format(T(302535920000151--[[%s: The spice must flow!--]]),ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/dust.tga"
   )
@@ -875,13 +878,14 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
   const.MoistureVaporatorPenaltyPercent = ChoGGi.ComFuncs.NumRetBool(const.MoistureVaporatorPenaltyPercent,0,ChoGGi.Consts.MoistureVaporatorPenaltyPercent)
   ChoGGi.ComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorRange)
   ChoGGi.ComFuncs.SetSavedSetting("MoistureVaporatorRange",const.MoistureVaporatorPenaltyPercent)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.MoistureVaporatorRange),T(302535920000152--[[": Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
+    string.format(T(302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
 Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
 C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]])),
+Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]),ChoGGi.UserSettings.MoistureVaporatorRange),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/zero_space_04.tga",
     true
@@ -893,10 +897,12 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
   local Consts = Consts
   Consts.CropFailThreshold = ChoGGi.ComFuncs.NumRetBool(Consts.CropFailThreshold,0,ChoGGi.Consts.CropFailThreshold)
   ChoGGi.ComFuncs.SetSavedSetting("CropFailThreshold",Consts.CropFailThreshold)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.CropFailThreshold),T(302535920000153--[[": So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
-it is a friendship greeting from the children of our small but great planet of Potatoho."--]])),
+    string.format(T(302535920000153--[["%s:
+So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
+it is a friendship greeting from the children of our small but great planet of Potatoho."--]]),ChoGGi.UserSettings.CropFailThreshold),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/Food_1.tga",
     true
@@ -933,9 +939,11 @@ function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MachineParts_cost_modifier",Consts.MachineParts_cost_modifier)
   ChoGGi.ComFuncs.SetSavedSetting("MachineParts_dome_cost_modifier",Consts.MachineParts_dome_cost_modifier)
   ChoGGi.ComFuncs.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Metals_cost_modifier),T(302535920000154--[[: Get yourself a beautiful showhome (even if it falls apart after you move in)--]])),
+    Concat(tostring(ChoGGi.UserSettings.Metals_cost_modifier),T(302535920000154--[[%s:
+Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]])),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/build_2.tga"
   )
@@ -945,14 +953,15 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("CrimeEventSabotageBuildingsCount",ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
   ChoGGi.ComFuncs.SetConstsG("CrimeEventDestroyedBuildingsCount",ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
-
   ChoGGi.ComFuncs.SetSavedSetting("CrimeEventSabotageBuildingsCount",Consts.CrimeEventSabotageBuildingsCount)
   ChoGGi.ComFuncs.SetSavedSetting("CrimeEventDestroyedBuildingsCount",Consts.CrimeEventDestroyedBuildingsCount)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),T(302535920000155--[[: We were all feeling a bit shagged and fagged and fashed,
+    string.format(T(302535920000155--[[%s:
+We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
-So we got rid of the auto and stopped off at the Korova for a nightcap.--]])),
+So we got rid of the auto and stopped off at the Korova for a nightcap.--]]),ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
     T(3980--[[Buildings--]]),
     "UI/Icons/Notifications/fractured_dome.tga",
     true
@@ -962,14 +971,14 @@ end
 function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
   local ChoGGi = ChoGGi
   local const = const
-  ChoGGi.UserSettings.BreakChanceCablePipe = not ChoGGi.UserSettings.BreakChanceCablePipe
+  ChoGGi.UserSettings.BreakChanceCablePipe = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BreakChanceCablePipe)
 
   const.BreakChanceCable = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChanceCable,600,10000000)
   const.BreakChancePipe = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChancePipe,600,10000000)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.BreakChanceCablePipe),T(302535920000156--[[: Aliens? We gotta deal with aliens too?--]])),
+    string.format(T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]),ChoGGi.UserSettings.BreakChanceCablePipe),
     T(302535920000157,"Cables & Pipes"),
     "UI/Icons/Notifications/timer.tga"
   )
@@ -979,12 +988,12 @@ function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("InstantCables",ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantCables))
   ChoGGi.ComFuncs.SetConstsG("InstantPipes",ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantPipes))
-
   ChoGGi.ComFuncs.SetSavedSetting("InstantCables",Consts.InstantCables)
   ChoGGi.ComFuncs.SetSavedSetting("InstantPipes",Consts.InstantPipes)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.InstantCables),T(302535920000156--[[: Aliens? We gotta deal with aliens too?--]])),
+    string.format(T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]),ChoGGi.UserSettings.InstantCables),
     T(302535920000157,"Cables & Pipes"),
     "UI/Icons/Notifications/timer.tga"
   )
@@ -992,11 +1001,11 @@ end
 
 function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.RemoveBuildingLimits = not ChoGGi.UserSettings.RemoveBuildingLimits
+  ChoGGi.UserSettings.RemoveBuildingLimits = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveBuildingLimits)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.RemoveBuildingLimits),T(302535920000158--[[: No no I said over there.--]])),
+    string.format(T(302535920000158--[[%s: No no I said over there.--]]),ChoGGi.UserSettings.RemoveBuildingLimits),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/zero_space_04.tga"
   )
@@ -1015,11 +1024,10 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
     end
   end
 
-
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Building_wonder),T(302535920000159--[[: Unlimited Wonders
-(restart to set disabled)--]])),
+    string.format(T(302535920000159--[[%s: Unlimited Wonders
+(restart to set disabled)--]]),ChoGGi.UserSettings.Building_wonder),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1027,11 +1035,12 @@ end
 
 function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.Building_dome_spot = not ChoGGi.UserSettings.Building_dome_spot
+  ChoGGi.UserSettings.Building_dome_spot = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_dome_spot)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Building_dome_spot),T(302535920000160--[[: Freedom for spires!
-(restart to set disabled)--]])),
+    string.format(T(302535920000160--[[%s: Freedom for spires!
+(restart to set disabled)--]]),ChoGGi.UserSettings.Building_dome_spot),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1039,11 +1048,12 @@ end
 
 function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.Building_instant_build = not ChoGGi.UserSettings.Building_instant_build
+  ChoGGi.UserSettings.Building_instant_build = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_instant_build)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Building_instant_build),T(302535920000161--[[: Building Instant Build
-(restart to set disabled).--]])),
+    string.format(T(302535920000161--[[%s: Building Instant Build
+(restart to set disabled)--]]),ChoGGi.UserSettings.Building_instant_build),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1051,11 +1061,12 @@ end
 
 function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.Building_hide_from_build_menu = not ChoGGi.UserSettings.Building_hide_from_build_menu
+  ChoGGi.UserSettings.Building_hide_from_build_menu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_hide_from_build_menu)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Building_hide_from_build_menu),T(302535920000162--[[: Buildings hidden
-(restart to toggle).--]])),
+    string.format(T(302535920000162--[[%s: Hidden Buildings
+(restart to set disabled)--]]),ChoGGi.UserSettings.Building_hide_from_build_menu),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1065,7 +1076,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   local ChoGGi = ChoGGi
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 25,value = 25},
@@ -1110,7 +1121,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(T(302535920000163--[[Radius--]]),": ",choice[1].text,msgpopup),
+        Concat(choice[1].text,":\n",T(msgpopup)),
         id,
         "UI/Icons/Upgrades/polymer_blades_04.tga",
         true
@@ -1118,10 +1129,10 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000129--[[Set--]])," ",id," ",T(302535920000163--[[Radius--]])),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end

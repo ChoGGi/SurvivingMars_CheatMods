@@ -566,7 +566,8 @@ Reselect to update display."--]]),name)
       if tempname ~= "" then
         SetHint(action,string.format(T(302535920001207--[["Add: %s to this building.
 
-%s."--]]),tempname,T(obj.upgrade2_description)))      else
+%s."--]]),tempname,T(obj.upgrade2_description)))
+      else
         action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade3" then

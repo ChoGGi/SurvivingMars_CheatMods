@@ -16,9 +16,10 @@ local pf_SetStepLen = pf.SetStepLen
 --~ local g_Classes = g_Classes
 
 function ChoGGi.MenuFuncs.SetRoverChargeRadius()
+  local ChoGGi = ChoGGi
   local DefaultSetting = 0
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 2,value = 2},
     {text = 3,value = 3},
@@ -51,25 +52,26 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
         T(5438--[[Rovers--]]),
         default_icon2
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000880--[[Set Rover Charge Radius--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetRoverWorkRadius()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.RCRoverMaxRadius
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
@@ -98,25 +100,26 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(tostring(ChoGGi.UserSettings.RCRoverMaxRadius),T(302535920000883--[[: I can see for miles and miles--]])),
+        string.format(T(302535920000883--[[%s: I can see for miles and miles.--]]),ChoGGi.UserSettings.RCRoverMaxRadius),
         T(5438--[[Rovers--]]),
         "UI/Icons/Upgrades/service_bots_04.tga"
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000884--[[Set Rover Work Radius--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint,"\n\n",T(302535920000115--[[Toggle selection to update visible hex grid.--]])),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.CommandCenterMaxRadius
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
@@ -145,25 +148,26 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(tostring(ChoGGi.UserSettings.CommandCenterMaxRadius),T(302535920000883--[[: I can see for miles and miles--]])),
+        string.format(T(302535920000883--[[%s: I can see for miles and miles--]]),ChoGGi.UserSettings.CommandCenterMaxRadius),
         T(3518--[[Drone Hub--]]),
         "UI/Icons/Upgrades/service_bots_04.tga"
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000886--[[Set DroneHub Work Radius--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint,"\n\n",T(302535920000115--[[Toggle selection to update visible hex grid.--]])),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 0,value = 0},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -188,27 +192,28 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 
       ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
       MsgPopup(
-        Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
         T(517--[[Drones--]]),
         default_icon
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000509--[[Drone Rock To Concrete Speed--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
+  local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedDrone
   local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedDrone()
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting / r),value = DefaultSetting,hint = T(302535920000889--[[base speed--]])},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting / r),value = DefaultSetting,hint = T(302535920000889--[[base speed--]])},
     {text = Concat(" ",T(302535920000890--[[Upgraded--]]),": ",UpgradedSetting / r),value = UpgradedSetting,hint = T(302535920000891--[[apply tech unlocks--]])},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
@@ -240,27 +245,28 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
         T(517--[[Drones--]]),
         default_icon
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000511--[[Drone Move Speed--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetRCMoveSpeed()
+  local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedRC
   local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedRC()
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting / r),value = DefaultSetting,hint = T(302535920000889--[[base speed--]])},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting / r),value = DefaultSetting,hint = T(302535920000889--[[base speed--]])},
     {text = Concat(" ",T(302535920000890--[[Upgraded--]]),": ",UpgradedSetting / r),value = UpgradedSetting,hint = T(302535920000891--[[apply tech unlocks--]])},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
@@ -292,22 +298,23 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
         T(5438--[[Rovers--]]),
         default_icon2
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000543--[[RC Move Speed--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
+  local ChoGGi = ChoGGi
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
     return
@@ -329,9 +336,9 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
     local value = choice[1].value
     if type(value) == "number" then
 
-      local change = " added: "
+      local change = Concat(T(302535920000746--[[added--]]))
       if choice[1].check1 then
-        change = " dismantled: "
+        change = Concat(T(302535920000917--[[dismantled--]]))
         for _ = 1, value do
           sel:ConvertDroneToPrefab()
         end
@@ -342,27 +349,28 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
       end
 
       MsgPopup(
-        Concat(T(517--[[Drones--]]),change,choice[1].text),
+        Concat(choice[1].text,": ",T(517--[[Drones--]])," ",change),
         T(517--[[Drones--]]),
         default_icon
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000895--[[Change Amount Of Drones--]]),
     hint = Concat(T(302535920000896--[[Drones in hub--]]),": ",CurrentAmount," ",T(302535920000897--[[Drone prefabs--]]),": ",UICity.drone_prefabs),
     check1 = T(302535920000898--[[Dismantle--]]),
     check1_hint = T(302535920000899--[[Check this to dismantle drones in hub--]]),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.DroneFactoryBuildSpeed
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -396,21 +404,22 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      Concat(T(302535920000900--[[Build Speed--]]),": ",choice[1].text),
+      Concat(choice[1].text,": ",T(302535920000900--[[Build Speed--]])),
       T(517--[[Drones--]]),
       default_icon
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000901--[[Set Drone Factory Build Speed--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("DroneMoveBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse))
   ChoGGi.ComFuncs.SetConstsG("DroneCarryBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse))
   ChoGGi.ComFuncs.SetConstsG("DroneConstructBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse))
@@ -426,13 +435,14 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneMoveBatteryUse),T(302535920000902--[[: What happens when the drones get into your Jolt Cola supply...--]])),
+    string.format(T(302535920000902--[[%s: What happens when the drones get into your Jolt Cola supply...--]]),ChoGGi.UserSettings.DroneMoveBatteryUse),
     T(517--[[Drones--]]),
     default_icon
   )
 end
 
 function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount,999900,ChoGGi.Consts.DroneConstructAmount))
   ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount,999900,ChoGGi.Consts.DroneBuildingRepairAmount))
   ChoGGi.ComFuncs.SetSavedSetting("DroneConstructAmount",Consts.DroneConstructAmount)
@@ -440,25 +450,27 @@ function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneConstructAmount),T(302535920000902--[[: What happens when the drones get into your Jolt Cola supply...--]])," ",T(302535920000903--[[and drink it--]])),
+    string.format(Concat(T(302535920000902--[[%s: What happens when the drones get into your Jolt Cola supply...--]])," ",T(302535920000903--[[and drink it...--]])),ChoGGi.UserSettings.DroneConstructAmount),
     T(517--[[Drones--]]),
     default_icon
   )
 end
 
 function ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost))
   ChoGGi.ComFuncs.SetSavedSetting("RCRoverDroneRechargeCost",Consts.RCRoverDroneRechargeCost)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.RCRoverDroneRechargeCost),T(302535920000904--[[: More where that came from--]])),
+    string.format(T(302535920000904--[[%s: More where that came from--]]),ChoGGi.UserSettings.RCRoverDroneRechargeCost),
     T(5438--[[Rovers--]]),
     default_icon2
   )
 end
 
 function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
   ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.CodeFuncs.GetRCTransportGatherResourceWorkTime()))
   ChoGGi.ComFuncs.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
@@ -466,54 +478,58 @@ function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),T(302535920000905--[[: Slight of hand--]])),
+    string.format(T(302535920000905--[[%s: Slight of hand--]]),ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
     T(5438--[[Rovers--]]),
     "UI/Icons/IPButtons/resources_section.tga"
   )
 end
 
 function ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.ComFuncs.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance))
   ChoGGi.ComFuncs.SetSavedSetting("DroneMeteorMalfunctionChance",Consts.DroneMeteorMalfunctionChance)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneMeteorMalfunctionChance),T(302535920000906--[[: I'm singing in the rain. Just singin' in the rain. What a glorious feeling.--]])),
+    string.format(T(302535920000906--[[%s: I'm singing in the rain. Just singin' in the rain. What a glorious feeling.--]]),ChoGGi.UserSettings.DroneMeteorMalfunctionChance),
     T(517--[[Drones--]]),
     "UI/Icons/Notifications/meteor_storm.tga"
   )
 end
 
 function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("DroneRechargeTime",ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
   ChoGGi.ComFuncs.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneRechargeTime),"\n",T(302535920000907--[[Well, if jacking on'll make strangers think I'm cool, I'll do it!--]])),
+    string.format(T(302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]),ChoGGi.UserSettings.DroneRechargeTime),
     T(517--[[Drones--]]),
-    "UI/Icons/Notifications/low_battery.tga",true
+    "UI/Icons/Notifications/low_battery.tga",
+    true
   )
 end
 
 function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
+  local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
   ChoGGi.ComFuncs.SetSavedSetting("DroneRepairSupplyLeak",Consts.DroneRepairSupplyLeak)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneRepairSupplyLeak),T(302535920000908--[[: You know what they say about leaky pipes--]])),
+    string.format(T(302535920000908--[[%s: You know what they say about leaky pipes.--]]),ChoGGi.UserSettings.DroneRepairSupplyLeak),
     T(517--[[Drones--]]),
     default_icon
   )
 end
 
 function ChoGGi.MenuFuncs.SetDroneCarryAmount()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.CodeFuncs.GetDroneResourceCarryAmount()
-  local hinttoolarge = T(302535920000909--[[If you set this amount larger then a building's \"Storage\" amount then the drones will NOT pick up storage (See: Fixes>Drone Carry Amount).--]])
+  local hinttoolarge = string.format(T(302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]),T(302535920000613--[[Drone Carry Amount--]]))
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25,hint = hinttoolarge},
@@ -550,18 +566,19 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000913--[[Set Drone Carry Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint,"\n\n",hinttoolarge,"\n\n",T(302535920000834--[[Max--]]),": 1000."),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.CodeFuncs.GetCommandCenterMaxDrones()
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25},
@@ -593,18 +610,19 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000918--[[Set DroneHub Drone Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetDronesPerRCRover()
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.CodeFuncs.GetRCRoverMaxDrones()
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25},
@@ -636,21 +654,20 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000924--[[Set RC Rover Drone Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
-  })
+  }
 end
 
---somewhere above 2000 it will fuck the save (different amounts depending on the unit type (is it a height thing?)
 function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.CodeFuncs.GetRCTransportStorageCapacity() / r
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 50,value = 50},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -688,19 +705,20 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000927--[[Set RC Transport Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetShuttleCapacity()
+  local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.StorageShuttle / r
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25},
@@ -741,20 +759,20 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000930--[[Set Cargo Shuttle Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetShuttleSpeed()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedShuttle / r
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 50,value = 50},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -792,19 +810,19 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000932--[[Set Cargo Shuttle Speed--]]),
     hint = Concat(T(302535920000933--[[Current speed--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.ShuttleHubShuttleCapacity
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -849,20 +867,20 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000535--[[Set ShuttleHub Shuttle Capacity--]]),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetGravityRC()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.GravityRC
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 2,value = 2},
     {text = 3,value = 3},
@@ -902,20 +920,20 @@ function ChoGGi.MenuFuncs.SetGravityRC()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000920--[[Set RC Gravity--]]),
     hint = Concat(T(302535920000841--[[Current gravity--]]),": ",hint),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetGravityDrones()
-  --retrieve default
+  local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.GravityDrone
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 2,value = 2},
     {text = 3,value = 3},
@@ -954,10 +972,10 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000923--[[Set Drone Gravity--]]),
     hint = Concat(T(302535920000841--[[Current gravity--]]),": ",hint),
-  })
+  }
 end

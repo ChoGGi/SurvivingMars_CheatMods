@@ -4,9 +4,9 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
-local default_icon = "UI/Icons/Anomaly_Event.tga"
+--~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
-local next,tostring,type,table = next,tostring,type,table
+local next,type,table,string = next,type,table,string
 
 local ChangeGameSpeedState = ChangeGameSpeedState
 --~ local CreateRealTimeThread = CreateRealTimeThread
@@ -59,11 +59,11 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001083--[[Change Surface Signs--]]),
-  })
+  }
 end
 
 --AnnoyingSounds_Toggles
@@ -152,17 +152,18 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
       RCRoverEmergencyPower_Toggle()
     end
 
-    MsgPopup(Concat(choice[1].text,T(302535920001088--[[: Stop that bloody bouzouki!--]])),
+    MsgPopup(
+      string.format(T(302535920001088--[[%s: Stop that bloody bouzouki!--]]),choice[1].text),
       T(3581--[[Sounds--]])
     )
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000680--[[Annoying Sounds--]]),
     hint = T(302535920001090--[[You can only reset all sounds at once.--]]),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
@@ -253,14 +254,15 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
       ChoGGi.UserSettings.UnpinObjects = nil
     end
     ChoGGi.SettingFuncs.WriteSettings()
-    MsgPopup(Concat(T(302535920001093--[[Toggled--]]),": ",#choice," ",T(302535920001094--[[pinnable objects.--]])),
+    MsgPopup(
+      string.format(T(302535920001093--[[Toggled: %s pinnable objects.--]]),#choice),
       T(302535920001092--[[Pins--]])
     )
   end
 
   EnabledList[#EnabledList+1] = "\n"
   EnabledList[#EnabledList+1] = T(302535920001097--[[Enter a class name (s.class) to add a custom entry.--]])
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001095--[[Auto Remove Items From Pin List--]]),
@@ -270,7 +272,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     check1_hint = T(302535920001099--[[Add these items to the unpin list.--]]),
     check2 = T(302535920001100--[[Remove from list--]]),
     check2_hint = T(302535920001101--[[Remove these items from the unpin list.--]]),
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
@@ -305,7 +307,8 @@ end
 --build and show a list of attachments for changing their colours
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
   local ChoGGi = ChoGGi
-  obj = obj and obj.class and obj or ChoGGi.CodeFuncs.SelObject()
+  obj = obj or ChoGGi.CodeFuncs.SelObject()
+
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     MsgPopup(
       T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]),
@@ -340,13 +343,13 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 
   local CallBackFunc = function() return end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000021--[[Change Colour--]]),": ",RetName(obj)),
     hint = T(302535920001108--[[Double click to open object/attachment to edit.--]]),
     custom_type = 1,
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
@@ -393,8 +396,10 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
         SettingOpacity("TerrainDeposit")
       end
     end
-    MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
-      T(302535920001117--[[Opacity--]]),"UI/Icons/Sections/attention.tga"
+    MsgPopup(
+      Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+      T(302535920001117--[[Opacity--]]),
+      "UI/Icons/Sections/attention.tga"
     )
   end
   local hint = T(302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]])
@@ -402,23 +407,12 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
     hint = Concat(T(302535920000106--[[Current--]]),": ",sel:GetOpacity(),"\n\n",hint)
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920000694--[[Set Opacity--]]),": ",RetName(sel)),
     hint = hint,
-  })
-end
-
-function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.DisableTextureCompression = not ChoGGi.UserSettings.DisableTextureCompression
-  hr.TR_ToggleTextureCompression = 1
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920001121--[[Texture Compression--]]),": ",tostring(ChoGGi.UserSettings.DisableTextureCompression)),
-    T(302535920001015--[[Video--]]),default_icon
-  )
+  }
 end
 
 function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
@@ -430,7 +424,7 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats),T(302535920001122--[[: HAXOR--]])),
+    string.format(T(302535920001122--[[%s: HAXOR--]]),ChoGGi.UserSettings.ToggleInfopanelCheats),
     T(27--[[Cheats--]]),
     "UI/Icons/Anomaly_Tech.tga"
   )
@@ -448,7 +442,7 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane),": ",T(302535920001123--[[Cleanup--]])),
+    string.format(T(302535920001123--[[%s: Cleanup cheats infopane.--]]),ChoGGi.UserSettings.CleanupCheatsInfoPane),
     T(27--[[Cheats--]]),
     "UI/Icons/Anomaly_Tech.tga"
   )
@@ -461,7 +455,7 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize),T(302535920001124--[[: scans at a time.--]])),
+    string.format(T(302535920001124--[[%s: scans at a time.--]]),ChoGGi.UserSettings.ExplorationQueueMaxSize),
     T(302535920001125--[[Scanner--]]),
     "UI/Icons/Notifications/scan.tga"
   )
@@ -470,34 +464,43 @@ end
 --SetTimeFactor(1000) = normal speed
 function ChoGGi.MenuFuncs.SetGameSpeed()
   local ChoGGi = ChoGGi
+
+  local default_str = T(1000121--[[Default--]])
+  local double_str = T(302535920001126--[[Double--]])
+  local triple_str = T(302535920001127--[[Triple--]])
+  local quadruple_str = T(302535920001128--[[Quadruple--]])
+  local octuple_str = T(302535920001129--[[Octuple--]])
+  local sexdecuple_str = T(302535920001130--[[Sexdecuple--]])
+  local duotriguple_str = T(302535920001131--[[Duotriguple--]])
+  local quattuorsexaguple_str = T(302535920001132--[[Quattuorsexaguple--]])
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]])),value = 1},
-    {text = Concat("1 ",T(302535920001126--[[Double--]])),value = 2},
-    {text = Concat("2 ",T(302535920001127--[[Triple--]])),value = 3},
-    {text = Concat("3 ",T(302535920001128--[[Quadruple--]])),value = 4},
-    {text = Concat("4 ",T(302535920001129--[[Octuple--]])),value = 8},
-    {text = Concat("5 ",T(302535920001130--[[Sexdecuple--]])),value = 16},
-    {text = Concat("6 ",T(302535920001131--[[Duotriguple--]])),value = 32},
-    {text = Concat("7 ",T(302535920001132--[[Quattuorsexaguple--]])),value = 64},
+    {text = Concat(" ",default_str),value = 1},
+    {text = Concat("1 ",double_str),value = 2},
+    {text = Concat("2 ",triple_str),value = 3},
+    {text = Concat("3 ",quadruple_str),value = 4},
+    {text = Concat("4 ",octuple_str),value = 8},
+    {text = Concat("5 ",sexdecuple_str),value = 16},
+    {text = Concat("6 ",duotriguple_str),value = 32},
+    {text = Concat("7 ",quattuorsexaguple_str),value = 64},
   }
 
-  local current = "Default"
+  local current = default_str
   if const.mediumGameSpeed == 6 then
-    current = "Double"
+    current = double_str
   elseif const.mediumGameSpeed == 9 then
-    current = "Triple"
+    current = triple_str
   elseif const.mediumGameSpeed == 12 then
-    current = "Quadruple"
+    current = quadruple_str
   elseif const.mediumGameSpeed == 24 then
-    current = "Octuple"
+    current = octuple_str
   elseif const.mediumGameSpeed == 48 then
-    current = "Sexdecuple"
+    current = sexdecuple_str
   elseif const.mediumGameSpeed == 96 then
-    current = "Duotriguple"
+    current = duotriguple_str
   elseif const.mediumGameSpeed == 192 then
-    current = "Quattuorsexaguple"
+    current = quattuorsexaguple_str
   else
-    current = Concat(T(302535920000982--[[Custom--]]),": ",const.mediumGameSpeed," < ",T(302535920001134--[[base number 3 multipled by custom amount--]]))
+    current = string.format(T(302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]),const.mediumGameSpeed)
   end
 
   local CallBackFunc = function(choice)
@@ -515,19 +518,19 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,T(302535920001135--[[: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]])),
+        string.format(T(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]),choice[1].text),
         T(302535920001136--[[Speed--]]),
         "UI/Icons/Notifications/timer.tga"
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920001137--[[Set Game Speed--]]),
     hint = Concat(T(302535920000933--[[Current speed--]]),": ",current),
-  })
+  }
 end
 
 local entity_table = {}
@@ -549,8 +552,9 @@ end
 function ChoGGi.MenuFuncs.SetEntity()
   local ChoGGi = ChoGGi
   local sel = ChoGGi.CodeFuncs.SelObject()
+  local entity_str = T(155--[[Entity--]])
   if not sel then
-    MsgPopup(T(302535920001139--[[You need to select an object.--]]),T(155--[[Entity--]]))
+    MsgPopup(T(302535920001139--[[You need to select an object.--]]),entity_str)
     return
   end
 
@@ -584,7 +588,10 @@ function ChoGGi.MenuFuncs.SetEntity()
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then
-      MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(155--[[Entity--]]))
+      MsgPopup(
+        T(302535920000039--[[Don't pick both checkboxes next time...--]]),
+        entity_str
+      )
       return
     end
 
@@ -611,12 +618,12 @@ function ChoGGi.MenuFuncs.SetEntity()
       end
       MsgPopup(
         Concat(choice[1].text,": ",RetName(sel)),
-        T(155--[[Entity--]])
+        entity_str
       )
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001151--[[Set Entity For--]])," ",RetName(sel)),
@@ -627,7 +634,7 @@ Not permanent for colonists after they exit buildings (for now).--]])),
     check1_hint = T(302535920001255--[[Will only apply to objects in the same dome as selected object.--]]),
     check2 = T(302535920000752--[[Selected Only--]]),
     check2_hint = T(302535920001256--[[Will only apply to selected object.--]]),
-  })
+  }
 end
 
 local function SetScale(Obj,Scale)
@@ -671,12 +678,15 @@ function ChoGGi.MenuFuncs.SetEntityScale()
   local ChoGGi = ChoGGi
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel then
-    MsgPopup(T(302535920001139--[[You need to select an object.--]]),T(1000081--[[Scale--]]))
+    MsgPopup(
+      T(302535920001139--[[You need to select an object.--]]),
+      T(1000081--[[Scale--]])
+    )
     return
   end
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000110--[[Default--]])),value = 100},
+    {text = Concat(" ",T(1000121--[[Default--]])),value = 100},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 100,value = 100},
@@ -715,7 +725,8 @@ function ChoGGi.MenuFuncs.SetEntityScale()
           end
         end
       end
-      MsgPopup(Concat(choice[1].text,": ",RetName(sel)),
+      MsgPopup(
+        Concat(choice[1].text,": ",RetName(sel)),
         T(1000081--[[Scale--]]),
         nil,
         nil,
@@ -724,7 +735,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice({
+  ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(T(302535920001155--[[Set Entity Scale For--]])," ",RetName(sel)),
@@ -733,5 +744,5 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     check1_hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]),
     check2 = T(302535920000752--[[Selected Only--]]),
     check2_hint = T(302535920000753--[[Will only apply to selected colonist.--]]),
-  })
+  }
 end

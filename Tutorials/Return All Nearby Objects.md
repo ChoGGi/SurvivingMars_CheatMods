@@ -12,8 +12,8 @@ OpenExamine(ReturnAllNearby(nil,"class"))
 local function ReturnAllNearby(radius,sort)
   radius = radius or 5000
   local pos = GetTerrainCursor()
-  --get pretty much all objects (18K on a new map)
-  local all = GetObjects({class="CObject"})
+  --get all objects (18K on a new map)
+  local all = GetObjects{} or empty_table
   --we only want stuff within *radius*
   local list = FilterObjects({
     filter = function(Obj)
