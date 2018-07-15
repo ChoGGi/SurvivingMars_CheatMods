@@ -75,11 +75,20 @@ function OnMsg.ClassesBuilt()
       PlaceObj("XTemplateTemplate", {
         "__template", "InfopanelSlider",
         "BindTo", "max_workers",
+        -- if it's a resource unit then add 1000, so 25000
         "Max", 25,
-        "min", 5,
-				"StepSize", 5, --change 5 per movement
+        "Min", 5,
+				"StepSize", 5,
+--~ PageSize: 1
+--~ StepSize: 1
+--~ FullPageAtEnd: false
+--~ SnapToItems: false
+--~ AutoHide: false
+--~ Horizontal: false
         "OnContextUpdate", function(self, context)
-          self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+          -- make the slider scroll to current amount
+          self.Scroll = context.max_workers
+          self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
         end
       })
     })
@@ -105,7 +114,7 @@ function OnMsg.ClassesBuilt()
         "min", 5,
         "StepSize", 5, --change 5 per movement
         "OnContextUpdate", function(self, context)
-          --self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+          --self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
         end
       }),
       PlaceObj("XTemplateTemplate", {
@@ -113,7 +122,7 @@ function OnMsg.ClassesBuilt()
         "BindTo", "max_workers",
 				"StepSize", 5, --change 5 per movement
         "OnContextUpdate", function(self, context)
-          self.parent.parent:SetTitle("Change \"max_workers\" limit: " .. context.max_workers)
+          self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
         end
       }),
     })
