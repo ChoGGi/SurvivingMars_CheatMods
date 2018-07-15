@@ -147,7 +147,7 @@ function ChoGGi.MenuFuncs.ModUpload()
         end
 
         -- update mod log and print it to console log
-        ModLog(msg)
+        ModLog(Concat("\n",msg,": ",mod.title))
         print(T(302535920001265--[[ModMessageLog--]]),": ",ModMessageLog)
 
         -- let user know if we're good or not
