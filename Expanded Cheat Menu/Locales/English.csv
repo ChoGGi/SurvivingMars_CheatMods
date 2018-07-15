@@ -760,7 +760,7 @@ This'll check for and stop any broked ones (it'll show a popup msg when it stops
 302535920000461,All Pipe Skins To Default,
 302535920000463,"Large Water Tank + Pipes + Chrome skin = broked looking connections.
 This resets all pipes to the default skin.",
-302535920000249,"Colonists will leave a diner/etc and stop outside of it and not move anymore.
+302535920000249,"Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
 
 Seems to fix it after a Sol or two, so you shouldn't need to leave this running.",
 302535920001193,Remove Blue Grid Marks,

@@ -613,7 +613,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
     Concat(tostring(ChoGGi.UserSettings.NonSpecialistPerformancePenalty),"\n",T(302535920000788--[[You never know what you're gonna get.--]])),
-    T(02535920000912--[[Penalty--]]),
+    T(302535920000912--[[Penalty--]]),
     default_icon,
     true
   )

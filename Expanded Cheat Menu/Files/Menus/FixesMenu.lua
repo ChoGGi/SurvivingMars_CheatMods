@@ -205,9 +205,9 @@ This'll check for and stop any broked ones (it'll show a popup msg when it stops
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,
-        302535920000249--[[Colonists will leave a diner/etc and stop outside of it and not move anymore.
+        302535920000249--[["Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
 
-Seems to fix it after a Sol or two, so you shouldn't need to leave this running.--]]
+Seems to fix it after a Sol or two, so you shouldn't need to leave this running."--]]
       )
     end,
     icon
@@ -219,10 +219,10 @@ Seems to fix it after a Sol or two, so you shouldn't need to leave this running.
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix,
-        302535920000614--[[Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
+        302535920000614--[["Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
 This forces them to pick up whenever there's more then one resource).
 
-If you have an insane production amount set then it'll take an (in-game) hour between calling drones.--]]
+If you have an insane production amount set then it'll take an (in-game) hour between calling drones."--]]
       )
     end,
     icon
@@ -234,9 +234,9 @@ If you have an insane production amount set then it'll take an (in-game) hour be
     nil,
     function()
       return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist,
-        302535920000616--[[Each Sol goes through all buildings and sorts their cc list by nearest.
+        302535920000616--[["Each Sol goes through all buildings and sorts their cc list by nearest.
 
-Takes less then a second on a map with 3600+ buildings and 50+ drone hubs.--]]
+Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."--]]
       )
     end,
     "Axis.tga"
