@@ -247,35 +247,44 @@ ChoGGi.ComFuncs.Trans = Memoize(ChoGGi.ComFuncs.Trans)
 local T = ChoGGi.ComFuncs.Trans
 
 -- shows a popup msg with the rest of the notifications
-function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
+-- objects can be a single obj, or {obj1,obj2,etc}
+function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  --build our popup
+  -- build our popup
   local timeout = 10000
-  if Size then
+  if size then
     timeout = 30000
   end
   local params = {
-    expiration=timeout, --{expiration=99999999999999999}
-    --dismissable=false,
+    expiration = timeout,
+--~     {expiration = 99999999999999999},
+--~     dismissable = false,
   }
-  ---if there's no interface then we probably shouldn't open the popup
+  -- if there's no interface then we probably shouldn't open the popup
   local dlg = GetXDialog("OnScreenNotificationsDlg")
   if not dlg then
-    if not GetInGameInterface() then
+    local igi = GetInGameInterface()
+    if not igi then
       return
     end
-    dlg = OpenXDialog("OnScreenNotificationsDlg", GetInGameInterface())
+    dlg = OpenXDialog("OnScreenNotificationsDlg", igi)
   end
   --build the popup
   local data = {
     id = AsyncRand(),
-    title = tostring(Title or ""),
-    text = tostring(Msg or T(3718--[[NONE--]])),
-    image = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
+    title = tostring(title or ""),
+    text = tostring(text or T(3718--[[NONE--]])),
+    image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   }
   table.set_defaults(data, params)
   table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
+  if objects then
+    if type(objects) ~= "table" then
+      objects = {objects}
+    end
+    params.cycle_objs = objects
+  end
   --and show the popup
   CreateRealTimeThread(function()
 		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
@@ -283,7 +292,7 @@ function ChoGGi.ComFuncs.MsgPopup(Msg,Title,Icon,Size)
 		popup:Open()
 		dlg:ResolveRelativeFocusOrder()
     --large amount of text option (four long lines o' text, or is it five?)
-    if Size then
+    if size then
       --larger text limit
       popup.idText.Margins = box(0,0,0,-500)
       --resize title, or move it?
@@ -514,7 +523,7 @@ function ChoGGi.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,cont
   end)
 end
 
-function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
+function ChoGGi.ComFuncs.Dump(obj,Mode,File,Ext,Skip)
   if Mode == "w" or Mode == "w+" then
     Mode = nil
   else
@@ -526,12 +535,16 @@ function ChoGGi.ComFuncs.Dump(Obj,Mode,File,Ext,Skip)
 
   if pcall(function()
     ThreadLockKey(Filename)
-    AsyncStringToFile(Filename,Obj,Mode)
+    AsyncStringToFile(Filename,obj,Mode)
     ThreadUnlockKey(Filename)
   end) then
     if not Skip then
-      MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",tostring(Obj)),
-        Filename,"UI/Icons/Upgrades/magnetic_filtering_04.tga"
+      MsgPopup(
+        Concat(T(302535920000002--[[Dumped--]]),": ",tostring(obj)),
+        Filename,
+        "UI/Icons/Upgrades/magnetic_filtering_04.tga",
+        nil,
+        obj
       )
     end
   end
@@ -567,8 +580,12 @@ function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
   ChoGGi.ComFuncs.DumpTableFunc(obj,nil,funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.Temp.TextFile,mode)
 
-  MsgPopup(Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
-    "AppData/logs/DumpedText.txt"
+  MsgPopup(
+    Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
+    "AppData/logs/DumpedText.txt",
+    nil,
+    nil,
+    obj
   )
 end
 

@@ -5,7 +5,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local default_icon = "UI/Icons/Sections/spaceship.tga"
 
-local type,tostring = type,tostring
+local type,tostring,string = type,tostring,string
 
 local PlaceObj = PlaceObj
 local CreateRealTimeThread = CreateRealTimeThread
@@ -56,7 +56,9 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.MeteorHealthDamage),"\n",T(302535920001160--[[Damage? Total, sir.\nIt's what we call a global killer.\nThe end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria.--]])),
+  MsgPopup(Concat(tostring(ChoGGi.UserSettings.MeteorHealthDamage),"\n",T(302535920001160--[["Damage? Total, sir.
+It's what we call a global killer.
+The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]])),
     T(547--[[Colonists--]]),"UI/Icons/Notifications/meteor_storm.tga",true
   )
 end
@@ -91,8 +93,10 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
         --and bonuses
         city:InitMissionBonuses()
 
-        MsgPopup(Concat(T(302535920001161--[[Sponsor for this save is now--]])," ",choice[1].text),
-          T(302535920001162--[[Sponsor--]]),default_icon
+        MsgPopup(
+          string.format(T(302535920001161--[[Sponsor for this save is now %s--]]),choice[1].text),
+          T(302535920001162--[[Sponsor--]]),
+          default_icon
         )
         break
       end
@@ -202,8 +206,10 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         --and bonuses
         UICity:InitMissionBonuses()
 
-        MsgPopup(Concat(T(302535920001173--[[Commander for this save is now--]])," ",choice[1].text),
-          T(302535920001174--[[Commander--]]),default_icon
+        MsgPopup(
+          string.format(T(302535920001173--[[Commander for this save is now %s.--]]),choice[1].text),
+          T(302535920001174--[[Commander--]]),
+          default_icon
         )
         break
       end

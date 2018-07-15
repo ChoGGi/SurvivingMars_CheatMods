@@ -49,7 +49,8 @@ function ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920001266--[[Broked Transport Pathing--]]),": ",tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath)),
+  MsgPopup(
+    Concat(T(302535920001266--[[Broked Transport Pathing--]]),": ",tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath)),
     T(1683--[[RC Transport--]]),
     "UI/Icons/IPButtons/transport_route.tga"
   )
@@ -366,8 +367,10 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
     ChoGGi.CodeFuncs.AttachToNearestDome(Table[i])
   end
 
-  MsgPopup(T(302535920000972--[[Buildings attached.--]]),
-    T(3980--[[Buildings--]]),"UI/Icons/Sections/basic.tga"
+  MsgPopup(
+    T(302535920000972--[[Buildings attached.--]]),
+    T(3980--[[Buildings--]]),
+    "UI/Icons/Sections/basic.tga"
   )
 end
 
@@ -449,7 +452,8 @@ function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = not ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
+  MsgPopup(
+    Concat(T(302535920001040--[[Drone Wrong Angle--]]),": ",tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)),
     T(5438--[[Rovers--]])
   )
 end
@@ -464,8 +468,10 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000248--[[Colonists Stuck Outside Service Buildings--]]),": ",tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings)),
-    T(547--[[Colonists--]]),"UI/Icons/IPButtons/colonist_section.tga"
+  MsgPopup(
+    Concat(T(302535920000248--[[Colonists Stuck Outside Service Buildings--]]),": ",tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings)),
+    T(547--[[Colonists--]]),
+    "UI/Icons/IPButtons/colonist_section.tga"
   )
 end
 
@@ -473,8 +479,10 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DroneResourceCarryAmountFix = not ChoGGi.UserSettings.DroneResourceCarryAmountFix
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
-    T(517--[[Drones--]]),"UI/Icons/IPButtons/drone.tga"
+  MsgPopup(
+    Concat(T(302535920000965--[[Drone Carry Fix--]]),": ",tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix)),
+    T(517--[[Drones--]]),
+    "UI/Icons/IPButtons/drone.tga"
   )
 end
 
@@ -482,7 +490,8 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.SortCommandCenterDist = not ChoGGi.UserSettings.SortCommandCenterDist
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
+  MsgPopup(
+    Concat(T(302535920000966--[[Sorting cc dist--]]),": ",tostring(ChoGGi.UserSettings.SortCommandCenterDist)),
     T(3980--[[Buildings--]])
   )
 end

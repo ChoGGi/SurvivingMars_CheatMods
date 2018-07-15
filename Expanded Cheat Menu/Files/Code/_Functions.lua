@@ -821,7 +821,10 @@ end
 function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    MsgPopup(T(302535920000015--[[Can't colour object--]]),T(302535920000016--[[Colour--]]))
+    MsgPopup(
+      T(302535920000015--[[Can't colour object--]]),
+      T(302535920000016--[[Colour--]])
+    )
     return
   end
   --SetPal(Obj,i,Color,Roughness,Metallic)
@@ -946,7 +949,13 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
         end
       end
 
-      MsgPopup(Concat(T(302535920000020--[[Colour is set on--]])," ",obj.class),T(302535920000016--[[Colour--]]))
+      MsgPopup(
+        string.format(T(302535920000020--[[Colour is set on %s--]]),RetName(obj)),
+        T(302535920000016--[[Colour--]]),
+        nil,
+        nil,
+        obj
+      )
     end
   end
   ChoGGi.ComFuncs.OpenInListChoice{
@@ -1049,7 +1058,10 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
     Object = ChoGGi.CodeFuncs.SelObject()
   end
   if not Object then
-    MsgPopup(T(302535920000027--[[Nothing selected--]]),T(302535920000028--[[Find Resource--]]))
+    MsgPopup(
+      T(302535920000027--[[Nothing selected--]]),
+      T(302535920000028--[[Find Resource--]])
+    )
     return
   end
 
@@ -1109,7 +1121,13 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
       if nearest then
         ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
       else
-        MsgPopup(Concat(T(302535920000029--[[Error: Cannot find any--]])," ",choice[1].text),T(15--[[Resource--]]))
+        MsgPopup(
+          string.format(T(302535920000029--[[Error: Cannot find any %s.--]]),choice[1].text),
+          T(15--[[Resource--]]),
+          nil,
+          nil,
+          Object
+        )
       end
     end
   end
@@ -1492,8 +1510,12 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
   end
 
   if not skip_msg then
-    MsgPopup(string.format(T(302535920000969--[[Collisions %s on %s--]]),which,RetName(obj)),
-      T(302535920000968--[[Collisions--]])
+    MsgPopup(
+      string.format(T(302535920000969--[[Collisions %s on %s--]]),which,RetName(obj)),
+      T(302535920000968--[[Collisions--]]),
+      nil,
+      nil,
+      obj
     )
   end
 end
@@ -1507,7 +1529,9 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
       MsgPopup(
         string.format(T(302535920001267--[[%s at position: %s was stopped.--]]),RetName(obj),obj:GetVisualPos()),
         T(302535920001266--[[Broked Transport Pathing--]]),
-        "UI/Icons/IPButtons/transport_route.tga"
+        "UI/Icons/IPButtons/transport_route.tga",
+        nil,
+        obj
       )
     end
   end)

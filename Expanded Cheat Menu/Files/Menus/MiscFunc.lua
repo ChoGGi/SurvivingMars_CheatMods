@@ -307,7 +307,10 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
   local ChoGGi = ChoGGi
   obj = obj and obj.class and obj or ChoGGi.CodeFuncs.SelObject()
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    MsgPopup(T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]),T(302535920000016--[[Colour--]]))
+    MsgPopup(
+      T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]),
+      T(302535920000016--[[Colour--]])
+    )
     return
   end
   local ItemList = {}
@@ -426,8 +429,10 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats),T(302535920001122--[[: HAXOR--]])),
-    T(27--[[Cheats--]]),"UI/Icons/Anomaly_Tech.tga"
+  MsgPopup(
+    Concat(tostring(ChoGGi.UserSettings.ToggleInfopanelCheats),T(302535920001122--[[: HAXOR--]])),
+    T(27--[[Cheats--]]),
+    "UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -442,8 +447,10 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane),": ",T(302535920001123--[[Cleanup--]])),
-    T(27--[[Cheats--]]),"UI/Icons/Anomaly_Tech.tga"
+  MsgPopup(
+    Concat(tostring(ChoGGi.UserSettings.CleanupCheatsInfoPane),": ",T(302535920001123--[[Cleanup--]])),
+    T(27--[[Cheats--]]),
+    "UI/Icons/Anomaly_Tech.tga"
   )
 end
 
@@ -453,8 +460,10 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize),T(302535920001124--[[: scans at a time.--]])),
-    T(302535920001125--[[Scanner--]]),"UI/Icons/Notifications/scan.tga"
+  MsgPopup(
+    Concat(tostring(ChoGGi.UserSettings.ExplorationQueueMaxSize),T(302535920001124--[[: scans at a time.--]])),
+    T(302535920001125--[[Scanner--]]),
+    "UI/Icons/Notifications/scan.tga"
   )
 end
 
@@ -505,8 +514,10 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
       ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].text,T(302535920001135--[[: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]])),
-        T(302535920001136--[[Speed--]]),"UI/Icons/Notifications/timer.tga"
+      MsgPopup(
+        Concat(choice[1].text,T(302535920001135--[[: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]])),
+        T(302535920001136--[[Speed--]]),
+        "UI/Icons/Notifications/timer.tga"
       )
     end
   end
@@ -598,7 +609,8 @@ function ChoGGi.MenuFuncs.SetEntity()
           end
         end
       end
-      MsgPopup(Concat(choice[1].text,": ",RetName(sel)),
+      MsgPopup(
+        Concat(choice[1].text,": ",RetName(sel)),
         T(155--[[Entity--]])
       )
     end
@@ -704,7 +716,10 @@ function ChoGGi.MenuFuncs.SetEntityScale()
         end
       end
       MsgPopup(Concat(choice[1].text,": ",RetName(sel)),
-        T(1000081--[[Scale--]])
+        T(1000081--[[Scale--]]),
+        nil,
+        nil,
+        sel
       )
     end
   end

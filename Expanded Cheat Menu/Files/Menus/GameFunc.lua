@@ -380,7 +380,8 @@ function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
   ChoGGi.UserSettings.DisablePulsatingPinsMotion = not ChoGGi.UserSettings.DisablePulsatingPinsMotion
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000746--[[Pulsating Pins--]]),": ",tostring(ChoGGi.UserSettings.DisablePulsatingPinsMotion)),
+  MsgPopup(
+    Concat(T(302535920000746--[[Pulsating Pins--]]),": ",tostring(ChoGGi.UserSettings.DisablePulsatingPinsMotion)),
     T(302535920001092--[[Pins--]])
   )
 end
@@ -401,7 +402,8 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
     if type(value) == "number" then
       terrain_SetTerrainType({type = value})
 
-      MsgPopup(Concat(T(904--[[Terrain--]]),": ",choice[1].text),
+      MsgPopup(
+        Concat(T(904--[[Terrain--]]),": ",choice[1].text),
         T(904--[[Terrain--]])
       )
     end
@@ -535,7 +537,8 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
         end
 
         ChoGGi.SettingFuncs.WriteSettings()
-        MsgPopup(Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
+        MsgPopup(
+          Concat(T(302535920000769--[[Selected--]]),": ",choice[1].text),
           T(302535920000984--[[Lighting--]])
         )
       end
@@ -587,7 +590,8 @@ function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
   ChoGGi.UserSettings.TransparencyToggle = not ChoGGi.UserSettings.TransparencyToggle
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000992--[[UI Transparency Toggle--]]),": ",tostring(ChoGGi.UserSettings.TransparencyToggle)),
+  MsgPopup(
+    Concat(T(302535920000992--[[UI Transparency Toggle--]]),": ",tostring(ChoGGi.UserSettings.TransparencyToggle)),
     T(1608--[[Transparency--]])
   )
 end
@@ -701,8 +705,10 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
     end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920000633--[[Lights Radius--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),default_icon
+      MsgPopup(
+        Concat(T(302535920000633--[[Lights Radius--]]),": ",choice[1].text),
+        T(302535920001015--[[Video--]]),
+        default_icon
       )
   end
 
@@ -741,8 +747,10 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
     end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920000635--[[Terrain Detail--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),default_icon
+      MsgPopup(
+        Concat(T(302535920000635--[[Terrain Detail--]]),": ",choice[1].text),
+        T(302535920001015--[[Video--]]),
+        default_icon
       )
   end
 
@@ -778,8 +786,10 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
     end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920000637--[[Video Memory--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),default_icon
+      MsgPopup(
+        Concat(T(302535920000637--[[Video Memory--]]),": ",choice[1].text),
+        T(302535920001015--[[Video--]]),
+        default_icon
       )
   end
 
@@ -817,8 +827,10 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920001050--[[ShadowmapSize--]]),": ",choice[1].text),
-        T(302535920001015--[[Video--]]),default_icon
+      MsgPopup(
+        Concat(T(302535920001050--[[ShadowmapSize--]]),": ",choice[1].text),
+        T(302535920001015--[[Video--]]),
+        default_icon
       )
   end
 
@@ -837,8 +849,10 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
   hr.ShadowFadeOutRangePercent = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowFadeOutRangePercent,30,0)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920001053--[[Higher Shadow Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherShadowDist)),
-    T(302535920001015--[[Video--]]),default_icon
+  MsgPopup(
+    Concat(T(302535920001053--[[Higher Shadow Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherShadowDist)),
+    T(302535920001015--[[Video--]]),
+    default_icon
   )
 end
 
@@ -873,8 +887,10 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
       ChoGGi.ComFuncs.SetSavedSetting("HigherRenderDist",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920001057--[[Higher Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherRenderDist)),
-        T(302535920001015--[[Video--]]),default_icon
+      MsgPopup(
+        Concat(T(302535920001057--[[Higher Render Dist--]]),": ",tostring(ChoGGi.UserSettings.HigherRenderDist)),
+        T(302535920001015--[[Video--]]),
+        default_icon
       )
     end
   end
@@ -1019,8 +1035,10 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
       ChoGGi.CodeFuncs.SetCameraSettings()
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].value,": ",T(302535920001064--[[Mouse--]])," ",T(302535920000647--[[Border Scrolling--]])),
-        T(302535920000647--[[Border Scrolling--]]),"UI/Icons/IPButtons/status_effects.tga"
+      MsgPopup(
+        Concat(choice[1].value,": ",T(302535920001064--[[Mouse--]])," ",T(302535920000647--[[Border Scrolling--]])),
+        T(302535920000647--[[Border Scrolling--]]),
+        "UI/Icons/IPButtons/status_effects.tga"
       )
     end
 
@@ -1059,8 +1077,10 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
       ChoGGi.CodeFuncs.SetCameraSettings()
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].text,": ",T(302535920001058--[[Camera--]])," ",T(302535920001067--[[Zoom--]])),
-        T(302535920001058--[[Camera--]]),"UI/Icons/IPButtons/status_effects.tga"
+      MsgPopup(
+        Concat(choice[1].text,": ",T(302535920001058--[[Camera--]])," ",T(302535920001067--[[Zoom--]])),
+        T(302535920001058--[[Camera--]]),
+        "UI/Icons/IPButtons/status_effects.tga"
       )
     end
 

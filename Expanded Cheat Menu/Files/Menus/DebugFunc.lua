@@ -192,7 +192,8 @@ end
 function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
   _G[name] = not _G[name]
 
-  MsgPopup(Concat(T(trans_id),": ",tostring(_G[name])),
+  MsgPopup(
+    Concat(T(trans_id),": ",tostring(_G[name])),
     T(1000113--[[Debug--]])
   )
 end
@@ -239,14 +240,6 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   if obj and not obj.class then
     obj = ChoGGi.CodeFuncs.SelObject()
   end
-  local name = RetName(obj)
-  if not name then
-    MsgPopup(Concat(T(6774--[[Error--]]),": ",tostring(obj),T(302535920000851--[[isn't an object?
-Sounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGGi.email),
-      T(6774--[[Error--]]),nil,true
-    )
-    return
-  end
 
   local objs = GetObjects{class=obj.class} or empty_table
   local function CallBackFunc(answer)
@@ -258,6 +251,8 @@ Sounds like a broked save; send me the file and I'll take a look--]]),": ",ChoGG
       end)
     end
   end
+
+  local name = RetName(obj)
   ChoGGi.ComFuncs.QuestionBox(
     Concat(T(6779--[[Warning--]]),"!\n",string.format(T(302535920000852--[[This will delete all %s of %s--]],#objs,name)),"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
     CallBackFunc,
@@ -368,7 +363,8 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
   local CallBackFunc = function(choice)
     sel:SetStateText(choice[1].value)
-    MsgPopup(Concat(T(3722--[[State--]]),": ",choice[1].text),
+    MsgPopup(
+      Concat(T(3722--[[State--]]),": ",choice[1].text),
       T(302535920000859--[[Anim State--]])
     )
   end
@@ -419,7 +415,8 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
       --]]
 
-      MsgPopup(Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
+      MsgPopup(
+        Concat(T(302535920000014--[[Spawned--]]),": ",choice[1].text,T(298035641454--[[Object--]])),
         T(302535920000014--[[Spawned--]])
       )
     end
@@ -851,7 +848,13 @@ do --path markers
 
       end
     else
-      MsgPopup(T(302535920000871--[[Doesn't seem to be an object that moves.--]]),T(302535920000872--[[Pathing--]]))
+      MsgPopup(
+        T(302535920000871--[[Doesn't seem to be an object that moves.--]]),
+        T(302535920000872--[[Pathing--]]),
+        nil,
+        nil,
+        Obj
+      )
     end
   end
 

@@ -3,12 +3,13 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
-local type,pcall,tostring = type,pcall,tostring
+local type,pcall,tostring,string = type,pcall,tostring,string
 
 local PlaceObject = PlaceObject
 local ChangeFunding = ChangeFunding
@@ -65,7 +66,8 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920000941--[[Temp Storage--]]),": ",tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)),
+  MsgPopup(
+    Concat(T(302535920000941--[[Temp Storage--]]),": ",tostring(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)),
     T(519--[[Storage--]]),default_icon
   )
 end
@@ -105,8 +107,10 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
       ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].text,T(302535920000945--[[: I can still see some space--]])),
-        T(5238--[[Rockets--]]),"UI/Icons/Sections/spaceship.tga"
+      MsgPopup(
+        Concat(choice[1].text,T(302535920000945--[[: I can still see some space--]])),
+        T(5238--[[Rockets--]]),
+        "UI/Icons/Sections/spaceship.tga"
       )
     end
   end
@@ -154,8 +158,10 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
       ChoGGi.ComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(T(302535920000950--[[88 MPH--]]),": ",choice[1].text),
-        T(5238--[[Rockets--]]),"UI/Upgrades/autoregulator_04/timer.tga"
+      MsgPopup(
+        Concat(T(302535920000950--[[88 MPH--]]),": ",choice[1].text),
+        T(5238--[[Rockets--]]),
+        "UI/Upgrades/autoregulator_04/timer.tga"
       )
     end
   end
@@ -189,8 +195,10 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
       ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].text,T(302535920000952--[[: Long pig sardines--]])),
-        T(5238--[[Rockets--]]),"UI/Icons/Notifications/colonist.tga"
+      MsgPopup(
+        Concat(choice[1].text,T(302535920000952--[[: Long pig sardines--]])),
+        T(5238--[[Rockets--]]),
+        "UI/Icons/Notifications/colonist.tga"
       )
     end
   end
@@ -205,8 +213,10 @@ end
 
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
   if not SelectedObj or not SelectedObj.base_max_workers then
-    MsgPopup(T(302535920000954--[[You need to select a building that has workers.--]]),
-      T(302535920000567--[[Worker Capacity--]]),default_icon
+    MsgPopup(
+      T(302535920000954--[[You need to select a building that has workers.--]]),
+      T(302535920000567--[[Worker Capacity--]]),
+      default_icon
     )
     return
   end
@@ -261,8 +271,10 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000957--[[Capacity is now--]]),": ",choice[1].text),
-        T(302535920000567--[[Worker Capacity--]]),default_icon
+      MsgPopup(
+        string.format(T(302535920000957--[[%s capacity is now %s.--]]),RetName(sel),choice[1].text),
+        T(302535920000567--[[Worker Capacity--]]),
+        default_icon
       )
     end
   end
@@ -270,7 +282,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
   ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000567--[[Worker Capacity--]])),
+    title = Concat(T(302535920000129--[[Set--]])," ",RetName(sel)," ",T(302535920000567--[[Worker Capacity--]])),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint,"\n\n",hint_toolarge),
   })
 end
@@ -278,8 +290,10 @@ end
 function ChoGGi.MenuFuncs.SetBuildingCapacity()
   local sel = SelectedObj
   if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
-    MsgPopup(T(302535920000958--[[You need to select a building that has capacity.--]]),
-      T(3980--[[Buildings--]]),default_icon
+    MsgPopup(
+      T(302535920000958--[[You need to select a building that has capacity.--]]),
+      T(3980--[[Buildings--]]),
+      default_icon
     )
     return
   end
@@ -407,8 +421,10 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000957--[[Capacity is now--]]),": ",choice[1].text),
-        T(3980--[[Buildings--]]),default_icon
+      MsgPopup(
+        string.format(T(302535920000957--[[%s capacity is now %s.--]]),RetName(sel),choice[1].text),
+        T(3980--[[Buildings--]]),
+        default_icon
       )
     end
 
@@ -417,7 +433,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(109035890389--[[Capacity--]])),
+    title = Concat(T(302535920000129--[[Set--]])," ",RetName(sel)," ",T(109035890389--[[Capacity--]])),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint,"\n\n",hint_toolarge),
   })
 end --SetBuildingCapacity
@@ -425,8 +441,10 @@ end --SetBuildingCapacity
 function ChoGGi.MenuFuncs.SetVisitorCapacity()
   local sel = SelectedObj
   if not sel or (sel and not sel.base_max_visitors) then
-    MsgPopup(T(302535920000959--[[You need to select something that has space for visitors.--]]),
-      T(3980--[[Buildings--]]),default_icon2
+    MsgPopup(
+      T(302535920000959--[[You need to select something that has space for visitors.--]]),
+      T(3980--[[Buildings--]]),
+      default_icon2
     )
     return
   end
@@ -471,8 +489,10 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
       end
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000960--[[visitor capacity is now--]]),": ",choice[1].text),
-        T(3980--[[Buildings--]]),default_icon2
+      MsgPopup(
+        Concat(T(302535920000960--[[%s visitor capacity is now %s.--]]),RetName(sel),choice[1].text),
+        T(3980--[[Buildings--]]),
+        default_icon2
       )
     end
   end
@@ -480,7 +500,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
   ChoGGi.ComFuncs.OpenInListChoice({
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",ChoGGi.ComFuncs.RetName(sel)," ",T(302535920000961--[[Visitor Capacity--]])),
+    title = Concat(T(302535920000129--[[Set--]])," ",RetName(sel)," ",T(302535920000961--[[Visitor Capacity--]])),
     hint = Concat(T(302535920000914--[[Current capacity--]]),": ",hint),
   })
 end
@@ -569,8 +589,10 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(sType)
       ChoGGi.ComFuncs.SetSavedSetting(sType,value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(sType,": ", choice[1].text),
-        T(519--[[Storage--]]),"UI/Icons/Sections/basic.tga"
+      MsgPopup(
+        Concat(sType,": ", choice[1].text),
+        T(519--[[Storage--]]),
+        "UI/Icons/Sections/basic.tga"
       )
     end
   end
@@ -638,8 +660,10 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
       ChoGGi.ComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
 
       ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(Concat(choice[1].text,T(302535920001188--[[: om nom nom nom nom--]])),
-        T(302535920001189--[[Passengers--]]),"UI/Icons/Sections/Food_4.tga"
+      MsgPopup(
+        Concat(choice[1].text,T(302535920001188--[[: om nom nom nom nom--]])),
+        T(302535920001189--[[Passengers--]]),
+        "UI/Icons/Sections/Food_4.tga"
       )
     end
   end
@@ -682,8 +706,10 @@ function ChoGGi.MenuFuncs.AddPrefabs()
         UICity:AddPrefabs(text,value)
       end
       RefreshXBuildMenu()
-      MsgPopup(Concat(value," ",text," ",T(302535920001191--[[prefabs have been added.--]])),
-        T(302535920001192--[[Prefabs--]]),default_icon
+      MsgPopup(
+        string.format(T(302535920001191--[[%s %s prefabs have been added.--]]),value,text),
+        T(302535920001192--[[Prefabs--]]),
+        default_icon
       )
     end
   end
@@ -721,8 +747,10 @@ function ChoGGi.MenuFuncs.SetFunding()
       --and add the new amount
       ChangeFunding(value)
 
-      MsgPopup(choice[1].text,
-        T(3613--[[Funding--]]),default_icon3
+      MsgPopup(
+        choice[1].text,
+        T(3613--[[Funding--]]),
+        default_icon3
       )
     end
   end
@@ -742,8 +770,10 @@ function ChoGGi.MenuFuncs.FillResource()
   end
 
   --need the msg here, as i made it return if it succeeds
-  MsgPopup(T(302535920001198--[[Resouce Filled--]]),
-    T(15--[[Resource--]]),default_icon3
+  MsgPopup(
+    T(302535920001198--[[Resouce Filled--]]),
+    T(15--[[Resource--]]),
+    default_icon3
   )
 
   if pcall(function()

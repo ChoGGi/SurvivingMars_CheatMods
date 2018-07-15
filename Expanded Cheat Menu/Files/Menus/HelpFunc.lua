@@ -253,7 +253,8 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
+  MsgPopup(
+    Concat(T(302535920001068--[[Interface in screenshots--]]),": ",tostring(ChoGGi.UserSettings.ShowInterfaceInScreenshots)),
     T(302535920001069--[[Interface--]])
   )
 end
@@ -288,8 +289,10 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
       --so we don't save file on exit
       ChoGGi.Temp.ResetSettings = true
 
-      MsgPopup(T(302535920001070--[[Restart to take effect.--]]),
-        Concat(T(302535920001084--[[Reset","!--]])),default_icon
+      MsgPopup(
+        T(302535920001070--[[Restart to take effect.--]]),
+        T(302535920001084--[[Reset--]]),
+        default_icon
       )
     end
   end
@@ -304,17 +307,23 @@ end
 
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
-  MsgPopup(T(302535920001074--[[Sign, sign, everywhere a sign.
+  MsgPopup(
+    T(302535920001074--[[Sign, sign, everywhere a sign.
 Blockin' out the scenery, breakin' my mind.
 Do this, don't do that, can't you read the sign?--]]),
-    T(302535920001075--[[Signs--]]),nil,true
+    T(302535920001075--[[Signs--]]),
+    nil,
+    true
   )
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   SetHintNotificationsEnabled(not HintsEnabled)
   UpdateOnScreenHintDlg()
-  MsgPopup(HintsEnabled,T(4248--[[Hints--]]))
+  MsgPopup(
+    tostring(HintsEnabled),
+    T(4248--[[Hints--]])
+  )
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Reset()
