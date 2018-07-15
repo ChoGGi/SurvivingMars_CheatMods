@@ -19,11 +19,6 @@ local PlaceObj = PlaceObj
 local ViewPos = ViewPos
 local SelectObj = SelectObj
 
-local function ViewAndSelectObject(obj)
-  ViewPos(obj:GetVisualPos())
-  SelectObj(obj)
-end
-
 DefineClass.Solaria = {
   __parents = {
     "ElectricityConsumer",

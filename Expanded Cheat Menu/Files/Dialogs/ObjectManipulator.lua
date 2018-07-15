@@ -124,7 +124,7 @@ function ChoGGi_ObjectManipulator:Init()
   self.idGoto:SetHint(T(302535920000094--[[View object on map.--]]))
   --move viewpoint to obj
   function self.idGoto.OnButtonPressed()
-    ChoGGi.CodeFuncs.ViewAndSelectObject(self.obj)
+    ViewAndSelectObject(self.obj)
   end
 
   element_x = border * 2 + self.idGoto:GetPos():x() + self.idGoto:GetSize():x()

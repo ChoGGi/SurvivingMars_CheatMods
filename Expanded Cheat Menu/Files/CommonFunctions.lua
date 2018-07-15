@@ -45,7 +45,7 @@ local Sleep = Sleep
 local TechDef = TechDef
 local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
-local ViewPos = ViewPos
+local ViewObjectMars = ViewObjectMars
 local WaitMarsQuestion = WaitMarsQuestion
 local WaitPopupNotification = WaitPopupNotification
 local WorldToHex = WorldToHex
@@ -382,7 +382,7 @@ do --g_Classes
         end,
         OnMouseEnter = function()
           if item.pos then
-            ViewPos(item.pos)
+            ViewObjectMars(item.pos)
           end
         end,
       }, popup.idContainer)
@@ -450,7 +450,7 @@ do --g_Classes
         m:SetColor(color or RGB(0, 255, 0))
         markers[m] = "point"
         if not time then
-          ViewPos(o)
+          ViewObjectMars(o)
         end
         o = m
       end
@@ -459,7 +459,7 @@ do --g_Classes
       o:SetColorModifier(color or RGB(0, 255, 0))
       local pos = o:GetVisualPos()
       if not time and terrain_IsPointInBounds(pos) then
-        ViewPos(pos)
+        ViewObjectMars(pos)
       end
     end
   --~   lm = o

@@ -1256,7 +1256,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
     --do stuff
     {
       "^!(.*)",
-      "ChoGGi.CodeFuncs.ViewAndSelectObject(%s)"
+      "ViewAndSelectObject(%s)"
     },
     {
       "^~(.*)",

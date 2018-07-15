@@ -31,9 +31,7 @@ local PlaceObj = PlaceObj
 local point = point
 local Random = Random
 local SelectionMouseObj = SelectionMouseObj
-local SelectObj = SelectObj
 local Sleep = Sleep
-local ViewPos = ViewPos
 
 local terminal_GetMousePos = terminal.GetMousePos
 local UIL_GetScreenSize = UIL.GetScreenSize
@@ -1054,10 +1052,10 @@ local function GetStockpile(Label,Type,Object)
   end
 end
 
-function ChoGGi.CodeFuncs.FindNearestResource(Object)
+function ChoGGi.CodeFuncs.FindNearestResource(obj)
   local ChoGGi = ChoGGi
-  Object = Object or ChoGGi.CodeFuncs.SelObject()
-  if not Object then
+  obj = obj or ChoGGi.CodeFuncs.SelObject()
+  if not obj then
     MsgPopup(
       T(302535920000027--[[Nothing selected--]]),
       T(302535920000028--[[Find Resource--]])
@@ -1084,21 +1082,21 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
 
       --get nearest stockpiles to object
       local labels = UICity.labels
-      local mechstockpile = GetStockpile(labels[Concat("MechanizedDepot",value)],value,Object)
+      local mechstockpile = GetStockpile(labels[Concat("MechanizedDepot",value)],value,obj)
       local stockpile
-      local resourcepile = GetStockpile(GetObjects{class = "ResourceStockpile"} or empty_table,value,Object)
+      local resourcepile = GetStockpile(GetObjects{class = "ResourceStockpile"} or empty_table,value,obj)
       if value == "BlackCube" then
-        stockpile = GetStockpile(labels[Concat(value,"DumpSite")],value,Object)
+        stockpile = GetStockpile(labels[Concat(value,"DumpSite")],value,obj)
       elseif value == "MysteryResource" then
-        stockpile = GetStockpile(labels["MysteryDepot"],value,Object)
+        stockpile = GetStockpile(labels["MysteryDepot"],value,obj)
       else
-        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,Object)
+        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,obj)
       end
 
       local piles = {
-        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(Object)},
-        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(Object)},
-        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(Object)},
+        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(obj)},
+        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(obj)},
+        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(obj)},
       }
 
       local nearest
@@ -1119,14 +1117,14 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
       end
       --if there's no resources then "nearest" doesn't exist
       if nearest then
-        ChoGGi.CodeFuncs.ViewAndSelectObject(nearest)
+        ViewAndSelectObject(nearest)
       else
         MsgPopup(
           string.format(T(302535920000029--[[Error: Cannot find any %s.--]]),choice[1].text),
           T(15--[[Resource--]]),
           nil,
           nil,
-          Object
+          obj
         )
       end
     end
@@ -1135,15 +1133,9 @@ function ChoGGi.CodeFuncs.FindNearestResource(Object)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",RetName(Object)),
+    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",RetName(obj)),
     hint = T(302535920000032--[[Select a resource to find--]]),
   }
-end
-
-
-function ChoGGi.CodeFuncs.ViewAndSelectObject(obj)
-  ViewPos(obj:GetVisualPos())
-  SelectObj(obj)
 end
 
 local function DeleteObject_ExecFunc(obj,Name,Param)
