@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_DefenceTowersAttackDustDevils",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
+	"image", "Preview.png",
   "description", [[Defence towers will attack dustdevils.
 
 Requested by: rdr99 and Emmote

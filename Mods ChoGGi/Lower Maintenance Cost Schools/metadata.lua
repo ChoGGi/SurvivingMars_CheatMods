@@ -5,5 +5,6 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_LowerMaintenanceCostSchools",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
+	"image", "Preview.png",
   "description", [[Schools and Universities lower maintenance cost (half).]],
 })

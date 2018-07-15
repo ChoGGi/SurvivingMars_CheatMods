@@ -1,8 +1,8 @@
-return PlaceObj('ModDef', {
-	'title', "CheatMod: Defensive Turret",
-	'description', "Add Defensive Turrets to Infrastructure menu",
-	'tags', "Cheats",
-	'author', "ChoGGi",
-	'id', "ChoGGi_DefensiveTurret",
-	'version', 1,
+return PlaceObj("ModDef", {
+	"title", "Buildings: Defensive Turret",
+	"version", 1,
+	"tags", "Cheats",
+	"author", "ChoGGi",
+	"id", "ChoGGi_DefensiveTurret",
+	"description", "Add Defensive Turrets to Infrastructure menu",
 })

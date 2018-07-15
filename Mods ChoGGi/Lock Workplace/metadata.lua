@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
---~ 	"image", "Preview.png",
+	"image", "Preview.png",
   "saved", 1530014400,
   "version", 3,
   "title", "Lock Workplace v0.3",

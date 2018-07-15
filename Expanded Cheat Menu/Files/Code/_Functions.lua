@@ -340,52 +340,52 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
   dlg:SelectCategory(BuildCategories[iWhich])
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateAge(Colonist,Age)
+function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
   if Age == "Random" then
     Age = ChoGGi.Tables.ColonistAges[Random(1,6)]
   end
   --remove all age traits
-  Colonist:RemoveTrait("Child")
-  Colonist:RemoveTrait("Youth")
-  Colonist:RemoveTrait("Adult")
-  Colonist:RemoveTrait("Middle Aged")
-  Colonist:RemoveTrait("Senior")
-  Colonist:RemoveTrait("Retiree")
+  c:RemoveTrait("Child")
+  c:RemoveTrait("Youth")
+  c:RemoveTrait("Adult")
+  c:RemoveTrait("Middle Aged")
+  c:RemoveTrait("Senior")
+  c:RemoveTrait("Retiree")
   --add new age trait
-  Colonist:AddTrait(Age)
+  c:AddTrait(Age)
 
   --needed for comparison
-  local OrigAge = Colonist.age_trait
+  local OrigAge = c.age_trait
   --needed for updating entity
-  Colonist.age_trait = Age
+  c.age_trait = Age
 
   if Age == "Retiree" then
-    Colonist.age = 65 --why isn't there a base_MinAge_Retiree...
+    c.age = 65 --why isn't there a base_MinAge_Retiree...
   else
-    Colonist.age = Colonist[Concat("base_MinAge_",Age)]
+    c.age = c[Concat("base_MinAge_",Age)]
   end
 
   if Age == "Child" then
     --there aren't any child specialist entities
-    Colonist.specialist = "none"
+    c.specialist = "none"
     --only children live in nurseries
     if OrigAge ~= "Child" then
-      Colonist:SetResidence(false)
+      c:SetResidence(false)
     end
   end
   --only children live in nurseries
   if OrigAge == "Child" and Age ~= "Child" then
-    Colonist:SetResidence(false)
+    c:SetResidence(false)
   end
   --now we can set the new entity
-  Colonist:ChooseEntity()
+  c:ChooseEntity()
   --and (hopefully) prod them into finding a new residence
-  Colonist:UpdateWorkplace()
-  Colonist:UpdateResidence()
-  --Colonist:TryToEmigrate()
+  c:UpdateWorkplace()
+  c:UpdateResidence()
+  --c:TryToEmigrate()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
+function ChoGGi.CodeFuncs.ColonistUpdateGender(c,Gender,Cloned)
   local ChoGGi = ChoGGi
   if Gender == "Random" then
     Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
@@ -393,65 +393,65 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(Colonist,Gender,Cloned)
     Gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
   end
   --remove all gender traits
-  Colonist:RemoveTrait("OtherGender")
-  Colonist:RemoveTrait("Android")
-  Colonist:RemoveTrait("Clone")
-  Colonist:RemoveTrait("Male")
-  Colonist:RemoveTrait("Female")
+  c:RemoveTrait("OtherGender")
+  c:RemoveTrait("Android")
+  c:RemoveTrait("Clone")
+  c:RemoveTrait("Male")
+  c:RemoveTrait("Female")
   --add new gender trait
-  Colonist:AddTrait(Gender)
+  c:AddTrait(Gender)
   --needed for updating entity
-  Colonist.gender = Gender
+  c.gender = Gender
   --set entity gender
   if Gender == "Male" or Gender == "Female" then
-    Colonist.entity_gender = Gender
+    c.entity_gender = Gender
   else --random
     if Cloned then
-      Colonist.entity_gender = Cloned
+      c.entity_gender = Cloned
     else
       if Random(1,2) == 1 then
-        Colonist.entity_gender = "Male"
+        c.entity_gender = "Male"
       else
-        Colonist.entity_gender = "Female"
+        c.entity_gender = "Female"
       end
     end
   end
   --now we can set the new entity
-  Colonist:ChooseEntity()
+  c:ChooseEntity()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(colonist,spec)
+function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(c,spec)
   --children don't have spec models so they get black cube
-  if not colonist.entity:find("Child",1,true) then
+  if not c.entity:find("Child",1,true) then
     if spec == "Random" then
       spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
     end
-    colonist:SetSpecialization(spec,"init")
-    colonist:ChooseEntity()
-    colonist:UpdateWorkplace()
+    c:SetSpecialization(spec,"init")
+    c:ChooseEntity()
+    c:UpdateWorkplace()
     --randomly fails on colonists from rockets
-    --Colonist:TryToEmigrate()
+    --c:TryToEmigrate()
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateTraits(colonist,bool,traits)
-  local which
+function ChoGGi.CodeFuncs.ColonistUpdateTraits(c,bool,traits)
+  local func
   if bool == true then
-    which = "AddTrait"
+    func = "AddTrait"
   else
-    which = "RemoveTrait"
+    func = "RemoveTrait"
   end
   for i = 1, #traits do
-    colonist[which](colonist,traits[i],true)
+    c[func](c,traits[i],true)
   end
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateRace(colonist,race)
+function ChoGGi.CodeFuncs.ColonistUpdateRace(c,race)
   if race == "Random" then
     race = Random(1,5)
   end
-  colonist.race = race
-  colonist:ChooseEntity()
+  c.race = race
+  c:ChooseEntity()
 end
 
 --some dev removed this from the Spirit update... (harumph)

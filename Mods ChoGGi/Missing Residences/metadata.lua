@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
   "saved", 1531051200,
   "version", 1,
   "title", "Missing Residences v0.1",
---~ 	"image", "Preview.png",
+	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_MissingResidences",
   "author", "ChoGGi",

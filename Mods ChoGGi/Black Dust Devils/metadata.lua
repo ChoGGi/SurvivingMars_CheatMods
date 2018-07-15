@@ -8,5 +8,6 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411966010",
   "author", "ChoGGi",
   "code", {"Script.lua"},
+	"image", "Preview.png",
   "description", [[Makes all newly spawned dust devils black instead of brown.]],
 })

@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"version", 1,
 	"code", {"Script.lua"},
+	"image", "Preview.png",
 	"description", [[This calls the FlushLogFile() command as soon as the game loads, as well as each new Sol.
-Now if SM crashes a certain way (that doesn't create the log), you still have a log to look at.]],
+Now if SM crashes a certain way (that doesn"t create the log), you still have a log to look at.]],
 })

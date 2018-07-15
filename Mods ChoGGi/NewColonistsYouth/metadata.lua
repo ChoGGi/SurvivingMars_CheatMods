@@ -5,5 +5,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_NewColonistsYouth",
 	"code", {"Script.lua"},
+	"image", "Preview.png",
 	"description", [[Turns all born/sent from Earth Colonists into youths (no more dealing with children).]],
 })

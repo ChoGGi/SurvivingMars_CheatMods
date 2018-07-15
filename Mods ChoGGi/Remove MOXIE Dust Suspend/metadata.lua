@@ -4,5 +4,6 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_RemoveMOXIEDustSuspend",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
+	"image", "Preview.png",
   "description", [[Remove MOXIE Dust Suspend]],
 })

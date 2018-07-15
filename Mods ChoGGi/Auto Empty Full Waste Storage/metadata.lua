@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
   "image","Preview.png",
 	"code", {"Script.lua"},
+	"image", "Preview.png",
 	"description", [[Automatically empties full waste storage depots.
 
 Use Mod Config to toggle enabled, and hourly/daily empty]],

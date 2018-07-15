@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
---~ 	"image", "Preview.png",
+	"image", "Preview.png",
   "saved", 1529496000,
   "version", 1,
   "title", "China Mission Goal Proper Sol v0.1",

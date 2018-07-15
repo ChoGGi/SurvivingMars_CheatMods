@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
---~ 	"image", "Preview.png",
-  "saved", 1529496000,
-  "version", 1,
   "title", "Triboelectric Scrubbers Clean Dome Buildings v0.1",
+  "version", 1,
+  "saved", 1529496000,
+	"image", "Preview.png",
   "id", "ChoGGi_TriboelectricScrubbersCleanDomeBuildings",
   "author", "ChoGGi",
   "steam_id", "1417507249",
