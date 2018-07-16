@@ -1,3 +1,5 @@
+v0.4
+Added Remove All Rocks: Press Ctrl-Shift-F to show a confirmation dialog.
 v0.3
 Fixed issue with pipes getting marked as uneven terrain.
 v0.2

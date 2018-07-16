@@ -11,6 +11,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local GetInGameInterface = GetInGameInterface
 local GetXDialog = GetXDialog
 local OpenXDialog = OpenXDialog
+local WaitMarsQuestion = WaitMarsQuestion
 
 local local_T = T -- T replaced below
 
@@ -106,4 +107,31 @@ function FlattenGround.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Ty
       end
     end
   },Table)
+end
+
+-- well that's the question isn't it?
+function FlattenGround.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,context,parent)
+  -- thread needed for WaitMarsQuestion
+  CreateRealTimeThread(function()
+    if WaitMarsQuestion(
+      parent,
+      tostring(title or ""),
+      tostring(msg or ""),
+      tostring(ok_msg or T(6878--[[OK--]])),
+      tostring(cancel_msg or T(6879--[[Cancel--]])),
+      image,
+      context
+    ) == "ok" then
+      if func then
+        func(true)
+      end
+      return "ok"
+    else
+      -- user canceled / closed it
+      if func then
+        func()
+      end
+      return "cancel"
+    end
+  end)
 end

@@ -267,7 +267,9 @@ AddAction(
 
 AddAction(
   Concat("[102]",T(1000113--[[Debug--]]),"/[999]",T(302535920000489--[[Delete Object(s)--]]),"/",T(302535920000489--[[Delete Object(s)--]])),
-  ChoGGi.CodeFuncs.DeleteObject,
+  function()
+    ChoGGi.CodeFuncs.DeleteObject()
+  end,
   ChoGGi.UserSettings.KeyBindings.DeleteObject,
   T(302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
 

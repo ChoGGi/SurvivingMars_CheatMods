@@ -865,6 +865,7 @@ function Examine:totextex(o)
       str = o
     end
     res[#res+1] = tostring(str)
+  -- add some extra info for funcs
   elseif obj_type == "function" then
     local dbg_value = "\ndebug.getinfo: "
     local dbg_table = debug.getinfo(o) or empty_table
@@ -872,8 +873,8 @@ function Examine:totextex(o)
       dbg_value = Concat(dbg_value,"\n",key,": ",value)
     end
     res[#res+1] = dbg_value
+    res[#res+1] = Concat("\nGetStack:\n",GetStack(o))
   end
-
 
   return TConcat(res,"\n")
 end
@@ -1116,8 +1117,7 @@ function Examine:SetObj(o)
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attach_amount = attaches and #attaches or 0
-  self.idAttaches:SetHint(string.format(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]),name,attach_amount)
-  )
+  self.idAttaches:SetHint(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]):format(name,attach_amount))
   if is_table then
 
     --add object name to title

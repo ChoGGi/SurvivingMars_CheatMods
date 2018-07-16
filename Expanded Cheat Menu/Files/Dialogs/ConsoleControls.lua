@@ -270,6 +270,7 @@ ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),Cho
     AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
     AsyncCreatePath(Concat(script_path,"/Functions"))
     AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"} or empty_table]])

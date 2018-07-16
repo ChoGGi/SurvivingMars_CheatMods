@@ -1,6 +1,6 @@
--- hello
-FlattenGround = {
-  _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
+-- See LICENSE for terms
+
+local LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
 
 All of my code is licensed under the MIT License as follows:
 
@@ -24,17 +24,28 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.]],
+SOFTWARE.]]
+
+-- if we use global func more then once: make them local for that small bit o' speed
+local select,tostring,table = select,tostring,table
+local AsyncFileOpen = AsyncFileOpen
+local oldTableConcat = oldTableConcat
+
+
+-- hello
+FlattenGround = {
+  _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_Terraformer",
   -- orig funcs that we replace
   OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {
-    FileExists = function(name)
-      local _,test = AsyncFileOpen(name)
-      return test
+    FileExists = function(file)
+      return select(2,AsyncFileOpen(file))
     end,
+    -- thanks for replacing concat... what's wrong with using table.concat2?
+    TableConcat = oldTableConcat or table.concat,
   },
   -- /Code/_Functions.lua
   CodeFuncs = {},
@@ -53,97 +64,64 @@ SOFTWARE.]],
   FlattenGroundHeightDiff = 100,
   FlattenGroundRadiusDiff = 100,
 }
-
--- if we use global func more then once: make them local for that small bit o' speed
-local select,tostring,table = select,tostring,table
--- thanks for replacing concat...
-FlattenGround.ComFuncs.TableConcat = oldTableConcat or table.concat
-local TConcat = FlattenGround.ComFuncs.TableConcat
-
-local AsyncFileOpen = AsyncFileOpen
-function FlattenGround.ComFuncs.FileExists(file)
-  return select(2,AsyncFileOpen(file))
-end
-
--- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
--- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
-
--- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit
--- which means this is faster, and uses less memory
-local concat_table = {}
-local concat_value
-function FlattenGround.ComFuncs.Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one
-  if #concat_table > 1000 then
-    concat_table = {}
-  else
-    table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
-  end
-  -- build table from args
-  for i = 1, select("#",...) do
-    concat_value = select(i,...)
-      if type(concat_value) == "string" or type(concat_value) == "number" then
-      concat_table[i] = concat_value
-    else
-      concat_table[i] = tostring(concat_value)
-    end
-  end
-  -- and done
-  return TConcat(concat_table)
-end
-
 local FlattenGround = FlattenGround
 local Mods = Mods
 FlattenGround._VERSION = Mods[FlattenGround.id].version
 FlattenGround.ModPath = Mods[FlattenGround.id].path
-local Concat = FlattenGround.ComFuncs.Concat
-local FileExists = FlattenGround.ComFuncs.FileExists
 
--- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-local locale_file = Concat(FlattenGround.ModPath,"Locales/",GetLanguage(),".csv")
-if FileExists(locale_file) then
-  LoadTranslationTableFile(locale_file)
-else
-  LoadTranslationTableFile(Concat(FlattenGround.ModPath,"Locales/","English.csv"))
-end
-Msg("TranslationChanged")
-
-dofolder_files(Concat(FlattenGround.ModPath,"Code/"))
-
-function OnMsg.ModConfigReady()
-  local ModConfig = ModConfig
-
-  --get options
-  FlattenGround.FlattenGroundHeightDiff = ModConfig:Get("FlattenGround", "FlattenGroundHeightDiff") or 100
-  FlattenGround.FlattenGroundRadiusDiff = ModConfig:Get("FlattenGround", "FlattenGroundRadiusDiff") or 100
-
-  --setup menu options
-  ModConfig:RegisterMod("FlattenGround", "Flatten Ground")
-
-  ModConfig:RegisterOption("FlattenGround", "FlattenGroundHeightDiff", {
-    name = "Height change per press",
-    type = "number",
-    min = 0,
-    step = 10,
-    default = 100,
-  })
-
-  ModConfig:RegisterOption("FlattenGround", "FlattenGroundRadiusDiff", {
-    name = "Radius change per press",
-    type = "number",
-    min = 0,
-    step = 10,
-    default = 100,
-  })
-
-end
-
-function OnMsg.ModConfigChanged(mod_id, option_id, value)
-  if mod_id == "FlattenGround" then
-    if option_id == "FlattenGroundHeightDiff" then
-      FlattenGround.FlattenGroundHeightDiff = value
-    elseif option_id == "FlattenGroundRadiusDiff" then
-      FlattenGround.FlattenGroundRadiusDiff = value
+do -- Concat,FileExists
+  -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
+  -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
+  -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
+  local TableConcat = FlattenGround.ComFuncs.TableConcat
+  local concat_table = {}
+  function FlattenGround.ComFuncs.Concat(...)
+    -- reuse old table if it's not that big, else it's quicker to make new one
+    -- (should probably bench till i find a good medium rather than just using 500)
+    if #concat_table > 500 then
+      concat_table = {}
+    else
+      -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
+      table.iclear(concat_table)
     end
+    -- build table from args
+    for i = 1, select("#",...) do
+      local concat_value = select(i,...)
+      -- no sense in calling a func more then we need to
+      local concat_type = type(concat_value)
+      if concat_type == "string" or concat_type == "number" then
+        concat_table[i] = concat_value
+      else
+        concat_table[i] = tostring(concat_value)
+      end
+    end
+    -- and done
+    return TableConcat(concat_table)
   end
 end
+local Concat = FlattenGround.ComFuncs.Concat
+
+do -- translate
+  --load up translation strings
+  local function LoadLocale(file)
+    if not pcall(function()
+      LoadTranslationTableFile(file)
+    end) then
+      local err = [[Problem loading locale: %s
+
+        Please send me latest log file: %s]]
+      DebugPrintNL(err:format(file,FlattenGround.email))
+    end
+  end
+
+  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+  local locale_file = Concat(FlattenGround.ModPath,"Locales/",GetLanguage(),".csv")
+  if FlattenGround.ComFuncs.FileExists(locale_file) then
+    LoadLocale(locale_file)
+  else
+    LoadLocale(Concat(FlattenGround.ModPath,"Locales/","English.csv"))
+  end
+  Msg("TranslationChanged")
+end
+
+dofolder_files(Concat(FlattenGround.ModPath,"Code/"))

@@ -76,12 +76,13 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   end
   reboot = restart
   exit = quit
-  trans = ChoGGi.ComFuncs.Trans --works with userdata or index (like _InternalTranslate should?)
-  mh = GetTerrainCursorObjSel
+  trans = ChoGGi.ComFuncs.Trans -- works with userdata or index number
+  mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
+  mhc = GetTerrainCursorObj -- returns obj under cursor
   mc = GetPreciseCursorObj
   m = SelectionMouseObj
-  c = GetTerrainCursor --cursor position on map
-  cs = terminal_GetMousePos --cursor pos on screen
+  c = GetTerrainCursor -- cursor position on map
+  cs = terminal_GetMousePos -- cursor pos on screen
   s = false --used to store SelectedObj
   function so()
     return ChoGGi.CodeFuncs.SelObject()
@@ -521,7 +522,7 @@ function ChoGGi.CodeFuncs.FuckingDrones(Obj)
 
     local carry = g_Consts.DroneResourceCarryAmount * r
     --round to nearest 1000 (don't want uneven stacks)
-    stored = (stored - stored % r) / r * r
+    stored = (stored - stored % 1000) / 1000 * 1000
     --if carry is smaller then stored then they may not pickup (depends on storage)
     if carry < stored or
       --no picking up more then they can carry
@@ -1151,17 +1152,19 @@ local function DeleteObject_DeleteAttach(obj,Name)
 end
 function ChoGGi.CodeFuncs.DeleteObject(obj)
   local ChoGGi = ChoGGi
-  --the menu item sends itself
-  if obj and not obj.class then
-    --multiple selection from editor mode
-    local objs = editor:GetSel() or empty_table
-    if #objs > 0 then
-      for i = 1, #objs do
-        ChoGGi.CodeFuncs.DeleteObject(objs[i])
-      end
-    else
-      obj = ChoGGi.CodeFuncs.SelObject()
+
+  --multiple selection from editor mode
+  local objs = editor:GetSel() or empty_table
+  if #objs > 0 then
+    for i = 1, #objs do
+      ChoGGi.CodeFuncs.DeleteObject(objs[i])
     end
+  elseif not obj then
+    obj = ChoGGi.CodeFuncs.SelObject()
+  end
+
+  if not obj then
+    return
   end
 
   --deleting domes will freeze game if they have anything in them.

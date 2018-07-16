@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
--- hello
-ChoGGi = {
-  _LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
+local LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
 
 All of my code is licensed under the MIT License as follows:
 
@@ -26,7 +24,18 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.]],
+SOFTWARE.]]
+
+-- if we use global func more then once: make them local for that small bit o' speed
+local dofile,select,tostring,table,type = dofile,select,tostring,table,type
+local AsyncFileOpen = AsyncFileOpen
+local dofolder_files = dofolder_files
+-- needed?
+local oldTableConcat = oldTableConcat
+
+-- I should really split this into funcs and settings... one of these days
+ChoGGi = {
+  _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_CheatMenu",
   scripts = "AppData/ECM Scripts",
@@ -34,7 +43,13 @@ SOFTWARE.]],
   -- orig funcs that get replaced
   OrigFuncs = {},
   -- CommonFunctions.lua
-  ComFuncs = {},
+  ComFuncs = {
+    FileExists = function(file)
+      return select(2,AsyncFileOpen(file))
+    end,
+    -- thanks for replacing concat... what's wrong with using table.concat2?
+    TableConcat = oldTableConcat or table.concat,
+  },
   -- _Functions.lua
   CodeFuncs = {},
   -- /Menus/*
@@ -63,159 +78,155 @@ local Mods = Mods
 ChoGGi._VERSION = Mods[ChoGGi.id].version
 ChoGGi.ModPath = Mods[ChoGGi.id].path
 
--- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,table,type = dofile,select,tostring,table,type
-local AsyncFileOpen = AsyncFileOpen
-local dofolder_files = dofolder_files
-
-function ChoGGi.ComFuncs.FileExists(file)
-  return select(2,AsyncFileOpen(file))
-end
-
--- thanks for replacing concat... what's wrong with using table.concat2?
-ChoGGi.ComFuncs.TableConcat = oldTableConcat or table.concat
-local TableConcat = ChoGGi.ComFuncs.TableConcat
-
--- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
--- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
-
--- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
-local concat_table = {}
-function ChoGGi.ComFuncs.Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one
-  -- (should probably bench till i find a good medium rather than just using 500)
-  if #concat_table > 500 then
-    concat_table = {}
-  else
-    -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
-    table.iclear(concat_table)
-  end
-  -- build table from args
-  for i = 1, select("#",...) do
-    local concat_value = select(i,...)
-    -- no sense in calling a func more then we need to
-    local concat_type = type(concat_value)
-    if concat_type == "string" or concat_type == "number" then
-      concat_table[i] = concat_value
+do -- Concat
+  -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
+  -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
+  -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
+  local TableConcat = ChoGGi.ComFuncs.TableConcat
+  local concat_table = {}
+  function ChoGGi.ComFuncs.Concat(...)
+    -- reuse old table if it's not that big, else it's quicker to make new one
+    -- (should probably bench till i find a good medium rather than just using 500)
+    if #concat_table > 500 then
+      concat_table = {}
     else
-      concat_table[i] = tostring(concat_value)
+      -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
+      table.iclear(concat_table)
     end
+    -- build table from args
+    for i = 1, select("#",...) do
+      local concat_value = select(i,...)
+      -- no sense in calling a func more then we need to
+      local concat_type = type(concat_value)
+      if concat_type == "string" or concat_type == "number" then
+        concat_table[i] = concat_value
+      else
+        concat_table[i] = tostring(concat_value)
+      end
+    end
+    -- and done
+    return TableConcat(concat_table)
   end
-  -- and done
-  return TableConcat(concat_table)
 end
 
 local Concat = ChoGGi.ComFuncs.Concat
 local FileExists = ChoGGi.ComFuncs.FileExists
 
--- used to let the mod know if we're on my computer
-if FileExists("AppData/ChoGGi") then
-  --mostly just more logs msgs
-  ChoGGi.Testing = true
+do -- load script files
+  -- used to let the mod know if we're on my computer
+  if FileExists("AppData/ChoGGi") then
+    --mostly just more logs msgs
+    ChoGGi.Testing = true
 
-  ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
-  -- from here to the end of OnMsg.ChoGGi_Loaded()
-  ChoGGi.Temp.StartupTicks = GetPreciseTicks()
-else
-  if FileExists(Concat(ChoGGi.ModPath,"Defaults.lua")) then
-    -- if file exists then user likely unpacked the files, and moved them up a dir
-    ChoGGi.MountPath = ChoGGi.ModPath
+    ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
+    -- from here to the end of OnMsg.ChoGGi_Loaded()
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
   else
-    -- load up the hpk
-    AsyncMountPack("ChoGGi_Mount",Concat(ChoGGi.ModPath,"Files.hpk"))
-    ChoGGi.MountPath = "ChoGGi_Mount/"
+    if FileExists(Concat(ChoGGi.ModPath,"Defaults.lua")) then
+      -- if file exists then user likely unpacked the files, and moved them up a dir
+      ChoGGi.MountPath = ChoGGi.ModPath
+    else
+      -- load up the hpk
+      AsyncMountPack("ChoGGi_Mount",Concat(ChoGGi.ModPath,"Files.hpk"))
+      ChoGGi.MountPath = "ChoGGi_Mount/"
+    end
   end
 end
 
---load up translation strings
-local function LoadLocale(file)
-  if not pcall(function()
-    LoadTranslationTableFile(file)
-  end) then
-    DebugPrintNL(string.format([[Problem loading locale: %s
+do -- translate
+  --load up translation strings
+  local function LoadLocale(file)
+    if not pcall(function()
+      LoadTranslationTableFile(file)
+    end) then
+      local err = [[Problem loading locale: %s
 
-Please send me latest log file: %s]],file,ChoGGi.email))
+        Please send me latest log file: %s]]
+      DebugPrintNL(err:format(file,ChoGGi.email))
+    end
   end
+
+  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+  local locale_file = Concat(ChoGGi.ModPath,"Locales/",GetLanguage(),".csv")
+  if FileExists(locale_file) then
+    LoadLocale(locale_file)
+  else
+    LoadLocale(Concat(ChoGGi.ModPath,"Locales/","English.csv"))
+  end
+  Msg("TranslationChanged")
 end
 
--- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-local locale_file = Concat(ChoGGi.ModPath,"Locales/",GetLanguage(),".csv")
-if FileExists(locale_file) then
-  LoadLocale(locale_file)
-else
-  LoadLocale(Concat(ChoGGi.ModPath,"Locales/","English.csv"))
+do -- ECM
+  -- functions that need to be loaded before they get called...
+  dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
+  -- get saved settings for this mod
+  dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
+  -- new ui classes
+  dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
+  -- OnMsgs and functions that don't need to be in CommonFunctions
+  dofolder_files(Concat(ChoGGi.MountPath,"Code"))
+
+  -- read settings from AppData/CheatMenuModSettings.lua
+  ChoGGi.SettingFuncs.ReadSettings()
+
+  --bloody hint popups
+  if ChoGGi.UserSettings.DisableHints then
+    mapdata.DisableHints = true
+    HintsEnabled = false
+  end
+
+  -- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
+  if ChoGGi.Testing then
+    ChoGGi.UserSettings.WriteLogs = true
+  end
+
+  -- if writelogs option
+  if ChoGGi.UserSettings.WriteLogs then
+  --~   ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
+    ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+  end
+
+  local T = ChoGGi.ComFuncs.Trans
+
+  -- first time run info
+  if ChoGGi.UserSettings.FirstRun ~= false then
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color> ",T(302535920000201--[[Active--]]),"<color 0 0 0>:</color>\n",T(302535920000001--[["F2 to toggle cheats menu, and F9 to clear this text.
+  Press ~ or Enter and click the ""Console"" button to toggle this console history."--]]))
+    ChoGGi.UserSettings.FirstRun = false
+    ChoGGi.Temp.WriteSettings = true
+  end
+
+  local Platform = Platform
+  Platform.editor = true
+
+  -- fixes UpdateInterface nil value in editor mode
+  local d_before = Platform.developer
+  Platform.developer = true
+  editor.LoadPlaceObjConfig()
+  Platform.developer = d_before
+
+  -- editor wants a table
+  GlobalVar("g_revision_map",{})
+
+--~   ClassesGenerate
+--~   ClassesPreprocess
+--~   ClassesPostprocess
+--~   ClassesBuilt
+--~   OptionsApply
+--~   Autorun
+--~   ModsLoaded
+--~   EntitiesLoaded
+--~   BinAssetsLoaded
+
+--~   -- be nice to get a remote debugger working
+--~   Platform.editor = true
+--~   config.LuaDebugger = true
+--~   GlobalVar("outputSocket", false)
+--~   dofile("CommonLua/Core/luasocket.lua")
+--~   dofile("CommonLua/Core/luadebugger.lua")
+--~   outputSocket = LuaSocket:new()
+--~   outputThread = false
+--~   dofile("CommonLua/Core/luaDebuggerOutput.lua")
+--~   dofile("CommonLua/Core/ProjectSync.lua")
+--~   config.LuaDebugger = false
 end
-Msg("TranslationChanged")
-
--- functions that need to be loaded before they get called...
-dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
--- get saved settings for this mod
-dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
--- new ui classes
-dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
--- OnMsgs and functions that don't need to be in CommonFunctions
-dofolder_files(Concat(ChoGGi.MountPath,"Code"))
-
--- read settings from AppData/CheatMenuModSettings.lua
-ChoGGi.SettingFuncs.ReadSettings()
-
---bloody hint popups
-if ChoGGi.UserSettings.DisableHints then
-  mapdata.DisableHints = true
-  HintsEnabled = false
-end
-
--- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
-if ChoGGi.Testing then
-  ChoGGi.UserSettings.WriteLogs = true
-end
-
--- if writelogs option
-if ChoGGi.UserSettings.WriteLogs then
---~   ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
-  ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
-end
-
-local T = ChoGGi.ComFuncs.Trans
-
--- first time run info
-if ChoGGi.UserSettings.FirstRun ~= false then
-  ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color> ",T(302535920000201--[[Active--]]),"<color 0 0 0>:</color>\n",T(302535920000001--[["F2 to toggle cheats menu, and F9 to clear this text.
-Press ~ or Enter and click the ""Console"" button to toggle this console history."--]]))
-  ChoGGi.UserSettings.FirstRun = false
-  ChoGGi.Temp.WriteSettings = true
-end
-
-local Platform = Platform
-Platform.editor = true
-
--- fixes UpdateInterface nil value in editor mode
-local d_before = Platform.developer
-Platform.developer = true
-editor.LoadPlaceObjConfig()
-Platform.developer = d_before
-
--- editor wants a table
-GlobalVar("g_revision_map",{})
-
---~ ClassesGenerate
---~ ClassesPreprocess
---~ ClassesPostprocess
---~ ClassesBuilt
---~ OptionsApply
---~ Autorun
---~ ModsLoaded
---~ EntitiesLoaded
---~ BinAssetsLoaded
-
---~ -- be nice to get a remote debugger working
---~ Platform.editor = true
---~ config.LuaDebugger = true
---~ GlobalVar("outputSocket", false)
---~ dofile("CommonLua/Core/luasocket.lua")
---~ dofile("CommonLua/Core/luadebugger.lua")
---~ outputSocket = LuaSocket:new()
---~ outputThread = false
---~ dofile("CommonLua/Core/luaDebuggerOutput.lua")
---~ dofile("CommonLua/Core/ProjectSync.lua")
---~ config.LuaDebugger = false

@@ -451,9 +451,10 @@ end
 function ChoGGi.MenuFuncs.Editor_Toggle()
   local Platform = Platform
 
-  if type(UpdateMapRevision) ~= "function" then
-    function UpdateMapRevision() end
-  end
+--~   if type(UpdateMapRevision) ~= "function" then
+--~     function UpdateMapRevision() end
+--~   end
+
   Platform.editor = true
   Platform.developer = true
 
