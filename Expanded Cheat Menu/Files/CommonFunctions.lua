@@ -196,11 +196,10 @@ function memoize.memoize(f, cache)
   cache = cache or {}
 
   if not is_callable(f) then
-    print(string.format(
-            [[If you get this msg contact me, thanks.
+    local str = [[If you get this msg contact me, thanks.
 
-Only functions and callable tables are memoizable. Received %s (a %s)]],
-             tostring(f), type(f)))
+Only functions and callable tables are memoizable. Received %s (a %s)]]
+    print(str:format(tostring(f), type(f)))
   end
   return function (...)
     local params = {...}

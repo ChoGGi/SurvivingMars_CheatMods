@@ -9,7 +9,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
-local type,tostring,pairs,string = type,tostring,pairs,string
+local type,tostring,pairs = type,tostring,pairs
 
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
@@ -98,10 +98,10 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
+    T(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
-Where the fear has gone there will be nothing. Only I will remain.--]]),ChoGGi.UserSettings.AlwaysDustyBuildings),
+Where the fear has gone there will be nothing. Only I will remain.--]]):format(ChoGGi.UserSettings.AlwaysDustyBuildings),
     T(3980--[[Buildings--]]),
     nil,
     true
@@ -158,7 +158,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000113--[[%s range is now %s.--]]),RetName(sel),choice[1].text),
+        T(302535920000113--[[%s range is now %s.--]]):format(RetName(sel),choice[1].text),
         T(302535920000109--[[Protect--]]),
         default_icon
       )
@@ -194,7 +194,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(
-      string.format(T(302535920000116--[[%s: Buildings unlocked.--]]),#choice),
+      T(302535920000116--[[%s: Buildings unlocked.--]]):format(#choice),
       T(8690--[[Protect--]]),
       default_icon
     )
@@ -216,7 +216,7 @@ function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000119--[[%s: Is that a rocket in your pocket?--]]),ChoGGi.UserSettings.PipesPillarSpacing),
+    T(302535920000119--[[%s: Is that a rocket in your pocket?--]]):format(ChoGGi.UserSettings.PipesPillarSpacing),
     T(3980--[[Buildings--]])
   )
 end
@@ -233,7 +233,7 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000119--[[%s: Is that a rocket in your pocket?--]]),ChoGGi.UserSettings.UnlimitedConnectionLength),
+    T(302535920000119--[[%s: Is that a rocket in your pocket?--]]):format(ChoGGi.UserSettings.UnlimitedConnectionLength),
     T(3980--[[Buildings--]])
   )
 end
@@ -448,7 +448,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000128--[[%s rate is now: %s--]]),RetName(sel),choice[1].text),
+        T(302535920000128--[[%s rate is now: %s--]]):format(RetName(sel),choice[1].text),
         T(302535920000127--[[Rate--]]),
         default_icon2
       )
@@ -623,7 +623,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      string.format(T(302535920000137--[[%s production is now: %s--]]),RetName(sel),choice[1].text),
+      T(302535920000137--[[%s production is now: %s--]]):format(RetName(sel),choice[1].text),
       T(3980--[[Buildings--]]),
       default_icon2
     )
@@ -697,8 +697,8 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      string.format(T(302535920000143--[["%s
-I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]),choice[1].text),
+      T(302535920000143--[["%s
+I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]):format(choice[1].text),
       T(3980--[[Buildings--]]),
       default_icon,
       true
@@ -754,9 +754,9 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000148--[["%s:
+    T(302535920000148--[["%s:
 You keep your work station so clean, Jerome.
-It's next to godliness. Isn't that what they say?"--]]),ChoGGi.UserSettings.SchoolTrainAll),
+It's next to godliness. Isn't that what they say?"--]]):format(ChoGGi.UserSettings.SchoolTrainAll),
     T(5247--[[School--]]),
     default_icon,
     true
@@ -775,8 +775,8 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000149--[[%s:
-There's more vodka in this piss than there is piss.--]]),ChoGGi.UserSettings.SanatoriumCureAll),
+    T(302535920000149--[[%s:
+There's more vodka in this piss than there is piss.--]]):format(ChoGGi.UserSettings.SanatoriumCureAll),
     T(3540--[[Sanatorium--]]),
     default_icon,
     true
@@ -796,7 +796,7 @@ function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
   end
 
   MsgPopup(
-    string.format(T(302535920000150--[[%s: Good for what ails you--]]),#g_SchoolTraits),
+    T(302535920000150--[[%s: Good for what ails you--]]):format(#g_SchoolTraits),
     T(235--[[Traits--]]),
     "UI/Icons/Upgrades/factory_ai_04.tga"
   )
@@ -811,7 +811,7 @@ function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000150--[[%s: Good for what ails you--]]),ChoGGi.UserSettings.SanatoriumSchoolShowAll),
+    T(302535920000150--[[%s: Good for what ails you--]]):format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/superfungus_03.tga"
   )
@@ -840,7 +840,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000151--[[%s: The spice must flow!--]]),ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
+    T(302535920000151--[[%s: The spice must flow!--]]):format(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/dust.tga"
   )
@@ -865,7 +865,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000151--[[%s: The spice must flow!--]]),ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
+    T(302535920000151--[[%s: The spice must flow!--]]):format(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/dust.tga"
   )
@@ -881,11 +881,11 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
+    T(302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
 Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
 C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]),ChoGGi.UserSettings.MoistureVaporatorRange),
+Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]):format(ChoGGi.UserSettings.MoistureVaporatorRange),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/zero_space_04.tga",
     true
@@ -900,9 +900,9 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000153--[["%s:
+    T(302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
-it is a friendship greeting from the children of our small but great planet of Potatoho."--]]),ChoGGi.UserSettings.CropFailThreshold),
+it is a friendship greeting from the children of our small but great planet of Potatoho."--]]):format(ChoGGi.UserSettings.CropFailThreshold),
     T(3980--[[Buildings--]]),
     "UI/Icons/Sections/Food_1.tga",
     true
@@ -958,10 +958,10 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000155--[[%s:
+    T(302535920000155--[[%s:
 We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
-So we got rid of the auto and stopped off at the Korova for a nightcap.--]]),ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
+So we got rid of the auto and stopped off at the Korova for a nightcap.--]]):format(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
     T(3980--[[Buildings--]]),
     "UI/Icons/Notifications/fractured_dome.tga",
     true
@@ -978,7 +978,7 @@ function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]),ChoGGi.UserSettings.BreakChanceCablePipe),
+    T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]):format(ChoGGi.UserSettings.BreakChanceCablePipe),
     T(302535920000157,"Cables & Pipes"),
     "UI/Icons/Notifications/timer.tga"
   )
@@ -993,7 +993,7 @@ function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]),ChoGGi.UserSettings.InstantCables),
+    T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]):format(ChoGGi.UserSettings.InstantCables),
     T(302535920000157,"Cables & Pipes"),
     "UI/Icons/Notifications/timer.tga"
   )
@@ -1005,7 +1005,7 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000158--[[%s: No no I said over there.--]]),ChoGGi.UserSettings.RemoveBuildingLimits),
+    T(302535920000158--[[%s: No no I said over there.--]]):format(ChoGGi.UserSettings.RemoveBuildingLimits),
     T(3980--[[Buildings--]]),
     "UI/Icons/Upgrades/zero_space_04.tga"
   )
@@ -1026,8 +1026,8 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000159--[[%s: Unlimited Wonders
-(restart to set disabled)--]]),ChoGGi.UserSettings.Building_wonder),
+    T(302535920000159--[[%s: Unlimited Wonders
+(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_wonder),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1039,8 +1039,8 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000160--[[%s: Freedom for spires!
-(restart to set disabled)--]]),ChoGGi.UserSettings.Building_dome_spot),
+    T(302535920000160--[[%s: Freedom for spires!
+(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_dome_spot),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1052,8 +1052,8 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000161--[[%s: Building Instant Build
-(restart to set disabled)--]]),ChoGGi.UserSettings.Building_instant_build),
+    T(302535920000161--[[%s: Building Instant Build
+(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_instant_build),
     T(3980--[[Buildings--]]),
     default_icon3
   )
@@ -1065,8 +1065,8 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000162--[[%s: Hidden Buildings
-(restart to set disabled)--]]),ChoGGi.UserSettings.Building_hide_from_build_menu),
+    T(302535920000162--[[%s: Hidden Buildings
+(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_hide_from_build_menu),
     T(3980--[[Buildings--]]),
     default_icon3
   )

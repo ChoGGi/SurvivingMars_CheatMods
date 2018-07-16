@@ -6,7 +6,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 --~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
-local next,type,table,string = next,type,table,string
+local next,type,table = next,type,table
 
 local ChangeGameSpeedState = ChangeGameSpeedState
 --~ local CreateRealTimeThread = CreateRealTimeThread
@@ -153,7 +153,7 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
     end
 
     MsgPopup(
-      string.format(T(302535920001088--[[%s: Stop that bloody bouzouki!--]]),choice[1].text),
+      T(302535920001088--[[%s: Stop that bloody bouzouki!--]]):format(choice[1].text),
       T(3581--[[Sounds--]])
     )
   end
@@ -255,7 +255,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     end
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      string.format(T(302535920001093--[[Toggled: %s pinnable objects.--]]),#choice),
+      T(302535920001093--[[Toggled: %s pinnable objects.--]]):format(#choice),
       T(302535920001092--[[Pins--]])
     )
   end
@@ -424,7 +424,7 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920001122--[[%s: HAXOR--]]),ChoGGi.UserSettings.ToggleInfopanelCheats),
+    T(302535920001122--[[%s: HAXOR--]]):format(ChoGGi.UserSettings.ToggleInfopanelCheats),
     T(27--[[Cheats--]]),
     "UI/Icons/Anomaly_Tech.tga"
   )
@@ -442,7 +442,7 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920001123--[[%s: Cleanup cheats infopane.--]]),ChoGGi.UserSettings.CleanupCheatsInfoPane),
+    T(302535920001123--[[%s: Cleanup cheats infopane.--]]):format(ChoGGi.UserSettings.CleanupCheatsInfoPane),
     T(27--[[Cheats--]]),
     "UI/Icons/Anomaly_Tech.tga"
   )
@@ -455,7 +455,7 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920001124--[[%s: scans at a time.--]]),ChoGGi.UserSettings.ExplorationQueueMaxSize),
+    T(302535920001124--[[%s: scans at a time.--]]):format(ChoGGi.UserSettings.ExplorationQueueMaxSize),
     T(302535920001125--[[Scanner--]]),
     "UI/Icons/Notifications/scan.tga"
   )
@@ -500,7 +500,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
   elseif const.mediumGameSpeed == 192 then
     current = quattuorsexaguple_str
   else
-    current = string.format(T(302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]),const.mediumGameSpeed)
+    current = T(302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]):format(const.mediumGameSpeed)
   end
 
   local CallBackFunc = function(choice)
@@ -518,7 +518,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]),choice[1].text),
+        T(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]):format(choice[1].text),
         T(302535920001136--[[Speed--]]),
         "UI/Icons/Notifications/timer.tga"
       )

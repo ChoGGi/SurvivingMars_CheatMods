@@ -10,7 +10,7 @@ local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
-local type,tostring,string = type,tostring,string
+local type,tostring = type,tostring
 
 local PlaceObject = PlaceObject
 local ChangeFunding = ChangeFunding
@@ -37,7 +37,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     local value = choice[1].value
     if value == "New" then
       ChoGGi.ComFuncs.MsgWait(
-        string.format(T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]),ChoGGi.email),
+        T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]):format(ChoGGi.email),
         T(302535920000034--[[Request--]])
       )
     else
@@ -112,7 +112,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000945--[[%s: I can still see some space...--]]),choice[1].text),
+        T(302535920000945--[[%s: I can still see some space...--]]):format(choice[1].text),
         T(5238--[[Rockets--]]),
         "UI/Icons/Sections/spaceship.tga"
       )
@@ -164,7 +164,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000950--[[%s: 88 MPH--]]),choice[1].text),
+        T(302535920000950--[[%s: 88 MPH--]]):format(choice[1].text),
         T(5238--[[Rockets--]]),
         "UI/Upgrades/autoregulator_04/timer.tga"
       )
@@ -202,7 +202,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000952--[[%s: Long pig sardines--]]),choice[1].text),
+        T(302535920000952--[[%s: Long pig sardines--]]):format(choice[1].text),
         T(5238--[[Rockets--]]),
         "UI/Icons/Notifications/colonist.tga"
       )
@@ -279,7 +279,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000957--[[%s capacity is now %s.--]]),RetName(sel),choice[1].text),
+        T(302535920000957--[[%s capacity is now %s.--]]):format(RetName(sel),choice[1].text),
         T(302535920000567--[[Worker Capacity--]]),
         default_icon
       )
@@ -430,7 +430,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000957--[[%s capacity is now %s.--]]),RetName(sel),choice[1].text),
+        T(302535920000957--[[%s capacity is now %s.--]]):format(RetName(sel),choice[1].text),
         T(3980--[[Buildings--]]),
         default_icon
       )
@@ -676,7 +676,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920001188--[[%s: om nom nom nom nom--]]),choice[1].text),
+        T(302535920001188--[[%s: om nom nom nom nom--]]):format(choice[1].text),
         T(302535920001189--[[Passengers--]]),
         "UI/Icons/Sections/Food_4.tga"
       )
@@ -722,7 +722,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
       end
       RefreshXBuildMenu()
       MsgPopup(
-        string.format(T(302535920001191--[[%s %s prefabs have been added.--]]),value,text),
+        T(302535920001191--[[%s %s prefabs have been added.--]]):format(value,text),
         T(302535920001192--[[Prefabs--]]),
         default_icon
       )
@@ -740,9 +740,9 @@ end
 
 function ChoGGi.MenuFuncs.SetFunding()
   local DefaultSetting = T(302535920001195--[[(Reset to 500 M)--]])
-  local hint = string.format(T(302535920001196--[[If your funds are a negative value, then you added too much.
+  local hint = T(302535920001196--[[If your funds are a negative value, then you added too much.
 
-Fix with: %s--]]),DefaultSetting)
+Fix with: %s--]]):format(DefaultSetting)
   local ItemList = {
     {text = DefaultSetting,value = 500},
     {text = "100 M",value = 100,hint = hint},

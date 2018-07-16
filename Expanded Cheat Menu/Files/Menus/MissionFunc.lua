@@ -5,7 +5,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local default_icon = "UI/Icons/Sections/spaceship.tga"
 
-local type,tostring,string = type,tostring,string
+local type,tostring = type,tostring
 
 local PlaceObj = PlaceObj
 local CreateRealTimeThread = CreateRealTimeThread
@@ -41,10 +41,10 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
 
   ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(string.format(T(302535920001160--[["%s
+  MsgPopup(T(302535920001160--[["%s
 Damage? Total, sir.
 It's what we call a global killer.
-The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]),ChoGGi.UserSettings.MeteorHealthDamage),
+The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]):format(ChoGGi.UserSettings.MeteorHealthDamage),
     T(547--[[Colonists--]]),
     "UI/Icons/Notifications/meteor_storm.tga",
     true
@@ -82,7 +82,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
         city:InitMissionBonuses()
 
         MsgPopup(
-          string.format(T(302535920001161--[[Sponsor for this save is now %s--]]),choice[1].text),
+          T(302535920001161--[[Sponsor for this save is now %s--]]):format(choice[1].text),
           T(302535920001162--[[Sponsor--]]),
           default_icon
         )
@@ -196,7 +196,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
         UICity:InitMissionBonuses()
 
         MsgPopup(
-          string.format(T(302535920001173--[[Commander for this save is now %s.--]]),choice[1].text),
+          T(302535920001173--[[Commander for this save is now %s.--]]):format(choice[1].text),
           T(302535920001174--[[Commander--]]),
           default_icon
         )

@@ -6,7 +6,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
-local pcall,print,rawget,type,table,string = pcall,print,rawget,type,table,string
+local pcall,print,rawget,type,table = pcall,print,rawget,type,table
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
@@ -951,7 +951,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       end
 
       MsgPopup(
-        string.format(T(302535920000020--[[Colour is set on %s--]]),RetName(obj)),
+        T(302535920000020--[[Colour is set on %s--]]):format(RetName(obj)),
         T(302535920000016--[[Colour--]]),
         nil,
         nil,
@@ -1121,7 +1121,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
         ViewAndSelectObject(nearest)
       else
         MsgPopup(
-          string.format(T(302535920000029--[[Error: Cannot find any %s.--]]),choice[1].text),
+          T(302535920000029--[[Error: Cannot find any %s.--]]):format(choice[1].text),
           T(15--[[Resource--]]),
           nil,
           nil,
@@ -1260,7 +1260,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.MsgWait(
-      string.format(T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]),ChoGGi.email),
+      T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]):format(ChoGGi.email),
       T(302535920000034--[[Request--]])
     )
     return
@@ -1509,7 +1509,7 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
 
   if not skip_msg then
     MsgPopup(
-      string.format(T(302535920000969--[[Collisions %s on %s--]]),which,RetName(obj)),
+      T(302535920000969--[[Collisions %s on %s--]]):format(which,RetName(obj)),
       T(302535920000968--[[Collisions--]]),
       nil,
       nil,
@@ -1525,7 +1525,7 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
     if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
       obj:InterruptCommand()
       MsgPopup(
-        string.format(T(302535920001267--[[%s at position: %s was stopped.--]]),RetName(obj),obj:GetVisualPos()),
+        T(302535920001267--[[%s at position: %s was stopped.--]]):format(RetName(obj),obj:GetVisualPos()),
         T(302535920001266--[[Broked Transport Pathing--]]),
         "UI/Icons/IPButtons/transport_route.tga",
         nil,

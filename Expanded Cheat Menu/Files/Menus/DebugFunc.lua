@@ -5,7 +5,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
 
-local pairs,pcall,print,type,tonumber,tostring,string,table = pairs,pcall,print,type,tonumber,tostring,string,table
+local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
 
 local Clamp = Clamp
 local CreateGameTimeThread = CreateGameTimeThread
@@ -245,10 +245,10 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
 
   local name = RetName(obj)
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",string.format(T(302535920000852--[[This will delete all %s of %s--]],#objs,name)),"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
+    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000852--[[This will delete all %s of %s--]]):format(#objs,name),"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
     CallBackFunc,
     Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
-    Concat(string.format(T(302535920000856--[[Yes, I want to delete all: %s--]]),name)),
+    T(302535920000856--[[Yes, I want to delete all: %s--]]):format(name),
     T(302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]])
   )
 end
@@ -280,7 +280,8 @@ local function AnimDebug_Show(Obj,Colour)
   text:SetAttachOffset(point(0,0,Obj:GetObjectBBox():sizez() + 100))
   CreateGameTimeThread(function()
     while IsValid(text) do
-      text:SetText(string.format("%d. %s\n", 1, Obj:GetAnimDebug(1)))
+      local str = "%d. %s\n"
+      text:SetText(str:format(1,Obj:GetAnimDebug(1)))
       WaitNextFrame()
     end
   end)
@@ -740,7 +741,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print(Concat(T(6779--[[Warning--]]),": ",string.format(T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]),RetName(Obj))))
+        print(Concat(T(6779--[[Warning--]]),": ",T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]):format(RetName(Obj))))
       end
     end
     if path then

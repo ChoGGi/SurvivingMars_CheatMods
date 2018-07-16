@@ -5,7 +5,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local default_icon = "UI/Icons/Notifications/research.tga"
 
-local pairs,tostring,type,string = pairs,tostring,type,string
+local pairs,tostring,type = pairs,tostring,type
 
 local CheatMapExplore = CheatMapExplore
 local CheatSpawnNColonists = CheatSpawnNColonists
@@ -400,9 +400,9 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000268--[[Start A Mystery--]]),
-    hint = string.format(Concat(T(6779--[[Warning--]]),": ",T(302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+    hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-See Cheats>%s to remove."--]])),T(302535920000329--[[Manage Mysteries--]])),
+See Cheats>%s to remove."--]]):format(T(302535920000329--[[Manage Mysteries--]]))),
     check1 = T(302535920000270--[[Instant Start--]]),
     check1_hint = T(302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]]),
   }
@@ -702,9 +702,9 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]),warning),
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              string.format(T(302535920000291--[[Waiting for %s to finish.
+              T(302535920000291--[[Waiting for %s to finish.
 
-Skip it?--]]),seq.sequence),
+Skip it?--]]):format(seq.sequence),
               CallBackFunc,
               title
             )
@@ -772,8 +772,8 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000297--[["%s
-Best hope you picked India as your Mars sponsor..."--]]),ChoGGi.UserSettings.OutsourceResearchCost),
+    T(302535920000297--[["%s
+Best hope you picked India as your Mars sponsor..."--]]):format(ChoGGi.UserSettings.OutsourceResearchCost),
     T(311--[[Research--]]),
     "UI/Icons/Sections/research_1.tga",
     true
@@ -807,7 +807,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]),choice[1].text),
+        T(302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]):format(choice[1].text),
         T(5182--[[Omega Telescope--]]),
         default_icon
       )
@@ -845,7 +845,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000302--[[%s: S M R T--]]),choice[1].text),
+        T(302535920000302--[[%s: S M R T--]]):format(choice[1].text),
         T(311--[[Research--]]),
         default_icon
       )
@@ -890,7 +890,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000304--[[%s: Nerdgasm--]]),ChoGGi.UserSettings.ResearchQueueSize),
+        T(302535920000304--[[%s: Nerdgasm--]]):format(ChoGGi.UserSettings.ResearchQueueSize),
         T(311--[[Research--]]),
         default_icon
       )
@@ -986,7 +986,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     end
 
     MsgPopup(
-      string.format(T(302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]),text),
+      T(302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]):format(text),
       T(311--[[Research--]]),
       default_icon
     )

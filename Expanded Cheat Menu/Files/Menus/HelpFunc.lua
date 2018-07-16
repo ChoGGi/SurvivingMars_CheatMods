@@ -7,7 +7,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 
-local tostring,string = tostring,string
+local tostring = tostring
 
 local CreateBugReportDlg = CreateBugReportDlg
 local CreateRealTimeThread = CreateRealTimeThread
@@ -254,7 +254,7 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920001068--[[%s: Interface in screenshots.--]]),ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+    T(302535920001068--[[%s: Interface in screenshots.--]]):format(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
     T(302535920001069--[[Interface--]])
   )
 end
@@ -346,7 +346,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920001077--[[%s: Bye bye hints--]]),ChoGGi.UserSettings.DisableHints),
+    T(302535920001077--[[%s: Bye bye hints--]]):format(ChoGGi.UserSettings.DisableHints),
     T(4248--[[Hints--]]),
     "UI/Icons/Sections/attention.tga"
   )
@@ -365,10 +365,10 @@ end
 function ChoGGi.MenuFuncs.AboutECM()
   local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.MsgWait(
-    string.format(T(302535920001078--[["Hover mouse over menu item to get description and enabled status
+    T(302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 
-For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]),ChoGGi.email),
+For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]):format(ChoGGi.email),
     T(487939677892--[[Help--]])
   )
 end

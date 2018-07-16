@@ -5,7 +5,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
 local default_icon = "UI/Icons/Notifications/colonist.tga"
 
-local tostring,type,table,string = tostring,type,table,string
+local tostring,type,table = tostring,type,table
 
 local DelayedCall = DelayedCall
 local GameTime = GameTime
@@ -34,7 +34,7 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000736--[[%s: Whoops somebody broke the rocket, guess you're stuck on mars.--]]),ChoGGi.UserSettings.NoMoreEarthsick),
+    T(302535920000736--[[%s: Whoops somebody broke the rocket, guess you're stuck on mars.--]]):format(ChoGGi.UserSettings.NoMoreEarthsick),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -46,7 +46,7 @@ function ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000737--[[%s: Water? Like out of the toilet?--]]),ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait),
+    T(302535920000737--[[%s: Water? Like out of the toilet?--]]):format(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait),
     T(6652--[[Idiot--]]),
     default_icon
   )
@@ -211,7 +211,7 @@ I think somebody has been playing too much Fallout...--]]),
       end
     else
       MsgPopup(
-        string.format(T(302535920000744--[[%s: Wholesale slaughter--]]),choice[1].text),
+        T(302535920000744--[[%s: Wholesale slaughter--]]):format(choice[1].text),
         T(302535920000745--[[Snacks--]]),
         "UI/Icons/Sections/Food_1.tga"
       )
@@ -272,7 +272,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
         end
         g_LastGeneratedApplicantTime = now
         MsgPopup(
-          string.format(T(302535920000756--[[%s: Added applicants.--]]),choice[1].text),
+          T(302535920000756--[[%s: Added applicants.--]]):format(choice[1].text),
           T(302535920000755--[[Applicants--]]),
           default_icon
         )
@@ -286,9 +286,9 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     title = T(302535920000757--[[Add Applicants To Pool--]]),
     hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000758--[[Will take some time for 25K and up.--]])),
     check1 = T(302535920000759--[[Clear Applicant Pool--]]),
-    check1_hint = string.format(T(302535920000760--[["Remove all the applicants currently in the pool (checking this will ignore your list selection).
+    check1_hint = T(302535920000760--[["Remove all the applicants currently in the pool (checking this will ignore your list selection).
 
-Current Pool Size: %s"--]]),#g_ApplicantPool),
+Current Pool Size: %s"--]]):format(#g_ApplicantPool),
   }
 end
 
@@ -414,7 +414,7 @@ function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000773--[[%s: I just love findin' subversives.--]]),ChoGGi.UserSettings.RenegadeCreation),
+    T(302535920000773--[[%s: I just love findin' subversives.--]]):format(ChoGGi.UserSettings.RenegadeCreation),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -482,7 +482,7 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000778--[[%s: Happy as a pig in shit.--]]),ChoGGi.UserSettings.HighStatMoraleEffect),
+    T(302535920000778--[[%s: Happy as a pig in shit.--]]):format(ChoGGi.UserSettings.HighStatMoraleEffect),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -501,7 +501,7 @@ function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000778--[[%s: Happy as a pig in shit.--]]),ChoGGi.UserSettings.DustStormSanityDamage),
+    T(302535920000778--[[%s: Happy as a pig in shit.--]]):format(ChoGGi.UserSettings.DustStormSanityDamage),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -514,7 +514,7 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000779--[[%s: I love me some corpses.--]]),ChoGGi.UserSettings.SeeDeadSanity),
+    T(302535920000779--[[%s: I love me some corpses.--]]):format(ChoGGi.UserSettings.SeeDeadSanity),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -527,10 +527,10 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000780--[["%s:
+    T(302535920000780--[["%s:
 Oh, give me a home where the Buffalo roam.
 Where the Deer and the Antelope play;
-Where seldom is heard a discouraging word."--]]),ChoGGi.UserSettings.NoHomeComfort),
+Where seldom is heard a discouraging word."--]]):format(ChoGGi.UserSettings.NoHomeComfort),
     T(547--[[Colonists--]]),
     default_icon,
     true
@@ -544,7 +544,7 @@ function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000781--[[%s: Stupid and happy--]]),ChoGGi.UserSettings.LowSanityNegativeTraitChance),
+    T(302535920000781--[[%s: Stupid and happy--]]):format(ChoGGi.UserSettings.LowSanityNegativeTraitChance),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -557,7 +557,7 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000782--[[%s: Getting away ain't that easy--]]),ChoGGi.UserSettings.LowSanitySuicideChance),
+    T(302535920000782--[[%s: Getting away ain't that easy--]]):format(ChoGGi.UserSettings.LowSanitySuicideChance),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -570,7 +570,7 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000783--[[%s: Free Air--]]),ChoGGi.UserSettings.OxygenMaxOutsideTime),
+    T(302535920000783--[[%s: Free Air--]]):format(ChoGGi.UserSettings.OxygenMaxOutsideTime),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -583,7 +583,7 @@ function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000784--[[%s: Free Food--]]),ChoGGi.UserSettings.TimeBeforeStarving),
+    T(302535920000784--[[%s: Free Food--]]):format(ChoGGi.UserSettings.TimeBeforeStarving),
     T(547--[[Colonists--]]),
     "UI/Icons/Sections/Food_2.tga"
   )
@@ -596,7 +596,7 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000785--[[%s: No Shame--]]),ChoGGi.UserSettings.AvoidWorkplaceSols),
+    T(302535920000785--[[%s: No Shame--]]):format(ChoGGi.UserSettings.AvoidWorkplaceSols),
     T(547--[[Colonists--]]),
     default_icon
   )
@@ -609,11 +609,9 @@ function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000786--[[%s:
-We've all seen them, on the playground, at the store, walking on the streets.--]]),ChoGGi.UserSettings.positive_playground_chance),
+    T(302535920000786--[[%s: We've all seen them, on the playground, at the store, walking on the streets.--]]):format(ChoGGi.UserSettings.positive_playground_chance),
     T(235--[[Traits--]]),
-    "UI/Icons/Upgrades/home_collective_02.tga",
-    true
+    "UI/Icons/Upgrades/home_collective_02.tga"
   )
 end
 
@@ -624,11 +622,9 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000787--[["%s:
-Say, ""Small umbrella, small umbrella."""--]]),ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance),
+    T(302535920000787--[["%s: Say, ""Small umbrella, small umbrella."""--]]):format(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance),
     T(547--[[Colonists--]]),
-    "UI/Icons/Upgrades/rejuvenation_treatment_04.tga",
-    true
+    "UI/Icons/Upgrades/rejuvenation_treatment_04.tga"
   )
 end
 
@@ -639,7 +635,7 @@ function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    string.format(T(302535920000788--[[%s: You never know what you're gonna get.--]]),ChoGGi.UserSettings.NonSpecialistPerformancePenalty),
+    T(302535920000788--[[%s: You never know what you're gonna get.--]]):format(ChoGGi.UserSettings.NonSpecialistPerformancePenalty),
     T(302535920000912--[[Penalty--]]),
     default_icon,
     true
@@ -673,10 +669,10 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
         MsgPopup(
-          string.format(T(302535920000789--[[%s: There's a voice that keeps on calling me
+          T(302535920000789--[[%s: There's a voice that keeps on calling me
 Down the road is where I'll always be
 Maybe tomorrow, I'll find what I call home
-Until tomorrow, you know I'm free to roam--]]),choice[1].text),
+Until tomorrow, you know I'm free to roam--]]):format(choice[1].text),
           T(547--[[Colonists--]]),
           "UI/Icons/Sections/dome.tga",
           true
@@ -1576,7 +1572,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        string.format(T(302535920000839--[[Colonist gravity is now %s.--]]),choice[1].text),
+        T(302535920000839--[[Colonist gravity is now %s.--]]):format(choice[1].text),
         T(547--[[Colonists--]]),
         default_icon
       )

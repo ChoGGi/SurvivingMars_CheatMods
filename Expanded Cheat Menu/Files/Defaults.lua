@@ -5,7 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
 
-local next,pairs,print,type,table,string = next,pairs,print,type,table,string
+local next,pairs,print,type,table = next,pairs,print,type,table
 
 local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
@@ -391,7 +391,7 @@ function ChoGGi.SettingFuncs.WriteSettings(settings)
   ThreadUnlockKey(ChoGGi.SettingsFile)
 
   if DoneFuckedUp then
-    print(string.format(T(302535920000006--[[Failed to save settings to %s : %s--]]),ChoGGi.SettingsFile,DoneFuckedUp))
+    print(T(302535920000006--[[Failed to save settings to %s : %s--]]):format(ChoGGi.SettingsFile,DoneFuckedUp))
     return false, DoneFuckedUp
   end
 end

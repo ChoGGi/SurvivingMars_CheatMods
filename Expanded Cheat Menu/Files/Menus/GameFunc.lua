@@ -180,7 +180,7 @@ do --FlattenGround
       ToggleHotkeys(true)
       flatten_height = terrain_GetHeight(GetTerrainCursor())
       MsgPopup(
-        string.format(T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]),flatten_height),
+        T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]):format(flatten_height),
         T(904--[[Terrain--]]),
         "UI/Icons/Sections/warning.tga"
       )
@@ -432,7 +432,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000973--[[Change Terrain Texture--]]),
-    hint = string.format(T(302535920000974--[[Map default: %s--]]),mapdata.BaseLayer),
+    hint = T(302535920000974--[[Map default: %s--]]):format(mapdata.BaseLayer),
   }
 end
 

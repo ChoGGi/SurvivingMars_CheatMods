@@ -43,6 +43,7 @@ ID,Text,Translation
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001238,Removes any rocks for that smooth map feel (will take about 30 seconds).,
 302535920000800,MaleOrFemale,
 302535920000444,Set Stats,
 302535920000446,Colonist Death Age,
@@ -643,7 +644,6 @@ Not permanent.",
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
 302535920000874,(see Path Markers to mark more than one at a time),
 302535920000864,Delete All Rocks,
-302535920001238,Removes any rocks for that smooth map feel (will take about 30 seconds).,
 302535920001208,Export Colonist Data To CSV,
 302535920001219,Exports data about colonists to AppData/Colonists.csv,
 302535920001176,Toggle showing FX debug info in console.,
@@ -1034,10 +1034,8 @@ Where seldom is heard a discouraging word.",
 302535920000783,%s: Free Air,
 302535920000784,%s: Free Food,
 302535920000785,%s: No Shame,
-302535920000786,"%s:
-We've all seen them, on the playground, at the store, walking on the streets.",
-302535920000787,"%s:
-Say, ""Small umbrella, small umbrella.""",
+302535920000786,"%s:We've all seen them, on the playground, at the store, walking on the streets.",
+302535920000787,"%s: Say, ""Small umbrella, small umbrella.""",
 302535920000788,%s: You never know what you're gonna get.,
 302535920000789,"%s: There's a voice that keeps on calling me.
 Down the road is where I'll always be.

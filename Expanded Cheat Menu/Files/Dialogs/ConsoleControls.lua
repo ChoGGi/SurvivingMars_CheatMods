@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local T = ChoGGi.ComFuncs.Trans
 
-local rawget,table,string,tostring,print,select = rawget,table,string,tostring,print,select
+local rawget,table,tostring,print,select = rawget,table,tostring,print,select
 
 local AsyncCreatePath = AsyncCreatePath
 local AsyncFileOpen = AsyncFileOpen
@@ -211,6 +211,7 @@ local function BuildSciptButton(scripts,dlg,folder)
   }, scripts)
 end
 
+local scriptpath_str = T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]])
 -- rebuild menu toolbar buttons
 function ChoGGi.Console.RebuildConsoleToolbar(dlg)
   if not dlg then
@@ -228,17 +229,18 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
   BuildSciptButton(scripts,dlg,{
     Text = T(302535920000353--[[Scripts--]]),
-    RolloverText = string.format(T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]),ChoGGi.scripts),
+    RolloverText = scriptpath_str:format(ChoGGi.scripts),
     id = "idScriptsMenu",
     script_path = ChoGGi.scripts,
   })
 
   local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
   if folders then
+    local hint_str = T(302535920001159--[[Any .lua files contained in %s.--]])
     for i = 1, #folders do
       BuildSciptButton(scripts,dlg,{
         Text = folders[i].name,
-        RolloverText = string.format(T(302535920001159--[[Any .lua files contained in %s.--]]),folders[i].path),
+        RolloverText = hint_str:format(folders[i].path),
         id = Concat("id",folders[i].name,"Menu"),
         script_path = folders[i].path,
       })
@@ -247,36 +249,37 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
 end
 
--- add script files if not there
+-- add example script files if folder is missing
 function ChoGGi.Console.ListScriptFiles()
   local script_path = ChoGGi.scripts
   --create folder and some example scripts if folder doesn't exist
-  if AsyncFileOpen(script_path) ~= "Access Denied" then
-    AsyncCreatePath(script_path)
-    --print some info
-    local help = string.format(T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]),script_path)
-    print(help)
-    --add some example files and a readme
-    AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
-    AsyncStringToFile(Concat(script_path,"/Help.lua"),[[local ChoGGi = ChoGGi
-ChoGGi.ComFuncs.MsgWait(string.format(ChoGGi.ComFuncs.Trans(302535920000881),ChoGGi.scripts))]])
-    AsyncCreatePath(Concat(script_path,"/Examine"))
-    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
-    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
-    AsyncCreatePath(Concat(script_path,"/Functions"))
-    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"} or empty_table]])
-    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
-    --rebuild toolbar
-    ChoGGi.Console.RebuildConsoleToolbar()
+  if AsyncFileOpen(script_path) == "Access Denied" then
+    return
   end
+  AsyncCreatePath(script_path)
+  --print some info
+  local help = scriptpath_str:format(script_path)
+  print(help)
+  --add some example files and a readme
+  AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
+  AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[local ChoGGi = ChoGGi
+ChoGGi.ComFuncs.MsgWait(ChoGGi.ComFuncs.Trans(302535920000881):format(ChoGGi.scripts))]])
+  AsyncCreatePath(Concat(script_path,"/Examine"))
+  AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
+  AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
+  AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
+  AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
+  AsyncCreatePath(Concat(script_path,"/Functions"))
+  AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"} or empty_table]])
+  AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
+  --rebuild toolbar
+  ChoGGi.Console.RebuildConsoleToolbar()
 end
 
