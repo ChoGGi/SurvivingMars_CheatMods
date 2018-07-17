@@ -355,6 +355,7 @@ function OnMsg.ClassesBuilt()
     XTemplates.sectionWorkplace.SolariaTelepresence_Solaria = true
 
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+      "SolariaTelepresence_sectionWorkplace1", true,
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "",
@@ -406,6 +407,7 @@ Right click in list to view (closes menu).]])
 
     --list controlled buildings
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+      "SolariaTelepresence_sectionWorkplace2", true,
       "__context_of_kind", "Solaria",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Upgrades/build_2.tga",
@@ -439,6 +441,7 @@ Right click list item to view (closes menu).]],
 
     --go to controlled/controller building
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+      "SolariaTelepresence_sectionWorkplace3", true,
       "__context_of_kind", "Workplace",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Anomaly_Event.tga",

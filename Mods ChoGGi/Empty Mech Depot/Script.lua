@@ -146,6 +146,7 @@ function OnMsg.ClassesBuilt()
     XT.sectionStorage.ChoGGiEmpty = true
 
     XT.sectionStorage[1][#XT.sectionStorage[1]+1] = PlaceObj("XTemplateTemplate", {
+      "ChoGGi_EmptyMechDepot", true,
       "__context_of_kind", "MechanizedDepot",
       "__template", "InfopanelActiveSection",
       "Icon", "UI/Icons/Sections/storage.tga",

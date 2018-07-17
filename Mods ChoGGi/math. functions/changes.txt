@@ -1,0 +1,7 @@
+v0.2
+More type checking.
+Errors when input is NaN (instead of returning "-nan(ind)").
+Better math.random() output.
+math.ult() works according to manual now.
+Added math.test() for some unit testing.
+Added a few deprecated functions.

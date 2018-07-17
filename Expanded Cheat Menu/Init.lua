@@ -31,6 +31,13 @@ local dofile,select,tostring,table,type = dofile,select,tostring,table,type
 local AsyncFileOpen = AsyncFileOpen
 local dofolder_files = dofolder_files
 
+-- just in case they remove oldTableConcat
+local TableConcat
+pcall(function()
+  TableConcat = oldTableConcat
+end)
+TableConcat = TableConcat or table.concat
+
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
   _LICENSE = LICENSE,
@@ -46,7 +53,7 @@ ChoGGi = {
       return select(2,AsyncFileOpen(file))
     end,
     -- thanks for replacing concat... what's wrong with using table.concat2?
-    TableConcat = oldTableConcat or table.concat,
+    TableConcat = TableConcat,
   },
   -- _Functions.lua
   CodeFuncs = {},

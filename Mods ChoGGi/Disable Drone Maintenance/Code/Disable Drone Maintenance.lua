@@ -28,6 +28,7 @@ function OnMsg.ClassesBuilt()
     XTemplates.ipBuilding.ChoGGi_DisableMaintenance = true
 
     XTemplates.ipBuilding[1][#XTemplates.ipBuilding[1]+1] = PlaceObj("XTemplateTemplate", {
+      "ChoGGi_DisableMaintenance", true,
       "__context_of_kind", "Building",
       "__template", "InfopanelSection",
       --only show up for buildings that need maintenance

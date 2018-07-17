@@ -24,6 +24,7 @@ function OnMsg.ClassesBuilt()
 
     --add button to colonists
     XTemplates.ipColonist[1][#XTemplates.ipColonist[1]+1] = PlaceObj("XTemplateTemplate", {
+      "ChoGGi_LockworkplaceColonist", true,
       "__context_of_kind", "Colonist",
       "__template", "InfopanelActiveSection",
       "RolloverTitle","",
@@ -72,6 +73,7 @@ function OnMsg.ClassesBuilt()
 
     --add button to workplaces
     XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+      "ChoGGi_LockworkplaceWorkplace", true,
       "__context_of_kind", "Workplace",
       "__template", "InfopanelActiveSection",
       "RolloverTitle","",

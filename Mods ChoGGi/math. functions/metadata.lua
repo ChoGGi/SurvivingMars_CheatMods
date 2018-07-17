@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", [["math." Functions v0.1]],
-  "version", 1,
-  "saved", 1531742400,
+  "title", [["math." Functions v0.2]],
+  "version", 2,
+  "saved", 1531828800,
   "id", "ChoGGi_AddMathFunctions",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 For some reason SM doesn't have any of lua "math." functions.
 Functions are either from SM (math.min = Min()), or pure lua.
 
-SM and certain SM functions have issues with floats: 5 == 5.5 returns true for one.
+SM and certain SM functions have issues with floats: 5 == 5.5 returns true for one (though 5.0 == 5.5 returns false).
 Which is why I'm not just using math.cos = cos... (you can access them as math.sm_cos)
 I'm going for accuracy not speed: Bench with GetPreciseTicks()
 
@@ -22,9 +22,12 @@ abs,ceil,deg,exp,floor,fmod,huge,log,max,maxinteger,min,mininteger,modf,pi,rad,r
 Not implemented yet:
 cos,sin,tan,acos,atan
 
+Known Issues:
+math.random() will never return 1
+
 I'm only implementing the ones listed in the manual, if you have some to add: feel free to send them to me.
 
-Functions should return the value according to:
+Functions should return values according to:
 https://www.lua.org/manual/5.3/manual.html#6.7
 I included a compiled copy of lua.exe, if the result it gives is different then my func: Please let me know.]],
 })

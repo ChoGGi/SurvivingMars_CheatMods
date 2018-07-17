@@ -397,6 +397,7 @@ end --ClassesPostprocess
 --~     XTemplates.ipAttackRover.ChoGGi_PortableMiner = true
 
 --~     XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplate", {
+--~       ChoGGi_PortableMiner, true,
 --~       group = "Infopanel Sections",
 --~       id = "sectionMine",
 --~       PlaceObj("XTemplateTemplate", {

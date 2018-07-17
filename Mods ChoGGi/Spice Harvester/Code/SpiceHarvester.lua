@@ -130,6 +130,7 @@ function OnMsg.ClassesBuilt()
     XTemplates.ipAttackRover.Melanger_Section = true
 
     XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplateTemplate", {
+      "SolariaTelepresence_Melanger_Section", true,
       "__context_of_kind", "Melanger",
       "__template", "InfopanelSection",
       "Icon", "UI/Icons/traits_disapprove.tga",

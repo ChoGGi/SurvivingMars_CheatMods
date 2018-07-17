@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "version", 2,
-  "title", "Add Water Each Sol v0.2",
-  "saved", 1531569600,
+  "version", 3,
+  "title", "Add Water Each Sol v0.3",
+  "saved", 1531828800,
   "id", "ChoGGi_AddWaterEachSol",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

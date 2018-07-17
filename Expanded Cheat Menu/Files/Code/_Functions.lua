@@ -1410,6 +1410,7 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
       XTemplates[Template][1][Name] = true
 
       XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+        Concat("ChoGGi_ECM_",AsyncRand()), true,
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
@@ -1434,6 +1435,7 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
       XTemplates[Template][Name] = true
 
       XTemplates[Template][#XTemplates[Template]+1] = PlaceObj("XTemplateTemplate", {
+        Concat("ChoGGi_ECM_",AsyncRand()), true,
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",

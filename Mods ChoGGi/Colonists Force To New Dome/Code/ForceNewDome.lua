@@ -84,6 +84,7 @@ function OnMsg.ClassesBuilt()
     XTemplates.sectionDome.ChoGGi_ForceNewDome = true
 
     XTemplates.sectionDome[1][#XTemplates.sectionDome[1]+1] = PlaceObj("XTemplateTemplate", {
+      "ChoGGi_ForceNewDome", true,
 --~       "__context_of_kind", "Building",
       "__template", "InfopanelSection",
       -- skip any ruined domes
