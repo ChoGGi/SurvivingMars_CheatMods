@@ -38,7 +38,11 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   }
 
   local CallBackFunc = function(choice)
-    if choice[1].value == T(302535920001079--[[Enable--]]) then
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if value == T(302535920001079--[[Enable--]]) then
       ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
       ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
       ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
@@ -117,8 +121,11 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
 
   --callback
   local CallBackFunc = function(choice)
-    local FXRules = FXRules
     local value = choice[1].value
+    if not value then
+      return
+    end
+    local FXRules = FXRules
     if value == "SensorTowerWorking" then
       table.remove(FXRules.Working.start.SensorTower.any,3)
       RemoveFromRules("Object SensorTower Loop")
@@ -205,6 +212,10 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     --nothing checked so just return
@@ -374,8 +385,10 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
   }
   --callback
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       sel:SetOpacity(value)
     elseif type(value) == "string" then
@@ -504,8 +517,11 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
   end
 
   local CallBackFunc = function(choice)
-    local const = const
     local value = choice[1].value
+    if not value then
+      return
+    end
+    local const = const
     if type(value) == "number" then
       const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
       const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
@@ -585,6 +601,10 @@ function ChoGGi.MenuFuncs.SetEntity()
   local ItemList = entity_table
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then
@@ -599,7 +619,6 @@ function ChoGGi.MenuFuncs.SetEntity()
     if sel.dome and check1 then
       dome = sel.dome
     end
-    local value = choice[1].value
     if EntityData[value] or value == "Default" then
 
       if check2 then
@@ -697,6 +716,10 @@ function ChoGGi.MenuFuncs.SetEntityScale()
   }
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
     if check1 and check2 then

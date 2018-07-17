@@ -151,11 +151,16 @@ function ChoGGi_ObjectManipulator:Init()
     }
 
     local CallBackFunc = function(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
       --add it to the actual object
-      self.obj[tostring(choice[1].value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
+      self.obj[tostring(value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
       --refresh list
       self:UpdateListContent(self.obj)
     end
+
     ChoGGi.ComFuncs.OpenInListChoice{
       callback = CallBackFunc,
       items = ItemList,

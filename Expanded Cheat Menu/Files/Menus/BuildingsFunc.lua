@@ -47,6 +47,9 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       value = value * r
 
@@ -142,6 +145,9 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       local tab = UICity.labels[id] or empty_table
@@ -187,10 +193,12 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   end
 
   local CallBackFunc = function(choice)
+     local value = choice[1].value
+    if not value then
+      return
+    end
     for i = 1, #choice do
---~       pcall(function()
-        UnlockBuilding(choice[i].value)
---~       end)
+      UnlockBuilding(choice[i].value)
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(
@@ -379,6 +387,9 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
 
@@ -570,6 +581,9 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local amount = value * r
 
@@ -668,6 +682,9 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     local function SetPerf(a,b)
       if choice[1].check then
         sel.max_workers = a
@@ -1097,8 +1114,10 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   end
 
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       if value == DefaultSetting then

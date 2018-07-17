@@ -15,9 +15,8 @@ local RebuildInfopanel = RebuildInfopanel
 
 local pf_SetStepLen = pf.SetStepLen
 
-local g_Classes = g_Classes
-
 function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
+  local g_Classes = g_Classes
 
 --~ global objects
   function g_Classes.Building:CheatDestroy()
@@ -106,6 +105,9 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
   g_Classes.Unit.CheatHideSigns = CheatHideSigns
   g_Classes.Unit.CheatColourRandom = CheatColourRandom
   g_Classes.Unit.CheatColourDefault = CheatColourDefault
+  g_Classes.RCTransport.CheatHideSigns = CheatHideSigns
+  g_Classes.RCTransport.CheatColourRandom = CheatColourRandom
+  g_Classes.RCTransport.CheatColourDefault = CheatColourDefault
   g_Classes.SubsurfaceDepositMetals.CheatColourRandom = CheatColourRandom
   g_Classes.SubsurfaceDepositWater.CheatColourRandom = CheatColourRandom
   g_Classes.SubsurfaceDepositPreciousMetals.CheatColourRandom = CheatColourRandom
@@ -492,6 +494,7 @@ function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
 end --OnMsg
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+  local g_Classes = g_Classes
   if not CurrentMap:find("Tutorial") then
     g_Classes.Building.CheatAddMaintenancePnts = nil
     g_Classes.Building.CheatMakeSphereTarget = nil

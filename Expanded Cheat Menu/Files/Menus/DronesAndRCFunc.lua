@@ -40,8 +40,10 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
   end
 
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       if value == DefaultSetting then
@@ -87,6 +89,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxRadius",value)
@@ -135,6 +140,9 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxRadius",value)
@@ -185,8 +193,10 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 
   --callback
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
 
@@ -233,8 +243,10 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 
   --callback
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local tab = UICity.labels.Drone or empty_table
       for i = 1, #tab do
@@ -286,8 +298,10 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
   --callback
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
       local tab = UICity.labels.Rover or empty_table
@@ -334,6 +348,9 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       local change = Concat(T(302535920000746--[[added--]]))
@@ -393,7 +410,9 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
-
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local tab = UICity.labels.DroneFactory or empty_table
       for i = 1, #tab do
@@ -548,6 +567,9 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       --somewhere above 1000 fucks the save
       if value > 1000 then
@@ -597,6 +619,9 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxDrones",value)
       ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxDrones",value)
@@ -641,6 +666,9 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("RCRoverMaxDrones",value)
       ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxDrones",value)
@@ -683,8 +711,12 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
       --somewhere above 2000 fucks the save
       if value > 2000000 then
         value = 2000000
@@ -736,8 +768,12 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
       --not tested but I assume too much = dead save as well (like rc and transport)
       if value > 1000000 then
         value = 1000000
@@ -792,8 +828,12 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
       --loop through and set all shuttles
       local tab = UICity.labels.CargoShuttle or empty_table
       for i = 1, #tab do
@@ -844,8 +884,10 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
   end
 
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       --loop through and set all shuttles
       local tab = UICity.labels.ShuttleHub or empty_table
@@ -903,6 +945,9 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local value = value * r
       local tab = UICity.labels.Rover or empty_table
@@ -954,8 +999,12 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
     hint = ChoGGi.UserSettings.GravityDrone / r
   end
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
       --loop through and set all
       local tab = UICity.labels.Drone or empty_table
       for i = 1, #tab do

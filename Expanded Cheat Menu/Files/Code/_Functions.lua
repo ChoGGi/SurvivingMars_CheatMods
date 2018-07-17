@@ -29,6 +29,7 @@ local OpenExamine = OpenExamine
 local OpenXBuildMenu = OpenXBuildMenu
 local PlaceObj = PlaceObj
 local point = point
+local RandColor = RandColor
 local Random = Random
 local SelectionMouseObj = SelectionMouseObj
 local Sleep = Sleep
@@ -612,18 +613,16 @@ end
 
 function ChoGGi.CodeFuncs.RandomColour(Amount)
   local ChoGGi = ChoGGi
-  --local AsyncRand = AsyncRand
-  --AsyncRand(16777216) * -1
 
   --amount isn't a number so return a single colour
   if type(Amount) ~= "number" then
-    return Random(-16777216,0) --24bit colour
+    return RandColor() --24bit colour
   end
 
   local randcolors = {}
   --populate list with amount we want
   for _ = 1, Amount do
-    randcolors[#randcolors+1] = Random(-16777216,0)
+    randcolors[#randcolors+1] = RandColor()
   end
   --now remove all dupes and add more till we hit amount
   while true do
@@ -634,7 +633,7 @@ function ChoGGi.CodeFuncs.RandomColour(Amount)
     end
     --then loop missing amount
     for _ = 1, Amount - #randcolors do
-      randcolors[#randcolors+1] = Random(-16777216,0)
+      randcolors[#randcolors+1] = RandColor()
     end
   end
   return randcolors
@@ -862,6 +861,11 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
 
   --callback
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+
     if #choice == 13 then
       --keep original colours as part of object
       local base = choice[13].value
@@ -959,6 +963,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       )
     end
   end
+
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,

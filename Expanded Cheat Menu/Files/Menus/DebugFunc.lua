@@ -352,7 +352,11 @@ function ChoGGi.MenuFuncs.SetAnimState()
   end
 
   local CallBackFunc = function(choice)
-    sel:SetStateText(choice[1].value)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    sel:SetStateText(value)
     MsgPopup(
       Concat(choice[1].text,": ",T(3722--[[State--]])),
       T(302535920000859--[[Anim State--]])
@@ -383,6 +387,9 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if g_Classes[value] then
 
       local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
@@ -600,32 +607,6 @@ do --hex rings
 end
 
 do --path markers
-  --from CommonLua\Classes\CodeRenderableObject.lua
---~   local function PlaceTerrainLine(pt1, pt2, color, step, offset)
---~     step = step or guim
---~     offset = offset or guim
---~     local diff = pt2 - pt1
---~     local steps = Max(2, 1 + diff:Len2D() / step)
---~     local mapw, maph = terrain_GetMapSize()
---~     local points = {}
---~     for i = 1, steps do
---~       local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
---~       local x, y, z = pos:xy()
---~       x = Clamp(x, 0, mapw - terrain_HeightTileSize)
---~       y = Clamp(y, 0, maph - terrain_HeightTileSize)
---~       z = terrain_GetHeight(x, y) + offset
---~       points[#points + 1] = point(x, y, z)
---~     end
---~     local line = g_Classes.Polyline:new({
---~       max_vertices = #points
---~     })
---~     line:SetMesh(points, color)
---~     line:SetDepthTest(true)
---~     line:SetPos((pt1 + pt2) / 2)
---~     line:SetColor(color or white)
---~     return line
---~   end
-
   local randcolours = {}
   local colourcount = 0
   local dupewppos = {}
@@ -659,7 +640,6 @@ do --path markers
     local points = {}
     local mapw, maph = terrain_GetMapSize()
     for i = 1, #waypoints do
---~       local pos = pt1 + MulDivRound(diff, i - 1, steps - 1)
       local x, y, z = waypoints[i]:xy()
       x = Clamp(x, 0, mapw - terrain_HeightTileSize)
       y = Clamp(y, 0, maph - terrain_HeightTileSize)
@@ -673,39 +653,7 @@ do --path markers
     spawnline:SetPos(last_pos)
     spawnline.ChoGGi_WaypointPath = true
 
---~     --add text to last wp
---~     local endwp = PlaceText(Concat(RetName(Obj),": ",Obj.handle), last_pos)
---~     Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = endwp
---~     endwp:SetColor(colour)
---~     endwp:SetZ(endwp:GetZ() + 250)
---~     --endp:SetShadowOffset(3)
---~     endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
-
     Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spawnline
---~     spawnline:SetDepthTest(true)
-
---~     local sphereheight = 266 + height - 50
-    --spawn a sphere at the Obj pos
---~     if not single then
---~       local spherestart = PlaceObject("Sphere")
---~       Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spherestart
---~       spherestart:SetPos(point(Objpos:x(),Objpos:y(),(shuttle and shuttle + 500) or (Objterr + sphereheight)))
---~       spherestart:SetDepthTest(true)
---~       spherestart:SetColor(colour)
---~       spherestart:SetRadius(35)
---~     end
-    --and another at the end
-    --[[
-    local sphereend = PlaceObject("Sphere")
-    Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = sphereend
-    local w = waypoints[1]
-    sphereend:SetPos(w)
-    sphereend:SetZ(((w:z() or terrain_GetHeight(w)) + 10 * guic) + sphereheight)
-    sphereend:SetDepthTest(true)
-    sphereend:SetColor(colour)
-    sphereend:SetRadius(25)
-    --]]
-
   end --end of ShowWaypoints
 
   function ChoGGi.MenuFuncs.SetWaypoint(Obj,setcolour,skipheight)
@@ -912,8 +860,12 @@ do --path markers
 
     local CallBackFunc = function(choice)
       local value = choice[1].value
+      if not value then
+        return
+      end
       --remove wp/lines and reset colours
       if choice[1].check1 then
+        print("check1_hint")
 
         --reset all the base colours/waypoints
         ClearColourAndWP("CargoShuttle")
@@ -933,7 +885,7 @@ do --path markers
         colourcount = 0
         dupewppos = {}
 
-      else --add waypoints
+      elseif value then --add waypoints
 
         local function swp(Table)
           if choice[1].check2 then

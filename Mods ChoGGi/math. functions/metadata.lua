@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", [[Add "math." Functions v0.1]],
+  "title", [["math." Functions v0.1]],
   "version", 1,
   "saved", 1531742400,
   "id", "ChoGGi_AddMathFunctions",
@@ -7,7 +7,9 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1443143020",
-  "description", [[For some reason SM doesn't have any of lua "math." functions.
+  "description", [[Modders only (unless it's a mod that uses these functions).
+
+For some reason SM doesn't have any of lua "math." functions.
 Functions are either from SM (math.min = Min()), or pure lua.
 
 SM and certain SM functions have issues with floats: 5 == 5.5 returns true for one.

@@ -364,6 +364,9 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       --update const it checks
@@ -415,8 +418,10 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
   end
 
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       terrain_SetTerrainType({type = value})
 
@@ -472,6 +477,10 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local model_table = {}
     for i = 1, #choice do
       local value = choice[i].value
@@ -541,6 +550,9 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "string" then
       if Browse or choice[1].check2 then
         ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
@@ -665,6 +677,10 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   }
   --callback
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     for i = 1, #choice do
       local value = choice[i].value
       local text = choice[i].text
@@ -717,6 +733,9 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       if value > 100000 then
         value = 100000
@@ -759,6 +778,9 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       if value > 1000 then
         value = 1000
@@ -803,6 +825,9 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       hr.DTM_VideoMemory = value
       ChoGGi.ComFuncs.SetSavedSetting("VideoMemory",value)
@@ -841,6 +866,9 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       if value > 16384 then
         value = 16384
@@ -907,6 +935,9 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   --callback
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       hr.LODDistanceModifier = value
       ChoGGi.ComFuncs.SetSavedSetting("HigherRenderDist",value)
@@ -1053,6 +1084,9 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetSavedSetting("BorderScrollingArea",value)
       ChoGGi.CodeFuncs.SetCameraSettings()
@@ -1091,6 +1125,9 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetSavedSetting("CameraZoomToggle",value)
       ChoGGi.CodeFuncs.SetCameraSettings()

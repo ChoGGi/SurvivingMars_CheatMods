@@ -126,6 +126,9 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     local dome
     sel = SelectedObj
@@ -256,6 +259,9 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if choice[1].check1 then
       g_ApplicantPool = {}
       MsgPopup(
@@ -315,8 +321,12 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
   }
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local shift
-    if choice[1].value == 3.1415926535 then
+    if value == 3.1415926535 then
       shift = {true,true,true}
     else
       shift = {false,false,false}
@@ -366,8 +376,10 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 
   --callback
   local CallBackFunc = function(choice)
-
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       value = value * r
       ChoGGi.ComFuncs.SetConstsG("MinComfortBirth",value)
@@ -427,13 +439,16 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
   }
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local dome
     local sel = SelectedObj
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
     local Type
-    local value = choice[1].value
     if value == "Make" then
       Type = "AddTrait"
     elseif value == "Remove" then
@@ -663,6 +678,9 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("DefaultOutsideWorkplacesRadius",value)
       ChoGGi.ComFuncs.SetSavedSetting("DefaultOutsideWorkplacesRadius",value)
@@ -712,6 +730,9 @@ function ChoGGi.MenuFuncs.SetDeathAge()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     local amount
     if type(value) == "number" then
       amount = value
@@ -815,12 +836,15 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
-    local value = choice[1].value
     --new
     if iType == 1 then
       if value == default_str then
@@ -913,13 +937,16 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
     --new
-    local value = choice[1].value
     if iType == 1 then
       if value == T(1000121--[[Default--]]) then
         ChoGGi.UserSettings.NewColonistGender = nil
@@ -1015,13 +1042,16 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
     --new
-    local value = choice[1].value
     if iType == 1 then
       if value == T(1000121--[[Default--]]) then
         ChoGGi.UserSettings.NewColonistSpecialization = nil
@@ -1107,13 +1137,16 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
     --new
-    local value = choice[1].value
     if iType == 1 then
       if value == T(1000121--[[Default--]]) then
         ChoGGi.UserSettings.NewColonistRace = nil
@@ -1224,6 +1257,10 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1364,6 +1401,10 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
   }
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1371,7 +1412,6 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
     end
     local max = 100000 * r
     local fill = 100 * r
-    local value = choice[1].value
     local function SetStat(Stat,v)
       if v == 1 or v == 3 or v == 6 or v == 8 then
         v = max
@@ -1468,12 +1508,15 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 
   --callback
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
-    local value = choice[1].value
     if type(value) == "number" then
       if choice[1].check2 then
         if sel then
@@ -1543,12 +1586,15 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local sel = SelectedObj
     local dome
     if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
       dome = sel.dome
     end
-    local value = choice[1].value
     if type(value) == "number" then
       value = value * r
       if choice[1].check2 then
@@ -1626,6 +1672,10 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     local check1 = choice[1].check1
     for i = 1, #choice do
       local value = choice[i].value

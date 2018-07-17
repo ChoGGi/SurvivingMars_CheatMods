@@ -415,13 +415,15 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
       end
       self.choices[#self.choices+1] = items[i]
     end
-    --add checkbox statuses
-    self.choices[1].check1 = self.idCheckBox1:GetToggled()
-    self.choices[1].check2 = self.idCheckBox2:GetToggled()
-    self.choices[1].checkair = self.idColorCheckAir:GetToggled()
-    self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
-    self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
   end
+  -- send back checkmarks no matter what
+  self.choices[1] = self.choices[1] or {}
+  --add checkbox statuses
+  self.choices[1].check1 = self.idCheckBox1:GetToggled()
+  self.choices[1].check2 = self.idCheckBox2:GetToggled()
+  self.choices[1].checkair = self.idColorCheckAir:GetToggled()
+  self.choices[1].checkwater = self.idColorCheckWater:GetToggled()
+  self.choices[1].checkelec = self.idColorCheckElec:GetToggled()
 end
 
 --function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, vk)

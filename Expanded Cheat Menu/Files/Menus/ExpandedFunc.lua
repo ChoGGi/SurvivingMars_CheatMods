@@ -35,6 +35,9 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if value == "New" then
       ChoGGi.ComFuncs.MsgWait(
         T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]):format(ChoGGi.email),
@@ -106,6 +109,9 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
       ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
@@ -155,6 +161,9 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local value = value * r
       ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars",value)
@@ -196,6 +205,9 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket",value)
       ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
@@ -262,6 +274,9 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       local tab = UICity.labels.Workplace or empty_table
@@ -369,6 +384,9 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
 
       --colonist cap doesn't use res scale
@@ -483,6 +501,9 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       local tab = UICity.labels.BuildingNoDomes or empty_table
       for i = 1, #tab do
@@ -544,9 +565,13 @@ Mechanized: 1,000,000--]])
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
 
-      local value = choice[1].value * r
+      local value = value * r
       if sType == "StorageWasteDepot" then
         --limit amounts so saving with a full load doesn't delete your game
         if value > 1000000000 then
@@ -630,8 +655,11 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
   }
 
   local CallBackFunc = function(choice)
-    local UICity = UICity
     local value = choice[1].value
+    if not value then
+      return
+    end
+    local UICity = UICity
     if type(value) == "number" then
       for _ = 1, value do
         PlaceObject("OrbitalProbe",{city = UICity})
@@ -669,8 +697,12 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   end
 
   local CallBackFunc = function(choice)
-    if type(choice[1].value) == "number" then
-      local value = choice[1].value * r
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
       ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger",value)
       ChoGGi.ComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
 
@@ -711,8 +743,11 @@ function ChoGGi.MenuFuncs.AddPrefabs()
   }
 
   local CallBackFunc = function(choice)
-    local text = choice[1].text
     local value = choice[1].value
+    if not value then
+      return
+    end
+    local text = choice[1].text
 
     if type(value) == "number" then
       if text == "Drone" then
@@ -755,6 +790,9 @@ Fix with: %s--]]):format(DefaultSetting)
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     if type(value) == "number" then
       if value == 500 then
         --reset money back to 0

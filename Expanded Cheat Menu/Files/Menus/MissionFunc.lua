@@ -65,8 +65,11 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
   end
 
   local CallBackFunc = function(choice)
-    local g_CurrentMissionParams = g_CurrentMissionParams
     local value = choice[1].value
+    if not value then
+      return
+    end
+    local g_CurrentMissionParams = g_CurrentMissionParams
     for i = 1, #ItemList do
       --check to make sure it isn't a fake name (no sense in saving it)
       if ItemList[i].value == value then
@@ -114,6 +117,10 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     if choice[1].check2 then
       for i = 1, #ItemList do
         local value = ItemList[i].value
@@ -181,6 +188,9 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 
   local CallBackFunc = function(choice)
     local value = choice[1].value
+    if not value then
+      return
+    end
     for i = 1, #ItemList do
       --check to make sure it isn't a fake name (no sense in saving it)
       if ItemList[i].value == value then
@@ -228,6 +238,10 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
   end
 
   local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
     if choice[1].check2 then
       for i = 1, #ItemList do
         local value = ItemList[i].value
@@ -290,6 +304,9 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   local CallBackFunc = function(choice)
     --any newly built/landed uses this logo
     local value = choice[1].value
+    if not value then
+      return
+    end
 
     local function ChangeLogo(Label,Name)
       local tab = UICity.labels[Label] or empty_table
