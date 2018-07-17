@@ -434,7 +434,7 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 
   if painted_hexes then
     for i = 1, #painted_hexes do
-      DoneObject(painted_hexes[i])
+      painted_hexes[i]:delete()
     end
     painted_hexes = false
   end
@@ -514,7 +514,7 @@ function HexPainterModeDialog:Close(...)
   HexPainterResultArr = self.res_arr
   PaintHexArray()
   if self.hex_mid_circle then
-    DoneObject(self.hex_mid_circle)
+    self.hex_mid_circle:delete()
   end
 end
 
@@ -561,7 +561,7 @@ end
 
 function HexPainterModeDialog:PaintMid()
   if self.hex_mid_circle then
-    DoneObject(self.hex_mid_circle)
+    self.hex_mid_circle:delete()
   end
   if self.hex_mid_pt then
     self.hex_mid_circle = ChoGGi_HexSpot:new()

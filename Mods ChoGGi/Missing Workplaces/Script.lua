@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local table = table
-local DoneObject = DoneObject
 
 local cleaned_work
 
@@ -10,7 +9,7 @@ local function CleanWork(city)
   if not cleaned_work then
     for i = #work, 1, -1 do
       if work[i].class == "UnpersistedMissingClass" then
-        DoneObject(work[i])
+        work[i]:delete()
         table.remove(work,i)
       end
     end

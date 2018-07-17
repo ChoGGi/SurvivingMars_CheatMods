@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local table = table
-local DoneObject = DoneObject
 
 local cleaned_res
 
@@ -11,7 +10,7 @@ function GetFreeLivingSpace(city, count_children)
   if not cleaned_res then
     for i = #res, 1, -1 do
       if res[i].class == "UnpersistedMissingClass" then
-        DoneObject(res[i])
+        res[i]:delete()
         table.remove(res,i)
       end
     end

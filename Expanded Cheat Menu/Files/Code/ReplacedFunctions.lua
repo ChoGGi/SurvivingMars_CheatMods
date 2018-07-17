@@ -76,7 +76,6 @@ local CreateConsole = CreateConsole
 local CreateRealTimeThread = CreateRealTimeThread
 local CurrentThread = CurrentThread
 local DeleteThread = DeleteThread
-local DoneObject = DoneObject
 local GetActionsHost = GetActionsHost
 local GetMissionSponsor = GetMissionSponsor
 local IsBox = IsBox
@@ -122,54 +121,22 @@ do --funcs without a class
   SaveOrigFunc("ShowConsole")
   SaveOrigFunc("ShowConsoleLog")
   SaveOrigFunc("ShowPopupNotification")
-  SaveOrigFunc("GetFreeWorkplacesAround")
-  SaveOrigFunc("GetFreeWorkplaces")
-  SaveOrigFunc("GetFreeLivingSpace")
+  SaveOrigFunc("GetMissingMods")
+  SaveOrigFunc("IsDlcAvailable")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+  local UserSettings = ChoGGi.UserSettings
 
-  -- missing workplaces/residences
-  if ChoGGi.UserSettings.MissingWorkplacesResidencesFix then
-    local cleaned_work
-
-    local function CleanWork(city)
-      local work = city.labels.Workplace or empty_table
-      if not cleaned_work then
-        for i = #work, 1, -1 do
-          if work[i].class == "UnpersistedMissingClass" then
-            DoneObject(work[i])
-            table.remove(work,i)
-          end
-        end
-        cleaned_work = true
-      end
+  if UserSettings.SkipMissingMods then
+    --stops confirmation dialog about missing mods (still lets you know they're missing)
+    function GetMissingMods()
+      return "", false
     end
+  end
 
-    function GetFreeWorkplacesAround(dome)
-      local city = dome.city or UICity
-      CleanWork(city)
-      return ChoGGi_OrigFuncs.GetFreeWorkplacesAround(city)
-    end
-
-    function GetFreeWorkplaces(city)
-      CleanWork(city)
-      return ChoGGi_OrigFuncs.GetFreeWorkplaces(city)
-    end
-
-    local cleaned_res
-
-    function GetFreeLivingSpace(city, count_children)
-      local res = city.labels.Residence or empty_table
-      if not cleaned_res then
-        for i = #res, 1, -1 do
-          if res[i].class == "UnpersistedMissingClass" then
-            DoneObject(res[i])
-            table.remove(res,i)
-          end
-        end
-        cleaned_res = true
-      end
-
-      return ChoGGi_OrigFuncs.GetFreeLivingSpace(city, count_children)
+  if UserSettings.SkipMissingDLC then
+    --lets you load saved games that have dlc
+    function IsDlcAvailable()
+      return true
     end
   end
 
@@ -481,20 +448,6 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
 --~   SaveOrigFunc("RCRover","LeadIn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
   local UserSettings = ChoGGi.UserSettings
-
-  if UserSettings.SkipMissingMods then
-    --stops confirmation dialog about missing mods (still lets you know they're missing)
-    function GetMissingMods()
-      return "", false
-    end
-  end
-
-  if UserSettings.SkipMissingDLC then
-    --lets you load saved games that have dlc
-    function IsDlcAvailable()
-      return true
-    end
-  end
 
 --~   function RCRover:LeadIn(drone)
 --~     self.drone_charged = drone

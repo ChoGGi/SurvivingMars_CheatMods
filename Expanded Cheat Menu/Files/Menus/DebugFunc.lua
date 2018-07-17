@@ -11,7 +11,6 @@ local Clamp = Clamp
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
-local DoneObject = DoneObject
 local EditorState = EditorState
 local GetCamera = GetCamera
 local GetEditorInterface = GetEditorInterface
@@ -216,7 +215,7 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
     MeasureTool.enabled = true
     g_Classes.MeasureTool.OnLButtonDown(GetTerrainCursor())
   else
-    DoneObject(MeasureTool.object)
+    MeasureTool.object:delete()
     MeasureTool.enabled = false
   end
 end
@@ -298,7 +297,7 @@ local function AnimDebug_Hide(Obj)
   local att = Obj:GetAttaches() or empty_table
   for i = 1, #att do
     if att[i].ChoGGi_AnimDebug then
-      DoneObject(att[i]) --:delete()
+      att[i]:delete()
     end
   end
 end
@@ -427,7 +426,7 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
   --check for any opened windows and kill them
   for i = 1, #terminal.desktop do
     if terminal.desktop[i]:IsKindOf("ObjectsStatsDlg") then
-      DoneObject(terminal.desktop[i]) --:delete()
+      terminal.desktop[i]:delete()
     end
   end
   --open a new copy
@@ -534,7 +533,7 @@ do --hex rings
       build_grid_debug_thread = false
       if build_grid_debug_objs then
         for i = 1, #build_grid_debug_objs do
-          DoneObject(build_grid_debug_objs[i])
+          build_grid_debug_objs[i]:delete()
         end
         build_grid_debug_objs = false
       end
@@ -823,7 +822,7 @@ do --path markers
             --remove old wps
             if type(Obj.ChoGGi_Stored_Waypoints) == "table" then
               for i = #Obj.ChoGGi_Stored_Waypoints, 1, -1 do
-                DoneObject(Obj.ChoGGi_Stored_Waypoints[i])--:delete()
+                Obj.ChoGGi_Stored_Waypoints[i]:delete()
               end
             end
             Obj.ChoGGi_Stored_Waypoints = {}
@@ -856,7 +855,7 @@ do --path markers
           local pos = tostring(wp:GetPos())
           if dupewppos[pos] then
             dupewppos[pos]:SetColorModifier(6579300)
-            DoneObject(wp) --:delete()
+            wp:delete()
           else
             dupewppos[pos] = Obj.ChoGGi_Stored_Waypoints[i]
           end
@@ -886,7 +885,7 @@ do --path markers
 
       if type(Objs[i].ChoGGi_Stored_Waypoints) == "table" then
         for j = #Objs[i].ChoGGi_Stored_Waypoints, 1, -1 do
-          DoneObject(Objs[i].ChoGGi_Stored_Waypoints[j])
+          Objs[i].ChoGGi_Stored_Waypoints[j]:delete()
         end
         Objs[i].ChoGGi_Stored_Waypoints = nil
       end
@@ -924,7 +923,7 @@ do --path markers
         local lines = GetObjects{class = "Polyline"} or empty_table
         for i = 1, #lines do
           if lines[i].ChoGGi_WaypointPath then
-            DoneObject(lines[i])
+            lines[i]:delete()
           end
         end
 

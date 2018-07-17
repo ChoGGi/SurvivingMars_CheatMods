@@ -8,7 +8,6 @@ local T = ChoGGi.ComFuncs.Trans
 local pairs,pcall,type,tostring = pairs,pcall,type,tostring
 
 local CreateRealTimeThread = CreateRealTimeThread
-local DoneObject = DoneObject
 local FindNearestObject = FindNearestObject
 local ForEach = ForEach
 local GenerateColonistData = GenerateColonistData
@@ -74,12 +73,12 @@ end
 local function ResetRover(rc)
   if rc.attached_drones then
     for i = 1, #rc.attached_drones do
-      DoneObject(rc.attached_drones[i])
+      rc.attached_drones[i]:delete()
     end
   end
   local pos = rc:GetVisualPos()
   local new = rc:Clone()
-  DoneObject(rc)
+  rc:delete()
   new:SetPos(GetPassablePointNearby(pos))
 end
 
@@ -167,7 +166,7 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
           if type(c.Done) == "function" then
             c:Done()
           end
-          DoneObject(c)
+          c:delete()
         end
       end
     end
@@ -189,7 +188,7 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
       if type(c.Done) == "function" then
         c:Done()
       end
-      DoneObject(c)
+      c:delete()
     end
   end
 end
@@ -215,7 +214,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
         if type(c.Done) == "function" then
           c:Done()
         end
-        DoneObject(c)
+        c:delete()
       end
     end
   end
@@ -327,7 +326,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	ForEach{
 		class = "GridTile",
 		exec = function(obj)
-      DoneObject(obj)
+      obj:delete()
 		end
 	}
 end
@@ -336,7 +335,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	ForEach{
 		class = "RangeHexRadius",
 		exec = function(obj)
-      DoneObject(obj)
+      obj:delete()
 		end
 	}
 end
@@ -524,7 +523,7 @@ end
 --~   local objs = GetObjects{class = classname} or empty_table
 --~   print(#objs," = ",classname)
 --~   for i = 1, #objs do
---~     DoneObject(objs[i])
+--~     objs[i]:delete()
 --~   end
 --~ end
 

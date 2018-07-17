@@ -95,8 +95,8 @@ ChoGGi.Defaults = {
   ConsoleHistoryMenuLength = 50,
   -- shows how many ticks it takes between the start of ECM and when the game loads
   ShowStartupTicks = false,
-  -- if mod added work/res and user removed removed mod without removing buildings then inf loop
-  MissingWorkplacesResidencesFix = false,
+  -- if a mod added certain buildings and user removed removed mod without removing buildings then inf loop
+  FixMissingModBuildings = false,
   -- Mod Editor shows the help page every single time you open it.
   SkipModHelpPage = true,
   -- stores custom settings for each building
@@ -171,7 +171,7 @@ if ChoGGi.Testing then
   -- add extra debugging defaults for me
   ChoGGi.Defaults.ShowStartupTicks = true
   ChoGGi.Defaults.WriteLogs = true
-  ChoGGi.Defaults.MissingWorkplacesResidencesFix = true
+  ChoGGi.Defaults.FixMissingModBuildings = true
   -- and maybe a bit of class
   ChoGGi.Defaults.Transparency = {
 		HUD = 50,

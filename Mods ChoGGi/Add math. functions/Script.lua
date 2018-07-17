@@ -182,12 +182,14 @@ math = {
 --~   When called without arguments, returns a pseudo-random float with uniform distribution in the range [0,1).
 --~   When called with two integers m and n, math.random returns a pseudo-random integer with uniform distribution in the range [m, n].
 --~   (The value n-m cannot be negative and must fit in a Lua integer.) The call math.random(n) is equivalent to math.random(1,n).
---~   This function is an interface to the underling pseudo-random generator function provided by C.
-  random = function(m,n)
-  -- i should probably implement this properly
---~     m = m or 0
---~     n = n or 1
-    return tonumber(TableConcat{"0.",AsyncRand(m)})
+  random = function(max,min)
+    if max and min then
+      return AsyncRand(max - min + 1) + min
+    elseif max then
+      return AsyncRand(max - 1 + 1) + 1
+    else
+      return tonumber(TableConcat{"0.",AsyncRand()})
+    end
   end,
 --~   Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
 --~   The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers.

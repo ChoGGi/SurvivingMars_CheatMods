@@ -1534,3 +1534,12 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
     end
   end)
 end
+
+function ChoGGi.CodeFuncs.DeleteAttaches(obj)
+  pcall(function()
+    local a = obj:GetAttaches() or empty_table
+    for i = #a, 1, -1 do
+      a[i]:delete()
+    end
+  end)
+end

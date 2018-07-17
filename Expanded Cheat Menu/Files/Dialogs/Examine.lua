@@ -908,7 +908,7 @@ local function Destroy_menu(o,self)
     function(answer)
       self:SetZOrder(z)
       if answer and IsValid(o) then
-    --~     DoneObject(o)
+    --~     o:delete()
         ChoGGi.CodeFuncs.DeleteObject(o)
       end
     end,

@@ -22,7 +22,6 @@ local box = box
 local CreateRealTimeThread = CreateRealTimeThread
 local CreateRolloverWindow = CreateRolloverWindow
 local DelayedCall = DelayedCall
-local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
 local GetLogFile = GetLogFile
@@ -471,13 +470,13 @@ do --g_Classes
     c:SetColor(color or RGB(255, 255, 255))
     DelayedCall(7000, function()
       if IsValid(c) then
-        DoneObject(c)
+        c:delete()
       end
     end)
 --~     CreateGameTimeThread(function()
 --~       Sleep(7000)
 --~       if IsValid(c) then
---~         DoneObject(c)
+--~         c:delete()
 --~       end
 --~     end)
   end
@@ -556,16 +555,16 @@ function ChoGGi.ComFuncs.Dump(obj,Mode,File,Ext,Skip)
 end
 
 function ChoGGi.ComFuncs.DumpLua(value)
-  local v_type = type(value)
-  local which = "TupleToLuaCode"
-  if v_type == "table" then
-    which = "TableToLuaCode"
-  elseif v_type == "string" then
-    which = "StringToLuaCode"
-  elseif v_type == "userdata" then
-    which = "ValueToLuaCode"
-  end
-  ChoGGi.ComFuncs.Dump(Concat("\r\n",_G[which](value)),nil,"DumpedLua","lua")
+--~   local v_type = type(value)
+--~   local which = "TupleToLuaCode"
+--~   if v_type == "table" then
+--~     which = "TableToLuaCode"
+--~   elseif v_type == "string" then
+--~     which = "StringToLuaCode"
+--~   elseif v_type == "userdata" then
+--~     which = "ValueToLuaCode"
+--~   end
+  ChoGGi.ComFuncs.Dump(Concat("\r\n",ValueToLuaCode(value)),nil,"DumpedLua","lua")
 end
 
 --[[
@@ -1773,7 +1772,7 @@ function ChoGGi.ComFuncs.ClearShowMe()
     for k, v in pairs(markers) do
       if IsValid(k) then
         if v == "point" then
-          DoneObject(k)
+          k:delete()
         else
           k:SetColorModifier(v)
         end

@@ -10,7 +10,6 @@ local print,type,tostring,string = print,type,tostring,string
 local cls = cls
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
-local DoneObject = DoneObject
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
 local GetInGameInterface = GetInGameInterface
@@ -158,7 +157,7 @@ do --FlattenGround
       ToggleHotkeys()
       are_we_flattening = false
       DeleteThread(are_we_flattening)
-      DoneObject(visual_circle)
+      visual_circle:delete()
       MsgPopup(
         T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
         T(904--[[Terrain--]]),
