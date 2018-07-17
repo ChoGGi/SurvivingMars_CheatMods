@@ -11,14 +11,16 @@ local ViewPos = ViewPos
 
 local function ClickObj(old,new,button)
   --skip selected dome
-  if not old then
+  if not old or not IsValid(new) then
     return
   end
-  if button == "L" and IsValid(new) then
+  if button == "L" then
     local c = old.labels.Colonist
     for i = #c, 1, -1 do
       c[i]:SetDome(new)
     end
+  elseif button == "R" then
+    ViewObjectMars(new)
   end
 end
 

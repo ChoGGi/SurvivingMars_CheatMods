@@ -30,8 +30,6 @@ SOFTWARE.]]
 local dofile,select,tostring,table,type = dofile,select,tostring,table,type
 local AsyncFileOpen = AsyncFileOpen
 local dofolder_files = dofolder_files
--- needed?
-local oldTableConcat = oldTableConcat
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
