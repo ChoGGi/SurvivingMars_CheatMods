@@ -6,6 +6,9 @@ Fixes>Toggles>Broked Transport Pathing: RC Transports on a route have a certain 
 Changed:
 Examine shows more info about functions/threads.
 
+Fixed:
+Cheats pane was missing some items.
+
 v6.5
 Added:
 Examine>Tools>Functions: Shows a list of all functions.

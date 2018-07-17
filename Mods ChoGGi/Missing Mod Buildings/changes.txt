@@ -1,0 +1,2 @@
+v0.2
+Disabled a fix that may do more harm than good (it was just for removing some errors from log).

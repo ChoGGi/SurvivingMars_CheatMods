@@ -2,20 +2,22 @@
 
 local table,pairs,type = table,pairs,type
 
-function OnMsg.ClassesGenerate()
-  -- less of a fix, and more of a less garbage in console
-  local ChoGGi_OrigFuncs = {
-    ResourceStockpileBase_SetCountInternal = ResourceStockpileBase.SetCountInternal
-  }
-  function ResourceStockpileBase:SetCountInternal(new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
-    if type(placed_cubes) == "boolean" then
-      placed_cubes = {}
-    end
-    if type(self.AttachObject) == "function" then
-      return ChoGGi_OrigFuncs.ResourceStockpileBase_SetCountInternal(self, new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
-    end
-  end
-end
+--~ function OnMsg.ClassesGenerate()
+
+--~   -- less of a fix, and more of a less garbage in console
+--~   local ChoGGi_OrigFuncs = {
+--~     ResourceStockpileBase_SetCountInternal = ResourceStockpileBase.SetCountInternal
+--~   }
+--~   function ResourceStockpileBase:SetCountInternal(new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
+--~     if type(placed_cubes) == "boolean" then
+--~       placed_cubes = {}
+--~     end
+--~     if type(self.AttachObject) == "function" then
+--~       return ChoGGi_OrigFuncs.ResourceStockpileBase_SetCountInternal(self, new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
+--~     end
+--~   end
+
+--~ end
 
 function OnMsg.ClassesPreprocess()
   -- stops crashing with certain missing pinned objects
