@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "title", [["math." Functions v0.4]],
-  "version", 4,
+  "title", [["math." Functions v0.3]],
+  "version", 3,
   "saved", 1531915200,
   "id", "ChoGGi_AddMathFunctions",
   "author", "ChoGGi",
