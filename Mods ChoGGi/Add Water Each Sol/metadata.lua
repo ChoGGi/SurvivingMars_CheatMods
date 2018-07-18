@@ -9,5 +9,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1440164001",
   "description", [[Adds 50 units of water to any visible deposits each new Sol.
 
-This will not increase the capacity, so if the deposit is full that's it.]],
+This will not increase the capacity, so if the deposit is full that's it.
+
+You can adjust the amount added with ModConfig.]],
 })

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", [["math." Functions v0.2]],
-  "version", 2,
-  "saved", 1531828800,
+  "title", [["math." Functions v0.4]],
+  "version", 4,
+  "saved", 1531915200,
   "id", "ChoGGi_AddMathFunctions",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
@@ -20,7 +20,7 @@ Implemented:
 abs,ceil,deg,exp,floor,fmod,huge,log,max,maxinteger,min,mininteger,modf,pi,rad,random,randomseed,sqrt,tointeger,type,ult
 
 Not implemented yet:
-cos,sin,tan,acos,atan
+cos,sin,tan,acos,asin,atan
 
 Known Issues:
 math.random() will never return 1
@@ -29,5 +29,6 @@ I'm only implementing the ones listed in the manual, if you have some to add: fe
 
 Functions should return values according to:
 https://www.lua.org/manual/5.3/manual.html#6.7
-I included a compiled copy of lua.exe, if the result it gives is different then my func: Please let me know.]],
+You can test results with a copy of lua.exe (https://github.com/HazeProductions/Lua-x64).
+If the result it gives is different then my func: Please let me know.]],
 })

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
-local LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
+local LICENSE = [[
+Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
 
 All of my code is licensed under the MIT License as follows:
 
@@ -24,7 +25,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.]]
+SOFTWARE.
+]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,table,type = dofile,select,tostring,table,type
@@ -144,10 +146,9 @@ do -- translate
     if not pcall(function()
       LoadTranslationTableFile(file)
     end) then
-      local err = [[Problem loading locale: %s
+      DebugPrintNL(string.format([[Problem loading locale: %s
 
-        Please send me latest log file: %s]]
-      DebugPrintNL(err:format(file,ChoGGi.email))
+Please send me latest log file: %s]],file,ChoGGi.email))
     end
   end
 

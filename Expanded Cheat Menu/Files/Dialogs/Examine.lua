@@ -873,7 +873,8 @@ function Examine:totextex(o)
       dbg_value = Concat(dbg_value,"\n",key,": ",value)
     end
     res[#res+1] = dbg_value
-    res[#res+1] = Concat("\nGetStack:\n",GetStack(o))
+--~     res[#res+1] = Concat("\nGetStack:\n",GetStack(o))
+    res[#res+1] = Concat("\nGetStack:\n",GetStack())
   end
 
   return TConcat(res,"\n")

@@ -14,5 +14,13 @@ If you installed a mod that adds certain buildings, then removed the mod without
 
 This fixes that, and will remove any broked buildings.
 
-You can remove this mod after saving your game, or leave it enabled.]],
+You can remove this mod after saving your game, or leave it enabled.
+
+
+
+
+BACKUP your save before using this.
+
+
+]],
 })

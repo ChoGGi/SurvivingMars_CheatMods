@@ -3,7 +3,6 @@
 local table,pairs,type = table,pairs,type
 
 --~ function OnMsg.ClassesGenerate()
-
 --~   -- less of a fix, and more of a less garbage in console
 --~   local ChoGGi_OrigFuncs = {
 --~     ResourceStockpileBase_SetCountInternal = ResourceStockpileBase.SetCountInternal
@@ -16,7 +15,6 @@ local table,pairs,type = table,pairs,type
 --~       return ChoGGi_OrigFuncs.ResourceStockpileBase_SetCountInternal(self, new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
 --~     end
 --~   end
-
 --~ end
 
 function OnMsg.ClassesPreprocess()
@@ -27,12 +25,12 @@ function OnMsg.ClassesPreprocess()
 end
 
 function OnMsg.PersistPostLoad()
-  --[LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
+  -- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
   if type(ControllerMarkers) == "boolean" then
     ControllerMarkers = {}
   end
 
-  --[LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
+  -- [LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
   local s_Heaters = s_Heaters
   for obj,_ in pairs(s_Heaters) do
     if obj:IsKindOf("UnpersistedMissingClass") then
@@ -40,7 +38,8 @@ function OnMsg.PersistPostLoad()
     end
   end
 
-  --GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
+  -- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
+  -- (what used to be missing workplaces/residences)
   local UICity = UICity
   for _,label in pairs(UICity.labels or empty_table) do
     for i = #label, 1, -1 do
@@ -61,4 +60,5 @@ function OnMsg.PersistPostLoad()
       end
     end
   end
+
 end
