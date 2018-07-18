@@ -29,6 +29,6 @@ I'm only implementing the ones listed in the manual, if you have some to add: fe
 
 Functions should return values according to:
 https://www.lua.org/manual/5.3/manual.html#6.7
-You can test results with a copy of lua.exe (https://github.com/HazeProductions/Lua-x64).
+You can test results with a copy of lua.exe: https://github.com/HazeProductions/Lua-x64.
 If the result it gives is different then my func: Please let me know.]],
 })

@@ -27,19 +27,16 @@ SOFTWARE.
 ]]
 
 -- local any funcs used below
-local select,tonumber,tostring = select,tonumber,tostring
+local tonumber,tostring,pcall = tonumber,tostring,pcall
 local AsyncRand = AsyncRand
-local AsyncFileOpen = AsyncFileOpen
 
+-- easy place to store some info
 local ChoGGi_math = {
   _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_AddMathFunctions",
 }
 ChoGGi_math.ModPath = Mods[ChoGGi_math.id].path
-local function FileExists(file)
-  return select(2,AsyncFileOpen(file))
-end
 
 -- just in case they remove oldTableConcat
 local TableConcat
@@ -62,13 +59,14 @@ Please send me latest log file: %s]],file,ChoGGi_math.email))
 
   -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
   local locale_file = TableConcat{ChoGGi_math.ModPath,"Locales/",GetLanguage(),".csv"}
-  if FileExists(locale_file) then
+  if AsyncFileOpen(locale_file) then
     LoadLocale(locale_file)
   else
     LoadLocale(TableConcat{ChoGGi_math.ModPath,"Locales/","English.csv"})
   end
   Msg("TranslationChanged")
 end
+-- locale id to string
 local function t(str)
   return _InternalTranslate(T{str})
 end

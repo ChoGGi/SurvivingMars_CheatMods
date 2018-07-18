@@ -1,4 +1,3 @@
-v0.4
 v0.3
 Fixed: math.fmod, math.modf, math.log, math.random(n).
 More unit testing.

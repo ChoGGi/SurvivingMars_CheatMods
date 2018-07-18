@@ -825,12 +825,13 @@ function ChoGGi.MenuFuncs.FillResource()
 
   if type(sel.CheatFill) == "function" then
     sel:CheatFill()
-  elseif type(self.CheatRefill) == "function" then
+  end
+  if type(sel.CheatRefill) == "function" then
     sel:CheatRefill()
   end
 
   MsgPopup(
-    T(302535920001198--[[Resouce Filled--]]),
+    T(302535920001198--[[Resource Filled--]]),
     T(15--[[Resource--]]),
     default_icon3
   )

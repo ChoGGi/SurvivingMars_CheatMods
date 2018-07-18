@@ -238,19 +238,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
   SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
   SaveOrigFunc("BaseRover","GetCableNearby")
   SaveOrigFunc("GridObject","GetPipeConnections")
-  SaveOrigFunc("ResourceStockpileBase","SetCountInternal")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
-  if ChoGGi.UserSettings.FixMissingModBuildings then
-    function ResourceStockpileBase:SetCountInternal(new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
-      if type(placed_cubes) == "boolean" then
-        placed_cubes = {}
-      end
-      if type(self.AttachObject) == "function" then
-        return ChoGGi_OrigFuncs.ResourceStockpileBase_SetCountInternal(self, new_count, count, resource, placed_cubes, placement_offset, group_angle, single_angle)
-      end
-    end
-  end
 
   do -- Large Water Tank + Pipes + Chrome skin = broked looking pipes
     local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight", }

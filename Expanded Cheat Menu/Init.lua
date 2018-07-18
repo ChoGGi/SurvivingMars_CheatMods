@@ -29,7 +29,7 @@ SOFTWARE.
 ]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,table,type = dofile,select,tostring,table,type
+local dofile,select,tostring,type,pcall,table = dofile,select,tostring,type,pcall,table
 local AsyncFileOpen = AsyncFileOpen
 local dofolder_files = dofolder_files
 
@@ -126,8 +126,7 @@ do -- load script files
     ChoGGi.Testing = true
 
     ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
-    -- from here to the end of OnMsg.ChoGGi_Loaded()
-    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+
   else
     if FileExists(Concat(ChoGGi.ModPath,"Defaults.lua")) then
       -- if file exists then user likely unpacked the files, and moved them up a dir
@@ -174,6 +173,11 @@ do -- ECM
 
   -- read settings from AppData/CheatMenuModSettings.lua
   ChoGGi.SettingFuncs.ReadSettings()
+
+  if ChoGGi.Testing or ChoGGi.UserSettings.ShowStartupTicks then
+    -- from here to the end of OnMsg.ChoGGi_Loaded()
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+  end
 
   --bloody hint popups
   if ChoGGi.UserSettings.DisableHints then
