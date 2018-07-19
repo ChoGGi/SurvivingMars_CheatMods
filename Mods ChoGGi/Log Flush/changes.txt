@@ -1,0 +1,3 @@
+v0.2
+Flushes at a couple new places.
+Added commented out options for NewHour/NewMinute.
