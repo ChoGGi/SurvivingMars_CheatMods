@@ -5,7 +5,6 @@ local AddAction = ChoGGi.ComFuncs.AddAction
 local T = ChoGGi.ComFuncs.Trans
 
 local icon = "AlignSel.tga"
-local icon2 = "Cube.tga"
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
@@ -28,7 +27,7 @@ AddAction(
   end,
   nil,
   T(302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block overrides).--]]),
-  icon2
+  "SelectByClassName.tga"
 )
 
 AddAction(
@@ -38,7 +37,7 @@ AddAction(
   end,
   nil,
   T(302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]),
-  icon2
+  "SelectByClassName.tga"
 )
 
 AddAction(
@@ -46,7 +45,7 @@ AddAction(
   ChoGGi.MenuFuncs.TheSoylentOption,
   ChoGGi.UserSettings.KeyBindings.TheSoylentOption,
   T(302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]),
-  icon2
+  "Cube.tga"
 )
 
 AddAction(

@@ -21,9 +21,10 @@ function OnMsg.ClassesBuilt()
 
   local orig_Drone_UseBattery = Drone.UseBattery
   function Drone:UseBattery(amount)
-    if not is_tech_researched then
-      orig_Drone_UseBattery(self, amount)
+    if is_tech_researched then
+      amount = 0
     end
+    orig_Drone_UseBattery(self, amount)
   end
 
 end

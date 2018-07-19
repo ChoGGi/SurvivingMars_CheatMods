@@ -91,6 +91,7 @@ local TGetID = TGetID
 local WaitWakeup = WaitWakeup
 
 local guim = guim
+local OnMsg = OnMsg
 
 local UserActions_GetActiveActions = UserActions.GetActiveActions
 
@@ -232,7 +233,7 @@ do --funcs without a class
 end
 
 --Gen
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
+function OnMsg.ClassesGenerate()
   SaveOrigFunc("UIRangeBuilding","SetUIRange")
   SaveOrigFunc("Workplace","AddWorker")
   SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
@@ -384,7 +385,7 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
 end --OnMsg
 
 --Pre
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
+function OnMsg.ClassesPreprocess()
   SaveOrigFunc("InfopanelObj","CreateCheatActions")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
@@ -399,11 +400,11 @@ function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
 end --OnMsg
 
 --Post
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
+function OnMsg.ClassesPostprocess()
 end --OnMsg
 
 --Built
-function ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+function OnMsg.ClassesBuilt()
   SaveOrigFunc("Colonist","ChangeComfort")
   SaveOrigFunc("Console","Exec")
   SaveOrigFunc("Console","HistoryDown")

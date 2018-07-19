@@ -621,30 +621,6 @@ function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
   end
 end
 
---[[
-ChoGGi.ComFuncs.DumpObject(Consts)
-ChoGGi.ComFuncs.DumpObject(const)
-if you want to dump functions as well DumpObject(object,true)
---]]
-function ChoGGi.ComFuncs.DumpObject(Obj,Mode,Funcs)
-  local ChoGGi = ChoGGi
-  if not Obj then
-    MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
-    return
-  end
-
-  local Text = ""
-  for k,v in pairs(Obj) do
-    if k ~= nil then
-      Text = Concat(Text,"\n",tostring(k)," = ")
-    end
-    if v ~= nil then
-      Text = Concat(Text,tostring(ChoGGi.ComFuncs.RetTextForDump(v,Funcs)))
-    end
-  end
-  ChoGGi.ComFuncs.Dump(Text,Mode)
-end
-
 function ChoGGi.ComFuncs.RetTextForDump(obj,funcs)
   local obj_type = type(obj)
   if obj_type == "userdata" then

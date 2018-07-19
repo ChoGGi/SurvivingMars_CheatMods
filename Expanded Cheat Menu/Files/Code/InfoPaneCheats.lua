@@ -15,7 +15,7 @@ local RebuildInfopanel = RebuildInfopanel
 
 local pf_SetStepLen = pf.SetStepLen
 
-function ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
+function OnMsg.ClassesGenerate()
   local g_Classes = g_Classes
 
 --~ global objects

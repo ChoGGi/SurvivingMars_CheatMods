@@ -68,5 +68,6 @@ For more info see Menu>Help>ECM>Readme
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
-unluac: https://sourceforge.net/projects/unluac/]],
+unluac: https://sourceforge.net/projects/unluac/
+Everyone else giving suggestions/pointing out issues.]],
 })

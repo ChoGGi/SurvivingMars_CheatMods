@@ -191,7 +191,6 @@ restart : or reboot
 OpenExamine(Consts) : or ex(SelectedObj)
 dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
-dumpobject(SelectedObj) : or dumpo
 dumptable(Consts) : or dumpt
 trans() : translate userdata: ********** or 6543256 to text
 SelectedObj : or s
@@ -210,7 +209,7 @@ $example to translate userdata/stringbase
 &handle to open object in examiner
 *r/*g to wrap code in real/game time threads
 
-If you want to overwrite instead of append text: dumpobject(Presets.TechPreset,"w")
+If you want to overwrite instead of append text: dumplua(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
 If you want to save the console text: Debug>Write Logs (very helpful for examining an object)
 
@@ -253,4 +252,5 @@ chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedeta
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
+Everyone else giving suggestions/pointing out issues.
 ```

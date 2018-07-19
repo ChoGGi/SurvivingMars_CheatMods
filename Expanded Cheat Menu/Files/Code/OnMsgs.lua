@@ -1,7 +1,5 @@
 --  See LICENSE for terms
 
---  i like keeping all my OnMsgs in one file (go go gadget anal retentiveness)
-
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
@@ -33,17 +31,12 @@ local g_Classes = g_Classes
 local OnMsg = OnMsg
 
 -- use this message to mess with the classdefs (before classes are built)
--- function OnMsg.ClassesGenerate(classdefs)
-function OnMsg.ClassesGenerate()
-  local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesGenerate()
-  ChoGGi.MsgFuncs.InfoPaneCheats_ClassesGenerate()
-end --OnMsg
+--~ function OnMsg.ClassesGenerate(classdefs)
+--~ end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
-  local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPreprocess()
+--~   local ChoGGi = ChoGGi
 
 --~   InfopanelItems.LayoutMethod = "VList"
 --~   InfopanelItems.MaxWidth = 500
@@ -77,47 +70,18 @@ end
 
 -- where we can add new BuildingTemplates
 -- use this message to make modifications to the built classes (before they are declared final)
-function OnMsg.ClassesPostprocess()
-  local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesPostprocess()
-
---~   --don't show cheats pane if we don't have any to show
---~   XTemplates.sectionCheats[1].__condition = function(parent, context)
---~     --no sense in doing anything without cheats pane enabled
---~     if not config.BuildingInfopanelCheats then
---~       return false
---~     end
---~     --break on the first cheat we find
---~     local t = getmetatable(g_Classes[context.class])
---~     local cheats
---~     while type(t) == "table" do
---~       for name, value in pairs(t) do
---~         if type(name) == "string" and type(value) == "function" and name:starts_with("Cheat") then
---~           cheats = true
---~           break
---~         end
---~         t = getmetatable(t)
---~         t = t and t.__index
---~       end
---~     end
---~     if cheats then
---~       return context:CreateCheatActions(parent)
---~     end
---~   end
-
-end
+--~ function OnMsg.ClassesPostprocess()
+--~ end
 
 -- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
-  local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.ReplacedFunctions_ClassesBuilt()
+--~   local ChoGGi = ChoGGi
+  local XTemplates = XTemplates
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
     BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T(1000155--[[Hidden--]]),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
-
-  local XTemplates = XTemplates
 
   -- don't show cheats pane for ResourceOverview
   XTemplates.sectionCheats[1].__condition = function(parent, context)
@@ -183,11 +147,9 @@ function OnMsg.ClassesBuilt()
 
 end --OnMsg
 
-function OnMsg.OptionsApply()
-  ChoGGi.MsgFuncs.Defaults_OptionsApply()
-end --OnMsg
-
 function OnMsg.ModsLoaded()
+  local ChoGGi = ChoGGi
+
 --~ 	ForEachPreset("Cargo", function(cargo, group, self, props)
 --~     if cargo.id == "RegolithExtractor" then
 --~       -- needed to show it in the menu
@@ -199,13 +161,6 @@ function OnMsg.ModsLoaded()
 --~     end
 --~   end)
 
-  local ChoGGi = ChoGGi
-  ChoGGi.MsgFuncs.Defaults_ModsLoaded()
-
-  --everyone loves a new titlebar, unless they don't
-  if ChoGGi.UserSettings.ChangeWindowTitle then
-    terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
-  end
   --genders/ages/traits/specs/birthplaces
   ChoGGi.ComFuncs.UpdateColonistsTables()
 end
@@ -1201,6 +1156,11 @@ function OnMsg.ChoGGi_Loaded()
   local msgs = ChoGGi.Temp.StartupMsgs
   for i = 1, #msgs do
     print(msgs[i])
+  end
+
+  --everyone loves a new titlebar, unless they don't
+  if UserSettings.ChangeWindowTitle then
+    terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
   end
 
   --someone doesn't like LICENSE files...

@@ -47,10 +47,8 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   --make some easy to type names
   local ChoGGi = ChoGGi
   function dump(...)ChoGGi.ComFuncs.Dump(...)end
-  function dumpobject(...)ChoGGi.ComFuncs.DumpObject(...)end
   function dumplua(...)ChoGGi.ComFuncs.DumpLua(...)end
   function dumptable(...)ChoGGi.ComFuncs.DumpTable(...)end
-  function dumpo(...)ChoGGi.ComFuncs.DumpObject(...)end
   function dumpl(...)ChoGGi.ComFuncs.DumpLua(...)end
   function dumpt(...)ChoGGi.ComFuncs.DumpTable(...)end
   function alert(...)MsgPopup(...)end

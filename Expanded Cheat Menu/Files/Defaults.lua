@@ -26,30 +26,33 @@ do
   ChoGGi.Tables = {
     --display names only! (stored as numbers, not names like the rest; which is why i guessed)
     ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
+
     --Some names need to be fixed when doing construction placement
     ConstructionNamesListFix = {
       RCRover = "RCRoverBuilding",
       RCDesireTransport = "RCDesireTransportBuilding",
       RCTransport = "RCTransportBuilding",
       ExplorerRover = "RCExplorerBuilding",
-      Rocket = "SupplyRocket"
+      Rocket = "SupplyRocket",
     },
-    SchoolTraits = const.SchoolTraits,
-    SanatoriumTraits = const.SanatoriumTraits,
     --for mystery menu items (added below after mods load)
-    Mystery = {}
+    Mystery = {},
   }
 
   --genders/ages/traits/specs/birthplaces
   ChoGGi.ComFuncs.UpdateColonistsTables()
 
-  --maybe if a mod removed them?
-  if #const.SchoolTraits < 5 then
+  if #const.SchoolTraits == 5 then
+    ChoGGi.Tables.SchoolTraits = const.SchoolTraits
+  else
     ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
   end
-  if #const.SanatoriumTraits < 7 then
+  if #const.SanatoriumTraits == 7 then
+    ChoGGi.Tables.SanatoriumTraits = const.SanatoriumTraits
+  else
     ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
   end
+
 end
 
 -- stores defaults
@@ -166,6 +169,7 @@ ChoGGi.Defaults = {
   -- if transport on a route has a broked route then lag happens (can't set faster game speeds)
   CheckForBrokedTransportPath = true,
 }
+-- my defaults
 if ChoGGi.Testing then
   local ChoGGi = ChoGGi
   -- add extra debugging defaults for me
@@ -428,7 +432,7 @@ If you can delete it and still get this error; please send it and this log to th
 end
 
 --OptionsApply is the earliest we can call Consts:GetProperties()
-function ChoGGi.MsgFuncs.Defaults_OptionsApply()
+function OnMsg.OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts
 
@@ -470,9 +474,34 @@ function ChoGGi.MsgFuncs.Defaults_OptionsApply()
   ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
-function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
+--used to add old lists to new combined list
+local function AddOldSettings(OldCat,NewName)
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
+
+  --is there anthing in the table?
+  if type(ChoGGi.UserSettings[OldCat]) == "table" and next(ChoGGi.UserSettings[OldCat]) then
+    --then loop through it
+    for Key,Value in pairs(ChoGGi.UserSettings[OldCat]) do
+      --it likely doesn't exist, but check first and add a blank table
+      if not ChoGGi.UserSettings.BuildingSettings[Key] then
+        ChoGGi.UserSettings.BuildingSettings[Key] = {}
+      end
+      --add it to vistors list?
+      if NewName == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
+        ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
+      else
+        ChoGGi.UserSettings.BuildingSettings[Key][NewName] = Value
+      end
+    end
+  end
+  --remove old settings
+  ChoGGi.UserSettings[OldCat] = nil
+  return true
+end
+
+function OnMsg.ModsLoaded()
+  local ChoGGi = ChoGGi
   --remove empty entries in BuildingSettings
   if next(ChoGGi.UserSettings.BuildingSettings) then
     --remove any empty building tables
@@ -483,29 +512,6 @@ function ChoGGi.MsgFuncs.Defaults_ModsLoaded()
     end
   --if empty table then new settings file or old settings
   else
-    --used to add old lists to new combined list
-    local function AddOldSettings(OldCat,NewName)
-      --is there anthing in the table?
-      if type(ChoGGi.UserSettings[OldCat]) == "table" and next(ChoGGi.UserSettings[OldCat]) then
-        --then loop through it
-        for Key,Value in pairs(ChoGGi.UserSettings[OldCat]) do
-          --it likely doesn't exist, but check first and add a blank table
-          if not ChoGGi.UserSettings.BuildingSettings[Key] then
-            ChoGGi.UserSettings.BuildingSettings[Key] = {}
-          end
-          --add it to vistors list?
-          if NewName == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
-            ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
-          else
-            ChoGGi.UserSettings.BuildingSettings[Key][NewName] = Value
-          end
-        end
-      end
-      --remove old settings
-      ChoGGi.UserSettings[OldCat] = nil
-      --if not then we'll give an error msg for users
-      return true
-    end
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
     local errormsg = Concat(T(302535920000008--[[Error: Couldn't convert old settings to new settings--]]),": ")
     if not AddOldSettings("BuildingsCapacity","capacity") then
