@@ -405,11 +405,11 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       end
 
       ObjModified(NewObj)
+      -- be nice to populate with default values, but causes issues
       --[[
-      be nice to populate with default values, but causes issues
-      --local NewObj = PlaceObj(value,{"Pos",GetTerrainCursor()})
-      for _, prop in iXpairs(NewObj:GetProperties()) do
-        NewObj:SetProperty(prop.id, NewObj:GetDefaultPropertyValue(prop.id, prop))
+      local props = NewObj:GetProperties()
+      for i = 1, #props do
+        NewObj:SetProperty(props[i].id, NewObj:GetDefaultPropertyValue(props[i].id, props[i]))
       end
       --]]
 

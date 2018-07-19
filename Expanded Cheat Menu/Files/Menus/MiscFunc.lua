@@ -731,7 +731,6 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     if sel.dome and check1 then
       dome = sel.dome
     end
-    local value = choice[1].value
     if type(value) == "number" then
 
       if check2 then

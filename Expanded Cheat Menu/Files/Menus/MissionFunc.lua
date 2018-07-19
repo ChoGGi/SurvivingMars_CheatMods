@@ -7,25 +7,29 @@ local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 local type,tostring = type,tostring
 
-local PlaceObj = PlaceObj
 local CreateRealTimeThread = CreateRealTimeThread
-local WaitPopupNotification = WaitPopupNotification
-local Msg = Msg
 local GetMissionSponsor = GetMissionSponsor
+local Msg = Msg
+local PlaceObj = PlaceObj
+local RestartGlobalGameTimeThread = RestartGlobalGameTimeThread
+local WaitPopupNotification = WaitPopupNotification
 
 function ChoGGi.MenuFuncs.InstantMissionGoal()
-  local ChoGGi = ChoGGi
   local UICity = UICity
+
   local goal = UICity.mission_goal
   local target = GetMissionSponsor().goal_target + 1
-  --different goals use different targets, we'll just set them all
+  -- different goals use different targets, we'll just set them all
   goal.analyzed = target
   goal.amount = target
   goal.researched = target
-  --
   goal.colony_approval_sol = UICity.day
   ChoGGi.Temp.InstantMissionGoal = true
-  MsgPopup(T(302535920001158--[[Mission goal--]]),T(8076--[[Goal--]]),default_icon)
+  MsgPopup(
+    T(302535920001158--[[Mission goal--]]),
+    T(8076--[[Goal--]]),
+    default_icon
+  )
 end
 
 function ChoGGi.MenuFuncs.InstantColonyApproval()
@@ -52,14 +56,17 @@ The end of mankind. Doesn't matter where it hits. Nothing would survive, not eve
 end
 
 function ChoGGi.MenuFuncs.ChangeSponsor()
+  local Presets = Presets
+
   local ItemList = {}
-  local tab = Presets.MissionSponsorPreset.Default or empty_table
-  for i = 1, #tab do
-    if tab[i].id ~= "random" then
+  local defs = Presets.MissionSponsorPreset.Default or empty_table
+  for i = 1, #defs do
+    local def = defs[i]
+    if def.id ~= "random" then
       ItemList[#ItemList+1] = {
-        text = T(tab[i].display_name),
-        value = tab[i].id,
-        hint = T(tab[i].effect)
+        text = T(def.display_name),
+        value = def.id,
+        hint = T(def.effect)
       }
     end
   end
@@ -104,6 +111,9 @@ end
 
 --set just the bonus effects
 function ChoGGi.MenuFuncs.SetSponsorBonus()
+  local ChoGGi = ChoGGi
+  local Presets = Presets
+
   local ItemList = {}
   local tab = Presets.MissionSponsorPreset.Default or empty_table
   for i = 1, #tab do
@@ -225,6 +235,8 @@ end
 
 --set just the bonus effects
 function ChoGGi.MenuFuncs.SetCommanderBonus()
+  local Presets = Presets
+
   local ItemList = {}
   local tab = Presets.CommanderProfilePreset.Default or empty_table
   for i = 1, #tab do
@@ -292,6 +304,8 @@ end
 
 --pick a logo
 function ChoGGi.MenuFuncs.ChangeGameLogo()
+  local Presets = Presets
+
   local ItemList = {}
   local tab = Presets.MissionLogoPreset.Default or empty_table
   for i = 1, #tab do
@@ -364,6 +378,8 @@ function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
 end
 
 function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
+  local ChoGGi = ChoGGi
+
   local currentname = g_CurrentMissionParams.idMissionSponsor
   local sponsor = MissionParams.idMissionSponsor.items[currentname]
   local bonus = Presets.MissionSponsorPreset.Default[sType]
@@ -484,104 +500,141 @@ function ChoGGi.MenuFuncs.SetSponsorBonuses(sType)
   end
 end
 
---~ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
---~   local ItemList = {}
---~   local data = DataInstances[Concat("MapSettings_",sType)]
+function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
+  local mapdata = mapdata
 
---~   for i = 1, #data do
---~     ItemList[#ItemList+1] = {
---~       text = data[i].name,
---~       value = data[i].name
---~     }
---~   end
+  local ItemList = {}
+  local data = DataInstances[Concat("MapSettings_",sType)]
 
---~   local CallBackFunc = function(choice)
---~     mapdata[Concat("MapSettings_",sType})] = Concat(sType,"_",choice[1].value))
+  for i = 1, #data do
+    ItemList[#ItemList+1] = {
+      text = data[i].name,
+      value = data[i].name
+    }
+  end
 
---~     MsgPopup(Concat(sType," ",T(302535920001179--[[occurrence is now--]]),": ",choice[1].value),
---~       T(3983--[[Disasters--]]),"UI/Icons/Sections/attention.tga"
---~     )
---~   end
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
 
---~   ChoGGi.ComFuncs.OpenInListChoice{
---~     callback = CallBackFunc,
---~     items = ItemList,
---~     title = Concat(T(302535920000129--[[Set--]])," ",sType," ",T(302535920001180--[[Disaster Occurrences--]])),
---~     hint = Concat(T(302535920000106--[[Current--]]),": ",mapdata[Concat("MapSettings_",sType)]),
---~   }
---~ end
+    mapdata[Concat("MapSettings_",sType)] = value
+    if sType == "Meteor" then
+      RestartGlobalGameTimeThread("Meteors")
+      RestartGlobalGameTimeThread("MeteorStorm")
+    else
+      RestartGlobalGameTimeThread(sType)
+    end
 
---~ function ChoGGi.ChangeRules()
---~   local ItemList = {}
---~   for _,Value in iXpairs(Presets.GameRules.Default) do
---~     if Value.id ~= "random" then
---~       ItemList[#ItemList+1] = {
---~         text = T(Value.display_name),
---~         value = Value.id,
---~         hint = Concat(T(Value.description),"\n",T(Value.flavor))
---~       }
---~     end
---~   end
+    MsgPopup(
+      T(302535920001179--[[%s occurrence is now: %s--]]):format(sType,value),
+      T(3983--[[Disasters--]]),
+      "UI/Icons/Sections/attention.tga"
+    )
+  end
 
---~   local CallBackFunc = function(choice)
---~     local check1 = choice[1].check1
---~     local check2 = choice[1].check2
---~     if not check1 and not check2 then
---~       MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(302535920001181--[[Rules--]]),default_icon)
---~       return
---~     elseif check1 and check2 then
---~       MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(302535920001181--[[Rules--]]),default_icon)
---~       return
---~     end
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = Concat(T(302535920000129--[[Set--]])," ",sType," ",T(302535920001180--[[Disaster Occurrences--]])),
+    hint = Concat(T(302535920000106--[[Current--]]),": ",mapdata[Concat("MapSettings_",sType)]),
+  }
+end
 
---~     for i = 1, #ItemList do
---~       --check to make sure it isn't a fake name (no sense in saving it)
---~         for j = 1, #choice do
---~           local value = choice[j].value
---~           if ItemList[i].value == value then
---~             --new comm
---~             if not g_CurrentMissionParams.idGameRules then
---~               g_CurrentMissionParams.idGameRules = {}
---~             end
---~             if check1 then
---~               g_CurrentMissionParams.idGameRules[value] = true
---~             elseif check2 then
---~               g_CurrentMissionParams.idGameRules[value] = nil
---~             end
---~           end
---~         end
---~       end
+function ChoGGi.MenuFuncs.ChangeRules()
+  local Presets = Presets
+  local GameRulesMap = GameRulesMap
+  local g_CurrentMissionParams = g_CurrentMissionParams
 
---~     local rules = GetActiveGameRules()
---~     for _, rule_id in iXpairs(rules) do
---~       GameRulesMap[rule_id]:OnInitEffect(UICity)
---~       GameRulesMap[rule_id]:OnApplyEffect(UICity)
---~     end
---~     MsgPopup(Concat(T(302535920000129--[[Set--]]),": ",#choice),
---~       T(302535920001181--[[Rules--]]),default_icon
---~     )
---~   end
+  local ItemList = {}
+  local defs = Presets.GameRules.Default
+  for i = 1, #defs do
+    local def = defs[i]
+    if def.id ~= "random" then
+      ItemList[#ItemList+1] = {
+        text = T(def.display_name),
+        value = def.id,
+        hint = Concat(T(def.description),"\n",T(def.flavor))
+      }
+    end
+  end
 
---~   local hint = {}
---~   local rules = g_CurrentMissionParams.idGameRules
---~   if type(rules) == "table" and next(rules) then
---~     hint[#hint+1] = T(302535920000106--[[Current--]])
---~     hint[#hint+1] = ":"
---~     for Key,_ in pairs(rules) do
---~       hint[#hint+1] = " "
---~       hint[#hint+1] = T(Presets.GameRules.Default[Key].display_name)
---~     end
---~   end
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
 
---~   ChoGGi.ComFuncs.OpenInListChoice{
---~     callback = CallBackFunc,
---~     items = ItemList,
---~     title = T(302535920001182--[[Set Rules--]]),
---~     hint = Concat(hint),
---~     multisel = true,
---~     check1 = T(302535920001183--[[Add--]]),
---~     check1_hint = T(302535920001185--[[Add selected rules--]]),
---~     check2 = T(302535920000281--[[Remove--]]),
---~     check2_hint = T(302535920001186--[[Remove selected rules--]]),
---~   }
---~ end
+    local check1 = choice[1].check1
+    local check2 = choice[1].check2
+    if not check1 and not check2 then
+      MsgPopup(
+        T(302535920000038--[[Pick a checkbox next time...--]]),
+        T(302535920001181--[[Rules--]]),
+        default_icon
+      )
+      return
+    elseif check1 and check2 then
+      MsgPopup(
+        T(302535920000039--[[Don't pick both checkboxes next time...--]]),
+        T(302535920001181--[[Rules--]]),
+        default_icon
+      )
+      return
+    end
+
+    for i = 1, #ItemList do
+      --check to make sure it isn't a fake name (no sense in saving it)
+        for j = 1, #choice do
+          local value = choice[j].value
+          if ItemList[i].value == value then
+            --new comm
+            if not g_CurrentMissionParams.idGameRules then
+              g_CurrentMissionParams.idGameRules = {}
+            end
+            if check1 then
+              g_CurrentMissionParams.idGameRules[value] = true
+            elseif check2 then
+              g_CurrentMissionParams.idGameRules[value] = nil
+            end
+          end
+        end
+      end
+
+    local rules = GetActiveGameRules()
+    for i = 1, #rules do
+      local rule = rules[i]
+      GameRulesMap[rule]:OnInitEffect(UICity)
+      GameRulesMap[rule]:OnApplyEffect(UICity)
+    end
+    MsgPopup(
+      Concat(T(302535920000129--[[Set--]]),": ",#choice),
+      T(302535920001181--[[Rules--]]),
+      default_icon
+    )
+  end
+
+  local hint = {}
+  local rules = g_CurrentMissionParams.idGameRules
+  if type(rules) == "table" and next(rules) then
+    hint[#hint+1] = T(302535920000106--[[Current--]])
+    hint[#hint+1] = ":"
+    for Key,_ in pairs(rules) do
+      hint[#hint+1] = " "
+      hint[#hint+1] = T(Presets.GameRules.Default[Key].display_name)
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = T(302535920001182--[[Set Game Rules--]]),
+    hint = ChoGGi.ComFuncs.TableConcat(hint),
+    multisel = true,
+    check1 = T(302535920001183--[[Add--]]),
+    check1_hint = T(302535920001185--[[Add selected rules--]]),
+    check2 = T(302535920000281--[[Remove--]]),
+    check2_hint = T(302535920001186--[[Remove selected rules--]]),
+  }
+end

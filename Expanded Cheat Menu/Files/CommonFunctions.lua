@@ -1828,6 +1828,7 @@ function ChoGGi.ComFuncs.UpdateColonistsTables()
   ChoGGi.Tables.ColonistBirthplaces = {}
   ChoGGi.Tables.NegativeTraits = {}
   ChoGGi.Tables.PositiveTraits = {}
+  ChoGGi.Tables.OtherTraits = {}
   ChoGGi.Tables.ColonistAges = {}
   ChoGGi.Tables.ColonistGenders = {}
   ChoGGi.Tables.ColonistSpecializations = {}
@@ -1843,6 +1844,9 @@ function ChoGGi.ComFuncs.UpdateColonistsTables()
     elseif cat == "Negative" then
       ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = name
       ChoGGi.Tables.NegativeTraits[name] = true
+    elseif cat == "other" then
+      ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = name
+      ChoGGi.Tables.OtherTraits[name] = true
     elseif cat == "Age Group" then
       ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = name
       ChoGGi.Tables.ColonistAges[name] = true
@@ -1863,6 +1867,7 @@ function ChoGGi.ComFuncs.UpdateColonistsTables()
   table.sort(ChoGGi.Tables.ColonistBirthplaces)
   table.sort(ChoGGi.Tables.NegativeTraits)
   table.sort(ChoGGi.Tables.PositiveTraits)
+  table.sort(ChoGGi.Tables.OtherTraits)
   table.sort(ChoGGi.Tables.ColonistAges)
   table.sort(ChoGGi.Tables.ColonistGenders)
   table.sort(ChoGGi.Tables.ColonistSpecializations)

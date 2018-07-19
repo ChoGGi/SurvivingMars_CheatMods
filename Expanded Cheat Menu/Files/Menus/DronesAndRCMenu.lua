@@ -9,8 +9,13 @@ local iconRC = "HostGame.tga"
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
+local str_ECM = T(302535920000104--[[Expanded CM--]])
+local str_Drones = T(517--[[Drones--]])
+local str_Shuttles = T(745--[[Shuttles--]])
+local str_Rovers = T(5438--[[Rovers--]])
+
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000505--[[Work Radius RC Rover--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000505--[[Work Radius RC Rover--]])),
   ChoGGi.MenuFuncs.SetRoverWorkRadius,
   nil,
   T(302535920000506--[[Change RC Rover drone radius (this ignores slider).--]]),
@@ -18,7 +23,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000507--[[Work Radius DroneHub--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000507--[[Work Radius DroneHub--]])),
   ChoGGi.MenuFuncs.SetDroneHubWorkRadius,
   nil,
   T(302535920000508--[[Change DroneHub drone radius (this ignores slider).--]]),
@@ -26,7 +31,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000509--[[Drone Rock To Concrete Speed--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000509--[[Drone Rock To Concrete Speed--]])),
   ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed,
   nil,
   T(302535920000510--[[How long it takes drones to convert rock to concrete.--]]),
@@ -34,7 +39,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000511--[[Drone Move Speed--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000511--[[Drone Move Speed--]])),
   ChoGGi.MenuFuncs.SetDroneMoveSpeed,
   nil,
   T(302535920000512--[[How fast drones will move.--]]),
@@ -42,7 +47,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000513--[[Change Amount Of Drones In Hub--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000513--[[Change Amount Of Drones In Hub--]])),
   ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
   ChoGGi.UserSettings.KeyBindings.SetDroneAmountDroneHub,
   T(302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]),
@@ -50,7 +55,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000515--[[DroneFactory Build Speed--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000515--[[DroneFactory Build Speed--]])),
   ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed,
   nil,
   T(302535920000516--[[Change how fast drone factories build drones.--]]),
@@ -58,7 +63,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000517--[[Drone Gravity--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000517--[[Drone Gravity--]])),
   ChoGGi.MenuFuncs.SetGravityDrones,
   nil,
   T(302535920000518--[[Change gravity of Drones.--]]),
@@ -66,11 +71,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000519--[[Drone Battery Infinite--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000519--[[Drone Battery Infinite--]])),
   ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.DroneMoveBatteryUse,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.DroneMoveBatteryUse,
       302535920000519--[[Drone Battery Infinite--]]
     )
   end,
@@ -78,11 +84,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000521--[[Drone Build Speed--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000521--[[Drone Build Speed--]])),
   ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.DroneConstructAmount,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.DroneConstructAmount,
       302535920000522--[[Instant build/repair when resources are ready.--]]
     )
   end,
@@ -90,11 +97,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000523--[[Drone Meteor Malfunction--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000523--[[Drone Meteor Malfunction--]])),
   ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.DroneMeteorMalfunctionChance,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.DroneMeteorMalfunctionChance,
       302535920000524--[[Drones will not malfunction when close to a meteor impact site.--]]
     )
   end,
@@ -102,11 +110,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(4645--[[Drone Recharge Time--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(4645--[[Drone Recharge Time--]])),
   ChoGGi.MenuFuncs.DroneRechargeTime_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.DroneRechargeTime,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.DroneRechargeTime,
       302535920000526--[[Faster/Slower Drone Recharge.--]]
     )
   end,
@@ -114,11 +123,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000527--[[Drone Repair Supply Leak Speed--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000527--[[Drone Repair Supply Leak Speed--]])),
   ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.DroneRepairSupplyLeak,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.DroneRepairSupplyLeak,
       302535920000528--[[Faster Drone fix supply leak.--]]
     )
   end,
@@ -126,7 +136,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000529--[[Drone Carry Amount--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000529--[[Drone Carry Amount--]])),
   ChoGGi.MenuFuncs.SetDroneCarryAmount,
   nil,
   T(302535920000530--[[Change amount drones can carry.--]]),
@@ -134,7 +144,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000531--[[Drones Per Drone Hub--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000531--[[Drones Per Drone Hub--]])),
   ChoGGi.MenuFuncs.SetDronesPerDroneHub,
   nil,
   T(302535920000532--[[Change amount of drones Drone Hubs will command.--]]),
@@ -142,7 +152,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(517--[[Drones--]]),"/",T(302535920000533--[[Drones Per RC Rover--]])),
+  Concat(str_ECM,"/",str_Drones,"/",T(302535920000533--[[Drones Per RC Rover--]])),
   ChoGGi.MenuFuncs.SetDronesPerRCRover,
   nil,
   T(302535920000534--[[Change amount of drones RC Rovers will command.--]]),
@@ -151,7 +161,7 @@ AddAction(
 
 -------------Shuttles
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(745--[[Shuttles--]]),"/",T(302535920000535--[[Set ShuttleHub Shuttle Capacity--]])),
+  Concat(str_ECM,"/",str_Shuttles,"/",T(302535920000535--[[Set ShuttleHub Shuttle Capacity--]])),
   ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
   nil,
   T(302535920000536--[[Change amount of shuttles per shuttlehub.--]]),
@@ -159,7 +169,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(745--[[Shuttles--]]),"/",T(302535920000537--[[Set Capacity--]])),
+  Concat(str_ECM,"/",str_Shuttles,"/",T(302535920000537--[[Set Capacity--]])),
   ChoGGi.MenuFuncs.SetShuttleCapacity,
   nil,
   T(302535920000538--[[Change capacity of shuttles.--]]),
@@ -167,7 +177,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(745--[[Shuttles--]]),"/",T(302535920000539--[[Set Speed--]])),
+  Concat(str_ECM,"/",str_Shuttles,"/",T(302535920000539--[[Set Speed--]])),
   ChoGGi.MenuFuncs.SetShuttleSpeed,
   nil,
   T(302535920000540--[[Change speed of shuttles.--]]),
@@ -176,7 +186,7 @@ AddAction(
 
 -------------RCs
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000541--[[Set Charging Distance--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000541--[[Set Charging Distance--]])),
   ChoGGi.MenuFuncs.SetRoverChargeRadius,
   nil,
   T(302535920000542--[[Distance from power lines that rovers can charge.--]]),
@@ -184,7 +194,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000543--[[RC Move Speed--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000543--[[RC Move Speed--]])),
   ChoGGi.MenuFuncs.SetRCMoveSpeed,
   nil,
   T(302535920000544--[[How fast RCs will move.--]]),
@@ -192,7 +202,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000545--[[RC Gravity--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000545--[[RC Gravity--]])),
   ChoGGi.MenuFuncs.SetGravityRC,
   nil,
   T(302535920000546--[[Change gravity of RCs.--]]),
@@ -200,11 +210,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000547--[[RC Rover Drone Recharge Free--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000547--[[RC Rover Drone Recharge Free--]])),
   ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.RCRoverDroneRechargeCost,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.RCRoverDroneRechargeCost,
       302535920000548--[[No more draining Rover Battery when recharging drones.--]]
     )
   end,
@@ -212,11 +223,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000549--[[RC Transport Instant Transfer--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000549--[[RC Transport Instant Transfer--]])),
   ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.RCRoverTransferResourceWorkTime,
+    return ChoGGi.ComFuncs.SettingState(
+      Consts.RCRoverTransferResourceWorkTime,
       302535920000550--[[RC Rover quick Transfer/Gather resources.--]]
     )
   end,
@@ -224,7 +236,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5438--[[Rovers--]]),"/",T(302535920000551--[[RC Transport Storage Capacity--]])),
+  Concat(str_ECM,"/",str_Rovers,"/",T(302535920000551--[[RC Transport Storage Capacity--]])),
   ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,
   nil,
   T(302535920000552--[[Change amount of resources RC Transports can carry.--]]),

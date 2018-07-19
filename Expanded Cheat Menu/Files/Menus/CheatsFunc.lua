@@ -269,8 +269,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   }
 
   local CallBackFunc = function(choice)
-    local value = choice[1].value
-    if not value then
+    if not choice[1].value then
       return
     end
     local function ExploreDeep()

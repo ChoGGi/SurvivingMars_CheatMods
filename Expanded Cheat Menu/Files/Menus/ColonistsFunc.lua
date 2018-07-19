@@ -707,8 +707,9 @@ Until tomorrow, you know I'm free to roam--]]):format(choice[1].text),
 end
 
 function ChoGGi.MenuFuncs.SetDeathAge()
-  local function RetDeathAge(colonist)
-    return colonist.MinAge_Senior + 5 + colonist:Random(10) + colonist:Random(5) + colonist:Random(5)
+  local function RetDeathAge(c)
+    c = c or Colonist
+    return c.MinAge_Senior + 5 + c:Random(10) + c:Random(5) + c:Random(5)
   end
 
   local default_str = T(1000121--[[Default--]])
@@ -734,9 +735,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
       return
     end
     local amount
-    if type(value) == "number" then
-      amount = value
-    elseif value == "LoganNovel" then
+    if value == "LoganNovel" then
       amount = 21
     elseif value == "LoganMovie" then
       amount = 30
@@ -746,6 +745,8 @@ function ChoGGi.MenuFuncs.SetDeathAge()
       amount = 60
     elseif value == "InTime" then
       amount = 26
+    elseif type(value) == "number" then
+      amount = value
     end
 
     if value == default_str or type(amount) == "number" then
@@ -773,7 +774,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000801--[[Set Death Age--]]),
-    hint = Concat(T(302535920000802--[[Usual age is around--]])," ",RetDeathAge(UICity.labels.Colonist[1]),T(302535920000803--[[. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]])),
+    hint = T(302535920000802--[[Usual age is around %s. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]]):format(RetDeathAge()),
   }
 end
 
@@ -1226,11 +1227,12 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   hint = Concat(hint,"\n\n",T(302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]))
 
   local ItemList = {
-      {text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = T(302535920000822--[[Use game defaults--]])},
-      {text = Concat(" ",T(302535920000823--[[All Positive Traits--]])),value = "PositiveTraits",hint = T(302535920000824--[[All the positive traits...--]])},
-      {text = Concat(" ",T(302535920000825--[[All Negative Traits--]])),value = "NegativeTraits",hint = T(302535920000826--[[All the negative traits...--]])},
-      {text = Concat(" ",T(652319561018--[[All Traits--]])),value = "AllTraits",hint = T(302535920000828--[[All the traits...--]])},
-    }
+    {text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = T(302535920000822--[[Use game defaults--]])},
+    {text = Concat(" ",T(302535920000823--[[All Positive Traits--]])),value = "PositiveTraits",hint = T(302535920000824--[[All the positive traits...--]])},
+    {text = Concat(" ",T(302535920000825--[[All Negative Traits--]])),value = "NegativeTraits",hint = T(302535920000826--[[All the negative traits...--]])},
+    {text = Concat(" ",T(302535920001040--[[All Other Traits--]])),value = "OtherTraits",hint = T(302535920001050--[[All the other traits...--]])},
+    {text = Concat(" ",T(652319561018--[[All Traits--]])),value = "AllTraits",hint = T(302535920000828--[[All the traits...--]])},
+  }
 
   if iType == 2 then
     ItemList[1].hint = T(302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]])
@@ -1246,6 +1248,12 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     ItemList[#ItemList+1] = {
       text = ChoGGi.Tables.PositiveTraits[i],
       value = ChoGGi.Tables.PositiveTraits[i],
+    }
+  end
+  for i = 1, #ChoGGi.Tables.OtherTraits do
+    ItemList[#ItemList+1] = {
+      text = ChoGGi.Tables.OtherTraits[i],
+      value = ChoGGi.Tables.OtherTraits[i],
     }
   end
   --add hint descriptions
@@ -1279,7 +1287,10 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
         TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
       elseif choice[i].value == "PositiveTraits" then
         TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
+      elseif choice[i].value == "OtherTraits" then
+        TraitsListTemp = AddToTable(ChoGGi.Tables.OtherTraits,TraitsListTemp)
       elseif choice[i].value == "AllTraits" then
+        TraitsListTemp = AddToTable(ChoGGi.Tables.OtherTraits,TraitsListTemp)
         TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
         TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
       else
@@ -1312,6 +1323,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       if choice[1].value == DefaultSetting then
         local function RandomTraits(Obj)
           --remove all traits
+          ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.OtherTraits)
           ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.PositiveTraits)
           ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.NegativeTraits)
           --add random ones
@@ -1639,15 +1651,18 @@ end
 
 function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
   local ChoGGi = ChoGGi
+  local DataInstances = DataInstances
+
   local sel = ChoGGi.CodeFuncs.SelObject()
-  if not sel or not sel:IsKindOf(T(4801--[[Workplace--]])) then
+  if not sel or (not sel:IsKindOf("Workplace") and not sel:IsKindOf("TrainingBuilding")) then
     MsgPopup(
-      T(302535920000842--[[Select a workplace.--]]),
-      T(4801--[[Workplace--]]),
+      T(302535920000842--[[Select a workplace or training building.--]]),
+      T(302535920000992--[[Building Traits--]]),
       default_icon
     )
     return
   end
+
   local id = sel.encyclopedia_id
   local name = T(sel.display_name)
   local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
@@ -1656,18 +1671,32 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
   end
 
   local ItemList = {}
+  local str_hint = Concat(T(302535920000106--[[Current--]]),": %s")
   for i = 1, #ChoGGi.Tables.NegativeTraits do
+    local trait = ChoGGi.Tables.NegativeTraits[i]
+    local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
     ItemList[#ItemList+1] = {
-      text = ChoGGi.Tables.NegativeTraits[i],
-      value = ChoGGi.Tables.NegativeTraits[i],
-      hint = type(BuildingSettings[id][toggle_type][ChoGGi.Tables.NegativeTraits[i]]) == "boolean" and "true" or "false",
+      text = trait,
+      value = trait,
+      hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
     }
   end
   for i = 1, #ChoGGi.Tables.PositiveTraits do
+    local trait = ChoGGi.Tables.PositiveTraits[i]
+    local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
     ItemList[#ItemList+1] = {
-      text = ChoGGi.Tables.PositiveTraits[i],
-      value = ChoGGi.Tables.PositiveTraits[i],
-      hint = type(BuildingSettings[id][toggle_type][ChoGGi.Tables.PositiveTraits[i]]) == "boolean" and "true" or "false",
+      text = trait,
+      value = trait,
+      hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
+    }
+  end
+  for i = 1, #ChoGGi.Tables.OtherTraits do
+    local trait = ChoGGi.Tables.OtherTraits[i]
+    local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
+    ItemList[#ItemList+1] = {
+      text = trait,
+      value = trait,
+      hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
     }
   end
 
@@ -1744,10 +1773,10 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000146--[[Toggle--]])," ",toggle_type," ",T(302535920000846--[[For--]])," ",name),
-    hint = Concat(hint),
+    title = Concat(T(302535920000129--[[Set--]])," ",T(302535920000992--[[Building Traits--]])," ",T(302535920000846--[[For--]])," ",name),
+    hint = ChoGGi.ComFuncs.TableConcat(hint),
     multisel = true,
     check1 = T(302535920000848--[[Fire Workers--]]),
-    check1_hint = Concat(T(302535920000849--[[Will also fire workers with the traits from all--]])," ",name,"."),
+    check1_hint = T(302535920000849--[[Will also fire workers with the traits from all %s.--]]):format(name),
   }
 end

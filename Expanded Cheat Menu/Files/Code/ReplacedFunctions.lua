@@ -797,17 +797,16 @@ function OnMsg.ClassesBuilt()
   end
 
   --some mission goals check colonist amounts
-  local MG_target = GetMissionSponsor().goal_target + 1
   function MG_Colonists:GetProgress()
     if ChoGGi.Temp.InstantMissionGoal then
-      return MG_target
+      return GetMissionSponsor().goal_target + 1
     else
       return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
     end
   end
   function MG_Martianborn:GetProgress()
     if ChoGGi.Temp.InstantMissionGoal then
-      return MG_target
+      return GetMissionSponsor().goal_target + 1
     else
       return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
     end

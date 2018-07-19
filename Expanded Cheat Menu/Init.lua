@@ -196,16 +196,6 @@ do -- ECM
     ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
   end
 
-  local T = ChoGGi.ComFuncs.Trans
-
-  -- first time run info
-  if ChoGGi.UserSettings.FirstRun ~= false then
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 200 200 200>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color> ",T(302535920000201--[[Active--]]),"<color 0 0 0>:</color>\n",T(302535920000001--[["F2 to toggle cheats menu, and F9 to clear this text.
-  Press ~ or Enter and click the ""Console"" button to toggle this console history."--]]))
-    ChoGGi.UserSettings.FirstRun = false
-    ChoGGi.Temp.WriteSettings = true
-  end
-
   local Platform = Platform
   Platform.editor = true
 

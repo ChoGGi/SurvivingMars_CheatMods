@@ -8,8 +8,12 @@ local T = ChoGGi.ComFuncs.Trans
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
+local str_Game = T(1000435--[[Game--]])
+local str_Render = T(302535920000845--[[Render--]])
+local str_Camera = T(302535920001058--[[Camera--]])
+
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000485--[[Flatten Terrain Toggle--]])),
+  Concat(str_Game,"/",T(302535920000485--[[Flatten Terrain Toggle--]])),
   ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
   ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
   T(302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
@@ -19,7 +23,7 @@ Use Shift + Arrow keys to change the height/radius.--]]),
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000493--[[Change Map--]])),
+  Concat(str_Game,"/",T(302535920000493--[[Change Map--]])),
   ChoGGi.MenuFuncs.ChangeMap,
   nil,
   T(302535920000494--[[Change map (options to pick commander, sponsor, etc...
@@ -30,11 +34,12 @@ The map disaster settings don't do jack.--]]),
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
+  Concat(str_Game,"/",T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
   ChoGGi.MenuFuncs.AutosavePeriod,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(const.AutosavePeriod,
+    return ChoGGi.ComFuncs.SettingState(
+      const.AutosavePeriod,
       302535920001206--[[Change how many Sols between autosaving.--]]
     )
   end,
@@ -42,11 +47,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000265--[[Pulsating Pins--]])),
+  Concat(str_Game,"/",T(302535920000265--[[Pulsating Pins--]])),
   ChoGGi.MenuFuncs.PulsatingPins_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.DisablePulsatingPinsMotion,
       302535920000335--[[Pins will no longer do the pulsating motion (hover over to stop).--]]
     )
   end,
@@ -54,7 +60,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000623--[[Change Terrain Type--]])),
+  Concat(str_Game,"/",T(302535920000623--[[Change Terrain Type--]])),
   ChoGGi.MenuFuncs.ChangeTerrainType,
   nil,
   T(302535920000624--[[Green or Icy mars? Coming right up!
@@ -63,7 +69,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000625--[[Change Light Model--]])),
+  Concat(str_Game,"/",T(302535920000625--[[Change Light Model--]])),
   ChoGGi.MenuFuncs.ChangeLightmodel,
   nil,
   T(302535920000626--[[Changes the lighting mode (temporary or permanent).--]]),
@@ -71,7 +77,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000627--[[Change Light Model Custom--]])),
+  Concat(str_Game,"/",T(302535920000627--[[Change Light Model Custom--]])),
   ChoGGi.MenuFuncs.ChangeLightmodelCustom,
   nil,
   T(302535920000628--[[Make a custom lightmodel and save it to settings. You still need to use \"Change Light Model\" for permanent.--]]),
@@ -79,7 +85,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000629--[[UI Transparency--]])),
+  Concat(str_Game,"/",T(302535920000629--[[UI Transparency--]])),
   ChoGGi.MenuFuncs.SetTransparencyUI,
   ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
   T(302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]),
@@ -87,11 +93,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/",T(302535920000631--[[UI Transparency Mouseover--]])),
+  Concat(str_Game,"/",T(302535920000631--[[UI Transparency Mouseover--]])),
   ChoGGi.MenuFuncs.TransparencyUI_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.TransparencyToggle,
       302535920000632--[[Toggle removing transparency on mouseover.--]]
     )
   end,
@@ -99,11 +106,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000633--[[Lights Radius--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000633--[[Lights Radius--]])),
   ChoGGi.MenuFuncs.SetLightsRadius,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LightsRadius,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.LightsRadius,
       302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
 Lets you see lights from further away/more bleedout?--]]
     )
@@ -112,11 +120,12 @@ Lets you see lights from further away/more bleedout?--]]
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000635--[[Terrain Detail--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000635--[[Terrain Detail--]])),
   ChoGGi.MenuFuncs.SetTerrainDetail,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TerrainDetail,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.TerrainDetail,
       302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
 Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]
     )
@@ -125,11 +134,12 @@ Makes the background terrain more detailed (make sure to also stick Terrain on U
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000637--[[Video Memory--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000637--[[Video Memory--]])),
   ChoGGi.MenuFuncs.SetVideoMemory,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.VideoMemory,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.VideoMemory,
       302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]
     )
   end,
@@ -137,11 +147,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000639--[[Shadow Map--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000639--[[Shadow Map--]])),
   ChoGGi.MenuFuncs.SetShadowmapSize,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShadowmapSize,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.ShadowmapSize,
       302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]
     )
   end,
@@ -150,11 +161,12 @@ AddAction(
 
 --------------------
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000641--[[Disable Texture Compression--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000641--[[Disable Texture Compression--]])),
   ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.DisableTextureCompression,
       302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]
     )
   end,
@@ -162,11 +174,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000643--[[Higher Render Distance--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000643--[[Higher Render Distance--]])),
   ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.HigherRenderDist,
       302535920000644--[[Renders model from further away.
 Not noticeable unless using higher zoom.--]]
     )
@@ -175,11 +188,12 @@ Not noticeable unless using higher zoom.--]]
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[2]",T(302535920000845--[[Render--]]),"/",T(302535920000645--[[Higher Shadow Distance--]])),
+  Concat(str_Game,"/[2]",str_Render,"/",T(302535920000645--[[Higher Shadow Distance--]])),
   ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.HigherShadowDist,
       302535920000646--[[Renders shadows from further away.
 Not noticeable unless using higher zoom.--]]
     )
@@ -188,11 +202,12 @@ Not noticeable unless using higher zoom.--]]
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000647--[[Border Scrolling--]])),
+  Concat(str_Game,"/[1]",str_Camera,"/",T(302535920000647--[[Border Scrolling--]])),
   ChoGGi.MenuFuncs.SetBorderScrolling,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BorderScrollingToggle,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.BorderScrollingToggle,
       302535920000648--[[Set size of activation for mouse border scrolling.--]]
     )
   end,
@@ -200,11 +215,12 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000649--[[Zoom Distance--]])),
+  Concat(str_Game,"/[1]",str_Camera,"/",T(302535920000649--[[Zoom Distance--]])),
   ChoGGi.MenuFuncs.CameraZoom_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CameraZoomToggle,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.CameraZoomToggle,
       302535920000650--[[Further zoom distance.--]]
     )
   end,
@@ -212,7 +228,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000651--[[Toggle Free Camera--]])),
+  Concat(str_Game,"/[1]",str_Camera,"/",T(302535920000651--[[Toggle Free Camera--]])),
   ChoGGi.MenuFuncs.CameraFree_Toggle,
   ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
   T(302535920000652--[[I believe I can fly.--]]),
@@ -220,7 +236,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000653--[[Toggle Follow Camera--]])),
+  Concat(str_Game,"/[1]",str_Camera,"/",T(302535920000653--[[Toggle Follow Camera--]])),
   ChoGGi.MenuFuncs.CameraFollow_Toggle,
   ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
   T(302535920000654--[[Select (or mouse over) an object to follow.--]]),
@@ -228,7 +244,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(1000435--[[Game--]]),"/[1]",T(302535920001058--[[Camera--]]),"/",T(302535920000655--[[Toggle Cursor--]])),
+  Concat(str_Game,"/[1]",str_Camera,"/",T(302535920000655--[[Toggle Cursor--]])),
   ChoGGi.MenuFuncs.CursorVisible_Toggle,
   ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
   T(302535920000656--[[Toggle between moving camera and selecting objects.--]]),

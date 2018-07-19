@@ -4,7 +4,11 @@ Help>Mod Upload: Show list of mods to upload to Steam Workshop.
 Fixes>Toggles>Broked Transport Pathing: RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed). Defaults to enabled.
 
 Changed:
+Re-added Mission>Disaster Occurrences, and Mission>Game Rules (not all rules/parts of rules will apply).
 Examine shows more info about functions/threads.
+Removed DumpObject (DumpLua works the same).
+Added a Close button to the console.
+The Traits functions in Colonists were missing the "other" traits (thanks Nacira).
 
 Fixed:
 Cheats pane was missing some items.

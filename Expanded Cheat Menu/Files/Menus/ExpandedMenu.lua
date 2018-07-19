@@ -10,9 +10,14 @@ local T = ChoGGi.ComFuncs.Trans
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
+local str_ECM = T(302535920000104--[[Expanded CM--]])
+local str_Rockets = T(5238--[[Rockets--]])
+local str_Capacity = T(109035890389--[[Capacity--]])
+local str_Resources = T(692--[[Resources--]])
+
 --------------------------------top level
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/[97]",T(302535920000031--[[Find Nearest Resource--]])),
+  Concat(str_ECM,"/[97]",T(302535920000031--[[Find Nearest Resource--]])),
   function()
     ChoGGi.CodeFuncs.FindNearestResource()
   end,
@@ -22,7 +27,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/[99]",T(302535920000469--[[Close Dialogs--]])),
+  Concat(str_ECM,"/[99]",T(302535920000469--[[Close Dialogs--]])),
   ChoGGi.CodeFuncs.CloseDialogsECM,
   nil,
   T(302535920000470--[[Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)--]]),
@@ -30,7 +35,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/[98]",T(302535920000555--[[Monitor Info--]])),
+  Concat(str_ECM,"/[98]",T(302535920000555--[[Monitor Info--]])),
   ChoGGi.MenuFuncs.MonitorInfo,
   nil,
   T(302535920000556--[[Shows a list of updated information about your city.--]]),
@@ -41,7 +46,7 @@ AddAction(
 
 -------------rockets
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5238--[[Rockets--]]),"/",T(302535920000557--[[Launch Empty Rocket--]])),
+  Concat(str_ECM,"/",str_Rockets,"/",T(302535920000557--[[Launch Empty Rocket--]])),
   ChoGGi.MenuFuncs.LaunchEmptyRocket,
   nil,
   T(302535920000558--[[Launches an empty rocket to Mars.--]]),
@@ -49,7 +54,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5238--[[Rockets--]]),"/",T(302535920000559--[[Cargo Capacity--]])),
+  Concat(str_ECM,"/",str_Rockets,"/",T(302535920000559--[[Cargo Capacity--]])),
   ChoGGi.MenuFuncs.SetRocketCargoCapacity,
   nil,
   T(302535920000560--[[Change amount of storage space in rockets.--]]),
@@ -57,7 +62,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5238--[[Rockets--]]),"/",T(302535920000561--[[Travel Time--]])),
+  Concat(str_ECM,"/",str_Rockets,"/",T(302535920000561--[[Travel Time--]])),
   ChoGGi.MenuFuncs.SetRocketTravelTime,
   nil,
   T(302535920000562--[[Change how long to take to travel between planets.--]]),
@@ -65,7 +70,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(5238--[[Rockets--]]),"/",T(4594--[[Colonists Per Rocket--]])),
+  Concat(str_ECM,"/",str_Rockets,"/",T(4594--[[Colonists Per Rocket--]])),
   ChoGGi.MenuFuncs.SetColonistsPerRocket,
   nil,
   T(302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]),
@@ -74,18 +79,19 @@ AddAction(
 
 --------------------capacity
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000565--[[Storage Mechanized Depots Temp--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000565--[[Storage Mechanized Depots Temp--]])),
   ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
       302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.--]]
     )
   end,
   "Cube.tga"
 )
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000567--[[Worker Capacity--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000567--[[Worker Capacity--]])),
   ChoGGi.MenuFuncs.SetWorkerCapacity,
   ChoGGi.UserSettings.KeyBindings.SetWorkerCapacity,
   T(302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]),
@@ -93,7 +99,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000569--[[Building Capacity--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000569--[[Building Capacity--]])),
   ChoGGi.MenuFuncs.SetBuildingCapacity,
   ChoGGi.UserSettings.KeyBindings.SetBuildingCapacity,
   T(302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]),
@@ -101,7 +107,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000571--[[Building Visitor Capacity--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000571--[[Building Visitor Capacity--]])),
   ChoGGi.MenuFuncs.SetVisitorCapacity,
   ChoGGi.UserSettings.KeyBindings.SetVisitorCapacity,
   T(302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]),
@@ -109,7 +115,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000573--[[Storage Universal Depot--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000573--[[Storage Universal Depot--]])),
   function()
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageUniversalDepot")
   end,
@@ -119,7 +125,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000575--[[Storage Other Depot--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000575--[[Storage Other Depot--]])),
   function()
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageOtherDepot")
   end,
@@ -129,7 +135,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000577--[[Storage Waste Depot--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000577--[[Storage Waste Depot--]])),
   function()
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
   end,
@@ -139,7 +145,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(109035890389--[[Capacity--]]),"/",T(302535920000579--[[Storage Mechanized Depots--]])),
+  Concat(str_ECM,"/",str_Capacity,"/",T(302535920000579--[[Storage Mechanized Depots--]])),
   function()
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageMechanizedDepot")
   end,
@@ -149,7 +155,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000719--[[Add Orbital Probes--]])),
+  Concat(str_ECM,"/",str_Resources,"/",T(302535920000719--[[Add Orbital Probes--]])),
   ChoGGi.MenuFuncs.AddOrbitalProbes,
   nil,
   T(302535920000720--[[Add more probes.--]]),
@@ -157,7 +163,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(4616--[[Food Per Rocket Passenger--]])),
+  Concat(str_ECM,"/",str_Resources,"/",T(4616--[[Food Per Rocket Passenger--]])),
   ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
   nil,
   T(302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]),
@@ -165,7 +171,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000723--[[Add Prefabs--]])),
+  Concat(str_ECM,"/",str_Resources,"/",T(302535920000723--[[Add Prefabs--]])),
   ChoGGi.MenuFuncs.AddPrefabs,
   nil,
   T(302535920000724--[[Adds prefabs.--]]),
@@ -173,7 +179,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000725--[[Add Funding--]])),
+  Concat(str_ECM,"/",str_Resources,"/",T(302535920000725--[[Add Funding--]])),
   ChoGGi.MenuFuncs.SetFunding,
   ChoGGi.UserSettings.KeyBindings.SetFunding,
   T(302535920000726--[[Add more funding (or reset back to 500 M).--]]),
@@ -181,7 +187,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(T(302535920000104--[[Expanded CM--]]),"/",T(692--[[Resources--]]),"/",T(302535920000727--[[Fill Selected Resource--]])),
+  Concat(str_ECM,"/",str_Resources,"/",T(302535920000727--[[Fill Selected Resource--]])),
   ChoGGi.MenuFuncs.FillResource,
   ChoGGi.UserSettings.KeyBindings.FillResource,
   T(302535920000728--[[Fill the selected/moused over object's resource(s)--]]),

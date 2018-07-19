@@ -7,6 +7,7 @@ local T = ChoGGi.ComFuncs.Trans
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
 local AsyncFileToString = AsyncFileToString
+local box = box
 local ClassDescendantsList = ClassDescendantsList
 local CreateRealTimeThread = CreateRealTimeThread
 local FlushLogFile = FlushLogFile
@@ -59,6 +60,7 @@ function OnMsg.ClassesPreprocess()
 
   --changed from 2000000
   ConsoleLog.ZOrder = 2
+  Console.ZOrder = 3
 
   -- stops crashing with certain missing pinned objects
   if ChoGGi.UserSettings.FixMissingModBuildings then
@@ -871,12 +873,29 @@ function OnMsg.ChoGGi_Loaded()
     --add Scripts button to console
     if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
       dlgConsole.ChoGGi_MenuAdded = true
-  --~     --make some space for the button
-  --~     dlgConsole.idEdit:SetMargins(box(10, 0, 10, 5))
-      --build console buttons
+      -- build console buttons
       ChoGGi.Console.ConsoleControls()
-      --check for and create example scripts/script folder
+      -- check for and create example scripts/script folder
       ChoGGi.Console.ListScriptFiles()
+
+      -- add a close button
+      g_Classes.XTextButton:new({
+        Id = "idClose",
+        RolloverTemplate = "Rollover",
+        RolloverText = T(1011--[[Close--]]),
+        RolloverTitle = T(126095410863--[[Info--]]),
+        Image = "UI/Common/mission_no.tga",
+        Background = RGB(255, 255, 255),
+        OnPress = function()
+          dlgConsole:Show()
+        end,
+        Margins = box(0, 0, 0, -53),
+        Dock = "bottom",
+        HAlign = "right",
+      }, dlgConsole)
+
+      -- make some space for the button
+      dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
     end
 
   end
@@ -1146,12 +1165,6 @@ function OnMsg.ChoGGi_Loaded()
     DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
   end)
 
-  --make sure to save anything we changed above
-  if ChoGGi.Temp.WriteSettings then
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.Temp.WriteSettings = nil
-  end
-
   --print startup msgs to console log
   local msgs = ChoGGi.Temp.StartupMsgs
   for i = 1, #msgs do
@@ -1182,10 +1195,27 @@ function OnMsg.ChoGGi_Loaded()
     terminal_SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
   end
 
-  --how long startup takes, maybe add this as an option for other modders to see as well?
-  if UserSettings.ShowStartupTicks then
-    ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-    print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
+  -- first time run info
+  if ChoGGi.UserSettings.FirstRun ~= false then
+    ChoGGi.ComFuncs.MsgWait(
+      T(302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+Press ~ or Enter and click the ""Console"" button to toggle showing console log history."--]]),
+      Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000201--[[Active--]]))
+    )
+    ChoGGi.UserSettings.FirstRun = false
+    ChoGGi.Temp.WriteSettings = true
+  end
+
+
+
+  ------------------------------- always fired last
+
+
+
+  -- make sure to save anything we changed above
+  if ChoGGi.Temp.WriteSettings then
+    ChoGGi.SettingFuncs.WriteSettings()
+    ChoGGi.Temp.WriteSettings = nil
   end
 
   if UserSettings.FlushLog then
@@ -1194,9 +1224,18 @@ function OnMsg.ChoGGi_Loaded()
   -- used to check when game has started and it's safe to print() etc
   ChoGGi.Temp.GameLoaded = true
 
+  -- how long startup takes
+  if ChoGGi.Testing or UserSettings.ShowStartupTicks then
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
+    print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
+  end
+
 end --OnMsg
 
 -- show how long loading takes
 function OnMsg.ChangeMap()
-  ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+  local ChoGGi = ChoGGi
+  if ChoGGi.Testing or ChoGGi.UserSettings.ShowStartupTicks then
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+  end
 end
