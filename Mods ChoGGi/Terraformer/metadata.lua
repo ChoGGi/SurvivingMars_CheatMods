@@ -8,9 +8,10 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"image", "Preview.png",
 	"steam_id", "1415296985",
-	"description", [[If you're feeling OCD about a perfect layout for your base then look no further (unless you want to remove some rocks, then use ECM).
+	"description", [[If you're feeling OCD about a perfect layout for your base then look no further.
 
 Press Shift-F to set height to wherever cursor is, move cursor around to flatten ground, press Shift-F again to update buildable area.
+Press Ctrl-Shift-F to remove all rocks.
 
 Defaults to a radius of 2500, Shift+ Left/Right to change.
 Change height with Shift+ Up/Down.

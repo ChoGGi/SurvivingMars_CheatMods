@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1424918098",
   "description", [[Shows grid radius around Drone Hubs and Rockets when you're in construction mode.
 
-No luck with RC Rovers...
+No luck with the RC Rovers grid.
 
 Requested by mysticlife.]],
 })
