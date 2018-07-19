@@ -503,7 +503,10 @@ end
 function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
   local mapdata = mapdata
 
-  local ItemList = {}
+  local ItemList = {{
+    text = Concat(" ",T(302535920000036--[[Disabled--]])),
+    value = "disabled"
+  }}
   local data = DataInstances[Concat("MapSettings_",sType)]
 
   for i = 1, #data do

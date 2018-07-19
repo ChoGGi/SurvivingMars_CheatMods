@@ -536,7 +536,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
       MsgPopup(
         T(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]):format(choice[1].text),
         T(302535920001136--[[Speed--]]),
-        "UI/Icons/Notifications/timer.tga"
+        "UI/Icons/Notifications/timer.tga",
+        true
       )
     end
   end
