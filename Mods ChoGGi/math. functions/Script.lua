@@ -57,7 +57,7 @@ Please send me latest log file: %s]],file,ChoGGi_math.email))
     end
   end
 
-  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+  -- load locale translation
   local locale_file = TableConcat{ChoGGi_math.ModPath,"Locales/",GetLanguage(),".csv"}
   if AsyncFileOpen(locale_file) then
     LoadLocale(locale_file)

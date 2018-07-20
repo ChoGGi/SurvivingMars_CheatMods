@@ -27,10 +27,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local select,tostring,table = select,tostring,table
+local select,tostring,type,pcall,table = select,tostring,type,pcall,table
 local AsyncFileOpen = AsyncFileOpen
-local oldTableConcat = oldTableConcat
 
+-- just in case they remove oldTableConcat
+local TableConcat
+pcall(function()
+  TableConcat = oldTableConcat
+end)
+TableConcat = TableConcat or table.concat
 
 -- hello
 FlattenGround = {
@@ -45,7 +50,7 @@ FlattenGround = {
       return select(2,AsyncFileOpen(file))
     end,
     -- thanks for replacing concat... what's wrong with using table.concat2?
-    TableConcat = oldTableConcat or table.concat,
+    TableConcat = TableConcat,
   },
   -- /Code/_Functions.lua
   CodeFuncs = {},
@@ -69,7 +74,7 @@ local Mods = Mods
 FlattenGround._VERSION = Mods[FlattenGround.id].version
 FlattenGround.ModPath = Mods[FlattenGround.id].path
 
-do -- Concat,FileExists
+do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
   -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
   -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
@@ -114,7 +119,7 @@ do -- translate
     end
   end
 
-  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+  -- load locale translation
   local locale_file = Concat(FlattenGround.ModPath,"Locales/",GetLanguage(),".csv")
   if FlattenGround.ComFuncs.FileExists(locale_file) then
     LoadLocale(locale_file)
