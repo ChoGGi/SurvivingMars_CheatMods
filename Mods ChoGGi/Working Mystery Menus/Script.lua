@@ -73,7 +73,7 @@ local concat_table = {}
 local concat_value
 function WorkingMysteryMenus.ComFuncs.Concat(...)
   -- reuse old table if it's not that big, else it's quicker to make new one
-  if #concat_table > 1000 then
+  if #concat_table > 500 then
     concat_table = {}
   else
     table.iclear(concat_table) -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
