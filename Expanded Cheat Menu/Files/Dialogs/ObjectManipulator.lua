@@ -405,41 +405,6 @@ function ChoGGi_ObjectManipulator:OnCreate(item,list)
   end
 end
 
---~ function ChoGGi_ObjectManipulator:filtersmarttable(e)
---~   local format_text = tostring(e[2])
---~   local t = string.match(format_text, "^%[(.*)%]")
---~   if t then
---~     if LocalStorage.trace_config ~= nil then
---~       local filter = filters[LocalStorage.trace_config] or filters.General
---~       if not table.find(filter, t) then
---~         return false
---~       end
---~     end
---~     format_text = string.sub(format_text, 3 + #t)
---~   end
---~   return format_text, e
---~ end
-
---~ function ChoGGi_ObjectManipulator:evalsmarttable(format_text, e)
---~   local touched = {}
---~   local i = 0
---~   format_text = string.gsub(format_text, "{(%d-)}", function(s)
---~     if #s == 0 then
---~       i = i + 1
---~     else
---~       i = tonumber(s)
---~     end
---~     touched[i + 1] = true
---~     return Concat("<color 255 255 128>",self:CreateProp(e[i + 2]),"</color>")
---~   end)
---~   for i = 2, #e do
---~     if not touched[i] then
---~       format_text = Concat(format_text," <color 255 255 128>[",self:CreateProp(e[i]),"]</color>")
---~     end
---~   end
---~   return format_text
---~ end
-
 function ChoGGi_ObjectManipulator:CreateProp(o)
   local objlist = objlist
   local obj_type = type(o)

@@ -466,7 +466,7 @@ function Examine:FindNext(filter)
   for y, list_draw_info in pairs(drawBuffer) do
     for i = 1, #list_draw_info do
       local draw_info = list_draw_info[i]
-      if draw_info.text and string.find(draw_info.text:lower(), filter:lower(), 0, true) then
+      if draw_info.text and draw_info.text:lower():find(filter:lower(), 0, true) then
         if not min_match or y < min_match then
           min_match = y
         end

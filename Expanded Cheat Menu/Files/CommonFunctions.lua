@@ -626,7 +626,7 @@ function ChoGGi.ComFuncs.RetTextForDump(obj,funcs)
   if obj_type == "userdata" then
     return T(obj)
   elseif funcs and obj_type == "function" then
-    return Concat("Func: \n\n",string.dump(obj),"\n\n")
+    return Concat("Func: \n\n",obj:dump(),"\n\n")
   elseif obj_type == "table" then
     return Concat(tostring(obj)," len: ",#obj)
   else
@@ -1447,7 +1447,8 @@ function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
     for i = 1, #files do
       local name
       if Ext then
-        name = string.gsub(files[i]:gsub(path,""),Ext,"")
+--~         name = string.gsub(files[i]:gsub(path,""),Ext,"")
+        name = files[i]:gsub(path,""):gsub(Ext,"")
       else
         name = files[i]:gsub(path,"")
       end
