@@ -79,12 +79,12 @@ end
 -- changes a function to also post a Msg for use with OnMsg
 function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
   local ChoGGi = ChoGGi
-  --save orig
+  -- save orig
   ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
-  --redefine it
+  -- redefine it
   g_Classes[ClassName][FuncName] = function(...)
 --~   _G[ClassName][FuncName] = function(...)
-    --I just care about adding self to the msgs
+    -- I just care about adding self to the msgs
     Msg(sMsg,select(1,...))
 
 --~     --use to debug if getting an error
