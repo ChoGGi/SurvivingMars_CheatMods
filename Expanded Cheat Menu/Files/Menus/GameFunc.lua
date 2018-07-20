@@ -37,7 +37,7 @@ local GetMapName = GetMapName
 local GetModifiedProperties = GetModifiedProperties
 local InitNewGameMissionParams = InitNewGameMissionParams
 local ListMaps = ListMaps
-local OpenExamine = OpenExamine
+local OpenExamineRet = OpenExamineRet
 
 local camera_GetFovX = camera.GetFovX
 local camera_SetFovX = camera.SetFovX
@@ -215,6 +215,7 @@ end
 --~ terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
+  local str_hint_rules = T(302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]])
   local NewMissionParams = {}
 
   --open a list dialog to set g_CurrentMissionParams
@@ -222,7 +223,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
     {text = T(3474--[[Mission Sponsor--]]),value = "IMM"},
     {text = T(3478--[[Commander Profile--]]),value = "rocketscientist"},
     {text = T(3486--[[Mystery--]]),value = "random"},
-    {text = T(8800--[[Game Rules--]]),value = ""},
+    {text = T(8800--[[Game Rules--]]),value = "",hint = str_hint_rules},
   }
 
   local CallBackFunc = function(choice)
@@ -252,20 +253,18 @@ function ChoGGi.MenuFuncs.ChangeMap()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice{
+  local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = T(302535920000866--[[Set MissionParams NewMap--]]),
-    hint = T(302535920000867--[["Attention: You must close this dialog for these settings to take effect on new map!
+    hint = Concat(T(302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-See the list on the left for ids.
-
-For rules separate with spaces: Hunger Twister (or leave blank for none)."--]]),
+See the examine list on the left for ids."--]]),"\n\n",str_hint_rules),
     custom_type = 4,
   }
 
   --shows the mission params for people to look at
-  OpenExamine(MissionParams)
+  local ex = OpenExamineRet(MissionParams)
 
   --map list dialog
   CreateRealTimeThread(function()
@@ -302,6 +301,10 @@ For rules separate with spaces: Hunger Twister (or leave blank for none)."--]]),
     dlg.move:SetZOrder(10)
 
     sel_idx, map_settings = dlg:Wait()
+
+    -- close dialogs we opened
+    dlg_list:delete()
+    ex:delete()
 
     if sel_idx ~= "idCancel" then
       local g_CurrentMissionParams = g_CurrentMissionParams

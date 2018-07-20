@@ -453,7 +453,8 @@ This can take time on something like the \"Building\" metatable (don't use this 
   self.transp_mode = transp_mode
   self:SetTranspMode(self.transp_mode)
 
-  CreateRealTimeThread(function()
+--~   CreateRealTimeThread(function()
+  DelayedCall(1, function()
     self:SetPos(point(100,100))
   end)
 end

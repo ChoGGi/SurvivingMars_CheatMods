@@ -1207,6 +1207,8 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
   else
     dlg:SetPos(terminal_GetMousePos())
   end
+
+  return dlg
 end
 
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
@@ -1237,6 +1239,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
     dlg:SetPos(terminal_GetMousePos())
   end
 
+  return dlg
 end
 
 function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
@@ -1284,6 +1287,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   --update item list
   dlg:UpdateListContent(Object)
 
+  return dlg
 end
 
 --[[
@@ -1331,98 +1335,97 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     Table.items[#Table.items+1] = {text = "",hint = "",value = false}
   end
 
-  CreateRealTimeThread(function()
---~     local option = ChoGGi.ComFuncs.OpenInListChoice(Table)
-    local dlg = ChoGGi_ListChoiceCustomDialog:new()
+  local dlg = ChoGGi_ListChoiceCustomDialog:new()
 
-    if not dlg then
-      return
-    end
+  if not dlg then
+    return
+  end
 
-    --title text
-    dlg.idCaption:SetText(Table.title)
-    --list
-    dlg.idList:SetContent(Table.items)
+  --title text
+  dlg.idCaption:SetText(Table.title)
+  --list
+  dlg.idList:SetContent(Table.items)
 
-    --fiddling with custom value
-    if Table.custom_type then
-      dlg.idEditValue.auto_select_all = false
-      dlg.CustomType = Table.custom_type
-      if Table.custom_type == 2 or Table.custom_type == 5 then
-        dlg.idList:SetSelection(1, true)
-        dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-        dlg.idEditValue:SetText(tostring(dlg.sel.value))
-        dlg:UpdateColourPicker()
-        if Table.custom_type == 2 then
-          dlg:SetWidth(750)
-          dlg.idColorHSV:SetVisible(true)
-          dlg.idColorCheckAir:SetVisible(true)
-          dlg.idColorCheckWater:SetVisible(true)
-          dlg.idColorCheckElec:SetVisible(true)
-        end
+  --fiddling with custom value
+  if Table.custom_type then
+    dlg.idEditValue.auto_select_all = false
+    dlg.CustomType = Table.custom_type
+    if Table.custom_type == 2 or Table.custom_type == 5 then
+      dlg.idList:SetSelection(1, true)
+      dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
+      dlg.idEditValue:SetText(tostring(dlg.sel.value))
+      dlg:UpdateColourPicker()
+      if Table.custom_type == 2 then
+        dlg:SetWidth(750)
+        dlg.idColorHSV:SetVisible(true)
+        dlg.idColorCheckAir:SetVisible(true)
+        dlg.idColorCheckWater:SetVisible(true)
+        dlg.idColorCheckElec:SetVisible(true)
       end
     end
+  end
 
-    if Table.custom_func then
-      dlg.Func = Table.custom_func
-    end
+  if Table.custom_func then
+    dlg.Func = Table.custom_func
+  end
 
-    if Table.multisel then
-      dlg.idList.multiple_selection = true
-      if type(Table.multisel) == "number" then
-        --select all of number
-        for i = 1, Table.multisel do
-          dlg.idList:SetSelection(i, true)
-        end
+  if Table.multisel then
+    dlg.idList.multiple_selection = true
+    if type(Table.multisel) == "number" then
+      --select all of number
+      for i = 1, Table.multisel do
+        dlg.idList:SetSelection(i, true)
       end
     end
+  end
 
-    --setup checkboxes
-    if not Table.check1 and not Table.check2 then
-      dlg.idCheckBox1:SetVisible(false)
-      dlg.idCheckBox2:SetVisible(false)
+  --setup checkboxes
+  if not Table.check1 and not Table.check2 then
+    dlg.idCheckBox1:SetVisible(false)
+    dlg.idCheckBox2:SetVisible(false)
+  else
+    dlg.idList:SetSize(point(390, 310))
+
+    if Table.check1 then
+      dlg.idCheckBox1:SetText(Table.check1)
+      dlg.idCheckBox1:SetHint(Table.check1_hint)
     else
-      dlg.idList:SetSize(point(390, 310))
-
-      if Table.check1 then
-        dlg.idCheckBox1:SetText(Table.check1)
-        dlg.idCheckBox1:SetHint(Table.check1_hint)
-      else
-        dlg.idCheckBox1:SetVisible(false)
-      end
-      if Table.check2 then
-        dlg.idCheckBox2:SetText(Table.check2)
-        dlg.idCheckBox2:SetHint(Table.check2_hint)
-      else
-        dlg.idCheckBox2:SetVisible(false)
-      end
+      dlg.idCheckBox1:SetVisible(false)
     end
-    if Table.check1_checked then
-      dlg.idCheckBox1:SetValue(true)
+    if Table.check2 then
+      dlg.idCheckBox2:SetText(Table.check2)
+      dlg.idCheckBox2:SetHint(Table.check2_hint)
+    else
+      dlg.idCheckBox2:SetVisible(false)
     end
-    if Table.check2_checked then
-       dlg.idCheckBox2:SetValue(true)
-   end
+  end
+  if Table.check1_checked then
+    dlg.idCheckBox1:SetValue(true)
+  end
+  if Table.check2_checked then
+     dlg.idCheckBox2:SetValue(true)
+ end
 
-    --where to position dlg
-    dlg:SetPos(terminal_GetMousePos())
+  --where to position dlg
+  dlg:SetPos(terminal_GetMousePos())
 
-    --focus on list
-    dlg.idList:SetFocus()
-    --dlg.idList:SetSelection(1, true)
+  --focus on list
+  dlg.idList:SetFocus()
+  --dlg.idList:SetSelection(1, true)
 
-    --are we showing a hint?
-    if Table.hint then
-      dlg.idList:SetHint(Table.hint)
-      dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
-    end
+  --are we showing a hint?
+  if Table.hint then
+    dlg.idList:SetHint(Table.hint)
+    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
+  end
 
-    --hide ok/cancel buttons as they don't do jack
-    if Table.custom_type == 1 then
-      dlg.idOK:SetVisible(false)
-      dlg.idClose:SetVisible(false)
-    end
+  --hide ok/cancel buttons as they don't do jack
+  if Table.custom_type == 1 then
+    dlg.idOK:SetVisible(false)
+    dlg.idClose:SetVisible(false)
+  end
 
+  CreateRealTimeThread(function()
     --waiting for choice
     local option = dlg:Wait()
 
@@ -1431,6 +1434,8 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     end
 
   end)
+
+  return dlg
 end
 
 -- returns table with list of files without path or ext and path, or exclude ext to return all files
@@ -1707,7 +1712,7 @@ end
 ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
 -- Haemimont Games code from examine.lua (moved here for local)
-function OpenExamine(o, from)
+function OpenExamine(o, from, ret)
   local ChoGGi = ChoGGi
   if not o then
     return ChoGGi.ComFuncs.ClearShowMe()
@@ -1716,7 +1721,7 @@ function OpenExamine(o, from)
   local ex = Examine:new()
   if from then
     --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
-    --so i use a thread in Init to re-pos it, which messes this up, so we want to make sure this is called later
+    --so i use a delay in Init to re-pos it, which messes this up, so we want to make sure this is called later
     DelayedCall(1, function()
       if IsPoint(from) then
         ex:SetPos(from)
@@ -1732,13 +1737,16 @@ function OpenExamine(o, from)
     end)
   end
   ex:SetObj(o)
-end
 
-local OpenExamine = OpenExamine
-function ex(o, from)
-  if o then
-    OpenExamine(o, from)
+  if ret then
+    return ex
   end
+end
+local OpenExamine = OpenExamine
+
+ex = OpenExamine
+function OpenExamineRet(o, from)
+  return OpenExamine(o, from, true)
 end
 
 --~ local lm = false
