@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local LICENSE = [[
 Any code that isn't mine is under the respective copyright of that author.
 
@@ -35,8 +37,8 @@ local ChoGGi_math = {
   _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_AddMathFunctions",
+  ModPath = Mods.ChoGGi_AddMathFunctions.path,
 }
-ChoGGi_math.ModPath = Mods[ChoGGi_math.id].path
 
 -- just in case they remove oldTableConcat
 local TableConcat
@@ -75,6 +77,7 @@ end
 local mod_path = Mods.ChoGGi_AddMathFunctions.path
 local tmpfile = TableConcat{mod_path,"UnitTest.txt"}
 
+-- strings
 local not_implemented = t(302535920010000--[[math.%s not implemented yet.--]])
 local error_msg = t(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]])
 local zero = t(302535920010002--[[zero--]])
@@ -95,307 +98,308 @@ local function CheckNum(x,name,arg)
   end
 end
 
-math = {
---~   Returns the absolute value of x. (integer/float)
-  sm_abs = abs,
-  abs = function(x)
-    x = CheckNum(x,"abs")
+-- global table holding all the functions
+math = {}
 
-    if x < 0 then
-      x = 0 - x
-    end
-    return x
-  end,
+--~   Returns the absolute value of x. (integer/float)
+math.sm_abs = abs
+function math.abs(x)
+  x = CheckNum(x,"abs")
+
+  if x < 0 then
+    x = 0 - x
+  end
+  return x
+end
 
 --~   Returns the smallest integral value larger than or equal to x.
-  ceil = function(x)
-    x = CheckNum(x,"ceil")
+function math.ceil(x)
+  x = CheckNum(x,"ceil")
 
-    return math.floor(x+.5)
-  end,
+  return math.floor(x+.5)
+end
 
 --~   Converts the angle x from radians to degrees.
-  deg = function(x)
-    x = CheckNum(x,"deg")
+function math.deg(x)
+  x = CheckNum(x,"deg")
 
-    return x * 180.0 / math.pi
-  end,
+  return x * 180.0 / math.pi
+end
 
 --~   Napier's constant/Euler's number
-  e = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746,
+math.e = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746
 
 --~   Returns the value e^x (where e is the base of natural logarithms).
-  exp = function(x)
-    x = CheckNum(x,"exp")
+function math.exp(x)
+  x = CheckNum(x,"exp")
 
-    return math.e^x
-  end,
+  return math.e^x
+end
 
 --~   Returns the largest integral value smaller than or equal to x.
-  floor = floatfloor or function(x)
-    x = CheckNum(x,"floor")
+math.floor = floatfloor or function(x)
+  x = CheckNum(x,"floor")
 
-    return x - (x%1)
-  end,
+  return x - (x%1)
+end
 
 --~   Returns the remainder of the division of x by y that rounds the quotient towards zero. (integer/float)
-  fmod = function(x, y)
-    x = CheckNum(x,"fmod")
-    y = CheckNum(y,"fmod",2)
+function math.fmod(x, y)
+  x = CheckNum(x,"fmod")
+  y = CheckNum(y,"fmod",2)
 
-    if y == 0 then
-      print(error_msg:format(2,"fmod",zero))
-      return 0/0
+  if y == 0 then
+    print(error_msg:format(2,"fmod",zero))
+    return 0/0
+  end
+
+  if y < 0 then
+    y = y * -1
+  end
+
+  local neg
+  if x < 0 then
+    neg = true
+    x = x * -1
+  end
+
+  x = x % y
+    if neg then
+      return -x
     end
+  return x
 
-    if y < 0 then
-      y = y * -1
-    end
-
-    local neg
-    if x < 0 then
-      neg = true
-      x = x * -1
-    end
-
-    x = x % y
-      if neg then
-        return -x
-      end
-    return x
-
-  end,
+end
 
 --~   The float value HUGE_VAL, a value larger than any other numeric value.
-  huge = 10e500 + 10e400,
+math.huge = 10e500 + 10e400
 
 --~   Returns the logarithm of x in the given base. The default for base is e (so that the function returns the natural logarithm of x).
-  log = function(x,base)
-    x = CheckNum(x,"log")
-    if x < 0 or tostring(x) == "0" then
-      print(error_msg:format(1,"log",less_than_or_equals_zero))
+function math.log(x,base)
+  x = CheckNum(x,"log")
+  if x < 0 or tostring(x) == "0" then
+    print(error_msg:format(1,"log",less_than_or_equals_zero))
+    return 0/0
+  end
+
+  base = tonumber(base)
+  if base then
+    if base < 0 then
+      print(error_msg:format(2,"log",less_than_zero))
       return 0/0
+    elseif base == 0 then
+      return -0.0
+    end
+    if tostring(x) == "1" then
+      return 0.0
     end
 
-    base = tonumber(base)
-    if base then
-      if base < 0 then
-        print(error_msg:format(2,"log",less_than_zero))
-        return 0/0
-      elseif base == 0 then
-        return -0.0
-      end
-      if tostring(x) == "1" then
-        return 0.0
-      end
-
-      return math.log(x) / math.log(base)
-    end
-    base = math.e
+    return math.log(x) / math.log(base)
+  end
+  base = math.e
 
 --~     http://foldit.wikia.com/wiki/Lua_Script_Library#math.log_.28Taylor_Series_Approximation_.29
-    local result = 0
-    local residue = x / base
-    while residue > 1 do
-      residue = residue / base
-      result = result + 1
-    end
-    local y = residue - 1
-    -- just enough to get the same result as math.log()
-    -- Taylor series
-    residue = 1+y-y ^2/2+y ^3/3-y ^4/4+y ^5/5-y ^6/6+y ^7/7-y ^8/8+y
-      ^9/9-y ^10/10+y ^11/11-y ^12/12+y ^13/13-y ^14/14+y ^15/15-y ^16/16+y
-      ^17/17-y ^18/18+y ^19/19-y ^20/20+y ^21/21-y ^22/22+y ^23/23-y ^24/24+y
-      ^25/25-y ^26/26+y ^27/27-y ^28/28+y ^29/29-y ^30/30+y ^31/31-y ^32/32+y
-      ^33/33-y ^34/34+y ^35/35-y ^36/36+y ^37/37-y ^38/38+y ^39/39-y ^40/40+y
-      ^41/41-y ^42/42+y ^43/43-y ^44/44+y ^45/45-y ^46/46+y ^47/47-y ^48/48+y
-      ^49/49-y ^50/50+y ^51/51-y ^52/52+y ^53/53-y ^54/54+y ^55/55-y ^56/56+y
-      ^57/57-y ^58/58+y ^59/59-y ^60/60+y ^61/61-y ^62/62+y ^63/63-y ^64/64
-    result = result + residue
-    return result
-  end,
+  local result = 0
+  local residue = x / base
+  while residue > 1 do
+    residue = residue / base
+    result = result + 1
+  end
+  local y = residue - 1
+  -- just enough to get the same result as math.log()
+  -- Taylor series
+  residue = 1+y-y ^2/2+y ^3/3-y ^4/4+y ^5/5-y ^6/6+y ^7/7-y ^8/8+y
+    ^9/9-y ^10/10+y ^11/11-y ^12/12+y ^13/13-y ^14/14+y ^15/15-y ^16/16+y
+    ^17/17-y ^18/18+y ^19/19-y ^20/20+y ^21/21-y ^22/22+y ^23/23-y ^24/24+y
+    ^25/25-y ^26/26+y ^27/27-y ^28/28+y ^29/29-y ^30/30+y ^31/31-y ^32/32+y
+    ^33/33-y ^34/34+y ^35/35-y ^36/36+y ^37/37-y ^38/38+y ^39/39-y ^40/40+y
+    ^41/41-y ^42/42+y ^43/43-y ^44/44+y ^45/45-y ^46/46+y ^47/47-y ^48/48+y
+    ^49/49-y ^50/50+y ^51/51-y ^52/52+y ^53/53-y ^54/54+y ^55/55-y ^56/56+y
+    ^57/57-y ^58/58+y ^59/59-y ^60/60+y ^61/61-y ^62/62+y ^63/63-y ^64/64
+  result = result + residue
+  return result
+end
 
 --~   Returns the argument with the maximum value, according to the Lua operator <. (integer/float)
-  max = Max, -- (i, ...)
+math.max = Max -- (i, ...)
 
 --~   An integer with the maximum value for an integer.
-  maxinteger = 9223372036854775807,
+math.maxinteger = 9223372036854775807
 
 --~   Returns the argument with the minimum value, according to the Lua operator <. (integer/float)
-  min = Min, -- (i, ...)
+math.min = Min -- (i, ...)
 
 --~   An integer with the minimum value for an integer.
-  mininteger = -9223372036854775808,
+math.mininteger = -9223372036854775808
 
 --~   Returns the integral part of x and the fractional part of x. Its second result is always a float.
-  modf = function(x)
-    x = CheckNum(x,"modf")
+function math.modf(x)
+  x = CheckNum(x,"modf")
 
-    if math.type(x) == "integer" then
-      return x,0.0
-    end
+  if math.type(x) == "integer" then
+    return x,0.0
+  end
 
-    local neg
-    if x < 0 then
-      neg = true
-      x = x * -1
-    end
+  local neg
+  if x < 0 then
+    neg = true
+    x = x * -1
+  end
 
-    local int = math.floor(x)
+  local int = math.floor(x)
 
-    if tostring(x) == tostring(int) then
-      x = x % 1
-    else
-      x = x - int
-    end
+  if tostring(x) == tostring(int) then
+    x = x % 1
+  else
+    x = x - int
+  end
 
-    if neg then
-      return -int,-x
-    end
-    return int,x
+  if neg then
+    return -int,-x
+  end
+  return int,x
 
-  end,
+end
 
 --~   pi is pi is pi
-  pi = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214,
+math.pi = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214
 
 --~   Converts the angle x from degrees to radians.
-  rad = function(x)
-    x = CheckNum(x,"rad")
+function math.rad(x)
+  x = CheckNum(x,"rad")
 
-    return x * math.pi / 180.0
-  end,
+  return x * math.pi / 180.0
+end
 
 --~   When called without arguments, returns a pseudo-random float with uniform distribution in the range [0,1).
 --~   When called with two integers m and n, math.random returns a pseudo-random integer with uniform distribution in the range [m, n].
 --~   (The value n-m cannot be negative and must fit in a Lua integer.) The call math.random(n) is equivalent to math.random(1,n).
-  random = function(m,n)
+function math.random(m,n)
 
-    if m and n then
-      m = CheckNum(m,"random")
-      n = CheckNum(n,"random")
-      if n-m < 0 then
-        print(error_msg:format("1 or #2","random",arg2_arg1_less_than_zero))
-        return 0/0
-      end
-
-      return AsyncRand(n - m + 1) + m
-    elseif m then
-      m = CheckNum(m,"random")
-      if m <= 0 then
-        print(error_msg:format(1,"random",less_than_or_equals_zero))
-        return 0/0
-      end
-
-      return AsyncRand(m)
-    else
-      -- so it'll never return 1, close enough
-      return tonumber(TableConcat{"0.",AsyncRand()})
-    end
-
-  end,
-
---~   Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
---~   The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers.
-  randomseed = AsyncSetSeed,
-
---~   Returns the square root of x.
-  sqrt = function(x)
-    x = CheckNum(x,"sqrt")
-    if x < 0 then
-      print(error_msg:format(1,"sqrt",less_than_zero))
+  if m and n then
+    m = CheckNum(m,"random")
+    n = CheckNum(n,"random")
+    if n-m < 0 then
+      print(error_msg:format("1 or #2","random",arg2_arg1_less_than_zero))
       return 0/0
     end
 
-    return x^0.5
-  end,
+    return AsyncRand(n - m + 1) + m
+  elseif m then
+    m = CheckNum(m,"random")
+    if m <= 0 then
+      print(error_msg:format(1,"random",less_than_or_equals_zero))
+      return 0/0
+    end
+
+    return AsyncRand(m)
+  else
+    -- so it'll never return 1, close enough
+    return tonumber(TableConcat{"0.",AsyncRand()})
+  end
+
+end
+
+--~   Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
+--~   The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers.
+math.randomseed = AsyncSetSeed
+
+--~   Returns the square root of x.
+function math.sqrt(x)
+  x = CheckNum(x,"sqrt")
+  if x < 0 then
+    print(error_msg:format(1,"sqrt",less_than_zero))
+    return 0/0
+  end
+
+  return x^0.5
+end
 
 --~   If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
-  tointeger = function(x)
-    x = CheckNum(x,"tointeger")
+function math.tointeger(x)
+  x = CheckNum(x,"tointeger")
 
-    return math.floor(x)
-  end,
+  return math.floor(x)
+end
 
 --~   Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
-  type = function(x)
-    x = CheckNum(x,"type")
+function math.type(x)
+  x = CheckNum(x,"type")
 
-    -- SM thinks 5.5 == 5...
-    if tostring(math.floor(x)) == tostring(x) then
-      return "integer"
-    end
-    return "float"
-  end,
+  -- SM thinks 5.5 == 5...
+  if tostring(math.floor(x)) == tostring(x) then
+    return "integer"
+  end
+  return "float"
+end
 
 --~   Returns a boolean, true if and only if integer m is below integer n when they are compared as unsigned integers.
-  ult = function(m, n)
-    m = math.tointeger(m)
-    n = math.tointeger(n)
+function math.ult(m, n)
+  m = math.tointeger(m)
+  n = math.tointeger(n)
 
 --~     if m and n and m < n then
 --~       return true
 --~     end
 --~     return false
-    if m and n then
-      if m < n then
-        return true
-      else
-        return false
-      end
+  if m and n then
+    if m < n then
+      return true
+    else
+      return false
     end
-  end,
+  end
+end
 
 
 
 --~   Returns the cosine of x (assumed to be in radians).
-  sm_cos = cos,
-  cos = function(x)
-    x = CheckNum(x,"cos")
+math.sm_cos = cos
+function math.cos(x)
+  x = CheckNum(x,"cos")
 
-    return math.sin(x + math.pi/2)
-  end,
+  return math.sin(x + math.pi/2)
+end
 
 --~   Returns the sine of x (assumed to be in radians).
-  sm_sin = sin,
-  sin = function(x)
-    x = CheckNum(x,"sin")
+math.sm_sin = sin
+function math.sin(x)
+  x = CheckNum(x,"sin")
 
-    print(not_implemented:format("sin"))
-  end,
+  print(not_implemented:format("sin"))
+end
 
 --~   Returns the tangent of x (assumed to be in radians).
-  tan = function(x)
-    x = CheckNum(x,"tan")
+function math.tan(x)
+  x = CheckNum(x,"tan")
 
-    print(not_implemented:format("tan"))
-  end,
+  print(not_implemented:format("tan"))
+end
 
 --~   Returns the arc cosine of x (in radians).
-  sm_acos = acos,
-  acos = function(x)
-    x = CheckNum(x,"acos")
+math.sm_acos = acos
+function math.acos(x)
+  x = CheckNum(x,"acos")
 
-    print(not_implemented:format("acos"))
-  end,
+  print(not_implemented:format("acos"))
+end
 
 --~   Returns the arc sine of x (in radians).
-  sm_asin = asin,
-  asin = function(x)
-    x = CheckNum(x,"asin")
+math.sm_asin = asin
+function math.asin(x)
+  x = CheckNum(x,"asin")
 
-    print(not_implemented:format("asin"))
-  end,
+  print(not_implemented:format("asin"))
+end
 
 --~   Returns the arc tangent of y/x (in radians), but uses the signs of both arguments to find the quadrant of the result. (It also handles correctly the case of x being zero.)
 --~   The default value for x is 1, so that the call math.atan(y) returns the arc tangent of y.
-  sm_atan = atan,
-  atan = function(x)
-    x = CheckNum(x,"atan")
+math.sm_atan = atan
+function math.atan(x)
+  x = CheckNum(x,"atan")
 
-    print(not_implemented:format("atan"))
-  end,
-}
+  print(not_implemented:format("atan"))
+end
 
 
 

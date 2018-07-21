@@ -1,7 +1,11 @@
+v0.4
+
 v0.3
 Fixed: math.fmod, math.modf, math.log, math.random(n).
 More unit testing.
 Removed lua.exe, use https://github.com/HazeProductions/Lua-x64.
+Slightly more useful error msgs.
+
 v0.2
 More type checking.
 Errors when input is NaN (instead of returning "-nan(ind)").

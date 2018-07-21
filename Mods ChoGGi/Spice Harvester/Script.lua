@@ -47,7 +47,8 @@ SpiceHarvester = {
   -- CommonFunctions.lua
   ComFuncs = {
     FileExists = function(file)
-      return select(2,AsyncFileOpen(file))
+      local _,str = AsyncFileOpen(file)
+      return str
     end,
     -- thanks for replacing concat... what's wrong with using table.concat2?
     TableConcat = TableConcat,

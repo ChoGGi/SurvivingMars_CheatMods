@@ -47,12 +47,16 @@ ChoGGi = {
   id = "ChoGGi_CheatMenu",
   scripts = "AppData/ECM Scripts",
   SettingsFile = "AppData/CheatMenuModSettings.lua",
+  _VERSION = Mods.ChoGGi_CheatMenu.version,
+  ModPath = Mods.ChoGGi_CheatMenu.path,
+
   -- orig funcs that get replaced
   OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {
     FileExists = function(file)
-      return select(2,AsyncFileOpen(file))
+      local _,str = AsyncFileOpen(file)
+      return str
     end,
     -- thanks for replacing concat... what's wrong with using table.concat2?
     TableConcat = TableConcat,
@@ -81,9 +85,6 @@ ChoGGi = {
   },
 }
 local ChoGGi = ChoGGi
-local Mods = Mods
-ChoGGi._VERSION = Mods[ChoGGi.id].version
-ChoGGi.ModPath = Mods[ChoGGi.id].path
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

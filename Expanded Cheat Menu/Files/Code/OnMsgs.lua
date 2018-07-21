@@ -1221,14 +1221,15 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
   if UserSettings.FlushLog then
     FlushLogFile()
   end
-  -- used to check when game has started and it's safe to print() etc
-  ChoGGi.Temp.GameLoaded = true
 
   -- how long startup takes
   if ChoGGi.Testing or UserSettings.ShowStartupTicks then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
     print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
   end
+
+  -- used to check when game has started and it's safe to print() etc
+  ChoGGi.Temp.GameLoaded = true
 
 end --OnMsg
 
