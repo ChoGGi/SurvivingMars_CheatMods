@@ -127,17 +127,21 @@ do --funcs without a class
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
   local UserSettings = ChoGGi.UserSettings
 
-  if UserSettings.SkipMissingMods then
-    --stops confirmation dialog about missing mods (still lets you know they're missing)
-    function GetMissingMods()
+  --stops confirmation dialog about missing mods (still lets you know they're missing)
+  function GetMissingMods()
+    if ChoGGi.UserSettings.SkipMissingMods then
       return "", false
+    else
+      return ChoGGi_OrigFuncs.GetMissingMods()
     end
   end
 
-  if UserSettings.SkipMissingDLC then
-    --lets you load saved games that have dlc
-    function IsDlcAvailable()
+  --lets you load saved games that have dlc
+  function IsDlcAvailable()
+    if ChoGGi.UserSettings.SkipMissingDLC then
       return true
+    else
+      return ChoGGi_OrigFuncs.IsDlcAvailable()
     end
   end
 

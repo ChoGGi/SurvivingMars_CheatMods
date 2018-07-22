@@ -1,5 +1,5 @@
 ID,Text,Translation
-302535920001057,,
+302535920000068,,
 302535920001094,,
 302535920001121,,
 302535920001269,,
@@ -37,6 +37,7 @@ ID,Text,Translation
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001057,Data,
 302535920001238,Removes any rocks for that smooth map feel (will take about 30 seconds).,
 302535920000800,MaleOrFemale,
 302535920000444,Set Stats,
@@ -201,7 +202,7 @@ You can copy and paste numbers if you want (click item again after picking).",
 
 Right-click to scroll to top.",
 302535920000046,dumps text to AppData/DumpedExamine.lua,
-302535920000047,"View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).",
+302535920000047,View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).,
 302535920000048,View,
 302535920001027,"dumps object to AppData/DumpedExamineObject.lua
 
@@ -225,8 +226,7 @@ Which you can then mess around with some more in the console.",
 302535920000065,Short,
 302535920000066,Long,
 302535920000067,TraceCall,
-302535920000068,No examining this object kthxbye,
-302535920000070,"Shows list of attachments. This %s has %s",
+302535920000070,Shows list of attachments. This %s has %s.,
 302535920000040,Exec Code on,
 302535920000051,Exec,
 302535920000072,Paste or type code to be executed here.,

@@ -4,6 +4,10 @@ Fuel to Cheat pane: Fill up rocket with fuel.
 
 Changed:
 Research Tech defaults to "Unlock", if both are checked then "Research" takes precedent.
+Examine table (len:0) now shows "Data" if it's an associative table.
+
+Fixed:
+Issue with SkipMissingMods/SkipMissingDLC not working.
 
 v6.6
 Added:
