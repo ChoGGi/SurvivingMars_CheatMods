@@ -650,18 +650,26 @@ function Examine:valuetotextex(o)
       "'"
     )
   elseif obj_type == "userdata" then
-    local str = T(o)
-    -- might as well just return the userdata instead of these
-    if str == "stripped" or str:find("Missing locale string id") then
-      str = o
+    local str = tostring(o)
+    local trans = T(o)
+    -- if it isn't translatable then return a clickable link (not that useful, but's it's highlighted)
+    if trans == "stripped" or trans:find("Missing locale string id") then
+      return Concat(
+        self:HyperLink(function(_,_,button)
+          Examine_valuetotextex(_,_,button,o,self)
+        end),
+        str,
+        HLEnd
+      )
+    else
+      return Concat(
+        trans,
+        " < \"",
+        obj_type,
+        "\""
+      )
     end
-    return Concat(
-      "'",
-      str,
-      -- <left> is needed for descriptions that stick stuff on the right (well needed for the stuff after it)
-      -- igi > infopanel > something with a colonist spec
-      "'<left>"
-    )
+
   end
 
 --~   return tostring(o)
@@ -767,7 +775,8 @@ function Examine:totextex(o)
       res[#res+1] = Concat(
         self:valuetotextex(k),
         " = ",
-        self:valuetotextex(v)
+        self:valuetotextex(v),
+        "<left>"
       )
       if type(k) == "number" then
         sort[res[#res]] = k
