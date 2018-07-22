@@ -19,6 +19,13 @@ function OnMsg.ClassesGenerate()
   local g_Classes = g_Classes
 
 --~ global objects
+  function g_Classes.SupplyRocket:CheatFuel()
+    local const = const
+    self.accumulated_fuel = self.refuel_request:GetTargetAmount()
+    self.refuel_request = Request_New(self, "Fuel", 0, const.rfStorageDepot + const.rfPairWithHigher,-1)
+    Msg("RocketRefueled", self)
+    RebuildInfopanel(self)
+  end
   function g_Classes.Building:CheatDestroy()
     local ChoGGi = ChoGGi
     local name = ChoGGi.ComFuncs.RetName(self)
@@ -610,6 +617,9 @@ Reselect to update display."--]]):format(name)
       SetHint(action,T(302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]))
 
 --Misc
+    elseif action.ActionId == "Fuel" then
+      SetHint(action,T(302535920001053--[[Fill up %s with fuel.--]]):format(name))
+
     elseif action.ActionId == "DeleteObject" then
       SetHint(action,T(302535920000885--[[Permanently delete %s--]]):format(name))
 

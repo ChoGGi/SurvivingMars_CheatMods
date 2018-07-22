@@ -1,5 +1,4 @@
 ID,Text,Translation
-302535920001053,,
 302535920001057,,
 302535920001094,,
 302535920001121,,
@@ -1426,6 +1425,7 @@ The end of mankind. Doesn't matter where it hits. Nothing would survive, not eve
 302535920001196,"If your funds are a negative value, then you added too much.
 Fix with: %s",
 302535920001198,Resource Filled,
+302535920001053,Fill up %s with fuel.,
 302535920000005,Drops a new colonist in selected dome.,
 302535920001246,Changes colour of %s back to default.,
 302535920000885,Permanently delete %s,

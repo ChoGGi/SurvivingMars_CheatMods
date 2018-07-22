@@ -1,4 +1,9 @@
 v6.7
+Added:
+Fuel to Cheat pane: Fill up rocket with fuel.
+
+Changed:
+Research Tech defaults to "Unlock", if both are checked then "Research" takes precedent.
 
 v6.6
 Added:

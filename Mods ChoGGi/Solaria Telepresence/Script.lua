@@ -84,7 +84,6 @@ do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
   -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
   -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
-  local TableConcat = SolariaTelepresence.ComFuncs.TableConcat
   local concat_table = {}
   function SolariaTelepresence.ComFuncs.Concat(...)
     -- reuse old table if it's not that big, else it's quicker to make new one

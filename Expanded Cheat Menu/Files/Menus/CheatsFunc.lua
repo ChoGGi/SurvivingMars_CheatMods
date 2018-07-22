@@ -980,13 +980,10 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     end
     local check1 = choice[1].check1
     local check2 = choice[1].check2
-    --nothing checked so just return
+
+    --nothing checked so we discover
     if not check1 and not check2 then
-      MsgPopup(T(302535920000038--[[Pick a checkbox next time...--]]),T(311--[[Research--]]),default_icon)
-      return
-    elseif check1 and check2 then
-      MsgPopup(T(302535920000039--[[Don't pick both checkboxes next time...--]]),T(311--[[Research--]]),default_icon)
-      return
+      check1 = true
     end
 
     local func
@@ -994,7 +991,8 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     if check1 then
       func = "DiscoverTech"
       text = T(8690--[[Unlocked--]])
-    elseif check2 then
+    end
+    if check2 then
       func = "GrantTech"
       text = T(302535920000314--[[Researched--]])
     end
@@ -1031,6 +1029,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     multisel = true,
     check1 = T(302535920000318--[[Unlock--]]),
     check1_hint = T(302535920000319--[[Just unlocks in the research tree.--]]),
+    check1_checked = true,
     check2 = T(311--[[Research--]]),
     check2_hint = T(302535920000320--[[Unlocks and researchs.--]]),
   }

@@ -956,7 +956,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920001057--[[Higher Render Dist--]]),
+    title = T(302535920000643--[[Higher Render Distance--]]),
     hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
   }
 end

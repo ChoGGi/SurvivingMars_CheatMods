@@ -18,7 +18,7 @@ local RetName
 local RetSortTextAssTable
 local ShowMe
 local T
-local TConcat
+local TableConcat
 --now we can local just the funcs, and ignore the settings that may be changed later on (maybe i should have two globals, settings and funcs)
 do
   local ChoGGi = ChoGGi
@@ -33,7 +33,7 @@ do
   RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
   ShowMe = ChoGGi.ComFuncs.ShowMe
   T = ChoGGi.ComFuncs.Trans
-  TConcat = ChoGGi.ComFuncs.TableConcat
+  TableConcat = ChoGGi.ComFuncs.TableConcat
 end
 
 local pairs,type,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8 = pairs,type,tostring,tonumber,getmetatable,rawget,string,table,debug,utf8
@@ -53,6 +53,57 @@ local ValueToLuaCode = ValueToLuaCode
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local terrain_GetHeight = terrain.GetHeight
+
+-- only call T once
+local str_Examine = T(302535920000069--[[Examine--]])
+local str_Data = T(302535920001057--[[Data--]])
+local str_unknownname = T(302535920000063--[[unknown name--]])
+local str_Gototext = T(302535920000044--[[Goto text--]])
+local str_Tools = T(302535920000239--[[Tools--]])
+local str_Dump = T(302535920000004--[[Dump--]])
+local str_View = T(302535920000048--[[View--]])
+local str_Object = T(298035641454--[[Object--]])
+local str_DumpText = Concat(str_Dump," ",T(1000145--[[Text--]]))
+local str_DumpTextDes = T(302535920000046--[[dumps text to AppData/DumpedExamine.lua--]])
+local str_DumpObject = Concat(str_Dump," ",str_Object)
+local str_DumpObjectDes = T(302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the "Building" metatable--]])
+local str_ViewText = Concat(str_View," ",T(1000145--[[Text--]]))
+local str_ViewTextDes = T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]])
+local str_ViewObject = Concat(str_View," ",str_Object)
+local str_ViewObjectDes = T(302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]])
+local str_EditObject = Concat(T(327465361219 --[[Edit--]])," ",str_Object)
+local str_EditObjectDes = T(302535920000050--[[Opens object in Object Manipulator.--]])
+local str_ExecCode = T(302535920000323--[[Exec Code--]])
+local str_ExecCodeDes = T(302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
+Which you can then mess around with some more in the console."--]])
+local str_Functions = T(302535920001239--[[Functions--]])
+local str_FunctionsDes = T(302535920001240--[[Show all functions of this object and parents/ancestors.--]])
+local str_Parents = T(302535920000520--[[Parents--]])
+local str_ParentsDes = T(302535920000553--[[Examine parent and ancestor objects.--]])
+local str_Ancestors = T(302535920000525--[[Ancestors--]])
+local str_Attaches = T(302535920000053--[[Attaches--]])
+local str_AttachesDes = T(302535920000054--[[Any objects attached to this object.--]])
+local str_AttachesDes2 = T(302535920000070--[[Shows list of attachments. This %s has: %s.--]])
+local str_Next = T(1000232--[[Next--]])
+local str_NextDes = T(302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+
+Right-click to scroll to top."--]])
+local str_NextDes2 = T(302535920000043--[[Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top).--]])
+local str_Destroy = T(697--[[Destroy--]])
+local str_DestroyQues = T(302535920000414--[[Are you sure you wish to destroy it?--]])
+local str_Refresh = T(1000220--[[Refresh--]])
+local str_ShowIt = T(302535920000058--[[[ShowIt]--]])
+local str_ClearMarkers = T(302535920000059--[[[Clear Markers]--]])
+local str_Transp = T(302535920000064--[[[Transp]--]])
+local str_DestroyIt = T(302535920000060--[[[Destroy It!]--]])
+local str_Handle = T(302535920000955--[[Handle--]])
+local str_AutoRefresh = T(302535920000084--[[Auto-Refresh--]])
+local str_AutoRefreshDes = T(302535920001257--[[Auto-refresh list every second.--]])
+
 
 -- 1 above console log
 local zorder = 2000001
@@ -93,7 +144,7 @@ function Examine:Init()
 
   DialogAddCloseX(self)
   DialogAddCaption(self,{
-    prefix = Concat(T(302535920000069--[[Examine--]]),": "),
+    prefix = Concat(str_Examine,": "),
     pos = point(25, border),
     size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
   })
@@ -116,7 +167,7 @@ function Examine:Init()
     flags = const.intfIgnoreParent
   })
 
-  local title = T(302535920000084--[[Auto-Refresh--]])
+  local title = str_AutoRefresh
   local button_size = RetCheckTextSize(title)
   self.idAutoRefresh = g_Classes.CheckButton:new(self)
   self.idAutoRefresh:SetPos(point(dialog_width - button_size:x() + 20, element_y + 1))
@@ -124,7 +175,7 @@ function Examine:Init()
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idAutoRefresh:SetHSizing("AnchorToRight")
   self.idAutoRefresh:SetText(title)
-  self.idAutoRefresh:SetHint(T(302535920001257--[[Auto-refresh list every second.--]]))
+  self.idAutoRefresh:SetHint(str_AutoRefreshDes)
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   function self.idAutoRefresh.button.OnButtonPressed()
@@ -148,11 +199,11 @@ function Examine:Init()
   self.idFilter:SetHSizing("Resize")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idFilter:SetFontStyle("Editor12Bold")
-  self.idFilter:SetHint(T(302535920000043--[[Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top).--]]))
+  self.idFilter:SetHint(str_NextDes2)
   self.idFilter:SetTextHAlign("center")
   self.idFilter:SetTextVAlign("center")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
-  self.idFilter.display_text = T(302535920000044--[[Goto text--]])
+  self.idFilter.display_text = str_Gototext
   -- blocks the transp toggle
 --~   self.idFilter:AddInterpolation({
 --~     type = const.intAlpha,
@@ -180,7 +231,7 @@ function Examine:Init()
 
   element_y = border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
 
-  title = T(302535920000239--[[Tools--]])
+  title = str_Tools
   self.idTools = g_Classes.Button:new(self)
   self.idTools:SetPos(point(dialog_left+5, element_y))
   self.idTools:SetSize(RetButtonTextSize(title))
@@ -200,13 +251,13 @@ function Examine:Init()
     self.idToolsMenu.drop_dialog:SetZOrder(zorder+1)
   end
 
-  local menuitem_DumpText = Concat(T(302535920000004--[[Dump--]])," ",T(1000145--[[Text--]]))
-  local menuitem_DumpObject = Concat(T(302535920000004--[[Dump--]])," ",T(298035641454--[[Object--]]))
-  local menuitem_ViewText = Concat(T(302535920000048--[[View--]])," ",T(1000145--[[Text--]]))
-  local menuitem_ViewObject = Concat(T(302535920000048--[[View--]])," ",T(298035641454--[[Object--]]))
-  local menuitem_EditObject = Concat(T(327465361219 --[[Edit--]])," ",T(298035641454 --[[Object--]]))
-  local menuitem_ExecCode = T(302535920000323--[[Exec Code--]])
-  local menuitem_Functions = T(302535920001239--[[Functions--]])
+  local menuitem_DumpText = str_DumpText
+  local menuitem_DumpObject = str_DumpObject
+  local menuitem_ViewText = str_ViewText
+  local menuitem_ViewObject = str_ViewObject
+  local menuitem_EditObject = str_EditObject
+  local menuitem_ExecCode = str_ExecCode
+  local menuitem_Functions = str_Functions
 
   function self.idToolsMenu.OnComboClose(menu,idx)
     --close hint
@@ -221,7 +272,7 @@ function Examine:Init()
           checkbox = true,
           zorder = zorder,
           text = str,
-          hint_ok = T(302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]),
+          hint_ok = str_ViewTextDes,
           func = function(answer,overwrite)
             if answer then
               Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
@@ -235,9 +286,7 @@ function Examine:Init()
           checkbox = true,
           zorder = zorder,
           text = str,
-          hint_ok = T(302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
-
-This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]),
+          hint_ok = str_ViewObjectDes,
           func = function(answer,overwrite)
             if answer then
               Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
@@ -286,8 +335,8 @@ This can take time on something like the ""Building"" metatable (don't use this 
           end
         end
 
-        ProcessList(self.parents,Concat(" ",T(302535920000520--[[Parents--]]),": "))
-        ProcessList(self.ancestors,Concat(T(302535920000525--[[Ancestors--]]),": "))
+        ProcessList(self.parents,Concat(" ",str_Parents,": "))
+        ProcessList(self.ancestors,Concat(str_Ancestors,": "))
         -- add examiner object with some spaces so it's at the top
         BuildFuncList(self.obj.class,"  ")
 
@@ -300,29 +349,25 @@ This can take time on something like the ""Building"" metatable (don't use this 
   --setup menu items
   self.idToolsMenu:SetContent({
     {
-      text = Concat("   ---- ",T(302535920000239--[[Tools--]])),
+      text = Concat("   ---- ",str_Tools),
       rollover = "-"
     },
     {
       text = menuitem_DumpText,
-      rollover = T(302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]),
+      rollover = str_DumpTextDes,
     },
     {
       text = menuitem_DumpObject,
-      rollover = T(302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
-
-This can take time on something like the "Building" metatable--]]),
+      rollover = str_DumpObjectDes,
     },
 
     {
       text = menuitem_ViewText,
-      rollover = T(302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)--]]),
+      rollover = str_ViewTextDes,
     },
     {
       text = menuitem_ViewObject,
-      rollover = T(302535920000049--[[View text, and optionally dumps object to AppData/DumpedExamineObject.lua
-
-This can take time on something like the \"Building\" metatable (don't use this option on large text)--]]),
+      rollover = str_ViewObjectDes,
     },
     {
       text = "   ---- ",
@@ -330,25 +375,25 @@ This can take time on something like the \"Building\" metatable (don't use this 
     },
     {
       text = menuitem_Functions,
-      rollover = T(302535920001240--[[Show all functions of this object and parents/ancestors.--]]),
+      rollover = str_FunctionsDes,
     },
     {
       text = menuitem_EditObject,
-      rollover = T(302535920000050--[[Opens object in Object Manipulator.--]]),
+      rollover = str_EditObjectDes,
     },
     {
       text = menuitem_ExecCode,
-      rollover = T(302535920000052--[[Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.\nWhich you can then mess around with some more in the console.--]]),
+      rollover = str_ExecCodeDes,
     },
   }, true)
 
   element_x = 10 + self.idTools:GetPos():x() + self.idTools:GetSize():x()
-  title = T(302535920000520--[[Parents--]])
+  title = str_Parents
   self.idParents = g_Classes.Button:new(self)
   self.idParents:SetPos(point(element_x, element_y))
   self.idParents:SetSize(RetButtonTextSize(title))
   self.idParents:SetText(title)
-  self.idParents:SetHint(T(302535920000553--[[Examine parent and ancestor objects.--]]))
+  self.idParents:SetHint(str_ParentsDes)
 
   self.idParentsMenu = g_Classes.ComboBox:new(self)
   self.idParentsMenu:SetPos(self.idParents:GetPos() + point(0,10))
@@ -377,12 +422,12 @@ This can take time on something like the \"Building\" metatable (don't use this 
 
   element_x = 10 + self.idParents:GetPos():x() + self.idParents:GetSize():x()
 
-  title = T(302535920000053--[[Attaches--]])
+  title = str_Attaches
   self.idAttaches = g_Classes.Button:new(self)
   self.idAttaches:SetPos(point(element_x, element_y))
   self.idAttaches:SetSize(RetButtonTextSize(title))
   self.idAttaches:SetText(title)
-  self.idAttaches:SetHint(T(302535920000054--[[Any objects attached to this object.--]]))
+  self.idAttaches:SetHint(str_AttachesDes)
   self.idAttachesMenu = g_Classes.ComboBox:new(self)
   self.idAttachesMenu:SetPos(self.idAttaches:GetPos() + point(0,10))
   --height doesn't matter, but width sure does
@@ -409,7 +454,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
     end
   end
 
-  title = T(1000232--[[Next--]])
+  title = str_Next
   button_size = RetCheckTextSize(title)
   self.idNext = g_Classes.Button:new(self)
   self.idNext:SetSize(RetButtonTextSize(title))
@@ -417,7 +462,7 @@ This can take time on something like the \"Building\" metatable (don't use this 
   self.idNext:SetText(title)
   --self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
   self.idNext:SetHSizing("AnchorToRight")
-  self.idNext:SetHint(T(302535920000045--[[Scrolls down one line or scrolls between text in \"Goto text\".\nRight-click to scroll to top.--]]))
+  self.idNext:SetHint(str_NextDes)
   function self.idNext.OnButtonPressed()
     self:FindNext(self.idFilter:GetText())
   end
@@ -519,7 +564,7 @@ function Examine:valuetotextex(o)
       self:HyperLink(function(_,_,button)
         Examine_valuetotextex(_,_,button,o,self)
       end),
-      tostring(debug_info.name or debug_info.name_what or T(302535920000063--[[unknown name--]])),
+      tostring(debug_info.name or debug_info.name_what or str_unknownname),
       "@",
       debug_info.short_src,
       "(",
@@ -548,8 +593,8 @@ function Examine:valuetotextex(o)
   end
 
   if is_table then
-    local is_objlist = getmetatable(o)
-    if is_objlist and is_objlist == objlist then
+    local meta_type = getmetatable(o)
+    if meta_type and meta_type == objlist then
       local res = {
         self:HyperLink(function(_,_,button)
           Examine_valuetotextex(_,_,button,o,self)
@@ -568,7 +613,26 @@ function Examine:valuetotextex(o)
       end
       res[#res+1] = ", "
       res[#res+1] = "}"
-      return TConcat(res)
+      return TableConcat(res)
+    else
+      -- regular table
+      local table_data
+
+      if #o > 0 then
+        table_data = #o
+      elseif next(o) then
+        table_data = str_Data
+      else
+        table_data = 0
+      end
+
+      return Concat(
+        self:HyperLink(function(_,_,button)
+          Examine_valuetotextex(_,_,button,o,self)
+        end),
+        Concat(RetName(o)," (len: ",table_data,")"),
+        HLEnd
+      )
     end
 
   elseif obj_type == "thread" then
@@ -595,17 +659,8 @@ function Examine:valuetotextex(o)
       "'",
       str,
       -- <left> is needed for descriptions that stick stuff on the right (well needed for the stuff after it)
+      -- igi > infopanel > something with a colonist spec
       "'<left>"
-    )
-  end
-
-  if is_table then
-    return Concat(
-      self:HyperLink(function(_,_,button)
-        Examine_valuetotextex(_,_,button,o,self)
-      end),
-      Concat(RetName(o)," (len:",#o,")"),
-      HLEnd
     )
   end
 
@@ -734,7 +789,7 @@ function Examine:totextex(o)
           "(",
           info.currentline,
           ") ",
-          (info.name or info.name_what or T(302535920000063--[[unknown name--]])),
+          (info.name or info.name_what or str_unknownname),
           HLEnd
         )
       else
@@ -876,7 +931,7 @@ function Examine:totextex(o)
     res[#res+1] = dbg_value
   end
 
-  return TConcat(res,"\n")
+  return TableConcat(res,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
@@ -904,7 +959,7 @@ local function Destroy_menu(o,self)
   local z = self.ZOrder
   self:SetZOrder(1)
   ChoGGi.ComFuncs.QuestionBox(
-    T(302535920000414--[[Are you sure you wish to destroy it?--]]),
+    str_DestroyQues,
     function(answer)
       self:SetZOrder(z)
       if answer and IsValid(o) then
@@ -912,7 +967,7 @@ local function Destroy_menu(o,self)
         ChoGGi.CodeFuncs.DeleteObject(o)
       end
     end,
-    T(697--[[Destroy--]])
+    str_Destroy
   )
 end
 --~ local function Assign_menu(_, _, button,name,o,self)
@@ -972,7 +1027,7 @@ function Examine:menu(o)
     Refresh_menu(o,self)
   end)
   res[#res+1] = "["
-  res[#res+1] = T(1000220--[[Refresh--]])
+  res[#res+1] = str_Refresh
   res[#res+1] = "]"
   res[#res+1] = HLEnd
   res[#res+1] = " "
@@ -980,25 +1035,25 @@ function Examine:menu(o)
     res[#res+1] = self:HyperLink(function()
       Show_menu(o)
     end)
-    res[#res+1] = T(302535920000058--[[[ShowIt]--]])
+    res[#res+1] = str_ShowIt
     res[#res+1] = HLEnd
     res[#res+1] = " "
   end
   res[#res+1] = self:HyperLink(ClearShowMe_menu)
-  res[#res+1] = T(302535920000059--[[[Clear Markers]--]])
+  res[#res+1] = str_ClearMarkers
   res[#res+1] = HLEnd
   res[#res+1] = " "
   res[#res+1] = self:HyperLink(function()
     SetTransp_menu(o,self)
   end)
-  res[#res+1] = T(302535920000064--[[[Transp]--]])
+  res[#res+1] = str_Transp
   res[#res+1] = HLEnd
   if IsValid(o) then
     res[#res+1] = " "
     res[#res+1] = self:HyperLink(function()
       Destroy_menu(o,self)
     end)
-    res[#res+1] = T(302535920000060--[[[Destroy It!]--]])
+    res[#res+1] = str_DestroyIt
     res[#res+1] = HLEnd
     res[#res+1] = " "
 --~     if o:HasMember("trace_log") then
@@ -1080,7 +1135,7 @@ function Examine:menu(o)
 --~       res[#res+1] = "</color> "
 --~     end
 --~   end
-  return TConcat(res)
+  return TableConcat(res)
 end
 
 -- used to build parents/ancestors menu
@@ -1090,7 +1145,7 @@ local function BuildParents(self,list,list_type,title,sort_type)
   if list and next(list) then
     list = RetSortTextAssTable(list,sort_type)
     self[list_type] = list
-    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",T(title))}
+    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",title)}
     for i = 1, #list do
       -- no sense in having an item in parents and ancestors
       if not pmenu_skip_dupes[list[i]] then
@@ -1117,7 +1172,7 @@ function Examine:SetObj(o)
   --update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attach_amount = attaches and #attaches or 0
-  self.idAttaches:SetHint(T(302535920000070--[["Shows list of attachments. This %s has: %s"--]]):format(name,attach_amount))
+  self.idAttaches:SetHint(str_AttachesDes2:format(name,attach_amount))
   if is_table then
 
     --add object name to title
@@ -1132,8 +1187,8 @@ function Examine:SetObj(o)
     pmenu_list_items = {}
     pmenu_skip_dupes = {}
     -- build menu list
-    BuildParents(self,o.__parents,"parents",302535920000520--[[Parents--]])
-    BuildParents(self,o.__ancestors,"ancestors",302535920000525--[[Ancestors--]],true)
+    BuildParents(self,o.__parents,"parents",str_Parents)
+    BuildParents(self,o.__ancestors,"ancestors",str_Ancestors,true)
     -- if anything was added to the list then add to the menu
     if #pmenu_list_items > 0 then
       self.idParentsMenu:SetContent(pmenu_list_items, true)
@@ -1145,7 +1200,7 @@ function Examine:SetObj(o)
     --attaches menu
     if attaches and attach_amount > 0 then
 
-      local spacer_text = T(302535920000053--[[Attaches--]])
+      local spacer_text = str_Attaches
       local list_items = {
         {
           text = Concat("   ---- ",spacer_text),
@@ -1156,7 +1211,7 @@ function Examine:SetObj(o)
       for i = 1, #attaches do
         local hint = attaches[i].handle or type(attaches[i].GetPos) == "function" and Concat("Pos: ",attaches[i]:GetPos())
         if type(hint) == "number" then
-          hint = Concat(T(302535920000955--[[Handle--]]),": ",hint)
+          hint = Concat(str_Handle,": ",hint)
         end
         list_items[#list_items+1] = {
           text = RetName(attaches[i]),
