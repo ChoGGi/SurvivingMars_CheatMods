@@ -162,6 +162,11 @@ local Strings = {
   [487939677892] = _InternalTranslate(T{487939677892}), --Help
   [640016954592] = _InternalTranslate(T{640016954592}), --Remove this switch or valve.
 }
+-- what's wrong with string.format?
+Strings[1000012] = Strings[1000012]:gsub("<ModLabel>","%%s")
+Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s")
+Strings[1000013] = Strings[1000013]:gsub("<err>","%%s")
+Strings[1000014] = Strings[1000014]:gsub("<ModLabel>","%%s")
 
 -- we need to pad some zeros
 local function TransZero(pad,first,last)

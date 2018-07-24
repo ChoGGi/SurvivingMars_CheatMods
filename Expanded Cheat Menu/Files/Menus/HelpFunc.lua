@@ -64,7 +64,7 @@ function ChoGGi.MenuFuncs.ModUpload()
       AsyncCreatePath(dest)
 
       -- build / show confirmation dialog
-      local upload_msg = S[1000012--[[Mod <ModLabel> will be uploaded to Steam--]]]
+      local upload_msg = S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)
       if not copy_files then
         upload_msg = Concat(upload_msg,"\n",S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for insert."--]]])
       end
@@ -138,10 +138,10 @@ function ChoGGi.MenuFuncs.ModUpload()
         end
         local msg, title
         if err and not blank_mod then
-          msg = Concat(S[1000013--[[Mod <ModLabel> was not uploaded to Steam. Error: <err>--]]]," ",mod.title," ",err)
+          msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
           title = S[1000592--[[Error--]]]
         else
-          msg = Concat(S[1000014--[[Mod <ModLabel> was successfully uploaded to Steam!--]]]," ",mod.title)
+          msg = S[1000014--[[Mod %s was successfully uploaded to Steam!--]]]:format(mod.title)
           title = S[1000015--[[Success--]]]
         end
 
