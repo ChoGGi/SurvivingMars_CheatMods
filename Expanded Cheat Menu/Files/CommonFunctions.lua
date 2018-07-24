@@ -1380,11 +1380,12 @@ ChoGGi.ComFuncs.OpenInListChoice{
 }
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(Table)
-  local ChoGGi = ChoGGi
-  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    print(S[302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]])
+  -- if table isn't a table or it doesn't have items/callback func or it has zero items
+  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) or #Table.items < 1 then
     return
   end
+
+  local ChoGGi = ChoGGi
 
   --sort table by display text
   local sortby = Table.sortby or "text"
@@ -1406,10 +1407,13 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     return
   end
 
-  --title text
+  -- title text
   dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
-  --list
+  -- add list items
   dlg.idList:SetContent(Table.items)
+
+  -- used for hiding ListItems (well, okay restoring the actual height of them)
+  dlg.listitem_height = dlg.idList.item_windows[1]:GetHeight()
 
   --fiddling with custom value
   if Table.custom_type then

@@ -1,8 +1,4 @@
 ID,Text,Translation
-302535920000068,,
-302535920000453,,
-302535920000454,,
-302535920000806,,
 302535920000850,,
 302535920001094,,
 302535920001121,,
@@ -41,6 +37,7 @@ ID,Text,Translation
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920000453,Reload Lua,
 302535920001057,Data,
 302535920001238,Removes any rocks for that smooth map feel (will take about 30 seconds).,
 302535920000800,MaleOrFemale,
@@ -236,6 +233,10 @@ Which you can then mess around with some more in the console.",
 302535920000073,Exec and close dialog (Enter can also be used).,
 302535920000075,Insert Obj,
 302535920000076,At caret position inserts: ChoGGi.CurObj,
+302535920000068,Filter Text,
+302535920000806,"Only show items containing this text.
+
+Press Enter to clear value.",
 302535920000077,"You can enter a custom value to be applied.
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues.",
@@ -638,6 +639,7 @@ Works after colonist idle.",
 Not permanent.",
 302535920000447,Change the age at which colonists die.,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920000454,Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).,
 302535920000874,(see Path Markers to mark more than one at a time).,
 302535920000864,Delete All Rocks,
 302535920001208,Export Colonist Data To CSV,

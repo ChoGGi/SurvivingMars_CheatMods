@@ -7,6 +7,7 @@ Research Tech defaults to "Unlock", if both are checked then "Research" takes pr
 Examine:
 > table (len:0) now shows "Data" if it's an associative table.
 > Translated userdata now shows < "userdata" to let you know it isn't a string.
+ItemList dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
 
 Fixed:
 ECM would wig out if CheatMenuModSettings.lua was a blank file (thanks Royal Rudolf).

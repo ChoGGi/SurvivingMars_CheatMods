@@ -175,7 +175,10 @@ local function TransZero(pad,first,last)
       break
     end
     local num = tonumber(TableConcat{30253592000,pad,i})
-    Strings[num] = _InternalTranslate(T{num})
+    local str = _InternalTranslate(T{num})
+    if str ~= "stripped" then
+      Strings[num] = str
+    end
   end
 end
 TransZero("000",0,9)
