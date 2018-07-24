@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Notifications/research.tga"
 
 local pairs,tostring,type = pairs,tostring,type
@@ -35,8 +36,8 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DraggableCheatsMenu),": ",T(302535920000232--[[Draggable cheats menu--]])),
-    T(1000162--[[Menu--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,302535920000232--[[Draggable cheats menu--]]),
+    1000162--[[Menu--]]
   )
 end
 
@@ -46,8 +47,8 @@ function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.ToggleWidthOfCheatsHover),": ",T(302535920000233--[[Cheats hover toggle--]])),
-    T(1000162--[[Menu--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ToggleWidthOfCheatsHover,302535920000233--[[Cheats hover toggle--]]),
+    1000162--[[Menu--]]
   )
 end
 
@@ -61,8 +62,8 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.KeepCheatsMenuPosition),": ",T(302535920000234--[[Cheats menu save position--]])),
-    T(1000162--[[Menu--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition,302535920000234--[[Cheats menu save position--]]),
+    1000162--[[Menu--]]
   )
 end
 
@@ -73,11 +74,11 @@ function ChoGGi.MenuFuncs.OpenModEditor()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000235--[[Save your game.
-This will switch to a new map.--]])),
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920000235--[[Save your game.
+This will switch to a new map.--]]]),
     CallBackFunc,
-    Concat(T(6779--[[Warning--]]),": ",T(302535920000236--[[Mod Editor--]])),
-    T(302535920000237--[[Okay (change map)--]])
+    Concat(S[6779--[[Warning--]]],": ",S[302535920000236--[[Mod Editor--]]]),
+    302535920000237--[[Okay (change map)--]]
   )
 end
 
@@ -90,11 +91,11 @@ function ChoGGi.MenuFuncs.ResetAllResearch()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
 
-Buildings are still unlocked.--]])),
+Buildings are still unlocked.--]]]),
     CallBackFunc,
-    Concat(T(6779--[[Warning--]]),"!")
+    Concat(S[6779--[[Warning--]]],"!")
   )
 end
 
@@ -163,20 +164,20 @@ end
 function ChoGGi.MenuFuncs.DisastersTrigger()
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = Concat(" ",T(302535920000240--[[Stop Most Disasters--]])),value = "Stop"},
-    {text = T(4149--[[Cold Wave--]]),value = "ColdWave"},
-    {text = T(302535920000241--[[Dust Devil Major--]]),value = "DustDevilsMajor"},
-    {text = T(302535920000242--[[Dust Devil--]]),value = "DustDevils"},
-    {text = T(302535920000243--[[Dust Storm Electrostatic--]]),value = "DustStormElectrostatic"},
-    {text = T(302535920000244--[[Dust Storm Great--]]),value = "DustStormGreat"},
-    {text = T(4250--[[Dust Storm--]]),value = "DustStorm"},
-    {text = T(5620--[[Meteor Storm--]]),value = "MeteorStorm"},
-    {text = T(302535920000245--[[Meteor Multi-Spawn--]]),value = "MeteorMultiSpawn"},
-    {text = T(4251--[[Meteor--]]),value = "Meteor"},
-    {text = Concat(T(302535920000246--[[Missle--]])," ",1),value = "Missle1"},
-    {text = Concat(T(302535920000246--[[Missle--]])," ",10),value = "Missle10"},
-    {text = Concat(T(302535920000246--[[Missle--]])," ",100),value = "Missle100"},
-    {text = Concat(T(302535920000246--[[Missle--]])," ",500),value = "Missle500",hint = T(302535920000250--[[Might be a little laggy--]])},
+    {text = Concat(" ",S[302535920000240--[[Stop Most Disasters--]]]),value = "Stop"},
+    {text = S[4149--[[Cold Wave--]]],value = "ColdWave"},
+    {text = S[302535920000241--[[Dust Devil Major--]]],value = "DustDevilsMajor"},
+    {text = S[302535920000242--[[Dust Devil--]]],value = "DustDevils"},
+    {text = S[302535920000243--[[Dust Storm Electrostatic--]]],value = "DustStormElectrostatic"},
+    {text = S[302535920000244--[[Dust Storm Great--]]],value = "DustStormGreat"},
+    {text = S[4250--[[Dust Storm--]]],value = "DustStorm"},
+    {text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
+    {text = S[302535920000245--[[Meteor Multi-Spawn--]]],value = "MeteorMultiSpawn"},
+    {text = S[4251--[[Meteor--]]],value = "Meteor"},
+    {text = Concat(S[302535920000246--[[Missle--]]]," ",1),value = "Missle1"},
+    {text = Concat(S[302535920000246--[[Missle--]]]," ",10),value = "Missle10"},
+    {text = Concat(S[302535920000246--[[Missle--]]]," ",100),value = "Missle100"},
+    {text = Concat(S[302535920000246--[[Missle--]]]," ",500),value = "Missle500",hint = S[302535920000250--[[Might be a little laggy--]]]},
   }
 
 --~   local Table = DataInstances.MapSettings_ColdWave
@@ -232,7 +233,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
       end
       MsgPopup(
         choice[i].text,
-        T(3983--[[Disasters--]])
+        3983--[[Disasters--]]
       )
     end
   end
@@ -240,8 +241,8 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000251--[[Trigger Disaster--]]),
-    hint = T(302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]]),
+    title = 302535920000251--[[Trigger Disaster--]],
+    hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
     multisel = true,
   }
 end
@@ -250,22 +251,22 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   local ChoGGi = ChoGGi
   local Consts = Consts
   local UICity = UICity
-  local hint_core = T(302535920000253--[[Core: Repeatable, exploit core resources.--]])
-  local hint_deep = T(302535920000254--[[Deep: Toggleable, exploit deep resources.--]])
+  local hint_core = S[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
+  local hint_deep = S[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
   local ItemList = {
-    {text = Concat(" ",T(4493--[[All--]])),value = 1,hint = Concat(hint_core,"\n",hint_deep)},
-    {text = Concat(" ",T(302535920000255--[[Deep--]])),value = 2,hint = hint_deep},
-    {text = Concat(" ",T(302535920000256--[[Core--]])),value = 3,hint = hint_core},
-    {text = T(302535920000257--[[Deep Scan--]]),value = 4,hint = Concat(hint_deep,"\n",T(302535920000030--[[Enabled--]]),": ",Consts.DeepScanAvailable)},
-    {text = T(797--[[Deep Water--]]),value = 5,hint = Concat(hint_deep,"\n",T(302535920000030--[[Enabled--]]),": ",Consts.IsDeepWaterExploitable)},
-    {text = T(793--[[Deep Metals--]]),value = 6,hint = Concat(hint_deep,"\n",T(302535920000030--[[Enabled--]]),": ",Consts.IsDeepMetalsExploitable)},
-    {text = T(801--[[Deep Rare Metals--]]),value = 7,hint = Concat(hint_deep,"\n",T(302535920000030--[[Enabled--]]),": ",Consts.IsDeepPreciousMetalsExploitable)},
-    {text = T(6548--[[Core Water--]]),value = 8,hint = hint_core},
-    {text = T(6546--[[Core Metals--]]),value = 9,hint = hint_core},
-    {text = T(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
-    {text = T(6556--[[Alien Imprints--]]),value = 11,hint = hint_core},
-    {text = T(302535920000258--[[Reveal Map--]]),value = 12,hint = T(302535920000259--[[Reveals the map squares--]])},
-    {text = T(302535920000260--[[Reveal Map (Deep)--]]),value = 13,hint = T(302535920000261--[[Reveals the map and unlocks "Deep" resources--]])},
+    {text = Concat(" ",S[4493--[[All--]]]),value = 1,hint = Concat(hint_core,"\n",hint_deep)},
+    {text = Concat(" ",S[302535920000255--[[Deep--]]]),value = 2,hint = hint_deep},
+    {text = Concat(" ",S[302535920000256--[[Core--]]]),value = 3,hint = hint_core},
+    {text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.DeepScanAvailable)},
+    {text = S[797--[[Deep Water--]]],value = 5,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.IsDeepWaterExploitable)},
+    {text = S[793--[[Deep Metals--]]],value = 6,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.IsDeepMetalsExploitable)},
+    {text = S[801--[[Deep Rare Metals--]]],value = 7,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.IsDeepPreciousMetalsExploitable)},
+    {text = S[6548--[[Core Water--]]],value = 8,hint = hint_core},
+    {text = S[6546--[[Core Metals--]]],value = 9,hint = hint_core},
+    {text = S[6550--[[Core Rare Metals--]]],value = 10,hint = hint_core},
+    {text = S[6556--[[Alien Imprints--]]],value = 11,hint = hint_core},
+    {text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = S[302535920000259--[[Reveals the map squares--]]]},
+    {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = S[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
   }
 
   local CallBackFunc = function(choice)
@@ -325,12 +326,12 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      T(302535920000262--[[Alice thought to herself.
+      302535920000262--[[Alice thought to herself.
 ""Now you will see a film made for children"".
 Perhaps.
 But I nearly forgot! You must close your eyes.
-Otherwise you won't see anything."--]]),
-      T(1000436--[[Map--]]),
+Otherwise you won't see anything."--]],
+      1000436--[[Map--]],
       "UI/Achievements/TheRabbitHole.tga",
       true
     )
@@ -339,8 +340,8 @@ Otherwise you won't see anything."--]]),
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000263--[[Scan Map--]]),
-    hint = T(302535920000264--[[You can select multiple items.--]]),
+    title = 302535920000263--[[Scan Map--]],
+    hint = 302535920000264--[[You can select multiple items.--]],
     multisel = true,
   }
 end
@@ -370,8 +371,8 @@ function ChoGGi.MenuFuncs.SpawnColonists()
     if type(value) == "number" then
       CheatSpawnNColonists(value)
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000014--[[Spawned--]])),
-        T(547--[[Colonists--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000014--[[Spawned--]]),
+        547--[[Colonists--]],
         "UI/Icons/Sections/colonist.tga"
       )
     end
@@ -380,8 +381,8 @@ function ChoGGi.MenuFuncs.SpawnColonists()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000266--[[Spawn--]])," ",T(547--[[Colonists--]])),
-    hint = T(302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.--]]),
+    title = Concat(S[302535920000266--[[Spawn--]]]," ",S[547--[[Colonists--]]]),
+    hint = 302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.--]],
   }
 end
 
@@ -412,12 +413,12 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000268--[[Start A Mystery--]]),
-    hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+    title = 302535920000268--[[Start A Mystery--]],
+    hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-See Cheats>%s to remove."--]]):format(T(302535920000329--[[Manage Mysteries--]]))),
-    check1 = T(302535920000270--[[Instant Start--]]),
-    check1_hint = T(302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]]),
+See Cheats>%s to remove."--]]]:format(S[302535920000329--[[Manage Mysteries--]]])),
+    check1 = 302535920000270--[[Instant Start--]],
+    check1_hint = 302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]],
   }
 end
 
@@ -477,8 +478,8 @@ end
 
 --loops through all the sequence and adds the logs we've already seen
 local function ShowMysteryLog(MystName)
-  local msgs = {Concat(MystName,"\n\n",T(302535920000272--[["To play back speech use ""Tools>Exec"" and type in
-g_Voice:Play(ChoGGi.CurObj.speech)"--]]),"\n")}
+  local msgs = {Concat(MystName,"\n\n",S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
+g_Voice:Play(ChoGGi.CurObj.speech)"--]]],"\n")}
   local Players = s_SeqListPlayers
   -- 1 is some default map thing
   if #Players < 2 then
@@ -499,7 +500,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]),"\n")}
               if seq.class == "SA_WaitMessage" then
                 --add to msg list
                 msgs[#msgs+1] = {
-                  [" "] = Concat(T(302535920000273--[[Speech--]]),": ",T(seq.voiced_text),"\n\n\n\n",T(302535920000274--[[Message--]]),": ",T(seq.text)),
+                  [" "] = Concat(S[302535920000273--[[Speech--]]],": ",T(seq.voiced_text),"\n\n\n\n",S[302535920000274--[[Message--]]],": ",T(seq.text)),
                   speech = seq.voiced_text,
                   class = T(seq.title)
                 }
@@ -531,7 +532,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
         value = id,
         func = id,
         seed = PlayerList[i].seed,
-        hint = Concat(ChoGGi.Tables.Mystery[id].description,"\n\n<color 255 75 75>",T(302535920000275--[[Total parts--]]),"</color>: ",totalparts," <color 255 75 75>",T(302535920000289--[[Current part--]]),"</color>: ",(ip or T(302535920000276--[[done?--]])))
+        hint = Concat(ChoGGi.Tables.Mystery[id].description,"\n\n<color 255 75 75>",S[302535920000275--[[Total parts--]]],"</color>: ",totalparts," <color 255 75 75>",S[302535920000289--[[Current part--]]],"</color>: ",(ip or S[302535920000276--[[done?--]]]))
       }
     end
   end
@@ -555,7 +556,10 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
           DeleteThread(Thread.thread)
         end
       end
-      MsgPopup(T(302535920000277--[[Removed all!--]]),T(3486--[[Mystery--]]))
+      MsgPopup(
+        302535920000277--[[Removed all!--]],
+        3486--[[Mystery--]]
+      )
     elseif choice[1].check1 then
       --remove mystery
       for i = #PlayerList, 1, -1 do
@@ -569,8 +573,8 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
         end
       end
       MsgPopup(
-        Concat(choice[1].text,": ",T(3486--[[Mystery--]])," ",T(302535920000278--[[Removed--]]),"!"),
-        T(3486--[[Mystery--]])
+        Concat(choice[1].text,": ",S[3486--[[Mystery--]]]," ",S[302535920000278--[[Removed--]]],"!"),
+        3486--[[Mystery--]]
       )
     elseif value then
       --next step
@@ -582,16 +586,16 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000279--[[Manage--]]),
-    hint = T(302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
+    title = 302535920000279--[[Manage--]],
+    hint = 302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
 
 Sequence part may have more then one check, you may have to skip twice or more.
 
-Double right-click selected mystery to review past messages.--]]),
-    check1 = T(302535920000281--[[Remove--]]),
-    check1_hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]])),
-    check2 = T(302535920000283--[[Remove All--]]),
-    check2_hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000284--[[This will remove all the mysteries!--]])),
+Double right-click selected mystery to review past messages.--]],
+    check1 = 302535920000281--[[Remove--]],
+    check1_hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]]]),
+    check2 = 302535920000283--[[Remove All--]],
+    check2_hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000284--[[This will remove all the mysteries!--]]]),
     custom_type = 6,
     custom_func = ShowMysteryLog,
   }
@@ -608,8 +612,8 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
   local ChoGGi = ChoGGi
   local ThreadsMessageToThreads = ThreadsMessageToThreads
 
-  local warning = Concat("\n\n",T(302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]))
-  local name = Concat(T(3486--[[Mystery--]]),": ",ChoGGi.Tables.Mystery[Mystery].name)
+  local warning = Concat("\n\n",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
+  local name = Concat(S[3486--[[Mystery--]]],": ",ChoGGi.Tables.Mystery[Mystery].name)
 
   for Thread in pairs(ThreadsMessageToThreads) do
     if Thread.player and Thread.player.seed == seed then
@@ -628,7 +632,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
         --skip older seqs
         if i >= ip then
           local seq = seq_list[i]
-          local title = Concat(name," ",T(302535920000286--[[Part--]]),": ",ip)
+          local title = Concat(name," ",S[302535920000286--[[Part--]]],": ",ip)
 
           --seqs that add delays/tasks
           if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
@@ -651,7 +655,10 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
             --may not be needed
             Player:UpdateCurrentIP(seq_list)
             --let them know
-            MsgPopup(T(302535920000287--[[Timer delay removed (may take upto a Sol).--]]),title)
+            MsgPopup(
+              302535920000287--[[Timer delay removed (may take upto a Sol).--]],
+              title
+            )
             break
 
           elseif seq.class == "SA_WaitExpression" then
@@ -671,9 +678,12 @@ function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              Concat(T(302535920000288--[[Advancement requires--]]),": ",tostring(seq.expression),"\n\n",T(302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
+              Concat(
+                S[302535920000288--[[Advancement requires--]]],": ",tostring(seq.expression),"\n\n",S[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
 
-Wait for a Sol or two for it to update (should give a popup msg).--]]),warning),
+Wait for a Sol or two for it to update (should give a popup msg).--]]],
+                warning
+              ),
               CallBackFunc,
               title
             )
@@ -689,7 +699,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]),warning),
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              Concat(T(302535920000288--[[Advancement requires--]]),": ",tostring(seq.msg),warning),
+              Concat(S[302535920000288--[[Advancement requires--]]],": ",tostring(seq.msg),warning),
               CallBackFunc,
               title
             )
@@ -704,7 +714,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]),warning),
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              Concat(T(302535920000288--[[Advancement requires--]]),": ",tostring(seq.Research),warning),
+              Concat(S[302535920000288--[[Advancement requires--]]],": ",tostring(seq.Research),warning),
               CallBackFunc,
               title
             )
@@ -718,9 +728,9 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]),warning),
               end
             end
             ChoGGi.ComFuncs.QuestionBox(
-              T(302535920000291--[[Waiting for %s to finish.
+              S[302535920000291--[[Waiting for %s to finish.
 
-Skip it?--]]):format(seq.sequence),
+Skip it?--]]]:format(seq.sequence),
               CallBackFunc,
               title
             )
@@ -739,8 +749,8 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings()
   CheatUnlockAllBuildings()
   RefreshXBuildMenu()
   MsgPopup(
-    T(302535920000293--[[Unlocked all buildings for construction.--]]),
-    T(3980--[[Buildings--]]),
+    302535920000293--[[Unlocked all buildings for construction.--]],
+    3980--[[Buildings--]],
     "UI/Icons/Upgrades/build_2.tga"
   )
 end
@@ -769,8 +779,8 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
     if type(value) == "number" then
       UICity:AddResearchPoints(value)
       MsgPopup(
-        Concat(T(302535920000294--[[Added--]]),": ",choice[1].text),
-        T(311--[[Research--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000294--[[Added--]]),
+        311--[[Research--]],
         "UI/Icons/Upgrades/eternal_fusion_04.tga"
       )
     end
@@ -779,8 +789,8 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000295--[[Add Research Points--]]),
-    hint = T(302535920000296--[[If you need a little boost (or a lotta boost) in research.--]]),
+    title = 302535920000295--[[Add Research Points--]],
+    hint = 302535920000296--[[If you need a little boost (or a lotta boost) in research.--]],
   }
 end
 
@@ -791,21 +801,21 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
   ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000297--[["%s
-Best hope you picked India as your Mars sponsor..."--]]):format(ChoGGi.UserSettings.OutsourceResearchCost),
-    T(311--[[Research--]]),
+    S[302535920000297--[["%s
+Best hope you picked India as your Mars sponsor..."--]]]:format(ChoGGi.UserSettings.OutsourceResearchCost),
+    311--[[Research--]],
     "UI/Icons/Sections/research_1.tga",
     true
   )
 end
 
-local hint_maxa = T(302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]])
+local hint_maxa = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]
 function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 6,value = 6},
     {text = 12,value = 12},
     {text = 24,value = 24},
@@ -828,8 +838,8 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        T(302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]):format(choice[1].text),
-        T(5182--[[Omega Telescope--]]),
+        S[302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]]:format(choice[1].text),
+        5182--[[Omega Telescope--]],
         default_icon
       )
     end
@@ -838,8 +848,8 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000300--[[BreakThroughs From Omega--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = 302535920000300--[[BreakThroughs From Omega--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
@@ -848,8 +858,8 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
   local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
-    {text = 26,value = 26,hint = T(302535920000301--[[Doubled the base amount.--]])},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = 26,value = 26,hint = S[302535920000301--[[Doubled the base amount.--]]]},
     {text = MaxAmount,value = MaxAmount,hint = hint_maxa},
   }
 
@@ -869,8 +879,8 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        T(302535920000302--[[%s: S M R T--]]):format(choice[1].text),
-        T(311--[[Research--]]),
+        S[302535920000302--[[%s: S M R T--]]]:format(choice[1].text),
+        311--[[Research--]],
         default_icon
       )
     end
@@ -879,8 +889,8 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000303--[[BreakThroughs Allowed--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = 302535920000303--[[BreakThroughs Allowed--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
@@ -888,7 +898,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.ResearchQueueSize
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25},
@@ -917,8 +927,8 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        T(302535920000304--[[%s: Nerdgasm--]]):format(ChoGGi.UserSettings.ResearchQueueSize),
-        T(311--[[Research--]]),
+        S[302535920000304--[[%s: Nerdgasm--]]]:format(ChoGGi.UserSettings.ResearchQueueSize),
+        311--[[Research--]],
         default_icon
       )
     end
@@ -927,8 +937,8 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000305--[[Research Queue Size--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = 302535920000305--[[Research Queue Size--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
@@ -937,24 +947,24 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   local Presets = Presets
   local ItemList = {}
   ItemList[#ItemList+1] = {
-    text = Concat(" ",T(302535920000306--[[Everything--]])),
+    text = Concat(" ",S[302535920000306--[[Everything--]]]),
     value = "Everything",
-    hint = T(302535920000307--[[All the tech/breakthroughs/mysteries--]])
+    hint = S[302535920000307--[[All the tech/breakthroughs/mysteries--]]]
   }
   ItemList[#ItemList+1] = {
-    text = Concat(" ",T(302535920000308--[[All Tech--]])),
+    text = Concat(" ",S[302535920000308--[[All Tech--]]]),
     value = "AllTech",
-    hint = T(302535920000309--[[All the regular tech--]])
+    hint = S[302535920000309--[[All the regular tech--]]]
   }
   ItemList[#ItemList+1] = {
-    text = Concat(" ",T(302535920000310--[[All Breakthroughs--]])),
+    text = Concat(" ",S[302535920000310--[[All Breakthroughs--]]]),
     value = "AllBreakthroughs",
-    hint = T(302535920000311--[[All the breakthroughs--]])
+    hint = S[302535920000311--[[All the breakthroughs--]]]
   }
   ItemList[#ItemList+1] = {
-    text = Concat(" ",T(302535920000312--[[All Mysteries--]])),
+    text = Concat(" ",S[302535920000312--[[All Mysteries--]]]),
     value = "AllMysteries",
-    hint = T(302535920000313--[[All the mysteries--]])
+    hint = S[302535920000313--[[All the mysteries--]]]
   }
 
   for i = 1, #Presets.TechPreset do
@@ -968,7 +978,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
       ItemList[#ItemList+1] = {
         text = text,
         value = tech.id,
-        hint = Concat(T(tech.description),"\n\n",T(1000097--[[Category--]]),": ",tech.group)
+        hint = Concat(T(tech.description),"\n\n",S[1000097--[[Category--]]],": ",tech.group)
       }
     end
   end
@@ -990,11 +1000,11 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     local text
     if check1 then
       func = "DiscoverTech"
-      text = T(8690--[[Unlocked--]])
+      text = S[8690--[[Unlocked--]]]
     end
     if check2 then
       func = "GrantTech"
-      text = T(302535920000314--[[Researched--]])
+      text = S[302535920000314--[[Researched--]]]
     end
 
     for i = 1, #choice do
@@ -1015,8 +1025,8 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     end
 
     MsgPopup(
-      T(302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]):format(text),
-      T(311--[[Research--]]),
+      S[302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]]:format(text),
+      311--[[Research--]],
       default_icon
     )
   end
@@ -1024,14 +1034,14 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000316--[[Research Unlock--]]),
-    hint = T(302535920000317--[[Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).--]]),
+    title = 302535920000316--[[Research Unlock--]],
+    hint = 302535920000317--[[Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).--]],
     multisel = true,
-    check1 = T(302535920000318--[[Unlock--]]),
-    check1_hint = T(302535920000319--[[Just unlocks in the research tree.--]]),
+    check1 = 302535920000318--[[Unlock--]],
+    check1_hint = 302535920000319--[[Just unlocks in the research tree.--]],
     check1_checked = true,
-    check2 = T(311--[[Research--]]),
-    check2_hint = T(302535920000320--[[Unlocks and researchs.--]]),
+    check2 = 311--[[Research--]],
+    check2_hint = 302535920000320--[[Unlocks and researchs.--]],
   }
 end
 

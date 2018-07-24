@@ -61,7 +61,7 @@ Lua\X\Infopanel.lua
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Trans
+--~ local T = ChoGGi.ComFuncs.Trans
 --~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
@@ -125,7 +125,6 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-  local UserSettings = ChoGGi.UserSettings
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()
@@ -773,7 +772,10 @@ function OnMsg.ClassesBuilt()
       if StopWait.skipmsg then
         StopWait.skipmsg = nil
       else
-        MsgPopup(T(302535920000735--[[Timer delay skipped--]]),T(3486--[[Mystery--]]))
+        MsgPopup(
+          302535920000735--[[Timer delay skipped--]],
+          3486--[[Mystery--]]
+        )
       end
 
       --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...

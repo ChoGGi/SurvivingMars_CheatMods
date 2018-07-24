@@ -162,6 +162,8 @@ Please send me latest log file: %s]],file,ChoGGi.email))
 end
 
 do -- ECM
+  -- translate all the strings before anything else
+  dofile(Concat(ChoGGi.MountPath,"Strings.lua"))
   -- functions that need to be loaded before they get called...
   dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
   -- get saved settings for this mod
@@ -192,7 +194,6 @@ do -- ECM
 
   -- if writelogs option
   if ChoGGi.UserSettings.WriteLogs then
-  --~   ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = "<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Writing debug/console logs to AppData/logs</color>"
     ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
   end
 

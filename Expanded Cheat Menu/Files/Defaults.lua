@@ -4,6 +4,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local next,pairs,print,type,table = next,pairs,print,type,table
 
@@ -395,7 +396,7 @@ function ChoGGi.SettingFuncs.WriteSettings(settings)
   ThreadUnlockKey(ChoGGi.SettingsFile)
 
   if DoneFuckedUp then
-    print(T(302535920000006--[[Failed to save settings to %s : %s--]]):format(ChoGGi.SettingsFile,DoneFuckedUp))
+    print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(ChoGGi.SettingsFile,DoneFuckedUp))
     return false, DoneFuckedUp
   end
 end
@@ -403,8 +404,6 @@ end
 -- read saved settings from file
 function ChoGGi.SettingFuncs.ReadSettings(settings_str)
   local ChoGGi = ChoGGi
-  local errormsg = Concat("\n\n",T(302535920000000--[[Expanded Cheat Menu--]]),": ",T(302535920000007--[[Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author.--]]),"\n\n")
 
   -- try to read settings
   if not settings_str then
@@ -424,7 +423,8 @@ If you can delete it and still get this error; please send it and this log to th
   local code_error
   code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
 	if code_error then
-    print(errormsg)
+    print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author.--]]],"\n\n")
 		return code_error
 	end
 
@@ -513,7 +513,7 @@ function OnMsg.ModsLoaded()
   --if empty table then new settings file or old settings
   else
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local errormsg = Concat(T(302535920000008--[[Error: Couldn't convert old settings to new settings--]]),": ")
+    local errormsg = Concat(S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]],": ")
     if not AddOldSettings("BuildingsCapacity","capacity") then
       ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsCapacity")
     end
@@ -524,9 +524,9 @@ function OnMsg.ModsLoaded()
 
   --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
   ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g_Classes[class].scenario_name or T(302535920000009--[[Missing Scenario Name--]])
-    local display_name = T(g_Classes[class].display_name) or T(302535920000010--[[Missing Name--]])
-    local description = T(g_Classes[class].rollover_text) or T(302535920000011--[[Missing Description--]])
+    local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
+    local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
+    local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
 
     local temptable = {
       class = class,

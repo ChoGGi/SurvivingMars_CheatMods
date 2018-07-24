@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local rawget,table,tostring,print,select = rawget,table,tostring,print,select
 
@@ -22,6 +22,119 @@ local g_Classes = g_Classes
 --~ box(left, top, right, bottom)
 
 -- fired from OnMsgs
+local function ShowFileLog()
+  FlushLogFile()
+  print(select(2,AsyncFileToString(GetLogFile())))
+end
+local function ModsLog()
+  print(ModMessageLog)
+end
+local function ConsoleLog()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
+  ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
+  ChoGGi.SettingFuncs.WriteSettings()
+end
+local function ConsoleLogWindow()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
+  ChoGGi.SettingFuncs.WriteSettings()
+  ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
+end
+local function WriteConsoleLog()
+  local ChoGGi = ChoGGi
+  if ChoGGi.UserSettings.WriteLogs then
+    ChoGGi.UserSettings.WriteLogs = nil
+    ChoGGi.ComFuncs.WriteLogs_Toggle()
+  else
+    ChoGGi.UserSettings.WriteLogs = true
+    ChoGGi.ComFuncs.WriteLogs_Toggle(true)
+  end
+  ChoGGi.SettingFuncs.WriteSettings()
+end
+local function ConsolePopup(self)
+  local popup = rawget(terminal.desktop, "idConsoleMenu")
+  if popup then
+    popup:Close()
+  else
+    PopupToggle(self,"idConsoleMenu",{
+      {
+        name = S[302535920001026--[[Show File Log--]]],
+        hint = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
+        class = "XTextButton",
+--~             clicked = function(self,pos,button)
+        clicked = ShowFileLog,
+      },
+      {
+        name = S[302535920000071--[[Mods Log--]]],
+        hint = S[302535920000870--[[Shows any errors from loading mods in console log.--]]],
+        class = "XTextButton",
+        clicked = ModsLog,
+      },
+      {name = " - ",class = "XTextButton"},
+      {
+        name = S[302535920000734--[[Clear Log--]]],
+        hint = S[302535920001152--[[Clear out the console log (F9 also works).--]]],
+        class = "XTextButton",
+        clicked = cls,
+      },
+      {
+        name = S[302535920000563--[[Copy Log Text--]]],
+        hint = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
+        class = "XTextButton",
+        clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
+      },
+      {name = " - ",class = "XTextButton"},
+      {
+        name = S[302535920001112--[[Console Log--]]],
+        hint = S[302535920001119--[[Toggle showing the console log on screen.--]]],
+        class = "XCheckButton",
+        value = "dlgConsoleLog",
+        clicked = ConsoleLog,
+      },
+      {
+        name = S[302535920001120--[[Console Log Window--]]],
+        hint = S[302535920001133--[[Toggle showing the console log window on screen.--]]],
+        class = "XCheckButton",
+        value = "dlgChoGGi_ConsoleLogWin",
+        clicked = ConsoleLogWindow,
+      },
+      {
+        name = S[302535920000483--[[Write Console Log--]]],
+        hint = S[302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]]],
+        class = "XCheckButton",
+        value = {"WriteLogs"},
+        clicked = WriteConsoleLog,
+      },
+    })
+  end
+end
+local function HistoryPopup(self)
+  local popup = rawget(terminal.desktop, "idHistoryMenu")
+  if popup then
+    popup:Close()
+  else
+    local items = {}
+    --build history list menu
+    if #dlgConsole.history_queue > 0 then
+      local history = dlgConsole.history_queue
+      for i = 1, #history do
+        --these can get long so keep 'em short
+        local text = tostring(history[i])
+        local name = text:sub(1,ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50)
+        items[#items+1] = {
+          class = "XTextButton",
+          name = name,
+          hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
+          clicked = function()
+            dlgConsole:Exec(text)
+          end,
+        }
+      end
+    end
+    PopupToggle(self,"idHistoryMenu",items)
+  end
+end
 function ChoGGi.Console.ConsoleControls()
   --stick everything in
   local container = g_Classes.XWindow:new({
@@ -40,89 +153,9 @@ function ChoGGi.Console.ConsoleControls()
     RolloverAnchor = "top",
     RolloverTemplate = "Rollover",
     RolloverBackground = RGBA(40, 163, 255, 255),
-    RolloverText = T(302535920001089--[[Settings & Commands--]]),
-    Text = T(302535920001073--[[Console--]]),
-    OnPress = function(self)
-      local popup = rawget(terminal.desktop, "idConsoleMenu")
-      if popup then
-        popup:Close()
-      else
-        PopupToggle(self,"idConsoleMenu",{
-          {
-            name = T(302535920001026--[[Show File Log--]]),
-            hint = T(302535920001091--[[Flushes log to disk and displays in console log.--]]),
-            class = "XTextButton",
---~             clicked = function(self,pos,button)
-            clicked = function()
-              FlushLogFile()
-              print(select(2,AsyncFileToString(GetLogFile())))
-            end,
-          },
-          {
-            name = T(302535920000071--[[Mods Log,--]]),
-            hint = T(302535920000870--[[Shows any errors from loading mods in console log.--]]),
-            class = "XTextButton",
-            clicked = function()
-              print(ModMessageLog)
-            end,
-          },
-          {name = " - ",class = "XTextButton"},
-          {
-            name = T(302535920000734--[[Clear Log--]]),
-            hint = T(302535920001152--[[Clear out the console log (F9 also works).--]]),
-            class = "XTextButton",
-            clicked = cls,
-          },
-          {
-            name = T(302535920000563--[[Copy Log Text--]]),
-            hint = T(302535920001154--[[Displays the log text in a window you can copy sections from.--]]),
-            class = "XTextButton",
-            clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
-          },
-          {name = " - ",class = "XTextButton"},
-          {
-            name = T(302535920001112--[[Console Log--]]),
-            hint = T(302535920001119--[[Toggle showing the console log on screen.--]]),
-            class = "XCheckButton",
-            value = "dlgConsoleLog",
-            clicked = function()
-              local ChoGGi = ChoGGi
-              ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
-              ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
-              ChoGGi.SettingFuncs.WriteSettings()
-            end,
-          },
-          {
-            name = T(302535920001120--[[Console Log Window--]]),
-            hint = T(302535920001133--[[Toggle showing the console log window on screen.--]]),
-            class = "XCheckButton",
-            value = "dlgChoGGi_ConsoleLogWin",
-            clicked = function()
-              local ChoGGi = ChoGGi
-              ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
-              ChoGGi.SettingFuncs.WriteSettings()
-              ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
-            end,
-          },
-          {
-            name = T(302535920000483--[[Write Console Log--]]),
-            hint = T(302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]]),
-            class = "XCheckButton",
-            value = {"WriteLogs"},
-            clicked = function()
-              if ChoGGi.UserSettings.WriteLogs then
-                ChoGGi.UserSettings.WriteLogs = nil
-                ChoGGi.ComFuncs.WriteLogs_Toggle()
-              else
-                ChoGGi.UserSettings.WriteLogs = true
-                ChoGGi.ComFuncs.WriteLogs_Toggle(true)
-              end
-              ChoGGi.SettingFuncs.WriteSettings()
-            end,
-          },
-        })
-      end
-    end,
+    RolloverText = S[302535920001089--[[Settings & Commands--]]],
+    Text = S[302535920001073--[[Console--]]],
+    OnPress = ConsolePopup,
   }, container)
 
   --------------------------------History popup
@@ -133,35 +166,9 @@ function ChoGGi.Console.ConsoleControls()
     RolloverAnchor = "top",
     Padding = box(5, 2, 5, 2),
     TextFont = "Editor16Bold",
-    RolloverText = T(302535920001080--[[Console History Items--]]),
-    Text = T(302535920000793--[[History--]]),
-    OnPress = function(self)
-      local popup = rawget(terminal.desktop, "idHistoryMenu")
-      if popup then
-        popup:Close()
-      else
-        local items = {}
-        --build history list menu
-        if #dlgConsole.history_queue > 0 then
-          local history = dlgConsole.history_queue
-          for i = 1, #history do
-            --these can get long so keep 'em short
-            local text = tostring(history[i])
-            local name = text:sub(1,ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50)
-            items[#items+1] = {
-              class = "XTextButton",
-              name = name,
-              hint = Concat(T(302535920001138--[[Execute this command in the console.--]]),"\n\n",text),
-              clicked = function()
---~                 ShowConsoleLog(true)
-                dlgConsole:Exec(text)
-              end,
-            }
-          end
-        end
-        PopupToggle(self,"idHistoryMenu",items)
-      end
-    end,
+    RolloverText = S[302535920001080--[[Console History Items--]]],
+    Text = S[302535920000793--[[History--]]],
+    OnPress = HistoryPopup,
   }, container)
 
   --------------------------------Scripts buttons
@@ -197,7 +204,7 @@ local function BuildSciptButton(scripts,dlg,folder)
             items[#items+1] = {
               class = "XTextButton",
               name = scripts[i].name,
-              hint = Concat(T(302535920001138--[[Execute this command in the console.--]]),"\n\n",script),
+              hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
               clicked = function()
                 dlg:Exec(script)
               end,
@@ -211,7 +218,6 @@ local function BuildSciptButton(scripts,dlg,folder)
   }, scripts)
 end
 
-local scriptpath_str = T(302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]])
 -- rebuild menu toolbar buttons
 function ChoGGi.Console.RebuildConsoleToolbar(dlg)
   if not dlg then
@@ -228,15 +234,15 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
   end
 
   BuildSciptButton(scripts,dlg,{
-    Text = T(302535920000353--[[Scripts--]]),
-    RolloverText = scriptpath_str:format(ChoGGi.scripts),
+    Text = S[302535920000353--[[Scripts--]]],
+    RolloverText = S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(ChoGGi.scripts),
     id = "idScriptsMenu",
     script_path = ChoGGi.scripts,
   })
 
   local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
   if folders then
-    local hint_str = T(302535920001159--[[Any .lua files contained in %s.--]])
+    local hint_str = S[302535920001159--[[Any .lua files contained in %s.--]]]
     for i = 1, #folders do
       BuildSciptButton(scripts,dlg,{
         Text = folders[i].name,
@@ -258,12 +264,11 @@ function ChoGGi.Console.ListScriptFiles()
   end
   AsyncCreatePath(script_path)
   --print some info
-  local help = scriptpath_str:format(script_path)
-  print(help)
+  print(S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(script_path))
   --add some example files and a readme
-  AsyncStringToFile(Concat(script_path,"/readme.txt"),T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]))
+  AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
   AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[local ChoGGi = ChoGGi
-ChoGGi.ComFuncs.MsgWait(ChoGGi.ComFuncs.Trans(302535920000881):format(ChoGGi.scripts))]])
+ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
   AsyncCreatePath(Concat(script_path,"/Examine"))
   AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
   AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])

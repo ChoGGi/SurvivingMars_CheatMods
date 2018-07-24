@@ -2,18 +2,14 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
+local S = ChoGGi.Strings
 
-local T = ChoGGi.ComFuncs.Trans
 local icon = "Cube.tga"
 
 --AddAction(Menu,Action,Key,Des,Icon)
 
-local str_ECM = T(302535920000104--[[Expanded CM--]])
-local str_Buildings = T(3980--[[Buildings--]])
-local str_CablesPipes = T(302535920000157--[[Cables & Pipes--]])
-
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000164--[[Storage Amount Of Diner & Grocery--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000164--[[Storage Amount Of Diner & Grocery--]]]),
   ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
   nil,
   function()
@@ -26,7 +22,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000168--[[Triboelectric Scrubber Radius--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000168--[[Triboelectric Scrubber Radius--]]]),
   function()
     ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber",302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
 All four engines have stopped. We are doing our damnedest to get them going again.
@@ -43,7 +39,7 @@ I trust you are not in too much distress."--]])
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000171--[[SubsurfaceHeater Radius--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000171--[[SubsurfaceHeater Radius--]]]),
   function()
     ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\n",302535920000172--[[Some smart quip about heating?--]])
   end,
@@ -58,7 +54,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000174--[[Always Dusty--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000174--[[Always Dusty--]]]),
   ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle,
   nil,
   function()
@@ -71,31 +67,31 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000176--[[Empty Mech Depot--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000176--[[Empty Mech Depot--]]]),
   ChoGGi.CodeFuncs.EmptyMechDepot,
   nil,
-  T(302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]),
+  302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000178--[[Protection Radius--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000178--[[Protection Radius--]]]),
   ChoGGi.MenuFuncs.SetProtectionRadius,
   nil,
-  T(302535920000179--[[Change threat protection coverage distance.--]]),
+  302535920000179--[[Change threat protection coverage distance.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000180--[[Unlock Locked Buildings--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000180--[[Unlock Locked Buildings--]]]),
   ChoGGi.MenuFuncs.UnlockLockedBuildings,
   nil,
-  T(302535920000181--[[Gives you a list of buildings you can unlock in the build menu.--]]),
+  302535920000181--[[Gives you a list of buildings you can unlock in the build menu.--]],
   "toggle_post.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000182--[[Pipes Pillars Spacing--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000182--[[Pipes Pillars Spacing--]]]),
   ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle,
   nil,
   function()
@@ -108,7 +104,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000184--[[Unlimited Connection Length--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000184--[[Unlimited Connection Length--]]]),
   ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
   nil,
   function()
@@ -121,38 +117,38 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/[12]",T(302535920000186--[[Power-free Building--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/[12]",S[302535920000186--[[Power-free Building--]]]),
   ChoGGi.MenuFuncs.BuildingPower_Toggle,
   nil,
-  T(302535920000187--[[Toggle electricity use for selected building type.--]]),
+  302535920000187--[[Toggle electricity use for selected building type.--]],
   icon
 )
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/[13]",T(302535920001251--[[Water-free Building--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/[13]",S[302535920001251--[[Water-free Building--]]]),
   ChoGGi.MenuFuncs.BuildingWater_Toggle,
   nil,
-  T(302535920001252--[[Toggle water use for selected building type.--]]),
+  302535920001252--[[Toggle water use for selected building type.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/[14]",T(302535920001253--[[Oxygen-free Building--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/[14]",S[302535920001253--[[Oxygen-free Building--]]]),
   ChoGGi.MenuFuncs.BuildingAir_Toggle,
   nil,
-  T(302535920001254--[[Toggle oxygen use for selected building type.--]]),
+  302535920001254--[[Toggle oxygen use for selected building type.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000188--[[Set Charge & Discharge Rates--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000188--[[Set Charge & Discharge Rates--]]]),
   ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
   ChoGGi.UserSettings.KeyBindings.SetMaxChangeOrDischarge,
-  T(302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]),
+  302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000191--[[Use Last Orientation--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000191--[[Use Last Orientation--]]]),
   ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
   "F7",
   ChoGGi.ComFuncs.SettingState(
@@ -163,7 +159,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000198--[[Sanatoriums Cure All--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000198--[[Sanatoriums Cure All--]]]),
   ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
   nil,
   function()
@@ -176,7 +172,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000200--[[Schools Train All--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000200--[[Schools Train All--]]]),
   ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
   nil,
   function()
@@ -189,33 +185,32 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000192--[[Farm Shifts All On--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000192--[[Farm Shifts All On--]]]),
   ChoGGi.MenuFuncs.FarmShiftsAllOn,
   nil,
-  T(302535920000193--[[Turns on all the farm shifts.--]]),
+  302535920000193--[[Turns on all the farm shifts.--]],
   icon
 )
 --------------------
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000194--[[Production Amount Set--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000194--[[Production Amount Set--]]]),
   ChoGGi.MenuFuncs.SetProductionAmount,
   ChoGGi.UserSettings.KeyBindings.SetProductionAmount,
-  T(302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
-Works on any building that produces."--]]),
+  302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
+Works on any building that produces."--]],
   icon
 )
 --------------------
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000196--[[Fully Automated Building--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000196--[[Fully Automated Building--]]]),
   ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
   nil,
-  T(302535920000197--[["Work without workers (select a building and this will apply to all of type or selected).
-Thanks to BoehserOnkel for the idea."--]]),
+  302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000202--[[Sanatoriums & Schools: Show All Traits--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000202--[[Sanatoriums & Schools: Show All Traits--]]]),
   ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
   nil,
   function()
@@ -228,7 +223,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000204--[[Sanatoriums & Schools: Show Full List--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000204--[[Sanatoriums & Schools: Show Full List--]]]),
   ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
   nil,
   function()
@@ -241,7 +236,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000206--[[Maintenance Free Inside--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000206--[[Maintenance Free Inside--]]]),
   ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle,
   nil,
   function()
@@ -254,7 +249,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000208--[[Maintenance Free--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000208--[[Maintenance Free--]]]),
   ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle,
   nil,
   function()
@@ -267,7 +262,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000210--[[Moisture Vaporator Penalty--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000210--[[Moisture Vaporator Penalty--]]]),
   ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
   nil,
   function()
@@ -280,7 +275,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(4711--[[Crop Fail Threshold--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[4711--[[Crop Fail Threshold--]]]),
   ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
   nil,
   function()
@@ -293,7 +288,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000214--[[Cheap Construction--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000214--[[Cheap Construction--]]]),
   ChoGGi.MenuFuncs.CheapConstruction_Toggle,
   nil,
   function()
@@ -306,7 +301,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000216--[[Building Damage Crime--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000216--[[Building Damage Crime--]]]),
   ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle,
   nil,
   function()
@@ -320,33 +315,33 @@ AddAction(
 
 --------------------
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",str_CablesPipes,": ",T(302535920000218--[[No Chance Of Break--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000218--[[No Chance Of Break--]]]),
   ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.BreakChanceCablePipe,
-      Concat(str_CablesPipes,": ",T(302535920000219--[[will never break.--]]))
+      Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000219--[[will never break.--]]])
     )
   end,
   "ViewCamPath.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",str_CablesPipes,": ",T(134--[[Instant Build--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000157--[[Cables & Pipes--]]],": ",S[134--[[Instant Build--]]]),
   ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
       Consts.InstantCables,
-      Concat(str_CablesPipes,": ",T(302535920000221--[[are built instantly.--]]))
+      Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000221--[[are built instantly.--]]])
     )
   end,
   "ViewCamPath.tga"
 )
 --------------------
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000222--[[Unlimited Wonders--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000222--[[Unlimited Wonders--]]]),
   ChoGGi.MenuFuncs.Building_wonder_Toggle,
   nil,
   function()
@@ -359,7 +354,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000224--[[Show Hidden Buildings--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000224--[[Show Hidden Buildings--]]]),
   ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,
   nil,
   function()
@@ -372,7 +367,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000226--[[Build Spires Outside of Spire Point--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000226--[[Build Spires Outside of Spire Point--]]]),
   ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
   nil,
   function()
@@ -386,7 +381,7 @@ Use with Remove Building Limits to fill up a dome with spires."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920001241--[[Instant Build--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920001241--[[Instant Build--]]]),
   ChoGGi.MenuFuncs.Building_instant_build_Toggle,
   nil,
   function()
@@ -400,7 +395,7 @@ Doesn't work with domes."--]]
 )
 --------------------
 AddAction(
-  Concat(str_ECM,"/",str_Buildings,"/",T(302535920000230--[[Remove Building Limits--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[3980--[[Buildings--]]],"/",S[302535920000230--[[Remove Building Limits--]]]),
   ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,
   nil,
   function()

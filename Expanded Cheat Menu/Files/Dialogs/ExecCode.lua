@@ -8,7 +8,7 @@ if g_Classes.ChoGGi_ExecCodeDlg then
 end
 
 local Concat = ChoGGi.ComFuncs.Concat
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local ShowConsoleLog = ShowConsoleLog
 local point = point
@@ -52,7 +52,7 @@ function ChoGGi_ExecCodeDlg:Init()
     end
   )
   ChoGGi.ComFuncs.DialogAddCaption(self,{
-    prefix = Concat(T(302535920000040--[[Exec Code on--]]),": "),
+    prefix = Concat(S[302535920000040--[[Exec Code on--]]],": "),
     pos = point(25, border),
     size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
   })
@@ -68,7 +68,7 @@ function ChoGGi_ExecCodeDlg:Init()
   self.idEditValue:SetTextVAlign("center")
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetText("ChoGGi.CurObj") --start off with this as code (maybe just update s instead?)
-  self.idEditValue:SetHint(T(302535920000072--[[Paste or type code to be executed here.--]]))
+  self.idEditValue:SetHint(S[302535920000072--[[Paste or type code to be executed here.--]]])
   self.idEditValue:SetMaxLen(-1)
   --focus on textbox and move cursor to end of text
   self.idEditValue:SetFocus()
@@ -76,7 +76,7 @@ function ChoGGi_ExecCodeDlg:Init()
 
   element_y = 5 + self.idEditValue:GetPos():y() + self.idEditValue:GetSize():y()
 
-  local title = T(302535920000051--[[Exec--]])
+  local title = S[302535920000051--[[Exec--]]]
   self.idOK = g_Classes.Button:new(self)
   self.idOK:SetPos(point(dialog_left+5, element_y))
   self.idOK:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
@@ -84,7 +84,7 @@ function ChoGGi_ExecCodeDlg:Init()
   self.idOK:SetVSizing("AnchorToBottom")
   self.idOK:SetFontStyle("Editor14Bold")
   self.idOK:SetText(title)
-  self.idOK:SetHint(T(302535920000073--[[Exec and close dialog (Enter can also be used).--]]))
+  self.idOK:SetHint(S[302535920000073--[[Exec and close dialog (Enter can also be used).--]]])
   --just exec instead of also closing dialog
   function self.idOK.OnButtonPressed()
     ChoGGi.CurObj = self.obj
@@ -95,7 +95,7 @@ function ChoGGi_ExecCodeDlg:Init()
 
   element_x = border * 2 + self.idOK:GetPos():x() + self.idOK:GetSize():x()
 
-  title = T(1000430--[[Cancel--]])
+  title = S[6879--[[Cancel--]]]
   self.idClose = g_Classes.Button:new(self)
   self.idClose:SetPos(point(element_x, element_y))
   self.idClose:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
@@ -103,12 +103,12 @@ function ChoGGi_ExecCodeDlg:Init()
   self.idClose:SetVSizing("AnchorToBottom")
   self.idClose:SetFontStyle("Editor14Bold")
   self.idClose:SetText(title)
-  self.idClose:SetHint(T(302535920000074--[[Cancel without changing anything.--]]))
+  self.idClose:SetHint(S[302535920000074--[[Cancel without changing anything.--]]])
   self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
   element_x = border * 2 + self.idClose:GetPos():x() + self.idClose:GetSize():x()
 
-  title = T(302535920000075--[[Insert Obj--]])
+  title = S[302535920000075--[[Insert Obj--]]]
   self.idInsertObj = g_Classes.Button:new(self)
   self.idInsertObj:SetPos(point(element_x, element_y))
   self.idInsertObj:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
@@ -116,7 +116,7 @@ function ChoGGi_ExecCodeDlg:Init()
   self.idInsertObj:SetVSizing("AnchorToBottom")
   self.idInsertObj:SetFontStyle("Editor14Bold")
   self.idInsertObj:SetText(title)
-  self.idInsertObj:SetHint(Concat(T(302535920000076--[[At caret position inserts--]]),": ","ChoGGi.CurObj"))
+  self.idInsertObj:SetHint(S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]])
 
   --insert text at caret
   function self.idInsertObj.OnButtonPressed()

@@ -2,20 +2,14 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local icon = "AlignSel.tga"
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
-local str_ECM = T(302535920000104--[[Expanded CM--]])
-local str_Colonists = T(547--[[Colonists--]])
-local str_Work = T(302535920000212--[[Work--]])
-local str_Stats = T(5568--[[Stats--]])
-local str_Traits = T(235--[[Traits--]])
-
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000369--[[No More Earthsick--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000369--[[No More Earthsick--]]]),
   ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle,
   nil,
   function()
@@ -28,76 +22,76 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000371--[[Traits: Restrict For Selected Building Type--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000371--[[Traits: Restrict For Selected Building Type--]]]),
   function()
     ChoGGi.MenuFuncs.SetBuildingTraits("restricttraits")
   end,
   nil,
-  T(302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block overrides).--]]),
+  302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block overrides).--]],
   "SelectByClassName.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000373--[[Traits: Block For Selected Building Type--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000373--[[Traits: Block For Selected Building Type--]]]),
   function()
     ChoGGi.MenuFuncs.SetBuildingTraits("blocktraits")
   end,
   nil,
-  T(302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]),
+  302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]],
   "SelectByClassName.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000375--[[The Soylent Option--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000375--[[The Soylent Option--]]]),
   ChoGGi.MenuFuncs.TheSoylentOption,
   ChoGGi.UserSettings.KeyBindings.TheSoylentOption,
-  T(302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]),
+  302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]],
   "Cube.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000377--[[Colonists Move Speed--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000377--[[Colonists Move Speed--]]]),
   ChoGGi.MenuFuncs.SetColonistMoveSpeed,
   nil,
-  T(302535920000378--[[How fast colonists will move.--]]),
+  302535920000378--[[How fast colonists will move.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000379--[[Add Or Remove Applicants--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000379--[[Add Or Remove Applicants--]]]),
   ChoGGi.MenuFuncs.AddApplicantsToPool,
   nil,
-  T(302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]),
+  302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000381--[[Colonists Gravity--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000381--[[Colonists Gravity--]]]),
   ChoGGi.MenuFuncs.SetColonistsGravity,
   nil,
-  T(302535920000382--[[Change gravity of Colonists.--]]),
+  302535920000382--[[Change gravity of Colonists.--]],
   icon
 )
 
 -------------------------------work
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000383--[[Fire All Colonists!--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000383--[[Fire All Colonists!--]]]),
   ChoGGi.MenuFuncs.FireAllColonists,
   nil,
-  T(302535920000384--[[Fires everyone from every job.--]]),
+  302535920000384--[[Fires everyone from every job.--]],
   "ToggleEnvMap.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000385--[[Set All Work Shifts--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000385--[[Set All Work Shifts--]]]),
   ChoGGi.MenuFuncs.SetAllWorkShifts,
   nil,
-  T(302535920000386--[[Set all shifts on or off (able to cancel).--]]),
+  302535920000386--[[Set all shifts on or off (able to cancel).--]],
   "ToggleEnvMap.tga"
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000387--[[Colonists Avoid Fired Workplace--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000387--[[Colonists Avoid Fired Workplace--]]]),
   ChoGGi.MenuFuncs.AvoidWorkplace_Toggle,
   nil,
   function()
@@ -111,7 +105,7 @@ Works after colonist idle."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000389--[[Performance Penalty Non-Specialist--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000389--[[Performance Penalty Non-Specialist--]]]),
   ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
   nil,
   function()
@@ -125,7 +119,7 @@ Activated when colonist changes job."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000392--[[Outside Workplace Radius--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000392--[[Outside Workplace Radius--]]]),
   ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
   nil,
   ChoGGi.ComFuncs.SettingState(
@@ -136,16 +130,16 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[3]",str_Work,"/",T(302535920000393--[[Add Specialization To All--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[3]",S[302535920000212--[[Work--]]],"/",S[302535920000393--[[Add Specialization To All--]]]),
   ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll,
   nil,
-  T(302535920000394--[[If Colonist has no Specialization then add a random one--]]),
+  302535920000394--[[If Colonist has no Specialization then add a random one--]],
   icon
 )
 
 -------------------------------stats
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000395--[[Min Comfort Birth--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000395--[[Min Comfort Birth--]]]),
   ChoGGi.MenuFuncs.SetMinComfortBirth,
   nil,
   function()
@@ -158,7 +152,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000397--[[Visit Fail Penalty--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000397--[[Visit Fail Penalty--]]]),
   ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
   nil,
   function()
@@ -171,7 +165,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000399--[[Renegade Creation Toggle--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000399--[[Renegade Creation Toggle--]]]),
   ChoGGi.MenuFuncs.RenegadeCreation_Toggle,
   nil,
   function()
@@ -185,15 +179,15 @@ Works after daily update."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000401--[[Set Renegade Status--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000401--[[Set Renegade Status--]]]),
   ChoGGi.MenuFuncs.SetRenegadeStatus,
   nil,
-  T(302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]]),
+  302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000402--[[Morale Always Max--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000402--[[Morale Always Max--]]]),
   ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle,
   nil,
   function()
@@ -207,7 +201,7 @@ Only works on colonists that have yet to spawn (maybe)."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000404--[[See Dead Sanity Damage--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000404--[[See Dead Sanity Damage--]]]),
   ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle,
   nil,
   function()
@@ -221,7 +215,7 @@ Works after in-game hour."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000406--[[No Home Comfort Damage--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000406--[[No Home Comfort Damage--]]]),
   ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle,
   nil,
   function()
@@ -235,7 +229,7 @@ Works after in-game hour."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(302535920000408--[[Chance Of Sanity Damage--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[302535920000408--[[Chance Of Sanity Damage--]]]),
   ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle,
   nil,
   function()
@@ -249,7 +243,7 @@ Works after in-game hour."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[2]",str_Traits,"/",T(302535920000410--[[University Grad Remove Idiot--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[2]",S[235--[[Traits--]]],"/",S[302535920000410--[[University Grad Remove Idiot--]]]),
   ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,
   nil,
   function()
@@ -262,7 +256,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[2]",str_Traits,"/",T(302535920000412--[[Chance Of Negative Trait--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[2]",S[235--[[Traits--]]],"/",S[302535920000412--[[Chance Of Negative Trait--]]]),
   ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle,
   nil,
   function()
@@ -276,7 +270,7 @@ Works after colonist idle."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[1]",str_Stats,"/",T(4576--[[Chance Of Suicide--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[1]",S[5568--[[Stats--]]],"/",S[4576--[[Chance Of Suicide--]]]),
   ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle,
   nil,
   function()
@@ -290,7 +284,7 @@ Works after colonist idle."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000416--[[Colonists Suffocate--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000416--[[Colonists Suffocate--]]]),
   ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle,
   nil,
   function()
@@ -304,7 +298,7 @@ Works after in-game hour."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000418--[[Colonists Starve--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000418--[[Colonists Starve--]]]),
   ChoGGi.MenuFuncs.ColonistsStarve_Toggle,
   nil,
   function()
@@ -318,7 +312,7 @@ Works after colonist idle."--]]
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[2]",str_Traits,"/",T(302535920000420--[[Positive Playground--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[2]",S[235--[[Traits--]]],"/",S[302535920000420--[[Positive Playground--]]]),
   ChoGGi.MenuFuncs.PositivePlayground_Toggle,
   nil,
   function()
@@ -331,7 +325,7 @@ AddAction(
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/[2]",str_Traits,"/",T(302535920000422--[[Project Morpheus Positive Trait--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/[2]",S[235--[[Traits--]]],"/",S[302535920000422--[[Project Morpheus Positive Trait--]]]),
   ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,
   nil,
   function()
@@ -345,118 +339,118 @@ AddAction(
 
 -------------------
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000424--[[Set Age New--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000424--[[Set Age New--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsAge(1)
   end,
   nil,
-  T(302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]),
+  302535920000425--[[This will make all newly arrived and born colonists a certain age.--]],
   icon
 )
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000426--[[Set Age--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000426--[[Set Age--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsAge(2)
   end,
   nil,
-  T(302535920000427--[[This will make all colonists a certain age.--]]),
+  302535920000427--[[This will make all colonists a certain age.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000428--[[Set Gender New--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000428--[[Set Gender New--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsGender(1)
   end,
   nil,
-  T(302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]),
+  302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000430--[[Set Gender--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000430--[[Set Gender--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsGender(2)
   end,
   nil,
-  T(302535920000431--[[This will make all colonists a certain gender.--]]),
+  302535920000431--[[This will make all colonists a certain gender.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000432--[[Set Specialization New--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000432--[[Set Specialization New--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsSpecialization(1)
   end,
   nil,
-  T(302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]),
+  302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000434--[[Set Specialization--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000434--[[Set Specialization--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsSpecialization(2)
   end,
   nil,
-  T(302535920000435--[[This will make all colonists a certain specialization.--]]),
+  302535920000435--[[This will make all colonists a certain specialization.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000436--[[Set Race New--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000436--[[Set Race New--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsRace(1)
   end,
   nil,
-  T(302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]),
+  302535920000437--[[This will make all newly arrived and born colonists a certain race.--]],
   icon
 )
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000438--[[Set Race--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000438--[[Set Race--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsRace(2)
   end,
   nil,
-  T(302535920000439--[[This will make all colonists a certain race.--]]),
+  302535920000439--[[This will make all colonists a certain race.--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000440--[[Set Traits New--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000440--[[Set Traits New--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsTraits(1)
   end,
   nil,
-  T(302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]),
+  302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]],
   icon
 )
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000442--[[Set Traits--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000442--[[Set Traits--]]]),
   function()
     ChoGGi.MenuFuncs.SetColonistsTraits(2)
   end,
   nil,
-  T(302535920000443--[[Choose traits for all colonists.--]]),
+  302535920000443--[[Choose traits for all colonists.--]],
   icon
 )
 
 -------------------
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000444--[[Set Stats--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000444--[[Set Stats--]]]),
   ChoGGi.MenuFuncs.SetColonistsStats,
   nil,
-  T(302535920000445--[["Change the stats of all colonists (health/sanity/comfort/morale).
+  302535920000445--[["Change the stats of all colonists (health/sanity/comfort/morale).
 
-Not permanent."--]]),
+Not permanent."--]],
   icon
 )
 
 AddAction(
-  Concat(str_ECM,"/",str_Colonists,"/",T(302535920000446--[[Colonist Death Age--]])),
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000446--[[Colonist Death Age--]]]),
   ChoGGi.MenuFuncs.SetDeathAge,
   nil,
-  T(302535920000447--[[Change the age at which colonists die.--]]),
+  302535920000447--[[Change the age at which colonists die.--]],
   icon
 )

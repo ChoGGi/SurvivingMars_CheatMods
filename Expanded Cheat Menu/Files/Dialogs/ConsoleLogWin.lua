@@ -6,7 +6,7 @@ if g_Classes.ChoGGi_ConsoleLogWin then
 end
 
 local Concat = ChoGGi.ComFuncs.Concat
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local print,select,rawget = print,select,rawget
 
@@ -47,14 +47,14 @@ function ChoGGi_ConsoleLogWin:Init()
 
   ChoGGi.ComFuncs.DialogAddCloseX(self)
   ChoGGi.ComFuncs.DialogAddCaption(self,{
-    title = T(302535920001120--[[Console Log Window--]]),
+    title = S[302535920001120--[[Console Log Window--]]],
     pos = point(25, border),
     size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
   })
 
   element_y = border / 2 + self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
 
-  local title = T(302535920000865--[[Toggle Trans--]])
+  local title = S[302535920000865--[[Toggle Trans--]]]
   self.idToggleTrans = g_Classes.CheckButton:new(self)
   self.idToggleTrans:SetPos(point(dialog_left, element_y))
   self.idToggleTrans:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title) + point(20,5))
@@ -71,14 +71,14 @@ function ChoGGi_ConsoleLogWin:Init()
 
   element_x = self.idToggleTrans:GetPos():x() + self.idToggleTrans:GetSize():x() - 20
 
-  title = T(302535920001026--[[Show File Log--]])
+  title = S[302535920001026--[[Show File Log--]]]
   self.idShowFileLog = g_Classes.Button:new(self)
   self.idShowFileLog:SetPos(point(element_x, element_y))
   self.idShowFileLog:SetText(title)
   self.idShowFileLog:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title) + point(20,5))
   self.idShowFileLog:SetHSizing("AnchorToLeft")
   self.idShowFileLog:SetVSizing("AnchorToTop")
-  self.idShowFileLog:SetHint(T(302535920001091--[[Flushes log to disk and displays in console log.--]]))
+  self.idShowFileLog:SetHint(S[302535920001091--[[Flushes log to disk and displays in console log.--]]])
   function self.idShowFileLog.OnButtonPressed()
     FlushLogFile()
     print(select(2,AsyncFileToString(GetLogFile())))
@@ -86,42 +86,42 @@ function ChoGGi_ConsoleLogWin:Init()
 
   element_x = self.idShowFileLog:GetPos():x() + self.idShowFileLog:GetSize():x() - 20
 
-  title = T(302535920000071--[[Mods Log,--]])
+  title = S[302535920000071--[[Mods Log--]]]
   self.idShowModsLog = g_Classes.Button:new(self)
   self.idShowModsLog:SetPos(point(element_x, element_y))
   self.idShowModsLog:SetText(title)
   self.idShowModsLog:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title) + point(20,5))
   self.idShowModsLog:SetHSizing("AnchorToLeft")
   self.idShowModsLog:SetVSizing("AnchorToTop")
-  self.idShowModsLog:SetHint(T(302535920000870--[[Shows any errors from loading mods in console log.--]]))
+  self.idShowModsLog:SetHint(S[302535920000870--[[Shows any errors from loading mods in console log.--]]])
   function self.idShowModsLog.OnButtonPressed()
     print(ModMessageLog)
   end
 
   element_x = self.idShowModsLog:GetPos():x() + self.idShowModsLog:GetSize():x()
 
-  title = T(302535920000734--[[Clear Log--]])
+  title = S[302535920000734--[[Clear Log--]]]
   self.idClearLog = g_Classes.Button:new(self)
   self.idClearLog:SetPos(point(element_x, element_y))
   self.idClearLog:SetText(title)
   self.idClearLog:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title) + point(-10,5))
   self.idClearLog:SetHSizing("AnchorToLeft")
   self.idClearLog:SetVSizing("AnchorToTop")
-  self.idClearLog:SetHint(T(302535920000477--[[Clear out the windowed console log.--]]))
+  self.idClearLog:SetHint(S[302535920000477--[[Clear out the windowed console log.--]]])
   function self.idClearLog.OnButtonPressed()
     self:ClearText()
   end
 
   element_x = self.idClearLog:GetPos():x() + self.idClearLog:GetSize():x()
 
-  title = T(302535920000563--[[Copy Log Text--]])
+  title = S[302535920000563--[[Copy Log Text--]]]
   self.idCopyText = g_Classes.Button:new(self)
   self.idCopyText:SetPos(point(element_x, element_y))
   self.idCopyText:SetText(title)
   self.idCopyText:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title) + point(20,5))
   self.idCopyText:SetHSizing("AnchorToLeft")
   self.idCopyText:SetVSizing("AnchorToTop")
-  self.idCopyText:SetHint(T(302535920001154--[[Displays the log text in a window you can copy sections from.--]]))
+  self.idCopyText:SetHint(S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]])
   function self.idCopyText.OnButtonPressed()
     ChoGGi.ComFuncs.SelectConsoleLogText()
   end

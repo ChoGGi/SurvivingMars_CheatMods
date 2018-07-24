@@ -4,8 +4,7 @@ local default_icon = "UI/Icons/Sections/attention.tga"
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local local_T = T
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local tostring = tostring
 
@@ -46,8 +45,8 @@ function ChoGGi.MenuFuncs.ModUpload()
     -- abort if upload already happening
     if IsValidThread(ModUploadThread) then
       ChoGGi.ComFuncs.MsgWait(
-        T(1000011--[[There is an active Steam upload--]]),
-        T(1000592--[[Error--]]),
+        1000011--[[There is an active Steam upload--]],
+        1000592--[[Error--]],
         "UI/Common/mod_steam_workshop.tga"
       )
       return
@@ -65,12 +64,12 @@ function ChoGGi.MenuFuncs.ModUpload()
       AsyncCreatePath(dest)
 
       -- build / show confirmation dialog
-      local upload_msg = T(local_T({1000012,"Mod <ModLabel> will be uploaded to Steam",mod.title}))
+      local upload_msg = S[1000012--[[Mod <ModLabel> will be uploaded to Steam--]]]
       if not copy_files then
-        upload_msg = Concat(upload_msg,"\n",T(302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for insert."--]]))
+        upload_msg = Concat(upload_msg,"\n",S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for insert."--]]])
       end
       if diff_author then
-        upload_msg = Concat(upload_msg,"\n\n",T(302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]))
+        upload_msg = Concat(upload_msg,"\n\n",S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]])
       end
 
       local function CallBackFunc(answer)
@@ -135,20 +134,20 @@ function ChoGGi.MenuFuncs.ModUpload()
 
         -- show id in console (figure out a decent way to add this to metadat.lua)
         if item_id then
-          print(mod.title,": ",T(1000107--[[Mod--]])," ",T(1000021--[[Steam ID--]]),": ",item_id)
+          print(mod.title,": ",S[1000107--[[Mod--]]]," ",S[1000021--[[Steam ID--]]],": ",item_id)
         end
         local msg, title
         if err and not blank_mod then
-          msg = T(local_T({1000013,"Mod <ModLabel> was not uploaded to Steam. Error: <err>",mod.title,err}))
-          title = T(1000593--[[Error--]])
+          msg = Concat(S[1000013--[[Mod <ModLabel> was not uploaded to Steam. Error: <err>--]]]," ",mod.title," ",err)
+          title = S[1000592--[[Error--]]]
         else
-          msg = T(local_T({1000014,"Mod <ModLabel> was successfully uploaded to Steam!",mod.title}))
-          title = T(1000015--[[Success--]])
+          msg = Concat(S[1000014--[[Mod <ModLabel> was successfully uploaded to Steam!--]]]," ",mod.title)
+          title = S[1000015--[[Success--]]]
         end
 
         -- update mod log and print it to console log
         ModLog(Concat("\n",msg,": ",mod.title))
-        print(T(302535920001265--[[ModMessageLog--]]),": ",ModMessageLog)
+        print(S[302535920001265--[[ModMessageLog--]]],":\n",ModMessageLog)
 
         -- let user know if we're good or not
         ChoGGi.ComFuncs.MsgWait(
@@ -175,12 +174,12 @@ function ChoGGi.MenuFuncs.ModUpload()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000367--[[Mod Upload--]]),
-    check1 = T(302535920001258--[[Copy Files--]]),
-    check1_hint = T(302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]]),
+    title = 302535920000367--[[Mod Upload--]],
+    check1 = 302535920001258--[[Copy Files--]],
+    check1_hint = 302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]],
     check1_checked = true,
-    check2 = T(302535920001260--[[Blank Mod--]]),
-    check2_hint = T(302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]]),
+    check2 = 302535920001260--[[Blank Mod--]],
+    check2_hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
   }
 end
 
@@ -191,8 +190,8 @@ function ChoGGi.MenuFuncs.EditECMSettings()
   -- load up settings file in the editor
   local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
     text = ChoGGi.SettingFuncs.ReadSettings(),
-    hint_ok = T(302535920001244--[["Saves settings to file, and applies any changes."--]]),
-    hint_cancel = T(302535920001245--[[Abort without touching anything.--]]),
+    hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
+    hint_cancel = 302535920001245--[[Abort without touching anything.--]],
     func = function(answer,_,obj)
       if answer then
         -- get text and update settings file
@@ -215,14 +214,14 @@ function ChoGGi.MenuFuncs.DisableECM()
       ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
       ChoGGi.SettingFuncs.WriteSettings()
 
-      MsgPopup(T(302535920001070--[[Restart to take effect.--]]))
+      MsgPopup(302535920001070--[[Restart to take effect.--]])
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-CheatMenuModSettings.lua > DisableECM to re-enable them."--]]),"\n\n",T(302535920001070--[[Restart to take effect.--]])),
+    Concat(S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+CheatMenuModSettings.lua > DisableECM to re-enable them."--]]],"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
     CallBackFunc,
-    T(302535920000142--[[Disable--]])
+    302535920000142--[[Disable--]]
   )
 end
 
@@ -254,8 +253,8 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920001068--[[%s: Interface in screenshots.--]]):format(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
-    T(302535920001069--[[Interface--]])
+    S[302535920001068--[[%s: Interface in screenshots.--]]]:format(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+    302535920001069--[[Interface--]]
   )
 end
 
@@ -290,28 +289,28 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
       ChoGGi.Temp.ResetSettings = true
 
       MsgPopup(
-        T(302535920001070--[[Restart to take effect.--]]),
-        T(302535920001084--[[Reset--]]),
+        302535920001070--[[Restart to take effect.--]],
+        302535920001084--[[Reset--]],
         default_icon
       )
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(302535920001072--[[Are you sure you want to reset ECM settings?
+    Concat(S[302535920001072--[[Are you sure you want to reset ECM settings?
 
-Old settings are saved as--]])," ",old,"\n\n",T(302535920001070--[[Restart to take effect.--]])),
+Old settings are saved as %s--]]]:format(old),"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
     CallBackFunc,
-    T(302535920001071--[[Reset!--]])
+    302535920001071--[[Reset!--]]
   )
 end
 
 function ChoGGi.MenuFuncs.SignsInterface_Toggle()
   ToggleSigns()
   MsgPopup(
-    T(302535920001074--[[Sign, sign, everywhere a sign.
+    302535920001074--[[Sign, sign, everywhere a sign.
 Blockin' out the scenery, breakin' my mind.
-Do this, don't do that, can't you read the sign?--]]),
-    T(302535920001075--[[Signs--]]),
+Do this, don't do that, can't you read the sign?--]],
+    302535920001075--[[Signs--]],
     nil,
     true
   )
@@ -322,14 +321,17 @@ function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
   UpdateOnScreenHintDlg()
   MsgPopup(
     tostring(HintsEnabled),
-    T(4248--[[Hints--]])
+    4248--[[Hints--]]
   )
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Reset()
   g_ShownOnScreenHints = {}
   UpdateOnScreenHintDlg()
-  MsgPopup(T(302535920001076--[[Hints Reset!--]]),T(4248--[[Hints--]]))
+  MsgPopup(
+    302535920001076--[[Hints Reset!--]],
+    4248--[[Hints--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
@@ -346,8 +348,8 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920001077--[[%s: Bye bye hints--]]):format(ChoGGi.UserSettings.DisableHints),
-    T(4248--[[Hints--]]),
+    S[302535920001077--[[%s: Bye bye hints--]]]:format(ChoGGi.UserSettings.DisableHints),
+    4248--[[Hints--]],
     "UI/Icons/Sections/attention.tga"
   )
 end
@@ -365,11 +367,11 @@ end
 function ChoGGi.MenuFuncs.AboutECM()
   local ChoGGi = ChoGGi
   ChoGGi.ComFuncs.MsgWait(
-    T(302535920001078--[["Hover mouse over menu item to get description and enabled status
+    S[302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 
-For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]):format(ChoGGi.email),
-    T(487939677892--[[Help--]])
+For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]]:format(ChoGGi.email),
+    487939677892--[[Help--]]
   )
 end
 

@@ -3,9 +3,9 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
-local pairs,pcall,type,tostring = pairs,pcall,type,tostring
+local pairs,pcall,type = pairs,pcall,type
 
 local CreateRealTimeThread = CreateRealTimeThread
 local FindNearestObject = FindNearestObject
@@ -48,8 +48,8 @@ function ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.CheckForBrokedTransportPath),": ",T(302535920001266--[[Broked Transport Pathing--]])),
-    T(1683--[[RC Transport--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBrokedTransportPath,302535920001266--[[Broked Transport Pathing--]]),
+    1683--[[RC Transport--]],
     "UI/Icons/IPButtons/transport_route.tga"
   )
 end
@@ -104,7 +104,10 @@ function ChoGGi.MenuFuncs.ResetRovers()
       end
     })
     -- let user know something is happening
-    MsgPopup(T(302535920000464--[[Updating Rovers--]]),T(5438--[[Rovers--]]))
+    MsgPopup(
+      302535920000464--[[Updating Rovers--]],
+      5438--[[Rovers--]]
+    )
     --wait awhile just to be sure
     Sleep(5000)
     --go through and reset any rovers still doing the same thing
@@ -171,9 +174,9 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
       end
     end
     ChoGGi.ComFuncs.QuestionBox(
-      Concat(T(6779--[[Warning--]]),"!\n",T(302535920000055--[[Reset All Colonists--]]),"\n",T(302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]])),
+      Concat(S[6779--[[Warning--]]],"!\n",S[302535920000055--[[Reset All Colonists--]]],"\n",S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
       CallBackFunc,
-      Concat(T(6779--[[Warning--]]),": ",T(302535920000055--[[Reset All Colonists--]]))
+      Concat(S[6779--[[Warning--]]],": ",S[302535920000055--[[Reset All Colonists--]]])
     )
 end
 
@@ -319,7 +322,10 @@ function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
   RemoveUnreachable("DroneHub")
   RemoveUnreachable("RCRover")
   RemoveUnreachable("SupplyRocket")
-  MsgPopup(T(302535920000970--[[Removed unreachable--]]),T(302535920000971--[[Sites--]]))
+  MsgPopup(
+    302535920000970--[[Removed unreachable--]],
+    302535920000971--[[Sites--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
@@ -366,8 +372,8 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   end
 
   MsgPopup(
-    T(302535920000972--[[Buildings attached.--]]),
-    T(3980--[[Buildings--]]),
+    302535920000972--[[Buildings attached.--]],
+    3980--[[Buildings--]],
     "UI/Icons/Sections/basic.tga"
   )
 end
@@ -421,30 +427,6 @@ function ChoGGi.MenuFuncs.CablesAndPipesRepair()
 end
 
 ------------------------- toggles
---[[
-fixed in curiosity
-
-function ChoGGi.MenuFuncs.NoRestingBonusPsychologistFix_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.NoRestingBonusPsychologistFix = not ChoGGi.UserSettings.NoRestingBonusPsychologistFix
-
-  local commander_profile = GetCommanderProfile()
-  if ChoGGi.UserSettings.NoRestingBonusPsychologistFix then
-    if commander_profile.id == "psychologist" then
-      commander_profile.param1 = 5
-    end
-  else --don't know why you'd want to disable the bonus
-    if commander_profile.id == "psychologist" then
-      commander_profile.param1 = 0
-    end
-  end
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(Concat("No resting bonus psychologist: ",tostring(UserSettings.NoRestingBonusPsychologistFix)),
-    "Psychologist"
-  )
-end
---]]
 
 function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
   local ChoGGi = ChoGGi
@@ -452,8 +434,8 @@ function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle),": ",T(302535920001071--[[Drone Charges From Rover Wrong Angle--]])),
-    T(517--[[Drones--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle,302535920001071--[[Drone Charges From Rover Wrong Angle--]]),
+    517--[[Drones--]]
   )
 end
 
@@ -468,8 +450,8 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),": ",T(302535920000248--[[Colonists Stuck Outside Service Buildings--]])),
-    T(547--[[Colonists--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,302535920000248--[[Colonists Stuck Outside Service Buildings--]]),
+    547--[[Colonists--]],
     "UI/Icons/IPButtons/colonist_section.tga"
   )
 end
@@ -480,8 +462,8 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DroneResourceCarryAmountFix),": ",T(302535920000613--[[Drone Carry Amount--]])),
-    T(517--[[Drones--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix,302535920000613--[[Drone Carry Amount--]]),
+    517--[[Drones--]],
     "UI/Icons/IPButtons/drone.tga"
   )
 end
@@ -492,8 +474,8 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.SortCommandCenterDist),": ",T(302535920000615--[[Sort Command Center Dist--]])),
-    T(3980--[[Buildings--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist,302535920000615--[[Sort Command Center Dist--]]),
+    3980--[[Buildings--]]
   )
 end
 

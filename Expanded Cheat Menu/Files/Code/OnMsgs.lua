@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
@@ -82,7 +82,7 @@ function OnMsg.ClassesBuilt()
 
   --add HiddenX cat for Hidden items
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
-    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = T(1000155--[[Hidden--]]),img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
+    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
   end
 
   -- don't show cheats pane for ResourceOverview
@@ -109,14 +109,14 @@ function OnMsg.ClassesBuilt()
 --~       '__context_of_kind', "Object",
       '__condition', function (_, context) return context.ChoGGi_Spawned end,
       '__template', "Infopanel",
-      'Description', T(313911890683--[[<description>--]]),
+      'Description', S[313911890683--[[<description>--]]],
     }, {
     PlaceObj('XTemplateTemplate', {
       'comment', "salvage",
       '__template', "InfopanelButton",
-      'RolloverText', T(640016954592--[[Remove this switch or valve.--]]),
-      'RolloverTitle', T(3973--[[Salvage--]]),
-      'RolloverHintGamepad', T(7657--[[<ButtonY> Activate--]]),
+      'RolloverText', S[640016954592--[[Remove this switch or valve.--]]],
+      'RolloverTitle', S[3973--[[Salvage--]]],
+      'RolloverHintGamepad', S[7657--[[<ButtonY> Activate--]]],
       'ContextUpdateOnOpen', false,
       'OnPressParam', "Demolish",
       'Icon', "UI/Icons/IPButtons/salvage_1.tga",
@@ -477,23 +477,35 @@ function OnMsg.NewMinute()
 end
 
 --if you pick a mystery from the cheat menu
-local logo_13 = "UI/Icons/Logos/logo_13.tga"
+local icon_logo_13 = "UI/Icons/Logos/logo_13.tga"
 function OnMsg.MysteryBegin()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    MsgPopup(T(302535920000729--[[You've started a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(
+      302535920000729--[[You've started a mystery!--]],
+      3486--[[Mystery--]],
+      icon_logo_13
+    )
   end
 end
 function OnMsg.MysteryChosen()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    MsgPopup(T(302535920000730--[[You've chosen a mystery!--]]),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(
+      302535920000730--[[You've chosen a mystery!--]],
+      3486--[[Mystery--]],
+      icon_logo_13
+    )
   end
 end
 function OnMsg.MysteryEnd(Outcome)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
-    MsgPopup(tostring(Outcome),T(3486--[[Mystery--]]),logo_13)
+    MsgPopup(
+      tostring(Outcome),
+      3486--[[Mystery--]],
+      icon_logo_13
+    )
   end
 end
 
@@ -692,7 +704,7 @@ function OnMsg.ChoGGi_DaddysLittleHitler()
       return true
     end,
     base_score = 0,
-    display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]),
+    display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
     group = "Default",
     id = "DaddysLittleHitler"
   })
@@ -705,7 +717,7 @@ function OnMsg.ChoGGi_Childkiller()
   local MilestoneCompleted = MilestoneCompleted
   PlaceObj("Milestone", {
     base_score = 0,
-    display_name = T(302535920000732--[[Childkiller (You evil, evil person.)--]]),
+    display_name = S[302535920000732--[[Childkiller (You evil, evil person.)--]]],
     group = "Default",
     id = "Childkiller"
   })
@@ -820,7 +832,7 @@ function OnMsg.ChoGGi_Loaded()
     --add preset menu items
     ClassDescendantsList("Preset", function(name, class)
       ChoGGi.ComFuncs.AddAction(
-        Concat(T(302535920000979--[[Presets--]]),"/",name),
+        Concat(S[302535920000979--[[Presets--]]],"/",name),
         function()
           OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
             PresetClass = name,
@@ -828,7 +840,7 @@ function OnMsg.ChoGGi_Loaded()
           })
         end,
         class.EditorShortcut or nil,
-        T(302535920000733--[[Open a preset in the editor.--]]),
+        S[302535920000733--[[Open a preset in the editor.--]]],
         class.EditorIcon or "CollectionsEditor.tga"
       )
     end)
@@ -882,8 +894,8 @@ function OnMsg.ChoGGi_Loaded()
       g_Classes.XTextButton:new({
         Id = "idClose",
         RolloverTemplate = "Rollover",
-        RolloverText = T(1011--[[Close--]]),
-        RolloverTitle = T(126095410863--[[Info--]]),
+        RolloverText = S[1011--[[Close--]]],
+        RolloverTitle = S[126095410863--[[Info--]]],
         Image = "UI/Common/mission_no.tga",
         Background = RGB(255, 255, 255),
         OnPress = function()
@@ -910,24 +922,24 @@ function OnMsg.ChoGGi_Loaded()
   if UICity.ChoGGi.DaddysLittleHitler then
     PlaceObj("Milestone", {
       base_score = 0,
-      display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]),
+      display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
       group = "Default",
       id = "DaddysLittleHitler"
     })
     if not MilestoneCompleted.DaddysLittleHitler then
-      MilestoneCompleted.DaddysLittleHitler = 3025359200000 --hitler's birthday
+      MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
     end
   end
   if UICity.ChoGGi.Childkiller then
     PlaceObj("Milestone", {
       base_score = 0,
-      display_name = T(302535920000732--[[Childkiller (You evil, evil person.)--]]),
+      display_name = S[302535920000732--[[Childkiller (You evil, evil person.)--]]],
       group = "Default",
       id = "Childkiller"
     })
     --it doesn't hurt
     if not MilestoneCompleted.Childkiller then
-      MilestoneCompleted.Childkiller = 479000000 --666
+      MilestoneCompleted.Childkiller = 479000000 -- 666
     end
   end
 
@@ -1173,7 +1185,7 @@ function OnMsg.ChoGGi_Loaded()
 
   --everyone loves a new titlebar, unless they don't
   if UserSettings.ChangeWindowTitle then
-    terminal_SetOSWindowTitle(Concat(T(1079--[[Surviving Mars--]]),": ",T(302535920000887--[[ECM--]])," v",ChoGGi._VERSION))
+    terminal_SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
   end
 
   --someone doesn't like LICENSE files...
@@ -1198,9 +1210,9 @@ function OnMsg.ChoGGi_Loaded()
   -- first time run info
   if ChoGGi.UserSettings.FirstRun ~= false then
     ChoGGi.ComFuncs.MsgWait(
-      T(302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-Press ~ or Enter and click the ""Console"" button to toggle showing console log history."--]]),
-      Concat(T(302535920000000--[[Expanded Cheat Menu--]])," ",T(302535920000201--[[Active--]]))
+      S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+Press ~ or Enter and click the ""Console"" button to toggle showing console log history."--]]],
+      Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]])
     )
     ChoGGi.UserSettings.FirstRun = false
     ChoGGi.Temp.WriteSettings = true
@@ -1225,7 +1237,7 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
   -- how long startup takes
   if ChoGGi.Testing or UserSettings.ShowStartupTicks then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-    print(Concat("<color 200 200 200>",T(302535920000887--[[ECM--]]),"</color><color 0 0 0>:</color>",T(302535920000247--[[Startup ticks--]]),": ",ChoGGi.Temp.StartupTicks))
+    print(Concat("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks))
   end
 
   -- used to check when game has started and it's safe to print() etc

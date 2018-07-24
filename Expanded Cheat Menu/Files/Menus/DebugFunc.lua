@@ -4,6 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
 
@@ -68,9 +69,9 @@ function ChoGGi.MenuFuncs.DeleteAllRocks()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]])),
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]]),
     CallBackFunc,
-    Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]]))
+    Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
   )
 end
 
@@ -89,31 +90,31 @@ do --export colonist data
   skipped_traits = AddSkipped(ChoGGi_Tables.ColonistSpecializations,skipped_traits)
 
   local ColonistsCSVColumns = {
-    {"name",T(1000037--[[Name--]])},
-    {"age",T(302535920001222--[[Age--]])},
-    {"age_trait",Concat(T(302535920001222--[[Age--]])," ",T(3720--[[Trait--]]))},
-    {"death_age",T(4284--[[Age of death--]])},
-    {"birthplace",T(302535920000739--[[Birthplace--]])},
-    {"gender",T(302535920000740--[[Gender--]])},
-    {"race",T(302535920000741--[[Race--]])},
-    {"specialist",T(240--[[Specialization--]])},
-    {"performance",T(4283--[[Worker performance--]])},
-    {"health",T(4291--[[Health--]])},
-    {"comfort",T(4295--[[Comfort--]])},
-    {"morale",T(4297--[[Morale--]])},
-    {"sanity",T(4293--[[Sanity--]])},
-    {"handle",T(302535920000955--[[Handle--]])},
-    {"last_meal",T(302535920001229--[[Last Meal--]])},
-    {"last_rest",T(302535920001235--[[Last Rest--]])},
-    {"dome_name",Concat(T(1234--[[Dome--]])," ",T(1000037--[[Name--]]))},
-    {"dome_pos",Concat(T(1234--[[Dome--]])," ",T(302535920001237--[[Position--]]))},
-    {"dome_handle",Concat(T(1234--[[Dome--]])," ",T(302535920000955--[[Handle--]]))},
-    {"residence_name",Concat(T(4809--[[Residence--]])," ",T(1000037--[[Name--]]))},
-    {"residence_pos",Concat(T(4809--[[Residence--]])," ",T(302535920001237--[[Position--]]))},
-    {"residence_dome",Concat(T(4809--[[Residence--]])," ",T(1234--[[Dome--]]))},
-    {"workplace_name",Concat(T(4801--[[Workplace--]])," ",T(1000037--[[Name--]]))},
-    {"workplace_pos",Concat(T(4801--[[Workplace--]])," ",T(302535920001237--[[Position--]]))},
-    {"workplace_dome",Concat(T(4801--[[Workplace--]])," ",T(1234--[[Dome--]]))},
+    {"name",S[1000037--[[Name--]]]},
+    {"age",S[302535920001222--[[Age--]]]},
+    {"age_trait",Concat(S[302535920001222--[[Age--]]]," ",S[3720--[[Trait--]]])},
+    {"death_age",S[4284--[[Age of death--]]]},
+    {"birthplace",S[302535920000739--[[Birthplace--]]]},
+    {"gender",S[302535920000740--[[Gender--]]]},
+    {"race",S[302535920000741--[[Race--]]]},
+    {"specialist",S[240--[[Specialization--]]]},
+    {"performance",S[4283--[[Worker performance--]]]},
+    {"health",S[4291--[[Health--]]]},
+    {"comfort",S[4295--[[Comfort--]]]},
+    {"morale",S[4297--[[Morale--]]]},
+    {"sanity",S[4293--[[Sanity--]]]},
+    {"handle",S[302535920000955--[[Handle--]]]},
+    {"last_meal",S[302535920001229--[[Last Meal--]]]},
+    {"last_rest",S[302535920001235--[[Last Rest--]]]},
+    {"dome_name",Concat(S[1234--[[Dome--]]]," ",S[1000037--[[Name--]]])},
+    {"dome_pos",Concat(S[1234--[[Dome--]]]," ",S[302535920001237--[[Position--]]])},
+    {"dome_handle",Concat(S[1234--[[Dome--]]]," ",S[302535920000955--[[Handle--]]])},
+    {"residence_name",Concat(S[4809--[[Residence--]]]," ",S[1000037--[[Name--]]])},
+    {"residence_pos",Concat(S[4809--[[Residence--]]]," ",S[302535920001237--[[Position--]]])},
+    {"residence_dome",Concat(S[4809--[[Residence--]]]," ",S[1234--[[Dome--]]])},
+    {"workplace_name",Concat(S[4801--[[Workplace--]]]," ",S[1000037--[[Name--]]])},
+    {"workplace_pos",Concat(S[4801--[[Workplace--]]]," ",S[302535920001237--[[Position--]]])},
+    {"workplace_dome",Concat(S[4801--[[Workplace--]]]," ",S[1234--[[Dome--]]])},
   }
   local function AddTraits(traits,list)
     for i = 1, #traits do
@@ -186,8 +187,8 @@ function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
   _G[name] = not _G[name]
 
   MsgPopup(
-    Concat(tostring(_G[name]),": ",T(trans_id)),
-    T(1000113--[[Debug--]])
+    ChoGGi.ComFuncs.SettingState(tostring(_G[name]),trans_id),
+    1000113--[[Debug--]]
   )
 end
 
@@ -224,7 +225,10 @@ function ChoGGi.MenuFuncs.ReloadLua()
   ReloadLua()
   WaitDelayedLoadEntities()
   ReloadClassEntities()
-  print(T(302535920000850--[[Reload lua done--]]))
+  MsgPopup(
+    302535920000850--[[Reload lua done--]],
+    1000113--[[Debug--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
@@ -244,11 +248,11 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
 
   local name = RetName(obj)
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(T(6779--[[Warning--]]),"!\n",T(302535920000852--[[This will delete all %s of %s--]]):format(#objs,name),"\n\n",T(302535920000854--[[Takes about thirty seconds for 12 000 objects.--]])),
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(#objs,name),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
     CallBackFunc,
-    Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
-    T(302535920000856--[[Yes, I want to delete all: %s--]]):format(name),
-    T(302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]])
+    Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
+    S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(name),
+    302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]
   )
 end
 
@@ -346,7 +350,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
   for Key,State in pairs(Table) do
     ItemList[#ItemList+1] = {
-      text = Concat(T(1000037--[[Name--]]),": ",State," ",T(302535920000858--[[Idx--]]),": ",Key),
+      text = Concat(S[1000037--[[Name--]]],": ",State," ",S[302535920000858--[[Idx--]]],": ",Key),
       value = State,
     }
   end
@@ -358,16 +362,16 @@ function ChoGGi.MenuFuncs.SetAnimState()
     end
     sel:SetStateText(value)
     MsgPopup(
-      Concat(choice[1].text,": ",T(3722--[[State--]])),
-      T(302535920000859--[[Anim State--]])
+      ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
+      302535920000859--[[Anim State--]]
     )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000860--[[Set Anim State--]]),
-    hint = Concat(T(302535920000861--[[Current State--]]),": ",sel:GetState()),
+    title = 302535920000860--[[Set Anim State--]],
+    hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
   }
 end
 
@@ -414,8 +418,8 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
       --]]
 
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000014--[[Spawned--]])," ",T(298035641454--[[Object--]])),
-        T(302535920000014--[[Spawned--]])
+        Concat(choice[1].text,": ",S[302535920000014--[[Spawned--]]]," ",S[298035641454--[[Object--]]]),
+        302535920000014--[[Spawned--]]
       )
     end
   end
@@ -423,8 +427,8 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ObjectSpawner_ItemList,
-    title = T(302535920000862--[[Object Spawner (EntityData list)--]]),
-    hint = Concat(T(6779--[[Warning--]]),": ",T(302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]])),
+    title = 302535920000862--[[Object Spawner (EntityData list)--]],
+    hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
   }
 end
 
@@ -688,7 +692,7 @@ do --path markers
         path = type(Obj.GetPath) == "function" and Obj:GetPath()
       end) then
         OpenExamine(Obj)
-        print(Concat(T(6779--[[Warning--]]),": ",T(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]):format(RetName(Obj))))
+        print(Concat(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(Obj))))
       end
     end
     if path then
@@ -785,8 +789,8 @@ do --path markers
       end
     else
       MsgPopup(
-        T(302535920000871--[[Doesn't seem to be an object that moves.--]]),
-        T(302535920000872--[[Pathing--]]),
+        302535920000871--[[Doesn't seem to be an object that moves.--]],
+        302535920000872--[[Pathing--]],
         nil,
         nil,
         Obj
@@ -851,11 +855,11 @@ do --path markers
     end
 
     local ItemList = {
-      {text = T(4493--[[All--]]),value = "All"},
-      {text = T(547--[[Colonists--]]),value = "Colonist"},
-      {text = T(517--[[Drones--]]),value = "Drone"},
-      {text = T(5438--[[Rovers--]]),value = "BaseRover"},
-      {text = T(745--[[Shuttles--]]),value = "CargoShuttle",hint = T(302535920000873--[[Doesn't work that well.--]])},
+      {text = S[4493--[[All--]]],value = "All"},
+      {text = S[547--[[Colonists--]]],value = "Colonist"},
+      {text = S[517--[[Drones--]]],value = "Drone"},
+      {text = S[5438--[[Rovers--]]],value = "BaseRover"},
+      {text = S[745--[[Shuttles--]]],value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
     }
 
     local CallBackFunc = function(choice)
@@ -933,11 +937,11 @@ do --path markers
     ChoGGi.ComFuncs.OpenInListChoice{
       callback = CallBackFunc,
       items = ItemList,
-      title = T(302535920000467--[[Path Markers--]]),
-      check1 = T(302535920000876--[[Remove Waypoints--]]),
-      check1_hint = T(302535920000877--[[Remove waypoints from the map and reset colours.--]]),
-      check2 = T(4099--[[Game Time--]]),
-      check2_hint = Concat(T(302535920000462--[[Maps paths in real time--]]),"."),
+      title = 302535920000467--[[Path Markers--]],
+      check1 = 302535920000876--[[Remove Waypoints--]],
+      check1_hint = 302535920000877--[[Remove waypoints from the map and reset colours.--]],
+      check2 = 4099--[[Game Time--]],
+      check2_hint = Concat(S[302535920000462--[[Maps paths in real time--]]],"."),
     }
   end
 end

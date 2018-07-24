@@ -6,11 +6,12 @@ DefineClass.ChoGGi_HexSpot = {
   entity = "GridTile"
 }
 
-local TConcat
-local Concat = ChoGGi.ComFuncs.Concat --added in Init.lua
+local TableConcat -- added in Init.lua
+local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
+local S = ChoGGi.Strings
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
-local table,debug,string = table,debug,string
+local table,debug = table,debug
 
 local _InternalTranslate = _InternalTranslate
 local AsyncFileToString = AsyncFileToString
@@ -223,7 +224,7 @@ T = Memoize(T)
 TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
 
 ChoGGi.ComFuncs.TableConcat = Memoize(ChoGGi.ComFuncs.TableConcat)
-TConcat = ChoGGi.ComFuncs.TableConcat
+TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- I want a translate func to always return a string
 function ChoGGi.ComFuncs.Trans(...)
@@ -249,6 +250,65 @@ function ChoGGi.ComFuncs.Trans(...)
 end
 ChoGGi.ComFuncs.Trans = Memoize(ChoGGi.ComFuncs.Trans)
 local T = ChoGGi.ComFuncs.Trans
+
+-- check if text is already translated or needs to be, and return the text
+function ChoGGi.ComFuncs.CheckText(text,fallback)
+  if type(text) == "string" then
+    return text
+  else
+    text = S[text]
+  end
+  -- probably missing locale id
+  if type(text) ~= "string" then
+    text = tostring(fallback)
+  end
+  return text
+end
+
+-- returns object name or at least always some string
+function ChoGGi.ComFuncs.RetName(obj)
+  if obj == _G then
+    return "_G"
+  end
+  local name
+  if type(obj) == "table" then
+    if obj.name and obj.name ~= "" then
+      --colonist names
+      if type(obj.name) == "table" then
+        name = {}
+        for i = 1, #obj.name do
+          name[i] = T(obj.name[i])
+        end
+        return TableConcat(name)
+      --custom name from user (probably)
+      else
+        return obj.name
+      end
+    --translated name
+    elseif obj.display_name and obj.display_name ~= "" then
+      return T(obj.display_name)
+    --added this here as doing tostring lags the shit outta kansas if this is a large objlist
+    elseif IsObjlist(obj) then
+      return "objlist"
+    end
+    --class or encyclopedia_id
+    name = getmetatable(obj)
+    if name and type(name.class) == "string" then
+      return name.class
+    end
+    name = obj.encyclopedia_id or obj.class
+  end
+
+  --if .class or .encyclopedia_id worked
+  if type(name) == "string" then
+    return name
+  end
+
+  --falling back baby
+--~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
+  return tostring(obj)
+end
+local RetName = ChoGGi.ComFuncs.RetName
 
 -- shows a popup msg with the rest of the notifications
 -- objects can be a single obj, or {obj1,obj2,etc}
@@ -277,8 +337,8 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   --build the popup
   local data = {
     id = AsyncRand(),
-    title = tostring(title or ""),
-    text = tostring(text or T(3718--[[NONE--]])),
+    title = ChoGGi.ComFuncs.CheckText(title,""),
+    text = ChoGGi.ComFuncs.CheckText(text,S[3718--[[NONE--]]]),
     image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   }
   table.set_defaults(data, params)
@@ -337,7 +397,7 @@ do --g_Classes
     parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
     parent.idCloseX:SetSize(point(18, 18))
     parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-    parent.idCloseX:SetHint(T(1011--[[Close--]]))
+    parent.idCloseX:SetHint(S[1011--[[Close--]]])
     parent.idCloseX.OnButtonPressed = func or function()
       parent:delete()
     end
@@ -347,9 +407,9 @@ do --g_Classes
     g_Classes.XTextButton:new({
       RolloverTemplate = "Rollover",
       RolloverText = hint or "",
-      RolloverTitle = T(126095410863--[[Info--]]),
+      RolloverTitle = S[126095410863--[[Info--]]],
       MinWidth = 60,
-      Text = text or T(1000616--[[OK--]]),
+      Text = text or S[6878--[[OK--]]],
       OnPress = onpress,
       --center text
       LayoutMethod = "VList",
@@ -484,7 +544,10 @@ do --g_Classes
 end
 
 -- centred msgbox with Ok
-function ChoGGi.ComFuncs.MsgWait(msg,title,image)
+function ChoGGi.ComFuncs.MsgWait(text,title,image)
+  text = ChoGGi.ComFuncs.CheckText(text,text)
+  title = ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]])
+
   local preset
   if image then
     preset = "ChoGGi_TempPopup"
@@ -493,23 +556,23 @@ function ChoGGi.ComFuncs.MsgWait(msg,title,image)
     DataInstances.PopupNotificationPreset[preset].name = preset
     DataInstances.PopupNotificationPreset[preset].image = image
   end
-  title = tostring(title) or T(1000016--[[Title--]])
   CreateRealTimeThread(function()
-    WaitPopupNotification(preset, {title = title, text = tostring(msg)})
+    WaitPopupNotification(preset, {title = title, text = text})
     DataInstances.PopupNotificationPreset[preset] = nil
   end)
 end
 
 -- well that's the question isn't it?
-function ChoGGi.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,context,parent)
+function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,context,parent)
+  local ChoGGi = ChoGGi
   -- thread needed for WaitMarsQuestion
   CreateRealTimeThread(function()
     if WaitMarsQuestion(
       parent,
-      tostring(title or ""),
-      tostring(msg or ""),
-      tostring(ok_msg or T(6878--[[OK--]])),
-      tostring(cancel_msg or T(6879--[[Cancel--]])),
+      ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]]),
+      ChoGGi.ComFuncs.CheckText(text,S[3718--[[NONE--]]]),
+      ChoGGi.ComFuncs.CheckText(ok_msg,S[6878--[[OK--]]]),
+      ChoGGi.ComFuncs.CheckText(cancel_msg,S[6879--[[Cancel--]]]),
       image,
       context
     ) == "ok" then
@@ -544,7 +607,7 @@ function ChoGGi.ComFuncs.Dump(obj,Mode,File,Ext,Skip)
   end) then
     if not Skip then
       MsgPopup(
-        Concat(T(302535920000002--[[Dumped--]]),": ",tostring(obj)),
+        S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
         Filename,
         "UI/Icons/Upgrades/magnetic_filtering_04.tga",
         nil,
@@ -575,7 +638,10 @@ ChoGGi.ComFuncs.DumpTable(Object)
 function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
   local ChoGGi = ChoGGi
   if not obj then
-    MsgPopup(T(302535920000003--[[Can't dump nothing--]]),T(302535920000004--[[Dump--]]))
+    MsgPopup(
+      302535920000003--[[Can't dump nothing--]],
+      302535920000004--[[Dump--]]
+    )
     return
   end
   mode = mode or "-1"
@@ -585,7 +651,7 @@ function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
   AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.Temp.TextFile,mode)
 
   MsgPopup(
-    Concat(T(302535920000002--[[Dumped--]]),": ",ChoGGi.ComFuncs.RetName(obj)),
+    S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
     "AppData/logs/DumpedText.txt",
     nil,
     nil,
@@ -920,7 +986,7 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
           else
             v.description = Concat(v.description," (",keys[1])
             for i = 2, #keys do
-              v.description = Concat(v.description," ",T(302535920000165--[[or--]])," ",keys[i])
+              v.description = Concat(v.description," ",S[302535920000165--[[or--]]]," ",keys[i])
             end
             v.description = Concat(v.description,")")
           end
@@ -942,7 +1008,7 @@ end
 function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
   local ChoGGi = ChoGGi
   if Menu then
-    Menu = Concat("/",tostring(Menu))
+    Menu = Concat("/",Menu)
   end
   -- fallback name if something is broked
   local name = "NOFUNC"
@@ -958,8 +1024,9 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
     name = name:gsub("...Mods/Expanded Cheat Menu/","")
   else
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",T(302535920000000--[[Expanded Cheat Menu--]]),"</color><color 0 0 0>: </color><color 128 255 128>",T(302535920000166--[[BROKEN FUNCTION--]]),": </color>",Menu)
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",Menu)
   end
+  Des = ChoGGi.ComFuncs.CheckText(Des,Des)
 
 --[[
 --TEST menu items
@@ -990,7 +1057,7 @@ print("\n")
       menu = Menu,
       action = Action,
       key = Key,
-      description = Des or "", --errors if not a string
+      description = Des,
       icon = Icon,
       toolbar = Toolbar,
       mode = Mode,
@@ -1194,7 +1261,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
   dlg.tables = Table.tables
   dlg.values = Table.values
 
-  dlg.idCaption:SetText(Table.title)
+  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
 
   --set pos
   if Parent then
@@ -1225,7 +1292,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
   --update internal object
   dlg.obj = Object
 
-  dlg.idCaption:SetText(ChoGGi.ComFuncs.RetName(Object))
+  dlg.idCaption:SetText(RetName(Object))
 
   --set pos
   if Parent then
@@ -1265,10 +1332,10 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   --update internal object
   dlg.obj = Object
 
-  local title = ChoGGi.ComFuncs.RetName(Object)
+  local title = RetName(Object)
 
   --update the add button hint
-  dlg.idAddNew:SetHint(Concat(T(302535920000041--[[Add new entry to--]])," ",title," ",T(302535920000138--[[(Defaults to name/value of selected item).--]])))
+  dlg.idAddNew:SetHint(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(title))
 
   --title text
   dlg.idCaption:SetText(title)
@@ -1317,7 +1384,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 function ChoGGi.ComFuncs.OpenInListChoice(Table)
   local ChoGGi = ChoGGi
   if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) then
-    MsgPopup(T(302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]),T(6774--[[Error--]]))
+    print(S[302535920000013--[[This shouldn't happen... Well shit something's bork bork bork.--]]])
     return
   end
 
@@ -1342,7 +1409,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   end
 
   --title text
-  dlg.idCaption:SetText(Table.title)
+  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
   --list
   dlg.idList:SetContent(Table.items)
 
@@ -1387,14 +1454,14 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     dlg.idList:SetSize(point(390, 310))
 
     if Table.check1 then
-      dlg.idCheckBox1:SetText(Table.check1)
-      dlg.idCheckBox1:SetHint(Table.check1_hint)
+      dlg.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(Table.check1,""))
+      dlg.idCheckBox1:SetHint(ChoGGi.ComFuncs.CheckText(Table.check1_hint,""))
     else
       dlg.idCheckBox1:SetVisible(false)
     end
     if Table.check2 then
-      dlg.idCheckBox2:SetText(Table.check2)
-      dlg.idCheckBox2:SetHint(Table.check2_hint)
+      dlg.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(Table.check2,""))
+      dlg.idCheckBox2:SetHint(ChoGGi.ComFuncs.CheckText(Table.check2_hint,""))
     else
       dlg.idCheckBox2:SetVisible(false)
     end
@@ -1415,6 +1482,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 
   --are we showing a hint?
   if Table.hint then
+    Table.hint = ChoGGi.ComFuncs.CheckText(Table.hint,"")
     dlg.idList:SetHint(Table.hint)
     dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
   end
@@ -1507,13 +1575,13 @@ function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
 end
 
 -- return a string setting/text for menus
-function ChoGGi.ComFuncs.SettingState(setting,msg_or_id)
+function ChoGGi.ComFuncs.SettingState(setting,text)
   -- have it return false instead of nil
   if type(setting) == "nil" then
     setting = false
   end
 
-  return Concat(setting,": ",T(msg_or_id))
+  return Concat(setting,": ",S[text])
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
@@ -1631,52 +1699,6 @@ function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
   return HexGridGetObjects(ObjectGrid, q, r)
 end
 
--- returns object name or at least always some string
-function ChoGGi.ComFuncs.RetName(obj)
-  if obj == _G then
-    return "_G"
-  end
-  local name
-  if type(obj) == "table" then
-    if obj.name and obj.name ~= "" then
-      --colonist names
-      if type(obj.name) == "table" then
-        name = {}
-        for i = 1, #obj.name do
-          name[i] = T(obj.name[i])
-        end
-        return TConcat(name)
-      --custom name from user (probably)
-      else
-        return obj.name
-      end
-    --translated name
-    elseif obj.display_name and obj.display_name ~= "" then
-      return T(obj.display_name)
-    --added this here as doing tostring lags the shit outta kansas if this is a large objlist
-    elseif IsObjlist(obj) then
-      return "objlist"
-    end
-    --class or encyclopedia_id
-    name = getmetatable(obj)
-    if name and type(name.class) == "string" then
-      return name.class
-    end
-    name = obj.encyclopedia_id or obj.class
-  end
-
-  --if .class or .encyclopedia_id worked
-  if type(name) == "string" then
-    return name
-  end
-
-  --falling back baby
---~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
-  return tostring(obj)
-end
--- if i memoize and user changes the name to something then it'll return the old one
---~ ChoGGi.ComFuncs.RetName = Memoize(ChoGGi.ComFuncs.RetName)
-
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
   local temp_table = {}
 
@@ -1783,7 +1805,7 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
   end
   local text = dlgConsoleLog.idText:GetText()
   if text:len() == 0 then
-    print(T(302535920000692--[[Log is blank (well not anymore).--]]))
+    print(S[302535920000692--[[Log is blank (well not anymore).--]]])
     return
   end
   local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{

@@ -4,6 +4,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 local ResourceScale = ChoGGi.Consts.ResourceScale
 
 local CurrentMap = CurrentMap
@@ -31,11 +32,11 @@ function OnMsg.ClassesGenerate()
     local name = ChoGGi.ComFuncs.RetName(self)
     local obj_type
     if self:IsKindOf("BaseRover") then
-      obj_type = 7825 --Destroy this Rover.
+      obj_type = S[7825--[[Destroy this Rover.--]]]
     elseif self:IsKindOf("Drone") then
-      obj_type = 7824 --Destroy this Drone.
+      obj_type = S[7824--[[Destroy this Drone.--]]]
     else
-      obj_type = 7822 --Destroy this building.
+      obj_type = S[7822--[[Destroy this building.--]]]
     end
 
     local function CallBackFunc(answer)
@@ -45,11 +46,11 @@ function OnMsg.ClassesGenerate()
       end
     end
     ChoGGi.ComFuncs.QuestionBox(
-      Concat(T(6779--[[Warning--]]),"!\n",T(obj_type),"\n",name),
+      Concat(S[6779--[[Warning--]]],"!\n",obj_type,"\n",name),
       CallBackFunc,
-      Concat(T(6779--[[Warning--]]),": ",T(obj_type)),
-      Concat(T(obj_type)," ",name),
-      T(1176--[[Cancel Destroy--]])
+      Concat(S[6779--[[Warning--]]],": ",obj_type),
+      Concat(obj_type," ",name),
+      S[1176--[[Cancel Destroy--]]]
     )
   end
   local function CheatDeleteObject(self)
@@ -61,11 +62,11 @@ function OnMsg.ClassesGenerate()
       end
     end
     ChoGGi.ComFuncs.QuestionBox(
-      Concat(T(6779--[[Warning--]]),"!\n",T(302535920000885--[[Permanently delete %s?--]]):format(name),"?"),
+      Concat(S[6779--[[Warning--]]],"!\n",S[302535920000885--[[Permanently delete %s?--]]]:format(name),"?"),
       CallBackFunc,
-      Concat(T(6779--[[Warning--]]),": ",T(302535920000855--[[Last chance before deletion!--]])),
-      Concat(T(5451--[[DELETE--]]),": ",name),
-      Concat(T(3687--[[Cancel--]])," ",T(1000287--[[Delete--]]))
+      Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
+      Concat(S[5451--[[DELETE--]]],": ",name),
+      Concat(S[6879--[[Cancel--]]]," ",S[1000287--[[Delete--]]])
     )
   end
   g_Classes.PinnableObject.CheatDeleteObject = CheatDeleteObject
@@ -518,12 +519,12 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
   local doublec = ""
   local resetc = ""
   if id then
-    doublec = T(302535920001199--[["Double the amount of colonist slots for this %s.
+    doublec = S[302535920001199--[["Double the amount of colonist slots for this %s.
 
-Reselect to update display."--]]):format(name)
-    resetc = T(302535920001200--[["Reset the capacity of colonist slots for this %s.
+Reselect to update display."--]]]:format(name)
+    resetc = S[302535920001200--[["Reset the capacity of colonist slots for this %s.
 
-Reselect to update display."--]]):format(name)
+Reselect to update display."--]]]:format(name)
   end
   local function SetHint(action,hint)
     --name has to be set to make the hint show up
@@ -536,15 +537,15 @@ Reselect to update display."--]]):format(name)
 
 --Colonists
     if action.ActionId == "FillAll" then
-      SetHint(action,T(302535920001202--[[Fill all stat bars.--]]))
+      SetHint(action,S[302535920001202--[[Fill all stat bars.--]]])
     elseif action.ActionId == "SpawnColonist" then
-      SetHint(action,T(302535920000005--[[Drops a new colonist in selected dome.--]]))
+      SetHint(action,S[302535920000005--[[Drops a new colonist in selected dome.--]]])
     elseif action.ActionId == "PrefDbl" then
-      SetHint(action,T(302535920001203--[[Double %s's performance.--]]):format(name))
+      SetHint(action,S[302535920001203--[[Double %s's performance.--]]]:format(name))
     elseif action.ActionId == "PrefDef" then
-      SetHint(action,T(302535920001204--[[Reset %s's performance to default.--]]):format(name))
+      SetHint(action,S[302535920001204--[[Reset %s's performance to default.--]]]:format(name))
     elseif action.ActionId == "RandomSpecialization" then
-      SetHint(action,T(302535920001205--[[Randomly set %s's specialization.--]]):format(name))
+      SetHint(action,S[302535920001205--[[Randomly set %s's specialization.--]]]:format(name))
 
 --Buildings
     elseif action.ActionId == "VisitorsDbl" then
@@ -563,103 +564,103 @@ Reselect to update display."--]]):format(name)
     elseif action.ActionId == "Upgrade1" then
       local tempname = T(obj.upgrade1_display_name)
       if tempname ~= "" then
-        SetHint(action,T(302535920001207--[["Add: %s to this building.
+        SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]):format(tempname,T(obj.upgrade1_description)))
+%s."--]]]:format(tempname,T(obj.upgrade1_description)))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade2" then
       local tempname = T(obj.upgrade2_display_name)
       if tempname ~= "" then
-        SetHint(action,T(302535920001207--[["Add: %s to this building.
+        SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]):format(tempname,T(obj.upgrade2_description)))
+%s."--]]]:format(tempname,T(obj.upgrade2_description)))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "Upgrade3" then
       local tempname = T(obj.upgrade3_display_name)
       if tempname ~= "" then
-        SetHint(action,T(302535920001207--[["Add: %s to this building.
+        SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]):format(tempname,T(obj.upgrade3_description)))
+%s."--]]]:format(tempname,T(obj.upgrade3_description)))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "WorkAuto" then
       local bs = ChoGGi.UserSettings.BuildingSettings
-      SetHint(action,T(302535920001209--[[Make this %s not need workers (performance: %s).--]]):format(name,bs and bs[id] and bs[id].performance or 150))
+      SetHint(action,S[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
 
     elseif action.ActionId == "WorkManual" then
-      SetHint(action,T(302535920001210--[[Make this %s need workers.--]]):format(name))
+      SetHint(action,S[302535920001210--[[Make this %s need workers.--]]]:format(name))
     elseif action.ActionId == "CapDbl" then
       if obj:IsKindOf("SupplyRocket") then
-        SetHint(action,T(302535920001211--[[Double the export storage capacity of this %s.--]]):format(name))
+        SetHint(action,S[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
       else
-        SetHint(action,T(302535920001212--[[Double the storage capacity of this %s.--]]):format(name))
+        SetHint(action,S[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
       end
     elseif action.ActionId == "CapDef" then
-      SetHint(action,T(302535920001213--[[Reset the storage capacity of this %s to default.--]]):format(name))
+      SetHint(action,S[302535920001213--[[Reset the storage capacity of this %s to default.--]]]:format(name))
     elseif action.ActionId == "EmptyDepot" then
-      SetHint(action,T(302535920001214--[[sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]))
+      SetHint(action,S[302535920001214--[[sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]])
 
 --Farms
     elseif action.ActionId == "AllShifts" then
-      SetHint(action,T(302535920001215--[[Turn on all work shifts.--]]))
+      SetHint(action,S[302535920001215--[[Turn on all work shifts.--]]])
 
 --RC
     elseif action.ActionId == "BattCapDbl" then
-      SetHint(action,T(302535920001216--[[Double the battery capacity.--]]))
+      SetHint(action,S[302535920001216--[[Double the battery capacity.--]]])
     elseif action.ActionId == "MaxShuttlesDbl" then
-      SetHint(action,T(302535920001217--[[Double the shuttles this ShuttleHub can control.--]]))
+      SetHint(action,S[302535920001217--[[Double the shuttles this ShuttleHub can control.--]]])
     elseif action.ActionId == "FindResource" then
-      SetHint(action,T(302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]))
+      SetHint(action,S[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]])
 
 --Misc
     elseif action.ActionId == "Fuel" then
-      SetHint(action,T(302535920001053--[[Fill up %s with fuel.--]]):format(name))
+      SetHint(action,S[302535920001053--[[Fill up %s with fuel.--]]]:format(name))
 
     elseif action.ActionId == "DeleteObject" then
-      SetHint(action,T(302535920000885--[[Permanently delete %s--]]):format(name))
+      SetHint(action,S[302535920000885--[[Permanently delete %s--]]]:format(name))
 
     elseif action.ActionId == "Malfunction" then
-      SetHint(action,Concat(T(8039--[[Trait: Idiot (can cause a malfunction)--]]),"...\n",T(53--[[Malfunction--]],"?")))
+      SetHint(action,Concat(S[8039--[[Trait: Idiot (can cause a malfunction)--]]],"...\n",S[53--[[Malfunction--]]],"?"))
     elseif action.ActionId == "PowerFree" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920001220--[[Change this %s so it doesn't need a power source.--]]):format(name))
+        SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a power source.--]]]:format(name))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "PowerNeed" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920001221--[[Change this %s so it needs a power source.--]]):format(name))
+        SetHint(action,S[302535920001221--[[Change this %s so it needs a power source.--]]]:format(name))
       else
         action.ActionId = ""
       end
 
     elseif action.ActionId == "WaterFree" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920000853--[[Change this %s so it doesn't need a water source.--]]):format(name))
+        SetHint(action,S[302535920000853--[[Change this %s so it doesn't need a water source.--]]]:format(name))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "WaterNeed" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920001247--[[Change this %s so it needs a water source.--]]):format(name))
+        SetHint(action,S[302535920001247--[[Change this %s so it needs a water source.--]]]:format(name))
       else
         action.ActionId = ""
       end
 
     elseif action.ActionId == "OxygenFree" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]):format(name))
+        SetHint(action,S[302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]]:format(name))
       else
         action.ActionId = ""
       end
     elseif action.ActionId == "OxygenNeed" then
       if obj.electricity_consumption then
-        SetHint(action,T(302535920001249--[[Change this %s so it needs a oxygen source.--]]):format(name))
+        SetHint(action,S[302535920001249--[[Change this %s so it needs a oxygen source.--]]]:format(name))
       else
         action.ActionId = ""
       end
@@ -668,57 +669,57 @@ Reselect to update display."--]]):format(name)
       if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001223--[[Hides any signs above %s (until state is changed).--]]):format(name))
+        SetHint(action,S[302535920001223--[[Hides any signs above %s (until state is changed).--]]]:format(name))
       end
 
     elseif action.ActionId == "ColourRandom" then
       if obj:IsKindOf("WasteRockDumpSite") then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).--]]):format(name))
+        SetHint(action,S[302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).--]]]:format(name))
       end
     elseif action.ActionId == "ColourDefault" then
       if obj:IsKindOf("WasteRockDumpSite") then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001246--[[Changes colour of %s back to default.--]]):format(name))
+        SetHint(action,S[302535920001246--[[Changes colour of %s back to default.--]]]:format(name))
       end
     elseif action.ActionId == "AddDust" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001225--[[Add visual dust and maintenance points.--]]))
+        SetHint(action,S[302535920001225--[[Add visual dust and maintenance points.--]]])
       end
     elseif action.ActionId == "CleanAndFix" then
       if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]))
+        SetHint(action,S[302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]])
       end
     elseif action.ActionId == "Destroy" then
       if obj.class == "SupplyRocket" then
         action.ActionId = ""
       else
-        SetHint(action,T(302535920001227--[[Turns object into ruin.--]]))
+        SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
       end
     elseif action.ActionId == "Empty" then
       if obj.class:find("SubsurfaceDeposit") then
-        SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001228--[[This will remove the %s object from the map.--]]):format(name)))
+        SetHint(action,Concat(S[6779--[[Warning--]]],": ",S[302535920001228--[[This will remove the %s object from the map.--]]]:format(name)))
       else
-        SetHint(action,T(302535920001230--[[Empties the storage of this building.
+        SetHint(action,S[302535920001230--[[Empties the storage of this building.
 
-If this isn't a dumping site then waste rock will not be emptied.--]]))
+If this isn't a dumping site then waste rock will not be emptied.--]]])
       end
     elseif action.ActionId == "Refill" then
-      SetHint(action,T(302535920001231--[[Refill the deposit to full capacity.--]]))
+      SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
     elseif action.ActionId == "Fill" then
-      SetHint(action,T(302535920001232--[[Fill the storage of this building.--]]))
+      SetHint(action,S[302535920001232--[[Fill the storage of this building.--]]])
     elseif action.ActionId == "Launch" then
-      SetHint(action,Concat(T(6779--[[Warning--]]),": ",T(302535920001233--[[Launches rocket without asking.--]])))
+      SetHint(action,Concat(S[6779--[[Warning--]]],": ",S[302535920001233--[[Launches rocket without asking.--]]]))
     elseif action.ActionId == "DoubleMaxAmount" then
-      SetHint(action,T(302535920001234--[[Double the amount this %s can hold.--]]):format(name))
+      SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
     elseif action.ActionId == "ReneagadeCapDbl" then
-      SetHint(action,T(302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]):format(obj.negated_renegades))
+      SetHint(action,S[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]]:format(obj.negated_renegades))
     end
 
   end --for

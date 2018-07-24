@@ -8,7 +8,7 @@ if g_Classes.ChoGGi_MultiLineText then
 end
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local box = box
 local RGBA = RGBA
@@ -122,8 +122,8 @@ function ChoGGi_MultiLineText:Init(parent, context)
   if context.checkbox then
     g_Classes.XCheckButton:new({
       RolloverTemplate = "Rollover",
-      RolloverText = T(302535920000827--[[Check this to overwrite file instead of appending to it.--]]),
-      RolloverTitle = T(302535920000721--[[Checkbox--]]),
+      RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
+      RolloverTitle = S[302535920000721--[[Checkbox--]]],
 
       OnChange = function()
         if self.overwrite then
@@ -137,8 +137,8 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
   ChoGGi.ComFuncs.DialogXAddButton(
     self.idButtonContainer,
-    T(1000616--[[OK--]]),
-    context.hint_ok or T(6294--[[OK--]]),
+    S[6878--[[OK--]]],
+    ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
     function()
       self:Close(true,"ok")
     end
@@ -146,8 +146,8 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
   ChoGGi.ComFuncs.DialogXAddButton(
     self.idButtonContainer,
-    T(1000246--[[Cancel--]]),
-    context.hint_cancel or T(6720--[[Cancel--]]),
+    S[6879--[[Cancel--]]],
+    ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
     function()
       self:Close(false,"cancel")
     end

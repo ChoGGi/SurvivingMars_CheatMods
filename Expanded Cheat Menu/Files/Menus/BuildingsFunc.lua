@@ -8,6 +8,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local type,tostring,pairs = type,tostring,pairs
 
@@ -27,7 +28,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   local UserSettings = ChoGGi.UserSettings
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 20,value = 20},
@@ -71,8 +72,8 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(8830--[[Food Storage--]])),
-        T(1022--[[Food--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,8830--[[Food Storage--]]),
+        1022--[[Food--]],
         "UI/Icons/Sections/Food_1.tga"
       )
     end
@@ -81,8 +82,8 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000105--[[Set Food Storage--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = 302535920000105--[[Set Food Storage--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
@@ -101,11 +102,11 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
+    S[302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
-Where the fear has gone there will be nothing. Only I will remain.--]]):format(ChoGGi.UserSettings.AlwaysDustyBuildings),
-    T(3980--[[Buildings--]]),
+Where the fear has gone there will be nothing. Only I will remain.--]]]:format(ChoGGi.UserSettings.AlwaysDustyBuildings),
+    3980--[[Buildings--]],
     nil,
     true
   )
@@ -116,8 +117,8 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   local sel = ChoGGi.CodeFuncs.SelObject()
   if not sel or not sel.protect_range then
     MsgPopup(
-      T(302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]]),
-      T(302535920000109--[[Protect--]]),
+      302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]],
+      302535920000109--[[Protect--]],
       default_icon
     )
     return
@@ -125,12 +126,12 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   local id = sel.encyclopedia_id
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("protect_range")
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
-    {text = 320,value = 320,hint = T(302535920000111--[[Cover the entire map from the centre.--]])},
-    {text = 640,value = 640,hint = T(302535920000112--[[Cover the entire map from a corner.--]])},
+    {text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
+    {text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
   }
 
   if not ChoGGi.UserSettings.BuildingSettings[id] then
@@ -164,8 +165,8 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        T(302535920000113--[[%s range is now %s.--]]):format(RetName(sel),choice[1].text),
-        T(302535920000109--[[Protect--]]),
+        S[302535920000113--[[%s range is now %s.--]]]:format(RetName(sel),choice[1].text),
+        302535920000109--[[Protect--]],
         default_icon
       )
     end
@@ -174,8 +175,8 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000114--[[Set Protection Radius--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint,"\n\n",T(302535920000115--[[Toggle selection to update visible hex grid.--]])),
+    title = 302535920000114--[[Set Protection Radius--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint,"\n\n",S[302535920000115--[[Toggle selection to update visible hex grid.--]]]),
   }
 end
 
@@ -202,8 +203,8 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(
-      T(302535920000116--[[%s: Buildings unlocked.--]]):format(#choice),
-      T(8690--[[Protect--]]),
+      S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
+      8690--[[Protect--]],
       default_icon
     )
   end
@@ -211,8 +212,8 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000117--[[Unlock Buildings--]]),
-    hint = T(302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]]),
+    title = 302535920000117--[[Unlock Buildings--]],
+    hint = 302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]],
     multisel = true,
   }
 end
@@ -224,8 +225,8 @@ function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000119--[[%s: Is that a rocket in your pocket?--]]):format(ChoGGi.UserSettings.PipesPillarSpacing),
-    T(3980--[[Buildings--]])
+    S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.PipesPillarSpacing),
+    3980--[[Buildings--]]
   )
 end
 
@@ -241,8 +242,8 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000119--[[%s: Is that a rocket in your pocket?--]]):format(ChoGGi.UserSettings.UnlimitedConnectionLength),
-    T(3980--[[Buildings--]])
+    S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.UnlimitedConnectionLength),
+    3980--[[Buildings--]]
   )
 end
 
@@ -251,8 +252,8 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
   local sel = SelectedObj
   if not sel or not sel[type1] then
     MsgPopup(
-      T(str1),
-      T(3980--[[Buildings--]]),
+      str1,
+      3980--[[Buildings--]],
       default_icon
     )
     return
@@ -281,8 +282,8 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(RetName(sel)," ",T(str2)),
-    T(3980--[[Buildings--]]),
+    Concat(RetName(sel)," ",S[str2]),
+    3980--[[Buildings--]],
     default_icon
   )
 end
@@ -325,8 +326,8 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   local sel = SelectedObj
   if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
     MsgPopup(
-      T(302535920000122--[[You need to select something that has capacity (air/water/elec).--]]),
-      T(3980--[[Buildings--]]),
+      302535920000122--[[You need to select something that has capacity (air/water/elec).--]],
+      3980--[[Buildings--]],
       default_icon
     )
     return
@@ -355,7 +356,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   local DefaultSettingD = template[Concat("max_",CapType,"_discharge")] / r
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000123--[[Defaults--]])),value = 3.1415926535,hint = Concat(T(302535920000124--[[Charge--]]),": ",DefaultSettingC," / ",T(302535920000125--[[Discharge--]]),": ",DefaultSettingD)},
+    {text = Concat(" ",S[302535920000123--[[Defaults--]]]),value = 3.1415926535,hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -373,15 +374,15 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     ChoGGi.UserSettings.BuildingSettings[id] = {}
   end
 
-  local hint = Concat(T(302535920000124--[[Charge--]]),": ",DefaultSettingC," / ",T(302535920000125--[[Discharge--]]) ": ",DefaultSettingD)
+  local hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)
   local setting = ChoGGi.UserSettings.BuildingSettings[id]
   if setting then
     if setting.charge and setting.discharge then
-      hint = Concat(T(302535920000124--[[Charge--]]),": ",tostring(setting.charge / r)," / ",T(302535920000125--[[Discharge--]]) ": ",tostring(setting.discharge / r))
+      hint = Concat(S[302535920000124--[[Charge--]]],": ",setting.charge / r," / ",S[302535920000125--[[Discharge--]]],": ",setting.discharge / r)
     elseif setting.charge then
-      hint = tostring(setting.charge / r)
+      hint = setting.charge / r
     elseif setting.discharge then
-      hint = tostring(setting.discharge / r)
+      hint = setting.discharge / r
     end
   end
 
@@ -395,8 +396,8 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
     if not check1 and not check2 then
       MsgPopup(
-        T(302535920000126--[[Pick a checkbox or two next time...--]]),
-        T(302535920000127--[[Rate--]]),
+        302535920000126--[[Pick a checkbox or two next time...--]],
+        302535920000127--[[Rate--]],
         default_icon2
       )
       return
@@ -459,8 +460,8 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        T(302535920000128--[[%s rate is now: %s--]]):format(RetName(sel),choice[1].text),
-        T(302535920000127--[[Rate--]]),
+        S[302535920000128--[[%s rate is now: %s--]]]:format(RetName(sel),choice[1].text),
+        302535920000127--[[Rate--]],
         default_icon2
       )
     end
@@ -469,12 +470,12 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000130--[[Dis/Charge Rates--]])),
-    hint = Concat(T(302535920000131--[[Current rate--]]),": ",hint),
-    check1 = T(302535920000124--[[Charge--]]),
-    check1_hint = T(302535920000132--[[Change charge rate--]]),
-    check2 = T(302535920000125--[[Discharge--]]),
-    check2_hint = T(302535920000133--[[Change discharge rate--]]),
+    title = Concat(S[302535920000129--[[Set--]]]," ",name," ",S[302535920000130--[[Dis/Charge Rates--]]]),
+    hint = Concat(S[302535920000131--[[Current rate--]]],": ",hint),
+    check1 = 302535920000124--[[Charge--]],
+    check1_hint = 302535920000132--[[Change charge rate--]],
+    check2 = 302535920000125--[[Discharge--]],
+    check2_hint = 302535920000133--[[Change discharge rate--]],
   }
 end
 
@@ -484,8 +485,8 @@ function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.UseLastOrientation),": ",T(302535920000134--[[Building Orientation--]])),
-    T(3980--[[Buildings--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UseLastOrientation,302535920000134--[[Building Orientation--]]),
+    3980--[[Buildings--]]
   )
 end
 
@@ -506,11 +507,11 @@ function ChoGGi.MenuFuncs.FarmShiftsAllOn()
   end
 
   MsgPopup(
-    T(302535920000135--[[Well, I been working in a coal mine
+    302535920000135--[[Well, I been working in a coal mine
 Going down, down
 Working in a coal mine
-Whew, about to slip down--]]),
-    T(5068--[[Farms--]]),
+Whew, about to slip down--]],
+    5068--[[Farms--]],
     "UI/Icons/Sections/Food_2.tga",
     true
   )
@@ -521,8 +522,8 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   local sel = SelectedObj
   if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
     MsgPopup(
-      T(302535920000136--[[Select something that produces (air,water,electricity,other).--]]),
-      T(3980--[[Buildings--]]),
+      302535920000136--[[Select something that produces (air,water,electricity,other).--]],
+      3980--[[Buildings--]],
       default_icon2
     )
     return
@@ -552,7 +553,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   end
 
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -637,8 +638,8 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      T(302535920000137--[[%s production is now: %s--]]):format(RetName(sel),choice[1].text),
-      T(3980--[[Buildings--]]),
+      S[302535920000137--[[%s production is now: %s--]]]:format(RetName(sel),choice[1].text),
+      3980--[[Buildings--]],
       default_icon2
     )
   end
@@ -646,8 +647,8 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",name," ",T(302535920000139--[[Production Amount--]])),
-    hint = Concat(T(302535920000140--[[Current production--]]),": ",hint),
+    title = Concat(S[302535920000129--[[Set--]]]," ",name," ",S[302535920000139--[[Production Amount--]]]),
+    hint = Concat(S[302535920000140--[[Current production--]]],": ",hint),
   }
 end
 
@@ -656,8 +657,8 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
   local sel = SelectedObj
   if not sel or sel and not sel:IsKindOf("Workplace") then
     MsgPopup(
-      T(302535920000141--[[Select a building with workers.--]]),
-      T(3980--[[Buildings--]]),
+      302535920000141--[[Select a building with workers.--]],
+      3980--[[Buildings--]],
       default_icon2
     )
     return
@@ -666,7 +667,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
   local name = T(sel.display_name)
 
   local ItemList = {
-    {text = Concat(" ",T(302535920000142--[[Disable--]])),value = "disable"},
+    {text = Concat(" ",S[302535920000142--[[Disable--]]]),value = "disable"},
     {text = 100,value = 100},
     {text = 150,value = 150},
     {text = 250,value = 250},
@@ -714,9 +715,9 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(
-      T(302535920000143--[["%s
-I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]):format(choice[1].text),
-      T(3980--[[Buildings--]]),
+      S[302535920000143--[["%s
+I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]]:format(choice[1].text),
+      3980--[[Buildings--]],
       default_icon,
       true
     )
@@ -736,11 +737,11 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(name,": ",T(302535920000144--[[Automated Performance--]])),
-    hint = Concat(T(302535920000145--[[Sets performance of all automated buildings
-Current--]]),": ",hint),
-    check1 = T(302535920000769--[[Selected--]]),
-    check1_hint = Concat(T(302535920000147--[[Only apply to selected object instead of all--]])," ",name),
+    title = Concat(name,": ",S[302535920000144--[[Automated Performance--]]]),
+    hint = S[302535920000145--[["Sets performance of all automated buildings
+Current: %s"--]]]:format(hint),
+    check1 = 302535920000769--[[Selected--]],
+    check1_hint = Concat(S[302535920000147--[[Only apply to selected object instead of all--]]]," ",name),
   }
 end
 
@@ -771,10 +772,10 @@ function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000148--[["%s:
+    S[302535920000148--[["%s:
 You keep your work station so clean, Jerome.
-It's next to godliness. Isn't that what they say?"--]]):format(ChoGGi.UserSettings.SchoolTrainAll),
-    T(5247--[[School--]]),
+It's next to godliness. Isn't that what they say?"--]]]:format(ChoGGi.UserSettings.SchoolTrainAll),
+    5247--[[School--]],
     default_icon,
     true
   )
@@ -792,9 +793,9 @@ function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000149--[[%s:
-There's more vodka in this piss than there is piss.--]]):format(ChoGGi.UserSettings.SanatoriumCureAll),
-    T(3540--[[Sanatorium--]]),
+    S[302535920000149--[[%s:
+There's more vodka in this piss than there is piss.--]]]:format(ChoGGi.UserSettings.SanatoriumCureAll),
+    3540--[[Sanatorium--]],
     default_icon,
     true
   )
@@ -813,8 +814,8 @@ function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
   end
 
   MsgPopup(
-    T(302535920000150--[[%s: Good for what ails you--]]):format(#g_SchoolTraits),
-    T(235--[[Traits--]]),
+    S[302535920000150--[[%s: Good for what ails you--]]]:format(#g_SchoolTraits),
+    235--[[Traits--]],
     "UI/Icons/Upgrades/factory_ai_04.tga"
   )
 end
@@ -828,8 +829,8 @@ function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000150--[[%s: Good for what ails you--]]):format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
-    T(3980--[[Buildings--]]),
+    S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
+    3980--[[Buildings--]],
     "UI/Icons/Upgrades/superfungus_03.tga"
   )
 end
@@ -857,8 +858,8 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000151--[[%s: The spice must flow!--]]):format(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
-    T(3980--[[Buildings--]]),
+    S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
+    3980--[[Buildings--]],
     "UI/Icons/Sections/dust.tga"
   )
 end
@@ -882,8 +883,8 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000151--[[%s: The spice must flow!--]]):format(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
-    T(3980--[[Buildings--]]),
+    S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
+    3980--[[Buildings--]],
     "UI/Icons/Sections/dust.tga"
   )
 end
@@ -898,12 +899,12 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
+    S[302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
 Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
 C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]):format(ChoGGi.UserSettings.MoistureVaporatorRange),
-    T(3980--[[Buildings--]]),
+Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]]:format(ChoGGi.UserSettings.MoistureVaporatorRange),
+    3980--[[Buildings--]],
     "UI/Icons/Upgrades/zero_space_04.tga",
     true
   )
@@ -917,10 +918,10 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000153--[["%s:
+    S[302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
-it is a friendship greeting from the children of our small but great planet of Potatoho."--]]):format(ChoGGi.UserSettings.CropFailThreshold),
-    T(3980--[[Buildings--]]),
+it is a friendship greeting from the children of our small but great planet of Potatoho."--]]]:format(ChoGGi.UserSettings.CropFailThreshold),
+    3980--[[Buildings--]],
     "UI/Icons/Sections/Food_1.tga",
     true
   )
@@ -959,9 +960,9 @@ function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.Metals_cost_modifier),T(302535920000154--[[%s:
-Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]])),
-    T(3980--[[Buildings--]]),
+    S[302535920000154--[[%s:
+Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]]]:format(ChoGGi.UserSettings.Metals_cost_modifier),
+    3980--[[Buildings--]],
     "UI/Icons/Upgrades/build_2.tga"
   )
 end
@@ -975,11 +976,11 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000155--[[%s:
+    S[302535920000155--[[%s:
 We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
-So we got rid of the auto and stopped off at the Korova for a nightcap.--]]):format(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
-    T(3980--[[Buildings--]]),
+So we got rid of the auto and stopped off at the Korova for a nightcap.--]]]:format(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
+    3980--[[Buildings--]],
     "UI/Icons/Notifications/fractured_dome.tga",
     true
   )
@@ -995,8 +996,8 @@ function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]):format(ChoGGi.UserSettings.BreakChanceCablePipe),
-    T(302535920000157,"Cables & Pipes"),
+    S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.BreakChanceCablePipe),
+    302535920000157--[[Cables & Pipes--]],
     "UI/Icons/Notifications/timer.tga"
   )
 end
@@ -1010,8 +1011,8 @@ function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]):format(ChoGGi.UserSettings.InstantCables),
-    T(302535920000157,"Cables & Pipes"),
+    S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.InstantCables),
+    302535920000157--[[Cables & Pipes--]],
     "UI/Icons/Notifications/timer.tga"
   )
 end
@@ -1022,8 +1023,8 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000158--[[%s: No no I said over there.--]]):format(ChoGGi.UserSettings.RemoveBuildingLimits),
-    T(3980--[[Buildings--]]),
+    S[302535920000158--[[%s: No no I said over there.--]]]:format(ChoGGi.UserSettings.RemoveBuildingLimits),
+    3980--[[Buildings--]],
     "UI/Icons/Upgrades/zero_space_04.tga"
   )
 end
@@ -1043,9 +1044,9 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000159--[[%s: Unlimited Wonders
-(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_wonder),
-    T(3980--[[Buildings--]]),
+    S[302535920000159--[[%s: Unlimited Wonders
+(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_wonder),
+    3980--[[Buildings--]],
     default_icon3
   )
 end
@@ -1056,9 +1057,9 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000160--[[%s: Freedom for spires!
-(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_dome_spot),
-    T(3980--[[Buildings--]]),
+    S[302535920000160--[[%s: Freedom for spires!
+(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_dome_spot),
+    3980--[[Buildings--]],
     default_icon3
   )
 end
@@ -1069,9 +1070,9 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000161--[[%s: Building Instant Build
-(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_instant_build),
-    T(3980--[[Buildings--]]),
+    S[302535920000161--[[%s: Building Instant Build
+(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_instant_build),
+    3980--[[Buildings--]],
     default_icon3
   )
 end
@@ -1082,9 +1083,9 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    T(302535920000162--[[%s: Hidden Buildings
-(restart to set disabled)--]]):format(ChoGGi.UserSettings.Building_hide_from_build_menu),
-    T(3980--[[Buildings--]]),
+    S[302535920000162--[[%s: Hidden Buildings
+(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_hide_from_build_menu),
+    3980--[[Buildings--]],
     default_icon3
   )
 end
@@ -1093,7 +1094,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   local ChoGGi = ChoGGi
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 25,value = 25},
@@ -1140,7 +1141,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,":\n",T(msgpopup)),
+        Concat(choice[1].text,":\n",Strings[msgpopup]),
         id,
         "UI/Icons/Upgrades/polymer_blades_04.tga",
         true
@@ -1151,7 +1152,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",id," ",T(302535920000163--[[Radius--]])),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = Concat(S[302535920000129--[[Set--]]]," ",id," ",S[302535920000163--[[Radius--]]]),
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end

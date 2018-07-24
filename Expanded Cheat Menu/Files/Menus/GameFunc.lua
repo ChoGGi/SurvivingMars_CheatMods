@@ -2,10 +2,10 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Anomaly_Event.tga"
 
-local print,type,tostring,string = print,type,tostring,string
+local print,type,tostring = print,type,tostring
 
 local cls = cls
 local CreateRealTimeThread = CreateRealTimeThread
@@ -70,9 +70,8 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DisableTextureCompression),": ",T(302535920000641--[[Texture Compression--]])),
-    T(302535920001015--[[Video--]]),
-    default_icon
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression,302535920000641--[[Texture Compression--]]),
+    302535920001015--[[Video--]]
   )
 end
 
@@ -159,8 +158,8 @@ do --FlattenGround
       DeleteThread(are_we_flattening)
       visual_circle:delete()
       MsgPopup(
-        T(302535920001164--[[Flattening has been stopped, now updating buildable.--]]),
-        T(904--[[Terrain--]]),
+        302535920001164--[[Flattening has been stopped, now updating buildable.--]],
+        904--[[Terrain--]],
         "UI/Icons/Sections/WasteRock_1.tga"
       )
       -- disable collisions on pipes so they don't get marked as uneven terrain
@@ -179,8 +178,8 @@ do --FlattenGround
       ToggleHotkeys(true)
       flatten_height = terrain_GetHeight(GetTerrainCursor())
       MsgPopup(
-        T(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]):format(flatten_height),
-        T(904--[[Terrain--]]),
+        S[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]]:format(flatten_height),
+        904--[[Terrain--]],
         "UI/Icons/Sections/warning.tga"
       )
   --~     local terrain_type = mapdata.BaseLayer or "Grass_01"		-- applied terrain type
@@ -215,15 +214,15 @@ end
 --~ terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
-  local str_hint_rules = T(302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]])
+  local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
   local NewMissionParams = {}
 
   --open a list dialog to set g_CurrentMissionParams
   local ItemList = {
-    {text = T(3474--[[Mission Sponsor--]]),value = "IMM"},
-    {text = T(3478--[[Commander Profile--]]),value = "rocketscientist"},
-    {text = T(3486--[[Mystery--]]),value = "random"},
-    {text = T(8800--[[Game Rules--]]),value = "",hint = str_hint_rules},
+    {text = S[3474--[[Mission Sponsor--]]],value = "IMM"},
+    {text = S[3478--[[Commander Profile--]]],value = "rocketscientist"},
+    {text = S[3486--[[Mystery--]]],value = "random"},
+    {text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
   }
 
   local CallBackFunc = function(choice)
@@ -234,13 +233,13 @@ function ChoGGi.MenuFuncs.ChangeMap()
       local text = choice[i].text
       local value = choice[i].value
 
-      if text == T(3474--[[Mission Sponsor--]]) then
+      if text == S[3474--[[Mission Sponsor--]]] then
         NewMissionParams.idMissionSponsor = value
-      elseif text == T(3478--[[Commander Profile--]]) then
+      elseif text == S[3478--[[Commander Profile--]]] then
         NewMissionParams.idCommanderProfile = value
-      elseif text == T(3486--[[Mystery--]]) then
+      elseif text == S[3486--[[Mystery--]]] then
         NewMissionParams.idMystery = value
-      elseif text == T(8800--[[Game Rules--]]) then
+      elseif text == S[8800--[[Game Rules--]]] then
         NewMissionParams.idGameRules = {}
         if value:find(" ") then
           for i in value:gmatch("%S+") do
@@ -256,10 +255,10 @@ function ChoGGi.MenuFuncs.ChangeMap()
   local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000866--[[Set MissionParams NewMap--]]),
-    hint = Concat(T(302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
+    title = 302535920000866--[[Set MissionParams NewMap--]],
+    hint = Concat(S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-See the examine list on the left for ids."--]]),"\n\n",str_hint_rules),
+See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
     custom_type = 4,
   }
 
@@ -268,7 +267,7 @@ See the examine list on the left for ids."--]]),"\n\n",str_hint_rules),
 
   --map list dialog
   CreateRealTimeThread(function()
-    local caption = T(302535920000868--[[Choose map with settings presets:--]])
+    local caption = S[302535920000868--[[Choose map with settings presets:--]]]
     local maps = ListMaps()
     local items = {}
     for i = 1, #maps do
@@ -350,8 +349,9 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.AutosavePeriod
   local UserSettings = ChoGGi.UserSettings
+  local title = Concat(S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]])
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 3,value = 3},
     {text = 10,value = 10},
@@ -384,8 +384,8 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
-        Concat(T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]]))
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
+        title
       )
     end
   end
@@ -393,7 +393,7 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(3591--[[Autosave--]])," ",T(302535920001201--[[Interval--]])),
+    title = title,
     hint = Concat("Current: ",hint),
   }
 end
@@ -404,8 +404,8 @@ function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.DisablePulsatingPinsMotion),": ",T(302535920000265--[[Pulsating Pins--]])),
-    T(302535920001092--[[Pins--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion,302535920000265--[[Pulsating Pins--]]),
+    302535920001092--[[Pins--]]
   )
 end
 
@@ -428,8 +428,8 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
       terrain_SetTerrainType({type = value})
 
       MsgPopup(
-        Concat(choice[1].text,": ",T(904--[[Terrain--]])),
-        T(904--[[Terrain--]])
+        ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),
+        904--[[Terrain--]]
       )
     end
   end
@@ -437,8 +437,8 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000973--[[Change Terrain Texture--]]),
-    hint = T(302535920000974--[[Map default: %s--]]):format(mapdata.BaseLayer),
+    title = 302535920000973--[[Change Terrain Texture--]],
+    hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
   }
 end
 
@@ -448,11 +448,11 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
 
   --always load defaults, then override with custom settings so list is always full
   local def = g_Classes.Lightmodel:GetProperties()
-  local help_str = T(487939677892--[[Help--]])
-  local default_str = T(1000121--[[Default--]])
-  local min_str = T(302535920000110--[[Min--]])
-  local max_str = T(302535920000941--[[Max--]])
-  local scale_str = T(1000081--[[Scale--]])
+  local help_str = S[487939677892--[[Help--]]]
+  local default_str = S[1000121--[[Default--]]]
+  local min_str = S[302535920000110--[[Min--]]]
+  local max_str = S[302535920000941--[[Max--]]]
+  local scale_str = S[1000081--[[Scale--]]]
   for i = 1, #def do
     if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
       ItemList[#ItemList+1] = {
@@ -511,12 +511,12 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     callback = CallBackFunc,
     items = ItemList,
     sortby = "sort",
-    title = T(302535920000975--[[Custom Lightmodel--]]),
-    hint = T(302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj).--]]),
-    check1 = T(302535920000977--[[Semi-Permanent--]]),
-    check1_hint = T(302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]]),
-    check2 = T(302535920000979--[[Presets--]]),
-    check2_hint = T(302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]]),
+    title = 302535920000975--[[Custom Lightmodel--]],
+    hint = 302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj).--]],
+    check1 = 302535920000977--[[Semi-Permanent--]],
+    check1_hint = 302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]],
+    check2 = 302535920000979--[[Presets--]],
+    check2_hint = 302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]],
     custom_type = 5,
   }
 end
@@ -531,14 +531,14 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
   local ItemList = {}
   if not Browse then
     ItemList[#ItemList+1] = {
-      text = Concat(" ",T(1000121--[[Default--]])),
+      text = Concat(" ",S[1000121--[[Default--]]]),
       value = "ChoGGi_Default",
-      hint = T(302535920000981--[[Choose to this remove Permanent setting.--]]),
+      hint = S[302535920000981--[[Choose to this remove Permanent setting.--]]],
     }
     ItemList[#ItemList+1] = {
-      text = Concat(" ",T(302535920000982--[[Custom--]])),
+      text = Concat(" ",S[302535920000982--[[Custom--]]]),
       value = "ChoGGi_Custom",
-      hint = T(302535920000983--[[Custom Lightmodel made with \"Change Light Model Custom\"--]]),
+      hint = S[302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]]],
     }
   end
   local Table = DataInstances.Lightmodel
@@ -574,46 +574,46 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
 
         ChoGGi.SettingFuncs.WriteSettings()
         MsgPopup(
-          Concat(choice[1].text,": ",T(302535920000769--[[Selected--]])),
-          T(302535920000984--[[Lighting--]])
+          ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
+          302535920000984--[[Lighting--]]
         )
       end
     end
   end
 
   local hint = {}
-  local Check1
-  local Check1Hint
-  local Check2
-  local Check2Hint
-  local title = T(302535920000985--[[Select Lightmodel Preset--]])
+  local check1
+  local check1_hint
+  local check2
+  local check2_hint
+  local title = 302535920000985--[[Select Lightmodel Preset--]]
   if not Browse then
-    title = T(302535920000986--[[Change Lightmodel--]])
-    hint[#hint+1] = T(302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]])
-    local Lightmodel = ChoGGi.UserSettings.Lightmodel
-    if Lightmodel then
+    title = 302535920000986--[[Change Lightmodel--]]
+    hint[#hint+1] = S[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]]
+    local lightmodel = ChoGGi.UserSettings.Lightmodel
+    if lightmodel then
       hint[#hint+1] = "\n\n"
-      hint[#hint+1] = T(302535920000988--[[Permanent--]])
+      hint[#hint+1] = S[302535920000988--[[Permanent--]]]
       hint[#hint+1] = ": "
-      hint[#hint+1] = Lightmodel
+      hint[#hint+1] = lightmodel
     end
-    Check1 = T(302535920000988--[[Permanent--]])
-    Check1Hint = T(302535920000989--[[Make it stay at selected light model all the time (including reboots).--]])
-    Check2 = T(327465361219--[[Edit--]])
-    Check2Hint = T(302535920000990--[[Open this style in "Change Light Model Custom".--]])
+    check1 = 302535920000988--[[Permanent--]]
+    check1_hint = 302535920000989--[[Make it stay at selected light model all the time (including reboots).--]]
+    check2 = 327465361219--[[Edit--]]
+    check2_hint = 302535920000990--[[Open this style in "Change Light Model Custom".--]]
   end
 
   hint[#hint+1] = "\n\n"
-  hint[#hint+1] = T(302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]])
+  hint[#hint+1] = S[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = title,
     hint = Concat(hint),
-    check1 = Check1,
-    check1_hint = Check1Hint,
-    check2 = Check2,
-    check2_hint = Check2Hint,
+    check1 = check1,
+    check1_hint = check1_hint,
+    check2 = check2,
+    check2_hint = check2_hint,
     custom_type = 6,
     custom_func = function(value)
       SetLightmodel(1,value)
@@ -627,8 +627,8 @@ function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.TransparencyToggle),": ",T(302535920000629--[[UI Transparency--]])),
-    T(1608--[[Transparency--]])
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle,302535920000629--[[UI Transparency--]]),
+    1608--[[Transparency--]]
   )
 end
 
@@ -668,14 +668,14 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   end
 
   local ItemList = {
-    {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = T(302535920000994--[[Console logging text--]])},
-    {text = "Console",value = trans(1,"Console"),hint = T(302535920000996--[[Console text input--]])},
-    {text = "UAMenu",value = trans(1,"UAMenu"),hint = T(302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]])},
+    {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = S[302535920000994--[[Console logging text--]]]},
+    {text = "Console",value = trans(1,"Console"),hint = S[302535920000996--[[Console text input--]]]},
+    {text = "UAMenu",value = trans(1,"UAMenu"),hint = S[302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]]},
 
-    {text = "HUD",value = trans(2,"HUD"),hint = T(302535920001000--[[Buttons at bottom--]])},
-    {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = T(302535920000993--[[Build menu--]])},
-    {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = T(302535920000995--[[Infopanel (selection)--]])},
-    {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = T(302535920000997--[[Pins menu--]])},
+    {text = "HUD",value = trans(2,"HUD"),hint = S[302535920001000--[[Buttons at bottom--]]]},
+    {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = S[302535920000993--[[Build menu--]]]},
+    {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = S[302535920000995--[[Infopanel (selection)--]]]},
+    {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = S[302535920000997--[[Pins menu--]]]},
   }
   --callback
   local CallBackFunc = function(choice)
@@ -706,31 +706,34 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
-    MsgPopup(T(302535920000999--[[Transparency has been updated.--]]),T(1608--[[Transparency--]]))
+    MsgPopup(
+      302535920000999--[[Transparency has been updated.--]],
+      1608--[[Transparency--]]
+    )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000629--[[Set UI Transparency--]]),
-    hint = T(302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]]),
+    title = 302535920000629--[[Set UI Transparency--]],
+    hint = 302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]],
     custom_type = 4,
   }
 end
 
 function ChoGGi.MenuFuncs.SetLightsRadius()
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
-    {text = T(302535920001004--[[01 Lowest (25)--]]),value = 25},
-    {text = T(302535920001005--[[02 Lower (50)--]]),value = 50},
-    {text = Concat(T(302535920001006--[[03 Low (90)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 90},
-    {text = Concat(T(302535920001007--[[04 Medium (95)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 95},
-    {text = Concat(T(302535920001008--[[05 High (100)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 100},
-    {text = T(302535920001009--[[06 Ultra (200)--]]),value = 200},
-    {text = T(302535920001010--[[07 Ultra-er (400)--]]),value = 400},
-    {text = T(302535920001011--[[08 Ultra-er (600)--]]),value = 600},
-    {text = T(302535920001012--[[09 Ultra-er (1000)--]]),value = 1000},
-    {text = T(302535920001013--[[10 Laggy (10000)--]]),value = 10000},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
+    {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
+    {text = Concat(S[302535920001006--[[03 Low (90)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 90},
+    {text = Concat(S[302535920001007--[[04 Medium (95)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 95},
+    {text = Concat(S[302535920001008--[[05 High (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
+    {text = S[302535920001009--[[06 Ultra (200)--]]],value = 200},
+    {text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
+    {text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
+    {text = S[302535920001012--[[09 Ultra-er (1000)--]]],value = 1000},
+    {text = S[302535920001013--[[10 Laggy (10000)--]]],value = 10000},
   }
 
   local CallBackFunc = function(choice)
@@ -748,34 +751,34 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
       ChoGGi.UserSettings.LightsRadius = nil
     end
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000633--[[Lights Radius--]])),
-        T(302535920001015--[[Video--]]),
-        default_icon
-      )
+    ChoGGi.SettingFuncs.WriteSettings()
+    MsgPopup(
+      ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000633--[[Lights Radius--]]),
+      302535920001015--[[Video--]],
+      default_icon
+    )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920001016--[[Set Lights Radius--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hr.LightsRadiusModifier,"\n\n",T(302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]])),
+    title = 302535920001016--[[Set Lights Radius--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hr.LightsRadiusModifier,"\n\n",S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]]),
   }
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
-    {text = T(302535920001004--[[01 Lowest (25)--]]),value = 25},
-    {text = T(302535920001005--[[02 Lower (50)--]]),value = 50},
-    {text = Concat(T(302535920001021--[[03 Low (100)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 100},
-    {text = Concat(T(302535920001022--[[04 Medium (150)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 150},
-    {text = Concat(T(302535920001008--[[05 High (100)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 100},
-    {text = Concat(T(302535920001024--[[06 Ultra (200)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 200},
-    {text = T(302535920001010--[[07 Ultra-er (400)--]]),value = 400},
-    {text = T(302535920001011--[[08 Ultra-er (600)--]]),value = 600},
-    {text = T(302535920001012--[[09 Ultraist (1000)--]]),value = 1000,hint = Concat("\n",T(302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]))},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
+    {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
+    {text = Concat(S[302535920001021--[[03 Low (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
+    {text = Concat(S[302535920001022--[[04 Medium (150)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 150},
+    {text = Concat(S[302535920001008--[[05 High (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
+    {text = Concat(S[302535920001024--[[06 Ultra (200)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 200},
+    {text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
+    {text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
+    {text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = Concat("\n",S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]])},
   }
 
   local CallBackFunc = function(choice)
@@ -795,8 +798,8 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000635--[[Terrain Detail--]])),
-        T(302535920001015--[[Video--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000635--[[Terrain Detail--]]),
+        302535920001015--[[Video--]],
         default_icon
       )
   end
@@ -804,25 +807,25 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",T(302535920000635--[[Terrain Detail--]])),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hr.TR_MaxChunks,"\n",T(302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
+    title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000635--[[Terrain Detail--]]]),
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hr.TR_MaxChunks,"\n",S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
-And yes Medium is using a higher setting than High..."--]])),
+And yes Medium is using a higher setting than High..."--]]]),
   }
 end
 
 function ChoGGi.MenuFuncs.SetVideoMemory()
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
-    {text = T(302535920001031--[[1 Crap (32)--]]),value = 32},
-    {text = T(302535920001032--[[2 Crap (64)--]]),value = 64},
-    {text = T(302535920001033--[[3 Crap (128)--]]),value = 128},
-    {text = Concat(T(302535920001034--[[4 Low (256)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 256},
-    {text = Concat(T(302535920001035--[[5 Medium (512)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 512},
-    {text = Concat(T(302535920001036--[[6 High (1024)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 1024},
-    {text = Concat(T(302535920001037--[[7 Ultra (2048)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 2048},
-    {text = T(302535920001038--[[8 Ultra-er (4096)--]]),value = 4096},
-    {text = T(302535920001039--[[9 Ultra-er-er (8192)--]]),value = 8192},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
+    {text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
+    {text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
+    {text = Concat(S[302535920001034--[[4 Low (256)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 256},
+    {text = Concat(S[302535920001035--[[5 Medium (512)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 512},
+    {text = Concat(S[302535920001036--[[6 High (1024)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1024},
+    {text = Concat(S[302535920001037--[[7 Ultra (2048)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 2048},
+    {text = S[302535920001038--[[8 Ultra-er (4096)--]]],value = 4096},
+    {text = S[302535920001039--[[9 Ultra-er-er (8192)--]]],value = 8192},
   }
 
   local CallBackFunc = function(choice)
@@ -839,8 +842,8 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000637--[[Video Memory--]])),
-        T(302535920001015--[[Video--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000637--[[Video Memory--]]),
+        302535920001015--[[Video--]],
         default_icon
       )
   end
@@ -848,22 +851,22 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920001041--[[Set Video Memory Use--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hr.DTM_VideoMemory),
+    title = 302535920001041--[[Set Video Memory Use--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hr.DTM_VideoMemory),
   }
 end
 
 function ChoGGi.MenuFuncs.SetShadowmapSize()
-  local hint_highest = Concat(T(6779--[[Warning--]]),": ",T(302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]))
+  local hint_highest = Concat(S[6779--[[Warning--]]],": ",S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]])),value = false,hint = T(302535920001003--[[restart to enable--]])},
-    {text = T(302535920001043--[[1 Crap (256)--]]),value = 256},
-    {text = T(302535920001044--[[2 Lower (512)--]]),value = 512},
-    {text = Concat(T(302535920001045--[[3 Low (1536)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 1536},
-    {text = Concat(T(302535920001046--[[4 Medium (2048)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 2048},
-    {text = Concat(T(302535920001047--[[5 High (4096)--]])," < ",T(302535920001065--[[Menu Option--]])),value = 4096},
-    {text = T(302535920001048--[[6 Higher (8192)--]]),value = 8192},
-    {text = T(302535920001049--[[7 Highest (16384)--]]),value = 16384,hint = hint_highest},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
+    {text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
+    {text = Concat(S[302535920001045--[[3 Low (1536)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1536},
+    {text = Concat(S[302535920001046--[[4 Medium (2048)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 2048},
+    {text = Concat(S[302535920001047--[[5 High (4096)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 4096},
+    {text = S[302535920001048--[[6 Higher (8192)--]]],value = 8192},
+    {text = S[302535920001049--[[7 Highest (16384)--]]],value = 16384,hint = hint_highest},
   }
 
   local CallBackFunc = function(choice)
@@ -883,8 +886,8 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920000639--[[Shadow Map--]])),
-        T(302535920001015--[[Video--]]),
+        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000639--[[Shadow Map--]]),
+        302535920001015--[[Video--]],
         default_icon
       )
   end
@@ -892,8 +895,8 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920001051--[[Set Shadowmap Size--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hr.ShadowmapSize,"\n\n",hint_highest,"\n\n",T(302535920001052--[[Max limited to 16384 (or crashing).--]])),
+    title = 302535920001051--[[Set Shadowmap Size--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hr.ShadowmapSize,"\n\n",hint_highest,"\n\n",S[302535920001052--[[Max limited to 16384 (or crashing).--]]]),
   }
 end
 
@@ -905,19 +908,19 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    Concat(tostring(ChoGGi.UserSettings.HigherShadowDist),": ",T(302535920000645--[[Higher Shadow Distance--]])),
-    T(302535920001015--[[Video--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist,302535920000645--[[Higher Shadow Distance--]]),
+    302535920001015--[[Video--]],
     default_icon
   )
 end
 
 function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   local DefaultSetting = ChoGGi.Consts.HigherRenderDist
-  local hint_min = T(302535920001054--[[Minimal FPS hit on large base--]])
-  local hint_small = T(302535920001055--[[Small FPS hit on large base--]])
-  local hint_fps = T(302535920001056--[[FPS hit--]])
+  local hint_min = S[302535920001054--[[Minimal FPS hit on large base--]]]
+  local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
+  local hint_fps = S[302535920001056--[[FPS hit--]]]
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 240,value = 240,hint = hint_min},
     {text = 360,value = 360,hint = hint_min},
     {text = 480,value = 480,hint = hint_min},
@@ -946,8 +949,8 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(tostring(ChoGGi.UserSettings.HigherRenderDist),": ",T(302535920000643--[[Higher Render Distance--]])),
-        T(302535920001015--[[Video--]]),
+        ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist,302535920000643--[[Higher Render Distance--]]),
+        302535920001015--[[Video--]],
         default_icon
       )
     end
@@ -956,8 +959,8 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = T(302535920000643--[[Higher Render Distance--]]),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = 302535920000643--[[Higher Render Distance--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
@@ -973,14 +976,14 @@ function ChoGGi.MenuFuncs.CameraFree_Toggle()
     ShowMouseCursor("InGameCursor")
     cameraRTS_Activate(1)
     engineShowMouseCursor()
-    print(Concat(T(302535920001058--[[Camera--]])," ",T(302535920001059--[[RTS--]])))
+    print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001059--[[RTS--]]]))
   else
     cameraFly_Activate(1)
     HideMouseCursor("InGameCursor")
     SetMouseDeltaMode(true)
     --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
     engineHideMouseCursor()
-    print(Concat(T(302535920001058--[[Camera--]])," ",T(302535920001060--[[Fly--]])))
+    print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001060--[[Fly--]]]))
   end
   --resets zoom so...
   ChoGGi.CodeFuncs.SetCameraSettings()
@@ -1016,7 +1019,7 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
     return
   end
   --let user know the camera mode
-  print(Concat(T(302535920001058--[[Camera--]])," ",T(302535920001061--[[Follow--]])))
+  print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001061--[[Follow--]]]))
   --we only want to follow one object
   if ChoGGi.LastFollowedObject then
     camera3p_DetachObject(ChoGGi.LastFollowedObject)
@@ -1068,10 +1071,10 @@ end
 
 function ChoGGi.MenuFuncs.SetBorderScrolling()
   local DefaultSetting = 5
-  local hint_down = T(302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]])
+  local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]])),value = DefaultSetting},
-    {text = 0,value = 0,hint = T(302535920001063--[[disable mouse border scrolling, WASD still works fine.--]])},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = DefaultSetting},
+    {text = 0,value = 0,hint = S[302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]]},
     {text = 1,value = 1,hint = hint_down},
     {text = 2,value = 2,hint = hint_down},
     {text = 3,value = 3},
@@ -1095,8 +1098,8 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].value,": ",T(302535920001064--[[Mouse--]])," ",T(302535920000647--[[Border Scrolling--]])),
-        T(302535920000647--[[Border Scrolling--]]),
+        Concat(choice[1].value,": ",S[302535920001064--[[Mouse--]]]," ",S[302535920000647--[[Border Scrolling--]]]),
+        302535920000647--[[Border Scrolling--]],
         "UI/Icons/IPButtons/status_effects.tga"
       )
     end
@@ -1105,18 +1108,18 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000129--[[Set--]])," ",T(302535920000647--[[Border Scrolling--]])),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000647--[[Border Scrolling--]]]),
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end
 
 function ChoGGi.MenuFuncs.CameraZoom_Toggle()
   local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
   local ItemList = {
-    {text = Concat(" ",T(1000121--[[Default--]]),": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 16000,value = 16000},
     {text = 20000,value = 20000},
-    {text = 24000,value = 24000, hint = T(302535920001066--[[What used to be the default for this ECM setting--]])},
+    {text = 24000,value = 24000, hint = S[302535920001066--[[What used to be the default for this ECM setting--]]]},
     {text = 32000,value = 32000},
   }
 
@@ -1136,8 +1139,8 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 
       ChoGGi.SettingFuncs.WriteSettings()
       MsgPopup(
-        Concat(choice[1].text,": ",T(302535920001058--[[Camera--]])," ",T(302535920001067--[[Zoom--]])),
-        T(302535920001058--[[Camera--]]),
+        Concat(choice[1].text,": ",S[302535920001058--[[Camera--]]]," ",S[302535920001067--[[Zoom--]]]),
+        302535920001058--[[Camera--]],
         "UI/Icons/IPButtons/status_effects.tga"
       )
     end
@@ -1146,7 +1149,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920001058--[[Camera--]])," ",T(302535920001067--[[Zoom--]])),
-    hint = Concat(T(302535920000106--[[Current--]]),": ",hint),
+    title = Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001067--[[Zoom--]]]),
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
   }
 end

@@ -8,8 +8,9 @@ if g_Classes.ChoGGi_ListChoiceCustomDialog then
 end
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
-local TConcat = ChoGGi.ComFuncs.TableConcat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local type,tostring,table = type,tostring,table
 
@@ -88,7 +89,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idCheckBox1 = g_Classes.CheckButton:new(self)
   self.idCheckBox1:SetPos(point(dialog_left+15, element_y))
   self.idCheckBox1:SetSize(point(halfish_for_checks, 17))
-  self.idCheckBox1:SetText(T(588--[[Empty--]]))
+  self.idCheckBox1:SetText(S[588--[[Empty--]]])
   self.idCheckBox1:SetButtonSize(point(16, 16))
   self.idCheckBox1:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idCheckBox1:SetHSizing("AnchorToMidline")
@@ -99,7 +100,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idCheckBox2 = g_Classes.CheckButton:new(self)
   self.idCheckBox2:SetPos(point(element_x, element_y))
   self.idCheckBox2:SetSize(point(halfish_for_checks, 17))
-  self.idCheckBox2:SetText(T(588--[[Empty--]]))
+  self.idCheckBox2:SetText(S[588--[[Empty--]]])
   self.idCheckBox2:SetButtonSize(point(16, 16))
   self.idCheckBox2:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idCheckBox2:SetHSizing("AnchorToMidline")
@@ -142,8 +143,8 @@ function ChoGGi_ListChoiceCustomDialog:Init()
             hint[#hint+1] = "\n\n"
             hint[#hint+1] = item.hint
           end
-          self.parent:SetHint(TConcat(hint))
-          CreateRolloverWindow(self.parent, TConcat(hint), true)
+          self.parent:SetHint(TableConcat(hint))
+          CreateRolloverWindow(self.parent, TableConcat(hint), true)
         end
       end
     end
@@ -215,9 +216,11 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetHSizing("Resize")
   self.idEditValue:SetVSizing("AnchorToBottom")
-  self.idEditValue:SetHint(T(302535920000077--[[You can enter a custom value to be applied.\n\nWarning: Entering the wrong value may crash the game or otherwise cause issues.--]]))
+  self.idEditValue:SetHint(S[302535920000077--[["You can enter a custom value to be applied.
+
+Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]])
   self.idEditValue:SetTextVAlign("center")
-  self.idEditValue.display_text = T(302535920000078--[[Add Custom Value--]])
+  self.idEditValue.display_text = S[302535920000078--[[Add Custom Value--]]]
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
@@ -228,14 +231,14 @@ function ChoGGi_ListChoiceCustomDialog:Init()
       self.idList:SetItem(#self.idList.items,{
         text = value,
         value = value,
-        hint = T(302535920000079--[[< Use custom value--]])
+        hint = S[302535920000079--[[< Use custom value--]]]
       })
     end
   end
 
   element_y = 4 + self.idEditValue:GetPos():y() + self.idEditValue:GetSize():y()
 
-  local title = T(1000429--[[OK--]])
+  local title = S[6878--[[OK--]]]
   self.idOK = g_Classes.Button:new(self)
   self.idOK:SetPos(point(dialog_left+20, element_y))
   self.idOK:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
@@ -243,7 +246,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idOK:SetVSizing("AnchorToBottom")
   self.idOK:SetFontStyle("Editor14Bold")
   self.idOK:SetText(title)
-  self.idOK:SetHint(T(302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]))
+  self.idOK:SetHint(S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]])
 
   element_x = 100 + self.idOK:GetPos():x() + self.idOK:GetSize():x()
 
@@ -255,14 +258,14 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     self:delete(self.choices)
   end
 
-  title = T(1000430--[[Cancel--]])
+  title = S[6879--[[Cancel--]]]
   self.idClose = g_Classes.Button:new(self)
   self.idClose:SetPos(point(element_x, element_y))
   self.idClose:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
   self.idClose:SetHSizing("AnchorToLeft")
   self.idClose:SetVSizing("AnchorToBottom")
   self.idClose:SetFontStyle("Editor14Bold")
-  self.idClose:SetHint(T(302535920000074--[[Cancel without changing anything.--]]))
+  self.idClose:SetHint(S[302535920000074--[[Cancel without changing anything.--]]])
   self.idClose:SetText(title)
   self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
 
@@ -275,7 +278,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idColorHSV:SetHSizing("AnchorToRight")
   self.idColorHSV:SetVSizing("AnchorToTop")
   self.idColorHSV:SetVisible(false)
-  self.idColorHSV:SetHint(T(302535920000081--[[Double right-click to set without closing dialog.--]]))
+  self.idColorHSV:SetHint(S[302535920000081--[[Double right-click to set without closing dialog.--]]])
   --stop idColorHSV from closing on dblclick
   function self.idColorHSV.OnLButtonDoubleClick()
   end
@@ -308,13 +311,11 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     self.idEditValue:SetText(tostring(color))
   end
 
-  local hint_connectedgrid = T(302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]])
-
   element_y = self.idColorHSV:GetPos():y() + self.idColorHSV:GetSize():y()
   local offset = 50
 
   --right to left positioning for checks as we use AnchorToRight
-  title = T(302535920000037--[[Electricity--]])
+  title = S[302535920000037--[[Electricity--]]]
   local title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
   self.idColorCheckElec = g_Classes.CheckButton:new(self)
   self.idColorCheckElec:SetPos(point(dialog_width - border - title_size:x() - offset, element_y))
@@ -325,11 +326,11 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idColorCheckElec:SetButtonSize(point(16, 16))
   self.idColorCheckElec:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckElec:SetText(title)
-  self.idColorCheckElec:SetHint(hint_connectedgrid)
+  self.idColorCheckElec:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
 
   element_x = border * 2 + self.idColorCheckElec:GetSize():x()
 
-  title = T(891--[[Air--]])
+  title = S[891--[[Air--]]]
   title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
   self.idColorCheckAir = g_Classes.CheckButton:new(self)
   self.idColorCheckAir:SetPos(point(dialog_width - title_size:x() - element_x - offset, element_y))
@@ -340,11 +341,11 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idColorCheckAir:SetButtonSize(point(16, 16))
   self.idColorCheckAir:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckAir:SetText(title)
-  self.idColorCheckAir:SetHint(hint_connectedgrid)
+  self.idColorCheckAir:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
 
   element_x = border * 2 + self.idColorCheckAir:GetPos():x()
 
-  title = T(681--[[Water--]])
+  title = S[681--[[Water--]]]
   self.idColorCheckWater = g_Classes.CheckButton:new(self)
   self.idColorCheckWater:SetPos(point(dialog_width - element_x - offset - 25, element_y))
   self.idColorCheckWater:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
@@ -354,7 +355,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idColorCheckWater:SetButtonSize(point(16, 16))
   self.idColorCheckWater:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckWater:SetText(title)
-  self.idColorCheckWater:SetHint(hint_connectedgrid)
+  self.idColorCheckWater:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
 
   --so elements move when dialog re-sizes
   self:InitChildrenSizing()

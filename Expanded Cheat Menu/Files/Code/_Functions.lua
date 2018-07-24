@@ -4,7 +4,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local T = ChoGGi.ComFuncs.Trans
+local S = ChoGGi.Strings
 
 local pcall,print,rawget,type,table = pcall,print,rawget,type,table
 
@@ -43,6 +43,7 @@ local camera_SetFovX = camera.SetFovX
 
 local g_Classes = g_Classes
 
+-- add some shortened func names
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
   local ChoGGi = ChoGGi
@@ -51,7 +52,6 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   function dumptable(...)ChoGGi.ComFuncs.DumpTable(...)end
   function dumpl(...)ChoGGi.ComFuncs.DumpLua(...)end
   function dumpt(...)ChoGGi.ComFuncs.DumpTable(...)end
-  function alert(...)MsgPopup(...)end
   local function RemoveLast(str)
     --remove restart as the last cmd so we don't hit it by accident
     local dlgConsole = dlgConsole
@@ -264,7 +264,7 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
         building:ToggleWorking()
       end)
     end) then
-      print(Concat(T(302535920000012--[[Error borked building--]]),": ",RetName(building)))
+      print(S[302535920000012]--[[302535920000012,Error borked building: %s--]]:format(RetName(building)))
       OpenExamine(building)
     end
   end
@@ -341,7 +341,7 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
-  if Age == T(3490--[[Random--]]) then
+  if Age == S[3490--[[Random--]]] then
     Age = ChoGGi.Tables.ColonistAges[Random(1,6)]
   end
   --remove all age traits
@@ -387,9 +387,9 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateGender(c,Gender,Cloned)
   local ChoGGi = ChoGGi
-  if Gender == T(3490--[[Random--]]) then
+  if Gender == S[3490--[[Random--]]] then
     Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
-  elseif Gender == T(302535920000800--[[MaleOrFemale--]]) then
+  elseif Gender == S[302535920000800--[[MaleOrFemale--]]] then
     Gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
   end
   --remove all gender traits
@@ -423,7 +423,7 @@ end
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(c,spec)
   --children don't have spec models so they get black cube
   if not c.entity:find("Child",1,true) then
-    if spec == T(3490--[[Random--]]) then
+    if spec == S[3490--[[Random--]]] then
       spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
     end
     c:SetSpecialization(spec,"init")
@@ -447,7 +447,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateTraits(c,bool,traits)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateRace(c,race)
-  if race == T(3490--[[Random--]]) then
+  if race == S[3490--[[Random--]]] then
     race = Random(1,5)
   end
   c.race = race
@@ -820,8 +820,8 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     MsgPopup(
-      T(302535920000015--[[Can't colour object--]]),
-      T(302535920000016--[[Colour--]])
+      302535920000015--[[Can't colour object--]],
+      302535920000016--[[Colour--]]
     )
     return
   end
@@ -835,26 +835,27 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = T(302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]),
+      hint = S[302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]],
     }
     text = Concat("Metallic",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]),
+      hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]],
     }
     text = Concat("Roughness",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]),
+      hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]],
     }
   end
   ItemList[#ItemList+1] = {
     text = "X_BaseColour",
     value = 6579300,
     obj = obj,
-    hint = T(302535920000019--[[single colour for object (this colour will interact with the other colours).\nIf you want to change the colour of an object you can't with 1-4 (like drones).--]]),
+    hint = S[302535920000019--[["Single colour for object (this colour will interact with the other colours).
+If you want to change the colour of an object you can't with 1-4 (like drones)."--]]],
   }
 
   --callback
@@ -953,8 +954,8 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
       end
 
       MsgPopup(
-        T(302535920000020--[[Colour is set on %s--]]):format(RetName(obj)),
-        T(302535920000016--[[Colour--]]),
+        S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
+        302535920000016--[[Colour--]],
         nil,
         nil,
         obj
@@ -965,14 +966,17 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000021--[[Change Colour--]]),": ",RetName(obj)),
-    hint = T(302535920000022--[[If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.\n\nThe colour picker doesn't work for Metallic/Roughness.\nYou can copy and paste numbers if you want (click item again after picking).--]]),
+    title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
+    hint = S[302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
+
+The colour picker doesn't work for Metallic/Roughness.
+You can copy and paste numbers if you want (click item again after picking)."--]]],
     multisel = true,
     custom_type = 2,
-    check1 = T(302535920000023--[[All of type--]]),
-    check1_hint = T(302535920000024--[[Change all objects of the same type.--]]),
-    check2 = T(302535920000025--[[Default Colour--]]),
-    check2_hint = T(302535920000026--[[if they're there; resets to default colours.--]]),
+    check1 = S[302535920000023--[[All of type--]]],
+    check1_hint = S[302535920000024--[[Change all objects of the same type.--]]],
+    check2 = S[302535920000025--[[Default Colour--]]],
+    check2_hint = S[302535920000026--[[if they're there; resets to default colours.--]]],
   }
 end
 
@@ -1061,23 +1065,23 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
   obj = obj or ChoGGi.CodeFuncs.SelObject()
   if not obj then
     MsgPopup(
-      T(302535920000027--[[Nothing selected--]]),
-      T(302535920000028--[[Find Resource--]])
+      302535920000027--[[Nothing selected--]],
+      302535920000028--[[Find Resource--]]
     )
     return
   end
 
   local ItemList = {
-    {text = T(3514),value = "Metals"},
-    {text = T(4764),value = "BlackCube"},
-    {text = T(8064),value = "MysteryResource"},
-    {text = T(3513),value = "Concrete"},
-    {text = T(1022),value = "Food"},
-    {text = T(4139),value = "RareMetals"},
-    {text = T(3515),value = "Polymers"},
-    {text = T(3517),value = "Electronics"},
-    {text = T(4765),value = "Fuel"},
-    {text = T(3516),value = "MachineParts"},
+    {text = S[3514],value = "Metals"},
+    {text = S[4764],value = "BlackCube"},
+    {text = S[8064],value = "MysteryResource"},
+    {text = S[3513],value = "Concrete"},
+    {text = S[1022],value = "Food"},
+    {text = S[4139],value = "RareMetals"},
+    {text = S[3515],value = "Polymers"},
+    {text = S[3517],value = "Electronics"},
+    {text = S[4765],value = "Fuel"},
+    {text = S[3516],value = "MachineParts"},
   }
 
   local CallBackFunc = function(choice)
@@ -1124,8 +1128,8 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
         ViewAndSelectObject(nearest)
       else
         MsgPopup(
-          T(302535920000029--[[Error: Cannot find any %s.--]]):format(choice[1].text),
-          T(15--[[Resource--]]),
+          S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
+          15--[[Resource--]],
           nil,
           nil,
           obj
@@ -1137,8 +1141,8 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = Concat(T(302535920000031--[[Find Nearest Resource--]])," ",RetName(obj)),
-    hint = T(302535920000032--[[Select a resource to find--]]),
+    title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
+    hint = S[302535920000032--[[Select a resource to find--]]],
   }
 end
 
@@ -1263,8 +1267,8 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   if value == "New" then
     local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.MsgWait(
-      T(302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]):format(ChoGGi.email),
-      T(302535920000034--[[Request--]])
+      S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
+      S[302535920000034--[[Request--]]]
     )
     return
   end
@@ -1298,25 +1302,25 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   }
   if value == "Grids" then
     info = info_grid
-    info_grid.title = T(302535920000035--[[Grids--]])
+    info_grid.title = S[302535920000035--[[Grids--]]]
     AddGrid("air",info)
     AddGrid("electricity",info)
     AddGrid("water",info)
   elseif value == "Air" then
     info = info_grid
-    info_grid.title = T(891--[[Air--]])
+    info_grid.title = S[891--[[Air--]]]
     AddGrid("air",info)
   elseif value == "Electricity" then
     info = info_grid
-    info_grid.title = T(302535920000037--[[Electricity--]])
+    info_grid.title = S[302535920000037--[[Electricity--]]]
     AddGrid("electricity",info)
   elseif value == "Water" then
     info = info_grid
-    info_grid.title = T(681--[[Water--]])
+    info_grid.title = S[681--[[Water--]]]
     AddGrid("water",info)
   elseif value == "Research" then
     info = {
-      title = T(311--[[Research--]]),
+      title = S[311--[[Research--]]],
       listtype = "all",
       tables = {UICity.tech_status},
       values = {
@@ -1325,7 +1329,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Colonists" then
     info = {
-      title = T(547--[[Colonists--]]),
+      title = S[547--[[Colonists--]]],
       tables = UICity.labels.Colonist,
       values = {
         {name="handle",kind=0},
@@ -1351,7 +1355,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "Rockets" then
     info = {
-      title = T(5238--[[Rockets--]]),
+      title = S[5238--[[Rockets--]]],
       tables = UICity.labels.AllRockets,
       values = {
         {name="name",kind=0},
@@ -1370,7 +1374,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
     }
   elseif value == "City" then
     info = {
-      title = T(302535920000042--[[City--]]),
+      title = S[302535920000042--[[City--]]],
       tables = {UICity},
       values = {
         {name="rand_state",kind=0},
@@ -1412,10 +1416,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or T(588--[[Empty--]]),
-        "RolloverText", Table.RolloverText or T(126095410863--[[unknown name--]]),
-        "RolloverTitle", Table.RolloverTitle or T(1000016--[[Title--]]),
-        "RolloverHint", Table.RolloverHint or T(4248--[[Hints--]]),
+        "Title", Table.Title or S[588--[[Empty--]]],
+        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
+        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
+        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {
@@ -1437,10 +1441,10 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
         "__context_of_kind", Table.__context_of_kind or "Infopanel",
         "__template", Table.__template or "InfopanelSection",
         "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or T(588--[[Empty--]]),
-        "RolloverText", Table.RolloverText or T(126095410863--[[unknown name--]]),
-        "RolloverTitle", Table.RolloverTitle or T(1000016--[[Title--]]),
-        "RolloverHint", Table.RolloverHint or T(4248--[[Hints--]]),
+        "Title", Table.Title or S[588--[[Empty--]]],
+        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
+        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
+        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
         "OnContextUpdate", Table.OnContextUpdate
       }, {
         PlaceObj("XTemplateFunc", {
@@ -1494,7 +1498,10 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
   end
   if not obj then
     if not skip_msg then
-      MsgPopup(T(302535920000967--[[Nothing selected.--]]),T(302535920000968--[[Collisions--]]))
+      MsgPopup(
+        302535920000967--[[Nothing selected.--]],
+        302535920000968--[[Collisions--]]
+      )
     end
     return
   end
@@ -1514,8 +1521,8 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
 
   if not skip_msg then
     MsgPopup(
-      T(302535920000969--[[Collisions %s on %s--]]):format(which,RetName(obj)),
-      T(302535920000968--[[Collisions--]]),
+      S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
+      302535920000968--[[Collisions--]],
       nil,
       nil,
       obj
@@ -1530,8 +1537,8 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
     if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
       obj:InterruptCommand()
       MsgPopup(
-        T(302535920001267--[[%s at position: %s was stopped.--]]):format(RetName(obj),obj:GetVisualPos()),
-        T(302535920001266--[[Broked Transport Pathing--]]),
+        S[302535920001267--[[%s at position: %s was stopped.--]]]:format(RetName(obj),obj:GetVisualPos()),
+        302535920001266--[[Broked Transport Pathing--]],
         "UI/Icons/IPButtons/transport_route.tga",
         nil,
         obj
