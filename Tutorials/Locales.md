@@ -68,7 +68,7 @@ function Translate(...)
       return vararg[2]
     end
     -- just in case c
-    return vararg[1] .. " < Missing locale string id"
+    return table.concat{vararg[1]," < Missing locale string id"}
   end
   return trans
 end
