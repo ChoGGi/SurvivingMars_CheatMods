@@ -28,7 +28,6 @@ local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
 local UserActions_GetActiveActions = UserActions.GetActiveActions
 local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 
-local g_Classes = g_Classes
 local OnMsg = OnMsg
 
 -- use this message to mess with the classdefs (before classes are built)
@@ -447,7 +446,6 @@ function OnMsg.NewHour()
   -- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
   if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
     local UICity = UICity
-    local empty_table = empty_table
 
     -- Hey. Do I preach at you when you're lying stoned in the gutter? No!
     local prods = UICity.labels.ResourceProducer or empty_table
@@ -746,14 +744,6 @@ function OnMsg.CityStart()
   Msg("ChoGGi_Loaded")
 end
 
-function OnMsg.ReloadLua()
-  --only do it when we're in-game
-  if UICity then
-    ChoGGi.Temp.IsGameLoaded = false
-    Msg("ChoGGi_Loaded")
-  end
-end
-
 --~ --fired as late as we can
 --~ function OnMsg.ChoGGi_Loaded()
 --~   Msg("ChoGGi_Loaded")
@@ -788,19 +778,16 @@ function OnMsg.ChoGGi_Loaded()
   local UserActions = UserActions
   local UserSettings = ChoGGi.UserSettings
   local hr = hr
+  local g_Classes = g_Classes
 
   --gets used a few times
   local Table
 
-  local not_ged = not g_gedListener
-
   --late enough that I can set g_Consts.
   ChoGGi.SettingFuncs.SetConstsToSaved()
 
-  if not_ged then
-    --needed for DroneResourceCarryAmount?
-    UpdateDroneResourceUnits()
-  end
+  --needed for DroneResourceCarryAmount?
+  UpdateDroneResourceUnits()
 
   --clear out Temp settings
   ChoGGi.Temp.UnitPathingHandles = {}
@@ -846,9 +833,7 @@ function OnMsg.ChoGGi_Loaded()
     end)
 
     --update menu
-    if not_ged then
-      g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-    end
+    g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
 
     if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
       --always show on my computer
@@ -864,11 +849,11 @@ function OnMsg.ChoGGi_Loaded()
     end
 
     --show console log history
-    if UserSettings.ConsoleToggleHistory and not_ged then
+    if UserSettings.ConsoleToggleHistory then
       ShowConsoleLog(true)
     end
 
-    if UserSettings.ConsoleHistoryWin and not_ged then
+    if UserSettings.ConsoleHistoryWin then
       ChoGGi.ComFuncs.ShowConsoleLogWin(true)
     end
 
@@ -944,7 +929,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --add custom lightmodel
-  if DataInstances.Lightmodel.ChoGGi_Custom and not_ged then
+  if DataInstances.Lightmodel.ChoGGi_Custom and type(DataInstances.Lightmodel.ChoGGi_Custom.delete) == "function" then
     DataInstances.Lightmodel.ChoGGi_Custom:delete()
   end
 
@@ -1052,17 +1037,15 @@ function OnMsg.ChoGGi_Loaded()
   end)
 
   --so we can change the max_amount for concrete
-  if not_ged then
-    Table = g_Classes.TerrainDepositConcrete.properties
-    for i = 1, #Table do
-      if Table[i].id == "max_amount" then
-        Table[i].read_only = nil
-      end
+  Table = g_Classes.TerrainDepositConcrete.properties or empty_table
+  for i = 1, #Table do
+    if Table[i].id == "max_amount" then
+      Table[i].read_only = nil
     end
   end
 
   --override building templates
-  Table = DataInstances.BuildingTemplate
+  Table = DataInstances.BuildingTemplate or empty_table
   for i = 1, #Table do
     local temp = Table[i]
 

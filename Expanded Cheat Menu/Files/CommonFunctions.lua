@@ -30,7 +30,6 @@ local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
-local HandleToObject = HandleToObject
 local HexGridGetObject = HexGridGetObject
 local HexGridGetObjects = HexGridGetObjects
 local IsBox = IsBox
@@ -548,18 +547,17 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
   text = ChoGGi.ComFuncs.CheckText(text,text)
   title = ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]])
 
-  local preset
   if image then
-    preset = "ChoGGi_TempPopup"
+    local preset = "ChoGGi_TempPopup"
     local DataInstances = DataInstances
     DataInstances.PopupNotificationPreset[preset] = {}
     DataInstances.PopupNotificationPreset[preset].name = preset
     DataInstances.PopupNotificationPreset[preset].image = image
+    CreateRealTimeThread(function()
+      WaitPopupNotification(preset, {title = title, text = text})
+      DataInstances.PopupNotificationPreset[preset] = nil
+    end)
   end
-  CreateRealTimeThread(function()
-    WaitPopupNotification(preset, {title = title, text = text})
-    DataInstances.PopupNotificationPreset[preset] = nil
-  end)
 end
 
 -- well that's the question isn't it?

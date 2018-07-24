@@ -404,6 +404,7 @@ end
 -- read saved settings from file
 function ChoGGi.SettingFuncs.ReadSettings(settings_str)
   local ChoGGi = ChoGGi
+  local is_error
 
   -- try to read settings
   if not settings_str then
@@ -413,9 +414,11 @@ function ChoGGi.SettingFuncs.ReadSettings(settings_str)
       -- no settings file so make a new one
       ChoGGi.SettingFuncs.WriteSettings()
       file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
-      -- something is definitely wrong so just abort
+      -- something is definitely wrong so just abort, and let user know
       if file_error then
-        return file_error
+        print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+        is_error = true
       end
     end
   end
@@ -423,15 +426,21 @@ function ChoGGi.SettingFuncs.ReadSettings(settings_str)
   local code_error
   code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
 	if code_error then
-    print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author.--]]],"\n\n")
-		return code_error
+    print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+    is_error = true
 	end
 
+  if is_error or type(ChoGGi.UserSettings) ~= "table" then
+    -- so now at least the game will start
+    ChoGGi.UserSettings = ChoGGi.Defaults
+    return ChoGGi.Defaults
+  end
+  -- all is well
   return settings_str
 end
 
---OptionsApply is the earliest we can call Consts:GetProperties()
+-- OptionsApply is the earliest we can call Consts:GetProperties()
 function OnMsg.OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts

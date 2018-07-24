@@ -9,6 +9,7 @@ Examine:
 > Translated userdata now shows < "userdata" to let you know it isn't a string.
 
 Fixed:
+ECM would wig out if CheatMenuModSettings.lua was a blank file (thanks Royal Rudolf).
 Examine userdata wasn't always displaying correctly.
 Issue with SkipMissingMods/SkipMissingDLC not working.
 Mod Upload shows the mod title instead of <ModLabel>.

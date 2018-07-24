@@ -226,7 +226,7 @@ function ChoGGi.MenuFuncs.ReloadLua()
   WaitDelayedLoadEntities()
   ReloadClassEntities()
   MsgPopup(
-    302535920000850--[[Reload lua done--]],
+    302535920000453--[[Reload Lua--]],
     1000113--[[Debug--]]
   )
 end
