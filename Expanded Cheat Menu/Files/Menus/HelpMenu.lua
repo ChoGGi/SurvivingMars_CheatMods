@@ -173,7 +173,7 @@ do -- build text file menu items
   local function ReadText(file)
     local file_error, text = AsyncFileToString(file)
     if file_error then
-      -- close enough, very unlikely this will ever happen (unless user is really being a user)
+      -- close enough msg, very unlikely this will ever happen (unless user is really being a user)
       return S[1000058--[[Missing file <u(src)> referenced in entity--]]]
     else
       return text

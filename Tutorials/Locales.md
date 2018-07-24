@@ -19,14 +19,26 @@ local function FileExists(file)
   return file
 end
 
-local locale_file = Concat(ModPath,"Locales/",GetLanguage(),".csv")
+--load up translation strings
+local function LoadLocale(file)
+  if not pcall(function()
+    LoadTranslationTableFile(file)
+  end) then
+    DebugPrintNL(string.format([[Problem loading locale: %s
+
+Please send me latest log file: %s]],file,"your@emailaddress.com"))
+  end
+end
+
+-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+local locale_file = table.concat{ModPath,"Locales/",GetLanguage(),".csv"}
 if FileExists(locale_file) then
   LoadLocale(locale_file)
 else
-  --fallback lang (ie: whatever you used for your filename)
-  LoadLocale(Concat(ModPath,"Locales/","English.csv"))
+  LoadLocale(table.concat{ModPath,"Locales/","English.csv"})
 end
 Msg("TranslationChanged")
+
 
 
 
