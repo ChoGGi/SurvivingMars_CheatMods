@@ -164,8 +164,7 @@ local Strings = {
 }
 -- what's wrong with string.format?
 Strings[1000012] = Strings[1000012]:gsub("<ModLabel>","%%s")
-Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s")
-Strings[1000013] = Strings[1000013]:gsub("<err>","%%s")
+Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
 Strings[1000014] = Strings[1000014]:gsub("<ModLabel>","%%s")
 
 -- we need to pad some zeros
