@@ -9,6 +9,14 @@ local S = ChoGGi.Strings
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
 AddAction(
+  Concat("[102]",S[1000113--[[Debug--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
+  ChoGGi.MenuFuncs.DeleteAllRocks,
+  nil,
+  302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]],
+  "selslope.tga"
+)
+
+AddAction(
   Concat(S[1000435--[[Game--]]],"/",S[302535920000485--[[Flatten Terrain Toggle--]]]),
   ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
   ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,

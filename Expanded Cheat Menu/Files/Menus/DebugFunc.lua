@@ -53,28 +53,6 @@ local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
 
-local function DeleteAllRocks(rock_cls)
-  local objs = GetObjects{class = rock_cls} or empty_table
-  for i = 1, #objs do
-    objs[i]:delete()
-  end
-end
-
-function ChoGGi.MenuFuncs.DeleteAllRocks()
-  local function CallBackFunc(answer)
-    if answer then
-      DeleteAllRocks("Deposition")
-      DeleteAllRocks("WasteRockObstructorSmall")
-      DeleteAllRocks("WasteRockObstructor")
-    end
-  end
-  ChoGGi.ComFuncs.QuestionBox(
-    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]]),
-    CallBackFunc,
-    Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
-  )
-end
-
 do --export colonist data
   local ChoGGi_Tables = ChoGGi.Tables
   --build list of traits to skip (added as columns, we don't want dupes)

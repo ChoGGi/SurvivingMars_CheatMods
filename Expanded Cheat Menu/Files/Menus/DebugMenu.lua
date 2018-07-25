@@ -12,14 +12,6 @@ local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
 --~ AddAction(Menu,Action,Key,Des,Icon)
 
 AddAction(
-  Concat("[102]",S[1000113--[[Debug--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
-  ChoGGi.MenuFuncs.DeleteAllRocks,
-  nil,
-  302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]],
-  "selslope.tga"
-)
-
-AddAction(
   Concat("[102]",S[1000113--[[Debug--]]],"/",S[302535920001208--[[Export Colonist Data To CSV--]]]),
   ChoGGi.MenuFuncs.ExportColonistDataToCSV,
   nil,

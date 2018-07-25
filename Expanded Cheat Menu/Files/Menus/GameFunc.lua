@@ -63,6 +63,28 @@ local white = white
 local guic = guic
 local g_Classes = g_Classes
 
+local function DeleteAllRocks(rock_cls)
+  local objs = GetObjects{class = rock_cls} or empty_table
+  for i = 1, #objs do
+    objs[i]:delete()
+  end
+end
+
+function ChoGGi.MenuFuncs.DeleteAllRocks()
+  local function CallBackFunc(answer)
+    if answer then
+      DeleteAllRocks("Deposition")
+      DeleteAllRocks("WasteRockObstructorSmall")
+      DeleteAllRocks("WasteRockObstructor")
+    end
+  end
+  ChoGGi.ComFuncs.QuestionBox(
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]]),
+    CallBackFunc,
+    Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
+  )
+end
+
 function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DisableTextureCompression = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisableTextureCompression)
@@ -76,6 +98,61 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 end
 
 do --FlattenGround
+
+  -- we also save the height offset of all the rocks if user wants to change that as well (optionally as it takes awhile)
+
+  -- some rocks are Deposition as well as WasteRockObstructor, and we don't want dupes
+  -- rocks don't have handles, so we use their position to build a table of no dupes
+  local positions = {}
+  local function SaveRocks(rock_cls,rock_objects)
+    local objs = GetObjects{class = rock_cls} or empty_table
+    for i = 1, #objs do
+      local pos = objs[i]:GetVisualPos()
+      if not positions[pos] then
+        local terrain_height = terrain_GetHeight(pos)
+        rock_objects[#rock_objects+1] = {
+          obj = objs[i],
+          pos = point(pos:x(),pos:y()),
+          height_t = terrain_height,
+          offset = terrain_height - pos:z(),
+        }
+        positions[pos] = true
+      end
+    end
+  end
+  local function UpdateRockList()
+    rock_objects = {}
+    SaveRocks("Deposition",rock_objects)
+    SaveRocks("WasteRockObstructorSmall",rock_objects)
+    SaveRocks("WasteRockObstructor",rock_objects)
+    UICity.ChoGGi.map_rock_objects = rock_objects
+  end
+
+  function ChoGGi.MenuFuncs.SaveRockHeight()
+    local rock_objects = UICity.ChoGGi.map_rock_objects
+    -- make a list of rocks to henceforth be a reference
+    if not rock_objects then
+      UpdateRockList()
+    end
+  end
+
+  function ChoGGi.MenuFuncs.MoveRocksToGround()
+    local rock_objects = UICity.ChoGGi.map_rock_objects
+    if not rock_objects then
+      UpdateRockList()
+    end
+    for i = 1, #rock_objects do
+
+if i == 500 then
+  break
+end
+
+      local r = rock_objects[i]
+      r.obj:SetPos(r.pos:SetZ(terrain_GetHeight(r.pos) + r.offset))
+    end
+  end
+
+
   local are_we_flattening
   local visual_circle
   local flatten_height
@@ -152,6 +229,12 @@ do --FlattenGround
   end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
+
+    -- make a list of rocks to henceforth be a reference
+    if not UICity.ChoGGi.map_rock_objects then
+      UpdateRockList()
+    end
+
     if are_we_flattening then
       ToggleHotkeys()
       are_we_flattening = false
