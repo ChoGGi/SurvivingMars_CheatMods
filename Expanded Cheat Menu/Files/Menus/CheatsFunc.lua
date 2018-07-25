@@ -177,7 +177,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     {text = Concat(S[302535920000246--[[Missle--]]]," ",1),value = "Missle1"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",10),value = "Missle10"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",100),value = "Missle100"},
-    {text = Concat(S[302535920000246--[[Missle--]]]," ",500),value = "Missle500",hint = S[302535920000250--[[Might be a little laggy--]]]},
+    {text = Concat(S[302535920000246--[[Missle--]]]," ",500),value = "Missle500",hint = 302535920000250--[[Might be a little laggy--]]},
   }
 
 --~   local Table = DataInstances.MapSettings_ColdWave
@@ -265,8 +265,8 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     {text = S[6546--[[Core Metals--]]],value = 9,hint = hint_core},
     {text = S[6550--[[Core Rare Metals--]]],value = 10,hint = hint_core},
     {text = S[6556--[[Alien Imprints--]]],value = 11,hint = hint_core},
-    {text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = S[302535920000259--[[Reveals the map squares--]]]},
-    {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = S[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
+    {text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = 302535920000259--[[Reveals the map squares--]]},
+    {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = 302535920000261--[[Reveals the map and unlocks "Deep" resources--]]},
   }
 
   local CallBackFunc = function(choice)
@@ -390,10 +390,10 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
   local ChoGGi = ChoGGi
   local ItemList = {}
   for i = 1, #ChoGGi.Tables.Mystery do
-    ItemList[#ItemList+1] = {
+    ItemList[i] = {
       text = Concat(ChoGGi.Tables.Mystery[i].number,": ",ChoGGi.Tables.Mystery[i].name),
       value = ChoGGi.Tables.Mystery[i].class,
-      hint = ChoGGi.Tables.Mystery[i].description
+      hint = ChoGGi.Tables.Mystery[i].description,
     }
   end
 
@@ -434,10 +434,8 @@ function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
   for i = 1, #fields do
     local field = fields[i]
     local field_id = field.id
---~     local costs = field.costs or empty_table
     local list = UICity.tech_field[field_id] or empty_table
     UICity.tech_field[field_id] = list
---~     for _, tech in ipairs(Presets.TechPreset[field_id]) do
     local ids = Presets.TechPreset[field_id] or empty_table
     for j = 1, #ids do
       if ids[j].mystery == mystery_id then
@@ -859,7 +857,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
     {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
-    {text = 26,value = 26,hint = S[302535920000301--[[Doubled the base amount.--]]]},
+    {text = 26,value = 26,hint = 302535920000301--[[Doubled the base amount.--]]},
     {text = MaxAmount,value = MaxAmount,hint = hint_maxa},
   }
 
@@ -949,22 +947,22 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
   ItemList[#ItemList+1] = {
     text = Concat(" ",S[302535920000306--[[Everything--]]]),
     value = "Everything",
-    hint = S[302535920000307--[[All the tech/breakthroughs/mysteries--]]]
+    hint = 302535920000307--[[All the tech/breakthroughs/mysteries--]],
   }
   ItemList[#ItemList+1] = {
     text = Concat(" ",S[302535920000308--[[All Tech--]]]),
     value = "AllTech",
-    hint = S[302535920000309--[[All the regular tech--]]]
+    hint = 302535920000309--[[All the regular tech--]],
   }
   ItemList[#ItemList+1] = {
     text = Concat(" ",S[302535920000310--[[All Breakthroughs--]]]),
     value = "AllBreakthroughs",
-    hint = S[302535920000311--[[All the breakthroughs--]]]
+    hint = 302535920000311--[[All the breakthroughs--]],
   }
   ItemList[#ItemList+1] = {
     text = Concat(" ",S[302535920000312--[[All Mysteries--]]]),
     value = "AllMysteries",
-    hint = S[302535920000313--[[All the mysteries--]]]
+    hint = 302535920000313--[[All the mysteries--]],
   }
 
   for i = 1, #Presets.TechPreset do

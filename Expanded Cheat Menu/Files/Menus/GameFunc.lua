@@ -230,10 +230,12 @@ end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
 
+if ChoGGi.Test then
     -- make a list of rocks to henceforth be a reference
     if not UICity.ChoGGi.map_rock_objects then
       UpdateRockList()
     end
+end
 
     if are_we_flattening then
       ToggleHotkeys()
@@ -616,12 +618,12 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     ItemList[#ItemList+1] = {
       text = Concat(" ",S[1000121--[[Default--]]]),
       value = "ChoGGi_Default",
-      hint = S[302535920000981--[[Choose to this remove Permanent setting.--]]],
+      hint = 302535920000981--[[Choose to this remove Permanent setting.--]],
     }
     ItemList[#ItemList+1] = {
       text = Concat(" ",S[302535920000982--[[Custom--]]]),
       value = "ChoGGi_Custom",
-      hint = S[302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]]],
+      hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
     }
   end
   local Table = DataInstances.Lightmodel
@@ -751,14 +753,14 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   end
 
   local ItemList = {
-    {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = S[302535920000994--[[Console logging text--]]]},
-    {text = "Console",value = trans(1,"Console"),hint = S[302535920000996--[[Console text input--]]]},
-    {text = "UAMenu",value = trans(1,"UAMenu"),hint = S[302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]]},
+    {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = 302535920000994--[[Console logging text--]]},
+    {text = "Console",value = trans(1,"Console"),hint = 302535920000996--[[Console text input--]]},
+    {text = "UAMenu",value = trans(1,"UAMenu"),hint = 302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]},
 
-    {text = "HUD",value = trans(2,"HUD"),hint = S[302535920001000--[[Buttons at bottom--]]]},
-    {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = S[302535920000993--[[Build menu--]]]},
-    {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = S[302535920000995--[[Infopanel (selection)--]]]},
-    {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = S[302535920000997--[[Pins menu--]]]},
+    {text = "HUD",value = trans(2,"HUD"),hint = 302535920001000--[[Buttons at bottom--]]},
+    {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = 302535920000993--[[Build menu--]]},
+    {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = 302535920000995--[[Infopanel (selection)--]]},
+    {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
   }
   --callback
   local CallBackFunc = function(choice)
@@ -806,7 +808,7 @@ end
 
 function ChoGGi.MenuFuncs.SetLightsRadius()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
     {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
     {text = Concat(S[302535920001006--[[03 Low (90)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 90},
@@ -852,7 +854,7 @@ end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
     {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
     {text = Concat(S[302535920001021--[[03 Low (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
@@ -899,7 +901,7 @@ end
 
 function ChoGGi.MenuFuncs.SetVideoMemory()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
     {text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
     {text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
@@ -942,7 +944,7 @@ end
 function ChoGGi.MenuFuncs.SetShadowmapSize()
   local hint_highest = Concat(S[6779--[[Warning--]]],": ",S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = S[302535920001003--[[restart to enable--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
     {text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
     {text = Concat(S[302535920001045--[[3 Low (1536)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1536},
@@ -1157,7 +1159,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
   local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
   local ItemList = {
     {text = Concat(" ",S[1000121--[[Default--]]]),value = DefaultSetting},
-    {text = 0,value = 0,hint = S[302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]]},
+    {text = 0,value = 0,hint = 302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]},
     {text = 1,value = 1,hint = hint_down},
     {text = 2,value = 2,hint = hint_down},
     {text = 3,value = 3},
@@ -1202,7 +1204,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
     {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 16000,value = 16000},
     {text = 20000,value = 20000},
-    {text = 24000,value = 24000, hint = S[302535920001066--[[What used to be the default for this ECM setting--]]]},
+    {text = 24000,value = 24000, hint = 302535920001066--[[What used to be the default for this ECM setting--]]},
     {text = 32000,value = 32000},
   }
 

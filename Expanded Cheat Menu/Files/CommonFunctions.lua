@@ -258,7 +258,7 @@ function ChoGGi.ComFuncs.CheckText(text,fallback)
     text = S[text]
   end
   -- probably missing locale id
-  if type(text) ~= "string" then
+  if type(text) ~= "string" and fallback then
     text = tostring(fallback)
   end
   return text
@@ -378,15 +378,15 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do --g_Classes
   local g_Classes = g_Classes
-  function ChoGGi.ComFuncs.DialogAddCaption(parent,Table)
+  function ChoGGi.ComFuncs.DialogAddCaption(parent,list)
     parent.idCaption = g_Classes.StaticText:new(parent)
-    parent.idCaption:SetPos(Table.pos)
-    parent.idCaption:SetSize(Table.size)
+    parent.idCaption:SetPos(list.pos)
+    parent.idCaption:SetSize(list.size)
     parent.idCaption:SetHSizing("AnchorToLeft")
     parent.idCaption:SetBackgroundColor(0)
     parent.idCaption:SetFontStyle("Editor14Bold")
-    parent.idCaption:SetTextPrefix(Table.prefix or "<center>")
-    parent.idCaption:SetText(Table.title or "")
+    parent.idCaption:SetTextPrefix(list.prefix or "<center>")
+    parent.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
     parent.idCaption.HandleMouse = false
   end
 
@@ -408,7 +408,7 @@ do --g_Classes
       RolloverText = hint or "",
       RolloverTitle = S[126095410863--[[Info--]]],
       MinWidth = 60,
-      Text = text or S[6878--[[OK--]]],
+      Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
       OnPress = onpress,
       --center text
       LayoutMethod = "VList",
@@ -429,9 +429,9 @@ do --g_Classes
       local item = items[i]
       local button = g_Classes[item.class]:new({
         TextFont = "Editor16Bold",
-        RolloverText = item.hint,
+        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
         RolloverTemplate = "Rollover",
-        Text = item.name,
+        Text = ChoGGi.ComFuncs.CheckText(item.name),
 --~         RolloverBackground = RGBA(40, 163, 255, 255),
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
@@ -1904,4 +1904,46 @@ function ChoGGi.ComFuncs.UpdateColonistsTables()
   table.sort(ChoGGi.Tables.ColonistAges)
   table.sort(ChoGGi.Tables.ColonistGenders)
   table.sort(ChoGGi.Tables.ColonistSpecializations)
+end
+
+function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
+  if type(query) ~= "table" then
+    return GetObjects{class = query}
+  end
+  return GetObjects({
+    class = query.class,
+    classes = query.classes,
+    area = query.area,
+    areapoint1 = query.areapoint1,
+    areapoint2 = query.areapoint2,
+    arearadius = query.arearadius,
+    areafilter = query.areafilter,
+    hexradius = query.hexradius,
+    collection = query.collection,
+    attached = query.attached,
+    recursive = query.recursive,
+    enum_flags_any = query.enum_flags_any,
+    game_flags_all = query.game_flags_all,
+    class_flags_all = query.class_flags_all,
+    filter = query.filter,
+--~     classes = {"EditorDummy","Text"},
+--~     area = "line", -- "realm","outsiders","detached",
+--~     areapoint1 = self.point0,
+--~     areapoint2 = self.point1,
+--~     arearadius = 100,
+--~       areafilter = function(o)
+--~         return o:GetParent() == nil
+--~       end,
+--~     hexradius = self.exploitation_radius,
+--~     collection = self.Index,
+--~     attached = false,
+--~     recursive = true,
+--~     enum_flags_any = const.efBakedTerrainDecal,
+--~     class_flags_all = const.cfLuaObject,
+--~     game_flags_all = const.gofPermanent,
+--~     filter = function(o)
+--~       return not IsKindOf(o, "Collection")
+--~     end,
+
+  },obj, query_width, ignore_classes)
 end

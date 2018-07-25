@@ -148,8 +148,8 @@ function ChoGGi_ObjectManipulator:Init()
       sel_value = false
     end
     local ItemList = {
-      {text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = S[302535920000096--[[Enter the name of the new entry to be added.--]]]},
-      {text = S[302535920000097--[[New Value--]]],value = sel_value,hint = S[302535920000098--[[Set the value of the new entry to be added.--]]]},
+      {text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = 302535920000096--[[Enter the name of the new entry to be added.--]]},
+      {text = S[302535920000097--[[New Value--]]],value = sel_value,hint = 302535920000098--[[Set the value of the new entry to be added.--]]},
     }
 
     local CallBackFunc = function(choice)

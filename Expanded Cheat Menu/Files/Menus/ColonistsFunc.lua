@@ -716,7 +716,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
 
   local default_str = S[1000121--[[Default--]]]
   local ItemList = {
-    {text = Concat(" ",default_str),value = default_str,hint = S[302535920000794--[[Uses same code as game to pick death ages.--]]]},
+    {text = Concat(" ",default_str),value = default_str,hint = 302535920000794--[[Uses same code as game to pick death ages.--]]},
     {text = 60,value = 60},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -916,12 +916,12 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
   ItemList[#ItemList+1] = {
     text = Concat(" ",DefaultSetting),
     value = DefaultSetting,
-    hint = S[302535920000808--[[How the game normally works--]]],
+    hint = 302535920000808--[[How the game normally works--]],
   }
   ItemList[#ItemList+1] = {
     text = Concat(" ",MaleOrFemale),
     value = MaleOrFemale,
-    hint = S[302535920000809--[[Only set as male or female--]]],
+    hint = 302535920000809--[[Only set as male or female--]],
   }
   for i = 1, #ChoGGi.Tables.ColonistGenders do
     ItemList[#ItemList+1] = {
@@ -1014,19 +1014,19 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
   ItemList[#ItemList+1] = {
     text = DefaultSetting,
     value = DefaultSetting,
-    hint = S[302535920000808--[[How the game normally works--]]],
+    hint = 302535920000808--[[How the game normally works--]],
   }
   if iType == 1 then
     ItemList[#ItemList+1] = {
       text = S[3490--[[Random--]]],
       value = S[3490--[[Random--]]],
-      hint = S[302535920000811--[[Everyone gets a spec--]]],
+      hint = 302535920000811--[[Everyone gets a spec--]],
     }
   end
   ItemList[#ItemList+1] = {
     text = "none",
     value = "none",
-    hint = S[302535920000812--[[Removes specializations--]]],
+    hint = 302535920000812--[[Removes specializations--]],
   }
   for i = 1, #ChoGGi.Tables.ColonistSpecializations do
     ItemList[#ItemList+1] = {
@@ -1229,15 +1229,15 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
   hint = Concat(hint,"\n\n",S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
 
   local ItemList = {
-    {text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = S[302535920000822--[[Use game defaults--]]]},
-    {text = Concat(" ",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = S[302535920000824--[[All the positive traits...--]]]},
-    {text = Concat(" ",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = S[302535920000826--[[All the negative traits...--]]]},
-    {text = Concat(" ",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = S[302535920001050--[[All the other traits...--]]]},
-    {text = Concat(" ",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
+    {text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
+    {text = Concat(" ",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
+    {text = Concat(" ",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
+    {text = Concat(" ",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
+    {text = Concat(" ",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
   }
 
   if iType == 2 then
-    ItemList[1].hint = S[302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]]
+    ItemList[1].hint = 302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]
   end
 
   for i = 1, #ChoGGi.Tables.NegativeTraits do

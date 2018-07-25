@@ -77,8 +77,8 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
-    {text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
-    {text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
+    {text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
+    {text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
   }
 
   --other hint type
@@ -128,8 +128,8 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
-    {text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
-    {text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
+    {text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
+    {text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
   }
 
   --other hint type
@@ -223,8 +223,8 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
   local DefaultSetting = ChoGGi.Consts.SpeedDrone
   local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedDrone()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
-    {text = Concat(" ",S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
+    {text = Concat(" ",S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},
@@ -278,8 +278,8 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
   local DefaultSetting = ChoGGi.Consts.SpeedRC
   local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedRC()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
-    {text = Concat(" ",S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]},
+    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
+    {text = Concat(" ",S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},
@@ -702,7 +702,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
     {text = 250,value = 250},
     {text = 500,value = 500},
     {text = 1000,value = 1000},
-    {text = 2000,value = 2000,hint = S[302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]]},
+    {text = 2000,value = 2000,hint = 302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]},
   }
 
   local hint = DefaultSetting
@@ -759,7 +759,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
     {text = 100,value = 100},
     {text = 250,value = 250},
     {text = 500,value = 500},
-    {text = 1000,value = 1000,hint = S[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
+    {text = 1000,value = 1000,hint = 302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]},
   }
 
   local hint = DefaultSetting

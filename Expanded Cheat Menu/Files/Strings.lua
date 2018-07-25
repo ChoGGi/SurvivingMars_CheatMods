@@ -103,6 +103,7 @@ local Strings = {
   [5444] = _InternalTranslate(T{5444}), --Workplaces
   [5451] = _InternalTranslate(T{5451}), --DELETE
   [5568] = _InternalTranslate(T{5568}), --Stats
+  [5620] = _InternalTranslate(T{5620}), --Meteor Storm
   [6546] = _InternalTranslate(T{6546}), --Core Metals
   [6548] = _InternalTranslate(T{6548}), --Core Water
   [6550] = _InternalTranslate(T{6550}), --Core Rare Metals
@@ -161,6 +162,7 @@ local Strings = {
   [398847925160] = _InternalTranslate(T{398847925160}), --New
   [487939677892] = _InternalTranslate(T{487939677892}), --Help
   [640016954592] = _InternalTranslate(T{640016954592}), --Remove this switch or valve.
+  [652319561018] = _InternalTranslate(T{652319561018}), --All Traits
 }
 -- what's wrong with string.format?
 Strings[1000012] = Strings[1000012]:gsub("<ModLabel>","%%s")

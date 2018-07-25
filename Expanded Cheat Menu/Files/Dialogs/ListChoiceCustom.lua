@@ -425,7 +425,7 @@ function ChoGGi_ListChoiceCustomDialog:idListSetContent(items)
           hint[#hint+1] = T(item.hint)
         elseif item.hint then
           hint[#hint+1] = "\n\n"
-          hint[#hint+1] = item.hint
+          hint[#hint+1] = ChoGGi.ComFuncs.CheckText(item.hint)
         end
         self.parent:SetHint(TableConcat(hint))
         CreateRolloverWindow(self.parent, TableConcat(hint), true)

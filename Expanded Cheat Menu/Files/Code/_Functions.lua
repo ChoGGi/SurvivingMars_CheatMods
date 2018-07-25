@@ -835,27 +835,27 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = S[302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]],
+      hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
     }
     text = Concat("Metallic",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]],
+      hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
     }
     text = Concat("Roughness",i)
     ItemList[#ItemList+1] = {
       text = text,
       value = pal[text],
-      hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]]],
+      hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
     }
   end
   ItemList[#ItemList+1] = {
     text = "X_BaseColour",
     value = 6579300,
     obj = obj,
-    hint = S[302535920000019--[["Single colour for object (this colour will interact with the other colours).
-If you want to change the colour of an object you can't with 1-4 (like drones)."--]]],
+    hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
+If you want to change the colour of an object you can't with 1-4 (like drones)."--]],
   }
 
   --callback
@@ -967,16 +967,16 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
-    hint = S[302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
+    hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
 
 The colour picker doesn't work for Metallic/Roughness.
-You can copy and paste numbers if you want (click item again after picking)."--]]],
+You can copy and paste numbers if you want (click item again after picking)."--]],
     multisel = true,
     custom_type = 2,
-    check1 = S[302535920000023--[[All of type--]]],
-    check1_hint = S[302535920000024--[[Change all objects of the same type.--]]],
-    check2 = S[302535920000025--[[Default Colour--]]],
-    check2_hint = S[302535920000026--[[if they're there; resets to default colours.--]]],
+    check1 = 302535920000023--[[All of type--]],
+    check1_hint = 302535920000024--[[Change all objects of the same type.--]],
+    check2 = 302535920000025--[[Default Colour--]],
+    check2_hint = 302535920000026--[[if they're there; resets to default colours.--]],
   }
 end
 
@@ -1020,42 +1020,23 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
   end
 end
 
-local function GetStockpile(Label,Type,Object)
-  --check if there's actually a label and that it has anything in it
-  if type(Label) == "table" and #Label > 0 then
-
-    --GetStoredAmount works for all piles, but we only want to use it for ResourceStockpiles
-    local pile = false
-    --if it's a stockpile list then remove all stockpiles of a different type
-    if Label[1].class == "ResourceStockpile" or Label[1].class == "ResourceStockpileLR" then
-      pile = true
-      Label = FilterObjects({
-        filter = function(Obj)
-          if Obj.resource == Type then
-            return Obj
-          end
-        end
-      },Label)
-    end
-
-    local GetStored = Concat("GetStored_",Type)
-    --if there's only pile and it has a resource (for blackcubes/mystery, otherwise we send the full list of depots)
-    if #Label == 1 and
-      (Label[1][GetStored] and Label[1][GetStored](Label[1]) > 999 or
-      pile and Label[1].GetStoredAmount and Label[1]:GetStoredAmount() > 999) then
-        return Label[1]
+local function GetNearestStockpile(list,GetStored,obj)
+  -- check if there's actually a list and that it has anything in it
+  if type(list) == "table" and #list > 0 then
+    -- if there's only one pile and it has a resource
+    if #list == 1 and list[1][GetStored] and list[1][GetStored](list[1]) > 999 then
+      return list[1]
     else
       --otherwise filter out empty stockpiles and (and ones for other resources)
-      Label = FilterObjects({
-        filter = function(Obj)
-          if Obj[GetStored] and Obj[GetStored](Obj) > 999 or
-            pile and Obj.GetStoredAmount and Obj:GetStoredAmount() > 999 then
-              return Obj
+      list = FilterObjects({
+        filter = function(o)
+          if o[GetStored] and o[GetStored](o) > 999 then
+            return o
           end
         end
-      },Label)
+      },list)
       --and return nearest
-      return FindNearestObject(Label,Object)
+      return FindNearestObject(list,obj)
     end
   end
 end
@@ -1077,7 +1058,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
     {text = S[8064],value = "MysteryResource"},
     {text = S[3513],value = "Concrete"},
     {text = S[1022],value = "Food"},
-    {text = S[4139],value = "RareMetals"},
+    {text = S[4139],value = "PreciousMetals"},
     {text = S[3515],value = "Polymers"},
     {text = S[3517],value = "Electronics"},
     {text = S[4765],value = "Fuel"},
@@ -1090,16 +1071,25 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
 
       --get nearest stockpiles to object
       local labels = UICity.labels
-      local mechstockpile = GetStockpile(labels[Concat("MechanizedDepot",value)],value,obj)
+      local GetStored = Concat("GetStored_",value)
+
+      local mechstockpile = GetNearestStockpile(labels[Concat("MechanizedDepot",value)],GetStored,obj)
       local stockpile
-      local resourcepile = GetStockpile(GetObjects{class = "ResourceStockpile"} or empty_table,value,obj)
       if value == "BlackCube" then
-        stockpile = GetStockpile(labels[Concat(value,"DumpSite")],value,obj)
+        stockpile = GetNearestStockpile(labels[Concat(value,"DumpSite")],GetStored,obj)
       elseif value == "MysteryResource" then
-        stockpile = GetStockpile(labels["MysteryDepot"],value,obj)
+        stockpile = GetNearestStockpile(labels["MysteryDepot"],GetStored,obj)
       else
-        stockpile = GetStockpile(labels["UniversalStorageDepot"],value,obj)
+        stockpile = GetNearestStockpile(labels["UniversalStorageDepot"],GetStored,obj)
       end
+      local resourcepile = GetNearestStockpile(GetObjects{
+        classes = "ResourceStockpile","ResourceStockpileLR",
+        filter = function(o)
+          if o.resource == value and o:GetStoredAmount() > 999 then
+            return o
+          end
+        end,
+      },"GetStoredAmount",obj)
 
       local piles = {
         {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(obj)},
@@ -1129,10 +1119,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
       else
         MsgPopup(
           S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-          15--[[Resource--]],
-          nil,
-          nil,
-          obj
+          15--[[Resource--]]
         )
       end
     end
@@ -1142,7 +1129,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
-    hint = S[302535920000032--[[Select a resource to find--]]],
+    hint = 302535920000032--[[Select a resource to find--]],
   }
 end
 

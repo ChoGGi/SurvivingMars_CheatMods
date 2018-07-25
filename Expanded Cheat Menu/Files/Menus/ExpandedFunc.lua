@@ -25,7 +25,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     {text = Concat(S[302535920000035--[[Grids--]]],": ",S[681--[[Water--]]]),value = "Water"},
     {text = Concat(S[302535920000035--[[Grids--]]],": ",S[891--[[Air--]]],"/",S[302535920000037--[[Electricity--]]],"/",S[681--[[Water--]]]),value = "Grids"},
     {text = S[302535920000042--[[City--]]],value = "City"},
-    {text = S[547--[[Colonists--]]],value = "Colonists",hint = S[302535920000937--[[Laggy with lots of colonists.--]]]},
+    {text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
     {text = S[5238--[[Rockets--]]],value = "Rockets"},
     --{text = "Research",value = "Research"}
   }

@@ -130,8 +130,8 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
-    {text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
-    {text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
+    {text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
+    {text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
   }
 
   if not ChoGGi.UserSettings.BuildingSettings[id] then

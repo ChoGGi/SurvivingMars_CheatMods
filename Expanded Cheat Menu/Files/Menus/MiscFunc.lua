@@ -33,8 +33,8 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   end
 
   local ItemList = {
-    {text = S[302535920001079--[[Enable--]]],value = 1,hint = S[302535920001081--[[Changes signs to materials.--]]]},
-    {text = S[302535920000142--[[Disable--]]],value = 0,hint = S[302535920001082--[[Changes materials to signs.--]]]},
+    {text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
+    {text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
   }
 
   local CallBackFunc = function(choice)
@@ -346,7 +346,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
       text = Concat(" ",obj.class),
       value = obj.class,
       obj = obj,
-      hint = S[302535920001106--[[Change main object colours.--]]],
+      hint = 302535920001106--[[Change main object colours.--]],
     }
     local Attaches = obj:GetAttaches() or empty_table
     for i = 1, #Attaches do
@@ -355,7 +355,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
         value = Attaches[i].class,
         parentobj = obj,
         obj = Attaches[i],
-        hint = S[302535920001107--[[Change colours of an attached object.--]]],
+        hint = 302535920001107--[[Change colours of an attached object.--]],
       }
     end
   end
