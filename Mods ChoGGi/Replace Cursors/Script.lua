@@ -7,8 +7,8 @@ MountFolder("UI/Cursors",cursors)
 
 local cursor = table.concat{cursors,"cursor.tga"}
 
--- starting cursor when you first load the game
-SelectionModeDialog.MouseCursor = cursor
-
--- all new cursors use the new one
+-- default cursor for most objects
+PropertyObject.MouseCursor = cursor
+InterfaceModeDialog.MouseCursor = cursor
+-- new cursors use the new one
 const.DefaultMouseCursor = cursor

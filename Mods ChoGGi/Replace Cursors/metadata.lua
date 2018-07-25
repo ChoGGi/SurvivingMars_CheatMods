@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "version", 1,
-  "title", "Replace Cursors v0.1",
+  "version", 2,
+  "title", "Replace Cursors v0.2",
   "saved", 1532433600,
   "id", "ChoGGi_ReplaceCursors",
   "author", "ChoGGi",
