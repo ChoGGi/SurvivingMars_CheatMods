@@ -20,6 +20,9 @@ return {
     "name", "CustomMusic",
     "display_name",[[Custom Music]],
     "play", function (self)
+      -- only list opus files
+--~       local err, files = AsyncListFiles("AppData/Music",".opus")
+      -- list all files in folder
       local err, files = AsyncListFiles("AppData/Music")
       if err or #files < 1 then
         CreateRealTimeThread(WaitCustomPopupNotification,
@@ -31,11 +34,19 @@ As far as I know it only plays opus and wav.]],
         return
       end
       while true do
-        table.permute(files, AsyncRand())           -- shuffle files list, with random seed
+        -- remove this line if you want to play in file name order
+        table.permute(files, AsyncRand())
+        -- loop through all the files
         for i = 1, #files do
-          Music:PlayTrack({path = files[i]})        -- start playing one track via the music subsystem
-          WaitMsg("MusicTrackEnded", 30*60*1000)  -- wait till it ends, or at most 30 minutes
-          Sleep(delay_between_tracks * 1000)              -- pause for silence
+          -- you could add a
+          -- if files[i]:find(".opus") or files[i]:find(".wav") then
+          -- end
+          -- if you want to only play certain file types
+          Music:PlayTrack({path = files[i]})
+          -- wait till it ends, or at most 30 minutes
+          WaitMsg("MusicTrackEnded", 30*60*1000)
+          -- pause between tracks
+          Sleep(delay_between_tracks * 1000)
         end
       end
     end,
