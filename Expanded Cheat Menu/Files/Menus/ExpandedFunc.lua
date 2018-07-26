@@ -104,7 +104,7 @@ do --ChangeResupplySettings
       callback = CallBackFunc,
       items = ItemList,
       title = 302535920000850--[[Change Resupply Settings--]],
-      hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click."--]],
+      hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
       custom_type = 7,
       custom_func = function(sel)
         ShowResupplyList(sel.value,sel.meta)

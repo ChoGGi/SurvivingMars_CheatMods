@@ -44,7 +44,7 @@ AddAction(
   Concat(S[302535920000104--[[Expanded CM--]]],"/",S[5238--[[Rockets--]]],"/",S[302535920000850--[[Change Resupply Settings--]]]),
   ChoGGi.MenuFuncs.ChangeResupplySettings,
   nil,
-  302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click."--]],
+  302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
   "change_height_down.tga"
 )
 
