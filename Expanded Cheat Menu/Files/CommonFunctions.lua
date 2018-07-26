@@ -269,41 +269,42 @@ function ChoGGi.ComFuncs.RetName(obj)
   if obj == _G then
     return "_G"
   end
-  local name
+
   if type(obj) == "table" then
-    if obj.name and obj.name ~= "" then
-      --colonist names
-      if type(obj.name) == "table" then
-        name = {}
-        for i = 1, #obj.name do
-          name[i] = T(obj.name[i])
-        end
-        return TableConcat(name)
-      --custom name from user (probably)
-      else
-        return obj.name
-      end
+    local name_type = type(obj.name)
+
+    -- custom name from user (probably)
+    if name_type == "string" and obj.name ~= "" then
+      return obj.name
+
+    -- colonist names
+    elseif name_type == "table" and #obj.name == 3 then
+      return TableConcat{
+        T(obj.name[1]),
+        " ",
+        T(obj.name[3]),
+      }
+
     --translated name
     elseif obj.display_name and obj.display_name ~= "" then
       return T(obj.display_name)
-    --added this here as doing tostring lags the shit outta kansas if this is a large objlist
+
+    -- encyclopedia_id
+    elseif type(obj.encyclopedia_id) == "string" then
+      return obj.encyclopedia_id
+
+    -- class
+    elseif type(obj.class) == "string" then
+      return obj.class
+
+    -- added this here as doing tostring lags the shit outta kansas if this is a large objlist
     elseif IsObjlist(obj) then
       return "objlist"
     end
-    --class or encyclopedia_id
-    name = getmetatable(obj)
-    if name and type(name.class) == "string" then
-      return name.class
-    end
-    name = obj.encyclopedia_id or obj.class
+
   end
 
-  --if .class or .encyclopedia_id worked
-  if type(name) == "string" then
-    return name
-  end
-
-  --falling back baby
+  -- falling back baby
 --~   return tostring(obj):sub(1,150) --limit length of string in case it's a large one
   return tostring(obj)
 end

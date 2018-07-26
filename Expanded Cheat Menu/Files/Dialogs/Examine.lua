@@ -856,6 +856,7 @@ function Examine:totextex(o)
 --~           ))
 --~       end
 --~     else
+
       table.insert(res, 1, Concat(
         "<center>--",
         self:valuetotextex(obj_metatable),
