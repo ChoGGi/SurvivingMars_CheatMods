@@ -545,7 +545,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     callback = CallBackFunc,
     items = ItemList,
     title = 302535920001137--[[Set Game Speed--]],
-    hint = Concat(S[302535920000933--[[Current speed--]]],": ",current),
+    hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
   }
 end
 

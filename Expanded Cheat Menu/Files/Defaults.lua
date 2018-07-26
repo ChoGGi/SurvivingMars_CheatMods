@@ -25,10 +25,10 @@ do
   local const = const
 
   ChoGGi.Tables = {
-    --display names only! (stored as numbers, not names like the rest; which is why i guessed)
+    -- display names only! (stored as numbers, not names like the rest; which is why i guessed)
     ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
 
-    --Some names need to be fixed when doing construction placement
+    -- some names need to be fixed when doing construction placement
     ConstructionNamesListFix = {
       RCRover = "RCRoverBuilding",
       RCDesireTransport = "RCDesireTransportBuilding",
@@ -36,24 +36,10 @@ do
       ExplorerRover = "RCExplorerBuilding",
       Rocket = "SupplyRocket",
     },
-    --for mystery menu items (added below after mods load)
-    Mystery = {},
   }
 
-  --genders/ages/traits/specs/birthplaces
-  ChoGGi.ComFuncs.UpdateColonistsTables()
-
-  if #const.SchoolTraits == 5 then
-    ChoGGi.Tables.SchoolTraits = const.SchoolTraits
-  else
-    ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-  end
-  if #const.SanatoriumTraits == 7 then
-    ChoGGi.Tables.SanatoriumTraits = const.SanatoriumTraits
-  else
-    ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-  end
-
+  -- easy access to colonist data, cargo, mystery
+  ChoGGi.ComFuncs.UpdateDataTables()
 end
 
 -- stores defaults
@@ -105,6 +91,8 @@ ChoGGi.Defaults = {
   SkipModHelpPage = true,
   -- stores custom settings for each building
   BuildingSettings = {},
+  -- resupply settings
+  CargoSettings = {},
   -- transparent UI stored here
 	Transparency = {},
   -- shortcut keys
@@ -511,7 +499,8 @@ end
 
 function OnMsg.ModsLoaded()
   local ChoGGi = ChoGGi
-  --remove empty entries in BuildingSettings
+
+  -- remove empty entries in BuildingSettings
   if next(ChoGGi.UserSettings.BuildingSettings) then
     --remove any empty building tables
     for Key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
@@ -519,7 +508,7 @@ function OnMsg.ModsLoaded()
         ChoGGi.UserSettings.BuildingSettings[Key] = nil
       end
     end
-  --if empty table then new settings file or old settings
+  -- if empty table then new settings file or old settings
   else
     --then we check if this is an older version still using the old way of storing building settings and convert over to new
     local errormsg = Concat(S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]],": ")
@@ -531,22 +520,12 @@ function OnMsg.ModsLoaded()
     end
   end
 
-  --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
-  ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
-    local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
-    local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
-
-    local temptable = {
-      class = class,
-      number = scenario_name,
-      name = display_name,
-      description = description
-    }
-    --we want to be able to access by for loop, Mystery 7, and WorldWar3
-    ChoGGi.Tables.Mystery[scenario_name] = temptable
-    ChoGGi.Tables.Mystery[class] = temptable
-    ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
-  end)
-
+    -- remove empty entries in CargoSettings
+  if next(ChoGGi.UserSettings.CargoSettings) then
+    for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings) do
+      if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
+        ChoGGi.UserSettings.CargoSettings[Key] = nil
+      end
+    end
+  end
 end

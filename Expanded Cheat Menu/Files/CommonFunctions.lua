@@ -1009,7 +1009,8 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   if Menu then
     Menu = Concat("/",Menu)
   end
-  -- fallback name if something is broked
+
+  -- build function
   local name = "NOFUNC"
   -- tooltip menu item
   if Action == "blank_function" then
@@ -1025,7 +1026,13 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   else
     ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",Menu)
   end
-  Des = ChoGGi.ComFuncs.CheckText(Des,Des)
+
+  -- description
+  if type(Des) == "function" then
+    Des = Des()
+  else
+    Des = ChoGGi.ComFuncs.CheckText(Des,Des)
+  end
 
 --[[
 --TEST menu items
@@ -1363,6 +1370,7 @@ CustomType=3 : updates selected item with custom value type, and sends back sele
 CustomType=4 : updates selected item with custom value type, and sends back all items
 CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+CustomType=7 : dblclick fires custom_func with self.sel
 
 ChoGGi.ComFuncs.OpenInListChoice{
   callback = CallBackFunc,
@@ -1853,12 +1861,45 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
   end
 end
 
-function ChoGGi.ComFuncs.UpdateColonistsTables()
+function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
   local ChoGGi = ChoGGi
   local Nations = Nations
   local DataInstances = DataInstances
+  local g_Classes = g_Classes
 
-  --start off with empty ones
+  if #const.SchoolTraits < 5 then
+    ChoGGi.Tables.SchoolTraits = const.SchoolTraits
+  else
+    ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
+  end
+  if #const.SanatoriumTraits < 7 then
+    ChoGGi.Tables.SanatoriumTraits = const.SanatoriumTraits
+  else
+    ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
+  end
+
+  -- mysteries
+  ChoGGi.Tables.Mystery = {}
+
+  --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
+  ClassDescendantsList("MysteryBase",function(class)
+    local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
+    local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
+    local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
+
+    local temptable = {
+      class = class,
+      number = scenario_name,
+      name = display_name,
+      description = description
+    }
+    --we want to be able to access by for loop, Mystery 7, and WorldWar3
+    ChoGGi.Tables.Mystery[scenario_name] = temptable
+    ChoGGi.Tables.Mystery[class] = temptable
+    ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
+  end)
+
+  -- colonists
   ChoGGi.Tables.ColonistBirthplaces = {}
   ChoGGi.Tables.NegativeTraits = {}
   ChoGGi.Tables.PositiveTraits = {}
@@ -1905,6 +1946,30 @@ function ChoGGi.ComFuncs.UpdateColonistsTables()
   table.sort(ChoGGi.Tables.ColonistAges)
   table.sort(ChoGGi.Tables.ColonistGenders)
   table.sort(ChoGGi.Tables.ColonistSpecializations)
+
+  -- easier access to cargo
+  ChoGGi.Tables.Cargo = {}
+  ChoGGi.Tables.CargoPresets = {}
+
+  -- only called when ResupplyItemDefinitions is built
+  if cargo_update == true then
+    local ResupplyItemDefinitions = ResupplyItemDefinitions
+    for i = 1, #ResupplyItemDefinitions do
+      local meta = getmetatable(ResupplyItemDefinitions[i]).__index
+      ChoGGi.Tables.Cargo[i] = meta
+      ChoGGi.Tables.Cargo[meta.id] = meta
+    end
+
+    -- just used to check defaults for cargo
+    local preset = Presets.Cargo
+    for i = 1, #preset do
+      for j = 1, #preset[i] do
+        local c = preset[i][j]
+        ChoGGi.Tables.CargoPresets[#ChoGGi.Tables.CargoPresets+1] = c
+        ChoGGi.Tables.CargoPresets[c.id] = c
+      end
+    end
+  end
 end
 
 function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)

@@ -396,7 +396,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
     if not check1 and not check2 then
       MsgPopup(
-        302535920000126--[[Pick a checkbox or two next time...--]],
+        302535920000038--[[Pick a checkbox next time...--]],
         302535920000127--[[Rate--]],
         default_icon2
       )

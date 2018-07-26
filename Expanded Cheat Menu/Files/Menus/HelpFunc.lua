@@ -300,7 +300,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 
 Old settings are saved as %s--]]]:format(old),"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
     CallBackFunc,
-    302535920001071--[[Reset!--]]
+    Concat(S[302535920001084--[[Reset--]]],"!")
   )
 end
 

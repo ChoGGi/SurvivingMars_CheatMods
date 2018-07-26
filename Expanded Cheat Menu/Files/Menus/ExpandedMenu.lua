@@ -41,6 +41,14 @@ AddAction(
 
 -------------rockets
 AddAction(
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[5238--[[Rockets--]]],"/",S[302535920000850--[[Change Resupply Settings--]]]),
+  ChoGGi.MenuFuncs.ChangeResupplySettings,
+  nil,
+  302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click."--]],
+  "change_height_down.tga"
+)
+
+AddAction(
   Concat(S[302535920000104--[[Expanded CM--]]],"/",S[5238--[[Rockets--]]],"/",S[302535920000557--[[Launch Empty Rocket--]]]),
   ChoGGi.MenuFuncs.LaunchEmptyRocket,
   nil,

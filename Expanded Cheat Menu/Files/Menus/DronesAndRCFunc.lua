@@ -855,7 +855,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
     callback = CallBackFunc,
     items = ItemList,
     title = 302535920000932--[[Set Cargo Shuttle Speed--]],
-    hint = Concat(S[302535920000933--[[Current speed--]]],": ",hint),
+    hint = S[302535920000933--[[Current speed: %s--]]]:format(hint),
   }
 end
 

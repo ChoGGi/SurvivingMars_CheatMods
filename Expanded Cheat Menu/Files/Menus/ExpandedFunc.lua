@@ -4,17 +4,114 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
+local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 
 local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
-local type,tostring = type,tostring
+local type,tostring,getmetatable = type,tostring,getmetatable
 
 local PlaceObject = PlaceObject
 local ChangeFunding = ChangeFunding
 local RefreshXBuildMenu = RefreshXBuildMenu
+
+do --ChangeResupplySettings
+  local function CheckResupplySetting(cargo_val,name,value,meta)
+    if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
+      ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
+      meta[cargo_val] = value
+    else
+      ChoGGi.UserSettings.CargoSettings[name][cargo_val] = value
+      meta[cargo_val] = value
+    end
+  end
+  local function ShowResupplyList(name,meta)
+    local ChoGGi = ChoGGi
+
+    local ItemList = {
+      [1] = {text = "pack",value = meta.pack,hint = 302535920001269--[[Amount Per Click--]]},
+      [2] = {text = "kg",value = meta.kg,hint = 302535920001270--[[Weight Per Item--]]},
+      [3] = {text = "price",value = meta.price,hint = 302535920001271--[[Price Per Item--]]},
+      [4] = {text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
+    }
+
+    local CallBackFunc = function(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+
+      if not ChoGGi.UserSettings.CargoSettings[name] then
+        ChoGGi.UserSettings.CargoSettings[name] = {}
+      end
+
+      for i = 1, #choice do
+        value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+        local text = choice[i].text
+        if text == "pack" and type(value) == "number" then
+          CheckResupplySetting("pack",name,value,meta)
+        elseif text == "kg" and type(value) == "number" then
+          CheckResupplySetting("kg",name,value,meta)
+        elseif text == "price" and type(value) == "number" then
+          CheckResupplySetting("price",name,value,meta)
+        elseif text == "locked" and type(value) == "boolean" then
+          CheckResupplySetting("locked",name,value,meta)
+        end
+      end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      MsgPopup(
+        302535920000850--[[Change Resupply Settings--]],
+        302535920001272--[[Updated--]],
+        "UI/Icons/Sections/spaceship.tga"
+      )
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = Concat(S[302535920000850--[[Change Resupply Settings--]]],": ",name),
+      hint = 302535920001121--[[Edit value for each setting you wish to change then press OK to save.--]],
+      custom_type = 4,
+    }
+  end
+
+  function ChoGGi.MenuFuncs.ChangeResupplySettings()
+    local ChoGGi = ChoGGi
+    local Cargo = ChoGGi.Tables.Cargo
+    local g_Classes = g_Classes
+
+    local ItemList = {}
+    for i = 1, #Cargo do
+      ItemList[i] = {
+        text = T(Cargo[i].name),
+        value = Cargo[i].id,
+        meta = Cargo[i],
+      }
+    end
+
+    local CallBackFunc = function(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+      ShowResupplyList(value,choice[1].meta)
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = 302535920000850--[[Change Resupply Settings--]],
+      hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click."--]],
+      custom_type = 7,
+      custom_func = function(sel)
+        ShowResupplyList(sel.value,sel.meta)
+      end,
+    }
+  end
+end
 
 function ChoGGi.MenuFuncs.MonitorInfo()
   local ChoGGi = ChoGGi
@@ -54,6 +151,9 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     title = 302535920000555--[[Monitor Info--]],
     hint = 302535920000940--[[Select something to monitor.--]],
     custom_type = 7,
+    custom_func = function(sel)
+      ChoGGi.CodeFuncs.DisplayMonitorList(sel.value,sel.parentobj)
+    end,
   }
 end
 

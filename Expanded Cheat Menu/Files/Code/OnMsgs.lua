@@ -154,7 +154,8 @@ function OnMsg.ClassesBuilt()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
-  local ChoGGi = ChoGGi
+  -- easy access to colonist data, cargo, mystery
+  ChoGGi.ComFuncs.UpdateDataTables()
 
 --~ 	ForEachPreset("Cargo", function(cargo, group, self, props)
 --~     if cargo.id == "RegolithExtractor" then
@@ -166,9 +167,6 @@ function OnMsg.ModsLoaded()
 --~       cargo.price = 123400000
 --~     end
 --~   end)
-
-  --genders/ages/traits/specs/birthplaces
-  ChoGGi.ComFuncs.UpdateColonistsTables()
 end
 
 function OnMsg.PersistPostLoad()
@@ -774,31 +772,47 @@ function OnMsg.ChoGGi_Loaded()
   end
   ChoGGi.Temp.IsGameLoaded = true
 
-  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
+  local UserSettings = ChoGGi.UserSettings
+  local g_Classes = g_Classes
   local config = config
   local const = const
+  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
   local DataInstances = DataInstances
   local dlgConsole = dlgConsole
   local Presets = Presets
   local UserActions = UserActions
-  local UserSettings = ChoGGi.UserSettings
   local hr = hr
-  local g_Classes = g_Classes
 
-  --gets used a few times
+  -- gets used a few times
   local Table
 
-  --late enough that I can set g_Consts.
+  -- late enough that I can set g_Consts.
   ChoGGi.SettingFuncs.SetConstsToSaved()
 
-  --needed for DroneResourceCarryAmount?
+  -- needed for DroneResourceCarryAmount?
   UpdateDroneResourceUnits()
 
-  --clear out Temp settings
+  -- clear out Temp settings
   ChoGGi.Temp.UnitPathingHandles = {}
 
+  -- update cargo resupply
+  ChoGGi.ComFuncs.UpdateDataTables(true)
+  for Key,Value in pairs(UserSettings.CargoSettings) do
+    if ChoGGi.Tables.Cargo[Key] then
+      if Value.pack then
+        ChoGGi.Tables.Cargo[Key].pack = Value.pack
+      end
+      if Value.kg then
+        ChoGGi.Tables.Cargo[Key].kg = Value.kg
+      end
+      if Value.price then
+        ChoGGi.Tables.Cargo[Key].price = Value.price
+      end
+    end
+  end
+
   if not UserSettings.DisableECM then
-    --remove all built-in actions
+    -- remove all built-in actions
     UserActions_ClearGlobalTables()
     UserActions.Actions = {}
     UserActions.RejectedActions = {}
@@ -807,7 +821,7 @@ function OnMsg.ChoGGi_Loaded()
       ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
     end
 
-    --add custom actions
+    -- add custom actions
     dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
 
     local function SetMissionBonuses(Preset,Type,Func)
@@ -821,7 +835,7 @@ function OnMsg.ChoGGi_Loaded()
     SetMissionBonuses("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
     SetMissionBonuses("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
 
-    --add preset menu items
+    -- add preset menu items
     ClassDescendantsList("Preset", function(name, class)
       ChoGGi.ComFuncs.AddAction(
         Concat(S[302535920000979--[[Presets--]]],"/",name),
@@ -837,17 +851,17 @@ function OnMsg.ChoGGi_Loaded()
       )
     end)
 
-    --update menu
+    -- update menu
     g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
 
+    -- always show on my computer
     if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
-      --always show on my computer
       if not dlgUAMenu then
         g_Classes.UAMenu.ToggleOpen()
       end
     end
 
-    --show cheat pane?
+    -- show cheat pane in selection panel
     if UserSettings.InfopanelCheats then
       config.BuildingInfopanelCheats = true
       ReopenSelectionXInfopanel()
@@ -900,7 +914,9 @@ function OnMsg.ChoGGi_Loaded()
       dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
     end
 
-  end
+  end -- DisableECM
+
+
 
 
 
@@ -908,7 +924,9 @@ function OnMsg.ChoGGi_Loaded()
 
 
 
-  --show completed hidden milestones
+
+
+  -- show completed hidden milestones
   if UICity.ChoGGi.DaddysLittleHitler then
     PlaceObj("Milestone", {
       base_score = 0,

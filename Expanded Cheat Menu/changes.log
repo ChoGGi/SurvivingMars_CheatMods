@@ -1,3 +1,10 @@
+v6.8
+Added:
+Rockets>Change Resupply Settings: Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click.
+
+Fixed:
+Examine shows proper name next to metatable now.
+
 v6.7
 Added:
 Fuel to Cheat pane: Fill up rocket with fuel.
