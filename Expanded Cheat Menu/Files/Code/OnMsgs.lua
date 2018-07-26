@@ -74,9 +74,7 @@ end
 --~ function OnMsg.ClassesPostprocess()
 --~ end
 
--- use this message to perform post-built actions on the final classes
-function OnMsg.ClassesBuilt()
---~   local ChoGGi = ChoGGi
+local function OnMsgClassesBuilt()
   local XTemplates = XTemplates
 
   --add HiddenX cat for Hidden items
@@ -145,7 +143,14 @@ function OnMsg.ClassesBuilt()
       }),
     }),
   })
+end
+function OnMsg.XTemplatesLoaded()
+  OnMsgClassesBuilt()
+end
 
+-- use this message to perform post-built actions on the final classes
+function OnMsg.ClassesBuilt()
+  OnMsgClassesBuilt()
 end --OnMsg
 
 function OnMsg.ModsLoaded()
