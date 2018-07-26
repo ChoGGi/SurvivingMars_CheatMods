@@ -23,7 +23,7 @@ return {
       local err, files = AsyncListFiles("AppData/Music")
       if err or #files < 1 then
         CreateRealTimeThread(WaitCustomPopupNotification,
-          "Help",
+          [[Custom Music Help]],
           [[Place files in AppData/Surviving Mars/Music.
 As far as I know it only plays opus and wav.]],
           {"OK"}
