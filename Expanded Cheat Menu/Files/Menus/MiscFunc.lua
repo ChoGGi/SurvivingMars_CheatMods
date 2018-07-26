@@ -22,7 +22,7 @@ local pf_SetStepLen = pf.SetStepLen
 
 function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
   local function ChangeEntity(Class,Entity,random)
-    local objs = GetObjects{class = Class} or empty_table
+    local objs = GetObjects{class = Class}
     for i = 1, #objs do
       if random then
         objs[i]:ChangeEntity(Concat(Entity,Random(1,random)))
@@ -290,7 +290,7 @@ end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
   local const = const
-  local objs = GetObjects{} or empty_table
+  local objs = GetObjects{}
   for i = 1, #objs do
     if type(objs[i].SetDust) == "function" then
       objs[i]:SetDust(0,const.DustMaterialExterior)
@@ -304,7 +304,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-  local objs = GetObjects{} or empty_table
+  local objs = GetObjects{}
   for i = 1, #objs do
     if type(objs[i].Repair) == "function" then
       objs[i]:Repair()
@@ -627,7 +627,7 @@ function ChoGGi.MenuFuncs.SetEntity()
       if check2 then
         SetEntity(sel,value)
       else
-        local objs = GetObjects{class = sel.class} or empty_table
+        local objs = GetObjects{class = sel.class}
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome.handle == dome.handle then
@@ -742,7 +742,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
       if check2 then
         SetScale(sel,value)
       else
-        local objs = GetObjects{class = sel.class} or empty_table
+        local objs = GetObjects{class = sel.class}
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome.handle == dome.handle then

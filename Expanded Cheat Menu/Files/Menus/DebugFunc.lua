@@ -213,7 +213,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   local ChoGGi = ChoGGi
   obj = obj or ChoGGi.CodeFuncs.SelObject()
 
-  local objs = GetObjects{class = obj.class} or empty_table
+  local objs = GetObjects{class = obj.class}
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -269,7 +269,7 @@ local function AnimDebug_Show(Obj,Colour)
 end
 
 local function AnimDebug_ShowAll(Class)
-  local objs = GetObjects{class = Class} or empty_table
+  local objs = GetObjects{class = Class}
   for i = 1, #objs do
     AnimDebug_Show(objs[i])
   end
@@ -286,7 +286,7 @@ end
 
 local function AnimDebug_HideAll(Class)
   local empty_table = empty_table
-  local objs = GetObjects{class = Class} or empty_table
+  local objs = GetObjects{class = Class}
   for i = 1, #objs do
     AnimDebug_Hide(objs[i])
   end
@@ -800,12 +800,12 @@ do --path markers
     end
   end
 
-  local function ClearColourAndWP(Class)
+  local function ClearColourAndWP(cls)
     local ChoGGi = ChoGGi
     --remove all thread refs so they stop
     ChoGGi.Temp.UnitPathingHandles = {}
     --and waypoints/colour
-    local Objs = GetObjects{class = Class} or empty_table
+    local Objs = GetObjects{class = cls}
     for i = 1, #Objs do
 
       if Objs[i].ChoGGi_WaypointPathAdded then
@@ -854,7 +854,7 @@ do --path markers
         ClearColourAndWP("Unit")
 
         --check for any extra lines
-        local lines = GetObjects{class = "Polyline"} or empty_table
+        local lines = GetObjects{class = "Polyline"}
         for i = 1, #lines do
           if lines[i].ChoGGi_WaypointPath then
             lines[i]:delete()
@@ -882,15 +882,15 @@ do --path markers
         end
 
         if value == "All" then
-          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"} or empty_table,"IsValid",nil,true)
-          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "CargoShuttle"} or empty_table,"IsValid",nil,true)
+          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
+          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "CargoShuttle"},"IsValid",nil,true)
           colourcount = colourcount + #Table1
           colourcount = colourcount + #Table2
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table1)
           swp(Table2)
         else
-          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = value} or empty_table,"IsValid",nil,true)
+          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = value},"IsValid",nil,true)
           colourcount = colourcount + #Table
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
           swp(Table)
@@ -898,7 +898,7 @@ do --path markers
 
         --remove any waypoints in the same pos
         local function ClearAllDupeWP(Class)
-          local objs = GetObjects{class = Class} or empty_table
+          local objs = GetObjects{class = Class}
           for i = 1, #objs do
             if objs[i] and objs[i].ChoGGi_Stored_Waypoints then
               RemoveWPDupePos("WayPoint",objs[i])
@@ -926,7 +926,7 @@ end
 
 -- add realtime markers to all of class
 --~ local classname = "Drone"
---~ local objs = GetObjects{class = classname} or empty_table
+--~ local objs = GetObjects{class = classname}
 --~ for i = 1, #objs do
 --~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i])
 --~ end

@@ -228,7 +228,7 @@ end
 
 --if building requires a dome and that dome is broked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
-  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "Dome"} or empty_table,nil,nil,"working")
+  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "Dome"},nil,nil,"working")
   --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
   if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
     --find the nearest dome
@@ -991,7 +991,7 @@ function ChoGGi.CodeFuncs.SelObject()
 --~   return select(2,pcall(function()
   return SelectedObj or SelectionMouseObj() or NearestObject(
     GetTerrainCursor(),
-    ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem = 1},"class"),
+    ChoGGi.ComFuncs.FilterFromTable(GetObjects{},{ParSystem = 1},"class"),
     1000
   )
 --~   end))

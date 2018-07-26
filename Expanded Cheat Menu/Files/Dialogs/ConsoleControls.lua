@@ -282,7 +282,7 @@ ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]
   AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
   AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
   AsyncCreatePath(Concat(script_path,"/Functions"))
-  AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"} or empty_table]])
+  AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"}]])
   AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
   --rebuild toolbar
   ChoGGi.Console.RebuildConsoleToolbar()

@@ -54,7 +54,7 @@ if ChoGGi.Testing then
     newdome:InitAttaches()
   end
 
-  local Table1 = GetObjects{class = "Destlock"} or empty_table
+  local Table1 = GetObjects{class = "Destlock"}
   for i = 1, #Table1 do
 
   local wp = PlaceObject("WayPoint")
@@ -62,7 +62,7 @@ if ChoGGi.Testing then
 
   end
 
-  local Table2 = GetObjects{class = "ParSystem"} or empty_table
+  local Table2 = GetObjects{class = "ParSystem"}
   for i = 1, #Table2 do
     Table2[i]:delete()
   end

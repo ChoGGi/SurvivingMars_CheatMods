@@ -13,7 +13,7 @@ local function ReturnAllNearby(radius,sort)
   radius = radius or 5000
   local pos = GetTerrainCursor()
   --get all objects (18K on a new map)
-  local all = GetObjects{} or empty_table
+  local all = GetObjects{}
   --we only want stuff within *radius*
   local list = FilterObjects({
     filter = function(Obj)

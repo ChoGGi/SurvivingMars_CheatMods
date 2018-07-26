@@ -1197,8 +1197,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
   return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem = true,ResourceStockpile = true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"} or empty_table,nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{},{ParSystem = true,ResourceStockpile = true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"},nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
@@ -1227,8 +1227,8 @@ function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   },Table)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{} or empty_table,"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"} or empty_table,"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{},"IsKindOf","Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
     filter = function(Obj)
@@ -1659,7 +1659,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
   pos = pos or GetTerrainCursor()
 
   --get all objects (18K+ on a new map)
-  local all = GetObjects{} or empty_table
+  local all = GetObjects{}
   --we only want stuff within *radius*
   local list = FilterObjects({
     filter = function(Obj)

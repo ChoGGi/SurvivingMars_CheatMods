@@ -186,7 +186,7 @@ function ChoGGi_ObjectManipulator:Init()
     end
     local value = self.sel.value
     if value then
-      local objs = GetObjects{class = self.obj.class} or empty_table
+      local objs = GetObjects{class = self.obj.class}
       for i = 1, #objs do
         objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
       end

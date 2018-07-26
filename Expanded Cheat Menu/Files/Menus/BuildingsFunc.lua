@@ -61,7 +61,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
       end
 
       local function SetStor(cls_name)
-        local objs = GetObjects{class = cls_name} or empty_table
+        local objs = GetObjects{class = cls_name}
         for i = 1, #objs do
           objs[i].consumption_stored_resources = value
           objs[i].consumption_max_storage = value
@@ -92,7 +92,7 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
   if ChoGGi.UserSettings.AlwaysDustyBuildings then
     ChoGGi.UserSettings.AlwaysDustyBuildings = nil
     --dust clean up
-    local objs = GetObjects{class = "Building"} or empty_table
+    local objs = GetObjects{class = "Building"}
     for i = 1, #objs do
       objs[i].ChoGGi_AlwaysDust = nil
     end

@@ -64,7 +64,7 @@ local guic = guic
 local g_Classes = g_Classes
 
 local function DeleteAllRocks(rock_cls)
-  local objs = GetObjects{class = rock_cls} or empty_table
+  local objs = GetObjects{class = rock_cls}
   for i = 1, #objs do
     objs[i]:delete()
   end
@@ -105,7 +105,7 @@ do --FlattenGround
   -- rocks don't have handles, so we use their position to build a table of no dupes
   local positions = {}
   local function SaveRocks(rock_cls,rock_objects)
-    local objs = GetObjects{class = rock_cls} or empty_table
+    local objs = GetObjects{class = rock_cls}
     for i = 1, #objs do
       local pos = objs[i]:GetVisualPos()
       if not positions[pos] then
@@ -248,7 +248,7 @@ end
         "UI/Icons/Sections/WasteRock_1.tga"
       )
       -- disable collisions on pipes so they don't get marked as uneven terrain
-      local objs = GetObjects{class = "LifeSupportGridElement"} or empty_table
+      local objs = GetObjects{class = "LifeSupportGridElement"}
       ToggleCollisions(objs)
       -- update uneven terrain checker thingy
       RecalcBuildableGrid()
