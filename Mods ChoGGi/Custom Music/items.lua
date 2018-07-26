@@ -9,6 +9,7 @@ test if music format works
 PlaySound("AppData/Music/some filename.ext","Music") --"Music", "UI"
 --]]
 
+-- local some globals for slightly faster access
 local table = table
 local Music,WaitMsg,Sleep,AsyncRand = Music,WaitMsg,Sleep,AsyncRand
 
