@@ -548,17 +548,22 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
   text = ChoGGi.ComFuncs.CheckText(text,text)
   title = ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]])
 
+  local preset
   if image then
-    local preset = "ChoGGi_TempPopup"
+    preset = "ChoGGi_TempPopup"
     local DataInstances = DataInstances
-    DataInstances.PopupNotificationPreset[preset] = {}
-    DataInstances.PopupNotificationPreset[preset].name = preset
-    DataInstances.PopupNotificationPreset[preset].image = image
-    CreateRealTimeThread(function()
-      WaitPopupNotification(preset, {title = title, text = text})
-      DataInstances.PopupNotificationPreset[preset] = nil
-    end)
+    DataInstances.PopupNotificationPreset[preset] = {
+      name = preset,
+      image = image,
+    }
   end
+
+  CreateRealTimeThread(function()
+    WaitPopupNotification(preset, {title = title, text = text})
+    if preset then
+      DataInstances.PopupNotificationPreset[preset] = nil
+    end
+  end)
 end
 
 -- well that's the question isn't it?

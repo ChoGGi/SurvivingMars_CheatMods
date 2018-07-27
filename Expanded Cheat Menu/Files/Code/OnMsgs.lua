@@ -892,7 +892,7 @@ function OnMsg.ChoGGi_Loaded()
       -- build console buttons
       ChoGGi.Console.ConsoleControls()
       -- check for and create example scripts/script folder
-      ChoGGi.Console.ListScriptFiles()
+--~       ChoGGi.Console.BuildScriptFiles()
 
       -- add a close button
       g_Classes.XTextButton:new({

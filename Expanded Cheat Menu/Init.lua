@@ -30,7 +30,7 @@ SOFTWARE.
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,pcall,table = dofile,select,tostring,type,pcall,table
-local AsyncFileOpen = AsyncFileOpen
+local AsyncGetFileAttribute = AsyncGetFileAttribute
 local dofolder_files = dofolder_files
 
 -- just in case they remove oldTableConcat
@@ -42,8 +42,11 @@ end)
 TableConcat = TableConcat or table.concat
 
 local function FileExists(file)
-  local _,str = AsyncFileOpen(file)
-  return str
+  -- AsyncFileOpen may not work that well under linux?
+  local err,_ = AsyncGetFileAttribute(file,"size")
+  if not err then
+    return true
+  end
 end
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

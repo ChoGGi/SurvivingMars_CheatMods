@@ -7,7 +7,7 @@ local S = ChoGGi.Strings
 local rawget,table,tostring,print,select = rawget,table,tostring,print,select
 
 local AsyncCreatePath = AsyncCreatePath
-local AsyncFileOpen = AsyncFileOpen
+local AsyncGetFileAttribute = AsyncGetFileAttribute
 local AsyncFileToString = AsyncFileToString
 local AsyncStringToFile = AsyncStringToFile
 local box = box
@@ -227,6 +227,8 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
   local ChoGGi = ChoGGi
   local scripts = dlg.idScripts
 
+  ChoGGi.Console.BuildScriptFiles()
+
   --clear out old buttons first
   for i = #scripts, 1, -1 do
     scripts[i]:delete()
@@ -256,34 +258,34 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 end
 
 -- add example script files if folder is missing
-function ChoGGi.Console.ListScriptFiles()
+function ChoGGi.Console.BuildScriptFiles()
   local script_path = ChoGGi.scripts
   --create folder and some example scripts if folder doesn't exist
-  if AsyncFileOpen(script_path) == "Access Denied" then
-    return
+  local err,_ = AsyncGetFileAttribute(script_path,"size")
+  if err then
+--~     AsyncCreatePath(Concat(script_path))
+    AsyncCreatePath(Concat(script_path,"/Examine"))
+    AsyncCreatePath(Concat(script_path,"/Functions"))
+    --print some info
+    print(S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(script_path))
+    --add some example files and a readme
+    AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
+    AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
+    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
+    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
+    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
+    AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
+    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"}]])
+    AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
   end
-  AsyncCreatePath(script_path)
-  --print some info
-  print(S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(script_path))
-  --add some example files and a readme
-  AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
-  AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[local ChoGGi = ChoGGi
-ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
-  AsyncCreatePath(Concat(script_path,"/Examine"))
-  AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[OpenExamine(ChoGGi)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[OpenExamine(DataInstances)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[OpenExamine(GetInGameInterface())]])
-  AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[OpenExamine(MsgThreads)\n--includes ThreadsRegister]])
-  AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[OpenExamine(Presets)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[OpenExamine(terminal.desktop)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[OpenExamine(UICity)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[OpenExamine(XTemplates)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
-  AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
-  AsyncCreatePath(Concat(script_path,"/Functions"))
-  AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#GetObjects{class = "Colonist"}]])
-  AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
+
   --rebuild toolbar
   ChoGGi.Console.RebuildConsoleToolbar()
 end
