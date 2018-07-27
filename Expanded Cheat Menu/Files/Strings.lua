@@ -78,6 +78,8 @@ local Strings = {
   [4248] = _InternalTranslate(T{4248}), --Hints
   [4250] = _InternalTranslate(T{4250}), --Dust Storm
   [4251] = _InternalTranslate(T{4251}), --Meteor
+  [4273] = _InternalTranslate(T{4273}), --Saved on <save_date>
+  [4274] = _InternalTranslate(T{4274}), --Playtime <playtime>
   [4283] = _InternalTranslate(T{4283}), --Worker performance
   [4284] = _InternalTranslate(T{4284}), --Age of death
   [4291] = _InternalTranslate(T{4291}), --Health
@@ -134,6 +136,7 @@ local Strings = {
   [9003] = _InternalTranslate(T{9003}), --Trigon Dome
   [9009] = _InternalTranslate(T{9009}), --Mega Trigon Dome
   [9012] = _InternalTranslate(T{9012}), --Diamond Dome
+  [1000009] = _InternalTranslate(T{1000009}), --Confirmation
   [1000011] = _InternalTranslate(T{1000011}), --There is an active Steam upload
   [1000012] = _InternalTranslate(T{1000012}), --Mod <ModLabel> will be uploaded to Steam
   [1000013] = _InternalTranslate(T{1000013}), --Mod <ModLabel> was not uploaded to Steam. Error: <err>
@@ -171,6 +174,8 @@ local Strings = {
 Strings[1000012] = Strings[1000012]:gsub("<ModLabel>","%%s")
 Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
 Strings[1000014] = Strings[1000014]:gsub("<ModLabel>","%%s")
+Strings[4274] = Strings[4274]:gsub("<playtime>","%%s")
+Strings[4273] = Strings[4273]:gsub("<save_date>","%%s")
 
 -- we need to pad some zeros
 local function TransZero(pad,first,last)

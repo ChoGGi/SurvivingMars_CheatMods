@@ -1,6 +1,7 @@
 v6.8
 Added:
 Rockets>Change Resupply Settings: Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click.
+Debug>Delete Saved Games: Shows a list of saved games, and allows you to delete more than one at a time.
 
 Fixed:
 Examine shows proper name next to metatable now.

@@ -171,7 +171,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(S[302535920001162--[[Sponsor--]]]," ",S[302535920001166--[[Bonuses--]]]),
-    hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple bonuses.--]]],"\n\n",S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
+    hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
     multisel = true,
     check1 = 302535920001169--[[Turn Off--]],
     check1_hint = 302535920001170--[[Turn off selected bonuses (defaults to turning on).--]],

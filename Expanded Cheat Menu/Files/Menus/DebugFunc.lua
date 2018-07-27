@@ -3,11 +3,13 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
+local local_T = T
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 
 local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
 
+local AsyncFileDelete = AsyncFileDelete
 local Clamp = Clamp
 local CreateGameTimeThread = CreateGameTimeThread
 local CreateRealTimeThread = CreateRealTimeThread
@@ -16,6 +18,7 @@ local EditorState = EditorState
 local GetCamera = GetCamera
 local GetEditorInterface = GetEditorInterface
 local GetObjects = GetObjects
+local GetPCSaveFolder = GetPCSaveFolder
 local GetTerrainCursor = GetTerrainCursor
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
@@ -52,6 +55,94 @@ local terrain_GetMapSize = terrain.GetMapSize
 local UIL_GetFontID = UIL.GetFontID
 
 local g_Classes = g_Classes
+
+function ChoGGi.MenuFuncs.DeleteSavedGames()
+  local SavegamesList = SavegamesList
+
+
+  local ItemList = {}
+  for i = 1, #SavegamesList do
+    local data = SavegamesList[i]
+
+    -- build played time
+    local playtime = local_T{77, "Unknown"}
+    if data.playtime then
+      local h, m, s = FormatElapsedTime(data.playtime, "hms")
+      local hours = string.format("%02d", h)
+      local minutes = string.format("%02d", m)
+      playtime = T(local_T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
+    end
+    -- and last saved
+    local save_date = 0
+    if data.timestamp then
+      save_date = os.date("%H:%M - %d / %m / %Y", data.timestamp)
+    end
+
+    ItemList[i] = {
+      text = data.displayname,
+      value = data.savename,
+      hint = Concat(
+        S[4274--[[Playtime <playtime>--]]]:format(playtime),
+        "\n",
+        S[4273--[[Saved on <save_date>--]]]:format(save_date),
+        "\n\n",
+        S[302535920001274--[[This is permanent!--]]]
+      ),
+    }
+  end
+
+  local CallBackFunc = function(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+
+    if not choice[1].check1 then
+      MsgPopup(
+        302535920000038--[[Pick a checkbox next time...--]],
+        302535920000146--[[Delete Saved Games--]]
+      )
+      return
+    end
+    local save_folder = GetPCSaveFolder()
+
+    for i = 1, #choice do
+      value = choice[i].value
+      if type(value) == "string" then
+--~         print("delete ",Concat(save_folder,value))
+        AsyncFileDelete(Concat(save_folder,value))
+      end
+    end
+
+    -- remove any saves we deleted
+    local games_amt = #SavegamesList
+    for i = #SavegamesList, 1, -1 do
+      if not ChoGGi.ComFuncs.FileExists(Concat(save_folder,SavegamesList[i].savename)) then
+        SavegamesList[i] = nil
+        table.remove(SavegamesList,i)
+      end
+    end
+
+    games_amt = games_amt - #SavegamesList
+    if games_amt > 0 then
+      MsgPopup(
+        S[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
+        302535920000146--[[Delete Saved Games--]]
+      )
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = Concat(S[302535920000146--[[Delete Saved Games--]]],": ",#ItemList),
+    hint = Concat(S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[6779--[[Warning--]]],": ",S[302535920001274--[[This is permanent!--]]]),
+    multisel = true,
+    skip_sort = true,
+    check1 = 1000009--[[Confirmation--]],
+    check1_hint = 302535920001276--[[Nothing is deleted unless you check this.--]],
+  }
+end
 
 do --export colonist data
   local ChoGGi_Tables = ChoGGi.Tables

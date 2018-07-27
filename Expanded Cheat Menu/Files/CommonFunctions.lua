@@ -1397,12 +1397,14 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   local ChoGGi = ChoGGi
 
   --sort table by display text
-  local sortby = Table.sortby or "text"
-  table.sort(Table.items,
-    function(a,b)
-      return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
-    end
-  )
+  if not Table.skip_sort then
+    local sortby = Table.sortby or "text"
+    table.sort(Table.items,
+      function(a,b)
+        return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
+      end
+    )
+  end
 
   --only insert blank item if we aren't updating other items with it
   if not Table.custom_type then

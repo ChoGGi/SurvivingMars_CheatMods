@@ -250,6 +250,15 @@ AddAction(
 )
 -------------------------------debugfx
 
+------------------------------- DELETE
+AddAction(
+  Concat("[102]",S[1000113--[[Debug--]]],"/[998]",S[302535920000146--[[Delete Saved Games--]]]),
+  ChoGGi.MenuFuncs.DeleteSavedGames,
+  nil,
+  Concat(S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],"\n\n",S[302535920001274--[[This is permanent!--]]]),
+  "DeleteArea.tga"
+)
+
 AddAction(
   Concat("[102]",S[1000113--[[Debug--]]],"/[999]",S[302535920000487--[[Delete All Of Selected Object--]]]),
   function()
@@ -271,3 +280,4 @@ AddAction(
 Use Editor Mode and mouse drag to select multiple objects for deletion."--]],
   "delete_objects.tga"
 )
+------------------------------- DELETE
