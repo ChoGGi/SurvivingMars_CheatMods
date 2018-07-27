@@ -1019,6 +1019,7 @@ function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,
   local name = "NOFUNC"
   -- tooltip menu item
   if Action == "blank_function" then
+    name = Action
     Action = function()end
   -- make the id the func location (filename/linenum)
   elseif type(Action) == "function" then

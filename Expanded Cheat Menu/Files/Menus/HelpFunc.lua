@@ -76,6 +76,12 @@ function ChoGGi.MenuFuncs.ModUpload()
         if not answer then
           return
         end
+
+        MsgPopup(
+          5452--[[START--]],
+          302535920000367--[[Mod Upload--]]
+        )
+
         -- add new mod
         local err,item_id,bShowLegalAgreement
         if Platform.steam then

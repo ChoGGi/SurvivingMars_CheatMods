@@ -107,6 +107,7 @@ local Strings = {
   [5438] = _InternalTranslate(T{5438}), --Rovers
   [5444] = _InternalTranslate(T{5444}), --Workplaces
   [5451] = _InternalTranslate(T{5451}), --DELETE
+  [5452] = _InternalTranslate(T{5452}), --START
   [5568] = _InternalTranslate(T{5568}), --Stats
   [5620] = _InternalTranslate(T{5620}), --Meteor Storm
   [6546] = _InternalTranslate(T{6546}), --Core Metals

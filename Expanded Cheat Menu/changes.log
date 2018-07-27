@@ -1,3 +1,5 @@
+v6.9
+
 v6.8
 Added:
 Rockets>Change Resupply Settings: Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click.
@@ -6,11 +8,12 @@ Debug>Delete Saved Games: Shows a list of saved games, and allows you to delete 
 Changed:
 ECM won't create "ECM Scripts" folder until after you open the console.
 ItemList dialogs hide empty space now.
+Mod Upload will show a popup msg when upload starts.
 
 Fixed:
 Examine shows proper name next to metatable now.
 Some missing strings from last update.
-I broke some ECM dialogs from showing up.
+I broke some ECM dialogs.
 
 v6.7
 Added:

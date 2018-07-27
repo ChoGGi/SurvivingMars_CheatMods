@@ -160,11 +160,12 @@ end
   local radius
 
   local remove_actions = {
-    FlattenGround_RaiseHeight = true,
-    FlattenGround_LowerHeight = true,
-    FlattenGround_WidenRadius = true,
-    FlattenGround_ShrinkRadius = true,
+    [1] = "FlattenGround_RaiseHeight",
+    [2] = "FlattenGround_LowerHeight",
+    [3] = "FlattenGround_WidenRadius",
+    [4] = "FlattenGround_ShrinkRadius",
   }
+
   local temp_height
   local function ToggleHotkeys(bool)
     if bool then
@@ -213,16 +214,16 @@ end
       })
     else
       local UserActions = UserActions
-      for k, _ in pairs(UserActions.Actions) do
-        if remove_actions[k] then
-          UserActions.Actions[k] = nil
-        end
+      for i = 1, #remove_actions do
+        UserActions.Actions[remove_actions[i]] = nil
       end
     end
 
     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
   end
+
   local function ToggleCollisions(objs)
+    local ChoGGi = ChoGGi
     for i = 1, #objs do
       ChoGGi.CodeFuncs.CollisionsObject_Toggle(objs[i],true)
     end
@@ -238,21 +239,25 @@ if ChoGGi.Test then
 end
 
     if are_we_flattening then
+      -- disable shift-arrow keys
       ToggleHotkeys()
-      are_we_flattening = false
       DeleteThread(are_we_flattening)
+      are_we_flattening = false
       visual_circle:delete()
+      -- update saved settings
+      ChoGGi.SettingFuncs.WriteSettings()
+
       MsgPopup(
         302535920001164--[[Flattening has been stopped, now updating buildable.--]],
         904--[[Terrain--]],
         "UI/Icons/Sections/WasteRock_1.tga"
       )
-      -- disable collisions on pipes so they don't get marked as uneven terrain
+      -- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
       local objs = GetObjects{class = "LifeSupportGridElement"}
       ToggleCollisions(objs)
       -- update uneven terrain checker thingy
       RecalcBuildableGrid()
-      -- turn them back on
+      -- and back on when we're done
       ToggleCollisions(objs)
 
     else
@@ -267,14 +272,13 @@ end
         904--[[Terrain--]],
         "UI/Icons/Sections/warning.tga"
       )
-  --~     local terrain_type = mapdata.BaseLayer or "Grass_01"		-- applied terrain type
-  --~     local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_01")
       visual_circle = g_Classes.Circle:new()
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
 
       are_we_flattening = CreateRealTimeThread(function()
-        --thread gets deleted, but just in case
+        -- thread gets deleted, but just in case
         while are_we_flattening do
           local cursor = GetTerrainCursor()
           visual_circle:SetPos(cursor)
@@ -283,7 +287,7 @@ end
             outer = radius / 2
           end
           terrain_SetHeightCircle(cursor, radius, outer or radius, flatten_height)
---~           terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
+--~ terrain.SetTypeCircle(cursor, radius, terrain_type_idx)
           --used to set terrain type (see above)
           Sleep(10)
         end
@@ -294,9 +298,9 @@ end
 end
 
 -- we'll get more concrete one of these days
---~ local terrain_type = "Regolith"		-- applied terrain type
---~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
---~ terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
+local terrain_type = "Regolith"		-- applied terrain type
+local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
   local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
