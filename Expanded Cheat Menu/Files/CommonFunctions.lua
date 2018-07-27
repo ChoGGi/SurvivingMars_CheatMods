@@ -1364,6 +1364,8 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
 end
 
 --[[
+get around to merging some of these types into funcs?
+
 CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dbl click opens colour changer, and sends back all items
 CustomType=2 : colour selector
 CustomType=3 : updates selected item with custom value type, and sends back selected item.
@@ -1418,6 +1420,8 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     return
   end
 
+  dlg.hidden = {}
+
   -- title text
   dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
   -- add list items
@@ -1461,6 +1465,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 
   --setup checkboxes
   if not Table.check1 and not Table.check2 then
+    dlg.hidden.checks = true
     dlg.idCheckBox1:SetVisible(false)
     dlg.idCheckBox2:SetVisible(false)
   else
@@ -1502,10 +1507,12 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 
   --hide ok/cancel buttons as they don't do jack
   if Table.custom_type == 1 then
+    dlg.hidden.buttons = true
     dlg.idOK:SetVisible(false)
-    dlg.idClose:SetVisible(false)
+    dlg.idCancel:SetVisible(false)
   end
 
+  -- fires callback func when dialog closes
   CreateRealTimeThread(function()
     --waiting for choice
     local option = dlg:Wait()
@@ -1513,8 +1520,10 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     if option and #option > 0 then
       Table.callback(option)
     end
-
   end)
+
+  -- if anything is hidden this makes it so we don't have a bunch of blank areas.
+  dlg:UpdateElementPositions()
 
   return dlg
 end

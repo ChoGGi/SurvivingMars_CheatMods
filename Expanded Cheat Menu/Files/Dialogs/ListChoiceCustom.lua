@@ -39,39 +39,44 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
   CustomType = 0,
   colorpicker = false,
   Func = false,
+  hidden = false,
+  dialog_width = false,
+  dialog_height = false,
+  border = false,
+  min_size = point(50, 50),
 }
 
 function ChoGGi_ListChoiceCustomDialog:Init()
   local ChoGGi = ChoGGi
 
-  --element pos is based on
+  -- element pos is based on
   self:SetPos(point(0,0))
 
-  local dialog_width = 400
-  local dialog_height = 470
-  self:SetSize(point(dialog_width, dialog_height))
-  self:SetMinSize(point(50, 50))
+  self.dialog_width = 400
+  self.dialog_height = 470
+  self.border = 4
+
+  self:SetSize(point(self.dialog_width, self.dialog_height))
+--~   self:SetMinSize(point(50, 50))
   self:SetMovable(true)
   self:SetTranslate(false)
 
-  local border = 4
   local element_y
   local element_x
-  dialog_width = dialog_width - border * 2
-  local dialog_left = border
+  self.dialog_width = self.dialog_width - self.border * 2
 
   ChoGGi.ComFuncs.DialogAddCloseX(self)
   ChoGGi.ComFuncs.DialogAddCaption(self,{
-    pos = point(25, border),
-    size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
+    pos = point(25, self.border),
+    size = point(self.dialog_width - self.idCloseX:GetSize():x(), 22)
   })
 
   element_y = self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
 
-  local idList_height = 330
+  local list_height = 330
   self.idList = g_Classes.List:new(self)
-  self.idList:SetPos(point(dialog_left, element_y-2))
-  self.idList:SetSize(point(dialog_width, idList_height))
+  self.idList:SetPos(point(self.border, element_y-2))
+  self.idList:SetSize(point(self.dialog_width, list_height))
   self.idList:SetShowPartialItems(true)
   self.idList:SetBackgroundColor(RGBA(0, 0, 0, 50))
   self.idList:SetSelectionColor(RGB(0, 0, 0))
@@ -109,17 +114,18 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     self:idListOnRButtonDoubleClick()
   end
 
-  element_y = border + self.idList:GetPos():y() + self.idList:GetSize():y()
+  element_y = self.border + self.idList:GetPos():y() + self.idList:GetSize():y()
 
   self.idFilter = g_Classes.SingleLineEdit:new(self)
-  self.idFilter:SetPos(point(dialog_left, element_y))
-  self.idFilter:SetSize(point(dialog_width, 26))
-  self.idFilter:SetHSizing("Resize")
+  self.idFilter:SetPos(point(self.border, element_y))
+  self.idFilter:SetSize(point(self.dialog_width, 26))
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idFilter:SetFontStyle("Editor12Bold")
   self.idFilter:SetHint(S[302535920000806--[[Only show items containing this text.--]]])
   self.idFilter:SetTextHAlign("center")
   self.idFilter:SetTextVAlign("center")
+  self.idFilter:SetHSizing("Resize")
+  self.idFilter:SetVSizing("AnchorToBottom")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
   self.idFilter.display_text = S[302535920000068--[[Filter Text--]]]
   function self.idFilter.OnValueChanged(_, value)
@@ -137,12 +143,12 @@ function ChoGGi_ListChoiceCustomDialog:Init()
     end
   end
 
-  element_y = border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
+  element_y = self.border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
 
-  local halfish_for_checkboxes = (dialog_width - 10) / 2
+  local halfish_for_checkboxes = (self.dialog_width - 10) / 2
 
   self.idCheckBox1 = g_Classes.CheckButton:new(self)
-  self.idCheckBox1:SetPos(point(dialog_left+15, element_y))
+  self.idCheckBox1:SetPos(point(self.border+15, element_y))
   self.idCheckBox1:SetSize(point(halfish_for_checkboxes, 17))
   self.idCheckBox1:SetText(S[588--[[Empty--]]])
   self.idCheckBox1:SetButtonSize(point(16, 16))
@@ -150,7 +156,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.idCheckBox1:SetHSizing("AnchorToMidline")
   self.idCheckBox1:SetVSizing("AnchorToBottom")
 
-  element_x = border * 2 + self.idCheckBox1:GetPos():x() + self.idCheckBox1:GetSize():x()
+  element_x = self.border * 2 + self.idCheckBox1:GetPos():x() + self.idCheckBox1:GetSize():x()
 
   self.idCheckBox2 = g_Classes.CheckButton:new(self)
   self.idCheckBox2:SetPos(point(element_x, element_y))
@@ -172,8 +178,8 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   element_y = 4 + self.idCheckBox2:GetPos():y() + self.idCheckBox2:GetSize():y()
 
   self.idEditValue = g_Classes.SingleLineEdit:new(self)
-  self.idEditValue:SetPos(point(dialog_left, element_y))
-  self.idEditValue:SetSize(point(dialog_width, 24))
+  self.idEditValue:SetPos(point(self.border, element_y))
+  self.idEditValue:SetSize(point(self.dialog_width, 24))
   self.idEditValue:SetAutoSelectAll(true)
   self.idEditValue:SetFontStyle("Editor14Bold")
   self.idEditValue:SetHSizing("Resize")
@@ -187,14 +193,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   --update custom value list item
   function self.idEditValue.OnValueChanged()
     local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
-
     if self.CustomType > 0 then
-      self.idList.items[self.idList.last_selected].value = value
+      if self.idList.last_selected then
+        self.idList.items[self.idList.last_selected].value = value
+      end
     else
       self.idList:SetItem(#self.idList.items,{
         text = value,
         value = value,
-        hint = S[302535920000079--[[< Use custom value--]]]
+        hint = 302535920000079--[[< Use custom value--]],
       })
     end
   end
@@ -203,7 +210,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
   local title = S[6878--[[OK--]]]
   self.idOK = g_Classes.Button:new(self)
-  self.idOK:SetPos(point(dialog_left+20, element_y))
+  self.idOK:SetPos(point(self.border + 20, element_y))
   self.idOK:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
   self.idOK:SetHSizing("AnchorToLeft")
   self.idOK:SetVSizing("AnchorToBottom")
@@ -219,23 +226,23 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     self:delete(self.choices)
   end
 
-  element_x = 100 + self.idOK:GetPos():x() + self.idOK:GetSize():x()
-
   title = S[6879--[[Cancel--]]]
-  self.idClose = g_Classes.Button:new(self)
-  self.idClose:SetPos(point(element_x, element_y))
-  self.idClose:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
-  self.idClose:SetHSizing("AnchorToLeft")
-  self.idClose:SetVSizing("AnchorToBottom")
-  self.idClose:SetFontStyle("Editor14Bold")
-  self.idClose:SetHint(S[302535920000074--[[Cancel without changing anything.--]]])
-  self.idClose:SetText(title)
-  self.idClose.OnButtonPressed = self.idCloseX.OnButtonPressed
+  local title_size = ChoGGi.ComFuncs.RetButtonTextSize(title)
+  self.idCancel = g_Classes.Button:new(self)
+  self.idCancel:SetPos(point(self.dialog_width - title_size:x() - 20 - self.border, element_y))
+  self.idCancel:SetSize(title_size)
+  self.idCancel:SetHSizing("AnchorToRight")
+  self.idCancel:SetVSizing("AnchorToBottom")
+  self.idCancel:SetFontStyle("Editor14Bold")
+  self.idCancel:SetHint(S[302535920000074--[[Cancel without changing anything.--]]])
+  self.idCancel:SetText(title)
+  self.idCancel.OnButtonPressed = self.idCloseX.OnButtonPressed
 
   element_y = self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
 
   self.idColorHSV = g_Classes.ColorHSVControl:new(self)
-  self.idColorHSV:SetPos(point(dialog_width - 325, element_y)) --for some reason this is ignored till visible, unlike checkmarks
+  -- for some reason this is ignored till visible, unlike checkmarks
+  self.idColorHSV:SetPos(point(self.dialog_width - 325, element_y))
   self.idColorHSV:SetSize(point(300, 300))
   self.idColorHSV:SetHSizing("AnchorToRight")
   self.idColorHSV:SetVSizing("AnchorToTop")
@@ -263,9 +270,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
   --right to left positioning for checks as we use AnchorToRight
   title = S[302535920000037--[[Electricity--]]]
-  local title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
+  title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
   self.idColorCheckElec = g_Classes.CheckButton:new(self)
-  self.idColorCheckElec:SetPos(point(dialog_width - border - title_size:x() - offset, element_y))
+  self.idColorCheckElec:SetPos(point(self.dialog_width - self.border - title_size:x() - offset, element_y))
   self.idColorCheckElec:SetSize(title_size)
   self.idColorCheckElec:SetHSizing("AnchorToRight")
   self.idColorCheckElec:SetVSizing("AnchorToTop")
@@ -273,14 +280,14 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idColorCheckElec:SetButtonSize(point(16, 16))
   self.idColorCheckElec:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckElec:SetText(title)
-  self.idColorCheckElec:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
+  self.idColorCheckElec:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
 
-  element_x = border * 2 + self.idColorCheckElec:GetSize():x()
+  element_x = self.border * 2 + self.idColorCheckElec:GetSize():x()
 
   title = S[891--[[Air--]]]
   title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
   self.idColorCheckAir = g_Classes.CheckButton:new(self)
-  self.idColorCheckAir:SetPos(point(dialog_width - title_size:x() - element_x - offset, element_y))
+  self.idColorCheckAir:SetPos(point(self.dialog_width - title_size:x() - element_x - offset, element_y))
   self.idColorCheckAir:SetSize(title_size)
   self.idColorCheckAir:SetHSizing("AnchorToRight")
   self.idColorCheckAir:SetVSizing("AnchorToTop")
@@ -288,13 +295,13 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idColorCheckAir:SetButtonSize(point(16, 16))
   self.idColorCheckAir:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckAir:SetText(title)
-  self.idColorCheckAir:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
+  self.idColorCheckAir:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
 
-  element_x = border * 2 + self.idColorCheckAir:GetPos():x()
+  element_x = self.border * 2 + self.idColorCheckAir:GetPos():x()
 
   title = S[681--[[Water--]]]
   self.idColorCheckWater = g_Classes.CheckButton:new(self)
-  self.idColorCheckWater:SetPos(point(dialog_width - element_x - offset - 25, element_y))
+  self.idColorCheckWater:SetPos(point(self.dialog_width - element_x - offset - 25, element_y))
   self.idColorCheckWater:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
   self.idColorCheckWater:SetHSizing("AnchorToRight")
   self.idColorCheckWater:SetVSizing("AnchorToTop")
@@ -302,14 +309,54 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idColorCheckWater:SetButtonSize(point(16, 16))
   self.idColorCheckWater:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idColorCheckWater:SetText(title)
-  self.idColorCheckWater:SetHint(S[302535920000082--[[Check this for \"All of type\" to only apply to connected grid.--]]])
+  self.idColorCheckWater:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
 
-  --so elements move when dialog re-sizes
+  -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
   self:InitChildrenSizing()
 
-  --if i don't have this than there's a chunk of empy beneath idList (till user resizes)
+  -- if i don't have this than there's a chunk of empy beneath idList (till user resizes)
   CreateRealTimeThread(function()
-    self.idList:SetSize(point(dialog_width, idList_height))
+    self.idList:SetSize(point(self.dialog_width, list_height))
+  end)
+
+end
+
+function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()
+  -- no sense in doing anything if we don't need to
+  if not self.hidden.checks and not self.hidden.buttons then
+    return
+  end
+  CreateRealTimeThread(function()
+    -- what we adjust by
+    local heightc = 0
+    local heightb = 0
+    if self.hidden.checks then
+      heightc = self.idCheckBox1:GetHeight()
+    end
+    if self.hidden.buttons then
+      heightb = self.idOK:GetHeight()
+    end
+    -- list only gets bigger, we don't need to move it
+    local size = self.idList:GetSize()
+    self.idList:SetSize(point(size:x(),size:y() + heightc + heightb))
+    -- filter just needs to be moved down, the rest have offsets depending on what is hidden
+    local pos = self.idFilter:GetPos()
+    self.idFilter:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+    pos = self.idCheckBox1:GetPos()
+    self.idCheckBox1:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+    pos = self.idCheckBox2:GetPos()
+    self.idCheckBox2:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+
+    -- only need to adjust by button height for these
+    pos = self.idEditValue:GetPos()
+    self.idEditValue:SetPos(point(pos:x(),pos:y() + heightb))
+    pos = self.idOK:GetPos()
+    self.idOK:SetPos(point(pos:x(),pos:y() + heightb))
+    pos = self.idCancel:GetPos()
+    self.idCancel:SetPos(point(pos:x(),pos:y() + heightb))
+
+    -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
+    self:InitChildrenSizing()
   end)
 end
 
