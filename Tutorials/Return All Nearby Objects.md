@@ -22,6 +22,7 @@ local function ReturnAllNearby(radius,sort)
       end
     end,
   }
+
   -- sort list custom
   if sort then
     table.sort(list,
@@ -37,6 +38,7 @@ local function ReturnAllNearby(radius,sort)
       end
     )
   end
+
   return list
 end
 ```

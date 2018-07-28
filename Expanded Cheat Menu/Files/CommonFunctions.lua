@@ -1646,6 +1646,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
       end
     end,
   }
+
   -- sort list custom
   if sort then
     table.sort(list,
@@ -1661,6 +1662,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
       end
     )
   end
+
   return list
 end
 

@@ -1,10 +1,10 @@
 v6.9
 
-Changed:
-Cleaned up some funcs to use labels instead of GetObjects.
-Hide Some cheats where they weren't needed (ex: WaterFree on a Casino).
+Added:
+Examine to Cheats pane.
 
 Changed:
+Hide some items in the Cheats pane when they aren't needed (ex: WaterFree on a Casino).
 The selection radius for objects under the cursor is slightly larger.
 
 Fixed:

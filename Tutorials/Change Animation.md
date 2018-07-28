@@ -1,4 +1,4 @@
-### How to change (built-in) animations
+### How to change (built-in) animations (not permanent)
 
 ```
 --get a list of animations for object

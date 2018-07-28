@@ -2,18 +2,29 @@
 
 ```
 CreateRealTimeThread(function()
-  local choice = WaitListChoice({
-    {text="Choice 1"},
-    {text="Choice 2"},
-    {text="Choice 3"},
-  }, "Title of dialog")
+
+  local choice = WaitListChoice(
+    {
+      {text = "Choice 1"},
+      {text = "Choice 2"},
+      {
+        text = "Choice 3",
+        func = function(value)
+          print(value)
+        end,
+      },
+    },
+    "Title of dialog"
+  )
+
   if choice == 1 then
-    print("choice " .. choice)
+    print(choice.text)
   elseif choice == 2 then
-    print("choice " .. choice)
+    print(choice.text)
   elseif choice == 3 then
-    print("choice " .. choice)
+    choice.func("function choice")
   end
+
 end)
 ```
 

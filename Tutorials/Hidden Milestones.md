@@ -1,11 +1,11 @@
 ### Adding hidden Milestones:
 
 ```
---Use this to when it gets completed (I'm using UICity to store as it's saved per-game)
---local is faster then global if you call it more then once
+-- Use this to when it gets completed (I'm using UICity to store as it's saved per-game)
+-- local is faster then global if you call it more then once
 local UICity = UICity
 local Msg = Msg
---check if it's already been enabled
+-- check if it's already been enabled
 if not UICity.SomethingUnique_WubbaLubbaDubDub then
   UICity.SomethingUnique_WubbaLubbaDubDub = true
   Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
@@ -14,49 +14,49 @@ end
 ```
 
 ```
---this will fire when you Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
+-- this will fire when you Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
 function OnMsg.SomethingUnique_WubbaLubbaDubDub_OnMsg()
-  --temp milestone that's used till restart/load
+  -- temp milestone that's used till restart/load
   PlaceObj("Milestone", {
-    --you can just remove this if you don't want a notification popup (give 'em a little surprise)
+    -- you can just remove this if you don't want a notification popup (give 'em a little surprise)
     Complete = function(self)
       WaitMsg("SomethingUnique_WubbaLubbaDubDub")
       return true
     end,
 
-    SortKey = 0, --doesn't seem to matter, always adds to the end
+    SortKey = 0, -- doesn't seem to matter, always adds to the end
     base_score = -100, -- MulDivRound(base_score, ChallengeRating, 100)
     bonus_score = -1000, -- if past sols then does nothing otherwise bonus based on time left
-    bonus_score_expiration = 15, --timeout in sols
+    bonus_score_expiration = 15, -- timeout in sols
     display_name = "Turned 100 colonists into goo: WubbaLubbaDubDub",
-    group = "Default", --?
-    id = "WubbaLubbaDubDub"
+    group = "Default", -- ?
+    id = "SomethingUnique_WubbaLubbaDubDub"
   })
-  --shows the green checkmark in milestone dialog, and the date next to it
+  -- shows the green checkmark in milestone dialog, and the date next to it
   local mc = MilestoneCompleted
-  if not mc.WubbaLubbaDubDub then
-    mc.WubbaLubbaDubDub = 479000000 --sol 666
+  if not mc.SomethingUnique_WubbaLubbaDubDub then
+    mc.SomethingUnique_WubbaLubbaDubDub = 479000000 -- sol 666
   end
 end
 ```
 
 ```
---this one is used after milestone is unlocked and the game loads
+-- this one is used after milestone is unlocked and the game loads
 function OnMsg.LoadGame()
-  if UICity.ChoGGi.WubbaLubbaDubDub then
+  if UICity.SomethingUnique_WubbaLubbaDubDub then
     PlaceObj("Milestone", {
-      --no need for "Complete" as it's already done
+      -- no need for "Complete" as it's already done
       base_score = -100,
       bonus_score = -1000,
       bonus_score_expiration = 15,
       display_name = "Turned 100 colonists into goo: WubbaLubbaDubDub",
       group = "Default",
-      id = "WubbaLubbaDubDub"
+      id = "SomethingUnique_WubbaLubbaDubDub"
     })
-    --it doesn't hurt
+    -- it doesn't hurt
     local mc = MilestoneCompleted
-    if not mc.WubbaLubbaDubDub then
-      mc.WubbaLubbaDubDub = 479000000
+    if not mc.SomethingUnique_WubbaLubbaDubDub then
+      mc.SomethingUnique_WubbaLubbaDubDub = 479000000
     end
   end
 end
@@ -64,13 +64,13 @@ end
 
 #### To show user completed milestone
 ```
---if you do want the little notification popup then call it like this instead
+-- if you do want a little notification popup then call it like this instead
 local Msg = Msg
 Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
 Msg("SomethingUnique_WubbaLubbaDubDub")
 local MilestoneThreads = MilestoneThreads
 CreateRealTimeThread(function()
-  local id = "WubbaLubbaDubDub"
+  local id = "SomethingUnique_WubbaLubbaDubDub"
   DeleteThread(MilestoneThreads[id])
   local milestone = Presets.Milestone.Default[id]
   local res = milestone:Complete(UICity)
