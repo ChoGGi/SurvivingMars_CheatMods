@@ -6,8 +6,13 @@ Mod folder\Locales\English.csv
 
 In English.csv add text like so:
 ID,Text
-11111111110001029,Some text
-11111111110001014,and more text
+11111111110001001,Some text
+11111111110001002,and More text.
+11111111110001003,"and some ""quoted"" text"
+11111111110001004,"some text with
+
+new lines in them"
+11111111110001005,"some text with commas, included"
 
 CHANGE 11111111 to some random arsed number, or use whatever you already use in your mod.
 
@@ -51,6 +56,7 @@ and start changing strings, and then send it to you, all you need to do is put i
 
 I like to use this function for ease of use (and to make sure I always get a string back):
 
+local local_T = T
 function Translate(...)
   local trans
   local vararg = {...}
@@ -59,7 +65,7 @@ function Translate(...)
     if type(vararg[1]) == "userdata" then
       trans = _InternalTranslate(table.unpack(vararg))
     else
-      trans = _InternalTranslate(T(vararg))
+      trans = _InternalTranslate(local_T(vararg))
     end
   end)
   -- just in case b

@@ -1165,22 +1165,22 @@ function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
   end
 end
 
-function ChoGGi.ComFuncs.RetTableNoDupes(Table)
+function ChoGGi.ComFuncs.RetTableNoDupes(list)
   local tempt = {}
   local dupe = {}
 
-  for i = 1, #Table do
-    if not dupe[Table[i]] then
-      tempt[#tempt+1] = Table[i]
-      dupe[Table[i]] = true
+  for i = 1, #list do
+    if not dupe[list[i]] then
+      tempt[#tempt+1] = list[i]
+      dupe[list[i]] = true
     end
   end
   return tempt
 end
 
-function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
+function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
   local ChoGGi = ChoGGi
-  table.sort(Table,
+  table.sort(list,
     function(a,b)
       return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
     end
@@ -1188,22 +1188,22 @@ function ChoGGi.ComFuncs.RetTableNoClassDupes(Table)
   local tempt = {}
   local dupe = {}
 
-  for i = 1, #Table do
-    if not dupe[Table[i].class] then
-      tempt[#tempt+1] = Table[i]
-      dupe[Table[i].class] = true
+  for i = 1, #list do
+    if not dupe[list[i].class] then
+      tempt[#tempt+1] = list[i]
+      dupe[list[i].class] = true
     end
   end
   return tempt
 end
 
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
-function ChoGGi.ComFuncs.RemoveFromTable(Table,Type,Text)
+function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
   local tempt = {}
-  Table = Table or empty_table
-  for i = 1, #Table do
-    if Table[i][Type] ~= Text then
-      tempt[#tempt+1] = Table[i]
+  list = list or empty_table
+  for i = 1, #list do
+    if list[i][cls] ~= text then
+      tempt[#tempt+1] = list[i]
     end
   end
   return tempt
@@ -1213,26 +1213,26 @@ end
 -- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"},nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
-    filter = function(Obj)
+    filter = function(o)
       if ExcludeList or IncludeList then
         if ExcludeList and IncludeList then
-          if not ExcludeList[Obj[Type]] then
-            return Obj
-          elseif IncludeList[Obj[Type]] then
-            return Obj
+          if not ExcludeList[o[Type]] then
+            return o
+          elseif IncludeList[o[Type]] then
+            return o
           end
         elseif ExcludeList then
-          if not ExcludeList[Obj[Type]] then
-            return Obj
+          if not ExcludeList[o[Type]] then
+            return o
           end
         elseif IncludeList then
-          if IncludeList[Obj[Type]] then
-            return Obj
+          if IncludeList[o[Type]] then
+            return o
           end
         end
       else
-        if Obj[Type] then
-          return Obj
+        if o[Type] then
+          return o
         end
       end
     end
@@ -1243,13 +1243,13 @@ end
 -- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
   return FilterObjects({
-    filter = function(Obj)
+    filter = function(o)
       if IsBool then
-        if _G[Func](Obj) then
-          return Obj
+        if _G[Func](o) then
+          return o
         end
-      elseif Obj[Func](Obj,Value) then
-        return Obj
+      elseif o[Func](o,Value) then
+        return o
       end
     end
   },Table)
@@ -2007,6 +2007,7 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
     game_flags_all = query.game_flags_all,
     class_flags_all = query.class_flags_all,
     filter = query.filter,
+  },obj, query_width, ignore_classes)
 --~     classes = {"EditorDummy","Text"},
 --~     area = "line", -- "realm","outsiders","detached",
 --~     areapoint1 = self.point0,
@@ -2026,5 +2027,4 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
 --~       return not IsKindOf(o, "Collection")
 --~     end,
 
-  },obj, query_width, ignore_classes)
 end
