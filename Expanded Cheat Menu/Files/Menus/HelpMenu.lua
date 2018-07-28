@@ -169,7 +169,6 @@ AddAction(
 
 do -- build text file menu items
   local ChoGGi = ChoGGi
-  local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),".txt")
   local function ReadText(file)
     local file_error, text = AsyncFileToString(file)
     if file_error then
@@ -183,9 +182,7 @@ do -- build text file menu items
   local info = Concat(S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]]," : ",ChoGGi.email)
   AddAction(
     Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[-1]*",S[126095410863--[[Info--]]],"*"),
-    function()
-      OpenExamine(info)
-    end,
+    "blank_function",
     nil,
     info,
     "AreaProperties.tga"
@@ -202,18 +199,24 @@ do -- build text file menu items
     "AreaProperties.tga"
   )
 
-  if folders then
-    for i = 1, #folders do
-      local text = ReadText(folders[i].path)
-      AddAction(
-        Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[",i,"]",folders[i].name),
-        function()
-          OpenExamine(text)
-        end,
-        nil,
-        text:sub(1,100),
-        "Voice.tga"
-      )
+  local function LoopFiles(ext)
+    local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),ext)
+    if folders then
+      for i = 1, #folders do
+        local text = ReadText(folders[i].path)
+        AddAction(
+          Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[999]",folders[i].name),
+          function()
+            OpenExamine(text)
+          end,
+          nil,
+          text:sub(1,100),
+          "Voice.tga"
+        )
+      end
     end
   end
+  LoopFiles(".txt")
+  LoopFiles(".md")
+
 end

@@ -216,15 +216,15 @@ function OnMsg.PersistPostLoad()
 end
 
 -- for instant build
-function OnMsg.BuildingPlaced(Obj)
-  if Obj:IsKindOf("Building") then
-    ChoGGi.Temp.LastPlacedObject = Obj
+function OnMsg.BuildingPlaced(obj)
+  if obj:IsKindOf("Building") then
+    ChoGGi.Temp.LastPlacedObject = obj
   end
 end --OnMsg
 -- regular build
-function OnMsg.ConstructionSitePlaced(Obj)
-  if Obj:IsKindOf("Building") then
-    ChoGGi.Temp.LastPlacedObject = Obj
+function OnMsg.ConstructionSitePlaced(obj)
+  if obj:IsKindOf("Building") then
+    ChoGGi.Temp.LastPlacedObject = obj
   end
 end --OnMsg
 
@@ -355,47 +355,47 @@ function OnMsg.Demolished(building)
   end
 end --OnMsg
 
-local function ColonistCreated(Obj,Skip)
+local function ColonistCreated(obj,skip)
   local UserSettings = ChoGGi.UserSettings
 
   if UserSettings.GravityColonist then
-    Obj:SetGravity(UserSettings.GravityColonist)
+    obj:SetGravity(UserSettings.GravityColonist)
   end
   if UserSettings.NewColonistGender then
-    ChoGGi.CodeFuncs.ColonistUpdateGender(Obj,UserSettings.NewColonistGender)
+    ChoGGi.CodeFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
   end
   if UserSettings.NewColonistAge then
-    ChoGGi.CodeFuncs.ColonistUpdateAge(Obj,UserSettings.NewColonistAge)
+    ChoGGi.CodeFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
   end
-  --children don't have spec models so they get black cube
-  if UserSettings.NewColonistSpecialization and not Skip then
-    ChoGGi.CodeFuncs.ColonistUpdateSpecialization(Obj,UserSettings.NewColonistSpecialization)
+  -- children don't have spec models so they get black cube
+  if UserSettings.NewColonistSpecialization and not skip then
+    ChoGGi.CodeFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
   end
   if UserSettings.NewColonistRace then
-    ChoGGi.CodeFuncs.ColonistUpdateRace(Obj,UserSettings.NewColonistRace)
+    ChoGGi.CodeFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
   end
   if UserSettings.NewColonistTraits then
-    ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,true,UserSettings.NewColonistTraits)
+    ChoGGi.CodeFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
   end
   if UserSettings.SpeedColonist then
-    Obj:SetMoveSpeed(UserSettings.SpeedColonist)
+    obj:SetMoveSpeed(UserSettings.SpeedColonist)
   end
 end
 
-function OnMsg.ColonistArrived(Obj)
-  ColonistCreated(Obj)
+function OnMsg.ColonistArrived(obj)
+  ColonistCreated(obj)
 end --OnMsg
 
-function OnMsg.ColonistBorn(Obj)
-  ColonistCreated(Obj,true)
+function OnMsg.ColonistBorn(obj)
+  ColonistCreated(obj,true)
 end --OnMsg
 
-function OnMsg.SelectionAdded(Obj)
+function OnMsg.SelectionAdded(obj)
   --update selection shortcut
-  s = Obj
+  s = obj
   --update last placed (or selected)
-  if Obj:IsKindOf("Building") then
-    ChoGGi.Temp.LastPlacedObject = Obj
+  if obj:IsKindOf("Building") then
+    ChoGGi.Temp.LastPlacedObject = obj
   end
 end
 
@@ -504,11 +504,11 @@ function OnMsg.MysteryChosen()
     )
   end
 end
-function OnMsg.MysteryEnd(Outcome)
+function OnMsg.MysteryEnd(outcome)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowMysteryMsgs then
     MsgPopup(
-      tostring(Outcome),
+      tostring(outcome),
       3486--[[Mystery--]],
       icon_logo_13
     )
@@ -540,20 +540,20 @@ function OnMsg.ApplicationQuit()
 end
 
 --attached temporary resource depots
-function OnMsg.ChoGGi_SpawnedResourceStockpileLR(Obj)
+function OnMsg.ChoGGi_SpawnedResourceStockpileLR(obj)
   local ChoGGi = ChoGGi
-  if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and Obj.parent.class:find("MechanizedDepot") then
-    ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj.parent)
+  if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and obj.parent.class:find("MechanizedDepot") then
+    ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj.parent)
   end
 end
 
-function OnMsg.ChoGGi_TogglePinnableObject(Obj)
+function OnMsg.ChoGGi_TogglePinnableObject(obj)
   local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
   if type(UnpinObjects) == "table" and next(UnpinObjects) then
     local Table = UnpinObjects or empty_table
     for i = 1, #Table do
-      if Obj.class == Table[i] and Obj:IsPinned() then
-        Obj:TogglePin()
+      if obj.class == Table[i] and obj:IsPinned() then
+        obj:TogglePin()
         break
       end
     end
@@ -561,144 +561,144 @@ function OnMsg.ChoGGi_TogglePinnableObject(Obj)
 end
 
 --custom UICity.labels lists
-function OnMsg.ChoGGi_CreatedGridObject(Obj)
+function OnMsg.ChoGGi_CreatedGridObject(obj)
   local labels = UICity.labels
-  labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = Obj
-  local label = labels[Concat("ChoGGi_",Obj.class)]
-  label[#label+1] = Obj
+  labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = obj
+  local label = labels[Concat("ChoGGi_",obj.class)]
+  label[#label+1] = obj
 end
-function OnMsg.ChoGGi_RemovedGridObject(Obj)
+function OnMsg.ChoGGi_RemovedGridObject(obj)
   local ChoGGi = ChoGGi
-  ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",Obj)
-  ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",Obj.class),Obj)
+  ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",obj)
+  ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",obj.class),obj)
 end
 
 --shuttle comes out of a hub
-function OnMsg.ChoGGi_SpawnedShuttle(Obj)
+function OnMsg.ChoGGi_SpawnedShuttle(obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.StorageShuttle then
-    Obj.max_shared_storage = UserSettings.StorageShuttle
+    obj.max_shared_storage = UserSettings.StorageShuttle
   end
   if UserSettings.SpeedShuttle then
-    Obj.max_speed = UserSettings.SpeedShuttle
+    obj.max_speed = UserSettings.SpeedShuttle
   end
 end
 
-function OnMsg.ChoGGi_SpawnedDrone(Obj)
+function OnMsg.ChoGGi_SpawnedDrone(obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.GravityDrone then
-    Obj:SetGravity(UserSettings.GravityDrone)
+    obj:SetGravity(UserSettings.GravityDrone)
   end
   if UserSettings.SpeedDrone then
-    Obj:SetMoveSpeed(UserSettings.SpeedDrone)
+    obj:SetMoveSpeed(UserSettings.SpeedDrone)
   end
 end
 
-local function RCCreated(Obj)
+local function RCCreated(obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.SpeedRC then
-    Obj:SetMoveSpeed(UserSettings.SpeedRC)
+    obj:SetMoveSpeed(UserSettings.SpeedRC)
   end
   if UserSettings.GravityRC then
-    Obj:SetGravity(UserSettings.GravityRC)
+    obj:SetGravity(UserSettings.GravityRC)
   end
 end
-function OnMsg.ChoGGi_SpawnedRCTransport(Obj)
+function OnMsg.ChoGGi_SpawnedRCTransport(obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.RCTransportStorageCapacity then
-    Obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+    obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
   end
-  RCCreated(Obj)
+  RCCreated(obj)
 end
-function OnMsg.ChoGGi_SpawnedRCRover(Obj)
+function OnMsg.ChoGGi_SpawnedRCRover(obj)
   if ChoGGi.UserSettings.RCRoverMaxRadius then
-    Obj:SetWorkRadius() -- I override the func so no need to send a value here
+    obj:SetWorkRadius() -- I override the func so no need to send a value here
   end
-  RCCreated(Obj)
+  RCCreated(obj)
 end
-function OnMsg.ChoGGi_SpawnedExplorerRover(Obj)
-  RCCreated(Obj)
+function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
+  RCCreated(obj)
 end
 
-function OnMsg.ChoGGi_SpawnedDroneHub(Obj)
+function OnMsg.ChoGGi_SpawnedDroneHub(obj)
   if ChoGGi.UserSettings.CommandCenterMaxRadius then
-    Obj:SetWorkRadius()
+    obj:SetWorkRadius()
   end
 end
 
 --if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
-function OnMsg.ChoGGi_SpawnedResidence(Obj)
-  ChoGGi.CodeFuncs.AttachToNearestDome(Obj)
+function OnMsg.ChoGGi_SpawnedResidence(obj)
+  ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 end
-function OnMsg.ChoGGi_SpawnedWorkplace(Obj)
-  ChoGGi.CodeFuncs.AttachToNearestDome(Obj)
+function OnMsg.ChoGGi_SpawnedWorkplace(obj)
+  ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 end
-function OnMsg.ChoGGi_SpawnedSpireBase(Obj)
-  ChoGGi.CodeFuncs.AttachToNearestDome(Obj)
+function OnMsg.ChoGGi_SpawnedSpireBase(obj)
+  ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 end
-function OnMsg.ChoGGi_SpawnedDinerGrocery(Obj)
+function OnMsg.ChoGGi_SpawnedDinerGrocery(obj)
   local ChoGGi = ChoGGi
   --more food for diner/grocery
   if ChoGGi.UserSettings.ServiceWorkplaceFoodStorage then
     --for some reason InitConsumptionRequest always adds 5 to it
     local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
-    Obj.consumption_stored_resources = storedv
-    Obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
+    obj.consumption_stored_resources = storedv
+    obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
   end
 end
 
 --make sure they use with our new values
-local function SetProd(Obj,sType)
-  local prod = ChoGGi.UserSettings.BuildingSettings[Obj.encyclopedia_id]
+local function SetProd(obj,sType)
+  local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
   if prod and prod.production then
-    Obj[sType] = prod.production
+    obj[sType] = prod.production
   end
 end
-function OnMsg.ChoGGi_SpawnedProducerElectricity(Obj)
-  SetProd(Obj,"electricity_production")
+function OnMsg.ChoGGi_SpawnedProducerElectricity(obj)
+  SetProd(obj,"electricity_production")
 end
-function OnMsg.ChoGGi_SpawnedProducerAir(Obj)
-  SetProd(Obj,"air_production")
+function OnMsg.ChoGGi_SpawnedProducerAir(obj)
+  SetProd(obj,"air_production")
 end
-function OnMsg.ChoGGi_SpawnedProducerWater(Obj)
-  SetProd(Obj,"water_production")
+function OnMsg.ChoGGi_SpawnedProducerWater(obj)
+  SetProd(obj,"water_production")
 end
-function OnMsg.ChoGGi_SpawnedProducerSingle(Obj)
-  SetProd(Obj,"production_per_day")
+function OnMsg.ChoGGi_SpawnedProducerSingle(obj)
+  SetProd(obj,"production_per_day")
 end
 
-local function CheckForRate(Obj)
+local function CheckForRate(obj)
   --charge/discharge
-  local value = ChoGGi.UserSettings.BuildingSettings[Obj.encyclopedia_id]
+  local value = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
 
   if value then
     local function SetValue(sType)
       if value.charge then
-        Obj[sType].max_charge = value.charge
-        Obj[Concat("max_",sType,"_charge")] = value.charge
+        obj[sType].max_charge = value.charge
+        obj[Concat("max_",sType,"_charge")] = value.charge
       end
       if value.discharge then
-        Obj[sType].max_discharge = value.discharge
-        Obj[Concat("max_",sType,"_discharge")] = value.discharge
+        obj[sType].max_discharge = value.discharge
+        obj[Concat("max_",sType,"_discharge")] = value.discharge
       end
     end
 
-    if type(Obj.GetStoredAir) == "function" then
+    if type(obj.GetStoredAir) == "function" then
       SetValue("air")
-    elseif type(Obj.GetStoredWater) == "function" then
+    elseif type(obj.GetStoredWater) == "function" then
       SetValue("water")
-    elseif type(Obj.GetStoredPower) == "function" then
+    elseif type(obj.GetStoredPower) == "function" then
       SetValue("electricity")
     end
   end
 end
 --water/air tanks
-function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(Obj)
-  CheckForRate(Obj)
+function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(obj)
+  CheckForRate(obj)
 end
 --battery
-function OnMsg.ChoGGi_SpawnedElectricityStorage(Obj)
-  CheckForRate(Obj)
+function OnMsg.ChoGGi_SpawnedElectricityStorage(obj)
+  CheckForRate(obj)
 end
 
 --hidden milestones

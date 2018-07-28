@@ -1,5 +1,8 @@
 v6.9
 
+Fixed:
+Examine wasn't stopping the auto-refresh thread after dialog was closed.
+
 v6.8
 Added:
 Rockets>Change Resupply Settings: Shows a list of all cargo and allows you to change the price, weight taken up, and how many per click.

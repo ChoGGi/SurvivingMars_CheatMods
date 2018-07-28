@@ -472,28 +472,28 @@ function OnMsg.OptionsApply()
 end
 
 --used to add old lists to new combined list
-local function AddOldSettings(OldCat,NewName)
+local function AddOldSettings(old_cat,new_name)
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
 
   --is there anthing in the table?
-  if type(ChoGGi.UserSettings[OldCat]) == "table" and next(ChoGGi.UserSettings[OldCat]) then
+  if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
     --then loop through it
-    for Key,Value in pairs(ChoGGi.UserSettings[OldCat]) do
+    for Key,Value in pairs(ChoGGi.UserSettings[old_cat]) do
       --it likely doesn't exist, but check first and add a blank table
       if not ChoGGi.UserSettings.BuildingSettings[Key] then
         ChoGGi.UserSettings.BuildingSettings[Key] = {}
       end
       --add it to vistors list?
-      if NewName == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
+      if new_name == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
         ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
       else
-        ChoGGi.UserSettings.BuildingSettings[Key][NewName] = Value
+        ChoGGi.UserSettings.BuildingSettings[Key][new_name] = Value
       end
     end
   end
   --remove old settings
-  ChoGGi.UserSettings[OldCat] = nil
+  ChoGGi.UserSettings[old_cat] = nil
   return true
 end
 

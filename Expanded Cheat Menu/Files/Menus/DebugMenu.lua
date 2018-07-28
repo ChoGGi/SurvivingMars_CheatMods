@@ -99,7 +99,9 @@ AddAction(
 
 AddAction(
   Concat("[102]",S[1000113--[[Debug--]]],"/",S[302535920000471--[[Object Manipulator--]]]),
-  ChoGGi.ComFuncs.OpenInObjectManipulator,
+  function()
+    ChoGGi.ComFuncs.OpenInObjectManipulator()
+  end,
   ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
   302535920000472--[[Manipulate objects (selected or under mouse cursor)--]],
   "SaveMapEntityList.tga"

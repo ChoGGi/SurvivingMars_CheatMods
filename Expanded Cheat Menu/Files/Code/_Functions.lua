@@ -317,7 +317,7 @@ function ChoGGi.CodeFuncs.RemoveOldFiles()
   end
 end
 
-function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
+function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   local BuildCategories = BuildCategories
 
   --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, check for a msg to use?)
@@ -328,21 +328,21 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(iWhich)
   local dlg = GetXDialog("XBuildMenu")
   if dlg then
     --opened so check if number corresponds and if so hide the menu
-    if dlg.category == BuildCategories[iWhich].id then
+    if dlg.category == BuildCategories[which].id then
       CloseXDialog("XBuildMenu")
     end
   else
     OpenXBuildMenu()
   end
   dlg = GetXDialog("XBuildMenu")
-  dlg:SelectCategory(BuildCategories[iWhich])
+  dlg:SelectCategory(BuildCategories[which])
   --have to fire twice to highlight the icon
-  dlg:SelectCategory(BuildCategories[iWhich])
+  dlg:SelectCategory(BuildCategories[which])
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
-  if Age == S[3490--[[Random--]]] then
-    Age = ChoGGi.Tables.ColonistAges[Random(1,6)]
+function ChoGGi.CodeFuncs.ColonistUpdateAge(c,age)
+  if age == S[3490--[[Random--]]] then
+    age = ChoGGi.Tables.ColonistAges[Random(1,6)]
   end
   --remove all age traits
   c:RemoveTrait("Child")
@@ -352,20 +352,20 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
   c:RemoveTrait("Senior")
   c:RemoveTrait("Retiree")
   --add new age trait
-  c:AddTrait(Age)
+  c:AddTrait(age)
 
   --needed for comparison
   local OrigAge = c.age_trait
   --needed for updating entity
-  c.age_trait = Age
+  c.age_trait = age
 
-  if Age == "Retiree" then
+  if age == "Retiree" then
     c.age = 65 --why isn't there a base_MinAge_Retiree...
   else
-    c.age = c[Concat("base_MinAge_",Age)]
+    c.age = c[Concat("base_MinAge_",age)]
   end
 
-  if Age == "Child" then
+  if age == "Child" then
     --there aren't any child specialist entities
     c.specialist = "none"
     --only children live in nurseries
@@ -374,7 +374,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
     end
   end
   --only children live in nurseries
-  if OrigAge == "Child" and Age ~= "Child" then
+  if OrigAge == "Child" and age ~= "Child" then
     c:SetResidence(false)
   end
   --now we can set the new entity
@@ -385,12 +385,12 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,Age)
   --c:TryToEmigrate()
 end
 
-function ChoGGi.CodeFuncs.ColonistUpdateGender(c,Gender,Cloned)
+function ChoGGi.CodeFuncs.ColonistUpdateGender(c,gender,cloned)
   local ChoGGi = ChoGGi
-  if Gender == S[3490--[[Random--]]] then
-    Gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
-  elseif Gender == S[302535920000800--[[MaleOrFemale--]]] then
-    Gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
+  if gender == S[3490--[[Random--]]] then
+    gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
+  elseif gender == S[302535920000800--[[MaleOrFemale--]]] then
+    gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
   end
   --remove all gender traits
   c:RemoveTrait("OtherGender")
@@ -399,15 +399,15 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(c,Gender,Cloned)
   c:RemoveTrait("Male")
   c:RemoveTrait("Female")
   --add new gender trait
-  c:AddTrait(Gender)
+  c:AddTrait(gender)
   --needed for updating entity
-  c.gender = Gender
+  c.gender = gender
   --set entity gender
-  if Gender == "Male" or Gender == "Female" then
-    c.entity_gender = Gender
+  if gender == "Male" or gender == "Female" then
+    c.entity_gender = gender
   else --random
-    if Cloned then
-      c.entity_gender = Cloned
+    if cloned then
+      c.entity_gender = cloned
     else
       if Random(1,2) == 1 then
         c.entity_gender = "Male"
@@ -485,13 +485,13 @@ end
     end
 --]]
 --force drones to pickup from object even if they have a large carry cap
-function ChoGGi.CodeFuncs.FuckingDrones(Obj)
+function ChoGGi.CodeFuncs.FuckingDrones(obj)
   local ChoGGi = ChoGGi
   local r = ChoGGi.Consts.ResourceScale
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
 
-  if not Obj then
+  if not obj then
     return
   end
 
@@ -500,16 +500,16 @@ function ChoGGi.CodeFuncs.FuckingDrones(Obj)
   local request
   local resource
   --mines/farms/factories
-  if Obj.class == "SingleResourceProducer" then
-    p = Obj.parent
-    stored = Obj:GetAmountStored()
-    request = Obj.stockpiles[Obj:GetNextStockpileIndex()].supply_request
-    resource = Obj.resource_produced
-  elseif Obj.class == "BlackCubeStockpile" then
-    p = Obj
-    stored = Obj:GetStoredAmount()
-    request = Obj.supply_request
-    resource = Obj.resource
+  if obj.class == "SingleResourceProducer" then
+    p = obj.parent
+    stored = obj:GetAmountStored()
+    request = obj.stockpiles[obj:GetNextStockpileIndex()].supply_request
+    resource = obj.resource_produced
+  elseif obj.class == "BlackCubeStockpile" then
+    p = obj
+    stored = obj:GetStoredAmount()
+    request = obj.supply_request
+    resource = obj.resource
   end
 
   --only fire if more then one resource
@@ -539,27 +539,27 @@ function ChoGGi.CodeFuncs.FuckingDrones(Obj)
   end
 end
 
-function ChoGGi.CodeFuncs.GetNearestIdleDrone(Bld)
+function ChoGGi.CodeFuncs.GetNearestIdleDrone(bld)
   local ChoGGi = ChoGGi
-  if not Bld or (Bld and not Bld.command_centers) then
+  if not bld or (bld and not bld.command_centers) then
     return
   end
 
   --check if nearest cc has idle drones
-  local cc = FindNearestObject(Bld.command_centers,Bld)
+  local cc = FindNearestObject(bld.command_centers,bld)
   if cc and cc:GetIdleDronesCount() > 0 then
     cc = cc.drones
   else
     --sort command_centers by nearest dist
-    table.sort(Bld.command_centers,
+    table.sort(bld.command_centers,
       function(a,b)
-        return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
+        return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",bld.command_centers)
       end
     )
     --get command_center with idle drones
-    for i = 1, #Bld.command_centers do
-      if Bld.command_centers[i]:GetIdleDronesCount() > 0 then
-        cc = Bld.command_centers[i].drones
+    for i = 1, #bld.command_centers do
+      if bld.command_centers[i]:GetIdleDronesCount() > 0 then
+        cc = bld.command_centers[i].drones
         break
       end
     end
@@ -577,120 +577,118 @@ function ChoGGi.CodeFuncs.GetNearestIdleDrone(Bld)
   end
 end
 
-function ChoGGi.CodeFuncs.SaveOldPalette(Obj)
-  local GetPal = Obj.GetColorizationMaterial
-  if not Obj.ChoGGi_origcolors then
-    Obj.ChoGGi_origcolors = {}
-    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,1)}
-    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,2)}
-    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,3)}
-    Obj.ChoGGi_origcolors[#Obj.ChoGGi_origcolors+1] = {GetPal(Obj,4)}
+function ChoGGi.CodeFuncs.SaveOldPalette(obj)
+  local GetPal = obj.GetColorizationMaterial
+  if not obj.ChoGGi_origcolors then
+    obj.ChoGGi_origcolors = {}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,1)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,2)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,3)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,4)}
   end
 end
-function ChoGGi.CodeFuncs.RestoreOldPalette(Obj)
-  if Obj.ChoGGi_origcolors then
-    local c = Obj.ChoGGi_origcolors
-    local SetPal = Obj.SetColorizationMaterial
-    SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
-    Obj.ChoGGi_origcolors = nil
+function ChoGGi.CodeFuncs.RestoreOldPalette(obj)
+  if obj.ChoGGi_origcolors then
+    local c = obj.ChoGGi_origcolors
+    local SetPal = obj.SetColorizationMaterial
+    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+    obj.ChoGGi_origcolors = nil
   end
 end
 
-function ChoGGi.CodeFuncs.GetPalette(Obj)
-  local g = Obj.GetColorizationMaterial
+function ChoGGi.CodeFuncs.GetPalette(obj)
+  local g = obj.GetColorizationMaterial
   local pal = {}
-  pal.Color1, pal.Roughness1, pal.Metallic1 = g(Obj, 1)
-  pal.Color2, pal.Roughness2, pal.Metallic2 = g(Obj, 2)
-  pal.Color3, pal.Roughness3, pal.Metallic3 = g(Obj, 3)
-  pal.Color4, pal.Roughness4, pal.Metallic4 = g(Obj, 4)
+  pal.Color1, pal.Roughness1, pal.Metallic1 = g(obj, 1)
+  pal.Color2, pal.Roughness2, pal.Metallic2 = g(obj, 2)
+  pal.Color3, pal.Roughness3, pal.Metallic3 = g(obj, 3)
+  pal.Color4, pal.Roughness4, pal.Metallic4 = g(obj, 4)
   return pal
 end
 
-function ChoGGi.CodeFuncs.RandomColour(Amount)
+function ChoGGi.CodeFuncs.RandomColour(amount)
   local ChoGGi = ChoGGi
 
-  --amount isn't a number so return a single colour
-  if type(Amount) ~= "number" then
+  -- amount isn't a number so return a single colour
+  if type(amount) ~= "number" then
     return RandColor() --24bit colour
   end
 
-  local randcolors = {}
-  --populate list with amount we want
-  for _ = 1, Amount do
-    randcolors[#randcolors+1] = RandColor()
+  local colours = {}
+  -- populate list with amount we want
+  for _ = 1, amount do
+    colours[#colours+1] = RandColor()
   end
-  --now remove all dupes and add more till we hit amount
-  while true do
-    --remove dupes
-    randcolors = ChoGGi.ComFuncs.RetTableNoDupes(randcolors)
-    if #randcolors == Amount then
-      break
-    end
-    --then loop missing amount
-    for _ = 1, Amount - #randcolors do
-      randcolors[#randcolors+1] = RandColor()
+
+  -- now remove all dupes and add more till we hit amount
+  while #colours ~= amount do
+    -- remove dupes
+    colours = ChoGGi.ComFuncs.RetTableNoDupes(colours)
+    -- then loop missing amount
+    for _ = 1, amount - #colours do
+      colours[#colours+1] = RandColor()
     end
   end
-  return randcolors
+
+  return colours
 end
 
-local function SetRandColour(Obj,colour,ChoGGi)
+local function SetRandColour(obj,colour,ChoGGi)
   colour = colour or ChoGGi.CodeFuncs.RandomColour()
-  local SetPal = Obj.SetColorizationMaterial
-  local GetPal = Obj.GetColorizationMaterial
-  local c1,c2,c3,c4 = GetPal(Obj,1),GetPal(Obj,2),GetPal(Obj,3),GetPal(Obj,4)
+  local SetPal = obj.SetColorizationMaterial
+  local GetPal = obj.GetColorizationMaterial
+  local c1,c2,c3,c4 = GetPal(obj,1),GetPal(obj,2),GetPal(obj,3),GetPal(obj,4)
   --likely can only change basecolour
---~ if Base or (c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504) then
   if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
-    Obj:SetColorModifier(colour)
+    obj:SetColorModifier(colour)
   else
-    if not Obj.ChoGGi_origcolors then
-      ChoGGi.CodeFuncs.SaveOldPalette(Obj)
+    if not obj.ChoGGi_origcolors then
+      ChoGGi.CodeFuncs.SaveOldPalette(obj)
     end
     --s,1,Color, Roughness, Metallic
-    SetPal(Obj, 1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(Obj, 2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(Obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(Obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(obj, 1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(obj, 2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+    SetPal(obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
   end
 end
 
-function ChoGGi.CodeFuncs.ObjectColourRandom(Obj)
-  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
+  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     return
   end
-  local Attaches = Obj:GetAttaches() or empty_table
+  local Attaches = obj:GetAttaches() or empty_table
   --random is random after all, so lets try for at least slightly different colours
   local colours = ChoGGi.CodeFuncs.RandomColour(#Attaches + 1)
   local ChoGGi = ChoGGi
-  SetRandColour(Obj,colours[1],ChoGGi)
+  SetRandColour(obj,colours[1],ChoGGi)
   for i = 1, #Attaches do
     SetRandColour(Attaches[i],colours[i+1],ChoGGi)
   end
 --~   return colour
 end
 
-local function SetDefColour(Obj)
-  Obj:SetColorModifier(6579300)
-  if Obj.ChoGGi_origcolors then
-    local SetPal = Obj.SetColorizationMaterial
-    local c = Obj.ChoGGi_origcolors
-    SetPal(Obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(Obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(Obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(Obj,4, c[4][1], c[4][2], c[4][3])
+local function SetDefColour(obj)
+  obj:SetColorModifier(6579300)
+  if obj.ChoGGi_origcolors then
+    local SetPal = obj.SetColorizationMaterial
+    local c = obj.ChoGGi_origcolors
+    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
+    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
+    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
+    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
   end
 end
 
-function ChoGGi.CodeFuncs.ObjectColourDefault(Obj)
-  if not Obj or Obj and not Obj:IsKindOf("ColorizableObject") then
+function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
+  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     return
   end
-  SetDefColour(Obj)
-  local Attaches = Obj:GetAttaches() or empty_table
+  SetDefColour(obj)
+  local Attaches = obj:GetAttaches() or empty_table
   for i = 1, #Attaches do
     SetDefColour(Attaches[i])
   end
@@ -699,10 +697,10 @@ end
 do --CloseDialogsECM
   local ChoGGi = ChoGGi
   local term = terminal.desktop
-  function ChoGGi.CodeFuncs.RemoveOldDialogs(Dialog)
-    while ChoGGi.ComFuncs.CheckForTypeInList(term,Dialog) do
+  function ChoGGi.CodeFuncs.RemoveOldDialogs(dialog)
+    while ChoGGi.ComFuncs.CheckForTypeInList(term,dialog) do
       for i = #term, 1, -1 do
-        if term[i]:IsKindOf(Dialog) then
+        if term[i]:IsKindOf(dialog) then
           term[i]:delete()
         end
       end
@@ -719,10 +717,10 @@ do --CloseDialogsECM
   end
 end
 
-function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(Obj,amount)
+function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj,amount)
   amount = amount or 10
-  local resource = Obj.resource
-  local io_stockpile = Obj.stockpiles[Obj:GetNextStockpileIndex()]
+  local resource = obj.resource
+  local io_stockpile = obj.stockpiles[obj:GetNextStockpileIndex()]
   local io_supply_req = io_stockpile.supply[resource]
   local io_demand_req = io_stockpile.demand[resource]
 
@@ -816,7 +814,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end)
 end
 
-function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
+function ChoGGi.CodeFuncs.ChangeObjectColour(obj,parent)
   local ChoGGi = ChoGGi
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     MsgPopup(
@@ -825,7 +823,7 @@ function ChoGGi.CodeFuncs.ChangeObjectColour(obj,Parent)
     )
     return
   end
-  --SetPal(Obj,i,Color,Roughness,Metallic)
+  --SetPal(obj,i,Color,Roughness,Metallic)
   local SetPal = obj.SetColorizationMaterial
   local pal = ChoGGi.CodeFuncs.GetPalette(obj)
 
@@ -875,9 +873,9 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
       --needed to set attachment colours
       local Label = obj.class
       local FakeParent
-      if Parent then
-        Label = Parent.class
-        FakeParent = Parent
+      if parent then
+        Label = parent.class
+        FakeParent = parent
       else
         FakeParent = obj.parentobj
       end
@@ -926,7 +924,7 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
       if choice[1].check1 then
         local tab = UICity.labels[Label] or empty_table
         for i = 1, #tab do
-          if Parent then
+          if parent then
             local Attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches(obj.class) or empty_table
             for j = 1, #Attaches do
               --if Attaches[j].class == obj.class then
@@ -943,7 +941,7 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
             else
               CheckGrid(SetColours,tab[i],tab[i])
             end
-          end --Parent
+          end --parent
         end
       else --single building change
         if choice[1].check2 then
@@ -997,23 +995,23 @@ function ChoGGi.CodeFuncs.SelObject()
 --~   end))
 end
 
-function ChoGGi.CodeFuncs.LightmodelBuild(Table)
+function ChoGGi.CodeFuncs.LightmodelBuild(list)
   local data = DataInstances.Lightmodel
   --always start with blank lightmodel
   data.ChoGGi_Custom:delete()
   data.ChoGGi_Custom = g_Classes.Lightmodel:new()
   data.ChoGGi_Custom.name = "ChoGGi_Custom"
 
-  for i = 1, #Table do
-    data.ChoGGi_Custom[Table[i].id] = Table[i].value
+  for i = 1, #list do
+    data.ChoGGi_Custom[list[i].id] = list[i].value
   end
   ChoGGi.Temp.LightmodelCustom = data.ChoGGi_Custom
   return data.ChoGGi_Custom
 end
 
-function ChoGGi.CodeFuncs.DeleteAllAttaches(Obj)
-  if type(Obj.GetAttaches) == "function" then
-    local Attaches =  Obj:GetAttaches() or empty_table
+function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
+  if type(obj.GetAttaches) == "function" then
+    local Attaches =  obj:GetAttaches() or empty_table
     for i = #Attaches, 1, -1 do
       Attaches[i]:delete()
     end
@@ -1133,17 +1131,18 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
   }
 end
 
-local function DeleteObject_ExecFunc(obj,Name,Param)
-  if type(obj[Name]) == "function" then
-    obj[Name](obj,Param)
+local function DeleteObject_ExecFunc(obj,name,param)
+  if type(obj[name]) == "function" then
+    obj[name](obj,param)
   end
 end
 
-local function DeleteObject_DeleteAttach(obj,Name)
-  if obj[Name] then
-    obj[Name]:delete()
+local function DeleteObject_DeleteAttach(obj,name)
+  if obj[name] then
+    obj[name]:delete()
   end
 end
+
 function ChoGGi.CodeFuncs.DeleteObject(obj)
   local ChoGGi = ChoGGi
 
@@ -1162,7 +1161,6 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   end
 
   --deleting domes will freeze game if they have anything in them.
-  --if obj:IsKindOf("Dome") and obj.working then
   if obj:IsKindOf("Dome") and obj.air then
     return
   end
@@ -1174,7 +1172,16 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   obj.indestructible = false
 
   if obj.DoDemolish then
-    DestroyBuildingImmediate(obj)
+    pcall(function()
+      DestroyBuildingImmediate(obj)
+    end)
+  end
+
+  if obj:IsKindOf("Deposit") then
+    for i = #obj.group, 1, -1 do
+      obj.group[i]:delete()
+      obj.group[i] = nil
+    end
   end
 
   DeleteObject_ExecFunc(obj,"Destroy")
@@ -1387,66 +1394,6 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   end
 end
 
---only add unique template names
-function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable)
-  if not (Name or Template or Table) then
-    return
-  end
-  XTemplates = XTemplates or XTemplates
-
-  if not InnerTable then
-    if not XTemplates[Template][1][Name] then
-      XTemplates[Template][1][Name] = true
-
-      XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
-        Concat("ChoGGi_ECM_",AsyncRand()), true,
-        "__context_of_kind", Table.__context_of_kind or "Infopanel",
-        "__template", Table.__template or "InfopanelSection",
-        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or S[588--[[Empty--]]],
-        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
-        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
-        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
-        "OnContextUpdate", Table.OnContextUpdate
-      }, {
-        PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
---~         "parent", function(parent, context)
-        "parent", function(parent, _)
-            return parent.parent
-          end,
-        "func", Table.func or "function() return end"
-        })
-      })
-    end
-  else
-    if not XTemplates[Template][Name] then
-      XTemplates[Template][Name] = true
-
-      XTemplates[Template][#XTemplates[Template]+1] = PlaceObj("XTemplateTemplate", {
-        Concat("ChoGGi_ECM_",AsyncRand()), true,
-        "__context_of_kind", Table.__context_of_kind or "Infopanel",
-        "__template", Table.__template or "InfopanelSection",
-        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-        "Title", Table.Title or S[588--[[Empty--]]],
-        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
-        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
-        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
-        "OnContextUpdate", Table.OnContextUpdate
-      }, {
-        PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
---~         "parent", function(parent, context)
-        "parent", function(parent, _)
-            return parent.parent
-          end,
-        "func", Table.func or "function() return end"
-        })
-      })
-    end
-  end
-end
-
 function ChoGGi.CodeFuncs.ResetHumanCentipedes()
   local objs = UICity.labels.Colonist or empty_table
   for i = 1, #objs do
@@ -1535,10 +1482,68 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
 end
 
 function ChoGGi.CodeFuncs.DeleteAttaches(obj)
-  pcall(function()
-    local a = obj:GetAttaches() or empty_table
-    for i = #a, 1, -1 do
-      a[i]:delete()
+  local a = obj:GetAttaches() or empty_table
+  for i = #a, 1, -1 do
+    a[i]:delete()
+  end
+end
+
+--only add unique template names
+function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable)
+  if not (Name or Template or Table) then
+    return
+  end
+  XTemplates = XTemplates or XTemplates
+
+  if not InnerTable then
+    if not XTemplates[Template][1][Name] then
+      XTemplates[Template][1][Name] = true
+
+      XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
+        Concat("ChoGGi_ECM_",AsyncRand()), true,
+        "__context_of_kind", Table.__context_of_kind or "Infopanel",
+        "__template", Table.__template or "InfopanelSection",
+        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+        "Title", Table.Title or S[588--[[Empty--]]],
+        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
+        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
+        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
+        "OnContextUpdate", Table.OnContextUpdate
+      }, {
+        PlaceObj("XTemplateFunc", {
+        "name", "OnActivate(self, context)",
+--~         "parent", function(parent, context)
+        "parent", function(parent, _)
+            return parent.parent
+          end,
+        "func", Table.func or "function() return end"
+        })
+      })
     end
-  end)
+  else
+    if not XTemplates[Template][Name] then
+      XTemplates[Template][Name] = true
+
+      XTemplates[Template][#XTemplates[Template]+1] = PlaceObj("XTemplateTemplate", {
+        Concat("ChoGGi_ECM_",AsyncRand()), true,
+        "__context_of_kind", Table.__context_of_kind or "Infopanel",
+        "__template", Table.__template or "InfopanelSection",
+        "Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
+        "Title", Table.Title or S[588--[[Empty--]]],
+        "RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
+        "RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
+        "RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
+        "OnContextUpdate", Table.OnContextUpdate
+      }, {
+        PlaceObj("XTemplateFunc", {
+        "name", "OnActivate(self, context)",
+--~         "parent", function(parent, context)
+        "parent", function(parent, _)
+            return parent.parent
+          end,
+        "func", Table.func or "function() return end"
+        })
+      })
+    end
+  end
 end

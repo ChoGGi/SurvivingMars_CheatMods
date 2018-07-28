@@ -40,10 +40,11 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
   colorpicker = false,
   Func = false,
   hidden = false,
+  translate = false,
+  min_size = point(50, 50),
   dialog_width = false,
   dialog_height = false,
   border = false,
-  min_size = point(50, 50),
 }
 
 function ChoGGi_ListChoiceCustomDialog:Init()
@@ -57,9 +58,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   self.border = 4
 
   self:SetSize(point(self.dialog_width, self.dialog_height))
---~   self:SetMinSize(point(50, 50))
   self:SetMovable(true)
-  self:SetTranslate(false)
 
   local element_y
   local element_x

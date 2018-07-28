@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local g_Classes = g_Classes
 if g_Classes.Examine then
   return
 end
@@ -26,6 +25,7 @@ local pairs,type,tostring,tonumber,getmetatable,rawget,table,debug,utf8 = pairs,
 
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
+local DeleteThread = DeleteThread
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
@@ -54,41 +54,57 @@ DefineClass.Examine = {
   show_times = "relative",
   offset = 1,
   page = 1,
+  autorefresh_thread = false,
+  menuitems = {
+    DumpText = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
+    DumpObject = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
+    ViewText = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
+    ViewObject = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
+    EditObject = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+    ExecCode = S[302535920000323--[[Exec Code--]]],
+    Functions = S[302535920001239--[[Functions--]]],
+  },
+  translate = false,
+  min_size = point(50, 50),
+  dialog_width = false,
+  dialog_height = false,
+  border = false,
 }
 
 function Examine:Init()
   local ChoGGi = ChoGGi
+
+  local g_Classes = g_Classes
   local const = const
   local terminal = terminal
 
   --element pos is based on
   self:SetPos(point(0,0))
 
-  local dialog_width = 500
-  local dialog_height = 600
-  self:SetSize(point(dialog_width,dialog_height))
-  self:SetMinSize(point(50, 50))
-  self:SetMovable(true)
-  self:SetTranslate(false)
+  self.dialog_width = 500
+  self.dialog_height = 600
+  self.border = 4
 
-  local border = 4
+  self:SetSize(point(self.dialog_width,self.dialog_height))
+  self:SetMovable(true)
+
   local element_y
   local element_x
-  dialog_width = dialog_width - border * 2
-  local dialog_left = border
+  self.dialog_width = self.dialog_width - self.border * 2
+  local dialog_left = self.border
 
   DialogAddCloseX(self)
   DialogAddCaption(self,{
     prefix = Concat(S[302535920000069--[[Examine--]]],": "),
-    pos = point(25, border),
-    size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
+    pos = point(25, self.border),
+    size = point(self.dialog_width-self.idCloseX:GetSize():x(), 22)
   })
 
   element_y = self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
 
   self.idLinks = g_Classes.StaticText:new(self)
   self.idLinks:SetPos(point(dialog_left, element_y))
-  self.idLinks:SetSize(point(dialog_width, 20))
+  self.idLinks:SetSize(point(self.dialog_width, 20))
   --~ box(left,top, right, bottom)
   self.idLinks:SetHSizing("Resize")
   self.idLinks:SetBackgroundColor(RGBA(0, 0, 0, 16))
@@ -105,66 +121,41 @@ function Examine:Init()
   local title = S[302535920000084--[[Auto-Refresh--]]]
   local button_size = RetCheckTextSize(title)
   self.idAutoRefresh = g_Classes.CheckButton:new(self)
-  self.idAutoRefresh:SetPos(point(dialog_width - button_size:x() + 20, element_y + 1))
+  self.idAutoRefresh:SetPos(point(self.dialog_width - button_size:x() + 20, element_y + 1))
   self.idAutoRefresh:SetSize(button_size)
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idAutoRefresh:SetHSizing("AnchorToRight")
   self.idAutoRefresh:SetText(title)
   self.idAutoRefresh:SetHint(S[302535920001257--[[Auto-refresh list every second.--]]])
   self.idAutoRefresh:SetButtonSize(point(16, 16))
-  --add check for auto-refresh
+  -- auto-refresh toggle
   function self.idAutoRefresh.button.OnButtonPressed()
-    self.refreshing = self.idAutoRefresh:GetState()
-    CreateRealTimeThread(function()
-      while self.refreshing do
-        if self.obj then
-          self:SetObj(self.obj)
-        end
-        Sleep(1000)
-      end
-    end)
+    self.idAutoRefreshButOnButtonPressed(self)
   end
 
-  element_y = border / 2 + self.idLinks:GetPos():y() + self.idLinks:GetSize():y()
+  element_y = self.border / 2 + self.idLinks:GetPos():y() + self.idLinks:GetSize():y()
 
-  --todo: better text control (fix weird ass text controls)
+  -- todo: better text control (fix weird ass text controls)
   self.idFilter = g_Classes.SingleLineEdit:new(self)
   self.idFilter:SetPos(point(dialog_left, element_y))
-  self.idFilter:SetSize(point(dialog_width, 26))
+  self.idFilter:SetSize(point(self.dialog_width, 26))
   self.idFilter:SetHSizing("Resize")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
   self.idFilter:SetFontStyle("Editor12Bold")
-  self.idFilter:SetHint(S[302535920000043--[[Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top).--]]])
+  self.idFilter:SetHint(S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]])
   self.idFilter:SetTextHAlign("center")
   self.idFilter:SetTextVAlign("center")
   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
   self.idFilter.display_text = S[302535920000044--[[Goto text--]]]
-  -- blocks the transp toggle
---~   self.idFilter:AddInterpolation({
---~     type = const.intAlpha,
---~     startValue = 255,
---~     flags = const.intfIgnoreParent
---~   })
   function self.idFilter.OnValueChanged(_, value)
     self:FindNext(value)
   end
   --improved text handling (orig used StaticText.OnKbdKeyDown...)
   function self.idFilter:OnKbdKeyDown(char, vk)
-    if vk == const.vkEnter then
-      self.parent:FindNext(self:GetText())
-      return "break"
-    elseif vk == const.vkUp then
-      self.parent.idText:SetTextOffset(point(0,0))
-      return "break"
-    elseif vk == const.vkEsc then
-      self.parent.idCloseX:Press()
-      return "break"
-    else
-      g_Classes.SingleLineEdit.OnKbdKeyDown(self, char, vk)
-    end
+    self.idFilterOnKbdKeyDown(self, char, vk)
   end
 
-  element_y = border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
+  element_y = self.border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
 
   title = S[302535920000239--[[Tools--]]]
   self.idTools = g_Classes.Button:new(self)
@@ -173,116 +164,23 @@ function Examine:Init()
   self.idTools:SetText(title)
   self.idToolsMenu = g_Classes.ComboBox:new(self)
   self.idToolsMenu:SetPos(self.idTools:GetPos() + point(0,10))
-  --height doesn't matter, but width sure does
+  -- height doesn't matter, but width sure does
   self.idToolsMenu:SetSize(point(100, 0))
   self.idToolsMenu:SetVisible(false)
   self.idToolsMenu:SetItemsLimit(25)
-  --so it doesn't block clicking when it's closed
+  -- so it doesn't block clicking when it's closed
   self.idToolsMenu:SetZOrder(0)
 
   function self.idTools.OnButtonPressed()
     DialogUpdateMenuitems(self.idToolsMenu)
-    --combo makes this 1000000, we need more to be on top of examine
+    -- combobox makes this 1000000, we need more to be on top of examine
     self.idToolsMenu.drop_dialog:SetZOrder(zorder+1)
   end
 
-  local menuitem_DumpText = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]])
-  local menuitem_DumpObject = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]])
-  local menuitem_ViewText = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]])
-  local menuitem_ViewObject = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]])
-  local menuitem_EditObject = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]])
-  local menuitem_ExecCode = S[302535920000323--[[Exec Code--]]]
-  local menuitem_Functions = S[302535920001239--[[Functions--]]]
-
   function self.idToolsMenu.OnComboClose(menu,idx)
-    --close hint
-    XDestroyRolloverWindow(true)
-    if self.idToolsMenu.list.rollover then
-      local text = menu.items[idx].text
-      if text == menuitem_ViewText then
-        local str = self:totextex(self.obj)
-        --remove html tags
-        str = str:gsub("<[/%s%a%d]*>","")
-        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-          checkbox = true,
-          zorder = zorder,
-          text = str,
-          hint_ok = 302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]],
-          func = function(answer,overwrite)
-            if answer then
-              Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
-            end
-          end,
-        })
-        dialog:Open()
-      elseif text == menuitem_ViewObject then
-        local str = ValueToLuaCode(self.obj)
-        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-          checkbox = true,
-          zorder = zorder,
-          text = str,
-          hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
-
-This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
-          func = function(answer,overwrite)
-            if answer then
-              Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
-            end
-          end,
-        })
-        dialog:Open()
-      elseif text == menuitem_DumpText then
-        local str = self:totextex(self.obj)
-        --remove html tags
-        str = str:gsub("<[/%s%a%d]*>","")
-        Dump(Concat("\n",str),nil,"DumpedExamine","lua")
-      elseif text == menuitem_DumpObject then
-        local str = ValueToLuaCode(self.obj)
-        Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
-      elseif text == menuitem_EditObject then
-        ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-      elseif text == menuitem_ExecCode then
-        ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
-      elseif text == menuitem_Functions then
-
-        local menu_added = {}
-        local menu_list_items = {}
-        -- adds class name then list of functions below
-        local function BuildFuncList(obj_name,prefix)
-          prefix = prefix or ""
-          local class = _G[obj_name]
-          local skip = true
-          for Key,_ in pairs(class) do
-            if type(class[Key]) == "function" then
-              menu_list_items[Concat(prefix,obj_name,".",Key,": ")] = class[Key]
-              skip = false
-            end
-          end
-          if not skip then
-            menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
-          end
-        end
-        local function ProcessList(list,prefix)
-          for i = 1, #list do
-            -- CObject and Object are pretty much the same (Object has a couple more funcs)
-            if not menu_added[list[i]] and list[i] ~= "CObject" then
-              menu_added[list[i]] = true
-              BuildFuncList(list[i],prefix)
-            end
-          end
-        end
-
-        ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
-        ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
-        -- add examiner object with some spaces so it's at the top
-        BuildFuncList(self.obj.class,"  ")
-
-        OpenExamine(menu_list_items,self)
-
-      end
-
-    end
+    self:idToolsMenuOnComboClose(menu,idx)
   end
+
   --setup menu items
   self.idToolsMenu:SetContent({
     {
@@ -290,22 +188,22 @@ This can take time on something like the ""Building"" metatable (don't use this 
       rollover = "-"
     },
     {
-      text = menuitem_DumpText,
+      text = self.menuitems.DumpText,
       rollover = S[302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]],
     },
     {
-      text = menuitem_DumpObject,
+      text = self.menuitems.DumpObject,
       rollover = S[302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]],
     },
 
     {
-      text = menuitem_ViewText,
+      text = self.menuitems.ViewText,
       rollover = S[302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]]],
     },
     {
-      text = menuitem_ViewObject,
+      text = self.menuitems.ViewObject,
       rollover = S[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
@@ -315,15 +213,15 @@ This can take time on something like the ""Building"" metatable (don't use this 
       rollover = "-",
     },
     {
-      text = menuitem_Functions,
+      text = self.menuitems.Functions,
       rollover = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
     },
     {
-      text = menuitem_EditObject,
+      text = self.menuitems.EditObject,
       rollover = S[302535920000050--[[Opens object in Object Manipulator.--]]],
     },
     {
-      text = menuitem_ExecCode,
+      text = self.menuitems.ExecCode,
       rollover = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
     },
@@ -351,15 +249,8 @@ Which you can then mess around with some more in the console."--]]],
     self.idParentsMenu.drop_dialog:SetZOrder(zorder+1)
   end
 
-  function self.idParentsMenu.OnComboClose(menu,index)
-    --close hint
-    XDestroyRolloverWindow(true)
-    if self.idParentsMenu.list.rollover then
-      local text = menu.items[index].text
-      if not text:find("-") then
-        OpenExamine(_G[text],self)
-      end
-    end
+  function self.idParentsMenu.OnComboClose(menu,idx)
+    self:MenuOnComboClose(menu,idx,"idParentsMenu")
   end
 
   element_x = 10 + self.idParents:GetPos():x() + self.idParents:GetSize():x()
@@ -386,21 +277,14 @@ Which you can then mess around with some more in the console."--]]],
   end
 
   function self.idAttachesMenu.OnComboClose(menu,idx)
-    --close hint
-    XDestroyRolloverWindow(true)
-    if self.idAttachesMenu.list.rollover then
-      local item = menu.items[idx]
-      if not item.text:find("-") then
-        OpenExamine(item.obj,self)
-      end
-    end
+    self:MenuOnComboClose(menu,idx,"idAttachesMenu")
   end
 
   title = S[1000232--[[Next--]]]
   button_size = RetCheckTextSize(title)
   self.idNext = g_Classes.Button:new(self)
   self.idNext:SetSize(RetButtonTextSize(title))
-  self.idNext:SetPos(point(dialog_width - button_size:x() - border, element_y))
+  self.idNext:SetPos(point(self.dialog_width - button_size:x() - self.border, element_y))
   self.idNext:SetText(title)
   --self.idNext:SetTextColorDisabled(RGBA(127, 127, 127, 255))
   self.idNext:SetHSizing("AnchorToRight")
@@ -414,11 +298,11 @@ Right-click to scroll to top."--]]])
     self.idText:SetTextOffset(point(0,0))
   end
 
-  element_y = border + self.idTools:GetPos():y() + self.idTools:GetSize():y()
+  element_y = self.border + self.idTools:GetPos():y() + self.idTools:GetSize():y()
 
   self.idText = g_Classes.StaticText:new(self)
   self.idText:SetPos(point(dialog_left, element_y))
-  self.idText:SetSize(point(dialog_width, dialog_height-element_y-border-1))
+  self.idText:SetSize(point(self.dialog_width, self.dialog_height-element_y-self.border-1))
   self.idText:SetHSizing("Resize")
   self.idText:SetVSizing("Resize")
   self.idText:SetBackgroundColor(RGBA(0, 0, 0, 50))
@@ -433,7 +317,7 @@ Right-click to scroll to top."--]]])
     startValue = 255,
     flags = const.intfIgnoreParent
   })
-  element_y = border + self.idText:GetPos():y() + self.idText:GetSize():y()
+  element_y = self.border + self.idText:GetPos():y() + self.idText:GetSize():y()
 
   --so elements move when dialog re-sizes
   self:InitChildrenSizing()
@@ -442,10 +326,146 @@ Right-click to scroll to top."--]]])
   self.transp_mode = transp_mode
   self:SetTranspMode(self.transp_mode)
 
---~   CreateRealTimeThread(function()
   DelayedCall(1, function()
     self:SetPos(point(100,100))
   end)
+end
+
+function Examine:idAutoRefreshButOnButtonPressed()
+  -- if already running then stop and return
+  if self.autorefresh_thread then
+    DeleteThread(self.autorefresh_thread)
+    self.autorefresh_thread = false
+    return
+  end
+  -- otherwise fire it up
+  self.autorefresh_thread = CreateRealTimeThread(function()
+    while true do
+      if self.obj then
+        self:SetObj(self.obj)
+      else
+        DeleteThread(self.autorefresh_thread)
+      end
+      Sleep(1000)
+    end
+  end)
+end
+
+function Examine:idFilterOnKbdKeyDown(char, vk)
+  local p = self.parent
+  if vk == const.vkEnter then
+    p:FindNext(self:GetText())
+    return "break"
+  elseif vk == const.vkUp then
+    p.idText:SetTextOffset(point(0,0))
+    return "break"
+  elseif vk == const.vkEsc then
+    p.idCloseX:Press()
+    return "break"
+  else
+    g_Classes.SingleLineEdit.OnKbdKeyDown(self, char, vk)
+  end
+end
+
+function Examine:MenuOnComboClose(menu,idx,which)
+  --close hint
+  XDestroyRolloverWindow(true)
+  if self[which].list.rollover then
+    local item = menu.items[idx]
+    if not item.text:find("-") then
+      OpenExamine(item.obj,self)
+    end
+  end
+end
+
+function Examine:idToolsMenuOnComboClose(menu,idx)
+  --close hint
+  XDestroyRolloverWindow(true)
+  if self.idToolsMenu.list.rollover then
+    local text = menu.items[idx].text
+    if text == self.menuitems.ViewText then
+      local str = self:totextex(self.obj)
+      --remove html tags
+      str = str:gsub("<[/%s%a%d]*>","")
+      local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+        checkbox = true,
+        zorder = zorder,
+        text = str,
+        hint_ok = 302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]],
+        func = function(answer,overwrite)
+          if answer then
+            Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+          end
+        end,
+      })
+      dialog:Open()
+    elseif text == self.menuitems.ViewObject then
+      local str = ValueToLuaCode(self.obj)
+      local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+        checkbox = true,
+        zorder = zorder,
+        text = str,
+        hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
+        func = function(answer,overwrite)
+          if answer then
+            Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+          end
+        end,
+      })
+      dialog:Open()
+    elseif text == self.menuitems.DumpText then
+      local str = self:totextex(self.obj)
+      --remove html tags
+      str = str:gsub("<[/%s%a%d]*>","")
+      Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+    elseif text == self.menuitems.DumpObject then
+      local str = ValueToLuaCode(self.obj)
+      Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
+    elseif text == self.menuitems.EditObject then
+      ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
+    elseif text == self.menuitems.ExecCode then
+      ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
+    elseif text == self.menuitems.Functions then
+
+      local menu_added = {}
+      local menu_list_items = {}
+      -- adds class name then list of functions below
+      local function BuildFuncList(obj_name,prefix)
+        prefix = prefix or ""
+        local class = _G[obj_name]
+        local skip = true
+        for Key,_ in pairs(class) do
+          if type(class[Key]) == "function" then
+            menu_list_items[Concat(prefix,obj_name,".",Key,": ")] = class[Key]
+            skip = false
+          end
+        end
+        if not skip then
+          menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
+        end
+      end
+      local function ProcessList(list,prefix)
+        for i = 1, #list do
+          -- CObject and Object are pretty much the same (Object has a couple more funcs)
+          if not menu_added[list[i]] and list[i] ~= "CObject" then
+            menu_added[list[i]] = true
+            BuildFuncList(list[i],prefix)
+          end
+        end
+      end
+
+      ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
+      ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
+      -- add examiner object with some spaces so it's at the top
+      BuildFuncList(self.obj.class,"  ")
+
+      OpenExamine(menu_list_items,self)
+
+    end
+
+  end
 end
 
 function Examine:FindNext(filter)
@@ -1200,5 +1220,8 @@ end
 --~ end
 
 function Examine:Done(result)
+  if self.autorefresh_thread then
+    DeleteThread(self.autorefresh_thread)
+  end
   g_Classes.Dialog.Done(self,result)
 end

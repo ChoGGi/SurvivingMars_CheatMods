@@ -594,30 +594,27 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
   end)
 end
 
-function ChoGGi.ComFuncs.Dump(obj,Mode,File,Ext,Skip)
-  if Mode == "w" or Mode == "w+" then
-    Mode = nil
+function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
+  if mode == "w" or mode == "w+" then
+    mode = nil
   else
-    Mode = "-1"
+    mode = "-1"
   end
-  Ext = Ext or "txt"
-  File = File or "DumpedText"
-  local Filename = Concat("AppData/logs/",File,".",Ext)
+  local filename = Concat("AppData/logs/",file or "DumpedText",".",ext or "txt")
 
-  if pcall(function()
-    ThreadLockKey(Filename)
-    AsyncStringToFile(Filename,obj,Mode)
-    ThreadUnlockKey(Filename)
-  end) then
-    if not Skip then
-      MsgPopup(
-        S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
-        Filename,
-        "UI/Icons/Upgrades/magnetic_filtering_04.tga",
-        nil,
-        obj
-      )
-    end
+  ThreadLockKey(filename)
+  AsyncStringToFile(filename,obj,mode)
+  ThreadUnlockKey(filename)
+
+  -- let user know
+  if not skip_msg then
+    MsgPopup(
+      S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
+      filename,
+      "UI/Icons/Upgrades/magnetic_filtering_04.tga",
+      nil,
+      obj
+    )
   end
 end
 
@@ -714,39 +711,39 @@ end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
 -- ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
-function ChoGGi.ComFuncs.NumRetBool(Num,TrueVar,FalseVar)
-  if type(Num) ~= "number" then
+function ChoGGi.ComFuncs.NumRetBool(num,true_var,false_var)
+  if type(num) ~= "number" then
     return
   end
-  local Bool = true
-  if Num < 1 then
-    Bool = nil
+  local bool = true
+  if num < 1 then
+    bool = false
   end
-  return Bool and TrueVar or FalseVar
+  return bool and true_var or false_var
 end
 
 -- return opposite value or first value if neither
-function ChoGGi.ComFuncs.ValueRetOpp(Setting,Value1,Value2)
-  if Setting == Value1 then
-    return Value2
-  elseif Setting == Value2 then
-    return Value1
+function ChoGGi.ComFuncs.ValueRetOpp(setting,value1,value2)
+  if setting == value1 then
+    return value2
+  elseif setting == value2 then
+    return value1
   end
   --just in case
-  return Value1
+  return value1
 end
 
 -- return as num
-function ChoGGi.ComFuncs.BoolRetNum(Bool)
-  if Bool == true then
+function ChoGGi.ComFuncs.BoolRetNum(bool)
+  if bool == true then
     return 1
   end
   return 0
 end
 
 -- toggle 0/1
-function ChoGGi.ComFuncs.ToggleBoolNum(Num)
-  if Num == 0 then
+function ChoGGi.ComFuncs.ToggleBoolNum(n)
+  if n == 0 then
     return 1
   end
   return 0
@@ -761,17 +758,17 @@ function ChoGGi.ComFuncs.ToggleValue(value)
 end
 
 -- return equal or higher amount
-function ChoGGi.ComFuncs.CompareAmounts(iAmtA,iAmtB)
+function ChoGGi.ComFuncs.CompareAmounts(a,b)
   --if ones missing then just return the other
-  if not iAmtA then
-    return iAmtB
-  elseif not iAmtB then
-    return iAmtA
+  if not a then
+    return b
+  elseif not b then
+    return a
   --else return equal or higher amount
-  elseif iAmtA >= iAmtB then
-    return iAmtA
-  elseif iAmtB >= iAmtA then
-    return iAmtB
+  elseif a >= b then
+    return a
+  elseif b >= a then
+    return b
   end
 end
 
@@ -793,14 +790,14 @@ end
     end
   )
 --]]
-function ChoGGi.ComFuncs.CompareTableValue(a,b,sName)
+function ChoGGi.ComFuncs.CompareTableValue(a,b,name)
   if not a and not b then
     return
   end
-  if type(a[sName]) == type(b[sName]) then
-    return a[sName] < b[sName]
+  if type(a[name]) == type(b[name]) then
+    return a[name] < b[name]
   else
-    return tostring(a[sName]) < tostring(b[sName])
+    return tostring(a[name]) < tostring(b[name])
   end
 end
 
@@ -811,33 +808,33 @@ table.sort(s.command_centers,
   end
 )
 --]]
-function ChoGGi.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
+function ChoGGi.ComFuncs.CompareTableFuncs(a,b,func,obj)
   if not a and not b then
     return
   end
-  if Obj then
-    return Obj[sFunc](Obj,a) < Obj[sFunc](Obj,b)
+  if obj then
+    return obj[func](obj,a) < obj[func](obj,b)
   else
-    return a[sFunc](a,b) < b[sFunc](b,a)
+    return a[func](a,b) < b[func](b,a)
   end
 end
 
 -- write logs funcs
-local function ReplaceFunc(Name,Type,ChoGGi)
-  ChoGGi.ComFuncs.SaveOrigFunc(Name)
-  _G[Name] = function(...)
-    ChoGGi.ComFuncs.PrintFiles(Type,ChoGGi.OrigFuncs[Name],nil,...)
+local function ReplaceFunc(name,which,ChoGGi)
+  ChoGGi.ComFuncs.SaveOrigFunc(name)
+  _G[name] = function(...)
+    ChoGGi.ComFuncs.PrintFiles(which,ChoGGi.OrigFuncs[name],nil,...)
   end
 end
-local function ResetFunc(Name,ChoGGi)
-  if ChoGGi.OrigFuncs[Name] then
-    _G[Name] = ChoGGi.OrigFuncs[Name]
-    ChoGGi.OrigFuncs[Name] = nil
+local function ResetFunc(name,ChoGGi)
+  if ChoGGi.OrigFuncs[name] then
+    _G[name] = ChoGGi.OrigFuncs[name]
+    ChoGGi.OrigFuncs[name] = nil
   end
 end
-function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
+function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
   local ChoGGi = ChoGGi
-  if Enable == true then
+  if which == true then
     -- remove old logs
     local console = "AppData/logs/ConsoleLog.log"
     AsyncCopyFile(console, "AppData/logs/ConsoleLog.previous.log")
@@ -859,13 +856,13 @@ function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
 end
 
 -- ChoGGi.ComFuncs.PrintIds(Object)
-function ChoGGi.ComFuncs.PrintIds(Table)
+function ChoGGi.ComFuncs.PrintIds(list)
   local text = ""
 
-  for i = 1, #Table do
-    text = Concat(text,"----------------- ",Table[i].id,": ",i,"\n")
-    for j = 1, #Table[i] do
-      text = Concat(text,Table[i][j].id,": ",j,"\n")
+  for i = 1, #list do
+    text = Concat(text,"----------------- ",list[i].id,": ",i,"\n")
+    for j = 1, #list[i] do
+      text = Concat(text,list[i][j].id,": ",j,"\n")
     end
   end
 
@@ -873,81 +870,70 @@ function ChoGGi.ComFuncs.PrintIds(Table)
 end
 
 -- check for and remove broken objects from UICity.labels
-function ChoGGi.ComFuncs.RemoveMissingLabelObjects(Label)
+function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
   local UICity = UICity
-  local found = true
-  while found do
-    found = nil
-    local tab = UICity.labels[Label] or empty_table
-    for i = 1, #tab do
-      if not IsValid(tab[i]) then
-      --if tostring(tab[i]:GetPos()) == "(0, 0, 0)" then
-        table.remove(UICity.labels[Label],i)
-        found = true
-        break
-      end
+  local list = UICity.labels[label] or empty_table
+  for i = #list, 1, -1 do
+    if not IsValid(list[i]) then
+      table.remove(UICity.labels[label],i)
     end
   end
 end
 
-function ChoGGi.ComFuncs.RemoveMissingTableObjects(Table,TObject)
-  local found = true
-  while found do
-    found = nil
-    for i = 1, #Table do
-      if TObject then
-        if #Table[i][TObject] == 0 then
-          table.remove(Table,i)
-          found = true
-          break
-        end
-      elseif not IsValid(Table[i]) then
-        --placed objects
-        table.remove(Table,i)
-        found = true
-        break
+function ChoGGi.ComFuncs.RemoveMissingTableObjects(list,obj)
+  if obj then
+    for i = #list, 1, -1 do
+      if #list[i][list] == 0 then
+        table.remove(list,i)
+      end
+    end
+  else
+    for i = #list, 1, -1 do
+      if not IsValid(list[i]) then
+        table.remove(list,i)
       end
     end
   end
-  return Table
+  return list
 end
 
-function ChoGGi.ComFuncs.RemoveFromLabel(Label,Obj)
+function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
   local UICity = UICity
-  local tab = UICity.labels[Label] or empty_table
+  local tab = UICity.labels[label] or empty_table
   for i = 1, #tab do
-    if tab[i] and tab[i].handle and tab[i] == Obj.handle then
-      table.remove(UICity.labels[Label],i)
+    if tab[i] and tab[i].handle and tab[i] == obj.handle then
+      table.remove(UICity.labels[label],i)
     end
   end
 end
 
-function toboolean(Str)
-  if Str == "true" then
+function toboolean(str)
+  if str:lower() == "true" then
     return true
-  elseif Str == "false" then
+  elseif str:lower() == "false" then
     return false
   end
 end
 
--- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil
-function ChoGGi.ComFuncs.RetProperType(Value)
-  --number?
-  local num = tonumber(Value)
+-- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"
+function ChoGGi.ComFuncs.RetProperType(value)
+  -- number?
+  local num = tonumber(value)
   if num then
     return num
   end
-  --stringy boolean
-  if Value == "true" then
+  -- stringy boolean
+  if value == "true" then
     return true
-  elseif Value == "false" then
+  elseif value == "false" then
     return false
   end
-  if Value == "nil" then
+  -- nadda
+  if value == "nil" then
     return
   end
-  --then it's a string (probably)
-  return Value
+  -- then it's a string (probably)
+  return value
 end
 
 -- used to check for some SM objects (Points/Boxes)
@@ -973,12 +959,8 @@ end
 
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
-function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
---~   if ChoGGi.Testing and type(ActionsToAdd) == "string" then
---~     print("ActionsToAdd",ActionsToAdd)
---~   end
-
-  for k, v in pairs(ActionsToAdd) do
+function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
+  for k, v in pairs(actions_to_add) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
         if type(v.key) == "table" then
@@ -1007,81 +989,58 @@ function ChoGGi.ComFuncs.UserAddActions(ActionsToAdd)
   UserActions_SetMode(UserActions.mode)
 end
 
-function ChoGGi.ComFuncs.AddAction(Menu,Action,Key,Des,Icon,Toolbar,Mode,xInput,ToolbarDefault)
+function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
   local ChoGGi = ChoGGi
-  if Menu then
-    Menu = Concat("/",Menu)
+  if menu then
+    menu = Concat("/",menu)
   end
 
   -- build function
   local name = "NOFUNC"
   -- tooltip menu item
-  if Action == "blank_function" then
-    name = Action
-    Action = function()end
+  if action == "blank_function" then
+    name = action
+    action = function()end
   -- make the id the func location (filename/linenum)
-  elseif type(Action) == "function" then
-    local debug_info = debug.getinfo(Action, "Sn")
+  elseif type(action) == "function" then
+    local debug_info = debug.getinfo(action, "Sn")
     local text = Concat(debug_info.short_src,"(",debug_info.linedefined,")")
     name = text:gsub(ChoGGi.ModPath,"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
     name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
     name = name:gsub("...Mods/Expanded Cheat Menu/","")
   else
-    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",Menu)
+    ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",menu)
   end
 
   -- description
-  if type(Des) == "function" then
-    Des = Des()
+  if type(des) == "function" then
+    des = des()
   else
-    Des = ChoGGi.ComFuncs.CheckText(Des,Des)
+    des = ChoGGi.ComFuncs.CheckText(des,des)
   end
 
---[[
---TEST menu items
-  if Menu then
-    print(Menu)
-  end
-  if Action then
-    print(Action)
-  end
-  if Key then
-    print(Key)
-  end
-  if Des then
-    print(Des)
-  end
-  if Icon then
-    print(Icon)
-  end
-print("\n")
---]]
-
-  --T(Number from Game.csv)
-  --UserActions.AddActions({
-  --UserActions.RejectedActions()
   ChoGGi.ComFuncs.UserAddActions({
     -- AsyncRand needed for items made from same line (like a loop)
     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
-      menu = Menu,
-      action = Action,
-      key = Key,
-      description = Des,
-      icon = Icon,
-      toolbar = Toolbar,
-      mode = Mode,
-      xinput = xInput,
-      toolbar_default = ToolbarDefault
+      menu = menu,
+      action = action,
+      key = key,
+      description = des,
+      icon = icon,
+      toolbar = toolbar,
+      mode = mode,
+      xinput = xinput,
+      toolbar_default = toolbar_default
     }
   })
 end
 
 -- while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
-function ChoGGi.ComFuncs.CheckForTypeInList(List,Type)
+function ChoGGi.ComFuncs.CheckForTypeInList(list,cls)
   local ret = false
-  for i = 1, #List do
-    if List[i]:IsKindOf(Type) then
+  for i = 1, #list do
+    if list[i]:IsKindOf(cls) then
       ret = true
     end
   end
@@ -1102,26 +1061,26 @@ it returns percentages in decimal for ease of mathing (SM removed the math.funct
 ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
-function ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
-  local techdef = TechDef[Tech] or empty_table
+function ChoGGi.ComFuncs.ReturnTechAmount(tech,prop)
+  local techdef = TechDef[tech] or empty_table
   for i = 1, #techdef do
-    if techdef[i].Prop == Prop then
-      Tech = techdef[i]
+    if techdef[i].Prop == prop then
+      tech = techdef[i]
       local RetObj = {}
 
-      if Tech.Percent then
-        local percent = Tech.Percent
+      if tech.Percent then
+        local percent = tech.Percent
         if percent < 0 then
           percent = percent * -1 -- -50 > 50
         end
         RetObj.p = (percent + 0.0) / 100 -- (50 > 50.0) > 0.50
       end
 
-      if Tech.Amount then
-        if Tech.Amount < 0 then
-          RetObj.a = Tech.Amount * -1 -- always gotta be positive
+      if tech.Amount then
+        if tech.Amount < 0 then
+          RetObj.a = tech.Amount * -1 -- always gotta be positive
         else
-          RetObj.a = Tech.Amount
+          RetObj.a = tech.Amount
         end
       end
 
@@ -1145,23 +1104,23 @@ end
   end
 --]]
 -- function ChoGGi.ComFuncs.SetConstsG(Name,Value,IsResearched)
-function ChoGGi.ComFuncs.SetConstsG(Name,Value)
+function ChoGGi.ComFuncs.SetConstsG(name,value)
   --we only want to change it if user set value
-  if Value then
+  if value then
     --some mods change Consts or g_Consts, so we'll just do both to be sure
-    Consts[Name] = Value
-    g_Consts[Name] = Value
+    Consts[name] = value
+    g_Consts[name] = value
   end
 end
 
 -- if value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function ChoGGi.ComFuncs.SetSavedSetting(Setting,Value)
+function ChoGGi.ComFuncs.SetSavedSetting(setting,value)
   local ChoGGi = ChoGGi
   --if setting is the same as the default then remove it
-  if ChoGGi.Consts[Setting] == Value then
-    ChoGGi.UserSettings[Setting] = nil
+  if ChoGGi.Consts[setting] == value then
+    ChoGGi.UserSettings[setting] = nil
   else
-    ChoGGi.UserSettings[Setting] = Value
+    ChoGGi.UserSettings[setting] = value
   end
 end
 
@@ -1211,52 +1170,52 @@ end
 
 -- ChoGGi.ComFuncs.FilterFromTable(GetObjects{},{ParSystem = true,ResourceStockpile = true},nil,"class")
 -- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"},nil,nil,"working")
-function ChoGGi.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
+function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
   return FilterObjects({
     filter = function(o)
-      if ExcludeList or IncludeList then
-        if ExcludeList and IncludeList then
-          if not ExcludeList[o[Type]] then
+      if exclude_list or include_list then
+        if exclude_list and include_list then
+          if not exclude_list[o[name]] then
             return o
-          elseif IncludeList[o[Type]] then
-            return o
-          end
-        elseif ExcludeList then
-          if not ExcludeList[o[Type]] then
+          elseif include_list[o[name]] then
             return o
           end
-        elseif IncludeList then
-          if IncludeList[o[Type]] then
+        elseif exclude_list then
+          if not exclude_list[o[name]] then
+            return o
+          end
+        elseif include_list then
+          if include_list[o[name]] then
             return o
           end
         end
       else
-        if o[Type] then
+        if o[name] then
           return o
         end
       end
     end
-  },Table)
+  },list)
 end
 
 -- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{},"IsKindOf","Residence")
 -- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
-function ChoGGi.ComFuncs.FilterFromTableFunc(Table,Func,Value,IsBool)
+function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
   return FilterObjects({
     filter = function(o)
-      if IsBool then
-        if _G[Func](o) then
+      if is_bool then
+        if _G[func](o) then
           return o
         end
-      elseif o[Func](o,Value) then
+      elseif o[func](o,value) then
         return o
       end
     end
-  },Table)
+  },list)
 end
 
-function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
-  if type(Table) ~= "table" then
+function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
+  if type(list) ~= "table" then
     return
   end
 
@@ -1267,15 +1226,15 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
   end
 
   --update internal
-  dlg.object = Table
-  dlg.tables = Table.tables
-  dlg.values = Table.values
+  dlg.object = list
+  dlg.tables = list.tables
+  dlg.values = list.values
 
-  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
+  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
 
   --set pos
-  if Parent then
-    local pos = Parent:GetPos()
+  if parent then
+    local pos = parent:GetPos()
     if not pos then
       dlg:SetPos(terminal_GetMousePos())
     else
@@ -1288,8 +1247,11 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(Table,Parent)
   return dlg
 end
 
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
-  if not Object then
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
+  if not obj then
+    obj = ChoGGi.CodeFuncs.SelObject()
+  end
+  if obj and not obj:IsKindOf("CObject") then
     return
   end
 
@@ -1300,13 +1262,13 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
   end
 
   --update internal object
-  dlg.obj = Object
+  dlg.obj = obj
 
-  dlg.idCaption:SetText(RetName(Object))
+  dlg.idCaption:SetText(RetName(obj))
 
   --set pos
-  if Parent then
-    local pos = Parent:GetPos()
+  if parent then
+    local pos = parent:GetPos()
     if not pos then
       dlg:SetPos(terminal_GetMousePos())
     else
@@ -1319,17 +1281,11 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(Object,Parent)
   return dlg
 end
 
-function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
-  if type(Object) ~= "table" then
-    return
+function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
+  if not obj then
+    obj = ChoGGi.CodeFuncs.SelObject()
   end
-  local ChoGGi = ChoGGi
-  --nothing selected or menu item
-  if not Object or (Object and not Object.class) then
-    Object = ChoGGi.CodeFuncs.SelObject()
-  end
-
-  if not Object then
+  if obj and not obj:IsKindOf("CObject") then
     return
   end
 
@@ -1340,9 +1296,9 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   end
 
   --update internal object
-  dlg.obj = Object
+  dlg.obj = obj
 
-  local title = RetName(Object)
+  local title = RetName(obj)
 
   --update the add button hint
   dlg.idAddNew:SetHint(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(title))
@@ -1351,8 +1307,8 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
   dlg.idCaption:SetText(title)
 
   --set pos
-  if Parent then
-    local pos = Parent:GetPos()
+  if parent then
+    local pos = parent:GetPos()
     if not pos then
       dlg:SetPos(terminal_GetMousePos())
     else
@@ -1362,7 +1318,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(Object,Parent)
     dlg:SetPos(terminal_GetMousePos())
   end
   --update item list
-  dlg:UpdateListContent(Object)
+  dlg:UpdateListContent(obj)
 
   return dlg
 end
@@ -1394,18 +1350,18 @@ ChoGGi.ComFuncs.OpenInListChoice{
   check2_checked = true,
 }
 --]]
-function ChoGGi.ComFuncs.OpenInListChoice(Table)
+function ChoGGi.ComFuncs.OpenInListChoice(list)
   -- if table isn't a table or it doesn't have items/callback func or it has zero items
-  if not Table or (Table and type(Table) ~= "table" or not Table.callback or not Table.items) or #Table.items < 1 then
+  if not list or (list and type(list) ~= "table" or not list.callback or not list.items) or #list.items < 1 then
     return
   end
 
   local ChoGGi = ChoGGi
 
   --sort table by display text
-  if not Table.skip_sort then
-    local sortby = Table.sortby or "text"
-    table.sort(Table.items,
+  if not list.skip_sort then
+    local sortby = list.sortby or "text"
+    table.sort(list.items,
       function(a,b)
         return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
       end
@@ -1413,9 +1369,9 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   end
 
   --only insert blank item if we aren't updating other items with it
-  if not Table.custom_type then
+  if not list.custom_type then
     --insert blank item for adding custom value
-    Table.items[#Table.items+1] = {text = "",hint = "",value = false}
+    list.items[#list.items+1] = {text = "",hint = "",value = false}
   end
 
   local dlg = ChoGGi_ListChoiceCustomDialog:new()
@@ -1427,23 +1383,23 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   dlg.hidden = {}
 
   -- title text
-  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(Table.title,""))
+  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
   -- add list items
-  dlg.idList:SetContent(Table.items)
+  dlg.idList:SetContent(list.items)
 
   -- used for hiding ListItems (well, okay restoring the actual height of them)
   dlg.listitem_height = dlg.idList.item_windows[1]:GetHeight()
 
   --fiddling with custom value
-  if Table.custom_type then
+  if list.custom_type then
     dlg.idEditValue.auto_select_all = false
-    dlg.CustomType = Table.custom_type
-    if Table.custom_type == 2 or Table.custom_type == 5 then
+    dlg.CustomType = list.custom_type
+    if list.custom_type == 2 or list.custom_type == 5 then
       dlg.idList:SetSelection(1, true)
       dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
       dlg.idEditValue:SetText(tostring(dlg.sel.value))
       dlg:UpdateColourPicker()
-      if Table.custom_type == 2 then
+      if list.custom_type == 2 then
         dlg:SetWidth(750)
         dlg.idColorHSV:SetVisible(true)
         dlg.idColorCheckAir:SetVisible(true)
@@ -1453,45 +1409,45 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     end
   end
 
-  if Table.custom_func then
-    dlg.Func = Table.custom_func
+  if list.custom_func then
+    dlg.Func = list.custom_func
   end
 
-  if Table.multisel then
+  if list.multisel then
     dlg.idList.multiple_selection = true
-    if type(Table.multisel) == "number" then
+    if type(list.multisel) == "number" then
       --select all of number
-      for i = 1, Table.multisel do
+      for i = 1, list.multisel do
         dlg.idList:SetSelection(i, true)
       end
     end
   end
 
   --setup checkboxes
-  if not Table.check1 and not Table.check2 then
+  if not list.check1 and not list.check2 then
     dlg.hidden.checks = true
     dlg.idCheckBox1:SetVisible(false)
     dlg.idCheckBox2:SetVisible(false)
   else
     dlg.idList:SetSize(point(390, 310))
 
-    if Table.check1 then
-      dlg.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(Table.check1,""))
-      dlg.idCheckBox1:SetHint(ChoGGi.ComFuncs.CheckText(Table.check1_hint,""))
+    if list.check1 then
+      dlg.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(list.check1,""))
+      dlg.idCheckBox1:SetHint(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
     else
       dlg.idCheckBox1:SetVisible(false)
     end
-    if Table.check2 then
-      dlg.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(Table.check2,""))
-      dlg.idCheckBox2:SetHint(ChoGGi.ComFuncs.CheckText(Table.check2_hint,""))
+    if list.check2 then
+      dlg.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(list.check2,""))
+      dlg.idCheckBox2:SetHint(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
     else
       dlg.idCheckBox2:SetVisible(false)
     end
   end
-  if Table.check1_checked then
+  if list.check1_checked then
     dlg.idCheckBox1:SetValue(true)
   end
-  if Table.check2_checked then
+  if list.check2_checked then
      dlg.idCheckBox2:SetValue(true)
  end
 
@@ -1503,14 +1459,14 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
   --dlg.idList:SetSelection(1, true)
 
   --are we showing a hint?
-  if Table.hint then
-    Table.hint = ChoGGi.ComFuncs.CheckText(Table.hint,"")
-    dlg.idList:SetHint(Table.hint)
-    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",Table.hint))
+  if list.hint then
+    list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
+    dlg.idList:SetHint(list.hint)
+    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",list.hint))
   end
 
   --hide ok/cancel buttons as they don't do jack
-  if Table.custom_type == 1 then
+  if list.custom_type == 1 then
     dlg.hidden.buttons = true
     dlg.idOK:SetVisible(false)
     dlg.idCancel:SetVisible(false)
@@ -1522,7 +1478,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
     local option = dlg:Wait()
 
     if option and #option > 0 then
-      Table.callback(option)
+      list.callback(option)
     end
   end)
 
@@ -1533,16 +1489,15 @@ function ChoGGi.ComFuncs.OpenInListChoice(Table)
 end
 
 -- returns table with list of files without path or ext and path, or exclude ext to return all files
-function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
-  local err, files = AsyncListFiles(Folder,Ext and Concat("*",Ext) or "*")
+function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
+  local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
   if not err and #files > 0 then
     local table_path = {}
-    local path = Concat(Folder,"/")
+    local path = Concat(folder,"/")
     for i = 1, #files do
       local name
-      if Ext then
---~         name = string.gsub(files[i]:gsub(path,""),Ext,"")
-        name = files[i]:gsub(path,""):gsub(Ext,"")
+      if ext then
+        name = files[i]:gsub(path,""):gsub(ext,"")
       else
         name = files[i]:gsub(path,"")
       end
@@ -1555,12 +1510,12 @@ function ChoGGi.ComFuncs.RetFilesInFolder(Folder,Ext)
   end
 end
 
-function ChoGGi.ComFuncs.RetFoldersInFolder(Folder)
+function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
   --local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
-  local err, folders = AsyncListFiles(Folder,"*","folders")
+  local err, folders = AsyncListFiles(folder,"*","folders")
   if not err and #folders > 0 then
     local table_path = {}
-    local temp_path = Concat(Folder,"/")
+    local temp_path = Concat(folder,"/")
     for i = 1, #folders do
       table_path[#table_path+1] = {
         path = folders[i],
@@ -1686,9 +1641,9 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
   local all = GetObjects{}
   --we only want stuff within *radius*
   local list = FilterObjects({
-    filter = function(Obj)
-      if Obj:GetDist2D(pos) <= radius then
-        return Obj
+    filter = function(o)
+      if o:GetDist2D(pos) <= radius then
+        return o
       end
     end
   },all)

@@ -861,12 +861,12 @@ function OnMsg.ClassesBuilt()
   end
 
   --larger drone work radius
-  local function SetHexRadius(OrigFunc,Setting,Obj,OrigRadius)
-    local UserSettings = ChoGGi.UserSettings[Setting]
+  local function SetHexRadius(orig_func,setting,obj,orig_radius)
+    local UserSettings = ChoGGi.UserSettings[setting]
     if UserSettings then
-      return ChoGGi_OrigFuncs[OrigFunc](Obj,UserSettings)
+      return ChoGGi_OrigFuncs[orig_func](obj,UserSettings)
     end
-    return ChoGGi_OrigFuncs[OrigFunc](Obj,OrigRadius)
+    return ChoGGi_OrigFuncs[orig_func](obj,orig_radius)
   end
   function RCRover:SetWorkRadius(radius)
     SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
