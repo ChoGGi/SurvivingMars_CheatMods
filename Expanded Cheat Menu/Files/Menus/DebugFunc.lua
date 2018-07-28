@@ -199,8 +199,7 @@ do --export colonist data
 
   function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
     local export_data = {}
---~     local colonists = UICity.labels.Colonist
-    local colonists = GetObjects{class = "Colonist"}
+    local colonists = UICity.labels.Colonist or empty_table
 
     for i = 1, #colonists do
       local c = colonists[i]

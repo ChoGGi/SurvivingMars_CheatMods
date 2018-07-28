@@ -162,7 +162,7 @@ end
 function ChoGGi.MenuFuncs.ResetAllColonists()
     local function CallBackFunc(answer)
       if answer then
-        local objs = GetObjects{class = "Colonist"}
+        local objs = UICity.labels.Colonist or empty_table
         for i = 1, #objs do
           local c = objs[i]
           SpawnColonist(c,something,c:GetVisualPos(),UICity)
@@ -182,7 +182,7 @@ end
 
 function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   local UICity = UICity
-  local objs = GetObjects{class = "Colonist"}
+  local objs = UICity.labels.Colonist or empty_table
   for i = 1, #objs do
     local c = objs[i]
     if c:GetStateText() == "movePlanet" then
@@ -379,8 +379,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
-  local objs = GetObjects{class = "Colonist"}
---~   local objs = UICity.labels.Colonist or empty_table
+  local objs = UICity.labels.Colonist or empty_table
   for i = 1, #objs do
     local c = objs[i]
 --~     if c.entity:find("Child",1,true) then
@@ -482,7 +481,7 @@ end
 
 ---------------------------------------------------Testers
 
---~ GetDupePositions(GetObjects{class = "Colonist"})
+--~ GetDupePositions(UICity.labels.Colonist or empty_table)
 --~ function ChoGGi.MenuFuncs.GetDupePositions(list)
 --~   local dupes = {}
 --~   local positions = {}

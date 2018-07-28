@@ -25,8 +25,7 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
     ChoGGi.UserSettings.NoMoreEarthsick = nil
   else
     ChoGGi.UserSettings.NoMoreEarthsick = true
---~     local c = UICity.labels.Colonist or empty_table
-    local c = GetObjects{class = "Colonist"}
+    local c = UICity.labels.Colonist or empty_table
     for i = 1, #c do
       if c[i].status_effects.StatusEffect_Earthsick then
         c[i]:Affect("StatusEffect_Earthsick", false)
@@ -86,7 +85,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     DelayedCall(100, function()
 --~     CreateRealTimeThread(function()
 --~       Sleep(100)
-      local Table = GetObjects{class = "Colonist"}
+      local Table = UICity.labels.Colonist or empty_table
       for i = 1, #Table do
         if Table[i].ChoGGi_Soylent then
           Table[i]:Done()
@@ -152,8 +151,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       end
     end
     local function CullTrait(Trait)
---~       Table = UICity.labels.Colonist or empty_table
-      Table = GetObjects{class = "Colonist"}
+      Table = UICity.labels.Colonist or empty_table
       for i = #Table, 1, -1 do
         if Table[i].traits[Trait] then
           if dome then
@@ -169,8 +167,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     local function Cull(Trait,TraitType,Race)
       --only race is stored as number (maybe there's a cock^?^?^?^?CoC around)
       Trait = Race or Trait
---~       Table = UICity.labels.Colonist or empty_table
-      Table = GetObjects{class = "Colonist"}
+      Table = UICity.labels.Colonist or empty_table
       for i = #Table, 1, -1 do
         if Table[i][TraitType] == Trait then
           if dome then
@@ -305,8 +302,7 @@ end
 function ChoGGi.MenuFuncs.FireAllColonists()
   local function CallBackFunc(answer)
     if answer then
---~       local tab = UICity.labels.Colonist or empty_table
-      local tab = GetObjects{class = "Colonist"}
+      local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         tab[i]:GetFired()
       end
@@ -461,8 +457,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
       Type = "RemoveTrait"
     end
 
---~     local tab = UICity.labels.Colonist or empty_table
-    local tab = GetObjects{class = "Colonist"}
+    local tab = UICity.labels.Colonist or empty_table
     for i = 1, #tab do
       if dome then
         if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -758,14 +753,12 @@ function ChoGGi.MenuFuncs.SetDeathAge()
 
     if value == default_str or type(amount) == "number" then
       if value == default_str then
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           tab[i].death_age = RetDeathAge(tab[i])
         end
       elseif type(amount) == "number" then
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           tab[i].death_age = amount
         end
@@ -789,8 +782,7 @@ end
 
 function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
   local ChoGGi = ChoGGi
---~   local tab = UICity.labels.Colonist or empty_table
-  local tab = GetObjects{class = "Colonist"}
+  local tab = UICity.labels.Colonist or empty_table
   for i = 1, #tab do
     if tab[i].specialist == "none" then
       ChoGGi.CodeFuncs.ColonistUpdateSpecialization(tab[i],S[3490--[[Random--]]])
@@ -872,8 +864,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
           ChoGGi.CodeFuncs.ColonistUpdateAge(sel,value)
         end
       else
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
             if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -973,8 +964,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
           ChoGGi.CodeFuncs.ColonistUpdateGender(sel,value)
         end
       else
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
             if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -1079,8 +1069,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
           ChoGGi.CodeFuncs.ColonistUpdateSpecialization(sel,value)
         end
       else
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
             if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -1443,8 +1432,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
       else
         v = fill
       end
---~       local tab = UICity.labels.Colonist or empty_table
-      local tab = GetObjects{class = "Colonist"}
+      local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
           if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -1463,8 +1451,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
         value = fill
       end
 
---~       local tab = UICity.labels.Colonist or empty_table
-      local tab = GetObjects{class = "Colonist"}
+      local tab = UICity.labels.Colonist or empty_table
       for i = 1, #tab do
         if dome then
           if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -1550,8 +1537,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
           pf_SetStepLen(sel,value)
         end
       else
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
             if tab[i].dome and tab[i].dome.handle == dome.handle then
@@ -1630,8 +1616,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
           sel:SetGravity(value)
         end
       else
---~         local tab = UICity.labels.Colonist or empty_table
-        local tab = GetObjects{class = "Colonist"}
+        local tab = UICity.labels.Colonist or empty_table
         for i = 1, #tab do
           if dome then
             if tab[i].dome and tab[i].dome.handle == dome.handle then

@@ -1317,8 +1317,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   elseif value == "Colonists" then
     info = {
       title = S[547--[[Colonists--]]],
---~       tables = UICity.labels.Colonist,
-      tables = GetObjects{class = "Colonist"},
+      tables = UICity.labels.Colonist or empty_table,
       values = {
         {name="handle",kind=0},
         {name="command",kind=0},
@@ -1449,8 +1448,7 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
 end
 
 function ChoGGi.CodeFuncs.ResetHumanCentipedes()
---~   local objs = UICity.labels.Colonist or empty_table
-  local objs = GetObjects{class = "Colonist"}
+  local objs = UICity.labels.Colonist or empty_table
   for i = 1, #objs do
     --only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
     if objs[i]:IsValidPos() and not objs[i]:GetPath() then
