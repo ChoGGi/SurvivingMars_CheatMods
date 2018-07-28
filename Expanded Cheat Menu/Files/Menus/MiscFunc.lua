@@ -21,13 +21,13 @@ local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
 local pf_SetStepLen = pf.SetStepLen
 
 function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
-  local function ChangeEntity(Class,Entity,random)
-    local objs = GetObjects{class = Class}
+  local function ChangeEntity(cls,entity,random)
+    local objs = GetObjects{class = cls}
     for i = 1, #objs do
       if random then
-        objs[i]:ChangeEntity(Concat(Entity,Random(1,random)))
+        objs[i]:ChangeEntity(Concat(entity,Random(1,random)))
       else
-        objs[i]:ChangeEntity(Entity)
+        objs[i]:ChangeEntity(entity)
       end
     end
   end

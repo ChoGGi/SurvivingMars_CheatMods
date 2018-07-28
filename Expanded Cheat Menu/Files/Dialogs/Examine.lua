@@ -150,9 +150,9 @@ function Examine:Init()
   function self.idFilter.OnValueChanged(_, value)
     self:FindNext(value)
   end
-  --improved text handling (orig used StaticText.OnKbdKeyDown...)
-  function self.idFilter:OnKbdKeyDown(char, vk)
-    self.idFilterOnKbdKeyDown(self, char, vk)
+  -- improved text handling (orig used StaticText.OnKbdKeyDown...)
+  function self.idFilter.OnKbdKeyDown(_, char, vk)
+    self:idFilterOnKbdKeyDown(char, vk)
   end
 
   element_y = self.border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
@@ -352,18 +352,17 @@ function Examine:idAutoRefreshButOnButtonPressed()
 end
 
 function Examine:idFilterOnKbdKeyDown(char, vk)
-  local p = self.parent
   if vk == const.vkEnter then
-    p:FindNext(self:GetText())
+    self:FindNext(self.idFilter:GetText())
     return "break"
   elseif vk == const.vkUp then
-    p.idText:SetTextOffset(point(0,0))
+    self.idText:SetTextOffset(point(0,0))
     return "break"
   elseif vk == const.vkEsc then
-    p.idCloseX:Press()
+    self.idCloseX:Press()
     return "break"
   else
-    g_Classes.SingleLineEdit.OnKbdKeyDown(self, char, vk)
+    SingleLineEdit.OnKbdKeyDown(self.idFilter, char, vk)
   end
 end
 
@@ -373,12 +372,17 @@ function Examine:MenuOnComboClose(menu,idx,which)
   if self[which].list.rollover then
     local item = menu.items[idx]
     if not item.text:find("-") then
-      OpenExamine(item.obj,self)
+      if which == "idParentsMenu" then
+        OpenExamine(_G[item.text],self)
+      else
+        OpenExamine(item.obj,self)
+      end
     end
   end
 end
 
 function Examine:idToolsMenuOnComboClose(menu,idx)
+  local g_Classes = g_Classes
   --close hint
   XDestroyRolloverWindow(true)
   if self.idToolsMenu.list.rollover then
@@ -1223,5 +1227,5 @@ function Examine:Done(result)
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
   end
-  g_Classes.Dialog.Done(self,result)
+  Dialog.Done(self,result)
 end

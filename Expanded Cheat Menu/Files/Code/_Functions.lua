@@ -228,7 +228,7 @@ end
 
 --if building requires a dome and that dome is broked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
-  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "Dome"},nil,nil,"working")
+  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome or empty_table,nil,nil,"working")
   --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
   if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
     --find the nearest dome
@@ -660,15 +660,14 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
   if not obj or obj and not obj:IsKindOf("ColorizableObject") then
     return
   end
+  local ChoGGi = ChoGGi
   local Attaches = obj:GetAttaches() or empty_table
   --random is random after all, so lets try for at least slightly different colours
   local colours = ChoGGi.CodeFuncs.RandomColour(#Attaches + 1)
-  local ChoGGi = ChoGGi
-  SetRandColour(obj,colours[1],ChoGGi)
   for i = 1, #Attaches do
-    SetRandColour(Attaches[i],colours[i+1],ChoGGi)
+    SetRandColour(Attaches[i],colours[i],ChoGGi)
   end
---~   return colour
+  SetRandColour(obj,colours[#colours],ChoGGi)
 end
 
 local function SetDefColour(obj)
@@ -985,14 +984,17 @@ end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
 function ChoGGi.CodeFuncs.SelObject()
-  --pcall returns "bool,return" so we select the return, and ignore the bool
---~   return select(2,pcall(function()
   return SelectedObj or SelectionMouseObj() or NearestObject(
     GetTerrainCursor(),
-    ChoGGi.ComFuncs.FilterFromTable(GetObjects{},{ParSystem = 1},"class"),
-    1000
+    GetObjects{
+      filter = function(o)
+        if o.class ~= "ParSystem" then
+          return o
+        end
+      end,
+    },
+    1500
   )
---~   end))
 end
 
 function ChoGGi.CodeFuncs.LightmodelBuild(list)

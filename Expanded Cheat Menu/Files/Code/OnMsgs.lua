@@ -420,13 +420,13 @@ function OnMsg.NewDay() -- NewSol...
 
   -- sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
-    local blds = GetObjects{class = "Building"}
-    for i = 1, #blds do
+    local objs = UICity.labels.Building or empty_table
+    for i = 1, #objs do
       --no sense in doing it with only one center
-      if #blds[i].command_centers > 1 then
-        table.sort(blds[i].command_centers,
+      if #objs[i].command_centers > 1 then
+        table.sort(objs[i].command_centers,
           function(a,b)
-            return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",blds[i])
+            return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",objs[i])
           end
         )
       end

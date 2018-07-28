@@ -186,7 +186,7 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
   for i = 1, #objs do
     local c = objs[i]
     if c:GetStateText() == "movePlanet" then
-      local rocket = FindNearestObject(GetObjects{class = "SupplyRocket"},c)
+      local rocket = FindNearestObject(UICity.labels.AllRockets or empty_table,c)
       SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
       if type(c.Done) == "function" then
         c:Done()
@@ -197,27 +197,30 @@ function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
 end
 
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local rockets = GetObjects{class = "SupplyRocket"}
+  local rockets = UICity.labels.AllRockets or empty_table
   local pos
   for i = 1, #rockets do
-    pos = rockets[i]:GetPos()
-    local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches("Colonist") or empty_table
-    --Attaches = ChoGGi.ComFuncs.FilterFromTable(Attaches,nil,{Colonist=true},"class")
-    if #Attaches > 0 then
-      for j = #Attaches, 1, -1 do
-        local c = Attaches[j]
-        if not pcall(function()
-          c:Detach()
-          pos = type(c.GetPos) == "function" and c:GetPos() or pos
-          SpawnColonist(c,rockets[i],pos)
-        end) then
-          SpawnColonist(nil,rockets[i],pos)
-          --something messed up with so just spawn random colonist
+    -- AllRockets also returns rockets in space
+    if rockets[i]:IsValidPos() then
+      pos = rockets[i]:GetPos()
+      local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches("Colonist") or empty_table
+      if #Attaches > 0 then
+        for j = #Attaches, 1, -1 do
+          local c = Attaches[j]
+          -- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
+          if not pcall(function()
+            c:Detach()
+            pos = type(c.GetPos) == "function" and c:GetPos() or pos
+            SpawnColonist(c,rockets[i],pos)
+          end) then
+            SpawnColonist(nil,rockets[i],pos)
+            --something messed up with so just spawn random colonist
+          end
+          if type(c.Done) == "function" then
+            c:Done()
+          end
+          c:delete()
         end
-        if type(c.Done) == "function" then
-          c:Done()
-        end
-        c:delete()
       end
     end
   end
@@ -243,7 +246,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
-  local objs = GetObjects{class = "MirrorSphere"}
+  local objs = UICity.labels.MirrorSpheres or empty_table
   for i = 1, #objs do
     if not IsValid(objs[i].target) then
       DeleteObject(objs[i])
@@ -260,7 +263,7 @@ end
 
 function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
   local ChoGGi = ChoGGi
-  local objs = GetObjects{class = "Unit"}
+  local objs = UICity.labels.Unit or empty_table
   --CargoShuttle
   for i = 1, #objs do
     ChoGGi.CodeFuncs.CheckForBrokedTransportPath(objs[i])
@@ -315,7 +318,7 @@ local function RemoveUnreachable(cls_name)
   end
 end
 function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-  local objs = GetObjects{class = "Drone"}
+  local objs = UICity.labels.Drone or empty_table
   for i = 1, #objs do
     objs[i]:CleanUnreachables()
   end

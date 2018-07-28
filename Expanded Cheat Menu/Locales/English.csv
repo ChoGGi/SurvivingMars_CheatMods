@@ -1,5 +1,4 @@
 ID,Text,Translation
-302535920001277,SteamFileExists,
 302535920001278,,
 302535920001279,,
 302535920001280,,
@@ -124,6 +123,7 @@ You can copy and paste numbers if you want (click item again after picking).",
 302535920000732,"Childkiller: You evil, evil person.",
 302535920000733,Open a preset in the editor.,
 302535920000735,Timer delay skipped,
+302535920001277,Open %s in the Object Examiner.,
 302535920001053,Fill up %s with fuel.,
 302535920000005,Drops a new colonist in selected dome.,
 302535920001246,Changes colour of %s back to default.,

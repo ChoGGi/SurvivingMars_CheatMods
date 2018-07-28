@@ -341,33 +341,33 @@ function ChoGGi.MenuFuncs.ObjectCloner(obj)
   end
 end
 
-local function AnimDebug_Show(Obj,Colour)
+local function AnimDebug_Show(obj,colour)
   local text = PlaceObject("Text")
   text:SetDepthTest(true)
-  text:SetColor(Colour or ChoGGi.CodeFuncs.RandomColour())
+  text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
   text:SetFontId(UIL_GetFontID("droid, 14, bold"))
 
   text.ChoGGi_AnimDebug = true
-  Obj:Attach(text)
-  text:SetAttachOffset(point(0,0,Obj:GetObjectBBox():sizez() + 100))
+  obj:Attach(text)
+  text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
   CreateGameTimeThread(function()
     while IsValid(text) do
       local str = "%d. %s\n"
-      text:SetText(str:format(1,Obj:GetAnimDebug(1)))
+      text:SetText(str:format(1,obj:GetAnimDebug(1)))
       WaitNextFrame()
     end
   end)
 end
 
-local function AnimDebug_ShowAll(Class)
-  local objs = GetObjects{class = Class}
+local function AnimDebug_ShowAll(cls)
+  local objs = UICity.labels[cls] or empty_table
   for i = 1, #objs do
     AnimDebug_Show(objs[i])
   end
 end
 
-local function AnimDebug_Hide(Obj)
-  local att = Obj:GetAttaches() or empty_table
+local function AnimDebug_Hide(obj)
+  local att = obj:GetAttaches() or empty_table
   for i = 1, #att do
     if att[i].ChoGGi_AnimDebug then
       att[i]:delete()
@@ -375,9 +375,8 @@ local function AnimDebug_Hide(Obj)
   end
 end
 
-local function AnimDebug_HideAll(Class)
-  local empty_table = empty_table
-  local objs = GetObjects{class = Class}
+local function AnimDebug_HideAll(cls)
+  local objs = UICity.labels[cls] or empty_table
   for i = 1, #objs do
     AnimDebug_Hide(objs[i])
   end
@@ -894,19 +893,19 @@ do --path markers
     --remove all thread refs so they stop
     ChoGGi.Temp.UnitPathingHandles = {}
     --and waypoints/colour
-    local Objs = GetObjects{class = cls}
-    for i = 1, #Objs do
+    local objs = UICity.labels[cls] or empty_table
+    for i = 1, #objs do
 
-      if Objs[i].ChoGGi_WaypointPathAdded then
-        Objs[i]:SetColorModifier(Objs[i].ChoGGi_WaypointPathAdded)
-        Objs[i].ChoGGi_WaypointPathAdded = nil
+      if objs[i].ChoGGi_WaypointPathAdded then
+        objs[i]:SetColorModifier(objs[i].ChoGGi_WaypointPathAdded)
+        objs[i].ChoGGi_WaypointPathAdded = nil
       end
 
-      if type(Objs[i].ChoGGi_Stored_Waypoints) == "table" then
-        for j = #Objs[i].ChoGGi_Stored_Waypoints, 1, -1 do
-          Objs[i].ChoGGi_Stored_Waypoints[j]:delete()
+      if type(objs[i].ChoGGi_Stored_Waypoints) == "table" then
+        for j = #objs[i].ChoGGi_Stored_Waypoints, 1, -1 do
+          objs[i].ChoGGi_Stored_Waypoints[j]:delete()
         end
-        Objs[i].ChoGGi_Stored_Waypoints = nil
+        objs[i].ChoGGi_Stored_Waypoints = nil
       end
 
     end
@@ -914,10 +913,10 @@ do --path markers
 
   function ChoGGi.MenuFuncs.SetPathMarkersVisible()
     local ChoGGi = ChoGGi
-    local Obj = SelectedObj
-    if Obj then
+    local sel = SelectedObj
+    if sel then
       randcolours = ChoGGi.CodeFuncs.RandomColour(#randcolours + 1)
-      ChoGGi.MenuFuncs.SetWaypoint(Obj)
+      ChoGGi.MenuFuncs.SetWaypoint(sel)
       return
     end
 
@@ -934,6 +933,7 @@ do --path markers
       if not value then
         return
       end
+      local UICity = UICity
       --remove wp/lines and reset colours
       if choice[1].check1 then
         print("check1_hint")
@@ -941,6 +941,7 @@ do --path markers
         --reset all the base colours/waypoints
         ClearColourAndWP("CargoShuttle")
         ClearColourAndWP("Unit")
+        ClearColourAndWP("Colonist")
 
         --check for any extra lines
         local lines = GetObjects{class = "Polyline"}
@@ -958,36 +959,46 @@ do --path markers
 
       elseif value then --add waypoints
 
-        local function swp(Table)
+        local function swp(list)
           if choice[1].check2 then
-            for i = 1, #Table do
-              ChoGGi.MenuFuncs.SetPathMarkersGameTime(Table[i])
+            for i = 1, #list do
+              ChoGGi.MenuFuncs.SetPathMarkersGameTime(list[i])
             end
           else
-            for i = 1, #Table do
-              ChoGGi.MenuFuncs.SetWaypoint(Table[i])
+            for i = 1, #list do
+              ChoGGi.MenuFuncs.SetWaypoint(list[i])
             end
           end
         end
 
         if value == "All" then
-          local Table1 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
-          local Table2 = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "CargoShuttle"},"IsValid",nil,true)
-          colourcount = colourcount + #Table1
-          colourcount = colourcount + #Table2
+          local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or empty_table,"IsValid",nil,true)
+          local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle or empty_table,"IsValid",nil,true)
+          local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist or empty_table,"IsValid",nil,true)
+          colourcount = colourcount + #table1
+          colourcount = colourcount + #table2
+          colourcount = colourcount + #table3
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
-          swp(Table1)
-          swp(Table2)
+          swp(table1)
+          swp(table2)
+          swp(table3)
         else
-          local Table = ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = value},"IsValid",nil,true)
-          colourcount = colourcount + #Table
+          local table1 = GetObjects{
+            class = value,
+            filter = function(o)
+              if IsValid(o) then
+                return o
+              end
+            end,
+          }
+          colourcount = colourcount + #table1
           randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
-          swp(Table)
+          swp(table1)
         end
 
         --remove any waypoints in the same pos
-        local function ClearAllDupeWP(Class)
-          local objs = GetObjects{class = Class}
+        local function ClearAllDupeWP(cls)
+          local objs = UICity.labels[cls] or empty_table
           for i = 1, #objs do
             if objs[i] and objs[i].ChoGGi_Stored_Waypoints then
               RemoveWPDupePos("WayPoint",objs[i])
@@ -997,6 +1008,7 @@ do --path markers
         end
         ClearAllDupeWP("CargoShuttle")
         ClearAllDupeWP("Unit")
+        ClearAllDupeWP("Colonist")
 
       end
     end
@@ -1012,13 +1024,6 @@ do --path markers
     }
   end
 end
-
--- add realtime markers to all of class
---~ local classname = "Drone"
---~ local objs = GetObjects{class = classname}
---~ for i = 1, #objs do
---~   ChoGGi.MenuFuncs.SetPathMarkersGameTime(objs[i])
---~ end
 
 --little bit of painting
 --~ local terrain_type = "Grass_01"

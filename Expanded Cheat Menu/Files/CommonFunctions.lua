@@ -1168,8 +1168,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
   return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{},{ParSystem = true,ResourceStockpile = true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(GetObjects{class = "CObject"},nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building or empty_table,{ParSystem = true,ResourceStockpile = true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit or empty_table,nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
   return FilterObjects({
     filter = function(o)
@@ -1194,12 +1194,12 @@ function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
           return o
         end
       end
-    end
+    end,
   },list)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{},"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(GetObjects{class = "Unit"},"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Building,"IsKindOf","Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or empty_table,"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
   return FilterObjects({
     filter = function(o)
@@ -1637,18 +1637,16 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
   radius = radius or 5000
   pos = pos or GetTerrainCursor()
 
-  --get all objects (18K+ on a new map)
-  local all = GetObjects{}
-  --we only want stuff within *radius*
-  local list = FilterObjects({
+  -- get all objects on map (18K+ on a new map)
+  local list = GetObjects{
+    -- we only want stuff within *radius*
     filter = function(o)
       if o:GetDist2D(pos) <= radius then
         return o
       end
-    end
-  },all)
-
-  --sort list custom
+    end,
+  }
+  -- sort list custom
   if sort then
     table.sort(list,
       function(a,b)
@@ -1656,7 +1654,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
       end
     )
   else
-    --sort nearest
+    -- sort nearest
     table.sort(list,
       function(a,b)
         return a:GetDist2D(pos) < b:GetDist2D(pos)

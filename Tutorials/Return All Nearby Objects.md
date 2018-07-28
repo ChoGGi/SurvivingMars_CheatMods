@@ -11,18 +11,18 @@ OpenExamine(ReturnAllNearby(nil,"class"))
 ```
 local function ReturnAllNearby(radius,sort)
   radius = radius or 5000
-  local pos = GetTerrainCursor()
-  --get all objects (18K on a new map)
-  local all = GetObjects{}
-  --we only want stuff within *radius*
-  local list = FilterObjects({
-    filter = function(Obj)
-      if Obj:GetDist2D(pos) <= radius then
-        return Obj
+  pos = pos or GetTerrainCursor()
+
+  -- get all objects on map (18K+ on a new map)
+  local list = GetObjects{
+    -- we only want stuff within *radius*
+    filter = function(o)
+      if o:GetDist2D(pos) <= radius then
+        return o
       end
-    end
-  },all)
-  --sort list custom
+    end,
+  }
+  -- sort list custom
   if sort then
     table.sort(list,
       function(a,b)
@@ -30,7 +30,7 @@ local function ReturnAllNearby(radius,sort)
       end
     )
   else
-    --sort nearest
+    -- sort nearest
     table.sort(list,
       function(a,b)
         return a:GetDist2D(pos) < b:GetDist2D(pos)

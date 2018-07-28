@@ -1,5 +1,12 @@
 v6.9
 
+Changed:
+Cleaned up some funcs to use labels instead of GetObjects.
+Hide Some cheats where they weren't needed (ex: WaterFree on a Casino).
+
+Changed:
+The selection radius for objects under the cursor is slightly larger.
+
 Fixed:
 Examine wasn't stopping the auto-refresh thread after dialog was closed.
 
@@ -44,9 +51,11 @@ Fixes>Toggles>Broked Transport Pathing: RC Transports on a route have a certain 
 Changed:
 Re-added Mission>Disaster Occurrences, and Mission>Game Rules (not all rules/parts of rules will apply).
 Examine shows more info about functions/threads.
-Removed DumpObject (DumpLua works the same).
 Added a Close button to the console.
 The Traits functions in Colonists were missing the "other" traits (thanks Nacira).
+
+Removed:
+DumpObject (DumpLua works the same).
 
 Fixed:
 Cheats pane was missing some items.
@@ -92,8 +101,10 @@ Any ECM stuff using Traits/Specs/etc will now also use any mod added ones.
 Somehow missed specialization for exporting colonist CSV data.
 Fixes>Most>High Stutter With High FPS: Made the colonists more random.
 Fixes>Reset Rovers: Updated for another type of broke Rover.
-Debug>Path Markers: Removed flags/text from markers, added real time option to the list.
 Moved Change Map from Debug to Game.
+
+Removed:
+Debug>Path Markers: Removed flags/text from markers, added real time option to the list.
 
 Fixed:
 Cheat Menu menu closing when you tab back in to SM.
@@ -111,7 +122,9 @@ Changed:
 Renamed "Reset Rovers With Drones Stuck" to "Reset Rovers": It fixes a number of issues with them so....
 Hover effects for Console buttons.
 Debug>Write Logs: Moved to Console Button.
-Removed Console: Clear Log (F9 still works), I wanted to keep all the console related stuff in the Console menu.
+
+Removed:
+Console: Clear Log (F9 still works), I wanted to keep all the console related stuff in the Console menu.
 
 Fixed:
 Broke Drone/Colonist/etc Move Speed (thanks satirawongwan).
@@ -126,11 +139,13 @@ Show Mods Log to Console Scripts: No more having to quit to see mod errors (only
 
 Changed:
 Moved F2 to Help>Hide Cheats Menu.
-Removed Debug>Toggle showing console log (added as checkbox to Console menu).
 Console>Show File Log: Flushes the stored log to disk and displays it in the console log.
 Stop Disasters will now remove dust devils.
 Write logs just writes console output now, I don't think I've ever seen anything useful in DebugLog.log (if you have let me know I'll add it back).
 Tidied up Help menu.
+
+Removed:
+Debug>Toggle showing console log (added as checkbox to Console menu).
 
 Fixed:
 Cables & Pipes No Chance Of Break wasn't actually working (thanks BLAde).
@@ -247,7 +262,6 @@ Auto unpin list now shows names of auto unpinned objects (in the hints).
 
 v4.8
 Changed:
-Removed Follower shuttles from ECM (use Personal Shuttles if you want it).
 and Defence Towers Attack DustDevils (same).
 Follower shuttles show what they're carrying.
 Follower shuttles now break path when you move the mouse (they do get confused at times, figured decent tradeoff).
@@ -255,8 +269,10 @@ Only shows shuttle control button when it's a follower shuttle.
 Follower shuttles now carry visible objects (ah yeah).
 Follower shuttles will now only pick up one item at a time.
 Moved "Launch Empty Rocket" from resource overview to "Rocket>Launch Empty Rocket".
-
 High FPS stutter fix now fixes another stutter bug (this one by colonists).
+
+Removed:
+Follower shuttles from ECM (use Personal Shuttles if you want it).
 
 Fixed:
 Removed an error msg that would happen if you removed this mod with defence towers built (didn't actually cause problems, just log spam).
@@ -460,10 +476,12 @@ Buildings>Unlock Locked Buildings.
 
 Changed:
 Enabled the DroneResourceCarryAmount fix for any amount above one (instead of ten).
-Removed Buildings>Add Mystery & Breakthrough Buildings.
 Trigger Disasters: Added option to remove broken meteors (if your meteors are stuck on the ground).
 Removed shortcut key from Debug/Change Map.
 Building Orientation now also uses last selected object.
+
+Removed:
+Buildings>Add Mystery & Breakthrough Buildings.
 
 Fixed:
 Powerless Buildings didn't work for certain upgraded buildings.
@@ -502,7 +520,9 @@ Commander/Sponsor bonus lists now show enabled status.
 Alt-D is now Shift-D (since Alt-D is a built-in shortcut to rotate camera).
 Fill/Dismantle drones of dronehub is now "Change Amount Of Drones In Hub".
 Breakthroughs per game is now a list.
-Removed the 1000000 points per outsource (you can just add research points, or spam free outsourcing).
+
+Removed:
+1000000 points per outsource (you can just add research points, or spam free outsourcing).
 
 Fixed:
 Issue with storage depots (thanks Pernicio).
@@ -597,10 +617,12 @@ Infopanel: Cheats,Residents,Traits are now height limited till mouseover (for th
 Changed:
 Camera Zoom and Higher Render Dist are now lists.
 Better hint popups for list choices.
-Removed Colonists>Traits>Set Individual Traits (merged into Set Traits).
 Object Examiner:
 Improved text handling in goto box.
 Moved button out of the way of the goto box.
+
+Removed:
+Colonists>Traits>Set Individual Traits (merged into Set Traits).
 
 Fixed:
 Certain researched items wouldn't be unlocked after restarting game (thanks LBraden).
@@ -732,12 +754,14 @@ Hide certain items in cheatpane (QoL>Infopanel Cheats Cleanup).
 Set occurrence level of disasters.
 
 Changed:
-Removed domes from Instant Build (use Alt-B for them).
 Follow Camera distance is consistent now.
 Hides the console log when using Follow Camera (camera going through glass = spammy log).
 Higher render dist/shadows default to off, as higher zoom also defaults to off.
 Added option for minimal border scroll mouse activation area (QoL>Camera/Border Scrolling Area).
 Cleaned up some menu descriptions.
+
+Removed:
+Domes from Instant Build (use Alt-B for them).
 
 Fixes:
 Console stopped working after loading a different game.
@@ -758,6 +782,7 @@ F5 dumps info from Examiner instead of dumpobject
 Screenshots are quicker.
 
 v2.0
+Changed:
 Completely disabled depot storage cheats till I figure it out.
 Drone Repair Supply Leak Toggle: Changed time to 1 instead of 0, to stop drones from ignoring leaks.
 
@@ -792,40 +817,29 @@ Doubling amount of placed waste rock storage adds rocks to it.
 increase beforehand
 
 v0.7
-Fixes:
-Fixed Ctrl-Space/Ctrl-Shift-Space not working on some items
-Hopefully fixed the waste rock not emptying issue for good...
-No more html tags when using Examine>Dump button
-
-New:
+Added:
 Added Gameplay>QoL>Follow Camera (Ctrl-Shift-F to toggle, Ctrl-Alt-F to toggle mouse cursor)
 Added Gameplay/Building/Production Amount + 25 (Ctrl-Shift-P, Works on any building that produces)
 Set Gravity for Colonists,Drones,RCs (bouncy time)
 Added a bunch of items to the cheat pane
 
-
-Known issues:
-Doubling amount of placed waste rock storage adds rocks to it.
-increase beforehand
-using Remove Building Limits and placing buildings will sometimes cause placement mode to stick.
-use Ctrl-Shift-E to toggle editor mode, right-click to deselect then exit editor mode.
+Fixes:
+Fixed Ctrl-Space/Ctrl-Shift-Space not working on some items
+Hopefully fixed the waste rock not emptying issue for good...
+No more html tags when using Examine>Dump button
 
 v0.6
-Added some new shortcut keys
+Added:
 Ctrl-Alt-Shift-R: opens console and puts restart in it
 Ctrl-Space: Opens placement mode with the last placed item
 Ctrl-Shift-Space: Opens placement mode with the selected item
-
 Added the (useless) RC Desire Transport
+
+Changed:
 Put Gameplay/Qol when it should be Gameplay/QoL
-Added a PrependSelObjConsole Bool to add SelectedObj to the console whenever you open it
 
 v0.5
-Hopefully fixed the waste storage blockage
-Limited height of colonist list in info pane (side effect: crops a bit of the head icon)
-Fixed some more incorrect menus (should be all good now)
-
-Menus:
+Added:
 Gameplay/Colonists/
 Fire All Colonists
 Turn Off All Shifts
@@ -864,9 +878,16 @@ Asteroids (single,multi,storm)
 
 Cheats/Start Mystery (the original ones didn't work, but they came like that so...)
 
+Changed:
+Limited height of colonist list in info pane (side effect: crops a bit of the head icon)
+
+Fixed:
+Hopefully fixed the waste storage blockage
+Fixed some more incorrect menus (should be all good now)
+
 v0.4
+Added/Changed:
 Bumped the RC Transport storage capacity amount given to 256 (from 100)
-Fixed waste storage not storing waste
 
 WriteDebugLogs:
 Fixed some issues with WriteDebugLogs
@@ -890,7 +911,11 @@ Gameplay/Buildings/Capacity/Storage Waste Depot
 Gameplay/Buildings/Capacity/Storage Other Depot
 Gameplay/Buildings/Capacity/Storage Universal Depot
 
+Fixed:
+Fixed waste storage not storing waste
+
 v0.3
+Fixed:
 Broke a bunch of menu toggles
 Possible freezing issue when opening menus
 
