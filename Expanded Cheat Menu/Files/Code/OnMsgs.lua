@@ -413,6 +413,7 @@ local function ValidGridElements(label,city)
   end
 end
 
+-- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
   local ChoGGi = ChoGGi
   local UICity = UICity
@@ -443,6 +444,7 @@ function OnMsg.NewDay() -- NewSol...
   end
 end
 
+-- const.Scale.hours is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
   local ChoGGi = ChoGGi
 
@@ -469,13 +471,16 @@ function OnMsg.NewHour()
   if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
     ChoGGi.CodeFuncs.ResetHumanCentipedes()
   end
-end
 
-function OnMsg.NewMinute()
+  -- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
   if ChoGGi.UserSettings.FlushLogConstantly then
     FlushLogFile()
   end
 end
+
+-- const.MinuteDuration is 500 ticks (GameTime)
+--~ function OnMsg.NewMinute()
+--~ end
 
 --if you pick a mystery from the cheat menu
 local icon_logo_13 = "UI/Icons/Logos/logo_13.tga"

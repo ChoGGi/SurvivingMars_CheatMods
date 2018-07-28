@@ -684,9 +684,7 @@ do --path markers
   local colourcount = 0
   local dupewppos = {}
   --pick a random model for start of path if doing single object
-  local SpawnModels = {}
-  SpawnModels[1] = "GreenMan"
-  SpawnModels[2] = "Lama"
+  local SpawnModels = {"GreenMan","Lama"}
   --default height of waypoints (maybe flag_height isn't the best name as no more flags)
   local flag_height = 50
 

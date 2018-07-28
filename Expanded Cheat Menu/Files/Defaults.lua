@@ -66,7 +66,7 @@ ChoGGi.Defaults = {
   ShowCheatsMenu = true,
   -- dumps the log to disk on startup, and every new Sol (good for some crashes)
   FlushLog = true,
-  -- dumps log to disk every in-game minute
+  -- dumps log to disk every in-game hour (30 000 ticks of GameTime)
   FlushLogConstantly = false,
   -- okay, maybe some people don't want a mod to change the title of their game
   ChangeWindowTitle = true,

@@ -31,10 +31,10 @@ do --ChangeResupplySettings
     local ChoGGi = ChoGGi
 
     local ItemList = {
-      [1] = {text = "pack",value = meta.pack,hint = 302535920001269--[[Amount Per Click--]]},
-      [2] = {text = "kg",value = meta.kg,hint = 302535920001270--[[Weight Per Item--]]},
-      [3] = {text = "price",value = meta.price,hint = 302535920001271--[[Price Per Item--]]},
-      [4] = {text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
+      {text = "pack",value = meta.pack,hint = 302535920001269--[[Amount Per Click--]]},
+      {text = "kg",value = meta.kg,hint = 302535920001270--[[Weight Per Item--]]},
+      {text = "price",value = meta.price,hint = 302535920001271--[[Price Per Item--]]},
+      {text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
     }
 
     local CallBackFunc = function(choice)

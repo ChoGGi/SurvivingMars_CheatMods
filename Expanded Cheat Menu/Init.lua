@@ -30,11 +30,11 @@ SOFTWARE.
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,pcall,table = dofile,select,tostring,type,pcall,table
-local AsyncGetFileAttribute = AsyncGetFileAttribute
+local AsyncGetFileAttribute,Mods = AsyncGetFileAttribute,Mods
 local dofolder_files = dofolder_files
 
--- just in case they remove oldTableConcat
 local TableConcat
+-- just in case they remove oldTableConcat
 pcall(function()
   TableConcat = oldTableConcat
 end)
@@ -161,7 +161,7 @@ Please send me latest log file: %s]],file,ChoGGi.email))
   Msg("TranslationChanged")
 end
 
-do -- ECM
+do -- ECM settings
   -- translate all the strings before anything else
   dofile(Concat(ChoGGi.MountPath,"Strings.lua"))
   -- functions that need to be loaded before they get called...

@@ -14,8 +14,8 @@ local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetat
 local table,debug = table,debug
 
 local _InternalTranslate = _InternalTranslate
+local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
-local AsyncFileRename = AsyncFileRename
 local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
 local AsyncStringToFile = AsyncStringToFile
@@ -838,13 +838,12 @@ end
 function ChoGGi.ComFuncs.WriteLogs_Toggle(Enable)
   local ChoGGi = ChoGGi
   if Enable == true then
-    --remove old logs
-    local logs = "AppData/logs/"
-    local console = Concat(logs,"ConsoleLog.log")
-    AsyncFileRename(console,Concat(logs,"ConsoleLog.previous.log"))
+    -- remove old logs
+    local console = "AppData/logs/ConsoleLog.log"
+    AsyncCopyFile(console, "AppData/logs/ConsoleLog.previous.log")
     AsyncStringToFile(console,"")
 
-    --redirect functions
+    -- redirect functions
     ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
     ReplaceFunc("print","ConsoleLog",ChoGGi)
 --~     ReplaceFunc("printf","DebugLog",ChoGGi)
@@ -953,8 +952,7 @@ end
 
 -- used to check for some SM objects (Points/Boxes)
 function ChoGGi.ComFuncs.RetType(obj)
-  local meta = getmetatable(obj)
-  if meta then
+  if getmetatable(obj) then
     if IsPoint(obj) then
       return "Point"
     end
@@ -966,11 +964,11 @@ end
 
 -- takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
 function ChoGGi.ComFuncs.StringToTable(str)
-  local Table = {}
+  local temp = {}
   for i in str:gmatch("%S+") do
-    Table[#Table+1] = i
+    temp[#temp+1] = i
   end
-  return Table
+  return temp
 end
 
 -- change some annoying stuff about UserActions.AddActions()

@@ -160,10 +160,10 @@ end
   local radius
 
   local remove_actions = {
-    [1] = "FlattenGround_RaiseHeight",
-    [2] = "FlattenGround_LowerHeight",
-    [3] = "FlattenGround_WidenRadius",
-    [4] = "FlattenGround_ShrinkRadius",
+    "FlattenGround_RaiseHeight",
+    "FlattenGround_LowerHeight",
+    "FlattenGround_WidenRadius",
+    "FlattenGround_ShrinkRadius",
   }
 
   local temp_height
