@@ -621,7 +621,7 @@ function ChoGGi.ComFuncs.Dump(obj,Mode,File,Ext,Skip)
   end
 end
 
-function ChoGGi.ComFuncs.DumpLua(value)
+function ChoGGi.ComFuncs.DumpLua(obj)
 --~   local v_type = type(value)
 --~   local which = "TupleToLuaCode"
 --~   if v_type == "table" then
@@ -631,7 +631,7 @@ function ChoGGi.ComFuncs.DumpLua(value)
 --~   elseif v_type == "userdata" then
 --~     which = "ValueToLuaCode"
 --~   end
-  ChoGGi.ComFuncs.Dump(Concat("\r\n",ValueToLuaCode(value)),nil,"DumpedLua","lua")
+  ChoGGi.ComFuncs.Dump(Concat("\r\n",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
 end
 
 --[[

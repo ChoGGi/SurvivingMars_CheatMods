@@ -379,7 +379,8 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
-  local objs = UICity.labels.Colonist or empty_table
+  local objs = GetObjects{class = "Colonist"}
+--~   local objs = UICity.labels.Colonist or empty_table
   for i = 1, #objs do
     local c = objs[i]
 --~     if c.entity:find("Child",1,true) then
