@@ -4,8 +4,8 @@ In your mod folder create a Locales folder, in that folder create English.csv (o
 
 Mod folder\Locales\English.csv
 
-In English.csv add text like so:
-ID,Text
+In English.csv add text like so (you only really need: ID,Text)
+ID,Text,Translation,Old Translation,Gender
 11111111110001001,Some text
 11111111110001002,and More text.
 11111111110001003,"and some ""quoted"" text"
