@@ -56,13 +56,18 @@ end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
 local function SelObject()
-  local _,ret = pcall(function()
-    local objs = FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
-    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
-  end)
-  return ret
+  return SelectedObj or SelectionMouseObj() or NearestObject(
+    GetTerrainCursor(),
+    GetObjects{
+      filter = function(o)
+        if o.class ~= "ParSystem" then
+          return o
+        end
+      end,
+    },
+    1500
+  )
 end
-
 
 --sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 local function EmptyMechDepot(oldobj)

@@ -39,11 +39,17 @@ function BuildingPlacementOrientation.FilterFromTable(Table,ExcludeList,Type)
 end
 
 function BuildingPlacementOrientation.SelObject()
-  local _,ret = pcall(function()
-    local objs = BuildingPlacementOrientation.FilterFromTable(GetObjects({class="PropertyObject"}),{ParSystem=1},"class")
-    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
-  end)
-  return ret
+  return SelectedObj or SelectionMouseObj() or NearestObject(
+    GetTerrainCursor(),
+    GetObjects{
+      filter = function(o)
+        if o.class ~= "ParSystem" then
+          return o
+        end
+      end,
+    },
+    1500
+  )
 end
 
 local function SomeCode()

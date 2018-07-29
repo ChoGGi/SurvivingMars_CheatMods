@@ -1,7 +1,6 @@
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
 local DoneObject = DoneObject
-local GetObjects = GetObjects
 local IsValid = IsValid
 local IsValidThread = IsValidThread
 local NearestObject = NearestObject
@@ -47,7 +46,7 @@ function Carwash:GameInit()
       if self.working then
         local obj = nil
         -- check for anything on the "tarmac"
-        obj = NearestObject(self:GetVisualPos(),GetObjects{class="Unit"} or empty_table,1000)
+        obj = NearestObject(self:GetVisualPos(),UICity.labels.Unit or empty_table,1000)
         -- if so clean them
         if obj then
           -- get dust amount, and convert to percentage

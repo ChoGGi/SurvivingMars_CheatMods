@@ -162,7 +162,7 @@ function OnMsg.ClassesBuilt()
       "RolloverHint",  "",
       "OnPress", function(self, context)
         ---
-        local objs = GetObjects{class="SubsurfaceDeposit"} or empty_table
+        local objs = UICity.labels.SubsurfaceDeposit or ""
         for i = 1, #objs do
           objs[i].max_amount = objs[i].max_amount * 5
           objs[i]:CheatRefill()

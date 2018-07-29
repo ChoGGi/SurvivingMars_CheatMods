@@ -11,7 +11,6 @@ local AsyncFileToString = AsyncFileToString
 local box = box
 local ClassDescendantsList = ClassDescendantsList
 local CreateRealTimeThread = CreateRealTimeThread
-local GetObjects = GetObjects
 local IsValid = IsValid
 local LuaCodeToTuple = LuaCodeToTuple
 local Msg = Msg

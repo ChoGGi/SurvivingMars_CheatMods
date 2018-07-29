@@ -21,7 +21,6 @@ local CreateRolloverWindow = CreateRolloverWindow
 local DoneObject = DoneObject
 local FilterObjects = FilterObjects
 local GetInGameInterface = GetInGameInterface
-local GetObjects = GetObjects
 local GetTerrainCursor = GetTerrainCursor
 local GetXDialog = GetXDialog
 local HandleToObject = HandleToObject

@@ -7,7 +7,6 @@ local rawget = rawget
 
 local XTemplates = XTemplates
 local PlaceObj = PlaceObj
-local GetObjects = GetObjects
 
 function OnMsg.ClassesGenerate()
 
@@ -82,7 +81,7 @@ function OnMsg.ClassesBuilt()
                 hint = Concat("Toggles maintenance on all ",RetName(context)," (all will be set the same as this one)."),
                 class = "XTextButton",
                 clicked = function()
-                  local objs = GetObjects({class = context.class}) or empty_table
+                  local objs = UICity.labels[context.class] or ""
                   if context.ChoGGi_DisableMaintenance then
                     for i = 1, #objs do
                       objs[i].ChoGGi_DisableMaintenance = nil

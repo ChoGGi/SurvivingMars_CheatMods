@@ -5,7 +5,6 @@ local RetName = ForceNewDome.ComFuncs.RetName
 local rawget = rawget
 local XTemplates = XTemplates
 local PlaceObj = PlaceObj
-local GetObjects = GetObjects
 local IsValid = IsValid
 local ViewPos = ViewPos
 

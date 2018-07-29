@@ -14,7 +14,7 @@ end
 --[[
 function OnMsg.LoadGame()
   --dust removal, uncomment and restart the game (or maybe just reload it).
-  local objs = GetObjects({class = "Building"}) or empty_table
+  local objs = local objs = UICity.labels.Building or ""
   for i = 1, #objs do
     objs[i].ChoGGi_AlwaysDust = nil
   end

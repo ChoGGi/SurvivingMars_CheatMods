@@ -43,13 +43,18 @@ local g_Classes = g_Classes
 
 --returns whatever is selected > moused over > nearest non particle object to cursor
 function ChangeObjectColour.CodeFuncs.SelObject()
-  local _,ret = pcall(function()
-    local objs = ChangeObjectColour.ComFuncs.FilterFromTable(GetObjects({class="CObject"}),{ParSystem=1},"class")
-    return SelectedObj or SelectionMouseObj() or NearestObject(GetTerrainCursor(),objs,500)
-  end)
-  return ret
+  return SelectedObj or SelectionMouseObj() or NearestObject(
+    GetTerrainCursor(),
+    GetObjects{
+      filter = function(o)
+        if o.class ~= "ParSystem" then
+          return o
+        end
+      end,
+    },
+    1500
+  )
 end
-
 
 function ChangeObjectColour.CodeFuncs.SaveOldPalette(Obj)
   local GetPal = Obj.GetColorizationMaterial

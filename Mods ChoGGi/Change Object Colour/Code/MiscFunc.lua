@@ -8,7 +8,6 @@ local next,tostring,type,table = next,tostring,type,table
 
 local ChangeGameSpeedState = ChangeGameSpeedState
 local CreateRealTimeThread = CreateRealTimeThread
-local GetObjects = GetObjects
 local PlayFX = PlayFX
 local Random = Random
 local RebuildFXRules = RebuildFXRules

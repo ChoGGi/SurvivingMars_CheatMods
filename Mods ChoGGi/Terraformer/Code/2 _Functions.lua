@@ -7,8 +7,14 @@ local GetTerrainCursor = GetTerrainCursor
 function FlattenGround.CodeFuncs.SelObject()
   return SelectedObj or SelectionMouseObj() or NearestObject(
     GetTerrainCursor(),
-    FlattenGround.ComFuncs.FilterFromTable(GetObjects{} or empty_table,{ParSystem=1},"class"),
-    1000
+    GetObjects{
+      filter = function(o)
+        if o.class ~= "ParSystem" then
+          return o
+        end
+      end,
+    },
+    1500
   )
 end
 
