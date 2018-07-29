@@ -9,13 +9,17 @@ local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcal
 local AsyncFileToString = AsyncFileToString
 local box = box
 local ClassDescendantsList = ClassDescendantsList
+local CloseDialog = CloseDialog
 local CreateRealTimeThread = CreateRealTimeThread
 local FlushLogFile = FlushLogFile
+local GetDialog = GetDialog
 local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
+local GrantResearchPoints = GrantResearchPoints
 local IsValid = IsValid
 local LuaCodeToTuple = LuaCodeToTuple
 local Msg = Msg
+local OpenDialog = OpenDialog
 local OpenGedApp = OpenGedApp
 local PlaceObj = PlaceObj
 local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
@@ -481,6 +485,16 @@ end
 -- const.MinuteDuration is 500 ticks (GameTime)
 --~ function OnMsg.NewMinute()
 --~ end
+function OnMsg.ResearchQueueChange(city, tech_id)
+  if ChoGGi.UserSettings.InstantResearch then
+    GrantResearchPoints(city.tech_status[tech_id].cost)
+    -- updates the researchdlg by toggling it.
+    if GetDialog("ResearchDlg") then
+      CloseDialog("ResearchDlg")
+      OpenDialog("ResearchDlg")
+    end
+  end
+end
 
 --if you pick a mystery from the cheat menu
 local icon_logo_13 = "UI/Icons/Logos/logo_13.tga"

@@ -30,6 +30,17 @@ local StopDustStorm = StopDustStorm
 
 local g_Classes = g_Classes
 
+function ChoGGi.MenuFuncs.InstantResearch_toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)
+
+  ChoGGi.SettingFuncs.WriteSettings()
+  MsgPopup(
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantResearch,302535920001278--[[Instant Research--]]),
+    311--[[Research--]]
+  )
+end
+
 function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)

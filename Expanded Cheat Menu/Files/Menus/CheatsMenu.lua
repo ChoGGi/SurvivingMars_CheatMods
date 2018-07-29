@@ -130,6 +130,14 @@ AddAction(
 
 ----------------------research
 AddAction(
+  Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/",S[302535920001278--[[Instant Research--]]]),
+  ChoGGi.MenuFuncs.InstantResearch_toggle,
+  nil,
+  302535920001279--[[Instantly research anything you click.--]],
+  "DarkSideOfTheMoon.tga"
+)
+
+AddAction(
   Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/",S[302535920000345--[[Research Tech--]]]),
   ChoGGi.MenuFuncs.ShowResearchTechList,
   nil,
