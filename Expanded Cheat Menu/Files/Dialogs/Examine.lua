@@ -4,7 +4,7 @@ if g_Classes.Examine then
   return
 end
 
--- see about hiding list when moving dialog
+-- see about hiding list when resizing dialog
 
 local Concat = ChoGGi.ComFuncs.Concat
 local DialogAddCaption = ChoGGi.ComFuncs.DialogAddCaption
@@ -26,6 +26,7 @@ local pairs,type,tostring,tonumber,getmetatable,rawget,table,debug,utf8 = pairs,
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
+local DelayedCall = DelayedCall
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
@@ -37,6 +38,12 @@ local RGBA = RGBA
 local Sleep = Sleep
 local ValueToLuaCode = ValueToLuaCode
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+-- threads
+local IsValidThread = IsValidThread
+local GetThreadStatus = GetThreadStatus
+local IsGameTimeThread = IsGameTimeThread
+local IsRealTimeThread = IsRealTimeThread
+local ThreadHasFlags = ThreadHasFlags
 
 local terrain_GetHeight = terrain.GetHeight
 
@@ -72,11 +79,8 @@ DefineClass.Examine = {
 }
 
 function Examine:Init()
-  local ChoGGi = ChoGGi
-
   local g_Classes = g_Classes
   local const = const
-  local terminal = terminal
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -438,7 +442,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
       -- adds class name then list of functions below
       local function BuildFuncList(obj_name,prefix)
         prefix = prefix or ""
-        local class = _G[obj_name]
+        local class = _G[obj_name] or empty_table
         local skip = true
         for Key,_ in pairs(class) do
           if type(class[Key]) == "function" then
@@ -473,7 +477,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 end
 
 function Examine:FindNext(filter)
-  local drawBuffer = self.idText.draw_cache
+  local drawBuffer = self.idText.draw_cache or empty_table
   local current_y = -self.idText.text_offset:y()
   local min_match, closest_match = false, false
   for y, list_draw_info in pairs(drawBuffer) do

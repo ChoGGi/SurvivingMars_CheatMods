@@ -31,7 +31,7 @@ local ModUploadThread
 function ChoGGi.MenuFuncs.ModUpload()
   local ChoGGi = ChoGGi
   local ItemList = {}
-  local Mods = Mods
+  local Mods = Mods or empty_table
   for id,mod in pairs(Mods) do
     ItemList[#ItemList+1] = {
       text = mod.title,
@@ -112,7 +112,7 @@ function ChoGGi.MenuFuncs.ModUpload()
     --~       AsyncCreatePath(dest)
           err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
           if not err then
-            for i = 1, #files or empty_table do
+            for i = 1, #files or "" do
               local dest_file = Concat(dest,files[i])
               local dir = SplitPath(dest_file)
               AsyncCreatePath(dir)

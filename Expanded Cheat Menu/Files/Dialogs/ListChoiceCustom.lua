@@ -92,7 +92,7 @@ function ChoGGi_ListChoiceCustomDialog:Init()
   local orig_SetContent = self.idList.SetContent
   function self.idList:SetContent(items)
     orig_SetContent(self,items)
-    self.parent.idListSetContent(self,items)
+    self.parent.idListSetContent(self)
   end
   --do stuff on selection
   local orig_OnLButtonDown = self.idList.OnLButtonDown
@@ -448,7 +448,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idListSetContent(items)
+function ChoGGi_ListChoiceCustomDialog:idListSetContent()
   local listitems = self.item_windows
   for i = 1, #listitems do
     local listitem = listitems[i]

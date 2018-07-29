@@ -72,7 +72,7 @@ end
 
 --AnnoyingSounds_Toggles
 local function MirrorSphere_Toggle()
-  local tab = UICity.labels.MirrorSpheres or empty_table
+  local tab = UICity.labels.MirrorSpheres or ""
   for i = 1, #tab do
     PlayFX("Freeze", "end", tab[i])
     PlayFX("Freeze", "start", tab[i])
@@ -80,20 +80,20 @@ local function MirrorSphere_Toggle()
 end
 local function SensorTower_Toggle()
   local ChoGGi = ChoGGi
-  local tab = UICity.labels.SensorTower or empty_table
+  local tab = UICity.labels.SensorTower or ""
   for i = 1, #tab do
     ChoGGi.CodeFuncs.ToggleWorking(tab[i])
   end
 end
 local function RCRoverDeploy_Toggle()
-  local tab = UICity.labels.RCRover or empty_table
+  local tab = UICity.labels.RCRover or ""
   for i = 1, #tab do
     PlayFX("RoverDeploy", "end", tab[i])
     PlayFX("RoverDeploy", "start", tab[i])
   end
 end
 local function RCRoverEmergencyPower_Toggle()
-  local tab = UICity.labels.RCRover or empty_table
+  local tab = UICity.labels.RCRover or ""
   for i = 1, #tab do
     PlayFX("EmergencyPower", "end", tab[i])
     PlayFX("EmergencyPower", "start", tab[i])
@@ -204,7 +204,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   local EnabledList = {S[302535920001096--[[Auto Unpinned--]]],":"}
   local list = ChoGGi.UserSettings.UnpinObjects
   if next(list) then
-    local tab = list or empty_table
+    local tab = list or ""
     for i = 1, #tab do
       EnabledList[#EnabledList+1] = " "
       EnabledList[#EnabledList+1] = tab[i]
@@ -312,7 +312,7 @@ function ChoGGi.MenuFuncs.FixAllObjects()
     end
   end
 
-  objs = UICity.labels.Drone or empty_table
+  objs = UICity.labels.Drone or ""
   for i = 1, #objs do
     objs[i]:SetCommand("RepairDrone")
   end
@@ -348,7 +348,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
       obj = obj,
       hint = 302535920001106--[[Change main object colours.--]],
     }
-    local Attaches = obj:GetAttaches() or empty_table
+    local Attaches = obj:GetAttaches() or ""
     for i = 1, #Attaches do
       ItemList[#ItemList+1] = {
         text = Attaches[i].class,
@@ -401,7 +401,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
       sel:SetOpacity(value)
     elseif type(value) == "string" then
       local function SettingOpacity(label)
-        local tab = UICity.labels[label] or empty_table
+        local tab = UICity.labels[label] or ""
         for i = 1, #tab do
           tab[i]:SetOpacity(100)
         end

@@ -60,7 +60,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
   local Presets = Presets
 
   local ItemList = {}
-  local defs = Presets.MissionSponsorPreset.Default or empty_table
+  local defs = Presets.MissionSponsorPreset.Default or ""
   for i = 1, #defs do
     local def = defs[i]
     if def.id ~= "random" then
@@ -116,7 +116,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
   local Presets = Presets
 
   local ItemList = {}
-  local tab = Presets.MissionSponsorPreset.Default or empty_table
+  local tab = Presets.MissionSponsorPreset.Default or ""
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
@@ -186,7 +186,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
   local UICity = UICity
 
   local ItemList = {}
-  local tab = Presets.CommanderProfilePreset.Default or empty_table
+  local tab = Presets.CommanderProfilePreset.Default or ""
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
@@ -239,7 +239,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
   local Presets = Presets
 
   local ItemList = {}
-  local tab = Presets.CommanderProfilePreset.Default or empty_table
+  local tab = Presets.CommanderProfilePreset.Default or ""
   for i = 1, #tab do
     if tab[i].id ~= "random" then
       ItemList[#ItemList+1] = {
@@ -308,7 +308,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
   local Presets = Presets
 
   local ItemList = {}
-  local tab = Presets.MissionLogoPreset.Default or empty_table
+  local tab = Presets.MissionLogoPreset.Default or ""
   for i = 1, #tab do
     ItemList[#ItemList+1] = {
       text = T(tab[i].display_name),
@@ -324,9 +324,9 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     end
 
     local function ChangeLogo(Label,Name)
-      local tab = UICity.labels[Label] or empty_table
+      local tab = UICity.labels[Label] or ""
       for i = 1, #tab do
-        local tab2 = tab[i]:GetAttaches("Logo") or empty_table
+        local tab2 = tab[i]:GetAttaches("Logo") or ""
         for j = 1, #tab2 do
           --if tab2[j].class == "Logo" then
             local tempLogo = tab2[j]
@@ -338,7 +338,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
       end
     end
 
-    local tab = Presets.MissionLogoPreset.Default or empty_table
+    local tab = Presets.MissionLogoPreset.Default or ""
     for i = 1, #tab do
       if tab[i].id == value then
         --for any new objects
@@ -370,7 +370,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonuses(sType)
   local currentname = g_CurrentMissionParams.idCommanderProfile
   local comm = MissionParams.idCommanderProfile.items[currentname]
   local bonus = Presets.CommanderProfilePreset.Default[sType]
-  local tab = bonus or empty_table
+  local tab = bonus or ""
   for i = 1, #tab do
     CreateRealTimeThread(function()
       comm[#comm+1] = tab[i]

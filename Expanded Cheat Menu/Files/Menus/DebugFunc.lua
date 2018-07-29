@@ -67,7 +67,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
     -- build played time
     local playtime = local_T{77, "Unknown"}
     if data.playtime then
-      local h, m, s = FormatElapsedTime(data.playtime, "hms")
+      local h, m, _ = FormatElapsedTime(data.playtime, "hms")
       local hours = string.format("%02d", h)
       local minutes = string.format("%02d", m)
       playtime = T(local_T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
@@ -199,7 +199,7 @@ do --export colonist data
 
   function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
     local export_data = {}
-    local colonists = UICity.labels.Colonist or empty_table
+    local colonists = UICity.labels.Colonist or ""
 
     for i = 1, #colonists do
       local c = colonists[i]
@@ -360,14 +360,14 @@ local function AnimDebug_Show(obj,colour)
 end
 
 local function AnimDebug_ShowAll(cls)
-  local objs = UICity.labels[cls] or empty_table
+  local objs = UICity.labels[cls] or ""
   for i = 1, #objs do
     AnimDebug_Show(objs[i])
   end
 end
 
 local function AnimDebug_Hide(obj)
-  local att = obj:GetAttaches() or empty_table
+  local att = obj:GetAttaches() or ""
   for i = 1, #att do
     if att[i].ChoGGi_AnimDebug then
       att[i]:delete()
@@ -376,7 +376,7 @@ local function AnimDebug_Hide(obj)
 end
 
 local function AnimDebug_HideAll(cls)
-  local objs = UICity.labels[cls] or empty_table
+  local objs = UICity.labels[cls] or ""
   for i = 1, #objs do
     AnimDebug_Hide(objs[i])
   end
@@ -414,7 +414,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
     return
   end
   local ItemList = {}
-  local Table = sel:GetStates()
+  local Table = sel:GetStates() or empty_table
 
   for Key,State in pairs(Table) do
     ItemList[#ItemList+1] = {
@@ -447,7 +447,7 @@ end
 local ObjectSpawner_ItemList = {}
 function ChoGGi.MenuFuncs.ObjectSpawner()
   local ChoGGi = ChoGGi
-  local EntityData = EntityData
+  local EntityData = EntityData or empty_table
   if #ObjectSpawner_ItemList == 0 then
     for Key,_ in pairs(EntityData) do
       ObjectSpawner_ItemList[#ObjectSpawner_ItemList+1] = {
@@ -682,8 +682,6 @@ do --path markers
   local randcolours = {}
   local colourcount = 0
   local dupewppos = {}
-  --pick a random model for start of path if doing single object
-  local SpawnModels = {"GreenMan","Lama"}
   --default height of waypoints (maybe flag_height isn't the best name as no more flags)
   local flag_height = 50
 
@@ -893,7 +891,7 @@ do --path markers
     --remove all thread refs so they stop
     ChoGGi.Temp.UnitPathingHandles = {}
     --and waypoints/colour
-    local objs = UICity.labels[cls] or empty_table
+    local objs = UICity.labels[cls] or ""
     for i = 1, #objs do
 
       if objs[i].ChoGGi_WaypointPathAdded then
@@ -972,9 +970,9 @@ do --path markers
         end
 
         if value == "All" then
-          local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or empty_table,"IsValid",nil,true)
-          local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle or empty_table,"IsValid",nil,true)
-          local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist or empty_table,"IsValid",nil,true)
+          local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or "","IsValid",nil,true)
+          local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle or "","IsValid",nil,true)
+          local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist or "","IsValid",nil,true)
           colourcount = colourcount + #table1
           colourcount = colourcount + #table2
           colourcount = colourcount + #table3
@@ -998,7 +996,7 @@ do --path markers
 
         --remove any waypoints in the same pos
         local function ClearAllDupeWP(cls)
-          local objs = UICity.labels[cls] or empty_table
+          local objs = UICity.labels[cls] or ""
           for i = 1, #objs do
             if objs[i] and objs[i].ChoGGi_Stored_Waypoints then
               RemoveWPDupePos("WayPoint",objs[i])

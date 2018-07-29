@@ -16,7 +16,6 @@ local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local SelectObj = SelectObj
 local UnlockBuilding = UnlockBuilding
-local GetObjects = GetObjects
 local GetBuildingTechsStatus = GetBuildingTechsStatus
 
 local g_Classes = g_Classes
@@ -61,7 +60,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
       end
 
       local function SetStor(cls)
-        local objs = UICity.labels[cls] or empty_table
+        local objs = UICity.labels[cls] or ""
         for i = 1, #objs do
           objs[i].consumption_stored_resources = value
           objs[i].consumption_max_storage = value
@@ -92,7 +91,7 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
   if ChoGGi.UserSettings.AlwaysDustyBuildings then
     ChoGGi.UserSettings.AlwaysDustyBuildings = nil
     --dust clean up
-    local objs = UICity.labels.Building or empty_table
+    local objs = UICity.labels.Building or ""
     for i = 1, #objs do
       objs[i].ChoGGi_AlwaysDust = nil
     end
@@ -151,7 +150,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     end
     if type(value) == "number" then
 
-      local tab = UICity.labels[id] or empty_table
+      local tab = UICity.labels[id] or ""
       for i = 1, #tab do
         tab[i].protect_range = value
         tab[i].shoot_range = value * ChoGGi.Consts.guim
@@ -182,7 +181,7 @@ end
 
 function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   local ChoGGi = ChoGGi
-  local data = DataInstances.BuildingTemplate
+  local data = DataInstances.BuildingTemplate or empty_table
   local ItemList = {}
   for Key,_ in pairs(data) do
     if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
@@ -275,7 +274,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
     which = func2
   end
 
-  local blds = UICity.labels[id] or empty_table
+  local blds = UICity.labels[id] or ""
   for i = 1, #blds do
     ChoGGi.CodeFuncs[which](blds[i])
   end
@@ -427,7 +426,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
       --updating time
       if CapType == "electricity" then
-        local tab = UICity.labels.Power or empty_table
+        local tab = UICity.labels.Power or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == id then
             if check1 then
@@ -442,7 +441,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
           end
         end
       else --water and air
-        local tab = UICity.labels["Life-Support"] or empty_table
+        local tab = UICity.labels["Life-Support"] or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == id then
             if check1 then
@@ -492,14 +491,14 @@ end
 
 function ChoGGi.MenuFuncs.FarmShiftsAllOn()
   local UICity = UICity
-  local tab = UICity.labels.BaseFarm or empty_table
+  local tab = UICity.labels.BaseFarm or ""
   for i = 1, #tab do
     tab[i].closed_shifts[1] = false
     tab[i].closed_shifts[2] = false
     tab[i].closed_shifts[3] = false
   end
   --BaseFarm doesn't include FungalFarm...
-  tab = UICity.labels.FungalFarm or empty_table
+  tab = UICity.labels.FungalFarm or ""
   for i = 1, #tab do
     tab[i].closed_shifts[1] = false
     tab[i].closed_shifts[2] = false
@@ -599,7 +598,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
       --all this just to update the displayed amount :)
       local function SetProd(Label)
-        local tab = UICity.labels[Label] or empty_table
+        local tab = UICity.labels[Label] or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == id then
             tab[i][ProdType]:SetProduction(amount)
@@ -615,7 +614,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
       else --other prod
 
         local function SetProdOther(Label)
-          local tab = UICity.labels[Label] or empty_table
+          local tab = UICity.labels[Label] or ""
           for i = 1, #tab do
             if tab[i].encyclopedia_id == id then
               tab[i]:GetProducerObj().production_per_day = amount
@@ -693,7 +692,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
         sel.auto_performance = value
         ChoGGi.CodeFuncs.ToggleWorking(sel)
       else
-        local tab = UICity.labels.BuildingNoDomes or empty_table
+        local tab = UICity.labels.BuildingNoDomes or ""
         for i = 1, #tab do
           if tab[i].base_max_workers then
             tab[i].max_workers = a
@@ -746,15 +745,15 @@ Current: %s"--]]]:format(hint),
 end
 
 --used to add or remove traits from schools/sanitariums
-function ChoGGi.MenuFuncs.BuildingsSetAll_Traits(Building,Traits,Bool)
-  local Buildings = UICity.labels[Building] or empty_table
-  for i = 1, #Buildings do
-    local Obj = Buildings[i]
-    for j = 1,#Traits do
-      if Bool == true then
-        Obj:SetTrait(j,nil)
+function ChoGGi.MenuFuncs.BuildingsSetAll_Traits(Building,traits,bool)
+  local objs = UICity.labels[Building] or ""
+  for i = 1, #objs do
+    local obj = objs[i]
+    for j = 1,#traits do
+      if bool == true then
+        obj:SetTrait(j,nil)
       else
-        Obj:SetTrait(j,Traits[j])
+        obj:SetTrait(j,traits[j])
       end
     end
   end
@@ -839,7 +838,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.InsideBuildingsNoMaintenance = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InsideBuildingsNoMaintenance)
 
-  local tab = UICity.labels.InsideBuildings or empty_table
+  local tab = UICity.labels.InsideBuildings or ""
   for i = 1, #tab do
     if tab[i].base_maintenance_build_up_per_hr then
 
@@ -868,7 +867,7 @@ function ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.RemoveMaintenanceBuildUp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)
 
-  local tab = UICity.labels.Building or empty_table
+  local tab = UICity.labels.Building or ""
   for i = 1, #tab do
     if tab[i].base_maintenance_build_up_per_hr then
       if ChoGGi.UserSettings.RemoveMaintenanceBuildUp then
@@ -1036,7 +1035,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
     --go through and reset to defaults?
   else
     ChoGGi.UserSettings.Building_wonder = true
-    local tab = DataInstances.BuildingTemplate or empty_table
+    local tab = DataInstances.BuildingTemplate or ""
     for i = 1, #tab do
       tab[i].wonder = false
     end
@@ -1130,7 +1129,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
       --find a better way to update radius...
       local sel = SelectedObj
       CreateRealTimeThread(function()
-        local objs = UICity.labels[id] or empty_table
+        local objs = UICity.labels[id] or ""
         for i = 1, #objs do
           objs[i]:SetUIRange(value)
           SelectObj(objs[i])

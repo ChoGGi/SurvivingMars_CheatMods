@@ -181,7 +181,7 @@ function OnMsg.PersistPostLoad()
     end
 
     --[LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
-    local s_Heaters = s_Heaters
+    local s_Heaters = s_Heaters or empty_table
     for obj,_ in pairs(s_Heaters) do
       if obj:IsKindOf("UnpersistedMissingClass") then
         s_Heaters[obj] = nil
@@ -198,7 +198,7 @@ function OnMsg.PersistPostLoad()
         end
       end
     end
-    local domes = UICity.labels.Dome or empty_table
+    local domes = UICity.labels.Dome or ""
     for i = 1, #domes do
       for _,label in pairs(domes[i].labels or empty_table) do
         for j = #label, 1, -1 do
@@ -352,7 +352,7 @@ function OnMsg.Demolished(building)
     local UICity = building.city or UICity
     UICity.labels.Domes_Working = nil
     UICity:InitEmptyLabel("Domes_Working")
-    local Table = UICity.labels.Dome or empty_table
+    local Table = UICity.labels.Dome or ""
     for i = 1, #Table do
       UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = Table[i]
     end
@@ -424,7 +424,7 @@ function OnMsg.NewDay() -- NewSol...
 
   -- sorts cc list by dist to building
   if ChoGGi.UserSettings.SortCommandCenterDist then
-    local objs = UICity.labels.Building or empty_table
+    local objs = UICity.labels.Building or ""
     for i = 1, #objs do
       --no sense in doing it with only one center
       if #objs[i].command_centers > 1 then
@@ -457,14 +457,14 @@ function OnMsg.NewHour()
     local UICity = UICity
 
     -- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local prods = UICity.labels.ResourceProducer or empty_table
+    local prods = UICity.labels.ResourceProducer or ""
     for i = 1, #prods do
       ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
       if prods[i].wasterock_producer then
         ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
       end
     end
-    prods = UICity.labels.BlackCubeStockpiles or empty_table
+    prods = UICity.labels.BlackCubeStockpiles or ""
     for i = 1, #prods do
       ChoGGi.CodeFuncs.FuckingDrones(prods[i])
     end
@@ -564,7 +564,7 @@ end
 function OnMsg.ChoGGi_TogglePinnableObject(obj)
   local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
   if type(UnpinObjects) == "table" and next(UnpinObjects) then
-    local Table = UnpinObjects or empty_table
+    local Table = UnpinObjects or ""
     for i = 1, #Table do
       if obj.class == Table[i] and obj:IsPinned() then
         obj:TogglePin()
@@ -816,7 +816,7 @@ function OnMsg.ChoGGi_Loaded()
 
   -- update cargo resupply
   ChoGGi.ComFuncs.UpdateDataTables(true)
-  for Key,Value in pairs(UserSettings.CargoSettings) do
+  for Key,Value in pairs(UserSettings.CargoSettings or empty_table) do
     if ChoGGi.Tables.Cargo[Key] then
       if Value.pack then
         ChoGGi.Tables.Cargo[Key].pack = Value.pack
@@ -844,7 +844,7 @@ function OnMsg.ChoGGi_Loaded()
     dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
 
     local function SetMissionBonuses(Preset,Type,Func)
-      local tab = Presets[Preset].Default or empty_table
+      local tab = Presets[Preset].Default or ""
       for i = 1, #tab do
         if UserSettings[Concat(Type,tab[i].id)] then
           Func(tab[i].id)
@@ -1059,7 +1059,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --not sure why this would be false on a dome
-  Table = UICity.labels.Dome or empty_table
+  Table = UICity.labels.Dome or ""
   for i = 1, #Table do
     if Table[i].achievement == "FirstDome" and type(Table[i].connected_domes) ~= "table" then
       Table[i].connected_domes = {}
@@ -1067,7 +1067,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --something messed up if storage is negative (usually setting an amount then lowering it)
-  Table = UICity.labels.Storages or empty_table
+  Table = UICity.labels.Storages or ""
   pcall(function()
     for i = 1, #Table do
       if Table[i]:GetStoredAmount() < 0 then
@@ -1079,7 +1079,7 @@ function OnMsg.ChoGGi_Loaded()
   end)
 
   --so we can change the max_amount for concrete
-  Table = g_Classes.TerrainDepositConcrete.properties or empty_table
+  Table = g_Classes.TerrainDepositConcrete.properties or ""
   for i = 1, #Table do
     if Table[i].id == "max_amount" then
       Table[i].read_only = nil
@@ -1087,7 +1087,7 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   --override building templates
-  Table = DataInstances.BuildingTemplate or empty_table
+  Table = DataInstances.BuildingTemplate or ""
   for i = 1, #Table do
     local temp = Table[i]
 
@@ -1157,7 +1157,7 @@ function OnMsg.ChoGGi_Loaded()
     CheckLabel("ChoGGi_LifeSupportGridElement")
 
     --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-    local shown = g_ShownOnScreenNotifications
+    local shown = g_ShownOnScreenNotifications or empty_table
     for Key,_ in pairs(shown) do
       if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
         shown[Key] = nil
@@ -1168,7 +1168,7 @@ function OnMsg.ChoGGi_Loaded()
     ChoGGi.CodeFuncs.CloseDialogsECM()
 
     --remove any outside buildings i accidentally attached to domes ;)
-    Table = UICity.labels.BuildingNoDomes or empty_table
+    Table = UICity.labels.BuildingNoDomes or ""
     local sType
     for i = 1, #Table do
       if Table[i].dome_required == false and Table[i].parent_dome then

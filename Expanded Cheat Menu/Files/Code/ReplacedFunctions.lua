@@ -245,7 +245,7 @@ function OnMsg.ClassesGenerate()
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   do -- Large Water Tank + Pipes + Chrome skin = broked looking pipes
-    local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight", }
+    local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
     local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
     local decor_spot = "Tubedecor"
     function GridObject:GetPipeConnections()

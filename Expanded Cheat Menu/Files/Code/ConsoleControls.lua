@@ -282,7 +282,7 @@ function ChoGGi.Console.BuildScriptFiles()
     AsyncStringToFile(Concat(script_path,"/Examine/XDialogs.lua"),[[OpenExamine(XDialogs)]])
     AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[OpenExamine(Flags)]])
     AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop) --Platform.editor]])
-    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#(UICity.labels.Colonist or empty_table)]])
+    AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#(UICity.labels.Colonist or "")]])
     AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
   end
 

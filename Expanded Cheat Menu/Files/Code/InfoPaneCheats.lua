@@ -234,24 +234,24 @@ do
   end
   --
   --CheatCapDbl people
-  function Residence:CheatColonistCapDbl(self)
+  function Residence:CheatColonistCapDbl()
     if self.capacity == 4096 then
       return
     end
     self.capacity = self.capacity * 2
   end
-  function Residence:CheatColonistCapDef(self)
+  function Residence:CheatColonistCapDef()
     self.capacity = self.base_capacity
   end
 
   --CheatVisitorsDbl
-  function Service:CheatVisitorsDbl(self)
+  function Service:CheatVisitorsDbl()
     if self.max_visitors == 4096 then
       return
     end
     self.max_visitors = self.max_visitors * 2
   end
-  function Service:CheatVisitorsDef(self)
+  function Service:CheatVisitorsDef()
     self.max_visitors = self.base_max_visitors
   end
 
@@ -374,9 +374,8 @@ Reselect to update display."--]]]:format(name)
     action.ActionName = action.ActionId
     action.RolloverHint = hint
   end
-  local Table = win.actions or empty_table
-  for i = 1, #Table do
-    local action = Table[i]
+  for i = 1, #win.actions do
+    local action = win.actions[i]
 
 --Colonists
     if action.ActionId == "FillAll" then

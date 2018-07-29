@@ -11,7 +11,7 @@ local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
-local type,tostring,getmetatable = type,tostring,getmetatable
+local type,tostring = type,tostring
 
 local PlaceObject = PlaceObject
 local ChangeFunding = ChangeFunding
@@ -81,7 +81,6 @@ do --ChangeResupplySettings
   function ChoGGi.MenuFuncs.ChangeResupplySettings()
     local ChoGGi = ChoGGi
     local Cargo = ChoGGi.Tables.Cargo
-    local g_Classes = g_Classes
 
     local ItemList = {}
     for i = 1, #Cargo do
@@ -165,7 +164,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   if not ChoGGi.UserSettings.StorageMechanizedDepotsTemp then
     amount = 5
   end
-  local tab = UICity.labels.MechanizedDepots or empty_table
+  local tab = UICity.labels.MechanizedDepots or ""
   for i = 1, #tab do
     ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
   end
@@ -379,7 +378,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
     end
     if type(value) == "number" then
 
-      local tab = UICity.labels.Workplace or empty_table
+      local tab = UICity.labels.Workplace or ""
       for i = 1, #tab do
         if tab[i].encyclopedia_id == sel.encyclopedia_id then
           tab[i].max_workers = value
@@ -510,7 +509,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       end
       --updating time
       if CapType == "electricity" then
-        local tab = UICity.labels.Power or empty_table
+        local tab = UICity.labels.Power or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == sel.encyclopedia_id then
             tab[i].capacity = amount
@@ -521,7 +520,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
         end
 
       elseif CapType == "colonist" then
-        local tab = UICity.labels.Residence or empty_table
+        local tab = UICity.labels.Residence or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == sel.encyclopedia_id then
             tab[i].capacity = amount
@@ -529,7 +528,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
         end
 
       else --water and air
-        local tab = UICity.labels["Life-Support"] or empty_table
+        local tab = UICity.labels["Life-Support"] or ""
         for i = 1, #tab do
           if tab[i].encyclopedia_id == sel.encyclopedia_id then
             tab[i][Concat(CapType,"_capacity")] = amount
@@ -605,7 +604,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
       return
     end
     if type(value) == "number" then
-      local tab = UICity.labels.BuildingNoDomes or empty_table
+      local tab = UICity.labels.BuildingNoDomes or ""
       for i = 1, #tab do
         if tab[i].encyclopedia_id == sel.encyclopedia_id then
           tab[i].max_visitors = value
@@ -679,7 +678,7 @@ Mechanized: 1,000,000--]]]
         end
         --loop through and change all existing
 
-        local tab = UICity.labels.WasteRockDumpSite or empty_table
+        local tab = UICity.labels.WasteRockDumpSite or ""
         for i = 1, #tab do
           tab[i].max_amount_WasteRock = value
           if tab[i]:GetStoredAmount() < 0 then
@@ -691,14 +690,14 @@ Mechanized: 1,000,000--]]]
         if value > 20000000 then
           value = 20000000
         end
-        local tab = UICity.labels.UniversalStorageDepot or empty_table
+        local tab = UICity.labels.UniversalStorageDepot or ""
         for i = 1, #tab do
           if tab[i].entity ~= "StorageDepot" then
             tab[i].max_storage_per_resource = value
           end
         end
         local function OtherDepot(label,res)
-          local tab = UICity.labels[label] or empty_table
+          local tab = UICity.labels[label] or ""
           for i = 1, #tab do
             tab[i][res] = value
           end
@@ -709,7 +708,7 @@ Mechanized: 1,000,000--]]]
         if value > 2500000 then
           value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
         end
-        local tab = UICity.labels.UniversalStorageDepot or empty_table
+        local tab = UICity.labels.UniversalStorageDepot or ""
         for i = 1, #tab do
           if tab[i].entity == "StorageDepot" then
             tab[i].max_storage_per_resource = value
@@ -719,7 +718,7 @@ Mechanized: 1,000,000--]]]
         if value > 1000000000 then
           value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
         end
-        local tab = UICity.labels.MechanizedDepots or empty_table
+        local tab = UICity.labels.MechanizedDepots or ""
         for i = 1, #tab do
           tab[i].max_storage_per_resource = value
         end

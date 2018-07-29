@@ -10,6 +10,7 @@ The selection radius for objects under the cursor is slightly larger.
 
 Fixed:
 Examine wasn't stopping the auto-refresh thread after dialog was closed.
+Cheats menu settings text wasn't updating (broke it in 6.8).
 
 v6.8
 Added:

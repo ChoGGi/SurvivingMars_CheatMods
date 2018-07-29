@@ -3,7 +3,7 @@
 -- stores default values and some tables
 
 local Concat = ChoGGi.ComFuncs.Concat
-local T = ChoGGi.ComFuncs.Trans
+--~ local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 
 local next,pairs,print,type,table = next,pairs,print,type,table
@@ -11,7 +11,6 @@ local next,pairs,print,type,table = next,pairs,print,type,table
 local AsyncCopyFile = AsyncCopyFile
 local AsyncFileToString = AsyncFileToString
 local AsyncStringToFile = AsyncStringToFile
-local ClassDescendantsList = ClassDescendantsList
 local LuaCodeToTuple = LuaCodeToTuple
 local TableToLuaCode = TableToLuaCode
 local ThreadLockKey = ThreadLockKey
@@ -19,28 +18,22 @@ local ThreadUnlockKey = ThreadUnlockKey
 
 local g_Classes = g_Classes
 
---useful lists
-do
-  local ChoGGi = ChoGGi
-  local const = const
+-- useful lists
+ChoGGi.Tables = {
+  -- display names only! (stored as numbers, not names like the rest; which is why i guessed)
+  ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
 
-  ChoGGi.Tables = {
-    -- display names only! (stored as numbers, not names like the rest; which is why i guessed)
-    ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
-
-    -- some names need to be fixed when doing construction placement
-    ConstructionNamesListFix = {
-      RCRover = "RCRoverBuilding",
-      RCDesireTransport = "RCDesireTransportBuilding",
-      RCTransport = "RCTransportBuilding",
-      ExplorerRover = "RCExplorerBuilding",
-      Rocket = "SupplyRocket",
-    },
-  }
-
-  -- easy access to colonist data, cargo, mystery
-  ChoGGi.ComFuncs.UpdateDataTables()
-end
+  -- some names need to be fixed when doing construction placement
+  ConstructionNamesListFix = {
+    RCRover = "RCRoverBuilding",
+    RCDesireTransport = "RCDesireTransportBuilding",
+    RCTransport = "RCTransportBuilding",
+    ExplorerRover = "RCExplorerBuilding",
+    Rocket = "SupplyRocket",
+  },
+}
+-- easy access to colonist data, cargo, mystery
+ChoGGi.ComFuncs.UpdateDataTables()
 
 -- stores defaults
 ChoGGi.Defaults = {
@@ -476,10 +469,10 @@ local function AddOldSettings(old_cat,new_name)
   local ChoGGi = ChoGGi
   local DataInstances = DataInstances
 
-  --is there anthing in the table?
-  if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
+--~   --is there anthing in the table?
+--~   if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
     --then loop through it
-    for Key,Value in pairs(ChoGGi.UserSettings[old_cat]) do
+    for Key,Value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
       --it likely doesn't exist, but check first and add a blank table
       if not ChoGGi.UserSettings.BuildingSettings[Key] then
         ChoGGi.UserSettings.BuildingSettings[Key] = {}
@@ -491,7 +484,7 @@ local function AddOldSettings(old_cat,new_name)
         ChoGGi.UserSettings.BuildingSettings[Key][new_name] = Value
       end
     end
-  end
+--~   end
   --remove old settings
   ChoGGi.UserSettings[old_cat] = nil
   return true
@@ -520,12 +513,10 @@ function OnMsg.ModsLoaded()
     end
   end
 
-    -- remove empty entries in CargoSettings
-  if next(ChoGGi.UserSettings.CargoSettings) then
-    for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings) do
-      if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
-        ChoGGi.UserSettings.CargoSettings[Key] = nil
-      end
+  -- remove empty entries in CargoSettings
+  for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings or empty_table) do
+    if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
+      ChoGGi.UserSettings.CargoSettings[Key] = nil
     end
   end
 end

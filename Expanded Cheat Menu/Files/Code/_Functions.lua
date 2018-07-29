@@ -228,7 +228,7 @@ end
 
 --if building requires a dome and that dome is broked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
-  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome or empty_table,nil,nil,"working")
+  local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome or "",nil,nil,"working")
   --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
   if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
     --find the nearest dome
@@ -479,7 +479,7 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
 end
 
 --[[
-    local tab = UICity.labels.BlackCubeStockpiles or empty_table
+    local tab = UICity.labels.BlackCubeStockpiles or ""
     for i = 1, #tab do
       ChoGGi.CodeFuncs.FuckingDrones(tab[i])
     end
@@ -661,11 +661,11 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
     return
   end
   local ChoGGi = ChoGGi
-  local Attaches = obj:GetAttaches() or empty_table
+  local attaches = obj:GetAttaches() or ""
   --random is random after all, so lets try for at least slightly different colours
-  local colours = ChoGGi.CodeFuncs.RandomColour(#Attaches + 1)
-  for i = 1, #Attaches do
-    SetRandColour(Attaches[i],colours[i],ChoGGi)
+  local colours = ChoGGi.CodeFuncs.RandomColour(#attaches + 1)
+  for i = 1, #attaches do
+    SetRandColour(attaches[i],colours[i],ChoGGi)
   end
   SetRandColour(obj,colours[#colours],ChoGGi)
 end
@@ -687,9 +687,9 @@ function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
     return
   end
   SetDefColour(obj)
-  local Attaches = obj:GetAttaches() or empty_table
-  for i = 1, #Attaches do
-    SetDefColour(Attaches[i])
+  local attaches = obj:GetAttaches() or ""
+  for i = 1, #attaches do
+    SetDefColour(attaches[i])
   end
 end
 
@@ -921,16 +921,16 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
       )
       --All of type checkbox
       if choice[1].check1 then
-        local tab = UICity.labels[Label] or empty_table
+        local tab = UICity.labels[Label] or ""
         for i = 1, #tab do
           if parent then
-            local Attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches(obj.class) or empty_table
-            for j = 1, #Attaches do
+            local attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches(obj.class) or ""
+            for j = 1, #attaches do
               --if Attaches[j].class == obj.class then
                 if choice[1].check2 then
-                  CheckGrid(SetOrigColours,Attaches[j],tab[i])
+                  CheckGrid(SetOrigColours,attaches[j],tab[i])
                 else
-                  CheckGrid(SetColours,Attaches[j],tab[i])
+                  CheckGrid(SetColours,attaches[j],tab[i])
                 end
               --end
             end
@@ -1013,9 +1013,9 @@ end
 
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
   if type(obj.GetAttaches) == "function" then
-    local Attaches =  obj:GetAttaches() or empty_table
-    for i = #Attaches, 1, -1 do
-      Attaches[i]:delete()
+    local attaches = obj:GetAttaches() or ""
+    for i = #attaches, 1, -1 do
+      attaches[i]:delete()
     end
   end
 end
@@ -1149,7 +1149,7 @@ function ChoGGi.CodeFuncs.DeleteObject(obj)
   local ChoGGi = ChoGGi
 
   --multiple selection from editor mode
-  local objs = editor:GetSel() or empty_table
+  local objs = editor:GetSel() or ""
   if #objs > 0 then
     for i = 1, #objs do
       ChoGGi.CodeFuncs.DeleteObject(objs[i])
@@ -1326,7 +1326,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
   elseif value == "Colonists" then
     info = {
       title = S[547--[[Colonists--]]],
-      tables = UICity.labels.Colonist or empty_table,
+      tables = UICity.labels.Colonist or "",
       values = {
         {name="handle",kind=0},
         {name="command",kind=0},
@@ -1397,7 +1397,7 @@ function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
 end
 
 function ChoGGi.CodeFuncs.ResetHumanCentipedes()
-  local objs = UICity.labels.Colonist or empty_table
+  local objs = UICity.labels.Colonist or ""
   for i = 1, #objs do
     --only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
     if objs[i]:IsValidPos() and not objs[i]:GetPath() then
@@ -1409,7 +1409,7 @@ function ChoGGi.CodeFuncs.ResetHumanCentipedes()
 end
 
 local function AttachmentsCollisionToggle(sel,which)
-  local att = sel:GetAttaches() or empty_table
+  local att = sel:GetAttaches() or ""
   if att and #att > 0 then
     --are we disabling col or enabling
     local flag
@@ -1484,7 +1484,7 @@ function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
 end
 
 function ChoGGi.CodeFuncs.DeleteAttaches(obj)
-  local a = obj:GetAttaches() or empty_table
+  local a = obj:GetAttaches() or ""
   for i = #a, 1, -1 do
     a[i]:delete()
   end

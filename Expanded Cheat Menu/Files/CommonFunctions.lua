@@ -668,12 +668,12 @@ function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
     return 0
   end
 
-  if obj.id then
-    ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
-  end
-  if (type(obj) == "table") then
+  if type(obj) == "table" then
+    if obj.id then
+      ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
+    end
     for k,v in pairs(obj) do
-      if (type(v) == "table") then
+      if type(v) == "table" then
         ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
       else
         if k ~= nil then
@@ -872,7 +872,7 @@ end
 -- check for and remove broken objects from UICity.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
   local UICity = UICity
-  local list = UICity.labels[label] or empty_table
+  local list = UICity.labels[label] or ""
   for i = #list, 1, -1 do
     if not IsValid(list[i]) then
       table.remove(UICity.labels[label],i)
@@ -899,7 +899,7 @@ end
 
 function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
   local UICity = UICity
-  local tab = UICity.labels[label] or empty_table
+  local tab = UICity.labels[label] or ""
   for i = 1, #tab do
     if tab[i] and tab[i].handle and tab[i] == obj.handle then
       table.remove(UICity.labels[label],i)
@@ -960,7 +960,7 @@ end
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
-  for k, v in pairs(actions_to_add) do
+  for k, v in pairs(actions_to_add or empty_table) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
         if type(v.key) == "table" then
@@ -1060,7 +1060,7 @@ ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
 function ChoGGi.ComFuncs.ReturnTechAmount(tech,prop)
-  local techdef = TechDef[tech] or empty_table
+  local techdef = TechDef[tech] or ""
   for i = 1, #techdef do
     if techdef[i].Prop == prop then
       tech = techdef[i]
@@ -1157,7 +1157,7 @@ end
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
   local tempt = {}
-  list = list or empty_table
+  list = list or ""
   for i = 1, #list do
     if list[i][cls] ~= text then
       tempt[#tempt+1] = list[i]
@@ -1166,9 +1166,12 @@ function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
   return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building or empty_table,{ParSystem = true,ResourceStockpile = true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit or empty_table,nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building or "",{ParSystem = true,ResourceStockpile = true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit or "",nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
+  if #list < 1 then
+    return
+  end
   return FilterObjects({
     filter = function(o)
       if exclude_list or include_list then
@@ -1197,7 +1200,7 @@ function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
 end
 
 -- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Building,"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or empty_table,"IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or "","IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
   return FilterObjects({
     filter = function(o)
@@ -1608,12 +1611,12 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
   local restrict = false
 
   local rtotal = 0
-  for _,_ in pairs(settings.restricttraits) do
+  for _,_ in pairs(settings.restricttraits or empty_table) do
     rtotal = rtotal + 1
   end
 
   local rcount = 0
-  for trait,_ in pairs(traits) do
+  for trait,_ in pairs(traits or empty_table) do
     if settings.restricttraits[trait] then
       rcount = rcount + 1
     end
@@ -1683,11 +1686,11 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 
   --add
   if for_type then
-    for k,_ in pairs(list) do
+    for k,_ in pairs(list or empty_table) do
       temp_table[#temp_table+1] = k
     end
   else
-    for _,v in pairs(list) do
+    for _,v in pairs(list or empty_table) do
       temp_table[#temp_table+1] = v
     end
   end

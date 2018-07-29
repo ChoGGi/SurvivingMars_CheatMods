@@ -98,7 +98,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
       --we need to set this so the hex grid during placement is enlarged
       const.RCRoverMaxRadius = value
 
-      local tab = UICity.labels.RCRover or empty_table
+      local tab = UICity.labels.RCRover or ""
       for i = 1, #tab do
         tab[i]:SetWorkRadius(value)
       end
@@ -149,7 +149,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
       --we need to set this so the hex grid during placement is enlarged
       const.CommandCenterMaxRadius = value
 
-      local tab = UICity.labels.DroneHub or empty_table
+      local tab = UICity.labels.DroneHub or ""
       for i = 1, #tab do
         tab[i]:SetWorkRadius(value)
       end
@@ -248,7 +248,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
       return
     end
     if type(value) == "number" then
-      local tab = UICity.labels.Drone or empty_table
+      local tab = UICity.labels.Drone or ""
       for i = 1, #tab do
         --tab[i]:SetMoveSpeed(value)
         pf_SetStepLen(tab[i],value)
@@ -304,7 +304,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
     end
     if type(value) == "number" then
       ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
-      local tab = UICity.labels.Rover or empty_table
+      local tab = UICity.labels.Rover or ""
       for i = 1, #tab do
         --tab[i]:SetMoveSpeed(value)
         pf_SetStepLen(tab[i],value)
@@ -414,7 +414,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
       return
     end
     if type(value) == "number" then
-      local tab = UICity.labels.DroneFactory or empty_table
+      local tab = UICity.labels.DroneFactory or ""
       for i = 1, #tab do
         tab[i].performance = value
       end
@@ -722,7 +722,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
         value = 2000000
       end
       --loop through and set all
-      local tab = UICity.labels.RCTransport or empty_table
+      local tab = UICity.labels.RCTransport or ""
       for i = 1, #tab do
         tab[i].max_shared_storage = value
       end
@@ -780,7 +780,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
       end
 
       --loop through and set all shuttles
-      local tab = UICity.labels.CargoShuttle or empty_table
+      local tab = UICity.labels.CargoShuttle or ""
       for i = 1, #tab do
         tab[i].max_shared_storage = value
       end
@@ -835,7 +835,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
     if type(value) == "number" then
       local value = value * r
       --loop through and set all shuttles
-      local tab = UICity.labels.CargoShuttle or empty_table
+      local tab = UICity.labels.CargoShuttle or ""
       for i = 1, #tab do
         tab[i].max_speed = value
         --pf_SetStepLen(tab[i],value)
@@ -891,7 +891,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
     end
     if type(value) == "number" then
       --loop through and set all shuttles
-      local tab = UICity.labels.ShuttleHub or empty_table
+      local tab = UICity.labels.ShuttleHub or ""
       for i = 1, #tab do
         tab[i].max_shuttles = value
       end
@@ -951,7 +951,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
     end
     if type(value) == "number" then
       local value = value * r
-      local tab = UICity.labels.Rover or empty_table
+      local tab = UICity.labels.Rover or ""
       for i = 1, #tab do
         tab[i]:SetGravity(value)
       end
@@ -1007,7 +1007,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
     if type(value) == "number" then
       local value = value * r
       --loop through and set all
-      local tab = UICity.labels.Drone or empty_table
+      local tab = UICity.labels.Drone or ""
       for i = 1, #tab do
         tab[i]:SetGravity(value)
       end

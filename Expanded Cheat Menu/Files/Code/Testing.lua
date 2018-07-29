@@ -9,7 +9,7 @@ if ChoGGi.Testing then
   OpenExamine(ChoGGi.ComFuncs.ReturnAllNearby(1000))
   ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-  local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches("Colonist") or empty_table
+  local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches("Colonist") or ""
   for i = #Attaches, 1, -1 do
       Attaches[i]:Detach()
       Attaches[i]:SetState("idle")
@@ -23,9 +23,7 @@ if ChoGGi.Testing then
 
 
   function ChoGGi.Temp.ReplaceDome(dome)
-    if not dome then
-      return
-    end
+    dome = dome or empty_table
     local olddome = empty_table
     for Key,Value in pairs(dome) do
       olddome[Key] = Value

@@ -165,7 +165,7 @@ function ChoGGi.MenuFuncs.DisastersStop()
     end
   end
 
-  local mp = g_MeteorsPredicted or empty_table
+  local mp = g_MeteorsPredicted or ""
   for i = #mp, 1, -1 do
     Msg("MeteorIntercepted", mp[i])
     mp[i]:ExplodeInAir()
@@ -445,9 +445,9 @@ function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
   for i = 1, #fields do
     local field = fields[i]
     local field_id = field.id
-    local list = UICity.tech_field[field_id] or empty_table
+    local list = UICity.tech_field[field_id] or ""
     UICity.tech_field[field_id] = list
-    local ids = Presets.TechPreset[field_id] or empty_table
+    local ids = Presets.TechPreset[field_id] or ""
     for j = 1, #ids do
       if ids[j].mystery == mystery_id then
         local tech_id = ids[j].id
@@ -551,7 +551,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
     if not value then
       return
     end
-    local ThreadsMessageToThreads = ThreadsMessageToThreads
+    local ThreadsMessageToThreads = ThreadsMessageToThreads or empty_table
     local seed = choice[1].seed
     if choice[1].check2 then
       --remove all
@@ -619,7 +619,7 @@ end
 --~ ex(s_SeqListPlayers)
 function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
   local ChoGGi = ChoGGi
-  local ThreadsMessageToThreads = ThreadsMessageToThreads
+  local ThreadsMessageToThreads = ThreadsMessageToThreads or empty_table
 
   local warning = Concat("\n\n",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
   local name = Concat(S[3486--[[Mystery--]]],": ",ChoGGi.Tables.Mystery[Mystery].name)
