@@ -1175,13 +1175,16 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
           end
         end
       end
-
     end
-    if value and value ~= S[3490--[[Random--]]] then
-      if not UICity.ChoGGi.DaddysLittleHitler then
-        Msg("ChoGGi_DaddysLittleHitler")
-        UICity.ChoGGi.DaddysLittleHitler = true
-      end
+
+    -- remove if random
+    if value == S[3490--[[Random--]]] then
+      MilestoneCompleted.DaddysLittleHitler = nil
+      UICity.ChoGGi.DaddysLittleHitler = nil
+    -- if only changing one colonists then you aren't hitler :)
+    elseif not choice[1].check2 and not UICity.ChoGGi.DaddysLittleHitler then
+      Msg("ChoGGi_DaddysLittleHitler")
+      UICity.ChoGGi.DaddysLittleHitler = true
     end
 
     MsgPopup(

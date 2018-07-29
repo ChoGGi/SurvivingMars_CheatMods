@@ -719,10 +719,10 @@ end
 function OnMsg.ChoGGi_DaddysLittleHitler()
   local MilestoneCompleted = MilestoneCompleted
   PlaceObj("Milestone", {
-    Complete = function(self)
-      WaitMsg("ChoGGi_DaddysLittleHitler2")
-      return true
-    end,
+--~     Complete = function(self)
+--~       WaitMsg("ChoGGi_DaddysLittleHitler2")
+--~       return true
+--~     end,
     base_score = 0,
     display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
     group = "Default",
