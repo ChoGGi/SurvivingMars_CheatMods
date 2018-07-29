@@ -130,15 +130,20 @@ AddAction(
 
 ----------------------research
 AddAction(
-  Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/",S[302535920001278--[[Instant Research--]]]),
+  Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920001278--[[Instant Research--]]]),
   ChoGGi.MenuFuncs.InstantResearch_toggle,
   nil,
-  302535920001279--[[Instantly research anything you click.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.InstantResearch,
+      302535920001279--[[Instantly research anything you click.--]]
+    )
+  end,
   "DarkSideOfTheMoon.tga"
 )
 
 AddAction(
-  Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/",S[302535920000345--[[Research Tech--]]]),
+  Concat(S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[-1]",S[302535920000345--[[Research Tech--]]]),
   ChoGGi.MenuFuncs.ShowResearchTechList,
   nil,
   302535920000346--[[Pick what you want to unlock/research.--]],

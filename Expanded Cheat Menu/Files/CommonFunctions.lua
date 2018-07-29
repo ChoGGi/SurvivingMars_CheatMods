@@ -1013,10 +1013,8 @@ function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,
     ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",menu)
   end
 
-  -- description
-  if type(des) == "function" then
-    des = des()
-  else
+  -- description (we leave funcs as they are, so UAMenu.UpdateUAMenu works)
+  if type(des) ~= "function" then
     des = ChoGGi.ComFuncs.CheckText(des,des)
   end
 
