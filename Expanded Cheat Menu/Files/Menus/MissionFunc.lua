@@ -72,7 +72,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -127,7 +127,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -197,7 +197,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -250,7 +250,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -316,7 +316,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     --any newly built/landed uses this logo
     local value = choice[1].value
     if not value then
@@ -517,7 +517,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -564,7 +564,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

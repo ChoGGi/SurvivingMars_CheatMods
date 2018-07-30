@@ -314,7 +314,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
     {text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     if type(choice) ~= "table" then
       return
     end
@@ -453,7 +453,7 @@ function ChoGGi.MenuFuncs.AutosavePeriod()
     hint = UserSettings.AutosavePeriod
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -508,7 +508,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -567,7 +567,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -639,7 +639,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -767,7 +767,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
     {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
   }
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -825,7 +825,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
     {text = S[302535920001013--[[10 Laggy (10000)--]]],value = 10000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -870,7 +870,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
     {text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = Concat("\n",S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]])},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -917,7 +917,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
     {text = S[302535920001039--[[9 Ultra-er-er (8192)--]]],value = 8192},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -958,7 +958,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     {text = S[302535920001049--[[7 Highest (16384)--]]],value = 16384,hint = hint_highest},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1027,7 +1027,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1176,7 +1176,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
     hint = tostring(ChoGGi.UserSettings.BorderScrollingArea)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1217,7 +1217,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
     hint = tostring(ChoGGi.UserSettings.CameraZoomToggle)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

@@ -89,7 +89,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -421,7 +421,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -455,7 +455,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -925,7 +925,7 @@ do --path markers
       {text = S[745--[[Shuttles--]]],value = "CargoShuttle",hint = 302535920000873--[[Doesn't work that well.--]]},
     }
 
-    local CallBackFunc = function(choice)
+    local function CallBackFunc(choice)
       local value = choice[1].value
       if not value then
         return

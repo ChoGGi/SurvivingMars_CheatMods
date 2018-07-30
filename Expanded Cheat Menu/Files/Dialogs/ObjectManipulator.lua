@@ -151,7 +151,7 @@ function ChoGGi_ObjectManipulator:Init()
       {text = S[302535920000097--[[New Value--]]],value = sel_value,hint = 302535920000098--[[Set the value of the new entry to be added.--]]},
     }
 
-    local CallBackFunc = function(choice)
+    local function CallBackFunc(choice)
       local value = choice[1].value
       if not value then
         return

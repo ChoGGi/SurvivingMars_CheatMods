@@ -37,7 +37,7 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
     {text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -120,7 +120,7 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
   }
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -211,7 +211,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -360,7 +360,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
     end
   end
 
-  local CallBackFunc = function() return end
+  local function CallBackFunc()end
 
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
@@ -392,7 +392,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
     {text = 100,value = 100},
   }
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -515,7 +515,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -603,7 +603,7 @@ function ChoGGi.MenuFuncs.SetEntity()
   end
   local ItemList = entity_table
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -718,7 +718,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     {text = 10000,value = 10000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

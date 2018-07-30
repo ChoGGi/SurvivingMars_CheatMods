@@ -4,32 +4,34 @@ local default_icon = "UI/Icons/Sections/attention.tga"
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
 
 local tostring = tostring
 
+local AsyncCopyFile = AsyncCopyFile
+local AsyncFileDelete = AsyncFileDelete
 local CreateBugReportDlg = CreateBugReportDlg
 local CreateRealTimeThread = CreateRealTimeThread
-local UpdateOnScreenHintDlg = UpdateOnScreenHintDlg
-local SetHintNotificationsEnabled = SetHintNotificationsEnabled
-local ToggleSigns = ToggleSigns
-local AsyncFileDelete = AsyncFileDelete
-local ThreadUnlockKey = ThreadUnlockKey
-local ThreadLockKey = ThreadLockKey
-local AsyncCopyFile = AsyncCopyFile
-local WriteScreenshot = WriteScreenshot
 local GenerateScreenshotFilename = GenerateScreenshotFilename
-local MovieWriteScreenshot = MovieWriteScreenshot
-local UnlockCamera = UnlockCamera
+local IsValidThread = IsValidThread
 local LockCamera = LockCamera
-local WaitNextFrame = WaitNextFrame
 local LuaCodeToTuple = LuaCodeToTuple
+local MovieWriteScreenshot = MovieWriteScreenshot
+local SetHintNotificationsEnabled = SetHintNotificationsEnabled
+local ThreadLockKey = ThreadLockKey
+local ThreadUnlockKey = ThreadUnlockKey
+local ToggleSigns = ToggleSigns
+local UnlockCamera = UnlockCamera
+local UpdateOnScreenHintDlg = UpdateOnScreenHintDlg
+local WaitNextFrame = WaitNextFrame
+local WriteScreenshot = WriteScreenshot
 
-local ModUploadThread
+local mod_upload_thread
 function ChoGGi.MenuFuncs.ModUpload()
   local ChoGGi = ChoGGi
   local ItemList = {}
-  local Mods = Mods or empty_table
+  local Mods = Mods
   for id,mod in pairs(Mods) do
     ItemList[#ItemList+1] = {
       text = mod.title,
@@ -39,9 +41,9 @@ function ChoGGi.MenuFuncs.ModUpload()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     -- abort if upload already happening
-    if IsValidThread(ModUploadThread) then
+    if IsValidThread(mod_upload_thread) then
       ChoGGi.ComFuncs.MsgWait(
         1000011--[[There is an active Steam upload--]],
         1000592--[[Error--]],
@@ -50,24 +52,28 @@ function ChoGGi.MenuFuncs.ModUpload()
       return
     end
 
-    local mod = choice[1].mod
-    local copy_files = choice[1].check1
-    local blank_mod = choice[1].check2
-    local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
-
-    ModUploadThread = CreateRealTimeThread(function()
-      -- clear out and create upload folder
+    mod_upload_thread = CreateRealTimeThread(function()
+      local mod = choice[1].mod
+      local copy_files = choice[1].check1
+      local blank_mod = choice[1].check2
+      local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
       local dest = "AppData/ModUpload/"
-      AsyncDeletePath(dest)
-      AsyncCreatePath(dest)
+
+      -- clear out and create upload folder
+      if copy_files then
+        AsyncDeletePath(dest)
+        AsyncCreatePath(dest)
+      end
 
       -- build / show confirmation dialog
-      local upload_msg = S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)
+      local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
       if not copy_files then
-        upload_msg = Concat(upload_msg,"\n",S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for insert."--]]])
+        upload_msg[#upload_msg+1] = "\n\n"
+        upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
       end
       if diff_author then
-        upload_msg = Concat(upload_msg,"\n\n",S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]])
+        upload_msg[#upload_msg+1] = "\n\n"
+        upload_msg[#upload_msg+1] = S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]]
       end
 
       local function CallBackFunc(answer)
@@ -106,8 +112,8 @@ function ChoGGi.MenuFuncs.ModUpload()
             mod:SaveDef()
           end
           mod:SaveItems()
-    --~       AsyncDeletePath(dest)
-    --~       AsyncCreatePath(dest)
+          AsyncDeletePath(dest)
+          AsyncCreatePath(dest)
           err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
           if not err then
             for i = 1, #files or "" do
@@ -165,14 +171,14 @@ function ChoGGi.MenuFuncs.ModUpload()
       end
 
       ChoGGi.ComFuncs.QuestionBox(
-        upload_msg,
+        TableConcat(upload_msg),
         CallBackFunc,
         mod.title,
         nil,
         nil,
         "UI/Common/mod_steam_workshop.tga"
       )
-    end) -- ModUploadThread
+    end) -- mod_upload_thread
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{

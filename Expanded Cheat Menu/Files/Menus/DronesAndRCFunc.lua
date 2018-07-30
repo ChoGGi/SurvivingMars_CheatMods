@@ -37,7 +37,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
     hint = ChoGGi.UserSettings.RCChargeDist
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -85,7 +85,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
     hint = ChoGGi.UserSettings.RCRoverMaxRadius
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -136,7 +136,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
     hint = ChoGGi.UserSettings.CommandCenterMaxRadius
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -190,7 +190,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -240,7 +240,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -295,7 +295,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -344,7 +344,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
     {text = 250,value = 250},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -406,7 +406,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
     hint = tostring(ChoGGi.UserSettings.DroneFactoryBuildSpeed)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -563,7 +563,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
     hint = ChoGGi.UserSettings.DroneResourceCarryAmount
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -615,7 +615,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
     hint = ChoGGi.UserSettings.CommandCenterMaxDrones
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -662,7 +662,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
     hint = ChoGGi.UserSettings.RCRoverMaxDrones
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -708,7 +708,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
     hint = ChoGGi.UserSettings.RCTransportStorageCapacity / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -765,7 +765,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
     hint = ChoGGi.UserSettings.StorageShuttle / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -825,7 +825,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
     hint = ChoGGi.UserSettings.SpeedShuttle / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -882,7 +882,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
     hint = tostring(setting.shuttles)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -942,7 +942,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
     hint = ChoGGi.UserSettings.GravityRC / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -997,7 +997,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
   if ChoGGi.UserSettings.GravityDrone then
     hint = ChoGGi.UserSettings.GravityDrone / r
   end
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

@@ -43,7 +43,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
     hint = UserSettings.ServiceWorkplaceFoodStorage
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -141,7 +141,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     hint = tostring(setting.protect_range)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -190,7 +190,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
      local value = choice[1].value
     if not value then
       return
@@ -383,7 +383,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -577,7 +577,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     hint = tostring(setting.production / r)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -678,7 +678,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
     {text = 100000,value = 100000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1112,7 +1112,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     hint = UserSettings.BuildingSettings[id].uirange
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

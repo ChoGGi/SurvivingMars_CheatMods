@@ -37,7 +37,7 @@ do --ChangeResupplySettings
       {text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
     }
 
-    local CallBackFunc = function(choice)
+    local function CallBackFunc(choice)
       local value = choice[1].value
       if not value then
         return
@@ -91,7 +91,7 @@ do --ChangeResupplySettings
       }
     end
 
-    local CallBackFunc = function(choice)
+    local function CallBackFunc(choice)
       local value = choice[1].value
       if not value then
         return
@@ -129,7 +129,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     ItemList[#ItemList+1] = {text = S[311--[[Research--]]],value = "Research"}
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -206,7 +206,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
     {text = "1 000 000 000 kg",value = 1000000000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -258,7 +258,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
     hint = ChoGGi.UserSettings.TravelTimeEarthMars / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -302,7 +302,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
     {text = 10000,value = 10000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -371,7 +371,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
     hint = tostring(setting.workers)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -481,7 +481,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -598,7 +598,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
     hint = tostring(setting.visitors)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -663,7 +663,7 @@ Mechanized: 1,000,000--]]]
     hint = ChoGGi.UserSettings[sType] / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -753,7 +753,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
     {text = 200,value = 200},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -795,7 +795,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
     hint = FoodPerRocketPassenger / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -841,7 +841,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
     {text = "CloningVat",value = 10},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -887,7 +887,7 @@ Fix with: %s--]]]:format(DefaultSetting)
     {text = "90 000 000 000 M",value = 90000000000,hint = hint},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

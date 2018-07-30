@@ -14,7 +14,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 if ChoGGi.Lang ~= "English" then
   local Concat = ChoGGi.ComFuncs.Concat
   -- first get the unicode font name
-  local f = _InternalTranslate(T{984,Concat(f,", 15, aa")})
+  local f = _InternalTranslate(T{984,"SchemeBk, 15, aa"})
   f = f:sub(1,f:find(",")-1)
 
   -- replace any fonts using droid

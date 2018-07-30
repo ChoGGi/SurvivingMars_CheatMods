@@ -125,7 +125,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
   AddToList(ChoGGi.Tables.ColonistRaces,302535920000741--[[Race--]])
   AddToList(ChoGGi.Tables.ColonistSpecializations,240--[[Specialization--]])
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -258,7 +258,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
     {text = 100000,value = 100000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -321,7 +321,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
     {text = S[302535920000764--[[Turn Off All Shifts--]]],value = 3.1415926535},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -376,7 +376,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -440,7 +440,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
     {text = S[302535920000775--[[Remove All Renegades--]]],value = "Remove"},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -678,7 +678,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
     hint = ChoGGi.UserSettings.DefaultOutsideWorkplacesRadius
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -731,7 +731,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     {text = S[302535920000799--[[In Time--]]],value = "InTime"},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -838,7 +838,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint,"\n\n",S[302535920000805--[[Warning: Child will remove specialization.--]]])
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -939,7 +939,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1044,7 +1044,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1139,7 +1139,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1269,7 +1269,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1417,7 +1417,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
     {text = Concat(S[4295--[[Comfort--]]]" ",S[302535920000835--[[Fill--]]]),value = 9},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1524,7 +1524,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
   end
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1602,7 +1602,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
     hint = ChoGGi.UserSettings.GravityColonist / r
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1705,7 +1705,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return

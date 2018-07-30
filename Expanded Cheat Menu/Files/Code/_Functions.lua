@@ -853,7 +853,7 @@ If you want to change the colour of an object you can't with 1-4 (like drones)."
   }
 
   --callback
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -1062,7 +1062,7 @@ function ChoGGi.CodeFuncs.FindNearestResource(obj)
     {text = S[3516],value = "MachineParts"},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if type(value) == "string" then
 

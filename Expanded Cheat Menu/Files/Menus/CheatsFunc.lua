@@ -200,7 +200,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
 --~     }
 --~   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -278,7 +278,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = 302535920000261--[[Reveals the map and unlocks "Deep" resources--]]},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     if not choice[1].value then
       return
     end
@@ -372,7 +372,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
     {text = 10000,value = 10000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -406,7 +406,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
     }
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -544,7 +544,7 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -779,7 +779,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
     {text = 100000000,value = 100000000},
   }
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -835,7 +835,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
     hint = ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -876,7 +876,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
     hint = ChoGGi.UserSettings.BreakThroughTechsPerGame
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -923,7 +923,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
     hint = ResearchQueueSize
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
@@ -991,7 +991,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     end
   end
 
-  local CallBackFunc = function(choice)
+  local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
       return
