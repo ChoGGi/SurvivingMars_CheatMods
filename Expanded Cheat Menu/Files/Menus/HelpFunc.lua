@@ -7,7 +7,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
 
-local tostring = tostring
+local print,tostring = print,tostring
 
 local AsyncCopyFile = AsyncCopyFile
 local AsyncFileDelete = AsyncFileDelete
@@ -157,7 +157,11 @@ function ChoGGi.MenuFuncs.ModUpload()
 
         -- update mod log and print it to console log
         ModLog(Concat("\n",msg,": ",mod.title))
-        print(S[302535920001265--[[ModMessageLog--]]],":\n",ModMessageLog)
+        local ModMessageLog = ModMessageLog
+        print(S[302535920001265--[[ModMessageLog--]]],":")
+        for i = 1, #ModMessageLog do
+          print(ModMessageLog[i])
+        end
 
         -- let user know if we're good or not
         ChoGGi.ComFuncs.MsgWait(
