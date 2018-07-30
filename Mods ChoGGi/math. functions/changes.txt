@@ -1,7 +1,13 @@
 v0.4
+Changed:
+.log(number,NaN) would assume NaN was Napier's constant, now it errors out.
+.maxinteger/.mininteger now use max_int/min_int instead of the values from lua console.
+
+Fixed:
+.ceil() was off for negative numbers with a few decimal place digits.
 
 v0.3
-Fixed: math.fmod, math.modf, math.log, math.random(n).
+Fixed: .fmod(), .modf(), .log(), .random(n).
 More unit testing.
 Removed lua.exe, use https://github.com/HazeProductions/Lua-x64.
 Slightly more useful error msgs.
@@ -9,7 +15,7 @@ Slightly more useful error msgs.
 v0.2
 More type checking.
 Errors when input is NaN (instead of returning "-nan(ind)").
-Better math.random() output.
-math.ult() works according to manual now.
-Added math.test() for some unit testing.
+Better .random() output.
+.ult() works according to manual now.
+Added .test() for some unit testing.
 Added a few deprecated functions.

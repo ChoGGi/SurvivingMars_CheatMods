@@ -28,12 +28,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
--- local any funcs used below
+-- local any funcs used below (more than once)
 local tonumber,tostring,pcall = tonumber,tostring,pcall
-local AsyncRand = AsyncRand
+local AsyncRand,_InternalTranslate,T = AsyncRand,_InternalTranslate,T
 
 -- easy place to store some info
-local ChoGGi_math = {
+local ChoGGi_MathFunctions = {
   _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_AddMathFunctions",
@@ -46,6 +46,11 @@ pcall(function()
   TableConcat = oldTableConcat
 end)
 TableConcat = TableConcat or table.concat
+-- just in case etc
+local floatfloor_tmp
+pcall(function()
+  floatfloor_tmp = floatfloor
+end)
 
 do -- translate
   --load up translation strings
@@ -55,45 +60,47 @@ do -- translate
     end) then
       DebugPrintNL(string.format([[Problem loading locale: %s
 
-Please send me latest log file: %s]],file,ChoGGi_math.email))
+Please send me latest log file: %s]],file,ChoGGi_MathFunctions.email))
     end
   end
 
   -- load locale translation
-  local locale_file = TableConcat{ChoGGi_math.ModPath,"Locales/",GetLanguage(),".csv"}
+  local locale_file = TableConcat{ChoGGi_MathFunctions.ModPath,"Locales/",GetLanguage(),".csv"}
   if AsyncFileOpen(locale_file) then
     LoadLocale(locale_file)
   else
-    LoadLocale(TableConcat{ChoGGi_math.ModPath,"Locales/","English.csv"})
+    LoadLocale(TableConcat{ChoGGi_MathFunctions.ModPath,"Locales/","English.csv"})
   end
   Msg("TranslationChanged")
 end
 -- locale id to string
-local function t(str)
+local function trans(str)
   return _InternalTranslate(T{str})
 end
 
--- needed for tmp file when doing unit tests
-local mod_path = Mods.ChoGGi_AddMathFunctions.path
-local tmpfile = TableConcat{mod_path,"UnitTest.txt"}
+local str = {
+  not_implemented = trans(302535920010000--[[math.%s not implemented yet.--]]),
+  error = trans(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]]),
+  zero = trans(302535920010002--[[zero--]]),
+  less_than_or_equals_zero = trans(302535920010003--[[less than or equals zero--]]),
+  less_than_zero = trans(302535920010004--[[less than zero--]]),
+  arg2_arg1_less_than_zero = trans(302535920010005--[[arg#2 - arg#1 == less than zero--]]),
+  test_start = trans(302535920010006--[[Testing math: Start--]]),
+  test_end = trans(302535920010007--[[Testing math: End--]]),
+  test_error = trans(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)--]]),
+}
 
--- strings
-local not_implemented = t(302535920010000--[[math.%s not implemented yet.--]])
-local error_msg = t(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]])
-local zero = t(302535920010002--[[zero--]])
-local less_than_or_equals_zero = t(302535920010003--[[less than or equals zero--]])
-local less_than_zero = t(302535920010004--[[less than zero--]])
-local arg2_arg1_less_than_zero = t(302535920010005--[[arg#2 - arg#1 == less than zero--]])
-local test_start = t(302535920010006--[[Testing math: Start--]])
-local test_end = t(302535920010007--[[Testing math: End--]])
-local test_error = t(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)--]])
+-- whenever i get .cos etc added (needed for unit testing)
+--~ -- needed for tmp file when doing unit tests
+--~ local mod_path = Mods.ChoGGi_AddMathFunctions.path
+--~ local tmpfile = TableConcat{mod_path,"UnitTest.txt"}
 
 local function CheckNum(x,name,arg)
   x = tonumber(x)
   if x then
     return x
   else
-    print(error_msg:format(arg or 1,name,"nan"))
+    print(str.error:format(arg or 1,name,"nan"))
     return 0/0
   end
 end
@@ -116,7 +123,14 @@ end
 function math.ceil(x)
   x = CheckNum(x,"ceil")
 
-  return math.floor(x+.5)
+  -- needed for neg numbers
+  if x < 0 then
+    x = x + 1 - (x % 1)
+    return math.floor(x)
+  end
+  -- works fine on pos numbers
+  return math.floor(x + 0.9)
+
 end
 
 --~   Converts the angle x from radians to degrees.
@@ -126,7 +140,7 @@ function math.deg(x)
   return x * 180.0 / math.pi
 end
 
---~   Napier's constant/Euler's number
+--~   Napier's constant/Euler's number (to 104 digits)
 math.e = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746
 
 --~   Returns the value e^x (where e is the base of natural logarithms).
@@ -137,10 +151,10 @@ function math.exp(x)
 end
 
 --~   Returns the largest integral value smaller than or equal to x.
-math.floor = floatfloor or function(x)
+math.floor = floatfloor_tmp or function(x)
   x = CheckNum(x,"floor")
 
-  return x - (x%1)
+  return x - (x % 1)
 end
 
 --~   Returns the remainder of the division of x by y that rounds the quotient towards zero. (integer/float)
@@ -149,7 +163,7 @@ function math.fmod(x, y)
   y = CheckNum(y,"fmod",2)
 
   if y == 0 then
-    print(error_msg:format(2,"fmod",zero))
+    print(str.error:format(2,"fmod",str.zero))
     return 0/0
   end
 
@@ -172,33 +186,41 @@ function math.fmod(x, y)
 end
 
 --~   The float value HUGE_VAL, a value larger than any other numeric value.
-math.huge = 10e500 + 10e400
+math.huge = 10e500 + 10e500
 
 --~   Returns the logarithm of x in the given base. The default for base is e (so that the function returns the natural logarithm of x).
 function math.log(x,base)
   x = CheckNum(x,"log")
   if x < 0 or tostring(x) == "0" then
-    print(error_msg:format(1,"log",less_than_or_equals_zero))
+    print(str.error:format(1,"log",str.less_than_or_equals_zero))
     return 0/0
   end
 
-  base = tonumber(base)
   if base then
-    if base < 0 then
-      print(error_msg:format(2,"log",less_than_zero))
-      return 0/0
-    elseif base == 0 then
-      return -0.0
-    end
-    if tostring(x) == "1" then
-      return 0.0
-    end
+    base = tonumber(base)
+    if base then
+      if base < 0 then
+        print(str.error:format(2,"log",str.less_than_zero))
+        return 0/0
+      elseif base == 0 then
+        return -0.0
+      end
+      if tostring(x) == "1" then
+        return 0.0
+      end
 
-    return math.log(x) / math.log(base)
+      return math.log(x) / math.log(base)
+    else
+      -- user put something for base that isn't a number
+      print(str.error:format(2,"log","nan"))
+      return 0/0
+    end
   end
+
+  -- no base means use
   base = math.e
 
---~     http://foldit.wikia.com/wiki/Lua_Script_Library#math.log_.28Taylor_Series_Approximation_.29
+--~   http://foldit.wikia.com/wiki/Lua_Script_Library#math.log_.28Taylor_Series_Approximation_.29
   local result = 0
   local residue = x / base
   while residue > 1 do
@@ -221,16 +243,16 @@ function math.log(x,base)
 end
 
 --~   Returns the argument with the maximum value, according to the Lua operator <. (integer/float)
-math.max = Max -- (i, ...)
+math.max = Max
 
 --~   An integer with the maximum value for an integer.
-math.maxinteger = 9223372036854775807
+math.maxinteger = max_int
 
 --~   Returns the argument with the minimum value, according to the Lua operator <. (integer/float)
-math.min = Min -- (i, ...)
+math.min = Min
 
 --~   An integer with the minimum value for an integer.
-math.mininteger = -9223372036854775808
+math.mininteger = min_int
 
 --~   Returns the integral part of x and the fractional part of x. Its second result is always a float.
 function math.modf(x)
@@ -261,7 +283,7 @@ function math.modf(x)
 
 end
 
---~   pi is pi is pi
+--~   pi is pi is pi (to 104 digits)
 math.pi = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214
 
 --~   Converts the angle x from degrees to radians.
@@ -280,7 +302,7 @@ function math.random(m,n)
     m = CheckNum(m,"random")
     n = CheckNum(n,"random")
     if n-m < 0 then
-      print(error_msg:format("1 or #2","random",arg2_arg1_less_than_zero))
+      print(str.error:format("1 or #2","random",str.arg2_arg1_less_than_zero))
       return 0/0
     end
 
@@ -288,7 +310,7 @@ function math.random(m,n)
   elseif m then
     m = CheckNum(m,"random")
     if m <= 0 then
-      print(error_msg:format(1,"random",less_than_or_equals_zero))
+      print(str.error:format(1,"random",str.less_than_or_equals_zero))
       return 0/0
     end
 
@@ -308,7 +330,7 @@ math.randomseed = AsyncSetSeed
 function math.sqrt(x)
   x = CheckNum(x,"sqrt")
   if x < 0 then
-    print(error_msg:format(1,"sqrt",less_than_zero))
+    print(str.error:format(1,"sqrt",str.less_than_zero))
     return 0/0
   end
 
@@ -366,14 +388,14 @@ math.sm_sin = sin
 function math.sin(x)
   x = CheckNum(x,"sin")
 
-  print(not_implemented:format("sin"))
+  print(str.not_implemented:format("sin"))
 end
 
 --~   Returns the tangent of x (assumed to be in radians).
 function math.tan(x)
   x = CheckNum(x,"tan")
 
-  print(not_implemented:format("tan"))
+  print(str.not_implemented:format("tan"))
 end
 
 --~   Returns the arc cosine of x (in radians).
@@ -381,7 +403,7 @@ math.sm_acos = acos
 function math.acos(x)
   x = CheckNum(x,"acos")
 
-  print(not_implemented:format("acos"))
+  print(str.not_implemented:format("acos"))
 end
 
 --~   Returns the arc sine of x (in radians).
@@ -389,7 +411,7 @@ math.sm_asin = asin
 function math.asin(x)
   x = CheckNum(x,"asin")
 
-  print(not_implemented:format("asin"))
+  print(str.not_implemented:format("asin"))
 end
 
 --~   Returns the arc tangent of y/x (in radians), but uses the signs of both arguments to find the quadrant of the result. (It also handles correctly the case of x being zero.)
@@ -398,7 +420,7 @@ math.sm_atan = atan
 function math.atan(x)
   x = CheckNum(x,"atan")
 
-  print(not_implemented:format("atan"))
+  print(str.not_implemented:format("atan"))
 end
 
 
@@ -414,37 +436,40 @@ function math.RoundDown(x, g)
   g = g or 1000
   return (x - x % g) / g * g
 end
--- integer round up to nearest
-math.sm_RoundUp = round -- (number, granularity)
 
-math.sm_AngleNormalize = AngleNormalize -- (angle)
-math.sm_band = band -- (n1, n2)
-math.sm_bnot = bnot -- (n)
-math.sm_bor = bor -- (n1, n2)
-math.sm_bxor = bxor -- (n1, n2)
-math.sm_CatmullRomSpline = CatmullRomSpline -- (p1, p2, p3, p4, t, scale)
-math.sm_compare = compare -- (n1, n2)
-math.sm_DivCeil = DivCeil -- (v, d)
-math.sm_DivRound = DivRound -- (m, d)
-math.sm_FastSin = FastSin -- (a)
-math.sm_GetClock = GetClock
-math.sm_GetPreciseTicks = GetPreciseTicks
-math.sm_HermiteSpline = HermiteSpline -- (p1, m1, p2, m2, t, scale)
-math.sm_IsPowerOf2 = IsPowerOf2 -- (v)
-math.sm_maskset = maskset -- (flags, mask, value)
-math.sm_MulDivRound = MulDivRound -- (v, m, d)
-math.sm_MulDivTrunc = MulDivTrunc -- (v, m, d)
-math.sm_shift = shift -- (value, shift)
-math.sm_xxhash = xxhash -- (arg1, arg2, arg3)
+pcall(function()
+  -- integer round up to nearest
+  math.sm_RoundUp = round -- (number, granularity)
 
--- not really mathy
-math.sm_cs = cs
-math.sm_perlin = perlin
-math.sm_Encode16 = Encode16
-math.sm_Decode16 = Decode16
-math.sm_Encode64 = Encode64
-math.sm_Decode64 = Decode64
-math.sm_EaseCoeff = EaseCoeff
+  math.sm_AngleNormalize = AngleNormalize -- (angle)
+  math.sm_band = band -- (n1, n2)
+  math.sm_bnot = bnot -- (n)
+  math.sm_bor = bor -- (n1, n2)
+  math.sm_bxor = bxor -- (n1, n2)
+  math.sm_CatmullRomSpline = CatmullRomSpline -- (p1, p2, p3, p4, t, scale)
+  math.sm_compare = compare -- (n1, n2)
+  math.sm_DivCeil = DivCeil -- (v, d)
+  math.sm_DivRound = DivRound -- (m, d)
+  math.sm_FastSin = FastSin -- (a)
+  math.sm_GetClock = GetClock
+  math.sm_GetPreciseTicks = GetPreciseTicks
+  math.sm_HermiteSpline = HermiteSpline -- (p1, m1, p2, m2, t, scale)
+  math.sm_IsPowerOf2 = IsPowerOf2 -- (v)
+  math.sm_maskset = maskset -- (flags, mask, value)
+  math.sm_MulDivRound = MulDivRound -- (v, m, d)
+  math.sm_MulDivTrunc = MulDivTrunc -- (v, m, d)
+  math.sm_shift = shift -- (value, shift)
+  math.sm_xxhash = xxhash -- (arg1, arg2, arg3)
+
+  -- not really mathy
+  math.sm_cs = cs
+  math.sm_perlin = perlin
+  math.sm_Encode16 = Encode16
+  math.sm_Decode16 = Decode16
+  math.sm_Encode64 = Encode64
+  math.sm_Decode64 = Decode64
+  math.sm_EaseCoeff = EaseCoeff
+end)
 
 -- deprecated
 
@@ -482,35 +507,35 @@ end
 math.atan2 = math.atan
 math.mod = math.fmod
 
---~ https://github.com/NLua/LuaTests/blob/master/suite/math.lua
+--~ https://github.com/NLua/LuaTests/blob/master/suite/math.lua (mostly)
 function math.test()
-  print(test_start)
+  print(str.test_start)
 
   local getinfo = debug.getinfo
-  local script_name = TableConcat{ChoGGi_math.ModPath,"Script.lua"}
+  local script_name = TableConcat{ChoGGi_MathFunctions.ModPath,"Script.lua"}
 
   local function Test(line,func,n1,n2)
     if n1 == false then
-      print(test_error:format(script_name,line,n1,n2,func))
+      print(str.test_error:format(script_name,line,n1,n2,func))
     elseif n1 and n2 and n1 ~= n2 then
-      print(test_error:format(script_name,line,n1,n2,func))
+      print(str.test_error:format(script_name,line,n1,n2,func))
     end
   end
-
-  Test(getinfo(1).currentline,"huge",math.huge > 10e30)
-  Test(getinfo(1).currentline,"huge",-math.huge < -10e30)
 
   local function eq(a,b,limit)
     return math.abs(a-b) <= (limit or 10E-10)
   end
 
+  Test(getinfo(1).currentline,"huge",math.huge > 10e30)
+  Test(getinfo(1).currentline,"huge",-math.huge < -10e30)
+
   -- testing mod operator
   Test(getinfo(1).currentline,"pi",tostring(math.pi - math.pi % 1),"3.0")
   Test(getinfo(1).currentline,"pi",tostring(math.pi - math.pi % 0.001),"3.141")
 
-  local function testbit(a, n)
-    return a/2^n % 2 >= 1
-  end
+--~     local function testbit(a, n)
+--~       return a/2^n % 2 >= 1
+--~     end
 
 --~   Test(getinfo(1).currentline,"sin",eq(math.sin(-9.8)^2 + math.cos(-9.8)^2, 1))
 --~   Test(getinfo(1).currentline,"tan",eq(math.tan(math.pi/4), 1))
@@ -580,7 +605,7 @@ function math.test()
 
   math.randomseed(0)
 
-  for i=1,10 do
+  for _ = 1, 10 do
     local t = math.random(5)
     Test(getinfo(1).currentline,"random",1 <= t and t <= 5)
   end
@@ -599,8 +624,9 @@ function math.test()
   Test(getinfo(1).currentline,"random",-10 <= Min and Max<=0)
   Test(getinfo(1).currentline,"random",flag);
 
+  -- tests I added
 
-
+  Test(getinfo(1).currentline,"huge",math.huge + math.huge,math.huge)
   Test(getinfo(1).currentline,"log",tostring(math.log(1.1)),"0.095310179804325")
   Test(getinfo(1).currentline,"log",tostring(math.log(6.4643,25)),"0.57979705728765")
   Test(getinfo(1).currentline,"exp",tostring(math.exp(5.453454)),"233.56350262858")
@@ -609,8 +635,10 @@ function math.test()
   Test(getinfo(1).currentline,"fmod",tostring(math.fmod(-56546.45645,1.5)),"-0.95644999999786")
   Test(getinfo(1).currentline,"fmod",tostring(math.fmod(-876.0007665,-1)),"-0.00076650000005429")
   Test(getinfo(1).currentline,"fmod",tostring(math.fmod(876.0007665,-1.6)),"0.80076650000001")
-  Test(getinfo(1).currentline,"ceil",math.ceil(-4.5),-4)
-  Test(getinfo(1).currentline,"floor",math.floor(-4.5),-5)
+  Test(getinfo(1).currentline,"ceil",math.ceil(123.334546452),124)
+  Test(getinfo(1).currentline,"ceil",math.ceil(-123.334546452),-123)
+  Test(getinfo(1).currentline,"floor",math.floor(-123.525645644),-124)
+  Test(getinfo(1).currentline,"floor",math.floor(123.525645644),123)
 
   local int,flt = math.modf(3453444.54354645)
   Test(getinfo(1).currentline,"modf",int,3453444)
@@ -620,7 +648,7 @@ function math.test()
   Test(getinfo(1).currentline,"modf",tostring(flt),"-0.5435464498587")
 
   -- check error msg
---~   Test(getinfo(1).currentline,"modf",int,-34534441)
+--~   Test(getinfo(1).currentline,"test",1,0)
 
-  print(test_end)
+  print(str.test_end)
 end
