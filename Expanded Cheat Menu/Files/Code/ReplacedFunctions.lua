@@ -244,7 +244,7 @@ function OnMsg.ClassesGenerate()
   SaveOrigFunc("GridObject","GetPipeConnections")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
-  do -- Large Water Tank + Pipes + Chrome skin = broked looking pipes
+  do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
     local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
     local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
     local decor_spot = "Tubedecor"
@@ -471,17 +471,17 @@ function OnMsg.ClassesBuilt()
 
   -- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
   if LuaRevision == 231777 then
-    -- check transports for broked paths
+    -- check transports for borked paths
     function RCTransport:TransportRouteLoad()
       ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
-      if ChoGGi.UserSettings.CheckForBrokedTransportPath then
-        ChoGGi.CodeFuncs.CheckForBrokedTransportPath(self)
+      if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+        ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
       end
     end
     function RCTransport:TransportRouteUnload()
       ChoGGi_OrigFuncs.RCTransport_TransportRouteUnload(self)
-      if ChoGGi.UserSettings.CheckForBrokedTransportPath then
-        ChoGGi.CodeFuncs.CheckForBrokedTransportPath(self)
+      if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+        ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
       end
     end
   end
@@ -610,14 +610,15 @@ function OnMsg.ClassesBuilt()
   end
 
   --limit width of cheats menu till hover
-  local UAMenu_cheats_width = 520
+  local UAMenu_cheats_width_c = 520
+  local UAMenu_cheats_width = UAMenu_cheats_width_c
   if UserSettings.ToggleWidthOfCheatsHover then
     UAMenu_cheats_width = 80
     local thread
     function UAMenu:OnMouseEnter(...)
       ChoGGi_OrigFuncs.UAMenu_OnMouseEnter(self,...)
       DeleteThread(thread)
-      self:SetSize(point(520,self:GetSize():y()))
+      self:SetSize(point(UAMenu_cheats_width_c,self:GetSize():y()))
     end
     function UAMenu:OnMouseLeft(...)
       ChoGGi_OrigFuncs.UAMenu_OnMouseLeft(self,...)

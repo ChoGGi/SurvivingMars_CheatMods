@@ -54,8 +54,6 @@ local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
 local UIL_GetFontID = UIL.GetFontID
 
-local g_Classes = g_Classes
-
 function ChoGGi.MenuFuncs.DeleteSavedGames()
   local SavegamesList = SavegamesList
 
@@ -283,7 +281,7 @@ end
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true
-    g_Classes.MeasureTool.OnLButtonDown(GetTerrainCursor())
+    MeasureTool.OnLButtonDown(GetTerrainCursor())
   else
     MeasureTool.object:delete()
     MeasureTool.enabled = false
@@ -509,7 +507,7 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
     end
   end
   --open a new copy
-  local dlg = g_Classes.ObjectsStatsDlg:new()
+  local dlg = ObjectsStatsDlg:new()
   if not dlg then
     return
   end
@@ -575,7 +573,7 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     --GetEditorInterface():SetMinimapVisible(true)
     --CreateEditorPlaceObjectsDlg()
     if showmenu then
-      g_Classes.UAMenu.ToggleOpen()
+      UAMenu.ToggleOpen()
     end
   end
 
@@ -588,6 +586,7 @@ do --hex rings
   local build_grid_debug_thread = false
 
   function ChoGGi.MenuFuncs.debug_build_grid(iType)
+    local g_Classes = g_Classes
     local ObjectGrid = ObjectGrid
     local UserSettings = ChoGGi.UserSettings
     if type(UserSettings.DebugGridSize) == "number" then
@@ -716,7 +715,7 @@ do --path markers
     end
     local last_pos = points[#points]
     --and spawn the line
-    local spawnline = g_Classes.Polyline:new{max_vertices = #waypoints}
+    local spawnline = Polyline:new{max_vertices = #waypoints}
     spawnline:SetMesh(points, colour)
     spawnline:SetPos(last_pos)
     spawnline.ChoGGi_WaypointPath = true

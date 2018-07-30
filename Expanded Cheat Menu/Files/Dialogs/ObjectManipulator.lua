@@ -2,7 +2,6 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_ObjectManipulator then
   return
 end
@@ -45,7 +44,8 @@ DefineClass.ChoGGi_ObjectManipulator = {
   choices = {},
   sel = false,
   obj = false,
-  --
+  MinSize = point(50, 50),
+  translate = false,
   refreshing = false,
   page = 1,
   show_times = "relative",
@@ -53,6 +53,7 @@ DefineClass.ChoGGi_ObjectManipulator = {
 
 function ChoGGi_ObjectManipulator:Init()
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -60,9 +61,7 @@ function ChoGGi_ObjectManipulator:Init()
   local dialog_width = 650
   local dialog_height = 450
   self:SetSize(point(dialog_width, dialog_height))
-  self:SetMinSize(point(50, 50))
   self:SetMovable(true)
-  self:SetTranslate(false)
 
   local border = 4
   local element_y
@@ -365,6 +364,7 @@ end
 
 --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
 function ChoGGi_ObjectManipulator:OnCreate(item,list)
+  local g_Classes = g_Classes
   local data_instance = item.ItemDataInstance or list:GetItemDataInstance()
   local view_name = item and item.ItemSubview or list:GetItemSubview()
   if data_instance ~= "" and view_name ~= "" then

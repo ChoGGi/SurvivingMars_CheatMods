@@ -2,7 +2,6 @@
 
 -- displays text in a selectable text box
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_MultiLineText then
   return
 end
@@ -34,6 +33,7 @@ DefineClass.ChoGGi_MultiLineText = {
 
 function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
 
   --build container
   g_Classes.StdDialog.Init(self, parent, context)
@@ -164,6 +164,7 @@ function ChoGGi_MultiLineText:OnShortcut(shortcut, _)
 end
 
 function ChoGGi_MultiLineText:Close(answer,result)
+  local g_Classes = g_Classes
   g_Classes.XRolloverWindow.ZOrder = self.XRolloverWindow_ZOrder
 
   if self.func then

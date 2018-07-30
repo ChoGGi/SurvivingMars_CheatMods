@@ -1,8 +1,8 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001280,,
-302535920001281,,
-302535920001282,,
-302535920001283,,
+302535920001280,Cheats,
+302535920001281,Game,
+302535920001282,Help,
+302535920001283,Debug,
 302535920001284,,
 302535920001285,,
 302535920001286,,
@@ -28,7 +28,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000800,MaleOrFemale,
 302535920000613,Drone Carry Amount,
 302535920000914,Current capacity,
-302535920001266,Broked Transport Pathing,
+302535920001266,Borked Transport Pathing,
 302535920000979,Presets,
 302535920000955,Handle,
 302535920001201,Interval,
@@ -426,7 +426,7 @@ Doesn't work with domes.",
 302535920000305,Research Queue Size,
 302535920000266,Spawn,
 302535920000295,Add Research Points,
-302535920000232,Draggable cheats menu,
+302535920000232,Draggable Cheats Menu,
 302535920000329,Manage Mysteries,
 302535920000321,Toggle Width Of Cheats Menu On Hover,
 302535920000322,Makes the cheats menu just show Cheats till mouseover (restart to take effect).,
@@ -801,7 +801,7 @@ Not permanent.",
 302535920001163,"Flatten height has been choosen %s, press shortcut again to update buildable.",
 302535920001164,"Flattening has been stopped, now updating buildable.",
 302535920000851,"isn't an object?
-Sounds like a broked save; send me the file and I'll take a look",
+Sounds like a borked save; send me the file and I'll take a look",
 302535920000852,This will delete all %s of %s,
 302535920000854,Takes about thirty seconds for 12 000 objects.,
 302535920000856,"Yes, I want to delete all: %s",
@@ -1079,9 +1079,9 @@ Mechanized: 1,000,000",
 302535920000972,Buildings attached.,
 302535920001268,"RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
-This'll check for and stop any broked ones (it'll show a popup msg when it stops one).",
+This'll check for and stop any borked ones (it'll show a popup msg when it stops one).",
 302535920000461,All Pipe Skins To Default,
-302535920000463,"Large Water Tank + Pipes + Chrome skin = broked looking connections.
+302535920000463,"Large Water Tank + Pipes + Chrome skin = borked looking connections.
 This resets all pipes to the default skin.",
 302535920000249,"Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
 
@@ -1112,9 +1112,9 @@ Should be safe to use without breaking anything.",
 302535920000593,Remove Particles With Null Polylines,
 302535920000594,"It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.",
 302535920000595,Mirror Sphere Stuck,
-302535920000596,"If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere).",
+302535920000596,"If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any borked cone of a captured sphere).",
 302535920000597,Stutter With High FPS or Human Centipede,
-302535920000598,"If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).
+302535920000598,"If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).
 
 This also works for colonists practicing the human centipede.",
 302535920000599,Drones Keep Trying Blocked Areas,
@@ -1497,4 +1497,4 @@ restart to set disabled.",
 302535920010005,arg#2 - arg#1 == less than zero,
 302535920010006,Testing math: Start,
 302535920010007,Testing math: End,
-302535920010008,Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s),
+302535920010008,Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s

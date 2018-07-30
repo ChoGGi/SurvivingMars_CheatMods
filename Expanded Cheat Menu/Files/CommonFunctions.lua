@@ -58,8 +58,6 @@ local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
 local FontStyles_GetFontId = FontStyles.GetFontId
 
---~ local g_Classes = g_Classes
-
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
@@ -1018,7 +1016,7 @@ function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,
     des = ChoGGi.ComFuncs.CheckText(des,des)
   end
 
-  ChoGGi.ComFuncs.UserAddActions({
+  ChoGGi.ComFuncs.UserAddActions{
     -- AsyncRand needed for items made from same line (like a loop)
     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
       menu = menu,
@@ -1030,8 +1028,8 @@ function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,
       mode = mode,
       xinput = xinput,
       toolbar_default = toolbar_default
-    }
-  })
+    },
+  }
 end
 
 -- while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
@@ -1252,7 +1250,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
   if not obj then
     obj = ChoGGi.CodeFuncs.SelObject()
   end
-  if obj and not obj:IsKindOf("CObject") then
+  if not obj then
     return
   end
 

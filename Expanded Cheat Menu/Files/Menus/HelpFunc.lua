@@ -25,8 +25,6 @@ local LockCamera = LockCamera
 local WaitNextFrame = WaitNextFrame
 local LuaCodeToTuple = LuaCodeToTuple
 
-local g_Classes = g_Classes
-
 local ModUploadThread
 function ChoGGi.MenuFuncs.ModUpload()
   local ChoGGi = ChoGGi
@@ -194,7 +192,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
   -- make sure any changed settings are current
   ChoGGi.SettingFuncs.WriteSettings()
   -- load up settings file in the editor
-  local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+  local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{
     text = ChoGGi.SettingFuncs.ReadSettings(),
     hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
     hint_cancel = 302535920001245--[[Abort without touching anything.--]],
@@ -235,7 +233,7 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
   ChoGGi.SettingFuncs.WriteSettings()
-  g_Classes.UAMenu.ToggleOpen()
+  UAMenu.ToggleOpen()
 end
 
 function ChoGGi.MenuFuncs.ShowChangelogECM()

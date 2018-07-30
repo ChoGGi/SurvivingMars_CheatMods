@@ -28,8 +28,6 @@ local StartDustStorm = StartDustStorm
 local StopColdWave = StopColdWave
 local StopDustStorm = StopDustStorm
 
-local g_Classes = g_Classes
-
 function ChoGGi.MenuFuncs.InstantResearch_toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)
@@ -47,7 +45,7 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,302535920000232--[[Draggable cheats menu--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,302535920000232--[[Draggable Cheats Menu--]]),
     1000162--[[Menu--]]
   )
 end
@@ -619,7 +617,8 @@ end
 --~ ex(s_SeqListPlayers)
 function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
   local ChoGGi = ChoGGi
-  local ThreadsMessageToThreads = ThreadsMessageToThreads or empty_table
+  local g_Classes = g_Classes
+  local ThreadsMessageToThreads = ThreadsMessageToThreads
 
   local warning = Concat("\n\n",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
   local name = Concat(S[3486--[[Mystery--]]],": ",ChoGGi.Tables.Mystery[Mystery].name)

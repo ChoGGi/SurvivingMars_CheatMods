@@ -1,4 +1,8 @@
 v7.0
+Fixed:
+Cheats menu was borked if the button names used any char that wasn't ASCII (thanks SkiRich).
+Examine and other dialogs I use also used the same font.
+Examine didn't work on everything (broke it in 6.9).
 
 v6.9
 Added:
@@ -49,7 +53,7 @@ Mod Upload shows the mod title instead of <ModLabel>.
 v6.6
 Added:
 Help>Mod Upload: Show list of mods to upload to Steam Workshop.
-Fixes>Toggles>Broked Transport Pathing: RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed). Defaults to enabled.
+Fixes>Toggles>Borked Transport Pathing: RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed). Defaults to enabled.
 
 Changed:
 Re-added Mission>Disaster Occurrences, and Mission>Game Rules (not all rules/parts of rules will apply).
@@ -81,7 +85,7 @@ Fixed:
 Wrong string for Buildings>Instant Build (thanks lufou1).
 Flatten Ground wasn't using saved radius till after it was adjusted.
 Dome Only checkbox didn't work.
-Slightly bypassed a weird flashing UI bug with clipping the colonist head amount for residence selection panels (Thanks SkiRich).
+Slightly bypassed a weird flashing UI bug with clipping the colonist head amount for residence selection panels (thanks SkiRich).
 
 v6.4
 Added:
@@ -89,11 +93,11 @@ Help>ECM>Disable ECM: Disables menu, cheat panel, and hotkeys, but leaves settin
 
 Fixed:
 Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).
-FlattenGround: Fixed issue with pipes getting marked as uneven terrain (works on broked saves).
+FlattenGround: Fixed issue with pipes getting marked as uneven terrain (works on borked saves).
 
 v6.3
 Added:
-Fixes>All Pipe Skins To Default: Large Water Tank + Pipes + Chrome skin = broked looking connections (thanks Akashi Konno).
+Fixes>All Pipe Skins To Default: Large Water Tank + Pipes + Chrome skin = borked looking connections (thanks Akashi Konno).
 Typing &handle in console will open that object in the examiner.
 Fixes>Toggles>Colonists Stuck Outside Service Buildings: Sometimes colonists will keep getting stuck when leaving some buildings.
 
@@ -354,11 +358,11 @@ Colonists>Traits: Block For Selected Building Type: No more idiots.
 Colonists>Traits: Restrict For Selected Building Type: Only idoits.
 Misc>Find Nearest Resource: Select an object and click this to display a list of resources (also added to cheat pane for Transports/Drones).
 Fixes>Toggle: Psychologist Resting Bonus: The Psychologist profile is supposed to give a +5 sanity bonus to colonists during rest (now it will).
-Fixes>Fire All Fixes: One click to apply all the single use fixes (likely safe to use, they all check for broked stuff so).
+Fixes>Fire All Fixes: One click to apply all the single use fixes (likely safe to use, they all check for borked stuff so).
 Fixes>Remove Particles With Null Polylines: Found on a broken mystery (meteor crashed into mirror sphere power decoy thingy).
 Fixes>Remove Missing Class Objects: Probably from mods that were removed.
 Fixes>Mirror Sphere Stuck: If you have a mirror sphere stuck at the edge of the map, and it just won't die/move...
-Fixes>Stutter With High FPS: If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing.
+Fixes>Stutter With High FPS: If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing.
 Debug>Delete All Of Selected Object: It gives a confirmation beforehand.
 
 Changed:

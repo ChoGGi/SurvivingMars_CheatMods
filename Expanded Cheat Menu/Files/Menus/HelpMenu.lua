@@ -7,9 +7,8 @@ local S = ChoGGi.Strings
 --~ local icon = "new_city.tga"
 
 --~ AddAction(Menu,Action,Key,Des,Icon)
-
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000367--[[Mod Upload--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000367--[[Mod Upload--]]]),
   ChoGGi.MenuFuncs.ModUpload,
   nil,
   302535920001264--[[Show list of mods to upload to Steam Workshop.--]],
@@ -17,7 +16,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000674--[[Report Bug--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000674--[[Report Bug--]]]),
   ChoGGi.MenuFuncs.ReportBugDlg,
   ChoGGi.UserSettings.KeyBindings.ReportBugDlg,
   302535920000675--[[Report Bug
@@ -28,7 +27,7 @@ This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]],
 
 --------------------screenshot
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000657--[[Screenshot--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000657--[[Screenshot--]]]),
   ChoGGi.MenuFuncs.TakeScreenshot,
   ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
   302535920000658--[[Write screenshot--]],
@@ -36,7 +35,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000659--[[Screenshot Upsampled--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000659--[[Screenshot Upsampled--]]]),
   function()
     ChoGGi.MenuFuncs.TakeScreenshot(true)
   end,
@@ -46,7 +45,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000661--[[Show Interface in Screenshots--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000661--[[Show Interface in Screenshots--]]]),
   ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
   nil,
   function()
@@ -60,7 +59,7 @@ AddAction(
 
 --------------------Interface
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000663--[[Toggle Interface--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000663--[[Toggle Interface--]]]),
   function()
     hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
   end,
@@ -70,7 +69,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000664--[[Toggle Signs--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000664--[[Toggle Signs--]]]),
   ChoGGi.MenuFuncs.SignsInterface_Toggle,
   ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
   302535920000665--[[Concrete, metal deposits, not working, etc...--]],
@@ -78,7 +77,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[16]",S[302535920000666--[[Toggle on-screen hints--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[16]",S[302535920000666--[[Toggle on-screen hints--]]]),
   ChoGGi.MenuFuncs.OnScreenHints_Toggle,
   nil,
   302535920000667--[[Don't show hints for this game--]],
@@ -86,7 +85,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[17]",S[302535920000668--[[Reset on-screen hints--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[17]",S[302535920000668--[[Reset on-screen hints--]]]),
   ChoGGi.MenuFuncs.OnScreenHints_Reset,
   nil,
   302535920000669--[[Just in case you wanted to see them again.--]],
@@ -94,7 +93,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[18]",S[302535920000670--[[Never Show Hints--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[18]",S[302535920000670--[[Never Show Hints--]]]),
   ChoGGi.MenuFuncs.NeverShowHints_Toggle,
   nil,
   function()
@@ -109,7 +108,7 @@ AddAction(
 
 ----------------------------------ECM
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[1]",S[302535920000672--[[About ECM--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[1]",S[302535920000672--[[About ECM--]]]),
   ChoGGi.MenuFuncs.AboutECM,
   nil,
   Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000673--[[info dialog.--]]]),
@@ -117,7 +116,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[2]",S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[2]",S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
   ChoGGi.MenuFuncs.ShowReadmeECM,
   nil,
   302535920001025--[[Help! I'm with stupid!--]],
@@ -125,7 +124,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[3]",S[302535920001029--[[Change log--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[3]",S[302535920001029--[[Change log--]]]),
   ChoGGi.MenuFuncs.ShowChangelogECM,
   nil,
   4915--[[Good News, Everyone!"--]],
@@ -133,7 +132,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920001014--[[Hide Cheats Menu--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920001014--[[Hide Cheats Menu--]]]),
   ChoGGi.MenuFuncs.CheatsMenu_Toggle,
   ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
   302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]],
@@ -141,7 +140,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
   ChoGGi.MenuFuncs.DisableECM,
   nil,
   302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]],
@@ -149,7 +148,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000676--[[Reset ECM Settings--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000676--[[Reset ECM Settings--]]]),
   ChoGGi.MenuFuncs.ResetECMSettings,
   nil,
   302535920000677--[[Reset all ECM settings to default (restart to enable).--]],
@@ -157,7 +156,7 @@ AddAction(
 )
 
 AddAction(
-  Concat("[999]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920001242--[[Edit ECM Settings File--]]]),
+  Concat("[99]",S[302535920001282--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920001242--[[Edit ECM Settings File--]]]),
   ChoGGi.MenuFuncs.EditECMSettings,
   nil,
   302535920001243--[[Manually edit ECM settings.--]],
@@ -181,7 +180,7 @@ do -- build text file menu items
 
   local info = Concat(S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]]," : ",ChoGGi.email)
   AddAction(
-    Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[-1]*",S[126095410863--[[Info--]]],"*"),
+    Concat("[99]",S[302535920001282--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[-1]*",S[126095410863--[[Info--]]],"*"),
     "blank_function",
     nil,
     info,
@@ -190,7 +189,7 @@ do -- build text file menu items
 
   local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
   AddAction(
-    Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[0]*",S[302535920000875--[[Game Functions--]]],"*"),
+    Concat("[99]",S[302535920001282--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[302535920000875--[[Game Functions--]]],"*"),
     function()
       OpenExamine(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
     end,
@@ -205,7 +204,7 @@ do -- build text file menu items
       for i = 1, #folders do
         local text = ReadText(folders[i].path)
         AddAction(
-          Concat("[999]",S[487939677892--[[Help--]]],"/[999]",S[1000145--[[Text--]]],"/[999]",folders[i].name),
+          Concat("[99]",S[302535920001282--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[99]",folders[i].name),
           function()
             OpenExamine(text)
           end,

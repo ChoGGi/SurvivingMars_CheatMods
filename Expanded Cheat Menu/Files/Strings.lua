@@ -1,11 +1,52 @@
 -- See LICENSE for terms
 
 -- translate all the strings at startup, so it's a table lookup instead of a func
+--~ ChoGGi.Strings[27]
+
 local ChoGGi = ChoGGi
 local _InternalTranslate = _InternalTranslate
 local T = T
 local tonumber = tonumber
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+
+-- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
+-- UAMenu still doesn't like anything other than ASCII, so...
+if ChoGGi.Lang ~= "English" then
+  local Concat = ChoGGi.ComFuncs.Concat
+  -- first get the unicode font name
+  local f = _InternalTranslate(T{984,Concat(f,", 15, aa")})
+  f = f:sub(1,f:find(",")-1)
+
+  -- replace any fonts using droid
+  __game_font_styles[false] = Concat(f,", 12, aa")
+  __game_font_styles.Editor9 = Concat(f,", 9, aa")
+  __game_font_styles.Editor11Bold = Concat(f,", 11, bold, aa")
+  __game_font_styles.Editor11 = Concat(f,", 11, aa")
+  __game_font_styles.Editor12Bold = Concat(f,", 12, bold, aa")
+  __game_font_styles.Editor12 = Concat(f,", 12, aa")
+  __game_font_styles.Editor13 = Concat(f,", 13, aa")
+  __game_font_styles.Editor13Bold = Concat(f,", 13, bold, aa")
+  __game_font_styles.Editor14 = Concat(f,", 14, aa")
+  __game_font_styles.Editor14Bold = Concat(f,", 14, bold, aa")
+  __game_font_styles.Editor16 = Concat(f,", 16, aa")
+  __game_font_styles.Editor16Bold = Concat(f,", 16, bold, aa")
+  __game_font_styles.Editor17 = Concat(f,", 17, aa")
+  __game_font_styles.Editor17Bold = Concat(f,", 17, bold, aa")
+  __game_font_styles.Editor18 = Concat(f,", 18, aa")
+  __game_font_styles.Editor18Bold = Concat(f,", 18, bold, aa")
+  __game_font_styles.Editor21Bold = Concat(f,", 21, bold, aa")
+  __game_font_styles.Editor32Bold = Concat(f,", 32, bold")
+  __game_font_styles.Rollover = Concat(f,", 14, bold, aa")
+  __game_font_styles.DesignerCaption = Concat(f,", 18, bold, aa")
+  __game_font_styles.DesignerPropEditor = Concat(f,", 12, aa")
+  __game_font_styles.Console = Concat(f,", 13, bold, aa")
+  __game_font_styles.UAMenu = Concat(f,", 14, aa")
+  __game_font_styles.UAToolbar = Concat(f,", 14, bold, aa")
+  __game_font_styles.EditorCaption = Concat(f,", 14, bold, aa")
+
+  -- normally called when translation is changed, but i try to keep Init.lua simple
+  InitGameFontStyles()
+end
 
 local Strings = {
   [15] = _InternalTranslate(T{15}), --Resource

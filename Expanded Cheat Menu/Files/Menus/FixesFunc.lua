@@ -19,8 +19,6 @@ local IsValid = IsValid
 local Msg = Msg
 local Sleep = Sleep
 
-local g_Classes = g_Classes
-
 function ChoGGi.MenuFuncs.FireMostFixes()
   local ChoGGi = ChoGGi
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
@@ -37,18 +35,18 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
-function ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle()
+function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
   local ChoGGi = ChoGGi
-  if ChoGGi.UserSettings.CheckForBrokedTransportPath then
-    ChoGGi.UserSettings.CheckForBrokedTransportPath = nil
+  if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+    ChoGGi.UserSettings.CheckForBorkedTransportPath = nil
   else
-    ChoGGi.UserSettings.CheckForBrokedTransportPath = true
+    ChoGGi.UserSettings.CheckForBorkedTransportPath = true
     ChoGGi.MenuFuncs.StutterWithHighFPS(true)
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBrokedTransportPath,302535920001266--[[Broked Transport Pathing--]]),
+    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath,302535920001266--[[Borked Transport Pathing--]]),
     1683--[[RC Transport--]],
     "UI/Icons/IPButtons/transport_route.tga"
   )
@@ -96,7 +94,7 @@ function ChoGGi.MenuFuncs.ResetRovers()
           if rc:GetState() == GetStateIdx("deployIdle") then
             -- store them in a table for later
             before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
-          -- broked, no sense in waiting for later
+          -- borked, no sense in waiting for later
           elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
             ResetRover(rc)
           end
@@ -150,7 +148,7 @@ local function SpawnColonist(old_c,building,pos,city)
 
   colonist.dome = dome
   colonist.current_dome = dome
-  g_Classes.Colonist:new(colonist)
+  Colonist:new(colonist)
   Msg("ColonistBorn", colonist)
   colonist:SetPos(pos or dome:PickColonistSpawnPt())
   --dome:UpdateUI()
@@ -266,7 +264,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
   local objs = UICity.labels.Unit or ""
   --CargoShuttle
   for i = 1, #objs do
-    ChoGGi.CodeFuncs.CheckForBrokedTransportPath(objs[i])
+    ChoGGi.CodeFuncs.CheckForBorkedTransportPath(objs[i])
   end
 
   if skip ~= true then
@@ -405,13 +403,13 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
   end
 end
 
-local function RepairBrokedShit(broked_shit)
+local function RepairBorkedShit(borked_shit)
   local just_in_case = 0
-  while #broked_shit > 0 do
+  while #borked_shit > 0 do
 
-    for i = #broked_shit, 1, -1 do
-      if IsValid(broked_shit[i]) and type(broked_shit[i].Repair) == "function" then
-        broked_shit[i]:Repair()
+    for i = #borked_shit, 1, -1 do
+      if IsValid(borked_shit[i]) and type(borked_shit[i].Repair) == "function" then
+        borked_shit[i]:Repair()
       end
     end
 
@@ -425,8 +423,8 @@ end
 
 function ChoGGi.MenuFuncs.CablesAndPipesRepair()
   local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
-  RepairBrokedShit(g_BrokenSupplyGridElements.electricity)
-  RepairBrokedShit(g_BrokenSupplyGridElements.water)
+  RepairBorkedShit(g_BrokenSupplyGridElements.electricity)
+  RepairBorkedShit(g_BrokenSupplyGridElements.water)
 end
 
 ------------------------- toggles

@@ -125,7 +125,8 @@ function Examine:Init()
   local title = S[302535920000084--[[Auto-Refresh--]]]
   local button_size = RetCheckTextSize(title)
   self.idAutoRefresh = g_Classes.CheckButton:new(self)
-  self.idAutoRefresh:SetPos(point(self.dialog_width - button_size:x() + 20, element_y + 1))
+  local adjust = ChoGGi.lang == "English" and 20 or 15
+  self.idAutoRefresh:SetPos(point(self.dialog_width - button_size:x() + adjust, element_y + 1))
   self.idAutoRefresh:SetSize(button_size)
   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
   self.idAutoRefresh:SetHSizing("AnchorToRight")

@@ -12,7 +12,7 @@ AddAction(
   Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000461--[[All Pipe Skins To Default--]]]),
   ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
   nil,
-  302535920000463--[[Large Water Tank + Pipes + Chrome skin = broked looking connections.
+  302535920000463--[[Large Water Tank + Pipes + Chrome skin = borked looking connections.
 This resets all pipes to the default skin.--]],
   icon
 )
@@ -98,7 +98,7 @@ AddAction(
   Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000595--[[Mirror Sphere Stuck--]]]),
   ChoGGi.MenuFuncs.MirrorSphereStuck,
   nil,
-  302535920000596--[[If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any broked cone of a captured sphere)--]],
+  302535920000596--[[If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any borked cone of a captured sphere)--]],
   icon
 )
 
@@ -106,7 +106,7 @@ AddAction(
   Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000597--[[Stutter With High FPS or Human Centipede--]]]),
   ChoGGi.MenuFuncs.StutterWithHighFPS,
   nil,
-  302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with broked pathing (or there's one of those magical invisible walls in it's way).
+  302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).
 
 This also works for colonists practicing the human centipede.--]],
   icon
@@ -187,15 +187,15 @@ if ChoGGi.Testing then
 end
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001266--[[Broked Transport Pathing--]]]),
-  ChoGGi.MenuFuncs.CheckForBrokedTransportPath_Toggle,
+  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001266--[[Borked Transport Pathing--]]]),
+  ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      ChoGGi.UserSettings.CheckForBrokedTransportPath,
+      ChoGGi.UserSettings.CheckForBorkedTransportPath,
       302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
-This'll check for and stop any broked ones (it'll show a popup msg when it stops one)."--]]
+This'll check for and stop any borked ones (it'll show a popup msg when it stops one)."--]]
     )
   end,
   icon

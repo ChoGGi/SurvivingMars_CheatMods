@@ -16,8 +16,6 @@ local TableToLuaCode = TableToLuaCode
 local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
 
-local g_Classes = g_Classes
-
 -- useful lists
 ChoGGi.Tables = {
   -- display names only! (stored as numbers, not names like the rest; which is why i guessed)
@@ -148,8 +146,8 @@ ChoGGi.Defaults = {
     InfopanelCheats_Toggle = "Ctrl-F2",
   },
 
-  -- if transport on a route has a broked route then lag happens (can't set faster game speeds)
-  CheckForBrokedTransportPath = true,
+  -- if transport on a route has a borked route then lag happens (can't set faster game speeds)
+  CheckForBorkedTransportPath = true,
 }
 -- my defaults
 if ChoGGi.Testing then
@@ -164,7 +162,7 @@ if ChoGGi.Testing then
 		PinsDlg = 50,
 		UAMenu = 150,
   }
-  -- probably not useful for anyone who isn't loading up broked saves to test
+  -- probably not useful for anyone who isn't loading up borked saves to test
   ChoGGi.Defaults.SkipMissingMods = true
   ChoGGi.Defaults.SkipMissingDLC = true
 end
@@ -425,6 +423,7 @@ end
 function OnMsg.OptionsApply()
   local ChoGGi = ChoGGi
   local Consts = Consts
+  local g_Classes = g_Classes
 
   --if setting doesn't exist then add default
   for Key,Value in pairs(ChoGGi.Defaults) do

@@ -2,7 +2,6 @@
 
 -- shows various information (with auto-refresh)
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_MonitorInfoDlg then
   return
 end
@@ -32,10 +31,13 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
   values = false,
   tables = false,
   delay = 1000,
+  MinSize = point(50, 50),
+  translate = false,
 }
 
 function ChoGGi_MonitorInfoDlg:Init()
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -43,9 +45,7 @@ function ChoGGi_MonitorInfoDlg:Init()
   local dialog_width = 400
   local dialog_height = 600
   self:SetSize(point(dialog_width, dialog_height))
-  self:SetMinSize(point(50, 50))
   self:SetMovable(true)
-  self:SetTranslate(false)
 
   local border = 4
   local element_y
@@ -259,5 +259,5 @@ function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, vk)
 end
 function ChoGGi_MonitorInfoDlg:Done()
   self.refreshing = false
-  g_Classes.Window.Done(self)
+  Window.Done(self)
 end

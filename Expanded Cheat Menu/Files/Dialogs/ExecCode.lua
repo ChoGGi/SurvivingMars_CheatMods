@@ -2,7 +2,6 @@
 
 -- shows a dialog with a single line edit to execute code in
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_ExecCodeDlg then
   return
 end
@@ -22,11 +21,12 @@ DefineClass.ChoGGi_ExecCodeDlg = {
   --defaults
   code = false,
   obj = false,
+  MinSize = point(50, 50),
+  translate = false,
 }
-
 function ChoGGi_ExecCodeDlg:Init()
-
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
   local dlgConsole = dlgConsole
 
   --element pos is based on
@@ -35,9 +35,7 @@ function ChoGGi_ExecCodeDlg:Init()
   local dialog_width = 600
   local dialog_height = 90
   self:SetSize(point(dialog_width, dialog_height))
-  self:SetMinSize(point(50, 50))
   self:SetMovable(true)
-  self:SetTranslate(false)
 
   local border = 4
   local element_y

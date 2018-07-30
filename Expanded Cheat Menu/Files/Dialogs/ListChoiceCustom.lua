@@ -2,7 +2,6 @@
 
 -- all purpose items list
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_ListChoiceCustomDialog then
   return
 end
@@ -49,6 +48,7 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
 
 function ChoGGi_ListChoiceCustomDialog:Init()
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
 
   -- element pos is based on
   self:SetPos(point(0,0))

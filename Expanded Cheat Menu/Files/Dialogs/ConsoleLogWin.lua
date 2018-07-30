@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local g_Classes = g_Classes
 if g_Classes.ChoGGi_ConsoleLogWin then
   return
 end
@@ -24,10 +23,13 @@ DefineClass.ChoGGi_ConsoleLogWin = {
   ZOrder = zorder,
   transp_mode = false,
   update_thread = false,
+  MinSize = point(50, 50),
+  translate = false,
 }
 
 function ChoGGi_ConsoleLogWin:Init()
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -35,9 +37,7 @@ function ChoGGi_ConsoleLogWin:Init()
   local dialog_width = 700
   local dialog_height = 500
   self:SetSize(point(dialog_width, dialog_height))
-  self:SetMinSize(point(50, 50))
   self:SetMovable(true)
-  self:SetTranslate(false)
 
   local border = 4
   local element_y
@@ -162,7 +162,7 @@ function ChoGGi_ConsoleLogWin:Done(result)
   --save the dimensions
   ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
   ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
-  g_Classes.Dialog.Done(self,result)
+  Dialog.Done(self,result)
 end
 
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false

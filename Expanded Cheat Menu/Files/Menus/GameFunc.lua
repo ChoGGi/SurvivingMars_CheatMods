@@ -61,7 +61,6 @@ local UserActions_GetActiveActions = UserActions.GetActiveActions
 
 local white = white
 local guic = guic
-local g_Classes = g_Classes
 
 local function DeleteAllRocks(rock_cls)
   local objs = GetObjects{class = rock_cls}
@@ -273,7 +272,7 @@ end
         "UI/Icons/Sections/warning.tga"
       )
 --~ local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_01")
-      visual_circle = g_Classes.Circle:new()
+      visual_circle = Circle:new()
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
 
@@ -303,6 +302,7 @@ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
 terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
+  local g_Classes = g_Classes
   local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
   local NewMissionParams = {}
 
@@ -536,7 +536,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   local ItemList = {}
 
   --always load defaults, then override with custom settings so list is always full
-  local def = g_Classes.Lightmodel:GetProperties()
+  local def = Lightmodel:GetProperties()
   local help_str = S[487939677892--[[Help--]]]
   local default_str = S[1000121--[[Default--]]]
   local min_str = S[302535920000110--[[Min--]]]

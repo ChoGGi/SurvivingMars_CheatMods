@@ -18,8 +18,6 @@ local SelectObj = SelectObj
 local UnlockBuilding = UnlockBuilding
 local GetBuildingTechsStatus = GetBuildingTechsStatus
 
-local g_Classes = g_Classes
-
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   --make a list
   local ChoGGi = ChoGGi
@@ -821,6 +819,7 @@ end
 
 function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
   local ChoGGi = ChoGGi
+  local g_Classes = g_Classes
   ChoGGi.UserSettings.SanatoriumSchoolShowAll = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SanatoriumSchoolShowAll)
 
 	g_Classes.Sanatorium.max_traits = ChoGGi.ComFuncs.ValueRetOpp(g_Classes.Sanatorium.max_traits,3,#ChoGGi.Tables.NegativeTraits)

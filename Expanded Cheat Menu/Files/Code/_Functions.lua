@@ -41,8 +41,6 @@ local cameraRTS_SetZoomLimits = cameraRTS.SetZoomLimits
 local camera_SetFovY = camera.SetFovY
 local camera_SetFovX = camera.SetFovX
 
-local g_Classes = g_Classes
-
 -- add some shortened func names
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
@@ -59,7 +57,6 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
       table.remove(dlgConsole.history_queue,1)
       --and save it?
       if rawget(_G, "dlgConsole") then
---~         g_Classes.Console.StoreHistory(dlgConsole)
         dlgConsole:StoreHistory()
       end
     end
@@ -226,7 +223,7 @@ do
   end
 end
 
---if building requires a dome and that dome is broked then assign it to nearest dome
+--if building requires a dome and that dome is borked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
   local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome or "",nil,nil,"working")
   --check for dome and ignore outdoor buildings *and* if there aren't any domes on map
@@ -474,7 +471,7 @@ function ChoGGi.CodeFuncs.ToggleConsoleLog()
       log:SetVisible(true)
     end
   else
-    dlgConsoleLog = g_Classes.ConsoleLog:new({}, terminal.desktop)
+    dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
   end
 end
 
@@ -1001,7 +998,7 @@ function ChoGGi.CodeFuncs.LightmodelBuild(list)
   local data = DataInstances.Lightmodel
   --always start with blank lightmodel
   data.ChoGGi_Custom:delete()
-  data.ChoGGi_Custom = g_Classes.Lightmodel:new()
+  data.ChoGGi_Custom = Lightmodel:new()
   data.ChoGGi_Custom.name = "ChoGGi_Custom"
 
   for i = 1, #list do
@@ -1466,15 +1463,15 @@ function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
   end
 end
 
-function ChoGGi.CodeFuncs.CheckForBrokedTransportPath(obj)
+function ChoGGi.CodeFuncs.CheckForBorkedTransportPath(obj)
   -- let it sleep for awhile
   DelayedCall(1000, function()
-    -- 0 means it's stopped, so anything above that and without a path means it's broked (probably)
+    -- 0 means it's stopped, so anything above that and without a path means it's borked (probably)
     if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
       obj:InterruptCommand()
       MsgPopup(
         S[302535920001267--[[%s at position: %s was stopped.--]]]:format(RetName(obj),obj:GetVisualPos()),
-        302535920001266--[[Broked Transport Pathing--]],
+        302535920001266--[[Borked Transport Pathing--]],
         "UI/Icons/IPButtons/transport_route.tga",
         nil,
         obj

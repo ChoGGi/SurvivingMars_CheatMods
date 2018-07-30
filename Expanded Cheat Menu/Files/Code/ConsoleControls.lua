@@ -18,7 +18,6 @@ local ModMessageLog = ModMessageLog
 local RGBA = RGBA
 local ShowConsoleLog = ShowConsoleLog
 
-local g_Classes = g_Classes
 --~ box(left, top, right, bottom)
 
 -- fired from OnMsgs
@@ -136,6 +135,8 @@ local function HistoryPopup(self)
   end
 end
 function ChoGGi.Console.ConsoleControls()
+  local g_Classes = g_Classes
+
   --stick everything in
   local container = g_Classes.XWindow:new({
     Id = "idContainer",
@@ -183,7 +184,7 @@ function ChoGGi.Console.ConsoleControls()
 end
 
 local function BuildSciptButton(scripts,dlg,folder)
-  g_Classes.XTextButton:new({
+  XTextButton:new({
     Padding = box(5, 2, 5, 2),
     RolloverBackground = RGBA(40, 163, 255, 255),
     TextFont = "Editor16Bold",

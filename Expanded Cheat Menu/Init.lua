@@ -86,6 +86,7 @@ ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   _VERSION = Mods.ChoGGi_CheatMenu.version,
   ModPath = Mods.ChoGGi_CheatMenu.path,
+  Lang = GetLanguage,
 
   -- orig funcs that get replaced
   OrigFuncs = {},
@@ -152,7 +153,7 @@ Please send me latest log file: %s]],file,ChoGGi.email))
   end
 
   -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-  local locale_file = Concat(ChoGGi.ModPath,"Locales/",GetLanguage(),".csv")
+  local locale_file = Concat(ChoGGi.ModPath,"Locales/",ChoGGi.Lang,".csv")
   if FileExists(locale_file) then
     LoadLocale(locale_file)
   else
