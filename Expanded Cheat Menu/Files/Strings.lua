@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- translate all the strings at startup, so it's a table lookup instead of a func
+-- translate all the strings at startup, so it's a table lookup instead of a func call
 --~ ChoGGi.Strings[27]
 
 local ChoGGi = ChoGGi
