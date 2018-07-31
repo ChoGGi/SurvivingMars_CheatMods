@@ -6,10 +6,11 @@ local S = ChoGGi.Strings
 
 local icon = "ReportBug.tga"
 
---~ AddAction(Menu,Action,Key,Des,Icon)
+--~ AddAction(Entry,Menu,Action,Key,Des,Icon)
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000461--[[All Pipe Skins To Default--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000461--[[All Pipe Skins To Default--]]]),
   ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
   nil,
   302535920000463--[[Large Water Tank + Pipes + Chrome skin = borked looking connections.
@@ -18,7 +19,8 @@ This resets all pipes to the default skin.--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000292--[[Reset Rovers--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000292--[[Reset Rovers--]]]),
   ChoGGi.MenuFuncs.ResetRovers,
   nil,
   302535920000882--[[If you have borked rovers, this will probably fix them (may take a few seconds to apply).
@@ -28,7 +30,8 @@ You may need to toggle the recall drones button (for certain issues).--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000055--[[Reset All Colonists--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000055--[[Reset All Colonists--]]]),
   ChoGGi.MenuFuncs.ResetAllColonists,
   nil,
   302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]],
@@ -36,7 +39,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000581--[[Toggle Collisions On Selected Object--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000581--[[Toggle Collisions On Selected Object--]]]),
   ChoGGi.CodeFuncs.CollisionsObject_Toggle,
   nil,
   302535920000582--[[Just in case you get something stuck somewhere.--]],
@@ -44,7 +48,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000583--[[Rebuild Walkable Points In Domes--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000583--[[Rebuild Walkable Points In Domes--]]]),
   ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
   nil,
   302535920000584--[[Useful? who knows, won't hurt.--]],
@@ -52,7 +57,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000585--[[Colonists Stuck Outside Rocket--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000585--[[Colonists Stuck Outside Rocket--]]]),
   ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
   nil,
   302535920000586--[[If any colonists are stuck AND you don't have any other rockets unloading colonists.
@@ -62,7 +68,8 @@ This will do a little copy n paste fix (they'll keep the same traits/whatnot).--
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000587--[[Remove Missing Class Objects (Warning)--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000587--[[Remove Missing Class Objects (Warning)--]]]),
   ChoGGi.MenuFuncs.RemoveMissingClassObjects,
   nil,
   Concat(S[6779--[[Warning--]]],": ",S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
@@ -71,7 +78,8 @@ AddAction(
 
 ---------------------------------most
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]"," ",S[302535920000589--[[Fire Most Fixes--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]"," ",S[302535920000589--[[Fire Most Fixes--]]]),
   ChoGGi.MenuFuncs.FireMostFixes,
   nil,
   302535920000590--[[Fires all the fixes in the "Most" menu (nuke 'em from orbit and all that).
@@ -80,14 +88,16 @@ Should be safe to use without breaking anything.--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]]),
   ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame,
   nil,
   302535920000592--[[Doesn't fix the underlying cause, but it works.--]],
   icon
 )
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000593--[[Remove Particles With Null Polylines--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000593--[[Remove Particles With Null Polylines--]]]),
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
   nil,
   302535920000594--[[It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.--]],
@@ -95,7 +105,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000595--[[Mirror Sphere Stuck--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000595--[[Mirror Sphere Stuck--]]]),
   ChoGGi.MenuFuncs.MirrorSphereStuck,
   nil,
   302535920000596--[[If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any borked cone of a captured sphere)--]],
@@ -103,7 +114,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000597--[[Stutter With High FPS or Human Centipede--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000597--[[Stutter With High FPS or Human Centipede--]]]),
   ChoGGi.MenuFuncs.StutterWithHighFPS,
   nil,
   302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).
@@ -113,7 +125,8 @@ This also works for colonists practicing the human centipede.--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000599--[[Drones Keep Trying Blocked Areas--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000599--[[Drones Keep Trying Blocked Areas--]]]),
   ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas,
   nil,
   302535920000600--[[If you have a certain dronehub who's drones keep trying to get somewhere they can't reach, try this.--]],
@@ -121,7 +134,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000601--[[Idle Drones Won't Build When Resources Available--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000601--[[Idle Drones Won't Build When Resources Available--]]]),
   ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
   nil,
   302535920000602--[[If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
@@ -131,7 +145,8 @@ This removes any of those (resources won't be touched).--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000603--[[Remove Yellow Grid Marks--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000603--[[Remove Yellow Grid Marks--]]]),
   ChoGGi.MenuFuncs.RemoveYellowGridMarks,
   nil,
   302535920000604--[[If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.--]],
@@ -139,7 +154,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920001193--[[Remove Blue Grid Marks--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920001193--[[Remove Blue Grid Marks--]]]),
   ChoGGi.MenuFuncs.RemoveBlueGridMarks,
   nil,
   302535920001197--[[If you have any buildings with the selection grid around it, and you don't have it selected.--]],
@@ -147,7 +163,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000605--[[Project Morpheus Radar Fell Down--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000605--[[Project Morpheus Radar Fell Down--]]]),
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
   nil,
   302535920000606--[[Sometimes the blue radar thingy falls off.--]],
@@ -155,7 +172,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]]),
   ChoGGi.MenuFuncs.CablesAndPipesRepair,
   nil,
   302535920000608--[[Instantly repair all broken pipes and cables.--]],
@@ -163,7 +181,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000609--[[Attach Buildings To Nearest Working Dome--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000609--[[Attach Buildings To Nearest Working Dome--]]]),
   ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
   nil,
   302535920000610--[[If you placed inside buildings outside and removed the dome they're attached to; use this.--]],
@@ -173,7 +192,8 @@ AddAction(
 
 if ChoGGi.Testing then
   AddAction(
-    Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001071--[[Drone Charges From Rover Wrong Angle--]]]),
+    {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+    Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001071--[[Drone Charges From Rover Wrong Angle--]]]),
     ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
     nil,
     function()
@@ -187,7 +207,8 @@ if ChoGGi.Testing then
 end
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001266--[[Borked Transport Pathing--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001266--[[Borked Transport Pathing--]]]),
   ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
   nil,
   function()
@@ -202,7 +223,8 @@ This'll check for and stop any borked ones (it'll show a popup msg when it stops
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000248--[[Colonists Stuck Outside Service Buildings--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000248--[[Colonists Stuck Outside Service Buildings--]]]),
   ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
   nil,
   function()
@@ -217,7 +239,8 @@ Seems to fix it after a Sol or two, so you shouldn't need to leave this running.
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000613--[[Drone Carry Amount--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000613--[[Drone Carry Amount--]]]),
   ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
   nil,
   function()
@@ -233,7 +256,8 @@ If you have an insane production amount set then it'll take an (in-game) hour be
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000615--[[Sort Command Center Dist--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920000615--[[Sort Command Center Dist--]]]),
   ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
   nil,
   function()
@@ -249,7 +273,8 @@ Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."--]]
 
 -----------------------ECM fixes
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/",S[302535920000617--[[See tooltip--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/",S[302535920000617--[[See tooltip--]]]),
   "blank_function",
   nil,
   302535920000618--[[Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed.--]],
@@ -257,7 +282,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/[1]",S[302535920000619--[[Fix Black Cube Colonists--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/[1]",S[302535920000619--[[Fix Black Cube Colonists--]]]),
   ChoGGi.MenuFuncs.ColonistsFixBlackCube,
   nil,
   302535920000620--[[If any colonists are black cubes click this.--]],
@@ -265,7 +291,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/[1]",S[302535920000621--[[Align All Buildings To Hex Grid--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[99]",S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]],"/[1]",S[302535920000621--[[Align All Buildings To Hex Grid--]]]),
   ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
   nil,
   302535920000622--[[If you have any buildings that aren't aligned to the hex grids use this.--]],

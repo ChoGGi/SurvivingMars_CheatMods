@@ -857,7 +857,8 @@ function OnMsg.ChoGGi_Loaded()
     -- add preset menu items
     ClassDescendantsList("Preset", function(name, class)
       ChoGGi.ComFuncs.AddAction(
-        Concat(S[302535920000979--[[Presets--]]],"/",name),
+        {"/[40]",S[302535920000979--[[Presets--]]],"/"},
+        Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
         function()
           OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
             PresetClass = name,

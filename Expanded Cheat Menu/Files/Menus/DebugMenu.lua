@@ -4,15 +4,16 @@ local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
 local S = ChoGGi.Strings
 
---~ local icon = "new_city.tga"
-
 local OpenGedGameObjectEditor = OpenGedGameObjectEditor
 local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
 
---~ AddAction(Menu,Action,Key,Des,Icon)
+--~ local icon = "new_city.tga"
+
+--~ AddAction(Entry,Menu,Action,Key,Des,Icon)
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920001208--[[Export Colonist Data To CSV--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920001208--[[Export Colonist Data To CSV--]]]),
   ChoGGi.MenuFuncs.ExportColonistDataToCSV,
   nil,
   302535920001219--[[Exports data about colonists to AppData/Colonists.csv--]],
@@ -20,7 +21,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000449--[[Attach Spots Toggle--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000449--[[Attach Spots Toggle--]]]),
   ChoGGi.MenuFuncs.AttachSpots_Toggle,
   nil,
   302535920000450--[[Toggle showing attachment spots on selected object.--]],
@@ -28,7 +30,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000451--[[Measure Tool--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000451--[[Measure Tool--]]]),
   function()
     ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
   end,
@@ -39,6 +42,7 @@ AddAction(
 
 AddAction(
   nil,
+  nil,
   function()
     ChoGGi.MenuFuncs.MeasureTool_Toggle()
   end,
@@ -46,7 +50,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000453--[[Reload Lua--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000453--[[Reload Lua--]]]),
   ChoGGi.MenuFuncs.ReloadLua,
   nil,
   302535920000454--[[Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).--]],
@@ -54,7 +59,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000455--[[Object Cloner--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000455--[[Object Cloner--]]]),
   function()
     ChoGGi.MenuFuncs.ObjectCloner()
   end,
@@ -64,7 +70,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000457--[[Anim State Set--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000457--[[Anim State Set--]]]),
   ChoGGi.MenuFuncs.SetAnimState,
   nil,
   302535920000458--[[Make object dance on command.--]],
@@ -72,7 +79,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000459--[[Anim Debug Toggle--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000459--[[Anim Debug Toggle--]]]),
   ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
   nil,
   302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]],
@@ -80,7 +88,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]," ",S[4099--[[Game Time--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]," ",S[4099--[[Game Time--]]]),
   function()
     ChoGGi.MenuFuncs.SetPathMarkersGameTime()
   end,
@@ -90,7 +99,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]),
   ChoGGi.MenuFuncs.SetPathMarkersVisible,
   ChoGGi.UserSettings.KeyBindings.SetPathMarkersVisible,
   302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]],
@@ -98,7 +108,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000471--[[Object Manipulator--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000471--[[Object Manipulator--]]]),
   function()
     ChoGGi.ComFuncs.OpenInObjectManipulator()
   end,
@@ -108,7 +119,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000473--[[Selection Editor--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000473--[[Selection Editor--]]]),
   ChoGGi.MenuFuncs.ShowSelectionEditor,
   nil,
   302535920000474--[["Lets you manipulate objects.
@@ -118,7 +130,8 @@ If you leave it opened during a game load/save, then click this menu item to mak
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000475--[[Object Spawner--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000475--[[Object Spawner--]]]),
   ChoGGi.MenuFuncs.ObjectSpawner,
   ChoGGi.UserSettings.KeyBindings.ObjectSpawner,
   302535920000476--[["Shows list of objects, and spawns at mouse cursor.
@@ -129,7 +142,8 @@ hover mouse over and use Delete Selected Object"--]],
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000479--[[Toggle Editor--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000479--[[Toggle Editor--]]]),
   ChoGGi.MenuFuncs.Editor_Toggle,
   ChoGGi.UserSettings.KeyBindings.Editor_Toggle,
   302535920000480--[["Select object(s) then hold ctrl/shift/alt and drag mouse.
@@ -140,7 +154,8 @@ It's not as if domes need to be where you placed them (people will just ignore i
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000481--[[Open In Ged Object Editor--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000481--[[Open In Ged Object Editor--]]]),
   function()
     OpenGedGameObjectEditor(ChoGGi.CodeFuncs.SelObject())
   end,
@@ -150,7 +165,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000491--[[Examine Current Obj--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000491--[[Examine Current Obj--]]]),
   ChoGGi.MenuFuncs.ObjExaminer,
   ChoGGi.UserSettings.KeyBindings.ObjExaminer,
   302535920000492--[[Opens the object examiner--]],
@@ -158,7 +174,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920000495--[[Particles Reload--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000495--[[Particles Reload--]]]),
   ChoGGi.MenuFuncs.ParticlesReload,
   nil,
   302535920000496--[[Reloads particles from "Data/Particles"...--]],
@@ -167,7 +184,8 @@ AddAction(
 
 -------------------------------toggle grids
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[08]",S[302535920000497--[[Toggle Terrain Deposit Grid--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[08]",S[302535920000497--[[Toggle Terrain Deposit Grid--]]]),
   ToggleTerrainDepositGrid,
   ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
   302535920000498--[[Shows a grid around concrete.--]],
@@ -175,7 +193,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[09]",S[302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[09]",S[302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]]]),
   function()
     ChoGGi.MenuFuncs.debug_build_grid(1)
   end,
@@ -185,7 +204,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[10]",S[302535920000501--[[Toggle Hex Passability Grid Visibility--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[10]",S[302535920000501--[[Toggle Hex Passability Grid Visibility--]]]),
   function()
     ChoGGi.MenuFuncs.debug_build_grid(2)
   end,
@@ -195,7 +215,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[11]",S[302535920000503--[[Toggle Hex Build Grid Visibility--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[11]",S[302535920000503--[[Toggle Hex Build Grid Visibility--]]]),
   function()
     ChoGGi.MenuFuncs.debug_build_grid(3)
   end,
@@ -207,7 +228,8 @@ AddAction(
 
 -------------------------------debugfx
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[302535920001175--[[Debug FX--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[302535920001175--[[Debug FX--]]]),
   function()
     ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
   end,
@@ -222,7 +244,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[302535920001184--[[Particles--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[302535920001184--[[Particles--]]]),
   function()
     ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
   end,
@@ -237,7 +260,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[4107--[[Sound FX--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920001175--[[Debug FX--]]],"/",S[4107--[[Sound FX--]]]),
   function()
     ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
   end,
@@ -254,7 +278,8 @@ AddAction(
 
 ------------------------------- DELETE
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[98]",S[302535920000146--[[Delete Saved Games--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[98]",S[302535920000146--[[Delete Saved Games--]]]),
   ChoGGi.MenuFuncs.DeleteSavedGames,
   nil,
   Concat(S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],"\n\n",S[302535920001274--[[This is permanent!--]]]),
@@ -262,7 +287,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[99]",S[302535920000487--[[Delete All Of Selected Object--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[99]",S[302535920000487--[[Delete All Of Selected Object--]]]),
   function()
     ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
   end,
@@ -272,7 +298,8 @@ AddAction(
 )
 
 AddAction(
-  Concat("[90]",S[302535920001283--[[Debug--]]],"/[99]",S[302535920000489--[[Delete Object(s)--]]],"/",S[302535920000489--[[Delete Object(s)--]]]),
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[99]",S[302535920000489--[[Delete Object(s)--]]],"/",S[302535920000489--[[Delete Object(s)--]]]),
   function()
     ChoGGi.CodeFuncs.DeleteObject()
   end,

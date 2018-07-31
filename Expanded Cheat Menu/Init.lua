@@ -86,7 +86,7 @@ ChoGGi = {
   SettingsFile = "AppData/CheatMenuModSettings.lua",
   _VERSION = Mods.ChoGGi_CheatMenu.version,
   ModPath = Mods.ChoGGi_CheatMenu.path,
-  Lang = GetLanguage,
+  Lang = GetLanguage(),
 
   -- orig funcs that get replaced
   OrigFuncs = {},

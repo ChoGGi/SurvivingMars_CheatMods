@@ -674,16 +674,46 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-  --default menu width/draggable menu
+
+  -- change menu width, toggle draggable menu, and have the Cheats menu works with accented chars
   function UAMenu:SetBtns()
-    local ret = {ChoGGi_OrigFuncs.UAMenu_SetBtns(self)}
+    local keys = {}
+
+    -- build list of path and menu button name
+    for _, v in pairs(self.Actions) do
+      if v.entry then
+        keys[#keys + 1] = {
+          v.entry,
+          v.path,
+        }
+      end
+    end
+
+    -- sort by name or if we added a number
+    table.sort(keys,
+      function(a,b)
+        return a[2] < b[2]
+      end
+    )
+
+    -- build the menu items for the buttons
+    local ptMenuEnd = 0
+    for i = 1, #keys do
+      local entry = keys[i][1]
+      if not self.Btns[entry] then
+        local menuEntry = self:CreateBtn(entry, keys[i][2])
+        self.Btns[entry] = menuEntry
+        ptMenuEnd = menuEntry:GetSize():y()
+      end
+    end
+
     --shrink the width
-    self:SetSize(point(UAMenu_cheats_width,self:GetSize():y()))
+    self:SetSize(point(UAMenu_cheats_width,self.ptInitBtnPos:y() + ptMenuEnd))
     --make the menu draggable
     if ChoGGi.UserSettings.DraggableCheatsMenu then
       self:SetMovable(true)
     end
-    return table.unpack(ret)
+
   end --func
 
   --set menu position

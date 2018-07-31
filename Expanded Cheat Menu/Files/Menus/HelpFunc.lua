@@ -59,17 +59,15 @@ function ChoGGi.MenuFuncs.ModUpload()
       local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
       local dest = "AppData/ModUpload/"
 
-      -- clear out and create upload folder
-      if copy_files then
-        AsyncDeletePath(dest)
-        AsyncCreatePath(dest)
-      end
-
       -- build / show confirmation dialog
       local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
       if not copy_files then
         upload_msg[#upload_msg+1] = "\n\n"
         upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
+
+        -- clear out and create upload folder
+        AsyncDeletePath(dest)
+        AsyncCreatePath(dest)
       end
       if diff_author then
         upload_msg[#upload_msg+1] = "\n\n"

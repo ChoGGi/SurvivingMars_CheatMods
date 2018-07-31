@@ -6,10 +6,11 @@ local S = ChoGGi.Strings
 
 --~ local icon = "new_city.tga"
 
---~ AddAction(Menu,Action,Key,Des,Icon)
+--~ AddAction(Entry,Menu,Action,Key,Des,Icon)
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000704--[[Instant Mission Goal--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000704--[[Instant Mission Goal--]]]),
   ChoGGi.MenuFuncs.InstantMissionGoal,
   nil,
   302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).
@@ -19,7 +20,8 @@ Needs to change Sol to update.--]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000706--[[Instant Colony Approval--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000706--[[Instant Colony Approval--]]]),
   ChoGGi.MenuFuncs.InstantColonyApproval,
   nil,
   302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).--]],
@@ -27,7 +29,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000710--[[Change Logo--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000710--[[Change Logo--]]]),
   ChoGGi.MenuFuncs.ChangeGameLogo,
   nil,
   302535920000711--[[Change the logo for anything that uses the logo.--]],
@@ -35,7 +38,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[1]",S[302535920000712--[[Set Sponsor--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[1]",S[302535920000712--[[Set Sponsor--]]]),
   ChoGGi.MenuFuncs.ChangeSponsor,
   nil,
   302535920000713--[[Switch to a different sponsor.--]],
@@ -43,7 +47,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[3]",S[302535920000716--[[Set Commander--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[3]",S[302535920000716--[[Set Commander--]]]),
   ChoGGi.MenuFuncs.ChangeCommander,
   nil,
   302535920000717--[[Switch to a different commander.--]],
@@ -52,7 +57,8 @@ AddAction(
 
 ------------
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[2]",S[302535920000714--[[Set Bonuses Sponsor--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[2]",S[302535920000714--[[Set Bonuses Sponsor--]]]),
   ChoGGi.MenuFuncs.SetSponsorBonus,
   nil,
   S[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -63,7 +69,8 @@ restart to set disabled.--]]],
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[4]",S[302535920000718--[[Set Bonuses Commander--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[4]",S[302535920000718--[[Set Bonuses Commander--]]]),
   ChoGGi.MenuFuncs.SetCommanderBonus,
   nil,
   S[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -75,7 +82,8 @@ restart to set disabled.--]]],
 
 --------------------disasters
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[302535920000708--[[Meteor Damage--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[302535920000708--[[Meteor Damage--]]]),
   ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
   nil,
   function()
@@ -87,7 +95,8 @@ AddAction(
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4142--[[Dust Devils--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4142--[[Dust Devils--]]]),
   function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("DustDevils")
   end,
@@ -98,7 +107,8 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4148--[[Cold Waves--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4148--[[Cold Waves--]]]),
   function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("ColdWave")
   end,
@@ -109,7 +119,8 @@ Current: %s"--]]]:format(S[4149--[[Cold Wave--]]],mapdata.MapSettings_ColdWave),
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4144--[[Dust Storms--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4144--[[Dust Storms--]]]),
   function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("DustStorm")
   end,
@@ -120,7 +131,8 @@ Current: %s"--]]]:format(S[4250--[[Dust Storm--]]],mapdata.MapSettings_DustStorm
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4146--[[Meteors--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4146--[[Meteors--]]]),
   function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("Meteor")
   end,
@@ -131,7 +143,8 @@ Current: %s"--]]]:format(S[4251--[[Meteor--]]],mapdata.MapSettings_Meteor),
 )
 
 AddAction(
-  Concat(S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[8800--[[Game Rules--]]]),
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[8800--[[Game Rules--]]]),
   ChoGGi.MenuFuncs.ChangeRules,
   nil,
   302535920000965--[["Change the ""Game Rules""."--]],

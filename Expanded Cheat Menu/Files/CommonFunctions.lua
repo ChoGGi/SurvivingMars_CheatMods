@@ -987,11 +987,8 @@ function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
   UserActions_SetMode(UserActions.mode)
 end
 
-function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
+function ChoGGi.ComFuncs.AddAction(entry,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
   local ChoGGi = ChoGGi
-  if menu then
-    menu = Concat("/",menu)
-  end
 
   -- build function
   local name = "NOFUNC"
@@ -1013,17 +1010,34 @@ function ChoGGi.ComFuncs.AddAction(menu,action,key,des,icon,toolbar,mode,xinput,
 
   -- description (we leave funcs as they are, so UAMenu.UpdateUAMenu works)
   if type(des) ~= "function" then
-    des = ChoGGi.ComFuncs.CheckText(des,des)
+    des = ChoGGi.ComFuncs.CheckText(des,menu)
   end
 
+  local path
+  if entry then
+    path = TableConcat(entry)
+    entry = entry[2]
+  end
   ChoGGi.ComFuncs.UserAddActions{
     -- AsyncRand needed for items made from same line (like a loop)
     [Concat("ChoGGi_",name,"-",AsyncRand())] = {
+      -- name of button
+      entry = entry,
+      -- button path needed for UAMenu, so i don't have to go through the whole pattern match utf (they translated the strings used for the cheats menu, but didn't make it actually support utf)
+      path = path,
+      -- the below are all part of default table
+
+      -- menu path needed for UAMenu
       menu = menu,
+      -- func
       action = action,
+      -- shortcut
       key = key,
+      -- good question
       description = des,
+      -- i should change the built-in func to use full paths
       icon = icon,
+      -- dunno the rest
       toolbar = toolbar,
       mode = mode,
       xinput = xinput,

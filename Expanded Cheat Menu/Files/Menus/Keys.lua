@@ -20,6 +20,7 @@ if ChoGGi.UserSettings.NumberKeysBuildMenu then
   local function AddMenuKey(Num,Key)
     AddAction(
       nil,
+      nil,
       function()
         ChoGGi.CodeFuncs.ShowBuildMenu(Num)
       end,
@@ -119,11 +120,13 @@ end
 
 AddAction(
   nil,
+  nil,
   cls,
   ChoGGi.UserSettings.KeyBindings.ClearConsoleLog
 )
 
 AddAction(
+  nil,
   nil,
   function()
     ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
@@ -132,6 +135,7 @@ AddAction(
 )
 
 AddAction(
+  nil,
   nil,
   function()
     ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
@@ -142,6 +146,7 @@ AddAction(
 --show console
 AddAction(
   nil,
+  nil,
   function()
     ShowConsole(true)
   end,
@@ -149,6 +154,7 @@ AddAction(
 )
 
 AddAction(
+  nil,
   nil,
   function()
     ShowConsole(true)
@@ -158,6 +164,7 @@ AddAction(
 
 --show console with restart
 AddAction(
+  nil,
   nil,
   function()
     ShowConsole(true)
@@ -173,6 +180,7 @@ AddAction(
 --goes to placement mode with last built object
 AddAction(
   nil,
+  nil,
   function()
     local last = UICity.LastConstructedBuilding
     if last.entity then
@@ -184,6 +192,7 @@ AddAction(
 
 --goes to placement mode with SelectedObj
 AddAction(
+  nil,
   nil,
   function()
     local ChoGGi = ChoGGi

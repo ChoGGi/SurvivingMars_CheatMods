@@ -1,3 +1,7 @@
+v7.1
+Changed:
+Cheat menu buttons work with utf now.
+
 v7.0
 Fixed:
 Cheats menu was borked if the button names used any char that wasn't ASCII (thanks SkiRich).

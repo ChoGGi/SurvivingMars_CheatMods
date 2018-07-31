@@ -103,6 +103,7 @@ local Strings = {
   [3718] = _InternalTranslate(T{3718}), --NONE
   [3720] = _InternalTranslate(T{3720}), --Trait
   [3722] = _InternalTranslate(T{3722}), --State
+  [3734] = _InternalTranslate(T{3734}), --Tech
   [3973] = _InternalTranslate(T{3973}), --Salvage
   [3980] = _InternalTranslate(T{3980}), --Buildings
   [3982] = _InternalTranslate(T{3982}), --Deposits
