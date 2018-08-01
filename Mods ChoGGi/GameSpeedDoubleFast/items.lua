@@ -1,1 +1,0 @@
-const.fastGameSpeed = 10
