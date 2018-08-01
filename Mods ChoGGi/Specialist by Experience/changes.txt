@@ -1,0 +1,2 @@
+v0.2
+Error spamming in log if you have no workplaces.

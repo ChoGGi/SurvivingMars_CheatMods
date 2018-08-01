@@ -82,7 +82,7 @@ local pairs,IsValid = pairs,IsValid
 function OnMsg.NewDay(sol) -- NewSol...
   local ignore_spec = SpecialistByExperience.IgnoreSpec
   local g_Classes = g_Classes
-  local workplaces = UICity.labels.Workplace
+  local workplaces = UICity.labels.Workplace or ""
 
   for i = 1, #workplaces do
     local work = workplaces[i]

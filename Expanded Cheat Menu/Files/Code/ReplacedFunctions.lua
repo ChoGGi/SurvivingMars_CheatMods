@@ -112,7 +112,7 @@ end
 --set UI transparency:
 local function SetTrans(obj)
   local trans = ChoGGi.UserSettings.Transparency
-  if type(trans) == "table" and type(obj) == "table" and trans[obj.class] then
+  if trans and obj.class and trans[obj.class] then
     obj:SetTransparency(trans[obj.class])
   end
 end
@@ -124,7 +124,16 @@ do --funcs without a class
   SaveOrigFunc("ShowPopupNotification")
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
+  SaveOrigFunc("UIGetBuildingPrerequisites")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
+  function UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
+		local class = g_Classes[template.template_class]
+    if class and class:IsKindOf("Building") then
+      return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
+    end
+  end
 
   --stops confirmation dialog about missing mods (still lets you know they're missing)
   function GetMissingMods()

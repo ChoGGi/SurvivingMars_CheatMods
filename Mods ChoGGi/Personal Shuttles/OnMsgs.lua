@@ -120,7 +120,7 @@ function OnMsg.NewDay() --newsol
   local UICity = UICity
 
   --clean up old handles
-  if next(UICity.PersonalShuttles.CargoShuttleThreads) then
+  if UICity.PersonalShuttles and next(UICity.PersonalShuttles.CargoShuttleThreads) then
     for h,_ in pairs(UICity.PersonalShuttles.CargoShuttleThreads) do
       if not IsValid(HandleToObject[h]) then
         UICity.PersonalShuttles.CargoShuttleThreads[h] = nil
