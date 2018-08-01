@@ -659,38 +659,39 @@ Not permanent for colonists after they exit buildings (for now).--]]]),
   }
 end
 
-local function SetScale(Obj,Scale)
+local function SetScale(obj,Scale)
   local ChoGGi = ChoGGi
   local cUserSettings = ChoGGi.UserSettings
-  Obj:SetScale(Scale)
+  obj:SetScale(Scale)
+
   --changing entity to a static one and changing scale can make things not move so re-apply speeds.
   --and it needs a slight delay
 	DelayedCall(500, function()
 --~   CreateRealTimeThread(function()
 --~     Sleep(500)
-    if Obj.class == "Drone" then
+    if obj.class == "Drone" then
       if cUserSettings.SpeedDrone then
-        pf_SetStepLen(Obj,cUserSettings.SpeedDrone)
+        pf_SetStepLen(obj,cUserSettings.SpeedDrone)
       else
-        Obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
+        obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
       end
-    elseif Obj.class == "CargoShuttle" then
+    elseif obj.class == "CargoShuttle" then
       if cUserSettings.SpeedShuttle then
-        Obj.max_speed = ChoGGi.Consts.SpeedShuttle
+        obj.max_speed = ChoGGi.Consts.SpeedShuttle
       else
-        Obj.max_speed = ChoGGi.Consts.SpeedShuttle
+        obj.max_speed = ChoGGi.Consts.SpeedShuttle
       end
-    elseif Obj.class == "Colonist" then
+    elseif obj.class == "Colonist" then
       if cUserSettings.SpeedColonist then
-        pf_SetStepLen(Obj,cUserSettings.SpeedColonist)
+        pf_SetStepLen(obj,cUserSettings.SpeedColonist)
       else
-        Obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
+        obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
       end
-    elseif Obj:IsKindOf("BaseRover") then
+    elseif obj:IsKindOf("BaseRover") then
       if cUserSettings.SpeedRC then
-        pf_SetStepLen(Obj,cUserSettings.SpeedRC)
+        pf_SetStepLen(obj,cUserSettings.SpeedRC)
       else
-        Obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
+        obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
       end
     end
   end)

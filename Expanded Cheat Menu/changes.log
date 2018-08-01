@@ -3,10 +3,12 @@ Changed:
 Cheats menu tooltips now show the ECM setting value instead of game value.
 More menu items have the setting in the tooltip.
 Colonist Death Age now applies to newly born/arrived (it used to just affect current colonists).
+Trigger Disasters changed to Start Disasters.
+Added Metatron Ion Storm to Start Disasters.
 
 Fixed:
 Problem with ECM and not having Mysteries DLC installed.
-Start Disasters>Missiles weren't aiming properly.
+Start Disasters>Missiles/Meteors weren't aiming properly (thanks Encei).
 
 v7.1 (30 Jul 2018)
 Changed:

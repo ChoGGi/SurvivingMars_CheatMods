@@ -1,4 +1,6 @@
-### Load order when you load a game; excluding spammy ones, tabbed means loaded more then once.
+### Load order when you load a game; excluding spammy ones.
+
+#####Tabs denote repetition of Msg
 ```
 Changing map to ""
 *** Reloading assets from folder BinAssets/

@@ -1575,7 +1575,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
     setting = false
   end
 
-  return Concat(setting,": ",S[text])
+  return Concat(setting,": ",ChoGGi.ComFuncs.CheckText(S[text],text))
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems

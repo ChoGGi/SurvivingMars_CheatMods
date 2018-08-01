@@ -54,6 +54,140 @@ local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
 local UIL_GetFontID = UIL.GetFontID
 
+do -- ViewDomeInfo_Toggle
+  local function GetInfo(d)
+    return Concat(
+      "-",d.name,"-\n",
+      S[547--[[Colonists--]]],": ",#(d.labels.Colonist or ""),"\n",
+      S[7553--[[Homeless--]]],": ",#(d.labels.Homeless or ""),", ",
+      S[6859--[[Unemployed--]]],": ",#(d.labels.Unemployed or ""),", ",
+      S[7031--[[Renegades--]]],": ",#(d.labels.Renegade or ""),", ",
+      S[5647--[[Dead Colonists: <count>--]]]:format(#(d.labels.DeadColonist or "")),"\n",
+
+      S[6647--[[Guru--]]],": ",#(d.labels.Guru or ""),", ",
+      S[6640--[[Genius--]]],": ",#(d.labels.Genius or ""),", ",
+      S[6642--[[Celebrity--]]],": ",#(d.labels.Celebrity or ""),", ",
+      S[6644--[[Saint--]]],": ",#(d.labels.Saint or ""),"\n\n",
+
+
+      S[79--[[Power--]]],": ",d.electricity.current_consumption,"/",d.electricity.consumption,", ",
+      S[682--[[Oxygen--]]],": ",d.air.current_consumption,"/",d.air.consumption,", ",
+      S[681--[[Water--]]],": ",d.water.current_consumption,"/",d.water.consumption,"\n",
+
+      S[5436--[[Residences--]]],": ",#(d.labels.Residence or ""),", ",
+      S[5180--[[Nurseries--]]],": ",#(d.labels.Nursery or ""),"\n",
+
+      S[5043--[[Diners--]]],": ",#(d.labels.Diner or ""),", ",
+      S[5097--[[Grocers--]]],": ",#(d.labels.ShopsFood or ""),"\n",
+
+      S[5106--[[Infirmaries--]]],": ",#(d.labels.Infirmary or ""),", ",
+      S[5255--[[Security Stations--]]],": ",#(d.labels.SecurityStation or "")
+    )
+  end
+  local update_info_thread
+  local viewing_dome_info
+
+  local function AddViewDomeInfo()
+    local domes = UICity.labels.Dome or ""
+    for i = 1, #domes do
+      local d = domes[i]
+      -- ruins don't have any grids, air is the shortest to type
+      if d.air then
+        local text_obj = Text:new()
+        local text_orient = Orientation:new()
+        text_orient.ChoGGi_ViewDomeInfo_o = true
+        text_obj.ChoGGi_ViewDomeInfo_t = true
+        text_obj:SetText(GetInfo(d))
+        text_obj:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
+        text_obj:SetCenter(true)
+
+        Concat(ChoGGi.Font,", 16, bold, aa")
+
+        local _, origin = d:GetAllSpots(0)
+        d:Attach(text_obj, origin)
+        d:Attach(text_orient, origin)
+        text_obj:SetAttachOffset(point(0,0,8000))
+      end
+    end
+  end
+
+  local function RemoveViewDomeInfo()
+    -- clear out the text objects
+    local domes = UICity.labels.Dome or ""
+    for i = 1, #domes do
+      local attaches = domes[i]:GetAttaches() or ""
+      for i = #attaches, 1, -1 do
+        if attaches[i].ChoGGi_ViewDomeInfo_t or attaches[i].ChoGGi_ViewDomeInfo_o then
+          attaches[i]:delete()
+        end
+      end
+    end
+  end
+
+  local function UpdateViewDomeInfo()
+    -- fire an update every second
+    update_info_thread = CreateRealTimeThread(function()
+      while update_info_thread do
+        local domes = UICity.labels.Dome or ""
+        for i = 1, #domes do
+          local attaches = domes[i]:GetAttaches() or ""
+          for j = 1, #attaches do
+            if attaches[j].ChoGGi_ViewDomeInfo_t then
+              attaches[j]:SetText(GetInfo(domes[i]))
+            end
+          end
+        end
+        Sleep(1000)
+      end
+    end)
+  end
+
+  function ChoGGi.MenuFuncs.ViewDomeInfo_Toggle()
+    -- cleanup
+    if viewing_dome_info then
+      viewing_dome_info = nil
+      RemoveViewDomeInfo()
+      DeleteThread(update_info_thread)
+    else
+      -- add signs
+      viewing_dome_info = true
+      AddViewDomeInfo()
+    end
+
+    -- auto-refresh
+    if viewing_dome_info then
+      UpdateViewDomeInfo()
+    end
+
+  end
+
+end
+
+--~ Dome stats is.....well, a lot of what I want is already there. I suppose what would be better is more of an overhaul of how the data is presented, so you don't have to dig into things. Say, for example, you had a bar that gave you the total, similar to what you have right now. Except it gives a better breakdown,and gives you a "capacity" rating of what your colonists have in that particular day.
+
+--~ (# of people) (Effect)
+--~ Sanity: 50/100 (avg)
+
+--~ (6) Working outside of the dome (-20)
+
+--~ ..
+
+--~ ..
+
+--~ Workplace efficiency: 80%
+
+--~ (7) Wrong workplace specialization (-50)
+
+--~ Health: 40%
+
+--~ 25/10 Capacity (3 slots from neighboring dome)
+
+--~ Comfort: 95%
+
+--~ Service capacity: 80/90
+
+--~ Gardens: 7 (+20)
+
 function ChoGGi.MenuFuncs.DeleteSavedGames()
   local SavegamesList = SavegamesList
 
@@ -341,12 +475,14 @@ end
 
 local function AnimDebug_Show(obj,colour)
   local text = PlaceObject("Text")
-  text:SetDepthTest(true)
   text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-  text:SetFontId(UIL_GetFontID("droid, 14, bold"))
+  text:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
+  text:SetCenter(true)
+  local orient = Orientation:new()
 
   text.ChoGGi_AnimDebug = true
-  obj:Attach(text)
+  obj:Attach(text, 0)
+  obj:Attach(orient, 0)
   text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
   CreateGameTimeThread(function()
     while IsValid(text) do
@@ -814,12 +950,12 @@ do --path markers
             Obj.ChoGGi_Stored_Waypoints = {}
           end
           local sleepidx = 0
-          --stick a flag over the follower
-          --local endwp = PlaceText(Concat(Obj.class,": ",Obj.handle), Obj:GetPos())
-          --endwp:SetColor(colour)
-          --endwp:Attach(Obj)
-          --endwp:SetAttachOffset(point(0,0,500))
-          --endwp:SetFontId(UIL_GetFontID("droid, 14, bold"))
+--~           --stick a flag over the follower
+--~           local wpend = PlaceText(Concat(Obj.class,": ",Obj.handle), Obj:GetPos())
+--~           wpend:SetColor(colour)
+--~           wpend:Attach(Obj)
+--~           wpend:SetAttachOffset(point(0,0,500))
+--~           wpend:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
           repeat
             --shuttles don't have paths
             if Obj.class ~= "CargoShuttle" and not Obj:GetPath() then

@@ -1,4 +1,6 @@
 ### "New Game"
+
+#####Tabs denote repetition of Msg
 ```
 New UA mode "Game" set in 0 ms
 Changing map to "PreGame"

@@ -748,29 +748,22 @@ end
 --earliest on-ground objects are loaded?
 --function OnMsg.PersistLoad()
 
---saved game is loaded
+-- saved game is loaded
 function OnMsg.LoadGame()
-  --so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
   ChoGGi.Temp.IsGameLoaded = false
   Msg("ChoGGi_Loaded")
 end
 
---for new games
---OnMsg.NewMapLoaded()
+-- for new games
 function OnMsg.CityStart()
   local ChoGGi = ChoGGi
   ChoGGi.Temp.IsGameLoaded = false
-  --reset my mystery msgs to hidden
+  -- reset my mystery msgs to hidden
   ChoGGi.UserSettings.ShowMysteryMsgs = nil
   Msg("ChoGGi_Loaded")
 end
 
---~ --fired as late as we can
---~ function OnMsg.ChoGGi_Loaded()
---~   Msg("ChoGGi_Loaded")
---~ end
-
---fired when game is loaded
+-- LoadGame/CityStart
 function OnMsg.ChoGGi_Loaded()
   local UICity = UICity
   --for new games
@@ -778,13 +771,14 @@ function OnMsg.ChoGGi_Loaded()
     return
   end
 
-  --place to store per-game values
+  -- a place to store per-game values
   if not UICity.ChoGGi then
     UICity.ChoGGi = {}
   end
 
   local ChoGGi = ChoGGi
 
+  -- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
   if ChoGGi.Temp.IsGameLoaded == true then
     return
   end

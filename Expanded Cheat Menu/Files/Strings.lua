@@ -11,11 +11,13 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- UAMenu still doesn't like anything other than ASCII, so...
+ChoGGi.Font = "droid"
 if ChoGGi.Lang ~= "English" then
   local Concat = ChoGGi.ComFuncs.Concat
   -- first get the unicode font name
   local f = _InternalTranslate(T{984,"SchemeBk, 15, aa"})
   f = f:sub(1,f:find(",")-1)
+  ChoGGi.Font = f
 
   -- replace any fonts using droid
   __game_font_styles[false] = Concat(f,", 12, aa")
@@ -52,6 +54,7 @@ local Strings = {
   [15] = _InternalTranslate(T{15}), --Resource
   [27] = _InternalTranslate(T{27}), --Cheats
   [53] = _InternalTranslate(T{53}), --Malfunction
+  [79] = _InternalTranslate(T{79}), --Power
   [155] = _InternalTranslate(T{155}), --Entity
   [134] = _InternalTranslate(T{134}), --Instant Build
   [217] = _InternalTranslate(T{217}), --Work Shifts
@@ -65,6 +68,7 @@ local Strings = {
   [656] = _InternalTranslate(T{656}), --Water consumption
   [657] = _InternalTranslate(T{657}), --Oxygen Consumption
   [681] = _InternalTranslate(T{681}), --Water
+  [682] = _InternalTranslate(T{682}), --Oxygen
   [683] = _InternalTranslate(T{683}), --Power Consumption
   [692] = _InternalTranslate(T{692}), --Resources
   [697] = _InternalTranslate(T{697}), --Destroy
@@ -141,23 +145,34 @@ local Strings = {
   [4809] = _InternalTranslate(T{4809}), --Residence
   [4915] = _InternalTranslate(T{4915}), --Good News, Everyone!
   [5017] = _InternalTranslate(T{5017}), --Basic Dome
+  [5043] = _InternalTranslate(T{5043}), --Diners
   [5068] = _InternalTranslate(T{5068}), --Farms
   [5093] = _InternalTranslate(T{5093}), --Geoscape Dome
+  [5097] = _InternalTranslate(T{5097}), --Grocers
+  [5106] = _InternalTranslate(T{5106}), --Infirmaries
   [5146] = _InternalTranslate(T{5146}), --Medium Dome
   [5152] = _InternalTranslate(T{5152}), --Mega Dome
+  [5180] = _InternalTranslate(T{5180}), --Nurseries
   [5182] = _InternalTranslate(T{5182}), --Omega Telescope
   [5188] = _InternalTranslate(T{5188}), --Oval Dome
   [5238] = _InternalTranslate(T{5238}), --Rockets
+  [5255] = _InternalTranslate(T{5255}), --Security Stations
+  [5436] = _InternalTranslate(T{5436}), --Residences
   [5438] = _InternalTranslate(T{5438}), --Rovers
   [5444] = _InternalTranslate(T{5444}), --Workplaces
   [5451] = _InternalTranslate(T{5451}), --DELETE
   [5452] = _InternalTranslate(T{5452}), --START
   [5568] = _InternalTranslate(T{5568}), --Stats
   [5620] = _InternalTranslate(T{5620}), --Meteor Storm
+  [5647] = _InternalTranslate(T{5647}), --Dead Colonists: <count>
   [6546] = _InternalTranslate(T{6546}), --Core Metals
   [6548] = _InternalTranslate(T{6548}), --Core Water
   [6550] = _InternalTranslate(T{6550}), --Core Rare Metals
   [6556] = _InternalTranslate(T{6556}), --Alien Imprints
+  [6640] = _InternalTranslate(T{6640}), --Genius
+  [6642] = _InternalTranslate(T{6642}), --Celebrity
+  [6644] = _InternalTranslate(T{6644}), --Saint
+  [6647] = _InternalTranslate(T{6647}), --Guru
   [6652] = _InternalTranslate(T{6652}), --Idiot
   [6761] = _InternalTranslate(T{6761}), --None
   [6779] = _InternalTranslate(T{6779}), --Warning
@@ -221,6 +236,7 @@ Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
 Strings[1000014] = Strings[1000014]:gsub("<ModLabel>","%%s")
 Strings[4274] = Strings[4274]:gsub("<playtime>","%%s")
 Strings[4273] = Strings[4273]:gsub("<save_date>","%%s")
+Strings[5647] = Strings[5647]:gsub("<count>","%%s")
 
 -- we need to pad some zeros
 local function TransZero(pad,first,last)

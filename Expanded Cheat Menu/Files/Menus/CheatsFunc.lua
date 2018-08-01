@@ -20,6 +20,7 @@ local MeteorsDisaster = MeteorsDisaster
 local ModEditorOpen = ModEditorOpen
 local Msg = Msg
 local OpenExamine = OpenExamine
+local PlaceObject = PlaceObject
 local point = point
 local RefreshXBuildMenu = RefreshXBuildMenu
 local StartBombard = StartBombard
@@ -156,6 +157,19 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
     MeteorsDisaster(descr, meteors_type, pos)
   end)
 end
+function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
+  local pos = ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor()
+  if type(pos) == "table" then
+    pos = pos:GetPos()
+  end
+
+  local const = const
+  local expiration = Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
+  local storm = PlaceObject("MetatronIonStorm")
+  storm.expiration_time = expiration
+  storm:SetPos(pos)
+  storm:SetAngle(Random(1,21600))
+end
 
 function ChoGGi.MenuFuncs.DisastersStop()
   local mis = g_IncomingMissiles
@@ -170,21 +184,29 @@ function ChoGGi.MenuFuncs.DisastersStop()
     StopColdWave()
   end
 
-  local g_DustDevils = g_DustDevils
-  if g_DustDevils then
-    for i = #g_DustDevils, 1, -1 do
-      g_DustDevils[i]:delete()
+  local objs = g_DustDevils
+  if objs then
+    for i = #objs, 1, -1 do
+      objs[i]:delete()
     end
   end
 
-  local mp = g_MeteorsPredicted or ""
-  for i = #mp, 1, -1 do
-    Msg("MeteorIntercepted", mp[i])
-    mp[i]:ExplodeInAir()
+  objs = g_MeteorsPredicted or ""
+  for i = #objs, 1, -1 do
+    Msg("MeteorIntercepted", objs[i])
+    objs[i]:ExplodeInAir()
+  end
+
+  objs = g_IonStorms or ""
+  for i = #objs, 1, -1 do
+    objs[i]:delete()
+    table.remove(g_IonStorms,i)
   end
 end
 
 function ChoGGi.MenuFuncs.DisastersTrigger()
+
+
   local ChoGGi = ChoGGi
   local ItemList = {
     {text = Concat(" ",S[302535920000240--[[Stop Most Disasters--]]]),value = "Stop"},
@@ -197,6 +219,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     {text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
     {text = S[302535920000245--[[Meteor Multi-Spawn--]]],value = "MeteorMultiSpawn"},
     {text = S[4251--[[Meteor--]]],value = "Meteor"},
+    {text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",1),value = "Missle1"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",10),value = "Missle10"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",100),value = "Missle100"},
@@ -253,7 +276,11 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
         ChoGGi.MenuFuncs.DisasterTriggerMissle(100)
       elseif value == "Missle500" then
         ChoGGi.MenuFuncs.DisasterTriggerMissle(500)
+
+      elseif value == "MetatronIonStorm" then
+        ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
       end
+
       MsgPopup(
         choice[i].text,
         3983--[[Disasters--]]

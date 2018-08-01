@@ -590,10 +590,13 @@ function Examine:valuetotextex(o)
     else
       -- regular table
       local table_data
+      local is_next = next(o)
 
-      if #o > 0 then
+      if #o > 0 and is_next then
+        table_data = Concat(#o," / ",S[302535920001057--[[Data--]]])
+      elseif #o > 0 then
         table_data = #o
-      elseif next(o) then
+      elseif is_next then
         table_data = S[302535920001057--[[Data--]]]
       else
         table_data = 0

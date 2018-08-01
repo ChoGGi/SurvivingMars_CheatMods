@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
     scanning = false, --from explorer code for AnalyzeAnomaly
     dest_pos = false, --there isn't one, but adding one prevents log spam
   }
+
   --if it idles it'll go home, so we return my command till we remove thread
   SaveOrigFunc("CargoShuttle","Idle")
   function CargoShuttle:Idle()
