@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Fake Personal Information v0.1",
 	"version", 1,
-	"saved", 1532347200,
+	"saved", 1533124800,
 	"id", "ChoGGi_FakePersonalInformation",
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
---~ 	"steam_id", "0",
+	"steam_id", "1449211890",
 	"description", [[I don't care for a game storing my personal information.
 This changes all your stored info to the info for Haemimont Games and/or the CEO (thanks Google).
 

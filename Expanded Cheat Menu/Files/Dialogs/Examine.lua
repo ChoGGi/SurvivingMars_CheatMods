@@ -1152,7 +1152,7 @@ function Examine:SetObj(o)
   local is_table = type(o) == "table"
   local name = RetName(o)
 
-  --update attaches button with attaches amount
+  -- update attaches button with attaches amount
   local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
   local attach_amount = attaches and #attaches or 0
   self.idAttaches:SetHint(S[302535920000070--[[Shows list of attachments. This %s has: %s.--]]]:format(name,attach_amount))

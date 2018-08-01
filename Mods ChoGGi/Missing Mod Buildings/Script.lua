@@ -34,16 +34,18 @@ function OnMsg.PersistPostLoad()
       end
     end
   end
-  local domes = UICity.labels.Dome or empty_table
-  for i = 1, #domes do
-    for _,label in pairs(domes[i].labels or empty_table) do
-      for j = #label, 1, -1 do
-        if type(label[j].SetBase) ~= "function" then
-          label[j]:delete()
-          table.remove(label,j)
-        end
-      end
-    end
-  end
+
+  -- probably does more harm than good
+--~   local domes = UICity.labels.Dome or empty_table
+--~   for i = 1, #domes do
+--~     for _,label in pairs(domes[i].labels or empty_table) do
+--~       for j = #label, 1, -1 do
+--~         if type(label[j].SetBase) ~= "function" then
+--~           label[j]:delete()
+--~           table.remove(label,j)
+--~         end
+--~       end
+--~     end
+--~   end
 
 end

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"image", "Preview.png",
-  "saved", 1530014400,
-  "version", 3,
   "title", "Lock Workplace v0.3",
+  "version", 3,
+  "saved", 1533124800,
+	"image", "Preview.png",
   "id", "ChoGGi_LockWorkplace",
   "author", "ChoGGi",
   "steam_id", "1422914403",

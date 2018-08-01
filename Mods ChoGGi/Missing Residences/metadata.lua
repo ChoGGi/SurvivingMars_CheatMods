@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "saved", 1531051200,
-  "version", 1,
   "title", "Missing Residences v0.1",
+  "version", 1,
+  "saved", 1533124800,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_MissingResidences",

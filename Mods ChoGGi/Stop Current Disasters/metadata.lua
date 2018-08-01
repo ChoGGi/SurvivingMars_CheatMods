@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "title", "Stop Current Disasters v0.2",
   "version", 2,
-  "saved", 1527940800,
+  "saved", 1533124800,
   "tags", "Cheats",
   "id", "ChoGGi_StopCurrentDisasters",
   "author", "ChoGGi",

@@ -198,24 +198,19 @@ function OnMsg.PersistPostLoad()
         end
       end
     end
-    local domes = UICity.labels.Dome or ""
-    for i = 1, #domes do
-      for _,label in pairs(domes[i].labels or empty_table) do
-        for j = #label, 1, -1 do
-          if type(label[j].SetBase) ~= "function" then
-            label[j]:delete()
-            table.remove(label,j)
-          end
-        end
-      end
-    end
---~     -- probably don't need this
---~     ForEach{
---~       class = "UnpersistedMissingClass",
---~       exec = function(obj)
---~         obj:delete()
+
+--~     local domes = UICity.labels.Dome or ""
+--~     for i = 1, #domes do
+--~       for _,label in pairs(domes[i].labels or empty_table) do
+--~         for j = #label, 1, -1 do
+--~           if type(label[j].SetBase) ~= "function" then
+--~             label[j]:delete()
+--~             table.remove(label,j)
+--~           end
+--~         end
 --~       end
---~     }
+--~     end
+
   end
 end
 
