@@ -434,7 +434,7 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
   end)
 end
 
-function ChoGGi.MenuFuncs.AutosavePeriod()
+function ChoGGi.MenuFuncs.SetAutosavePeriod()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.AutosavePeriod
   local UserSettings = ChoGGi.UserSettings

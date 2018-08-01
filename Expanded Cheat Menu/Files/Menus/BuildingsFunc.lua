@@ -735,7 +735,7 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(name,": ",S[302535920000144--[[Automated Performance--]]]),
-    hint = S[302535920000145--[["Sets performance of all automated buildings
+    hint = S[302535920000145--[["Sets performance of all automated buildings of this type
 Current: %s"--]]]:format(hint),
     check1 = 302535920000769--[[Selected--]],
     check1_hint = Concat(S[302535920000147--[[Only apply to selected object instead of all--]]]," ",name),

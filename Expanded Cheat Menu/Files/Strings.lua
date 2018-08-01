@@ -138,6 +138,7 @@ local Strings = {
   [4765] = _InternalTranslate(T{4765}), --Fuel
   [4801] = _InternalTranslate(T{4801}), --Workplace
   [4809] = _InternalTranslate(T{4809}), --Residence
+  [4915] = _InternalTranslate(T{4915}), --Good News, Everyone!
   [5017] = _InternalTranslate(T{5017}), --Basic Dome
   [5068] = _InternalTranslate(T{5068}), --Farms
   [5093] = _InternalTranslate(T{5093}), --Geoscape Dome

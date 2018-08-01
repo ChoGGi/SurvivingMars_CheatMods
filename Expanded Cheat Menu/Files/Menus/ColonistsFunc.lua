@@ -356,7 +356,6 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
 end
 
 function ChoGGi.MenuFuncs.SetMinComfortBirth()
-
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.MinComfortBirth / r
   local hint_low = S[302535920000767--[[Lower = more babies--]]]
@@ -757,12 +756,16 @@ function ChoGGi.MenuFuncs.SetDeathAge()
         for i = 1, #tab do
           tab[i].death_age = RetDeathAge(tab[i])
         end
+        ChoGGi.UserSettings.DeathAgeColonist = nil
       elseif type(amount) == "number" then
         local tab = UICity.labels.Colonist or ""
         for i = 1, #tab do
           tab[i].death_age = amount
         end
+        ChoGGi.UserSettings.DeathAgeColonist = amount
       end
+
+      ChoGGi.SettingFuncs.WriteSettings()
 
       MsgPopup(
         ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000446--[[Colonist Death Age--]]),

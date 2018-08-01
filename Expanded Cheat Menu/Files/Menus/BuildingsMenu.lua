@@ -104,7 +104,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.PipesPillarSpacing,
+      ChoGGi.UserSettings.PipesPillarSpacing,
       302535920000183--[[Only place Pillars at start and end.--]]
     )
   end,
@@ -291,7 +291,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      const.MoistureVaporatorRange,
+      ChoGGi.UserSettings.MoistureVaporatorRange,
       302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.--]]
     )
   end,
@@ -305,7 +305,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.CropFailThreshold,
+      ChoGGi.UserSettings.CropFailThreshold,
       302535920000213--[[Remove Threshold for failing crops (crops won't fail).--]]
     )
   end,
@@ -319,7 +319,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.rebuild_cost_modifier,
+      ChoGGi.UserSettings.rebuild_cost_modifier,
       302535920000215--[[Build with minimal resources.--]]
     )
   end,
@@ -333,7 +333,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.CrimeEventSabotageBuildingsCount,
+      ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount,
       302535920000217--[[Disable damage from renegedes to buildings.--]]
     )
   end,
@@ -362,7 +362,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.InstantCables,
+      ChoGGi.UserSettings.InstantCables,
       Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000221--[[are built instantly.--]]])
     )
   end,

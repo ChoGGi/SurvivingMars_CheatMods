@@ -1,3 +1,9 @@
+v7.2 (Unreleased)
+Changed:
+Cheats menu tooltips now show the ECM setting value instead of game value.
+More menu items have the setting in the tooltip.
+Colonist Death Age now applies to newly born/arrived (it used to just affect current colonists).
+
 v7.1 (30 Jul 2018)
 Changed:
 Cheat menu buttons work with utf now.

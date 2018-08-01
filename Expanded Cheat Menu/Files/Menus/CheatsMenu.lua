@@ -173,7 +173,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      const.ResearchQueueSize,
+      ChoGGi.UserSettings.ResearchQueueSize,
       302535920000348--[[Allow more items in queue.--]]
     )
   end,
@@ -214,7 +214,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.OutsourceResearchCost,
+      ChoGGi.UserSettings.OutsourceResearchCost,
       302535920000356--[[Outsourcing is free to purchase (over n over).--]]
     )
   end,
@@ -226,7 +226,12 @@ AddAction(
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[1]",S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]]),
   ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
   nil,
-  302535920000358--[[How many breakthroughs are allowed to be unlocked?--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.BreakThroughTechsPerGame,
+      302535920000358--[[How many breakthroughs are allowed to be unlocked?--]]
+    )
+  end,
   "AlignSel.tga"
 )
 
@@ -235,7 +240,12 @@ AddAction(
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[2]",S[302535920000359--[[Breakthroughs From OmegaTelescope--]]]),
   ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
   nil,
-  302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount,
+      302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]
+    )
+  end,
   "AlignSel.tga"
 )
 ----------------------cheats

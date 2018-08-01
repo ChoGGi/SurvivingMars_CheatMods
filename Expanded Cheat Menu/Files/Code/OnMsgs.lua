@@ -379,6 +379,10 @@ local function ColonistCreated(obj,skip)
   if UserSettings.SpeedColonist then
     obj:SetMoveSpeed(UserSettings.SpeedColonist)
   end
+  if UserSettings.DeathAgeColonist then
+    obj.death_age = UserSettings.DeathAgeColonist
+  end
+
 end
 
 function OnMsg.ColonistArrived(obj)

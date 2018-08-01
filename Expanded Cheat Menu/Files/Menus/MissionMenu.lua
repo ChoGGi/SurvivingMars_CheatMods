@@ -87,7 +87,8 @@ AddAction(
   ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
   nil,
   function()
-    return ChoGGi.ComFuncs.SettingState(Consts.MeteorHealthDamage,
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.MeteorHealthDamage,
       302535920000709--[[Disable Meteor damage (colonists?).--]]
     )
   end,

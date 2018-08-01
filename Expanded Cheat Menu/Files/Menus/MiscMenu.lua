@@ -96,7 +96,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[90]",S[1000207--[[Misc--]]],"/[-1]",S[302535920000696--[[Infopanel Cheats--]]]),
   ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
   ChoGGi.UserSettings.KeyBindings.InfopanelCheats_Toggle,
-  302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.ToggleInfopanelCheats,
+      302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]
+    )
+  end,
   "toggle_dtm_slots.tga"
 )
 
@@ -123,7 +128,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      const.ExplorationQueueMaxSize,
+      ChoGGi.UserSettings.ExplorationQueueMaxSize,
       302535920000701--[[Queue up to 100 squares.--]]
     )
   end,
@@ -135,6 +140,11 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[90]",S[1000207--[[Misc--]]],"/",S[302535920000702--[[Game Speed--]]]),
   ChoGGi.MenuFuncs.SetGameSpeed,
   nil,
-  302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.mediumGameSpeed,
+      302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]]
+    )
+  end,
   "SelectionToTemplates.tga"
 )

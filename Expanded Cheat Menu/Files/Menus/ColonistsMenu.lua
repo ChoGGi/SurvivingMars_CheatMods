@@ -58,7 +58,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000377--[[Colonists Move Speed--]]]),
   ChoGGi.MenuFuncs.SetColonistMoveSpeed,
   nil,
-  302535920000378--[[How fast colonists will move.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.SpeedColonist,
+      302535920000378--[[How fast colonists will move.--]]
+    )
+  end,
   icon
 )
 
@@ -76,7 +81,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000381--[[Colonists Gravity--]]]),
   ChoGGi.MenuFuncs.SetColonistsGravity,
   nil,
-  302535920000382--[[Change gravity of Colonists.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.GravityColonist,
+      302535920000382--[[Change gravity of Colonists.--]]
+    )
+  end,
   icon
 )
 
@@ -106,7 +116,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.AvoidWorkplaceSols,
+      ChoGGi.UserSettings.AvoidWorkplaceSols,
       302535920000388--[["After being fired, Colonists won't avoid that Workplace searching for a Workplace.
 Works after colonist idle."--]]
     )
@@ -121,7 +131,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.NonSpecialistPerformancePenalty,
+      ChoGGi.UserSettings.NonSpecialistPerformancePenalty,
       302535920000390--[["Disable performance penalty for non-Specialists.
 Activated when colonist changes job."--]]
     )
@@ -135,7 +145,7 @@ AddAction(
   ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
   nil,
   ChoGGi.ComFuncs.SettingState(
-    Consts.DefaultOutsideWorkplacesRadius,
+    ChoGGi.UserSettings.DefaultOutsideWorkplacesRadius,
     302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]
   ),
   icon
@@ -158,7 +168,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.MinComfortBirth,
+      ChoGGi.UserSettings.MinComfortBirth,
       302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]
     )
   end,
@@ -172,7 +182,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.VisitFailPenalty,
+      ChoGGi.UserSettings.VisitFailPenalty,
       302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]
     )
   end,
@@ -186,7 +196,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.RenegadeCreation,
+      ChoGGi.UserSettings.RenegadeCreation,
       302535920000400--[["Disable creation of renegades.
 Works after daily update."--]]
     )
@@ -210,7 +220,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.HighStatLevel,
+      ChoGGi.UserSettings.HighStatLevel,
       302535920000403--[["Colonists always max morale (will effect birthing rates).
 Only works on colonists that have yet to spawn (maybe)."--]]
     )
@@ -225,7 +235,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.SeeDeadSanity,
+      ChoGGi.UserSettings.SeeDeadSanity,
       302535920000405--[["Disable colonists taking sanity damage from seeing dead.
 Works after in-game hour."--]]
     )
@@ -240,7 +250,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.NoHomeComfort,
+      ChoGGi.UserSettings.NoHomeComfort,
       302535920000407--[["Disable colonists taking comfort damage from not having a home.
 Works after in-game hour."--]]
     )
@@ -255,7 +265,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.DustStormSanityDamage,
+      ChoGGi.UserSettings.DustStormSanityDamage,
       302535920000409--[["Disable colonists taking sanity damage from certain events.
 Works after in-game hour."--]]
     )
@@ -284,7 +294,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.LowSanityNegativeTraitChance,
+      ChoGGi.UserSettings.LowSanityNegativeTraitChance,
       302535920000413--[["isable chance of getting a negative trait when Sanity reaches zero.
 Works after colonist idle."--]]
     )
@@ -299,7 +309,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.LowSanitySuicideChance,
+      ChoGGi.UserSettings.LowSanitySuicideChance,
       302535920000415--[["Disable chance of suicide when Sanity reaches zero.
 Works after colonist idle."--]]
     )
@@ -314,7 +324,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.OxygenMaxOutsideTime,
+      ChoGGi.UserSettings.OxygenMaxOutsideTime,
       302535920000417--[["Disable colonists suffocating with no oxygen.
 Works after in-game hour."--]]
     )
@@ -329,7 +339,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.TimeBeforeStarving,
+      ChoGGi.UserSettings.TimeBeforeStarving,
       302535920000419--[["Disable colonists starving with no food.
 Works after colonist idle."--]]
     )
@@ -344,7 +354,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.positive_playground_chance,
+      ChoGGi.UserSettings.positive_playground_chance,
       302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]
     )
   end,
@@ -358,7 +368,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      Consts.ProjectMorphiousPositiveTraitChance,
+      ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance,
       302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]
     )
   end,
@@ -373,9 +383,15 @@ AddAction(
     ChoGGi.MenuFuncs.SetColonistsAge(1)
   end,
   nil,
-  302535920000425--[[This will make all newly arrived and born colonists a certain age.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.NewColonistAge,
+      302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]
+    )
+  end,
   icon
 )
+
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000426--[[Set Age--]]]),
@@ -394,7 +410,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetColonistsGender(1)
   end,
   nil,
-  302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.NewColonistGender,
+      302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]
+    )
+  end,
   icon
 )
 
@@ -416,7 +437,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetColonistsSpecialization(1)
   end,
   nil,
-  302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.NewColonistSpecialization,
+      302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]
+    )
+  end,
   icon
 )
 
@@ -438,7 +464,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetColonistsRace(1)
   end,
   nil,
-  302535920000437--[[This will make all newly arrived and born colonists a certain race.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.NewColonistRace,
+      302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]
+    )
+  end,
   icon
 )
 AddAction(
@@ -459,7 +490,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetColonistsTraits(1)
   end,
   nil,
-  302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.NewColonistTraits,
+      302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]
+    )
+  end,
   icon
 )
 AddAction(
@@ -491,6 +527,11 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[547--[[Colonists--]]],"/",S[302535920000446--[[Colonist Death Age--]]]),
   ChoGGi.MenuFuncs.SetDeathAge,
   nil,
-  302535920000447--[[Change the age at which colonists die.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.DeathAgeColonist,
+      302535920000447--[[Change the age at which colonists die (applies to newly arrived and born colonists as well).--]]
+    )
+  end,
   icon
 )

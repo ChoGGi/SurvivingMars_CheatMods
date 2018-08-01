@@ -71,7 +71,7 @@ AddAction(
     hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
   end,
   ChoGGi.UserSettings.KeyBindings.ToggleInterface,
-  nil,
+  302535920000663--[[Toggle Interface--]],
   "ToggleSelectionOcclusion.tga"
 )
 

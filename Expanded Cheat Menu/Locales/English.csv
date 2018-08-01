@@ -315,7 +315,7 @@ Whew, about to slip down.",
 302535920000143,"%s:
 I presume the PM's in favour of the scheme because it'll reduce unemployment.",
 302535920000144,Automated Performance,
-302535920000145,"Sets performance of all automated buildings
+302535920000145,"Sets performance of all automated buildings of this type
 Current: %s",
 302535920000147,Only apply to selected object instead of all,
 302535920000148,"%s:
@@ -784,7 +784,7 @@ Works after colonist idle.",
 302535920000445,"Change the stats of all colonists (health/sanity/comfort/morale).
 
 Not permanent.",
-302535920000447,Change the age at which colonists die.,
+302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
 302535920001276,Nothing is deleted unless you check this.,
 302535920000146,Delete Saved Games,

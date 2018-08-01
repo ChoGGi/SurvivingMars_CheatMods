@@ -43,11 +43,11 @@ The map disaster settings don't do jack (use ECM>Mission>Disasters).--]],
 AddAction(
   {"/[30]",S[1000435--[[Game--]]],"/"},
   Concat("/[30]",S[1000435--[[Game--]]],"/",S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]]),
-  ChoGGi.MenuFuncs.AutosavePeriod,
+  ChoGGi.MenuFuncs.SetAutosavePeriod,
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      const.AutosavePeriod,
+      ChoGGi.UserSettings.AutosavePeriod,
       302535920001206--[[Change how many Sols between autosaving.--]]
     )
   end,
@@ -83,7 +83,12 @@ AddAction(
   Concat("/[30]",S[1000435--[[Game--]]],"/",S[302535920000625--[[Change Light Model--]]]),
   ChoGGi.MenuFuncs.ChangeLightmodel,
   nil,
-  302535920000626--[[Changes the lighting mode (temporary or permanent).--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.Lightmodel,
+      302535920000626--[[Changes the lighting mode (temporary or permanent).--]]
+    )
+  end,
   "light_model.tga"
 )
 
@@ -92,7 +97,12 @@ AddAction(
   Concat("/[30]",S[1000435--[[Game--]]],"/",S[302535920000627--[[Change Light Model Custom--]]]),
   ChoGGi.MenuFuncs.ChangeLightmodelCustom,
   nil,
-  302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.LightmodelCustom,
+      302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]
+    )
+  end,
   "light_model.tga"
 )
 

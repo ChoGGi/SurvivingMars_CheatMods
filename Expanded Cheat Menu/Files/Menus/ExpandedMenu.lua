@@ -66,7 +66,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[5238--[[Rockets--]]],"/",S[302535920000559--[[Cargo Capacity--]]]),
   ChoGGi.MenuFuncs.SetRocketCargoCapacity,
   nil,
-  302535920000560--[[Change amount of storage space in rockets.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.CargoCapacity,
+      302535920000560--[[Change amount of storage space in rockets.--]]
+    )
+  end,
   "scale_gizmo.tga"
 )
 
@@ -75,7 +80,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[5238--[[Rockets--]]],"/",S[302535920000561--[[Travel Time--]]]),
   ChoGGi.MenuFuncs.SetRocketTravelTime,
   nil,
-  302535920000562--[[Change how long to take to travel between planets.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.TravelTimeEarthMars,
+      302535920000562--[[Change how long to take to travel between planets.--]]
+    )
+  end,
   "place_particles.tga"
 )
 
@@ -136,7 +146,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageUniversalDepot")
   end,
   nil,
-  302535920000574--[[Change universal storage depot capacity.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.StorageUniversalDepot,
+      302535920000574--[[Change universal storage depot capacity.--]]
+    )
+  end,
   "MeasureTool.tga"
 )
 
@@ -147,7 +162,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageOtherDepot")
   end,
   nil,
-  302535920000576--[[Change other storage depot capacity.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.StorageOtherDepot,
+      302535920000576--[[Change other storage depot capacity.--]]
+    )
+  end,
   "MeasureTool.tga"
 )
 
@@ -158,7 +178,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
   end,
   nil,
-  302535920000578--[[Change waste storage depot capacity.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.StorageWasteDepot,
+      302535920000578--[[Change waste storage depot capacity.--]]
+    )
+  end,
   "MeasureTool.tga"
 )
 
@@ -169,7 +194,12 @@ AddAction(
     ChoGGi.MenuFuncs.SetStorageDepotSize("StorageMechanizedDepot")
   end,
   nil,
-  302535920000580--[[Change mechanized depot storage capacity.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.StorageMechanizedDepot,
+      302535920000580--[[Change mechanized depot storage capacity.--]]
+    )
+  end,
   "Cube.tga"
 )
 
@@ -187,7 +217,12 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[692--[[Resources--]]],"/",S[4616--[[Food Per Rocket Passenger--]]]),
   ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
   nil,
-  302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]],
+  function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.FoodPerRocketPassenger,
+      302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]
+    )
+  end,
   "ToggleTerrainHeight.tga"
 )
 
