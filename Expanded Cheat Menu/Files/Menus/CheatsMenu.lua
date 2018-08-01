@@ -87,10 +87,10 @@ AddAction(
 
 AddAction(
   {"/[10]",S[27--[[Cheats--]]],"/"},
-  Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[302535920000333--[[Trigger Disasters--]]]),
+  Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[1694--[[Start--]]]," ",S[3983--[[Disasters--]]]),
   ChoGGi.MenuFuncs.DisastersTrigger,
   nil,
-  302535920000334--[[Show the trigger disasters list.--]],
+  302535920000334--[[Show the disasters list and optionally start one.--]],
   "ApplyWaterMarkers.tga"
 )
 

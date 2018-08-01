@@ -113,7 +113,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(Amount)
   --(obj, radius, count, delay_min, delay_max)
   StartBombard(
     ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor(),
-    0,
+    1000,
     Amount
   )
 end
@@ -137,12 +137,26 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
   GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
+  local pos = ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor()
+  if type(pos) == "table" then
+    pos = pos:GetPos()
+  end
+  pos = point(pos:x(),pos:y())
+
   local data = DataInstances.MapSettings_Meteor
   local descr = data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+  if meteors_type == "single" then
+    -- defaults to 50000, which is fine for multiple ones i suppose.
+    descr.storm_radius = 1000
+  else
+    -- reset it back to 50000
+    descr.storm_radius = descr:GetDefaultPropertyValue("storm_radius")
+  end
   CreateGameTimeThread(function()
-    MeteorsDisaster(descr, meteors_type, GetTerrainCursor())
+    MeteorsDisaster(descr, meteors_type, pos)
   end)
 end
+
 function ChoGGi.MenuFuncs.DisastersStop()
   local mis = g_IncomingMissiles
   for Key,_ in pairs(mis or empty_table) do
@@ -250,7 +264,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
-    title = 302535920000251--[[Trigger Disaster--]],
+    title = Concat(S[1694--[[Start--]]]," ",S[3983--[[Disasters--]]]),
     hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
     multisel = true,
   }

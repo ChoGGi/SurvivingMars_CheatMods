@@ -86,6 +86,7 @@ local Strings = {
   [1683] = _InternalTranslate(T{1683}), --RC Transport
   [1684] = _InternalTranslate(T{1684}), --RC Explorer
   [1685] = _InternalTranslate(T{1685}), --Rocket
+  [1694] = _InternalTranslate(T{1694}), --Start
   [3474] = _InternalTranslate(T{3474}), --Mission Sponsor
   [3478] = _InternalTranslate(T{3478}), --Commander Profile
   [3486] = _InternalTranslate(T{3486}), --Mystery
