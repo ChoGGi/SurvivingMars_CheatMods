@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"image", "Preview.png",
-  "saved", 1527854400,
-  "version", 1,
   "title", "Permanent Priority v0.1",
+  "version", 1,
+  "saved", 1533297600,
+	"image", "Preview.png",
   "id", "ChoGGi_PermanentPriority",
   "author", "ChoGGi",
   "steam_id", "1411112809",

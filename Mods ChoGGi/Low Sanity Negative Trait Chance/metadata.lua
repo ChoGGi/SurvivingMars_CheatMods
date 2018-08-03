@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: LowSanityNegativeTraitChance",
-	"description", "0% Chance of getting a negative trait when Sanity reaches zero.",
+	"title", "Low Sanity Negative Trait Chance v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_LowSanityNegativeTraitChance",
-	"version", 1,
 	"image", "Preview.png",
+	"description", "0% Chance of getting a negative trait when Sanity reaches zero.",
 })

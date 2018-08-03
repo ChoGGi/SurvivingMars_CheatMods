@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "title", "Stop Current Disasters v0.2",
   "version", 2,
-  "saved", 1533124800,
+  "saved", 1533297600,
   "tags", "Cheats",
   "id", "ChoGGi_StopCurrentDisasters",
   "author", "ChoGGi",
@@ -10,5 +10,5 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
   "description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don"t need to leave it enabled afterwards).
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

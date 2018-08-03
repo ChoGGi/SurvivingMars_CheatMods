@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: RC Transport Fast Resource",
+	"title", "RC Transport Fast Resource v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"description", "The time it takes for an RC Transport to Transfer/Gather resources (0s)",
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_RCRoverFastResources",
-	"version", 1,
 	"image", "Preview.png",
 })

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "saved", 1527249600,
-  "version", 1,
   "title", "Sample Sidepanel Controls v0.1",
+  "version", 1,
+  "saved", 1533297600,
   "tags", "Modding",
   "id", "ChoGGi_SampleSidepanelControls",
   "author", "ChoGGi",

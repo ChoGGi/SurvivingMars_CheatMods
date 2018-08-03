@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: DefaultOutsideWorkplacesRadius",
+	"title", "Default Outside Workplaces Radius v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"description", "Colonists search 256 hexes outside their Dome when looking for a Workplace.",
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_DefaultOutsideWorkplacesRadius",
-	"version", 1,
 	"image", "Preview.png",
 })

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "saved", 1527336000,
-  "version", 1,
   "title", "Black Dust Devils v0.1",
+  "version", 1,
+  "saved", 1533297600,
 	"image", "Preview.png",
   "tags", "Gameplay",
   "id", "ChoGGi_BlackDustDevils",

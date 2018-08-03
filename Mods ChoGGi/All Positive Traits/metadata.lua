@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
-	"version", 2,
 	"title", "All Positive Traits v0.2",
+	"version", 2,
+  "saved", 1533297600,
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_AllPositiveTraits",

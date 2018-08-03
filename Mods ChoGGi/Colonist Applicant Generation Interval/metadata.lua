@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Colonist: Applicant Generation Interval",
+	"title", "Colonist: Applicant Generation Interval v0.1",
 	"version", 1,
+  "saved", 1533297600,
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_ApplicantGenerationInterval",

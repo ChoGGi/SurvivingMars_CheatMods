@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"image", "Preview.png",
-  "saved", 1529409600,
-  "version", 2,
   "title", "Disable Drone Maintenance v0.2",
+  "version", 2,
+  "saved", 1533297600,
+	"image", "Preview.png",
   "id", "ChoGGi_DisableDroneMaintenance",
   "author", "ChoGGi",
   "steam_id", "1411107464",

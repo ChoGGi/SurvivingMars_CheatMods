@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
+	"title", "New Colonists Youth v0.1",
 	"version", 1,
-	"title", "CheatMod: New Colonists Youth",
+  "saved", 1533297600,
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_NewColonistsYouth",

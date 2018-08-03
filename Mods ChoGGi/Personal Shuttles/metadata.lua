@@ -1,6 +1,8 @@
 return PlaceObj("ModDef", {
-	"image", "Preview.png",
 	"title", "Personal Shuttles v0.3",
+	"version", 3,
+  "saved", 1533297600,
+	"image", "Preview.png",
 	"description", [[Adds buttons to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around.
 
 Spawned shuttles can pick up certain items (storage depots, resource drops, rovers and drones).
@@ -16,11 +18,6 @@ They have a time limit of about four Sols (I was going to do it by fuel, but the
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
 	"author", "ChoGGi",
-	"version", 3,
-	"lua_revision", 231139,
-	"code", {
-		"Script.lua",
-	},
-	"saved", 1528918364,
+  "code", {"Script.lua"},
 	"TagOther", true,
 })

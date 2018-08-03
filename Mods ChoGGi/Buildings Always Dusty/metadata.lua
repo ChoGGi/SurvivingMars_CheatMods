@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "title", "Buildings Always Dusty v0.1",
   "version", 1,
-  "saved", 1533124800,
+  "saved", 1533297600,
   "id", "ChoGGi_BuildingsAlwaysDusty",
   "author", "ChoGGi",
 	"steam_id", "1411885355",
@@ -11,5 +11,5 @@ return PlaceObj("ModDef", {
 
 Requested by: LegendGamer
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

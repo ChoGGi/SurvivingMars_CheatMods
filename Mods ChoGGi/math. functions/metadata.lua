@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "title", [["math." Functions v0.4]],
   "version", 4,
-  "saved", 1532865600,
+  "saved", 1533297600,
   "id", "ChoGGi_AddMathFunctions",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
   "title", "Amount Of WasteRock Per Producer v0.1",
   "version", 1,
-  "saved", 1533124800,
+  "saved", 1533297600,
   "id", "ChoGGi_AmountOfWasteRockPerProducer",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

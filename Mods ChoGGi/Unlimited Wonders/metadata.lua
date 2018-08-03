@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: Unlimited Wonders",
+	"title", "Unlimited Wonders v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"description", "Add as many Wonders as you want",
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_UnlimitedWonders",
-	"version", 1,
 	"image", "Preview.png",
 })

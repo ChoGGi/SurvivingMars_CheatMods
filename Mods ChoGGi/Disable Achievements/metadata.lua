@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "version", 1,
   "title", "Disable Achievements v0.1",
-  "saved", 1533124800,
+  "version", 1,
+  "saved", 1533297600,
   "id", "ChoGGi_DisableAchievements",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

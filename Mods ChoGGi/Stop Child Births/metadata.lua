@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: Stop Child Birth",
+	"title", "Stop Child Birth v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"description", "No more children born",
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_StopChildBirths",
-	"version", 1,
 	"image", "Preview.png",
 })

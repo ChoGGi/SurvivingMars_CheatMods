@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"version", 3,
 	"title", "Building Placement Orientation v0.3",
-	"saved", 1526126400,
+	"version", 3,
+  "saved", 1533297600,
 	"image", "Preview.png",
 	"tags", "Building",
 	"id", "ChoGGi_BuildingPlacementOrientation",

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "version", 3,
   "title", "Replace Cursors v0.3",
-  "saved", 1532520000,
+  "version", 3,
+  "saved", 1533297600,
   "id", "ChoGGi_ReplaceCursors",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

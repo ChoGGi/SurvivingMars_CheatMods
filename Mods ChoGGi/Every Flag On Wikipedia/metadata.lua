@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "version", 1,
   "title", "Every Flag On Wikipedia v0.1",
-  "saved", 1532692800,
+  "version", 1,
+  "saved", 1533297600,
   "id", "ChoGGi_EveryFlagOnWikipedia",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

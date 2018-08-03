@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"image", "Preview.png",
-  "saved", 1527940800,
-  "version", 2,
   "title", "Selectable Cables v0.2",
+  "version", 2,
+  "saved", 1533297600,
+	"image", "Preview.png",
   "id", "ChoGGi_SelectableCables",
   "author", "ChoGGi",
   "steam_id", "1411114741",

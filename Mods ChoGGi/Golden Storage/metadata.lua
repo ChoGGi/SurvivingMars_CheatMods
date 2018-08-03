@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "version", 1,
   "title", "Golden Storage v0.1",
+  "version", 1,
   "saved", 1528027200,
 	"image", "Preview.png",
   "id", "ChoGGi_GoldenStorage",

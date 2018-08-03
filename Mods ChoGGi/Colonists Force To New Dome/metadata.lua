@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "version", 1,
   "title", "Colonists: Force To New Dome v0.1",
-  "saved", 1530878400,
+  "version", 1,
+  "saved", 1533297600,
   "id", "ChoGGi_ColonistsForceToNewDome",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

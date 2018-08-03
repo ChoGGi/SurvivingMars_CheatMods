@@ -1,9 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "CheatMod: Larger Research Queue",
+	"title", "Larger Research Queue v0.1",
+	"version", 1,
+  "saved", 1533297600,
 	"description", "Add up to 25 items",
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_LargerResearchQueue",
-	"version", 1,
 	"image", "Preview.png",
 })

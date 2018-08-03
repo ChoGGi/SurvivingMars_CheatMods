@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Terraformer v0.4",
 	"version", 4,
-	"saved", 1531742400,
+  "saved", 1533297600,
 	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
@@ -19,5 +19,5 @@ Use Mod Config to change the amount it changes when you press an arrow key.
 
 There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days), so I wouldn't bother flattening the border mountains.
 
-Included in Expanded Cheat Menu.]],
+Part of ECM.]],
 })

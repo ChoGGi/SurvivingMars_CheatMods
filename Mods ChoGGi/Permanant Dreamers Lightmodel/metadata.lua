@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"version", 2,
 	"title", "Permanant Dreamers Lightmodel v0.2",
+	"version", 2,
 	"saved", 1530964800,
 	"id", "ChoGGi_PermanantDreamersLightmodel",
 	"author", "ChoGGi",
