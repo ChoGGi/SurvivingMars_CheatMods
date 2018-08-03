@@ -209,6 +209,8 @@ do -- ECM settings
 
   -- editor wants a table
   GlobalVar("g_revision_map",{})
+  -- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
+  GlobalVar("g_Cities",{})
 
 --~   ClassesGenerate
 --~   ClassesPreprocess

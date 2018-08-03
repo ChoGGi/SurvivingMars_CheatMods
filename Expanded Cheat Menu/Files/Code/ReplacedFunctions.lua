@@ -544,8 +544,15 @@ function OnMsg.ClassesBuilt()
 
   --no more stuck focus on SingleLineEdits
   function XDesktop:MouseEvent(event, pt, button, time)
-    if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
-      self.focus_log[#self.focus_log-1]:SetFocus()
+--~     if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
+    if event == "OnMouseButtonDown" and (button == "L" or button == "R") and self.keyboard_focus.class == "SingleLineEdit" then
+      for i = #self.focus_log, 1, -1 do
+        -- get last focused object that isn't a textbox
+        if self.focus_log[i].class ~= "SingleLineEdit" then
+          self.focus_log[i]:SetFocus()
+          break
+        end
+      end
     end
     return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
   end

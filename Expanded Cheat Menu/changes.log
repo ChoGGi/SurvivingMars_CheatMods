@@ -1,14 +1,21 @@
 v7.2 (Unreleased)
+Added:
+ECM>Building Info: Shows text above buildings with info about them (domes,drones,deposits).
+Help>Text: Stats = hardware info, Game & Map Info = lists objects, and shows log.
+
 Changed:
 Cheats menu tooltips now show the ECM setting value instead of game value.
 More menu items have the setting in the tooltip.
 Colonist Death Age now applies to newly born/arrived (it used to just affect current colonists).
 Trigger Disasters changed to Start Disasters.
 Added Metatron Ion Storm to Start Disasters.
+Path Markers: Destinations for every shuttle (hopefully).
 
 Fixed:
 Problem with ECM and not having Mysteries DLC installed.
 Start Disasters>Missiles/Meteors weren't aiming properly (thanks Encei).
+Examine now shows CObject functions on objects that don't include Object.
+The Soylent Option was doing birthplace Indian instead of race Indian.
 
 v7.1 (30 Jul 2018)
 Changed:

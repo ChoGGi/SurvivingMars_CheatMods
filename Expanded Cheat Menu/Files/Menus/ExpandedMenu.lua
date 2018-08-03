@@ -13,12 +13,30 @@ local S = ChoGGi.Strings
 --------------------------------top level
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[97]",S[302535920000031--[[Find Nearest Resource--]]]),
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[96]",S[302535920000031--[[Find Nearest Resource--]]]),
   function()
     ChoGGi.CodeFuncs.FindNearestResource()
   end,
   nil,
   302535920000554--[[Select an object and click this to display a list of resources.--]],
+  "EV_OpenFirst.tga"
+)
+
+AddAction(
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[97]",S[302535920000333--[[Building Info--]]]),
+  ChoGGi.MenuFuncs.BuildingInfo_Toggle,
+  nil,
+  302535920000345--[[Shows info about building in text above it.--]],
+  "ExportImageSequence.tga"
+)
+
+AddAction(
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[98]",S[302535920000555--[[Monitor Info--]]]),
+  ChoGGi.MenuFuncs.MonitorInfo,
+  nil,
+  302535920000556--[[Shows a list of updated information about your city.--]],
   "EV_OpenFirst.tga"
 )
 
@@ -31,14 +49,7 @@ AddAction(
   "remove_water.tga"
 )
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/[98]",S[302535920000555--[[Monitor Info--]]]),
-  ChoGGi.MenuFuncs.MonitorInfo,
-  nil,
-  302535920000556--[[Shows a list of updated information about your city.--]],
-  "EV_OpenFirst.tga"
-)
+
 
 --------------------------------top level
 

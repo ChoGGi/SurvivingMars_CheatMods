@@ -365,6 +365,7 @@ function Examine:idFilterOnKbdKeyDown(char, vk)
     return "break"
   elseif vk == const.vkEsc then
     self.idCloseX:Press()
+--~     self:SetFocus()
     return "break"
   else
     SingleLineEdit.OnKbdKeyDown(self.idFilter, char, vk)
@@ -381,6 +382,38 @@ function Examine:MenuOnComboClose(menu,idx,which)
         OpenExamine(_G[item.text],self)
       else
         OpenExamine(item.obj,self)
+      end
+    end
+  end
+end
+
+local menu_added
+local menu_list_items
+-- adds class name then list of functions below
+local function BuildFuncList(obj_name,prefix)
+  prefix = prefix or ""
+  local class = _G[obj_name] or empty_table
+  local skip = true
+  for key,_ in pairs(class) do
+    if type(class[key]) == "function" then
+      menu_list_items[Concat(prefix,obj_name,".",key,": ")] = class[key]
+      skip = false
+    end
+  end
+  if not skip then
+    menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
+  end
+end
+local function ProcessList(list,prefix)
+  for i = 1, #list do
+    if not menu_added[list[i]] then
+      -- CObject and Object are pretty much the same (Object has a couple more funcs)
+      if list[i] == "CObject" then
+        -- keep it for later (for the rare objects that use CObject, but not Object)
+        menu_added[list[i]] = prefix
+      else
+        menu_added[list[i]] = true
+        BuildFuncList(list[i],prefix)
       end
     end
   end
@@ -437,38 +470,17 @@ This can take time on something like the ""Building"" metatable (don't use this 
     elseif text == self.menuitems.ExecCode then
       ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
     elseif text == self.menuitems.Functions then
-
-      local menu_added = {}
-      local menu_list_items = {}
-      -- adds class name then list of functions below
-      local function BuildFuncList(obj_name,prefix)
-        prefix = prefix or ""
-        local class = _G[obj_name] or empty_table
-        local skip = true
-        for Key,_ in pairs(class) do
-          if type(class[Key]) == "function" then
-            menu_list_items[Concat(prefix,obj_name,".",Key,": ")] = class[Key]
-            skip = false
-          end
-        end
-        if not skip then
-          menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
-        end
-      end
-      local function ProcessList(list,prefix)
-        for i = 1, #list do
-          -- CObject and Object are pretty much the same (Object has a couple more funcs)
-          if not menu_added[list[i]] and list[i] ~= "CObject" then
-            menu_added[list[i]] = true
-            BuildFuncList(list[i],prefix)
-          end
-        end
-      end
+      menu_added = {}
+      menu_list_items = {}
 
       ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
       ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
       -- add examiner object with some spaces so it's at the top
       BuildFuncList(self.obj.class,"  ")
+      -- if Object hasn't been added, then add CObject
+      if not menu_added.Object and menu_added.CObject then
+        BuildFuncList("CObject",menu_added.CObject)
+      end
 
       OpenExamine(menu_list_items,self)
 
@@ -529,7 +541,6 @@ end
 function Examine:valuetotextex(o)
   local objlist = objlist
   local obj_type = type(o)
-  local is_table = obj_type == "table"
 
   if obj_type == "function" then
     local debug_info = debug.getinfo(o, "Sn")
@@ -545,71 +556,6 @@ function Examine:valuetotextex(o)
       ")",
       HLEnd
     )
-  elseif IsValid(o) then
-    return Concat(
-      self:HyperLink(function(_,_,button)
-        Examine_valuetotextex(_,_,button,o,self)
-      end),
-      o.class,
-      HLEnd,
-      "@",
-      self:valuetotextex(o:GetPos())
-    )
-  elseif IsPoint(o) then
-    return Concat(
-      self:HyperLink(function()
-        ShowPoint_valuetotextex(o)
-      end),
-      "(",o:x(),",",o:y(),",",o:z() or terrain_GetHeight(o),")",
-      HLEnd
-    )
-  end
-
-  if is_table then
-    local meta_type = getmetatable(o)
-    if meta_type and meta_type == objlist then
-      local res = {
-        self:HyperLink(function(_,_,button)
-          Examine_valuetotextex(_,_,button,o,self)
-        end),
-        "objlist",
-        HLEnd,
-        "{",
-      }
-      for i = 1, Min(#o, 3) do
-        res[#res+1] = i
-        res[#res+1] = " = "
-        res[#res+1] = self:valuetotextex(o[i])
-      end
-      if #o > 3 then
-        res[#res+1] = "..."
-      end
-      res[#res+1] = ", "
-      res[#res+1] = "}"
-      return TableConcat(res)
-    else
-      -- regular table
-      local table_data
-      local is_next = next(o)
-
-      if #o > 0 and is_next then
-        table_data = Concat(#o," / ",S[302535920001057--[[Data--]]])
-      elseif #o > 0 then
-        table_data = #o
-      elseif is_next then
-        table_data = S[302535920001057--[[Data--]]]
-      else
-        table_data = 0
-      end
-
-      return Concat(
-        self:HyperLink(function(_,_,button)
-          Examine_valuetotextex(_,_,button,o,self)
-        end),
-        Concat(RetName(o)," (len: ",table_data,")"),
-        HLEnd
-      )
-    end
 
   elseif obj_type == "thread" then
     return Concat(
@@ -619,12 +565,24 @@ function Examine:valuetotextex(o)
       tostring(o),
       HLEnd
     )
+
   elseif obj_type == "string" then
     return Concat(
       "'",
       o,
       "'"
     )
+
+  -- point() is userdata (keep before it)
+  elseif IsPoint(o) then
+    return Concat(
+      self:HyperLink(function()
+        ShowPoint_valuetotextex(o)
+      end),
+      "(",o:x(),",",o:y(),",",o:z() or terrain_GetHeight(o),")",
+      HLEnd
+    )
+
   elseif obj_type == "userdata" then
     local str = tostring(o)
     local trans = T(o)
@@ -646,9 +604,74 @@ function Examine:valuetotextex(o)
       )
     end
 
+  elseif obj_type == "table" then
+
+    if IsValid(o) then
+      return Concat(
+        self:HyperLink(function(_,_,button)
+          Examine_valuetotextex(_,_,button,o,self)
+        end),
+        o.class,
+        HLEnd,
+        "@",
+        self:valuetotextex(o:GetPos())
+      )
+
+    else
+      local len = #o
+      local meta_type = getmetatable(o)
+
+      -- if it's an objlist then we just return a list of the objects
+      if meta_type and meta_type == objlist then
+        local res = {
+          self:HyperLink(function(_,_,button)
+            Examine_valuetotextex(_,_,button,o,self)
+          end),
+          "objlist",
+          HLEnd,
+          "{",
+        }
+        for i = 1, Min(len, 3) do
+          res[#res+1] = i
+          res[#res+1] = " = "
+          res[#res+1] = self:valuetotextex(o[i])
+        end
+        if len > 3 then
+          res[#res+1] = "..."
+        end
+        res[#res+1] = ", "
+        res[#res+1] = "}"
+        return TableConcat(res)
+      else
+        -- regular table
+        local table_data
+        local is_next = next(o)
+
+        if len > 0 and is_next then
+          -- next works for both
+          table_data = Concat(len," / ",S[302535920001057--[[Data--]]])
+  --~       elseif len > 0 then
+  --~         -- index based
+  --~         table_data = len
+        elseif is_next then
+          -- ass based
+          table_data = S[302535920001057--[[Data--]]]
+        else
+          -- blank table
+          table_data = 0
+        end
+
+        return Concat(
+          self:HyperLink(function(_,_,button)
+            Examine_valuetotextex(_,_,button,o,self)
+          end),
+          Concat(RetName(o)," (len: ",table_data,")"),
+          HLEnd
+        )
+      end
+    end
   end
 
---~   return tostring(o)
   return o
 end
 
@@ -1164,9 +1187,6 @@ function Examine:SetObj(o)
     --add object name to title
     if type(o.handle) == "number" then
       self.idCaption:SetText(Concat(name," (",o.handle,")"))
-    else
-      --limit length so we don't cover up close button (only for objlist, everything else is short enough)
-      self.idCaption:SetText(utf8.sub(name, 1, 50))
     end
 
     -- reset menu list
@@ -1211,10 +1231,9 @@ function Examine:SetObj(o)
     else
       self.idAttaches:SetVisible()
     end
-
-  else
-    self.idCaption:SetText(utf8.sub(name, 1, 50))
   end
+  --limit length so we don't cover up close button (only for objlist, everything else is short enough)
+  self.idCaption:SetText(utf8.sub(name, 1, 45))
 
   if ChoGGi.Testing then
     ChoGGi.ComFuncs.TickEnd("Examine:SetObj")

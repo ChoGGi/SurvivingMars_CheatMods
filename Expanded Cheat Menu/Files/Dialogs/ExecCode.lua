@@ -133,6 +133,7 @@ function ChoGGi_ExecCodeDlg:OnKbdKeyDown(_, virtual_key)
   local const = const
   if virtual_key == const.vkEsc then
     self.idCloseX:Press()
+--~     self:SetFocus()
     return "break"
   elseif virtual_key == const.vkEnter then
     self.idOK:Press()

@@ -362,12 +362,17 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 
   local function CallBackFunc()end
 
+  local function FiredOnMenuClick(sel)
+    ChoGGi.CodeFuncs.ChangeObjectColour(sel.obj,sel.parentobj)
+  end
+
   ChoGGi.ComFuncs.OpenInListChoice{
     callback = CallBackFunc,
     items = ItemList,
     title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
     hint = 302535920001108--[[Double click to open object/attachment to edit.--]],
     custom_type = 1,
+    custom_func = FiredOnMenuClick,
   }
 end
 
@@ -381,7 +386,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
   local ItemList = {
     {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3984--[[Anomalies--]]]),value = "Anomaly",hint = Concat(hint_loop,S[302535920001110--[[anomalies visible.--]]])},
     {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3980--[[Buildings--]]]),value = "Building",hint = Concat(hint_loop,S[302535920001111--[[buildings visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[302535920000157--[[Cables & Pipes--]]]),value = "ChoGGi_GridElements",hint = Concat(hint_loop,S[302535920001113--[[pipes and cables visible.--]]])},
+    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = Concat(hint_loop,S[302535920001113--[[pipes and cables visible.--]]])},
     {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[547--[[Colonists--]]]),value = "Colonists",hint = Concat(hint_loop,S[302535920001114--[[colonists visible.--]]])},
     {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3981--[[Units--]]]),value = "Unit",hint = Concat(hint_loop,S[302535920001115--[[rovers and drones visible.--]]])},
     {text = Concat(" ",S[302535920001084--[[Reset--]]]": ",S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = Concat(hint_loop,S[302535920000138--[["surface, subsurface, and terrain deposits visible."--]]])},

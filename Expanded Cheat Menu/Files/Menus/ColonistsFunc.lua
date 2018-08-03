@@ -120,8 +120,8 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     end
   end
   AddToList(ChoGGi.Tables.ColonistAges,987289847467--[[Age Groups--]])
-  AddToList(ChoGGi.Tables.ColonistBirthplaces,302535920000739--[[Birthplace--]])
-  AddToList(ChoGGi.Tables.ColonistGenders,302535920000740--[[Gender--]])
+  AddToList(ChoGGi.Tables.ColonistBirthplaces,4357--[[Birthplace--]])
+  AddToList(ChoGGi.Tables.ColonistGenders,4356--[[Sex--]])
   AddToList(ChoGGi.Tables.ColonistRaces,302535920000741--[[Race--]])
   AddToList(ChoGGi.Tables.ColonistSpecializations,240--[[Specialization--]])
 
@@ -137,64 +137,74 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
       dome = sel.dome
     end
 
-    local Table
-    local function CullLabel(Label)
-      Table = UICity.labels[Label] or ""
-      for i = #Table, 1, -1 do
+    local function CullLabel(label)
+      local objs = UICity.labels[label] or ""
+      for i = #objs, 1, -1 do
         if dome then
-          if Table[i].dome and Table[i].dome.handle == dome.handle then
-            MeatbagsToSoylent(Table[i],check1)
+          if objs[i].dome and objs[i].dome.handle == dome.handle then
+            MeatbagsToSoylent(objs[i],check1)
           end
         else
-          MeatbagsToSoylent(Table[i],check1)
+          MeatbagsToSoylent(objs[i],check1)
         end
       end
     end
-    local function CullTrait(Trait)
-      Table = UICity.labels.Colonist or ""
-      for i = #Table, 1, -1 do
-        if Table[i].traits[Trait] then
+    local function CullTrait(trait)
+      local objs = UICity.labels.Colonist or ""
+      for i = #objs, 1, -1 do
+        if objs[i].traits[trait] then
           if dome then
-            if Table[i].dome and Table[i].dome.handle == dome.handle then
-              MeatbagsToSoylent(Table[i],check1)
+            if objs[i].dome and objs[i].dome.handle == dome.handle then
+              MeatbagsToSoylent(objs[i],check1)
             end
           else
-            MeatbagsToSoylent(Table[i],check1)
+            MeatbagsToSoylent(objs[i],check1)
           end
         end
       end
     end
-    local function Cull(Trait,TraitType,Race)
+    local function Cull(trait,trait_type,race)
       --only race is stored as number (maybe there's a cock^?^?^?^?CoC around)
-      Trait = Race or Trait
-      Table = UICity.labels.Colonist or ""
-      for i = #Table, 1, -1 do
-        if Table[i][TraitType] == Trait then
+      trait = race or trait
+      local objs = UICity.labels.Colonist or ""
+      for i = #objs, 1, -1 do
+        if objs[i][trait_type] == trait then
           if dome then
-            if Table[i].dome and Table[i].dome.handle == dome.handle then
-              MeatbagsToSoylent(Table[i],check1)
+            if objs[i].dome and objs[i].dome.handle == dome.handle then
+              MeatbagsToSoylent(objs[i],check1)
             end
           else
-            MeatbagsToSoylent(Table[i],check1)
+            MeatbagsToSoylent(objs[i],check1)
           end
         end
       end
     end
+    local text = choice[1].text
 
     if value == "Homeless" or value == "Unemployed" then
       CullLabel(value)
-    elseif ChoGGi.Tables.ColonistSpecializations[value] or value == "none" then
-      CullLabel(value)
-    elseif ChoGGi.Tables.ColonistAges[value] then
-      CullTrait(value)
-    elseif ChoGGi.Tables.ColonistBirthplaces[value] then
-      Cull(value,"birthplace")
-    elseif ChoGGi.Tables.ColonistGenders[value] then
-      CullTrait(value)
-    elseif ChoGGi.Tables.ColonistRaces[value] then
-      Cull(value,"race",choice[1].idx)
     elseif value == "Renegade" then
       CullTrait(value)
+    elseif text:find(S[240--[[Specialization--]]]) and (ChoGGi.Tables.ColonistSpecializations[value] or value == "none") then
+      CullLabel(value)
+    elseif text:find(S[987289847467--[[Age Groups--]]]) and ChoGGi.Tables.ColonistAges[value] then
+      CullTrait(value)
+    elseif text:find(S[4357--[[Birthplace--]]]) and ChoGGi.Tables.ColonistBirthplaces[value] then
+      Cull(value,"birthplace")
+      -- bonus round
+      if not UICity.ChoGGi.DaddysLittleHitler then
+        Msg("ChoGGi_DaddysLittleHitler")
+        UICity.ChoGGi.DaddysLittleHitler = true
+      end
+    elseif text:find(S[4356--[[Sex--]]]) and ChoGGi.Tables.ColonistGenders[value] then
+      CullTrait(value)
+    elseif text:find(S[302535920000741--[[Race--]]]) and ChoGGi.Tables.ColonistRaces[value] then
+      Cull(value,"race",choice[1].idx)
+      -- bonus round
+      if not UICity.ChoGGi.DaddysLittleHitler then
+        Msg("ChoGGi_DaddysLittleHitler")
+        UICity.ChoGGi.DaddysLittleHitler = true
+      end
     end
 
     if value == "Child" then

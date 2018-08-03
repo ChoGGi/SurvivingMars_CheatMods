@@ -378,11 +378,8 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDoubleClick()
   if not self.sel then
     return
   end
-  -- open colour changer
-  if self.CustomType == 1 then
-    ChoGGi.CodeFuncs.ChangeObjectColour(self.sel.obj,self.sel.parentobj)
-  elseif self.CustomType == 7 then
-    -- fire custom_func with sel
+  -- fire custom_func with sel
+  if self.CustomType == 1 or self.CustomType == 7 then
     self.Func(self.sel)
   elseif self.CustomType ~= 5 and self.CustomType ~= 2 then
     -- dblclick to close and ret item

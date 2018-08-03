@@ -2,6 +2,7 @@
 --any funcs called from Code/*
 
 local Concat = ChoGGi.ComFuncs.Concat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local S = ChoGGi.Strings
@@ -1485,6 +1486,46 @@ function ChoGGi.CodeFuncs.DeleteAttaches(obj)
   for i = #a, 1, -1 do
     a[i]:delete()
   end
+end
+
+function ChoGGi.CodeFuncs.RetHardwareInfo()
+  local mem = {}
+  for key,value in pairs(GetMemoryInfo()) do
+    mem[#mem+1] = Concat(key,": ",value,"\n")
+  end
+
+  local hw = {}
+  for key,value in pairs(GetHardwareInfo(0)) do
+    if key == "gpu" then
+      hw[#hw+1] = Concat(key,": ",GetGpuDescription(),"\n")
+    else
+      hw[#hw+1] = Concat(key,": ",value,"\n")
+    end
+  end
+  table.sort(hw)
+  hw[#hw+1] = "\n"
+
+  return Concat(
+    "GetHardwareInfo(0): ",TableConcat(hw),"\n\n",
+    "GetMemoryInfo(): ",TableConcat(mem),"\n",
+    "AdapterMode(0): ",TableConcat({GetAdapterMode(0)}," "),"\n\n",
+    "GetMachineID(): ",GetMachineID(),"\n\n",
+    "GetSupportedMSAAModes(): ",TableConcat(GetSupportedMSAAModes()," "):gsub("HR::",""),"\n\n",
+    "GetSupportedShaderModel(): ",GetSupportedShaderModel(),"\n\n",
+    "GetMaxStrIDMemoryStats(): ",GetMaxStrIDMemoryStats(),"\n\n\n\n",
+
+    "GameObjectStats(): ",GameObjectStats(),"\n\n\n\n",
+
+    "GetCWD(): ",GetCWD(),"\n\n",
+    "GetExecDirectory(): ",GetExecDirectory(),"\n\n",
+    "GetExecName(): ",GetExecName(),"\n\n",
+    "GetDate(): ",GetDate(),"\n\n",
+    "GetOSName(): ",GetOSName(),"\n\n",
+    "GetOSVersion(): ",GetOSVersion(),"\n\n",
+    "GetUsername(): ",GetUsername(),"\n\n",
+    "GetSystemDPI(): ",GetSystemDPI(),"\n\n",
+    "GetComputerName(): ",GetComputerName(),"\n\n\n\n"
+  )
 end
 
 --only add unique template names

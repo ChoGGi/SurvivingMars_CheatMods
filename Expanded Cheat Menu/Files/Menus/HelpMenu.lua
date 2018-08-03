@@ -183,7 +183,6 @@ AddAction(
 ----------------------------------ECM
 
 
-
 do -- build text file menu items
   local ChoGGi = ChoGGi
   local function ReadText(file)
@@ -217,6 +216,28 @@ do -- build text file menu items
     funcs:sub(1,100),
     "AreaProperties.tga"
   )
+
+  AddAction(
+    {"/[60]",S[487939677892--[[Help--]]],"/"},
+    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[5568--[[Stats--]]],"*"),
+    function()
+      OpenExamine(ChoGGi.CodeFuncs.RetHardwareInfo())
+    end,
+    nil,
+    302535920001281--[[Information about your computer (as seen by SM).--]],
+    "AreaProperties.tga"
+  )
+
+  AddAction(
+    {"/[60]",S[487939677892--[[Help--]]],"/"},
+    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[1]*",S[1000435--[[Game--]]]," & ",S[1000436--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
+    ChoGGi.MenuFuncs.RetMapInfo,
+    nil,
+    302535920001282--[[Information about this saved game (mostly objects).--]],
+    "AreaProperties.tga"
+  )
+
+
 
   local function LoopFiles(ext)
     local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),ext)

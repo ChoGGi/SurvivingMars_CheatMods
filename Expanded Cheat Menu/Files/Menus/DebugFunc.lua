@@ -54,140 +54,6 @@ local terrain_GetHeight = terrain.GetHeight
 local terrain_GetMapSize = terrain.GetMapSize
 local UIL_GetFontID = UIL.GetFontID
 
-do -- ViewDomeInfo_Toggle
-  local function GetInfo(d)
-    return Concat(
-      "-",d.name,"-\n",
-      S[547--[[Colonists--]]],": ",#(d.labels.Colonist or ""),"\n",
-      S[7553--[[Homeless--]]],": ",#(d.labels.Homeless or ""),", ",
-      S[6859--[[Unemployed--]]],": ",#(d.labels.Unemployed or ""),", ",
-      S[7031--[[Renegades--]]],": ",#(d.labels.Renegade or ""),", ",
-      S[5647--[[Dead Colonists: <count>--]]]:format(#(d.labels.DeadColonist or "")),"\n",
-
-      S[6647--[[Guru--]]],": ",#(d.labels.Guru or ""),", ",
-      S[6640--[[Genius--]]],": ",#(d.labels.Genius or ""),", ",
-      S[6642--[[Celebrity--]]],": ",#(d.labels.Celebrity or ""),", ",
-      S[6644--[[Saint--]]],": ",#(d.labels.Saint or ""),"\n\n",
-
-
-      S[79--[[Power--]]],": ",d.electricity.current_consumption,"/",d.electricity.consumption,", ",
-      S[682--[[Oxygen--]]],": ",d.air.current_consumption,"/",d.air.consumption,", ",
-      S[681--[[Water--]]],": ",d.water.current_consumption,"/",d.water.consumption,"\n",
-
-      S[5436--[[Residences--]]],": ",#(d.labels.Residence or ""),", ",
-      S[5180--[[Nurseries--]]],": ",#(d.labels.Nursery or ""),"\n",
-
-      S[5043--[[Diners--]]],": ",#(d.labels.Diner or ""),", ",
-      S[5097--[[Grocers--]]],": ",#(d.labels.ShopsFood or ""),"\n",
-
-      S[5106--[[Infirmaries--]]],": ",#(d.labels.Infirmary or ""),", ",
-      S[5255--[[Security Stations--]]],": ",#(d.labels.SecurityStation or "")
-    )
-  end
-  local update_info_thread
-  local viewing_dome_info
-
-  local function AddViewDomeInfo()
-    local domes = UICity.labels.Dome or ""
-    for i = 1, #domes do
-      local d = domes[i]
-      -- ruins don't have any grids, air is the shortest to type
-      if d.air then
-        local text_obj = Text:new()
-        local text_orient = Orientation:new()
-        text_orient.ChoGGi_ViewDomeInfo_o = true
-        text_obj.ChoGGi_ViewDomeInfo_t = true
-        text_obj:SetText(GetInfo(d))
-        text_obj:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
-        text_obj:SetCenter(true)
-
-        Concat(ChoGGi.Font,", 16, bold, aa")
-
-        local _, origin = d:GetAllSpots(0)
-        d:Attach(text_obj, origin)
-        d:Attach(text_orient, origin)
-        text_obj:SetAttachOffset(point(0,0,8000))
-      end
-    end
-  end
-
-  local function RemoveViewDomeInfo()
-    -- clear out the text objects
-    local domes = UICity.labels.Dome or ""
-    for i = 1, #domes do
-      local attaches = domes[i]:GetAttaches() or ""
-      for i = #attaches, 1, -1 do
-        if attaches[i].ChoGGi_ViewDomeInfo_t or attaches[i].ChoGGi_ViewDomeInfo_o then
-          attaches[i]:delete()
-        end
-      end
-    end
-  end
-
-  local function UpdateViewDomeInfo()
-    -- fire an update every second
-    update_info_thread = CreateRealTimeThread(function()
-      while update_info_thread do
-        local domes = UICity.labels.Dome or ""
-        for i = 1, #domes do
-          local attaches = domes[i]:GetAttaches() or ""
-          for j = 1, #attaches do
-            if attaches[j].ChoGGi_ViewDomeInfo_t then
-              attaches[j]:SetText(GetInfo(domes[i]))
-            end
-          end
-        end
-        Sleep(1000)
-      end
-    end)
-  end
-
-  function ChoGGi.MenuFuncs.ViewDomeInfo_Toggle()
-    -- cleanup
-    if viewing_dome_info then
-      viewing_dome_info = nil
-      RemoveViewDomeInfo()
-      DeleteThread(update_info_thread)
-    else
-      -- add signs
-      viewing_dome_info = true
-      AddViewDomeInfo()
-    end
-
-    -- auto-refresh
-    if viewing_dome_info then
-      UpdateViewDomeInfo()
-    end
-
-  end
-
-end
-
---~ Dome stats is.....well, a lot of what I want is already there. I suppose what would be better is more of an overhaul of how the data is presented, so you don't have to dig into things. Say, for example, you had a bar that gave you the total, similar to what you have right now. Except it gives a better breakdown,and gives you a "capacity" rating of what your colonists have in that particular day.
-
---~ (# of people) (Effect)
---~ Sanity: 50/100 (avg)
-
---~ (6) Working outside of the dome (-20)
-
---~ ..
-
---~ ..
-
---~ Workplace efficiency: 80%
-
---~ (7) Wrong workplace specialization (-50)
-
---~ Health: 40%
-
---~ 25/10 Capacity (3 slots from neighboring dome)
-
---~ Comfort: 95%
-
---~ Service capacity: 80/90
-
---~ Gardens: 7 (+20)
-
 function ChoGGi.MenuFuncs.DeleteSavedGames()
   local SavegamesList = SavegamesList
 
@@ -214,9 +80,9 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
       text = data.displayname,
       value = data.savename,
       hint = Concat(
-        S[4274--[[Playtime <playtime>--]]]:format(playtime),
+        S[4274--[[Playtime: %s--]]]:format(playtime),
         "\n",
-        S[4273--[[Saved on <save_date>--]]]:format(save_date),
+        S[4273--[[Saved on: %s--]]]:format(save_date),
         "\n\n",
         S[302535920001274--[[This is permanent!--]]]
       ),
@@ -295,8 +161,8 @@ do --export colonist data
     {"age",S[302535920001222--[[Age--]]]},
     {"age_trait",Concat(S[302535920001222--[[Age--]]]," ",S[3720--[[Trait--]]])},
     {"death_age",S[4284--[[Age of death--]]]},
-    {"birthplace",S[302535920000739--[[Birthplace--]]]},
-    {"gender",S[302535920000740--[[Gender--]]]},
+    {"birthplace",S[4357--[[Birthplace--]]]},
+    {"gender",S[4356--[[Sex--]]]},
     {"race",S[302535920000741--[[Race--]]]},
     {"specialist",S[240--[[Specialization--]]]},
     {"performance",S[4283--[[Worker performance--]]]},
@@ -820,19 +686,19 @@ do --path markers
   --default height of waypoints (maybe flag_height isn't the best name as no more flags)
   local flag_height = 50
 
-  local function ShowWaypoints(waypoints, colour, Obj, skipheight)
+  local function ShowWaypoints(waypoints, colour, obj, skipheight)
     colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
     --also used for line height
     if not skipheight then
       flag_height = flag_height + 4
     end
     local height = flag_height
-    local Objpos = Obj:GetVisualPos()
+    local Objpos = obj:GetVisualPos()
     local Objterr = terrain_GetHeight(Objpos)
-    local Objheight = Obj:GetObjectBBox():sizez() / 2
+    local Objheight = obj:GetObjectBBox():sizez() / 2
     local shuttle
-    if Obj.class == "CargoShuttle" then
-      shuttle = Obj:GetPos():z()
+    if obj.class == "CargoShuttle" then
+      shuttle = obj:GetPos():z()
     end
     --some objects don't have pos as waypoint
     if waypoints[#waypoints] ~= Objpos then
@@ -856,44 +722,56 @@ do --path markers
     spawnline:SetPos(last_pos)
     spawnline.ChoGGi_WaypointPath = true
 
-    Obj.ChoGGi_Stored_Waypoints[#Obj.ChoGGi_Stored_Waypoints+1] = spawnline
+    obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
   end --end of ShowWaypoints
 
-  function ChoGGi.MenuFuncs.SetWaypoint(Obj,setcolour,skipheight)
+  function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skipheight)
     local path
+
     --we need to build a path for shuttles (and figure out a way to get their dest properly...)
-    if Obj.class == "CargoShuttle" then
+    if obj.class == "CargoShuttle" then
 
       path = {}
       --going to pickup colonist
-      if Obj.dest_dome then
-        path[1] = Obj.dest_dome:GetPos()
+      if obj.command == "GoHome" then
+        path[1] = obj.hub:GetPos()
+      elseif obj.command == "Transport" then
+        -- 2 is pickup loc, 3 is drop off
+        path[1] = (obj.transport_task[2] and obj.transport_task[2]:GetBuilding():GetPos()) or (obj.transport_task[3] and obj.transport_task[3]:GetBuilding():GetPos())
+      elseif obj.is_colonist_transport_task then
+        path[1] = obj.transport_task.dest_pos or obj.transport_task.colonist:GetPos()
       else
-        path[1] = Obj:GetDestination()
+        path[1] = obj:GetDestination()
       end
+
       --the next four points it's going to
-      local Table = Obj.next_spline
+      local Table = obj.next_spline
       if Table then
         -- :GetPath() has them backwards so we'll do the same
         for i = #Table, 1, -1 do
           path[#path+1] = Table[i]
         end
       end
-      Table = Obj.current_spline
+
+      Table = obj.current_spline
       if Table then
         for i = #Table, 1, -1 do
           path[#path+1] = Table[i]
         end
       end
-      path[#path+1] = Obj:GetPos()
+      path[#path+1] = obj:GetPos()
+
     else
+      -- rovers/drones/colonists
       if not pcall(function()
-        path = type(Obj.GetPath) == "function" and Obj:GetPath()
+        path = type(obj.GetPath) == "function" and obj:GetPath()
       end) then
-        OpenExamine(Obj)
-        print(Concat(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(Obj))))
+        OpenExamine(obj)
+        print(Concat(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj))))
       end
     end
+
+    -- we have a path so add some colours, and build the waypoints
     if path then
       local colour
       if setcolour then
@@ -908,81 +786,75 @@ do --path markers
         end
       end
 
-      if type(Obj.ChoGGi_Stored_Waypoints) ~= "table" then
-        Obj.ChoGGi_Stored_Waypoints = {}
+      if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
+        obj.ChoGGi_Stored_Waypoints = {}
       end
 
-      if not Obj.ChoGGi_WaypointPathAdded then
+      if not obj.ChoGGi_WaypointPathAdded then
         --used to reset the colour later on
-        Obj.ChoGGi_WaypointPathAdded = Obj:GetColorModifier()
+        obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
       end
       --colour it up
-      Obj:SetColorModifier(colour)
+      obj:SetColorModifier(colour)
       --send path off to make wp
       ShowWaypoints(
         path,
         colour,
-        Obj,
+        obj,
         skipheight
       )
     end
   end
 
-  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(Obj)
+  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj)
     local ChoGGi = ChoGGi
-    Obj = Obj or ChoGGi.CodeFuncs.SelObject()
+    obj = obj or ChoGGi.CodeFuncs.SelObject()
 
-    if Obj and Obj:IsKindOfClasses("Movable", "Shuttle") then
+    if obj and obj:IsKindOfClasses("Movable", "CargoShuttle") then
       if not ChoGGi.Temp.UnitPathingHandles then
         ChoGGi.Temp.UnitPathingHandles = {}
       end
 
-      if ChoGGi.Temp.UnitPathingHandles[Obj.handle] then
+      if ChoGGi.Temp.UnitPathingHandles[obj.handle] then
         --already exists so remove thread
-        --DeleteThread(ChoGGi.Temp.UnitPathingHandles[Obj.handle])
-        ChoGGi.Temp.UnitPathingHandles[Obj.handle] = nil
-      elseif IsValid(Obj) and (type(Obj.GetPath) == "function" or Obj.class == "CargoShuttle") then
+        ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
+      elseif IsValid(obj) and (type(obj.GetPath) == "function" or obj.class == "CargoShuttle") then
 
         --continous loooop of object for pathing it
-        ChoGGi.Temp.UnitPathingHandles[Obj.handle] = CreateGameTimeThread(function()
+        ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
           local colour = ChoGGi.CodeFuncs.RandomColour()
-          if type(Obj.ChoGGi_Stored_Waypoints) ~= "table" then
-            Obj.ChoGGi_Stored_Waypoints = {}
+          if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
+            obj.ChoGGi_Stored_Waypoints = {}
           end
+
           local sleepidx = 0
---~           --stick a flag over the follower
---~           local wpend = PlaceText(Concat(Obj.class,": ",Obj.handle), Obj:GetPos())
---~           wpend:SetColor(colour)
---~           wpend:Attach(Obj)
---~           wpend:SetAttachOffset(point(0,0,500))
---~           wpend:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
           repeat
             --shuttles don't have paths
-            if Obj.class ~= "CargoShuttle" and not Obj:GetPath() then
+            if obj.class ~= "CargoShuttle" and not obj:GetPath() then
               Sleep(500)
               sleepidx = sleepidx + 1
               if sleepidx == 250 then
-                DeleteThread(ChoGGi.Temp.UnitPathingHandles[Obj.handle])
+                DeleteThread(ChoGGi.Temp.UnitPathingHandles[obj.handle])
               end
             end
             sleepidx = 0
 
-            ChoGGi.MenuFuncs.SetWaypoint(Obj,colour,true)
+            ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
             Sleep(750)
 
             --remove old wps
-            if type(Obj.ChoGGi_Stored_Waypoints) == "table" then
-              for i = #Obj.ChoGGi_Stored_Waypoints, 1, -1 do
-                Obj.ChoGGi_Stored_Waypoints[i]:delete()
+            if type(obj.ChoGGi_Stored_Waypoints) == "table" then
+              for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
+                obj.ChoGGi_Stored_Waypoints[i]:delete()
               end
             end
-            Obj.ChoGGi_Stored_Waypoints = {}
+            obj.ChoGGi_Stored_Waypoints = {}
 
             --break thread when obj isn't valid
-            if not IsValid(Obj) then
-              ChoGGi.Temp.UnitPathingHandles[Obj.handle] = nil
+            if not IsValid(obj) or not obj:IsValidPos() then
+              ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
             end
-          until not ChoGGi.Temp.UnitPathingHandles[Obj.handle]
+          until not ChoGGi.Temp.UnitPathingHandles[obj.handle]
         end)
 
       end
@@ -992,30 +864,30 @@ do --path markers
         302535920000872--[[Pathing--]],
         nil,
         nil,
-        Obj
+        obj
       )
     end
   end
 
-  local function RemoveWPDupePos(Class,Obj)
+  local function RemoveWPDupePos(Class,obj)
     --remove dupe pos
-    if type(Obj.ChoGGi_Stored_Waypoints) == "table" then
-      for i = 1, #Obj.ChoGGi_Stored_Waypoints do
-        local wp = Obj.ChoGGi_Stored_Waypoints[i]
+    if type(obj.ChoGGi_Stored_Waypoints) == "table" then
+      for i = 1, #obj.ChoGGi_Stored_Waypoints do
+        local wp = obj.ChoGGi_Stored_Waypoints[i]
         if wp.class == Class then
           local pos = tostring(wp:GetPos())
           if dupewppos[pos] then
             dupewppos[pos]:SetColorModifier(6579300)
             wp:delete()
           else
-            dupewppos[pos] = Obj.ChoGGi_Stored_Waypoints[i]
+            dupewppos[pos] = obj.ChoGGi_Stored_Waypoints[i]
           end
         end
       end
       --remove removed
-      for i = #Obj.ChoGGi_Stored_Waypoints, 1, -1 do
-        if not IsValid(Obj.ChoGGi_Stored_Waypoints[i]) then
-          table.remove(Obj.ChoGGi_Stored_Waypoints,i)
+      for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
+        if not IsValid(obj.ChoGGi_Stored_Waypoints[i]) then
+          table.remove(obj.ChoGGi_Stored_Waypoints,i)
         end
       end
     end
@@ -1154,6 +1026,7 @@ do --path markers
       check1_hint = 302535920000877--[[Remove waypoints from the map and reset colours.--]],
       check2 = 4099--[[Game Time--]],
       check2_hint = Concat(S[302535920000462--[[Maps paths in real time--]]],"."),
+      check2_checked = true,
     }
   end
 end

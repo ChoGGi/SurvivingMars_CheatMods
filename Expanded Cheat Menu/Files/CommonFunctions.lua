@@ -116,10 +116,6 @@ AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
 AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
 AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
 AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
-AddMsgToFunc("ElectricityGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("ElectricityGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
-AddMsgToFunc("LifeSupportGridElement","ApplyToGrids","ChoGGi_CreatedGridObject")
-AddMsgToFunc("LifeSupportGridElement","RemoveFromGrids","ChoGGi_RemovedGridObject")
 AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
@@ -1339,7 +1335,7 @@ end
 --[[
 get around to merging some of these types into funcs?
 
-CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dbl click opens colour changer, and sends back all items
+CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with self.sel, and sends back all items
 CustomType=2 : colour selector
 CustomType=3 : updates selected item with custom value type, and sends back selected item.
 CustomType=4 : updates selected item with custom value type, and sends back all items
@@ -1960,6 +1956,7 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
     return GetObjects{class = query}
   end
   return GetObjects({
+  -- or CountObjects{}
     class = query.class,
     classes = query.classes,
     area = query.area,
@@ -1975,15 +1972,20 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
     game_flags_all = query.game_flags_all,
     class_flags_all = query.class_flags_all,
     filter = query.filter,
-  },obj, query_width, ignore_classes)
---~     classes = {"EditorDummy","Text"},
---~     area = "line", -- "realm","outsiders","detached",
+  }, obj, query_width, ignore_classes)
+--~     area = "line",
+--~ "realm" or "" = every object
+--~ "outsiders" = prefab markers
+--~ "detached" = invalid positions
+--~ "line" = ?
 --~     areapoint1 = self.point0,
 --~     areapoint2 = self.point1,
 --~     arearadius = 100,
 --~       areafilter = function(o)
 --~         return o:GetParent() == nil
 --~       end,
+--~     class = "Object",
+--~     classes = {"EditorDummy","Text"},
 --~     hexradius = self.exploitation_radius,
 --~     collection = self.Index,
 --~     attached = false,

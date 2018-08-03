@@ -26,174 +26,184 @@ local UnlockCamera = UnlockCamera
 local UpdateOnScreenHintDlg = UpdateOnScreenHintDlg
 local WaitNextFrame = WaitNextFrame
 local WriteScreenshot = WriteScreenshot
+local HashLogToTable = HashLogToTable
+local OpenExamine = OpenExamine
 
-local mod_upload_thread
-function ChoGGi.MenuFuncs.ModUpload()
-  local ChoGGi = ChoGGi
-  local ItemList = {}
-  local Mods = Mods
-  for id,mod in pairs(Mods) do
-    ItemList[#ItemList+1] = {
-      text = mod.title,
-      value = id,
-      hint = mod.description,
-      mod = mod,
-    }
-  end
+function ChoGGi.MenuFuncs.RetMapInfo()
+  local data = HashLogToTable()
+  data[1] = data[1]:gsub("\n\n","")
+  OpenExamine(table.concat(data,"\n"))
+end
 
-  local function CallBackFunc(choice)
-    -- abort if upload already happening
-    if IsValidThread(mod_upload_thread) then
-      ChoGGi.ComFuncs.MsgWait(
-        1000011--[[There is an active Steam upload--]],
-        1000592--[[Error--]],
-        "UI/Common/mod_steam_workshop.tga"
-      )
-      return
+do -- ModUpload
+  local mod_upload_thread
+  function ChoGGi.MenuFuncs.ModUpload()
+    local ChoGGi = ChoGGi
+    local ItemList = {}
+    local Mods = Mods
+    for id,mod in pairs(Mods) do
+      ItemList[#ItemList+1] = {
+        text = mod.title,
+        value = id,
+        hint = mod.description,
+        mod = mod,
+      }
     end
 
-    mod_upload_thread = CreateRealTimeThread(function()
-      local mod = choice[1].mod
-      local copy_files = choice[1].check1
-      local blank_mod = choice[1].check2
-      local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
-      local dest = "AppData/ModUpload/"
-
-      -- build / show confirmation dialog
-      local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
-      if not copy_files then
-        upload_msg[#upload_msg+1] = "\n\n"
-        upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
-
-        -- clear out and create upload folder
-        AsyncDeletePath(dest)
-        AsyncCreatePath(dest)
-      end
-      if diff_author then
-        upload_msg[#upload_msg+1] = "\n\n"
-        upload_msg[#upload_msg+1] = S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]]
-      end
-
-      local function CallBackFunc(answer)
-        if not answer then
-          return
-        end
-
-        MsgPopup(
-          5452--[[START--]],
-          302535920000367--[[Mod Upload--]]
-        )
-
-        -- add new mod
-        local err,item_id,bShowLegalAgreement
-        if Platform.steam then
-          if mod.steam_id ~= 0 then
-            local exists
-            local appId = SteamGetAppId()
-            local userId = SteamGetUserId64()
-            err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-            if not err and not exists then
-              mod.steam_id = 0
-            end
-          end
-          if mod.steam_id == 0 then
-            err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
-            mod.steam_id = item_id or nil
-          end
-        end
-
-        -- update mod, and copy files to ModUpload
-        if copy_files and not blank_mod and not err then
-          local files
-          -- I prefer to update this manually
-          if not ChoGGi.Testing then
-            mod:SaveDef()
-          end
-          mod:SaveItems()
-          AsyncDeletePath(dest)
-          AsyncCreatePath(dest)
-          err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
-          if not err then
-            for i = 1, #files or "" do
-              local dest_file = Concat(dest,files[i])
-              local dir = SplitPath(dest_file)
-              AsyncCreatePath(dir)
-              err = AsyncCopyFile(Concat(mod.path,files[i]), dest_file, "raw")
-            end
-          end
-        end
-
-        -- update mod on workshop
-        if not err or blank_mod then
-          local os_dest = ConvertToOSPath(dest)
-          if Platform.steam then
-            err = AsyncSteamWorkshopUpdateItem{
-              item_id = mod.steam_id,
-              title = mod.title,
-              description = mod.description,
-              tags = mod:GetTags(),
-              content_os_folder = os_dest,
-              image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
-            }
-          else
-            err = "no steam"
-          end
-        end
-
-        -- show id in console (figure out a decent way to add this to metadat.lua)
-        if item_id then
-          print(mod.title,": ",S[1000107--[[Mod--]]]," ",S[1000021--[[Steam ID--]]],": ",item_id)
-        end
-        local msg, title
-        if err and not blank_mod then
-          msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
-          title = S[1000592--[[Error--]]]
-        else
-          msg = S[1000014--[[Mod %s was successfully uploaded to Steam!--]]]:format(mod.title)
-          title = S[1000015--[[Success--]]]
-        end
-
-        -- update mod log and print it to console log
-        ModLog(Concat("\n",msg,": ",mod.title))
-        local ModMessageLog = ModMessageLog
-        print(S[302535920001265--[[ModMessageLog--]]],":")
-        for i = 1, #ModMessageLog do
-          print(ModMessageLog[i])
-        end
-
-        -- let user know if we're good or not
+    local function CallBackFunc(choice)
+      -- abort if upload already happening
+      if IsValidThread(mod_upload_thread) then
         ChoGGi.ComFuncs.MsgWait(
-          msg,
-          Concat(title,": ",mod.title),
+          1000011--[[There is an active Steam upload--]],
+          1000592--[[Error--]],
           "UI/Common/mod_steam_workshop.tga"
         )
-
-        -- remove upload folder
-        AsyncDeletePath(dest)
+        return
       end
 
-      ChoGGi.ComFuncs.QuestionBox(
-        TableConcat(upload_msg),
-        CallBackFunc,
-        mod.title,
-        nil,
-        nil,
-        "UI/Common/mod_steam_workshop.tga"
-      )
-    end) -- mod_upload_thread
-  end
+      mod_upload_thread = CreateRealTimeThread(function()
+        local mod = choice[1].mod
+        local copy_files = choice[1].check1
+        local blank_mod = choice[1].check2
+        local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
+        local dest = "AppData/ModUpload/"
 
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = 302535920000367--[[Mod Upload--]],
-    check1 = 302535920001258--[[Copy Files--]],
-    check1_hint = 302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]],
-    check1_checked = true,
-    check2 = 302535920001260--[[Blank Mod--]],
-    check2_hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
-  }
-end
+        -- build / show confirmation dialog
+        local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
+        if not copy_files then
+          upload_msg[#upload_msg+1] = "\n\n"
+          upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
+
+          -- clear out and create upload folder
+          AsyncDeletePath(dest)
+          AsyncCreatePath(dest)
+        end
+        if diff_author then
+          upload_msg[#upload_msg+1] = "\n\n"
+          upload_msg[#upload_msg+1] = S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]]
+        end
+
+        local function CallBackFunc(answer)
+          if not answer then
+            return
+          end
+
+          MsgPopup(
+            5452--[[START--]],
+            302535920000367--[[Mod Upload--]]
+          )
+
+          -- add new mod
+          local err,item_id,bShowLegalAgreement
+          if Platform.steam then
+            if mod.steam_id ~= 0 then
+              local exists
+              local appId = SteamGetAppId()
+              local userId = SteamGetUserId64()
+              err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+              if not err and not exists then
+                mod.steam_id = 0
+              end
+            end
+            if mod.steam_id == 0 then
+              err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
+              mod.steam_id = item_id or nil
+            end
+          end
+
+          -- update mod, and copy files to ModUpload
+          if copy_files and not blank_mod and not err then
+            local files
+            -- I prefer to update this manually
+            if not ChoGGi.Testing then
+              mod:SaveDef()
+            end
+            mod:SaveItems()
+            AsyncDeletePath(dest)
+            AsyncCreatePath(dest)
+            err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
+            if not err then
+              for i = 1, #files or "" do
+                local dest_file = Concat(dest,files[i])
+                local dir = SplitPath(dest_file)
+                AsyncCreatePath(dir)
+                err = AsyncCopyFile(Concat(mod.path,files[i]), dest_file, "raw")
+              end
+            end
+          end
+
+          -- update mod on workshop
+          if not err or blank_mod then
+            local os_dest = ConvertToOSPath(dest)
+            if Platform.steam then
+              err = AsyncSteamWorkshopUpdateItem{
+                item_id = mod.steam_id,
+                title = mod.title,
+                description = mod.description,
+                tags = mod:GetTags(),
+                content_os_folder = os_dest,
+                image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
+              }
+            else
+              err = "no steam"
+            end
+          end
+
+          -- show id in console (figure out a decent way to add this to metadat.lua)
+          if item_id then
+            print(mod.title,": ",S[1000107--[[Mod--]]]," ",S[1000021--[[Steam ID--]]],": ",item_id)
+          end
+          local msg, title
+          if err and not blank_mod then
+            msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
+            title = S[1000592--[[Error--]]]
+          else
+            msg = S[1000014--[[Mod %s was successfully uploaded to Steam!--]]]:format(mod.title)
+            title = S[1000015--[[Success--]]]
+          end
+
+          -- update mod log and print it to console log
+          ModLog(Concat("\n",msg,": ",mod.title))
+          local ModMessageLog = ModMessageLog
+          print(S[302535920001265--[[ModMessageLog--]]],":")
+          for i = 1, #ModMessageLog do
+            print(ModMessageLog[i])
+          end
+
+          -- let user know if we're good or not
+          ChoGGi.ComFuncs.MsgWait(
+            msg,
+            Concat(title,": ",mod.title),
+            "UI/Common/mod_steam_workshop.tga"
+          )
+
+          -- remove upload folder
+          AsyncDeletePath(dest)
+        end
+
+        ChoGGi.ComFuncs.QuestionBox(
+          TableConcat(upload_msg),
+          CallBackFunc,
+          mod.title,
+          nil,
+          nil,
+          "UI/Common/mod_steam_workshop.tga"
+        )
+      end) -- mod_upload_thread
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = 302535920000367--[[Mod Upload--]],
+      check1 = 302535920001258--[[Copy Files--]],
+      check1_hint = 302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]],
+      check1_checked = true,
+      check2 = 302535920001260--[[Blank Mod--]],
+      check2_hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
+    }
+  end
+end -- do
 
 function ChoGGi.MenuFuncs.EditECMSettings()
   local ChoGGi = ChoGGi

@@ -18,9 +18,16 @@ local ThreadUnlockKey = ThreadUnlockKey
 
 -- useful lists
 ChoGGi.Tables = {
-  -- display names only! (stored as numbers, not names like the rest; which is why i guessed)
-  ColonistRaces = {"White","Black","Asian","Indian","Southeast Asian",White = true,Black = true,Asian = true,Indian = true,["Southeast Asian"] = true},
-
+  -- display names only! (stored as numbers, not names like the rest; which is why i'm guessing)
+--~ s.race = 1
+--~ s:ChooseEntity()
+  ColonistRaces = {
+    S[1859--[[White--]]],[S[1859--[[White--]]]] = true,
+    S[302535920000739--[[Black--]]],[S[302535920000739--[[Black--]]]] = true,
+    S[302535920000740--[[Asian--]]],[S[302535920000740--[[Asian--]]]] = true,
+    S[302535920001283--[[Indian--]]],[S[302535920001283--[[Indian--]]]] = true,
+    S[302535920001284--[[Southeast Asian--]]],[S[302535920001284--[[Southeast Asian--]]]] = true,
+  },
   -- some names need to be fixed when doing construction placement
   ConstructionNamesListFix = {
     RCRover = "RCRoverBuilding",

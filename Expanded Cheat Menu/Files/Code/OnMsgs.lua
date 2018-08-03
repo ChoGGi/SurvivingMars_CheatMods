@@ -13,10 +13,8 @@ local CloseDialog = CloseDialog
 local CreateRealTimeThread = CreateRealTimeThread
 local FlushLogFile = FlushLogFile
 local GetDialog = GetDialog
-local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local GrantResearchPoints = GrantResearchPoints
-local IsValid = IsValid
 local LuaCodeToTuple = LuaCodeToTuple
 local Msg = Msg
 local OpenDialog = OpenDialog
@@ -26,7 +24,6 @@ local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
 local SetLightmodelOverride = SetLightmodelOverride
 local ShowConsoleLog = ShowConsoleLog
 local UpdateDroneResourceUnits = UpdateDroneResourceUnits
-local WaitMsg = WaitMsg
 
 local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
 local UserActions_GetActiveActions = UserActions.GetActiveActions
@@ -407,15 +404,6 @@ function OnMsg.SelectionRemoved()
   s = false
 end
 
-local function ValidGridElements(label,city)
-  label = city.labels[label]
-  for i = #label, 1, -1 do
-    if not IsValid(label[i]) then
-      table.remove(label,i)
-    end
-  end
-end
-
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
   local ChoGGi = ChoGGi
@@ -436,10 +424,10 @@ function OnMsg.NewDay() -- NewSol...
     end
   end
 
-  -- GridObject.RemoveFromGrids doesn't fire for all elements? (it leaves one from the end of each grid (or grid line?), so we remove them here)
-  ValidGridElements("ChoGGi_GridElements",UICity)
-  ValidGridElements("ChoGGi_LifeSupportGridElement",UICity)
-  ValidGridElements("ChoGGi_ElectricityGridElement",UICity)
+  -- not needed, removing from old saves, so people don't notice them
+  UICity.labels.ChoGGi_GridElements = nil
+  UICity.labels.ChoGGi_LifeSupportGridElement = nil
+  UICity.labels.ChoGGi_ElectricityGridElement = nil
 
   -- dump log to disk
   if ChoGGi.UserSettings.FlushLog then
@@ -571,19 +559,6 @@ function OnMsg.ChoGGi_TogglePinnableObject(obj)
       end
     end
   end
-end
-
---custom UICity.labels lists
-function OnMsg.ChoGGi_CreatedGridObject(obj)
-  local labels = UICity.labels
-  labels.ChoGGi_GridElements[#labels.ChoGGi_GridElements+1] = obj
-  local label = labels[Concat("ChoGGi_",obj.class)]
-  label[#label+1] = obj
-end
-function OnMsg.ChoGGi_RemovedGridObject(obj)
-  local ChoGGi = ChoGGi
-  ChoGGi.ComFuncs.RemoveFromLabel("ChoGGi_GridElements",obj)
-  ChoGGi.ComFuncs.RemoveFromLabel(Concat("ChoGGi_",obj.class),obj)
 end
 
 --shuttle comes out of a hub
@@ -1133,23 +1108,6 @@ function OnMsg.ChoGGi_Loaded()
   end
 
   CreateRealTimeThread(function()
-    --add custom labels for cables/pipes
-    local function CheckLabel(Label)
-      if not UICity.labels[Label] then
-        UICity:InitEmptyLabel(Label)
-        if Label == "ChoGGi_ElectricityGridElement" or Label == "ChoGGi_LifeSupportGridElement" then
-          local objs = GetObjects{class = Label:gsub("ChoGGi_","")}
-          for i = 1, #objs do
-            UICity.labels[Label][#UICity.labels[Label]+1] = objs[i]
-            UICity.labels.ChoGGi_GridElements[#UICity.labels.ChoGGi_GridElements+1] = objs[i]
-          end
-        end
-      end
-    end
-    CheckLabel("ChoGGi_GridElements")
-    CheckLabel("ChoGGi_ElectricityGridElement")
-    CheckLabel("ChoGGi_LifeSupportGridElement")
-
     --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
     local shown = g_ShownOnScreenNotifications or empty_table
     for Key,_ in pairs(shown) do
