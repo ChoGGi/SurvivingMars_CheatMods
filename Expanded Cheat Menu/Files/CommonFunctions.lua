@@ -51,6 +51,7 @@ local WorldToHex = WorldToHex
 
 local local_T = T -- T replaced below
 local guic = guic
+local white = white
 
 local UserActions_SetMode = UserActions.SetMode
 local terminal_GetMousePos = terminal.GetMousePos
@@ -517,22 +518,17 @@ do --g_Classes
   --~   lm = o
   end
 
-  function ChoGGi.ComFuncs.ShowCircle(pt, r, color)
+  -- show a circle for time and delete it
+  function ChoGGi.ComFuncs.Circle(pos, radius, color, time)
     local c = g_Classes.Circle:new()
-    c:SetPos(pt:SetTerrainZ(10 * guic))
-    c:SetRadius(r)
-    c:SetColor(color or RGB(255, 255, 255))
-    DelayedCall(7000, function()
+    c:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
+    c:SetRadius(radius or 1000)
+    c:SetColor(color or white)
+    DelayedCall(time or 50000, function()
       if IsValid(c) then
         c:delete()
       end
     end)
---~     CreateGameTimeThread(function()
---~       Sleep(7000)
---~       if IsValid(c) then
---~         c:delete()
---~       end
---~     end)
   end
 
 end

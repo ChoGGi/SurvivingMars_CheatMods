@@ -278,31 +278,6 @@ do -- ViewDomeInfo_Toggle
 
 end -- do
 
---~ Dome stats is.....well, a lot of what I want is already there. I suppose what would be better is more of an overhaul of how the data is presented, so you don't have to dig into things. Say, for example, you had a bar that gave you the total, similar to what you have right now. Except it gives a better breakdown,and gives you a "capacity" rating of what your colonists have in that particular day.
-
---~ (# of people) (Effect)
---~ Sanity: 50/100 (avg)
-
---~ (6) Working outside of the dome (-20)
-
---~ ..
-
---~ ..
-
---~ Workplace efficiency: 80%
-
---~ (7) Wrong workplace specialization (-50)
-
---~ Health: 40%
-
---~ 25/10 Capacity (3 slots from neighboring dome)
-
---~ Comfort: 95%
-
---~ Service capacity: 80/90
-
---~ Gardens: 7 (+20)
-
 do --ChangeResupplySettings
   local function CheckResupplySetting(cargo_val,name,value,meta)
     if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
