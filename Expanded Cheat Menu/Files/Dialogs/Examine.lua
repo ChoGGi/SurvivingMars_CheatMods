@@ -1151,7 +1151,7 @@ end
 function Examine:SetObj(o)
   local ChoGGi = ChoGGi
 
-  if ChoGGi.Testing then
+  if ChoGGi.testing then
     ChoGGi.ComFuncs.TickStart("Examine:SetObj")
   end
   self.onclick_handles = {}
@@ -1219,13 +1219,13 @@ function Examine:SetObj(o)
   --limit length so we don't cover up close button (only for objlist, everything else is short enough)
   self.idCaption:SetText(utf8.sub(name, 1, 45))
 
-  if ChoGGi.Testing then
+  if ChoGGi.testing then
     ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
   end
 end
 
 --~ function Examine:SetText(text)
---~   if ChoGGi.Testing then
+--~   if ChoGGi.testing then
 --~     print("Examine:SetText(text)",Examine:SetText(text))
 --~   end
 --~   self.onclick_handles = {}

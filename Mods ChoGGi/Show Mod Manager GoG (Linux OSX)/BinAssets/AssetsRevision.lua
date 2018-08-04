@@ -6,8 +6,13 @@ function OnMsg.ReloadLua()
     for i = 1, #buttons do
       if buttons[i].ActionId == "idModManager" then
         buttons[i].__condition = function(parent, context)
-          --return Platform.steam or Platform.pc
-          return Platform.desktop
+          -- orig
+--~           return Platform.steam or Platform.pc
+
+          -- return true whenever it isn't a console
+          return not Platform.console
+
+          --return Platform.desktop
         end
       end
     end

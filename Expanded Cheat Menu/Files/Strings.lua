@@ -11,13 +11,13 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
-ChoGGi.Font = "droid"
-if ChoGGi.Lang ~= "English" then
+ChoGGi.font = "droid"
+if ChoGGi.lang ~= "English" then
   local Concat = ChoGGi.ComFuncs.Concat
   -- first get the unicode font name
   local f = _InternalTranslate(T{984,"SchemeBk, 15, aa"})
   f = f:sub(1,f:find(",")-1)
-  ChoGGi.Font = f
+  ChoGGi.font = f
 
   -- replace any fonts using droid
   local __game_font_styles = __game_font_styles

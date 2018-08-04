@@ -157,7 +157,7 @@ ChoGGi.Defaults = {
   CheckForBorkedTransportPath = true,
 }
 -- my defaults
-if ChoGGi.Testing then
+if ChoGGi.testing then
   local ChoGGi = ChoGGi
   -- add extra debugging defaults for me
   ChoGGi.Defaults.ShowStartupTicks = true

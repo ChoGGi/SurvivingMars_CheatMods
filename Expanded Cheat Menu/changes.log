@@ -1,7 +1,8 @@
 v7.2 (Unreleased)
 Added:
-ECM>Building Info: Shows text above buildings with info about them (domes,drones,deposits).
+ECM>Building Info: Shows text above buildings with info about them (domes, drones, drone controllers, deposits, production).
 Help>Text: Stats = hardware info, Game & Map Info = lists objects, and shows log.
+Help>ECM>Modify ECM Files: Extracts files to ECM Folder\FilesHPK so you can edit them, or use in your mod.
 
 Changed:
 Cheats menu tooltips now show the ECM setting value instead of game value.

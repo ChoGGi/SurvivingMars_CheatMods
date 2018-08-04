@@ -525,7 +525,7 @@ function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
   --my comp or if we're resetting settings
-  if ChoGGi.Temp.ResetSettings or ChoGGi.Testing then
+  if ChoGGi.Temp.ResetSettings or ChoGGi.testing then
     return
   end
 
@@ -737,14 +737,14 @@ end
 
 -- saved game is loaded
 function OnMsg.LoadGame()
-  ChoGGi.Temp.IsGameLoaded = false
+  ChoGGi.Temp.IsChoGGiMsgLoaded = false
   Msg("ChoGGi_Loaded")
 end
 
 -- for new games
 function OnMsg.CityStart()
   local ChoGGi = ChoGGi
-  ChoGGi.Temp.IsGameLoaded = false
+  ChoGGi.Temp.IsChoGGiMsgLoaded = false
   -- reset my mystery msgs to hidden
   ChoGGi.UserSettings.ShowMysteryMsgs = nil
   Msg("ChoGGi_Loaded")
@@ -776,10 +776,10 @@ do -- LoadGame/CityStart
     local ChoGGi = ChoGGi
 
     -- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
-    if ChoGGi.Temp.IsGameLoaded == true then
+    if ChoGGi.Temp.IsChoGGiMsgLoaded == true then
       return
     end
-    ChoGGi.Temp.IsGameLoaded = true
+    ChoGGi.Temp.IsChoGGiMsgLoaded = true
 
     local UserSettings = ChoGGi.UserSettings
     local g_Classes = g_Classes
@@ -826,7 +826,7 @@ do -- LoadGame/CityStart
       UserActions.Actions = {}
       UserActions.RejectedActions = {}
 
-      if ChoGGi.Testing then
+      if ChoGGi.testing then
         ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
       end
 
@@ -856,7 +856,7 @@ do -- LoadGame/CityStart
       g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
 
       -- always show on my computer
-      if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
+      if UserSettings.ShowCheatsMenu or ChoGGi.testing then
         if not dlgUAMenu then
           g_Classes.UAMenu.ToggleOpen()
         end
@@ -1090,11 +1090,11 @@ do -- LoadGame/CityStart
       g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
     end
 
-    --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
+    --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk, and steam is a thing)
     if ChoGGi._VERSION ~= UserSettings._VERSION then
-      --clean up
+      -- clean up
       CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
-      --update saved version
+      -- update saved version
       UserSettings._VERSION = ChoGGi._VERSION
       ChoGGi.Temp.WriteSettings = true
     end
@@ -1204,7 +1204,7 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
     end
 
     -- how long startup takes
-    if ChoGGi.Testing or UserSettings.ShowStartupTicks then
+    if ChoGGi.testing or UserSettings.ShowStartupTicks then
       ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
       print(Concat("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks))
     end
@@ -1218,7 +1218,7 @@ end -- do
 -- show how long loading takes
 function OnMsg.ChangeMap()
   local ChoGGi = ChoGGi
-  if ChoGGi.Testing or ChoGGi.UserSettings.ShowStartupTicks then
+  if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
     ChoGGi.Temp.StartupTicks = GetPreciseTicks()
   end
 end

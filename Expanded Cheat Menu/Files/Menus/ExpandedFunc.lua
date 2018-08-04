@@ -183,10 +183,10 @@ do -- ViewDomeInfo_Toggle
         text_orient.ChoGGi_ViewObjInfo_o = true
         text_obj.ChoGGi_ViewObjInfo_t = true
         text_obj:SetText(GetInfo[label](obj))
-        text_obj:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
+        text_obj:SetFontId(UIL_GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
         text_obj:SetCenter(true)
 
-        Concat(ChoGGi.Font,", 16, bold, aa")
+        Concat(ChoGGi.font,", 16, bold, aa")
 
         local _, origin = obj:GetAllSpots(0)
         obj:Attach(text_obj, origin)
@@ -387,7 +387,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     {text = S[5238--[[Rockets--]]],value = "Rockets"},
     --{text = "Research",value = "Research"}
   }
-  if ChoGGi.Testing then
+  if ChoGGi.testing then
     ItemList[#ItemList+1] = {text = S[311--[[Research--]]],value = "Research"}
   end
 

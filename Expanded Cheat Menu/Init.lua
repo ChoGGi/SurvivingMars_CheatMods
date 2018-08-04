@@ -80,10 +80,12 @@ ChoGGi = {
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_CheatMenu",
   scripts = "AppData/ECM Scripts",
+  lang = GetLanguage(),
   SettingsFile = "AppData/CheatMenuModSettings.lua",
-  _VERSION = Mods.ChoGGi_CheatMenu.version,
-  ModPath = Mods.ChoGGi_CheatMenu.path,
-  Lang = GetLanguage(),
+  -- set below
+  _VERSION = false,
+  ModPath = false,
+  ExtractPath = false,
 
   -- CommonFunctions.lua
   ComFuncs = {
@@ -117,23 +119,24 @@ ChoGGi = {
   },
 }
 local ChoGGi = ChoGGi
+ChoGGi._VERSION = Mods[ChoGGi.id].version
+ChoGGi.ModPath = Mods[ChoGGi.id].path
+ChoGGi.ExtractPath = Concat(ChoGGi.ModPath,"FilesHPK/")
 
 do -- load script files
   -- used to let the mod know if we're on my computer
   if FileExists("AppData/ChoGGi") then
-    --mostly just more logs msgs
-    ChoGGi.Testing = true
-
+    -- stuff that isn't ready for release, more print msgs, and some default settings
+    ChoGGi.testing = true
+    -- i keep Files/ unpacked for easy access
     ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
+  elseif FileExists(Concat(ChoGGi.ExtractPath,"TheIncal.tga")) then
+    -- if exists then user unpacked the files to Files/
+    ChoGGi.MountPath = ChoGGi.ExtractPath
   else
-    if FileExists(Concat(ChoGGi.ModPath,"Defaults.lua")) then
-      -- if file exists then user likely unpacked the files, and moved them up a dir
-      ChoGGi.MountPath = ChoGGi.ModPath
-    else
-      -- load up the hpk
-      AsyncMountPack("ChoGGi_Mount",Concat(ChoGGi.ModPath,"Files.hpk"))
-      ChoGGi.MountPath = "ChoGGi_Mount/"
-    end
+    -- load up the hpk
+    AsyncMountPack("ChoGGi_Mount",Concat(ChoGGi.ModPath,"Files.hpk"))
+    ChoGGi.MountPath = "ChoGGi_Mount/"
   end
 end
 
@@ -150,7 +153,7 @@ Please send me latest log file: %s]],file,ChoGGi.email))
   end
 
   -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-  local locale_file = Concat(ChoGGi.ModPath,"Locales/",ChoGGi.Lang,".csv")
+  local locale_file = Concat(ChoGGi.ModPath,"Locales/",ChoGGi.lang,".csv")
   if FileExists(locale_file) then
     LoadLocale(locale_file)
   else
@@ -174,7 +177,7 @@ do -- ECM settings
   -- read settings from AppData/CheatMenuModSettings.lua
   ChoGGi.SettingFuncs.ReadSettings()
 
-  if ChoGGi.Testing or ChoGGi.UserSettings.ShowStartupTicks then
+  if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
     -- from here to the end of OnMsg.ChoGGi_Loaded()
     ChoGGi.Temp.StartupTicks = GetPreciseTicks()
   end
@@ -186,7 +189,7 @@ do -- ECM settings
   end
 
   -- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
-  if ChoGGi.Testing then
+  if ChoGGi.testing then
     ChoGGi.UserSettings.WriteLogs = true
   end
 

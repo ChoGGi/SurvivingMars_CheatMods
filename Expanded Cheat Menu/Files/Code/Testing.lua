@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-if ChoGGi.Testing then
+if ChoGGi.testing then
   local Concat = ChoGGi.ComFuncs.Concat
 
   -- checking how fast concat is for examining large amounts of objects
@@ -134,7 +134,7 @@ if ChoGGi.Testing then
   end
 
 ---------
-  print("ChoGGi.Testing")
+  print("ChoGGi.testing")
 
   function OnMsg.ClassesGenerate()
     local config = config

@@ -190,7 +190,7 @@ AddAction(
 )
 ---------------------------toggles
 
-if ChoGGi.Testing then
+if ChoGGi.testing then
   AddAction(
     {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
     Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[6]",S[302535920000938--[[Toggles--]]],"/",S[302535920001071--[[Drone Charges From Rover Wrong Angle--]]]),

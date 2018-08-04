@@ -147,7 +147,17 @@ AddAction(
 
 AddAction(
   {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920001014--[[Hide Cheats Menu--]]]),
+  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920000242--[[Modify ECM Files--]]]),
+  ChoGGi.MenuFuncs.ExtractFilesHPK,
+  nil,
+  S[302535920000243--[["Extracts Files.hpk to ""%s"".
+You can then edit the files for use with ECM, or your mod (don't forget to include my LICENSE file)."--]]]:format(ChoGGi.ExtractPath),
+  "editmapdata.tga"
+)
+
+AddAction(
+  {"/[60]",S[487939677892--[[Help--]]],"/"},
+  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920001014--[[Hide Cheats Menu--]]]),
   ChoGGi.MenuFuncs.CheatsMenu_Toggle,
   ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
   302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]],
@@ -156,7 +166,7 @@ AddAction(
 
 AddAction(
   {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
+  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
   ChoGGi.MenuFuncs.DisableECM,
   nil,
   302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]],
@@ -165,7 +175,7 @@ AddAction(
 
 AddAction(
   {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000676--[[Reset ECM Settings--]]]),
+  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920000676--[[Reset ECM Settings--]]]),
   ChoGGi.MenuFuncs.ResetECMSettings,
   nil,
   302535920000677--[[Reset all ECM settings to default (restart to enable).--]],
@@ -174,7 +184,7 @@ AddAction(
 
 AddAction(
   {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920001242--[[Edit ECM Settings File--]]]),
+  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[8]",S[302535920001242--[[Edit ECM Settings File--]]]),
   ChoGGi.MenuFuncs.EditECMSettings,
   nil,
   302535920001243--[[Manually edit ECM settings.--]],

@@ -173,7 +173,7 @@ do --funcs without a class
       return
     end
 
---~     if type(ChoGGi.Testing) == "function" then
+--~     if type(ChoGGi.testing) == "function" then
 --~     --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
 --~       if not pcall(function()
 --~         local function ColourText(Text,Bool)

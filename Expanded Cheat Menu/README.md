@@ -40,9 +40,6 @@ There's a cheats section in most selection panels on the right side of the scree
 Menu>Gameplay>QoL>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
-To edit and use files from Files.hpk, use HPK archiver to extract them into the mod folder.
-If Defaults.lua is in the same place as Init.lua you did it correctly.
-
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
 Help>Reset Settings will also do the same thing.

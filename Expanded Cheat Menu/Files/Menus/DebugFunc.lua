@@ -342,7 +342,7 @@ end
 local function AnimDebug_Show(obj,colour)
   local text = PlaceObject("Text")
   text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-  text:SetFontId(UIL_GetFontID(Concat(ChoGGi.Font,", 14, bold, aa")))
+  text:SetFontId(UIL_GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
   text:SetCenter(true)
   local orient = Orientation:new()
 

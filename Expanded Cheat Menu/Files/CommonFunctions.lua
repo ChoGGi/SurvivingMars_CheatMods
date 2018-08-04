@@ -832,17 +832,23 @@ do -- WriteLogs_Toggle
       AsyncStringToFile(console,"")
 
       -- redirect functions
+      if ChoGGi.testing then
+        ReplaceFunc("dlc_print","ConsoleLog",ChoGGi)
+        ReplaceFunc("printf","DebugLog",ChoGGi)
+        ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
+        ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
+      end
       ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
       ReplaceFunc("print","ConsoleLog",ChoGGi)
---~       ReplaceFunc("printf","DebugLog",ChoGGi)
---~       ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
---~       ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
     else
+      if ChoGGi.testing then
+        ResetFunc("dlc_print",ChoGGi)
+        ResetFunc("printf",ChoGGi)
+        ResetFunc("DebugPrint",ChoGGi)
+        ResetFunc("OutputDebugString",ChoGGi)
+      end
       ResetFunc("AddConsoleLog",ChoGGi)
       ResetFunc("print","ConsoleLog",ChoGGi)
---~       ResetFunc("printf",ChoGGi)
---~       ResetFunc("DebugPrint",ChoGGi)
---~       ResetFunc("OutputDebugString",ChoGGi)
     end
   end
 end -- do
