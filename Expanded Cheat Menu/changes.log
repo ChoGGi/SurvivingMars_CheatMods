@@ -3,6 +3,7 @@ Added:
 ECM>Building Info: Shows text above buildings with info about them (domes, drones, drone controllers, deposits, production).
 Help>Text: Stats = hardware info, Game & Map Info = lists objects, and shows log.
 Help>ECM>Modify ECM Files: Extracts files to ECM Folder\FilesHPK so you can edit them, or use in your mod.
+Game>List All Objects: A list of objects; double-click on one to select and move the camera to it.
 
 Changed:
 Cheats menu tooltips now show the ECM setting value instead of game value.
@@ -10,6 +11,7 @@ More menu items have the setting in the tooltip.
 Colonist Death Age now applies to newly born/arrived (it used to just affect current colonists).
 Trigger Disasters changed to Start Disasters.
 Added Metatron Ion Storm to Start Disasters.
+Examine shows length of index based tables/objlists in caption.
 Path Markers:
 > Destinations for every shuttle (hopefully).
 > Game Time is default (ignored for Remove).

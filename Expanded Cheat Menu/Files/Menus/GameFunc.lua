@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
+local RetName = ChoGGi.ComFuncs.RetName
 local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local print,type,tostring = print,type,tostring
@@ -16,6 +17,7 @@ local GetObjects = GetObjects
 local GetTerrainCursor = GetTerrainCursor
 local HideMouseCursor = HideMouseCursor
 local IsMouseCursorHidden = IsMouseCursorHidden
+local IsValid = IsValid
 local point = point
 local PropToLuaCode = PropToLuaCode
 local RecalcBuildableGrid = RecalcBuildableGrid
@@ -24,19 +26,6 @@ local SetLightmodel = SetLightmodel
 local SetLightmodelOverride = SetLightmodelOverride
 local SetMouseDeltaMode = SetMouseDeltaMode
 local ShowMouseCursor = ShowMouseCursor
-local Sleep = Sleep
---change map funcs
-local ClassDescendantsList = ClassDescendantsList
-local CloseMenuDialogs = CloseMenuDialogs
-local CreateMapSettingsDialog = CreateMapSettingsDialog
-local FillRandomMapProps = FillRandomMapProps
-local GenerateRandomMapParams = GenerateRandomMapParams
-local GenerateRocketCargo = GenerateRocketCargo
-local GetMapName = GetMapName
-local GetModifiedProperties = GetModifiedProperties
-local InitNewGameMissionParams = InitNewGameMissionParams
-local ListMaps = ListMaps
-local OpenExamineRet = OpenExamineRet
 
 local camera_GetFovX = camera.GetFovX
 local camera_SetFovX = camera.SetFovX
@@ -60,6 +49,89 @@ local UserActions_GetActiveActions = UserActions.GetActiveActions
 
 local white = white
 local guic = guic
+
+do -- ListAllObjects
+  local function CallBackFunc_Objects(choice)
+    local obj = choice.obj or choice[1].obj
+    if not obj then
+      return
+    end
+    ViewObjectMars(obj)
+    SelectObj(obj)
+  end
+
+  local function CallBackFunc_List(choice)
+    local value = choice.value or choice[1].value
+    if not value then
+      return
+    end
+
+    local UICity = UICity
+    local handles = {}
+    -- build our list of objects
+    if value == S[302535920000306--[[Everything--]]] then
+      for label,list in pairs(UICity.labels) do
+        if label ~= "Consts" then
+          for i = 1, #list do
+            if type(list[i]) == "table" and not handles[list[i].handle] then
+              handles[list[i].handle] = list[i]
+            end
+          end
+        end
+      end
+    else
+      local list = UICity.labels[value] or ""
+      for i = 1, #list do
+        if type(list[i]) == "table" and list[i] and not handles[list[i].handle] then
+          handles[list[i].handle] = list[i]
+        end
+      end
+    end
+
+    -- and build the ass table into an idx one
+    local ItemList = {}
+    for _,obj in pairs(handles) do
+      if IsValid(obj) then
+        local name = RetName(obj)
+        local class = obj.class
+        if name ~= class then
+          name = Concat(class,": ",name)
+        end
+        ItemList[#ItemList+1] = {
+          text = name,
+          value = tostring(obj:GetVisualPos()),
+          obj = obj,
+        }
+      end
+    end
+
+    -- and display them
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc_Objects,
+      items = ItemList,
+      title = Concat(S[302535920001292--[[List All Objects--]]],": ",choice.text or choice[1].text),
+      custom_type = 1,
+      custom_func = CallBackFunc_Objects,
+    }
+  end
+
+  function ChoGGi.MenuFuncs.ListAllObjects()
+    local ItemList = {{text = Concat(" ",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
+    for label,list in pairs(UICity.labels) do
+      if label ~= "Consts" and #list > 0 then
+        ItemList[#ItemList+1] = {text = Concat(label,": ",#list),value = label}
+      end
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc_List,
+      items = ItemList,
+      title = 302535920001292--[[List All Objects--]],
+      custom_type = 1,
+      custom_func = CallBackFunc_List,
+    }
+  end
+end -- do
 
 local function DeleteAllRocks(rock_cls)
   local objs = GetObjects{class = rock_cls}
@@ -275,6 +347,7 @@ end
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
 
+      local Sleep = Sleep
       are_we_flattening = CreateRealTimeThread(function()
         -- thread gets deleted, but just in case
         while are_we_flattening do

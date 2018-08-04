@@ -1170,7 +1170,9 @@ function Examine:SetObj(o)
 
     --add object name to title
     if type(o.handle) == "number" then
-      self.idCaption:SetText(Concat(name," (",o.handle,")"))
+      name = Concat(name," (",o.handle,")")
+    elseif #o > 0 then
+      name = Concat(name," (",#o,")")
     end
 
     -- reset menu list

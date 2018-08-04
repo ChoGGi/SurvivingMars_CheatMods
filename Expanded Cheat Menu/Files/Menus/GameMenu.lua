@@ -10,6 +10,15 @@ local S = ChoGGi.Strings
 
 AddAction(
   {"/[30]",S[1000435--[[Game--]]],"/"},
+  Concat("/[30]",S[1000435--[[Game--]]],"/",S[302535920001292--[[List All Objects--]]]),
+  ChoGGi.MenuFuncs.ListAllObjects,
+  nil,
+  302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]],
+  "select_objects.tga"
+)
+
+AddAction(
+  {"/[30]",S[1000435--[[Game--]]],"/"},
   Concat("/[30]",S[1000435--[[Game--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
   ChoGGi.MenuFuncs.DeleteAllRocks,
   nil,
