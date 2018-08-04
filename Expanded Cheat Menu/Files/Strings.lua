@@ -11,7 +11,6 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
-ChoGGi.font = "droid"
 if ChoGGi.lang ~= "English" then
   local Concat = ChoGGi.ComFuncs.Concat
   -- first get the unicode font name

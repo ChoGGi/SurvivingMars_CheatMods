@@ -76,16 +76,38 @@ end
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
+  -- see above
   _LICENSE = LICENSE,
-  email = "SM_Mods@choggi.org",
-  id = "ChoGGi_CheatMenu",
-  scripts = "AppData/ECM Scripts",
-  lang = GetLanguage(),
-  SettingsFile = "AppData/CheatMenuModSettings.lua",
-  -- set below
+  -- get version of mod from metadata.lua
   _VERSION = false,
-  ModPath = false,
+  -- constants
+  Consts = false,
+  -- default ECM settings
+  Defaults = false,
+  -- means of communication
+  email = "SM_Mods@choggi.org",
+  -- used for FilesHPK stuff
   ExtractPath = false,
+  -- font used for various UI stuff
+  font = "droid",
+  -- used to access Mods[id]
+  id = "ChoGGi_CheatMenu",
+  -- Wha'choo talkin' 'bout, Willis?
+  lang = GetLanguage(),
+  -- path to this mods' folder
+  ModPath = false,
+  -- pretty much the same, but for mounting Files.hpk
+  MountPath = false,
+  -- Console>Scripts folder
+  scripts = "AppData/ECM Scripts",
+  -- i tend to be forgetful in my old age
+  SettingsFile = "AppData/CheatMenuModSettings.lua",
+  -- i translate all my strings at startup (and a couple of the built-in ones
+  Strings = false,
+  -- easy access to some data (traits,cargo,mysteries,colonist data)
+  Tables = false,
+  -- stuff that isn't ready for release, more print msgs, and some default settings
+  testing = false,
 
   -- CommonFunctions.lua
   ComFuncs = {
@@ -126,7 +148,6 @@ ChoGGi.ExtractPath = Concat(ChoGGi.ModPath,"FilesHPK/")
 do -- load script files
   -- used to let the mod know if we're on my computer
   if FileExists("AppData/ChoGGi") then
-    -- stuff that isn't ready for release, more print msgs, and some default settings
     ChoGGi.testing = true
     -- i keep Files/ unpacked for easy access
     ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
