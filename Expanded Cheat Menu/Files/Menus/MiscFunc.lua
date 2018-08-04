@@ -112,7 +112,7 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
   local ChoGGi = ChoGGi
   --make a list
   local ItemList = {
-    {text = Concat(" ",S[302535920001084--[[Reset--]]]),value = "Reset"},
+    {text = S[302535920001084--[[Reset--]]],value = "Reset"},
     {text = S[302535920001085--[[Sensor Tower Beeping--]]],value = "SensorTowerWorking"},
     {text = S[302535920001086--[[RC Rover Drones Deployed--]]],value = "RCRoverAntenna"},
     {text = S[302535920001087--[[Mirror Sphere Crackling--]]],value = "MirrorSphereFreeze"},
@@ -170,19 +170,22 @@ function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
     items = ItemList,
     title = 302535920000680--[[Annoying Sounds--]],
     hint = 302535920001090--[[You can only reset all sounds at once.--]],
+    skip_sort = true,
   }
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
   local ChoGGi = ChoGGi
   local ItemList = {
+    {text = S[547--[[Colonists--]]],value = "Colonist"},
+    {text = S[1120--[[Space Elevator--]]],value = "SpaceElevator"},
+    {text = S[3518--[[Drone Hub--]]],value = "DroneHub"},
+    {text = S[1685--[[Rocket--]]],value = "SupplyRocket"},
+
     {text = S[1682--[[RC Rover--]]],value = "RCRover"},
     {text = S[1684--[[RC Explorer--]]],value = "RCExplorer"},
     {text = S[1683--[[RC Transport--]]],value = "RCTransport"},
-    {text = S[3518--[[Drone Hub--]]],value = "DroneHub"},
-    {text = S[547--[[Colonists--]]],value = "Colonist"},
-    {text = S[1685--[[Rocket--]]],value = "SupplyRocket"},
-    {text = S[1120--[[Space Elevator--]]],value = "SpaceElevator"},
+
     {text = S[5017--[[Basic Dome--]]],value = "DomeBasic"},
     {text = S[5146--[[Medium Dome--]]],value = "DomeMedium"},
     {text = S[5152--[[Mega Dome--]]],value = "DomeMega"},
@@ -285,6 +288,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
     check1_hint = 302535920001099--[[Add these items to the unpin list.--]],
     check2 = 302535920001100--[[Remove from list--]],
     check2_hint = 302535920001101--[[Remove these items from the unpin list.--]],
+    skip_sort = true,
   }
 end
 
@@ -348,7 +352,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
       obj = obj,
       hint = 302535920001106--[[Change main object colours.--]],
     }
-    local Attaches = obj:GetAttaches() or ""
+    local Attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
     for i = 1, #Attaches do
       ItemList[#ItemList+1] = {
         text = Attaches[i].class,
@@ -382,14 +386,14 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
   if not sel then
     return
   end
-  local hint_loop = Concat(S[302535920001109--[[Loops though and makes all--]]]," ")
+  local hint_loop = S[302535920001109--[[Loops though and makes all--]]]
   local ItemList = {
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3984--[[Anomalies--]]]),value = "Anomaly",hint = Concat(hint_loop,S[302535920001110--[[anomalies visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3980--[[Buildings--]]]),value = "Building",hint = Concat(hint_loop,S[302535920001111--[[buildings visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = Concat(hint_loop,S[302535920001113--[[pipes and cables visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[547--[[Colonists--]]]),value = "Colonists",hint = Concat(hint_loop,S[302535920001114--[[colonists visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]],": ",S[3981--[[Units--]]]),value = "Unit",hint = Concat(hint_loop,S[302535920001115--[[rovers and drones visible.--]]])},
-    {text = Concat(" ",S[302535920001084--[[Reset--]]]": ",S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = Concat(hint_loop,S[302535920000138--[["surface, subsurface, and terrain deposits visible."--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]],": ",S[3984--[[Anomalies--]]]),value = "Anomaly",hint = Concat(hint_loop," ",S[302535920001110--[[anomalies visible.--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]],": ",S[3980--[[Buildings--]]]),value = "Building",hint = Concat(hint_loop," ",S[302535920001111--[[buildings visible.--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]],": ",S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = Concat(hint_loop," ",S[302535920001113--[[pipes and cables visible.--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]],": ",S[547--[[Colonists--]]]),value = "Colonists",hint = Concat(hint_loop," ",S[302535920001114--[[colonists visible.--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]],": ",S[3981--[[Units--]]]),value = "Unit",hint = Concat(hint_loop," ",S[302535920001115--[[rovers and drones visible.--]]])},
+    {text = Concat(S[302535920001084--[[Reset--]]]": ",S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = Concat(hint_loop," ",S[302535920000138--[["surface, subsurface, and terrain deposits visible."--]]])},
     {text = 0,value = 0},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -438,6 +442,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
     items = ItemList,
     title = Concat(S[302535920000694--[[Set Opacity--]]],": ",RetName(sel)),
     hint = hint,
+    skip_sort = true,
   }
 end
 
@@ -491,14 +496,14 @@ end
 function ChoGGi.MenuFuncs.SetGameSpeed()
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = 1},
-    {text = Concat("1 ",S[302535920001126--[[Double--]]]),value = 2},
-    {text = Concat("2 ",S[302535920001127--[[Triple--]]]),value = 3},
-    {text = Concat("3 ",S[302535920001128--[[Quadruple--]]]),value = 4},
-    {text = Concat("4 ",S[302535920001129--[[Octuple--]]]),value = 8},
-    {text = Concat("5 ",S[302535920001130--[[Sexdecuple--]]]),value = 16},
-    {text = Concat("6 ",S[302535920001131--[[Duotriguple--]]]),value = 32},
-    {text = Concat("7 ",S[302535920001132--[[Quattuorsexaguple--]]]),value = 64},
+    {text = S[1000121--[[Default--]]],value = 1},
+    {text = S[302535920001126--[[Double--]]],value = 2},
+    {text = S[302535920001127--[[Triple--]]],value = 3},
+    {text = S[302535920001128--[[Quadruple--]]],value = 4},
+    {text = S[302535920001129--[[Octuple--]]],value = 8},
+    {text = S[302535920001130--[[Sexdecuple--]]],value = 16},
+    {text = S[302535920001131--[[Duotriguple--]]],value = 32},
+    {text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64},
   }
 
   local current = S[1000121--[[Default--]]]
@@ -551,6 +556,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     items = ItemList,
     title = 302535920001137--[[Set Game Speed--]],
     hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
+    skip_sort = true,
   }
 end
 
@@ -714,7 +720,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
   end
 
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = 100},
+    {text = S[1000121--[[Default--]]],value = 100},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 100,value = 100},
@@ -778,5 +784,6 @@ function ChoGGi.MenuFuncs.SetEntityScale()
     check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
     check2 = 302535920000752--[[Selected Only--]],
     check2_hint = 302535920000753--[[Will only apply to selected colonist.--]],
+    skip_sort = true,
   }
 end

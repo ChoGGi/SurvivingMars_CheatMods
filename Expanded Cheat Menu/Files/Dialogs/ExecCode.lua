@@ -9,9 +9,6 @@ end
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-local ShowConsoleLog = ShowConsoleLog
-local point = point
-
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
@@ -24,10 +21,12 @@ DefineClass.ChoGGi_ExecCodeDlg = {
   MinSize = point(50, 50),
   translate = false,
 }
+
 function ChoGGi_ExecCodeDlg:Init()
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local dlgConsole = dlgConsole
+  local point = point
 
   --element pos is based on
   self:SetPos(point(0,0))

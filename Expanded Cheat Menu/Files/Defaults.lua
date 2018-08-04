@@ -268,101 +268,103 @@ ChoGGi.Consts = {
 }
 
 --set game values to saved values
-function ChoGGi.SettingFuncs.SetConstsToSaved()
-  local ChoGGi = ChoGGi
-  local const = const
---Consts.
-  local function SetConstsG(Name)
-    ChoGGi.ComFuncs.SetConstsG(Name,ChoGGi.UserSettings[Name])
+do -- SetConstsToSaved
+  local function SetConstsG(ChoGGi,name)
+    ChoGGi.ComFuncs.SetConstsG(name,ChoGGi.UserSettings[name])
   end
-  SetConstsG("AvoidWorkplaceSols")
-  SetConstsG("BirthThreshold")
-  SetConstsG("CargoCapacity")
-  SetConstsG("ColdWaveSanityDamage")
-  SetConstsG("CommandCenterMaxDrones")
-  SetConstsG("Concrete_cost_modifier")
-  SetConstsG("Concrete_dome_cost_modifier")
-  SetConstsG("CrimeEventDestroyedBuildingsCount")
-  SetConstsG("CrimeEventSabotageBuildingsCount ")
-  SetConstsG("CropFailThreshold")
-  SetConstsG("DeepScanAvailable")
-  SetConstsG("DefaultOutsideWorkplacesRadius")
-  SetConstsG("DroneBuildingRepairAmount")
-  SetConstsG("DroneBuildingRepairBatteryUse")
-  SetConstsG("DroneCarryBatteryUse")
-  SetConstsG("DroneConstructAmount")
-  SetConstsG("DroneConstructBatteryUse")
-  SetConstsG("DroneDeconstructBatteryUse")
-  SetConstsG("DroneMeteorMalfunctionChance")
-  SetConstsG("DroneMoveBatteryUse")
-  SetConstsG("DroneRechargeTime")
-  SetConstsG("DroneRepairSupplyLeak")
-  SetConstsG("DroneResourceCarryAmount")
-  SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount")
-  SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse")
-  SetConstsG("DustStormSanityDamage")
-  SetConstsG("Electronics_cost_modifier")
-  SetConstsG("Electronics_dome_cost_modifier")
-  SetConstsG("FoodPerRocketPassenger")
-  SetConstsG("HighStatLevel")
-  SetConstsG("HighStatMoraleEffect")
-  SetConstsG("InstantCables")
-  SetConstsG("InstantPipes")
-  SetConstsG("IsDeepMetalsExploitable")
-  SetConstsG("IsDeepPreciousMetalsExploitable")
-  SetConstsG("IsDeepWaterExploitable")
-  SetConstsG("LowSanityNegativeTraitChance")
-  SetConstsG("LowSanitySuicideChance")
-  SetConstsG("LowStatLevel")
-  SetConstsG("MachineParts_cost_modifier")
-  SetConstsG("MachineParts_dome_cost_modifier")
-  SetConstsG("MaxColonistsPerRocket")
-  SetConstsG("Metals_cost_modifier")
-  SetConstsG("Metals_dome_cost_modifier")
-  SetConstsG("MeteorHealthDamage")
-  SetConstsG("MeteorSanityDamage")
-  SetConstsG("MinComfortBirth")
-  SetConstsG("MysteryDreamSanityDamage")
-  SetConstsG("NoHomeComfort")
-  SetConstsG("NonSpecialistPerformancePenalty")
-  SetConstsG("OutsourceResearch")
-  SetConstsG("OutsourceResearchCost")
-  SetConstsG("OxygenMaxOutsideTime")
-  SetConstsG("PipesPillarSpacing")
-  SetConstsG("Polymers_cost_modifier")
-  SetConstsG("Polymers_dome_cost_modifier")
-  SetConstsG("positive_playground_chance")
-  SetConstsG("PreciousMetals_cost_modifier")
-  SetConstsG("PreciousMetals_dome_cost_modifier")
-  SetConstsG("ProjectMorphiousPositiveTraitChance")
-  SetConstsG("RCRoverDroneRechargeCost")
-  SetConstsG("RCRoverMaxDrones")
-  SetConstsG("RCRoverTransferResourceWorkTime")
-  SetConstsG("RCTransportGatherResourceWorkTime")
-  SetConstsG("rebuild_cost_modifier")
-  SetConstsG("RenegadeCreation")
-  SetConstsG("SeeDeadSanity")
-  SetConstsG("TimeBeforeStarving")
-  SetConstsG("TravelTimeEarthMars")
-  SetConstsG("TravelTimeMarsEarth")
-  SetConstsG("VisitFailPenalty")
---const.
-  local function SetConst(Name)
-    if ChoGGi.UserSettings[Name] then
-      const[Name] = ChoGGi.UserSettings[Name]
+  local function SetConst(ChoGGi,const,name)
+    if ChoGGi.UserSettings[name] then
+      const[name] = ChoGGi.UserSettings[name]
     end
   end
-  SetConst("BreakThroughTechsPerGame")
-  SetConst("ExplorationQueueMaxSize")
-  SetConst("fastGameSpeed")
-  SetConst("mediumGameSpeed")
-  SetConst("MoistureVaporatorPenaltyPercent")
-  SetConst("MoistureVaporatorRange")
-  SetConst("ResearchQueueSize")
-  SetConst("RCRoverMaxRadius")
-  SetConst("CommandCenterMaxRadius")
-  SetConst("OmegaTelescopeBreakthroughsCount")
-end
+  function ChoGGi.SettingFuncs.SetConstsToSaved()
+    local ChoGGi = ChoGGi
+    local const = const
+--Consts.
+    SetConstsG(ChoGGi,"AvoidWorkplaceSols")
+    SetConstsG(ChoGGi,"BirthThreshold")
+    SetConstsG(ChoGGi,"CargoCapacity")
+    SetConstsG(ChoGGi,"ColdWaveSanityDamage")
+    SetConstsG(ChoGGi,"CommandCenterMaxDrones")
+    SetConstsG(ChoGGi,"Concrete_cost_modifier")
+    SetConstsG(ChoGGi,"Concrete_dome_cost_modifier")
+    SetConstsG(ChoGGi,"CrimeEventDestroyedBuildingsCount")
+    SetConstsG(ChoGGi,"CrimeEventSabotageBuildingsCount ")
+    SetConstsG(ChoGGi,"CropFailThreshold")
+    SetConstsG(ChoGGi,"DeepScanAvailable")
+    SetConstsG(ChoGGi,"DefaultOutsideWorkplacesRadius")
+    SetConstsG(ChoGGi,"DroneBuildingRepairAmount")
+    SetConstsG(ChoGGi,"DroneBuildingRepairBatteryUse")
+    SetConstsG(ChoGGi,"DroneCarryBatteryUse")
+    SetConstsG(ChoGGi,"DroneConstructAmount")
+    SetConstsG(ChoGGi,"DroneConstructBatteryUse")
+    SetConstsG(ChoGGi,"DroneDeconstructBatteryUse")
+    SetConstsG(ChoGGi,"DroneMeteorMalfunctionChance")
+    SetConstsG(ChoGGi,"DroneMoveBatteryUse")
+    SetConstsG(ChoGGi,"DroneRechargeTime")
+    SetConstsG(ChoGGi,"DroneRepairSupplyLeak")
+    SetConstsG(ChoGGi,"DroneResourceCarryAmount")
+    SetConstsG(ChoGGi,"DroneTransformWasteRockObstructorToStockpileAmount")
+    SetConstsG(ChoGGi,"DroneTransformWasteRockObstructorToStockpileBatteryUse")
+    SetConstsG(ChoGGi,"DustStormSanityDamage")
+    SetConstsG(ChoGGi,"Electronics_cost_modifier")
+    SetConstsG(ChoGGi,"Electronics_dome_cost_modifier")
+    SetConstsG(ChoGGi,"FoodPerRocketPassenger")
+    SetConstsG(ChoGGi,"HighStatLevel")
+    SetConstsG(ChoGGi,"HighStatMoraleEffect")
+    SetConstsG(ChoGGi,"InstantCables")
+    SetConstsG(ChoGGi,"InstantPipes")
+    SetConstsG(ChoGGi,"IsDeepMetalsExploitable")
+    SetConstsG(ChoGGi,"IsDeepPreciousMetalsExploitable")
+    SetConstsG(ChoGGi,"IsDeepWaterExploitable")
+    SetConstsG(ChoGGi,"LowSanityNegativeTraitChance")
+    SetConstsG(ChoGGi,"LowSanitySuicideChance")
+    SetConstsG(ChoGGi,"LowStatLevel")
+    SetConstsG(ChoGGi,"MachineParts_cost_modifier")
+    SetConstsG(ChoGGi,"MachineParts_dome_cost_modifier")
+    SetConstsG(ChoGGi,"MaxColonistsPerRocket")
+    SetConstsG(ChoGGi,"Metals_cost_modifier")
+    SetConstsG(ChoGGi,"Metals_dome_cost_modifier")
+    SetConstsG(ChoGGi,"MeteorHealthDamage")
+    SetConstsG(ChoGGi,"MeteorSanityDamage")
+    SetConstsG(ChoGGi,"MinComfortBirth")
+    SetConstsG(ChoGGi,"MysteryDreamSanityDamage")
+    SetConstsG(ChoGGi,"NoHomeComfort")
+    SetConstsG(ChoGGi,"NonSpecialistPerformancePenalty")
+    SetConstsG(ChoGGi,"OutsourceResearch")
+    SetConstsG(ChoGGi,"OutsourceResearchCost")
+    SetConstsG(ChoGGi,"OxygenMaxOutsideTime")
+    SetConstsG(ChoGGi,"PipesPillarSpacing")
+    SetConstsG(ChoGGi,"Polymers_cost_modifier")
+    SetConstsG(ChoGGi,"Polymers_dome_cost_modifier")
+    SetConstsG(ChoGGi,"positive_playground_chance")
+    SetConstsG(ChoGGi,"PreciousMetals_cost_modifier")
+    SetConstsG(ChoGGi,"PreciousMetals_dome_cost_modifier")
+    SetConstsG(ChoGGi,"ProjectMorphiousPositiveTraitChance")
+    SetConstsG(ChoGGi,"RCRoverDroneRechargeCost")
+    SetConstsG(ChoGGi,"RCRoverMaxDrones")
+    SetConstsG(ChoGGi,"RCRoverTransferResourceWorkTime")
+    SetConstsG(ChoGGi,"RCTransportGatherResourceWorkTime")
+    SetConstsG(ChoGGi,"rebuild_cost_modifier")
+    SetConstsG(ChoGGi,"RenegadeCreation")
+    SetConstsG(ChoGGi,"SeeDeadSanity")
+    SetConstsG(ChoGGi,"TimeBeforeStarving")
+    SetConstsG(ChoGGi,"TravelTimeEarthMars")
+    SetConstsG(ChoGGi,"TravelTimeMarsEarth")
+    SetConstsG(ChoGGi,"VisitFailPenalty")
+--const.
+    SetConst(ChoGGi,const,"BreakThroughTechsPerGame")
+    SetConst(ChoGGi,const,"ExplorationQueueMaxSize")
+    SetConst(ChoGGi,const,"fastGameSpeed")
+    SetConst(ChoGGi,const,"mediumGameSpeed")
+    SetConst(ChoGGi,const,"MoistureVaporatorPenaltyPercent")
+    SetConst(ChoGGi,const,"MoistureVaporatorRange")
+    SetConst(ChoGGi,const,"ResearchQueueSize")
+    SetConst(ChoGGi,const,"RCRoverMaxRadius")
+    SetConst(ChoGGi,const,"CommandCenterMaxRadius")
+    SetConst(ChoGGi,const,"OmegaTelescopeBreakthroughsCount")
+  end
+end -- do
 
 --called everytime we set a setting in menu
 function ChoGGi.SettingFuncs.WriteSettings(settings)
@@ -470,59 +472,60 @@ function OnMsg.OptionsApply()
   ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
 end
 
---used to add old lists to new combined list
-local function AddOldSettings(old_cat,new_name)
-  local ChoGGi = ChoGGi
-  local DataInstances = DataInstances
+do -- AddOldSettings
+  --used to add old lists to new combined list
+  local function AddOldSettings(ChoGGi,old_cat,new_name)
+    local DataInstances = DataInstances
 
---~   --is there anthing in the table?
---~   if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
-    --then loop through it
-    for Key,Value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
-      --it likely doesn't exist, but check first and add a blank table
-      if not ChoGGi.UserSettings.BuildingSettings[Key] then
-        ChoGGi.UserSettings.BuildingSettings[Key] = {}
+--~     --is there anthing in the table?
+--~     if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
+      --then loop through it
+      for Key,Value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
+        --it likely doesn't exist, but check first and add a blank table
+        if not ChoGGi.UserSettings.BuildingSettings[Key] then
+          ChoGGi.UserSettings.BuildingSettings[Key] = {}
+        end
+        --add it to vistors list?
+        if new_name == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
+          ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
+        else
+          ChoGGi.UserSettings.BuildingSettings[Key][new_name] = Value
+        end
       end
-      --add it to vistors list?
-      if new_name == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
-        ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
-      else
-        ChoGGi.UserSettings.BuildingSettings[Key][new_name] = Value
-      end
-    end
---~   end
-  --remove old settings
-  ChoGGi.UserSettings[old_cat] = nil
-  return true
-end
-
-function OnMsg.ModsLoaded()
-  local ChoGGi = ChoGGi
-
-  -- remove empty entries in BuildingSettings
-  if next(ChoGGi.UserSettings.BuildingSettings) then
-    --remove any empty building tables
-    for Key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
-      if not next(ChoGGi.UserSettings.BuildingSettings[Key]) then
-        ChoGGi.UserSettings.BuildingSettings[Key] = nil
-      end
-    end
-  -- if empty table then new settings file or old settings
-  else
-    --then we check if this is an older version still using the old way of storing building settings and convert over to new
-    local errormsg = Concat(S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]],": ")
-    if not AddOldSettings("BuildingsCapacity","capacity") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsCapacity")
-    end
-    if not AddOldSettings("BuildingsProduction","production") then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsProduction")
-    end
+--~     end
+    --remove old settings
+    ChoGGi.UserSettings[old_cat] = nil
+    return true
   end
 
-  -- remove empty entries in CargoSettings
-  for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings or empty_table) do
-    if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
-      ChoGGi.UserSettings.CargoSettings[Key] = nil
+  function OnMsg.ModsLoaded()
+    local ChoGGi = ChoGGi
+
+    -- remove empty entries in BuildingSettings
+    if next(ChoGGi.UserSettings.BuildingSettings) then
+      --remove any empty building tables
+      for Key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
+        if not next(ChoGGi.UserSettings.BuildingSettings[Key]) then
+          ChoGGi.UserSettings.BuildingSettings[Key] = nil
+        end
+      end
+    -- if empty table then new settings file or old settings
+    else
+      --then we check if this is an older version still using the old way of storing building settings and convert over to new
+      local errormsg = Concat(S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]],": ")
+      if not AddOldSettings(ChoGGi,"BuildingsCapacity","capacity") then
+        ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsCapacity")
+      end
+      if not AddOldSettings(ChoGGi,"BuildingsProduction","production") then
+        ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsProduction")
+      end
+    end
+
+    -- remove empty entries in CargoSettings
+    for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings or empty_table) do
+      if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
+        ChoGGi.UserSettings.CargoSettings[Key] = nil
+      end
     end
   end
-end
+end -- do

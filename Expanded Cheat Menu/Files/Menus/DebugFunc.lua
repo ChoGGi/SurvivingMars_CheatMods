@@ -80,9 +80,9 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
       text = data.displayname,
       value = data.savename,
       hint = Concat(
-        S[4274--[[Playtime: %s--]]]:format(playtime),
+        S[4274--[[Playtime : %s--]]]:format(playtime),
         "\n",
-        S[4273--[[Saved on: %s--]]]:format(save_date),
+        S[4273--[[Saved on : %s--]]]:format(save_date),
         "\n\n",
         S[302535920001274--[[This is permanent!--]]]
       ),
@@ -367,7 +367,7 @@ local function AnimDebug_ShowAll(cls)
 end
 
 local function AnimDebug_Hide(obj)
-  local att = obj:GetAttaches() or ""
+  local att = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
   for i = 1, #att do
     if att[i].ChoGGi_AnimDebug then
       att[i]:delete()

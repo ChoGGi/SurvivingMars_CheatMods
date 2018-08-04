@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- called from OnMsgs
+
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
@@ -20,7 +22,6 @@ local ShowConsoleLog = ShowConsoleLog
 
 --~ box(left, top, right, bottom)
 
--- fired from OnMsgs
 local function ShowFileLog()
   FlushLogFile()
   print(select(2,AsyncFileToString(GetLogFile())))

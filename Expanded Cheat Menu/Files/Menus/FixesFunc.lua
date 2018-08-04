@@ -201,10 +201,10 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
     -- AllRockets also returns rockets in space
     if rockets[i]:IsValidPos() then
       pos = rockets[i]:GetPos()
-      local Attaches = type(rockets[i].GetAttaches) == "function" and rockets[i]:GetAttaches("Colonist") or ""
-      if #Attaches > 0 then
-        for j = #Attaches, 1, -1 do
-          local c = Attaches[j]
+      local attaches = rockets[i]:GetAttaches("Colonist") or ""
+      if #attaches > 0 then
+        for j = #attaches, 1, -1 do
+          local c = attaches[j]
           -- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
           if not pcall(function()
             c:Detach()

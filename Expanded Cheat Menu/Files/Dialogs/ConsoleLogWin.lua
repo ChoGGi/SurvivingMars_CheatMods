@@ -7,14 +7,6 @@ end
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-local print,select,rawget = print,select,rawget
-
-local FlushLogFile = FlushLogFile
-local AsyncFileToString = AsyncFileToString
-local RGBA = RGBA
-local point = point
-local GetLogFile = GetLogFile
-
 -- 1 above console log, 5000 above examine
 local zorder = 2005001
 
@@ -30,6 +22,7 @@ DefineClass.ChoGGi_ConsoleLogWin = {
 function ChoGGi_ConsoleLogWin:Init()
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local point = point
 
   --element pos is based on
   self:SetPos(point(0,0))

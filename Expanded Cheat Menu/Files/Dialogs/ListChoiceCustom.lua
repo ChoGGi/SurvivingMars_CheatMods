@@ -11,19 +11,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 
-local type,tostring,table = type,tostring,table
-
-local CreateRealTimeThread = CreateRealTimeThread
-local CreateRolloverWindow = CreateRolloverWindow
-local GetRGB = GetRGB
-local point = point
-local SetLightmodel = SetLightmodel
-local RGB,RGBA = RGB,RGBA
-
-local UIL_RGBtoHSV = UIL.RGBtoHSV
-
---ex(ChoGGi.ListChoiceCustomDialog_Dlg)
---ChoGGi.ListChoiceCustomDialog_Dlg.colorpicker
+local type,tostring = type,tostring
 
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
@@ -49,6 +37,8 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
 function ChoGGi_ListChoiceCustomDialog:Init()
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local point = point
+  local RGB,RGBA = RGB,RGBA
 
   -- element pos is based on
   self:SetPos(point(0,0))
@@ -321,6 +311,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 end
 
 function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()
+  local point = point
   -- no sense in doing anything if we don't need to
   if not self.hidden.checks and not self.hidden.buttons then
     return
@@ -501,7 +492,7 @@ end
 function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
   local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
   if type(num) == "number" then
-    self.idColorHSV:SetHSV(UIL_RGBtoHSV(GetRGB(num)))
+    self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
     self.idColorHSV:InitHSVPtPos()
     self.idColorHSV:Invalidate()
   end

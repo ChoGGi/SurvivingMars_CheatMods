@@ -47,6 +47,10 @@ do -- ViewDomeInfo_Toggle
   end
 
   local GetInfo = {
+--~     Power = function(obj)
+--~     end,
+--~     ["Life-Support"] = function(obj)
+--~     end,
     SubsurfaceDeposit = function(obj)
       return Concat(
         "-",RetName(obj),"-\n",
@@ -81,7 +85,7 @@ do -- ViewDomeInfo_Toggle
     Production = function(obj)
       local prod = type(obj.GetProducerObj) == "function" and obj:GetProducerObj()
       if not prod then
-        return
+        return ""
       end
 
       local predprod
@@ -97,7 +101,7 @@ do -- ViewDomeInfo_Toggle
         waste = Concat(
         "\n-",S[4518--[[Waste Rock--]]],"-\n",
         S[80--[[Production--]]],": ",prefix,predprod,", ",
-        S[6729--[[Daily Production: %s--]]]:format(waste:GetPredictedDailyProduction() / r),", ",
+        S[6729--[[Daily Production : %s--]]]:format(waste:GetPredictedDailyProduction() / r),", ",
         S[434--[[Lifetime: %s--]]]:format(waste.lifetime_production / r),"\n",
 
         S[519--[[Storage--]]],": ",waste:GetAmountStored() / r,"/",waste.max_storage / r
@@ -112,20 +116,16 @@ do -- ViewDomeInfo_Toggle
       return table.concat{Concat(
         "-",RetName(obj),"-\n",
         S[80--[[Production--]]],": ",prefix,predprod,", ",
-        S[6729--[[Daily Production: %s--]]]:format(prod:GetPredictedDailyProduction() / r),", ",
+        S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),", ",
         S[434--[[Lifetime: %s--]]]:format(prod.lifetime_production / r),"\n",
 
         S[519--[[Storage--]]],": ",prod:GetAmountStored() / r,"/",prod.max_storage / r
       ),waste}
 
     end,
-    Power = function(obj)
-    end,
-    ["Life-Support"] = function(obj)
-    end,
     Dome = function(obj)
       if not obj.air then
-        return
+        return ""
       end
       local medic_use,medic_max,medic_handles = GetService(obj,"needMedical")
       local food_use,food_max,food_handles = GetService(obj,"needFood")
@@ -205,9 +205,9 @@ do -- ViewDomeInfo_Toggle
     local objs = UICity.labels[label] or ""
     for i = 1, #objs do
       local attaches = objs[i]:GetAttaches() or ""
-      for i = #attaches, 1, -1 do
-        if attaches[i].ChoGGi_ViewObjInfo_t or attaches[i].ChoGGi_ViewObjInfo_o then
-          attaches[i]:delete()
+      for j = #attaches, 1, -1 do
+        if attaches[j].ChoGGi_ViewObjInfo_t or attaches[j].ChoGGi_ViewObjInfo_o then
+          attaches[j]:delete()
         end
       end
     end
@@ -376,7 +376,8 @@ end
 function ChoGGi.MenuFuncs.MonitorInfo()
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = Concat(" ",S[302535920000936--[[Something you'd like to see added?--]]]),value = "New"},
+    {text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
+    {text = "",value = "New"},
     {text = Concat(S[302535920000035--[[Grids--]]],": ",S[891--[[Air--]]]),value = "Air"},
     {text = Concat(S[302535920000035--[[Grids--]]],": ",S[302535920000037--[[Electricity--]]]),value = "Electricity"},
     {text = Concat(S[302535920000035--[[Grids--]]],": ",S[681--[[Water--]]]),value = "Water"},
@@ -414,6 +415,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
     custom_func = function(sel)
       ChoGGi.CodeFuncs.DisplayMonitorList(sel.value,sel.parentobj)
     end,
+    skip_sort = true,
   }
 end
 
@@ -456,7 +458,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.CodeFuncs.GetCargoCapacity()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting," kg"),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting," kg"),value = DefaultSetting},
     {text = "50 000 kg",value = 50000},
     {text = "100 000 kg",value = 100000},
     {text = "250 000 kg",value = 250000},
@@ -490,6 +492,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
     items = ItemList,
     title = 302535920000946--[[Set Rocket Cargo Capacity--]],
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",Consts.CargoCapacity),
+    skip_sort = true,
   }
 end
 
@@ -498,10 +501,10 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.CodeFuncs.GetTravelTimeEarthMars() / r
   local ItemList = {
-    {text = Concat(" ",S[302535920000947--[[Instant--]]]),value = 0},
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
-    {text = Concat(" ",S[302535920000948--[[Original--]]],": ",750),value = 750},
-    {text = Concat(" ",S[302535920000949--[[Half of Original--]]],": ",375),value = 375},
+    {text = S[302535920000947--[[Instant--]]],value = 0},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[302535920000948--[[Original--]]],": ",750),value = 750},
+    {text = Concat(S[302535920000949--[[Half of Original--]]],": ",375),value = 375},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -545,6 +548,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
     items = ItemList,
     title = 302535920000951--[[Rocket Travel Time--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -552,7 +556,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -586,6 +590,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
     items = ItemList,
     title = 302535920000953--[[Set Colonist Capacity--]],
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",Consts.MaxColonistsPerRocket),
+    skip_sort = true,
   }
 end
 
@@ -604,7 +609,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
   local hint_toolarge = Concat(S[6779--[[Warning--]]]," ",S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
 
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -666,6 +671,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[302535920000567--[[Worker Capacity--]]]),
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_toolarge),
+    skip_sort = true,
   }
 end
 
@@ -708,7 +714,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
   end
 
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -821,6 +827,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[109035890389--[[Capacity--]]]),
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_toolarge),
+    skip_sort = true,
   }
 end
 
@@ -837,7 +844,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
   local ChoGGi = ChoGGi
   local DefaultSetting = sel.base_max_visitors
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 25,value = 25},
     {text = 50,value = 50},
@@ -892,6 +899,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[302535920000961--[[Visitor Capacity--]]]),
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -905,7 +913,7 @@ Other: 20,000
 Waste: 1,000,000
 Mechanized: 1,000,000--]]]
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 50,value = 50},
     {text = 100,value = 100},
     {text = 250,value = 250},
@@ -1001,6 +1009,7 @@ Mechanized: 1,000,000--]]]
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]],": ",sType," ",S[302535920000963--[[Size--]]]),
     hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_max),
+    skip_sort = true,
   }
 end
 
@@ -1031,6 +1040,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
     callback = CallBackFunc,
     items = ItemList,
     title = 302535920001187--[[Add Probes--]],
+    skip_sort = true,
   }
 end
 
@@ -1039,7 +1049,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -1080,6 +1090,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
     items = ItemList,
     title = 302535920001190--[[Set Food Per Rocket Passenger--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 

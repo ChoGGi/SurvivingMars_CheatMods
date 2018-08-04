@@ -12,23 +12,12 @@ local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 
-local pairs,pcall,tostring,type,getmetatable = pairs,pcall,tostring,type,getmetatable
-local debug,table = debug,table
+local pcall,tostring,type = pcall,tostring,type
+local table = table
 
-local CmpLower = CmpLower
-local CreateRealTimeThread = CreateRealTimeThread
-local CreateRolloverWindow = CreateRolloverWindow
---~ local GameTime = GameTime
-local GetObjects = GetObjects
-local InDesigner = InDesigner
 local IsPoint = IsPoint
-local IsT = IsT
-local IsValid = IsValid
 local Min = Min
 local ObjectClass = ObjectClass
-local point = point
-local RGB = RGB
-local Sleep = Sleep
 
 local g_traceMeta = g_traceMeta
 
@@ -54,6 +43,7 @@ DefineClass.ChoGGi_ObjectManipulator = {
 function ChoGGi_ObjectManipulator:Init()
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local point = point
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -93,6 +83,7 @@ function ChoGGi_ObjectManipulator:Init()
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   function self.idAutoRefresh.button.OnButtonPressed()
+    local Sleep = Sleep
     self.refreshing = self.idAutoRefresh:GetState()
     CreateRealTimeThread(function()
       while self.refreshing do
@@ -432,7 +423,8 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
   end
   --if some value is fucked, this just lets us ignore whatever value is fucked.
   pcall(function()
-    if obj_type == "table" and getmetatable(o) and getmetatable(o) == objlist then
+    local meta = getmetatable(o)
+    if obj_type == "table" and meta and meta == objlist then
       local res = {}
       for i = 1, Min(#o, 3) do
         res[#res+1] = {
@@ -465,7 +457,6 @@ function ChoGGi_ObjectManipulator:CreateProp(o)
   end
 
   return tostring(o)
-
 end
 
 function ChoGGi_ObjectManipulator:CreatePropList(o)

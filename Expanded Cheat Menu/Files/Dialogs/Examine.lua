@@ -7,10 +7,7 @@ end
 -- see about hiding list when resizing dialog
 
 local Concat = ChoGGi.ComFuncs.Concat
-local DialogAddCaption = ChoGGi.ComFuncs.DialogAddCaption
-local DialogAddCloseX = ChoGGi.ComFuncs.DialogAddCloseX
 local DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
-local Dump = ChoGGi.ComFuncs.Dump
 local RetButtonTextSize = ChoGGi.ComFuncs.RetButtonTextSize
 local RetCheckTextSize = ChoGGi.ComFuncs.RetCheckTextSize
 local RetName = ChoGGi.ComFuncs.RetName
@@ -20,30 +17,14 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 
-
-local pairs,type,tostring,tonumber,getmetatable,rawget,table,debug,utf8 = pairs,type,tostring,tonumber,getmetatable,rawget,table,debug,utf8
+local pairs,type,tostring,tonumber,rawget,table,debug = pairs,type,tostring,tonumber,rawget,table,debug
 
 local CmpLower = CmpLower
-local CreateRealTimeThread = CreateRealTimeThread
-local DeleteThread = DeleteThread
-local DelayedCall = DelayedCall
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
-local Min = Min
-local OpenExamine = OpenExamine
 local point = point
-local RGBA = RGBA
-local Sleep = Sleep
-local ValueToLuaCode = ValueToLuaCode
-local XDestroyRolloverWindow = XDestroyRolloverWindow
--- threads
-local IsValidThread = IsValidThread
-local GetThreadStatus = GetThreadStatus
-local IsGameTimeThread = IsGameTimeThread
-local IsRealTimeThread = IsRealTimeThread
-local ThreadHasFlags = ThreadHasFlags
 
 local terrain_GetHeight = terrain.GetHeight
 
@@ -81,6 +62,8 @@ DefineClass.Examine = {
 function Examine:Init()
   local g_Classes = g_Classes
   local const = const
+  local point = point
+  local RGBA = RGBA
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -97,8 +80,8 @@ function Examine:Init()
   self.dialog_width = self.dialog_width - self.border * 2
   local dialog_left = self.border
 
-  DialogAddCloseX(self)
-  DialogAddCaption(self,{
+  ChoGGi.ComFuncs.DialogAddCloseX(self)
+  ChoGGi.ComFuncs.DialogAddCaption(self,{
     prefix = Concat(S[302535920000069--[[Examine--]]],": "),
     pos = point(25, self.border),
     size = point(self.dialog_width-self.idCloseX:GetSize():x(), 22)
@@ -344,6 +327,7 @@ function Examine:idAutoRefreshButOnButtonPressed()
     return
   end
   -- otherwise fire it up
+  local Sleep = Sleep
   self.autorefresh_thread = CreateRealTimeThread(function()
     while true do
       if self.obj then
@@ -436,7 +420,7 @@ function Examine:idToolsMenuOnComboClose(menu,idx)
         hint_ok = 302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]],
         func = function(answer,overwrite)
           if answer then
-            Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+            ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
           end
         end,
       })
@@ -452,7 +436,7 @@ function Examine:idToolsMenuOnComboClose(menu,idx)
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
         func = function(answer,overwrite)
           if answer then
-            Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+            ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
           end
         end,
       })
@@ -461,10 +445,10 @@ This can take time on something like the ""Building"" metatable (don't use this 
       local str = self:totextex(self.obj)
       --remove html tags
       str = str:gsub("<[/%s%a%d]*>","")
-      Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+      ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
     elseif text == self.menuitems.DumpObject then
       local str = ValueToLuaCode(self.obj)
-      Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
+      ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
     elseif text == self.menuitems.EditObject then
       ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
     elseif text == self.menuitems.ExecCode then
@@ -1179,8 +1163,8 @@ function Examine:SetObj(o)
   local name = RetName(o)
 
   -- update attaches button with attaches amount
-  local attaches = is_table and type(o.GetAttaches) == "function" and o:GetAttaches()
-  local attach_amount = attaches and #attaches or 0
+  local attaches = is_table and type(o.GetAttaches) == "function" and o:IsKindOf("ComponentAttach") and o:GetAttaches()
+  local attach_amount = attaches and #attaches
   self.idAttaches:SetHint(S[302535920000070--[[Shows list of attachments. This %s has: %s.--]]]:format(name,attach_amount))
   if is_table then
 

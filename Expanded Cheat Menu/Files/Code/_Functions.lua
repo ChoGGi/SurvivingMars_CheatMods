@@ -22,7 +22,6 @@ local GetPassablePointNearby = GetPassablePointNearby
 local GetPreciseCursorObj = GetPreciseCursorObj
 local GetTerrainCursor = GetTerrainCursor
 local GetTerrainCursorObjSel = GetTerrainCursorObjSel
-local GetXDialog = GetXDialog
 local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local NearestObject = NearestObject
@@ -46,11 +45,21 @@ local camera_SetFovX = camera.SetFovX
 do --for those that don't know "do ... end" is a way of keeping "local" local to the do
   --make some easy to type names
   local ChoGGi = ChoGGi
-  function dump(...)ChoGGi.ComFuncs.Dump(...)end
-  function dumplua(...)ChoGGi.ComFuncs.DumpLua(...)end
-  function dumptable(...)ChoGGi.ComFuncs.DumpTable(...)end
-  function dumpl(...)ChoGGi.ComFuncs.DumpLua(...)end
-  function dumpt(...)ChoGGi.ComFuncs.DumpTable(...)end
+  function dump(...)
+    ChoGGi.ComFuncs.Dump(...)
+  end
+  function dumplua(...)
+    ChoGGi.ComFuncs.DumpLua(...)
+  end
+  function dumptable(...)
+    ChoGGi.ComFuncs.DumpTable(...)
+  end
+  function dumpl(...)
+    ChoGGi.ComFuncs.DumpLua(...)
+  end
+  function dumpt(...)
+    ChoGGi.ComFuncs.DumpTable(...)
+  end
   local function RemoveLast(str)
     --remove restart as the last cmd so we don't hit it by accident
     local dlgConsole = dlgConsole
@@ -71,20 +80,21 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
     quit("restart")
     RemoveLast("restart")
   end
-  reboot = restart
-  exit = quit
   trans = ChoGGi.ComFuncs.Trans -- works with userdata or index number
-  mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
-  mhc = GetTerrainCursorObj -- returns obj under cursor
-  mc = GetPreciseCursorObj
-  m = SelectionMouseObj
-  c = GetTerrainCursor -- cursor position on map
-  cs = terminal_GetMousePos -- cursor pos on screen
-  s = false --used to store SelectedObj
   function so()
     return ChoGGi.CodeFuncs.SelObject()
   end
 end
+-- no need to have these in the do
+reboot = restart
+exit = quit
+mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
+mhc = GetTerrainCursorObj -- returns obj under cursor
+mc = GetPreciseCursorObj
+m = SelectionMouseObj
+c = GetTerrainCursor -- cursor position on map
+cs = terminal_GetMousePos -- cursor pos on screen
+s = false --used to store SelectedObj
 
 --check if tech is researched before we get value
 do
@@ -319,11 +329,11 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   local BuildCategories = BuildCategories
 
   --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, check for a msg to use?)
-  if not GetXDialog("PinsDlg") then
+  if not XDialogs.PinsDlg then
     return
   end
 
-  local dlg = GetXDialog("XBuildMenu")
+  local dlg = XDialogs.XBuildMenu
   if dlg then
     --opened so check if number corresponds and if so hide the menu
     if dlg.category == BuildCategories[which].id then
@@ -332,7 +342,7 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   else
     OpenXBuildMenu()
   end
-  dlg = GetXDialog("XBuildMenu")
+  dlg = XDialogs.XBuildMenu
   dlg:SelectCategory(BuildCategories[which])
   --have to fire twice to highlight the icon
   dlg:SelectCategory(BuildCategories[which])
@@ -576,34 +586,31 @@ function ChoGGi.CodeFuncs.GetNearestIdleDrone(bld)
 end
 
 function ChoGGi.CodeFuncs.SaveOldPalette(obj)
-  local GetPal = obj.GetColorizationMaterial
   if not obj.ChoGGi_origcolors then
     obj.ChoGGi_origcolors = {}
-    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,1)}
-    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,2)}
-    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,3)}
-    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {GetPal(obj,4)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(1)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(2)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(3)}
+    obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(4)}
   end
 end
 function ChoGGi.CodeFuncs.RestoreOldPalette(obj)
   if obj.ChoGGi_origcolors then
     local c = obj.ChoGGi_origcolors
-    local SetPal = obj.SetColorizationMaterial
-    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+    obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+    obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+    obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+    obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
     obj.ChoGGi_origcolors = nil
   end
 end
 
 function ChoGGi.CodeFuncs.GetPalette(obj)
-  local g = obj.GetColorizationMaterial
   local pal = {}
-  pal.Color1, pal.Roughness1, pal.Metallic1 = g(obj, 1)
-  pal.Color2, pal.Roughness2, pal.Metallic2 = g(obj, 2)
-  pal.Color3, pal.Roughness3, pal.Metallic3 = g(obj, 3)
-  pal.Color4, pal.Roughness4, pal.Metallic4 = g(obj, 4)
+  pal.Color1, pal.Roughness1, pal.Metallic1 = obj:GetColorizationMaterial(1)
+  pal.Color2, pal.Roughness2, pal.Metallic2 = obj:GetColorizationMaterial(2)
+  pal.Color3, pal.Roughness3, pal.Metallic3 = obj:GetColorizationMaterial(3)
+  pal.Color4, pal.Roughness4, pal.Metallic4 = obj:GetColorizationMaterial(4)
   return pal
 end
 
@@ -634,62 +641,63 @@ function ChoGGi.CodeFuncs.RandomColour(amount)
   return colours
 end
 
-local function SetRandColour(obj,colour,ChoGGi)
-  colour = colour or ChoGGi.CodeFuncs.RandomColour()
-  local SetPal = obj.SetColorizationMaterial
-  local GetPal = obj.GetColorizationMaterial
-  local c1,c2,c3,c4 = GetPal(obj,1),GetPal(obj,2),GetPal(obj,3),GetPal(obj,4)
-  --likely can only change basecolour
-  if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
-    obj:SetColorModifier(colour)
-  else
-    if not obj.ChoGGi_origcolors then
-      ChoGGi.CodeFuncs.SaveOldPalette(obj)
+do -- SetRandColour
+  local function SetRandColour(obj,colour,ChoGGi)
+    colour = colour or ChoGGi.CodeFuncs.RandomColour()
+    local c1,c2,c3,c4 = obj:GetColorizationMaterial(1),obj:GetColorizationMaterial(2),obj:GetColorizationMaterial(3),obj:GetColorizationMaterial(4)
+    --likely can only change basecolour
+    if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
+      obj:SetColorModifier(colour)
+    else
+      if not obj.ChoGGi_origcolors then
+        ChoGGi.CodeFuncs.SaveOldPalette(obj)
+      end
+      --s,1,Color, Roughness, Metallic
+      obj:SetColorizationMaterial(1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+      obj:SetColorizationMaterial(2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+      obj:SetColorizationMaterial(3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+      obj:SetColorizationMaterial(4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
     end
-    --s,1,Color, Roughness, Metallic
-    SetPal(obj, 1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(obj, 2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(obj, 3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-    SetPal(obj, 4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
   end
-end
 
-function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
-  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    return
+  function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
+    if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+      return
+    end
+    local ChoGGi = ChoGGi
+    local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
+    --random is random after all, so lets try for at least slightly different colours
+    local colours = ChoGGi.CodeFuncs.RandomColour(#attaches + 1)
+    for i = 1, #attaches do
+      SetRandColour(attaches[i],colours[i],ChoGGi)
+    end
+    SetRandColour(obj,colours[#colours],ChoGGi)
   end
-  local ChoGGi = ChoGGi
-  local attaches = obj:GetAttaches() or ""
-  --random is random after all, so lets try for at least slightly different colours
-  local colours = ChoGGi.CodeFuncs.RandomColour(#attaches + 1)
-  for i = 1, #attaches do
-    SetRandColour(attaches[i],colours[i],ChoGGi)
-  end
-  SetRandColour(obj,colours[#colours],ChoGGi)
-end
+end -- do
 
-local function SetDefColour(obj)
-  obj:SetColorModifier(6579300)
-  if obj.ChoGGi_origcolors then
-    local SetPal = obj.SetColorizationMaterial
-    local c = obj.ChoGGi_origcolors
-    SetPal(obj,1, c[1][1], c[1][2], c[1][3])
-    SetPal(obj,2, c[2][1], c[2][2], c[2][3])
-    SetPal(obj,3, c[3][1], c[3][2], c[3][3])
-    SetPal(obj,4, c[4][1], c[4][2], c[4][3])
+do -- SetDefColour
+  local function SetDefColour(obj)
+    obj:SetColorModifier(6579300)
+    if obj.ChoGGi_origcolors then
+      local c = obj.ChoGGi_origcolors
+      obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+      obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+      obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+      obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+    end
   end
-end
 
-function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
-  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    return
+  function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
+    if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+      return
+    end
+    SetDefColour(obj)
+    local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
+    for i = 1, #attaches do
+      SetDefColour(attaches[i])
+    end
   end
-  SetDefColour(obj)
-  local attaches = obj:GetAttaches() or ""
-  for i = 1, #attaches do
-    SetDefColour(attaches[i])
-  end
-end
+end -- do
 
 do --CloseDialogsECM
   local ChoGGi = ChoGGi
@@ -728,7 +736,7 @@ function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj,amount)
 end
 
 function ChoGGi.CodeFuncs.BuildMenu_Toggle()
-  local dlg = GetXDialog("XBuildMenu")
+  local dlg = XDialogs.XBuildMenu
   if not dlg then
     return
   end
@@ -811,169 +819,169 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
   end)
 end
 
-function ChoGGi.CodeFuncs.ChangeObjectColour(obj,parent)
-  local ChoGGi = ChoGGi
-  if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-    MsgPopup(
-      302535920000015--[[Can't colour object--]],
-      302535920000016--[[Colour--]]
-    )
-    return
+do --ChangeObjectColour
+  --they get called a few times so
+  local function SetOrigColours(obj)
+    ChoGGi.CodeFuncs.RestoreOldPalette(obj)
+    --6579300 = reset base color
+    obj:SetColorModifier(6579300)
   end
-  --SetPal(obj,i,Color,Roughness,Metallic)
-  local SetPal = obj.SetColorizationMaterial
-  local pal = ChoGGi.CodeFuncs.GetPalette(obj)
-
-  local ItemList = {}
-  for i = 1, 4 do
-    local text = Concat("Color",i)
-    ItemList[#ItemList+1] = {
-      text = text,
-      value = pal[text],
-      hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
-    }
-    text = Concat("Metallic",i)
-    ItemList[#ItemList+1] = {
-      text = text,
-      value = pal[text],
-      hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
-    }
-    text = Concat("Roughness",i)
-    ItemList[#ItemList+1] = {
-      text = text,
-      value = pal[text],
-      hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
-    }
+  local function SetColours(obj,choice)
+    ChoGGi.CodeFuncs.SaveOldPalette(obj)
+    for i = 1, 4 do
+      local color = choice[i].value
+      local roughness = choice[i+8].value
+      local metallic = choice[i+4].value
+      obj:SetColorizationMaterial(i,color,roughness,metallic)
+    end
+    obj:SetColorModifier(choice[13].value)
   end
-  ItemList[#ItemList+1] = {
-    text = "X_BaseColour",
-    value = 6579300,
-    obj = obj,
-    hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
-If you want to change the colour of an object you can't with 1-4 (like drones)."--]],
-  }
+  --make sure we're in the same grid
+  local function CheckGrid(fake_parent,Func,obj,obj_bld,choice)
+    --used to check for grid connections
+    local check_air = choice[1].checkair
+    local check_water = choice[1].checkwater
+    local check_elec = choice[1].checkelec
 
-  --callback
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
+    if check_air and obj_bld.air and fake_parent.air and obj_bld.air.grid.elements[1].building == fake_parent.air.grid.elements[1].building then
+      Func(obj,choice)
+    end
+    if check_water and obj_bld.water and fake_parent.water and obj_bld.water.grid.elements[1].building == fake_parent.water.grid.elements[1].building then
+      Func(obj,choice)
+    end
+    if check_elec and obj_bld.electricity and fake_parent.electricity and obj_bld.electricity.grid.elements[1].building == fake_parent.electricity.grid.elements[1].building then
+      Func(obj,choice)
+    end
+    if not check_air and not check_water and not check_elec then
+      Func(obj,choice)
+    end
+  end
+
+  function ChoGGi.CodeFuncs.ChangeObjectColour(obj,parent)
+    local ChoGGi = ChoGGi
+    if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+      MsgPopup(
+        302535920000015--[[Can't colour object--]],
+        302535920000016--[[Colour--]]
+      )
       return
     end
+    local pal = ChoGGi.CodeFuncs.GetPalette(obj)
 
-    if #choice == 13 then
-      --keep original colours as part of object
-      local base = choice[13].value
-      --used to check for grid connections
-      local CheckAir = choice[1].checkair
-      local CheckWater = choice[1].checkwater
-      local CheckElec = choice[1].checkelec
-      --needed to set attachment colours
-      local Label = obj.class
-      local FakeParent
-      if parent then
-        Label = parent.class
-        FakeParent = parent
-      else
-        FakeParent = obj.parentobj
-      end
-      if not FakeParent then
-        FakeParent = obj
-      end
-      --they get called a few times so
-      local function SetOrigColours(Object)
-        ChoGGi.CodeFuncs.RestoreOldPalette(Object)
-        --6579300 = reset base color
-        Object:SetColorModifier(6579300)
-      end
-      local function SetColours(Object)
-        ChoGGi.CodeFuncs.SaveOldPalette(Object)
-        for i = 1, 4 do
-          local Color = choice[i].value
-          local Metallic = choice[i+4].value
-          local Roughness = choice[i+8].value
-          SetPal(Object,i,Color,Roughness,Metallic)
-        end
-        Object:SetColorModifier(base)
-      end
-      --make sure we're in the same grid
-      local function CheckGrid(Func,Object,Building)
-        if CheckAir and Building.air and FakeParent.air and Building.air.grid.elements[1].building == FakeParent.air.grid.elements[1].building then
-          Func(Object)
-        end
-        if CheckWater and Building.water and FakeParent.water and Building.water.grid.elements[1].building == FakeParent.water.grid.elements[1].building then
-          Func(Object)
-        end
-        if CheckElec and Building.electricity and FakeParent.electricity and Building.electricity.grid.elements[1].building == FakeParent.electricity.grid.elements[1].building then
-          Func(Object)
-        end
-        if not CheckAir and not CheckWater and not CheckElec then
-          Func(Object)
-        end
-      end
-
-      --store table so it's the same as was displayed
-      table.sort(choice,
-        function(a,b)
-          return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
-        end
-      )
-      --All of type checkbox
-      if choice[1].check1 then
-        local tab = UICity.labels[Label] or ""
-        for i = 1, #tab do
-          if parent then
-            local attaches = type(tab[i].GetAttaches) == "function" and tab[i]:GetAttaches(obj.class) or ""
-            for j = 1, #attaches do
-              --if Attaches[j].class == obj.class then
-                if choice[1].check2 then
-                  CheckGrid(SetOrigColours,attaches[j],tab[i])
-                else
-                  CheckGrid(SetColours,attaches[j],tab[i])
-                end
-              --end
-            end
-          else --not parent
-            if choice[1].check2 then
-              CheckGrid(SetOrigColours,tab[i],tab[i])
-            else
-              CheckGrid(SetColours,tab[i],tab[i])
-            end
-          end --parent
-        end
-      else --single building change
-        if choice[1].check2 then
-          CheckGrid(SetOrigColours,obj,obj)
-        else
-          CheckGrid(SetColours,obj,obj)
-        end
-      end
-
-      MsgPopup(
-        S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
-        302535920000016--[[Colour--]],
-        nil,
-        nil,
-        obj
-      )
+    local ItemList = {}
+    for i = 1, 4 do
+      local text = Concat("Color",i)
+      ItemList[#ItemList+1] = {
+        text = text,
+        value = pal[text],
+        hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
+      }
+      text = Concat("Metallic",i)
+      ItemList[#ItemList+1] = {
+        text = text,
+        value = pal[text],
+        hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+      }
+      text = Concat("Roughness",i)
+      ItemList[#ItemList+1] = {
+        text = text,
+        value = pal[text],
+        hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+      }
     end
+    ItemList[#ItemList+1] = {
+      text = "X_BaseColour",
+      value = 6579300,
+      obj = obj,
+      hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
+  If you want to change the colour of an object you can't with 1-4 (like drones)."--]],
+    }
+
+    --callback
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+
+      if #choice == 13 then
+        --needed to set attachment colours
+        local label = obj.class
+        local fake_parent
+        if parent then
+          label = parent.class
+          fake_parent = parent
+        else
+          fake_parent = obj.parentobj
+        end
+        if not fake_parent then
+          fake_parent = obj
+        end
+
+        --store table so it's the same as was displayed
+        table.sort(choice,
+          function(a,b)
+            return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
+          end
+        )
+        --All of type checkbox
+        if choice[1].check1 then
+          local tab = UICity.labels[label] or ""
+          for i = 1, #tab do
+            if parent then
+              local attaches = tab[i]:GetAttaches(obj.class) or ""
+              for j = 1, #attaches do
+                --if Attaches[j].class == obj.class then
+                  if choice[1].check2 then
+                    CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i])
+                  else
+                    CheckGrid(fake_parent,SetColours,attaches[j],tab[i],choice)
+                  end
+                --end
+              end
+            else --not parent
+              if choice[1].check2 then
+                CheckGrid(fake_parent,SetOrigColours,tab[i],tab[i])
+              else
+                CheckGrid(fake_parent,SetColours,tab[i],tab[i],choice)
+              end
+            end --parent
+          end
+        else --single building change
+          if choice[1].check2 then
+            CheckGrid(fake_parent,SetOrigColours,obj,obj)
+          else
+            CheckGrid(fake_parent,SetColours,obj,obj,choice)
+          end
+        end
+
+        MsgPopup(
+          S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
+          302535920000016--[[Colour--]],
+          nil,
+          nil,
+          obj
+        )
+      end
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
+      hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
+
+  The colour picker doesn't work for Metallic/Roughness.
+  You can copy and paste numbers if you want (click item again after picking)."--]],
+      multisel = true,
+      custom_type = 2,
+      check1 = 302535920000023--[[All of type--]],
+      check1_hint = 302535920000024--[[Change all objects of the same type.--]],
+      check2 = 302535920000025--[[Default Colour--]],
+      check2_hint = 302535920000026--[[if they're there; resets to default colours.--]],
+    }
   end
-
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
-    hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
-
-The colour picker doesn't work for Metallic/Roughness.
-You can copy and paste numbers if you want (click item again after picking)."--]],
-    multisel = true,
-    custom_type = 2,
-    check1 = 302535920000023--[[All of type--]],
-    check1_hint = 302535920000024--[[Change all objects of the same type.--]],
-    check2 = 302535920000025--[[Default Colour--]],
-    check2_hint = 302535920000026--[[if they're there; resets to default colours.--]],
-  }
-end
+end -- do
 
 --returns the near hex grid for object placement
 function ChoGGi.CodeFuncs.CursorNearestHex()
@@ -1010,7 +1018,7 @@ function ChoGGi.CodeFuncs.LightmodelBuild(list)
 end
 
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
-  if type(obj.GetAttaches) == "function" then
+  if obj:IsKindOf("ComponentAttach") then
     local attaches = obj:GetAttaches() or ""
     for i = #attaches, 1, -1 do
       attaches[i]:delete()
@@ -1018,381 +1026,390 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
   end
 end
 
-local function GetNearestStockpile(list,GetStored,obj)
-  -- check if there's actually a list and that it has anything in it
-  if type(list) == "table" and #list > 0 then
-    -- if there's only one pile and it has a resource
-    if #list == 1 and list[1][GetStored] and list[1][GetStored](list[1]) > 999 then
-      return list[1]
-    else
-      --otherwise filter out empty stockpiles and (and ones for other resources)
-      list = FilterObjects({
-        filter = function(o)
-          if o[GetStored] and o[GetStored](o) > 999 then
-            return o
-          end
-        end
-      },list)
-      --and return nearest
-      return FindNearestObject(list,obj)
-    end
-  end
-end
-
-function ChoGGi.CodeFuncs.FindNearestResource(obj)
-  local ChoGGi = ChoGGi
-  obj = obj or ChoGGi.CodeFuncs.SelObject()
-  if not obj then
-    MsgPopup(
-      302535920000027--[[Nothing selected--]],
-      302535920000028--[[Find Resource--]]
-    )
-    return
-  end
-
-  local ItemList = {
-    {text = S[3514],value = "Metals"},
-    {text = S[4764],value = "BlackCube"},
-    {text = S[8064],value = "MysteryResource"},
-    {text = S[3513],value = "Concrete"},
-    {text = S[1022],value = "Food"},
-    {text = S[4139],value = "PreciousMetals"},
-    {text = S[3515],value = "Polymers"},
-    {text = S[3517],value = "Electronics"},
-    {text = S[4765],value = "Fuel"},
-    {text = S[3516],value = "MachineParts"},
-  }
-
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if type(value) == "string" then
-
-      --get nearest stockpiles to object
-      local labels = UICity.labels
-      local GetStored = Concat("GetStored_",value)
-
-      local mechstockpile = GetNearestStockpile(labels[Concat("MechanizedDepot",value)],GetStored,obj)
-      local stockpile
-      if value == "BlackCube" then
-        stockpile = GetNearestStockpile(labels[Concat(value,"DumpSite")],GetStored,obj)
-      elseif value == "MysteryResource" then
-        stockpile = GetNearestStockpile(labels["MysteryDepot"],GetStored,obj)
+do -- FindNearestResource
+  local function GetNearestStockpile(list,GetStored,obj)
+    -- check if there's actually a list and that it has anything in it
+    if type(list) == "table" and #list > 0 then
+      -- if there's only one pile and it has a resource
+      if #list == 1 and list[1][GetStored] and list[1][GetStored](list[1]) > 999 then
+        return list[1]
       else
-        stockpile = GetNearestStockpile(labels["UniversalStorageDepot"],GetStored,obj)
-      end
-      local resourcepile = GetNearestStockpile(GetObjects{
-        classes = "ResourceStockpile","ResourceStockpileLR",
-        filter = function(o)
-          if o.resource == value and o:GetStoredAmount() > 999 then
-            return o
+        --otherwise filter out empty stockpiles and (and ones for other resources)
+        list = FilterObjects({
+          filter = function(o)
+            if o[GetStored] and o[GetStored](o) > 999 then
+              return o
+            end
           end
-        end,
-      },"GetStoredAmount",obj)
-
-      local piles = {
-        {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(obj)},
-        {obj = stockpile, dist = stockpile and stockpile:GetDist2D(obj)},
-        {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(obj)},
-      }
-
-      local nearest
-      local nearestdist
-      --now we can compare the dists
-      for i = 1, #piles do
-        local p = piles[i]
-        if p.obj then
-          --we need something to compare
-          if not nearest then
-            nearest = p.obj
-            nearestdist = p.dist
-          elseif p.dist < nearestdist then
-            nearest = p.obj
-            nearestdist = p.dist
-          end
-        end
-      end
-      --if there's no resources then "nearest" doesn't exist
-      if nearest then
-        ViewAndSelectObject(nearest)
-      else
-        MsgPopup(
-          S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-          15--[[Resource--]]
-        )
+        },list)
+        --and return nearest
+        return FindNearestObject(list,obj)
       end
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
-    hint = 302535920000032--[[Select a resource to find--]],
-  }
-end
-
-local function DeleteObject_ExecFunc(obj,name,param)
-  if type(obj[name]) == "function" then
-    obj[name](obj,param)
-  end
-end
-
-local function DeleteObject_DeleteAttach(obj,name)
-  if obj[name] then
-    obj[name]:delete()
-  end
-end
-
-function ChoGGi.CodeFuncs.DeleteObject(obj)
-  local ChoGGi = ChoGGi
-
-  --multiple selection from editor mode
-  local objs = editor:GetSel() or ""
-  if #objs > 0 then
-    for i = 1, #objs do
-      ChoGGi.CodeFuncs.DeleteObject(objs[i])
-    end
-  elseif not obj then
-    obj = ChoGGi.CodeFuncs.SelObject()
-  end
-
-  if not obj then
-    return
-  end
-
-  --deleting domes will freeze game if they have anything in them.
-  if obj:IsKindOf("Dome") and obj.air then
-    return
-  end
-
-  --some stuff will leave holes in the world if they're still working
-  DeleteObject_ExecFunc(obj,"ToggleWorking")
-
-  obj.can_demolish = true
-  obj.indestructible = false
-
-  if obj.DoDemolish then
-    pcall(function()
-      DestroyBuildingImmediate(obj)
-    end)
-  end
-
-  if obj:IsKindOf("Deposit") then
-    for i = #obj.group, 1, -1 do
-      obj.group[i]:delete()
-      obj.group[i] = nil
-    end
-  end
-
-  DeleteObject_ExecFunc(obj,"Destroy")
-  DeleteObject_ExecFunc(obj,"SetDome",false)
-  DeleteObject_ExecFunc(obj,"RemoveFromLabels")
-  DeleteObject_ExecFunc(obj,"Done")
-  DeleteObject_ExecFunc(obj,"Gossip","done")
-  DeleteObject_ExecFunc(obj,"SetHolder",false)
-
-  DeleteObject_DeleteAttach(obj,"sphere")
-  DeleteObject_DeleteAttach(obj,"decal")
-
-  -- I did ask nicely
-  if IsValid(obj) then
-    obj:delete()
-  end
-end
-
-local function AddConsumption(obj,name)
-  --if this is here we know it has what we need so no need to check for mod/consump
-  if obj[Concat("ChoGGi_mod_",name)] then
-    local mod = obj.modifications[name]
-    if mod[1] then
-      mod = mod[1]
-    end
-    local orig = obj[Concat("ChoGGi_mod_",name)]
-    if mod:IsKindOf("ObjectModifier") then
-      mod:Change(orig.amount,orig.percent)
-    else
-      mod.amount = orig.amount
-      mod.percent = orig.percent
-    end
-    obj[Concat("ChoGGi_mod_",name)] = nil
-  end
-  local amount = DataInstances.BuildingTemplate[obj.encyclopedia_id][name]
-  obj:SetBase(name, amount)
-end
-local function RemoveConsumption(obj,name)
-  local mods = obj.modifications
-  if mods and mods[name] then
-    local mod = obj.modifications[name]
-    if mod[1] then
-      mod = mod[1]
-    end
-    if not obj[Concat("ChoGGi_mod_",name)] then
-      obj[Concat("ChoGGi_mod_",name)] = {
-        amount = mod.amount,
-        percent = mod.percent
-      }
-    end
-    if mod:IsKindOf("ObjectModifier") then
-      mod:Change(0,0)
-    end
-  end
-  obj:SetBase(name, 0)
-end
-function ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
-  RemoveConsumption(obj,"water_consumption")
-end
-function ChoGGi.CodeFuncs.AddBuildingWaterConsump(obj)
-  AddConsumption(obj,"water_consumption")
-end
-function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
-  RemoveConsumption(obj,"electricity_consumption")
-end
-function ChoGGi.CodeFuncs.AddBuildingElecConsump(obj)
-  AddConsumption(obj,"electricity_consumption")
-end
-function ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
-  RemoveConsumption(obj,"air_consumption")
-end
-function ChoGGi.CodeFuncs.AddBuildingAirConsump(obj)
-  AddConsumption(obj,"air_consumption")
-end
-
-function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
-  if value == "New" then
+  function ChoGGi.CodeFuncs.FindNearestResource(obj)
     local ChoGGi = ChoGGi
-    ChoGGi.ComFuncs.MsgWait(
-      S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-      S[302535920000034--[[Request--]]]
-    )
-    return
-  end
+    obj = obj or ChoGGi.CodeFuncs.SelObject()
+    if not obj then
+      MsgPopup(
+        302535920000027--[[Nothing selected--]],
+        302535920000028--[[Find Resource--]]
+      )
+      return
+    end
 
-  local UICity = UICity
-  local info
-  local function AddGrid(Name,info)
-    for i = 1, #UICity[Name] do
-      info.tables[#info.tables+1] = UICity[Name][i]
+    local ItemList = {
+      {text = S[3514],value = "Metals"},
+      {text = S[4764],value = "BlackCube"},
+      {text = S[8064],value = "MysteryResource"},
+      {text = S[3513],value = "Concrete"},
+      {text = S[1022],value = "Food"},
+      {text = S[4139],value = "PreciousMetals"},
+      {text = S[3515],value = "Polymers"},
+      {text = S[3517],value = "Electronics"},
+      {text = S[4765],value = "Fuel"},
+      {text = S[3516],value = "MachineParts"},
+    }
+
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if type(value) == "string" then
+
+        --get nearest stockpiles to object
+        local labels = UICity.labels
+        local GetStored = Concat("GetStored_",value)
+
+        local mechstockpile = GetNearestStockpile(labels[Concat("MechanizedDepot",value)],GetStored,obj)
+        local stockpile
+        if value == "BlackCube" then
+          stockpile = GetNearestStockpile(labels[Concat(value,"DumpSite")],GetStored,obj)
+        elseif value == "MysteryResource" then
+          stockpile = GetNearestStockpile(labels["MysteryDepot"],GetStored,obj)
+        else
+          stockpile = GetNearestStockpile(labels["UniversalStorageDepot"],GetStored,obj)
+        end
+        local resourcepile = GetNearestStockpile(GetObjects{
+          classes = "ResourceStockpile","ResourceStockpileLR",
+          filter = function(o)
+            if o.resource == value and o:GetStoredAmount() > 999 then
+              return o
+            end
+          end,
+        },"GetStoredAmount",obj)
+
+        local piles = {
+          {obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(obj)},
+          {obj = stockpile, dist = stockpile and stockpile:GetDist2D(obj)},
+          {obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(obj)},
+        }
+
+        local nearest
+        local nearestdist
+        --now we can compare the dists
+        for i = 1, #piles do
+          local p = piles[i]
+          if p.obj then
+            --we need something to compare
+            if not nearest then
+              nearest = p.obj
+              nearestdist = p.dist
+            elseif p.dist < nearestdist then
+              nearest = p.obj
+              nearestdist = p.dist
+            end
+          end
+        end
+        --if there's no resources then "nearest" doesn't exist
+        if nearest then
+          ViewAndSelectObject(nearest)
+        else
+          MsgPopup(
+            S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
+            15--[[Resource--]]
+          )
+        end
+      end
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
+      hint = 302535920000032--[[Select a resource to find--]],
+    }
+  end
+end -- do
+
+do -- DeleteObject
+  local function DeleteObject_ExecFunc(obj,name,param)
+    if type(obj[name]) == "function" then
+      obj[name](obj,param)
     end
   end
-  --0=value,1=#table,2=list table values
-  local info_grid = {
-    tables = {},
-    values = {
-      {name="connectors",kind=1},
-      {name="consumers",kind=1},
-      {name="producers",kind=1},
-      {name="storages",kind=1},
-      {name="all_consumers_supplied",kind=0},
-      {name="charge",kind=0},
-      {name="discharge",kind=0},
-      {name="current_consumption",kind=0},
-      {name="current_production",kind=0},
-      {name="current_reserve",kind=0},
-      {name="current_storage",kind=0},
-      {name="current_storage_change",kind=0},
-      {name="current_throttled_production",kind=0},
-      {name="current_waste",kind=0},
-    }
-  }
-  if value == "Grids" then
-    info = info_grid
-    info_grid.title = S[302535920000035--[[Grids--]]]
-    AddGrid("air",info)
-    AddGrid("electricity",info)
-    AddGrid("water",info)
-  elseif value == "Air" then
-    info = info_grid
-    info_grid.title = S[891--[[Air--]]]
-    AddGrid("air",info)
-  elseif value == "Electricity" then
-    info = info_grid
-    info_grid.title = S[302535920000037--[[Electricity--]]]
-    AddGrid("electricity",info)
-  elseif value == "Water" then
-    info = info_grid
-    info_grid.title = S[681--[[Water--]]]
-    AddGrid("water",info)
-  elseif value == "Research" then
-    info = {
-      title = S[311--[[Research--]]],
-      listtype = "all",
-      tables = {UICity.tech_status},
-      values = {
-        researched = true
-      }
-    }
-  elseif value == "Colonists" then
-    info = {
-      title = S[547--[[Colonists--]]],
-      tables = UICity.labels.Colonist or "",
-      values = {
-        {name="handle",kind=0},
-        {name="command",kind=0},
-        {name="goto_target",kind=0},
-        {name="age",kind=0},
-        {name="age_trait",kind=0},
-        {name="death_age",kind=0},
-        {name="race",kind=0},
-        {name="gender",kind=0},
-        {name="birthplace",kind=0},
-        {name="specialist",kind=0},
-        {name="sols",kind=0},
-        --{name="workplace",kind=0},
-        {name="workplace_shift",kind=0},
-        --{name="residence",kind=0},
-        --{name="current_dome",kind=0},
-        {name="daily_interest",kind=0},
-        {name="daily_interest_fail",kind=0},
-        {name="dome_enter_fails",kind=0},
-        {name="traits",kind=2},
-      }
-    }
-  elseif value == "Rockets" then
-    info = {
-      title = S[5238--[[Rockets--]]],
-      tables = UICity.labels.AllRockets,
-      values = {
-        {name="name",kind=0},
-        {name="handle",kind=0},
-        {name="command",kind=0},
-        {name="status",kind=0},
-        {name="priority",kind=0},
-        {name="working",kind=0},
-        {name="charging_progress",kind=0},
-        {name="charging_time_left",kind=0},
-        {name="landed",kind=0},
-        {name="drones",kind=1},
-        --{name="units",kind=1},
-        {name="unreachable_buildings",kind=0},
-      }
-    }
-  elseif value == "City" then
-    info = {
-      title = S[302535920000042--[[City--]]],
-      tables = {UICity},
-      values = {
-        {name="rand_state",kind=0},
-        {name="day",kind=0},
-        {name="hour",kind=0},
-        {name="minute",kind=0},
-        {name="total_export",kind=0},
-        {name="total_export_funding",kind=0},
-        {name="funding",kind=0},
-        {name="research_queue",kind=1},
-        {name="consumption_resources_consumed_today",kind=2},
-        {name="maintenance_resources_consumed_today",kind=2},
-        {name="gathered_resources_today",kind=2},
-        {name="consumption_resources_consumed_yesterday",kind=2},
-        {name="maintenance_resources_consumed_yesterday",kind=2},
-        {name="gathered_resources_yesterday",kind=2},
-         --{name="unlocked_upgrades",kind=2},
-      }
-    }
+  local function DeleteObject_DeleteAttach(obj,name)
+    if obj[name] then
+      obj[name]:delete()
+    end
   end
-  if info then
-    ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info,parent)
+
+  function ChoGGi.CodeFuncs.DeleteObject(obj)
+    local ChoGGi = ChoGGi
+
+    --multiple selection from editor mode
+    local objs = editor:GetSel() or ""
+    if #objs > 0 then
+      for i = 1, #objs do
+        ChoGGi.CodeFuncs.DeleteObject(objs[i])
+      end
+    elseif not obj then
+      obj = ChoGGi.CodeFuncs.SelObject()
+    end
+
+    if not obj then
+      return
+    end
+
+    --deleting domes will freeze game if they have anything in them.
+    if obj:IsKindOf("Dome") and obj.air then
+      return
+    end
+
+    --some stuff will leave holes in the world if they're still working
+    DeleteObject_ExecFunc(obj,"ToggleWorking")
+
+    obj.can_demolish = true
+    obj.indestructible = false
+
+    if obj.DoDemolish then
+      pcall(function()
+        DestroyBuildingImmediate(obj)
+      end)
+    end
+
+    if obj:IsKindOf("Deposit") then
+      for i = #obj.group, 1, -1 do
+        obj.group[i]:delete()
+        obj.group[i] = nil
+      end
+    end
+
+    DeleteObject_ExecFunc(obj,"Destroy")
+    DeleteObject_ExecFunc(obj,"SetDome",false)
+    DeleteObject_ExecFunc(obj,"RemoveFromLabels")
+    DeleteObject_ExecFunc(obj,"Done")
+    DeleteObject_ExecFunc(obj,"Gossip","done")
+    DeleteObject_ExecFunc(obj,"SetHolder",false)
+
+    DeleteObject_DeleteAttach(obj,"sphere")
+    DeleteObject_DeleteAttach(obj,"decal")
+
+    -- I did ask nicely
+    if IsValid(obj) then
+      obj:delete()
+    end
   end
-end
+end -- do
+
+do -- BuildingConsumption
+  local function AddConsumption(obj,name)
+    --if this is here we know it has what we need so no need to check for mod/consump
+    if obj[Concat("ChoGGi_mod_",name)] then
+      local mod = obj.modifications[name]
+      if mod[1] then
+        mod = mod[1]
+      end
+      local orig = obj[Concat("ChoGGi_mod_",name)]
+      if mod:IsKindOf("ObjectModifier") then
+        mod:Change(orig.amount,orig.percent)
+      else
+        mod.amount = orig.amount
+        mod.percent = orig.percent
+      end
+      obj[Concat("ChoGGi_mod_",name)] = nil
+    end
+    local amount = DataInstances.BuildingTemplate[obj.encyclopedia_id][name]
+    obj:SetBase(name, amount)
+  end
+  local function RemoveConsumption(obj,name)
+    local mods = obj.modifications
+    if mods and mods[name] then
+      local mod = obj.modifications[name]
+      if mod[1] then
+        mod = mod[1]
+      end
+      if not obj[Concat("ChoGGi_mod_",name)] then
+        obj[Concat("ChoGGi_mod_",name)] = {
+          amount = mod.amount,
+          percent = mod.percent
+        }
+      end
+      if mod:IsKindOf("ObjectModifier") then
+        mod:Change(0,0)
+      end
+    end
+    obj:SetBase(name, 0)
+  end
+
+  function ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
+    RemoveConsumption(obj,"water_consumption")
+  end
+  function ChoGGi.CodeFuncs.AddBuildingWaterConsump(obj)
+    AddConsumption(obj,"water_consumption")
+  end
+  function ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
+    RemoveConsumption(obj,"electricity_consumption")
+  end
+  function ChoGGi.CodeFuncs.AddBuildingElecConsump(obj)
+    AddConsumption(obj,"electricity_consumption")
+  end
+  function ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
+    RemoveConsumption(obj,"air_consumption")
+  end
+  function ChoGGi.CodeFuncs.AddBuildingAirConsump(obj)
+    AddConsumption(obj,"air_consumption")
+  end
+end -- do
+
+do -- DisplayMonitorList
+  local function AddGrid(UICity,name,info)
+    for i = 1, #UICity[name] do
+      info.tables[#info.tables+1] = UICity[name][i]
+    end
+  end
+
+  function ChoGGi.CodeFuncs.DisplayMonitorList(value,parent)
+    if value == "New" then
+      local ChoGGi = ChoGGi
+      ChoGGi.ComFuncs.MsgWait(
+        S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
+        S[302535920000034--[[Request--]]]
+      )
+      return
+    end
+
+    local UICity = UICity
+    local info
+    --0=value,1=#table,2=list table values
+    local info_grid = {
+      tables = {},
+      values = {
+        {name="connectors",kind=1},
+        {name="consumers",kind=1},
+        {name="producers",kind=1},
+        {name="storages",kind=1},
+        {name="all_consumers_supplied",kind=0},
+        {name="charge",kind=0},
+        {name="discharge",kind=0},
+        {name="current_consumption",kind=0},
+        {name="current_production",kind=0},
+        {name="current_reserve",kind=0},
+        {name="current_storage",kind=0},
+        {name="current_storage_change",kind=0},
+        {name="current_throttled_production",kind=0},
+        {name="current_waste",kind=0},
+      }
+    }
+    if value == "Grids" then
+      info = info_grid
+      info_grid.title = S[302535920000035--[[Grids--]]]
+      AddGrid(UICity,"air",info)
+      AddGrid(UICity,"electricity",info)
+      AddGrid(UICity,"water",info)
+    elseif value == "Air" then
+      info = info_grid
+      info_grid.title = S[891--[[Air--]]]
+      AddGrid(UICity,"air",info)
+    elseif value == "Electricity" then
+      info = info_grid
+      info_grid.title = S[302535920000037--[[Electricity--]]]
+      AddGrid(UICity,"electricity",info)
+    elseif value == "Water" then
+      info = info_grid
+      info_grid.title = S[681--[[Water--]]]
+      AddGrid(UICity,"water",info)
+    elseif value == "Research" then
+      info = {
+        title = S[311--[[Research--]]],
+        listtype = "all",
+        tables = {UICity.tech_status},
+        values = {
+          researched = true
+        }
+      }
+    elseif value == "Colonists" then
+      info = {
+        title = S[547--[[Colonists--]]],
+        tables = UICity.labels.Colonist or "",
+        values = {
+          {name="handle",kind=0},
+          {name="command",kind=0},
+          {name="goto_target",kind=0},
+          {name="age",kind=0},
+          {name="age_trait",kind=0},
+          {name="death_age",kind=0},
+          {name="race",kind=0},
+          {name="gender",kind=0},
+          {name="birthplace",kind=0},
+          {name="specialist",kind=0},
+          {name="sols",kind=0},
+          --{name="workplace",kind=0},
+          {name="workplace_shift",kind=0},
+          --{name="residence",kind=0},
+          --{name="current_dome",kind=0},
+          {name="daily_interest",kind=0},
+          {name="daily_interest_fail",kind=0},
+          {name="dome_enter_fails",kind=0},
+          {name="traits",kind=2},
+        }
+      }
+    elseif value == "Rockets" then
+      info = {
+        title = S[5238--[[Rockets--]]],
+        tables = UICity.labels.AllRockets,
+        values = {
+          {name="name",kind=0},
+          {name="handle",kind=0},
+          {name="command",kind=0},
+          {name="status",kind=0},
+          {name="priority",kind=0},
+          {name="working",kind=0},
+          {name="charging_progress",kind=0},
+          {name="charging_time_left",kind=0},
+          {name="landed",kind=0},
+          {name="drones",kind=1},
+          --{name="units",kind=1},
+          {name="unreachable_buildings",kind=0},
+        }
+      }
+    elseif value == "City" then
+      info = {
+        title = S[302535920000042--[[City--]]],
+        tables = {UICity},
+        values = {
+          {name="rand_state",kind=0},
+          {name="day",kind=0},
+          {name="hour",kind=0},
+          {name="minute",kind=0},
+          {name="total_export",kind=0},
+          {name="total_export_funding",kind=0},
+          {name="funding",kind=0},
+          {name="research_queue",kind=1},
+          {name="consumption_resources_consumed_today",kind=2},
+          {name="maintenance_resources_consumed_today",kind=2},
+          {name="gathered_resources_today",kind=2},
+          {name="consumption_resources_consumed_yesterday",kind=2},
+          {name="maintenance_resources_consumed_yesterday",kind=2},
+          {name="gathered_resources_yesterday",kind=2},
+           --{name="unlocked_upgrades",kind=2},
+        }
+      }
+    end
+    if info then
+      ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info,parent)
+    end
+  end
+end -- do
 
 function ChoGGi.CodeFuncs.ResetHumanCentipedes()
   local objs = UICity.labels.Colonist or ""
@@ -1406,63 +1423,65 @@ function ChoGGi.CodeFuncs.ResetHumanCentipedes()
   end
 end
 
-local function AttachmentsCollisionToggle(sel,which)
-  local att = sel:GetAttaches() or ""
-  if att and #att > 0 then
-    --are we disabling col or enabling
-    local flag
-    if which then
-      flag = "ClearEnumFlags"
-    else
-      flag = "SetEnumFlags"
-    end
-    --and loop through all the attach
-    local const = const
-    for i = 1, #att do
-      att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
+do -- CollisionsObject_Toggle
+  local function AttachmentsCollisionToggle(sel,which)
+    local att = sel:IsKindOf("ComponentAttach") and sel:GetAttaches() or ""
+    if att and #att > 0 then
+      --are we disabling col or enabling
+      local flag
+      if which then
+        flag = "ClearEnumFlags"
+      else
+        flag = "SetEnumFlags"
+      end
+      --and loop through all the attach
+      local const = const
+      for i = 1, #att do
+        att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
+      end
     end
   end
-end
 
-function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
-  obj = obj or ChoGGi.CodeFuncs.SelObject()
-  --menu item
-  if not obj.class then
-    obj = ChoGGi.CodeFuncs.SelObject()
-  end
-  if not obj then
+  function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
+    obj = obj or ChoGGi.CodeFuncs.SelObject()
+    --menu item
+    if not obj.class then
+      obj = ChoGGi.CodeFuncs.SelObject()
+    end
+    if not obj then
+      if not skip_msg then
+        MsgPopup(
+          302535920000967--[[Nothing selected.--]],
+          302535920000968--[[Collisions--]]
+        )
+      end
+      return
+    end
+
+    local which
+    if obj.ChoGGi_CollisionsDisabled then
+      obj:SetEnumFlags(const.efCollision + const.efApplyToGrids)
+      AttachmentsCollisionToggle(obj,false)
+      obj.ChoGGi_CollisionsDisabled = nil
+      which = "enabled"
+    else
+      obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+      AttachmentsCollisionToggle(obj,true)
+      obj.ChoGGi_CollisionsDisabled = true
+      which = "disabled"
+    end
+
     if not skip_msg then
       MsgPopup(
-        302535920000967--[[Nothing selected.--]],
-        302535920000968--[[Collisions--]]
+        S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
+        302535920000968--[[Collisions--]],
+        nil,
+        nil,
+        obj
       )
     end
-    return
   end
-
-  local which
-  if obj.ChoGGi_CollisionsDisabled then
-    obj:SetEnumFlags(const.efCollision + const.efApplyToGrids)
-    AttachmentsCollisionToggle(obj,false)
-    obj.ChoGGi_CollisionsDisabled = nil
-    which = "enabled"
-  else
-    obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
-    AttachmentsCollisionToggle(obj,true)
-    obj.ChoGGi_CollisionsDisabled = true
-    which = "disabled"
-  end
-
-  if not skip_msg then
-    MsgPopup(
-      S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
-      302535920000968--[[Collisions--]],
-      nil,
-      nil,
-      obj
-    )
-  end
-end
+end -- do
 
 function ChoGGi.CodeFuncs.CheckForBorkedTransportPath(obj)
   -- let it sleep for awhile
@@ -1482,7 +1501,7 @@ function ChoGGi.CodeFuncs.CheckForBorkedTransportPath(obj)
 end
 
 function ChoGGi.CodeFuncs.DeleteAttaches(obj)
-  local a = obj:GetAttaches() or ""
+  local a = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
   for i = #a, 1, -1 do
     a[i]:delete()
   end
@@ -1585,5 +1604,140 @@ function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable
         })
       })
     end
+  end
+end
+
+function ChoGGi.CodeFuncs.SetCommanderBonuses(sType)
+  local currentname = g_CurrentMissionParams.idCommanderProfile
+  local comm = MissionParams.idCommanderProfile.items[currentname]
+  local bonus = Presets.CommanderProfilePreset.Default[sType]
+  local tab = bonus or ""
+  for i = 1, #tab do
+    CreateRealTimeThread(function()
+      comm[#comm+1] = tab[i]
+    end)
+  end
+end
+
+function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
+  local ChoGGi = ChoGGi
+
+  local currentname = g_CurrentMissionParams.idMissionSponsor
+  local sponsor = MissionParams.idMissionSponsor.items[currentname]
+  local bonus = Presets.MissionSponsorPreset.Default[sType]
+  --bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
+  if sponsor.cargo then
+    sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
+  end
+  if sponsor.additional_research_points then
+    sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+  end
+
+  if sType == "IMM" then
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","FoodPerRocketPassenger",
+      "Amount",9000
+    })
+  elseif sType == "NASA" then
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","SponsorFundingPerInterval",
+      "Amount",500
+    })
+  elseif sType == "BlueSun" then
+    sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+    sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+      "Field","Physics",
+      "Research","DeepMetalExtraction"
+    })
+  elseif sType == "CNSA" then
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","ApplicantGenerationInterval",
+      "Percent",-50
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","MaxColonistsPerRocket",
+      "Amount",10
+    })
+  elseif sType == "ISRO" then
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+      "Field","Engineering",
+      "Research","LowGEngineering"
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","Concrete_cost_modifier",
+      "Percent",-20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","Electronics_cost_modifier",
+      "Percent",-20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","MachineParts_cost_modifier",
+      "Percent",-20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","ApplicantsPoolStartingSize",
+      "Percent",50
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","Metals_cost_modifier",
+      "Percent",-20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","Polymers_cost_modifier",
+      "Percent",-20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","PreciousMetals_cost_modifier",
+      "Percent",-20
+    })
+  elseif sType == "ESA" then
+    sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+    sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+  elseif sType == "SpaceY" then
+    sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2,bonus.bonusmodifier_name2)
+    sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+    sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+    sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","CommandCenterMaxDrones",
+      "Percent",20
+    })
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","starting_drones",
+      "Percent",4
+    })
+  elseif sType == "NewArk" then
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+      "Label","Consts",
+      "Prop","BirthThreshold",
+      "Percent",-50
+    })
+  elseif sType == "Roscosmos" then
+    sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+    sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+    sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+      "Field","Robotics",
+      "Research","FueledExtractors"
+    })
+  elseif sType == "Paradox" then
+    sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+    sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end

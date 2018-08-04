@@ -1,51 +1,42 @@
 --See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
 
-
-local pcall,tostring = pcall,tostring
-
-local CloseXBuildMenu = CloseXBuildMenu
-local GetInGameInterface = GetInGameInterface
-local GetXDialog = GetXDialog
-local PlaceObj = PlaceObj
-local Random = Random
-local ShowConsole = ShowConsole
-local UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
-local ValueToLuaCode = ValueToLuaCode
-
 --use number keys to activate/hide build menus
-if ChoGGi.UserSettings.NumberKeysBuildMenu then
-  local function AddMenuKey(Num,Key)
+do -- NumberKeysBuildMenu
+  local function AddMenuKey(num,key)
     AddAction(
       nil,
       nil,
       function()
-        ChoGGi.CodeFuncs.ShowBuildMenu(Num)
+        ChoGGi.CodeFuncs.ShowBuildMenu(num)
       end,
-      Key
+      key
     )
   end
-  local skipped = false
-  local Table = BuildCategories
-  for i = 1, #Table do
-    if i < 10 then
-      --the key has to be a string
-      AddMenuKey(i,tostring(i))
-    elseif i == 10 then
-      AddMenuKey(i,"0")
-    else
-      --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
-      if Table[i].id == "Hidden" then
-        skipped = true
+  if ChoGGi.UserSettings.NumberKeysBuildMenu then
+    local Concat = ChoGGi.ComFuncs.Concat
+    local tostring = tostring
+    local skipped
+    local BuildCategories = BuildCategories
+    for i = 1, #BuildCategories do
+      if i < 10 then
+        --the key has to be a string
+        AddMenuKey(i,tostring(i))
+      elseif i == 10 then
+        AddMenuKey(i,"0")
       else
-        if skipped then
-          -- -1 more for skipping Hidden
-          AddMenuKey(i,Concat("Shift-",i - 11))
+        --skip Hidden as it'll have the Rocket Landing Site (hard to remove).
+        if BuildCategories[i].id == "Hidden" then
+          skipped = true
         else
-          -- -10 since we're doing Shift-*
-          AddMenuKey(i,Concat("Shift-",i - 10))
+          if skipped then
+            -- -1 more for skipping Hidden
+            AddMenuKey(i,Concat("Shift-",i - 11))
+          else
+            -- -10 since we're doing Shift-*
+            AddMenuKey(i,Concat("Shift-",i - 10))
+          end
         end
       end
     end
@@ -92,7 +83,7 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
     itemname = fixed
   end
   --n all the rest
-  local igi = GetInGameInterface()
+  local igi = XDialogs.InGameInterface
   if not igi or not igi:GetVisible() then
     return
   end
@@ -101,7 +92,7 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
   local _,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
   --if show then --interferes with building passageramp
-    local dlg = GetXDialog("XBuildMenu")
+    local dlg = XDialogs.XBuildMenu
     if action then
       action(dlg,{
         enabled = can_build,
@@ -118,14 +109,14 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
   --end
 end
 
-AddAction(
+AddAction( -- ClearConsoleLog
   nil,
   nil,
   cls,
   ChoGGi.UserSettings.KeyBindings.ClearConsoleLog
 )
 
-AddAction(
+AddAction( -- ObjectColourRandom
   nil,
   nil,
   function()
@@ -134,7 +125,7 @@ AddAction(
   ChoGGi.UserSettings.KeyBindings.ObjectColourRandom
 )
 
-AddAction(
+AddAction( -- ObjectColourDefault
   nil,
   nil,
   function()
@@ -143,8 +134,7 @@ AddAction(
   ChoGGi.UserSettings.KeyBindings.ObjectColourDefault
 )
 
---show console
-AddAction(
+AddAction( -- ShowConsoleTilde
   nil,
   nil,
   function()
@@ -153,7 +143,7 @@ AddAction(
   ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
 )
 
-AddAction(
+AddAction( -- ShowConsoleEnter
   nil,
   nil,
   function()
@@ -162,8 +152,7 @@ AddAction(
   ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter
 )
 
---show console with restart
-AddAction(
+AddAction( -- ConsoleRestart
   nil,
   nil,
   function()
@@ -178,7 +167,7 @@ AddAction(
 )
 
 --goes to placement mode with last built object
-AddAction(
+AddAction( -- LastConstructedBuilding
   nil,
   nil,
   function()
@@ -191,7 +180,7 @@ AddAction(
 )
 
 --goes to placement mode with SelectedObj
-AddAction(
+AddAction( -- LastPlacedObject
   nil,
   nil,
   function()

@@ -371,7 +371,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
   local hint_low = S[302535920000767--[[Lower = more babies--]]]
   local hint_high = S[302535920000768--[[Higher = less babies--]]]
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 0,value = 0,hint = hint_low},
     {text = 35,value = 35,hint = hint_low},
     {text = 140,value = 140,hint = hint_high},
@@ -411,6 +411,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
     items = ItemList,
     title = 302535920000771--[[Set the minimum comfort needed for birth--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -672,7 +673,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 15,value = 15},
     {text = 20,value = 20},
     {text = 25,value = 25},
@@ -714,6 +715,7 @@ Until tomorrow, you know I'm free to roam--]]]:format(choice[1].text),
     items = ItemList,
     title = 302535920000790--[[Set Outside Workplace Radius--]],
     hint = Concat(S[302535920000791--[[Current distance--]]],": ",hint,"\n\n",S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]]),
+    skip_sort = true,
   }
 end
 
@@ -725,7 +727,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
 
   local default_str = S[1000121--[[Default--]]]
   local ItemList = {
-    {text = Concat(" ",default_str),value = default_str,hint = 302535920000794--[[Uses same code as game to pick death ages.--]]},
+    {text = default_str,value = default_str,hint = 302535920000794--[[Uses same code as game to pick death ages.--]]},
     {text = 60,value = 60},
     {text = 75,value = 75},
     {text = 100,value = 100},
@@ -790,6 +792,7 @@ function ChoGGi.MenuFuncs.SetDeathAge()
     items = ItemList,
     title = 302535920000801--[[Set Death Age--]],
     hint = S[302535920000802--[[Usual age is around %s. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]]]:format(RetDeathAge()),
+    skip_sort = true,
   }
 end
 
@@ -1519,7 +1522,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
   local r = ChoGGi.Consts.ResourceScale
   local DefaultSetting = ChoGGi.Consts.SpeedColonist
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
     {text = 5,value = 5 * r},
     {text = 10,value = 10 * r},
     {text = 15,value = 15 * r},
@@ -1586,6 +1589,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
     check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
     check2 = 302535920000752--[[Selected Only--]],
     check2_hint = 302535920000753--[[Will only apply to selected colonist.--]],
+    skip_sort = true,
   }
 end
 
@@ -1594,7 +1598,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
   local DefaultSetting = ChoGGi.Consts.GravityColonist
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 2,value = 2},
     {text = 3,value = 3},
@@ -1664,6 +1668,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
     check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
     check2 = 302535920000752--[[Selected Only--]],
     check2_hint = 302535920000753--[[Will only apply to selected colonist.--]],
+    skip_sort = true,
   }
 end
 

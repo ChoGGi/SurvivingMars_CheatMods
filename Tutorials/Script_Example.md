@@ -37,14 +37,8 @@ end
 -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
 local function Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one
-  -- (should probably bench till i find a good medium rather than just using 500)
-  if #concat_table > 500 then
-    concat_table = {}
-  else
-    -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
-    table.iclear(concat_table)
-  end
+  -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
+  table.iclear(concat_table)
   -- build table from args
   for i = 1, select("#",...) do
     local concat_value = select(i,...)

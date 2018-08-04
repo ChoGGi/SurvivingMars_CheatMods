@@ -12,7 +12,6 @@ local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
-local GetInGameInterface = GetInGameInterface
 local GetObjects = GetObjects
 local GetTerrainCursor = GetTerrainCursor
 local HideMouseCursor = HideMouseCursor
@@ -440,7 +439,7 @@ function ChoGGi.MenuFuncs.SetAutosavePeriod()
   local UserSettings = ChoGGi.UserSettings
   local title = Concat(S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]])
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 1,value = 1},
     {text = 3,value = 3},
     {text = 10,value = 10},
@@ -484,6 +483,7 @@ function ChoGGi.MenuFuncs.SetAutosavePeriod()
     items = ItemList,
     title = title,
     hint = Concat("Current: ",hint),
+    skip_sort = true,
   }
 end
 
@@ -723,7 +723,7 @@ end
 
 function ChoGGi.MenuFuncs.SetTransparencyUI()
   local desk = terminal.desktop
-  local igi = GetInGameInterface()
+  local igi = XDialogs.InGameInterface
   --sets or gets transparency based on iWhich
   local function trans(iType,sName,iWhich)
     local name = ChoGGi.UserSettings.Transparency[sName]
@@ -811,8 +811,10 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
 end
 
 function ChoGGi.MenuFuncs.SetLightsRadius()
+  local ChoGGi = ChoGGi
+  local hr = hr
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
+    {text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
     {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
     {text = Concat(S[302535920001006--[[03 Low (90)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 90},
@@ -853,12 +855,15 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
     items = ItemList,
     title = 302535920001016--[[Set Lights Radius--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hr.LightsRadiusModifier,"\n\n",S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]]),
+    skip_sort = true,
   }
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
+  local ChoGGi = ChoGGi
+  local hr = hr
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
+    {text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
     {text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
     {text = Concat(S[302535920001021--[[03 Low (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
@@ -885,12 +890,12 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
       ChoGGi.UserSettings.TerrainDetail = nil
     end
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(
-        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000635--[[Terrain Detail--]]),
-        302535920001015--[[Video--]],
-        default_icon
-      )
+    ChoGGi.SettingFuncs.WriteSettings()
+    MsgPopup(
+      ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000635--[[Terrain Detail--]]),
+      302535920001015--[[Video--]],
+      default_icon
+    )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
@@ -900,12 +905,15 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
     hint = Concat(S[302535920000106--[[Current--]]],": ",hr.TR_MaxChunks,"\n",S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
 And yes Medium is using a higher setting than High..."--]]]),
+    skip_sort = true,
   }
 end
 
 function ChoGGi.MenuFuncs.SetVideoMemory()
+  local ChoGGi = ChoGGi
+  local hr = hr
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
+    {text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
     {text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
     {text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
@@ -929,12 +937,12 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
       ChoGGi.UserSettings.VideoMemory = nil
     end
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(
-        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000637--[[Video Memory--]]),
-        302535920001015--[[Video--]],
-        default_icon
-      )
+    ChoGGi.SettingFuncs.WriteSettings()
+    MsgPopup(
+      ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000637--[[Video Memory--]]),
+      302535920001015--[[Video--]],
+      default_icon
+    )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
@@ -942,13 +950,16 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
     items = ItemList,
     title = 302535920001041--[[Set Video Memory Use--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hr.DTM_VideoMemory),
+    skip_sort = true,
   }
 end
 
 function ChoGGi.MenuFuncs.SetShadowmapSize()
+  local ChoGGi = ChoGGi
+  local hr = hr
   local hint_highest = Concat(S[6779--[[Warning--]]],": ",S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = false,hint = 302535920001003--[[restart to enable--]]},
+    {text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
     {text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
     {text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
     {text = Concat(S[302535920001045--[[3 Low (1536)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1536},
@@ -963,6 +974,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     if not value then
       return
     end
+
     if type(value) == "number" then
       if value > 16384 then
         value = 16384
@@ -973,12 +985,12 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
       ChoGGi.UserSettings.ShadowmapSize = nil
     end
 
-      ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(
-        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000639--[[Shadow Map--]]),
-        302535920001015--[[Video--]],
-        default_icon
-      )
+    ChoGGi.SettingFuncs.WriteSettings()
+    MsgPopup(
+      ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000639--[[Shadow Map--]]),
+      302535920001015--[[Video--]],
+      default_icon
+    )
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
@@ -986,6 +998,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
     items = ItemList,
     title = 302535920001051--[[Set Shadowmap Size--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hr.ShadowmapSize,"\n\n",hint_highest,"\n\n",S[302535920001052--[[Max limited to 16384 (or crashing).--]]]),
+    skip_sort = true,
   }
 end
 
@@ -1009,7 +1022,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
   local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
   local hint_fps = S[302535920001056--[[FPS hit--]]]
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 240,value = 240,hint = hint_min},
     {text = 360,value = 360,hint = hint_min},
     {text = 480,value = 480,hint = hint_min},
@@ -1050,6 +1063,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
     items = ItemList,
     title = 302535920000643--[[Higher Render Distance--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -1162,7 +1176,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
   local DefaultSetting = 5
   local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]]),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]]),value = DefaultSetting},
     {text = 0,value = 0,hint = 302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]},
     {text = 1,value = 1,hint = hint_down},
     {text = 2,value = 2,hint = hint_down},
@@ -1199,13 +1213,14 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000647--[[Border Scrolling--]]]),
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
 function ChoGGi.MenuFuncs.CameraZoom_Toggle()
   local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 16000,value = 16000},
     {text = 20000,value = 20000},
     {text = 24000,value = 24000, hint = 302535920001066--[[What used to be the default for this ECM setting--]]},
@@ -1240,5 +1255,6 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
     items = ItemList,
     title = Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001067--[[Zoom--]]]),
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end

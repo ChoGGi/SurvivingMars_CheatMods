@@ -9,16 +9,6 @@ end
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-local box = box
-local RGBA = RGBA
-
-local white = white
-local black = black
-local dark_gray = -13158858
-local light_gray = -2368549
-
-local UIL_GetScreenSize = UIL.GetScreenSize
-
 DefineClass.ChoGGi_MultiLineText = {
   __parents = {"XDialog"},
   HandleKeyboard = true,
@@ -34,6 +24,10 @@ DefineClass.ChoGGi_MultiLineText = {
 function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local white = white
+  local black = black
+  local dark_gray = -13158858
+  local light_gray = -2368549
 
   --build container
   g_Classes.StdDialog.Init(self, parent, context)
@@ -44,7 +38,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
   --size it
   local width,height = 500,250
-  local size = UIL_GetScreenSize()
+  local size = UIL.GetScreenSize()
   if size:x() > 1024 then
     width = 1000
   end

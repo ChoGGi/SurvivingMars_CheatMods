@@ -205,21 +205,25 @@ function ChoGGi.MenuFuncs.DisastersStop()
 end
 
 function ChoGGi.MenuFuncs.DisastersTrigger()
-
-
   local ChoGGi = ChoGGi
   local ItemList = {
-    {text = Concat(" ",S[302535920000240--[[Stop Most Disasters--]]]),value = "Stop"},
+    {text = Concat(S[302535920000240--[[Stop--]]]," ",S[3983--[[Disasters--]]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
+
     {text = S[4149--[[Cold Wave--]]],value = "ColdWave"},
-    {text = S[302535920000241--[[Dust Devil Major--]]],value = "DustDevilsMajor"},
-    {text = S[302535920000242--[[Dust Devil--]]],value = "DustDevils"},
-    {text = S[302535920000243--[[Dust Storm Electrostatic--]]],value = "DustStormElectrostatic"},
-    {text = S[302535920000244--[[Dust Storm Great--]]],value = "DustStormGreat"},
+
+    {text = S[4142--[[Dust Devils--]]],value = "DustDevils"},
+    {text = Concat(S[4142--[[Dust Devils--]]]," ",S[302535920000241--[[Major--]]]),value = "DustDevilsMajor"},
+
     {text = S[4250--[[Dust Storm--]]],value = "DustStorm"},
-    {text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
-    {text = S[302535920000245--[[Meteor Multi-Spawn--]]],value = "MeteorMultiSpawn"},
+    {text = S[5627--[[Great Dust Storm--]]],value = "DustStormGreat"},
+    {text = S[5628--[[Electrostatic Dust Storm--]]],value = "DustStormElectrostatic"},
+
     {text = S[4251--[[Meteor--]]],value = "Meteor"},
+    {text = Concat(S[4251--[[Meteor--]]]," ",S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
+    {text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
+
     {text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
+
     {text = Concat(S[302535920000246--[[Missle--]]]," ",1),value = "Missle1"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",10),value = "Missle10"},
     {text = Concat(S[302535920000246--[[Missle--]]]," ",100),value = "Missle100"},
@@ -294,6 +298,7 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     title = Concat(S[1694--[[Start--]]]," ",S[3983--[[Disasters--]]]),
     hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
     multisel = true,
+    skip_sort = true,
   }
 end
 
@@ -304,9 +309,13 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   local hint_core = S[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
   local hint_deep = S[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
   local ItemList = {
-    {text = Concat(" ",S[4493--[[All--]]]),value = 1,hint = Concat(hint_core,"\n",hint_deep)},
-    {text = Concat(" ",S[302535920000255--[[Deep--]]]),value = 2,hint = hint_deep},
-    {text = Concat(" ",S[302535920000256--[[Core--]]]),value = 3,hint = hint_core},
+    {text = S[4493--[[All--]]],value = 1,hint = Concat(hint_core,"\n",hint_deep)},
+    {text = S[302535920000255--[[Deep--]]],value = 2,hint = hint_deep},
+    {text = S[302535920000256--[[Core--]]],value = 3,hint = hint_core},
+
+    {text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = 302535920000259--[[Reveals the map squares--]]},
+    {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = 302535920000261--[[Reveals the map and unlocks "Deep" resources--]]},
+
     {text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.DeepScanAvailable)},
     {text = S[797--[[Deep Water--]]],value = 5,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.IsDeepWaterExploitable)},
     {text = S[793--[[Deep Metals--]]],value = 6,hint = Concat(hint_deep,"\n",S[302535920000030--[[Enabled--]]],": ",Consts.IsDeepMetalsExploitable)},
@@ -315,8 +324,6 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
     {text = S[6546--[[Core Metals--]]],value = 9,hint = hint_core},
     {text = S[6550--[[Core Rare Metals--]]],value = 10,hint = hint_core},
     {text = S[6556--[[Alien Imprints--]]],value = 11,hint = hint_core},
-    {text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = 302535920000259--[[Reveals the map squares--]]},
-    {text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = 302535920000261--[[Reveals the map and unlocks "Deep" resources--]]},
   }
 
   local function CallBackFunc(choice)
@@ -393,6 +400,7 @@ Otherwise you won't see anything."--]],
     title = 302535920000263--[[Scan Map--]],
     hint = 302535920000264--[[You can select multiple items.--]],
     multisel = true,
+    skip_sort = true,
   }
 end
 
@@ -864,7 +872,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
   local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 6,value = 6},
     {text = 12,value = 12},
     {text = 24,value = 24},
@@ -899,6 +907,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
     items = ItemList,
     title = 302535920000300--[[BreakThroughs From Omega--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -907,7 +916,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
   local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
   local MaxAmount = #UICity.tech_field.Breakthroughs
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 26,value = 26,hint = 302535920000301--[[Doubled the base amount.--]]},
     {text = MaxAmount,value = MaxAmount,hint = hint_maxa},
   }
@@ -940,6 +949,7 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
     items = ItemList,
     title = 302535920000303--[[BreakThroughs Allowed--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -947,7 +957,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
   local ChoGGi = ChoGGi
   local DefaultSetting = ChoGGi.Consts.ResearchQueueSize
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 5,value = 5},
     {text = 10,value = 10},
     {text = 25,value = 25},
@@ -988,6 +998,7 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
     items = ItemList,
     title = 302535920000305--[[Research Queue Size--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 

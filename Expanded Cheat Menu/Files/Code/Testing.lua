@@ -3,13 +3,23 @@
 if ChoGGi.Testing then
   local Concat = ChoGGi.ComFuncs.Concat
 
+  -- checking how fast concat is for examining large amounts of objects
+  function ChoGGi.CodeFuncs.TestConcat()
+    local ChoGGi,OpenExamine,GetObjects = ChoGGi,OpenExamine,GetObjects
+    for _ = 1, 5 do
+      ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
+      OpenExamine(GetObjects{})
+    end
+    ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
+  end
+
   --[[
   --for ingame editor
 
   OpenExamine(ChoGGi.ComFuncs.ReturnAllNearby(1000))
   ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-  local Attaches = type(s.GetAttaches) == "function" and s:GetAttaches("Colonist") or ""
+  local Attaches = type(s) == "table" and o:IsKindOf("ComponentAttach") and s:GetAttaches("Colonist") or ""
   for i = #Attaches, 1, -1 do
       Attaches[i]:Detach()
       Attaches[i]:SetState("idle")
@@ -477,10 +487,10 @@ local HexPainter_toggle
 function HexPainter(arr)
   if HexPainter_toggle then
     HexPainter_toggle = nil
-    GetInGameInterface():SetMode("selection")
+    XDialogs.InGameInterface:SetMode("selection")
   else
     HexPainter_toggle = true
-    GetInGameInterface():SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetTerrainCursor()))})
+    XDialogs.InGameInterface:SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetTerrainCursor()))})
   end
 end
 

@@ -29,9 +29,8 @@ SOFTWARE.
 ]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,type,pcall,table = dofile,select,tostring,type,pcall,table
-local AsyncGetFileAttribute,Mods = AsyncGetFileAttribute,Mods
-local dofolder_files = dofolder_files
+local dofile,select,tostring,type,table = dofile,select,tostring,type,table
+local AsyncGetFileAttribute,Mods,dofolder_files = AsyncGetFileAttribute,Mods,dofolder_files
 
 local TableConcat
 -- just in case they remove oldTableConcat
@@ -51,22 +50,18 @@ end
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
--- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
+-- this is also used instead of "str .. str"; anytime you do that lua will check for the hashed string, if not then hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
 local function Concat(...)
-  -- reuse old table if it's not that big, else it's quicker to make new one
-  -- (should probably bench till i find a good medium rather than just using 500)
-  if #concat_table > 500 then
-    concat_table = {}
-  else
-    -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
-    table.iclear(concat_table)
-  end
+  -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
+  table.iclear(concat_table)
   -- build table from args
+  local concat_value
+  local concat_type
   for i = 1, select("#",...) do
-    local concat_value = select(i,...)
+    concat_value = select(i,...)
     -- no sense in calling a func more then we need to
-    local concat_type = type(concat_value)
+    concat_type = type(concat_value)
     if concat_type == "string" or concat_type == "number" then
       concat_table[i] = concat_value
     else
@@ -76,6 +71,8 @@ local function Concat(...)
   -- and done
   return TableConcat(concat_table)
 end
+
+--~ ChoGGi.CodeFuncs.TestConcat()
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
@@ -88,14 +85,14 @@ ChoGGi = {
   ModPath = Mods.ChoGGi_CheatMenu.path,
   Lang = GetLanguage(),
 
-  -- orig funcs that get replaced
-  OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {
     FileExists = FileExists,
     TableConcat = TableConcat,
     Concat = Concat,
   },
+  -- orig funcs that get replaced
+  OrigFuncs = {},
   -- _Functions.lua
   CodeFuncs = {},
   -- /Menus/*

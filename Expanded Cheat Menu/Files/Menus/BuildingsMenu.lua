@@ -235,7 +235,7 @@ AddAction(
   nil,
   function()
     return ChoGGi.ComFuncs.SettingState(
-      g_SchoolTraits,
+      #g_SchoolTraits,
       302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.--]]
     )
   end,

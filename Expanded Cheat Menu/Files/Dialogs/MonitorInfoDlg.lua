@@ -12,12 +12,6 @@ local S = ChoGGi.Strings
 
 local pairs,type,tostring = pairs,type,tostring
 
-local Sleep = Sleep
-local CreateRealTimeThread = CreateRealTimeThread
-local OpenExamine = OpenExamine
-local point = point
-local RGBA = RGBA
-
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
@@ -38,6 +32,7 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
 function ChoGGi_MonitorInfoDlg:Init()
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local point = point
 
   --element pos is based on
   self:SetPos(point(0,0))
@@ -72,6 +67,7 @@ function ChoGGi_MonitorInfoDlg:Init()
   self.idAutoRefresh:SetButtonSize(point(16, 16))
   --add check for auto-refresh
   function self.idAutoRefresh.button.OnButtonPressed()
+    local Sleep = Sleep
     self.refreshing = self.idAutoRefresh:GetState()
     self.refreshing_thread = CreateRealTimeThread(function()
       while self.refreshing do

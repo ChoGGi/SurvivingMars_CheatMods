@@ -25,7 +25,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   local UserSettings = ChoGGi.UserSettings
   local r = ChoGGi.Consts.ResourceScale
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 20,value = 20},
@@ -81,6 +81,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
     items = ItemList,
     title = 302535920000105--[[Set Food Storage--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -123,7 +124,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
   local id = sel.encyclopedia_id
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("protect_range")
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
     {text = 80,value = 80},
     {text = 160,value = 160},
@@ -174,6 +175,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     items = ItemList,
     title = 302535920000114--[[Set Protection Radius--]],
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint,"\n\n",S[302535920000115--[[Toggle selection to update visible hex grid.--]]]),
+    skip_sort = true,
   }
 end
 
@@ -353,7 +355,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   local DefaultSettingD = template[Concat("max_",CapType,"_discharge")] / r
 
   local ItemList = {
-    {text = Concat(" ",S[302535920000123--[[Defaults--]]]),value = 3.1415926535,hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)},
+    {text = Concat(S[1000121--[[Default--]]]),value = S[1000121--[[Default--]]],hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -404,7 +406,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
       local numberC = value * r
       local numberD = value * r
 
-      if value == 3.1415926535 then
+      if value == S[1000121--[[Default--]]] then
         if check1 then
           setting.charge = nil
           numberC = DefaultSettingC * r
@@ -473,6 +475,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
     check1_hint = 302535920000132--[[Change charge rate--]],
     check2 = 302535920000125--[[Discharge--]],
     check2_hint = 302535920000133--[[Change discharge rate--]],
+    skip_sort = true,
   }
 end
 
@@ -550,7 +553,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
   end
 
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 25,value = 25},
     {text = 50,value = 50},
     {text = 75,value = 75},
@@ -646,6 +649,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",name," ",S[302535920000139--[[Production Amount--]]]),
     hint = Concat(S[302535920000140--[[Current production--]]],": ",hint),
+    skip_sort = true,
   }
 end
 
@@ -664,7 +668,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
   local name = T(sel.display_name)
 
   local ItemList = {
-    {text = Concat(" ",S[302535920000142--[[Disable--]]]),value = "disable"},
+    {text = Concat(S[302535920000142--[[Disable--]]]),value = "disable"},
     {text = 100,value = 100},
     {text = 150,value = 150},
     {text = 250,value = 250},
@@ -704,10 +708,10 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
       ChoGGi.UserSettings.BuildingSettings[id].performance = value
     end
 
-    if type(value) == "number" then
-      SetPerf(0,1)
-    elseif value == "disable" then
+    if value == "disable" then
       SetPerf()
+    elseif type(value) == "number" then
+      SetPerf(0,1)
     end
 
     ChoGGi.SettingFuncs.WriteSettings()
@@ -739,6 +743,7 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
 Current: %s"--]]]:format(hint),
     check1 = 302535920000769--[[Selected--]],
     check1_hint = Concat(S[302535920000147--[[Only apply to selected object instead of all--]]]," ",name),
+    skip_sort = true,
   }
 end
 
@@ -1092,7 +1097,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
   local ChoGGi = ChoGGi
   local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
   local ItemList = {
-    {text = Concat(" ",S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 10,value = 10},
     {text = 15,value = 15},
     {text = 25,value = 25},
@@ -1152,5 +1157,6 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
     items = ItemList,
     title = Concat(S[302535920000129--[[Set--]]]," ",id," ",S[302535920000163--[[Radius--]]]),
     hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
   }
 end

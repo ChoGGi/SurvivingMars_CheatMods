@@ -242,7 +242,7 @@ do --funcs without a class
     ChoGGi_OrigFuncs.ShowConsoleLog(...)
     SetTrans(dlgConsoleLog)
   end
-end
+end -- do
 
 --Gen
 function OnMsg.ClassesGenerate()
@@ -546,13 +546,20 @@ function OnMsg.ClassesBuilt()
   function XDesktop:MouseEvent(event, pt, button, time)
 --~     if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
     if event == "OnMouseButtonDown" and (button == "L" or button == "R") and self.keyboard_focus.class == "SingleLineEdit" then
-      for i = #self.focus_log, 1, -1 do
-        -- get last focused object that isn't a textbox
-        if self.focus_log[i].class ~= "SingleLineEdit" then
-          self.focus_log[i]:SetFocus()
-          break
-        end
+      -- if console visible set focus to it, else use the hud
+      local dlgConsole = dlgConsole
+      if dlgConsole and dlgConsole:GetVisible() then
+        dlgConsole.idEdit:SetFocus()
+      elseif XDialogs.HUD then
+        XDialogs.HUD:SetFocus()
       end
+--~       for i = #self.focus_log, 1, -1 do
+--~         -- get last focused object that isn't a textbox
+--~         if self.focus_log[i].class ~= "SingleLineEdit" then
+--~           self.focus_log[i]:SetFocus()
+--~           break
+--~         end
+--~       end
     end
     return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
   end
@@ -809,45 +816,47 @@ function OnMsg.ClassesBuilt()
   end
 
   --used to skip mystery sequences
-  local function SkipMystStep(self,MystFunc)
-    local ChoGGi = ChoGGi
-    local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
-    local p = self.meta.player
+  do -- SkipMystStep
+    local function SkipMystStep(self,MystFunc)
+      local ChoGGi = ChoGGi
+      local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
+      local p = self.meta.player
 
-    if StopWait and p and StopWait.seed == p.seed then
-      --inform user, or if it's a dbl then skip
-      if StopWait.skipmsg then
-        StopWait.skipmsg = nil
-      else
-        MsgPopup(
-          302535920000735--[[Timer delay skipped--]],
-          3486--[[Mystery--]]
-        )
+      if StopWait and p and StopWait.seed == p.seed then
+        --inform user, or if it's a dbl then skip
+        if StopWait.skipmsg then
+          StopWait.skipmsg = nil
+        else
+          MsgPopup(
+            302535920000735--[[Timer delay skipped--]],
+            3486--[[Mystery--]]
+          )
+        end
+
+        --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
+        if StopWait.again == true then
+          StopWait.again = nil
+          StopWait.skipmsg = true
+        else
+          --reset it for next time
+          StopWait.seed = false
+          StopWait.again = false
+        end
+
+        --skip
+        return 1
       end
 
-      --only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
-      if StopWait.again == true then
-        StopWait.again = nil
-        StopWait.skipmsg = true
-      else
-        --reset it for next time
-        StopWait.seed = false
-        StopWait.again = false
-      end
-
-      --skip
-      return 1
+      return ChoGGi_OrigFuncs[MystFunc](self)
     end
 
-    return ChoGGi_OrigFuncs[MystFunc](self)
-  end
-
-  function SA_WaitTime:StopWait()
-    SkipMystStep(self,"SA_WaitTime_StopWait")
-  end
-  function SA_WaitMarsTime:StopWait()
-    SkipMystStep(self,"SA_WaitMarsTime_StopWait")
-  end
+    function SA_WaitTime:StopWait()
+      SkipMystStep(self,"SA_WaitTime_StopWait")
+    end
+    function SA_WaitMarsTime:StopWait()
+      SkipMystStep(self,"SA_WaitMarsTime_StopWait")
+    end
+  end -- do
 
   --some mission goals check colonist amounts
   function MG_Colonists:GetProgress()
@@ -907,20 +916,22 @@ function OnMsg.ClassesBuilt()
     return ChoGGi_OrigFuncs.SingleResourceProducer_Produce(self, amount_to_produce)
   end
 
-  --larger drone work radius
-  local function SetHexRadius(orig_func,setting,obj,orig_radius)
-    local UserSettings = ChoGGi.UserSettings[setting]
-    if UserSettings then
-      return ChoGGi_OrigFuncs[orig_func](obj,UserSettings)
+  -- larger drone work radius
+  do -- SetWorkRadius
+    local function SetHexRadius(orig_func,setting,obj,orig_radius)
+      local UserSettings = ChoGGi.UserSettings[setting]
+      if UserSettings then
+        return ChoGGi_OrigFuncs[orig_func](obj,UserSettings)
+      end
+      return ChoGGi_OrigFuncs[orig_func](obj,orig_radius)
     end
-    return ChoGGi_OrigFuncs[orig_func](obj,orig_radius)
-  end
-  function RCRover:SetWorkRadius(radius)
-    SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
-  end
-  function DroneHub:SetWorkRadius(radius)
-    SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
-  end
+    function RCRover:SetWorkRadius(radius)
+      SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
+    end
+    function DroneHub:SetWorkRadius(radius)
+      SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
+    end
+  end -- do
 
   --toggle trans on mouseover
   function XWindow:OnMouseEnter(pt, child)
@@ -939,165 +950,169 @@ function OnMsg.ClassesBuilt()
   end
 
   --remove spire spot limit, and other limits on placing buildings
-  function ConstructionController:UpdateCursor(pos, force)
-    local UserSettings = ChoGGi.UserSettings
-    local function SetDefault(Name)
-      self.template_obj[Name] = self.template_obj:GetDefaultPropertyValue(Name)
+  do -- ConstructionController:UpdateCursor
+    local function SetDefault(cc,name)
+      cc.template_obj[name] = cc.template_obj:GetDefaultPropertyValue(name)
     end
-    local force_override
+    function ConstructionController:UpdateCursor(pos, force)
+      local UserSettings = ChoGGi.UserSettings
+      local force_override
 
-    if UserSettings.Building_instant_build then
-      --instant_build on domes = missing textures on domes
-      if self.template_obj.achievement ~= "FirstDome" then
-        self.template_obj.instant_build = true
+      if UserSettings.Building_instant_build then
+        --instant_build on domes = missing textures on domes
+        if self.template_obj.achievement ~= "FirstDome" then
+          self.template_obj.instant_build = true
+        end
+      else
+        SetDefault(self,"instant_build")
+        --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
       end
-    else
-      SetDefault("instant_build")
-      --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
-    end
 
-    if UserSettings.Building_dome_spot then
-      self.template_obj.dome_spot = "none"
-      --force_override = true
-    else
-      SetDefault("dome_spot")
-    end
+      if UserSettings.Building_dome_spot then
+        self.template_obj.dome_spot = "none"
+        --force_override = true
+      else
+        SetDefault(self,"dome_spot")
+      end
 
-    if UserSettings.RemoveBuildingLimits then
-      self.template_obj.dome_required = false
-      self.template_obj.dome_forbidden = false
-      force_override = true
-    else
-      SetDefault("dome_required")
-      SetDefault("dome_forbidden")
-    end
+      if UserSettings.RemoveBuildingLimits then
+        self.template_obj.dome_required = false
+        self.template_obj.dome_forbidden = false
+        force_override = true
+      else
+        SetDefault(self,"dome_required")
+        SetDefault(self,"dome_forbidden")
+      end
 
-    if force_override then
-      return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, false)
-    else
-      return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, force)
-    end
+      if force_override then
+        return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, false)
+      else
+        return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, force)
+      end
 
-  end
+    end
+  end -- do
 
   --add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
-  --ex(GetInGameInterface()[6][2])
-  -- list control GetInGameInterface()[6][2][3][2]:SetMaxHeight(165)
-  function InfopanelDlg:Open(...)
-    --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
-    local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
+--~   ex(XDialogs.InGameInterface[6][2])
 
---~     DelayedCall(1, function()
-    CreateRealTimeThread(function()
-      local c = self.idContent
+  -- list control XDialogs.InGameInterface[6][2][3][2]:SetMaxHeight(165)
+  do -- InfopanelDlg:Open
+    local function ToggleVis(idx,content,v,h)
+      for i = 6, idx do
+        content[i]:SetVisible(v)
+        content[i]:SetMaxHeight(h)
+      end
+    end
+    function InfopanelDlg:Open(...)
+      --fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
+      local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
 
-      --probably don't need this...
-      if c then
+      CreateRealTimeThread(function()
+        local c = self.idContent
 
-        --this limits height of traits you can choose to 3 till mouse over
-        --7422="Select A Trait"
-        if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422 then
-          --sanitarium
-          local idx = 18
-          --school
-          if TGetID(c[20].idSectionTitle.Text) == 7422 then
-            idx = 20
-          end
-          local function ToggleVis(v,h)
-            for i = 6, idx do
-              c[i]:SetVisible(v)
-              c[i]:SetMaxHeight(h)
+        --probably don't need this...
+        if c then
+
+          --this limits height of traits you can choose to 3 till mouse over
+          --7422="Select A Trait"
+          if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422 then
+            --sanitarium
+            local idx = 18
+            --school
+            if TGetID(c[20].idSectionTitle.Text) == 7422 then
+              idx = 20
             end
+            --init set to hidden
+            ToggleVis(idx,c,false,0)
+
+            local visthread
+            self.OnMouseEnter = function()
+              DeleteThread(visthread)
+              ToggleVis(idx,c,true)
+            end
+            self.OnMouseLeft = function()
+              visthread = CreateRealTimeThread(function()
+                Sleep(1000)
+                ToggleVis(idx,c,false,0)
+              end)
+            end
+
           end
-          --init set to hidden
-          ToggleVis(false,0)
 
-          local visthread
-          self.OnMouseEnter = function()
-            DeleteThread(visthread)
-            ToggleVis(true)
-          end
-          self.OnMouseLeft = function()
-            visthread = CreateRealTimeThread(function()
-              Sleep(1000)
-              ToggleVis(false,0)
-            end)
-          end
+          --loop all the sections
+          for i = 1, #c do
+            local section = c[i]
+            if section.class == "XSection" then
+              local title = TGetID(section.idSectionTitle.Text)
+              local content = section.idContent[2]
 
-        end
+              if section.idWorkers and #section.idWorkers > 14 then
+                --sets height
+                content:SetMaxHeight(32)
 
-        --loop all the sections
-        for i = 1, #c do
-          local section = c[i]
-          if section.class == "XSection" then
-            local title = TGetID(section.idSectionTitle.Text)
-            local content = section.idContent[2]
+                local expandthread
+                section.OnMouseEnter = function()
+                  DeleteThread(expandthread)
+                  content:SetLayoutMethod("HWrap")
+                  content:SetMaxHeight()
+                end
+                section.OnMouseLeft = function()
+                  expandthread = CreateRealTimeThread(function()
+                    Sleep(500)
+                    content:SetLayoutMethod("HList")
+                    content:SetMaxHeight(32)
+                  end)
+                end
 
-            if section.idWorkers and #section.idWorkers > 14 then
-              --sets height
-              content:SetMaxHeight(32)
+              --Cheats
+              elseif title == 27 then
 
-              local expandthread
-              section.OnMouseEnter = function()
-                DeleteThread(expandthread)
-                content:SetLayoutMethod("HWrap")
-                content:SetMaxHeight()
-              end
-              section.OnMouseLeft = function()
-                expandthread = CreateRealTimeThread(function()
-                  Sleep(500)
-                  content:SetLayoutMethod("HList")
-                  content:SetMaxHeight(32)
-                end)
-              end
+                local expandthread
+                section.OnMouseEnter = function()
+                  DeleteThread(expandthread)
+                  content:SetMaxHeight()
+                end
+                section.OnMouseLeft = function()
+                  expandthread = CreateRealTimeThread(function()
+                    Sleep(ChoGGi.UserSettings.CheatsInfoPanelHideDelay or 1500)
+                    content:SetMaxHeight(0)
+                  end)
+                end
 
-            --Cheats
-            elseif title == 27 then
+              -- 235=Traits, 702480492408=Residents
+              elseif title == 235 or title == 702480492408 then
 
-              local expandthread
-              section.OnMouseEnter = function()
-                DeleteThread(expandthread)
-                content:SetMaxHeight()
-              end
-              section.OnMouseLeft = function()
-                expandthread = CreateRealTimeThread(function()
-                  Sleep(ChoGGi.UserSettings.CheatsInfoPanelHideDelay or 1500)
-                  content:SetMaxHeight(0)
-                end)
-              end
-
-            -- 235=Traits, 702480492408=Residents
-            elseif title == 235 or title == 702480492408 then
-
-              if title == 702480492408 then
-                -- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
-                if self.context.capacity ~= self.context.base_capacity then
+                if title == 702480492408 then
+                  -- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
+                  if self.context.capacity ~= self.context.base_capacity then
+                    content.Clip = true
+                  end
+                else
                   content.Clip = true
                 end
-              else
-                content.Clip = true
-              end
 
-              local expandthread
-              section.OnMouseEnter = function()
-                DeleteThread(expandthread)
-                content:SetMaxHeight()
-              end
-              section.OnMouseLeft = function()
-                expandthread = CreateRealTimeThread(function()
-                  Sleep(500)
-                  content:SetMaxHeight(256)
-                end)
-              end
+                local expandthread
+                section.OnMouseEnter = function()
+                  DeleteThread(expandthread)
+                  content:SetMaxHeight()
+                end
+                section.OnMouseLeft = function()
+                  expandthread = CreateRealTimeThread(function()
+                    Sleep(500)
+                    content:SetMaxHeight(256)
+                  end)
+                end
 
-            end
-          end --if XSection
+              end
+            end --if XSection
+          end
         end
-      end
-    end)
+      end)
 
-    return table.unpack(ret)
-  end
+      return table.unpack(ret)
+    end
+  end -- do
 
   --make the background hide when console not visible (instead of after a second or two)
   function ConsoleLog:ShowBackground(visible, immediate)
@@ -1274,7 +1289,7 @@ function OnMsg.ClassesBuilt()
     },
     {
       "^!!(.*)",
-      "local o = (%s) local attaches = type(o) == 'table' and type(o.GetAttaches) == 'function' and o:GetAttaches() if attaches and #attaches > 0 then OpenExamine(attaches,true) end"
+      "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then OpenExamine(attaches,true) end"
     },
     --built-in
     {

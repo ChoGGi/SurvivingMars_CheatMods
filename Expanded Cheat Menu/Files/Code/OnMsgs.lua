@@ -74,85 +74,88 @@ end
 -- use this message to make modifications to the built classes (before they are declared final)
 --~ function OnMsg.ClassesPostprocess()
 --~ end
+do -- OnMsgClassesBuilt
+  local function OnMsgClassesBuilt()
+    local XTemplates = XTemplates
 
-local function OnMsgClassesBuilt()
-  local XTemplates = XTemplates
-
-  --add HiddenX cat for Hidden items
-  if ChoGGi.UserSettings.Building_hide_from_build_menu then
-    BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
-  end
-
-  -- don't show cheats pane for ResourceOverview
-  XTemplates.sectionCheats[1].__condition = function(parent, context)
-    --no sense in doing anything without cheats pane enabled
-    if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
-      return false
+    --add HiddenX cat for Hidden items
+    if ChoGGi.UserSettings.Building_hide_from_build_menu then
+      BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
     end
-    return context:CreateCheatActions(parent)
-  end
 
-  -- limit height of cheats pane and others in the selection panel
-  XTemplates.sectionCheats[1][1].Clip = true
-  XTemplates.sectionCheats[1][1].MaxHeight = 0
-  XTemplates.sectionResidence[1][1].MaxHeight = 256
+    -- don't show cheats pane for ResourceOverview
+    XTemplates.sectionCheats[1].__condition = function(parent, context)
+      --no sense in doing anything without cheats pane enabled
+      if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
+        return false
+      end
+      return context:CreateCheatActions(parent)
+    end
 
-  -- only added to stuff spawned with object spawner
-  XTemplates.ipEverything = nil
+    -- limit height of cheats pane and others in the selection panel
+    XTemplates.sectionCheats[1][1].Clip = true
+    XTemplates.sectionCheats[1][1].MaxHeight = 0
+    XTemplates.sectionResidence[1][1].MaxHeight = 256
 
-  PlaceObj('XTemplate', {
-    group = "Infopanel Sections",
-    id = "ipEverything",
-    PlaceObj('XTemplateTemplate', {
---~       '__context_of_kind', "Object",
-      '__condition', function (_, context) return context.ChoGGi_Spawned end,
-      '__template', "Infopanel",
-      'Description', S[313911890683--[[<description>--]]],
-    }, {
-    PlaceObj('XTemplateTemplate', {
-      'comment', "salvage",
-      '__template', "InfopanelButton",
-      'RolloverText', S[640016954592--[[Remove this switch or valve.--]]],
-      'RolloverTitle', S[3973--[[Salvage--]]],
-      'RolloverHintGamepad', S[7657--[[<ButtonY> Activate--]]],
-      'ContextUpdateOnOpen', false,
-      'OnPressParam', "Demolish",
-      'Icon', "UI/Icons/IPButtons/salvage_1.tga",
-    }, {
-        PlaceObj('XTemplateFunc', {
-          'name', "OnXButtonDown(self, button)",
-          'func', function (self, button)
-            if button == "ButtonY" then
-              return self:OnButtonDown(false)
-            elseif button == "ButtonX" then
-              return self:OnButtonDown(true)
-            end
-            return (button == "ButtonA") and "break"
-          end,
-        }),
-        PlaceObj('XTemplateFunc', {
-          'name', "OnXButtonUp(self, button)",
-          'func', function (self, button)
-            if button == "ButtonY" then
-              return self:OnButtonUp(false)
-            elseif button == "ButtonX" then
-              return self:OnButtonUp(true)
-            end
-            return (button == "ButtonA") and "break"
-          end,
+    -- only added to stuff spawned with object spawner
+    XTemplates.ipEverything = nil
+
+    PlaceObj('XTemplate', {
+      group = "Infopanel Sections",
+      id = "ipEverything",
+      PlaceObj('XTemplateTemplate', {
+  --~       '__context_of_kind', "Object",
+        '__condition', function (_, context) return context.ChoGGi_Spawned end,
+        '__template', "Infopanel",
+        'Description', S[313911890683--[[<description>--]]],
+      }, {
+      PlaceObj('XTemplateTemplate', {
+        'comment', "salvage",
+        '__template', "InfopanelButton",
+        'RolloverText', S[640016954592--[[Remove this switch or valve.--]]],
+        'RolloverTitle', S[3973--[[Salvage--]]],
+        'RolloverHintGamepad', S[7657--[[<ButtonY> Activate--]]],
+        'ContextUpdateOnOpen', false,
+        'OnPressParam', "Demolish",
+        'Icon', "UI/Icons/IPButtons/salvage_1.tga",
+      }, {
+          PlaceObj('XTemplateFunc', {
+            'name', "OnXButtonDown(self, button)",
+            'func', function (self, button)
+              if button == "ButtonY" then
+                return self:OnButtonDown(false)
+              elseif button == "ButtonX" then
+                return self:OnButtonDown(true)
+              end
+              return (button == "ButtonA") and "break"
+            end,
+          }),
+          PlaceObj('XTemplateFunc', {
+            'name', "OnXButtonUp(self, button)",
+            'func', function (self, button)
+              if button == "ButtonY" then
+                return self:OnButtonUp(false)
+              elseif button == "ButtonX" then
+                return self:OnButtonUp(true)
+              end
+              return (button == "ButtonA") and "break"
+            end,
+          }),
         }),
       }),
-    }),
-  })
-end
-function OnMsg.XTemplatesLoaded()
-  OnMsgClassesBuilt()
-end
+    })
+  end
 
--- use this message to perform post-built actions on the final classes
-function OnMsg.ClassesBuilt()
-  OnMsgClassesBuilt()
-end --OnMsg
+  -- called when new DLC is added (or a new game)
+  function OnMsg.XTemplatesLoaded()
+    OnMsgClassesBuilt()
+  end
+
+  -- use this message to perform post-built actions on the final classes
+  function OnMsg.ClassesBuilt()
+    OnMsgClassesBuilt()
+  end --OnMsg
+end -- do
 
 function OnMsg.ModsLoaded()
   -- easy access to colonist data, cargo, mystery
@@ -344,51 +347,53 @@ function OnMsg.Demolished(building)
     local UICity = building.city or UICity
     UICity.labels.Domes_Working = nil
     UICity:InitEmptyLabel("Domes_Working")
-    local Table = UICity.labels.Dome or ""
-    for i = 1, #Table do
-      UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = Table[i]
+    local table_temp = UICity.labels.Dome or ""
+    for i = 1, #table_temp do
+      UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = table_temp[i]
     end
   end
 end --OnMsg
 
-local function ColonistCreated(obj,skip)
-  local UserSettings = ChoGGi.UserSettings
+do -- ColonistCreated
+  local function ColonistCreated(obj,skip)
+    local UserSettings = ChoGGi.UserSettings
 
-  if UserSettings.GravityColonist then
-    obj:SetGravity(UserSettings.GravityColonist)
-  end
-  if UserSettings.NewColonistGender then
-    ChoGGi.CodeFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
-  end
-  if UserSettings.NewColonistAge then
-    ChoGGi.CodeFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
-  end
-  -- children don't have spec models so they get black cube
-  if UserSettings.NewColonistSpecialization and not skip then
-    ChoGGi.CodeFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
-  end
-  if UserSettings.NewColonistRace then
-    ChoGGi.CodeFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
-  end
-  if UserSettings.NewColonistTraits then
-    ChoGGi.CodeFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
-  end
-  if UserSettings.SpeedColonist then
-    obj:SetMoveSpeed(UserSettings.SpeedColonist)
-  end
-  if UserSettings.DeathAgeColonist then
-    obj.death_age = UserSettings.DeathAgeColonist
+    if UserSettings.GravityColonist then
+      obj:SetGravity(UserSettings.GravityColonist)
+    end
+    if UserSettings.NewColonistGender then
+      ChoGGi.CodeFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
+    end
+    if UserSettings.NewColonistAge then
+      ChoGGi.CodeFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
+    end
+    -- children don't have spec models so they get black cube
+    if UserSettings.NewColonistSpecialization and not skip then
+      ChoGGi.CodeFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
+    end
+    if UserSettings.NewColonistRace then
+      ChoGGi.CodeFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
+    end
+    if UserSettings.NewColonistTraits then
+      ChoGGi.CodeFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
+    end
+    if UserSettings.SpeedColonist then
+      obj:SetMoveSpeed(UserSettings.SpeedColonist)
+    end
+    if UserSettings.DeathAgeColonist then
+      obj.death_age = UserSettings.DeathAgeColonist
+    end
+
   end
 
-end
+  function OnMsg.ColonistArrived(obj)
+    ColonistCreated(obj)
+  end --OnMsg
 
-function OnMsg.ColonistArrived(obj)
-  ColonistCreated(obj)
-end --OnMsg
-
-function OnMsg.ColonistBorn(obj)
-  ColonistCreated(obj,true)
-end --OnMsg
+  function OnMsg.ColonistBorn(obj)
+    ColonistCreated(obj,true)
+  end --OnMsg
+end -- do
 
 function OnMsg.SelectionAdded(obj)
   --update selection shortcut
@@ -551,9 +556,9 @@ end
 function OnMsg.ChoGGi_TogglePinnableObject(obj)
   local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
   if type(UnpinObjects) == "table" and next(UnpinObjects) then
-    local Table = UnpinObjects or ""
-    for i = 1, #Table do
-      if obj.class == Table[i] and obj:IsPinned() then
+    local table_temp = UnpinObjects or ""
+    for i = 1, #table_temp do
+      if obj.class == table_temp[i] and obj:IsPinned() then
         obj:TogglePin()
         break
       end
@@ -582,31 +587,33 @@ function OnMsg.ChoGGi_SpawnedDrone(obj)
   end
 end
 
-local function RCCreated(obj)
-  local UserSettings = ChoGGi.UserSettings
-  if UserSettings.SpeedRC then
-    obj:SetMoveSpeed(UserSettings.SpeedRC)
+do -- RCCreated
+  local function RCCreated(obj)
+    local UserSettings = ChoGGi.UserSettings
+    if UserSettings.SpeedRC then
+      obj:SetMoveSpeed(UserSettings.SpeedRC)
+    end
+    if UserSettings.GravityRC then
+      obj:SetGravity(UserSettings.GravityRC)
+    end
   end
-  if UserSettings.GravityRC then
-    obj:SetGravity(UserSettings.GravityRC)
+  function OnMsg.ChoGGi_SpawnedRCTransport(obj)
+    local UserSettings = ChoGGi.UserSettings
+    if UserSettings.RCTransportStorageCapacity then
+      obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+    end
+    RCCreated(obj)
   end
-end
-function OnMsg.ChoGGi_SpawnedRCTransport(obj)
-  local UserSettings = ChoGGi.UserSettings
-  if UserSettings.RCTransportStorageCapacity then
-    obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+  function OnMsg.ChoGGi_SpawnedRCRover(obj)
+    if ChoGGi.UserSettings.RCRoverMaxRadius then
+      obj:SetWorkRadius() -- I override the func so no need to send a value here
+    end
+    RCCreated(obj)
   end
-  RCCreated(obj)
-end
-function OnMsg.ChoGGi_SpawnedRCRover(obj)
-  if ChoGGi.UserSettings.RCRoverMaxRadius then
-    obj:SetWorkRadius() -- I override the func so no need to send a value here
+  function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
+    RCCreated(obj)
   end
-  RCCreated(obj)
-end
-function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
-  RCCreated(obj)
-end
+end -- do
 
 function OnMsg.ChoGGi_SpawnedDroneHub(obj)
   if ChoGGi.UserSettings.CommandCenterMaxRadius then
@@ -636,58 +643,63 @@ function OnMsg.ChoGGi_SpawnedDinerGrocery(obj)
 end
 
 --make sure they use with our new values
-local function SetProd(obj,sType)
-  local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
-  if prod and prod.production then
-    obj[sType] = prod.production
-  end
-end
-function OnMsg.ChoGGi_SpawnedProducerElectricity(obj)
-  SetProd(obj,"electricity_production")
-end
-function OnMsg.ChoGGi_SpawnedProducerAir(obj)
-  SetProd(obj,"air_production")
-end
-function OnMsg.ChoGGi_SpawnedProducerWater(obj)
-  SetProd(obj,"water_production")
-end
-function OnMsg.ChoGGi_SpawnedProducerSingle(obj)
-  SetProd(obj,"production_per_day")
-end
-
-local function CheckForRate(obj)
-  --charge/discharge
-  local value = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
-
-  if value then
-    local function SetValue(sType)
-      if value.charge then
-        obj[sType].max_charge = value.charge
-        obj[Concat("max_",sType,"_charge")] = value.charge
-      end
-      if value.discharge then
-        obj[sType].max_discharge = value.discharge
-        obj[Concat("max_",sType,"_discharge")] = value.discharge
-      end
-    end
-
-    if type(obj.GetStoredAir) == "function" then
-      SetValue("air")
-    elseif type(obj.GetStoredWater) == "function" then
-      SetValue("water")
-    elseif type(obj.GetStoredPower) == "function" then
-      SetValue("electricity")
+do -- SetProd
+  local function SetProd(obj,sType)
+    local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
+    if prod and prod.production then
+      obj[sType] = prod.production
     end
   end
-end
---water/air tanks
-function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(obj)
-  CheckForRate(obj)
-end
---battery
-function OnMsg.ChoGGi_SpawnedElectricityStorage(obj)
-  CheckForRate(obj)
-end
+  function OnMsg.ChoGGi_SpawnedProducerElectricity(obj)
+    SetProd(obj,"electricity_production")
+  end
+  function OnMsg.ChoGGi_SpawnedProducerAir(obj)
+    SetProd(obj,"air_production")
+  end
+  function OnMsg.ChoGGi_SpawnedProducerWater(obj)
+    SetProd(obj,"water_production")
+  end
+  function OnMsg.ChoGGi_SpawnedProducerSingle(obj)
+    SetProd(obj,"production_per_day")
+  end
+end -- do
+
+do -- CheckForRate
+  local function SetValue(obj,value,res)
+    if value.charge then
+      obj[res].max_charge = value.charge
+      obj[Concat("max_",res,"_charge")] = value.charge
+    end
+    if value.discharge then
+      obj[res].max_discharge = value.discharge
+      obj[Concat("max_",res,"_discharge")] = value.discharge
+    end
+  end
+  local function CheckForRate(obj)
+    --charge/discharge
+    local value = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
+
+    if value then
+
+      if type(obj.GetStoredAir) == "function" then
+        SetValue(obj,value,"air")
+      elseif type(obj.GetStoredWater) == "function" then
+        SetValue(obj,value,"water")
+      elseif type(obj.GetStoredPower) == "function" then
+        SetValue(obj,value,"electricity")
+      end
+    end
+  end
+
+  --water/air tanks
+  function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(obj)
+    CheckForRate(obj)
+  end
+  --battery
+  function OnMsg.ChoGGi_SpawnedElectricityStorage(obj)
+    CheckForRate(obj)
+  end
+end -- do
 
 --hidden milestones
 function OnMsg.ChoGGi_DaddysLittleHitler()
@@ -738,489 +750,470 @@ function OnMsg.CityStart()
   Msg("ChoGGi_Loaded")
 end
 
--- LoadGame/CityStart
-function OnMsg.ChoGGi_Loaded()
-  local UICity = UICity
-  --for new games
-  if not UICity then
-    return
-  end
 
-  -- a place to store per-game values
-  if not UICity.ChoGGi then
-    UICity.ChoGGi = {}
-  end
-
-  local ChoGGi = ChoGGi
-
-  -- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
-  if ChoGGi.Temp.IsGameLoaded == true then
-    return
-  end
-  ChoGGi.Temp.IsGameLoaded = true
-
-  local UserSettings = ChoGGi.UserSettings
-  local g_Classes = g_Classes
-  local config = config
-  local const = const
-  local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-  local DataInstances = DataInstances
-  local dlgConsole = dlgConsole
-  local Presets = Presets
-  local UserActions = UserActions
-  local hr = hr
-
-  -- gets used a few times
-  local Table
-
-  -- late enough that I can set g_Consts.
-  ChoGGi.SettingFuncs.SetConstsToSaved()
-
-  -- needed for DroneResourceCarryAmount?
-  UpdateDroneResourceUnits()
-
-  -- clear out Temp settings
-  ChoGGi.Temp.UnitPathingHandles = {}
-
-  -- update cargo resupply
-  ChoGGi.ComFuncs.UpdateDataTables(true)
-  for Key,Value in pairs(UserSettings.CargoSettings or empty_table) do
-    if ChoGGi.Tables.Cargo[Key] then
-      if Value.pack then
-        ChoGGi.Tables.Cargo[Key].pack = Value.pack
-      end
-      if Value.kg then
-        ChoGGi.Tables.Cargo[Key].kg = Value.kg
-      end
-      if Value.price then
-        ChoGGi.Tables.Cargo[Key].price = Value.price
+do -- LoadGame/CityStart
+  local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
+    local tab = Presets[preset].Default or ""
+    for i = 1, #tab do
+      if UserSettings[Concat(which,tab[i].id)] then
+        Func(tab[i].id)
       end
     end
   end
 
-  if not UserSettings.DisableECM then
-    -- remove all built-in actions
-    UserActions_ClearGlobalTables()
-    UserActions.Actions = {}
-    UserActions.RejectedActions = {}
-
-    if ChoGGi.Testing then
-      ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
+  function OnMsg.ChoGGi_Loaded()
+    local UICity = UICity
+    --for new games
+    if not UICity then
+      return
     end
 
-    -- add custom actions
-    dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
+    -- a place to store per-game values
+    if not UICity.ChoGGi then
+      UICity.ChoGGi = {}
+    end
 
-    local function SetMissionBonuses(Preset,Type,Func)
-      local tab = Presets[Preset].Default or ""
-      for i = 1, #tab do
-        if UserSettings[Concat(Type,tab[i].id)] then
-          Func(tab[i].id)
+    local ChoGGi = ChoGGi
+
+    -- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
+    if ChoGGi.Temp.IsGameLoaded == true then
+      return
+    end
+    ChoGGi.Temp.IsGameLoaded = true
+
+    local UserSettings = ChoGGi.UserSettings
+    local g_Classes = g_Classes
+    local config = config
+    local const = const
+    local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
+    local DataInstances = DataInstances
+    local dlgConsole = dlgConsole
+    local Presets = Presets
+    local UserActions = UserActions
+    local hr = hr
+
+    -- gets used a few times
+    local table_temp
+
+    -- late enough that I can set g_Consts.
+    ChoGGi.SettingFuncs.SetConstsToSaved()
+
+    -- needed for DroneResourceCarryAmount?
+    UpdateDroneResourceUnits()
+
+    -- clear out Temp settings
+    ChoGGi.Temp.UnitPathingHandles = {}
+
+    -- update cargo resupply
+    ChoGGi.ComFuncs.UpdateDataTables(true)
+    for Key,Value in pairs(UserSettings.CargoSettings or empty_table) do
+      if ChoGGi.Tables.Cargo[Key] then
+        if Value.pack then
+          ChoGGi.Tables.Cargo[Key].pack = Value.pack
+        end
+        if Value.kg then
+          ChoGGi.Tables.Cargo[Key].kg = Value.kg
+        end
+        if Value.price then
+          ChoGGi.Tables.Cargo[Key].price = Value.price
         end
       end
     end
-    SetMissionBonuses("MissionSponsorPreset","Sponsor",ChoGGi.MenuFuncs.SetSponsorBonuses)
-    SetMissionBonuses("CommanderProfilePreset","Commander",ChoGGi.MenuFuncs.SetCommanderBonuses)
 
-    -- add preset menu items
-    ClassDescendantsList("Preset", function(name, class)
-      ChoGGi.ComFuncs.AddAction(
-        {"/[40]",S[302535920000979--[[Presets--]]],"/"},
-        Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
-        function()
-          OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-            PresetClass = name,
-            SingleFile = class.SingleFile
-          })
-        end,
-        class.EditorShortcut or nil,
-        S[302535920000733--[[Open a preset in the editor.--]]],
-        class.EditorIcon or "CollectionsEditor.tga"
-      )
+    if not UserSettings.DisableECM then
+      -- remove all built-in actions
+      UserActions_ClearGlobalTables()
+      UserActions.Actions = {}
+      UserActions.RejectedActions = {}
+
+      if ChoGGi.Testing then
+        ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
+      end
+
+      -- add custom actions
+      dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
+      SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
+      SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
+
+      -- add preset menu items
+      ClassDescendantsList("Preset", function(name, class)
+        ChoGGi.ComFuncs.AddAction(
+          {"/[40]",S[302535920000979--[[Presets--]]],"/"},
+          Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
+          function()
+            OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+              PresetClass = name,
+              SingleFile = class.SingleFile
+            })
+          end,
+          class.EditorShortcut or nil,
+          S[302535920000733--[[Open a preset in the editor.--]]],
+          class.EditorIcon or "CollectionsEditor.tga"
+        )
+      end)
+
+      -- update menu
+      g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+
+      -- always show on my computer
+      if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
+        if not dlgUAMenu then
+          g_Classes.UAMenu.ToggleOpen()
+        end
+      end
+
+      -- show cheat pane in selection panel
+      if UserSettings.InfopanelCheats then
+        config.BuildingInfopanelCheats = true
+        ReopenSelectionXInfopanel()
+      end
+
+      --show console log history
+      if UserSettings.ConsoleToggleHistory then
+        ShowConsoleLog(true)
+      end
+
+      if UserSettings.ConsoleHistoryWin then
+        ChoGGi.ComFuncs.ShowConsoleLogWin(true)
+      end
+
+      --dim that console bg
+      if UserSettings.ConsoleDim then
+        config.ConsoleDim = 1
+      end
+
+      --remove some uselessish Cheats to clear up space
+      if UserSettings.CleanupCheatsInfoPane then
+        ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+      end
+
+      --add Scripts button to console
+      if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+        dlgConsole.ChoGGi_MenuAdded = true
+        -- build console buttons
+        ChoGGi.Console.ConsoleControls()
+        -- check for and create example scripts/script folder
+  --~       ChoGGi.Console.BuildScriptFiles()
+
+        -- add a close button
+        g_Classes.XTextButton:new({
+          Id = "idClose",
+          RolloverTemplate = "Rollover",
+          RolloverText = S[1011--[[Close--]]],
+          RolloverTitle = S[126095410863--[[Info--]]],
+          Image = "UI/Common/mission_no.tga",
+          Background = RGB(255, 255, 255),
+          OnPress = function()
+            dlgConsole:Show()
+          end,
+          Margins = box(0, 0, 0, -53),
+          Dock = "bottom",
+          HAlign = "right",
+        }, dlgConsole)
+
+        -- make some space for the button
+        dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+      end
+
+    end -- DisableECM
+
+
+
+
+
+  -------------------do the above stuff before the below stuff
+
+
+
+
+
+    -- show completed hidden milestones
+    if UICity.ChoGGi.DaddysLittleHitler then
+      PlaceObj("Milestone", {
+        base_score = 0,
+        display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
+        group = "Default",
+        id = "DaddysLittleHitler"
+      })
+      if not MilestoneCompleted.DaddysLittleHitler then
+        MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
+      end
+    end
+    if UICity.ChoGGi.Childkiller then
+      PlaceObj("Milestone", {
+        base_score = 0,
+        display_name = S[302535920000732--[[Childkiller (You evil, evil person.)--]]],
+        group = "Default",
+        id = "Childkiller"
+      })
+      --it doesn't hurt
+      if not MilestoneCompleted.Childkiller then
+        MilestoneCompleted.Childkiller = 479000000 -- 666
+      end
+    end
+
+    --add custom lightmodel
+    if DataInstances.Lightmodel.ChoGGi_Custom and type(DataInstances.Lightmodel.ChoGGi_Custom.delete) == "function" then
+      DataInstances.Lightmodel.ChoGGi_Custom:delete()
+    end
+
+    local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
+    if not LightmodelCustom then
+      _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Defaults.LightmodelCustom)
+    end
+
+    if LightmodelCustom then
+      DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+    else
+      LightmodelCustom = ChoGGi.Consts.LightmodelCustom
+      UserSettings.LightmodelCustom = LightmodelCustom
+      DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+      ChoGGi.Temp.WriteSettings = true
+    end
+    ChoGGi.Temp.LightmodelCustom = LightmodelCustom
+
+    --if there's a lightmodel name saved
+    local LightModel = UserSettings.LightModel
+    if LightModel then
+      SetLightmodelOverride(1,LightModel)
+    end
+
+    -- defaults to 20 items
+    const.nConsoleHistoryMaxSize = 100
+
+    --long arsed cables
+    if UserSettings.UnlimitedConnectionLength then
+      g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000
+    end
+
+    -- on by default, you know all them martian trees (might make a cpu difference, probably not)
+    hr.TreeWind = 0
+
+    if UserSettings.DisableTextureCompression then
+      -- uses more vram (1 toggles it, not sure what 0 does...)
+      hr.TR_ToggleTextureCompression = 1
+    end
+
+    -- render settings
+    hr.ShadowmapSize = UserSettings.ShadowmapSize or hr.ShadowmapSize
+    hr.DTM_VideoMemory = UserSettings.VideoMemory or hr.DTM_VideoMemory
+    hr.TR_MaxChunks = UserSettings.TerrainDetail or hr.TR_MaxChunks
+    hr.LightsRadiusModifier = UserSettings.LightsRadius or hr.LightsRadiusModifier
+
+    if UserSettings.HigherRenderDist then
+      -- lot of lag for some small rocks in distance
+      -- hr.AutoFadeDistanceScale = 2200 --def 2200
+
+      -- render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
+      if type(UserSettings.HigherRenderDist) == "number" then
+        hr.DistanceModifier = UserSettings.HigherRenderDist
+        hr.LODDistanceModifier = UserSettings.HigherRenderDist
+      else
+        hr.DistanceModifier = 600
+        hr.LODDistanceModifier = 600
+      end
+    end
+
+    if UserSettings.HigherShadowDist then
+      if type(UserSettings.HigherShadowDist) == "number" then
+        hr.ShadowRangeOverride = UserSettings.HigherShadowDist
+      else
+        -- shadow cutoff dist
+        hr.ShadowRangeOverride = 1000000 --def 0
+      end
+      -- no shadow fade out when zooming
+      hr.ShadowFadeOutRangePercent = 0 --def 30
+    end
+
+    -- default to showing interface in ss
+    if UserSettings.ShowInterfaceInScreenshots then
+      hr.InterfaceInScreenshot = 1
+    end
+
+    -- not sure why this would be false on a dome
+    table_temp = UICity.labels.Dome or ""
+    for i = 1, #table_temp do
+      if table_temp[i].achievement == "FirstDome" and type(table_temp[i].connected_domes) ~= "table" then
+        table_temp[i].connected_domes = {}
+      end
+    end
+
+    -- something messed up if storage is negative (usually setting an amount then lowering it)
+    table_temp = UICity.labels.Storages or ""
+    pcall(function()
+      for i = 1, #table_temp do
+        if table_temp[i]:GetStoredAmount() < 0 then
+          -- we have to empty it first (just filling doesn't fix the issue)
+          table_temp[i]:CheatEmpty()
+          table_temp[i]:CheatFill()
+        end
+      end
     end)
 
-    -- update menu
-    g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-
-    -- always show on my computer
-    if UserSettings.ShowCheatsMenu or ChoGGi.Testing then
-      if not dlgUAMenu then
-        g_Classes.UAMenu.ToggleOpen()
+    --so we can change the max_amount for concrete
+    table_temp = g_Classes.TerrainDepositConcrete.properties or ""
+    for i = 1, #table_temp do
+      if table_temp[i].id == "max_amount" then
+        table_temp[i].read_only = nil
       end
     end
 
-    -- show cheat pane in selection panel
-    if UserSettings.InfopanelCheats then
-      config.BuildingInfopanelCheats = true
-      ReopenSelectionXInfopanel()
-    end
+    --override building templates
+    table_temp = DataInstances.BuildingTemplate or ""
+    for i = 1, #table_temp do
+      local temp = table_temp[i]
 
-    --show console log history
-    if UserSettings.ConsoleToggleHistory then
-      ShowConsoleLog(true)
-    end
-
-    if UserSettings.ConsoleHistoryWin then
-      ChoGGi.ComFuncs.ShowConsoleLogWin(true)
-    end
-
-    --dim that console bg
-    if UserSettings.ConsoleDim then
-      config.ConsoleDim = 1
-    end
-
-    --remove some uselessish Cheats to clear up space
-    if UserSettings.CleanupCheatsInfoPane then
-      ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-    end
-
-    --add Scripts button to console
-    if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
-      dlgConsole.ChoGGi_MenuAdded = true
-      -- build console buttons
-      ChoGGi.Console.ConsoleControls()
-      -- check for and create example scripts/script folder
---~       ChoGGi.Console.BuildScriptFiles()
-
-      -- add a close button
-      g_Classes.XTextButton:new({
-        Id = "idClose",
-        RolloverTemplate = "Rollover",
-        RolloverText = S[1011--[[Close--]]],
-        RolloverTitle = S[126095410863--[[Info--]]],
-        Image = "UI/Common/mission_no.tga",
-        Background = RGB(255, 255, 255),
-        OnPress = function()
-          dlgConsole:Show()
-        end,
-        Margins = box(0, 0, 0, -53),
-        Dock = "bottom",
-        HAlign = "right",
-      }, dlgConsole)
-
-      -- make some space for the button
-      dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-    end
-
-  end -- DisableECM
-
-
-
-
-
--------------------do the above stuff before the below stuff
-
-
-
-
-
-  -- show completed hidden milestones
-  if UICity.ChoGGi.DaddysLittleHitler then
-    PlaceObj("Milestone", {
-      base_score = 0,
-      display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
-      group = "Default",
-      id = "DaddysLittleHitler"
-    })
-    if not MilestoneCompleted.DaddysLittleHitler then
-      MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
-    end
-  end
-  if UICity.ChoGGi.Childkiller then
-    PlaceObj("Milestone", {
-      base_score = 0,
-      display_name = S[302535920000732--[[Childkiller (You evil, evil person.)--]]],
-      group = "Default",
-      id = "Childkiller"
-    })
-    --it doesn't hurt
-    if not MilestoneCompleted.Childkiller then
-      MilestoneCompleted.Childkiller = 479000000 -- 666
-    end
-  end
-
-  --add custom lightmodel
-  if DataInstances.Lightmodel.ChoGGi_Custom and type(DataInstances.Lightmodel.ChoGGi_Custom.delete) == "function" then
-    DataInstances.Lightmodel.ChoGGi_Custom:delete()
-  end
-
-  local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
-  if not LightmodelCustom then
-    _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Defaults.LightmodelCustom)
-  end
-
-  if LightmodelCustom then
-    DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
-  else
-    LightmodelCustom = ChoGGi.Consts.LightmodelCustom
-    UserSettings.LightmodelCustom = LightmodelCustom
-    DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
-    ChoGGi.Temp.WriteSettings = true
-  end
-  ChoGGi.Temp.LightmodelCustom = LightmodelCustom
-
-  --if there's a lightmodel name saved
-  local LightModel = UserSettings.LightModel
-  if LightModel then
-    SetLightmodelOverride(1,LightModel)
-  end
-
-  --defaults to 20 items
-  const.nConsoleHistoryMaxSize = 100
-
-  --long arsed cables
-  if UserSettings.UnlimitedConnectionLength then
-    g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000
-  end
-
-  --on by default, you know all them martian trees (might make a cpu difference, probably not)
-  hr.TreeWind = 0
-
-  if UserSettings.DisableTextureCompression then
-    --uses more vram (1 toggles it, not sure what 0 does...)
-    hr.TR_ToggleTextureCompression = 1
-  end
-
-  if UserSettings.ShadowmapSize then
-    hr.ShadowmapSize = UserSettings.ShadowmapSize
-  end
-
-  if UserSettings.VideoMemory then
-    hr.DTM_VideoMemory = UserSettings.VideoMemory
-  end
-
-  if UserSettings.TerrainDetail then
-    hr.TR_MaxChunks = UserSettings.TerrainDetail
-  end
-
-  if UserSettings.LightsRadius then
-    hr.LightsRadiusModifier = UserSettings.LightsRadius
-  end
-
-  if UserSettings.HigherRenderDist then
-    --lot of lag for some small rocks in distance
-    --hr.AutoFadeDistanceScale = 2200 --def 2200
-
-    --render objects from further away (going to 960 makes a minimal difference, other than FPS on bigger cities)
-    if type(UserSettings.HigherRenderDist) == "number" then
-      hr.DistanceModifier = UserSettings.HigherRenderDist
-      hr.LODDistanceModifier = UserSettings.HigherRenderDist
-    else
-      hr.DistanceModifier = 600
-      hr.LODDistanceModifier = 600
-    end
-  end
-
-  if UserSettings.HigherShadowDist then
-    if type(UserSettings.HigherShadowDist) == "number" then
-      hr.ShadowRangeOverride = UserSettings.HigherShadowDist
-    else
-    --shadow cutoff dist
-    hr.ShadowRangeOverride = 1000000 --def 0
-    end
-    --no shadow fade out when zooming
-    hr.ShadowFadeOutRangePercent = 0 --def 30
-  end
-
-  --default to showing interface in ss
-  if UserSettings.ShowInterfaceInScreenshots then
-    hr.InterfaceInScreenshot = 1
-  end
-
-  --not sure why this would be false on a dome
-  Table = UICity.labels.Dome or ""
-  for i = 1, #Table do
-    if Table[i].achievement == "FirstDome" and type(Table[i].connected_domes) ~= "table" then
-      Table[i].connected_domes = {}
-    end
-  end
-
-  --something messed up if storage is negative (usually setting an amount then lowering it)
-  Table = UICity.labels.Storages or ""
-  pcall(function()
-    for i = 1, #Table do
-      if Table[i]:GetStoredAmount() < 0 then
-        --we have to empty it first (just filling doesn't fix the issue)
-        Table[i]:CheatEmpty()
-        Table[i]:CheatFill()
-      end
-    end
-  end)
-
-  --so we can change the max_amount for concrete
-  Table = g_Classes.TerrainDepositConcrete.properties or ""
-  for i = 1, #Table do
-    if Table[i].id == "max_amount" then
-      Table[i].read_only = nil
-    end
-  end
-
-  --override building templates
-  Table = DataInstances.BuildingTemplate or ""
-  for i = 1, #Table do
-    local temp = Table[i]
-
-    --make hidden buildings visible
-    if UserSettings.Building_hide_from_build_menu then
-      BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-      BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
-      if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
-        temp.hide_from_build_menu = nil
-      end
-      if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
-        temp.build_category = "HiddenX"
-      end
-    end
-
-    --wonder building limit
-    if UserSettings.Building_wonder then
-      temp.wonder = nil
-    end
-
-  end
-
-  --get the +5 bonus from phys profile, fixed in curo update
-  --[[
-  if UserSettings.NoRestingBonusPsychologistFix then
-    local commander_profile = GetCommanderProfile()
-    if commander_profile.id == "psychologist" then
-      commander_profile.param1 = 5
-    end
-  end
-  --]]
-
-  --set zoom/border scrolling
-  ChoGGi.CodeFuncs.SetCameraSettings()
-
-  --show all traits
-  if UserSettings.SanatoriumSchoolShowAll then
-    g_Classes.Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
-    g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
-  end
-
-  --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
-  if ChoGGi._VERSION ~= UserSettings._VERSION then
-    --clean up
-    CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
-    --update saved version
-    UserSettings._VERSION = ChoGGi._VERSION
-    ChoGGi.Temp.WriteSettings = true
-  end
-
-  CreateRealTimeThread(function()
-    --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-    local shown = g_ShownOnScreenNotifications or empty_table
-    for Key,_ in pairs(shown) do
-      if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
-        shown[Key] = nil
-      end
-    end
-
-    --remove any dialogs we opened
-    ChoGGi.CodeFuncs.CloseDialogsECM()
-
-    --remove any outside buildings i accidentally attached to domes ;)
-    Table = UICity.labels.BuildingNoDomes or ""
-    local sType
-    for i = 1, #Table do
-      if Table[i].dome_required == false and Table[i].parent_dome then
-
-        sType = false
-        --remove it from the dome label
-        if Table[i].closed_shifts then
-          sType = "Residence"
-        elseif Table[i].colonists then
-          sType = "Workplace"
+      --make hidden buildings visible
+      if UserSettings.Building_hide_from_build_menu then
+        BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
+        BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
+        if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
+          temp.hide_from_build_menu = nil
         end
+        if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
+          temp.build_category = "HiddenX"
+        end
+      end
 
-        if sType then --get a fucking continue lua
-          if Table[i].parent_dome.labels and Table[i].parent_dome.labels[sType] then
-            local dome = Table[i].parent_dome.labels[sType]
-            for j = 1, #dome do
-              if dome[j].class == Table[i].class then
-                dome[j] = nil
+      --wonder building limit
+      if UserSettings.Building_wonder then
+        temp.wonder = nil
+      end
+    end
+
+    --set zoom/border scrolling
+    ChoGGi.CodeFuncs.SetCameraSettings()
+
+    --show all traits
+    if UserSettings.SanatoriumSchoolShowAll then
+      g_Classes.Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
+      g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
+    end
+
+    --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk)
+    if ChoGGi._VERSION ~= UserSettings._VERSION then
+      --clean up
+      CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
+      --update saved version
+      UserSettings._VERSION = ChoGGi._VERSION
+      ChoGGi.Temp.WriteSettings = true
+    end
+
+    CreateRealTimeThread(function()
+      --clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
+      local shown = g_ShownOnScreenNotifications or empty_table
+      for Key,_ in pairs(shown) do
+        if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
+          shown[Key] = nil
+        end
+      end
+
+      --remove any dialogs we opened
+      ChoGGi.CodeFuncs.CloseDialogsECM()
+
+      --remove any outside buildings i accidentally attached to domes ;)
+      table_temp = UICity.labels.BuildingNoDomes or ""
+      local sType
+      for i = 1, #table_temp do
+        if table_temp[i].dome_required == false and table_temp[i].parent_dome then
+
+          sType = false
+          --remove it from the dome label
+          if table_temp[i].closed_shifts then
+            sType = "Residence"
+          elseif table_temp[i].colonists then
+            sType = "Workplace"
+          end
+
+          if sType then --get a fucking continue lua
+            if table_temp[i].parent_dome.labels and table_temp[i].parent_dome.labels[sType] then
+              local dome = table_temp[i].parent_dome.labels[sType]
+              for j = 1, #dome do
+                if dome[j].class == table_temp[i].class then
+                  dome[j] = nil
+                end
               end
             end
+            --remove parent_dome
+            table_temp[i].parent_dome = nil
           end
-          --remove parent_dome
-          Table[i].parent_dome = nil
-        end
 
+        end
       end
+
+      --make the change map dialog movable
+      DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
+      DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
+    end)
+
+    --print startup msgs to console log
+    local msgs = ChoGGi.Temp.StartupMsgs
+    for i = 1, #msgs do
+      print(msgs[i])
     end
 
-    --make the change map dialog movable
-    DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
-    DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
-  end)
+    --everyone loves a new titlebar, unless they don't
+    if UserSettings.ChangeWindowTitle then
+      terminal_SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
+    end
 
-  --print startup msgs to console log
-  local msgs = ChoGGi.Temp.StartupMsgs
-  for i = 1, #msgs do
-    print(msgs[i])
-  end
+    --someone doesn't like LICENSE files...
+    local dickhead
+    local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"LICENSE"))
 
-  --everyone loves a new titlebar, unless they don't
-  if UserSettings.ChangeWindowTitle then
-    terminal_SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
-  end
+    if nofile then
+      --some dickhead removed the LICENSE
+      dickhead = true
+    elseif not file:find("ChoGGi") then
+      --LICENSE exists, but was changed (again dickhead)
+      dickhead = true
+    end
 
-  --someone doesn't like LICENSE files...
-  local dickhead
-  local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"LICENSE"))
+    --look ma; a LICENSE! oh no wait, just a dickhead
+    if dickhead then
+      --i mean you gotta be compliant somehow...
+      print(ChoGGi._LICENSE)
+      terminal_SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
+    end
 
-  if nofile then
-    --some dickhead removed the LICENSE
-    dickhead = true
-  elseif not file:find("ChoGGi") then
-    --LICENSE exists, but was changed (again dickhead)
-    dickhead = true
-  end
-
-  --look ma; a LICENSE! oh no wait, just a dickhead
-  if dickhead then
-    --i mean you gotta be compliant somehow...
-    print(ChoGGi._LICENSE)
-    terminal_SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
-  end
-
-  -- first time run info
-  if ChoGGi.UserSettings.FirstRun ~= false then
-    ChoGGi.ComFuncs.MsgWait(
-      S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+    -- first time run info
+    if ChoGGi.UserSettings.FirstRun ~= false then
+      ChoGGi.ComFuncs.MsgWait(
+        S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 Press ~ or Enter and click the ""Console"" button to toggle showing console log history."--]]],
-      Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]])
-    )
-    ChoGGi.UserSettings.FirstRun = false
-    ChoGGi.Temp.WriteSettings = true
-  end
+        Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]])
+      )
+      ChoGGi.UserSettings.FirstRun = false
+      ChoGGi.Temp.WriteSettings = true
+    end
 
 
 
-  ------------------------------- always fired last
+    ------------------------------- always fired last
 
 
 
-  -- make sure to save anything we changed above
-  if ChoGGi.Temp.WriteSettings then
-    ChoGGi.SettingFuncs.WriteSettings()
-    ChoGGi.Temp.WriteSettings = nil
-  end
+    -- make sure to save anything we changed above
+    if ChoGGi.Temp.WriteSettings then
+      ChoGGi.SettingFuncs.WriteSettings()
+      ChoGGi.Temp.WriteSettings = nil
+    end
 
-  if UserSettings.FlushLog then
-    FlushLogFile()
-  end
+    if UserSettings.FlushLog then
+      FlushLogFile()
+    end
 
-  -- how long startup takes
-  if ChoGGi.Testing or UserSettings.ShowStartupTicks then
-    ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-    print(Concat("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks))
-  end
+    -- how long startup takes
+    if ChoGGi.Testing or UserSettings.ShowStartupTicks then
+      ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
+      print(Concat("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks))
+    end
 
-  -- used to check when game has started and it's safe to print() etc
-  ChoGGi.Temp.GameLoaded = true
+    -- used to check when game has started and it's safe to print() etc
+    ChoGGi.Temp.GameLoaded = true
 
-end --OnMsg
+  end --OnMsg
+end -- do
 
 -- show how long loading takes
 function OnMsg.ChangeMap()
