@@ -1740,7 +1740,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
     end
 
     if check1 then
-      local objs = GetObjects{class = sel.class}
+      local objs = GetObjects{class = sel.class,area = ""}
       --all buildings
       for i = 1, #objs do
         local workplace = objs[i]

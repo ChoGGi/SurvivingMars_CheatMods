@@ -342,8 +342,7 @@ So we got rid of the auto and stopped off at the Korova for a nightcap.",
 (restart to set disabled).",
 302535920000160,"%s: Freedom for spires!
 (restart to set disabled).",
-302535920000161,"%s: Building Instant Build
-(restart to set disabled).",
+302535920000161,%s: Buildings Instant Build,
 302535920000162,"%s: Hidden Buildings
 (restart to toggle).",
 302535920000163,Radius,
@@ -415,8 +414,7 @@ Works on any building that produces.",
 302535920000226,Build Spires Outside of Spire Point,
 302535920000227,"Build spires outside spire point.
 Use with Remove Building Limits to fill up a dome with spires.",
-302535920000229,"Allow buildings to be built instantly.
-Doesn't work with domes.",
+302535920000229,Buildings are built instantly.,
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).",
 302535920000123,Stops most disasters,

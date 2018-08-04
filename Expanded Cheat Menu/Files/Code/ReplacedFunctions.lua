@@ -958,15 +958,16 @@ function OnMsg.ClassesBuilt()
       local UserSettings = ChoGGi.UserSettings
       local force_override
 
-      if UserSettings.Building_instant_build then
-        --instant_build on domes = missing textures on domes
-        if self.template_obj.achievement ~= "FirstDome" then
-          self.template_obj.instant_build = true
-        end
-      else
-        SetDefault(self,"instant_build")
-        --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
-      end
+      -- used a different method that works with domes
+--~       if UserSettings.Building_instant_build then
+--~         --instant_build on domes = missing textures on domes
+--~         if self.template_obj.achievement ~= "FirstDome" then
+--~           self.template_obj.instant_build = true
+--~         end
+--~       else
+--~         SetDefault(self,"instant_build")
+--~         --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
+--~       end
 
       if UserSettings.Building_dome_spot then
         self.template_obj.dome_spot = "none"

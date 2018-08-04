@@ -638,7 +638,7 @@ function ChoGGi.MenuFuncs.SetEntity()
       if check2 then
         SetEntity(sel,value)
       else
-        local objs = GetObjects{class = sel.class}
+        local objs = GetObjects{class = sel.class,area = ""}
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome.handle == dome.handle then
@@ -754,7 +754,7 @@ function ChoGGi.MenuFuncs.SetEntityScale()
       if check2 then
         SetScale(sel,value)
       else
-        local objs = GetObjects{class = sel.class}
+        local objs = GetObjects{class = sel.class,area = ""}
         for i = 1, #objs do
           if dome then
             if objs[i].dome and objs[i].dome.handle == dome.handle then

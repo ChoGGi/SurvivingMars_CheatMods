@@ -302,7 +302,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   local ChoGGi = ChoGGi
   obj = obj or ChoGGi.CodeFuncs.SelObject()
 
-  local objs = GetObjects{class = obj.class}
+  local objs = GetObjects{class = obj.class,area = ""}
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
@@ -806,7 +806,7 @@ do --path markers
     end
   end
 
-  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj)
+  function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
     local ChoGGi = ChoGGi
     obj = obj or ChoGGi.CodeFuncs.SelObject()
 
@@ -858,7 +858,7 @@ do --path markers
         end)
 
       end
-    else
+    elseif single then
       MsgPopup(
         302535920000871--[[Doesn't seem to be an object that moves.--]],
         302535920000872--[[Pathing--]],
@@ -949,7 +949,7 @@ do --path markers
         ClearColourAndWP("Colonist")
 
         --check for any extra lines
-        local lines = GetObjects{class = "Polyline"}
+        local lines = GetObjects{class = "Polyline",area = ""}
         for i = 1, #lines do
           if lines[i].ChoGGi_WaypointPath then
             lines[i]:delete()
@@ -989,6 +989,7 @@ do --path markers
           swp(table3)
         else
           local table1 = GetObjects{
+            area = "",
             class = value,
             filter = function(o)
               if IsValid(o) then

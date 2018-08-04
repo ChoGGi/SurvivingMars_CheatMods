@@ -226,7 +226,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
 end
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-  local objs = GetObjects{class = "ParSystem"}
+  local objs = GetObjects{class = "ParSystem",area = ""}
   for i = 1, #objs do
     if type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
       objs[i]:delete()
@@ -250,7 +250,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
       DeleteObject(objs[i])
     end
   end
-  objs = GetObjects{class = "ParSystem"}
+  objs = GetObjects{class = "ParSystem",area = ""}
   for i = 1, #objs do
     if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
         type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
@@ -274,7 +274,7 @@ end
 
 local function ResetPriorityQueue(cls_name)
   local const = const
-  local hubs = GetObjects{class = cls_name}
+  local hubs = GetObjects{class = cls_name,area = ""}
   for i = 1, #hubs do
     --clears out the queues
     hubs[i].priority_queue = {}
@@ -305,7 +305,7 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 end
 
 local function RemoveUnreachable(cls_name)
-  local objs = GetObjects{class = cls_name}
+  local objs = GetObjects{class = cls_name,area = ""}
   for i = 1, #objs do
     for bld,_ in pairs(objs[i].unreachable_buildings or empty_table) do
       if bld:IsKindOf("ConstructionSite") then
@@ -503,7 +503,7 @@ end
 --~ end
 
 --~ function ChoGGi.MenuFuncs.DeathToObjects(classname)
---~   local objs = GetObjects{class = classname}
+--~   local objs = GetObjects{class = classname,area = ""}
 --~   print(#objs," = ",classname)
 --~   for i = 1, #objs do
 --~     objs[i]:delete()
@@ -519,7 +519,7 @@ end
 --~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists
 
 --show all elec consumption
---~ local objs = GetObjects{}
+--~ local objs = GetObjects{area = ""}
 --~ local amount = 0
 --~ for i = 1, #objs do
 --~   local obj = objs[i]

@@ -15,8 +15,8 @@ print(socket._VERSION)
 To get your mod path (if user renames your mod folder):
 Mods["MOD_ID"].path
 
-List all objects on the map (zoom close into the ground for 200-400 ticks faster):
-OpenExamine(GetObjects{})
+List all objects (zoom close into the ground for 200-400 ticks faster, realm means all objects (default ignores items not on the maps)):
+OpenExamine(GetObjects{area = "realm"})
 Just domes:
 OpenExamine(GetObjects{class = "Dome"})
 

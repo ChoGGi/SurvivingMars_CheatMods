@@ -91,7 +91,7 @@ AddAction(
   {"/[50]",S[1000113--[[Debug--]]],"/"},
   Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]," ",S[4099--[[Game Time--]]]),
   function()
-    ChoGGi.MenuFuncs.SetPathMarkersGameTime()
+    ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
   end,
   ChoGGi.UserSettings.KeyBindings.SetPathMarkersGameTime,
   Concat(S[302535920000462--[[Maps paths in real time--]]]," ",S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
@@ -101,7 +101,9 @@ AddAction(
 AddAction(
   {"/[50]",S[1000113--[[Debug--]]],"/"},
   Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000467--[[Path Markers--]]]),
-  ChoGGi.MenuFuncs.SetPathMarkersVisible,
+  function()
+    ChoGGi.MenuFuncs.SetPathMarkersVisible()
+  end,
   ChoGGi.UserSettings.KeyBindings.SetPathMarkersVisible,
   302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]],
   "ViewCamPath.tga"

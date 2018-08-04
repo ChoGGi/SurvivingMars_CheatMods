@@ -221,9 +221,25 @@ function OnMsg.BuildingPlaced(obj)
   end
 end --OnMsg
 -- regular build
+local function QuickBuild(sites)
+  for i = 1, #sites do
+    if not sites[i].construction_group or sites[i].construction_group[1] == sites[i] then
+      sites[i]:Complete("quick_build")
+    end
+  end
+end
 function OnMsg.ConstructionSitePlaced(obj)
+  local ChoGGi = ChoGGi
   if obj:IsKindOf("Building") then
     ChoGGi.Temp.LastPlacedObject = obj
+  end
+
+  if ChoGGi.UserSettings.Building_instant_build then
+    DelayedCall(100, function()
+      local UICity = UICity
+      QuickBuild(UICity.labels.ConstructionSite or "")
+      QuickBuild(UICity.labels.ConstructionSiteWithHeightSurfaces or "")
+    end)
   end
 end --OnMsg
 
@@ -428,11 +444,6 @@ function OnMsg.NewDay() -- NewSol...
       end
     end
   end
-
-  -- not needed, removing from old saves, so people don't notice them
-  UICity.labels.ChoGGi_GridElements = nil
-  UICity.labels.ChoGGi_LifeSupportGridElement = nil
-  UICity.labels.ChoGGi_ElectricityGridElement = nil
 
   -- dump log to disk
   if ChoGGi.UserSettings.FlushLog then
@@ -803,6 +814,11 @@ do -- LoadGame/CityStart
 
     -- clear out Temp settings
     ChoGGi.Temp.UnitPathingHandles = {}
+
+    -- not needed, removing from old saves, so people don't notice them
+    UICity.labels.ChoGGi_GridElements = nil
+    UICity.labels.ChoGGi_LifeSupportGridElement = nil
+    UICity.labels.ChoGGi_ElectricityGridElement = nil
 
     -- update cargo resupply
     ChoGGi.ComFuncs.UpdateDataTables(true)

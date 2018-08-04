@@ -20,6 +20,7 @@ Start Disasters>Missiles/Meteors weren't aiming properly (thanks Encei).
 Examine now shows CObject functions on objects that don't include Object.
 The Soylent Option was doing birthplace Indian instead of race Indian.
 Most of the Game>Render options ignored "Default" setting.
+Buildings>Instant Building: Now works with domes.
 
 v7.1 (30 Jul 2018)
 Changed:

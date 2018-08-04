@@ -420,8 +420,7 @@ AddAction(
   function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.Building_instant_build,
-      302535920000229--[["Allow buildings to be built instantly.
-Doesn't work with domes."--]]
+      302535920000229--[[Buildings are built instantly.--]]
     )
   end,
   "toggle_post.tga"

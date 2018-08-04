@@ -1073,8 +1073,7 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    S[302535920000161--[[%s: Building Instant Build
-(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_instant_build),
+    S[302535920000161--[[%s: Buildings Instant Build--]]]:format(ChoGGi.UserSettings.Building_instant_build),
     3980--[[Buildings--]],
     default_icon3
   )

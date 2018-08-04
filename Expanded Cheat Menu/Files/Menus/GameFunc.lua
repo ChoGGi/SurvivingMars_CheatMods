@@ -295,10 +295,10 @@ end
 
 end
 
--- we'll get more concrete one of these days
-local terrain_type = "Regolith"		-- applied terrain type
-local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
-terrain.SetTypeCircle(c(), 5000, terrain_type_idx)
+--~ -- we'll get more concrete one of these days
+--~ local terrain_type = "Regolith"		-- applied terrain type
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ terrain.SetTypeCircle(GetTerrainCursor(), 5000, terrain_type_idx)
 
 function ChoGGi.MenuFuncs.ChangeMap()
   local g_Classes = g_Classes
