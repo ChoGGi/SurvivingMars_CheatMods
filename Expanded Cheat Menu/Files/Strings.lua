@@ -108,6 +108,7 @@ local Strings = {
   [1022] = _InternalTranslate(T{1022}), -- Food
   [1079] = _InternalTranslate(T{1079}), -- Surviving Mars
   [1120] = _InternalTranslate(T{1120}), -- Space Elevator
+  [1157] = _InternalTranslate(T{1157}), -- Complete thread
   [1176] = _InternalTranslate(T{1176}), -- Cancel Destroy
   [3474] = _InternalTranslate(T{3474}), -- Mission Sponsor
   [3478] = _InternalTranslate(T{3478}), -- Commander Profile

@@ -35,6 +35,71 @@ function ChoGGi.MenuFuncs.FireMostFixes()
   ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
+do -- DronesNotRepairingDome
+  local ChoGGi = ChoGGi
+  local looping_thread
+
+  local function MoveAllRes()
+    local domes = UICity.labels.Domes or ""
+    for i = 1, #domes do
+      -- get a list of all res in the center of dome
+      local pos = domes[i]:GetSpotPos(-1)
+      local objs = GetObjects{
+        class = "ResourcePile",
+        -- we only want stuff within *radius*
+        filter = function(o)
+          if o:GetDist2D(pos) <= 1000 then
+            return o
+          end
+        end,
+      }
+
+      -- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
+      if #objs > 0 then
+        local start_id, end_id = domes[i]:GetAllSpots(domes[i]:GetState())
+        for j = start_id, end_id do
+          if domes[i]:GetSpotName(j) == "Workdrone" then
+            local spot_pos = domes[i]:GetSpotPos(j)
+            -- and goodbye res
+            for k = 1, #objs do
+              objs[k]:SetPos(spot_pos)
+            end
+            break
+          end
+        end
+      end
+    end
+  end
+
+  function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
+    MsgPopup(
+      83--[[Domes--]],
+      302535920001295--[[Drones Not Repairing Domes--]]
+    )
+    -- just in case someone decides to click it more than once...
+    if looping_thread then
+      DeleteThread(looping_thread)
+      looping_thread = nil
+    end
+    -- loop 50 times, more than long enough for a drone smart/idle enough to grab the res outside the dome and repair it.
+    looping_thread = CreateRealTimeThread(function()
+      local count = 0
+      while true do
+        if count > 49 then
+          break
+        end
+        count = count + 1
+        MoveAllRes()
+        Sleep(1000)
+      end
+      MsgPopup(
+        1157--[[Complete thread--]],
+        302535920001295--[[Drones Not Repairing Domes--]]
+      )
+    end)
+  end
+end -- do
+
 function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.CheckForBorkedTransportPath then
@@ -308,7 +373,7 @@ local function RemoveUnreachable(cls_name)
   local objs = GetObjects{class = cls_name,area = ""}
   for i = 1, #objs do
     for bld,_ in pairs(objs[i].unreachable_buildings or empty_table) do
-      if bld:IsKindOf("ConstructionSite") then
+      if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
         bld:Cancel()
       end
     end
@@ -530,31 +595,3 @@ end
 --~   end
 --~ end
 --~ print(amount)
-
-
---~ :IsMalfunctioned()
---~ local dome = s
---~ local objs = ChoGGi.ComFuncs.FilterFromTable(ChoGGi.ComFuncs.ReturnAllNearby(1000,nil,dome:GetSpotPos(-1)),nil,{ResourcePile=true},"class")
---~ if #objs > 0 then
-
---~   local start_id, end_id = dome:GetAllSpots(dome:GetState())
---~   local name
---~   local pos
---~   for i = start_id, end_id do
---~     name = dome:GetSpotName(i)
---~     if name == "Workdrone" then
---~       pos = dome:GetSpotPos(i)
---~       if #ChoGGi.ComFuncs.RetObjectsAtPos(pos) < 2 then
---~         for j = 1, #objs do
---~           objs[j]:SetPos(pos)
---~         end
---~         break
---~       end
---~     end
---~   end
-
---~   dome:Repair()
---~   dome:ResetMaintenanceRequests()
---~   dome:ResetMaintenanceWorkRequest()
---~   dome:CheatMalfunction()
---~ end

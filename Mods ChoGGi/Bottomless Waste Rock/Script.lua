@@ -28,7 +28,7 @@ function OnMsg.ClassesPostprocess()
     "dome_forbidden", true,
     "display_name", [[Bottomless WasteRock]],
     "display_name_pl", [[Bottomless WasteRock]],
-    "description", [[Anything added to this depot will disappear.]],
+    "description", [[Any rocks dumped at this depot will disappear.]],
     "build_category", "Storages",
     "display_icon", table.concat{Mods.ChoGGi_BottomlessWasteRock.path,"/res_waste_rock.tga"},
     "entity", "ResourcePlatform",

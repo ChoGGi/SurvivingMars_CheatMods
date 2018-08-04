@@ -10,6 +10,15 @@ local icon = "ReportBug.tga"
 
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920001295--[[Drones Not Repairing Domes--]]]),
+  ChoGGi.MenuFuncs.DronesNotRepairingDomes,
+  nil,
+  302535920001296--[[If your drones are just dumping polymers into the centre of your dome.--]],
+  icon
+)
+
+AddAction(
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920000461--[[All Pipe Skins To Default--]]]),
   ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
   nil,
@@ -136,7 +145,9 @@ AddAction(
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000601--[[Idle Drones Won't Build When Resources Available--]]]),
-  ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
+  function()
+    ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+  end,
   nil,
   302535920000602--[[If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
 
