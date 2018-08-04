@@ -545,7 +545,7 @@ function OnMsg.ClassesBuilt()
   --no more stuck focus on SingleLineEdits
   function XDesktop:MouseEvent(event, pt, button, time)
 --~     if button == "L" and event == "OnMouseButtonDown" and type(self.keyboard_focus) == "table" and self.keyboard_focus:IsKindOf("SingleLineEdit") then
-    if event == "OnMouseButtonDown" and (button == "L" or button == "R") and self.keyboard_focus.class == "SingleLineEdit" then
+    if event == "OnMouseButtonDown" and (button == "L" or button == "R") and self.keyboard_focus and self.keyboard_focus.class == "SingleLineEdit" then
       -- if console visible set focus to it, else use the hud
       local dlgConsole = dlgConsole
       if dlgConsole and dlgConsole:GetVisible() then

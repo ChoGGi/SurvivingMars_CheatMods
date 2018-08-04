@@ -1,3 +1,5 @@
-0.2
+v0.3
+Uses the smallest resource platform model now.
+v0.2
 Corrected title to Storage instead of depot.
 Added custom description.

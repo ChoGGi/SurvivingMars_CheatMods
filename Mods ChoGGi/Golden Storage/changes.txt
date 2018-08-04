@@ -1,0 +1,2 @@
+v0.2
+Uses the smallest resource platform model now.
