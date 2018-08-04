@@ -19,7 +19,7 @@ local RefreshXBuildMenu = RefreshXBuildMenu
 
 local UIL_GetFontID = UIL.GetFontID
 
-do -- ViewDomeInfo_Toggle
+do -- ViewObjInfo_Toggle
   local r = ChoGGi.Consts.ResearchPointsScale
   local update_info_thread = {}
   local viewing_obj_info = {}
@@ -214,15 +214,36 @@ do -- ViewDomeInfo_Toggle
   end
 
   local function UpdateViewObjInfo(label)
+    local cam_pos = camera.GetPos
     -- fire an update every second
     update_info_thread[label] = CreateRealTimeThread(function()
       while update_info_thread[label] do
         local objs = UICity.labels[label] or ""
+        local mine
         for i = 1, #objs do
+          mine = nil
           local attaches = objs[i]:GetAttaches() or ""
           for j = 1, #attaches do
             if attaches[j].ChoGGi_ViewObjInfo_t then
+              mine = {
+                pos = objs[i]:GetVisualPos(),
+                text = attaches[j],
+              }
               attaches[j]:SetText(GetInfo[label](objs[i]))
+              break
+            end
+          end
+          -- set opacity depending on dist
+          if mine then
+            local dist = mine.pos:Dist2D(cam_pos())
+            if dist < 50000 then
+              mine.text:SetOpacityInterpolation(127)
+            elseif dist < 100000 then
+              mine.text:SetOpacityInterpolation(75)
+--~             elseif dist < 200000 then
+--~               mine.text:SetOpacityInterpolation(50)
+            else
+              mine.text:SetOpacityInterpolation(0)
             end
           end
         end
