@@ -1,17 +1,27 @@
 return PlaceObj("ModDef", {
-  "title", "Replace Cursors v0.3",
-  "version", 3,
-  "saved", 1533297600,
+  "title", "Replace Cursors v0.4",
+  "version", 4,
+  "saved", 1533384000,
   "id", "ChoGGi_ReplaceCursors",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1450132231",
-  "description", [[Replace cursors with black ones to work around transparency issue (once you load a game).
-Cursors are stored in the mod folder/Cursors, if you want replace them with your own.
+  "description", [[Replace cursors with grayscale ones to work around transparency issue (once you load a game).
+Or just to have different cursors.
+
+Cursors are stored in mod folder/Cursors.
+
+To use custom cursors (won't be removed when this mod is updated):
+Copy cursors to your profile folder\Cursors, like so:
+
+Windows: %APPDATA%\Surviving Mars\Cursors
+macOS/OSX: ~/Library/Application Support/Surviving Mars/Cursors
+Linux: $XDG_DATA_HOME/Surviving Mars/Cursors
+
+See mod folder/Replacements for some to use.
 
 Thanks to nadrolinux for figuring out cursors that work.
-
 https://steamcommunity.com/app/464920/discussions/0/1696043806561017960
 
 
