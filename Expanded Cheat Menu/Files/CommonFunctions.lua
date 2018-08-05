@@ -6,6 +6,17 @@ DefineClass.ChoGGi_HexSpot = {
   entity = "GridTile"
 }
 
+--~ -- used for flatten ground
+--~ DefineClass.ChoGGi_Square = {
+--~   __parents = {"Polyline"}
+--~ }
+--~ function ChoGGi_Square:Init()
+--~   Polyline.Init(self)
+--~   self.max_vertices = #self.points
+--~   self:SetMesh(self.points)
+--~   self:SetPos(self.points[1])
+--~ end
+
 local TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings

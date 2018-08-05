@@ -56,8 +56,6 @@ local UIL_GetFontID = UIL.GetFontID
 
 function ChoGGi.MenuFuncs.DeleteSavedGames()
   local SavegamesList = SavegamesList
-
-
   local ItemList = {}
   for i = 1, #SavegamesList do
     local data = SavegamesList[i]

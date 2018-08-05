@@ -1,4 +1,8 @@
-v7.2 (Unreleased)
+v7.3 (Unreleased)
+Added:
+Debug>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
+
+v7.2 (04 Aug 2018)
 Added:
 ECM>Building Info: Shows text above buildings with info about them (domes, drones, drone controllers, deposits, production).
 Game>List All Objects: A list of objects; double-click on one to select and move the camera to it.

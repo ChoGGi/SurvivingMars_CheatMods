@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v7.2",
-	"version", 72,
+	"title", "Expanded Cheat Menu v7.3 Test",
+	"version", 73,
 	"saved", 1533384000,
 	"steam_id", "1411157810",
 	"code", {"Init.lua"},

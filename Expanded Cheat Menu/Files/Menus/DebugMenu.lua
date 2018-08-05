@@ -226,6 +226,17 @@ AddAction(
   302535920000504--[[Shows a hex grid with green for buildable (ignores uneven terrain).--]],
   "ToggleCollisions.tga"
 )
+
+AddAction(
+  {"/[50]",S[1000113--[[Debug--]]],"/"},
+  Concat("/[50]",S[1000113--[[Debug--]]],"/[12]",S[302535920001297--[[Toggle Flight Grid--]]]),
+  function()
+    ChoGGi.CodeFuncs.FlightGrid_Toggle()
+  end,
+  ChoGGi.UserSettings.KeyBindings.debug_grid_squares,
+  302535920001298--[[Shows a square grid with terrain/objects shape.--]],
+  "ToggleCollisions.tga"
+)
 -------------------------------toggle grids
 
 -------------------------------debugfx

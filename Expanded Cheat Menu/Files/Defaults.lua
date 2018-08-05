@@ -127,6 +127,7 @@ ChoGGi.Defaults = {
     debug_build_grid_both = "Shift-F1",
     debug_build_grid_pass = "Shift-F2",
     debug_build_grid_build = "Shift-F3",
+    debug_grid_squares = "Shift-F4",
     -- DronesAndRCMenu.lua
     SetDroneAmountDroneHub = "Shift-D",
     -- ExpandedMenu
@@ -435,9 +436,14 @@ function OnMsg.OptionsApply()
   local g_Classes = g_Classes
 
   --if setting doesn't exist then add default
-  for Key,Value in pairs(ChoGGi.Defaults) do
-    if type(ChoGGi.UserSettings[Key]) == "nil" then
-      ChoGGi.UserSettings[Key] = Value
+  for key,value in pairs(ChoGGi.Defaults) do
+    if type(ChoGGi.UserSettings[key]) == "nil" then
+      ChoGGi.UserSettings[key] = value
+    end
+  end
+  for key,value in pairs(ChoGGi.Defaults.KeyBindings) do
+    if type(ChoGGi.UserSettings.KeyBindings[key]) == "nil" then
+      ChoGGi.UserSettings.KeyBindings[key] = value
     end
   end
 

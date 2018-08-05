@@ -1765,3 +1765,102 @@ function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
     sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
   end
 end
+
+do -- flightgrids
+  local Flight_DbgLines
+  local type_tile = terrain.TypeTileSize()
+  local work_step = 16 * type_tile
+  local dbg_step = work_step / 4 -- 400
+  local PlacePolyline = PlacePolyline
+  local MulDivRound = MulDivRound
+  local InterpolateRGB = InterpolateRGB
+  local Clamp = Clamp
+  local AveragePoint2D = AveragePoint2D
+  local DbgClearVectors = DbgClearVectors
+  local terrain_GetHeight = terrain.GetHeight
+
+  local function Flight_DbgRasterLine(pos1, pos0, zoffset)
+    pos1 = pos1 or GetTerrainCursor()
+    pos0 = pos0 or FindPassable(GetTerrainCursor())
+    zoffset = zoffset or 0
+    if not pos0 or not Flight_Height then
+      return
+    end
+    local diff = pos1 - pos0
+    local dist = diff:Len2D()
+    local steps = 1 + (dist + dbg_step - 1) / dbg_step
+    local points, colors = {}, {}
+    local max_diff = 10 * guim
+    for i = 1,steps do
+      local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
+      local height = Flight_Height:GetBilinear(pos, work_step, 0, 1) + zoffset
+      points[#points + 1] = pos:SetZ(height)
+      colors[#colors + 1] = InterpolateRGB(
+        -1, -- white
+        -16711936, -- green
+        Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
+        max_diff
+      )
+    end
+    local line = PlacePolyline(points, colors)
+    line:SetDepthTest(false)
+    line:SetPos(AveragePoint2D(points))
+    Flight_DbgLines = Flight_DbgLines or {}
+    Flight_DbgLines[#Flight_DbgLines+1] = line
+  end
+
+  local function Flight_DbgClear()
+    if Flight_DbgLines then
+      for i = 1, #Flight_DbgLines do
+        Flight_DbgLines[i]:delete()
+      end
+      Flight_DbgLines = false
+    end
+  end
+
+  local grid_thread
+  function ChoGGi.CodeFuncs.FlightGrid_Update(size,zoffset)
+    if grid_thread then
+      DeleteThread(grid_thread)
+      grid_thread = nil
+      Flight_DbgClear()
+    end
+    ChoGGi.CodeFuncs.FlightGrid_Toggle(size,zoffset)
+  end
+  function ChoGGi.CodeFuncs.FlightGrid_Toggle(size,zoffset)
+    if grid_thread then
+      DeleteThread(grid_thread)
+      grid_thread = nil
+      Flight_DbgClear()
+      return
+    end
+    grid_thread = CreateMapRealTimeThread(function()
+      local Sleep = Sleep
+      local orig_size = size or 256 * guim
+      local pos_c
+      local pos_t
+      while true do
+        pos_t = GetTerrainCursor()
+        if pos_c ~= pos_t then
+          pos_c = pos_t
+          pos = pos_t
+          Flight_DbgClear()
+          -- Flight_DbgRasterArea
+          size = orig_size
+          local steps = 1 + (size + dbg_step - 1) / dbg_step
+          size = steps * dbg_step
+          pos = pos - point(size, size) / 2
+          for y = 0,steps do
+            Flight_DbgRasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset)
+          end
+          for x = 0,steps do
+            Flight_DbgRasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset)
+          end
+
+          Sleep(10)
+        end
+        Sleep(50)
+      end
+    end)
+  end
+end -- do
