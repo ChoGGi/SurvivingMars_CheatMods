@@ -176,10 +176,13 @@ function ChoGGi_ObjectManipulator:Init()
     end
     local value = self.sel.value
     if value then
-      local objs = GetObjects{class = self.obj.class,area = ""}
-      for i = 1, #objs do
-        objs[i][self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
-      end
+      ForEach{
+        class = self.obj.class,
+        area = "realm",
+        exec = function(o)
+          o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+        end,
+      }
     end
   end
 

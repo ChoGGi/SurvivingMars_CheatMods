@@ -300,20 +300,24 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
   local ChoGGi = ChoGGi
   obj = obj or ChoGGi.CodeFuncs.SelObject()
 
-  local objs = GetObjects{class = obj.class,area = ""}
   local function CallBackFunc(answer)
     if answer then
       CreateRealTimeThread(function()
-        for i = 1, #objs do
-          ChoGGi.CodeFuncs.DeleteObject(objs[i])
-        end
+        ForEach{
+          class = obj.class,
+          area = "realm",
+          exec = function(o)
+            ChoGGi.CodeFuncs.DeleteObject(o)
+          end,
+        }
       end)
     end
   end
 
+  local count = CountObjects{class = obj.class,area = "realm"}
   local name = RetName(obj)
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(#objs,name),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(count,name),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
     CallBackFunc,
     Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
     S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(name),
@@ -937,30 +941,33 @@ do --path markers
         return
       end
       local UICity = UICity
-      --remove wp/lines and reset colours
+      -- remove wp/lines and reset colours
       if choice[1].check1 then
         print("check1_hint")
 
-        --reset all the base colours/waypoints
+        -- reset all the base colours/waypoints
         ClearColourAndWP("CargoShuttle")
         ClearColourAndWP("Unit")
         ClearColourAndWP("Colonist")
 
-        --check for any extra lines
-        local lines = GetObjects{class = "Polyline",area = ""}
-        for i = 1, #lines do
-          if lines[i].ChoGGi_WaypointPath then
-            lines[i]:delete()
-          end
-        end
+        -- check for any extra lines
+        ForEach{
+          class = "Polyline",
+          area = "realm",
+          exec = function(o)
+            if o.ChoGGi_WaypointPath then
+              o:delete()
+            end
+          end,
+        }
 
-        --reset stuff
+        -- reset stuff
         flag_height = 50
         randcolours = {}
         colourcount = 0
         dupewppos = {}
 
-      elseif value then --add waypoints
+      elseif value then -- add waypoints
 
         local function swp(list)
           if choice[1].check2 then

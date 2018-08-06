@@ -10,6 +10,15 @@ local icon = "ReportBug.tga"
 
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920001299--[[Toggle Working On All Buildings--]]]),
+  ChoGGi.MenuFuncs.ToggleWorkingAll,
+  nil,
+  302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).-]],
+  icon
+)
+
+AddAction(
+  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[9]",S[302535920001295--[[Drones Not Repairing Domes--]]]),
   ChoGGi.MenuFuncs.DronesNotRepairingDomes,
   nil,
@@ -109,7 +118,8 @@ AddAction(
   Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000593--[[Remove Particles With Null Polylines--]]]),
   ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
   nil,
-  302535920000594--[[It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.--]],
+  302535920000594--[["It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.
+This may remove some smoke stacks like the concrete extractors (just toggle working on any that don't have smoke)."--]],
   icon
 )
 
@@ -124,7 +134,7 @@ AddAction(
 
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000597--[[Stutter With High FPS or Human Centipede--]]]),
+  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[302535920000922--[[Fixes--]]],"/[0]",S[302535920000935--[[Most--]]],"/",S[302535920000597--[[Stutter With High FPS--]]]),
   ChoGGi.MenuFuncs.StutterWithHighFPS,
   nil,
   302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).

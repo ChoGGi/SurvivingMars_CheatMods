@@ -22,7 +22,7 @@ AddAction(
   Concat("/[30]",S[1000435--[[Game--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
   ChoGGi.MenuFuncs.DeleteAllRocks,
   nil,
-  302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]],
+  302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]],
   "selslope.tga"
 )
 

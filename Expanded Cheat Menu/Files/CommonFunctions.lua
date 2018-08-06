@@ -320,6 +320,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 -- objects can be a single obj, or {obj1,obj2,etc}
 function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   local ChoGGi = ChoGGi
+  if not ChoGGi.Temp.MsgPopups then
+    ChoGGi.Temp.MsgPopups = {}
+  end
   local g_Classes = g_Classes
   -- build our popup
   local timeout = 10000
@@ -361,7 +364,9 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		popup:FillData(data, nil, params, params.cycle_objs)
 		popup:Open()
 		dlg:ResolveRelativeFocusOrder()
-    --large amount of text option (four long lines o' text, or is it five?)
+    ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
+
+    -- large amount of text option (four long lines o' text, or is it five?)
     if size then
       --larger text limit
       popup.idText.Margins = box(0,0,0,-500)
@@ -1990,8 +1995,8 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
   if type(query) ~= "table" then
     return GetObjects{class = query}
   end
+  -- ForEach,CountObjects
   return GetObjects({
-  -- or CountObjects{}
     class = query.class,
     classes = query.classes,
     area = query.area,
@@ -2009,7 +2014,7 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
     filter = query.filter,
   }, obj, query_width, ignore_classes)
 --~     area = "line",
---~ "realm" or "" = every object
+--~ "realm" = every object
 --~ "outsiders" = prefab markers
 --~ "detached" = invalid positions
 --~ "line" = ?

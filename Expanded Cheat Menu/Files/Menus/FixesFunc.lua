@@ -7,71 +7,63 @@ local S = ChoGGi.Strings
 
 local pairs,pcall,type = pairs,pcall,type
 
-local CreateRealTimeThread = CreateRealTimeThread
-local FindNearestObject = FindNearestObject
 local ForEach = ForEach
-local GenerateColonistData = GenerateColonistData
-local GetObjects = GetObjects
-local GetPassablePointNearby = GetPassablePointNearby
-local GetStateIdx = GetStateIdx
-local HexGetNearestCenter = HexGetNearestCenter
-local IsValid = IsValid
-local Msg = Msg
-local Sleep = Sleep
 
 function ChoGGi.MenuFuncs.FireMostFixes()
-  local ChoGGi = ChoGGi
-  ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-  ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-  ChoGGi.MenuFuncs.StutterWithHighFPS()
+  CreateRealTimeThread(function()
+    local ChoGGi = ChoGGi
+    local Sleep = Sleep
 
-  ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-  ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
-  ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-  ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-  ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-  ChoGGi.MenuFuncs.CablesAndPipesRepair()
-  ChoGGi.MenuFuncs.MirrorSphereStuck()
-  ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
+    pcall(function()
+      ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+      ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
+      ChoGGi.MenuFuncs.StutterWithHighFPS()
+
+      ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
+      ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
+      ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
+      ChoGGi.MenuFuncs.RemoveYellowGridMarks()
+      ChoGGi.MenuFuncs.RemoveBlueGridMarks()
+      ChoGGi.MenuFuncs.CablesAndPipesRepair()
+      ChoGGi.MenuFuncs.MirrorSphereStuck()
+      ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
+    end)
+
+    -- loop through and remove all my msgs from the onscreen popups
+    DelayedCall(1000, function()
+      while #ChoGGi.Temp.MsgPopups < 10 do
+        Sleep(500)
+      end
+      local popups = ChoGGi.Temp.MsgPopups or ""
+      for i = #popups, 1, -1 do
+        popups[i]:delete()
+      end
+      ChoGGi.Temp.MsgPopups = {}
+    end)
+  end)
+end
+
+function ChoGGi.MenuFuncs.ToggleWorkingAll()
+  ForEach{
+    area = "realm",
+    exec = function(o)
+      if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
+        ChoGGi.CodeFuncs.ToggleWorking(o)
+      end
+    end,
+  }
+  MsgPopup(
+    4493--[[All--]],
+    302535920001299--[[Toggle Working On All Buildings--]]
+  )
 end
 
 do -- DronesNotRepairingDome
-  local ChoGGi = ChoGGi
   local looping_thread
 
-  local function MoveAllRes()
-    local domes = UICity.labels.Domes or ""
-    for i = 1, #domes do
-      -- get a list of all res in the center of dome
-      local pos = domes[i]:GetSpotPos(-1)
-      local objs = GetObjects{
-        class = "ResourcePile",
-        -- we only want stuff within *radius*
-        filter = function(o)
-          if o:GetDist2D(pos) <= 1000 then
-            return o
-          end
-        end,
-      }
-
-      -- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
-      if #objs > 0 then
-        local start_id, end_id = domes[i]:GetAllSpots(domes[i]:GetState())
-        for j = start_id, end_id do
-          if domes[i]:GetSpotName(j) == "Workdrone" then
-            local spot_pos = domes[i]:GetSpotPos(j)
-            -- and goodbye res
-            for k = 1, #objs do
-              objs[k]:SetPos(spot_pos)
-            end
-            break
-          end
-        end
-      end
-    end
-  end
-
   function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
+    local GetObjects = GetObjects
+    local Sleep = Sleep
     MsgPopup(
       83--[[Domes--]],
       302535920001295--[[Drones Not Repairing Domes--]]
@@ -89,7 +81,35 @@ do -- DronesNotRepairingDome
           break
         end
         count = count + 1
-        MoveAllRes()
+
+        local domes = UICity.labels.Domes or ""
+        for i = 1, #domes do
+          -- get a list of all res in the center of dome
+          local pos = domes[i]:GetSpotPos(-1)
+          local objs = GetObjects{
+            class = "ResourcePile",
+            -- we only want stuff within *radius*
+            filter = function(o)
+              if o:GetDist2D(pos) <= 1000 then
+                return o
+              end
+            end,
+          }
+
+          -- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
+          local start_id, end_id = domes[i]:GetAllSpots(domes[i]:GetState())
+          for j = start_id, end_id do
+            if domes[i]:GetSpotName(j) == "Workdrone" then
+              local spot_pos = domes[i]:GetSpotPos(j)
+              -- and goodbye res
+              for k = 1, #objs do
+                objs[k]:SetPos(spot_pos)
+              end
+              break
+            end
+          end
+        end
+
         Sleep(1000)
       end
       MsgPopup(
@@ -119,6 +139,7 @@ end
 
 function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
   local ChoGGi = ChoGGi
+  local Sleep = Sleep
   CreateRealTimeThread(function()
     -- so GetPipeConnections ignores the dupe connection error
     ChoGGi.Temp.FixingPipes = true
@@ -131,98 +152,112 @@ function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
     end
     ChoGGi.Temp.FixingPipes = nil
   end)
+  MsgPopup(
+    4493--[[All--]],
+    302535920000461--[[All Pipe Skins To Default--]]
+  )
 end
 
-local function ResetRover(rc)
-  if rc.attached_drones then
-    for i = 1, #rc.attached_drones do
-      rc.attached_drones[i]:delete()
+do --ResetRovers
+  local function ResetRover(rc)
+    if rc.attached_drones then
+      for i = 1, #rc.attached_drones do
+        rc.attached_drones[i]:delete()
+      end
     end
+    local pos = rc:GetVisualPos()
+    local new = rc:Clone()
+    rc:delete()
+    new:SetPos(GetPassablePointNearby(pos))
   end
-  local pos = rc:GetVisualPos()
-  local new = rc:Clone()
-  rc:delete()
-  new:SetPos(GetPassablePointNearby(pos))
-end
 
-function ChoGGi.MenuFuncs.ResetRovers()
-  CreateRealTimeThread(function()
-    local before_table = {}
+  function ChoGGi.MenuFuncs.ResetRovers()
+    CreateRealTimeThread(function()
+      local Sleep = Sleep
+      local GetStateIdx = GetStateIdx
+      local before_table = {}
 
-    -- get all rovers stuck in deploy with at least one drone
-    ForEach({
-      class = "RCRover",
-      exec = function(rc)
-        local drones = #rc.attached_drones > 0
---~         print("sdfsdfds",state,drones)
-        if drones then
-          if rc:GetState() == GetStateIdx("deployIdle") then
-            -- store them in a table for later
-            before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
-          -- borked, no sense in waiting for later
-          elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
-            ResetRover(rc)
+      -- get all rovers stuck in deploy with at least one drone
+      ForEach{
+        class = "RCRover",
+        exec = function(rc)
+          local drones = #rc.attached_drones > 0
+          if drones then
+            if rc:GetState() == GetStateIdx("deployIdle") then
+              -- store them in a table for later
+              before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+            -- borked, no sense in waiting for later
+            elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
+              ResetRover(rc)
+            end
           end
         end
+      }
+      -- let user know something is happening
+      MsgPopup(
+        302535920000464--[[Updating Rovers--]],
+        5438--[[Rovers--]]
+      )
+      --wait awhile just to be sure
+      Sleep(5000)
+      --go through and reset any rovers still doing the same thing
+      for _,rc_table in pairs(before_table) do
+        local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
+        local drones = #rc_table.rc.attached_drones == rc_table.amount
+        if state and drones then
+          ResetRover(rc_table.rc)
+        end
       end
-    })
-    -- let user know something is happening
-    MsgPopup(
-      302535920000464--[[Updating Rovers--]],
-      5438--[[Rovers--]]
-    )
-    --wait awhile just to be sure
-    Sleep(5000)
-    --go through and reset any rovers still doing the same thing
-    for _,rc_table in pairs(before_table) do
-      local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
-      local drones = #rc_table.rc.attached_drones == rc_table.amount
-      if state and drones then
-        ResetRover(rc_table.rc)
-      end
-    end
-  end)
-end
+    end)
+  end
+end -- do
 
-local function SpawnColonist(old_c,building,pos,city)
-  local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
-  if not dome then
-    return
+do -- Colonist stuff
+  local pairs = pairs
+  local Msg = Msg
+  local FindNearestObject = FindNearestObject
+  local GenerateColonistData = GenerateColonistData
+
+  local function SpawnColonist(old_c,building,pos,city)
+    local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
+    if not dome then
+      return
+    end
+
+    local colonist
+    if old_c then
+  --~     colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+      colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+      --we set all the set gen doesn't (it's more for random gen after all
+      colonist.birthplace = old_c.birthplace
+      colonist.death_age = old_c.death_age
+      colonist.name = old_c.name
+      colonist.race = old_c.race
+      colonist.specialist = old_c.specialist
+      for trait_id, _ in pairs(old_c.traits) do
+        if trait_id and trait_id ~= "" then
+          colonist.traits[trait_id] = true
+          --colonist:AddTrait(trait_id,true)
+        end
+      end
+    else
+      --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
+      colonist = GenerateColonistData(city)
+    end
+
+    colonist.dome = dome
+    colonist.current_dome = dome
+    Colonist:new(colonist)
+    Msg("ColonistBorn", colonist)
+    colonist:SetPos(pos or dome:PickColonistSpawnPt())
+    --dome:UpdateUI()
+    --if spec is different then updates to new entity
+    colonist:ChooseEntity()
+    return colonist
   end
 
-  local colonist
-  if old_c then
---~     colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
-    colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
-    --we set all the set gen doesn't (it's more for random gen after all
-    colonist.birthplace = old_c.birthplace
-    colonist.death_age = old_c.death_age
-    colonist.name = old_c.name
-    colonist.race = old_c.race
-    colonist.specialist = old_c.specialist
-    for trait_id, _ in pairs(old_c.traits) do
-      if trait_id and trait_id ~= "" then
-        colonist.traits[trait_id] = true
-        --colonist:AddTrait(trait_id,true)
-      end
-    end
-  else
-    --GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
-    colonist = GenerateColonistData(city)
-  end
-
-  colonist.dome = dome
-  colonist.current_dome = dome
-  Colonist:new(colonist)
-  Msg("ColonistBorn", colonist)
-  colonist:SetPos(pos or dome:PickColonistSpawnPt())
-  --dome:UpdateUI()
-  --if spec is different then updates to new entity
-  colonist:ChooseEntity()
-  return colonist
-end
-
-function ChoGGi.MenuFuncs.ResetAllColonists()
+  function ChoGGi.MenuFuncs.ResetAllColonists()
+    local UICity = UICity
     local function CallBackFunc(answer)
       if answer then
         local objs = UICity.labels.Colonist or ""
@@ -236,92 +271,127 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
         end
       end
     end
+
     ChoGGi.ComFuncs.QuestionBox(
       Concat(S[6779--[[Warning--]]],"!\n",S[302535920000055--[[Reset All Colonists--]]],"\n",S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
       CallBackFunc,
       Concat(S[6779--[[Warning--]]],": ",S[302535920000055--[[Reset All Colonists--]]])
     )
-end
-
-function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-  local UICity = UICity
-  local objs = UICity.labels.Colonist or ""
-  for i = 1, #objs do
-    local c = objs[i]
-    if c:GetStateText() == "movePlanet" then
-      local rocket = FindNearestObject(UICity.labels.AllRockets or empty_table,c)
-      SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
-      if type(c.Done) == "function" then
-        c:Done()
-      end
-      c:delete()
-    end
   end
-end
 
-function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-  local rockets = UICity.labels.AllRockets or ""
-  local pos
-  for i = 1, #rockets do
-    -- AllRockets also returns rockets in space
-    if rockets[i]:IsValidPos() then
-      pos = rockets[i]:GetPos()
-      local attaches = rockets[i]:GetAttaches("Colonist") or ""
-      if #attaches > 0 then
-        for j = #attaches, 1, -1 do
-          local c = attaches[j]
-          -- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
-          if not pcall(function()
-            c:Detach()
-            pos = type(c.GetPos) == "function" and c:GetPos() or pos
-            SpawnColonist(c,rockets[i],pos)
-          end) then
-            SpawnColonist(nil,rockets[i],pos)
-            --something messed up with so just spawn random colonist
+  function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
+    local UICity = UICity
+    local objs = UICity.labels.Colonist or ""
+    for i = 1, #objs do
+      local c = objs[i]
+      if IsValid(c) and c:GetStateText() == "movePlanet" then
+        local rocket = FindNearestObject(UICity.labels.AllRockets or empty_table,c)
+        SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
+        if type(c.Done) == "function" then
+          c:Done()
+        end
+        c:delete()
+      end
+    end
+
+    MsgPopup(
+      4493--[[All--]],
+      302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]
+    )
+  end
+
+  function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+    local rockets = UICity.labels.AllRockets or ""
+    local pos
+    for i = 1, #rockets do
+      -- AllRockets also returns rockets in space
+      if rockets[i]:IsValidPos() then
+        pos = rockets[i]:GetPos()
+        local attaches = rockets[i]:GetAttaches("Colonist") or ""
+        if #attaches > 0 then
+          for j = #attaches, 1, -1 do
+            local c = attaches[j]
+            -- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
+            if not pcall(function()
+              c:Detach()
+              pos = type(c.GetPos) == "function" and c:GetPos() or pos
+              SpawnColonist(c,rockets[i],pos)
+            end) then
+              SpawnColonist(nil,rockets[i],pos)
+              --something messed up with so just spawn random colonist
+            end
+            if type(c.Done) == "function" then
+              c:Done()
+            end
+            c:delete()
           end
-          if type(c.Done) == "function" then
-            c:Done()
-          end
-          c:delete()
         end
       end
     end
+    MsgPopup(
+      302535920000585--[[Colonists Stuck Outside Rocket--]],
+      4493--[[All--]]
+    )
   end
 
-end
+end -- do
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-  local objs = GetObjects{class = "ParSystem",area = ""}
-  for i = 1, #objs do
-    if type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
-      objs[i]:delete()
-    end
-  end
+  ForEach{
+    class = "ParSystem",
+    area = "realm",
+    exec = function(o)
+      if type(o.polyline) == "string" and o.polyline:find("\0") then
+        o:delete()
+      end
+    end,
+  }
+  MsgPopup(
+    302535920000593--[[Remove Particles With Null Polylines--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
   ForEach{
     class = "UnpersistedMissingClass",
+    area = "realm",
     exec = function(obj)
       DeleteObject(obj)
     end
   }
+  MsgPopup(
+    302535920000587--[[Remove Missing Class Objects (Warning)--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
+  local type = type
+  local IsValid = IsValid
+  local DeleteObject = DeleteObject
+
   local objs = UICity.labels.MirrorSpheres or ""
   for i = 1, #objs do
     if not IsValid(objs[i].target) then
       DeleteObject(objs[i])
     end
   end
-  objs = GetObjects{class = "ParSystem",area = ""}
-  for i = 1, #objs do
-    if objs[i]:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
-        type(objs[i].polyline) == "string" and objs[i].polyline:find("\0") then
-      objs[i]:delete()
-    end
-  end
+
+  ForEach{
+    class = "ParSystem",
+    area = "realm",
+    exec = function(o)
+      if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
+          type(o.polyline) == "string" and o.polyline:find("\0") then
+        o:delete()
+      end
+    end,
+  }
+  MsgPopup(
+    302535920000595--[[Mirror Sphere Stuck--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
@@ -335,64 +405,93 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
   if skip ~= true then
     ChoGGi.CodeFuncs.ResetHumanCentipedes()
   end
-end
-
-local function ResetPriorityQueue(cls_name)
-  local const = const
-  local hubs = GetObjects{class = cls_name,area = ""}
-  for i = 1, #hubs do
-    --clears out the queues
-    hubs[i].priority_queue = {}
-    for priority = -1, const.MaxBuildingPriority do
-      hubs[i].priority_queue[priority] = {}
-    end
-  end
-end
-function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-  local ChoGGi = ChoGGi
-  ResetPriorityQueue("SupplyRocket")
-  ResetPriorityQueue("RCRover")
-  ResetPriorityQueue("DroneHub")
-  --toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-  local Sites = GetObjects{class = "ConstructionSite"}
-  for i = 1, #Sites do
-    ChoGGi.CodeFuncs.ToggleWorking(Sites[i])
-  end
-end
-
-function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
-  local blds = GetObjects{class = "Building"}
-  if blds[1] and blds[1].class then
-    for i = 1, #blds do
-      blds[i]:SetPos(HexGetNearestCenter(blds[i]:GetVisualPos()))
-    end
-  end
-end
-
-local function RemoveUnreachable(cls_name)
-  local objs = GetObjects{class = cls_name,area = ""}
-  for i = 1, #objs do
-    for bld,_ in pairs(objs[i].unreachable_buildings or empty_table) do
-      if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
-        bld:Cancel()
-      end
-    end
-    objs[i].unreachable_buildings = empty_table
-  end
-end
-function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-  local objs = UICity.labels.Drone or ""
-  for i = 1, #objs do
-    objs[i]:CleanUnreachables()
-  end
-  RemoveUnreachable("DroneHub")
-  RemoveUnreachable("RCRover")
-  RemoveUnreachable("SupplyRocket")
   MsgPopup(
-    302535920000970--[[Removed unreachable--]],
-    302535920000971--[[Sites--]]
+    302535920000597--[[Stutter With High FPS--]],
+    4493--[[All--]]
   )
 end
+
+do -- DronesKeepTryingBlockedAreas
+  local ForEach = ForEach
+  local function ResetPriorityQueue(cls_name)
+    local prio = const.MaxBuildingPriority
+    ForEach{
+      class = cls_name,
+      exec = function(o)
+        -- clears out the queues
+        o.priority_queue = {}
+        for priority = -1, prio do
+          o.priority_queue[priority] = {}
+        end
+      end,
+    }
+  end
+
+  function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
+    local ChoGGi = ChoGGi
+    ResetPriorityQueue("SupplyRocket")
+    ResetPriorityQueue("RCRover")
+    ResetPriorityQueue("DroneHub")
+    -- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
+    ForEach{
+      class = "ConstructionSite",
+      exec = function(o)
+        ChoGGi.CodeFuncs.ToggleWorking(o)
+      end,
+    }
+    MsgPopup(
+      302535920000599--[[Drones Keep Trying Blocked Areas--]],
+      4493--[[All--]]
+    )
+  end
+end -- do
+
+function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
+  local HexGetNearestCenter = HexGetNearestCenter
+  ForEach{
+    class = "Building",
+    exec = function(o)
+      o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
+    end,
+  }
+  MsgPopup(
+    302535920000621--[[Align All Buildings To Hex Grid--]],
+    4493--[[All--]]
+  )
+end
+
+do -- RemoveUnreachableConstructionSites
+  local type,pairs = type,pairs
+  local function RemoveUnreachable(cls_name)
+    ForEach{
+      class = cls_name,
+      area = "realm",
+      exec = function(o)
+        for bld,_ in pairs(o.unreachable_buildings or empty_table) do
+          if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
+            bld:Cancel()
+          end
+        end
+        o.unreachable_buildings = empty_table
+      end,
+    }
+  end
+
+  function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+    local objs = UICity.labels.Drone or ""
+    for i = 1, #objs do
+      objs[i]:CleanUnreachables()
+    end
+    RemoveUnreachable("DroneHub")
+    RemoveUnreachable("RCRover")
+    RemoveUnreachable("SupplyRocket")
+
+    MsgPopup(
+      302535920000601--[[Idle Drones Won't Build When Resources Available--]],
+      302535920000971--[[Sites--]]
+    )
+  end
+end -- do
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	ForEach{
@@ -401,6 +500,10 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
       obj:delete()
 		end
 	}
+  MsgPopup(
+    302535920000603--[[Remove Yellow Grid Marks--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
@@ -410,6 +513,10 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
       obj:delete()
 		end
 	}
+  MsgPopup(
+    302535920001193--[[Remove Blue Grid Marks--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
@@ -418,6 +525,10 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
     objs[i]:ChangeWorkingStateAnim(false)
     objs[i]:ChangeWorkingStateAnim(true)
   end
+  MsgPopup(
+    302535920000605--[[Project Morpheus Radar Fell Down--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
@@ -428,6 +539,10 @@ function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
       dome:GenerateWalkablePoints()
 		end
 	}
+  MsgPopup(
+    302535920000583--[[Rebuild Walkable Points In Domes--]],
+    4493--[[All--]]
+  )
 end
 
 function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
@@ -438,7 +553,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
   end
 
   MsgPopup(
-    302535920000972--[[Buildings attached.--]],
+    302535920000609--[[Attach Buildings To Nearest Working Dome--]],
     3980--[[Buildings--]],
     "UI/Icons/Sections/basic.tga"
   )
@@ -466,31 +581,44 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
       c:UpdateResidence()
     end
   end
+  MsgPopup(
+    302535920000619--[[Fix Black Cube Colonists--]],
+    4493--[[All--]]
+  )
 end
 
-local function RepairBorkedShit(borked_shit)
-  local just_in_case = 0
-  while #borked_shit > 0 do
+do -- CablesAndPipesRepair
+  local function RepairBorkedShit(borked_shit)
+    local type = type
+    local IsValid = IsValid
+    local just_in_case = 0
+    while #borked_shit > 0 do
 
-    for i = #borked_shit, 1, -1 do
-      if IsValid(borked_shit[i]) and type(borked_shit[i].Repair) == "function" then
-        borked_shit[i]:Repair()
+      for i = #borked_shit, 1, -1 do
+        if IsValid(borked_shit[i]) and type(borked_shit[i].Repair) == "function" then
+          borked_shit[i]:Repair()
+        end
       end
-    end
 
-    if just_in_case > 25000 then
-      break
-    end
-    just_in_case = just_in_case + 1
+      if just_in_case > 25000 then
+        break
+      end
+      just_in_case = just_in_case + 1
 
+    end
   end
-end
 
-function ChoGGi.MenuFuncs.CablesAndPipesRepair()
-  local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
-  RepairBorkedShit(g_BrokenSupplyGridElements.electricity)
-  RepairBorkedShit(g_BrokenSupplyGridElements.water)
-end
+  function ChoGGi.MenuFuncs.CablesAndPipesRepair()
+    local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
+    RepairBorkedShit(g_BrokenSupplyGridElements.electricity)
+    RepairBorkedShit(g_BrokenSupplyGridElements.water)
+
+    MsgPopup(
+      S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]],
+      4493--[[All--]]
+    )
+  end
+end -- do
 
 ------------------------- toggles
 
@@ -567,12 +695,14 @@ end
 --~   end
 --~ end
 
---~ function ChoGGi.MenuFuncs.DeathToObjects(classname)
---~   local objs = GetObjects{class = classname,area = ""}
---~   print(#objs," = ",classname)
---~   for i = 1, #objs do
---~     objs[i]:delete()
---~   end
+--~ function ChoGGi.MenuFuncs.DeathToObjects(cls)
+--~   ForEach{
+--~     class = cls,
+--~     area = "realm",
+--~     exec = function(o)
+--~       o:delete()
+--~     end,
+--~   }
 --~ end
 
 --~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
@@ -583,15 +713,16 @@ end
 --~ ChoGGi.MenuFuncs.DeathToObjects("SupplyRocket")
 --~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists
 
---show all elec consumption
---~ local objs = GetObjects{area = ""}
+--~ --show all elec consumption
 --~ local amount = 0
---~ for i = 1, #objs do
---~   local obj = objs[i]
---~   if obj.class and obj.electricity and obj.electricity.consumption then
---~     local temp = obj.electricity.consumption / 1000
---~     amount = amount + temp
---~     print(obj.class,": ",temp)
---~   end
---~ end
+--~ ForEach{
+--~   area = "realm",
+--~   exec = function(o)
+--~     if o.class and o.electricity and o.electricity.consumption then
+--~       local temp = o.electricity.consumption / 1000
+--~       amount = amount + temp
+--~       print(o.class,": ",temp)
+--~     end
+--~   end,
+--~ }
 --~ print(amount)

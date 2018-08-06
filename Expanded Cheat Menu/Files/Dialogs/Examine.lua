@@ -1149,7 +1149,6 @@ local function BuildParents(self,list,list_type,title,sort_type)
   end
 end
 function Examine:SetObj(o)
-  local ChoGGi = ChoGGi
   self.onclick_handles = {}
   self.obj = o
   self.idText:SetText(self:totextex(o))

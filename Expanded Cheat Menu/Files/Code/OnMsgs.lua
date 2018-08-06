@@ -75,13 +75,8 @@ end
 --~ function OnMsg.ClassesPostprocess()
 --~ end
 do -- OnMsgClassesBuilt
-  local function OnMsgClassesBuilt()
+  local function OnMsgXTemplates()
     local XTemplates = XTemplates
-
-    --add HiddenX cat for Hidden items
-    if ChoGGi.UserSettings.Building_hide_from_build_menu then
-      BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
-    end
 
     -- don't show cheats pane for ResourceOverview
     XTemplates.sectionCheats[1].__condition = function(parent, context)
@@ -148,13 +143,19 @@ do -- OnMsgClassesBuilt
 
   -- called when new DLC is added (or a new game)
   function OnMsg.XTemplatesLoaded()
-    OnMsgClassesBuilt()
+    OnMsgXTemplates()
   end
 
   -- use this message to perform post-built actions on the final classes
   function OnMsg.ClassesBuilt()
-    OnMsgClassesBuilt()
-  end --OnMsg
+    --add HiddenX cat for Hidden items
+    if ChoGGi.UserSettings.Building_hide_from_build_menu then
+      BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
+    end
+
+    OnMsgXTemplates()
+  end
+
 end -- do
 
 function OnMsg.ModsLoaded()
@@ -427,62 +428,79 @@ end
 
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
-  local ChoGGi = ChoGGi
-  local UICity = UICity
+  -- let everyone else go first
+  DelayedCall(1000, function()
+    local ChoGGi = ChoGGi
 
-  -- sorts cc list by dist to building
-  if ChoGGi.UserSettings.SortCommandCenterDist then
-    local objs = UICity.labels.Building or ""
-    for i = 1, #objs do
-      --no sense in doing it with only one center
-      if #objs[i].command_centers > 1 then
-        table.sort(objs[i].command_centers,
-          function(a,b)
-            return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",objs[i])
-          end
-        )
+    -- sorts cc list by dist to building
+    if ChoGGi.UserSettings.SortCommandCenterDist then
+      local objs = UICity.labels.Building or ""
+      local sort = table.sort
+      for i = 1, #objs do
+        -- no sense in doing it with only one center
+        if #objs[i].command_centers > 1 then
+          sort(objs[i].command_centers,
+            function(a,b)
+              return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",objs[i])
+            end
+          )
+        end
       end
     end
-  end
 
-  -- dump log to disk
-  if ChoGGi.UserSettings.FlushLog then
-    FlushLogFile()
-  end
+    -- dump log to disk
+    if ChoGGi.UserSettings.FlushLog then
+      FlushLogFile()
+    end
+
+    -- loop through and remove any missing popups
+    local popups = ChoGGi.Temp.MsgPopups or ""
+    local remove = table.remove
+    for i = #popups, 1, -1 do
+      if not popups[i]:IsVisible() then
+        popups[i]:delete()
+        remove(popups,i)
+      end
+    end
+
+  end)
 end
 
 -- const.Scale.hours is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
-  local ChoGGi = ChoGGi
+  -- let everyone else go first
+  DelayedCall(500, function()
+    local ChoGGi = ChoGGi
 
-  -- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
-  if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-    local UICity = UICity
+    -- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+    if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+      local UICity = UICity
 
-    -- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-    local prods = UICity.labels.ResourceProducer or ""
-    for i = 1, #prods do
-      ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
-      if prods[i].wasterock_producer then
-        ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
+      -- Hey. Do I preach at you when you're lying stoned in the gutter? No!
+      local prods = UICity.labels.ResourceProducer or ""
+      for i = 1, #prods do
+        ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
+        if prods[i].wasterock_producer then
+          ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
+        end
+      end
+      prods = UICity.labels.BlackCubeStockpiles or ""
+      for i = 1, #prods do
+        ChoGGi.CodeFuncs.FuckingDrones(prods[i])
       end
     end
-    prods = UICity.labels.BlackCubeStockpiles or ""
-    for i = 1, #prods do
-      ChoGGi.CodeFuncs.FuckingDrones(prods[i])
+
+    -- pathing? pathing in domes works great... watch out for that invisible wall!
+    -- update: seems like this is an issue from one of those smarter work ai mods
+    if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
+      ChoGGi.CodeFuncs.ResetHumanCentipedes()
     end
-  end
 
-  -- pathing? pathing in domes works great... watch out for that invisible wall!
-  -- update: seems like this is an issue from one of those smarter work ai mods
-  if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
-    ChoGGi.CodeFuncs.ResetHumanCentipedes()
-  end
-
-  -- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
-  if ChoGGi.UserSettings.FlushLogConstantly then
-    FlushLogFile()
-  end
+    -- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
+    if ChoGGi.UserSettings.FlushLogConstantly then
+      FlushLogFile()
+    end
+  end)
 end
 
 -- const.MinuteDuration is 500 ticks (GameTime)

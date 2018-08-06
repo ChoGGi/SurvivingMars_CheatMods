@@ -9,9 +9,7 @@ local S = ChoGGi.Strings
 
 local next,type,table = next,type,table
 
-local ChangeGameSpeedState = ChangeGameSpeedState
 --~ local CreateRealTimeThread = CreateRealTimeThread
-local GetObjects = GetObjects
 local PlayFX = PlayFX
 local RebuildFXRules = RebuildFXRules
 local RemoveFromRules = RemoveFromRules
@@ -22,14 +20,16 @@ local pf_SetStepLen = pf.SetStepLen
 
 do -- ChangeSurfaceSignsToMaterials
   local function ChangeEntity(cls,entity,random)
-    local objs = GetObjects{class = cls}
-    for i = 1, #objs do
-      if random then
-        objs[i]:ChangeEntity(Concat(entity,Random(1,random)))
-      else
-        objs[i]:ChangeEntity(entity)
-      end
-    end
+    ForEach{
+      class = cls,
+      exec = function(o)
+        if random then
+          o:ChangeEntity(Concat(entity,Random(1,random)))
+        else
+          o:ChangeEntity(entity)
+        end
+      end,
+    }
   end
 
   function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
@@ -296,13 +296,16 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
-  local const = const
-  local objs = GetObjects{}
-  for i = 1, #objs do
-    if type(objs[i].SetDust) == "function" then
-      objs[i]:SetDust(0,const.DustMaterialExterior)
-    end
-  end
+  local dust = const.DustMaterialExterior
+
+  ForEach{
+    area = "realm",
+    exec = function(o)
+      if type(o.SetDust) == "function" then
+        o:SetDust(0,dust)
+      end
+    end,
+  }
 
   MsgPopup(
     302535920001102--[[Cleaned all--]],
@@ -311,18 +314,23 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-  local objs = GetObjects{}
-  for i = 1, #objs do
-    if type(objs[i].Repair) == "function" then
-      objs[i]:Repair()
-      objs[i].accumulated_maintenance_points = 0
-    end
-  end
+  ForEach{
+    area = "realm",
+    exec = function(o)
+      if type(o.Repair) == "function" then
+        o:Repair()
+        o.accumulated_maintenance_points = 0
+      end
+    end,
+  }
 
-  objs = UICity.labels.Drone or ""
-  for i = 1, #objs do
-    objs[i]:SetCommand("RepairDrone")
-  end
+  ForEach{
+    class = "Drone",
+    area = "realm",
+    exec = function(o)
+      o:SetCommand("RepairDrone")
+    end,
+  }
 
   MsgPopup(
     302535920001104--[[Fixed all--]],
@@ -496,8 +504,10 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 end
 
 --SetTimeFactor(1000) = normal speed
-function ChoGGi.MenuFuncs.SetGameSpeed()
+do -- SetGameSpeed
   local ChoGGi = ChoGGi
+  local ChangeGameSpeedState = ChangeGameSpeedState
+
   local ItemList = {
     {text = S[1000121--[[Default--]]],value = 1},
     {text = S[302535920001126--[[Double--]]],value = 2},
@@ -508,26 +518,6 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     {text = S[302535920001131--[[Duotriguple--]]],value = 32},
     {text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64},
   }
-
-  local current = S[1000121--[[Default--]]]
-  if const.mediumGameSpeed == 6 then
-    current = S[302535920001126--[[Double--]]]
-  elseif const.mediumGameSpeed == 9 then
-    current = S[302535920001127--[[Triple--]]]
-  elseif const.mediumGameSpeed == 12 then
-    current = S[302535920001128--[[Quadruple--]]]
-  elseif const.mediumGameSpeed == 24 then
-    current = S[302535920001129--[[Octuple--]]]
-  elseif const.mediumGameSpeed == 48 then
-    current = S[302535920001130--[[Sexdecuple--]]]
-  elseif const.mediumGameSpeed == 96 then
-    current = S[302535920001131--[[Duotriguple--]]]
-  elseif const.mediumGameSpeed == 192 then
-    current = S[302535920001132--[[Quattuorsexaguple--]]]
-  else
-    current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
-  end
-
   local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
@@ -554,239 +544,268 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
     end
   end
 
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = 302535920001137--[[Set Game Speed--]],
-    hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
-    skip_sort = true,
+  local speeds = {
+    [3] = S[1000121--[[Default--]]],
+    [6] = S[302535920001126--[[Double--]]],
+    [9] = S[302535920001127--[[Triple--]]],
+    [12] = S[302535920001128--[[Quadruple--]]],
+    [24] = S[302535920001129--[[Octuple--]]],
+    [48] = S[302535920001130--[[Sexdecuple--]]],
+    [96] = S[302535920001131--[[Duotriguple--]]],
+    [192] = S[302535920001132--[[Quattuorsexaguple--]]],
   }
-end
 
-local entity_table = {}
-local function SetEntity(obj,entity)
-  --backup orig
-  if not obj.ChoGGi_OrigEntity then
-    obj.ChoGGi_OrigEntity = obj.entity
-  end
-  if entity == "Default" then
-    local orig = obj.ChoGGi_OrigEntity or obj:GetDefaultPropertyValue("entity")
-    obj.entity = orig
-    obj:ChangeEntity(orig)
-    obj.ChoGGi_OrigEntity = nil
-  else
-    obj.entity = entity
-    obj:ChangeEntity(entity)
-  end
-end
-function ChoGGi.MenuFuncs.SetEntity()
-  local ChoGGi = ChoGGi
-  local sel = ChoGGi.CodeFuncs.SelObject()
-  local entity_str = 155--[[Entity--]]
-  if not sel then
-    MsgPopup(
-      302535920001139--[[You need to select an object.--]],
-      entity_str
-    )
-    return
-  end
+  function ChoGGi.MenuFuncs.SetGameSpeed()
+    local const = const
 
-  local hint_noanim = S[302535920001140--[[No animation.--]]]
-  if #entity_table == 0 then
-    entity_table = {
-      {text = Concat("  ",S[302535920001141--[[Default Entity--]]]),value = "Default"},
-      {text = Concat(" ",S[302535920001142--[[Kosmonavt--]]]),value = "Kosmonavt"},
-      {text = Concat(" ",S[302535920001143--[[Jama--]]]),value = "Lama"},
-      {text = Concat(" ",S[302535920001144--[[Green Man--]]]),value = "GreenMan"},
-      {text = Concat(" ",S[302535920001145--[[Planet Mars--]]]),value = "PlanetMars",hint = hint_noanim},
-      {text = Concat(" ",S[302535920001146--[[Planet Earth--]]]),value = "PlanetEarth",hint = hint_noanim},
-      {text = Concat(" ",S[302535920001147--[[Rocket Small--]]]),value = "RocketUI",hint = hint_noanim},
-      {text = Concat(" ",S[302535920001148--[[Rocket Regular--]]]),value = "Rocket",hint = hint_noanim},
-      {text = Concat(" ",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
-      {text = Concat(" ",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
+    local current = speeds[const.mediumGameSpeed]
+    if not current then
+      current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = 302535920001137--[[Set Game Speed--]],
+      hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
+      skip_sort = true,
     }
-    --EntityData
-    local Table = DataInstances.BuildingTemplate
-    for i = 1, #Table do
-      entity_table[#entity_table+1] = {
-        text = Table[i].entity,
-        value = Table[i].entity,
-        hint = hint_noanim
+  end
+end -- do
+
+do -- SetEntity
+  local entity_table = {}
+  local function SetEntity(obj,entity)
+    --backup orig
+    if not obj.ChoGGi_OrigEntity then
+      obj.ChoGGi_OrigEntity = obj.entity
+    end
+    if entity == "Default" then
+      local orig = obj.ChoGGi_OrigEntity or obj:GetDefaultPropertyValue("entity")
+      obj.entity = orig
+      obj:ChangeEntity(orig)
+      obj.ChoGGi_OrigEntity = nil
+    else
+      obj.entity = entity
+      obj:ChangeEntity(entity)
+    end
+  end
+
+  function ChoGGi.MenuFuncs.SetEntity()
+    local ChoGGi = ChoGGi
+    local sel = ChoGGi.CodeFuncs.SelObject()
+    local entity_str = 155--[[Entity--]]
+    if not sel then
+      MsgPopup(
+        302535920001139--[[You need to select an object.--]],
+        entity_str
+      )
+      return
+    end
+
+    local hint_noanim = S[302535920001140--[[No animation.--]]]
+    if #entity_table == 0 then
+      entity_table = {
+        {text = Concat("  ",S[302535920001141--[[Default Entity--]]]),value = "Default"},
+        {text = Concat(" ",S[302535920001142--[[Kosmonavt--]]]),value = "Kosmonavt"},
+        {text = Concat(" ",S[302535920001143--[[Jama--]]]),value = "Lama"},
+        {text = Concat(" ",S[302535920001144--[[Green Man--]]]),value = "GreenMan"},
+        {text = Concat(" ",S[302535920001145--[[Planet Mars--]]]),value = "PlanetMars",hint = hint_noanim},
+        {text = Concat(" ",S[302535920001146--[[Planet Earth--]]]),value = "PlanetEarth",hint = hint_noanim},
+        {text = Concat(" ",S[302535920001147--[[Rocket Small--]]]),value = "RocketUI",hint = hint_noanim},
+        {text = Concat(" ",S[302535920001148--[[Rocket Regular--]]]),value = "Rocket",hint = hint_noanim},
+        {text = Concat(" ",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
+        {text = Concat(" ",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
       }
-    end
-  end
-  local ItemList = entity_table
-
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
-      return
-    end
-    local check1 = choice[1].check1
-    local check2 = choice[1].check2
-    if check1 and check2 then
-      MsgPopup(
-        302535920000039--[[Don't pick both checkboxes next time...--]],
-        entity_str
-      )
-      return
-    end
-
-    local dome
-    if sel.dome and check1 then
-      dome = sel.dome
-    end
-    if EntityData[value] or value == "Default" then
-
-      if check2 then
-        SetEntity(sel,value)
-      else
-        local objs = GetObjects{class = sel.class,area = ""}
-        for i = 1, #objs do
-          if dome then
-            if objs[i].dome and objs[i].dome.handle == dome.handle then
-              SetEntity(objs[i],value)
-            end
-          else
-            SetEntity(objs[i],value)
-          end
-        end
+      --EntityData
+      local Table = DataInstances.BuildingTemplate
+      for i = 1, #Table do
+        entity_table[#entity_table+1] = {
+          text = Table[i].entity,
+          value = Table[i].entity,
+          hint = hint_noanim
+        }
       end
-      MsgPopup(
-        Concat(choice[1].text,": ",RetName(sel)),
-        entity_str
-      )
     end
-  end
+    local ItemList = entity_table
 
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
-    hint = Concat(S[302535920000106--[[Current--]]],": ",(sel.ChoGGi_OrigEntity or sel.entity),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],"\n\n",S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+      local check1 = choice[1].check1
+      local check2 = choice[1].check2
+      if check1 and check2 then
+        MsgPopup(
+          302535920000039--[[Don't pick both checkboxes next time...--]],
+          entity_str
+        )
+        return
+      end
+
+      local dome
+      if sel.dome and check1 then
+        dome = sel.dome
+      end
+      if EntityData[value] or value == "Default" then
+
+        if check2 then
+          SetEntity(sel,value)
+        else
+          ForEach{
+            class = sel.class,
+            area = "realm",
+            exec = function(o)
+              if dome then
+                if o.dome and o.dome.handle == dome.handle then
+                  SetEntity(o,value)
+                end
+              else
+                SetEntity(o,value)
+              end
+            end,
+          }
+        end
+        MsgPopup(
+          Concat(choice[1].text,": ",RetName(sel)),
+          entity_str
+        )
+      end
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
+      hint = Concat(S[302535920000106--[[Current--]]],": ",(sel.ChoGGi_OrigEntity or sel.entity),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],"\n\n",S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
 Not permanent for colonists after they exit buildings (for now).--]]]),
-    check1 = 302535920000750--[[Dome Only--]],
-    check1_hint = 302535920001255--[[Will only apply to objects in the same dome as selected object.--]],
-    check2 = 302535920000752--[[Selected Only--]],
-    check2_hint = 302535920001256--[[Will only apply to selected object.--]],
-  }
-end
+      check1 = 302535920000750--[[Dome Only--]],
+      check1_hint = 302535920001255--[[Will only apply to objects in the same dome as selected object.--]],
+      check2 = 302535920000752--[[Selected Only--]],
+      check2_hint = 302535920001256--[[Will only apply to selected object.--]],
+    }
+  end
+end -- do
 
-local function SetScale(obj,Scale)
-  local ChoGGi = ChoGGi
-  local cUserSettings = ChoGGi.UserSettings
-  obj:SetScale(Scale)
+do -- SetEntityScale
+  local function SetScale(obj,Scale)
+    local ChoGGi = ChoGGi
+    local cUserSettings = ChoGGi.UserSettings
+    obj:SetScale(Scale)
 
-  --changing entity to a static one and changing scale can make things not move so re-apply speeds.
-  --and it needs a slight delay
-	DelayedCall(500, function()
---~   CreateRealTimeThread(function()
---~     Sleep(500)
-    if obj.class == "Drone" then
-      if cUserSettings.SpeedDrone then
-        pf_SetStepLen(obj,cUserSettings.SpeedDrone)
-      else
-        obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
+    --changing entity to a static one and changing scale can make things not move so re-apply speeds.
+    --and it needs a slight delay
+    DelayedCall(500, function()
+      if obj.class == "Drone" then
+        if cUserSettings.SpeedDrone then
+          pf_SetStepLen(obj,cUserSettings.SpeedDrone)
+        else
+          obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
+        end
+      elseif obj.class == "CargoShuttle" then
+        if cUserSettings.SpeedShuttle then
+          obj.max_speed = ChoGGi.Consts.SpeedShuttle
+        else
+          obj.max_speed = ChoGGi.Consts.SpeedShuttle
+        end
+      elseif obj.class == "Colonist" then
+        if cUserSettings.SpeedColonist then
+          pf_SetStepLen(obj,cUserSettings.SpeedColonist)
+        else
+          obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
+        end
+      elseif obj:IsKindOf("BaseRover") then
+        if cUserSettings.SpeedRC then
+          pf_SetStepLen(obj,cUserSettings.SpeedRC)
+        else
+          obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
+        end
       end
-    elseif obj.class == "CargoShuttle" then
-      if cUserSettings.SpeedShuttle then
-        obj.max_speed = ChoGGi.Consts.SpeedShuttle
-      else
-        obj.max_speed = ChoGGi.Consts.SpeedShuttle
-      end
-    elseif obj.class == "Colonist" then
-      if cUserSettings.SpeedColonist then
-        pf_SetStepLen(obj,cUserSettings.SpeedColonist)
-      else
-        obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
-      end
-    elseif obj:IsKindOf("BaseRover") then
-      if cUserSettings.SpeedRC then
-        pf_SetStepLen(obj,cUserSettings.SpeedRC)
-      else
-        obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
-      end
-    end
-  end)
-end
-
-function ChoGGi.MenuFuncs.SetEntityScale()
-  local ChoGGi = ChoGGi
-  local sel = ChoGGi.CodeFuncs.SelObject()
-  if not sel then
-    MsgPopup(
-      302535920001139--[[You need to select an object.--]],
-      1000081--[[Scale--]]
-    )
-    return
+    end)
   end
 
-  local ItemList = {
-    {text = S[1000121--[[Default--]]],value = 100},
-    {text = 25,value = 25},
-    {text = 50,value = 50},
-    {text = 100,value = 100},
-    {text = 250,value = 250},
-    {text = 500,value = 500},
-    {text = 1000,value = 1000},
-    {text = 10000,value = 10000},
-  }
-
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
-      return
-    end
-    local check1 = choice[1].check1
-    local check2 = choice[1].check2
-    if check1 and check2 then
+  function ChoGGi.MenuFuncs.SetEntityScale()
+    local ChoGGi = ChoGGi
+    local sel = ChoGGi.CodeFuncs.SelObject()
+    if not sel then
       MsgPopup(
-        302535920000039--[[Don't pick both checkboxes next time...--]],
+        302535920001139--[[You need to select an object.--]],
         1000081--[[Scale--]]
       )
       return
     end
 
-    local dome
-    if sel.dome and check1 then
-      dome = sel.dome
-    end
-    if type(value) == "number" then
+    local ItemList = {
+      {text = S[1000121--[[Default--]]],value = 100},
+      {text = 25,value = 25},
+      {text = 50,value = 50},
+      {text = 100,value = 100},
+      {text = 250,value = 250},
+      {text = 500,value = 500},
+      {text = 1000,value = 1000},
+      {text = 10000,value = 10000},
+    }
 
-      if check2 then
-        SetScale(sel,value)
-      else
-        local objs = GetObjects{class = sel.class,area = ""}
-        for i = 1, #objs do
-          if dome then
-            if objs[i].dome and objs[i].dome.handle == dome.handle then
-              SetScale(objs[i],value)
-            end
-          else
-            SetScale(objs[i],value)
-          end
-        end
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
       end
-      MsgPopup(
-        Concat(choice[1].text,": ",RetName(sel)),
-        1000081--[[Scale--]],
-        nil,
-        nil,
-        sel
-      )
-    end
-  end
+      local check1 = choice[1].check1
+      local check2 = choice[1].check2
+      if check1 and check2 then
+        MsgPopup(
+          302535920000039--[[Don't pick both checkboxes next time...--]],
+          1000081--[[Scale--]]
+        )
+        return
+      end
 
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
-    hint = Concat(S[302535920001156--[[Current object--]]],": ",sel:GetScale(),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
-    check1 = 302535920000750--[[Dome Only--]],
-    check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
-    check2 = 302535920000752--[[Selected Only--]],
-    check2_hint = 302535920000753--[[Will only apply to selected colonist.--]],
-    skip_sort = true,
-  }
-end
+      local dome
+      if sel.dome and check1 then
+        dome = sel.dome
+      end
+      if type(value) == "number" then
+
+        if check2 then
+          SetScale(sel,value)
+        else
+          ForEach{
+            class = sel.class,
+            area = "realm",
+            exec = function(o)
+              if dome then
+                if o.dome and o.dome.handle == dome.handle then
+                  SetScale(o,value)
+                end
+              else
+                SetScale(o,value)
+              end
+            end,
+          }
+        end
+        MsgPopup(
+          Concat(choice[1].text,": ",RetName(sel)),
+          1000081--[[Scale--]],
+          nil,
+          nil,
+          sel
+        )
+      end
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
+      hint = Concat(S[302535920001156--[[Current object--]]],": ",sel:GetScale(),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
+      check1 = 302535920000750--[[Dome Only--]],
+      check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
+      check2 = 302535920000752--[[Selected Only--]],
+      check2_hint = 302535920000753--[[Will only apply to selected colonist.--]],
+      skip_sort = true,
+    }
+  end
+end -- do

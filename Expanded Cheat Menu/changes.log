@@ -1,6 +1,10 @@
 v7.3 (Unreleased)
 Added:
 Debug>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
+Fixes>Toggle Working On All Buildings: Does what it says (on n off, or off n on).
+
+Changed:
+RandomColour is slightly more random (lines for pathing, object colour, and so on).
 
 v7.2 (04 Aug 2018)
 Added:

@@ -8,7 +8,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 
-local pcall,print,rawget,type,table = pcall,print,rawget,type,table
+local pcall,rawget,type,table = pcall,rawget,type,table
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
@@ -26,11 +26,9 @@ local GetTerrainCursorObjSel = GetTerrainCursorObjSel
 local HexGetNearestCenter = HexGetNearestCenter
 local IsValid = IsValid
 local NearestObject = NearestObject
-local OpenExamine = OpenExamine
 local OpenXBuildMenu = OpenXBuildMenu
 local PlaceObj = PlaceObj
 local point = point
-local RandColor = RandColor
 local SelectionMouseObj = SelectionMouseObj
 local Sleep = Sleep
 
@@ -265,16 +263,11 @@ end
 --toggle working status
 function ChoGGi.CodeFuncs.ToggleWorking(building)
   if IsValid(building) then
-    if not pcall(function()
-      CreateRealTimeThread(function()
-        building:ToggleWorking()
-        Sleep(5)
-        building:ToggleWorking()
-      end)
-    end) then
-      print(S[302535920000012]--[[302535920000012,Error borked building: %s--]]:format(RetName(building)))
-      OpenExamine(building)
-    end
+    CreateRealTimeThread(function()
+      building:ToggleWorking()
+      Sleep(5)
+      building:ToggleWorking()
+    end)
   end
 end
 
@@ -1024,6 +1017,7 @@ function ChoGGi.CodeFuncs.SelObject()
         end
       end,
     },
+    -- how far from cursor do we check for objects
     1500
   )
 end
@@ -1777,7 +1771,6 @@ do -- flightgrids
   local InterpolateRGB = InterpolateRGB
   local Clamp = Clamp
   local AveragePoint2D = AveragePoint2D
-  local DbgClearVectors = DbgClearVectors
   local terrain_GetHeight = terrain.GetHeight
 
   local function Flight_DbgRasterLine(pos1, pos0, zoffset)

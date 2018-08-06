@@ -13,7 +13,6 @@ local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
-local GetObjects = GetObjects
 local GetTerrainCursor = GetTerrainCursor
 local HideMouseCursor = HideMouseCursor
 local IsMouseCursorHidden = IsMouseCursorHidden
@@ -134,10 +133,12 @@ do -- ListAllObjects
 end -- do
 
 local function DeleteAllRocks(rock_cls)
-  local objs = GetObjects{class = rock_cls}
-  for i = 1, #objs do
-    objs[i]:delete()
-  end
+  ForEach{
+    class = rock_cls,
+    exec = function(o)
+      o:delete()
+    end,
+  }
 end
 
 function ChoGGi.MenuFuncs.DeleteAllRocks()
@@ -149,7 +150,7 @@ function ChoGGi.MenuFuncs.DeleteAllRocks()
     end
   end
   ChoGGi.ComFuncs.QuestionBox(
-    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes any rocks for that smooth map feel (will take about 30 seconds).--]]]),
+    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
     CallBackFunc,
     Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
   )
@@ -175,20 +176,22 @@ do --FlattenGround
   -- rocks don't have handles, so we use their position to build a table of no dupes
   local positions = {}
   local function SaveRocks(rock_cls,rock_objects)
-    local objs = GetObjects{class = rock_cls}
-    for i = 1, #objs do
-      local pos = objs[i]:GetVisualPos()
-      if not positions[pos] then
-        local terrain_height = terrain_GetHeight(pos)
-        rock_objects[#rock_objects+1] = {
-          obj = objs[i],
-          pos = point(pos:x(),pos:y()),
-          height_t = terrain_height,
-          offset = terrain_height - pos:z(),
-        }
-        positions[pos] = true
-      end
-    end
+    ForEach{
+      class = rock_cls,
+      exec = function(o)
+        local pos = o:GetVisualPos()
+        if not positions[pos] then
+          local terrain_height = terrain_GetHeight(pos)
+          rock_objects[#rock_objects+1] = {
+            obj = o,
+            pos = point(pos:x(),pos:y()),
+            height_t = terrain_height,
+            offset = terrain_height - pos:z(),
+          }
+          positions[pos] = true
+        end
+      end,
+    }
   end
   local function UpdateRockList()
     rock_objects = {}
@@ -292,15 +295,17 @@ end
     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
   end
 
-  local function ToggleCollisions(objs)
-    local ChoGGi = ChoGGi
-    for i = 1, #objs do
-      ChoGGi.CodeFuncs.CollisionsObject_Toggle(objs[i],true)
-    end
+  local function ToggleCollisions(ChoGGi)
+    ForEach{
+      class = "LifeSupportGridElement",
+      exec = function(o)
+        ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+      end,
+    }
   end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
-
+    local ChoGGi = ChoGGi
 if ChoGGi.Test then
     -- make a list of rocks to henceforth be a reference
     if not UICity.ChoGGi.map_rock_objects then
@@ -323,12 +328,11 @@ end
         "UI/Icons/Sections/WasteRock_1.tga"
       )
       -- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-      local objs = GetObjects{class = "LifeSupportGridElement"}
-      ToggleCollisions(objs)
+      ToggleCollisions(ChoGGi)
       -- update uneven terrain checker thingy
       RecalcBuildableGrid()
       -- and back on when we're done
-      ToggleCollisions(objs)
+      ToggleCollisions(ChoGGi)
 
     else
       -- have to set it here after settings are loaded or it'll be default radius till user adjusts it

@@ -46,7 +46,7 @@ if ChoGGi.testing then
     print("Random:\n",values)
 
     TickStart("Random1.Tick")
-      local values = {}
+      values = {}
       for i = 1, amount or 10000 do
         values[i] = Random1(0,10000)
       end

@@ -283,8 +283,8 @@ Strings[584248706535] = Strings[584248706535]:gsub("<right><ResourceAmount>",": 
 -- we need to pad some zeros
 local function TransZero(pad,first,last)
   for i = first, last do
-    -- 1300 entries in the CSV file
-    if i > 1300 then
+    -- entries in the CSV file
+    if i > 1350 then
       break
     end
     local num = tonumber(TableConcat{30253592000,pad,i})
