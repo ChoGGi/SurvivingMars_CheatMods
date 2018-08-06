@@ -5,6 +5,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
+local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 
 local pcall,print,rawget,type,table = pcall,print,rawget,type,table
@@ -30,7 +31,6 @@ local OpenXBuildMenu = OpenXBuildMenu
 local PlaceObj = PlaceObj
 local point = point
 local RandColor = RandColor
-local Random = Random
 local SelectionMouseObj = SelectionMouseObj
 local Sleep = Sleep
 
@@ -639,30 +639,31 @@ function ChoGGi.CodeFuncs.GetPalette(obj)
 end
 
 function ChoGGi.CodeFuncs.RandomColour(amount)
-  local ChoGGi = ChoGGi
+  if amount and type(amount) == "number" then
+    local RetTableNoDupes = ChoGGi.ComFuncs.RetTableNoDupes
+    local Random = Random -- ChoGGi.ComFuncs.Random
 
-  -- amount isn't a number so return a single colour
-  if type(amount) ~= "number" then
-    return RandColor() --24bit colour
-  end
-
-  local colours = {}
-  -- populate list with amount we want
-  for _ = 1, amount do
-    colours[#colours+1] = RandColor()
-  end
-
-  -- now remove all dupes and add more till we hit amount
-  while #colours ~= amount do
-    -- remove dupes
-    colours = ChoGGi.ComFuncs.RetTableNoDupes(colours)
-    -- then loop missing amount
-    for _ = 1, amount - #colours do
-      colours[#colours+1] = RandColor()
+    local colours = {}
+    -- populate list with amount we want
+    for _ = 1, amount do
+      colours[#colours+1] = Random(-16777216,0) -- 24bit colour
     end
+
+    -- now remove all dupes and add more till we hit amount
+    repeat
+      -- then loop missing amount
+      for _ = 1, amount - #colours do
+        colours[#colours+1] = Random(-16777216,0)
+      end
+      -- remove dupes
+      colours = RetTableNoDupes(colours)
+    until #colours == amount
+
+    return colours
   end
 
-  return colours
+  -- return a single colour
+  return Random(-16777216,0)
 end
 
 do -- SetRandColour

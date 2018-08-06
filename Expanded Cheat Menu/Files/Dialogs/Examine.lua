@@ -1150,10 +1150,6 @@ local function BuildParents(self,list,list_type,title,sort_type)
 end
 function Examine:SetObj(o)
   local ChoGGi = ChoGGi
-
-  if ChoGGi.testing then
-    ChoGGi.ComFuncs.TickStart("Examine:SetObj")
-  end
   self.onclick_handles = {}
   self.obj = o
   self.idText:SetText(self:totextex(o))
@@ -1220,10 +1216,6 @@ function Examine:SetObj(o)
   end
   --limit length so we don't cover up close button (only for objlist, everything else is short enough)
   self.idCaption:SetText(utf8.sub(name, 1, 45))
-
-  if ChoGGi.testing then
-    ChoGGi.ComFuncs.TickEnd("Examine:SetObj")
-  end
 end
 
 --~ function Examine:SetText(text)

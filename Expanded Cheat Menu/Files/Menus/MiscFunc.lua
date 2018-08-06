@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
+local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 --~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
@@ -12,7 +13,6 @@ local ChangeGameSpeedState = ChangeGameSpeedState
 --~ local CreateRealTimeThread = CreateRealTimeThread
 local GetObjects = GetObjects
 local PlayFX = PlayFX
-local Random = Random
 local RebuildFXRules = RebuildFXRules
 local RemoveFromRules = RemoveFromRules
 local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
@@ -20,7 +20,7 @@ local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
 
 local pf_SetStepLen = pf.SetStepLen
 
-function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
+do -- ChangeSurfaceSignsToMaterials
   local function ChangeEntity(cls,entity,random)
     local objs = GetObjects{class = cls}
     for i = 1, #objs do
@@ -32,43 +32,46 @@ function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
     end
   end
 
-  local ItemList = {
-    {text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
-    {text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
-  }
+  function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
 
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
-      return
+    local ItemList = {
+      {text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
+      {text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
+    }
+
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+      if value == 1 then
+        ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
+        ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
+        ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
+        ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
+        ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
+        ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
+        ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+      else
+        ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
+        ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
+        ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
+        ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
+        ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
+        ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
+        ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
+        ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
+        ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
+      end
     end
-    if value == 1 then
-      ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
-      ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
-      ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
-      ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
-      ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
-      ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
-      ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
-    else
-      ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
-      ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
-      ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
-      ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
-      ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
-      ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
-      ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
-      ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
-      ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
-    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = 302535920001083--[[Change Surface Signs--]],
+    }
   end
-
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = 302535920001083--[[Change Surface Signs--]],
-  }
-end
+end -- do
 
 --AnnoyingSounds_Toggles
 local function MirrorSphere_Toggle()

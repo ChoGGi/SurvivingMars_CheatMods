@@ -1146,16 +1146,19 @@ function ChoGGi.ComFuncs.SetSavedSetting(setting,value)
 end
 
 function ChoGGi.ComFuncs.RetTableNoDupes(list)
-  local tempt = {}
-  local dupe = {}
+  local temp_t = {}
+  local dupe_t = {}
 
   for i = 1, #list do
-    if not dupe[list[i]] then
-      tempt[#tempt+1] = list[i]
-      dupe[list[i]] = true
+    if not dupe_t[list[i]] then
+
+      temp_t[#temp_t+1] = list[i]
+      dupe_t[list[i]] = true
+
     end
   end
-  return tempt
+
+  return temp_t
 end
 
 function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
@@ -1963,6 +1966,23 @@ function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
         ChoGGi.Tables.CargoPresets[c.id] = c
       end
     end
+  end
+end
+
+function ChoGGi.ComFuncs.Random(m, n)
+  -- m = min, n = max
+  if n then
+
+--~     -- return nil instead of just returning max without any randomness
+--~     if n-m < 0 then
+--~       return
+--~     end
+
+    return AsyncRand(n - m + 1) + m
+
+  else
+    -- m = max, min = 0 OR number between 0 and max_int
+    return m and AsyncRand(m) or AsyncRand()
   end
 end
 

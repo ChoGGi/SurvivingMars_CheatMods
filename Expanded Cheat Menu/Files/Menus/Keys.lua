@@ -47,12 +47,11 @@ end
 function ChoGGi.MenuFuncs.AddDeposit(sType)
   local obj = PlaceObj(sType, {
     "Pos", ChoGGi.CodeFuncs.CursorNearestHex(),
-    "max_amount", Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale),
     "revealed", true,
   })
+  obj.max_amount = ChoGGi.ComFuncs.Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale)
   obj:CheatRefill()
   obj.amount = obj.max_amount
-
 end
 
 --fixup name we get from Object
@@ -179,7 +178,7 @@ AddAction( -- LastConstructedBuilding
   ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding
 )
 
---goes to placement mode with SelectedObj
+-- goes to placement mode with SelectedObj
 AddAction( -- LastPlacedObject
   nil,
   nil,

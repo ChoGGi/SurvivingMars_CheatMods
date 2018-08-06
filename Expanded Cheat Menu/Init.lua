@@ -72,7 +72,7 @@ local function Concat(...)
   return TableConcat(concat_table)
 end
 
---~ ChoGGi.CodeFuncs.TestConcat()
+--~ ChoGGi.CodeFuncs.TestConcatExamine()
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {

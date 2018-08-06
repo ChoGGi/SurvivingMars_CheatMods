@@ -2,6 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Random = ChoGGi.ComFuncs.Random
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Notifications/colonist.tga"
@@ -15,7 +16,6 @@ local GetObjects = GetObjects
 local Msg = Msg
 local Notify = Notify
 local PlaceResourcePile = PlaceResourcePile
-local Random = Random
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -81,10 +81,8 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
     PlaceResourcePile(MeatBag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
     MeatBag:SetCommand("Die","ChoGGi_Soylent")
     MeatBag.ChoGGi_Soylent = true
-    --gotta wait for a tad else log gets spammed with changepath and other stuff
+    -- gotta wait for a tad else log gets spammed with changepath and other stuff
     DelayedCall(100, function()
---~     CreateRealTimeThread(function()
---~       Sleep(100)
       local Table = UICity.labels.Colonist or ""
       for i = 1, #Table do
         if Table[i].ChoGGi_Soylent then
@@ -722,7 +720,8 @@ end
 function ChoGGi.MenuFuncs.SetDeathAge()
   local function RetDeathAge(c)
     c = c or Colonist
-    return c.MinAge_Senior + 5 + c:Random(10) + c:Random(5) + c:Random(5)
+--~     return c.MinAge_Senior + 5 + c:Random(10) + c:Random(5) + c:Random(5)
+    return c.MinAge_Senior + 5 + Random(10) + Random(5) + Random(5)
   end
 
   local default_str = S[1000121--[[Default--]]]
@@ -1342,19 +1341,19 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
     elseif iType == 2 then
       --random 3x3
       if choice[1].value == DefaultSetting then
-        local function RandomTraits(Obj)
+        local function RandomTraits(o)
           --remove all traits
-          ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.OtherTraits)
-          ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.PositiveTraits)
-          ChoGGi.CodeFuncs.ColonistUpdateTraits(Obj,false,ChoGGi.Tables.NegativeTraits)
+          ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.OtherTraits)
+          ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.PositiveTraits)
+          ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.NegativeTraits)
           --add random ones
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-          Obj:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-          Notify(Obj,"UpdateMorale")
+          o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
+          o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+          Notify(o,"UpdateMorale")
         end
         local tab = UICity.labels.Colonist or ""
         for i = 1, #tab do

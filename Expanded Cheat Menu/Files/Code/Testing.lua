@@ -1,16 +1,59 @@
 -- See LICENSE for terms
 
 if ChoGGi.testing then
+  local TickStart = ChoGGi.ComFuncs.TickStart
+  local TickEnd = ChoGGi.ComFuncs.TickEnd
   local Concat = ChoGGi.ComFuncs.Concat
 
   -- checking how fast concat is for examining large amounts of objects
-  function ChoGGi.CodeFuncs.TestConcat()
-    local ChoGGi,OpenExamine,GetObjects = ChoGGi,OpenExamine,GetObjects
-    for _ = 1, 5 do
-      ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
+  function ChoGGi.CodeFuncs.TestConcatExamine(amount)
+    TickStart("TestConcatExamine.Total")
+
+    local OpenExamine,GetObjects = OpenExamine,GetObjects
+    local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
+    for _ = 1, amount or 5 do
+      TickStart("TestConcatExamine.Tick")
+      RemoveOldDialogs("Examine")
       OpenExamine(GetObjects{})
+      TickEnd("TestConcatExamine.Tick")
     end
-    ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
+    RemoveOldDialogs("Examine")
+
+    TickEnd("TestConcatExamine.Total")
+  end
+  function ChoGGi.CodeFuncs.TestRandomColour(amount)
+    TickStart("TestRandomColour.Total")
+    local RandomColour = ChoGGi.CodeFuncs.RandomColour
+    for _ = 1, amount or 5 do
+      TickStart("TestRandomColour.Tick")
+      RandomColour(100000)
+      TickEnd("TestRandomColour.Tick")
+    end
+    TickEnd("TestRandomColour.Total")
+  end
+
+  function ChoGGi.CodeFuncs.TestRandom(amount)
+    TickStart("TestRandom.Total")
+    local Random = Random
+    local Random1 = ChoGGi.ComFuncs.Random
+
+    TickStart("TestRandom.Tick")
+      local values = {}
+      for i = 1, amount or 10000 do
+        values[i] = Random(0,10000)
+      end
+    TickEnd("TestRandom.Tick")
+    print("Random:\n",values)
+
+    TickStart("Random1.Tick")
+      local values = {}
+      for i = 1, amount or 10000 do
+        values[i] = Random1(0,10000)
+      end
+    TickEnd("Random1.Tick")
+    print("Random1:\n",values)
+
+    TickEnd("TestRandom.Total")
   end
 
   --[[

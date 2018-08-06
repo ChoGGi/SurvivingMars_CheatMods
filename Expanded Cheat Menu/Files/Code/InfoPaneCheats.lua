@@ -4,6 +4,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
+local Random = ChoGGi.ComFuncs.Random
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
 local ResourceScale = ChoGGi.Consts.ResourceScale
@@ -132,7 +133,7 @@ do
     self:ChooseEntity()
   end
   function Colonist:CheatRandomSpec()
-    --skip children, or they'll be a black cube
+    -- skip children, or they'll be a black cube
     if not self.entity:find("Child",1,true) then
       self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,6)],"init")
     end

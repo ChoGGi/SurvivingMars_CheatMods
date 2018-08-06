@@ -9,5 +9,7 @@ return PlaceObj("ModDef", {
   "code", {"Script.lua"},
   "description", [[Any rocks dumped at this depot will disappear (good for excess resources).
 
-Be careful where you place it as drones will use it like a regular depot.]],
+Be careful where you place it as drones will use it like a regular depot.
+
+Requested by Black Jesus.]],
 })

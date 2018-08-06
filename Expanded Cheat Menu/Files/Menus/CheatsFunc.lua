@@ -133,9 +133,14 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity,storm_type)
   end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
+  local pos = ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor()
+  if type(pos) == "table" then
+    pos = pos:GetPos()
+  end
+
   local data = DataInstances.MapSettings_DustDevils
   local descr = data[severity] or data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-  GenerateDustDevil(GetTerrainCursor(), descr, nil, major):Start()
+  GenerateDustDevil(pos, descr, nil, major):Start()
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
   local pos = ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor()
@@ -158,17 +163,18 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
   end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
+  local ChoGGi = ChoGGi
+
   local pos = ChoGGi.CodeFuncs.SelObject() or GetTerrainCursor()
   if type(pos) == "table" then
     pos = pos:GetPos()
   end
 
   local const = const
-  local expiration = Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
   local storm = PlaceObject("MetatronIonStorm")
-  storm.expiration_time = expiration
+  storm.expiration_time = ChoGGi.ComFuncs.Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
   storm:SetPos(pos)
-  storm:SetAngle(Random(1,21600))
+  storm:SetAngle(ChoGGi.ComFuncs.Random(1,21600))
 end
 
 function ChoGGi.MenuFuncs.DisastersStop()
