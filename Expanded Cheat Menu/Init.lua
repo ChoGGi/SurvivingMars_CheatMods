@@ -190,6 +190,8 @@ do -- ECM settings
   dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
   -- get saved settings for this mod
   dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
+  -- stuff remove from newer SM versions (starting with curo update)
+  dofolder_files(Concat(ChoGGi.MountPath,"Removed"))
   -- new ui classes
   dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
   -- OnMsgs and functions that don't need to be in CommonFunctions

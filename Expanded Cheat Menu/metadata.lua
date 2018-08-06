@@ -11,6 +11,9 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+  -- errors out unless it's the same as LuaRevision
+	"lua_revision", 233467,
+
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
