@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1443143020",
+	"lua_revision", LuaRevision,
   "description", [[Modders only (unless it's a mod that uses these functions).
 
 For some reason SM doesn't have any of lua "math." functions.

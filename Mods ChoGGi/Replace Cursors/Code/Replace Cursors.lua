@@ -30,6 +30,8 @@ for _,t in pairs(XTemplates) do
   end
 end
 
+--~ terminal.desktop:SetMouseCursor("CommonAssets/UI/Controls/Button/Close.tga")
+
 -- default cursor for most objects
 PropertyObject.MouseCursor = cursor
 InterfaceModeDialog.MouseCursor = cursor

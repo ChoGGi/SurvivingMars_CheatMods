@@ -1,3 +1,4 @@
+local mod_path = ConvertToOSPath(_G.CurrentModPath)
 return PlaceObj("ModDef", {
 	"title", "Expanded Cheat Menu v7.3 Test",
 	"version", 73,
@@ -11,18 +12,21 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-  -- errors out unless it's the same as LuaRevision
-	"lua_revision", 233467,
+--~ 	"lua_revision", LuaRevision,
+
+  "last change" , string.format([[v7.3
+Da Vinci Patch:
+If this mod is disabled due to version compatibility then you need to install the helper mod at:
+%sHelperMod
+]],mod_path),
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
-	"description", [[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+	"description", string.format([[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
-The only mod a modder needs.
-
-Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Expanded%20Cheat%20Menu\
-Badly outdated list of features: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md#list-of-some-stuff-added-not-up-to-date
+If this mod is disabled due to version compatibility then you need to install the helper mod at:
+%sHelperMod
 
 
 
@@ -53,18 +57,16 @@ There's a cheats section in most selection panels on the right side of the scree
 Menu>Misc>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
-To edit and use files from Files.hpk, use HPK archiver to extract them into the mod folder.
-If Defaults.lua is in the same place as Init.lua you did it correctly.
-
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
+Settings are saved at %%APPDATA%%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
 
 You can edit the shortcut keys in the settings file (or blank them to disable).
 
 
 
-#####
-For more info see Menu>Help>ECM>Readme
+##### For more info see Menu>Help>ECM>Readme
+Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
+
 
 
 ##### Thanks
@@ -72,5 +74,5 @@ chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedeta
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.]],
+Everyone else giving suggestions/pointing out issues.]],mod_path),
 })

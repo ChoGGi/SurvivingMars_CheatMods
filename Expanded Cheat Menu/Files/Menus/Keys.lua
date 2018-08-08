@@ -82,7 +82,7 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
     itemname = fixed
   end
   --n all the rest
-  local igi = XDialogs.InGameInterface
+  local igi = Dialogs.InGameInterface
   if not igi or not igi:GetVisible() then
     return
   end
@@ -91,7 +91,7 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
   local _,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
   --if show then --interferes with building passageramp
-    local dlg = XDialogs.XBuildMenu
+    local dlg = Dialogs.XBuildMenu
     if action then
       action(dlg,{
         enabled = can_build,
@@ -133,37 +133,43 @@ AddAction( -- ObjectColourDefault
   ChoGGi.UserSettings.KeyBindings.ObjectColourDefault
 )
 
-AddAction( -- ShowConsoleTilde
-  nil,
-  nil,
-  function()
-    ShowConsole(true)
-  end,
-  ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
-)
+local function ToggleConsole()
+  local dlgConsole = dlgConsole
+  if dlgConsole then
+    ShowConsole(not dlgConsole:GetVisible())
+  end
+end
+--~ AddAction( -- ShowConsoleTilde
+--~   nil,
+--~   nil,
+--~   function()
+--~     ShowConsole(true)
+--~   end,
+--~   ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
+--~ )
 
 AddAction( -- ShowConsoleEnter
   nil,
   nil,
   function()
-    ShowConsole(true)
+    ToggleConsole()
   end,
   ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter
 )
 
-AddAction( -- ConsoleRestart
-  nil,
-  nil,
-  function()
-    ShowConsole(true)
-    local dlgConsole = dlgConsole
-    if dlgConsole then
-      dlgConsole.idEdit:SetText("restart")
-      dlgConsole.idEdit:SetFocus()
-    end
-  end,
-  ChoGGi.UserSettings.KeyBindings.ConsoleRestart
-)
+--~ AddAction( -- ConsoleRestart
+--~   nil,
+--~   nil,
+--~   function()
+--~     ShowConsole(true)
+--~     local dlgConsole = dlgConsole
+--~     if dlgConsole then
+--~       dlgConsole.idEdit:SetText("restart")
+--~       dlgConsole.idEdit:SetFocus()
+--~     end
+--~   end,
+--~   ChoGGi.UserSettings.KeyBindings.ConsoleRestart
+--~ )
 
 --goes to placement mode with last built object
 AddAction( -- LastConstructedBuilding
@@ -192,3 +198,46 @@ AddAction( -- LastPlacedObject
   end,
   ChoGGi.UserSettings.KeyBindings.LastPlacedObject
 )
+
+function OnMsg.ShortcutsReloaded()
+--~   if XTemplates.DeveloperShortcuts then
+--~     XTemplateSpawn("DeveloperShortcuts", XShortcutsTarget)
+--~   end
+
+  XShortcutsTarget:AddAction(XAction:new{
+    ActionId = "ChoGGi_ObjectExamine",
+    ActionTranslate = false,
+    ActionShortcut = "F4",
+    OnAction = function()
+      local sel = ChoGGi.CodeFuncs.SelObject()
+      if not sel then
+        return
+      end
+      --open examine at the object
+      OpenExamine(sel,sel)
+    end,
+  })
+
+  XShortcutsTarget:AddAction(XAction:new{
+    ActionId = "ChoGGi_ConsoleRestart",
+    ActionTranslate = false,
+    ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
+    OnAction = function()
+      ShowConsole(true)
+      local dlgConsole = dlgConsole
+      if dlgConsole then
+        dlgConsole.idEdit:SetText("restart")
+        dlgConsole.idEdit:SetFocus()
+      end
+    end,
+  })
+
+  XShortcutsTarget:AddAction(XAction:new{
+    ActionId = "ChoGGi_ShowConsoleTilde",
+    ActionTranslate = false,
+    ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+    OnAction = function()
+      ToggleConsole()
+    end,
+  })
+end

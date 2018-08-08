@@ -28,17 +28,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+--~ -- have to see if this is a good or bad idea
+--~ if not Mods.ChoGGi_CheatMenu.FirstLoad then
+--~   return
+--~ end
+
+--~ print("XActionsHost ",ValueToLuaCode(XActionsHost))
+--~ print("terminal ",ValueToLuaCode(terminal))
+
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,table = dofile,select,tostring,type,table
-local AsyncGetFileAttribute,Mods,dofolder_files = AsyncGetFileAttribute,Mods,dofolder_files
+local AsyncGetFileAttribute,Mods,dofolder,dofolder_files = AsyncGetFileAttribute,Mods,dofolder,dofolder_files
 
-local TableConcat
--- just in case they remove oldTableConcat
-pcall(function()
-  TableConcat = oldTableConcat
-end)
 -- thanks for replacing concat... what's wrong with using table.concat2?
-TableConcat = TableConcat or table.concat
+local TableConcat = oldTableConcat or table.concat
 
 local function FileExists(file)
   -- AsyncFileOpen may not work that well under linux?
@@ -190,8 +193,6 @@ do -- ECM settings
   dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
   -- get saved settings for this mod
   dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
-  -- stuff remove from newer SM versions (starting with curo update)
-  dofolder_files(Concat(ChoGGi.MountPath,"Removed"))
   -- new ui classes
   dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
   -- OnMsgs and functions that don't need to be in CommonFunctions

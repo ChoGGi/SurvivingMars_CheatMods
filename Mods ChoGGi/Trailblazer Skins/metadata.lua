@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_TrailblazerSkins",
 	"code", {"Script.lua"},
-	"description", [[Enable Trailblazer Skins.]],
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
+	"description", [[Enable Trailblazer Skins.]],
 })

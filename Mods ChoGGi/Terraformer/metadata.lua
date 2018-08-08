@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"image", "Preview.png",
 	"steam_id", "1415296985",
+	"lua_revision", LuaRevision,
 	"description", [[If you're feeling OCD about a perfect layout for your base then look no further.
 
 Press Shift-F to set height to wherever cursor is, move cursor around to flatten ground, press Shift-F again to update buildable area.

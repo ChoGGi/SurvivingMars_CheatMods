@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_LowSanityNegativeTraitChance",
 	"image", "Preview.png",
-	"description", "0% Chance of getting a negative trait when Sanity reaches zero.",
+	"lua_revision", LuaRevision,
+	"description", [[0% Chance of getting a negative trait when Sanity reaches zero.]],
 })

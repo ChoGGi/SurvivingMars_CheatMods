@@ -168,7 +168,7 @@ if ChoGGi.testing then
   ChoGGi.Defaults.Transparency = {
 		HUD = 50,
 		PinsDlg = 50,
-		UAMenu = 150,
+--~ 		UAMenu = 150,
   }
   -- probably not useful for anyone who isn't loading up borked saves to test
   ChoGGi.Defaults.SkipMissingMods = true
@@ -213,7 +213,7 @@ ChoGGi.Consts = {
   DroneConstructAmount = false,
   DroneConstructBatteryUse = false,
   DroneDeconstructBatteryUse = false,
-  DroneMeteorMalfunctionChance = false,
+--~   DroneMeteorMalfunctionChance = false,
   DroneMoveBatteryUse = false,
   DroneRechargeTime = false,
   DroneRepairSupplyLeak = false,
@@ -300,7 +300,7 @@ do -- SetConstsToSaved
     SetConstsG(ChoGGi,"DroneConstructAmount")
     SetConstsG(ChoGGi,"DroneConstructBatteryUse")
     SetConstsG(ChoGGi,"DroneDeconstructBatteryUse")
-    SetConstsG(ChoGGi,"DroneMeteorMalfunctionChance")
+--~     SetConstsG(ChoGGi,"DroneMeteorMalfunctionChance")
     SetConstsG(ChoGGi,"DroneMoveBatteryUse")
     SetConstsG(ChoGGi,"DroneRechargeTime")
     SetConstsG(ChoGGi,"DroneRepairSupplyLeak")

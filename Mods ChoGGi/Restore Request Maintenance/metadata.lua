@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1411114444",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[Restores "Request Maintenance" button.]],
 })

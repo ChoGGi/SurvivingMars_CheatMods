@@ -12,7 +12,7 @@ local pcall,rawget,type,table = pcall,rawget,type,table
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
-local CloseXDialog = CloseXDialog
+local CloseDialog = CloseDialog
 local CreateRealTimeThread = CreateRealTimeThread
 local DelayedCall = DelayedCall
 local DestroyBuildingImmediate = DestroyBuildingImmediate
@@ -346,20 +346,20 @@ function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   local BuildCategories = BuildCategories
 
   --make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, check for a msg to use?)
-  if not XDialogs.PinsDlg then
+  if not Dialogs.PinsDlg then
     return
   end
 
-  local dlg = XDialogs.XBuildMenu
+  local dlg = Dialogs.XBuildMenu
   if dlg then
     --opened so check if number corresponds and if so hide the menu
     if dlg.category == BuildCategories[which].id then
-      CloseXDialog("XBuildMenu")
+      CloseDialog("XBuildMenu")
     end
   else
     OpenXBuildMenu()
   end
-  dlg = XDialogs.XBuildMenu
+  dlg = Dialogs.XBuildMenu
   dlg:SelectCategory(BuildCategories[which])
   --have to fire twice to highlight the icon
   dlg:SelectCategory(BuildCategories[which])
@@ -754,7 +754,7 @@ function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj,amount)
 end
 
 function ChoGGi.CodeFuncs.BuildMenu_Toggle()
-  local dlg = XDialogs.XBuildMenu
+  local dlg = Dialogs.XBuildMenu
   if not dlg then
     return
   end
@@ -1023,7 +1023,7 @@ function ChoGGi.CodeFuncs.SelObject()
 end
 
 function ChoGGi.CodeFuncs.LightmodelBuild(list)
-  local data = DataInstances.Lightmodel
+  local data = Presets.LightmodelPreset
   --always start with blank lightmodel
   data.ChoGGi_Custom:delete()
   data.ChoGGi_Custom = Lightmodel:new()
@@ -1206,7 +1206,7 @@ do -- DeleteObject
       end)
     end
 
-    if obj:IsKindOf("Deposit") then
+    if obj:IsKindOf("Deposit") and obj.group then
       for i = #obj.group, 1, -1 do
         obj.group[i]:delete()
         obj.group[i] = nil

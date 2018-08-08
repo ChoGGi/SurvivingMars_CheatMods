@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1428027914",
+	"lua_revision", LuaRevision,
   "description", [[Shows lines between domes when they're close enough for passages to connect.
 I use straight lines, instead of the angled passages, so it isn't perfect.
 

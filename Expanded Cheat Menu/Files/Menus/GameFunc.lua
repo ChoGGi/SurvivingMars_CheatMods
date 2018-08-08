@@ -42,9 +42,9 @@ local cameraRTS_SetZoom = cameraRTS.SetZoom
 local terrain_GetHeight = terrain.GetHeight
 local terrain_SetHeightCircle = terrain.SetHeightCircle
 local terrain_SetTerrainType = terrain.SetTerrainType
-local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
-local UserActions_AddActions = UserActions.AddActions
-local UserActions_GetActiveActions = UserActions.GetActiveActions
+--~ local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
+--~ local UserActions_AddActions = UserActions.AddActions
+--~ local UserActions_GetActiveActions = UserActions.GetActiveActions
 
 local white = white
 local guic = guic
@@ -239,61 +239,61 @@ end
     "FlattenGround_ShrinkRadius",
   }
 
-  local temp_height
-  local function ToggleHotkeys(bool)
-    if bool then
-      local us = ChoGGi.UserSettings
-      UserActions_AddActions({
-        FlattenGround_RaiseHeight = {
-          key = "Shift-Up",
-          action = function()
-            temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
-            --guess i found the ceiling limit
-            if temp_height > 65535 then
-              temp_height = 65535
-            end
-            flatten_height = temp_height
-          end
-        },
-        FlattenGround_LowerHeight = {
-          key = "Shift-Down",
-          action = function()
-            temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
-            --and the floor limit (oh look 0 go figure)
-            if temp_height < 0 then
-              temp_height = 0
-            end
-            flatten_height = temp_height
-          end
-        },
-        FlattenGround_WidenRadius = {
-          key = "Shift-Right",
-          action = function()
-            us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) + (us.FlattenGround_RadiusDiff or 100)
-            size = us.FlattenGround_Radius
-            visual_circle:SetRadius(size)
-            radius = size * guic
-          end
-        },
-        FlattenGround_ShrinkRadius = {
-          key = "Shift-Left",
-          action = function()
-            us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) - (us.FlattenGround_RadiusDiff or 100)
-            size = us.FlattenGround_Radius
-            visual_circle:SetRadius(size)
-            radius = size * guic
-          end
-        },
-      })
-    else
-      local UserActions = UserActions
-      for i = 1, #remove_actions do
-        UserActions.Actions[remove_actions[i]] = nil
-      end
-    end
+--~   local temp_height
+--~   local function ToggleHotkeys(bool)
+--~     if bool then
+--~       local us = ChoGGi.UserSettings
+--~       UserActions_AddActions({
+--~         FlattenGround_RaiseHeight = {
+--~           key = "Shift-Up",
+--~           action = function()
+--~             temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
+--~             --guess i found the ceiling limit
+--~             if temp_height > 65535 then
+--~               temp_height = 65535
+--~             end
+--~             flatten_height = temp_height
+--~           end
+--~         },
+--~         FlattenGround_LowerHeight = {
+--~           key = "Shift-Down",
+--~           action = function()
+--~             temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
+--~             --and the floor limit (oh look 0 go figure)
+--~             if temp_height < 0 then
+--~               temp_height = 0
+--~             end
+--~             flatten_height = temp_height
+--~           end
+--~         },
+--~         FlattenGround_WidenRadius = {
+--~           key = "Shift-Right",
+--~           action = function()
+--~             us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) + (us.FlattenGround_RadiusDiff or 100)
+--~             size = us.FlattenGround_Radius
+--~             visual_circle:SetRadius(size)
+--~             radius = size * guic
+--~           end
+--~         },
+--~         FlattenGround_ShrinkRadius = {
+--~           key = "Shift-Left",
+--~           action = function()
+--~             us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) - (us.FlattenGround_RadiusDiff or 100)
+--~             size = us.FlattenGround_Radius
+--~             visual_circle:SetRadius(size)
+--~             radius = size * guic
+--~           end
+--~         },
+--~       })
+--~     else
+--~       local UserActions = UserActions
+--~       for i = 1, #remove_actions do
+--~         UserActions.Actions[remove_actions[i]] = nil
+--~       end
+--~     end
 
-    UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
-  end
+--~     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
+--~   end
 
   local function ToggleCollisions(ChoGGi)
     ForEach{
@@ -636,7 +636,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   local cus = ChoGGi.Temp.LightmodelCustom
   --or loading style from presets
   if type(Name) == "string" then
-    cus = DataInstances.Lightmodel[Name]
+    cus = Presets.LightmodelPreset[Name]
   end
   for i = 1, #ItemList do
     if cus[ItemList[i].sort] then
@@ -678,7 +678,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     items = ItemList,
     sortby = "sort",
     title = 302535920000975--[[Custom Lightmodel--]],
-    hint = 302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(DataInstances.Lightmodel) and use dump obj).--]],
+    hint = 302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(Presets.LightmodelPreset) and use dump obj).--]],
     check1 = 302535920000977--[[Semi-Permanent--]],
     check1_hint = 302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]],
     check2 = 302535920000979--[[Presets--]],
@@ -707,7 +707,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
       hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
     }
   end
-  local Table = DataInstances.Lightmodel
+  local Table = Presets.LightmodelPreset
   for i = 1, #Table do
     ItemList[#ItemList+1] = {
       text = Table[i].name,
@@ -800,7 +800,7 @@ end
 
 function ChoGGi.MenuFuncs.SetTransparencyUI()
   local desk = terminal.desktop
-  local igi = XDialogs.InGameInterface
+  local igi = Dialogs.InGameInterface
   --sets or gets transparency based on iWhich
   local function trans(iType,sName,iWhich)
     local name = ChoGGi.UserSettings.Transparency[sName]
@@ -836,7 +836,7 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
   local ItemList = {
     {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = 302535920000994--[[Console logging text--]]},
     {text = "Console",value = trans(1,"Console"),hint = 302535920000996--[[Console text input--]]},
-    {text = "UAMenu",value = trans(1,"UAMenu"),hint = 302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]},
+--~     {text = "UAMenu",value = trans(1,"UAMenu"),hint = 302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]},
 
     {text = "HUD",value = trans(2,"HUD"),hint = 302535920001000--[[Buttons at bottom--]]},
     {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = 302535920000993--[[Build menu--]]},

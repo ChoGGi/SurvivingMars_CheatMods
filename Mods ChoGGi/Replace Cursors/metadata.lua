@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1450132231",
+	"lua_revision", LuaRevision,
   "description", [[Replace cursors with grayscale ones to work around transparency issue (once you load a game).
 Or just to have different cursors.
 

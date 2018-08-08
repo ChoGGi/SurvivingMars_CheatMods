@@ -5,5 +5,6 @@ return PlaceObj("ModDef", {
 	"tags", "Cheats",
 	"author", "ChoGGi",
 	"id", "ChoGGi_DefensiveTurret",
-	"description", "Add Defensive Turrets to Infrastructure menu",
+	"lua_revision", LuaRevision,
+	"description", [[Add Defensive Turrets to Infrastructure menu.]],
 })

@@ -25,8 +25,8 @@ local SetLightmodelOverride = SetLightmodelOverride
 local ShowConsoleLog = ShowConsoleLog
 local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
-local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
-local UserActions_GetActiveActions = UserActions.GetActiveActions
+--~ local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
+--~ local UserActions_GetActiveActions = UserActions.GetActiveActions
 local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 
 local OnMsg = OnMsg
@@ -558,11 +558,11 @@ function OnMsg.ApplicationQuit()
     return
   end
 
-  --save menu pos
-  local dlg = dlgUAMenu
-  if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
-    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
-  end
+--~   --save menu pos
+--~   local dlg = dlgUAMenu
+--~   if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
+--~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
+--~   end
   --console log window settings
   dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
@@ -818,7 +818,7 @@ do -- LoadGame/CityStart
     local DataInstances = DataInstances
     local dlgConsole = dlgConsole
     local Presets = Presets
-    local UserActions = UserActions
+--~     local UserActions = UserActions
     local hr = hr
 
     -- gets used a few times
@@ -855,10 +855,10 @@ do -- LoadGame/CityStart
     end
 
     if not UserSettings.DisableECM then
-      -- remove all built-in actions
-      UserActions_ClearGlobalTables()
-      UserActions.Actions = {}
-      UserActions.RejectedActions = {}
+--~       -- remove all built-in actions
+--~       UserActions_ClearGlobalTables()
+--~       UserActions.Actions = {}
+--~       UserActions.RejectedActions = {}
 
       if ChoGGi.testing then
         ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
@@ -885,16 +885,6 @@ do -- LoadGame/CityStart
           class.EditorIcon or "CollectionsEditor.tga"
         )
       end)
-
-      -- update menu
-      g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-
-      -- always show on my computer
-      if UserSettings.ShowCheatsMenu or ChoGGi.testing then
-        if not dlgUAMenu then
-          g_Classes.UAMenu.ToggleOpen()
-        end
-      end
 
       -- show cheat pane in selection panel
       if UserSettings.InfopanelCheats then
@@ -926,10 +916,10 @@ do -- LoadGame/CityStart
         dlgConsole.ChoGGi_MenuAdded = true
         -- build console buttons
         ChoGGi.Console.ConsoleControls()
-        -- check for and create example scripts/script folder
-  --~       ChoGGi.Console.BuildScriptFiles()
 
-        -- add a close button
+        -- make some space for the close button
+        dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+        -- add close button
         g_Classes.XTextButton:new({
           Id = "idClose",
           RolloverTemplate = "Rollover",
@@ -945,9 +935,23 @@ do -- LoadGame/CityStart
           HAlign = "right",
         }, dlgConsole)
 
-        -- make some space for the button
-        dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+--~         XMoveControl:new({
+--~           Id = "idMoveControl",
+--~         }, dlgConsole)
+--~         XSizeControl:new({
+--~           Id = "idSizeControl",
+--~         }, dlgConsole)
       end
+
+--~       -- update menu
+--~       g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+
+--~         -- always show on my computer
+--~         if UserSettings.ShowCheatsMenu or ChoGGi.testing then
+--~           if not dlgUAMenu then
+--~             g_Classes.UAMenu.ToggleOpen()
+--~           end
+--~         end
 
     end -- DisableECM
 
@@ -987,8 +991,8 @@ do -- LoadGame/CityStart
     end
 
     --add custom lightmodel
-    if DataInstances.Lightmodel.ChoGGi_Custom and type(DataInstances.Lightmodel.ChoGGi_Custom.delete) == "function" then
-      DataInstances.Lightmodel.ChoGGi_Custom:delete()
+    if Presets.LightmodelPreset.ChoGGi_Custom and type(Presets.LightmodelPreset.ChoGGi_Custom.delete) == "function" then
+      Presets.LightmodelPreset.ChoGGi_Custom:delete()
     end
 
     local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
@@ -997,11 +1001,11 @@ do -- LoadGame/CityStart
     end
 
     if LightmodelCustom then
-      DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+      Presets.LightmodelPreset.ChoGGi_Custom = LightmodelCustom
     else
       LightmodelCustom = ChoGGi.Consts.LightmodelCustom
       UserSettings.LightmodelCustom = LightmodelCustom
-      DataInstances.Lightmodel.ChoGGi_Custom = LightmodelCustom
+      Presets.LightmodelPreset.ChoGGi_Custom = LightmodelCustom
       ChoGGi.Temp.WriteSettings = true
     end
     ChoGGi.Temp.LightmodelCustom = LightmodelCustom
@@ -1175,9 +1179,12 @@ do -- LoadGame/CityStart
         end
       end
 
-      --make the change map dialog movable
-      DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
-      DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
+--~       -- make the change map dialog movable
+--~ print("DataInstances.UIDesignerData")
+--~       if next(DataInstances.UIDesignerData) then
+--~         DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
+--~         DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
+--~       end
     end)
 
     --print startup msgs to console log
@@ -1245,6 +1252,35 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
 
     -- used to check when game has started and it's safe to print() etc
     ChoGGi.Temp.GameLoaded = true
+
+    -- XShortcutsTarget
+    ReloadShortcuts()
+
+--~ CreateRealTimeThread(function()
+--~   if not g_gedListener then
+--~     ListenForGed(true)
+--~   end
+
+--~   local id = AsyncRand()
+--~   local template = "GedInspector"
+--~   local context = {}
+--~   context.in_game = true
+--~   local ged = OpenGed(id, true)
+--~   if not ged then
+--~     return
+--~   end
+--~   ged:BindObj("root", s)
+--~   ged.app_template = template
+--~   ged.context = context
+--~   local err = ged:Rfc("rpcOpenApp", template, context)
+--~   if err then
+--~     print("OpenGedApp('%s') error: %s", tostring(template), tostring(err))
+--~   end
+
+--~   Msg("GedOpened", ged.ged_id)
+--~   ChoGGi.ged = ged
+--~ end)
+
 
   end --OnMsg
 end -- do

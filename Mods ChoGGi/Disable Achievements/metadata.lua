@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1461207873",
+	"lua_revision", LuaRevision,
   "description", [[Stops you from being able to unlock any Steam achievements.
 
 Requested by: I know someone did, but I forgot who...]],

@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1465688997",
   "code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[Any rocks dumped at this depot will disappear (good for excess resources).
 
 Be careful where you place it as drones will use it like a regular depot.

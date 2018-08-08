@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "image","Preview.png",
   "steam_id", "1411109283",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
 	"description", [[Further shadow, and model rendering
 This is somewhat useless without increasing zoom in ECM.
 

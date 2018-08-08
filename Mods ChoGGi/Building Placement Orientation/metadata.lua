@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1411105601",
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
 	"description", [[Any object you place will have the same orientation as the last placed object.
 
 Ctrl-Space to activate placement mode with the last placed object.

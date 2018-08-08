@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
   "image","Preview.png",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
 	"description", [[Automatically empties waste storage sites.
 
 Use Mod Config to toggle enabled, and hourly/daily empty]],

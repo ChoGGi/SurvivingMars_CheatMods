@@ -1,64 +1,5 @@
 -- See LICENSE for terms
 
---[[
-needs an update
-
-files to check after update:
-
-CommonLua\Classes\Sequences\SequenceAction.lua
-  SA_WaitBase>SA_WaitTime:StopWait
-  SA_WaitBase>SA_WaitMarsTime:StopWait
-CommonLua\UI\uiUAMenu.lua
-  UAMenu:SetBtns
-CommonLua\UI\Controls\uiFrameWindow.lua
-  FrameWindow:PostInit
-  UAMenu>FrameWindow:OnMouseEnter
-  UAMenu>FrameWindow:OnMouseLeft
-CommonLua\UI\Dev\uiConsole.lua
-  Console:Show
-  Console:TextChanged
-  Console:HistoryDown
-  Console:HistoryUp
-CommonLua\UI\Dev\uiConsoleLog.lua
-  ConsoleLog:ShowBackground
-CommonLua\UI\X\XDialog.lua
-  OpenXDialog
-
-Lua\Construction.lua
-  ConstructionController:UpdateConstructionStatuses
-  ConstructionController:CreateCursorObj
-  TunnelConstructionController:UpdateConstructionStatuses
-Lua\Heat.lua
-  SubsurfaceHeater:UpdatElectricityConsumption
-Lua\MissionGoals.lua
-  MG_Colonists:GetProgress
-  MG_Martianborn:GetProgress
-Lua\RequiresMaintenance.lua
-  RequiresMaintenance:AddDust
-Lua\SupplyGrid.lua
-  SupplyGridElement:SetProduction
-Lua\Buildings\BaseRover.lua
-  BaseRover:GetCableNearby
-Lua\Buildings\BuildingComponents.lua
-  BuildingVisualDustComponent:SetDustVisuals
-  SingleResourceProducer:Produce
-Lua\Buildings\MartianUniversity.lua
-  MartianUniversity:OnTrainingCompleted
-Lua\Buildings\TriboelectricScrubber.lua
-  TriboelectricScrubber:OnPostChangeRange
-Lua\Buildings\UIRangeBuilding.lua
-  UIRangeBuilding:SetUIRange
-Lua\Buildings\Workplace.lua
-  Workplace:AddWorker
-Lua\UI\PopupNotification.lua
-  ShowPopupNotification
-Lua\Units\Colonist.lua
-  Colonist:ChangeComfort
-Lua\X\Infopanel.lua
-  InfopanelObj:CreateCheatActions
-  InfopanelDlg:Open
---]]
-
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local T = ChoGGi.ComFuncs.Trans
@@ -93,8 +34,6 @@ local WaitWakeup = WaitWakeup
 local guim = guim
 local OnMsg = OnMsg
 
-local UserActions_GetActiveActions = UserActions.GetActiveActions
-
 local function SaveOrigFunc(ClassOrFunc,Func)
   local ChoGGi = ChoGGi
   if Func then
@@ -111,6 +50,9 @@ end
 
 --set UI transparency:
 local function SetTrans(obj)
+  if not obj then
+    return
+  end
   local trans = ChoGGi.UserSettings.Transparency
   if trans and obj.class and trans[obj.class] then
     obj:SetTransparency(trans[obj.class])
@@ -118,7 +60,7 @@ local function SetTrans(obj)
 end
 
 do --funcs without a class
-  SaveOrigFunc("OpenXDialog")
+  SaveOrigFunc("OpenDialog")
   SaveOrigFunc("ShowConsole")
   SaveOrigFunc("ShowConsoleLog")
   SaveOrigFunc("ShowPopupNotification")
@@ -231,9 +173,9 @@ do --funcs without a class
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
 
- --UI transparency xdialogs (buildmenu, pins, infopanel)
-  function OpenXDialog(...)
-    local ret = {ChoGGi_OrigFuncs.OpenXDialog(...)}
+ --UI transparency dialogs (buildmenu, pins, infopanel)
+  function OpenDialog(...)
+    local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
     SetTrans(ret)
     return table.unpack(ret)
   end
@@ -429,7 +371,7 @@ function OnMsg.ClassesBuilt()
   SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
   SaveOrigFunc("ConstructionController","UpdateCursor")
   SaveOrigFunc("DroneHub","SetWorkRadius")
-  SaveOrigFunc("FrameWindow","Init")
+--~   SaveOrigFunc("FrameWindow","Init")
   SaveOrigFunc("InfopanelDlg","Open")
   SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
   SaveOrigFunc("MG_Colonists","GetProgress")
@@ -447,12 +389,6 @@ function OnMsg.ClassesBuilt()
   SaveOrigFunc("terminal","SysEvent")
   SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
   SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
-  SaveOrigFunc("UAMenu","CreateBtn")
-  SaveOrigFunc("UAMenu","OnDesktopSize")
-  SaveOrigFunc("UAMenu","OnMouseEnter")
-  SaveOrigFunc("UAMenu","OnMouseLeft")
-  SaveOrigFunc("UAMenu","SetBtns")
-  SaveOrigFunc("UAMenu","ToggleOpen")
   SaveOrigFunc("XBlinkingButtonWithRMB","SetBlinking")
   SaveOrigFunc("XDesktop","MouseEvent")
   SaveOrigFunc("XWindow","OnMouseEnter")
@@ -495,24 +431,24 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-  --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
-  if UserSettings.HideuiWindowErrorMsg then
-    function terminal.SysEvent(event, ...)
-      if event == "OnSystemSize" then
-        local targets = terminal.targets
-        for i = 1, #targets do
-          if not targets[i].UAMenu then
-            local result = targets[i]:SysEvent(event, ...)
-            if result == "break" then
-              return "break"
-            end
-          end
-        end
-      else
-        return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
-      end
-    end
-  end
+--~   --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
+--~   if UserSettings.HideuiWindowErrorMsg then
+--~     function terminal.SysEvent(event, ...)
+--~       if event == "OnSystemSize" then
+--~         local targets = terminal.targets
+--~         for i = 1, #targets do
+--~           if not targets[i].UAMenu then
+--~             local result = targets[i]:SysEvent(event, ...)
+--~             if result == "break" then
+--~               return "break"
+--~             end
+--~           end
+--~         end
+--~       else
+--~         return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
+--~       end
+--~     end
+--~   end
 
   --unbreakable cables/pipes
   function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
@@ -526,12 +462,12 @@ function OnMsg.ClassesBuilt()
     function GedOpHelpMod() end
   end
 
-  --UI transparency "desktop" dialogs (toolbar)
-  function FrameWindow:Init(...)
-    local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
-    SetTrans(self)
-    return table.unpack(ret)
-  end
+--~   --UI transparency "desktop" dialogs (toolbar)
+--~   function FrameWindow:Init(...)
+--~     local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
+--~     SetTrans(self)
+--~     return table.unpack(ret)
+--~   end
 
   --no more pulsating pin motion
   function XBlinkingButtonWithRMB:SetBlinking(...)
@@ -550,8 +486,8 @@ function OnMsg.ClassesBuilt()
       local dlgConsole = dlgConsole
       if dlgConsole and dlgConsole:GetVisible() then
         dlgConsole.idEdit:SetFocus()
-      elseif XDialogs.HUD then
-        XDialogs.HUD:SetFocus()
+      elseif Dialogs.HUD then
+        Dialogs.HUD:SetFocus()
       end
 --~       for i = #self.focus_log, 1, -1 do
 --~         -- get last focused object that isn't a textbox
@@ -630,158 +566,6 @@ function OnMsg.ClassesBuilt()
       end
     end
     self.Id = id
-  end
-
-  --limit width of cheats menu till hover
-  local UAMenu_cheats_width_c = 520
-  local UAMenu_cheats_width = UAMenu_cheats_width_c
-  if UserSettings.ToggleWidthOfCheatsHover then
-    UAMenu_cheats_width = 80
-    local thread
-    function UAMenu:OnMouseEnter(...)
-      ChoGGi_OrigFuncs.UAMenu_OnMouseEnter(self,...)
-      DeleteThread(thread)
-      self:SetSize(point(UAMenu_cheats_width_c,self:GetSize():y()))
-    end
-    function UAMenu:OnMouseLeft(...)
-      ChoGGi_OrigFuncs.UAMenu_OnMouseLeft(self,...)
-      thread = CreateRealTimeThread(function()
-        Sleep(2500)
-        self:SetSize(point(80,self:GetSize():y()))
-      end)
-    end
-  end
-
-  do --UAMenu:CreateBtn
-    local menuButtons_selected_color = RGB(153, 204, 255)
-    local menuButtons_rollover_color = RGB(0, 0, 0)
-    --make the buttons open their menus where the menu is, not at the top left
-    function UAMenu:CreateBtn(text, path)
-      local entry = ChoGGi_OrigFuncs.UAMenu_CreateBtn(self, text, path)
-      entry:SetFontStyle("Editor14Bold")
-      --higher than the "Move" element
-      entry:SetZOrder(9)
-
-      function entry.OnLButtonDown()
-        local p = entry:GetPos()
-        local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
-        if self.MenuOpen == text then
-          self:CloseMenu()
-        else
-          self:CloseMenu()
-          self.MenuOpen = text
-          entry:SetTextColor(menuButtons_rollover_color)
-          entry:SetBackgroundColor(menuButtons_selected_color)
-          self.current_pos = pos
-          self:SetMenuPath(path)
-        end
-        return "break"
-      end
-
-      function entry.OnMouseEnter()
-        local p = entry:GetPos()
-        local pos = point(p:x(), p:y() + entry:GetSize():y() + 1)
-        if self.MenuOpen then
-          self:CloseMenu()
-          self.MenuOpen = text
-          entry:SetTextColor(menuButtons_rollover_color)
-          entry:SetBackgroundColor(menuButtons_selected_color)
-          self.current_pos = pos
-          self:SetMenuPath(path)
-        else
-          entry:SetTextColor(menuButtons_rollover_color)
-        end
-      end
-
-      return entry
-    end
-  end
-
-
-  -- change menu width, toggle draggable menu, and have the Cheats menu works with accented chars
-  function UAMenu:SetBtns()
-    local keys = {}
-
-    -- build list of path and menu button name
-    for _, v in pairs(self.Actions) do
-      if v.entry then
-        keys[#keys + 1] = {
-          v.entry,
-          v.path,
-        }
-      end
-    end
-
-    -- sort by name or if we added a number
-    table.sort(keys,
-      function(a,b)
-        return a[2] < b[2]
-      end
-    )
-
-    -- build the menu items for the buttons
-    local ptMenuEnd = 0
-    for i = 1, #keys do
-      local entry = keys[i][1]
-      if not self.Btns[entry] then
-        local menuEntry = self:CreateBtn(entry, keys[i][2])
-        self.Btns[entry] = menuEntry
-        ptMenuEnd = menuEntry:GetSize():y()
-      end
-    end
-
-    --shrink the width
-    self:SetSize(point(UAMenu_cheats_width,self.ptInitBtnPos:y() + ptMenuEnd))
-    --make the menu draggable
-    if ChoGGi.UserSettings.DraggableCheatsMenu then
-      self:SetMovable(true)
-    end
-
-  end --func
-
-  --set menu position
---~   function UAMenu.ToggleOpen()
-  function UAMenu.ToggleOpen()
-    local UserSettings = ChoGGi.UserSettings
-
-    if dlgUAMenu then
-      if UserSettings.KeepCheatsMenuPosition then
-        UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
-      end
-      UAMenu.CloseUAMenu()
-    else
-      dlgUAMenu = UAMenu:new(terminal.desktop)
-      UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
-      if IsPoint(UserSettings.KeepCheatsMenuPosition) then
-        dlgUAMenu:SetPos(UserSettings.KeepCheatsMenuPosition)
-      end
-    end
-  end
-
-  --keep buttons/pos of menu when alt-tabbing
-  function UAMenu:OnDesktopSize(...)
-    local ret = {ChoGGi_OrigFuncs.UAMenu_OnDesktopSize(self, ...)}
-
-    if ChoGGi.UserSettings.DraggableCheatsMenu then
-      local dlgUAMenu = dlgUAMenu
-      local pos = type(self.GetPos) == "function" and self.GetPos(self)
-      --if opened then toggle close and open to restore the menu items (not sure why alt-tabbing removes them when i make it movable...)
-      if dlgUAMenu then
-        self.ToggleOpen(dlgUAMenu)
-        self.ToggleOpen(dlgUAMenu)
-      end
-      --and restore pos
-      if pos then
-        dlgUAMenu:SetPos(pos)
-      end
-
-      --convenience: if console is visible then focus on it
-      if dlgConsole.visible then
-        dlgConsole.idEdit:SetFocus()
-      end
-    end
-
-    return table.unpack(ret)
   end
 
   --removes earthsick effect
@@ -995,9 +779,9 @@ function OnMsg.ClassesBuilt()
   end -- do
 
   --add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
---~   ex(XDialogs.InGameInterface[6][2])
+--~   ex(Dialogs.InGameInterface[6][2])
 
-  -- list control XDialogs.InGameInterface[6][2][3][2]:SetMaxHeight(165)
+  -- list control Dialogs.InGameInterface[6][2][3][2]:SetMaxHeight(165)
   do -- InfopanelDlg:Open
     local function ToggleVis(idx,content,v,h)
       for i = 6, idx do
@@ -1157,11 +941,12 @@ function OnMsg.ClassesBuilt()
   --make it so caret is at the end of the text when you use history
   function Console:HistoryDown()
     ChoGGi_OrigFuncs.Console_HistoryDown(self)
-    self.idEdit:SetCursorPos(#self.idEdit:GetText())
+    self.idEdit:SetCursor(1,#self.idEdit:GetText())
   end
+
   function Console:HistoryUp()
     ChoGGi_OrigFuncs.Console_HistoryUp(self)
-    self.idEdit:SetCursorPos(#self.idEdit:GetText())
+    self.idEdit:SetCursor(1,#self.idEdit:GetText())
   end
 
   --was giving a nil error in log, I assume devs'll fix it one day

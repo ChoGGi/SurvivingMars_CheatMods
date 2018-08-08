@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
   "steam_id", "1411111982",
   "code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
   "description", [[Pauses the game on new notifications (also removes Drone Heavy Load notification).]],
 })

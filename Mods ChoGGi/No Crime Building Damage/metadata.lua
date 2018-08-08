@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_NoCrimeBuildingDamage",
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[Sets the amount to 0 for CrimeEventSabotageBuildingsCount and CrimeEventDestroyedBuildingsCount (renegades).]],
 })

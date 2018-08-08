@@ -540,10 +540,10 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
   Platform.developer = true
 
   --keep menu opened if visible
-  local showmenu
-  if dlgUAMenu then
-    showmenu = true
-  end
+--~   local showmenu
+--~   if dlgUAMenu then
+--~     showmenu = true
+--~   end
 
   if IsEditorActive() then
     EditorState(0)
@@ -576,9 +576,9 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     GetEditorInterface().dlgEditorStatusbar:SetVisible(true)
     --GetEditorInterface():SetMinimapVisible(true)
     --CreateEditorPlaceObjectsDlg()
-    if showmenu then
-      UAMenu.ToggleOpen()
-    end
+--~     if showmenu then
+--~       UAMenu.ToggleOpen()
+--~     end
   end
 
 end

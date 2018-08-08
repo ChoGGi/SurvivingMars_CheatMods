@@ -1,3 +1,6 @@
+v0.5
+Da Vinci
+Switched to Black borders from Grayscale.
 v0.4
 Changed cursors to grayscale (hopefully still fixes issue). See Mod folder\Replacements.
 Mod now checks SM profile folder\Cursors for custom cursors.

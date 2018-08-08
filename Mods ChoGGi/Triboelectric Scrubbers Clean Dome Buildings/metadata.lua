@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1417507249",
   "code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[They removed this in the Spirit Update.
 
 Requested by Cinereously.]],

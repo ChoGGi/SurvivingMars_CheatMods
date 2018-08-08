@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "code", {"Script.lua"},
 	"steam_id", "1416040484",
+	"lua_revision", LuaRevision,
   "description", [[It doesn't do much; but move around and make thumping sounds at the moment.
 
 Anyone up for making a better model?]],

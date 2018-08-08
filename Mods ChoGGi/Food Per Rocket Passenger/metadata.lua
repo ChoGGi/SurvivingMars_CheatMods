@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_FoodPerRocketPassenger",
 	"image", "Preview.png",
-	"description", "The amount of Food supplied with each Colonist arrival (100).",
+	"lua_revision", LuaRevision,
+	"description", [[The amount of Food supplied with each Colonist arrival (100).]],
 })

@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
   "description", [[Adds some example controls to various side panel selections.]],
 })

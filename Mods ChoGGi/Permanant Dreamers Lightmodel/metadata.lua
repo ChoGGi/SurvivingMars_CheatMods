@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
   "image","Preview.png",
   "steam_id", "1433249476",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
 	"description", [[Always a green morning.
 
 Part of ECM.

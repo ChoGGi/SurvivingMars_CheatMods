@@ -3,6 +3,12 @@ return PlaceObj("ModDef", {
 	"version", 3,
   "saved", 1533297600,
 	"image", "Preview.png",
+	"id", "ChoGGi_PersonalShuttles",
+	"steam_id", "1410892053",
+	"author", "ChoGGi",
+  "code", {"Script.lua"},
+	"TagOther", true,
+	"lua_revision", LuaRevision,
 	"description", [[Adds buttons to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around.
 
 Spawned shuttles can pick up certain items (storage depots, resource drops, rovers and drones).
@@ -15,9 +21,4 @@ If you have drones or resources in un-reachable spaces you can use this to move 
 Attacker: a shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and move items.
 Pin it and right-click the pin to have it come to your position (I made it not follow if your mouse is too far away).
 They have a time limit of about four Sols (I was going to do it by fuel, but they get magical fuel when they stop moving...).]],
-	"id", "ChoGGi_PersonalShuttles",
-	"steam_id", "1410892053",
-	"author", "ChoGGi",
-  "code", {"Script.lua"},
-	"TagOther", true,
 })

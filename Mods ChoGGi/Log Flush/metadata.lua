@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[This calls the FlushLogFile() command as soon as the game loads, as well as each new Sol.
 Now if SM crashes a certain way (that doesn't create the log), you still have a log to look at.
 

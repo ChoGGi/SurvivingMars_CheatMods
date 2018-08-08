@@ -7,7 +7,11 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
   "steam_id", "1411113412",
-  "code", {"Script.lua"},
+  "code", {
+    "Code/Script.lua",
+    "Code/Portable Miner.lua",
+  },
+	"lua_revision", LuaRevision,
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
 
 Uses the Attack Rover model.

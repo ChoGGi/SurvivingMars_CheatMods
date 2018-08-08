@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_AvoidWorkplaceSols",
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[After being fired, Colonists won't avoid that Workplace when searching for a Workplace.]],
 })

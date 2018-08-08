@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1443225581",
   "code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[This replaces my Missing Residences/Missing Workplaces mods, it also adds support for some other missing buildings.
 
 If you installed a mod that adds certain buildings, then removed the mod without removing them; your game won't load...

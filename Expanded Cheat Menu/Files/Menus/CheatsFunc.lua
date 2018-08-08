@@ -67,7 +67,7 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
   if ChoGGi.UserSettings.KeepCheatsMenuPosition then
     ChoGGi.UserSettings.KeepCheatsMenuPosition = nil
   else
-    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
+--~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
@@ -147,7 +147,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
   if type(pos) == "table" then
     pos = pos:GetPos()
   end
-  pos = point(pos:x(),pos:y())
+--~   pos = point(pos:x(),pos:y())
 
   local data = DataInstances.MapSettings_Meteor
   local descr = data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow

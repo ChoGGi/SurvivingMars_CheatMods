@@ -17,6 +17,17 @@ DefineClass.ChoGGi_HexSpot = {
 --~   self:SetPos(self.points[1])
 --~ end
 
+function DestroyRolloverWindow(_, instant)
+  XDestroyRolloverWindow(instant)
+end
+function CreateRolloverWindow(ctrl, text, bXInput)
+  if (text or "") == "" then
+    return
+  end
+  XCreateRolloverWindow(ctrl, bXInput, true, {RolloverText = text})
+end
+
+
 local TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
@@ -46,7 +57,7 @@ local IsObjlist = IsObjlist
 local IsPoint = IsPoint
 local IsValid = IsValid
 local Msg = Msg
-local OpenXDialog = OpenXDialog
+local OpenDialog = OpenDialog
 local point = point
 local RGB = RGB
 local Sleep = Sleep
@@ -62,8 +73,7 @@ local local_T = T -- T replaced below
 local guic = guic
 local white = white
 
-local UserActions_SetMode = UserActions.SetMode
-local terminal_GetMousePos = terminal.GetMousePos
+--~ local UserActions_SetMode = UserActions.SetMode
 local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
 local FontStyles_GetFontId = FontStyles.GetFontId
@@ -335,13 +345,13 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 --~     dismissable = false,
   }
   -- if there's no interface then we probably shouldn't open the popup
-  local dlg = XDialogs.OnScreenNotificationsDlg
+  local dlg = Dialogs.OnScreenNotificationsDlg
   if not dlg then
-    local igi = XDialogs.InGameInterface
+    local igi = Dialogs.InGameInterface
     if not igi then
       return
     end
-    dlg = OpenXDialog("OnScreenNotificationsDlg", igi)
+    dlg = OpenDialog("OnScreenNotificationsDlg", igi)
   end
   --build the popup
   local data = {
@@ -390,29 +400,32 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do --g_Classes
   local g_Classes = g_Classes
-  function ChoGGi.ComFuncs.DialogAddCaption(parent,list)
-    parent.idCaption = g_Classes.StaticText:new(parent)
-    parent.idCaption:SetPos(list.pos)
-    parent.idCaption:SetSize(list.size)
-    parent.idCaption:SetHSizing("AnchorToLeft")
-    parent.idCaption:SetBackgroundColor(0)
-    parent.idCaption:SetFontStyle("Editor14Bold")
-    parent.idCaption:SetTextPrefix(list.prefix or "<center>")
-    parent.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
-    parent.idCaption.HandleMouse = false
-  end
+--~   function ChoGGi.ComFuncs.DialogAddCaption(parent,list)
+--~     parent.idCaption = g_Classes.StaticText:new(parent)
+--~     parent.idCaption:SetPos(list.pos)
+--~     parent.idCaption:SetSize(list.size)
+--~     parent.idCaption:SetHSizing("AnchorToLeft")
+--~     parent.idCaption:SetBackgroundColor(0)
+--~     parent.idCaption:SetFontStyle("Editor14Bold")
+--~     parent.idCaption:SetTextPrefix(list.prefix or "<center>")
+--~     parent.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
+--~     parent.idCaption.HandleMouse = false
+--~   end
 
-  function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
-    parent.idCloseX = g_Classes.Button:new(parent)
-    parent.idCloseX:SetHSizing("AnchorToRight")
-    parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
-    parent.idCloseX:SetSize(point(18, 18))
-    parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
-    parent.idCloseX:SetHint(S[1011--[[Close--]]])
-    parent.idCloseX.OnButtonPressed = func or function()
-      parent:delete()
-    end
-  end
+--~   function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
+--~   end
+
+--~   function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
+--~     parent.idCloseX = g_Classes.Button:new(parent)
+--~     parent.idCloseX:SetHSizing("AnchorToRight")
+--~     parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
+--~     parent.idCloseX:SetSize(point(18, 18))
+--~     parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
+--~     parent.idCloseX:SetHint(S[1011--[[Close--]]])
+--~     parent.idCloseX.OnButtonPressed = func or function()
+--~       parent:delete()
+--~     end
+--~   end
 
   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
     g_Classes.XTextButton:new({
@@ -666,46 +679,48 @@ function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
   )
 end
 
-function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
-  local ChoGGi = ChoGGi
-  if (hierarchyLevel == nil) then
-    hierarchyLevel = 0
-  elseif (hierarchyLevel == 4) then
-    return 0
+do -- DumpTableFunc
+  local function RetTextForDump(obj,funcs)
+    local obj_type = type(obj)
+    if obj_type == "userdata" then
+      return T(obj)
+    elseif funcs and obj_type == "function" then
+      return Concat("Func: \n\n",obj:dump(),"\n\n")
+    elseif obj_type == "table" then
+      return Concat(tostring(obj)," len: ",#obj)
+    else
+      return tostring(obj)
+    end
   end
 
-  if type(obj) == "table" then
-    if obj.id then
-      ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
+  function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
+    local ChoGGi = ChoGGi
+    if (hierarchyLevel == nil) then
+      hierarchyLevel = 0
+    elseif (hierarchyLevel == 4) then
+      return 0
     end
-    for k,v in pairs(obj) do
-      if type(v) == "table" then
-        ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
-      else
-        if k ~= nil then
-          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n",tostring(k)," = ")
+
+    if type(obj) == "table" then
+      if obj.id then
+        ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
+      end
+      for k,v in pairs(obj) do
+        if type(v) == "table" then
+          ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
+        else
+          if k ~= nil then
+            ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n",tostring(k)," = ")
+          end
+          if v ~= nil then
+            ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,RetTextForDump(v,funcs))
+          end
+          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n")
         end
-        if v ~= nil then
-          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,tostring(ChoGGi.ComFuncs.RetTextForDump(v,funcs)))
-        end
-        ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n")
       end
     end
   end
-end
-
-function ChoGGi.ComFuncs.RetTextForDump(obj,funcs)
-  local obj_type = type(obj)
-  if obj_type == "userdata" then
-    return T(obj)
-  elseif funcs and obj_type == "function" then
-    return Concat("Func: \n\n",obj:dump(),"\n\n")
-  elseif obj_type == "table" then
-    return Concat(tostring(obj)," len: ",#obj)
-  else
-    return tostring(obj)
-  end
-end
+end --do
 
 function ChoGGi.ComFuncs.PrintFiles(filename,func,text,...)
   text = text or ""
@@ -850,18 +865,18 @@ do -- WriteLogs_Toggle
       -- redirect functions
       if ChoGGi.testing then
         ReplaceFunc("dlc_print","ConsoleLog",ChoGGi)
-        ReplaceFunc("printf","DebugLog",ChoGGi)
-        ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
-        ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
+--~         ReplaceFunc("printf","DebugLog",ChoGGi)
+--~         ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
+--~         ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
       end
       ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
       ReplaceFunc("print","ConsoleLog",ChoGGi)
     else
       if ChoGGi.testing then
         ResetFunc("dlc_print",ChoGGi)
-        ResetFunc("printf",ChoGGi)
-        ResetFunc("DebugPrint",ChoGGi)
-        ResetFunc("OutputDebugString",ChoGGi)
+--~         ResetFunc("printf",ChoGGi)
+--~         ResetFunc("DebugPrint",ChoGGi)
+--~         ResetFunc("OutputDebugString",ChoGGi)
       end
       ResetFunc("AddConsoleLog",ChoGGi)
       ResetFunc("print","ConsoleLog",ChoGGi)
@@ -974,6 +989,11 @@ end
 -- change some annoying stuff about UserActions.AddActions()
 local g_idxAction = 0
 function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
+
+  if true then
+    return
+  end
+
   for k, v in pairs(actions_to_add or empty_table) do
     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
       if v.key ~= nil and v.key ~= "" then
@@ -1004,6 +1024,11 @@ function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
 end
 
 function ChoGGi.ComFuncs.AddAction(entry,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
+
+  if true then
+    return
+  end
+
   local ChoGGi = ChoGGi
 
   -- build function
@@ -1268,12 +1293,12 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
   if parent then
     local pos = parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal_GetMousePos())
+      dlg:SetPos(terminal.GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=height of header
     end
   else
-    dlg:SetPos(terminal_GetMousePos())
+    dlg:SetPos(terminal.GetMousePos())
   end
 
   return dlg
@@ -1302,12 +1327,12 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
   if parent then
     local pos = parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal_GetMousePos())
+      dlg:SetPos(terminal.GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
     end
   else
-    dlg:SetPos(terminal_GetMousePos())
+    dlg:SetPos(terminal.GetMousePos())
   end
 
   return dlg
@@ -1342,12 +1367,12 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
   if parent then
     local pos = parent:GetPos()
     if not pos then
-      dlg:SetPos(terminal_GetMousePos())
+      dlg:SetPos(terminal.GetMousePos())
     else
       dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
     end
   else
-    dlg:SetPos(terminal_GetMousePos())
+    dlg:SetPos(terminal.GetMousePos())
   end
   --update item list
   dlg:UpdateListContent(obj)
@@ -1484,7 +1509,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
  end
 
   --where to position dlg
-  dlg:SetPos(terminal_GetMousePos())
+  dlg:SetPos(terminal.GetMousePos())
 
   --focus on list
   dlg.idList:SetFocus()
@@ -1754,25 +1779,17 @@ function OpenExamine(o, from, ret)
     return ChoGGi.ComFuncs.ClearShowMe()
   end
 
-  local ex = Examine:new()
+  local ex = Examine:new({}, terminal.desktop,{
+    obj = o,
+  })
+
   if from then
-    --i use SetPos(0,0) for all dialogs, Examine is the only one that doesn't always get set to a custom pos
-    --so i use a delay in Init to re-pos it, which messes this up, so we want to make sure this is called later
-    DelayedCall(1, function()
-      if IsPoint(from) then
-        ex:SetPos(from)
-
-      elseif from.class == "Examine"  then
-        ex:SetPos(from:GetPos() + point(0, 20))
-        ex:SetSize(from:GetSize())
-
-      else
-        ex:SetPos(terminal_GetMousePos())
-
-      end
-    end)
+    if from.class == "Examine"  then
+      ex:SetPos(from)
+    else
+      ex:SetPos(terminal.GetMousePos())
+    end
   end
-  ex:SetObj(o)
 
   if ret then
     return ex
@@ -1910,29 +1927,26 @@ function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
   ChoGGi.Tables.ColonistGenders = {}
   ChoGGi.Tables.ColonistSpecializations = {}
 
-  local traits = DataInstances.Trait
   --add as index and associative tables for ease of filtering
-  for i = 1, #traits do
-    local cat = traits[i].category
-    local name = traits[i].name
-    if cat == "Positive" then
-      ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = name
-      ChoGGi.Tables.PositiveTraits[name] = true
-    elseif cat == "Negative" then
-      ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = name
-      ChoGGi.Tables.NegativeTraits[name] = true
-    elseif cat == "other" then
-      ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = name
-      ChoGGi.Tables.OtherTraits[name] = true
-    elseif cat == "Age Group" then
-      ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = name
-      ChoGGi.Tables.ColonistAges[name] = true
-    elseif cat == "Gender" then
-      ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = name
-      ChoGGi.Tables.ColonistGenders[name] = true
-    elseif cat == "Specialization" and name ~= "none" then
-      ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = name
-      ChoGGi.Tables.ColonistSpecializations[name] = true
+  for _,t in pairs(DataInstances.Trait) do
+    if t.category == "Positive" then
+      ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = t.name
+      ChoGGi.Tables.PositiveTraits[t.name] = true
+    elseif t.category == "Negative" then
+      ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = t.name
+      ChoGGi.Tables.NegativeTraits[t.name] = true
+    elseif t.category == "other" then
+      ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = t.name
+      ChoGGi.Tables.OtherTraits[t.name] = true
+    elseif t.category == "Age Group" then
+      ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = t.name
+      ChoGGi.Tables.ColonistAges[t.name] = true
+    elseif t.category == "Gender" then
+      ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = t.name
+      ChoGGi.Tables.ColonistGenders[t.name] = true
+    elseif t.category == "Specialization" and t.name ~= "none" then
+      ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = t.name
+      ChoGGi.Tables.ColonistSpecializations[t.name] = true
     end
   end
 

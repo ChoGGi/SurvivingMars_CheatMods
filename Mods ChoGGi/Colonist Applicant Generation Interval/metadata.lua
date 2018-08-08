@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_ApplicantGenerationInterval",
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[How long it takes to generate a new Applicant in the Applicant Pool. (1s)]],
 })

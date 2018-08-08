@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_MaxColonistsPerRocket",
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[Maximum number of Colonists that can arrive on Mars in a single Rocket (100).]],
 })

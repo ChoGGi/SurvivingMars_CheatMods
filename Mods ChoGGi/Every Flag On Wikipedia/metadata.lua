@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1455937967",
+	"lua_revision", LuaRevision,
   "description", [[Adds every flag on Wikipedia (450+), and no more Martian only names.
 
 Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.

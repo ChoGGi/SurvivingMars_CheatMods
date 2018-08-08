@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1411108831",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

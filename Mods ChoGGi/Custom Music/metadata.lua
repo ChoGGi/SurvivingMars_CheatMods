@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CustomMusic",
 	"author", "ChoGGi",
   "steam_id", "1411106409",
+	"lua_revision", LuaRevision,
 	"description", [[Place files in AppData/Surviving Mars/Music
 As far as I know it only plays opus and wav
 mp3,aac,ogg,flac,aiff = don't work

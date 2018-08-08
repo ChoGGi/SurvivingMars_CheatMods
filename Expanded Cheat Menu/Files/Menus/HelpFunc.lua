@@ -291,7 +291,7 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
   ChoGGi.SettingFuncs.WriteSettings()
-  UAMenu.ToggleOpen()
+--~   UAMenu.ToggleOpen()
 end
 
 function ChoGGi.MenuFuncs.ShowChangelogECM()

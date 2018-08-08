@@ -530,10 +530,10 @@ local HexPainter_toggle
 function HexPainter(arr)
   if HexPainter_toggle then
     HexPainter_toggle = nil
-    XDialogs.InGameInterface:SetMode("selection")
+    Dialogs.InGameInterface:SetMode("selection")
   else
     HexPainter_toggle = true
-    XDialogs.InGameInterface:SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetTerrainCursor()))})
+    Dialogs.InGameInterface:SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetTerrainCursor()))})
   end
 end
 

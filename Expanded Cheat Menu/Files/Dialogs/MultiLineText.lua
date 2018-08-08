@@ -9,8 +9,16 @@ end
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
+local white = white
+local black = black
+local dark_gray = -13158858
+local light_gray = -2368549
+
 DefineClass.ChoGGi_MultiLineText = {
-  __parents = {"XDialog"},
+--~   __parents = {"XScrollArea"},
+--~   __parents = {"XWindow"},
+--~   __parents = {"XDialog"},
+  __parents = {"StdDialog"},
   HandleKeyboard = true,
   Translate = false,
   HAlign = "center",
@@ -19,32 +27,29 @@ DefineClass.ChoGGi_MultiLineText = {
   func = false,
   XRolloverWindow_ZOrder = false,
   overwrite = false,
+  MinHeight = 50,
+  MinWidth = 150,
 }
 
 function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  local white = white
-  local black = black
-  local dark_gray = -13158858
-  local light_gray = -2368549
 
-  --build container
+  -- build container
   g_Classes.StdDialog.Init(self, parent, context)
-
-  --damn modal
+  -- damn modal
   self:SetModal(false)
-  self:SetTranslate(false)
+--~   self:SetTranslate(false)
 
-  --size it
-  local width,height = 500,250
-  local size = UIL.GetScreenSize()
-  if size:x() > 1024 then
-    width = 1000
-  end
-  if size:y() > 768 then
-    height = 500
-  end
+--~   --size it
+--~   local width,height = 500,250
+--~   local size = UIL.GetScreenSize()
+--~   if size:x() > 1024 then
+--~     width = 1000
+--~   end
+--~   if size:y() > 768 then
+--~     height = 500
+--~   end
 
   local z = context.zorder or 1
   -- so we're on top of examine
@@ -54,18 +59,27 @@ function ChoGGi_MultiLineText:Init(parent, context)
   g_Classes.XRolloverWindow.ZOrder = z+1
 
   --add a little spacing
-  self.idContainer:SetMargins(box(0, 6, 6, 0))
+  self.idContainer:SetMargins(box(0, 15, 6, 0))
   self.idContainer:SetBackground(dark_gray)
   self:SetBorderColor(white)
   --store func for calling from :OnShortcut
   self.func = context.func
 
+  g_Classes.XMoveControl:new({
+    Id = "idMoveControl",
+    MinHeight = 20,
+    VAlign = "top",
+  }, self)
+  g_Classes.XSizeControl:new({
+    Id = "idSizeControl",
+  }, self)
+
   g_Classes.XMultiLineEdit:new({
     Id = "idText",
 --~     TextVAlign = "center",
-    MinWidth = width,
-    MaxWidth = width,
-    MinHeight = height,
+--~     MinWidth = width,
+--~     MaxWidth = width,
+--~     MinHeight = height,
     TextFont = "Editor16",
     --default
     Background = dark_gray,
@@ -77,7 +91,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
     SelectionBackground = light_gray,
     SelectionColor = black,
 
-    WordWrap = context.wrap,
+    WordWrap = context.wrap or false,
     MaxLen = 65536, --65536?
 --~     MaxLines = 15,
   }, self.idContainer)
@@ -164,7 +178,7 @@ function ChoGGi_MultiLineText:Close(answer,result)
   if self.func then
     self.func(answer,self.overwrite,self)
   end
-  g_Classes.XDialog.Close(self,result)
+  g_Classes.StdDialog.Close(self,result)
 end
 
 

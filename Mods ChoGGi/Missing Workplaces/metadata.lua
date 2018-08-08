@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1416732651",
   "code", {"Script.lua"},
+	"lua_revision", LuaRevision,
   "description", [[If you installed a mod that adds workplaces, then removed the mod without removing the workplace buildings; your game won't load...
 
 This fixes that, and will remove any broked workplaces.

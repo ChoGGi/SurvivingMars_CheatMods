@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1411216506",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
   "description", [[Receive a bonus of one percent of your funds each year.
 
 Requested by: EasyMoney]],

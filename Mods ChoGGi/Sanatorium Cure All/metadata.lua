@@ -7,5 +7,6 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SanatoriumCureAll",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[Sanatoriums cure all negative traits, and Sanatorium+ treats 12 instead of 4 people at a time]],
 })

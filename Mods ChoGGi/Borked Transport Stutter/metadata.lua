@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
+	"lua_revision", LuaRevision,
 	"description", [[RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
 This'll check for and stop any borked ones (it'll show a popup msg when it stops one).]],

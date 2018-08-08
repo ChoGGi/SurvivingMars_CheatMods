@@ -6,5 +6,6 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"id", "ChoGGi_DroneMeteorMalfunctionChance",
 	"image", "Preview.png",
-	"description", "Drones will not malfunction when close to a meteor impact site.",
+	"lua_revision", LuaRevision,
+	"description", [[Drones will not malfunction when close to a meteor impact site.]],
 })

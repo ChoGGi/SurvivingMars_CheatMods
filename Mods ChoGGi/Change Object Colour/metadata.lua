@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
   "steam_id", "1411106049",
 	"code", {"Script.lua"},
+	"lua_revision", LuaRevision,
 	"description", [[Press F6 to change the colour of selected/moused over object, or all objects of selected type
 
 Use the "Default" checkbox to reset colours.

@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1461190633",
+	"lua_revision", LuaRevision,
   "description", [[Colonists that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
 
 Does not include colonists that already have a spec (you can allow that with ModConfig).

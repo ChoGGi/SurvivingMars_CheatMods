@@ -39,11 +39,11 @@ if ChoGGi.lang ~= "English" then
   __game_font_styles.Editor21Bold = Concat(f,", 21, bold, aa")
   __game_font_styles.Editor32Bold = Concat(f,", 32, bold")
   __game_font_styles.Rollover = Concat(f,", 14, bold, aa")
-  __game_font_styles.DesignerCaption = Concat(f,", 18, bold, aa")
-  __game_font_styles.DesignerPropEditor = Concat(f,", 12, aa")
+--~   __game_font_styles.DesignerCaption = Concat(f,", 18, bold, aa")
+--~   __game_font_styles.DesignerPropEditor = Concat(f,", 12, aa")
   __game_font_styles.Console = Concat(f,", 13, bold, aa")
-  __game_font_styles.UAMenu = Concat(f,", 14, aa")
-  __game_font_styles.UAToolbar = Concat(f,", 14, bold, aa")
+--~   __game_font_styles.UAMenu = Concat(f,", 14, aa")
+--~   __game_font_styles.UAToolbar = Concat(f,", 14, bold, aa")
   __game_font_styles.EditorCaption = Concat(f,", 14, bold, aa")
 
   -- normally called when translation is changed, but i try to keep Init.lua simple
