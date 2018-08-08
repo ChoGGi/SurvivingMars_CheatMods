@@ -1,4 +1,3 @@
-local FirstLoad = FirstLoad
 local mod_ids = {
   -- ECM
   ["1411157810"] = true,
@@ -16,10 +15,10 @@ CreateRealTimeThread(function()
       mod.lua_revision = LuaRevision
       -- just a little overreaching with that blacklist
       mod.env = nil
-      mod.FirstLoad = FirstLoad
     end
   end
 end)
+
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
