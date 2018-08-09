@@ -20,9 +20,6 @@ local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local point = point
 
-local terrain_GetHeight = terrain.GetHeight
-
-
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
 --~ Transparency
@@ -31,31 +28,32 @@ local white = white
 local black = black
 local dark_gray = -13158858
 local light_gray = -2368549
+-- make 'em lower_case
+local DumpText = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]])
+local DumpObject = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]])
+local ViewText = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]])
+local ViewObject = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]])
+local EditObject = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]])
+local ExecCode = S[302535920000323--[[Exec Code--]]]
+local Functions = S[302535920001239--[[Functions--]]]
+local str_title = Concat(S[302535920000069--[[Examine--]]],": ")
 
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
+  -- clickable purple text
   onclick_handles = {},
+  -- what we're examining
   obj = false,
+  -- if user checks the autorefresh checkbox
+  autorefresh_thread = false,
+
+--~   border = false,
+  XRolloverWindow_ZOrder = false,
+
+  -- needed?
   show_times = "relative",
   offset = 1,
   page = 1,
-  autorefresh_thread = false,
-  menuitems = {
-    DumpText = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
-    DumpObject = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
-    ViewText = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
-    ViewObject = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
-    EditObject = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
-    ExecCode = S[302535920000323--[[Exec Code--]]],
-    Functions = S[302535920001239--[[Functions--]]],
-  },
-  dialog_width = false,
-  dialog_height = false,
-  border = false,
-  XRolloverWindow_ZOrder = false,
-  title = Concat(S[302535920000069--[[Examine--]]],": "),
-  -- so we can move it with SetBox
---~   Dock = "ignore",
 }
 
 --~ box(left,top, right, bottom)
@@ -76,41 +74,26 @@ function Examine:Init(parent, context)
   local point = point
   local RGBA = RGBA
 
-  -- By the Power of Grayskull!
-  g_Classes.ChoGGi_Window.Init(self, parent, context)
-
   -- any self. values from :new()
   self.obj = context.obj
 
   self.dialog_width = 500
   self.dialog_height = 600
-  self.border = 4
+--~   self.border = 4
 
-  -- add contain dialog in an XDialog
-  self.idContainer = g_Classes.ChoGGi_Dialog:new({
-    Background = dark_gray,
-    BorderWidth = 2,
-    BorderColor = light_gray,
---~     Margins = box(0, 15, 6, 0),
---~     Padding = box(8, 8, 8, 8)
-  }, self)
-  -- x,y,w,h
-  self.idContainer:SetBox(100, 100, self.dialog_width, self.dialog_height)
-  -- size/move/close X/title
-  self.idContainer:AddElements(self, context)
-
-  local element_y
-  local element_x
-  self.dialog_width = self.dialog_width - self.border * 2
-  local dialog_left = self.border
+  -- By the Power of Grayskull!
+--~   g_Classes.ChoGGi_Window.Init(parent, context)
+  g_Classes.ChoGGi_Window.AddElements(self, parent, context)
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
+
   self.idLinks = g_Classes.ChoGGi_Text:new({
+    Id = "idLinks",
     VAlign = "top",
-    FontStyle = "Editor12Bold",
+    FontStyle = "Editor14",
     BackgroundColor = RGBA(0, 0, 0, 16),
-  }, self.idContainer)
+  }, self.idDialog)
 
   function self.idLinks.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)
@@ -121,17 +104,20 @@ function Examine:Init(parent, context)
     flags = const.intfIgnoreParent
   }
 
-  self.idText = g_Classes.ChoGGi_Text:new({
-    Margins = box(0, 25, 0, 0),
-    FontStyle = "Editor12Bold",
-    BackgroundColor = RGBA(0, 0, 0, 50),
-  }, self.idContainer)
 
---~   self.idText:SetScrollBar(true)
---~   self.idText:SetScrollAutohide(true)
-  function self.idText.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
+--~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
+--~     g_Classes.XTextButton:new({
+--~       RolloverTemplate = "Rollover",
+--~       RolloverText = hint or "",
+--~       RolloverTitle = S[126095410863--[[Info--]]],
+--~       MinWidth = 60,
+--~       Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
+--~       OnPress = onpress,
+--~       --center text
+--~       LayoutMethod = "VList",
+--~     }, parent)
+--~   end
+  g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
 
   -- look at them sexy internals
   self.transp_mode = transp_mode
@@ -389,7 +375,7 @@ function Examine:valuetotextex(o)
       self:HyperLink(function()
         ShowPoint_valuetotextex(o)
       end),
-      "(",o:x(),",",o:y(),",",o:z() or terrain_GetHeight(o),")",
+      "(",o:x(),",",o:y(),",",o:z() or terrain.GetHeight(o),")",
       HLEnd
     )
 
@@ -836,7 +822,7 @@ function Examine:SetObj(o)
 --~   end
 
   --limit length so we don't cover up close button (only for objlist, everything else is short enough)
-  self.idTitle:SetText(utf8.sub(Concat(self.title,name), 1, 45))
+  self.idTitle:SetText(utf8.sub(Concat(str_title,name), 1, 45))
 end
 
 function Examine:Done(result)

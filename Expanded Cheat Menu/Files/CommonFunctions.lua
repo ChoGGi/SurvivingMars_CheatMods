@@ -427,18 +427,18 @@ do --g_Classes
 --~     end
 --~   end
 
-  function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
-    g_Classes.XTextButton:new({
-      RolloverTemplate = "Rollover",
-      RolloverText = hint or "",
-      RolloverTitle = S[126095410863--[[Info--]]],
-      MinWidth = 60,
-      Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
-      OnPress = onpress,
-      --center text
-      LayoutMethod = "VList",
-    }, parent)
-  end
+--~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
+--~     g_Classes.XTextButton:new({
+--~       RolloverTemplate = "Rollover",
+--~       RolloverText = hint or "",
+--~       RolloverTitle = S[126095410863--[[Info--]]],
+--~       MinWidth = 60,
+--~       Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
+--~       OnPress = onpress,
+--~       --center text
+--~       LayoutMethod = "VList",
+--~     }, parent)
+--~   end
 
   function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items)
     local popup = g_Classes.XPopupList:new({
@@ -1782,6 +1782,7 @@ function OpenExamine(o, from, ret)
   local ex = Examine:new({}, terminal.desktop,{
     obj = o,
   })
+--~   ex:SetObj(o)
 
   if from then
     if from.class == "Examine"  then

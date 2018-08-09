@@ -23,26 +23,52 @@ DefineClass.ChoGGi_Text = {
   -- selected
   SelectionBackground = light_gray,
   SelectionColor = black,
+  TextFont = "Editor12Bold",
 
   WordWrap = false,
 --~     MaxLen = 65536, --65536?
 }
 
-DefineClass.ChoGGi_CloseButton = {
+DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
   RolloverTemplate = "Rollover",
-  RolloverText = S[1011--[[Close--]]],
   RolloverTitle = S[126095410863--[[Info--]]],
+}
+
+DefineClass.ChoGGi_Button = {
+  __parents = {"ChoGGi_Buttons"},
+  MinWidth = 60,
+  Text = S[6878--[[OK--]]],
+  --center text
+  LayoutMethod = "VList",
+}
+
+DefineClass.ChoGGi_CloseButton = {
+  __parents = {"ChoGGi_Buttons"},
+  RolloverText = S[1011--[[Close--]]],
 --~   Image = "CommonAssets/UI/Controls/Button/Close.tga",
   Image = "UI/Common/mission_no.tga",
   Dock = "top",
   HAlign = "right",
-  ZOrder = 99,
-  Margins = box(0, -20, 0, 0),
+--~   ZOrder = 99,
+--~   Margins = box(0, -20, 0, 0),
+    Margins = box(0, 4, 2, 0),
 }
 
 -- 1 above console log
 --~ local zorder = 2000001
+
+DefineClass.ChoGGi_CheckButton = {
+  __parents = {"XCheckButton"},
+  RolloverTemplate = "Rollover",
+  RolloverTitle = S[302535920000721--[[Checkbox--]]],
+  MinWidth = 60,
+  Text = S[6878--[[OK--]]],
+  --center text
+  LayoutMethod = "VList",
+}
+--~ OnChange
+--~ RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
 
 DefineClass.ChoGGi_Dialog = {
   __parents = {"XDialog"},
@@ -57,60 +83,130 @@ DefineClass.ChoGGi_Dialog = {
   Dock = "ignore",
 }
 
-function ChoGGi_Dialog:AddElements(parent,context)
+DefineClass.ChoGGi_Window = {
+  __parents = {"XWindow"},
+  dialog_width = 500,
+  dialog_height = 500,
+}
+
+function ChoGGi_Window:AddElements(parent,context)
   local g_Classes = g_Classes
 
-  parent.idSizeControl = g_Classes.XSizeControl:new({
-    ZOrder = 98,
+  -- add contain dialog in an XDialog
+  self.idDialog = g_Classes.ChoGGi_Dialog:new({
+    Background = dark_gray,
+    BorderWidth = 2,
+    BorderColor = light_gray,
+--~     Margins = box(0, 15, 6, 0),
+--~     Padding = box(8, 8, 8, 8)
   }, self)
 
-  parent.idMoveControl = g_Classes.XMoveControl:new({
+  -- x,y,w,h
+  self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
+
+  self.idSizeControl = g_Classes.XSizeControl:new({
+--~     ZOrder = 98,
+  }, self.idDialog)
+
+  self.idMoveControl = g_Classes.XMoveControl:new({
     MinHeight = 30,
     Margins = box(0, -30, 0, 0),
     VAlign = "top",
-    ZOrder = 97,
-  }, self)
+--~     ZOrder = 97,
+  }, self.idDialog)
 
-  parent.idCloseX = ChoGGi_CloseButton:new({
+  self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
-      parent:delete()
+      self:delete()
     end,
-  }, self)
+  }, self.idDialog)
 
-  parent.idTitle = g_Classes.XLabel:new({
+  self.idTitle = g_Classes.XLabel:new({
     Dock = "top",
     HAlign = "center",
-    FontStyle = "Editor12Bold",
-    Margins = box(4, 2, 4, 2),
+    TextFont = "Editor14Bold",
+    Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
     TextColor = light_gray,
-  }, self)
-  parent.idTitle:SetText(parent.title or S[1000016--[[Title--]]])
+  }, self.idDialog)
+  self.idTitle:SetText(self.title or S[1000016--[[Title--]]])
 
 end
 
-DefineClass.ChoGGi_Window = {
-  __parents = {"XWindow"},
-}
-
+-- takes either a point, or box to set pos
 function ChoGGi_Window:SetPos(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   local x,y,w,h
   if IsPoint(obj) then
-    local box = self.idContainer.box
+    local box = self.idDialog.box
     x = obj:x()
     y = obj:y()
     w = box:sizex()
     h = box:sizey()
   else
     -- it's a copy of examine wanting a new window offset
-    obj = obj.idContainer.box
+    obj = obj.idDialog.box
     x = obj:minx()
-    y = obj:miny() + 30
+    y = obj:miny() + 25
     w = obj:sizex()
     h = obj:sizey()
   end
+  -- make sure we can always move it
+  if self.idDialog.Dock ~= "ignore" then
+    self.idDialog:SetDock("ignore")
+  end
+  self.idDialog:SetBox(x,y,w,h)
+end
 
-  self.idContainer:SetBox(x,y,w,h)
+function ChoGGi_Window:AddTextBox(parent,context)
+  local g_Classes = g_Classes
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idScrollBox",
+    Dock = "right",
+    Margins = box(0, 30, 0, 0),
+  }, self.idDialog)
+
+  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollH",
+    Target = "idScrollBox",
+    Dock = "bottom",
+    Horizontal = true,
+  }, self.idDialog)
+
+  self.idScrollBox = g_Classes.XScrollArea:new({
+    Id = "idScrollBox",
+    Dock = "box",
+    LayoutMethod = "VList",
+    Margins = box(0, 30, 0, 0),
+    VScroll = "idScrollV",
+    HScroll = "idScrollH",
+  }, self.idDialog)
+
+  self.idText = g_Classes.ChoGGi_Text:new({
+    Id = "idText",
+    -- centres text, but blocks scroll
+--~     Dock = "box",
+  }, self.idScrollBox)
+
+  function self.idText.OnHyperLink(_, link, _, box, pos, button)
+    self.onclick_handles[tonumber(link)](box, pos, button)
+  end
+end
+
+DefineClass.ChoGGi_SleekScroll = {
+  __parents = {"XSleekScroll"},
+  MinThumbSize = 30,
+  AutoHide = true,
+  Background = RGBA(0,0,0,0),
+}
+
+-- convenience function
+function ChoGGi_SleekScroll:SetHorizontal()
+  self.MinHeight = 10
+  self.MaxHeight = 10
+  self.MinWidth = 10
+  self.MaxWidth = 10
 end

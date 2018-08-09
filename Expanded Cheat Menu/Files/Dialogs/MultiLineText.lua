@@ -108,6 +108,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
     --doesn't seem to work?
     AutoHide = true,
   }, self.idContainer)
+
   self.idVScroll.MinWidth = 15
   self.idVScroll.MaxWidth = 15
   self.idText.VScroll = "idVScroll"

@@ -12,5 +12,5 @@ If you did it correctly ECM will no longer have a version compatibility issue.
 
 
 Symlinking:
-If you symlink the BinAssets folder, you won't need to update it manually.
-It shouldn't be updated too often, but hopefully the devs ease up on the blacklisting, and I can remove it.
+If you symlink the BinAssets folder, you won't need to update HelperMod manually.
+HelperMod shouldn't be updated too often, but hopefully the devs ease up on the blacklisting, and I can remove it.
