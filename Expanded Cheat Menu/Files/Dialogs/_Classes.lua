@@ -35,14 +35,6 @@ DefineClass.ChoGGi_Buttons = {
   RolloverTitle = S[126095410863--[[Info--]]],
 }
 
-DefineClass.ChoGGi_Button = {
-  __parents = {"ChoGGi_Buttons"},
-  MinWidth = 60,
-  Text = S[6878--[[OK--]]],
-  --center text
-  LayoutMethod = "VList",
-}
-
 DefineClass.ChoGGi_CloseButton = {
   __parents = {"ChoGGi_Buttons"},
   RolloverText = S[1011--[[Close--]]],
@@ -55,8 +47,14 @@ DefineClass.ChoGGi_CloseButton = {
     Margins = box(0, 4, 2, 0),
 }
 
--- 1 above console log
---~ local zorder = 2000001
+DefineClass.ChoGGi_Button = {
+  __parents = {"ChoGGi_Buttons"},
+  MinWidth = 60,
+  Text = S[6878--[[OK--]]],
+  --center text
+  LayoutMethod = "VList",
+}
+
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
@@ -159,6 +157,7 @@ function ChoGGi_Window:SetPos(obj)
   self.idDialog:SetBox(x,y,w,h)
 end
 
+-- scrollable text
 function ChoGGi_Window:AddTextBox(parent,context)
   local g_Classes = g_Classes
 

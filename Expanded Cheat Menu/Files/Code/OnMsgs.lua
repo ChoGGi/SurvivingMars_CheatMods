@@ -215,6 +215,32 @@ function OnMsg.PersistPostLoad()
   end
 end
 
+-- fires when ReloadShortcuts() is called (among others)
+function OnMsg.ShortcutsReloaded()
+  local XShortcutsTarget = XShortcutsTarget
+  local XAction = XAction
+  local keys = ChoGGi.Temp.MenuitemsKeys
+  for i = 1, #keys do
+    local item = keys[i]
+    XShortcutsTarget:AddAction(XAction:new{
+      ActionMenubar = "CUSTOM",
+      ActionName = item.ActionName,
+      ActionId = item.ActionId,
+      ActionIcon = item.ActionIcon,
+      ActionTranslate = item.ActionTranslate,
+      ActionShortcut = item.ActionShortcut,
+      ActionMode = item.ActionMode,
+      RolloverText = item.RolloverText,
+      RolloverTemplate = item.RolloverTemplate,
+      RolloverTitle = item.RolloverTitle,
+      ActionSortKey = item.ActionSortKey,
+      OnAltAction = item.OnAltAction,
+      OnAction = item.OnAction,
+    })
+  end
+
+end
+
 -- for instant build
 function OnMsg.BuildingPlaced(obj)
   if obj:IsKindOf("Building") then
@@ -558,11 +584,11 @@ function OnMsg.ApplicationQuit()
     return
   end
 
---~   --save menu pos
---~   local dlg = dlgUAMenu
---~   if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
---~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
---~   end
+  --save menu pos
+  local dlg = XShortcutsTarget
+  if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
+  end
   --console log window settings
   dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
@@ -870,8 +896,9 @@ do -- LoadGame/CityStart
       SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
 
       -- add preset menu items
+      local AddAction = ChoGGi.ComFuncs.AddAction
       ClassDescendantsList("Preset", function(name, class)
-        ChoGGi.ComFuncs.AddAction(
+        AddAction(
           {"/[40]",S[302535920000979--[[Presets--]]],"/"},
           Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
           function()
@@ -934,24 +961,15 @@ do -- LoadGame/CityStart
           Dock = "bottom",
           HAlign = "right",
         }, dlgConsole)
-
---~         XMoveControl:new({
---~           Id = "idMoveControl",
---~         }, dlgConsole)
---~         XSizeControl:new({
---~           Id = "idSizeControl",
---~         }, dlgConsole)
       end
 
---~       -- update menu
---~       g_Classes.UAMenu.UpdateUAMenu(UserActions_GetActiveActions())
+      -- update menu
+      ReloadShortcuts()
 
---~         -- always show on my computer
---~         if UserSettings.ShowCheatsMenu or ChoGGi.testing then
---~           if not dlgUAMenu then
---~             g_Classes.UAMenu.ToggleOpen()
---~           end
---~         end
+      -- always show on my computer
+      if UserSettings.ShowCheatsMenu or ChoGGi.testing then
+        XShortcutsTarget:SetVisible(true)
+      end
 
     end -- DisableECM
 
@@ -1253,8 +1271,6 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
     -- used to check when game has started and it's safe to print() etc
     ChoGGi.Temp.GameLoaded = true
 
-    -- XShortcutsTarget
-    ReloadShortcuts()
 
 --~ CreateRealTimeThread(function()
 --~   if not g_gedListener then

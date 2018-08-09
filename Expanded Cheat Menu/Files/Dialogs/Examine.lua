@@ -38,6 +38,8 @@ local ExecCode = S[302535920000323--[[Exec Code--]]]
 local Functions = S[302535920001239--[[Functions--]]]
 local str_title = Concat(S[302535920000069--[[Examine--]]],": ")
 
+-- 1 above console log
+local zorder = 2000001
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
   -- clickable purple text
@@ -49,6 +51,7 @@ DefineClass.Examine = {
 
 --~   border = false,
   XRolloverWindow_ZOrder = false,
+  ZOrder = zorder,
 
   -- needed?
   show_times = "relative",
@@ -79,14 +82,11 @@ function Examine:Init(parent, context)
 
   self.dialog_width = 500
   self.dialog_height = 600
---~   self.border = 4
 
   -- By the Power of Grayskull!
---~   g_Classes.ChoGGi_Window.Init(parent, context)
   g_Classes.ChoGGi_Window.AddElements(self, parent, context)
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-
 
   self.idLinks = g_Classes.ChoGGi_Text:new({
     Id = "idLinks",
@@ -108,7 +108,6 @@ function Examine:Init(parent, context)
 --~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
 --~     g_Classes.XTextButton:new({
 --~       RolloverTemplate = "Rollover",
---~       RolloverText = hint or "",
 --~       RolloverTitle = S[126095410863--[[Info--]]],
 --~       MinWidth = 60,
 --~       Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
@@ -117,6 +116,19 @@ function Examine:Init(parent, context)
 --~       LayoutMethod = "VList",
 --~     }, parent)
 --~   end
+
+  self.idButtons = g_Classes.XWindow:new({
+    Id = "idButtons",
+  }, self.idDialog)
+
+--~   self.idLinks = g_Classes.ChoGGi_Button:new({
+--~     Id = "idLinks",
+--~     RolloverText = "hint",
+--~     VAlign = "top",
+--~     FontStyle = "Editor14",
+--~     BackgroundColor = RGBA(0, 0, 0, 16),
+--~   }, self.idDialog)
+
   g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
 
   -- look at them sexy internals

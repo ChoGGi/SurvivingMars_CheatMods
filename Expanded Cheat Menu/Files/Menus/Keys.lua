@@ -139,14 +139,15 @@ local function ToggleConsole()
     ShowConsole(not dlgConsole:GetVisible())
   end
 end
---~ AddAction( -- ShowConsoleTilde
---~   nil,
---~   nil,
---~   function()
---~     ShowConsole(true)
---~   end,
---~   ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
---~ )
+
+AddAction( -- ShowConsoleTilde
+  nil,
+  nil,
+  function()
+    ToggleConsole()
+  end,
+  ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
+)
 
 AddAction( -- ShowConsoleEnter
   nil,
@@ -157,19 +158,19 @@ AddAction( -- ShowConsoleEnter
   ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter
 )
 
---~ AddAction( -- ConsoleRestart
---~   nil,
---~   nil,
---~   function()
---~     ShowConsole(true)
---~     local dlgConsole = dlgConsole
---~     if dlgConsole then
---~       dlgConsole.idEdit:SetText("restart")
---~       dlgConsole.idEdit:SetFocus()
---~     end
---~   end,
---~   ChoGGi.UserSettings.KeyBindings.ConsoleRestart
---~ )
+AddAction( -- ConsoleRestart
+  nil,
+  nil,
+  function()
+    ShowConsole(true)
+    local dlgConsole = dlgConsole
+    if dlgConsole then
+      dlgConsole.idEdit:SetText("restart")
+      dlgConsole.idEdit:SetFocus()
+    end
+  end,
+  ChoGGi.UserSettings.KeyBindings.ConsoleRestart
+)
 
 --goes to placement mode with last built object
 AddAction( -- LastConstructedBuilding
@@ -199,45 +200,45 @@ AddAction( -- LastPlacedObject
   ChoGGi.UserSettings.KeyBindings.LastPlacedObject
 )
 
-function OnMsg.ShortcutsReloaded()
 --~   if XTemplates.DeveloperShortcuts then
 --~     XTemplateSpawn("DeveloperShortcuts", XShortcutsTarget)
 --~   end
+--~ function OnMsg.ShortcutsReloaded()
 
-  XShortcutsTarget:AddAction(XAction:new{
-    ActionId = "ChoGGi_ObjectExamine",
-    ActionTranslate = false,
-    ActionShortcut = "F4",
-    OnAction = function()
-      local sel = ChoGGi.CodeFuncs.SelObject()
-      if not sel then
-        return
-      end
-      --open examine at the object
-      OpenExamine(sel,sel)
-    end,
-  })
+--~   XShortcutsTarget:AddAction(XAction:new{
+--~     ActionId = "ChoGGi_ObjectExamine",
+--~     ActionTranslate = false,
+--~     ActionShortcut = "F4",
+--~     OnAction = function()
+--~       local sel = ChoGGi.CodeFuncs.SelObject()
+--~       if not sel then
+--~         return
+--~       end
+--~       --open examine at the object
+--~       OpenExamine(sel,sel)
+--~     end,
+--~   })
 
-  XShortcutsTarget:AddAction(XAction:new{
-    ActionId = "ChoGGi_ConsoleRestart",
-    ActionTranslate = false,
-    ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
-    OnAction = function()
-      ShowConsole(true)
-      local dlgConsole = dlgConsole
-      if dlgConsole then
-        dlgConsole.idEdit:SetText("restart")
-        dlgConsole.idEdit:SetFocus()
-      end
-    end,
-  })
+--~   XShortcutsTarget:AddAction(XAction:new{
+--~     ActionId = "ChoGGi_ConsoleRestart",
+--~     ActionTranslate = false,
+--~     ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
+--~     OnAction = function()
+--~       ShowConsole(true)
+--~       local dlgConsole = dlgConsole
+--~       if dlgConsole then
+--~         dlgConsole.idEdit:SetText("restart")
+--~         dlgConsole.idEdit:SetFocus()
+--~       end
+--~     end,
+--~   })
 
-  XShortcutsTarget:AddAction(XAction:new{
-    ActionId = "ChoGGi_ShowConsoleTilde",
-    ActionTranslate = false,
-    ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
-    OnAction = function()
-      ToggleConsole()
-    end,
-  })
-end
+--~   XShortcutsTarget:AddAction(XAction:new{
+--~     ActionId = "ChoGGi_ShowConsoleTilde",
+--~     ActionTranslate = false,
+--~     ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+--~     OnAction = function()
+--~       ToggleConsole()
+--~     end,
+--~   })
+--~ end

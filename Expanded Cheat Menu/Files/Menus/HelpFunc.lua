@@ -289,9 +289,14 @@ end
 
 function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.ShowCheatsMenu = not ChoGGi.UserSettings.ShowCheatsMenu
+  if ChoGGi.UserSettings.ShowCheatsMenu then
+    ChoGGi.UserSettings.ShowCheatsMenu = nil
+    XShortcutsTarget:SetVisible()
+  else
+    ChoGGi.UserSettings.ShowCheatsMenu = true
+    XShortcutsTarget:SetVisible(true)
+  end
   ChoGGi.SettingFuncs.WriteSettings()
---~   UAMenu.ToggleOpen()
 end
 
 function ChoGGi.MenuFuncs.ShowChangelogECM()
