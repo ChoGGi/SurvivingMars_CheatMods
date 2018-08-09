@@ -14,7 +14,7 @@ CreateRealTimeThread(function()
       -- just a little overreaching with that blacklist
       mod.env = nil
       -- add a warning to any mods that get changed
-      mod.title = table.concat{[[Warning: ]],mod.title}
+      mod.title = table.concat{mod.title," (Warning)"}
       mod.description = table.concat{[[Warning: This mod has had it's safety blacklist from the devs removed!
 If the author isn't ChoGGi, and it isn't Expanded Cheat Menu, then be wary of it...]],"\n\n",mod.description}
     end
