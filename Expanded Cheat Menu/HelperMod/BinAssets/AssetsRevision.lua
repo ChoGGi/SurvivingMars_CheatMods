@@ -1,8 +1,6 @@
 local mod_ids = {
   -- ECM
   ["1411157810"] = true,
-  -- Change Object Colour
-  ["1411106049"] = true,
 }
 
 CreateRealTimeThread(function()
@@ -15,10 +13,13 @@ CreateRealTimeThread(function()
       mod.lua_revision = LuaRevision
       -- just a little overreaching with that blacklist
       mod.env = nil
+      -- add a warning to any mods that get changed
+      mod.title = table.concat{[[Warning: ]],mod.title}
+      mod.description = table.concat{[[Warning: This mod has had it's safety blacklist from the devs removed!
+If the author isn't ChoGGi, and it isn't Expanded Cheat Menu, then be wary of it...]],"\n\n",mod.description}
     end
   end
 end)
-
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
