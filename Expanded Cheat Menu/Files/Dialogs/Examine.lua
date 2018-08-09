@@ -88,12 +88,17 @@ function Examine:Init(parent, context)
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
+  self.idLinkButtons = g_Classes.XWindow:new({
+    Id = "idLinkButtons",
+    Dock = "top",
+  }, self.idDialog)
+
   self.idLinks = g_Classes.ChoGGi_Text:new({
     Id = "idLinks",
     VAlign = "top",
     FontStyle = "Editor14",
     BackgroundColor = RGBA(0, 0, 0, 16),
-  }, self.idDialog)
+  }, self.idLinkButtons)
 
   function self.idLinks.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)
@@ -103,6 +108,27 @@ function Examine:Init(parent, context)
     startValue = 255,
     flags = const.intfIgnoreParent
   }
+
+  self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idAutoRefresh",
+    RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
+    Text = S[302535920000084--[[Auto-Refresh--]]],
+    Dock = "right",
+    OnChange = function()
+      self.idAutoRefreshToggle(self)
+    end,
+  }, self.idLinkButtons)
+
+--~   local button_size = RetCheckTextSize(title)
+--~   local adjust = ChoGGi.lang == "English" and 20 or 15
+--~   self.idAutoRefresh:SetPos(point(self.dialog_width - button_size:x() + adjust, element_y + 1))
+--~   self.idAutoRefresh:SetSize(button_size)
+--~   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
+--~   self.idAutoRefresh:SetHSizing("AnchorToRight")
+--~   self.idAutoRefresh:SetText(title)
+--~   self.idAutoRefresh:SetHint(S[302535920001257--[[Auto-refresh list every second.--]]])
+--~   self.idAutoRefresh:SetButtonSize(point(16, 16))
+
 
 
 --~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
@@ -117,12 +143,12 @@ function Examine:Init(parent, context)
 --~     }, parent)
 --~   end
 
-  self.idButtons = g_Classes.XWindow:new({
-    Id = "idButtons",
-  }, self.idDialog)
+--~   self.idButtons = g_Classes.XWindow:new({
+--~     Id = "idButtons",
+--~   }, self.idDialog)
 
---~   self.idLinks = g_Classes.ChoGGi_Button:new({
---~     Id = "idLinks",
+--~   self.idLinksX = g_Classes.ChoGGi_Button:new({
+--~     Id = "idLinksX",
 --~     RolloverText = "hint",
 --~     VAlign = "top",
 --~     FontStyle = "Editor14",
@@ -138,7 +164,7 @@ function Examine:Init(parent, context)
   self:SetObj(self.obj)
 end
 
-function Examine:idAutoRefreshButOnButtonPressed()
+function Examine:idAutoRefreshToggle()
   -- if already running then stop and return
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)

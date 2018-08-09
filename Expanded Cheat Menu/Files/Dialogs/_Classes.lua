@@ -58,15 +58,18 @@ DefineClass.ChoGGi_Button = {
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
-  RolloverTemplate = "Rollover",
-  RolloverTitle = S[302535920000721--[[Checkbox--]]],
+--~   RolloverTemplate = "Rollover",
+--~   RolloverTitle = S[302535920000721--[[Checkbox--]]],
+  TextColor = white,
+  RolloverTextColor = light_gray,
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
   --center text
-  LayoutMethod = "VList",
+--~   LayoutMethod = "HList",
 }
---~ OnChange
---~ RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
+function ChoGGi_CheckButton:Init()
+  self.idIcon:SetBackground(light_gray)
+end
 
 DefineClass.ChoGGi_Dialog = {
   __parents = {"XDialog"},
@@ -90,16 +93,19 @@ DefineClass.ChoGGi_Window = {
 function ChoGGi_Window:AddElements(parent,context)
   local g_Classes = g_Classes
 
-  -- add contain dialog in an XDialog
+  -- add container dialog for everything to fit in
   self.idDialog = g_Classes.ChoGGi_Dialog:new({
     Background = dark_gray,
     BorderWidth = 2,
     BorderColor = light_gray,
---~     Margins = box(0, 15, 6, 0),
---~     Padding = box(8, 8, 8, 8)
   }, self)
 
-  -- x,y,w,h
+  self.idCaption = g_Classes.XWindow:new({
+    Id = "idCaption",
+    Dock = "top",
+  }, self.idDialog)
+
+  -- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
   self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
 
   self.idSizeControl = g_Classes.XSizeControl:new({
@@ -111,13 +117,13 @@ function ChoGGi_Window:AddElements(parent,context)
     Margins = box(0, -30, 0, 0),
     VAlign = "top",
 --~     ZOrder = 97,
-  }, self.idDialog)
+  }, self.idCaption)
 
   self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
       self:delete()
     end,
-  }, self.idDialog)
+  }, self.idCaption)
 
   self.idTitle = g_Classes.XLabel:new({
     Dock = "top",
@@ -125,8 +131,8 @@ function ChoGGi_Window:AddElements(parent,context)
     TextFont = "Editor14Bold",
     Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
-    TextColor = light_gray,
-  }, self.idDialog)
+    TextColor = white,
+  }, self.idCaption)
   self.idTitle:SetText(self.title or S[1000016--[[Title--]]])
 
 end
@@ -165,7 +171,6 @@ function ChoGGi_Window:AddTextBox(parent,context)
     Id = "idScrollV",
     Target = "idScrollBox",
     Dock = "right",
-    Margins = box(0, 30, 0, 0),
   }, self.idDialog)
 
   self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
@@ -179,9 +184,11 @@ function ChoGGi_Window:AddTextBox(parent,context)
     Id = "idScrollBox",
     Dock = "box",
     LayoutMethod = "VList",
-    Margins = box(0, 30, 0, 0),
     VScroll = "idScrollV",
     HScroll = "idScrollH",
+--~     BorderWidth = 1,
+--~     BorderColor = light_gray,
+    Margins = box(5,0,0,0),
   }, self.idDialog)
 
   self.idText = g_Classes.ChoGGi_Text:new({

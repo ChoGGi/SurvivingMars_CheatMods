@@ -223,7 +223,7 @@ function OnMsg.ShortcutsReloaded()
   for i = 1, #keys do
     local item = keys[i]
     XShortcutsTarget:AddAction(XAction:new{
-      ActionMenubar = "CUSTOM",
+      ActionMenubar = "Cheats",
       ActionName = item.ActionName,
       ActionId = item.ActionId,
       ActionIcon = item.ActionIcon,
