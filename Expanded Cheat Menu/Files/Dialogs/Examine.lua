@@ -87,7 +87,8 @@ function Examine:Init(parent, context)
   self.dialog_height = 600
 
   -- By the Power of Grayskull!
-  g_Classes.ChoGGi_Window.AddElements(self, parent, context)
+--~   g_Classes.ChoGGi_Window.AddElements(self, parent, context)
+  self:AddElements(parent, context)
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
@@ -114,6 +115,7 @@ function Examine:Init(parent, context)
 
   self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
     Id = "idAutoRefresh",
+    RolloverAnchor = "right",
     RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
     Text = S[302535920000084--[[Auto-Refresh--]]],
     Dock = "right",
@@ -129,31 +131,17 @@ function Examine:Init(parent, context)
 
   self.idFilter = g_Classes.ChoGGi_TextInput:new({
     Id = "idFilter",
-    RolloverTemplate = "Rollover",
-    RolloverTitle = S[302535920000721--[[Checkbox--]]],
     RolloverText = S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]],
     Hint = S[302535920000044--[[Goto text--]]],
+    OnTextChanged = function(edit)
+      ChoGGi_TextInput.OnTextChanged(edit)
+      self:FindNext(self.idFilter:GetText())
+    end,
+    -- block the rest of the game input
+    OnKbdKeyDown = function(obj, vk)
+      return self:idFilterOnKbdKeyDown(obj, vk)
+    end,
   }, self.idFilterArea)
-  function self.idFilter.OnValueChanged(_, value)
-    self:FindNext(value)
-  end
-  function self.idFilter.OnKbdKeyDown(_, vk)
-    self:idFilterOnKbdKeyDown(vk)
-    return "break"
-  end
-
---~   -- todo: better text control (fix weird ass text controls)
---~   self.idFilter = g_Classes.SingleLineEdit:new(self)
---~   self.idFilter:SetPos(point(dialog_left, element_y))
---~   self.idFilter:SetSize(point(self.dialog_width, 26))
---~   self.idFilter:SetHSizing("Resize")
---~   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
---~   self.idFilter:SetFontStyle("Editor12Bold")
---~   self.idFilter:SetRollover(S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]])
---~   self.idFilter:SetTextHAlign("center")
---~   self.idFilter:SetTextVAlign("center")
---~   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
---~   self.idFilter.display_text = S[302535920000044--[[Goto text--]]]
 
   self.idMenuButtons = g_Classes.XWindow:new({
     Id = "idMenuButtons",
@@ -202,6 +190,7 @@ Right-click to scroll to top."--]]],
     Id = "idNext",
     Text = S[1000232--[[Next--]]],
     Dock = "right",
+    RolloverAnchor = "right",
     RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 
 Right-click to scroll to top."--]]],
@@ -209,13 +198,14 @@ Right-click to scroll to top."--]]],
       if button == "L" then
         self:FindNext(self.idFilter:GetText())
       else
-        self.idText:SetTextOffset(point(0,0))
+        self.idScrollBox:ScrollTo(0,0)
       end
     end,
   }, self.idMenuButtons)
 
   -- adds textarea with scrollbars
-  g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
+--~   g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
+  self:AddTextBox(parent, context)
 
   -- look at them sexy internals
   self.transp_mode = transp_mode
@@ -223,6 +213,8 @@ Right-click to scroll to top."--]]],
 
   -- load up obj in text display
   self:SetObj(self.obj)
+
+  self:FlashWindow(self.obj)
 end
 
 function Examine:Menu_Toggle(obj,menu,items)
@@ -255,19 +247,22 @@ function Examine:idAutoRefreshToggle()
   end)
 end
 
-function Examine:idFilterOnKbdKeyDown(vk)
+function Examine:idFilterOnKbdKeyDown(obj,vk)
   if vk == const.vkEnter then
     self:FindNext(self.idFilter:GetText())
     return "break"
   elseif vk == const.vkUp then
-    self.idText:SetTextOffset(point(0,0))
+    self.idScrollBox:ScrollTo(0,0)
+    return "break"
+  elseif vk == const.vkDown then
+    local v = self.idScrollV
+    self.idScrollBox:ScrollTo(0,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
     return "break"
   elseif vk == const.vkEsc then
     self.idCloseX:Press()
---~     self:SetFocus()
     return "break"
   else
-    XTextEditor.OnKbdKeyDown(self.idFilter, vk)
+    return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
   end
 end
 
@@ -288,7 +283,6 @@ end
 
 local menu_added
 local menu_list_items
-
 -- adds class name then list of functions below
 local function BuildFuncList(obj_name,prefix)
   prefix = prefix or ""
@@ -460,7 +454,7 @@ end
 
 function Examine:FindNext(filter)
   local drawBuffer = self.idText.draw_cache or empty_table
-  local current_y = -self.idText.text_offset:y()
+  local current_y = self.idScrollBox.OffsetY
   local min_match, closest_match = false, false
   for y, list_draw_info in pairs(drawBuffer) do
     for i = 1, #list_draw_info do
@@ -475,10 +469,52 @@ function Examine:FindNext(filter)
       end
     end
   end
-  if min_match or closest_match then
-    self.idText:SetTextOffset(point(0, -(closest_match or min_match)))
+  if closest_match or min_match then
+    self.idScrollBox:ScrollTo(0, (closest_match or min_match))
   end
 end
+
+local flashing_window = false
+local empty_box = empty_box
+function Examine:FlashWindow(obj)
+--~   local UIL = UIL
+--~   local Sleep = Sleep
+
+--~   obj = obj or self.obj
+--~   if flashing_window then
+--~     DeleteThread(flashing_window.thread)
+--~   end
+--~   flashing_window = {
+--~     BorderWidth = 1,
+--~     BorderColor = black,
+--~     Box = empty_box,
+--~     thread = false,
+--~   }
+--~   flashing_window.thread = CreateRealTimeThread(function()
+--~     for i = 1, 5 do
+--~       local target = obj.box
+--~       if obj.window_state ~= "destroying" and target then
+--~         flashing_window.Box = target
+--~         flashing_window.BorderColor = white
+--~         UIL.Invalidate()
+--~         Sleep(50)
+--~         flashing_window.BorderColor = black
+--~         UIL.Invalidate()
+--~         Sleep(50)
+--~       end
+--~     end
+--~     flashing_window = false
+--~     UIL.Invalidate()
+--~   end)
+
+end
+function ChoGGiExamineFlashWindow()
+  if flashing_window then
+    local border_width = flashing_window.BorderWidth
+    UIL.DrawBorderRect(flashing_window.Box, border_width, border_width, flashing_window.BorderColor, RGBA(0, 0, 0, 0))
+  end
+end
+--~ UIL.Register("ChoGGiExamineFlashWindow", XDesktop.terminal_target_priority + 1)
 
 function Examine:SetTranspMode(toggle)
   self:ClearModifiers()
@@ -864,6 +900,7 @@ end
 local function Refresh_menu(_,self)
   if self.obj then
     self:SetObj(self.obj)
+    self:FlashWindow(self.obj)
   end
 end
 local function SetTransp_menu(_,self)
@@ -964,8 +1001,8 @@ function Examine:SetObj(o)
             pos and Concat("Pos: ",pos)
           ),
 
-          -- fucking with SkiRich
-          pos = pos,
+--~           -- fucking with SkiRich
+--~           pos = pos,
 
           clicked = function()
             OpenExamine(attaches[i],self)
@@ -984,6 +1021,9 @@ end
 function Examine:Done(result)
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
+  end
+  if flashing_window then
+    DeleteThread(flashing_window.thread)
   end
   ChoGGi_Window.Done(self,result)
 end

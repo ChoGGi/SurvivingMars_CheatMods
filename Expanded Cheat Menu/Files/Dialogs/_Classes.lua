@@ -12,6 +12,10 @@ local dark_gray = -13158858
 local light_gray = -2368549
 local rollover_blue = RGB(24, 123, 197)
 
+local text = "Editor12Bold"
+if ChoGGi.Testing then
+  text = "Editor14Bold"
+end
 DefineClass.ChoGGi_Text = {
   __parents = {"XText"},
   -- default
@@ -23,7 +27,7 @@ DefineClass.ChoGGi_Text = {
   -- selected
   SelectionBackground = light_gray,
   SelectionColor = black,
-  TextFont = "Editor12Bold",
+  TextFont = text,
 
   WordWrap = false,
 --~     MaxLen = 65536, --65536?
@@ -31,7 +35,6 @@ DefineClass.ChoGGi_Text = {
 
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
---~   RolloverTemplate = "Rollover",
   RolloverTitle = S[126095410863--[[Info--]]],
   RolloverBackground = rollover_blue,
   RolloverTextColor = white,
@@ -40,6 +43,7 @@ DefineClass.ChoGGi_Buttons = {
 DefineClass.ChoGGi_CloseButton = {
   __parents = {"ChoGGi_Buttons"},
   RolloverText = S[1011--[[Close--]]],
+  RolloverAnchor = "right",
 --~   Image = "CommonAssets/UI/Controls/Button/Close.tga",
   Image = "UI/Common/mission_no.tga",
   Dock = "top",
@@ -66,7 +70,6 @@ DefineClass.ChoGGi_ComboButton = {
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
---~   RolloverTemplate = "Rollover",
   RolloverTitle = S[302535920000721--[[Checkbox--]]],
   TextColor = white,
   RolloverTextColor = light_gray,
@@ -80,10 +83,11 @@ function ChoGGi_CheckButton:Init()
 end
 
 DefineClass.ChoGGi_TextInput = {
-  __parents = {"XTextEditor"},
-  Multiline = false,
-  WordWrap = false,
-  AllowTabs = false,
+  __parents = {"XEdit"},
+--~   Multiline = false,
+--~   WordWrap = false,
+--~   AllowTabs = false,
+  RolloverTitle = S[126095410863--[[Info--]]],
 --~   -- text displayed till mouse/kb focus
 --~   display_text = false,
 }
@@ -219,7 +223,7 @@ function ChoGGi_Window:AddTextBox(parent,context)
 --~     Dock = "box",
   }, self.idScrollBox)
 
-
+  self.idText.hovered_hyperlink = true
 
   function self.idText.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)

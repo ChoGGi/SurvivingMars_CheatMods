@@ -532,7 +532,6 @@ do --g_Classes
       local button = g_Classes[item.class or "XTextButton"]:new({
         TextFont = "Editor16Bold",
         RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
---~         RolloverTemplate = "Rollover",
         Text = ChoGGi.ComFuncs.CheckText(item.name),
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
@@ -576,14 +575,13 @@ do --g_Classes
 
     popup:SetAnchor(parent.box)
     popup:SetAnchorType(anchor or "top")
---~     popup:SetAnchorType("smart")
-  --~   "smart",
-  --~   "left",
-  --~   "right",
-  --~   "top",
-  --~   "center-top",
-  --~   "bottom",
-  --~   "mouse"
+--~     "smart",
+--~     "left",
+--~     "right",
+--~     "top",
+--~     "center-top",
+--~     "bottom",
+--~     "mouse"
 
     popup:Open()
     popup:SetFocus()
