@@ -255,7 +255,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 
 Right-click to scroll to top.",
 302535920000046,dumps text to AppData/DumpedExamine.lua,
-302535920000047,View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).,
+302535920000047,"View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).",
 302535920000048,View,
 302535920001027,"dumps object to AppData/DumpedExamineObject.lua
 

@@ -32,8 +32,12 @@ local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 local OnMsg = OnMsg
 
 -- use this message to mess with the classdefs (before classes are built)
---~ function OnMsg.ClassesGenerate(classdefs)
---~ end
+function OnMsg.ClassesGenerate()
+  -- for some reason rollovers don't just use the default template (i don't want to set this for everything that i want a hint on)
+  XRollover.RolloverTemplate = "Rollover"
+  -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I should change the rest)
+  XRolloverWindow.ZOrder = 9999999
+end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()

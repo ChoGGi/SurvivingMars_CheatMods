@@ -10,10 +10,10 @@ local white = white
 local black = black
 local dark_gray = -13158858
 local light_gray = -2368549
+local rollover_blue = RGB(24, 123, 197)
 
 DefineClass.ChoGGi_Text = {
   __parents = {"XText"},
-  -- needed for SetBox
   -- default
   Background = dark_gray,
   TextColor = white,
@@ -31,8 +31,10 @@ DefineClass.ChoGGi_Text = {
 
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
-  RolloverTemplate = "Rollover",
+--~   RolloverTemplate = "Rollover",
   RolloverTitle = S[126095410863--[[Info--]]],
+  RolloverBackground = rollover_blue,
+  RolloverTextColor = white,
 }
 
 DefineClass.ChoGGi_CloseButton = {
@@ -53,13 +55,19 @@ DefineClass.ChoGGi_Button = {
   Text = S[6878--[[OK--]]],
   --center text
   LayoutMethod = "VList",
+  Background = light_gray,
+}
+DefineClass.ChoGGi_ComboButton = {
+  __parents = {"XComboButton"},
+  Background = light_gray,
+  RolloverTextColor = white,
 }
 
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
 --~   RolloverTemplate = "Rollover",
---~   RolloverTitle = S[302535920000721--[[Checkbox--]]],
+  RolloverTitle = S[302535920000721--[[Checkbox--]]],
   TextColor = white,
   RolloverTextColor = light_gray,
   MinWidth = 60,
@@ -70,6 +78,18 @@ DefineClass.ChoGGi_CheckButton = {
 function ChoGGi_CheckButton:Init()
   self.idIcon:SetBackground(light_gray)
 end
+
+DefineClass.ChoGGi_TextInput = {
+  __parents = {"XTextEditor"},
+  Multiline = false,
+  WordWrap = false,
+  AllowTabs = false,
+--~   -- text displayed till mouse/kb focus
+--~   display_text = false,
+}
+--~ function ChoGGi_TextInput:Init()
+--~   self:SetText(self.display_text or "")
+--~ end
 
 DefineClass.ChoGGi_Dialog = {
   __parents = {"XDialog"},
@@ -99,6 +119,7 @@ function ChoGGi_Window:AddElements(parent,context)
     BorderWidth = 2,
     BorderColor = light_gray,
   }, self)
+  self.idDialog:Open(parent,context)
 
   self.idCaption = g_Classes.XWindow:new({
     Id = "idCaption",
@@ -191,11 +212,14 @@ function ChoGGi_Window:AddTextBox(parent,context)
     Margins = box(5,0,0,0),
   }, self.idDialog)
 
+  -- somewhere set min/max size to size of idScrollBox?
   self.idText = g_Classes.ChoGGi_Text:new({
     Id = "idText",
     -- centres text, but blocks scroll
 --~     Dock = "box",
   }, self.idScrollBox)
+
+
 
   function self.idText.OnHyperLink(_, link, _, box, pos, button)
     self.onclick_handles[tonumber(link)](box, pos, button)

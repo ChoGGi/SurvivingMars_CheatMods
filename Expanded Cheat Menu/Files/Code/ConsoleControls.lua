@@ -57,34 +57,30 @@ local function ConsolePopup(self)
   if popup then
     popup:Close()
   else
-    PopupToggle(self,"idConsoleMenu",{
+    PopupToggle(self,"idConsoleMenu",nil,{
       {
         name = 302535920001026--[[Show File Log--]],
         hint = 302535920001091--[[Flushes log to disk and displays in console log.--]],
-        class = "XTextButton",
 --~             clicked = function(self,pos,button)
         clicked = ShowFileLog,
       },
       {
         name = 302535920000071--[[Mods Log--]],
         hint = 302535920000870--[[Shows any errors from loading mods in console log.--]],
-        class = "XTextButton",
         clicked = ModsLog,
       },
-      {name = " - ",class = "XTextButton"},
+      {name = " - "},
       {
         name = 302535920000734--[[Clear Log--]],
         hint = 302535920001152--[[Clear out the console log (F9 also works).--]],
-        class = "XTextButton",
         clicked = cls,
       },
       {
         name = 302535920000563--[[Copy Log Text--]],
         hint = 302535920001154--[[Displays the log text in a window you can copy sections from.--]],
-        class = "XTextButton",
         clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
       },
-      {name = " - ",class = "XTextButton"},
+      {name = " - "},
       {
         name = 302535920001112--[[Console Log--]],
         hint = 302535920001119--[[Toggle showing the console log on screen.--]],
@@ -123,7 +119,6 @@ local function HistoryPopup(self)
         local text = tostring(history[i])
         local name = text:sub(1,ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50)
         items[#items+1] = {
-          class = "XTextButton",
           name = name,
           hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
           clicked = function()
@@ -132,7 +127,7 @@ local function HistoryPopup(self)
         }
       end
     end
-    PopupToggle(self,"idHistoryMenu",items)
+    PopupToggle(self,"idHistoryMenu",nil,items)
   end
 end
 function ChoGGi.Console.ConsoleControls()
@@ -204,7 +199,6 @@ local function BuildSciptButton(scripts,dlg,folder)
           for i = 1, #scripts do
             local _, script = AsyncFileToString(scripts[i].path)
             items[#items+1] = {
-              class = "XTextButton",
               name = scripts[i].name,
               hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
               clicked = function()
@@ -214,7 +208,7 @@ local function BuildSciptButton(scripts,dlg,folder)
           end
         end
 
-        PopupToggle(self,folder.id,items)
+        PopupToggle(self,folder.id,nil,items)
       end
     end,
   }, scripts)

@@ -1,7 +1,8 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
+--~ local DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
+local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetButtonTextSize = ChoGGi.ComFuncs.RetButtonTextSize
 local RetCheckTextSize = ChoGGi.ComFuncs.RetCheckTextSize
 local RetName = ChoGGi.ComFuncs.RetName
@@ -29,13 +30,13 @@ local black = black
 local dark_gray = -13158858
 local light_gray = -2368549
 -- make 'em lower_case
-local DumpText = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]])
-local DumpObject = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]])
-local ViewText = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]])
-local ViewObject = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]])
-local EditObject = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]])
-local ExecCode = S[302535920000323--[[Exec Code--]]]
-local Functions = S[302535920001239--[[Functions--]]]
+local str_dump_text = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]])
+local str_dump_object = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]])
+local str_view_text = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]])
+local str_view_object = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]])
+local str_edit_object = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]])
+local str_exec_code = S[302535920000323--[[Exec Code--]]]
+local str_functions = S[302535920001239--[[Functions--]]]
 local str_title = Concat(S[302535920000069--[[Examine--]]],": ")
 
 -- 1 above console log
@@ -76,6 +77,8 @@ function Examine:Init(parent, context)
   local const = const
   local point = point
   local RGBA = RGBA
+
+  g_Classes.Examine:Open(parent, context)
 
   -- any self. values from :new()
   self.obj = context.obj
@@ -119,49 +122,116 @@ function Examine:Init(parent, context)
     end,
   }, self.idLinkButtons)
 
---~   local button_size = RetCheckTextSize(title)
---~   local adjust = ChoGGi.lang == "English" and 20 or 15
---~   self.idAutoRefresh:SetPos(point(self.dialog_width - button_size:x() + adjust, element_y + 1))
---~   self.idAutoRefresh:SetSize(button_size)
---~   self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
---~   self.idAutoRefresh:SetHSizing("AnchorToRight")
---~   self.idAutoRefresh:SetText(title)
---~   self.idAutoRefresh:SetHint(S[302535920001257--[[Auto-refresh list every second.--]]])
---~   self.idAutoRefresh:SetButtonSize(point(16, 16))
+  self.idFilterArea = g_Classes.XWindow:new({
+    Id = "idFilterArea",
+    Dock = "top",
+  }, self.idDialog)
 
+  self.idFilter = g_Classes.ChoGGi_TextInput:new({
+    Id = "idFilter",
+    RolloverTemplate = "Rollover",
+    RolloverTitle = S[302535920000721--[[Checkbox--]]],
+    RolloverText = S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]],
+    Hint = S[302535920000044--[[Goto text--]]],
+  }, self.idFilterArea)
+  function self.idFilter.OnValueChanged(_, value)
+    self:FindNext(value)
+  end
+  function self.idFilter.OnKbdKeyDown(_, vk)
+    self:idFilterOnKbdKeyDown(vk)
+    return "break"
+  end
 
+--~   -- todo: better text control (fix weird ass text controls)
+--~   self.idFilter = g_Classes.SingleLineEdit:new(self)
+--~   self.idFilter:SetPos(point(dialog_left, element_y))
+--~   self.idFilter:SetSize(point(self.dialog_width, 26))
+--~   self.idFilter:SetHSizing("Resize")
+--~   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
+--~   self.idFilter:SetFontStyle("Editor12Bold")
+--~   self.idFilter:SetRollover(S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]])
+--~   self.idFilter:SetTextHAlign("center")
+--~   self.idFilter:SetTextVAlign("center")
+--~   self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
+--~   self.idFilter.display_text = S[302535920000044--[[Goto text--]]]
 
---~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
---~     g_Classes.XTextButton:new({
---~       RolloverTemplate = "Rollover",
---~       RolloverTitle = S[126095410863--[[Info--]]],
---~       MinWidth = 60,
---~       Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
---~       OnPress = onpress,
---~       --center text
---~       LayoutMethod = "VList",
---~     }, parent)
---~   end
+  self.idMenuButtons = g_Classes.XWindow:new({
+    Id = "idMenuButtons",
+    Dock = "top",
+  }, self.idDialog)
 
---~   self.idButtons = g_Classes.XWindow:new({
---~     Id = "idButtons",
---~   }, self.idDialog)
+  self.idTools = g_Classes.ChoGGi_ComboButton:new({
+    Id = "idTools",
+    Text = S[302535920000239--[[Tools--]]],
+    RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 
---~   self.idLinksX = g_Classes.ChoGGi_Button:new({
---~     Id = "idLinksX",
---~     RolloverText = "hint",
---~     VAlign = "top",
---~     FontStyle = "Editor14",
---~     BackgroundColor = RGBA(0, 0, 0, 16),
---~   }, self.idDialog)
+Right-click to scroll to top."--]]],
+    OnMouseButtonDown = function(button,_,mouse)
+      if mouse == "L" then
+        self:idToolsMenuClicked(button)
+      end
+    end,
+    Dock = "left",
+  }, self.idMenuButtons)
 
+  self.idParents = g_Classes.ChoGGi_ComboButton:new({
+    Id = "idParents",
+    Text = S[302535920000520--[[Parents--]]],
+    RolloverText = S[302535920000553--[[Examine parent and ancestor objects.--]]],
+    OnMouseButtonDown = function(button,_,mouse)
+      if mouse == "L" then
+        self:idParentsMenuClicked(button)
+      end
+    end,
+    Dock = "left",
+  }, self.idMenuButtons)
+
+  self.idAttaches = g_Classes.ChoGGi_ComboButton:new({
+    Id = "idAttaches",
+    Text = S[302535920000053--[[Attaches--]]],
+    RolloverText = S[302535920000054--[[Any objects attached to this object.--]]],
+    OnMouseButtonDown = function(button,_,mouse)
+      if mouse == "L" then
+        self:idAttachesMenuClicked(button)
+      end
+    end,
+    Dock = "left",
+  }, self.idMenuButtons)
+
+  self.idNext = g_Classes.ChoGGi_Button:new({
+    Id = "idNext",
+    Text = S[1000232--[[Next--]]],
+    Dock = "right",
+    RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+
+Right-click to scroll to top."--]]],
+    OnMouseButtonDown = function(_,_,button)
+      if button == "L" then
+        self:FindNext(self.idFilter:GetText())
+      else
+        self.idText:SetTextOffset(point(0,0))
+      end
+    end,
+  }, self.idMenuButtons)
+
+  -- adds textarea with scrollbars
   g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
 
   -- look at them sexy internals
   self.transp_mode = transp_mode
   self:SetTranspMode(self.transp_mode)
 
+  -- load up obj in text display
   self:SetObj(self.obj)
+end
+
+function Examine:Menu_Toggle(obj,menu,items)
+  local popup = rawget(terminal.desktop,menu)
+  if popup then
+    popup:Close()
+  else
+    PopupToggle(obj,menu,"bottom",items)
+  end
 end
 
 function Examine:idAutoRefreshToggle()
@@ -172,8 +242,8 @@ function Examine:idAutoRefreshToggle()
     return
   end
   -- otherwise fire it up
-  local Sleep = Sleep
   self.autorefresh_thread = CreateRealTimeThread(function()
+    local Sleep = Sleep
     while true do
       if self.obj then
         self:SetObj(self.obj)
@@ -185,7 +255,7 @@ function Examine:idAutoRefreshToggle()
   end)
 end
 
-function Examine:idFilterOnKbdKeyDown(char, vk)
+function Examine:idFilterOnKbdKeyDown(vk)
   if vk == const.vkEnter then
     self:FindNext(self.idFilter:GetText())
     return "break"
@@ -197,7 +267,7 @@ function Examine:idFilterOnKbdKeyDown(char, vk)
 --~     self:SetFocus()
     return "break"
   else
-    SingleLineEdit.OnKbdKeyDown(self.idFilter, char, vk)
+    XTextEditor.OnKbdKeyDown(self.idFilter, vk)
   end
 end
 
@@ -250,74 +320,142 @@ local function ProcessList(list,prefix)
   end
 end
 
-function Examine:idToolsMenuOnComboClose(menu,idx)
-  local g_Classes = g_Classes
-  --close hint
-  XDestroyRolloverWindow(true)
-  if self.idToolsMenu.list.rollover then
-    local text = menu.items[idx].text
-    if text == self.menuitems.ViewText then
-      local str = self:totextex(self.obj)
-      --remove html tags
-      str = str:gsub("<[/%s%a%d]*>","")
-      local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-        checkbox = true,
-        zorder = zorder,
-        text = str,
-        hint_ok = 302535920000047--[[View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).--]],
-        func = function(answer,overwrite)
-          if answer then
-            ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
-          end
-        end,
-      })
-      dialog:Open()
-    elseif text == self.menuitems.ViewObject then
-      local str = ValueToLuaCode(self.obj)
-      local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
-        checkbox = true,
-        zorder = zorder,
-        text = str,
-        hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+function Examine:idToolsMenuClicked(button)
+  self:Menu_Toggle(button,"idToolsMenu",{
+    {
+      name = str_dump_text,
+      hint = S[302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]],
+      clicked = function()
+        local str = self:totextex(self.obj)
+        --remove html tags
+        str = str:gsub("<[/%s%a%d]*>","")
+        ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+      end,
+    },
+    {
+      name = str_dump_object,
+      hint = S[302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the "Building" metatable--]]],
+      clicked = function()
+        local str = ValueToLuaCode(self.obj)
+        ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
+      end,
+    },
+
+    {
+      name = str_view_text,
+      hint = S[302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]],
+      clicked = function()
+        local str = self:totextex(self.obj)
+        --remove html tags
+        str = str:gsub("<[/%s%a%d]*>","")
+        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+          checkbox = true,
+          zorder = zorder,
+          text = str,
+          hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
+          func = function(answer,overwrite)
+            if answer then
+              ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+            end
+          end,
+        })
+        dialog:Open()
+      end,
+    },
+    {
+      name = str_view_object,
+      hint = S[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+
+This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
+      clicked = function()
+        local str = ValueToLuaCode(self.obj)
+        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+          checkbox = true,
+          zorder = zorder,
+          text = str,
+          hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
-        func = function(answer,overwrite)
-          if answer then
-            ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
-          end
-        end,
-      })
-      dialog:Open()
-    elseif text == self.menuitems.DumpText then
-      local str = self:totextex(self.obj)
-      --remove html tags
-      str = str:gsub("<[/%s%a%d]*>","")
-      ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
-    elseif text == self.menuitems.DumpObject then
-      local str = ValueToLuaCode(self.obj)
-      ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
-    elseif text == self.menuitems.EditObject then
-      ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-    elseif text == self.menuitems.ExecCode then
-      ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
-    elseif text == self.menuitems.Functions then
-      menu_added = {}
-      menu_list_items = {}
+          func = function(answer,overwrite)
+            if answer then
+              ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+            end
+          end,
+        })
+        dialog:Open()
+      end,
+    },
+    {name = "   ---- "},
+    {
+      name = str_functions,
+      hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
+      clicked = function()
+        menu_added = {}
+        menu_list_items = {}
 
-      ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
-      ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
-      -- add examiner object with some spaces so it's at the top
-      BuildFuncList(self.obj.class,"  ")
-      -- if Object hasn't been added, then add CObject
-      if not menu_added.Object and menu_added.CObject then
-        BuildFuncList("CObject",menu_added.CObject)
+        ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
+        ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
+        -- add examiner object with some spaces so it's at the top
+        BuildFuncList(self.obj.class,"  ")
+        -- if Object hasn't been added, then add CObject
+        if not menu_added.Object and menu_added.CObject then
+          BuildFuncList("CObject",menu_added.CObject)
+        end
+
+        OpenExamine(menu_list_items,self)
+      end,
+    },
+    {
+      name = str_edit_object,
+      hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+      clicked = function()
+        ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
+      end,
+    },
+    {
+      name = str_exec_code,
+      hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
+Which you can then mess around with some more in the console."--]]],
+      clicked = function()
+        ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
+      end,
+    },
+  })
+end
+
+local pmenu_list_items
+local pmenu_skip_dupes
+local function BuildParents(self,list,list_type,title,sort_type)
+  local g_Classes = g_Classes
+  if list and next(list) then
+    list = RetSortTextAssTable(list,sort_type)
+    self[list_type] = list
+    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",title)}
+    for i = 1, #list do
+      -- no sense in having an item in parents and ancestors
+      if not pmenu_skip_dupes[list[i]] then
+        pmenu_skip_dupes[list[i]] = true
+        pmenu_list_items[#pmenu_list_items+1] = {
+          name = list[i],
+          hint = list[i],
+          clicked = function()
+            OpenExamine(g_Classes[list[i]],self)
+          end,
+        }
       end
-
-      OpenExamine(menu_list_items,self)
-
     end
-
   end
+end
+
+function Examine:idParentsMenuClicked(button)
+  self:Menu_Toggle(button,"idParentsMenu",pmenu_list_items)
+end
+
+local amenu_list_items
+function Examine:idAttachesMenuClicked(button)
+  self:Menu_Toggle(button,"idAttachesMenu",amenu_list_items)
 end
 
 function Examine:FindNext(filter)
@@ -775,22 +913,7 @@ function Examine:menu(o)
 end
 
 -- used to build parents/ancestors menu
-local pmenu_list_items
-local pmenu_skip_dupes
-local function BuildParents(self,list,list_type,title,sort_type)
-  if list and next(list) then
-    list = RetSortTextAssTable(list,sort_type)
-    self[list_type] = list
-    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",title)}
-    for i = 1, #list do
-      -- no sense in having an item in parents and ancestors
-      if not pmenu_skip_dupes[list[i]] then
-        pmenu_skip_dupes[list[i]] = true
-        pmenu_list_items[#pmenu_list_items+1] = {text = list[i]}
-      end
-    end
-  end
-end
+
 function Examine:SetObj(o)
   o = o or self.obj
 
@@ -802,62 +925,57 @@ function Examine:SetObj(o)
   local is_table = type(o) == "table"
   local name = RetName(o)
 
---~   -- update attaches button with attaches amount
---~   local attaches = is_table and type(o.GetAttaches) == "function" and o:IsKindOf("ComponentAttach") and o:GetAttaches()
---~   local attach_amount = attaches and #attaches
---~   self.idAttaches:SetHint(S[302535920000070--[[Shows list of attachments. This %s has: %s.--]]]:format(name,attach_amount))
---~   if is_table then
+  -- update attaches button with attaches amount
+  local attaches = is_table and type(o.GetAttaches) == "function" and o:IsKindOf("ComponentAttach") and o:GetAttaches()
+  local attach_amount = attaches and #attaches
+  self.idAttaches.RolloverText = S[302535920000070--[[Shows list of attachments. This %s has: %s.--]]]:format(name,attach_amount)
 
---~     --add object name to title
---~     if type(o.handle) == "number" then
---~       name = Concat(name," (",o.handle,")")
---~     elseif #o > 0 then
---~       name = Concat(name," (",#o,")")
---~     end
+  if is_table then
 
---~     -- reset menu list
---~     pmenu_list_items = {}
---~     pmenu_skip_dupes = {}
---~     -- build menu list
---~     BuildParents(self,o.__parents,"parents",S[302535920000520--[[Parents--]]])
---~     BuildParents(self,o.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
---~     -- if anything was added to the list then add to the menu
---~     if #pmenu_list_items > 0 then
---~       self.idParentsMenu:SetContent(pmenu_list_items, true)
---~     else
---~       --no parents or ancestors, so hide the button
---~       self.idParents:SetVisible()
---~     end
+    --add object name to title
+    if type(o.handle) == "number" then
+      name = Concat(name," (",o.handle,")")
+    elseif #o > 0 then
+      name = Concat(name," (",#o,")")
+    end
 
---~     --attaches menu
---~     if attaches and attach_amount > 0 then
+    -- reset menu list
+    pmenu_list_items = {}
+    pmenu_skip_dupes = {}
+    -- build menu list
+    BuildParents(self,o.__parents,"parents",S[302535920000520--[[Parents--]]])
+    BuildParents(self,o.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
+    -- if anything was added to the list then add to the menu
+    if #pmenu_list_items < 1 then
+      --no parents or ancestors, so hide the button
+      self.idParents:SetVisible()
+    end
 
---~       local spacer_text = S[302535920000053--[[Attaches--]]]
---~       local list_items = {
---~         {
---~           text = Concat("   ---- ",spacer_text),
---~           rollover = spacer_text
---~         }
---~       }
+    --attaches menu
+    if attaches and attach_amount > 0 then
+      amenu_list_items = {}
+      for i = 1, #attaches do
+        local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
+        amenu_list_items[#amenu_list_items+1] = {
+          name = RetName(attaches[i]),
+          hint = Concat(
+            attaches[i].class,"\n",
+            S[302535920000955--[[Handle--]]],": ",attaches[i].handle or "","\n",
+            pos and Concat("Pos: ",pos)
+          ),
 
---~       for i = 1, #attaches do
---~         local hint = attaches[i].handle or type(attaches[i].GetPos) == "function" and Concat("Pos: ",attaches[i]:GetPos())
---~         if type(hint) == "number" then
---~           hint = Concat(S[302535920000955--[[Handle--]]],": ",hint)
---~         end
---~         list_items[#list_items+1] = {
---~           text = RetName(attaches[i]),
---~           rollover = hint or attaches[i].class,
---~           obj = attaches[i],
---~         }
---~       end
+          -- fucking with SkiRich
+          pos = pos,
 
---~       self.idAttachesMenu:SetContent(list_items, true)
-
---~     else
---~       self.idAttaches:SetVisible()
---~     end
---~   end
+          clicked = function()
+            OpenExamine(attaches[i],self)
+          end,
+        }
+      end
+    else
+      self.idAttaches:SetVisible()
+    end
+  end
 
   --limit length so we don't cover up close button (only for objlist, everything else is short enough)
   self.idTitle:SetText(utf8.sub(Concat(str_title,name), 1, 45))

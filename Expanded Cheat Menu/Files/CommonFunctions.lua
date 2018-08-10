@@ -498,7 +498,7 @@ do --g_Classes
 --~     parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
 --~     parent.idCloseX:SetSize(point(18, 18))
 --~     parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
---~     parent.idCloseX:SetHint(S[1011--[[Close--]]])
+--~     parent.idCloseX:SetRollover(S[1011--[[Close--]]])
 --~     parent.idCloseX.OnButtonPressed = func or function()
 --~       parent:delete()
 --~     end
@@ -517,24 +517,23 @@ do --g_Classes
 --~     }, parent)
 --~   end
 
-  function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items)
+  function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
     local popup = g_Classes.XPopupList:new({
       Opened = true,
       Id = popup_id,
-      ZOrder = 2000001, --1 above consolelog
-      Dock = "top",
-      Margins = box(0, 0, 0, 5),
+      ZOrder = 9999999,
+      -- anchor usually means bottom, nil means top
+      Margins = anchor and box(0, 5, 0, 0) or  box(0, 0, 0, 5),
       LayoutMethod = "VList",
     }, terminal.desktop)
 
     for i = 1, #items do
       local item = items[i]
-      local button = g_Classes[item.class]:new({
+      local button = g_Classes[item.class or "XTextButton"]:new({
         TextFont = "Editor16Bold",
         RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
-        RolloverTemplate = "Rollover",
+--~         RolloverTemplate = "Rollover",
         Text = ChoGGi.ComFuncs.CheckText(item.name),
---~         RolloverBackground = RGBA(40, 163, 255, 255),
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
@@ -547,7 +546,7 @@ do --g_Classes
       }, popup.idContainer)
       button:SetRollover(item.hint)
 
-      --i just love checkmarks
+      -- i just love checkmarks
       if item.value then
         local is_vis
         local value
@@ -576,7 +575,8 @@ do --g_Classes
     end
 
     popup:SetAnchor(parent.box)
-    popup:SetAnchorType("top")
+    popup:SetAnchorType(anchor or "top")
+--~     popup:SetAnchorType("smart")
   --~   "smart",
   --~   "left",
   --~   "right",
@@ -1366,7 +1366,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
   local title = RetName(obj)
 
   --update the add button hint
-  dlg.idAddNew:SetHint(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(title))
+  dlg.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(title))
 
   --title text
   dlg.idCaption:SetText(title)
@@ -1498,13 +1498,13 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 
     if list.check1 then
       dlg.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(list.check1,""))
-      dlg.idCheckBox1:SetHint(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
+      dlg.idCheckBox1:SetRollover(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
     else
       dlg.idCheckBox1:SetVisible(false)
     end
     if list.check2 then
       dlg.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(list.check2,""))
-      dlg.idCheckBox2:SetHint(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
+      dlg.idCheckBox2:SetRollover(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
     else
       dlg.idCheckBox2:SetVisible(false)
     end
@@ -1526,8 +1526,8 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
   --are we showing a hint?
   if list.hint then
     list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
-    dlg.idList:SetHint(list.hint)
-    dlg.idOK:SetHint(Concat(dlg.idOK:GetHint(),"\n\n\n",list.hint))
+    dlg.idList:SetRollover(list.hint)
+    dlg.idOK:SetRollover(Concat(dlg.idOK:GetHint(),"\n\n\n",list.hint))
   end
 
   --hide ok/cancel buttons as they don't do jack

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-if g_Classes.ChoGGi_ConsoleLogWin then
+if true then
   return
 end
 
