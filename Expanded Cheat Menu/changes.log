@@ -5,7 +5,10 @@ Fixes>Toggle Working On All Buildings: Does what it says (on n off, or off n on)
 
 Changed:
 RandomColour is slightly more random (lines for pathing, object colour, and so on).
-Examine: up/down in Go to text scrolls to top/bottom (used to be just top).
+Examine:
+> up/down in Go to text scrolls to top/bottom (used to be just top).
+> Attaches menu highlights objects.
+> UI objects will now flash (like the ged window inspector, see Tools to disable).
 
 v7.2 (04 Aug 2018)
 Added:

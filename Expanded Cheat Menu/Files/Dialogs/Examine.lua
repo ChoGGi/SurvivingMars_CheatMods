@@ -29,15 +29,6 @@ local white = white
 local black = black
 local dark_gray = -13158858
 local light_gray = -2368549
--- make 'em lower_case
-local str_dump_text = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]])
-local str_dump_object = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]])
-local str_view_text = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]])
-local str_view_object = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]])
-local str_edit_object = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]])
-local str_exec_code = S[302535920000323--[[Exec Code--]]]
-local str_functions = S[302535920001239--[[Functions--]]]
-local str_title = Concat(S[302535920000069--[[Examine--]]],": ")
 
 -- 1 above console log
 local zorder = 2000001
@@ -87,11 +78,11 @@ function Examine:Init(parent, context)
   self.dialog_height = 600
 
   -- By the Power of Grayskull!
---~   g_Classes.ChoGGi_Window.AddElements(self, parent, context)
   self:AddElements(parent, context)
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
+  -- everything grouped gets a window to go in
   self.idLinkButtons = g_Classes.XWindow:new({
     Id = "idLinkButtons",
     Dock = "top",
@@ -102,11 +93,11 @@ function Examine:Init(parent, context)
     VAlign = "top",
     FontStyle = "Editor14",
     BackgroundColor = RGBA(0, 0, 0, 16),
+    OnHyperLink = function(_, link, _, box, pos, button)
+      self.onclick_handles[tonumber(link)](box, pos, button)
+    end,
   }, self.idLinkButtons)
 
-  function self.idLinks.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
   self.idLinks:AddInterpolation{
     type = const.intAlpha,
     startValue = 255,
@@ -204,7 +195,6 @@ Right-click to scroll to top."--]]],
   }, self.idMenuButtons)
 
   -- adds textarea with scrollbars
---~   g_Classes.ChoGGi_Window.AddTextBox(self, parent, context)
   self:AddTextBox(parent, context)
 
   -- look at them sexy internals
@@ -214,7 +204,9 @@ Right-click to scroll to top."--]]],
   -- load up obj in text display
   self:SetObj(self.obj)
 
-  self:FlashWindow(self.obj)
+  if ChoGGi.UserSettings.FlashExamineObject then
+    self:FlashWindow(self.obj)
+  end
 end
 
 function Examine:Menu_Toggle(obj,menu,items)
@@ -317,7 +309,7 @@ end
 function Examine:idToolsMenuClicked(button)
   self:Menu_Toggle(button,"idToolsMenu",{
     {
-      name = str_dump_text,
+      name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]],
       clicked = function()
         local str = self:totextex(self.obj)
@@ -327,7 +319,7 @@ function Examine:idToolsMenuClicked(button)
       end,
     },
     {
-      name = str_dump_object,
+      name = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
       hint = S[302535920001027--[[dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]],
@@ -338,7 +330,7 @@ This can take time on something like the "Building" metatable--]]],
     },
 
     {
-      name = str_view_text,
+      name = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]],
       clicked = function()
         local str = self:totextex(self.obj)
@@ -359,7 +351,7 @@ This can take time on something like the "Building" metatable--]]],
       end,
     },
     {
-      name = str_view_object,
+      name = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
       hint = S[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
@@ -383,7 +375,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
     },
     {name = "   ---- "},
     {
-      name = str_functions,
+      name = S[302535920001239--[[Functions--]]],
       hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
       clicked = function()
         menu_added = {}
@@ -402,19 +394,29 @@ This can take time on something like the ""Building"" metatable (don't use this 
       end,
     },
     {
-      name = str_edit_object,
+      name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
       hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
       clicked = function()
         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
       end,
     },
     {
-      name = str_exec_code,
+      name = S[302535920000323--[[Exec Code--]]],
       hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
       clicked = function()
         ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
       end,
+    },
+    {
+      name = S[302535920000970--[[Toggle Object Flash--]]],
+      hint = S[302535920000972--[[Flashes object being examined.--]]],
+      clicked = function()
+        ChoGGi.UserSettings.FlashExamineObject = not ChoGGi.UserSettings.FlashExamineObject
+        ChoGGi.SettingFuncs.WriteSettings()
+      end,
+      value = {"FlashExamineObject"},
+      class = "XCheckButton",
     },
   })
 end
@@ -474,47 +476,46 @@ function Examine:FindNext(filter)
   end
 end
 
-local flashing_window = false
-local empty_box = empty_box
+local flashing_table = {}
 function Examine:FlashWindow(obj)
---~   local UIL = UIL
---~   local Sleep = Sleep
-
---~   obj = obj or self.obj
---~   if flashing_window then
---~     DeleteThread(flashing_window.thread)
---~   end
---~   flashing_window = {
---~     BorderWidth = 1,
---~     BorderColor = black,
---~     Box = empty_box,
---~     thread = false,
---~   }
---~   flashing_window.thread = CreateRealTimeThread(function()
---~     for i = 1, 5 do
---~       local target = obj.box
---~       if obj.window_state ~= "destroying" and target then
---~         flashing_window.Box = target
---~         flashing_window.BorderColor = white
---~         UIL.Invalidate()
---~         Sleep(50)
---~         flashing_window.BorderColor = black
---~         UIL.Invalidate()
---~         Sleep(50)
---~       end
---~     end
---~     flashing_window = false
---~     UIL.Invalidate()
---~   end)
-
-end
-function ChoGGiExamineFlashWindow()
-  if flashing_window then
-    local border_width = flashing_window.BorderWidth
-    UIL.DrawBorderRect(flashing_window.Box, border_width, border_width, flashing_window.BorderColor, RGBA(0, 0, 0, 0))
+  obj = obj or self.obj
+  -- we don't want to flash the desktop since that's just annoying
+  local d = terminal.desktop
+  if obj == d or obj.parent == d then
+    return
   end
+  local Sleep,UIL,black,white = Sleep,UIL,black,white
+  -- always kill off old thread and reset colours, else they may get stuck
+  if flashing_table.thread then
+    DeleteThread(flashing_table.thread)
+    obj.BorderWidth = flashing_table.width
+    obj.BorderColor = flashing_table.colour
+    obj.Background = flashing_table.bg
+  end
+
+  flashing_table.thread = CreateRealTimeThread(function()
+    flashing_table.width = obj.BorderWidth
+    flashing_table.colour = obj.BorderColor
+    flashing_table.bg = obj.Background
+
+    obj.BorderWidth = 2
+    local c = black
+    for i = 1, 5 do
+      if obj.window_state ~= "destroying" and obj.box then
+        obj.BorderColor = c
+        obj.Background = c
+        Sleep(75)
+        UIL.Invalidate()
+        c = c == white and black or white
+      end
+    end
+    if obj.window_state ~= "destroying" and obj.box then
+      obj.BorderWidth = flashing_table.width
+      obj.BorderColor = flashing_table.colour
+      obj.Background = flashing_table.bg
+    end
+  end)
 end
---~ UIL.Register("ChoGGiExamineFlashWindow", XDesktop.terminal_target_priority + 1)
 
 function Examine:SetTranspMode(toggle)
   self:ClearModifiers()
@@ -807,7 +808,8 @@ function Examine:totextex(o)
   if IsValid(o) and o:IsKindOf("CObject") then
 
     table.insert(res,1,Concat(
-      "<center>--",
+--~       "<center>--",
+      "\t\t\t\t--",
       self:HyperLink(function()
         Examine_totextex(obj_metatable,self)
       end),
@@ -833,7 +835,8 @@ function Examine:totextex(o)
 
   elseif is_table and obj_metatable then
       table.insert(res, 1, Concat(
-        "<center>--",
+--~         "<center>--",
+        "\t\t\t\t--",
         self:valuetotextex(obj_metatable),
         ": metatable--<vspace 6><left>"
       ))
@@ -900,7 +903,9 @@ end
 local function Refresh_menu(_,self)
   if self.obj then
     self:SetObj(self.obj)
-    self:FlashWindow(self.obj)
+    if ChoGGi.UserSettings.FlashExamineObject then
+      self:FlashWindow(self.obj)
+    end
   end
 end
 local function SetTransp_menu(_,self)
@@ -963,9 +968,11 @@ function Examine:SetObj(o)
   local name = RetName(o)
 
   -- update attaches button with attaches amount
-  local attaches = is_table and type(o.GetAttaches) == "function" and o:IsKindOf("ComponentAttach") and o:GetAttaches()
+  local attaches = is_table and o:IsKindOf("ComponentAttach") and o:GetAttaches()
   local attach_amount = attaches and #attaches
-  self.idAttaches.RolloverText = S[302535920000070--[[Shows list of attachments. This %s has: %s.--]]]:format(name,attach_amount)
+  self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
+
+Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Clear Markers]--]]])
 
   if is_table then
 
@@ -1000,10 +1007,7 @@ function Examine:SetObj(o)
             S[302535920000955--[[Handle--]]],": ",attaches[i].handle or "","\n",
             pos and Concat("Pos: ",pos)
           ),
-
---~           -- fucking with SkiRich
---~           pos = pos,
-
+          showme = attaches[i],
           clicked = function()
             OpenExamine(attaches[i],self)
           end,
@@ -1014,11 +1018,13 @@ function Examine:SetObj(o)
     end
   end
 
-  --limit length so we don't cover up close button (only for objlist, everything else is short enough)
-  self.idTitle:SetText(utf8.sub(Concat(str_title,name), 1, 45))
+  -- limit caption length so we don't cover up close button
+  self.idTitle:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
 end
 
 function Examine:Done(result)
+--~   self.obj = false
+
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
   end

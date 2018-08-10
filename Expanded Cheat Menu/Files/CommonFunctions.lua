@@ -476,34 +476,6 @@ do --g_Classes
 --~     }
   end
 
-
---~   function ChoGGi.ComFuncs.DialogAddCaption(parent,list)
---~     parent.idCaption = g_Classes.StaticText:new(parent)
---~     parent.idCaption:SetPos(list.pos)
---~     parent.idCaption:SetSize(list.size)
---~     parent.idCaption:SetHSizing("AnchorToLeft")
---~     parent.idCaption:SetBackgroundColor(0)
---~     parent.idCaption:SetFontStyle("Editor14Bold")
---~     parent.idCaption:SetTextPrefix(list.prefix or "<center>")
---~     parent.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
---~     parent.idCaption.HandleMouse = false
---~   end
-
---~   function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
---~   end
-
---~   function ChoGGi.ComFuncs.DialogAddCloseX(parent,func)
---~     parent.idCloseX = g_Classes.Button:new(parent)
---~     parent.idCloseX:SetHSizing("AnchorToRight")
---~     parent.idCloseX:SetPos(parent:GetPos() + point(parent:GetSize():x() - 21, 3))
---~     parent.idCloseX:SetSize(point(18, 18))
---~     parent.idCloseX:SetImage("CommonAssets/UI/Controls/Button/Close.tga")
---~     parent.idCloseX:SetRollover(S[1011--[[Close--]]])
---~     parent.idCloseX.OnButtonPressed = func or function()
---~       parent:delete()
---~     end
---~   end
-
 --~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
 --~     g_Classes.XTextButton:new({
 --~       RolloverTemplate = "Rollover",
@@ -529,31 +501,40 @@ do --g_Classes
 
     for i = 1, #items do
       local item = items[i]
-      local button = g_Classes[item.class or "XTextButton"]:new({
+      local button = g_Classes[item.class or "XTextButton"]:new({ -- class = "XCheckButton",
         TextFont = "Editor16Bold",
-        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
+        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint,""),
         Text = ChoGGi.ComFuncs.CheckText(item.name),
         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
         end,
-        OnMouseEnter = function()
-          if item.pos then
-            ViewObjectMars(item.pos)
-          end
-        end,
       }, popup.idContainer)
-      button:SetRollover(item.hint)
+--~       button:SetRollover(item.hint)
+
+      if item.showme then
+        function button.OnMouseEnter()
+          ChoGGi.ComFuncs.ClearShowMe()
+          ChoGGi.ComFuncs.ShowMe(item.showme, nil, true, true)
+        end
+      elseif item.pos then
+        function button.OnMouseEnter()
+          ViewObjectMars(item.pos)
+        end
+      end
 
       -- i just love checkmarks
       if item.value then
+
         local is_vis
         local value
+
         if type(item.value) == "table" then
           value = ChoGGi.UserSettings[item.value[1]]
         else
           value = _G[item.value]
         end
+
         if type(value) == "table" then
           if value.visible then
             is_vis = true
@@ -571,6 +552,7 @@ do --g_Classes
           button:SetCheck(false)
         end
       end
+
     end
 
     popup:SetAnchor(parent.box)
@@ -588,10 +570,11 @@ do --g_Classes
     return popup
   end
 
-  function ChoGGi.ComFuncs.ShowMe(o, color, time)
+  function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
     if not o then
       return ChoGGi.ComFuncs.ClearShowMe()
     end
+
     if type(o) == "table" and #o == 2 then
       if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
         local m = g_Classes.Vector:new()
@@ -599,24 +582,30 @@ do --g_Classes
         markers[m] = "vector"
         o = m
       end
-    elseif IsPoint(o) then
-      if terrain_IsPointInBounds(o) then
-        local m = g_Classes.Sphere:new()
-        m:SetPos(o)
-        m:SetRadius(50 * guic)
-        m:SetColor(color or RGB(0, 255, 0))
-        markers[m] = "point"
-        if not time then
-          ViewObjectMars(o)
+    else
+      -- both is for objs i also want a sphere over
+      if IsPoint(o) or both then
+        local o2 = IsPoint(o) and o or o:GetVisualPos()
+        if terrain_IsPointInBounds(o2) then
+          local m = g_Classes.Sphere:new()
+          m:SetPos(o2)
+          m:SetRadius(50 * guic)
+          m:SetColor(color or RGB(0, 255, 0))
+          markers[m] = "point"
+          if not time then
+            ViewObjectMars(o2)
+          end
+          o2 = m
         end
-        o = m
       end
-    elseif IsValid(o) then
-      markers[o] = markers[o] or o:GetColorModifier()
-      o:SetColorModifier(color or RGB(0, 255, 0))
-      local pos = o:GetVisualPos()
-      if not time and terrain_IsPointInBounds(pos) then
-        ViewObjectMars(pos)
+
+      if IsValid(o) then
+        markers[o] = markers[o] or o:GetColorModifier()
+        o:SetColorModifier(color or RGB(0, 255, 0))
+        local pos = o:GetVisualPos()
+        if not time and terrain_IsPointInBounds(pos) then
+          ViewObjectMars(pos)
+        end
       end
     end
   --~   lm = o

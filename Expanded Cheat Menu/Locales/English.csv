@@ -1,6 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000970,,
-302535920000972,,
+302535920000970,Toggle Object Flash,
+302535920000972,Flashes object being examined.,
 302535920001301,,
 302535920001302,,
 302535920001303,,
@@ -279,7 +279,9 @@ Which you can then mess around with some more in the console.",
 302535920000065,Short,
 302535920000066,Long,
 302535920000067,TraceCall,
-302535920000070,Shows list of attachments. This %s has %s.,
+302535920000070,"Shows list of attachments. This %s has %s.
+
+Press %s to hide markers.",
 302535920000040,Exec Code on,
 302535920000051,Exec,
 302535920000072,Paste or type code to be executed here.,

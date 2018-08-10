@@ -62,6 +62,8 @@ ChoGGi.Defaults = {
   UseLastOrientation = true,
   -- show the cheats menu...
   ShowCheatsMenu = true,
+  -- blinky blink
+  FlashExamineObject = true,
   -- dumps the log to disk on startup, and every new Sol (good for some crashes)
   FlushLog = true,
   -- dumps log to disk every in-game hour (30 000 ticks of GameTime)

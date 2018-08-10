@@ -13,7 +13,7 @@ local light_gray = -2368549
 local rollover_blue = RGB(24, 123, 197)
 
 local text = "Editor12Bold"
-if ChoGGi.Testing then
+if ChoGGi.testing then
   text = "Editor14Bold"
 end
 DefineClass.ChoGGi_Text = {
@@ -28,9 +28,7 @@ DefineClass.ChoGGi_Text = {
   SelectionBackground = light_gray,
   SelectionColor = black,
   TextFont = text,
-
-  WordWrap = false,
---~     MaxLen = 65536, --65536?
+  WordWrap = true,
 }
 
 DefineClass.ChoGGi_Buttons = {
@@ -75,10 +73,9 @@ DefineClass.ChoGGi_CheckButton = {
   RolloverTextColor = light_gray,
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
-  --center text
---~   LayoutMethod = "HList",
 }
 function ChoGGi_CheckButton:Init()
+--~   XCheckButton.Init(self)
   self.idIcon:SetBackground(light_gray)
 end
 
@@ -123,7 +120,7 @@ function ChoGGi_Window:AddElements(parent,context)
     BorderWidth = 2,
     BorderColor = light_gray,
   }, self)
-  self.idDialog:Open(parent,context)
+--~   self.idDialog:Open(parent,context)
 
   self.idCaption = g_Classes.XWindow:new({
     Id = "idCaption",
@@ -157,9 +154,9 @@ function ChoGGi_Window:AddElements(parent,context)
     Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
     TextColor = white,
+    Text = self.title or S[1000016--[[Title--]]],
   }, self.idCaption)
-  self.idTitle:SetText(self.title or S[1000016--[[Title--]]])
-
+--~   self.idTitle:SetText()
 end
 
 -- takes either a point, or box to set pos
@@ -188,7 +185,7 @@ function ChoGGi_Window:SetPos(obj)
   self.idDialog:SetBox(x,y,w,h)
 end
 
--- scrollable text
+-- scrollable textbox
 function ChoGGi_Window:AddTextBox(parent,context)
   local g_Classes = g_Classes
 
@@ -207,27 +204,18 @@ function ChoGGi_Window:AddTextBox(parent,context)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
     Id = "idScrollBox",
-    Dock = "box",
-    LayoutMethod = "VList",
     VScroll = "idScrollV",
     HScroll = "idScrollH",
---~     BorderWidth = 1,
---~     BorderColor = light_gray,
     Margins = box(5,0,0,0),
   }, self.idDialog)
 
-  -- somewhere set min/max size to size of idScrollBox?
   self.idText = g_Classes.ChoGGi_Text:new({
     Id = "idText",
-    -- centres text, but blocks scroll
---~     Dock = "box",
+    OnHyperLink = function(_, link, _, box, pos, button)
+      self.onclick_handles[tonumber(link)](box, pos, button)
+    end,
   }, self.idScrollBox)
 
-  self.idText.hovered_hyperlink = true
-
-  function self.idText.OnHyperLink(_, link, _, box, pos, button)
-    self.onclick_handles[tonumber(link)](box, pos, button)
-  end
 end
 
 DefineClass.ChoGGi_SleekScroll = {
