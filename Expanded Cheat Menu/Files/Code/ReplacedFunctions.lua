@@ -1043,45 +1043,69 @@ function OnMsg.ClassesBuilt()
 
   --add a bunch of rules to console input
   local ConsoleRules = {
-    --print info in log
+
+    -- print info in console log
     {
+      -- $userdata/string id
       "^$(.*)",
       "print(ChoGGi.ComFuncs.Trans(%s))"
     },
     {
+      -- @function
       "^@(.*)",
       "print(debug.getinfo(%s))"
     },
     {
+      -- @@anything
       "^@@(.*)",
       "print(type(%s))"
     },
-    --do stuff
+
+    -- do stuff
     {
+      -- !obj_on_map
       "^!(.*)",
       "ViewAndSelectObject(%s)"
     },
     {
+      -- ~anything
       "^~(.*)",
       "OpenExamine(%s)"
     },
     {
+      -- &handle
       "^&(.*)",
       "OpenExamine(HandleToObject[%s])"
     },
     {
+      -- !!obj_with_attachments
       "^!!(.*)",
       "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then OpenExamine(attaches,true) end"
     },
-    --built-in
+
+    -- built-in
     {
+      -- r* some function/cmd that needs a realtime thread
       "^*r%s*(.*)",
       "CreateRealTimeThread(function() %s end) return"
     },
     {
+      -- g* or a gametime
       "^*g%s*(.*)",
       "CreateGameTimeThread(function() %s end) return"
     },
+    {
+      -- m* or a maprealtime
+      "^*g%s*(.*)",
+      "CreateMapRealTimeThread(function() %s end) return"
+    },
+    -- something screenshot
+    {
+    "^SSA?A?0%d+ (.*)",
+    "ViewShot([[%s]])"
+    },
+
+    -- prints out cmds entered I assume?
     {
       "^(%a[%w.]*)$",
       "ConsolePrint(print_format(__run(%s)))"
@@ -1090,9 +1114,12 @@ function OnMsg.ClassesBuilt()
       "(.*)",
       "ConsolePrint(print_format(%s))"
     },
-
-    {"(.*)", "%s"}
+    {
+      "(.*)",
+      "%s"
+    },
   }
+
   function Console:Exec(text)
     self:AddHistory(text)
     AddConsoleLog("> ", true)

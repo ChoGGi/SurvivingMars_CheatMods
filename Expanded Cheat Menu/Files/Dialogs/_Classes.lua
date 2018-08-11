@@ -30,6 +30,21 @@ DefineClass.ChoGGi_Text = {
   TextFont = text,
   WordWrap = true,
 }
+DefineClass.ChoGGi_MultiLineEdit = {
+  __parents = {"XMultiLineEdit"},
+  TextFont = "Editor16",
+  --default
+  Background = dark_gray,
+  TextColor = white,
+  --focused
+  FocusedBackground = dark_gray,
+  RolloverTextColor = white,
+  --selected
+  SelectionBackground = light_gray,
+  SelectionColor = black,
+
+  MaxLen = 65536, --65536?
+}
 
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
@@ -53,6 +68,7 @@ DefineClass.ChoGGi_CloseButton = {
 
 DefineClass.ChoGGi_Button = {
   __parents = {"ChoGGi_Buttons"},
+  RolloverAnchor = "bottom",
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
   --center text
@@ -62,15 +78,18 @@ DefineClass.ChoGGi_Button = {
 DefineClass.ChoGGi_ComboButton = {
   __parents = {"XComboButton"},
   Background = light_gray,
+  RolloverBackground = rollover_blue,
   RolloverTextColor = white,
+  RolloverAnchor = "top",
+  RolloverTitle = S[126095410863--[[Info--]]],
 }
-
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
-  RolloverTitle = S[302535920000721--[[Checkbox--]]],
-  TextColor = white,
+  RolloverTitle = S[126095410863--[[Info--]]],
+  RolloverAnchor = "right",
   RolloverTextColor = light_gray,
+  TextColor = white,
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
 }
@@ -87,6 +106,7 @@ DefineClass.ChoGGi_TextInput = {
   RolloverTitle = S[126095410863--[[Info--]]],
 --~   -- text displayed till mouse/kb focus
 --~   display_text = false,
+  RolloverAnchor = "top",
 }
 --~ function ChoGGi_TextInput:Init()
 --~   self:SetText(self.display_text or "")
@@ -95,13 +115,11 @@ DefineClass.ChoGGi_TextInput = {
 DefineClass.ChoGGi_Dialog = {
   __parents = {"XDialog"},
   Translate = false,
---~   min_size = point(50, 50),
   MinHeight = 50,
   MinWidth = 150,
   BackgroundColor = RGBA(0, 0, 0, 16),
-  HAlign = "left",
-  VAlign = "top",
---~   ZOrder = zorder,
+--~   HAlign = "left",
+--~   VAlign = "top",
   Dock = "ignore",
 }
 
@@ -109,6 +127,8 @@ DefineClass.ChoGGi_Window = {
   __parents = {"XWindow"},
   dialog_width = 500,
   dialog_height = 500,
+  -- above console
+  ZOrder = 5,
 }
 
 function ChoGGi_Window:AddElements(parent,context)
@@ -120,42 +140,41 @@ function ChoGGi_Window:AddElements(parent,context)
     BorderWidth = 2,
     BorderColor = light_gray,
   }, self)
---~   self.idDialog:Open(parent,context)
-
-  self.idCaption = g_Classes.XWindow:new({
-    Id = "idCaption",
-    Dock = "top",
-  }, self.idDialog)
 
   -- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
   self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
 
   self.idSizeControl = g_Classes.XSizeControl:new({
---~     ZOrder = 98,
+  }, self.idDialog)
+
+  self.idTitleArea = g_Classes.XWindow:new({
+    Id = "idTitleArea",
+    Dock = "top",
   }, self.idDialog)
 
   self.idMoveControl = g_Classes.XMoveControl:new({
     MinHeight = 30,
     Margins = box(0, -30, 0, 0),
     VAlign = "top",
---~     ZOrder = 97,
-  }, self.idCaption)
+  }, self.idTitleArea)
 
   self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
       self:delete()
     end,
-  }, self.idCaption)
+  }, self.idTitleArea)
 
-  self.idTitle = g_Classes.XLabel:new({
+  self.idCaption = g_Classes.XLabel:new({
+    Id = "idCaption",
     Dock = "top",
-    HAlign = "center",
+--~     HAlign = "center",
+		TextHAlign = "center",
     TextFont = "Editor14Bold",
     Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
     TextColor = white,
-    Text = self.title or S[1000016--[[Title--]]],
-  }, self.idCaption)
+    Text = ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]),
+  }, self.idTitleArea)
 --~   self.idTitle:SetText()
 end
 
@@ -186,7 +205,7 @@ function ChoGGi_Window:SetPos(obj)
 end
 
 -- scrollable textbox
-function ChoGGi_Window:AddTextBox(parent,context)
+function ChoGGi_Window:AddScrollArea(padding)
   local g_Classes = g_Classes
 
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
@@ -204,18 +223,45 @@ function ChoGGi_Window:AddTextBox(parent,context)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
     Id = "idScrollBox",
+    Dock = "box",
     VScroll = "idScrollV",
     HScroll = "idScrollH",
-    Margins = box(5,0,0,0),
+    Margins = padding and box(5,0,0,0) or box(0,0,0,0),
   }, self.idDialog)
 
-  self.idText = g_Classes.ChoGGi_Text:new({
+end
+
+function ChoGGi_Window:AddScrollAreaV(padding)
+  local g_Classes = g_Classes
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idScrollBox",
+    Dock = "right",
+  }, self.idDialog)
+
+  self.idScrollBox = g_Classes.XScrollArea:new({
+    Id = "idScrollBox",
+    Dock = "box",
+    VScroll = "idScrollV",
+    Margins = padding and box(5,0,0,0) or box(0,0,0,0),
+  }, self.idDialog)
+
+end
+
+function ChoGGi_Window:AddStaticTextScroll()
+  self.idText = ChoGGi_Text:new({
     Id = "idText",
     OnHyperLink = function(_, link, _, box, pos, button)
       self.onclick_handles[tonumber(link)](box, pos, button)
     end,
   }, self.idScrollBox)
-
+end
+function ChoGGi_Window:AddMultiTextScroll(context)
+  self.idText = ChoGGi_MultiLineEdit:new({
+    Id = "idText",
+    WordWrap = context.wrap or false,
+  }, self.idScrollBox)
 end
 
 DefineClass.ChoGGi_SleekScroll = {

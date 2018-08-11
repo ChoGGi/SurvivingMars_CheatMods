@@ -1161,6 +1161,7 @@ do -- FindNearestResource
 end -- do
 
 do -- DeleteObject
+  local IsValid = IsValid
   local function DeleteObject_ExecFunc(obj,name,param)
     if type(obj[name]) == "function" then
       obj[name](obj,param)
@@ -1185,7 +1186,7 @@ do -- DeleteObject
       obj = ChoGGi.CodeFuncs.SelObject()
     end
 
-    if not obj then
+    if not IsValid(obj) then
       return
     end
 

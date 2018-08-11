@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if g_Classes.Examine then
+  return
+end
+
 local Concat = ChoGGi.ComFuncs.Concat
 --~ local DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
@@ -30,8 +34,6 @@ local black = black
 local dark_gray = -13158858
 local light_gray = -2368549
 
--- 1 above console log
-local zorder = 2000001
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
   -- clickable purple text
@@ -40,10 +42,6 @@ DefineClass.Examine = {
   obj = false,
   -- if user checks the autorefresh checkbox
   autorefresh_thread = false,
-
---~   border = false,
-  XRolloverWindow_ZOrder = false,
-  ZOrder = zorder,
 
   -- needed?
   show_times = "relative",
@@ -69,7 +67,7 @@ function Examine:Init(parent, context)
   local point = point
   local RGBA = RGBA
 
-  g_Classes.Examine:Open(parent, context)
+--~   g_Classes.Examine:Open(parent, context)
 
   -- any self. values from :new()
   self.obj = context.obj
@@ -106,7 +104,6 @@ function Examine:Init(parent, context)
 
   self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
     Id = "idAutoRefresh",
-    RolloverAnchor = "right",
     RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
     Text = S[302535920000084--[[Auto-Refresh--]]],
     Dock = "right",
@@ -194,8 +191,9 @@ Right-click to scroll to top."--]]],
     end,
   }, self.idMenuButtons)
 
-  -- adds textarea with scrollbars
-  self:AddTextBox(parent, context)
+  self:AddScrollArea(true)
+  -- text box with obj info in it
+  self:AddStaticTextScroll()
 
   -- look at them sexy internals
   self.transp_mode = transp_mode
@@ -328,7 +326,6 @@ This can take time on something like the "Building" metatable--]]],
         ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
       end,
     },
-
     {
       name = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]],
@@ -338,8 +335,8 @@ This can take time on something like the "Building" metatable--]]],
         str = str:gsub("<[/%s%a%d]*>","")
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           checkbox = true,
-          zorder = zorder,
           text = str,
+          title = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
           hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
           func = function(answer,overwrite)
             if answer then
@@ -359,8 +356,8 @@ This can take time on something like the ""Building"" metatable (don't use this 
         local str = ValueToLuaCode(self.obj)
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           checkbox = true,
-          zorder = zorder,
           text = str,
+          title = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
           hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
@@ -891,8 +888,7 @@ local function Destroy_menu(o,self)
     S[302535920000414--[[Are you sure you wish to destroy it?--]]],
     function(answer)
       self:SetZOrder(z)
-      if answer and IsValid(o) then
-    --~     o:delete()
+      if answer then
         ChoGGi.CodeFuncs.DeleteObject(o)
       end
     end,
@@ -1019,7 +1015,7 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
   end
 
   -- limit caption length so we don't cover up close button
-  self.idTitle:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
+  self.idCaption:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
 end
 
 function Examine:Done(result)
@@ -1027,9 +1023,6 @@ function Examine:Done(result)
 
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
-  end
-  if flashing_window then
-    DeleteThread(flashing_window.thread)
   end
   ChoGGi_Window.Done(self,result)
 end

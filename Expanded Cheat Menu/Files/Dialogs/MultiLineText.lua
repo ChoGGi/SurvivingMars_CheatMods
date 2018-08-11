@@ -15,124 +15,49 @@ local dark_gray = -13158858
 local light_gray = -2368549
 
 DefineClass.ChoGGi_MultiLineText = {
---~   __parents = {"XScrollArea"},
---~   __parents = {"XWindow"},
---~   __parents = {"XDialog"},
-  __parents = {"StdDialog"},
+  __parents = {"ChoGGi_Window"},
+
+--~   HAlign = "center",
+--~   VAlign = "center",
+--~   BackgroundColor = RGBA(0, 0, 0, 16),
   HandleKeyboard = true,
-  Translate = false,
-  HAlign = "center",
-  VAlign = "center",
-  BackgroundColor = RGBA(0, 0, 0, 16),
-  func = false,
-  XRolloverWindow_ZOrder = false,
+  retfunc = false,
   overwrite = false,
-  MinHeight = 50,
-  MinWidth = 150,
 }
 
 function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
-  -- build container
-  g_Classes.StdDialog.Init(self, parent, context)
-  -- damn modal
-  self:SetModal(false)
---~   self:SetTranslate(false)
+--~   g_Classes.Examine:Open(parent, context)
 
---~   --size it
---~   local width,height = 500,250
---~   local size = UIL.GetScreenSize()
---~   if size:x() > 1024 then
---~     width = 1000
---~   end
---~   if size:y() > 768 then
---~     height = 500
---~   end
+  self.dialog_width = 500
+  self.dialog_height = 400
 
-  local z = context.zorder or 1
-  -- so we're on top of examine
-  z = z + 1
-  self:SetZOrder(z)
-  self.XRolloverWindow_ZOrder = g_Classes.XRolloverWindow.ZOrder
-  g_Classes.XRolloverWindow.ZOrder = z+1
-
-  --add a little spacing
-  self.idContainer:SetMargins(box(0, 15, 6, 0))
-  self.idContainer:SetBackground(dark_gray)
-  self:SetBorderColor(white)
   --store func for calling from :OnShortcut
-  self.func = context.func
+  self.retfunc = context.func
+  -- overwrite dumped file
+  self.overwrite = context.overwrite
+  -- pretty title
+  self.title = context.title
 
-  g_Classes.XMoveControl:new({
-    Id = "idMoveControl",
-    MinHeight = 20,
-    VAlign = "top",
-  }, self)
-  g_Classes.XSizeControl:new({
-    Id = "idSizeControl",
-  }, self)
+  -- By the Power of Grayskull!
+  self:AddElements(parent, context)
 
-  g_Classes.XMultiLineEdit:new({
-    Id = "idText",
---~     TextVAlign = "center",
---~     MinWidth = width,
---~     MaxWidth = width,
---~     MinHeight = height,
-    TextFont = "Editor16",
-    --default
-    Background = dark_gray,
-    TextColor = white,
-    --focused
-    FocusedBackground = dark_gray,
-    RolloverTextColor = white,
-    --selected
-    SelectionBackground = light_gray,
-    SelectionColor = black,
-
-    WordWrap = context.wrap or false,
-    MaxLen = 65536, --65536?
---~     MaxLines = 15,
-  }, self.idContainer)
-
+  self:AddScrollAreaV()
+  self:AddMultiTextScroll(context)
   self.idText:SetText(context.text)
 
-  g_Classes.XSleekScroll:new({
-    Id = "idVScroll",
-    Target = "idText",
-    --vertical scroll
-    Dock = "right",
-    Max = context.text:len(),
-    Margins = box(4, 1, -4, 1),
-    --doesn't seem to work?
-    AutoHide = true,
-  }, self.idContainer)
-
-  self.idVScroll.MinWidth = 15
-  self.idVScroll.MaxWidth = 15
-  self.idText.VScroll = "idVScroll"
-
---~ box(left,top, right, bottom)
-
-  g_Classes.XSleekScroll:new({
-    Id = "idHScroll",
-    Target = "idText",
+  self.idButtonContainer = g_Classes.XWindow:new({
+    Id = "idButtonContainer",
     Dock = "bottom",
-    Horizontal = true,
-    Max = context.text:len(),
-    Margins = box(1, 4, 1, 1),
-    AutoHide = true,
-  }, self.idContainer)
-  self.idHScroll.MinHeight = 15
-  self.idHScroll.MaxHeight = 15
-  self.idText.HScroll = "idHScroll"
+  }, self.idDialog)
 
   if context.checkbox then
-    g_Classes.XCheckButton:new({
-      RolloverTemplate = "Rollover",
+    g_Classes.ChoGGi_CheckButton:new({
+      Dock = "left",
+      Text = S[302535920000721--[[Overwrite--]]],
       RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
-      RolloverTitle = S[302535920000721--[[Checkbox--]]],
 
       OnChange = function()
         if self.overwrite then
@@ -144,42 +69,41 @@ function ChoGGi_MultiLineText:Init(parent, context)
     }, self.idButtonContainer)
   end
 
-  ChoGGi.ComFuncs.DialogXAddButton(
-    self.idButtonContainer,
-    S[6878--[[OK--]]],
-    ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
-    function()
-      self:Close(true,"ok")
-    end
-  )
+  self.idOkay = g_Classes.ChoGGi_Button:new({
+    Id = "idOkay",
+    Dock = "left",
+    Text = S[6878--[[OK--]]],
+    RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
+    OnMouseButtonDown = function(_,_,button)
+      self:Close("ok",true)
+    end,
+  }, self.idButtonContainer)
 
-  ChoGGi.ComFuncs.DialogXAddButton(
-    self.idButtonContainer,
-    S[6879--[[Cancel--]]],
-    ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
-    function()
-      self:Close(false,"cancel")
-    end
-  )
+  self.idCancel = g_Classes.ChoGGi_Button:new({
+    Id = "idCancel",
+    Dock = "right",
+    Text = S[6879--[[Cancel--]]],
+    RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
+    OnMouseButtonDown = function(_,_,button)
+      self:Close("cancel",false)
+    end,
+  }, self.idButtonContainer)
 
 end
 
-function ChoGGi_MultiLineText:OnShortcut(shortcut, _)
+function ChoGGi_MultiLineText:OnShortcut(shortcut)
   if shortcut == "Enter" then
-    self:Close(true,"ok")
-  elseif self.context.question and shortcut == "Escape" then
-    self:Close(false,"cancel")
+    self:Close("ok",true)
+  elseif shortcut == "Escape" and self.context.question then
+    self:Close("cancel",false)
   end
 end
 
-function ChoGGi_MultiLineText:Close(answer,result)
-  local g_Classes = g_Classes
-  g_Classes.XRolloverWindow.ZOrder = self.XRolloverWindow_ZOrder
-
-  if self.func then
-    self.func(answer,self.overwrite,self)
+function ChoGGi_MultiLineText:Close(result,answer)
+  if self.retfunc then
+    self.retfunc(answer,self.overwrite,self)
   end
-  g_Classes.StdDialog.Close(self,result)
+  ChoGGi_Window.Close(self,result)
 end
 
 
