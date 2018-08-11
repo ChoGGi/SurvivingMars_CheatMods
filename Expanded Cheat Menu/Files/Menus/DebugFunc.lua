@@ -520,15 +520,6 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
-function ChoGGi.MenuFuncs.ObjExaminer()
-  local sel = ChoGGi.CodeFuncs.SelObject()
-  if not sel then
-    return
-  end
-  --open examine at the object
-  OpenExamine(sel,sel)
-end
-
 function ChoGGi.MenuFuncs.Editor_Toggle()
   local Platform = Platform
 

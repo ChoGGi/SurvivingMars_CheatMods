@@ -329,8 +329,9 @@ Double click selected item to open in new manipulator."--]]]
   end
 
 
-  --so elements move when dialog re-sizes
-  self:InitChildrenSizing()
+  self:SetInitPos(context.parent)
+  --update item list
+  dlg:UpdateListContent(obj)
 end
 
 

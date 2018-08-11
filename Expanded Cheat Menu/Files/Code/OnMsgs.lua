@@ -951,19 +951,14 @@ do -- LoadGame/CityStart
         -- make some space for the close button
         dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
         -- add close button
-        g_Classes.XTextButton:new({
+        g_Classes.ChoGGi_CloseButton:new({
           Id = "idClose",
-          RolloverTemplate = "Rollover",
-          RolloverText = S[1011--[[Close--]]],
-          RolloverTitle = S[126095410863--[[Info--]]],
-          Image = "UI/Common/mission_no.tga",
-          Background = RGB(255, 255, 255),
+          RolloverAnchor = "smart",
           OnPress = function()
             dlgConsole:Show()
           end,
           Margins = box(0, 0, 0, -53),
           Dock = "bottom",
-          HAlign = "right",
         }, dlgConsole)
       end
 

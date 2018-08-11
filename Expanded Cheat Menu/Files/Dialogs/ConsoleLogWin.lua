@@ -22,9 +22,8 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
-  self.idButtonContainer = g_Classes.XWindow:new({
+  self.idButtonContainer = g_Classes.ChoGGi_Section:new({
     Id = "idButtonContainer",
-    Margins = box(8,8,8,8),
     Dock = "top",
   }, self.idDialog)
 

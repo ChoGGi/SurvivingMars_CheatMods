@@ -84,21 +84,21 @@ local function ConsolePopup(self)
       {
         name = 302535920001112--[[Console Log--]],
         hint = 302535920001119--[[Toggle showing the console log on screen.--]],
-        class = "XCheckButton",
+        class = "ChoGGi_CheckButtonMenu",
         value = "dlgConsoleLog",
         clicked = ConsoleLog,
       },
       {
         name = 302535920001120--[[Console Log Window--]],
         hint = 302535920001133--[[Toggle showing the console log window on screen.--]],
-        class = "XCheckButton",
+        class = "ChoGGi_CheckButtonMenu",
         value = "dlgChoGGi_ConsoleLogWin",
         clicked = ConsoleLogWindow,
       },
       {
         name = 302535920000483--[[Write Console Log--]],
         hint = 302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]],
-        class = "XCheckButton",
+        class = "ChoGGi_CheckButtonMenu",
         value = {"WriteLogs"},
         clicked = WriteConsoleLog,
       },
@@ -171,9 +171,6 @@ function ChoGGi.Console.ConsoleControls()
   --------------------------------Scripts buttons
   g_Classes.XWindow:new({
     Id = "idScripts",
---~     Margins = box(15, 0, 0, 0),
---~     Dock = "bottom",
---~     Padding = box(5, 2, 5, 2),
     LayoutMethod = "HWrap",
   }, container)
 

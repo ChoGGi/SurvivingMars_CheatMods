@@ -21,7 +21,7 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
   --defaults
   refreshing = false,
   refreshing_thread = false,
-  object = false,
+  obj = false,
   values = false,
   tables = false,
   delay = 1000,
@@ -34,7 +34,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 
 
     dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
-    self.object = context.object
+    self.obj = context.obj
     self.values = context.values
     self.tables = context.tables
 
@@ -85,7 +85,7 @@ function ChoGGi_MonitorInfoDlg:Init()
         self:UpdateText()
         Sleep(self.delay)
         --check for missing table objects
-        if self.object.title:find("Grids") then
+        if self.obj.title:find("Grids") then
           self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables,"elements")
           --break if there's none left
           if #self.tables == 0 then
@@ -108,7 +108,7 @@ function ChoGGi_MonitorInfoDlg:Init()
   self.idRefresh:SetHint(S[302535920000086--[[Manually refresh the list.--]]])
   function self.idRefresh.OnButtonPressed()
     if ChoGGi.testing then
-      OpenExamine(self.object)
+      OpenExamine(self.obj)
     end
     self:UpdateText()
   end
@@ -172,7 +172,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
       texttable[#texttable+1] = ". "
       texttable[#texttable+1] = monitort.class
       texttable[#texttable+1] = ":\n"
-      if self.object.listtype == "all" then
+      if self.obj.listtype == "all" then
         print("all")
         ex(self.tables[i])
         ex(self.values)
@@ -220,7 +220,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
   text = TableConcat(texttable)
 
   if text == "" then
-    self.idText:SetText(S[302535920000090--[[Error opening: %s--]]]:format(RetName(self.object)))
+    self.idText:SetText(S[302535920000090--[[Error opening: %s--]]]:format(RetName(self.obj)))
     return
   end
   --populate it

@@ -39,9 +39,8 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
     return self:idEditOnKbdKeyDown(obj, vk)
   end
 
-  self.idButtonContainer = g_Classes.XWindow:new({
+  self.idButtonContainer = g_Classes.ChoGGi_Section:new({
     Id = "idButtonContainer",
-    Padding = box(4,8,4,4),
     Dock = "bottom",
   }, self.idDialog)
 
@@ -81,6 +80,8 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
     Margins = box(0, 0, 10, 0),
     OnPress = self.idCloseX.OnPress,
   }, self.idButtonContainer)
+
+  self:SetInitPos(context.parent)
 end
 
 local IsKeyPressed = terminal.IsKeyPressed

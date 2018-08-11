@@ -493,24 +493,27 @@ do --g_Classes
     local popup = g_Classes.XPopupList:new({
       Opened = true,
       Id = popup_id,
-      ZOrder = 9999999,
+      ZOrder = 999999,
       -- anchor usually means bottom, nil means top
-      Margins = anchor and box(0, 5, 0, 0) or  box(0, 0, 0, 5),
+--~       Margins = anchor and box(0, 5, 0, 0) or  box(0, 0, 0, 5),
       LayoutMethod = "VList",
     }, terminal.desktop)
 
     for i = 1, #items do
       local item = items[i]
-      local button = g_Classes[item.class or "XTextButton"]:new({ -- class = "XCheckButton",
-        TextFont = "Editor16Bold",
+      -- defaults to XTextButton. class = "ChoGGi_CheckButtonMenu",
+      local button = g_Classes[item.class or "ChoGGi_ButtonMenu"]:new({
         RolloverText = ChoGGi.ComFuncs.CheckText(item.hint,""),
-        Text = ChoGGi.ComFuncs.CheckText(item.name),
-        OnMouseButtonDown = item.clicked or function()end,
+        Text = ChoGGi.ComFuncs.CheckText(item.name,""),
+--~         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
         end,
       }, popup.idContainer)
---~       button:SetRollover(item.hint)
+
+      if item.clicked then
+        button.OnMouseButtonDown = item.clicked
+      end
 
       if item.showme then
         function button.OnMouseEnter()
@@ -567,7 +570,7 @@ do --g_Classes
 
     popup:Open()
     popup:SetFocus()
-    return popup
+--~     return popup
   end
 
   function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
@@ -585,8 +588,8 @@ do --g_Classes
     else
       -- both is for objs i also want a sphere over
       if IsPoint(o) or both then
-        local o2 = IsPoint(o) and o or o:GetVisualPos()
-        if terrain_IsPointInBounds(o2) then
+        local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
+        if o2 and terrain_IsPointInBounds(o2) then
           local m = g_Classes.Sphere:new()
           m:SetPos(o2)
           m:SetRadius(50 * guic)
@@ -1271,29 +1274,12 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
     return
   end
 
-  local dlg = ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
+  return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
     object = list,
+    parent = parent,
     tables = list.tables,
     values = list.values,
   })
-
-  if not dlg then
-    return
-  end
-
-  --set pos
-  if parent then
-    local pos = parent:GetPos()
-    if not pos then
-      dlg:SetPos(terminal.GetMousePos())
-    else
-      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=height of header
-    end
-  else
-    dlg:SetPos(terminal.GetMousePos())
-  end
-
-  return dlg
 end
 
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
@@ -1304,60 +1290,24 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
     return
   end
 
-  local dlg = ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
+  return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
     obj = obj,
+    parent = parent,
   })
-
-  if not dlg then
-    return
-  end
-
-  --set pos
-  if parent then
-    local pos = parent:GetPos()
-    if not pos then
-      dlg:SetPos(terminal.GetMousePos())
-    else
-      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
-    end
-  else
-    dlg:SetPos(terminal.GetMousePos())
-  end
-
-  return dlg
 end
 
 function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
   if not obj then
     obj = ChoGGi.CodeFuncs.SelObject()
   end
-  if obj and not obj:IsKindOf("CObject") then
+  if not obj then
     return
   end
 
-  local dlg = ChoGGi_ObjectManipulator:new({}, terminal.desktop,{
+  return ChoGGi_ObjectManipulator:new({}, terminal.desktop,{
     obj = obj,
+    parent = parent,
   })
-
-  if not dlg then
-    return
-  end
-
-  --set pos
-  if parent then
-    local pos = parent:GetPos()
-    if not pos then
-      dlg:SetPos(terminal.GetMousePos())
-    else
-      dlg:SetPos(point(pos:x(),pos:y() + 22)) --22=side of header
-    end
-  else
-    dlg:SetPos(terminal.GetMousePos())
-  end
-  --update item list
-  dlg:UpdateListContent(obj)
-
-  return dlg
 end
 
 --[[
@@ -1413,6 +1363,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 
   local dlg = ChoGGi_ListChoiceCustomDialog:new({}, terminal.desktop,{
     obj = obj,
+    list = list,
     hidden = {},
     items = list.items,
     -- used for hiding ListItems (well, okay restoring the actual height of them)
@@ -1425,84 +1376,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     return
   end
 
-  --fiddling with custom value
-  if list.custom_type then
-    dlg.idEditValue.auto_select_all = false
-    dlg.custom_type = list.custom_type
-    if list.custom_type == 2 or list.custom_type == 5 then
-      dlg.idList:SetSelection(1, true)
-      dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
-      dlg.idEditValue:SetText(tostring(dlg.sel.value))
-      dlg:UpdateColourPicker()
-      if list.custom_type == 2 then
-        dlg:SetWidth(750)
-        dlg.idColorHSV:SetVisible(true)
-        dlg.idColorCheckAir:SetVisible(true)
-        dlg.idColorCheckWater:SetVisible(true)
-        dlg.idColorCheckElec:SetVisible(true)
-      end
-    end
-  end
-
-  if list.multisel then
-    dlg.idList.multiple_selection = true
-    if type(list.multisel) == "number" then
-      --select all of number
-      for i = 1, list.multisel do
-        dlg.idList:SetSelection(i, true)
-      end
-    end
-  end
-
-  --setup checkboxes
-  if not list.check1 and not list.check2 then
-    dlg.hidden.checks = true
-    dlg.idCheckBox1:SetVisible(false)
-    dlg.idCheckBox2:SetVisible(false)
-  else
-    dlg.idList:SetSize(point(390, 310))
-
-    if list.check1 then
-      dlg.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(list.check1,""))
-      dlg.idCheckBox1:SetRollover(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
-    else
-      dlg.idCheckBox1:SetVisible(false)
-    end
-    if list.check2 then
-      dlg.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(list.check2,""))
-      dlg.idCheckBox2:SetRollover(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
-    else
-      dlg.idCheckBox2:SetVisible(false)
-    end
-  end
-  if list.check1_checked then
-    dlg.idCheckBox1:SetValue(true)
-  end
-  if list.check2_checked then
-     dlg.idCheckBox2:SetValue(true)
- end
-
-  --where to position dlg
-  dlg:SetPos(terminal.GetMousePos())
-
-  --focus on list
-  dlg.idList:SetFocus()
-  --dlg.idList:SetSelection(1, true)
-
-  --are we showing a hint?
-  if list.hint then
-    list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
-    dlg.idList:SetRollover(list.hint)
-    dlg.idOK:SetRollover(Concat(dlg.idOK:GetHint(),"\n\n\n",list.hint))
-  end
-
-  --hide ok/cancel buttons as they don't do jack
-  if list.custom_type == 1 then
-    dlg.hidden.buttons = true
-    dlg.idOK:SetVisible(false)
-    dlg.idCancel:SetVisible(false)
-  end
-
   -- fires callback func when dialog closes
   CreateRealTimeThread(function()
     --waiting for choice
@@ -1513,8 +1386,8 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     end
   end)
 
-  -- if anything is hidden this makes it so we don't have a bunch of blank areas.
-  dlg:UpdateElementPositions()
+--~   -- if anything is hidden this makes it so we don't have a bunch of blank areas.
+--~   dlg:UpdateElementPositions()
 
   return dlg
 end
@@ -1730,34 +1603,26 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 end
 
 -- Haemimont Games code from examine.lua (moved here for local)
-function OpenExamine(o, from, ret)
+function OpenExamine(obj, parent, return_dlg)
   local ChoGGi = ChoGGi
-  if not o then
+  if not obj then
     return ChoGGi.ComFuncs.ClearShowMe()
   end
 
-  local ex = Examine:new({}, terminal.desktop,{
-    obj = o,
+  local dlg = Examine:new({}, terminal.desktop,{
+    obj = obj,
+    parent = parent,
   })
---~   ex:SetObj(o)
 
-  if from then
-    if from.class == "Examine"  then
-      ex:SetPos(from)
-    else
-      ex:SetPos(terminal.GetMousePos())
-    end
-  end
-
-  if ret then
-    return ex
+  if return_dlg then
+    return dlg
   end
 end
 local OpenExamine = OpenExamine
 
 ex = OpenExamine
-function OpenExamineRet(o, from)
-  return OpenExamine(o, from, true)
+function OpenExamineRet(obj, parent)
+  return OpenExamine(obj, parent, true)
 end
 
 --~ local lm = false

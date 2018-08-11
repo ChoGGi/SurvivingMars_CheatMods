@@ -67,13 +67,10 @@ DefineClass.ChoGGi_CloseButton = {
   __parents = {"ChoGGi_Buttons"},
   RolloverText = S[1011--[[Close--]]],
   RolloverAnchor = "right",
---~   Image = "CommonAssets/UI/Controls/Button/Close.tga",
   Image = "UI/Common/mission_no.tga",
   Dock = "top",
   HAlign = "right",
---~   ZOrder = 99,
---~   Margins = box(0, -20, 0, 0),
-    Margins = box(0, 4, 2, 0),
+  Margins = box(0, 4, 2, 0),
 }
 
 DefineClass.ChoGGi_Button = {
@@ -81,9 +78,16 @@ DefineClass.ChoGGi_Button = {
   RolloverAnchor = "bottom",
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
-  --center text
-  LayoutMethod = "VList",
   Background = light_gray,
+  -- center text
+  LayoutMethod = "VList",
+}
+DefineClass.ChoGGi_ButtonMenu = {
+  __parents = {"ChoGGi_Button"},
+  LayoutMethod = "HList",
+  RolloverAnchor = "smart",
+  TextFont = "Editor16Bold",
+  TextColor = black,
 }
 DefineClass.ChoGGi_ComboButton = {
   __parents = {"XComboButton"},
@@ -103,6 +107,18 @@ DefineClass.ChoGGi_CheckButton = {
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
 }
+DefineClass.ChoGGi_CheckButtonMenu = {
+  __parents = {"ChoGGi_CheckButton"},
+  RolloverAnchor = "smart",
+  Background = light_gray,
+  TextHAlign = "left",
+  TextFont = "Editor16Bold",
+  TextColor = black,
+  RolloverBackground = rollover_blue,
+  RolloverTextColor = white,
+  Margins = box(4,0,0,0),
+}
+
 function ChoGGi_CheckButton:Init()
 --~   XCheckButton.Init(self)
   self.idIcon:SetBackground(light_gray)
@@ -131,6 +147,11 @@ DefineClass.ChoGGi_Dialog = {
 --~   HAlign = "left",
 --~   VAlign = "top",
   Dock = "ignore",
+}
+
+DefineClass.ChoGGi_Section = {
+  __parents = {"XWindow"},
+  Margins = box(4,4,4,4),
 }
 
 DefineClass.ChoGGi_Window = {
@@ -203,12 +224,19 @@ function ChoGGi_Window:SetPos(obj)
     w = box:sizex()
     h = box:sizey()
   else
-    -- it's a copy of examine wanting a new window offset
-    obj = obj.idDialog.box
-    x = obj:minx()
-    y = obj:miny() + 25
-    w = obj:sizex()
-    h = obj:sizey()
+    local box = obj.idDialog.box
+    x = box:minx()
+    y = box:miny() + 25
+    if self.class == "Examine" then
+      -- it's a copy of examine wanting a new window offset, so we want the size of it
+      w = box:sizex()
+      h = box:sizey()
+    else
+      -- keep orig size please n thanks
+      box = self.idDialog.box
+      w = box:sizex()
+      h = box:sizey()
+    end
   end
   self.idDialog:SetBox(x,y,w,h)
 end
@@ -225,6 +253,16 @@ end
 function ChoGGi_Window:GetSize()
   local b = self.idDialog.box
   return point(b:sizex(),b:sizey())
+end
+
+local GetMousePos = terminal.GetMousePos
+function ChoGGi_Window:SetInitPos(parent)
+  -- set dialog pos
+  if parent then
+    self:SetPos(parent)
+  else
+    self:SetPos(GetMousePos())
+  end
 end
 
 -- scrollable textbox

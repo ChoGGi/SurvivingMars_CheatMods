@@ -914,8 +914,8 @@ It's not as if domes need to be where you placed them (people will just ignore i
 302535920000490,"Deletes selected object or object under mouse cursor (most objs, not all).
 
 Use Editor Mode and mouse drag to select multiple objects for deletion.",
-302535920000491,Examine Current Obj,
-302535920000492,Opens the object examiner,
+302535920000491,Examine Object,
+302535920000492,Opens the object examiner for the selected or moused-over obj.,
 302535920000493,Change Map,
 302535920000494,"Change map (options to pick commander, sponsor, etc...
 

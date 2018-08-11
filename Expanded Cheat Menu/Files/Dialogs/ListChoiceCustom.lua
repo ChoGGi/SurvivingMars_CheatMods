@@ -270,14 +270,99 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idColorCheckWater:SetText(title)
   self.idColorCheckWater:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
 
-  -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
-  self:InitChildrenSizing()
+--~   -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
+--~   self:InitChildrenSizing()
 
-  -- if i don't have this than there's a chunk of empy beneath idList (till user resizes)
-  CreateRealTimeThread(function()
-    self.idList:SetSize(point(self.dialog_width, list_height))
-  end)
+--~   -- if i don't have this than there's a chunk of empy beneath idList (till user resizes)
+--~   CreateRealTimeThread(function()
+--~     self.idList:SetSize(point(self.dialog_width, list_height))
+--~   end)
 
+
+  -- fiddling with custom value
+  local list = context.list
+  if list.custom_type then
+    self.idEditValue.auto_select_all = false
+    self.custom_type = list.custom_type
+    if list.custom_type == 2 or list.custom_type == 5 then
+      self.idList:SetSelection(1, true)
+      self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+      self.idEditValue:SetText(tostring(self.sel.value))
+      self:UpdateColourPicker()
+      if list.custom_type == 2 then
+        self:SetWidth(750)
+        self.idColorHSV:SetVisible(true)
+        self.idColorCheckAir:SetVisible(true)
+        self.idColorCheckWater:SetVisible(true)
+        self.idColorCheckElec:SetVisible(true)
+      end
+    end
+  end
+
+  if list.multisel then
+    self.idList.multiple_selection = true
+    if type(list.multisel) == "number" then
+      --select all of number
+      for i = 1, list.multisel do
+        self.idList:SetSelection(i, true)
+      end
+    end
+  end
+
+  --setup checkboxes
+  if not list.check1 and not list.check2 then
+    self.hidden.checks = true
+    self.idCheckBox1:SetVisible(false)
+    self.idCheckBox2:SetVisible(false)
+  else
+    self.idList:SetSize(point(390, 310))
+
+    if list.check1 then
+      self.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(list.check1,""))
+      self.idCheckBox1:SetRollover(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
+    else
+      self.idCheckBox1:SetVisible(false)
+    end
+    if list.check2 then
+      self.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(list.check2,""))
+      self.idCheckBox2:SetRollover(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
+    else
+      self.idCheckBox2:SetVisible(false)
+    end
+  end
+  if list.check1_checked then
+    self.idCheckBox1:SetValue(true)
+  end
+  if list.check2_checked then
+     self.idCheckBox2:SetValue(true)
+ end
+
+  --where to position self
+  self:SetPos(terminal.GetMousePos())
+
+  --focus on list
+  self.idList:SetFocus()
+  --self.idList:SetSelection(1, true)
+
+  --are we showing a hint?
+  if list.hint then
+    list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
+    self.idList:SetRollover(list.hint)
+    self.idOK:SetRollover(Concat(self.idOK:GetHint(),"\n\n\n",list.hint))
+  end
+
+  --hide ok/cancel buttons as they don't do jack
+  if list.custom_type == 1 then
+    self.hidden.buttons = true
+    self.idOK:SetVisible(false)
+    self.idCancel:SetVisible(false)
+  end
+
+
+
+
+
+  self:SetInitPos(context.parent)
 end
 
 function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()

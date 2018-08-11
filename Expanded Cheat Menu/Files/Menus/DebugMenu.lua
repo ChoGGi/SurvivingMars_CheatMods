@@ -168,10 +168,12 @@ AddAction(
 
 AddAction(
   {"/[50]",S[1000113--[[Debug--]]],"/"},
-  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000491--[[Examine Current Obj--]]]),
-  ChoGGi.MenuFuncs.ObjExaminer,
+  Concat("/[50]",S[1000113--[[Debug--]]],"/",S[302535920000491--[[Examine Object--]]]),
+  function()
+    OpenExamine(ChoGGi.CodeFuncs.SelObject())
+  end,
   ChoGGi.UserSettings.KeyBindings.ObjExaminer,
-  302535920000492--[[Opens the object examiner--]],
+  302535920000492--[[Opens the object examiner for the selected or moused-over obj.--]],
   "PlayerInfo.tga"
 )
 

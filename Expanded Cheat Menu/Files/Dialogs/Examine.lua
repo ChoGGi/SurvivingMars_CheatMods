@@ -45,15 +45,6 @@ DefineClass.Examine = {
 --~ box(left,top, right, bottom)
 
 function Examine:Init(parent, context)
---~   XEdit:new({
---~     Id = "idEdit",
---~     Dock = "bottom",
---~     TextFont = "Editor18Bold",
---~     OnTextChanged = function(edit)
---~       XEdit.OnTextChanged(edit)
---~       self:TextChanged()
---~     end
---~   }, self)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local const = const
@@ -74,7 +65,7 @@ function Examine:Init(parent, context)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   -- everything grouped gets a window to go in
-  self.idLinkButtons = g_Classes.XWindow:new({
+  self.idLinkButtons = g_Classes.ChoGGi_Section:new({
     Id = "idLinkButtons",
     Dock = "top",
   }, self.idDialog)
@@ -105,7 +96,7 @@ function Examine:Init(parent, context)
     end,
   }, self.idLinkButtons)
 
-  self.idFilterArea = g_Classes.XWindow:new({
+  self.idFilterArea = g_Classes.ChoGGi_Section:new({
     Id = "idFilterArea",
     Dock = "top",
   }, self.idDialog)
@@ -124,7 +115,7 @@ function Examine:Init(parent, context)
     end,
   }, self.idFilterArea)
 
-  self.idMenuButtons = g_Classes.XWindow:new({
+  self.idMenuButtons = g_Classes.ChoGGi_Section:new({
     Id = "idMenuButtons",
     Dock = "top",
   }, self.idDialog)
@@ -197,6 +188,8 @@ Right-click to scroll to top."--]]],
   if ChoGGi.UserSettings.FlashExamineObject then
     self:FlashWindow(self.obj)
   end
+
+  self:SetInitPos(context.parent)
 end
 
 function Examine:Menu_Toggle(obj,menu,items)
@@ -245,21 +238,6 @@ function Examine:idFilterOnKbdKeyDown(obj,vk)
     return "break"
   end
   return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
-end
-
-function Examine:MenuOnComboClose(menu,idx,which)
-  --close hint
-  XDestroyRolloverWindow(true)
-  if self[which].list.rollover then
-    local item = menu.items[idx]
-    if not item.text:find("-") then
-      if which == "idParentsMenu" then
-        OpenExamine(_G[item.text],self)
-      else
-        OpenExamine(item.obj,self)
-      end
-    end
-  end
 end
 
 local menu_added
@@ -404,7 +382,7 @@ Which you can then mess around with some more in the console."--]]],
         ChoGGi.SettingFuncs.WriteSettings()
       end,
       value = {"FlashExamineObject"},
-      class = "XCheckButton",
+      class = "ChoGGi_CheckButtonMenu",
     },
   })
 end
@@ -1009,9 +987,18 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
   self.idCaption:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
 end
 
+local function PopupClose(name)
+  local popup = rawget(terminal.desktop,name)
+  if popup then
+    popup:Close()
+  end
+end
 function Examine:Done(result)
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
   end
+  PopupClose("idAttachesMenu")
+  PopupClose("idParentsMenu")
+  PopupClose("idToolsMenu")
   ChoGGi_Window.Done(self,result)
 end

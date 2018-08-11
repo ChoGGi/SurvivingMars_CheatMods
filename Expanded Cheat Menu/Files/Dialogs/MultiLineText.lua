@@ -31,9 +31,8 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self:AddScrollEdit(context)
   self.idEdit:SetText(context.text)
 
-  self.idButtonContainer = g_Classes.XWindow:new({
+  self.idButtonContainer = g_Classes.ChoGGi_Section:new({
     Id = "idButtonContainer",
-    Margins = box(8,8,8,8),
     Dock = "bottom",
   }, self.idDialog)
 
@@ -73,6 +72,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
     end,
   }, self.idButtonContainer)
 
+  self:SetInitPos(context.parent)
 end
 
 function ChoGGi_MultiLineText:OnShortcut(shortcut)
