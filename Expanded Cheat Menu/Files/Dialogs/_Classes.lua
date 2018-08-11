@@ -216,11 +216,15 @@ end
 function ChoGGi_Window:SetSize(point)
   local x,y,w,h
   local box = self.idDialog.box
-  x = point:x()
-  y = point:y()
-  w = box:sizex()
-  h = box:sizey()
+  x = box:minx()
+  y = box:miny()
+  w = point:x()
+  h = point:y()
   self.idDialog:SetBox(x,y,w,h)
+end
+function ChoGGi_Window:GetSize()
+  local b = self.idDialog.box
+  return point(b:sizex(),b:sizey())
 end
 
 -- scrollable textbox

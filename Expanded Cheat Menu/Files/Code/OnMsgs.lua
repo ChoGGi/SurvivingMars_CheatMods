@@ -583,18 +583,18 @@ end
 function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
-  --my comp or if we're resetting settings
+  -- my comp or if we're resetting settings
   if ChoGGi.Temp.ResetSettings or ChoGGi.testing then
     return
   end
 
---~   --save menu pos
+--~   -- save menu pos
 --~   local dlg = dlgUAMenu
 --~   if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
 --~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
 --~   end
-  --console log window settings
-  dlg = dlgChoGGi_ConsoleLogWin
+  -- console log window settings
+  local dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
     ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
     ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()

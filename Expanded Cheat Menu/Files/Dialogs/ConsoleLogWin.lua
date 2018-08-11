@@ -102,6 +102,7 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
     }
   end
 end
+dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 
 function ChoGGi_ConsoleLogWin:Done(result)
   local ChoGGi = ChoGGi
@@ -114,8 +115,6 @@ function ChoGGi_ConsoleLogWin:Done(result)
   ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
   Dialog.Done(self,result)
 end
-
-dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 
 function OnMsg.ConsoleLine(text, bNewLine)
   local dlg = dlgChoGGi_ConsoleLogWin
