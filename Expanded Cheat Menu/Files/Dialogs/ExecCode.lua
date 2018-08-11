@@ -2,17 +2,12 @@
 
 -- shows a dialog with a single line edit to execute code in
 
-if g_Classes.ChoGGi_ExecCodeDlg then
-  return
-end
-
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 
 DefineClass.ChoGGi_ExecCodeDlg = {
   __parents = {"ChoGGi_Window"},
-  code = false,
   obj = false,
 }
 
@@ -31,13 +26,15 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   self:AddElements(parent, context)
 
   self:AddScrollEdit(context)
+
   -- start off with this as code
   self.idEdit:SetText(GetFromClipboard() or "ChoGGi.CurObj")
   -- focus on textbox and move cursor to end of text
   self.idEdit:SetFocus()
-  self.idEdit:SetCursor(1,#self.idEdit:GetText())
-  self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here.
+  -- hinty hint
+  self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object.
 Press Ctrl-Enter or Shift-Enter to execute code."--]]])
+  -- let us override enter/esc
   self.idEdit.OnKbdKeyDown = function(obj, vk)
     return self:idEditOnKbdKeyDown(obj, vk)
   end
@@ -72,19 +69,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
     Margins = box(10, 0, 0, 0),
     MinWidth = 100,
     OnMouseButtonDown = function()
---~       local line = self.idEdit.cursor_line
---~       local pos = utf8.len(self.idEdit.lines[line])
---~       local text = self.idEdit:GetText()
---~       self.idEdit:SetText(Concat(utf8.sub(text,1,pos),"ChoGGi.CurObj",utf8.sub(text,pos+1)))
---~       self.idEdit:SetCursor(line,pos+13)
-
-      local text = self.idEdit:GetText()
-      local _,before = self.idEdit:OneCharBeforeCursor()
-      local line,after = self.idEdit:OneCharAfterCursor()
-      print(before,"|",after)
-      self.idEdit:SetText(Concat(text:sub(1,before),"ChoGGi.CurObj",text:sub(after)))
-      self.idEdit:SetCursor(line,after+12)
-
+      self.idEdit:EditOperation("ChoGGi.CurObj",true)
     end,
   }, self.idButtonContainer)
 

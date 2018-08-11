@@ -9,6 +9,9 @@ Examine:
 > up/down in Go to text scrolls to top/bottom (used to be just top).
 > Attaches menu highlights objects.
 > UI objects will now flash (like the ged window inspector, see Tools to disable).
+Exec Code:
+> Multi line text support.
+> Now checks clipboard content before adding ChoGGi.CurObj.
 
 v7.2 (04 Aug 2018)
 Added:
@@ -949,8 +952,7 @@ Examine:
 Added a Dump button to the Examine Dialog
 added console command for Examine
 examine(SelectedObj)
-or shortform
-ex(Consts)
+or shortform ex(Consts)
 
 Menus:
 Made the toggle msgs more useful

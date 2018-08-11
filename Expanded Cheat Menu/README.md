@@ -181,7 +181,7 @@ A bunch more (certain crashes with colonists rovers, etc)
 ##### Console
 ```
 Press Tilde (~), Enter, or Numpad Enter to show the console
-Toggle showing history/results on-screen (it's on by default)
+Toggle showing history/results on-screen (it's on by default, see Console to change it)
 type any name in to see it in the console log (ex: Consts)
 exit : or quit
 restart : or reboot
@@ -204,18 +204,18 @@ $example to translate userdata/stringbase
 !example to select/view
 !!example to examine attached objects
 &handle to open object in examiner
-*r/*g to wrap code in real/game time threads
+*r/*g/*m to wrap code in real/game/mapreal time threads
 
 If you want to overwrite instead of append text: dumplua(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
-If you want to save the console text: Debug>Write Logs (very helpful for examining an object)
+If you want to save the console text: Console>Write Logs (very helpful for examining an object)
 
-you can paste chunks of code in the console to test out:
-local templates = DataInstances.BuildingTemplate
-for i = 1, #templates do
-  local building = templates[i]
-	print(building.name)
-end
+you can paste chunks of code in the console to test out (with DA you need spaces at the start):
+  local templates = DataInstances.BuildingTemplate
+  for i = 1, #templates do
+    local building = templates[i]
+    print(building.name)
+  end
 Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
 

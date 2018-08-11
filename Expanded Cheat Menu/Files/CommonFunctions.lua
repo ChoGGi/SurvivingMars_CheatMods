@@ -1363,13 +1363,13 @@ end
 --[[
 get around to merging some of these types into funcs?
 
-CustomType=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with self.sel, and sends back all items
-CustomType=2 : colour selector
-CustomType=3 : updates selected item with custom value type, and sends back selected item.
-CustomType=4 : updates selected item with custom value type, and sends back all items
-CustomType=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
-CustomType=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
-CustomType=7 : dblclick fires custom_func with self.sel
+custom_type=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with self.sel, and sends back all items
+custom_type=2 : colour selector
+custom_type=3 : updates selected item with custom value type, and sends back selected item.
+custom_type=4 : updates selected item with custom value type, and sends back all items
+custom_type=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
+custom_type=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+custom_type=7 : dblclick fires custom_func with self.sel
 
 ChoGGi.ComFuncs.OpenInListChoice{
   callback = CallBackFunc,
@@ -1377,7 +1377,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
   title = "Title",
   hint = Concat("Current: ",hint),
   multisel = true,
-  custom_type = CustomType,
+  custom_type = custom_type,
   custom_func = CustomFunc,
   check1 = "Check1",
   check1_hint = "Check1Hint",
@@ -1418,19 +1418,17 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     -- used for hiding ListItems (well, okay restoring the actual height of them)
     listitem_height = dlg.idList.item_windows[1]:GetHeight(),
     Func = list.custom_func,
+    title = list.title,
   })
 
   if not dlg then
     return
   end
 
-  -- title text
-  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
-
   --fiddling with custom value
   if list.custom_type then
     dlg.idEditValue.auto_select_all = false
-    dlg.CustomType = list.custom_type
+    dlg.custom_type = list.custom_type
     if list.custom_type == 2 or list.custom_type == 5 then
       dlg.idList:SetSelection(1, true)
       dlg.sel = dlg.idList:GetSelection()[#dlg.idList:GetSelection()]
@@ -1799,16 +1797,15 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
     return
   end
   local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{
-  --~                 zorder = 2000001,
     wrap = true,
     text = text,
   })
-  dialog:Open()
+--~   dialog:Open()
 end
 
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
   if visible and not dlgChoGGi_ConsoleLogWin then
-    dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new()
+    dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
 
     --update it with console log text
     local dlg = dlgConsoleLog
@@ -1820,6 +1817,7 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
     end
 
   end
+
   local dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
     dlg:SetVisible(visible)

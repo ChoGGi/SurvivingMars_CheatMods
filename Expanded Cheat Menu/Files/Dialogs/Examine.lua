@@ -1,9 +1,5 @@
 -- See LICENSE for terms
 
-if g_Classes.Examine then
-  return
-end
-
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
@@ -473,7 +469,7 @@ function Examine:FlashWindow(obj)
   obj = obj or self.obj
   -- we don't want to flash the desktop since that's just annoying
   local d = terminal.desktop
-  if obj == d or obj.parent == d then
+  if obj == d or obj == _G or obj.parent == d then
     return
   end
   local Sleep,UIL,black,white = Sleep,UIL,black,white
@@ -493,7 +489,7 @@ function Examine:FlashWindow(obj)
     obj.BorderWidth = 2
     local c = black
     for i = 1, 5 do
-      if obj.window_state ~= "destroying" and obj.box then
+      if obj.window_state ~= "destroying" then
         obj.BorderColor = c
         obj.Background = c
         Sleep(75)
@@ -501,7 +497,7 @@ function Examine:FlashWindow(obj)
         c = c == white and black or white
       end
     end
-    if obj.window_state ~= "destroying" and obj.box then
+    if obj.window_state ~= "destroying" then
       obj.BorderWidth = flashing_table.width
       obj.BorderColor = flashing_table.colour
       obj.Background = flashing_table.bg
@@ -959,7 +955,7 @@ function Examine:SetObj(o)
   local name = RetName(o)
 
   -- update attaches button with attaches amount
-  local attaches = is_table and o:IsKindOf("ComponentAttach") and o:GetAttaches()
+  local attaches = is_table and IsValid(o) and o:IsKindOf("ComponentAttach") and o:GetAttaches()
   local attach_amount = attaches and #attaches
   self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
 

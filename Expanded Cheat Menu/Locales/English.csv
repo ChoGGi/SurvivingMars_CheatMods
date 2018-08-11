@@ -284,7 +284,7 @@ Which you can then mess around with some more in the console.",
 
 Press %s to hide markers.",
 302535920000040,Exec Code,
-302535920000072,"Paste or type code to be executed here.
+302535920000072,"Paste or type code to be executed here, ChoGGi.CurObj is the examined object.
 Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920000073,Exec code (Ctrl-Enter or Shift-Enter to execute code).,
 302535920000075,Insert Obj,

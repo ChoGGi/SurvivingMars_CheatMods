@@ -480,16 +480,13 @@ function OnMsg.ClassesBuilt()
 
   --no more stuck focus on SingleLineEdits
   function XDesktop:MouseEvent(event, pt, button, time)
-    if event == "OnMouseButtonDown" and self.keyboard_focus and (button == "L" or button == "R") then
-      local kb = self.keyboard_focus.class
-      if kb == "XTextEditor" or kb == "ChoGGi_TextInput" then
-        -- if console visible set focus to it, else use the hud
-        local dlgConsole = dlgConsole
-        if dlgConsole and dlgConsole:GetVisible() then
-          dlgConsole.idEdit:SetFocus()
-        elseif Dialogs.HUD then
-          Dialogs.HUD:SetFocus()
-        end
+    if event == "OnMouseButtonDown" and self.keyboard_focus and (button == "L" or button == "R") and self:IsKindOf("XTextEditor") then
+      -- if console visible set focus to it, else use the hud
+      local dlgConsole = dlgConsole
+      if dlgConsole and dlgConsole:GetVisible() then
+        dlgConsole.idEdit:SetFocus()
+      elseif Dialogs.HUD then
+        Dialogs.HUD:SetFocus()
       end
     end
 

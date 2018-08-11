@@ -588,11 +588,11 @@ function OnMsg.ApplicationQuit()
     return
   end
 
-  --save menu pos
-  local dlg = XShortcutsTarget
-  if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
-    ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
-  end
+--~   --save menu pos
+--~   local dlg = dlgUAMenu
+--~   if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
+--~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
+--~   end
   --console log window settings
   dlg = dlgChoGGi_ConsoleLogWin
   if dlg then

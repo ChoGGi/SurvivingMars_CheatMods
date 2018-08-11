@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
 local RGB = RGB
@@ -9,6 +10,7 @@ local point = point
 local white = white
 local black = black
 local dark_gray = -13158858
+local medium_gray = -10263966
 local light_gray = -2368549
 local rollover_blue = RGB(24, 123, 197)
 
@@ -43,14 +45,22 @@ DefineClass.ChoGGi_MultiLineEdit = {
   SelectionBackground = light_gray,
   SelectionColor = black,
 
-  MaxLen = 65536, --65536?
+  MaxLen = -1,
 }
+--~ function ChoGGi_MultiLineEdit:InsertStrAtCaret(str)
+--~   local pos = self:GetCursorCharIdx() + 1
+--~   local line, char = self.cursor_line, self.cursor_char
+--~   local text = self:GetText()
+--~   self:SetText(Concat(text:sub(1,pos),str,text:sub(pos+1)))
+--~   self:SetCursor(line,char+13)
+--~ end
 
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
   RolloverTitle = S[126095410863--[[Info--]]],
   RolloverBackground = rollover_blue,
   RolloverTextColor = white,
+  Margins = box(4,0,0,0),
 }
 
 DefineClass.ChoGGi_CloseButton = {
@@ -150,6 +160,7 @@ function ChoGGi_Window:AddElements(parent,context)
   self.idTitleArea = g_Classes.XWindow:new({
     Id = "idTitleArea",
     Dock = "top",
+    Background = medium_gray,
   }, self.idDialog)
 
   self.idMoveControl = g_Classes.XMoveControl:new({
@@ -166,9 +177,6 @@ function ChoGGi_Window:AddElements(parent,context)
 
   self.idCaption = g_Classes.XLabel:new({
     Id = "idCaption",
---~     Dock = "top",
---~     HAlign = "center",
---~ 		TextHAlign = "center",
     TextFont = "Editor14Bold",
     Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
@@ -202,10 +210,16 @@ function ChoGGi_Window:SetPos(obj)
     w = obj:sizex()
     h = obj:sizey()
   end
-  -- make sure we can always move it
-  if self.idDialog.Dock ~= "ignore" then
-    self.idDialog:SetDock("ignore")
-  end
+  self.idDialog:SetBox(x,y,w,h)
+end
+
+function ChoGGi_Window:SetSize(point)
+  local x,y,w,h
+  local box = self.idDialog.box
+  x = point:x()
+  y = point:y()
+  w = box:sizex()
+  h = box:sizey()
   self.idDialog:SetBox(x,y,w,h)
 end
 
@@ -239,6 +253,26 @@ function ChoGGi_Window:AddScrollText()
     OnHyperLink = function(_, link, _, box, pos, button)
       self.onclick_handles[tonumber(link)](box, pos, button)
     end,
+  }, self.idScrollBox)
+end
+
+function ChoGGi_Window:AddScrollList()
+  local g_Classes = g_Classes
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idScrollBox",
+    Dock = "right",
+  }, self.idDialog)
+
+  self.idScrollBox = g_Classes.XScrollArea:new({
+    Id = "idScrollBox",
+    VScroll = "idScrollV",
+    Margins = box(5,0,0,0),
+  }, self.idDialog)
+
+  self.idList = g_Classes.XList:new({
+    Id = "idList",
   }, self.idScrollBox)
 end
 

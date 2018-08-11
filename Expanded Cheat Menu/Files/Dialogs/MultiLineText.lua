@@ -2,17 +2,8 @@
 
 -- displays text in a selectable text box
 
-if g_Classes.ChoGGi_MultiLineText then
-  return
-end
-
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
-
-local white = white
-local black = black
-local dark_gray = -13158858
-local light_gray = -2368549
 
 DefineClass.ChoGGi_MultiLineText = {
   __parents = {"ChoGGi_Window"},
@@ -42,7 +33,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
 
   self.idButtonContainer = g_Classes.XWindow:new({
     Id = "idButtonContainer",
-    Padding = box(4,0,4,4),
+    Margins = box(8,8,8,8),
     Dock = "bottom",
   }, self.idDialog)
 
