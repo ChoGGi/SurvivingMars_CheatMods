@@ -191,9 +191,8 @@ Right-click to scroll to top."--]]],
     end,
   }, self.idMenuButtons)
 
-  self:AddScrollArea(true)
   -- text box with obj info in it
-  self:AddStaticTextScroll()
+  self:AddScrollText()
 
   -- look at them sexy internals
   self.transp_mode = transp_mode
@@ -336,7 +335,7 @@ This can take time on something like the "Building" metatable--]]],
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           checkbox = true,
           text = str,
-          title = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
+          title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
           hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
           func = function(answer,overwrite)
             if answer then
@@ -357,7 +356,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
         local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
           checkbox = true,
           text = str,
-          title = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
+          title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
           hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
@@ -1019,8 +1018,6 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 end
 
 function Examine:Done(result)
---~   self.obj = false
-
   if self.autorefresh_thread then
     DeleteThread(self.autorefresh_thread)
   end

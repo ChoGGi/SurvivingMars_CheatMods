@@ -166,16 +166,15 @@ function ChoGGi_Window:AddElements(parent,context)
 
   self.idCaption = g_Classes.XLabel:new({
     Id = "idCaption",
-    Dock = "top",
+--~     Dock = "top",
 --~     HAlign = "center",
-		TextHAlign = "center",
+--~ 		TextHAlign = "center",
     TextFont = "Editor14Bold",
     Margins = box(4, -20, 4, 2),
     Translate = self.Translate,
     TextColor = white,
-    Text = ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]),
   }, self.idTitleArea)
---~   self.idTitle:SetText()
+  self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]))
 end
 
 -- takes either a point, or box to set pos
@@ -205,7 +204,7 @@ function ChoGGi_Window:SetPos(obj)
 end
 
 -- scrollable textbox
-function ChoGGi_Window:AddScrollArea(padding)
+function ChoGGi_Window:AddScrollText()
   local g_Classes = g_Classes
 
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
@@ -223,45 +222,45 @@ function ChoGGi_Window:AddScrollArea(padding)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
     Id = "idScrollBox",
-    Dock = "box",
+--~     Dock = "box",
     VScroll = "idScrollV",
     HScroll = "idScrollH",
-    Margins = padding and box(5,0,0,0) or box(0,0,0,0),
+    Margins = box(5,0,0,0),
   }, self.idDialog)
 
-end
-
-function ChoGGi_Window:AddScrollAreaV(padding)
-  local g_Classes = g_Classes
-
-  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollV",
-    Target = "idScrollBox",
-    Dock = "right",
-  }, self.idDialog)
-
-  self.idScrollBox = g_Classes.XScrollArea:new({
-    Id = "idScrollBox",
-    Dock = "box",
-    VScroll = "idScrollV",
-    Margins = padding and box(5,0,0,0) or box(0,0,0,0),
-  }, self.idDialog)
-
-end
-
-function ChoGGi_Window:AddStaticTextScroll()
-  self.idText = ChoGGi_Text:new({
+  self.idText = g_Classes.ChoGGi_Text:new({
     Id = "idText",
     OnHyperLink = function(_, link, _, box, pos, button)
       self.onclick_handles[tonumber(link)](box, pos, button)
     end,
   }, self.idScrollBox)
 end
-function ChoGGi_Window:AddMultiTextScroll(context)
+
+function ChoGGi_Window:AddScrollEdit(context)
+  local g_Classes = g_Classes
+
+  self.idEditArea = g_Classes.XWindow:new({
+    Id = "idEditArea",
+    Margins = box(5,0,0,0),
+  }, self.idDialog)
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idText",
+    Dock = "right",
+  }, self.idEditArea)
+
+  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollH",
+    Target = "idText",
+    Dock = "bottom",
+    Horizontal = true,
+  }, self.idEditArea)
+
   self.idText = ChoGGi_MultiLineEdit:new({
     Id = "idText",
     WordWrap = context.wrap or false,
-  }, self.idScrollBox)
+  }, self.idEditArea)
 end
 
 DefineClass.ChoGGi_SleekScroll = {

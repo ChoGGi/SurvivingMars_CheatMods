@@ -39,17 +39,17 @@ function ChoGGi_MultiLineText:Init(parent, context)
   -- overwrite dumped file
   self.overwrite = context.overwrite
   -- pretty title
-  self.title = context.title
+  self.title = context.title or 302535920001301--[[Edit Text--]]
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
-  self:AddScrollAreaV()
-  self:AddMultiTextScroll(context)
+  self:AddScrollEdit(context)
   self.idText:SetText(context.text)
 
   self.idButtonContainer = g_Classes.XWindow:new({
     Id = "idButtonContainer",
+    Padding = box(4,0,4,4),
     Dock = "bottom",
   }, self.idDialog)
 
