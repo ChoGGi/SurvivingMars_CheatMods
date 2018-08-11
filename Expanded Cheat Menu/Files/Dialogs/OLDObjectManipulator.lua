@@ -32,15 +32,28 @@ DefineClass.ChoGGi_ObjectManipulator = {
   ZOrder = zorder,
   choices = {},
   sel = false,
-  obj = false,
   MinSize = point(50, 50),
   translate = false,
   refreshing = false,
   page = 1,
   show_times = "relative",
+
+  obj = false,
+  title = false,
 }
 
 function ChoGGi_ObjectManipulator:Init()
+  self.obj = context.obj
+  self.title = RetName(self.obj)
+
+  --update the add button hint
+  dlg.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.title))
+
+
+
+
+
+
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local point = point

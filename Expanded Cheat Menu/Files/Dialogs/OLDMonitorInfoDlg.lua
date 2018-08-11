@@ -30,6 +30,17 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
 }
 
 function ChoGGi_MonitorInfoDlg:Init()
+
+
+
+    dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
+    self.object = context.object
+    self.values = context.values
+    self.tables = context.tables
+
+
+
+
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local point = point

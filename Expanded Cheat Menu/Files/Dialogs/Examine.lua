@@ -5,10 +5,7 @@ if g_Classes.Examine then
 end
 
 local Concat = ChoGGi.ComFuncs.Concat
---~ local DialogUpdateMenuitems = ChoGGi.ComFuncs.DialogUpdateMenuitems
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local RetButtonTextSize = ChoGGi.ComFuncs.RetButtonTextSize
-local RetCheckTextSize = ChoGGi.ComFuncs.RetCheckTextSize
 local RetName = ChoGGi.ComFuncs.RetName
 local RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
 local ShowMe = ChoGGi.ComFuncs.ShowMe
@@ -248,11 +245,10 @@ function Examine:idFilterOnKbdKeyDown(obj,vk)
     self.idScrollBox:ScrollTo(0,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
     return "break"
   elseif vk == const.vkEsc then
-    self.idCloseX:Press()
+    self.idCloseX:OnPress()
     return "break"
-  else
-    return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
   end
+  return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
 function Examine:MenuOnComboClose(menu,idx,which)

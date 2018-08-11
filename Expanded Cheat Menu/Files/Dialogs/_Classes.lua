@@ -177,6 +177,12 @@ function ChoGGi_Window:AddElements(parent,context)
   self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]))
 end
 
+-- returns x,y
+function ChoGGi_Window:GetPos()
+  local b = self.idDialog.box
+  return point(b:minx(),b:miny())
+end
+
 -- takes either a point, or box to set pos
 function ChoGGi_Window:SetPos(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
@@ -257,8 +263,8 @@ function ChoGGi_Window:AddScrollEdit(context)
     Horizontal = true,
   }, self.idEditArea)
 
-  self.idText = ChoGGi_MultiLineEdit:new({
-    Id = "idText",
+  self.idEdit = ChoGGi_MultiLineEdit:new({
+    Id = "idEdit",
     WordWrap = context.wrap or false,
   }, self.idEditArea)
 end

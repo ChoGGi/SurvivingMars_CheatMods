@@ -1271,18 +1271,15 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
     return
   end
 
-  local dlg = ChoGGi_MonitorInfoDlg:new()
+  local dlg = ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
+    object = list,
+    tables = list.tables,
+    values = list.values,
+  })
 
   if not dlg then
     return
   end
-
-  --update internal
-  dlg.object = list
-  dlg.tables = list.tables
-  dlg.values = list.values
-
-  dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
 
   --set pos
   if parent then
@@ -1307,16 +1304,13 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
     return
   end
 
-  local dlg = ChoGGi_ExecCodeDlg:new()
+  local dlg = ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
+    obj = obj,
+  })
 
   if not dlg then
     return
   end
-
-  --update internal object
-  dlg.obj = obj
-
-  dlg.idCaption:SetText(RetName(obj))
 
   --set pos
   if parent then
@@ -1341,22 +1335,13 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
     return
   end
 
-  local dlg = ChoGGi_ObjectManipulator:new()
+  local dlg = ChoGGi_ObjectManipulator:new({}, terminal.desktop,{
+    obj = obj,
+  })
 
   if not dlg then
     return
   end
-
-  --update internal object
-  dlg.obj = obj
-
-  local title = RetName(obj)
-
-  --update the add button hint
-  dlg.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(title))
-
-  --title text
-  dlg.idCaption:SetText(title)
 
   --set pos
   if parent then
@@ -1426,21 +1411,21 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     list.items[#list.items+1] = {text = "",hint = "",value = false}
   end
 
-  local dlg = ChoGGi_ListChoiceCustomDialog:new()
+  local dlg = ChoGGi_ListChoiceCustomDialog:new({}, terminal.desktop,{
+    obj = obj,
+    hidden = {},
+    items = list.items,
+    -- used for hiding ListItems (well, okay restoring the actual height of them)
+    listitem_height = dlg.idList.item_windows[1]:GetHeight(),
+    Func = list.custom_func,
+  })
 
   if not dlg then
     return
   end
 
-  dlg.hidden = {}
-
   -- title text
   dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
-  -- add list items
-  dlg.idList:SetContent(list.items)
-
-  -- used for hiding ListItems (well, okay restoring the actual height of them)
-  dlg.listitem_height = dlg.idList.item_windows[1]:GetHeight()
 
   --fiddling with custom value
   if list.custom_type then
@@ -1459,10 +1444,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
         dlg.idColorCheckElec:SetVisible(true)
       end
     end
-  end
-
-  if list.custom_func then
-    dlg.Func = list.custom_func
   end
 
   if list.multisel then
@@ -1749,23 +1730,6 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
   --and send back sorted
   return temp_table
 end
-
-function ChoGGi.ComFuncs.RetButtonTextSize(text,font,width)
-  width = width or 0
-  --if no font or no id for that font then default to 14 bold
-  font = font and FontStyles_GetFontId(font) or FontStyles_GetFontId("Editor14Bold")
-  local x,y = UIL_MeasureText(text or "", font)
-  return point(x + 24 + width,y + 4) --button padding
-end
-ChoGGi.ComFuncs.RetButtonTextSize = Memoize(ChoGGi.ComFuncs.RetButtonTextSize)
-
-function ChoGGi.ComFuncs.RetCheckTextSize(text,font,width)
-  width = width or 0
-  font = font and FontStyles_GetFontId(font) or FontStyles_GetFontId("Editor14Bold")
-  local x,_ = UIL_MeasureText(text or "", font)
-  return point(x + 24 + width,17) --button padding
-end
-ChoGGi.ComFuncs.RetCheckTextSize = Memoize(ChoGGi.ComFuncs.RetCheckTextSize)
 
 -- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(o, from, ret)

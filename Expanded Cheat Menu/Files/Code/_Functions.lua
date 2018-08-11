@@ -479,17 +479,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateRace(c,race)
   c:ChooseEntity()
 end
 
---some dev removed this from the Spirit update... (harumph)
-function ChoGGi.CodeFuncs.AddConsolePrompt(text)
-  local dlg = dlgConsole
-  if dlg then
-    dlg:Show(true)
-    dlg.idEdit:Replace(dlg.idEdit.cursor_pos, dlg.idEdit.cursor_pos, text, true)
-    dlg.idEdit:SetCursorPos(#text)
-  end
-end
-
---toggle visiblity of console log
+-- toggle visiblity of console log
 function ChoGGi.CodeFuncs.ToggleConsoleLog()
   local log = dlgConsoleLog
   if log then

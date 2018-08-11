@@ -16,11 +16,6 @@ local light_gray = -2368549
 
 DefineClass.ChoGGi_MultiLineText = {
   __parents = {"ChoGGi_Window"},
-
---~   HAlign = "center",
---~   VAlign = "center",
---~   BackgroundColor = RGBA(0, 0, 0, 16),
-  HandleKeyboard = true,
   retfunc = false,
   overwrite = false,
 }
@@ -29,8 +24,6 @@ function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
---~   g_Classes.Examine:Open(parent, context)
-
   self.dialog_width = 500
   self.dialog_height = 400
 
@@ -38,14 +31,14 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self.retfunc = context.func
   -- overwrite dumped file
   self.overwrite = context.overwrite
-  -- pretty title
+
   self.title = context.title or 302535920001301--[[Edit Text--]]
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
   self:AddScrollEdit(context)
-  self.idText:SetText(context.text)
+  self.idEdit:SetText(context.text)
 
   self.idButtonContainer = g_Classes.XWindow:new({
     Id = "idButtonContainer",
@@ -74,7 +67,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
     Dock = "left",
     Text = S[6878--[[OK--]]],
     RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
-    OnMouseButtonDown = function(_,_,button)
+    OnMouseButtonDown = function()
       self:Close("ok",true)
     end,
   }, self.idButtonContainer)
@@ -84,7 +77,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
     Dock = "right",
     Text = S[6879--[[Cancel--]]],
     RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
-    OnMouseButtonDown = function(_,_,button)
+    OnMouseButtonDown = function()
       self:Close("cancel",false)
     end,
   }, self.idButtonContainer)
