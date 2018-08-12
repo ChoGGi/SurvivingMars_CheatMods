@@ -31,7 +31,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self:AddScrollEdit(context)
   self.idEdit:SetText(context.text)
 
-  self.idButtonContainer = g_Classes.ChoGGi_Section:new({
+  self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
     Id = "idButtonContainer",
     Dock = "bottom",
   }, self.idDialog)

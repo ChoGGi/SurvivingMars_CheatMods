@@ -39,7 +39,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
     return self:idEditOnKbdKeyDown(obj, vk)
   end
 
-  self.idButtonContainer = g_Classes.ChoGGi_Section:new({
+  self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
     Id = "idButtonContainer",
     Dock = "bottom",
   }, self.idDialog)

@@ -138,6 +138,10 @@ DefineClass.ChoGGi_TextInput = {
 --~   self:SetText(self.display_text or "")
 --~ end
 
+DefineClass.ChoGGi_List = {
+  __parents = {"XList"},
+}
+
 DefineClass.ChoGGi_Dialog = {
   __parents = {"XDialog"},
   Translate = false,
@@ -149,7 +153,7 @@ DefineClass.ChoGGi_Dialog = {
   Dock = "ignore",
 }
 
-DefineClass.ChoGGi_Section = {
+DefineClass.ChoGGi_DialogSection = {
   __parents = {"XWindow"},
   Margins = box(4,4,4,4),
 }
@@ -241,14 +245,17 @@ function ChoGGi_Window:SetPos(obj)
   self.idDialog:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(point)
-  local x,y,w,h
+function ChoGGi_Window:SetSize(size)
   local box = self.idDialog.box
-  x = box:minx()
-  y = box:miny()
-  w = point:x()
-  h = point:y()
+  local x,y = box:minx(),box:miny()
+  local w,h = size:x(),size:y()
   self.idDialog:SetBox(x,y,w,h)
+end
+function ChoGGi_Window:SetWidth(w)
+  self:SetSize(point(w,self.idDialog.box:sizey()))
+end
+function ChoGGi_Window:SetHeight(h)
+  self:SetSize(point(self.idDialog.box:sizex(),h))
 end
 function ChoGGi_Window:GetSize()
   local b = self.idDialog.box
@@ -313,7 +320,7 @@ function ChoGGi_Window:AddScrollList()
     Margins = box(5,0,0,0),
   }, self.idDialog)
 
-  self.idList = g_Classes.XList:new({
+  self.idList = g_Classes.ChoGGi_List:new({
     Id = "idList",
   }, self.idScrollBox)
 end

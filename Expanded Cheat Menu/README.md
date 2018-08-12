@@ -1,4 +1,4 @@
-You should buy a copy: http://store.steampowered.com/app/464920
+You should buy a copy: [GOG](https://www.gog.com/game/surviving_mars) or [Steam](http://store.steampowered.com/app/464920)
 
 ### No warranty implied or otherwise!
 

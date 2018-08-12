@@ -65,7 +65,7 @@ function Examine:Init(parent, context)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   -- everything grouped gets a window to go in
-  self.idLinkButtons = g_Classes.ChoGGi_Section:new({
+  self.idLinkButtons = g_Classes.ChoGGi_DialogSection:new({
     Id = "idLinkButtons",
     Dock = "top",
   }, self.idDialog)
@@ -88,15 +88,15 @@ function Examine:Init(parent, context)
 
   self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
     Id = "idAutoRefresh",
-    RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
     Text = S[302535920000084--[[Auto-Refresh--]]],
+    RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
     Dock = "right",
     OnChange = function()
       self.idAutoRefreshToggle(self)
     end,
   }, self.idLinkButtons)
 
-  self.idFilterArea = g_Classes.ChoGGi_Section:new({
+  self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idFilterArea",
     Dock = "top",
   }, self.idDialog)
@@ -104,18 +104,16 @@ function Examine:Init(parent, context)
   self.idFilter = g_Classes.ChoGGi_TextInput:new({
     Id = "idFilter",
     RolloverText = S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]],
-    Hint = S[302535920000044--[[Goto text--]]],
-    OnTextChanged = function(edit)
-      ChoGGi_TextInput.OnTextChanged(edit)
+    Hint = S[302535920000044--[[Go To Text--]]],
+    OnTextChanged = function()
       self:FindNext(self.idFilter:GetText())
     end,
-    -- block the rest of the game input
     OnKbdKeyDown = function(obj, vk)
       return self:idFilterOnKbdKeyDown(obj, vk)
     end,
   }, self.idFilterArea)
 
-  self.idMenuButtons = g_Classes.ChoGGi_Section:new({
+  self.idMenuButtons = g_Classes.ChoGGi_DialogSection:new({
     Id = "idMenuButtons",
     Dock = "top",
   }, self.idDialog)

@@ -1362,14 +1362,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
   end
 
   local dlg = ChoGGi_ListChoiceCustomDialog:new({}, terminal.desktop,{
-    obj = obj,
     list = list,
-    hidden = {},
-    items = list.items,
-    -- used for hiding ListItems (well, okay restoring the actual height of them)
-    listitem_height = dlg.idList.item_windows[1]:GetHeight(),
-    Func = list.custom_func,
-    title = list.title,
   })
 
   if not dlg then
@@ -1379,7 +1372,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
   -- fires callback func when dialog closes
   CreateRealTimeThread(function()
     --waiting for choice
-    local option = dlg:Wait()
+    local option = dlg.idDialog:Wait()
 
     if option and #option > 0 then
       list.callback(option)

@@ -1,12 +1,8 @@
 -- See LICENSE for terms
 
-if true then
-  return
-end
-
 -- all purpose items list
 
---~ local Concat = ChoGGi.ComFuncs.Concat
+local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
 local S = ChoGGi.Strings
@@ -16,13 +12,14 @@ local type,tostring = type,tostring
 DefineClass.ChoGGi_ListChoiceCustomDialog = {
   __parents = {"ChoGGi_Window"},
   choices = false,
+  listitem_height = false,
+  colorpicker = false,
+  custom_type = 0,
+  custom_func = false,
+  hidden = false,
+
   sel = false,
   obj = false,
-  listitem_height = false,
-  custom_type = 0,
-  colorpicker = false,
-  Func = false,
-  hidden = false,
 }
 
 function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
@@ -34,12 +31,17 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   self.dialog_width = 400
   self.dialog_height = 470
 
-  self.obj = context.obj
-  self.hidden = context.hidden
-  self.items = context.items
-  self.listitem_height = context.listitem_height
-  self.Func = context.Func
-  self.title = context.title
+  self.list = context.list
+  self.items = self.list.items
+  self.custom_func = self.list.custom_func
+--~   self.hidden = {}
+  self.custom_type = self.list.custom_type
+--~   -- used for hiding ListItems (well, okay restoring the actual height of them)
+--~   self.listitem_height = self.idList.item_windows[1]:GetHeight(),
+  -- fix this
+  self.listitem_height = 25
+
+  self.title = self.list.title
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
@@ -47,6 +49,7 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   self:AddScrollList()
+  self.idList:SetDock("top")
 
 --~   --hook into SetContent so we can add OnSetState to each list item to show hints
 --~   local orig_SetContent = self.idList.SetContent
@@ -73,217 +76,177 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
 --~     self:idListOnRButtonDoubleClick()
 --~   end
 
-  element_y = self.border + self.idList:GetPos():y() + self.idList:GetSize():y()
+  self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idFilterArea",
+    Dock = "bottom",
+  }, self.idDialog)
 
-  self.idFilter = g_Classes.SingleLineEdit:new(self)
-  self.idFilter:SetPos(point(self.border, element_y))
-  self.idFilter:SetSize(point(self.dialog_width, 26))
-  self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 16))
-  self.idFilter:SetFontStyle("Editor12Bold")
-  self.idFilter:SetHint(S[302535920000806--[[Only show items containing this text.--]]])
-  self.idFilter:SetTextHAlign("center")
-  self.idFilter:SetTextVAlign("center")
-  self.idFilter:SetHSizing("Resize")
-  self.idFilter:SetVSizing("AnchorToBottom")
-  self.idFilter:SetBackgroundColor(RGBA(0, 0, 0, 100))
-  self.idFilter.display_text = S[302535920000068--[[Filter Text--]]]
-  function self.idFilter.OnValueChanged(_, value)
-    self:FilterText(value)
-  end
-  function self.idFilter:OnKbdKeyDown(char, vk)
-    if vk == const.vkEnter then
-      self.parent:FilterText("")
-      return "break"
-    elseif vk == const.vkEsc then
-      self.parent.idCloseX:Press()
-      return "break"
-    else
-      g_Classes.SingleLineEdit.OnKbdKeyDown(self, char, vk)
-    end
-  end
+  self.idFilter = g_Classes.ChoGGi_TextInput:new({
+    Id = "idFilter",
+    RolloverText = S[302535920000806--[["Only show items containing this text.
 
-  element_y = self.border + self.idFilter:GetPos():y() + self.idFilter:GetSize():y()
+Press Enter to show all items."--]]],
+    Hint = S[302535920000068--[[Filter Text--]]],
+    OnTextChanged = function()
+      self:FilterText(self.idFilter:GetText())
+    end,
+    OnKbdKeyDown = function(obj, vk)
+      return self:idFilterOnKbdKeyDown(obj, vk)
+    end,
+  }, self.idFilterArea)
 
-  local halfish_for_checkboxes = (self.dialog_width - 10) / 2
+  self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idCheckboxArea",
+    Dock = "bottom",
+  }, self.idDialog)
 
-  self.idCheckBox1 = g_Classes.CheckButton:new(self)
-  self.idCheckBox1:SetPos(point(self.border+15, element_y))
-  self.idCheckBox1:SetSize(point(halfish_for_checkboxes, 17))
-  self.idCheckBox1:SetText(S[588--[[Empty--]]])
-  self.idCheckBox1:SetButtonSize(point(16, 16))
-  self.idCheckBox1:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idCheckBox1:SetHSizing("AnchorToMidline")
-  self.idCheckBox1:SetVSizing("AnchorToBottom")
+  self.idCheckBox1 = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idCheckBox1",
+    Text = S[588--[[Empty--]]],
+    Dock = "left",
+--~     OnChange = function()
+--~       self.idAutoRefreshToggle(self)
+--~     end,
+  }, self.idCheckboxArea)
 
-  element_x = self.border * 2 + self.idCheckBox1:GetPos():x() + self.idCheckBox1:GetSize():x()
+  self.idCheckBox2 = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idCheckBox2",
+    Text = S[588--[[Empty--]]],
+    Dock = "right",
+--~     OnChange = function()
+--~       self.idAutoRefreshToggle(self)
+--~     end,
+  }, self.idCheckboxArea)
 
-  self.idCheckBox2 = g_Classes.CheckButton:new(self)
-  self.idCheckBox2:SetPos(point(element_x, element_y))
-  self.idCheckBox2:SetSize(point(halfish_for_checkboxes, 17))
-  self.idCheckBox2:SetText(S[588--[[Empty--]]])
-  self.idCheckBox2:SetButtonSize(point(16, 16))
-  self.idCheckBox2:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idCheckBox2:SetHSizing("AnchorToMidline")
-  self.idCheckBox2:SetVSizing("AnchorToBottom")
-
-  --make checkbox work like a button
-  function self.idCheckBox2.button.OnButtonPressed()
-    --show lightmodel lists and lets you pick one to use in new window
-    if self.custom_type == 5 then
+  -- make checkbox work like a button
+  if self.custom_type == 5 then
+    function self.idCheckBox2.OnChange()
+      -- show lightmodel lists and lets you pick one to use in new window
       ChoGGi.MenuFuncs.ChangeLightmodel(true)
     end
   end
 
-  element_y = 4 + self.idCheckBox2:GetPos():y() + self.idCheckBox2:GetSize():y()
+  self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idEditArea",
+    Dock = "bottom",
+  }, self.idDialog)
 
-  self.idEditValue = g_Classes.SingleLineEdit:new(self)
-  self.idEditValue:SetPos(point(self.border, element_y))
-  self.idEditValue:SetSize(point(self.dialog_width, 24))
-  self.idEditValue:SetAutoSelectAll(true)
-  self.idEditValue:SetFontStyle("Editor14Bold")
-  self.idEditValue:SetHSizing("Resize")
-  self.idEditValue:SetVSizing("AnchorToBottom")
-  self.idEditValue:SetHint(S[302535920000077--[["You can enter a custom value to be applied.
+  self.idEditValue = g_Classes.ChoGGi_TextInput:new({
+    Id = "idEditValue",
+    RolloverText = S[302535920000077--[["You can enter a custom value to be applied.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]])
-  self.idEditValue:SetTextVAlign("center")
-  self.idEditValue.display_text = S[302535920000078--[[Add Custom Value--]]]
-
-  --update custom value list item
-  function self.idEditValue.OnValueChanged()
-    local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
-    if self.custom_type > 0 then
-      if self.idList.last_selected then
-        self.idList.items[self.idList.last_selected].value = value
+Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
+    Hint = S[302535920000078--[[Add Custom Value--]]],
+    OnTextChanged = function()
+      local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
+      if self.custom_type > 0 then
+        if self.idList.last_selected then
+          self.idList.items[self.idList.last_selected].value = value
+        end
+      else
+        self.idList:SetItem(#self.idList.items,{
+          text = value,
+          value = value,
+          hint = 302535920000079--[[< Use custom value--]],
+        })
       end
-    else
-      self.idList:SetItem(#self.idList.items,{
-        text = value,
-        value = value,
-        hint = 302535920000079--[[< Use custom value--]],
-      })
-    end
-  end
+    end,
+  }, self.idEditArea)
 
-  element_y = 4 + self.idEditValue:GetPos():y() + self.idEditValue:GetSize():y()
+  self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idButtonContainer",
+    Dock = "bottom",
+  }, self.idDialog)
 
-  local title = S[6878--[[OK--]]]
-  self.idOK = g_Classes.Button:new(self)
-  self.idOK:SetPos(point(self.border + 20, element_y))
-  self.idOK:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
-  self.idOK:SetHSizing("AnchorToLeft")
-  self.idOK:SetVSizing("AnchorToBottom")
-  self.idOK:SetFontStyle("Editor14Bold")
-  self.idOK:SetText(title)
-  self.idOK:SetHint(S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]])
+  self.idOK = g_Classes.ChoGGi_Button:new({
+    Id = "idOK",
+    Dock = "left",
+    Text = S[6878--[[OK--]]],
+    RolloverText = S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]],
+    OnMouseButtonDown = function()
+      -- build self.choices
+      self:GetAllItems()
+      -- send selection back
+      self:delete(self.choices)
+    end,
+  }, self.idButtonContainer)
 
-  --return values
-  function self.idOK.OnButtonPressed()
-    --item list
-    self:GetAllItems()
-    --send selection back
-    self:delete(self.choices)
-  end
+  self.idCancel = g_Classes.ChoGGi_Button:new({
+    Id = "idCancel",
+    Dock = "right",
+    Text = S[6879--[[Cancel--]]],
+    RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
+    OnMouseButtonDown = self.idCloseX.OnPress,
+  }, self.idButtonContainer)
 
-  title = S[6879--[[Cancel--]]]
-  local title_size = ChoGGi.ComFuncs.RetButtonTextSize(title)
-  self.idCancel = g_Classes.Button:new(self)
-  self.idCancel:SetPos(point(self.dialog_width - title_size:x() - 20 - self.border, element_y))
-  self.idCancel:SetSize(title_size)
-  self.idCancel:SetHSizing("AnchorToRight")
-  self.idCancel:SetVSizing("AnchorToBottom")
-  self.idCancel:SetFontStyle("Editor14Bold")
-  self.idCancel:SetHint(S[302535920000074--[[Cancel without changing anything.--]]])
-  self.idCancel:SetText(title)
-  self.idCancel.OnButtonPressed = self.idCloseX.OnButtonPressed
+  -- keep all colour elements in here for easier... UIy stuff
+  self.idColourContainer = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idColourContainer",
+    MinWidth = 550,
+    Dock = "right",
+  }, self.idDialog)
 
-  element_y = self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
+  self.idColorPickerArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idColorPickerArea",
+    Dock = "top",
+  }, self.idColourContainer)
 
-  self.idColorHSV = g_Classes.ColorHSVControl:new(self)
-  -- for some reason this is ignored till visible, unlike checkmarks
-  self.idColorHSV:SetPos(point(self.dialog_width - 325, element_y))
-  self.idColorHSV:SetSize(point(300, 300))
-  self.idColorHSV:SetHSizing("AnchorToRight")
-  self.idColorHSV:SetVSizing("AnchorToTop")
-  self.idColorHSV:SetVisible(false)
-  self.idColorHSV:SetHint(S[302535920000081--[[Double right-click to set without closing dialog.--]]])
+  self.idColorPicker = g_Classes.XColorPicker:new({
+    RolloverText = S[302535920000081--[[Double right-click to change colour without closing dialog.--]]],
+    OnColorChanged = function(picker, color)
+--~       self.idEdit:SetText(self:ConvertToText(color))
+--~       self.idColorBox.idColor:SetBackground(color)
+--~       if now() - last_update >= 100 then
+--~         self:SetProp(color)
+--~         last_update = now()
+--~       end
+      --update item
+      self.idList.items[self.idList.last_selected].value = color
+      --custom value box
+      self.idEditValue:SetText(tostring(color))
+    end,
+    OnMouseButtonDoubleClick = function(_, _, button)
+      print(button)
+      if button == "R" then
+        self:idColorPickerOnRButtonDoubleClick()
+      end
+    end,
+--~     AdditionalComponent = self.prop_meta.editor == "color" and "alpha" or "intensity"
+  }, self.idColorPickerArea)
+--~   --stop idColorPicker from closing on dbl l click
+--~   function self.idColorPicker.OnLButtonDoubleClick()
+--~   end
 
-  --stop idColorHSV from closing on dblclick
-  function self.idColorHSV.OnLButtonDoubleClick()
-  end
-  --apply colour on dbl r-click
-  function self.idColorHSV.OnRButtonDoubleClick()
-    self:idColorHSVOnRButtonDoubleClick()
-  end
+  self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idColorCheckArea",
+    Dock = "bottom",
+  }, self.idColourContainer)
 
-  --and update custom value when dbl r-click
-  function self.OnColorChanged(color)
-    --update item
-    self.idList.items[self.idList.last_selected].value = color
-    --custom value box
-    self.idEditValue:SetText(tostring(color))
-  end
+  self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idColorCheckElec",
+    Text = S[302535920000037--[[Electricity--]]],
+    RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+    Dock = "left",
+  }, self.idColourContainer)
 
-  element_y = self.idColorHSV:GetPos():y() + self.idColorHSV:GetSize():y()
-  local offset = 50
+  self.idColorCheckAir = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idColorCheckAir",
+    Text = S[891--[[Air--]]],
+    RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+    Dock = "left",
+  }, self.idColourContainer)
 
-  --right to left positioning for checks as we use AnchorToRight
-  title = S[302535920000037--[[Electricity--]]]
-  title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
-  self.idColorCheckElec = g_Classes.CheckButton:new(self)
-  self.idColorCheckElec:SetPos(point(self.dialog_width - self.border - title_size:x() - offset, element_y))
-  self.idColorCheckElec:SetSize(title_size)
-  self.idColorCheckElec:SetHSizing("AnchorToRight")
-  self.idColorCheckElec:SetVSizing("AnchorToTop")
-  self.idColorCheckElec:SetVisible(false)
-  self.idColorCheckElec:SetButtonSize(point(16, 16))
-  self.idColorCheckElec:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idColorCheckElec:SetText(title)
-  self.idColorCheckElec:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
-
-  element_x = self.border * 2 + self.idColorCheckElec:GetSize():x()
-
-  title = S[891--[[Air--]]]
-  title_size = ChoGGi.ComFuncs.RetCheckTextSize(title)
-  self.idColorCheckAir = g_Classes.CheckButton:new(self)
-  self.idColorCheckAir:SetPos(point(self.dialog_width - title_size:x() - element_x - offset, element_y))
-  self.idColorCheckAir:SetSize(title_size)
-  self.idColorCheckAir:SetHSizing("AnchorToRight")
-  self.idColorCheckAir:SetVSizing("AnchorToTop")
-  self.idColorCheckAir:SetVisible(false)
-  self.idColorCheckAir:SetButtonSize(point(16, 16))
-  self.idColorCheckAir:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idColorCheckAir:SetText(title)
-  self.idColorCheckAir:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
-
-  element_x = self.border * 2 + self.idColorCheckAir:GetPos():x()
-
-  title = S[681--[[Water--]]]
-  self.idColorCheckWater = g_Classes.CheckButton:new(self)
-  self.idColorCheckWater:SetPos(point(self.dialog_width - element_x - offset - 25, element_y))
-  self.idColorCheckWater:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
-  self.idColorCheckWater:SetHSizing("AnchorToRight")
-  self.idColorCheckWater:SetVSizing("AnchorToTop")
-  self.idColorCheckWater:SetVisible(false)
-  self.idColorCheckWater:SetButtonSize(point(16, 16))
-  self.idColorCheckWater:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
-  self.idColorCheckWater:SetText(title)
-  self.idColorCheckWater:SetHint(S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]])
-
---~   -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
---~   self:InitChildrenSizing()
-
---~   -- if i don't have this than there's a chunk of empy beneath idList (till user resizes)
---~   CreateRealTimeThread(function()
---~     self.idList:SetSize(point(self.dialog_width, list_height))
---~   end)
-
+  self.idColorCheckWater = g_Classes.ChoGGi_CheckButton:new({
+    Id = "idColorCheckWater",
+    Text = S[681--[[Water--]]],
+    RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+    Dock = "left",
+  }, self.idColourContainer)
 
   -- fiddling with custom value
   local list = context.list
   if list.custom_type then
     self.idEditValue.auto_select_all = false
-    self.custom_type = list.custom_type
     if list.custom_type == 2 or list.custom_type == 5 then
       self.idList:SetSelection(1, true)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
@@ -291,18 +254,21 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
       self:UpdateColourPicker()
       if list.custom_type == 2 then
         self:SetWidth(750)
-        self.idColorHSV:SetVisible(true)
-        self.idColorCheckAir:SetVisible(true)
-        self.idColorCheckWater:SetVisible(true)
-        self.idColorCheckElec:SetVisible(true)
+--~         self.idColourContainer:SetVisible(true)
+--~         self.idColorPicker:SetVisible(true)
+--~         self.idColorCheckAir:SetVisible(true)
+--~         self.idColorCheckWater:SetVisible(true)
+--~         self.idColorCheckElec:SetVisible(true)
+      else
+        self.idColourContainer:SetVisible(false)
       end
     end
   end
 
   if list.multisel then
-    self.idList.multiple_selection = true
+    self.idList.MultipleSelection = true
     if type(list.multisel) == "number" then
-      --select all of number
+      -- select all of number
       for i = 1, list.multisel do
         self.idList:SetSelection(i, true)
       end
@@ -311,7 +277,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
   --setup checkboxes
   if not list.check1 and not list.check2 then
-    self.hidden.checks = true
+--~     self.hidden.checks = true
     self.idCheckBox1:SetVisible(false)
     self.idCheckBox2:SetVisible(false)
   else
@@ -337,8 +303,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
      self.idCheckBox2:SetValue(true)
  end
 
-  --where to position self
-  self:SetPos(terminal.GetMousePos())
+--~   --where to position self
+--~   self:SetPos(terminal.GetMousePos())
 
   --focus on list
   self.idList:SetFocus()
@@ -348,12 +314,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   if list.hint then
     list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
     self.idList:SetRollover(list.hint)
-    self.idOK:SetRollover(Concat(self.idOK:GetHint(),"\n\n\n",list.hint))
+    self.idOK:SetRollover(Concat(self.idOK:GetRolloverText(),"\n\n\n",list.hint))
   end
 
-  --hide ok/cancel buttons as they don't do jack
+  -- hide ok/cancel buttons as they don't do jack
   if list.custom_type == 1 then
-    self.hidden.buttons = true
+--~     self.hidden.buttons = true
     self.idOK:SetVisible(false)
     self.idCancel:SetVisible(false)
   end
@@ -365,45 +331,56 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self:SetInitPos(context.parent)
 end
 
-function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()
-  local point = point
-  -- no sense in doing anything if we don't need to
-  if not self.hidden.checks and not self.hidden.buttons then
-    return
+function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
+  if vk == const.vkEnter then
+    self:FilterText("")
+    return "break"
+  elseif vk == const.vkEsc then
+    self.idCloseX:Press()
+    return "break"
   end
-  CreateRealTimeThread(function()
-    -- what we adjust by
-    local heightc = 0
-    local heightb = 0
-    if self.hidden.checks then
-      heightc = self.idCheckBox1:GetHeight()
-    end
-    if self.hidden.buttons then
-      heightb = self.idOK:GetHeight()
-    end
-    -- list only gets bigger, we don't need to move it
-    local size = self.idList:GetSize()
-    self.idList:SetSize(point(size:x(),size:y() + heightc + heightb))
-    -- filter just needs to be moved down, the rest have offsets depending on what is hidden
-    local pos = self.idFilter:GetPos()
-    self.idFilter:SetPos(point(pos:x(),pos:y() + heightc + heightb))
-    pos = self.idCheckBox1:GetPos()
-    self.idCheckBox1:SetPos(point(pos:x(),pos:y() + heightc + heightb))
-    pos = self.idCheckBox2:GetPos()
-    self.idCheckBox2:SetPos(point(pos:x(),pos:y() + heightc + heightb))
-
-    -- only need to adjust by button height for these
-    pos = self.idEditValue:GetPos()
-    self.idEditValue:SetPos(point(pos:x(),pos:y() + heightb))
-    pos = self.idOK:GetPos()
-    self.idOK:SetPos(point(pos:x(),pos:y() + heightb))
-    pos = self.idCancel:GetPos()
-    self.idCancel:SetPos(point(pos:x(),pos:y() + heightb))
-
-    -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
-    self:InitChildrenSizing()
-  end)
+  return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
+
+--~ function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()
+--~   local point = point
+--~   -- no sense in doing anything if we don't need to
+--~   if not self.hidden.checks and not self.hidden.buttons then
+--~     return
+--~   end
+--~   CreateRealTimeThread(function()
+--~     -- what we adjust by
+--~     local heightc = 0
+--~     local heightb = 0
+--~     if self.hidden.checks then
+--~       heightc = self.idCheckBox1:GetHeight()
+--~     end
+--~     if self.hidden.buttons then
+--~       heightb = self.idOK:GetHeight()
+--~     end
+--~     -- list only gets bigger, we don't need to move it
+--~     local size = self.idList:GetSize()
+--~     self.idList:SetSize(point(size:x(),size:y() + heightc + heightb))
+--~     -- filter just needs to be moved down, the rest have offsets depending on what is hidden
+--~     local pos = self.idFilter:GetPos()
+--~     self.idFilter:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+--~     pos = self.idCheckBox1:GetPos()
+--~     self.idCheckBox1:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+--~     pos = self.idCheckBox2:GetPos()
+--~     self.idCheckBox2:SetPos(point(pos:x(),pos:y() + heightc + heightb))
+
+--~     -- only need to adjust by button height for these
+--~     pos = self.idEditValue:GetPos()
+--~     self.idEditValue:SetPos(point(pos:x(),pos:y() + heightb))
+--~     pos = self.idOK:GetPos()
+--~     self.idOK:SetPos(point(pos:x(),pos:y() + heightb))
+--~     pos = self.idCancel:GetPos()
+--~     self.idCancel:SetPos(point(pos:x(),pos:y() + heightb))
+
+--~     -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
+--~     self:InitChildrenSizing()
+--~   end)
+--~ end
 
 function ChoGGi_ListChoiceCustomDialog:FilterText(text)
   -- loop through all the list items and set ones without the text to 0 height
@@ -426,7 +403,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDoubleClick()
   end
   -- fire custom_func with sel
   if self.custom_type == 1 or self.custom_type == 7 then
-    self.Func(self.sel)
+    self.custom_func(self.sel)
   elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
     -- dblclick to close and ret item
     self.idOK.OnButtonPressed()
@@ -437,17 +414,17 @@ function ChoGGi_ListChoiceCustomDialog:idListOnRButtonDoubleClick()
   --applies the lightmodel without closing dialog,
   if self.custom_type == 5 then
     self:BuildAndApplyLightmodel()
-  elseif self.custom_type == 6 and self.Func then
-    self.Func(self.sel.func)
+  elseif self.custom_type == 6 and self.custom_func then
+    self.custom_func(self.sel.func)
   else
     self.idEditValue:SetText(self.sel.text)
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idColorHSVOnRButtonDoubleClick()
+function ChoGGi_ListChoiceCustomDialog:idColorPickerOnRButtonDoubleClick()
   if self.custom_type == 2 then
     if not self.obj then
-      --grab the object from the last list item
+      -- grab the object from the last list item
       self.obj = self.idList.items[#self.idList.items].obj
     end
     local SetPal = self.obj.SetColorizationMaterial
@@ -482,9 +459,11 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
         if p.custom_type == 5 and p.sel.editor == "color" then
           p:UpdateColourPicker()
           p:SetWidth(750)
-          p.idColorHSV:SetVisible(true)
+          p.idColourContainer:SetVisible(true)
+--~           p.idColorPicker:SetVisible(true)
         else
-          p.idColorHSV:SetVisible(false)
+          p.idColourContainer:SetVisible(false)
+--~           p.idColorPicker:SetVisible(false)
         end
       end
     end
@@ -548,9 +527,9 @@ end
 function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
   local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
   if type(num) == "number" then
-    self.idColorHSV:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
-    self.idColorHSV:InitHSVPtPos()
-    self.idColorHSV:Invalidate()
+    self.idColorPicker:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
+    self.idColorPicker:InitHSVPtPos()
+    self.idColorPicker:Invalidate()
   end
 end
 
@@ -599,4 +578,37 @@ function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, vk)
 --~     return "break"
   end
   return "continue"
+end
+
+-- copied from GedPropEditors.lua
+function CreateNumberEditor(parent, id, up_pressed, down_pressed)
+  local button_panel = XWindow:new({Dock = "right"}, parent)
+  local top_btn = XTextButton:new({
+    Dock = "top",
+    OnPress = up_pressed,
+    Padding = box(1, 2, 1, 1),
+    Icon = "CommonAssets/UI/arrowup-40.tga",
+    IconScale = point(500, 500),
+    IconColor = RGB(0, 0, 0),
+    DisabledIconColor = RGBA(0, 0, 0, 128),
+    Background = RGBA(0, 0, 0, 0),
+    DisabledBackground = RGBA(0, 0, 0, 0),
+    RolloverBackground = RGB(204, 232, 255),
+    PressedBackground = RGB(121, 189, 241)
+  }, button_panel, nil, nil, "NumberArrow")
+  local bottom_btn = XTextButton:new({
+    Dock = "bottom",
+    OnPress = down_pressed,
+    Padding = box(1, 1, 1, 2),
+    Icon = "CommonAssets/UI/arrowdown-40.tga",
+    IconScale = point(500, 500),
+    IconColor = RGB(0, 0, 0),
+    DisabledIconColor = RGBA(0, 0, 0, 128),
+    Background = RGBA(0, 0, 0, 0),
+    DisabledBackground = RGBA(0, 0, 0, 0),
+    RolloverBackground = RGB(204, 232, 255),
+    PressedBackground = RGB(121, 189, 241)
+  }, button_panel, nil, nil, "NumberArrow")
+  local edit = XEdit:new({Id = id, Dock = "box"}, parent)
+  return edit, top_btn, bottom_btn
 end
