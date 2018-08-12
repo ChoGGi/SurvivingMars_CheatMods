@@ -952,6 +952,24 @@ do -- LoadGame/CityStart
 
         -- make some space for the close button
         dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+
+
+        --OnTextChanged?
+
+--~   -- add tabs to every line so to prevent errors from how DA update merges lines
+--~   function Console:OnShortcut(shortcut, source)
+--~     if shortcut == "Enter" then
+--~     local text = self.idEdit:GetText()
+--~ print(text)
+--~     text:gsub("\n","\t\n")
+--~ print(text)
+--~     self.idEdit:SetText(text)
+
+
+--~     end
+--~     return ChoGGi_OrigFuncs.Console_OnShortcut(self, shortcut, source)
+--~   end
+
         -- add close button
         g_Classes.ChoGGi_CloseButton:new({
           Id = "idClose",
@@ -967,7 +985,7 @@ do -- LoadGame/CityStart
       -- update menu
       ReloadShortcuts()
 
-      -- always show on my computer
+      -- always show menu on my computer
       if UserSettings.ShowCheatsMenu or ChoGGi.testing then
         XShortcutsTarget:SetVisible(true)
       end

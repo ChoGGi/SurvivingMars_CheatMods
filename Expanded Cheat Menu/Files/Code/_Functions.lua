@@ -40,8 +40,8 @@ local camera_SetFovY = camera.SetFovY
 local camera_SetFovX = camera.SetFovX
 
 -- add some shortened func names
-do --for those that don't know "do ... end" is a way of keeping "local" local to the do
-  --make some easy to type names
+do -- for those that don't know "do ... end" is a way of keeping "local =" local to the do
+  -- make some easy to type names
   local ChoGGi = ChoGGi
   function dump(...)
     ChoGGi.ComFuncs.Dump(...)
@@ -58,32 +58,34 @@ do --for those that don't know "do ... end" is a way of keeping "local" local to
   function dumpt(...)
     ChoGGi.ComFuncs.DumpTable(...)
   end
-  local function RemoveLast(str)
-    --remove restart as the last cmd so we don't hit it by accident
-    local dlgConsole = dlgConsole
-    if dlgConsole.history_queue[1] == str then
-      table.remove(dlgConsole.history_queue,1)
-      --and save it?
-      if rawget(_G, "dlgConsole") then
-        dlgConsole:StoreHistory()
-      end
-    end
-  end
-  local orig_quit = quit
-  function quit(...)
-    orig_quit(...)
-    RemoveLast("quit")
-  end
-  function restart()
-    quit("restart")
-    RemoveLast("restart")
-  end
-  trans = ChoGGi.ComFuncs.Trans -- works with userdata or index number
+
+--~   local function RemoveLast(str)
+--~     --remove restart/quit as the last cmd so we don't hit it by accident
+--~     local dlgConsole = dlgConsole
+--~     if dlgConsole.history_queue[1] == str then
+--~       table.remove(dlgConsole.history_queue,1)
+--~       --and save it?
+--~       if rawget(_G, "dlgConsole") then
+--~         dlgConsole:StoreHistory()
+--~       end
+--~     end
+--~   end
+--~   local orig_quit = quit
+--~   function quit(...)
+--~     orig_quit(...)
+--~     RemoveLast("quit")
+--~   end
+
+  -- works with userdata or index number
+  trans = ChoGGi.ComFuncs.Trans
   function so()
     return ChoGGi.CodeFuncs.SelObject()
   end
 end
 -- no need to have these in the do
+function restart()
+  quit("restart")
+end
 reboot = restart
 exit = quit
 mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
@@ -92,9 +94,9 @@ mc = GetPreciseCursorObj
 m = SelectionMouseObj
 c = GetTerrainCursor -- cursor position on map
 cs = terminal_GetMousePos -- cursor pos on screen
-s = false --used to store SelectedObj
+s = false -- used to store SelectedObj
 
---check if tech is researched before we get value
+-- check if tech is researched before we get value
 do
   local ChoGGi = ChoGGi
   function ChoGGi.CodeFuncs.GetSpeedDrone()

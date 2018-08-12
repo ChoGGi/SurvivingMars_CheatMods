@@ -360,6 +360,7 @@ end --OnMsg
 --Built
 function OnMsg.ClassesBuilt()
   SaveOrigFunc("Colonist","ChangeComfort")
+  SaveOrigFunc("Console","AddHistory")
   SaveOrigFunc("Console","Exec")
   SaveOrigFunc("Console","HistoryDown")
   SaveOrigFunc("Console","HistoryUp")
@@ -905,26 +906,45 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-  --make sure console is focused even when construction is opened
+  -- make sure console is focused even when construction is opened
   function Console:Show(show)
     ChoGGi_OrigFuncs.Console_Show(self, show)
     local was_visible = self:GetVisible()
     if show and not was_visible then
-      --always on top
+      -- always on top
       self:SetModal()
     end
     if not show then
-      --always on top off
+      -- always on top off
       self:SetModal(false)
     end
-    --adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
+    -- adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
     SetTrans(self)
 
-    --and rebuild the console buttons (added by ECM)
+    -- and rebuild the console buttons (added by ECM)
     ChoGGi.Console.RebuildConsoleToolbar(self)
   end
 
-  --kind of an ugly way of making sure console doesn't include ` when using tilde to open console
+  do -- skip quit from being added to console history to prevent annoyances
+    local skip_cmds = {
+      quit = true,
+      ["quit()"] = true,
+      exit = true,
+      ["exit()"] = true,
+      reboot = true,
+      ["reboot()"] = true,
+      restart = true,
+      ["restart()"] = true,
+    }
+    function Console:AddHistory(text)
+      if skip_cmds[text] then
+        return
+      end
+      return ChoGGi_OrigFuncs.Console_AddHistory(self,text)
+    end
+  end -- do
+
+  -- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
   function Console:TextChanged()
     ChoGGi_OrigFuncs.Console_TextChanged(self)
     if self.idEdit:GetText() == "`" then
