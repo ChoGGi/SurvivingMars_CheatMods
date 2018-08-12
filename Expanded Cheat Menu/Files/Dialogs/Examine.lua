@@ -727,11 +727,11 @@ function Examine:totextex(o)
         )
       else
         res[#res+1] = Concat("<color 255 255 255>\nThread info: ",
-          "\nIsValidThread: ",IsValidThread(o),
-          "\nGetThreadStatus: ",GetThreadStatus(o),
-          "\nIsGameTimeThread: ",IsGameTimeThread(o),
-          "\nIsRealTimeThread: ",IsRealTimeThread(o),
-          "\nThreadHasFlags: ",ThreadHasFlags(o),
+          "\nIsValidThread(): ",IsValidThread(o),
+          "\nGetThreadStatus(): ",GetThreadStatus(o),
+          "\nIsGameTimeThread(): ",IsGameTimeThread(o),
+          "\nIsRealTimeThread(): ",IsRealTimeThread(o),
+          "\nThreadHasFlags(): ",ThreadHasFlags(o),
           "</color>"
         )
         break
