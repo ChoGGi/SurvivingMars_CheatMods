@@ -266,7 +266,6 @@ function ChoGGi.MenuFuncs.EditECMSettings()
       end
     end,
   })
-  dialog:Open()
 end
 
 function ChoGGi.MenuFuncs.DisableECM()

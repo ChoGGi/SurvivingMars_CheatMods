@@ -311,7 +311,6 @@ This can take time on something like the "Building" metatable--]]],
             end
           end,
         })
-        dialog:Open()
       end,
     },
     {
@@ -334,7 +333,6 @@ This can take time on something like the ""Building"" metatable (don't use this 
             end
           end,
         })
-        dialog:Open()
       end,
     },
     {name = "   ---- "},

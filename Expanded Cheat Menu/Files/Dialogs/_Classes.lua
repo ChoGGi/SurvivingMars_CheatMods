@@ -156,6 +156,7 @@ DefineClass.ChoGGi_Dialog = {
 DefineClass.ChoGGi_DialogSection = {
   __parents = {"XWindow"},
   Margins = box(4,4,4,4),
+  FoldWhenHidden = true,
 }
 
 DefineClass.ChoGGi_Window = {

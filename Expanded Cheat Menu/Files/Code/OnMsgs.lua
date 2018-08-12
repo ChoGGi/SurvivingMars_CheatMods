@@ -37,6 +37,8 @@ function OnMsg.ClassesGenerate()
   XRollover.RolloverTemplate = "Rollover"
   -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
   XRolloverWindow.ZOrder = 9999999
+  -- when it's not visible it doesn't take up space
+  XListItem.FoldWhenHidden = true
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)

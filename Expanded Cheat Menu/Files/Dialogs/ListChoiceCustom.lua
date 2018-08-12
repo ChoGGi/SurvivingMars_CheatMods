@@ -12,7 +12,7 @@ local type,tostring = type,tostring
 DefineClass.ChoGGi_ListChoiceCustomDialog = {
   __parents = {"ChoGGi_Window"},
   choices = false,
-  listitem_height = false,
+--~   listitem_height = false,
   colorpicker = false,
   custom_type = 0,
   custom_func = false,
@@ -37,10 +37,6 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   self.custom_func = self.list.custom_func
 --~   self.hidden = {}
   self.custom_type = self.list.custom_type
---~   -- used for hiding ListItems (well, okay restoring the actual height of them)
---~   self.listitem_height = self.idList.item_windows[1]:GetHeight(),
-  -- fix this
-  self.listitem_height = 25
 
   self.title = self.list.title
 
@@ -48,19 +44,21 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   self:AddElements(parent, context)
 
   self:AddScrollList()
---~   self.idList:SetDock("box")
   self:BuildList(self.list.items)
 
-  function self.idList.OnMouseButtonDown(button,_,mouse)
-    print(1,mouse)
-    if mouse == "L" then
+  function self.idList.OnMouseButtonDown(obj,pt,button)
+    if button == "L" then
+      self:idListOnLButtonDown()
+    end
+    return g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
+  end
+  function self.idList.OnMouseButtonDoubleClick(obj,pt,button)
+    if button == "L" then
       self:idListOnLButtonDoubleClick()
-    elseif mouse == "R" then
+    elseif button == "R" then
       self:idListOnRButtonDoubleClick()
     end
-  end
-  function self.idList.OnMouseButtonDoubleClick(button,_,mouse)
-    print(2,mouse)
+--~     return g_Classes.ChoGGi_List.OnMouseButtonDoubleClick(obj,pt,button)
   end
 --~   function list.OnDoubleClick(container_list, item_idx)
 --~     self:ApplyActiveSuggestion()
@@ -128,17 +126,20 @@ Press Enter to show all items."--]]],
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
     Hint = S[302535920000078--[[Add Custom Value--]]],
     OnTextChanged = function()
-      local value = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetValue())
+      local text = self.idEditValue:GetText()
+      local value = ChoGGi.ComFuncs.RetProperType(text)
       if self.custom_type > 0 then
-        if self.idList.last_selected then
-          self.idList.items[self.idList.last_selected].value = value
+        if #self.idList.selection > 0 then
+          self.idList[#self.idList.selection].ChoGGi_context.value = value
         end
       else
-        self.idList:SetItem(#self.idList.items,{
-          text = value,
-          value = value,
-          hint = 302535920000079--[[< Use custom value--]],
-        })
+        local listitem = self.idList:CreateTextItem(text)
+        listitem.RolloverText = ChoGGi.ComFuncs.CheckText(302535920000079--[[< Use custom value--]])
+        listitem.ChoGGi_context = {
+          text = text
+          value = value
+          hint = 302535920000079--[[< Use custom value--]]
+        }
       end
     end,
   }, self.idEditArea)
@@ -174,7 +175,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Id = "idColourContainer",
     MinWidth = 550,
     Dock = "right",
-    FoldWhenHidden = true,
   }, self.idDialog)
   self.idColourContainer.visible = false
 
@@ -193,7 +193,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 --~         last_update = now()
 --~       end
       --update item
-      self.idList.items[self.idList.last_selected].value = color
+      self.idList[#self.idList.selection].ChoGGi_context.value = color
       --custom value box
       self.idEditValue:SetText(tostring(color))
     end,
@@ -240,7 +240,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     self.idEditValue.auto_select_all = false
     if self.custom_type == 2 or self.custom_type == 5 then
       self.idList:SetSelection(1, true)
-      self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+      self.sel = self.idList[#self.idList.selection]
       self.idEditValue:SetText(tostring(self.sel.value))
       self:UpdateColourPicker()
       if self.custom_type == 2 then
@@ -275,7 +275,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   -- are we showing a hint?
   local hint = self.list.hint
   if hint then
-    hint = ChoGGi.ComFuncs.CheckText(hint,"")
+    hint = ChoGGi.ComFuncs.CheckText(hint)
     self.idList:SetRollover(hint)
     self.idOK:SetRollover(Concat(self.idOK:GetRolloverText(),"\n\n\n",hint))
   end
@@ -291,22 +291,23 @@ end
 function ChoGGi_ListChoiceCustomDialog:BuildList(items)
   self.idList:Clear()
   for i = 1, #items do
-    self.idList:CreateTextItem(items[i].text,nil,items[i])
+    local listitem = self.idList:CreateTextItem(items[i].text)
+    listitem.RolloverText = ChoGGi.ComFuncs.CheckText(items[i].hint)
+    listitem.ChoGGi_context = items[i]
   end
-  self.idList:SetInitialSelection()
   ex(self.idList)
 end
 
 function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
   local name1 = Concat("idCheckBox",i)
   local name2 = Concat("check",i)
-  if list[name2] then
-    self[name1]:SetText(ChoGGi.ComFuncs.CheckText(list[name2],""))
-    self[name1]:SetRollover(ChoGGi.ComFuncs.CheckText(list[Concat("check",i,"_hint")],""))
+  if self.list[name2] then
+    self[name1]:SetText(ChoGGi.ComFuncs.CheckText(self.list[name2]))
+    self[name1]:SetRollover(ChoGGi.ComFuncs.CheckText(self.list[Concat("check",i,"_hint")]))
   else
     self[name1]:SetVisible(false)
   end
-  if list[Concat("check",i,"_checked")] then
+  if self.list[Concat("check",i,"_checked")] then
     self[name1]:SetValue(true)
   end
 end
@@ -324,17 +325,19 @@ end
 
 function ChoGGi_ListChoiceCustomDialog:FilterText(text)
   -- loop through all the list items and set ones without the text to 0 height
-  local listitems = self.idList.item_windows
+  local listitems = self.idList
   for i = 1, #listitems do
     local li = listitems[i]
 
     if li.text.text:lower():find(text:lower()) then
-      li:SetHeight(self.listitem_height)
+--~       li:SetHeight(self.listitem_height)
+      li:SetVisible(true)
     else
-      li:SetHeight(0)
+      li:SetVisible()
+--~       li:SetHeight(0)
     end
   end
-  List.Refresh(self.idList)
+--~   List.Refresh(self.idList)
 end
 
 function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDoubleClick()
@@ -351,7 +354,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDoubleClick()
 end
 
 function ChoGGi_ListChoiceCustomDialog:idListOnRButtonDoubleClick()
-  --applies the lightmodel without closing dialog,
+  -- applies the lightmodel without closing dialog,
   if self.custom_type == 5 then
     self:BuildAndApplyLightmodel()
   elseif self.custom_type == 6 and self.custom_func then
@@ -365,10 +368,10 @@ function ChoGGi_ListChoiceCustomDialog:idColorPickerOnRButtonDoubleClick()
   if self.custom_type == 2 then
     if not self.obj then
       -- grab the object from the last list item
-      self.obj = self.idList.items[#self.idList.items].obj
+      self.obj = self.idList[#self.idList].ChoGGi_context.obj
     end
     local SetPal = self.obj.SetColorizationMaterial
-    local items = self.idList.items
+    local items = self.idList
     ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
     for i = 1, 4 do
       local Color = items[i].value
@@ -376,32 +379,30 @@ function ChoGGi_ListChoiceCustomDialog:idColorPickerOnRButtonDoubleClick()
       local Roughness = items[i+8].value
       SetPal(self.obj,i,Color,Roughness,Metallic)
     end
-    self.obj:SetColorModifier(self.idList.items[#self.idList.items].value)
+    self.obj:SetColorModifier(self.idList[#self.idList].ChoGGi_context.value)
   elseif self.custom_type == 5 then
     self:BuildAndApplyLightmodel()
   end
 end
 
 function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
-  local p = self.parent
-  local sel = self:GetSelection()
-  if type(sel) == "table" and #sel > 0 then
-    --update selection (select last selected if multisel)
-    p.sel = sel[#sel]
-    --update the custom value box
-    p.idEditValue:SetText(tostring(p.sel.value))
-    if p.custom_type > 0 then
-      --2 = showing the colour picker
-      if p.custom_type == 2 then
-        p:UpdateColourPicker()
-      --don't show picker unless it's a colour setting
-      elseif p.custom_type == 5 then
-        if p.custom_type == 5 and p.sel.editor == "color" then
-          p:UpdateColourPicker()
-          p:SetWidth(800)
-          p.idColourContainer:SetVisible(true)
+  if #self.idList.selection > 0 then
+    -- update selection (select last selected if multisel)
+    self.sel = self.idList[#self.idList.selection].ChoGGi_context
+    -- update the custom value box
+    self.idEditValue:SetText(tostring(self.sel.value))
+    if self.custom_type > 0 then
+      -- 2 = showing the colour picker
+      if self.custom_type == 2 then
+        self:UpdateColourPicker()
+      -- don't show picker unless it's a colour setting
+      elseif self.custom_type == 5 then
+        if self.custom_type == 5 and self.sel.editor == "color" then
+          self:UpdateColourPicker()
+          self:SetWidth(800)
+          self.idColourContainer:SetVisible(true)
         else
-          p.idColourContainer:SetVisible(false)
+          self.idColourContainer:SetVisible(false)
         end
       end
     end
@@ -409,7 +410,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
 end
 
 function ChoGGi_ListChoiceCustomDialog:idListSetContent()
-  local listitems = self.item_windows
+  local listitems = self
   for i = 1, #listitems do
     local listitem = listitems[i]
     listitem.orig_OnSetState = listitem.OnSetState
@@ -477,10 +478,10 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
   --get sel item(s)
   local items
   if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
-    items = self.idList:GetSelection()
-  --get all items
+    items = self.idList.selection
+  -- get all items
   else
-    items = self.idList.items
+    items = self.idList
   end
   --attach other stuff to first item
   if #items > 0 then
@@ -489,7 +490,7 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
         --always return the custom value (and try to convert it to correct type)
         items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
       end
-      self.choices[#self.choices+1] = items[i]
+      self.choices[#self.choices+1] = items[i].ChoGGi_context
     end
   end
   -- send back checkmarks no matter what

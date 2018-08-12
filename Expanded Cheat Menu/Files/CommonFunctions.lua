@@ -274,8 +274,8 @@ function ChoGGi.ComFuncs.CheckText(text,fallback)
     text = S[text]
   end
   -- probably missing locale id
-  if type(text) ~= "string" and fallback then
-    text = tostring(fallback)
+  if type(text) ~= "string" then
+    text = tostring(fallback or "")
   end
   return text
 end
@@ -356,7 +356,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   --build the popup
   local data = {
     id = AsyncRand(),
-    title = ChoGGi.ComFuncs.CheckText(title,""),
+    title = ChoGGi.ComFuncs.CheckText(title),
     text = ChoGGi.ComFuncs.CheckText(text,S[3718--[[NONE--]]]),
     image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   }
@@ -503,8 +503,8 @@ do --g_Classes
       local item = items[i]
       -- defaults to XTextButton. class = "ChoGGi_CheckButtonMenu",
       local button = g_Classes[item.class or "ChoGGi_ButtonMenu"]:new({
-        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint,""),
-        Text = ChoGGi.ComFuncs.CheckText(item.name,""),
+        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
+        Text = ChoGGi.ComFuncs.CheckText(item.name),
 --~         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
@@ -1658,7 +1658,6 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
     wrap = true,
     text = text,
   })
---~   dialog:Open()
 end
 
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)

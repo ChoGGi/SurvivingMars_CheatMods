@@ -98,7 +98,6 @@ end
 
 --[[
 local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{})
-dialog:Open()
 OpenGedApp("XWindowInspector", dialog)
 FontStyles.Consolas13 = "Consolas, 13, aa"
 FontStyles.Consolas15 = "Consolas, 15, aa"
