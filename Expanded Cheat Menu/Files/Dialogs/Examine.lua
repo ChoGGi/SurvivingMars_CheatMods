@@ -445,7 +445,7 @@ function Examine:FlashWindow(obj)
   obj = obj or self.obj
   -- we don't want to flash the desktop since that's just annoying
   local d = terminal.desktop
-  if obj == d or obj == _G or obj.parent == d then
+  if type(obj) ~= "table" or obj == d or obj == _G or obj.parent == d then
     return
   end
   local Sleep,UIL,black,white = Sleep,UIL,black,white

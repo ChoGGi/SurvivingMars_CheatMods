@@ -50,31 +50,19 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
 
   self:AddScrollList()
   self.idList:SetDock("top")
+  self:BuildList(self.list.items)
 
---~   --hook into SetContent so we can add OnSetState to each list item to show hints
---~   local orig_SetContent = self.idList.SetContent
---~   function self.idList:SetContent(items)
---~     orig_SetContent(self,items)
---~     self.parent.idListSetContent(self)
---~   end
---~   --do stuff on selection
---~   local orig_OnLButtonDown = self.idList.OnLButtonDown
---~   function self.idList:OnLButtonDown(...)
---~     local ret = {orig_OnLButtonDown(self,...)}
---~     self.parent.idListOnLButtonDown(self)
---~     --for whatever is expecting a return value
---~     return table.unpack(ret)
---~   end
-
---~   --what happens when you dbl click the list
---~   function self.idList.OnLButtonDoubleClick()
---~     self:idListOnLButtonDoubleClick()
---~   end
-
---~   --what happens when you dbl r-click the list
---~   function self.idList.OnRButtonDoubleClick()
---~     self:idListOnRButtonDoubleClick()
---~   end
+  function self.idList.OnMouseButtonDown(button,_,mouse)
+    print(1,mouse)
+    if mouse == "L" then
+      self:idListOnLButtonDoubleClick()
+    elseif mouse == "R" then
+      self:idListOnRButtonDoubleClick()
+    end
+  end
+  function self.idList.OnMouseButtonDoubleClick(button,_,mouse)
+    print(2,mouse)
+  end
 
   self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idFilterArea",
@@ -205,17 +193,17 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
       --custom value box
       self.idEditValue:SetText(tostring(color))
     end,
-    OnMouseButtonDoubleClick = function(_, _, button)
+    OnMouseButtonDoubleClick = function(a, b, button)
+      print(a)
+      print(b)
       print(button)
       if button == "R" then
         self:idColorPickerOnRButtonDoubleClick()
       end
+      return "break"
     end,
 --~     AdditionalComponent = self.prop_meta.editor == "color" and "alpha" or "intensity"
   }, self.idColorPickerArea)
---~   --stop idColorPicker from closing on dbl l click
---~   function self.idColorPicker.OnLButtonDoubleClick()
---~   end
 
   self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idColorCheckArea",
@@ -243,92 +231,74 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Dock = "left",
   }, self.idColourContainer)
 
-  -- fiddling with custom value
-  local list = context.list
-  if list.custom_type then
+  -- fiddling with custom_type
+  if self.custom_type then
     self.idEditValue.auto_select_all = false
-    if list.custom_type == 2 or list.custom_type == 5 then
+    if self.custom_type == 2 or self.custom_type == 5 then
       self.idList:SetSelection(1, true)
       self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
       self.idEditValue:SetText(tostring(self.sel.value))
       self:UpdateColourPicker()
-      if list.custom_type == 2 then
-        self:SetWidth(750)
---~         self.idColourContainer:SetVisible(true)
---~         self.idColorPicker:SetVisible(true)
---~         self.idColorCheckAir:SetVisible(true)
---~         self.idColorCheckWater:SetVisible(true)
---~         self.idColorCheckElec:SetVisible(true)
+      if self.custom_type == 2 then
+        self:SetWidth(800)
       else
         self.idColourContainer:SetVisible(false)
       end
     end
   end
 
-  if list.multisel then
+  if self.list.multisel then
     self.idList.MultipleSelection = true
-    if type(list.multisel) == "number" then
+    if type(self.list.multisel) == "number" then
       -- select all of number
-      for i = 1, list.multisel do
+      for i = 1, self.list.multisel do
         self.idList:SetSelection(i, true)
       end
     end
   end
 
-  --setup checkboxes
-  if not list.check1 and not list.check2 then
---~     self.hidden.checks = true
-    self.idCheckBox1:SetVisible(false)
-    self.idCheckBox2:SetVisible(false)
+  -- setup checkboxes
+  if not self.list.check1 and not self.list.check2 then
+    self.idCheckboxArea:SetVisible(false)
   else
-    self.idList:SetSize(point(390, 310))
-
-    if list.check1 then
-      self.idCheckBox1:SetText(ChoGGi.ComFuncs.CheckText(list.check1,""))
-      self.idCheckBox1:SetRollover(ChoGGi.ComFuncs.CheckText(list.check1_hint,""))
-    else
-      self.idCheckBox1:SetVisible(false)
-    end
-    if list.check2 then
-      self.idCheckBox2:SetText(ChoGGi.ComFuncs.CheckText(list.check2,""))
-      self.idCheckBox2:SetRollover(ChoGGi.ComFuncs.CheckText(list.check2_hint,""))
-    else
-      self.idCheckBox2:SetVisible(false)
-    end
+    self:CheckboxSetup(1)
+    self:CheckboxSetup(2)
   end
-  if list.check1_checked then
-    self.idCheckBox1:SetValue(true)
-  end
-  if list.check2_checked then
-     self.idCheckBox2:SetValue(true)
- end
 
---~   --where to position self
---~   self:SetPos(terminal.GetMousePos())
-
-  --focus on list
+  -- focus on list
   self.idList:SetFocus()
-  --self.idList:SetSelection(1, true)
 
-  --are we showing a hint?
-  if list.hint then
-    list.hint = ChoGGi.ComFuncs.CheckText(list.hint,"")
-    self.idList:SetRollover(list.hint)
-    self.idOK:SetRollover(Concat(self.idOK:GetRolloverText(),"\n\n\n",list.hint))
+  -- are we showing a hint?
+  local hint = self.list.hint
+  if hint then
+    hint = ChoGGi.ComFuncs.CheckText(hint,"")
+    self.idList:SetRollover(hint)
+    self.idOK:SetRollover(Concat(self.idOK:GetRolloverText(),"\n\n\n",hint))
   end
 
   -- hide ok/cancel buttons as they don't do jack
-  if list.custom_type == 1 then
---~     self.hidden.buttons = true
-    self.idOK:SetVisible(false)
-    self.idCancel:SetVisible(false)
+  if self.custom_type == 1 then
+    self.idButtonContainer:SetVisible(false)
   end
 
-
-
-
-
   self:SetInitPos(context.parent)
+end
+
+function ChoGGi_ListChoiceCustomDialog:BuildList(items)
+end
+
+function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
+  local name1 = Concat("idCheckBox",i)
+  local name2 = Concat("check",i)
+  if list[name2] then
+    self[name1]:SetText(ChoGGi.ComFuncs.CheckText(list[name2],""))
+    self[name1]:SetRollover(ChoGGi.ComFuncs.CheckText(list[Concat("check",i,"_hint")],""))
+  else
+    self[name1]:SetVisible(false)
+  end
+  if list[Concat("check",i,"_checked")] then
+    self[name1]:SetValue(true)
+  end
 end
 
 function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
@@ -341,46 +311,6 @@ function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
   end
   return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
-
---~ function ChoGGi_ListChoiceCustomDialog:UpdateElementPositions()
---~   local point = point
---~   -- no sense in doing anything if we don't need to
---~   if not self.hidden.checks and not self.hidden.buttons then
---~     return
---~   end
---~   CreateRealTimeThread(function()
---~     -- what we adjust by
---~     local heightc = 0
---~     local heightb = 0
---~     if self.hidden.checks then
---~       heightc = self.idCheckBox1:GetHeight()
---~     end
---~     if self.hidden.buttons then
---~       heightb = self.idOK:GetHeight()
---~     end
---~     -- list only gets bigger, we don't need to move it
---~     local size = self.idList:GetSize()
---~     self.idList:SetSize(point(size:x(),size:y() + heightc + heightb))
---~     -- filter just needs to be moved down, the rest have offsets depending on what is hidden
---~     local pos = self.idFilter:GetPos()
---~     self.idFilter:SetPos(point(pos:x(),pos:y() + heightc + heightb))
---~     pos = self.idCheckBox1:GetPos()
---~     self.idCheckBox1:SetPos(point(pos:x(),pos:y() + heightc + heightb))
---~     pos = self.idCheckBox2:GetPos()
---~     self.idCheckBox2:SetPos(point(pos:x(),pos:y() + heightc + heightb))
-
---~     -- only need to adjust by button height for these
---~     pos = self.idEditValue:GetPos()
---~     self.idEditValue:SetPos(point(pos:x(),pos:y() + heightb))
---~     pos = self.idOK:GetPos()
---~     self.idOK:SetPos(point(pos:x(),pos:y() + heightb))
---~     pos = self.idCancel:GetPos()
---~     self.idCancel:SetPos(point(pos:x(),pos:y() + heightb))
-
---~     -- so elements move when dialog re-sizes (also has to be called whenever e are repositioned
---~     self:InitChildrenSizing()
---~   end)
---~ end
 
 function ChoGGi_ListChoiceCustomDialog:FilterText(text)
   -- loop through all the list items and set ones without the text to 0 height
@@ -458,12 +388,10 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
       elseif p.custom_type == 5 then
         if p.custom_type == 5 and p.sel.editor == "color" then
           p:UpdateColourPicker()
-          p:SetWidth(750)
+          p:SetWidth(800)
           p.idColourContainer:SetVisible(true)
---~           p.idColorPicker:SetVisible(true)
         else
           p.idColourContainer:SetVisible(false)
---~           p.idColorPicker:SetVisible(false)
         end
       end
     end
@@ -580,7 +508,7 @@ function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, vk)
   return "continue"
 end
 
--- copied from GedPropEditors.lua
+-- copied from GedPropEditors.lua (it's normally only called when GED is loaded).
 function CreateNumberEditor(parent, id, up_pressed, down_pressed)
   local button_panel = XWindow:new({Dock = "right"}, parent)
   local top_btn = XTextButton:new({

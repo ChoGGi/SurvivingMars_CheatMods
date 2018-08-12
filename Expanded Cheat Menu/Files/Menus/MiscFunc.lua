@@ -504,6 +504,7 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 end
 
 --SetTimeFactor(1000) = normal speed
+-- use GetTimeFactor() to check time for changing it so it can be paused?
 do -- SetGameSpeed
   local ChoGGi = ChoGGi
   local ChangeGameSpeedState = ChangeGameSpeedState

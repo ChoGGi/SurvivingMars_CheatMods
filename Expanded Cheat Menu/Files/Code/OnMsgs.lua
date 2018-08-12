@@ -35,7 +35,7 @@ local OnMsg = OnMsg
 function OnMsg.ClassesGenerate()
   -- for some reason rollovers don't just use the default template (i don't want to set this for everything that i want a hint on)
   XRollover.RolloverTemplate = "Rollover"
-  -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I should change the rest)
+  -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
   XRolloverWindow.ZOrder = 9999999
 end
 
