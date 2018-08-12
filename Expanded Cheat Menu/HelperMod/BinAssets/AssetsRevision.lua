@@ -15,8 +15,8 @@ CreateRealTimeThread(function()
       mod.env = nil
       -- add a warning to any mods that get changed
       mod.title = table.concat{mod.title," (Warning)"}
-      mod.description = table.concat{[[Warning: This mod has had it's safety blacklist from the devs removed!
-If the author isn't ChoGGi, and it isn't Expanded Cheat Menu, then be wary of it...]],"\n\n",mod.description}
+      mod.description = table.concat{[[Warning: The function blacklist added in the Da Vinci update has been removed!
+This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.]],"\n\n",mod.description}
     end
   end
 end)

@@ -4,15 +4,13 @@ function OnMsg.ReloadLua()
   CreateRealTimeThread(function()
     local buttons = XTemplates.PGMenu[1][2][3]
     for i = 1, #buttons do
-      if buttons[i].ActionId == "idModManager" then
-        buttons[i].__condition = function(parent, context)
-          -- orig
---~           return Platform.steam or Platform.pc
-
-          -- return true whenever it isn't a console
-          return not Platform.console
-
-          --return Platform.desktop
+      for j = 1, #buttons[i] do
+        local action = buttons[i][j]
+        if action.ActionId == "idModManager" then
+          action.__condition = function(parent, context)
+            -- return true whenever it isn't a console
+            return not Platform.console
+          end
         end
       end
     end
