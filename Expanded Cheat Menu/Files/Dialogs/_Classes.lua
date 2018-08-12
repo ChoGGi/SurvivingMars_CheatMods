@@ -196,7 +196,8 @@ function ChoGGi_Window:AddElements(parent,context)
 
   self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
-      self:delete()
+--~       self:delete()
+      self:Close("cancel",false)
     end,
   }, self.idTitleArea)
 
@@ -276,26 +277,30 @@ end
 function ChoGGi_Window:AddScrollText()
   local g_Classes = g_Classes
 
+  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollArea",
+  }, self.idDialog)
+
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
     Id = "idScrollV",
     Target = "idScrollBox",
     Dock = "right",
-  }, self.idDialog)
+  }, self.idScrollArea)
 
   self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
     Id = "idScrollH",
     Target = "idScrollBox",
     Dock = "bottom",
     Horizontal = true,
-  }, self.idDialog)
+  }, self.idScrollArea)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
     Id = "idScrollBox",
---~     Dock = "box",
     VScroll = "idScrollV",
     HScroll = "idScrollH",
-    Margins = box(5,0,0,0),
-  }, self.idDialog)
+    Margins = box(4,4,4,4),
+    BorderWidth = 0,
+  }, self.idScrollArea)
 
   self.idText = g_Classes.ChoGGi_Text:new({
     Id = "idText",
@@ -308,48 +313,54 @@ end
 function ChoGGi_Window:AddScrollList()
   local g_Classes = g_Classes
 
-  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollV",
-    Target = "idScrollBox",
-    Dock = "right",
+  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollArea",
   }, self.idDialog)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
     Id = "idScrollBox",
     VScroll = "idScrollV",
-    Margins = box(5,0,0,0),
-  }, self.idDialog)
+    Margins = box(4,4,4,4),
+  }, self.idScrollArea)
 
   self.idList = g_Classes.ChoGGi_List:new({
     Id = "idList",
   }, self.idScrollBox)
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idList",
+    Dock = "right",
+  }, self.idScrollArea)
 end
 
 function ChoGGi_Window:AddScrollEdit(context)
   local g_Classes = g_Classes
 
-  self.idEditArea = g_Classes.XWindow:new({
-    Id = "idEditArea",
-    Margins = box(5,0,0,0),
+  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollArea",
   }, self.idDialog)
 
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
     Id = "idScrollV",
-    Target = "idText",
+    Target = "idEdit",
     Dock = "right",
-  }, self.idEditArea)
+  }, self.idScrollArea)
 
   self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
     Id = "idScrollH",
-    Target = "idText",
+    Target = "idEdit",
     Dock = "bottom",
     Horizontal = true,
-  }, self.idEditArea)
+  }, self.idScrollArea)
 
   self.idEdit = ChoGGi_MultiLineEdit:new({
     Id = "idEdit",
     WordWrap = context.wrap or false,
-  }, self.idEditArea)
+    VScroll = "idScrollV",
+    HScroll = "idScrollH",
+    Margins = box(4,4,4,4),
+  }, self.idScrollArea)
 end
 
 DefineClass.ChoGGi_SleekScroll = {

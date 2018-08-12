@@ -254,7 +254,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
     text = ChoGGi.SettingFuncs.ReadSettings(),
     hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
     hint_cancel = 302535920001245--[[Abort without touching anything.--]],
-    func = function(answer,_,obj)
+    custom_func = function(answer,_,obj)
       if answer then
         -- get text and update settings file
         local err,settings = LuaCodeToTuple(obj.idText:GetText())

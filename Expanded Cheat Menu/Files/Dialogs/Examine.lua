@@ -72,6 +72,7 @@ function Examine:Init(parent, context)
 
   self.idLinks = g_Classes.ChoGGi_Text:new({
     Id = "idLinks",
+    Dock = "left",
     VAlign = "top",
     FontStyle = "Editor14",
     BackgroundColor = RGBA(0, 0, 0, 16),
@@ -79,7 +80,6 @@ function Examine:Init(parent, context)
       self.onclick_handles[tonumber(link)](box, pos, button)
     end,
   }, self.idLinkButtons)
-
   self.idLinks:AddInterpolation{
     type = const.intAlpha,
     startValue = 255,
@@ -305,7 +305,7 @@ This can take time on something like the "Building" metatable--]]],
           text = str,
           title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
           hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
-          func = function(answer,overwrite)
+          custom_func = function(answer,overwrite)
             if answer then
               ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
             end
@@ -328,7 +328,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
           hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
-          func = function(answer,overwrite)
+          custom_func = function(answer,overwrite)
             if answer then
               ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
             end
@@ -454,20 +454,20 @@ function Examine:FlashWindow(obj)
     DeleteThread(flashing_table.thread)
     obj.BorderWidth = flashing_table.width
     obj.BorderColor = flashing_table.colour
-    obj.Background = flashing_table.bg
+--~     obj.Background = flashing_table.bg
   end
 
   flashing_table.thread = CreateRealTimeThread(function()
     flashing_table.width = obj.BorderWidth
     flashing_table.colour = obj.BorderColor
-    flashing_table.bg = obj.Background
+--~     flashing_table.bg = obj.Background
 
     obj.BorderWidth = 2
     local c = black
     for i = 1, 5 do
       if obj.window_state ~= "destroying" then
         obj.BorderColor = c
-        obj.Background = c
+--~         obj.Background = c
         Sleep(75)
         UIL.Invalidate()
         c = c == white and black or white
@@ -476,7 +476,7 @@ function Examine:FlashWindow(obj)
     if obj.window_state ~= "destroying" then
       obj.BorderWidth = flashing_table.width
       obj.BorderColor = flashing_table.colour
-      obj.Background = flashing_table.bg
+--~       obj.Background = flashing_table.bg
     end
   end)
 end

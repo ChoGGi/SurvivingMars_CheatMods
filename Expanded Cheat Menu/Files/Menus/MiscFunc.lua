@@ -524,14 +524,15 @@ do -- SetGameSpeed
     if not value then
       return
     end
-    local const = const
     if type(value) == "number" then
+      local const = const
+      -- update values that are checked when speed is changed
       const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
       const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
-      --so it changes the speed
+      -- so it changes the speed immediately
       ChangeGameSpeedState(-1)
       ChangeGameSpeedState(1)
-      --update settings
+      -- update settings
       ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
       ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
 
@@ -558,7 +559,6 @@ do -- SetGameSpeed
 
   function ChoGGi.MenuFuncs.SetGameSpeed()
     local const = const
-
     local current = speeds[const.mediumGameSpeed]
     if not current then
       current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)

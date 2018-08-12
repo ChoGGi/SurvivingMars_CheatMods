@@ -9,6 +9,7 @@ DefineClass.ChoGGi_MultiLineText = {
   __parents = {"ChoGGi_Window"},
   retfunc = false,
   overwrite = false,
+  context = false,
 }
 
 function ChoGGi_MultiLineText:Init(parent, context)
@@ -18,12 +19,16 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self.dialog_width = 500
   self.dialog_height = 400
 
-  --store func for calling from :OnShortcut
-  self.retfunc = context.func
+  self.context = context
+  -- store func for calling from :OnShortcut
+  self.retfunc = context.custom_func
   -- overwrite dumped file
   self.overwrite = context.overwrite
 
   self.title = context.title or 302535920001301--[[Edit Text--]]
+
+  --
+--~   context.func = self:Close("cancel",false)
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)

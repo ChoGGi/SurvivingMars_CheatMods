@@ -22,6 +22,7 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
   obj = false,
 }
 
+--~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
@@ -46,10 +47,8 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
---~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-
   self:AddScrollList()
-  self.idList:SetDock("top")
+--~   self.idList:SetDock("box")
   self:BuildList(self.list.items)
 
   function self.idList.OnMouseButtonDown(button,_,mouse)
@@ -63,6 +62,9 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   function self.idList.OnMouseButtonDoubleClick(button,_,mouse)
     print(2,mouse)
   end
+--~   function list.OnDoubleClick(container_list, item_idx)
+--~     self:ApplyActiveSuggestion()
+--~   end
 
   self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idFilterArea",
@@ -172,7 +174,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Id = "idColourContainer",
     MinWidth = 550,
     Dock = "right",
+    FoldWhenHidden = true,
   }, self.idDialog)
+  self.idColourContainer.visible = false
 
   self.idColorPickerArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idColorPickerArea",
@@ -285,6 +289,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 end
 
 function ChoGGi_ListChoiceCustomDialog:BuildList(items)
+  self.idList:Clear()
+  for i = 1, #items do
+    self.idList:CreateTextItem(items[i].text,nil,items[i])
+  end
+  self.idList:SetInitialSelection()
+  ex(self.idList)
 end
 
 function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
