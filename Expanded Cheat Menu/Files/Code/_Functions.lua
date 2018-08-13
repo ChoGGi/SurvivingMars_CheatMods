@@ -867,7 +867,7 @@ do --ChangeObjectColour
     end
   end
 
-  function ChoGGi.CodeFuncs.ChangeObjectColour(obj,parent)
+  function ChoGGi.CodeFuncs.ChangeObjectColour(obj,parent,dialog)
     local ChoGGi = ChoGGi
     if not obj or obj and not obj:IsKindOf("ColorizableObject") then
       MsgPopup(
@@ -943,7 +943,7 @@ do --ChangeObjectColour
               for j = 1, #attaches do
                 --if Attaches[j].class == obj.class then
                   if choice[1].check2 then
-                    CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i])
+                    CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i],choice)
                   else
                     CheckGrid(fake_parent,SetColours,attaches[j],tab[i],choice)
                   end
@@ -951,7 +951,7 @@ do --ChangeObjectColour
               end
             else --not parent
               if choice[1].check2 then
-                CheckGrid(fake_parent,SetOrigColours,tab[i],tab[i])
+                CheckGrid(fake_parent,SetOrigColours,tab[i],tab[i],choice)
               else
                 CheckGrid(fake_parent,SetColours,tab[i],tab[i],choice)
               end
@@ -959,7 +959,7 @@ do --ChangeObjectColour
           end
         else --single building change
           if choice[1].check2 then
-            CheckGrid(fake_parent,SetOrigColours,obj,obj)
+            CheckGrid(fake_parent,SetOrigColours,obj,obj,choice)
           else
             CheckGrid(fake_parent,SetColours,obj,obj,choice)
           end
@@ -984,6 +984,7 @@ do --ChangeObjectColour
   The colour picker doesn't work for Metallic/Roughness.
   You can copy and paste numbers if you want (click item again after picking)."--]],
       multisel = true,
+      parent = dialog,
       custom_type = 2,
       check1 = 302535920000023--[[All of type--]],
       check1_hint = 302535920000024--[[Change all objects of the same type.--]],

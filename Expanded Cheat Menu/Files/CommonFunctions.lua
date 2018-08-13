@@ -1365,19 +1365,21 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     list = list,
   })
 
-  if not dlg then
-    return
-  end
+--~   if not dlg then
+--~     return
+--~   end
 
-  -- fires callback func when dialog closes
-  CreateRealTimeThread(function()
-    --waiting for choice
-    local option = dlg.idDialog:Wait()
+--~   -- fires callback func when dialog closes
+--~   CreateRealTimeThread(function()
+--~     -- waiting for choice
+--~     local option = dlg.idDialog:Wait()
+--~ print("WAIT1 ",option)
+--~ print("WAIT2 ",#option)
 
-    if option and #option > 0 then
-      list.callback(option)
-    end
-  end)
+--~     if option and #option > 0 then
+--~       list.callback(option)
+--~     end
+--~   end)
 
 --~   -- if anything is hidden this makes it so we don't have a bunch of blank areas.
 --~   dlg:UpdateElementPositions()

@@ -41,14 +41,14 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   self:AddElements(parent, context)
 
   self:AddScrollList()
-  self:BuildList(self.items)
+  self:BuildList()
 
   function self.idList.OnMouseButtonDown(obj,pt,button)
-    self:idListOnLButtonDown()
-    return g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
+    g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
+    self:idListOnMouseButtonDown(button)
   end
   function self.idList.OnMouseButtonDoubleClick(obj,pt,button)
-    self:OnMouseButtonDoubleClick(button)
+    self:idListOnMouseButtonDoubleClick(button)
 --~     return g_Classes.ChoGGi_List.OnMouseButtonDoubleClick(obj,pt,button)
   end
 --~   function list.OnDoubleClick(container_list, item_idx)
@@ -83,18 +83,12 @@ Press Enter to show all items."--]]],
     Id = "idCheckBox1",
     Text = S[588--[[Empty--]]],
     Dock = "left",
---~     OnChange = function()
---~       self.idAutoRefreshToggle(self)
---~     end,
   }, self.idCheckboxArea)
 
   self.idCheckBox2 = g_Classes.ChoGGi_CheckButton:new({
     Id = "idCheckBox2",
     Text = S[588--[[Empty--]]],
-    Dock = "right",
---~     OnChange = function()
---~       self.idAutoRefreshToggle(self)
---~     end,
+    Dock = "left",
   }, self.idCheckboxArea)
 
   -- make checkbox work like a button
@@ -117,6 +111,7 @@ Press Enter to show all items."--]]],
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
     Hint = S[302535920000078--[[Add Custom Value--]]],
     OnTextChanged = function()
+
       local text = self.idEditValue:GetText()
       local value = ChoGGi.ComFuncs.RetProperType(text)
       if self.custom_type > 0 then
@@ -124,15 +119,18 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
           self.items[self.idList.selection[1]].value = value
         end
       else
-        self.items[#self.items+1] = {
+        -- last item is a blank item for custom value
+        self.items[#self.items] = {
           text = text,
           value = value,
           hint = 302535920000079--[[< Use custom value--]],
         }
         local item = self.items[#self.items]
-        local listitem = self.idList:CreateTextItem(item.text)
+        local listitem = self.idList[#self.idList]
+        listitem[1]:SetText(item.text)
         listitem.RolloverText = ChoGGi.ComFuncs.CheckText(item.hint)
       end
+
     end,
   }, self.idEditArea)
 
@@ -147,10 +145,14 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Text = S[6878--[[OK--]]],
     RolloverText = S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]],
     OnMouseButtonDown = function()
+      -- I don't think it needs to be restored, but whatever
+      self.idColorPicker.Close = g_Classes.XColorPicker.Close
       -- build self.choices
       self:GetAllItems()
       -- send selection back
-      self:delete(self.choices)
+      self.list.callback(self.choices)
+--~       self:delete()
+      self:Close("cancel")
     end,
   }, self.idButtonContainer)
 
@@ -168,7 +170,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     MinWidth = 550,
     Dock = "right",
   }, self.idDialog)
-  self.idColourContainer.visible = false
+  self.idColourContainer:SetVisible()
 
   self.idColorPickerArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idColorPickerArea",
@@ -176,36 +178,28 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   }, self.idColourContainer)
 
   self.idColorPicker = g_Classes.XColorPicker:new({
-    RolloverText = S[302535920000081--[[Double right-click to change colour without closing dialog.--]]],
     OnColorChanged = function(picker, color)
-
---~       self.idEdit:SetText(self:ConvertToText(color))
---~       self.idColorBox.idColor:SetBackground(color)
---~       if now() - last_update >= 100 then
---~         self:SetProp(color)
---~         last_update = now()
---~       end
-
-      -- update item
-      self.items[self.idList.selection[1]].value = color
       -- custom value box
       self.idEditValue:SetText(tostring(color))
-    end,
-    OnMouseButtonDoubleClick = function(a, b, button)
-      print(a)
-      print(b)
-      print(button)
-      if button == "R" then
-        self:idColorPickerOnRButtonDoubleClick()
+      -- no list item selected, so just return
+      if not self.idList.selection[1] then
+        return
       end
-      return "break"
+      -- update item value (probably useless now that it's automagical)
+      self.items[self.idList.selection[1]].value = color
+      -- update object colour
+      self:idColorPickerOnColorChanged(color)
     end,
---~     AdditionalComponent = self.prop_meta.editor == "color" and "alpha" or "intensity"
+    -- easy way to stop the picker closing when you dbl-click it
+    Close = function()end,
+    AdditionalComponent = "alpha"
+--~     AdditionalComponent = "intensity"
   }, self.idColorPickerArea)
 
   self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idColorCheckArea",
-    Dock = "bottom",
+    Dock = "top",
+    HAlign = "center",
   }, self.idColourContainer)
 
   self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
@@ -213,35 +207,31 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Text = S[302535920000037--[[Electricity--]]],
     RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
     Dock = "left",
-  }, self.idColourContainer)
+  }, self.idColorCheckArea)
 
   self.idColorCheckAir = g_Classes.ChoGGi_CheckButton:new({
     Id = "idColorCheckAir",
     Text = S[891--[[Air--]]],
     RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
     Dock = "left",
-  }, self.idColourContainer)
+  }, self.idColorCheckArea)
 
   self.idColorCheckWater = g_Classes.ChoGGi_CheckButton:new({
     Id = "idColorCheckWater",
     Text = S[681--[[Water--]]],
     RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
     Dock = "left",
-  }, self.idColourContainer)
+  }, self.idColorCheckArea)
 
   -- fiddling with custom_type
-  if self.custom_type then
-    self.idEditValue.auto_select_all = false
-    if self.custom_type == 2 or self.custom_type == 5 then
-      self.idList:SetSelection(1, true)
-      self.sel = self.items[self.idList.selection[1]]
-      self.idEditValue:SetText(tostring(self.sel.value))
-      self:UpdateColourPicker()
-      if self.custom_type == 2 then
-        self:SetWidth(800)
-      else
-        self.idColourContainer:SetVisible()
-      end
+  if self.custom_type == 2 or self.custom_type == 5 then
+    self.idList:SetSelection(1, true)
+    self.sel = self.items[self.idList.selection[1]]
+    self.idEditValue:SetText(tostring(self.sel.value))
+    self:UpdateColourPicker()
+    if self.custom_type == 2 then
+      self:SetWidth(800)
+      self.idColourContainer:SetVisible(true)
     end
   end
 
@@ -267,11 +257,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idList:SetFocus()
 
   -- are we showing a hint?
-  local hint = self.list.hint
-  if hint then
-    hint = ChoGGi.ComFuncs.CheckText(hint)
-    self.idList:SetRollover(hint)
-    self.idOK:SetRollover(Concat(self.idOK:GetRolloverText(),"\n\n\n",hint))
+  local hint = ChoGGi.ComFuncs.CheckText(self.list.hint)
+  if hint ~= "" then
+    self.idList.RolloverText = hint
+    self.idOK.RolloverText = Concat(self.idOK:GetRolloverText(),"\n\n\n",hint)
   end
 
   -- hide ok/cancel buttons as they don't do jack
@@ -279,17 +268,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     self.idButtonContainer:SetVisible()
   end
 
-  self:SetInitPos(context.parent)
+  self:SetInitPos(self.list.parent)
 end
 
-function ChoGGi_ListChoiceCustomDialog:BuildList(items)
+function ChoGGi_ListChoiceCustomDialog:BuildList(skip)
   self.idList:Clear()
-  for i = 1, #items do
-    local listitem = self.idList:CreateTextItem(items[i].text)
-    listitem.RolloverText = ChoGGi.ComFuncs.CheckText(items[i].hint)
---~     listitem.ChoGGi_context = items[i]
+  for i = 1, #self.items do
+    local listitem = self.idList:CreateTextItem(self.items[i].text)
+    listitem.RolloverText = self:UpdateHintText(self.items[i])
   end
-  ex(self.idList)
 end
 
 function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
@@ -309,6 +296,7 @@ end
 function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
   if vk == const.vkEnter then
     self:FilterText("")
+    self.idFilter:SelectAll()
     return "break"
   elseif vk == const.vkEsc then
     self.idCloseX:Press()
@@ -317,50 +305,24 @@ function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
   return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
-function ChoGGi_ListChoiceCustomDialog:FilterText(text)
+function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
+  self:BuildList(true)
   -- loop through all the list items and set ones without the text to invis (i turned on the clip when invis in OnMsgs.lua)
-  local listitems = self.idList
-  for i = 1, #listitems do
-    local li = listitems[i]
-
-    if li.text.text:lower():find(text:lower()) then
-      li:SetVisible(true)
-    else
-      li:SetVisible()
+  txt = txt:lower()
+  for i = #self.idList, 1, -1 do
+    local li = self.idList[i]
+    if not li[1].text:lower():find(txt,1,true) then
+      table.remove(self.idList,i)
     end
   end
---~   List.Refresh(self.idList)
+  self.idList.selection = {}
 end
 
-function ChoGGi_ListChoiceCustomDialog:OnMouseButtonDoubleClick()
-  if not self.sel then
-    return
-  end
-  if button == "L" then
-    -- fire custom_func with sel
-    if self.custom_type == 1 or self.custom_type == 7 then
-      self.custom_func(self.sel)
-    elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
-      -- dblclick to close and ret item
-      self.idOK.OnButtonPressed()
-    end
-  elseif button == "R" then
-    -- applies the lightmodel without closing dialog,
-    if self.custom_type == 5 then
-      self:BuildAndApplyLightmodel()
-    elseif self.custom_type == 6 and self.custom_func then
-      self.custom_func(self.sel.func)
-    else
-      self.idEditValue:SetText(self.sel.text)
-    end
-  end
-end
-
-function ChoGGi_ListChoiceCustomDialog:idColorPickerOnRButtonDoubleClick()
+function ChoGGi_ListChoiceCustomDialog:idColorPickerOnColorChanged()
   if self.custom_type == 2 then
     if not self.obj then
       -- grab the object from the last list item
-      self.obj = self.items[#self.list].obj
+      self.obj = self.items[#self.items].obj
     end
     local SetPal = self.obj.SetColorizationMaterial
     local items = self.items
@@ -377,7 +339,7 @@ function ChoGGi_ListChoiceCustomDialog:idColorPickerOnRButtonDoubleClick()
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
+function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDown(button)
   if button ~= "L" or #self.idList.selection == 0 then
     return
   end
@@ -390,11 +352,11 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
     -- 2 = showing the colour picker
     if self.custom_type == 2 then
       self:UpdateColourPicker()
-    -- don't show picker unless it's a colour setting
+    -- don't show picker unless it's a colour setting (browsing lightmodel)
     elseif self.custom_type == 5 then
-      if self.custom_type == 5 and self.sel.editor == "color" then
-        self:UpdateColourPicker()
+      if self.sel.editor == "color" then
         self:SetWidth(800)
+        self:UpdateColourPicker()
         self.idColourContainer:SetVisible(true)
       else
         self:SetWidth(self.dialog_width)
@@ -404,37 +366,52 @@ function ChoGGi_ListChoiceCustomDialog:idListOnLButtonDown()
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idListSetContent()
-  local listitems = self
-  for i = 1, #listitems do
-    local listitem = listitems[i]
-    listitem.orig_OnSetState = listitem.OnSetState
-    function listitem:OnSetState(list, item, rollovered, selected)
-      self.orig_OnSetState(self,list, item, rollovered, selected)
-      if rollovered or selected then
-        local hint = {item.text}
-        if item.value then
-          if type(item.value) == "userdata" then
-            hint[#hint+1] = ": "
-            hint[#hint+1] = T(item.value)
-          elseif item.value then
-            hint[#hint+1] = ": "
-            hint[#hint+1] = tostring(item.value)
-          end
-        end
-        if type(item.hint) == "userdata" then
-          hint[#hint+1] = "\n\n"
-          hint[#hint+1] = T(item.hint)
-        elseif item.hint then
-          hint[#hint+1] = "\n\n"
-          hint[#hint+1] = ChoGGi.ComFuncs.CheckText(item.hint)
-        end
-        self.parent:SetHint(TableConcat(hint))
-        print("CreateRolloverWindow LISTCHOICE")
---~         CreateRolloverWindow(self.parent, TableConcat(hint), true)
-      end
+function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDoubleClick(button)
+  if not self.sel then
+    return
+  end
+  if button == "L" then
+    -- fire custom_func with sel
+    if self.custom_type == 1 or self.custom_type == 7 then
+      self.custom_func(self.sel,self)
+    elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
+      -- dblclick to close and ret item
+      self.idOK.OnMouseButtonDown()
+    end
+  elseif button == "R" then
+    -- applies the lightmodel without closing dialog,
+    if self.custom_type == 5 then
+      self:BuildAndApplyLightmodel()
+    elseif self.custom_type == 6 and self.custom_func then
+      self.custom_func(self.sel.func,self)
+    else
+      self.idEditValue:SetText(self.sel.text)
     end
   end
+end
+
+function ChoGGi_ListChoiceCustomDialog:UpdateHintText(item)
+  local hint = {item.text}
+
+  if item.value and item.value ~= item.text then
+    if type(item.value) == "userdata" then
+      hint[#hint+1] = ": "
+      hint[#hint+1] = T(item.value)
+    elseif item.value then
+      hint[#hint+1] = ": "
+      hint[#hint+1] = tostring(item.value)
+    end
+  end
+
+  if type(item.hint) == "userdata" then
+    hint[#hint+1] = "\n\n"
+    hint[#hint+1] = T(item.hint)
+  elseif item.hint then
+    hint[#hint+1] = "\n\n"
+    hint[#hint+1] = ChoGGi.ComFuncs.CheckText(item.hint)
+  end
+
+  return TableConcat(hint)
 end
 
 function ChoGGi_ListChoiceCustomDialog:BuildAndApplyLightmodel()
@@ -459,11 +436,12 @@ end
 
 --update colour
 function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
-  local num = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
-  if type(num) == "number" then
-    self.idColorPicker:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
-    self.idColorPicker:InitHSVPtPos()
-    self.idColorPicker:Invalidate()
+  local num = tonumber(self.idEditValue:GetText())
+  if num then
+    self.idColorPicker:SetColor(num)
+--~     self.idColorPicker:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
+--~     self.idColorPicker:InitHSVPtPos()
+--~     self.idColorPicker:Invalidate()
   end
 end
 
@@ -473,6 +451,7 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
   -- get sel item(s)
   local items
   if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
+    items = {}
     -- loop through and add all selected items to the list
     for i = 1, #self.idList.selection do
       items[#items+1] = self.items[self.idList.selection[i]]

@@ -363,13 +363,13 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
       obj = obj,
       hint = 302535920001106--[[Change main object colours.--]],
     }
-    local Attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-    for i = 1, #Attaches do
+    local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
+    for i = 1, #attaches do
       ItemList[#ItemList+1] = {
-        text = Attaches[i].class,
-        value = Attaches[i].class,
+        text = attaches[i].class,
+        value = attaches[i].class,
         parentobj = obj,
-        obj = Attaches[i],
+        obj = attaches[i],
         hint = 302535920001107--[[Change colours of an attached object.--]],
       }
     end
@@ -377,8 +377,8 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 
   local function CallBackFunc()end
 
-  local function FiredOnMenuClick(sel)
-    ChoGGi.CodeFuncs.ChangeObjectColour(sel.obj,sel.parentobj)
+  local function FiredOnMenuClick(sel,dialog)
+    ChoGGi.CodeFuncs.ChangeObjectColour(sel.obj,sel.parentobj,dialog)
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{

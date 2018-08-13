@@ -16,7 +16,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
-  self.dialog_width = 500
+  self.dialog_width = 700
   self.dialog_height = 400
 
   self.context = context

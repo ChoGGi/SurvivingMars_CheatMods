@@ -176,6 +176,8 @@ function ChoGGi_Window:AddElements(parent,context)
     BorderWidth = 2,
     BorderColor = light_gray,
   }, self)
+  -- needed for :Wait()
+  self.idDialog:Open()
 
   -- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
   self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
@@ -183,10 +185,11 @@ function ChoGGi_Window:AddElements(parent,context)
   self.idSizeControl = g_Classes.XSizeControl:new({
   }, self.idDialog)
 
-  self.idTitleArea = g_Classes.XWindow:new({
+  self.idTitleArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idTitleArea",
     Dock = "top",
     Background = medium_gray,
+    Margins = box(0,0,0,0),
   }, self.idDialog)
 
   self.idMoveControl = g_Classes.XMoveControl:new({
@@ -197,7 +200,9 @@ function ChoGGi_Window:AddElements(parent,context)
 
   self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
---~       self:delete()
+      if self.idColorPicker then
+        self.idColorPicker.Close = g_Classes.XColorPicker.Close
+      end
       self:Close("cancel",false)
     end,
   }, self.idTitleArea)
@@ -221,7 +226,6 @@ end
 -- takes either a point, or box to set pos
 function ChoGGi_Window:SetPos(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-
   local x,y,w,h
   if IsPoint(obj) then
     local box = self.idDialog.box
@@ -316,6 +320,7 @@ function ChoGGi_Window:AddScrollList()
 
   self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idScrollArea",
+    Margins = box(4,4,4,4),
   }, self.idDialog)
 
   self.idScrollBox = g_Classes.XScrollArea:new({
@@ -324,15 +329,17 @@ function ChoGGi_Window:AddScrollList()
     Margins = box(4,4,4,4),
   }, self.idScrollArea)
 
-  self.idList = g_Classes.ChoGGi_List:new({
-    Id = "idList",
-  }, self.idScrollBox)
-
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
     Id = "idScrollV",
-    Target = "idList",
+    Target = "idScrollBox",
     Dock = "right",
   }, self.idScrollArea)
+
+  self.idList = g_Classes.ChoGGi_List:new({
+    Id = "idList",
+    VScroll = "idScrollV",
+  }, self.idScrollBox)
+
 end
 
 function ChoGGi_Window:AddScrollEdit(context)

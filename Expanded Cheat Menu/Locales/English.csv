@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000081,,
 302535920000051,,
 302535920001302,,
 302535920001303,,
@@ -251,7 +252,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000228,Assign to,
 302535920000069,Examine,
 302535920000043,"Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top).",
-302535920000044,Go to text,
+302535920000044,Go To Text,
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 
 Right-click to scroll to top.",
@@ -299,7 +300,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 302535920000078,Add Custom Value,
 302535920000079,< Use custom value,
 302535920000080,Apply and close dialog (Arrow keys and Enter/Esc can also be used).,
-302535920000081,Double right-click to set without closing dialog.,
 302535920000082,"Check this for ""All of type"" to only apply to connected grid.",
 302535920000085,"Auto-refresh list every ""Amount"".",
 302535920000086,Manually refresh the list.,
