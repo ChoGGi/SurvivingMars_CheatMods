@@ -1,2 +1,4 @@
+0.3
+Intergrated with my HelperMod for ECM (easier to have the two both installed).
 0.2
 Added the options from Skip Logos (commented out).

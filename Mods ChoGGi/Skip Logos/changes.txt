@@ -1,3 +1,5 @@
+Version 0.9
+Intergrated with my HelperMod for ECM (easier to have the two both installed).
 Version 0.8
 Added the options from Skip Missing Mods & DLC Msgs (commented out).
 Version 0.7

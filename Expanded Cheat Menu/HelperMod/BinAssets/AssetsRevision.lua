@@ -1,18 +1,25 @@
+-- any "mods" that need to be loaded before the game is loaded (skip logos, etc)
+dofolder_files("BinAssets/Code")
+
 CreateRealTimeThread(function()
   -- mods are loaded
   WaitMsg("ModDefsLoaded")
 
   -- build a list of ids from lua files in "Mod Ids"
+  local AsyncFileToString = AsyncFileToString
   local mod_ids = {}
   local err, files = AsyncListFiles("BinAssets/Mod Ids","*.lua")
   if not err and #files > 0 then
     for i = 1, #files do
-      mod_ids[select(2,AsyncFileToString(files[i]))] = true
+      local err,id = AsyncFileToString(files[i])
+      if not err then
+        mod_ids[id] = true
+      end
     end
   end
 
-  -- loop through and set my mod ids to no blacklist
-  for id,mod in pairs(Mods) do
+  -- remove blacklist for any mods in "Mod Ids"
+  for _,mod in pairs(Mods) do
     if mod_ids[mod.steam_id] then
       -- i don't set this in mod\metadata.lua so it gives an error
       mod.lua_revision = LuaRevision

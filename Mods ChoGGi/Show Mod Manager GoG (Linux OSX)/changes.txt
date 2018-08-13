@@ -1,6 +1,7 @@
 0.7
 Da Vinci Update.
 More durable checking.
+Intergrated with my HelperMod for ECM (easier to have the two both installed).
 0.6
 Switched from checking Platform (.steam or .pc or .linux or .osx) to (.desktop).
 0.5
