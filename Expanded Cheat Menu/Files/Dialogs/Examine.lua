@@ -3,7 +3,6 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
-local RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
 local ShowMe = ChoGGi.ComFuncs.ShowMe
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Trans
@@ -65,8 +64,8 @@ function Examine:Init(parent, context)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   -- everything grouped gets a window to go in
-  self.idLinkButtons = g_Classes.ChoGGi_DialogSection:new({
-    Id = "idLinkButtons",
+  self.idLinkArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idLinkArea",
     Dock = "top",
   }, self.idDialog)
 
@@ -75,11 +74,10 @@ function Examine:Init(parent, context)
     Dock = "left",
     VAlign = "top",
     FontStyle = "Editor14",
-    BackgroundColor = RGBA(0, 0, 0, 16),
     OnHyperLink = function(_, link, _, box, pos, button)
       self.onclick_handles[tonumber(link)](box, pos, button)
     end,
-  }, self.idLinkButtons)
+  }, self.idLinkArea)
   self.idLinks:AddInterpolation{
     type = const.intAlpha,
     startValue = 255,
@@ -94,7 +92,7 @@ function Examine:Init(parent, context)
     OnChange = function()
       self.idAutoRefreshToggle(self)
     end,
-  }, self.idLinkButtons)
+  }, self.idLinkArea)
 
   self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idFilterArea",
@@ -113,8 +111,8 @@ function Examine:Init(parent, context)
     end,
   }, self.idFilterArea)
 
-  self.idMenuButtons = g_Classes.ChoGGi_DialogSection:new({
-    Id = "idMenuButtons",
+  self.idMenuArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idMenuArea",
     Dock = "top",
   }, self.idDialog)
 
@@ -130,7 +128,7 @@ Right-click to scroll to top."--]]],
       end
     end,
     Dock = "left",
-  }, self.idMenuButtons)
+  }, self.idMenuArea)
 
   self.idParents = g_Classes.ChoGGi_ComboButton:new({
     Id = "idParents",
@@ -142,7 +140,7 @@ Right-click to scroll to top."--]]],
       end
     end,
     Dock = "left",
-  }, self.idMenuButtons)
+  }, self.idMenuArea)
 
   self.idAttaches = g_Classes.ChoGGi_ComboButton:new({
     Id = "idAttaches",
@@ -154,7 +152,7 @@ Right-click to scroll to top."--]]],
       end
     end,
     Dock = "left",
-  }, self.idMenuButtons)
+  }, self.idMenuArea)
 
   self.idNext = g_Classes.ChoGGi_Button:new({
     Id = "idNext",
@@ -171,7 +169,7 @@ Right-click to scroll to top."--]]],
         self.idScrollBox:ScrollTo(0,0)
       end
     end,
-  }, self.idMenuButtons)
+  }, self.idMenuArea)
 
   -- text box with obj info in it
   self:AddScrollText()
@@ -188,6 +186,7 @@ Right-click to scroll to top."--]]],
   end
 
   self:SetInitPos(context.parent)
+
 end
 
 function Examine:Menu_Toggle(obj,menu,items)
@@ -388,9 +387,12 @@ local pmenu_skip_dupes
 local function BuildParents(self,list,list_type,title,sort_type)
   local g_Classes = g_Classes
   if list and next(list) then
-    list = RetSortTextAssTable(list,sort_type)
+    list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
     self[list_type] = list
-    pmenu_list_items[#pmenu_list_items+1] = {text = Concat("   ---- ",title)}
+    pmenu_list_items[#pmenu_list_items+1] = {
+      name = Concat("   ---- ",title),
+      hint = title,
+    }
     for i = 1, #list do
       -- no sense in having an item in parents and ancestors
       if not pmenu_skip_dupes[list[i]] then
@@ -452,20 +454,17 @@ function Examine:FlashWindow(obj)
     DeleteThread(flashing_table.thread)
     obj.BorderWidth = flashing_table.width
     obj.BorderColor = flashing_table.colour
---~     obj.Background = flashing_table.bg
   end
 
   flashing_table.thread = CreateRealTimeThread(function()
     flashing_table.width = obj.BorderWidth
     flashing_table.colour = obj.BorderColor
---~     flashing_table.bg = obj.Background
 
     obj.BorderWidth = 2
     local c = black
     for i = 1, 5 do
       if obj.window_state ~= "destroying" then
         obj.BorderColor = c
---~         obj.Background = c
         Sleep(75)
         UIL.Invalidate()
         c = c == white and black or white
@@ -474,7 +473,6 @@ function Examine:FlashWindow(obj)
     if obj.window_state ~= "destroying" then
       obj.BorderWidth = flashing_table.width
       obj.BorderColor = flashing_table.colour
---~       obj.Background = flashing_table.bg
     end
   end)
 end

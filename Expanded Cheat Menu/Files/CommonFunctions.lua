@@ -490,6 +490,12 @@ do --g_Classes
 --~   end
 
   function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
+    local ChoGGi = ChoGGi
+    local CheckText = ChoGGi.ComFuncs.CheckText
+    local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
+    local ShowMe = ChoGGi.ComFuncs.ShowMe
+    local ViewObjectMars = ViewObjectMars
+
     local popup = g_Classes.XPopupList:new({
       Opened = true,
       Id = popup_id,
@@ -501,10 +507,11 @@ do --g_Classes
 
     for i = 1, #items do
       local item = items[i]
+      local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
       -- defaults to XTextButton. class = "ChoGGi_CheckButtonMenu",
-      local button = g_Classes[item.class or "ChoGGi_ButtonMenu"]:new({
-        RolloverText = ChoGGi.ComFuncs.CheckText(item.hint),
-        Text = ChoGGi.ComFuncs.CheckText(item.name),
+      local button = cls:new({
+        RolloverText = CheckText(item.hint),
+        Text = CheckText(item.name),
 --~         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
@@ -516,12 +523,14 @@ do --g_Classes
       end
 
       if item.showme then
-        function button.OnMouseEnter()
-          ChoGGi.ComFuncs.ClearShowMe()
-          ChoGGi.ComFuncs.ShowMe(item.showme, nil, true, true)
+        function button.OnMouseEnter(self, pt, child)
+          cls.OnMouseEnter(self, pt, child)
+          ClearShowMe()
+          ShowMe(item.showme, nil, true, true)
         end
       elseif item.pos then
-        function button.OnMouseEnter()
+        function button.OnMouseEnter(self, pt, child)
+          cls.OnMouseEnter(self, pt, child)
           ViewObjectMars(item.pos)
         end
       end

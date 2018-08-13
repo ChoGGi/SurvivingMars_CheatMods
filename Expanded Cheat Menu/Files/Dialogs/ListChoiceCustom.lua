@@ -145,8 +145,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Text = S[6878--[[OK--]]],
     RolloverText = S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]],
     OnMouseButtonDown = function()
-      -- I don't think it needs to be restored, but whatever
-      self.idColorPicker.Close = g_Classes.XColorPicker.Close
       -- build self.choices
       self:GetAllItems()
       -- send selection back
@@ -159,6 +157,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idCancel = g_Classes.ChoGGi_Button:new({
     Id = "idCancel",
     Dock = "right",
+    MinWidth = 80,
     Text = S[6879--[[Cancel--]]],
     RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
     OnMouseButtonDown = self.idCloseX.OnPress,
@@ -178,7 +177,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   }, self.idColourContainer)
 
   self.idColorPicker = g_Classes.XColorPicker:new({
-    OnColorChanged = function(picker, color)
+    OnColorChanged = function(_, color)
       -- custom value box
       self.idEditValue:SetText(tostring(color))
       -- no list item selected, so just return
@@ -188,13 +187,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
       -- update item value (probably useless now that it's automagical)
       self.items[self.idList.selection[1]].value = color
       -- update object colour
-      self:idColorPickerOnColorChanged(color)
+      self:idColorPickerOnColorChanged()
     end,
-    -- easy way to stop the picker closing when you dbl-click it
-    Close = function()end,
     AdditionalComponent = "alpha"
 --~     AdditionalComponent = "intensity"
   }, self.idColorPickerArea)
+  -- block it from closing on dbl click
+  self.idColorPicker.idColorSquare.OnColorChanged = function(square, color, double_click)
+    self.idColorPicker:SetColorInternal(color)
+  end
 
   self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idColorCheckArea",
@@ -269,6 +270,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   end
 
   self:SetInitPos(self.list.parent)
+
+  -- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
+  self.idColorPicker:UpdateComponent("ALPHA", 1000)
 end
 
 function ChoGGi_ListChoiceCustomDialog:BuildList(skip)

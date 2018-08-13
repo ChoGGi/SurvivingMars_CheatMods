@@ -10,7 +10,7 @@ local point = point
 local white = white
 local black = black
 local dark_gray = -13158858
-local medium_gray = -10263966
+local medium_gray = -10592674
 local light_gray = -2368549
 local rollover_blue = RGB(24, 123, 197)
 
@@ -79,9 +79,11 @@ DefineClass.ChoGGi_Button = {
   MinWidth = 60,
   Text = S[6878--[[OK--]]],
   Background = light_gray,
-  -- center text
-  LayoutMethod = "VList",
 }
+function ChoGGi_Button:Init()
+  self.idLabel:SetDock("box")
+end
+
 DefineClass.ChoGGi_ButtonMenu = {
   __parents = {"ChoGGi_Button"},
   LayoutMethod = "HList",
@@ -200,9 +202,6 @@ function ChoGGi_Window:AddElements(parent,context)
 
   self.idCloseX = ChoGGi_CloseButton:new({
     OnPress = context.func or function()
-      if self.idColorPicker then
-        self.idColorPicker.Close = g_Classes.XColorPicker.Close
-      end
       self:Close("cancel",false)
     end,
   }, self.idTitleArea)
@@ -284,6 +283,9 @@ function ChoGGi_Window:AddScrollText()
 
   self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idScrollArea",
+    BorderWidth = 1,
+    Margins = box(0,0,0,0),
+    BorderColor = light_gray,
   }, self.idDialog)
 
   self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
