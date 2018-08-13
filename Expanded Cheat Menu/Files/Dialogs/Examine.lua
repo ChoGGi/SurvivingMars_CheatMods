@@ -355,13 +355,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
         OpenExamine(menu_list_items,self)
       end,
     },
-    {
-      name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
-      hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
-      clicked = function()
-        ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
-      end,
-    },
+--~     {
+--~       name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+--~       hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+--~       clicked = function()
+--~         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
+--~       end,
+--~     },
     {
       name = S[302535920000323--[[Exec Code--]]],
       hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.

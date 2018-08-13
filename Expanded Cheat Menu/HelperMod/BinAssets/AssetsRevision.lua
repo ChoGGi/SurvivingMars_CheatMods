@@ -1,6 +1,10 @@
 local mod_ids = {
   -- ECM
   ["1411157810"] = true,
+-- SkiRich Dev Fixes
+["1477071050"] = true,
+--~     -- Change Object Colour
+--~     ["1411106049"] = true,
 }
 
 CreateRealTimeThread(function()
@@ -15,11 +19,15 @@ CreateRealTimeThread(function()
       mod.env = nil
       -- add a warning to any mods that get changed
       mod.title = table.concat{mod.title," (Warning)"}
-      mod.description = table.concat{[[Warning: The function blacklist added in the Da Vinci update has been removed!
-This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.]],"\n\n",mod.description}
+      mod.description = table.concat{[[Warning: The blacklist function added in the Da Vinci update has been removed for this mod!
+This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.
+In other words, the same as Curiosity and lower.
+
+]],mod.description}
     end
   end
 end)
+
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")

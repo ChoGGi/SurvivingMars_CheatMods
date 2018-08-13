@@ -1,8 +1,8 @@
 local mod_path = ConvertToOSPath(_G.CurrentModPath)
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v7.3 Test",
-	"version", 73,
-	"saved", 1533384000,
+	"title", "Expanded Cheat Menu v8.0 Test",
+	"version", 80,
+	"saved", 1534075200,
 	"steam_id", "1411157810",
 	"code", {"Init.lua"},
 	"id", "ChoGGi_CheatMenu",
@@ -14,8 +14,8 @@ return PlaceObj("ModDef", {
 	"TagCheats", true,
 --~ 	"lua_revision", LuaRevision,
 
-  "last change" , string.format([[v7.3
-Da Vinci Patch:
+  "last change" , string.format([[v8.0
+Da Vinci Update:
 If this mod is disabled due to version compatibility then you need to install the helper mod at:
 %sHelperMod
 ]],mod_path),

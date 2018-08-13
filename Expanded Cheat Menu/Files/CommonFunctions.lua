@@ -33,7 +33,7 @@ local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
-local table,debug = table,debug
+local table = table
 
 local _InternalTranslate = _InternalTranslate
 local AsyncCopyFile = AsyncCopyFile
@@ -1343,21 +1343,20 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     return
   end
 
-  local ChoGGi = ChoGGi
+  local CompareTableValue = .ComFuncs.CompareTableValue
 
-  --sort table by display text
   if not list.skip_sort then
+    -- sort table by display text
     local sortby = list.sortby or "text"
     table.sort(list.items,
       function(a,b)
-        return ChoGGi.ComFuncs.CompareTableValue(a,b,sortby)
+        return CompareTableValue(a,b,sortby)
       end
     )
   end
 
-  --only insert blank item if we aren't updating other items with it
   if not list.custom_type then
-    --insert blank item for adding custom value
+    -- insert blank item for adding custom value
     list.items[#list.items+1] = {text = "",hint = "",value = false}
   end
 
@@ -1373,8 +1372,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 --~   CreateRealTimeThread(function()
 --~     -- waiting for choice
 --~     local option = dlg.idDialog:Wait()
---~ print("WAIT1 ",option)
---~ print("WAIT2 ",#option)
 
 --~     if option and #option > 0 then
 --~       list.callback(option)

@@ -17,6 +17,8 @@ Examine:
 Exec Code:
 > Multi line text support.
 > Now checks clipboard content before adding ChoGGi.CurObj.
+List Dialog:
+> Change Colour is now applied when you select a colour (default checkbox to reset).
 
 v7.2 (04 Aug 2018)
 Added:
