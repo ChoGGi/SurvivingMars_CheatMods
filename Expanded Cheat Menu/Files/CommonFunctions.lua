@@ -1343,8 +1343,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     return
   end
 
-  local CompareTableValue = .ComFuncs.CompareTableValue
-
+  local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
   if not list.skip_sort then
     -- sort table by display text
     local sortby = list.sortby or "text"
