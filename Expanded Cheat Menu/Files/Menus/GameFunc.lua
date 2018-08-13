@@ -1156,14 +1156,14 @@ function ChoGGi.MenuFuncs.CameraFree_Toggle()
     ShowMouseCursor("InGameCursor")
     cameraRTS_Activate(1)
     engineShowMouseCursor()
-    print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001059--[[RTS--]]]))
+    print(S[302535920001058--[[Camera--]]]," ",S[302535920001059--[[RTS--]]])
   else
     cameraFly_Activate(1)
     HideMouseCursor("InGameCursor")
     SetMouseDeltaMode(true)
     --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
     engineHideMouseCursor()
-    print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001060--[[Fly--]]]))
+    print(S[302535920001058--[[Camera--]]]," ",S[302535920001060--[[Fly--]]])
   end
   --resets zoom so...
   ChoGGi.CodeFuncs.SetCameraSettings()
@@ -1199,7 +1199,7 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
     return
   end
   --let user know the camera mode
-  print(Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001061--[[Follow--]]]))
+  print(S[302535920001058--[[Camera--]]]," ",S[302535920001061--[[Follow--]]])
   --we only want to follow one object
   if ChoGGi.LastFollowedObject then
     camera3p_DetachObject(ChoGGi.LastFollowedObject)

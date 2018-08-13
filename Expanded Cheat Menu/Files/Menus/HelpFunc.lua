@@ -97,7 +97,11 @@ do -- ModUpload
       local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
 
       -- build / show confirmation dialog
-      local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
+      local upload_msg = {
+        S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title),
+        "\n",
+        S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading.--]]],
+      }
       if not copy_files then
         upload_msg[#upload_msg+1] = "\n\n"
         upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
@@ -170,13 +174,13 @@ do -- ModUpload
               description = mod.description,
               tags = mod:GetTags(),
               content_os_folder = os_dest,
-              image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or ""
+              image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or "",
+              change_note = mod.last_changes or "",
             }
           else
             err = "no steam"
           end
         end
-
         -- show id in console (figure out a decent way to add this to metadat.lua)
         if item_id then
           print(mod.title,": ",S[1000107--[[Mod--]]]," ",S[1000021--[[Steam ID--]]],": ",item_id)

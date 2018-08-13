@@ -666,7 +666,7 @@ end
 --~   for Thread in pairs(ThreadsMessageToThreads) do
 --~     if Thread.thread and IsValidThread(Thread.thread) then
 --~       idx = idx + 1
---~       print(Concat("idx ",idx))
+--~       print("idx ",idx)
 --~     end
 --~   end
 --~ ex(s_SeqListPlayers)

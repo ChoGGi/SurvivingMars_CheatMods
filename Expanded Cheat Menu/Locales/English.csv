@@ -1,6 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
 302535920000081,,
-302535920000051,,
 302535920001302,,
 302535920001303,,
 302535920001304,,
@@ -1322,6 +1321,7 @@ Not noticeable unless using higher zoom.",
 302535920000654,Select (or mouse over) an object to follow.,
 302535920000655,Toggle Cursor,
 302535920000656,Toggle between moving camera and selecting objects.,
+302535920000051,Mod will not be packed in an hpk file like the Mod Editor does for uploading.,
 302535920000243,"Extracts Files.hpk to ""%s"".
 You can then edit the files for use with ECM, or your mod (don't forget to include my LICENSE file).",
 302535920000244,Extract,

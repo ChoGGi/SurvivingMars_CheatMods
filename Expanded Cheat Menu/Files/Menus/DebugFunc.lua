@@ -760,7 +760,7 @@ do --path markers
         path = type(obj.GetPath) == "function" and obj:GetPath()
       end) then
         OpenExamine(obj)
-        print(Concat(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj))))
+        print(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
       end
     end
 

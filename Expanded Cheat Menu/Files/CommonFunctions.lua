@@ -1480,9 +1480,9 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
   if v_type == "table" then
     local mTable = getmetatable(value)
     if mTable == nil then
-      print(Concat(spaces,linePrefix,"(table) "))
+      print(spaces,linePrefix,"(table) ")
     else
-      print(Concat(spaces,"(metatable) "))
+      print(spaces,"(metatable) ")
       value = mTable
     end
     for tableKey, tableValue in pairs(value) do
@@ -1493,9 +1493,9 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
     or v_type == "userdata"
     or value == nil
     then
-      print(Concat(spaces,tostring(value)))
+      print(spaces,tostring(value))
   else
-    print(Concat(spaces,linePrefix,"(",v_type,") ",tostring(value)))
+    print(spaces,linePrefix,"(",v_type,") ",tostring(value))
   end
 end
 

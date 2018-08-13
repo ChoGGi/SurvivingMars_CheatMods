@@ -1284,7 +1284,7 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
     -- how long startup takes
     if ChoGGi.testing or UserSettings.ShowStartupTicks then
       ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-      print(Concat("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks))
+      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks)
     end
 
     -- used to check when game has started and it's safe to print() etc

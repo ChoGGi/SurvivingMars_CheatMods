@@ -1,4 +1,5 @@
 local mod_path = ConvertToOSPath(_G.CurrentModPath)
+--~ local url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/HelperMod.zip"
 return PlaceObj("ModDef", {
 	"title", "Expanded Cheat Menu v8.0 Test",
 	"version", 80,

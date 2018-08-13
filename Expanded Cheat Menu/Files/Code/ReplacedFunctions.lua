@@ -134,7 +134,7 @@ do --funcs without a class
 --~         end
 --~         --show popups in console log
 --~         local presettext = DataInstances.PopupNotificationPreset[preset]
---~         --print(Concat(ColourText("Title: ",true),ColourText(T(presettext.title))))
+--~         --print(ColourText("Title: ",true),ColourText(T(presettext.title)))
 --~         local context = _GetPopupNotificationContext(preset, params or empty_table, bPersistable)
 --~         context.parent = parent
 --~         if bPersistable then
@@ -159,8 +159,8 @@ do --funcs without a class
 
 --~         --text = Concat(text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",T(params.colonist)) ,")>"))
 
---~         --print(Concat(ColourText("Text: ",true),text))
---~         --print(Concat(ColourText("Voiced Text: ",true),T(presettext.voiced_text)))
+--~         --print(ColourText("Text: ",true),text)
+--~         --print(ColourText("Voiced Text: ",true),T(presettext.voiced_text))
 --~       end) then
 --~         print("<color 255 0 0>Encountered an error trying to convert popup to console msg; showing popup instead (please let me know which popup it is).</color>")
 --~         return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
