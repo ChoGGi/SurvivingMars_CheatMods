@@ -19,7 +19,6 @@ local GrantTech = GrantTech
 local MeteorsDisaster = MeteorsDisaster
 local ModEditorOpen = ModEditorOpen
 local Msg = Msg
-local OpenExamine = OpenExamine
 local PlaceObject = PlaceObject
 local point = point
 local RefreshXBuildMenu = RefreshXBuildMenu
@@ -224,8 +223,8 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
     {text = S[5627--[[Great Dust Storm--]]],value = "DustStormGreat"},
     {text = S[5628--[[Electrostatic Dust Storm--]]],value = "DustStormElectrostatic"},
 
-    {text = S[4251--[[Meteor--]]],value = "Meteor"},
-    {text = Concat(S[4251--[[Meteor--]]]," ",S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
+    {text = S[4146--[[Meteors--]]],value = "Meteor"},
+    {text = Concat(S[4146--[[Meteors--]]]," ",S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
     {text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
 
     {text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
@@ -394,7 +393,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
 Perhaps.
 But I nearly forgot! You must close your eyes.
 Otherwise you won't see anything."--]],
-      1000436--[[Map--]],
+      987648737170--[[Map--]],
       "UI/Achievements/TheRabbitHole.tga",
       true
     )
@@ -573,8 +572,8 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]],"\n")}
       end
     end
   end
-  --display to user
-  OpenExamine(msgs, point(550,100))
+  -- display to user
+  ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550,100))
 end
 
 function ChoGGi.MenuFuncs.ShowStartedMysteryList()

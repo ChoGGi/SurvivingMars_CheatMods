@@ -6,28 +6,12 @@ local S = ChoGGi.Strings
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
-local AsyncFileToString = AsyncFileToString
 local box = box
-local ClassDescendantsList = ClassDescendantsList
-local CloseDialog = CloseDialog
-local CreateRealTimeThread = CreateRealTimeThread
 local FlushLogFile = FlushLogFile
-local GetDialog = GetDialog
-local GetPreciseTicks = GetPreciseTicks
-local GrantResearchPoints = GrantResearchPoints
-local LuaCodeToTuple = LuaCodeToTuple
 local Msg = Msg
-local OpenDialog = OpenDialog
-local OpenGedApp = OpenGedApp
-local PlaceObj = PlaceObj
-local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
-local SetLightmodelOverride = SetLightmodelOverride
-local ShowConsoleLog = ShowConsoleLog
-local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
 --~ local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
 --~ local UserActions_GetActiveActions = UserActions.GetActiveActions
-local terminal_SetOSWindowTitle = terminal.SetOSWindowTitle
 
 local OnMsg = OnMsg
 
@@ -39,6 +23,9 @@ function OnMsg.ClassesGenerate()
   XRolloverWindow.ZOrder = 9999999
   -- when it's not visible it doesn't take up space
   XListItem.FoldWhenHidden = true
+  -- changed from 2000000
+  ConsoleLog.ZOrder = 2
+  Console.ZOrder = 3
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
@@ -64,10 +51,6 @@ function OnMsg.ClassesPreprocess()
 --~   "HWrap",
 --~   "VWrap"
 
-  --changed from 2000000
-  ConsoleLog.ZOrder = 2
-  Console.ZOrder = 3
-
   -- stops crashing with certain missing pinned objects
   if ChoGGi.UserSettings.FixMissingModBuildings then
     local umc = UnpersistedMissingClass
@@ -83,6 +66,7 @@ end
 do -- OnMsgClassesBuilt
   local function OnMsgXTemplates()
     local XTemplates = XTemplates
+    local PlaceObj = PlaceObj
 
     -- don't show cheats pane for ResourceOverview
     XTemplates.sectionCheats[1].__condition = function(parent, context)
@@ -221,26 +205,71 @@ function OnMsg.PersistPostLoad()
   end
 end
 
+-- add all my cheat menu buttons
+ChoGGi.Temp.MenuitemsKeys = {
+  {
+    ActionId = "ChoGGiMenu_ExpandedCM",
+    ActionTranslate = false,
+    ActionName = S[302535920000104--[[Expanded CM--]]],
+    ActionMenubar = "DevMenu",
+    OnActionEffect = "popup",
+    replace_matching_id = true,
+  },
+  {
+    ActionId = "ChoGGiMenu_Presets",
+    ActionTranslate = false,
+    ActionName = S[302535920000979--[[Presets--]]],
+    ActionMenubar = "DevMenu",
+    OnActionEffect = "popup",
+    replace_matching_id = true,
+  },
+  {
+    ActionId = "ChoGGiMenu_Game",
+    ActionTranslate = false,
+    ActionName = S[283142739680--[[Game--]]],
+    ActionMenubar = "DevMenu",
+    OnActionEffect = "popup",
+    replace_matching_id = true,
+  },
+  {
+    ActionId = "ChoGGiMenu_Help",
+    ActionTranslate = false,
+    ActionName = S[487939677892--[[Help--]]],
+    ActionMenubar = "DevMenu",
+    OnActionEffect = "popup",
+    replace_matching_id = true,
+  },
+  {
+    ActionId = "ChoGGiMenu_Debug",
+    ActionTranslate = false,
+    ActionName = S[1000113--[[Debug--]]],
+    ActionMenubar = "DevMenu",
+    OnActionEffect = "popup",
+    replace_matching_id = true,
+  },
+}
 -- fires when ReloadShortcuts() is called (among others)
 function OnMsg.ShortcutsReloaded()
   local XShortcutsTarget = XShortcutsTarget
   local XAction = XAction
   local keys = ChoGGi.Temp.MenuitemsKeys
+
   for i = 1, #keys do
     local item = keys[i]
     XShortcutsTarget:AddAction(XAction:new{
-      ActionMenubar = "Cheats",
+      ActionMenubar = item.ActionMenubar,
       ActionName = item.ActionName,
       ActionId = item.ActionId,
       ActionIcon = item.ActionIcon,
-      ActionTranslate = item.ActionTranslate,
+      ActionTranslate = false,
       ActionShortcut = item.ActionShortcut,
-      ActionMode = item.ActionMode,
+--~       ActionMode = item.ActionMode,
+      ActionMode = "Game",
       RolloverText = item.RolloverText,
       RolloverTemplate = item.RolloverTemplate,
       RolloverTitle = item.RolloverTitle,
       ActionSortKey = item.ActionSortKey,
-      OnAltAction = item.OnAltAction,
+--~       OnAltAction = item.OnAltAction,
       OnAction = item.OnAction,
     })
   end
@@ -892,10 +921,6 @@ do -- LoadGame/CityStart
 --~       UserActions.Actions = {}
 --~       UserActions.RejectedActions = {}
 
-      if ChoGGi.testing then
-        ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
-      end
-
       -- add custom actions
       dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
       SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
@@ -903,6 +928,7 @@ do -- LoadGame/CityStart
 
       -- add preset menu items
       local AddAction = ChoGGi.ComFuncs.AddAction
+      local OpenGedApp = OpenGedApp
       ClassDescendantsList("Preset", function(name, class)
         AddAction(
           {"/[40]",S[302535920000979--[[Presets--]]],"/"},
@@ -1232,7 +1258,7 @@ do -- LoadGame/CityStart
 
     --everyone loves a new titlebar, unless they don't
     if UserSettings.ChangeWindowTitle then
-      terminal_SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
+      terminal.SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
     end
 
     --someone doesn't like LICENSE files...
@@ -1251,7 +1277,7 @@ do -- LoadGame/CityStart
     if dickhead then
       --i mean you gotta be compliant somehow...
       print(ChoGGi._LICENSE)
-      terminal_SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
+      terminal.SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
     end
 
     -- first time run info
@@ -1281,10 +1307,14 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
       FlushLogFile()
     end
 
+    if ChoGGi.testing then
+      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>: <color 128 255 128>Testing Enabled</color>")
+    end
+
     -- how long startup takes
     if ChoGGi.testing or UserSettings.ShowStartupTicks then
       ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color><color 0 0 0>:</color>",S[302535920000247--[[Startup ticks--]]],": ",ChoGGi.Temp.StartupTicks)
+      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",ChoGGi.Temp.StartupTicks)
     end
 
     -- used to check when game has started and it's safe to print() etc

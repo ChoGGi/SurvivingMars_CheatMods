@@ -32,8 +32,12 @@ DefineClass.Examine = {
   onclick_handles = {},
   -- what we're examining
   obj = false,
+  title = false,
   -- if user checks the autorefresh checkbox
   autorefresh_thread = false,
+  dialog_width = 500,
+  dialog_height = 600,
+
 
   -- needed?
   show_times = "relative",
@@ -54,9 +58,6 @@ function Examine:Init(parent, context)
 
   -- any self. values from :new()
   self.obj = context.obj
-
-  self.dialog_width = 500
-  self.dialog_height = 600
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
@@ -299,7 +300,7 @@ This can take time on something like the "Building" metatable--]]],
         local str = self:totextex(self.obj)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
-        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+        ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
           checkbox = true,
           text = str,
           title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
@@ -309,7 +310,7 @@ This can take time on something like the "Building" metatable--]]],
               ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
             end
           end,
-        })
+        },self)
       end,
     },
     {
@@ -319,7 +320,7 @@ This can take time on something like the "Building" metatable--]]],
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
       clicked = function()
         local str = ValueToLuaCode(self.obj)
-        local dialog = g_Classes.ChoGGi_MultiLineText:new({}, terminal.desktop,{
+        ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
           checkbox = true,
           text = str,
           title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
@@ -351,7 +352,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
           BuildFuncList("CObject",menu_added.CObject)
         end
 
-        OpenExamine(menu_list_items,self)
+        ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
       end,
     },
 --~     {
@@ -361,6 +362,15 @@ This can take time on something like the ""Building"" metatable (don't use this 
 --~         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
 --~       end,
 --~     },
+
+    {
+      name = S[302535920001302--[[Find--]]],
+      hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
+      clicked = function()
+        ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj,self)
+      end,
+    },
+
     {
       name = S[302535920000323--[[Exec Code--]]],
       hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
@@ -401,7 +411,7 @@ local function BuildParents(self,list,list_type,title,sort_type)
           name = list[i],
           hint = list[i],
           clicked = function()
-            OpenExamine(g_Classes[list[i]],self)
+            ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[list[i]],self)
           end,
         }
       end
@@ -497,7 +507,7 @@ end
 
 local function Examine_valuetotextex(_, _, button,o,self)
   if button == "L" then
-    OpenExamine(o, self)
+    ChoGGi.ComFuncs.OpenInExamineDlg(o, self)
   elseif IsValid(o) then
     ShowMe(o)
   end
@@ -674,12 +684,12 @@ local function ExamineThreadLevel_totextex(level, info, o,self)
     end
   end
   return function()
-    OpenExamine(data, self)
+    ChoGGi.ComFuncs.OpenInExamineDlg(data, self)
   end
 end
 
 local function Examine_totextex(o,self)
-  OpenExamine(o, self)
+  ChoGGi.ComFuncs.OpenInExamineDlg(o, self)
 end
 
 function Examine:totextex(o)
@@ -963,12 +973,12 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
           name = RetName(attaches[i]),
           hint = Concat(
             attaches[i].class,"\n",
-            S[302535920000955--[[Handle--]]],": ",attaches[i].handle or "","\n",
+            S[302535920000955--[[Handle--]]],": ",attaches[i].handle or S[6761--[[None--]]],"\n",
             pos and Concat("Pos: ",pos)
           ),
           showme = attaches[i],
           clicked = function()
-            OpenExamine(attaches[i],self)
+            ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
           end,
         }
       end

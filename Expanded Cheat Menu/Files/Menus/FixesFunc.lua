@@ -691,7 +691,7 @@ end
 --~   end
 --~   if #dupes > 0 then
 --~     table.sort(dupes)
---~     OpenExamine(dupes)
+--~     ChoGGi.ComFuncs.OpenInExamineDlg(dupes)
 --~   end
 --~ end
 

@@ -70,7 +70,7 @@ DefineClass.ChoGGi_CloseButton = {
   Image = "UI/Common/mission_no.tga",
   Dock = "top",
   HAlign = "right",
-  Margins = box(0, 4, 2, 0),
+  Margins = box(0, 1, 1, 0),
 }
 
 DefineClass.ChoGGi_Button = {
@@ -235,7 +235,7 @@ function ChoGGi_Window:SetPos(obj)
   else
     local box = obj.idDialog.box
     x = box:minx()
-    y = box:miny() + 25
+    y = box:miny() + 22
     if self.class == "Examine" then
       -- it's a copy of examine wanting a new window offset, so we want the size of it
       w = box:sizex()

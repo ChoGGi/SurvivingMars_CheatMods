@@ -6,17 +6,6 @@ DefineClass.ChoGGi_HexSpot = {
   entity = "GridTile"
 }
 
---~ -- used for flatten ground
---~ DefineClass.ChoGGi_Square = {
---~   __parents = {"Polyline"}
---~ }
---~ function ChoGGi_Square:Init()
---~   Polyline.Init(self)
---~   self.max_vertices = #self.points
---~   self:SetMesh(self.points)
---~   self:SetPos(self.points[1])
---~ end
-
 function DestroyRolloverWindow(_, instant)
   XDestroyRolloverWindow(instant)
 end
@@ -28,17 +17,13 @@ function CreateRolloverWindow(ctrl, text, bXInput)
 end
 
 
-local TableConcat -- added in Init.lua
+local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
 local table = table
 
-local _InternalTranslate = _InternalTranslate
-local AsyncCopyFile = AsyncCopyFile
-local AsyncFileToString = AsyncFileToString
-local AsyncListFiles = AsyncListFiles
 local AsyncRand = AsyncRand
 local AsyncStringToFile = AsyncStringToFile
 local box = box
@@ -50,8 +35,6 @@ local GetLogFile = GetLogFile
 local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
-local HexGridGetObject = HexGridGetObject
-local HexGridGetObjects = HexGridGetObjects
 local IsBox = IsBox
 local IsObjlist = IsObjlist
 local IsPoint = IsPoint
@@ -66,10 +49,7 @@ local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
 local ViewObjectMars = ViewObjectMars
 local WaitMarsQuestion = WaitMarsQuestion
-local WaitPopupNotification = WaitPopupNotification
-local WorldToHex = WorldToHex
 
-local local_T = T -- T replaced below
 local guic = guic
 local white = white
 
@@ -112,7 +92,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 --~       return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](table.unpack(params))
 --~     end) then
 --~       print("Function Error: ",Concat(ClassName,"_",FuncName))
---~       OpenExamine({params})
+--~       ChoGGi.ComFuncs.OpenInExamineDlg({params})
 --~     end
     return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
   end
@@ -139,131 +119,33 @@ AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
 AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
-do -- memoize
-  local memoize = {
-    _VERSION     = 'memoize v2.0',
-    _DESCRIPTION = 'Memoized functions in Lua',
-    _URL         = 'https://github.com/kikito/memoize.lua',
-    _LICENSE     = [[
-      MIT LICENSE
 
-      Copyright (c) 2018 Enrique García Cota
-
-      Permission is hereby granted, free of charge, to any person obtaining a
-      copy of this software and associated documentation files (the
-      "Software"), to deal in the Software without restriction, including
-      without limitation the rights to use, copy, modify, merge, publish,
-      distribute, sublicense, and/or sell copies of the Software, and to
-      permit persons to whom the Software is furnished to do so, subject to
-      the following conditions:
-
-      The above copyright notice and this permission notice shall be included
-      in all copies or substantial portions of the Software.
-
-      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-      OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-      IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-      CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-      TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-      SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-    ]]
-  }
-  -- Inspired by http://stackoverflow.com/questions/129877/how-do-i-write-a-generic-memoize-function
-
-  -- private stuff
-
-  local function is_callable(f)
-    local tf = type(f)
-    if tf == 'function' then return true end
-    if tf == 'table' then
-      local mt = getmetatable(f)
-      return type(mt) == 'table' and is_callable(mt.__call)
-    end
-    return false
-  end
-
-  local function cache_get(cache, params)
-    local node = cache
-    for i=1, #params do
-      node = node.children and node.children[params[i]]
-      if not node then return nil end
-    end
-    return node.results
-  end
-
-  local function cache_put(cache, params, results)
-    local node = cache
-    local param
-    for i=1, #params do
-      param = params[i]
-      node.children = node.children or {}
-      node.children[param] = node.children[param] or {}
-      node = node.children[param]
-    end
-    node.results = results
-  end
-
-  -- public function
-
-  function memoize.memoize(f, cache)
-    cache = cache or {}
-
-    if not is_callable(f) then
-      local str = [[If you get this msg contact me, thanks.
-
-  Only functions and callable tables are memoizable. Received %s (a %s)]]
-      print(str:format(tostring(f), type(f)))
-    end
-    return function (...)
-      local params = {...}
-
-      local results = cache_get(cache, params)
-      if not results then
-        results = { f(...) }
-        cache_put(cache, params, results)
+do -- Trans
+  local _InternalTranslate = _InternalTranslate
+  local T = T -- T replaced below
+  -- I want a translate func to always return a string
+  function ChoGGi.ComFuncs.Trans(...)
+    local trans
+    local vararg = {...}
+    -- just in case a
+    pcall(function()
+      if type(vararg[1]) == "userdata" then
+        trans = _InternalTranslate(table.unpack(vararg))
+      else
+        trans = _InternalTranslate(T(vararg))
       end
-
-      return table.unpack(results)
+    end)
+    -- just in case b
+    if type(trans) ~= "string" then
+      if type(vararg[2]) == "string" then
+        return vararg[2]
+      end
+      -- done fucked up (just in case c)
+      return Concat(vararg[1]," < Missing locale string id")
     end
+    return trans
   end
-  setmetatable(memoize, { __call = function(_, ...) return memoize.memoize(...) end })
-  ChoGGi.ComFuncs.Memoize = memoize.memoize
 end -- do
-local Memoize = ChoGGi.ComFuncs.Memoize
-
--- cache translation strings
-_InternalTranslate = Memoize(_InternalTranslate)
-IsT = Memoize(IsT)
-T = Memoize(T)
-TDevModeGetEnglishText = Memoize(TDevModeGetEnglishText)
-
-ChoGGi.ComFuncs.TableConcat = Memoize(ChoGGi.ComFuncs.TableConcat)
-TableConcat = ChoGGi.ComFuncs.TableConcat
-
--- I want a translate func to always return a string
-function ChoGGi.ComFuncs.Trans(...)
-  local trans
-  local vararg = {...}
-  -- just in case a
-  pcall(function()
-    if type(vararg[1]) == "userdata" then
-      trans = _InternalTranslate(table.unpack(vararg))
-    else
-      trans = _InternalTranslate(local_T(vararg))
-    end
-  end)
-  -- just in case b
-  if type(trans) ~= "string" then
-    if type(vararg[2]) == "string" then
-      return vararg[2]
-    end
-    -- done fucked up (just in case c)
-    return Concat(vararg[1]," < Missing locale string id")
-  end
-  return trans
-end
-ChoGGi.ComFuncs.Trans = Memoize(ChoGGi.ComFuncs.Trans)
 local T = ChoGGi.ComFuncs.Trans
 
 -- check if text is already translated or needs to be, and return the text
@@ -279,6 +161,7 @@ function ChoGGi.ComFuncs.CheckText(text,fallback)
   end
   return text
 end
+local CheckText = ChoGGi.ComFuncs.CheckText
 
 -- returns object name or at least always some string
 function ChoGGi.ComFuncs.RetName(obj)
@@ -356,8 +239,8 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   --build the popup
   local data = {
     id = AsyncRand(),
-    title = ChoGGi.ComFuncs.CheckText(title),
-    text = ChoGGi.ComFuncs.CheckText(text,S[3718--[[NONE--]]]),
+    title = CheckText(title),
+    text = CheckText(text,S[3718--[[NONE--]]]),
     image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
   }
   table.set_defaults(data, params)
@@ -400,57 +283,105 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do --g_Classes
   local g_Classes = g_Classes
-  function ChoGGi.ComFuncs.AddAction(entry,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
+
+--~ -- change some annoying stuff about UserActions.AddActions()
+--~ local g_idxAction = 0
+--~ function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
+--~   for k, v in pairs(actions_to_add or empty_table) do
+--~     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
+--~       if v.key ~= nil and v.key ~= "" then
+--~         if type(v.key) == "table" then
+--~           local keys = v.key
+--~           if #keys <= 0 then
+--~             v.description = ""
+--~           else
+--~             v.description = Concat(v.description," (",keys[1])
+--~             for i = 2, #keys do
+--~               v.description = Concat(v.description," ",S[302535920000165--[[or--]]]," ",keys[i])
+--~             end
+--~             v.description = Concat(v.description,")")
+--~           end
+--~         else
+--~           v.description = Concat(tostring(v.description)," (",v.key,")")
+--~         end
+--~       end
+--~       v.id = k
+--~       v.idx = g_idxAction
+--~       g_idxAction = g_idxAction + 1
+--~       UserActions.Actions[k] = v
+--~     else
+--~       UserActions.RejectedActions[k] = v
+--~     end
+--~   end
+--~   UserActions_SetMode(UserActions.mode)
+--~ end
+
+  function ChoGGi.ComFuncs.AddAction(name,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
     local ChoGGi = ChoGGi
 
     -- build function
-    local name = "NOFUNC"
+    local action_id = "NOFUNC"
     -- tooltip menu item
     if action == "blank_function" then
-      name = action
+      action_id = action
       action = function()end
     -- make the id the func location (filename/linenum)
     elseif type(action) == "function" then
       local debug_info = debug.getinfo(action, "Sn")
       local text = Concat(debug_info.short_src,"(",debug_info.linedefined,")")
-      name = text:gsub(ChoGGi.ModPath,"")
-      name = name:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
-      name = name:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
-      name = name:gsub("...Mods/Expanded Cheat Menu/","")
+      action_id = text:gsub(ChoGGi.ModPath,"")
+      action_id = action_id:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
+      action_id = action_id:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
+      action_id = action_id:gsub("...Mods/Expanded Cheat Menu/","")
     else
       ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",menu)
     end
 
     -- description (we leave funcs as they are, so UAMenu.UpdateUAMenu works)
     if type(des) ~= "function" then
-      des = ChoGGi.ComFuncs.CheckText(des,menu)
+      des = CheckText(des,menu)
     end
 
-    local path
-    if entry then
-      path = TableConcat(entry)
-      entry = entry[2]
+--~     local path
+--~     if entry then
+--~       path = TableConcat(entry)
+--~       entry = entry[2]
+--~     end
+
+name = Concat(name)
+
+    if icon and not icon:find("/") then
+      icon = Concat("CommonAssets/UI/Menu/",icon)
     end
 
-    ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
-      ActionMenubar = "CUSTOM",
-      ActionName = menu,
-      ActionId = Concat("ChoGGi_",name,"-",AsyncRand()),
-      ActionIcon = icon,
-      ActionTranslate = false,
-      ActionShortcut = key,
-      ActionMode = "Game",
-      RolloverText = des,
-      RolloverTemplate = "Rollover",
-      RolloverTitle = S[126095410863--[[Info--]]],
---~       ActionSortKey = "Displayname as well?",
---~       OnAltAction = ,
-      OnAction = action,
-    }
+    if menu then
+      ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
+        ActionMenubar = menu,
+        ActionName = name,
+        ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
+        ActionIcon = icon,
+--~         ActionTranslate = false,
+        ActionShortcut = key,
+--~         ActionMode = "Game",
+        RolloverText = des,
+        RolloverTemplate = "Rollover",
+        RolloverTitle = S[126095410863--[[Info--]]],
+        ActionSortKey = "0",
+--~         OnAltAction = ,
+        OnAction = action,
+      }
+    else
+      ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
+        ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
+        ActionTranslate = false,
+        ActionShortcut = key,
+        OnAction = action,
+      }
+    end
 
 --~     ChoGGi.ComFuncs.UserAddActions{
 --~       -- AsyncRand needed for items made from same line (like a loop)
---~       [Concat("ChoGGi_",name,"-",AsyncRand())] = {
+--~       [Concat("ChoGGi_",action_id,"-",AsyncRand())] = {
 --~         -- name of button
 --~         entry = entry,
 --~         -- button path needed for UAMenu, so i don't have to go through the whole pattern match utf (they translated the strings used for the cheats menu, but didn't make it actually support utf)
@@ -482,7 +413,7 @@ do --g_Classes
 --~       RolloverText = hint or "",
 --~       RolloverTitle = S[126095410863--[[Info--]]],
 --~       MinWidth = 60,
---~       Text = ChoGGi.ComFuncs.CheckText(text,S[6878--[[OK--]]]),
+--~       Text = CheckText(text,S[6878--[[OK--]]]),
 --~       OnPress = onpress,
 --~       --center text
 --~       LayoutMethod = "VList",
@@ -491,7 +422,6 @@ do --g_Classes
 
   function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
     local ChoGGi = ChoGGi
-    local CheckText = ChoGGi.ComFuncs.CheckText
     local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
     local ShowMe = ChoGGi.ComFuncs.ShowMe
     local ViewObjectMars = ViewObjectMars
@@ -512,7 +442,6 @@ do --g_Classes
       local button = cls:new({
         RolloverText = CheckText(item.hint),
         Text = CheckText(item.name),
---~         OnMouseButtonDown = item.clicked or function()end,
         OnMouseButtonUp = function()
           popup:Close()
         end,
@@ -639,9 +568,10 @@ do --g_Classes
 end
 
 -- centred msgbox with Ok
+local WaitPopupNotification = WaitPopupNotification
 function ChoGGi.ComFuncs.MsgWait(text,title,image)
-  text = ChoGGi.ComFuncs.CheckText(text,text)
-  title = ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]])
+  text = CheckText(text,text)
+  title = CheckText(title,S[1000016--[[Title--]]])
 
   local preset
   if image then
@@ -668,10 +598,10 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
   CreateRealTimeThread(function()
     if WaitMarsQuestion(
       parent,
-      ChoGGi.ComFuncs.CheckText(title,S[1000016--[[Title--]]]),
-      ChoGGi.ComFuncs.CheckText(text,S[3718--[[NONE--]]]),
-      ChoGGi.ComFuncs.CheckText(ok_msg,S[6878--[[OK--]]]),
-      ChoGGi.ComFuncs.CheckText(cancel_msg,S[6879--[[Cancel--]]]),
+      CheckText(title,S[1000016--[[Title--]]]),
+      CheckText(text,S[3718--[[NONE--]]]),
+      CheckText(ok_msg,S[6878--[[OK--]]]),
+      CheckText(cancel_msg,S[6879--[[Cancel--]]]),
       image,
       context
     ) == "ok" then
@@ -726,36 +656,8 @@ function ChoGGi.ComFuncs.DumpLua(obj)
   ChoGGi.ComFuncs.Dump(Concat("\r\n",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
 end
 
---[[
-Mode = -1 to append or nil to overwrite (default: -1)
-Funcs = true to dump functions as well (default: false)
-ChoGGi.ComFuncs.DumpTable(Object)
---]]
-function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
-  local ChoGGi = ChoGGi
-  if not obj then
-    MsgPopup(
-      302535920000003--[[Can't dump nothing--]],
-      302535920000004--[[Dump--]]
-    )
-    return
-  end
-  mode = mode or "-1"
-  --make sure it's empty
-  ChoGGi.Temp.TextFile = ""
-  ChoGGi.ComFuncs.DumpTableFunc(obj,nil,funcs)
-  AsyncStringToFile("AppData/logs/DumpedTable.txt",ChoGGi.Temp.TextFile,mode)
-
-  MsgPopup(
-    S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
-    "AppData/logs/DumpedText.txt",
-    nil,
-    nil,
-    obj
-  )
-end
-
 do -- DumpTableFunc
+  local output_string
   local function RetTextForDump(obj,funcs)
     local obj_type = type(obj)
     if obj_type == "userdata" then
@@ -769,8 +671,7 @@ do -- DumpTableFunc
     end
   end
 
-  function ChoGGi.ComFuncs.DumpTableFunc(obj,hierarchyLevel,funcs)
-    local ChoGGi = ChoGGi
+  local function DumpTableFunc(obj,hierarchyLevel,funcs)
     if (hierarchyLevel == nil) then
       hierarchyLevel = 0
     elseif (hierarchyLevel == 4) then
@@ -779,32 +680,53 @@ do -- DumpTableFunc
 
     if type(obj) == "table" then
       if obj.id then
-        ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n-----------------obj.id: ",obj.id," :")
+        output_string = Concat(output_string,"\n-----------------obj.id: ",obj.id," :")
       end
       for k,v in pairs(obj) do
         if type(v) == "table" then
-          ChoGGi.ComFuncs.DumpTableFunc(v, hierarchyLevel+1)
+          DumpTableFunc(v, hierarchyLevel+1)
         else
           if k ~= nil then
-            ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n",tostring(k)," = ")
+            output_string = Concat(output_string,"\n",tostring(k)," = ")
           end
           if v ~= nil then
-            ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,RetTextForDump(v,funcs))
+            output_string = Concat(output_string,RetTextForDump(v,funcs))
           end
-          ChoGGi.Temp.TextFile = Concat(ChoGGi.Temp.TextFile,"\n")
+          output_string = Concat(output_string,"\n")
         end
       end
     end
   end
-end --do
 
-function ChoGGi.ComFuncs.PrintFiles(filename,func,text,...)
-  text = text or ""
-  ChoGGi.ComFuncs.Dump(Concat(text,...,"\r\n"),nil,filename,"log",true)
-  if type(func) == "function" then
-    func(...)
+  --[[
+  Mode = -1 to append or nil to overwrite (default: -1)
+  Funcs = true to dump functions as well (default: false)
+  ChoGGi.ComFuncs.DumpTable(Object)
+  --]]
+  function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
+    local ChoGGi = ChoGGi
+    if not obj then
+      MsgPopup(
+        302535920000003--[[Can't dump nothing--]],
+        302535920000004--[[Dump--]]
+      )
+      return
+    end
+    mode = mode or "-1"
+    --make sure it's empty
+    output_string = ""
+    DumpTableFunc(obj,nil,funcs)
+    AsyncStringToFile("AppData/logs/DumpedTable.txt",output_string,mode)
+
+    MsgPopup(
+      S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
+      "AppData/logs/DumpedText.txt",
+      nil,
+      nil,
+      obj
+    )
   end
-end
+end --do
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
 -- ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
@@ -918,18 +840,29 @@ end
 
 -- write logs funcs
 do -- WriteLogs_Toggle
-  local function ReplaceFunc(name,which,ChoGGi)
+  local AsyncCopyFile = AsyncCopyFile
+  local Dump = ChoGGi.ComFuncs.Dump
+  local function ReplaceFunc(name,which)
+    local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.SaveOrigFunc(name)
     _G[name] = function(...)
-      ChoGGi.ComFuncs.PrintFiles(which,ChoGGi.OrigFuncs[name],nil,...)
+--~       PrintFiles(which,ChoGGi.OrigFuncs[name],nil,...)
+--~       text = text or ""
+--~       Dump(Concat(text,TableConcat{...},"\r\n"),nil,which,"log",true)
+      Dump(Concat(Concat(...),"\r\n"),nil,which,"log",true)
+      if type(ChoGGi.OrigFuncs[name]) == "function" then
+        ChoGGi.OrigFuncs[name](...)
+      end
     end
   end
-  local function ResetFunc(name,ChoGGi)
+  local function ResetFunc(name)
+    local ChoGGi = ChoGGi
     if ChoGGi.OrigFuncs[name] then
       _G[name] = ChoGGi.OrigFuncs[name]
       ChoGGi.OrigFuncs[name] = nil
     end
   end
+
   function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
     local ChoGGi = ChoGGi
     if which == true then
@@ -940,22 +873,22 @@ do -- WriteLogs_Toggle
 
       -- redirect functions
       if ChoGGi.testing then
-        ReplaceFunc("dlc_print","ConsoleLog",ChoGGi)
+        ReplaceFunc("dlc_print","ConsoleLog")
 --~         ReplaceFunc("printf","DebugLog",ChoGGi)
 --~         ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
 --~         ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
       end
-      ReplaceFunc("AddConsoleLog","ConsoleLog",ChoGGi)
-      ReplaceFunc("print","ConsoleLog",ChoGGi)
+      ReplaceFunc("AddConsoleLog","ConsoleLog")
+      ReplaceFunc("print","ConsoleLog")
     else
       if ChoGGi.testing then
-        ResetFunc("dlc_print",ChoGGi)
+        ResetFunc("dlc_print")
 --~         ResetFunc("printf",ChoGGi)
 --~         ResetFunc("DebugPrint",ChoGGi)
 --~         ResetFunc("OutputDebugString",ChoGGi)
       end
-      ResetFunc("AddConsoleLog",ChoGGi)
-      ResetFunc("print","ConsoleLog",ChoGGi)
+      ResetFunc("AddConsoleLog")
+      ResetFunc("print","ConsoleLog")
     end
   end
 end -- do
@@ -1061,38 +994,6 @@ function ChoGGi.ComFuncs.StringToTable(str)
   end
   return temp
 end
-
---~ -- change some annoying stuff about UserActions.AddActions()
---~ local g_idxAction = 0
---~ function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
---~   for k, v in pairs(actions_to_add or empty_table) do
---~     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
---~       if v.key ~= nil and v.key ~= "" then
---~         if type(v.key) == "table" then
---~           local keys = v.key
---~           if #keys <= 0 then
---~             v.description = ""
---~           else
---~             v.description = Concat(v.description," (",keys[1])
---~             for i = 2, #keys do
---~               v.description = Concat(v.description," ",S[302535920000165--[[or--]]]," ",keys[i])
---~             end
---~             v.description = Concat(v.description,")")
---~           end
---~         else
---~           v.description = Concat(tostring(v.description)," (",v.key,")")
---~         end
---~       end
---~       v.id = k
---~       v.idx = g_idxAction
---~       g_idxAction = g_idxAction + 1
---~       UserActions.Actions[k] = v
---~     else
---~       UserActions.RejectedActions[k] = v
---~     end
---~   end
---~   UserActions_SetMode(UserActions.mode)
---~ end
 
 -- while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
 function ChoGGi.ComFuncs.CheckForTypeInList(list,cls)
@@ -1293,13 +1194,40 @@ end
 
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
   if not obj then
-    obj = ChoGGi.CodeFuncs.SelObject()
-  end
-  if not obj then
     return
   end
 
   return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
+    obj = obj,
+    parent = parent,
+  })
+end
+
+function ChoGGi.ComFuncs.OpenInFindValueDlg(obj,parent)
+  if not obj then
+    return
+  end
+
+  return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
+    obj = obj,
+    parent = parent,
+  })
+end
+
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list,parent)
+  if not list then
+    return
+  end
+
+  return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,list)
+end
+
+function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
+  if not obj then
+    return
+  end
+
+  return Examine:new({}, terminal.desktop,{
     obj = obj,
     parent = parent,
   })
@@ -1392,43 +1320,46 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
   return dlg
 end
 
--- returns table with list of files without path or ext and path, or exclude ext to return all files
-function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-  local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
-  if not err and #files > 0 then
-    local table_path = {}
-    local path = Concat(folder,"/")
-    for i = 1, #files do
-      local name
-      if ext then
-        name = files[i]:gsub(path,""):gsub(ext,"")
-      else
-        name = files[i]:gsub(path,"")
+do --
+  local AsyncListFiles = AsyncListFiles
+  -- returns table with list of files without path or ext and path, or exclude ext to return all files
+  function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
+    local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
+    if not err and #files > 0 then
+      local table_path = {}
+      local path = Concat(folder,"/")
+      for i = 1, #files do
+        local name
+        if ext then
+          name = files[i]:gsub(path,""):gsub(ext,"")
+        else
+          name = files[i]:gsub(path,"")
+        end
+        table_path[#table_path+1] = {
+          path = files[i],
+          name = name,
+        }
       end
-      table_path[#table_path+1] = {
-        path = files[i],
-        name = name,
-      }
+      return table_path
     end
-    return table_path
   end
-end
 
-function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-  --local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
-  local err, folders = AsyncListFiles(folder,"*","folders")
-  if not err and #folders > 0 then
-    local table_path = {}
-    local temp_path = Concat(folder,"/")
-    for i = 1, #folders do
-      table_path[#table_path+1] = {
-        path = folders[i],
-        name = folders[i]:gsub(temp_path,""),
-      }
+  function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
+    --local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
+    local err, folders = AsyncListFiles(folder,"*","folders")
+    if not err and #folders > 0 then
+      local table_path = {}
+      local temp_path = Concat(folder,"/")
+      for i = 1, #folders do
+        table_path[#table_path+1] = {
+          path = folders[i],
+          name = folders[i]:gsub(temp_path,""),
+        }
+      end
+      return table_path
     end
-    return table_path
   end
-end
+end -- do
 
 -- i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
@@ -1466,7 +1397,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
     setting = false
   end
 
-  return Concat(setting,": ",ChoGGi.ComFuncs.CheckText(S[text],text))
+  return Concat(setting,": ",CheckText(S[text],text))
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
@@ -1536,7 +1467,7 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
 end
 
 -- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name
--- OpenExamine(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
+-- ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.ReturnAllNearby(1000,"class"))
 function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
   radius = radius or 5000
   pos = pos or GetTerrainCursor()
@@ -1570,19 +1501,25 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
   return list
 end
 
-function ChoGGi.ComFuncs.RetObjectAtPos(pos,q,r)
-  if pos then
-    q, r = WorldToHex(pos or GetTerrainCursor())
-  end
-  return HexGridGetObject(ObjectGrid, q, r)
-end
+do -- RetObjectAtPos/RetObjectsAtPos
+  local WorldToHex = WorldToHex
+  local HexGridGetObject = HexGridGetObject
+  local HexGridGetObjects = HexGridGetObjects
 
-function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
-  if pos then
-    q, r = WorldToHex(pos or GetTerrainCursor())
+  function ChoGGi.ComFuncs.RetObjectAtPos(pos,q,r)
+    if pos then
+      q, r = WorldToHex(pos or GetTerrainCursor())
+    end
+    return HexGridGetObject(ObjectGrid, q, r)
   end
-  return HexGridGetObjects(ObjectGrid, q, r)
-end
+
+  function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
+    if pos then
+      q, r = WorldToHex(pos or GetTerrainCursor())
+    end
+    return HexGridGetObjects(ObjectGrid, q, r)
+  end
+end -- do
 
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
   local temp_table = {}
@@ -1603,27 +1540,15 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 end
 
 -- Haemimont Games code from examine.lua (moved here for local)
-function OpenExamine(obj, parent, return_dlg)
+function OpenExamine(obj,parent)
   local ChoGGi = ChoGGi
   if not obj then
     return ChoGGi.ComFuncs.ClearShowMe()
   end
-
-  local dlg = Examine:new({}, terminal.desktop,{
-    obj = obj,
-    parent = parent,
-  })
-
-  if return_dlg then
-    return dlg
-  end
+  ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
 end
 local OpenExamine = OpenExamine
-
 ex = OpenExamine
-function OpenExamineRet(obj, parent)
-  return OpenExamine(obj, parent, true)
-end
 
 --~ local lm = false
 markers = {}
@@ -1661,12 +1586,14 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
     print(S[302535920000692--[[Log is blank (well not anymore).--]]])
     return
   end
-  local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{
+
+  ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
     wrap = true,
     text = text,
-  })
+  },parent)
 end
 
+local AsyncFileToString = AsyncFileToString
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
   if visible and not dlgChoGGi_ConsoleLogWin then
     dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
@@ -1677,7 +1604,10 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
       dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
     else
       --if for some reason consolelog isn't around, then grab the log file
-      dlgChoGGi_ConsoleLogWin.idText:SetText(select(2,AsyncFileToString(GetLogFile())))
+      local err,str = AsyncFileToString(GetLogFile())
+      if not err then
+        dlgChoGGi_ConsoleLogWin.idText:SetText(str)
+      end
     end
 
   end
@@ -1811,16 +1741,9 @@ function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
 end
 
 function ChoGGi.ComFuncs.Random(m, n)
-  -- m = min, n = max
   if n then
-
---~     -- return nil instead of just returning max without any randomness
---~     if n-m < 0 then
---~       return
---~     end
-
+    -- m = min, n = max
     return AsyncRand(n - m + 1) + m
-
   else
     -- m = max, min = 0 OR number between 0 and max_int
     return m and AsyncRand(m) or AsyncRand()
@@ -1849,7 +1772,7 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
     class_flags_all = query.class_flags_all,
     filter = query.filter,
   }, obj, query_width, ignore_classes)
---~     area = "line",
+--~     area = "realm",
 --~ "realm" = every object
 --~ "outsiders" = prefab markers
 --~ "detached" = invalid positions

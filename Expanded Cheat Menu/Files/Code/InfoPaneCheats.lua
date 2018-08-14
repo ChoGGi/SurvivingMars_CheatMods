@@ -62,11 +62,11 @@ do
       CallBackFunc,
       Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
       Concat(S[5451--[[DELETE--]]],": ",name),
-      Concat(S[6879--[[Cancel--]]]," ",S[1000287--[[Delete--]]])
+      Concat(S[6879--[[Cancel--]]]," ",S[1000615--[[Delete--]]])
     )
   end
 
-  Object.CheatExamine = OpenExamine
+  Object.CheatExamine = ChoGGi.ComFuncs.OpenInExamineDlg
 
   -- consumption
   function Building:CheatPowerFree()

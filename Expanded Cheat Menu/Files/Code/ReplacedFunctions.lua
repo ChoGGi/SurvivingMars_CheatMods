@@ -7,30 +7,6 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
 
---probably should be careful about localizing stuff i replace below...
-local AddConsoleLog = AddConsoleLog
-local ApplyToObjAndAttaches = ApplyToObjAndAttaches
-local box = box
-local ConsoleExec = ConsoleExec
-local ConsolePrint = ConsolePrint
-local CreateConsole = CreateConsole
-local CreateRealTimeThread = CreateRealTimeThread
-local CurrentThread = CurrentThread
-local DeleteThread = DeleteThread
-local GetActionsHost = GetActionsHost
-local GetMissionSponsor = GetMissionSponsor
-local IsBox = IsBox
-local IsPoint = IsPoint
-local IsValid = IsValid
-local MulDivRound = MulDivRound
-local point = point
-local RGB = RGB
-local RGBA = RGBA
-local SetObjDust = SetObjDust
-local Sleep = Sleep
-local TGetID = TGetID
-local WaitWakeup = WaitWakeup
-
 local guim = guim
 local OnMsg = OnMsg
 
@@ -96,6 +72,7 @@ do --funcs without a class
   end
 
   --always able to show console
+  local CreateConsole = CreateConsole
   function ShowConsole(visible)
   --~     removed from orig func:
   --~     if not Platform.developer and not ConsoleEnabled then
@@ -199,6 +176,10 @@ function OnMsg.ClassesGenerate()
     local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
     local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
     local decor_spot = "Tubedecor"
+    local IsValidEntity = IsValidEntity
+    local point = point
+    local WorldToHex = WorldToHex
+    local IsKindOf = IsKindOf
     function GridObject:GetPipeConnections()
       if ChoGGi.Temp.FixingPipes then
         if not IsKindOf(self, "LifeSupportGridObject") then
@@ -315,18 +296,22 @@ function OnMsg.ClassesGenerate()
     end
   end
 
-  --set amount of dust applied
-  function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
-    if ChoGGi.UserSettings.AlwaysDustyBuildings then
-      if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
-        self.ChoGGi_AlwaysDust = dust
+  do -- BuildingVisualDustComponent:SetDustVisuals
+    local ApplyToObjAndAttaches = ApplyToObjAndAttaches
+    local MulDivRound = MulDivRound
+    -- set amount of dust applied
+    function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
+      if ChoGGi.UserSettings.AlwaysDustyBuildings then
+        if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
+          self.ChoGGi_AlwaysDust = dust
+        end
+        dust = self.ChoGGi_AlwaysDust
       end
-      dust = self.ChoGGi_AlwaysDust
-    end
 
-    local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
-    ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
-  end
+      local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
+      ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
+    end
+  end --do
 
   --change dist we can charge from cables
   function BaseRover:GetCableNearby(rad)
@@ -343,6 +328,7 @@ function OnMsg.ClassesPreprocess()
   SaveOrigFunc("InfopanelObj","CreateCheatActions")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
+  local GetActionsHost = GetActionsHost
   function InfopanelObj:CreateCheatActions(win)
     --fire orig func to build cheats
     if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
@@ -495,19 +481,15 @@ function OnMsg.ClassesBuilt()
     return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
   end
 
-  --make sure consolelog uses our margin whenever it's visible
-  function ConsoleLog:SetVisible(visible)
-    local ret = {ChoGGi_OrigFuncs.ConsoleLog_SetVisible(self,visible)}
-    if visible then
-      self:SetMargins(box(0, 0, 0, 25))
-    end
-    return table.unpack(ret)
-  end
-
   -- function from github as the actual function has a whoopsie, or something does...
   -- going to be a fix in next version:
   -- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
   if LuaRevision <= 231139 then
+    local CurrentThread = CurrentThread
+    local DeleteThread = DeleteThread
+    local IsValid = IsValid
+    local Sleep = Sleep
+    local WaitWakeup = WaitWakeup
     function RCRover:ExitAllDrones()
       if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
         DeleteThread(self.exit_drones_thread)
@@ -637,21 +619,24 @@ function OnMsg.ClassesBuilt()
     end
   end -- do
 
-  --some mission goals check colonist amounts
-  function MG_Colonists:GetProgress()
-    if ChoGGi.Temp.InstantMissionGoal then
-      return GetMissionSponsor().goal_target + 1
-    else
-      return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+  do -- GetProgress
+    local GetMissionSponsor = GetMissionSponsor
+    --some mission goals check colonist amounts
+    function MG_Colonists:GetProgress()
+      if ChoGGi.Temp.InstantMissionGoal then
+        return GetMissionSponsor().goal_target + 1
+      else
+        return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+      end
     end
-  end
-  function MG_Martianborn:GetProgress()
-    if ChoGGi.Temp.InstantMissionGoal then
-      return GetMissionSponsor().goal_target + 1
-    else
-      return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+    function MG_Martianborn:GetProgress()
+      if ChoGGi.Temp.InstantMissionGoal then
+        return GetMissionSponsor().goal_target + 1
+      else
+        return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+      end
     end
-  end
+  end -- do
 
   --keep prod at saved values for grid producers (air/water/elec)
   function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
@@ -778,6 +763,10 @@ function OnMsg.ClassesBuilt()
 
   -- list control Dialogs.InGameInterface[6][2][3][2]:SetMaxHeight(165)
   do -- InfopanelDlg:Open
+    local CreateRealTimeThread = CreateRealTimeThread
+    local DeleteThread = DeleteThread
+    local Sleep = Sleep
+    local TGetID = TGetID
     local function ToggleVis(idx,content,v,h)
       for i = 6, idx do
         content[i]:SetVisible(v)
@@ -895,16 +884,20 @@ function OnMsg.ClassesBuilt()
   end -- do
 
   --make the background hide when console not visible (instead of after a second or two)
-  function ConsoleLog:ShowBackground(visible, immediate)
-    if config.ConsoleDim ~= 0 then
-      DeleteThread(self.background_thread)
-      if visible or immediate then
-        self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
-      else
-        self:SetBackground(RGBA(0, 0, 0, 0))
+  do -- ConsoleLog:ShowBackground
+    local DeleteThread = DeleteThread
+    local RGBA = RGBA
+    function ConsoleLog:ShowBackground(visible, immediate)
+      if config.ConsoleDim ~= 0 then
+        DeleteThread(self.background_thread)
+        if visible or immediate then
+          self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
+        else
+          self:SetBackground(RGBA(0, 0, 0, 0))
+        end
       end
     end
-  end
+  end -- do
 
   -- make sure console is focused even when construction is opened
   function Console:Show(show)
@@ -963,33 +956,41 @@ function OnMsg.ClassesBuilt()
     self.idEdit:SetCursor(1,#self.idEdit:GetText())
   end
 
-  --was giving a nil error in log, I assume devs'll fix it one day
-  function RequiresMaintenance:AddDust(amount)
-    --this wasn't checking if it was a number/point/box so errors in log, now it checks
-    if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
-      if self:IsKindOf("Building") then
-        amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
-      end
-      if self.accumulate_dust then
-        self:AccumulateMaintenancePoints(amount)
-      end
-    end
-  end
-
-  --set orientation to same as last object
-  function ConstructionController:CreateCursorObj(...)
-    local ChoGGi = ChoGGi
-    local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
-
-    local last = ChoGGi.Temp.LastPlacedObject
-    if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
-      if type(ret[1].SetAngle) == "function" then
-        ret[1]:SetAngle(last:GetAngle() or 0)
+  do -- RequiresMaintenance:AddDust
+    local IsBox = IsBox
+    local IsPoint = IsPoint
+    local MulDivRound = MulDivRound
+    --was giving a nil error in log, I assume devs'll fix it one day
+    function RequiresMaintenance:AddDust(amount)
+      --this wasn't checking if it was a number/point/box so errors in log, now it checks
+      if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
+        if self:IsKindOf("Building") then
+          amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
+        end
+        if self.accumulate_dust then
+          self:AccumulateMaintenancePoints(amount)
+        end
       end
     end
+  end -- do
 
-    return table.unpack(ret)
-  end
+  do -- ConstructionController:CreateCursorObj
+    local IsValid = IsValid
+    -- set orientation to same as last object
+    function ConstructionController:CreateCursorObj(...)
+      local ChoGGi = ChoGGi
+      local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+
+      local last = ChoGGi.Temp.LastPlacedObject
+      if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
+        if type(ret[1].SetAngle) == "function" then
+          ret[1]:SetAngle(last:GetAngle() or 0)
+        end
+      end
+
+      return table.unpack(ret)
+    end
+  end -- do
 
   --so we can build without (as many) limits
   function ConstructionController:UpdateConstructionStatuses(dont_finalize)
@@ -1088,17 +1089,17 @@ function OnMsg.ClassesBuilt()
     {
       -- ~anything
       "^~(.*)",
-      "OpenExamine(%s)"
+      "ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
     },
     {
       -- &handle
       "^&(.*)",
-      "OpenExamine(HandleToObject[%s])"
+      "ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
     },
     {
       -- !!obj_with_attachments
       "^!!(.*)",
-      "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then OpenExamine(attaches,true) end"
+      "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
     },
 
     -- built-in
@@ -1138,6 +1139,9 @@ function OnMsg.ClassesBuilt()
     },
   }
 
+  local AddConsoleLog = AddConsoleLog
+  local ConsoleExec = ConsoleExec
+  local ConsolePrint = ConsolePrint
   function Console:Exec(text)
     self:AddHistory(text)
     AddConsoleLog("> ", true)

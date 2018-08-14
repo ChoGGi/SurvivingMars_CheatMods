@@ -139,7 +139,7 @@ AddAction(
   end,
   nil,
   S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4251--[[Meteor--]]],mapdata.MapSettings_Meteor),
+Current: %s"--]]]:format(S[4146--[[Meteors--]]],mapdata.MapSettings_Meteor),
   "RandomMapPresetEditor.tga"
 )
 

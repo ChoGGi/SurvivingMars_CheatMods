@@ -427,8 +427,8 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
     custom_type = 4,
   }
 
-  --shows the mission params for people to look at
-  local ex = OpenExamineRet(MissionParams)
+  -- shows the mission params for people to look at
+  local ex = ChoGGi.ComFuncs.OpenInExamineDlg(MissionParams)
 
   --map list dialog
   CreateRealTimeThread(function()

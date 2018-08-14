@@ -27,7 +27,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoal()
   ChoGGi.Temp.InstantMissionGoal = true
   MsgPopup(
     302535920001158--[[Mission goal--]],
-    8076--[[Goal--]],
+    589254325694--[[Goal--]],
     default_icon
   )
 end

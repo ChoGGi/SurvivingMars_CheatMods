@@ -9,26 +9,6 @@ local S = ChoGGi.Strings
 
 local print,tostring = print,tostring
 
-local AsyncCopyFile = AsyncCopyFile
-local AsyncFileDelete = AsyncFileDelete
-local CreateBugReportDlg = CreateBugReportDlg
-local CreateRealTimeThread = CreateRealTimeThread
-local GenerateScreenshotFilename = GenerateScreenshotFilename
-local IsValidThread = IsValidThread
-local LockCamera = LockCamera
-local LuaCodeToTuple = LuaCodeToTuple
-local MovieWriteScreenshot = MovieWriteScreenshot
-local SetHintNotificationsEnabled = SetHintNotificationsEnabled
-local ThreadLockKey = ThreadLockKey
-local ThreadUnlockKey = ThreadUnlockKey
-local ToggleSigns = ToggleSigns
-local UnlockCamera = UnlockCamera
-local UpdateOnScreenHintDlg = UpdateOnScreenHintDlg
-local WaitNextFrame = WaitNextFrame
-local WriteScreenshot = WriteScreenshot
-local HashLogToTable = HashLogToTable
-local OpenExamine = OpenExamine
-
 do -- ExtractFilesHPK
   local ChoGGi = ChoGGi
   local path = ChoGGi.ExtractPath
@@ -71,7 +51,7 @@ end -- do
 function ChoGGi.MenuFuncs.RetMapInfo()
   local data = HashLogToTable()
   data[1] = data[1]:gsub("\n\n","")
-  OpenExamine(table.concat(data,"\n"))
+  ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data,"\n"))
 end
 
 do -- ModUpload
@@ -254,7 +234,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
   -- make sure any changed settings are current
   ChoGGi.SettingFuncs.WriteSettings()
   -- load up settings file in the editor
-  local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{
+  ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
     text = ChoGGi.SettingFuncs.ReadSettings(),
     hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
     hint_cancel = 302535920001245--[[Abort without touching anything.--]],
@@ -305,14 +285,14 @@ end
 function ChoGGi.MenuFuncs.ShowChangelogECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"changes.log"))
 	if not file_error then
-    OpenExamine(str)
+    ChoGGi.ComFuncs.OpenInExamineDlg(str)
 	end
 end
 
 function ChoGGi.MenuFuncs.ShowReadmeECM()
 	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
 	if not file_error then
-    OpenExamine(str)
+    ChoGGi.ComFuncs.OpenInExamineDlg(str)
 	end
 end
 

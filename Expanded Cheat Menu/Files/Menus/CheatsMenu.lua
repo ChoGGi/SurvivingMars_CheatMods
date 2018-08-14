@@ -14,11 +14,12 @@ local CheatToggleAllShifts = CheatToggleAllShifts
 local CheatUpdateAllWorkplaces = CheatUpdateAllWorkplaces
 local UnpinAll = UnpinAll
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+--~ AddAction(entry,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
-  Concat("/[10]",S[27--[[Cheats--]]],"/[99]",S[1000162--[[Menu--]]],"/",S[302535920000232--[[Draggable Cheats Menu--]]]),
+  S[302535920000232--[[Draggable Cheats Menu--]]],
+  Concat(S[27--[[Cheats--]]],".",S[1000162--[[Menu--]]],".",S[302535920000232--[[Draggable Cheats Menu--]]]),
+--~   Concat("/[10]",S[27--[[Cheats--]]],"/[99]",S[1000162--[[Menu--]]],"/",S[302535920000232--[[Draggable Cheats Menu--]]]),
   ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
   nil,
   function()
@@ -31,7 +32,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[99]",S[1000162--[[Menu--]]],"/",S[302535920000321--[[Toggle Width Of Cheats Menu On Hover--]]]),
   ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
   nil,
@@ -45,7 +46,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[99]",S[1000162--[[Menu--]]],"/",S[302535920000325--[[Keep Cheats Menu Position--]]]),
   ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
   nil,
@@ -59,7 +60,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[01]",S[302535920000327--[[Map Exploration--]]]),
   ChoGGi.MenuFuncs.ShowScanAndMapOptions,
   nil,
@@ -68,7 +69,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[302535920000329--[[Manage Mysteries--]]]),
   ChoGGi.MenuFuncs.ShowStartedMysteryList,
   nil,
@@ -77,7 +78,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[302535920000331--[[Start Mystery--]]]),
   ChoGGi.MenuFuncs.ShowMysteryList,
   nil,
@@ -86,7 +87,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[1694--[[Start--]]]," ",S[3983--[[Disasters--]]]),
   ChoGGi.MenuFuncs.DisastersTrigger,
   nil,
@@ -95,7 +96,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[06]",S[302535920000266--[[Spawn--]]]," ",S[547--[[Colonists--]]]),
   ChoGGi.MenuFuncs.SpawnColonists,
   nil,
@@ -104,7 +105,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[10]",S[302535920000337--[[Unlock all buildings--]]]),
   ChoGGi.MenuFuncs.UnlockAllBuildings,
   nil,
@@ -114,7 +115,7 @@ AddAction(
 
 ----------------------workplaces
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[5444--[[Workplaces--]]],"/",S[302535920000339--[[Toggle All Shifts--]]]),
   CheatToggleAllShifts,
   nil,
@@ -123,7 +124,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[5444--[[Workplaces--]]],"/",S[302535920000341--[[Update All Workplaces--]]]),
   CheatUpdateAllWorkplaces,
   nil,
@@ -132,7 +133,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[05]",S[5444--[[Workplaces--]]],"/",S[302535920000343--[[Clear Forced Workplaces--]]]),
   CheatClearForcedWorkplaces,
   nil,
@@ -142,7 +143,7 @@ AddAction(
 
 ----------------------research
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920001278--[[Instant Research--]]]),
   ChoGGi.MenuFuncs.InstantResearch_toggle,
   nil,
@@ -158,7 +159,7 @@ AddAction(
 
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[-1]",S[311--[[Research--]]]," ",S[3734--[[Tech--]]]),
   ChoGGi.MenuFuncs.ShowResearchTechList,
   nil,
@@ -167,7 +168,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920000305--[[Research Queue Size--]]]),
   ChoGGi.MenuFuncs.SetResearchQueueSize,
   nil,
@@ -181,7 +182,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920000349--[[Reset All Research--]]]),
   ChoGGi.MenuFuncs.ResetAllResearch,
   nil,
@@ -190,7 +191,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[7790--[[Research Current Tech--]]]),
   CheatResearchCurrent,
   nil,
@@ -199,7 +200,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920000295--[[Add Research Points--]]]),
   ChoGGi.MenuFuncs.AddResearchPoints,
   nil,
@@ -208,7 +209,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[0]",S[302535920000355--[[Outsourcing For Free--]]]),
   ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
   nil,
@@ -222,7 +223,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[1]",S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]]),
   ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
   nil,
@@ -236,7 +237,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[04]",S[311--[[Research--]]],"/[2]",S[302535920000359--[[Breakthroughs From OmegaTelescope--]]]),
   ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
   nil,
@@ -250,7 +251,7 @@ AddAction(
 )
 ----------------------cheats
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[10]",S[302535920000361--[[Unpin All Pinned Objects--]]]),
   UnpinAll,
   nil,
@@ -259,7 +260,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[12]",S[302535920000363--[[Complete Wires & Pipes--]]]),
   CheatCompleteAllWiresAndPipes,
   nil,
@@ -268,7 +269,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[13]",S[302535920000365--[[Complete Constructions--]]]),
   CheatCompleteAllConstructions,
   ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
@@ -277,7 +278,7 @@ AddAction(
 )
 
 AddAction(
-  {"/[10]",S[27--[[Cheats--]]],"/"},
+  S[27--[[Cheats--]]],
   Concat("/[10]",S[27--[[Cheats--]]],"/[14]",S[302535920000236--[[Mod Editor--]]]),
   ChoGGi.MenuFuncs.OpenModEditor,
   nil,

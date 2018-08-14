@@ -728,7 +728,8 @@ do --CloseDialogsECM
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MultiLineText")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_FindValueDlg")
   end
 end
 

@@ -63,12 +63,12 @@ do -- ViewObjInfo_Toggle
     DroneControl = function(obj)
       return Concat(
         "-",RetName(obj),"-\n",
-        S[517--[[Drones--]]],": ",#(obj.drones or ""),"/",obj:GetMaxDronesCount(),"\n",
-        S[295--[[Idle--]]]:format(obj:GetIdleDronesCount()),", ",
-        S[291--[[Maintenance--]]]:format(obj:GetMaintenanceDronesCount()),", ",
-        S[292--[[Workers--]]]:format(obj:GetTransportDronesCount() + obj:GetMiningDronesCount()),"\n",
-        S[293--[[Broken--]]]:format(obj:GetBrokenDronesCount()),", ",
-        S[294--[[Discharged--]]]:format(obj:GetDischargedDronesCount())
+        S[517--[[Drones: %s--]]],": ",#(obj.drones or ""),"/",obj:GetMaxDronesCount(),"\n",
+        S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),", ",
+        S[619281504128--[[Maintenance--]]],": ",obj:GetMaintenanceDronesCount(),", ",
+        S[302535920000081--[[Workers--]]],": ",obj:GetTransportDronesCount() + obj:GetMiningDronesCount(),", ",
+        S[293--[[Broken: %s--]]]:format(obj:GetBrokenDronesCount()),", ",
+        S[294--[[Discharged: %s--]]]:format(obj:GetDischargedDronesCount())
       )
     end,
     Drone = function(obj)

@@ -9,38 +9,6 @@ local S = ChoGGi.Strings
 
 local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
 
-local AsyncFileDelete = AsyncFileDelete
-local Clamp = Clamp
-local CreateGameTimeThread = CreateGameTimeThread
-local CreateRealTimeThread = CreateRealTimeThread
-local DeleteThread = DeleteThread
-local EditorState = EditorState
-local GetCamera = GetCamera
-local GetEditorInterface = GetEditorInterface
-local GetObjects = GetObjects
-local GetPCSaveFolder = GetPCSaveFolder
-local GetTerrainCursor = GetTerrainCursor
-local HexGridGetObject = HexGridGetObject
-local HexToWorld = HexToWorld
-local IsEditorActive = IsEditorActive
-local IsValid = IsValid
-local LoadStreamParticlesFromDir = LoadStreamParticlesFromDir
-local ObjModified = ObjModified
-local OpenExamine = OpenExamine
-local ParticlesReload = ParticlesReload
-local PlaceObj = PlaceObj
-local PlaceObject = PlaceObject
-local point = point
-local ReloadClassEntities = ReloadClassEntities
-local ReloadLua = ReloadLua
-local SaveCSV = SaveCSV
-local SelectionArrowAdd = SelectionArrowAdd
-local Sleep = Sleep
-local WaitDelayedLoadEntities = WaitDelayedLoadEntities
-local WaitNextFrame = WaitNextFrame
-local WorldToHex = WorldToHex
-local XShortcutsSetMode = XShortcutsSetMode
-
 local white = white
 --~ local TerrainTextures = TerrainTextures
 
@@ -759,7 +727,7 @@ do --path markers
       if not pcall(function()
         path = type(obj.GetPath) == "function" and obj:GetPath()
       end) then
-        OpenExamine(obj)
+        ChoGGi.ComFuncs.OpenInExamineDlg(obj)
         print(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
       end
     end

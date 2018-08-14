@@ -5,14 +5,14 @@
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-DefineClass.ChoGGi_MultiLineText = {
+DefineClass.ChoGGi_MultiLineTextDlg = {
   __parents = {"ChoGGi_Window"},
   retfunc = false,
   overwrite = false,
   context = false,
 }
 
-function ChoGGi_MultiLineText:Init(parent, context)
+function ChoGGi_MultiLineTextDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
@@ -26,9 +26,6 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self.overwrite = context.overwrite
 
   self.title = context.title or 302535920001301--[[Edit Text--]]
-
-  --
---~   context.func = self:Close("cancel",false)
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
@@ -80,7 +77,7 @@ function ChoGGi_MultiLineText:Init(parent, context)
   self:SetInitPos(context.parent)
 end
 
-function ChoGGi_MultiLineText:OnShortcut(shortcut)
+function ChoGGi_MultiLineTextDlg:OnShortcut(shortcut)
   if shortcut == "Enter" then
     self:Close("ok",true)
   elseif shortcut == "Escape" and self.context.question then
@@ -88,7 +85,7 @@ function ChoGGi_MultiLineText:OnShortcut(shortcut)
   end
 end
 
-function ChoGGi_MultiLineText:Close(result,answer)
+function ChoGGi_MultiLineTextDlg:Close(result,answer)
   if self.retfunc then
     self.retfunc(answer,self.overwrite,self)
   end
@@ -97,7 +94,7 @@ end
 
 
 --[[
-local dialog = ChoGGi_MultiLineText:new({}, terminal.desktop,{})
+local dialog = ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,{})
 OpenGedApp("XWindowInspector", dialog)
 FontStyles.Consolas13 = "Consolas, 13, aa"
 FontStyles.Consolas15 = "Consolas, 15, aa"

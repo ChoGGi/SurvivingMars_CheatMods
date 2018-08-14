@@ -220,7 +220,7 @@ do -- build text file menu items
     {"/[60]",S[487939677892--[[Help--]]],"/"},
     Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[302535920000875--[[Game Functions--]]],"*"),
     function()
-      OpenExamine(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
+      ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
     end,
     nil,
     funcs:sub(1,100),
@@ -231,7 +231,7 @@ do -- build text file menu items
     {"/[60]",S[487939677892--[[Help--]]],"/"},
     Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[5568--[[Stats--]]],"*"),
     function()
-      OpenExamine(ChoGGi.CodeFuncs.RetHardwareInfo())
+      ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.RetHardwareInfo())
     end,
     nil,
     302535920001281--[[Information about your computer (as seen by SM).--]],
@@ -240,7 +240,7 @@ do -- build text file menu items
 
   AddAction(
     {"/[60]",S[487939677892--[[Help--]]],"/"},
-    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[1]*",S[1000435--[[Game--]]]," & ",S[1000436--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
+    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[1]*",S[283142739680--[[Game--]]]," & ",S[987648737170--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
     ChoGGi.MenuFuncs.RetMapInfo,
     nil,
     302535920001282--[[Information about this saved game (mostly objects).--]],
@@ -258,7 +258,7 @@ do -- build text file menu items
           {"/[60]",S[487939677892--[[Help--]]],"/"},
           Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[99]",folders[i].name),
           function()
-            OpenExamine(text)
+            ChoGGi.ComFuncs.OpenInExamineDlg(text)
           end,
           nil,
           text:sub(1,100),

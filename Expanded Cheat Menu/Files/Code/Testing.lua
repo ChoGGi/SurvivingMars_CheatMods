@@ -7,14 +7,15 @@ if ChoGGi.testing then
 
   -- checking how fast concat is for examining large amounts of objects
   function ChoGGi.CodeFuncs.TestConcatExamine(amount)
+    local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
     TickStart("TestConcatExamine.Total")
 
-    local OpenExamine,GetObjects = OpenExamine,GetObjects
+    local OpenInExamineDlg,GetObjects = OpenInExamineDlg,GetObjects
     local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
     for _ = 1, amount or 5 do
       TickStart("TestConcatExamine.Tick")
       RemoveOldDialogs("Examine")
-      OpenExamine(GetObjects{})
+      OpenInExamineDlg(GetObjects{})
       TickEnd("TestConcatExamine.Tick")
     end
     RemoveOldDialogs("Examine")
@@ -59,7 +60,7 @@ if ChoGGi.testing then
   --[[
   --for ingame editor
 
-  OpenExamine(ChoGGi.ComFuncs.ReturnAllNearby(1000))
+  ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.ReturnAllNearby(1000))
   ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
   local Attaches = type(s) == "table" and o:IsKindOf("ComponentAttach") and s:GetAttaches("Colonist") or ""
@@ -468,12 +469,11 @@ if ChoGGi.testing then
     ------
   end
 
-  function ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
+--~   function ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
 
-    ------
-    print("<color 200 200 200>ECM</color><color 0 0 0>: </color><color 128 255 128>Testing Enabled</color>")
+--~     ------
 
-  end
+--~   end
 end
 
 GlobalVar("painted_hexes", false)
