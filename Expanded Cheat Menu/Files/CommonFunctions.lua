@@ -354,13 +354,21 @@ name = Concat(name)
       icon = Concat("CommonAssets/UI/Menu/",icon)
     end
 
+--~     OnActionEffect
+--~         "",
+--~         "popup",
+--~         "back",
+--~         "close",
+--~         "mode"
+--~       id = "OnAction",
+--~       params = "self, host, source"
+
     if menu then
       ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
         ActionMenubar = menu,
         ActionName = name,
         ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
         ActionIcon = icon,
---~         ActionTranslate = false,
         ActionShortcut = key,
 --~         ActionMode = "Game",
         RolloverText = des,
@@ -373,7 +381,6 @@ name = Concat(name)
     else
       ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
         ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
-        ActionTranslate = false,
         ActionShortcut = key,
         OnAction = action,
       }

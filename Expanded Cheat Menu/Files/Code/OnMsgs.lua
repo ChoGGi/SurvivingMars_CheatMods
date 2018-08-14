@@ -259,18 +259,21 @@ function OnMsg.ShortcutsReloaded()
     XShortcutsTarget:AddAction(XAction:new{
       ActionMenubar = item.ActionMenubar,
       ActionName = item.ActionName,
+
       ActionId = item.ActionId,
       ActionIcon = item.ActionIcon,
       ActionTranslate = false,
       ActionShortcut = item.ActionShortcut,
 --~       ActionMode = item.ActionMode,
       ActionMode = "Game",
-      RolloverText = item.RolloverText,
-      RolloverTemplate = item.RolloverTemplate,
-      RolloverTitle = item.RolloverTitle,
       ActionSortKey = item.ActionSortKey,
 --~       OnAltAction = item.OnAltAction,
       OnAction = item.OnAction,
+
+      RolloverTranslate = false,
+      RolloverText = item.RolloverText,
+      RolloverTemplate = item.RolloverTemplate,
+      RolloverTitle = item.RolloverTitle,
     })
   end
 

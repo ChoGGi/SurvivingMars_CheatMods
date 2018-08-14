@@ -36,7 +36,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
   self.idEdit = g_Classes.ChoGGi_TextInput:new({
     Id = "idEdit",
     Dock = "left",
-    MinWidth = 575,
+    MinWidth = 565,
     RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
     Hint = S[302535920001306--[[Enter text to find--]]],
     OnKbdKeyDown = function(obj, vk)
@@ -49,10 +49,10 @@ function ChoGGi_FindValueDlg:Init(parent, context)
   self.idLimit = g_Classes.ChoGGi_TextInput:new({
     Id = "idLimit",
     Dock = "right",
-    MinWidth = 25,
-    RolloverText = S[302535920001304--[[Set how many tables within this table we check into (careful making it too large).--]]],
+    MinWidth = 35,
+    RolloverText = S[302535920001304--[[Set how many levels within this table we check into (careful making it too large).--]]],
   }, self.idTextArea)
-  self.idLimit:SetText("2")
+  self.idLimit:SetText("1")
 
   self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
     Id = "idButtonContainer",
@@ -65,7 +65,6 @@ function ChoGGi_FindValueDlg:Init(parent, context)
     Text = S[302535920001302--[[Find--]]],
     RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
     Margins = box(10, 0, 0, 0),
---~     MinWidth = 100,
     OnPress = function()
       self:FindText()
     end,
@@ -110,12 +109,19 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
   if not level then
     level = 0
   end
-  if level >= limit then
+  if level > limit then
     return
   end
 
   if type(obj) == "table" then
-    local obj_string = tostring(obj)
+    local name1 = RetName(obj)
+    local name2 = tostring(obj)
+    local obj_string
+    if name1 == name2 then
+      obj_string = Concat(S[302535920001307--[[L%s--]]]:format(level),": ",name1)
+    else
+      obj_string = Concat(S[302535920001307--[[L%s--]]]:format(level),": ",name1," (",name2,")")
+    end
     for key,value in pairs(obj) do
       local key_str,key_type = ReturnStr(key)
       local value_str,value_type = ReturnStr(value)
