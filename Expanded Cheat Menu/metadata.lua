@@ -1,9 +1,8 @@
-local mod_path = ConvertToOSPath(_G.CurrentModPath)
---~ local url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/HelperMod.zip"
+local mod_path = ConvertToOSPath(CurrentModPath)
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v8.0 Test",
-	"version", 80,
-	"saved", 1534075200,
+	"title", "Expanded Cheat Menu v8.1 Test",
+	"version", 81,
+	"saved", 1534334400,
 	"steam_id", "1411157810",
 	"code", {"Init.lua"},
 	"id", "ChoGGi_CheatMenu",
@@ -14,12 +13,6 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagCheats", true,
 --~ 	"lua_revision", LuaRevision,
-
-  "last change" , string.format([[v8.0
-Da Vinci Update:
-If this mod is disabled due to version compatibility then you need to install the helper mod at:
-%sHelperMod
-]],mod_path),
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
@@ -45,11 +38,9 @@ Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
-Ctrl-Shift-F: Follow Camera (follow an object around).
-Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff).
-Ctrl-Shift-E: Toggle editor mode (select object then hold ctrl/shift/alt and drag mouse).
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
+Ctrl-Shift-T: Terrain Editor Mode.
 More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor.

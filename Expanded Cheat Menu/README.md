@@ -27,11 +27,9 @@ Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
-Ctrl-Shift-F: Follow Camera (follow an object around).
-Ctrl-Alt-F: Toggle mouse cursor (useful in follow mode to select stuff).
-Ctrl-Shift-E: Toggle editor mode (select object then hold ctrl/shift/alt and drag mouse).
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
+Ctrl-Shift-T: Terrain Editor Mode.
 More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor.

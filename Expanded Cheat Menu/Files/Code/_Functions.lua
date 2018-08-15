@@ -1859,6 +1859,8 @@ do -- flightgrids
 end -- do
 
 function ChoGGi.CodeFuncs.DraggableCheatsMenu(which)
+  local XShortcutsTarget = XShortcutsTarget
+
   if which then
     -- add a bit of spacing above menu
     XShortcutsTarget.idMenuBar:SetPadding(box(0, 8, 0, 0))
@@ -1876,7 +1878,7 @@ function ChoGGi.CodeFuncs.DraggableCheatsMenu(which)
       local height = XShortcutsTarget.idToolbar.box:maxy() * -1
       XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
     end)
-  else
+  elseif XShortcutsTarget.idMoveControl then
     XShortcutsTarget.idMoveControl:delete()
     XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
   end

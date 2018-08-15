@@ -69,6 +69,11 @@ local function ConsolePopup(self)
         hint = 302535920001154--[[Displays the log text in a window you can copy sections from.--]],
         clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
       },
+      {
+        name = 302535920000473--[[Reload ECM Menu--]],
+        hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]],
+        clicked = ReloadShortcuts,
+      },
       {name = " - "},
       {
         name = 302535920001112--[[Console Log--]],

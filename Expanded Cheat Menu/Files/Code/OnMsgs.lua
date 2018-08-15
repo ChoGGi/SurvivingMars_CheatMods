@@ -219,7 +219,7 @@ function OnMsg.ShortcutsReloaded()
   local table_remove = table.remove
   local a = XShortcutsTarget.actions
   for i = #a, 1, -1 do
-    if a[i].ActionMenubar:find("Cheats") or a[i].ActionId == "Cheats" or a[i].ActionId == "Editors" then
+    if a[i].ActionMenubar and a[i].ActionMenubar:find("Cheats") or a[i].ActionId == "Cheats" or a[i].ActionId == "Editors" then
       table_remove(a,i)
     end
   end
@@ -791,6 +791,10 @@ end
 --earliest on-ground objects are loaded?
 --function OnMsg.PersistLoad()
 
+-- so we at least have keys when it happens
+function OnMsg.ReloadLua()
+  ReloadShortcuts()
+end
 -- saved game is loaded
 function OnMsg.LoadGame()
   ChoGGi.Temp.IsChoGGiMsgLoaded = false

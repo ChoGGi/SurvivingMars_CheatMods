@@ -233,10 +233,13 @@ do -- ECM settings
   editor.LoadPlaceObjConfig()
   Platform.developer = d_before
 
-  -- editor wants a table
-  GlobalVar("g_revision_map",{})
   -- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
   GlobalVar("g_Cities",{})
+  -- editor wants a table
+  GlobalVar("g_revision_map",{})
+  -- stops some log spam in editor (function doesn't exist in SM)
+  function UpdateMapRevision()end
+  function AsyncGetSourceInfo()end
 
 --~   ClassesGenerate
 --~   ClassesPreprocess

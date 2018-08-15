@@ -1,15 +1,15 @@
 return PlaceObj("ModDef", {
-  "title", "Portable Miner v0.4",
-  "version", 4,
-  "saved", 1533297600,
+  "title", "Portable Miner v0.5",
+  "version", 5,
+  "saved", 1534334400,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
   "steam_id", "1411113412",
   "code", {
-    "Code/Script.lua",
-    "Code/Portable Miner.lua",
+    "Code/1 Script.lua",
+    "Code/2 Portable Miner.lua",
   },
 	"lua_revision", LuaRevision,
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
@@ -20,4 +20,7 @@ The ground where concrete is mined won't change (this will clear the whole concr
 
 
 Affectionately known as the pooper shooter.]],
+	"last_changes", [[v0.5
+Da Vinci
+The not working signing will actually go away now.]],
 })

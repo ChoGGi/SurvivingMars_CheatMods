@@ -50,7 +50,7 @@ do --funcs without a class
   function XTemplateSpawn(template_or_class, parent, context)
     parent = parent or terminal.desktop
     local template = XTemplates[template_or_class]
-    if template then
+    if template and type(template.Eval) == "function" then
       -- changed
       template = template:Eval(parent, context)
       template.RolloverTemplate = "Rollover"
