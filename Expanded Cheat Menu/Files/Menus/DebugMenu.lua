@@ -4,9 +4,6 @@ local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
 local S = ChoGGi.Strings
 
-local OpenGedGameObjectEditor = OpenGedGameObjectEditor
-local ToggleTerrainDepositGrid = ToggleTerrainDepositGrid
-
 --~ local icon = "new_city.tga"
 
 --~ AddAction(Entry,Menu,Action,Key,Des,Icon)

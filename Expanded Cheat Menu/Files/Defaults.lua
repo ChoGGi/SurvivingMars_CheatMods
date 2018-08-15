@@ -8,13 +8,24 @@ local S = ChoGGi.Strings
 
 local next,pairs,print,type,table = next,pairs,print,type,table
 
-local AsyncCopyFile = AsyncCopyFile
-local AsyncFileToString = AsyncFileToString
-local AsyncStringToFile = AsyncStringToFile
-local LuaCodeToTuple = LuaCodeToTuple
-local TableToLuaCode = TableToLuaCode
-local ThreadLockKey = ThreadLockKey
-local ThreadUnlockKey = ThreadUnlockKey
+do -- MenuitemsKeys
+  local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
+  local function AddMenuitem(name,sort)
+    MenuitemsKeys[#MenuitemsKeys+1] = {
+      ActionMenubar = "DevMenu",
+      ActionName = name,
+      ActionId = name,
+      OnActionEffect = "popup",
+      ActionSortKey = sort,
+    }
+  end
+  AddMenuitem(S[27--[[Cheats--]]],"01")
+  AddMenuitem(S[302535920000104--[[Expanded CM--]]],"02")
+  AddMenuitem(S[283142739680--[[Game--]]],"03")
+  AddMenuitem(S[302535920000979--[[Presets--]]],"04")
+  AddMenuitem(S[1000113--[[Debug--]]],"05")
+  AddMenuitem(S[487939677892--[[Help--]]],"06")
+end -- do
 
 -- useful lists
 ChoGGi.Tables = {
@@ -369,67 +380,78 @@ do -- SetConstsToSaved
   end
 end -- do
 
---called everytime we set a setting in menu
-function ChoGGi.SettingFuncs.WriteSettings(settings)
-  local ChoGGi = ChoGGi
-  settings = settings or ChoGGi.UserSettings
+do -- WriteSettings
+  local AsyncCopyFile = AsyncCopyFile
+  local AsyncStringToFile = AsyncStringToFile
+  local TableToLuaCode = TableToLuaCode
+  local ThreadLockKey = ThreadLockKey
+  local ThreadUnlockKey = ThreadUnlockKey
+  -- called everytime we set a setting in menu
+  function ChoGGi.SettingFuncs.WriteSettings(settings)
+    local ChoGGi = ChoGGi
+    settings = settings or ChoGGi.UserSettings
 
-  local bak = Concat(ChoGGi.SettingsFile,".bak")
-  --locks the file while we write (i mean it says thread, ah well can't hurt)?
-  ThreadLockKey(bak)
-  AsyncCopyFile(ChoGGi.SettingsFile,bak)
-  ThreadUnlockKey(bak)
+    local bak = Concat(ChoGGi.SettingsFile,".bak")
+    --locks the file while we write (i mean it says thread, ah well can't hurt)?
+    ThreadLockKey(bak)
+    AsyncCopyFile(ChoGGi.SettingsFile,bak)
+    ThreadUnlockKey(bak)
 
-  ThreadLockKey(ChoGGi.SettingsFile)
-  table.sort(settings)
-  --and write it to disk
-  local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
-  ThreadUnlockKey(ChoGGi.SettingsFile)
+    ThreadLockKey(ChoGGi.SettingsFile)
+    table.sort(settings)
+    --and write it to disk
+    local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
+    ThreadUnlockKey(ChoGGi.SettingsFile)
 
-  if DoneFuckedUp then
-    print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(ChoGGi.SettingsFile,DoneFuckedUp))
-    return false, DoneFuckedUp
-  end
-end
-
--- read saved settings from file
-function ChoGGi.SettingFuncs.ReadSettings(settings_str)
-  local ChoGGi = ChoGGi
-  local is_error
-
-  -- try to read settings
-  if not settings_str then
-    local file_error
-    file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
-    if file_error then
-      -- no settings file so make a new one
-      ChoGGi.SettingFuncs.WriteSettings()
-      file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
-      -- something is definitely wrong so just abort, and let user know
-      if file_error then
-        print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
-        is_error = true
-      end
+    if DoneFuckedUp then
+      print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(ChoGGi.SettingsFile,DoneFuckedUp))
+      return false, DoneFuckedUp
     end
   end
-  -- and convert it to lua / update in-game settings
-  local code_error
-  code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
-	if code_error then
-    print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
-    is_error = true
-	end
+end -- do
 
-  if is_error or type(ChoGGi.UserSettings) ~= "table" then
-    -- so now at least the game will start
-    ChoGGi.UserSettings = ChoGGi.Defaults
-    return ChoGGi.Defaults
+do -- ReadSettings
+  local AsyncFileToString = AsyncFileToString
+  local LuaCodeToTuple = LuaCodeToTuple
+  -- read saved settings from file
+  function ChoGGi.SettingFuncs.ReadSettings(settings_str)
+    local ChoGGi = ChoGGi
+    local is_error
+
+    -- try to read settings
+    if not settings_str then
+      local file_error
+      file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
+      if file_error then
+        -- no settings file so make a new one
+        ChoGGi.SettingFuncs.WriteSettings()
+        file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
+        -- something is definitely wrong so just abort, and let user know
+        if file_error then
+          print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+          is_error = true
+        end
+      end
+    end
+    -- and convert it to lua / update in-game settings
+    local code_error
+    code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
+    if code_error then
+      print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+      is_error = true
+    end
+
+    if is_error or type(ChoGGi.UserSettings) ~= "table" then
+      -- so now at least the game will start
+      ChoGGi.UserSettings = ChoGGi.Defaults
+      return ChoGGi.Defaults
+    end
+    -- all is well
+    return settings_str
   end
-  -- all is well
-  return settings_str
-end
+end -- do
 
 -- OptionsApply is the earliest we can call Consts:GetProperties()
 function OnMsg.OptionsApply()

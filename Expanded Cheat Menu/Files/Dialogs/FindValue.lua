@@ -43,7 +43,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
       return self:idEditOnKbdKeyDown(obj, vk)
     end,
   }, self.idTextArea)
-  -- focus on textbox and move cursor to end of text
+  -- focus on textbox
   self.idEdit:SetFocus()
 
   self.idLimit = g_Classes.ChoGGi_TextInput:new({

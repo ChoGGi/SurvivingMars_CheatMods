@@ -205,78 +205,25 @@ function OnMsg.PersistPostLoad()
   end
 end
 
--- add all my cheat menu buttons
-ChoGGi.Temp.MenuitemsKeys = {
-  {
-    ActionId = "ChoGGiMenu_ExpandedCM",
-    ActionTranslate = false,
-    ActionName = S[302535920000104--[[Expanded CM--]]],
-    ActionMenubar = "DevMenu",
-    OnActionEffect = "popup",
-    replace_matching_id = true,
-  },
-  {
-    ActionId = "ChoGGiMenu_Presets",
-    ActionTranslate = false,
-    ActionName = S[302535920000979--[[Presets--]]],
-    ActionMenubar = "DevMenu",
-    OnActionEffect = "popup",
-    replace_matching_id = true,
-  },
-  {
-    ActionId = "ChoGGiMenu_Game",
-    ActionTranslate = false,
-    ActionName = S[283142739680--[[Game--]]],
-    ActionMenubar = "DevMenu",
-    OnActionEffect = "popup",
-    replace_matching_id = true,
-  },
-  {
-    ActionId = "ChoGGiMenu_Help",
-    ActionTranslate = false,
-    ActionName = S[487939677892--[[Help--]]],
-    ActionMenubar = "DevMenu",
-    OnActionEffect = "popup",
-    replace_matching_id = true,
-  },
-  {
-    ActionId = "ChoGGiMenu_Debug",
-    ActionTranslate = false,
-    ActionName = S[1000113--[[Debug--]]],
-    ActionMenubar = "DevMenu",
-    OnActionEffect = "popup",
-    replace_matching_id = true,
-  },
-}
--- fires when ReloadShortcuts() is called (among others)
+-- update menu/menu items
 function OnMsg.ShortcutsReloaded()
-  local XShortcutsTarget = XShortcutsTarget
   local XAction = XAction
-  local keys = ChoGGi.Temp.MenuitemsKeys
+  local XShortcutsTarget = XShortcutsTarget
 
-  for i = 1, #keys do
-    local item = keys[i]
-    XShortcutsTarget:AddAction(XAction:new{
-      ActionMenubar = item.ActionMenubar,
-      ActionName = item.ActionName,
-
-      ActionId = item.ActionId,
-      ActionIcon = item.ActionIcon,
-      ActionTranslate = false,
-      ActionShortcut = item.ActionShortcut,
---~       ActionMode = item.ActionMode,
-      ActionMode = "Game",
-      ActionSortKey = item.ActionSortKey,
---~       OnAltAction = item.OnAltAction,
-      OnAction = item.OnAction,
-
-      RolloverTranslate = false,
-      RolloverText = item.RolloverText,
-      RolloverTemplate = item.RolloverTemplate,
-      RolloverTitle = item.RolloverTitle,
-    })
+  -- remove all old cheats
+  local table_remove = table.remove
+  local a = XShortcutsTarget.actions
+  for i = #a, 1, -1 do
+    if a[i].ActionMenubar:find("Cheats") or a[i].ActionId == "Cheats" or a[i].ActionId == "Editors" then
+      table_remove(a,i)
+    end
   end
 
+  -- and add mine
+  local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
+  for i = 1, #MenuitemsKeys do
+    XShortcutsTarget:AddAction(XAction:new(MenuitemsKeys[i]))
+  end
 end
 
 -- for instant build
@@ -918,21 +865,33 @@ do -- LoadGame/CityStart
       end
     end
 
+    SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
+    SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
+
     if not UserSettings.DisableECM then
 --~       -- remove all built-in actions
 --~       UserActions_ClearGlobalTables()
 --~       UserActions.Actions = {}
 --~       UserActions.RejectedActions = {}
 
-      -- add custom actions
-      dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
-      SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
-      SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
+      local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
 
       -- add preset menu items
       local AddAction = ChoGGi.ComFuncs.AddAction
       local OpenGedApp = OpenGedApp
       ClassDescendantsList("Preset", function(name, class)
+--~         MenuitemsKeys[#MenuitemsKeys+1] = {
+--~           ActionMenubar = str_Cheats_Research,
+--~           ActionName = ActionName,
+--~           ActionId = ActionId,
+--~           ActionIcon = "CommonAssets/UI/Menu/CollectionsEditor.tga",
+--~           RolloverText = S[],
+--~           OnAction = ChoGGi.MenuFuncs.XXXXXXXXX,
+--~           ActionSortKey = "",
+--~           ActionShortcut = ActionShortcut,
+--~         }
+
+
         AddAction(
           {"/[40]",S[302535920000979--[[Presets--]]],"/"},
           Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
@@ -947,6 +906,19 @@ do -- LoadGame/CityStart
           class.EditorIcon or "CollectionsEditor.tga"
         )
       end)
+
+      -- add custom actions
+      dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
+
+      -- add all the defaults we skip
+      for i = 1, #MenuitemsKeys do
+        MenuitemsKeys[i].ActionMode = "Game"
+        MenuitemsKeys[i].ActionTranslate = false
+        MenuitemsKeys[i].RolloverTitle = S[126095410863--[[Info--]]]
+        MenuitemsKeys[i].RolloverTranslate = false
+        MenuitemsKeys[i].RolloverTemplate = "Rollover"
+        MenuitemsKeys[i].replace_matching_id = true
+      end
 
       -- show cheat pane in selection panel
       if UserSettings.InfopanelCheats then
@@ -976,6 +948,7 @@ do -- LoadGame/CityStart
       --add Scripts button to console
       if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
         dlgConsole.ChoGGi_MenuAdded = true
+
         -- build console buttons
         ChoGGi.Console.ConsoleControls()
 

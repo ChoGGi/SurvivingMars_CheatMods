@@ -362,15 +362,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
 --~         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
 --~       end,
 --~     },
-
     {
-      name = S[302535920001302--[[Find--]]],
+      name = S[302535920001305--[[Find Within--]]],
       hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
       clicked = function()
         ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj,self)
       end,
     },
-
     {
       name = S[302535920000323--[[Exec Code--]]],
       hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.

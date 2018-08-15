@@ -77,6 +77,7 @@ Press Enter to show all items."--]]],
   self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idCheckboxArea",
     Dock = "bottom",
+    HAlign = "center",
   }, self.idDialog)
 
   self.idCheckBox1 = g_Classes.ChoGGi_CheckButton:new({
@@ -283,17 +284,19 @@ function ChoGGi_ListChoiceCustomDialog:BuildList(skip)
   end
 end
 
+-- working on adding * of checkboxes
 function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
   local name1 = Concat("idCheckBox",i)
   local name2 = Concat("check",i)
+
   if self.list[name2] then
     self[name1]:SetText(ChoGGi.ComFuncs.CheckText(self.list[name2]))
-    self[name1]:SetRollover(ChoGGi.ComFuncs.CheckText(self.list[Concat("check",i,"_hint")]))
+    self[name1].RolloverText = ChoGGi.ComFuncs.CheckText(self.list[Concat(name2,"_hint")])
   else
     self[name1]:SetVisible()
   end
-  if self.list[Concat("check",i,"_checked")] then
-    self[name1]:SetValue(true)
+  if self.list[Concat(name2,"_checked")] then
+    self[name1]:SetCheck(true)
   end
 end
 

@@ -278,7 +278,7 @@ AddAction(
   "NewCamera.tga"
 )
 
-AddAction(
+AddAction(-- Toggle Follow Camera
   {"/[30]",S[283142739680--[[Game--]]],"/"},
   Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000653--[[Toggle Follow Camera--]]]),
   ChoGGi.MenuFuncs.CameraFollow_Toggle,
@@ -287,9 +287,14 @@ AddAction(
   "Shot.tga"
 )
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000655--[[Toggle Cursor--]]]),
+AddAction(-- Toggle Cursor
+--~   {"/[30]",S[283142739680--[[Game--]]],"/"},
+--~   Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000655--[[Toggle Cursor--]]]),
+
+  S[302535920000655--[[Toggle Cursor--]]],
+  S[283142739680--[[Game--]]],
+  Concat(S[283142739680--[[Game--]]],".",S[302535920001058--[[Camera--]]]),
+
   ChoGGi.MenuFuncs.CursorVisible_Toggle,
   ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
   302535920000656--[[Toggle between moving camera and selecting objects.--]],

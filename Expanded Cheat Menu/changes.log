@@ -6,7 +6,7 @@ Please and thank you.
 Added:
 Debug>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
 Fixes>Toggle Working On All Buildings: Does what it says (on n off, or off n on).
-Examine Object>Tools>Find: Search for text within object.
+Examine Object>Tools>Find Within: Search for text within object.
 
 Changed:
 RandomColour is slightly more random (lines for pathing, object colour, and so on).

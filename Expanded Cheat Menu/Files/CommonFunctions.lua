@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+--remove me when im all done converting menus
+function ChoGGi.ComFuncs.AddAction(ActionName,ActionMenubar,OnAction,ActionShortcut,RolloverText,ActionIcon,ActionSortKey)
+  DebugPrintNL(tostring(ActionMenubar))
+end
+
+
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},
@@ -284,149 +290,6 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 do --g_Classes
   local g_Classes = g_Classes
 
---~ -- change some annoying stuff about UserActions.AddActions()
---~ local g_idxAction = 0
---~ function ChoGGi.ComFuncs.UserAddActions(actions_to_add)
---~   for k, v in pairs(actions_to_add or empty_table) do
---~     if type(v.action) == "function" and (v.key ~= nil and v.key ~= "" or v.xinput ~= nil and v.xinput ~= "" or v.menu ~= nil and v.menu ~= "" or v.toolbar ~= nil and v.toolbar ~= "") then
---~       if v.key ~= nil and v.key ~= "" then
---~         if type(v.key) == "table" then
---~           local keys = v.key
---~           if #keys <= 0 then
---~             v.description = ""
---~           else
---~             v.description = Concat(v.description," (",keys[1])
---~             for i = 2, #keys do
---~               v.description = Concat(v.description," ",S[302535920000165--[[or--]]]," ",keys[i])
---~             end
---~             v.description = Concat(v.description,")")
---~           end
---~         else
---~           v.description = Concat(tostring(v.description)," (",v.key,")")
---~         end
---~       end
---~       v.id = k
---~       v.idx = g_idxAction
---~       g_idxAction = g_idxAction + 1
---~       UserActions.Actions[k] = v
---~     else
---~       UserActions.RejectedActions[k] = v
---~     end
---~   end
---~   UserActions_SetMode(UserActions.mode)
---~ end
-
-  function ChoGGi.ComFuncs.AddAction(name,menu,action,key,des,icon,toolbar,mode,xinput,toolbar_default)
-    local ChoGGi = ChoGGi
-
-    -- build function
-    local action_id = "NOFUNC"
-    -- tooltip menu item
-    if action == "blank_function" then
-      action_id = action
-      action = function()end
-    -- make the id the func location (filename/linenum)
-    elseif type(action) == "function" then
-      local debug_info = debug.getinfo(action, "Sn")
-      local text = Concat(debug_info.short_src,"(",debug_info.linedefined,")")
-      action_id = text:gsub(ChoGGi.ModPath,"")
-      action_id = action_id:gsub(ChoGGi.ModPath:gsub("AppData","...ata"),"")
-      action_id = action_id:gsub(ChoGGi.ModPath:gsub("AppData","...a"),"")
-      action_id = action_id:gsub("...Mods/Expanded Cheat Menu/","")
-    else
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat("<color 255 100 100>",S[302535920000000--[[Expanded Cheat Menu--]]],"</color><color 0 0 0>: </color><color 128 255 128>",S[302535920000166--[[BROKEN FUNCTION--]]],": </color>",menu)
-    end
-
-    -- description (we leave funcs as they are, so UAMenu.UpdateUAMenu works)
-    if type(des) ~= "function" then
-      des = CheckText(des,menu)
-    end
-
---~     local path
---~     if entry then
---~       path = TableConcat(entry)
---~       entry = entry[2]
---~     end
-
-name = Concat(name)
-
-    if icon and not icon:find("/") then
-      icon = Concat("CommonAssets/UI/Menu/",icon)
-    end
-
---~     OnActionEffect
---~         "",
---~         "popup",
---~         "back",
---~         "close",
---~         "mode"
---~       id = "OnAction",
---~       params = "self, host, source"
-
-    if menu then
-      ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
-        ActionMenubar = menu,
-        ActionName = name,
-        ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
-        ActionIcon = icon,
-        ActionShortcut = key,
---~         ActionMode = "Game",
-        RolloverText = des,
-        RolloverTemplate = "Rollover",
-        RolloverTitle = S[126095410863--[[Info--]]],
-        ActionSortKey = "0",
---~         OnAltAction = ,
-        OnAction = action,
-      }
-    else
-      ChoGGi.Temp.MenuitemsKeys[#ChoGGi.Temp.MenuitemsKeys+1] = {
-        ActionId = Concat("ChoGGi_",action_id,"-",AsyncRand()),
-        ActionShortcut = key,
-        OnAction = action,
-      }
-    end
-
---~     ChoGGi.ComFuncs.UserAddActions{
---~       -- AsyncRand needed for items made from same line (like a loop)
---~       [Concat("ChoGGi_",action_id,"-",AsyncRand())] = {
---~         -- name of button
---~         entry = entry,
---~         -- button path needed for UAMenu, so i don't have to go through the whole pattern match utf (they translated the strings used for the cheats menu, but didn't make it actually support utf)
---~         path = path,
---~         -- the below are all part of default table
-
---~         -- menu path needed for UAMenu
---~         menu = menu,
---~         -- func
---~         action = action,
---~         -- shortcut
---~         key = key,
---~         -- good question
---~         description = des,
---~         -- i should change the built-in func to use full paths
---~         icon = icon,
---~         -- dunno the rest
---~         toolbar = toolbar,
---~         mode = mode,
---~         xinput = xinput,
---~         toolbar_default = toolbar_default
---~       },
---~     }
-  end
-
---~   function ChoGGi.ComFuncs.DialogXAddButton(parent,text,hint,onpress)
---~     g_Classes.XTextButton:new({
---~       RolloverTemplate = "Rollover",
---~       RolloverText = hint or "",
---~       RolloverTitle = S[126095410863--[[Info--]]],
---~       MinWidth = 60,
---~       Text = CheckText(text,S[6878--[[OK--]]]),
---~       OnPress = onpress,
---~       --center text
---~       LayoutMethod = "VList",
---~     }, parent)
---~   end
-
   function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
     local ChoGGi = ChoGGi
     local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
@@ -437,8 +300,6 @@ name = Concat(name)
       Opened = true,
       Id = popup_id,
       ZOrder = 999999,
-      -- anchor usually means bottom, nil means top
---~       Margins = anchor and box(0, 5, 0, 0) or  box(0, 0, 0, 5),
       LayoutMethod = "VList",
     }, terminal.desktop)
 

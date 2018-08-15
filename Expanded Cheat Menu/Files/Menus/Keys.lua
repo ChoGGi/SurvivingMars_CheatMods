@@ -1,18 +1,19 @@
 --See LICENSE for terms
 
-local AddAction = ChoGGi.ComFuncs.AddAction
+local AsyncRand = AsyncRand
+local Concat = ChoGGi.ComFuncs.Concat
+local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
 
 --use number keys to activate/hide build menus
 do -- NumberKeysBuildMenu
   local function AddMenuKey(num,key)
-    AddAction(
-      nil,
-      nil,
-      function()
+    MenuitemsKeys[#MenuitemsKeys+1] = {
+      ActionId = Concat("ChoGGi_AddMenuKey",num,AsyncRand()),
+      OnAction = function()
         ChoGGi.CodeFuncs.ShowBuildMenu(num)
       end,
-      key
-    )
+      ActionShortcut = key,
+    }
   end
   if ChoGGi.UserSettings.NumberKeysBuildMenu then
     local Concat = ChoGGi.ComFuncs.Concat
@@ -108,30 +109,27 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
   --end
 end
 
-AddAction( -- ClearConsoleLog
-  nil,
-  nil,
-  cls,
-  ChoGGi.UserSettings.KeyBindings.ClearConsoleLog
-)
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ClearConsoleLog",AsyncRand()),
+  OnAction = cls,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ClearConsoleLog,
+}
 
-AddAction( -- ObjectColourRandom
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ObjectColourRandom",AsyncRand()),
+  OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
   end,
-  ChoGGi.UserSettings.KeyBindings.ObjectColourRandom
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourRandom,
+}
 
-AddAction( -- ObjectColourDefault
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ObjectColourDefault",AsyncRand()),
+  OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
   end,
-  ChoGGi.UserSettings.KeyBindings.ObjectColourDefault
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourDefault,
+}
 
 local function ToggleConsole()
   local dlgConsole = dlgConsole
@@ -140,28 +138,25 @@ local function ToggleConsole()
   end
 end
 
-AddAction( -- ShowConsoleTilde
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ShowConsoleTilde",AsyncRand()),
+  OnAction = function()
     ToggleConsole()
   end,
-  ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+}
 
-AddAction( -- ShowConsoleEnter
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ShowConsoleEnter",AsyncRand()),
+  OnAction = function()
     ToggleConsole()
   end,
-  ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter,
+}
 
-AddAction( -- ConsoleRestart
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_ConsoleRestart",AsyncRand()),
+  OnAction = function()
     ShowConsole(true)
     local dlgConsole = dlgConsole
     if dlgConsole then
@@ -169,27 +164,25 @@ AddAction( -- ConsoleRestart
       dlgConsole.idEdit:SetFocus()
     end
   end,
-  ChoGGi.UserSettings.KeyBindings.ConsoleRestart
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
+}
 
---goes to placement mode with last built object
-AddAction( -- LastConstructedBuilding
-  nil,
-  nil,
-  function()
+-- goes to placement mode with last built object
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_LastConstructedBuilding",AsyncRand()),
+  OnAction = function()
     local last = UICity.LastConstructedBuilding
     if last.entity then
       ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id or last.entity)
     end
   end,
-  ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding,
+}
 
 -- goes to placement mode with SelectedObj
-AddAction( -- LastPlacedObject
-  nil,
-  nil,
-  function()
+MenuitemsKeys[#MenuitemsKeys+1] = {
+  ActionId = Concat("ChoGGi_LastPlacedObject",AsyncRand()),
+  OnAction = function()
     local ChoGGi = ChoGGi
     local sel = ChoGGi.CodeFuncs.SelObject()
     if sel then
@@ -197,8 +190,8 @@ AddAction( -- LastPlacedObject
       ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
     end
   end,
-  ChoGGi.UserSettings.KeyBindings.LastPlacedObject
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastPlacedObject,
+}
 
 --~   if XTemplates.DeveloperShortcuts then
 --~     XTemplateSpawn("DeveloperShortcuts", XShortcutsTarget)
