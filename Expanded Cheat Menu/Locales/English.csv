@@ -1,4 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000674,,
+302535920000675,,
 302535920001308,,
 302535920001309,,
 302535920001310,,
@@ -1229,7 +1231,7 @@ Some settings can't be changed in the editor, but you can manually add them in t
 302535920000995,Infopanel (selection),
 302535920000996,Console text input,
 302535920000997,Pins menu,
-302535920000998,Cheat Menu: This uses 255 as visible and 0 as invisible.,
+302535920000998,Cheat Menu,
 302535920000999,Transparency has been updated.,
 302535920001000,Buttons at bottom,
 302535920001002,For some reason they went opposite day with this one: 255 is invisible and 0 is visible.,
@@ -1393,10 +1395,6 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email %
 302535920000671,No more hints ever.,
 302535920000672,About ECM,
 302535920000673,info dialog.,
-302535920000674,Report Bug,
-302535920000675,"Report Bug
-
-This doesn't go to ECM author, if you have a bug with ECM; see Help>About.",
 302535920000676,Reset ECM Settings,
 302535920000677,Reset all ECM settings to default (restart to enable).,
 302535920000694,Set Opacity,

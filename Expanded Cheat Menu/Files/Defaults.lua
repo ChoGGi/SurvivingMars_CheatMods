@@ -180,7 +180,7 @@ if ChoGGi.testing then
   ChoGGi.Defaults.Transparency = {
 		HUD = 50,
 		PinsDlg = 50,
---~ 		UAMenu = 150,
+		XShortcutsHost = 100,
   }
   -- probably not useful for anyone who isn't loading up borked saves to test
   ChoGGi.Defaults.SkipMissingMods = true

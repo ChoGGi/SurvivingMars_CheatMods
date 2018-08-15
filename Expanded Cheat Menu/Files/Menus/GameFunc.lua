@@ -755,23 +755,19 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
         end
       end
     end
-    if not iWhich then
-      --didn't find window so return 0 (fully vis)
-      return 0
-    end
   end
 
   local ItemList = {
     {text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = 302535920000994--[[Console logging text--]]},
     {text = "Console",value = trans(1,"Console"),hint = 302535920000996--[[Console text input--]]},
---~     {text = "UAMenu",value = trans(1,"UAMenu"),hint = 302535920000998--[[Cheat Menu: This uses 255 as visible and 0 as invisible.--]]},
+    {text = "XShortcutsHost",value = trans(1,"XShortcutsHost"),hint = 302535920000998--[[Cheat Menu--]]},
 
     {text = "HUD",value = trans(2,"HUD"),hint = 302535920001000--[[Buttons at bottom--]]},
     {text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = 302535920000993--[[Build menu--]]},
     {text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = 302535920000995--[[Infopanel (selection)--]]},
     {text = "PinsDlg",value = trans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
   }
-  --callback
+  -- callback
   local function CallBackFunc(choice)
     local value = choice[1].value
     if not value then
@@ -783,14 +779,13 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
 
       if type(value) == "number" then
 
-        if text == "UAMenu" or text == "Console" or text == "ConsoleLog" then
+        if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
           trans(1,text,value)
         else
           trans(2,text,value)
         end
 
-        --everything but UAMenu uses 255-0 in the opposite manner
-        if value == 0 or (value == 255 and text == "UAMenu") then
+        if value == 0 then
           ChoGGi.UserSettings.Transparency[text] = nil
         else
           ChoGGi.UserSettings.Transparency[text] = value

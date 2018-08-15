@@ -224,7 +224,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
   end
   local params = {
     expiration = timeout,
---~     {expiration = 99999999999999999},
+--~     {expiration = max_int},
 --~     dismissable = false,
   }
   -- if there's no interface then we probably shouldn't open the popup
@@ -289,19 +289,21 @@ do --g_Classes
     local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
     local ShowMe = ChoGGi.ComFuncs.ShowMe
     local ViewObjectMars = ViewObjectMars
+    local black = black
 
     local popup = g_Classes.XPopupList:new({
       Opened = true,
       Id = popup_id,
-      ZOrder = 999999,
+      ZOrder = max_int - 1000,
       LayoutMethod = "VList",
     }, terminal.desktop)
 
     for i = 1, #items do
       local item = items[i]
       local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
-      -- defaults to XTextButton. class = "ChoGGi_CheckButtonMenu",
+      -- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
       local button = cls:new({
+        TextColor = black,
         RolloverText = CheckText(item.hint),
         Text = CheckText(item.name),
         OnMouseButtonUp = function()

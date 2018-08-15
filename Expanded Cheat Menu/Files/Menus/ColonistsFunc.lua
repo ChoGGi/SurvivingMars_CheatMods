@@ -423,7 +423,7 @@ end
 function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
   local ChoGGi = ChoGGi
   local Consts = Consts
-  ChoGGi.ComFuncs.SetConstsG("RenegadeCreation",ChoGGi.ComFuncs.ValueRetOpp(Consts.RenegadeCreation,9999900,ChoGGi.Consts.RenegadeCreation))
+  ChoGGi.ComFuncs.SetConstsG("RenegadeCreation",ChoGGi.ComFuncs.ValueRetOpp(Consts.RenegadeCreation,max_int,ChoGGi.Consts.RenegadeCreation))
 
   ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
   ChoGGi.SettingFuncs.WriteSettings()
@@ -492,7 +492,7 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
   -- was -100
   ChoGGi.ComFuncs.SetConstsG("HighStatLevel",ChoGGi.ComFuncs.NumRetBool(Consts.HighStatLevel,0,ChoGGi.Consts.HighStatLevel))
   ChoGGi.ComFuncs.SetConstsG("LowStatLevel",ChoGGi.ComFuncs.NumRetBool(Consts.LowStatLevel,0,ChoGGi.Consts.LowStatLevel))
-  ChoGGi.ComFuncs.SetConstsG("HighStatMoraleEffect",ChoGGi.ComFuncs.ValueRetOpp(Consts.HighStatMoraleEffect,999900,ChoGGi.Consts.HighStatMoraleEffect))
+  ChoGGi.ComFuncs.SetConstsG("HighStatMoraleEffect",ChoGGi.ComFuncs.ValueRetOpp(Consts.HighStatMoraleEffect,max_int,ChoGGi.Consts.HighStatMoraleEffect))
   ChoGGi.ComFuncs.SetSavedSetting("HighStatMoraleEffect",Consts.HighStatMoraleEffect)
   ChoGGi.ComFuncs.SetSavedSetting("HighStatLevel",Consts.HighStatLevel)
   ChoGGi.ComFuncs.SetSavedSetting("LowStatLevel",Consts.LowStatLevel)
@@ -582,7 +582,7 @@ end
 
 function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.ComFuncs.SetConstsG("OxygenMaxOutsideTime",ChoGGi.ComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime,99999900,ChoGGi.Consts.OxygenMaxOutsideTime))
+  ChoGGi.ComFuncs.SetConstsG("OxygenMaxOutsideTime",ChoGGi.ComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime,max_int,ChoGGi.Consts.OxygenMaxOutsideTime))
   ChoGGi.ComFuncs.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
 
   ChoGGi.SettingFuncs.WriteSettings()
@@ -595,7 +595,7 @@ end
 
 function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.ComFuncs.SetConstsG("TimeBeforeStarving",ChoGGi.ComFuncs.ValueRetOpp(Consts.TimeBeforeStarving,99999900,ChoGGi.Consts.TimeBeforeStarving))
+  ChoGGi.ComFuncs.SetConstsG("TimeBeforeStarving",ChoGGi.ComFuncs.ValueRetOpp(Consts.TimeBeforeStarving,max_int,ChoGGi.Consts.TimeBeforeStarving))
   ChoGGi.ComFuncs.SetSavedSetting("TimeBeforeStarving",Consts.TimeBeforeStarving)
 
   ChoGGi.SettingFuncs.WriteSettings()

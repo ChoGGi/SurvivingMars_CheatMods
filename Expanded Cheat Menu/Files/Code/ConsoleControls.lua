@@ -130,6 +130,7 @@ local function HistoryPopup(self)
     PopupToggle(self,"idHistoryMenu",nil,items)
   end
 end
+local pad_script = box(5, 2, 5, 2)
 function ChoGGi.Console.ConsoleControls()
   local g_Classes = g_Classes
 
@@ -143,12 +144,11 @@ function ChoGGi.Console.ConsoleControls()
   }, dlgConsole)
 
   --------------------------------Console popup
-  g_Classes.XTextButton:new({
+  g_Classes.ChoGGi_Button:new({
 --~     Id = "idConsoleMenu",
-    Padding = box(5, 2, 5, 2),
+    Padding = pad_script,
     TextFont = "Editor16Bold",
     RolloverAnchor = "top",
-    RolloverTemplate = "Rollover",
     RolloverBackground = RGBA(40, 163, 255, 255),
     RolloverText = S[302535920001089--[[Settings & Commands--]]],
     Text = S[302535920001073--[[Console--]]],
@@ -156,12 +156,11 @@ function ChoGGi.Console.ConsoleControls()
   }, container)
 
   --------------------------------History popup
-  g_Classes.XTextButton:new({
+  g_Classes.ChoGGi_Button:new({
 --~     Id = "idHistoryMenu",
     RolloverBackground = RGBA(40, 163, 255, 255),
-    RolloverTemplate = "Rollover",
     RolloverAnchor = "top",
-    Padding = box(5, 2, 5, 2),
+    Padding = pad_script,
     TextFont = "Editor16Bold",
     RolloverText = S[302535920001080--[[Console History Items--]]],
     Text = S[302535920000793--[[History--]]],
@@ -173,16 +172,14 @@ function ChoGGi.Console.ConsoleControls()
     Id = "idScripts",
     LayoutMethod = "HWrap",
   }, container)
-
 end
 
 local function BuildSciptButton(scripts,dlg,folder)
-  XTextButton:new({
-    Padding = box(5, 2, 5, 2),
+  ChoGGi_Button:new({
+    Padding = pad_script,
     RolloverBackground = RGBA(40, 163, 255, 255),
     TextFont = "Editor16Bold",
     RolloverAnchor = "top",
-    RolloverTemplate = "Rollover",
     RolloverText = folder.RolloverText,
     Text = folder.Text,
     OnPress = function(self)

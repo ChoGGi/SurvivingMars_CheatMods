@@ -24,13 +24,13 @@ local function SaveOrigFunc(ClassOrFunc,Func)
   end
 end
 
---set UI transparency:
+-- set UI transparency:
 local function SetTrans(obj)
   if not obj then
     return
   end
   local trans = ChoGGi.UserSettings.Transparency
-  if trans and obj.class and trans[obj.class] then
+  if obj.class and trans[obj.class] then
     obj:SetTransparency(trans[obj.class])
   end
 end
@@ -169,7 +169,7 @@ do --funcs without a class
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
   --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
 
- --UI transparency dialogs (buildmenu, pins, infopanel)
+ -- UI transparency dialogs (buildmenu, pins, infopanel)
   function OpenDialog(...)
     local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
     SetTrans(ret)
@@ -190,7 +190,14 @@ function OnMsg.ClassesGenerate()
   SaveOrigFunc("UIRangeBuilding","SetUIRange")
   SaveOrigFunc("Workplace","AddWorker")
   SaveOrigFunc("XPopupMenu","RebuildActions")
+  SaveOrigFunc("XShortcutsHost","SetVisible")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- UI transparency cheats menu
+  function XShortcutsHost:SetVisible(...)
+    SetTrans(self)
+    return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self,...)
+  end
 
   -- yeah who gives a shit about mouseover hints on menu items
   function XPopupMenu:RebuildActions(host)
@@ -407,11 +414,11 @@ function OnMsg.ClassesPreprocess()
     end
   end
 
-end --OnMsg
+end
 
 --Post
-function OnMsg.ClassesPostprocess()
-end --OnMsg
+--~ function OnMsg.ClassesPostprocess()
+--~ end
 
 --Built
 function OnMsg.ClassesBuilt()
@@ -428,7 +435,6 @@ function OnMsg.ClassesBuilt()
   SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
   SaveOrigFunc("ConstructionController","UpdateCursor")
   SaveOrigFunc("DroneHub","SetWorkRadius")
---~   SaveOrigFunc("FrameWindow","Init")
   SaveOrigFunc("InfopanelDlg","Open")
   SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
   SaveOrigFunc("MG_Colonists","GetProgress")
@@ -488,25 +494,6 @@ function OnMsg.ClassesBuilt()
     end
   end
 
---~   --fix/skip error msg uiWindow:1104 that happens when you tab back into SM when cheat menu menu is visible (also happens to fix the problem of the menu closing)
---~   if UserSettings.HideuiWindowErrorMsg then
---~     function terminal.SysEvent(event, ...)
---~       if event == "OnSystemSize" then
---~         local targets = terminal.targets
---~         for i = 1, #targets do
---~           if not targets[i].UAMenu then
---~             local result = targets[i]:SysEvent(event, ...)
---~             if result == "break" then
---~               return "break"
---~             end
---~           end
---~         end
---~       else
---~         return ChoGGi_OrigFuncs.terminal_SysEvent(event, ...)
---~       end
---~     end
---~   end
-
   --unbreakable cables/pipes
   function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
     if not ChoGGi.UserSettings.BreakChanceCablePipe then
@@ -518,13 +505,6 @@ function OnMsg.ClassesBuilt()
   if Platform.editor and UserSettings.SkipModHelpPage then
     function GedOpHelpMod() end
   end
-
---~   --UI transparency "desktop" dialogs (toolbar)
---~   function FrameWindow:Init(...)
---~     local ret = {ChoGGi_OrigFuncs.FrameWindow_Init(self,...)}
---~     SetTrans(self)
---~     return table.unpack(ret)
---~   end
 
   --no more pulsating pin motion
   function XBlinkingButtonWithRMB:SetBlinking(...)
@@ -769,18 +749,16 @@ function OnMsg.ClassesBuilt()
 
   --toggle trans on mouseover
   function XWindow:OnMouseEnter(pt, child)
-    local ret = {ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       self:SetTransparency(0)
     end
-    return table.unpack(ret)
+    return ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child)
   end
   function XWindow:OnMouseLeft(pt, child)
-    local ret = {ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)}
     if ChoGGi.UserSettings.TransparencyToggle then
       SetTrans(self)
     end
-    return table.unpack(ret)
+    return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)
   end
 
   --remove spire spot limit, and other limits on placing buildings
@@ -1222,4 +1200,4 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-end --OnMsg
+end
