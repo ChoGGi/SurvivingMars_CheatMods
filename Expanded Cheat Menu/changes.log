@@ -18,7 +18,7 @@ Nicer looking menu items (and highlighting).
 Changed some of the grid toggle shortcuts (changed F2 to squares and removed F3).
 Delete Rocks now also removes all those little buggers (if it's too slow for you: let me know and I'll make it optional).
 Examine:
-> up/down in Go to text scrolls to top/bottom (used to be just top).
+> Up/Down in Go to text scrolls to top/bottom (used to be just top).
 > Attaches menu highlights objects.
 > UI objects will now flash (like the ged window inspector, see Tools to disable).
 Exec Code:

@@ -11,11 +11,28 @@ local print,type,tostring = print,type,tostring
 local white = white
 local guic = guic
 
+local function ToggleCollisions(ChoGGi)
+  ForEach{
+    class = "LifeSupportGridElement",
+    exec = function(o)
+      ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+    end,
+  }
+end
+
 function ChoGGi.MenuFuncs.TerrainEditor_Toggle()
   ChoGGi.MenuFuncs.Editor_Toggle()
   if Platform.editor then
     editor.ClearSel()
     SetEditorBrush(const.ebtTerrainType)
+  else
+    -- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+    ToggleCollisions(ChoGGi)
+    -- update uneven terrain checker thingy
+    RecalcBuildableGrid()
+    -- and back on when we're done
+    ToggleCollisions(ChoGGi)
+
   end
 end
 
@@ -261,15 +278,6 @@ end
     else
       ReloadShortcuts()
     end
-  end
-
-  local function ToggleCollisions(ChoGGi)
-    ForEach{
-      class = "LifeSupportGridElement",
-      exec = function(o)
-        ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
-      end,
-    }
   end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
