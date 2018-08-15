@@ -1042,3 +1042,252 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
     skip_sort = true,
   }
 end
+
+do --ChangeResupplySettings
+  local function CheckResupplySetting(cargo_val,name,value,meta)
+    if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
+      ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
+      meta[cargo_val] = value
+    else
+      ChoGGi.UserSettings.CargoSettings[name][cargo_val] = value
+      meta[cargo_val] = value
+    end
+  end
+  local function ShowResupplyList(name,meta)
+    local ChoGGi = ChoGGi
+
+    local ItemList = {
+      {text = "pack",value = meta.pack,hint = 302535920001269--[[Amount Per Click--]]},
+      {text = "kg",value = meta.kg,hint = 302535920001270--[[Weight Per Item--]]},
+      {text = "price",value = meta.price,hint = 302535920001271--[[Price Per Item--]]},
+      {text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
+    }
+
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+
+      if not ChoGGi.UserSettings.CargoSettings[name] then
+        ChoGGi.UserSettings.CargoSettings[name] = {}
+      end
+
+      for i = 1, #choice do
+        value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+        local text = choice[i].text
+        if text == "pack" and type(value) == "number" then
+          CheckResupplySetting("pack",name,value,meta)
+        elseif text == "kg" and type(value) == "number" then
+          CheckResupplySetting("kg",name,value,meta)
+        elseif text == "price" and type(value) == "number" then
+          CheckResupplySetting("price",name,value,meta)
+        elseif text == "locked" and type(value) == "boolean" then
+          CheckResupplySetting("locked",name,value,meta)
+        end
+      end
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      MsgPopup(
+        302535920000850--[[Change Resupply Settings--]],
+        302535920001272--[[Updated--]],
+        "UI/Icons/Sections/spaceship.tga"
+      )
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = Concat(S[302535920000850--[[Change Resupply Settings--]]],": ",name),
+      hint = 302535920001121--[[Edit value for each setting you wish to change then press OK to save.--]],
+      custom_type = 4,
+    }
+  end
+
+  function ChoGGi.MenuFuncs.ChangeResupplySettings()
+    local ChoGGi = ChoGGi
+    local Cargo = ChoGGi.Tables.Cargo
+
+    local ItemList = {}
+    for i = 1, #Cargo do
+      ItemList[i] = {
+        text = T(Cargo[i].name),
+        value = Cargo[i].id,
+        meta = Cargo[i],
+      }
+    end
+
+    local function CallBackFunc(choice)
+      local value = choice[1].value
+      if not value then
+        return
+      end
+      ShowResupplyList(value,choice[1].meta)
+    end
+
+    ChoGGi.ComFuncs.OpenInListChoice{
+      callback = CallBackFunc,
+      items = ItemList,
+      title = 302535920000850--[[Change Resupply Settings--]],
+      hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
+      custom_type = 7,
+      custom_func = function(sel)
+        ShowResupplyList(sel.value,sel.meta)
+      end,
+    }
+  end
+end
+
+function ChoGGi.MenuFuncs.LaunchEmptyRocket()
+  local function CallBackFunc(answer)
+    if answer then
+      UICity:OrderLanding()
+    end
+  end
+  ChoGGi.ComFuncs.QuestionBox(
+    302535920000942--[[Are you sure you want to launch an empty rocket?--]],
+    CallBackFunc,
+    302535920000943--[[Launch rocket to Mars.--]],
+    302535920000944--[[Yamato Hasshin!--]]
+  )
+end
+
+function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
+  local ChoGGi = ChoGGi
+  local DefaultSetting = ChoGGi.CodeFuncs.GetCargoCapacity()
+  local ItemList = {
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting," kg"),value = DefaultSetting},
+    {text = "50 000 kg",value = 50000},
+    {text = "100 000 kg",value = 100000},
+    {text = "250 000 kg",value = 250000},
+    {text = "500 000 kg",value = 500000},
+    {text = "1 000 000 kg",value = 1000000},
+    {text = "10 000 000 kg",value = 10000000},
+    {text = "100 000 000 kg",value = 100000000},
+    {text = "1 000 000 000 kg",value = 1000000000},
+  }
+
+  local function CallBackFunc(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
+      ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      MsgPopup(
+        S[302535920000945--[[%s: I can still see some space...--]]]:format(choice[1].text),
+        5238--[[Rockets--]],
+        "UI/Icons/Sections/spaceship.tga"
+      )
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = 302535920000946--[[Set Rocket Cargo Capacity--]],
+    hint = Concat(S[302535920000914--[[Current capacity--]]],": ",Consts.CargoCapacity),
+    skip_sort = true,
+  }
+end
+
+function ChoGGi.MenuFuncs.SetRocketTravelTime()
+  local ChoGGi = ChoGGi
+  local r = ChoGGi.Consts.ResourceScale
+  local DefaultSetting = ChoGGi.CodeFuncs.GetTravelTimeEarthMars() / r
+  local ItemList = {
+    {text = S[302535920000947--[[Instant--]]],value = 0},
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = Concat(S[302535920000948--[[Original--]]],": ",750),value = 750},
+    {text = Concat(S[302535920000949--[[Half of Original--]]],": ",375),value = 375},
+    {text = 10,value = 10},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 100,value = 100},
+    {text = 150,value = 150},
+    {text = 200,value = 200},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+  }
+
+  --other hint type
+  local hint = DefaultSetting
+  if ChoGGi.UserSettings.TravelTimeEarthMars then
+    hint = ChoGGi.UserSettings.TravelTimeEarthMars / r
+  end
+
+  local function CallBackFunc(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      local value = value * r
+      ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars",value)
+      ChoGGi.ComFuncs.SetConstsG("TravelTimeMarsEarth",value)
+      ChoGGi.ComFuncs.SetSavedSetting("TravelTimeEarthMars",value)
+      ChoGGi.ComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      MsgPopup(
+        S[302535920000950--[[%s: 88 MPH--]]]:format(choice[1].text),
+        5238--[[Rockets--]],
+        "UI/Upgrades/autoregulator_04/timer.tga"
+      )
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = 302535920000951--[[Rocket Travel Time--]],
+    hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+    skip_sort = true,
+  }
+end
+
+function ChoGGi.MenuFuncs.SetColonistsPerRocket()
+  local ChoGGi = ChoGGi
+  local DefaultSetting = ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
+  local ItemList = {
+    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+    {text = 25,value = 25},
+    {text = 50,value = 50},
+    {text = 75,value = 75},
+    {text = 100,value = 100},
+    {text = 250,value = 250},
+    {text = 500,value = 500},
+    {text = 1000,value = 1000},
+    {text = 10000,value = 10000},
+  }
+
+  local function CallBackFunc(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    if type(value) == "number" then
+      ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket",value)
+      ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
+
+      ChoGGi.SettingFuncs.WriteSettings()
+      MsgPopup(
+        S[302535920000952--[[%s: Long pig sardines--]]]:format(choice[1].text),
+        5238--[[Rockets--]],
+        "UI/Icons/Notifications/colonist.tga"
+      )
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = 302535920000953--[[Set Colonist Capacity--]],
+    hint = Concat(S[302535920000914--[[Current capacity--]]],": ",Consts.MaxColonistsPerRocket),
+    skip_sort = true,
+  }
+end

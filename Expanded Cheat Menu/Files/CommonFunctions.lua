@@ -1,11 +1,5 @@
 -- See LICENSE for terms
 
---remove me when im all done converting menus
-function ChoGGi.ComFuncs.AddAction(ActionName,ActionMenubar,OnAction,ActionShortcut,RolloverText,ActionIcon,ActionSortKey)
---~   DebugPrintNL(tostring(ActionMenubar))
-end
-
-
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},

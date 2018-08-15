@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local T = ChoGGi.ComFuncs.Trans
---~ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+local S = ChoGGi.Strings
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
 
@@ -43,7 +43,26 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   SaveOrigFunc("UIGetBuildingPrerequisites")
+  SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- that GedToolbarRollover shit don't do shit
+  function XTemplateSpawn(template_or_class, parent, context)
+    parent = parent or terminal.desktop
+    local template = XTemplates[template_or_class]
+    if template then
+      -- changed
+      template = template:Eval(parent, context)
+      template.RolloverTemplate = "Rollover"
+      return template
+      -- return template:Eval(parent, context)
+    else
+      local class = g_Classes[template_or_class]
+      if class then
+        return class:new({}, parent, context)
+      end
+    end
+  end
 
   -- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
   function UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
@@ -165,12 +184,63 @@ end -- do
 
 --Gen
 function OnMsg.ClassesGenerate()
+  SaveOrigFunc("BaseRover","GetCableNearby")
+  SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
+  SaveOrigFunc("GridObject","GetPipeConnections")
   SaveOrigFunc("UIRangeBuilding","SetUIRange")
   SaveOrigFunc("Workplace","AddWorker")
-  SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
-  SaveOrigFunc("BaseRover","GetCableNearby")
-  SaveOrigFunc("GridObject","GetPipeConnections")
+  SaveOrigFunc("XPopupMenu","RebuildActions")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- yeah who gives a shit about mouseover hints on menu items
+  function XPopupMenu:RebuildActions(host)
+    local menu = self.MenuEntries
+    local context = host.context
+    local ShowIcons = self.ShowIcons
+    self.idContainer:DeleteChildren()
+    for i = 1, #host.actions do
+      local action = host.actions[i]
+      if action.ActionMenubar == menu and host:FilterAction(action) then
+        local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+
+        -- that was hard...
+        if type(action.RolloverText) == "function" then
+          entry.RolloverText = action.RolloverText()
+        else
+          entry.RolloverText = action.RolloverText
+        end
+        entry.RolloverTitle = S[126095410863--[[Info--]]]
+
+        function entry.OnPress(this, gamepad)
+          if action.OnActionEffect ~= "popup" then
+            self:ClosePopupMenus()
+          end
+          host:OnAction(action, this)
+          if action.ActionToggle and self.window_state ~= "destroying" then
+            self:RebuildActions(host)
+          end
+        end
+        function entry.OnAltPress(this, gamepad)
+          self:ClosePopupMenus()
+          action:OnAltAction(host, this)
+        end
+        entry:SetFontProps(self)
+        entry:SetTranslate(action.ActionTranslate)
+        entry:SetText(action.ActionName)
+        if action.ActionToggle then
+          entry:SetToggled(action:ActionToggled(host))
+        else
+          entry:SetIconReservedSpace(self.IconReservedSpace)
+        end
+        if ShowIcons then
+          entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
+        end
+        entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+        entry:Open()
+      else
+      end
+    end
+  end
 
   do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
     local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }

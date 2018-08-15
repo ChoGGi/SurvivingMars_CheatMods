@@ -26,6 +26,14 @@ function OnMsg.ClassesGenerate()
   -- changed from 2000000
   ConsoleLog.ZOrder = 2
   Console.ZOrder = 3
+  -- changed from 10000000
+  XShortcutsHost.ZOrder = 2
+  -- make cheats menu look like older one (more gray, less white)
+  local dark_gray = -9868951
+  XMenuBar.Background = dark_gray
+  XMenuBar.TextColor = -1
+  XPopupMenu.Background = dark_gray
+  XPopupMenu.TextColor = -1
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
@@ -877,13 +885,12 @@ do -- LoadGame/CityStart
       local Actions = ChoGGi.Temp.Actions
 
       -- add preset menu items
-      local AddAction = ChoGGi.ComFuncs.AddAction
       local OpenGedApp = OpenGedApp
       ClassDescendantsList("Preset", function(name, cls)
         Actions[#Actions+1] = {
-          ActionMenubar = S[302535920000979--[[Presets--]]],
+          ActionMenubar = "Presets",
           ActionName = name,
-          ActionId = Concat(S[302535920000979--[[Presets--]]],"/",name),
+          ActionId = Concat("Presets.",name),
           ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
           RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
           OnAction = function()
@@ -901,11 +908,9 @@ do -- LoadGame/CityStart
 
       -- add all the defaults we skip
       for i = 1, #Actions do
-        Actions[i].ActionMode = "Game"
         Actions[i].ActionTranslate = false
         Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
         Actions[i].RolloverTranslate = false
---~         Actions[i].RolloverTemplate = "Rollover"
         Actions[i].replace_matching_id = true
       end
 

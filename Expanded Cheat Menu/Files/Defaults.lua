@@ -10,21 +10,21 @@ local next,pairs,print,type,table = next,pairs,print,type,table
 
 do -- Actions
   local Actions = ChoGGi.Temp.Actions
-  local function AddMenuitem(name,sort)
+  local function AddMenuitem(name,str_id,sort)
     Actions[#Actions+1] = {
       ActionMenubar = "DevMenu",
-      ActionName = name,
+      ActionName = S[str_id],
       ActionId = name,
       OnActionEffect = "popup",
       ActionSortKey = sort,
     }
   end
-  AddMenuitem(S[27--[[Cheats--]]],"01")
-  AddMenuitem(S[302535920000104--[[Expanded CM--]]],"02")
-  AddMenuitem(S[283142739680--[[Game--]]],"03")
-  AddMenuitem(S[302535920000979--[[Presets--]]],"04")
-  AddMenuitem(S[1000113--[[Debug--]]],"05")
-  AddMenuitem(S[487939677892--[[Help--]]],"06")
+  AddMenuitem("Cheats",27,"01")
+  AddMenuitem("Expanded CM",302535920000104,"02")
+  AddMenuitem("Game",283142739680,"03")
+  AddMenuitem("Presets",302535920000979,"04")
+  AddMenuitem("Debug",1000113,"05")
+  AddMenuitem("Help",487939677892,"06")
 end -- do
 
 -- useful lists
@@ -120,6 +120,7 @@ ChoGGi.Defaults = {
     -- Buildings.lua
     SetMaxChangeOrDischarge = "Ctrl-Shift-R",
     SetProductionAmount = "Ctrl-Shift-P",
+    UseLastOrientation = "F7",
     -- CheatsMenu.lua
     CheatCompleteAllConstructions = "Alt-B",
     -- ColonistsMenu.lua

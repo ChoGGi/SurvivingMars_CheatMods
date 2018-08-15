@@ -492,60 +492,6 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
   end)
 end
 
-function ChoGGi.MenuFuncs.SetAutosavePeriod()
-  local ChoGGi = ChoGGi
-  local DefaultSetting = ChoGGi.Consts.AutosavePeriod
-  local UserSettings = ChoGGi.UserSettings
-  local title = Concat(S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]])
-  local ItemList = {
-    {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
-    {text = 1,value = 1},
-    {text = 3,value = 3},
-    {text = 10,value = 10},
-    {text = 15,value = 15},
-  }
-
-  --other hint type
-  local hint = DefaultSetting
-  if UserSettings.AutosavePeriod then
-    hint = UserSettings.AutosavePeriod
-  end
-
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
-      return
-    end
-    if type(value) == "number" then
-
-      --update const it checks
-      const.AutosavePeriod = value
-      --and update current countdown
-      g_NextAutosaveSol = UICity.day + value
-
-      if value == DefaultSetting then
-        UserSettings.AutosavePeriod = nil
-      else
-        UserSettings.AutosavePeriod = value
-      end
-
-      ChoGGi.SettingFuncs.WriteSettings()
-      MsgPopup(
-        ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-        title
-      )
-    end
-  end
-
-  ChoGGi.ComFuncs.OpenInListChoice{
-    callback = CallBackFunc,
-    items = ItemList,
-    title = title,
-    hint = Concat("Current: ",hint),
-    skip_sort = true,
-  }
-end
-
 function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DisablePulsatingPinsMotion = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisablePulsatingPinsMotion)

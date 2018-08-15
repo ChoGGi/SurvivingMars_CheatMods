@@ -7,12 +7,13 @@ local RGB = RGB
 local box = box
 local point = point
 
-local white = white
-local black = black
+local white = -1
+local black = 0
 local dark_gray = -13158858
 local medium_gray = -10592674
 local light_gray = -2368549
-local rollover_blue = RGB(24, 123, 197)
+--~ local rollover_blue = RGB(24, 123, 197)
+local rollover_blue = -15172667
 
 local text = "Editor12Bold"
 if ChoGGi.testing then

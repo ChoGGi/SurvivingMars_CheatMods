@@ -1,153 +1,169 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local AddAction = ChoGGi.ComFuncs.AddAction
 local S = ChoGGi.Strings
-
---~ local icon = "new_city.tga"
-
 local Actions = ChoGGi.Temp.Actions
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000704--[[Instant Mission Goal--]]]),
-  ChoGGi.MenuFuncs.InstantMissionGoal,
-  nil,
-  302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).
+local str_ExpandedCM_Mission = "Expanded CM.Mission"
+Actions[#Actions+1] = {
+  ActionMenubar = "Expanded CM",
+  ActionName = S[1635--[[Mission--]]],
+  ActionId = str_ExpandedCM_Mission,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+}
 
-Needs to change Sol to update.--]],
-  "AlignSel.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000704--[[Instant Mission Goal--]]],
+  ActionId = "Expanded CM.Mission.Instant Mission Goal",
+  ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+  RolloverText = S[302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000706--[[Instant Colony Approval--]]]),
-  ChoGGi.MenuFuncs.InstantColonyApproval,
-  nil,
-  302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).--]],
-  "AlignSel.tga"
-)
+Needs to change Sol to update.--]]],
+  OnAction = ChoGGi.MenuFuncs.InstantMissionGoal,
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[302535920000710--[[Change Logo--]]]),
-  ChoGGi.MenuFuncs.ChangeGameLogo,
-  nil,
-  302535920000711--[[Change the logo for anything that uses the logo.--]],
-  "ViewArea.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000706--[[Instant Colony Approval--]]],
+  ActionId = "Expanded CM.Mission.Instant Colony Approval",
+  ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+  RolloverText = S[302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).--]]],
+  OnAction = ChoGGi.MenuFuncs.InstantColonyApproval,
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[1]",S[302535920000712--[[Set Sponsor--]]]),
-  ChoGGi.MenuFuncs.ChangeSponsor,
-  nil,
-  302535920000713--[[Switch to a different sponsor.--]],
-  "SelectByClassName.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000710--[[Change Logo--]]],
+  ActionId = "Expanded CM.Mission.Change Logo",
+  ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
+  RolloverText = S[302535920000711--[[Change the logo for anything that uses the logo.--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeGameLogo,
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[3]",S[302535920000716--[[Set Commander--]]]),
-  ChoGGi.MenuFuncs.ChangeCommander,
-  nil,
-  302535920000717--[[Switch to a different commander.--]],
-  "SetCamPos&Loockat.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000712--[[Set Sponsor--]]],
+  ActionId = "Expanded CM.Mission.Set Sponsor",
+  ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
+  RolloverText = S[302535920000713--[[Switch to a different sponsor.--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
+  ActionSortKey = "01",
+}
 
-------------
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[2]",S[302535920000714--[[Set Bonuses Sponsor--]]]),
-  ChoGGi.MenuFuncs.SetSponsorBonus,
-  nil,
-  S[302535920000715--[[Applies the good effects only (no drawbacks).
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000716--[[Set Commander--]]],
+  ActionId = "Expanded CM.Mission.Set Commander",
+  ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+  RolloverText = S[302535920000717--[[Switch to a different commander.--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeCommander,
+  ActionSortKey = "03",
+}
 
-(if value already exists; set to larger amount).
-restart to set disabled.--]]],
-  "EV_OpenFromInputBox.tga"
-)
-
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/[4]",S[302535920000718--[[Set Bonuses Commander--]]]),
-  ChoGGi.MenuFuncs.SetCommanderBonus,
-  nil,
-  S[302535920000715--[[Applies the good effects only (no drawbacks).
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000714--[[Set Bonuses Sponsor--]]],
+  ActionId = "Expanded CM.Mission.Set Bonuses Sponsor",
+  ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+  RolloverText = S[302535920000715--[[Applies the good effects only (no drawbacks).
 
 (if value already exists; set to larger amount).
 restart to set disabled.--]]],
-  "EV_OpenFromInputBox.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
+  ActionSortKey = "02",
+}
 
---------------------disasters
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[302535920000708--[[Meteor Damage--]]]),
-  ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[302535920000718--[[Set Bonuses Commander--]]],
+  ActionId = "Expanded CM.Mission.Set Bonuses Commander",
+  ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+  RolloverText = S[302535920000715--[[Applies the good effects only (no drawbacks).
+
+(if value already exists; set to larger amount).
+restart to set disabled.--]]],
+  OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
+  ActionSortKey = "04",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission,
+  ActionName = S[8800--[[Game Rules--]]],
+  ActionId = "Expanded CM.Mission.Game Rules",
+  ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
+  RolloverText = S[302535920000965--[["Change the ""Game Rules""."--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeRules,
+}
+
+local str_ExpandedCM_Mission_Disasters = "Expanded CM.Mission.Disasters"
+Actions[#Actions+1] = {
+  ActionMenubar = "Expanded CM.Mission",
+  ActionName = S[3983--[[Disasters--]]],
+  ActionId = str_ExpandedCM_Mission_Disasters,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission_Disasters,
+  ActionName = S[302535920000708--[[Meteor Damage--]]],
+  ActionId = "Expanded CM.Mission.Disasters.Meteor Damage",
+  ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.MeteorHealthDamage,
       302535920000709--[[Disable Meteor damage (colonists?).--]]
     )
   end,
-  "remove_water.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4142--[[Dust Devils--]]]),
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission_Disasters,
+  ActionName = S[4142--[[Dust Devils--]]],
+  ActionId = "Expanded CM.Mission.Disasters.Dust Devils",
+  ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+  RolloverText = S[302535920000966--[["Set the occurrence level of %s disasters.
+Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevils),
+  OnAction = function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("DustDevils")
   end,
-  nil,
-  S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevils),
-  "RandomMapPresetEditor.tga"
-)
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4148--[[Cold Waves--]]]),
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission_Disasters,
+  ActionName = S[4148--[[Cold Waves--]]],
+  ActionId = "Expanded CM.Mission.Disasters.Cold Waves",
+  ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+  RolloverText = S[302535920000966--[["Set the occurrence level of %s disasters.
+Current: %s"--]]]:format(S[4149--[[Cold Wave--]]],mapdata.MapSettings_ColdWave),
+  OnAction = function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("ColdWave")
   end,
-  nil,
-  S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4149--[[Cold Wave--]]],mapdata.MapSettings_ColdWave),
-  "RandomMapPresetEditor.tga"
-)
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4144--[[Dust Storms--]]]),
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission_Disasters,
+  ActionName = S[4144--[[Dust Storms--]]],
+  ActionId = "Expanded CM.Mission.Disasters.Dust Storms",
+  ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+  RolloverText = S[302535920000966--[["Set the occurrence level of %s disasters.
+Current: %s"--]]]:format(S[4250--[[Dust Storm--]]],mapdata.MapSettings_DustStorm),
+  OnAction = function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("DustStorm")
   end,
-  nil,
-  S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4250--[[Dust Storm--]]],mapdata.MapSettings_DustStorm),
-  "RandomMapPresetEditor.tga"
-)
+}
 
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[3983--[[Disasters--]]],"/",S[4146--[[Meteors--]]]),
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_ExpandedCM_Mission_Disasters,
+  ActionName = S[4146--[[Meteors--]]],
+  ActionId = "Expanded CM.Mission.Disasters.Meteors",
+  ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+  RolloverText = S[302535920000966--[["Set the occurrence level of %s disasters.
+Current: %s"--]]]:format(S[4146--[[Meteors--]]],mapdata.MapSettings_Meteor),
+  OnAction = function()
     ChoGGi.MenuFuncs.SetDisasterOccurrence("Meteor")
   end,
-  nil,
-  S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4146--[[Meteors--]]],mapdata.MapSettings_Meteor),
-  "RandomMapPresetEditor.tga"
-)
-
-AddAction(
-  {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},
-  Concat("/[20]",S[302535920000104--[[Expanded CM--]]],"/",S[1635--[[Mission--]]],"/",S[8800--[[Game Rules--]]]),
-  ChoGGi.MenuFuncs.ChangeRules,
-  nil,
-  302535920000965--[["Change the ""Game Rules""."--]],
-  "ListCollections.tga"
-)
+}
