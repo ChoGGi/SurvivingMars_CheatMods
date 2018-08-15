@@ -1167,17 +1167,21 @@ do -- DeleteObject
     end
   end
 
-  function ChoGGi.CodeFuncs.DeleteObject(obj)
+  function ChoGGi.CodeFuncs.DeleteObject(obj,editor_delete)
     local ChoGGi = ChoGGi
 
-    --multiple selection from editor mode
-    local objs = editor:GetSel() or ""
-    if #objs > 0 then
-      for i = 1, #objs do
-        ChoGGi.CodeFuncs.DeleteObject(objs[i])
+    if not editor_delete then
+      -- multiple selection from editor mode
+      local objs = editor:GetSel() or ""
+      if #objs > 0 then
+        for i = 1, #objs do
+          if objs[i].class ~= "MapSector" then
+            ChoGGi.CodeFuncs.DeleteObject(objs[i],true)
+          end
+        end
+      elseif not obj then
+        obj = ChoGGi.CodeFuncs.SelObject()
       end
-    elseif not obj then
-      obj = ChoGGi.CodeFuncs.SelObject()
     end
 
     if not IsValid(obj) then
@@ -1853,3 +1857,27 @@ do -- flightgrids
     end)
   end
 end -- do
+
+function ChoGGi.CodeFuncs.DraggableCheatsMenu(which)
+  if which then
+    -- add a bit of spacing above menu
+    XShortcutsTarget.idMenuBar:SetPadding(box(0, 8, 0, 0))
+
+    -- add move control to menu
+    XShortcutsTarget.idMoveControl = g_Classes.XMoveControl:new({
+      Id = "idMoveControl",
+      MinHeight = 8,
+      VAlign = "top",
+    }, XShortcutsTarget)
+
+    -- move the move control to the padding space we created above
+    DelayedCall(1, function()
+      -- needs a delay (cause we added the control?)
+      local height = XShortcutsTarget.idToolbar.box:maxy() * -1
+      XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
+    end)
+  else
+    XShortcutsTarget.idMoveControl:delete()
+    XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
+  end
+end

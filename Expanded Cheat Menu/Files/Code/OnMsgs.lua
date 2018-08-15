@@ -10,9 +10,6 @@ local box = box
 local FlushLogFile = FlushLogFile
 local Msg = Msg
 
---~ local UserActions_ClearGlobalTables = UserActions.ClearGlobalTables
---~ local UserActions_GetActiveActions = UserActions.GetActiveActions
-
 local OnMsg = OnMsg
 
 -- use this message to mess with the classdefs (before classes are built)
@@ -27,7 +24,7 @@ function OnMsg.ClassesGenerate()
   ConsoleLog.ZOrder = 2
   Console.ZOrder = 3
   -- changed from 10000000
-  XShortcutsHost.ZOrder = 2
+  XShortcutsHost.ZOrder = 4
   -- make cheats menu look like older one (more gray, less white)
   local dark_gray = -9868951
   XMenuBar.Background = dark_gray
@@ -569,6 +566,17 @@ function OnMsg.MysteryEnd(outcome)
   end
 end
 
+-- fired when cheats menu is toggled
+function OnMsg.DevMenuVisible(visible)
+  if visible then
+    if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+      XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
+    else
+      XShortcutsTarget:SetPos(point(0,0))
+    end
+  end
+end
+
 function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
@@ -577,16 +585,16 @@ function OnMsg.ApplicationQuit()
     return
   end
 
---~   -- save menu pos
---~   local dlg = dlgUAMenu
---~   if dlg and ChoGGi.UserSettings.KeepCheatsMenuPosition then
---~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlg:GetPos()
---~   end
   -- console log window settings
   local dlg = dlgChoGGi_ConsoleLogWin
   if dlg then
     ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
     ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
+  end
+
+  -- save menu pos
+  if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
   end
 
   --save any unsaved settings on exit
@@ -837,7 +845,6 @@ do -- LoadGame/CityStart
     local DataInstances = DataInstances
     local dlgConsole = dlgConsole
     local Presets = Presets
---~     local UserActions = UserActions
     local hr = hr
 
     -- gets used a few times
@@ -877,11 +884,6 @@ do -- LoadGame/CityStart
     SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
 
     if not UserSettings.DisableECM then
---~       -- remove all built-in actions
---~       UserActions_ClearGlobalTables()
---~       UserActions.Actions = {}
---~       UserActions.RejectedActions = {}
-
       local Actions = ChoGGi.Temp.Actions
 
       -- add preset menu items
@@ -979,24 +981,42 @@ do -- LoadGame/CityStart
         }, dlgConsole)
       end
 
-      -- update menu
+      -- reloads actions (cheat menu/menu items/shortcuts)
       ReloadShortcuts()
 
+      -- cheats menu fun
       local XShortcutsTarget = XShortcutsTarget
       if XShortcutsTarget then
 
-         -- yeah... i don't need the cheats menu taking up the whole width of my screen
+        for i = 1, #XShortcutsTarget do
+          if XShortcutsTarget[i].class == "XMenuBar" then
+            XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
+          elseif XShortcutsTarget[i].class == "XWindow" then
+            XShortcutsTarget.idToolbar = XShortcutsTarget[i]
+            break
+          end
+        end
+
+         -- yeah... i don't need the menu taking up the whole width of my screen
         XShortcutsTarget:SetHAlign("left")
 
         -- always show menu on my computer
         if UserSettings.ShowCheatsMenu or ChoGGi.testing then
-          XShortcutsTarget:SetVisible(true)
+          XShortcutsTarget:ToggleMenu()
+          if UserSettings.KeepCheatsMenuPosition then
+            XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
+          end
         end
 
         -- that info text about right-clicking expands the menu instead of just hiding or something
-        XShortcutsTarget[2][2]:delete()
-      end
+        for i = 1, #XShortcutsTarget.idToolbar do
+          if XShortcutsTarget.idToolbar[i].class == "XText" then
+            XShortcutsTarget.idToolbar[i]:delete()
+          end
+        end
 
+        ChoGGi.CodeFuncs.DraggableCheatsMenu(UserSettings.DraggableCheatsMenu)
+      end
     end -- DisableECM
 
 
@@ -1008,6 +1028,11 @@ do -- LoadGame/CityStart
 
 
 
+    -- bloody hint popups
+    if ChoGGi.UserSettings.DisableHints then
+      mapdata.DisableHints = true
+      HintsEnabled = false
+    end
 
     -- show completed hidden milestones
     if UICity.ChoGGi.DaddysLittleHitler then

@@ -24,8 +24,18 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = S[283142739680--[[Game--]]],
-  ActionName = S[302535920000485--[[Flatten Terrain Toggle--]]],
-  ActionId = "Game.Flatten Terrain Toggle",
+  ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
+  ActionId = "Game.Terrain Editor Toggle",
+  ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+  RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
+  OnAction = ChoGGi.MenuFuncs.TerrainEditor_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.TerrainEditor_Toggle,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000485--[[Terrain Flatten Toggle--]]],
+  ActionId = "Game.Terrain Flatten Toggle",
   ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
   RolloverText = S[302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 

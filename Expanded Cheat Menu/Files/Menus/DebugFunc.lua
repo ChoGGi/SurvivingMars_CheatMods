@@ -234,14 +234,10 @@ function ChoGGi.MenuFuncs.AttachSpots_Toggle()
   end
 end
 
-function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
-  if which then
-    MeasureTool.enabled = true
-    MeasureTool.OnMouseButtonDown(GetTerrainCursor())
-  else
-    MeasureTool.object:delete()
-    MeasureTool.enabled = false
-  end
+function ChoGGi.MenuFuncs.MeasureTool_Toggle()
+  local MeasureTool = MeasureTool
+  MeasureTool.SetEnabled(not MeasureTool.enabled)
+  MeasureTool.OnMouseButtonDown(GetTerrainCursor(),"L")
 end
 
 function ChoGGi.MenuFuncs.ReloadLua()
@@ -488,12 +484,6 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
   Platform.editor = true
   Platform.developer = true
 
-  --keep menu opened if visible
---~   local showmenu
---~   if dlgUAMenu then
---~     showmenu = true
---~   end
-
   if IsEditorActive() then
     EditorState(0)
     table.restore(hr, "Editor")
@@ -521,13 +511,9 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     camera.Unlock(1)
 
     GetEditorInterface():SetVisible(true)
-    GetEditorInterface():ShowSidebar(true)
-    GetEditorInterface().dlgEditorStatusbar:SetVisible(true)
+    GetEditorInterface():ShowActionBar(true)
     --GetEditorInterface():SetMinimapVisible(true)
     --CreateEditorPlaceObjectsDlg()
---~     if showmenu then
---~       UAMenu.ToggleOpen()
---~     end
   end
 
 end

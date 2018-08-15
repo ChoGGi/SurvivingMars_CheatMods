@@ -28,18 +28,8 @@ Actions[#Actions+1] = {
   ActionId = "Debug.Measure Tool",
   ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
   RolloverText = S[302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]],
-  OnAction = function()
-    ChoGGi.MenuFuncs.MeasureTool_Toggle(true)
-  end,
+  OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.MeasureTool_Toggle,
-}
-
-Actions[#Actions+1] = {
-  ActionId = Concat("MeasureTool_Toggle",AsyncRand()),
-  OnAction = function()
-    ChoGGi.MenuFuncs.MeasureTool_Toggle()
-  end,
-  ActionShortcut = ChoGGi.UserSettings.KeyBindings.MeasureTool_Clear,
 }
 
 Actions[#Actions+1] = {
@@ -93,17 +83,6 @@ Actions[#Actions+1] = {
 --~   ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
 --~   ActionSortKey = "",
 --~ }
-
-Actions[#Actions+1] = {
-  ActionMenubar = "Debug",
-  ActionName = S[302535920000473--[[Selection Editor--]]],
-  ActionId = "Debug.Selection Editor",
-  ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
-  RolloverText = S[302535920000474--[["Lets you manipulate objects.
-
-If you leave it opened during a game load/save, then click this menu item to make it closeable)."--]]],
-  OnAction = ChoGGi.MenuFuncs.ShowSelectionEditor,
-}
 
 Actions[#Actions+1] = {
   ActionMenubar = "Debug",

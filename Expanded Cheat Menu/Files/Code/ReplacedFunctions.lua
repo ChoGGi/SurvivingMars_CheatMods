@@ -175,7 +175,7 @@ do --funcs without a class
     SetTrans(ret)
     return table.unpack(ret)
   end
-  --console stuff (it's visible before mods are loaded so I can't use FrameWindow_Init)
+  --console stuff
   function ShowConsoleLog(...)
     ChoGGi_OrigFuncs.ShowConsoleLog(...)
     SetTrans(dlgConsoleLog)
@@ -959,7 +959,7 @@ function OnMsg.ClassesBuilt()
       -- always on top off
       self:SetModal(false)
     end
-    -- adding transparency for console stuff (it's always visible so I can't use FrameWindow_PostInit)
+    -- adding transparency for console stuff
     SetTrans(self)
 
     -- and rebuild the console buttons (added by ECM)

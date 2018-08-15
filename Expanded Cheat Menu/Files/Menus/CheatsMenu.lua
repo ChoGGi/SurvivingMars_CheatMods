@@ -289,19 +289,7 @@ Actions[#Actions+1] = {
   end,
   OnAction = ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
 }
-Actions[#Actions+1] = {
-  ActionName = S[302535920000321--[[Toggle Width Of Cheats Menu On Hover--]]],
-  ActionMenubar = str_Cheats_Menu,
-  ActionId = "Cheats.Menu.Toggle Width Of Cheats Menu On Hove",
-  ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
-  RolloverText = function()
-    return ChoGGi.ComFuncs.SettingState(
-      ChoGGi.UserSettings.ToggleWidthOfCheatsHover,
-      302535920000322--[[Makes the cheats menu just show Cheats till mouseover (restart to take effect).--]]
-    )
-  end,
-  OnAction = ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle,
-}
+
 Actions[#Actions+1] = {
   ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
   ActionMenubar = str_Cheats_Menu,

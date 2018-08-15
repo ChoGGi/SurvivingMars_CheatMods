@@ -23,20 +23,11 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)
 
+  ChoGGi.CodeFuncs.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
+
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
     ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,302535920000232--[[Draggable Cheats Menu--]]),
-    1000162--[[Menu--]]
-  )
-end
-
-function ChoGGi.MenuFuncs.WidthOfCheatsHover_Toggle()
-  local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.ToggleWidthOfCheatsHover = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.ToggleWidthOfCheatsHover)
-
-  ChoGGi.SettingFuncs.WriteSettings()
-  MsgPopup(
-    ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ToggleWidthOfCheatsHover,302535920000233--[[Cheats hover toggle--]]),
     1000162--[[Menu--]]
   )
 end
@@ -46,8 +37,11 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
   if ChoGGi.UserSettings.KeepCheatsMenuPosition then
     ChoGGi.UserSettings.KeepCheatsMenuPosition = nil
   else
---~     ChoGGi.UserSettings.KeepCheatsMenuPosition = dlgUAMenu:GetPos()
+    ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
   end
+  -- toggle the menu, to reset/set position
+  XShortcutsTarget:ToggleMenu()
+  XShortcutsTarget:ToggleMenu()
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(

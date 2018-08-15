@@ -367,7 +367,9 @@ Do this, don't do that, can't you read the sign?--]],
 end
 
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
-  SetHintNotificationsEnabled(not HintsEnabled)
+  HintsEnabled = not HintsEnabled
+  SetHintNotificationsEnabled(HintsEnabled)
+  mapdata.DisableHints = not HintsEnabled
   UpdateOnScreenHintDlg()
   MsgPopup(
     tostring(HintsEnabled),

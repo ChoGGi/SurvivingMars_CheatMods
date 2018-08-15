@@ -53,7 +53,6 @@ local WaitMarsQuestion = WaitMarsQuestion
 local guic = guic
 local white = white
 
---~ local UserActions_SetMode = UserActions.SetMode
 local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
 local FontStyles_GetFontId = FontStyles.GetFontId

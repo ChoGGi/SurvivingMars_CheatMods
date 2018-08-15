@@ -8,28 +8,16 @@ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local print,type,tostring = print,type,tostring
 
-local camera_GetFovX = camera.GetFovX
-local camera_SetFovX = camera.SetFovX
-local camera3p_Activate = camera3p.Activate
-local camera3p_AttachObject = camera3p.AttachObject
-local camera3p_DetachObject = camera3p.DetachObject
-local camera3p_EnableMouseControl = camera3p.EnableMouseControl
-local camera3p_IsActive = camera3p.IsActive
-local camera3p_SetEyeOffset = camera3p.SetEyeOffset
-local camera3p_SetLookAtOffset = camera3p.SetLookAtOffset
-local cameraFly_Activate = cameraFly.Activate
-local cameraFly_IsActive = cameraFly.IsActive
-local cameraRTS_Activate = cameraRTS.Activate
-local cameraRTS_SetZoom = cameraRTS.SetZoom
-local terrain_GetHeight = terrain.GetHeight
-local terrain_SetHeightCircle = terrain.SetHeightCircle
-local terrain_SetTerrainType = terrain.SetTerrainType
---~ local UAMenu_UpdateUAMenu = UAMenu.UpdateUAMenu
---~ local UserActions_AddActions = UserActions.AddActions
---~ local UserActions_GetActiveActions = UserActions.GetActiveActions
-
 local white = white
 local guic = guic
+
+function ChoGGi.MenuFuncs.TerrainEditor_Toggle()
+  ChoGGi.MenuFuncs.Editor_Toggle()
+  if Platform.editor then
+    editor.ClearSel()
+    SetEditorBrush(const.ebtTerrainType)
+  end
+end
 
 do -- ListAllObjects
   local function CallBackFunc_Objects(choice)
@@ -114,29 +102,34 @@ do -- ListAllObjects
   end
 end -- do
 
-local function DeleteAllRocks(rock_cls)
-  ForEach{
-    class = rock_cls,
-    exec = function(o)
-      o:delete()
-    end,
-  }
-end
 
-function ChoGGi.MenuFuncs.DeleteAllRocks()
+do -- DeleteAllRocks
+  local function DeleteAllRocks(rock_cls)
+    ForEach{
+      class = rock_cls,
+      exec = function(o)
+        o:delete()
+      end,
+    }
+  end
+
   local function CallBackFunc(answer)
     if answer then
       DeleteAllRocks("Deposition")
       DeleteAllRocks("WasteRockObstructorSmall")
       DeleteAllRocks("WasteRockObstructor")
+      -- slower n slower
+      DeleteAllRocks("StoneSmall")
     end
   end
-  ChoGGi.ComFuncs.QuestionBox(
-    Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
-    CallBackFunc,
-    Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
-  )
-end
+  function ChoGGi.MenuFuncs.DeleteAllRocks()
+    ChoGGi.ComFuncs.QuestionBox(
+      Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
+      CallBackFunc,
+      Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
+    )
+  end
+end -- do
 
 function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
   local ChoGGi = ChoGGi
@@ -163,7 +156,7 @@ do --FlattenGround
       exec = function(o)
         local pos = o:GetVisualPos()
         if not positions[pos] then
-          local terrain_height = terrain_GetHeight(pos)
+          local terrain_height = terrain.GetHeight(pos)
           rock_objects[#rock_objects+1] = {
             obj = o,
             pos = point(pos:x(),pos:y()),
@@ -203,10 +196,9 @@ if i == 500 then
 end
 
       local r = rock_objects[i]
-      r.obj:SetPos(r.pos:SetZ(terrain_GetHeight(r.pos) + r.offset))
+      r.obj:SetPos(r.pos:SetZ(terrain.GetHeight(r.pos) + r.offset))
     end
   end
-
 
   local are_we_flattening
   local visual_circle
@@ -214,68 +206,62 @@ end
   local size
   local radius
 
-  local remove_actions = {
-    "FlattenGround_RaiseHeight",
-    "FlattenGround_LowerHeight",
-    "FlattenGround_WidenRadius",
-    "FlattenGround_ShrinkRadius",
-  }
+  local temp_height
+  local function ToggleHotkeys(bool)
+    if bool then
+      local us = ChoGGi.UserSettings
+      local XAction = XAction
+      local XShortcutsTarget = XShortcutsTarget
+      local AsyncRand = AsyncRand
 
---~   local temp_height
---~   local function ToggleHotkeys(bool)
---~     if bool then
---~       local us = ChoGGi.UserSettings
---~       UserActions_AddActions({
---~         FlattenGround_RaiseHeight = {
---~           key = "Shift-Up",
---~           action = function()
---~             temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
---~             --guess i found the ceiling limit
---~             if temp_height > 65535 then
---~               temp_height = 65535
---~             end
---~             flatten_height = temp_height
---~           end
---~         },
---~         FlattenGround_LowerHeight = {
---~           key = "Shift-Down",
---~           action = function()
---~             temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
---~             --and the floor limit (oh look 0 go figure)
---~             if temp_height < 0 then
---~               temp_height = 0
---~             end
---~             flatten_height = temp_height
---~           end
---~         },
---~         FlattenGround_WidenRadius = {
---~           key = "Shift-Right",
---~           action = function()
---~             us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) + (us.FlattenGround_RadiusDiff or 100)
---~             size = us.FlattenGround_Radius
---~             visual_circle:SetRadius(size)
---~             radius = size * guic
---~           end
---~         },
---~         FlattenGround_ShrinkRadius = {
---~           key = "Shift-Left",
---~           action = function()
---~             us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) - (us.FlattenGround_RadiusDiff or 100)
---~             size = us.FlattenGround_Radius
---~             visual_circle:SetRadius(size)
---~             radius = size * guic
---~           end
---~         },
---~       })
---~     else
---~       local UserActions = UserActions
---~       for i = 1, #remove_actions do
---~         UserActions.Actions[remove_actions[i]] = nil
---~       end
---~     end
-
---~     UAMenu_UpdateUAMenu(UserActions_GetActiveActions())
---~   end
+      XShortcutsTarget:AddAction(XAction:new{
+        ActionId = "ChoGGi_FlattenGround_RaiseHeight",
+        OnAction = function()
+          temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
+          --guess i found the ceiling limit
+          if temp_height > 65535 then
+            temp_height = 65535
+          end
+          flatten_height = temp_height
+        end,
+        ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_RaiseHeight,
+      })
+      XShortcutsTarget:AddAction(XAction:new{
+        ActionId = "ChoGGi_FlattenGround_LowerHeight",
+        OnAction = function()
+          temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
+          --and the floor limit (oh look 0 go figure)
+          if temp_height < 0 then
+            temp_height = 0
+          end
+          flatten_height = temp_height
+        end,
+        ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_LowerHeight,
+      })
+      XShortcutsTarget:AddAction(XAction:new{
+        ActionId = "ChoGGi_FlattenGround_WidenRadius",
+        OnAction = function()
+          us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) + (us.FlattenGround_RadiusDiff or 100)
+          size = us.FlattenGround_Radius
+          visual_circle:SetRadius(size)
+          radius = size * guic
+        end,
+        ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_WidenRadius,
+      })
+      XShortcutsTarget:AddAction(XAction:new{
+        ActionId = "ChoGGi_FlattenGround_ShrinkRadius",
+        OnAction = function()
+          us.FlattenGround_Radius = (us.FlattenGround_Radius or 2500) - (us.FlattenGround_RadiusDiff or 100)
+          size = us.FlattenGround_Radius
+          visual_circle:SetRadius(size)
+          radius = size * guic
+        end,
+        ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_ShrinkRadius,
+      })
+    else
+      ReloadShortcuts()
+    end
+  end
 
   local function ToggleCollisions(ChoGGi)
     ForEach{
@@ -288,6 +274,8 @@ end
 
   function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
     local ChoGGi = ChoGGi
+    local GetTerrainCursor = GetTerrainCursor
+
 if ChoGGi.Test then
     -- make a list of rocks to henceforth be a reference
     if not UICity.ChoGGi.map_rock_objects then
@@ -322,7 +310,7 @@ end
       radius = size * guic
 
       ToggleHotkeys(true)
-      flatten_height = terrain_GetHeight(GetTerrainCursor())
+      flatten_height = terrain.GetHeight(GetTerrainCursor())
       MsgPopup(
         S[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]]:format(flatten_height),
         904--[[Terrain--]],
@@ -333,6 +321,7 @@ end
       visual_circle:SetRadius(size)
       visual_circle:SetColor(white)
 
+      local SetHeightCircle = terrain.SetHeightCircle
       local Sleep = Sleep
       are_we_flattening = CreateRealTimeThread(function()
         -- thread gets deleted, but just in case
@@ -343,7 +332,7 @@ end
           if square == true then
             outer = radius / 2
           end
-          terrain_SetHeightCircle(cursor, radius, outer or radius, flatten_height)
+          SetHeightCircle(cursor, radius, outer or radius, flatten_height)
 --~ terrain.SetTypeCircle(cursor, radius, terrain_type_idx)
           --used to set terrain type (see above)
           Sleep(10)
@@ -519,7 +508,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
       return
     end
     if type(value) == "number" then
-      terrain_SetTerrainType({type = value})
+      terrain.SetTerrainType({type = value})
 
       MsgPopup(
         ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),
@@ -1074,14 +1063,14 @@ function ChoGGi.MenuFuncs.CameraFree_Toggle()
   --if not mapdata.GameLogic then
   --  return
   --end
-  if cameraFly_IsActive() then
+  if cameraFly.IsActive() then
     SetMouseDeltaMode(false)
     ShowMouseCursor("InGameCursor")
-    cameraRTS_Activate(1)
+    cameraRTS.Activate(1)
     engineShowMouseCursor()
     print(S[302535920001058--[[Camera--]]]," ",S[302535920001059--[[RTS--]]])
   else
-    cameraFly_Activate(1)
+    cameraFly.Activate(1)
     HideMouseCursor("InGameCursor")
     SetMouseDeltaMode(true)
     --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
@@ -1100,14 +1089,14 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
   local obj = ChoGGi.CodeFuncs.SelObject()
 
   --turn it off?
-  if camera3p_IsActive() then
+  if camera3p.IsActive() then
     engineShowMouseCursor()
     SetMouseDeltaMode(false)
     ShowMouseCursor("InGameCursor")
-    cameraRTS_Activate(1)
+    cameraRTS.Activate(1)
     --reset camera fov settings
     if ChoGGi.cameraFovX then
-      camera_SetFovX(ChoGGi.cameraFovX)
+      camera.SetFovX(ChoGGi.cameraFovX)
     end
     --show log again if it was hidden
     if ChoGGi.UserSettings.ConsoleToggleHistory then
@@ -1125,26 +1114,26 @@ function ChoGGi.MenuFuncs.CameraFollow_Toggle()
   print(S[302535920001058--[[Camera--]]]," ",S[302535920001061--[[Follow--]]])
   --we only want to follow one object
   if ChoGGi.LastFollowedObject then
-    camera3p_DetachObject(ChoGGi.LastFollowedObject)
+    camera3p.DetachObject(ChoGGi.LastFollowedObject)
   end
   --save for DetachObject
   ChoGGi.LastFollowedObject = obj
   --save for fovX reset
-  ChoGGi.cameraFovX = camera_GetFovX()
+  ChoGGi.cameraFovX = camera.GetFovX()
   --zoom further out unless it's a colonist
   if not obj.base_death_age then
     --up the horizontal fov so we're further away from object
-    camera_SetFovX(8400)
+    camera.SetFovX(8400)
   end
   --consistent zoom level
-  cameraRTS_SetZoom(8000)
+  cameraRTS.SetZoom(8000)
   --Activate it
-  camera3p_Activate(1)
-  camera3p_AttachObject(obj)
-  camera3p_SetLookAtOffset(point(0,0,-1500))
-  camera3p_SetEyeOffset(point(0,0,-1000))
+  camera3p.Activate(1)
+  camera3p.AttachObject(obj)
+  camera3p.SetLookAtOffset(point(0,0,-1500))
+  camera3p.SetEyeOffset(point(0,0,-1000))
   --moving mouse moves camera
-  camera3p_EnableMouseControl(true)
+  camera3p.EnableMouseControl(true)
   --IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
   engineHideMouseCursor()
 

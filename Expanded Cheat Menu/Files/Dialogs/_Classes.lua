@@ -8,12 +8,11 @@ local box = box
 local point = point
 
 local white = -1
-local black = 0
+local black = black
 local dark_gray = -13158858
 local medium_gray = -10592674
 local light_gray = -2368549
---~ local rollover_blue = RGB(24, 123, 197)
-local rollover_blue = -15172667
+local rollover_blue = -14113793
 
 local text = "Editor12Bold"
 if ChoGGi.testing then
@@ -81,6 +80,14 @@ DefineClass.ChoGGi_Button = {
   Text = S[6878--[[OK--]]],
   Background = light_gray,
 }
+DefineClass.ChoGGi_ConsoleButton = {
+  __parents = {"ChoGGi_Button"},
+  Padding = box(5, 2, 5, 2),
+  TextFont = "Editor16Bold",
+  RolloverAnchor = "right",
+  PressedBackground = dark_gray,
+}
+
 function ChoGGi_Button:Init()
   self.idLabel:SetDock("box")
 end
@@ -168,6 +175,8 @@ DefineClass.ChoGGi_Window = {
   dialog_height = 500,
   -- above console
   ZOrder = 5,
+  -- how far down to y-offset new dialogs
+  header = 22,
 }
 
 function ChoGGi_Window:AddElements(parent,context)
@@ -217,14 +226,14 @@ function ChoGGi_Window:AddElements(parent,context)
   self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]))
 end
 
--- returns x,y
-function ChoGGi_Window:GetPos()
-  local b = self.idDialog.box
+-- returns point(x,y)
+function ChoGGi_Window:GetPos(dialog)
+  local b = self[dialog or "idDialog"].box
   return point(b:minx(),b:miny())
 end
 
 -- takes either a point, or box to set pos
-function ChoGGi_Window:SetPos(obj)
+function ChoGGi_Window:SetPos(obj,dialog)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
   local x,y,w,h
   if IsPoint(obj) then
@@ -236,7 +245,7 @@ function ChoGGi_Window:SetPos(obj)
   else
     local box = obj.idDialog.box
     x = box:minx()
-    y = box:miny() + 22
+    y = box:miny() + self.header
     if self.class == "Examine" then
       -- it's a copy of examine wanting a new window offset, so we want the size of it
       w = box:sizex()
@@ -249,6 +258,7 @@ function ChoGGi_Window:SetPos(obj)
     end
   end
   self.idDialog:SetBox(x,y,w,h)
+  return x,y,w,h
 end
 
 function ChoGGi_Window:SetSize(size)
@@ -269,12 +279,22 @@ function ChoGGi_Window:GetSize()
 end
 
 local GetMousePos = terminal.GetMousePos
+local GetSafeAreaBox = GetSafeAreaBox
 function ChoGGi_Window:SetInitPos(parent)
-  -- set dialog pos
+  local x,y,w,h
+  -- if we're opened from another dialog then offset it, else open at mouse cursor
   if parent then
-    self:SetPos(parent)
+    x,y,w,h = self:SetPos(parent)
   else
-    self:SetPos(GetMousePos())
+    x,y,w,h = self:SetPos(GetMousePos())
+  end
+  -- check if dialog is within window size, and take off the size of the dialog if it isn't
+  local win = GetSafeAreaBox()
+  if (x + w) > win:maxx() then
+    self:SetPos(point(x-w),y)
+  end
+  if (y + h) > win:maxy() then
+    self:SetPos(point(x,y-h))
   end
 end
 
@@ -384,7 +404,15 @@ DefineClass.ChoGGi_SleekScroll = {
 -- convenience function
 function ChoGGi_SleekScroll:SetHorizontal()
   self.MinHeight = 10
-  self.MaxHeight = 10
+--~   self.MaxHeight = 10
   self.MinWidth = 10
-  self.MaxWidth = 10
+--~   self.MaxWidth = 10
+end
+
+-- haven't figured on a decent place to put this, so good enough for now (AddedFunctions maybe?)
+XShortcutsHost.SetPos = function(self,pt)
+  self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
+end
+XShortcutsHost.GetPos = function(self)
+  return ChoGGi_Window.GetPos(self,"idMenuBar")
 end

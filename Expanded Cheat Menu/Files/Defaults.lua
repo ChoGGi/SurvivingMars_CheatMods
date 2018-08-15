@@ -126,9 +126,8 @@ ChoGGi.Defaults = {
     -- ColonistsMenu.lua
     TheSoylentOption = "Ctrl-Alt-Numpad 1",
     -- DebugMenu.lua
-    FlattenTerrain_Toggle = "Shift-F",
     MeasureTool_Toggle = "Ctrl-M",
-    MeasureTool_Clear = "Ctrl-Shift-M",
+--~     MeasureTool_Clear = "Ctrl-Shift-M",
     ObjectCloner = "Shift-Q",
     SetPathMarkersGameTime = "Ctrl-Numpad .",
     SetPathMarkersVisible = "Ctrl-Numpad 0",
@@ -153,6 +152,12 @@ ChoGGi.Defaults = {
     CameraFree_Toggle = "Shift-C",
     CameraFollow_Toggle = "Ctrl-Shift-F",
     CursorVisible_Toggle = "Ctrl-Alt-F",
+    FlattenTerrain_Toggle = "Shift-F",
+    FlattenGround_RaiseHeight = "Shift-Up",
+    FlattenGround_LowerHeight = "Shift-Down",
+    FlattenGround_WidenRadius = "Shift-Right",
+    FlattenGround_ShrinkRadius = "Shift-Left",
+    TerrainEditor_Toggle = "Ctrl-Shift-T",
     -- HelpMenu.lua
     TakeScreenshot = "-PrtScr",
     TakeScreenshotUpsampled = "-Ctrl-PrtScr",

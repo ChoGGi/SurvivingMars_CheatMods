@@ -1,6 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000674,,
-302535920000675,,
+302535920000473,,
+302535920000474,,
 302535920001308,,
 302535920001309,,
 302535920001310,,
@@ -870,7 +870,7 @@ See the examine list on the left for ids.",
 302535920001219,Exports data about colonists to AppData/Colonists.csv,
 302535920001176,Toggle showing FX debug info in console.,
 302535920001184,Particles,
-302535920000485,Flatten Terrain Toggle,
+302535920000485,Terrain Flatten Toggle,
 302535920000486,"Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 
 Use Shift + Arrow keys to change the height/radius.",
@@ -889,10 +889,6 @@ Use Shift + Arrow keys to change the height/radius.",
 302535920000469,Close Dialogs,
 302535920000470,"Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...).",
 302535920000472,Manipulate objects (selected or under mouse cursor),
-302535920000473,Selection Editor,
-302535920000474,"Lets you manipulate objects.
-
-If you leave it opened during a game load/save, then click this menu item to make it closeable).",
 302535920000475,Object Spawner,
 302535920000476,"Shows list of objects, and spawns at mouse cursor.
 
@@ -1191,6 +1187,8 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs.",
 302535920000620,If any colonists are black cubes click this.,
 302535920000621,Align All Buildings To Hex Grid,
 302535920000622,If you have any buildings that aren't aligned to the hex grids use this.,
+302535920000674,Terrain Editor Toggle,
+302535920000675,Opens up the map editor with the brush tool visible.,
 302535920001292,List All Objects,
 302535920001293,A list of objects; double-click on one to select and move the camera to it.,
 302535920001294,Laggy,

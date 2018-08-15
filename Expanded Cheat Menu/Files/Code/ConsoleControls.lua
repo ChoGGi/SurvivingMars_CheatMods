@@ -5,20 +5,9 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
+local rollover_blue = -14113793
 
 local rawget,table,tostring,print,select = rawget,table,tostring,print,select
-
-local AsyncCreatePath = AsyncCreatePath
-local AsyncGetFileAttribute = AsyncGetFileAttribute
-local AsyncFileToString = AsyncFileToString
-local AsyncStringToFile = AsyncStringToFile
-local box = box
-local cls = cls
-local FlushLogFile = FlushLogFile
-local GetLogFile = GetLogFile
-local ModMessageLog = ModMessageLog
-local RGBA = RGBA
-local ShowConsoleLog = ShowConsoleLog
 
 --~ box(left, top, right, bottom)
 
@@ -130,9 +119,10 @@ local function HistoryPopup(self)
     PopupToggle(self,"idHistoryMenu",nil,items)
   end
 end
-local pad_script = box(5, 2, 5, 2)
+
 function ChoGGi.Console.ConsoleControls()
   local g_Classes = g_Classes
+  local dlgConsole = dlgConsole
 
   --stick everything in
   local container = g_Classes.XWindow:new({
@@ -144,42 +134,30 @@ function ChoGGi.Console.ConsoleControls()
   }, dlgConsole)
 
   --------------------------------Console popup
-  g_Classes.ChoGGi_Button:new({
---~     Id = "idConsoleMenu",
-    Padding = pad_script,
-    TextFont = "Editor16Bold",
-    RolloverAnchor = "top",
-    RolloverBackground = RGBA(40, 163, 255, 255),
+  dlgConsole.idConsoleMenu = g_Classes.ChoGGi_ConsoleButton:new({
+    Id = "idConsoleMenu",
     RolloverText = S[302535920001089--[[Settings & Commands--]]],
     Text = S[302535920001073--[[Console--]]],
     OnPress = ConsolePopup,
   }, container)
 
   --------------------------------History popup
-  g_Classes.ChoGGi_Button:new({
---~     Id = "idHistoryMenu",
-    RolloverBackground = RGBA(40, 163, 255, 255),
-    RolloverAnchor = "top",
-    Padding = pad_script,
-    TextFont = "Editor16Bold",
+  dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
+    Id = "idHistoryMenu",
     RolloverText = S[302535920001080--[[Console History Items--]]],
     Text = S[302535920000793--[[History--]]],
     OnPress = HistoryPopup,
   }, container)
 
   --------------------------------Scripts buttons
-  g_Classes.XWindow:new({
+  dlgConsole.idScripts = g_Classes.XWindow:new({
     Id = "idScripts",
-    LayoutMethod = "HWrap",
+    LayoutMethod = "HList",
   }, container)
 end
 
 local function BuildSciptButton(scripts,dlg,folder)
-  ChoGGi_Button:new({
-    Padding = pad_script,
-    RolloverBackground = RGBA(40, 163, 255, 255),
-    TextFont = "Editor16Bold",
-    RolloverAnchor = "top",
+  ChoGGi_ConsoleButton:new({
     RolloverText = folder.RolloverText,
     Text = folder.Text,
     OnPress = function(self)
@@ -219,7 +197,7 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
   ChoGGi.Console.BuildScriptFiles()
 
-  --clear out old buttons first
+  -- clear out old buttons first
   for i = #scripts, 1, -1 do
     scripts[i]:delete()
     table.remove(scripts,i)
@@ -227,7 +205,7 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
   BuildSciptButton(scripts,dlg,{
     Text = S[302535920000353--[[Scripts--]]],
-    RolloverText = S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(ChoGGi.scripts),
+    RolloverText = S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ChoGGi.scripts),
     id = "idScriptsMenu",
     script_path = ChoGGi.scripts,
   })
@@ -256,7 +234,7 @@ function ChoGGi.Console.BuildScriptFiles()
     AsyncCreatePath(Concat(script_path,"/Examine"))
     AsyncCreatePath(Concat(script_path,"/Functions"))
     --print some info
-    print(S[302535920000881--[[Place .lua files in %s to have them show up in the 'Scripts' list, you can then use the list to execute them (you can also create folders for sorting).--]]]:format(script_path))
+    print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(script_path))
     --add some example files and a readme
     AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
     AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
