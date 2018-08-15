@@ -1,302 +1,319 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
 local S = ChoGGi.Strings
 
---~ local icon = "new_city.tga"
+local Actions = ChoGGi.Temp.Actions
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920001292--[[List All Objects--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920001292--[[List All Objects--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
+  RolloverText = S[302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]]],
+  OnAction = ChoGGi.MenuFuncs.XXListAllObjectsXXXXXXX,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920001292--[[List All Objects--]]]),
-  ChoGGi.MenuFuncs.ListAllObjects,
-  nil,
-  302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]],
-  "select_objects.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000864--[[Delete All Rocks--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+  RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
+  OnAction = ChoGGi.MenuFuncs.DeleteAllRocks,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000864--[[Delete All Rocks--]]]),
-  ChoGGi.MenuFuncs.DeleteAllRocks,
-  nil,
-  302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]],
-  "selslope.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000485--[[Flatten Terrain Toggle--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000485--[[Flatten Terrain Toggle--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+  RolloverText = S[302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000485--[[Flatten Terrain Toggle--]]]),
-  ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-  ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
-  302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
+Use Shift + Arrow keys to change the height/radius.--]]],
+  OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
+}
 
-Use Shift + Arrow keys to change the height/radius.--]],
-  "FixUnderwaterEdges.tga"
-)
-
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000493--[[Change Map--]]]),
-  ChoGGi.MenuFuncs.ChangeMap,
-  nil,
-  302535920000494--[[Change map (options to pick commander, sponsor, etc...
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000493--[[Change Map--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000493--[[Change Map--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
+  RolloverText = S[302535920000494--[[Change map (options to pick commander, sponsor, etc...
 
 Attention: If you get yellow ground areas; just load it again.
-The map disaster settings don't do jack (use ECM>Mission>Disasters).--]],
-  "load_city.tga"
-)
+The map disaster settings don't do jack (use ECM>Mission>Disasters).--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeMap,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]]),
-  ChoGGi.MenuFuncs.SetAutosavePeriod,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = Concat(S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]]),
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[3591--[[Autosave--]]]," ",S[302535920001201--[[Interval--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/save_city.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.AutosavePeriod,
       302535920001206--[[Change how many Sols between autosaving.--]]
     )
   end,
-  "save_city.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetAutosavePeriod,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000265--[[Pulsating Pins--]]]),
-  ChoGGi.MenuFuncs.PulsatingPins_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000265--[[Pulsating Pins--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000265--[[Pulsating Pins--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.DisablePulsatingPinsMotion,
       302535920000335--[[Pins will no longer do the pulsating motion (hover over to stop).--]]
     )
   end,
-  "JoinGame.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000623--[[Change Terrain Type--]]]),
-  ChoGGi.MenuFuncs.ChangeTerrainType,
-  nil,
-  302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]],
-  "prefabs.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000623--[[Change Terrain Type--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000623--[[Change Terrain Type--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/prefabs.tga",
+  RolloverText = S[302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]],
+  OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000625--[[Change Light Model--]]]),
-  ChoGGi.MenuFuncs.ChangeLightmodel,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000625--[[Change Light Model--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000625--[[Change Light Model--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.Lightmodel,
       302535920000626--[[Changes the lighting mode (temporary or permanent).--]]
     )
   end,
-  "light_model.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.ChangeLightmodel,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000627--[[Change Light Model Custom--]]]),
-  ChoGGi.MenuFuncs.ChangeLightmodelCustom,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000627--[[Change Light Model Custom--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000627--[[Change Light Model Custom--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.LightmodelCustom,
       302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]
     )
   end,
-  "light_model.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.ChangeLightmodelCustom,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000629--[[UI Transparency--]]]),
-  ChoGGi.MenuFuncs.SetTransparencyUI,
-  ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
-  302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]],
-  "set_last_texture.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000629--[[UI Transparency--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000629--[[UI Transparency--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+  RolloverText = S[302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]],
+  OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000631--[[UI Transparency Mouseover--]]]),
-  ChoGGi.MenuFuncs.TransparencyUI_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000631--[[UI Transparency Mouseover--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/",S[302535920000631--[[UI Transparency Mouseover--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.TransparencyToggle,
       302535920000632--[[Toggle removing transparency on mouseover.--]]
     )
   end,
-  "set_last_texture.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000633--[[Lights Radius--]]]),
-  ChoGGi.MenuFuncs.SetLightsRadius,
-  nil,
-  function()
+local str_Cheats_Render = Concat(S[283142739680--[[Game--]]],".",S[302535920000845--[[Render--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000845--[[Render--]]],
+  ActionId = str_Cheats_Render,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "02",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000633--[[Lights Radius--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000633--[[Lights Radius--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.LightsRadius,
       302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
 Lets you see lights from further away/more bleedout?--]]
     )
   end,
-  "LightArea.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetLightsRadius,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000635--[[Terrain Detail--]]]),
-  ChoGGi.MenuFuncs.SetTerrainDetail,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000635--[[Terrain Detail--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000635--[[Terrain Detail--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.TerrainDetail,
       302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
 Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]
     )
   end,
-  "selslope.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetTerrainDetail,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000637--[[Video Memory--]]]),
-  ChoGGi.MenuFuncs.SetVideoMemory,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000637--[[Video Memory--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000637--[[Video Memory--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.VideoMemory,
       302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]
     )
   end,
-  "CountPointLights.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetVideoMemory,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000639--[[Shadow Map--]]]),
-  ChoGGi.MenuFuncs.SetShadowmapSize,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000639--[[Shadow Map--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000639--[[Shadow Map--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.ShadowmapSize,
       302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]
     )
   end,
-  "DisableEyeSpec.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetShadowmapSize,
+}
 
---------------------
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000641--[[Disable Texture Compression--]]]),
-  ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000641--[[Disable Texture Compression--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000641--[[Disable Texture Compression--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.DisableTextureCompression,
       302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]
     )
   end,
-  "ExportImageSequence.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000643--[[Higher Render Distance--]]]),
-  ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000643--[[Higher Render Distance--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000643--[[Higher Render Distance--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.HigherRenderDist,
       302535920000644--[[Renders model from further away.
 Not noticeable unless using higher zoom.--]]
     )
   end,
-  "CameraEditor.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000645--[[Higher Shadow Distance--]]]),
-  ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Render,
+  ActionName = S[302535920000645--[[Higher Shadow Distance--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[2]",S[302535920000845--[[Render--]]],"/",S[302535920000645--[[Higher Shadow Distance--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.HigherShadowDist,
       302535920000646--[[Renders shadows from further away.
 Not noticeable unless using higher zoom.--]]
     )
   end,
-  "toggle_post.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000647--[[Border Scrolling--]]]),
-  ChoGGi.MenuFuncs.SetBorderScrolling,
-  nil,
-  function()
+local str_Cheats_Camera = Concat(S[283142739680--[[Game--]]],".",S[302535920001058--[[Camera--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920001058--[[Camera--]]],
+  ActionId = str_Cheats_Camera,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "01",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Camera,
+  ActionName = S[302535920000647--[[Border Scrolling--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000647--[[Border Scrolling--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.BorderScrollingToggle,
       302535920000648--[[Set size of activation for mouse border scrolling.--]]
     )
   end,
-  "CameraToggle.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.SetBorderScrolling,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000649--[[Zoom Distance--]]]),
-  ChoGGi.MenuFuncs.CameraZoom_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Camera,
+  ActionName = S[302535920000649--[[Zoom Distance--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000649--[[Zoom Distance--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/MoveUpCamera.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.CameraZoomToggle,
       302535920000650--[[Further zoom distance.--]]
     )
   end,
-  "MoveUpCamera.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.CameraZoom_Toggle,
+}
 
-AddAction(
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000651--[[Toggle Free Camera--]]]),
-  ChoGGi.MenuFuncs.CameraFree_Toggle,
-  ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
-  302535920000652--[[I believe I can fly.--]],
-  "NewCamera.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Camera,
+  ActionName = S[302535920000651--[[Toggle Free Camera--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000651--[[Toggle Free Camera--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
+  RolloverText = S[302535920000652--[[I believe I can fly.--]]],
+  OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
+}
 
-AddAction(-- Toggle Follow Camera
-  {"/[30]",S[283142739680--[[Game--]]],"/"},
-  Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000653--[[Toggle Follow Camera--]]]),
-  ChoGGi.MenuFuncs.CameraFollow_Toggle,
-  ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
-  302535920000654--[[Select (or mouse over) an object to follow.--]],
-  "Shot.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Camera,
+  ActionName = S[302535920000653--[[Toggle Follow Camera--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000653--[[Toggle Follow Camera--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
+  RolloverText = S[302535920000654--[[Select (or mouse over) an object to follow.--]]],
+  OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
+}
 
-AddAction(-- Toggle Cursor
---~   {"/[30]",S[283142739680--[[Game--]]],"/"},
---~   Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000655--[[Toggle Cursor--]]]),
-
-  S[302535920000655--[[Toggle Cursor--]]],
-  S[283142739680--[[Game--]]],
-  Concat(S[283142739680--[[Game--]]],".",S[302535920001058--[[Camera--]]]),
-
-  ChoGGi.MenuFuncs.CursorVisible_Toggle,
-  ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
-  302535920000656--[[Toggle between moving camera and selecting objects.--]],
-  "select_objects.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Cheats_Camera,
+  ActionName = S[302535920000655--[[Toggle Cursor--]]],
+  ActionId = Concat("/[30]",S[283142739680--[[Game--]]],"/[1]",S[302535920001058--[[Camera--]]],"/",S[302535920000655--[[Toggle Cursor--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
+  RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
+  OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
+}

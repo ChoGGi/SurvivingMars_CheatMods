@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local default_icon = "UI/Icons/Sections/attention.tga"
 

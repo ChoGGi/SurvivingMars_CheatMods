@@ -1,13 +1,13 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local AsyncRand = AsyncRand
 local Concat = ChoGGi.ComFuncs.Concat
-local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
+local Actions = ChoGGi.Temp.Actions
 
 --use number keys to activate/hide build menus
 do -- NumberKeysBuildMenu
   local function AddMenuKey(num,key)
-    MenuitemsKeys[#MenuitemsKeys+1] = {
+    Actions[#Actions+1] = {
       ActionId = Concat("ChoGGi_AddMenuKey",num,AsyncRand()),
       OnAction = function()
         ChoGGi.CodeFuncs.ShowBuildMenu(num)
@@ -109,13 +109,13 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
   --end
 end
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ClearConsoleLog",AsyncRand()),
   OnAction = cls,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ClearConsoleLog,
 }
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ObjectColourRandom",AsyncRand()),
   OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
@@ -123,7 +123,7 @@ MenuitemsKeys[#MenuitemsKeys+1] = {
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourRandom,
 }
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ObjectColourDefault",AsyncRand()),
   OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
@@ -138,7 +138,7 @@ local function ToggleConsole()
   end
 end
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ShowConsoleTilde",AsyncRand()),
   OnAction = function()
     ToggleConsole()
@@ -146,7 +146,7 @@ MenuitemsKeys[#MenuitemsKeys+1] = {
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
 }
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ShowConsoleEnter",AsyncRand()),
   OnAction = function()
     ToggleConsole()
@@ -154,7 +154,7 @@ MenuitemsKeys[#MenuitemsKeys+1] = {
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter,
 }
 
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_ConsoleRestart",AsyncRand()),
   OnAction = function()
     ShowConsole(true)
@@ -168,7 +168,7 @@ MenuitemsKeys[#MenuitemsKeys+1] = {
 }
 
 -- goes to placement mode with last built object
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_LastConstructedBuilding",AsyncRand()),
   OnAction = function()
     local last = UICity.LastConstructedBuilding
@@ -180,7 +180,7 @@ MenuitemsKeys[#MenuitemsKeys+1] = {
 }
 
 -- goes to placement mode with SelectedObj
-MenuitemsKeys[#MenuitemsKeys+1] = {
+Actions[#Actions+1] = {
   ActionId = Concat("ChoGGi_LastPlacedObject",AsyncRand()),
   OnAction = function()
     local ChoGGi = ChoGGi

@@ -220,9 +220,9 @@ function OnMsg.ShortcutsReloaded()
   end
 
   -- and add mine
-  local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
-  for i = 1, #MenuitemsKeys do
-    XShortcutsTarget:AddAction(XAction:new(MenuitemsKeys[i]))
+  local Actions = ChoGGi.Temp.Actions
+  for i = 1, #Actions do
+    XShortcutsTarget:AddAction(XAction:new(Actions[i]))
   end
 end
 
@@ -874,50 +874,39 @@ do -- LoadGame/CityStart
 --~       UserActions.Actions = {}
 --~       UserActions.RejectedActions = {}
 
-      local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
+      local Actions = ChoGGi.Temp.Actions
 
       -- add preset menu items
       local AddAction = ChoGGi.ComFuncs.AddAction
       local OpenGedApp = OpenGedApp
-      ClassDescendantsList("Preset", function(name, class)
---~         MenuitemsKeys[#MenuitemsKeys+1] = {
---~           ActionMenubar = str_Cheats_Research,
---~           ActionName = ActionName,
---~           ActionId = ActionId,
---~           ActionIcon = "CommonAssets/UI/Menu/CollectionsEditor.tga",
---~           RolloverText = S[],
---~           OnAction = ChoGGi.MenuFuncs.XXXXXXXXX,
---~           ActionSortKey = "",
---~           ActionShortcut = ActionShortcut,
---~         }
-
-
-        AddAction(
-          {"/[40]",S[302535920000979--[[Presets--]]],"/"},
-          Concat("/[40]",S[302535920000979--[[Presets--]]],"/",name),
-          function()
+      ClassDescendantsList("Preset", function(name, cls)
+        Actions[#Actions+1] = {
+          ActionMenubar = S[302535920000979--[[Presets--]]],
+          ActionName = name,
+          ActionId = Concat(S[302535920000979--[[Presets--]]],"/",name),
+          ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
+          RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
+          OnAction = function()
             OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
               PresetClass = name,
-              SingleFile = class.SingleFile
+              SingleFile = cls.SingleFile
             })
           end,
-          class.EditorShortcut or nil,
-          S[302535920000733--[[Open a preset in the editor.--]]],
-          class.EditorIcon or "CollectionsEditor.tga"
-        )
+--~           ActionShortcut = cls.EditorShortcut,
+        }
       end)
 
-      -- add custom actions
+      -- add my custom menu items/actions
       dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
 
       -- add all the defaults we skip
-      for i = 1, #MenuitemsKeys do
-        MenuitemsKeys[i].ActionMode = "Game"
-        MenuitemsKeys[i].ActionTranslate = false
-        MenuitemsKeys[i].RolloverTitle = S[126095410863--[[Info--]]]
-        MenuitemsKeys[i].RolloverTranslate = false
-        MenuitemsKeys[i].RolloverTemplate = "Rollover"
-        MenuitemsKeys[i].replace_matching_id = true
+      for i = 1, #Actions do
+        Actions[i].ActionMode = "Game"
+        Actions[i].ActionTranslate = false
+        Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
+        Actions[i].RolloverTranslate = false
+--~         Actions[i].RolloverTemplate = "Rollover"
+        Actions[i].replace_matching_id = true
       end
 
       -- show cheat pane in selection panel

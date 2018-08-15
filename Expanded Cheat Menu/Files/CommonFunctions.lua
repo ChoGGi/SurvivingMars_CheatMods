@@ -2,7 +2,7 @@
 
 --remove me when im all done converting menus
 function ChoGGi.ComFuncs.AddAction(ActionName,ActionMenubar,OnAction,ActionShortcut,RolloverText,ActionIcon,ActionSortKey)
-  DebugPrintNL(tostring(ActionMenubar))
+--~   DebugPrintNL(tostring(ActionMenubar))
 end
 
 
@@ -435,7 +435,7 @@ do --g_Classes
 
 end
 
--- centred msgbox with Ok
+-- centred msgbox with Ok, and optional image
 local WaitPopupNotification = WaitPopupNotification
 function ChoGGi.ComFuncs.MsgWait(text,title,image)
   text = CheckText(text,text)
@@ -444,17 +444,20 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
   local preset
   if image then
     preset = "ChoGGi_TempPopup"
-    local DataInstances = DataInstances
-    DataInstances.PopupNotificationPreset[preset] = {
+    local Presets = Presets
+    local temppop = {
       name = preset,
       image = image,
     }
+    Presets.PopupNotificationPreset[1][preset] = temppop
+    Presets.PopupNotificationPreset.Default[preset] = temppop
   end
 
   CreateRealTimeThread(function()
     WaitPopupNotification(preset, {title = title, text = text})
     if preset then
-      DataInstances.PopupNotificationPreset[preset] = nil
+      Presets.PopupNotificationPreset[1][preset] = nil
+      Presets.PopupNotificationPreset.Default[preset] = nil
     end
   end)
 end
@@ -1140,6 +1143,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
   check2 = "Check2",
   check2_hint = "Check2Hint",
   check2_checked = true,
+  skip_sort = true,
 }
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(list)

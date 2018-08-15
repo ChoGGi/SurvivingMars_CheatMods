@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 --funcs under Gameplay menu without a separate file
 
 local Concat = ChoGGi.ComFuncs.Concat
@@ -12,10 +12,6 @@ local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
 local type,tostring,string = type,tostring,string
-
-local PlaceObject = PlaceObject
-local ChangeFunding = ChangeFunding
-local RefreshXBuildMenu = RefreshXBuildMenu
 
 local UIL_GetFontID = UIL.GetFontID
 

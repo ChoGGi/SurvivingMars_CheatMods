@@ -12,12 +12,6 @@ local S = ChoGGi.Strings
 
 local type,tostring,pairs = type,tostring,pairs
 
-local Sleep = Sleep
-local CreateRealTimeThread = CreateRealTimeThread
-local SelectObj = SelectObj
-local UnlockBuilding = UnlockBuilding
-local GetBuildingTechsStatus = GetBuildingTechsStatus
-
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   --make a list
   local ChoGGi = ChoGGi

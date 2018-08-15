@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -8,8 +8,6 @@ local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
 local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
 
 local tostring,type = tostring,type
-
-local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
 local pf_SetStepLen = pf.SetStepLen
 

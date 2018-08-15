@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -7,12 +7,6 @@ local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 local type,tostring = type,tostring
-
-local CreateRealTimeThread = CreateRealTimeThread
-local GetMissionSponsor = GetMissionSponsor
-local Msg = Msg
-local RestartGlobalGameTimeThread = RestartGlobalGameTimeThread
-local WaitPopupNotification = WaitPopupNotification
 
 function ChoGGi.MenuFuncs.InstantMissionGoal()
   local UICity = UICity

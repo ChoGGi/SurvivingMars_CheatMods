@@ -1,6 +1,8 @@
 v7.3 (Unreleased)
 If any developers read this: http://keepachangelog.com (especially Deprecated/Removed).
-I'm not saying do it with your release notes, but at least add a link to an actual change log.
+I'm not saying to do it with your release notes, but at least add a link to an actual change log.
+For instance: Moving PopupNotificationPreset from DataInstances to Presets.
+
 Please and thank you.
 
 Added:

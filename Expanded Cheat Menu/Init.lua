@@ -137,7 +137,7 @@ ChoGGi = {
     -- collect msgs to be displayed when game is loaded
     StartupMsgs = {},
     -- we build a list of menuitems and shortcut keys called on Msg("ShortcutsReloaded")
-    MenuitemsKeys = {},
+    Actions = {},
   },
   -- settings that are saved to SettingsFile
   UserSettings = {

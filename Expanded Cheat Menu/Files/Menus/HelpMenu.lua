@@ -1,197 +1,231 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
 local S = ChoGGi.Strings
 
---~ local icon = "new_city.tga"
+local Actions = ChoGGi.Temp.Actions
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+Actions[#Actions+1] = {
+  ActionMenubar = S[487939677892--[[Help--]]],
+  ActionName = S[302535920000367--[[Mod Upload--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000367--[[Mod Upload--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/gear.tga",
+  RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
+  OnAction = ChoGGi.MenuFuncs.ModUpload,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000367--[[Mod Upload--]]]),
-  ChoGGi.MenuFuncs.ModUpload,
-  nil,
-  302535920001264--[[Show list of mods to upload to Steam Workshop.--]],
-  "gear.tga"
-)
+local str_Help_Screenshot = Concat(S[487939677892--[[Help--]]],".",S[302535920000892--[[Screenshot--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[487939677892--[[Help--]]],
+  ActionName = S[302535920000892--[[Screenshot--]]],
+  ActionId = str_Help_Screenshot,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "02",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000674--[[Report Bug--]]]),
-  ChoGGi.MenuFuncs.ReportBugDlg,
-  ChoGGi.UserSettings.KeyBindings.ReportBugDlg,
-  302535920000675--[[Report Bug
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Screenshot,
+  ActionName = S[302535920000657--[[Screenshot--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000657--[[Screenshot--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+  RolloverText = S[302535920000658--[[Write screenshot--]]],
+  OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
+}
 
-This doesn't go to ECM author, if you have a bug with ECM; see Help>About.--]],
-  "ReportBug.tga"
-)
-
---------------------screenshot
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000657--[[Screenshot--]]]),
-  ChoGGi.MenuFuncs.TakeScreenshot,
-  ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
-  302535920000658--[[Write screenshot--]],
-  "light_model.tga"
-)
-
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000659--[[Screenshot Upsampled--]]]),
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Screenshot,
+  ActionName = S[302535920000659--[[Screenshot Upsampled--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000659--[[Screenshot Upsampled--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+  RolloverText = S[302535920000660--[[Write screenshot upsampled--]]],
+  OnAction = function()
     ChoGGi.MenuFuncs.TakeScreenshot(true)
   end,
-  ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
-  302535920000660--[[Write screenshot upsampled--]],
-  "light_model.tga"
-)
+  ActionSortKey = "",
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000661--[[Show Interface in Screenshots--]]]),
-  ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Screenshot,
+  ActionName = S[302535920000661--[[Show Interface in Screenshots--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[2]",S[302535920000892--[[Screenshot--]]],"/",S[302535920000661--[[Show Interface in Screenshots--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.ShowInterfaceInScreenshots,
       302535920000662--[[Do you want to see the interface in screenshots?--]]
     )
   end,
-  "toggle_dtm_slots.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
+}
 
---------------------Interface
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000663--[[Toggle Interface--]]]),
-  function()
+local str_Help_Interface = Concat(S[487939677892--[[Help--]]],".",S[302535920000893--[[Interface--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[487939677892--[[Help--]]],
+  ActionName = S[302535920000893--[[Interface--]]],
+  ActionId = str_Help_Interface,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "01",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Interface,
+  ActionName = S[302535920000663--[[Toggle Interface--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000663--[[Toggle Interface--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
+  RolloverText = S[302535920000663--[[Toggle Interface--]]],
+  OnAction = function()
     hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
   end,
-  ChoGGi.UserSettings.KeyBindings.ToggleInterface,
-  302535920000663--[[Toggle Interface--]],
-  "ToggleSelectionOcclusion.tga"
-)
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleInterface,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000664--[[Toggle Signs--]]]),
-  ChoGGi.MenuFuncs.SignsInterface_Toggle,
-  ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
-  302535920000665--[[Concrete, metal deposits, not working, etc...--]],
-  "ToggleMarkers.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Interface,
+  ActionName = S[302535920000664--[[Toggle Signs--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/",S[302535920000664--[[Toggle Signs--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
+  RolloverText = S[302535920000665--[[Concrete, metal deposits, not working, etc...--]]],
+  OnAction = ChoGGi.MenuFuncs.SignsInterface_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[16]",S[302535920000666--[[Toggle on-screen hints--]]]),
-  ChoGGi.MenuFuncs.OnScreenHints_Toggle,
-  nil,
-  302535920000667--[[Don't show hints for this game--]],
-  "HideUnselected.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Interface,
+  ActionName = S[302535920000666--[[Toggle on-screen hints--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[16]",S[302535920000666--[[Toggle on-screen hints--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/HideUnselected.tga",
+  RolloverText = S[302535920000667--[[Don't show hints for this game--]]],
+  OnAction = ChoGGi.MenuFuncs.OnScreenHints_Toggle,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[17]",S[302535920000668--[[Reset on-screen hints--]]]),
-  ChoGGi.MenuFuncs.OnScreenHints_Reset,
-  nil,
-  302535920000669--[[Just in case you wanted to see them again.--]],
-  "HideSelected.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Interface,
+  ActionName = S[302535920000668--[[Reset on-screen hints--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[17]",S[302535920000668--[[Reset on-screen hints--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/HideSelected.tga",
+  RolloverText = S[302535920000669--[[Just in case you wanted to see them again.--]]],
+  OnAction = ChoGGi.MenuFuncs.OnScreenHints_Reset,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[18]",S[302535920000670--[[Never Show Hints--]]]),
-  ChoGGi.MenuFuncs.NeverShowHints_Toggle,
-  nil,
-  function()
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_Interface,
+  ActionName = S[302535920000670--[[Never Show Hints--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[1]",S[302535920000893--[[Interface--]]],"/[18]",S[302535920000670--[[Never Show Hints--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/set_debug_texture.tga",
+  RolloverText = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.DisableHints,
       302535920000671--[[No more hints ever.--]]
     )
   end,
-  "set_debug_texture.tga"
-)
---------------------Interface
+  OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
+}
 
-----------------------------------ECM
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[1]",S[302535920000672--[[About ECM--]]]),
-  ChoGGi.MenuFuncs.AboutECM,
-  nil,
-  Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000673--[[info dialog.--]]]),
-  "help.tga"
-)
+local str_Help_ECM = Concat(S[487939677892--[[Help--]]],".",S[302535920000000--[[Expanded Cheat Menu--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[487939677892--[[Help--]]],
+  ActionName = S[302535920000000--[[Expanded Cheat Menu--]]],
+  ActionId = str_Help_ECM,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "00",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[2]",S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
-  ChoGGi.MenuFuncs.ShowReadmeECM,
-  nil,
-  302535920001025--[[Help! I'm with stupid!--]],
-  "help.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920000672--[[About ECM--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[1]",S[302535920000672--[[About ECM--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/help.tga",
+  RolloverText = Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000673--[[info dialog.--]]]),
+  OnAction = ChoGGi.MenuFuncs.AboutECM,
+  ActionSortKey = "01",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[3]",S[302535920001029--[[Change log--]]]),
-  ChoGGi.MenuFuncs.ShowChangelogECM,
-  nil,
-  4915--[[Good News, Everyone!"--]],
-  "DisablePostprocess.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[2]",S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/help.tga",
+  RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
+  OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
+  ActionSortKey = "02",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920000242--[[Modify ECM Files--]]]),
-  ChoGGi.MenuFuncs.ExtractFilesHPK,
-  nil,
-  S[302535920000243--[["Extracts Files.hpk to ""%s"".
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920001029--[[Change log--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[3]",S[302535920001029--[[Change log--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
+  RolloverText = S[4915--[[Good News, Everyone!"--]]],
+  OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
+  ActionSortKey = "03",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920000242--[[Modify ECM Files--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[4]",S[302535920000242--[[Modify ECM Files--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
+  RolloverText = S[302535920000243--[["Extracts Files.hpk to ""%s"".
 You can then edit the files for use with ECM, or your mod (don't forget to include my LICENSE file)."--]]]:format(ChoGGi.ExtractPath),
-  "editmapdata.tga"
-)
+  OnAction = ChoGGi.MenuFuncs.ExtractFilesHPK,
+  ActionSortKey = "04",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920001014--[[Hide Cheats Menu--]]]),
-  ChoGGi.MenuFuncs.CheatsMenu_Toggle,
-  ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
-  302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]],
-  "ToggleEnvMap.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[5]",S[302535920001014--[[Hide Cheats Menu--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
+  RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
+  OnAction = ChoGGi.MenuFuncs.CheatsMenu_Toggle,
+  ActionSortKey = "05",
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
-  ChoGGi.MenuFuncs.DisableECM,
-  nil,
-  302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]],
-  "ToggleEnvMap.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = Concat(S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[6]",S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
+  RolloverText = S[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]]],
+  OnAction = ChoGGi.MenuFuncs.DisableECM,
+  ActionSortKey = "06",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920000676--[[Reset ECM Settings--]]]),
-  ChoGGi.MenuFuncs.ResetECMSettings,
-  nil,
-  302535920000677--[[Reset all ECM settings to default (restart to enable).--]],
-  "ToggleEnvMap.tga"
-)
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920000676--[[Reset ECM Settings--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[7]",S[302535920000676--[[Reset ECM Settings--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
+  RolloverText = S[302535920000677--[[Reset all ECM settings to default (restart to enable).--]]],
+  OnAction = ChoGGi.MenuFuncs.ResetECMSettings,
+  ActionSortKey = "07",
+}
 
-AddAction(
-  {"/[60]",S[487939677892--[[Help--]]],"/"},
-  Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[8]",S[302535920001242--[[Edit ECM Settings File--]]]),
-  ChoGGi.MenuFuncs.EditECMSettings,
-  nil,
-  302535920001243--[[Manually edit ECM settings.--]],
-  "UIDesigner.tga"
-)
-----------------------------------ECM
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920001242--[[Edit ECM Settings File--]]],
+  ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/",S[302535920000000--[[Expanded Cheat Menu--]]],"/[8]",S[302535920001242--[[Edit ECM Settings File--]]]),
+  ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
+  RolloverText = S[302535920001243--[[Manually edit ECM settings.--]]],
+  OnAction = ChoGGi.MenuFuncs.XXXXXXXXX,
+  ActionSortKey = "08",
+}
 
+local str_Help_Text = Concat(S[487939677892--[[Help--]]],".",S[1000145--[[Text--]]])
+Actions[#Actions+1] = {
+  ActionMenubar = S[487939677892--[[Help--]]],
+  ActionName = S[1000145--[[Text--]]],
+  ActionId = str_Help_Text,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+}
 
 do -- build text file menu items
   local ChoGGi = ChoGGi
@@ -206,68 +240,68 @@ do -- build text file menu items
   end
 
   local info = Concat(S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]]," : ",ChoGGi.email)
-  AddAction(
-    {"/[60]",S[487939677892--[[Help--]]],"/"},
-    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[-1]*",S[126095410863--[[Info--]]],"*"),
-    "blank_function",
-    nil,
-    info,
-    "AreaProperties.tga"
-  )
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = Concat("*",S[126095410863--[[Info--]]],"*"),
+    ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[-1]*",S[126095410863--[[Info--]]],"*"),
+    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+    RolloverText = info,
+    ActionSortKey = "-1",
+  }
 
   local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
-  AddAction(
-    {"/[60]",S[487939677892--[[Help--]]],"/"},
-    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[302535920000875--[[Game Functions--]]],"*"),
-    function()
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
+    ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[302535920000875--[[Game Functions--]]],"*"),
+    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+    RolloverText = funcs:sub(1,100),
+    OnAction = function()
       ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
     end,
-    nil,
-    funcs:sub(1,100),
-    "AreaProperties.tga"
-  )
-
-  AddAction(
-    {"/[60]",S[487939677892--[[Help--]]],"/"},
-    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[5568--[[Stats--]]],"*"),
-    function()
+    ActionSortKey = "00",
+  }
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = Concat("*",S[5568--[[Stats--]]],"*"),
+    ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[0]*",S[5568--[[Stats--]]],"*"),
+    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+    RolloverText = S[302535920001281--[[Information about your computer (as seen by SM).--]]],
+    OnAction = function()
       ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.RetHardwareInfo())
     end,
-    nil,
-    302535920001281--[[Information about your computer (as seen by SM).--]],
-    "AreaProperties.tga"
-  )
-
-  AddAction(
-    {"/[60]",S[487939677892--[[Help--]]],"/"},
-    Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[1]*",S[283142739680--[[Game--]]]," & ",S[987648737170--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
-    ChoGGi.MenuFuncs.RetMapInfo,
-    nil,
-    302535920001282--[[Information about this saved game (mostly objects).--]],
-    "AreaProperties.tga"
-  )
-
-
+    ActionSortKey = "00",
+  }
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = Concat("*",S[283142739680--[[Game--]]]," & ",S[987648737170--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
+    ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[1]*",S[283142739680--[[Game--]]]," & ",S[987648737170--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
+    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+    RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],
+    OnAction = ChoGGi.MenuFuncs.RetMapInfo,
+    ActionSortKey = "01",
+    ActionShortcut = ChoGGi.UserSettings.KeyBindings.XXXXXXXX,
+  }
 
   local function LoopFiles(ext)
     local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),ext)
     if folders then
       for i = 1, #folders do
         local text = ReadText(folders[i].path)
-        AddAction(
-          {"/[60]",S[487939677892--[[Help--]]],"/"},
-          Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[99]",folders[i].name),
-          function()
+        Actions[#Actions+1] = {
+          ActionMenubar = str_Help_Text,
+          ActionName = folders[i].name,
+          ActionId = Concat("/[60]",S[487939677892--[[Help--]]],"/[99]",S[1000145--[[Text--]]],"/[99]",folders[i].name),
+          ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+          RolloverText = text:sub(1,100),
+          OnAction = function()
             ChoGGi.ComFuncs.OpenInExamineDlg(text)
           end,
-          nil,
-          text:sub(1,100),
-          "Voice.tga"
-        )
+          ActionSortKey = "99",
+        }
       end
     end
   end
   LoopFiles(".txt")
   LoopFiles(".md")
-
 end

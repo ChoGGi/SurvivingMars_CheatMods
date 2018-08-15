@@ -1,4 +1,5 @@
-(C) means it's a c function, and I don't know the args
+(C) means it's a c function, and I don't know the args, lasted checked on Curo update.
+
 __DestroyObject(C)
 __DumpObjPropsForSave()
 __finish_sprocall(C)

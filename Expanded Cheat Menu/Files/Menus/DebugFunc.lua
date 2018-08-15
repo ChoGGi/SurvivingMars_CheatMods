@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -11,16 +11,6 @@ local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,to
 
 local white = white
 --~ local TerrainTextures = TerrainTextures
-
-local camera_IsLocked = camera.IsLocked
-local camera_Unlock = camera.Unlock
-local terminal_GetMousePos = terminal.GetMousePos
-local terrain_HeightTileSize = terrain.HeightTileSize() --intentional
-local terrain_IsSCell = terrain.IsSCell
-local terrain_IsPassable = terrain.IsPassable
-local terrain_GetHeight = terrain.GetHeight
-local terrain_GetMapSize = terrain.GetMapSize
-local UIL_GetFontID = UIL.GetFontID
 
 function ChoGGi.MenuFuncs.DeleteSavedGames()
   local SavegamesList = SavegamesList
@@ -247,7 +237,7 @@ end
 function ChoGGi.MenuFuncs.MeasureTool_Toggle(which)
   if which then
     MeasureTool.enabled = true
-    MeasureTool.OnLButtonDown(GetTerrainCursor())
+    MeasureTool.OnMouseButtonDown(GetTerrainCursor())
   else
     MeasureTool.object:delete()
     MeasureTool.enabled = false
@@ -312,7 +302,7 @@ end
 local function AnimDebug_Show(obj,colour)
   local text = PlaceObject("Text")
   text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-  text:SetFontId(UIL_GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
+  text:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
   text:SetCenter(true)
   local orient = Orientation:new()
 
@@ -483,7 +473,7 @@ function ChoGGi.MenuFuncs.ShowSelectionEditor()
   if not dlg then
     return
   end
-  dlg:SetPos(terminal_GetMousePos())
+  dlg:SetPos(terminal.GetMousePos())
 
   --OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
@@ -527,8 +517,8 @@ function ChoGGi.MenuFuncs.Editor_Toggle()
     editor.OldCameraType = {
       GetCamera()
     }
-    editor.CameraWasLocked = camera_IsLocked(1)
-    camera_Unlock(1)
+    editor.CameraWasLocked = camera.IsLocked(1)
+    camera.Unlock(1)
 
     GetEditorInterface():SetVisible(true)
     GetEditorInterface():ShowSidebar(true)
@@ -548,7 +538,11 @@ do --hex rings
   local build_grid_debug_objs = false
   local build_grid_debug_thread = false
 
-  function ChoGGi.MenuFuncs.debug_build_grid(iType)
+  function ChoGGi.MenuFuncs.debug_build_grid()
+    local IsSCell = terrain.IsSCell
+    local IsPassable = terrain.IsPassable
+    local HexToWorld = HexToWorld
+
     local g_Classes = g_Classes
     local ObjectGrid = ObjectGrid
     local UserSettings = ChoGGi.UserSettings
@@ -593,31 +587,12 @@ do --hex rings
                   if q_i + r_i + z_i == 0 then
                     --CursorBuilding is from construct controller, but it works nicely along with GridTile for filling each grid
                     local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_HexSpot:new()
-                    --both
-                    if iType == 1 then
-                      if (terrain_IsSCell(HexToWorld(q_i, r_i)) or terrain_IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-                        --green
-                        c:SetColorModifier(-16711936)
-                      else
-                        --red
-                        c:SetColorModifier(-65536)
-                      end
-                    --passable
-                    elseif iType == 2 then
-                      if terrain_IsSCell(HexToWorld(q_i, r_i)) or terrain_IsPassable(HexToWorld(q_i, r_i)) then
-                        --green
-                        c:SetColorModifier(-16711936)
-                      else
-                        --red
-                        c:SetColorModifier(-65536)
-                      end
-                    --buildable
-                    elseif iType == 3 then
-                      if HexGridGetObject(ObjectGrid, q_i, r_i) then
-                        c:SetColorModifier(-65536)
-                      else
-                        c:SetColorModifier(-16711936)
-                      end
+                    if (IsSCell(HexToWorld(q_i, r_i)) or IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+                      --green
+                      c:SetColorModifier(-16711936)
+                    else
+                      --red
+                      c:SetColorModifier(-65536)
                     end
                     --c:SetOpacity(0)
                     c:SetPos(point(HexToWorld(q_i, r_i)))
@@ -646,6 +621,7 @@ do --path markers
   local dupewppos = {}
   --default height of waypoints (maybe flag_height isn't the best name as no more flags)
   local flag_height = 50
+  local terrain_HeightTileSize = terrain.HeightTileSize()
 
   local function ShowWaypoints(waypoints, colour, obj, skipheight)
     colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
@@ -655,7 +631,7 @@ do --path markers
     end
     local height = flag_height
     local Objpos = obj:GetVisualPos()
-    local Objterr = terrain_GetHeight(Objpos)
+    local Objterr = terrain.GetHeight(Objpos)
     local Objheight = obj:GetObjectBBox():sizez() / 2
     local shuttle
     if obj.class == "CargoShuttle" then
@@ -668,12 +644,12 @@ do --path markers
 
     --build a list of points that aren't high in the sky
     local points = {}
-    local mapw, maph = terrain_GetMapSize()
+    local mapw, maph = terrain.GetMapSize()
     for i = 1, #waypoints do
       local x, y, z = waypoints[i]:xy()
       x = Clamp(x, 0, mapw - terrain_HeightTileSize)
       y = Clamp(y, 0, maph - terrain_HeightTileSize)
-      z = terrain_GetHeight(x, y) + (shuttle and shuttle - Objterr or Objheight) + height --shuttle z always puts it too high?
+      z = terrain.GetHeight(x, y) + (shuttle and shuttle - Objterr or Objheight) + height --shuttle z always puts it too high?
       points[#points + 1] = point(x, y, z)
     end
     local last_pos = points[#points]

@@ -8,26 +8,6 @@ local default_icon = "UI/Icons/Notifications/research.tga"
 
 local pairs,tostring,type = pairs,tostring,type
 
-local CheatMapExplore = CheatMapExplore
-local CheatSpawnNColonists = CheatSpawnNColonists
-local CheatUnlockAllBuildings = CheatUnlockAllBuildings
-local CreateGameTimeThread = CreateGameTimeThread
-local DeleteThread = DeleteThread
-local GenerateDustDevil = GenerateDustDevil
-local GetTerrainCursor = GetTerrainCursor
-local GrantTech = GrantTech
-local MeteorsDisaster = MeteorsDisaster
-local ModEditorOpen = ModEditorOpen
-local Msg = Msg
-local PlaceObject = PlaceObject
-local point = point
-local RefreshXBuildMenu = RefreshXBuildMenu
-local StartBombard = StartBombard
-local StartColdWave = StartColdWave
-local StartDustStorm = StartDustStorm
-local StopColdWave = StopColdWave
-local StopDustStorm = StopDustStorm
-
 function ChoGGi.MenuFuncs.InstantResearch_toggle()
   local ChoGGi = ChoGGi
   ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)

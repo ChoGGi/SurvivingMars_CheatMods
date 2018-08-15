@@ -9,13 +9,6 @@ local default_icon = "UI/Icons/Notifications/colonist.tga"
 
 local type,table = type,table
 
-local DelayedCall = DelayedCall
-local GameTime = GameTime
-local GenerateApplicant = GenerateApplicant
-local Msg = Msg
-local Notify = Notify
-local PlaceResourcePile = PlaceResourcePile
-
 local pf_SetStepLen = pf.SetStepLen
 
 function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()

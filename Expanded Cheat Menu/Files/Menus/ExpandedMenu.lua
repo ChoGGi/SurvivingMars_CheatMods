@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 -- menus under Gameplay menu without a separate file
 
@@ -8,7 +8,7 @@ local S = ChoGGi.Strings
 
 --~ local icon = "new_city.tga"
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+local Actions = ChoGGi.Temp.Actions
 
 --------------------------------top level
 AddAction(

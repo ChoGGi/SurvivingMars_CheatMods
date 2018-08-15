@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -8,13 +8,6 @@ local S = ChoGGi.Strings
 --~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local next,type,table = next,type,table
-
---~ local CreateRealTimeThread = CreateRealTimeThread
-local PlayFX = PlayFX
-local RebuildFXRules = RebuildFXRules
-local RemoveFromRules = RemoveFromRules
-local ReopenSelectionXInfopanel = ReopenSelectionXInfopanel
---~ local Sleep = Sleep
 
 local pf_SetStepLen = pf.SetStepLen
 

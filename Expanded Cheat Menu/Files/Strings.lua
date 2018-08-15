@@ -227,6 +227,7 @@ local Strings = {
   [1000037] = _InternalTranslate(T{1000037}), -- Name
   [1000058] = _InternalTranslate(T{1000058}), -- Missing file <u(src)> referenced in entity
   [1000081] = _InternalTranslate(T{1000081}), -- Scale
+  [1000097] = _InternalTranslate(T{1000097}), -- Category
   [1000100] = _InternalTranslate(T{1000100}), -- Amount
   [1000107] = _InternalTranslate(T{1000107}), -- Mod
   [1000113] = _InternalTranslate(T{1000113}), -- Debug

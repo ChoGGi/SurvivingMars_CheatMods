@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -6,8 +6,6 @@ local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local S = ChoGGi.Strings
 
 local pairs,pcall,type = pairs,pcall,type
-
-local ForEach = ForEach
 
 function ChoGGi.MenuFuncs.FireMostFixes()
   CreateRealTimeThread(function()

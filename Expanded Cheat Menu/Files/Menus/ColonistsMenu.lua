@@ -6,7 +6,7 @@ local S = ChoGGi.Strings
 
 local icon = "AlignSel.tga"
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+local Actions = ChoGGi.Temp.Actions
 
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},

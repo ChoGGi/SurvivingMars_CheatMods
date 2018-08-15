@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local AddAction = ChoGGi.ComFuncs.AddAction
@@ -7,7 +7,7 @@ local S = ChoGGi.Strings
 local iconD = "ShowAll.tga"
 local iconRC = "HostGame.tga"
 
---~ AddAction(Entry,Menu,Action,Key,Des,Icon)
+local Actions = ChoGGi.Temp.Actions
 
 AddAction(
   {"/[20]",S[302535920000104--[[Expanded CM--]]],"/"},

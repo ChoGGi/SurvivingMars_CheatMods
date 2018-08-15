@@ -1,4 +1,4 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -7,24 +7,6 @@ local RetName = ChoGGi.ComFuncs.RetName
 local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local print,type,tostring = print,type,tostring
-
-local cls = cls
-local CreateRealTimeThread = CreateRealTimeThread
-local DeleteThread = DeleteThread
-local engineHideMouseCursor = engineHideMouseCursor
-local engineShowMouseCursor = engineShowMouseCursor
-local GetTerrainCursor = GetTerrainCursor
-local HideMouseCursor = HideMouseCursor
-local IsMouseCursorHidden = IsMouseCursorHidden
-local IsValid = IsValid
-local point = point
-local PropToLuaCode = PropToLuaCode
-local RecalcBuildableGrid = RecalcBuildableGrid
-local SaveLocalStorage = SaveLocalStorage
-local SetLightmodel = SetLightmodel
-local SetLightmodelOverride = SetLightmodelOverride
-local SetMouseDeltaMode = SetMouseDeltaMode
-local ShowMouseCursor = ShowMouseCursor
 
 local camera_GetFovX = camera.GetFovX
 local camera_SetFovX = camera.SetFovX

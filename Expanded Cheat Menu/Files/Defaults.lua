@@ -8,10 +8,10 @@ local S = ChoGGi.Strings
 
 local next,pairs,print,type,table = next,pairs,print,type,table
 
-do -- MenuitemsKeys
-  local MenuitemsKeys = ChoGGi.Temp.MenuitemsKeys
+do -- Actions
+  local Actions = ChoGGi.Temp.Actions
   local function AddMenuitem(name,sort)
-    MenuitemsKeys[#MenuitemsKeys+1] = {
+    Actions[#Actions+1] = {
       ActionMenubar = "DevMenu",
       ActionName = name,
       ActionId = name,
@@ -137,10 +137,8 @@ ChoGGi.Defaults = {
     DeleteObject = "Ctrl-Alt-Shift-D",
     ObjExaminer = "F4",
     ToggleTerrainDepositGrid = "Ctrl-F4",
-    debug_build_grid_both = "Shift-F1",
-    debug_build_grid_pass = "Shift-F2",
-    debug_build_grid_build = "Shift-F3",
-    debug_grid_squares = "Shift-F4",
+    debug_grid_build = "Shift-F1",
+    debug_grid_squares = "Shift-F2",
     -- DronesAndRCMenu.lua
     SetDroneAmountDroneHub = "Shift-D",
     -- ExpandedMenu
