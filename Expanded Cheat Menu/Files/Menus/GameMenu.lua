@@ -135,7 +135,7 @@ Actions[#Actions+1] = {
 local str_Game_Render = "Game.Render"
 Actions[#Actions+1] = {
   ActionMenubar = "Game",
-  ActionName = S[302535920000845--[[Render--]]],
+  ActionName = Concat(S[302535920000845--[[Render--]]]," .."),
   ActionId = str_Game_Render,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
@@ -247,7 +247,7 @@ Not noticeable unless using higher zoom.--]]
 local str_Game_Camera = "Game.Camera"
 Actions[#Actions+1] = {
   ActionMenubar = "Game",
-  ActionName = S[302535920001058--[[Camera--]]],
+  ActionName = Concat(S[302535920001058--[[Camera--]]]," .."),
   ActionId = str_Game_Camera,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",

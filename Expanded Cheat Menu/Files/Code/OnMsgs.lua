@@ -210,20 +210,17 @@ function OnMsg.PersistPostLoad()
   end
 end
 
-local ECM_Rebuildshortcuts
-local function Rebuildshortcuts(skip)
+local function Rebuildshortcuts()
   local XShortcutsTarget = XShortcutsTarget
-  -- skip means i called it from below
-  if not skip then
-    -- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
-    XShortcutsTarget.actions = {}
-    if not Platform.ged then
-      if XTemplates.GameShortcuts then
-        XTemplateSpawn("GameShortcuts", XShortcutsTarget)
-      end
-    elseif XTemplates.GedShortcuts then
-      XTemplateSpawn("GedShortcuts", XShortcutsTarget)
+
+  -- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
+  XShortcutsTarget.actions = {}
+  if not Platform.ged then
+    if XTemplates.GameShortcuts then
+      XTemplateSpawn("GameShortcuts", XShortcutsTarget)
     end
+  elseif XTemplates.GedShortcuts then
+    XTemplateSpawn("GedShortcuts", XShortcutsTarget)
   end
 
   -- remove stuff from GameShortcuts
@@ -256,15 +253,14 @@ local function Rebuildshortcuts(skip)
     XShortcutsTarget:AddAction(XAction:new(Actions[i]))
   end
 
---~   Msg("ShortcutsReloaded")
+  -- add rightclick action to menuitems
   XShortcutsTarget:UpdateToolbar()
+  -- got me
   XShortcutsThread = false
 
 end
-
 function OnMsg.ShortcutsReloaded()
-  -- true to skip re-adding actions already added by sm
-  Rebuildshortcuts(true)
+  Rebuildshortcuts()
 end
 
 -- for instant build

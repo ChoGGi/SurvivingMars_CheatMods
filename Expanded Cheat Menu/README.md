@@ -20,7 +20,7 @@ F4: Open object examiner.
 F5: Open object manipulator (or use edit button in examiner).
 F6: Change building colour (Shift or Ctrl to apply random/default).
 F7: Toggle using last building orientation.
-F9: Clear the console log.
+F9: Clear the console log (or in console (Enter/Tilde) uncheck Console>Console Log).
 Ctrl+F: Fill resource of object.
 Enter or Tilde: Show the console.
 Number keys: Toggle build menu (Shift-*Num for menus above 10).

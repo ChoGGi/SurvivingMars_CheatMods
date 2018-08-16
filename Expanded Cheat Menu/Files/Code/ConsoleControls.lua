@@ -141,15 +141,15 @@ function ChoGGi.Console.ConsoleControls()
   --------------------------------Console popup
   dlgConsole.idConsoleMenu = g_Classes.ChoGGi_ConsoleButton:new({
     Id = "idConsoleMenu",
-    RolloverText = S[302535920001089--[[Settings & Commands--]]],
-    Text = S[302535920001073--[[Console--]]],
+    RolloverText = S[302535920001089--[[Settings & Commands for the console.--]]],
+    Text = S[302535920001308--[[Settings--]]],
     OnPress = ConsolePopup,
   }, container)
 
   --------------------------------History popup
   dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
     Id = "idHistoryMenu",
-    RolloverText = S[302535920001080--[[Console History Items--]]],
+    RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
     Text = S[302535920000793--[[History--]]],
     OnPress = HistoryPopup,
   }, container)
@@ -217,7 +217,7 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
   local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
   if folders then
-    local hint_str = S[302535920001159--[[Any .lua files contained in %s.--]]]
+    local hint_str = S[302535920001159--[[Any .lua files in %s.--]]]
     for i = 1, #folders do
       BuildSciptButton(scripts,dlg,{
         Text = folders[i].name,
