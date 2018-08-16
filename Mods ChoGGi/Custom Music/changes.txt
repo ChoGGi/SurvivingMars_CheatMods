@@ -1,2 +1,4 @@
+v0.3
+Da Vinci
 v0.2
 Cleaned up the code a tad.
