@@ -106,7 +106,7 @@ Actions[#Actions+1] = {
 click+drag for multiple selection.
 
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."--]]],
-  OnAction = ChoGGi.MenuFuncs.Editor_Toggle,
+  OnAction = ChoGGi.CodeFuncs.Editor_Toggle,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.Editor_Toggle,
 }
 

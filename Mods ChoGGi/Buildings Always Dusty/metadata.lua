@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Buildings Always Dusty v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "Buildings Always Dusty v0.2",
+  "version", 2,
+  "saved", 1534334400,
   "id", "ChoGGi_BuildingsAlwaysDusty",
   "author", "ChoGGi",
 	"steam_id", "1411885355",

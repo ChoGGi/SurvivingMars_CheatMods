@@ -28,7 +28,7 @@ SOFTWARE.]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local select,tostring,type,pcall,table = select,tostring,type,pcall,table
-local AsyncGetFileAttribute,Mods = AsyncGetFileAttribute,Mods
+local Mods = Mods
 
 local TableConcat
 -- just in case they remove oldTableConcat
@@ -37,14 +37,6 @@ pcall(function()
 end)
 -- thanks for replacing concat... what's wrong with using table.concat2?
 TableConcat = TableConcat or table.concat
-
-local function FileExists(file)
-  -- AsyncFileOpen may not work that well under linux?
-  local err,_ = AsyncGetFileAttribute(file,"size")
-  if not err then
-    return true
-  end
-end
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
@@ -79,11 +71,7 @@ ReplaceCursors = {
   ModPath = Mods.ChoGGi_ReplaceCursors.path,
   -- CommonFunctions.lua
   ComFuncs = {
-    FileExists = FileExists,
     TableConcat = TableConcat,
     Concat = Concat,
   },
 }
-local ReplaceCursors = ReplaceCursors
-
-dofolder_files(Concat(ReplaceCursors.ModPath,"Code/"))

@@ -21,7 +21,8 @@ local function ToggleCollisions(ChoGGi)
 end
 
 function ChoGGi.MenuFuncs.TerrainEditor_Toggle()
-  ChoGGi.MenuFuncs.Editor_Toggle()
+  local ChoGGi = ChoGGi
+  ChoGGi.CodeFuncs.Editor_Toggle()
   if Platform.editor then
     editor.ClearSel()
     SetEditorBrush(const.ebtTerrainType)

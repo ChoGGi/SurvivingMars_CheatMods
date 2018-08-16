@@ -1,10 +1,14 @@
 return PlaceObj("ModDef", {
-  "title", "Replace Cursors v0.4",
-  "version", 4,
-  "saved", 1533384000,
+  "title", "Replace Cursors v0.5",
+  "version", 5,
+  "saved", 1534334400,
   "id", "ChoGGi_ReplaceCursors",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
+  "code", {
+    "Code/1 Script.lua",
+    "Code/2 Replace Cursors.lua",
+  },
 	"image", "Preview.png",
   "steam_id", "1450132231",
 	"lua_revision", LuaRevision,

@@ -1,16 +1,20 @@
 local Concat = ReplaceCursors.ComFuncs.Concat
 --~ local TableConcat = ReplaceCursors.ComFuncs.TableConcat
 
-local cursors
-if ReplaceCursors.ComFuncs.FileExists("AppData/Cursors") then
-  cursors = "AppData/Cursors/"
-else
-  cursors = Concat(Mods.ChoGGi_ReplaceCursors.path,"Cursors/")
-end
+--~ local cursors
+--~ if ReplaceCursors.ComFuncs.FileExists("AppData/Cursors") then
+--~   cursors = "AppData/Cursors/"
+--~ else
+--~   cursors = Concat(Mods.ChoGGi_ReplaceCursors.path,"Cursors/")
+--~ end
+local cursors = Concat(Mods.ChoGGi_ReplaceCursors.path,"Cursors/")
 
 -- for some reason this doesn't work for everything... (caching I suppose)
 --~ Unmount("UI")
+
 MountFolder("UI/Cursors",cursors)
+
+
 --~ AsyncMountPack("UI", "Packs/UI.hpk")
 
 --~ UIL.ReloadImage("UI/Cursors/cursor.tga")

@@ -1,1 +1,1 @@
-const.ExplorationQueueMaxSize = 100
+return {}

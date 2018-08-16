@@ -20,7 +20,4 @@ The ground where concrete is mined won't change (this will clear the whole concr
 
 
 Affectionately known as the pooper shooter.]],
-	"last_changes", [[v0.5
-Da Vinci
-The not working signing will actually go away now.]],
 })

@@ -793,8 +793,11 @@ end
 
 -- so we at least have keys when it happens
 function OnMsg.ReloadLua()
-  ReloadShortcuts()
+  if type(XShortcutsTarget.UpdateToolbar) == "function" then
+    ReloadShortcuts()
+  end
 end
+
 -- saved game is loaded
 function OnMsg.LoadGame()
   ChoGGi.Temp.IsChoGGiMsgLoaded = false

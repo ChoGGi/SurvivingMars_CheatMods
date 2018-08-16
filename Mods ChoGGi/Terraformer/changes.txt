@@ -1,3 +1,8 @@
+v0.5
+Da Vinci
+Changed to use the built-in map editor as it can make smooth formations, paint, etc.
+If you like the old way then use ECM (can do both).
+Remove All Rocks also does the little rocks (takes longer).
 v0.4
 Added Remove All Rocks: Press Ctrl-Shift-F to show a confirmation dialog.
 v0.3

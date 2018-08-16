@@ -1,3 +1,5 @@
+--~ s:SetDust(1000, const.DustMaterialExterior)
+
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
 local DoneObject = DoneObject
@@ -111,7 +113,7 @@ end
 function OnMsg.ClassesPostprocess()
 
   PlaceObj("BuildingTemplate", {
-    "name", "Carwash",
+    "Id", "Carwash",
     "template_class", "Carwash",
     "dome_forbidden", true,
     "display_name", "Martian Carwash",
@@ -121,6 +123,7 @@ Working at the car wash, yeah
 Come on and sing it with me, car wash
 Sing it with the feeling now, car wash, yeah]],
     "build_category", "Wonders", -- oh it's wonderful, be even more wonderful if I could figure out how to add a pipe connection, and have it suck up water
+    "Group", "Wonders",
     "display_icon", Mods.ChoGGi_MartianCarwash.path .. "/carwash.tga",
     "entity", "Farm",
     "electricity_consumption", 2500,

@@ -1,26 +1,16 @@
 -- See LICENSE for terms
 
-local Concat = FlattenGround.ComFuncs.Concat --added in Init.lua
+local Concat = Terraformer.ComFuncs.Concat --added in Init.lua
 
 local pcall,tostring,pairs,print,type = pcall,tostring,pairs,print,type
 local table,debug = table,debug
 
-local _InternalTranslate = _InternalTranslate
-local AsyncRand = AsyncRand
-local CreateRealTimeThread = CreateRealTimeThread
-local GetInGameInterface = GetInGameInterface
-local GetXDialog = GetXDialog
-local OpenXDialog = OpenXDialog
-local WaitMarsQuestion = WaitMarsQuestion
-
 local local_T = T -- T replaced below
-
-local UserActions_SetMode = UserActions.SetMode
 
 local g_Classes = g_Classes
 
 -- I want a translate func to always return a string
-function FlattenGround.ComFuncs.Trans(...)
+function Terraformer.ComFuncs.Trans(...)
   local trans
   local vararg = {...}
   -- just in case a
@@ -41,12 +31,12 @@ function FlattenGround.ComFuncs.Trans(...)
   end
   return trans
 end
-local T = FlattenGround.ComFuncs.Trans
+local T = Terraformer.ComFuncs.Trans
 
 -- shows a popup msg with the rest of the notifications
-function FlattenGround.ComFuncs.MsgPopup(Msg,Title,Icon)
-  local FlattenGround = FlattenGround
-  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(FlattenGround.MountPath,"TheIncal.tga")
+function Terraformer.ComFuncs.MsgPopup(Msg,Title,Icon)
+  local Terraformer = Terraformer
+  Icon = type(tostring(Icon):find(".tga")) == "number" and Icon or Concat(Terraformer.MountPath,"TheIncal.tga")
   --eh, it needs something for the id, so I can fiddle with it later
   local id = AsyncRand()
   --build our popup
@@ -81,7 +71,7 @@ function FlattenGround.ComFuncs.MsgPopup(Msg,Title,Icon)
   end)
 end
 
-function FlattenGround.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
+function Terraformer.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Type)
   return FilterObjects({
     filter = function(Obj)
       if ExcludeList or IncludeList then
@@ -110,7 +100,7 @@ function FlattenGround.ComFuncs.FilterFromTable(Table,ExcludeList,IncludeList,Ty
 end
 
 -- well that's the question isn't it?
-function FlattenGround.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,context,parent)
+function Terraformer.ComFuncs.QuestionBox(msg,func,title,ok_msg,cancel_msg,image,context,parent)
   -- thread needed for WaitMarsQuestion
   CreateRealTimeThread(function()
     if WaitMarsQuestion(

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Dome Passage Line v0.3",
-  "version", 3,
-  "saved", 1533297600,
+  "title", "Construction: Show Dome Passage Line v0.4",
+  "version", 4,
+  "saved", 1534334400,
   "id", "ChoGGi_ConstructionShowDomePassageLine",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
