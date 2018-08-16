@@ -812,11 +812,12 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 end
 
 function toboolean(str)
-  if str:lower() == "true" then
+  if str == "true" then
     return true
-  elseif str:lower() == "false" then
+  elseif str == "false" then
     return false
   end
+  return 0/0
 end
 
 -- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"

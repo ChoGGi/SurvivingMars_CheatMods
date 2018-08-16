@@ -210,25 +210,61 @@ function OnMsg.PersistPostLoad()
   end
 end
 
--- update menu/menu items
-function OnMsg.ShortcutsReloaded()
-  local XAction = XAction
+local ECM_Rebuildshortcuts
+local function Rebuildshortcuts(skip)
   local XShortcutsTarget = XShortcutsTarget
+  -- skip means i called it from below
+  if not skip then
+    -- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
+    XShortcutsTarget.actions = {}
+    if not Platform.ged then
+      if XTemplates.GameShortcuts then
+        XTemplateSpawn("GameShortcuts", XShortcutsTarget)
+      end
+    elseif XTemplates.GedShortcuts then
+      XTemplateSpawn("GedShortcuts", XShortcutsTarget)
+    end
+  end
 
-  -- remove all old cheats
+  -- remove stuff from GameShortcuts
   local table_remove = table.remove
-  local a = XShortcutsTarget.actions
-  for i = #a, 1, -1 do
-    if a[i].ActionMenubar and a[i].ActionMenubar:find("Cheats") or a[i].ActionId == "Cheats" or a[i].ActionId == "Editors" then
-      table_remove(a,i)
+  for i = #XShortcutsTarget.actions, 1, -1 do
+    -- removes pretty much all the dev actions added, and leaves the game ones intact
+    local id = XShortcutsTarget.actions[i].ActionId
+    if id and (not id:starts_with("action") --[[or id:starts_with("actionPOC")--]] or id == "actionToggleFullscreen") then
+      table_remove(XShortcutsTarget.actions,i)
     end
   end
 
   -- and add mine
+  local XAction = XAction
   local Actions = ChoGGi.Temp.Actions
+
+--~ Actions = {}
+--~ Actions[#Actions+1] = {
+--~   ActionId = Concat("ChoGGi_ShowConsoleTilde",AsyncRand()),
+--~   OnAction = function()
+--~   local dlgConsole = dlgConsole
+--~   if dlgConsole then
+--~     ShowConsole(not dlgConsole:GetVisible())
+--~   end
+--~   end,
+--~   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+--~ }
+
   for i = 1, #Actions do
     XShortcutsTarget:AddAction(XAction:new(Actions[i]))
   end
+
+--~   Msg("ShortcutsReloaded")
+  XShortcutsTarget:UpdateToolbar()
+  XShortcutsThread = false
+
+end
+
+function OnMsg.ShortcutsReloaded()
+  -- true to skip re-adding actions already added by sm
+  Rebuildshortcuts(true)
 end
 
 -- for instant build
@@ -794,7 +830,7 @@ end
 -- so we at least have keys when it happens
 function OnMsg.ReloadLua()
   if type(XShortcutsTarget.UpdateToolbar) == "function" then
-    ReloadShortcuts()
+    Rebuildshortcuts()
   end
 end
 
@@ -989,7 +1025,7 @@ do -- LoadGame/CityStart
       end
 
       -- reloads actions (cheat menu/menu items/shortcuts)
-      ReloadShortcuts()
+      Rebuildshortcuts()
 
       -- cheats menu fun
       local XShortcutsTarget = XShortcutsTarget

@@ -50,12 +50,16 @@ do --funcs without a class
   function XTemplateSpawn(template_or_class, parent, context)
     parent = parent or terminal.desktop
     local template = XTemplates[template_or_class]
-    if template and type(template.Eval) == "function" then
-      -- changed
-      template = template:Eval(parent, context)
-      template.RolloverTemplate = "Rollover"
-      return template
-      -- return template:Eval(parent, context)
+    if template then
+      if type(template.Eval) == "function" then
+        -- changed
+        template = template:Eval(parent, context)
+        template.RolloverTemplate = "Rollover"
+        return template
+        -- return template:Eval(parent, context)
+      elseif ChoGGi.testing then
+        print("ECM BORKED XTemplateSpawn: ",template_or_class)
+      end
     else
       local class = g_Classes[template_or_class]
       if class then

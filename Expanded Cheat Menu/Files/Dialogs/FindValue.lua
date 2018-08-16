@@ -88,7 +88,8 @@ function ChoGGi_FindValueDlg:FindText()
   -- build our list of objs
   self:RetObjects(
     self.obj,
-    self.idEdit:GetText():lower(),
+--~     self.idEdit:GetText():lower(),
+    self.idEdit:GetText(),
     tonumber(self.idLimit:GetText())
   )
   -- and fire off a new dialog
@@ -98,9 +99,11 @@ end
 local function ReturnStr(obj)
   local obj_type = type(obj)
   if obj_type == "string" then
-    return obj:lower(), obj_type
+--~     return obj:lower(), obj_type
+    return obj, obj_type
   else
-    return tostring(obj):lower(), obj_type
+--~     return tostring(obj):lower(), obj_type
+    return tostring(obj), obj_type
   end
 end
 function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
@@ -125,7 +128,8 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
       local key_str,key_type = ReturnStr(key)
       local value_str,value_type = ReturnStr(value)
 
-      if key_str:find(str) or value_str:find(str) then
+--~       if key_str:find(str) or value_str:find(str) then
+      if key_str:find_lower(str) or value_str:find_lower(str) then
         -- makes dupes
         -- found_objs[#found_objs+1] = obj
         -- should be decent enough?

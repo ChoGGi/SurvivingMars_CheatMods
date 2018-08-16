@@ -315,10 +315,11 @@ end
 function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
   self:BuildList(true)
   -- loop through all the list items and set ones without the text to invis (i turned on the clip when invis in OnMsgs.lua)
-  txt = txt:lower()
+--~   txt = txt:lower()
   for i = #self.idList, 1, -1 do
     local li = self.idList[i]
-    if not li[1].text:lower():find(txt,1,true) then
+--~     if not li[1].text:lower():find(txt,1,true) then
+    if not li[1].text:find_lower(txt) then
       table.remove(self.idList,i)
     end
   end

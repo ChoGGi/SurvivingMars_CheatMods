@@ -416,7 +416,8 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
     local maps = ListMaps()
     local items = {}
     for i = 1, #maps do
-      if not maps[i]:lower():find("^prefab") and not maps[i]:find("^__") then
+--~       if not maps[i]:lower():find("^prefab") and not maps[i]:find("^__") then
+      if not maps[i]:find_lower("^prefab") and not maps[i]:find("^__") then
         items[#items+1] = {
           text = maps[i],
           map = maps[i]

@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
 	"description", [[If you're feeling OCD about a perfect layout for your base then look no further.
 
-Press Shift-F begin, press Shift-F again to update buildable area.
+Press Shift-F to begin, press Shift-F again to update buildable area.
 Press Ctrl-Shift-F to remove all rocks (takes awhile).
 
 There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days), so I wouldn't bother flattening the border mountains.

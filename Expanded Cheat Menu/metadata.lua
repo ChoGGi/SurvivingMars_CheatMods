@@ -1,4 +1,3 @@
-local mod_path = ConvertToOSPath(CurrentModPath)
 return PlaceObj("ModDef", {
 	"title", "Expanded Cheat Menu v8.1 Test",
 	"version", 81,
@@ -12,11 +11,14 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
---~ 	"lua_revision", LuaRevision,
+
+  -- i leave this commented out to force users to read description and install helpermod
+	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
+
 	"description", string.format([[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 If this mod is disabled due to version compatibility then you need to install the helper mod at:
@@ -66,5 +68,5 @@ chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedeta
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.]],mod_path),
+Everyone else giving suggestions/pointing out issues.]],ConvertToOSPath(CurrentModPath)),
 })
