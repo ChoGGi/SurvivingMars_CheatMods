@@ -1,5 +1,8 @@
 v8.1 (Unreleased)
 
+Added:
+ECM will now always show a msg in the log telling user how to turn off the log.
+
 Changed:
 Added .. to any menu items that are "folders".
 Console button "Console" renamed to "Settings".

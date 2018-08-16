@@ -1295,18 +1295,18 @@ do -- LoadGame/CityStart
 --~       end
     end)
 
-    --print startup msgs to console log
+    -- print startup msgs to console log
     local msgs = ChoGGi.Temp.StartupMsgs
     for i = 1, #msgs do
       print(msgs[i])
     end
 
-    --everyone loves a new titlebar, unless they don't
+    -- everyone loves a new titlebar, unless they don't
     if UserSettings.ChangeWindowTitle then
       terminal.SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
     end
 
-    --someone doesn't like LICENSE files...
+    -- someone doesn't like LICENSE files...
     local dickhead
     local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"LICENSE"))
 
@@ -1328,8 +1328,8 @@ do -- LoadGame/CityStart
     -- first time run info
     if ChoGGi.UserSettings.FirstRun ~= false then
       ChoGGi.ComFuncs.MsgWait(
-        S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-Press ~ or Enter and click the ""Console"" button to toggle showing console log history."--]]],
+        Concat(S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+Press Tilde or Enter and click the ""Settings"" button to toggle showing console log history."--]]],"\n",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
         Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]])
       )
       ChoGGi.UserSettings.FirstRun = false
@@ -1361,6 +1361,9 @@ Press ~ or Enter and click the ""Console"" button to toggle showing console log 
       ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
       print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",ChoGGi.Temp.StartupTicks)
     end
+
+    -- getting tired of people asking how to disable console log
+    print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]])
 
     -- used to check when game has started and it's safe to print() etc
     ChoGGi.Temp.GameLoaded = true
