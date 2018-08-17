@@ -12,7 +12,6 @@ DefineClass.ChoGGi_ConsoleLogWin = {
 function ChoGGi_ConsoleLogWin:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  local point = point
 
   self.dialog_width = 700
   self.dialog_height = 500

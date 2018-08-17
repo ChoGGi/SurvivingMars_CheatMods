@@ -222,7 +222,7 @@ function OnMsg.ClassesGenerate()
         end
         entry.RolloverTitle = S[126095410863--[[Info--]]]
 
-        function entry.OnPress(this, gamepad)
+        function entry.OnPress(this, _)
           if action.OnActionEffect ~= "popup" then
             self:ClosePopupMenus()
           end
@@ -231,7 +231,7 @@ function OnMsg.ClassesGenerate()
             self:RebuildActions(host)
           end
         end
-        function entry.OnAltPress(this, gamepad)
+        function entry.OnAltPress(this, _)
           self:ClosePopupMenus()
           action:OnAltAction(host, this)
         end

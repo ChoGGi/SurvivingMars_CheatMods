@@ -15,10 +15,7 @@ DefineClass.ChoGGi_FindValueDlg = {
 }
 
 function ChoGGi_FindValueDlg:Init(parent, context)
-  local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  local dlgConsole = dlgConsole
-  local point = point
 
   self.obj = context.obj
   self.obj_name = RetName(self.obj)
@@ -107,7 +104,6 @@ local function ReturnStr(obj)
   end
 end
 function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
-  local ChoGGi = ChoGGi
   if not level then
     level = 0
   end

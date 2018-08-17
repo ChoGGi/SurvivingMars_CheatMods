@@ -3,13 +3,13 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Translate
+--~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
-local type,tostring,string = type,tostring,string
+local type = type
 
 function ChoGGi.MenuFuncs.AddOrbitalProbes()
   local ItemList = {

@@ -6,8 +6,6 @@
 #### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
 - Renamed Start Disasters to Disasters (since you can stop them as well).
-- It seems the devs didn't remove all traces of the old select sound for the precious metals extractor.
-- > It was spamming the console with invalid sound type... (thanks hchsiao)
 
 #### Fixed:
 - Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.

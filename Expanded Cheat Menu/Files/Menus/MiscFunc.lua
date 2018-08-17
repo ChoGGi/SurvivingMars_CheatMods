@@ -7,7 +7,7 @@ local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 --~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
-local next,type,table = next,type,table
+local next,type = next,type
 
 local pf_SetStepLen = pf.SetStepLen
 
@@ -507,7 +507,7 @@ do -- SetEntity
         {text = Concat(" ",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
         {text = Concat(" ",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
       }
-      for key,value in pairs(EntityData) do
+      for key,_ in pairs(EntityData) do
         entity_table[#entity_table+1] = {
           text = key,
           value = key,

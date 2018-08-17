@@ -336,7 +336,6 @@ end
       local us = ChoGGi.UserSettings
       local XAction = XAction
       local XShortcutsTarget = XShortcutsTarget
-      local AsyncRand = AsyncRand
 
       XShortcutsTarget:AddAction(XAction:new{
         ActionId = "ChoGGi_FlattenGround_RaiseHeight",

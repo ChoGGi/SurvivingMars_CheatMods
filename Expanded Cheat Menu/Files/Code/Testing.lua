@@ -10,7 +10,7 @@ if ChoGGi.testing then
     local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
     TickStart("TestConcatExamine.Total")
 
-    local OpenInExamineDlg,GetObjects = OpenInExamineDlg,GetObjects
+    local GetObjects = GetObjects
     local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
     for _ = 1, amount or 5 do
       TickStart("TestConcatExamine.Tick")

@@ -15,7 +15,6 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local dlgConsole = dlgConsole
-  local point = point
 
   self.dialog_width = 600
   self.dialog_height = 150

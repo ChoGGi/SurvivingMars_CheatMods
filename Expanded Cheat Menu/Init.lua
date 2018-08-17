@@ -30,7 +30,7 @@ SOFTWARE.
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,table = dofile,select,tostring,type,table
-local AsyncGetFileAttribute,Mods,dofolder,dofolder_files = AsyncGetFileAttribute,Mods,dofolder,dofolder_files
+local AsyncGetFileAttribute,Mods,dofolder_files = AsyncGetFileAttribute,Mods,dofolder_files
 
 -- thanks for replacing concat... what's wrong with using table.concat2?
 local TableConcat = oldTableConcat or table.concat

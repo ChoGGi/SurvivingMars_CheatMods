@@ -15,7 +15,6 @@ local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
-local point = point
 
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
@@ -23,8 +22,6 @@ local HLEnd = "</h></color>"
 
 local white = white
 local black = black
-local dark_gray = -13158858
-local light_gray = -2368549
 
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
@@ -51,8 +48,6 @@ function Examine:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
   local const = const
-  local point = point
-  local RGBA = RGBA
 
 --~   g_Classes.Examine:Open(parent, context)
 
@@ -300,7 +295,7 @@ This can take time on something like the "Building" metatable--]]],
         local str = self:totextex(self.obj,ChoGGi)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
-        ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
+        ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
           checkbox = true,
           text = str,
           title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
@@ -310,7 +305,7 @@ This can take time on something like the "Building" metatable--]]],
               ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
             end
           end,
-        },self)
+        }
       end,
     },
     {
@@ -320,7 +315,7 @@ This can take time on something like the "Building" metatable--]]],
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
       clicked = function()
         local str = ValueToLuaCode(self.obj)
-        ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
+        ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
           checkbox = true,
           text = str,
           title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
@@ -332,7 +327,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
               ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
             end
           end,
-        })
+        }
       end,
     },
     {name = "   ---- "},
@@ -471,7 +466,7 @@ function Examine:FlashWindow(obj)
 
     obj.BorderWidth = 2
     local c = black
-    for i = 1, 5 do
+    for _ = 1, 5 do
       if obj.window_state ~= "destroying" then
         obj.BorderColor = c
         Sleep(75)
@@ -733,7 +728,7 @@ function Examine:totextex(o,ChoGGi)
 
     if ChoGGi.blacklist then
       res[#res+1] = Concat(
-        self:HyperLink(function(level, info)
+        self:HyperLink(function(_, _)
           ExamineThreadLevel_totextex(nil, nil, o, self)
         end),
         self:HyperLink(ExamineThreadLevel_totextex(nil, nil, o, self)),

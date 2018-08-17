@@ -27,8 +27,6 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
 function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-  local point = point
-  local RGB,RGBA = RGB,RGBA
 
   self.dialog_width = 400
   self.dialog_height = 470
@@ -49,13 +47,9 @@ function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
     g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
     self:idListOnMouseButtonDown(button)
   end
-  function self.idList.OnMouseButtonDoubleClick(obj,pt,button)
+  function self.idList.OnMouseButtonDoubleClick(_,_,button)
     self:idListOnMouseButtonDoubleClick(button)
---~     return g_Classes.ChoGGi_List.OnMouseButtonDoubleClick(obj,pt,button)
   end
---~   function list.OnDoubleClick(container_list, item_idx)
---~     self:ApplyActiveSuggestion()
---~   end
 
   self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
     Id = "idFilterArea",
@@ -197,7 +191,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 --~     AdditionalComponent = "intensity"
   }, self.idColorPickerArea)
   -- block it from closing on dbl click
-  self.idColorPicker.idColorSquare.OnColorChanged = function(square, color, double_click)
+  self.idColorPicker.idColorSquare.OnColorChanged = function(_, color)
     self.idColorPicker:SetColorInternal(color)
   end
 
@@ -281,7 +275,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.skip_color_change = false
 end
 
-function ChoGGi_ListChoiceCustomDialog:BuildList(skip)
+function ChoGGi_ListChoiceCustomDialog:BuildList()
   self.idList:Clear()
   for i = 1, #self.items do
     local listitem = self.idList:CreateTextItem(self.items[i].text)

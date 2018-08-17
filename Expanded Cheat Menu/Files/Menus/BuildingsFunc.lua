@@ -10,7 +10,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
-local type,tostring,pairs = type,tostring,pairs
+local type,tostring = type,tostring
 
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
   --make a list

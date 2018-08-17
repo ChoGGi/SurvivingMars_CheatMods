@@ -1,9 +1,8 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
+--~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-local RGB = RGB
 local box = box
 local point = point
 
@@ -180,7 +179,7 @@ DefineClass.ChoGGi_Window = {
   header = 22,
 }
 
-function ChoGGi_Window:AddElements(parent,context)
+function ChoGGi_Window:AddElements(_,context)
   local g_Classes = g_Classes
 
   -- add container dialog for everything to fit in

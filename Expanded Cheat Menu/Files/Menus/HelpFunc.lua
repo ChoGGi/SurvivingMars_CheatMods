@@ -236,7 +236,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
     ChoGGi.SettingFuncs.WriteSettings()
   end
   -- load up settings file in the editor
-  ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
+  ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
     text = ChoGGi.SettingFuncs.ReadSettings(),
     hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
     hint_cancel = 302535920001245--[[Abort without touching anything.--]],
@@ -251,7 +251,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
         end
       end
     end,
-  })
+  }
 end
 
 function ChoGGi.MenuFuncs.DisableECM()

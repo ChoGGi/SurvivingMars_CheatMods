@@ -5,7 +5,6 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
-local rollover_blue = -14113793
 
 local rawget,table,tostring,print,select = rawget,table,tostring,print,select
 

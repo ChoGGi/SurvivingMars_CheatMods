@@ -163,6 +163,7 @@ function ChoGGi.MenuFuncs.DisastersStop()
   end
   if g_ColdWave then
     StopColdWave()
+    g_ColdWave = false
   end
 
   local objs = g_DustDevils

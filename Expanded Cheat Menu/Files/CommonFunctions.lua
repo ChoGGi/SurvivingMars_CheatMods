@@ -10,7 +10,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
 
-local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable,setmetatable
+local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable
 local table = table
 
 local AsyncRand = AsyncRand
@@ -41,9 +41,7 @@ local WaitMarsQuestion = WaitMarsQuestion
 local guic = guic
 local white = white
 
-local UIL_MeasureText = UIL.MeasureText
 local terrain_IsPointInBounds = terrain.IsPointInBounds
-local FontStyles_GetFontId = FontStyles.GetFontId
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
@@ -445,7 +443,6 @@ end
 
 -- well that's the question isn't it?
 function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,context,parent)
-  local ChoGGi = ChoGGi
   -- thread needed for WaitMarsQuestion
   CreateRealTimeThread(function()
     if WaitMarsQuestion(
@@ -556,7 +553,6 @@ do -- DumpTableFunc
   ChoGGi.ComFuncs.DumpTable(Object)
   --]]
   function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
-    local ChoGGi = ChoGGi
     if not obj then
       MsgPopup(
         302535920000003--[[Can't dump nothing--]],
@@ -1067,7 +1063,7 @@ function ChoGGi.ComFuncs.OpenInFindValueDlg(obj,parent)
   })
 end
 
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list,parent)
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list)
   if not list then
     return
   end
@@ -1441,9 +1437,7 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
     return
   end
 
-  ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
-    text = text,
-  },parent)
+  ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
 end
 
 local AsyncFileToString = AsyncFileToString

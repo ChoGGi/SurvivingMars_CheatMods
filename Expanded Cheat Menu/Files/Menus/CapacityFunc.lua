@@ -4,13 +4,13 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local T = ChoGGi.ComFuncs.Translate
+--~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
-local type,tostring,string = type,tostring,string
+local type,tostring = type,tostring
 
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
   local ChoGGi = ChoGGi

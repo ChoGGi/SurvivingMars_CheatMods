@@ -8,7 +8,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 
-local pcall,rawget,type,table = pcall,rawget,type,table
+local pcall,type,table = pcall,type,table
 
 local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
