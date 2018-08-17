@@ -16,7 +16,7 @@ Opening an Examine dialog from the top of the history list made it go off-screen
 Disabling the console log breaks ECM (thanks wizisi2k).
 You couldn't type in edit text dialog when 128 lines.
 You couldn't scroll textures in the paint section of Terrain Editor.
-Lightmodels.
+Lightmodels (back up your setting, as you'll have to manually redo if you have a custom one saved).
 
 v8.0 (15 Aug 2018)
 If any developers read this: http://keepachangelog.com (especially Deprecated/Removed).
