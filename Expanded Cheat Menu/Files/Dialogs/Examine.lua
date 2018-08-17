@@ -676,9 +676,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level, info, o,self)
-  local data
+  local data = {}
   if ChoGGi.blacklist then
-    data = {luadebugger.Enum(luadebugger:new(),o,"")()}
+--~     data = {luadebugger:new():Enum(,o,"")()}
   else
     data = {}
     local l = 1
@@ -709,7 +709,6 @@ local function Examine_totextex(o,self)
 end
 
 function Examine:totextex(o,ChoGGi)
-  local luabug = luadebugger:new()
   local res = {}
   local sort = {}
   local obj_metatable = getmetatable(o)
@@ -777,8 +776,8 @@ function Examine:totextex(o,ChoGGi)
 
   elseif obj_type == "function" then
     if ChoGGi.blacklist then
-      local _,upvalue = luabug:Enum(o,"")()
-      res[#res+1] = self:valuetotextex(upvalue)
+--~       local _,upvalue = luadebugger:new():Enum(o,"")()
+--~       res[#res+1] = self:valuetotextex(upvalue)
     else
       local i = 1
       while true do
