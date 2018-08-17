@@ -935,7 +935,7 @@ function OnMsg.ClassesBuilt()
     end
   end -- do
 
-  --make the background hide when console not visible (instead of after a second or two)
+  -- make the background hide when console not visible (instead of after a second or two)
   do -- ConsoleLog:ShowBackground
     local DeleteThread = DeleteThread
     local RGBA = RGBA

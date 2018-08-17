@@ -210,6 +210,7 @@ function OnMsg.PersistPostLoad()
   end
 end
 
+-- removes all the dev shortcuts/etc and adds mine
 local function Rebuildshortcuts()
   local XShortcutsTarget = XShortcutsTarget
 
@@ -962,7 +963,7 @@ do -- LoadGame/CityStart
         ReopenSelectionXInfopanel()
       end
 
-      --show console log history
+      -- show console log history
       if UserSettings.ConsoleToggleHistory then
         ShowConsoleLog(true)
       end
@@ -991,7 +992,9 @@ do -- LoadGame/CityStart
         -- make some space for the close button
         dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
         -- move log text above the buttons i added
-        dlgConsoleLog.idText:SetMargins(box(10, 0, 10, 60))
+        if dlgConsoleLog then
+          dlgConsoleLog.idText:SetMargins(box(10, 0, 10, 60))
+        end
 
         --OnTextChanged?
 
