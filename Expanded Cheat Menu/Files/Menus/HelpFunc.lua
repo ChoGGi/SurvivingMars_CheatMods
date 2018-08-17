@@ -285,7 +285,7 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ShowChangelogECM()
-	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"changes.log"))
+	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"Changelog.md"))
 	if not file_error then
     ChoGGi.ComFuncs.OpenInExamineDlg(str)
 	end
