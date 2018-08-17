@@ -4,7 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local local_T = T
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table

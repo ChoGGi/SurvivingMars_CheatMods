@@ -8,7 +8,7 @@ end
 
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 

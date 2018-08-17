@@ -7,7 +7,7 @@ local default_icon3 = "UI/Icons/IPButtons/assign_residence.tga"
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local type,tostring,pairs = type,tostring,pairs

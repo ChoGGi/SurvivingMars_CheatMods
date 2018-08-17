@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 81,
 	"saved", 1534334400,
 	"steam_id", "1411157810",
-	"code", {"Init.lua"},
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",
 	"TagGameplay", true,
@@ -11,8 +10,9 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	"code", {"Init.lua"},
 
-  -- i leave this commented out to force users to read description and install helpermod
+  -- i leave this commented out to force users to read description and install helpermod (for now)
 	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi

@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
---~ local T = ChoGGi.ComFuncs.Trans
+--~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
@@ -1119,7 +1119,7 @@ function OnMsg.ClassesBuilt()
     {
       -- $userdata/string id
       "^$(.*)",
-      "print(ChoGGi.ComFuncs.Trans(%s))"
+      "print(ChoGGi.ComFuncs.Translate(%s))"
     },
     {
       -- @function

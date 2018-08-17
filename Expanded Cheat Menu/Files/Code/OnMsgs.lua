@@ -484,12 +484,13 @@ function OnMsg.NewDay() -- NewSol...
     if ChoGGi.UserSettings.SortCommandCenterDist then
       local objs = UICity.labels.Building or ""
       local sort = table.sort
+      local CompareTableFuncs = ChoGGi.ComFuncs.CompareTableFuncs
       for i = 1, #objs do
         -- no sense in doing it with only one center
         if #objs[i].command_centers > 1 then
           sort(objs[i].command_centers,
             function(a,b)
-              return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",objs[i])
+              return CompareTableFuncs(a,b,"GetDist2D",objs[i])
             end
           )
         end

@@ -77,7 +77,7 @@ do -- for those that don't know "do ... end" is a way of keeping "local =" local
 --~   end
 
   -- works with userdata or index number
-  trans = ChoGGi.ComFuncs.Trans
+  trans = ChoGGi.ComFuncs.Translate
   function so()
     return ChoGGi.CodeFuncs.SelObject()
   end

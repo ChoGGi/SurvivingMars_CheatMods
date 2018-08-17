@@ -295,7 +295,7 @@ end
 
 TransZero("000",0,9)
 TransZero("00",10,99)
-TransZero("0",100,999)
+TransZero(0,100,999)
 TransZero("",1000,9999)
 
 ChoGGi.Strings = Strings

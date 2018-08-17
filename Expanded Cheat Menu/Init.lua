@@ -28,14 +28,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
---~ -- have to see if this is a good or bad idea
---~ if not Mods.ChoGGi_CheatMenu.FirstLoad then
---~   return
---~ end
-
---~ print("XActionsHost ",ValueToLuaCode(XActionsHost))
---~ print("terminal ",ValueToLuaCode(terminal))
-
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,table = dofile,select,tostring,type,table
 local AsyncGetFileAttribute,Mods,dofolder,dofolder_files = AsyncGetFileAttribute,Mods,dofolder,dofolder_files
@@ -152,11 +144,11 @@ ChoGGi.ExtractPath = Concat(ChoGGi.ModPath,"FilesHPK/")
 
 do -- load script files
   -- used to let the mod know if we're on my computer
-  if FileExists("AppData/ChoGGi") then
+  if Mods.ChoGGi_testing then
     ChoGGi.testing = true
     -- i keep Files/ unpacked for easy access
     ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
-  elseif FileExists(Concat(ChoGGi.ExtractPath,"TheIncal.tga")) then
+  elseif type(FileExists) == "function" and FileExists(Concat(ChoGGi.ExtractPath,"TheIncal.tga")) then
     -- if exists then user unpacked the files to Files/
     ChoGGi.MountPath = ChoGGi.ExtractPath
   else
@@ -167,23 +159,10 @@ do -- load script files
 end
 
 do -- translate
-  --load up translation strings
-  local function LoadLocale(file)
-    if not pcall(function()
-      LoadTranslationTableFile(file)
-    end) then
-      DebugPrintNL(string.format([[Problem loading locale: %s
-
-Please send me latest log file: %s]],file,ChoGGi.email))
-    end
-  end
-
   -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-  local locale_file = Concat(ChoGGi.ModPath,"Locales/",ChoGGi.lang,".csv")
-  if FileExists(locale_file) then
-    LoadLocale(locale_file)
-  else
-    LoadLocale(Concat(ChoGGi.ModPath,"Locales/","English.csv"))
+  local locale_path = Concat(ChoGGi.ModPath,"Locales/%s.csv")
+  if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
+    LoadTranslationTableFile(locale_path:format("English"))
   end
   Msg("TranslationChanged")
 end

@@ -6,17 +6,6 @@ DefineClass.ChoGGi_HexSpot = {
   entity = "GridTile"
 }
 
-function DestroyRolloverWindow(_, instant)
-  XDestroyRolloverWindow(instant)
-end
-function CreateRolloverWindow(ctrl, text, bXInput)
-  if (text or "") == "" then
-    return
-  end
-  XCreateRolloverWindow(ctrl, bXInput, true, {RolloverText = text})
-end
-
-
 local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
@@ -28,7 +17,6 @@ local AsyncRand = AsyncRand
 local AsyncStringToFile = AsyncStringToFile
 local box = box
 local CreateRealTimeThread = CreateRealTimeThread
-local CreateRolloverWindow = CreateRolloverWindow
 local DelayedCall = DelayedCall
 local FilterObjects = FilterObjects
 local GetLogFile = GetLogFile
@@ -119,33 +107,30 @@ AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 
 
-do -- Trans
-  local _InternalTranslate = _InternalTranslate
-  local T = T -- T replaced below
-  -- I want a translate func to always return a string
-  function ChoGGi.ComFuncs.Trans(...)
-    local trans
-    local vararg = {...}
-    -- just in case a
-    pcall(function()
-      if type(vararg[1]) == "userdata" then
-        trans = _InternalTranslate(table.unpack(vararg))
-      else
-        trans = _InternalTranslate(T(vararg))
-      end
-    end)
-    -- just in case b
-    if type(trans) ~= "string" then
-      if type(vararg[2]) == "string" then
-        return vararg[2]
-      end
-      -- done fucked up (just in case c)
-      return Concat(vararg[1]," < Missing locale string id")
+do -- Translate
+  local T,_InternalTranslate = T,_InternalTranslate
+  local type,select = type,select
+  -- translate func that always returns a string
+  function ChoGGi.ComFuncs.Translate(...)
+    local str
+    if type(select(1,...)) == "userdata" then
+      str = _InternalTranslate(T{...})
+    else
+      str = _InternalTranslate(...)
     end
-    return trans
+    -- just in case a
+    if type(str) ~= "string" then
+      local arg2 = select(2,...)
+      if type(arg2) == "string" then
+        return arg2
+      end
+      -- done fucked up (just in case b)
+      return Concat(select(1,...)," < Missing locale string id")
+    end
+    return str
   end
 end -- do
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 
 -- check if text is already translated or needs to be, and return the text
 function ChoGGi.ComFuncs.CheckText(text,fallback)
@@ -1234,29 +1219,29 @@ function ChoGGi.ComFuncs.HandleToObject(h)
   return HandleToObject[h]
 end
 
-function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
-  parent:CreateDropdownBox()
+--~ function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
+--~   parent:CreateDropdownBox()
 
-  local list = parent.list
-  list:SetBackgroundColor(RGB(125,125,125))
+--~   local list = parent.list
+--~   list:SetBackgroundColor(RGB(125,125,125))
 
-  --of course combomenu sets the scrollbar images to blank, why not...
-  list:SetScrollBackImage("CommonAssets/UI/Controls/ScrollBar/scroll_back_vertical.tga")
-  list:SetScrollButtonImage("CommonAssets/UI/Controls/ScrollBar/scroll_buttons_vertical.tga")
-  list:SetScrollThumbImage("CommonAssets/UI/Controls/ScrollBar/scroll_thumb_vertical.tga")
+--~   --of course combomenu sets the scrollbar images to blank, why not...
+--~   list:SetScrollBackImage("CommonAssets/UI/Controls/ScrollBar/scroll_back_vertical.tga")
+--~   list:SetScrollButtonImage("CommonAssets/UI/Controls/ScrollBar/scroll_buttons_vertical.tga")
+--~   list:SetScrollThumbImage("CommonAssets/UI/Controls/ScrollBar/scroll_thumb_vertical.tga")
 
-  --loop through and set hints (sure would be nice to have List do that for you)
-  local windows = list.item_windows
-  for i = 1, #windows do
-    windows[i].orig_OnSetState = windows[i].OnSetState
-    windows[i].OnSetState = function(self, list, item, rollovered, selected)
-      if self.RolloverText ~= "" and (selected or rollovered) then
-        CreateRolloverWindow(self.parent, self.RolloverText)
-      end
-      return self.orig_OnSetState(self,list, item, rollovered, selected)
-    end
-  end
-end
+--~   --loop through and set hints (sure would be nice to have List do that for you)
+--~   local windows = list.item_windows
+--~   for i = 1, #windows do
+--~     windows[i].orig_OnSetState = windows[i].OnSetState
+--~     windows[i].OnSetState = function(self, list, item, rollovered, selected)
+--~       if self.RolloverText ~= "" and (selected or rollovered) then
+--~         CreateRolloverWindow(self.parent, self.RolloverText)
+--~       end
+--~       return self.orig_OnSetState(self,list, item, rollovered, selected)
+--~     end
+--~   end
+--~ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)

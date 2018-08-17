@@ -5,7 +5,7 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 local ShowMe = ChoGGi.ComFuncs.ShowMe
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local pairs,type,tostring,tonumber,rawget,table,debug = pairs,type,tostring,tonumber,rawget,table,debug
@@ -564,7 +564,7 @@ function Examine:valuetotextex(o)
   elseif obj_type == "userdata" then
     local str = tostring(o)
     local trans = T(o)
-    -- if it isn't translatable then return a clickable link (not that useful, but's it's highlighted)
+    -- if it isn't translatable then return a clickable link (not that useful, but it's highlighted)
     if trans == "stripped" or trans:find("Missing locale string id") then
       return Concat(
         self:HyperLink(function(_,_,button)
@@ -816,7 +816,7 @@ function Examine:totextex(o)
     res[#res+1] = tostring(o)
   elseif obj_type == "userdata" then
     local str = T(o)
-    -- might as well just return the userdata instead of these
+    -- might as well just return userdata instead of these
     if str == "stripped" or str:find("Missing locale string id") then
       str = o
     end
@@ -926,9 +926,7 @@ end
 
 function Examine:SetObj(o)
   o = o or self.obj
-
   self.onclick_handles = {}
-  self.obj = o
   self.idText:SetText(self:totextex(o))
   self.idLinks:SetText(self:menu(o))
 
@@ -966,6 +964,7 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
     --attaches menu
     if attaches and attach_amount > 0 then
       amenu_list_items = {}
+      local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
       for i = 1, #attaches do
         local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
         amenu_list_items[#amenu_list_items+1] = {
@@ -977,7 +976,7 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
           ),
           showme = attaches[i],
           clicked = function()
-            ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
+            OpenInExamineDlg(attaches[i],self)
           end,
         }
       end

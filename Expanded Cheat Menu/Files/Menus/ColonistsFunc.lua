@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Notifications/colonist.tga"
 

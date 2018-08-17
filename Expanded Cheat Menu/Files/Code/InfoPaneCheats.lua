@@ -5,7 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
-local T = ChoGGi.ComFuncs.Trans
+local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local ResourceScale = ChoGGi.Consts.ResourceScale
 

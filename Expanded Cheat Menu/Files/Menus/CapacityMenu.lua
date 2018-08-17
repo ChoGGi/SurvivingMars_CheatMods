@@ -96,13 +96,13 @@ Actions[#Actions+1] = {
   ActionId = "Expanded CM.Capacity.Storage Waste Depot",
   ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
   RolloverText = function()
-    ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
-  end,
-  OnAction = function()
     return ChoGGi.ComFuncs.SettingState(
       ChoGGi.UserSettings.StorageWasteDepot,
       302535920000578--[[Change waste storage depot capacity.--]]
     )
+  end,
+  OnAction = function()
+    ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
   end,
 }
 
