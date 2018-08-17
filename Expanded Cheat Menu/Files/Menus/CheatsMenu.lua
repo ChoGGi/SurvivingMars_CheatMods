@@ -11,7 +11,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
   RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
   OnAction = ChoGGi.MenuFuncs.ShowScanAndMapOptions,
-  ActionSortKey = "1Map Exploration",
+  ActionSortKey = "01Map Exploration",
 }
 
 Actions[#Actions+1] = {
@@ -19,9 +19,9 @@ Actions[#Actions+1] = {
   ActionName = S[302535920000329--[[Manage Mysteries--]]],
   ActionId = "Cheats.Manage Mysteries",
   ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
-  RolloverText = S[302535920000330--[[Advance to next part or remove mysteries.--]]],
+  RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
   OnAction = ChoGGi.MenuFuncs.ShowStartedMysteryList,
-  ActionSortKey = "5Manage Mysteries",
+  ActionSortKey = "03Manage Mysteries",
 }
 
 Actions[#Actions+1] = {
@@ -31,7 +31,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
   RolloverText = S[302535920000332--[[Pick and start a mystery (with instant start option).--]]],
   OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
-  ActionSortKey = "5Start Mystery",
+  ActionSortKey = "04Start Mystery",
 }
 
 Actions[#Actions+1] = {
@@ -41,7 +41,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
   RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],
   OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
-  ActionSortKey = "5Start Disasters",
+  ActionSortKey = "05Start Disasters",
 }
 
 Actions[#Actions+1] = {
@@ -51,7 +51,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
   RolloverText = S[302535920000336--[[Spawn certain amount of colonists.--]]],
   OnAction = ChoGGi.MenuFuncs.SpawnColonists,
-  ActionSortKey = "6Spawn Colonists",
+  ActionSortKey = "07Spawn Colonists",
 }
 
 Actions[#Actions+1] = {
@@ -61,7 +61,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
   RolloverText = S[302535920000338--[[Unlock all buildings for construction.--]]],
   OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings,
-  ActionSortKey = "10Unlock all buildings",
+  ActionSortKey = "08Unlock all buildings",
 }
 
 Actions[#Actions+1] = {
@@ -71,7 +71,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
   RolloverText = S[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
   OnAction = UnpinAll,
-  ActionSortKey = "10Unpin All Pinned Objects",
+  ActionSortKey = "09Unpin All Pinned Objects",
 }
 
 Actions[#Actions+1] = {
@@ -81,7 +81,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
   RolloverText = S[302535920000364--[[Complete all wires and pipes instantly.--]]],
   OnAction = CheatCompleteAllWiresAndPipes,
-  ActionSortKey = "12Complete Wires & Pipes",
+  ActionSortKey = "10Complete Wires & Pipes",
 }
 
 Actions[#Actions+1] = {
@@ -91,7 +91,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
   RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
   OnAction = CheatCompleteAllConstructions,
-  ActionSortKey = "13Complete Constructions",
+  ActionSortKey = "11Complete Constructions",
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
 }
 
@@ -102,7 +102,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Action.tga",
   RolloverText = S[302535920000368--[[Switch to the mod editor.--]]],
   OnAction = ChoGGi.MenuFuncs.OpenModEditor,
-  ActionSortKey = "14Mod Editor",
+  ActionSortKey = "12Mod Editor",
 }
 
 local str_Cheats_Workplaces = "Cheats.Workplaces"
@@ -112,7 +112,7 @@ Actions[#Actions+1] = {
   ActionId = str_Cheats_Workplaces,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "5Workplaces",
+  ActionSortKey = "06Workplaces",
 }
 
 Actions[#Actions+1] = {
@@ -149,7 +149,7 @@ Actions[#Actions+1] = {
   ActionId = str_Cheats_Research,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "4Research",
+  ActionSortKey = "02Research",
 }
 
 Actions[#Actions+1] = {
