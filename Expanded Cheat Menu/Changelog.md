@@ -5,26 +5,28 @@
 
 ## v8.1 (16 Aug 2018)
 ###### Added:
-ECM will now always show a msg in the log telling user how to turn off the log.
+- ECM will now always show a msg in the log telling user how to turn off the log.
 
 ### Changed:
-Added .. to any menu items that are "folders".
-Console button "Console" renamed to "Settings".
+- Added .. to any menu items that are "folders".
+- Console button "Console" renamed to "Settings".
 
 ### Fixed:
-Menu>ECM>Capacity was showing the waste capacity list rather than a menu popup.
-Opening an Examine dialog from the top of the history list made it go off-screen (thanks SkiRich).
-Disabling the console log breaks ECM (thanks wizisi2k).
-You couldn't type in edit text dialog when 128 lines.
-You couldn't scroll textures in the paint section of Terrain Editor.
-Lightmodels (back up your setting, as you'll have to manually redo if you have a custom one saved).
+- Menu>ECM>Capacity was showing the waste capacity list rather than a menu popup.
+- Opening an Examine dialog from the top of the history list made it go off-screen (thanks SkiRich).
+- Disabling the console log breaks ECM (thanks wizisi2k).
+- You couldn't type in edit text dialog when 128 lines.
+- You couldn't scroll textures in the paint section of Terrain Editor.
+- Lightmodels (back up your setting, as you'll have to manually redo if you have a custom one saved).
 
 ## v8.0 (15 Aug 2018)
-###### If any developers read this: http://keepachangelog.com (especially Deprecated/Removed).
-###### I'm not saying to do it with your release notes, but at least add a link to an actual change log.
-###### For instance: Moving PopupNotificationPreset from DataInstances to Presets.
+```
+If any developers read this: http://keepachangelog.com (especially Deprecated/Removed).
+I'm not saying to do it with your release notes, but at least add a link to an actual change log.
+For instance: Moving PopupNotificationPreset from DataInstances to Presets.
 
-###### Please and thank you.
+Please and thank you.
+```
 
 ### Added:
 Debug>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
