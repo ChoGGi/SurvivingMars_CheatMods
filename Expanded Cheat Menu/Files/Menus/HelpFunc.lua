@@ -231,8 +231,10 @@ end -- do
 
 function ChoGGi.MenuFuncs.EditECMSettings()
   local ChoGGi = ChoGGi
-  -- make sure any changed settings are current
-  ChoGGi.SettingFuncs.WriteSettings()
+  if not ChoGGi.testing then
+    -- make sure any changed settings are current
+    ChoGGi.SettingFuncs.WriteSettings()
+  end
   -- load up settings file in the editor
   ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
     text = ChoGGi.SettingFuncs.ReadSettings(),
@@ -241,7 +243,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
     custom_func = function(answer,_,obj)
       if answer then
         -- get text and update settings file
-        local err,settings = LuaCodeToTuple(obj.idText:GetText())
+        local err,settings = LuaCodeToTuple(obj.idEdit:GetText())
         if not err then
           ChoGGi.SettingFuncs.WriteSettings(settings)
           -- then read new settings

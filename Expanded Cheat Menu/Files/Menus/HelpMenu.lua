@@ -11,6 +11,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/gear.tga",
   RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
   OnAction = ChoGGi.MenuFuncs.ModUpload,
+  ActionSortKey = "99",
 }
 
 local str_Help_Screenshot = "Help.Screenshot"
@@ -20,7 +21,7 @@ Actions[#Actions+1] = {
   ActionId = str_Help_Screenshot,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "02",
+  ActionSortKey = "2Screenshot",
 }
 
 Actions[#Actions+1] = {
@@ -42,7 +43,6 @@ Actions[#Actions+1] = {
   OnAction = function()
     ChoGGi.MenuFuncs.TakeScreenshot(true)
   end,
-  ActionSortKey = "",
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
 }
 
@@ -67,7 +67,7 @@ Actions[#Actions+1] = {
   ActionId = str_Help_Interface,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "01",
+  ActionSortKey = "1Interface",
 }
 
 Actions[#Actions+1] = {
@@ -131,7 +131,7 @@ Actions[#Actions+1] = {
   ActionId = str_Help_ECM,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "00",
+  ActionSortKey = "0Expanded Cheat Menu",
 }
 
 Actions[#Actions+1] = {
@@ -141,7 +141,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/help.tga",
   RolloverText = Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000673--[[info dialog.--]]]),
   OnAction = ChoGGi.MenuFuncs.AboutECM,
-  ActionSortKey = "01",
+  ActionSortKey = "1",
 }
 
 Actions[#Actions+1] = {
@@ -151,7 +151,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/help.tga",
   RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
   OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
-  ActionSortKey = "02",
+  ActionSortKey = "2",
 }
 
 Actions[#Actions+1] = {
@@ -161,7 +161,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
   RolloverText = S[4915--[[Good News, Everyone!"--]]],
   OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
-  ActionSortKey = "03",
+  ActionSortKey = "3",
 }
 
 Actions[#Actions+1] = {
@@ -172,7 +172,7 @@ Actions[#Actions+1] = {
   RolloverText = S[302535920000243--[["Extracts Files.hpk to ""%s"".
 You can then edit the files for use with ECM, or your mod (don't forget to include my LICENSE file)."--]]]:format(ChoGGi.ExtractPath),
   OnAction = ChoGGi.MenuFuncs.ExtractFilesHPK,
-  ActionSortKey = "04",
+  ActionSortKey = "4",
 }
 
 Actions[#Actions+1] = {
@@ -182,7 +182,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
   RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
   OnAction = ChoGGi.MenuFuncs.CheatsMenu_Toggle,
-  ActionSortKey = "05",
+  ActionSortKey = "5",
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
 }
 
@@ -193,7 +193,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
   RolloverText = S[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]]],
   OnAction = ChoGGi.MenuFuncs.DisableECM,
-  ActionSortKey = "06",
+  ActionSortKey = "6",
 }
 
 Actions[#Actions+1] = {
@@ -203,7 +203,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
   RolloverText = S[302535920000677--[[Reset all ECM settings to default (restart to enable).--]]],
   OnAction = ChoGGi.MenuFuncs.ResetECMSettings,
-  ActionSortKey = "07",
+  ActionSortKey = "7",
 }
 
 Actions[#Actions+1] = {
@@ -213,7 +213,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
   RolloverText = S[302535920001243--[[Manually edit ECM settings.--]]],
   OnAction = ChoGGi.MenuFuncs.EditECMSettings,
-  ActionSortKey = "08",
+  ActionSortKey = "8",
 }
 
 local str_Help_Text = "Help.Text"
@@ -223,6 +223,7 @@ Actions[#Actions+1] = {
   ActionId = str_Help_Text,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Text",
 }
 
 do -- build text file menu items
@@ -257,7 +258,7 @@ do -- build text file menu items
     OnAction = function()
       ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
     end,
-    ActionSortKey = "00",
+    ActionSortKey = "0",
   }
   Actions[#Actions+1] = {
     ActionMenubar = str_Help_Text,
@@ -268,7 +269,7 @@ do -- build text file menu items
     OnAction = function()
       ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.RetHardwareInfo())
     end,
-    ActionSortKey = "00",
+    ActionSortKey = "0",
   }
   Actions[#Actions+1] = {
     ActionMenubar = str_Help_Text,
@@ -277,7 +278,7 @@ do -- build text file menu items
     ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
     RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],
     OnAction = ChoGGi.MenuFuncs.RetMapInfo,
-    ActionSortKey = "01",
+    ActionSortKey = "1",
   }
 
   local function LoopFiles(ext)

@@ -30,22 +30,23 @@ DefineClass.ChoGGi_Text = {
   SelectionBackground = light_gray,
   SelectionColor = black,
   TextFont = text,
-  WordWrap = true,
+--~   WordWrap = true,
 }
 DefineClass.ChoGGi_MultiLineEdit = {
   __parents = {"XMultiLineEdit"},
   TextFont = "Editor16",
-  --default
+  -- default
   Background = dark_gray,
   TextColor = white,
-  --focused
+  -- focused
   FocusedBackground = dark_gray,
   RolloverTextColor = white,
-  --selected
+  -- selected
   SelectionBackground = light_gray,
   SelectionColor = black,
 
   MaxLen = -1,
+  MaxLines = -1,
 }
 --~ function ChoGGi_MultiLineEdit:InsertStrAtCaret(str)
 --~   local pos = self:GetCursorCharIdx() + 1
@@ -286,7 +287,8 @@ function ChoGGi_Window:SetInitPos(parent)
   -- if it's negative then set it to 100
   y = y < 0 and 100 or y
   x = x < 0 and 100 or x
-  -- check if dialog is within window size, and take off the size of the dialog if it isn't
+
+  -- check if bottom of dialog is within win size, if it isn't then take the size of the dialog off from the win size
   local safe = GetSafeAreaBox()
   local winw = safe:maxx()
   local winh = safe:maxy()
@@ -368,7 +370,7 @@ function ChoGGi_Window:AddScrollList()
 
 end
 
-function ChoGGi_Window:AddScrollEdit(context)
+function ChoGGi_Window:AddScrollEdit()
   local g_Classes = g_Classes
 
   self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
@@ -390,7 +392,6 @@ function ChoGGi_Window:AddScrollEdit(context)
 
   self.idEdit = ChoGGi_MultiLineEdit:new({
     Id = "idEdit",
-    WordWrap = context.wrap or false,
     VScroll = "idScrollV",
     HScroll = "idScrollH",
     Margins = box(4,4,4,4),
@@ -414,10 +415,8 @@ end
 
 -- haven't figured on a decent place to put this, so good enough for now (AddedFunctions maybe?)
 XShortcutsHost.SetPos = function(self,pt)
-  print(self.class)
   self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
 end
 XShortcutsHost.GetPos = function(self)
-  print(self.class)
   return ChoGGi_Window.GetPos(self,"idMenuBar")
 end

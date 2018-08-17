@@ -11,6 +11,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Resources,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Resources",
 }
 
 Actions[#Actions+1] = {

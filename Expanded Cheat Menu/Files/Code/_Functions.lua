@@ -1016,20 +1016,6 @@ function ChoGGi.CodeFuncs.SelObject()
   )
 end
 
-function ChoGGi.CodeFuncs.LightmodelBuild(list)
-  local data = Presets.LightmodelPreset
-  --always start with blank lightmodel
-  data.ChoGGi_Custom:delete()
-  data.ChoGGi_Custom = Lightmodel:new()
-  data.ChoGGi_Custom.name = "ChoGGi_Custom"
-
-  for i = 1, #list do
-    data.ChoGGi_Custom[list[i].id] = list[i].value
-  end
-  ChoGGi.Temp.LightmodelCustom = data.ChoGGi_Custom
-  return data.ChoGGi_Custom
-end
-
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
   if obj:IsKindOf("ComponentAttach") then
     local attaches = obj:GetAttaches() or ""

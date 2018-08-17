@@ -81,7 +81,6 @@ Actions[#Actions+1] = {
 --~     ChoGGi.ComFuncs.OpenInObjectManipulator()
 --~   end,
 --~   ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
---~   ActionSortKey = "",
 --~ }
 
 Actions[#Actions+1] = {
@@ -149,6 +148,7 @@ Actions[#Actions+1] = {
   ActionId = str_Debug_Grids,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Grids",
 }
 
 Actions[#Actions+1] = {
@@ -190,6 +190,7 @@ Actions[#Actions+1] = {
   ActionId = str_Debug_DebugFX,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Debug FX",
 }
 
 Actions[#Actions+1] = {
@@ -247,6 +248,7 @@ Actions[#Actions+1] = {
   ActionId = str_Debug_PathMarkers,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Path Markers",
 }
 
 Actions[#Actions+1] = {

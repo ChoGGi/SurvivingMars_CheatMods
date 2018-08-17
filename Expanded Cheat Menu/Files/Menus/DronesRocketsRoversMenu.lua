@@ -13,6 +13,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Drones,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Drones",
 }
 
 Actions[#Actions+1] = {
@@ -229,6 +230,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Shuttles,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Shuttles",
 }
 
 Actions[#Actions+1] = {
@@ -281,8 +283,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Rovers,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-
-  ActionSortKey = "00",
+  ActionSortKey = "1Rovers",
 }
 
 Actions[#Actions+1] = {
@@ -376,6 +377,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Rockets,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Rockets",
 }
 
 Actions[#Actions+1] = {

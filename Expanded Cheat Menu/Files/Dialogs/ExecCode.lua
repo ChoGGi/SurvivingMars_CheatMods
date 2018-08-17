@@ -25,11 +25,11 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
-  self:AddScrollEdit(context)
+  self:AddScrollEdit()
 
   -- start off with this as code
   self.idEdit:SetText(GetFromClipboard() or "ChoGGi.CurObj")
-  -- focus on textbox and move cursor to end of text
+  -- focus on text
   self.idEdit:SetFocus()
   -- hinty hint
   self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object.
@@ -88,6 +88,7 @@ local IsKeyPressed = terminal.IsKeyPressed
 local shift_key = const.vkShift
 local ctrl_key = Platform.osx and const.vkLwin or const.vkControl
 function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(obj,vk)
+  local const = const
   if vk == const.vkEnter then
     if IsKeyPressed(shift_key) or IsKeyPressed(ctrl_key) then
       self.idOK:Press()

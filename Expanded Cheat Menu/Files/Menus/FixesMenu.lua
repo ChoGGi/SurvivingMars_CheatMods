@@ -12,6 +12,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Fixes,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Fixes",
 }
 
 Actions[#Actions+1] = {
@@ -21,7 +22,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).-]]],
   OnAction = ChoGGi.MenuFuncs.ToggleWorkingAll,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -31,7 +32,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920001296--[[If your drones are just dumping polymers into the centre of your dome.--]]],
   OnAction = ChoGGi.MenuFuncs.DronesNotRepairingDomes,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -42,7 +43,7 @@ Actions[#Actions+1] = {
   RolloverText = S[302535920000463--[[Large Water Tank + Pipes + Chrome skin = borked looking connections.
 This resets all pipes to the default skin.--]]],
   OnAction = ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -54,7 +55,7 @@ Actions[#Actions+1] = {
 
 You may need to toggle the recall drones button (for certain issues).--]]],
   OnAction = ChoGGi.MenuFuncs.ResetRovers,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -64,7 +65,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]]],
   OnAction = ChoGGi.MenuFuncs.ResetAllColonists,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -74,7 +75,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920000582--[[Just in case you get something stuck somewhere.--]]],
   OnAction = ChoGGi.MenuFuncs.CollisionsObject_Toggle,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -84,7 +85,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920000584--[[Useful? who knows, won't hurt.--]]],
   OnAction = ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -96,7 +97,7 @@ Actions[#Actions+1] = {
 
 This will do a little copy n paste fix (they'll keep the same traits/whatnot).--]]],
   OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -106,7 +107,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = Concat(S[6779--[[Warning--]]],": ",S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
   OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
-  ActionSortKey = "09",
+  ActionSortKey = "9",
 }
 
 Actions[#Actions+1] = {
@@ -117,9 +118,8 @@ Actions[#Actions+1] = {
   RolloverText = S[302535920000590--[[Fires all the fixes in the "Most" menu (nuke 'em from orbit and all that).
 Should be safe to use without breaking anything.--]]],
   OnAction = ChoGGi.MenuFuncs.FireMostFixes,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
-
 
 local str_ExpandedCM_Fixes_Most = "Expanded CM.Fixes.Most"
 Actions[#Actions+1] = {
@@ -128,7 +128,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Fixes_Most,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "00",
+  ActionSortKey = "0Most",
 }
 
 Actions[#Actions+1] = {
@@ -242,7 +242,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Fixes_Toggles,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "06",
+  ActionSortKey = "6Toggles",
 }
 
 if ChoGGi.testing then
@@ -351,7 +351,7 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920000620--[[If any colonists are black cubes click this.--]]],
   OnAction = ChoGGi.MenuFuncs.ColonistsFixBlackCube,
-  ActionSortKey = "01",
+  ActionSortKey = "1",
 }
 
 Actions[#Actions+1] = {
@@ -361,5 +361,5 @@ Actions[#Actions+1] = {
   ActionIcon = icon,
   RolloverText = S[302535920000622--[[If you have any buildings that aren't aligned to the hex grids use this.--]]],
   OnAction = ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
-  ActionSortKey = "01",
+  ActionSortKey = "1",
 }

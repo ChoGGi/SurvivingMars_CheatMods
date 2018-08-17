@@ -12,6 +12,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Colonists,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Colonists",
 }
 
 Actions[#Actions+1] = {
@@ -296,7 +297,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Colonists_Work,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "03",
+  ActionSortKey = "3Work",
 }
 
 Actions[#Actions+1] = {
@@ -377,7 +378,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Colonists_Stats,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "01",
+  ActionSortKey = "1Stats",
 }
 
 Actions[#Actions+1] = {
@@ -514,7 +515,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Colonists_Traits,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "02",
+  ActionSortKey = "2Traits",
 }
 
 Actions[#Actions+1] = {

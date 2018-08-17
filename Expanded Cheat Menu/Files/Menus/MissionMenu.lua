@@ -11,6 +11,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Mission,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Mission",
 }
 
 Actions[#Actions+1] = {
@@ -49,7 +50,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
   RolloverText = S[302535920000713--[[Switch to a different sponsor.--]]],
   OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
-  ActionSortKey = "01",
+  ActionSortKey = "1Set Sponsor",
 }
 
 Actions[#Actions+1] = {
@@ -59,7 +60,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
   RolloverText = S[302535920000717--[[Switch to a different commander.--]]],
   OnAction = ChoGGi.MenuFuncs.ChangeCommander,
-  ActionSortKey = "03",
+  ActionSortKey = "3",
 }
 
 Actions[#Actions+1] = {
@@ -72,7 +73,7 @@ Actions[#Actions+1] = {
 (if value already exists; set to larger amount).
 restart to set disabled.--]]],
   OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
-  ActionSortKey = "02",
+  ActionSortKey = "2",
 }
 
 Actions[#Actions+1] = {
@@ -85,7 +86,7 @@ Actions[#Actions+1] = {
 (if value already exists; set to larger amount).
 restart to set disabled.--]]],
   OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
-  ActionSortKey = "04",
+  ActionSortKey = "4",
 }
 
 Actions[#Actions+1] = {
@@ -104,6 +105,7 @@ Actions[#Actions+1] = {
   ActionId = str_ExpandedCM_Mission_Disasters,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
+  ActionSortKey = "1Disasters",
 }
 
 Actions[#Actions+1] = {

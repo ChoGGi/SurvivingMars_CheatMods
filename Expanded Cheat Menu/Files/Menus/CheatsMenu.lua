@@ -11,7 +11,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
   RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
   OnAction = ChoGGi.MenuFuncs.ShowScanAndMapOptions,
-  ActionSortKey = "01",
+  ActionSortKey = "1Map Exploration",
 }
 
 Actions[#Actions+1] = {
@@ -21,7 +21,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
   RolloverText = S[302535920000330--[[Advance to next part or remove mysteries.--]]],
   OnAction = ChoGGi.MenuFuncs.ShowStartedMysteryList,
-  ActionSortKey = "05",
+  ActionSortKey = "5Manage Mysteries",
 }
 
 Actions[#Actions+1] = {
@@ -31,7 +31,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
   RolloverText = S[302535920000332--[[Pick and start a mystery (with instant start option).--]]],
   OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
-  ActionSortKey = "05",
+  ActionSortKey = "5Start Mystery",
 }
 
 Actions[#Actions+1] = {
@@ -41,7 +41,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
   RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],
   OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
-  ActionSortKey = "05",
+  ActionSortKey = "5Start Disasters",
 }
 
 Actions[#Actions+1] = {
@@ -51,7 +51,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
   RolloverText = S[302535920000336--[[Spawn certain amount of colonists.--]]],
   OnAction = ChoGGi.MenuFuncs.SpawnColonists,
-  ActionSortKey = "06",
+  ActionSortKey = "6Spawn Colonists",
 }
 
 Actions[#Actions+1] = {
@@ -61,7 +61,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
   RolloverText = S[302535920000338--[[Unlock all buildings for construction.--]]],
   OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings,
-  ActionSortKey = "10",
+  ActionSortKey = "10Unlock all buildings",
 }
 
 Actions[#Actions+1] = {
@@ -71,7 +71,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
   RolloverText = S[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
   OnAction = UnpinAll,
-  ActionSortKey = "10",
+  ActionSortKey = "10Unpin All Pinned Objects",
 }
 
 Actions[#Actions+1] = {
@@ -81,7 +81,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
   RolloverText = S[302535920000364--[[Complete all wires and pipes instantly.--]]],
   OnAction = CheatCompleteAllWiresAndPipes,
-  ActionSortKey = "12",
+  ActionSortKey = "12Complete Wires & Pipes",
 }
 
 Actions[#Actions+1] = {
@@ -91,7 +91,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
   RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
   OnAction = CheatCompleteAllConstructions,
-  ActionSortKey = "13",
+  ActionSortKey = "13Complete Constructions",
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
 }
 
@@ -102,7 +102,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Action.tga",
   RolloverText = S[302535920000368--[[Switch to the mod editor.--]]],
   OnAction = ChoGGi.MenuFuncs.OpenModEditor,
-  ActionSortKey = "14",
+  ActionSortKey = "14Mod Editor",
 }
 
 local str_Cheats_Workplaces = "Cheats.Workplaces"
@@ -112,7 +112,7 @@ Actions[#Actions+1] = {
   ActionId = str_Cheats_Workplaces,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "05",
+  ActionSortKey = "5Workplaces",
 }
 
 Actions[#Actions+1] = {
@@ -149,7 +149,7 @@ Actions[#Actions+1] = {
   ActionId = str_Cheats_Research,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "04",
+  ActionSortKey = "4Research",
 }
 
 Actions[#Actions+1] = {
@@ -164,7 +164,7 @@ Actions[#Actions+1] = {
     )
   end,
   OnAction = ChoGGi.MenuFuncs.InstantResearch_toggle,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -189,7 +189,7 @@ Actions[#Actions+1] = {
     )
   end,
   OnAction = ChoGGi.MenuFuncs.SetResearchQueueSize,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -199,7 +199,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
   RolloverText = S[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
   OnAction = ChoGGi.MenuFuncs.ResetAllResearch,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -209,7 +209,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
   RolloverText = S[302535920000352--[[Complete item currently being researched.--]]],
   OnAction = CheatResearchCurrent,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -219,7 +219,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
   RolloverText = S[302535920000354--[[Add a specified amount of research points.--]]],
   OnAction = ChoGGi.MenuFuncs.AddResearchPoints,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -234,7 +234,7 @@ Actions[#Actions+1] = {
     )
   end,
   OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
-  ActionSortKey = "00",
+  ActionSortKey = "0",
 }
 
 Actions[#Actions+1] = {
@@ -249,7 +249,7 @@ Actions[#Actions+1] = {
     )
   end,
   OnAction = ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
-  ActionSortKey = "01",
+  ActionSortKey = "1",
 }
 
 Actions[#Actions+1] = {
@@ -264,7 +264,7 @@ Actions[#Actions+1] = {
     )
   end,
   OnAction = ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
-  ActionSortKey = "02",
+  ActionSortKey = "2",
 }
 
 local str_Cheats_Menu = "Cheats.Menu"

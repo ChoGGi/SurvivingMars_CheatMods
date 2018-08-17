@@ -6,7 +6,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 --~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
-local next,pairs,print,type,table = next,pairs,print,type,table
+local next,pairs,type,table = next,pairs,type,table
 
 do -- Actions
   local Actions = ChoGGi.Temp.Actions
@@ -194,7 +194,19 @@ end
 
 -- and constants
 ChoGGi.Consts = {
-	LightmodelCustom = "PlaceObj('Lightmodel', {\n\t'name', \"ChoGGi_Custom\",\n\t'pp_bloom_strength', 100,\n\t'pp_bloom_threshold', 25,\n\t'pp_bloom_contrast', 75,\n\t'pp_bloom_colorization', 65,\n\t'pp_bloom_inner_tint', RGBA(187, 23, 146, 255),\n\t'pp_bloom_mip2_radius', 8,\n\t'pp_bloom_mip3_radius', 10,\n\t'pp_bloom_mip4_radius', 27,\n\t'exposure', -100,\n\t'gamma', RGBA(76, 76, 166, 255),\n})",
+	LightmodelCustom = {
+		id = "ChoGGi_Custom",
+    pp_bloom_strength = 100,
+    pp_bloom_threshold = 25,
+    pp_bloom_contrast = 75,
+    pp_bloom_colorization = 65,
+    pp_bloom_inner_tint = RGBA(187, 23, 146, 255),
+    pp_bloom_mip2_radius = 8,
+    pp_bloom_mip3_radius = 10,
+    pp_bloom_mip4_radius = 27,
+    exposure = -100,
+    gamma = RGBA(76, 76, 166, 255),
+	},
 
 -- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
   RCRoverMaxRadius = 20,
@@ -432,18 +444,21 @@ do -- ReadSettings
         file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
         -- something is definitely wrong so just abort, and let user know
         if file_error then
-          print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+          ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]])
           is_error = true
         end
       end
     end
+
     -- and convert it to lua / update in-game settings
     local code_error
     code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
+    ChoGGi.Temp.a = settings_str
+    ChoGGi.Temp.b = settings_str
     if code_error then
-      print("\n\n",S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]],"\n\n")
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
+If you can delete it and still get this error; please send it and this log to the author."--]]])
       is_error = true
     end
 

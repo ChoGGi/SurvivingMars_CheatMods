@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
@@ -536,11 +537,11 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 end
 
 --add button to import model
-function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
+function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
   local ItemList = {}
 
-  --always load defaults, then override with custom settings so list is always full
-  local def = Lightmodel:GetProperties()
+  -- always load defaults, then override with custom settings so list is always full
+  local def = LightmodelPreset:GetProperties()
   local help_str = S[487939677892--[[Help--]]]
   local default_str = S[1000121--[[Default--]]]
   local min_str = S[302535920000110--[[Min--]]]
@@ -549,25 +550,22 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
   for i = 1, #def do
     if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
       ItemList[#ItemList+1] = {
-        text = Concat(def[i].editor == "color" and "<color 175 175 255>",def[i].id,"</color>" or def[i].id),
+        text = Concat(def[i].editor == "color" and "<color 100 100 255>" or "",def[i].id,"</color>" or def[i].id),
         sort = def[i].id,
         value = def[i].default,
         default = def[i].default,
         editor = def[i].editor,
-        hint = Concat("",(def[i].name or ""),"\n",help_str,": ",(def[i].help or ""),"\n\n",default_str,": ",(tostring(def[i].default) or "")," ",min_str,": ",(def[i].min or "")," ",max_str,": ",(def[i].max or "")," ",scale_str,": ",(def[i].scale or "")),
+        hint = Concat("",(def[i].id or ""),"\n",help_str,": ",(def[i].help or ""),"\n\n",default_str,": ",(tostring(def[i].default) or "")," ",min_str,": ",(def[i].min or "")," ",max_str,": ",(def[i].max or "")," ",scale_str,": ",(def[i].scale or "")),
       }
     end
   end
 
-  --custom settings
-  local cus = ChoGGi.Temp.LightmodelCustom
-  --or loading style from presets
-  if type(Name) == "string" then
-    cus = Presets.LightmodelPreset[Name]
-  end
+  -- or loading style from presets
+  name = LightmodelPresets[name or "ChoGGi_Custom"]
   for i = 1, #ItemList do
-    if cus[ItemList[i].sort] then
-      ItemList[i].value = cus[ItemList[i].sort]
+    if name[ItemList[i].sort] then
+    print(ItemList[i].sort)
+      ItemList[i].value = name[ItemList[i].sort]
     end
   end
 
@@ -580,24 +578,22 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     for i = 1, #choice do
       local value = choice[i].value
       if value ~= choice[i].default then
-        model_table[#model_table+1] = {
-          id = choice[i].sort,
-          value = value,
-        }
+        model_table[choice[i].sort] = value
       end
     end
+    model_table.id = "ChoGGi_Custom"
 
-    --save the custom lightmodel
-    local lm = ChoGGi.CodeFuncs.LightmodelBuild(model_table)
-    lm.name = "ChoGGi_Custom"
-    ChoGGi.UserSettings.LightmodelCustom = PropToLuaCode(lm)
+    -- save usersetting before, or else the table will be made into a LightmodelPreset
+    ChoGGi.UserSettings.LightmodelCustom = model_table
+    LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(model_table)
     if choice[1].check1 then
       SetLightmodelOverride(1,"ChoGGi_Custom")
     else
       SetLightmodel(1,"ChoGGi_Custom")
     end
 
-    ChoGGi.SettingFuncs.WriteSettings()
+print("WRITE SETTINGS")
+--~     ChoGGi.SettingFuncs.WriteSettings()
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{
@@ -605,7 +601,9 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(Name)
     items = ItemList,
     sortby = "sort",
     title = 302535920000975--[[Custom Lightmodel--]],
-    hint = 302535920000976--[[Use double right click to test without closing dialog\n\nSome settings can't be changed in the editor, but you can manually add them in the settings file (type ex(Presets.LightmodelPreset) and use dump obj).--]],
+    hint = 302535920000976--[[Use double right click to test without closing dialog
+
+Some settings can't be changed in the editor, but you can manually add them in the settings file (type OpenExamine(LightmodelPresets) and use dump obj).--]],
     check1 = 302535920000977--[[Semi-Permanent--]],
     check1_hint = 302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]],
     check2 = 302535920000979--[[Presets--]],
@@ -634,12 +632,11 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
       hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
     }
   end
-  local Table = Presets.LightmodelPreset
-  for i = 1, #Table do
+  for key,_ in pairs(LightmodelPresets) do
     ItemList[#ItemList+1] = {
-      text = Table[i].name,
-      value = Table[i].name,
-      func = Table[i].name,
+      text = key,
+      value = key,
+      func = key,
     }
   end
 
@@ -702,7 +699,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
     callback = CallBackFunc,
     items = ItemList,
     title = title,
-    hint = Concat(hint),
+    hint = TableConcat(hint),
     check1 = check1,
     check1_hint = check1_hint,
     check2 = check2,

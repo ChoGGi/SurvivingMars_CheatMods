@@ -1,3 +1,6 @@
+To Do:
+Dialogs: Change map, Object Manipulator, Monitor Info
+
 v8.1 (Unreleased)
 
 Added:
@@ -11,6 +14,9 @@ Fixed:
 Menu>ECM>Capacity was showing the waste capacity list rather than a menu popup.
 Opening an Examine dialog from the top of the history list made it go off-screen (thanks SkiRich).
 Disabling the console log breaks ECM (thanks wizisi2k).
+You couldn't type in edit text dialog when 128 lines.
+You couldn't scroll textures in the paint section of Terrain Editor.
+Lightmodels.
 
 v8.0 (15 Aug 2018)
 If any developers read this: http://keepachangelog.com (especially Deprecated/Removed).

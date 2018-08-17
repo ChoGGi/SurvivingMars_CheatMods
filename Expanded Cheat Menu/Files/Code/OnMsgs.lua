@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
   -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
   XRolloverWindow.ZOrder = max_int
   -- when it's not visible it doesn't take up space
-  XListItem.FoldWhenHidden = true
+--~   XListItem.FoldWhenHidden = true
   -- changed from 2000000
   ConsoleLog.ZOrder = 2
   Console.ZOrder = 3
@@ -1103,29 +1103,23 @@ do -- LoadGame/CityStart
     end
 
     --add custom lightmodel
-    if Presets.LightmodelPreset.ChoGGi_Custom and type(Presets.LightmodelPreset.ChoGGi_Custom.delete) == "function" then
-      Presets.LightmodelPreset.ChoGGi_Custom:delete()
+    local lm = LightmodelPresets
+    if type(lm.ChoGGi_Custom and lm.ChoGGi_Custom.delete) == "function" then
+      lm.ChoGGi_Custom:delete()
     end
 
-    local _,LightmodelCustom = LuaCodeToTuple(UserSettings.LightmodelCustom)
-    if not LightmodelCustom then
-      _,LightmodelCustom = LuaCodeToTuple(ChoGGi.Defaults.LightmodelCustom)
-    end
-
-    if LightmodelCustom then
-      Presets.LightmodelPreset.ChoGGi_Custom = LightmodelCustom
+    -- we have to copy the table, so :new doesn't replace my saved settings
+    local temp_lm
+    if UserSettings.LightmodelCustom then
+      temp_lm = table.copy(UserSettings.LightmodelCustom)
     else
-      LightmodelCustom = ChoGGi.Consts.LightmodelCustom
-      UserSettings.LightmodelCustom = LightmodelCustom
-      Presets.LightmodelPreset.ChoGGi_Custom = LightmodelCustom
-      ChoGGi.Temp.WriteSettings = true
+      temp_lm = table.copy(ChoGGi.Consts.LightmodelCustom)
     end
-    ChoGGi.Temp.LightmodelCustom = LightmodelCustom
+    lm.ChoGGi_Custom = LightmodelPreset:new(temp_lm)
 
-    --if there's a lightmodel name saved
-    local LightModel = UserSettings.LightModel
-    if LightModel then
-      SetLightmodelOverride(1,LightModel)
+    -- if there's a lightmodel name saved
+    if UserSettings.Lightmodel then
+      SetLightmodelOverride(1,UserSettings.Lightmodel)
     end
 
     -- defaults to 20 items

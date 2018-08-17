@@ -13,6 +13,8 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
   __parents = {"ChoGGi_Window"},
   choices = false,
   colorpicker = false,
+  -- we don't want it to fire till after window is loaded
+  skip_color_change = true,
   custom_type = 0,
   custom_func = false,
   hidden = false,
@@ -96,7 +98,7 @@ Press Enter to show all items."--]]],
   if self.custom_type == 5 then
     function self.idCheckBox2.OnChange()
       -- show lightmodel lists and lets you pick one to use in new window
-      ChoGGi.MenuFuncs.ChangeLightmodel(true)
+      ChoGGi.MenuFuncs.ChangeLightmodel()
     end
   end
 
@@ -274,6 +276,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
   -- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
   self.idColorPicker:UpdateComponent("ALPHA", 1000)
+
+  self.skip_color_change = false
 end
 
 function ChoGGi_ListChoiceCustomDialog:BuildList(skip)
@@ -327,6 +331,9 @@ function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
 end
 
 function ChoGGi_ListChoiceCustomDialog:idColorPickerOnColorChanged()
+  if self.skip_color_change then
+    return
+  end
   if self.custom_type == 2 then
     if not self.obj then
       -- grab the object from the last list item
@@ -430,15 +437,12 @@ function ChoGGi_ListChoiceCustomDialog:BuildAndApplyLightmodel()
   for i = 1, #self.choices do
     local value = self.choices[i].value
     if value ~= self.choices[i].default then
-      model_table[#model_table+1] = {
-        id = self.choices[i].sort,
-        value = value,
-      }
+      model_table[self.choices[i].sort] = value
     end
   end
-  --rebuild it
-  ChoGGi.CodeFuncs.LightmodelBuild(model_table)
-  --and temp apply
+  -- rebuild it
+  LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(model_table)
+  -- and temp apply
   SetLightmodel(1,"ChoGGi_Custom")
 end
 

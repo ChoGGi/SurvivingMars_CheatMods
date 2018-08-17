@@ -580,7 +580,7 @@ do -- DumpTableFunc
 end --do
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
--- ChoGGi.Consts.XXX = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.XXX,0,ChoGGi.Consts.XXX)
+-- ChoGGi.Consts.X = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.X,0,ChoGGi.Consts.X)
 function ChoGGi.ComFuncs.NumRetBool(num,true_var,false_var)
   if type(num) ~= "number" then
     return
@@ -1441,7 +1441,6 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
   end
 
   ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
-    wrap = true,
     text = text,
   },parent)
 end

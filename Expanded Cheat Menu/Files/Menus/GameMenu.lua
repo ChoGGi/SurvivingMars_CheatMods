@@ -10,7 +10,7 @@ Actions[#Actions+1] = {
   ActionId = "Game.List All Objects",
   ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
   RolloverText = S[302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]]],
-  OnAction = ChoGGi.MenuFuncs.XXListAllObjectsXXXXXXX,
+  OnAction = ChoGGi.MenuFuncs.ListAllObjects,
 }
 
 Actions[#Actions+1] = {
@@ -105,7 +105,9 @@ Actions[#Actions+1] = {
       302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]
     )
   end,
-  OnAction = ChoGGi.MenuFuncs.ChangeLightmodelCustom,
+  OnAction = function()
+    ChoGGi.MenuFuncs.ChangeLightmodelCustom()
+  end,
 }
 
 Actions[#Actions+1] = {
@@ -132,6 +134,75 @@ Actions[#Actions+1] = {
   OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
 }
 
+local str_Game_Camera = "Game.Camera"
+Actions[#Actions+1] = {
+  ActionMenubar = "Game",
+  ActionName = Concat(S[302535920001058--[[Camera--]]]," .."),
+  ActionId = str_Game_Camera,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "2Camera",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Game_Camera,
+  ActionName = S[302535920000647--[[Border Scrolling--]]],
+  ActionId = "Game.Camera.Border Scrolling",
+  ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
+  RolloverText = function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.BorderScrollingToggle,
+      302535920000648--[[Set size of activation for mouse border scrolling.--]]
+    )
+  end,
+  OnAction = ChoGGi.MenuFuncs.SetBorderScrolling,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Game_Camera,
+  ActionName = S[302535920000649--[[Zoom Distance--]]],
+  ActionId = "Game.Camera.Zoom Distance",
+  ActionIcon = "CommonAssets/UI/Menu/MoveUpCamera.tga",
+  RolloverText = function()
+    return ChoGGi.ComFuncs.SettingState(
+      ChoGGi.UserSettings.CameraZoomToggle,
+      302535920000650--[[Further zoom distance.--]]
+    )
+  end,
+  OnAction = ChoGGi.MenuFuncs.CameraZoom_Toggle,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Game_Camera,
+  ActionName = S[302535920000651--[[Toggle Free Camera--]]],
+  ActionId = "Game.Camera.Toggle Free Camera",
+  ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
+  RolloverText = S[302535920000652--[[I believe I can fly.--]]],
+  OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Game_Camera,
+  ActionName = S[302535920000653--[[Toggle Follow Camera--]]],
+  ActionId = "Game.Camera.Toggle Follow Camera",
+  ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
+  RolloverText = S[302535920000654--[[Select (or mouse over) an object to follow.--]]],
+  OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = str_Game_Camera,
+  ActionName = S[302535920000655--[[Toggle Cursor--]]],
+  ActionId = "Game.Camera.Toggle Cursor",
+  ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
+  RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
+  OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
+  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
+}
+
+
 local str_Game_Render = "Game.Render"
 Actions[#Actions+1] = {
   ActionMenubar = "Game",
@@ -139,7 +210,7 @@ Actions[#Actions+1] = {
   ActionId = str_Game_Render,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",
   OnActionEffect = "popup",
-  ActionSortKey = "02",
+  ActionSortKey = "2Render",
 }
 
 Actions[#Actions+1] = {
@@ -242,72 +313,4 @@ Not noticeable unless using higher zoom.--]]
     )
   end,
   OnAction = ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
-}
-
-local str_Game_Camera = "Game.Camera"
-Actions[#Actions+1] = {
-  ActionMenubar = "Game",
-  ActionName = Concat(S[302535920001058--[[Camera--]]]," .."),
-  ActionId = str_Game_Camera,
-  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-  OnActionEffect = "popup",
-  ActionSortKey = "01",
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Game_Camera,
-  ActionName = S[302535920000647--[[Border Scrolling--]]],
-  ActionId = "Game.Camera.Border Scrolling",
-  ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
-  RolloverText = function()
-    return ChoGGi.ComFuncs.SettingState(
-      ChoGGi.UserSettings.BorderScrollingToggle,
-      302535920000648--[[Set size of activation for mouse border scrolling.--]]
-    )
-  end,
-  OnAction = ChoGGi.MenuFuncs.SetBorderScrolling,
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Game_Camera,
-  ActionName = S[302535920000649--[[Zoom Distance--]]],
-  ActionId = "Game.Camera.Zoom Distance",
-  ActionIcon = "CommonAssets/UI/Menu/MoveUpCamera.tga",
-  RolloverText = function()
-    return ChoGGi.ComFuncs.SettingState(
-      ChoGGi.UserSettings.CameraZoomToggle,
-      302535920000650--[[Further zoom distance.--]]
-    )
-  end,
-  OnAction = ChoGGi.MenuFuncs.CameraZoom_Toggle,
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Game_Camera,
-  ActionName = S[302535920000651--[[Toggle Free Camera--]]],
-  ActionId = "Game.Camera.Toggle Free Camera",
-  ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
-  RolloverText = S[302535920000652--[[I believe I can fly.--]]],
-  OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
-  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Game_Camera,
-  ActionName = S[302535920000653--[[Toggle Follow Camera--]]],
-  ActionId = "Game.Camera.Toggle Follow Camera",
-  ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
-  RolloverText = S[302535920000654--[[Select (or mouse over) an object to follow.--]]],
-  OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
-  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Game_Camera,
-  ActionName = S[302535920000655--[[Toggle Cursor--]]],
-  ActionId = "Game.Camera.Toggle Cursor",
-  ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
-  RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
-  OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
-  ActionShortcut = ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
 }

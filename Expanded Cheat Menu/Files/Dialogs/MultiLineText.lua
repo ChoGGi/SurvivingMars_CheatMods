@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- displays text in a selectable text box
+-- displays text in an editable text box
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
@@ -30,8 +30,15 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
 
-  self:AddScrollEdit(context)
+  self:AddScrollEdit()
   self.idEdit:SetText(context.text)
+  -- focus on textbox
+  self.idEdit:SetFocus()
+
+--~   -- let us override enter/esc
+--~   self.idEdit.OnKbdKeyDown = function(obj, vk)
+--~     return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
+--~   end
 
   self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
     Id = "idButtonContainer",
@@ -77,13 +84,14 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
   self:SetInitPos(context.parent)
 end
 
-function ChoGGi_MultiLineTextDlg:OnShortcut(shortcut)
-  if shortcut == "Enter" then
-    self:Close("ok",true)
-  elseif shortcut == "Escape" and self.context.question then
-    self:Close("cancel",false)
-  end
-end
+--~ function ChoGGi_MultiLineTextDlg:OnShortcut(shortcut)
+--~   if shortcut == "Enter" then
+--~     self:Close("ok",true)
+--~   elseif shortcut == "Escape" and self.context.question then
+--~     self:Close("cancel",false)
+--~   end
+--~   return ChoGGi_Window.OnShortcut(self,shortcut)
+--~ end
 
 function ChoGGi_MultiLineTextDlg:Close(result,answer)
   if self.retfunc then
