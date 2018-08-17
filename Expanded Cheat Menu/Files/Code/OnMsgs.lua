@@ -1074,6 +1074,7 @@ do -- LoadGame/CityStart
 
 
     -- it seems the devs didn't remove all traces of the old select sound, or didn't add them all?
+    -- got anyways this'll remove the borky one, and restore when it's a new version
     if LuaRevision > 233467 then
       RebuildFXRules()
       local tab = UICity.labels.PreciousMetalsExtractor or ""

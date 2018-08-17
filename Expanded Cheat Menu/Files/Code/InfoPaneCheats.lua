@@ -17,9 +17,9 @@ do
 
 --~   global objects
   function SupplyRocket:CheatFuel()
-    local const = const
-    self.accumulated_fuel = self.refuel_request:GetTargetAmount()
-    self.refuel_request = Request_New(self, "Fuel", 0, const.rfStorageDepot + const.rfPairWithHigher,-1)
+    local total = self.refuel_request:GetTargetAmount()
+    self.accumulated_fuel = total
+    self.refuel_request:SetAmount(total)
     Msg("RocketRefueled", self)
     RebuildInfopanel(self)
   end
