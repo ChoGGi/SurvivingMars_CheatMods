@@ -41,15 +41,15 @@ Please and thank you.
 - Nicer looking menu items (and highlighting).
 - Changed some of the grid toggle shortcuts (changed F2 to squares and removed F3).
 - Delete Rocks now also removes all those little buggers (if it's too slow for you: let me know and I'll make it optional).
-- Examine:
-- Up/Down in Go to text scrolls to top/bottom (used to be just top).
-- Attaches menu highlights objects.
-- UI objects will now flash (like the ged window inspector, see Tools to disable).
-- Exec Code:
-- Multi line text support.
-- Now checks clipboard content before adding ChoGGi.CurObj.
-- List Dialog:
-- Change Colour is now applied when you select a colour (default checkbox to reset).
+##### Examine:
+- > Up/Down in Go to text scrolls to top/bottom (used to be just top).
+- > Attaches menu highlights objects.
+- > UI objects will now flash (like the ged window inspector, see Tools to disable).
+##### Exec Code:
+- > Multi line text support.
+- > Now checks clipboard content before adding ChoGGi.CurObj.
+##### List Dialog:
+- > Change Colour is now applied when you select a colour (default checkbox to reset).
 
 #### Fixed:
 - God knows.
@@ -69,9 +69,9 @@ Please and thank you.
 - Trigger Disasters changed to Start Disasters.
 - Added Metatron Ion Storm to Start Disasters.
 - Examine shows length of index based tables/objlists in caption.
-- Path Markers:
-- Destinations for every shuttle (hopefully).
-- Game Time is default (ignored for Remove).
+##### Path Markers:
+- > Destinations for every shuttle (hopefully).
+- > Game Time is default (ignored for Remove).
 
 #### Fixed:
 - Problem with ECM and not having Mysteries DLC installed.
@@ -125,11 +125,11 @@ Please and thank you.
 
 #### Changed:
 - Research Tech defaults to "Unlock", if both are checked then "Research" takes precedent.
-- Examine:
-- table (len:0) now shows "Data" if it's an associative table.
-- Translated userdata now shows < "userdata" to let you know it isn't a string.
 - ItemList dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
 - Moved Delete All Rocks to Game from Debug.
+##### Examine:
+- > table (len:0) now shows "Data" if it's an associative table.
+- > Translated userdata now shows < "userdata" to let you know it isn't a string.
 
 #### Fixed:
 - ECM would wig out if CheatMenuModSettings.lua was a blank file (thanks Royal Rudolf).
@@ -268,15 +268,15 @@ Please and thank you.
 - Draggable Cheats Menu buttons have a larger clickable area.
 - Changed the way I create dialogs, might be lingering issues.
 - Added more stuff to Monitor Info.
-- Examine:
-- >Dialog is now above console log text.
-- >Moved most buttons into Tools menu.
-- >Added Parents button menu: examine parents/ancestors.
-- >Attaches is now a button menu as well.
-- >Dump Text/Obj now opens a text box.
-- >Right-click Next to scroll to top (useful on small items without a scrollbar).
-- >Filter Scroll now ignores case (no more need to Capitalise queries).
-- >Works with threads/functions again.
+##### Examine:
+- > Dialog is now above console log text.
+- > Moved most buttons into Tools menu.
+- > Added Parents button menu: examine parents/ancestors.
+- > Attaches is now a button menu as well.
+- > Dump Text/Obj now opens a text box.
+- > Right-click Next to scroll to top (useful on small items without a scrollbar).
+- > Filter Scroll now ignores case (no more need to Capitalise queries).
+- > Works with threads/functions again.
 
 #### Fixed:
 - I broke certain popups in 5.3.
@@ -382,11 +382,11 @@ Please and thank you.
 - Then the shuttle will drop the item next to your mouse cursor.
 - If you have drones or resources in un-reachable spaces you can use this to move them :)
 
-- Shuttles>
-- >Show Shuttle Controls: I've added controls to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around, use this to hide the controls.
-- >Spawn Shuttle Attacker: Spawns an attacker at the nearest tower to you.
-- >Spawn Shuttle Friend: Spawns an friend at the nearest tower to you.
-- >Spawned Shuttles Recall: Recalls all spawned shuttles back to their towers.
+##### Shuttles:
+- > Show Shuttle Controls: I've added controls to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around, use this to hide the controls.
+- > Spawn Shuttle Attacker: Spawns an attacker at the nearest tower to you.
+- > Spawn Shuttle Friend: Spawns an friend at the nearest tower to you.
+- > Spawned Shuttles Recall: Recalls all spawned shuttles back to their towers.
 
 #### Fixed:
 - Spawned shuttles work much better now.
@@ -781,9 +781,9 @@ Please and thank you.
 - Instantly start mysteries (Cheats>Start Mystery).
 - Help>Interface>Never Show Hints (no need to see hints on a new game).
 
-- Colonists will now use inside buildings that are outside (you need to have at least one dome placed), colonists will still use the dome.
-- >To get workplaces working; increase Outside Workplace Radius, and some of the buildings don't really work correctly (diner).
-- >Expect bugs: this isn't how the game is supposed to work...
+##### Colonists will now use inside buildings that are outside (you need to have at least one dome placed), colonists will still use the dome.
+- > To get workplaces working; increase Outside Workplace Radius, and some of the buildings don't really work correctly (diner).
+- > Expect bugs: this isn't how the game is supposed to work...
 
 ## v2.5 (14 Apr 2018)
 #### Added:
@@ -889,7 +889,7 @@ Please and thank you.
 #### Known issues:
 - Doubling amount of placed waste rock storage adds rocks to it.
 - Increasing amount of storage in waste depot is ignored in already placed ones.
-- >Increase before placing or use CheatEmpty.
+- > Increase before placing or use CheatEmpty.
 
 ## v0.8 (02 Apr 2018)
 #### Added:
