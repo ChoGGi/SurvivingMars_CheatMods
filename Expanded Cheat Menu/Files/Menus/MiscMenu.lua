@@ -25,15 +25,6 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = str_ExpandedCM_Misc,
-  ActionName = S[302535920000680--[[Annoying Sounds--]]],
-  ActionId = "Expanded CM.Misc.Annoying Sounds",
-  ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
-  RolloverText = S[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
-  OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_ExpandedCM_Misc,
   ActionName = S[302535920000682--[[Change Entity--]]],
   ActionId = "Expanded CM.Misc.Change Entity",
   ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",

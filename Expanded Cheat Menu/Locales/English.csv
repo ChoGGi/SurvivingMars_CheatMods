@@ -1,6 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000222,,
-302535920001310,,
+302535920000222,Precious Metals Extractor Invalid,
+302535920001310,Clicking on an extractor on a new game with ECM will show an invalid sound type msg in the console log.,
 302535920001311,,
 302535920001312,,
 302535920001313,,

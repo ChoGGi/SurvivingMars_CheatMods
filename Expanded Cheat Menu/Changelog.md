@@ -3,6 +3,11 @@
 
 ## v8.2 (Unreleased)
 
+#### Changed:
+- moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
+- It seems the devs didn't remove all traces of the old select sound for the precious metals extractor.
+- > It was spamming the console with invalid sound type... (thanks hchsiao)
+
 #### Fixed:
 - Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.
 - Shuttle speed didn't work (thanks hchsiao).

@@ -73,7 +73,7 @@ ChoGGi = {
   _LICENSE = LICENSE,
   -- get version of mod from metadata.lua
   _VERSION = false,
-  -- is ECM shanghaiedby the blacklist?
+  -- is ECM shanghaied by the blacklist?
   blacklist = Mods.ChoGGi_CheatMenu.env,
   -- constants
   Consts = false,

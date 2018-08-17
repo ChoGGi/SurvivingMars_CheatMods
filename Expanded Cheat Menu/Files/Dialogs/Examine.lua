@@ -678,7 +678,7 @@ end
 local function ExamineThreadLevel_totextex(level, info, o,self)
   local data = {}
   if ChoGGi.blacklist then
---~     data = {luadebugger:new():Enum(,o,"")()}
+    data = {ChoGGi.ComFuncs.DebugGetInfo(o)}
   else
     data = {}
     local l = 1
@@ -754,7 +754,6 @@ function Examine:totextex(o,ChoGGi)
             "(",
             info.currentline,
             ") ",
---~             (info.name or info.name_what or S[302535920000063--[[unknown name--]]]),
             info.name or info.name_what or S[302535920000063--[[unknown name--]]],
             HLEnd
           )
@@ -776,8 +775,7 @@ function Examine:totextex(o,ChoGGi)
 
   elseif obj_type == "function" then
     if ChoGGi.blacklist then
---~       local _,upvalue = luadebugger:new():Enum(o,"")()
---~       res[#res+1] = self:valuetotextex(upvalue)
+      res[#res+1] = self:valuetotextex(ChoGGi.ComFuncs.DebugGetInfo(o))
     else
       local i = 1
       while true do

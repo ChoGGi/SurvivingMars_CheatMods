@@ -6,6 +6,15 @@ local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {
   ActionMenubar = S[283142739680--[[Game--]]],
+  ActionName = S[302535920000680--[[Annoying Sounds--]]],
+  ActionId = "Game.Misc.Annoying Sounds",
+  ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
+  RolloverText = S[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
+  OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = S[283142739680--[[Game--]]],
   ActionName = S[302535920001292--[[List All Objects--]]],
   ActionId = "Game.List All Objects",
   ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
