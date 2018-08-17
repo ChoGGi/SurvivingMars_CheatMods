@@ -151,13 +151,15 @@ function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
 end
 
 function ChoGGi.MenuFuncs.DisastersStop()
-  local mis = g_IncomingMissiles
-  for Key,_ in pairs(mis or empty_table) do
+  local mis = g_IncomingMissiles or empty_table
+  for Key,_ in pairs(mis) do
     Key:ExplodeInAir()
   end
 
   if g_DustStorm then
     StopDustStorm()
+    -- stop doesn't always seem to work, so adding this as well
+    g_DustStormType = false
   end
   if g_ColdWave then
     StopColdWave()

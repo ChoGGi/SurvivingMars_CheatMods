@@ -5,6 +5,7 @@
 
 #### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
+- Renamed Start Disasters to Disasters (since you can stop them as well).
 - It seems the devs didn't remove all traces of the old select sound for the precious metals extractor.
 - > It was spamming the console with invalid sound type... (thanks hchsiao)
 
@@ -13,6 +14,8 @@
 - Shuttle speed didn't work (thanks hchsiao).
 - Also fixed a bunch of building cheats (devs moved templates from DataInstances to Presets).
 - The list dialog filter text wasn't working properly (getting values from full list instead of visible list).
+- The Fuel rocket cheat in Cheats pane would freeze the game (thanks CenariusPL).
+- Stop Disasters may not have always stopped dust storms.
 
 ## v8.1 (16 Aug 2018)
 #### Added:

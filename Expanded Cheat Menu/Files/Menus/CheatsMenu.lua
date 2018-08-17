@@ -36,7 +36,7 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = "Cheats",
-  ActionName = Concat(S[1694--[[Start--]]]," ",S[3983--[[Disasters--]]]),
+  ActionName = S[3983--[[Disasters--]]],
   ActionId = "Cheats.Start Disasters",
   ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
   RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],

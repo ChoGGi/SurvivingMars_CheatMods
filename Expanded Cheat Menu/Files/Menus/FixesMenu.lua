@@ -7,7 +7,7 @@ local icon = "CommonAssets/UI/Menu/ReportBug.tga"
 
 local str_ExpandedCM_Fixes = "Expanded CM.Fixes"
 Actions[#Actions+1] = {
-  ActionMenubar = "Expanded CM.Fixes",
+  ActionMenubar = "Expanded CM",
   ActionName = Concat(S[302535920000922--[[Fixes--]]]," .."),
   ActionId = str_ExpandedCM_Fixes,
   ActionIcon = "CommonAssets/UI/Menu/folder.tga",

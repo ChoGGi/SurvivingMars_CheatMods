@@ -1073,22 +1073,22 @@ do -- LoadGame/CityStart
 
 
 
-    -- it seems the devs didn't remove all traces of the old select sound, or didn't add them all?
-    -- got anyways this'll remove the borky one, and restore when it's a new version
-    if LuaRevision > 233467 then
-      RebuildFXRules()
-      local tab = UICity.labels.PreciousMetalsExtractor or ""
-      for i = 1, #tab do
-        ChoGGi.CodeFuncs.ToggleWorking(tab[i])
-      end
-    elseif FXRules.SelectObj.start.PreciousMetalsExtractor.any[1].Source == "Actor" then
-      table.remove(FXRules.SelectObj.start.PreciousMetalsExtractor.any,1)
-      RemoveFromRules("Object PreciousExtractor Select")
-      local tab = UICity.labels.PreciousMetalsExtractor or ""
-      for i = 1, #tab do
-        ChoGGi.CodeFuncs.ToggleWorking(tab[i])
-      end
-    end
+--~     -- it seems the devs didn't remove all traces of the old select sound, or didn't add them all?
+--~     -- got anyways this'll remove the borky one, and restore when it's a new version
+--~     if LuaRevision > 233467 then
+--~       RebuildFXRules()
+--~       local tab = UICity.labels.PreciousMetalsExtractor or ""
+--~       for i = 1, #tab do
+--~         ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+--~       end
+--~     elseif FXRules.SelectObj.start.PreciousMetalsExtractor.any[1].Source == "Actor" then
+--~       table.remove(FXRules.SelectObj.start.PreciousMetalsExtractor.any,1)
+--~       RemoveFromRules("Object PreciousExtractor Select")
+--~       local tab = UICity.labels.PreciousMetalsExtractor or ""
+--~       for i = 1, #tab do
+--~         ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+--~       end
+--~     end
 
     -- bloody hint popups
     if ChoGGi.UserSettings.DisableHints then
