@@ -42,14 +42,14 @@ Please and thank you.
 - Changed some of the grid toggle shortcuts (changed F2 to squares and removed F3).
 - Delete Rocks now also removes all those little buggers (if it's too slow for you: let me know and I'll make it optional).
 - Examine:
-- > Up/Down in Go to text scrolls to top/bottom (used to be just top).
-- > Attaches menu highlights objects.
-- > UI objects will now flash (like the ged window inspector, see Tools to disable).
+- Up/Down in Go to text scrolls to top/bottom (used to be just top).
+- Attaches menu highlights objects.
+- UI objects will now flash (like the ged window inspector, see Tools to disable).
 - Exec Code:
-- > Multi line text support.
-- > Now checks clipboard content before adding ChoGGi.CurObj.
+- Multi line text support.
+- Now checks clipboard content before adding ChoGGi.CurObj.
 - List Dialog:
-- > Change Colour is now applied when you select a colour (default checkbox to reset).
+- Change Colour is now applied when you select a colour (default checkbox to reset).
 
 #### Fixed:
 - God knows.
@@ -70,8 +70,8 @@ Please and thank you.
 - Added Metatron Ion Storm to Start Disasters.
 - Examine shows length of index based tables/objlists in caption.
 - Path Markers:
-- > Destinations for every shuttle (hopefully).
-- > Game Time is default (ignored for Remove).
+- Destinations for every shuttle (hopefully).
+- Game Time is default (ignored for Remove).
 
 #### Fixed:
 - Problem with ECM and not having Mysteries DLC installed.
@@ -126,8 +126,8 @@ Please and thank you.
 #### Changed:
 - Research Tech defaults to "Unlock", if both are checked then "Research" takes precedent.
 - Examine:
-- > table (len:0) now shows "Data" if it's an associative table.
-- > Translated userdata now shows < "userdata" to let you know it isn't a string.
+- table (len:0) now shows "Data" if it's an associative table.
+- Translated userdata now shows < "userdata" to let you know it isn't a string.
 - ItemList dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
 - Moved Delete All Rocks to Game from Debug.
 
