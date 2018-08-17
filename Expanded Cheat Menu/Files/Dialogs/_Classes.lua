@@ -233,7 +233,7 @@ function ChoGGi_Window:GetPos(dialog)
 end
 
 -- takes either a point, or box to set pos
-function ChoGGi_Window:SetPos(obj,dialog)
+function ChoGGi_Window:SetPos(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
   local x,y,w,h
   if IsPoint(obj) then
@@ -281,21 +281,24 @@ end
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
 function ChoGGi_Window:SetInitPos(parent)
-  local x,y,w,h
   -- if we're opened from another dialog then offset it, else open at mouse cursor
-  if parent then
-    x,y,w,h = self:SetPos(parent)
-  else
-    x,y,w,h = self:SetPos(GetMousePos())
-  end
+  local x,y,w,h = self:SetPos(parent or GetMousePos())
+  -- if it's negative then set it to 100
+  y = y < 0 and 100 or y
+  x = x < 0 and 100 or x
   -- check if dialog is within window size, and take off the size of the dialog if it isn't
-  local win = GetSafeAreaBox()
-  if (x + w) > win:maxx() then
-    self:SetPos(point(x-w),y)
+  local safe = GetSafeAreaBox()
+  local winw = safe:maxx()
+  local winh = safe:maxy()
+
+  if (x + w) > winw then
+    self:SetPos(point(winw - w,y))
   end
-  if (y + h) > win:maxy() then
-    self:SetPos(point(x,y-h))
+
+  if (y + h) > winh then
+    self:SetPos(point(x,winh - h))
   end
+
 end
 
 -- scrollable textbox
@@ -411,8 +414,10 @@ end
 
 -- haven't figured on a decent place to put this, so good enough for now (AddedFunctions maybe?)
 XShortcutsHost.SetPos = function(self,pt)
+  print(self.class)
   self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
 end
 XShortcutsHost.GetPos = function(self)
+  print(self.class)
   return ChoGGi_Window.GetPos(self,"idMenuBar")
 end
