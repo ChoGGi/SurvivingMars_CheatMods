@@ -1,8 +1,9 @@
 To Do:
 Dialogs: Change map, Object Manipulator, Monitor Info
 
-v8.1 (Unreleased)
+v8.2 (Unreleased)
 
+v8.1 (16 Aug 2018)
 Added:
 ECM will now always show a msg in the log telling user how to turn off the log.
 
