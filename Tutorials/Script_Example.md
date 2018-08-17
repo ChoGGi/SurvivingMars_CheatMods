@@ -59,7 +59,7 @@ Some_Unique_Mod_Name = {
   email = "email@example.com",
   id = "Your_Mod_Id",
   _VERSION = Mods.Your_Mod_Id.version,
-  ModPath = Mods.Your_Mod_Id.path,
+  ModPath = CurrentModPath,
 
   ComFuncs = {
     FileExists = FileExists,

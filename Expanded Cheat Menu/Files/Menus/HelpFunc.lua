@@ -135,7 +135,7 @@ do -- ModUpload
           AsyncCreatePath(dest)
           err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
           if not err then
-            for i = 1, #files or "" do
+            for i = 1, #(files or "") do
               local dest_file = Concat(dest,files[i])
               local dir = SplitPath(dest_file)
               AsyncCreatePath(dir)

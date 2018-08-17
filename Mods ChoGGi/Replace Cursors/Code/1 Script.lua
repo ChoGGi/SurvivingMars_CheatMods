@@ -68,7 +68,7 @@ ReplaceCursors = {
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_ReplaceCursors",
   _VERSION = Mods.ChoGGi_ReplaceCursors.version,
-  ModPath = Mods.ChoGGi_ReplaceCursors.path,
+  ModPath = CurrentModPath,
   -- CommonFunctions.lua
   ComFuncs = {
     TableConcat = TableConcat,

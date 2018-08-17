@@ -19,8 +19,7 @@ CHANGE 11111111 to some random arsed number, or use whatever you already use in 
 At the tippy top of your ModItemCode file add this (or something like it)
 
 
-local ModPath = Mods[YOUR_MOD_ID].path
-local locale_path = Concat(ModPath,"Locales/%s.csv")
+local locale_path = Concat(CurrentModPath,"Locales/%s.csv")
 -- this checks if there's a csv for the current lang, if not it loads the English one.
 if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
   LoadTranslationTableFile(locale_path:format("English"))

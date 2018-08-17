@@ -77,7 +77,7 @@ SpiceHarvester = {
 local SpiceHarvester = SpiceHarvester
 local Mods = Mods
 SpiceHarvester._VERSION = Mods[SpiceHarvester.id].version
-SpiceHarvester.ModPath = Mods[SpiceHarvester.id].path
+SpiceHarvester.ModPath = CurrentModPath
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

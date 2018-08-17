@@ -77,7 +77,7 @@ ChangeObjectColour = {
 local ChangeObjectColour = ChangeObjectColour
 local Mods = Mods
 ChangeObjectColour._VERSION = Mods[ChangeObjectColour.id].version
-ChangeObjectColour.ModPath = Mods[ChangeObjectColour.id].path
+ChangeObjectColour.ModPath = CurrentModPath
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

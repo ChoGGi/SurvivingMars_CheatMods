@@ -77,7 +77,7 @@ DisableDroneMaintenance = {
 local DisableDroneMaintenance = DisableDroneMaintenance
 local Mods = Mods
 DisableDroneMaintenance._VERSION = Mods[DisableDroneMaintenance.id].version
-DisableDroneMaintenance.ModPath = Mods[DisableDroneMaintenance.id].path
+DisableDroneMaintenance.ModPath = CurrentModPath
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

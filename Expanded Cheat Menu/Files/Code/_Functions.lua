@@ -1232,7 +1232,7 @@ do -- BuildingConsumption
       end
       obj[Concat("ChoGGi_mod_",name)] = nil
     end
-    local amount = DataInstances.BuildingTemplate[obj.encyclopedia_id][name]
+    local amount = Presets.BuildingTemplate[obj.build_category][obj.encyclopedia_id][name]
     obj:SetBase(name, amount)
   end
   local function RemoveConsumption(obj,name)

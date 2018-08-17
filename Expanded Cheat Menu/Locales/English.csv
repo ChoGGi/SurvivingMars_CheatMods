@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000222,,
 302535920001310,,
 302535920001311,,
 302535920001312,,
@@ -386,8 +387,7 @@ it having been an evening of some small energy expenditure, O my brothers.
 So we got rid of the auto and stopped off at the Korova for a nightcap.",
 302535920000156,%s: Aliens? We gotta deal with aliens too?,
 302535920000158,%s: No no I said over there.,
-302535920000159,"%s: Unlimited Wonders
-(restart to set disabled).",
+302535920000159,Unlimited Wonders,
 302535920000160,"%s: Freedom for spires!
 (restart to set disabled).",
 302535920000161,%s: Buildings Instant Build,
@@ -455,8 +455,7 @@ Works on any building that produces.",
 302535920000218,No Chance Of Break,
 302535920000219,will never break.,
 302535920000221,are built instantly.,
-302535920000222,Unlimited Wonders,
-302535920000223,Unlimited wonder build limit (restart game to toggle).,
+302535920000223,Unlimited wonder build limit.,
 302535920000224,Show Hidden Buildings,
 302535920000225,Show hidden buildings (restart game to toggle).,
 302535920000226,Build Spires Outside of Spire Point,

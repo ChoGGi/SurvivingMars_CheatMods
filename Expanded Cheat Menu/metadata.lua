@@ -10,10 +10,12 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-	"code", {"Init.lua"},
+	"code", {
+		"Init.lua",
+	},
 
   -- i leave this commented out to force users to read description and install helpermod (for now)
-	"lua_revision", LuaRevision,
+--~ 	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.

@@ -43,9 +43,7 @@ local function FileExists(file)
   end
 end
 
--- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
--- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
--- this is also used instead of "str .. str"; anytime you do that lua will check for the hashed string, if not then hash the new string, and store it till exit (which means this is faster, and uses less memory)
+-- this is used instead of "str .. str"; anytime you do that lua will check for the hashed string, if not then hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
 local function Concat(...)
   -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
@@ -75,6 +73,8 @@ ChoGGi = {
   _LICENSE = LICENSE,
   -- get version of mod from metadata.lua
   _VERSION = false,
+  -- is ECM working under the blacklist?
+  blacklist = Mods.ChoGGi_CheatMenu.env,
   -- constants
   Consts = false,
   -- default ECM settings
@@ -109,6 +109,7 @@ ChoGGi = {
     FileExists = FileExists,
     TableConcat = TableConcat,
     Concat = Concat,
+    DebugGetInfo = format_value,
   },
   -- orig funcs that get replaced
   OrigFuncs = {},
@@ -139,7 +140,7 @@ ChoGGi = {
 }
 local ChoGGi = ChoGGi
 ChoGGi._VERSION = Mods[ChoGGi.id].version
-ChoGGi.ModPath = Mods[ChoGGi.id].path
+ChoGGi.ModPath = Mods[ChoGGi.id].content_path
 ChoGGi.ExtractPath = Concat(ChoGGi.ModPath,"FilesHPK/")
 
 do -- load script files

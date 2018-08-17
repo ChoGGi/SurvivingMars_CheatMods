@@ -611,15 +611,21 @@ do -- SetEntity
         {text = Concat(" ",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
         {text = Concat(" ",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
       }
-      --EntityData
-      local Table = DataInstances.BuildingTemplate
-      for i = 1, #Table do
+      for key,value in pairs(EntityData) do
         entity_table[#entity_table+1] = {
-          text = Table[i].entity,
-          value = Table[i].entity,
+          text = key,
+          value = key,
           hint = hint_noanim
         }
       end
+--~       local Table = Presets.BuildingTemplate[asdsadsads]
+--~       for i = 1, #list do
+--~         entity_table[#entity_table+1] = {
+--~           text = list[i].entity,
+--~           value = list[i].entity,
+--~           hint = hint_noanim
+--~         }
+--~       end
     end
     local ItemList = entity_table
 

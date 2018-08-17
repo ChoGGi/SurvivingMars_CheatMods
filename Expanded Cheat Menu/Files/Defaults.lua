@@ -501,7 +501,7 @@ function OnMsg.OptionsApply()
   --get other defaults not stored in Consts
   ChoGGi.Consts.DroneFactoryBuildSpeed = g_Classes.DroneFactory:GetDefaultPropertyValue("performance")
   ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-  ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_speed")
+  ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("move_speed")
   ChoGGi.Consts.ShuttleHubShuttleCapacity = g_Classes.ShuttleHub:GetDefaultPropertyValue("max_shuttles")
   ChoGGi.Consts.GravityColonist = 0
   ChoGGi.Consts.GravityDrone = 0
@@ -522,27 +522,23 @@ function OnMsg.OptionsApply()
 end
 
 do -- AddOldSettings
-  --used to add old lists to new combined list
+  -- used to add old lists to new combined list
   local function AddOldSettings(ChoGGi,old_cat,new_name)
-    local DataInstances = DataInstances
-
---~     --is there anthing in the table?
---~     if type(ChoGGi.UserSettings[old_cat]) == "table" and next(ChoGGi.UserSettings[old_cat]) then
-      --then loop through it
-      for Key,Value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
-        --it likely doesn't exist, but check first and add a blank table
-        if not ChoGGi.UserSettings.BuildingSettings[Key] then
-          ChoGGi.UserSettings.BuildingSettings[Key] = {}
-        end
-        --add it to vistors list?
-        if new_name == "capacity" and DataInstances.BuildingTemplate[Key].max_visitors then
-          ChoGGi.UserSettings.BuildingSettings[Key].visitors = Value
-        else
-          ChoGGi.UserSettings.BuildingSettings[Key][new_name] = Value
-        end
+    local Presets = Presets
+    -- then loop through it
+    for key,value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
+      --it likely doesn't exist, but check first and add a blank table
+      if not ChoGGi.UserSettings.BuildingSettings[key] then
+        ChoGGi.UserSettings.BuildingSettings[key] = {}
       end
---~     end
-    --remove old settings
+      -- add it to vistors list?
+      if new_name == "capacity" and Presets.BuildingTemplate[g_Classes[key].build_category][key].max_visitors then
+        ChoGGi.UserSettings.BuildingSettings[key].visitors = value
+      else
+        ChoGGi.UserSettings.BuildingSettings[key][new_name] = value
+      end
+    end
+    -- remove old settings
     ChoGGi.UserSettings[old_cat] = nil
     return true
   end

@@ -37,7 +37,7 @@ local ChoGGi_MathFunctions = {
   _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_AddMathFunctions",
-  ModPath = Mods.ChoGGi_AddMathFunctions.path,
+  ModPath = CurrentModPath,
 }
 
 -- just in case they remove oldTableConcat

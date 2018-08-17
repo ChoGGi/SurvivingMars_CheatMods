@@ -14,6 +14,18 @@ Actions[#Actions+1] = {
   ActionSortKey = "99",
 }
 
+Actions[#Actions+1] = {
+  ActionMenubar = "Help",
+  ActionName = S[302535920000473--[[Reload ECM Menu--]]],
+  ActionId = "Help.Mod Upload",
+  ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+  RolloverText = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]]],
+  OnAction = function()
+    Msg("ShortcutsReloaded")
+  end,
+  ActionSortKey = "99",
+}
+
 local str_Help_Screenshot = "Help.Screenshot"
 Actions[#Actions+1] = {
   ActionMenubar = "Help",

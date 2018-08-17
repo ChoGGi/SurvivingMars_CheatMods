@@ -50,7 +50,6 @@ local function ConsolePopup(self)
       {
         name = 302535920001026--[[Show File Log--]],
         hint = 302535920001091--[[Flushes log to disk and displays in console log.--]],
---~             clicked = function(self,pos,button)
         clicked = ShowFileLog,
       },
       {
@@ -72,7 +71,9 @@ local function ConsolePopup(self)
       {
         name = 302535920000473--[[Reload ECM Menu--]],
         hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]],
-        clicked = ReloadShortcuts,
+        clicked = function()
+          Msg("ShortcutsReloaded")
+        end,
       },
       {name = " - "},
       {

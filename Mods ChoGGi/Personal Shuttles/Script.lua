@@ -79,7 +79,7 @@ end
 local PersonalShuttles = PersonalShuttles
 local Mods = Mods
 PersonalShuttles._VERSION = Mods[PersonalShuttles.id].version
-PersonalShuttles.ModPath = Mods[PersonalShuttles.id].path
+PersonalShuttles.ModPath = CurrentModPath
 
 local Concat = PersonalShuttles.ComFuncs.Concat
 

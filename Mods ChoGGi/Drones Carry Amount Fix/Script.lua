@@ -101,7 +101,7 @@ end
 local DronesCarryAmountFix = DronesCarryAmountFix
 local Mods = Mods
 DronesCarryAmountFix._VERSION = Mods[DronesCarryAmountFix.id].version
-DronesCarryAmountFix.ModPath = Mods[DronesCarryAmountFix.id].path
+DronesCarryAmountFix.ModPath = CurrentModPath
 local Concat = DronesCarryAmountFix.ComFuncs.Concat
 local FileExists = DronesCarryAmountFix.ComFuncs.FileExists
 

@@ -208,13 +208,13 @@ If you want to overwrite instead of append text: dumplua(Presets.TechPreset,"w")
 If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
 If you want to save the console text: Console>Write Logs (very helpful for examining an object)
 
-you can paste chunks of code in the console to test out (with DA you need spaces at the start):
-  local templates = DataInstances.BuildingTemplate
+you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
+  local templates = Presets.BuildingTemplate[1]
   for i = 1, #templates do
     local building = templates[i]
     print(building.name)
   end
-Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
+Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu (-- comments are fine).
 ```
 
 ##### Known issues

@@ -175,28 +175,32 @@ end
 
 function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   local ChoGGi = ChoGGi
-  local data = DataInstances.BuildingTemplate or empty_table
+
   local ItemList = {}
-  for Key,_ in pairs(data) do
-    if type(Key) == "string" and not GetBuildingTechsStatus(Key) then
-      ItemList[#ItemList+1] = {
-        text = T(data[Key].display_name),
-        value = Key
-      }
+  local temps = Presets.BuildingTemplate or ""
+  for i = 1, #temps do
+    for j = 1, #temps[i] do
+      local temp = temps[i][j]
+      if not GetBuildingTechsStatus(temp.encyclopedia_id) then
+        ItemList[#ItemList+1] = {
+          text = T(temp.display_name),
+          value = temp.encyclopedia_id
+        }
+      end
     end
   end
 
-  local function CallBackFunc(choice)
-     local value = choice[1].value
+  local function CallBackFunc(choices)
+    local value = choices[1].value
     if not value then
       return
     end
-    for i = 1, #choice do
-      UnlockBuilding(choice[i].value)
+    for i = 1, #choices do
+      UnlockBuilding(choices[i].value)
     end
     ChoGGi.CodeFuncs.BuildMenu_Toggle()
     MsgPopup(
-      S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
+      S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choices),
       8690--[[Protect--]],
       default_icon
     )
@@ -344,7 +348,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   end
 
   --get default amount
-  local template = DataInstances.BuildingTemplate[id]
+  local template = Presets.BuildingTemplate[sel.build_category][id]
   local DefaultSettingC = template[Concat("max_",CapType,"_charge")] / r
   local DefaultSettingD = template[Concat("max_",CapType,"_discharge")] / r
 
@@ -1026,23 +1030,25 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
   )
 end
 
+local function SetWonders(bool)
+  local wonders = Presets.BuildingTemplate.Wonders or ""
+  for i = 1, #wonders do
+    wonders[i].wonder = bool
+  end
+end
 function ChoGGi.MenuFuncs.Building_wonder_Toggle()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.Building_wonder then
     ChoGGi.UserSettings.Building_wonder = nil
-    --go through and reset to defaults?
+    SetWonders(true)
   else
     ChoGGi.UserSettings.Building_wonder = true
-    local tab = DataInstances.BuildingTemplate or ""
-    for i = 1, #tab do
-      tab[i].wonder = false
-    end
+    SetWonders(false)
   end
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
-    S[302535920000159--[[%s: Unlimited Wonders
-(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_wonder),
+    Concat(ChoGGi.UserSettings.Building_wonder,": ",S[302535920000159--[[Unlimited Wonders--]]]),
     3980--[[Buildings--]],
     default_icon3
   )
@@ -1073,9 +1079,27 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
   )
 end
 
+local function SetHiddenCat(str)
+  local hiddens = Presets.BuildingTemplate.Hidden or ""
+  for i = 1, #hiddens do
+    hiddens[i].build_category = str
+  end
+end
 function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   local ChoGGi = ChoGGi
-  ChoGGi.UserSettings.Building_hide_from_build_menu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_hide_from_build_menu)
+  if ChoGGi.UserSettings.Building_hide_from_build_menu then
+    ChoGGi.UserSettings.Building_hide_from_build_menu = nil
+    SetHiddenCat("Hidden")
+  else
+    ChoGGi.UserSettings.Building_hide_from_build_menu = true
+    local temps = Presets.BuildingTemplate or ""
+    for i = 1, #temps do
+      for j = 1, #temps[i] do
+        temps[i][j].hide_from_build_menu = false
+      end
+    end
+    SetHiddenCat("HiddenX")
+  end
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(

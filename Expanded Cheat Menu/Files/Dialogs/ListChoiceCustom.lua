@@ -119,7 +119,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
       local value = ChoGGi.ComFuncs.RetProperType(text)
       if self.custom_type > 0 then
         if #self.idList.selection > 0 then
-          self.items[self.idList.selection[1]].value = value
+          self.idList[self.idList.selection[1]].item.value = value
         end
       else
         -- last item is a blank item for custom value
@@ -131,6 +131,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
         local item = self.items[#self.items]
         local listitem = self.idList[#self.idList]
         listitem[1]:SetText(item.text)
+        listitem.item = item
         listitem.RolloverText = ChoGGi.ComFuncs.CheckText(item.hint)
       end
 
@@ -188,7 +189,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
         return
       end
       -- update item value (probably useless now that it's automagical)
-      self.items[self.idList.selection[1]].value = color
+      self.idList[self.idList.selection[1]].item.value = color
       -- update object colour
       self:idColorPickerOnColorChanged()
     end,
@@ -230,7 +231,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   -- fiddling with custom_type
   if self.custom_type == 2 or self.custom_type == 5 then
     self.idList:SetSelection(1, true)
-    self.sel = self.items[self.idList.selection[1]]
+    self.sel = self.idList[self.idList.selection[1]].item
     self.idEditValue:SetText(tostring(self.sel.value))
     self:UpdateColourPicker()
     if self.custom_type == 2 then
@@ -284,6 +285,7 @@ function ChoGGi_ListChoiceCustomDialog:BuildList(skip)
   self.idList:Clear()
   for i = 1, #self.items do
     local listitem = self.idList:CreateTextItem(self.items[i].text)
+    listitem.item = self.items[i]
     listitem.RolloverText = self:UpdateHintText(self.items[i])
   end
 end
@@ -318,11 +320,9 @@ end
 
 function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
   self:BuildList(true)
-  -- loop through all the list items and set ones without the text to invis (i turned on the clip when invis in OnMsgs.lua)
---~   txt = txt:lower()
+  -- loop through all the list items and remove any we can't find
   for i = #self.idList, 1, -1 do
     local li = self.idList[i]
---~     if not li[1].text:lower():find(txt,1,true) then
     if not li[1].text:find_lower(txt) then
       table.remove(self.idList,i)
     end
@@ -337,30 +337,30 @@ function ChoGGi_ListChoiceCustomDialog:idColorPickerOnColorChanged()
   if self.custom_type == 2 then
     if not self.obj then
       -- grab the object from the last list item
-      self.obj = self.items[#self.items].obj
+      self.obj = self.idList[#self.idList].item.obj
     end
     local SetPal = self.obj.SetColorizationMaterial
-    local items = self.items
+    local items = self.idList
     ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
     for i = 1, 4 do
-      local Color = items[i].value
-      local Metallic = items[i+4].value
-      local Roughness = items[i+8].value
+      local Color = items[i].item.value
+      local Metallic = items[i+4].item.value
+      local Roughness = items[i+8].item.value
       SetPal(self.obj,i,Color,Roughness,Metallic)
     end
-    self.obj:SetColorModifier(self.items[#self.items].value)
+    self.obj:SetColorModifier(self.idList[#self.idList].item.value)
   elseif self.custom_type == 5 then
     self:BuildAndApplyLightmodel()
   end
 end
 
 function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDown(button)
-  if button ~= "L" or #self.idList.selection == 0 then
+  if button ~= "L" or #self.idList.selection < 1 then
     return
   end
 
   -- update selection (select last selected if multisel)
-  self.sel = self.items[self.idList.selection[#self.idList.selection]]
+  self.sel = self.idList[self.idList.selection[#self.idList.selection]].item
   -- update the custom value box
   self.idEditValue:SetText(tostring(self.sel.value))
   if self.custom_type > 0 then
@@ -461,16 +461,17 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
   -- always start with blank choices
   self.choices = {}
   -- get sel item(s)
-  local items
+  local items = {}
   if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
-    items = {}
     -- loop through and add all selected items to the list
     for i = 1, #self.idList.selection do
-      items[#items+1] = self.items[self.idList.selection[i]]
+      items[#items+1] = self.idList[self.idList.selection[i]].item
     end
   else
-    -- get all items
-    items = self.items
+    -- get all (visible) items
+    for i = 1, #self.idList do
+      items[#items+1] = self.idList[i].item
+    end
   end
   -- attach other stuff to first item
 

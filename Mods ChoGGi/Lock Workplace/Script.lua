@@ -77,7 +77,7 @@ LockWorkplace = {
 local LockWorkplace = LockWorkplace
 local Mods = Mods
 LockWorkplace._VERSION = Mods[LockWorkplace.id].version
-LockWorkplace.ModPath = Mods[LockWorkplace.id].path
+LockWorkplace.ModPath = CurrentModPath
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

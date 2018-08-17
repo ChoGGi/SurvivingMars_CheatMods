@@ -12,26 +12,29 @@ local Msg = Msg
 
 local OnMsg = OnMsg
 
--- use this message to mess with the classdefs (before classes are built)
-function OnMsg.ClassesGenerate()
-  -- for some reason rollovers don't just use the default template (i don't want to set this for everything that i want a hint on)
-  XRollover.RolloverTemplate = "Rollover"
-  -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
-  XRolloverWindow.ZOrder = max_int
-  -- when it's not visible it doesn't take up space
+-- for some reason rollovers don't just use the default template (i don't want to set this for everything that i want a hint on)
+XRollover.RolloverTemplate = "Rollover"
+-- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
+XRolloverWindow.ZOrder = max_int
+
+-- when it's not visible it doesn't take up space
 --~   XListItem.FoldWhenHidden = true
-  -- changed from 2000000
-  ConsoleLog.ZOrder = 2
-  Console.ZOrder = 3
-  -- changed from 10000000
-  XShortcutsHost.ZOrder = 4
-  -- make cheats menu look like older one (more gray, less white)
-  local dark_gray = -9868951
-  XMenuBar.Background = dark_gray
-  XMenuBar.TextColor = -1
-  XPopupMenu.Background = dark_gray
-  XPopupMenu.TextColor = -1
-end
+
+-- changed from 2000000
+ConsoleLog.ZOrder = 2
+Console.ZOrder = 3
+-- changed from 10000000
+XShortcutsHost.ZOrder = 4
+-- make cheats menu look like older one (more gray, less white)
+local dark_gray = -9868951
+XMenuBar.Background = dark_gray
+XMenuBar.TextColor = -1
+XPopupMenu.Background = dark_gray
+XPopupMenu.TextColor = -1
+
+-- use this message to mess with the classdefs (before classes are built)
+--~ function OnMsg.ClassesGenerate()
+--~ end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
@@ -258,8 +261,8 @@ local function Rebuildshortcuts()
   XShortcutsTarget:UpdateToolbar()
   -- got me
   XShortcutsThread = false
-
 end
+
 function OnMsg.ShortcutsReloaded()
   Rebuildshortcuts()
 end
@@ -864,6 +867,21 @@ do -- LoadGame/CityStart
     if not UICity then
       return
     end
+PlaceObj('Sound', {
+	'name', "Object PreciousExtractor Select",
+	'type', "ObjectOperation",
+	'volume', 150,
+	'mindistance', 2500,
+}, {
+	PlaceObj('Sample', {
+		'file', "Sounds/Objects/ExtractorPrecious/extractorUniversal_select1",
+		'frequency', 50,
+	}),
+	PlaceObj('Sample', {
+		'file', "Sounds/Objects/ExtractorPrecious/extractorUniversal_select2",
+		'frequency', 50,
+	}),
+	})
 
     -- a place to store per-game values
     if not UICity.ChoGGi then
@@ -1203,25 +1221,27 @@ do -- LoadGame/CityStart
     end
 
     --override building templates
-    table_temp = DataInstances.BuildingTemplate or ""
+    table_temp = Presets.BuildingTemplate or ""
     for i = 1, #table_temp do
-      local temp = table_temp[i]
+      for j = 1, #table_temp[i] do
+        local temp = table_temp[i][j]
 
-      --make hidden buildings visible
-      if UserSettings.Building_hide_from_build_menu then
-        BuildMenuPrerequisiteOverrides["StorageMysteryResource"] = true
-        BuildMenuPrerequisiteOverrides["MechanizedDepotMysteryResource"] = true
-        if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
-          temp.hide_from_build_menu = nil
+        --make hidden buildings visible
+        if UserSettings.Building_hide_from_build_menu then
+          BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
+          BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+          if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
+            temp.hide_from_build_menu = nil
+          end
+          if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
+            temp.build_category = "HiddenX"
+          end
         end
-        if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
-          temp.build_category = "HiddenX"
-        end
-      end
 
-      --wonder building limit
-      if UserSettings.Building_wonder then
-        temp.wonder = nil
+        --wonder building limit
+        if UserSettings.Building_wonder then
+          temp.wonder = nil
+        end
       end
     end
 

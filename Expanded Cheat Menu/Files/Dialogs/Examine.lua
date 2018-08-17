@@ -277,7 +277,7 @@ function Examine:idToolsMenuClicked(button)
       name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]],
       clicked = function()
-        local str = self:totextex(self.obj)
+        local str = self:totextex(self.obj,ChoGGi)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
         ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
@@ -297,7 +297,7 @@ This can take time on something like the "Building" metatable--]]],
       name = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]],
       clicked = function()
-        local str = self:totextex(self.obj)
+        local str = self:totextex(self.obj,ChoGGi)
         --remove html tags
         str = str:gsub("<[/%s%a%d]*>","")
         ChoGGi.ComFuncs.OpenInMultiLineTextDlg({
@@ -521,19 +521,30 @@ function Examine:valuetotextex(o)
   local obj_type = type(o)
 
   if obj_type == "function" then
-    local debug_info = debug.getinfo(o, "Sn")
-    return Concat(
-      self:HyperLink(function(_,_,button)
-        Examine_valuetotextex(_,_,button,o,self)
-      end),
-      tostring(debug_info.name or debug_info.name_what or S[302535920000063--[[unknown name--]]]),
-      "@",
-      debug_info.short_src,
-      "(",
-      debug_info.linedefined,
-      ")",
-      HLEnd
-    )
+
+    if ChoGGi.blacklist then
+      return Concat(
+        self:HyperLink(function(_,_,button)
+          Examine_valuetotextex(_,_,button,o,self)
+        end),
+        ChoGGi.ComFuncs.DebugGetInfo(o),
+        HLEnd
+      )
+    else
+      local debug_info = debug.getinfo(o, "Sn")
+      return Concat(
+        self:HyperLink(function(_,_,button)
+          Examine_valuetotextex(_,_,button,o,self)
+        end),
+        tostring(debug_info.name or debug_info.name_what or S[302535920000063--[[unknown name--]]]),
+        "@",
+        debug_info.short_src,
+        "(",
+        debug_info.linedefined,
+        ")",
+        HLEnd
+      )
+    end
 
   elseif obj_type == "thread" then
     return Concat(
@@ -665,23 +676,29 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level, info, o,self)
-  local data = {}
-  local l = 1
-  while true do
-    local name, val = debug.getlocal(o, level, l)
-    if name then
-      data[name] = val
-      l = l + 1
-    else
-      break
+  local data
+  if ChoGGi.blacklist then
+    data = {luadebugger.Enum(luadebugger:new(),o,"")()}
+  else
+    data = {}
+    local l = 1
+    while true do
+      local name, val = debug.getlocal(o, level, l)
+      if name then
+        data[name] = val
+        l = l + 1
+      else
+        break
+      end
+    end
+    for i = 1, info.nups do
+      local name, val = debug.getupvalue(info.func, i)
+      if name ~= nil and val ~= nil then
+        data[Concat(name,"(up)")] = val
+      end
     end
   end
-  for i = 1, info.nups do
-    local name, val = debug.getupvalue(info.func, i)
-    if name ~= nil and val ~= nil then
-      data[Concat(name,"(up)")] = val
-    end
-  end
+
   return function()
     ChoGGi.ComFuncs.OpenInExamineDlg(data, self)
   end
@@ -691,7 +708,8 @@ local function Examine_totextex(o,self)
   ChoGGi.ComFuncs.OpenInExamineDlg(o, self)
 end
 
-function Examine:totextex(o)
+function Examine:totextex(o,ChoGGi)
+  local luabug = luadebugger:new()
   local res = {}
   local sort = {}
   local obj_metatable = getmetatable(o)
@@ -714,54 +732,70 @@ function Examine:totextex(o)
 
   elseif obj_type == "thread" then
 
-    local info, level = true, 0
-    while true do
-      info = debug.getinfo(o, level, "Slfun")
-      if info then
-        res[#res+1] = Concat(
-          self:HyperLink(function(level, info)
-            ExamineThreadLevel_totextex(level, info, o,self)
-          end),
-          self:HyperLink(ExamineThreadLevel_totextex(level, info, o,self)),
-          info.short_src,
-          "(",
-          info.currentline,
-          ") ",
-          (info.name or info.name_what or S[302535920000063--[[unknown name--]]]),
-          HLEnd
-        )
-      else
-        res[#res+1] = Concat("<color 255 255 255>\nThread info: ",
-          "\nIsValidThread(): ",IsValidThread(o),
-          "\nGetThreadStatus(): ",GetThreadStatus(o),
-          "\nIsGameTimeThread(): ",IsGameTimeThread(o),
-          "\nIsRealTimeThread(): ",IsRealTimeThread(o),
-          "\nThreadHasFlags(): ",ThreadHasFlags(o),
-          "</color>"
-        )
-        break
+    if ChoGGi.blacklist then
+      res[#res+1] = Concat(
+        self:HyperLink(function(level, info)
+          ExamineThreadLevel_totextex(nil, nil, o, self)
+        end),
+        self:HyperLink(ExamineThreadLevel_totextex(nil, nil, o, self)),
+        ChoGGi.ComFuncs.DebugGetInfo(o),
+        HLEnd
+      )
+    else
+      local info, level = true, 0
+      while true do
+        info = debug.getinfo(o, level, "Slfun")
+        if info then
+          res[#res+1] = Concat(
+            self:HyperLink(function(level, info)
+              ExamineThreadLevel_totextex(level, info, o,self)
+            end),
+            self:HyperLink(ExamineThreadLevel_totextex(level, info, o,self)),
+            info.short_src,
+            "(",
+            info.currentline,
+            ") ",
+--~             (info.name or info.name_what or S[302535920000063--[[unknown name--]]]),
+            info.name or info.name_what or S[302535920000063--[[unknown name--]]],
+            HLEnd
+          )
+        else
+          break
+        end
+        level = level + 1
       end
-      level = level + 1
     end
 
+    res[#res+1] = Concat("<color 255 255 255>\nThread info: ",
+      "\nIsValidThread(): ",IsValidThread(o),
+      "\nGetThreadStatus(): ",GetThreadStatus(o),
+      "\nIsGameTimeThread(): ",IsGameTimeThread(o),
+      "\nIsRealTimeThread(): ",IsRealTimeThread(o),
+      "\nThreadHasFlags(): ",ThreadHasFlags(o),
+      "</color>"
+    )
+
   elseif obj_type == "function" then
-
-    local i = 1
-    while true do
-      local k, v = debug.getupvalue(o, i)
-      if k then
-        res[#res+1] = Concat(
-          self:valuetotextex(k),
-          " = ",
-          self:valuetotextex(v)
-        )
-      else
-        res[#res+1] = self:valuetotextex(o)
-        break
+    if ChoGGi.blacklist then
+      local _,upvalue = luabug:Enum(o,"")()
+      res[#res+1] = self:valuetotextex(upvalue)
+    else
+      local i = 1
+      while true do
+        local k, v = debug.getupvalue(o, i)
+        if k then
+          res[#res+1] = Concat(
+            self:valuetotextex(k),
+            " = ",
+            self:valuetotextex(v)
+          )
+        else
+          res[#res+1] = self:valuetotextex(o)
+          break
+        end
+        i = i + 1
       end
-      i = i + 1
-    end --while
-
+    end
   end
 
   table.sort(res, function(a, b)
@@ -824,9 +858,13 @@ function Examine:totextex(o)
   -- add some extra info for funcs
   elseif obj_type == "function" then
     local dbg_value = "\ndebug.getinfo: "
-    local dbg_table = debug.getinfo(o) or empty_table
-    for key,value in pairs(dbg_table) do
-      dbg_value = Concat(dbg_value,"\n",key,": ",value)
+    if ChoGGi.blacklist then
+      dbg_value = Concat(dbg_value,ChoGGi.ComFuncs.DebugGetInfo(o))
+    else
+      local dbg_table = debug.getinfo(o) or empty_table
+      for key,value in pairs(dbg_table) do
+        dbg_value = Concat(dbg_value,"\n",key,": ",value)
+      end
     end
     res[#res+1] = dbg_value
   end
@@ -927,7 +965,7 @@ end
 function Examine:SetObj(o)
   o = o or self.obj
   self.onclick_handles = {}
-  self.idText:SetText(self:totextex(o))
+  self.idText:SetText(self:totextex(o,ChoGGi))
   self.idLinks:SetText(self:menu(o))
 
   local is_table = type(o) == "table"

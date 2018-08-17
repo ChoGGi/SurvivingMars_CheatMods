@@ -77,7 +77,7 @@ ForceNewDome = {
 local ForceNewDome = ForceNewDome
 local Mods = Mods
 ForceNewDome._VERSION = Mods[ForceNewDome.id].version
-ForceNewDome.ModPath = Mods[ForceNewDome.id].path
+ForceNewDome.ModPath = CurrentModPath
 
 do -- Concat
   -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat

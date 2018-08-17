@@ -3,6 +3,12 @@
 
 ## v8.2 (Unreleased)
 
+#### Fixed:
+- Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.
+- Shuttle speed didn't work (thanks hchsiao).
+- Also fixed a bunch of building cheats (devs moved templates from DataInstances to Presets).
+- The list dialog filter text wasn't working properly (getting values from full list instead of visible list).
+
 ## v8.1 (16 Aug 2018)
 #### Added:
 - ECM will now always show a msg in the log telling user how to turn off the log.

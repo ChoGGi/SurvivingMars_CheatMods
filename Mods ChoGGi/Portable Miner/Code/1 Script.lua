@@ -77,5 +77,5 @@ ChoGGi_Miner = {
 local ChoGGi_Miner = ChoGGi_Miner
 local Mods = Mods
 ChoGGi_Miner._VERSION = Mods[ChoGGi_Miner.id].version
-ChoGGi_Miner.ModPath = Mods[ChoGGi_Miner.id].path
+ChoGGi_Miner.ModPath = CurrentModPath
 

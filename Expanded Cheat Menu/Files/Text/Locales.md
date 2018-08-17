@@ -18,7 +18,7 @@ CHANGE 11111111 to some random arsed number, or use whatever you already use in 
 
 At the tippy top of your ModItemCode file add this (or something like it)
 
-local ModPath = Mods[YOUR_MOD_ID].path
+local ModPath = CurrentModPath
 local function FileExists(file)
   _,file = AsyncFileOpen(file)
   return file

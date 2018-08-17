@@ -154,6 +154,7 @@ function ChoGGi.ComFuncs.RetName(obj)
   end
 
   if type(obj) == "table" then
+
     local name_type = type(obj.name)
 
     -- custom name from user (probably)

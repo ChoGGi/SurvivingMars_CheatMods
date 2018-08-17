@@ -56,7 +56,7 @@ function ChoGGi.MenuFuncs.AddDeposit(sType)
 end
 
 --fixup name we get from Object
-function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname)
+function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname,build_category)
   --we want template_name or we have to guess from the placeobj name
   local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
   if not tempname then
@@ -67,31 +67,33 @@ function ChoGGi.MenuFuncs.ConstructionModeNameClean(itemname)
   if tempname:find("Deposit") then
     ChoGGi.MenuFuncs.AddDeposit(tempname)
   else
-    ChoGGi.MenuFuncs.ConstructionModeSet(tempname)
+    ChoGGi.MenuFuncs.ConstructionModeSet(tempname,build_category)
   end
 end
 
 --place item under the mouse for construction
-function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
+function ChoGGi.MenuFuncs.ConstructionModeSet(itemname,build_category)
   --make sure it's closed so we don't mess up selection
   pcall(function()
     CloseXBuildMenu()
   end)
-  --fix up some names
+  -- fix up some names
   local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
   if fixed then
     itemname = fixed
   end
-  --n all the rest
+  -- n all the rest
   local igi = Dialogs.InGameInterface
   if not igi or not igi:GetVisible() then
     return
   end
-  local bld_template = DataInstances.BuildingTemplate[itemname]
-  --local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
-  local _,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
-  --if show then --interferes with building passageramp
+  local bld_template = Presets.BuildingTemplate[build_category][itemname]
+  --local show,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+  local _,_,can_build,action = UIGetBuildingPrerequisites(build_category,bld_template,true)
+
+  -- interferes with building passage ramp
+  --if show then
     local dlg = Dialogs.XBuildMenu
     if action then
       action(dlg,{
@@ -173,7 +175,7 @@ Actions[#Actions+1] = {
   OnAction = function()
     local last = UICity.LastConstructedBuilding
     if last.entity then
-      ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id or last.entity)
+      ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id or last.entity,last.build_category)
     end
   end,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding,
@@ -187,12 +189,8 @@ Actions[#Actions+1] = {
     local sel = ChoGGi.CodeFuncs.SelObject()
     if sel then
       ChoGGi.Temp.LastPlacedObject = sel
-      ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
+      ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel),sel.build_category)
     end
   end,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastPlacedObject,
 }
-
---~   if XTemplates.DeveloperShortcuts then
---~     XTemplateSpawn("DeveloperShortcuts", XShortcutsTarget)
---~   end

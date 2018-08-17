@@ -10,7 +10,7 @@ DefineClass.ChoGGi_FindValueDlg = {
   __parents = {"ChoGGi_Window"},
   obj = false,
   obj_name = false,
-  dialog_width = 500,
+  dialog_width = 525,
   dialog_height = 80,
 }
 

@@ -89,7 +89,7 @@ Terraformer = {
 }
 local Terraformer = Terraformer
 Terraformer._VERSION = Mods[Terraformer.id].version
-Terraformer.ModPath = Mods[Terraformer.id].path
+Terraformer.ModPath = CurrentModPath
 
 do -- translate
   local locale_path = Concat(Terraformer.ModPath,"Locales/%s.csv")

@@ -386,7 +386,7 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = str_ExpandedCM_Buildings,
-  ActionName = S[302535920000222--[[Unlimited Wonders--]]],
+  ActionName = S[302535920000159--[[Unlimited Wonders--]]],
   ActionId = "Expanded CM.Buildings.Unlimited Wonders",
   ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
   RolloverText = function()

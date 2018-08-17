@@ -77,7 +77,7 @@ SolariaTelepresence = {
 local SolariaTelepresence = SolariaTelepresence
 local Mods = Mods
 SolariaTelepresence._VERSION = Mods[SolariaTelepresence.id].version
-SolariaTelepresence.ModPath = Mods[SolariaTelepresence.id].path
+SolariaTelepresence.ModPath = CurrentModPath
 SolariaTelepresence.MountPath = SolariaTelepresence.ModPath
 
 do -- Concat
