@@ -43,30 +43,14 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   SaveOrigFunc("UIGetBuildingPrerequisites")
-  SaveOrigFunc("XTemplateSpawn")
+--~   SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
-  -- that GedToolbarRollover shit don't do shit
-  function XTemplateSpawn(template_or_class, parent, context)
-    parent = parent or terminal.desktop
-    local template = XTemplates[template_or_class]
-    if template then
-      if type(template.Eval) == "function" then
-        -- changed
-        template = template:Eval(parent, context)
-        template.RolloverTemplate = "Rollover"
-        return template
-        -- return template:Eval(parent, context)
-      elseif ChoGGi.testing then
-        print("ECM BORKED XTemplateSpawn: ",template_or_class)
-      end
-    else
-      local class = g_Classes[template_or_class]
-      if class then
-        return class:new({}, parent, context)
-      end
-    end
-  end
+--~   -- if i need the names of xelements
+--~   function XTemplateSpawn(template_or_class, parent, context)
+--~     print(template_or_class)
+--~     return ChoGGi_OrigFuncs.XTemplateSpawn(template_or_class, parent, context)
+--~   end
 
   -- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
   function UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
@@ -179,11 +163,13 @@ do --funcs without a class
     SetTrans(ret)
     return table.unpack(ret)
   end
+
   --console stuff
   function ShowConsoleLog(...)
     ChoGGi_OrigFuncs.ShowConsoleLog(...)
     SetTrans(dlgConsoleLog)
   end
+
 end -- do
 
 --Gen

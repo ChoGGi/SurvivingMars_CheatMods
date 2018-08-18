@@ -13,8 +13,9 @@ local Msg = Msg
 
 local OnMsg = OnMsg
 
--- for some reason rollovers don't just use the default template (i don't want to set this for everything that i want a hint on)
-XRollover.RolloverTemplate = "Rollover"
+-- be too annoying to add templates to all of these manually
+XMenuEntry.RolloverTemplate = "Rollover"
+XListItem.RolloverTemplate = "Rollover"
 -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 XRolloverWindow.ZOrder = max_int
 
@@ -1024,6 +1025,7 @@ do -- LoadGame/CityStart
         Actions[i].ActionTranslate = false
         Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
         Actions[i].RolloverTranslate = false
+--~         Actions[i].RolloverTemplate = "Rollover"
         Actions[i].replace_matching_id = true
       end
 

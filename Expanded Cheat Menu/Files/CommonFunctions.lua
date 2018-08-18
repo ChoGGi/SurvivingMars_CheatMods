@@ -264,87 +264,85 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 end
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-do --g_Classes
+function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
+  local ChoGGi = ChoGGi
   local g_Classes = g_Classes
+  local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
+  local ShowMe = ChoGGi.ComFuncs.ShowMe
+  local ViewObjectMars = ViewObjectMars
+  local black = black
 
-  function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
-    local ChoGGi = ChoGGi
-    local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
-    local ShowMe = ChoGGi.ComFuncs.ShowMe
-    local ViewObjectMars = ViewObjectMars
-    local black = black
+  local popup = g_Classes.XPopupList:new({
+    Opened = true,
+    Id = popup_id,
+    ZOrder = max_int - 1000,
+    LayoutMethod = "VList",
+  }, terminal.desktop)
 
-    local popup = g_Classes.XPopupList:new({
-      Opened = true,
-      Id = popup_id,
-      ZOrder = max_int - 1000,
-      LayoutMethod = "VList",
-    }, terminal.desktop)
+  for i = 1, #items do
+    local item = items[i]
+    local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
+    -- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
+    local button = cls:new({
+      TextColor = black,
+      RolloverText = CheckText(item.hint),
+      Text = CheckText(item.name),
+      OnMouseButtonUp = function()
+        popup:Close()
+      end,
+    }, popup.idContainer)
 
-    for i = 1, #items do
-      local item = items[i]
-      local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
-      -- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
-      local button = cls:new({
-        TextColor = black,
-        RolloverText = CheckText(item.hint),
-        Text = CheckText(item.name),
-        OnMouseButtonUp = function()
-          popup:Close()
-        end,
-      }, popup.idContainer)
-
-      if item.clicked then
-        button.OnMouseButtonDown = item.clicked
-      end
-
-      if item.showme then
-        function button.OnMouseEnter(self, pt, child)
-          cls.OnMouseEnter(self, pt, child)
-          ClearShowMe()
-          ShowMe(item.showme, nil, true, true)
-        end
-      elseif item.pos then
-        function button.OnMouseEnter(self, pt, child)
-          cls.OnMouseEnter(self, pt, child)
-          ViewObjectMars(item.pos)
-        end
-      end
-
-      -- i just love checkmarks
-      if item.value then
-
-        local is_vis
-        local value
-
-        if type(item.value) == "table" then
-          value = ChoGGi.UserSettings[item.value[1]]
-        else
-          value = _G[item.value]
-        end
-
-        if type(value) == "table" then
-          if value.visible then
-            is_vis = true
-          end
-        else
-          if value then
-            is_vis = true
-          end
-        end
-
-
-        if is_vis then
-          button:SetCheck(true)
-        else
-          button:SetCheck(false)
-        end
-      end
-
+    if item.clicked then
+      button.OnMouseButtonDown = item.clicked
     end
 
-    popup:SetAnchor(parent.box)
-    popup:SetAnchorType(anchor or "top")
+    if item.showme then
+      function button.OnMouseEnter(self, pt, child)
+        cls.OnMouseEnter(self, pt, child)
+        ClearShowMe()
+        ShowMe(item.showme, nil, true, true)
+      end
+    elseif item.pos then
+      function button.OnMouseEnter(self, pt, child)
+        cls.OnMouseEnter(self, pt, child)
+        ViewObjectMars(item.pos)
+      end
+    end
+
+    -- i just love checkmarks
+    if item.value then
+
+      local is_vis
+      local value
+
+      if type(item.value) == "table" then
+        value = ChoGGi.UserSettings[item.value[1]]
+      else
+        value = _G[item.value]
+      end
+
+      if type(value) == "table" then
+        if value.visible then
+          is_vis = true
+        end
+      else
+        if value then
+          is_vis = true
+        end
+      end
+
+
+      if is_vis then
+        button:SetCheck(true)
+      else
+        button:SetCheck(false)
+      end
+    end
+
+  end
+
+  popup:SetAnchor(parent.box)
+  popup:SetAnchorType(anchor or "top")
 --~     "smart",
 --~     "left",
 --~     "right",
@@ -353,65 +351,64 @@ do --g_Classes
 --~     "bottom",
 --~     "mouse"
 
-    popup:Open()
-    popup:SetFocus()
+  popup:Open()
+  popup:SetFocus()
 --~     return popup
-  end
+end
 
-  function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
-    if not o then
-      return ChoGGi.ComFuncs.ClearShowMe()
+function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
+  if not o then
+    return ChoGGi.ComFuncs.ClearShowMe()
+  end
+  local g_Classes = g_Classes
+
+  if type(o) == "table" and #o == 2 then
+    if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
+      local m = g_Classes.Vector:new()
+      m:Set(o[1], o[2], color)
+      markers[m] = "vector"
+      o = m
+    end
+  else
+    -- both is for objs i also want a sphere over
+    if IsPoint(o) or both then
+      local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
+      if o2 and terrain_IsPointInBounds(o2) then
+        local m = g_Classes.Sphere:new()
+        m:SetPos(o2)
+        m:SetRadius(50 * guic)
+        m:SetColor(color or RGB(0, 255, 0))
+        markers[m] = "point"
+        if not time then
+          ViewObjectMars(o2)
+        end
+        o2 = m
+      end
     end
 
-    if type(o) == "table" and #o == 2 then
-      if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
-        local m = g_Classes.Vector:new()
-        m:Set(o[1], o[2], color)
-        markers[m] = "vector"
-        o = m
-      end
-    else
-      -- both is for objs i also want a sphere over
-      if IsPoint(o) or both then
-        local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
-        if o2 and terrain_IsPointInBounds(o2) then
-          local m = g_Classes.Sphere:new()
-          m:SetPos(o2)
-          m:SetRadius(50 * guic)
-          m:SetColor(color or RGB(0, 255, 0))
-          markers[m] = "point"
-          if not time then
-            ViewObjectMars(o2)
-          end
-          o2 = m
-        end
-      end
-
-      if IsValid(o) then
-        markers[o] = markers[o] or o:GetColorModifier()
-        o:SetColorModifier(color or RGB(0, 255, 0))
-        local pos = o:GetVisualPos()
-        if not time and terrain_IsPointInBounds(pos) then
-          ViewObjectMars(pos)
-        end
+    if IsValid(o) then
+      markers[o] = markers[o] or o:GetColorModifier()
+      o:SetColorModifier(color or RGB(0, 255, 0))
+      local pos = o:GetVisualPos()
+      if not time and terrain_IsPointInBounds(pos) then
+        ViewObjectMars(pos)
       end
     end
-  --~   lm = o
   end
+--~   lm = o
+end
 
-  -- show a circle for time and delete it
-  function ChoGGi.ComFuncs.Circle(pos, radius, color, time)
-    local c = g_Classes.Circle:new()
-    c:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
-    c:SetRadius(radius or 1000)
-    c:SetColor(color or white)
-    DelayedCall(time or 50000, function()
-      if IsValid(c) then
-        c:delete()
-      end
-    end)
-  end
-
+-- show a circle for time and delete it
+function ChoGGi.ComFuncs.Circle(pos, radius, color, time)
+  local c = Circle:new()
+  c:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
+  c:SetRadius(radius or 1000)
+  c:SetColor(color or white)
+  DelayedCall(time or 50000, function()
+    if IsValid(c) then
+      c:delete()
+    end
+  end)
 end
 
 -- centred msgbox with Ok, and optional image
@@ -1643,4 +1640,8 @@ function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
 --~       return not IsKindOf(o, "Collection")
 --~     end,
 
+end
+
+function ChoGGi.ComFuncs.OpenKeyPresserDlg()
+  ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
 end

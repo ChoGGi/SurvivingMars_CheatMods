@@ -275,10 +275,12 @@ function Examine:idToolsMenuClicked(button)
       name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to AppData/DumpedExamine.lua--]]],
       clicked = function()
-        local str = self:totextex(self.obj,ChoGGi)
-        --remove html tags
-        str = str:gsub("<[/%s%a%d]*>","")
-        ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+        CreateRealTimeThread(function()
+          local str = self:totextex(self.obj,ChoGGi)
+          --remove html tags
+          str = str:gsub("<[/%s%a%d]*>","")
+          ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+        end)
       end,
     },
     {
@@ -295,20 +297,22 @@ This can take time on something like the "Building" metatable--]]],
       name = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]]],
       clicked = function()
-        local str = self:totextex(self.obj,ChoGGi)
-        --remove html tags
-        str = str:gsub("<[/%s%a%d]*>","")
-        ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-          checkbox = true,
-          text = str,
-          title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
-          hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
-          custom_func = function(answer,overwrite)
-            if answer then
-              ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
-            end
-          end,
-        }
+        CreateRealTimeThread(function()
+          local str = self:totextex(self.obj,ChoGGi)
+          --remove html tags
+          str = str:gsub("<[/%s%a%d]*>","")
+          ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+            checkbox = true,
+            text = str,
+            title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
+            hint_ok = 302535920000047--[["View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text)."--]],
+            custom_func = function(answer,overwrite)
+              if answer then
+                ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+              end
+            end,
+          }
+        end)
       end,
     },
     {

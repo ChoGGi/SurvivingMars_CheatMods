@@ -25,6 +25,10 @@ return PlaceObj("ModDef", {
 		"Files/Dialogs/FindValue.lua",
 		"Files/Dialogs/ListChoiceCustom.lua",
 		"Files/Dialogs/MultiLineText.lua",
+
+    -- temp added to check out keys for XXXUnknownXXX
+		"Files/Dialogs/KeyPresser.lua",
+
 --~ 		"Files/Dialogs/MonitorInfo.lua",
 --~ 		"Files/Dialogs/ObjectManipulator.lua",
     -- stuff that can come later

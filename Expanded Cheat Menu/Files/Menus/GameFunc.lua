@@ -42,13 +42,13 @@ do -- AnnoyingSounds_Toggle
     end
   end
 
-  --Data\Sound.lua, and Lua\Config\__SoundTypes.lua
-  --test sounds:
-  --~ local function TestSound(snd)
-  --~   StopSound(ChoGGi.Temp.Sound)
-  --~   ChoGGi.Temp.Sound = PlaySound(snd,"UI")
-  --~ end
-  --~ TestSound("Object MOXIE Loop")
+--~   -- Data\Sound.lua, and Lua\Config\__SoundTypes.lua
+--~   -- test sounds:
+--~   local function TestSound(snd)
+--~     StopSound(ChoGGi.Temp.Sound)
+--~     ChoGGi.Temp.Sound = PlaySound(snd,"UI")
+--~   end
+--~   TestSound("Object MOXIE Loop")
 
   function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
     local ChoGGi = ChoGGi

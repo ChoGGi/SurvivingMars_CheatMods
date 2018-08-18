@@ -46,6 +46,7 @@ DefineClass.ChoGGi_MultiLineEdit = {
 
   MaxLen = -1,
   MaxLines = -1,
+  RolloverTemplate = "Rollover",
 }
 --~ function ChoGGi_MultiLineEdit:InsertStrAtCaret(str)
 --~   local pos = self:GetCursorCharIdx() + 1
@@ -58,6 +59,7 @@ DefineClass.ChoGGi_MultiLineEdit = {
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
   RolloverTitle = S[126095410863--[[Info--]]],
+  RolloverTemplate = "Rollover",
   RolloverBackground = rollover_blue,
   RolloverTextColor = white,
   Margins = box(4,0,0,0),
@@ -106,11 +108,13 @@ DefineClass.ChoGGi_ComboButton = {
   RolloverTextColor = white,
   RolloverAnchor = "top",
   RolloverTitle = S[126095410863--[[Info--]]],
+  RolloverTemplate = "Rollover",
 }
 
 DefineClass.ChoGGi_CheckButton = {
   __parents = {"XCheckButton"},
   RolloverTitle = S[126095410863--[[Info--]]],
+  RolloverTemplate = "Rollover",
   RolloverAnchor = "right",
   RolloverTextColor = light_gray,
   TextColor = white,
@@ -136,13 +140,11 @@ end
 
 DefineClass.ChoGGi_TextInput = {
   __parents = {"XEdit"},
---~   Multiline = false,
---~   WordWrap = false,
---~   AllowTabs = false,
+  WordWrap = false,
+  AllowTabs = false,
   RolloverTitle = S[126095410863--[[Info--]]],
---~   -- text displayed till mouse/kb focus
---~   display_text = false,
   RolloverAnchor = "top",
+  RolloverTemplate = "Rollover",
 }
 --~ function ChoGGi_TextInput:Init()
 --~   self:SetText(self.display_text or "")
@@ -150,6 +152,7 @@ DefineClass.ChoGGi_TextInput = {
 
 DefineClass.ChoGGi_List = {
   __parents = {"XList"},
+  RolloverTemplate = "Rollover",
 }
 
 DefineClass.ChoGGi_Dialog = {
@@ -161,12 +164,14 @@ DefineClass.ChoGGi_Dialog = {
 --~   HAlign = "left",
 --~   VAlign = "top",
   Dock = "ignore",
+  RolloverTemplate = "Rollover",
 }
 
 DefineClass.ChoGGi_DialogSection = {
   __parents = {"XWindow"},
   Margins = box(4,4,4,4),
   FoldWhenHidden = true,
+  RolloverTemplate = "Rollover",
 }
 
 DefineClass.ChoGGi_Window = {
@@ -177,6 +182,9 @@ DefineClass.ChoGGi_Window = {
   ZOrder = 5,
   -- how far down to y-offset new dialogs
   header = 22,
+
+  title = S[1000016--[[Title--]]],
+  RolloverTemplate = "Rollover",
 }
 
 function ChoGGi_Window:AddElements(_,context)
@@ -223,7 +231,7 @@ function ChoGGi_Window:AddElements(_,context)
     Translate = self.Translate,
     TextColor = white,
   }, self.idTitleArea)
-  self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,S[1000016--[[Title--]]]))
+  self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,""))
 end
 
 -- returns point(x,y)
