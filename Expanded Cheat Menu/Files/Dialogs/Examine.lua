@@ -209,7 +209,9 @@ function Examine:idAutoRefreshToggle()
       if self.obj then
         self:SetObj(self.obj)
       else
-        DeleteThread(self.autorefresh_thread)
+--~         DeleteThread(self.autorefresh_thread)
+--~         self.autorefresh_thread = false
+        Halt()
       end
       Sleep(1000)
     end
@@ -518,8 +520,7 @@ function Examine:valuetotextex(o)
 
   if obj_type == "function" then
 
-    if blacklist
- then
+    if blacklist then
       return Concat(
         self:HyperLink(function(_,_,button)
           Examine_valuetotextex(_,_,button,o,self)
@@ -715,7 +716,14 @@ function Examine:totextex(o,ChoGGi)
 
   if is_table then
 
+    local count = 0
     for k, v in pairs(o) do
+      count = count + 1
+      if count % 20 == 0 then
+        Sleep(1)
+      end
+
+
       res[#res+1] = Concat(
         self:valuetotextex(k),
         " = ",
@@ -963,8 +971,12 @@ end
 function Examine:SetObj(o)
   o = o or self.obj
   self.onclick_handles = {}
-  self.idText:SetText(self:totextex(o,ChoGGi))
-  self.idLinks:SetText(self:menu(o))
+
+  self.idText:SetText(S[67--[[Loading resources--]]])
+  CreateRealTimeThread(function()
+    self.idText:SetText(self:totextex(o,ChoGGi))
+    self.idLinks:SetText(self:menu(o))
+  end)
 
   local is_table = type(o) == "table"
   local name = RetName(o)

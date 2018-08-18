@@ -6,6 +6,7 @@
 #### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
 - Renamed Start Disasters to Disasters (since you can stop them as well).
+- Added a slight delay when loading 15k plus objects in examine (your game will still be responsive).
 
 #### Fixed:
 - Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.
