@@ -79,7 +79,7 @@ CreateRealTimeThread(function()
     MilestoneCompleted[id] = res and GameTime() or false
     if res then
       AddOnScreenNotification("MilestoneComplete", function()
-        OpenDialog("Milestones")
+        OpenXDialog("Milestones")
       end, {
         display_name = milestone.display_name,
         score = milestone:GetScore()

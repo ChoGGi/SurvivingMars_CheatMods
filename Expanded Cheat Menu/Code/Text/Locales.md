@@ -18,74 +18,55 @@ CHANGE 11111111 to some random arsed number, or use whatever you already use in 
 
 At the tippy top of your ModItemCode file add this (or something like it)
 
-local ModPath = CurrentModPath
-local function FileExists(file)
-  _,file = AsyncFileOpen(file)
-  return file
-end
 
---load up translation strings
-local function LoadLocale(file)
-  if not pcall(function()
-    LoadTranslationTableFile(file)
-  end) then
-    DebugPrintNL(string.format([[Problem loading locale: %s
-
-Please send me latest log file: %s]],file,"your@emailaddress.com"))
-  end
-end
-
--- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-local locale_file = table.concat{ModPath,"Locales/",GetLanguage(),".csv"}
-if FileExists(locale_file) then
-  LoadLocale(locale_file)
-else
-  LoadLocale(table.concat{ModPath,"Locales/","English.csv"})
+local locale_path = Concat(CurrentModPath,"Locales/%s.csv")
+-- this checks if there's a csv for the current lang, if not it loads the English one.
+if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
+  LoadTranslationTableFile(locale_path:format("English"))
 end
 Msg("TranslationChanged")
 
 
 
-
 Now you can use _InternalTranslate(T({11111111110001029--[[optionally showing a string for your %s.--]]})):format("sanity")
 All a translator needs to do is make a copy of English.csv, rename it to their lang: OpenExamine(AllLanguages),
-start changing strings, and then send you the file. All you need to do is put it in the Locales folder.
+start changing strings, and then send you the file.
 
 
 
 
 I like to use this function for ease of use (and to make sure I always get a string back):
 
-Some_Unique_Name = {}
-
-local local_T = T
-function Some_Unique_Name.Translate(...)
-  local trans
-  local vararg = {...}
-  -- just in case a
-  pcall(function()
-    if type(vararg[1]) == "userdata" then
-      trans = _InternalTranslate(table.unpack(vararg))
+do -- Translate (I wrap it in a do, so the locals are kept local)
+  local T,_InternalTranslate = T,_InternalTranslate
+  local type,select = type,select
+  -- translate func that always returns a string
+  function Translate(...)
+    local str
+    if type(select(1,...)) == "userdata" then
+      str = _InternalTranslate(T{...})
     else
-      trans = _InternalTranslate(local_T(vararg))
+      str = _InternalTranslate(...)
     end
-  end)
-  -- just in case b
-  if type(trans) ~= "string" then
-    if type(vararg[2]) == "string" then
-      return vararg[2]
+    -- just in case a
+    if type(str) ~= "string" then
+      local arg2 = select(2,...)
+      if type(arg2) == "string" then
+        return arg2
+      end
+      -- done fucked up (just in case b)
+      return Concat(select(1,...)," < Missing locale string id")
     end
-    -- just in case c
-    return table.concat{vararg[1]," < Missing locale string id"}
+    return str
   end
-  return trans
-end
+end -- do
+
 
 Translate(11111111110001029--[[The text from the csv, so I know what it means--]])
 
 
 or use:
-local T = Some_Unique_Name.Translate
+local T = Translate
 At the top of any new lua files. It'll work for both T() and T({})
 ```
 
@@ -107,7 +88,7 @@ local mod_id = "YOUR_MOD_ID"
 local filename = table.concat({Mods[mod_id].path,"Locales/",GetLanguage(),".csv"})
 
 --this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
-DebugPrintNL("\r\nBegin: LoadCSV()")
+print("\r\nBegin: LoadCSV()")
 local fields_remap = {
   "id",
   "text",
@@ -126,7 +107,7 @@ local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
 local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
 local space = string.byte(" ", 1)
 local RemoveTrailingSpaces = RemoveTrailingSpaces
-local DebugPrintNL = DebugPrintNL
+local print = print
 local FlushLogFile = FlushLogFile
 local table = table
 --local debug_output = {}
@@ -155,15 +136,15 @@ while pos < #str do
 
       --only seems to happen on bad things
       if col > 4 then
-        DebugPrintNL(table.concat{"\r\nERROR: \r\ncol: ",col," value: ",value," pos: ",pos})
+        print(table.concat{"\r\nERROR: \r\ncol: ",col," value: ",value," pos: ",pos})
       end
 
       local nextt = field:match(str, pos)
       if nextt ~= "" and previous ~= nextt then
         --outputs as STRING_ID,STRING,
-        DebugPrintNL(table.concat{"\r\n",value,",",nextt,","})
+        print(table.concat{"\r\n",value,",",nextt,","})
         --shows col and position (not useful for comparing to csv file)
-        --DebugPrintNL(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
+        --print(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
       end
 
       previous = nextt
@@ -178,8 +159,8 @@ while pos < #str do
   omit_captions = false
 end
 
---DebugPrintNL(table.concat(debug_output))
-DebugPrintNL("\r\nEnd: LoadCSV()")
+--print(table.concat(debug_output))
+print("\r\nEnd: LoadCSV()")
 ```
 
 ##### you can use this AutoHotkey script to clear out the log a bit for easier side-by-side comparisons

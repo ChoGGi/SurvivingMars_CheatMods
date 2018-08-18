@@ -1,8 +1,9 @@
 ###### To Do:
 ###### Dialogs: Change map, Object Manipulator, Monitor Info
 
-## v8.2 (Unreleased)
+## v8.3 (Unreleased)
 
+## v8.2 (18 Aug 2018)
 #### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
 - Renamed Start Disasters to Disasters (since you can stop them as well).
