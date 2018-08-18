@@ -172,7 +172,7 @@ ChoGGi.Defaults = {
   },
 
   -- if transport on a route has a borked route then lag happens (can't set faster game speeds)
-  CheckForBorkedTransportPath = true,
+--~   CheckForBorkedTransportPath = true,
 }
 -- my defaults
 if ChoGGi.testing then

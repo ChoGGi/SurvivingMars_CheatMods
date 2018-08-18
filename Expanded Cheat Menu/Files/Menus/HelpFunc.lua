@@ -236,7 +236,8 @@ end
 function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.ShowCheatsMenu then
-    ChoGGi.UserSettings.ShowCheatsMenu = nil
+    -- needs default
+    ChoGGi.UserSettings.ShowCheatsMenu = false
     XShortcutsTarget:SetVisible()
   else
     ChoGGi.UserSettings.ShowCheatsMenu = true
@@ -262,6 +263,7 @@ end
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   local ChoGGi = ChoGGi
   hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
+  -- needs default
   ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
   ChoGGi.SettingFuncs.WriteSettings()

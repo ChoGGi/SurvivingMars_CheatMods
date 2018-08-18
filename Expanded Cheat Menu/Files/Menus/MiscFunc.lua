@@ -351,7 +351,11 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   local config = config
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
-  ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
+
+  local ChoGGi = ChoGGi
+  ChoGGi.UserSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
+
+--~   ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
 
   ChoGGi.SettingFuncs.WriteSettings()
   MsgPopup(
@@ -365,7 +369,8 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
   local ChoGGi = ChoGGi
 
   if ChoGGi.UserSettings.CleanupCheatsInfoPane then
-    ChoGGi.UserSettings.CleanupCheatsInfoPane = nil
+  -- needs default
+    ChoGGi.UserSettings.CleanupCheatsInfoPane = false
   else
     ChoGGi.UserSettings.CleanupCheatsInfoPane = true
     ChoGGi.InfoFuncs.InfopanelCheatsCleanup()

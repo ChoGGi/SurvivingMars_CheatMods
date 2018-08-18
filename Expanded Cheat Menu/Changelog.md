@@ -6,7 +6,7 @@
 #### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
 - Renamed Start Disasters to Disasters (since you can stop them as well).
-- Added a slight delay when loading 15k plus objects in examine (your game will still be responsive).
+- Added a slight delay when loading 15K+ objects in examine (as a tradeoff your game will still be responsive).
 
 #### Fixed:
 - Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.
@@ -15,6 +15,7 @@
 - The list dialog filter text wasn't working properly (getting values from full list instead of visible list).
 - The Fuel rocket cheat in Cheats pane would freeze the game (thanks CenariusPL).
 - Stop Disasters may not have always stopped dust storms.
+- Certain settings were reset after restarting (thanks Dawnmist).
 
 ## v8.1 (16 Aug 2018)
 #### Added:
