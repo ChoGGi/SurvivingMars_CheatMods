@@ -465,10 +465,15 @@ If you can delete it and still get this error; please send it and this log to th
     if is_error or type(ChoGGi.UserSettings) ~= "table" then
       -- so now at least the game will start
       ChoGGi.UserSettings = ChoGGi.Defaults
+      if ChoGGi.testing then
+        ChoGGi.UserSettings.WriteLogs = true
+      end
       return ChoGGi.Defaults
     end
+
     -- all is well
     return settings_str
+
   end
 end -- do
 
@@ -574,3 +579,24 @@ do -- AddOldSettings
     end
   end
 end -- do
+
+local ChoGGi = ChoGGi
+
+-- read settings from AppData/CheatMenuModSettings.lua
+ChoGGi.SettingFuncs.ReadSettings()
+
+if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
+  -- from here to the end of OnMsg.ChoGGi_Loaded()
+  ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+end
+
+--bloody hint popups
+if ChoGGi.UserSettings.DisableHints then
+  mapdata.DisableHints = true
+  HintsEnabled = false
+end
+
+-- if writelogs option
+if ChoGGi.UserSettings.WriteLogs then
+  ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+end

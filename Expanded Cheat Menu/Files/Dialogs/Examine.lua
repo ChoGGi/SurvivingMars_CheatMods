@@ -7,6 +7,7 @@ local ShowMe = ChoGGi.ComFuncs.ShowMe
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local pairs,type,tostring,tonumber,rawget,table,debug = pairs,type,tostring,tonumber,rawget,table,debug
 
@@ -517,7 +518,8 @@ function Examine:valuetotextex(o)
 
   if obj_type == "function" then
 
-    if ChoGGi.blacklist then
+    if blacklist
+ then
       return Concat(
         self:HyperLink(function(_,_,button)
           Examine_valuetotextex(_,_,button,o,self)
@@ -672,7 +674,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level, info, o,self)
   local data = {}
-  if ChoGGi.blacklist then
+  if blacklist
+ then
     data = {ChoGGi.ComFuncs.DebugGetInfo(o)}
   else
     data = {}
@@ -726,7 +729,8 @@ function Examine:totextex(o,ChoGGi)
 
   elseif obj_type == "thread" then
 
-    if ChoGGi.blacklist then
+    if blacklist
+ then
       res[#res+1] = Concat(
         self:HyperLink(function(_, _)
           ExamineThreadLevel_totextex(nil, nil, o, self)
@@ -769,7 +773,8 @@ function Examine:totextex(o,ChoGGi)
     )
 
   elseif obj_type == "function" then
-    if ChoGGi.blacklist then
+    if blacklist
+ then
       res[#res+1] = self:valuetotextex(ChoGGi.ComFuncs.DebugGetInfo(o))
     else
       local i = 1
@@ -850,7 +855,8 @@ function Examine:totextex(o,ChoGGi)
   -- add some extra info for funcs
   elseif obj_type == "function" then
     local dbg_value = "\ndebug.getinfo: "
-    if ChoGGi.blacklist then
+    if blacklist
+ then
       dbg_value = Concat(dbg_value,ChoGGi.ComFuncs.DebugGetInfo(o))
     else
       local dbg_table = debug.getinfo(o) or empty_table

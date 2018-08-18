@@ -1,19 +1,22 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local blacklist = ChoGGi.blacklist
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 
-Actions[#Actions+1] = {
-  ActionMenubar = "Help",
-  ActionName = S[302535920000367--[[Mod Upload--]]],
-  ActionId = "Help.Mod Upload",
-  ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-  RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
-  OnAction = ChoGGi.MenuFuncs.ModUpload,
-  ActionSortKey = "99",
-}
+if not blacklist then
+  Actions[#Actions+1] = {
+    ActionMenubar = "Help",
+    ActionName = S[302535920000367--[[Mod Upload--]]],
+    ActionId = "Help.Mod Upload",
+    ActionIcon = "CommonAssets/UI/Menu/gear.tga",
+    RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
+    OnAction = ChoGGi.MenuFuncs.ModUpload,
+    ActionSortKey = "99",
+  }
 
+end
 Actions[#Actions+1] = {
   ActionMenubar = "Help",
   ActionName = S[302535920000473--[[Reload ECM Menu--]]],
@@ -156,36 +159,27 @@ Actions[#Actions+1] = {
   ActionSortKey = "1",
 }
 
-Actions[#Actions+1] = {
-  ActionMenubar = str_Help_ECM,
-  ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
-  ActionId = "Help.Expanded Cheat Menu.ECM Read me",
-  ActionIcon = "CommonAssets/UI/Menu/help.tga",
-  RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
-  OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
-  ActionSortKey = "2",
-}
+if not blacklist then
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_ECM,
+    ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
+    ActionId = "Help.Expanded Cheat Menu.ECM Read me",
+    ActionIcon = "CommonAssets/UI/Menu/help.tga",
+    RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
+    OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
+    ActionSortKey = "2",
+  }
 
-Actions[#Actions+1] = {
-  ActionMenubar = str_Help_ECM,
-  ActionName = S[302535920001029--[[Change log--]]],
-  ActionId = "Help.Expanded Cheat Menu.Change log",
-  ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-  RolloverText = S[4915--[[Good News, Everyone!"--]]],
-  OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
-  ActionSortKey = "3",
-}
-
-Actions[#Actions+1] = {
-  ActionMenubar = str_Help_ECM,
-  ActionName = S[302535920000242--[[Modify ECM Files--]]],
-  ActionId = "Help.Expanded Cheat Menu.Modify ECM Files",
-  ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
-  RolloverText = S[302535920000243--[["Extracts Files.hpk to ""%s"".
-You can then edit the files for use with ECM, or your mod (don't forget to include my LICENSE file)."--]]]:format(ChoGGi.ExtractPath),
-  OnAction = ChoGGi.MenuFuncs.ExtractFilesHPK,
-  ActionSortKey = "4",
-}
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_ECM,
+    ActionName = S[302535920001029--[[Change log--]]],
+    ActionId = "Help.Expanded Cheat Menu.Change log",
+    ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
+    RolloverText = S[4915--[[Good News, Everyone!"--]]],
+    OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
+    ActionSortKey = "3",
+  }
+end
 
 Actions[#Actions+1] = {
   ActionMenubar = str_Help_ECM,
@@ -240,15 +234,6 @@ Actions[#Actions+1] = {
 
 do -- build text file menu items
   local ChoGGi = ChoGGi
-  local function ReadText(file)
-    local file_error, text = AsyncFileToString(file)
-    if file_error then
-      -- close enough msg, very unlikely this will ever happen (unless user is really being a user)
-      return S[1000058--[[Missing file <u(src)> referenced in entity--]]]
-    else
-      return text
-    end
-  end
 
   local info = Concat(S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]]," : ",ChoGGi.email)
   Actions[#Actions+1] = {
@@ -260,18 +245,6 @@ do -- build text file menu items
     ActionSortKey = "-1",
   }
 
-  local funcs = ReadText(Concat(ChoGGi.MountPath,"Text/GameFunctions.lua"))
-  Actions[#Actions+1] = {
-    ActionMenubar = str_Help_Text,
-    ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
-    ActionId = "Help.Text.*Game Functions*",
-    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
-    RolloverText = funcs:sub(1,100),
-    OnAction = function()
-      ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
-    end,
-    ActionSortKey = "0",
-  }
   Actions[#Actions+1] = {
     ActionMenubar = str_Help_Text,
     ActionName = Concat("*",S[5568--[[Stats--]]],"*"),
@@ -293,25 +266,50 @@ do -- build text file menu items
     ActionSortKey = "1",
   }
 
-  local function LoopFiles(ext)
-    local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.MountPath,"Text"),ext)
-    if folders then
-      for i = 1, #folders do
-        local text = ReadText(folders[i].path)
-        Actions[#Actions+1] = {
-          ActionMenubar = str_Help_Text,
-          ActionName = folders[i].name,
-          ActionId = Concat("Help.Text",folders[i].name),
-          ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-          RolloverText = text:sub(1,100),
-          OnAction = function()
-            ChoGGi.ComFuncs.OpenInExamineDlg(text)
-          end,
-          ActionSortKey = "99",
-        }
+  if not blacklist then
+    local function ReadText(file)
+      local file_error, text = AsyncFileToString(file)
+      if file_error then
+        -- close enough msg, very unlikely this will ever happen (unless user is really being a user)
+        return S[1000058--[[Missing file <u(src)> referenced in entity--]]]
+      else
+        return text
       end
     end
+
+    local funcs = ReadText(Concat(ChoGGi.ModPath,"Files/Text/GameFunctions.lua"))
+    Actions[#Actions+1] = {
+      ActionMenubar = str_Help_Text,
+      ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
+      ActionId = "Help.Text.*Game Functions*",
+      ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+      RolloverText = funcs:sub(1,100),
+      OnAction = function()
+        ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
+      end,
+      ActionSortKey = "0",
+    }
+    local function LoopFiles(ext)
+      local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.ModPath,"Files/Text"),ext)
+      if folders then
+        for i = 1, #folders do
+          local text = ReadText(folders[i].path)
+          Actions[#Actions+1] = {
+            ActionMenubar = str_Help_Text,
+            ActionName = folders[i].name,
+            ActionId = Concat("Help.Text",folders[i].name),
+            ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+            RolloverText = text:sub(1,100),
+            OnAction = function()
+              ChoGGi.ComFuncs.OpenInExamineDlg(text)
+            end,
+            ActionSortKey = "99",
+          }
+        end
+      end
+    end
+    LoopFiles(".txt")
+    LoopFiles(".md")
   end
-  LoopFiles(".txt")
-  LoopFiles(".md")
+
 end

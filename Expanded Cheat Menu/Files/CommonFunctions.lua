@@ -224,7 +224,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
     id = AsyncRand(),
     title = CheckText(title),
     text = CheckText(text,S[3718--[[NONE--]]]),
-    image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.MountPath,"TheIncal.tga")
+    image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Files/TheIncal.tga")
   }
   table.set_defaults(data, params)
   table.set_defaults(data, g_Classes.OnScreenNotificationPreset)

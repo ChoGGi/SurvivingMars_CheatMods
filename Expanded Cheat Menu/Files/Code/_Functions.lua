@@ -308,41 +308,18 @@ function ChoGGi.CodeFuncs.SetCameraSettings()
   --cameraRTS_SetProperties(1,{HeightInertia = 0})
 end
 
-do -- RemoveOldFiles
-  local function CallBackFunc(answer)
-    if not answer then
-      return
-    end
-    AsyncUnpack(Concat(ChoGGi.ModPath,"Files.hpk"), ChoGGi.ExtractPath)
+function ChoGGi.CodeFuncs.RemoveOldFiles()
+  local ChoGGi = ChoGGi
+  local files = {
+    -- from before we used Files.hpk
+    "Functions",
+    "Settings",
+  }
+  for i = 1, #files do
+    AsyncFileDelete(Concat(ChoGGi.ModPath,files[i],".lua"))
   end
 
-  function ChoGGi.CodeFuncs.RemoveOldFiles()
-    local ChoGGi = ChoGGi
-    local files = {
-      -- from before we used Files.hpk
-      "Functions",
-      "Settings",
-    }
-    for i = 1, #files do
-      AsyncFileDelete(Concat(ChoGGi.ModPath,files[i],".lua"))
-    end
-    -- check if user extract files to FilesHPK/
-    if ChoGGi.ComFuncs.FileExists(Concat(ChoGGi.ExtractPath,"/TheIncal.tga")) then
-      -- remove TheIncal.tga and inform user of their options.
-      AsyncFileDelete(Concat(ChoGGi.ExtractPath,"/TheIncal.tga"))
-      ChoGGi.ComFuncs.QuestionBox(
-        S[302535920001289--[["ECM was updated and you are using the older files in ""%s"".
-Press OK to update older files (backup your changed files first).
-
-ECM will use the older files until you restart."--]]]:format(ChoGGi.ExtractPath),
-        CallBackFunc,
-        302535920000242--[[Modify ECM Files--]],
-        302535920001290--[[OK: Overwrite older files!--]],
-        302535920001291--[[Cancel: Use Files.hpk after you restart.--]]
-      )
-    end
-  end
-end -- do
+end
 
 function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   local BuildCategories = BuildCategories

@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
@@ -948,16 +949,8 @@ do -- LoadGame/CityStart
         }
       end)
 
-      -- add my custom menu items/actions
-      dofolder_files(Concat(ChoGGi.MountPath,"Menus"))
-
-      -- add all the defaults we skip
-      for i = 1, #Actions do
-        Actions[i].ActionTranslate = false
-        Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
-        Actions[i].RolloverTranslate = false
-        Actions[i].replace_matching_id = true
-      end
+--~       -- add my custom menu items/actions
+--~       dofolder_files(Concat(ChoGGi.ModPath,"Files/Menus"))
 
       -- show cheat pane in selection panel
       if UserSettings.InfopanelCheats then
@@ -1024,6 +1017,14 @@ do -- LoadGame/CityStart
           Margins = box(0, 0, 0, -53),
           Dock = "bottom",
         }, dlgConsole)
+      end
+
+      -- add all the defaults we skip to my actions
+      for i = 1, #Actions do
+        Actions[i].ActionTranslate = false
+        Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
+        Actions[i].RolloverTranslate = false
+        Actions[i].replace_matching_id = true
       end
 
       -- reloads actions (cheat menu/menu items/shortcuts)
@@ -1241,7 +1242,7 @@ do -- LoadGame/CityStart
     end
 
     --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk, and steam is a thing)
-    if ChoGGi._VERSION ~= UserSettings._VERSION then
+    if ChoGGi._VERSION ~= UserSettings._VERSION and not blacklist then
       -- clean up
       CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
       -- update saved version

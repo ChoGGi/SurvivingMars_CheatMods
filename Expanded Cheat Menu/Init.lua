@@ -30,16 +30,21 @@ SOFTWARE.
 
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,type,table = dofile,select,tostring,type,table
-local AsyncGetFileAttribute,Mods,dofolder_files = AsyncGetFileAttribute,Mods,dofolder_files
+local id,Mods,FileExists = "ChoGGi_CheatMenu",Mods
+local blacklist = Mods[id].env
 
 -- thanks for replacing concat... what's wrong with using table.concat2?
 local TableConcat = oldTableConcat or table.concat
 
-local function FileExists(file)
-  -- AsyncFileOpen may not work that well under linux?
-  local err,_ = AsyncGetFileAttribute(file,"size")
-  if not err then
-    return true
+if not blacklist then
+  local AsyncGetFileAttribute = AsyncGetFileAttribute
+
+  FileExists = function(file)
+    -- AsyncFileOpen may not work that well under linux?
+    local err,_ = AsyncGetFileAttribute(file,"size")
+    if not err then
+      return true
+    end
   end
 end
 
@@ -72,31 +77,27 @@ ChoGGi = {
   -- see above
   _LICENSE = LICENSE,
   -- get version of mod from metadata.lua
-  _VERSION = false,
+  _VERSION = Mods[id].version,
   -- is ECM shanghaied by the blacklist?
-  blacklist = Mods.ChoGGi_CheatMenu.env,
+  blacklist = blacklist,
   -- constants
   Consts = false,
   -- default ECM settings
   Defaults = false,
   -- means of communication
   email = "SM_Mods@choggi.org",
-  -- used for FilesHPK stuff
-  ExtractPath = false,
   -- font used for various UI stuff
   font = "droid",
   -- used to access Mods[id]
-  id = "ChoGGi_CheatMenu",
+  id = id,
   -- Wha'choo talkin' 'bout, Willis?
   lang = GetLanguage(),
   -- path to this mods' folder
-  ModPath = false,
-  -- pretty much the same, but for mounting Files.hpk
-  MountPath = false,
+  ModPath = blacklist and CurrentModPath or Mods[id].content_path or Mods[id].path,
   -- Console>Scripts folder
   scripts = "AppData/ECM Scripts",
-  -- i tend to be forgetful in my old age
-  SettingsFile = "AppData/CheatMenuModSettings.lua",
+  -- you can pry my settings FILE from my cold dead (and not modding sm anymore) hands.
+  SettingsFile = blacklist and nil or "AppData/CheatMenuModSettings.lua",
   -- i translate all my strings at startup (and a couple of the built-in ones
   Strings = false,
   -- easy access to some data (traits,cargo,mysteries,colonist data)
@@ -139,25 +140,6 @@ ChoGGi = {
   },
 }
 local ChoGGi = ChoGGi
-ChoGGi._VERSION = Mods[ChoGGi.id].version
-ChoGGi.ModPath = Mods[ChoGGi.id].content_path
-ChoGGi.ExtractPath = Concat(ChoGGi.ModPath,"FilesHPK/")
-
-do -- load script files
-  -- used to let the mod know if we're on my computer
-  if Mods.ChoGGi_testing then
-    ChoGGi.testing = true
-    -- i keep Files/ unpacked for easy access
-    ChoGGi.MountPath = Concat(ChoGGi.ModPath,"Files/")
-  elseif type(FileExists) == "function" and FileExists(Concat(ChoGGi.ExtractPath,"TheIncal.tga")) then
-    -- if exists then user unpacked the files to Files/
-    ChoGGi.MountPath = ChoGGi.ExtractPath
-  else
-    -- load up the hpk
-    AsyncMountPack("ChoGGi_Mount",Concat(ChoGGi.ModPath,"Files.hpk"))
-    ChoGGi.MountPath = "ChoGGi_Mount/"
-  end
-end
 
 do -- translate
   -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
@@ -168,78 +150,23 @@ do -- translate
   Msg("TranslationChanged")
 end
 
-do -- ECM settings
-  -- translate all the strings before anything else
-  dofile(Concat(ChoGGi.MountPath,"Strings.lua"))
-  -- functions that need to be loaded before they get called...
-  dofile(Concat(ChoGGi.MountPath,"CommonFunctions.lua"))
-  -- get saved settings for this mod
-  dofile(Concat(ChoGGi.MountPath,"Defaults.lua"))
-  -- new ui classes
-  dofolder_files(Concat(ChoGGi.MountPath,"Dialogs"))
-  -- OnMsgs and functions that don't need to be in CommonFunctions
-  dofolder_files(Concat(ChoGGi.MountPath,"Code"))
-
-  -- read settings from AppData/CheatMenuModSettings.lua
-  ChoGGi.SettingFuncs.ReadSettings()
-
-  if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
-    -- from here to the end of OnMsg.ChoGGi_Loaded()
-    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
-  end
-
-  --bloody hint popups
-  if ChoGGi.UserSettings.DisableHints then
-    mapdata.DisableHints = true
-    HintsEnabled = false
-  end
-
-  -- why would anyone ever turn this off? console logging ftw, and why did the devs make their log print only after quitting...!? unless of course it crashes in certain ways, then fuck you no log for you... Thank the Gods for FlushLogFile() (or whichever dev added it; Thank YOU!)
-  if ChoGGi.testing then
-    ChoGGi.UserSettings.WriteLogs = true
-  end
-
-  -- if writelogs option
-  if ChoGGi.UserSettings.WriteLogs then
-    ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
-  end
-
-  local Platform = Platform
-  Platform.editor = true
-
-  -- fixes UpdateInterface nil value in editor mode
-  local d_before = Platform.developer
-  Platform.developer = true
-  editor.LoadPlaceObjConfig()
-  Platform.developer = d_before
-
-  -- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
-  GlobalVar("g_Cities",{})
-  -- editor wants a table
-  GlobalVar("g_revision_map",{})
-  -- stops some log spam in editor (function doesn't exist in SM)
-  function UpdateMapRevision()end
-  function AsyncGetSourceInfo()end
-
---~   ClassesGenerate
---~   ClassesPreprocess
---~   ClassesPostprocess
---~   ClassesBuilt
---~   OptionsApply
---~   Autorun
---~   ModsLoaded
---~   EntitiesLoaded
---~   BinAssetsLoaded
-
---~   -- be nice to get a remote debugger working
---~   Platform.editor = true
---~   config.LuaDebugger = true
---~   GlobalVar("outputSocket", false)
---~   dofile("CommonLua/Core/luasocket.lua")
---~   dofile("CommonLua/Core/luadebugger.lua")
---~   outputSocket = LuaSocket:new()
---~   outputThread = false
---~   dofile("CommonLua/Core/luaDebuggerOutput.lua")
---~   dofile("CommonLua/Core/ProjectSync.lua")
---~   config.LuaDebugger = false
+if Mods.ChoGGi_testing then
+  ChoGGi.testing = true
 end
+
+local Platform = Platform
+Platform.editor = true
+
+-- fixes UpdateInterface nil value in editor mode
+local d_before = Platform.developer
+Platform.developer = true
+editor.LoadPlaceObjConfig()
+Platform.developer = d_before
+
+-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
+GlobalVar("g_Cities",{})
+-- editor wants a table
+GlobalVar("g_revision_map",{})
+-- stops some log spam in editor (function doesn't exist in SM)
+function UpdateMapRevision()end
+function AsyncGetSourceInfo()end

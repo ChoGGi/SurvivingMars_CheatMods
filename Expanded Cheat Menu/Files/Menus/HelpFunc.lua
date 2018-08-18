@@ -9,45 +9,6 @@ local S = ChoGGi.Strings
 
 local print,tostring = print,tostring
 
-do -- ExtractFilesHPK
-  local ChoGGi = ChoGGi
-  local path = ChoGGi.ExtractPath
-  local ItemList = {
-    {text = S[302535920000244--[[Extract--]]],value = "Extract",hint = S[302535920001286--[["Extract will make ECM use lua files in ""%s"" instead of Files.hpk.
-ECM files contained within will be overwritten (easier for me when there's an update)."--]]]:format(path)},
-    {text = S[302535920001285--[[Clean up-]]],value = "CleanUp",hint = S[302535920001287--[["Clean up will remove ""%sTheIncal.tga"", and ECM will go back to using Files.hpk."--]]]:format(path)},
-  }
-  local function CallBackFunc(choice)
-    local value = choice[1].value
-    if not value then
-      return
-    end
-
-    if value == "Extract" then
-      AsyncUnpack(Concat(ChoGGi.ModPath,"Files.hpk"), path)
-    elseif value == "CleanUp" then
-      -- only remove file ECM checks for (too lazy to do a loop/delete)
-      AsyncFileDelete(Concat(path,"/TheIncal.tga"))
-    end
-    -- an informed user is still a user
-    MsgPopup(
-      Concat(S[302535920000769--[[Selected--]]],": ",choice[1].text),
-      302535920000242--[[Modify ECM Files--]]
-    )
-  end
-
-  function ChoGGi.MenuFuncs.ExtractFilesHPK()
-    ChoGGi.ComFuncs.OpenInListChoice{
-      callback = CallBackFunc,
-      items = ItemList,
-      title = 302535920000242--[[Modify ECM Files--]],
-      hint = 302535920001288--[["Restart ECM for any changes to take effect.
-When ECM version is changed ""Clean up"" will occur."--]],
-      skip_sort = true,
-    }
-  end
-end -- do
-
 function ChoGGi.MenuFuncs.RetMapInfo()
   local data = HashLogToTable()
   data[1] = data[1]:gsub("\n\n","")
