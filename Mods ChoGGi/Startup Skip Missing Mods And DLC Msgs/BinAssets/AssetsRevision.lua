@@ -23,7 +23,8 @@ CreateRealTimeThread(function()
     if mod_ids[mod.steam_id] then
       -- i don't set this in mod\metadata.lua so it gives an error
       mod.lua_revision = LuaRevision
-      -- just a little overreaching with that blacklist
+      -- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
+      mod.old_env = mod.env
       mod.env = nil
       -- add a warning to any mods without a blacklist, so user knows something is up
       mod.title = table.concat{mod.title," (Warning)"}
