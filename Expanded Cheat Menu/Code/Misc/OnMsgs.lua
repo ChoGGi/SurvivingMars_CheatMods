@@ -572,7 +572,7 @@ function OnMsg.ResearchQueueChange(city, tech_id)
   end
 end
 
---if you pick a mystery from the cheat menu
+-- if you pick a mystery from the cheat menu
 local icon_logo_13 = "UI/Icons/Logos/logo_13.tga"
 function OnMsg.MysteryBegin()
   local ChoGGi = ChoGGi
@@ -640,7 +640,7 @@ function OnMsg.ApplicationQuit()
   ChoGGi.SettingFuncs.WriteSettings()
 end
 
---attached temporary resource depots
+-- attached temporary resource depots
 function OnMsg.ChoGGi_SpawnedResourceStockpileLR(obj)
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and obj.parent.class:find("MechanizedDepot") then
@@ -661,7 +661,7 @@ function OnMsg.ChoGGi_TogglePinnableObject(obj)
   end
 end
 
---shuttle comes out of a hub
+-- shuttle comes out of a hub
 function OnMsg.ChoGGi_SpawnedShuttle(obj)
   local UserSettings = ChoGGi.UserSettings
   if UserSettings.StorageShuttle then
@@ -716,7 +716,7 @@ function OnMsg.ChoGGi_SpawnedDroneHub(obj)
   end
 end
 
---if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
+-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 function OnMsg.ChoGGi_SpawnedResidence(obj)
   ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 end
@@ -737,7 +737,7 @@ function OnMsg.ChoGGi_SpawnedDinerGrocery(obj)
   end
 end
 
---make sure they use with our new values
+-- make sure they use with our new values
 do -- SetProd
   local function SetProd(obj,sType)
     local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
@@ -796,7 +796,7 @@ do -- CheckForRate
   end
 end -- do
 
---hidden milestones
+-- hidden milestones
 function OnMsg.ChoGGi_DaddysLittleHitler()
   local MilestoneCompleted = MilestoneCompleted
   PlaceObj("Milestone", {
@@ -827,8 +827,16 @@ function OnMsg.ChoGGi_Childkiller()
   end
 end
 
---earliest on-ground objects are loaded?
---function OnMsg.PersistLoad()
+-- earliest on-ground objects are loaded?
+--~ function OnMsg.PersistLoad()
+--~ end
+-- show how long loading takes
+function OnMsg.ChangeMap()
+  local ChoGGi = ChoGGi
+  if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
+    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+  end
+end
 
 -- so we at least have keys when it happens
 function OnMsg.ReloadLua()
@@ -1243,10 +1251,8 @@ do -- LoadGame/CityStart
       g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
     end
 
-    --people will likely just copy new mod over old, and I moved stuff around (not as important now that most everything is stored in .hpk, and steam is a thing)
-    if ChoGGi._VERSION ~= UserSettings._VERSION and not blacklist then
-      -- clean up
-      CreateRealTimeThread(ChoGGi.CodeFuncs.RemoveOldFiles)
+    -- new version, not that i really need this anymore...
+    if ChoGGi._VERSION ~= UserSettings._VERSION then
       -- update saved version
       UserSettings._VERSION = ChoGGi._VERSION
       ChoGGi.Temp.WriteSettings = true
@@ -1313,25 +1319,6 @@ do -- LoadGame/CityStart
       terminal.SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
     end
 
-    -- someone doesn't like LICENSE files...
-    local dickhead
-    local nofile,file = AsyncFileToString(Concat(ChoGGi.ModPath,"LICENSE"))
-
-    if nofile then
-      --some dickhead removed the LICENSE
-      dickhead = true
-    elseif not file:find("ChoGGi") then
-      --LICENSE exists, but was changed (again dickhead)
-      dickhead = true
-    end
-
-    --look ma; a LICENSE! oh no wait, just a dickhead
-    if dickhead then
-      --i mean you gotta be compliant somehow...
-      print(ChoGGi._LICENSE)
-      terminal.SetOSWindowTitle("Zombie baby Jesus eats the babies of LICENSE removers.")
-    end
-
     -- first time run info
     if ChoGGi.UserSettings.FirstRun ~= false then
       ChoGGi.ComFuncs.MsgWait(
@@ -1365,8 +1352,7 @@ Press Tilde or Enter and click the ""Settings"" button to toggle showing console
 
     -- how long startup takes
     if ChoGGi.testing or UserSettings.ShowStartupTicks then
-      ChoGGi.Temp.StartupTicks = GetPreciseTicks() - ChoGGi.Temp.StartupTicks
-      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",ChoGGi.Temp.StartupTicks)
+      print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
     end
 
     -- getting tired of people asking how to disable console log
@@ -1405,10 +1391,3 @@ Press Tilde or Enter and click the ""Settings"" button to toggle showing console
   end --OnMsg
 end -- do
 
--- show how long loading takes
-function OnMsg.ChangeMap()
-  local ChoGGi = ChoGGi
-  if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
-    ChoGGi.Temp.StartupTicks = GetPreciseTicks()
-  end
-end

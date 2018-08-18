@@ -178,7 +178,7 @@ Right-click to scroll to top."--]]],
   -- load up obj in text display
   self:SetObj(self.obj)
 
-  if ChoGGi.UserSettings.FlashExamineObject then
+  if ChoGGi.UserSettings.FlashExamineObject and type(self.obj) == "table" then
     self:FlashWindow(self.obj)
   end
 
@@ -380,8 +380,9 @@ Which you can then mess around with some more in the console."--]]],
       end,
     },
     {
-      name = S[302535920000970--[[Toggle Object Flash--]]],
-      hint = S[302535920000972--[[Flashes object being examined.--]]],
+      name = S[302535920000970--[[UI Flash--]]],
+      hint = S[302535920000972--[["Toggle flashing the UI object being examined.
+This may temporarily add some extra values to objects (BorderWidth/BorderColor)."--]]],
       clicked = function()
         ChoGGi.UserSettings.FlashExamineObject = not ChoGGi.UserSettings.FlashExamineObject
         ChoGGi.SettingFuncs.WriteSettings()
@@ -454,12 +455,14 @@ end
 local flashing_table = {}
 function Examine:FlashWindow(obj)
   obj = obj or self.obj
-  -- we don't want to flash the desktop since that's just annoying
+  -- we don't want to flash certain objects
   local d = terminal.desktop
-  if type(obj) ~= "table" or obj == d or obj == _G or obj.parent == d then
+--~   if obj == d or obj == _G or obj.parent == d then
+  if obj == d or not obj:IsKindOf("XWindow") then
     return
   end
   local Sleep,UIL,black,white = Sleep,UIL,black,white
+
   -- always kill off old thread and reset colours, else they may get stuck
   if flashing_table.thread then
     DeleteThread(flashing_table.thread)
@@ -473,17 +476,20 @@ function Examine:FlashWindow(obj)
 
     obj.BorderWidth = 2
     local c = black
-    for _ = 1, 5 do
-      if obj.window_state ~= "destroying" then
-        obj.BorderColor = c
-        Sleep(75)
-        UIL.Invalidate()
-        c = c == white and black or white
+    for _ = 1, 6 do
+      if obj.window_state == "destroying" then
+        break
       end
+      obj.BorderColor = c
+      UIL.Invalidate()
+      Sleep(100)
+      c = c == black and white or black
     end
     if obj.window_state ~= "destroying" then
       obj.BorderWidth = flashing_table.width
       obj.BorderColor = flashing_table.colour
+      flashing_table = {}
+      UIL.Invalidate()
     end
   end)
 end
@@ -919,7 +925,7 @@ end
 local function Refresh_menu(_,self)
   if self.obj then
     self:SetObj(self.obj)
-    if ChoGGi.UserSettings.FlashExamineObject then
+    if type(self.obj) == "table" then
       self:FlashWindow(self.obj)
     end
   end

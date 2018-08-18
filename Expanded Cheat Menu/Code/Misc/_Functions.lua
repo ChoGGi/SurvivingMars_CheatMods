@@ -308,19 +308,6 @@ function ChoGGi.CodeFuncs.SetCameraSettings()
   --cameraRTS_SetProperties(1,{HeightInertia = 0})
 end
 
-function ChoGGi.CodeFuncs.RemoveOldFiles()
-  local ChoGGi = ChoGGi
-  local files = {
-    -- from before we used Files.hpk
-    "Functions",
-    "Settings",
-  }
-  for i = 1, #files do
-    AsyncFileDelete(Concat(ChoGGi.ModPath,files[i],".lua"))
-  end
-
-end
-
 function ChoGGi.CodeFuncs.ShowBuildMenu(which)
   local BuildCategories = BuildCategories
 
