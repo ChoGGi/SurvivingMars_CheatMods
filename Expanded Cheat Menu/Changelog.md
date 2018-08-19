@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
-## v8.3 (Unreleased)
+## v8.4 (Unreleased)
+
+## v8.3 (19 Aug 2018)
 ### Changed:
 - HelperMod not needed for normal usage of ECM (modders may still prefer using it).
 - To import your old settings:
@@ -14,6 +16,7 @@
 - > Restart ECM to make sure settings are applied.
 - Random Colour now also changes the Roughness/Metallic settings.
 - ECM dialogs will size based on UI scale.
+- Unlocked camera in Terrain Editor mode.
 
 ### Fixed:
 - Not using English resulted in certain menu items not appearing.
