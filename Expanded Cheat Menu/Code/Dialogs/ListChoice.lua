@@ -21,15 +21,15 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 
   sel = false,
   obj = false,
+
+  dialog_width = 500,
+  dialog_height = 600,
 }
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 function ChoGGi_ListChoiceDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-
-  self.dialog_width = 400
-  self.dialog_height = 470
 
   self.list = context.list
   self.items = self.list.items

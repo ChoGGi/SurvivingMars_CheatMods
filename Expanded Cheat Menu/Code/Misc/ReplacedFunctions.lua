@@ -44,8 +44,38 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   SaveOrigFunc("UIGetBuildingPrerequisites")
+  SaveOrigFunc("KbdShortcut")
 --~   SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  local osx = Platform.osx
+  function KbdShortcut(virtual_key)
+    if not osx then
+      return KbdShortcut(virtual_key)
+    end
+    print("virtual_key:",virtual_key)
+
+    if not VKStrNames[virtual_key] then
+      return
+    end
+    local s = ""
+    if virtual_key == 131 or terminal.IsKeyPressed(131) then
+      s = Concat(s,"Cmd-")
+    end
+    if virtual_key == const.vkControl or terminal.IsKeyPressed(const.vkControl) then
+      s = Concat(s,"Ctrl-")
+    end
+    if virtual_key == const.vkAlt or terminal.IsKeyPressed(const.vkAlt) then
+      s = Concat(s,"Alt-")
+    end
+    if virtual_key == const.vkShift or terminal.IsKeyPressed(const.vkShift) then
+      s = Concat(s,"Shift-")
+    end
+    if virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
+      return s:sub(1, -2)
+    end
+    return Concat(s,VKStrNames[virtual_key])
+  end
 
 --~   -- if i need the names of xelements
 --~   function XTemplateSpawn(template_or_class, parent, context)
@@ -819,6 +849,13 @@ function OnMsg.ClassesBuilt()
       local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
 
       CreateRealTimeThread(function()
+        while #self < 1 do
+          Sleep(5)
+        end
+        if ChoGGi.testing then
+          ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+        end
+
         local c = self.idContent
 
         --probably don't need this...

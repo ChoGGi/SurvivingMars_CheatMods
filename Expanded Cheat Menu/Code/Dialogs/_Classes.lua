@@ -1,5 +1,18 @@
 -- See LICENSE for terms
 
+--~ function XWindow:CreateThread(name, func, ...)
+--~   func = func or name
+--~   self.real_time_threads = self.real_time_threads or {}
+--~   DeleteThread(self.real_time_threads[name])
+--~   self.real_time_threads[name] = CreateRealTimeThread(func, ...)
+--~ end
+--~ self:CreateThread("update", function(self)
+--~   while true do
+--~     RebuildInfopanel(ResolvePropObj(self.context), 999)
+--~     Sleep(1000)
+--~   end
+--~ end, self)
+
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
@@ -183,7 +196,7 @@ DefineClass.ChoGGi_Window = {
   -- above console
   ZOrder = 5,
   -- how far down to y-offset new dialogs
-  header = 22,
+  header = 33,
 
   title = S[1000016--[[Title--]]],
   RolloverTemplate = "Rollover",
@@ -242,9 +255,28 @@ function ChoGGi_Window:GetPos(dialog)
   return point(b:minx(),b:miny())
 end
 
--- takes either a point, or box to set pos
-function ChoGGi_Window:SetPos(obj)
+-- get size of box and offset header
+local function BoxSize(obj,self)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
+  local x,y,w,h
+  local box = obj.idDialog.box
+  x = box:minx()
+  y = box:miny() + self.header
+  if self.class == "Examine" then
+    -- it's a copy of examine wanting a new window offset, so we want the size of it
+    w = box:sizex()
+    h = box:sizey()
+  else
+    -- keep orig size please n thanks
+    box = self.idDialog.box
+    w = box:sizex()
+    h = box:sizey()
+  end
+  return x,y,w,h
+end
+
+-- takes either a point, or obj to set pos
+function ChoGGi_Window:SetPos(obj)
   local x,y,w,h
   if IsPoint(obj) then
     local box = self.idDialog.box
@@ -253,22 +285,9 @@ function ChoGGi_Window:SetPos(obj)
     w = box:sizex()
     h = box:sizey()
   else
-    local box = obj.idDialog.box
-    x = box:minx()
-    y = box:miny() + self.header
-    if self.class == "Examine" then
-      -- it's a copy of examine wanting a new window offset, so we want the size of it
-      w = box:sizex()
-      h = box:sizey()
-    else
-      -- keep orig size please n thanks
-      box = self.idDialog.box
-      w = box:sizex()
-      h = box:sizey()
-    end
+    x,y,w,h = BoxSize(obj,self)
   end
   self.idDialog:SetBox(x,y,w,h)
-  return x,y,w,h
 end
 
 function ChoGGi_Window:SetSize(size)
@@ -291,25 +310,40 @@ end
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
 function ChoGGi_Window:SetInitPos(parent)
+  local x,y,w,h
+
   -- if we're opened from another dialog then offset it, else open at mouse cursor
-  local x,y,w,h = self:SetPos(parent or GetMousePos())
+  if parent then
+    x,y,w,h = BoxSize(parent,self)
+  else
+    local pt = GetMousePos()
+    local box = self.idDialog.box
+    x = pt:x()
+    y = pt:y()
+    w = box:sizex()
+    h = box:sizey()
+  end
+
   -- if it's negative then set it to 100
   y = y < 0 and 100 or y
   x = x < 0 and 100 or x
 
-  -- check if bottom of dialog is within win size, if it isn't then take the size of the dialog off from the win size
+  -- res of game window
   local safe = GetSafeAreaBox()
   local winw = safe:maxx()
   local winh = safe:maxy()
 
+  -- check if dialog is past the edge
+  local new_x
   if (x + w) > winw then
-    self:SetPos(point(winw - w,y))
+    new_x = winw - w
   end
-
+  local new_y
   if (y + h) > winh then
-    self:SetPos(point(x,winh - h))
+    new_y = winh - h
   end
 
+  self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 end
 
 -- scrollable textbox

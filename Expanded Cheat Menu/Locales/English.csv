@@ -259,13 +259,13 @@ This may temporarily add some extra values to objects (BorderWidth/BorderColor).
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 
 Right-click to scroll to top.",
-302535920000046,dumps text to AppData/DumpedExamine.lua,
-302535920000047,"View text, and optionally dumps text to AppData/DumpedExamine.lua (don't use this option on large text).",
+302535920000046,dumps text to %sDumpedExamine.lua,
+302535920000047,"View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text).",
 302535920000048,View,
-302535920001027,"dumps object to AppData/DumpedExamineObject.lua
+302535920001027,"dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable.",
-302535920000049,"View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+302535920000049,"View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)",
 302535920000050,Opens object in Object Manipulator.,
@@ -868,7 +868,7 @@ See the examine list on the left for ids.",
 302535920000874,(see Path Markers to mark more than one at a time).,
 302535920000864,Delete All Rocks,
 302535920001208,Export Colonist Data To CSV,
-302535920001219,Exports data about colonists to AppData/Colonists.csv,
+302535920001219,Exports data about colonists to %sColonists.csv,
 302535920001176,Toggle showing FX debug info in console.,
 302535920001184,Particles,
 302535920000485,Terrain Flatten Toggle,
@@ -904,7 +904,7 @@ It's not as if domes need to be where you placed them (people will just ignore i
 302535920000481,Open In Ged Object Editor,
 302535920000482,It edits stuff?,
 302535920000483,Write Console Log,
-302535920000484,Write console log to AppData/logs/ConsoleLog.log (writes immediately).,
+302535920000484,Write console log to %slogs/ConsoleLog.log (writes immediately).,
 302535920000487,Delete All Of Selected Object,
 302535920000488,Will ask for confirmation beforehand (will not delete domes).,
 302535920000489,Delete Object(s),
@@ -1331,10 +1331,10 @@ Not noticeable unless using higher zoom.",
 302535920000236,Mod Editor,
 302535920001265,ModMessageLog,
 302535920001258,Copy Files,
-302535920001259,"Copies all mod files to AppData/ModUpload, uncheck to copy files manually.",
+302535920001259,"Copies all mod files to %sModUpload, uncheck to copy files manually.",
 302535920001260,Blank Mod,
 302535920001261,"Uploads a blank private mod to Steam Workshop, and prints Workshop id in log.",
-302535920001262,"""AppData/ModUpload"" folder is empty and waiting for files.",
+302535920001262,%sModUpload folder is empty and waiting for files.,
 302535920001263,"Mod author name is different from your name, do you have permission to upload this mod?",
 302535920001244,"Saves settings to file, and applies any changes.",
 302535920001245,Abort without touching anything.,

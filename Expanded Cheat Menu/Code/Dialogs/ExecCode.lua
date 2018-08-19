@@ -16,8 +16,8 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   local g_Classes = g_Classes
   local dlgConsole = dlgConsole
 
-  self.dialog_width = 600
-  self.dialog_height = 150
+  self.dialog_width = 700
+  self.dialog_height = 240
   self.obj = context.obj
   self.title = Concat(S[302535920000040--[[Exec Code--]]],": ",RetName(self.obj))
 

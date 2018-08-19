@@ -2,6 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 DefineClass.ChoGGi_ConsoleLogWin = {
   __parents = {"ChoGGi_Window"},

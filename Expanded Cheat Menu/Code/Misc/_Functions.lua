@@ -1882,3 +1882,45 @@ function ChoGGi.CodeFuncs.Editor_Toggle()
   end
 
 end
+
+function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
+  local g_Classes = g_Classes
+
+  obj.idChoGGi_Dialog = g_Classes.XDrawCacheDialog:new({}, obj)
+
+  obj.idChoGGi_ScrollArea = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idChoGGi_ScrollArea",
+    BorderWidth = 1,
+    Margins = box(0,0,0,0),
+    BorderColor = 0,
+  }, obj.idChoGGi_Dialog)
+
+  obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idChoGGi_ScrollV",
+    Target = "idChoGGi_ScrollBox",
+    Dock = "right",
+  }, obj.idChoGGi_ScrollArea)
+
+  obj.idChoGGi_ScrollH = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idChoGGi_ScrollH",
+    Target = "idChoGGi_ScrollBox",
+    Dock = "bottom",
+    Horizontal = true,
+  }, obj.idChoGGi_ScrollArea)
+
+  obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+    Id = "idChoGGi_ScrollBox",
+    VScroll = "idChoGGi_ScrollV",
+    HScroll = "idChoGGi_ScrollH",
+    Margins = box(4,4,4,4),
+    BorderWidth = 0,
+  }, obj.idChoGGi_ScrollArea)
+
+  for i = #obj, 1, -1 do
+    if obj[i].class ~= "XDrawCacheDialog" then
+      obj[i]:SetParent(obj.idChoGGi_ScrollBox)
+    end
+  end
+
+end
+

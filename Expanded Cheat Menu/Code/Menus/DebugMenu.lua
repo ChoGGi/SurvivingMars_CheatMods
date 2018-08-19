@@ -10,7 +10,7 @@ Actions[#Actions+1] = {
   ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
   ActionId = "Debug.Export Colonist Data To CSV",
   ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-  RolloverText = S[302535920001219--[[Exports data about colonists to AppData/Colonists.csv--]]],
+  RolloverText = S[302535920001219--[[Exports data about colonists to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
   OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
 }
 

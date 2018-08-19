@@ -180,32 +180,32 @@ do --export colonist data
         last_meal = c.last_meal,
         last_rest = c.last_rest,
       }
-      --dome
+      -- dome
       if c.dome then
         export_data[i].dome_name = RetName(c.dome)
         export_data[i].dome_pos = c.dome:GetVisualPos()
         export_data[i].dome_handle = c.dome.handle
       end
-      --residence
+      -- residence
       if c.residence then
         export_data[i].residence_name = RetName(c.residence)
         export_data[i].residence_pos = c.residence:GetVisualPos()
         export_data[i].residence_dome = RetName(c.residence.parent_dome)
       end
-      --workplace
+      -- workplace
       if c.workplace then
         export_data[i].workplace_name = RetName(c.workplace)
         export_data[i].workplace_pos = c.workplace:GetVisualPos()
         export_data[i].workplace_dome = RetName(c.workplace.parent_dome)
       end
-      --traits
+      -- traits
       for trait_id, _ in pairs(c.traits) do
         if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
           export_data[i][Concat("trait_",trait_id)] = true
         end
       end
     end
-    --and now we can save it to disk
+    -- and now we can save it to disk
     SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
   end
 end

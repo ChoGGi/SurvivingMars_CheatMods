@@ -44,14 +44,15 @@ do -- ModUpload
         "\n",
         S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading.--]]],
       }
-      if not copy_files then
+      if not copy_files or mod.id == "ChoGGi_CheatMenu" then
         upload_msg[#upload_msg+1] = "\n\n"
-        upload_msg[#upload_msg+1] = S[302535920001262--[["""AppData/ModUpload"" folder is empty and waiting for files."--]]]
+        upload_msg[#upload_msg+1] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
 
         -- clear out and create upload folder
         AsyncDeletePath(dest)
         AsyncCreatePath(dest)
       end
+
       if diff_author then
         upload_msg[#upload_msg+1] = "\n\n"
         upload_msg[#upload_msg+1] = S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]]
@@ -187,7 +188,7 @@ do -- ModUpload
       items = ItemList,
       title = 302535920000367--[[Mod Upload--]],
       check1 = 302535920001258--[[Copy Files--]],
-      check1_hint = 302535920001259--[["Copies all mod files to AppData/ModUpload, uncheck to copy files manually."--]],
+      check1_hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
       check1_checked = true,
       check2 = 302535920001260--[[Blank Mod--]],
       check2_hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],

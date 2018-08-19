@@ -180,17 +180,17 @@ if ChoGGi.testing then
 ---------
   print("ChoGGi.testing")
 
-  function OnMsg.ClassesGenerate()
-    local config = config
+--~   function OnMsg.ClassesGenerate()
 
-    config.TraceEnable = true
-    Platform.editor = true
-    config.LuaDebugger = true
-    GlobalVar("outputSocket", false)
-    dofile("CommonLua/Core/luasocket.lua")
-    dofile("CommonLua/Core/luadebugger.lua")
-    dofile("CommonLua/Core/luaDebuggerOutput.lua")
-    dofile("CommonLua/Core/ProjectSync.lua")
+--~     local config = config
+--~     config.TraceEnable = true
+--~     Platform.editor = true
+--~     config.LuaDebugger = true
+--~     GlobalVar("outputSocket", false)
+--~     dofile("CommonLua/Core/luasocket.lua")
+--~     dofile("CommonLua/Core/luadebugger.lua")
+--~     dofile("CommonLua/Core/luaDebuggerOutput.lua")
+--~     dofile("CommonLua/Core/ProjectSync.lua")
 
     --fixes error msg from the human centipede bug
   --~   SaveOrigFunc("Unit","Goto")
@@ -201,9 +201,9 @@ if ChoGGi.testing then
   --~ end
 
    ------
-  end
+--~   end
 
-  function OnMsg.ClassesPreprocess()
+--~   function OnMsg.ClassesPreprocess()
     --fix the arcology dome spot
     --[[
     SaveOrigFunc("SpireBase","GameInit")
@@ -222,14 +222,14 @@ if ChoGGi.testing then
     end
     --]]
     ------
-  end --ClassesPreprocess
+--~   end --ClassesPreprocess
 
   --where we add new BuildingTemplates
-  function OnMsg.ClassesPostprocess()
-    ------
-  end
+--~   function OnMsg.ClassesPostprocess()
+--~     ------
+--~   end
 
-  function OnMsg.ClassesBuilt()
+--~   function OnMsg.ClassesBuilt()
 
     --add an overlay for dead rover
     --[[
@@ -467,7 +467,7 @@ if ChoGGi.testing then
   --]]
 
     ------
-  end
+--~   end
 
 --~   function ChoGGi.MsgFuncs.Testing_ChoGGi_Loaded()
 

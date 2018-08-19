@@ -13,18 +13,20 @@
 - > Replace the settings with your settings, and press OK.
 - > Restart ECM to make sure settings are applied.
 - Random Colour now also changes the Roughness/Metallic settings.
+- Resized ECM dialogs to look decent with default scaling.
 
 ### Fixed:
 - Not using English resulted in certain menu items not appearing.
 - The list dialog Filter Text wasn't showing the full list when empty/on enter.
 - Change Lightmodel Custom didn't save settings, and printed some text to console.
 - Some errors in log about GetColorizationMaterial (not important, just annoying).
+- That slight Examine delay was messing with scroll position on refresh.
 
 ## v8.2 (18 Aug 2018)
 ### Changed:
 - moved Annoying Sounds from Menu>ECM>Misc to Menu>Game.
 - Renamed Start Disasters to Disasters (since you can stop them as well).
-- Added a slight delay when loading 15K+ objects in examine (as a tradeoff your game will still be responsive).
+- Added a slight delay for loading 15K+ objects in Examine.
 
 ### Fixed:
 - Unlimited Wonders stopped working after DA update (thanks hchsiao), and restart no longer needed to disable.

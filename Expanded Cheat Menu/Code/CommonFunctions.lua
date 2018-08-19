@@ -697,19 +697,18 @@ end
 do -- WriteLogs_Toggle
   local AsyncCopyFile = AsyncCopyFile
   local Dump = ChoGGi.ComFuncs.Dump
+
   local function ReplaceFunc(name,which)
     local ChoGGi = ChoGGi
     ChoGGi.ComFuncs.SaveOrigFunc(name)
     _G[name] = function(...)
---~       PrintFiles(which,ChoGGi.OrigFuncs[name],nil,...)
---~       text = text or ""
---~       Dump(Concat(text,TableConcat{...},"\r\n"),nil,which,"log",true)
       Dump(Concat(Concat(...),"\r\n"),nil,which,"log",true)
       if type(ChoGGi.OrigFuncs[name]) == "function" then
         ChoGGi.OrigFuncs[name](...)
       end
     end
   end
+
   local function ResetFunc(name)
     local ChoGGi = ChoGGi
     if ChoGGi.OrigFuncs[name] then
@@ -1493,113 +1492,95 @@ do -- ShowConsoleLogWin
   end
 end -- do
 
-function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
-  local ChoGGi = ChoGGi
-  local Nations = Nations
-  local DataInstances = DataInstances
-  local g_Classes = g_Classes
+do --
+  local function BuildTable(traits,skip)
+    local list = {}
+    for i = 0, #traits do
+      if traits[i] then
+        if skip ~= traits[i].id then
+          list[#list+1] = traits[i].id
+          list[traits[i].id] = true
+        end
+      end
+    end
+    return list
+  end
+  function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
+    local ChoGGi = ChoGGi
 
-  if #const.SchoolTraits < 5 then
     ChoGGi.Tables.SchoolTraits = const.SchoolTraits
-  else
-    ChoGGi.Tables.SchoolTraits = {"Nerd","Composed","Enthusiast","Religious","Survivor"}
-  end
-  if #const.SanatoriumTraits < 7 then
     ChoGGi.Tables.SanatoriumTraits = const.SanatoriumTraits
-  else
-    ChoGGi.Tables.SanatoriumTraits = {"Alcoholic","Gambler","Glutton","Lazy","ChronicCondition","Melancholic","Coward"}
-  end
 
-  -- mysteries
-  ChoGGi.Tables.Mystery = {}
+    -- mysteries
+    ChoGGi.Tables.Mystery = {}
+    -- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
+    local g_Classes = g_Classes
+    ClassDescendantsList("MysteryBase",function(class)
+      local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
+      local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
+      local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
 
-  --build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
-  ClassDescendantsList("MysteryBase",function(class)
-    local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
-    local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
-    local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
+      local temptable = {
+        class = class,
+        number = scenario_name,
+        name = display_name,
+        description = description
+      }
+      --we want to be able to access by for loop, Mystery 7, and WorldWar3
+      ChoGGi.Tables.Mystery[scenario_name] = temptable
+      ChoGGi.Tables.Mystery[class] = temptable
+      ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
+    end)
 
-    local temptable = {
-      class = class,
-      number = scenario_name,
-      name = display_name,
-      description = description
-    }
-    --we want to be able to access by for loop, Mystery 7, and WorldWar3
-    ChoGGi.Tables.Mystery[scenario_name] = temptable
-    ChoGGi.Tables.Mystery[class] = temptable
-    ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
-  end)
+    -- colonists
+    local t = Presets.TraitPreset
+    ChoGGi.Tables.NegativeTraits = BuildTable(t.Negative)
+    ChoGGi.Tables.PositiveTraits = BuildTable(t.Positive)
+    ChoGGi.Tables.OtherTraits = BuildTable(t.other)
+    ChoGGi.Tables.ColonistAges = BuildTable(t["Age Group"])
+    ChoGGi.Tables.ColonistGenders = BuildTable(t.Gender)
+    ChoGGi.Tables.ColonistSpecializations = BuildTable(t.Specialization,"none")
 
-  -- colonists
-  ChoGGi.Tables.ColonistBirthplaces = {}
-  ChoGGi.Tables.NegativeTraits = {}
-  ChoGGi.Tables.PositiveTraits = {}
-  ChoGGi.Tables.OtherTraits = {}
-  ChoGGi.Tables.ColonistAges = {}
-  ChoGGi.Tables.ColonistGenders = {}
-  ChoGGi.Tables.ColonistSpecializations = {}
-
-  --add as index and associative tables for ease of filtering
-  for _,t in pairs(DataInstances.Trait) do
-    if t.category == "Positive" then
-      ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = t.name
-      ChoGGi.Tables.PositiveTraits[t.name] = true
-    elseif t.category == "Negative" then
-      ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = t.name
-      ChoGGi.Tables.NegativeTraits[t.name] = true
-    elseif t.category == "other" then
-      ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = t.name
-      ChoGGi.Tables.OtherTraits[t.name] = true
-    elseif t.category == "Age Group" then
-      ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = t.name
-      ChoGGi.Tables.ColonistAges[t.name] = true
-    elseif t.category == "Gender" then
-      ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = t.name
-      ChoGGi.Tables.ColonistGenders[t.name] = true
-    elseif t.category == "Specialization" and t.name ~= "none" then
-      ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = t.name
-      ChoGGi.Tables.ColonistSpecializations[t.name] = true
-    end
-  end
-
-  for i = 1, #Nations do
-    ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
-    ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
-  end
-
-  table.sort(ChoGGi.Tables.ColonistBirthplaces)
-  table.sort(ChoGGi.Tables.NegativeTraits)
-  table.sort(ChoGGi.Tables.PositiveTraits)
-  table.sort(ChoGGi.Tables.OtherTraits)
-  table.sort(ChoGGi.Tables.ColonistAges)
-  table.sort(ChoGGi.Tables.ColonistGenders)
-  table.sort(ChoGGi.Tables.ColonistSpecializations)
-
-  -- easier access to cargo
-  ChoGGi.Tables.Cargo = {}
-  ChoGGi.Tables.CargoPresets = {}
-
-  -- only called when ResupplyItemDefinitions is built
-  if cargo_update == true then
-    local ResupplyItemDefinitions = ResupplyItemDefinitions
-    for i = 1, #ResupplyItemDefinitions do
-      local meta = getmetatable(ResupplyItemDefinitions[i]).__index
-      ChoGGi.Tables.Cargo[i] = meta
-      ChoGGi.Tables.Cargo[meta.id] = meta
+    local Nations = Nations
+    ChoGGi.Tables.ColonistBirthplaces = {}
+    for i = 1, #Nations do
+      ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
+      ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
     end
 
-    -- just used to check defaults for cargo
-    local preset = Presets.Cargo
-    for i = 1, #preset do
-      for j = 1, #preset[i] do
-        local c = preset[i][j]
-        ChoGGi.Tables.CargoPresets[#ChoGGi.Tables.CargoPresets+1] = c
-        ChoGGi.Tables.CargoPresets[c.id] = c
+    table.sort(ChoGGi.Tables.ColonistBirthplaces)
+    table.sort(ChoGGi.Tables.NegativeTraits)
+    table.sort(ChoGGi.Tables.PositiveTraits)
+    table.sort(ChoGGi.Tables.OtherTraits)
+    table.sort(ChoGGi.Tables.ColonistAges)
+    table.sort(ChoGGi.Tables.ColonistGenders)
+    table.sort(ChoGGi.Tables.ColonistSpecializations)
+
+    -- easier access to cargo
+    ChoGGi.Tables.Cargo = {}
+    ChoGGi.Tables.CargoPresets = {}
+
+    -- only called when ResupplyItemDefinitions is built
+    if cargo_update == true then
+      local ResupplyItemDefinitions = ResupplyItemDefinitions
+      for i = 1, #ResupplyItemDefinitions do
+        local meta = getmetatable(ResupplyItemDefinitions[i]).__index
+        ChoGGi.Tables.Cargo[i] = meta
+        ChoGGi.Tables.Cargo[meta.id] = meta
+      end
+
+      -- just used to check defaults for cargo
+      local preset = Presets.Cargo
+      for i = 1, #preset do
+        for j = 1, #preset[i] do
+          local c = preset[i][j]
+          ChoGGi.Tables.CargoPresets[#ChoGGi.Tables.CargoPresets+1] = c
+          ChoGGi.Tables.CargoPresets[c.id] = c
+        end
       end
     end
   end
-end
+end -- do
 
 function ChoGGi.ComFuncs.Random(m, n)
   if n then

@@ -96,7 +96,7 @@ local function ConsolePopup(self)
       },
       {
         name = 302535920000483--[[Write Console Log--]],
-        hint = 302535920000484--[[Write console log to AppData/logs/ConsoleLog.log (writes immediately).--]],
+        hint = S[302535920000484--[[Write console log to %slogs/ConsoleLog.log (writes immediately).--]]]:format(ConvertToOSPath("AppData/")),
         class = "ChoGGi_CheckButtonMenu",
         value = {"WriteLogs"},
         clicked = WriteConsoleLog,
