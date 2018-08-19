@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Missing Residences v0.1",
+  "title", "Fix: Missing Residences v0.1",
   "version", 1,
   "saved", 1533297600,
 	"image", "Preview.png",
