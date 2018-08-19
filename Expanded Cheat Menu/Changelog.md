@@ -1,4 +1,4 @@
-#Changelog for Expanded Cheat Menu
+## ECM Changelog
 
 ###### To Do:
 ###### Dialogs: Change map, Object Manipulator, Monitor Info
