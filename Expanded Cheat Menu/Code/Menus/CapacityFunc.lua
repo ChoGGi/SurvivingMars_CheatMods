@@ -85,7 +85,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
       local tab = UICity.labels.Workplace or ""
       for i = 1, #tab do
-        if tab[i].encyclopedia_id == sel.encyclopedia_id then
+        if tab[i].id == sel.encyclopedia_id then
           tab[i].max_workers = value
         end
       end
@@ -217,7 +217,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       if CapType == "electricity" then
         local tab = UICity.labels.Power or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+          if tab[i].id == sel.encyclopedia_id then
             tab[i].capacity = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -228,7 +228,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       elseif CapType == "colonist" then
         local tab = UICity.labels.Residence or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+          if tab[i].id == sel.encyclopedia_id then
             tab[i].capacity = amount
           end
         end
@@ -236,7 +236,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
       else --water and air
         local tab = UICity.labels["Life-Support"] or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == sel.encyclopedia_id then
+          if tab[i].id == sel.encyclopedia_id then
             tab[i][Concat(CapType,"_capacity")] = amount
             tab[i][CapType].storage_capacity = amount
             tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -313,7 +313,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
     if type(value) == "number" then
       local tab = UICity.labels.BuildingNoDomes or ""
       for i = 1, #tab do
-        if tab[i].encyclopedia_id == sel.encyclopedia_id then
+        if tab[i].id == sel.encyclopedia_id then
           tab[i].max_visitors = value
         end
       end

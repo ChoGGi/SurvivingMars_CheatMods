@@ -90,7 +90,7 @@ if ChoGGi.testing then
       'Pos', pos,
     })
     for Key,Value in pairs(olddome) do
-      if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "encyclopedia_id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
+      if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
         newdome[Key] = Value
       end
     end

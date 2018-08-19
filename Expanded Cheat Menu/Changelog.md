@@ -6,6 +6,9 @@
 ## v8.4 (Unreleased)
 ### Fixed:
 - Examine: Some strings were changing text colour they shouldn't.
+- Activating Last Constructed Building when there isn't one caused UI to somewhat stop responding.
+- Bunch of other issues with buildings (building cheats issues continued).
+- Drone Factory Build Speed reset on shift change (thanks hchsiao).
 
 ## v8.3 (19 Aug 2018)
 ### Changed:

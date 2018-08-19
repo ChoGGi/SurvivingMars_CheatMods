@@ -521,11 +521,10 @@ do -- SetEntity
           hint = hint_noanim
         }
       end
---~       local Table = Presets.BuildingTemplate[asdsadsads]
---~       for i = 1, #list do
+--~       for _,bld in pairs(BuildingTemplates or {}) do
 --~         entity_table[#entity_table+1] = {
---~           text = list[i].entity,
---~           value = list[i].entity,
+--~           text = bld.entity,
+--~           value = bld.entity,
 --~           hint = hint_noanim
 --~         }
 --~       end

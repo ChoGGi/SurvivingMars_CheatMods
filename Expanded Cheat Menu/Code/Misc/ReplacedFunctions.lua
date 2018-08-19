@@ -54,7 +54,7 @@ do --funcs without a class
 
   -- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
   function UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
-		local class = g_Classes[template.template_class]
+		local class = template and g_Classes[template.template_class]
     if class and class:IsKindOf("Building") then
       return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems)
     end
@@ -183,7 +183,17 @@ function OnMsg.ClassesGenerate()
   SaveOrigFunc("Workplace","AddWorker")
   SaveOrigFunc("XPopupMenu","RebuildActions")
   SaveOrigFunc("XShortcutsHost","SetVisible")
+  SaveOrigFunc("Workplace","GetWorkshiftPerformance")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+  -- override any performance changes if needed
+  function Workplace:GetWorkshiftPerformance(...)
+    local set = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+    if set and set.performance_notauto then
+      return set.performance_notauto
+    end
+    return ChoGGi_OrigFuncs.Workplace_GetWorkshiftPerformance(self,...)
+  end
 
   -- UI transparency cheats menu
   function XShortcutsHost:SetVisible(...)
@@ -821,10 +831,10 @@ function OnMsg.ClassesBuilt()
         while #self < 1 do
           Sleep(5)
         end
-        if ChoGGi.testing then
-          print("AddScrollDialogXTemplates")
-          ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
-        end
+--~         if ChoGGi.testing then
+--~           print("AddScrollDialogXTemplates")
+--~           ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+--~         end
 
         local c = self.idContent
 

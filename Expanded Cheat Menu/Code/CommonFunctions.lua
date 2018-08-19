@@ -168,13 +168,16 @@ function ChoGGi.ComFuncs.RetName(obj)
         T(obj.name[3]),
       }
 
-    --translated name
+    -- translated name
     elseif obj.display_name and obj.display_name ~= "" then
       return T(obj.display_name)
 
     -- encyclopedia_id
     elseif type(obj.encyclopedia_id) == "string" then
       return obj.encyclopedia_id
+
+    elseif type(obj.id) == "string" then
+      return obj.id
 
     -- class
     elseif type(obj.class) == "string" then
@@ -804,8 +807,8 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
   end
 end
 do -- bool
-  acmpd = nil
-  acsac = nil
+  acmpd = false
+  acsac = false
   CreateRealTimeThread(function()
     while not dlgConsole do
       Sleep(50)

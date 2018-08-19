@@ -116,7 +116,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
     return
   end
   local id = sel.encyclopedia_id
-  local DefaultSetting = _G[id]:GetDefaultPropertyValue("protect_range")
+  local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
   local ItemList = {
     {text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
     {text = 40,value = 40},
@@ -177,16 +177,12 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
   local ChoGGi = ChoGGi
 
   local ItemList = {}
-  local temps = Presets.BuildingTemplate or ""
-  for i = 1, #temps do
-    for j = 1, #temps[i] do
-      local temp = temps[i][j]
-      if not GetBuildingTechsStatus(temp.encyclopedia_id) then
-        ItemList[#ItemList+1] = {
-          text = T(temp.display_name),
-          value = temp.encyclopedia_id
-        }
-      end
+  for _,bld in pairs(BuildingTemplates or {}) do
+    if not GetBuildingTechsStatus(bld.encyclopedia_id) then
+      ItemList[#ItemList+1] = {
+        text = T(bld.display_name),
+        value = bld.encyclopedia_id
+      }
     end
   end
 
@@ -348,7 +344,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
   end
 
   --get default amount
-  local template = Presets.BuildingTemplate[sel.build_category][id]
+  local template = BuildingTemplates[id]
   local DefaultSettingC = template[Concat("max_",CapType,"_charge")] / r
   local DefaultSettingD = template[Concat("max_",CapType,"_discharge")] / r
 
@@ -426,7 +422,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
       if CapType == "electricity" then
         local tab = UICity.labels.Power or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == id then
+          if tab[i].id == id then
             if check1 then
               tab[i][CapType].max_charge = numberC
               tab[i][Concat("max_",CapType,"_charge")] = numberC
@@ -441,7 +437,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
       else --water and air
         local tab = UICity.labels["Life-Support"] or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == id then
+          if tab[i].id == id then
             if check1 then
               tab[i][CapType].max_charge = numberC
               tab[i][Concat("max_",CapType,"_charge")] = numberC
@@ -599,7 +595,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
       local function SetProd(Label)
         local tab = UICity.labels[Label] or ""
         for i = 1, #tab do
-          if tab[i].encyclopedia_id == id then
+          if tab[i].id == id then
             tab[i][ProdType]:SetProduction(amount)
           end
         end
@@ -615,7 +611,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
         local function SetProdOther(Label)
           local tab = UICity.labels[Label] or ""
           for i = 1, #tab do
-            if tab[i].encyclopedia_id == id then
+            if tab[i].id == id then
               tab[i]:GetProducerObj().production_per_day = amount
               tab[i]:GetProducerObj():Produce(amount)
             end
@@ -1031,9 +1027,10 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 end
 
 local function SetWonders(bool)
-  local wonders = Presets.BuildingTemplate.Wonders or ""
-  for i = 1, #wonders do
-    wonders[i].wonder = bool
+  for _,bld in pairs(BuildingTemplates or {}) do
+    if bld.group == "Wonders" then
+      bld.wonder = bool
+    end
   end
 end
 function ChoGGi.MenuFuncs.Building_wonder_Toggle()
@@ -1079,26 +1076,23 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
   )
 end
 
-local function SetHiddenCat(str)
-  local hiddens = Presets.BuildingTemplate.Hidden or ""
-  for i = 1, #hiddens do
-    hiddens[i].build_category = str
-  end
-end
 function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
   local ChoGGi = ChoGGi
   if ChoGGi.UserSettings.Building_hide_from_build_menu then
     ChoGGi.UserSettings.Building_hide_from_build_menu = nil
-    SetHiddenCat("Hidden")
-  else
-    ChoGGi.UserSettings.Building_hide_from_build_menu = true
-    local temps = Presets.BuildingTemplate or ""
-    for i = 1, #temps do
-      for j = 1, #temps[i] do
-        temps[i][j].hide_from_build_menu = false
+    for _,bld in pairs(BuildingTemplates or {}) do
+      if bld.group == "Hidden" then
+        bld.build_category = "Hidden"
       end
     end
-    SetHiddenCat("HiddenX")
+  else
+    ChoGGi.UserSettings.Building_hide_from_build_menu = true
+    for _,bld in pairs(BuildingTemplates or {}) do
+      bld.hide_from_build_menu = false
+      if bld.group == "Hidden" then
+        bld.build_category = "HiddenX"
+      end
+    end
   end
 
   ChoGGi.SettingFuncs.WriteSettings()

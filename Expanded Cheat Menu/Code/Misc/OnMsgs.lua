@@ -333,9 +333,6 @@ function OnMsg.ConstructionComplete(building)
   elseif UserSettings.StorageOtherDepot and building.class == "BlackCubeDumpSite" then
     building.max_amount_BlackCube = UserSettings.StorageOtherDepot
 
-  elseif UserSettings.DroneFactoryBuildSpeed and building.class == "DroneFactory" then
-    building.performance = UserSettings.DroneFactoryBuildSpeed
-
   elseif UserSettings.ShuttleHubFuelStorage and building.class:find("ShuttleHub") then
     building.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
@@ -361,52 +358,58 @@ function OnMsg.ConstructionComplete(building)
     building.maintenance_build_up_per_hr = -10000
   end
 
-  --saved building settings
+  -- saved building settings
   local setting = UserSettings.BuildingSettings[building.encyclopedia_id]
-  if setting and next(setting) then
-    --saved settings for capacity, shuttles
-    if setting.capacity then
-      if building.base_capacity then
-        building.capacity = setting.capacity
-      elseif building.base_air_capacity then
-        building.air_capacity = setting.capacity
-      elseif building.base_water_capacity then
-        building.water_capacity = setting.capacity
-      elseif building.base_max_shuttles then
-        building.max_shuttles = setting.capacity
+  if setting then
+    if next(setting) then
+      -- saved settings for capacity, shuttles
+      if setting.capacity then
+        if building.base_capacity then
+          building.capacity = setting.capacity
+        elseif building.base_air_capacity then
+          building.air_capacity = setting.capacity
+        elseif building.base_water_capacity then
+          building.water_capacity = setting.capacity
+        elseif building.base_max_shuttles then
+          building.max_shuttles = setting.capacity
+        end
       end
+      -- max visitors
+      if setting.visitors and building.base_max_visitors then
+        building.max_visitors = setting.visitors
+      end
+      -- max workers
+      if setting.workers then
+        building.max_workers = setting.workers
+      end
+      -- no power needed
+      if setting.nopower then
+        ChoGGi.CodeFuncs.RemoveBuildingElecConsump(building)
+      end
+      if setting.noair then
+        ChoGGi.CodeFuncs.RemoveBuildingAirConsump(building)
+      end
+      if setting.nowater then
+        ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(building)
+      end
+      -- large protect_range for defence buildings
+      if setting.protect_range then
+        building.protect_range = setting.protect_range
+        building.shoot_range = setting.protect_range * ChoGGi.Consts.guim
+      end
+      -- fully auto building
+      if setting.performance then
+        building.max_workers = 0
+        building.automation = 1
+        building.auto_performance = setting.performance
+      end
+      -- just perf boost
+      if setting.performance_notauto then
+        building.performance = setting.performance_notauto
+      end
+    else
+      UserSettings.BuildingSettings[building.encyclopedia_id] = nil
     end
-    --max visitors
-    if setting.visitors and building.base_max_visitors then
-      building.max_visitors = setting.visitors
-    end
-    --max workers
-    if setting.workers then
-      building.max_workers = setting.workers
-    end
-    --no power needed
-    if setting.nopower then
-      ChoGGi.CodeFuncs.RemoveBuildingElecConsump(building)
-    end
-    if setting.noair then
-      ChoGGi.CodeFuncs.RemoveBuildingAirConsump(building)
-    end
-    if setting.nowater then
-      ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(building)
-    end
-    --large protect_range for defence buildings
-    if setting.protect_range then
-      building.protect_range = setting.protect_range
-      building.shoot_range = setting.protect_range * ChoGGi.Consts.guim
-    end
-    --fully auto building
-    if setting.performance then
-      building.max_workers = 0
-      building.automation = 1
-      building.auto_performance = setting.performance
-    end
-  else
-    UserSettings.BuildingSettings[building.encyclopedia_id] = nil
   end
 
 end --OnMsg
@@ -1222,28 +1225,24 @@ do -- LoadGame/CityStart
       end
     end
 
-    --override building templates
-    table_temp = Presets.BuildingTemplate or ""
-    for i = 1, #table_temp do
-      for j = 1, #table_temp[i] do
-        local temp = table_temp[i][j]
+    -- override building templates
 
-        --make hidden buildings visible
-        if UserSettings.Building_hide_from_build_menu then
-          BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
-          BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
-          if temp.name ~= "LifesupportSwitch" and temp.name ~= "ElectricitySwitch" then
-            temp.hide_from_build_menu = nil
-          end
-          if temp.build_category == "Hidden" and temp.name ~= "RocketLandingSite" then
-            temp.build_category = "HiddenX"
-          end
+    for _,temp in pairs(BuildingTemplates or {}) do
+      --make hidden buildings visible
+      if UserSettings.Building_hide_from_build_menu then
+        BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
+        BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+        if temp.id ~= "LifesupportSwitch" and temp.id ~= "ElectricitySwitch" then
+          temp.hide_from_build_menu = nil
         end
+        if temp.build_category == "Hidden" and temp.id ~= "RocketLandingSite" then
+          temp.build_category = "HiddenX"
+        end
+      end
 
-        --wonder building limit
-        if UserSettings.Building_wonder then
-          temp.wonder = nil
-        end
+      --wonder building limit
+      if UserSettings.Building_wonder then
+        temp.wonder = nil
       end
     end
 

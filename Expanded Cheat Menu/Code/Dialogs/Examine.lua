@@ -112,6 +112,7 @@ function Examine:Init(parent, context)
     Dock = "top",
   }, self.idDialog)
 
+  local tools_menu_popup = self:BuildToolsMenuPopup()
   self.idTools = g_Classes.ChoGGi_ComboButton:new({
     Id = "idTools",
     Text = S[302535920000239--[[Tools--]]],
@@ -120,7 +121,8 @@ function Examine:Init(parent, context)
 Right-click to scroll to top."--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
-        self:idToolsMenuClicked(button)
+--~         self:idToolsMenuClicked(button)
+        self:Menu_Toggle(button,"idToolsMenu",tools_menu_popup)
       end
     end,
     Dock = "left",
@@ -267,8 +269,8 @@ local function ProcessList(list,prefix)
   end
 end
 
-function Examine:idToolsMenuClicked(button)
-  self:Menu_Toggle(button,"idToolsMenu",{
+function Examine:BuildToolsMenuPopup()
+  return {
     {
       name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
@@ -384,7 +386,7 @@ This may temporarily add some extra values to objects (BorderWidth/BorderColor).
       value = {"FlashExamineObject"},
       class = "ChoGGi_CheckButtonMenu",
     },
-  })
+  }
 end
 
 local pmenu_list_items

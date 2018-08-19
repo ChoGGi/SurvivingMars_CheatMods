@@ -116,7 +116,7 @@ do -- ModUpload
           if Platform.steam then
             err = AsyncSteamWorkshopUpdateItem{
               item_id = mod.steam_id,
-              title = mod.title:gsub(" \(Warning\)",""),
+              title = mod.title,
               description = mod.description,
               tags = mod:GetTags(),
               content_os_folder = os_dest,

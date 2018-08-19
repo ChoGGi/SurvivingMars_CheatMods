@@ -406,9 +406,14 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
     {text = 100000,value = 100000},
   }
 
+  if not ChoGGi.UserSettings.BuildingSettings.DroneFactory then
+    ChoGGi.UserSettings.BuildingSettings.DroneFactory = {}
+  end
+  local setting = ChoGGi.UserSettings.BuildingSettings.DroneFactory
+
   local hint = DefaultSetting
-  if ChoGGi.UserSettings.DroneFactoryBuildSpeed then
-    hint = tostring(ChoGGi.UserSettings.DroneFactoryBuildSpeed)
+  if setting.performance_notauto then
+    hint = tostring(setting.performance_notauto)
   end
 
   local function CallBackFunc(choice)
@@ -422,7 +427,12 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
         tab[i].performance = value
       end
     end
-    ChoGGi.ComFuncs.SetSavedSetting("DroneFactoryBuildSpeed",value)
+
+    if value == DefaultSetting then
+      setting.performance_notauto = nil
+    else
+      setting.performance_notauto = value
+    end
 
     ChoGGi.SettingFuncs.WriteSettings()
     MsgPopup(

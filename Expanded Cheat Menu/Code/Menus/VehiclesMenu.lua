@@ -88,8 +88,9 @@ Actions[#Actions+1] = {
   ActionId = "Expanded CM.Drones.DroneFactory Build Speed",
   ActionIcon = iconD,
   RolloverText = function()
+    local s = ChoGGi.UserSettings.BuildingSettings.DroneFactory
     return ChoGGi.ComFuncs.SettingState(
-      ChoGGi.UserSettings.DroneFactoryBuildSpeed,
+      s and s.performance_notauto,
       302535920000516--[[Change how fast drone factories build drones.--]]
     )
   end,
