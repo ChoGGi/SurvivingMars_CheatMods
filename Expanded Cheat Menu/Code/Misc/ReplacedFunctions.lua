@@ -48,6 +48,7 @@ do --funcs without a class
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   if Platform.osx then
+    VKStrNamesInverse.Cmd = 131
     local IsKeyPressed = terminal.IsKeyPressed
     function KbdShortcut(virtual_key)
       local VKStrNames = VKStrNames
