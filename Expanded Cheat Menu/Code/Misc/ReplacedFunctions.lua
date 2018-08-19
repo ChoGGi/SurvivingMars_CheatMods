@@ -44,11 +44,11 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   SaveOrigFunc("UIGetBuildingPrerequisites")
---~   SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   if Platform.osx then
     VKStrNamesInverse.Cmd = 131
+    const.vkCmd = 133
     local IsKeyPressed = terminal.IsKeyPressed
     function KbdShortcut(virtual_key)
       local VKStrNames = VKStrNames
