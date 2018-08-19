@@ -561,7 +561,7 @@ function ChoGGi.CodeFuncs.GetNearestIdleDrone(bld)
 end
 
 function ChoGGi.CodeFuncs.SaveOldPalette(obj)
-  if not obj.ChoGGi_origcolors then
+  if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
     obj.ChoGGi_origcolors = {}
     obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(1)}
     obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(2)}
@@ -621,18 +621,19 @@ do -- SetRandColour
   local function SetRandColour(obj,colour,ChoGGi)
     colour = colour or ChoGGi.CodeFuncs.RandomColour()
     local c1,c2,c3,c4 = obj:GetColorizationMaterial(1),obj:GetColorizationMaterial(2),obj:GetColorizationMaterial(3),obj:GetColorizationMaterial(4)
-    --likely can only change basecolour
+    -- likely can only change basecolour
     if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
       obj:SetColorModifier(colour)
     else
       if not obj.ChoGGi_origcolors then
         ChoGGi.CodeFuncs.SaveOldPalette(obj)
       end
-      --s,1,Color, Roughness, Metallic
-      obj:SetColorizationMaterial(1, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      obj:SetColorizationMaterial(2, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      obj:SetColorizationMaterial(3, ChoGGi.CodeFuncs.RandomColour(), 0,0)
-      obj:SetColorizationMaterial(4, ChoGGi.CodeFuncs.RandomColour(), 0,0)
+      -- object,1,Color, Roughness, Metallic
+      local Random = Random -- ChoGGi.ComFuncs.Random
+      obj:SetColorizationMaterial(1, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
+      obj:SetColorizationMaterial(2, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
+      obj:SetColorizationMaterial(3, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
+      obj:SetColorizationMaterial(4, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
     end
   end
 
@@ -645,7 +646,9 @@ do -- SetRandColour
     --random is random after all, so lets try for at least slightly different colours
     local colours = ChoGGi.CodeFuncs.RandomColour(#attaches + 1)
     for i = 1, #attaches do
-      SetRandColour(attaches[i],colours[i],ChoGGi)
+      if attaches[i]:IsKindOf("ColorizableObject") then
+        SetRandColour(attaches[i],colours[i],ChoGGi)
+      end
     end
     SetRandColour(obj,colours[#colours],ChoGGi)
   end

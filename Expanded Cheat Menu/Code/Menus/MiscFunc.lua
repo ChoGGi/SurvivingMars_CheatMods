@@ -227,7 +227,7 @@ function ChoGGi.MenuFuncs.FixAllObjects()
   )
 end
 
---build and show a list of attachments for changing their colours
+-- build and show a list of attachments for changing their colours
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
   local ChoGGi = ChoGGi
   obj = obj or ChoGGi.CodeFuncs.SelObject()
@@ -241,7 +241,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
   end
   local ItemList = {}
 
-  --has no Attaches so just open as is
+  -- has no Attaches so just open as is
   if obj:GetNumAttaches() == 0 then
     ChoGGi.CodeFuncs.ChangeObjectColour(obj)
     return
@@ -254,13 +254,15 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
     }
     local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
     for i = 1, #attaches do
-      ItemList[#ItemList+1] = {
-        text = attaches[i].class,
-        value = attaches[i].class,
-        parentobj = obj,
-        obj = attaches[i],
-        hint = 302535920001107--[[Change colours of an attached object.--]],
-      }
+      if attaches[i]:IsKindOf("ColorizableObject") then
+        ItemList[#ItemList+1] = {
+          text = attaches[i].class,
+          value = attaches[i].class,
+          parentobj = obj,
+          obj = attaches[i],
+          hint = 302535920001107--[[Change colours of an attached object.--]],
+        }
+      end
     end
   end
 

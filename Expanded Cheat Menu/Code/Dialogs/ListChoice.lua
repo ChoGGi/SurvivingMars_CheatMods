@@ -432,9 +432,8 @@ function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
   --remove defaults
   local model_table = {}
   for i = 1, #self.choices do
-    local value = self.choices[i].value
-    if value ~= self.choices[i].default then
-      model_table[self.choices[i].sort] = value
+    if self.choices[i].value ~= self.choices[i].default then
+      model_table[self.choices[i].sort] = self.choices[i].value
     end
   end
   -- rebuild it
@@ -443,14 +442,11 @@ function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
   SetLightmodel(1,"ChoGGi_Custom")
 end
 
---update colour
+-- update colour
 function ChoGGi_ListChoiceDlg:UpdateColourPicker()
   local num = tonumber(self.idEditValue:GetText())
   if num then
     self.idColorPicker:SetColor(num)
---~     self.idColorPicker:SetHSV(UIL.RGBtoHSV(GetRGB(num)))
---~     self.idColorPicker:InitHSVPtPos()
---~     self.idColorPicker:Invalidate()
   end
 end
 
@@ -491,7 +487,6 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
   self.choices[1].checkelec = self.idColorCheckElec:GetCheck()
 end
 
---function ChoGGi_ListChoiceDlg:OnKbdKeyDown(char, vk)
 function ChoGGi_ListChoiceDlg:OnKbdKeyDown(_, vk)
   local const = const
   if vk == const.vkEsc then
@@ -507,35 +502,44 @@ function ChoGGi_ListChoiceDlg:OnKbdKeyDown(_, vk)
   return "continue"
 end
 
--- copied from GedPropEditors.lua (it's normally only called when GED is loaded).
+-- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
 function CreateNumberEditor(parent, id, up_pressed, down_pressed)
-  local button_panel = XWindow:new({Dock = "right"}, parent)
-  local top_btn = XTextButton:new({
+  local g_Classes = g_Classes
+  local RGBA,RGB,box = RGBA,RGB,box
+  local IconScale = point(500, 500)
+  local IconColor = RGB(0, 0, 0)
+  local RolloverBackground = RGB(204, 232, 255)
+  local PressedBackground = RGB(121, 189, 241)
+  local Background = RGBA(0, 0, 0, 0)
+  local DisabledIconColor = RGBA(0, 0, 0, 128)
+
+  local button_panel = g_Classes.XWindow:new({Dock = "right"}, parent)
+  local top_btn = g_Classes.XTextButton:new({
     Dock = "top",
     OnPress = up_pressed,
     Padding = box(1, 2, 1, 1),
     Icon = "CommonAssets/UI/arrowup-40.tga",
-    IconScale = point(500, 500),
-    IconColor = RGB(0, 0, 0),
-    DisabledIconColor = RGBA(0, 0, 0, 128),
-    Background = RGBA(0, 0, 0, 0),
-    DisabledBackground = RGBA(0, 0, 0, 0),
-    RolloverBackground = RGB(204, 232, 255),
-    PressedBackground = RGB(121, 189, 241)
+    IconScale = IconScale,
+    IconColor = IconColor,
+    DisabledIconColor = DisabledIconColor,
+    Background = Background,
+    DisabledBackground = Background,
+    RolloverBackground = RolloverBackground,
+    PressedBackground = PressedBackground,
   }, button_panel, nil, nil, "NumberArrow")
-  local bottom_btn = XTextButton:new({
+  local bottom_btn = g_Classes.XTextButton:new({
     Dock = "bottom",
     OnPress = down_pressed,
     Padding = box(1, 1, 1, 2),
     Icon = "CommonAssets/UI/arrowdown-40.tga",
-    IconScale = point(500, 500),
-    IconColor = RGB(0, 0, 0),
-    DisabledIconColor = RGBA(0, 0, 0, 128),
-    Background = RGBA(0, 0, 0, 0),
-    DisabledBackground = RGBA(0, 0, 0, 0),
-    RolloverBackground = RGB(204, 232, 255),
-    PressedBackground = RGB(121, 189, 241)
+    IconScale = IconScale,
+    IconColor = IconColor,
+    DisabledIconColor = DisabledIconColor,
+    Background = Background,
+    DisabledBackground = Background,
+    RolloverBackground = RolloverBackground,
+    PressedBackground = PressedBackground,
   }, button_panel, nil, nil, "NumberArrow")
-  local edit = XEdit:new({Id = id, Dock = "box"}, parent)
+  local edit = g_Classes.XEdit:new({Id = id, Dock = "box"}, parent)
   return edit, top_btn, bottom_btn
 end

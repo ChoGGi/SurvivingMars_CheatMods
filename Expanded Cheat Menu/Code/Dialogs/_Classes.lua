@@ -3,8 +3,8 @@
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
-local box = box
-local point = point
+local box,point = box,point
+local RGBA = RGBA
 
 local white = -1
 local black = black
@@ -12,6 +12,8 @@ local dark_gray = -13158858
 local medium_gray = -10592674
 local light_gray = -2368549
 local rollover_blue = -14113793
+local invis = 0
+local invis_less = 268435456
 
 local text = "Editor12Bold"
 if ChoGGi.testing then
@@ -160,7 +162,7 @@ DefineClass.ChoGGi_Dialog = {
   Translate = false,
   MinHeight = 50,
   MinWidth = 150,
-  BackgroundColor = RGBA(0, 0, 0, 16),
+  BackgroundColor = invis_less,
 --~   HAlign = "left",
 --~   VAlign = "top",
   Dock = "ignore",
@@ -409,7 +411,7 @@ DefineClass.ChoGGi_SleekScroll = {
   __parents = {"XSleekScroll"},
   MinThumbSize = 30,
   AutoHide = true,
-  Background = RGBA(0,0,0,0),
+  Background = invis,
 }
 
 -- convenience function

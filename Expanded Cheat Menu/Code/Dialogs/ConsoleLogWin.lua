@@ -115,7 +115,7 @@ function ChoGGi_ConsoleLogWin:Done(result)
   -- save the dimensions
   ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
   ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
-  Dialog.Done(self,result)
+  ChoGGi_Window.Done(self,result)
 end
 
 function OnMsg.ConsoleLine(text, bNewLine)

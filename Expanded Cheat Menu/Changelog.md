@@ -1,4 +1,3 @@
-
 ## ECM Changelog
 
 ##### To do:
@@ -13,11 +12,13 @@
 - > Go to Menu>ECM>Help>Edit ECM Settings
 - > Replace the settings with your settings, and press OK.
 - > Restart ECM to make sure settings are applied.
+- Random Colour now also changes the Roughness/Metallic settings.
 
 ### Fixed:
 - Not using English resulted in certain menu items not appearing.
 - The list dialog Filter Text wasn't showing the full list when empty/on enter.
 - Change Lightmodel Custom didn't save settings, and printed some text to console.
+- Some errors in log about GetColorizationMaterial (not important, just annoying).
 
 ## v8.2 (18 Aug 2018)
 ### Changed:

@@ -686,17 +686,18 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
     end
     model_table.id = "ChoGGi_Custom"
 
-    -- save usersetting before, or else the table will be made into a LightmodelPreset
-    ChoGGi.UserSettings.LightmodelCustom = model_table
-    LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(model_table)
+    -- make a copy, as LightmodelPreset:new will change it into an object, and i don't want to save that to the settings
+    local temp_lm = table.copy(model_table)
+
+    LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(temp_lm)
     if choice[1].check1 then
       SetLightmodelOverride(1,"ChoGGi_Custom")
     else
       SetLightmodel(1,"ChoGGi_Custom")
     end
 
-print("LightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomWriteSettingsWriteSettingsWriteSettingsWriteSettingsWriteSettings")
---~     ChoGGi.SettingFuncs.WriteSettings()
+    ChoGGi.UserSettings.LightmodelCustom = model_table
+    ChoGGi.SettingFuncs.WriteSettings()
   end
 
   ChoGGi.ComFuncs.OpenInListChoice{

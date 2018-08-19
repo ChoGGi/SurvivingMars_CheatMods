@@ -5,6 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 --~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local next,pairs,type,table = next,pairs,type,table
 
@@ -192,14 +193,16 @@ if ChoGGi.testing then
   ChoGGi.Defaults.SkipMissingDLC = true
 end
 
-function OnMsg.ChoGGi_Loaded()
-  dlgConsole:Exec([[ChoGGi.Temp.g = _G
-dlgConsole.history_queue_idx = 0
-dlgConsole.history_queue = {}
-LocalStorage.history_log = {}
-SaveLocalStorage()]])
+--~ function OnMsg.ChoGGi_Loaded()
+--~ if blacklist then
+--~   dlgConsole:Exec([[ChoGGi.Temp.g = _G
+--~ dlgConsole.history_queue_idx = 0
+--~ dlgConsole.history_queue = {}
+--~ LocalStorage.history_log = {}
+--~ SaveLocalStorage()]])
 --~   dlgConsole:AddHistory("print(ChoGGi.Strings[302535920000242])")
-end
+--~ end
+--~ end
 
 -- and constants
 ChoGGi.Consts = {
@@ -485,7 +488,10 @@ end -- do
 do -- WriteSettingsAcct
   local TableToLuaCode = TableToLuaCode
   local AsyncCompress = AsyncCompress
-  local WriteModPersistentData = WriteModPersistentData
+  local gWriteModPersistentData
+  if blacklist then
+    gWriteModPersistentData = WriteModPersistentData
+  end
   local MaxModDataSize = const.MaxModDataSize
   local function RetError(err)
     if ChoGGi.Temp.GameLoaded then
@@ -509,7 +515,7 @@ do -- WriteSettingsAcct
       return
     end
 
-    local err = WriteModPersistentData(data)
+    local err = gWriteModPersistentData(data)
     if err then
       RetError(err)
       return
@@ -520,7 +526,10 @@ do -- WriteSettingsAcct
 end -- do
 
 do -- ReadSettingsAcct
-  local ReadModPersistentData = ReadModPersistentData
+  local gReadModPersistentData
+  if blacklist then
+    gReadModPersistentData = ReadModPersistentData
+  end
   local AsyncDecompress = AsyncDecompress
   local LuaCodeToTuple = LuaCodeToTuple
   local function RetError(err)
@@ -537,7 +546,7 @@ do -- ReadSettingsAcct
     -- try to read settings
     if not settings_str then
       local settings_data
-      err,settings_data = ReadModPersistentData()
+      err,settings_data = gReadModPersistentData()
 
       if err or not settings_data or settings_data == "" then
         -- no settings so use defaults
@@ -679,7 +688,7 @@ end -- do
 local ChoGGi = ChoGGi
 
 -- saving settings to a file or (shudder) in-game
-if ChoGGi.blacklist then
+if blacklist then
   ChoGGi.SettingFuncs.ReadSettings = ChoGGi.SettingFuncs.ReadSettingsAcct
   ChoGGi.SettingFuncs.WriteSettings = ChoGGi.SettingFuncs.WriteSettingsAcct
 else
