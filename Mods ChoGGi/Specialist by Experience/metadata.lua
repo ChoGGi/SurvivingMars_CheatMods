@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Specialist By Experience v0.2",
-  "version", 2,
-  "saved", 1533124800,
+  "title", "Specialist By Experience v0.3",
+  "version", 3,
+  "saved", 1534680000,
   "id", "ChoGGi_SpecialistByExperience",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

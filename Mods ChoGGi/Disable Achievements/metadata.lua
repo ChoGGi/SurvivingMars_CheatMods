@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "title", "Disable Achievements v0.1",
-  "version", 1,
+  "title", "Disable Achievements v0.2",
+  "version", 2,
   "saved", 1533297600,
   "id", "ChoGGi_DisableAchievements",
   "author", "ChoGGi",
