@@ -196,7 +196,7 @@ DefineClass.ChoGGi_Window = {
   -- above console
   ZOrder = 5,
   -- how far down to y-offset new dialogs
-  header = 33,
+  header = 33.0,
 
   title = S[1000016--[[Title--]]],
   RolloverTemplate = "Rollover",
@@ -204,6 +204,11 @@ DefineClass.ChoGGi_Window = {
 
 function ChoGGi_Window:AddElements(_,context)
   local g_Classes = g_Classes
+
+  -- scale to UI
+  self.dialog_width = self.dialog_width * ChoGGi.Temp.UIScale
+  self.dialog_height = self.dialog_height * ChoGGi.Temp.UIScale
+  self.header = self.header * ChoGGi.Temp.UIScale
 
   -- add container dialog for everything to fit in
   self.idDialog = g_Classes.ChoGGi_Dialog:new({

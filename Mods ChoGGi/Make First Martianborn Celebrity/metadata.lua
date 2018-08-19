@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Make First Martianborn Celebrity v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "Make First Martianborn Celebrity v0.2",
+  "version", 2,
+  "saved", 1534680000,
   "id", "ChoGGi_MakeFirstMartianbornCelebrity",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

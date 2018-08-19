@@ -5,9 +5,9 @@ local Concat = ReplaceCursors.ComFuncs.Concat
 --~ if ReplaceCursors.ComFuncs.FileExists("AppData/Cursors") then
 --~   cursors = "AppData/Cursors/"
 --~ else
---~   cursors = Concat(Mods.ChoGGi_ReplaceCursors.path,"Cursors/")
+--~   cursors = Concat(CurrentModPath,"Cursors/")
 --~ end
-local cursors = Concat(Mods.ChoGGi_ReplaceCursors.path,"Cursors/")
+local cursors = Concat(CurrentModPath,"Cursors/")
 
 -- for some reason this doesn't work for everything... (caching I suppose)
 --~ Unmount("UI")

@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
-	"title", "Pipes & Cables: No Maintenence, not cheating! v0.3",
-	"version", 3,
+	"title", "Pipes & Cables: No Maintenence, not cheating! v0.4",
+	"version", 4,
   "saved", 1533297600,
 	"id", "ChoGGi_NotCheatingPipesCablesNoMaintenence",
-	"steam_id", "1410829032",
+	"steam_id", "1534680000",
 	"author", "ChoGGi",
 	"TagOther", true,
 	"code", {"Script.lua"},

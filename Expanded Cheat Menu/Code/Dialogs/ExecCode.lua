@@ -9,6 +9,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 DefineClass.ChoGGi_ExecCodeDlg = {
   __parents = {"ChoGGi_Window"},
   obj = false,
+
+  dialog_width = 700.0,
+  dialog_height = 240.0,
 }
 
 function ChoGGi_ExecCodeDlg:Init(parent, context)
@@ -16,8 +19,6 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   local g_Classes = g_Classes
   local dlgConsole = dlgConsole
 
-  self.dialog_width = 700
-  self.dialog_height = 240
   self.obj = context.obj
   self.title = Concat(S[302535920000040--[[Exec Code--]]],": ",RetName(self.obj))
 

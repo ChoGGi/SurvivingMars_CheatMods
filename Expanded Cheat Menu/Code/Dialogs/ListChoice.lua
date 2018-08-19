@@ -21,9 +21,6 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 
   sel = false,
   obj = false,
-
-  dialog_width = 500,
-  dialog_height = 600,
 }
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
@@ -36,6 +33,9 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
   self.custom_func = self.list.custom_func
   self.custom_type = self.list.custom_type
   self.title = self.list.title
+
+  self.dialog_width = self.list.width or 500.0
+  self.dialog_height = self.list.height or 600.0
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)

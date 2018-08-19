@@ -83,7 +83,7 @@ function OnMsg.ClassesPostprocess()
     "display_name_pl", [[Golden Storage]],
     "description", [[Converts Metals to PreciousMetals.]],
     "build_category", "Storages",
-    "display_icon", table.concat{Mods.ChoGGi_GoldenStorage.path,"/universal_storage.tga"},
+    "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
     "entity", "ResourcePlatform",
     "on_off_button", false,
     "prio_button", false,

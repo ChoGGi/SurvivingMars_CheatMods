@@ -31,10 +31,6 @@ SOFTWARE.]],
   OrigFuncs = {},
   -- CommonFunctions.lua
   ComFuncs = {
-    FileExists = function(name)
-      local _,test = AsyncFileOpen(name)
-      return test
-    end,
   },
   -- /Code/_Functions.lua
   CodeFuncs = {},
@@ -64,22 +60,13 @@ SOFTWARE.]],
 -- if we use global func more then once: make them local for that small bit o' speed
 local dofile,select,tostring,table = dofile,select,tostring,table
 -- thanks for replacing concat...
-DronesCarryAmountFix.ComFuncs.TableConcat = oldTableConcat or table.concat
-local TConcat = DronesCarryAmountFix.ComFuncs.TableConcat
-
-local AsyncFileOpen = AsyncFileOpen
-local dofolder_files = dofolder_files
-
+local TableConcat = oldTableConcat or table.concat
 local g_Classes = g_Classes
 
--- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
--- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
-
--- this is also used instead of string .. string; anytime you do that lua will hash the new string, and store it till exit
--- which means this is faster, and uses less memory
+-- this is used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
 local concat_table = {}
-function DronesCarryAmountFix.ComFuncs.Concat(...)
-  -- i assume sm added a c func to clear tables, which does seem to be faster than a lua for loop
+local function Concat(...)
+  -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
   table.iclear(concat_table)
   -- build table from args
   local concat_value
@@ -95,18 +82,17 @@ function DronesCarryAmountFix.ComFuncs.Concat(...)
     end
   end
   -- and done
-  return TConcat(concat_table)
+  return TableConcat(concat_table)
 end
+
 
 local DronesCarryAmountFix = DronesCarryAmountFix
 local Mods = Mods
 DronesCarryAmountFix._VERSION = Mods[DronesCarryAmountFix.id].version
 DronesCarryAmountFix.ModPath = CurrentModPath
-local Concat = DronesCarryAmountFix.ComFuncs.Concat
-local FileExists = DronesCarryAmountFix.ComFuncs.FileExists
 
 
-function DronesCarryAmountFix.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
+local function CompareTableFuncs(a,b,sFunc,Obj)
   if not a and not b then
     return
   end
@@ -118,7 +104,7 @@ function DronesCarryAmountFix.ComFuncs.CompareTableFuncs(a,b,sFunc,Obj)
 end
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
-function DronesCarryAmountFix.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+local function SaveOrigFunc(ClassOrFunc,Func)
   local DronesCarryAmountFix = DronesCarryAmountFix
   if Func then
     local newname = Concat(ClassOrFunc,"_",Func)
@@ -133,8 +119,46 @@ function DronesCarryAmountFix.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
   end
 end
 
+local function GetNearestIdleDrone(Bld)
+  local DronesCarryAmountFix = DronesCarryAmountFix
+  if not Bld or (Bld and not Bld.command_centers) then
+    return
+  end
+
+  --check if nearest cc has idle drones
+  local cc = FindNearestObject(Bld.command_centers,Bld)
+  if cc and cc:GetIdleDronesCount() > 0 then
+    cc = cc.drones
+  else
+    --sort command_centers by nearest dist
+    table.sort(Bld.command_centers,
+      function(a,b)
+        return CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
+      end
+    )
+    --get command_center with idle drones
+    for i = 1, #Bld.command_centers do
+      if Bld.command_centers[i]:GetIdleDronesCount() > 0 then
+        cc = Bld.command_centers[i].drones
+        break
+      end
+    end
+  end
+  --it happens...
+  if not cc then
+    return
+  end
+
+  --get an idle drone
+  for i = 1, #cc do
+    if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
+      return cc[i]
+    end
+  end
+end
+
 --force drones to pickup from object even if they have a large carry cap
-function DronesCarryAmountFix.CodeFuncs.FuckingDrones(Obj)
+local function FuckingDrones(Obj)
   local DronesCarryAmountFix = DronesCarryAmountFix
   --Come on, Bender. Grab a jack. I told these guys you were cool.
   --Well, if jacking on will make strangers think I'm cool, I'll do it.
@@ -162,7 +186,7 @@ function DronesCarryAmountFix.CodeFuncs.FuckingDrones(Obj)
 
   --only fire if more then one resource
   if stored > 1000 then
-    local drone = DronesCarryAmountFix.CodeFuncs.GetNearestIdleDrone(p)
+    local drone = GetNearestIdleDrone(p)
     if not drone then
       return
     end
@@ -187,53 +211,15 @@ function DronesCarryAmountFix.CodeFuncs.FuckingDrones(Obj)
   end
 end
 
-function DronesCarryAmountFix.CodeFuncs.GetNearestIdleDrone(Bld)
-  local DronesCarryAmountFix = DronesCarryAmountFix
-  if not Bld or (Bld and not Bld.command_centers) then
-    return
-  end
-
-  --check if nearest cc has idle drones
-  local cc = FindNearestObject(Bld.command_centers,Bld)
-  if cc and cc:GetIdleDronesCount() > 0 then
-    cc = cc.drones
-  else
-    --sort command_centers by nearest dist
-    table.sort(Bld.command_centers,
-      function(a,b)
-        return DronesCarryAmountFix.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",Bld.command_centers)
-      end
-    )
-    --get command_center with idle drones
-    for i = 1, #Bld.command_centers do
-      if Bld.command_centers[i]:GetIdleDronesCount() > 0 then
-        cc = Bld.command_centers[i].drones
-        break
-      end
-    end
-  end
-  --it happens...
-  if not cc then
-    return
-  end
-
-  --get an idle drone
-  for i = 1, #cc do
-    if cc[i].command == "Idle" or cc[i].command == "WaitCommand" then
-      return cc[i]
-    end
-  end
-end
-
 function OnMsg.ClassesBuilt()
-  DronesCarryAmountFix.ComFuncs.SaveOrigFunc("SingleResourceProducer","Produce")
+  SaveOrigFunc("SingleResourceProducer","Produce")
   local DronesCarryAmountFix_OrigFuncs = DronesCarryAmountFix.OrigFuncs
 
   function g_Classes.SingleResourceProducer:Produce(amount_to_produce)
 
     --get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
     if DronesCarryAmountFix.UserSettings.DroneResourceCarryAmountFix then
-      DronesCarryAmountFix.CodeFuncs.FuckingDrones(self)
+      FuckingDrones(self)
     end
 
     return DronesCarryAmountFix_OrigFuncs.SingleResourceProducer_Produce(self, amount_to_produce)
@@ -243,21 +229,20 @@ end
 
 function OnMsg.NewHour()
 
-  local DronesCarryAmountFix = DronesCarryAmountFix
   local UICity = UICity
   local empty_table = empty_table
 
   --Hey. Do I preach at you when you're lying stoned in the gutter? No!
   local Table = UICity.labels.ResourceProducer or empty_table
   for i = 1, #Table do
-    DronesCarryAmountFix.CodeFuncs.FuckingDrones(Table[i]:GetProducerObj())
+    FuckingDrones(Table[i]:GetProducerObj())
     if Table[i].wasterock_producer then
-      DronesCarryAmountFix.CodeFuncs.FuckingDrones(Table[i].wasterock_producer)
+      FuckingDrones(Table[i].wasterock_producer)
     end
   end
   Table = UICity.labels.BlackCubeStockpiles or empty_table
   for i = 1, #Table do
-    DronesCarryAmountFix.CodeFuncs.FuckingDrones(Table[i])
+    FuckingDrones(Table[i])
   end
 
 end

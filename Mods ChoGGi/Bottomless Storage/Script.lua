@@ -36,7 +36,7 @@ function OnMsg.ClassesPostprocess()
     "display_name_pl", [[Bottomless Storage]],
     "description", [[Anything added to this depot will disappear.]],
     "build_category", "Storages",
-    "display_icon", table.concat{Mods.ChoGGi_BottomlessStorage.path,"/universal_storage.tga"},
+    "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
 --~     "entity", "StorageDepot",
     "entity", "ResourcePlatform",
     "on_off_button", false,

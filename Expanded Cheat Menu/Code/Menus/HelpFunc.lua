@@ -113,12 +113,12 @@ do -- ModUpload
           if Platform.steam then
             err = AsyncSteamWorkshopUpdateItem{
               item_id = mod.steam_id,
-              title = mod.title,
+              title = mod.title:gsub(" (Warning)",""),
               description = mod.description,
               tags = mod:GetTags(),
               content_os_folder = os_dest,
               image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or "",
-              change_note = mod.last_changes or "",
+              change_note = mod.last_changes or tostring(mod.version),
             }
           else
             err = "no steam"
@@ -192,6 +192,7 @@ do -- ModUpload
       check1_checked = true,
       check2 = 302535920001260--[[Blank Mod--]],
       check2_hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
+      height = 800.0,
     }
   end
 end -- do

@@ -35,9 +35,8 @@ DefineClass.Examine = {
   title = false,
   -- if user checks the autorefresh checkbox
   autorefresh_thread = false,
-  dialog_width = 650,
-  dialog_height = 750,
-
+  dialog_width = 650.0,
+  dialog_height = 750.0,
 
   -- needed?
   show_times = "relative",
@@ -178,6 +177,7 @@ Right-click to scroll to top."--]]],
   -- load up obj in text display
   self:SetObj(self.obj)
 
+  -- needs a bit of a delay since we delay in SetObj
   if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
     self:FlashWindow(self.obj)
   end
@@ -975,19 +975,7 @@ function Examine:SetObj(obj,skip_thread)
   self.onclick_handles = {}
 
   self.idText:SetText(S[67--[[Loading resources--]]])
-
-  -- don't create a new thread if we're already in one from auto-refresh
-  if skip_thread then
-    self.idText:SetText(self:totextex(obj,ChoGGi))
-  else
-    CreateRealTimeThread(function()
-      Sleep(5)
-      self.idText:SetText(self:totextex(obj,ChoGGi))
-    end)
-  end
-
   self.idLinks:SetText(self:menu(obj))
-
   local is_table = type(obj) == "table"
   local name = RetName(obj)
 
@@ -1045,6 +1033,16 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 
   -- limit caption length so we don't cover up close button
   self.idCaption:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
+
+  -- don't create a new thread if we're already in one from auto-refresh
+  if skip_thread then
+    self.idText:SetText(self:totextex(obj,ChoGGi))
+  else
+    -- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
+    DelayedCall(5, function()
+      self.idText:SetText(self:totextex(obj,ChoGGi))
+    end)
+  end
 end
 
 local function PopupClose(name)

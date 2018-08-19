@@ -143,14 +143,14 @@ local function SomeCode()
             if #keys <= 0 then
               v.description = ""
             else
-              v.description = v.description .. " (" .. keys[1]
+              v.description = table.concat{v.description," (",keys[1]}
               for i = 2, #keys do
-                v.description = v.description .. " or " .. keys[i]
+                v.description = table.concat{v.description," or ",keys[i]}
               end
-              v.description = v.description .. ")"
+              v.description = table.concat{v.description,")"}
             end
           else
-            v.description = tostring(v.description) .. " (" .. v.key .. ")"
+            v.description = table.concat{tostring(v.description)," (",v.key,")"}
           end
         end
         v.id = k

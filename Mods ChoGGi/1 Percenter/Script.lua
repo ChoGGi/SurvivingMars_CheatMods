@@ -1,3 +1,7 @@
+local CreateRealTimeThread = CreateRealTimeThread
+local AddCustomOnScreenNotification = AddCustomOnScreenNotification
+local AsyncRand = AsyncRand
+
 local function MsgPopup(Msg,Title,Icon)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
@@ -11,15 +15,16 @@ local function MsgPopup(Msg,Title,Icon)
         AddCustomOnScreenNotification(
           id,Title,Msg,Icon,nil,{expiration=timeout}
         )
-        --since I use AsyncRand for the id, I don't want this getting too large.
+        -- since I use AsyncRand for the id, I don't want this getting too large.
         g_ShownOnScreenNotifications[id] = nil
       end)
     end
   end)
 end
 
+local ChangeFunding = ChangeFunding
 function OnMsg.NewDay()
   local amount = (UICity.funding / 1000000) * 0.01 -- 0.01 = 1%
   ChangeFunding(amount)
-  MsgPopup("You've received: " .. amount .. " M","1 Percenter")
+  MsgPopup(table.concat{"You've received: ",amount," M"},"1 Percenter")
 end

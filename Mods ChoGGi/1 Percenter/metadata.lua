@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "1 Percenter v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "1 Percenter v0.2",
+  "version", 2,
+  "saved", 1534680000,
   "tags", "Cheats",
   "id", "ChoGGi_1Percenter",
   "author", "ChoGGi",

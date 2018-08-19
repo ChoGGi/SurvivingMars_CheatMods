@@ -1,3 +1,5 @@
-Version 0.2
+v0.4
+Da Vinci
+v0.2
 Compatibly with ECM
 May sometimes place buildings not aligned to the hex grid (thanks kajb139).

@@ -488,10 +488,7 @@ end -- do
 do -- WriteSettingsAcct
   local TableToLuaCode = TableToLuaCode
   local AsyncCompress = AsyncCompress
-  local gWriteModPersistentData
-  if blacklist then
-    gWriteModPersistentData = WriteModPersistentData
-  end
+  local WriteModPersistentData = blacklist and WriteModPersistentData
   local MaxModDataSize = const.MaxModDataSize
   local function RetError(err)
     if ChoGGi.Temp.GameLoaded then
@@ -504,21 +501,39 @@ do -- WriteSettingsAcct
     local ChoGGi = ChoGGi
     settings = settings or ChoGGi.UserSettings
 
-    local err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
+    -- lz4 is quicker, but less compressy
+    local err, data = AsyncCompress(TableToLuaCode(settings), false, "lz4")
     if err then
       RetError(err)
       return
     end
 
-    if #data > MaxModDataSize then
-      RetError(S[302535920000222--[[Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.--]]])
-      return
-    end
+    local acmpd = acmpd
+    if acmpd then
+      if not acmpd then
+        acmpd = {}
+      end
+      acmpd.ChoGGi_CheatMenu = data
+      acsac(5000)
+    else
+      if #data > MaxModDataSize then
+        err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
+        if err then
+          RetError(err)
+          return
+        end
 
-    local err = gWriteModPersistentData(data)
-    if err then
-      RetError(err)
-      return
+        if #data > MaxModDataSize then
+          RetError(S[302535920000222--[[Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.--]]])
+          return
+        end
+      end
+
+      local err = WriteModPersistentData(data)
+      if err then
+        RetError(err)
+        return
+      end
     end
 
     return data
@@ -526,10 +541,7 @@ do -- WriteSettingsAcct
 end -- do
 
 do -- ReadSettingsAcct
-  local gReadModPersistentData
-  if blacklist then
-    gReadModPersistentData = ReadModPersistentData
-  end
+  local ReadModPersistentData = blacklist and ReadModPersistentData
   local AsyncDecompress = AsyncDecompress
   local LuaCodeToTuple = LuaCodeToTuple
   local function RetError(err)
@@ -546,7 +558,7 @@ do -- ReadSettingsAcct
     -- try to read settings
     if not settings_str then
       local settings_data
-      err,settings_data = gReadModPersistentData()
+      err,settings_data = ReadModPersistentData()
 
       if err or not settings_data or settings_data == "" then
         -- no settings so use defaults

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Notification Pause v0.3",
-  "version", 3,
-  "saved", 1533297600,
+  "title", "Notification Pause v0.4",
+  "version", 4,
+  "saved", 1534680000,
   "id", "ChoGGi_NotificationPause",
   "author", "ChoGGi",
   "steam_id", "1411111982",

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Rocket: Always Ask Before Launch v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "Rocket: Always Ask Before Launch v0.2",
+  "version", 2,
+  "saved", 1534680000,
   "id", "ChoGGi_RocketAlwaysAskBeforeLaunch",
   "author", "ChoGGi",
 	"code", {"Script.lua"},

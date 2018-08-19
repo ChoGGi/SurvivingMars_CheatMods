@@ -30,7 +30,7 @@ function OnMsg.ClassesPostprocess()
     "display_name_pl", [[Bottomless WasteRock]],
     "description", [[Any rocks dumped at this depot will disappear.]],
     "build_category", "Storages",
-    "display_icon", table.concat{Mods.ChoGGi_BottomlessWasteRock.path,"/res_waste_rock.tga"},
+    "display_icon", table.concat{CurrentModPath,"res_waste_rock.tga"},
     "entity", "ResourcePlatform",
     "on_off_button", false,
     "prio_button", false,

@@ -1,3 +1,7 @@
+-- I didn't get a harumph outta that guy!
+ModEnvBlacklist = {--[[Harumph!--]]}
+-- yeah i know it don't do jack shit your point?
+
 -- See LICENSE for terms
 
 local LICENSE = [[

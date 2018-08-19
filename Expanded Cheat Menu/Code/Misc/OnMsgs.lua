@@ -561,6 +561,12 @@ end
 -- const.MinuteDuration is 500 ticks (GameTime)
 --~ function OnMsg.NewMinute()
 --~ end
+
+ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100 or 100
+function OnMsg.SystemSize()
+  ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
+end
+
 function OnMsg.ResearchQueueChange(city, tech_id)
   if ChoGGi.UserSettings.InstantResearch then
     GrantResearchPoints(city.tech_status[tech_id].cost)

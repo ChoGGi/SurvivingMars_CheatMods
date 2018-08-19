@@ -803,6 +803,18 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
     end
   end
 end
+do -- bool
+  acmpd = nil
+  acsac = nil
+  CreateRealTimeThread(function()
+    while not dlgConsole do
+      Sleep(50)
+    end
+    dlgConsole:Exec("ChoGGi.Temp.AccountStorage=AccountStorage\nChoGGi.Temp.SaveAccountStorage=SaveAccountStorage",true)
+    acmpd = ChoGGi.Temp.AccountStorage.ModPersistentData
+    acsac = ChoGGi.Temp.SaveAccountStorage
+  end)
+end
 
 function toboolean(str)
   if str == "true" then
@@ -1133,6 +1145,8 @@ ChoGGi.ComFuncs.OpenInListChoice{
   check2_hint = "Check2Hint",
   check2_checked = true,
   skip_sort = true,
+  height = 800,
+  width = 100,
 }
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(list)

@@ -13,7 +13,7 @@
 - > Replace the settings with your settings, and press OK.
 - > Restart ECM to make sure settings are applied.
 - Random Colour now also changes the Roughness/Metallic settings.
-- Resized ECM dialogs to look decent with default scaling.
+- ECM dialogs will size based on UI scale.
 
 ### Fixed:
 - Not using English resulted in certain menu items not appearing.

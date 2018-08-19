@@ -10,14 +10,13 @@ DefineClass.ChoGGi_MultiLineTextDlg = {
   retfunc = false,
   overwrite = false,
   context = false,
+  dialog_width = 800.0,
+  dialog_height = 600.0,
 }
 
 function ChoGGi_MultiLineTextDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-
-  self.dialog_width = 800
-  self.dialog_height = 600
 
   self.context = context
   -- store func for calling from :OnShortcut

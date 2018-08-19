@@ -8,16 +8,15 @@ DefineClass.ChoGGi_ConsoleLogWin = {
   __parents = {"ChoGGi_Window"},
   transp_mode = false,
   update_thread = false,
+
+  dialog_width = 700.0,
+  dialog_height = 500.0,
+  title = 302535920001120--[[Console Log Window--]],
 }
 
 function ChoGGi_ConsoleLogWin:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
-
-  self.dialog_width = 700
-  self.dialog_height = 500
-
-  self.title = 302535920001120--[[Console Log Window--]]
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)

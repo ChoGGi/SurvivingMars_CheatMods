@@ -1,11 +1,11 @@
 return PlaceObj("ModDef", {
-	"title", "Auto Empty Waste Storage v0.3",
-	"version", 3,
-  "saved", 1533297600,
+	"title", "Auto Empty Waste Storage v0.4",
+	"version", 4,
+	"saved", 1534680000,
 	"tags", "Misc",
 	"id", "ChoGGi_AutoEmptyWasteStorage",
 	"author", "ChoGGi",
-  "image","Preview.png",
+	"image","Preview.png",
 	"code", {"Script.lua"},
 	"lua_revision", LuaRevision,
 	"description", [[Automatically empties waste storage sites.
