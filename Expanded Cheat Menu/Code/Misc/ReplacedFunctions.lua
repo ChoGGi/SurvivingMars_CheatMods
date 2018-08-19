@@ -44,31 +44,31 @@ do --funcs without a class
   SaveOrigFunc("GetMissingMods")
   SaveOrigFunc("IsDlcAvailable")
   SaveOrigFunc("UIGetBuildingPrerequisites")
-  SaveOrigFunc("KbdShortcut")
 --~   SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
   local osx = Platform.osx
+  local IsKeyPressed = terminal.IsKeyPressed
+  VKStrNames[133] = "Cmd"
   function KbdShortcut(virtual_key)
-    if not osx then
-      return KbdShortcut(virtual_key)
-    end
-    print("virtual_key:",virtual_key)
-
+    local VKStrNames = VKStrNames
     if not VKStrNames[virtual_key] then
       return
     end
+
+    print("virtual_key:",virtual_key)
+    local const = const
     local s = ""
-    if virtual_key == 131 or terminal.IsKeyPressed(131) then
+    if virtual_key == 131 or IsKeyPressed(131) then
       s = Concat(s,"Cmd-")
     end
-    if virtual_key == const.vkControl or terminal.IsKeyPressed(const.vkControl) then
+    if virtual_key == const.vkControl or IsKeyPressed(const.vkControl) then
       s = Concat(s,"Ctrl-")
     end
-    if virtual_key == const.vkAlt or terminal.IsKeyPressed(const.vkAlt) then
+    if virtual_key == const.vkAlt or IsKeyPressed(const.vkAlt) then
       s = Concat(s,"Alt-")
     end
-    if virtual_key == const.vkShift or terminal.IsKeyPressed(const.vkShift) then
+    if virtual_key == const.vkShift or IsKeyPressed(const.vkShift) then
       s = Concat(s,"Shift-")
     end
     if virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
