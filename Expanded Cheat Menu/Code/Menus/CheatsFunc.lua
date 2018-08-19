@@ -1084,6 +1084,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
     check1_checked = true,
     check2 = 311--[[Research--]],
     check2_hint = 302535920000320--[[Unlocks and researchs.--]],
+    height = 800,
   }
 end
 

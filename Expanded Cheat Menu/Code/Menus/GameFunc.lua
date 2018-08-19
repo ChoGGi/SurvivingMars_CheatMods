@@ -222,6 +222,7 @@ do -- ListAllObjects
       title = 302535920001292--[[List All Objects--]],
       custom_type = 1,
       custom_func = CallBackFunc_List,
+      height = 800,
     }
   end
 end -- do

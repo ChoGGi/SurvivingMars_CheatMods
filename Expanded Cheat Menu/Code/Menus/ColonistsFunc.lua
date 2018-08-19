@@ -1405,6 +1405,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
       check1_hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
       check2 = 302535920000281--[[Remove--]],
       check2_hint = 302535920000832--[[Check to remove traits--]],
+      height = 800,
     }
   end
 end
