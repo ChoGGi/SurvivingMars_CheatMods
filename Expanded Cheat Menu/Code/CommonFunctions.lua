@@ -1510,18 +1510,6 @@ do -- ShowConsoleLogWin
 end -- do
 
 do --
-  local function BuildTable(traits,skip)
-    local list = {}
-    for i = 0, #traits do
-      if traits[i] then
-        if skip ~= traits[i].id then
-          list[#list+1] = traits[i].id
-          list[traits[i].id] = true
-        end
-      end
-    end
-    return list
-  end
   function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
     local ChoGGi = ChoGGi
 
@@ -1550,16 +1538,37 @@ do --
     end)
 
     -- colonists
-    local t = Presets.TraitPreset
-    ChoGGi.Tables.NegativeTraits = BuildTable(t.Negative)
-    ChoGGi.Tables.PositiveTraits = BuildTable(t.Positive)
-    ChoGGi.Tables.OtherTraits = BuildTable(t.other)
-    ChoGGi.Tables.ColonistAges = BuildTable(t["Age Group"])
-    ChoGGi.Tables.ColonistGenders = BuildTable(t.Gender)
-    ChoGGi.Tables.ColonistSpecializations = BuildTable(t.Specialization,"none")
+    ChoGGi.Tables.NegativeTraits = {}
+    ChoGGi.Tables.PositiveTraits = {}
+    ChoGGi.Tables.OtherTraits = {}
+    ChoGGi.Tables.ColonistAges = {}
+    ChoGGi.Tables.ColonistGenders = {}
+    ChoGGi.Tables.ColonistSpecializations = {}
+    ChoGGi.Tables.ColonistBirthplaces = {}
+    --add as index and associative tables for ease of filtering
+    for id,t in pairs(TraitPresets) do
+      if t.category == "Positive" then
+        ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = id
+        ChoGGi.Tables.PositiveTraits[id] = true
+      elseif t.category == "Negative" then
+        ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = id
+        ChoGGi.Tables.NegativeTraits[id] = true
+      elseif t.category == "other" then
+        ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = id
+        ChoGGi.Tables.OtherTraits[id] = true
+      elseif t.category == "Age Group" then
+        ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = id
+        ChoGGi.Tables.ColonistAges[id] = true
+      elseif t.category == "Gender" then
+        ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = id
+        ChoGGi.Tables.ColonistGenders[id] = true
+      elseif t.category == "Specialization" and id ~= "none" then
+        ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = id
+        ChoGGi.Tables.ColonistSpecializations[id] = true
+      end
+    end
 
     local Nations = Nations
-    ChoGGi.Tables.ColonistBirthplaces = {}
     for i = 1, #Nations do
       ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
       ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
