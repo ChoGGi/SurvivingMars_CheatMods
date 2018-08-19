@@ -69,7 +69,7 @@ do --funcs without a class
       if virtual_key == const.vkShift or IsKeyPressed(const.vkShift) then
         s = Concat(s,"Shift-")
       end
-      if virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
+      if virtual_key == 133 or virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
         return s:sub(1, -2)
       end
       return Concat(s,VKStrNames[virtual_key])
@@ -79,6 +79,7 @@ do --funcs without a class
       local win = XWindow:new({
         OnKbdKeyUp = function(self, virtual_key)
           local shortcut = KbdShortcut(virtual_key)
+          print("shortcut:",shortcut)
           if shortcut ~= "Cmd" and shortcut ~= "Ctrl" and shortcut ~= "Shift" then
             Wakeup(thread, shortcut)
           end
