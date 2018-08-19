@@ -10,7 +10,8 @@
 - > Go to %AppData%\Surviving Mars\Mods.
 - > Open CheatMenuModSettings.lua in a text editor.
 - > Go to Menu>ECM>Help>Edit ECM Settings
-- > Paste in the settigns and press ok, then restart ECM to make sure all are active.
+- > Replace the settings with your settings, and press OK.
+- > Restart ECM to make sure settings are applied.
 
 ### Fixed:
 - Not using English resulted in certain menu items not appearing.
