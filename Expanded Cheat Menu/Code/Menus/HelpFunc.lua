@@ -37,6 +37,9 @@ do -- ModUpload
       local blank_mod = choice[1].check2
       local dest = "AppData/ModUpload/"
       local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
+      if mod.id == "ChoGGi_CheatMenu" then
+        copy_files = false
+      end
 
       -- build / show confirmation dialog
       local upload_msg = {
@@ -44,7 +47,7 @@ do -- ModUpload
         "\n",
         S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading.--]]],
       }
-      if not copy_files or mod.id == "ChoGGi_CheatMenu" then
+      if not copy_files then
         upload_msg[#upload_msg+1] = "\n\n"
         upload_msg[#upload_msg+1] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
 
