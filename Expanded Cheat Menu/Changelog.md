@@ -1,3 +1,5 @@
+#Changelog for Expanded Cheat Menu
+
 ###### To Do:
 ###### Dialogs: Change map, Object Manipulator, Monitor Info
 
