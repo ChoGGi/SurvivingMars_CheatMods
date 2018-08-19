@@ -418,6 +418,8 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
   text = CheckText(text,text)
   title = CheckText(title,S[1000016--[[Title--]]])
 
+  local PopupNotificationPresets = PopupNotificationPresets
+
   local preset
   if image then
     preset = "ChoGGi_TempPopup"
@@ -426,15 +428,13 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
       name = preset,
       image = image,
     }
-    Presets.PopupNotificationPreset[1][preset] = temppop
-    Presets.PopupNotificationPreset.Default[preset] = temppop
+    PopupNotificationPresets[preset] = temppop
   end
 
   CreateRealTimeThread(function()
     WaitPopupNotification(preset, {title = title, text = text})
     if preset then
-      Presets.PopupNotificationPreset[1][preset] = nil
-      Presets.PopupNotificationPreset.Default[preset] = nil
+      PopupNotificationPresets[preset] = nil
     end
   end)
 end

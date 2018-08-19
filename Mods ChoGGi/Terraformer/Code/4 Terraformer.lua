@@ -50,6 +50,7 @@ function Terraformer.MenuFuncs.TerrainEditor_Toggle()
   if Platform.editor then
     editor.ClearSel()
     SetEditorBrush(const.ebtTerrainType)
+    camera.Unlock(1)
   else
     -- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
     ToggleCollisions(Terraformer)

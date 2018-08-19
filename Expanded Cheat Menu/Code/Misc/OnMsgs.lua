@@ -1326,10 +1326,13 @@ do -- LoadGame/CityStart
 
     -- first time run info
     if ChoGGi.UserSettings.FirstRun ~= false then
+--~     local S = ChoGGi.Strings
+--~     local Concat = ChoGGi.ComFuncs.Concat
       ChoGGi.ComFuncs.MsgWait(
         Concat(S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-Press Tilde or Enter and click the ""Settings"" button to toggle showing console log history."--]]],"\n",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
-        Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]])
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],"\n",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
+        Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]]),
+        Concat(ChoGGi.ModPath,"Preview.png")
       )
       ChoGGi.UserSettings.FirstRun = false
       ChoGGi.Temp.WriteSettings = true

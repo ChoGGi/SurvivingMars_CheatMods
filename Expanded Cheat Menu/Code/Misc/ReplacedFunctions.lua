@@ -119,7 +119,7 @@ do --funcs without a class
 --~           return Text:gsub(SearchName,ColourText(T(params[Name])))
 --~         end
 --~         --show popups in console log
---~         local presettext = DataInstances.PopupNotificationPreset[preset]
+--~         local presettext = PopupNotificationPresets[preset]
 --~         --print(ColourText("Title: ",true),ColourText(T(presettext.title)))
 --~         local context = _GetPopupNotificationContext(preset, params or empty_table, bPersistable)
 --~         context.parent = parent
@@ -157,7 +157,7 @@ do --funcs without a class
     return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
   end
   --Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
-  --local temp = DataInstances.PopupNotificationPreset.FirstColonistDeath
+  --local temp = PopupNotificationPresets.FirstColonistDeath
 
  -- UI transparency dialogs (buildmenu, pins, infopanel)
   function OpenDialog(...)

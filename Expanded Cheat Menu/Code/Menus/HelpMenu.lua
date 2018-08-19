@@ -88,7 +88,7 @@ Actions[#Actions+1] = {
   ActionName = S[302535920000663--[[Toggle Interface--]]],
   ActionId = "Help.Interface.Toggle Interface",
   ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
-  RolloverText = S[302535920000663--[[Toggle Interface--]]],
+  RolloverText = S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
   OnAction = function()
     hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
   end,
@@ -172,8 +172,8 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = str_Help_ECM,
-  ActionName = S[302535920001029--[[Change log--]]],
-  ActionId = "Help.Expanded Cheat Menu.Change log",
+  ActionName = S[302535920001029--[[Changelog--]]],
+  ActionId = "Help.Expanded Cheat Menu.Changelog",
   ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
   RolloverText = S[4915--[[Good News, Everyone!"--]]],
 --~   OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
