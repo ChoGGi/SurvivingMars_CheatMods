@@ -5,7 +5,7 @@ local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000680--[[Annoying Sounds--]]],
   ActionId = "Game.Misc.Annoying Sounds",
   ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
@@ -14,7 +14,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920001292--[[List All Objects--]]],
   ActionId = "Game.List All Objects",
   ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
@@ -23,7 +23,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000864--[[Delete All Rocks--]]],
   ActionId = "Game.Delete All Rocks",
   ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
@@ -32,7 +32,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
   ActionId = "Game.Terrain Editor Toggle",
   ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
@@ -42,7 +42,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000485--[[Terrain Flatten Toggle--]]],
   ActionId = "Game.Terrain Flatten Toggle",
   ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
@@ -54,7 +54,7 @@ Use Shift + Arrow keys to change the height/radius.--]]],
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000493--[[Change Map--]]],
   ActionId = "Game.Change Map",
   ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
@@ -66,7 +66,7 @@ The map disaster settings don't do jack (use ECM>Mission>Disasters).--]]],
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000265--[[Pulsating Pins--]]],
   ActionId = "Game.Pulsating Pins",
   ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -80,7 +80,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000623--[[Change Terrain Type--]]],
   ActionId = "Game.Change Terrain Type",
   ActionIcon = "CommonAssets/UI/Menu/prefabs.tga",
@@ -90,7 +90,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000625--[[Change Light Model--]]],
   ActionId = "Game.Change Light Model",
   ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
@@ -104,7 +104,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000627--[[Change Light Model Custom--]]],
   ActionId = "Game.Change Light Model Custom",
   ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
@@ -120,7 +120,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000629--[[UI Transparency--]]],
   ActionId = "Game.UI Transparency",
   ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
@@ -130,7 +130,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionMenubar = S[283142739680--[[Game--]]],
+  ActionMenubar = "Game",
   ActionName = S[302535920000631--[[UI Transparency Mouseover--]]],
   ActionId = "Game.UI Transparency Mouseover",
   ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",

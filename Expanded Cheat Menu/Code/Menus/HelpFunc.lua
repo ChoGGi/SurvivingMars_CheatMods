@@ -6,6 +6,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local print,tostring = print,tostring
 
@@ -166,6 +167,10 @@ do -- ModUpload
   end
 
   function ChoGGi.MenuFuncs.ModUpload()
+    if blacklist then
+      print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+      return
+    end
     local ItemList = {}
     local Mods = Mods
     for id,mod in pairs(Mods) do
@@ -246,19 +251,19 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
   ChoGGi.SettingFuncs.WriteSettings()
 end
 
-function ChoGGi.MenuFuncs.ShowChangelogECM()
-	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"Changelog.md"))
-	if not file_error then
-    ChoGGi.ComFuncs.OpenInExamineDlg(str)
-	end
-end
+--~ function ChoGGi.MenuFuncs.ShowChangelogECM()
+--~   local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"Changelog.md"))
+--~   if not file_error then
+--~     ChoGGi.ComFuncs.OpenInExamineDlg(str)
+--~   end
+--~ end
 
-function ChoGGi.MenuFuncs.ShowReadmeECM()
-	local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
-	if not file_error then
-    ChoGGi.ComFuncs.OpenInExamineDlg(str)
-	end
-end
+--~ function ChoGGi.MenuFuncs.ShowReadmeECM()
+--~   local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
+--~   if not file_error then
+--~     ChoGGi.ComFuncs.OpenInExamineDlg(str)
+--~   end
+--~ end
 
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
   local ChoGGi = ChoGGi
@@ -287,21 +292,25 @@ function ChoGGi.MenuFuncs.TakeScreenshot(Bool)
 end
 
 function ChoGGi.MenuFuncs.ResetECMSettings()
+
   local file = ChoGGi.SettingsFile
   local old = Concat(file,".old")
 
   local function CallBackFunc(answer)
     if answer then
-      ThreadLockKey(old)
-      AsyncCopyFile(file,old)
-      ThreadUnlockKey(old)
+      if blacklist then
+        ChoGGi.UserSettings = ChoGGi.Defaults
+      else
+        ThreadLockKey(old)
+        AsyncCopyFile(file,old)
+        ThreadUnlockKey(old)
 
-      ThreadLockKey(file)
-      AsyncFileDelete(ChoGGi.SettingsFile)
-      ThreadUnlockKey(file)
+        ThreadLockKey(file)
+        AsyncFileDelete(ChoGGi.SettingsFile)
+        ThreadUnlockKey(file)
+      end
 
-      --so we don't save file on exit
-      ChoGGi.Temp.ResetSettings = true
+      ChoGGi.SettingFuncs.WriteSettings()
 
       MsgPopup(
         302535920001070--[[Restart to take effect.--]],
@@ -310,10 +319,10 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
       )
     end
   end
+
   ChoGGi.ComFuncs.QuestionBox(
     Concat(S[302535920001072--[[Are you sure you want to reset ECM settings?
-
-Old settings are saved as %s--]]]:format(old),"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
+Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old),"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
     CallBackFunc,
     Concat(S[302535920001084--[[Reset--]]],"!")
   )

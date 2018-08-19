@@ -1,22 +1,20 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
-local blacklist = ChoGGi.blacklist
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 local Actions = ChoGGi.Temp.Actions
 
-if not blacklist then
-  Actions[#Actions+1] = {
-    ActionMenubar = "Help",
-    ActionName = S[302535920000367--[[Mod Upload--]]],
-    ActionId = "Help.Mod Upload",
-    ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-    RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
-    OnAction = ChoGGi.MenuFuncs.ModUpload,
-    ActionSortKey = "99",
-  }
+Actions[#Actions+1] = {
+  ActionMenubar = "Help",
+  ActionName = S[302535920000367--[[Mod Upload--]]],
+  ActionId = "Help.Mod Upload",
+  ActionIcon = "CommonAssets/UI/Menu/gear.tga",
+  RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
+  OnAction = ChoGGi.MenuFuncs.ModUpload,
+  ActionSortKey = "99",
+}
 
-end
 Actions[#Actions+1] = {
   ActionMenubar = "Help",
   ActionName = S[302535920000473--[[Reload ECM Menu--]]],
@@ -159,27 +157,31 @@ Actions[#Actions+1] = {
   ActionSortKey = "1",
 }
 
-if not blacklist then
-  Actions[#Actions+1] = {
-    ActionMenubar = str_Help_ECM,
-    ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
-    ActionId = "Help.Expanded Cheat Menu.ECM Read me",
-    ActionIcon = "CommonAssets/UI/Menu/help.tga",
-    RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
-    OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
-    ActionSortKey = "2",
-  }
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
+  ActionId = "Help.Expanded Cheat Menu.ECM Read me",
+  ActionIcon = "CommonAssets/UI/Menu/help.tga",
+  RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
+--~   OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
+  OnAction = function()
+    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise")
+  end,
+  ActionSortKey = "2",
+}
 
-  Actions[#Actions+1] = {
-    ActionMenubar = str_Help_ECM,
-    ActionName = S[302535920001029--[[Change log--]]],
-    ActionId = "Help.Expanded Cheat Menu.Change log",
-    ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-    RolloverText = S[4915--[[Good News, Everyone!"--]]],
-    OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
-    ActionSortKey = "3",
-  }
-end
+Actions[#Actions+1] = {
+  ActionMenubar = str_Help_ECM,
+  ActionName = S[302535920001029--[[Change log--]]],
+  ActionId = "Help.Expanded Cheat Menu.Change log",
+  ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
+  RolloverText = S[4915--[[Good News, Everyone!"--]]],
+--~   OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
+  OnAction = function()
+    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded Cheat Menu/Changelog.md#ecm-changelog")
+  end,
+  ActionSortKey = "3",
+}
 
 Actions[#Actions+1] = {
   ActionMenubar = str_Help_ECM,
@@ -214,8 +216,8 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = str_Help_ECM,
-  ActionName = S[302535920001242--[[Edit ECM Settings File--]]],
-  ActionId = "Help.Expanded Cheat Menu.Edit ECM Settings File",
+  ActionName = S[302535920001242--[[Edit ECM Settings--]]],
+  ActionId = "Help.Expanded Cheat Menu.Edit ECM Settings",
   ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
   RolloverText = S[302535920001243--[[Manually edit ECM settings.--]]],
   OnAction = ChoGGi.MenuFuncs.EditECMSettings,
@@ -277,7 +279,7 @@ do -- build text file menu items
       end
     end
 
-    local funcs = ReadText(Concat(ChoGGi.ModPath,"Files/Text/GameFunctions.lua"))
+    local funcs = ReadText(Concat(ChoGGi.ModPath,"Code/Text/GameFunctions.lua"))
     Actions[#Actions+1] = {
       ActionMenubar = str_Help_Text,
       ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
@@ -290,7 +292,7 @@ do -- build text file menu items
       ActionSortKey = "0",
     }
     local function LoopFiles(ext)
-      local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.ModPath,"Files/Text"),ext)
+      local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.ModPath,"Code/Text"),ext)
       if folders then
         for i = 1, #folders do
           local text = ReadText(folders[i].path)

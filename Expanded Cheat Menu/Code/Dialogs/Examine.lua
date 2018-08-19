@@ -455,10 +455,8 @@ end
 local flashing_table = {}
 function Examine:FlashWindow(obj)
   obj = obj or self.obj
-  -- we don't want to flash certain objects
-  local d = terminal.desktop
---~   if obj == d or obj == _G or obj.parent == d then
-  if obj == d or not obj:IsKindOf("XWindow") then
+  -- only flash actual UI objects
+  if not IsKindOf(obj,"XWindow") then
     return
   end
   local Sleep,UIL,black,white = Sleep,UIL,black,white

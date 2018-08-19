@@ -5,12 +5,17 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local rawget,table,tostring,print,select = rawget,table,tostring,print,select
 
 --~ box(left, top, right, bottom)
 
 local function ShowFileLog()
+  if blacklist then
+    print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+    return
+  end
   FlushLogFile()
   print(select(2,AsyncFileToString(GetLogFile())))
 end
@@ -125,9 +130,8 @@ local function HistoryPopup(self)
   end
 end
 
-function ChoGGi.Console.ConsoleControls()
+function ChoGGi.Console.ConsoleControls(dlgConsole)
   local g_Classes = g_Classes
-  local dlgConsole = dlgConsole
 
   --stick everything in
   local container = g_Classes.XWindow:new({
@@ -146,19 +150,21 @@ function ChoGGi.Console.ConsoleControls()
     OnPress = ConsolePopup,
   }, container)
 
-  --------------------------------History popup
-  dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
-    Id = "idHistoryMenu",
-    RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
-    Text = S[302535920000793--[[History--]]],
-    OnPress = HistoryPopup,
-  }, container)
+  if not blacklist then
+    --------------------------------History popup
+    dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
+      Id = "idHistoryMenu",
+      RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
+      Text = S[302535920000793--[[History--]]],
+      OnPress = HistoryPopup,
+    }, container)
 
-  --------------------------------Scripts buttons
-  dlgConsole.idScripts = g_Classes.XWindow:new({
-    Id = "idScripts",
-    LayoutMethod = "HList",
-  }, container)
+    --------------------------------Scripts buttons
+    dlgConsole.idScripts = g_Classes.XWindow:new({
+      Id = "idScripts",
+      LayoutMethod = "HList",
+    }, container)
+  end
 end
 
 local function BuildSciptButton(scripts,dlg,folder)
@@ -191,16 +197,23 @@ local function BuildSciptButton(scripts,dlg,folder)
   }, scripts)
 end
 
+-- only check for ECM Scripts once per load
+local script_files_added
 -- rebuild menu toolbar buttons
 function ChoGGi.Console.RebuildConsoleToolbar(dlg)
-  if not dlg then
+  if blacklist then
     return
   end
 
+  dlg = dlg or dlgConsole
   local ChoGGi = ChoGGi
   local scripts = dlg.idScripts
 
-  ChoGGi.Console.BuildScriptFiles()
+  -- add example script files if folder is missing
+  if not script_files_added then
+    ChoGGi.Console.BuildScriptFiles()
+    script_files_added = true
+  end
 
   -- clear out old buttons first
   for i = #scripts, 1, -1 do
@@ -227,10 +240,8 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
       })
     end
   end
-
 end
 
--- add example script files if folder is missing
 function ChoGGi.Console.BuildScriptFiles()
   local script_path = ChoGGi.scripts
   --create folder and some example scripts if folder doesn't exist
@@ -262,15 +273,11 @@ function ChoGGi.Console.BuildScriptFiles()
     AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(XTemplates)
 -- stores all GUI before they're built. Saved per game, new DLC will update them as well.]])
     AsyncStringToFile(Concat(script_path,"/Examine/Dialogs.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Dialogs)]])
--- added by ECM]])
     AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Flags)
 -- See const.FLAG]])
     AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop)]])
     AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#(UICity.labels.Colonist or "")]])
     AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
   end
-
-  --rebuild toolbar
-  ChoGGi.Console.RebuildConsoleToolbar()
 end
 

@@ -1,7 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000222,,
-302535920000242,,
-302535920000243,,
 302535920000244,,
 302535920001285,,
 302535920001286,,
@@ -54,6 +51,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920000242,Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.,
 302535920001302,Find,
 302535920001303,Search for text within %s.,
 302535920000306,Everything,
@@ -117,13 +115,14 @@ ID,Text,Translation,Old Translation,Gender
 302535920000793,History,
 302535920000881,"Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting).",
 302535920000888,Any .lua files in here will be part of a list that you can execute in-game from the console menu.,
+302535920000222,Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.,
 302535920000739,Black,
 302535920000740,Asian,
 302535920001283,Indian,
 302535920001284,Southeast Asian,
 302535920000006,Failed to save settings to %s : %s,
-302535920000007,"Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author.",
+302535920000243,Problem saving settings! Error: %s,
+302535920000007,Problem loading settings! Error: %s,
 302535920000008,Error: Couldn't convert old settings to new settings,
 302535920000009,Missing Scenario Name,
 302535920000010,Missing Name,
@@ -1345,8 +1344,7 @@ CheatMenuModSettings.lua > DisableECM to re-enable them.",
 302535920001069,Interface,
 302535920001070,Restart to take effect.,
 302535920001072,"Are you sure you want to reset ECM settings?
-
-Old settings are saved as %s.",
+Old settings are saved as %s (or not saved if you don't use the HelperMod).",
 302535920001074,"Sign, sign, everywhere a sign.
 Blockin' out the scenery, breakin' my mind.
 Do this, don't do that, can't you read the sign?",
@@ -1358,7 +1356,7 @@ If there isn't a status then it's likely a list of options to choose from
 
 For any issues; please report them to my Github/Steam/NexusMods page, or email %s",
 302535920001264,Show list of mods to upload to Steam Workshop.,
-302535920001242,Edit ECM Settings File,
+302535920001242,Edit ECM Settings,
 302535920001243,Manually edit ECM settings.,
 302535920000875,Game Functions,
 302535920000465,"Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file.",

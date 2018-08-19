@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/Examine.lua",
 		"Code/Dialogs/ExecCode.lua",
 		"Code/Dialogs/FindValue.lua",
-		"Code/Dialogs/ListChoiceCustom.lua",
+		"Code/Dialogs/ListChoice.lua",
 		"Code/Dialogs/MultiLineText.lua",
 
     -- temp added to check out keys for XXXUnknownXXX
@@ -39,6 +39,7 @@ return PlaceObj("ModDef", {
 		"Code/Misc/ReplacedFunctions.lua",
 		"Code/Misc/Testing.lua",
     -- menus/menu items/shortcuts
+		"Code/Menus/Keys.lua",
 		"Code/Menus/BuildingsFunc.lua",
 		"Code/Menus/BuildingsMenu.lua",
 		"Code/Menus/CapacityFunc.lua",
@@ -57,7 +58,6 @@ return PlaceObj("ModDef", {
 		"Code/Menus/GameMenu.lua",
 		"Code/Menus/HelpFunc.lua",
 		"Code/Menus/HelpMenu.lua",
-		"Code/Menus/Keys.lua",
 		"Code/Menus/MiscFunc.lua",
 		"Code/Menus/MiscMenu.lua",
 		"Code/Menus/MissionFunc.lua",
@@ -71,18 +71,13 @@ return PlaceObj("ModDef", {
 	},
 
   -- i leave this commented out to force users to read description and install helpermod (for now)
---~ 	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
 
 	"description", string.format([[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
-
-If this mod is disabled due to version compatibility then you need to install the helper mod at:
-%sHelperMod
-
-
 
 ##### Info
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
@@ -126,5 +121,11 @@ chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedeta
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.]],ConvertToOSPath(CurrentModPath)),
+Everyone else giving suggestions/pointing out issues.
+
+
+##### Access to missing functionality
+Da Vinci updated added a blacklist of functions, you can use this to bypass them.
+%sHelperMod
+]],ConvertToOSPath(CurrentModPath)),
 })

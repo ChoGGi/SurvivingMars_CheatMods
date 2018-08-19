@@ -7,10 +7,10 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local pcall,type,table = pcall,type,table
 
-local AsyncFileDelete = AsyncFileDelete
 local CloseXBuildMenu = CloseXBuildMenu
 local CloseDialog = CloseDialog
 local CreateRealTimeThread = CreateRealTimeThread
@@ -43,20 +43,22 @@ local camera_SetFovX = camera.SetFovX
 do -- for those that don't know "do ... end" is a way of keeping "local =" local to the do
   -- make some easy to type names
   local ChoGGi = ChoGGi
-  function dump(...)
-    ChoGGi.ComFuncs.Dump(...)
-  end
-  function dumplua(...)
-    ChoGGi.ComFuncs.DumpLua(...)
-  end
-  function dumptable(...)
-    ChoGGi.ComFuncs.DumpTable(...)
-  end
-  function dumpl(...)
-    ChoGGi.ComFuncs.DumpLua(...)
-  end
-  function dumpt(...)
-    ChoGGi.ComFuncs.DumpTable(...)
+  if not blacklist then
+    function dump(...)
+      ChoGGi.ComFuncs.Dump(...)
+    end
+    function dumplua(...)
+      ChoGGi.ComFuncs.DumpLua(...)
+    end
+    function dumptable(...)
+      ChoGGi.ComFuncs.DumpTable(...)
+    end
+    function dumpl(...)
+      ChoGGi.ComFuncs.DumpLua(...)
+    end
+    function dumpt(...)
+      ChoGGi.ComFuncs.DumpTable(...)
+    end
   end
 
 --~   local function RemoveLast(str)
@@ -689,7 +691,7 @@ do --CloseDialogsECM
   function ChoGGi.CodeFuncs.CloseDialogsECM()
     ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator")
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceCustomDialog")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MultiLineTextDlg")

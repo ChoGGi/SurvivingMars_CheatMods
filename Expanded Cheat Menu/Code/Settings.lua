@@ -8,7 +8,7 @@ local S = ChoGGi.Strings
 
 local next,pairs,type,table = next,pairs,type,table
 
-do -- Actions
+do -- cheat menu custom menus
   local Actions = ChoGGi.Temp.Actions
   local function AddMenuitem(name,str_id,sort)
     Actions[#Actions+1] = {
@@ -190,6 +190,15 @@ if ChoGGi.testing then
   -- probably not useful for anyone who isn't loading up borked saves to test
   ChoGGi.Defaults.SkipMissingMods = true
   ChoGGi.Defaults.SkipMissingDLC = true
+end
+
+function OnMsg.ChoGGi_Loaded()
+  dlgConsole:Exec([[ChoGGi.Temp.g = _G
+dlgConsole.history_queue_idx = 0
+dlgConsole.history_queue = {}
+LocalStorage.history_log = {}
+SaveLocalStorage()]])
+--~   dlgConsole:AddHistory("print(ChoGGi.Strings[302535920000242])")
 end
 
 -- and constants
@@ -396,14 +405,14 @@ do -- SetConstsToSaved
   end
 end -- do
 
-do -- WriteSettings
+do -- WriteSettingsOrig
   local AsyncCopyFile = AsyncCopyFile
   local AsyncStringToFile = AsyncStringToFile
   local TableToLuaCode = TableToLuaCode
   local ThreadLockKey = ThreadLockKey
   local ThreadUnlockKey = ThreadUnlockKey
   -- called everytime we set a setting in menu
-  function ChoGGi.SettingFuncs.WriteSettings(settings)
+  function ChoGGi.SettingFuncs.WriteSettingsOrig(settings)
     local ChoGGi = ChoGGi
     settings = settings or ChoGGi.UserSettings
 
@@ -426,11 +435,11 @@ do -- WriteSettings
   end
 end -- do
 
-do -- ReadSettings
+do -- ReadSettingsOrig
   local AsyncFileToString = AsyncFileToString
   local LuaCodeToTuple = LuaCodeToTuple
   -- read saved settings from file
-  function ChoGGi.SettingFuncs.ReadSettings(settings_str)
+  function ChoGGi.SettingFuncs.ReadSettingsOrig(settings_str)
     local ChoGGi = ChoGGi
     local is_error
 
@@ -439,13 +448,12 @@ do -- ReadSettings
       local file_error
       file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
       if file_error then
-        -- no settings file so make a new one
-        ChoGGi.SettingFuncs.WriteSettings()
+        -- no settings file so make a new one and read it
+        ChoGGi.SettingFuncs.WriteSettingsOrig()
         file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
         -- something is definitely wrong so just abort, and let user know
         if file_error then
-          ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]])
+          ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(file_error))
           is_error = true
         end
       end
@@ -454,15 +462,103 @@ If you can delete it and still get this error; please send it and this log to th
     -- and convert it to lua / update in-game settings
     local code_error
     code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
-    ChoGGi.Temp.a = settings_str
-    ChoGGi.Temp.b = settings_str
     if code_error then
-      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[["Problem loading AppData/Surviving Mars/CheatMenuModSettings.lua
-If you can delete it and still get this error; please send it and this log to the author."--]]])
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(code_error))
       is_error = true
     end
 
     if is_error or type(ChoGGi.UserSettings) ~= "table" then
+      -- so now at least the game will start
+      ChoGGi.UserSettings = ChoGGi.Defaults
+      if ChoGGi.testing then
+        ChoGGi.UserSettings.WriteLogs = true
+      end
+      return ChoGGi.Defaults
+    end
+
+    -- all is well
+    return settings_str
+
+  end
+end -- do
+
+do -- WriteSettingsAcct
+  local TableToLuaCode = TableToLuaCode
+  local AsyncCompress = AsyncCompress
+  local WriteModPersistentData = WriteModPersistentData
+  local MaxModDataSize = const.MaxModDataSize
+  local function RetError(err)
+    if ChoGGi.Temp.GameLoaded then
+      print(Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)))
+    else
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
+    end
+  end
+  function ChoGGi.SettingFuncs.WriteSettingsAcct(settings)
+    local ChoGGi = ChoGGi
+    settings = settings or ChoGGi.UserSettings
+
+    local err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
+    if err then
+      RetError(err)
+      return
+    end
+
+    if #data > MaxModDataSize then
+      RetError(S[302535920000222--[[Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.--]]])
+      return
+    end
+
+    local err = WriteModPersistentData(data)
+    if err then
+      RetError(err)
+      return
+    end
+
+    return data
+  end
+end -- do
+
+do -- ReadSettingsAcct
+  local ReadModPersistentData = ReadModPersistentData
+  local AsyncDecompress = AsyncDecompress
+  local LuaCodeToTuple = LuaCodeToTuple
+  local function RetError(err)
+    if ChoGGi.Temp.GameLoaded then
+      print(Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err)))
+    else
+      ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
+    end
+  end
+  function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_str)
+    local ChoGGi = ChoGGi
+    local is_error,err
+
+    -- try to read settings
+    if not settings_str then
+      local settings_data
+      err,settings_data = ReadModPersistentData()
+
+      if err or not settings_data or settings_data == "" then
+        -- no settings so use defaults
+        settings_data = ChoGGi.SettingFuncs.WriteSettingsAcct(ChoGGi.Defaults)
+      end
+
+      some_error, settings_str = AsyncDecompress(settings_data)
+      if err then
+        RetError(err)
+        is_error = true
+      end
+    end
+
+    -- and convert it to lua / update in-game settings
+    err, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
+    if err then
+      RetError(err)
+      is_error = true
+    end
+
+    if is_error or ChoGGi.UserSettings == empty_table or type(ChoGGi.UserSettings) ~= "table" then
       -- so now at least the game will start
       ChoGGi.UserSettings = ChoGGi.Defaults
       if ChoGGi.testing then
@@ -581,6 +677,15 @@ do -- AddOldSettings
 end -- do
 
 local ChoGGi = ChoGGi
+
+-- saving settings to a file or (shudder) in-game
+if ChoGGi.blacklist then
+  ChoGGi.SettingFuncs.ReadSettings = ChoGGi.SettingFuncs.ReadSettingsAcct
+  ChoGGi.SettingFuncs.WriteSettings = ChoGGi.SettingFuncs.WriteSettingsAcct
+else
+  ChoGGi.SettingFuncs.ReadSettings = ChoGGi.SettingFuncs.ReadSettingsOrig
+  ChoGGi.SettingFuncs.WriteSettings = ChoGGi.SettingFuncs.WriteSettingsOrig
+end
 
 -- read settings from AppData/CheatMenuModSettings.lua
 ChoGGi.SettingFuncs.ReadSettings()

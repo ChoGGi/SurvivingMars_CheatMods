@@ -4,6 +4,7 @@ local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
 
@@ -81,16 +82,18 @@ do --funcs without a class
   --always able to show console
   local CreateConsole = CreateConsole
   function ShowConsole(visible)
-  --~     removed from orig func:
-  --~     if not Platform.developer and not ConsoleEnabled then
-  --~       return
-  --~     end
-    if visible and not rawget(_G, "dlgConsole") then
+    local dlgConsole = dlgConsole
+
+    if visible and not dlgConsole then
       CreateConsole()
     end
-    if rawget(_G, "dlgConsole") then
+    if visible then
+      ShowConsoleLog(true)
+    end
+    if dlgConsole then
       dlgConsole:Show(visible)
     end
+
   end
   --convert popups to console text
   function ShowPopupNotification(preset, params, bPersistable, parent)
@@ -1098,96 +1101,100 @@ function OnMsg.ClassesBuilt()
     end
   end
 
-  --add a bunch of rules to console input
-  local ConsoleRules = {
+  if not blacklist then
+    --add a bunch of rules to console input
+    local ConsoleRules = {
 
-    -- print info in console log
-    {
-      -- $userdata/string id
-      "^$(.*)",
-      "print(ChoGGi.ComFuncs.Translate(%s))"
-    },
-    {
-      -- @function
-      "^@(.*)",
-      "print(debug.getinfo(%s))"
-    },
-    {
-      -- @@anything
-      "^@@(.*)",
-      "print(type(%s))"
-    },
+      -- print info in console log
+      {
+        -- $userdata/string id
+        "^$(.*)",
+        "print(ChoGGi.ComFuncs.Translate(%s))"
+      },
+      {
+        -- @function
+        "^@(.*)",
+        "print(debug.getinfo(%s))"
+      },
+      {
+        -- @@anything
+        "^@@(.*)",
+        "print(type(%s))"
+      },
 
-    -- do stuff
-    {
-      -- !obj_on_map
-      "^!(.*)",
-      "ViewAndSelectObject(%s)"
-    },
-    {
-      -- ~anything
-      "^~(.*)",
-      "ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
-    },
-    {
-      -- &handle
-      "^&(.*)",
-      "ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
-    },
-    {
-      -- !!obj_with_attachments
-      "^!!(.*)",
-      "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
-    },
+      -- do stuff
+      {
+        -- !obj_on_map
+        "^!(.*)",
+        "ViewAndSelectObject(%s)"
+      },
+      {
+        -- ~anything
+        "^~(.*)",
+        "ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
+      },
+      {
+        -- &handle
+        "^&(.*)",
+        "ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
+      },
+      {
+        -- !!obj_with_attachments
+        "^!!(.*)",
+        "local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
+      },
 
-    -- built-in
-    {
-      -- r* some function/cmd that needs a realtime thread
-      "^*r%s*(.*)",
-      "CreateRealTimeThread(function() %s end) return"
-    },
-    {
-      -- g* or a gametime
-      "^*g%s*(.*)",
-      "CreateGameTimeThread(function() %s end) return"
-    },
-    {
-      -- m* or a maprealtime
-      "^*g%s*(.*)",
-      "CreateMapRealTimeThread(function() %s end) return"
-    },
-    -- something screenshot
-    {
-    "^SSA?A?0%d+ (.*)",
-    "ViewShot([[%s]])"
-    },
+      -- built-in
+      {
+        -- r* some function/cmd that needs a realtime thread
+        "^*r%s*(.*)",
+        "CreateRealTimeThread(function() %s end) return"
+      },
+      {
+        -- g* or a gametime
+        "^*g%s*(.*)",
+        "CreateGameTimeThread(function() %s end) return"
+      },
+      {
+        -- m* or a maprealtime
+        "^*g%s*(.*)",
+        "CreateMapRealTimeThread(function() %s end) return"
+      },
+      -- something screenshot
+      {
+      "^SSA?A?0%d+ (.*)",
+      "ViewShot([[%s]])"
+      },
 
-    -- prints out cmds entered I assume?
-    {
-      "^(%a[%w.]*)$",
-      "ConsolePrint(print_format(__run(%s)))"
-    },
-    {
-      "(.*)",
-      "ConsolePrint(print_format(%s))"
-    },
-    {
-      "(.*)",
-      "%s"
-    },
-  }
+      -- prints out cmds entered I assume?
+      {
+        "^(%a[%w.]*)$",
+        "ConsolePrint(print_format(__run(%s)))"
+      },
+      {
+        "(.*)",
+        "ConsolePrint(print_format(%s))"
+      },
+      {
+        "(.*)",
+        "%s"
+      },
+    }
 
-  local AddConsoleLog = AddConsoleLog
-  local ConsoleExec = ConsoleExec
-  local ConsolePrint = ConsolePrint
-  function Console:Exec(text)
-    self:AddHistory(text)
-    AddConsoleLog("> ", true)
-    AddConsoleLog(text, false)
-    local err = ConsoleExec(text, ConsoleRules)
-    if err then
-      ConsolePrint(err)
+    local AddConsoleLog = AddConsoleLog
+    local ConsoleExec = ConsoleExec
+    local ConsolePrint = ConsolePrint
+    function Console:Exec(text)
+      self:AddHistory(text)
+      AddConsoleLog("> ", true)
+      AddConsoleLog(text, false)
+      local err = ConsoleExec(text, ConsoleRules)
+      if err then
+        ConsolePrint(err)
+      end
     end
+  else
+    ConsoleExec = ChoGGi_OrigFuncs.Console_Exec
   end
 
 end

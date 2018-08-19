@@ -47,6 +47,10 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
     Text = S[302535920001026--[[Show File Log--]]],
     RolloverText = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
     OnMouseButtonDown = function()
+      if blacklist then
+        print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+        return
+      end
       FlushLogFile()
       print(select(2,AsyncFileToString(GetLogFile())))
     end,

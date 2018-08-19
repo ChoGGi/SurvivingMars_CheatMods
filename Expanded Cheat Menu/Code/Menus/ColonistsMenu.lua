@@ -40,8 +40,6 @@ Actions[#Actions+1] = {
   end,
 }
 
-
-
 Actions[#Actions+1] = {
   ActionMenubar = str_ExpandedCM_Colonists,
   ActionName = S[302535920000373--[[Traits: Block For Selected Building Type--]]],

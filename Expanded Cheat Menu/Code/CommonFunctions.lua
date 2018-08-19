@@ -9,6 +9,7 @@ DefineClass.ChoGGi_HexSpot = {
 local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable
 local table = table
@@ -224,7 +225,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
     id = AsyncRand(),
     title = CheckText(title),
     text = CheckText(text,S[3718--[[NONE--]]]),
-    image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Files/TheIncal.tga")
+    image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Code/TheIncal.tga")
   }
   table.set_defaults(data, params)
   table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
@@ -466,6 +467,11 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 end
 
 function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
+  if blacklist then
+    print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+    return
+  end
+
   if mode == "w" or mode == "w+" then
     mode = nil
   else
@@ -550,6 +556,10 @@ do -- DumpTableFunc
   ChoGGi.ComFuncs.DumpTable(Object)
   --]]
   function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
+    if blacklist then
+      print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+      return
+    end
     if not obj then
       MsgPopup(
         302535920000003--[[Can't dump nothing--]],
@@ -709,6 +719,11 @@ do -- WriteLogs_Toggle
   end
 
   function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
+    if blacklist then
+      print(S[302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]])
+      return
+    end
+
     local ChoGGi = ChoGGi
     if which == true then
       -- remove old logs
@@ -1143,7 +1158,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
     list.items[#list.items+1] = {text = "",hint = "",value = false}
   end
 
-  local dlg = ChoGGi_ListChoiceCustomDialog:new({}, terminal.desktop,{
+  local dlg = ChoGGi_ListChoiceDlg:new({}, terminal.desktop,{
     list = list,
   })
 
@@ -1437,44 +1452,46 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
   ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
 end
 
-local AsyncFileToString = AsyncFileToString
-function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
-  if visible and not dlgChoGGi_ConsoleLogWin then
-    dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
+do -- ShowConsoleLogWin
+  local AsyncFileToString = AsyncFileToString
+  function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+    if visible and not dlgChoGGi_ConsoleLogWin then
+      dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
 
-    --update it with console log text
-    local dlg = dlgConsoleLog
-    if dlg then
-      dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
-    else
-      --if for some reason consolelog isn't around, then grab the log file
-      local err,str = AsyncFileToString(GetLogFile())
-      if not err then
-        dlgChoGGi_ConsoleLogWin.idText:SetText(str)
+      -- update it with console log text
+      local dlg = dlgConsoleLog
+      if dlg then
+        dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
+      elseif not blacklist then
+        --if for some reason consolelog isn't around, then grab the log file
+        local err,str = AsyncFileToString(GetLogFile())
+        if not err then
+          dlgChoGGi_ConsoleLogWin.idText:SetText(str)
+        end
       end
+
     end
 
+    local dlg = dlgChoGGi_ConsoleLogWin
+    if dlg then
+      dlg:SetVisible(visible)
+
+      --size n position
+      local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+      local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
+      --make sure dlg is within screensize
+      if size then
+        dlg:SetSize(size)
+      end
+      if pos then
+        dlg:SetPos(pos)
+      else
+        dlg:SetPos(point(100,100))
+      end
+
+    end
   end
-
-  local dlg = dlgChoGGi_ConsoleLogWin
-  if dlg then
-    dlg:SetVisible(visible)
-
-    --size n position
-    local size = ChoGGi.UserSettings.ConsoleLogWin_Size
-    local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
-    --make sure dlg is within screensize
-    if size then
-      dlg:SetSize(size)
-    end
-    if pos then
-      dlg:SetPos(pos)
-    else
-      dlg:SetPos(point(100,100))
-    end
-
-  end
-end
+end -- do
 
 function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
   local ChoGGi = ChoGGi

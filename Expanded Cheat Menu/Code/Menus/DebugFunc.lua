@@ -13,6 +13,10 @@ local white = white
 --~ local TerrainTextures = TerrainTextures
 
 function ChoGGi.MenuFuncs.DeleteSavedGames()
+  if blacklist then
+    print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+    return
+  end
   local SavegamesList = SavegamesList
   local ItemList = {}
   for i = 1, #SavegamesList do

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local AsyncRand = AsyncRand
 local Concat = ChoGGi.ComFuncs.Concat
 local Actions = ChoGGi.Temp.Actions
 
@@ -8,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 do -- NumberKeysBuildMenu
   local function AddMenuKey(num,key)
     Actions[#Actions+1] = {
-      ActionId = Concat("ChoGGi_AddMenuKey",num,AsyncRand()),
+      ActionId = Concat("ChoGGi_AddMenuKey",num),
       OnAction = function()
         ChoGGi.CodeFuncs.ShowBuildMenu(num)
       end,
@@ -112,13 +111,13 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname,build_category)
 end
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ClearConsoleLog",AsyncRand()),
+  ActionId = "ChoGGi_ClearConsoleLog",
   OnAction = cls,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ClearConsoleLog,
 }
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ObjectColourRandom",AsyncRand()),
+  ActionId = "ChoGGi_ObjectColourRandom",
   OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
   end,
@@ -126,7 +125,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ObjectColourDefault",AsyncRand()),
+  ActionId = "ChoGGi_ObjectColourDefault",
   OnAction = function()
     ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
   end,
@@ -141,7 +140,7 @@ local function ToggleConsole()
 end
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ShowConsoleTilde",AsyncRand()),
+  ActionId = "ChoGGi_ShowConsoleTilde",
   OnAction = function()
     ToggleConsole()
   end,
@@ -149,7 +148,7 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ShowConsoleEnter",AsyncRand()),
+  ActionId = "ChoGGi_ShowConsoleEnter",
   OnAction = function()
     ToggleConsole()
   end,
@@ -157,13 +156,15 @@ Actions[#Actions+1] = {
 }
 
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_ConsoleRestart",AsyncRand()),
+  ActionId = "ChoGGi_ConsoleRestart",
   OnAction = function()
-    ShowConsole(true)
     local dlgConsole = dlgConsole
     if dlgConsole then
-      dlgConsole.idEdit:SetText("restart")
+      if not dlgConsole:GetVisible() then
+        ShowConsole(true)
+      end
       dlgConsole.idEdit:SetFocus()
+      dlgConsole.idEdit:SetText("restart")
     end
   end,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
@@ -171,7 +172,7 @@ Actions[#Actions+1] = {
 
 -- goes to placement mode with last built object
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_LastConstructedBuilding",AsyncRand()),
+  ActionId = "ChoGGi_LastConstructedBuilding",
   OnAction = function()
     local last = UICity.LastConstructedBuilding
     if last.entity then
@@ -183,7 +184,7 @@ Actions[#Actions+1] = {
 
 -- goes to placement mode with SelectedObj
 Actions[#Actions+1] = {
-  ActionId = Concat("ChoGGi_LastPlacedObject",AsyncRand()),
+  ActionId = "ChoGGi_LastPlacedObject",
   OnAction = function()
     local ChoGGi = ChoGGi
     local sel = ChoGGi.CodeFuncs.SelObject()

@@ -668,7 +668,6 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
   name = LightmodelPresets[name or "ChoGGi_Custom"]
   for i = 1, #ItemList do
     if name[ItemList[i].sort] then
-    print(ItemList[i].sort)
       ItemList[i].value = name[ItemList[i].sort]
     end
   end
@@ -696,7 +695,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
       SetLightmodel(1,"ChoGGi_Custom")
     end
 
-print("WRITE SETTINGS")
+print("LightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomLightmodelCustomWriteSettingsWriteSettingsWriteSettingsWriteSettingsWriteSettings")
 --~     ChoGGi.SettingFuncs.WriteSettings()
   end
 

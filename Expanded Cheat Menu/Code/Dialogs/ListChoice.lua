@@ -9,7 +9,7 @@ local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
 
-DefineClass.ChoGGi_ListChoiceCustomDialog = {
+DefineClass.ChoGGi_ListChoiceDlg = {
   __parents = {"ChoGGi_Window"},
   choices = false,
   colorpicker = false,
@@ -24,7 +24,7 @@ DefineClass.ChoGGi_ListChoiceCustomDialog = {
 }
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-function ChoGGi_ListChoiceCustomDialog:Init(parent, context)
+function ChoGGi_ListChoiceDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
@@ -275,7 +275,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.skip_color_change = false
 end
 
-function ChoGGi_ListChoiceCustomDialog:BuildList()
+function ChoGGi_ListChoiceDlg:BuildList()
   self.idList:Clear()
   for i = 1, #self.items do
     local listitem = self.idList:CreateTextItem(self.items[i].text)
@@ -285,7 +285,7 @@ function ChoGGi_ListChoiceCustomDialog:BuildList()
 end
 
 -- working on adding * of checkboxes
-function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
+function ChoGGi_ListChoiceDlg:CheckboxSetup(i)
   local name1 = Concat("idCheckBox",i)
   local name2 = Concat("check",i)
 
@@ -300,9 +300,9 @@ function ChoGGi_ListChoiceCustomDialog:CheckboxSetup(i)
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
+function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(obj,vk)
   if vk == const.vkEnter then
-    self:FilterText("")
+    self:FilterText()
     self.idFilter:SelectAll()
     return "break"
   elseif vk == const.vkEsc then
@@ -312,8 +312,11 @@ function ChoGGi_ListChoiceCustomDialog:idFilterOnKbdKeyDown(obj,vk)
   return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
-function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
-  self:BuildList(true)
+function ChoGGi_ListChoiceDlg:FilterText(txt)
+  self:BuildList()
+  if not txt or txt == "" then
+    return
+  end
   -- loop through all the list items and remove any we can't find
   for i = #self.idList, 1, -1 do
     local li = self.idList[i]
@@ -324,7 +327,7 @@ function ChoGGi_ListChoiceCustomDialog:FilterText(txt)
   self.idList.selection = {}
 end
 
-function ChoGGi_ListChoiceCustomDialog:idColorPickerOnColorChanged()
+function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged()
   if self.skip_color_change then
     return
   end
@@ -348,7 +351,7 @@ function ChoGGi_ListChoiceCustomDialog:idColorPickerOnColorChanged()
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDown(button)
+function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
   if button ~= "L" or #self.idList.selection < 1 then
     return
   end
@@ -375,7 +378,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDown(button)
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDoubleClick(button)
+function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
   if not self.sel then
     return
   end
@@ -399,7 +402,7 @@ function ChoGGi_ListChoiceCustomDialog:idListOnMouseButtonDoubleClick(button)
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:UpdateHintText(item)
+function ChoGGi_ListChoiceDlg:UpdateHintText(item)
   local hint = {item.text}
 
   if item.value and item.value ~= item.text then
@@ -423,7 +426,7 @@ function ChoGGi_ListChoiceCustomDialog:UpdateHintText(item)
   return TableConcat(hint)
 end
 
-function ChoGGi_ListChoiceCustomDialog:BuildAndApplyLightmodel()
+function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
   --update list item settings table
   self:GetAllItems()
   --remove defaults
@@ -441,7 +444,7 @@ function ChoGGi_ListChoiceCustomDialog:BuildAndApplyLightmodel()
 end
 
 --update colour
-function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
+function ChoGGi_ListChoiceDlg:UpdateColourPicker()
   local num = tonumber(self.idEditValue:GetText())
   if num then
     self.idColorPicker:SetColor(num)
@@ -451,7 +454,7 @@ function ChoGGi_ListChoiceCustomDialog:UpdateColourPicker()
   end
 end
 
-function ChoGGi_ListChoiceCustomDialog:GetAllItems()
+function ChoGGi_ListChoiceDlg:GetAllItems()
   -- always start with blank choices
   self.choices = {}
   -- get sel item(s)
@@ -488,8 +491,8 @@ function ChoGGi_ListChoiceCustomDialog:GetAllItems()
   self.choices[1].checkelec = self.idColorCheckElec:GetCheck()
 end
 
---function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(char, vk)
-function ChoGGi_ListChoiceCustomDialog:OnKbdKeyDown(_, vk)
+--function ChoGGi_ListChoiceDlg:OnKbdKeyDown(char, vk)
+function ChoGGi_ListChoiceDlg:OnKbdKeyDown(_, vk)
   local const = const
   if vk == const.vkEsc then
     self.idCloseX:Press()

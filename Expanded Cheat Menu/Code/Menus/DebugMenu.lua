@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local blacklist = ChoGGi.blacklist
 
 Actions[#Actions+1] = {
   ActionMenubar = "Debug",
@@ -266,13 +267,23 @@ Actions[#Actions+1] = {
 Actions[#Actions+1] = {
   ActionMenubar = str_Debug_PathMarkers,
   ActionName = S[302535920000467--[[Path Markers--]]],
-  ActionId = "Debug.Path Markers",
+  ActionId = "Debug.Path Markers MENUITEM",
   ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
   RolloverText = S[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
   OnAction = function()
     ChoGGi.MenuFuncs.SetPathMarkersVisible()
   end,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetPathMarkersVisible,
+}
+
+local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
+Actions[#Actions+1] = {
+  ActionMenubar = "Debug",
+  ActionName = Concat(S[302535920000489--[[Delete Object(s)--]]]," .."),
+  ActionId = str_Debug_DeleteObjects,
+  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+  OnActionEffect = "popup",
+  ActionSortKey = "99",
 }
 
 Actions[#Actions+1] = {
@@ -294,16 +305,6 @@ Actions[#Actions+1] = {
   OnAction = function()
     ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
   end,
-  ActionSortKey = "99",
-}
-
-local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
-Actions[#Actions+1] = {
-  ActionMenubar = "Debug",
-  ActionName = Concat(S[302535920000489--[[Delete Object(s)--]]]," .."),
-  ActionId = str_Debug_DeleteObjects,
-  ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-  OnActionEffect = "popup",
   ActionSortKey = "99",
 }
 

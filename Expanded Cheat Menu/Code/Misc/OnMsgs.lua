@@ -245,7 +245,7 @@ local function Rebuildshortcuts()
 
 --~ Actions = {}
 --~ Actions[#Actions+1] = {
---~   ActionId = Concat("ChoGGi_ShowConsoleTilde",AsyncRand()),
+--~   ActionId = Concat("ChoGGi_ShowConsoleTilde"),
 --~   OnAction = function()
 --~   local dlgConsole = dlgConsole
 --~   if dlgConsole then
@@ -620,7 +620,7 @@ function OnMsg.ApplicationQuit()
   local ChoGGi = ChoGGi
 
   -- my comp or if we're resetting settings
-  if ChoGGi.Temp.ResetSettings or ChoGGi.testing then
+  if ChoGGi.testing then
     return
   end
 
@@ -636,7 +636,7 @@ function OnMsg.ApplicationQuit()
     ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
   end
 
-  --save any unsaved settings on exit
+  -- save any unsaved settings on exit
   ChoGGi.SettingFuncs.WriteSettings()
 end
 
@@ -959,7 +959,7 @@ do -- LoadGame/CityStart
       end)
 
 --~       -- add my custom menu items/actions
---~       dofolder_files(Concat(ChoGGi.ModPath,"Files/Menus"))
+--~       dofolder_files(Concat(ChoGGi.ModPath,"Code/Menus"))
 
       -- show cheat pane in selection panel
       if UserSettings.InfopanelCheats then
@@ -991,7 +991,7 @@ do -- LoadGame/CityStart
         dlgConsole.ChoGGi_MenuAdded = true
 
         -- build console buttons
-        ChoGGi.Console.ConsoleControls()
+        ChoGGi.Console.ConsoleControls(dlgConsole)
 
         -- make some space for the close button
         dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
@@ -1031,9 +1031,8 @@ do -- LoadGame/CityStart
       -- add all the defaults we skip to my actions
       for i = 1, #Actions do
         Actions[i].ActionTranslate = false
-        Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
-        Actions[i].RolloverTranslate = false
---~         Actions[i].RolloverTemplate = "Rollover"
+--~         Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
+--~         Actions[i].RolloverTranslate = false
         Actions[i].replace_matching_id = true
       end
 
