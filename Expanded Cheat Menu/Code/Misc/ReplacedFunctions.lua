@@ -47,34 +47,69 @@ do --funcs without a class
 --~   SaveOrigFunc("XTemplateSpawn")
   local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
-  local osx = Platform.osx
-  local IsKeyPressed = terminal.IsKeyPressed
-  VKStrNames[133] = "Cmd"
-  function KbdShortcut(virtual_key)
-    local VKStrNames = VKStrNames
-    if not VKStrNames[virtual_key] then
-      return
-    end
+  if Platform.osx then
+    local IsKeyPressed = terminal.IsKeyPressed
+    function KbdShortcut(virtual_key)
+      local VKStrNames = VKStrNames
+      if not VKStrNames[virtual_key] then
+        return
+      end
 
-    print("virtual_key:",virtual_key)
-    local const = const
-    local s = ""
-    if virtual_key == 131 or IsKeyPressed(131) then
-      s = Concat(s,"Cmd-")
+      local const = const
+      local s = ""
+      if virtual_key == 131 or IsKeyPressed(131) then
+        s = Concat(s,"Cmd-")
+      end
+      if virtual_key == const.vkControl or IsKeyPressed(const.vkControl) then
+        s = Concat(s,"Ctrl-")
+      end
+      if virtual_key == const.vkAlt or IsKeyPressed(const.vkAlt) then
+        s = Concat(s,"Alt-")
+      end
+      if virtual_key == const.vkShift or IsKeyPressed(const.vkShift) then
+        s = Concat(s,"Shift-")
+      end
+      if virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
+        return s:sub(1, -2)
+      end
+      return Concat(s,VKStrNames[virtual_key])
     end
-    if virtual_key == const.vkControl or IsKeyPressed(const.vkControl) then
-      s = Concat(s,"Ctrl-")
+    function WaitShortcut()
+      local thread = CurrentThread()
+      local win = XWindow:new({
+        OnKbdKeyUp = function(self, virtual_key)
+          local shortcut = KbdShortcut(virtual_key)
+          if shortcut ~= "Cmd" and shortcut ~= "Ctrl" and shortcut ~= "Shift" then
+            Wakeup(thread, shortcut)
+          end
+          return "break"
+        end,
+        OnKbdKeyDown = function()
+          return "break"
+        end,
+        OnKbdChar = function()
+          return "break"
+        end,
+        OnKbdIMEStartComposition = function()
+          return "break"
+        end,
+        OnKbdIMEEndComposition = function()
+          return "break"
+        end,
+        OnMouseButtonUp = function(self, pt, button)
+          local shortcut = MouseShortcut(button)
+          Wakeup(thread, shortcut)
+          return "break"
+        end,
+        HandleMouse = true
+      }, terminal.desktop)
+      win:Open()
+      win:SetModal()
+      win:SetFocus()
+      local success, shortcut = WaitWakeup()
+      win:Close()
+      return shortcut
     end
-    if virtual_key == const.vkAlt or IsKeyPressed(const.vkAlt) then
-      s = Concat(s,"Alt-")
-    end
-    if virtual_key == const.vkShift or IsKeyPressed(const.vkShift) then
-      s = Concat(s,"Shift-")
-    end
-    if virtual_key == const.vkControl or virtual_key == const.vkAlt or virtual_key == const.vkShift then
-      return s:sub(1, -2)
-    end
-    return Concat(s,VKStrNames[virtual_key])
   end
 
 --~   -- if i need the names of xelements

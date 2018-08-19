@@ -178,7 +178,7 @@ Right-click to scroll to top."--]]],
   -- load up obj in text display
   self:SetObj(self.obj)
 
-  if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and not self.obj.class == "InGameInterface" then
+  if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
     self:FlashWindow(self.obj)
   end
 
@@ -915,7 +915,7 @@ end
 local function Refresh_menu(self)
   if self.obj then
     self:SetObj(self.obj,true)
-    if IsKindOf(self.obj,"XWindow") and not self.obj.class == "InGameInterface" then
+    if IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
       self:FlashWindow(self.obj)
     end
   end
