@@ -16,3 +16,9 @@ function OnMsg.ClassesPostprocess()
   })
 end
 ```
+
+Access traits with:
+```
+local Fitter = TraitPresets.Fitter
+print(Fitter.display_name)
+```
