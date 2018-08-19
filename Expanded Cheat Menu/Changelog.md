@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
 ## v8.4 (Unreleased)
+### Fixed:
+- Examine: Some strings were changing text colour they shouldn't.
 
 ## v8.3 (19 Aug 2018)
 ### Changed:

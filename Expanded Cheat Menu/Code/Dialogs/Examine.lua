@@ -557,7 +557,8 @@ function Examine:valuetotextex(obj)
     return Concat(
       "'",
       obj,
-      "'"
+      -- some translated stuff has <color in it, so we make sure they don't bother the rest
+      "</color></color>'"
     )
 
   -- point() is userdata (keep before it)
@@ -585,7 +586,7 @@ function Examine:valuetotextex(obj)
     else
       return Concat(
         trans,
-        "</color> < \"", -- some translated stuff has <color> in it
+        "</color></color> < \"",
         obj_type,
         "\""
       )
@@ -859,6 +860,7 @@ function Examine:totextex(obj,ChoGGi)
     if str == "stripped" or str:find("Missing locale string id") then
       str = obj
     end
+
     res[#res+1] = tostring(str)
   -- add some extra info for funcs
   elseif obj_type == "function" then
