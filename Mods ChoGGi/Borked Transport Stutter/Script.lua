@@ -96,7 +96,7 @@ local function CheckForBrokedPath(obj)
     MsgPopup(
       string.format("%s at position: %s was stopped.",obj.name or obj.class,obj:GetVisualPos()),
       "Broked Pathing",
-      "UI/Icons/IPButtons/transport_route.tga"
+      "UI/Icons/IPButtons/transport_route.tga",
       nil,
       obj
     )

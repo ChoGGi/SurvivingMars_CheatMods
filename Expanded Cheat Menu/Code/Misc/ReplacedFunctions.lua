@@ -80,6 +80,9 @@ do --funcs without a class
       local win = XWindow:new({
         OnKbdKeyUp = function(self, virtual_key)
           local shortcut = KbdShortcut(virtual_key)
+          if shortcut == "Cmd-Cmd" then
+            shortcut = "Cmd"
+          end
           print("shortcut:",shortcut)
           if shortcut ~= "Cmd" and shortcut ~= "Ctrl" and shortcut ~= "Shift" then
             Wakeup(thread, shortcut)
