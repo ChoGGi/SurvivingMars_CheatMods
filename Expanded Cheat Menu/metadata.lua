@@ -75,24 +75,23 @@ return PlaceObj("ModDef", {
 
     -- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
-
-  -- i leave this commented out to force users to read description and install helpermod (for now)
+  -- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
 	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
 
-	"description", string.format([[Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+	"description", string.format([[Enables cheat menu, cheat info pane, console, examine object, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 ##### Info
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
 F4: Open object examiner.
-F5: Open object manipulator (or use edit button in examiner).
-F6: Change building colour (Shift or Ctrl to apply random/default).
+F5: Open object manipulator (or use Tools>Edit obj in Examine).
+F6: Change building colour (Shift- or Ctrl- to apply random/default).
 F7: Toggle using last building orientation.
-F9: Clear the console log (or in console uncheck Settings>Console Log).
+F9: Clear the console log.
 Enter or Tilde: Show the console.
 Ctrl+F: Fill resource of object.
 Number keys: Toggle build menu (Shift-*Num for menus above 10).
@@ -101,7 +100,7 @@ Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
-Ctrl-Shift-T: Terrain Editor Mode.
+Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor.

@@ -1,12 +1,17 @@
 -- See LICENSE for terms
 
+if true then
+  return
+end
+
 -- used to do minimal editing of objects (or all of same type)
 
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local RetName = ChoGGi.ComFuncs.RetName
+local CheckText = ChoGGi.ComFuncs.CheckText
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
-local RetName = ChoGGi.ComFuncs.RetName
 
 local pcall,tostring,type,table = pcall,tostring,type,table
 
@@ -17,10 +22,10 @@ local ObjectClass = ObjectClass
 DefineClass.ChoGGi_ObjectManipulatorDlg = {
   __parents = {"ChoGGi_Window"},
   choices = {},
-  refreshing = false,
   obj = false,
   obj_name = false,
   sel = false,
+
   dialog_width = 750.0,
   dialog_height = 650.0,
 }
@@ -100,6 +105,12 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
   }, self.idButtonArea)
 
   self:AddScrollList()
+
+  self.idListVal = g_Classes.ChoGGi_List:new({
+    Id = "idListVal",
+    VScroll = "idScrollV",
+  }, self.idScrollArea)
+  self.idScrollArea:SetLayoutMethod("HList")
 
   function self.idList.OnMouseButtonDown(obj,pt,button)
     g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
@@ -233,17 +244,21 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
-  self:CreateThread("update", function(self)
-    local Sleep = Sleep
-    while true do
-      if self.obj then
-        self:UpdateListContent()
-      else
-        Halt()
+  if self.real_time_threads.AutoRefreshToggle then
+    DeleteThread(self.real_time_threads.AutoRefreshToggle)
+  else
+    self:CreateThread("AutoRefreshToggle", function(self)
+      local Sleep = Sleep
+      while true do
+        if self.obj then
+          self:UpdateListContent()
+        else
+          Halt()
+        end
+        Sleep(1000)
       end
-      Sleep(1000)
-    end
-  end, self)
+    end, self)
+  end
 end
 
 function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
@@ -262,10 +277,11 @@ end
 
 function ChoGGi_ObjectManipulatorDlg:BuildList()
   self.idList:Clear()
+  self.idListVal:Clear()
+
   for i = 1, #self.items do
-    local listitem = self.idList:CreateTextItem(self.items[i].text)
-    listitem.item = self.items[i]
-    listitem.RolloverText = self:UpdateHintText(self.items[i])
+    self.idList:CreateTextItem(self.items[i].text)
+    self.idListVal:CreateTextItem(self.items[i].value)
   end
 end
 
@@ -291,7 +307,7 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
     return
   end
   -- populate it
-  self.idList:BuildList()
+  self:BuildList()
 
   -- and scroll to saved pos
   self.idScrollArea:ScrollTo(scrollpos)
@@ -453,6 +469,10 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
   end)
 
   return res
+end
+
+function ChoGGi_ObjectManipulatorDlg:Done(result)
+  ChoGGi_Window.Done(self,result)
 end
 
 -- fired as the last dialog opened

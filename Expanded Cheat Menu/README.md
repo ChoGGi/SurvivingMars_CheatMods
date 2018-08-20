@@ -2,7 +2,7 @@ You should buy a copy: [GOG](https://www.gog.com/game/surviving_mars) or [Steam]
 
 ### No warranty implied or otherwise!
 
-Enables cheat menu, cheat info pane, console, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+Enables cheat menu, cheat info pane, console, examine object, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 ##### Install help
 ```
@@ -17,19 +17,19 @@ Enable with in-game mod manager
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
 F4: Open object examiner.
-F5: Open object manipulator (or use edit button in examiner).
-F6: Change building colour (Shift or Ctrl to apply random/default).
+F5: Open object manipulator (or use Tools>Edit obj in Examine).
+F6: Change building colour (Shift- or Ctrl- to apply random/default).
 F7: Toggle using last building orientation.
-F9: Clear the console log (or in console (Enter/Tilde) uncheck Console>Console Log).
-Ctrl+F: Fill resource of object.
+F9: Clear the console log.
 Enter or Tilde: Show the console.
+Ctrl+F: Fill resource of object.
 Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with the last built object.
 Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
-Ctrl-Shift-T: Terrain Editor Mode.
+Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 More shortcut keys are available, see menu items.
 
 When I say object that means either the selected object or the object under the mouse cursor.
@@ -176,7 +176,7 @@ Instantly repair all broken pipes and cables.
 A bunch more (certain crashes with colonists rovers, etc)
 ```
 
-##### Console
+##### Console and Commands
 ```
 Press Tilde (~), Enter, or Numpad Enter to show the console
 Toggle showing history/results on-screen (it's on by default, see Console to change it)

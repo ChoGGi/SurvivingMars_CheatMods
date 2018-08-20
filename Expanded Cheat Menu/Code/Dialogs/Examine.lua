@@ -30,8 +30,7 @@ DefineClass.Examine = {
   onclick_handles = {},
   -- what we're examining
   obj = false,
-  -- if user checks the autorefresh checkbox
-  autorefresh_thread = false,
+
   dialog_width = 650.0,
   dialog_height = 750.0,
 }
@@ -156,7 +155,7 @@ Right-click to scroll to top."--]]],
       if button == "L" then
         self:FindNext(self.idFilter:GetText())
       else
-        self.idScrollBox:ScrollTo(0,0)
+        self.idScrollArea:ScrollTo(0,0)
       end
     end,
   }, self.idMenuArea)
@@ -190,17 +189,21 @@ function Examine:Menu_Toggle(obj,menu,items)
 end
 
 function Examine:idAutoRefreshToggle()
-  self:CreateThread("update", function(self)
-    local Sleep = Sleep
-    while true do
-      if self.obj then
-        self:SetObj(self.obj,true)
-      else
-        Halt()
+  if self.real_time_threads.AutoRefreshToggle then
+    DeleteThread(self.real_time_threads.AutoRefreshToggle)
+  else
+    self:CreateThread("AutoRefreshToggle", function(self)
+      local Sleep = Sleep
+      while true do
+        if self.obj then
+          self:SetObj(self.obj,true)
+        else
+          Halt()
+        end
+        Sleep(1000)
       end
-      Sleep(1000)
-    end
-  end, self)
+    end, self)
+  end
 end
 
 function Examine:idFilterOnKbdKeyDown(obj,vk)
@@ -208,11 +211,11 @@ function Examine:idFilterOnKbdKeyDown(obj,vk)
     self:FindNext(self.idFilter:GetText())
     return "break"
   elseif vk == const.vkUp then
-    self.idScrollBox:ScrollTo(0,0)
+    self.idScrollArea:ScrollTo(0,0)
     return "break"
   elseif vk == const.vkDown then
     local v = self.idScrollV
-    self.idScrollBox:ScrollTo(0,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+    self.idScrollArea:ScrollTo(0,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
     return "break"
   elseif vk == const.vkEsc then
     self.idCloseX:OnPress()
@@ -338,13 +341,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
         ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
       end,
     },
-    {
-      name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
-      hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
-      clicked = function()
-        ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
-      end,
-    },
+--~     {
+--~       name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+--~       hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+--~       clicked = function()
+--~         ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
+--~       end,
+--~     },
     {
       name = S[302535920001305--[[Find Within--]]],
       hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
@@ -412,7 +415,7 @@ end
 
 function Examine:FindNext(filter)
   local drawBuffer = self.idText.draw_cache or empty_table
-  local current_y = self.idScrollBox.OffsetY
+  local current_y = self.idScrollArea.OffsetY
   local min_match, closest_match = false, false
   for y, list_draw_info in pairs(drawBuffer) do
     for i = 1, #list_draw_info do
@@ -428,7 +431,7 @@ function Examine:FindNext(filter)
     end
   end
   if closest_match or min_match then
-    self.idScrollBox:ScrollTo(0, (closest_match or min_match))
+    self.idScrollArea:ScrollTo(0, (closest_match or min_match))
   end
 end
 

@@ -341,107 +341,113 @@ function ChoGGi_Window:SetInitPos(parent)
   self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 end
 
--- scrollable textbox
-function ChoGGi_Window:AddScrollText()
-  local g_Classes = g_Classes
-
-  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
-    Id = "idScrollArea",
-    BorderWidth = 1,
-    Margins = box(0,0,0,0),
-    BorderColor = light_gray,
-  }, self.idDialog)
-
-  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollV",
-    Target = "idScrollBox",
-    Dock = "right",
-  }, self.idScrollArea)
-
-  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollH",
-    Target = "idScrollBox",
-    Dock = "bottom",
-    Horizontal = true,
-  }, self.idScrollArea)
-
-  self.idScrollBox = g_Classes.XScrollArea:new({
-    Id = "idScrollBox",
-    VScroll = "idScrollV",
-    HScroll = "idScrollH",
-    Margins = box(4,4,4,4),
-    BorderWidth = 0,
-  }, self.idScrollArea)
-
-  self.idText = g_Classes.ChoGGi_Text:new({
-    Id = "idText",
-    OnHyperLink = function(_, link, _, box, pos, button)
-      self.onclick_handles[tonumber(link)](box, pos, button)
-    end,
-  }, self.idScrollBox)
-end
-
-function ChoGGi_Window:AddScrollList()
-  local g_Classes = g_Classes
-
-  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
-    Id = "idScrollArea",
-    Margins = box(4,4,4,4),
-  }, self.idDialog)
-
-  self.idScrollBox = g_Classes.XScrollArea:new({
-    Id = "idScrollBox",
-    VScroll = "idScrollV",
-    Margins = box(4,4,4,4),
-  }, self.idScrollArea)
-
-  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollV",
-    Target = "idScrollBox",
-    Dock = "right",
-  }, self.idScrollArea)
-
-  self.idList = g_Classes.ChoGGi_List:new({
-    Id = "idList",
-    VScroll = "idScrollV",
-  }, self.idScrollBox)
-
-end
-
-function ChoGGi_Window:AddScrollEdit()
-  local g_Classes = g_Classes
-
-  self.idScrollArea = g_Classes.ChoGGi_DialogSection:new({
-    Id = "idScrollArea",
-  }, self.idDialog)
-
-  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollV",
-    Target = "idEdit",
-    Dock = "right",
-  }, self.idScrollArea)
-
-  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
-    Id = "idScrollH",
-    Target = "idEdit",
-    Dock = "bottom",
-    Horizontal = true,
-  }, self.idScrollArea)
-
-  self.idEdit = ChoGGi_MultiLineEdit:new({
-    Id = "idEdit",
-    VScroll = "idScrollV",
-    HScroll = "idScrollH",
-    Margins = box(4,4,4,4),
-  }, self.idScrollArea)
-end
-
 DefineClass.ChoGGi_SleekScroll = {
   __parents = {"XSleekScroll"},
   MinThumbSize = 30,
   AutoHide = true,
   Background = invis,
 }
+
+DefineClass.ChoGGi_ScrollArea = {
+  __parents = {"XScrollArea"},
+  UniformColumnWidth = true,
+  UniformRowHeight = true,
+}
+
+-- scrollable textbox
+function ChoGGi_Window:AddScrollText()
+  local g_Classes = g_Classes
+
+  self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollSection",
+    BorderWidth = 1,
+    Margins = box(0,0,0,0),
+    BorderColor = light_gray,
+  }, self.idDialog)
+
+  self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+    Id = "idScrollArea",
+    VScroll = "idScrollV",
+    HScroll = "idScrollH",
+    Margins = box(4,4,4,4),
+    BorderWidth = 0,
+  }, self.idScrollSection)
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idScrollArea",
+    Dock = "right",
+  }, self.idScrollSection)
+
+  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollH",
+    Target = "idScrollArea",
+    Dock = "bottom",
+    Horizontal = true,
+  }, self.idScrollSection)
+
+  self.idText = g_Classes.ChoGGi_Text:new({
+    Id = "idText",
+    OnHyperLink = function(_, link, _, box, pos, button)
+      self.onclick_handles[tonumber(link)](box, pos, button)
+    end,
+  }, self.idScrollArea)
+end
+
+function ChoGGi_Window:AddScrollList()
+  local g_Classes = g_Classes
+
+  self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollSection",
+    Margins = box(4,4,4,4),
+  }, self.idDialog)
+
+  self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+    Id = "idScrollArea",
+    VScroll = "idScrollV",
+    Margins = box(4,4,4,4),
+  }, self.idScrollSection)
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idScrollArea",
+    Dock = "right",
+  }, self.idScrollSection)
+
+  self.idList = g_Classes.ChoGGi_List:new({
+    Id = "idList",
+    VScroll = "idScrollV",
+  }, self.idScrollArea)
+
+end
+
+function ChoGGi_Window:AddScrollEdit()
+  local g_Classes = g_Classes
+
+  self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+    Id = "idScrollSection",
+  }, self.idDialog)
+
+  self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollV",
+    Target = "idEdit",
+    Dock = "right",
+  }, self.idScrollSection)
+
+  self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+    Id = "idScrollH",
+    Target = "idEdit",
+    Dock = "bottom",
+    Horizontal = true,
+  }, self.idScrollSection)
+
+  self.idEdit = ChoGGi_MultiLineEdit:new({
+    Id = "idEdit",
+    VScroll = "idScrollV",
+    HScroll = "idScrollH",
+    Margins = box(4,4,4,4),
+  }, self.idScrollSection)
+end
 
 -- convenience function
 function ChoGGi_SleekScroll:SetHorizontal()

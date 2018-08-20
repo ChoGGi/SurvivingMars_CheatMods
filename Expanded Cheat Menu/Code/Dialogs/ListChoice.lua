@@ -4,6 +4,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local CheckText = ChoGGi.ComFuncs.CheckText
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
@@ -41,7 +42,6 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
   self:AddElements(parent, context)
 
   self:AddScrollList()
-  self:BuildList()
 
   function self.idList.OnMouseButtonDown(obj,pt,button)
     g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
@@ -202,6 +202,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
     Dock = "left",
   }, self.idColorCheckArea)
 
+  self:BuildList()
+
   -- fiddling with custom_type
   if self.custom_type == 2 or self.custom_type == 5 then
     self.idList:SetSelection(1, true)
@@ -236,7 +238,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idList:SetFocus()
 
   -- are we showing a hint?
-  local hint = ChoGGi.ComFuncs.CheckText(self.list.hint)
+  local hint = CheckText(self.list.hint)
   if hint ~= "" then
     self.idList.RolloverText = hint
     self.idOK.RolloverText = Concat(self.idOK:GetRolloverText(),"\n\n\n",hint)
@@ -273,7 +275,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
     local listitem = self.idList[#self.idList]
     listitem[1]:SetText(item.text)
     listitem.item = item
-    listitem.RolloverText = ChoGGi.ComFuncs.CheckText(item.hint)
+    listitem.RolloverText = CheckText(item.hint)
   end
 end
 
@@ -292,8 +294,8 @@ function ChoGGi_ListChoiceDlg:CheckboxSetup(i)
   local name2 = Concat("check",i)
 
   if self.list[name2] then
-    self[name1]:SetText(ChoGGi.ComFuncs.CheckText(self.list[name2]))
-    self[name1].RolloverText = ChoGGi.ComFuncs.CheckText(self.list[Concat(name2,"_hint")])
+    self[name1]:SetText(CheckText(self.list[name2]))
+    self[name1].RolloverText = CheckText(self.list[Concat(name2,"_hint")])
   else
     self[name1]:SetVisible()
   end
@@ -422,7 +424,7 @@ function ChoGGi_ListChoiceDlg:UpdateHintText(item)
     hint[#hint+1] = T(item.hint)
   elseif item.hint then
     hint[#hint+1] = "\n\n"
-    hint[#hint+1] = ChoGGi.ComFuncs.CheckText(item.hint)
+    hint[#hint+1] = CheckText(item.hint)
   end
 
   return TableConcat(hint)
