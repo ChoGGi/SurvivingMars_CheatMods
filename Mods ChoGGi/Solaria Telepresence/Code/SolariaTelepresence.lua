@@ -300,7 +300,7 @@ end
 function OnMsg.ClassesPostprocess()
   --add building to building template list
   PlaceObj("BuildingTemplate", {
-    "name", "Solaria",
+    "Id", "Solaria",
     "template_class", "Solaria",
     "construction_cost_Concrete", 40000,
     "construction_cost_Electronics", 10000,
@@ -317,6 +317,7 @@ function OnMsg.ClassesPostprocess()
 Worker amount is dependent on controlled building.
 
 Telepresence control may take up to a shift to propagate to controlled building.]],
+    "Group", "Dome Services",
     "build_category", "Dome Services",
     "display_icon", Concat(SolariaTelepresence.ModPath,"/TheIncal.tga"),
     "build_pos", 12,

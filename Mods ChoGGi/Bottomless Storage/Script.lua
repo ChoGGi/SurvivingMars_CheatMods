@@ -28,13 +28,14 @@ end
 --add building to building template list
 function OnMsg.ClassesPostprocess()
   PlaceObj("BuildingTemplate", {
-    "name", "BottomlessStorage",
+    "Id", "BottomlessStorage",
     "template_class", "BottomlessStorage",
     "instant_build", true,
     "dome_forbidden", true,
     "display_name", [[Bottomless Storage]],
     "display_name_pl", [[Bottomless Storage]],
     "description", [[Anything added to this depot will disappear.]],
+    "Group", "Storages",
     "build_category", "Storages",
     "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
 --~     "entity", "StorageDepot",

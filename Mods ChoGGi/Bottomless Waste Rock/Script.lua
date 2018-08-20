@@ -22,13 +22,14 @@ end
 --add building to building template list
 function OnMsg.ClassesPostprocess()
   PlaceObj("BuildingTemplate", {
-    "name", "BottomlessWasteRock",
+    "Id", "BottomlessWasteRock",
     "template_class", "BottomlessWasteRock",
     "instant_build", true,
     "dome_forbidden", true,
     "display_name", [[Bottomless WasteRock]],
     "display_name_pl", [[Bottomless WasteRock]],
     "description", [[Any rocks dumped at this depot will disappear.]],
+    "Group", "Storages",
     "build_category", "Storages",
     "display_icon", table.concat{CurrentModPath,"res_waste_rock.tga"},
     "entity", "ResourcePlatform",

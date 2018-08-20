@@ -111,7 +111,7 @@ local function SomeCode()
     if not igi or not igi:GetVisible() then
       return
     end
-    local bld_template = DataInstances.BuildingTemplate[itemname]
+    local bld_template = BuildingTemplates[itemname]
     local _,prefabs,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
 
     --if show then

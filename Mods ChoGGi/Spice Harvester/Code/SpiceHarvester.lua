@@ -105,7 +105,7 @@ end
 function OnMsg.ClassesPostprocess()
 
   PlaceObj("BuildingTemplate",{
-    "name","MelangerBuilding",
+    "Id","MelangerBuilding",
     "template_class","MelangerBuilding",
     --pricey
     "construction_cost_Metals",1000,
@@ -113,6 +113,7 @@ function OnMsg.ClassesPostprocess()
     "display_name","Spice Harvester",
     "display_name_pl","Spice Harvester",
     "description","Doesn't do jack (unless you count roaming around).",
+    "Group","Infrastructure",
     "build_category","Infrastructure",
     "display_icon","UI/Icons/Buildings/boomerang_garden.tga",
     "encyclopedia_exclude",true,
