@@ -13,10 +13,13 @@ return PlaceObj("ModDef", {
 	"code", {
     -- start 'er up
 		"Init.lua",
-    -- needs before everything else
+    -- gets the font (if not eng lang), and builds a table of translated strings
 		"Code/Strings.lua",
+    -- Msg("ChoGGi_ComFuncs"), lets people know OpenExamine is available
 		"Code/CommonFunctions.lua",
+    -- defaults,consts,read/save settings
 		"Code/Settings.lua",
+
     -- custom dialogs
 		"Code/Dialogs/_Classes.lua",
 		"Code/Dialogs/ConsoleLogWin.lua",
@@ -25,21 +28,22 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/FindValue.lua",
 		"Code/Dialogs/ListChoice.lua",
 		"Code/Dialogs/MultiLineText.lua",
-
 --~     -- temp added to check out keys for XXXUnknownXXX
 --~ 		"Code/Dialogs/KeyPresser.lua",
-
 		"Code/Dialogs/MonitorInfo.lua",
+    -- always fired last for the Msg("ChoGGi_Dialogs") in it
 		"Code/Dialogs/ObjectManipulator.lua",
+
     -- stuff that can come later
 		"Code/Misc/_Functions.lua",
 		"Code/Misc/ConsoleControls.lua",
 		"Code/Misc/InfoPaneCheats.lua",
-		"Code/Misc/OnMsgs.lua",
-		"Code/Misc/ReplacedFunctions.lua",
 		"Code/Misc/Testing.lua",
+		"Code/Misc/ReplacedFunctions.lua",
+    -- always fired last for the Msg("ChoGGi_CodeFuncs") in it
+		"Code/Misc/OnMsgs.lua",
+
     -- menus/menu items/shortcuts
-		"Code/Menus/Keys.lua",
 		"Code/Menus/BuildingsFunc.lua",
 		"Code/Menus/BuildingsMenu.lua",
 		"Code/Menus/CapacityFunc.lua",
@@ -66,6 +70,8 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ResourcesMenu.lua",
 		"Code/Menus/VehiclesFunc.lua",
 		"Code/Menus/VehiclesMenu.lua",
+    -- always fired last for the Msg("ChoGGi_MenuFuncs") in it
+		"Code/Menus/Keys.lua",
 
     -- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},

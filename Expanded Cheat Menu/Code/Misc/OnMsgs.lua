@@ -1397,3 +1397,5 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
   end --OnMsg
 end -- do
 
+-- fired as last lua in Misc
+Msg("ChoGGi_CodeFuncs")

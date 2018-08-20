@@ -1,6 +1,6 @@
 ### "Easy Start"
 
-#####Tabs denote repetition of Msg
+##### Tabs denote repetition of Msg
 ```
 Changing map to "BlankBig_02"
 *** Reloading assets from folder BinAssets/

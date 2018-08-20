@@ -550,12 +550,12 @@ do -- ReadSettingsAcct
       ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
     end
   end
-  function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_str)
+  function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_table)
     local ChoGGi = ChoGGi
     local err
 
     -- try to read settings
-    if not settings_str then
+    if not settings_table then
       local settings_data
       err,settings_data = ReadModPersistentData()
 
@@ -564,14 +564,14 @@ do -- ReadSettingsAcct
         settings_data = ChoGGi.SettingFuncs.WriteSettingsAcct(ChoGGi.Defaults)
       end
 
-      some_error, settings_str = AsyncDecompress(settings_data)
+      some_error, settings_table = AsyncDecompress(settings_data)
       if err then
         RetError(err)
       end
     end
 
     -- and convert it to lua / update in-game settings
-    err, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
+    err, ChoGGi.UserSettings = LuaCodeToTuple(settings_table)
     if err then
       RetError(err)
     end
@@ -583,7 +583,7 @@ do -- ReadSettingsAcct
     end
 
     -- all is well
-    return settings_str
+    return settings_table
 
   end
 end -- do

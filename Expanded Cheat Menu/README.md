@@ -228,7 +228,22 @@ Depot capacities have been limited, so adding too much won't crash and delete yo
   >Best I can tell is a height limit of 65536 for any objects.
 
 You can't cheat fill concrete deposits.
-  >Just stick with spamming The Excavator.
+  >Just stick with spamming "The Excavator" around.
+```
+
+##### Modder related (Misc Info)
+```
+OnMsg.ChoGGi_ComFuncs()
+OpenExamine is ready to use
+
+OnMsg.ChoGGi_Dialogs()
+All the stuff in Dialogs/ is loaded
+
+OnMsg.ChoGGi_CodeFuncs()
+All the stuff in Misc/ is loaded
+
+OnMsg.ChoGGi_MenuFuncs()
+All the stuff in Menus/ is loaded
 ```
 
 ##### New locales

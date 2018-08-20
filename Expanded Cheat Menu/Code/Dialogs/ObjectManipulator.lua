@@ -19,6 +19,7 @@ DefineClass.ChoGGi_ObjectManipulatorDlg = {
   choices = {},
   refreshing = false,
   obj = false,
+  obj_name = false,
   sel = false,
   dialog_width = 750.0,
   dialog_height = 650.0,
@@ -28,10 +29,9 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
-  local name = RetName(self.obj)
-
+  self.obj_name = RetName(context.obj)
   self.obj = context.obj
-  self.title = Concat(S[302535920000471--[[Object Manipulator--]]],": ",name)
+  self.title = Concat(S[302535920000471--[[Object Manipulator--]]],": ",self.obj_name)
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
@@ -87,7 +87,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
     end,
   }, self.idButtonArea)
   -- update the add button hint
-  self.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(name))
+  self.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name))
 
   self.idApplyAll = g_Classes.ChoGGi_Button:new({
     Id = "idApplyAll",
@@ -260,27 +260,40 @@ function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
   return "continue"
 end
 
+function ChoGGi_ObjectManipulatorDlg:BuildList()
+  self.idList:Clear()
+  for i = 1, #self.items do
+    local listitem = self.idList:CreateTextItem(self.items[i].text)
+    listitem.item = self.items[i]
+    listitem.RolloverText = self:UpdateHintText(self.items[i])
+  end
+end
+
 function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
   local obj = self.obj
---~   self.idList:Clear()
+  self.idList:Clear()
 --~   for i = 1, #self.items do
 --~     local listitem = self.idList:CreateTextItem(self.items[i].text)
 --~     listitem.item = self.items[i]
 --~     listitem.RolloverText = self:UpdateHintText(self.items[i])
 --~   end
 
-  --check for scroll pos
+  -- check for scroll pos
   local scrollpos = self.idScrollArea.OffsetY
-  --create prop list for list
-  local list = self:CreatePropList(obj)
-  if not list then
-    local err = S[302535920000090--[[Error opening: %s--]]]:format(RetName(obj))
---~     self.idList:SetContent({text=err,value=err})
+
+  -- create prop list for list
+  self.items = self:CreatePropList(obj)
+  if not self.items then
+    local err = S[302535920000090--[[Error opening: %s--]]]:format(self.obj_name)
+    self.idList:Clear()
+    local listitem = self.idList:CreateTextItem(err)
+    listitem.RolloverText = err
     return
   end
-  --populate it
---~   self.idList:SetContent(list)
-  --and scroll to saved pos
+  -- populate it
+  self.idList:BuildList()
+
+  -- and scroll to saved pos
   self.idScrollArea:ScrollTo(scrollpos)
 end
 
@@ -392,7 +405,11 @@ end
 
 function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
   local res = {}
+
+  -- change this crap
   local sort = {}
+
+
   local function tableinsert(k,v)
     --text colours
     local text
@@ -437,3 +454,6 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
 
   return res
 end
+
+-- fired as the last dialog opened
+Msg("ChoGGi_Dialogs")

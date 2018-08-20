@@ -1059,7 +1059,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
   end
 
   return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
-    object = list,
+    obj = list,
     parent = parent,
     tables = list.tables,
     values = list.values,
@@ -1668,3 +1668,6 @@ end
 function ChoGGi.ComFuncs.OpenKeyPresserDlg()
   ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
 end
+
+-- if anyone else is using ECM
+Msg("ChoGGi_ComFuncs")

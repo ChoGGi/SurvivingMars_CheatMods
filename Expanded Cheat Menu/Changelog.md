@@ -5,7 +5,7 @@
 
 ## v8.4 (Unreleased)
 ### Changed:
-- Help>Text items are now open a url to files on github.
+- Help>Text items now open a url to files on github (no reading mod files with blacklist).
 
 ### Fixed:
 - Examine: Some strings were changing text colour they shouldn't.

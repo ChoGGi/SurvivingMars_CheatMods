@@ -198,3 +198,6 @@ Actions[#Actions+1] = {
   end,
   ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastPlacedObject,
 }
+
+-- fired as last lua in Menus
+Msg("ChoGGi_MenuFuncs")
