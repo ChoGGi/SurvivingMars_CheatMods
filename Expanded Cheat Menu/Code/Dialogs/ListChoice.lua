@@ -108,27 +108,7 @@ Press Enter to show all items."--]]],
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
     Hint = S[302535920000078--[[Add Custom Value--]]],
     OnTextChanged = function()
-
-      local text = self.idEditValue:GetText()
-      local value = ChoGGi.ComFuncs.RetProperType(text)
-      if self.custom_type > 0 then
-        if #self.idList.selection > 0 then
-          self.idList[self.idList.selection[1]].item.value = value
-        end
-      else
-        -- last item is a blank item for custom value
-        self.items[#self.items] = {
-          text = text,
-          value = value,
-          hint = 302535920000079--[[< Use custom value--]],
-        }
-        local item = self.items[#self.items]
-        local listitem = self.idList[#self.idList]
-        listitem[1]:SetText(item.text)
-        listitem.item = item
-        listitem.RolloverText = ChoGGi.ComFuncs.CheckText(item.hint)
-      end
-
+      self:idEditValueOnTextChanged()
     end,
   }, self.idEditArea)
 
@@ -273,6 +253,28 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
   self.idColorPicker:UpdateComponent("ALPHA", 1000)
 
   self.skip_color_change = false
+end
+
+function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
+  local text = self.idEditValue:GetText()
+  local value = ChoGGi.ComFuncs.RetProperType(text)
+  if self.custom_type > 0 then
+    if #self.idList.selection > 0 then
+      self.idList[self.idList.selection[1]].item.value = value
+    end
+  else
+    -- last item is a blank item for custom value
+    self.items[#self.items] = {
+      text = text,
+      value = value,
+      hint = 302535920000079--[[< Use custom value--]],
+    }
+    local item = self.items[#self.items]
+    local listitem = self.idList[#self.idList]
+    listitem[1]:SetText(item.text)
+    listitem.item = item
+    listitem.RolloverText = ChoGGi.ComFuncs.CheckText(item.hint)
+  end
 end
 
 function ChoGGi_ListChoiceDlg:BuildList()

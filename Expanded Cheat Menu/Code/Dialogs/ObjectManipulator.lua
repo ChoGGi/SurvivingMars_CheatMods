@@ -20,8 +20,8 @@ DefineClass.ChoGGi_ObjectManipulatorDlg = {
   refreshing = false,
   obj = false,
   sel = false,
-  dialog_width = 650.0,
-  dialog_height = 450.0,
+  dialog_width = 750.0,
+  dialog_height = 650.0,
 }
 
 function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
@@ -46,7 +46,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
     Id = "idAutoRefresh",
     Text = S[302535920000084--[[Auto-Refresh--]]],
     RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
-    Dock = "right",
+    Dock = "left",
     OnChange = function()
       self.idAutoRefreshToggle(self)
     end,
@@ -63,7 +63,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
     Dock = "left",
     RolloverText = S[302535920000092--[[Refresh list.--]]],
     OnMouseButtonDown = function()
-      self:UpdateListContent(self.obj)
+      self:UpdateListContent()
     end,
   }, self.idButtonArea)
 
@@ -83,38 +83,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
     Dock = "left",
     RolloverText = S[398847925160--[[New--]]],
     OnMouseButtonDown = function()
-      local sel_name
-      local sel_value
-      if self.sel then
-        sel_name = self.sel.text
-        sel_value = self.sel.value
-      else
-        sel_name = S[3718--[[NONE--]]]
-        sel_value = false
-      end
-      local ItemList = {
-        {text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = 302535920000096--[[Enter the name of the new entry to be added.--]]},
-        {text = S[302535920000097--[[New Value--]]],value = sel_value,hint = 302535920000098--[[Set the value of the new entry to be added.--]]},
-      }
-
-      local function CallBackFunc(choice)
-        local value = choice[1].value
-        if not value then
-          return
-        end
-        --add it to the actual object
-        self.obj[tostring(value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
-        --refresh list
-        self:UpdateListContent(self.obj)
-      end
-
-      ChoGGi.ComFuncs.OpenInListChoice{
-        callback = CallBackFunc,
-        items = ItemList,
-        title = S[302535920000095--[[New Entry--]]],
-        custom_type = 4,
-      }
-
+      self:idAddNewOnMouseButtonDown()
     end,
   }, self.idButtonArea)
   -- update the add button hint
@@ -126,24 +95,11 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
     Dock = "left",
     RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
     OnMouseButtonDown = function()
-      if not self.sel then
-        return
-      end
-      local value = self.sel.value
-      if value then
-        ForEach{
-          class = self.obj.class,
-          area = "realm",
-          exec = function(o)
-            o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
-          end,
-        }
-      end
+      self:idApplyAllOnMouseButtonDown()
     end,
   }, self.idButtonArea)
 
   self:AddScrollList()
-  self:BuildList()
 
   function self.idList.OnMouseButtonDown(obj,pt,button)
     g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
@@ -151,68 +107,6 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
   end
   function self.idList.OnMouseButtonDoubleClick(_,_,button)
     self:idListOnMouseButtonDoubleClick(button)
-  end
-
-  --hook into SetContent so we can add OnSetState to each listitem to show hints
-  self.idList.orig_SetContent = self.idList.SetContent
-  function self.idList:SetContent(items)
-    self.orig_SetContent(self,items)
-    local listitems = self.item_windows
-    for i = 1, #listitems do
-      local listitem = listitems[i]
-      listitem.orig_OnSetState = listitem.OnSetState
-      function listitem:OnSetState(list, item, rollovered, selected)
-        self.orig_OnSetState(self,list, item, rollovered, selected)
-        if rollovered or selected then
-          local hint = {item.text}
-          if item.value then
-            hint[#hint+1] = ": "
-            hint[#hint+1] = item.value
-          end
-          if item.hint then
-            hint[#hint+1] = "\n\n"
-            hint[#hint+1] = item.hint
-          end
-          hint[#hint+1] = "\n\n"
-          hint[#hint+1] = S[302535920000101--[["You can only change strings/numbers/booleans (to remove set value to nil).
-Value is updated while typing.\nPress Enter to refresh list (update names).
-
-Double click selected item to open in new manipulator."--]]]
-          self.parent:SetHint(TableConcat(hint))
-          CreateRolloverWindow(self.parent, TableConcat(hint), true)
-        end
-      end
-    end
-  end
-  --override ListItem:OnCreate
-  function self.idList:ItemCreate(item_window, item)
-    if not item_window then
-      return
-    end
-    self.parent.OnCreate(item_window,item,self)
-  end
-  --do stuff on selection
-  local orig_OnLButtonDown = self.idList.OnLButtonDown
-  function self.idList:OnLButtonDown(...)
-    local ret = {orig_OnLButtonDown(self,...)}
-    self = self.parent
-
-    --update selection (select last selected if multisel)
-    self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-    if self.sel then
-      --update the edit value box
-      self.idEditValue:SetText(self.sel.value)
-      self.idEditValue:SetFocus()
-    end
-
-    --for whatever is expecting a return value
-    return table.unpack(ret)
-  end
-  --open editor with whatever is selected
-  function self.idList.OnLButtonDoubleClick()
-    if self.sel then
-      ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
-    end
   end
 
   self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
@@ -225,59 +119,125 @@ Double click selected item to open in new manipulator."--]]]
     RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
     Hint = S[302535920000103--[[Edit Value--]]],
     OnTextChanged = function()
-
-      local sel_idx = self.idList.last_selected
-      --nothing selected
-      if not sel_idx then
-        return
-      end
-      --
-      local edit_text = self.idEditValue:GetText()
-      local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
-      local edit_type = type(edit_value)
-      local obj_value = self.obj[self.idList.items[sel_idx].text]
-      local obj_type = type(obj_value)
-      --only update strings/numbers/boolean/nil
-      if obj_type == "table" or obj_type == "userdata" or obj_type == "function" or obj_type == "thread" then
-        return
-      end
-
-      --if types match then we're fine, or nil if we're removing something
-      if obj_type == edit_type or edit_type == "nil" or
-          --false bools can be made a string or num
-          (obj_value == false and edit_type == "string" or edit_type == "number") or
-          --strings can be numbers or bools
-          (obj_type == "string" and edit_type == "number" or edit_type == "boolean") or
-          --numbers can be false
-          (obj_type ~= "number" and edit_type ~= "boolean") then
-        --list item
-        self.idList.items[sel_idx].value = edit_text
-        --stored obj
-        self.idList.item_windows[sel_idx].value:SetText(edit_text)
-        --actual object
-        local value = self.obj[self.idList.items[sel_idx].text]
-        if value == false or value then
-          self.obj[self.idList.items[sel_idx].text] = edit_value
-        end
-      end
-
+      self:idEditValueOnTextChanged()
     end,
   }, self.idEditArea)
 
-
   self:SetInitPos(context.parent)
-  --update item list
-  self:UpdateListContent(obj)
+
+  -- update item list
+  self:UpdateListContent()
 end
 
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(button)
+  --update selection (select last selected if multisel)
+  self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
+  if self.sel then
+    --update the edit value box
+    self.idEditValue:SetText(self.sel.value)
+    self.idEditValue:SetFocus()
+  end
+end
 
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick(button)
+  if #self.idList.selection > 0 then
+    ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
+  end
+end
+
+function ChoGGi_ObjectManipulatorDlg:idAddNewOnMouseButtonDown()
+  local sel_name
+  local sel_value
+  if self.sel then
+    sel_name = self.sel.text
+    sel_value = self.sel.value
+  else
+    sel_name = S[3718--[[NONE--]]]
+    sel_value = false
+  end
+  local ItemList = {
+    {text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = 302535920000096--[[Enter the name of the new entry to be added.--]]},
+    {text = S[302535920000097--[[New Value--]]],value = sel_value,hint = 302535920000098--[[Set the value of the new entry to be added.--]]},
+  }
+
+  local function CallBackFunc(choice)
+    local value = choice[1].value
+    if not value then
+      return
+    end
+    --add it to the actual object
+    self.obj[tostring(value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
+    --refresh list
+    self:UpdateListContent()
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = S[302535920000095--[[New Entry--]]],
+    custom_type = 4,
+  }
+end
+
+function ChoGGi_ObjectManipulatorDlg:idApplyAllOnMouseButtonDown()
+  if not self.sel then
+    return
+  end
+  local value = self.sel.value
+  if value then
+    ForEach{
+      class = self.obj.class,
+      area = "realm",
+      exec = function(o)
+        o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+      end,
+    }
+  end
+end
+
+function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
+  local sel_idx = self.idList.selection
+  -- nothing selected
+  if #sel_idx < 1 then
+    return
+  end
+  --
+  local edit_text = self.idEditValue:GetText()
+  local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
+  local edit_type = type(edit_value)
+  local obj_value = self.obj[self.idList.items[sel_idx].text]
+  local obj_type = type(obj_value)
+  --only update strings/numbers/boolean/nil
+  if obj_type == "table" or obj_type == "userdata" or obj_type == "function" or obj_type == "thread" then
+    return
+  end
+
+  --if types match then we're fine, or nil if we're removing something
+  if obj_type == edit_type or edit_type == "nil" or
+      --false bools can be made a string or num
+      (obj_value == false and edit_type == "string" or edit_type == "number") or
+      --strings can be numbers or bools
+      (obj_type == "string" and edit_type == "number" or edit_type == "boolean") or
+      --numbers can be false
+      (obj_type ~= "number" and edit_type ~= "boolean") then
+    --list item
+    self.idList.items[sel_idx].value = edit_text
+    --stored obj
+    self.idList.item_windows[sel_idx].value:SetText(edit_text)
+    --actual object
+    local value = self.obj[self.idList.items[sel_idx].text]
+    if value == false or value then
+      self.obj[self.idList.items[sel_idx].text] = edit_value
+    end
+  end
+end
 
 function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
   self:CreateThread("update", function(self)
     local Sleep = Sleep
     while true do
       if self.obj then
-        self:UpdateListContent(self.obj)
+        self:UpdateListContent()
       else
         Halt()
       end
@@ -293,31 +253,35 @@ function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
     return "break"
   elseif vk == const.vkEnter then
     local origsel = self.idList.last_selected
-    self:UpdateListContent(self.obj)
+    self:UpdateListContent()
     self.idList:SetSelection(origsel, true)
     return "break"
   end
   return "continue"
 end
 
-function ChoGGi_ObjectManipulatorDlg:UpdateListContent(obj)
-  if not self.idList then
-    return
-  end
+function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
+  local obj = self.obj
+--~   self.idList:Clear()
+--~   for i = 1, #self.items do
+--~     local listitem = self.idList:CreateTextItem(self.items[i].text)
+--~     listitem.item = self.items[i]
+--~     listitem.RolloverText = self:UpdateHintText(self.items[i])
+--~   end
+
   --check for scroll pos
-  local scrollpos = self.idList.vscrollbar:GetPosition()
+  local scrollpos = self.idScrollArea.OffsetY
   --create prop list for list
   local list = self:CreatePropList(obj)
   if not list then
     local err = S[302535920000090--[[Error opening: %s--]]]:format(RetName(obj))
-    --self.idList:SetContent({{text=err,value=err}})
-    self.idList:SetContent({text=err,value=err})
+--~     self.idList:SetContent({text=err,value=err})
     return
   end
   --populate it
-  self.idList:SetContent(list)
+--~   self.idList:SetContent(list)
   --and scroll to saved pos
-  self.idList.vscrollbar:SetPosition(scrollpos)
+  self.idScrollArea:ScrollTo(scrollpos)
 end
 
 --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
@@ -368,38 +332,38 @@ function ChoGGi_ObjectManipulatorDlg:OnCreate(item,list)
   end
 end
 
-function ChoGGi_ObjectManipulatorDlg:CreateProp(o)
+function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
   local objlist = objlist
-  local obj_type = type(o)
+  local obj_type = type(obj)
   if obj_type == "function" then
-    local debug_info = debug.getinfo(o, "Sn")
+    local debug_info = debug.getinfo(obj, "Sn")
     return Concat(tostring(debug_info.name or debug_info.name_what or S[302535920000063--[[unknown name--]]]),"@",debug_info.short_src,"(",debug_info.linedefined,")")
   end
 
-  if IsValid(o) then
-    return Concat(o.class,"@",self:CreateProp(o:GetPos()))
+  if IsValid(obj) then
+    return Concat(obj.class,"@",self:CreateProp(obj:GetPos()))
   end
 
-  if IsPoint(o) then
+  if IsPoint(obj) then
     local res = {
-      o:x(),
-      o:y(),
-      o:z()
+      obj:x(),
+      obj:y(),
+      obj:z()
     }
     return Concat("(",Concat(res, ","),")")
   end
   --if some value is fucked, this just lets us ignore whatever value is fucked.
   pcall(function()
-    local meta = getmetatable(o)
+    local meta = getmetatable(obj)
     if obj_type == "table" and meta and meta == objlist then
       local res = {}
-      for i = 1, Min(#o, 3) do
+      for i = 1, Min(#obj, 3) do
         res[#res+1] = {
           text = i,
-          value = self:CreateProp(o[i])
+          value = self:CreateProp(obj[i])
         }
       end
-      if #o > 3 then
+      if #obj > 3 then
         res[#res+1] = {text = "..."}
       end
       return Concat("objlist","{",Concat(res, ", "),"}")
@@ -407,26 +371,26 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(o)
   end)
 
   if obj_type == "thread" then
-    return tostring(o)
+    return tostring(obj)
   end
 
   if obj_type == "string" then
-    return o
+    return obj
   end
 
   if obj_type == "table" then
-    if IsT(o) then
-      return Concat("T{\"",T(o),"\"}")
+    if IsT(obj) then
+      return Concat("T{\"",T(obj),"\"}")
     else
-      local text = Concat(ObjectClass(o) or tostring(o),"(len:",#o,")")
+      local text = Concat(ObjectClass(obj) or tostring(obj),"(len:",#obj,")")
       return text
     end
   end
 
-  return tostring(o)
+  return tostring(obj)
 end
 
-function ChoGGi_ObjectManipulatorDlg:CreatePropList(o)
+function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
   local res = {}
   local sort = {}
   local function tableinsert(k,v)
@@ -452,8 +416,8 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(o)
     }
   end
 
-  if type(o) == "table" then
-    for k, v in pairs(o) do
+  if type(obj) == "table" then
+    for k, v in pairs(obj) do
       tableinsert(k,v,res)
       if type(k) == "number" then
         sort[res[#res]] = k

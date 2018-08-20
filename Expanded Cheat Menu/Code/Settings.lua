@@ -498,13 +498,12 @@ do -- WriteSettingsAcct
     end
   end
   function ChoGGi.SettingFuncs.WriteSettingsAcct(settings)
-    local ChoGGi = ChoGGi
     settings = settings or ChoGGi.UserSettings
 
     -- lz4 is quicker, but less compressy
-    local err, data = AsyncCompress(TableToLuaCode(settings), false, "lz4")
+--~     local err, data = AsyncCompress(TableToLuaCode(settings), false, "lz4")
+    local err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
     if err then
-      RetError(err)
       return
     end
 
@@ -553,7 +552,7 @@ do -- ReadSettingsAcct
   end
   function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_str)
     local ChoGGi = ChoGGi
-    local is_error,err
+    local err
 
     -- try to read settings
     if not settings_str then
@@ -568,7 +567,6 @@ do -- ReadSettingsAcct
       some_error, settings_str = AsyncDecompress(settings_data)
       if err then
         RetError(err)
-        is_error = true
       end
     end
 
@@ -576,15 +574,11 @@ do -- ReadSettingsAcct
     err, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
     if err then
       RetError(err)
-      is_error = true
     end
 
-    if is_error or ChoGGi.UserSettings == empty_table or type(ChoGGi.UserSettings) ~= "table" then
+    if ChoGGi.UserSettings == empty_table or type(ChoGGi.UserSettings) ~= "table" then
       -- so now at least the game will start
       ChoGGi.UserSettings = ChoGGi.Defaults
-      if ChoGGi.testing then
-        ChoGGi.UserSettings.WriteLogs = true
-      end
       return ChoGGi.Defaults
     end
 
