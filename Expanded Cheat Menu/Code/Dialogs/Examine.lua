@@ -16,8 +16,6 @@ local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
-local CreateRealTimeThread = CreateRealTimeThread
-
 
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
@@ -32,16 +30,10 @@ DefineClass.Examine = {
   onclick_handles = {},
   -- what we're examining
   obj = false,
-  title = false,
   -- if user checks the autorefresh checkbox
   autorefresh_thread = false,
   dialog_width = 650.0,
   dialog_height = 750.0,
-
-  -- needed?
-  show_times = "relative",
-  offset = 1,
-  page = 1,
 }
 
 --~ box(left,top, right, bottom)
@@ -198,14 +190,7 @@ function Examine:Menu_Toggle(obj,menu,items)
 end
 
 function Examine:idAutoRefreshToggle()
-  -- if already running then stop and return
-  if self.autorefresh_thread then
-    DeleteThread(self.autorefresh_thread)
-    self.autorefresh_thread = false
-    return
-  end
-  -- otherwise fire it up
-  self.autorefresh_thread = CreateRealTimeThread(function()
+  self:CreateThread("update", function(self)
     local Sleep = Sleep
     while true do
       if self.obj then
@@ -215,7 +200,7 @@ function Examine:idAutoRefreshToggle()
       end
       Sleep(1000)
     end
-  end)
+  end, self)
 end
 
 function Examine:idFilterOnKbdKeyDown(obj,vk)
@@ -353,13 +338,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
         ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
       end,
     },
---~     {
---~       name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
---~       hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
---~       clicked = function()
---~         ChoGGi.ComFuncs.OpenInObjectManipulator(self.obj,self)
---~       end,
---~     },
+    {
+      name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+      hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+      clicked = function()
+        ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
+      end,
+    },
     {
       name = S[302535920001305--[[Find Within--]]],
       hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
@@ -451,10 +436,8 @@ do -- FlashWindow
   local flashing_table = {}
   local black,white = black,white
   local Sleep = Sleep
-  local IsKindOfClasses = IsKindOfClasses
-  local CreateRealTimeThread = CreateRealTimeThread
   local Invalidate = UIL.Invalidate
-  local clear = table.clear
+
   function Examine:FlashWindow(obj)
     obj = obj or self.obj
 
@@ -483,7 +466,7 @@ do -- FlashWindow
       if obj.window_state ~= "destroying" then
         obj.BorderWidth = flashing_table.width
         obj.BorderColor = flashing_table.colour
-        clear(flashing_table)
+        table.clear(flashing_table)
         Invalidate()
       end
     end)
@@ -1056,9 +1039,6 @@ local function PopupClose(name)
   end
 end
 function Examine:Done(result)
-  if self.autorefresh_thread then
-    DeleteThread(self.autorefresh_thread)
-  end
   PopupClose("idAttachesMenu")
   PopupClose("idParentsMenu")
   PopupClose("idToolsMenu")

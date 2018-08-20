@@ -33,7 +33,7 @@ SOFTWARE.
 ]]
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,type,table = dofile,select,tostring,type,table
+local select,tostring,type,table = select,tostring,type,table
 local id,Mods,FileExists = "ChoGGi_CheatMenu",Mods
 local blacklist = Mods[id].env
 

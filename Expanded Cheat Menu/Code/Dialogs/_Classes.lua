@@ -1,23 +1,13 @@
 -- See LICENSE for terms
 
---~ function XWindow:CreateThread(name, func, ...)
---~   func = func or name
---~   self.real_time_threads = self.real_time_threads or {}
---~   DeleteThread(self.real_time_threads[name])
---~   self.real_time_threads[name] = CreateRealTimeThread(func, ...)
---~ end
 --~ self:CreateThread("update", function(self)
---~   while true do
---~     RebuildInfopanel(ResolvePropObj(self.context), 999)
---~     Sleep(1000)
---~   end
 --~ end, self)
+
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
 local box,point = box,point
-local RGBA = RGBA
 
 local white = -1
 local black = black

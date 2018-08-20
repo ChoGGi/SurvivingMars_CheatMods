@@ -18,7 +18,6 @@ if not VKStrNames[12] then
 end
 
 function ChoGGi_KeyPresserDlg:Init(parent, context)
-  local ChoGGi = ChoGGi
   local g_Classes = g_Classes
 
   self.dialog_width = 500

@@ -4,11 +4,15 @@
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
 ## v8.4 (Unreleased)
+### Changed:
+- Help>Text items are now open a url to files on github.
+
 ### Fixed:
 - Examine: Some strings were changing text colour they shouldn't.
 - Activating Last Constructed Building when there isn't one caused UI to somewhat stop responding.
 - Bunch of other issues with buildings (building cheats issues continued).
 - Drone Factory Build Speed reset on shift change (thanks hchsiao).
+- log spammed with some msgs from functions that still work (whoops).
 
 ## v8.3 (19 Aug 2018)
 ### Changed:

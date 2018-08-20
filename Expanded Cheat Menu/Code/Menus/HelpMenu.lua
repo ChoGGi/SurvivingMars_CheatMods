@@ -2,7 +2,6 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {
@@ -273,7 +272,7 @@ do -- build text file menu items
     ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
     ActionId = "Help.Text.*Game Functions*",
     ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
-    RolloverText = S[302535920000875--[[Game Functions--]]],
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
     OnAction = function()
       OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/GameFunctions.lua")
     end,

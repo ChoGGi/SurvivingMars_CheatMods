@@ -29,8 +29,8 @@ return PlaceObj("ModDef", {
 --~     -- temp added to check out keys for XXXUnknownXXX
 --~ 		"Code/Dialogs/KeyPresser.lua",
 
---~ 		"Code/Dialogs/MonitorInfo.lua",
---~ 		"Code/Dialogs/ObjectManipulator.lua",
+		"Code/Dialogs/MonitorInfo.lua",
+		"Code/Dialogs/ObjectManipulator.lua",
     -- stuff that can come later
 		"Code/Misc/_Functions.lua",
 		"Code/Misc/ConsoleControls.lua",

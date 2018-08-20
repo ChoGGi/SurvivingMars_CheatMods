@@ -354,7 +354,6 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
   config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
   ReopenSelectionXInfopanel()
 
-  local ChoGGi = ChoGGi
   ChoGGi.UserSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
 
 --~   ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)

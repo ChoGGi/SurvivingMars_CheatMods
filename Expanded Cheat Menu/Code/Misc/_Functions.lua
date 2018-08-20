@@ -693,7 +693,7 @@ do --CloseDialogsECM
 
   function ChoGGi.CodeFuncs.CloseDialogsECM()
     ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
-    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulator")
+    ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
     ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")

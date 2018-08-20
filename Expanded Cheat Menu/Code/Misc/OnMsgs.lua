@@ -3,7 +3,6 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 

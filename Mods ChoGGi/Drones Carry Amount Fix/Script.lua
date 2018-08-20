@@ -58,7 +58,7 @@ SOFTWARE.]],
 }
 
 -- if we use global func more then once: make them local for that small bit o' speed
-local dofile,select,tostring,table = dofile,select,tostring,table
+local select,tostring,table = select,tostring,table
 -- thanks for replacing concat...
 local TableConcat = oldTableConcat or table.concat
 local g_Classes = g_Classes

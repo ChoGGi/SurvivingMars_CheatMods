@@ -426,7 +426,6 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
   local preset
   if image then
     preset = "ChoGGi_TempPopup"
-    local Presets = Presets
     local temppop = {
       name = preset,
       image = image,
@@ -1108,7 +1107,7 @@ function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
   })
 end
 
-function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
+function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
   if not obj then
     obj = ChoGGi.CodeFuncs.SelObject()
   end
@@ -1116,7 +1115,7 @@ function ChoGGi.ComFuncs.OpenInObjectManipulator(obj,parent)
     return
   end
 
-  return ChoGGi_ObjectManipulator:new({}, terminal.desktop,{
+  return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
     obj = obj,
     parent = parent,
   })
