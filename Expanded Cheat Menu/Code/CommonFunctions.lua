@@ -1547,22 +1547,22 @@ do --
     ChoGGi.Tables.ColonistBirthplaces = {}
     --add as index and associative tables for ease of filtering
     for id,t in pairs(TraitPresets) do
-      if t.category == "Positive" then
+      if t.group == "Positive" then
         ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = id
         ChoGGi.Tables.PositiveTraits[id] = true
-      elseif t.category == "Negative" then
+      elseif t.group == "Negative" then
         ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = id
         ChoGGi.Tables.NegativeTraits[id] = true
-      elseif t.category == "other" then
+      elseif t.group == "other" then
         ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = id
         ChoGGi.Tables.OtherTraits[id] = true
-      elseif t.category == "Age Group" then
+      elseif t.group == "Age Group" then
         ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = id
         ChoGGi.Tables.ColonistAges[id] = true
-      elseif t.category == "Gender" then
+      elseif t.group == "Gender" then
         ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = id
         ChoGGi.Tables.ColonistGenders[id] = true
-      elseif t.category == "Specialization" and id ~= "none" then
+      elseif t.group == "Specialization" and id ~= "none" then
         ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = id
         ChoGGi.Tables.ColonistSpecializations[id] = true
       end

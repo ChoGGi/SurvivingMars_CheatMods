@@ -1,6 +1,6 @@
 ### Return a random number
 
-AsyncRand() has slightly more variation then Random(), and possibliy more than UICity:Random() (never bothered to test).
+AsyncRand() has slightly more variation then Random(), and possibly more than UICity:Random() (never bothered to test).
 It's also faster (though the ifs I added may make this function slower).
 
 Random() -- returns number between 0 and max_int
@@ -27,6 +27,22 @@ do
       return m and AsyncRand(m) or AsyncRand()
     end
 
+  end
+end
+```
+
+#### If you're sure you won't send n-m < 0 then you can skip that
+```
+do
+  local AsyncRand = AsyncRand
+  function Random(m, n)
+    if n then
+      -- m = min, n = max
+      return AsyncRand(n - m + 1) + m
+    else
+      -- m = max, min = 0 OR number between 0 and max_int
+      return m and AsyncRand(m) or AsyncRand()
+    end
   end
 end
 ```

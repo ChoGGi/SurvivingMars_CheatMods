@@ -33,6 +33,17 @@ if ChoGGi.testing then
     TickEnd("TestRandomColour.Total")
   end
 
+  function ChoGGi.CodeFuncs.TestRandomColour2(amount)
+    TickStart("TestRandomColour.Total")
+    local RandomColour = ChoGGi.CodeFuncs.RandomColour2
+    for _ = 1, amount or 5 do
+      TickStart("TestRandomColour.Tick")
+      RandomColour(100000)
+      TickEnd("TestRandomColour.Tick")
+    end
+    TickEnd("TestRandomColour.Total")
+  end
+
   function ChoGGi.CodeFuncs.TestRandom(amount)
     TickStart("TestRandom.Total")
     local Random = Random

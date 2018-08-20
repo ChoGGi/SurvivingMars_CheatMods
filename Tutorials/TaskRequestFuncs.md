@@ -2,7 +2,7 @@
 
 ```
 -- create a new work/supply/demand request (see Lua/_TaskRequest.lua)
-bld.some_request = Request_New(bld, "metals", 1000)
+bld.maintenance_work_request = Request_New(bld, "metals", 1000)
 
 -- building the request is attached to
 req:GetBuilding()
@@ -16,6 +16,8 @@ req:GetResource()
 req:GetFreeUnitSlots()
 -- see const.rf*
 req:GetFlags()
--- ?
+-- set the amount the request already has (rocket.refuel_request:SetAmount(number))
 req:SetAmount()
+-- add to the amount
+req:AddAmount()
 ```

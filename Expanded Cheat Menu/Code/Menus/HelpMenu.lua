@@ -268,50 +268,184 @@ do -- build text file menu items
     ActionSortKey = "1",
   }
 
-  if not blacklist then
-    local function ReadText(file)
-      local file_error, text = AsyncFileToString(file)
-      if file_error then
-        -- close enough msg, very unlikely this will ever happen (unless user is really being a user)
-        return S[1000058--[[Missing file <u(src)> referenced in entity--]]]
-      else
-        return text
-      end
-    end
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
+    ActionId = "Help.Text.*Game Functions*",
+    ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+    RolloverText = S[302535920000875--[[Game Functions--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/GameFunctions.lua")
+    end,
+    ActionSortKey = "0",
+  }
 
-    local funcs = ReadText(Concat(ChoGGi.ModPath,"Code/Text/GameFunctions.lua"))
-    Actions[#Actions+1] = {
-      ActionMenubar = str_Help_Text,
-      ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
-      ActionId = "Help.Text.*Game Functions*",
-      ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
-      RolloverText = funcs:sub(1,100),
-      OnAction = function()
-        ChoGGi.ComFuncs.OpenInExamineDlg(Concat(S[302535920001023--[[This WILL take awhile if you open it in View Text.--]]],"\n\n\n\n",funcs))
-      end,
-      ActionSortKey = "0",
-    }
-    local function LoopFiles(ext)
-      local folders = ChoGGi.ComFuncs.RetFilesInFolder(Concat(ChoGGi.ModPath,"Code/Text"),ext)
-      if folders then
-        for i = 1, #folders do
-          local text = ReadText(folders[i].path)
-          Actions[#Actions+1] = {
-            ActionMenubar = str_Help_Text,
-            ActionName = folders[i].name,
-            ActionId = Concat("Help.Text",folders[i].name),
-            ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-            RolloverText = text:sub(1,100),
-            OnAction = function()
-              ChoGGi.ComFuncs.OpenInExamineDlg(text)
-            end,
-            ActionSortKey = "99",
-          }
-        end
-      end
-    end
-    LoopFiles(".txt")
-    LoopFiles(".md")
-  end
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Misc]],
+    ActionId = "Help.Text.Misc",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Misc.md")
+    end,
+    ActionSortKey = "98",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Add New Trait]],
+    ActionId = "Help.Text.Add New Trait",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Add New Trait.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Change Animation]],
+    ActionId = "Help.Text.Change Animation",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Change Animation.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[DroneNoBatteryNeeded]],
+    ActionId = "Help.Text.DroneNoBatteryNeeded",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/DroneNoBatteryNeeded.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Hidden Milestones]],
+    ActionId = "Help.Text.Hidden Milestones",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Hidden Milestones.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Locales]],
+    ActionId = "Help.Text.Locales",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[OnMsgs Easy Start]],
+    ActionId = "Help.Text.OnMsgs Easy Start",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs Easy Start.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[OnMsgs Load Game]],
+    ActionId = "Help.Text.OnMsgs Load Game",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs Load Game.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[OnMsgs New Game]],
+    ActionId = "Help.Text.OnMsgs New Game",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs New Game.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Random number]],
+    ActionId = "Help.Text.Random number",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Random number.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Return All Nearby Objects]],
+    ActionId = "Help.Text.Return All Nearby Objects",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Return All Nearby Objects.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Return Random Colours]],
+    ActionId = "Help.Text.Return Random Colours",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Return Random Colours.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[Show A List of Choices]],
+    ActionId = "Help.Text.Show A List of Choices",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/XXXShow A List of ChoicesXXXXXX.md")
+    end,
+    ActionSortKey = "99",
+  }
+
+  Actions[#Actions+1] = {
+    ActionMenubar = str_Help_Text,
+    ActionName = [[TaskRequestFuncs]],
+    ActionId = "Help.Text.TaskRequestFuncs",
+    ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+    RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+    OnAction = function()
+      OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/TaskRequestFuncs.md")
+    end,
+    ActionSortKey = "99",
+  }
 
 end
