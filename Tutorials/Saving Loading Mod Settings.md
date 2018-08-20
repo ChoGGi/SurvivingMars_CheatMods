@@ -13,7 +13,7 @@ settings = {
 }
 ```
 
-### GLOBAL_SETTINGS_VAR, and DEFAULT_MOD_SETTINGS are used for saved settings/default settings
+### MOD_SETTINGS_TABLE, and MOD_DEFAULT_SETTINGS are used for saved settings/default settings
 
 #### Write Mod Settings
 ```
@@ -24,7 +24,7 @@ local WriteModPersistentData = WriteModPersistentData
 local MaxModDataSize = const.MaxModDataSize
 
 function WriteModSettings(settings)
-  settings = settings or GLOBAL_SETTINGS_VAR or DEFAULT_MOD_SETTINGS
+  settings = settings or MOD_SETTINGS_TABLE or MOD_DEFAULT_SETTINGS
 
   -- lz4 is quicker, but less compressy
   local err, data = AsyncCompress(TableToLuaCode(settings), false, "lz4")
@@ -73,7 +73,7 @@ function ReadModSettings()
 
   if err or not settings_data or settings_data == "" then
     -- no settings found so write default settings (it returns the saved setting)
-    settings_data = WriteModSettings(DEFAULT_MOD_SETTINGS)
+    settings_data = WriteModSettings(MOD_DEFAULT_SETTINGS)
   end
 
   err, settings_table = AsyncDecompress(settings_data)
@@ -82,15 +82,15 @@ function ReadModSettings()
   end
 
   -- and convert it to lua / update in-game settings
-  err, GLOBAL_SETTINGS_VAR = LuaCodeToTuple(settings_table)
+  err, MOD_SETTINGS_TABLE = LuaCodeToTuple(settings_table)
   if err then
     print(err)
   end
 
   -- just in case
-  if GLOBAL_SETTINGS_VAR == empty_table or type(GLOBAL_SETTINGS_VAR) ~= "table" then
+  if MOD_SETTINGS_TABLE == empty_table or type(MOD_SETTINGS_TABLE) ~= "table" then
     -- i have a defaults table i load up with my mod, if somethings wrong then at at the mod will have some settings to use
-    GLOBAL_SETTINGS_VAR = DEFAULT_MOD_SETTINGS
+    MOD_SETTINGS_TABLE = MOD_DEFAULT_SETTINGS
   end
 
 end
