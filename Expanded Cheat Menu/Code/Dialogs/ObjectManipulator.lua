@@ -244,21 +244,23 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
-  if self.real_time_threads.AutoRefreshToggle then
-    DeleteThread(self.real_time_threads.AutoRefreshToggle)
-  else
-    self:CreateThread("AutoRefreshToggle", function(self)
-      local Sleep = Sleep
-      while true do
-        if self.obj then
-          self:UpdateListContent()
-        else
-          Halt()
-        end
-        Sleep(1000)
-      end
-    end, self)
+  -- if already running then stop and return
+  if IsValidThread(self.autorefresh_thread) then
+    DeleteThread(self.autorefresh_thread)
+    return
   end
+  -- otherwise fire it up
+  self.autorefresh_thread = CreateRealTimeThread(function()
+    local Sleep = Sleep
+    while true do
+      if self.obj then
+        self:UpdateListContent()
+      else
+        Halt()
+      end
+      Sleep(1000)
+    end
+  end)
 end
 
 function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
@@ -472,6 +474,7 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
 end
 
 function ChoGGi_ObjectManipulatorDlg:Done(result)
+  DeleteThread(self.autorefresh_thread)
   ChoGGi_Window.Done(self,result)
 end
 

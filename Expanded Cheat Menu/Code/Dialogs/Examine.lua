@@ -24,11 +24,6 @@ local HLEnd = "</h></color>"
 local white = white
 local black = black
 
--- created below Init, but needs to be accessed in it
-local parents_menu_popup
-local ancestors_menu_popup
-local tools_menu_popup
-
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
   -- clickable purple text
@@ -38,6 +33,9 @@ DefineClass.Examine = {
 
   dialog_width = 650.0,
   dialog_height = 750.0,
+
+  parents_menu_popup = false,
+  attaches_menu_popup = false,
 }
 
 function Examine:Init(parent, context)
@@ -104,6 +102,7 @@ function Examine:Init(parent, context)
     Dock = "top",
   }, self.idDialog)
 
+  local tools_menu_popup = self:BuildToolsMenuPopup()
   self.idTools = g_Classes.ChoGGi_ComboButton:new({
     Id = "idTools",
     Text = S[302535920000239--[[Tools--]]],
@@ -124,7 +123,7 @@ Right-click to scroll to top."--]]],
     RolloverText = S[302535920000553--[[Examine parent and ancestor objects.--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
-        PopupToggle(button,"idParentsMenu",parents_menu_popup,"bottom")
+        PopupToggle(button,"idParentsMenu",self.parents_menu_popup,"bottom")
       end
     end,
     Dock = "left",
@@ -136,7 +135,7 @@ Right-click to scroll to top."--]]],
     RolloverText = S[302535920000054--[[Any objects attached to this object.--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
-        PopupToggle(button,"idAttachesMenu",ancestors_menu_popup,"bottom")
+        PopupToggle(button,"idAttachesMenu",self.attaches_menu_popup,"bottom")
       end
     end,
     Dock = "left",
@@ -176,25 +175,26 @@ Right-click to scroll to top."--]]],
 
   self:SetInitPos(context.parent)
 
-  self:BuildToolsMenuPopup()
 end
 
 function Examine:idAutoRefreshToggle()
-  if self.real_time_threads.AutoRefreshToggle then
-    DeleteThread(self.real_time_threads.AutoRefreshToggle)
-  else
-    self:CreateThread("AutoRefreshToggle", function(self)
-      local Sleep = Sleep
-      while true do
-        if self.obj then
-          self:SetObj(self.obj,true)
-        else
-          Halt()
-        end
-        Sleep(1000)
-      end
-    end, self)
+  -- if already running then stop and return
+  if IsValidThread(self.autorefresh_thread) then
+    DeleteThread(self.autorefresh_thread)
+    return
   end
+  -- otherwise fire it up
+  self.autorefresh_thread = CreateRealTimeThread(function()
+    local Sleep = Sleep
+    while true do
+      if self.obj then
+        self:SetObj(self.obj,true)
+      else
+        Halt()
+      end
+      Sleep(1000)
+    end
+  end)
 end
 
 function Examine:idFilterOnKbdKeyDown(obj,vk)
@@ -249,7 +249,7 @@ local function ProcessList(list,prefix)
 end
 
 function Examine:BuildToolsMenuPopup()
-  tools_menu_popup = {
+  return {
     {
       name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
@@ -374,7 +374,7 @@ local function BuildParents(self,list,list_type,title,sort_type)
   if list and next(list) then
     list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
     self[list_type] = list
-    parents_menu_popup[#parents_menu_popup+1] = {
+    self.parents_menu_popup[#self.parents_menu_popup+1] = {
       name = Concat("   ---- ",title),
       hint = title,
     }
@@ -382,7 +382,7 @@ local function BuildParents(self,list,list_type,title,sort_type)
       -- no sense in having an item in parents and ancestors
       if not pmenu_skip_dupes[list[i]] then
         pmenu_skip_dupes[list[i]] = true
-        parents_menu_popup[#parents_menu_popup+1] = {
+        self.parents_menu_popup[#self.parents_menu_popup+1] = {
           name = list[i],
           hint = list[i],
           clicked = function()
@@ -967,24 +967,24 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
     end
 
     -- reset menu list
-    parents_menu_popup = {}
+    self.parents_menu_popup = {}
     pmenu_skip_dupes = {}
     -- build menu list
     BuildParents(self,obj.__parents,"parents",S[302535920000520--[[Parents--]]])
     BuildParents(self,obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
     -- if anything was added to the list then add to the menu
-    if #parents_menu_popup < 1 then
+    if #self.parents_menu_popup < 1 then
       --no parents or ancestors, so hide the button
       self.idParents:SetVisible()
     end
 
     --attaches menu
     if attaches and attach_amount > 0 then
-      ancestors_menu_popup = {}
+      self.attaches_menu_popup = {}
       local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
       for i = 1, #attaches do
         local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
-        ancestors_menu_popup[#ancestors_menu_popup+1] = {
+        self.attaches_menu_popup[#self.attaches_menu_popup+1] = {
           name = RetName(attaches[i]),
           hint = Concat(
             attaches[i].class,"\n",
@@ -1023,6 +1023,7 @@ local function PopupClose(name)
   end
 end
 function Examine:Done(result)
+  DeleteThread(self.autorefresh_thread)
   PopupClose("idAttachesMenu")
   PopupClose("idParentsMenu")
   PopupClose("idToolsMenu")

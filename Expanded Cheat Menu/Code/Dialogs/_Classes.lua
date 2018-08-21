@@ -1,9 +1,5 @@
 -- See LICENSE for terms
 
---~ self:CreateThread("THREADID", function(self)
---~ end, self)
---~ if self.real_time_threads.THREADID then
-
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
 --~ local Concat = ChoGGi.ComFuncs.Concat

@@ -76,13 +76,13 @@ end
 function OnMsg.ClassesPostprocess()
   PlaceObj("BuildingTemplate", {
     "Id", "GoldenStorage",
+    "Group", "Storages",
     "template_class", "GoldenStorage",
     "instant_build", true,
     "dome_forbidden", true,
     "display_name", [[Golden Storage]],
     "display_name_pl", [[Golden Storage]],
     "description", [[Converts Metals to PreciousMetals.]],
-    "Group", "Storages",
     "build_category", "Storages",
     "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
     "entity", "ResourcePlatform",
