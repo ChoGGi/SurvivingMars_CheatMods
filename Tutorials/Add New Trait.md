@@ -3,7 +3,8 @@
 ```
 function OnMsg.ClassesPostprocess()
   PlaceObj("TraitPreset", {
-    id = "Fitter",
+    id = "UniqueName_Fitter",
+
     display_name = "Fitter", -- probably should use T{} and translate it
 
     description = T{6639, --[[TraitPreset Composed description]] "All Sanity losses are halved."},
@@ -55,8 +56,8 @@ end
 -- trait definition https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Traits.lua
 ```
 
-Access traits with:
+Access trait with:
 ```
-local Fitter = TraitPresets.Fitter
+local Fitter = TraitPresets.UniqueName_Fitter
 print(Fitter.display_name)
 ```
