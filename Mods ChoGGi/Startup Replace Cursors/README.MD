@@ -4,8 +4,9 @@
 ```
 Surviving Mars\BinAssets\AssetsRevision.lua
 
-This will replace the cursors with black n white ones to get around graphic corruption happening under certain Linux configs.
+This will replace the cursors with custom ones to get around graphic corruption happening under certain Linux configs.
 
+Thanks to Vavooon for the currently used ones (there's more in replacements).
 ```
 
 ##### OSX Install Help (thanks BodyByBuddha)

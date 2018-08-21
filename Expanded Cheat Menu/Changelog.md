@@ -4,6 +4,12 @@
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
 ## v8.5 (Unreleased)
+### Changed:
+- Mod Upload now has support for packed mods (you need to manually pack them: ModFolder/Pack/ModContent.hpk).
+- > If they force only .hpk mods then I'll make it automagical.
+
+### Fixed:
+- Fixed keyboard focus when using the inputs on my dialogs (whoops).
 
 ## v8.4 (Aug 21 2018)
 ### Added:

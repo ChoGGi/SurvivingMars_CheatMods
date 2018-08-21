@@ -45,7 +45,7 @@ do -- ModUpload
       local upload_msg = {
         S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title),
         "\n",
-        S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading.--]]],
+        S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading (but you can pack it manually: ModFolder/Pack/ModContent.hpk).--]]],
       }
       if not copy_files then
         upload_msg[#upload_msg+1] = "\n\n"
@@ -112,7 +112,15 @@ do -- ModUpload
 
         -- update mod on workshop
         if not err or blank_mod then
-          local os_dest = ConvertToOSPath(dest)
+          local os_dest = Concat(dest,"Pack/ModContent.hpk")
+          if ChoGGi.ComFuncs.FileExists(os_dest) then
+            os_dest = ConvertToOSPath(os_dest)
+          else
+            os_dest = ConvertToOSPath(dest)
+          end
+
+          print(ConvertToOSPath(os_dest))
+
           if Platform.steam then
             err = AsyncSteamWorkshopUpdateItem{
               item_id = mod.steam_id,
