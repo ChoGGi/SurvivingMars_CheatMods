@@ -132,9 +132,9 @@ ChoGGi = {
   Console = {},
   -- temporary... stuff
   Temp = {
-    -- collect msgs to be displayed when game is loaded
+    -- collect error msgs to be displayed in console after game is loaded
     StartupMsgs = {},
-    -- we build a list of menuitems and shortcut keys called on Msg("ShortcutsReloaded")
+    -- a list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
     Actions = {},
   },
   -- settings that are saved to SettingsFile
@@ -146,8 +146,8 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 do -- translate
-  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
   local locale_path = Concat(ChoGGi.ModPath,"Locales/%s.csv")
+  -- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
   if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
     LoadTranslationTableFile(locale_path:format("English"))
   end

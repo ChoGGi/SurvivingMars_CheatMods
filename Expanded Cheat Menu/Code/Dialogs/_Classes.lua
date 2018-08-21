@@ -38,6 +38,7 @@ DefineClass.ChoGGi_Text = {
   TextFont = text,
 --~   WordWrap = true,
 }
+
 DefineClass.ChoGGi_MultiLineEdit = {
   __parents = {"XMultiLineEdit"},
   TextFont = "Editor16",

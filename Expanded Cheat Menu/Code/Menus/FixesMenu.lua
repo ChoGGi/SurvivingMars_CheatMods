@@ -20,7 +20,7 @@ Actions[#Actions+1] = {
   ActionName = S[302535920001299--[[Toggle Working On All Buildings--]]],
   ActionId = "Expanded CM.Fixes.Toggle Working On All Buildings",
   ActionIcon = icon,
-  RolloverText = S[302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).-]]],
+  RolloverText = S[302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).--]]],
   OnAction = ChoGGi.MenuFuncs.ToggleWorkingAll,
   ActionSortKey = "9",
 }

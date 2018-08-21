@@ -95,3 +95,28 @@ function ReadModSettings()
 
 end
 ```
+
+
+##### Benching
+```
+-- uncompressed TableToLuaCode(TranslationTable)
+-- #786351
+
+-- lz4 compressed to #407672
+-- 50 loops of AsyncDecompress(lz4_data)
+-- 155 ticks
+-- 50 loops of AsyncCompress(lz4_data)
+-- 1404 ticks
+-- 50 loops of compress/decompress
+-- 1512,1491,1491 ticks (did it three times)
+
+-- zstd compressed to #251660
+-- 50 loops of AsyncDecompress(zstd_data)
+-- 205 ticks
+-- 50 loops of AsyncCompress(zstd_data)
+-- 1508 ticks
+-- 50 loops of compress/decompress
+-- 1650,1676,1691 ticks (did it three times)
+```
+
+See ECM/Code/Misc/Testing.lua for the script I used

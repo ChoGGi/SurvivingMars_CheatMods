@@ -4,6 +4,8 @@ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 
+local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/%s"
+
 Actions[#Actions+1] = {
   ActionMenubar = "Help",
   ActionName = S[302535920000367--[[Mod Upload--]]],
@@ -164,7 +166,7 @@ Actions[#Actions+1] = {
   RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
 --~   OnAction = ChoGGi.MenuFuncs.ShowReadmeECM,
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise")
+    OpenUrl(str_url:format("Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise"))
   end,
   ActionSortKey = "2",
 }
@@ -177,7 +179,7 @@ Actions[#Actions+1] = {
   RolloverText = S[4915--[[Good News, Everyone!"--]]],
 --~   OnAction = ChoGGi.MenuFuncs.ShowChangelogECM,
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded Cheat Menu/Changelog.md#ecm-changelog")
+    OpenUrl(str_url:format("Expanded Cheat Menu/Changelog.md#ecm-changelog"))
   end,
   ActionSortKey = "3",
 }
@@ -270,7 +272,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/GameFunctions.lua")
+    OpenUrl(str_url:format("Tutorials/GameFunctions.lua"))
   end,
   ActionSortKey = "0",
 }
@@ -282,19 +284,19 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Misc.md")
+    OpenUrl(str_url:format("Tutorials/Misc.md"))
   end,
   ActionSortKey = "96",
 }
 
 Actions[#Actions+1] = {
   ActionMenubar = str_Help_Text,
-  ActionName = [[Saving Loading Mod Settings]],
-  ActionId = "Help.Text.Saving Loading Mod Settings",
+  ActionName = [[Save Load Mod Settings]],
+  ActionId = "Help.Text.Save Load Mod Settings",
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Saving Loading Mod Settings.md")
+    OpenUrl(str_url:format("Tutorials/Save Load Mod Settings.md"))
   end,
   ActionSortKey = "97",
 }
@@ -306,7 +308,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs Easy Start.md")
+    OpenUrl(str_url:format("Tutorials/OnMsgs Easy Start.md"))
   end,
   ActionSortKey = "98",
 }
@@ -318,7 +320,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs Load Game.md")
+    OpenUrl(str_url:format("Tutorials/OnMsgs Load Game.md"))
   end,
   ActionSortKey = "98",
 }
@@ -330,7 +332,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs New Game.md")
+    OpenUrl(str_url:format("Tutorials/OnMsgs New Game.md"))
   end,
   ActionSortKey = "98",
 }
@@ -342,7 +344,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Add New Trait.md")
+    OpenUrl(str_url:format("Tutorials/Add New Trait.md"))
   end,
   ActionSortKey = "99",
 }
@@ -354,7 +356,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Change Animation.md")
+    OpenUrl(str_url:format("Tutorials/Change Animation.md"))
   end,
   ActionSortKey = "99",
 }
@@ -366,7 +368,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/DroneNoBatteryNeeded.md")
+    OpenUrl(str_url:format("Tutorials/DroneNoBatteryNeeded.md"))
   end,
   ActionSortKey = "99",
 }
@@ -378,7 +380,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Hidden Milestones.md")
+    OpenUrl(str_url:format("Tutorials/Hidden Milestones.md"))
   end,
   ActionSortKey = "99",
 }
@@ -390,7 +392,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md")
+    OpenUrl(str_url:format("Tutorials/Locales.md"))
   end,
   ActionSortKey = "99",
 }
@@ -402,7 +404,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Random number.md")
+    OpenUrl(str_url:format("Tutorials/Random number.md"))
   end,
   ActionSortKey = "99",
 }
@@ -414,7 +416,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Return All Nearby Objects.md")
+    OpenUrl(str_url:format("Tutorials/Return All Nearby Objects.md"))
   end,
   ActionSortKey = "99",
 }
@@ -426,7 +428,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Return Random Colours.md")
+    OpenUrl(str_url:format("Tutorials/Return Random Colours.md"))
   end,
   ActionSortKey = "99",
 }
@@ -438,7 +440,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/XXXShow A List of ChoicesXXXXXX.md")
+    OpenUrl(str_url:format("Tutorials/Show A List of Choices.md"))
   end,
   ActionSortKey = "99",
 }
@@ -450,7 +452,7 @@ Actions[#Actions+1] = {
   ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
   RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
   OnAction = function()
-    OpenUrl("https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/TaskRequestFuncs.md")
+    OpenUrl(str_url:format("Tutorials/TaskRequestFuncs.md"))
   end,
   ActionSortKey = "99",
 }

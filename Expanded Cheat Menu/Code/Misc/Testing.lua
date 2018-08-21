@@ -5,6 +5,43 @@ if ChoGGi.testing then
   local TickEnd = ChoGGi.ComFuncs.TickEnd
   local Concat = ChoGGi.ComFuncs.Concat
 
+  -- compare compression speed/size
+  function ChoGGi.CodeFuncs.TestCompress(amount)
+    -- uncompressed TableToLuaCode(TranslationTable)
+    -- #786351
+
+    -- lz4 compressed to #407672
+    -- 50 loops of AsyncDecompress(lz4_data)
+    -- 155 ticks
+    -- 50 loops of AsyncCompress(lz4_data)
+    -- 1404 ticks
+    -- 50 loops of compress/decompress
+    -- 1512,1491,1491 ticks (did it three times)
+
+    -- zstd compressed to #251660
+    -- 50 loops of AsyncDecompress(zstd_data)
+    -- 205 ticks
+    -- 50 loops of AsyncCompress(zstd_data)
+    -- 1508 ticks
+    -- 50 loops of compress/decompress
+    -- 1650,1676,1691 ticks (did it three times)
+
+    TickStart("TestCompress_lz4.Tick")
+    for _ = 1, amount or 50 do
+      local _,lz4_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "lz4")
+      AsyncDecompress(lz4_data)
+    end
+    TickEnd("TestCompress_lz4.Tick")
+
+    TickStart("TestCompress_zstd.Tick")
+    for _ = 1, amount or 50 do
+      local _,zstd_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "zstd")
+      AsyncDecompress(zstd_data)
+    end
+    TickEnd("TestCompress_zstd.Tick")
+
+  end
+
   -- checking how fast concat is for examining large amounts of objects
   function ChoGGi.CodeFuncs.TestConcatExamine(amount)
     local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
