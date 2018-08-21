@@ -219,6 +219,8 @@ function ChoGGi.MenuFuncs.EditECMSettings()
           ChoGGi.SettingFuncs.WriteSettings(settings)
           -- then read new settings
           ChoGGi.SettingFuncs.ReadSettings()
+          -- now I just need to have some stuff update when this happens
+          Msg("ChoGGi_SettingsUpdated")
         end
       end
     end,

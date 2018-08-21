@@ -45,100 +45,143 @@ local function WriteConsoleLog()
   end
   ChoGGi.SettingFuncs.WriteSettings()
 end
-local function ConsolePopup(self)
-  local popup = rawget(terminal.desktop, "idConsoleMenu")
-  if popup then
-    popup:Close()
-  else
-    PopupToggle(self,"idConsoleMenu",nil,{
-      {
-        name = 302535920001026--[[Show File Log--]],
-        hint = 302535920001091--[[Flushes log to disk and displays in console log.--]],
-        clicked = ShowFileLog,
-      },
-      {
-        name = 302535920000071--[[Mods Log--]],
-        hint = 302535920000870--[[Shows any errors from loading mods in console log.--]],
-        clicked = ModsLog,
-      },
-      {name = " - "},
-      {
-        name = 302535920000734--[[Clear Log--]],
-        hint = 302535920001152--[[Clear out the console log (F9 also works).--]],
-        clicked = cls,
-      },
-      {
-        name = 302535920000563--[[Copy Log Text--]],
-        hint = 302535920001154--[[Displays the log text in a window you can copy sections from.--]],
-        clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
-      },
-      {
-        name = 302535920000473--[[Reload ECM Menu--]],
-        hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]],
-        clicked = function()
-          Msg("ShortcutsReloaded")
-        end,
-      },
-      {name = " - "},
-      {
-        name = 302535920001112--[[Console Log--]],
-        hint = 302535920001119--[[Toggle showing the console log on screen.--]],
-        class = "ChoGGi_CheckButtonMenu",
-        value = "dlgConsoleLog",
-        clicked = ConsoleLog,
-      },
-      {
-        name = 302535920001120--[[Console Log Window--]],
-        hint = 302535920001133--[[Toggle showing the console log window on screen.--]],
-        class = "ChoGGi_CheckButtonMenu",
-        value = "dlgChoGGi_ConsoleLogWin",
-        clicked = ConsoleLogWindow,
-      },
-      {
-        name = 302535920000483--[[Write Console Log--]],
-        hint = S[302535920000484--[[Write console log to %slogs/ConsoleLog.log (writes immediately).--]]]:format(ConvertToOSPath("AppData/")),
-        class = "ChoGGi_CheckButtonMenu",
-        value = {"WriteLogs"},
-        clicked = WriteConsoleLog,
-      },
-    })
-  end
-end
+
+local ConsolePopupToggle_list = {
+  {
+    name = 302535920000040--[[Exec Code--]],
+    hint = 302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]],
+    clicked = function()
+      ChoGGi.ComFuncs.OpenInExecCodeDlg()
+    end,
+  },
+  {
+    name = 302535920001026--[[Show File Log--]],
+    hint = 302535920001091--[[Flushes log to disk and displays in console log.--]],
+    clicked = ShowFileLog,
+  },
+  {
+    name = 302535920000071--[[Mods Log--]],
+    hint = 302535920000870--[[Shows any errors from loading mods in console log.--]],
+    clicked = ModsLog,
+  },
+  {name = " - "},
+  {
+    name = 302535920000734--[[Clear Log--]],
+    hint = 302535920001152--[[Clear out the console log (F9 also works).--]],
+    clicked = cls,
+  },
+  {
+    name = 302535920000563--[[Copy Log Text--]],
+    hint = 302535920001154--[[Displays the log text in a window you can copy sections from.--]],
+    clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
+  },
+  {
+    name = 302535920000473--[[Reload ECM Menu--]],
+    hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]],
+    clicked = function()
+      Msg("ShortcutsReloaded")
+    end,
+  },
+  {name = " - "},
+  {
+    name = 302535920001112--[[Console Log--]],
+    hint = 302535920001119--[[Toggle showing the console log on screen.--]],
+    class = "ChoGGi_CheckButtonMenu",
+    value = "dlgConsoleLog",
+    clicked = ConsoleLog,
+  },
+  {
+    name = 302535920001120--[[Console Log Window--]],
+    hint = 302535920001133--[[Toggle showing the console log window on screen.--]],
+    class = "ChoGGi_CheckButtonMenu",
+    value = "dlgChoGGi_ConsoleLogWin",
+    clicked = ConsoleLogWindow,
+  },
+  {
+    name = 302535920000483--[[Write Console Log--]],
+    hint = S[302535920000484--[[Write console log to %slogs/ConsoleLog.log (writes immediately).--]]]:format(ConvertToOSPath("AppData/")),
+    class = "ChoGGi_CheckButtonMenu",
+    value = "ChoGGi.UserSettings.WriteLogs",
+    clicked = WriteConsoleLog,
+  },
+}
+
 local function HistoryPopup(self)
-  local popup = rawget(terminal.desktop, "idHistoryMenu")
-  if popup then
-    popup:Close()
-  else
-    local items = {}
-    --build history list menu
-    if #dlgConsole.history_queue > 0 then
-      local history = dlgConsole.history_queue
-      for i = 1, #history do
-        --these can get long so keep 'em short
-        local text = tostring(history[i])
-        local name = text:sub(1,ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50)
-        items[#items+1] = {
-          name = name,
-          hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
-          clicked = function()
-            dlgConsole:Exec(text)
-          end,
-        }
-      end
+  local dlgConsole = dlgConsole
+  local ConsoleHistoryMenuLength = ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50
+  local items = {}
+  if #dlgConsole.history_queue > 0 then
+    local history = dlgConsole.history_queue
+    for i = 1, #history do
+      local text = tostring(history[i])
+      items[#items+1] = {
+        -- these can get long so keep 'em short
+        name = text:sub(1,ConsoleHistoryMenuLength),
+        hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
+        clicked = function()
+          dlgConsole:Exec(text)
+        end,
+      }
     end
-    PopupToggle(self,"idHistoryMenu",nil,items)
   end
+  PopupToggle(self,"idHistoryMenu",items)
+end
+
+-- created when we create the controls controls the first time
+local ExamineMenuToggle_list
+
+-- build list of objects to examine
+local function BuildExamineMenu()
+  ExamineMenuToggle_list = {}
+
+  local list = ChoGGi.UserSettings.ConsoleExamineList or ""
+
+  table.sort(list,
+    function(a,b)
+      -- damn eunuchs
+      return a:lower() < b:lower()
+    end
+  )
+
+  for i = 0, #list do
+    ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
+      name = list[i],
+      hint = Concat(S[302535920000491--[[Examine Object--]]],": ",list[i]),
+      clicked = function()
+        local obj = ChoGGi.ComFuncs.ConvertNameToObject(list[i])
+        if type(obj) == "function" then
+          ChoGGi.ComFuncs.OpenInExamineDlg(obj())
+        else
+          ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+        end
+      end,
+    }
+  end
+
+  -- bonus addition at bottom
+  ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
+    name = "XWindowInspector",
+    hint = "XWindowInspector",
+    clicked = function()
+      OpenGedApp("XWindowInspector", terminal.desktop)
+    end,
+  }
+end
+-- rebuild list of objects to examine when user changes settings
+function OnMsg.ChoGGi_SettingsUpdated()
+  BuildExamineMenu()
 end
 
 function ChoGGi.Console.ConsoleControls(dlgConsole)
   local g_Classes = g_Classes
 
-  --stick everything in
+  -- stick everything in
   local container = g_Classes.XWindow:new({
     Id = "idContainer",
     Margins = box(15, 0, 0, 0),
     Dock = "bottom",
-    LayoutMethod = "HWrap",
+--~     LayoutMethod = "HWrap",
+    LayoutMethod = "HList",
     Image = "CommonAssets/UI/round-frame-20.tga",
   }, dlgConsole)
 
@@ -147,7 +190,18 @@ function ChoGGi.Console.ConsoleControls(dlgConsole)
     Id = "idConsoleMenu",
     RolloverText = S[302535920001089--[[Settings & Commands for the console.--]]],
     Text = S[302535920001308--[[Settings--]]],
-    OnPress = ConsolePopup,
+    OnPress = function()
+      PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsolePopupToggle_list)
+    end,
+  }, container)
+
+  dlgConsole.idExamineMenu = g_Classes.ChoGGi_ConsoleButton:new({
+    Id = "idExamineMenu",
+    RolloverText = S[302535920000491--[[Examine Object--]]],
+    Text = S[302535920000069--[[Examine--]]],
+    OnPress = function()
+      PopupToggle(dlgConsole.idExamineMenu,"idExamineMenuPopup",ExamineMenuToggle_list)
+    end,
   }, container)
 
   if not blacklist then
@@ -165,6 +219,8 @@ function ChoGGi.Console.ConsoleControls(dlgConsole)
       LayoutMethod = "HList",
     }, container)
   end
+
+  BuildExamineMenu()
 end
 
 local function BuildSciptButton(scripts,dlg,folder)
@@ -172,27 +228,23 @@ local function BuildSciptButton(scripts,dlg,folder)
     RolloverText = folder.RolloverText,
     Text = folder.Text,
     OnPress = function(self)
-      local popup = rawget(terminal.desktop, folder.id)
-      if popup then
-        popup:Close()
-      else
-        local items = {}
-        local scripts = ChoGGi.ComFuncs.RetFilesInFolder(folder.script_path,".lua")
-        if scripts then
-          for i = 1, #scripts do
-            local _, script = AsyncFileToString(scripts[i].path)
-            items[#items+1] = {
-              name = scripts[i].name,
-              hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
-              clicked = function()
-                dlg:Exec(script)
-              end,
-            }
-          end
+      -- build list of scripts to show
+      local items = {}
+      local scripts = ChoGGi.ComFuncs.RetFilesInFolder(folder.script_path,".lua")
+      if scripts then
+        for i = 1, #scripts do
+          local _, script = AsyncFileToString(scripts[i].path)
+          items[#items+1] = {
+            name = scripts[i].name,
+            hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
+            clicked = function()
+              dlg:Exec(script)
+            end,
+          }
         end
-
-        PopupToggle(self,folder.id,nil,items)
       end
+
+      PopupToggle(self,folder.id,items)
     end,
   }, scripts)
 end
@@ -254,28 +306,6 @@ function ChoGGi.Console.BuildScriptFiles()
     --add some example files and a readme
     AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
     AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
-    AsyncStringToFile(Concat(script_path,"/Examine/ChoGGi.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi)
--- stores all ECM stuff.]])
-    AsyncStringToFile(Concat(script_path,"/Examine/DataInstances.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(DataInstances)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Consts.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Consts)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/const.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(const)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/FXRules.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(FXRules)
--- sounds/fx effects/etc]])
-    AsyncStringToFile(Concat(script_path,"/Examine/InGameInterface.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(GetInGameInterface())
--- use Dialogs instead of this if you want to access the dialogs.]])
-    AsyncStringToFile(Concat(script_path,"/Examine/MsgThreads.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(MsgThreads)
--- includes ThreadsRegister]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Presets.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Presets)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/terminal.desktop.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
--- any opened UI elements.]])
-    AsyncStringToFile(Concat(script_path,"/Examine/UICity.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(UICity)
--- created on a new game, stores most data you'll need.]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XTemplates.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(XTemplates)
--- stores all GUI before they're built. Saved per game, new DLC will update them as well.]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Dialogs.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Dialogs)]])
-    AsyncStringToFile(Concat(script_path,"/Examine/Flags.lua"),[[ChoGGi.ComFuncs.OpenInExamineDlg(Flags)
--- See const.FLAG]])
-    AsyncStringToFile(Concat(script_path,"/Examine/XWindowInspector.lua"),[[OpenGedApp("XWindowInspector", terminal.desktop)]])
     AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#(UICity.labels.Colonist or "")]])
     AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
   end

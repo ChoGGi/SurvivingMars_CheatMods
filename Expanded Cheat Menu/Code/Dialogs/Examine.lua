@@ -24,6 +24,11 @@ local HLEnd = "</h></color>"
 local white = white
 local black = black
 
+-- created below Init, but needs to be accessed in it
+local parents_menu_popup
+local ancestors_menu_popup
+local tools_menu_popup
+
 DefineClass.Examine = {
   __parents = {"ChoGGi_Window"},
   -- clickable purple text
@@ -35,8 +40,6 @@ DefineClass.Examine = {
   dialog_height = 750.0,
 }
 
---~ box(left,top, right, bottom)
-
 function Examine:Init(parent, context)
   local ChoGGi = ChoGGi
   local g_Classes = g_Classes
@@ -47,8 +50,6 @@ function Examine:Init(parent, context)
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
-
---~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
   -- everything grouped gets a window to go in
   self.idLinkArea = g_Classes.ChoGGi_DialogSection:new({
@@ -103,7 +104,6 @@ function Examine:Init(parent, context)
     Dock = "top",
   }, self.idDialog)
 
-  local tools_menu_popup = self:BuildToolsMenuPopup()
   self.idTools = g_Classes.ChoGGi_ComboButton:new({
     Id = "idTools",
     Text = S[302535920000239--[[Tools--]]],
@@ -112,8 +112,7 @@ function Examine:Init(parent, context)
 Right-click to scroll to top."--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
---~         self:idToolsMenuClicked(button)
-        self:Menu_Toggle(button,"idToolsMenu",tools_menu_popup)
+        PopupToggle(button,"idToolsMenu",tools_menu_popup,"bottom")
       end
     end,
     Dock = "left",
@@ -125,7 +124,7 @@ Right-click to scroll to top."--]]],
     RolloverText = S[302535920000553--[[Examine parent and ancestor objects.--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
-        self:idParentsMenuClicked(button)
+        PopupToggle(button,"idParentsMenu",parents_menu_popup,"bottom")
       end
     end,
     Dock = "left",
@@ -137,7 +136,7 @@ Right-click to scroll to top."--]]],
     RolloverText = S[302535920000054--[[Any objects attached to this object.--]]],
     OnMouseButtonDown = function(button,_,mouse)
       if mouse == "L" then
-        self:idAttachesMenuClicked(button)
+        PopupToggle(button,"idAttachesMenu",ancestors_menu_popup,"bottom")
       end
     end,
     Dock = "left",
@@ -177,15 +176,7 @@ Right-click to scroll to top."--]]],
 
   self:SetInitPos(context.parent)
 
-end
-
-function Examine:Menu_Toggle(obj,menu,items)
-  local popup = rawget(terminal.desktop,menu)
-  if popup then
-    popup:Close()
-  else
-    PopupToggle(obj,menu,"bottom",items)
-  end
+  self:BuildToolsMenuPopup()
 end
 
 function Examine:idAutoRefreshToggle()
@@ -258,7 +249,7 @@ local function ProcessList(list,prefix)
 end
 
 function Examine:BuildToolsMenuPopup()
-  return {
+  tools_menu_popup = {
     {
       name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
       hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
@@ -371,20 +362,19 @@ This may temporarily add some extra values to objects (BorderWidth/BorderColor).
         ChoGGi.UserSettings.FlashExamineObject = not ChoGGi.UserSettings.FlashExamineObject
         ChoGGi.SettingFuncs.WriteSettings()
       end,
-      value = {"FlashExamineObject"},
+      value = "ChoGGi.UserSettings.FlashExamineObject",
       class = "ChoGGi_CheckButtonMenu",
     },
   }
 end
 
-local pmenu_list_items
 local pmenu_skip_dupes
 local function BuildParents(self,list,list_type,title,sort_type)
   local g_Classes = g_Classes
   if list and next(list) then
     list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
     self[list_type] = list
-    pmenu_list_items[#pmenu_list_items+1] = {
+    parents_menu_popup[#parents_menu_popup+1] = {
       name = Concat("   ---- ",title),
       hint = title,
     }
@@ -392,7 +382,7 @@ local function BuildParents(self,list,list_type,title,sort_type)
       -- no sense in having an item in parents and ancestors
       if not pmenu_skip_dupes[list[i]] then
         pmenu_skip_dupes[list[i]] = true
-        pmenu_list_items[#pmenu_list_items+1] = {
+        parents_menu_popup[#parents_menu_popup+1] = {
           name = list[i],
           hint = list[i],
           clicked = function()
@@ -402,15 +392,6 @@ local function BuildParents(self,list,list_type,title,sort_type)
       end
     end
   end
-end
-
-function Examine:idParentsMenuClicked(button)
-  self:Menu_Toggle(button,"idParentsMenu",pmenu_list_items)
-end
-
-local amenu_list_items
-function Examine:idAttachesMenuClicked(button)
-  self:Menu_Toggle(button,"idAttachesMenu",amenu_list_items)
 end
 
 function Examine:FindNext(filter)
@@ -986,24 +967,24 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
     end
 
     -- reset menu list
-    pmenu_list_items = {}
+    parents_menu_popup = {}
     pmenu_skip_dupes = {}
     -- build menu list
     BuildParents(self,obj.__parents,"parents",S[302535920000520--[[Parents--]]])
     BuildParents(self,obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
     -- if anything was added to the list then add to the menu
-    if #pmenu_list_items < 1 then
+    if #parents_menu_popup < 1 then
       --no parents or ancestors, so hide the button
       self.idParents:SetVisible()
     end
 
     --attaches menu
     if attaches and attach_amount > 0 then
-      amenu_list_items = {}
+      ancestors_menu_popup = {}
       local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
       for i = 1, #attaches do
         local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
-        amenu_list_items[#amenu_list_items+1] = {
+        ancestors_menu_popup[#ancestors_menu_popup+1] = {
           name = RetName(attaches[i]),
           hint = Concat(
             attaches[i].class,"\n",

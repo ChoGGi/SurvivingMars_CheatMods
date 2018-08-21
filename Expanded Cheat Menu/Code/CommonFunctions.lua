@@ -268,96 +268,100 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 end
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,anchor,items)
-  local ChoGGi = ChoGGi
-  local g_Classes = g_Classes
-  local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
-  local ShowMe = ChoGGi.ComFuncs.ShowMe
-  local ViewObjectMars = ViewObjectMars
-  local black = black
+function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
+  local opened_popup = rawget(terminal.desktop,popup_id)
+  if opened_popup then
+    opened_popup:Close()
+  else
+    local ChoGGi = ChoGGi
+    local g_Classes = g_Classes
+    local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
+    local ShowMe = ChoGGi.ComFuncs.ShowMe
+    local ConvertNameToObject = ChoGGi.ComFuncs.ConvertNameToObject
+    local ViewObjectMars = ViewObjectMars
+    local black = black
 
-  local popup = g_Classes.XPopupList:new({
-    Opened = true,
-    Id = popup_id,
-    ZOrder = max_int - 1000,
-    LayoutMethod = "VList",
-  }, terminal.desktop)
+    local popup = g_Classes.XPopupList:new({
+      -- default to showing it, since we close it ourselves
+      Opened = true,
+      Id = popup_id,
+      -- -1000 is for XRollovers which get max_int
+      ZOrder = max_int - 1000,
+      LayoutMethod = "VList",
+    }, terminal.desktop)
 
-  for i = 1, #items do
-    local item = items[i]
-    local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
-    -- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
-    local button = cls:new({
-      TextColor = black,
-      RolloverText = CheckText(item.hint),
-      Text = CheckText(item.name),
-      OnMouseButtonUp = function()
-        popup:Close()
-      end,
-    }, popup.idContainer)
+    for i = 1, #items do
+      local item = items[i]
+      local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
+      -- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
+      local button = cls:new({
+        TextColor = black,
+        RolloverText = CheckText(item.hint),
+        Text = CheckText(item.name),
+        OnMouseButtonUp = function()
+          popup:Close()
+        end,
+      }, popup.idContainer)
 
-    if item.clicked then
-      button.OnMouseButtonDown = item.clicked
-    end
-
-    if item.showme then
-      function button.OnMouseEnter(self, pt, child)
-        cls.OnMouseEnter(self, pt, child)
-        ClearShowMe()
-        ShowMe(item.showme, nil, true, true)
-      end
-    elseif item.pos then
-      function button.OnMouseEnter(self, pt, child)
-        cls.OnMouseEnter(self, pt, child)
-        ViewObjectMars(item.pos)
-      end
-    end
-
-    -- i just love checkmarks
-    if item.value then
-
-      local is_vis
-      local value
-
-      if type(item.value) == "table" then
-        value = ChoGGi.UserSettings[item.value[1]]
-      else
-        value = _G[item.value]
+      if item.clicked then
+        button.OnMouseButtonDown = item.clicked
       end
 
-      if type(value) == "table" then
-        if value.visible then
-          is_vis = true
+      if item.showme then
+        function button.OnMouseEnter(self, pt, child)
+          cls.OnMouseEnter(self, pt, child)
+          ClearShowMe()
+          ShowMe(item.showme, nil, true, true)
         end
-      else
-        if value then
-          is_vis = true
+      elseif item.pos then
+        function button.OnMouseEnter(self, pt, child)
+          cls.OnMouseEnter(self, pt, child)
+          ViewObjectMars(item.pos)
         end
       end
 
+      -- checkboxes (with a value (naturally))
+      if item.value then
 
-      if is_vis then
-        button:SetCheck(true)
-      else
-        button:SetCheck(false)
+        local is_vis
+        local value = ConvertNameToObject(item.value)
+
+        -- dlgConsole.visible i think? damn me and my lazy commenting
+        if type(value) == "table" then
+          if value.visible then
+            is_vis = true
+          end
+        else
+          if value then
+            is_vis = true
+          end
+        end
+
+        -- oh yeah, you toggle that check
+        if is_vis then
+          button:SetCheck(true)
+        else
+          button:SetCheck(false)
+        end
       end
+
     end
 
+    popup:SetAnchor(parent.box)
+    -- top for the console, XPopupList defaults to smart which just looks ugly for console
+    popup:SetAnchorType(anchor or "top")
+  --~     "smart",
+  --~     "left",
+  --~     "right",
+  --~     "top",
+  --~     "center-top",
+  --~     "bottom",
+  --~     "mouse"
+
+    popup:Open()
+    popup:SetFocus()
+--~       return popup
   end
-
-  popup:SetAnchor(parent.box)
-  popup:SetAnchorType(anchor or "top")
---~     "smart",
---~     "left",
---~     "right",
---~     "top",
---~     "center-top",
---~     "bottom",
---~     "mouse"
-
-  popup:Open()
-  popup:SetFocus()
---~     return popup
 end
 
 function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
@@ -1067,10 +1071,6 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
 end
 
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
-  if not obj then
-    return
-  end
-
   return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
     obj = obj,
     parent = parent,
@@ -1097,10 +1097,6 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list)
 end
 
 function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
-  if not obj then
-    return
-  end
-
   return Examine:new({}, terminal.desktop,{
     obj = obj,
     parent = parent,
@@ -1418,9 +1414,8 @@ end
 
 -- Haemimont Games code from examine.lua (moved here for local)
 function OpenExamine(obj,parent)
-  local ChoGGi = ChoGGi
   if not obj then
-    return ChoGGi.ComFuncs.ClearShowMe()
+    ChoGGi.ComFuncs.ClearShowMe()
   end
   ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
 end
@@ -1667,6 +1662,29 @@ end
 
 function ChoGGi.ComFuncs.OpenKeyPresserDlg()
   ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
+end
+
+-- "some.some.some.etc" = returns etc as object
+-- https://www.lua.org/pil/14.1.html
+function ChoGGi.ComFuncs.ConvertNameToObject(name)
+  -- always start with _G
+  local obj = _G
+  for str, match in name:gmatch("([%w_]+)(.?)") do
+    -- . means we're not at the end yet
+    if match == "." then      -- not last field?
+      -- i just want to check for existance not create a new table
+--~       obj[str] = obj[str] or {}   -- create table if absent
+      -- something in the table is missing so return
+      if not obj[str] then
+        return
+      end
+      -- get the next table in the name
+      obj = obj[str]
+    else
+      -- no more . so we got the object
+      return obj[str]
+    end
+  end
 end
 
 -- if anyone else is using ECM

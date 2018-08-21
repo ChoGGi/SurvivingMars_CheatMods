@@ -74,6 +74,22 @@ ChoGGi.Defaults = {
   UseLastOrientation = true,
   -- show the cheats menu...
   ShowCheatsMenu = true,
+  -- stuff to show in Console>Examine list (tables/values/functions are fine)
+  ConsoleExamineList = {
+    "ChoGGi",
+    "DataInstances",
+    "Consts",
+    "const",
+    "FXRules",
+    "GetInGameInterface",
+    "MsgThreads",
+    "Presets",
+    "terminal.desktop",
+    "UICity",
+    "XTemplates",
+    "Dialogs",
+    "Flags",
+  },
   -- blinky blink
   FlashExamineObject = true,
   -- dumps the log to disk on startup, and every new Sol (good for some crashes)
@@ -107,6 +123,8 @@ ChoGGi.Defaults = {
   CargoSettings = {},
   -- transparent UI stored here
 	Transparency = {},
+  -- wrap lines in text editors
+  WordWrap = false,
   -- shortcut keys
   KeyBindings = {
     -- Keys.lua
@@ -594,19 +612,20 @@ function OnMsg.OptionsApply()
   local Consts = Consts
   local g_Classes = g_Classes
 
-  --if setting doesn't exist then add default
+  -- if setting doesn't exist then add default
   for key,value in pairs(ChoGGi.Defaults) do
     if type(ChoGGi.UserSettings[key]) == "nil" then
       ChoGGi.UserSettings[key] = value
     end
   end
+
   for key,value in pairs(ChoGGi.Defaults.KeyBindings) do
     if type(ChoGGi.UserSettings.KeyBindings[key]) == "nil" then
       ChoGGi.UserSettings.KeyBindings[key] = value
     end
   end
 
-  --get the default values for our Consts
+  -- get the default values for our Consts
   for SettingName,_ in pairs(ChoGGi.Consts) do
     local setting = Consts:GetDefaultPropertyValue(SettingName)
     if setting then

@@ -4,11 +4,11 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
-local RetName = ChoGGi.ComFuncs.RetName
 
 DefineClass.ChoGGi_ExecCodeDlg = {
   __parents = {"ChoGGi_Window"},
   obj = false,
+  obj_name = false,
 
   dialog_width = 700.0,
   dialog_height = 240.0,
@@ -20,7 +20,14 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   local dlgConsole = dlgConsole
 
   self.obj = context.obj
-  self.title = Concat(S[302535920000040--[[Exec Code--]]],": ",RetName(self.obj))
+  self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or S[302535920001073--[[Console--]]]
+
+  self.title = Concat(S[302535920000040--[[Exec Code--]]],": ",self.obj_name)
+
+  if not self.obj then
+    self.dialog_width = 800.0
+    self.dialog_height = 650.0
+  end
 
   -- By the Power of Grayskull!
   self:AddElements(parent, context)
@@ -28,11 +35,11 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
   self:AddScrollEdit()
 
   -- start off with this as code
-  self.idEdit:SetText(GetFromClipboard() or "ChoGGi.CurObj")
+  self.idEdit:SetText(GetFromClipboard() or (self.obj and "ChoGGi.CurObj" or ""))
   -- focus on text
   self.idEdit:SetFocus()
   -- hinty hint
-  self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object.
+  self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code."--]]])
   -- let us override enter/esc
   self.idEdit.OnKbdKeyDown = function(obj, vk)
@@ -60,16 +67,30 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
     end,
   }, self.idButtonContainer)
 
-  self.idInsertObj = g_Classes.ChoGGi_Button:new({
-    Id = "idInsertObj",
+  if self.obj then
+    self.idInsertObj = g_Classes.ChoGGi_Button:new({
+      Id = "idInsertObj",
+      Dock = "left",
+      Text = S[302535920000075--[[Insert Obj--]]],
+      RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
+      Margins = box(10, 0, 0, 0),
+      MinWidth = 100,
+      OnMouseButtonDown = function()
+        self.idEdit:EditOperation("ChoGGi.CurObj",true)
+      end,
+    }, self.idButtonContainer)
+  end
+
+  g_Classes.ChoGGi_CheckButton:new({
     Dock = "left",
-    Text = S[302535920000075--[[Insert Obj--]]],
-    RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
-    Margins = box(10, 0, 0, 0),
-    MinWidth = 100,
-    OnMouseButtonDown = function()
-      self.idEdit:EditOperation("ChoGGi.CurObj",true)
-    end,
+    Text = S[302535920001288--[[Wrap Lines--]]],
+    RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+    Margins = box(10,0,0,0),
+    Check = ChoGGi.UserSettings.WordWrap,
+    OnChange = function(_,which)
+      ChoGGi.UserSettings.WordWrap = which
+      self.idEdit:SetWordWrap(which)
+    end
   }, self.idButtonContainer)
 
   self.idCancel = g_Classes.ChoGGi_Button:new({
@@ -94,7 +115,7 @@ function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(obj,vk)
       self.idOK:Press()
     end
     return "break"
-  elseif vk == const.vkEsc then
+  elseif vk == const.vkEsc and self.obj then
     self.idCloseX:Press()
     return "break"
   end

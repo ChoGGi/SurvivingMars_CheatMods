@@ -70,6 +70,18 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
     end,
   }, self.idButtonContainer)
 
+  g_Classes.ChoGGi_CheckButton:new({
+    Dock = "left",
+    Text = S[302535920001288--[[Wrap Lines--]]],
+    RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+    Margins = box(10,0,0,0),
+    Check = ChoGGi.UserSettings.WordWrap,
+    OnChange = function(_,which)
+      ChoGGi.UserSettings.WordWrap = which
+      self.idEdit:SetWordWrap(which)
+    end
+  }, self.idButtonContainer)
+
   self.idCancel = g_Classes.ChoGGi_Button:new({
     Id = "idCancel",
     Dock = "right",

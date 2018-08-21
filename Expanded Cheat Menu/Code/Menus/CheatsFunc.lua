@@ -284,6 +284,52 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
   }
 end
 
+function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
+  local ItemList = {
+    {text = S[4493--[[All--]]],value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
+    {text = S[8--[[Breakthrough Tech--]]],value = "SubsurfaceAnomaly_breakthrough",hint = S[11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+    {text = S[2--[[Unlock Tech--]]],value = "SubsurfaceAnomaly_unlock",hint = S[12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+    {text = S[3--[[Grant Research--]]],value = "SubsurfaceAnomaly_complete",hint = S[13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+    {text = S[9--[[Anomaly--]]],value = "SubsurfaceAnomaly",hint = S[14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+  }
+
+  local function CallBackFunc(choice)
+    if not choice[1].value then
+      return
+    end
+
+    for i = 1, #choice do
+      local value = choice[i].value
+
+      -- if 4 are selected that's all
+      if value == "All" or #choice > 3 then
+        local a = UICity.labels.Anomaly or ""
+        for i = #a, 1, -1 do
+          a[i]:CheatScan()
+        end
+        -- no sense in doing other choices as we just did all
+        break
+      else
+        local a = UICity.labels.Anomaly or ""
+        for i = #a, 1, -1 do
+          if a[i].class == value then
+            a[i]:CheatScan()
+          end
+        end
+      end
+    end
+  end
+
+  ChoGGi.ComFuncs.OpenInListChoice{
+    callback = CallBackFunc,
+    items = ItemList,
+    title = 25--[[Anomaly Scanning--]],
+    hint = 302535920000264--[[You can select multiple items.--]],
+    multisel = true,
+    skip_sort = true,
+  }
+end
+
 function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
   local ChoGGi = ChoGGi
   local Consts = Consts
@@ -325,9 +371,8 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
       Msg("TechResearched","AlienImprints", UICity)
     end
 
-    local value
-    for i=1,#choice do
-      value = choice[i].value
+    for i = 1,#choice do
+      local value = choice[i].value
       if value == 1 then
         CheatMapExplore("deep scanned")
 --~         ExploreDeep()
@@ -456,7 +501,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
     title = 302535920000268--[[Start A Mystery--]],
     hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-See Cheats>%s to remove."--]]]:format(S[302535920000329--[[Manage Mysteries--]]])),
+See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
     check1 = 302535920000270--[[Instant Start--]],
     check1_hint = 302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]],
   }

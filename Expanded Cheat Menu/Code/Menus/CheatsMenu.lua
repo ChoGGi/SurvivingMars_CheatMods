@@ -6,7 +6,7 @@ local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {
   ActionMenubar = "Cheats",
-  ActionName = S[302535920000327--[[Map Exploration--]]],
+  ActionName = Concat(S[987648737170--[[Map--]]]," ",S[5422--[[Exploration--]]]),
   ActionId = "Cheats.Map Exploration",
   ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
   RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
@@ -16,12 +16,22 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
   ActionMenubar = "Cheats",
-  ActionName = S[302535920000329--[[Manage Mysteries--]]],
-  ActionId = "Cheats.Manage Mysteries",
+  ActionName = S[25--[[Anomaly Scanning--]]],
+  ActionId = "Cheats.Anomaly Scanning",
+  ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
+  RolloverText = S[302535920001286--[[Scan all or certain types of anomalies.--]]],
+  OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
+  ActionSortKey = "01Anomaly Scanning",
+}
+
+Actions[#Actions+1] = {
+  ActionMenubar = "Cheats",
+  ActionName = S[5661--[[Mystery Log--]]],
+  ActionId = "Cheats.Mystery Log",
   ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
   RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
   OnAction = ChoGGi.MenuFuncs.ShowStartedMysteryList,
-  ActionSortKey = "03Manage Mysteries",
+  ActionSortKey = "03Mystery Log",
 }
 
 Actions[#Actions+1] = {

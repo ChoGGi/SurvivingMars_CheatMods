@@ -1,8 +1,10 @@
 -- See LICENSE for terms
 
---~ self:CreateThread("update", function(self)
+--~ self:CreateThread("THREADID", function(self)
 --~ end, self)
+--~ if self.real_time_threads.THREADID then
 
+--~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
@@ -52,14 +54,8 @@ DefineClass.ChoGGi_MultiLineEdit = {
   MaxLen = -1,
   MaxLines = -1,
   RolloverTemplate = "Rollover",
+  WordWrap = false,
 }
---~ function ChoGGi_MultiLineEdit:InsertStrAtCaret(str)
---~   local pos = self:GetCursorCharIdx() + 1
---~   local line, char = self.cursor_line, self.cursor_char
---~   local text = self:GetText()
---~   self:SetText(Concat(text:sub(1,pos),str,text:sub(pos+1)))
---~   self:SetCursor(line,char+13)
---~ end
 
 DefineClass.ChoGGi_Buttons = {
   __parents = {"XTextButton"},
@@ -446,6 +442,7 @@ function ChoGGi_Window:AddScrollEdit()
     VScroll = "idScrollV",
     HScroll = "idScrollH",
     Margins = box(4,4,4,4),
+    WordWrap = ChoGGi.UserSettings.WordWrap or false,
   }, self.idScrollSection)
 end
 
