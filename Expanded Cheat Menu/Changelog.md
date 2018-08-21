@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
-## v8.4 (Unreleased)
+## v8.5 (Unreleased)
+
+## v8.4 (Aug 21 2018)
 ### Added:
 - Cheats>Anomaly Scanning (requested by Antipatiko).
 - Console>Examine: I used to create a folder with some commonly examined objects, now it's a list saved in settings (thanks blacklist...).
