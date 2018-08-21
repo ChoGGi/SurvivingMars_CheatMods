@@ -76,7 +76,7 @@ function Examine:Init(parent, context)
     RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
     Dock = "right",
     OnChange = function()
-      self.idAutoRefreshToggle(self)
+      self:idAutoRefreshToggle()
     end,
   }, self.idLinkArea)
 
@@ -178,13 +178,23 @@ Right-click to scroll to top."--]]],
 end
 
 function Examine:idAutoRefreshToggle()
+  -- if it's called directly we set the check if needed
+  local checked = self.idAutoRefresh:GetCheck()
+
   -- if already running then stop and return
   if IsValidThread(self.autorefresh_thread) then
+
+    if checked then
+      self.idAutoRefresh:SetCheck(false)
+    end
     DeleteThread(self.autorefresh_thread)
     return
   end
   -- otherwise fire it up
   self.autorefresh_thread = CreateRealTimeThread(function()
+    if not checked then
+      self.idAutoRefresh:SetCheck(true)
+    end
     local Sleep = Sleep
     while true do
       if self.obj then
@@ -195,6 +205,7 @@ function Examine:idAutoRefreshToggle()
       Sleep(1000)
     end
   end)
+
 end
 
 function Examine:idFilterOnKbdKeyDown(obj,vk)
