@@ -4,10 +4,8 @@ return PlaceObj("ModDef", {
   "saved", 1534334400,
   "id", "ChoGGi_ReplaceCursors",
   "author", "ChoGGi",
-	"code", {"Script.lua"},
   "code", {
-    "Code/1 Script.lua",
-    "Code/2 Replace Cursors.lua",
+    "Code/Replace Cursors.lua",
   },
 	"image", "Preview.png",
   "steam_id", "1450132231",
