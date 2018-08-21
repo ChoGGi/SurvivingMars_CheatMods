@@ -4,7 +4,7 @@
 ```
 Surviving Mars\BinAssets\AssetsRevision.lua
 
-Startup Fix Non-Unbuntu Network Crash DA
+Startup Fix Non-Ubuntu Network Crash DA
 
 See: https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-linux-steam.1113701/
 ```
