@@ -26,17 +26,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.]]
 
--- if we use global func more then once: make them local for that small bit o' speed
-local select,tostring,type,pcall,table = select,tostring,type,pcall,table
-
-local TableConcat
--- just in case they remove oldTableConcat
-pcall(function()
-  TableConcat = oldTableConcat
-end)
--- thanks for replacing concat... what's wrong with using table.concat2?
-TableConcat = TableConcat or table.concat
-
 -- Everything stored in one global table
 EveryFlagOnWikipedia = {
   _LICENSE = LICENSE,
@@ -48,8 +37,7 @@ EveryFlagOnWikipedia = {
 -- just in case anyone adds some custom HumanNames
 function OnMsg.ModsLoaded()
 
-  local Random = Random
-  local T = T
+  local AsyncRand = AsyncRand
   local HumanNames = HumanNames
 
   -- get all human names then merge into one table and apply to all nations
@@ -239,9 +227,9 @@ function OnMsg.ModsLoaded()
   end
 
   -- makes it easier to access the flags, not with the DA blacklist it doesn't
---~   MountFolder("EveryFlagOnWikipedia",TableConcat{EveryFlagOnWikipedia.ModPath,"Flags/"})
+--~   MountFolder("EveryFlagOnWikipedia",table.concat{EveryFlagOnWikipedia.ModPath,"Flags/"})
 
-  local path = TableConcat{CurrentModPath,"Flags/flag_%s.tga"}
+  local path = table.concat{CurrentModPath,"Flags/flag_%s.tga"}
 
   local Nations = Nations
 
@@ -2591,19 +2579,20 @@ function OnMsg.ModsLoaded()
 
   -- add list of names from earlier for each nation
   for i = 1, #Nations do
-    -- skip the ones added by the game (unless it's Mars)
-    if Nations[i].value == "Mars" or type(Nations[i].text) == "string" then
-      HumanNames[Nations[i].value] = name_table
-    else
-      if HumanNames[Nations[i].value] then
-        HumanNames[Nations[i].value].Unique = name_table.Unique
-      end
-    end
+    HumanNames[Nations[i].value] = name_table
+--~     -- skip the countries added by the game (unless it's Mars)
+--~     if Nations[i].value == "Mars" or type(Nations[i].text) == "string" then
+--~       HumanNames[Nations[i].value] = name_table
+--~     else
+--~       if HumanNames[Nations[i].value] then
+--~         HumanNames[Nations[i].value].Unique = name_table.Unique
+--~       end
+--~     end
   end
 
   -- replace the func that gets a nation (it gets a weighted nation depending on your sponsors instead of all of them)
   function GetWeightedRandNation()
-    return Nations[Random(1,#Nations)].value
+    return Nations[AsyncRand(#Nations - 1 + 1) + 1].value
   end
 
 end
