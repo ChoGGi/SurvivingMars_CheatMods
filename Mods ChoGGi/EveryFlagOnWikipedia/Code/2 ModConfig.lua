@@ -22,7 +22,7 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
   end
 end
 
-local Random = Random
+local AsyncRand = AsyncRand
 local NameUnit = NameUnit
 
 local orig_GenerateColonistData = GenerateColonistData
@@ -30,7 +30,8 @@ function GenerateColonistData(...)
   if EveryFlagOnWikipedia.RandomBirthplace then
     local Nations = Nations
     local c = orig_GenerateColonistData(...)
-    c.birthplace = Nations[Random(1,#Nations)].value
+--~     c.birthplace = Nations[Random(1,#Nations)].value
+    c.birthplace = Nations[AsyncRand(#Nations - 1 + 1) + 1].value
     NameUnit(c)
     return c
   else

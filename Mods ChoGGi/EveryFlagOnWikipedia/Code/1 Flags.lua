@@ -31,7 +31,7 @@ EveryFlagOnWikipedia = {
   _LICENSE = LICENSE,
   email = "SM_Mods@choggi.org",
   id = "ChoGGi_EveryFlagOnWikipedia",
-  RandomBirthplace = false,
+  RandomBirthplace = true,
 }
 
 -- just in case anyone adds some custom HumanNames

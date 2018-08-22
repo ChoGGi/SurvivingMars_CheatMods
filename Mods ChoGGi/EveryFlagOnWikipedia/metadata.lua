@@ -5,8 +5,8 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_EveryFlagOnWikipedia",
 	"author", "ChoGGi",
 	"code", {
-	"Code/1 Flags.lua",
-	"Code/2 ModConfig.lua",
+    "Code/1 Flags.lua",
+    "Code/2 ModConfig.lua",
   },
 	"image", "Preview.png",
 	"steam_id", "1455937967",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.
 This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
 
-If you use ModConfig you can set it to randomly choose a birthplace for newborns, instead of just using Mars.
+If you use ModConfig you can disable the randomly choose a birthplace for newborns, instead of just using Mars.
 
 I also added a few unique names associated with space.
 suggestions welcome, see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Already%20Added.txt

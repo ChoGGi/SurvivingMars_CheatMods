@@ -1,5 +1,6 @@
 v0.3
 List of all names is now applied to built-in countries.
+Random birthplace defaults to true (use Mod Config to disable).
 Now with 10% more randomness (or something like that).
 Also now packed in an .hpk for size (5MB -> under 1MB).
 v0.2
