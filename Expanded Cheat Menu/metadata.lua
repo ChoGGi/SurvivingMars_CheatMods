@@ -11,16 +11,16 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagCheats", true,
 	"code", {
-    -- start 'er up
+		-- start 'er up
 		"Init.lua",
-    -- gets the font (if not eng lang), and builds a table of translated strings
+		-- gets the font (if not eng lang), and builds a table of translated strings
 		"Code/Strings.lua",
-    -- Msg("ChoGGi_ComFuncs"), lets people know OpenExamine is available
+		-- Msg("ChoGGi_ComFuncs"), lets people know OpenExamine is available
 		"Code/CommonFunctions.lua",
-    -- defaults,consts,read/save settings
+		-- defaults,consts,read/save settings
 		"Code/Settings.lua",
 
-    -- custom dialogs
+		-- custom dialogs
 		"Code/Dialogs/_Classes.lua",
 		"Code/Dialogs/ConsoleLogWin.lua",
 		"Code/Dialogs/Examine.lua",
@@ -28,22 +28,22 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/FindValue.lua",
 		"Code/Dialogs/ListChoice.lua",
 		"Code/Dialogs/MultiLineText.lua",
---~     -- temp added to check out keys for XXXUnknownXXX
+--~		 -- temp added to check out keys for XXXUnknownXXX
 --~ 		"Code/Dialogs/KeyPresser.lua",
 		"Code/Dialogs/MonitorInfo.lua",
-    -- always fired last for the Msg("ChoGGi_Dialogs") in it
+		-- always fired last for the Msg("ChoGGi_Dialogs") in it
 		"Code/Dialogs/ObjectManipulator.lua",
 
-    -- stuff that can come later
+		-- stuff that can come later
 		"Code/Misc/_Functions.lua",
 		"Code/Misc/ConsoleControls.lua",
 		"Code/Misc/InfoPaneCheats.lua",
 		"Code/Misc/Testing.lua",
 		"Code/Misc/ReplacedFunctions.lua",
-    -- always fired last for the Msg("ChoGGi_CodeFuncs") in it
+		-- always fired last for the Msg("ChoGGi_CodeFuncs") in it
 		"Code/Misc/OnMsgs.lua",
 
-    -- menus/menu items/shortcuts
+		-- menus/menu items/shortcuts
 		"Code/Menus/BuildingsFunc.lua",
 		"Code/Menus/BuildingsMenu.lua",
 		"Code/Menus/CapacityFunc.lua",
@@ -70,12 +70,12 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ResourcesMenu.lua",
 		"Code/Menus/VehiclesFunc.lua",
 		"Code/Menus/VehiclesMenu.lua",
-    -- always fired last for the Msg("ChoGGi_MenuFuncs") in it
+		-- always fired last for the Msg("ChoGGi_MenuFuncs") in it
 		"Code/Menus/Keys.lua",
 
-    -- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
+		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
-  -- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
+	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
 	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi

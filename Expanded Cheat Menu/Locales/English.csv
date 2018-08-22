@@ -45,6 +45,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001257,Auto-refresh list every second.,
 302535920001288,Wrap Lines,
 302535920001289,Wrap lines or show horizontal scrollbar.,
 302535920000069,Examine,
@@ -242,7 +243,6 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000972,"Toggle flashing the UI object being examined.
 This may temporarily add some extra values to objects (BorderWidth/BorderColor).",
 302535920001057,Data,
-302535920001257,Auto-refresh list every second.,
 302535920001239,Functions,
 302535920001240,Show all functions of this object and parents/ancestors.,
 302535920001001,ECM: Slight issue with %s you may safely ignore the following error or three.,
@@ -296,7 +296,7 @@ Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920000806,"Only show items containing this text.
 
 Press Enter to show all items.",
-302535920000077,"You can enter a custom value to be applied.
+302535920000077,"You can enter a custom value to be applied (it needs to be selected to take effect).
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues.",
 302535920000078,Add Custom Value,
@@ -861,7 +861,7 @@ See the examine list on the left for ids.",
 302535920000872,Pathing,
 302535920000873,Doesn't work that well.,
 302535920000876,Remove Waypoints,
-302535920000877,Remove waypoints from the map and reset colours.,
+302535920000877,Remove waypoints from the map and reset colours (select any object type to remove them all).,
 302535920000878,Skip Flags,
 302535920000879,"Doesn't add the little flags, just lines and spheres (good for larger maps).",
 302535920000454,Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).,
