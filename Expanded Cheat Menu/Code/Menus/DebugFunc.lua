@@ -655,8 +655,9 @@ do --path markers
 			shuttle = obj:GetPos():z()
 		end
 		--some objects don't have pos as waypoint
-		if waypoints[#waypoints] ~= Objpos then
-			waypoints[#waypoints+1] = Objpos
+		local cwp = #waypoints
+		if waypoints[cwp] ~= Objpos then
+			waypoints[cwp+1] = Objpos
 		end
 
 		--build a list of points that aren't high in the sky
@@ -697,23 +698,27 @@ do --path markers
 			else
 				path[1] = obj:GetDestination()
 			end
+			local c = #path
+
 
 			--the next four points it's going to
 			local Table = obj.next_spline
 			if Table then
 				-- :GetPath() has them backwards so we'll do the same
 				for i = #Table, 1, -1 do
-					path[#path+1] = Table[i]
+					c = c + 1
+					path[c] = Table[i]
 				end
 			end
 
 			Table = obj.current_spline
 			if Table then
 				for i = #Table, 1, -1 do
-					path[#path+1] = Table[i]
+					path[c] = Table[i]
 				end
 			end
-			path[#path+1] = obj:GetPos()
+			c = c + 1
+			path[c] = obj:GetPos()
 
 		else
 			-- rovers/drones/colonists

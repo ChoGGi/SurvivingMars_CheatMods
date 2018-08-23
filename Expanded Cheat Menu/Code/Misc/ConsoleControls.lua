@@ -114,7 +114,7 @@ local function HistoryPopup(self)
 		local history = dlgConsole.history_queue
 		for i = 1, #history do
 			local text = tostring(history[i])
-			items[#items+1] = {
+			items[i] = {
 				-- these can get long so keep 'em short
 				name = text:sub(1,ConsoleHistoryMenuLength),
 				hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
@@ -144,7 +144,7 @@ local function BuildExamineMenu()
 	)
 
 	for i = 0, #list do
-		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
+		ExamineMenuToggle_list[i] = {
 			name = list[i],
 			hint = Concat(S[302535920000491--[[Examine Object--]]],": ",list[i]),
 			clicked = function()
@@ -234,7 +234,7 @@ local function BuildSciptButton(scripts,dlg,folder)
 			if scripts then
 				for i = 1, #scripts do
 					local _, script = AsyncFileToString(scripts[i].path)
-					items[#items+1] = {
+					items[i] = {
 						name = scripts[i].name,
 						hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
 						clicked = function()

@@ -3,9 +3,11 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
 local str_ExpandedCM_Capacity = "Expanded CM.Capacity"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[109035890389--[[Capacity--]]]," .."),
 	ActionId = str_ExpandedCM_Capacity,
@@ -14,7 +16,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Capacity",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000565--[[Storage Mechanized Depots Temp--]]],
 	ActionId = "Expanded CM.Capacity.Storage Mechanized Depots Temp",
@@ -28,7 +31,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000567--[[Worker Capacity--]]],
 	ActionId = "Expanded CM.Capacity.Worker Capacity",
@@ -38,7 +42,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetWorkerCapacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000569--[[Building Capacity--]]],
 	ActionId = "Expanded CM.Capacity.Building Capacity",
@@ -48,7 +53,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetBuildingCapacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000571--[[Building Visitor Capacity--]]],
 	ActionId = "Expanded CM.Capacity.Building Visitor Capacity",
@@ -59,7 +65,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000573--[[Storage Universal Depot--]]],
 	ActionId = "Expanded CM.Capacity.Storage Universal Depot",
@@ -75,7 +82,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000575--[[Storage Other Depot--]]],
 	ActionId = "Expanded CM.Capacity.Storage Other Depot",
@@ -91,7 +99,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000577--[[Storage Waste Depot--]]],
 	ActionId = "Expanded CM.Capacity.Storage Waste Depot",
@@ -107,7 +116,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Capacity,
 	ActionName = S[302535920000579--[[Storage Mechanized Depots--]]],
 	ActionId = "Expanded CM.Capacity.Storage Mechanized Depots",

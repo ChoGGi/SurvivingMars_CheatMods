@@ -12,54 +12,54 @@ RandomColour(1000)
 ```
 -- helper functions for RandomColour function (below)
 local function RetTableNoDupes(list)
-  local temp_t = {}
-  local dupe_t = {}
+	local temp_t = {}
+	local dupe_t = {}
+	local c = 0
 
-  for i = 1, #list do
-    if not dupe_t[list[i]] then
+	for i = 1, #list do
+		if not dupe_t[list[i]] then
+			c = c + 1
+			temp_t[c] = list[i]
+			dupe_t[list[i]] = true
+		end
+	end
 
-      temp_t[#temp_t+1] = list[i]
-      dupe_t[list[i]] = true
-
-    end
-  end
-
-  return temp_t
+	return temp_t
 end
+-- m = min, n = max
+local AsyncRand = AsyncRand
 local function Random(m, n)
-  if n then
-    -- m = min, n = max
-    return AsyncRand(n - m + 1) + m
-  else
-    -- m = max, min = 0 OR number between 0 and max_int
-    return m and AsyncRand(m) or AsyncRand()
-  end
+	return AsyncRand(n - m + 1) + m
 end
 
 function RandomColour(amount)
-  if amount and type(amount) == "number" then
+	if amount and type(amount) == "number" then
 
-    local colours = {}
-    -- populate list with amount we want
-    for _ = 1, amount do
-      colours[#colours+1] = Random(-16777216,0) -- 24bit colour
-    end
+		local colours = {}
+		local c = 0
+		-- populate list with amount we want
+		for _ = 1, amount do
+			c = c + 1
+			colours[c] = Random(-16777216,0) -- 24bit colour
+		end
 
-    -- now remove all dupes and add more till we hit amount
-    repeat
-      -- then loop missing amount
-      for _ = 1, amount - #colours do
-        colours[#colours+1] = Random(-16777216,0)
-      end
-      -- remove dupes
-      colours = RetTableNoDupes(colours)
-    until #colours == amount
+		-- now remove all dupes and add more till we hit amount
+		repeat
+			-- then loop missing amount
+			c = #colours
+			for _ = 1, amount - #colours do
+				c = c + 1
+				colours[c] = Random(-16777216,0)
+			end
+			-- remove dupes
+			colours = RetTableNoDupes(colours)
+		until #colours == amount
 
-    return colours
-  end
+		return colours
+	end
 
-  -- return a single colour
-  return Random(-16777216,0)
+	-- return a single colour
+	return Random(-16777216,0)
 
 end
 ```

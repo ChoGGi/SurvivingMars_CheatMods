@@ -403,23 +403,32 @@ end
 
 function ChoGGi_ListChoiceDlg:UpdateHintText(item)
 	local hint = {item.text}
+	local c = #hint
 
 	if item.value and item.value ~= item.text then
 		if type(item.value) == "userdata" then
-			hint[#hint+1] = ": "
-			hint[#hint+1] = T(item.value)
+			c = c + 1
+			hint[c] = ": "
+			c = c + 1
+			hint[c] = T(item.value)
 		elseif item.value then
-			hint[#hint+1] = ": "
-			hint[#hint+1] = tostring(item.value)
+			c = c + 1
+			hint[c] = ": "
+			c = c + 1
+			hint[c] = tostring(item.value)
 		end
 	end
 
 	if type(item.hint) == "userdata" then
-		hint[#hint+1] = "\n\n"
-		hint[#hint+1] = T(item.hint)
+		c = c + 1
+		hint[c] = "\n\n"
+		c = c + 1
+		hint[c] = T(item.hint)
 	elseif item.hint then
-		hint[#hint+1] = "\n\n"
-		hint[#hint+1] = CheckText(item.hint)
+		c = c + 1
+		hint[c] = "\n\n"
+		c = c + 1
+		hint[c] = CheckText(item.hint)
 	end
 
 	return TableConcat(hint)
@@ -457,23 +466,25 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
 		-- loop through and add all selected items to the list
 		for i = 1, #self.idList.selection do
-			items[#items+1] = self.idList[self.idList.selection[i]].item
+			items[i] = self.idList[self.idList.selection[i]].item
 		end
 	else
 		-- get all (visible) items
 		for i = 1, #self.idList do
-			items[#items+1] = self.idList[i].item
+			items[i] = self.idList[i].item
 		end
 	end
 	-- attach other stuff to first item
 
 	if #items > 0 then
+		local c = #self.choices
 		for i = 1, #items do
 			if i == 1 then
 				-- always return the custom value (and try to convert it to correct type)
 				items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
 			end
-			self.choices[#self.choices+1] = items[i]
+			c = c + 1
+			self.choices[c] = items[i]
 		end
 	end
 	-- send back checkmarks no matter what

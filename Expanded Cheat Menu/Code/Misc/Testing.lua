@@ -5,6 +5,27 @@ if ChoGGi.testing then
 	local TickEnd = ChoGGi.ComFuncs.TickEnd
 	local Concat = ChoGGi.ComFuncs.Concat
 
+	function ChoGGi.CodeFuncs.TestTableInsert()
+		TickStart("TestTableInsert.Tick")
+		local t1 = {}
+		local c = 0
+		for i=0, 10000000 do
+			c = c + 1
+			t1[c] = i
+		end
+		TickEnd("TestTableInsert.Tick")
+		TickStart("TestTableInsert.Tick")
+		local rawset = rawset
+		local t2 = {}
+		local c2 = 0
+		for i=0, 10000000 do
+			c2 = c2 + 1
+			rawset(t2, c2, i)
+		end
+		TickEnd("TestTableInsert.Tick")
+
+	end
+
 	-- compare compression speed/size
 	function ChoGGi.CodeFuncs.TestCompress(amount)
 		-- uncompressed TableToLuaCode(TranslationTable)

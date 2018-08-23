@@ -11,8 +11,10 @@ local next,pairs,type,table = next,pairs,type,table
 
 do -- cheat menu custom menus
 	local Actions = ChoGGi.Temp.Actions
+	local c = #Actions
 	local function AddMenuitem(name,str_id,sort)
-		Actions[#Actions+1] = {
+		c = c + 1
+		Actions[c] = {
 			ActionMenubar = "DevMenu",
 			ActionName = S[str_id],
 			ActionId = name,

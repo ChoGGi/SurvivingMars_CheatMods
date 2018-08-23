@@ -2,6 +2,9 @@
 
 -- shows various information (with auto-refresh)
 
+--~ local c = 0
+--~ c = c + 1
+
 if true then
 	return
 end

@@ -3,9 +3,11 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
 local str_ExpandedCM_Resources = "Expanded CM.Resources"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[692--[[Resources--]]]," .."),
 	ActionId = str_ExpandedCM_Resources,
@@ -14,7 +16,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Resources",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
 	ActionName = S[302535920000719--[[Add Orbital Probes--]]],
 	ActionId = "Expanded CM.Resources.Add Orbital Probes",
@@ -23,7 +26,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
 	ActionName = S[4616--[[Food Per Rocket Passenger--]]],
 	ActionId = "Expanded CM.Resources.Food Per Rocket Passenger",
@@ -37,7 +41,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
 	ActionName = S[302535920000723--[[Add Prefabs--]]],
 	ActionId = "Expanded CM.Resources.Add Prefabs",
@@ -46,7 +51,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AddPrefabs,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
 	ActionName = S[302535920000725--[[Add Funding--]]],
 	ActionId = "Expanded CM.Resources.Add Funding",
@@ -56,7 +62,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetFunding,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
 	ActionName = S[302535920000727--[[Fill Selected Resource--]]],
 	ActionId = "Expanded CM.Resources.Fill Selected Resource",

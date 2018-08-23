@@ -562,11 +562,12 @@ end
 
 function ChoGGi.CodeFuncs.SaveOldPalette(obj)
 	if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
-		obj.ChoGGi_origcolors = {}
-		obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(1)}
-		obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(2)}
-		obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(3)}
-		obj.ChoGGi_origcolors[#obj.ChoGGi_origcolors+1] = {obj:GetColorizationMaterial(4)}
+		obj.ChoGGi_origcolors = {
+			{obj:GetColorizationMaterial(1)},
+			{obj:GetColorizationMaterial(2)},
+			{obj:GetColorizationMaterial(3)},
+			{obj:GetColorizationMaterial(4)},
+		}
 	end
 end
 function ChoGGi.CodeFuncs.RestoreOldPalette(obj)
@@ -595,16 +596,20 @@ function ChoGGi.CodeFuncs.RandomColour(amount)
 		local Random = Random -- ChoGGi.ComFuncs.Random
 
 		local colours = {}
+		local c = 0
 		-- populate list with amount we want
 		for _ = 1, amount do
-			colours[#colours+1] = Random(-16777216,0) -- 24bit colour
+			c = c + 1
+			colours[c] = Random(-16777216,0) -- 24bit colour
 		end
 
 		-- now remove all dupes and add more till we hit amount
 		repeat
 			-- then loop missing amount
+			c = #colours
 			for _ = 1, amount - #colours do
-				colours[#colours+1] = Random(-16777216,0)
+				c = c + 1
+				colours[c] = Random(-16777216,0)
 			end
 			-- remove dupes
 			colours = RetTableNoDupes(colours)
@@ -849,27 +854,32 @@ do --ChangeObjectColour
 		local pal = ChoGGi.CodeFuncs.GetPalette(obj)
 
 		local ItemList = {}
+		local c = 0
 		for i = 1, 4 do
 			local text = Concat("Color",i)
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
 			}
 			text = Concat("Metallic",i)
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
 			text = Concat("Roughness",i)
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
 		end
-		ItemList[#ItemList+1] = {
+		c = c + 1
+		ItemList[c] = {
 			text = "X_BaseColour",
 			value = 6579300,
 			obj = obj,
@@ -1252,8 +1262,10 @@ end -- do
 
 do -- DisplayMonitorList
 	local function AddGrid(UICity,name,info)
+		local c = #info.tables
 		for i = 1, #UICity[name] do
-			info.tables[#info.tables+1] = UICity[name][i]
+			c = c + 1
+			info.tables[c] = UICity[name][i]
 		end
 	end
 
@@ -1488,20 +1500,27 @@ end
 
 function ChoGGi.CodeFuncs.RetHardwareInfo()
 	local mem = {}
+	local cm = 0
+
 	for key,value in pairs(GetMemoryInfo()) do
-		mem[#mem+1] = Concat(key,": ",value,"\n")
+		cm = cm + 1
+		mem[cm] = Concat(key,": ",value,"\n")
 	end
 
 	local hw = {}
+	local chw = 0
 	for key,value in pairs(GetHardwareInfo(0)) do
 		if key == "gpu" then
-			hw[#hw+1] = Concat(key,": ",GetGpuDescription(),"\n")
+			chw = chw + 1
+			hw[chw] = Concat(key,": ",GetGpuDescription(),"\n")
 		else
-			hw[#hw+1] = Concat(key,": ",value,"\n")
+			chw = chw + 1
+			hw[chw] = Concat(key,": ",value,"\n")
 		end
 	end
 	table.sort(hw)
-	hw[#hw+1] = "\n"
+	chw = chw + 1
+	hw[chw] = "\n"
 
 	return Concat(
 		"GetHardwareInfo(0): ",TableConcat(hw),"\n\n",
@@ -1591,9 +1610,12 @@ function ChoGGi.CodeFuncs.SetCommanderBonuses(sType)
 	local comm = MissionParams.idCommanderProfile.items[currentname]
 	local bonus = Presets.CommanderProfilePreset.Default[sType]
 	local tab = bonus or ""
+	local c = #comm
+
 	for i = 1, #tab do
 		CreateRealTimeThread(function()
-			comm[#comm+1] = tab[i]
+			c = c + 1
+			comm[c] = tab[i]
 		end)
 	end
 end
@@ -1612,14 +1634,17 @@ function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
 		sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
 	end
 
+	local c = #sponsor
 	if sType == "IMM" then
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","FoodPerRocketPassenger",
 			"Amount",9000
 		})
 	elseif sType == "NASA" then
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","SponsorFundingPerInterval",
 			"Amount",500
@@ -1627,57 +1652,68 @@ function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
 	elseif sType == "BlueSun" then
 		sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
 		sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
 			"Field","Physics",
 			"Research","DeepMetalExtraction"
 		})
 	elseif sType == "CNSA" then
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","ApplicantGenerationInterval",
 			"Percent",-50
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","MaxColonistsPerRocket",
 			"Amount",10
 		})
 	elseif sType == "ISRO" then
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
 			"Field","Engineering",
 			"Research","LowGEngineering"
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","Concrete_cost_modifier",
 			"Percent",-20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","Electronics_cost_modifier",
 			"Percent",-20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","MachineParts_cost_modifier",
 			"Percent",-20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","ApplicantsPoolStartingSize",
 			"Percent",50
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","Metals_cost_modifier",
 			"Percent",-20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","Polymers_cost_modifier",
 			"Percent",-20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","PreciousMetals_cost_modifier",
 			"Percent",-20
@@ -1692,18 +1728,21 @@ function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
 		sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
 		sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
 		sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","CommandCenterMaxDrones",
 			"Percent",20
 		})
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","starting_drones",
 			"Percent",4
 		})
 	elseif sType == "NewArk" then
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_ModifyLabel",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
 			"Label","Consts",
 			"Prop","BirthThreshold",
 			"Percent",-50
@@ -1711,7 +1750,8 @@ function ChoGGi.CodeFuncs.SetSponsorBonuses(sType)
 	elseif sType == "Roscosmos" then
 		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
 		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-		sponsor[#sponsor+1] = PlaceObj("TechEffect_GrantTech",{
+		c = c + 1
+		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
 			"Field","Robotics",
 			"Research","FueledExtractors"
 		})
@@ -1743,13 +1783,15 @@ do -- flightgrids
 		local diff = pos1 - pos0
 		local dist = diff:Len2D()
 		local steps = 1 + (dist + dbg_step - 1) / dbg_step
-		local points, colors = {}, {}
+		local points,colors,pointsc,colorsc = {},{},0,0
 		local max_diff = 10 * guim
 		for i = 1,steps do
 			local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
 			local height = Flight_Height:GetBilinear(pos, work_step, 0, 1) + zoffset
-			points[#points + 1] = pos:SetZ(height)
-			colors[#colors + 1] = InterpolateRGB(
+			pointsc = pointsc + 1
+			colorsc = colorsc + 1
+			points[pointsc] = pos:SetZ(height)
+			colors[colorsc] = InterpolateRGB(
 				-1, -- white
 				-16711936, -- green
 				Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),

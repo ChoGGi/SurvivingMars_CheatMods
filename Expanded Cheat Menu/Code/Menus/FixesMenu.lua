@@ -4,9 +4,11 @@ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local icon = "CommonAssets/UI/Menu/ReportBug.tga"
+local c = #Actions
 
 local str_ExpandedCM_Fixes = "Expanded CM.Fixes"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[302535920000922--[[Fixes--]]]," .."),
 	ActionId = str_ExpandedCM_Fixes,
@@ -15,7 +17,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Fixes",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920001299--[[Toggle Working On All Buildings--]]],
 	ActionId = "Expanded CM.Fixes.Toggle Working On All Buildings",
@@ -25,7 +28,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920001295--[[Drones Not Repairing Domes--]]],
 	ActionId = "Expanded CM.Fixes.Drones Not Repairing Domes",
@@ -35,7 +39,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000461--[[All Pipe Skins To Default--]]],
 	ActionId = "Expanded CM.Fixes.All Pipe Skins To Default",
@@ -46,7 +51,8 @@ This resets all pipes to the default skin.--]]],
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000292--[[Reset Rovers--]]],
 	ActionId = "Expanded CM.Fixes.Reset Rovers",
@@ -58,7 +64,8 @@ You may need to toggle the recall drones button (for certain issues).--]]],
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000055--[[Reset All Colonists--]]],
 	ActionId = "Expanded CM.Fixes.Reset All Colonists",
@@ -68,7 +75,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000581--[[Toggle Collisions On Selected Object--]]],
 	ActionId = "Expanded CM.Fixes.Toggle Collisions On Selected Object",
@@ -78,7 +86,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000583--[[Rebuild Walkable Points In Domes--]]],
 	ActionId = "Expanded CM.Fixes.Rebuild Walkable Points In Domes",
@@ -88,7 +97,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000585--[[Colonists Stuck Outside Rocket--]]],
 	ActionId = "Expanded CM.Fixes.Colonists Stuck Outside Rocket",
@@ -100,7 +110,8 @@ This will do a little copy n paste fix (they'll keep the same traits/whatnot).--
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = S[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
 	ActionId = "Expanded CM.Fixes.Remove Missing Class Objects (Warning)",
@@ -110,7 +121,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "9",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
 	ActionName = Concat(" ",S[302535920000589--[[Fire Most Fixes--]]]),
 	ActionId = "Expanded CM.Fixes.Fire Most Fixes",
@@ -122,7 +134,8 @@ Should be safe to use without breaking anything.--]]],
 }
 
 local str_ExpandedCM_Fixes_Most = "Expanded CM.Fixes.Most"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
 	ActionName = Concat(S[302535920000935--[[Most--]]]," .."),
 	ActionId = str_ExpandedCM_Fixes_Most,
@@ -131,7 +144,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0Most",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]],
 	ActionId = "Expanded CM.Fixes.Most.Colonists Trying To Board Rocket Freezes Game",
@@ -140,7 +154,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000593--[[Remove Particles With Null Polylines--]]],
 	ActionId = "Expanded CM.Fixes.Most.Remove Particles With Null Polylines",
@@ -150,7 +165,8 @@ This may remove some smoke stacks like the concrete extractors (just toggle work
 	OnAction = ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000595--[[Mirror Sphere Stuck--]]],
 	ActionId = "Expanded CM.Fixes.Most.Mirror Sphere Stuck",
@@ -159,7 +175,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.MirrorSphereStuck,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000597--[[Stutter With High FPS--]]],
 	ActionId = "Expanded CM.Fixes.Most.Stutter With High FPS",
@@ -170,7 +187,8 @@ This also works for colonists practicing the human centipede.--]]],
 	OnAction = ChoGGi.MenuFuncs.StutterWithHighFPS,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000599--[[Drones Keep Trying Blocked Areas--]]],
 	ActionId = "Expanded CM.Fixes.Most.Drones Keep Trying Blocked Areas",
@@ -179,7 +197,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000601--[[Idle Drones Won't Build When Resources Available--]]],
 	ActionId = "Expanded CM.Fixes.Most.Idle Drones Won't Build When Resources Available",
@@ -190,7 +209,8 @@ This removes any of those (resources won't be touched).--]]],
 	OnAction = ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000603--[[Remove Yellow Grid Marks--]]],
 	ActionId = "Expanded CM.Fixes.Most.Remove Yellow Grid Marks",
@@ -199,7 +219,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.RemoveYellowGridMarks,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920001193--[[Remove Blue Grid Marks--]]],
 	ActionId = "Expanded CM.Fixes.Most.Remove Blue Grid Marks",
@@ -208,7 +229,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.RemoveBlueGridMarks,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000605--[[Project Morpheus Radar Fell Down--]]],
 	ActionId = "Expanded CM.Fixes.Most.Project Morpheus Radar Fell Down",
@@ -217,7 +239,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]]),
 	ActionId = "Expanded CM.Fixes.Most.Cables & Pipes: Instant Repair",
@@ -226,7 +249,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesRepair,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
 	ActionName = S[302535920000609--[[Attach Buildings To Nearest Working Dome--]]],
 	ActionId = "Expanded CM.Fixes.Most.Attach Buildings To Nearest Working Dome",
@@ -236,7 +260,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Fixes_Toggles = "Expanded CM.Fixes.Toggles"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
 	ActionName = Concat(S[302535920000938--[[Toggles--]]]," .."),
 	ActionId = str_ExpandedCM_Fixes_Toggles,
@@ -246,7 +271,8 @@ Actions[#Actions+1] = {
 }
 
 if ChoGGi.testing then
-	Actions[#Actions+1] = {
+	c = c + 1
+	Actions[c] = {
 		ActionMenubar = str_ExpandedCM_Fixes_Toggles,
 		ActionName = S[302535920001071--[[Drone Charges From Rover Wrong Angle--]]],
 		ActionId = "Expanded CM.Fixes.Toggles.Drone Charges From Rover Wrong Angle",
@@ -261,7 +287,8 @@ if ChoGGi.testing then
 	}
 end
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Toggles,
 	ActionName = S[302535920001266--[[Borked Transport Pathing--]]],
 	ActionId = "Expanded CM.Fixes.Toggles.Borked Transport Pathing",
@@ -277,7 +304,8 @@ This'll check for and stop any borked ones (it'll show a popup msg when it stops
 	OnAction = ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Toggles,
 	ActionName = S[302535920000248--[[Colonists Stuck Outside Service Buildings--]]],
 	ActionId = "Expanded CM.Fixes.Toggles.Colonists Stuck Outside Service Buildings",
@@ -293,7 +321,8 @@ Seems to fix it after a Sol or two, so you shouldn't need to leave this running.
 	OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Toggles,
 	ActionName = S[302535920000613--[[Drone Carry Amount--]]],
 	ActionId = "Expanded CM.Fixes.Toggles.Drone Carry Amount",
@@ -310,7 +339,8 @@ If you have an insane production amount set then it'll take an (in-game) hour be
 	OnAction = ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Toggles,
 	ActionName = S[302535920000615--[[Sort Command Center Dist--]]],
 	ActionId = "Expanded CM.Fixes.Toggles.Sort Command Center Dist",
@@ -327,7 +357,8 @@ Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."--]]
 }
 
 local str_ExpandedCM_Fixes_ECMFixes = "Expanded CM.Fixes.ECM Fixes"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
 	ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]]," .."),
 	ActionId = str_ExpandedCM_Fixes_ECMFixes,
@@ -336,7 +367,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_ECMFixes,
 	ActionName = S[302535920000617--[[See tooltip--]]],
 	ActionId = "Expanded CM.Fixes.ECM Fixes.See tooltip",
@@ -344,7 +376,8 @@ Actions[#Actions+1] = {
 	RolloverText = S[302535920000618--[[Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed.--]]],
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_ECMFixes,
 	ActionName = S[302535920000619--[[Fix Black Cube Colonists--]]],
 	ActionId = "Expanded CM.Fixes.ECM Fixes.Fix Black Cube Colonists",
@@ -354,7 +387,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_ECMFixes,
 	ActionName = S[302535920000621--[[Align All Buildings To Hex Grid--]]],
 	ActionId = "Expanded CM.Fixes.ECM Fixes.Align All Buildings To Hex Grid",

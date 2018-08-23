@@ -26,56 +26,56 @@ BinAssetsLoaded
 PreNewMap
 LightmodelNightChange
 LightmodelRainChange
-    LightmodelChange
-    AfterLightmodelChange
-    FundingChanged
-    ConstValueChanged
-    ConstValueChanged
-    UIModeChange
+		LightmodelChange
+		AfterLightmodelChange
+		FundingChanged
+		ConstValueChanged
+		ConstValueChanged
+		UIModeChange
 InGameInterfaceCreated
 CityStart
 NewMap
-    LoadingScreenPreClose
-    UIModeChange
+		LoadingScreenPreClose
+		UIModeChange
 NewMapLoaded
 PostNewMapLoaded
 GameTimeStart
-    LightmodelChange
-    AfterLightmodelChange
+		LightmodelChange
+		AfterLightmodelChange
 SunChange
 NewWorkshift
 starting sector selected: B8
 SequenceListPlayerStart
 MysteryChosen
-    BuildingPlaced
-    BuildingPlaced
-    BuildingPlaced
-    BuildingPlaced
-    BuildingPlaced
-    LightmodelChange
-    AfterLightmodelChange
-    ConstValueChanged
-    ConstValueChanged
-    FundingChanged
+		BuildingPlaced
+		BuildingPlaced
+		BuildingPlaced
+		BuildingPlaced
+		BuildingPlaced
+		LightmodelChange
+		AfterLightmodelChange
+		ConstValueChanged
+		ConstValueChanged
+		FundingChanged
 TechResearched
 DepositsSpawned
-    GameStateChanged
+		GameStateChanged
 ChangeMapDone
 Map changed to "BlankBig_02" in 9327 ms.
-    GameStateChangedNotify
-    GameStateChanged
-    Resume
-    LoadingScreenPreClose
-    GameStateChangedNotify
-    FundingChanged
+		GameStateChangedNotify
+		GameStateChanged
+		Resume
+		LoadingScreenPreClose
+		GameStateChangedNotify
+		FundingChanged
 RocketLaunchFromEarth
 SectorScanned
-    GameStateChanged
+		GameStateChanged
 Pause
-    GameStateChangedNotify
-    GameStateChanged
-    Resume
+		GameStateChangedNotify
+		GameStateChanged
+		Resume
 MarsResume
-    GameStateChangedNotify
+		GameStateChangedNotify
 *Start of actual gameplay*
 ```

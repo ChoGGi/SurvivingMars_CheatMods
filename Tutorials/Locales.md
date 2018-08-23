@@ -22,7 +22,7 @@ At the tippy top of your ModItemCode file add this (or something like it)
 local locale_path = Concat(CurrentModPath,"Locales/%s.csv")
 -- this checks if there's a csv for the current lang, if not it loads the English one.
 if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
-  LoadTranslationTableFile(locale_path:format("English"))
+	LoadTranslationTableFile(locale_path:format("English"))
 end
 Msg("TranslationChanged")
 
@@ -38,27 +38,27 @@ start changing strings, and then send you the file.
 I like to use this function for ease of use (and to make sure I always get a string back):
 
 do -- Translate (I wrap it in a do, so the locals are kept local)
-  local T,_InternalTranslate = T,_InternalTranslate
-  local type,select = type,select
-  -- translate func that always returns a string
-  function Translate(...)
-    local str
-    if type(select(1,...)) == "userdata" then
-      str = _InternalTranslate(T{...})
-    else
-      str = _InternalTranslate(...)
-    end
-    -- just in case a
-    if type(str) ~= "string" then
-      local arg2 = select(2,...)
-      if type(arg2) == "string" then
-        return arg2
-      end
-      -- done fucked up (just in case b)
-      return Concat(select(1,...)," < Missing locale string id")
-    end
-    return str
-  end
+	local T,_InternalTranslate = T,_InternalTranslate
+	local type,select = type,select
+	-- translate func that always returns a string
+	function Translate(...)
+		local str
+		if type(select(1,...)) == "userdata" then
+			str = _InternalTranslate(T{...})
+		else
+			str = _InternalTranslate(...)
+		end
+		-- just in case a
+		if type(str) ~= "string" then
+			local arg2 = select(2,...)
+			if type(arg2) == "string" then
+				return arg2
+			end
+			-- done fucked up (just in case b)
+			return Concat(select(1,...)," < Missing locale string id")
+		end
+		return str
+	end
 end -- do
 
 
@@ -90,11 +90,11 @@ local filename = table.concat({Mods[mod_id].path,"Locales/",GetLanguage(),".csv"
 --this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 print("\r\nBegin: LoadCSV()")
 local fields_remap = {
-  "id",
-  "text",
-  "translated",
-  "translated_new",
-  "gender"
+	"id",
+	"text",
+	"translated",
+	"translated_new",
+	"gender"
 }
 local data = {}
 local omit_captions = "omit_captions"
@@ -113,50 +113,50 @@ local table = table
 --local debug_output = {}
 --start of function LoadCSV(filename, data, fields_remap, omit_captions)
 while pos < #str do
-  local previous = ""
-  local row, col = {}, 1
-  local lf = str:sub(pos, pos) == "\n"
-  local crlf = str:sub(pos, pos + 1) == "\r\n"
-    while pos < #str and not lf and not crlf do
-      -- because this game keeps the log in memory till exit/certain crashes.
-      -- this certain crash won't leave you with a log file, so we flush.
-      FlushLogFile()
+	local previous = ""
+	local row, col = {}, 1
+	local lf = str:sub(pos, pos) == "\n"
+	local crlf = str:sub(pos, pos + 1) == "\r\n"
+		while pos < #str and not lf and not crlf do
+			-- because this game keeps the log in memory till exit/certain crashes.
+			-- this certain crash won't leave you with a log file, so we flush.
+			FlushLogFile()
 
-      local value, next = field:match(str, pos)
-      value = RemoveTrailingSpaces(value)
-      if not fields_remap then
-        row[col] = value
-      elseif fields_remap[col] then
-        row[fields_remap[col]] = value
-      end
-      col = col + 1
-      lf = str:sub(next, next) == "\n"
-      crlf = str:sub(next, next + 1) == "\r\n"
-      pos = next + 1
+			local value, next = field:match(str, pos)
+			value = RemoveTrailingSpaces(value)
+			if not fields_remap then
+				row[col] = value
+			elseif fields_remap[col] then
+				row[fields_remap[col]] = value
+			end
+			col = col + 1
+			lf = str:sub(next, next) == "\n"
+			crlf = str:sub(next, next + 1) == "\r\n"
+			pos = next + 1
 
-      --only seems to happen on bad things
-      if col > 4 then
-        print(table.concat{"\r\nERROR: \r\ncol: ",col," value: ",value," pos: ",pos})
-      end
+			--only seems to happen on bad things
+			if col > 4 then
+				print(table.concat{"\r\nERROR: \r\ncol: ",col," value: ",value," pos: ",pos})
+			end
 
-      local nextt = field:match(str, pos)
-      if nextt ~= "" and previous ~= nextt then
-        --outputs as STRING_ID,STRING,
-        print(table.concat{"\r\n",value,",",nextt,","})
-        --shows col and position (not useful for comparing to csv file)
-        --print(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
-      end
+			local nextt = field:match(str, pos)
+			if nextt ~= "" and previous ~= nextt then
+				--outputs as STRING_ID,STRING,
+				print(table.concat{"\r\n",value,",",nextt,","})
+				--shows col and position (not useful for comparing to csv file)
+				--print(table.concat({"\r\ncol: ",col," pos: ",pos,"\r\n",value,",",nextt,","}))
+			end
 
-      previous = nextt
-    end
+			previous = nextt
+		end
 
-  if crlf then
-    pos = pos + 1
-  end
-  if not omit_captions then
-    table.insert(rows, row)
-  end
-  omit_captions = false
+	if crlf then
+		pos = pos + 1
+	end
+	if not omit_captions then
+		table.insert(rows, row)
+	end
+	omit_captions = false
 end
 
 --print(table.concat(debug_output))
@@ -168,13 +168,13 @@ print("\r\nEnd: LoadCSV()")
 ```
 FileRead, temptext, MarsSteam.exe-20180616-15.12.24-5b0fe520.log
 Loop, parse, temptext, `n, `r
-  {
-  If A_LoopField !=
-    {
-    If !InStr(A_LoopField, "Lua time")
-      output .= A_LoopField "`n"
-    }
-  }
+	{
+	If A_LoopField !=
+		{
+		If !InStr(A_LoopField, "Lua time")
+			output .= A_LoopField "`n"
+		}
+	}
 FileDelete OUTPUT.csv
 FileAppend %output%,OUTPUT.csv
 ```

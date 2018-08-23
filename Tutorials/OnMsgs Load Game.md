@@ -30,15 +30,15 @@ PersistGatherPermanents
 PersistLoad
 PersistPostLoad
 Game loaded on map
-    GameStateChanged
+		GameStateChanged
 LightmodelChange
 AfterLightmodelChange
-LoadGame            <Fires on saved game
-    GameStateChangedNotify
+LoadGame						<Fires on saved game
+		GameStateChangedNotify
 UIModeChange
 InGameInterfaceCreated
-    GameStateChanged
+		GameStateChanged
 Resume
 LoadingScreenPreClose
-    GameStateChangedNotify
+		GameStateChangedNotify
 ```

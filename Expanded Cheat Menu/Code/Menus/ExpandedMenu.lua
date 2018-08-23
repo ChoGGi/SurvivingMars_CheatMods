@@ -3,8 +3,10 @@
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = S[302535920000031--[[Find Nearest Resource--]]],
 	ActionId = "Expanded CM.Find Nearest Resource",
@@ -16,7 +18,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "96",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = S[302535920000333--[[Building Info--]]],
 	ActionId = "Expanded CM.Building Info",
@@ -26,17 +29,19 @@ Actions[#Actions+1] = {
 	ActionSortKey = "97",
 }
 
---~ Actions[#Actions+1] = {
---~	 ActionMenubar = "Expanded CM",
---~	 ActionName = S[302535920000555--[[Monitor Info--]]],
---~	 ActionId = "Expanded CM.Monitor Info",
---~	 ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
---~	 RolloverText = S[302535920000556--[[Shows a list of updated information about your city.--]]],
---~	 OnAction = ChoGGi.MenuFuncs.MonitorInfo,
---~	 ActionSortKey = "98",
+--~ c = c + 1
+--~ Actions[c] = {
+--~ 	ActionMenubar = "Expanded CM",
+--~ 	ActionName = S[302535920000555--[[Monitor Info--]]],
+--~ 	ActionId = "Expanded CM.Monitor Info",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
+--~ 	RolloverText = S[302535920000556--[[Shows a list of updated information about your city.--]]],
+--~ 	OnAction = ChoGGi.MenuFuncs.MonitorInfo,
+--~ 	ActionSortKey = "98",
 --~ }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = S[302535920000469--[[Close Dialogs--]]],
 	ActionId = "Expanded CM.Close Dialogs",

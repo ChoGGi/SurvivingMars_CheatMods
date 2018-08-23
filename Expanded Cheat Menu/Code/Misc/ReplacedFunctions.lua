@@ -1071,22 +1071,26 @@ function OnMsg.ClassesBuilt()
 
 			--remove errors we want to remove
 			local statusNew = {}
+			local c = 0
 			local ConstructionStatus = ConstructionStatus
 			if type(status) == "table" and #status > 0 then
 				for i = 1, #status do
 					if status[i].type == "warning" then
-						statusNew[#statusNew+1] = status[i]
+						c = c + 1
+						statusNew[c] = status[i]
 					--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
 					--ResourceRequired < no point in building an extractor when there's nothing to extract
 					--BlockingObjects < place buildings in each other
---NoPlaceForSpire
---PassageTooCloseToLifeSupport
+					--NoPlaceForSpire
+					--PassageTooCloseToLifeSupport
 					--PassageAngleToSteep might be needed?
 					elseif status[i] == ConstructionStatus.UnevenTerrain then
-						statusNew[#statusNew+1] = status[i]
+						c = c + 1
+						statusNew[c] = status[i]
 					--probably good to have, but might be fun if it doesn't fuck up?
 					elseif status[i] == ConstructionStatus.PassageRequiresDifferentDomes then
-						statusNew[#statusNew+1] = status[i]
+						c = c + 1
+						statusNew[c] = status[i]
 					end
 				end
 			end

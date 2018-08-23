@@ -3,8 +3,10 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920001314--[[Toggle Render--]]],
 	ActionId = "Debug.Toggle Render",
@@ -13,7 +15,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.Render_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920001310--[[DTM Slots Display--]]],
 	ActionId = "Debug.DTM Slots Display",
@@ -22,7 +25,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920001312--[[FPS Counter Location--]]],
 	ActionId = "Debug.FPS Counter Location",
@@ -31,7 +35,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
 	ActionId = "Debug.Export Colonist Data To CSV",
@@ -40,7 +45,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000449--[[Attach Spots Toggle--]]],
 	ActionId = "Debug.Attach Spots Toggle",
@@ -49,7 +55,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AttachSpots_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000451--[[Measure Tool--]]],
 	ActionId = "Debug.Measure Tool",
@@ -59,7 +66,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.MeasureTool_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000453--[[Reload Lua--]]],
 	ActionId = "Debug.Reload Lua",
@@ -68,7 +76,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ReloadLua,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000455--[[Object Cloner--]]],
 	ActionId = "Debug.Object Cloner",
@@ -80,7 +89,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectCloner,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000457--[[Anim State Set--]]],
 	ActionId = "Debug.Anim State Set",
@@ -89,7 +99,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetAnimState,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000459--[[Anim Debug Toggle--]]],
 	ActionId = "Debug.Anim Debug Toggle",
@@ -98,19 +109,21 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
 }
 
---~ Actions[#Actions+1] = {
---~	 ActionMenubar = "Debug",
---~	 ActionName = S[302535920000471--[[Object Manipulator--]]],
---~	 ActionId = "Debug.Object Manipulator",
---~	 ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
---~	 RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
---~	 OnAction = function()
---~		 ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
---~	 end,
---~	 ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
+--~ c = c + 1
+--~ Actions[c] = {
+--~ 	ActionMenubar = "Debug",
+--~ 	ActionName = S[302535920000471--[[Object Manipulator--]]],
+--~ 	ActionId = "Debug.Object Manipulator",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
+--~ 	RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
+--~ 	OnAction = function()
+--~ 		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
+--~ 	end,
+--~ 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
 --~ }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000475--[[Object Spawner--]]],
 	ActionId = "Debug.Object Spawner",
@@ -123,7 +136,8 @@ hover mouse over and use Delete Selected Object"--]]],
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectSpawner,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000479--[[Toggle Editor--]]],
 	ActionId = "Debug.Toggle Editor",
@@ -136,7 +150,8 @@ It's not as if domes need to be where you placed them (people will just ignore i
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.Editor_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000481--[[Open In Ged Object Editor--]]],
 	ActionId = "Debug.Open In Ged Object Editor",
@@ -147,7 +162,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000491--[[Examine Object--]]],
 	ActionId = "Debug.Examine Object",
@@ -159,7 +175,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjExaminer,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000495--[[Particles Reload--]]],
 	ActionId = "Debug.Particles Reload",
@@ -169,7 +186,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Debug_Grids = "Debug.Grids"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = Concat(S[302535920000035--[[Grids--]]]," .."),
 	ActionId = str_Debug_Grids,
@@ -178,7 +196,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Grids",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_Grids,
 	ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
 	ActionId = "Debug.Toggle Terrain Deposit Grid",
@@ -188,7 +207,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_Grids,
 	ActionName = S[302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]]],
 	ActionId = "Debug.Toggle Hex Build + Passability Grid Visibility",
@@ -198,7 +218,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.debug_grid_build,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_Grids,
 	ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
 	ActionId = "Debug.Toggle Flight Grid",
@@ -211,7 +232,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Debug_DebugFX = "Debug.Debug FX"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = Concat(S[302535920001175--[[Debug FX--]]]," .."),
 	ActionId = str_Debug_DebugFX,
@@ -220,7 +242,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Debug FX",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_DebugFX,
 	ActionName = S[302535920001175--[[Debug FX--]]],
 	ActionId = "Debug.Debug FX.Debug FX",
@@ -236,7 +259,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_DebugFX,
 	ActionName = S[302535920001184--[[Particles--]]],
 	ActionId = "Debug.Debug FX.Particles",
@@ -252,7 +276,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_DebugFX,
 	ActionName = S[4107--[[Sound FX--]]],
 	ActionId = "Debug.Debug FX.Sound FX",
@@ -269,7 +294,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Debug_PathMarkers = "Debug.Path Markers"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = Concat(S[302535920000467--[[Path Markers--]]]," .."),
 	ActionId = str_Debug_PathMarkers,
@@ -278,7 +304,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Path Markers",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_PathMarkers,
 	ActionName = Concat(S[302535920000467--[[Path Markers--]]]," ",S[4099--[[Game Time--]]]),
 	ActionId = "Debug.Path Markers.Game Time",
@@ -290,7 +317,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetPathMarkersGameTime,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_PathMarkers,
 	ActionName = S[302535920000467--[[Path Markers--]]],
 	ActionId = "Debug.Path Markers MENUITEM",
@@ -303,7 +331,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = Concat(S[302535920000489--[[Delete Object(s)--]]]," .."),
 	ActionId = str_Debug_DeleteObjects,
@@ -312,7 +341,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000146--[[Delete Saved Games--]]],
 	ActionId = "Debug.Delete Saved Games",
@@ -322,7 +352,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "98",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Debug",
 	ActionName = S[302535920000487--[[Delete All Of Selected Object--]]],
 	ActionId = "Debug.Delete All Of Selected Object",
@@ -334,7 +365,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Debug_DeleteObjects,
 	ActionName = S[302535920000489--[[Delete Object(s)--]]],
 	ActionId = "Debug.Delete Object(s).Delete Object(s)",

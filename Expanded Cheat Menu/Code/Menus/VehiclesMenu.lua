@@ -5,9 +5,11 @@ local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
 local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
+local c = #Actions
 
 local str_ExpandedCM_Drones = "Expanded CM.Drones"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[517--[[Drones--]]]," .."),
 	ActionId = str_ExpandedCM_Drones,
@@ -16,7 +18,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Drones",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000505--[[Work Radius RC Rover--]]],
 	ActionId = "Expanded CM.Drones.Work Radius RC Rover",
@@ -30,7 +33,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRoverWorkRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000507--[[Work Radius DroneHub--]]],
 	ActionId = "Expanded CM.Drones.Work Radius DroneHub",
@@ -44,7 +48,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDroneHubWorkRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000509--[[Drone Rock To Concrete Speed--]]],
 	ActionId = "Expanded CM.Drones.Drone Rock To Concrete Speed",
@@ -58,7 +63,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000511--[[Drone Move Speed--]]],
 	ActionId = "Expanded CM.Drones.Drone Move Speed",
@@ -72,7 +78,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000513--[[Change Amount Of Drones In Hub--]]],
 	ActionId = "Expanded CM.Drones.Change Amount Of Drones In Hub",
@@ -82,7 +89,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetDroneAmountDroneHub,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000515--[[DroneFactory Build Speed--]]],
 	ActionId = "Expanded CM.Drones.DroneFactory Build Speed",
@@ -97,7 +105,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000517--[[Drone Gravity--]]],
 	ActionId = "Expanded CM.Drones.Drone Gravity",
@@ -111,7 +120,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetGravityDrones,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000519--[[Drone Battery Infinite--]]],
 	ActionId = "Expanded CM.Drones.Drone Battery Infinite",
@@ -125,7 +135,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000521--[[Drone Build Speed--]]],
 	ActionId = "Expanded CM.Drones.Drone Build Speed",
@@ -139,7 +150,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000523--[[Drone Meteor Malfunction--]]],
 	ActionId = "Expanded CM.Drones.Drone Meteor Malfunction",
@@ -153,7 +165,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[4645--[[Drone Recharge Time--]]],
 	ActionId = "Expanded CM.Drones.Drone Recharge Time",
@@ -167,7 +180,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DroneRechargeTime_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000527--[[Drone Repair Supply Leak Speed--]]],
 	ActionId = "Expanded CM.Drones.Drone Repair Supply Leak Speed",
@@ -181,7 +195,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000529--[[Drone Carry Amount--]]],
 	ActionId = "Expanded CM.Drones.Drone Carry Amount",
@@ -195,7 +210,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDroneCarryAmount,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000531--[[Drones Per Drone Hub--]]],
 	ActionId = "Expanded CM.Drones.Drones Per Drone Hub",
@@ -209,7 +225,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDronesPerDroneHub,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000533--[[Drones Per RC Rover--]]],
 	ActionId = "Expanded CM.Drones.Drones Per RC Rover",
@@ -223,9 +240,9 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetDronesPerRCRover,
 }
 
-
 local str_ExpandedCM_Shuttles = "Expanded CM.Shuttles"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[745--[[Shuttles--]]]," .."),
 	ActionId = str_ExpandedCM_Shuttles,
@@ -234,7 +251,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Shuttles",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
 	ActionId = "Expanded CM.Shuttles.Set ShuttleHub Shuttle Capacity",
@@ -249,7 +267,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000537--[[Set Capacity--]]],
 	ActionId = "Expanded CM.Shuttles.Set Capacity",
@@ -263,7 +282,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetShuttleCapacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000539--[[Set Speed--]]],
 	ActionId = "Expanded CM.Shuttles.Set Speed",
@@ -278,7 +298,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Rovers = "Expanded CM.Rovers"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[5438--[[Rovers--]]]," .."),
 	ActionId = str_ExpandedCM_Rovers,
@@ -287,7 +308,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Rovers",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000541--[[Set Charging Distance--]]],
 	ActionId = "Expanded CM.Rovers.Set Charging Distance",
@@ -301,7 +323,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRoverChargeRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000543--[[RC Move Speed--]]],
 	ActionId = "Expanded CM.Rovers.RC Move Speed",
@@ -315,7 +338,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRCMoveSpeed,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000545--[[RC Gravity--]]],
 	ActionId = "Expanded CM.Rovers.RC Gravity",
@@ -329,7 +353,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetGravityRC,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000547--[[RC Rover Drone Recharge Free--]]],
 	ActionId = "Expanded CM.Rovers.RC Rover Drone Recharge Free",
@@ -343,7 +368,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000549--[[RC Transport Instant Transfer--]]],
 	ActionId = "Expanded CM.Rovers.RC Transport Instant Transfer",
@@ -357,7 +383,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000551--[[RC Transport Storage Capacity--]]],
 	ActionId = "Expanded CM.Rovers.RC Transport Storage Capacity",
@@ -372,7 +399,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Rockets = "Expanded CM.Rockets"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[5238--[[Rockets--]]]," .."),
 	ActionId = str_ExpandedCM_Rockets,
@@ -381,7 +409,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Rockets",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000850--[[Change Resupply Settings--]]],
 	ActionId = "Expanded CM.Rockets.Change Resupply Settings",
@@ -390,7 +419,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ChangeResupplySettings,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000557--[[Launch Empty Rocket--]]],
 	ActionId = "Expanded CM.Rockets.Launch Empty Rocket",
@@ -399,7 +429,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.LaunchEmptyRocket,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000559--[[Cargo Capacity--]]],
 	ActionId = "Expanded CM.Rockets.Cargo Capacity",
@@ -413,7 +444,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRocketCargoCapacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000561--[[Travel Time--]]],
 	ActionId = "Expanded CM.Rockets.Travel Time",
@@ -427,7 +459,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRocketTravelTime,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[4594--[[Colonists Per Rocket--]]],
 	ActionId = "Expanded CM.Rockets.4594--[[Colonists Per Rocket",

@@ -3,10 +3,12 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local Actions = ChoGGi.Temp.Actions
 
+local c = #Actions
 --use number keys to activate/hide build menus
 do -- NumberKeysBuildMenu
 	local function AddMenuKey(num,key)
-		Actions[#Actions+1] = {
+		c = c + 1
+		Actions[c] = {
 			ActionId = Concat("ChoGGi_AddMenuKey",num),
 			OnAction = function()
 				ChoGGi.CodeFuncs.ShowBuildMenu(num)
@@ -113,13 +115,15 @@ function ChoGGi.MenuFuncs.ConstructionModeSet(itemname)
 --~	 end
 end
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ClearConsoleLog",
 	OnAction = cls,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ClearConsoleLog,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ObjectColourRandom",
 	OnAction = function()
 		ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
@@ -127,7 +131,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourRandom,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ObjectColourDefault",
 	OnAction = function()
 		ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
@@ -142,7 +147,8 @@ local function ToggleConsole()
 	end
 end
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ShowConsoleTilde",
 	OnAction = function()
 		ToggleConsole()
@@ -150,7 +156,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ShowConsoleEnter",
 	OnAction = function()
 		ToggleConsole()
@@ -158,7 +165,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_ConsoleRestart",
 	OnAction = function()
 		local dlgConsole = dlgConsole
@@ -174,7 +182,8 @@ Actions[#Actions+1] = {
 }
 
 -- goes to placement mode with last built object
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_LastConstructedBuilding",
 	OnAction = function()
 		local last = UICity.LastConstructedBuilding
@@ -186,7 +195,8 @@ Actions[#Actions+1] = {
 }
 
 -- goes to placement mode with SelectedObj
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionId = "ChoGGi_LastPlacedObject",
 	OnAction = function()
 		local ChoGGi = ChoGGi

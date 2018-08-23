@@ -594,7 +594,7 @@ FindShortestPath(C)
 FindSlidePosAtDestRadius(C)
 FlagClear(C)
 FlagSet(C)
-FlattenTerrainInShape(shape_data, obj, g_BuildableZ, ObjectGrid, g_NCF_FlatInner, g_NCF_FlatOuter, UnbuildableZ) --UnbuildableZ =  2^30 * 4 - 1
+FlattenTerrainInShape(shape_data, obj, g_BuildableZ, ObjectGrid, g_NCF_FlatInner, g_NCF_FlatOuter, UnbuildableZ) --UnbuildableZ =	2^30 * 4 - 1
 Flight_CheckCollisions(C)
 Flight_CheckPathSpline(C)
 Flight_GetCollisionTime(C)

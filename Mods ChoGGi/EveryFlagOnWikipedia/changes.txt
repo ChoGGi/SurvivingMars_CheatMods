@@ -1,3 +1,5 @@
+v0.4
+Slightly faster loading.
 v0.3
 List of all names is now applied to built-in countries.
 Random birthplace defaults to true (use Mod Config to disable).

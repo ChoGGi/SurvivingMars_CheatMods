@@ -868,7 +868,7 @@ end
 function ChoGGi.ComFuncs.StringToTable(str)
 	local temp = {}
 	for i in str:gmatch("%S+") do
-		temp[#temp+1] = i
+		temp[i] = i
 	end
 	return temp
 end
@@ -964,13 +964,13 @@ end
 function ChoGGi.ComFuncs.RetTableNoDupes(list)
 	local temp_t = {}
 	local dupe_t = {}
+	local c = 0
 
 	for i = 1, #list do
 		if not dupe_t[list[i]] then
-
-			temp_t[#temp_t+1] = list[i]
+			c = c + 1
+			temp_t[c] = list[i]
 			dupe_t[list[i]] = true
-
 		end
 	end
 
@@ -986,10 +986,12 @@ function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
 	)
 	local tempt = {}
 	local dupe = {}
+	local c = 0
 
 	for i = 1, #list do
 		if not dupe[list[i].class] then
-			tempt[#tempt+1] = list[i]
+			c = c + 1
+			tempt[c] = list[i]
 			dupe[list[i].class] = true
 		end
 	end
@@ -999,10 +1001,13 @@ end
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
 	local tempt = {}
+	local c = 0
+
 	list = list or ""
 	for i = 1, #list do
 		if list[i][cls] ~= text then
-			tempt[#tempt+1] = list[i]
+			c = c + 1
+			tempt[c] = list[i]
 		end
 	end
 	return tempt
@@ -1197,7 +1202,7 @@ do --
 				else
 					name = files[i]:gsub(path,"")
 				end
-				table_path[#table_path+1] = {
+				table_path[i] = {
 					path = files[i],
 					name = name,
 				}
@@ -1213,7 +1218,7 @@ do --
 			local table_path = {}
 			local temp_path = Concat(folder,"/")
 			for i = 1, #folders do
-				table_path[#table_path+1] = {
+				table_path[i] = {
 					path = folders[i],
 					name = folders[i]:gsub(temp_path,""),
 				}
@@ -1361,19 +1366,23 @@ end -- do
 
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 	local temp_table = {}
+	local c = 0
 
-	--add
+	-- add
 	if for_type then
 		for k,_ in pairs(list or empty_table) do
-			temp_table[#temp_table+1] = k
+			c = c + 1
+			temp_table[c] = k
 		end
 	else
 		for _,v in pairs(list or empty_table) do
-			temp_table[#temp_table+1] = v
+			c = c + 1
+			temp_table[c] = v
 		end
 	end
+
+	-- and send back sorted
 	table.sort(temp_table)
-	--and send back sorted
 	return temp_table
 end
 
@@ -1474,6 +1483,7 @@ do --
 
 		-- mysteries
 		ChoGGi.Tables.Mystery = {}
+		local cm = 0
 		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
 		local g_Classes = g_Classes
 		ClassDescendantsList("MysteryBase",function(class)
@@ -1487,10 +1497,11 @@ do --
 				name = display_name,
 				description = description
 			}
-			--we want to be able to access by for loop, Mystery 7, and WorldWar3
+			-- we want to be able to access by for loop, Mystery 7, and WorldWar3
 			ChoGGi.Tables.Mystery[scenario_name] = temptable
 			ChoGGi.Tables.Mystery[class] = temptable
-			ChoGGi.Tables.Mystery[#ChoGGi.Tables.Mystery+1] = temptable
+			cm = cm + 1
+			ChoGGi.Tables.Mystery[cm] = temptable
 		end)
 
 		-- colonists
@@ -1502,31 +1513,38 @@ do --
 		ChoGGi.Tables.ColonistSpecializations = {}
 		ChoGGi.Tables.ColonistBirthplaces = {}
 		--add as index and associative tables for ease of filtering
+		local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
 		for id,t in pairs(TraitPresets) do
 			if t.group == "Positive" then
-				ChoGGi.Tables.PositiveTraits[#ChoGGi.Tables.PositiveTraits+1] = id
+				c1 = c1 + 1
+				ChoGGi.Tables.PositiveTraits[c1] = id
 				ChoGGi.Tables.PositiveTraits[id] = true
 			elseif t.group == "Negative" then
-				ChoGGi.Tables.NegativeTraits[#ChoGGi.Tables.NegativeTraits+1] = id
+				c2 = c2 + 1
+				ChoGGi.Tables.NegativeTraits[c2] = id
 				ChoGGi.Tables.NegativeTraits[id] = true
 			elseif t.group == "other" then
-				ChoGGi.Tables.OtherTraits[#ChoGGi.Tables.OtherTraits+1] = id
+				c3 = c3 + 1
+				ChoGGi.Tables.OtherTraits[c3] = id
 				ChoGGi.Tables.OtherTraits[id] = true
 			elseif t.group == "Age Group" then
-				ChoGGi.Tables.ColonistAges[#ChoGGi.Tables.ColonistAges+1] = id
+				c4 = c4 + 1
+				ChoGGi.Tables.ColonistAges[c4] = id
 				ChoGGi.Tables.ColonistAges[id] = true
 			elseif t.group == "Gender" then
-				ChoGGi.Tables.ColonistGenders[#ChoGGi.Tables.ColonistGenders+1] = id
+				c5 = c5 + 1
+				ChoGGi.Tables.ColonistGenders[c5] = id
 				ChoGGi.Tables.ColonistGenders[id] = true
 			elseif t.group == "Specialization" and id ~= "none" then
-				ChoGGi.Tables.ColonistSpecializations[#ChoGGi.Tables.ColonistSpecializations+1] = id
+				c6 = c6 + 1
+				ChoGGi.Tables.ColonistSpecializations[c6] = id
 				ChoGGi.Tables.ColonistSpecializations[id] = true
 			end
 		end
 
 		local Nations = Nations
 		for i = 1, #Nations do
-			ChoGGi.Tables.ColonistBirthplaces[#ChoGGi.Tables.ColonistBirthplaces+1] = Nations[i].value
+			ChoGGi.Tables.ColonistBirthplaces[i] = Nations[i].value
 			ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
 		end
 
@@ -1541,6 +1559,7 @@ do --
 		-- easier access to cargo
 		ChoGGi.Tables.Cargo = {}
 		ChoGGi.Tables.CargoPresets = {}
+		local cc = 0
 
 		-- only called when ResupplyItemDefinitions is built
 		if cargo_update == true then
@@ -1556,7 +1575,8 @@ do --
 			for i = 1, #preset do
 				for j = 1, #preset[i] do
 					local c = preset[i][j]
-					ChoGGi.Tables.CargoPresets[#ChoGGi.Tables.CargoPresets+1] = c
+					cc = cc + 1
+					ChoGGi.Tables.CargoPresets[cc] = c
 					ChoGGi.Tables.CargoPresets[c.id] = c
 				end
 			end

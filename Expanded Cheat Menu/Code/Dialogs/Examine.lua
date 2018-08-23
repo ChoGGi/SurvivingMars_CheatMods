@@ -390,7 +390,9 @@ local function BuildParents(self,list,list_type,title,sort_type)
 	if list and next(list) then
 		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
 		self[list_type] = list
-		self.parents_menu_popup[#self.parents_menu_popup+1] = {
+		local c = #self.parents_menu_popup
+		c = c + 1
+		self.parents_menu_popup[c] = {
 			name = Concat("	 ---- ",title),
 			hint = title,
 		}
@@ -398,7 +400,8 @@ local function BuildParents(self,list,list_type,title,sort_type)
 			-- no sense in having an item in parents and ancestors
 			if not pmenu_skip_dupes[list[i]] then
 				pmenu_skip_dupes[list[i]] = true
-				self.parents_menu_popup[#self.parents_menu_popup+1] = {
+				c = c + 1
+				self.parents_menu_popup[c] = {
 					name = list[i],
 					hint = list[i],
 					clicked = function()
@@ -604,16 +607,23 @@ function Examine:valuetotextex(obj)
 					HLEnd,
 					"{",
 				}
+				local c = #res
 				for i = 1, Min(len, 3) do
-					res[#res+1] = i
-					res[#res+1] = " = "
-					res[#res+1] = self:valuetotextex(obj[i])
+					c = c + 1
+					res[c] = i
+					c = c + 1
+					res[c] = " = "
+					c = c + 1
+					res[c] = self:valuetotextex(obj[i])
 				end
 				if len > 3 then
-					res[#res+1] = "..."
+					c = c + 1
+					res[c] = "..."
 				end
-				res[#res+1] = ", "
-				res[#res+1] = "}"
+				c = c + 1
+				res[c] = ", "
+				c = c + 1
+				res[c] = "}"
 				return TableConcat(res)
 			else
 				-- regular table
@@ -706,26 +716,28 @@ function Examine:totextex(obj,ChoGGi)
 	local obj_metatable = getmetatable(obj)
 	local obj_type = type(obj)
 	local is_table = obj_type == "table"
+	local c = 0
 
 	if is_table then
 
 		for k, v in pairs(obj) do
-			res[#res+1] = Concat(
+			c = c + 1
+			res[c] = Concat(
 				self:valuetotextex(k),
 				" = ",
 				self:valuetotextex(v),
 				"<left>"
 			)
 			if type(k) == "number" then
-				sort[res[#res]] = k
+				sort[res[c]] = k
 			end
 		end
 
 	elseif obj_type == "thread" then
 
-		if blacklist
- then
-			res[#res+1] = Concat(
+		if blacklist then
+			c = c + 1
+			res[c] = Concat(
 				self:HyperLink(function(_, _)
 					ExamineThreadLevel_totextex(nil, nil, obj, self)
 				end),
@@ -738,7 +750,8 @@ function Examine:totextex(obj,ChoGGi)
 			while true do
 				info = debug.getinfo(obj, level, "Slfun")
 				if info then
-					res[#res+1] = Concat(
+					c = c + 1
+					res[c] = Concat(
 						self:HyperLink(function(level, info)
 							ExamineThreadLevel_totextex(level, info, obj,self)
 						end),
@@ -757,7 +770,8 @@ function Examine:totextex(obj,ChoGGi)
 			end
 		end
 
-		res[#res+1] = Concat("<color 255 255 255>\nThread info: ",
+		c = c + 1
+		res[c] = Concat("<color 255 255 255>\nThread info: ",
 			"\nIsValidThread(): ",IsValidThread(obj),
 			"\nGetThreadStatus(): ",GetThreadStatus(obj),
 			"\nIsGameTimeThread(): ",IsGameTimeThread(obj),
@@ -767,21 +781,23 @@ function Examine:totextex(obj,ChoGGi)
 		)
 
 	elseif obj_type == "function" then
-		if blacklist
- then
-			res[#res+1] = self:valuetotextex(ChoGGi.ComFuncs.DebugGetInfo(obj))
+		if blacklist then
+			c = c + 1
+			res[c] = self:valuetotextex(ChoGGi.ComFuncs.DebugGetInfo(obj))
 		else
 			local i = 1
 			while true do
 				local k, v = debug.getupvalue(obj, i)
 				if k then
-					res[#res+1] = Concat(
+					c = c + 1
+					res[c] = Concat(
 						self:valuetotextex(k),
 						" = ",
 						self:valuetotextex(v)
 					)
 				else
-					res[#res+1] = self:valuetotextex(obj)
+					c = c + 1
+					res[c] = self:valuetotextex(obj)
 					break
 				end
 				i = i + 1
@@ -838,7 +854,8 @@ function Examine:totextex(obj,ChoGGi)
 
 	-- add strings/numbers to the body
 	if obj_type == "number" or obj_type == "string" or obj_type == "boolean" then
-		res[#res+1] = tostring(obj)
+		c = c + 1
+		res[c] = tostring(obj)
 	elseif obj_type == "userdata" then
 		local str = T(obj)
 		-- might as well just return userdata instead of these
@@ -846,7 +863,8 @@ function Examine:totextex(obj,ChoGGi)
 			str = obj
 		end
 
-		res[#res+1] = tostring(str)
+		c = c + 1
+		res[c] = tostring(str)
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
 		local dbg_value = "\ndebug.getinfo: "
@@ -859,7 +877,8 @@ function Examine:totextex(obj,ChoGGi)
 				dbg_value = Concat(dbg_value,"\n",key,": ",value)
 			end
 		end
-		res[#res+1] = dbg_value
+		c = c + 1
+		res[c] = dbg_value
 	end
 
 	return TableConcat(res,"\n")
@@ -936,21 +955,27 @@ function Examine:menu(obj)
 		HLEnd,
 --~		 " ",
 	}
+	local c = #res
+
 	if IsValid(obj) and obj_type == "table" then
-		res[#res+1] = self:HyperLink(function()
+		c = c + 1
+		res[c] = self:HyperLink(function()
 			Show_menu(obj)
 		end)
-		res[#res+1] = S[302535920000058--[[[ShowIt]--]]]
-		res[#res+1] = HLEnd
---~		 res[#res+1] = " "
+		c = c + 1
+		res[c] = S[302535920000058--[[[ShowIt]--]]]
+		c = c + 1
+		res[c] = HLEnd
 	end
 	if IsValid(obj) then
---~		 res[#res+1] = " "
-		res[#res+1] = self:HyperLink(function()
+		c = c + 1
+		res[c] = self:HyperLink(function()
 			Destroy_menu(obj,self)
 		end)
-		res[#res+1] = S[302535920000060--[[[Destroy It!]--]]]
-		res[#res+1] = HLEnd
+		c = c + 1
+		res[c] = S[302535920000060--[[[Destroy It!]--]]]
+		c = c + 1
+		res[c] = HLEnd
 	end
 	return TableConcat(res)
 end
@@ -997,10 +1022,10 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 		--attaches menu
 		if attaches and attach_amount > 0 then
 			self.attaches_menu_popup = {}
-			local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+
 			for i = 1, #attaches do
 				local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
-				self.attaches_menu_popup[#self.attaches_menu_popup+1] = {
+				self.attaches_menu_popup[i] = {
 					name = RetName(attaches[i]),
 					hint = Concat(
 						attaches[i].class,"\n",
@@ -1009,7 +1034,7 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 					),
 					showme = attaches[i],
 					clicked = function()
-						OpenInExamineDlg(attaches[i],self)
+						ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
 					end,
 				}
 			end

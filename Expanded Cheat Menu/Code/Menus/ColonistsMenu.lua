@@ -4,9 +4,11 @@ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
+local c = #Actions
 
 local str_ExpandedCM_Colonists = "Expanded CM.Colonists"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[547--[[Colonists--]]]," .."),
 	ActionId = str_ExpandedCM_Colonists,
@@ -15,7 +17,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Colonists",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000369--[[No More Earthsick--]]],
 	ActionId = "Expanded CM.Colonists.No More Earthsick",
@@ -29,7 +32,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000371--[[Traits: Restrict For Selected Building Type--]]],
 	ActionId = "Expanded CM.Colonists.Traits: Restrict For Selected Building Type",
@@ -40,7 +44,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000373--[[Traits: Block For Selected Building Type--]]],
 	ActionId = "Expanded CM.Colonists.Traits: Block For Selected Building Type",
@@ -51,7 +56,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000375--[[The Soylent Option--]]],
 	ActionId = "Expanded CM.Colonists.The Soylent Option",
@@ -61,7 +67,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TheSoylentOption,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000377--[[Colonists Move Speed--]]],
 	ActionId = "Expanded CM.Colonists.Colonists Move Speed",
@@ -75,7 +82,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetColonistMoveSpeed,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000379--[[Add Or Remove Applicants--]]],
 	ActionId = "Expanded CM.Colonists.Add Or Remove Applicants",
@@ -84,7 +92,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AddApplicantsToPool,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000381--[[Colonists Gravity--]]],
 	ActionId = "Expanded CM.Colonists.Colonists Gravity",
@@ -98,7 +107,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetColonistsGravity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000416--[[Colonists Suffocate--]]],
 	ActionId = "Expanded CM.Colonists.Colonists Suffocate",
@@ -113,7 +123,8 @@ Works after in-game hour."--]]
 	OnAction = ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000418--[[Colonists Starve--]]],
 	ActionId = "Expanded CM.Colonists.Colonists Starve",
@@ -128,7 +139,8 @@ Works after colonist idle."--]]
 	OnAction = ChoGGi.MenuFuncs.ColonistsStarve_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000424--[[Set Age New--]]],
 	ActionId = "Expanded CM.Colonists.Set Age New",
@@ -144,7 +156,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000426--[[Set Age--]]],
 	ActionId = "Expanded CM.Colonists.Set Age",
@@ -155,7 +168,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000428--[[Set Gender New--]]],
 	ActionId = "Expanded CM.Colonists.Set Gender New",
@@ -171,7 +185,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000430--[[Set Gender--]]],
 	ActionId = "Expanded CM.Colonists.Set Gender",
@@ -182,7 +197,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000432--[[Set Specialization New--]]],
 	ActionId = "Expanded CM.Colonists.Set Specialization New",
@@ -198,7 +214,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000434--[[Set Specialization--]]],
 	ActionId = "Expanded CM.Colonists.Set Specialization",
@@ -209,7 +226,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000436--[[Set Race New--]]],
 	ActionId = "Expanded CM.Colonists.Set Race New",
@@ -225,7 +243,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000438--[[Set Race--]]],
 	ActionId = "Expanded CM.Colonists.Set Race",
@@ -236,7 +255,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000440--[[Set Traits New--]]],
 	ActionId = "Expanded CM.Colonists.Set Traits New",
@@ -252,7 +272,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000442--[[Set Traits--]]],
 	ActionId = "Expanded CM.Colonists.Set Traits",
@@ -263,7 +284,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000444--[[Set Stats--]]],
 	ActionId = "Expanded CM.Colonists.Set Stats",
@@ -274,7 +296,8 @@ Not permanent."--]]],
 	OnAction = ChoGGi.MenuFuncs.SetColonistsStats,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists,
 	ActionName = S[302535920000446--[[Colonist Death Age--]]],
 	ActionId = "Expanded CM.Colonists.Colonist Death Age",
@@ -289,7 +312,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Colonists_Work = "Expanded CM.Colonists.Work"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Colonists",
 	ActionName = Concat(S[302535920000212--[[Work--]]]," .."),
 	ActionId = str_ExpandedCM_Colonists_Work,
@@ -298,7 +322,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "3Work",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000383--[[Fire All Colonists!--]]],
 	ActionId = "Expanded CM.Colonists.Work.Fire All Colonists!",
@@ -307,7 +332,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.FireAllColonists,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000385--[[Set All Work Shifts--]]],
 	ActionId = "Expanded CM.Colonists.Work.Set All Work Shifts",
@@ -316,7 +342,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetAllWorkShifts,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
 	ActionId = "Expanded CM.Colonists.Work.Colonists Avoid Fired Workplace",
@@ -331,7 +358,8 @@ Works after colonist idle."--]]
 	OnAction = ChoGGi.MenuFuncs.AvoidWorkplace_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000389--[[Performance Penalty Non-Specialist--]]],
 	ActionId = "Expanded CM.Colonists.Work.Performance Penalty Non-Specialist",
@@ -346,7 +374,8 @@ Activated when colonist changes job."--]]
 	OnAction = ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000392--[[Outside Workplace Radius--]]],
 	ActionId = "Expanded CM.Colonists.Work.Outside Workplace Radius",
@@ -360,7 +389,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Work,
 	ActionName = S[302535920000393--[[Add Specialization To All--]]],
 	ActionId = "Expanded CM.Colonists.Work.Add Specialization To All",
@@ -370,7 +400,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Colonists_Stats = "Expanded CM.Colonists.Stats"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Colonists",
 	ActionName = Concat(S[5568--[[Stats--]]]," .."),
 	ActionId = str_ExpandedCM_Colonists_Stats,
@@ -379,7 +410,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Stats",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000395--[[Min Comfort Birth--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Min Comfort Birth",
@@ -393,7 +425,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetMinComfortBirth,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000397--[[Visit Fail Penalty--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Visit Fail Penalty",
@@ -407,7 +440,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000399--[[Renegade Creation Toggle--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Renegade Creation Toggle",
@@ -422,7 +456,8 @@ Works after daily update."--]]
 	OnAction = ChoGGi.MenuFuncs.RenegadeCreation_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000401--[[Set Renegade Status--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Set Renegade Status",
@@ -431,7 +466,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetRenegadeStatus,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000402--[[Morale Always Max--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Morale Always Max",
@@ -446,7 +482,8 @@ Only works on colonists that have yet to spawn (maybe)."--]]
 	OnAction = ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000404--[[See Dead Sanity Damage--]]],
 	ActionId = "Expanded CM.Colonists.Stats.See Dead Sanity Damage",
@@ -461,7 +498,8 @@ Works after in-game hour."--]]
 	OnAction = ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000406--[[No Home Comfort Damage--]]],
 	ActionId = "Expanded CM.Colonists.Stats.No Home Comfort Damage",
@@ -476,7 +514,8 @@ Works after in-game hour."--]]
 	OnAction = ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[302535920000408--[[Chance Of Sanity Damage--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Chance Of Sanity Damage",
@@ -491,7 +530,8 @@ Works after in-game hour."--]]
 	OnAction = ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Stats,
 	ActionName = S[4576--[[Chance Of Suicide--]]],
 	ActionId = "Expanded CM.Colonists.Stats.Chance Of Suicide",
@@ -507,7 +547,8 @@ Works after colonist idle."--]]
 }
 
 local str_ExpandedCM_Colonists_Traits = "Expanded CM.Colonists.Traits"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Colonists",
 	ActionName = Concat(S[235--[[Traits--]]]," .."),
 	ActionId = str_ExpandedCM_Colonists_Traits,
@@ -516,7 +557,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "2Traits",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Traits,
 	ActionName = S[302535920000410--[[University Grad Remove Idiot--]]],
 	ActionId = "Expanded CM.Colonists.Traits.University Grad Remove Idiot",
@@ -530,7 +572,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Traits,
 	ActionName = S[302535920000412--[[Chance Of Negative Trait--]]],
 	ActionId = "Expanded CM.Colonists.Traits.Chance Of Negative Trait",
@@ -545,7 +588,8 @@ Works after colonist idle."--]]
 	OnAction = ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Traits,
 	ActionName = S[302535920000420--[[Positive Playground--]]],
 	ActionId = "Expanded CM.Colonists.Traits.Positive Playground",
@@ -559,7 +603,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.PositivePlayground_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Colonists_Traits,
 	ActionName = S[302535920000422--[[Project Morpheus Positive Trait--]]],
 	ActionId = "Expanded CM.Colonists.Traits.Project Morpheus Positive Trait",

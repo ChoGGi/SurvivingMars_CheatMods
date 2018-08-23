@@ -3,8 +3,10 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = Concat(S[987648737170--[[Map--]]]," ",S[5422--[[Exploration--]]]),
 	ActionId = "Cheats.Map Exploration",
@@ -14,7 +16,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "01Map Exploration",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[25--[[Anomaly Scanning--]]],
 	ActionId = "Cheats.Anomaly Scanning",
@@ -24,7 +27,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "01Anomaly Scanning",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[5661--[[Mystery Log--]]],
 	ActionId = "Cheats.Mystery Log",
@@ -34,7 +38,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "03Mystery Log",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000331--[[Start Mystery--]]],
 	ActionId = "Cheats.Start Mystery",
@@ -44,7 +49,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "04Start Mystery",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[3983--[[Disasters--]]],
 	ActionId = "Cheats.Start Disasters",
@@ -54,7 +60,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "05Start Disasters",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = Concat(S[302535920000266--[[Spawn--]]]," ",S[547--[[Colonists--]]]),
 	ActionId = "Cheats.Spawn Colonists",
@@ -64,7 +71,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "07Spawn Colonists",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000337--[[Unlock all buildings--]]],
 	ActionId = "Cheats.Unlock all buildings",
@@ -74,7 +82,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "08Unlock all buildings",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000361--[[Unpin All Pinned Objects--]]],
 	ActionId = "Cheats.Unpin All Pinned Objects",
@@ -84,7 +93,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "09Unpin All Pinned Objects",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000363--[[Complete Wires & Pipes--]]],
 	ActionId = "Cheats.Complete Wires & Pipes",
@@ -94,7 +104,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "10Complete Wires & Pipes",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000365--[[Complete Constructions--]]],
 	ActionId = "Cheats.Complete Constructions",
@@ -105,7 +116,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = S[302535920000236--[[Mod Editor--]]],
 	ActionId = "Cheats.Mod Editor",
@@ -116,7 +128,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Cheats_Workplaces = "Cheats.Workplaces"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = Concat(S[5444--[[Workplaces--]]]," .."),
 	ActionId = str_Cheats_Workplaces,
@@ -125,7 +138,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "06Workplaces",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Workplaces,
 	ActionName = S[302535920000339--[[Toggle All Shifts--]]],
 	ActionId = "Cheats.Workplaces.Toggle All Shifts",
@@ -134,7 +148,8 @@ Actions[#Actions+1] = {
 	OnAction = CheatToggleAllShifts,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Workplaces,
 	ActionName = S[302535920000341--[[Update All Workplaces--]]],
 	ActionId = "Cheats.Workplaces.Update All Workplaces",
@@ -143,7 +158,8 @@ Actions[#Actions+1] = {
 	OnAction = CheatUpdateAllWorkplaces,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Workplaces,
 	ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
 	ActionId = "Cheats.Workplaces.Clear Forced Workplaces",
@@ -153,7 +169,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Cheats_Research = "Cheats.Research"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = Concat(S[311--[[Research--]]]," .."),
 	ActionId = str_Cheats_Research,
@@ -162,7 +179,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "02Research",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920001278--[[Instant Research--]]],
 	ActionId = "Cheats.Research.Instant Research",
@@ -177,7 +195,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = Concat(S[311--[[Research--]]]," ",S[3734--[[Tech--]]]),
 	ActionId = "Cheats.Research.Research Tech",
@@ -187,7 +206,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "-1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000305--[[Research Queue Size--]]],
 	ActionId = "Cheats.Research.Research Queue Size",
@@ -202,7 +222,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000349--[[Reset All Research--]]],
 	ActionId = "Cheats.Research.Reset All Research",
@@ -212,7 +233,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[7790--[[Research Current Tech--]]],
 	ActionId = "Cheats.Research.Research Current Tec",
@@ -222,7 +244,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000295--[[Add Research Points--]]],
 	ActionId = "Cheats.Research.Add Research Points",
@@ -232,7 +255,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000355--[[Outsourcing For Free--]]],
 	ActionId = "Cheats.Research.Outsourcing For Free",
@@ -247,7 +271,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
 	ActionId = "Cheats.Research.Set Amount Of Breakthroughs Allowed",
@@ -262,7 +287,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Cheats_Research,
 	ActionName = S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 	ActionId = "Cheats.Research.Breakthroughs From OmegaTelescope",
@@ -278,7 +304,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Cheats_Menu = "Cheats.Menu"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Cheats",
 	ActionName = Concat(S[1000162--[[Menu--]]]," .."),
 	ActionId = str_Cheats_Menu,
@@ -286,7 +313,8 @@ Actions[#Actions+1] = {
 	OnActionEffect = "popup",
 	ActionSortKey = "99",
 }
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionName = S[302535920000232--[[Draggable Cheats Menu--]]],
 	ActionMenubar = str_Cheats_Menu,
 	ActionId = "Cheats.Camera.Draggable Cheats Menu",
@@ -300,7 +328,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
 	ActionMenubar = str_Cheats_Menu,
 	ActionId = "Cheats.Menu.Keep Cheats Menu Position",

@@ -3,10 +3,12 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
 local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/%s"
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = S[302535920000367--[[Mod Upload--]]],
 	ActionId = "Help.Mod Upload",
@@ -16,7 +18,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = S[302535920000473--[[Reload ECM Menu--]]],
 	ActionId = "Help.Reload ECM Menu",
@@ -29,7 +32,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Help_Screenshot = "Help.Screenshot"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = Concat(S[302535920000892--[[Screenshot--]]]," .."),
 	ActionId = str_Help_Screenshot,
@@ -38,7 +42,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "2Screenshot",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Screenshot,
 	ActionName = S[302535920000657--[[Screenshot--]]],
 	ActionId = "Help.Screenshot.Screenshot",
@@ -48,7 +53,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Screenshot,
 	ActionName = S[302535920000659--[[Screenshot Upsampled--]]],
 	ActionId = "Help.Screenshot.Screenshot Upsampled",
@@ -60,7 +66,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Screenshot,
 	ActionName = S[302535920000661--[[Show Interface in Screenshots--]]],
 	ActionId = "Help.Screenshot.Show Interface in Screenshots",
@@ -75,7 +82,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Help_Interface = "Help.Interface"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = Concat(S[302535920000893--[[Interface--]]]," .."),
 	ActionId = str_Help_Interface,
@@ -84,7 +92,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Interface",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Interface,
 	ActionName = S[302535920000663--[[Toggle Interface--]]],
 	ActionId = "Help.Interface.Toggle Interface",
@@ -94,7 +103,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleInterface,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Interface,
 	ActionName = S[302535920000664--[[Toggle Signs--]]],
 	ActionId = "Help.Interface.Toggle Signs",
@@ -104,7 +114,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Interface,
 	ActionName = S[302535920000666--[[Toggle on-screen hints--]]],
 	ActionId = "Help.Interface.Toggle on-screen hints",
@@ -113,7 +124,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.OnScreenHints_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Interface,
 	ActionName = S[302535920000668--[[Reset on-screen hints--]]],
 	ActionId = "Help.Interface.Reset on-screen hints",
@@ -122,7 +134,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.OnScreenHints_Reset,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Interface,
 	ActionName = S[302535920000670--[[Never Show Hints--]]],
 	ActionId = "Help.Interface.Never Show Hints",
@@ -137,7 +150,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Help_ECM = "Help.Expanded Cheat Menu"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," .."),
 	ActionId = str_Help_ECM,
@@ -146,7 +160,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0Expanded Cheat Menu",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = S[302535920000672--[[About ECM--]]],
 	ActionId = "Help.Expanded Cheat Menu.About ECM",
@@ -156,7 +171,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920001020--[[Read me--]]]),
 	ActionId = "Help.Expanded Cheat Menu.ECM Read me",
@@ -169,7 +185,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "2",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = S[302535920001029--[[Changelog--]]],
 	ActionId = "Help.Expanded Cheat Menu.Changelog",
@@ -182,7 +199,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "3",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
 	ActionId = "Help.Expanded Cheat Menu.Hide Cheats Menu",
@@ -193,7 +211,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = Concat(S[302535920000142--[[Disable--]]]," ",S[302535920000887--[[ECM--]]]),
 	ActionId = "Help.Expanded Cheat Menu.Disable ECM",
@@ -203,7 +222,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "6",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = S[302535920000676--[[Reset ECM Settings--]]],
 	ActionId = "Help.Expanded Cheat Menu.Reset ECM Settings",
@@ -213,7 +233,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "7",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_ECM,
 	ActionName = S[302535920001242--[[Edit ECM Settings--]]],
 	ActionId = "Help.Expanded Cheat Menu.Edit ECM Settings",
@@ -224,7 +245,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Help_Text = "Help.Text"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Help",
 	ActionName = Concat(S[1000145--[[Text--]]]," .."),
 	ActionId = str_Help_Text,
@@ -233,7 +255,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Text",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = Concat("*",S[126095410863--[[Info--]]],"*"),
 	ActionId = "Help.Text.*Info*",
@@ -242,7 +265,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "-1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = Concat("*",S[5568--[[Stats--]]],"*"),
 	ActionId = "Help.Text.*Stats*",
@@ -253,7 +277,8 @@ Actions[#Actions+1] = {
 	end,
 	ActionSortKey = "0",
 }
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = Concat("*",S[283142739680--[[Game--]]]," & ",S[987648737170--[[Map--]]]," ",S[126095410863--[[Info--]]],"*"),
 	ActionId = "Help.Text.*Game & Map Info*",
@@ -263,7 +288,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = Concat("*",S[302535920000875--[[Game Functions--]]],"*"),
 	ActionId = "Help.Text.*Game Functions*",
@@ -275,7 +301,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "0",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Misc]],
 	ActionId = "Help.Text.Misc",
@@ -287,7 +314,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "96",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Save Load Mod Settings]],
 	ActionId = "Help.Text.Save Load Mod Settings",
@@ -299,7 +327,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "97",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[OnMsgs Easy Start]],
 	ActionId = "Help.Text.OnMsgs Easy Start",
@@ -311,7 +340,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "98",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[OnMsgs Load Game]],
 	ActionId = "Help.Text.OnMsgs Load Game",
@@ -323,7 +353,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "98",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[OnMsgs New Game]],
 	ActionId = "Help.Text.OnMsgs New Game",
@@ -335,7 +366,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "98",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Add New Trait]],
 	ActionId = "Help.Text.Add New Trait",
@@ -347,7 +379,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Change Animation]],
 	ActionId = "Help.Text.Change Animation",
@@ -359,7 +392,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[DroneNoBatteryNeeded]],
 	ActionId = "Help.Text.DroneNoBatteryNeeded",
@@ -371,7 +405,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Hidden Milestones]],
 	ActionId = "Help.Text.Hidden Milestones",
@@ -383,7 +418,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Locales]],
 	ActionId = "Help.Text.Locales",
@@ -395,7 +431,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Random number]],
 	ActionId = "Help.Text.Random number",
@@ -407,7 +444,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Return All Nearby Objects]],
 	ActionId = "Help.Text.Return All Nearby Objects",
@@ -419,7 +457,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Return Random Colours]],
 	ActionId = "Help.Text.Return Random Colours",
@@ -431,7 +470,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[Show A List of Choices]],
 	ActionId = "Help.Text.Show A List of Choices",
@@ -443,7 +483,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "99",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Help_Text,
 	ActionName = [[TaskRequestFuncs]],
 	ActionId = "Help.Text.TaskRequestFuncs",

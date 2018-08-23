@@ -4,9 +4,11 @@ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local icon = "CommonAssets/UI/Menu/Cube.tga"
+local c = #Actions
 
 local str_ExpandedCM_Buildings = "Expanded CM.Buildings"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[3980--[[Buildings--]]]," .."),
 	ActionId = str_ExpandedCM_Buildings,
@@ -15,7 +17,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Buildings",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
 	ActionId = "Expanded CM.Buildings.Storage Amount Of Diner & Grocery",
@@ -29,7 +32,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000168--[[Triboelectric Scrubber Radius--]]],
 	ActionId = "Expanded CM.Buildings.Triboelectric Scrubber Radius",
@@ -47,7 +51,8 @@ I trust you are not in too much distress."--]])
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000171--[[SubsurfaceHeater Radius--]]],
 	ActionId = "Expanded CM.Buildings.SubsurfaceHeater Radius",
@@ -63,7 +68,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000174--[[Always Dusty--]]],
 	ActionId = "Expanded CM.Buildings.Always Dusty",
@@ -77,7 +83,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000176--[[Empty Mech Depot--]]],
 	ActionId = "Expanded CM.Buildings.Empty Mech Depot",
@@ -86,7 +93,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.EmptyMechDepot,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000178--[[Protection Radius--]]],
 	ActionId = "Expanded CM.Buildings.Protection Radius",
@@ -95,7 +103,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
 	ActionId = "Expanded CM.Buildings.Unlock Locked Buildings",
@@ -104,7 +113,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000182--[[Pipes Pillars Spacing--]]],
 	ActionId = "Expanded CM.Buildings.Pipes Pillars Spacing",
@@ -118,7 +128,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000184--[[Unlimited Connection Length--]]],
 	ActionId = "Expanded CM.Buildings.Unlimited Connection Length",
@@ -132,7 +143,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000186--[[Power-free Building--]]],
 	ActionId = "Expanded CM.Buildings.Power-free Building",
@@ -142,7 +154,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "12",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920001251--[[Water-free Building--]]],
 	ActionId = "Expanded CM.Buildings.Water-free Building",
@@ -152,7 +165,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "13",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920001253--[[Oxygen-free Building--]]],
 	ActionId = "Expanded CM.Buildings.Oxygen-free Building",
@@ -162,7 +176,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "14",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000188--[[Set Charge & Discharge Rates--]]],
 	ActionId = "Expanded CM.Buildings.Set Charge & Discharge Rates",
@@ -172,7 +187,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetMaxChangeOrDischarge,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000191--[[Use Last Orientation--]]],
 	ActionId = "Expanded CM.Buildings.Use Last Orientation",
@@ -187,7 +203,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.UseLastOrientation,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000198--[[Sanatoriums Cure All--]]],
 	ActionId = "Expanded CM.Buildings.Sanatoriums Cure All",
@@ -201,7 +218,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000200--[[Schools Train All--]]],
 	ActionId = "Expanded CM.Buildings.Schools Train All",
@@ -215,7 +233,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000192--[[Farm Shifts All On--]]],
 	ActionId = "Expanded CM.Buildings.Farm Shifts All On",
@@ -224,7 +243,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.FarmShiftsAllOn,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000194--[[Production Amount Set--]]],
 	ActionId = "Expanded CM.Buildings.Production Amount Set",
@@ -235,7 +255,8 @@ Works on any building that produces."--]]],
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetProductionAmount,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000196--[[Fully Automated Building--]]],
 	ActionId = "Expanded CM.Buildings.Fully Automated Building",
@@ -244,7 +265,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000202--[[Sanatoriums & Schools: Show All Traits--]]],
 	ActionId = "Expanded CM.Buildings.Sanatoriums & Schools: Show All Traits",
@@ -258,7 +280,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000204--[[Sanatoriums & Schools: Show Full List--]]],
 	ActionId = "Expanded CM.Buildings.Sanatoriums & Schools: Show Full List",
@@ -272,7 +295,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000206--[[Maintenance Free Inside--]]],
 	ActionId = "Expanded CM.Buildings.Maintenance Free Inside",
@@ -286,7 +310,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000208--[[Maintenance Free--]]],
 	ActionId = "Expanded CM.Buildings.Maintenance Free",
@@ -300,7 +325,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000210--[[Moisture Vaporator Penalty--]]],
 	ActionId = "Expanded CM.Buildings.Moisture Vaporator Penalty",
@@ -314,7 +340,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[4711--[[Crop Fail Threshold--]]],
 	ActionId = "Expanded CM.Buildings.Crop Fail Threshold",
@@ -328,7 +355,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000214--[[Cheap Construction--]]],
 	ActionId = "Expanded CM.Buildings.Cheap Construction",
@@ -342,7 +370,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CheapConstruction_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000216--[[Building Damage Crime--]]],
 	ActionId = "Expanded CM.Buildings.Building Damage Crime",
@@ -356,7 +385,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000218--[[No Chance Of Break--]]]),
 	ActionId = "Expanded CM.Buildings.Cables & Pipes: No Chance Of Break",
@@ -370,7 +400,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[134--[[Instant Build--]]]),
 	ActionId = "Expanded CM.Buildings.Cables & Pipes: Instant Build",
@@ -384,7 +415,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000159--[[Unlimited Wonders--]]],
 	ActionId = "Expanded CM.Buildings.Unlimited Wonders",
@@ -398,7 +430,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.Building_wonder_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000224--[[Show Hidden Buildings--]]],
 	ActionId = "Expanded CM.Buildings.Show Hidden Buildings",
@@ -412,7 +445,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000226--[[Build Spires Outside of Spire Point--]]],
 	ActionId = "Expanded CM.Buildings.Build Spires Outside of Spire Point",
@@ -427,7 +461,8 @@ Use with Remove Building Limits to fill up a dome with spires."--]]
 	OnAction = ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920001241--[[Instant Build--]]],
 	ActionId = "Expanded CM.Buildings.Instant Build",
@@ -441,7 +476,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.Building_instant_build_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings,
 	ActionName = S[302535920000230--[[Remove Building Limits--]]],
 	ActionId = "Expanded CM.Buildings.Remove Building Limits",

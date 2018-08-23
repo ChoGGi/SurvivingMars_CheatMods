@@ -3,8 +3,10 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000680--[[Annoying Sounds--]]],
 	ActionId = "Game.Misc.Annoying Sounds",
@@ -13,7 +15,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920001292--[[List All Objects--]]],
 	ActionId = "Game.List All Objects",
@@ -22,7 +25,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ListAllObjects,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000864--[[Delete All Rocks--]]],
 	ActionId = "Game.Delete All Rocks",
@@ -31,7 +35,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DeleteAllRocks,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
 	ActionId = "Game.Terrain Editor Toggle",
@@ -41,7 +46,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TerrainEditor_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000485--[[Terrain Flatten Toggle--]]],
 	ActionId = "Game.Terrain Flatten Toggle",
@@ -53,7 +59,8 @@ Use Shift + Arrow keys to change the height/radius.--]]],
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000493--[[Change Map--]]],
 	ActionId = "Game.Change Map",
@@ -65,7 +72,8 @@ The map disaster settings don't do jack (use ECM>Mission>Disasters).--]]],
 	OnAction = ChoGGi.MenuFuncs.ChangeMap,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000265--[[Pulsating Pins--]]],
 	ActionId = "Game.Pulsating Pins",
@@ -79,7 +87,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000623--[[Change Terrain Type--]]],
 	ActionId = "Game.Change Terrain Type",
@@ -89,7 +98,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000625--[[Change Light Model--]]],
 	ActionId = "Game.Change Light Model",
@@ -103,7 +113,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ChangeLightmodel,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000627--[[Change Light Model Custom--]]],
 	ActionId = "Game.Change Light Model Custom",
@@ -119,7 +130,8 @@ Actions[#Actions+1] = {
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000629--[[UI Transparency--]]],
 	ActionId = "Game.UI Transparency",
@@ -129,7 +141,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000631--[[UI Transparency Mouseover--]]],
 	ActionId = "Game.UI Transparency Mouseover",
@@ -144,7 +157,8 @@ Actions[#Actions+1] = {
 }
 
 local str_Game_Camera = "Game.Camera"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = Concat(S[302535920001058--[[Camera--]]]," .."),
 	ActionId = str_Game_Camera,
@@ -153,7 +167,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "2Camera",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Camera,
 	ActionName = S[302535920000647--[[Border Scrolling--]]],
 	ActionId = "Game.Camera.Border Scrolling",
@@ -167,7 +182,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetBorderScrolling,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Camera,
 	ActionName = S[302535920000649--[[Zoom Distance--]]],
 	ActionId = "Game.Camera.Zoom Distance",
@@ -181,7 +197,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CameraZoom_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Camera,
 	ActionName = S[302535920000651--[[Toggle Free Camera--]]],
 	ActionId = "Game.Camera.Toggle Free Camera",
@@ -191,7 +208,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Camera,
 	ActionName = S[302535920000653--[[Toggle Follow Camera--]]],
 	ActionId = "Game.Camera.Toggle Follow Camera",
@@ -201,7 +219,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Camera,
 	ActionName = S[302535920000655--[[Toggle Cursor--]]],
 	ActionId = "Game.Camera.Toggle Cursor",
@@ -213,7 +232,8 @@ Actions[#Actions+1] = {
 
 
 local str_Game_Render = "Game.Render"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = Concat(S[302535920000845--[[Render--]]]," .."),
 	ActionId = str_Game_Render,
@@ -222,7 +242,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "2Render",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000633--[[Lights Radius--]]],
 	ActionId = "Game.Render.Lights Radius",
@@ -237,7 +258,8 @@ Lets you see lights from further away/more bleedout?--]]
 	OnAction = ChoGGi.MenuFuncs.SetLightsRadius,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000635--[[Terrain Detail--]]],
 	ActionId = "Game.Render.Terrain Detail",
@@ -252,7 +274,8 @@ Makes the background terrain more detailed (make sure to also stick Terrain on U
 	OnAction = ChoGGi.MenuFuncs.SetTerrainDetail,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000637--[[Video Memory--]]],
 	ActionId = "Game.Render.Video Memory",
@@ -266,7 +289,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetVideoMemory,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000639--[[Shadow Map--]]],
 	ActionId = "Game.Render.Shadow Map",
@@ -280,7 +304,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetShadowmapSize,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000641--[[Disable Texture Compression--]]],
 	ActionId = "Game.Render.Disable Texture Compression",
@@ -294,7 +319,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000643--[[Higher Render Distance--]]],
 	ActionId = "Game.Render.Higher Render Distance",
@@ -309,7 +335,8 @@ Not noticeable unless using higher zoom.--]]
 	OnAction = ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_Game_Render,
 	ActionName = S[302535920000645--[[Higher Shadow Distance--]]],
 	ActionId = "Game.Render.Higher Shadow Distance",

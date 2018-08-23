@@ -77,6 +77,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
 			MinWidth = 100,
 			OnMouseButtonDown = function()
 				self.idEdit:EditOperation("ChoGGi.CurObj",true)
+				self.idEdit:SetFocus()
 			end,
 		}, self.idButtonContainer)
 	end

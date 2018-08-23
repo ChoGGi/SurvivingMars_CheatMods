@@ -1,10 +1,13 @@
 -- See LICENSE for terms
 
+-- used to do minimal editing of objects (or all of same type)
+
 if true then
 	return
 end
 
--- used to do minimal editing of objects (or all of same type)
+--~ local c = 0
+--~ c = c + 1
 
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat

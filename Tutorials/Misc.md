@@ -30,25 +30,25 @@ Encode16(SHA256(value))
 Access varargs (...):
 Use select(index,...) index being the argument you want to select, or run it through a for loop with
 for i = 1, select("#",...) do
-  local arg = select(i,...)
+	local arg = select(i,...)
 end
 
 Countdown timer (use CreateGameTimeThread to have it pause when the game pauses):
 local countdown = CreateRealTimeThread(function()
-  Sleep(10000)
-  --do something after
+	Sleep(10000)
+	--do something after
 end)
 if you_want_stop_it_from_outside then
-  DeleteThread(countdown)
+	DeleteThread(countdown)
 end
 
 Loop backwards through a table (good for deleting as you go):
 for i = #some_table, 1, -1 do
-  print(some_table[i])
-  table.remove(some_table,i)
+	print(some_table[i])
+	table.remove(some_table,i)
 end
 
 Info from other people:
 
-  Crysm: 7200 units per revolution. So units = (degrees * 20)
+	Crysm: 7200 units per revolution. So units = (degrees * 20)
 ```

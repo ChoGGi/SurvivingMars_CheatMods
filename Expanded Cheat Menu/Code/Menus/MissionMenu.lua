@@ -3,9 +3,11 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
 local str_ExpandedCM_Mission = "Expanded CM.Mission"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[1635--[[Mission--]]]," .."),
 	ActionId = str_ExpandedCM_Mission,
@@ -14,7 +16,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Mission",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000704--[[Instant Mission Goal--]]],
 	ActionId = "Expanded CM.Mission.Instant Mission Goal",
@@ -25,7 +28,8 @@ Needs to change Sol to update.--]]],
 	OnAction = ChoGGi.MenuFuncs.InstantMissionGoal,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000706--[[Instant Colony Approval--]]],
 	ActionId = "Expanded CM.Mission.Instant Colony Approval",
@@ -34,7 +38,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.InstantColonyApproval,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000710--[[Change Logo--]]],
 	ActionId = "Expanded CM.Mission.Change Logo",
@@ -43,7 +48,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ChangeGameLogo,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000712--[[Set Sponsor--]]],
 	ActionId = "Expanded CM.Mission.Set Sponsor",
@@ -53,7 +59,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Set Sponsor",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000716--[[Set Commander--]]],
 	ActionId = "Expanded CM.Mission.Set Commander",
@@ -63,7 +70,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "3",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000714--[[Set Bonuses Sponsor--]]],
 	ActionId = "Expanded CM.Mission.Set Bonuses Sponsor",
@@ -76,7 +84,8 @@ restart to set disabled.--]]],
 	ActionSortKey = "2",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[302535920000718--[[Set Bonuses Commander--]]],
 	ActionId = "Expanded CM.Mission.Set Bonuses Commander",
@@ -89,7 +98,8 @@ restart to set disabled.--]]],
 	ActionSortKey = "4",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission,
 	ActionName = S[8800--[[Game Rules--]]],
 	ActionId = "Expanded CM.Mission.Game Rules",
@@ -99,7 +109,8 @@ Actions[#Actions+1] = {
 }
 
 local str_ExpandedCM_Mission_Disasters = "Expanded CM.Mission.Disasters"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM.Mission",
 	ActionName = Concat(S[3983--[[Disasters--]]]," .."),
 	ActionId = str_ExpandedCM_Mission_Disasters,
@@ -108,7 +119,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "1Disasters",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission_Disasters,
 	ActionName = S[302535920000708--[[Meteor Damage--]]],
 	ActionId = "Expanded CM.Mission.Disasters.Meteor Damage",
@@ -122,7 +134,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission_Disasters,
 	ActionName = S[4142--[[Dust Devils--]]],
 	ActionId = "Expanded CM.Mission.Disasters.Dust Devils",
@@ -134,7 +147,8 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission_Disasters,
 	ActionName = S[4148--[[Cold Waves--]]],
 	ActionId = "Expanded CM.Mission.Disasters.Cold Waves",
@@ -146,7 +160,8 @@ Current: %s"--]]]:format(S[4149--[[Cold Wave--]]],mapdata.MapSettings_ColdWave),
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission_Disasters,
 	ActionName = S[4144--[[Dust Storms--]]],
 	ActionId = "Expanded CM.Mission.Disasters.Dust Storms",
@@ -158,7 +173,8 @@ Current: %s"--]]]:format(S[4250--[[Dust Storm--]]],mapdata.MapSettings_DustStorm
 	end,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Mission_Disasters,
 	ActionName = S[4146--[[Meteors--]]],
 	ActionId = "Expanded CM.Mission.Disasters.Meteors",

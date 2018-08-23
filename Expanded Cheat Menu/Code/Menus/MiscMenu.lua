@@ -3,9 +3,11 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
+local c = #Actions
 
 local str_ExpandedCM_Misc = "Expanded CM.Misc"
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[1000207--[[Misc--]]]," .."),
 	ActionId = str_ExpandedCM_Misc,
@@ -14,7 +16,8 @@ Actions[#Actions+1] = {
 	ActionSortKey = "90Misc",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000678--[[Change Surface Signs To Materials--]]],
 	ActionId = "Expanded CM.Misc.Change Surface Signs To Materials",
@@ -23,7 +26,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000682--[[Change Entity--]]],
 	ActionId = "Expanded CM.Misc.Change Entity",
@@ -32,7 +36,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetEntity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000684--[[Change Entity Scale--]]],
 	ActionId = "Expanded CM.Misc.Change Entity Scale",
@@ -41,7 +46,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.SetEntityScale,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000686--[[Auto Unpin Objects--]]],
 	ActionId = "Expanded CM.Misc.Auto Unpin Objects",
@@ -50,7 +56,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000688--[[Clean All Objects--]]],
 	ActionId = "Expanded CM.Misc.Clean All Objects",
@@ -59,7 +66,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.CleanAllObjects,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000690--[[Fix All Objects--]]],
 	ActionId = "Expanded CM.Misc.Fix All Objects",
@@ -68,7 +76,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.FixAllObjects,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000021--[[Change Colour--]]],
 	ActionId = "Expanded CM.Misc.Change Colour",
@@ -80,7 +89,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CreateObjectListAndAttaches,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000694--[[Set Opacity--]]],
 	ActionId = "Expanded CM.Misc.Set Opacity",
@@ -90,7 +100,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetObjectOpacity,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000696--[[Infopanel Cheats--]]],
 	ActionId = "Expanded CM.Misc.Infopanel Cheats",
@@ -106,7 +117,8 @@ Actions[#Actions+1] = {
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.InfopanelCheats_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
 	ActionId = "Expanded CM.Misc.302535920000698--[[Infopanel Cheats Cleanup",
@@ -123,7 +135,8 @@ AddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor--]]
 	ActionSortKey = "-1",
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000700--[[Scanner Queue Larger--]]],
 	ActionId = "Expanded CM.Misc.Scanner Queue Larger",
@@ -137,7 +150,8 @@ Actions[#Actions+1] = {
 	OnAction = ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
 }
 
-Actions[#Actions+1] = {
+c = c + 1
+Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000702--[[Game Speed--]]],
 	ActionId = "Expanded CM.Misc.Game Speed",

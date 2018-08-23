@@ -63,8 +63,11 @@ function OnMsg.ClassesPreprocess()
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
-		umc.__parents[#umc.__parents+1] = "AutoAttachObject"
-		umc.__parents[#umc.__parents+1] = "PinnableObject"
+		local c = #umc.__parents
+		c = c + 1
+		umc.__parents[c] = "AutoAttachObject"
+		c = c + 1
+		umc.__parents[c] = "PinnableObject"
 	end
 end
 
@@ -421,8 +424,10 @@ function OnMsg.Demolished(building)
 		UICity.labels.Domes_Working = nil
 		UICity:InitEmptyLabel("Domes_Working")
 		local table_temp = UICity.labels.Dome or ""
+		local c = #UICity.labels.Domes_Working
 		for i = 1, #table_temp do
-			UICity.labels.Domes_Working[#UICity.labels.Domes_Working+1] = table_temp[i]
+			c = c + 1
+			UICity.labels.Domes_Working[c] = table_temp[i]
 		end
 	end
 end --OnMsg
@@ -946,11 +951,13 @@ do -- LoadGame/CityStart
 
 		if not UserSettings.DisableECM then
 			local Actions = ChoGGi.Temp.Actions
+			local c = #Actions
 
 			-- add preset menu items
 			local OpenGedApp = OpenGedApp
 			ClassDescendantsList("Preset", function(name, cls)
-				Actions[#Actions+1] = {
+				c = c + 1
+				Actions[c] = {
 					ActionMenubar = "Presets",
 					ActionName = name,
 					ActionId = Concat("Presets.",name),
