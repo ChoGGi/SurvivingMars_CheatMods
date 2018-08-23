@@ -79,23 +79,6 @@ function ChoGGi.MenuFuncs.FpsCounterLocation()
 	end
 end
 
-function ChoGGi.MenuFuncs.FpsCounter_Toggle()
-	local hr = hr
-	local mode = hr.FpsCounter or 0
-	mode = mode + 1
-	if mode > 2 then
-		mode = 0
-	end
-	if mode == 0 then
-		print("framerate indicator off")
-	elseif mode == 1 then
-		print("show frames-per-second")
-	elseif mode == 2 then
-		print("show (milli)seconds-per-frame")
-	end
-	hr.FpsCounter = mode
-end
-
 function ChoGGi.MenuFuncs.DeleteSavedGames()
 	if blacklist then
 		print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])

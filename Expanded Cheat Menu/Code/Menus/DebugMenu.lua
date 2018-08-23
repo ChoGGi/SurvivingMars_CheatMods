@@ -24,15 +24,6 @@ Actions[#Actions+1] = {
 
 Actions[#Actions+1] = {
 	ActionMenubar = "Debug",
-	ActionName = S[302535920001291--[[FPS Counter--]]],
-	ActionId = "Debug.FPS Counter",
-	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
-	RolloverText = S[302535920001290--[[Toggle showing FPS/milliseconds per frame/none--]]],
-	OnAction = ChoGGi.MenuFuncs.FpsCounter_Toggle,
-}
-
-Actions[#Actions+1] = {
-	ActionMenubar = "Debug",
 	ActionName = S[302535920001312--[[FPS Counter Location--]]],
 	ActionId = "Debug.FPS Counter Location",
 	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",

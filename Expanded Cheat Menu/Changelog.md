@@ -6,7 +6,7 @@
 ## v8.5 (Unreleased)
 ### Added:
 - Added a bunch of new debug stuff in DA
-- > FPS Counter/FPS Counter Location: Toggle built-in frame rate display.
+- > FPS Counter Location: Reposition the FPS counter.
 - > DTM Slots Display: Got me.
 - > Toggle Render: Shadows, objects, and such.
 
