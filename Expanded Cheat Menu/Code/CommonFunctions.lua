@@ -1120,7 +1120,7 @@ end
 --[[
 get around to merging some of these types into funcs?
 
-custom_type=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with self.sel, and sends back all items
+custom_type=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items
 custom_type=2 : colour selector
 custom_type=3 : updates selected item with custom value type, and sends back selected item.
 custom_type=4 : updates selected item with custom value type, and sends back all items
@@ -1151,8 +1151,8 @@ ChoGGi.ComFuncs.OpenInListChoice{
 		},
 	},
 	skip_sort = true,
-	height = 800,
-	width = 100,
+	height = 800.0,
+	width = 100.0,
 }
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(list)
@@ -1227,30 +1227,6 @@ end -- do
 function ChoGGi.ComFuncs.HandleToObject(h)
 	return HandleToObject[h]
 end
-
---~ function ChoGGi.ComFuncs.DialogUpdateMenuitems(parent)
---~	 parent:CreateDropdownBox()
-
---~	 local list = parent.list
---~	 list:SetBackgroundColor(RGB(125,125,125))
-
---~	 --of course combomenu sets the scrollbar images to blank, why not...
---~	 list:SetScrollBackImage("CommonAssets/UI/Controls/ScrollBar/scroll_back_vertical.tga")
---~	 list:SetScrollButtonImage("CommonAssets/UI/Controls/ScrollBar/scroll_buttons_vertical.tga")
---~	 list:SetScrollThumbImage("CommonAssets/UI/Controls/ScrollBar/scroll_thumb_vertical.tga")
-
---~	 --loop through and set hints (sure would be nice to have List do that for you)
---~	 local windows = list.item_windows
---~	 for i = 1, #windows do
---~		 windows[i].orig_OnSetState = windows[i].OnSetState
---~		 windows[i].OnSetState = function(self, list, item, rollovered, selected)
---~			 if self.RolloverText ~= "" and (selected or rollovered) then
---~				 CreateRolloverWindow(self.parent, self.RolloverText)
---~			 end
---~			 return self.orig_OnSetState(self,list, item, rollovered, selected)
---~		 end
---~	 end
---~ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)

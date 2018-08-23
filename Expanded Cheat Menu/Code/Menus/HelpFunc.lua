@@ -10,6 +10,17 @@ local blacklist = ChoGGi.blacklist
 
 local print,tostring = print,tostring
 
+function ChoGGi.MenuFuncs.Interface_Toggle()
+	rawset(_G, "OrgXRender", rawget(_G, "OrgXRender") or XRender)
+	if XRender == OrgXRender then
+		function XRender()
+		end
+	else
+		XRender = OrgXRender
+	end
+	UIL.Invalidate()
+end
+
 function ChoGGi.MenuFuncs.RetMapInfo()
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n","")

@@ -4,6 +4,12 @@
 ##### Dialogs: Change map, Object Manipulator, Monitor Info.
 
 ## v8.5 (Unreleased)
+### Added:
+- Added a bunch of new debug stuff in DA
+- > FPS Counter/FPS Counter Location: Toggle built-in frame rate display.
+- > DTM Slots Display: Got me.
+- > Toggle Render: Shadows, objects, and such.
+
 ### Changed:
 - Mod Upload now has support for packed mods (you need to manually pack them: ModFolder/Pack/ModContent.hpk).
 - > If they force only .hpk mods then I'll make it automagical.
@@ -14,7 +20,7 @@
 ## v8.4 (Aug 21 2018)
 ### Added:
 - Cheats>Anomaly Scanning (requested by Antipatiko).
-- Console>Examine: I used to create a folder with some commonly examined objects, now it's a list saved in settings (thanks blacklist...).
+- Console>Examine: I used to create a folder with some commonly examined objects/funcs, now it's a list saved in settings (thanks blacklist...).
 - Console>Settings>Exec Code: The devs decided to add some brittleness when pasting text (-- for one).
 - > You can use this for pasting chunks of code without worry (might also be easier to work on stuff).
 - Wrap Lines checkbox to my text edit dialogs (read globally).

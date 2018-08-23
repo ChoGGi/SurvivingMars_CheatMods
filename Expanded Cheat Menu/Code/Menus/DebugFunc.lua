@@ -12,6 +12,90 @@ local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,to
 local white = white
 --~ local TerrainTextures = TerrainTextures
 
+function ChoGGi.MenuFuncs.Render_Toggle()
+	local ItemList = {
+		{text = "RenderBillboards",value = "RenderBillboards"},
+		{text = "RenderBSpheres",value = "RenderBSpheres"},
+		{text = "RenderDecals",value = "RenderDecals"},
+		{text = "RenderGrass",value = "RenderGrass"},
+		{text = "RenderMapObjects",value = "RenderMapObjects"},
+		{text = "RenderParticles",value = "RenderParticles"},
+		{text = "RenderSkinned",value = "RenderSkinned"},
+		{text = "RenderTransparent",value = "RenderTransparent"},
+		{text = "Shadowmap",value = "Shadowmap"},
+		{text = "TerrainAABB",value = "TerrainAABB"},
+		{text = "ToggleSafearea",value = "ToggleSafearea"},
+	}
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+
+		local new_value
+		local obj = ChoGGi.ComFuncs.ConvertNameToObject(value)
+		if type(obj) == "function" then
+			new_value = obj()
+		else
+			if hr[value] == 0 then
+				hr[value] = 1
+			else
+				hr[value] = 0
+			end
+			new_value = hr[value]
+		end
+
+		MsgPopup(
+			S[302535920001316--[[Toggled: %s = %s--]]]:format(choice[1].text,new_value),
+			302535920001314--[[Toggle Render--]]
+		)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = 302535920001314--[[Toggle Render--]],
+		skip_sort = true,
+		custom_type = 1,
+		custom_func = CallBackFunc,
+	}
+end
+
+function ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle()
+	if GetDialog("DTMSlotsDlg") then
+		CloseDialog("DTMSlotsDlg")
+	else
+		OpenDialog("DTMSlotsDlg")
+	end
+end
+
+function ChoGGi.MenuFuncs.FpsCounterLocation()
+	local pos = hr.FpsCounterPos or 0
+	pos = pos + 1
+	if pos < 4 then
+		hr.FpsCounterPos = pos
+	else
+		hr.FpsCounterPos = 0
+	end
+end
+
+function ChoGGi.MenuFuncs.FpsCounter_Toggle()
+	local hr = hr
+	local mode = hr.FpsCounter or 0
+	mode = mode + 1
+	if mode > 2 then
+		mode = 0
+	end
+	if mode == 0 then
+		print("framerate indicator off")
+	elseif mode == 1 then
+		print("show frames-per-second")
+	elseif mode == 2 then
+		print("show (milli)seconds-per-frame")
+	end
+	hr.FpsCounter = mode
+end
+
 function ChoGGi.MenuFuncs.DeleteSavedGames()
 	if blacklist then
 		print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
@@ -249,9 +333,9 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ReloadLua()
+	force_load_build = true
 	ReloadLua()
-	WaitDelayedLoadEntities()
-	ReloadClassEntities()
+	force_load_build = nil
 	MsgPopup(
 		302535920000453--[[Reload Lua--]],
 		1000113--[[Debug--]]

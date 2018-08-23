@@ -19,7 +19,7 @@ Actions[#Actions+1] = {
 Actions[#Actions+1] = {
 	ActionMenubar = "Help",
 	ActionName = S[302535920000473--[[Reload ECM Menu--]]],
-	ActionId = "Help.Mod Upload",
+	ActionId = "Help.Reload ECM Menu",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]]],
 	OnAction = function()
@@ -90,9 +90,7 @@ Actions[#Actions+1] = {
 	ActionId = "Help.Interface.Toggle Interface",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
 	RolloverText = S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
-	OnAction = function()
-		hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
-	end,
+	OnAction = ChoGGi.MenuFuncs.Interface_Toggle,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleInterface,
 }
 

@@ -147,7 +147,7 @@ end
 
 do -- ListAllObjects
 	local function CallBackFunc_Objects(choice)
-		local obj = choice.obj or choice[1].obj
+		local obj = choice[1].obj
 		if not obj then
 			return
 		end
@@ -156,7 +156,7 @@ do -- ListAllObjects
 	end
 
 	local function CallBackFunc_List(choice)
-		local value = choice.value or choice[1].value
+		local value = choice[1].value
 		if not value then
 			return
 		end
@@ -541,6 +541,31 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
 				}
 			end
 		end
+
+--~           CreateRealTimeThread(function()
+--~             local caption = "Choose map:"
+--~             local maps = ListMaps()
+--~             local default_selection = table.find(maps, GetMapName())
+--~             local parent_container = XWindow:new({}, terminal.desktop)
+--~             parent_container:SetScaleModifier(point(1250, 1250))
+--~             local map = WaitListChoice(maps, caption, parent_container, default_selection)
+--~             if not map or map == "" then
+--~               return
+--~             end
+--~             local ineditor = Platform.editor and IsEditorActive()
+--~             XShortcutsSetMode("Game")
+--~             if ineditor then
+--~               editor.ClearDirtyFlag(const.DirtyFlagPassability)
+--~               Pause("editor")
+--~             end
+--~             CloseMenuDialogs()
+--~             ChangeMap(map)
+--~             LocalStorage.last_map = map
+--~             SaveLocalStorage()
+--~             if ineditor then
+--~               EditorActivate()
+--~             end
+--~           end)
 
 		local default_selection = table.find(maps, GetMapName())
 		local map_settings = {}

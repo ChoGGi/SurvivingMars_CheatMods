@@ -259,7 +259,7 @@ do -- ViewObjInfo_Toggle
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice.value or choice[1].value
+			local value = choice[1].value
 			if not value then
 				return
 			end

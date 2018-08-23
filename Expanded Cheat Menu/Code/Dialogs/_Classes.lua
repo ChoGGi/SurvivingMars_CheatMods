@@ -329,7 +329,13 @@ function ChoGGi_Window:SetInitPos(parent)
 	end
 	local new_y
 	if (y + h) > winh then
-		new_y = winh - h
+		if parent then
+			-- shrink box by header
+			new_y = winh - h + self.header
+			h = h - self.header
+		else
+			new_y = winh - h
+		end
 	end
 
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)

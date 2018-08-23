@@ -6,6 +6,42 @@ local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {
 	ActionMenubar = "Debug",
+	ActionName = S[302535920001314--[[Toggle Render--]]],
+	ActionId = "Debug.Toggle Render",
+	ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
+	RolloverText = S[302535920001315--[[Toggle rendering certain stuff.--]]],
+	OnAction = ChoGGi.MenuFuncs.Render_Toggle,
+}
+
+Actions[#Actions+1] = {
+	ActionMenubar = "Debug",
+	ActionName = S[302535920001310--[[DTM Slots Display--]]],
+	ActionId = "Debug.DTM Slots Display",
+	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+	RolloverText = S[302535920001311--[[Toggle DTM slots display--]]],
+	OnAction = ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle,
+}
+
+Actions[#Actions+1] = {
+	ActionMenubar = "Debug",
+	ActionName = S[302535920001291--[[FPS Counter--]]],
+	ActionId = "Debug.FPS Counter",
+	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
+	RolloverText = S[302535920001290--[[Toggle showing FPS/milliseconds per frame/none--]]],
+	OnAction = ChoGGi.MenuFuncs.FpsCounter_Toggle,
+}
+
+Actions[#Actions+1] = {
+	ActionMenubar = "Debug",
+	ActionName = S[302535920001312--[[FPS Counter Location--]]],
+	ActionId = "Debug.FPS Counter Location",
+	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
+	RolloverText = S[302535920001313--[[One of the four corners of your screen.--]]],
+	OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
+}
+
+Actions[#Actions+1] = {
+	ActionMenubar = "Debug",
 	ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
 	ActionId = "Debug.Export Colonist Data To CSV",
 	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",

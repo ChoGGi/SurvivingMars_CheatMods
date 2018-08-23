@@ -384,7 +384,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 	if button == "L" then
 		-- fire custom_func with sel
 		if self.custom_type == 1 or self.custom_type == 7 then
-			self.custom_func(self.sel,self)
+			self.custom_func({self.sel},self)
 		elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
 			-- dblclick to close and ret item
 			self.idOK.OnMouseButtonDown()
@@ -479,12 +479,12 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	-- send back checkmarks no matter what
 	self.choices[1] = self.choices[1] or {}
 	-- add checkbox statuses
-	if #self.list.check > 0 then
+	if self.list.check and #self.list.check > 0 then
 		for i = 0, #self.list.check do
 			self.choices[1][Concat("check",i)] = self[Concat("idCheckBox",i)]:GetCheck()
 		end
 	end
-	if self.custom_type == 2 or self.custom_type == 5 then
+	if self.idColourContainer then
 		self.choices[1].checkair = self.idColorCheckAir:GetCheck()
 		self.choices[1].checkwater = self.idColorCheckWater:GetCheck()
 		self.choices[1].checkelec = self.idColorCheckElec:GetCheck()
