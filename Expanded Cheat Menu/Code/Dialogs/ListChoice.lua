@@ -487,14 +487,16 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 			self.choices[c] = items[i]
 		end
 	end
+
 	-- send back checkmarks no matter what
 	self.choices[1] = self.choices[1] or {}
 	-- add checkbox statuses
 	if self.list.check and #self.list.check > 0 then
-		for i = 0, #self.list.check do
+		for i = 1, #self.list.check do
 			self.choices[1][Concat("check",i)] = self[Concat("idCheckBox",i)]:GetCheck()
 		end
 	end
+	-- and if it's a colourpicker list send that back as well
 	if self.idColourContainer then
 		self.choices[1].checkair = self.idColorCheckAir:GetCheck()
 		self.choices[1].checkwater = self.idColorCheckWater:GetCheck()
