@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000292,,
 302535920001291,,
 302535920001290,,
 302535920001317,,
@@ -1128,8 +1129,7 @@ This resets all pipes to the default skin.",
 Seems to fix it after a Sol or two, so you shouldn't need to leave this running.",
 302535920001193,Remove Blue Grid Marks,
 302535920001197,"If you have any buildings with the selection grid around it, and you don't have it selected.",
-302535920000292,Reset Rovers,
-302535920000882,"If you have borked rovers, this will probably fix them (may take a few seconds to apply).
+302535920000882,"If you have borked commanders, this will probably fix them (may take a few seconds to apply).
 
 You may need to toggle the recall drones button (for certain issues).",
 302535920000939,"Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.",

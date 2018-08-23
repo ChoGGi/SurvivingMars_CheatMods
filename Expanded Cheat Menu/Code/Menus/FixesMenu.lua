@@ -54,13 +54,13 @@ This resets all pipes to the default skin.--]]],
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
-	ActionName = S[302535920000292--[[Reset Rovers--]]],
-	ActionId = "Expanded CM.Fixes.Reset Rovers",
+	ActionName = Concat(S[302535920001084--[[Reset--]]]," ",S[5221--[[RC Commanders--]]]),
+	ActionId = "Expanded CM.Fixes.Reset Commanders",
 	ActionIcon = icon,
-	RolloverText = S[302535920000882--[[If you have borked rovers, this will probably fix them (may take a few seconds to apply).
+	RolloverText = S[302535920000882--[[If you have borked commanders, this will probably fix them (may take a few seconds to apply).
 
 You may need to toggle the recall drones button (for certain issues).--]]],
-	OnAction = ChoGGi.MenuFuncs.ResetRovers,
+	OnAction = ChoGGi.MenuFuncs.ResetCommanders,
 	ActionSortKey = "9",
 }
 

@@ -156,9 +156,11 @@ function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
 	)
 end
 
-do --ResetRovers
+do --ResetCommanders
 	local function ResetRover(rc)
+		local drones
 		if rc.attached_drones then
+			drones = #rc.attached_drones
 			for i = 1, #rc.attached_drones do
 				rc.attached_drones[i]:delete()
 			end
@@ -167,15 +169,21 @@ do --ResetRovers
 		local new = rc:Clone()
 		rc:delete()
 		new:SetPos(GetPassablePointNearby(pos))
+		-- add any missing drones
+		if drones > #new.attached_drones then
+			repeat
+				new:SpawnDrone()
+			until drones == #new.attached_drones
+		end
 	end
 
-	function ChoGGi.MenuFuncs.ResetRovers()
+	function ChoGGi.MenuFuncs.ResetCommanders()
 		CreateRealTimeThread(function()
 			local Sleep = Sleep
 			local GetStateIdx = GetStateIdx
 			local before_table = {}
 
-			-- get all rovers stuck in deploy with at least one drone
+			-- get all commanders stuck in deploy with at least one drone
 			ForEach{
 				class = "RCRover",
 				exec = function(rc)
