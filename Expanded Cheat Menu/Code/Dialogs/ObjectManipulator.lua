@@ -2,13 +2,6 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
-if true then
-	return
-end
-
---~ local c = 0
---~ c = c + 1
-
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
@@ -73,6 +66,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		OnMouseButtonDown = function()
 			self:UpdateListContent()
 		end,
+		MinWidth = 80,
 	}, self.idButtonArea)
 
 	self.idGoto = g_Classes.ChoGGi_Button:new({
@@ -83,6 +77,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		OnMouseButtonDown = function()
 			ViewAndSelectObject(self.obj)
 		end,
+		MinWidth = 90,
 	}, self.idButtonArea)
 
 	self.idAddNew = g_Classes.ChoGGi_Button:new({
@@ -105,15 +100,10 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		OnMouseButtonDown = function()
 			self:idApplyAllOnMouseButtonDown()
 		end,
+		MinWidth = 100,
 	}, self.idButtonArea)
 
 	self:AddScrollList()
-
-	self.idListVal = g_Classes.ChoGGi_List:new({
-		Id = "idListVal",
-		VScroll = "idScrollV",
-	}, self.idScrollArea)
-	self.idScrollArea:SetLayoutMethod("HList")
 
 	function self.idList.OnMouseButtonDown(obj,pt,button)
 		g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
@@ -143,14 +133,15 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 	self:UpdateListContent()
 end
 
+-- update edit text box with selected value
 function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(button)
-	--update selection (select last selected if multisel)
-	self.sel = self.idList:GetSelection()[#self.idList:GetSelection()]
-	if self.sel then
-		--update the edit value box
-		self.idEditValue:SetText(self.sel.value)
-		self.idEditValue:SetFocus()
+	if not self.idList.selection[1] then
+		return
 	end
+	self.sel = self.idList[self.idList.selection[1]].item
+	--update the edit value box
+	self.idEditValue:SetText(self.sel.value)
+	self.idEditValue:SetFocus()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick(button)
@@ -210,23 +201,22 @@ function ChoGGi_ObjectManipulatorDlg:idApplyAllOnMouseButtonDown()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
-	local sel_idx = self.idList.selection
-	-- nothing selected
-	if #sel_idx < 1 then
+	if not self.idList.selection[1] then
 		return
 	end
+	local sel_idx = self.idList.selection[1]
 	--
 	local edit_text = self.idEditValue:GetText()
 	local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
 	local edit_type = type(edit_value)
-	local obj_value = self.obj[self.idList.items[sel_idx].text]
+	local obj_value = self.obj[self.idList[sel_idx].item.text]
 	local obj_type = type(obj_value)
-	--only update strings/numbers/boolean/nil
+	-- only update strings/numbers/boolean/nil
 	if obj_type == "table" or obj_type == "userdata" or obj_type == "function" or obj_type == "thread" then
 		return
 	end
 
-	--if types match then we're fine, or nil if we're removing something
+	-- if types match then we're fine, or nil if we're removing something
 	if obj_type == edit_type or edit_type == "nil" or
 			--false bools can be made a string or num
 			(obj_value == false and edit_type == "string" or edit_type == "number") or
@@ -234,14 +224,15 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 			(obj_type == "string" and edit_type == "number" or edit_type == "boolean") or
 			--numbers can be false
 			(obj_type ~= "number" and edit_type ~= "boolean") then
-		--list item
-		self.idList.items[sel_idx].value = edit_text
-		--stored obj
-		self.idList.item_windows[sel_idx].value:SetText(edit_text)
-		--actual object
-		local value = self.obj[self.idList.items[sel_idx].text]
+		-- list item
+		self.idList[sel_idx].item.value = edit_text
+		self.idList[sel_idx][1]:SetText(Concat(self.idList[sel_idx].item.text," = ",edit_text))
+		-- stored obj
+		self.items[sel_idx].value = edit_text
+		-- actual object
+		local value = self.obj[self.idList[sel_idx].item.text]
 		if value == false or value then
-			self.obj[self.idList.items[sel_idx].text] = edit_value
+			self.obj[self.idList[sel_idx].item.text] = edit_value
 		end
 	end
 end
@@ -282,11 +273,9 @@ end
 
 function ChoGGi_ObjectManipulatorDlg:BuildList()
 	self.idList:Clear()
-	self.idListVal:Clear()
-
 	for i = 1, #self.items do
-		self.idList:CreateTextItem(self.items[i].text)
-		self.idListVal:CreateTextItem(self.items[i].value)
+		local listitem = self.idList:CreateTextItem(Concat(self.items[i].text," = ",self.items[i].value))
+		listitem.item = self.items[i]
 	end
 end
 
@@ -299,8 +288,9 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 --~		 listitem.RolloverText = self:UpdateHintText(self.items[i])
 --~	 end
 
-	-- check for scroll pos
-	local scrollpos = self.idScrollArea.OffsetY
+	-- get scroll pos
+	local scroll_x = self.idScrollArea.OffsetX
+	local scroll_y = self.idScrollArea.OffsetY
 
 	-- create prop list for list
 	self.items = self:CreatePropList(obj)
@@ -314,8 +304,8 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 	-- populate it
 	self:BuildList()
 
-	-- and scroll to saved pos
-	self.idScrollArea:ScrollTo(scrollpos)
+	-- and scroll to old pos
+	self.idScrollArea:ScrollTo(scroll_x,scroll_y)
 end
 
 --override Listitem:OnCreate so we can have two columns (wonder if there's another way)
@@ -392,7 +382,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 		if obj_type == "table" and meta and meta == objlist then
 			local res = {}
 			for i = 1, Min(#obj, 3) do
-				res[#res+1] = {
+				res[i] = {
 					text = i,
 					value = self:CreateProp(obj[i])
 				}
@@ -416,7 +406,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 		if IsT(obj) then
 			return Concat("T{\"",T(obj),"\"}")
 		else
-			local text = Concat(ObjectClass(obj) or tostring(obj),"(len:",#obj,")")
+			local text = Concat(ObjectClass(obj) or tostring(obj)," (len:",#obj,")")
 			return text
 		end
 	end
@@ -426,37 +416,34 @@ end
 
 function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
 	local res = {}
+	local c = 0
 
 	-- change this crap
 	local sort = {}
 
-
-	local function tableinsert(k,v)
-		--text colours
-		local text
-		local v_type = type(v)
-		if v_type == "table" then
-			if v.class then
-				text = Concat("<color 150 170 150>",self:CreateProp(k),"</color>")
-			else
-				text = Concat("<color 150 170 250>",self:CreateProp(k),"</color>")
-			end
-		elseif v_type == "function" then
-			text = Concat("<color 250 75 75>",self:CreateProp(k),"</color>")
-		else
-			text = self:CreateProp(k)
-		end
-		res[#res+1] = {
-			sort = self:CreateProp(k),
-			text = text,
-			value = self:CreateProp(v),
-			object = v
-		}
-	end
-
 	if type(obj) == "table" then
 		for k, v in pairs(obj) do
-			tableinsert(k,v,res)
+			--text colours
+			local text
+			local v_type = type(v)
+			if v_type == "table" then
+--~ 				if v.class then
+--~ 					text = Concat("<color 75 255 75>",self:CreateProp(k),"</color>")
+--~ 				else
+					text = Concat("<color 75 75 255>",self:CreateProp(k),"</color>")
+--~ 				end
+			elseif v_type == "function" then
+				text = Concat("<color 255 75 75>",self:CreateProp(k),"</color>")
+			else
+				text = self:CreateProp(k)
+			end
+			c = c + 1
+			res[c] = {
+				sort = self:CreateProp(k),
+				text = text,
+				value = self:CreateProp(v),
+				object = v
+			}
 			if type(k) == "number" then
 				sort[res[#res]] = k
 			end

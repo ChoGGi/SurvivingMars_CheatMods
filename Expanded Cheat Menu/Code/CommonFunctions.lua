@@ -1145,13 +1145,12 @@ ChoGGi.ComFuncs.OpenInListChoice{
 		{
 			title = "Check1",
 			hint = "Check1Hint",
-			func = function()end,
 			checked = true,
+--~ 			func = function()end,
 		},
 		{
 			title = "Check2",
 			hint = "Check2Hint",
-			func = function()end,
 			checked = true,
 		},
 	},

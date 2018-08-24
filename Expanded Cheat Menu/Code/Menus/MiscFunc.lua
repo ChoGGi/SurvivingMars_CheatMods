@@ -272,14 +272,12 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 		end
 	end
 
-	local function CallBackFunc()end
-
 	local function FiredOnMenuClick(sel,dialog)
-		ChoGGi.CodeFuncs.ChangeObjectColour(sel.obj,sel.parentobj,dialog)
+		ChoGGi.CodeFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
+		callback = function()end,
 		items = ItemList,
 		title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
 		hint = 302535920001108--[[Double click to open object/attachment to edit.--]],

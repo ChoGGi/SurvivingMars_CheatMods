@@ -95,9 +95,9 @@ Press Enter to show all items."--]]],
 			if obj.hint then
 				self[name1].RolloverText = CheckText(obj.hint)
 			end
-			if obj.func then
-				self[name1].Press = obj.func
-			end
+--~ 			if obj.func then
+--~ 				self[name1].Press = obj.func
+--~ 			end
 			if obj.checked then
 				self[name1]:SetCheck(true)
 			end

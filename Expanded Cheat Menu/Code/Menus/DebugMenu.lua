@@ -109,18 +109,18 @@ Actions[c] = {
 	OnAction = ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
 }
 
---~ c = c + 1
---~ Actions[c] = {
---~ 	ActionMenubar = "Debug",
---~ 	ActionName = S[302535920000471--[[Object Manipulator--]]],
---~ 	ActionId = "Debug.Object Manipulator",
---~ 	ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
---~ 	RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
---~ 	OnAction = function()
---~ 		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
---~ 	end,
---~ 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
---~ }
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Debug",
+	ActionName = S[302535920000471--[[Object Manipulator--]]],
+	ActionId = "Debug.Object Manipulator",
+	ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
+	RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
+	OnAction = function()
+		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
+	end,
+	ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
+}
 
 c = c + 1
 Actions[c] = {

@@ -348,13 +348,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
 			end,
 		},
---~		 {
---~			 name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
---~			 hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
---~			 clicked = function()
---~				 ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
---~			 end,
---~		 },
+		{
+			name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+			clicked = function()
+				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
+			end,
+		},
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),

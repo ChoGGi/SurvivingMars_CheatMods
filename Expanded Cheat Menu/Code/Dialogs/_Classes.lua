@@ -152,6 +152,7 @@ DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
+  Background = light_gray,
 }
 
 DefineClass.ChoGGi_Dialog = {

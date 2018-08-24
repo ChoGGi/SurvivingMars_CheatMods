@@ -1,7 +1,7 @@
 ## ECM Changelog
 
 ##### To do:
-##### Dialogs: Change map, Object Manipulator, Monitor Info.
+##### Dialogs: Change map, Monitor Info.
 
 ## v8.5 (Unreleased)
 ### Added:

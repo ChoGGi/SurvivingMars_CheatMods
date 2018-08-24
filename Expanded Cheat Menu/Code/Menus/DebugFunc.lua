@@ -951,7 +951,7 @@ do --path markers
 					swp(table3)
 				else
 					local table1 = GetObjects{
-						area = "",
+						area = "map",
 						class = value,
 						filter = function(o)
 							if IsValid(o) then
