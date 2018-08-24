@@ -75,6 +75,7 @@ end
 -- use this message to make modifications to the built classes (before they are declared final)
 --~ function OnMsg.ClassesPostprocess()
 --~ end
+
 do -- OnMsgClassesBuilt
 	local function OnMsgXTemplates()
 		local XTemplates = XTemplates

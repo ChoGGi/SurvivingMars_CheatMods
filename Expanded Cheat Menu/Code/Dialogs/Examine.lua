@@ -133,6 +133,7 @@ Right-click to scroll to top."--]]],
 		end,
 		Dock = "left",
 	}, self.idMenuArea)
+	self.idParents:SetVisible(false)
 
 	self.idAttaches = g_Classes.ChoGGi_ComboButton:new({
 		Id = "idAttaches",
@@ -145,6 +146,7 @@ Right-click to scroll to top."--]]],
 		end,
 		Dock = "left",
 	}, self.idMenuArea)
+	self.idAttaches:SetVisible(false)
 
 	self.idNext = g_Classes.ChoGGi_Button:new({
 		Id = "idNext",
@@ -1000,47 +1002,48 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 
 	if is_table then
 
-		--add object name to title
-		if type(obj.handle) == "number" then
-			name = Concat(name," (",obj.handle,")")
-		elseif #obj > 0 then
-			name = Concat(name," (",#obj,")")
-		end
-
 		-- reset menu list
 		self.parents_menu_popup = {}
-		pmenu_skip_dupes = {}
-		-- build menu list
-		BuildParents(self,obj.__parents,"parents",S[302535920000520--[[Parents--]]])
-		BuildParents(self,obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
-		-- if anything was added to the list then add to the menu
-		if #self.parents_menu_popup < 1 then
-			--no parents or ancestors, so hide the button
-			self.idParents:SetVisible()
-		end
 
-		--attaches menu
-		if attaches and attach_amount > 0 then
-			self.attaches_menu_popup = {}
-
-			for i = 1, #attaches do
-				local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
-				self.attaches_menu_popup[i] = {
-					name = RetName(attaches[i]),
-					hint = Concat(
-						attaches[i].class,"\n",
-						S[302535920000955--[[Handle--]]],": ",attaches[i].handle or S[6761--[[None--]]],"\n",
-						pos and Concat("Pos: ",pos)
-					),
-					showme = attaches[i],
-					clicked = function()
-						ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
-					end,
-				}
+		if IsValid(obj) then
+			--add object name to title
+			if type(obj.handle) == "number" then
+				name = Concat(name," (",obj.handle,")")
+			elseif #obj > 0 then
+				name = Concat(name," (",#obj,")")
 			end
-		else
-			self.idAttaches:SetVisible()
+
+			pmenu_skip_dupes = {}
+			-- build menu list
+			BuildParents(self,obj.__parents,"parents",S[302535920000520--[[Parents--]]])
+			BuildParents(self,obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
+			-- if anything was added to the list then add to the menu
+			if #self.parents_menu_popup > 0 then
+				self.idParents:SetVisible(true)
+			end
+			--attaches menu
+			if attaches and attach_amount > 0 then
+				self.attaches_menu_popup = {}
+
+				for i = 1, #attaches do
+					local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
+					self.attaches_menu_popup[i] = {
+						name = RetName(attaches[i]),
+						hint = Concat(
+							attaches[i].class,"\n",
+							S[302535920000955--[[Handle--]]],": ",attaches[i].handle or S[6761--[[None--]]],"\n",
+							pos and Concat("Pos: ",pos)
+						),
+						showme = attaches[i],
+						clicked = function()
+							ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
+						end,
+					}
+				end
+				self.idAttaches:SetVisible(true)
+			end
 		end
+
 	end
 
 	-- limit caption length so we don't cover up close button

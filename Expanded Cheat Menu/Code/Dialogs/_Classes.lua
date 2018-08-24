@@ -153,6 +153,7 @@ DefineClass.ChoGGi_List = {
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
   Background = light_gray,
+	FocusedBackground = light_gray,
 }
 
 DefineClass.ChoGGi_Dialog = {

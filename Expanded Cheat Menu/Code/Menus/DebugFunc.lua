@@ -14,14 +14,36 @@ local white = white
 
 function ChoGGi.MenuFuncs.Render_Toggle()
 	local ItemList = {
+		{text = "RenderAlwaysRenderableObjects",value = "RenderAlwaysRenderableObjects"},
+		{text = "RenderBandOutsideMap",value = "RenderBandOutsideMap"},
+		{text = "RenderBandOutsidersMaxZ",value = "RenderBandOutsidersMaxZ"},
+		{text = "RenderBandOutsidersMinZ",value = "RenderBandOutsidersMinZ"},
 		{text = "RenderBillboards",value = "RenderBillboards"},
+		{text = "RenderBillboardShadows",value = "RenderBillboardShadows"},
 		{text = "RenderBSpheres",value = "RenderBSpheres"},
+		{text = "RenderBuildGrid",value = "RenderBuildGrid"},
+		{text = "RenderCodeRenderables",value = "RenderCodeRenderables"},
 		{text = "RenderDecals",value = "RenderDecals"},
 		{text = "RenderGrass",value = "RenderGrass"},
+		{text = "RenderHasBillboards",value = "RenderHasBillboards"},
+		{text = "RenderIce",value = "RenderIce"},
+		{text = "RenderLights",value = "RenderLights"},
 		{text = "RenderMapObjects",value = "RenderMapObjects"},
+		{text = "RenderMirage",value = "RenderMirage"},
+		{text = "RenderOBBs",value = "RenderOBBs"},
+		{text = "RenderOutsiders",value = "RenderOutsiders"},
 		{text = "RenderParticles",value = "RenderParticles"},
+		{text = "RenderPlanetView",value = "RenderPlanetView"},
 		{text = "RenderSkinned",value = "RenderSkinned"},
+		{text = "RenderStatsFrameTimeCPU",value = "RenderStatsFrameTimeCPU"},
+		{text = "RenderStatsFrameTimeGPU",value = "RenderStatsFrameTimeGPU"},
+		{text = "RenderStatsSmoothing",value = "RenderStatsSmoothing"},
+		{text = "RenderTerrain",value = "RenderTerrain"},
+		{text = "RenderTerrainFirst",value = "RenderTerrainFirst"},
+		{text = "RenderTrails",value = "RenderTrails"},
 		{text = "RenderTransparent",value = "RenderTransparent"},
+--~ 		{text = "RenderUIL",value = "RenderUIL"},
+		{text = "RenderUnskinned",value = "RenderUnskinned"},
 		{text = "Shadowmap",value = "Shadowmap"},
 		{text = "TerrainAABB",value = "TerrainAABB"},
 		{text = "ToggleSafearea",value = "ToggleSafearea"},
@@ -529,24 +551,6 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 		title = 302535920000862--[[Object Spawner (EntityData list)--]],
 		hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
 	}
-end
-
-function ChoGGi.MenuFuncs.ShowSelectionEditor()
-	local terminal = terminal
-	--check for any opened windows and kill them
-	for i = 1, #terminal.desktop do
-		if terminal.desktop[i]:IsKindOf("ObjectsStatsDlg") then
-			terminal.desktop[i]:delete()
-		end
-	end
-	--open a new copy
-	local dlg = ObjectsStatsDlg:new()
-	if not dlg then
-		return
-	end
-	dlg:SetPos(terminal.GetMousePos())
-
-	--OpenDialog("ObjectsStatsDlg",nil,terminal.desktop)
 end
 
 do --hex rings

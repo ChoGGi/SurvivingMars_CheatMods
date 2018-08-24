@@ -14,6 +14,7 @@
 - Mod Upload now has support for packed mods (you need to manually pack them: ModFolder/Pack/ModContent.hpk).
 - > If they force only .hpk mods then I'll make it automagical.
 - Reset Rovers renamed to Reset Commanders (and it now takes the amount of drones into account).
+- Re-added Object Manipulator (Examine>Tools>Edit Obj or F5).
 
 ### Fixed:
 - Fixed keyboard focus when using the inputs on my dialogs (whoops).

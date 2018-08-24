@@ -1890,45 +1890,34 @@ end
 function ChoGGi.CodeFuncs.Editor_Toggle()
 	local Platform = Platform
 
---~	 if type(UpdateMapRevision) ~= "function" then
---~		 function UpdateMapRevision() end
---~	 end
-
-	Platform.editor = true
-	Platform.developer = true
-
 	if IsEditorActive() then
-		EditorState(0)
-		table.restore(hr, "Editor")
-		editor.SavedDynRes = false
-		XShortcutsSetMode("Game")
+    EditorState(0)
+    table.restore(hr, "Editor")
+    editor.SavedDynRes = false
+    XShortcutsSetMode("Game")
 		Platform.editor = false
 		Platform.developer = false
 	else
-		table.change(hr, "Editor", {
-			ResolutionPercent = 100,
-			SceneWidth = 0,
-			SceneHeight = 0,
-			DynResTargetFps = 0
-		})
-		XShortcutsSetMode("Game")
-		--XShortcutsSetMode("Editor", function()EditorDeactivate()end)
-		EditorState(1,1)
-		GetEditorInterface():Show(true)
-
-		--GetToolbar():SetVisible(true)
-		editor.OldCameraType = {
-			GetCamera()
-		}
-		editor.CameraWasLocked = camera.IsLocked(1)
-		camera.Unlock(1)
-
-		GetEditorInterface():SetVisible(true)
-		GetEditorInterface():ShowActionBar(true)
-		--GetEditorInterface():SetMinimapVisible(true)
-		--CreateEditorPlaceObjectsDlg()
+		Platform.editor = true
+		Platform.developer = true
+    table.change(hr, "Editor", {
+      ResolutionPercent = 100,
+      SceneWidth = 0,
+      SceneHeight = 0,
+      DynResTargetFps = 0,
+      EnablePreciseSelection = 1,
+      ObjectCounter = 1,
+      VerticesCounter = 1,
+      FarZ = 1500000
+    })
+    XShortcutsSetMode("Editor", function()
+      EditorDeactivate()
+    end)
+    EditorState(1,1)
 	end
 
+	camera.Unlock(1)
+	ChoGGi.CodeFuncs.SetCameraSettings()
 end
 
 function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
