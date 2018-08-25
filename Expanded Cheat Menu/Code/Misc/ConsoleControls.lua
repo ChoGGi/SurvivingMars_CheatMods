@@ -261,6 +261,11 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 	local ChoGGi = ChoGGi
 	local scripts = dlg.idScripts
 
+	if not dlg.idScripts then
+		-- we're in the select new map stuff screen
+		return
+	end
+
 	-- add example script files if folder is missing
 	if not script_files_added then
 		ChoGGi.Console.BuildScriptFiles()

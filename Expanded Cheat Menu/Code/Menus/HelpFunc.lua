@@ -130,7 +130,7 @@ do -- ModUpload
 						os_dest = ConvertToOSPath(dest)
 					end
 
-					print(ConvertToOSPath(os_dest))
+--~ 					print(ConvertToOSPath(os_dest))
 
 					if Platform.steam then
 						err = AsyncSteamWorkshopUpdateItem{
