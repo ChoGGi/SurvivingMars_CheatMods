@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
@@ -269,7 +270,9 @@ local function Rebuildshortcuts()
 end
 
 function OnMsg.ShortcutsReloaded()
-	Rebuildshortcuts()
+	if not ChoGGi.UserSettings.DisableECM then
+		Rebuildshortcuts()
+	end
 end
 
 -- for instant build
@@ -571,6 +574,7 @@ end
 --~ end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100 or 100
+-- used for resizing my dialogs to scale
 function OnMsg.SystemSize()
 	ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 end
@@ -1094,12 +1098,19 @@ do -- LoadGame/CityStart
 
 
 
-	-------------------do the above stuff before the below stuff
+---------------------do the above stuff before the below stuff
 
 
 
 
-
+		-- all yours XxUnkn0wnxX
+		if not blacklist then
+			local autoexec = Concat(ChoGGi.scripts,"/autoexec.lua")
+			if ChoGGi.ComFuncs.FileExists(autoexec) then
+				print("ECM executing: ",autoexec)
+				dofile(autoexec)
+			end
+		end
 
 		-- bloody hint popups
 		if ChoGGi.UserSettings.DisableHints then

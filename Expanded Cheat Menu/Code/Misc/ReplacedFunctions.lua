@@ -86,9 +86,9 @@ do --funcs without a class
 		if visible and not dlgConsole then
 			CreateConsole()
 		end
-		if visible then
-			ShowConsoleLog(true)
-		end
+--~ 		if visible then
+--~ 			ShowConsoleLog(true)
+--~ 		end
 		if dlgConsole then
 			dlgConsole:Show(visible)
 		end

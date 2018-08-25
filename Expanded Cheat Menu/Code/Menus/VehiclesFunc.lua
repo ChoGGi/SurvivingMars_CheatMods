@@ -332,7 +332,7 @@ end
 function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 	local ChoGGi = ChoGGi
 	local sel = ChoGGi.CodeFuncs.SelObject()
-	if not sel then
+	if not sel or not sel:IsKindOf("DroneHub") then
 		return
 	end
 
