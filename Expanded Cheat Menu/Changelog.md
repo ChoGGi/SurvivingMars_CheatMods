@@ -21,6 +21,7 @@
 - Shortcut keys were still enabled even with DisableECM setting (thanks XxUnkn0wnxX).
 - Pressing console key made the console log show up even when disabled (thanks XxUnkn0wnxX).
 - Annoying Sounds Toggle (thanks XxUnkn0wnxX).
+- Set Colonist Traits wasn't setting individual traits (thanks Dawnmist).
 
 ## v8.4 (Aug 21 2018)
 ### Added:

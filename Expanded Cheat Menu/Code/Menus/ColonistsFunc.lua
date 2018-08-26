@@ -1324,31 +1324,33 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
 			dome = sel.dome
 		end
+
 		--create list of traits
 		local TraitsListTemp = {}
-		local function AddToTable(List,Table)
-			for x = 1, #List do
-				Table[#Table+1] = List[x]
+		local function AddToTable(list)
+			for x = 1, #list do
+				TraitsListTemp[#TraitsListTemp+1] = list[x]
 			end
-			return Table
 		end
+
 		for i = 1, #choice do
 			if choice[i].value == "NegativeTraits" then
-				TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
+				AddToTable(ChoGGi.Tables.NegativeTraits)
 			elseif choice[i].value == "PositiveTraits" then
-				TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
+				AddToTable(ChoGGi.Tables.PositiveTraits)
 			elseif choice[i].value == "OtherTraits" then
-				TraitsListTemp = AddToTable(ChoGGi.Tables.OtherTraits,TraitsListTemp)
+				AddToTable(ChoGGi.Tables.OtherTraits)
 			elseif choice[i].value == "AllTraits" then
-				TraitsListTemp = AddToTable(ChoGGi.Tables.OtherTraits,TraitsListTemp)
-				TraitsListTemp = AddToTable(ChoGGi.Tables.PositiveTraits,TraitsListTemp)
-				TraitsListTemp = AddToTable(ChoGGi.Tables.NegativeTraits,TraitsListTemp)
+				AddToTable(ChoGGi.Tables.OtherTraits)
+				AddToTable(ChoGGi.Tables.PositiveTraits)
+				AddToTable(ChoGGi.Tables.NegativeTraits)
 			else
 				if choice[i].value then
-					TraitsListTemp = AddToTable(choice[i].value,TraitsListTemp)
+					TraitsListTemp[#TraitsListTemp+1] = choice[i].value
 				end
 			end
 		end
+
 		--remove dupes
 		table.sort(TraitsListTemp)
 		local TraitsList = {}
@@ -1417,6 +1419,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 			end
 
 		end
+
 		MsgPopup(
 			Concat(#TraitsList,": ",sType,S[302535920000830--[[Colonists traits set--]]]),
 			547--[[Colonists--]],
