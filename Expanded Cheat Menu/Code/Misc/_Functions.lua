@@ -987,18 +987,8 @@ end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
 function ChoGGi.CodeFuncs.SelObject()
-	return SelectedObj or SelectionMouseObj() or NearestObject(
-		GetTerrainCursor(),
-		GetObjects{
-			filter = function(o)
-				if o.class ~= "ParSystem" then
-					return o
-				end
-			end,
-		},
-		-- how far from cursor do we check for objects
-		1500
-	)
+	local c = GetTerrainCursor()
+	return SelectedObj or SelectionMouseObj() or MapFindNearest(c, c, 1500)
 end
 
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
@@ -1958,6 +1948,20 @@ function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
 			obj[i]:SetParent(obj.idChoGGi_ScrollBox)
 		end
 	end
-
 end
+
+do -- AddGridHandles
+	local function AddHandles(name)
+		local UICity = UICity
+		for i = 1, #UICity[name] do
+			UICity[name][i].ChoGGi_GridHandle = i
+		end
+	end
+
+	function ChoGGi.CodeFuncs.UpdateGridHandles()
+		AddHandles("air")
+		AddHandles("electricity")
+		AddHandles("water")
+	end
+end -- do
 

@@ -118,6 +118,7 @@ You can edit the shortcut keys in the settings file (or blank them to disable).
 
 ##### For more info see Menu>Help>ECM>Readme
 Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
+Changelog: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%%20Cheat%%20Menu/Changelog.md (see if issue is fixed here before asking please)
 
 
 
@@ -130,7 +131,7 @@ Everyone else giving suggestions/pointing out issues.
 
 
 ##### Access to missing functionality
-Da Vinci updated added a blacklist of functions, you can use this to bypass them.
+Da Vinci update added a blacklist of functions, you can use this to bypass them.
 %sHelperMod
 ]],ConvertToOSPath(CurrentModPath)),
 })

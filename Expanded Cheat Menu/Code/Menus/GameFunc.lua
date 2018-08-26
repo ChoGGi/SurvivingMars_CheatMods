@@ -12,6 +12,10 @@ local print,type,tostring = print,type,tostring
 local white = white
 local guic = guic
 
+--~ function OnMsg.DataLoaded()
+--~   RebuildFXRules()
+--~ end
+
 do -- AnnoyingSounds_Toggle
 	local function MirrorSphere_Toggle()
 		local tab = UICity.labels.MirrorSpheres or ""
@@ -249,34 +253,21 @@ do -- ListAllObjects
 	end
 end -- do
 
-
-do -- DeleteAllRocks
-	local function DeleteAllRocks(rock_cls)
-		ForEach{
-			class = rock_cls,
-			exec = function(o)
-				o:delete()
-			end,
-		}
-	end
-
+function ChoGGi.MenuFuncs.DeleteAllRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			DeleteAllRocks("Deposition")
-			DeleteAllRocks("WasteRockObstructorSmall")
-			DeleteAllRocks("WasteRockObstructor")
-			-- slower n slower
-			DeleteAllRocks("StoneSmall")
+			MapDelete("map", "Deposition")
+			MapDelete("map", "WasteRockObstructorSmall")
+			MapDelete("map", "WasteRockObstructor")
+			MapDelete("map", "StoneSmall")
 		end
 	end
-	function ChoGGi.MenuFuncs.DeleteAllRocks()
-		ChoGGi.ComFuncs.QuestionBox(
-			Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
-			CallBackFunc,
-			Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
-		)
-	end
-end -- do
+	ChoGGi.ComFuncs.QuestionBox(
+		Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
+		CallBackFunc,
+		Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
+	)
+end
 
 function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 	local ChoGGi = ChoGGi

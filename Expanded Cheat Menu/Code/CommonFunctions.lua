@@ -21,7 +21,6 @@ local CreateRealTimeThread = CreateRealTimeThread
 local DelayedCall = DelayedCall
 local FilterObjects = FilterObjects
 local GetLogFile = GetLogFile
-local GetObjects = GetObjects
 local GetPreciseTicks = GetPreciseTicks
 local GetTerrainCursor = GetTerrainCursor
 local IsBox = IsBox
@@ -1314,15 +1313,17 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
 	radius = radius or 5000
 	pos = pos or GetTerrainCursor()
 
-	-- get all objects on map (18K+ on a new map)
-	local list = GetObjects{
-		-- we only want stuff within *radius*
-		filter = function(o)
-			if o:GetDist2D(pos) <= radius then
-				return o
-			end
-		end,
-	}
+--~ 	-- get all objects on map (18K+ on a new map)
+--~ 	local list = GetObjects{
+--~ 		-- we only want stuff within *radius*
+--~ 		filter = function(o)
+--~ 			if o:GetDist2D(pos) <= radius then
+--~ 				return o
+--~ 			end
+--~ 		end,
+--~ 	}
+	-- get all objects within radius
+	local list = MapGet(pos,radius)
 
 	-- sort list custom
 	if sort then
@@ -1593,11 +1594,14 @@ function ChoGGi.ComFuncs.Random(m, n)
 	end
 end
 
+
 function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
+
 	if type(query) ~= "table" then
-		return GetObjects{class = query}
+		return MapGet(true,query)
 	end
-	-- ForEach,CountObjects
+--~ 	MapGet(true,s.class)
+--~ 	MapGet( GetTerrainCursor(), 100*guim, "Tree" )
 	return GetObjects({
 		class = query.class,
 		classes = query.classes,

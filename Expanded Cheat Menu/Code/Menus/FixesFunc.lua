@@ -60,7 +60,7 @@ do -- DronesNotRepairingDome
 	local looping_thread
 
 	function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
-		local GetObjects = GetObjects
+		local MapGet = MapGet
 		local Sleep = Sleep
 		MsgPopup(
 			83--[[Domes--]],
@@ -84,15 +84,16 @@ do -- DronesNotRepairingDome
 				for i = 1, #domes do
 					-- get a list of all res in the center of dome
 					local pos = domes[i]:GetSpotPos(-1)
-					local objs = GetObjects{
-						class = "ResourcePile",
-						-- we only want stuff within *radius*
-						filter = function(o)
-							if o:GetDist2D(pos) <= 1000 then
-								return o
-							end
-						end,
-					}
+					local objs = MapGet(pos, 1000, "ResourcePile")
+--~ 					local objs = GetObjects{
+--~ 						class = "ResourcePile",
+--~ 						-- we only want stuff within *radius*
+--~ 						filter = function(o)
+--~ 							if o:GetDist2D(pos) <= 1000 then
+--~ 								return o
+--~ 							end
+--~ 						end,
+--~ 					}
 
 					-- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
 					local start_id, end_id = domes[i]:GetAllSpots(domes[i]:GetState())

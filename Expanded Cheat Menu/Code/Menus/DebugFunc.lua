@@ -353,19 +353,11 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
 
 	local function CallBackFunc(answer)
 		if answer then
-			CreateRealTimeThread(function()
-				ForEach{
-					class = obj.class,
-					area = "realm",
-					exec = function(o)
-						ChoGGi.CodeFuncs.DeleteObject(o)
-					end,
-				}
-			end)
+			MapDelete("map", obj.class)
 		end
 	end
 
-	local count = CountObjects{class = obj.class,area = "realm"}
+	local count = MapCount("map", obj.class)
 	local name = RetName(obj)
 	ChoGGi.ComFuncs.QuestionBox(
 		Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(count,name),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),

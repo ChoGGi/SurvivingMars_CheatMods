@@ -7,7 +7,7 @@
 ### Added:
 - Added a bunch of new debug stuff in DA
 - > FPS Counter Location: Reposition the FPS counter.
-- > DTM Slots Display: Got me.
+- > DTM Slots Display: Got me, loaded textures I suppose.
 - > Toggle Render: Shadows, objects, and such.
 
 ### Changed:
@@ -15,6 +15,7 @@
 - > If they force only .hpk mods then I'll make it automagical.
 - Reset Rovers renamed to Reset Commanders (and it now takes the amount of drones into account).
 - Re-added Object Manipulator (Examine>Tools>Edit Obj or F5).
+- Building Info: Added "Outside Buildings" (just shows which grid they're connected to).
 
 ### Fixed:
 - Fixed keyboard focus when using the inputs on my dialogs (whoops).

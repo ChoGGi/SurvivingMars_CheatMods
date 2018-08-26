@@ -41,13 +41,19 @@ do -- ViewObjInfo_Toggle
 	end
 
 	local GetInfo = {
---~		 Power = function(obj)
---~		 end,
---~		 ["Life-Support"] = function(obj)
---~		 end,
+		OutsideBuildings = function(obj)
+			return Concat(
+				"- ",RetName(obj)," -\n",
+				S[302535920000035--[[Grids--]]],": ",S[682--[[Oxygen--]]],"(",obj.air and obj.air.grid.ChoGGi_GridHandle,") ",S[681--[[Water--]]],"(",obj.water and obj.water.grid.ChoGGi_GridHandle,") ",S[302535920000037--[[Electricity--]]],"(",obj.electricity and obj.electricity.grid.ChoGGi_GridHandle,")"
+			)
+		end,
+--~ 		Power = function(obj)
+--~ 		end,
+--~ 		["Life-Support"] = function(obj)
+--~ 		end,
 		SubsurfaceDeposit = function(obj)
 			return Concat(
-				"-",RetName(obj),"-\n",
+				"- ",RetName(obj)," -\n",
 				S[6--[[Depth Layer--]]],": ",obj.depth_layer,", ",
 				S[7--[[Is Revealed--]]],": ",obj.revealed,"\n",
 				S[16--[[Grade--]]],": ",obj.grade,", ",
@@ -56,18 +62,17 @@ do -- ViewObjInfo_Toggle
 		end,
 		DroneControl = function(obj)
 			return Concat(
-				"-",RetName(obj),"-\n",
+				"- ",RetName(obj)," -\n",
 				S[517--[[Drones: %s--]]],": ",#(obj.drones or ""),"/",obj:GetMaxDronesCount(),"\n",
 				S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),", ",
-				S[619281504128--[[Maintenance--]]],": ",obj:GetMaintenanceDronesCount(),", ",
-				S[302535920000081--[[Workers--]]],": ",obj:GetTransportDronesCount() + obj:GetMiningDronesCount(),", ",
+				S[302535920000081--[[Workers--]]],": ",--[[obj:GetTransportDronesCount() + --]]obj:GetMiningDronesCount(),", ",
 				S[293--[[Broken: %s--]]]:format(obj:GetBrokenDronesCount()),", ",
 				S[294--[[Discharged: %s--]]]:format(obj:GetDischargedDronesCount())
 			)
 		end,
 		Drone = function(obj)
 			return Concat(
-				"-",RetName(obj),"-\n",
+				"- ",RetName(obj)," -\n",
 				S[584248706535--[[Carrying: %s--]]]:format(Concat((obj.amount or 0) / r))," (",obj.resource,"), ",
 				S[63--[[Travelling--]]],": ",obj.moving,", ",
 				S[40--[[Recharge--]]],": ",obj.going_to_recharger,"\n",
@@ -108,7 +113,7 @@ do -- ViewObjInfo_Toggle
 				predprod = predprod / r
 			end
 			return table.concat{Concat(
-				"-",RetName(obj),"-\n",
+				"- ",RetName(obj)," -\n",
 				S[80--[[Production--]]],": ",prefix,predprod,", ",
 				S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),", ",
 				S[434--[[Lifetime: %s--]]]:format(prod.lifetime_production / r),"\n",
@@ -136,7 +141,7 @@ do -- ViewObjInfo_Toggle
 				end
 			end
 			return Concat(
-				"-",RetName(obj),"-\n",
+				"- ",RetName(obj)," -\n",
 				S[547--[[Colonists--]]],": ",#(obj.labels.Colonist or ""),"\n",
 
 				S[6859--[[Unemployed--]]],": ",#(obj.labels.Unemployed or ""),"/",Dome_GetWorkingSpace(obj),", ",
@@ -156,7 +161,9 @@ do -- ViewObjInfo_Toggle
 
 				S[1022--[[Food--]]]," (",#(obj.labels.needFood or ""),"): ",S[4439--[[Going to: %s--]]]:format(food_need),", ",S[526--[[Visitors--]]],": ",food_use,"/",food_max,"\n",
 
-				S[3862--[[Medic--]]]," (",#(obj.labels.needMedical or ""),"): ",S[4439--[[Going to: %s--]]]:format(medic_need),", ",S[526--[[Visitors--]]],": ",medic_use,"/",medic_max
+				S[3862--[[Medic--]]]," (",#(obj.labels.needMedical or ""),"): ",S[4439--[[Going to: %s--]]]:format(medic_need),", ",S[526--[[Visitors--]]],": ",medic_use,"/",medic_max,"\n\n",
+
+				S[302535920000035--[[Grids--]]],": ",S[682--[[Oxygen--]]],"(",obj.air.grid.ChoGGi_GridHandle,") ",S[681--[[Water--]]],"(",obj.water.grid.ChoGGi_GridHandle,") ",S[302535920000037--[[Electricity--]]],"(",obj.electricity.grid.ChoGGi_GridHandle,")"
 			)
 		end,
 	}
@@ -177,10 +184,8 @@ do -- ViewObjInfo_Toggle
 				text_orient.ChoGGi_ViewObjInfo_o = true
 				text_obj.ChoGGi_ViewObjInfo_t = true
 				text_obj:SetText(GetInfo[label](obj))
-				text_obj:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
+--~ 				text_obj:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
 				text_obj:SetCenter(true)
-
-				Concat(ChoGGi.font,", 16, bold, aa")
 
 				local _, origin = obj:GetAllSpots(0)
 				obj:Attach(text_obj, origin)
@@ -212,8 +217,12 @@ do -- ViewObjInfo_Toggle
 		-- fire an update every second
 		update_info_thread[label] = CreateRealTimeThread(function()
 			while update_info_thread[label] do
+				-- add a grid number we can reference
+				ChoGGi.CodeFuncs.UpdateGridHandles()
+
 				local objs = UICity.labels[label] or ""
 				local mine
+				-- update text
 				for i = 1, #objs do
 					mine = nil
 					local attaches = objs[i]:GetAttaches() or ""
@@ -227,18 +236,22 @@ do -- ViewObjInfo_Toggle
 							break
 						end
 					end
+
 					-- set opacity depending on dist
 					if mine then
-						local dist = mine.pos:Dist2D(cam_pos())
-						if dist < 50000 then
-							mine.text:SetOpacityInterpolation(127)
-						elseif dist < 100000 then
-							mine.text:SetOpacityInterpolation(75)
---~						 elseif dist < 200000 then
---~							 mine.text:SetOpacityInterpolation(50)
-						else
+						if mine.pos:Dist2D(cam_pos()) > 100000 then
 							mine.text:SetOpacityInterpolation(0)
+						else
+							mine.text:SetOpacityInterpolation(127)
 						end
+--~ 						local dist = mine.pos:Dist2D(cam_pos())
+--~ 						if dist < 50000 then
+--~ 							mine.text:SetOpacityInterpolation(127)
+--~ 						elseif dist < 100000 then
+--~ 							mine.text:SetOpacityInterpolation(75)
+--~ 						else
+--~ 							mine.text:SetOpacityInterpolation(0)
+--~ 						end
 					end
 				end
 				Sleep(1000)
@@ -253,8 +266,9 @@ do -- ViewObjInfo_Toggle
 			{text = S[80--[[Production--]]],value = "Production"},
 			{text = S[517--[[Drones--]]],value = "Drone"},
 			{text = S[5433--[[Drone Control--]]],value = "DroneControl"},
+			{text = S[885971788025--[[Outside Buildings--]]],value = "OutsideBuildings"},
 
---~			 {text = S[79--[[Power--]]],value = "Power"},
+--~ 			 {text = S[79--[[Power--]]],value = "Power"},
 --~			 {text = S[81--[[Life Support--]]],value = "Life-Support"},
 		}
 

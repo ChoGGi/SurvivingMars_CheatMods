@@ -3,9 +3,9 @@ local mapname
 local showimage
 
 -- override this func to create/update image when site changes
-local org_FillRandomMapProps = FillRandomMapProps
+local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, params)
-	local map = org_FillRandomMapProps(gen, params)
+	local map = orig_FillRandomMapProps(gen, params)
 	mapname = map
 	if not showimage then
 		showimage = ChoGGi_ShowImage:new({}, terminal.desktop,{})
@@ -24,6 +24,21 @@ function OnMsg.ChangeMapDone()
 			term[i]:delete()
 		end
 	end
+end
+
+-- reset func once we know it's a new game (someone reported image showing up after landing)
+local function ResetFunc()
+	if orig_FillRandomMapProps then
+		FillRandomMapProps = orig_FillRandomMapProps
+		orig_FillRandomMapProps = nil
+	end
+end
+
+function OnMsg.CityStart()
+	ResetFunc()
+end
+function OnMsg.LoadGame()
+	ResetFunc()
 end
 
 -- define a dialog that just shows an image

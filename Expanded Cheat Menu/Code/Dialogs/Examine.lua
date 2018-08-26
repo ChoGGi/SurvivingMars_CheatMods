@@ -1005,7 +1005,7 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 		-- reset menu list
 		self.parents_menu_popup = {}
 
-		if IsValid(obj) then
+		if obj.class then
 			--add object name to title
 			if type(obj.handle) == "number" then
 				name = Concat(name," (",obj.handle,")")

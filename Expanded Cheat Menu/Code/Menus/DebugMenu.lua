@@ -170,7 +170,10 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
 	RolloverText = S[302535920000492--[[Opens the object examiner for the selected or moused-over obj.--]]],
 	OnAction = function()
-		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.SelObject())
+		local obj = ChoGGi.CodeFuncs.SelObject()
+		if obj then
+			ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+		end
 	end,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjExaminer,
 }
