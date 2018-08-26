@@ -12,7 +12,9 @@ Actions[c] = {
 	ActionId = "Game.Misc.Annoying Sounds",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
 	RolloverText = S[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
-	OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
+	OnAction = function()
+		ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
+	end,
 }
 
 c = c + 1

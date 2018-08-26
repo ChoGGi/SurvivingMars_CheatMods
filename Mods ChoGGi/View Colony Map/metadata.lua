@@ -8,5 +8,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {"Code/Script.lua"},
 	"lua_revision", LuaRevision,
-	"description", [[Shows the map before you load it in the "Colony Spot" screen.]],
+	"description", [[Shows the map before you load it in the "Colony Spot" screen.
+
+For those wondering: Purple = mountainous, other colours = buildable.]],
 })

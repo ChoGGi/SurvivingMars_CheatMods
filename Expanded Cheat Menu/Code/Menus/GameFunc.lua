@@ -50,7 +50,7 @@ do -- AnnoyingSounds_Toggle
 --~	 end
 --~	 TestSound("Object MOXIE Loop")
 
-	function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
+	function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle(which)
 		local ChoGGi = ChoGGi
 		--make a list
 		local ItemList = {
@@ -62,7 +62,7 @@ do -- AnnoyingSounds_Toggle
 		}
 
 		--callback
-		local function CallBackFunc(choice)
+		local function CallBackFunc(choice,skip)
 			local value = choice[1].value
 			if not value then
 				return
@@ -76,20 +76,25 @@ do -- AnnoyingSounds_Toggle
 			elseif value == "MirrorSphereFreeze" then
 				table.remove(FXRules.Freeze.start.MirrorSphere.any,2)
 				FXRules.Freeze.start.any = nil
-				RemoveFromRules("Freeze")
+--~ 				RemoveFromRules("Freeze")
+				RemoveFromRules("Mystery Sphere Freeze")
 				MirrorSphere_Toggle()
 
 			elseif value == "RCRoverAntenna" then
-				table.remove(FXRules.RoverDeploy.start.RCRover.any,2)
-				table.remove(FXRules.RoverDeploy.start.RCRover.any,3)
-				RemoveFromRules("Unit Rover DeployWork")
+				local list = FXRules.RoverDeploy.start.RCRover.any
+				for i = #list, 1, -1 do
+					if list[i].Sound == "Unit Rover DeployAntennaON" or list[i].Sound == "Unit Rover DeployLoop" then
+						table.remove(list,i)
+					end
+				end
+				RemoveFromRules("Unit Rover DeployLoop")
 				RemoveFromRules("Unit Rover DeployAntennaON")
 				RCRoverDeploy_Toggle()
 
 			elseif value == "RCRoverEmergencyPower" then
-				table.remove(FXRules.EmergencyPower.start.RCRover.any,2)
-				table.remove(FXRules.EmergencyPower.start.RCRover.any,3)
-				RemoveFromRules("Unit Rover EmergencyPower")
+				table.remove(FXRules.EmergencyPower.start.RCRover.any,1)
+--~ 				table.remove(FXRules.EmergencyPower.start.RCRover.any,3)
+--~ 				RemoveFromRules("Unit Rover EmergencyPower")
 				RemoveFromRules("Unit Rover EmergencyPower")
 				RCRoverEmergencyPower_Toggle()
 
@@ -101,19 +106,25 @@ do -- AnnoyingSounds_Toggle
 				RCRoverEmergencyPower_Toggle()
 			end
 
-			MsgPopup(
-				S[302535920001088--[[%s: Stop that bloody bouzouki!--]]]:format(choice[1].text),
-				3581--[[Sounds--]]
-			)
+			if not skip then
+				MsgPopup(
+					S[302535920001088--[[%s: Stop that bloody bouzouki!--]]]:format(choice[1].text),
+					3581--[[Sounds--]]
+				)
+			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = 302535920000680--[[Annoying Sounds--]],
-			hint = 302535920001090--[[You can only reset all sounds at once.--]],
-			skip_sort = true,
-		}
+		if which then
+			CallBackFunc({value = which},true)
+		else
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = 302535920000680--[[Annoying Sounds--]],
+				hint = 302535920001090--[[You can only reset all sounds at once.--]],
+				skip_sort = true,
+			}
+		end
 	end
 end -- do
 

@@ -20,6 +20,7 @@
 - Fixed keyboard focus when using the inputs on my dialogs (whoops).
 - Shortcut keys were still enabled even with DisableECM setting (thanks XxUnkn0wnxX).
 - Pressing console key made the console log show up even when disabled (thanks XxUnkn0wnxX).
+- Annoying Sounds Toggle (thanks XxUnkn0wnxX).
 
 ## v8.4 (Aug 21 2018)
 ### Added:
