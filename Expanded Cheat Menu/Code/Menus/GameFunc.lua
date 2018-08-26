@@ -115,7 +115,7 @@ do -- AnnoyingSounds_Toggle
 		end
 
 		if which then
-			CallBackFunc({value = which},true)
+			CallBackFunc({{value = which}},true)
 		else
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
