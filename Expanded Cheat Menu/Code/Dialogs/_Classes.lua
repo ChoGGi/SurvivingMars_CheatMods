@@ -331,7 +331,7 @@ function ChoGGi_Window:SetInitPos(parent)
 	end
 	local new_y
 	if (y + h) > winh then
-		if parent then
+		if IsKindOf(parent,"XWindow") then
 			-- shrink box by header
 			new_y = winh - h + self.header
 			h = h - self.header

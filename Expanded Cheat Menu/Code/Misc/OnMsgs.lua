@@ -690,18 +690,18 @@ function OnMsg.ChoGGi_SpawnedShuttle(obj)
 	end
 end
 
-function OnMsg.ChoGGi_SpawnedDrone(obj)
-	local UserSettings = ChoGGi.UserSettings
-	if UserSettings.GravityDrone then
-		obj:SetGravity(UserSettings.GravityDrone)
+do -- SpawnedDrone/SpawnedRover
+	local function SpawnedDrone(obj)
+		local UserSettings = ChoGGi.UserSettings
+		if UserSettings.GravityDrone then
+			obj:SetGravity(UserSettings.GravityDrone)
+		end
+		if UserSettings.SpeedDrone then
+			obj:SetMoveSpeed(UserSettings.SpeedDrone)
+		end
 	end
-	if UserSettings.SpeedDrone then
-		obj:SetMoveSpeed(UserSettings.SpeedDrone)
-	end
-end
 
-do -- RCCreated
-	local function RCCreated(obj)
+	local function SpawnedRover(obj)
 		local UserSettings = ChoGGi.UserSettings
 		if UserSettings.SpeedRC then
 			obj:SetMoveSpeed(UserSettings.SpeedRC)
@@ -709,22 +709,40 @@ do -- RCCreated
 		if UserSettings.GravityRC then
 			obj:SetGravity(UserSettings.GravityRC)
 		end
+		if obj:IsKindOf("RCTransport") then
+			if UserSettings.RCTransportStorageCapacity then
+				obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+			end
+		end
+		if obj:IsKindOf("RCRover") then
+			if ChoGGi.UserSettings.RCRoverMaxRadius then
+				-- I override the func so no need to send a value here
+				obj:SetWorkRadius()
+			end
+		end
+	end
+
+	function OnMsg.ChoGGi_SpawnedDrone(obj)
+		SpawnedDrone(obj)
 	end
 	function OnMsg.ChoGGi_SpawnedRCTransport(obj)
-		local UserSettings = ChoGGi.UserSettings
-		if UserSettings.RCTransportStorageCapacity then
-			obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
-		end
-		RCCreated(obj)
+		SpawnedRover(obj)
 	end
 	function OnMsg.ChoGGi_SpawnedRCRover(obj)
-		if ChoGGi.UserSettings.RCRoverMaxRadius then
-			obj:SetWorkRadius() -- I override the func so no need to send a value here
-		end
-		RCCreated(obj)
+		SpawnedRover(obj)
 	end
 	function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
-		RCCreated(obj)
+		SpawnedRover(obj)
+	end
+	-- drones are spawned before this, so we can do both
+	function OnMsg.ChoGGi_RocketSpawnedRovers(rocket)
+		for i = 1, #rocket.rovers do
+			SpawnedRover(rocket.rovers[i])
+		end
+
+		for i = 1, #rocket.drones do
+			SpawnedDrone(rocket.drones[i])
+		end
 	end
 end -- do
 

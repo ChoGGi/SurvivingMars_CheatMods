@@ -16,6 +16,7 @@
 - Reset Rovers renamed to Reset Commanders (and it now takes the amount of drones into account).
 - Re-added Object Manipulator (Examine>Tools>Edit Obj or F5).
 - Building Info: Added "Outside Buildings" (just shows which grid they're connected to).
+- Rovers/Drones from rockets now have settings applied to them.
 
 ### Fixed:
 - Fixed keyboard focus when using the inputs on my dialogs (whoops).
