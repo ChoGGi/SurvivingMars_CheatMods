@@ -1350,7 +1350,7 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				choice[1].text,
+				ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
 				5238--[[Rockets--]],
 				"UI/Icons/Sections/PreciousMetals_2.tga"
 			)
