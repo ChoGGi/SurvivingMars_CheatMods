@@ -427,6 +427,36 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
+	ActionName = S[302535920001317--[[Launch Fuel Per Rocket--]]],
+	ActionId = "Expanded CM.Rockets.Launch Fuel Per Rocket",
+	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.LaunchFuelPerRocket,
+			302535920001318--[[Change how much fuel rockets need to launch.--]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.LaunchFuelPerRocket,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Rockets,
+	ActionName = S[302535920001319--[[Rockets Ignore Fuel--]]],
+	ActionId = "Expanded CM.Rockets.Launch Fuel Per Rocket",
+	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.RocketsIgnoreFuel,
+			302535920001320--[[Rockets don't need fuel to launch.--]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000850--[[Change Resupply Settings--]]],
 	ActionId = "Expanded CM.Rockets.Change Resupply Settings",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",

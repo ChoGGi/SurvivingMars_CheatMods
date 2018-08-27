@@ -1365,3 +1365,83 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 		skip_sort = true,
 	}
 end
+
+local function SetRocketFuelAmount(amount)
+	local rockets = UICity.labels.AllRockets
+	for i = 1, #rockets do
+		if rockets[i].refuel_request then
+			ChoGGi.CodeFuncs.SetFuelAmountPerRocket(rockets[i],amount)
+		else
+			rockets[i].launch_fuel = amount
+		end
+	end
+end
+
+function ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle()
+	local ChoGGi = ChoGGi
+	if ChoGGi.UserSettings.RocketsIgnoreFuel then
+		ChoGGi.UserSettings.RocketsIgnoreFuel = nil
+		SetRocketFuelAmount(ChoGGi.Consts.LaunchFuelPerRocket)
+	else
+		ChoGGi.UserSettings.RocketsIgnoreFuel = true
+		SetRocketFuelAmount(0)
+	end
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel,302535920001319--[[Rockets Ignore Fuel--]]),
+		5238--[[Rockets--]],
+		"UI/Icons/Sections/Fuel_1.tga"
+	)
+end
+
+function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
+	local ChoGGi = ChoGGi
+	local r = ChoGGi.Consts.ResourceScale
+	local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
+	local ItemList = {
+		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
+		{text = 5,value = 5 * r},
+		{text = 10,value = 10 * r},
+		{text = 15,value = 15 * r},
+		{text = 25,value = 25 * r},
+		{text = 50,value = 50 * r},
+		{text = 100,value = 100 * r},
+		{text = 1000,value = 1000 * r},
+		{text = 10000,value = 10000 * r},
+	}
+
+	if not ChoGGi.UserSettings.LaunchFuelPerRocket then
+		ChoGGi.UserSettings.LaunchFuelPerRocket = DefaultSetting
+	end
+
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+		if type(value) == "number" then
+			if value == DefaultSetting then
+				ChoGGi.UserSettings.LaunchFuelPerRocket = nil
+			else
+				ChoGGi.UserSettings.LaunchFuelPerRocket = value
+			end
+			SetRocketFuelAmount(value)
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
+				5238--[[Rockets--]],
+				"UI/Icons/Sections/Fuel_1.tga"
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = 302535920001317--[[Launch Fuel Per Rocket--]],
+		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",ChoGGi.UserSettings.LaunchFuelPerRocket),
+		skip_sort = true,
+	}
+end

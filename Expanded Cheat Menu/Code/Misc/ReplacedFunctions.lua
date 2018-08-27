@@ -184,7 +184,16 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
+	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+	function SupplyRocket:HasEnoughFuelToLaunch(...)
+		if ChoGGi.UserSettings.RocketsIgnoreFuel then
+			return true
+		else
+			return ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
+		end
+	end
 
 	-- override any performance changes if needed
 	function Workplace:GetWorkshiftPerformance(...)

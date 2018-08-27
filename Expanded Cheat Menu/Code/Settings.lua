@@ -656,6 +656,7 @@ function OnMsg.OptionsApply()
 	-- ^ they're all UniversalStorageDepot
 	-- not sure what the 100K is for with SupplyRocket, but ah well 30K it is
 	ChoGGi.Consts.RocketMaxExportAmount = 30 * r
+	ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
 
 	ChoGGi.Consts.CameraZoomToggle = 8000
 	ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier

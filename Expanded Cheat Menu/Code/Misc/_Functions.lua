@@ -1980,3 +1980,19 @@ function ChoGGi.CodeFuncs.SetExportAmountPerRocket(obj,value)
 		obj.export_requests[1]:AddAmount(amount * -1)
 	end
 end
+
+function ChoGGi.CodeFuncs.SetFuelAmountPerRocket(obj,value)
+	-- get stored amount
+	local amount = obj.launch_fuel - obj.refuel_request:GetActualAmount()
+	-- dbl amount stored
+	obj.launch_fuel = value
+	-- and reset 'er
+	obj.refuel_request:ResetAmount(obj.launch_fuel)
+	-- then add any stored
+	if amount > obj.launch_fuel then
+		-- don't set to above max storage
+		obj.refuel_request:AddAmount(obj.launch_fuel * -1)
+	else
+		obj.refuel_request:AddAmount(amount * -1)
+	end
+end
