@@ -11,12 +11,13 @@
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
+- Console additions now happen sooner (for ease of use during New Game screens).
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
 - Oxygen Need/Free wasn't working (thanks XxUnkn0wnxX).
 - Shuttle speed broke in DA (thanks hchsiao).
-- Shuttle Capacity broke in DA (thanks hchsiao).
+- Shuttle capacity broke in DA (thanks hchsiao).
 
 ## v8.5 (26 Aug 2018)
 ### Added:

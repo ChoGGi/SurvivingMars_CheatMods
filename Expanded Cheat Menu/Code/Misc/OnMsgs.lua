@@ -163,6 +163,8 @@ do -- OnMsgClassesBuilt
 end -- do
 
 function OnMsg.ModsLoaded()
+	local ChoGGi = ChoGGi
+
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
@@ -176,6 +178,51 @@ function OnMsg.ModsLoaded()
 --~			 cargo.price = 123400000
 --~		 end
 --~	 end)
+
+	local UserSettings = ChoGGi.UserSettings
+	if not UserSettings.DisableECM then
+		-- show console log history
+		if UserSettings.ConsoleToggleHistory then
+			ShowConsoleLog(true)
+		end
+
+		if UserSettings.ConsoleHistoryWin then
+			ChoGGi.ComFuncs.ShowConsoleLogWin(true)
+		end
+
+		--dim that console bg
+		if UserSettings.ConsoleDim then
+			config.ConsoleDim = 1
+		end
+
+
+		--add Scripts button to console
+		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+			dlgConsole.ChoGGi_MenuAdded = true
+
+			-- build console buttons
+			ChoGGi.Console.ConsoleControls(dlgConsole)
+
+			-- make some space for the close button
+			dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+			-- move log text above the buttons i added
+			if dlgConsoleLog then
+				dlgConsoleLog.idText:SetMargins(box(10, 0, 10, 60))
+			end
+
+			-- add close button
+			g_Classes.ChoGGi_CloseButton:new({
+				Id = "idClose",
+				RolloverAnchor = "smart",
+				OnPress = function()
+					dlgConsole:Show()
+				end,
+				Margins = box(0, 0, 0, -53),
+				Dock = "bottom",
+			}, dlgConsole)
+		end
+	end -- DisableECM
+
 end
 
 function OnMsg.PersistPostLoad()
@@ -996,65 +1043,9 @@ do -- LoadGame/CityStart
 				ReopenSelectionXInfopanel()
 			end
 
-			-- show console log history
-			if UserSettings.ConsoleToggleHistory then
-				ShowConsoleLog(true)
-			end
-
-			if UserSettings.ConsoleHistoryWin then
-				ChoGGi.ComFuncs.ShowConsoleLogWin(true)
-			end
-
-			--dim that console bg
-			if UserSettings.ConsoleDim then
-				config.ConsoleDim = 1
-			end
-
 			--remove some uselessish Cheats to clear up space
 			if UserSettings.CleanupCheatsInfoPane then
 				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-			end
-
-			--add Scripts button to console
-			if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
-				dlgConsole.ChoGGi_MenuAdded = true
-
-				-- build console buttons
-				ChoGGi.Console.ConsoleControls(dlgConsole)
-
-				-- make some space for the close button
-				dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-				-- move log text above the buttons i added
-				if dlgConsoleLog then
-					dlgConsoleLog.idText:SetMargins(box(10, 0, 10, 60))
-				end
-
-				--OnTextChanged?
-
---~	 -- add tabs to every line so to prevent errors from how DA update merges lines
---~	 function Console:OnShortcut(shortcut, source)
---~		 if shortcut == "Enter" then
---~		 local text = self.idEdit:GetText()
---~ print(text)
---~		 text:gsub("\n","\t\n")
---~ print(text)
---~		 self.idEdit:SetText(text)
-
-
---~		 end
---~		 return ChoGGi_OrigFuncs.Console_OnShortcut(self, shortcut, source)
---~	 end
-
-				-- add close button
-				g_Classes.ChoGGi_CloseButton:new({
-					Id = "idClose",
-					RolloverAnchor = "smart",
-					OnPress = function()
-						dlgConsole:Show()
-					end,
-					Margins = box(0, 0, 0, -53),
-					Dock = "bottom",
-				}, dlgConsole)
 			end
 
 			-- add all the defaults we skip to my actions
