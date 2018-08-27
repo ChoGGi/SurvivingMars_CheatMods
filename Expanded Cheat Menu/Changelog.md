@@ -5,7 +5,7 @@
 
 ## v8.6 (Unreleased)
 ### Changed:
-- Cheats>Research>Add Points: Added option to reset sponsor points to zero.
+- Cheats>Research>Add Points: Added option to reset sponsor points to default.
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).

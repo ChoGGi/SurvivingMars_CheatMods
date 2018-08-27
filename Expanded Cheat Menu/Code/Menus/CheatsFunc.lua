@@ -852,7 +852,7 @@ end
 function ChoGGi.MenuFuncs.AddResearchPoints()
 	local ChoGGi = ChoGGi
 	local ItemList = {
-		{text = S[302535920001084--[[Reset--]]],value = "Reset",hint = 302535920000292--[[Resets sponsor points to 0--]]},
+		{text = S[302535920001084--[[Reset--]]],value = "Reset",hint = 302535920000292--[[Resets sponsor points to default for that sponsor--]]},
 		{text = 100,value = 100},
 		{text = 100,value = 100},
 		{text = 250,value = 250},
@@ -875,8 +875,9 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 		if type(value) == "number" then
 			UICity:AddResearchPoints(value)
 		elseif value == "Reset" then
-			g_Consts.SponsorResearch = 0
-			Consts.SponsorResearch = 0
+			local default = GetMissionSponsor().research_points
+			g_Consts.SponsorResearch = default
+			Consts.SponsorResearch = default
 		end
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000294--[[Added--]]),
