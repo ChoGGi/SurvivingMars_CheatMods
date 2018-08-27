@@ -1341,23 +1341,10 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 
 			local rockets = UICity.labels.AllRockets
 			for i = 1, #rockets do
-				local rocky = rockets[i]
-				if rocky.export_requests then
-					-- get stored amount
-					local amount = rocky.max_export_storage - rocky.export_requests[1]:GetActualAmount()
-					-- dbl amount stored
-					rocky.max_export_storage = value
-					-- and reset 'er
-					rocky.export_requests[1]:ResetAmount(rocky.max_export_storage)
-					-- then add any stored
-					if amount > rocky.max_export_storage then
-						-- don't set to above max storage
-						rocky.export_requests[1]:AddAmount(rocky.max_export_storage * -1)
-					else
-						rocky.export_requests[1]:AddAmount(amount * -1)
-					end
+				if rockets[i].export_requests then
+					ChoGGi.CodeFuncs.SetExportAmountPerRocket(rockets[i],value)
 				else
-					rocky.max_export_storage = value
+					rockets[i].max_export_storage = value
 				end
 			end
 

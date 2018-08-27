@@ -330,26 +330,10 @@ do
 	end
 
 	function SupplyRocket:CheatCapDbl()
-		-- get stored amount
-		local amount = self.max_export_storage - self.export_requests[1]:GetActualAmount()
-		-- dbl amount stored
-		self.max_export_storage = self.max_export_storage * 2
-		-- and reset 'er
-		self.export_requests[1]:ResetAmount(self.max_export_storage)
-		-- then add any stored
-		self.export_requests[1]:AddAmount(amount * -1)
+		ChoGGi.CodeFuncs.SetExportAmountPerRocket(obj,self.max_export_storage * 2)
 	end
 	function SupplyRocket:CheatCapDef()
-		-- get stored amount
-		local amount = self.max_export_storage - self.export_requests[1]:GetActualAmount()
-		self.max_export_storage = self.base_max_export_storage
-		self.export_requests[1]:ResetAmount(self.max_export_storage)
-		-- don't set to above max storage
-		if amount > self.max_export_storage then
-			self.export_requests[1]:AddAmount(self.max_export_storage * -1)
-		else
-			self.export_requests[1]:AddAmount(amount * -1)
-		end
+		ChoGGi.CodeFuncs.SetExportAmountPerRocket(obj,self.base_max_export_storage)
 	end
 end -- do
 

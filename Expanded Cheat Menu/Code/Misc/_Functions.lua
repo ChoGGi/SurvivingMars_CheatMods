@@ -1965,3 +1965,18 @@ do -- AddGridHandles
 	end
 end -- do
 
+function ChoGGi.CodeFuncs.SetExportAmountPerRocket(obj,value)
+	-- get stored amount
+	local amount = obj.max_export_storage - obj.export_requests[1]:GetActualAmount()
+	-- dbl amount stored
+	obj.max_export_storage = value
+	-- and reset 'er
+	obj.export_requests[1]:ResetAmount(obj.max_export_storage)
+	-- then add any stored
+	if amount > obj.max_export_storage then
+		-- don't set to above max storage
+		obj.export_requests[1]:AddAmount(obj.max_export_storage * -1)
+	else
+		obj.export_requests[1]:AddAmount(amount * -1)
+	end
+end
