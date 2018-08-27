@@ -236,7 +236,8 @@ end
 local menu_added
 local menu_list_items
 -- adds class name then list of functions below
-local function BuildFuncList(obj_name,prefix)
+--~ local function BuildFuncList(obj_name,prefix)
+function Examine:BuildFuncList(obj_name,prefix)
 	prefix = prefix or ""
 	local class = _G[obj_name] or empty_table
 	local skip = true
@@ -251,7 +252,8 @@ local function BuildFuncList(obj_name,prefix)
 	end
 end
 
-local function ProcessList(list,prefix)
+--~ local function ProcessList(list,prefix)
+function Examine:ProcessList(list,prefix)
 	for i = 1, #list do
 		if not menu_added[list[i]] then
 			-- CObject and Object are pretty much the same (Object has a couple more funcs)
@@ -260,7 +262,7 @@ local function ProcessList(list,prefix)
 				menu_added[list[i]] = prefix
 			else
 				menu_added[list[i]] = true
-				BuildFuncList(list[i],prefix)
+				self:BuildFuncList(list[i],prefix)
 			end
 		end
 	end
@@ -338,13 +340,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				menu_added = {}
 				menu_list_items = {}
 
-				ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
-				ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
+				self:ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
+				self:ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
 				-- add examiner object with some spaces so it's at the top
-				BuildFuncList(self.obj.class,"	")
+				self:BuildFuncList(self.obj.class,"	")
 				-- if Object hasn't been added, then add CObject
 				if not menu_added.Object and menu_added.CObject then
-					BuildFuncList("CObject",menu_added.CObject)
+					self:BuildFuncList("CObject",menu_added.CObject)
 				end
 
 				ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
@@ -372,6 +374,15 @@ Which you can then mess around with some more in the console."--]]],
 				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
 			end,
 		},
+		{name = "	 ---- "},
+		{
+			name = S[302535920001321--[[UI Click To Select--]]],
+			hint = S[302535920001322--[["Allows you to inspect UI controls by clicking them.
+This dialog will freeze till you click something."--]]],
+			clicked = function()
+				ChoGGi_TerminalRolloverMode(true,self)
+			end,
+		},
 		{
 			name = S[302535920000970--[[UI Flash--]]],
 			hint = S[302535920000972--[["Toggle flashing the UI object being examined.
@@ -384,35 +395,6 @@ This may temporarily add some extra values to objects (BorderWidth/BorderColor).
 			class = "ChoGGi_CheckButtonMenu",
 		},
 	}
-end
-
-local pmenu_skip_dupes
-local function BuildParents(self,list,list_type,title,sort_type)
-	local g_Classes = g_Classes
-	if list and next(list) then
-		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
-		self[list_type] = list
-		local c = #self.parents_menu_popup
-		c = c + 1
-		self.parents_menu_popup[c] = {
-			name = Concat("	 ---- ",title),
-			hint = title,
-		}
-		for i = 1, #list do
-			-- no sense in having an item in parents and ancestors
-			if not pmenu_skip_dupes[list[i]] then
-				pmenu_skip_dupes[list[i]] = true
-				c = c + 1
-				self.parents_menu_popup[c] = {
-					name = list[i],
-					hint = list[i],
-					clicked = function()
-						ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[list[i]],self)
-					end,
-				}
-			end
-		end
-	end
 end
 
 function Examine:FindNext(filter)
@@ -984,6 +966,36 @@ end
 
 -- used to build parents/ancestors menu
 
+local pmenu_skip_dupes
+function Examine:BuildParents(list,list_type,title,sort_type)
+--~ local function BuildParents(self,list,list_type,title,sort_type)
+	local g_Classes = g_Classes
+	if list and next(list) then
+		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
+		self[list_type] = list
+		local c = #self.parents_menu_popup
+		c = c + 1
+		self.parents_menu_popup[c] = {
+			name = Concat("	 ---- ",title),
+			hint = title,
+		}
+		for i = 1, #list do
+			-- no sense in having an item in parents and ancestors
+			if not pmenu_skip_dupes[list[i]] then
+				pmenu_skip_dupes[list[i]] = true
+				c = c + 1
+				self.parents_menu_popup[c] = {
+					name = list[i],
+					hint = list[i],
+					clicked = function()
+						ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[list[i]],self)
+					end,
+				}
+			end
+		end
+	end
+end
+
 function Examine:SetObj(obj,skip_thread)
 	obj = obj or self.obj
 	self.onclick_handles = {}
@@ -1015,8 +1027,8 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 
 			pmenu_skip_dupes = {}
 			-- build menu list
-			BuildParents(self,obj.__parents,"parents",S[302535920000520--[[Parents--]]])
-			BuildParents(self,obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
+			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
+			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
 			-- if anything was added to the list then add to the menu
 			if #self.parents_menu_popup > 0 then
 				self.idParents:SetVisible(true)

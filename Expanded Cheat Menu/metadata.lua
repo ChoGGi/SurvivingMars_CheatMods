@@ -32,8 +32,9 @@ return PlaceObj("ModDef", {
 --~		 -- temp added to check out keys for XXXUnknownXXX
 --~ 		"Code/Dialogs/KeyPresser.lua",
 		"Code/Dialogs/MonitorInfo.lua",
-		-- always fired last for the Msg("ChoGGi_Dialogs") in it
 		"Code/Dialogs/ObjectManipulator.lua",
+		-- always fired last for the Msg("ChoGGi_Dialogs") in it
+		"Code/Dialogs/TerminalRolloverMode.lua",
 
 		-- stuff that can come later
 		"Code/Misc/_Functions.lua",

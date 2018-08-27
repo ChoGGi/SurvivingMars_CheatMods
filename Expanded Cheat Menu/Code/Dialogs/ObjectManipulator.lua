@@ -467,6 +467,3 @@ function ChoGGi_ObjectManipulatorDlg:Done(result)
 	DeleteThread(self.autorefresh_thread)
 	ChoGGi_Window.Done(self,result)
 end
-
--- fired as the last dialog opened
-Msg("ChoGGi_Dialogs")

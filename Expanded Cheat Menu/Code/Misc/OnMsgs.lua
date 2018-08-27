@@ -1077,7 +1077,9 @@ do -- LoadGame/CityStart
 
 				-- always show menu on my computer
 				if UserSettings.ShowCheatsMenu or ChoGGi.testing then
-					XShortcutsTarget:ToggleMenu()
+--~ 					XShortcutsTarget:ToggleMenu()
+					XShortcutsTarget:SetVisible(true)
+
 					if UserSettings.KeepCheatsMenuPosition then
 						XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
 					end
