@@ -2,16 +2,25 @@ local image_str = table.concat{CurrentModPath,"Maps/%s.png"}
 local mapname
 local showimage
 
+local skip_showing_image
+
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, params)
 	local map = orig_FillRandomMapProps(gen, params)
 	mapname = map
-	if not showimage then
-		showimage = ChoGGi_ShowImage:new({}, terminal.desktop,{})
+
+	-- if this doesn't work...
+	if not skip_showing_image then
+		-- check if we already created image viewer, and make one if not
+		if not showimage then
+			showimage = ChoGGi_ShowImage:new({}, terminal.desktop,{})
+		end
+		-- pretty little image
+		showimage.idImage:SetImage(image_str:format(mapname))
+		-- eh why not?
+		showimage.idCaption:SetText(mapname)
 	end
-	showimage.idImage:SetImage(image_str:format(mapname))
-	showimage.idCaption:SetText(mapname)
 
 	return map
 end
@@ -26,12 +35,14 @@ function OnMsg.ChangeMapDone()
 	end
 end
 
--- reset func once we know it's a new game (someone reported image showing up after landing)
 local function ResetFunc()
+	-- reset func once we know it's a new game (someone reported image showing up after landing)
 	if orig_FillRandomMapProps then
 		FillRandomMapProps = orig_FillRandomMapProps
 		orig_FillRandomMapProps = nil
 	end
+	-- alright fucker...
+	skip_showing_image = true
 end
 
 function OnMsg.CityStart()

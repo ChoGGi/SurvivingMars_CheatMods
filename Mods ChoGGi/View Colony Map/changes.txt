@@ -1,2 +1,4 @@
+v0.3
+As best I can tell some other mod is also using the same function, so I added a check for when a game is started to just skip showing the image.
 v0.2
 Made it stop the image from showing up once you start a new game.

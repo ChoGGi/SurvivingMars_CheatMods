@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "View Colony Map v0.2",
-	"version", 2,
+	"title", "View Colony Map v0.3",
+	"version", 3,
 	"saved", 1535284800,
 	"image", "Preview.png",
 	"id", "ChoGGi_ViewColonyMap",
