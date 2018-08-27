@@ -225,7 +225,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000477,Clear out the windowed console log.,
 302535920000865,Toggle Trans,
 302535920001321,UI Click To Select,
-302535920001322,"Allows you to inspect UI controls by clicking them.
+302535920001322,"Allows you to examine UI controls by clicking them.
 This dialog will freeze till you click something.",
 302535920000970,UI Flash,
 302535920000972,"Toggle flashing the UI object being examined.

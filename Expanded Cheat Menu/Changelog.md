@@ -8,6 +8,7 @@
 - Rockets>Max Export Amount: Change how many rares per rocket you can export.
 - Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
 - Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
+- Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
