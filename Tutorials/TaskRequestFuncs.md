@@ -16,8 +16,10 @@ req:GetResource()
 req:GetFreeUnitSlots()
 -- see const.rf*
 req:GetFlags()
--- set the amount the request already has (rocket.refuel_request:SetAmount(number))
-req:SetAmount()
--- add to the amount
-req:AddAmount()
+-- set the amount being requested (rocket.refuel_request:SetAmount(number))
+req:SetAmount(amount)
+-- add to the amount being requested
+req:AddAmount(amount)
+-- reset request to ask for this amount
+req:ResetAmount(amount)
 ```

@@ -613,6 +613,7 @@ function OnMsg.OptionsApply()
 	local ChoGGi = ChoGGi
 	local Consts = Consts
 	local g_Classes = g_Classes
+	local r = ChoGGi.Consts.ResourceScale
 
 	-- if setting doesn't exist then add default
 	for key,value in pairs(ChoGGi.Defaults) do
@@ -648,11 +649,13 @@ function OnMsg.OptionsApply()
 	ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.RCTransportStorageCapacity = g_Classes.RCTransport:GetDefaultPropertyValue("max_shared_storage")
 	ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
-	--ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-	ChoGGi.Consts.StorageWasteDepot = 70 * ChoGGi.Consts.ResourceScale --^ that has 45000 as default...
-	ChoGGi.Consts.StorageOtherDepot = 180 * ChoGGi.Consts.ResourceScale
-	ChoGGi.Consts.StorageMechanizedDepot = 3950 * ChoGGi.Consts.ResourceScale
-	--^ they're all UniversalStorageDepot
+--~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+	ChoGGi.Consts.StorageWasteDepot = 70 * r --^ that has 45000 as default...
+	ChoGGi.Consts.StorageOtherDepot = 180 * r
+	ChoGGi.Consts.StorageMechanizedDepot = 3950 * r
+	-- ^ they're all UniversalStorageDepot
+	-- not sure what the 100K is for with SupplyRocket, but ah well 30K it is
+	ChoGGi.Consts.RocketMaxExportAmount = 30 * r
 
 	ChoGGi.Consts.CameraZoomToggle = 8000
 	ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier

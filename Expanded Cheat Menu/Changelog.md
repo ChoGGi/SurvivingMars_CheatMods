@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.6 (Unreleased)
+### Added:
+- Rockets>Max Export Amount: Change how many rares per rocket you can export.
+
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
 

@@ -412,6 +412,21 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
+	ActionName = S[302535920001291--[[Max Export Amount--]]],
+	ActionId = "Expanded CM.Rockets.Max Export Amount",
+	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.RocketMaxExportAmount,
+			302535920001290--[[Change how many rares per rocket you can export.--]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.RocketMaxExportAmount,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000850--[[Change Resupply Settings--]]],
 	ActionId = "Expanded CM.Rockets.Change Resupply Settings",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
@@ -463,8 +478,13 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[4594--[[Colonists Per Rocket--]]],
-	ActionId = "Expanded CM.Rockets.4594--[[Colonists Per Rocket",
+	ActionId = "Expanded CM.Rockets.Colonists Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
-	RolloverText = S[302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]],
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			Consts.MaxColonistsPerRocket,
+			302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]
+		)
+	end,
 	OnAction = ChoGGi.MenuFuncs.SetColonistsPerRocket,
 }

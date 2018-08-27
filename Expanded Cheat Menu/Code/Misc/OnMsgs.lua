@@ -748,12 +748,19 @@ function OnMsg.ChoGGi_SpawnedSpireBase(obj)
 end
 function OnMsg.ChoGGi_SpawnedDinerGrocery(obj)
 	local ChoGGi = ChoGGi
-	--more food for diner/grocery
+	-- more food for diner/grocery
 	if ChoGGi.UserSettings.ServiceWorkplaceFoodStorage then
-		--for some reason InitConsumptionRequest always adds 5 to it
+		-- for some reason InitConsumptionRequest always adds 5 to it
 		local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
 		obj.consumption_stored_resources = storedv
 		obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
+	end
+end
+
+function OnMsg.ChoGGi_SpawnedSupplyRocket(obj)
+	local ChoGGi = ChoGGi
+	if ChoGGi.UserSettings.RocketMaxExportAmount then
+		obj.max_export_storage = ChoGGi.UserSettings.RocketMaxExportAmount
 	end
 end
 

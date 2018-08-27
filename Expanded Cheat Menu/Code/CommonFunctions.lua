@@ -103,6 +103,7 @@ AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
 AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
 AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
+AddMsgToFunc("SupplyRocket","GameInit","ChoGGi_SpawnedSupplyRocket")
 
 
 do -- Translate

@@ -236,7 +236,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		{text = 10000,value = 10000 * r},
 	}
 
-	--other hint type
+	-- other hint type
 	local hint = UpgradedSetting
 	if ChoGGi.UserSettings.SpeedDrone then
 		hint = ChoGGi.UserSettings.SpeedDrone
@@ -1303,6 +1303,78 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		items = ItemList,
 		title = 302535920000953--[[Set Colonist Capacity--]],
 		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",Consts.MaxColonistsPerRocket),
+		skip_sort = true,
+	}
+end
+
+function ChoGGi.MenuFuncs.RocketMaxExportAmount()
+	local ChoGGi = ChoGGi
+	local r = ChoGGi.Consts.ResourceScale
+	local DefaultSetting = ChoGGi.Consts.RocketMaxExportAmount
+	local ItemList = {
+		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
+		{text = 5,value = 5 * r},
+		{text = 10,value = 10 * r},
+		{text = 15,value = 15 * r},
+		{text = 25,value = 25 * r},
+		{text = 50,value = 50 * r},
+		{text = 100,value = 100 * r},
+		{text = 1000,value = 1000 * r},
+		{text = 10000,value = 10000 * r},
+	}
+
+	if not ChoGGi.UserSettings.RocketMaxExportAmount then
+		ChoGGi.UserSettings.RocketMaxExportAmount = DefaultSetting
+	end
+
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+		if type(value) == "number" then
+			if value == DefaultSetting then
+				ChoGGi.UserSettings.RocketMaxExportAmount = nil
+			else
+				ChoGGi.UserSettings.RocketMaxExportAmount = value
+			end
+
+			local rockets = UICity.labels.AllRockets
+			for i = 1, #rockets do
+				local rocky = rockets[i]
+				if rocky.export_requests then
+					-- get stored amount
+					local amount = rocky.max_export_storage - rocky.export_requests[1]:GetActualAmount()
+					-- dbl amount stored
+					rocky.max_export_storage = value
+					-- and reset 'er
+					rocky.export_requests[1]:ResetAmount(rocky.max_export_storage)
+					-- then add any stored
+					if amount > rocky.max_export_storage then
+						-- don't set to above max storage
+						rocky.export_requests[1]:AddAmount(rocky.max_export_storage * -1)
+					else
+						rocky.export_requests[1]:AddAmount(amount * -1)
+					end
+				else
+					rocky.max_export_storage = value
+				end
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				choice[1].text,
+				5238--[[Rockets--]],
+				"UI/Icons/Sections/PreciousMetals_2.tga"
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = 302535920001291--[[Max Export Amount--]],
+		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",ChoGGi.UserSettings.RocketMaxExportAmount),
 		skip_sort = true,
 	}
 end
