@@ -683,17 +683,18 @@ do --path markers
 		if obj.class == "CargoShuttle" then
 
 			path = {}
-			--going to pickup colonist
+			-- going to pickup colonist
 			if obj.command == "GoHome" then
 				path[1] = obj.hub:GetPos()
 			elseif obj.command == "Transport" then
 				-- 2 is pickup loc, 3 is drop off
-				path[1] = (obj.transport_task[2] and obj.transport_task[2]:GetBuilding():GetPos()) or (obj.transport_task[3] and obj.transport_task[3]:GetBuilding():GetPos())
+				path[1] = obj.transport_task and ((obj.transport_task[2] and obj.transport_task[2]:GetBuilding():GetPos()) or (obj.transport_task[3] and obj.transport_task[3]:GetBuilding():GetPos()))
 			elseif obj.is_colonist_transport_task then
-				path[1] = obj.transport_task.dest_pos or obj.transport_task.colonist:GetPos()
+				path[1] = obj.transport_task and (obj.transport_task.dest_pos or obj.transport_task.colonist:GetPos())
 			else
 				path[1] = obj:GetDestination()
 			end
+
 			local c = #path
 
 

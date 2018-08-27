@@ -801,12 +801,12 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 		end
 		if type(value) == "number" then
 			local value = value * r
-			--not tested but I assume too much = dead save as well (like rc and transport)
+			-- not tested but I assume too much = dead save as well (like rc and transport)
 			if value > 1000000 then
 				value = 1000000
 			end
 
-			--loop through and set all shuttles
+			-- loop through and set all shuttles
 			local tab = UICity.labels.CargoShuttle or ""
 			for i = 1, #tab do
 				tab[i].max_shared_storage = value
@@ -862,11 +862,10 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 		end
 		if type(value) == "number" then
 			local value = value * r
-			--loop through and set all shuttles
+			-- loop through and set all shuttles
 			local tab = UICity.labels.CargoShuttle or ""
 			for i = 1, #tab do
-				tab[i].max_speed = value
-				--pf_SetStepLen(tab[i],value)
+				tab[i].move_speed = value
 			end
 			ChoGGi.ComFuncs.SetSavedSetting("SpeedShuttle",value)
 

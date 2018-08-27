@@ -617,9 +617,9 @@ do -- SetEntityScale
 				end
 			elseif obj.class == "CargoShuttle" then
 				if cUserSettings.SpeedShuttle then
-					obj.max_speed = ChoGGi.Consts.SpeedShuttle
+					obj.move_speed = ChoGGi.Consts.SpeedShuttle
 				else
-					obj.max_speed = ChoGGi.Consts.SpeedShuttle
+					obj.move_speed = ChoGGi.Consts.SpeedShuttle
 				end
 			elseif obj.class == "Colonist" then
 				if cUserSettings.SpeedColonist then

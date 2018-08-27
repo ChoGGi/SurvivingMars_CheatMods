@@ -14,6 +14,8 @@
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
+- Oxygen Need/Free wasn't working (thanks XxUnkn0wnxX).
+- Shuttle speed broke in DA (thanks hchsiao).
 
 ## v8.5 (26 Aug 2018)
 ### Added:

@@ -686,7 +686,7 @@ function OnMsg.ChoGGi_SpawnedShuttle(obj)
 		obj.max_shared_storage = UserSettings.StorageShuttle
 	end
 	if UserSettings.SpeedShuttle then
-		obj.max_speed = UserSettings.SpeedShuttle
+		obj.move_speed = UserSettings.SpeedShuttle
 	end
 end
 
