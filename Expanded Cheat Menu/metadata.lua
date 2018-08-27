@@ -10,6 +10,7 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"code", {
 		-- start 'er up
 		"Init.lua",
@@ -110,7 +111,7 @@ There's a cheats section in most selection panels on the right side of the scree
 Menu>Gameplay>QoL>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist is enabled.
+Settings are saved at %%APPDATA%%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist is enabled.
 Help>Reset Settings will also do the same thing.
 
 To manually edit see: Help>ECM>Edit Settings.

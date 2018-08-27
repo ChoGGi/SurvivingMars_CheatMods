@@ -3,6 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
+local T = ChoGGi.ComFuncs.Translate
 local default_icon = "UI/Icons/IPButtons/drone.tga"
 local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
 local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
@@ -1146,7 +1147,7 @@ do --ChangeResupplySettings
 			hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
 			custom_type = 7,
 			custom_func = function(sel)
-				ShowResupplyList(sel.value,sel.meta)
+				ShowResupplyList(sel[1].value,sel[1].meta)
 			end,
 		}
 	end

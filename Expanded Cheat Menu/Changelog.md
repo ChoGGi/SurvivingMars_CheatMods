@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.6 (Unreleased)
+### Fixed:
+- Rocket >Change Resupply Settings (thanks XxUnkn0wnxX).
 
 ## v8.5 (26 Aug 2018)
 ### Added:
