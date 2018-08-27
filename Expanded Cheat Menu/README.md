@@ -42,7 +42,7 @@ Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
 ^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
 Help>Reset Settings will also do the same thing.
 
-You can edit the shortcut keys in the settings file (or blank them to disable).
+You can edit the shortcut keys (or blank them to disable), see Help>ECM>Edit Settings.
 ```
 
 
