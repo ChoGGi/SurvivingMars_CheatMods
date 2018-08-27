@@ -31,6 +31,7 @@ Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this 
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 More shortcut keys are available, see menu items.
+You can edit the shortcut keys (or blank them to disable), see below.
 
 When I say object that means either the selected object or the object under the mouse cursor.
 
@@ -38,11 +39,10 @@ There's a cheats section in most selection panels on the right side of the scree
 Menu>Gameplay>QoL>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua
-^ delete to reset to default settings (unless it's something like changing capacity of RC Transports, that's kept in savegame)
+Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist is enabled.
 Help>Reset Settings will also do the same thing.
 
-You can edit the shortcut keys (or blank them to disable), see Help>ECM>Edit Settings.
+To manually edit see: Help>ECM>Edit Settings.
 ```
 
 
