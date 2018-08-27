@@ -49,7 +49,7 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
 	if Func then
 		local newname = Concat(ClassOrFunc,"_",Func)
 		if not ChoGGi.OrigFuncs[newname] then
-			 ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
 --~ 			ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
 		end
 	else
@@ -66,7 +66,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 	ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
 	-- redefine it
 --~ 	g_Classes[ClassName][FuncName] = function(...)
-	 _G[ClassName][FuncName] = function(...)
+		_G[ClassName][FuncName] = function(...)
 		-- I just care about adding self to the msgs
 		Msg(sMsg,select(1,...))
 
@@ -103,7 +103,7 @@ AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
 AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
 AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
-AddMsgToFunc("SupplyRocket","SpawnRovers","ChoGGi_RocketSpawnedRovers")
+
 
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate

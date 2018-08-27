@@ -734,16 +734,16 @@ do -- SpawnedDrone/SpawnedRover
 	function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
 		SpawnedRover(obj)
 	end
-	-- drones are spawned before this, so we can do both
-	function OnMsg.ChoGGi_RocketSpawnedRovers(rocket)
-		for i = 1, #rocket.rovers do
-			SpawnedRover(rocket.rovers[i])
-		end
+--~ 	-- drones are spawned before this, so we can do both
+--~ 	function OnMsg.ChoGGi_RocketSpawnedRovers(rocket)
+--~ 		for i = 1, #rocket.rovers do
+--~ 			SpawnedRover(rocket.rovers[i])
+--~ 		end
 
-		for i = 1, #rocket.drones do
-			SpawnedDrone(rocket.drones[i])
-		end
-	end
+--~ 		for i = 1, #rocket.drones do
+--~ 			SpawnedDrone(rocket.drones[i])
+--~ 		end
+--~ 	end
 end -- do
 
 function OnMsg.ChoGGi_SpawnedDroneHub(obj)
