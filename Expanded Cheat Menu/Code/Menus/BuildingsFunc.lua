@@ -308,8 +308,8 @@ function ChoGGi.MenuFuncs.BuildingAir_Toggle()
 		"air_consumption",
 		302535920001250--[[You need to select a building that uses oxygen.--]],
 		"noair",
-		"AddBuildingOxygenConsump",
-		"RemoveBuildingOxygenConsump",
+		"AddBuildingAirConsump",
+		"RemoveBuildingAirConsump",
 		657--[[Oxygen Consumption--]]
 	)
 end

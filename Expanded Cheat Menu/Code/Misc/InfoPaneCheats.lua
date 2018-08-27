@@ -84,10 +84,10 @@ do
 	end
 	--
 	function Building:CheatOxygenFree()
-		ChoGGi.CodeFuncs.RemoveBuildingOxygenConsump(self)
+		ChoGGi.CodeFuncs.RemoveBuildingAirConsump(self)
 	end
 	function Building:CheatOxygenNeed()
-		ChoGGi.CodeFuncs.AddBuildingOxygenConsump(self)
+		ChoGGi.CodeFuncs.AddBuildingAirConsump(self)
 	end
 	--~
 	function Object:CheatHideSigns()
