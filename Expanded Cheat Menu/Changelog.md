@@ -5,7 +5,7 @@
 
 ## v8.6 (Unreleased)
 
-## v8.5 (18 Aug 2018)
+## v8.5 (26 Aug 2018)
 ### Added:
 - Added a bunch of new debug stuff in DA
 - > FPS Counter Location: Reposition the FPS counter.

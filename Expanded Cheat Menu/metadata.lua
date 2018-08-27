@@ -119,7 +119,6 @@ To manually edit see: Help>ECM>Edit Settings.
 
 ##### For more info see Menu>Help>ECM>Readme
 Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Changelog: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%%20Cheat%%20Menu/Changelog.md (see if issue is fixed here before asking please)
 
 
 
@@ -131,8 +130,8 @@ unluac: https://sourceforge.net/projects/unluac/
 Everyone else giving suggestions/pointing out issues.
 
 
+
 ##### Access to missing functionality
 Da Vinci update added a blacklist of functions, you can use this to bypass them.
-%sHelperMod
-]],ConvertToOSPath(CurrentModPath)),
+%sHelperMod]],ConvertToOSPath(CurrentModPath)),
 })
