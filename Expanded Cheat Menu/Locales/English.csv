@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000292,Resets sponsor points to 0,
 302535920001291,,
 302535920001290,,
 302535920001317,,
@@ -460,6 +459,7 @@ Use with Remove Building Limits to fill up a dome with spires.",
 302535920000229,Buildings are built instantly.,
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).",
+302535920000292,Resets sponsor points to default for that sponsor,
 302535920000329,Scan all anomalies.,
 302535920001286,Scan all or certain types of anomalies.,
 302535920000123,Stops most disasters,
