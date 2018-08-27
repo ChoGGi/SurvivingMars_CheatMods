@@ -347,7 +347,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		hint = 302535920000940--[[Select something to monitor.--]],
 		custom_type = 7,
 		custom_func = function(sel)
-			ChoGGi.CodeFuncs.DisplayMonitorList(sel.value,sel.parentobj)
+			ChoGGi.CodeFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)
 		end,
 		skip_sort = true,
 	}

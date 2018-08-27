@@ -852,6 +852,8 @@ end
 function ChoGGi.MenuFuncs.AddResearchPoints()
 	local ChoGGi = ChoGGi
 	local ItemList = {
+		{text = S[302535920001084--[[Reset--]]],value = "Reset",hint = 302535920000292--[[Resets sponsor points to 0--]]},
+		{text = 100,value = 100},
 		{text = 100,value = 100},
 		{text = 250,value = 250},
 		{text = 500,value = 500},
@@ -872,12 +874,15 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 		end
 		if type(value) == "number" then
 			UICity:AddResearchPoints(value)
-			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000294--[[Added--]]),
-				311--[[Research--]],
-				"UI/Icons/Upgrades/eternal_fusion_04.tga"
-			)
+		elseif value == "Reset" then
+			g_Consts.SponsorResearch = 0
+			Consts.SponsorResearch = 0
 		end
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000294--[[Added--]]),
+			311--[[Research--]],
+			"UI/Icons/Upgrades/eternal_fusion_04.tga"
+		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -885,6 +890,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 		items = ItemList,
 		title = 302535920000295--[[Add Research Points--]],
 		hint = 302535920000296--[[If you need a little boost (or a lotta boost) in research.--]],
+		skip_sort = true,
 	}
 end
 

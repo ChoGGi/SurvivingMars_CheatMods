@@ -4,8 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.6 (Unreleased)
+### Changed:
+- Cheats>Research>Add Points: Added option to reset sponsor points to zero.
+
 ### Fixed:
-- Rocket >Change Resupply Settings (thanks XxUnkn0wnxX).
+- Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
 
 ## v8.5 (26 Aug 2018)
 ### Added:

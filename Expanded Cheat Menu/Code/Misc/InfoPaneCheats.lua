@@ -329,12 +329,18 @@ do
 		ChoGGi.CodeFuncs.EmptyMechDepot(self)
 	end
 
-	--~	 function SupplyRocket:CheatCapDbl()
-	--~		 self.max_export_storage = self.max_export_storage * 2
-	--~	 end
-	--~	 function SupplyRocket:CheatCapDef()
-	--~		 self.max_export_storage = self.base_max_export_storage
-	--~	 end
+--~ 	function SupplyRocket:CheatCapDbl()
+--~ 		local stored = self.export_requests[1]:GetActualAmount()
+--~ 		print(self.export_requests[1]:GetActualAmount())
+--~ 		self.max_export_storage = self.max_export_storage * 2
+--~ 		print(self.export_requests[1]:GetActualAmount())
+--~ 		self.export_requests[1]:SetAmount(stored)
+--~ 	end
+--~ 	function SupplyRocket:CheatCapDef()
+--~ 		local stored = self.base_max_export_storage - self.export_requests[1]:GetActualAmount()
+--~ 		self.max_export_storage = self.base_max_export_storage
+--~ 		self.export_requests[1]:SetAmount(stored)
+--~ 	end
 end -- do
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
