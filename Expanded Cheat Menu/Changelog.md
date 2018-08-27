@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v8.5 (Unreleased)
+## v8.6 (Unreleased)
+
+## v8.5 (18 Aug 2018)
 ### Added:
 - Added a bunch of new debug stuff in DA
 - > FPS Counter Location: Reposition the FPS counter.
@@ -24,7 +26,7 @@
 - Annoying Sounds Toggle (thanks XxUnkn0wnxX).
 - Set Colonist Traits wasn't setting individual traits (thanks Dawnmist).
 
-## v8.4 (Aug 21 2018)
+## v8.4 (21 Aug 2018)
 ### Added:
 - Cheats>Anomaly Scanning (requested by Antipatiko).
 - Console>Examine: I used to create a folder with some commonly examined objects/funcs, now it's a list saved in settings (thanks blacklist...).
