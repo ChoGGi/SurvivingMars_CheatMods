@@ -44,7 +44,17 @@ do --funcs without a class
 	SaveOrigFunc("GetMissingMods")
 	SaveOrigFunc("IsDlcAvailable")
 	SaveOrigFunc("UIGetBuildingPrerequisites")
+	SaveOrigFunc("GetMaxCargoShuttleCapacity")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+	function GetMaxCargoShuttleCapacity()
+		local ChoGGi = ChoGGi
+		if ChoGGi.UserSettings.StorageShuttle then
+			return ChoGGi.UserSettings.StorageShuttle
+		else
+			return ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity()
+		end
+	end
 
 --~	 -- if i need the names of xelements
 --~	 function XTemplateSpawn(template_or_class, parent, context)
