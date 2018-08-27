@@ -101,6 +101,7 @@ s = false -- used to store SelectedObj
 -- check if tech is researched before we get value
 do
 	local ChoGGi = ChoGGi
+	local r = ChoGGi.Consts.ResourceScale
 	function ChoGGi.CodeFuncs.GetSpeedDrone()
 		local UICity = UICity
 		local MoveSpeed = ChoGGi.Consts.SpeedDrone
@@ -115,6 +116,15 @@ do
 		end
 
 		return MoveSpeed
+	end
+
+	function ChoGGi.CodeFuncs.GetFuelRocket()
+		local UICity = UICity
+		if UICity and UICity:IsTechResearched("AdvancedMartianEngines") then
+			local a = ChoGGi.ComFuncs.ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
+			return ChoGGi.Consts.LaunchFuelPerRocket - (a * r)
+		end
+		return ChoGGi.Consts.LaunchFuelPerRocket
 	end
 
 	function ChoGGi.CodeFuncs.GetSpeedRC()
@@ -212,7 +222,7 @@ do
 		local UICity = UICity
 		if UICity and UICity:IsTechResearched("TransportOptimization") then
 			local a = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
-			return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
+			return ChoGGi.Consts.RCTransportStorageCapacity + (a * r)
 		end
 		return ChoGGi.Consts.RCTransportStorageCapacity
 	end

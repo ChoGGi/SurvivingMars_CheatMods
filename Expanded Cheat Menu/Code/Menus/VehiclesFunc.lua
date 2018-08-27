@@ -225,7 +225,6 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 	local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedDrone()
 	local ItemList = {
 		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
-		{text = Concat(S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]},
 		{text = 5,value = 5 * r},
 		{text = 10,value = 10 * r},
 		{text = 15,value = 15 * r},
@@ -235,6 +234,9 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		{text = 1000,value = 1000 * r},
 		{text = 10000,value = 10000 * r},
 	}
+	if DefaultSetting ~= UpgradedSetting then
+		table.insert(ItemList,2,{text = Concat(S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
+	end
 
 	-- other hint type
 	local hint = UpgradedSetting
@@ -281,7 +283,6 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedRC()
 	local ItemList = {
 		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
-		{text = Concat(S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]},
 		{text = 5,value = 5 * r},
 		{text = 10,value = 10 * r},
 		{text = 15,value = 15 * r},
@@ -291,6 +292,9 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		{text = 1000,value = 1000 * r},
 		{text = 10000,value = 10000 * r},
 	}
+	if DefaultSetting ~= UpgradedSetting then
+		table.insert(ItemList,2,{text = Concat(S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
+	end
 
 	--other hint type
 	local hint = UpgradedSetting
@@ -1399,6 +1403,7 @@ function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
 	local ChoGGi = ChoGGi
 	local r = ChoGGi.Consts.ResourceScale
 	local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
+	local UpgradedSetting = ChoGGi.CodeFuncs.GetFuelRocket()
 	local ItemList = {
 		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
 		{text = 5,value = 5 * r},
@@ -1410,6 +1415,9 @@ function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
 		{text = 1000,value = 1000 * r},
 		{text = 10000,value = 10000 * r},
 	}
+	if DefaultSetting ~= UpgradedSetting then
+		table.insert(ItemList,2,{text = Concat(S[302535920000890--[[Upgraded--]]],": ",UpgradedSetting / r),value = UpgradedSetting})
+	end
 
 	if not ChoGGi.UserSettings.LaunchFuelPerRocket then
 		ChoGGi.UserSettings.LaunchFuelPerRocket = DefaultSetting
