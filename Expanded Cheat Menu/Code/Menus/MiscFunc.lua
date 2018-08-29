@@ -258,6 +258,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
 		}
+
 		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
 		for i = 1, #attaches do
 			if attaches[i]:IsKindOf("ColorizableObject") then
@@ -266,10 +267,23 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 					value = attaches[i].class,
 					parentobj = obj,
 					obj = attaches[i],
+					hint = Concat(S[302535920001107--[[Change colours of an attached object.--]]],"\n",S[302535920000955--[[Handle--]]],": ",attaches[i].handle),
+				}
+			end
+		end
+		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
+		for _,attach in pairs(obj) do
+			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
+				ItemList[#ItemList+1] = {
+					text = attach.class,
+					value = attach.class,
+					parentobj = obj,
+					obj = attach,
 					hint = 302535920001107--[[Change colours of an attached object.--]],
 				}
 			end
 		end
+
 	end
 
 	local function FiredOnMenuClick(sel,dialog)

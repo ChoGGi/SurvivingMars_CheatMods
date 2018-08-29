@@ -13,6 +13,7 @@
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
 - Console additions now happen sooner (for ease of use during New Game screens).
+- Change Colour (F6) has more attachments listed (the ones GetAttaches doesn't get...).
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).

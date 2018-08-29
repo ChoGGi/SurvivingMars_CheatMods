@@ -657,14 +657,24 @@ do -- SetRandColour
 			return
 		end
 		local ChoGGi = ChoGGi
-		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-		--random is random after all, so lets try for at least slightly different colours
-		local colours = ChoGGi.CodeFuncs.RandomColour(#attaches + 1)
-		for i = 1, #attaches do
+		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or {}
+		local c = #attaches
+		-- add any non-attached attaches
+		for _,attach in pairs(obj) do
+			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
+				c = c + 1
+				attaches[c] = attach
+			end
+		end
+		-- random is random after all, so lets try for at least slightly different colours
+		local colours = ChoGGi.CodeFuncs.RandomColour(c + 1)
+
+		for i = 1, c do
 			if attaches[i]:IsKindOf("ColorizableObject") then
 				SetRandColour(attaches[i],colours[i],ChoGGi)
 			end
 		end
+
 		SetRandColour(obj,colours[#colours],ChoGGi)
 	end
 end -- do
@@ -690,6 +700,12 @@ do -- SetDefColour
 		for i = 1, #attaches do
 			SetDefColour(attaches[i])
 		end
+		for _,attach in pairs(obj) do
+			if IsValid(attach) then
+				SetDefColour(attach)
+			end
+		end
+
 	end
 end -- do
 

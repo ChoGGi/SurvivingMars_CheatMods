@@ -330,6 +330,8 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged()
 	if self.skip_color_change then
 		return
 	end
+
+	-- colour selector
 	if self.custom_type == 2 then
 		if not self.obj then
 			-- grab the object from the last list item
@@ -345,6 +347,7 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged()
 			SetPal(self.obj,i,Color,Roughness,Metallic)
 		end
 		self.obj:SetColorModifier(self.idList[#self.idList].item.value)
+
 	elseif self.custom_type == 5 then
 		self:BuildAndApplyLightmodel()
 	end
@@ -363,6 +366,8 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 		-- 2 = showing the colour picker
 		if self.custom_type == 2 then
 			self:UpdateColourPicker()
+			-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
+			self.idColorPicker:UpdateComponent("ALPHA", 1000)
 		-- don't show picker unless it's a colour setting (browsing lightmodel)
 		elseif self.custom_type == 5 then
 			if self.sel.editor == "color" then

@@ -50,7 +50,6 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
 		local newname = Concat(ClassOrFunc,"_",Func)
 		if not ChoGGi.OrigFuncs[newname] then
 			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
---~ 			ChoGGi.OrigFuncs[newname] = g_Classes[ClassOrFunc][Func]
 		end
 	else
 		if not ChoGGi.OrigFuncs[ClassOrFunc] then
@@ -65,7 +64,6 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
 	-- redefine it
---~ 	g_Classes[ClassName][FuncName] = function(...)
 		_G[ClassName][FuncName] = function(...)
 		-- I just care about adding self to the msgs
 		Msg(sMsg,select(1,...))
@@ -228,7 +226,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		id = AsyncRand(),
 		title = CheckText(title),
 		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Code/TheIncal.tga")
+		image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Code/TheIncal.png")
 	}
 	table.set_defaults(data, params)
 	table.set_defaults(data, g_Classes.OnScreenNotificationPreset)

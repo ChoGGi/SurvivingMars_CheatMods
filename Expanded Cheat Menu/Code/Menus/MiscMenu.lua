@@ -113,8 +113,8 @@ Actions[c] = {
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
-	ActionSortKey = "-1",
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.InfopanelCheats_Toggle,
+	ActionSortKey = "-1",
 }
 
 c = c + 1

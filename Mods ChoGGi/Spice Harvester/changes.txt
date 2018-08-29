@@ -1,2 +1,7 @@
+v0.3
+Da Vinci...
+No more thumping when the game is paused.
+Sounds actually happen when you destroy it.
+Pin icon changed to build icon instead of attack rover.
 v0.2
 thumping and dust.
