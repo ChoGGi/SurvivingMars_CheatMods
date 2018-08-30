@@ -1483,7 +1483,7 @@ Not permanent for colonists after they exit buildings (for now).",
 302535920000698,Infopanel Cheats Cleanup,
 302535920000699,"Remove some entries from the cheat pane (restart to re-enable).
 
-AddMaintenancePnts, MakeSphereTarget, Malfunction, SpawnWorker, SpawnVisitor",
+AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor",
 302535920000700,Scanner Queue Larger,
 302535920000701,Queue up to 100 squares.,
 302535920000702,Game Speed,

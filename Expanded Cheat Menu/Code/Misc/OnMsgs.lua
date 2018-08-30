@@ -1381,8 +1381,10 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
-		-- getting tired of people asking how to disable console log
-		print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]])
+		if not ChoGGi.testing then
+			-- getting tired of people asking how to disable console log
+			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]])
+		end
 
 		-- used to check when game has started and it's safe to print() etc
 		ChoGGi.Temp.GameLoaded = true

@@ -128,7 +128,7 @@ Actions[c] = {
 			ChoGGi.UserSettings.CleanupCheatsInfoPane,
 			302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
 
-AddMaintenancePnts,MakeSphereTarget,Malfunction,SpawnWorker,SpawnVisitor--]]
+AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor--]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
