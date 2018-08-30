@@ -970,7 +970,6 @@ do -- LoadGame/CityStart
 		local config = config
 		local const = const
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-		local dlgConsole = dlgConsole
 		local Presets = Presets
 		local hr = hr
 

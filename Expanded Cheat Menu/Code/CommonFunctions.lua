@@ -11,37 +11,11 @@ local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
-local pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable = pcall,tonumber,tostring,next,pairs,print,type,select,getmetatable
-local table = table
-
 local AsyncRand = AsyncRand
-local AsyncStringToFile = AsyncStringToFile
-local box = box
-local CreateRealTimeThread = CreateRealTimeThread
-local DelayedCall = DelayedCall
-local FilterObjects = FilterObjects
-local GetLogFile = GetLogFile
-local GetPreciseTicks = GetPreciseTicks
-local GetTerrainCursor = GetTerrainCursor
-local IsBox = IsBox
-local IsObjlist = IsObjlist
-local IsPoint = IsPoint
 local IsValid = IsValid
-local Msg = Msg
-local OpenDialog = OpenDialog
-local point = point
-local RGB = RGB
-local Sleep = Sleep
-local TechDef = TechDef
-local ThreadLockKey = ThreadLockKey
-local ThreadUnlockKey = ThreadUnlockKey
-local ViewObjectMars = ViewObjectMars
-local WaitMarsQuestion = WaitMarsQuestion
-
-local guic = guic
-local white = white
-
-local terrain_IsPointInBounds = terrain.IsPointInBounds
+local GetTerrainCursor = GetTerrainCursor
+local AsyncStringToFile = _G.AsyncStringToFile
+local FilterObjects = FilterObjects
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
@@ -64,7 +38,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
 	-- redefine it
-		_G[ClassName][FuncName] = function(...)
+	_G[ClassName][FuncName] = function(...)
 		-- I just care about adding self to the msgs
 		Msg(sMsg,select(1,...))
 
@@ -110,7 +84,8 @@ do -- Translate
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str
-		if type(select(1,...)) == "userdata" then
+		local stype = type(select(1,...))
+		if stype == "userdata" or stype == "number" then
 			str = _InternalTranslate(T{...})
 		else
 			str = _InternalTranslate(...)
@@ -145,6 +120,7 @@ end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 -- returns object name or at least always some string
+local IsObjlist = IsObjlist
 function ChoGGi.ComFuncs.RetName(obj)
 	if obj == _G then
 		return "_G"
@@ -360,48 +336,6 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 		popup:SetFocus()
 --~			 return popup
 	end
-end
-
-function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
-	if not o then
-		return ChoGGi.ComFuncs.ClearShowMe()
-	end
-	local g_Classes = g_Classes
-
-	if type(o) == "table" and #o == 2 then
-		if IsPoint(o[1]) and terrain_IsPointInBounds(o[1]) and IsPoint(o[2]) and terrain_IsPointInBounds(o[2]) then
-			local m = g_Classes.Vector:new()
-			m:Set(o[1], o[2], color)
-			markers[m] = "vector"
-			o = m
-		end
-	else
-		-- both is for objs i also want a sphere over
-		if IsPoint(o) or both then
-			local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
-			if o2 and terrain_IsPointInBounds(o2) then
-				local m = g_Classes.Sphere:new()
-				m:SetPos(o2)
-				m:SetRadius(50 * guic)
-				m:SetColor(color or RGB(0, 255, 0))
-				markers[m] = "point"
-				if not time then
-					ViewObjectMars(o2)
-				end
-				o2 = m
-			end
-		end
-
-		if IsValid(o) then
-			markers[o] = markers[o] or o:GetColorModifier()
-			o:SetColorModifier(color or RGB(0, 255, 0))
-			local pos = o:GetVisualPos()
-			if not time and terrain_IsPointInBounds(pos) then
-				ViewObjectMars(pos)
-			end
-		end
-	end
---~	 lm = o
 end
 
 -- show a circle for time and delete it
@@ -699,7 +633,7 @@ end
 
 -- write logs funcs
 do -- WriteLogs_Toggle
-	local AsyncCopyFile = AsyncCopyFile
+	local AsyncCopyFile = _G.AsyncCopyFile
 	local Dump = ChoGGi.ComFuncs.Dump
 
 	local function ReplaceFunc(name,which)
@@ -810,6 +744,7 @@ end
 do -- bool
 	acmpd = false
 	acsac = false
+	local Sleep = Sleep
 	CreateRealTimeThread(function()
 		while not dlgConsole do
 			Sleep(50)
@@ -850,17 +785,21 @@ function ChoGGi.ComFuncs.RetProperType(value)
 	return value
 end
 
--- used to check for some SM objects (Points/Boxes)
-function ChoGGi.ComFuncs.RetType(obj)
-	if getmetatable(obj) then
-		if IsPoint(obj) then
-			return "Point"
-		end
-		if IsBox(obj) then
-			return "Box"
+do -- RetType
+	-- used to check for some SM objects (Points/Boxes)
+	local IsBox = IsBox
+	local IsPoint = IsPoint
+	function ChoGGi.ComFuncs.RetType(obj)
+		if getmetatable(obj) then
+			if IsPoint(obj) then
+				return "Point"
+			end
+			if IsBox(obj) then
+				return "Box"
+			end
 		end
 	end
-end
+end -- do
 
 -- takes "example1 example2" and returns {[1] = "example1",[2] = "example2"}
 function ChoGGi.ComFuncs.StringToTable(str)
@@ -1099,13 +1038,6 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list)
 	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,list)
 end
 
-function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
-	return Examine:new({}, terminal.desktop,{
-		obj = obj,
-		parent = parent,
-	})
-end
-
 function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
 	if not obj then
 		obj = ChoGGi.CodeFuncs.SelObject()
@@ -1184,46 +1116,17 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 	})
 end
 
-do --
-	local AsyncListFiles = AsyncListFiles
-	-- returns table with list of files without path or ext and path, or exclude ext to return all files
-	function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-		local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
-		if not err and #files > 0 then
-			local table_path = {}
-			local path = Concat(folder,"/")
-			for i = 1, #files do
-				local name
-				if ext then
-					name = files[i]:gsub(path,""):gsub(ext,"")
-				else
-					name = files[i]:gsub(path,"")
-				end
-				table_path[i] = {
-					path = files[i],
-					name = name,
-				}
-			end
-			return table_path
-		end
-	end
+function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
+	return Examine:new({}, terminal.desktop,{
+		obj = obj,
+		parent = parent,
+	})
+end
 
-	function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-		--local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
-		local err, folders = AsyncListFiles(folder,"*","folders")
-		if not err and #folders > 0 then
-			local table_path = {}
-			local temp_path = Concat(folder,"/")
-			for i = 1, #folders do
-				table_path[i] = {
-					path = folders[i],
-					name = folders[i]:gsub(temp_path,""),
-				}
-			end
-			return table_path
-		end
-	end
-end -- do
+function OpenExamine(obj,parent)
+	ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
+end
+ex = OpenExamine
 
 -- i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)
@@ -1385,17 +1288,15 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 	return temp_table
 end
 
--- Haemimont Games code from examine.lua (moved here for local)
-function OpenExamine(obj,parent)
-	ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
-end
-local OpenExamine = OpenExamine
-ex = OpenExamine
+do -- ShowMe
+	local IsPoint = IsPoint
+	local green = green
+	local guic = guic
+	local IsPointInBounds = terrain.IsPointInBounds
+	local ViewObjectMars = ViewObjectMars
 
---~ local lm = false
-markers = {}
-function ChoGGi.ComFuncs.ClearShowMe()
-	pcall(function()
+	local markers = {}
+	function ChoGGi.ComFuncs.ClearShowMe()
 		for k, v in pairs(markers) do
 			if IsValid(k) then
 				if v == "point" then
@@ -1406,17 +1307,62 @@ function ChoGGi.ComFuncs.ClearShowMe()
 				markers[k] = nil
 			end
 		end
-	end)
-end
+	end
 
-local times = {}
-function ChoGGi.ComFuncs.TickStart(id)
-	times[id] = GetPreciseTicks()
-end
-function ChoGGi.ComFuncs.TickEnd(id)
-	print(id,": ",GetPreciseTicks() - times[id])
-	times[id] = nil
-end
+	function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
+		if not o then
+			return ChoGGi.ComFuncs.ClearShowMe()
+		end
+		local g_Classes = g_Classes
+		color = color or green
+
+		if type(o) == "table" and #o == 2 then
+			if IsPoint(o[1]) and IsPointInBounds(o[1]) and IsPoint(o[2]) and IsPointInBounds(o[2]) then
+				local m = g_Classes.Vector:new()
+				m:Set(o[1], o[2], color)
+				markers[m] = "vector"
+				o = m
+			end
+		else
+			-- both is for objs i also want a sphere over
+			if IsPoint(o) or both then
+				local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
+				if o2 and IsPointInBounds(o2) then
+					local m = g_Classes.Sphere:new()
+					m:SetPos(o2)
+					m:SetRadius(50 * guic)
+					m:SetColor(color)
+					markers[m] = "point"
+					if not time then
+						ViewObjectMars(o2)
+					end
+					o2 = m
+				end
+			end
+
+			if IsValid(o) then
+				markers[o] = markers[o] or o:GetColorModifier()
+				o:SetColorModifier(color)
+				local pos = o:GetVisualPos()
+				if not time and IsPointInBounds(pos) then
+					ViewObjectMars(pos)
+				end
+			end
+		end
+	end
+end -- do
+
+do -- Ticks
+	local times = {}
+	local GetPreciseTicks = GetPreciseTicks
+	function ChoGGi.ComFuncs.TickStart(id)
+		times[id] = GetPreciseTicks()
+	end
+	function ChoGGi.ComFuncs.TickEnd(id)
+		print(id,": ",GetPreciseTicks() - times[id])
+		times[id] = nil
+	end
+end -- do
 
 function ChoGGi.ComFuncs.SelectConsoleLogText()
 	local dlgConsoleLog = dlgConsoleLog
@@ -1433,7 +1379,8 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
 end
 
 do -- ShowConsoleLogWin
-	local AsyncFileToString = AsyncFileToString
+	local AsyncFileToString = _G.AsyncFileToString
+	local GetLogFile = GetLogFile
 	function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 		if visible and not dlgChoGGi_ConsoleLogWin then
 			dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
@@ -1655,7 +1602,7 @@ function ChoGGi.ComFuncs.ConvertNameToObject(name)
 	local obj = _G
 	for str, match in name:gmatch("([%w_]+)(.?)") do
 		-- . means we're not at the end yet
-		if match == "." then			-- not last field?
+		if match == "." then
 			-- i just want to check for existance not create a new table
 --~			 obj[str] = obj[str] or {}	 -- create table if absent
 			-- something in the table is missing so return
@@ -1668,6 +1615,45 @@ function ChoGGi.ComFuncs.ConvertNameToObject(name)
 			-- no more . so we got the object
 			return obj[str]
 		end
+	end
+end
+
+local AsyncListFiles = _G.AsyncListFiles
+-- returns table with list of files without path or ext and path, or exclude ext to return all files
+function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
+	local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
+	if not err and #files > 0 then
+		local table_path = {}
+		local path = Concat(folder,"/")
+		for i = 1, #files do
+			local name
+			if ext then
+				name = files[i]:gsub(path,""):gsub(ext,"")
+			else
+				name = files[i]:gsub(path,"")
+			end
+			table_path[i] = {
+				path = files[i],
+				name = name,
+			}
+		end
+		return table_path
+	end
+end
+
+function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
+	--local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
+	local err, folders = AsyncListFiles(folder,"*","folders")
+	if not err and #folders > 0 then
+		local table_path = {}
+		local temp_path = Concat(folder,"/")
+		for i = 1, #folders do
+			table_path[i] = {
+				path = folders[i],
+				name = folders[i]:gsub(temp_path,""),
+			}
+		end
+		return table_path
 	end
 end
 

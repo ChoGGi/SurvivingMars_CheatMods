@@ -9,36 +9,6 @@ local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
-local pcall,type,table = pcall,type,table
-
-local CloseXBuildMenu = CloseXBuildMenu
-local CloseDialog = CloseDialog
-local CreateRealTimeThread = CreateRealTimeThread
-local DelayedCall = DelayedCall
-local DestroyBuildingImmediate = DestroyBuildingImmediate
-local FilterObjects = FilterObjects
-local FindNearestObject = FindNearestObject
-local GetObjects = GetObjects
-local GetPassablePointNearby = GetPassablePointNearby
-local GetPreciseCursorObj = GetPreciseCursorObj
-local GetTerrainCursor = GetTerrainCursor
-local GetTerrainCursorObjSel = GetTerrainCursorObjSel
-local HexGetNearestCenter = HexGetNearestCenter
-local IsValid = IsValid
-local NearestObject = NearestObject
-local OpenXBuildMenu = OpenXBuildMenu
-local PlaceObj = PlaceObj
-local point = point
-local SelectionMouseObj = SelectionMouseObj
-local Sleep = Sleep
-
-local terminal_GetMousePos = terminal.GetMousePos
-local UIL_GetScreenSize = UIL.GetScreenSize
-local cameraRTS_SetProperties = cameraRTS.SetProperties
-local cameraRTS_SetZoomLimits = cameraRTS.SetZoomLimits
-local camera_SetFovY = camera.SetFovY
-local camera_SetFovX = camera.SetFovX
-
 -- add some shortened func names
 do -- for those that don't know "do ... end" is a way of keeping "local =" local to the do
 	-- make some easy to type names
@@ -95,7 +65,7 @@ mhc = GetTerrainCursorObj -- returns obj under cursor
 mc = GetPreciseCursorObj
 m = SelectionMouseObj
 c = GetTerrainCursor -- cursor position on map
-cs = terminal_GetMousePos -- cursor pos on screen
+cs = terminal.GetMousePos -- cursor pos on screen
 s = false -- used to store SelectedObj
 
 -- check if tech is researched before we get value
@@ -285,16 +255,21 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
 	end
 end
 
+local SetZoomLimits = cameraRTS.SetZoomLimits
+local SetFovY = camera.SetFovY
+local SetFovX = camera.SetFovX
+local SetProperties = cameraRTS.SetProperties
+local GetScreenSize = UIL.GetScreenSize
 function ChoGGi.CodeFuncs.SetCameraSettings()
 	local ChoGGi = ChoGGi
 	--cameraRTS.GetProperties(1)
 
 	--size of activation area for border scrolling
 	if ChoGGi.UserSettings.BorderScrollingArea then
-		cameraRTS_SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
+		SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
 	else
 		--default
-		cameraRTS_SetProperties(1,{ScrollBorder = 5})
+		SetProperties(1,{ScrollBorder = 5})
 	end
 
 	--zoom
@@ -302,22 +277,22 @@ function ChoGGi.CodeFuncs.SetCameraSettings()
 	--camera.GetFovX()
 	if ChoGGi.UserSettings.CameraZoomToggle then
 		if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
-			cameraRTS_SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
+			SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
 		else
-			cameraRTS_SetZoomLimits(0,24000)
+			SetZoomLimits(0,24000)
 		end
 
 		--5760x1080 doesn't get the correct zoom size till after zooming out
-		if UIL_GetScreenSize():x() == 5760 then
-			camera_SetFovY(2580)
-			camera_SetFovX(7745)
+		if GetScreenSize():x() == 5760 then
+			SetFovY(2580)
+			SetFovX(7745)
 		end
 	else
 		--default
-		cameraRTS_SetZoomLimits(400,15000)
+		SetZoomLimits(400,15000)
 	end
 
-	--cameraRTS_SetProperties(1,{HeightInertia = 0})
+	--SetProperties(1,{HeightInertia = 0})
 end
 
 function ChoGGi.CodeFuncs.ShowBuildMenu(which)
@@ -358,7 +333,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,age)
 	c:AddTrait(age)
 
 	--needed for comparison
-	local OrigAge = c.age_trait
+	local orig_age = c.age_trait
 	--needed for updating entity
 	c.age_trait = age
 
@@ -372,12 +347,12 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,age)
 		--there aren't any child specialist entities
 		c.specialist = "none"
 		--only children live in nurseries
-		if OrigAge ~= "Child" then
+		if orig_age ~= "Child" then
 			c:SetResidence(false)
 		end
 	end
 	--only children live in nurseries
-	if OrigAge == "Child" and age ~= "Child" then
+	if orig_age == "Child" and age ~= "Child" then
 		c:SetResidence(false)
 	end
 	--now we can set the new entity
@@ -424,13 +399,13 @@ function ChoGGi.CodeFuncs.ColonistUpdateGender(c,gender,cloned)
 end
 
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(c,spec)
-	--children don't have spec models so they get black cube
-	if not c.entity:find("Child",1,true) then
+	-- children don't have spec models so they get black cubed
+--~ 	if not c.entity:find("Child") then
+	if c.age_trait ~= "Child" then
 		if spec == S[3490--[[Random--]]] then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
 		end
-		c:SetSpecialization(spec,"init")
-		c:ChooseEntity()
+		c:SetSpecialization(spec)
 		c:UpdateWorkplace()
 		--randomly fails on colonists from rockets
 		--c:TryToEmigrate()
@@ -660,6 +635,7 @@ do -- SetRandColour
 		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or {}
 		local c = #attaches
 		-- add any non-attached attaches
+		local IsValid = IsValid
 		for _,attach in pairs(obj) do
 			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
 				c = c + 1
@@ -700,6 +676,7 @@ do -- SetDefColour
 		for i = 1, #attaches do
 			SetDefColour(attaches[i])
 		end
+		local IsValid = IsValid
 		for _,attach in pairs(obj) do
 			if IsValid(attach) then
 				SetDefColour(attach)
@@ -817,6 +794,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	--make it align with the depot
 	newobj:SetAngle(angle)
 	--give it a bit before filling
+	local Sleep = Sleep
 	CreateRealTimeThread(function()
 		local time = 0
 		repeat
@@ -906,7 +884,7 @@ do --ChangeObjectColour
 		end
 		c = c + 1
 		ItemList[c] = {
-			text = "X_BaseColour",
+			text = "X_BaseColor",
 			value = 6579300,
 			obj = obj,
 			hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
@@ -1027,6 +1005,8 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
 end
 
 do -- FindNearestResource
+	local FilterObjects = FilterObjects
+	local FindNearestObject = FindNearestObject
 	local function GetNearestStockpile(list,GetStored,obj)
 		-- check if there's actually a list and that it has anything in it
 		if type(list) == "table" and #list > 0 then

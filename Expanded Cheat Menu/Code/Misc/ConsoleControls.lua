@@ -7,8 +7,6 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
-local rawget,table,tostring,print,select = rawget,table,tostring,print,select
-
 --~ box(left, top, right, bottom)
 
 local function ShowFileLog()

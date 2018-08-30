@@ -544,7 +544,6 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
 			end
 		end
 
---~           CreateRealTimeThread(function()
 --~             local caption = "Choose map:"
 --~             local maps = ListMaps()
 --~             local default_selection = table.find(maps, GetMapName())
@@ -556,18 +555,10 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
 --~             end
 --~             local ineditor = Platform.editor and IsEditorActive()
 --~             XShortcutsSetMode("Game")
---~             if ineditor then
---~               editor.ClearDirtyFlag(const.DirtyFlagPassability)
---~               Pause("editor")
---~             end
 --~             CloseMenuDialogs()
 --~             ChangeMap(map)
 --~             LocalStorage.last_map = map
 --~             SaveLocalStorage()
---~             if ineditor then
---~               EditorActivate()
---~             end
---~           end)
 
 		local default_selection = table.find(maps, GetMapName())
 		local map_settings = {}
@@ -582,11 +573,11 @@ See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
 		if default_selection then
 			dlg.idList:SetSelection(default_selection, true)
 		end
-		--QoL
-		dlg.idCaption.HandleMouse = false
-		dlg:SetMovable(true)
+--~ 		--QoL
+--~ 		dlg.idCaption.HandleMouse = false
+--~ 		dlg:SetMovable(true)
 		Sleep(1)
-		dlg.move:SetZOrder(10)
+--~ 		dlg.move:SetZOrder(10)
 
 		sel_idx, map_settings = dlg:Wait()
 
@@ -662,7 +653,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 			return
 		end
 		if type(value) == "number" then
-			terrain.SetTerrainType({type = value})
+			terrain.SetTerrainType{type = value}
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),

@@ -1,26 +1,19 @@
-local T = DisableDroneMaintenance.ComFuncs.Trans
-local Concat = DisableDroneMaintenance.ComFuncs.Concat
+local T = DisableDroneMaintenance.ComFuncs.Translate
 local RetName = DisableDroneMaintenance.ComFuncs.RetName
 local PopupToggle = DisableDroneMaintenance.ComFuncs.PopupToggle
 
-local rawget = rawget
-
-local XTemplates = XTemplates
-local PlaceObj = PlaceObj
-
-function OnMsg.ClassesGenerate()
-
-  local orig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestMaintenance
-  --only allow main if disable isn't
-  function RequiresMaintenance:RequestMaintenance()
-    if not self.ChoGGi_DisableMaintenance then
-      orig_RequiresMaintenance_RequestMaintenance(self)
-    end
-  end
-
+local orig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestMaintenance
+-- only allow main if disable isn't
+function RequiresMaintenance:RequestMaintenance()
+	if not self.ChoGGi_DisableMaintenance then
+		orig_RequiresMaintenance_RequestMaintenance(self)
+	end
 end
 
 function OnMsg.ClassesBuilt()
+	local rawget = rawget
+	local XTemplates = XTemplates
+	local PlaceObj = PlaceObj
 
   --don't add if button already added
   if not XTemplates.ipBuilding.ChoGGi_DisableMaintenance then
@@ -31,16 +24,19 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "Building",
       "__template", "InfopanelSection",
       --only show up for buildings that need maintenance
-      "__condition", function (parent, context) return context:DoesRequireMaintenance() end,
-      "RolloverTitle", " ",
+      "__condition", function (parent, context)
+				return context:DoesRequireMaintenance()
+			end,
+      "RolloverTitle", T(126095410863--[[Info--]]),
       "RolloverHint",  "",
       "OnContextUpdate", function(self, context)
+				local name = RetName(context)
         if context.ChoGGi_DisableMaintenance then
-          self:SetRolloverText(Concat("This ",RetName(context)," will not be maintained (press for menu)."))
+          self:SetRolloverText(string.format([[This %s will not be maintained (press for menu).]],name))
           self:SetTitle("Maintenance Disabled")
           self:SetIcon("UI/Icons/traits_disapprove.tga")
         else
-          self:SetRolloverText(Concat("This ",RetName(context)," will be maintained (press for menu)."))
+          self:SetRolloverText(string.format([[This %s will be maintained (press for menu).]],name))
           self:SetTitle("Maintenance Enabled")
           self:SetIcon("UI/Icons/traits_approve.tga")
         end
@@ -57,11 +53,12 @@ function OnMsg.ClassesBuilt()
           if popup then
             popup:Close()
           else
+						local name = RetName(context)
             PopupToggle(self,"idDisableDroneMaintenanceMenu",{
               {
-                name = Concat("Toggle maintenance on this ",RetName(context)," only."),
-                hint = Concat("Toggles maintenance on only this ",RetName(context),"."),
-                class = "XTextButton",
+                name = string.format([[Toggle maintenance on this %s only.]],name),
+                hint = string.format([[Toggles maintenance on only this %s.]],name),
+--~                 class = "XTextButton",
                 clicked = function()
                   if context.ChoGGi_DisableMaintenance then
                     --re-enable main
@@ -77,15 +74,15 @@ function OnMsg.ClassesBuilt()
                 end,
               },
               {
-                name = Concat("Toggle maintenance on all ",RetName(context),"."),
-                hint = Concat("Toggles maintenance on all ",RetName(context)," (all will be set the same as this one)."),
-                class = "XTextButton",
+                name = string.format([[Toggle maintenance on all %s.]],name),
+                hint = string.format([[Toggles maintenance on all %s (all will be set the same as this one).]],name),
+--~                 class = "XTextButton",
                 clicked = function()
                   local objs = UICity.labels[context.class] or ""
                   if context.ChoGGi_DisableMaintenance then
                     for i = 1, #objs do
                       objs[i].ChoGGi_DisableMaintenance = nil
-                      --and check if building is malfunctioned then call a fix
+                      -- and check if building is malfunctioned then call a fix
                       if objs[i].accumulated_maintenance_points == objs[i].maintenance_threshold_current then
                         objs[i]:RequestMaintenance()
                       end
@@ -97,7 +94,7 @@ function OnMsg.ClassesBuilt()
                   end
                 end,
               },
-            })
+            },"left")
           end
           ---
         end

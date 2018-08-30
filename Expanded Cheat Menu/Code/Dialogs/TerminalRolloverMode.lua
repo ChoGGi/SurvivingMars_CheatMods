@@ -10,7 +10,7 @@ DefineClass.ChoGGi_RolloverModeTerminalTarget = {
   terminal_target_priority = 20000000
 }
 
-function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt, button, time)
+function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt)
 	if event == "OnMouseButtonDown" then
 		local term = terminal.desktop
 		local target = term:GetMouseTarget(pt) or term

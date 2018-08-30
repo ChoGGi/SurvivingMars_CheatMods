@@ -1,11 +1,15 @@
 -- modconfig
-SpecialistByExperience = {}
+SpecialistByExperience = {
+	IgnoreSpec = false,
+	SolsToTrain = 25,
+}
 function OnMsg.ModConfigReady()
   local ModConfig = ModConfig
   local SpecialistByExperience = SpecialistByExperience
 
   -- get options
-  SpecialistByExperience.IgnoreSpec = ModConfig:Get("SpecialistByExperience", "IgnoreSpec") or false
+  SpecialistByExperience.IgnoreSpec = ModConfig:Get("SpecialistByExperience", "IgnoreSpec") or SpecialistByExperience.IgnoreSpec
+  SpecialistByExperience.SolsToTrain = ModConfig:Get("SpecialistByExperience", "SolsToTrain") or  SpecialistByExperience.SolsToTrain
 
   -- setup menu options
   ModConfig:RegisterMod("SpecialistByExperience", "Specialist By Experience")
@@ -15,10 +19,20 @@ function OnMsg.ModConfigReady()
     type = "boolean",
     default = SpecialistByExperience.IgnoreSpec,
   })
+  ModConfig:RegisterOption("SpecialistByExperience", "SolsToTrain", {
+    name = "How many Sols before getting new spec.",
+    type = "number",
+    default = SpecialistByExperience.SolsToTrain,
+  })
+
 end
 function OnMsg.ModConfigChanged(mod_id, option_id, value)
-  if mod_id == "SpecialistByExperience" and option_id == "IgnoreSpec" then
-    SpecialistByExperience.IgnoreSpec = value
+  if mod_id == "SpecialistByExperience" then
+		if option_id == "IgnoreSpec" then
+			SpecialistByExperience.IgnoreSpec = value
+		elseif option_id == "SolsToTrain" then
+			SpecialistByExperience.SolsToTrain = value
+		end
   end
 end
 
@@ -81,30 +95,28 @@ end
 local pairs,IsValid = pairs,IsValid
 function OnMsg.NewDay(sol) -- NewSol...
   local ignore_spec = SpecialistByExperience.IgnoreSpec
+  local sols_to_train = SpecialistByExperience.SolsToTrain
   local g_Classes = g_Classes
-  local workplaces = UICity.labels.Workplace or ""
 
+  local workplaces = UICity.labels.Workplace or ""
   for i = 1, #workplaces do
     local work = workplaces[i]
-    -- skip any workplace without my table
+    -- only workplaces with my table
     if work.ChoGGi_SpecByExp then
-
       for handle,c_table in pairs(work.ChoGGi_SpecByExp) do
+
         -- just in case
-        if IsValid(c_table.obj) then
+        if IsValid(c_table.obj) or not c_table.obj.dying then
           -- only allow spec=none or if modconfig then any spec, then check if worked long enough
-          if (c_table.obj.specialist == "none" or ignore_spec) and (sol - c_table.started_on) > 24 then
-            local orig_spec = c_table.obj.specialist
-            c_table.obj.specialist = work.specialist
-            c_table.obj.traits[orig_spec] = nil
-            c_table.obj.traits[work.specialist] = true
+          if (c_table.obj.specialist == "none" or ignore_spec) and (sol - c_table.started_on) >= sols_to_train then
+						c_table.obj:SetSpecialization(work.specialist)
           end
         else
           -- if not valid then remove
           work.ChoGGi_SpecByExp[handle] = nil
         end
-      end
 
+      end
     end
   end
 

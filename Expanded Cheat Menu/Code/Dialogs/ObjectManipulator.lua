@@ -3,9 +3,7 @@
 -- used to do minimal editing of objects (or all of same type)
 
 local Concat = ChoGGi.ComFuncs.Concat
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
-local CheckText = ChoGGi.ComFuncs.CheckText
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
@@ -27,7 +25,6 @@ DefineClass.ChoGGi_ObjectManipulatorDlg = {
 }
 
 function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
 	self.obj_name = RetName(context.obj)
@@ -134,7 +131,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 end
 
 -- update edit text box with selected value
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(button)
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown()
 	if not self.idList.selection[1] then
 		return
 	end
@@ -144,7 +141,7 @@ function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(button)
 	self.idEditValue:SetFocus()
 end
 
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick(button)
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick()
 	if #self.idList.selection > 0 then
 		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
 	end

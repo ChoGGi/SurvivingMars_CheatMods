@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"version", 1,
-	"title", "Fix: Missing Precious/Rare Extractor Sounds DA v0.1",
+	"title", "Fix: Missing Precious Extractor Sounds DA v0.1",
 	"saved", 1534507200,
 	"id", "ChoGGi_FixMissingPreciousExtractorSoundsDA",
 	"author", "ChoGGi",

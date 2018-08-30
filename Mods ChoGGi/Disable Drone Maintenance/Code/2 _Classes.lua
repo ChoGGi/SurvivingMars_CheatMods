@@ -2,8 +2,7 @@
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
---~ local Concat = ChoGGi.ComFuncs.Concat
-local S = ChoGGi.Strings
+local T = DisableDroneMaintenance.ComFuncs.Translate
 
 local box,point = box,point
 
@@ -17,10 +16,7 @@ local invis = 0
 local invis_less = 268435456
 
 local text = "Editor12Bold"
-if ChoGGi.testing then
-	text = "Editor14Bold"
-end
-DefineClass.ChoGGi_Text = {
+DefineClass.DisableDroneMaintenance_Text = {
 	__parents = {"XText"},
 	-- default
 	Background = dark_gray,
@@ -35,7 +31,7 @@ DefineClass.ChoGGi_Text = {
 --~	 WordWrap = true,
 }
 
-DefineClass.ChoGGi_MultiLineEdit = {
+DefineClass.DisableDroneMaintenance_MultiLineEdit = {
 	__parents = {"XMultiLineEdit"},
 	TextFont = "Editor16",
 	-- default
@@ -54,18 +50,18 @@ DefineClass.ChoGGi_MultiLineEdit = {
 	WordWrap = false,
 }
 
-DefineClass.ChoGGi_Buttons = {
+DefineClass.DisableDroneMaintenance_Buttons = {
 	__parents = {"XTextButton"},
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = T(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	RolloverTextColor = white,
 	Margins = box(4,0,0,0),
 }
 
-DefineClass.ChoGGi_CloseButton = {
-	__parents = {"ChoGGi_Buttons"},
-	RolloverText = S[1011--[[Close--]]],
+DefineClass.DisableDroneMaintenance_CloseButton = {
+	__parents = {"DisableDroneMaintenance_Buttons"},
+	RolloverText = T(1011--[[Close--]]),
 	RolloverAnchor = "right",
 	Image = "UI/Common/mission_no.tga",
 	Dock = "top",
@@ -73,54 +69,54 @@ DefineClass.ChoGGi_CloseButton = {
 	Margins = box(0, 1, 1, 0),
 }
 
-DefineClass.ChoGGi_Button = {
-	__parents = {"ChoGGi_Buttons"},
+DefineClass.DisableDroneMaintenance_Button = {
+	__parents = {"DisableDroneMaintenance_Buttons"},
 	RolloverAnchor = "bottom",
 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = T(6878--[[OK--]]),
 	Background = light_gray,
 }
-function ChoGGi_Button:Init()
+function DisableDroneMaintenance_Button:Init()
 	self.idLabel:SetDock("box")
 end
 
-DefineClass.ChoGGi_ConsoleButton = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.DisableDroneMaintenance_ConsoleButton = {
+	__parents = {"DisableDroneMaintenance_Button"},
 	Padding = box(5, 2, 5, 2),
 	TextFont = "Editor16Bold",
 	RolloverAnchor = "right",
 	PressedBackground = dark_gray,
 }
 
-DefineClass.ChoGGi_ButtonMenu = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.DisableDroneMaintenance_ButtonMenu = {
+	__parents = {"DisableDroneMaintenance_Button"},
 	LayoutMethod = "HList",
 	RolloverAnchor = "smart",
 	TextFont = "Editor16Bold",
 	TextColor = black,
 }
-DefineClass.ChoGGi_ComboButton = {
+DefineClass.DisableDroneMaintenance_ComboButton = {
 	__parents = {"XComboButton"},
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
 	RolloverTextColor = white,
 	RolloverAnchor = "top",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = T(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 }
 
-DefineClass.ChoGGi_CheckButton = {
+DefineClass.DisableDroneMaintenance_CheckButton = {
 	__parents = {"XCheckButton"},
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = T(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 	RolloverAnchor = "right",
 	RolloverTextColor = light_gray,
 	TextColor = white,
 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = T(6878--[[OK--]]),
 }
-DefineClass.ChoGGi_CheckButtonMenu = {
-	__parents = {"ChoGGi_CheckButton"},
+DefineClass.DisableDroneMaintenance_CheckButtonMenu = {
+	__parents = {"DisableDroneMaintenance_CheckButton"},
 	RolloverAnchor = "smart",
 	Background = light_gray,
 	TextHAlign = "left",
@@ -131,24 +127,24 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	Margins = box(4,0,0,0),
 }
 
-function ChoGGi_CheckButton:Init()
+function DisableDroneMaintenance_CheckButton:Init()
 --~	 XCheckButton.Init(self)
 	self.idIcon:SetBackground(light_gray)
 end
 
-DefineClass.ChoGGi_TextInput = {
+DefineClass.DisableDroneMaintenance_TextInput = {
 	__parents = {"XEdit"},
 	WordWrap = false,
 	AllowTabs = false,
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = T(126095410863--[[Info--]]),
 	RolloverAnchor = "top",
 	RolloverTemplate = "Rollover",
 }
---~ function ChoGGi_TextInput:Init()
+--~ function DisableDroneMaintenance_TextInput:Init()
 --~	 self:SetText(self.display_text or "")
 --~ end
 
-DefineClass.ChoGGi_List = {
+DefineClass.DisableDroneMaintenance_List = {
 	__parents = {"XList"},
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
@@ -156,7 +152,7 @@ DefineClass.ChoGGi_List = {
 	FocusedBackground = light_gray,
 }
 
-DefineClass.ChoGGi_Dialog = {
+DefineClass.DisableDroneMaintenance_Dialog = {
 	__parents = {"XDialog"},
 	Translate = false,
 	MinHeight = 50,
@@ -168,14 +164,14 @@ DefineClass.ChoGGi_Dialog = {
 	RolloverTemplate = "Rollover",
 }
 
-DefineClass.ChoGGi_DialogSection = {
+DefineClass.DisableDroneMaintenance_DialogSection = {
 	__parents = {"XWindow"},
 	Margins = box(4,4,4,4),
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
 }
 
-DefineClass.ChoGGi_Window = {
+DefineClass.DisableDroneMaintenance_Window = {
 	__parents = {"XWindow"},
 	dialog_width = 500,
 	dialog_height = 500,
@@ -184,20 +180,20 @@ DefineClass.ChoGGi_Window = {
 	-- how far down to y-offset new dialogs
 	header = 33.0,
 
-	title = S[1000016--[[Title--]]],
+	title = T(1000016--[[Title--]]),
 	RolloverTemplate = "Rollover",
 }
 
-function ChoGGi_Window:AddElements(_,context)
+function DisableDroneMaintenance_Window:AddElements(_,context)
 	local g_Classes = g_Classes
 
 	-- scale to UI
-	self.dialog_width = self.dialog_width * ChoGGi.Temp.UIScale
-	self.dialog_height = self.dialog_height * ChoGGi.Temp.UIScale
-	self.header = self.header * ChoGGi.Temp.UIScale
+--~ 	self.dialog_width = self.dialog_width * ChoGGi.Temp.UIScale
+--~ 	self.dialog_height = self.dialog_height * ChoGGi.Temp.UIScale
+--~ 	self.header = self.header * ChoGGi.Temp.UIScale
 
 	-- add container dialog for everything to fit in
-	self.idDialog = g_Classes.ChoGGi_Dialog:new({
+	self.idDialog = g_Classes.DisableDroneMaintenance_Dialog:new({
 		Background = dark_gray,
 		BorderWidth = 2,
 		BorderColor = light_gray,
@@ -211,7 +207,7 @@ function ChoGGi_Window:AddElements(_,context)
 	self.idSizeControl = g_Classes.XSizeControl:new({
 	}, self.idDialog)
 
-	self.idTitleArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idTitleArea = g_Classes.DisableDroneMaintenance_DialogSection:new({
 		Id = "idTitleArea",
 		Dock = "top",
 		Background = medium_gray,
@@ -224,7 +220,7 @@ function ChoGGi_Window:AddElements(_,context)
 		VAlign = "top",
 	}, self.idTitleArea)
 
-	self.idCloseX = ChoGGi_CloseButton:new({
+	self.idCloseX = DisableDroneMaintenance_CloseButton:new({
 		OnPress = context.func or function()
 			self:Close("cancel",false)
 		end,
@@ -237,11 +233,11 @@ function ChoGGi_Window:AddElements(_,context)
 		Translate = self.Translate,
 		TextColor = white,
 	}, self.idTitleArea)
-	self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,""))
+	self.idCaption:SetText(self.title)
 end
 
 -- returns point(x,y)
-function ChoGGi_Window:GetPos(dialog)
+function DisableDroneMaintenance_Window:GetPos(dialog)
 	local b = self[dialog or "idDialog"].box
 	return point(b:minx(),b:miny())
 end
@@ -267,7 +263,7 @@ local function BoxSize(obj,self)
 end
 
 -- takes either a point, or obj to set pos
-function ChoGGi_Window:SetPos(obj)
+function DisableDroneMaintenance_Window:SetPos(obj)
 	local x,y,w,h
 	if IsPoint(obj) then
 		local box = self.idDialog.box
@@ -281,26 +277,26 @@ function ChoGGi_Window:SetPos(obj)
 	self.idDialog:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(size)
+function DisableDroneMaintenance_Window:SetSize(size)
 	local box = self.idDialog.box
 	local x,y = box:minx(),box:miny()
 	local w,h = size:x(),size:y()
 	self.idDialog:SetBox(x,y,w,h)
 end
-function ChoGGi_Window:SetWidth(w)
+function DisableDroneMaintenance_Window:SetWidth(w)
 	self:SetSize(point(w,self.idDialog.box:sizey()))
 end
-function ChoGGi_Window:SetHeight(h)
+function DisableDroneMaintenance_Window:SetHeight(h)
 	self:SetSize(point(self.idDialog.box:sizex(),h))
 end
-function ChoGGi_Window:GetSize()
+function DisableDroneMaintenance_Window:GetSize()
 	local b = self.idDialog.box
 	return point(b:sizex(),b:sizey())
 end
 
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
-function ChoGGi_Window:SetInitPos(parent)
+function DisableDroneMaintenance_Window:SetInitPos(parent)
 	local x,y,w,h
 
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
@@ -343,31 +339,31 @@ function ChoGGi_Window:SetInitPos(parent)
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 end
 
-DefineClass.ChoGGi_SleekScroll = {
+DefineClass.DisableDroneMaintenance_SleekScroll = {
 	__parents = {"XSleekScroll"},
 	MinThumbSize = 30,
 	AutoHide = true,
 	Background = invis,
 }
 
-DefineClass.ChoGGi_ScrollArea = {
+DefineClass.DisableDroneMaintenance_ScrollArea = {
 	__parents = {"XScrollArea"},
 	UniformColumnWidth = true,
 	UniformRowHeight = true,
 }
 
 -- scrollable textbox
-function ChoGGi_Window:AddScrollText()
+function DisableDroneMaintenance_Window:AddScrollText()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.DisableDroneMaintenance_DialogSection:new({
 		Id = "idScrollSection",
 		BorderWidth = 1,
 		Margins = box(0,0,0,0),
 		BorderColor = light_gray,
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+	self.idScrollArea = g_Classes.DisableDroneMaintenance_ScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
@@ -375,20 +371,20 @@ function ChoGGi_Window:AddScrollText()
 		BorderWidth = 0,
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.DisableDroneMaintenance_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idScrollArea",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.DisableDroneMaintenance_SleekScroll:new({
 		Id = "idScrollH",
 		Target = "idScrollArea",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idText = g_Classes.ChoGGi_Text:new({
+	self.idText = g_Classes.DisableDroneMaintenance_Text:new({
 		Id = "idText",
 		OnHyperLink = function(_, link, _, box, pos, button)
 			self.onclick_handles[tonumber(link)](box, pos, button)
@@ -396,64 +392,64 @@ function ChoGGi_Window:AddScrollText()
 	}, self.idScrollArea)
 end
 
-function ChoGGi_Window:AddScrollList()
+function DisableDroneMaintenance_Window:AddScrollList()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.DisableDroneMaintenance_DialogSection:new({
 		Id = "idScrollSection",
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+	self.idScrollArea = g_Classes.DisableDroneMaintenance_ScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 		Margins = box(4,4,4,4),
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.DisableDroneMaintenance_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idScrollArea",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idList = g_Classes.ChoGGi_List:new({
+	self.idList = g_Classes.DisableDroneMaintenance_List:new({
 		Id = "idList",
 		VScroll = "idScrollV",
 	}, self.idScrollArea)
 
 end
 
-function ChoGGi_Window:AddScrollEdit()
+function DisableDroneMaintenance_Window:AddScrollEdit()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.DisableDroneMaintenance_DialogSection:new({
 		Id = "idScrollSection",
 	}, self.idDialog)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.DisableDroneMaintenance_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idEdit",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.DisableDroneMaintenance_SleekScroll:new({
 		Id = "idScrollH",
 		Target = "idEdit",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idEdit = ChoGGi_MultiLineEdit:new({
+	self.idEdit = DisableDroneMaintenance_MultiLineEdit:new({
 		Id = "idEdit",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
 		Margins = box(4,4,4,4),
-		WordWrap = ChoGGi.UserSettings.WordWrap or false,
+		WordWrap = false,
 	}, self.idScrollSection)
 end
 
 -- convenience function
-function ChoGGi_SleekScroll:SetHorizontal()
+function DisableDroneMaintenance_SleekScroll:SetHorizontal()
 	self.MinHeight = 10
 --~	 self.MaxHeight = 10
 	self.MinWidth = 10
@@ -465,5 +461,5 @@ XShortcutsHost.SetPos = function(self,pt)
 	self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
 end
 XShortcutsHost.GetPos = function(self)
-	return ChoGGi_Window.GetPos(self,"idMenuBar")
+	return DisableDroneMaintenance_Window.GetPos(self,"idMenuBar")
 end

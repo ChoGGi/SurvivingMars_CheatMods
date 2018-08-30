@@ -1,2 +1,4 @@
+v0.3
+Da Vinci
 v0.2
 Added a menu toggle for selected or all of type.

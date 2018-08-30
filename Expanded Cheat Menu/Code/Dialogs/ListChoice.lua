@@ -161,7 +161,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
 	self:BuildList()
 
-
 	-- add the colour picker?
 	if self.custom_type == 2 or self.custom_type == 5 then
 		-- keep all colour elements in here for easier... UIy stuff
@@ -178,24 +177,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idColourContainer)
 
 		self.idColorPicker = g_Classes.XColorPicker:new({
-			OnColorChanged = function(_, color)
-				-- custom value box
-				self.idEditValue:SetText(tostring(color))
-				-- no list item selected, so just return
-				if not self.idList.selection[1] then
-					return
-				end
-				-- update item value (probably useless now that it's automagical)
-				self.idList[self.idList.selection[1]].item.value = color
-				-- update object colour
-				self:idColorPickerOnColorChanged()
+			OnColorChanged = function(_, colour)
+				self:idColorPickerOnColorChanged(colour)
 			end,
 			AdditionalComponent = "alpha"
 	--~		 AdditionalComponent = "intensity"
 		}, self.idColorPickerArea)
 		-- block it from closing on dbl click
-		self.idColorPicker.idColorSquare.OnColorChanged = function(_, color)
-			self.idColorPicker:SetColorInternal(color)
+		self.idColorPicker.idColorSquare.OnColorChanged = function(_, colour)
+			self.idColorPicker:SetColorInternal(colour)
 		end
 
 		self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
@@ -228,7 +218,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idList:SetSelection(1, true)
 		self.sel = self.idList[self.idList.selection[1]].item
 		self.idEditValue:SetText(tostring(self.sel.value))
-		self:UpdateColourPicker()
+		self:UpdateColourPicker(self.sel.text)
 		if self.custom_type == 2 then
 			self:SetWidth(800)
 			self.idColourContainer:SetVisible(true)
@@ -250,6 +240,17 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	-- focus on list
 	self.idList:SetFocus()
+
+	self.idList.OnKbdKeyDown = function(_, vk)
+		if vk == const.vkEnter then
+			self:idListOnMouseButtonDoubleClick("L")
+			return "break"
+		elseif vk == const.vkEsc then
+			self.idCloseX:Press()
+			return "break"
+		end
+		return "continue"
+	end
 
 	-- are we showing a hint?
 	local hint = CheckText(self.list.hint)
@@ -326,7 +327,22 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	self.idList.selection = {}
 end
 
-function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged()
+function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
+	local sel_idx = self.idList.selection[1]
+	-- no list item selected, so just return
+	if not sel_idx then
+		return
+	end
+	local item = self.idList[sel_idx].item
+	-- if it's colourpicker mode and we selected Metallic or Roughness then skip updating
+	if self.custom_type == 2 and not item.text:find("Color") then
+		return
+	end
+	-- custom value box
+	self.idEditValue:SetText(tostring(colour))
+	-- update item value (probably useless now that it's automagical)
+	item.value = colour
+
 	if self.skip_color_change then
 		return
 	end
@@ -337,14 +353,15 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged()
 			-- grab the object from the last list item
 			self.obj = self.idList[#self.idList].item.obj
 		end
-		local SetPal = self.obj.SetColorizationMaterial
-		local items = self.idList
+		-- checks/backsup old colours
 		ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
+		-- update object colour
+		local items = self.idList
 		for i = 1, 4 do
-			local Color = items[i].item.value
-			local Metallic = items[i+4].item.value
-			local Roughness = items[i+8].item.value
-			SetPal(self.obj,i,Color,Roughness,Metallic)
+			local color = items[i].item.value
+			local metallic = items[i+4].item.value
+			local roughness = items[i+8].item.value
+			self.obj:SetColorizationMaterial(i,color,roughness,metallic)
 		end
 		self.obj:SetColorModifier(self.idList[#self.idList].item.value)
 
@@ -365,14 +382,14 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 	if self.custom_type > 0 then
 		-- 2 = showing the colour picker
 		if self.custom_type == 2 then
-			self:UpdateColourPicker()
+			self:UpdateColourPicker(self.sel.text)
 			-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
 			self.idColorPicker:UpdateComponent("ALPHA", 1000)
 		-- don't show picker unless it's a colour setting (browsing lightmodel)
 		elseif self.custom_type == 5 then
 			if self.sel.editor == "color" then
 				self:SetWidth(800)
-				self:UpdateColourPicker()
+				self:UpdateColourPicker(self.sel.text)
 				self.idColourContainer:SetVisible(true)
 			else
 				self:SetWidth(self.dialog_width)
@@ -456,7 +473,11 @@ function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
 end
 
 -- update colour
-function ChoGGi_ListChoiceDlg:UpdateColourPicker()
+function ChoGGi_ListChoiceDlg:UpdateColourPicker(text)
+	-- if it's colourpicker mode and we selected Metallic or Roughness then skip updating
+	if self.custom_type == 2 and not text:find("Color") then
+		return
+	end
 	local num = tonumber(self.idEditValue:GetText())
 	if num then
 		self.idColorPicker:SetColor(num)
@@ -507,21 +528,6 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 		self.choices[1].checkwater = self.idColorCheckWater:GetCheck()
 		self.choices[1].checkelec = self.idColorCheckElec:GetCheck()
 	end
-end
-
-function ChoGGi_ListChoiceDlg:OnKbdKeyDown(_, vk)
-	local const = const
-	if vk == const.vkEsc then
-		self.idCloseX:Press()
-		return "break"
-	elseif vk == const.vkEnter then
-		self.idOK:Press()
-		return "break"
---~	 elseif vk == const.vkSpace then
---~		 self.idCheckBox1:SetToggled(not self.idCheckBox1:GetCheck())
---~		 return "break"
-	end
-	return "continue"
 end
 
 -- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
