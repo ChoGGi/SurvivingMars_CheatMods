@@ -1345,7 +1345,7 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 			local rockets = UICity.labels.AllRockets
 			for i = 1, #rockets do
 				if rockets[i].export_requests then
-					ChoGGi.CodeFuncs.SetExportAmountPerRocket(rockets[i],value)
+					ChoGGi.CodeFuncs.SetTaskReqAmount(rockets[i],value,"export_requests","max_export_storage")
 				else
 					rockets[i].max_export_storage = value
 				end
@@ -1373,7 +1373,7 @@ local function SetRocketFuelAmount(amount)
 	local rockets = UICity.labels.AllRockets
 	for i = 1, #rockets do
 		if rockets[i].refuel_request then
-			ChoGGi.CodeFuncs.SetFuelAmountPerRocket(rockets[i],amount)
+			ChoGGi.CodeFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")
 		else
 			rockets[i].launch_fuel = amount
 		end

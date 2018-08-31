@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Upgrades/home_collective_04.tga"
+local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
 local default_icon2 = "UI/Icons/Sections/storage.tga"
-local default_icon3 = "UI/Icons/IPButtons/assign_residence.tga"
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -10,7 +9,141 @@ local RetName = ChoGGi.ComFuncs.RetName
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
-local type,tostring = type,tostring
+function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
+	local ChoGGi = ChoGGi
+	local DefaultSetting = S[1000121--[[Default--]]]
+	local UserSettings = ChoGGi.UserSettings
+	local id = "SpaceElevator"
+	local ItemList = {
+		{text = DefaultSetting,value = DefaultSetting},
+		{text = 10,value = 10},
+		{text = 15,value = 15},
+		{text = 20,value = 20},
+		{text = 25,value = 25},
+		{text = 50,value = 50},
+		{text = 75,value = 75},
+		{text = 100,value = 100},
+		{text = 250,value = 250},
+		{text = 500,value = 500},
+		{text = 1000,value = 1000},
+	}
+
+	if not UserSettings.BuildingSettings[id] then
+		UserSettings.BuildingSettings[id] = {}
+	end
+
+	local hint = DefaultSetting
+	local setting = UserSettings.BuildingSettings[id]
+	if setting and setting.export_when_this_amount then
+		hint = setting.export_when_this_amount
+	end
+
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+
+		if value == DefaultSetting then
+			setting.export_when_this_amount = nil
+		else
+			setting.export_when_this_amount = value * ChoGGi.Consts.ResourceScale
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(choice[1].value,302535920001336--[[Export When This Amount--]]),
+			1120--[[Space Elevator--]],
+			"UI/Icons/Sections/basic_active.tga"
+		)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = 302535920001336--[[Export When This Amount--]],
+		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		skip_sort = true,
+	}
+end
+
+function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(setting_name,title)
+	local ChoGGi = ChoGGi
+	local r = ChoGGi.Consts.ResourceScale
+	local DefaultSetting = SpaceElevator[setting_name] / r
+	local UserSettings = ChoGGi.UserSettings
+	local id = "SpaceElevator"
+	local ItemList = {
+		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = 10,value = 10},
+		{text = 15,value = 15},
+		{text = 20,value = 20},
+		{text = 25,value = 25},
+		{text = 50,value = 50},
+		{text = 75,value = 75},
+		{text = 100,value = 100},
+		{text = 250,value = 250},
+		{text = 500,value = 500},
+		{text = 1000,value = 1000},
+	}
+
+	if not UserSettings.BuildingSettings[id] then
+		UserSettings.BuildingSettings[id] = {}
+	end
+
+	local hint = DefaultSetting
+	local setting = UserSettings.BuildingSettings[id]
+	if setting and setting[setting_name] then
+		hint = setting[setting_name]
+	end
+
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+		if type(value) == "number" then
+			value = value * r
+
+			if value == DefaultSetting * r then
+				setting[setting_name] = nil
+			else
+				setting[setting_name] = value
+			end
+
+			local objs = UICity.labels.SpaceElevator or ""
+			for i = 1, #objs do
+				ChoGGi.CodeFuncs.SetTaskReqAmount(objs[i],value,"export_request",setting_name)
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice[1].text,title),
+				1120--[[Space Elevator--]],
+				"UI/Icons/Sections/basic_active.tga"
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = title,
+		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		skip_sort = true,
+	}
+end
+
+function ChoGGi.MenuFuncs.SpaceElevatorExport_Toggle()
+	local ChoGGi = ChoGGi
+	ChoGGi.UserSettings.SpaceElevatorToggleInstantExport = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SpaceElevatorToggleInstantExport)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,302535920001330--[[Instant Export On Toggle--]]),
+		3980--[[Buildings--]]
+	)
+end
 
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 	--make a list
@@ -111,7 +244,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 		MsgPopup(
 			302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]],
 			302535920000109--[[Protect--]],
-			default_icon
+			"UI/Icons/Upgrades/behavioral_melding_02.tga"
 		)
 		return
 	end
@@ -159,7 +292,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 			MsgPopup(
 				S[302535920000113--[[%s range is now %s.--]]]:format(RetName(sel),choice[1].text),
 				302535920000109--[[Protect--]],
-				default_icon
+				"UI/Icons/Upgrades/behavioral_melding_02.tga"
 			)
 		end
 	end
@@ -228,9 +361,11 @@ function ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle()
 	if ChoGGi.UserSettings.UnlimitedConnectionLength then
 		ChoGGi.UserSettings.UnlimitedConnectionLength = nil
 		GridConstructionController.max_hex_distance_to_allow_build = 20
+		const.PassageConstructionGroupMaxSize = 20
 	else
 		ChoGGi.UserSettings.UnlimitedConnectionLength = true
 		GridConstructionController.max_hex_distance_to_allow_build = 1000
+		const.PassageConstructionGroupMaxSize = 1000
 	end
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -418,11 +553,11 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 				end
 			end
 
-			--updating time
+			-- updating time
 			if CapType == "electricity" then
 				local tab = UICity.labels.Power or ""
 				for i = 1, #tab do
-					if tab[i].id == id then
+					if tab[i].encyclopedia_id == id then
 						if check1 then
 							tab[i][CapType].max_charge = numberC
 							tab[i][Concat("max_",CapType,"_charge")] = numberC
@@ -434,10 +569,10 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 						ChoGGi.CodeFuncs.ToggleWorking(tab[i])
 					end
 				end
-			else --water and air
+			else -- water and air
 				local tab = UICity.labels["Life-Support"] or ""
 				for i = 1, #tab do
-					if tab[i].id == id then
+					if tab[i].encyclopedia_id == id then
 						if check1 then
 							tab[i][CapType].max_charge = numberC
 							tab[i][Concat("max_",CapType,"_charge")] = numberC
@@ -602,7 +737,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 			local function SetProd(Label)
 				local tab = UICity.labels[Label] or ""
 				for i = 1, #tab do
-					if tab[i].id == id then
+					if tab[i].encyclopedia_id == id then
 						tab[i][ProdType]:SetProduction(amount)
 					end
 				end
@@ -618,7 +753,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 				local function SetProdOther(Label)
 					local tab = UICity.labels[Label] or ""
 					for i = 1, #tab do
-						if tab[i].id == id then
+						if tab[i].encyclopedia_id == id then
 							tab[i]:GetProducerObj().production_per_day = amount
 							tab[i]:GetProducerObj():Produce(amount)
 						end
@@ -661,7 +796,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		MsgPopup(
 			302535920000141--[[Select a building with workers.--]],
 			3980--[[Buildings--]],
-			default_icon2
+			"UI/Icons/Upgrades/service_bots_02.tga"
 		)
 		return
 	end
@@ -720,7 +855,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 			S[302535920000143--[["%s
 I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]]:format(choice[1].text),
 			3980--[[Buildings--]],
-			default_icon,
+			"UI/Icons/Upgrades/service_bots_02.tga",
 			true
 		)
 	end
@@ -752,76 +887,80 @@ Current: %s"--]]]:format(hint),
 	}
 end
 
---used to add or remove traits from schools/sanitariums
-function ChoGGi.MenuFuncs.BuildingsSetAll_Traits(Building,traits,bool)
-	local objs = UICity.labels[Building] or ""
-	for i = 1, #objs do
-		local obj = objs[i]
-		for j = 1,#traits do
-			if bool == true then
-				obj:SetTrait(j,nil)
-			else
-				obj:SetTrait(j,traits[j])
+do --
+	-- used to add or remove traits from schools/sanitariums
+	local function BuildingsSetAll_Traits(Building,traits,bool)
+		local objs = UICity.labels[Building] or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			for j = 1,#traits do
+				if bool == true then
+					obj:SetTrait(j,nil)
+				else
+					obj:SetTrait(j,traits[j])
+				end
 			end
 		end
 	end
-end
 
-function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
-	local ChoGGi = ChoGGi
-	if ChoGGi.UserSettings.SchoolTrainAll then
-		ChoGGi.UserSettings.SchoolTrainAll = nil
-		ChoGGi.MenuFuncs.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits,true)
-	else
-		ChoGGi.UserSettings.SchoolTrainAll = true
-		ChoGGi.MenuFuncs.BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits)
-	end
+	function ChoGGi.MenuFuncs.SchoolTrainAll_Toggle()
+		local ChoGGi = ChoGGi
+		if ChoGGi.UserSettings.SchoolTrainAll then
+			ChoGGi.UserSettings.SchoolTrainAll = nil
+			BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits,true)
+		else
+			ChoGGi.UserSettings.SchoolTrainAll = true
+			BuildingsSetAll_Traits("School",ChoGGi.Tables.PositiveTraits)
+		end
 
-	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(
-		S[302535920000148--[["%s:
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			S[302535920000148--[["%s:
 You keep your work station so clean, Jerome.
 It's next to godliness. Isn't that what they say?"--]]]:format(ChoGGi.UserSettings.SchoolTrainAll),
-		5247--[[School--]],
-		default_icon,
-		true
-	)
-end
-
-function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
-	local ChoGGi = ChoGGi
-	if ChoGGi.UserSettings.SanatoriumCureAll then
-		ChoGGi.UserSettings.SanatoriumCureAll = nil
-		ChoGGi.MenuFuncs.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits,true)
-	else
-		ChoGGi.UserSettings.SanatoriumCureAll = true
-		ChoGGi.MenuFuncs.BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits)
+			5247--[[School--]],
+			"UI/Icons/Upgrades/home_collective_02.tga",
+			true
+		)
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(
-		S[302535920000149--[[%s:
+	function ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle()
+		local ChoGGi = ChoGGi
+		if ChoGGi.UserSettings.SanatoriumCureAll then
+			ChoGGi.UserSettings.SanatoriumCureAll = nil
+			BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits,true)
+		else
+			ChoGGi.UserSettings.SanatoriumCureAll = true
+			BuildingsSetAll_Traits("Sanatorium",ChoGGi.Tables.NegativeTraits)
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			S[302535920000149--[[%s:
 There's more vodka in this piss than there is piss.--]]]:format(ChoGGi.UserSettings.SanatoriumCureAll),
-		3540--[[Sanatorium--]],
-		default_icon,
-		true
-	)
-end
+			3540--[[Sanatorium--]],
+			"UI/Icons/Upgrades/home_collective_02.tga",
+			true
+		)
+	end
+end -- do
 
 function ChoGGi.MenuFuncs.ShowAllTraits_Toggle()
 	local ChoGGi = ChoGGi
-	local g_SchoolTraits = g_SchoolTraits
 
-	if #g_SchoolTraits == 18 then
+	if ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits then
+		ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits = nil
 		g_SchoolTraits = ChoGGi.Tables.SchoolTraits
 		g_SanatoriumTraits = ChoGGi.Tables.SanatoriumTraits
 	else
+		ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits = true
 		g_SchoolTraits = ChoGGi.Tables.PositiveTraits
 		g_SanatoriumTraits = ChoGGi.Tables.NegativeTraits
 	end
 
+	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		S[302535920000150--[[%s: Good for what ails you--]]]:format(#g_SchoolTraits),
+		S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits),
 		235--[[Traits--]],
 		"UI/Icons/Upgrades/factory_ai_04.tga"
 	)
@@ -839,7 +978,7 @@ function ChoGGi.MenuFuncs.SanatoriumSchoolShowAll()
 	MsgPopup(
 		S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
 		3980--[[Buildings--]],
-		"UI/Icons/Upgrades/superfungus_03.tga"
+		"UI/Icons/Upgrades/factory_ai_04.tga"
 	)
 end
 
@@ -1058,7 +1197,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 	MsgPopup(
 		Concat(ChoGGi.UserSettings.Building_wonder,": ",S[302535920000159--[[Unlimited Wonders--]]]),
 		3980--[[Buildings--]],
-		default_icon3
+		"UI/Icons/Sections/theory_1.tga"
 	)
 end
 
@@ -1071,7 +1210,7 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 		S[302535920000160--[[%s: Freedom for spires!
 (restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_dome_spot),
 		3980--[[Buildings--]],
-		default_icon3
+		"UI/Icons/Upgrades/plutonium_core_02.tga"
 	)
 end
 
@@ -1083,7 +1222,7 @@ function ChoGGi.MenuFuncs.Building_instant_build_Toggle()
 	MsgPopup(
 		S[302535920000161--[[%s: Buildings Instant Build--]]]:format(ChoGGi.UserSettings.Building_instant_build),
 		3980--[[Buildings--]],
-		default_icon3
+		"UI/Icons/Upgrades/autoregulator_02.tga"
 	)
 end
 
@@ -1111,7 +1250,7 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		S[302535920000162--[[%s: Hidden Buildings
 (restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_hide_from_build_menu),
 		3980--[[Buildings--]],
-		default_icon3
+		"UI/Icons/Sections/theory_1.tga"
 	)
 end
 

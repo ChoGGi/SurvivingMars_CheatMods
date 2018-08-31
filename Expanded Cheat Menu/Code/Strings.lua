@@ -189,6 +189,8 @@ local Strings = {
 	[5188] = TranslationTable[5188], -- Oval Dome
 	[5221] = TranslationTable[5221], -- RC Commanders
 	[5238] = TranslationTable[5238], -- Rockets
+	[5245] = TranslationTable[5245], -- Sanatoriums
+	[5248] = TranslationTable[5248], -- Schools
 	[5422] = TranslationTable[5422], -- Exploration
 	[5433] = TranslationTable[5433], -- Drone Control
 	[5438] = TranslationTable[5438], -- Rovers
@@ -265,6 +267,7 @@ local Strings = {
 	[313911890683] = _InternalTranslate(T{313911890683}), -- <description>
 	[327465361219] = TranslationTable[327465361219], -- Edit
 	[398847925160] = TranslationTable[398847925160], -- New
+	[454042608125] = TranslationTable[454042608125], -- <ButtonA> Toggle
 	[487939677892] = TranslationTable[487939677892], -- Help
 	[584248706535] = _InternalTranslate(T{584248706535}), -- Carrying<right><ResourceAmount>
 	[589254325694] = TranslationTable[589254325694], -- Goal
@@ -275,6 +278,8 @@ local Strings = {
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
 	[987648737170] = TranslationTable[987648737170], -- Map
 }
+
+Strings[454042608125] = Strings[454042608125]:gsub("<ButtonA> ","")
 
 -- for string.format ease of use
 Strings[4356] = Strings[4356]:gsub("<right><Gender>","")

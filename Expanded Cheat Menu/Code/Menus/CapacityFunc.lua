@@ -34,7 +34,8 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
-	if not SelectedObj or not SelectedObj.base_max_workers then
+	local sel = SelectedObj
+	if not sel or not sel.base_max_workers then
 		MsgPopup(
 			302535920000954--[[You need to select a building that has workers.--]],
 			302535920000567--[[Worker Capacity--]],
@@ -43,7 +44,6 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 		return
 	end
 	local ChoGGi = ChoGGi
-	local sel = SelectedObj
 	local DefaultSetting = sel.base_max_workers
 	local hint_toolarge = Concat(S[6779--[[Warning--]]]," ",S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
 
@@ -65,7 +65,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 		{text = 25000,value = 25000,hint = hint_toolarge},
 	}
 
-	--check if there's an entry for building
+	-- check if there's an entry for building
 	if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
 		ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
 	end
@@ -85,7 +85,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 			local tab = UICity.labels.Workplace or ""
 			for i = 1, #tab do
-				if tab[i].id == sel.encyclopedia_id then
+				if tab[i].encyclopedia_id == sel.encyclopedia_id then
 					tab[i].max_workers = value
 				end
 			end
@@ -217,7 +217,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			if CapType == "electricity" then
 				local tab = UICity.labels.Power or ""
 				for i = 1, #tab do
-					if tab[i].id == sel.encyclopedia_id then
+					if tab[i].encyclopedia_id == sel.encyclopedia_id then
 						tab[i].capacity = amount
 						tab[i][CapType].storage_capacity = amount
 						tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -228,7 +228,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			elseif CapType == "colonist" then
 				local tab = UICity.labels.Residence or ""
 				for i = 1, #tab do
-					if tab[i].id == sel.encyclopedia_id then
+					if tab[i].encyclopedia_id == sel.encyclopedia_id then
 						tab[i].capacity = amount
 					end
 				end
@@ -236,7 +236,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			else --water and air
 				local tab = UICity.labels["Life-Support"] or ""
 				for i = 1, #tab do
-					if tab[i].id == sel.encyclopedia_id then
+					if tab[i].encyclopedia_id == sel.encyclopedia_id then
 						tab[i][Concat(CapType,"_capacity")] = amount
 						tab[i][CapType].storage_capacity = amount
 						tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -313,7 +313,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 		if type(value) == "number" then
 			local tab = UICity.labels.BuildingNoDomes or ""
 			for i = 1, #tab do
-				if tab[i].id == sel.encyclopedia_id then
+				if tab[i].encyclopedia_id == sel.encyclopedia_id then
 					tab[i].max_visitors = value
 				end
 			end

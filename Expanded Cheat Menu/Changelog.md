@@ -5,11 +5,16 @@
 
 ## v8.6 (Unreleased)
 ### Added:
-- Rockets>Max Export Amount: Change how many rares per rocket you can export.
-- Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
-- Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 - Help>List All Menu Items: Show all the cheat menu items in a list dialog.
+- Rockets
+- > Max Export Amount: Change how many rares per rocket you can export.
+- > Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
+- > Rockets Ignore Fuel: Rockets don't need fuel to launch.
+- Buildings>Space Elevator
+- > Instant Export On Toggle: Toggle Forbid Exports to have it instantly export current stock.
+- > Export When This Amount: When you have this many rares in storage launch right away.
+- > Import/Export Amount Per Trip: How much cargo space/ How many rares per.
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
@@ -28,6 +33,8 @@
 - Shuttle speed broke in DA (thanks hchsiao).
 - Shuttle capacity broke in DA (thanks hchsiao).
 - Examine dialog getting wrong zorder when using "Destroy It".
+- Buildings>Sanatoriums & Schools: Show All Traits wasn't toggling School traits (also changed it to a saved option).
+- I broke a few building cheats when updating to DA.
 
 ## v8.5 (26 Aug 2018)
 ### Added:

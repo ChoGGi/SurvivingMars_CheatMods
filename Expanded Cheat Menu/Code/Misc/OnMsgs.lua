@@ -345,15 +345,15 @@ function OnMsg.ConstructionComplete(obj)
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	-- if it's a fancy dome then we allow building in the removed entrances
-	if obj:IsKindOf("Dome") then
-		local start_id, end_id = obj:GetAllSpots(obj:GetState())
-		for i = start_id, end_id do
-			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
-				print(111)
-			end
-		end
-	end
+--~ 	-- if it's a fancy dome then we allow building in the removed entrances
+--~ 	if obj:IsKindOf("Dome") then
+--~ 		local start_id, end_id = obj:GetAllSpots(obj:GetState())
+--~ 		for i = start_id, end_id do
+--~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
+--~ 				print(111)
+--~ 			end
+--~ 		end
+--~ 	end
 
 	--print(obj.encyclopedia_id) print(obj.class)
 	if obj.class == "UniversalStorageDepot" then
@@ -454,6 +454,15 @@ function OnMsg.ConstructionComplete(obj)
 			if setting.performance_notauto then
 				obj.performance = setting.performance_notauto
 			end
+			-- space ele export amount
+			if setting.max_export_storage then
+				obj.max_export_storage = setting.max_export_storage
+			end
+			-- space ele import amount
+			if setting.cargo_capacity then
+				obj.cargo_capacity = setting.cargo_capacity
+			end
+
 		else
 			UserSettings.BuildingSettings[obj.encyclopedia_id] = nil
 		end
@@ -1040,6 +1049,10 @@ do -- LoadGame/CityStart
 			for i = 1, #Actions do
 				Actions[i].ActionTranslate = false
 				Actions[i].replace_matching_id = true
+				-- update any menu items that aren't the base popups
+				if Actions[i].ActionMenubar ~= "DevMenu" then
+					Actions[i].ActionId = Concat(Actions[i].ActionMenubar,Actions[i].ActionId)
+				end
 			end
 
 			-- reloads actions (cheat menu/menu items/shortcuts)
@@ -1095,6 +1108,12 @@ do -- LoadGame/CityStart
 
 
 
+
+		-- show all traits in trainable popup
+		if UserSettings.SanatoriumSchoolShowAllTraits then
+			g_SchoolTraits = ChoGGi.Tables.PositiveTraits
+			g_SanatoriumTraits = ChoGGi.Tables.NegativeTraits
+		end
 
 		-- all yours XxUnkn0wnxX
 		if not blacklist then
@@ -1162,6 +1181,7 @@ do -- LoadGame/CityStart
 		--long arsed cables
 		if UserSettings.UnlimitedConnectionLength then
 			g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000
+			const.PassageConstructionGroupMaxSize = 1000
 		end
 
 		-- on by default, you know all them martian trees (might make a cpu difference, probably not)

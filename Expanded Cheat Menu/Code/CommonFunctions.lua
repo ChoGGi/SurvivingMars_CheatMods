@@ -77,7 +77,6 @@ AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
 AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
 AddMsgToFunc("SupplyRocket","GameInit","ChoGGi_SpawnedSupplyRocket")
 
-
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
@@ -1146,6 +1145,11 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
+	if type(setting) == "string" then
+		-- some of the menu items passed are "table.table.exists?.setting"
+		setting = ChoGGi.ComFuncs.DotNameToObject(setting)
+	end
+
 	-- have it return false instead of nil
 	if type(setting) == "nil" then
 		setting = false
@@ -1619,23 +1623,31 @@ function ChoGGi.ComFuncs.OpenKeyPresserDlg()
 end
 
 -- "some.some.some.etc" = returns etc as object
-function ChoGGi.ComFuncs.DotNameToObject(str)
+function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
 	-- always start with _G
-	local obj = _G
+	local obj = root or _G
 	-- https://www.lua.org/pil/14.1.html
 	for name,match in str:gmatch("([%w_]+)(.?)") do
 		-- . means we're not at the end yet
 		if match == "." then
-			-- our treasure hunt is cut short, so return nadda
-			if not obj[name] then
+			-- create is for adding new settings in non-existent tables
+			if not obj[name] and not create then
+				-- our treasure hunt is cut short, so return nadda
 				return
 			end
-			-- change the parent to the child
-			obj = obj[name]
+			-- change the parent to the child (create table if absent, this'll only fire when create)
+			obj = obj[name] or {}
 		else
 			-- no more . so we return as conquering heroes with the obj
 			return obj[name]
 		end
+	end
+end
+
+function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
+	local setting = ChoGGi.ComFuncs.DotNameToObject(str,nil,true)
+	if type(setting) == setting_type then
+		return true
 	end
 end
 

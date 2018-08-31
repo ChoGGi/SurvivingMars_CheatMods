@@ -330,10 +330,10 @@ do
 	end
 
 	function SupplyRocket:CheatCapDbl()
-		ChoGGi.CodeFuncs.SetExportAmountPerRocket(self,self.max_export_storage * 2)
+		ChoGGi.CodeFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
 	end
 	function SupplyRocket:CheatCapDef()
-		ChoGGi.CodeFuncs.SetExportAmountPerRocket(self,self.base_max_export_storage)
+		ChoGGi.CodeFuncs.SetTaskReqAmount(self,self.base_max_export_storage,"export_requests","max_export_storage")
 	end
 end -- do
 

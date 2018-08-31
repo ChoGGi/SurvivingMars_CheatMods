@@ -1,9 +1,5 @@
 -- See LICENSE for terms
 
---~ function GridConstructionController:CanExtendFrom(q, r)
---~ 	return true
---~ end
-
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local T = ChoGGi.ComFuncs.Translate
@@ -482,9 +478,33 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
+	SaveOrigFunc("SpaceElevator","ToggleAllowExport")
+	SaveOrigFunc("SpaceElevator","DroneUnloadResource")
 --~	 SaveOrigFunc("RCRover","LeadIn")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	local UserSettings = ChoGGi.UserSettings
+
+	function SpaceElevator:DroneUnloadResource(...)
+		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
+		local amount = s.max_export_storage - s.export_request:GetActualAmount()
+		if export_when and amount >= export_when then
+			self.pod_thread = CreateGameTimeThread(function()
+				self:ExportGoods()
+				self.pod_thread = nil
+			end)
+		end
+		return ChoGGi_OrigFuncs.SpaceElevator_DroneUnloadResource(self,...)
+	end
+
+	function SpaceElevator:ToggleAllowExport(...)
+		ChoGGi_OrigFuncs.SpaceElevator_ToggleAllowExport(self,...)
+		if self.allow_export and ChoGGi.UserSettings.SpaceElevatorToggleInstantExport then
+			self.pod_thread = CreateGameTimeThread(function()
+				self:ExportGoods()
+				self.pod_thread = nil
+			end)
+		end
+	end
 
 --~	 function RCRover:LeadIn(drone)
 --~		 self.drone_charged = drone
@@ -859,102 +879,102 @@ function OnMsg.ClassesBuilt()
 
 				local c = self.idContent
 
-				-- probably don't need this if...
-				if c then
+				-- this limits height of traits you can choose to 3 till mouse over
+				if ChoGGi.UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
 
-					-- this limits height of traits you can choose to 3 till mouse over
-					if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422--[[Select A Trait--]] then
+					local idx
+					if self.context:IsKindOf("School") then
+						idx = 20
+					else
 						-- Sanitarium
-						local idx = 18
-						if TGetID(c[20].idSectionTitle.Text) == 7422--[[School--]] then
-							idx = 20
-						end
-
-						-- initially set to hidden
-						ToggleVis(idx,c,false,0)
-
-						local visthread
-						self.OnMouseEnter = function()
-							DeleteThread(visthread)
-							ToggleVis(idx,c,true)
-						end
-						self.OnMouseLeft = function()
-							visthread = CreateRealTimeThread(function()
-								Sleep(1000)
-								ToggleVis(idx,c,false,0)
-							end)
-						end
-
+						idx = 18
 					end
 
-					-- loop all the sections
-					for i = 1, #c do
-						local section = c[i]
-						if section.class == "XSection" then
-							local title = TGetID(section.idSectionTitle.Text)
-							local content = section.idContent[2]
+					-- initially set to hidden
+					ToggleVis(idx,c,false,0)
 
-							if section.idWorkers and #section.idWorkers > 14 then
-								-- set height to default? height (should check UIScale)
-								content:SetMaxHeight(32)
+					local visthread
+					self.OnMouseEnter = function()
+						DeleteThread(visthread)
+						ToggleVis(idx,c,true)
+					end
+					self.OnMouseLeft = function()
+						visthread = CreateRealTimeThread(function()
+							Sleep(1000)
+							ToggleVis(idx,c,false,0)
+						end)
+					end
 
-								local expandthread
-								section.OnMouseEnter = function()
-									DeleteThread(expandthread)
-									content:SetLayoutMethod("HWrap")
-									content:SetMaxHeight()
-								end
-								section.OnMouseLeft = function()
-									expandthread = CreateRealTimeThread(function()
-										Sleep(500)
-										content:SetLayoutMethod("HList")
-										content:SetMaxHeight(32)
-									end)
-								end
+				end
 
-							elseif title == 27--[[Cheats--]] then
+				-- loop all the sections
+				for i = 1, #c do
+					local section = c[i]
+					if section.class == "XSection" then
+						local title = TGetID(section.idSectionTitle.Text)
+						local content = section.idContent[2]
 
-								local expandthread
-								section.OnMouseEnter = function()
-									DeleteThread(expandthread)
-									content:SetMaxHeight()
-								end
-								section.OnMouseLeft = function()
-									expandthread = CreateRealTimeThread(function()
-										Sleep(ChoGGi.UserSettings.CheatsInfoPanelHideDelay or 1500)
-										content:SetMaxHeight(0)
-									end)
-								end
+						-- enlarge worker section if over the max amount visible
+						if section.idWorkers and #section.idWorkers > 14 then
+							-- set height to default height
+							content:SetMaxHeight(32)
 
-							elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
+							local expandthread
+							section.OnMouseEnter = function()
+								DeleteThread(expandthread)
+								content:SetLayoutMethod("HWrap")
+								content:SetMaxHeight()
+							end
+							section.OnMouseLeft = function()
+								expandthread = CreateRealTimeThread(function()
+									Sleep(500)
+									content:SetLayoutMethod("HList")
+									content:SetMaxHeight(32)
+								end)
+							end
 
-								if title == 702480492408 then
-									-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
-									if self.context.capacity ~= self.context.base_capacity then
-										content.Clip = true
-									end
-								else
+						elseif title == 27--[[Cheats--]] then
+
+							local expandthread
+							section.OnMouseEnter = function()
+								DeleteThread(expandthread)
+								content:SetMaxHeight()
+							end
+							section.OnMouseLeft = function()
+								expandthread = CreateRealTimeThread(function()
+									Sleep(ChoGGi.UserSettings.CheatsInfoPanelHideDelay or 1500)
+									content:SetMaxHeight(0)
+								end)
+							end
+
+						elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
+
+							if title == 702480492408 then
+								-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
+								if self.context.capacity ~= self.context.base_capacity then
 									content.Clip = true
 								end
-
-								local expandthread
-								section.OnMouseEnter = function()
-									DeleteThread(expandthread)
-									content:SetMaxHeight()
-								end
-								section.OnMouseLeft = function()
-									expandthread = CreateRealTimeThread(function()
-										Sleep(500)
-										content:SetMaxHeight(256)
-									end)
-								end
-
+							else
+								content.Clip = true
 							end
-						end -- if XSection
-					end
-				end
-			end)
 
+							local expandthread
+							section.OnMouseEnter = function()
+								DeleteThread(expandthread)
+								content:SetMaxHeight()
+							end
+							section.OnMouseLeft = function()
+								expandthread = CreateRealTimeThread(function()
+									Sleep(500)
+									content:SetMaxHeight(256)
+								end)
+							end
+
+						end
+					end -- if XSection
+				end
+
+			end)
 			return table.unpack(ret)
 		end
 	end -- do

@@ -739,22 +739,21 @@ end
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
+	oldobj = oldobj and oldobj:IsKindOf("MechanizedDepot") or ChoGGi.CodeFuncs.SelObject()
+
 	if not oldobj or not oldobj:IsKindOf("MechanizedDepot") then
-		oldobj = ChoGGi.CodeFuncs.SelObject()
-	end
-	if not oldobj:IsKindOf("MechanizedDepot") then
 		return
 	end
 
 	local res = oldobj.resource
 	local amount = oldobj[Concat("GetStored_",res)](oldobj)
-	--not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
+	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
 	if amount > 20000000 then
 		amount = amount
 	end
 	local stock = oldobj.stockpiles[oldobj:GetNextStockpileIndex()]
 	local angle = oldobj:GetAngle()
-	--new pos based on angle of old depot (so it's in front not inside)
+	-- new pos based on angle of old depot (so it's in front not inside)
 	local newx = 0
 	local newy = 0
 	if angle == 0 then
@@ -776,25 +775,28 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 		newx = 500
 		newy = -500
 	end
-	local oldpos = stock:GetPos()
-	local newpos = point(oldpos:x() + newx,oldpos:y() + newy,oldpos:z())
-	--yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
+	local x,y,z = stock:GetVisualPosXYZ()
+	-- so it doesn't look weird make sure it's on a hex point
+	local newpos = HexGetNearestCenter(point(x + newx,y + newy,z))
+
+	-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
 	local res2 = res
 	if res == "PreciousMetals" then
 		res2 = "RareMetals"
 	end
-	--create new depot, and set max amount to stored amount of old depot
+
+	-- create new depot, and set max amount to stored amount of old depot
 	local newobj = PlaceObj("UniversalStorageDepot", {
 		"template_name", Concat("Storage",res2),
 		"resource", {res},
 		"stockpiled_amount", {},
 		"max_storage_per_resource", amount,
-		--make sure it's on a hex point after we moved it in front
-		"Pos", HexGetNearestCenter(newpos),
+		"Pos", newpos,
 	})
-	--make it align with the depot
+
+	-- make it align with the depot
 	newobj:SetAngle(angle)
-	--give it a bit before filling
+	-- give it a bit before filling
 	local Sleep = Sleep
 	CreateRealTimeThread(function()
 		local time = 0
@@ -802,11 +804,12 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 			Sleep(25)
 			time = time + 25
 		until type(newobj.requester_id) == "number" or time > 5000
-		--since we set new depot max amount to old amount we can just fill it
+		-- since we set new depot max amount to old amount we can just CheatFill it
 		newobj:CheatFill()
-		--clean out old depot
+		-- clean out old depot
 		oldobj:CheatEmpty()
 	end)
+
 end
 
 do -- ChangeObjectColour
@@ -1938,34 +1941,26 @@ do -- AddGridHandles
 	end
 end -- do
 
-function ChoGGi.CodeFuncs.SetExportAmountPerRocket(obj,value)
-	-- get stored amount
-	local amount = obj.max_export_storage - obj.export_requests[1]:GetActualAmount()
-	-- dbl amount stored
-	obj.max_export_storage = value
-	-- and reset 'er
-	obj.export_requests[1]:ResetAmount(obj.max_export_storage)
-	-- then add any stored
-	if amount > obj.max_export_storage then
-		-- don't set to above max storage
-		obj.export_requests[1]:AddAmount(obj.max_export_storage * -1)
+-- set task request to new amount (for some reason changing the "limit" will also boost the stored amount)
+-- this will reset it back to whatever it was after changing it.
+function ChoGGi.CodeFuncs.SetTaskReqAmount(obj,value,task,setting)
+	-- if it's in a table, it's almost always [1], i'm sure i'll have lots of shit to fix on any update anyways, so fuck it
+	if type(obj[task]) == "userdata" then
+		task = obj[task]
 	else
-		obj.export_requests[1]:AddAmount(amount * -1)
+		task = obj[task][1]
 	end
-end
 
-function ChoGGi.CodeFuncs.SetFuelAmountPerRocket(obj,value)
 	-- get stored amount
-	local amount = obj.launch_fuel - obj.refuel_request:GetActualAmount()
-	-- dbl amount stored
-	obj.launch_fuel = value
+	local amount = obj[setting] - task:GetActualAmount()
+	-- set new amount
+	obj[setting] = value
 	-- and reset 'er
-	obj.refuel_request:ResetAmount(obj.launch_fuel)
-	-- then add any stored
-	if amount > obj.launch_fuel then
-		-- don't set to above max storage
-		obj.refuel_request:AddAmount(obj.launch_fuel * -1)
+	task:ResetAmount(obj[setting])
+	-- then add stored, but don't set to above new limit or it'll look weird (and could mess stuff up)
+	if amount > obj[setting] then
+		task:AddAmount(obj[setting] * -1)
 	else
-		obj.refuel_request:AddAmount(amount * -1)
+		task:AddAmount(amount * -1)
 	end
 end

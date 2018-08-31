@@ -503,8 +503,6 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	)
 end
 
-UICity.labels.ProjectMorpheus[1]:GetAttaches()
-
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 	local objs = UICity.labels.ProjectMorpheus or ""
 	for i = 1, #objs do

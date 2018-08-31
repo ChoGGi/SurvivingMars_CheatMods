@@ -1,13 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000063,,
-302535920001330,,
-302535920001331,,
-302535920001332,,
-302535920001333,,
-302535920001334,,
-302535920001335,,
-302535920001336,,
-302535920001337,,
 302535920001338,,
 302535920001339,,
 302535920001340,,
@@ -311,6 +302,15 @@ Press Enter to refresh list (update names).
 Double click selected item to open in new manipulator.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920001336,Export When This Amount,
+302535920001337,When you have this many rares in storage always launch.,
+302535920001330,Instant Export On Toggle,
+302535920001331,Toggle Forbid Exports to have it instantly export whatever is stored (over n over).,
+302535920001332,Export Amount Per Trip,
+302535920001333,How many rare metals you can export per trip.,
+302535920001334,Import Amount Per Trip,
+302535920001335,How much storage for import you can use.,
+302535920000063,You need to select a building before using these.,
 302535920000105,Set Food Storage,
 302535920000107,"%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 I will face my fear. I will permit it to pass over me and through me.
@@ -359,9 +359,9 @@ It's next to godliness. Isn't that what they say?",
 There's more vodka in this piss than there is piss.",
 302535920000150,%s: Good for what ails you,
 302535920000151,%s: The spice must flow!,
-302535920000152,"%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
+302535920000152,"%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we're slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
 Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
-C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
+C'mon, you want pussy, come on in Pussy Lovers! If we don't got it, you don't want it! Come on in Pussy lovers! Attention pussy shoppers!
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
 Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!",
 302535920000153,"%s:
@@ -422,12 +422,12 @@ I trust you are not in too much distress.",
 Works on any building that produces.",
 302535920000196,Fully Automated Building,
 302535920000197,Work without workers (select a building and this will apply to all of type or selected).,
-302535920000198,Sanatoriums Cure All,
+302535920000198,Cure All,
 302535920000199,"Toggle curing all traits (use ""Show All Traits"" & ""Show Full List"" to manually set).",
-302535920000200,Schools Train All,
-302535920000202,Sanatoriums & Schools: Show All Traits,
+302535920000200,Train All,
+302535920000202,Show All Traits,
 302535920000203,Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.,
-302535920000204,Sanatoriums & Schools: Show Full List,
+302535920000204,Show Full List,
 302535920000205,Toggle showing full list of trait selectors in side pane.,
 302535920000206,Maintenance Free Inside,
 302535920000207,Buildings inside domes don't build maintenance points (takes away instead of adding).,

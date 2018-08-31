@@ -12,7 +12,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[517--[[Drones--]]]," .."),
-	ActionId = str_ExpandedCM_Drones,
+	ActionId = ".Drones",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Drones",
@@ -22,7 +22,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000505--[[Work Radius RC Rover--]]],
-	ActionId = "Expanded CM.Drones.Work Radius RC Rover",
+	ActionId = ".Work Radius RC Rover",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -37,7 +37,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000507--[[Work Radius DroneHub--]]],
-	ActionId = "Expanded CM.Drones.Work Radius DroneHub",
+	ActionId = ".Work Radius DroneHub",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -52,7 +52,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000509--[[Drone Rock To Concrete Speed--]]],
-	ActionId = "Expanded CM.Drones.Drone Rock To Concrete Speed",
+	ActionId = ".Drone Rock To Concrete Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -67,7 +67,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000511--[[Drone Move Speed--]]],
-	ActionId = "Expanded CM.Drones.Drone Move Speed",
+	ActionId = ".Drone Move Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -82,7 +82,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000513--[[Change Amount Of Drones In Hub--]]],
-	ActionId = "Expanded CM.Drones.Change Amount Of Drones In Hub",
+	ActionId = ".Change Amount Of Drones In Hub",
 	ActionIcon = iconD,
 	RolloverText = S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
@@ -93,12 +93,11 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000515--[[DroneFactory Build Speed--]]],
-	ActionId = "Expanded CM.Drones.DroneFactory Build Speed",
+	ActionId = ".DroneFactory Build Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
-		local s = ChoGGi.UserSettings.BuildingSettings.DroneFactory
 		return ChoGGi.ComFuncs.SettingState(
-			s and s.performance_notauto,
+			"ChoGGi.UserSettings.BuildingSettings.DroneFactory.performance_notauto",
 			302535920000516--[[Change how fast drone factories build drones.--]]
 		)
 	end,
@@ -109,7 +108,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000517--[[Drone Gravity--]]],
-	ActionId = "Expanded CM.Drones.Drone Gravity",
+	ActionId = ".Drone Gravity",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -124,7 +123,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000519--[[Drone Battery Infinite--]]],
-	ActionId = "Expanded CM.Drones.Drone Battery Infinite",
+	ActionId = ".Drone Battery Infinite",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -139,7 +138,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000521--[[Drone Build Speed--]]],
-	ActionId = "Expanded CM.Drones.Drone Build Speed",
+	ActionId = ".Drone Build Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -154,7 +153,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000523--[[Drone Meteor Malfunction--]]],
-	ActionId = "Expanded CM.Drones.Drone Meteor Malfunction",
+	ActionId = ".Drone Meteor Malfunction",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -169,7 +168,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[4645--[[Drone Recharge Time--]]],
-	ActionId = "Expanded CM.Drones.Drone Recharge Time",
+	ActionId = ".Drone Recharge Time",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -184,7 +183,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000527--[[Drone Repair Supply Leak Speed--]]],
-	ActionId = "Expanded CM.Drones.Drone Repair Supply Leak Speed",
+	ActionId = ".Drone Repair Supply Leak Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -199,7 +198,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000529--[[Drone Carry Amount--]]],
-	ActionId = "Expanded CM.Drones.Drone Carry Amount",
+	ActionId = ".Drone Carry Amount",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -214,7 +213,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000531--[[Drones Per Drone Hub--]]],
-	ActionId = "Expanded CM.Drones.Drones Per Drone Hub",
+	ActionId = ".Drones Per Drone Hub",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -229,7 +228,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Drones,
 	ActionName = S[302535920000533--[[Drones Per RC Rover--]]],
-	ActionId = "Expanded CM.Drones.Drones Per RC Rover",
+	ActionId = ".Drones Per RC Rover",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -245,7 +244,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[745--[[Shuttles--]]]," .."),
-	ActionId = str_ExpandedCM_Shuttles,
+	ActionId = ".Shuttles",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Shuttles",
@@ -255,12 +254,11 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
-	ActionId = "Expanded CM.Shuttles.Set ShuttleHub Shuttle Capacity",
+	ActionId = ".Set ShuttleHub Shuttle Capacity",
 	ActionIcon = iconD,
 	RolloverText = function()
-		local ChoGGi = ChoGGi
 		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.BuildingSettings.ShuttleHub and ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles,
+			"ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles",
 			302535920000536--[[Change amount of shuttles per shuttlehub.--]]
 		)
 	end,
@@ -271,7 +269,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000537--[[Set Capacity--]]],
-	ActionId = "Expanded CM.Shuttles.Set Capacity",
+	ActionId = ".Set Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -286,7 +284,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Shuttles,
 	ActionName = S[302535920000539--[[Set Speed--]]],
-	ActionId = "Expanded CM.Shuttles.Set Speed",
+	ActionId = ".Set Speed",
 	ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -302,7 +300,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[5438--[[Rovers--]]]," .."),
-	ActionId = str_ExpandedCM_Rovers,
+	ActionId = ".Rovers",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Rovers",
@@ -312,7 +310,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000541--[[Set Charging Distance--]]],
-	ActionId = "Expanded CM.Rovers.Set Charging Distance",
+	ActionId = ".Set Charging Distance",
 	ActionIcon = iconRC,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -327,7 +325,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000543--[[RC Move Speed--]]],
-	ActionId = "Expanded CM.Rovers.RC Move Speed",
+	ActionId = ".RC Move Speed",
 	ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -342,7 +340,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000545--[[RC Gravity--]]],
-	ActionId = "Expanded CM.Rovers.RC Gravity",
+	ActionId = ".RC Gravity",
 	ActionIcon = iconRC,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -357,7 +355,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000547--[[RC Rover Drone Recharge Free--]]],
-	ActionId = "Expanded CM.Rovers.RC Rover Drone Recharge Free",
+	ActionId = ".RC Rover Drone Recharge Free",
 	ActionIcon = iconRC,
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -372,7 +370,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000549--[[RC Transport Instant Transfer--]]],
-	ActionId = "Expanded CM.Rovers.RC Transport Instant Transfer",
+	ActionId = ".RC Transport Instant Transfer",
 	ActionIcon = "CommonAssets/UI/Menu/Mirror.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -387,7 +385,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rovers,
 	ActionName = S[302535920000551--[[RC Transport Storage Capacity--]]],
-	ActionId = "Expanded CM.Rovers.RC Transport Storage Capacity",
+	ActionId = ".RC Transport Storage Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -403,7 +401,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
 	ActionName = Concat(S[5238--[[Rockets--]]]," .."),
-	ActionId = str_ExpandedCM_Rockets,
+	ActionId = ".Rockets",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Rockets",
@@ -413,7 +411,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920001291--[[Max Export Amount--]]],
-	ActionId = "Expanded CM.Rockets.Max Export Amount",
+	ActionId = ".Max Export Amount",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -428,7 +426,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920001317--[[Launch Fuel Per Rocket--]]],
-	ActionId = "Expanded CM.Rockets.Launch Fuel Per Rocket",
+	ActionId = ".Launch Fuel Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -443,8 +441,8 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920001319--[[Rockets Ignore Fuel--]]],
-	ActionId = "Expanded CM.Rockets.Launch Fuel Per Rocket",
-	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
+	ActionId = ".Launch Fuel Per Rocket",
+	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.RocketsIgnoreFuel,
@@ -458,7 +456,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000850--[[Change Resupply Settings--]]],
-	ActionId = "Expanded CM.Rockets.Change Resupply Settings",
+	ActionId = ".Change Resupply Settings",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	RolloverText = S[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]]],
 	OnAction = ChoGGi.MenuFuncs.ChangeResupplySettings,
@@ -468,7 +466,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000557--[[Launch Empty Rocket--]]],
-	ActionId = "Expanded CM.Rockets.Launch Empty Rocket",
+	ActionId = ".Launch Empty Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	RolloverText = S[302535920000558--[[Launches an empty rocket to Mars.--]]],
 	OnAction = ChoGGi.MenuFuncs.LaunchEmptyRocket,
@@ -478,7 +476,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000559--[[Cargo Capacity--]]],
-	ActionId = "Expanded CM.Rockets.Cargo Capacity",
+	ActionId = ".Cargo Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -493,7 +491,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[302535920000561--[[Travel Time--]]],
-	ActionId = "Expanded CM.Rockets.Travel Time",
+	ActionId = ".Travel Time",
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -508,7 +506,7 @@ c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Rockets,
 	ActionName = S[4594--[[Colonists Per Rocket--]]],
-	ActionId = "Expanded CM.Rockets.Colonists Per Rocket",
+	ActionId = ".Colonists Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(

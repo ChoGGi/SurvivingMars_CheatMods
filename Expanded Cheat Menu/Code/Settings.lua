@@ -78,6 +78,7 @@ ChoGGi.Defaults = {
 	ShowCheatsMenu = true,
 	-- stuff to show in Console>Examine list (tables/values/functions are fine)
 	ConsoleExamineList = {
+		"_G",
 		"ChoGGi",
 		"DataInstances",
 		"Consts",
@@ -86,6 +87,7 @@ ChoGGi.Defaults = {
 		"GetInGameInterface",
 		"MsgThreads",
 		"Presets",
+		"TaskRequesters",
 		"terminal.desktop",
 		"UICity",
 		"XTemplates",
@@ -641,9 +643,6 @@ function OnMsg.OptionsApply()
 	ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
 	ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.ShuttleHubShuttleCapacity = g_Classes.ShuttleHub:GetDefaultPropertyValue("max_shuttles")
-	ChoGGi.Consts.GravityColonist = 0
-	ChoGGi.Consts.GravityDrone = 0
-	ChoGGi.Consts.GravityRC = 0
 	ChoGGi.Consts.SpeedDrone = g_Classes.Drone:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.SpeedRC = g_Classes.RCRover:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
@@ -654,6 +653,9 @@ function OnMsg.OptionsApply()
 	ChoGGi.Consts.StorageOtherDepot = 180 * r
 	ChoGGi.Consts.StorageMechanizedDepot = 3950 * r
 	-- ^ they're all UniversalStorageDepot
+	ChoGGi.Consts.GravityColonist = 0
+	ChoGGi.Consts.GravityDrone = 0
+	ChoGGi.Consts.GravityRC = 0
 	-- not sure what the 100K is for with SupplyRocket, but ah well 30K it is
 	ChoGGi.Consts.RocketMaxExportAmount = 30 * r
 	ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
