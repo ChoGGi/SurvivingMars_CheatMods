@@ -303,7 +303,11 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		-- is there an icon to add
 		local text
 		if item.icon then
-			text = Concat("<image ",item.icon," 2500> ",item.text)
+			if item.icon:find("<image ") then
+				text = Concat(item.icon," ",item.text)
+			else
+				text = Concat("<image ",item.icon," 2500> ",item.text)
+			end
 		else
 			text = item.text
 		end
@@ -447,7 +451,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 			self.custom_func({self.sel},self)
 		elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
 			-- dblclick to close and ret item
-			self.idOK.OnMouseButtonDown()
+			self.idOK.OnPress()
 		end
 	elseif button == "R" then
 		-- applies the lightmodel without closing dialog,
@@ -462,9 +466,9 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 end
 
 function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
-	--update list item settings table
+	-- update list item settings table
 	self:GetAllItems()
-	--remove defaults
+	-- remove defaults
 	local model_table = {}
 	for i = 1, #self.choices do
 		if self.choices[i].value ~= self.choices[i].default then

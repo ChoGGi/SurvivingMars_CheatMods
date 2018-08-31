@@ -42,14 +42,12 @@ function ChoGGi.MenuFuncs.FireMostFixes()
 end
 
 function ChoGGi.MenuFuncs.ToggleWorkingAll()
-	ForEach{
-		area = "realm",
-		exec = function(o)
-			if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
-				ChoGGi.CodeFuncs.ToggleWorking(o)
-			end
-		end,
-	}
+  MapForEach("map","BaseBuilding",function(o)
+		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
+			ChoGGi.CodeFuncs.ToggleWorking(o)
+		end
+  end)
+
 	MsgPopup(
 		4493--[[All--]],
 		302535920001299--[[Toggle Working On All Buildings--]]
@@ -185,21 +183,18 @@ do --ResetCommanders
 			local before_table = {}
 
 			-- get all commanders stuck in deploy with at least one drone
-			ForEach{
-				class = "RCRover",
-				exec = function(rc)
-					local drones = #rc.attached_drones > 0
-					if drones then
-						if rc:GetState() == GetStateIdx("deployIdle") then
-							-- store them in a table for later
-							before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
-						-- borked, no sense in waiting for later
-						elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
-							ResetRover(rc)
-						end
+			MapForEach("map","RCRover",function(rc)
+				local drones = #rc.attached_drones > 0
+				if drones then
+					if rc:GetState() == GetStateIdx("deployIdle") then
+						-- store them in a table for later
+						before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+					-- borked, no sense in waiting for later
+					elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
+						ResetRover(rc)
 					end
 				end
-			}
+			end)
 			-- let user know something is happening
 			MsgPopup(
 				302535920000464--[[Updating Rovers--]],
@@ -344,15 +339,12 @@ do -- Colonist stuff
 end -- do
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-	ForEach{
-		class = "ParSystem",
-		area = "realm",
-		exec = function(o)
-			if type(o.polyline) == "string" and o.polyline:find("\0") then
-				o:delete()
-			end
-		end,
-	}
+  MapForEach("map","ParSystem",function(o)
+		if type(o.polyline) == "string" and o.polyline:find("\0") then
+			o:delete()
+		end
+  end)
+
 	MsgPopup(
 		302535920000593--[[Remove Particles With Null Polylines--]],
 		4493--[[All--]]
@@ -360,13 +352,14 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-	ForEach{
-		class = "UnpersistedMissingClass",
-		area = "realm",
-		exec = function(obj)
-			DeleteObject(obj)
-		end
-	}
+--~ 	ForEach{
+--~ 		class = "UnpersistedMissingClass",
+--~ 		area = "realm",
+--~ 		exec = function(obj)
+--~ 			DeleteObject(obj)
+--~ 		end
+--~ 	}
+	MapDelete("map", "UnpersistedMissingClass")
 	MsgPopup(
 		302535920000587--[[Remove Missing Class Objects (Warning)--]],
 		4493--[[All--]]
@@ -376,7 +369,6 @@ end
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	local type = type
 	local IsValid = IsValid
-	local DeleteObject = DeleteObject
 
 	local objs = UICity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
@@ -385,16 +377,13 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 		end
 	end
 
-	ForEach{
-		class = "ParSystem",
-		area = "realm",
-		exec = function(o)
-			if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
-					type(o.polyline) == "string" and o.polyline:find("\0") then
-				o:delete()
-			end
-		end,
-	}
+  MapForEach("map","ParSystem",function(o)
+		if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
+				type(o.polyline) == "string" and o.polyline:find("\0") then
+			o:delete()
+		end
+  end)
+
 	MsgPopup(
 		302535920000595--[[Mirror Sphere Stuck--]],
 		4493--[[All--]]
@@ -419,19 +408,15 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
 end
 
 do -- DronesKeepTryingBlockedAreas
-	local ForEach = ForEach
 	local function ResetPriorityQueue(cls_name)
-		local prio = const.MaxBuildingPriority
-		ForEach{
-			class = cls_name,
-			exec = function(o)
-				-- clears out the queues
-				o.priority_queue = {}
-				for priority = -1, prio do
-					o.priority_queue[priority] = {}
-				end
-			end,
-		}
+		local max = const.MaxBuildingPriority
+		MapForEach("map",cls_name,function(o)
+			-- clears out the queues
+			o.priority_queue = {}
+			for priority = -1, max do
+				o.priority_queue[priority] = {}
+			end
+		end)
 	end
 
 	function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
@@ -440,12 +425,9 @@ do -- DronesKeepTryingBlockedAreas
 		ResetPriorityQueue("RCRover")
 		ResetPriorityQueue("DroneHub")
 		-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-		ForEach{
-			class = "ConstructionSite",
-			exec = function(o)
-				ChoGGi.CodeFuncs.ToggleWorking(o)
-			end,
-		}
+		MapForEach("map","ConstructionSite",function(o)
+			ChoGGi.CodeFuncs.ToggleWorking(o)
+		end)
 		MsgPopup(
 			302535920000599--[[Drones Keep Trying Blocked Areas--]],
 			4493--[[All--]]
@@ -455,12 +437,9 @@ end -- do
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 	local HexGetNearestCenter = HexGetNearestCenter
-	ForEach{
-		class = "Building",
-		exec = function(o)
-			o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
-		end,
-	}
+  MapForEach("map","Building",function(o)
+		o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
+  end)
 	MsgPopup(
 		302535920000621--[[Align All Buildings To Hex Grid--]],
 		4493--[[All--]]
@@ -470,18 +449,14 @@ end
 do -- RemoveUnreachableConstructionSites
 	local type,pairs = type,pairs
 	local function RemoveUnreachable(cls_name)
-		ForEach{
-			class = cls_name,
-			area = "realm",
-			exec = function(o)
-				for bld,_ in pairs(o.unreachable_buildings or empty_table) do
-					if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
-						bld:Cancel()
-					end
+		MapForEach("map",cls_name,function(o)
+			for bld,_ in pairs(o.unreachable_buildings or empty_table) do
+				if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
+					bld:Cancel()
 				end
-				o.unreachable_buildings = empty_table
-			end,
-		}
+			end
+			o.unreachable_buildings = empty_table
+		end)
 	end
 
 	function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
@@ -501,12 +476,13 @@ do -- RemoveUnreachableConstructionSites
 end -- do
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-	ForEach{
-		class = "GridTile",
-		exec = function(obj)
-			obj:delete()
-		end
-	}
+--~ 	ForEach{
+--~ 		class = "GridTile",
+--~ 		exec = function(obj)
+--~ 			obj:delete()
+--~ 		end
+--~ 	}
+	MapDelete("map", "GridTile")
 	MsgPopup(
 		302535920000603--[[Remove Yellow Grid Marks--]],
 		4493--[[All--]]
@@ -514,17 +490,20 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-	ForEach{
-		class = "RangeHexRadius",
-		exec = function(obj)
-			obj:delete()
-		end
-	}
+--~ 	ForEach{
+--~ 		class = "RangeHexRadius",
+--~ 		exec = function(obj)
+--~ 			obj:delete()
+--~ 		end
+--~ 	}
+	MapDelete("map", "RangeHexRadius")
 	MsgPopup(
 		302535920001193--[[Remove Blue Grid Marks--]],
 		4493--[[All--]]
 	)
 end
+
+UICity.labels.ProjectMorpheus[1]:GetAttaches()
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 	local objs = UICity.labels.ProjectMorpheus or ""
@@ -539,13 +518,10 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
 function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
-	ForEach{
-		class = "Dome",
-		exec = function(dome)
-			dome.walkable_points = false
-			dome:GenerateWalkablePoints()
-		end
-	}
+  MapForEach("map","Dome",function(o)
+		o.walkable_points = false
+		o:GenerateWalkablePoints()
+  end)
 	MsgPopup(
 		302535920000583--[[Rebuild Walkable Points In Domes--]],
 		4493--[[All--]]
@@ -703,14 +679,8 @@ end
 --~ end
 
 --~ function ChoGGi.MenuFuncs.DeathToObjects(cls)
---~	 ForEach{
---~		 class = cls,
---~		 area = "realm",
---~		 exec = function(o)
---~			 o:delete()
---~		 end,
---~	 }
---~ end
+--~ use MapDelete above
+--~ 	end
 
 --~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
 --~ ChoGGi.MenuFuncs.DeathToObjects("Colonist")
@@ -722,14 +692,11 @@ end
 
 --~ --show all elec consumption
 --~ local amount = 0
---~ ForEach{
---~	 area = "realm",
---~	 exec = function(o)
---~		 if o.class and o.electricity and o.electricity.consumption then
---~			 local temp = o.electricity.consumption / 1000
---~			 amount = amount + temp
---~			 print(o.class,": ",temp)
---~		 end
---~	 end,
---~ }
+--~ MapForEach("map",nil,function(o)
+--~ 	if o.class and o.electricity and o.electricity.consumption then
+--~ 		local temp = o.electricity.consumption / 1000
+--~ 		amount = amount + temp
+--~ 		print(o.class,": ",temp)
+--~ 	end
+--~ end)
 --~ print(amount)

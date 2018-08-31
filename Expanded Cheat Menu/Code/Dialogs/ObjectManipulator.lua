@@ -2,8 +2,10 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
+local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
@@ -12,6 +14,7 @@ local pcall,tostring,type,table = pcall,tostring,type,table
 local IsPoint = IsPoint
 local Min = Min
 local ObjectClass = ObjectClass
+local CmpLower = CmpLower
 
 DefineClass.ChoGGi_ObjectManipulatorDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -83,7 +86,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Dock = "left",
 		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
 		OnPress = function()
-			self:idAddNewOnMouseButtonDown()
+			self:idAddNewOnPress()
 		end,
 	}, self.idButtonArea)
 
@@ -93,7 +96,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Dock = "left",
 		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
 		OnPress = function()
-			self:idApplyAllOnMouseButtonDown()
+			self:idApplyOnPress()
 		end,
 		MinWidth = 100,
 	}, self.idButtonArea)
@@ -102,10 +105,12 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 
 	function self.idList.OnMouseButtonDown(obj,pt,button)
 		g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
-		self:idListOnMouseButtonDown(button)
+		self:idListOnMouseButtonDown()
 	end
-	function self.idList.OnMouseButtonDoubleClick(_,_,button)
-		self:idListOnMouseButtonDoubleClick(button)
+	function self.idList.OnMouseButtonDoubleClick()
+		if #self.idList.selection > 0 then
+			ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
+		end
 	end
 
 	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
@@ -134,18 +139,12 @@ function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown()
 		return
 	end
 	self.sel = self.idList[self.idList.selection[1]].item
-	--update the edit value box
+	-- update the edit value box
 	self.idEditValue:SetText(self.sel.value)
 	self.idEditValue:SetFocus()
 end
 
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick()
-	if #self.idList.selection > 0 then
-		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
-	end
-end
-
-function ChoGGi_ObjectManipulatorDlg:idAddNewOnMouseButtonDown()
+function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 	local sel_name
 	local sel_value
 	if self.sel then
@@ -179,19 +178,15 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnMouseButtonDown()
 	}
 end
 
-function ChoGGi_ObjectManipulatorDlg:idApplyAllOnMouseButtonDown()
+function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
 	if not self.sel then
 		return
 	end
 	local value = self.sel.value
 	if value then
-		ForEach{
-			class = self.obj.class,
-			area = "realm",
-			exec = function(o)
-				o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
-			end,
-		}
+		MapForEach("map",self.obj.class,function(o)
+			o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+		end)
 	end
 end
 
@@ -303,91 +298,22 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 	self.idScrollArea:ScrollTo(scroll_x,scroll_y)
 end
 
---override Listitem:OnCreate so we can have two columns (wonder if there's another way)
-function ChoGGi_ObjectManipulatorDlg:OnCreate(item,list)
-	local g_Classes = g_Classes
-	local data_instance = item.ItemDataInstance or list:GetItemDataInstance()
-	local view_name = item and item.ItemSubview or list:GetItemSubview()
-	if data_instance ~= "" and view_name ~= "" then
-		self.DesignerFile = data_instance
-		self:SetDesignerFileView(view_name)
-		if InDesigner(list) and #self.children == 0 then
-			self:SetSize(point(25, 25))
-		end
-	else
-		local text_item = g_Classes.StaticText:new(self)
-		text_item:SetBackgroundColor(0)
-		text_item:SetId("text")
-		text_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
-		local item_spacing = list.item_spacing * list:GetWindowScale() / 100
-		local width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
-		local _, height = text_item:MeasureText(item.text or "", nil, nil, nil, width)
-		height = Min(720, height)
-		text_item:SetSize(point(width, height))
-		--newly added
-		local value_item = g_Classes.StaticText:new(self)
-		value_item:SetBackgroundColor(0)
-		value_item:SetId("value")
-		value_item:SetFontStyle(item.FontStyle or list:GetFontStyle(), item.FontStyle or list.font_scale)
-		--local item_spacing = list.item_spacing * list:GetWindowScale() / 100
-		--local value_width = Min(1280, list:GetSize():x() - 2 * item_spacing:x())
-		local _, value_height = value_item:MeasureText(item.text or "", nil, nil, nil, width)
-		value_height = Min(720, value_height)
-		value_item:SetSize(point(width, value_height))
-		value_item:SetPos(point(width - 250, value_item:GetY()))
-		--newly added
-	end
-	for i = 1, #self.children do
-		local child = self.children[i]
-		if item[child.id] and child:HasMember("SetText") then
-			child:SetText(item[child.id])
-		elseif item[child.id] and child:HasMember("SetImage") then
-			child:SetImage(item[child.id])
-		end
-	end
-	self:SetHint(item.rollover)
-	if item.ZOrder then
-		self:SetZOrder(item.ZOrder)
-	end
-end
-
 function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 	local objlist = objlist
 	local obj_type = type(obj)
+
 	if obj_type == "function" then
-		local debug_info = debug.getinfo(obj, "Sn")
-		return Concat(tostring(debug_info.name or debug_info.name_what or S[302535920000063--[[unknown name--]]]),"@",debug_info.short_src,"(",debug_info.linedefined,")")
+		return DebugGetInfo(obj)
 	end
 
 	if IsValid(obj) then
-		return Concat(obj.class,"@",self:CreateProp(obj:GetPos()))
+		local x,y,z = obj:GetVisualPosXYZ()
+		return Concat(obj.class," @ (",x,",",y,",",z,")")
 	end
 
 	if IsPoint(obj) then
-		local res = {
-			obj:x(),
-			obj:y(),
-			obj:z()
-		}
-		return Concat("(",Concat(res, ","),")")
+		return Concat("(",obj:x(),obj:y(),obj:z(),",",")")
 	end
-	--if some value is fucked, this just lets us ignore whatever value is fucked.
-	pcall(function()
-		local meta = getmetatable(obj)
-		if obj_type == "table" and meta and meta == objlist then
-			local res = {}
-			for i = 1, Min(#obj, 3) do
-				res[i] = {
-					text = i,
-					value = self:CreateProp(obj[i])
-				}
-			end
-			if #obj > 3 then
-				res[#res+1] = {text = "..."}
-			end
-			return Concat("objlist","{",Concat(res, ", "),"}")
-		end
-	end)
 
 	if obj_type == "thread" then
 		return tostring(obj)
@@ -397,12 +323,47 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 		return obj
 	end
 
+	local meta = getmetatable(obj)
 	if obj_type == "table" then
+		-- objlist ftw?
+		if meta and meta == objlist then
+			local res = {}
+			for i = 1, Min(#obj, 3) do
+				res[i] = self:CreateProp(obj[i])
+			end
+			if #obj > 3 then
+				res[#res+1] = "..."
+			end
+			return Concat("objlist","{",TableConcat(res,", "),"}")
+		end
+
 		if IsT(obj) then
 			return Concat("T{\"",T(obj),"\"}")
 		else
-			local text = Concat(ObjectClass(obj) or tostring(obj)," (len:",#obj,")")
-			return text
+			-- regular table
+			local table_data
+			local is_next = next(obj)
+			local len = #obj
+
+			if len > 0 and is_next then
+				-- next works for both
+				table_data = Concat(len," / ",S[302535920001057--[[Data--]]])
+			elseif is_next then
+				-- ass based
+				table_data = S[302535920001057--[[Data--]]]
+			else
+				-- blank table
+				table_data = 0
+			end
+
+			local name = RetName(obj)
+			if obj.class and name ~= obj.class then
+				name = Concat(obj.class," (len: ",table_data,", ",name,")")
+			else
+				name = Concat(name," (len: ",table_data,")")
+			end
+
+			return name
 		end
 	end
 
@@ -410,52 +371,48 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 end
 
 function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
-	local res = {}
-	local c = 0
-
-	-- change this crap
-	local sort = {}
-
 	if type(obj) == "table" then
+		local res = {}
+		local sort = {}
+		local c = 0
 		for k, v in pairs(obj) do
-			--text colours
+			-- pretty colours (red for func, blue for tables)
+			local sort = self:CreateProp(k)
 			local text
 			local v_type = type(v)
 			if v_type == "table" then
---~ 				if v.class then
---~ 					text = Concat("<color 75 255 75>",self:CreateProp(k),"</color>")
---~ 				else
-					text = Concat("<color 75 75 255>",self:CreateProp(k),"</color>")
---~ 				end
+				text = Concat("<color 75 75 255>",sort,"</color>")
 			elseif v_type == "function" then
-				text = Concat("<color 255 75 75>",self:CreateProp(k),"</color>")
+				text = Concat("<color 255 75 75>",sort,"</color>")
 			else
-				text = self:CreateProp(k)
+				text = sort
 			end
+
 			c = c + 1
 			res[c] = {
-				sort = self:CreateProp(k),
+				sort = sort,
 				text = text,
 				value = self:CreateProp(v),
 				object = v
 			}
 			if type(k) == "number" then
-				sort[res[#res]] = k
+				sort[res[c]] = k
 			end
 		end
+
+		table.sort(res, function(a, b)
+			if sort[a] and sort[b] then
+				return sort[a] < sort[b]
+			end
+			if sort[a] or sort[b] then
+				return sort[a] and true
+			end
+			return CmpLower(a, b)
+		end)
+		return res
+	else
+		return self:CreateProp(res)
 	end
-
-	table.sort(res, function(a, b)
-		if sort[a.sort] and sort[b.sort] then
-			return sort[a.sort] < sort[b.sort]
-		end
-		if sort[a.sort] or sort[b.sort] then
-			return sort[a.sort] and true
-		end
-		return CmpLower(a.sort, b.sort)
-	end)
-
-	return res
 end
 
 function ChoGGi_ObjectManipulatorDlg:Done(result)

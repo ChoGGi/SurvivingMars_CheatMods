@@ -1,10 +1,11 @@
 -- See LICENSE for terms
 
 local Concat = ChoGGi.ComFuncs.Concat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 local ShowMe = ChoGGi.ComFuncs.ShowMe
-local TableConcat = ChoGGi.ComFuncs.TableConcat
+local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local T = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
@@ -16,6 +17,8 @@ local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
+local getlocal = debug.getlocal
+local getupvalue = debug.getupvalue
 
 transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
@@ -495,30 +498,13 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
-
-		if blacklist then
-			return Concat(
-				self:HyperLink(function(_,_,button)
-					Examine_valuetotextex(_,_,button,obj,self)
-				end),
-				ChoGGi.ComFuncs.DebugGetInfo(obj),
-				HLEnd
-			)
-		else
-			local debug_info = debug.getinfo(obj, "Sn")
-			return Concat(
-				self:HyperLink(function(_,_,button)
-					Examine_valuetotextex(_,_,button,obj,self)
-				end),
-				tostring(debug_info.name or debug_info.name_what or S[302535920000063--[[unknown name--]]]),
-				"@",
-				debug_info.short_src,
-				"(",
-				debug_info.linedefined,
-				")",
-				HLEnd
-			)
-		end
+		return Concat(
+			self:HyperLink(function(_,_,button)
+				Examine_valuetotextex(_,_,button,obj,self)
+			end),
+			DebugGetInfo(obj),
+			HLEnd
+		)
 
 	elseif obj_type == "thread" then
 		return Concat(
@@ -600,19 +586,20 @@ function Examine:valuetotextex(obj)
 					c = c + 1
 					res[c] = i
 					c = c + 1
-					res[c] = " = "
+					res[c] = "="
 					c = c + 1
 					res[c] = self:valuetotextex(obj[i])
+					c = c + 1
+					res[c] = ","
 				end
 				if len > 3 then
 					c = c + 1
 					res[c] = "..."
 				end
 				c = c + 1
-				res[c] = ", "
-				c = c + 1
 				res[c] = "}"
-				return TableConcat(res)
+				-- remove last ,
+				return TableConcat(res):gsub(",}","}")
 			else
 				-- regular table
 				local table_data
@@ -621,9 +608,6 @@ function Examine:valuetotextex(obj)
 				if len > 0 and is_next then
 					-- next works for both
 					table_data = Concat(len," / ",S[302535920001057--[[Data--]]])
-	--~			 elseif len > 0 then
-	--~				 -- index based
-	--~				 table_data = len
 				elseif is_next then
 					-- ass based
 					table_data = S[302535920001057--[[Data--]]]
@@ -666,14 +650,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level, info, obj,self)
 	local data = {}
-	if blacklist
- then
-		data = {ChoGGi.ComFuncs.DebugGetInfo(obj)}
+	if blacklist then
+		data = {DebugGetInfo(obj)}
 	else
 		data = {}
 		local l = 1
 		while true do
-			local name, val = debug.getlocal(obj, level, l)
+			local name, val = getlocal(obj, level, l)
 			if name then
 				data[name] = val
 				l = l + 1
@@ -682,7 +665,7 @@ local function ExamineThreadLevel_totextex(level, info, obj,self)
 			end
 		end
 		for i = 1, info.nups do
-			local name, val = debug.getupvalue(info.func, i)
+			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
 				data[Concat(name,"(up)")] = val
 			end
@@ -730,7 +713,7 @@ function Examine:totextex(obj,ChoGGi)
 					ExamineThreadLevel_totextex(nil, nil, obj, self)
 				end),
 				self:HyperLink(ExamineThreadLevel_totextex(nil, nil, obj, self)),
-				ChoGGi.ComFuncs.DebugGetInfo(obj),
+				DebugGetInfo(obj),
 				HLEnd
 			)
 		else
@@ -748,7 +731,7 @@ function Examine:totextex(obj,ChoGGi)
 						"(",
 						info.currentline,
 						") ",
-						info.name or info.name_what or S[302535920000063--[[unknown name--]]],
+						info.name or info.name_what or S[302535920000723--[[Lua--]]],
 						HLEnd
 					)
 				else
@@ -771,11 +754,11 @@ function Examine:totextex(obj,ChoGGi)
 	elseif obj_type == "function" then
 		if blacklist then
 			c = c + 1
-			res[c] = self:valuetotextex(ChoGGi.ComFuncs.DebugGetInfo(obj))
+			res[c] = self:valuetotextex(DebugGetInfo(obj))
 		else
 			local i = 1
 			while true do
-				local k, v = debug.getupvalue(obj, i)
+				local k, v = getupvalue(obj, i)
 				if k then
 					c = c + 1
 					res[c] = Concat(
@@ -815,7 +798,8 @@ function Examine:totextex(obj,ChoGGi)
 			HLEnd,
 			"@",
 			self:valuetotextex(obj:GetPos()),
-			"--<vspace 6><left>"
+--~ 			"--<vspace 6><left>"
+			"--"
 		))
 
 		if obj:IsValidPos() and IsValidEntity(obj.entity) and 0 < obj:GetAnimDuration() then
@@ -836,7 +820,8 @@ function Examine:totextex(obj,ChoGGi)
 --~				 "<center>--",
 				"\t\t\t\t--",
 				self:valuetotextex(obj_metatable),
-				": metatable--<vspace 6><left>"
+--~ 				": metatable--<vspace 6><left>"
+				": metatable--"
 			))
 	end
 
@@ -856,9 +841,8 @@ function Examine:totextex(obj,ChoGGi)
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
 		local dbg_value = "\ndebug.getinfo: "
-		if blacklist
- then
-			dbg_value = Concat(dbg_value,ChoGGi.ComFuncs.DebugGetInfo(obj))
+		if blacklist then
+			dbg_value = Concat(dbg_value,DebugGetInfo(obj))
 		else
 			local dbg_table = debug.getinfo(obj) or empty_table
 			for key,value in pairs(dbg_table) do

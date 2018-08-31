@@ -82,7 +82,9 @@ Actions[c] = {
 	ActionId = "Expanded CM.Fixes.Toggle Collisions On Selected Object",
 	ActionIcon = icon,
 	RolloverText = S[302535920000582--[[Just in case you get something stuck somewhere.--]]],
-	OnAction = ChoGGi.MenuFuncs.CollisionsObject_Toggle,
+	OnAction = function()
+		ChoGGi.CodeFuncs.CollisionsObject_Toggle()
+	end,
 	ActionSortKey = "9",
 }
 

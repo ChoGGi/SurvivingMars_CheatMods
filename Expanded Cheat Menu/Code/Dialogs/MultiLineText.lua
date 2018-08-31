@@ -65,7 +65,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		Dock = "left",
 		Text = S[6878--[[OK--]]],
 		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
-		OnMouseButtonDown = function()
+		OnPress = function()
 			self:Close("ok",true)
 		end,
 	}, self.idButtonContainer)
@@ -87,7 +87,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		Dock = "right",
 		Text = S[6879--[[Cancel--]]],
 		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
-		OnMouseButtonDown = function()
+		OnPress = function()
 			self:Close("cancel",false)
 		end,
 	}, self.idButtonContainer)

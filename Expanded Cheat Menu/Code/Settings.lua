@@ -157,9 +157,9 @@ ChoGGi.Defaults = {
 		Editor_Toggle = "Ctrl-Shift-E",
 		DeleteObject = "Ctrl-Alt-Shift-D",
 		ObjExaminer = "F4",
-		ToggleTerrainDepositGrid = "Ctrl-F4",
 		debug_grid_build = "Shift-F1",
 		debug_grid_squares = "Shift-F2",
+		ToggleTerrainDepositGrid = "Shift-F3",
 		-- DronesAndRCMenu.lua
 		SetDroneAmountDroneHub = "Shift-D",
 		-- ExpandedMenu

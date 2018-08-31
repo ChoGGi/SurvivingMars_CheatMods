@@ -15,7 +15,7 @@ local AsyncRand = AsyncRand
 local IsValid = IsValid
 local GetTerrainCursor = GetTerrainCursor
 local AsyncStringToFile = _G.AsyncStringToFile
-local FilterObjects = FilterObjects
+local FilterObjectsC = FilterObjectsC
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
@@ -119,55 +119,56 @@ function ChoGGi.ComFuncs.CheckText(text,fallback)
 end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
--- returns object name or at least always some string
-local IsObjlist = IsObjlist
-function ChoGGi.ComFuncs.RetName(obj)
-	if obj == _G then
-		return "_G"
-	end
-
-	if type(obj) == "table" then
-
-		local name_type = type(obj.name)
-
-		-- custom name from user (probably)
-		if name_type == "string" and obj.name ~= "" then
-			return obj.name
-
-		-- colonist names
-		elseif name_type == "table" and #obj.name == 3 then
-			return TableConcat{
-				T(obj.name[1]),
-				" ",
-				T(obj.name[3]),
-			}
-
-		-- translated name
-		elseif obj.display_name and obj.display_name ~= "" then
-			return T(obj.display_name)
-
-		-- encyclopedia_id
-		elseif type(obj.encyclopedia_id) == "string" then
-			return obj.encyclopedia_id
-
-		elseif type(obj.id) == "string" then
-			return obj.id
-
-		-- class
-		elseif type(obj.class) == "string" then
-			return obj.class
-
-		-- added this here as doing tostring lags the shit outta kansas if this is a large objlist
-		elseif IsObjlist(obj) then
-			return "objlist"
+do -- RetName
+	local IsObjlist = IsObjlist
+	-- try to return a decent name for the obj, failing that return some sort of string
+	function ChoGGi.ComFuncs.RetName(obj)
+		if obj == _G then
+			return "_G"
 		end
 
-	end
+		if type(obj) == "table" then
 
-	-- falling back baby
---~	 return tostring(obj):sub(1,150) --limit length of string in case it's a large one
-	return tostring(obj)
-end
+			local name_type = type(obj.name)
+			-- custom name from user (probably)
+			if name_type == "string" and obj.name ~= "" then
+				return obj.name
+			-- colonist names
+			elseif name_type == "table" and #obj.name == 3 then
+				return TableConcat{
+					T(obj.name[1]),
+					" ",
+					T(obj.name[3]),
+				}
+
+			-- translated name
+			elseif obj.display_name and obj.display_name ~= "" then
+				return T(obj.display_name)
+
+			-- encyclopedia_id
+			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
+				return obj.encyclopedia_id
+
+			-- plain old id
+			elseif obj.id and obj.id ~= "" then
+				return obj.id
+
+			-- class
+			elseif obj.class and obj.class ~= "" then
+				return obj.class
+
+			-- added this here as doing tostring lags the shit outta kansas if this is a large objlist
+			elseif IsObjlist(obj) then
+				return "objlist"
+			end
+
+		end
+
+		-- falling back baby
+--~ 		return tostring(obj):sub(1,150) --limit length of string in case it's a large one
+		return tostring(obj)
+	end
+end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
 -- shows a popup msg with the rest of the notifications
@@ -251,7 +252,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 		local g_Classes = g_Classes
 		local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
 		local ShowMe = ChoGGi.ComFuncs.ShowMe
-		local ConvertNameToObject = ChoGGi.ComFuncs.ConvertNameToObject
+		local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 		local ViewObjectMars = ViewObjectMars
 		local black = black
 
@@ -298,7 +299,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 			if item.value then
 
 				local is_vis
-				local value = ConvertNameToObject(item.value)
+				local value = DotNameToObject(item.value)
 
 				-- dlgConsole.visible i think? damn me and my lazy commenting
 				if type(value) == "table" then
@@ -924,10 +925,10 @@ function ChoGGi.ComFuncs.RetTableNoDupes(list)
 end
 
 function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
-	local ChoGGi = ChoGGi
+	local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 	table.sort(list,
 		function(a,b)
-			return ChoGGi.ComFuncs.CompareTableValue(a,b,"class")
+			return CompareTableValue(a,b,"class")
 		end
 	)
 	local tempt = {}
@@ -965,7 +966,7 @@ function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
 	if #list < 1 then
 		return
 	end
-	return FilterObjects({
+	return FilterObjectsC({
 		filter = function(o)
 			if exclude_list or include_list then
 				if exclude_list and include_list then
@@ -995,7 +996,7 @@ end
 -- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Building,"IsKindOf","Residence")
 -- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or "","IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
-	return FilterObjects({
+	return FilterObjectsC({
 		filter = function(o)
 			if is_bool then
 				if _G[func](o) then
@@ -1432,14 +1433,17 @@ end -- do
 
 do --
 	function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
-		local ChoGGi = ChoGGi
+		local Tables = ChoGGi.Tables
+		local c = 0
 
-		ChoGGi.Tables.SchoolTraits = const.SchoolTraits
-		ChoGGi.Tables.SanatoriumTraits = const.SanatoriumTraits
+		Tables.SchoolTraits = const.SchoolTraits
+--~ 		table.append(Tables.SchoolTraits,const.SchoolExtraTraits)
+		Tables.SanatoriumTraits = const.SanatoriumTraits
+--~ 		table.append(Tables.SanatoriumTraits,const.SanatoriumTraitsTraits)
 
-		-- mysteries
-		ChoGGi.Tables.Mystery = {}
-		local cm = 0
+------------- mysteries
+		Tables.Mystery = {}
+		c = 0
 		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
 		local g_Classes = g_Classes
 		ClassDescendantsList("MysteryBase",function(class)
@@ -1454,89 +1458,98 @@ do --
 				description = description
 			}
 			-- we want to be able to access by for loop, Mystery 7, and WorldWar3
-			ChoGGi.Tables.Mystery[scenario_name] = temptable
-			ChoGGi.Tables.Mystery[class] = temptable
-			cm = cm + 1
-			ChoGGi.Tables.Mystery[cm] = temptable
+			Tables.Mystery[scenario_name] = temptable
+			Tables.Mystery[class] = temptable
+			c = c + 1
+			Tables.Mystery[c] = temptable
 		end)
 
-		-- colonists
-		ChoGGi.Tables.NegativeTraits = {}
-		ChoGGi.Tables.PositiveTraits = {}
-		ChoGGi.Tables.OtherTraits = {}
-		ChoGGi.Tables.ColonistAges = {}
-		ChoGGi.Tables.ColonistGenders = {}
-		ChoGGi.Tables.ColonistSpecializations = {}
-		ChoGGi.Tables.ColonistBirthplaces = {}
+----------- colonists
+		Tables.NegativeTraits = {}
+		Tables.PositiveTraits = {}
+		Tables.OtherTraits = {}
+		Tables.ColonistAges = {}
+		Tables.ColonistGenders = {}
+		Tables.ColonistSpecializations = {}
+		Tables.ColonistBirthplaces = {}
 		--add as index and associative tables for ease of filtering
 		local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
 		for id,t in pairs(TraitPresets) do
 			if t.group == "Positive" then
 				c1 = c1 + 1
-				ChoGGi.Tables.PositiveTraits[c1] = id
-				ChoGGi.Tables.PositiveTraits[id] = true
+				Tables.PositiveTraits[c1] = id
+				Tables.PositiveTraits[id] = true
 			elseif t.group == "Negative" then
 				c2 = c2 + 1
-				ChoGGi.Tables.NegativeTraits[c2] = id
-				ChoGGi.Tables.NegativeTraits[id] = true
+				Tables.NegativeTraits[c2] = id
+				Tables.NegativeTraits[id] = true
 			elseif t.group == "other" then
 				c3 = c3 + 1
-				ChoGGi.Tables.OtherTraits[c3] = id
-				ChoGGi.Tables.OtherTraits[id] = true
+				Tables.OtherTraits[c3] = id
+				Tables.OtherTraits[id] = true
 			elseif t.group == "Age Group" then
 				c4 = c4 + 1
-				ChoGGi.Tables.ColonistAges[c4] = id
-				ChoGGi.Tables.ColonistAges[id] = true
+				Tables.ColonistAges[c4] = id
+				Tables.ColonistAges[id] = true
 			elseif t.group == "Gender" then
 				c5 = c5 + 1
-				ChoGGi.Tables.ColonistGenders[c5] = id
-				ChoGGi.Tables.ColonistGenders[id] = true
+				Tables.ColonistGenders[c5] = id
+				Tables.ColonistGenders[id] = true
 			elseif t.group == "Specialization" and id ~= "none" then
 				c6 = c6 + 1
-				ChoGGi.Tables.ColonistSpecializations[c6] = id
-				ChoGGi.Tables.ColonistSpecializations[id] = true
+				Tables.ColonistSpecializations[c6] = id
+				Tables.ColonistSpecializations[id] = true
 			end
 		end
 
 		local Nations = Nations
 		for i = 1, #Nations do
-			ChoGGi.Tables.ColonistBirthplaces[i] = Nations[i].value
-			ChoGGi.Tables.ColonistBirthplaces[Nations[i].value] = true
+			Tables.ColonistBirthplaces[i] = Nations[i].value
+			Tables.ColonistBirthplaces[Nations[i].value] = true
 		end
 
-		table.sort(ChoGGi.Tables.ColonistBirthplaces)
-		table.sort(ChoGGi.Tables.NegativeTraits)
-		table.sort(ChoGGi.Tables.PositiveTraits)
-		table.sort(ChoGGi.Tables.OtherTraits)
-		table.sort(ChoGGi.Tables.ColonistAges)
-		table.sort(ChoGGi.Tables.ColonistGenders)
-		table.sort(ChoGGi.Tables.ColonistSpecializations)
-
-		-- easier access to cargo
-		ChoGGi.Tables.Cargo = {}
-		ChoGGi.Tables.CargoPresets = {}
-		local cc = 0
+------------- cargo
+		Tables.Cargo = {}
+		Tables.CargoPresets = {}
 
 		-- only called when ResupplyItemDefinitions is built
 		if cargo_update == true then
 			local ResupplyItemDefinitions = ResupplyItemDefinitions
 			for i = 1, #ResupplyItemDefinitions do
 				local meta = getmetatable(ResupplyItemDefinitions[i]).__index
-				ChoGGi.Tables.Cargo[i] = meta
-				ChoGGi.Tables.Cargo[meta.id] = meta
+				Tables.Cargo[i] = meta
+				Tables.Cargo[meta.id] = meta
 			end
 
 			-- just used to check defaults for cargo
 			local preset = Presets.Cargo
+			c = 0
 			for i = 1, #preset do
 				for j = 1, #preset[i] do
-					local c = preset[i][j]
-					cc = cc + 1
-					ChoGGi.Tables.CargoPresets[cc] = c
-					ChoGGi.Tables.CargoPresets[c.id] = c
+					local cp = preset[i][j]
+					c = c + 1
+					Tables.CargoPresets[c] = cp
+					Tables.CargoPresets[cp.id] = cp
 				end
 			end
 		end
+
+-------------- resources
+		Tables.Resources = {}
+		local AllResourcesList = AllResourcesList
+		for i = 1, #AllResourcesList do
+			Tables.Resources[i] = AllResourcesList[i]
+			Tables.Resources[AllResourcesList[i]] = true
+		end
+
+		table.sort(Tables.ColonistBirthplaces)
+		table.sort(Tables.NegativeTraits)
+		table.sort(Tables.PositiveTraits)
+		table.sort(Tables.OtherTraits)
+		table.sort(Tables.ColonistAges)
+		table.sort(Tables.ColonistGenders)
+		table.sort(Tables.ColonistSpecializations)
+		table.sort(Tables.Resources)
 	end
 end -- do
 
@@ -1606,66 +1619,66 @@ function ChoGGi.ComFuncs.OpenKeyPresserDlg()
 end
 
 -- "some.some.some.etc" = returns etc as object
--- https://www.lua.org/pil/14.1.html
-function ChoGGi.ComFuncs.ConvertNameToObject(name)
+function ChoGGi.ComFuncs.DotNameToObject(str)
 	-- always start with _G
 	local obj = _G
-	for str, match in name:gmatch("([%w_]+)(.?)") do
+	-- https://www.lua.org/pil/14.1.html
+	for name,match in str:gmatch("([%w_]+)(.?)") do
 		-- . means we're not at the end yet
 		if match == "." then
-			-- i just want to check for existance not create a new table
---~			 obj[str] = obj[str] or {}	 -- create table if absent
-			-- something in the table is missing so return
-			if not obj[str] then
+			-- our treasure hunt is cut short, so return nadda
+			if not obj[name] then
 				return
 			end
-			-- get the next table in the name
-			obj = obj[str]
+			-- change the parent to the child
+			obj = obj[name]
 		else
-			-- no more . so we got the object
-			return obj[str]
+			-- no more . so we return as conquering heroes with the obj
+			return obj[name]
 		end
 	end
 end
 
-local AsyncListFiles = _G.AsyncListFiles
--- returns table with list of files without path or ext and path, or exclude ext to return all files
-function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-	local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
-	if not err and #files > 0 then
-		local table_path = {}
-		local path = Concat(folder,"/")
-		for i = 1, #files do
-			local name
-			if ext then
-				name = files[i]:gsub(path,""):gsub(ext,"")
-			else
-				name = files[i]:gsub(path,"")
+do -- RetFilesInFolder/RetFoldersInFolder
+	local AsyncListFiles = _G.AsyncListFiles
+	-- returns table with list of files without path or ext and path, or exclude ext to return all files
+	function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
+		local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
+		if not err and #files > 0 then
+			local table_path = {}
+			local path = Concat(folder,"/")
+			for i = 1, #files do
+				local name
+				if ext then
+					name = files[i]:gsub(path,""):gsub(ext,"")
+				else
+					name = files[i]:gsub(path,"")
+				end
+				table_path[i] = {
+					path = files[i],
+					name = name,
+				}
 			end
-			table_path[i] = {
-				path = files[i],
-				name = name,
-			}
+			return table_path
 		end
-		return table_path
 	end
-end
 
-function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-	--local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
-	local err, folders = AsyncListFiles(folder,"*","folders")
-	if not err and #folders > 0 then
-		local table_path = {}
-		local temp_path = Concat(folder,"/")
-		for i = 1, #folders do
-			table_path[i] = {
-				path = folders[i],
-				name = folders[i]:gsub(temp_path,""),
-			}
+	function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
+		--local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
+		local err, folders = AsyncListFiles(folder,"*","folders")
+		if not err and #folders > 0 then
+			local table_path = {}
+			local temp_path = Concat(folder,"/")
+			for i = 1, #folders do
+				table_path[i] = {
+					path = folders[i],
+					name = folders[i]:gsub(temp_path,""),
+				}
+			end
+			return table_path
 		end
-		return table_path
 	end
-end
+end -- do
 
 -- if anyone else is using ECM
 Msg("ChoGGi_ComFuncs")

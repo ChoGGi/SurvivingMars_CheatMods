@@ -144,6 +144,7 @@ local function ToggleConsole()
 	local dlgConsole = dlgConsole
 	if dlgConsole then
 		ShowConsole(not dlgConsole:GetVisible())
+--~ 		dlgConsole.idEdit:SetFocus()
 	end
 end
 

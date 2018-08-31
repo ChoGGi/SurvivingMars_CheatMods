@@ -129,6 +129,7 @@ end
 local ExamineMenuToggle_list
 
 -- build list of objects to examine
+local CmpLower = CmpLower
 local function BuildExamineMenu()
 	ExamineMenuToggle_list = {}
 
@@ -137,7 +138,8 @@ local function BuildExamineMenu()
 	table.sort(list,
 		function(a,b)
 			-- damn eunuchs
-			return a:lower() < b:lower()
+--~ 			return a:lower() < b:lower()
+			return CmpLower(a,b)
 		end
 	)
 
@@ -146,7 +148,7 @@ local function BuildExamineMenu()
 			name = list[i],
 			hint = Concat(S[302535920000491--[[Examine Object--]]],": ",list[i]),
 			clicked = function()
-				local obj = ChoGGi.ComFuncs.ConvertNameToObject(list[i])
+				local obj = ChoGGi.ComFuncs.DotNameToObject(list[i])
 				if type(obj) == "function" then
 					ChoGGi.ComFuncs.OpenInExamineDlg(obj())
 				else
@@ -177,7 +179,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
 	if dlgConsoleLog then
 		-- move log text above the buttons i added and make sure log text stays below the cheat menu
-		dlgConsoleLog.idText:SetMargins(box(10, 75, 10, 60))
+		dlgConsoleLog.idText:SetMargins(box(10, 80, 10, 65))
 	end
 
 	-- add close button

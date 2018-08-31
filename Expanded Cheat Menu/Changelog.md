@@ -19,13 +19,15 @@
 - Resources: Add Prefabs renamed to Prefab Buildings, and Add Funding to Funding.
 - Tweaked dialogs a bit (colours, list item tooltip look, spacing, enter/esc work in lists).
 - Find Value has a "Case-sensitive" checkbox now.
+- Hints now show up for cheats toolbar items.
+- Find Nearest Resource adds a blinky for ten seconds (it also doesn't select anymore).
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
 - Oxygen Need/Free wasn't working (thanks XxUnkn0wnxX).
 - Shuttle speed broke in DA (thanks hchsiao).
 - Shuttle capacity broke in DA (thanks hchsiao).
-- Issue with wrong examine dialog getting higher zorder when using Destroy.
+- Examine dialog getting wrong zorder when using "Destroy It".
 
 ## v8.5 (26 Aug 2018)
 ### Added:

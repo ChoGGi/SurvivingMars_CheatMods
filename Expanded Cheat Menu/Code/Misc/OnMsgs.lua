@@ -77,7 +77,7 @@ end
 --~ function OnMsg.ClassesPostprocess()
 --~ end
 
-do -- OnMsgClassesBuilt
+do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	local function OnMsgXTemplates()
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
@@ -95,6 +95,9 @@ do -- OnMsgClassesBuilt
 		XTemplates.sectionCheats[1][1].Clip = true
 		XTemplates.sectionCheats[1][1].MaxHeight = 0
 		XTemplates.sectionResidence[1][1].MaxHeight = 256
+
+		-- add rollovers to cheats toolbar
+		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
 		-- only added to stuff spawned with object spawner
 		XTemplates.ipEverything = nil
@@ -296,6 +299,7 @@ local function Rebuildshortcuts()
 end
 
 function OnMsg.ShortcutsReloaded()
+	-- we don't add shortcuts and ain't supposed to drink no booze
 	if not ChoGGi.UserSettings.DisableECM then
 		Rebuildshortcuts()
 	end
@@ -341,6 +345,7 @@ function OnMsg.ConstructionComplete(obj)
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
+	-- if it's a fancy dome then we allow building in the removed entrances
 	if obj:IsKindOf("Dome") then
 		local start_id, end_id = obj:GetAllSpots(obj:GetState())
 		for i = start_id, end_id do
@@ -1004,7 +1009,6 @@ do -- LoadGame/CityStart
 			local c = #Actions
 
 			-- add preset menu items
-			local OpenGedApp = OpenGedApp
 			ClassDescendantsList("Preset", function(name, cls)
 				c = c + 1
 				Actions[c] = {
@@ -1032,11 +1036,9 @@ do -- LoadGame/CityStart
 				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
 			end
 
-			-- add all the defaults we skip to my actions
+			-- add the defaults we skip to my actions
 			for i = 1, #Actions do
 				Actions[i].ActionTranslate = false
---~				 Actions[i].RolloverTitle = S[126095410863--[[Info--]]]
---~				 Actions[i].RolloverTranslate = false
 				Actions[i].replace_matching_id = true
 			end
 

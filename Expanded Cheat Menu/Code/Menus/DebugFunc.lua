@@ -12,6 +12,19 @@ local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,to
 local white = white
 --~ local TerrainTextures = TerrainTextures
 
+do -- PostProcGrids
+	local SetPostProcPredicate = SetPostProcPredicate
+	function ChoGGi.MenuFuncs.PostProcGrids(grid_type)
+		-- always disable other ones
+		SetPostProcPredicate("grid45", false)
+		SetPostProcPredicate("grid", false)
+		SetPostProcPredicate("hexgrid", false)
+		if grid_type then
+			SetPostProcPredicate(grid_type, true)
+		end
+	end
+end -- do
+
 function ChoGGi.MenuFuncs.Render_Toggle()
 	local ItemList = {
 		{text = "RenderAlwaysRenderableObjects",value = "RenderAlwaysRenderableObjects"},
@@ -55,7 +68,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		end
 
 		local new_value
-		local obj = ChoGGi.ComFuncs.ConvertNameToObject(value)
+		local obj = ChoGGi.ComFuncs.DotNameToObject(value)
 		if type(obj) == "function" then
 			new_value = obj()
 		else
@@ -554,6 +567,10 @@ do -- debug_build_grid
 		local IsSCell = terrain.IsSCell
 		local IsPassable = terrain.IsPassable
 		local HexToWorld = HexToWorld
+		local GetTerrainCursor = GetTerrainCursor
+		local DeleteThread = DeleteThread
+		local CreateRealTimeThread = CreateRealTimeThread
+		local ChoGGi_HexSpot = ChoGGi_HexSpot
 
 		local g_Classes = g_Classes
 		local ObjectGrid = ObjectGrid
@@ -602,7 +619,7 @@ do -- debug_build_grid
 									if q_i + r_i + z_i == 0 then
 										idx = idx + 1
 										local x,y = HexToWorld(q_i, r_i)
-										local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_HexSpot:new()
+										local c = build_grid_debug_objs[idx] or ChoGGi_HexSpot:new()
 										if (IsSCell(x,y) or IsPassable(x,y)) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
 											-- green
 											c:SetColorModifier(-16711936)
@@ -906,15 +923,11 @@ do --path markers
 				ClearColourAndWP("Colonist")
 
 				-- check for any extra lines
-				ForEach{
-					class = "Polyline",
-					area = "realm",
-					exec = function(o)
-						if o.ChoGGi_WaypointPath then
-							o:delete()
-						end
-					end,
-				}
+				MapForEach("map","Polyline",function(o)
+					if o.ChoGGi_WaypointPath then
+						o:delete()
+					end
+				end)
 
 				-- reset stuff
 				flag_height = 50

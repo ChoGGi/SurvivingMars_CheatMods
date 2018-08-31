@@ -1799,31 +1799,26 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		end
 
 		if check1 then
-			ForEach{
-				class = sel.class,
-				area = "realm",
-				exec = function(workplace)
-					--all three shifts
-					for j = 1, #workplace.workers do
-						--workers in shifts (go through table backwards for when someone gets fired)
-						for k = #workplace.workers[j], 1, -1 do
-							local worker = workplace.workers[j][k]
-							local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
-							if block or not restrict then
-								table.remove_entry(workplace.workers[j], worker)
-								--table.remove(workplace.workers[j],k)
-								workplace:SetWorkplaceWorking()
-								workplace:StopWorkCycle(worker)
-								if worker:IsInWorkCommand() then
-									worker:InterruptCommand()
-								end
-								workplace:UpdateAttachedSigns()
+			MapForEach("map",sel.class,function(workplace)
+				--all three shifts
+				for j = 1, #workplace.workers do
+					--workers in shifts (go through table backwards for when someone gets fired)
+					for k = #workplace.workers[j], 1, -1 do
+						local worker = workplace.workers[j][k]
+						local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
+						if block or not restrict then
+							table.remove_entry(workplace.workers[j], worker)
+							--table.remove(workplace.workers[j],k)
+							workplace:SetWorkplaceWorking()
+							workplace:StopWorkCycle(worker)
+							if worker:IsInWorkCommand() then
+								worker:InterruptCommand()
 							end
+							workplace:UpdateAttachedSigns()
 						end
 					end
-				end,
-			}
-
+				end
+			end)
 		end
 
 		--remove empty tables

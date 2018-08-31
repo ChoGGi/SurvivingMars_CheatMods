@@ -33,7 +33,7 @@ Game loaded on map
 		GameStateChanged
 LightmodelChange
 AfterLightmodelChange
-LoadGame						<Fires on saved game
+LoadGame		< Fires on saved game
 		GameStateChangedNotify
 UIModeChange
 InGameInterfaceCreated

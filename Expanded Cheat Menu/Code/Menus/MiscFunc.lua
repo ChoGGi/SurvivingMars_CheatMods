@@ -13,16 +13,13 @@ local pf_SetStepLen = pf.SetStepLen
 
 do -- ChangeSurfaceSignsToMaterials
 	local function ChangeEntity(cls,entity,random)
-		ForEach{
-			class = cls,
-			exec = function(o)
-				if random then
-					o:ChangeEntity(Concat(entity,Random(1,random)))
-				else
-					o:ChangeEntity(entity)
-				end
-			end,
-		}
+		MapForEach("map",cls,function(o)
+			if random then
+				o:ChangeEntity(Concat(entity,Random(1,random)))
+			else
+				o:ChangeEntity(entity)
+			end
+		end)
 	end
 
 	function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
@@ -192,16 +189,11 @@ end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
 	local dust = const.DustMaterialExterior
-
-	ForEach{
-		area = "realm",
-		exec = function(o)
-			if type(o.SetDust) == "function" then
-				o:SetDust(0,dust)
-			end
-		end,
-	}
-
+  MapForEach("map","BaseBuilding",function(o)
+		if o.SetDust then
+			o:SetDust(0,dust)
+		end
+  end)
 	MsgPopup(
 		302535920001102--[[Cleaned all--]],
 		302535920001103--[[Objects--]]
@@ -209,23 +201,16 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-	ForEach{
-		area = "realm",
-		exec = function(o)
-			if type(o.Repair) == "function" then
-				o:Repair()
-				o.accumulated_maintenance_points = 0
-			end
-		end,
-	}
+  MapForEach("map","BaseBuilding",function(o)
+		if o.Repair then
+			o:Repair()
+			o.accumulated_maintenance_points = 0
+		end
+  end)
 
-	ForEach{
-		class = "Drone",
-		area = "realm",
-		exec = function(o)
-			o:SetCommand("RepairDrone")
-		end,
-	}
+  MapForEach("map","Drone",function(o)
+		o:SetCommand("RepairDrone",s)
+  end)
 
 	MsgPopup(
 		302535920001104--[[Fixed all--]],
@@ -572,19 +557,15 @@ do -- SetEntity
 				if check2 then
 					SetEntity(sel,value)
 				else
-					ForEach{
-						class = sel.class,
-						area = "realm",
-						exec = function(o)
-							if dome then
-								if o.dome and o.dome.handle == dome.handle then
-									SetEntity(o,value)
-								end
-							else
+					MapForEach("map",sel.class,function(o)
+						if dome then
+							if o.dome and o.dome.handle == dome.handle then
 								SetEntity(o,value)
 							end
-						end,
-					}
+						else
+							SetEntity(o,value)
+						end
+					end)
 				end
 				MsgPopup(
 					Concat(choice[1].text,": ",RetName(sel)),
@@ -697,19 +678,15 @@ do -- SetEntityScale
 				if check2 then
 					SetScale(sel,value)
 				else
-					ForEach{
-						class = sel.class,
-						area = "realm",
-						exec = function(o)
-							if dome then
-								if o.dome and o.dome.handle == dome.handle then
-									SetScale(o,value)
-								end
-							else
+					MapForEach("map",sel.class,function(o)
+						if dome then
+							if o.dome and o.dome.handle == dome.handle then
 								SetScale(o,value)
 							end
-						end,
-					}
+						else
+							SetScale(o,value)
+						end
+					end)
 				end
 				MsgPopup(
 					Concat(choice[1].text,": ",RetName(sel)),

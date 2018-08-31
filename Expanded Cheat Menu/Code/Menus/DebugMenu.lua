@@ -202,20 +202,9 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_Debug_Grids,
-	ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
-	ActionId = "Debug.Toggle Terrain Deposit Grid",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
-	RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
-	OnAction = ToggleTerrainDepositGrid,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_Debug_Grids,
 	ActionName = S[302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]]],
 	ActionId = "Debug.Toggle Hex Build + Passability Grid Visibility",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
 	OnAction = ChoGGi.MenuFuncs.debug_build_grid,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.debug_grid_build,
@@ -232,6 +221,65 @@ Actions[c] = {
 		ChoGGi.CodeFuncs.FlightGrid_Toggle()
 	end,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.debug_grid_squares,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Debug_Grids,
+	ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
+	ActionId = "Debug.Toggle Terrain Deposit Grid",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
+	RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
+	OnAction = ToggleTerrainDepositGrid,
+	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Debug_Grids,
+	ActionName = S[302535920000724--[[Show Grid Square--]]],
+	ActionId = "Debug.Show Grid Square",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	RolloverText = S[302535920000725--[[Square (use Disable to hide).--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.PostProcGrids("grid")
+	end,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Debug_Grids,
+	ActionName = S[302535920001192--[[Show Grid 45 Square--]]],
+	ActionId = "Debug.Show Grid 45 Square",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	RolloverText = S[302535920001325--[[Square 45 (use Disable to hide).--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.PostProcGrids("grid45")
+	end,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Debug_Grids,
+	ActionName = S[302535920001326--[[Show Grid Hex--]]],
+	ActionId = "Debug.Show Grid Hex",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	RolloverText = S[302535920001327--[[Hex (use Disable to hide).--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.PostProcGrids("hexgrid")
+	end,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Debug_Grids,
+	ActionName = S[302535920001328--[[Show Grid Disable--]]],
+	ActionId = "Debug.Show Grid Disable",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	RolloverText = S[302535920001329--[[Hide the white ground grids.--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.PostProcGrids()
+	end,
 }
 
 local str_Debug_DebugFX = "Debug.Debug FX"

@@ -133,12 +133,9 @@ do -- AnnoyingSounds_Toggle
 end -- do
 
 local function ToggleCollisions(ChoGGi)
-	ForEach{
-		class = "LifeSupportGridElement",
-		exec = function(o)
-			ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
-		end,
-	}
+  MapForEach("map","LifeSupportGridElement",function(o)
+		ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+  end)
 end
 
 function ChoGGi.MenuFuncs.TerrainEditor_Toggle()
@@ -289,22 +286,19 @@ do --FlattenGround
 	-- rocks don't have handles, so we use their position to build a table of no dupes
 	local positions = {}
 	local function SaveRocks(rock_cls,rock_objects)
-		ForEach{
-			class = rock_cls,
-			exec = function(o)
-				local pos = o:GetVisualPos()
-				if not positions[pos] then
-					local terrain_height = terrain.GetHeight(pos)
-					rock_objects[#rock_objects+1] = {
-						obj = o,
-						pos = point(pos:x(),pos:y()),
-						height_t = terrain_height,
-						offset = terrain_height - pos:z(),
-					}
-					positions[pos] = true
-				end
-			end,
-		}
+		MapForEach("map",rock_cls,function(o)
+			local pos = o:GetVisualPos()
+			if not positions[pos] then
+				local terrain_height = terrain.GetHeight(pos)
+				rock_objects[#rock_objects+1] = {
+					obj = o,
+					pos = point(pos:x(),pos:y()),
+					height_t = terrain_height,
+					offset = terrain_height - pos:z(),
+				}
+				positions[pos] = true
+			end
+		end)
 	end
 	local function UpdateRockList()
 		rock_objects = {}

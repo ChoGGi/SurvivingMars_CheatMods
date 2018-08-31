@@ -7,6 +7,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
+local T = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 
 -- add some shortened func names
@@ -686,7 +687,7 @@ do -- SetDefColour
 	end
 end -- do
 
-do --CloseDialogsECM
+do -- CloseDialogsECM
 	local ChoGGi = ChoGGi
 	local term = terminal.desktop
 	function ChoGGi.CodeFuncs.RemoveOldDialogs(dialog)
@@ -736,7 +737,7 @@ function ChoGGi.CodeFuncs.BuildMenu_Toggle()
 	end)
 end
 
---sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
+-- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	if not oldobj or not oldobj:IsKindOf("MechanizedDepot") then
 		oldobj = ChoGGi.CodeFuncs.SelObject()
@@ -808,7 +809,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	end)
 end
 
-do --ChangeObjectColour
+do -- ChangeObjectColour
 	--they get called a few times so
 	local function SetOrigColours(obj)
 		ChoGGi.CodeFuncs.RestoreOldPalette(obj)
@@ -1005,31 +1006,11 @@ function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
 end
 
 do -- FindNearestResource
-	local FilterObjects = FilterObjects
+	local MapGet = MapGet
+	local FilterObjectsC = FilterObjectsC
 	local FindNearestObject = FindNearestObject
-	local function GetNearestStockpile(list,GetStored,obj)
-		-- check if there's actually a list and that it has anything in it
-		if type(list) == "table" and #list > 0 then
-			-- if there's only one pile and it has a resource
-			if #list == 1 and list[1][GetStored] and list[1][GetStored](list[1]) > 999 then
-				return list[1]
-			else
-				--otherwise filter out empty stockpiles and (and ones for other resources)
-				list = FilterObjects({
-					filter = function(o)
-						if o[GetStored] and o[GetStored](o) > 999 then
-							return o
-						end
-					end
-				},list)
-				--and return nearest
-				return FindNearestObject(list,obj)
-			end
-		end
-	end
 
 	function ChoGGi.CodeFuncs.FindNearestResource(obj)
-		local ChoGGi = ChoGGi
 		obj = obj or ChoGGi.CodeFuncs.SelObject()
 		if not obj then
 			MsgPopup(
@@ -1039,70 +1020,70 @@ do -- FindNearestResource
 			return
 		end
 
-		local ItemList = {
-			{text = S[3514],value = "Metals"},
-			{text = S[4764],value = "BlackCube"},
-			{text = S[8064],value = "MysteryResource"},
-			{text = S[3513],value = "Concrete"},
-			{text = S[1022],value = "Food"},
-			{text = S[4139],value = "PreciousMetals"},
-			{text = S[3515],value = "Polymers"},
-			{text = S[3517],value = "Electronics"},
-			{text = S[4765],value = "Fuel"},
-			{text = S[3516],value = "MachineParts"},
-		}
+		-- build list of resources
+		local ItemList = {}
+		local ResourceDescription = ResourceDescription
+		local res = ChoGGi.Tables.Resources
+		local TagLookupTable = const.TagLookupTable
+		for i = 1, #res do
+			local item = ResourceDescription[table.find(ResourceDescription, "name", res[i])]
+			ItemList[i] = {
+				text = T(item.display_name),
+				value = item.name,
+				icon = TagLookupTable[Concat("icon_",item.name)],
+			}
+		end
 
 		local function CallBackFunc(choice)
 			local value = choice[1].value
 			if type(value) == "string" then
 
-				--get nearest stockpiles to object
+				-- get nearest stockpiles to object
 				local labels = UICity.labels
-				local GetStored = Concat("GetStored_",value)
 
-				local mechstockpile = GetNearestStockpile(labels[Concat("MechanizedDepot",value)],GetStored,obj)
-				local stockpile
+				local stockpiles = {}
+				table.append(stockpiles,labels[Concat("MechanizedDepot",value)])
 				if value == "BlackCube" then
-					stockpile = GetNearestStockpile(labels[Concat(value,"DumpSite")],GetStored,obj)
+					table.append(stockpiles,labels.BlackCubeDumpSite)
 				elseif value == "MysteryResource" then
-					stockpile = GetNearestStockpile(labels["MysteryDepot"],GetStored,obj)
+					table.append(stockpiles,labels.MysteryDepot)
+				elseif value == "WasteRock" then
+					table.append(stockpiles,labels.WasteRockDumpSite)
 				else
-					stockpile = GetNearestStockpile(labels["UniversalStorageDepot"],GetStored,obj)
+					table.append(stockpiles,labels.UniversalStorageDepot)
 				end
-				local resourcepile = GetNearestStockpile(GetObjects{
-					classes = "ResourceStockpile","ResourceStockpileLR",
+				-- filter out empty/diff res stockpiles
+				local GetStored = Concat("GetStored_",value)
+				stockpiles = FilterObjectsC({
 					filter = function(o)
-						if o.resource == value and o:GetStoredAmount() > 999 then
+						if o[GetStored] and o[GetStored](o) > 999 then
 							return o
 						end
 					end,
-				},"GetStoredAmount",obj)
-
-				local piles = {
-					{obj = mechstockpile, dist = mechstockpile and mechstockpile:GetDist2D(obj)},
-					{obj = stockpile, dist = stockpile and stockpile:GetDist2D(obj)},
-					{obj = resourcepile, dist = resourcepile and resourcepile:GetDist2D(obj)},
-				}
-
-				local nearest
-				local nearestdist
-				--now we can compare the dists
-				for i = 1, #piles do
-					local p = piles[i]
-					if p.obj then
-						--we need something to compare
-						if not nearest then
-							nearest = p.obj
-							nearestdist = p.dist
-						elseif p.dist < nearestdist then
-							nearest = p.obj
-							nearestdist = p.dist
+				},stockpiles)
+				-- attached stockpiles/stockpiles left from removed objects
+				table.append(stockpiles,
+					MapGet("map", {"ResourceStockpile","ResourceStockpileLR"}, function(o)
+						if o.resource == value and o:GetStoredAmount() > 999 then
+							return o
 						end
-					end
-				end
-				--if there's no resources then "nearest" doesn't exist
+					end)
+				)
+
+				local nearest = FindNearestObject(stockpiles,obj)
+				-- if there's no resource then there's no "nearest"
 				if nearest then
-					ViewAndSelectObject(nearest)
+					-- make sure we don't already have a blinky (don't give a shit about a non-visible waitmsg)
+					nearest:DestroyAttaches("RotatyThing")
+					-- add a blinky so it's obvious
+					nearest:Attach(PlaceObject("RotatyThing"), nearest:GetSpotBeginIndex("Top"))
+					-- the power of god
+					ViewObjectMars(nearest)
+					-- remove blinky after 10s
+					CreateRealTimeThread(function()
+						WaitMsg("SelectedObjChange",10000)
+						nearest:DestroyAttaches("RotatyThing")
+					end)
 				else
 					MsgPopup(
 						S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
@@ -1117,6 +1098,9 @@ do -- FindNearestResource
 			items = ItemList,
 			title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
 			hint = 302535920000032--[[Select a resource to find--]],
+			skip_sort = true,
+			custom_type = 7,
+			custom_func = CallBackFunc,
 		}
 	end
 end -- do
@@ -1126,11 +1110,6 @@ do -- DeleteObject
 	local function DeleteObject_ExecFunc(obj,name,param)
 		if type(obj[name]) == "function" then
 			obj[name](obj,param)
-		end
-	end
-	local function DeleteObject_DeleteAttach(obj,name)
-		if obj[name] then
-			obj[name]:delete()
 		end
 	end
 
@@ -1155,12 +1134,13 @@ do -- DeleteObject
 			return
 		end
 
-		--deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and obj.air then
+		-- deleting domes will freeze game if they have anything in them.
+--~ 		if obj:IsKindOf("Dome") and obj.air then
+		if obj:IsKindOf("Dome") and #obj.labels.Buildings > 0 then
 			return
 		end
 
-		--some stuff will leave holes in the world if they're still working
+		-- some stuff will leave holes in the world if they're still working
 		DeleteObject_ExecFunc(obj,"ToggleWorking")
 
 		obj.can_demolish = true
@@ -1185,9 +1165,7 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
-
-		DeleteObject_DeleteAttach(obj,"sphere")
-		DeleteObject_DeleteAttach(obj,"decal")
+		DeleteObject_ExecFunc(obj,"DestroyAttaches")
 
 		-- I did ask nicely
 		if IsValid(obj) then
@@ -1431,10 +1409,6 @@ do -- CollisionsObject_Toggle
 
 	function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
 		obj = obj or ChoGGi.CodeFuncs.SelObject()
-		--menu item
-		if not obj.class then
-			obj = ChoGGi.CodeFuncs.SelObject()
-		end
 		if not obj then
 			if not skip_msg then
 				MsgPopup(
@@ -1485,13 +1459,6 @@ function ChoGGi.CodeFuncs.CheckForBorkedTransportPath(obj)
 			)
 		end
 	end)
-end
-
-function ChoGGi.CodeFuncs.DeleteAttaches(obj)
-	local a = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-	for i = #a, 1, -1 do
-		a[i]:delete()
-	end
 end
 
 function ChoGGi.CodeFuncs.RetHardwareInfo()

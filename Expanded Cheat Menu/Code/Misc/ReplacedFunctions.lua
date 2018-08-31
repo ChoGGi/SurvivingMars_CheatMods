@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+--~ function GridConstructionController:CanExtendFrom(q, r)
+--~ 	return true
+--~ end
+
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local T = ChoGGi.ComFuncs.Translate
@@ -827,10 +831,7 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	--add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
---~	 ex(Dialogs.InGameInterface[6][2])
-
-	-- list control Dialogs.InGameInterface[6][2][3][2]:SetMaxHeight(165)
+	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
@@ -842,8 +843,9 @@ function OnMsg.ClassesBuilt()
 				content[i]:SetMaxHeight(h)
 			end
 		end
+
 		function InfopanelDlg:Open(...)
-			--fire the orig func so we can edit the dialog (and keep it's return value to pass on later)
+			-- fire the orig func so we can edit the dialog (and keep the return value to pass on later)
 			local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
 
 			CreateRealTimeThread(function()
@@ -857,19 +859,18 @@ function OnMsg.ClassesBuilt()
 
 				local c = self.idContent
 
-				--probably don't need this...
+				-- probably don't need this if...
 				if c then
 
-					--this limits height of traits you can choose to 3 till mouse over
-					--7422="Select A Trait"
-					if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422 then
-						--sanitarium
+					-- this limits height of traits you can choose to 3 till mouse over
+					if #c > 19 and c[18].idSectionTitle and TGetID(c[18].idSectionTitle.Text) == 7422--[[Select A Trait--]] then
+						-- Sanitarium
 						local idx = 18
-						--school
-						if TGetID(c[20].idSectionTitle.Text) == 7422 then
+						if TGetID(c[20].idSectionTitle.Text) == 7422--[[School--]] then
 							idx = 20
 						end
-						--init set to hidden
+
+						-- initially set to hidden
 						ToggleVis(idx,c,false,0)
 
 						local visthread
@@ -886,7 +887,7 @@ function OnMsg.ClassesBuilt()
 
 					end
 
-					--loop all the sections
+					-- loop all the sections
 					for i = 1, #c do
 						local section = c[i]
 						if section.class == "XSection" then
@@ -894,7 +895,7 @@ function OnMsg.ClassesBuilt()
 							local content = section.idContent[2]
 
 							if section.idWorkers and #section.idWorkers > 14 then
-								--sets height
+								-- set height to default? height (should check UIScale)
 								content:SetMaxHeight(32)
 
 								local expandthread
@@ -911,8 +912,7 @@ function OnMsg.ClassesBuilt()
 									end)
 								end
 
-							-- Cheats
-							elseif title == 27 then
+							elseif title == 27--[[Cheats--]] then
 
 								local expandthread
 								section.OnMouseEnter = function()
@@ -926,8 +926,7 @@ function OnMsg.ClassesBuilt()
 									end)
 								end
 
-							-- 235=Traits, 702480492408=Residents
-							elseif title == 235 or title == 702480492408 then
+							elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
 
 								if title == 702480492408 then
 									-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
@@ -951,7 +950,7 @@ function OnMsg.ClassesBuilt()
 								end
 
 							end
-						end --if XSection
+						end -- if XSection
 					end
 				end
 			end)
@@ -1081,7 +1080,8 @@ function OnMsg.ClassesBuilt()
 				local cobj = rawget(self.cursor_obj, true)
 				local tobj = setmetatable({
 					[true] = cobj,
-					["city"] = UICity
+--~ 					["city"] = UICity
+					city = UICity
 				}, {
 					__index = self.template_obj
 				})
@@ -1097,17 +1097,14 @@ function OnMsg.ClassesBuilt()
 					if status[i].type == "warning" then
 						c = c + 1
 						statusNew[c] = status[i]
-					--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
 					--ResourceRequired < no point in building an extractor when there's nothing to extract
 					--BlockingObjects < place buildings in each other
 					--NoPlaceForSpire
 					--PassageTooCloseToLifeSupport
 					--PassageAngleToSteep might be needed?
+
+					--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
 					elseif status[i] == ConstructionStatus.UnevenTerrain then
-						c = c + 1
-						statusNew[c] = status[i]
-					--probably good to have, but might be fun if it doesn't fuck up?
-					elseif status[i] == ConstructionStatus.PassageRequiresDifferentDomes then
 						c = c + 1
 						statusNew[c] = status[i]
 					end
