@@ -911,7 +911,7 @@ function OnMsg.ClassesBuilt()
 									end)
 								end
 
-							--Cheats
+							-- Cheats
 							elseif title == 27 then
 
 								local expandthread

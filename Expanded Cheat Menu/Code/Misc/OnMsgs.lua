@@ -331,126 +331,136 @@ function OnMsg.ConstructionSitePlaced(obj)
 end --OnMsg
 
 -- this gets called before buildings are completely initialized (no air/water/elec attached)
-function OnMsg.ConstructionComplete(building)
+
+function OnMsg.ConstructionComplete(obj)
 
 	--skip rockets
-	if building.class == "RocketLandingSite" then
+	if obj.class == "RocketLandingSite" then
 		return
 	end
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	--print(building.encyclopedia_id) print(building.class)
-	if building.class == "UniversalStorageDepot" then
-		if UserSettings.StorageUniversalDepot and building.entity == "StorageDepot" then
-			building.max_storage_per_resource = UserSettings.StorageUniversalDepot
+	if obj:IsKindOf("Dome") then
+		local start_id, end_id = obj:GetAllSpots(obj:GetState())
+		for i = start_id, end_id do
+			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
+				print(111)
+			end
+		end
+	end
+
+	--print(obj.encyclopedia_id) print(obj.class)
+	if obj.class == "UniversalStorageDepot" then
+		if UserSettings.StorageUniversalDepot and obj.entity == "StorageDepot" then
+			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
 		--other
-		elseif UserSettings.StorageOtherDepot and building.entity ~= "StorageDepot" then
-			building.max_storage_per_resource = UserSettings.StorageOtherDepot
+		elseif UserSettings.StorageOtherDepot and obj.entity ~= "StorageDepot" then
+			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
 		end
 
-	elseif UserSettings.StorageMechanizedDepot and building.class:find("MechanizedDepot") then
-		building.max_storage_per_resource = UserSettings.StorageMechanizedDepot
+	elseif UserSettings.StorageMechanizedDepot and obj.class:find("MechanizedDepot") then
+		obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
 
-	elseif UserSettings.StorageWasteDepot and building.class == "WasteRockDumpSite" then
-		building.max_amount_WasteRock = UserSettings.StorageWasteDepot
-		if building:GetStoredAmount() < 0 then
-			building:CheatEmpty()
-			building:CheatFill()
+	elseif UserSettings.StorageWasteDepot and obj.class == "WasteRockDumpSite" then
+		obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
+		if obj:GetStoredAmount() < 0 then
+			obj:CheatEmpty()
+			obj:CheatFill()
 		end
 
-	elseif UserSettings.StorageOtherDepot and building.class == "MysteryDepot" then
-		building.max_storage_per_resource = UserSettings.StorageOtherDepot
+	elseif UserSettings.StorageOtherDepot and obj.class == "MysteryDepot" then
+		obj.max_storage_per_resource = UserSettings.StorageOtherDepot
 
-	elseif UserSettings.StorageOtherDepot and building.class == "BlackCubeDumpSite" then
-		building.max_amount_BlackCube = UserSettings.StorageOtherDepot
+	elseif UserSettings.StorageOtherDepot and obj.class == "BlackCubeDumpSite" then
+		obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
 
-	elseif UserSettings.ShuttleHubFuelStorage and building.class:find("ShuttleHub") then
-		building.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
+	elseif UserSettings.ShuttleHubFuelStorage and obj.class:find("ShuttleHub") then
+		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
-	elseif UserSettings.SchoolTrainAll and building.class == "School" then
+	elseif UserSettings.SchoolTrainAll and obj.class == "School" then
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
-			building:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
+			obj:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
 		end
 
-	elseif UserSettings.SanatoriumCureAll and building.class == "Sanatorium" then
+	elseif UserSettings.SanatoriumCureAll and obj.class == "Sanatorium" then
 		for i = 1, #ChoGGi.Tables.NegativeTraits do
-			building:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
+			obj:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
 		end
 
 	end --end of elseifs
 
-	if UserSettings.InsideBuildingsNoMaintenance and building.dome_required then
-		building.ChoGGi_InsideBuildingsNoMaintenance = true
-		building.maintenance_build_up_per_hr = -10000
+	if UserSettings.InsideBuildingsNoMaintenance and obj.dome_required then
+		obj.ChoGGi_InsideBuildingsNoMaintenance = true
+		obj.maintenance_build_up_per_hr = -10000
 	end
 
-	if UserSettings.RemoveMaintenanceBuildUp and building.base_maintenance_build_up_per_hr then
-		building.ChoGGi_RemoveMaintenanceBuildUp = true
-		building.maintenance_build_up_per_hr = -10000
+	if UserSettings.RemoveMaintenanceBuildUp and obj.base_maintenance_build_up_per_hr then
+		obj.ChoGGi_RemoveMaintenanceBuildUp = true
+		obj.maintenance_build_up_per_hr = -10000
 	end
 
 	-- saved building settings
-	local setting = UserSettings.BuildingSettings[building.encyclopedia_id]
+	local setting = UserSettings.BuildingSettings[obj.encyclopedia_id]
 	if setting then
 		if next(setting) then
 			-- saved settings for capacity, shuttles
 			if setting.capacity then
-				if building.base_capacity then
-					building.capacity = setting.capacity
-				elseif building.base_air_capacity then
-					building.air_capacity = setting.capacity
-				elseif building.base_water_capacity then
-					building.water_capacity = setting.capacity
-				elseif building.base_max_shuttles then
-					building.max_shuttles = setting.capacity
+				if obj.base_capacity then
+					obj.capacity = setting.capacity
+				elseif obj.base_air_capacity then
+					obj.air_capacity = setting.capacity
+				elseif obj.base_water_capacity then
+					obj.water_capacity = setting.capacity
+				elseif obj.base_max_shuttles then
+					obj.max_shuttles = setting.capacity
 				end
 			end
 			-- max visitors
-			if setting.visitors and building.base_max_visitors then
-				building.max_visitors = setting.visitors
+			if setting.visitors and obj.base_max_visitors then
+				obj.max_visitors = setting.visitors
 			end
 			-- max workers
 			if setting.workers then
-				building.max_workers = setting.workers
+				obj.max_workers = setting.workers
 			end
 			-- no power needed
 			if setting.nopower then
-				ChoGGi.CodeFuncs.RemoveBuildingElecConsump(building)
+				ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
 			end
 			if setting.noair then
-				ChoGGi.CodeFuncs.RemoveBuildingAirConsump(building)
+				ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
 			end
 			if setting.nowater then
-				ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(building)
+				ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
 			end
 			-- large protect_range for defence buildings
 			if setting.protect_range then
-				building.protect_range = setting.protect_range
-				building.shoot_range = setting.protect_range * ChoGGi.Consts.guim
+				obj.protect_range = setting.protect_range
+				obj.shoot_range = setting.protect_range * ChoGGi.Consts.guim
 			end
 			-- fully auto building
 			if setting.performance then
-				building.max_workers = 0
-				building.automation = 1
-				building.auto_performance = setting.performance
+				obj.max_workers = 0
+				obj.automation = 1
+				obj.auto_performance = setting.performance
 			end
 			-- just perf boost
 			if setting.performance_notauto then
-				building.performance = setting.performance_notauto
+				obj.performance = setting.performance_notauto
 			end
 		else
-			UserSettings.BuildingSettings[building.encyclopedia_id] = nil
+			UserSettings.BuildingSettings[obj.encyclopedia_id] = nil
 		end
 	end
 
 end --OnMsg
 
-function OnMsg.Demolished(building)
+function OnMsg.Demolished(obj)
 	local UICity = UICity
 	--update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
-	if building.achievement == "FirstDome" then
-		local UICity = building.city or UICity
+	if obj.achievement == "FirstDome" then
+		local UICity = obj.city or UICity
 		UICity.labels.Domes_Working = nil
 		UICity:InitEmptyLabel("Domes_Working")
 		local table_temp = UICity.labels.Dome or ""
@@ -1009,20 +1019,15 @@ do -- LoadGame/CityStart
 							SingleFile = cls.SingleFile
 						})
 					end,
---~					 ActionShortcut = cls.EditorShortcut,
 				}
 			end)
-
---~			 -- add my custom menu items/actions
---~			 dofolder_files(Concat(ChoGGi.ModPath,"Code/Menus"))
 
 			-- show cheat pane in selection panel
 			if UserSettings.InfopanelCheats then
 				config.BuildingInfopanelCheats = true
-				ReopenSelectionXInfopanel()
 			end
 
-			--remove some uselessish Cheats to clear up space
+			-- remove some uselessish Cheats to clear up space
 			if UserSettings.CleanupCheatsInfoPane then
 				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
 			end
@@ -1054,6 +1059,7 @@ do -- LoadGame/CityStart
 
 				-- add a hint about rightclicking
 				XShortcutsTarget:SetRolloverTemplate("Rollover")
+				XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
 				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
 
 				-- yeah... i don't need the menu taking up the whole width of my screen

@@ -545,13 +545,12 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 	}
 end
 
-do --hex rings
-	local build_grid_debug_range = 10
-	local opacity = 15
-	local build_grid_debug_objs = false
+do -- debug_build_grid
+	local build_grid_debug_objs = {}
 	local build_grid_debug_thread = false
 
 	function ChoGGi.MenuFuncs.debug_build_grid()
+		-- local all the globals we use for some much needed speed
 		local IsSCell = terrain.IsSCell
 		local IsPassable = terrain.IsPassable
 		local HexToWorld = HexToWorld
@@ -559,15 +558,18 @@ do --hex rings
 		local g_Classes = g_Classes
 		local ObjectGrid = ObjectGrid
 		local UserSettings = ChoGGi.UserSettings
+		local build_grid_debug_range = 10
+		local opacity = 15
 		if type(UserSettings.DebugGridSize) == "number" then
 			build_grid_debug_range = UserSettings.DebugGridSize
 		end
 		if type(UserSettings.DebugGridOpacity) == "number" then
 			opacity = UserSettings.DebugGridOpacity
 		end
-		--might as well make it smoother (and suck up some cpu), i doubt anyone is going to leave it on
+
+		-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on, but it seems fine even if they do
 		local sleep = 10
-		-- 150 = 67951 objects (had a crash at 250, and not like you need one this big)
+		-- 150 = 67951 objects (had a crash at 250, and it's not like you need one that big)
 		if build_grid_debug_range > 150 then
 			build_grid_debug_range = 150
 		end
@@ -576,42 +578,41 @@ do --hex rings
 		elseif build_grid_debug_range > 99 then
 			sleep = 75
 		end
+
 		if build_grid_debug_thread then
 			DeleteThread(build_grid_debug_thread)
 			build_grid_debug_thread = false
 			if build_grid_debug_objs then
-				for i = 1, #build_grid_debug_objs do
+				for i = #build_grid_debug_objs, 1, -1 do
 					build_grid_debug_objs[i]:delete()
 				end
-				build_grid_debug_objs = false
+				build_grid_debug_objs = {}
 			end
 		else
-			build_grid_debug_objs = {}
 			build_grid_debug_thread = CreateRealTimeThread(function()
 				local last_q, last_r
-				while build_grid_debug_objs do
+				while build_grid_debug_thread do
 					local q, r = WorldToHex(GetTerrainCursor())
 					if last_q ~= q or last_r ~= r then
 						local z = -q - r
-						local idx = 1
+						local idx = 0
 						for q_i = q - build_grid_debug_range, q + build_grid_debug_range do
 							for r_i = r - build_grid_debug_range, r + build_grid_debug_range do
 								for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
 									if q_i + r_i + z_i == 0 then
-										--CursorBuilding is from construct controller, but it works nicely along with GridTile for filling each grid
+										idx = idx + 1
+										local x,y = HexToWorld(q_i, r_i)
 										local c = build_grid_debug_objs[idx] or g_Classes.ChoGGi_HexSpot:new()
-										if (IsSCell(HexToWorld(q_i, r_i)) or IsPassable(HexToWorld(q_i, r_i))) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-											--green
+										if (IsSCell(x,y) or IsPassable(x,y)) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+											-- green
 											c:SetColorModifier(-16711936)
 										else
-											--red
+											-- red
 											c:SetColorModifier(-65536)
 										end
-										--c:SetOpacity(0)
-										c:SetPos(point(HexToWorld(q_i, r_i)))
+										c:SetPos(point(x,y))
 										c:SetOpacity(opacity)
 										build_grid_debug_objs[idx] = c
-										idx = idx + 1
 									end
 								end
 							end
@@ -623,7 +624,7 @@ do --hex rings
 					end
 					Sleep(sleep)
 				end
-			end)
+			end) -- build_grid_debug_thread
 		end
 	end
 end

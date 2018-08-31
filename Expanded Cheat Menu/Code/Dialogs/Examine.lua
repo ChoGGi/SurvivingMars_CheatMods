@@ -892,12 +892,12 @@ local function ClearShowMe_menu()
 end
 
 local function Destroy_menu(obj,self)
-	local z = self.ZOrder
-	self:SetZOrder(1)
+--~ 	local z = self.ZOrder
+--~ 	self:SetZOrder(1)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000414--[[Are you sure you wish to destroy it?--]]],
 		function(answer)
-			self:SetZOrder(z)
+--~ 			self:SetZOrder(z)
 			if answer then
 				ChoGGi.CodeFuncs.DeleteObject(obj)
 			end

@@ -635,23 +635,32 @@ end
 do -- WriteLogs_Toggle
 	local AsyncCopyFile = _G.AsyncCopyFile
 	local Dump = ChoGGi.ComFuncs.Dump
+	local select,type = select,type
 
-	local function ReplaceFunc(name,which)
+	local function ReplaceFunc(funcname,filename)
 		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SaveOrigFunc(name)
-		_G[name] = function(...)
-			Dump(Concat(Concat(...),"\r\n"),nil,which,"log",true)
-			if type(ChoGGi.OrigFuncs[name]) == "function" then
-				ChoGGi.OrigFuncs[name](...)
+		ChoGGi.ComFuncs.SaveOrigFunc(funcname)
+
+		_G[funcname] = function(...)
+			local arg2 = select(2,...)
+			if arg2 and type(arg2) == "boolean" then
+				Dump(Concat(select(1,...),"\r\n"),nil,filename,"log",true)
+			else
+				Dump(Concat(...,"\r\n"),nil,filename,"log",true)
+			end
+			if type(ChoGGi.OrigFuncs[funcname]) == "function" then
+				ChoGGi.OrigFuncs[funcname](...)
 			end
 		end
+
 	end
 
-	local function ResetFunc(name)
+	local function ResetFunc(funcname)
 		local ChoGGi = ChoGGi
-		if ChoGGi.OrigFuncs[name] then
-			_G[name] = ChoGGi.OrigFuncs[name]
-			ChoGGi.OrigFuncs[name] = nil
+		if ChoGGi.OrigFuncs[funcname] then
+			_G[funcname] = ChoGGi.OrigFuncs[funcname]
+			-- shouldn't need to remove the orig, if we're enabling it again then we can save a tick or two
+--~ 			ChoGGi.OrigFuncs[funcname] = nil
 		end
 	end
 

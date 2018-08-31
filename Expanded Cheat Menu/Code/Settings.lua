@@ -107,7 +107,7 @@ ChoGGi.Defaults = {
 	FlattenGround_HeightDiff = 100,
 	FlattenGround_RadiusDiff = 100,
 	-- the build/passibility grid in debug menu
-	DebugGridSize = 10,
+	DebugGridSize = 25,
 	DebugGridOpacity = 15,
 	-- how long to wait before hiding the cheats pane in the selection panel
 	CheatsInfoPanelHideDelay = 1500,

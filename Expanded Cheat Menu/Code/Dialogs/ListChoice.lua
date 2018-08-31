@@ -299,17 +299,40 @@ function ChoGGi_ListChoiceDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
 		local item = self.items[i]
+
+		-- is there an icon to add
 		local text
 		if item.icon then
 			text = Concat("<image ",item.icon," 2500> ",item.text)
 		else
 			text = item.text
 		end
-
+		--
 		local listitem = self.idList:CreateTextItem(text)
-
+		-- easier access
 		listitem.item = item
-		listitem.RolloverText = self:UpdateHintText(item)
+
+		-- add rollover text
+		local title = item.text
+		if item.value and item.value ~= item.text then
+			local value_str
+			if type(item.value) == "userdata" then
+				value_str = T(item.value)
+			else
+				value_str = item.value
+			end
+			title = Concat(item.text,": <color 200 255 200>",value_str,"</color>")
+		end
+		listitem.RolloverTitle = title
+
+		if item.hint then
+			if type(item.hint) == "userdata" then
+				listitem.RolloverText = T(item.hint)
+			else
+				listitem.RolloverText = CheckText(item.hint)
+			end
+		end
+
 	end
 end
 
@@ -436,46 +459,6 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 			self.idEditValue:SetText(self.sel.text)
 		end
 	end
-end
-
-function ChoGGi_ListChoiceDlg:UpdateHintText(item)
-	-- skip the empty item
-	if item.text == "" then
-		return
-	end
-
-	local hint = {"<color 203 120 30>",item.text,"</color>"}
-	local c = 3
-
-	if item.value and item.value ~= item.text then
-		c = c + 1
-		hint[c] = ": <color 200 255 200>"
-		if type(item.value) == "userdata" then
-			c = c + 1
-			hint[c] = T(item.value)
-		else
-			c = c + 1
-			hint[c] = tostring(item.value)
-		end
-		c = c + 1
-		hint[c] = "</color>"
-	end
-
-	if item.hint then
-		if type(item.hint) == "userdata" then
-			c = c + 1
-			hint[c] = "\n\n"
-			c = c + 1
-			hint[c] = T(item.hint)
-		else
-			c = c + 1
-			hint[c] = "\n\n"
-			c = c + 1
-			hint[c] = CheckText(item.hint)
-		end
-	end
-
-	return TableConcat(hint)
 end
 
 function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()

@@ -17,14 +17,15 @@
 - Change Colour (F6) has more attachments listed (the ones GetAttaches doesn't get...).
 - Change Colour skips Metallic/Roughness when moving colour selector.
 - Resources: Add Prefabs renamed to Prefab Buildings, and Add Funding to Funding.
-- Tweaked dialogs a bit (hover colours, list item tooltip look, spacing, Enter/Esc work in lists).
-- Find Value has a Case-sensitive checkbox now.
+- Tweaked dialogs a bit (colours, list item tooltip look, spacing, enter/esc work in lists).
+- Find Value has a "Case-sensitive" checkbox now.
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
 - Oxygen Need/Free wasn't working (thanks XxUnkn0wnxX).
 - Shuttle speed broke in DA (thanks hchsiao).
 - Shuttle capacity broke in DA (thanks hchsiao).
+- Issue with wrong examine dialog getting higher zorder when using Destroy.
 
 ## v8.5 (26 Aug 2018)
 ### Added:
