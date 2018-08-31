@@ -60,7 +60,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[1000220--[[Refresh--]]],
 		Dock = "left",
 		RolloverText = S[302535920000092--[[Refresh list.--]]],
-		OnMouseButtonDown = function()
+		OnPress = function()
 			self:UpdateListContent()
 		end,
 		MinWidth = 80,
@@ -70,8 +70,8 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Id = "idGoto",
 		Text = S[302535920000093--[[Goto Obj--]]],
 		Dock = "left",
-		RolloverText = S[302535920000094--[[View object on map.--]]],
-		OnMouseButtonDown = function()
+		RolloverText = S[302535920000094--[[View/select object on map.--]]],
+		OnPress = function()
 			ViewAndSelectObject(self.obj)
 		end,
 		MinWidth = 90,
@@ -81,20 +81,18 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Id = "idAddNew",
 		Text = S[398847925160--[[New--]]],
 		Dock = "left",
-		RolloverText = S[398847925160--[[New--]]],
-		OnMouseButtonDown = function()
+		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
+		OnPress = function()
 			self:idAddNewOnMouseButtonDown()
 		end,
 	}, self.idButtonArea)
-	-- update the add button hint
-	self.idAddNew:SetRollover(S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name))
 
 	self.idApplyAll = g_Classes.ChoGGi_Button:new({
 		Id = "idApplyAll",
 		Text = S[302535920000099--[[Apply To All--]]],
 		Dock = "left",
 		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
-		OnMouseButtonDown = function()
+		OnPress = function()
 			self:idApplyAllOnMouseButtonDown()
 		end,
 		MinWidth = 100,

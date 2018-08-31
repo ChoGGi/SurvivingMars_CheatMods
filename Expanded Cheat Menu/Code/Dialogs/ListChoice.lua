@@ -36,7 +36,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.title = self.list.title
 
 	self.dialog_width = self.list.width or 500.0
-	self.dialog_height = self.list.height or 600.0
+	self.dialog_height = self.list.height or 610.0
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -113,21 +113,23 @@ Press Enter to show all items."--]]],
 		end
 	end
 
-	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
-		Id = "idEditArea",
-		Dock = "bottom",
-	}, self.idDialog)
+	if self.custom_type ~= 7 then
+		self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idEditArea",
+			Dock = "bottom",
+		}, self.idDialog)
 
-	self.idEditValue = g_Classes.ChoGGi_TextInput:new({
-		Id = "idEditValue",
-		RolloverText = S[302535920000077--[["You can enter a custom value to be applied (it needs to be selected to take effect).
+		self.idEditValue = g_Classes.ChoGGi_TextInput:new({
+			Id = "idEditValue",
+			RolloverText = S[302535920000077--[["You can enter a custom value to be applied (it needs to be selected to take effect).
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
-		Hint = S[302535920000078--[[Add Custom Value--]]],
-		OnTextChanged = function()
-			self:idEditValueOnTextChanged()
-		end,
-	}, self.idEditArea)
+			Hint = S[302535920000078--[[Add Custom Value--]]],
+			OnTextChanged = function()
+				self:idEditValueOnTextChanged()
+			end,
+		}, self.idEditArea)
+	end
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idButtonContainer",
@@ -137,9 +139,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self.idOK = g_Classes.ChoGGi_Button:new({
 		Id = "idOK",
 		Dock = "left",
+		RolloverAnchor = "smart",
 		Text = S[6878--[[OK--]]],
 		RolloverText = S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]],
-		OnMouseButtonDown = function()
+		OnPress = function()
 			-- build self.choices
 			self:GetAllItems()
 			-- send selection back
@@ -153,9 +156,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
+		RolloverAnchor = "smart",
 		Text = S[6879--[[Cancel--]]],
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
-		OnMouseButtonDown = self.idCloseX.OnPress,
+		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
 
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
@@ -294,9 +298,18 @@ end
 function ChoGGi_ListChoiceDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
-		local listitem = self.idList:CreateTextItem(self.items[i].text)
-		listitem.item = self.items[i]
-		listitem.RolloverText = self:UpdateHintText(self.items[i])
+		local item = self.items[i]
+		local text
+		if item.icon then
+			text = Concat("<image ",item.icon," 2500> ",item.text)
+		else
+			text = item.text
+		end
+
+		local listitem = self.idList:CreateTextItem(text)
+
+		listitem.item = item
+		listitem.RolloverText = self:UpdateHintText(item)
 	end
 end
 
@@ -377,8 +390,10 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 
 	-- update selection (select last selected if multisel)
 	self.sel = self.idList[self.idList.selection[#self.idList.selection]].item
-	-- update the custom value box
-	self.idEditValue:SetText(tostring(self.sel.value))
+	if self.idEditValue then
+		-- update the custom value box
+		self.idEditValue:SetText(tostring(self.sel.value))
+	end
 	if self.custom_type > 0 then
 		-- 2 = showing the colour picker
 		if self.custom_type == 2 then
@@ -417,40 +432,47 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 			self:BuildAndApplyLightmodel()
 		elseif self.custom_type == 6 and self.custom_func then
 			self.custom_func(self.sel.func,self)
-		else
+		elseif self.idEditValue then
 			self.idEditValue:SetText(self.sel.text)
 		end
 	end
 end
 
 function ChoGGi_ListChoiceDlg:UpdateHintText(item)
-	local hint = {item.text}
-	local c = #hint
+	-- skip the empty item
+	if item.text == "" then
+		return
+	end
+
+	local hint = {"<color 203 120 30>",item.text,"</color>"}
+	local c = 3
 
 	if item.value and item.value ~= item.text then
+		c = c + 1
+		hint[c] = ": <color 200 255 200>"
 		if type(item.value) == "userdata" then
 			c = c + 1
-			hint[c] = ": "
-			c = c + 1
 			hint[c] = T(item.value)
-		elseif item.value then
-			c = c + 1
-			hint[c] = ": "
+		else
 			c = c + 1
 			hint[c] = tostring(item.value)
 		end
+		c = c + 1
+		hint[c] = "</color>"
 	end
 
-	if type(item.hint) == "userdata" then
-		c = c + 1
-		hint[c] = "\n\n"
-		c = c + 1
-		hint[c] = T(item.hint)
-	elseif item.hint then
-		c = c + 1
-		hint[c] = "\n\n"
-		c = c + 1
-		hint[c] = CheckText(item.hint)
+	if item.hint then
+		if type(item.hint) == "userdata" then
+			c = c + 1
+			hint[c] = "\n\n"
+			c = c + 1
+			hint[c] = T(item.hint)
+		else
+			c = c + 1
+			hint[c] = "\n\n"
+			c = c + 1
+			hint[c] = CheckText(item.hint)
+		end
 	end
 
 	return TableConcat(hint)
@@ -505,7 +527,7 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	if #items > 0 then
 		local c = #self.choices
 		for i = 1, #items do
-			if i == 1 then
+			if i == 1 and self.idEditValue then
 				-- always return the custom value (and try to convert it to correct type)
 				items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
 			end

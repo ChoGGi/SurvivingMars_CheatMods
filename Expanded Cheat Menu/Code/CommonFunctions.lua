@@ -1055,13 +1055,13 @@ end
 --[[
 get around to merging some of these types into funcs?
 
-custom_type=1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items
-custom_type=2 : colour selector
-custom_type=3 : updates selected item with custom value type, and sends back selected item.
-custom_type=4 : updates selected item with custom value type, and sends back all items
-custom_type=5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
-custom_type=6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
-custom_type=7 : dblclick fires custom_func with self.sel
+custom_type = 1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items
+custom_type = 2 : colour selector
+custom_type = 3 : updates selected item with custom value type, and sends back selected item.
+custom_type = 4 : updates selected item with custom value type, and sends back all items
+custom_type = 5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
+custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
 
 ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,
@@ -1092,6 +1092,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 function ChoGGi.ComFuncs.OpenInListChoice(list)
 	-- if table isn't a table or it doesn't have items/callback func or it has zero items
 	if not list or (list and type(list) ~= "table" or not list.callback or not list.items) or #list.items < 1 then
+		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]])
 		return
 	end
 

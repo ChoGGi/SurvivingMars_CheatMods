@@ -77,9 +77,9 @@ function Examine:Init(parent, context)
 
 	self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idAutoRefresh",
+		Dock = "right",
 		Text = S[302535920000084--[[Auto-Refresh--]]],
 		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
-		Dock = "right",
 		OnChange = function()
 			self:idAutoRefreshToggle()
 		end,
@@ -114,9 +114,10 @@ function Examine:Init(parent, context)
 		RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 
 Right-click to scroll to top."--]]],
-		OnMouseButtonDown = function(button,_,mouse)
-			if mouse == "L" then
-				PopupToggle(button,"idToolsMenu",tools_menu_popup,"bottom")
+		OnMouseButtonDown = function(obj,pt,button,...)
+			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
+			if button == "L" then
+				PopupToggle(obj,"idToolsMenu",tools_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -126,9 +127,10 @@ Right-click to scroll to top."--]]],
 		Id = "idParents",
 		Text = S[302535920000520--[[Parents--]]],
 		RolloverText = S[302535920000553--[[Examine parent and ancestor objects.--]]],
-		OnMouseButtonDown = function(button,_,mouse)
-			if mouse == "L" then
-				PopupToggle(button,"idParentsMenu",self.parents_menu_popup,"bottom")
+		OnMouseButtonDown = function(obj,pt,button,...)
+			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
+			if button == "L" then
+				PopupToggle(obj,"idParentsMenu",self.parents_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -139,9 +141,10 @@ Right-click to scroll to top."--]]],
 		Id = "idAttaches",
 		Text = S[302535920000053--[[Attaches--]]],
 		RolloverText = S[302535920000054--[[Any objects attached to this object.--]]],
-		OnMouseButtonDown = function(button,_,mouse)
-			if mouse == "L" then
-				PopupToggle(button,"idAttachesMenu",self.attaches_menu_popup,"bottom")
+		OnMouseButtonDown = function(obj,pt,button,...)
+			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
+			if button == "L" then
+				PopupToggle(obj,"idAttachesMenu",self.attaches_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -156,7 +159,8 @@ Right-click to scroll to top."--]]],
 		RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 
 Right-click to scroll to top."--]]],
-		OnMouseButtonDown = function(_,_,button)
+		OnMouseButtonDown = function(obj,pt,button,...)
+			g_Classes.ChoGGi_Button.OnMouseButtonDown(obj,pt,button,...)
 			if button == "L" then
 				self:FindNext(self.idFilter:GetText())
 			else

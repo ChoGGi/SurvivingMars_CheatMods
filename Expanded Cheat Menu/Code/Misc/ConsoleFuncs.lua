@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- called from OnMsgs
+-- the menus/buttons added to the Console
 
 local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
@@ -170,20 +170,37 @@ function OnMsg.ChoGGi_SettingsUpdated()
 	BuildExamineMenu()
 end
 
-function ChoGGi.Console.ConsoleControls(dlgConsole)
+function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	local g_Classes = g_Classes
 
-	-- stick everything in
-	local container = g_Classes.XWindow:new({
-		Id = "idContainer",
-		Margins = box(15, 0, 0, 0),
+	-- make some space for the close button
+	dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
+	if dlgConsoleLog then
+		-- move log text above the buttons i added and make sure log text stays below the cheat menu
+		dlgConsoleLog.idText:SetMargins(box(10, 75, 10, 60))
+	end
+
+	-- add close button
+	g_Classes.ChoGGi_CloseButton:new({
+		Id = "idClose",
+		RolloverAnchor = "smart",
+		OnPress = function()
+			dlgConsole:Show()
+		end,
+		Margins = box(0, 0, 0, -53),
 		Dock = "bottom",
---~		 LayoutMethod = "HWrap",
+	}, dlgConsole)
+
+	-- stick everything in
+	dlgConsole.idContainer = g_Classes.XWindow:new({
+		Id = "idContainer",
+		Margins = box(10, 0, 0, dlgConsole.idEdit.box:sizey() + 6),
+		Dock = "bottom",
 		LayoutMethod = "HList",
 		Image = "CommonAssets/UI/round-frame-20.tga",
 	}, dlgConsole)
 
-	--------------------------------Console popup
+--------------------------------Console popup
 	dlgConsole.idConsoleMenu = g_Classes.ChoGGi_ConsoleButton:new({
 		Id = "idConsoleMenu",
 		RolloverText = S[302535920001089--[[Settings & Commands for the console.--]]],
@@ -191,7 +208,7 @@ function ChoGGi.Console.ConsoleControls(dlgConsole)
 		OnPress = function()
 			PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsolePopupToggle_list)
 		end,
-	}, container)
+	}, dlgConsole.idContainer)
 
 	dlgConsole.idExamineMenu = g_Classes.ChoGGi_ConsoleButton:new({
 		Id = "idExamineMenu",
@@ -200,24 +217,25 @@ function ChoGGi.Console.ConsoleControls(dlgConsole)
 		OnPress = function()
 			PopupToggle(dlgConsole.idExamineMenu,"idExamineMenuPopup",ExamineMenuToggle_list)
 		end,
-	}, container)
+	}, dlgConsole.idContainer)
 
+--------------------------------History popup
 	if not blacklist then
-		--------------------------------History popup
 		dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
 			Id = "idHistoryMenu",
 			RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
 			Text = S[302535920000793--[[History--]]],
 			OnPress = HistoryPopup,
-		}, container)
+		}, dlgConsole.idContainer)
 
 		--------------------------------Scripts buttons
 		dlgConsole.idScripts = g_Classes.XWindow:new({
 			Id = "idScripts",
 			LayoutMethod = "HList",
-		}, container)
+		}, dlgConsole.idContainer)
 	end
 
+	-- changed examine list to a saved one instead of one made of .lua files
 	BuildExamineMenu()
 end
 
@@ -250,7 +268,7 @@ end
 -- only check for ECM Scripts once per load
 local script_files_added
 -- rebuild menu toolbar buttons
-function ChoGGi.Console.RebuildConsoleToolbar(dlg)
+function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	if blacklist then
 		return
 	end
@@ -266,7 +284,7 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 
 	-- add example script files if folder is missing
 	if not script_files_added then
-		ChoGGi.Console.BuildScriptFiles()
+		ChoGGi.ConsoleFuncs.BuildScriptFiles()
 		script_files_added = true
 	end
 
@@ -297,7 +315,7 @@ function ChoGGi.Console.RebuildConsoleToolbar(dlg)
 	end
 end
 
-function ChoGGi.Console.BuildScriptFiles()
+function ChoGGi.ConsoleFuncs.BuildScriptFiles()
 	local script_path = ChoGGi.scripts
 	--create folder and some example scripts if folder doesn't exist
 	local err,_ = AsyncGetFileAttribute(script_path,"size")

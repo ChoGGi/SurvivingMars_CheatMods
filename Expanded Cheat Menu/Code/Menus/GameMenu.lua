@@ -123,7 +123,7 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.LightmodelCustom,
+			ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom),
 			302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]
 		)
 	end,

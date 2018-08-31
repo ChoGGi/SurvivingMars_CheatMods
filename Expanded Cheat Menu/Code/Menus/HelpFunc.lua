@@ -10,6 +10,48 @@ local blacklist = ChoGGi.blacklist
 
 local print,tostring = print,tostring
 
+function ChoGGi.MenuFuncs.ListAllMenuItems()
+	local ChoGGi = ChoGGi
+	local ItemList = {}
+	local c = 0
+
+	local actions = ChoGGi.Temp.Actions
+	for i = 1, #actions do
+		local a = actions[i]
+		-- skip menus
+		if a.OnActionEffect ~= "popup" and a.ActionName ~= "" then
+			c = c + 1
+			local hint = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
+
+			ItemList[c] = {
+				text = a.ActionName,
+				value = a.ActionName,
+				icon = a.ActionIcon,
+				func = a.OnAction,
+				hint = Concat(hint,"\n\n<color 200 255 200>",a.ActionId,"</color>"),
+			}
+		end
+	end
+------------------------------LIGHTMODEL CUSTOM SETTING IS OFF
+	local function CallBackFunc(choice)
+		if not choice[1].func then
+			return
+		end
+		choice[1].func()
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = 302535920000504--[[List All Menu Items--]],
+		custom_type = 7,
+		custom_func = CallBackFunc,
+		height = 800.0,
+--~ 		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+	}
+
+end
+
 function ChoGGi.MenuFuncs.Interface_Toggle()
 	rawset(_G, "OrgXRender", rawget(_G, "OrgXRender") or XRender)
 	if XRender == OrgXRender then

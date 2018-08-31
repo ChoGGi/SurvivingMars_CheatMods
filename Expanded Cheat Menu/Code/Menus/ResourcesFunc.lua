@@ -103,12 +103,12 @@ function ChoGGi.MenuFuncs.AddPrefabs()
 		{text = "PolymerPlant",value = 10},
 		{text = "StirlingGenerator",value = 10},
 		{text = "WaterReclamationSystem",value = 10},
-		{text = "Arcology",value = 10},
-		{text = "Sanatorium",value = 10},
-		{text = "NetworkNode",value = 10},
-		{text = "MedicalCenter",value = 10},
-		{text = "HangingGardens",value = 10},
-		{text = "CloningVat",value = 10},
+--~ 		{text = "Arcology",value = 10},
+--~ 		{text = "Sanatorium",value = 10},
+--~ 		{text = "NetworkNode",value = 10},
+--~ 		{text = "MedicalCenter",value = 10},
+--~ 		{text = "HangingGardens",value = 10},
+--~ 		{text = "CloningVat",value = 10},
 	}
 
 	local function CallBackFunc(choice)
@@ -127,7 +127,7 @@ function ChoGGi.MenuFuncs.AddPrefabs()
 			RefreshXBuildMenu()
 			MsgPopup(
 				S[302535920001191--[[%s %s prefabs have been added.--]]]:format(value,text),
-				302535920001192--[[Prefabs--]],
+				1110--[[Prefab Buildings--]],
 				default_icon
 			)
 		end
@@ -136,14 +136,15 @@ function ChoGGi.MenuFuncs.AddPrefabs()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = 302535920000723--[[Add Prefabs--]],
+		title = 1110--[[Prefab Buildings--]],
 		hint = 302535920001194--[[Use edit box to enter amount of prefabs to add.--]],
 		custom_type = 3,
+		skip_sort = true,
 	}
 end
 
 function ChoGGi.MenuFuncs.SetFunding()
-	local DefaultSetting = S[302535920001195--[[(Reset to 500 M)--]]]
+	local DefaultSetting = S[302535920001195--[[Reset to 500 M--]]]
 	local hint = S[302535920001196--[[If your funds are a negative value, then you added too much.
 
 Fix with: %s--]]]:format(DefaultSetting)
@@ -164,10 +165,10 @@ Fix with: %s--]]]:format(DefaultSetting)
 		end
 		if type(value) == "number" then
 			if value == 500 then
-				--reset money back to 0
+				-- reset money back to 0
 				UICity.funding = 0
 			end
-			--and add the new amount
+			-- and add the new amount
 			ChangeFunding(value)
 
 			MsgPopup(
@@ -181,8 +182,9 @@ Fix with: %s--]]]:format(DefaultSetting)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = 302535920000725--[[Add Funding--]],
+		title = 3613--[[Funding--]],
 		hint = hint,
+		skip_sort = true,
 	}
 end
 

@@ -515,19 +515,19 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	--unbreakable cables/pipes
+	-- unbreakable cables/pipes
 	function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
 		if not ChoGGi.UserSettings.BreakChanceCablePipe then
 			return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
 		end
 	end
 
-	--stops the help webpage from showing up every single time
+	-- stops the help webpage from showing up every single time
 	if Platform.editor and UserSettings.SkipModHelpPage then
 		function GedOpHelpMod() end
 	end
 
-	--no more pulsating pin motion
+	-- no more pulsating pin motion
 	function XBlinkingButtonWithRMB:SetBlinking(...)
 		if ChoGGi.UserSettings.DisablePulsatingPinsMotion then
 			self.blinking = false
@@ -536,16 +536,16 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	--no more stuck focus on SingleLineEdits
+	-- no more stuck focus on textboxes and so on
 	function XDesktop:MouseEvent(event, pt, button, time)
 --~ 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOf("XTextEditor") then
 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses("XTextEditor","XList") then
-			-- if console visible set focus to it, else use the hud
-			local dlgConsole = dlgConsole
-			if dlgConsole and dlgConsole:GetVisible() then
-				dlgConsole.idEdit:SetFocus()
-			elseif Dialogs.HUD then
-				Dialogs.HUD:SetFocus()
+			local hud = Dialogs.HUD
+			if hud then
+				hud:SetFocus()
+			else
+				-- hud should always be visible, but just in case focus on desktop
+				self:SetFocus()
 			end
 		end
 
@@ -992,7 +992,7 @@ function OnMsg.ClassesBuilt()
 		SetTrans(self)
 
 		-- and rebuild the console buttons (added by ECM)
-		ChoGGi.Console.RebuildConsoleToolbar(self)
+		ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
 	end
 
 	do -- skip quit from being added to console history to prevent annoyances

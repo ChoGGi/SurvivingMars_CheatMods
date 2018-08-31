@@ -128,8 +128,8 @@ ChoGGi = {
 	InfoFuncs = {},
 	-- Defaults.lua
 	SettingFuncs = {},
-	-- ConsoleControls.lua
-	Console = {},
+	-- ConsoleFuncs.lua
+	ConsoleFuncs = {},
 	-- temporary... stuff
 	Temp = {
 		-- collect error msgs to be displayed in console after game is loaded

@@ -44,18 +44,18 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
-	ActionName = S[302535920000723--[[Add Prefabs--]]],
-	ActionId = "Expanded CM.Resources.Add Prefabs",
+	ActionName = S[1110--[[Prefab Buildings--]]],
+	ActionId = "Expanded CM.Resources.Prefab Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-	RolloverText = S[302535920000724--[[Adds prefabs.--]]],
+	RolloverText = S[1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]],
 	OnAction = ChoGGi.MenuFuncs.AddPrefabs,
 }
 
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Resources,
-	ActionName = S[302535920000725--[[Add Funding--]]],
-	ActionId = "Expanded CM.Resources.Add Funding",
+	ActionName = S[3613--[[Funding--]]],
+	ActionId = "Expanded CM.Resources.Funding",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = S[302535920000726--[[Add more funding (or reset back to 500 M).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetFunding,

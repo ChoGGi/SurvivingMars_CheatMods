@@ -1154,7 +1154,7 @@ do --ChangeResupplySettings
 			end,
 		}
 	end
-end
+end -- do
 
 function ChoGGi.MenuFuncs.LaunchEmptyRocket()
 	local function CallBackFunc(answer)

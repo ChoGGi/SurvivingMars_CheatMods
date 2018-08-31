@@ -4,22 +4,23 @@
 
 --~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
+local text = "Editor12Bold"
+if ChoGGi.testing then
+	text = "Editor14Bold"
+end
 
 local box,point = box,point
 
 local white = -1
 local black = black
 local dark_gray = -13158858
+--~ local less_dark_gray = -12500671
 local medium_gray = -10592674
 local light_gray = -2368549
 local rollover_blue = -14113793
 local invis = 0
 local invis_less = 268435456
 
-local text = "Editor12Bold"
-if ChoGGi.testing then
-	text = "Editor14Bold"
-end
 DefineClass.ChoGGi_Text = {
 	__parents = {"XText"},
 	-- default
@@ -61,16 +62,8 @@ DefineClass.ChoGGi_Buttons = {
 	RolloverBackground = rollover_blue,
 	RolloverTextColor = white,
 	Margins = box(4,0,0,0),
-}
-
-DefineClass.ChoGGi_CloseButton = {
-	__parents = {"ChoGGi_Buttons"},
-	RolloverText = S[1011--[[Close--]]],
-	RolloverAnchor = "right",
-	Image = "UI/Common/mission_no.tga",
-	Dock = "top",
-	HAlign = "right",
-	Margins = box(0, 1, 1, 0),
+	PressedBackground = medium_gray,
+	PressedTextColor = white,
 }
 
 DefineClass.ChoGGi_Button = {
@@ -84,12 +77,21 @@ function ChoGGi_Button:Init()
 	self.idLabel:SetDock("box")
 end
 
+DefineClass.ChoGGi_CloseButton = {
+	__parents = {"ChoGGi_Buttons"},
+	RolloverText = S[1011--[[Close--]]],
+	RolloverAnchor = "right",
+	Image = "UI/Common/mission_no.tga",
+	Dock = "top",
+	HAlign = "right",
+	Margins = box(0, 1, 1, 0),
+}
+
 DefineClass.ChoGGi_ConsoleButton = {
 	__parents = {"ChoGGi_Button"},
 	Padding = box(5, 2, 5, 2),
 	TextFont = "Editor16Bold",
 	RolloverAnchor = "right",
-	PressedBackground = dark_gray,
 }
 
 DefineClass.ChoGGi_ButtonMenu = {
@@ -107,6 +109,8 @@ DefineClass.ChoGGi_ComboButton = {
 	RolloverAnchor = "top",
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
+	PressedBackground = medium_gray,
+	PressedTextColor = white,
 }
 
 DefineClass.ChoGGi_CheckButton = {
@@ -119,6 +123,11 @@ DefineClass.ChoGGi_CheckButton = {
 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
 }
+function ChoGGi_CheckButton:Init()
+--~	 XCheckButton.Init(self)
+	self.idIcon:SetBackground(light_gray)
+end
+
 DefineClass.ChoGGi_CheckButtonMenu = {
 	__parents = {"ChoGGi_CheckButton"},
 	RolloverAnchor = "smart",
@@ -131,11 +140,6 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	Margins = box(4,0,0,0),
 }
 
-function ChoGGi_CheckButton:Init()
---~	 XCheckButton.Init(self)
-	self.idIcon:SetBackground(light_gray)
-end
-
 DefineClass.ChoGGi_TextInput = {
 	__parents = {"XEdit"},
 	WordWrap = false,
@@ -143,6 +147,7 @@ DefineClass.ChoGGi_TextInput = {
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverAnchor = "top",
 	RolloverTemplate = "Rollover",
+	Background = light_gray,
 }
 --~ function ChoGGi_TextInput:Init()
 --~	 self:SetText(self.display_text or "")
@@ -174,6 +179,26 @@ DefineClass.ChoGGi_DialogSection = {
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
 }
+
+DefineClass.ChoGGi_ScrollArea = {
+	__parents = {"XScrollArea"},
+	UniformColumnWidth = true,
+	UniformRowHeight = true,
+}
+
+DefineClass.ChoGGi_SleekScroll = {
+	__parents = {"XSleekScroll"},
+	MinThumbSize = 30,
+	AutoHide = true,
+	Background = invis,
+}
+-- convenience function
+function ChoGGi_SleekScroll:SetHorizontal()
+	self.MinHeight = 10
+--~	 self.MaxHeight = 10
+	self.MinWidth = 10
+--~	 self.MaxWidth = 10
+end
 
 DefineClass.ChoGGi_Window = {
 	__parents = {"XWindow"},
@@ -293,8 +318,8 @@ end
 function ChoGGi_Window:SetHeight(h)
 	self:SetSize(point(self.idDialog.box:sizex(),h))
 end
-function ChoGGi_Window:GetSize()
-	local b = self.idDialog.box
+function ChoGGi_Window:GetSize(dialog)
+	local b = self[dialog or "idDialog"].box
 	return point(b:sizex(),b:sizey())
 end
 
@@ -342,19 +367,6 @@ function ChoGGi_Window:SetInitPos(parent)
 
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 end
-
-DefineClass.ChoGGi_SleekScroll = {
-	__parents = {"XSleekScroll"},
-	MinThumbSize = 30,
-	AutoHide = true,
-	Background = invis,
-}
-
-DefineClass.ChoGGi_ScrollArea = {
-	__parents = {"XScrollArea"},
-	UniformColumnWidth = true,
-	UniformRowHeight = true,
-}
 
 -- scrollable textbox
 function ChoGGi_Window:AddScrollText()
@@ -450,20 +462,4 @@ function ChoGGi_Window:AddScrollEdit()
 		Margins = box(4,4,4,4),
 		WordWrap = ChoGGi.UserSettings.WordWrap or false,
 	}, self.idScrollSection)
-end
-
--- convenience function
-function ChoGGi_SleekScroll:SetHorizontal()
-	self.MinHeight = 10
---~	 self.MaxHeight = 10
-	self.MinWidth = 10
---~	 self.MaxWidth = 10
-end
-
--- haven't figured on a decent place to put this, so good enough for now (AddedFunctions maybe?)
-XShortcutsHost.SetPos = function(self,pt)
-	self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
-end
-XShortcutsHost.GetPos = function(self)
-	return ChoGGi_Window.GetPos(self,"idMenuBar")
 end

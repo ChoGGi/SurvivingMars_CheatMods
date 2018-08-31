@@ -38,7 +38,8 @@ return PlaceObj("ModDef", {
 
 		-- stuff that can come later
 		"Code/Misc/_Functions.lua",
-		"Code/Misc/ConsoleControls.lua",
+		"Code/Misc/AddedFunctions.lua",
+		"Code/Misc/ConsoleFuncs.lua",
 		"Code/Misc/InfoPaneCheats.lua",
 		"Code/Misc/Testing.lua",
 		"Code/Misc/ReplacedFunctions.lua",

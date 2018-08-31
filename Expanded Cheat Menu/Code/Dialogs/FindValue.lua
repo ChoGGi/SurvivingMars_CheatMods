@@ -32,7 +32,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idEdit = g_Classes.ChoGGi_TextInput:new({
 		Id = "idEdit",
 		Dock = "left",
-		MinWidth = 565,
+		MinWidth = 550,
 		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Hint = S[302535920001306--[[Enter text to find--]]],
 		OnKbdKeyDown = function(obj, vk)
@@ -45,7 +45,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idLimit = g_Classes.ChoGGi_TextInput:new({
 		Id = "idLimit",
 		Dock = "right",
-		MinWidth = 35,
+		MinWidth = 50,
 		RolloverText = S[302535920001304--[[Set how many levels within this table we check into (careful making it too large).--]]],
 	}, self.idTextArea)
 	self.idLimit:SetText("1")
@@ -66,9 +66,19 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		end,
 	}, self.idButtonContainer)
 
+	self.idCaseSen = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idCaseSen",
+		Dock = "left",
+		RolloverAnchor = "bottom",
+		Margins = box(15, 0, 0, 0),
+		Text = S[302535920000501--[[Case-sensitive--]]],
+		RolloverText = S[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
+	}, self.idButtonContainer)
+
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
+		MinWidth = 80,
 		Text = S[6879--[[Cancel--]]],
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
@@ -82,28 +92,46 @@ local found_objs
 function ChoGGi_FindValueDlg:FindText()
 	-- always start off empty
 	found_objs = {}
+
+	local case = self.idCaseSen:GetCheck()
+	local str = case and self.idEdit:GetText() or self.idEdit:GetText():lower()
+
+	-- no sense in finding nothing
+	if str == "" then
+		return
+	end
+
 	-- build our list of objs
 	self:RetObjects(
 		self.obj,
---~		 self.idEdit:GetText():lower(),
-		self.idEdit:GetText(),
-		tonumber(self.idLimit:GetText())
+		str,
+		case,
+		tonumber(self.idLimit:GetText() or 1)
 	)
 	-- and fire off a new dialog
 	ChoGGi.ComFuncs.OpenInExamineDlg(found_objs):SetPos(self:GetPos()+point(0,self.header))
 end
 
-local function ReturnStr(obj)
+local function ReturnStr(obj,case)
 	local obj_type = type(obj)
 	if obj_type == "string" then
---~		 return obj:lower(), obj_type
-		return obj, obj_type
+		return case and obj or obj:lower(), obj_type
+--~ 		if case then
+--~ 			return obj, obj_type
+--~ 		else
+--~ 			return obj:lower(), obj_type
+--~ 		end
 	else
---~		 return tostring(obj):lower(), obj_type
-		return tostring(obj), obj_type
+		return case and tostring(obj) or tostring(obj):lower(), obj_type
+--~ 		if case then
+--~ 			return tostring(obj), obj_type
+--~ 		else
+--~ 			return tostring(obj):lower(), obj_type
+--~ 		end
 	end
 end
-function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
+
+function ChoGGi_FindValueDlg:RetObjects(obj,str,case,limit,level)
 	if not level then
 		level = 0
 	end
@@ -121,11 +149,11 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
 			obj_string = Concat(S[302535920001307--[[L%s--]]]:format(level),": ",name1," (",name2,")")
 		end
 		for key,value in pairs(obj) do
-			local key_str,key_type = ReturnStr(key)
-			local value_str,value_type = ReturnStr(value)
+			local key_str,key_type = ReturnStr(key,case)
+			local value_str,value_type = ReturnStr(value,case)
 
---~			 if key_str:find(str) or value_str:find(str) then
-			if key_str:find_lower(str) or value_str:find_lower(str) then
+			if key_str:find(str) or value_str:find(str) then
+--~ 			if key_str:find_lower(str) or value_str:find_lower(str) then
 				-- makes dupes
 				-- found_objs[#found_objs+1] = obj
 				-- should be decent enough?
@@ -134,9 +162,9 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,limit,level)
 				end
 			else
 				if key_type == "table" then
-					self:RetObjects(key,str,limit,level+1)
+					self:RetObjects(key,str,case,limit,level+1)
 				elseif value_type == "table" then
-					self:RetObjects(value,str,limit,level+1)
+					self:RetObjects(value,str,case,limit,level+1)
 				end
 			end
 

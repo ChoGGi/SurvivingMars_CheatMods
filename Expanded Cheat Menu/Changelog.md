@@ -9,13 +9,16 @@
 - Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
 - Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
+- Help>List All Menu Items: Show all the cheat menu items in a list dialog.
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
 - Console additions now happen sooner (for ease of use during New Game screens).
 - Change Colour (F6) has more attachments listed (the ones GetAttaches doesn't get...).
 - Change Colour skips Metallic/Roughness when moving colour selector.
-- Enter/Esc work in list dialog.
+- Resources: Add Prefabs renamed to Prefab Buildings, and Add Funding to Funding.
+- Tweaked dialogs a bit (hover colours, list item tooltip look, spacing, Enter/Esc work in lists).
+- Find Value has a Case-sensitive checkbox now.
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).

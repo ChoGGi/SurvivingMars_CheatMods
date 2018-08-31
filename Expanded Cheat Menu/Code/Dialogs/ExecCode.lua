@@ -55,7 +55,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
 		Id = "idOK",
 		Dock = "left",
 		Text = S[302535920000040--[[Exec Code--]]],
-		RolloverText = S[302535920000073--[[Exec code (Ctrl-Enter or Shift-Enter to execute code).--]]],
+		RolloverText = S[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
 		Margins = box(10, 0, 0, 0),
 		MinWidth = 100,
 		OnPress = function()
@@ -75,7 +75,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
 			RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
 			Margins = box(10, 0, 0, 0),
 			MinWidth = 100,
-			OnMouseButtonDown = function()
+			OnPress = function()
 				self.idEdit:EditOperation("ChoGGi.CurObj",true)
 				self.idEdit:SetFocus()
 			end,
@@ -97,6 +97,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]])
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
+		MinWidth = 80,
 		Text = S[6879--[[Cancel--]]],
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),

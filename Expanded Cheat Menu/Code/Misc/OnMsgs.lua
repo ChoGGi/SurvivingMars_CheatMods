@@ -179,50 +179,29 @@ function OnMsg.ModsLoaded()
 --~		 end
 --~	 end)
 
-	local UserSettings = ChoGGi.UserSettings
-	if not UserSettings.DisableECM then
+	-- added this here, as it's early enough to load during the New Game Menu
+	if not ChoGGi.UserSettings.DisableECM then
 		-- show console log history
-		if UserSettings.ConsoleToggleHistory then
+		if ChoGGi.UserSettings.ConsoleToggleHistory then
 			ShowConsoleLog(true)
 		end
 
-		if UserSettings.ConsoleHistoryWin then
+		if ChoGGi.UserSettings.ConsoleHistoryWin then
 			ChoGGi.ComFuncs.ShowConsoleLogWin(true)
 		end
 
 		--dim that console bg
-		if UserSettings.ConsoleDim then
+		if ChoGGi.UserSettings.ConsoleDim then
 			config.ConsoleDim = 1
 		end
 
-
-		--add Scripts button to console
+		-- build console buttons
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
 			dlgConsole.ChoGGi_MenuAdded = true
-
-			-- build console buttons
-			ChoGGi.Console.ConsoleControls(dlgConsole)
-
-			-- make some space for the close button
-			dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-			-- move log text above the buttons i added
-			if dlgConsoleLog then
-				dlgConsoleLog.idText:SetMargins(box(10, 0, 10, 60))
-			end
-
-			-- add close button
-			g_Classes.ChoGGi_CloseButton:new({
-				Id = "idClose",
-				RolloverAnchor = "smart",
-				OnPress = function()
-					dlgConsole:Show()
-				end,
-				Margins = box(0, 0, 0, -53),
-				Dock = "bottom",
-			}, dlgConsole)
+			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end
-	end -- DisableECM
 
+	end -- DisableECM
 end
 
 function OnMsg.PersistPostLoad()
@@ -676,6 +655,7 @@ function OnMsg.DevMenuVisible(visible)
 		if ChoGGi.UserSettings.KeepCheatsMenuPosition then
 			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
 		else
+			-- if user turns off menu pos then it'll stay where it's put, so set back to default pos
 			XShortcutsTarget:SetPos(point(0,0))
 		end
 	end
@@ -1062,6 +1042,7 @@ do -- LoadGame/CityStart
 			local XShortcutsTarget = XShortcutsTarget
 			if XShortcutsTarget then
 
+				-- add some ids for easier selection later on
 				for i = 1, #XShortcutsTarget do
 					if XShortcutsTarget[i].class == "XMenuBar" then
 						XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
@@ -1071,17 +1052,20 @@ do -- LoadGame/CityStart
 					end
 				end
 
-				 -- yeah... i don't need the menu taking up the whole width of my screen
+				-- add a hint about rightclicking
+				XShortcutsTarget:SetRolloverTemplate("Rollover")
+				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+
+				-- yeah... i don't need the menu taking up the whole width of my screen
 				XShortcutsTarget:SetHAlign("left")
 
 				-- always show menu on my computer
 				if UserSettings.ShowCheatsMenu or ChoGGi.testing then
---~ 					XShortcutsTarget:ToggleMenu()
 					XShortcutsTarget:SetVisible(true)
 
-					if UserSettings.KeepCheatsMenuPosition then
-						XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
-					end
+--~ 					if UserSettings.KeepCheatsMenuPosition then
+--~ 						XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
+--~ 					end
 				end
 
 				-- that info text about right-clicking expands the menu instead of just hiding or something

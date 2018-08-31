@@ -10,6 +10,17 @@ local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/%
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Help",
+	ActionName = S[302535920000504--[[List All Menu Items--]]],
+	ActionId = "Help.List All Menu Items",
+	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+	RolloverText = S[302535920001323--[[Show all the cheat menu items in a list dialog.--]]],
+	OnAction = ChoGGi.MenuFuncs.ListAllMenuItems,
+	ActionSortKey = "99",
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Help",
 	ActionName = S[302535920000367--[[Mod Upload--]]],
 	ActionId = "Help.Mod Upload",
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
@@ -24,7 +35,7 @@ Actions[c] = {
 	ActionName = S[302535920000473--[[Reload ECM Menu--]]],
 	ActionId = "Help.Reload ECM Menu",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
-	RolloverText = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]]],
+	RolloverText = S[302535920000474--[[Fiddling around in the editor mode can break the menu / shortcuts added by ECM (use this to fix).--]]],
 	OnAction = function()
 		Msg("ShortcutsReloaded")
 	end,
