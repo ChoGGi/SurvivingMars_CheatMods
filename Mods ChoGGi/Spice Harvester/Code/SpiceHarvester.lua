@@ -2,17 +2,6 @@
 
 local Random = SpiceHarvester.ComFuncs.Random
 
-local Sleep = Sleep
-local DeleteThread = DeleteThread
-local IsValid = IsValid
-local DoneObject = DoneObject
-local point = point
-local CreateGameTimeThread = CreateGameTimeThread
-local CreateRealTimeThread = CreateRealTimeThread
-local XTemplates = XTemplates
-local PlaySound = PlaySound
-local StopSound = StopSound
-
 DefineClass.Melanger = {
   __parents = {
     "AttackRover",
@@ -26,6 +15,8 @@ DefineClass.Melanger = {
   fake_obj = false,
   shuttles = false,
 	display_icon = "UI/Icons/Buildings/boomerang_garden.tga",
+	battery_hourly_drain_rate = 0,
+	attack_range = 0,
 }
 
 DefineClass.MelangerBuilding = {
@@ -33,19 +24,19 @@ DefineClass.MelangerBuilding = {
   rover_class = "Melanger",
 }
 
-local game_paused
+
 do -- pausey stuff
 	if UISpeedState == "pause" then
-		game_paused = true
+		SpiceHarvester.game_paused = true
 	else
-		game_paused = false
+		SpiceHarvester.game_paused = false
 	end
 
 	function OnMsg.MarsPause()
-		game_paused = true
+		SpiceHarvester.game_paused = true
 	end
 	function OnMsg.MarsResume()
-		game_paused = false
+		SpiceHarvester.game_paused = false
 	end
 end -- do
 
@@ -83,30 +74,29 @@ function Melanger:GameInit()
   self:SetCommand("Roam")
 
   -- needs a slight delay for the shuttlehub to do it's thing
+	local Sleep = Sleep
   CreateRealTimeThread(function()
-    Sleep(100)
     for _ = 1, shuttle_amount do
+			Sleep(Random(1000,2500))
       self.hub.shuttle_infos[#self.hub.shuttle_infos + 1] = ShuttleInfo:new{hub = self.hub}
       self.shuttles[#self.shuttles+1] = SpiceHarvester.ComFuncs.SpawnShuttle(self.hub)
 			-- delay between launch
-			Sleep(Random(1000,2500))
     end
 
-    Sleep(900)
-    local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
     -- should be good by now to start thumping
-    Sleep(1500)
+    Sleep(2500)
+
+		local IsValid = IsValid
+		local PlaySound = PlaySound
+		local StopSound = StopSound
 
     local delay = 0
     local snd
     while IsValid(self) do
 			-- if I use gametime then it'll speed up the sounds and such, but realtime doesn't pause on pause
-			if game_paused then
-				Sleep(500)
+			if SpiceHarvester.game_paused then
+				Sleep(1000)
 			else
-				local pos = self:GetVisualPos()
-				-- a slimy trail of sand
-				SetTypeCircle(pos, 900, terrain_type_idx)
 				Sleep(50)
 				delay = delay + 1
 				if delay > 125 then
@@ -123,18 +113,55 @@ function Melanger:GameInit()
 			end
     end
   end)
+
+	-- a slimy trail of sand
+	CreateRealTimeThread(function()
+		local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
+    while IsValid(self) do
+			if SpiceHarvester.game_paused then
+				Sleep(1000)
+			else
+				SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
+				Sleep(Random(2000,4000))
+			end
+		end
+	end)
+
 end
 
 -- added in DA update?
+local Sleep = Sleep
 function Melanger:MoveSleep(time)
 	Sleep(time)
---~ 	PlayFX("Moving", "move", self)
---~ 'Particles', "RCRover_Trail",
---~ 'Offset', point(0, 800, 0),
+end
+
+--iddqd
+function Melanger:Repair()
+	self.battery_current = self.battery_max
+	local city = self.city or UICity
+	self:DisconnectFromCommandCenters()
+	self.current_health = self.max_health
+	self.malfunction_idle_state = nil
+	self:SetState("idle")
+	self.is_repair_request_initialized = false
+	city:AddToLabel("HostileAttackRovers", self)
+	--hacky cmd exit
+	self.command = "" -- so we get around setcmd malf block
+	self:SetCommand("Roam")
+	Msg("AttackRoverRepaired", self)
+	ObjModified(self)
+end
+Melanger.Malfunction = Melanger.Repair
+Melanger.Dead = Melanger.Repair
+Melanger.NoBattery = Melanger.Repair
+function Melanger:IsDead()
+	return false
+end
+function Melanger:IsMalfunctioned()
+	return false
 end
 
 function OnMsg.ClassesPostprocess()
-
   PlaceObj("BuildingTemplate",{
     "Id","MelangerBuilding",
     "template_class","MelangerBuilding",
@@ -142,7 +169,6 @@ function OnMsg.ClassesPostprocess()
     "construction_cost_Metals",1000,
     "dome_forbidden",true,
     "display_name",[[Spice Harvester]],
---~     "display_name_pl","Spice Harvester",
     "description",[[Doesn't do jack (unless you count roaming around and thumping).]],
     "Group","Infrastructure",
     "build_category","Infrastructure",
@@ -151,43 +177,68 @@ function OnMsg.ClassesPostprocess()
     "on_off_button",false,
     "prio_button",false,
     "entity","PumpStationDemo",
---~     "palettes","AttackRoverBlue"
   })
-
 end --ClassesPostprocess
 
-function OnMsg.ClassesBuilt()
-
-  if not XTemplates.ipAttackRover.Melanger_Section then
-    XTemplates.ipAttackRover.Melanger_Section = true
-
-    XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplateTemplate", {
-      "SolariaTelepresence_Melanger_Section", true,
-      "__context_of_kind", "Melanger",
-      "__template", "InfopanelSection",
-      "Icon", "UI/Icons/traits_disapprove.tga",
-      "Title", "Destroy",
-      "RolloverText", "Remove this harvester.",
-      "RolloverTitle", "Destroy",
-    }, {
-      PlaceObj("XTemplateFunc", {
-      "name", "OnActivate(self, context)",
-      "parent", function(parent, context)
-          return parent.parent
-        end,
-      "func", function(parent, context)
-				CreateRealTimeThread(function()
-					PlayFX("GroundExplosion", "start", context.fake_obj)
-					PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, context.fake_obj, 1000)
-					Sleep(50)
-					context:SetVisible(false)
-					Sleep(2500)
-					DoneObject(context)
-				end)
-      end
-      })
-    })
-
-  end --XTemplates
-
+local function RemoveXTemplateSections(list,name)
+	for i = 1, #list do
+		if list[i][name] then
+			table.remove(list,i)
+			break
+		end
+	end
 end
+function OnMsg.ClassesBuilt()
+	local XTemplates = XTemplates
+	RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
+	RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
+
+	XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplateTemplate", {
+		"Melanger_Destroy", true,
+		"__context_of_kind", "Melanger",
+		"__template", "InfopanelSection",
+		"Icon", "UI/Icons/Sections/resource_no_accept.tga",
+		"Title", [[Destroy]],
+		"RolloverText", [[Remove this harvester.]],
+		"RolloverTitle", [[Destroy]],
+	}, {
+		PlaceObj("XTemplateFunc", {
+		"name", "OnActivate(self, context)",
+		"parent", function(parent, context)
+				return parent.parent
+			end,
+		"func", function(parent, context)
+			local function CallBackFunc(answer)
+				if answer then
+					local Sleep = Sleep
+					CreateRealTimeThread(function()
+						PlayFX("GroundExplosion", "start", context.fake_obj)
+						PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, context.fake_obj, 1000)
+						Sleep(50)
+						context:SetVisible(false)
+						Sleep(5000)
+						PlayFX("GroundExplosion", "end", context.fake_obj)
+						DoneObject(context)
+
+						for i = 1, #context.shuttles do
+							context.shuttles[i]:GoodByeCruelWorld()
+							-- delay between launch
+							Sleep(Random(1000,2500))
+						end
+
+					end)
+				end
+			end
+			SpiceHarvester.ComFuncs.QuestionBox(
+				[[There is no escape—we pay for the violence of our ancestors.]],
+				CallBackFunc,
+				[[Little-death]],
+				[[Destroy the poor defenseless harvester]],
+				[[Spareth ye sprynge]],
+				SpiceHarvester.ComFuncs.Concat(CurrentModPath,"Images/Wormy.png")
+			)
+		end
+		})
+	})
+
+end -- ClassesBuilt

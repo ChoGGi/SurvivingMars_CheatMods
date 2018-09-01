@@ -254,6 +254,7 @@ local function Rebuildshortcuts()
 
 	-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
 	XShortcutsTarget.actions = {}
+	-- re-add certain ones
 	if not Platform.ged then
 		if XTemplates.GameShortcuts then
 			XTemplateSpawn("GameShortcuts", XShortcutsTarget)

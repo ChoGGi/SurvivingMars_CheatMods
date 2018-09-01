@@ -72,18 +72,19 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 		end
 		local g_CurrentMissionParams = g_CurrentMissionParams
 		for i = 1, #ItemList do
-			--check to make sure it isn't a fake name (no sense in saving it)
+			-- check to make sure it isn't a fake name (no sense in saving it)
 			if ItemList[i].value == value then
-				--new comm
+				-- new spons
 				g_CurrentMissionParams.idMissionSponsor = value
 				-- apply tech from new sponsor
-				local city = UICity
+				local UICity = UICity
 				local sponsor = GetMissionSponsor()
-				city:ModifyGlobalConstsFromProperties(sponsor)
-				sponsor:game_apply(city)
-				sponsor:OnApplyEffect(city)
+				UICity:GrantTechFromProperties(sponsor)
+				sponsor:game_apply(UICity)
+				sponsor:EffectsApply(UICity)
+				UICity:ApplyModificationsFromProperties()
 				--and bonuses
-				city:InitMissionBonuses()
+				UICity:InitMissionBonuses()
 
 				MsgPopup(
 					S[302535920001161--[[Sponsor for this save is now %s--]]]:format(choice[1].text),
@@ -208,10 +209,13 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 				g_CurrentMissionParams.idCommanderProfile = value
 
 				-- apply tech from new commmander
-				local commander = GetMissionSponsor()
-				commander:game_apply(UICity)
-				commander:OnApplyEffect(UICity)
+				local comm = GetCommanderProfile()
+				local UICity = UICity
+
+				comm:game_apply(UICity)
+				comm:OnApplyEffect(UICity)
 				UICity:ApplyModificationsFromProperties()
+
 				--and bonuses
 				UICity:InitMissionBonuses()
 
@@ -460,28 +464,30 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		for i = 1, #ItemList do
 			--check to make sure it isn't a fake name (no sense in saving it)
-				for j = 1, #choice do
-					local value = choice[j].value
-					if ItemList[i].value == value then
-						--new comm
-						if not g_CurrentMissionParams.idGameRules then
-							g_CurrentMissionParams.idGameRules = {}
-						end
-						if check1 then
-							g_CurrentMissionParams.idGameRules[value] = true
-						elseif check2 then
-							g_CurrentMissionParams.idGameRules[value] = nil
-						end
+			for j = 1, #choice do
+				local value = choice[j].value
+				if ItemList[i].value == value then
+					--new comm
+					if not g_CurrentMissionParams.idGameRules then
+						g_CurrentMissionParams.idGameRules = {}
+					end
+					if check1 then
+						g_CurrentMissionParams.idGameRules[value] = true
+					elseif check2 then
+						g_CurrentMissionParams.idGameRules[value] = nil
 					end
 				end
 			end
+		end
 
+		-- apply new rules, something tells me this doesn't disable old rules...
 		local rules = GetActiveGameRules()
 		for i = 1, #rules do
 			local rule = rules[i]
 			GameRulesMap[rule]:OnInitEffect(UICity)
 			GameRulesMap[rule]:OnApplyEffect(UICity)
 		end
+
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choice,302535920000129--[[Set--]]),
 			302535920001181--[[Rules--]],

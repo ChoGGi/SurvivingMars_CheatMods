@@ -1,25 +1,25 @@
-local GetObjects = GetObjects
-local r = const.ResourceScale
+ChoGGi_AddWaterEachSol = {
+	AmountOfWater = 50
+}
 
 function OnMsg.NewDay()
-  local objs = GetObjects{class = "SubsurfaceDepositWater"} or ""
-  for i = 1, #objs do
-    local o = objs[i]
-    if o.amount < o.max_amount then
-      o.amount = o.amount + ((ChoGGi_AddWaterEachSol.AmountOfWater or 50) * r)
-    end
-  end
-end
+	local water = ChoGGi_AddWaterEachSol.AmountOfWater * const.ResourceScale
 
-ChoGGi_AddWaterEachSol = {}
+	MapForEach("map","SubsurfaceDepositWater",function(o)
+		o.amount = o.amount + water
+    if o.amount > o.max_amount then
+      o.amount = o.max_amount
+    end
+	end)
+end
 
 function OnMsg.ModConfigReady()
   local ModConfig = ModConfig
 
-  --get options
+  -- get option/default
   ChoGGi_AddWaterEachSol.AmountOfWater = ModConfig:Get("ChoGGi_AddWaterEachSol", "AmountOfWater") or 50
 
-  --setup menu options
+  -- setup menu options
   ModConfig:RegisterMod("ChoGGi_AddWaterEachSol", "Add Water Each Sol")
 
   ModConfig:RegisterOption("ChoGGi_AddWaterEachSol", "AmountOfWater", {
@@ -33,9 +33,7 @@ function OnMsg.ModConfigReady()
 end
 
 function OnMsg.ModConfigChanged(mod_id, option_id, value)
-  if mod_id == "ChoGGi_AddWaterEachSol" then
-    if option_id == "AmountOfWater" then
-      ChoGGi_AddWaterEachSol.AmountOfWater = value
-    end
+  if mod_id == "ChoGGi_AddWaterEachSol" and option_id == "AmountOfWater" then
+		ChoGGi_AddWaterEachSol.AmountOfWater = value
   end
 end

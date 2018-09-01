@@ -1,3 +1,7 @@
+v0.4
+It was breaking down, must've been too much spice...
+Added a confirm before destruction.
+Reworked the internals a bit.
 v0.3
 Da Vinci...
 No more thumping when the game is paused.

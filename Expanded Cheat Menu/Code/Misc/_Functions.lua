@@ -1511,65 +1511,47 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 	)
 end
 
---only add unique template names
-function ChoGGi.CodeFuncs.AddXTemplate(Name,Template,Table,XTemplates,InnerTable)
-	if not (Name or Template or Table) then
-		return
-	end
-	XTemplates = XTemplates or XTemplates
 
-	if not InnerTable then
-		if not XTemplates[Template][1][Name] then
-			XTemplates[Template][1][Name] = true
-
-			XTemplates[Template][1][#XTemplates[Template][1]+1] = PlaceObj("XTemplateTemplate", {
-				Concat("ChoGGi_ECM_",AsyncRand()), true,
-				"__context_of_kind", Table.__context_of_kind or "Infopanel",
-				"__template", Table.__template or "InfopanelSection",
-				"Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-				"Title", Table.Title or S[588--[[Empty--]]],
-				"RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
-				"RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
-				"RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
-				"OnContextUpdate", Table.OnContextUpdate
-			}, {
-				PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
---~				 "parent", function(parent, context)
-				"parent", function(parent, _)
-						return parent.parent
-					end,
-				"func", Table.func or "function() return end"
-				})
-			})
-		end
-	else
-		if not XTemplates[Template][Name] then
-			XTemplates[Template][Name] = true
-
-			XTemplates[Template][#XTemplates[Template]+1] = PlaceObj("XTemplateTemplate", {
-				Concat("ChoGGi_ECM_",AsyncRand()), true,
-				"__context_of_kind", Table.__context_of_kind or "Infopanel",
-				"__template", Table.__template or "InfopanelSection",
-				"Icon", Table.Icon or "UI/Icons/gpmc_system_shine.tga",
-				"Title", Table.Title or S[588--[[Empty--]]],
-				"RolloverText", Table.RolloverText or S[126095410863--[[Info--]]],
-				"RolloverTitle", Table.RolloverTitle or S[1000016--[[Title--]]],
-				"RolloverHint", Table.RolloverHint or S[4248--[[Hints--]]],
-				"OnContextUpdate", Table.OnContextUpdate
-			}, {
-				PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
---~				 "parent", function(parent, context)
-				"parent", function(parent, _)
-						return parent.parent
-					end,
-				"func", Table.func or "function() return end"
-				})
-			})
+do -- AddXTemplate
+	local function RemoveXTemplateSections(list,name)
+		for i = 1, #list do
+			if list[i][name] then
+				table.remove(list,i)
+				break
+			end
 		end
 	end
-end
+	function ChoGGi.CodeFuncs.AddXTemplate(name,template,list)
+		if not (name or template or list) then
+			return
+		end
+		local stored_name = Concat("ChoGGi_ECM_",name)
+		local XTemplates = XTemplates
+
+		-- check for and remove old object (these are created on new game / new dlc)
+		RemoveXTemplateSections(XTemplates[template][1],stored_name)
+
+		XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
+			stored_name, true,
+			"__context_of_kind", list.__context_of_kind or "Infopanel",
+			"__template", list.__template or "InfopanelSection",
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+			"Title", list.Title or S[588--[[Empty--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverTitle", list.RolloverTitle or S[1000016--[[Title--]]],
+			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+			"OnContextUpdate", list.OnContextUpdate
+		}, {
+			PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(parent, _)
+					return parent.parent
+				end,
+			"func", list.func or "function() return end"
+			})
+		})
+	end
+end -- do
 
 function ChoGGi.CodeFuncs.SetCommanderBonuses(sType)
 	local currentname = g_CurrentMissionParams.idCommanderProfile
