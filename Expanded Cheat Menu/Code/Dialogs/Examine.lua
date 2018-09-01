@@ -6,7 +6,7 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 local ShowMe = ChoGGi.ComFuncs.ShowMe
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
@@ -29,16 +29,19 @@ local black = black
 
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
-	-- clickable purple text
-	onclick_handles = {},
 	-- what we're examining
 	obj = false,
 
 	dialog_width = 650.0,
 	dialog_height = 750.0,
 
-	parents_menu_popup = false,
-	attaches_menu_popup = false,
+	-- declare our tables ahead of time, then clear tables instead
+	parents_menu_popup = {},
+	attaches_menu_popup = {},
+	parents = {},
+	ancestors = {},
+	-- clickable purple text
+	onclick_handles = {},
 }
 
 function Examine:Init(parent, context)
@@ -46,7 +49,6 @@ function Examine:Init(parent, context)
 	local g_Classes = g_Classes
 	local const = const
 
-	-- any self. values from :new()
 	self.obj = context.obj
 
 	-- reset any marked objects
@@ -240,10 +242,9 @@ function Examine:idFilterOnKbdKeyDown(obj,vk)
 	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
-local menu_added
-local menu_list_items
+local menu_added = {}
+local menu_list_items = {}
 -- adds class name then list of functions below
---~ local function BuildFuncList(obj_name,prefix)
 function Examine:BuildFuncList(obj_name,prefix)
 	prefix = prefix or ""
 	local class = _G[obj_name] or empty_table
@@ -259,7 +260,6 @@ function Examine:BuildFuncList(obj_name,prefix)
 	end
 end
 
---~ local function ProcessList(list,prefix)
 function Examine:ProcessList(list,prefix)
 	for i = 1, #list do
 		if not menu_added[list[i]] then
@@ -344,19 +344,28 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			name = S[302535920001239--[[Functions--]]],
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
 			clicked = function()
-				menu_added = {}
-				menu_list_items = {}
+				if #self.parents > 0 or #self.ancestors > 0 then
+					table.clear(menu_added)
+					table.clear(menu_list_items)
 
-				self:ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
-				self:ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
-				-- add examiner object with some spaces so it's at the top
-				self:BuildFuncList(self.obj.class,"	")
-				-- if Object hasn't been added, then add CObject
-				if not menu_added.Object and menu_added.CObject then
-					self:BuildFuncList("CObject",menu_added.CObject)
+					if #self.parents > 0 then
+						self:ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
+					end
+					if #self.ancestors > 0 then
+						self:ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
+					end
+					-- add examiner object with some spaces so it's at the top
+					self:BuildFuncList(self.obj.class,"	")
+					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
+					if not menu_added.Object and menu_added.CObject then
+						self:BuildFuncList("CObject",menu_added.CObject)
+					end
+
+					ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
+				else
+					-- close enough
+					print(S[9763--[[No objects matching current filters.--]]])
 				end
-
-				ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
 			end,
 		},
 		{
@@ -427,41 +436,29 @@ function Examine:FindNext(filter)
 end
 
 do -- FlashWindow
-	local flashing_table = {}
-	local black,white = black,white
+	local flashing_thread
 	local Sleep = Sleep
-	local Invalidate = UIL.Invalidate
+	local DeleteThread = DeleteThread
+	local CreateRealTimeThread = CreateRealTimeThread
 
 	function Examine:FlashWindow(obj)
 		obj = obj or self.obj
+		local orig_vis = obj:GetVisible()
 
-		-- always kill off old thread and reset colours, else they may get stuck
-		if flashing_table.thread then
-			DeleteThread(flashing_table.thread)
-			obj.BorderWidth = flashing_table.width
-			obj.BorderColor = flashing_table.colour
-		end
-
-		flashing_table.thread = CreateRealTimeThread(function()
-			flashing_table.width = obj.BorderWidth
-			flashing_table.colour = obj.BorderColor
-
-			obj.BorderWidth = 2
-			local c = black
+		-- always kill off old thread first
+		DeleteThread(flashing_thread)
+		flashing_thread = CreateRealTimeThread(function()
+			local vis = nil
 			for _ = 1, 6 do
 				if obj.window_state == "destroying" then
 					break
 				end
-				obj.BorderColor = c
-				Invalidate()
+				obj:SetVisible(vis)
 				Sleep(100)
-				c = c == black and white or black
+				vis = not vis
 			end
 			if obj.window_state ~= "destroying" then
-				obj.BorderWidth = flashing_table.width
-				obj.BorderColor = flashing_table.colour
-				table.clear(flashing_table)
-				Invalidate()
+				obj:SetVisible(orig_vis)
 			end
 		end)
 	end
@@ -535,7 +532,7 @@ function Examine:valuetotextex(obj)
 
 	elseif obj_type == "userdata" then
 		local str = tostring(obj)
-		local trans = T(obj)
+		local trans = Trans(obj)
 		-- if it isn't translatable then return a clickable link (not that useful, but it's highlighted)
 		if trans == "stripped" or trans:find("Missing locale string id") then
 			return Concat(
@@ -648,17 +645,18 @@ function Examine:HyperLink(f, custom_color)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
+local ExamineThreadLevel_data = {}
 local function ExamineThreadLevel_totextex(level, info, obj,self)
-	local data = {}
 	if blacklist then
-		data = {DebugGetInfo(obj)}
+		table.clear(ExamineThreadLevel_data)
+		ExamineThreadLevel_data = {DebugGetInfo(obj)}
 	else
-		data = {}
+		table.clear(ExamineThreadLevel_data)
 		local l = 1
 		while true do
 			local name, val = getlocal(obj, level, l)
 			if name then
-				data[name] = val
+				ExamineThreadLevel_data[name] = val
 				l = l + 1
 			else
 				break
@@ -667,13 +665,13 @@ local function ExamineThreadLevel_totextex(level, info, obj,self)
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
-				data[Concat(name,"(up)")] = val
+				ExamineThreadLevel_data[Concat(name,"(up)")] = val
 			end
 		end
 	end
 
 	return function()
-		ChoGGi.ComFuncs.OpenInExamineDlg(data, self)
+		ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data, self)
 	end
 end
 
@@ -681,26 +679,27 @@ local function Examine_totextex(obj,self)
 	ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
 end
 
-function Examine:totextex(obj,ChoGGi)
-	local res = {}
-	local sort = {}
+local totextex_res = {}
+local totextex_sort = {}
+function Examine:totextex(obj)
+	table.iclear(totextex_res)
+	table.clear(totextex_sort)
 	local obj_metatable = getmetatable(obj)
 	local obj_type = type(obj)
-	local is_table = obj_type == "table"
 	local c = 0
 
-	if is_table then
+	if obj_type == "table" then
 
 		for k, v in pairs(obj) do
 			c = c + 1
-			res[c] = Concat(
+			totextex_res[c] = Concat(
 				self:valuetotextex(k),
 				" = ",
 				self:valuetotextex(v),
 				"<left>"
 			)
 			if type(k) == "number" then
-				sort[res[c]] = k
+				totextex_sort[totextex_res[c]] = k
 			end
 		end
 
@@ -708,7 +707,7 @@ function Examine:totextex(obj,ChoGGi)
 
 		if blacklist then
 			c = c + 1
-			res[c] = Concat(
+			totextex_res[c] = Concat(
 				self:HyperLink(function(_, _)
 					ExamineThreadLevel_totextex(nil, nil, obj, self)
 				end),
@@ -722,7 +721,7 @@ function Examine:totextex(obj,ChoGGi)
 				info = debug.getinfo(obj, level, "Slfun")
 				if info then
 					c = c + 1
-					res[c] = Concat(
+					totextex_res[c] = Concat(
 						self:HyperLink(function(level, info)
 							ExamineThreadLevel_totextex(level, info, obj,self)
 						end),
@@ -742,7 +741,7 @@ function Examine:totextex(obj,ChoGGi)
 		end
 
 		c = c + 1
-		res[c] = Concat("<color 255 255 255>\nThread info: ",
+		totextex_res[c] = Concat("<color 255 255 255>\nThread info: ",
 			"\nIsValidThread(): ",IsValidThread(obj),
 			"\nGetThreadStatus(): ",GetThreadStatus(obj),
 			"\nIsGameTimeThread(): ",IsGameTimeThread(obj),
@@ -754,21 +753,21 @@ function Examine:totextex(obj,ChoGGi)
 	elseif obj_type == "function" then
 		if blacklist then
 			c = c + 1
-			res[c] = self:valuetotextex(DebugGetInfo(obj))
+			totextex_res[c] = self:valuetotextex(DebugGetInfo(obj))
 		else
 			local i = 1
 			while true do
 				local k, v = getupvalue(obj, i)
 				if k then
 					c = c + 1
-					res[c] = Concat(
+					totextex_res[c] = Concat(
 						self:valuetotextex(k),
 						" = ",
 						self:valuetotextex(v)
 					)
 				else
 					c = c + 1
-					res[c] = self:valuetotextex(obj)
+					totextex_res[c] = self:valuetotextex(obj)
 					break
 				end
 				i = i + 1
@@ -776,19 +775,19 @@ function Examine:totextex(obj,ChoGGi)
 		end
 	end
 
-	table.sort(res, function(a, b)
-		if sort[a] and sort[b] then
-			return sort[a] < sort[b]
+	table.sort(totextex_res, function(a, b)
+		if totextex_sort[a] and totextex_sort[b] then
+			return totextex_sort[a] < totextex_sort[b]
 		end
-		if sort[a] or sort[b] then
-			return sort[a] and true
+		if totextex_sort[a] or totextex_sort[b] then
+			return totextex_sort[a] and true
 		end
 		return CmpLower(a, b)
 	end)
 
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 
-		table.insert(res,1,Concat(
+		table.insert(totextex_res,1,Concat(
 --~			 "<center>--",
 			"\t\t\t\t--",
 			self:HyperLink(function()
@@ -804,7 +803,7 @@ function Examine:totextex(obj,ChoGGi)
 
 		if obj:IsValidPos() and IsValidEntity(obj.entity) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
-			table.insert(res, 2, Concat(
+			table.insert(totextex_res, 2, Concat(
 				GetStateName(obj:GetState()),
 				", step:",
 				self:HyperLink(function()
@@ -815,8 +814,8 @@ function Examine:totextex(obj,ChoGGi)
 			))
 		end
 
-	elseif is_table and obj_metatable then
-			table.insert(res, 1, Concat(
+	elseif obj_type == "table" and obj_metatable then
+			table.insert(totextex_res, 1, Concat(
 --~				 "<center>--",
 				"\t\t\t\t--",
 				self:valuetotextex(obj_metatable),
@@ -825,19 +824,20 @@ function Examine:totextex(obj,ChoGGi)
 			))
 	end
 
-	-- add strings/numbers to the body
+		-- add strings/numbers to the body
 	if obj_type == "number" or obj_type == "string" or obj_type == "boolean" then
 		c = c + 1
-		res[c] = tostring(obj)
+		totextex_res[c] = tostring(obj)
+
 	elseif obj_type == "userdata" then
-		local str = T(obj)
+		local str = Trans(obj)
 		-- might as well just return userdata instead of these
 		if str == "stripped" or str:find("Missing locale string id") then
 			str = obj
 		end
-
 		c = c + 1
-		res[c] = tostring(str)
+		totextex_res[c] = tostring(str)
+
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
 		local dbg_value = "\ndebug.getinfo: "
@@ -850,10 +850,10 @@ function Examine:totextex(obj,ChoGGi)
 			end
 		end
 		c = c + 1
-		res[c] = dbg_value
+		totextex_res[c] = dbg_value
 	end
 
-	return TableConcat(res,"\n")
+	return TableConcat(totextex_res,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
@@ -876,14 +876,11 @@ local function ClearShowMe_menu()
 end
 
 local function Destroy_menu(obj,self)
---~ 	local z = self.ZOrder
---~ 	self:SetZOrder(1)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000414--[[Are you sure you wish to destroy it?--]]],
 		function(answer)
---~ 			self:SetZOrder(z)
 			if answer then
-				ChoGGi.CodeFuncs.DeleteObject(obj)
+				DoneObject(obj)
 			end
 		end,
 		S[697--[[Destroy--]]]
@@ -927,36 +924,39 @@ function Examine:menu(obj)
 		HLEnd,
 --~		 " ",
 	}
-	local c = #res
 
-	if IsValid(obj) and obj_type == "table" then
-		c = c + 1
-		res[c] = self:HyperLink(function()
-			Show_menu(obj)
-		end)
-		c = c + 1
-		res[c] = S[302535920000058--[[[ShowIt]--]]]
-		c = c + 1
-		res[c] = HLEnd
+	if obj_type == "table" then
+		local c = #res
+		if IsValid(obj) then
+			c = c + 1
+			res[c] = self:HyperLink(function()
+				Show_menu(obj)
+			end)
+			c = c + 1
+			res[c] = S[302535920000058--[[[ShowIt]--]]]
+			c = c + 1
+			res[c] = HLEnd
+		end
+
+		if obj.class then
+			c = c + 1
+			res[c] = self:HyperLink(function()
+				Destroy_menu(obj,self)
+			end)
+			c = c + 1
+			res[c] = S[302535920000060--[[[Destroy It!]--]]]
+			c = c + 1
+			res[c] = HLEnd
+		end
 	end
-	if IsValid(obj) then
-		c = c + 1
-		res[c] = self:HyperLink(function()
-			Destroy_menu(obj,self)
-		end)
-		c = c + 1
-		res[c] = S[302535920000060--[[[Destroy It!]--]]]
-		c = c + 1
-		res[c] = HLEnd
-	end
+
 	return TableConcat(res)
 end
 
 -- used to build parents/ancestors menu
 
-local pmenu_skip_dupes
+local pmenu_skip_dupes = {}
 function Examine:BuildParents(list,list_type,title,sort_type)
---~ local function BuildParents(self,list,list_type,title,sort_type)
 	local g_Classes = g_Classes
 	if list and next(list) then
 		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
@@ -985,35 +985,35 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 end
 
 function Examine:SetObj(obj,skip_thread)
-	obj = obj or self.obj
-	self.onclick_handles = {}
 
-	self.idText:SetText(S[67--[[Loading resources--]]])
+	local obj_type = type(obj)
+	if obj_type == "string" then
+		-- check if obj string is a ref to an actual object
+		local obj_ref  = ChoGGi.ComFuncs.DotNameToObject(obj)
+		-- if it is then we use that as the obj to examine
+		if obj_ref then
+			obj = obj_ref
+		end
+	end
+
+	table.iclear(self.onclick_handles)
 	self.idLinks:SetText(self:menu(obj))
-	local is_table = type(obj) == "table"
+
 	local name = RetName(obj)
+	self.idText:SetText(name,": ",S[67--[[Loading resources--]]])
 
-	-- update attaches button with attaches amount
-	local attaches = is_table and IsValid(obj) and obj:IsKindOf("ComponentAttach") and obj:GetAttaches()
-	local attach_amount = attaches and #attaches
-	self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
-
-Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Clear Markers]--]]])
-
-	if is_table then
-
-		-- reset menu list
-		self.parents_menu_popup = {}
+	if obj_type == "table" then
+		-- add object name to title
+		if type(obj.handle) == "number" then
+			name = Concat(name," (",obj.handle,")")
+		elseif #obj > 0 then
+			name = Concat(name," (",#obj,")")
+		end
 
 		if obj.class then
-			--add object name to title
-			if type(obj.handle) == "number" then
-				name = Concat(name," (",obj.handle,")")
-			elseif #obj > 0 then
-				name = Concat(name," (",#obj,")")
-			end
-
-			pmenu_skip_dupes = {}
+			-- reset menu list
+			table.iclear(self.parents_menu_popup)
+			table.clear(pmenu_skip_dupes)
 			-- build menu list
 			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
 			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
@@ -1021,41 +1021,50 @@ Use %s to hide markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Cl
 			if #self.parents_menu_popup > 0 then
 				self.idParents:SetVisible(true)
 			end
-			--attaches menu
-			if attaches and attach_amount > 0 then
-				self.attaches_menu_popup = {}
 
-				for i = 1, #attaches do
-					local pos = type(attaches[i].GetVisualPos) == "function" and attaches[i]:GetVisualPos()
-					self.attaches_menu_popup[i] = {
-						name = RetName(attaches[i]),
+			-- attaches button/menu
+			if IsValid(obj) and obj:IsKindOf("ComponentAttach") then
+				table.iclear(self.attaches_menu_popup)
+				local attach_amount = 0
+				obj:ForEachAttach(function(a)
+					attach_amount = attach_amount + 1
+					local pos = type(a.GetVisualPos) == "function" and a:GetVisualPos()
+
+					self.attaches_menu_popup[attach_amount] = {
+						name = RetName(a),
 						hint = Concat(
-							attaches[i].class,"\n",
-							S[302535920000955--[[Handle--]]],": ",attaches[i].handle or S[6761--[[None--]]],"\n",
+							a.class,"\n",
+							S[302535920000955--[[Handle--]]],": ",a.handle or S[6761--[[None--]]],"\n",
 							pos and Concat("Pos: ",pos)
 						),
-						showme = attaches[i],
+						showme = a,
 						clicked = function()
-							ChoGGi.ComFuncs.OpenInExamineDlg(attaches[i],self)
+							ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
 						end,
 					}
-				end
-				self.idAttaches:SetVisible(true)
-			end
-		end
+				end)
 
-	end
+				if attach_amount > 0 then
+					self.idAttaches:SetVisible(true)
+					self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
+Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Clear Markers]--]]])
+				else
+					self.idAttaches:SetVisible()
+				end
+			end
+		end -- obj.class
+	end -- istable
 
 	-- limit caption length so we don't cover up close button
 	self.idCaption:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
 
 	-- don't create a new thread if we're already in one from auto-refresh
 	if skip_thread then
-		self.idText:SetText(self:totextex(obj,ChoGGi))
+		self.idText:SetText(self:totextex(obj))
 	else
 		-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
 		DelayedCall(5, function()
-			self.idText:SetText(self:totextex(obj,ChoGGi))
+			self.idText:SetText(self:totextex(obj))
 		end)
 	end
 end

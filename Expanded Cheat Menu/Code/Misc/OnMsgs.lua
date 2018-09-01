@@ -184,6 +184,37 @@ function OnMsg.ModsLoaded()
 
 	-- added this here, as it's early enough to load during the New Game Menu
 	if not ChoGGi.UserSettings.DisableECM then
+		local Actions = ChoGGi.Temp.Actions
+		local c = #Actions
+
+		-- add preset menu items
+		ClassDescendantsList("Preset", function(name, cls)
+			c = c + 1
+			Actions[c] = {
+				ActionMenubar = "Presets",
+				ActionName = name,
+				ActionId = Concat("Presets.",name),
+				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
+				RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
+				OnAction = function()
+					OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+						PresetClass = name,
+						SingleFile = cls.SingleFile
+					})
+				end,
+			}
+		end)
+
+		-- add the defaults we skip to my actions
+		for i = 1, c do
+			-- if it's a . than we haven't updated it yet
+			if Actions[i].ActionId:sub(1,1) == "." then
+				Actions[i].ActionTranslate = false
+				Actions[i].replace_matching_id = true
+				Actions[i].ActionId = Concat(Actions[i].ActionMenubar,Actions[i].ActionId)
+			end
+		end
+
 		-- show console log history
 		if ChoGGi.UserSettings.ConsoleToggleHistory then
 			ShowConsoleLog(true)
@@ -290,6 +321,7 @@ local function Rebuildshortcuts()
 --~ }
 
 	for i = 1, #Actions do
+		-- and add to the actual actions
 		XShortcutsTarget:AddAction(XAction:new(Actions[i]))
 	end
 
@@ -1015,26 +1047,6 @@ do -- LoadGame/CityStart
 		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
 
 		if not UserSettings.DisableECM then
-			local Actions = ChoGGi.Temp.Actions
-			local c = #Actions
-
-			-- add preset menu items
-			ClassDescendantsList("Preset", function(name, cls)
-				c = c + 1
-				Actions[c] = {
-					ActionMenubar = "Presets",
-					ActionName = name,
-					ActionId = Concat("Presets.",name),
-					ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
-					RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
-					OnAction = function()
-						OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-							PresetClass = name,
-							SingleFile = cls.SingleFile
-						})
-					end,
-				}
-			end)
 
 			-- show cheat pane in selection panel
 			if UserSettings.InfopanelCheats then
@@ -1044,16 +1056,6 @@ do -- LoadGame/CityStart
 			-- remove some uselessish Cheats to clear up space
 			if UserSettings.CleanupCheatsInfoPane then
 				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-			end
-
-			-- add the defaults we skip to my actions
-			for i = 1, #Actions do
-				Actions[i].ActionTranslate = false
-				Actions[i].replace_matching_id = true
-				-- update any menu items that aren't the base popups
-				if Actions[i].ActionMenubar ~= "DevMenu" then
-					Actions[i].ActionId = Concat(Actions[i].ActionMenubar,Actions[i].ActionId)
-				end
 			end
 
 			-- reloads actions (cheat menu/menu items/shortcuts)

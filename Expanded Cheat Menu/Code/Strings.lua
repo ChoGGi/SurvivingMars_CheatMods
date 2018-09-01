@@ -236,6 +236,7 @@ local Strings = {
 	[9003] = TranslationTable[9003], -- Trigon Dome
 	[9009] = TranslationTable[9009], -- Mega Trigon Dome
 	[9012] = TranslationTable[9012], -- Diamond Dome
+	[9763] = TranslationTable[9763], -- No objects matching current filters.
 	[1000009] = TranslationTable[1000009], -- Confirmation
 	[1000011] = TranslationTable[1000011], -- There is an active Steam upload
 	[1000012] = _InternalTranslate(T{1000012}), -- Mod <ModLabel> will be uploaded to Steam

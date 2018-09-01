@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local default_icon = "UI/Icons/IPButtons/drone.tga"
 local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
 local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
@@ -1129,7 +1129,7 @@ do --ChangeResupplySettings
 		local ItemList = {}
 		for i = 1, #Cargo do
 			ItemList[i] = {
-				text = T(Cargo[i].name),
+				text = Trans(Cargo[i].name),
 				value = Cargo[i].id,
 				meta = Cargo[i],
 			}

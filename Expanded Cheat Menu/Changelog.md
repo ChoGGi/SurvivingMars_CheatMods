@@ -26,6 +26,11 @@
 - Find Value has a "Case-sensitive" checkbox now.
 - Hints now show up for cheats toolbar items.
 - Find Nearest Resource adds a blinky for ten seconds (it also doesn't select anymore).
+- Added icons to some lists (example: research tech).
+- Some lists just displayed <param1> in the tooltip since I was too lazy to get the actual value.
+- Examine:
+- > Examine UI Flash toggles visibility now (not everything works with borders).
+- > OpenExamine("object_name"): Will examine "_G.object_name" (table example: "table.table.object")
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
@@ -35,6 +40,7 @@
 - Examine dialog getting wrong zorder when using "Destroy It".
 - Buildings>Sanatoriums & Schools: Show All Traits wasn't toggling School traits (also changed it to a saved option).
 - I broke a few building cheats when updating to DA.
+- Change Sponsor/Commander broke in DA (thanks Dawnmist).
 
 ## v8.5 (26 Aug 2018)
 ### Added:

@@ -7,7 +7,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 
 -- add some shortened func names
@@ -643,6 +643,7 @@ do -- SetRandColour
 				attaches[c] = attach
 			end
 		end
+
 		-- random is random after all, so lets try for at least slightly different colours
 		local colours = ChoGGi.CodeFuncs.RandomColour(c + 1)
 
@@ -673,13 +674,15 @@ do -- SetDefColour
 			return
 		end
 		SetDefColour(obj)
-		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-		for i = 1, #attaches do
-			SetDefColour(attaches[i])
+		-- attaches
+		if obj:IsKindOf("ComponentAttach") then
+			obj:ForEachAttach(function(a)
+				SetDefColour(a)
+			end)
 		end
-		local IsValid = IsValid
+		-- other attaches
 		for _,attach in pairs(obj) do
-			if IsValid(attach) then
+			if type(attach) == "table" then
 				SetDefColour(attach)
 			end
 		end
@@ -989,8 +992,8 @@ do -- ChangeObjectColour
 end -- do
 
 --returns the near hex grid for object placement
-function ChoGGi.CodeFuncs.CursorNearestHex()
-	return HexGetNearestCenter(GetTerrainCursor())
+function ChoGGi.CodeFuncs.CursorNearestHex(pt)
+	return HexGetNearestCenter(pt or GetTerrainCursor())
 end
 
 --returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
@@ -1001,10 +1004,7 @@ end
 
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
 	if obj:IsKindOf("ComponentAttach") then
-		local attaches = obj:GetAttaches() or ""
-		for i = #attaches, 1, -1 do
-			attaches[i]:delete()
-		end
+		obj:DestroyAttaches()
 	end
 end
 
@@ -1031,7 +1031,7 @@ do -- FindNearestResource
 		for i = 1, #res do
 			local item = ResourceDescription[table.find(ResourceDescription, "name", res[i])]
 			ItemList[i] = {
-				text = T(item.display_name),
+				text = Trans(item.display_name),
 				value = item.name,
 				icon = TagLookupTable[Concat("icon_",item.name)],
 			}
@@ -1393,19 +1393,17 @@ end
 
 do -- CollisionsObject_Toggle
 	local function AttachmentsCollisionToggle(sel,which)
-		local att = sel:IsKindOf("ComponentAttach") and sel:GetAttaches() or ""
-		if att and #att > 0 then
-			--are we disabling col or enabling
-			local flag
+		if sel:IsKindOf("ComponentAttach") then
+			local c = const.efCollision + const.efApplyToGrids
+			-- are we disabling col or enabling
 			if which then
-				flag = "ClearEnumFlags"
+				sel:ForEachAttach(function(a)
+					a:ClearEnumFlags(c)
+				end)
 			else
-				flag = "SetEnumFlags"
-			end
-			--and loop through all the attach
-			local const = const
-			for i = 1, #att do
-				att[i][flag](att[i],const.efCollision + const.efApplyToGrids)
+				sel:ForEachAttach(function(a)
+					a:SetEnumFlags(c)
+				end)
 			end
 		end
 	end

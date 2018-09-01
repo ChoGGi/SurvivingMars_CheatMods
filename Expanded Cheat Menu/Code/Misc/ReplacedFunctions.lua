@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
---~ local T = ChoGGi.ComFuncs.Translate
+--~ local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
@@ -126,11 +126,11 @@ do --funcs without a class
 --~					 if not Text:find(SearchName) then
 --~						 return Text
 --~					 end
---~					 return Text:gsub(SearchName,ColourText(T(params[Name])))
+--~					 return Text:gsub(SearchName,ColourText(Trans(params[Name])))
 --~				 end
 --~				 --show popups in console log
 --~				 local presettext = PopupNotificationPresets[preset]
---~				 --print(ColourText("Title: ",true),ColourText(T(presettext.title)))
+--~				 --print(ColourText("Title: ",true),ColourText(Trans(presettext.title)))
 --~				 local context = _GetPopupNotificationContext(preset, params or empty_table, bPersistable)
 --~				 context.parent = parent
 --~				 if bPersistable then
@@ -138,7 +138,7 @@ do --funcs without a class
 --~				 else
 --~					 context.async_signal = {}
 --~				 end
---~				 local text = T(presettext.text,context,true)
+--~				 local text = Trans(presettext.text,context,true)
 
 
 --~				 text = ReplaceParam("number1",text)
@@ -153,10 +153,10 @@ do --funcs without a class
 --~				 text = ReplaceParam("sponsor_name",text)
 --~				 text = ReplaceParam("commander_name",text)
 
---~				 --text = Concat(text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",T(params.colonist)) ,")>"))
+--~				 --text = Concat(text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Trans(params.colonist)) ,")>"))
 
 --~				 --print(ColourText("Text: ",true),text)
---~				 --print(ColourText("Voiced Text: ",true),T(presettext.voiced_text))
+--~				 --print(ColourText("Voiced Text: ",true),Trans(presettext.voiced_text))
 --~			 end) then
 --~				 print("<color 255 0 0>Encountered an error trying to convert popup to console msg; showing popup instead (please let me know which popup it is).</color>")
 --~				 return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)

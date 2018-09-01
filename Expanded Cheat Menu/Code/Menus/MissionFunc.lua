@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Sections/spaceship.tga"
 
@@ -53,18 +53,27 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 	local Presets = Presets
 
 	local ItemList = {}
-	local defs = Presets.MissionSponsorPreset.Default or ""
-	for i = 1, #defs do
-		local def = defs[i]
-		if def.id ~= "random" then
+	local objs = Presets.MissionSponsorPreset.Default or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.id ~= "random" and obj.id ~= "None" then
+			local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
+			local stats
+			-- the one we want is near the end, but there's also a blank item below it
+			for i = 1, #descr do
+				if type(descr[i]) == "table" then
+					stats = descr[i]
+				end
+			end
+
 			ItemList[#ItemList+1] = {
-				text = T(def.display_name),
-				value = def.id,
-				hint = T(def.effect)
+				text = Trans(obj.display_name),
+				value = obj.id,
+				hint = Trans(T{obj.effect,stats[2]})
 			}
 		end
 	end
-
+--~ Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
 	local function CallBackFunc(choice)
 		local value = choice[1].value
 		if not value then
@@ -100,7 +109,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000712--[[Set Sponsor--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)),
+		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)),
 	}
 end
 
@@ -110,13 +119,23 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 	local Presets = Presets
 
 	local ItemList = {}
-	local tab = Presets.MissionSponsorPreset.Default or ""
-	for i = 1, #tab do
-		if tab[i].id ~= "random" then
+	local objs = Presets.MissionSponsorPreset.Default or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.id ~= "random" and obj.id ~= "None" then
+			local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
+			local stats
+			-- the one we want is near the end, but there's also a blank item below it
+			for i = 1, #descr do
+				if type(descr[i]) == "table" then
+					stats = descr[i]
+				end
+			end
+
 			ItemList[#ItemList+1] = {
-				text = T(tab[i].display_name),
-				value = tab[i].id,
-				hint = Concat(T(tab[i].effect),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",tostring(ChoGGi.UserSettings[Concat("Sponsor",tab[i].id)]))
+				text = Trans(obj.display_name),
+				value = obj.id,
+				hint = Concat(Trans(T{obj.effect,stats[2]}),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",ChoGGi.UserSettings[Concat("Sponsor",obj.id)])
 			}
 		end
 	end
@@ -165,7 +184,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = Concat(S[302535920001162--[[Sponsor--]]]," ",S[302535920001166--[[Bonuses--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
+		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
 		multisel = true,
 		check = {
 			{
@@ -186,13 +205,14 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 	local UICity = UICity
 
 	local ItemList = {}
-	local tab = Presets.CommanderProfilePreset.Default or ""
-	for i = 1, #tab do
-		if tab[i].id ~= "random" then
+	local objs = Presets.CommanderProfilePreset.Default or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.id ~= "random" and obj.id ~= "None" then
 			ItemList[#ItemList+1] = {
-				text = T(tab[i].display_name),
-				value = tab[i].id,
-				hint = T(tab[i].effect)
+				text = Trans(obj.display_name),
+				value = obj.id,
+				hint = Trans(obj.effect)
 			}
 		end
 	end
@@ -233,7 +253,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000716--[[Set Commander--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)),
+		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)),
 	}
 end
 
@@ -242,13 +262,14 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 	local Presets = Presets
 
 	local ItemList = {}
-	local tab = Presets.CommanderProfilePreset.Default or ""
-	for i = 1, #tab do
-		if tab[i].id ~= "random" then
+	local objs = Presets.CommanderProfilePreset.Default or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.id ~= "random" and obj.id ~= "None" then
 			ItemList[#ItemList+1] = {
-				text = T(tab[i].display_name),
-				value = tab[i].id,
-				hint = Concat(T(tab[i].effect),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",ChoGGi.UserSettings[Concat("Commander",tab[i].id)])
+				text = Trans(obj.display_name),
+				value = obj.id,
+				hint = Concat(Trans(obj.effect),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",ChoGGi.UserSettings[Concat("Commander",obj.id)])
 			}
 		end
 	end
@@ -297,7 +318,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = Concat(S[302535920001174--[[Commander--]]]," ",S[302535920001166--[[Bonuses--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple bonuses.--]]]),
+		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple bonuses.--]]]),
 		multisel = true,
 		check = {
 			{
@@ -320,7 +341,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	local tab = Presets.MissionLogoPreset.Default or ""
 	for i = 1, #tab do
 		ItemList[#ItemList+1] = {
-			text = T(tab[i].display_name),
+			text = Trans(tab[i].display_name),
 			value = tab[i].id,
 		}
 	end
@@ -350,12 +371,12 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		local tab = Presets.MissionLogoPreset.Default or ""
 		for i = 1, #tab do
 			if tab[i].id == value then
-				--for any new objects
+				-- for any new objects
 				g_CurrentMissionParams.idMissionLogo = value
 				local entity_name = Presets.MissionLogoPreset.Default[value].entity_name
-				--loop through landed rockets and change logo
+				-- loop through rockets and change logo
 				ChangeLogo("AllRockets",entity_name)
-				--same for any buildings that use the logo
+				-- same for any buildings that use the logo
 				ChangeLogo("Building",entity_name)
 
 				MsgPopup(
@@ -371,7 +392,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001178--[[Set New Logo--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",T(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)),
+		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)),
 	}
 end
 
@@ -431,9 +452,9 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		local def = defs[i]
 		if def.id ~= "random" then
 			ItemList[#ItemList+1] = {
-				text = T(def.display_name),
+				text = Trans(def.display_name),
 				value = def.id,
-				hint = Concat(T(def.description),"\n",T(def.flavor))
+				hint = Concat(Trans(def.description),"\n",Trans(def.flavor))
 			}
 		end
 	end
@@ -502,7 +523,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		hint[#hint+1] = ":"
 		for Key,_ in pairs(rules) do
 			hint[#hint+1] = " "
-			hint[#hint+1] = T(Presets.GameRules.Default[Key].display_name)
+			hint[#hint+1] = Trans(Presets.GameRules.Default[Key].display_name)
 		end
 	end
 

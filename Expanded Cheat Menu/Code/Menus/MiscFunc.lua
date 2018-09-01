@@ -243,18 +243,19 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
 		}
-
-		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-		for i = 1, #attaches do
-			if attaches[i]:IsKindOf("ColorizableObject") then
-				ItemList[#ItemList+1] = {
-					text = attaches[i].class,
-					value = attaches[i].class,
-					parentobj = obj,
-					obj = attaches[i],
-					hint = Concat(S[302535920001107--[[Change colours of an attached object.--]]],"\n",S[302535920000955--[[Handle--]]],": ",attaches[i].handle),
-				}
-			end
+		-- check and add attachments
+		if obj:IsKindOf("ComponentAttach") then
+			obj:ForEachAttach(function(a)
+				if a:IsKindOf("ColorizableObject") then
+					ItemList[#ItemList+1] = {
+						text = a.class,
+						value = a.class,
+						parentobj = obj,
+						obj = a,
+						hint = Concat(S[302535920001107--[[Change colours of an attached object.--]]],"\n",S[302535920000955--[[Handle--]]],": ",a.handle),
+					}
+				end
+			end)
 		end
 		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
 		for _,attach in pairs(obj) do
@@ -292,6 +293,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 		return
 	end
 	local hint_loop = S[302535920001109--[[Loops though and makes all--]]]
+
 	local ItemList = {
 		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[3984--[[Anomalies--]]]),value = "Anomaly",hint = Concat(hint_loop," ",S[302535920001110--[[anomalies visible.--]]])},
 		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[3980--[[Buildings--]]]),value = "Building",hint = Concat(hint_loop," ",S[302535920001111--[[buildings visible.--]]])},
@@ -305,7 +307,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 		{text = 75,value = 75},
 		{text = 100,value = 100},
 	}
-	--callback
+
 	local function CallBackFunc(choice)
 		local value = choice[1].value
 		if not value then
@@ -356,10 +358,7 @@ function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
 	local config = config
 	config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
 	ReopenSelectionXInfopanel()
-
 	ChoGGi.UserSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
-
---~	 ChoGGi.ComFuncs.SetSavedSetting("ToggleInfopanelCheats",config.BuildingInfopanelCheats)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -373,7 +372,7 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
 	local ChoGGi = ChoGGi
 
 	if ChoGGi.UserSettings.CleanupCheatsInfoPane then
-	-- needs default
+		-- needs default?
 		ChoGGi.UserSettings.CleanupCheatsInfoPane = false
 	else
 		ChoGGi.UserSettings.CleanupCheatsInfoPane = true

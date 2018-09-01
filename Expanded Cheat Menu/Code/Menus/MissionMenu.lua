@@ -56,18 +56,7 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 	RolloverText = S[302535920000713--[[Switch to a different sponsor.--]]],
 	OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
-	ActionSortKey = "1Set Sponsor",
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_ExpandedCM_Mission,
-	ActionName = S[302535920000716--[[Set Commander--]]],
-	ActionId = ".Set Commander",
-	ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
-	RolloverText = S[302535920000717--[[Switch to a different commander.--]]],
-	OnAction = ChoGGi.MenuFuncs.ChangeCommander,
-	ActionSortKey = "3",
+	ActionSortKey = "21",
 }
 
 c = c + 1
@@ -81,7 +70,18 @@ Actions[c] = {
 (if value already exists; set to larger amount).
 restart to set disabled.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
-	ActionSortKey = "2",
+	ActionSortKey = "22",
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Mission,
+	ActionName = S[302535920000716--[[Set Commander--]]],
+	ActionId = ".Set Commander",
+	ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+	RolloverText = S[302535920000717--[[Switch to a different commander.--]]],
+	OnAction = ChoGGi.MenuFuncs.ChangeCommander,
+	ActionSortKey = "23",
 }
 
 c = c + 1
@@ -95,7 +95,7 @@ Actions[c] = {
 (if value already exists; set to larger amount).
 restart to set disabled.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
-	ActionSortKey = "4",
+	ActionSortKey = "24",
 }
 
 c = c + 1

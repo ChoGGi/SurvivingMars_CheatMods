@@ -6,7 +6,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local pcall,tostring,type,table = pcall,tostring,type,table
@@ -338,7 +338,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 		end
 
 		if IsT(obj) then
-			return Concat("T{\"",T(obj),"\"}")
+			return Concat("T{\"",Trans(obj),"\"}")
 		else
 			-- regular table
 			local table_data

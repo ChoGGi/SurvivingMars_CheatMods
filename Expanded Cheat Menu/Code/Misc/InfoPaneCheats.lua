@@ -5,7 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local ResourceScale = ChoGGi.Consts.ResourceScale
 
@@ -399,29 +399,29 @@ Reselect to update display."--]]]:format(name)
 				SetHint(action,resetc)
 
 			elseif action.ActionId == "Upgrade1" then
-				local tempname = T(obj.upgrade1_display_name)
+				local tempname = Trans(obj.upgrade1_display_name)
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]]:format(tempname,T(obj.upgrade1_description)))
+%s."--]]]:format(tempname,Trans(obj.upgrade1_description)))
 				else
 					action.ActionId = ""
 				end
 			elseif action.ActionId == "Upgrade2" then
-				local tempname = T(obj.upgrade2_display_name)
+				local tempname = Trans(obj.upgrade2_display_name)
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]]:format(tempname,T(obj.upgrade2_description)))
+%s."--]]]:format(tempname,Trans(obj.upgrade2_description)))
 				else
 					action.ActionId = ""
 				end
 			elseif action.ActionId == "Upgrade3" then
-				local tempname = T(obj.upgrade3_display_name)
+				local tempname = Trans(obj.upgrade3_display_name)
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]]:format(tempname,T(obj.upgrade3_description)))
+%s."--]]]:format(tempname,Trans(obj.upgrade3_description)))
 				else
 					action.ActionId = ""
 				end

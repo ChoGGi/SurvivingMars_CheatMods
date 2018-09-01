@@ -3,7 +3,7 @@
 -- stores default values and some tables
 
 local Concat = ChoGGi.ComFuncs.Concat
---~ local T = ChoGGi.ComFuncs.Translate
+--~ local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 

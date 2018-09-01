@@ -3,8 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local local_T = T
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
@@ -130,7 +129,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 			local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 			local hours = string.format("%02d", h)
 			local minutes = string.format("%02d", m)
-			playtime = T(local_T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
+			playtime = Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
 		end
 		-- and last saved
 		local save_date = 0
@@ -269,7 +268,7 @@ do --export colonist data
 			local c = colonists[i]
 
 			export_data[i] = {
-				name = Concat(T(c.name[1])," ",T(c.name[3])),
+				name = Concat(Trans(c.name[1])," ",Trans(c.name[3])),
 				age = c.age,
 				age_trait = c.age_trait,
 				birthplace = c.birthplace,
@@ -370,20 +369,19 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
 		end
 	end
 
-	local count = MapCount("map", obj.class)
-	local name = RetName(obj)
+	local count = MapCount("map",obj.class)
 	ChoGGi.ComFuncs.QuestionBox(
-		Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(count,name),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
+		Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
 		CallBackFunc,
 		Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
-		S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(name),
+		S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
 		302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]
 	)
 end
 
 function ChoGGi.MenuFuncs.ObjectCloner(obj)
 	obj = obj or ChoGGi.CodeFuncs.SelObject()
-	--clone dome = crashy
+	-- clone dome = crashy
 	local new
 	if obj:IsKindOf("Dome") then
 		new = g_Classes[obj.class]:new()
@@ -397,12 +395,12 @@ function ChoGGi.MenuFuncs.ObjectCloner(obj)
 	end
 end
 
-local function AnimDebug_Show(obj,colour)
+local function AnimDebug_Show(obj,colour,g)
 	local text = PlaceObject("Text")
 	text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
 	text:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
 	text:SetCenter(true)
-	local orient = Orientation:new()
+	local orient = g.Orientation:new()
 
 	text.ChoGGi_AnimDebug = true
 	obj:Attach(text, 0)
@@ -417,7 +415,7 @@ local function AnimDebug_Show(obj,colour)
 	end)
 end
 
-local function AnimDebug_ShowAll(cls)
+local function AnimDebug_ShowAll(cls,g)
 	local objs = UICity.labels[cls] or ""
 	for i = 1, #objs do
 		AnimDebug_Show(objs[i])
@@ -425,12 +423,11 @@ local function AnimDebug_ShowAll(cls)
 end
 
 local function AnimDebug_Hide(obj)
-	local att = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or ""
-	for i = 1, #att do
-		if att[i].ChoGGi_AnimDebug then
-			att[i]:delete()
+	obj:ForEachAttach(function(a)
+		if a.ChoGGi_AnimDebug then
+			a:delete()
 		end
-	end
+	end)
 end
 
 local function AnimDebug_HideAll(cls)
@@ -453,14 +450,15 @@ function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
 	else
 		local ChoGGi = ChoGGi
 		ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+		local g = g_Classes
 		if ChoGGi.Temp.ShowAnimDebug then
-			AnimDebug_ShowAll("Building")
-			AnimDebug_ShowAll("Unit")
-			AnimDebug_ShowAll("CargoShuttle")
+			AnimDebug_ShowAll("Building",g)
+			AnimDebug_ShowAll("Unit",g)
+			AnimDebug_ShowAll("CargoShuttle",g)
 		else
-			AnimDebug_HideAll("Building")
-			AnimDebug_HideAll("Unit")
-			AnimDebug_HideAll("CargoShuttle")
+			AnimDebug_HideAll("Building",g)
+			AnimDebug_HideAll("Unit",g)
+			AnimDebug_HideAll("CargoShuttle",g)
 		end
 	end
 end
@@ -915,7 +913,6 @@ do --path markers
 			local UICity = UICity
 			-- remove wp/lines and reset colours
 			if choice[1].check1 then
-				print("check1_hint")
 
 				-- reset all the base colours/waypoints
 				ClearColourAndWP("CargoShuttle")

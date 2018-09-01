@@ -101,7 +101,7 @@ do -- Translate
 		return str
 	end
 end -- do
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 
 -- check if text is already translated or needs to be, and return the text
 function ChoGGi.ComFuncs.CheckText(text,fallback)
@@ -135,14 +135,14 @@ do -- RetName
 			-- colonist names
 			elseif name_type == "table" and #obj.name == 3 then
 				return TableConcat{
-					T(obj.name[1]),
+					Trans(obj.name[1]),
 					" ",
-					T(obj.name[3]),
+					Trans(obj.name[3]),
 				}
 
 			-- translated name
 			elseif obj.display_name and obj.display_name ~= "" then
-				return T(obj.display_name)
+				return Trans(obj.display_name)
 
 			-- encyclopedia_id
 			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
@@ -451,7 +451,7 @@ do -- DumpTableFunc
 	local function RetTextForDump(obj,funcs)
 		local obj_type = type(obj)
 		if obj_type == "userdata" then
-			return T(obj)
+			return Trans(obj)
 		elseif funcs and obj_type == "function" then
 			return Concat("Func: \n\n",obj:dump(),"\n\n")
 		elseif obj_type == "table" then
@@ -1435,127 +1435,123 @@ do -- ShowConsoleLogWin
 	end
 end -- do
 
-do --
-	function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
-		local Tables = ChoGGi.Tables
-		local c = 0
+function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
+	local Tables = ChoGGi.Tables
+	local c = 0
 
-		Tables.SchoolTraits = const.SchoolTraits
---~ 		table.append(Tables.SchoolTraits,const.SchoolExtraTraits)
-		Tables.SanatoriumTraits = const.SanatoriumTraits
---~ 		table.append(Tables.SanatoriumTraits,const.SanatoriumTraitsTraits)
-
+	Tables.SchoolTraits = const.SchoolTraits
+	Tables.SanatoriumTraits = const.SanatoriumTraits
 ------------- mysteries
-		Tables.Mystery = {}
-		c = 0
-		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
-		local g_Classes = g_Classes
-		ClassDescendantsList("MysteryBase",function(class)
-			local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
-			local display_name = T(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
-			local description = T(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
+	Tables.Mystery = {}
+	c = 0
+	-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
+	local g_Classes = g_Classes
+	ClassDescendantsList("MysteryBase",function(class)
+		local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
+		local display_name = Trans(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
+		local description = Trans(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
 
-			local temptable = {
-				class = class,
-				number = scenario_name,
-				name = display_name,
-				description = description
-			}
-			-- we want to be able to access by for loop, Mystery 7, and WorldWar3
-			Tables.Mystery[scenario_name] = temptable
-			Tables.Mystery[class] = temptable
-			c = c + 1
-			Tables.Mystery[c] = temptable
-		end)
+		local temptable = {
+			class = class,
+			number = scenario_name,
+			name = display_name,
+			description = description,
+			-- add image here
+		}
+		-- we want to be able to access by for loop, Mystery 7, and WorldWar3
+		Tables.Mystery[scenario_name] = temptable
+		Tables.Mystery[class] = temptable
+		c = c + 1
+		Tables.Mystery[c] = temptable
+	end)
 
 ----------- colonists
-		Tables.NegativeTraits = {}
-		Tables.PositiveTraits = {}
-		Tables.OtherTraits = {}
-		Tables.ColonistAges = {}
-		Tables.ColonistGenders = {}
-		Tables.ColonistSpecializations = {}
-		Tables.ColonistBirthplaces = {}
-		--add as index and associative tables for ease of filtering
-		local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
-		for id,t in pairs(TraitPresets) do
-			if t.group == "Positive" then
-				c1 = c1 + 1
-				Tables.PositiveTraits[c1] = id
-				Tables.PositiveTraits[id] = true
-			elseif t.group == "Negative" then
-				c2 = c2 + 1
-				Tables.NegativeTraits[c2] = id
-				Tables.NegativeTraits[id] = true
-			elseif t.group == "other" then
-				c3 = c3 + 1
-				Tables.OtherTraits[c3] = id
-				Tables.OtherTraits[id] = true
-			elseif t.group == "Age Group" then
-				c4 = c4 + 1
-				Tables.ColonistAges[c4] = id
-				Tables.ColonistAges[id] = true
-			elseif t.group == "Gender" then
-				c5 = c5 + 1
-				Tables.ColonistGenders[c5] = id
-				Tables.ColonistGenders[id] = true
-			elseif t.group == "Specialization" and id ~= "none" then
-				c6 = c6 + 1
-				Tables.ColonistSpecializations[c6] = id
-				Tables.ColonistSpecializations[id] = true
-			end
+	Tables.NegativeTraits = {}
+	Tables.PositiveTraits = {}
+	Tables.OtherTraits = {}
+	Tables.ColonistAges = {}
+	Tables.ColonistGenders = {}
+	Tables.ColonistSpecializations = {}
+	Tables.ColonistBirthplaces = {}
+	--add as index and associative tables for ease of filtering
+	local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
+	for id,t in pairs(TraitPresets) do
+		if t.group == "Positive" then
+			c1 = c1 + 1
+			Tables.PositiveTraits[c1] = id
+			Tables.PositiveTraits[id] = true
+		elseif t.group == "Negative" then
+			c2 = c2 + 1
+			Tables.NegativeTraits[c2] = id
+			Tables.NegativeTraits[id] = true
+		elseif t.group == "other" then
+			c3 = c3 + 1
+			Tables.OtherTraits[c3] = id
+			Tables.OtherTraits[id] = true
+		elseif t.group == "Age Group" then
+			c4 = c4 + 1
+			Tables.ColonistAges[c4] = id
+			Tables.ColonistAges[id] = true
+		elseif t.group == "Gender" then
+			c5 = c5 + 1
+			Tables.ColonistGenders[c5] = id
+			Tables.ColonistGenders[id] = true
+		elseif t.group == "Specialization" and id ~= "none" then
+			c6 = c6 + 1
+			Tables.ColonistSpecializations[c6] = id
+			Tables.ColonistSpecializations[id] = true
 		end
+	end
 
-		local Nations = Nations
-		for i = 1, #Nations do
-			Tables.ColonistBirthplaces[i] = Nations[i].value
-			Tables.ColonistBirthplaces[Nations[i].value] = true
-		end
+	local Nations = Nations
+	for i = 1, #Nations do
+		Tables.ColonistBirthplaces[i] = Nations[i].value
+		Tables.ColonistBirthplaces[Nations[i].value] = true
+	end
 
 ------------- cargo
-		Tables.Cargo = {}
-		Tables.CargoPresets = {}
+	Tables.Cargo = {}
+	Tables.CargoPresets = {}
 
-		-- only called when ResupplyItemDefinitions is built
-		if cargo_update == true then
-			local ResupplyItemDefinitions = ResupplyItemDefinitions
-			for i = 1, #ResupplyItemDefinitions do
-				local meta = getmetatable(ResupplyItemDefinitions[i]).__index
-				Tables.Cargo[i] = meta
-				Tables.Cargo[meta.id] = meta
-			end
+	-- only called when ResupplyItemDefinitions is built
+	if cargo_update == true then
+		local ResupplyItemDefinitions = ResupplyItemDefinitions
+		for i = 1, #ResupplyItemDefinitions do
+			local meta = getmetatable(ResupplyItemDefinitions[i]).__index
+			Tables.Cargo[i] = meta
+			Tables.Cargo[meta.id] = meta
+		end
 
-			-- just used to check defaults for cargo
-			local preset = Presets.Cargo
-			c = 0
-			for i = 1, #preset do
-				for j = 1, #preset[i] do
-					local cp = preset[i][j]
-					c = c + 1
-					Tables.CargoPresets[c] = cp
-					Tables.CargoPresets[cp.id] = cp
-				end
+		-- just used to check defaults for cargo
+		local preset = Presets.Cargo
+		c = 0
+		for i = 1, #preset do
+			for j = 1, #preset[i] do
+				local cp = preset[i][j]
+				c = c + 1
+				Tables.CargoPresets[c] = cp
+				Tables.CargoPresets[cp.id] = cp
 			end
 		end
+	end
 
 -------------- resources
-		Tables.Resources = {}
-		local AllResourcesList = AllResourcesList
-		for i = 1, #AllResourcesList do
-			Tables.Resources[i] = AllResourcesList[i]
-			Tables.Resources[AllResourcesList[i]] = true
-		end
-
-		table.sort(Tables.ColonistBirthplaces)
-		table.sort(Tables.NegativeTraits)
-		table.sort(Tables.PositiveTraits)
-		table.sort(Tables.OtherTraits)
-		table.sort(Tables.ColonistAges)
-		table.sort(Tables.ColonistGenders)
-		table.sort(Tables.ColonistSpecializations)
-		table.sort(Tables.Resources)
+	Tables.Resources = {}
+	local AllResourcesList = AllResourcesList
+	for i = 1, #AllResourcesList do
+		Tables.Resources[i] = AllResourcesList[i]
+		Tables.Resources[AllResourcesList[i]] = true
 	end
-end -- do
+
+	table.sort(Tables.ColonistBirthplaces)
+	table.sort(Tables.NegativeTraits)
+	table.sort(Tables.PositiveTraits)
+	table.sort(Tables.OtherTraits)
+	table.sort(Tables.ColonistAges)
+	table.sort(Tables.ColonistGenders)
+	table.sort(Tables.ColonistSpecializations)
+	table.sort(Tables.Resources)
+end
 
 function ChoGGi.ComFuncs.Random(m, n)
 	if n then

@@ -158,6 +158,12 @@ if Mods.ChoGGi_testing then
 	ChoGGi.testing = true
 end
 
+function printC(...)
+	if ChoGGi.testing then
+		print(...)
+	end
+end
+
 local Platform = Platform
 Platform.editor = true
 

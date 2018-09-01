@@ -5,7 +5,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
@@ -321,7 +321,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		if item.value and item.value ~= item.text then
 			local value_str
 			if type(item.value) == "userdata" then
-				value_str = T(item.value)
+				value_str = Trans(item.value)
 			else
 				value_str = item.value
 			end
@@ -331,7 +331,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 
 		if item.hint then
 			if type(item.hint) == "userdata" then
-				listitem.RolloverText = T(item.hint)
+				listitem.RolloverText = Trans(item.hint)
 			else
 				listitem.RolloverText = CheckText(item.hint)
 			end

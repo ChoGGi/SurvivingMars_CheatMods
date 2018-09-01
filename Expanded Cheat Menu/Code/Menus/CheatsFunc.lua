@@ -2,7 +2,7 @@
 
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Notifications/research.tga"
 
@@ -475,6 +475,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
 	local ChoGGi = ChoGGi
 	local ItemList = {}
 	for i = 1, #ChoGGi.Tables.Mystery do
+--~ 		UI\Messages\power_of_three_mystery_01.tga
 		ItemList[i] = {
 			text = Concat(ChoGGi.Tables.Mystery[i].number,": ",ChoGGi.Tables.Mystery[i].name),
 			value = ChoGGi.Tables.Mystery[i].class,
@@ -488,7 +489,7 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
 			return
 		end
 		if choice[1].check1 then
-			--instant
+			-- instant
 			ChoGGi.MenuFuncs.StartMystery(value,true)
 		else
 			ChoGGi.MenuFuncs.StartMystery(value)
@@ -587,9 +588,9 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]],"\n")}
 							if seq.class == "SA_WaitMessage" then
 								--add to msg list
 								msgs[#msgs+1] = {
-									[" "] = Concat(S[302535920000273--[[Speech--]]],": ",T(seq.voiced_text),"\n\n\n\n",S[302535920000274--[[Message--]]],": ",T(seq.text)),
+									[" "] = Concat(S[302535920000273--[[Speech--]]],": ",Trans(seq.voiced_text),"\n\n\n\n",S[302535920000274--[[Message--]]],": ",Trans(seq.text)),
 									speech = seq.voiced_text,
-									class = T(seq.title)
+									class = Trans(seq.title)
 								}
 							end
 						end
@@ -1074,7 +1075,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 	for i = 1, #Presets.TechPreset do
 		for j = 1, #Presets.TechPreset[i] do
 			local tech = Presets.TechPreset[i][j]
-			local text = T(tech.display_name)
+			local text = Trans(tech.display_name)
 			--remove " from that one tech...
 			if text:find("\"") then
 				text = text:gsub("\"","")
@@ -1082,7 +1083,8 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 			ItemList[#ItemList+1] = {
 				text = text,
 				value = tech.id,
-				hint = Concat(T(tech.description),"\n\n",S[1000097--[[Category--]]],": ",tech.group)
+				icon = Concat("<image ",tech.icon," 250>"),
+				hint = Concat(Trans(T{tech.description,tech}),"\n\n",S[1000097--[[Category--]]],": ",tech.group,"\n\n<image ",tech.icon," 1500>")
 			}
 		end
 	end

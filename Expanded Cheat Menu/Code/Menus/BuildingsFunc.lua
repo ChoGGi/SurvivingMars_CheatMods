@@ -6,7 +6,7 @@ local default_icon2 = "UI/Icons/Sections/storage.tga"
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
@@ -313,7 +313,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 	for _,bld in pairs(BuildingTemplates or {}) do
 		if not GetBuildingTechsStatus(bld.encyclopedia_id) then
 			ItemList[#ItemList+1] = {
-				text = T(bld.display_name),
+				text = Trans(bld.display_name),
 				value = bld.encyclopedia_id
 			}
 		end
@@ -461,7 +461,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 		return
 	end
 	local id = sel.encyclopedia_id
-	local name = T(sel.display_name)
+	local name = Trans(sel.display_name)
 	local r = ChoGGi.Consts.ResourceScale
 
 	--get type of capacity
@@ -665,7 +665,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 		return
 	end
 	local id = sel.encyclopedia_id
-	local name = T(sel.display_name)
+	local name = Trans(sel.display_name)
 
 	--get type of producer
 	local ProdType
@@ -801,7 +801,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		return
 	end
 	local id = sel.encyclopedia_id
-	local name = T(sel.display_name)
+	local name = Trans(sel.display_name)
 
 	local ItemList = {
 		{text = Concat(S[302535920000142--[[Disable--]]]),value = "disable"},

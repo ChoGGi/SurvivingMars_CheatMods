@@ -253,10 +253,15 @@ end -- do
 function ChoGGi.MenuFuncs.DeleteAllRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			MapDelete("map", "Deposition")
-			MapDelete("map", "WasteRockObstructorSmall")
-			MapDelete("map", "WasteRockObstructor")
-			MapDelete("map", "StoneSmall")
+			CreateGameTimeThread(function()
+				MapDelete("map", "Deposition")
+				Sleep(10)
+				MapDelete("map", "WasteRockObstructorSmall")
+				Sleep(10)
+				MapDelete("map", "WasteRockObstructor")
+				Sleep(10)
+				MapDelete("map", "StoneSmall")
+			end)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(

@@ -3,7 +3,7 @@
 local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
-local T = ChoGGi.ComFuncs.Translate
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local default_icon = "UI/Icons/Notifications/colonist.tga"
 
@@ -1306,11 +1306,11 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 			value = ChoGGi.Tables.OtherTraits[i],
 		}
 	end
-	--add hint descriptions
+	-- add hint descriptions
 	for i = 1, #ItemList do
 		local hinttemp = DataInstances.Trait[ItemList[i].text]
 		if hinttemp then
-			ItemList[i].hint = Concat(": ",T(hinttemp.description))
+			ItemList[i].hint = Concat(": ",Trans(hinttemp.description))
 		end
 	end
 
@@ -1746,7 +1746,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 	end
 
 	local id = sel.encyclopedia_id
-	local name = T(sel.display_name)
+	local name = Trans(sel.display_name)
 	local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 	if not BuildingSettings[id] then
 		BuildingSettings[id] = {restricttraits = {},blocktraits = {},}
@@ -1760,7 +1760,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
+			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 	for i = 1, #ChoGGi.Tables.PositiveTraits do
@@ -1769,7 +1769,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
+			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 	for i = 1, #ChoGGi.Tables.OtherTraits do
@@ -1778,7 +1778,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",T(DataInstances.Trait[trait].description)),
+			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 
