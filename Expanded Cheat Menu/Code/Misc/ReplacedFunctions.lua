@@ -10,20 +10,6 @@ local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawge
 local guim = guim
 local OnMsg = OnMsg
 
-local function SaveOrigFunc(ClassOrFunc,Func)
-	local ChoGGi = ChoGGi
-	if Func then
-		local newname = string.format("%s_%s",ClassOrFunc,Func)
-		if not ChoGGi.OrigFuncs[newname] then
-			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
-		end
-	else
-		if not ChoGGi.OrigFuncs[ClassOrFunc] then
-			ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
-		end
-	end
-end
-
 -- set UI transparency:
 local function SetTrans(obj)
 	if not obj then
@@ -35,7 +21,14 @@ local function SetTrans(obj)
 	end
 end
 
-do --funcs without a class
+do -- funcs without a class
+	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+	local function SaveOrigFunc(func_name)
+		if not ChoGGi_OrigFuncs[func_name] then
+			ChoGGi_OrigFuncs[func_name] = _G[func_name]
+		end
+	end
+
 	SaveOrigFunc("OpenDialog")
 	SaveOrigFunc("ShowConsole")
 	SaveOrigFunc("ShowConsoleLog")
@@ -45,9 +38,9 @@ do --funcs without a class
 	SaveOrigFunc("UIGetBuildingPrerequisites")
 	SaveOrigFunc("GetMaxCargoShuttleCapacity")
 	SaveOrigFunc("LoadCustomOnScreenNotification")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	-- fix for sending nil id to it
+	local unpack_params = unpack_params
 	function LoadCustomOnScreenNotification(notification)
 		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
 		if unpack_params(notification) then
@@ -192,7 +185,15 @@ do --funcs without a class
 
 end -- do
 
---Gen
+local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+local function SaveOrigFunc(class_name,func_name)
+	local new_name = string.format("%s_%s",class_name,func_name)
+	if not ChoGGi_OrigFuncs[new_name] then
+		ChoGGi_OrigFuncs[new_name] = _G[class_name][func_name]
+	end
+end
+
+-- ClassesGenerate
 function OnMsg.ClassesGenerate()
 	SaveOrigFunc("BaseRover","GetCableNearby")
 	SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
@@ -203,7 +204,6 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
 	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	function SupplyRocket:HasEnoughFuelToLaunch(...)
 		if ChoGGi.UserSettings.RocketsIgnoreFuel then
@@ -427,12 +427,11 @@ function OnMsg.ClassesGenerate()
 		end
 		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
 	end
-end --OnMsg
+end -- ClassesGenerate
 
---Pre
+-- ClassesPreprocess
 function OnMsg.ClassesPreprocess()
 	SaveOrigFunc("InfopanelObj","CreateCheatActions")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	local GetActionsHost = GetActionsHost
 	function InfopanelObj:CreateCheatActions(win)
@@ -443,13 +442,13 @@ function OnMsg.ClassesPreprocess()
 		end
 	end
 
-end
+end -- ClassesPreprocess
 
---Post
+-- ClassesPostprocess
 --~ function OnMsg.ClassesPostprocess()
---~ end
+--~ end -- ClassesPostprocess
 
---Built
+-- ClassesBuilt
 function OnMsg.ClassesBuilt()
 	SaveOrigFunc("Colonist","ChangeComfort")
 	SaveOrigFunc("Console","AddHistory")
@@ -489,7 +488,6 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("SpaceElevator","ToggleAllowExport")
 	SaveOrigFunc("SpaceElevator","DroneUnloadResource")
 --~	 SaveOrigFunc("RCRover","LeadIn")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	local UserSettings = ChoGGi.UserSettings
 
 	function SpaceElevator:DroneUnloadResource(...)
@@ -883,13 +881,16 @@ function OnMsg.ClassesBuilt()
 		local function InfopanelDlgOpen(self)
 			local UserSettings = ChoGGi.UserSettings
 
-			-- skip stuff we don't care about (res overview for one)
+			-- give me the scroll. goddamn it blinky
 			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
 				self.idActionsFrame.parent:SetZOrder(2)
 				ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
 			end
 
 			local c = self.idContent
+			if not c then
+				return
+			end
 
 			-- this limits height of traits you can choose to 3 till mouse over
 			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
@@ -992,9 +993,6 @@ function OnMsg.ClassesBuilt()
 
 		-- the actual function
 		function InfopanelDlg:Open(...)
-			-- fire the orig func so we can edit the dialog (and keep the return value to pass on later)
-			local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
-
 			CreateRealTimeThread(function()
 				while not self.visible do
 					Sleep(10)
@@ -1002,7 +1000,7 @@ function OnMsg.ClassesBuilt()
 				InfopanelDlgOpen(self)
 			end)
 
-			return table.unpack(ret)
+			return ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)
 		end
 	end -- do
 
@@ -1286,4 +1284,4 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-end
+end -- ClassesBuilt

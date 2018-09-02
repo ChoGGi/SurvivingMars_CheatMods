@@ -7,6 +7,8 @@
 ### Added:
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 - Help>List All Menu Items: Show all the cheat menu items in a list dialog.
+- Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
+- Fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors).
 - Rockets
 - > Max Export Amount: Change how many rares per rocket you can export.
 - > Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
@@ -15,8 +17,6 @@
 - > Instant Export On Toggle: Toggle Forbid Exports to have it instantly export current stock.
 - > Export When This Amount: When you have this many rares in storage launch right away.
 - > Import/Export Amount Per Trip: How much cargo space/ How many rares per.
-- Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
-- Added fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors).
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
