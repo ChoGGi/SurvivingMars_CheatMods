@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 --~ local Trans = ChoGGi.ComFuncs.Translate
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
@@ -14,7 +13,7 @@ local OnMsg = OnMsg
 local function SaveOrigFunc(ClassOrFunc,Func)
 	local ChoGGi = ChoGGi
 	if Func then
-		local newname = Concat(ClassOrFunc,"_",Func)
+		local newname = string.format("%s_%s",ClassOrFunc,Func)
 		if not ChoGGi.OrigFuncs[newname] then
 			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
 		end
@@ -116,13 +115,13 @@ do --funcs without a class
 --~			 if not pcall(function()
 --~				 local function ColourText(Text,Bool)
 --~					 if Bool == true then
---~						 return Concat("<color 200 200 200>",Text,"</color>")
+--~						 return string.format("<color 200 200 200>%s</color>",Text)
 --~					 else
---~						 return Concat("<color 75 255 75>",Text,"</color>")
+--~						 return string.format("<color 75 255 75>%s</color>",Text)
 --~					 end
 --~				 end
 --~				 local function ReplaceParam(Name,Text,SearchName)
---~					 SearchName = SearchName or Concat("<",Name,">")
+--~					 SearchName = SearchName or string.format("<%s>",Name)
 --~					 if not Text:find(SearchName) then
 --~						 return Text
 --~					 end
@@ -153,7 +152,7 @@ do --funcs without a class
 --~				 text = ReplaceParam("sponsor_name",text)
 --~				 text = ReplaceParam("commander_name",text)
 
---~				 --text = Concat(text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Trans(params.colonist)) ,")>"))
+--~				 --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Trans(params.colonist)) ,")>")
 
 --~				 --print(ColourText("Text: ",true),text)
 --~				 --print(ColourText("Voiced Text: ",true),Trans(presettext.voiced_text))
@@ -872,10 +871,10 @@ function OnMsg.ClassesBuilt()
 				while #self < 1 do
 					Sleep(5)
 				end
---~				 if ChoGGi.testing then
---~					 print("AddScrollDialogXTemplates")
---~					 ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
---~				 end
+				 printC("AddScrollDialogXTemplates")
+--~ 				 if ChoGGi.testing then
+--~ 					 ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+--~ 				 end
 
 				local c = self.idContent
 

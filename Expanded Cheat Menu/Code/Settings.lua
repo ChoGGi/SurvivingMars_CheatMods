@@ -2,7 +2,6 @@
 
 -- stores default values and some tables
 
-local Concat = ChoGGi.ComFuncs.Concat
 --~ local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
@@ -441,7 +440,7 @@ do -- WriteSettingsOrig
 		local ChoGGi = ChoGGi
 		settings = settings or ChoGGi.UserSettings
 
-		local bak = Concat(ChoGGi.SettingsFile,".bak")
+		local bak = string.format("%s.bak",ChoGGi.SettingsFile)
 		--locks the file while we write (i mean it says thread, ah well can't hurt)?
 		ThreadLockKey(bak)
 		AsyncCopyFile(ChoGGi.SettingsFile,bak)
@@ -478,7 +477,7 @@ do -- ReadSettingsOrig
 				file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
 				-- something is definitely wrong so just abort, and let user know
 				if file_error then
-					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(file_error))
+					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(file_error))
 					is_error = true
 				end
 			end
@@ -488,7 +487,7 @@ do -- ReadSettingsOrig
 		local code_error
 		code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
 		if code_error then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(code_error))
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(code_error))
 			is_error = true
 		end
 
@@ -511,9 +510,9 @@ do -- WriteSettingsAcct
 	local MaxModDataSize = const.MaxModDataSize
 	local function RetError(err)
 		if ChoGGi.Temp.GameLoaded then
-			print(Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)))
+			print(string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)))
 		else
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
 		end
 	end
 	function ChoGGi.SettingFuncs.WriteSettingsAcct(settings)
@@ -564,9 +563,9 @@ do -- ReadSettingsAcct
 	local LuaCodeToTuple = LuaCodeToTuple
 	local function RetError(err)
 		if ChoGGi.Temp.GameLoaded then
-			print(Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err)))
+			print(string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err)))
 		else
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(S[302535920000000--[[Expanded Cheat Menu--]]],": ",S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
 		end
 	end
 	function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_table)
@@ -697,12 +696,12 @@ do -- AddOldSettings
 		-- if empty table then new settings file or old settings
 		else
 			--then we check if this is an older version still using the old way of storing building settings and convert over to new
-			local errormsg = Concat(S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]],": ")
+			local errormsg = string.format("%s: ",S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]])
 			if not AddOldSettings(ChoGGi,"BuildingsCapacity","capacity") then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsCapacity")
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sBuildingsCapacity",errormsg)
 			end
 			if not AddOldSettings(ChoGGi,"BuildingsProduction","production") then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(errormsg,"BuildingsProduction")
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sBuildingsProduction",errormsg)
 			end
 		end
 

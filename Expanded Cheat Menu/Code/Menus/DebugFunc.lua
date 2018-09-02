@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Trans = ChoGGi.ComFuncs.Translate
@@ -140,11 +139,9 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		ItemList[i] = {
 			text = data.displayname,
 			value = data.savename,
-			hint = Concat(
+			hint = string.format("%s\n%s\n\n%s",
 				S[4274--[[Playtime : %s--]]]:format(playtime),
-				"\n",
 				S[4273--[[Saved on : %s--]]]:format(save_date),
-				"\n\n",
 				S[302535920001274--[[This is permanent!--]]]
 			),
 		}
@@ -168,15 +165,14 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		for i = 1, #choice do
 			value = choice[i].value
 			if type(value) == "string" then
---~				 print("delete ",Concat(save_folder,value))
-				AsyncFileDelete(Concat(save_folder,value))
+				AsyncFileDelete(string.format("%s%s",save_folder,value))
 			end
 		end
 
 		-- remove any saves we deleted
 		local games_amt = #SavegamesList
 		for i = #SavegamesList, 1, -1 do
-			if not ChoGGi.ComFuncs.FileExists(Concat(save_folder,SavegamesList[i].savename)) then
+			if not ChoGGi.ComFuncs.FileExists(string.format("%s%s",save_folder,SavegamesList[i].savename)) then
 				SavegamesList[i] = nil
 				table.remove(SavegamesList,i)
 			end
@@ -194,8 +190,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000146--[[Delete Saved Games--]]],": ",#ItemList),
-		hint = Concat(S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[6779--[[Warning--]]],": ",S[302535920001274--[[This is permanent!--]]]),
+		title = string.format("%s: %s",S[302535920000146--[[Delete Saved Games--]]],#ItemList),
+		hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920001274--[[This is permanent!--]]]),
 		multisel = true,
 		skip_sort = true,
 		check = {
@@ -224,7 +220,7 @@ do --export colonist data
 	local ColonistsCSVColumns = {
 		{"name",S[1000037--[[Name--]]]},
 		{"age",S[302535920001222--[[Age--]]]},
-		{"age_trait",Concat(S[302535920001222--[[Age--]]]," ",S[3720--[[Trait--]]])},
+		{"age_trait",string.format("%s %s",S[302535920001222--[[Age--]]],S[3720--[[Trait--]]])},
 		{"death_age",S[4284--[[Age of death--]]]},
 		{"birthplace",S[4357--[[Birthplace--]]]},
 		{"gender",S[4356--[[Sex--]]]},
@@ -238,21 +234,21 @@ do --export colonist data
 		{"handle",S[302535920000955--[[Handle--]]]},
 		{"last_meal",S[302535920001229--[[Last Meal--]]]},
 		{"last_rest",S[302535920001235--[[Last Rest--]]]},
-		{"dome_name",Concat(S[1234--[[Dome--]]]," ",S[1000037--[[Name--]]])},
-		{"dome_pos",Concat(S[1234--[[Dome--]]]," ",S[302535920001237--[[Position--]]])},
-		{"dome_handle",Concat(S[1234--[[Dome--]]]," ",S[302535920000955--[[Handle--]]])},
-		{"residence_name",Concat(S[4809--[[Residence--]]]," ",S[1000037--[[Name--]]])},
-		{"residence_pos",Concat(S[4809--[[Residence--]]]," ",S[302535920001237--[[Position--]]])},
-		{"residence_dome",Concat(S[4809--[[Residence--]]]," ",S[1234--[[Dome--]]])},
-		{"workplace_name",Concat(S[4801--[[Workplace--]]]," ",S[1000037--[[Name--]]])},
-		{"workplace_pos",Concat(S[4801--[[Workplace--]]]," ",S[302535920001237--[[Position--]]])},
-		{"workplace_dome",Concat(S[4801--[[Workplace--]]]," ",S[1234--[[Dome--]]])},
+		{"dome_name",string.format("%s %s",S[1234--[[Dome--]]],S[1000037--[[Name--]]])},
+		{"dome_pos",string.format("%s %s",S[1234--[[Dome--]]],S[302535920001237--[[Position--]]])},
+		{"dome_handle",string.format("%s %s",S[1234--[[Dome--]]],S[302535920000955--[[Handle--]]])},
+		{"residence_name",string.format("%s %s",S[4809--[[Residence--]]],S[1000037--[[Name--]]])},
+		{"residence_pos",string.format("%s %s",S[4809--[[Residence--]]],S[302535920001237--[[Position--]]])},
+		{"residence_dome",string.format("%s %s",S[4809--[[Residence--]]],S[1234--[[Dome--]]])},
+		{"workplace_name",string.format("%s %s",S[4801--[[Workplace--]]],S[1000037--[[Name--]]])},
+		{"workplace_pos",string.format("%s %s",S[4801--[[Workplace--]]],S[302535920001237--[[Position--]]])},
+		{"workplace_dome",string.format("%s %s",S[4801--[[Workplace--]]],S[1234--[[Dome--]]])},
 	}
 	local function AddTraits(traits,list)
 		for i = 1, #traits do
 			list[#list+1] = {
-				Concat("trait_",traits[i]),
-				Concat("Trait ",traits[i]),
+				string.format("trait_%s",traits[i]),
+				string.format("Trait %s",traits[i]),
 			}
 		end
 		return list
@@ -268,7 +264,7 @@ do --export colonist data
 			local c = colonists[i]
 
 			export_data[i] = {
-				name = Concat(Trans(c.name[1])," ",Trans(c.name[3])),
+				name = string.format("%s %s",Trans(c.name[1]),Trans(c.name[3])),
 				age = c.age,
 				age_trait = c.age_trait,
 				birthplace = c.birthplace,
@@ -306,7 +302,7 @@ do --export colonist data
 			-- traits
 			for trait_id, _ in pairs(c.traits) do
 				if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
-					export_data[i][Concat("trait_",trait_id)] = true
+					export_data[i][string.format("trait_%s",trait_id)] = true
 				end
 			end
 		end
@@ -371,9 +367,9 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
 
 	local count = MapCount("map",obj.class)
 	ChoGGi.ComFuncs.QuestionBox(
-		Concat(S[6779--[[Warning--]]],"!\n",S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class),"\n\n",S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
+		string.format("%s!\n%s\n\n%s",S[6779--[[Warning--]]],S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class),S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
 		CallBackFunc,
-		Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]]),
+		string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
 		S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
 		302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]
 	)
@@ -398,7 +394,7 @@ end
 local function AnimDebug_Show(obj,colour,g)
 	local text = PlaceObject("Text")
 	text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-	text:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
+	text:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
 	text:SetCenter(true)
 	local orient = g.Orientation:new()
 
@@ -474,7 +470,7 @@ function ChoGGi.MenuFuncs.SetAnimState()
 
 	for Key,State in pairs(Table) do
 		ItemList[#ItemList+1] = {
-			text = Concat(S[1000037--[[Name--]]],": ",State," ",S[302535920000858--[[Idx--]]],": ",Key),
+			text = string.format("%s: %s %s: %s",S[1000037--[[Name--]]],State,S[302535920000858--[[Idx--]]],Key),
 			value = State,
 		}
 	end
@@ -542,7 +538,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 			--]]
 
 			MsgPopup(
-				Concat(choice[1].text,": ",S[302535920000014--[[Spawned--]]]," ",S[298035641454--[[Object--]]]),
+				string.format("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
 				302535920000014--[[Spawned--]]
 			)
 		end
@@ -552,7 +548,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 		callback = CallBackFunc,
 		items = ObjectSpawner_ItemList,
 		title = 302535920000862--[[Object Spawner (EntityData list)--]],
-		hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
+		hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
 	}
 end
 
@@ -1000,7 +996,7 @@ do --path markers
 				},
 				{
 					title = 4099--[[Game Time--]],
-					hint = Concat(S[302535920000462--[[Maps paths in real time--]]],"."),
+					hint = string.format("%s.",S[302535920000462--[[Maps paths in real time--]]]),
 					checked = true,
 				},
 			},

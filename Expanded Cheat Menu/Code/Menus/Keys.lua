@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local Actions = ChoGGi.Temp.Actions
 
 local c = #Actions
@@ -9,7 +8,7 @@ do -- NumberKeysBuildMenu
 	local function AddMenuKey(num,key)
 		c = c + 1
 		Actions[c] = {
-			ActionId = Concat("ChoGGi_AddMenuKey",num),
+			ActionId = string.format("ChoGGi_AddMenuKey%s",num),
 			OnAction = function()
 				ChoGGi.CodeFuncs.ShowBuildMenu(num)
 			end,
@@ -17,7 +16,6 @@ do -- NumberKeysBuildMenu
 		}
 	end
 	if ChoGGi.UserSettings.NumberKeysBuildMenu then
-		local Concat = ChoGGi.ComFuncs.Concat
 		local tostring = tostring
 		local skipped
 		local BuildCategories = BuildCategories
@@ -34,10 +32,10 @@ do -- NumberKeysBuildMenu
 				else
 					if skipped then
 						-- -1 more for skipping Hidden
-						AddMenuKey(i,Concat("Shift-",i - 11))
+						AddMenuKey(i,string.format("Shift-%s",i - 11))
 					else
 						-- -10 since we're doing Shift-*
-						AddMenuKey(i,Concat("Shift-",i - 10))
+						AddMenuKey(i,string.format("Shift-%s",i - 10))
 					end
 				end
 			end

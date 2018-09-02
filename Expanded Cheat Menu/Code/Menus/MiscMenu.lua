@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -9,21 +8,11 @@ local str_ExpandedCM_Misc = "Expanded CM.Misc"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
-	ActionName = Concat(S[1000207--[[Misc--]]]," .."),
+	ActionName = string.format("%s ..",S[1000207--[[Misc--]]]),
 	ActionId = ".Misc",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "90Misc",
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_ExpandedCM_Misc,
-	ActionName = S[302535920000678--[[Change Surface Signs To Materials--]]],
-	ActionId = ".Change Surface Signs To Materials",
-	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-	RolloverText = S[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
-	OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
 }
 
 c = c + 1
@@ -74,30 +63,6 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = S[302535920000691--[[Fixes all broken objects.--]]],
 	OnAction = ChoGGi.MenuFuncs.FixAllObjects,
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_ExpandedCM_Misc,
-	ActionName = S[302535920000021--[[Change Colour--]]],
-	ActionId = ".Change Colour",
-	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-	RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours.--]]],
-	OnAction = function()
-		ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
-	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CreateObjectListAndAttaches,
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_ExpandedCM_Misc,
-	ActionName = S[302535920000694--[[Set Opacity--]]],
-	ActionId = ".Set Opacity",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = S[302535920000695--[[Change the opacity of objects.--]]],
-	OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetObjectOpacity,
 }
 
 c = c + 1

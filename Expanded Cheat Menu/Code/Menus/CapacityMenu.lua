@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -9,7 +8,7 @@ local str_ExpandedCM_Capacity = "Expanded CM.Capacity"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
-	ActionName = Concat(S[109035890389--[[Capacity--]]]," .."),
+	ActionName = string.format("%s ..",S[109035890389--[[Capacity--]]]),
 	ActionId = ".Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",

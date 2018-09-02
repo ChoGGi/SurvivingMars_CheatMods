@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local icon = "CommonAssets/UI/Menu/Cube.tga"
@@ -10,7 +9,7 @@ local str_ExpandedCM_Buildings = "Expanded CM.Buildings"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
-	ActionName = Concat(S[3980--[[Buildings--]]]," .."),
+	ActionName = string.format("%s ..",S[3980--[[Buildings--]]]),
 	ActionId = ".Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -96,11 +95,11 @@ Actions[c] = {
 }
 
 local str_ExpandedCM_Buildings_SanatoriumsSchools = "Expanded CM.Buildings.Sanatoriums & Schools"
-local SandS = Concat(S[5245--[[Sanatoriums--]]]," & ",S[5248--[[Schools--]]])
+local SandS = string.format("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(SandS," .."),
+	ActionName = string.format("%s ..",SandS),
 	ActionId = ".Sanatoriums & Schools",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -110,7 +109,7 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-	ActionName = Concat(S[5245--[[Sanatoriums--]]]," ",S[302535920000198--[[Cure All--]]]),
+	ActionName = string.format("%s %s",S[5245--[[Sanatoriums--]]],S[302535920000198--[[Cure All--]]]),
 	ActionId = ".Sanatoriums Cure All",
 	ActionIcon = icon,
 	RolloverText = function()
@@ -125,7 +124,7 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-	ActionName = Concat(S[5248--[[Schools--]]]," ",S[302535920000200--[[Train All--]]]),
+	ActionName = string.format("%s %s",S[5248--[[Schools--]]],S[302535920000200--[[Train All--]]]),
 	ActionId = ".Schools Train All",
 	ActionIcon = icon,
 	RolloverText = function()
@@ -140,7 +139,7 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-	ActionName = Concat(SandS,": ",S[302535920000202--[[Show All Traits--]]]),
+	ActionName = string.format("%s: %s",SandS,S[302535920000202--[[Show All Traits--]]]),
 	ActionId = ".Sanatoriums & Schools: Show All Traits",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
@@ -155,7 +154,7 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-	ActionName = Concat(SandS,": ",S[302535920000204--[[Show Full List--]]]),
+	ActionName = string.format("%s: %s",SandS,S[302535920000204--[[Show Full List--]]]),
 	ActionId = ".Sanatoriums & Schools: Show Full List",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
@@ -171,7 +170,7 @@ local str_ExpandedCM_Buildings_Farms = "Expanded CM.Buildings.Farms"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(S[5068--[[Farms--]]]," .."),
+	ActionName = string.format("%s ..",S[5068--[[Farms--]]]),
 	ActionId = ".Farms",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -207,7 +206,7 @@ local str_ExpandedCM_Buildings_CablesPipes = "Expanded CM.Buildings.Cables & Pip
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(S[302535920000157--[[Cables & Pipes--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000157--[[Cables & Pipes--]]]),
 	ActionId = ".Cables & Pipes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -223,7 +222,7 @@ Actions[c] = {
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.BreakChanceCablePipe,
-			Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000219--[[will never break.--]]])
+			string.format("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000219--[[will never break.--]]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
@@ -238,7 +237,7 @@ Actions[c] = {
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.InstantCables,
-			Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000221--[[are built instantly.--]]])
+			string.format("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000221--[[are built instantly.--]]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
@@ -248,7 +247,7 @@ local str_ExpandedCM_Buildings_Buildings = "Expanded CM.Buildings.Buildings"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(S[3980--[[Buildings--]]]," .."),
+	ActionName = string.format("%s ..",S[3980--[[Buildings--]]]),
 	ActionId = ".Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -336,7 +335,7 @@ local str_ExpandedCM_Buildings_Toggle = "Expanded CM.Buildings.Toggle"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(S[454042608125--[[Toggle--]]]," .."),
+	ActionName = string.format("%s ..",S[454042608125--[[Toggle--]]]),
 	ActionId = ".Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -554,7 +553,7 @@ local str_ExpandedCM_Buildings_SpaceElevator = "Expanded CM.Buildings.Space Elev
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Buildings",
-	ActionName = Concat(S[1120--[[Space Elevator--]]]," .."),
+	ActionName = string.format("%s ..",S[1120--[[Space Elevator--]]]),
 	ActionId = ".Space Elevator",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",

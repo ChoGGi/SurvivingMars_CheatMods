@@ -1,15 +1,10 @@
 -- See LICENSE for terms
 
--- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
-DefineClass.ChoGGi_HexSpot = {
-	__parents = {"CObject"},
-	entity = "GridTile"
-}
-
 local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
-local Concat = ChoGGi.ComFuncs.Concat -- added in Init.lua
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
+
+local string = string
 
 local AsyncRand = AsyncRand
 local IsValid = IsValid
@@ -17,11 +12,17 @@ local GetTerrainCursor = GetTerrainCursor
 local AsyncStringToFile = _G.AsyncStringToFile
 local FilterObjectsC = FilterObjectsC
 
+-- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
+DefineClass.ChoGGi_HexSpot = {
+	__parents = {"CObject"},
+	entity = "GridTile"
+}
+
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
 	local ChoGGi = ChoGGi
 	if Func then
-		local newname = Concat(ClassOrFunc,"_",Func)
+		local newname = string.format("%s_%s",ClassOrFunc,Func)
 		if not ChoGGi.OrigFuncs[newname] then
 			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
 		end
@@ -46,12 +47,12 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
 --~		 local params = {...}
 --~		 --pass on args to orig func
 --~		 if not pcall(function()
---~			 return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](table.unpack(params))
+--~			 return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](table.unpack(params))
 --~		 end) then
---~			 print("Function Error: ",Concat(ClassName,"_",FuncName))
+--~			 print("Function Error: ",string.format("%s_%s",ClassName,FuncName))
 --~			 ChoGGi.ComFuncs.OpenInExamineDlg({params})
 --~		 end
-		return ChoGGi.OrigFuncs[Concat(ClassName,"_",FuncName)](...)
+		return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](...)
 	end
 end
 -- Custom Msgs
@@ -96,7 +97,7 @@ do -- Translate
 				return arg2
 			end
 			-- done fucked up (just in case b)
-			return Concat(select(1,...)," < Missing locale string id")
+			return string.format("%s < Missing locale string id",select(1,...))
 		end
 		return str
 	end
@@ -202,7 +203,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		id = AsyncRand(),
 		title = CheckText(title),
 		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or Concat(ChoGGi.ModPath,"Code/TheIncal.png")
+		image = type(tostring(icon):find(".tga")) == "number" and icon or string.format("%sCode/TheIncal.png",ChoGGi.ModPath)
 	}
 	table.set_defaults(data, params)
 	table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
@@ -415,7 +416,7 @@ function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
 	else
 		mode = "-1"
 	end
-	local filename = Concat("AppData/logs/",file or "DumpedText",".",ext or "txt")
+	local filename = string.format("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
 
 	ThreadLockKey(filename)
 	AsyncStringToFile(filename,obj,mode)
@@ -443,7 +444,7 @@ function ChoGGi.ComFuncs.DumpLua(obj)
 --~	 elseif v_type == "userdata" then
 --~		 which = "ValueToLuaCode"
 --~	 end
-	ChoGGi.ComFuncs.Dump(Concat("\r\n",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
+	ChoGGi.ComFuncs.Dump(string.format("\r\n%s",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
 end
 
 do -- DumpTableFunc
@@ -453,9 +454,9 @@ do -- DumpTableFunc
 		if obj_type == "userdata" then
 			return Trans(obj)
 		elseif funcs and obj_type == "function" then
-			return Concat("Func: \n\n",obj:dump(),"\n\n")
+			return string.format("Func: \r\n\r\n%s\r\n\r\n",obj:dump())
 		elseif obj_type == "table" then
-			return Concat(tostring(obj)," len: ",#obj)
+			return string.format("%s len: %s",tostring(obj),#obj)
 		else
 			return tostring(obj)
 		end
@@ -470,19 +471,19 @@ do -- DumpTableFunc
 
 		if type(obj) == "table" then
 			if obj.id then
-				output_string = Concat(output_string,"\n-----------------obj.id: ",obj.id," :")
+				output_string = string.format("%s\n-----------------obj.id: %s :",output_string,obj.id)
 			end
 			for k,v in pairs(obj) do
 				if type(v) == "table" then
 					DumpTableFunc(v, hierarchyLevel+1)
 				else
 					if k ~= nil then
-						output_string = Concat(output_string,"\n",tostring(k)," = ")
+						output_string = string.format("%s\n%s = ",output_string,k)
 					end
 					if v ~= nil then
-						output_string = Concat(output_string,RetTextForDump(v,funcs))
+						output_string = string.format("%s%s",output_string,RetTextForDump(v,funcs))
 					end
-					output_string = Concat(output_string,"\n")
+					output_string = string.format("%s\n",output_string)
 				end
 			end
 		end
@@ -643,9 +644,9 @@ do -- WriteLogs_Toggle
 		_G[funcname] = function(...)
 			local arg2 = select(2,...)
 			if arg2 and type(arg2) == "boolean" then
-				Dump(Concat(select(1,...),"\r\n"),nil,filename,"log",true)
+				Dump(string.format("%s\r\n",select(1,...)),nil,filename,"log",true)
 			else
-				Dump(Concat(...,"\r\n"),nil,filename,"log",true)
+				Dump(string.format("%s\r\n",...),nil,filename,"log",true)
 			end
 			if type(ChoGGi.OrigFuncs[funcname]) == "function" then
 				ChoGGi.OrigFuncs[funcname](...)
@@ -701,9 +702,9 @@ function ChoGGi.ComFuncs.PrintIds(list)
 	local text = ""
 
 	for i = 1, #list do
-		text = Concat(text,"----------------- ",list[i].id,": ",i,"\n")
+		text = string.format("%s----------------- %s: %s\r\n",text,list[i].id,i)
 		for j = 1, #list[i] do
-			text = Concat(text,list[i][j].id,": ",j,"\n")
+			text = string.format("%s%s: %s\r\n",text,list[i][j].id,j)
 		end
 	end
 
@@ -1073,7 +1074,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,
 	items = ItemList,
 	title = "Title",
-	hint = Concat("Current: ",hint),
+	hint = string.format("Current: %s",hint),
 	multisel = true,
 	custom_type = custom_type,
 	custom_func = CustomFunc,
@@ -1102,22 +1103,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		return
 	end
 
-	local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
-	if not list.skip_sort then
-		-- sort table by display text
-		local sortby = list.sortby or "text"
-		table.sort(list.items,
-			function(a,b)
-				return CompareTableValue(a,b,sortby)
-			end
-		)
-	end
-
-	if not list.custom_type then
-		-- insert blank item for adding custom value
-		list.items[#list.items+1] = {text = "",hint = "",value = false}
-	end
-
 	return ChoGGi_ListChoiceDlg:new({}, terminal.desktop,{
 		list = list,
 	})
@@ -1144,7 +1129,10 @@ end
 function ChoGGi.ComFuncs.SettingState(setting,text)
 	if type(setting) == "string" then
 		-- some of the menu items passed are "table.table.exists?.setting"
-		setting = ChoGGi.ComFuncs.DotNameToObject(setting)
+		local obj = ChoGGi.ComFuncs.DotNameToObject(setting)
+		if obj then
+			setting = obj
+		end
 	end
 
 	-- have it return false instead of nil
@@ -1152,7 +1140,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 		setting = false
 	end
 
-	return Concat(setting,": ",CheckText(S[text],text))
+	return string.format("%s: %s",setting,CheckText(S[text],text))
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
@@ -1169,7 +1157,7 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
 	else
 		depth = depth + 1
 		for _ = 1, depth do
-			spaces = Concat(spaces," ")
+			spaces = string.format("%s ",spaces)
 		end
 	end
 	if v_type == "table" then
@@ -1477,7 +1465,6 @@ do -- UpdateDataTables
 			c = c + 1
 			Tables.Mystery[c] = temptable
 		end)
-
 ----------- colonists
 		Tables.NegativeTraits = {}
 		Tables.PositiveTraits = {}
@@ -1518,8 +1505,17 @@ do -- UpdateDataTables
 
 		local Nations = Nations
 		for i = 1, #Nations do
-			Tables.ColonistBirthplaces[i] = Nations[i].value
-			Tables.ColonistBirthplaces[Nations[i].value] = true
+			local temptable = {
+				flag = Nations[i].flag,
+				text = Nations[i].text,
+				value = Nations[i].value,
+			}
+			if Nations[i].value == "Mars" then
+				-- eh, close enough
+				temptable.flag = "UI/Flags/flag_northkorea.tga"
+			end
+			Tables.ColonistBirthplaces[i] = temptable
+			Tables.ColonistBirthplaces[Nations[i].value] = temptable
 		end
 
 ------------- cargo
@@ -1556,14 +1552,25 @@ do -- UpdateDataTables
 			Tables.Resources[AllResourcesList[i]] = true
 		end
 
-		table.sort(Tables.ColonistBirthplaces)
-		table.sort(Tables.NegativeTraits)
-		table.sort(Tables.PositiveTraits)
-		table.sort(Tables.OtherTraits)
-		table.sort(Tables.ColonistAges)
-		table.sort(Tables.ColonistGenders)
-		table.sort(Tables.ColonistSpecializations)
-		table.sort(Tables.Resources)
+--~ 		table.sort(Tables.ColonistBirthplaces,
+--~ 			function(a,b)
+--~ 				return CmpLower(a.value,b.value)
+--~ 			end
+--~ 		)
+
+--~ 		table.sort(Tables.Mystery,
+--~ 			function(a,b)
+--~ 				return CmpLower(a.class,b.class)
+--~ 			end
+--~ 		)
+
+--~ 		table.sort(Tables.NegativeTraits)
+--~ 		table.sort(Tables.PositiveTraits)
+--~ 		table.sort(Tables.OtherTraits)
+--~ 		table.sort(Tables.ColonistAges)
+--~ 		table.sort(Tables.ColonistGenders)
+--~ 		table.sort(Tables.ColonistSpecializations)
+--~ 		table.sort(Tables.Resources)
 	end
 end -- do
 
@@ -1665,10 +1672,10 @@ do -- RetFilesInFolder/RetFoldersInFolder
 	local AsyncListFiles = _G.AsyncListFiles
 	-- returns table with list of files without path or ext and path, or exclude ext to return all files
 	function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-		local err, files = AsyncListFiles(folder,ext and Concat("*",ext) or "*")
+		local err, files = AsyncListFiles(folder,ext and string.format("*%s",ext) or "*")
 		if not err and #files > 0 then
 			local table_path = {}
-			local path = Concat(folder,"/")
+			local path = string.format("%s/",folder)
 			for i = 1, #files do
 				local name
 				if ext then
@@ -1690,7 +1697,7 @@ do -- RetFilesInFolder/RetFoldersInFolder
 		local err, folders = AsyncListFiles(folder,"*","folders")
 		if not err and #folders > 0 then
 			local table_path = {}
-			local temp_path = Concat(folder,"/")
+			local temp_path = string.format("%s/",folder)
 			for i = 1, #folders do
 				table_path[i] = {
 					path = folders[i],

@@ -3,7 +3,6 @@
 if ChoGGi.testing then
 	local TickStart = ChoGGi.ComFuncs.TickStart
 	local TickEnd = ChoGGi.ComFuncs.TickEnd
-	local Concat = ChoGGi.ComFuncs.Concat
 
 	function ChoGGi.CodeFuncs.TestTableInsert()
 		TickStart("TestTableInsert.Tick")
@@ -63,7 +62,7 @@ if ChoGGi.testing then
 
 	end
 
-	-- checking how fast concat is for examining large amounts of objects
+	-- checking how fast examine is for examining large amounts of objects
 	function ChoGGi.CodeFuncs.TestConcatExamine(amount)
 		local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 		TickStart("TestConcatExamine.Total")
@@ -235,14 +234,14 @@ if ChoGGi.testing then
 		local textstart = "<color 255 0 0>"
 		local textend = " is different length</color>"
 		if #const.SchoolTraits ~= 5 then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SchoolTraits",textend)
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSchoolTraits%s",textstart,textend)
 		end
 		if #const.SanatoriumTraits ~= 7 then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"SanatoriumTraits",textend)
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSanatoriumTraits%s",textstart,textend)
 		end
 		local fulllist = TraitsCombo()
 		if #fulllist ~= 55 then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Concat(textstart,"TraitsCombo",textend)
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sTraitsCombo%s",textstart,textend)
 		end
 	end
 

@@ -13,7 +13,7 @@ local TranslationTable = TranslationTable
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
 if ChoGGi.lang ~= "English" then
-	local Concat = ChoGGi.ComFuncs.Concat
+	local string = string
 	-- first get the unicode font name
 	local f = TranslationTable[984--[[SchemeBk, 15, aa--]]]
 	f = f:sub(1,f:find(",")-1)
@@ -21,31 +21,31 @@ if ChoGGi.lang ~= "English" then
 
 	-- replace any fonts using droid
 	local __game_font_styles = __game_font_styles
-	__game_font_styles[false] = Concat(f,", 12, aa")
-	__game_font_styles.Editor9 = Concat(f,", 9, aa")
-	__game_font_styles.Editor11Bold = Concat(f,", 11, bold, aa")
-	__game_font_styles.Editor11 = Concat(f,", 11, aa")
-	__game_font_styles.Editor12Bold = Concat(f,", 12, bold, aa")
-	__game_font_styles.Editor12 = Concat(f,", 12, aa")
-	__game_font_styles.Editor13 = Concat(f,", 13, aa")
-	__game_font_styles.Editor13Bold = Concat(f,", 13, bold, aa")
-	__game_font_styles.Editor14 = Concat(f,", 14, aa")
-	__game_font_styles.Editor14Bold = Concat(f,", 14, bold, aa")
-	__game_font_styles.Editor16 = Concat(f,", 16, aa")
-	__game_font_styles.Editor16Bold = Concat(f,", 16, bold, aa")
-	__game_font_styles.Editor17 = Concat(f,", 17, aa")
-	__game_font_styles.Editor17Bold = Concat(f,", 17, bold, aa")
-	__game_font_styles.Editor18 = Concat(f,", 18, aa")
-	__game_font_styles.Editor18Bold = Concat(f,", 18, bold, aa")
-	__game_font_styles.Editor21Bold = Concat(f,", 21, bold, aa")
-	__game_font_styles.Editor32Bold = Concat(f,", 32, bold")
-	__game_font_styles.Rollover = Concat(f,", 14, bold, aa")
---~	 __game_font_styles.DesignerCaption = Concat(f,", 18, bold, aa")
---~	 __game_font_styles.DesignerPropEditor = Concat(f,", 12, aa")
-	__game_font_styles.Console = Concat(f,", 13, bold, aa")
---~	 __game_font_styles.UAMenu = Concat(f,", 14, aa")
---~	 __game_font_styles.UAToolbar = Concat(f,", 14, bold, aa")
-	__game_font_styles.EditorCaption = Concat(f,", 14, bold, aa")
+	__game_font_styles[false] = string.format("%s, 12, aa",f)
+	__game_font_styles.Editor9 = string.format("%s, 9, aa",f)
+	__game_font_styles.Editor11Bold = string.format("%s, 11, bold, aa",f)
+	__game_font_styles.Editor11 = string.format("%s, 11, aa",f)
+	__game_font_styles.Editor12Bold = string.format("%s, 12, bold, aa",f)
+	__game_font_styles.Editor12 = string.format("%s, 12, aa",f)
+	__game_font_styles.Editor13 = string.format("%s, 13, aa",f)
+	__game_font_styles.Editor13Bold = string.format("%s, 13, bold, aa",f)
+	__game_font_styles.Editor14 = string.format("%s, 14, aa",f)
+	__game_font_styles.Editor14Bold = string.format("%s, 14, bold, aa",f)
+	__game_font_styles.Editor16 = string.format("%s, 16, aa",f)
+	__game_font_styles.Editor16Bold = string.format("%s, 16, bold, aa",f)
+	__game_font_styles.Editor17 = string.format("%s, 17, aa",f)
+	__game_font_styles.Editor17Bold = string.format("%s, 17, bold, aa",f)
+	__game_font_styles.Editor18 = string.format("%s, 18, aa",f)
+	__game_font_styles.Editor18Bold = string.format("%s, 18, bold, aa",f)
+	__game_font_styles.Editor21Bold = string.format("%s, 21, bold, aa",f)
+	__game_font_styles.Editor32Bold = string.format("%s, 32, bold",f)
+	__game_font_styles.Rollover = string.format("%s, 14, bold, aa",f)
+--~	 __game_font_styles.DesignerCaption = string.format("%s, 18, bold, aa",f)
+--~	 __game_font_styles.DesignerPropEditor = string.format("%s,f,", 12, aa"")
+	__game_font_styles.Console = string.format("%s, 13, bold, aa",f)
+--~	 __game_font_styles.UAMenu = string.format("%s, 14, aa",f)
+--~	 __game_font_styles.UAToolbar = string.format("%s, 14, bold, aa",f)
+	__game_font_styles.EditorCaption = string.format("%s, 14, bold, aa",f)
 
 	-- normally called when translation is changed, but i try to keep Init.lua simple
 	InitGameFontStyles()

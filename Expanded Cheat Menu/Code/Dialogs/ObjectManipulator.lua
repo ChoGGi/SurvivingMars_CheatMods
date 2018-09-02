@@ -3,7 +3,6 @@
 -- used to do minimal editing of objects (or all of same type)
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local Concat = ChoGGi.ComFuncs.Concat
 local RetName = ChoGGi.ComFuncs.RetName
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local Trans = ChoGGi.ComFuncs.Translate
@@ -32,7 +31,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = Concat(S[302535920000471--[[Object Manipulator--]]],": ",self.obj_name)
+	self.title = string.format("%s: %s",S[302535920000471--[[Object Manipulator--]]],self.obj_name)
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -216,7 +215,7 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 			(obj_type ~= "number" and edit_type ~= "boolean") then
 		-- list item
 		self.idList[sel_idx].item.value = edit_text
-		self.idList[sel_idx][1]:SetText(Concat(self.idList[sel_idx].item.text," = ",edit_text))
+		self.idList[sel_idx][1]:SetText(string.format("%s = %s",self.idList[sel_idx].item.text,edit_text))
 		-- stored obj
 		self.items[sel_idx].value = edit_text
 		-- actual object
@@ -264,7 +263,7 @@ end
 function ChoGGi_ObjectManipulatorDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
-		local listitem = self.idList:CreateTextItem(Concat(self.items[i].text," = ",self.items[i].value))
+		local listitem = self.idList:CreateTextItem(string.format("%s = %s",self.items[i].text,self.items[i].value))
 		listitem.item = self.items[i]
 	end
 end
@@ -308,11 +307,11 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 
 	if IsValid(obj) then
 		local x,y,z = obj:GetVisualPosXYZ()
-		return Concat(obj.class," @ (",x,",",y,",",z,")")
+		return string.format("%s @ (%s,%s,%s)",obj.class,x,y,z)
 	end
 
 	if IsPoint(obj) then
-		return Concat("(",obj:x(),obj:y(),obj:z(),",",")")
+		return string.format("(%s,%s,%s)",obj:x(),obj:y(),obj:z())
 	end
 
 	if obj_type == "thread" then
@@ -334,11 +333,11 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 			if #obj > 3 then
 				res[#res+1] = "..."
 			end
-			return Concat("objlist","{",TableConcat(res,", "),"}")
+			return string.format("objlist{%s}","",TableConcat(res,", "))
 		end
 
 		if IsT(obj) then
-			return Concat("T{\"",Trans(obj),"\"}")
+			return string.format([[T{"%s"}]],Trans(obj))
 		else
 			-- regular table
 			local table_data
@@ -347,7 +346,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 
 			if len > 0 and is_next then
 				-- next works for both
-				table_data = Concat(len," / ",S[302535920001057--[[Data--]]])
+				table_data = string.format("%s / %s",len,S[302535920001057--[[Data--]]])
 			elseif is_next then
 				-- ass based
 				table_data = S[302535920001057--[[Data--]]]
@@ -358,9 +357,9 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 
 			local name = RetName(obj)
 			if obj.class and name ~= obj.class then
-				name = Concat(obj.class," (len: ",table_data,", ",name,")")
+				name = string.format("%s (len: %s, %s)",obj.class,table_data,name)
 			else
-				name = Concat(name," (len: ",table_data,")")
+				name = string.format("%s (len: %s)",name,table_data)
 			end
 
 			return name
@@ -381,9 +380,9 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
 			local text
 			local v_type = type(v)
 			if v_type == "table" then
-				text = Concat("<color 75 75 255>",sort,"</color>")
+				text = string.format("<color 75 75 255>%s</color>",sort)
 			elseif v_type == "function" then
-				text = Concat("<color 255 75 75>",sort,"</color>")
+				text = string.format("<color 255 75 75>%s</color>",sort)
 			else
 				text = sort
 			end

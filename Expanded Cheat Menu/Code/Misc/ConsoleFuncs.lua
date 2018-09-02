@@ -2,7 +2,6 @@
 
 -- the menus/buttons added to the Console
 
-local Concat = ChoGGi.ComFuncs.Concat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
@@ -115,7 +114,7 @@ local function HistoryPopup(self)
 			items[i] = {
 				-- these can get long so keep 'em short
 				name = text:sub(1,ConsoleHistoryMenuLength),
-				hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",text),
+				hint = string.format("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],text),
 				clicked = function()
 					dlgConsole:Exec(text)
 				end,
@@ -146,7 +145,7 @@ local function BuildExamineMenu()
 	for i = 0, #list do
 		ExamineMenuToggle_list[i] = {
 			name = list[i],
-			hint = Concat(S[302535920000491--[[Examine Object--]]],": ",list[i]),
+			hint = string.format("%s: %s",S[302535920000491--[[Examine Object--]]],list[i]),
 			clicked = function()
 				local obj = ChoGGi.ComFuncs.DotNameToObject(list[i])
 				if type(obj) == "function" then
@@ -254,7 +253,7 @@ local function BuildSciptButton(scripts,dlg,folder)
 					local _, script = AsyncFileToString(scripts[i].path)
 					items[i] = {
 						name = scripts[i].name,
-						hint = Concat(S[302535920001138--[[Execute this command in the console.--]]],"\n\n",script),
+						hint = string.format("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
 						clicked = function()
 							dlg:Exec(script)
 						end,
@@ -310,7 +309,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 			BuildSciptButton(scripts,dlg,{
 				Text = folders[i].name,
 				RolloverText = hint_str:format(folders[i].path),
-				id = Concat("id",folders[i].name,"Menu"),
+				id = string.format("id%sMenu",folders[i].name),
 				script_path = folders[i].path,
 			})
 		end
@@ -322,15 +321,15 @@ function ChoGGi.ConsoleFuncs.BuildScriptFiles()
 	--create folder and some example scripts if folder doesn't exist
 	local err,_ = AsyncGetFileAttribute(script_path,"size")
 	if err then
-		AsyncCreatePath(Concat(script_path,"/Examine"))
-		AsyncCreatePath(Concat(script_path,"/Functions"))
+		AsyncCreatePath(string.format("%s/Examine",script_path))
+		AsyncCreatePath(string.format("%s/Functions",script_path))
 		--print some info
 		print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(script_path))
 		--add some example files and a readme
-		AsyncStringToFile(Concat(script_path,"/readme.txt"),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
-		AsyncStringToFile(Concat(script_path,"/Help Me.lua"),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
-		AsyncStringToFile(Concat(script_path,"/Functions/Amount of colonists.lua"),[[#(UICity.labels.Colonist or "")]])
-		AsyncStringToFile(Concat(script_path,"/Functions/Toggle Working SelectedObj.lua"),[[SelectedObj:ToggleWorking()]])
+		AsyncStringToFile(string.format("%s/readme.txt",script_path),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
+		AsyncStringToFile(string.format("%s/Help Me.lua",script_path),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
+		AsyncStringToFile(string.format("%s/Functions/Amount of colonists.lua",script_path),[[#(UICity.labels.Colonist or "")]])
+		AsyncStringToFile(string.format("%s/Functions/Toggle Working SelectedObj.lua",script_path),[[SelectedObj:ToggleWorking()]])
 	end
 end
 

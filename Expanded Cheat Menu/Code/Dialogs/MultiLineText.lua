@@ -2,7 +2,6 @@
 
 -- displays text in an editable text box
 
---~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
 DefineClass.ChoGGi_MultiLineTextDlg = {

@@ -44,37 +44,12 @@ if not blacklist then
 	local AsyncGetFileAttribute = AsyncGetFileAttribute
 
 	FileExists = function(file)
-		-- AsyncFileOpen may not work that well under linux?
 		local err,_ = AsyncGetFileAttribute(file,"size")
 		if not err then
 			return true
 		end
 	end
 end
-
--- this is used instead of "str .. str"; anytime you do that lua will check for the hashed string, if not then hash the new string, and store it till exit (which means this is faster, and uses less memory)
-local concat_table = {}
-local function Concat(...)
-	-- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
-	table.iclear(concat_table)
-	-- build table from args
-	local concat_value
-	local concat_type
-	for i = 1, select("#",...) do
-		concat_value = select(i,...)
-		-- no sense in calling a func more then we need to
-		concat_type = type(concat_value)
-		if concat_type == "string" or concat_type == "number" then
-			concat_table[i] = concat_value
-		else
-			concat_table[i] = tostring(concat_value)
-		end
-	end
-	-- and done
-	return TableConcat(concat_table)
-end
-
---~ ChoGGi.CodeFuncs.TestConcatExamine()
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
@@ -100,11 +75,11 @@ ChoGGi = {
 	ModPath = blacklist and CurrentModPath or Mods[id].content_path or Mods[id].path,
 	-- Console>Scripts folder
 	scripts = "AppData/ECM Scripts",
-	-- you can pry my settings FILE from my cold dead (and not modding sm anymore) hands.
+	-- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
 	SettingsFile = blacklist and nil or "AppData/CheatMenuModSettings.lua",
-	-- i translate all my strings at startup (and a couple of the built-in ones
+	-- i translate all my strings at startup (and a couple of the built-in ones)
 	Strings = false,
-	-- easy access to some data (traits,cargo,mysteries,colonist data)
+	-- easier access to some data (traits,cargo,mysteries,colonist data)
 	Tables = false,
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
@@ -113,7 +88,6 @@ ChoGGi = {
 	ComFuncs = {
 		FileExists = FileExists,
 		TableConcat = TableConcat,
-		Concat = Concat,
 		DebugGetInfo = format_value,
 	},
 	-- orig funcs that get replaced
@@ -146,7 +120,7 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 do -- translate
-	local locale_path = Concat(ChoGGi.ModPath,"Locales/%s.csv")
+	local locale_path = string.format("%sLocales/%s.csv",ChoGGi.ModPath,"%s")
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
 		LoadTranslationTableFile(locale_path:format("English"))

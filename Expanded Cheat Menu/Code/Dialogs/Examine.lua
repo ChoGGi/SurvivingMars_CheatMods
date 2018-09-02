@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
@@ -251,12 +250,12 @@ function Examine:BuildFuncList(obj_name,prefix)
 	local skip = true
 	for key,_ in pairs(class) do
 		if type(class[key]) == "function" then
-			menu_list_items[Concat(prefix,obj_name,".",key,": ")] = class[key]
+			menu_list_items[string.format("%s%s.%s: ",prefix,obj_name,key)] = class[key]
 			skip = false
 		end
 	end
 	if not skip then
-		menu_list_items[Concat(prefix,obj_name)] = "\n\n\n"
+		menu_list_items[string.format("%s%s",prefix,obj_name)] = "\n\n\n"
 	end
 end
 
@@ -278,27 +277,27 @@ end
 function Examine:BuildToolsMenuPopup()
 	return {
 		{
-			name = Concat(S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
+			name = string.format("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
 				str = str:gsub("<[/%s%a%d]*>","")
-				ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamine","lua")
+				ChoGGi.ComFuncs.Dump(string.format("\n%s",str),nil,"DumpedExamine","lua")
 			end,
 		},
 		{
-			name = Concat(S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
+			name = string.format("%s %s",S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920001027--[[dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
 				local str = ValueToLuaCode(self.obj)
-				ChoGGi.ComFuncs.Dump(Concat("\n",str),nil,"DumpedExamineObject","lua")
+				ChoGGi.ComFuncs.Dump(string.format("\n%s",str),nil,"DumpedExamineObject","lua")
 			end,
 		},
 		{
-			name = Concat(S[302535920000048--[[View--]]]," ",S[1000145--[[Text--]]]),
+			name = string.format("%s %s",S[302535920000048--[[View--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
 				local str = self.idText:GetText()
@@ -307,18 +306,18 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					checkbox = true,
 					text = str,
-					title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[1000145--[[Text--]]]),
+					title = string.format("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
-							ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamine","lua")
+							ChoGGi.ComFuncs.Dump(string.format("\n%s",str),overwrite,"DumpedExamine","lua")
 						end
 					end,
 				}
 			end,
 		},
 		{
-			name = Concat(S[302535920000048--[[View--]]]," ",S[298035641454--[[Object--]]]),
+			name = string.format("%s %s",S[302535920000048--[[View--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
@@ -327,13 +326,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					checkbox = true,
 					text = str,
-					title = Concat(S[302535920000048--[[View--]]],"/",S[302535920000004--[[Dump--]]]," ",S[298035641454--[[Object--]]]),
+					title = string.format("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
 					hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
 					custom_func = function(answer,overwrite)
 						if answer then
-							ChoGGi.ComFuncs.Dump(Concat("\n",str),overwrite,"DumpedExamineObject","lua")
+							ChoGGi.ComFuncs.Dump(string.format("\n%s",str),overwrite,"DumpedExamineObject","lua")
 						end
 					end,
 				}
@@ -349,10 +348,10 @@ This can take time on something like the ""Building"" metatable (don't use this 
 					table.clear(menu_list_items)
 
 					if #self.parents > 0 then
-						self:ProcessList(self.parents,Concat(" ",S[302535920000520--[[Parents--]]],": "))
+						self:ProcessList(self.parents,string.format(" %s: ",S[302535920000520--[[Parents--]]]))
 					end
 					if #self.ancestors > 0 then
-						self:ProcessList(self.ancestors,Concat(S[302535920000525--[[Ancestors--]]],": "))
+						self:ProcessList(self.ancestors,string.format("%s: ",S[302535920000525--[[Ancestors--]]]))
 					end
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj.class,"	")
@@ -369,7 +368,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			end,
 		},
 		{
-			name = Concat(S[327465361219--[[Edit--]]]," ",S[298035641454--[[Object--]]]),
+			name = string.format("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
@@ -495,7 +494,7 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
-		return Concat(
+		return string.format("%s%s%s",
 			self:HyperLink(function(_,_,button)
 				Examine_valuetotextex(_,_,button,obj,self)
 			end),
@@ -504,7 +503,7 @@ function Examine:valuetotextex(obj)
 		)
 
 	elseif obj_type == "thread" then
-		return Concat(
+		return string.format("%s%s%s",
 			self:HyperLink(function(_,_,button)
 				Examine_valuetotextex(_,_,button,obj,self)
 			end),
@@ -513,20 +512,18 @@ function Examine:valuetotextex(obj)
 		)
 
 	elseif obj_type == "string" then
-		return Concat(
-			"'",
-			obj,
-			-- some translated stuff has <color in it, so we make sure they don't bother the rest
-			"</color></color>'"
-		)
+		-- some translated stuff has <color in it, so we make sure they don't bother the rest
+		return string.format("'%s</color></color>'",obj)
 
 	-- point() is userdata (keep before it)
 	elseif IsPoint(obj) then
-		return Concat(
+		return string.format("%s(%s,%s)%s%s",
 			self:HyperLink(function()
 				ShowMe(obj)
 			end),
-			"(",obj:x(),",",obj:y(),",",obj:z() or terrain.GetHeight(obj),")",
+			obj:x(),
+			obj:y(),
+			obj:z() or terrain.GetHeight(obj),
 			HLEnd
 		)
 
@@ -535,7 +532,7 @@ function Examine:valuetotextex(obj)
 		local trans = Trans(obj)
 		-- if it isn't translatable then return a clickable link (not that useful, but it's highlighted)
 		if trans == "stripped" or trans:find("Missing locale string id") then
-			return Concat(
+			return string.format("%s%s%s",
 				self:HyperLink(function(_,_,button)
 					Examine_valuetotextex(_,_,button,obj,self)
 				end),
@@ -543,24 +540,21 @@ function Examine:valuetotextex(obj)
 				HLEnd
 			)
 		else
-			return Concat(
+			return string.format([[%s</color></color> < "%s"]],
 				trans,
-				"</color></color> < \"",
-				obj_type,
-				"\""
+				obj_type
 			)
 		end
 
 	elseif obj_type == "table" then
 
 		if IsValid(obj) then
-			return Concat(
+			return string.format("%s%s%s@%s",
 				self:HyperLink(function(_,_,button)
 					Examine_valuetotextex(_,_,button,obj,self)
 				end),
 				obj.class,
 				HLEnd,
-				"@",
 				self:valuetotextex(obj:GetPos())
 			)
 
@@ -604,7 +598,7 @@ function Examine:valuetotextex(obj)
 
 				if len > 0 and is_next then
 					-- next works for both
-					table_data = Concat(len," / ",S[302535920001057--[[Data--]]])
+					table_data = string.format("%s / %s",len,S[302535920001057--[[Data--]]])
 				elseif is_next then
 					-- ass based
 					table_data = S[302535920001057--[[Data--]]]
@@ -615,12 +609,12 @@ function Examine:valuetotextex(obj)
 
 				local name = RetName(obj)
 				if obj.class and name ~= obj.class then
-					name = Concat(obj.class," (len: ",table_data,", ",name,")")
+					name = string.format("%s (len: %s, %s)",obj.class,table_data,name)
 				else
-					name = Concat(name," (len: ",table_data,")")
+					name = string.format("%s (len: %s)",name,table_data)
 				end
 
-				return Concat(
+				return string.format("%s%s%s",
 					self:HyperLink(function(_,_,button)
 						Examine_valuetotextex(_,_,button,obj,self)
 					end),
@@ -636,11 +630,9 @@ end
 
 function Examine:HyperLink(f, custom_color)
 	self.onclick_handles[#self.onclick_handles+1] = f
-	return Concat(
-		(custom_color or "<color 150 170 250>"),
-		"<h ",
-		#self.onclick_handles,
-		" 230 195 50>"
+	return string.format("%s<h %s 230 195 50>",
+		custom_color or "<color 150 170 250>",
+		#self.onclick_handles
 	)
 end
 
@@ -665,7 +657,7 @@ local function ExamineThreadLevel_totextex(level, info, obj,self)
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
-				ExamineThreadLevel_data[Concat(name,"(up)")] = val
+				ExamineThreadLevel_data[string.format("%s(up)",name)] = val
 			end
 		end
 	end
@@ -692,11 +684,9 @@ function Examine:totextex(obj)
 
 		for k, v in pairs(obj) do
 			c = c + 1
-			totextex_res[c] = Concat(
+			totextex_res[c] = string.format("%s = %s<left>",
 				self:valuetotextex(k),
-				" = ",
-				self:valuetotextex(v),
-				"<left>"
+				self:valuetotextex(v)
 			)
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
@@ -707,7 +697,7 @@ function Examine:totextex(obj)
 
 		if blacklist then
 			c = c + 1
-			totextex_res[c] = Concat(
+			totextex_res[c] = string.format("%s%s%s%s",
 				self:HyperLink(function(_, _)
 					ExamineThreadLevel_totextex(nil, nil, obj, self)
 				end),
@@ -721,15 +711,13 @@ function Examine:totextex(obj)
 				info = debug.getinfo(obj, level, "Slfun")
 				if info then
 					c = c + 1
-					totextex_res[c] = Concat(
+					totextex_res[c] = string.format("%s%s%s(%s)%s%s",
 						self:HyperLink(function(level, info)
 							ExamineThreadLevel_totextex(level, info, obj,self)
 						end),
 						self:HyperLink(ExamineThreadLevel_totextex(level, info, obj,self)),
 						info.short_src,
-						"(",
 						info.currentline,
-						") ",
 						info.name or info.name_what or S[302535920000723--[[Lua--]]],
 						HLEnd
 					)
@@ -741,13 +729,18 @@ function Examine:totextex(obj)
 		end
 
 		c = c + 1
-		totextex_res[c] = Concat("<color 255 255 255>\nThread info: ",
-			"\nIsValidThread(): ",IsValidThread(obj),
-			"\nGetThreadStatus(): ",GetThreadStatus(obj),
-			"\nIsGameTimeThread(): ",IsGameTimeThread(obj),
-			"\nIsRealTimeThread(): ",IsRealTimeThread(obj),
-			"\nThreadHasFlags(): ",ThreadHasFlags(obj),
-			"</color>"
+		totextex_res[c] = string.format([[
+<color 200 200 200>Thread info:
+IsValidThread(): %s
+GetThreadStatus(): %s
+IsGameTimeThread(): %s
+IsRealTimeThread(): %s
+ThreadHasFlags(): %s</color>]],
+			IsValidThread(obj),
+			GetThreadStatus(obj),
+			IsGameTimeThread(obj),
+			IsRealTimeThread(obj),
+			ThreadHasFlags(obj)
 		)
 
 	elseif obj_type == "function" then
@@ -760,9 +753,8 @@ function Examine:totextex(obj)
 				local k, v = getupvalue(obj, i)
 				if k then
 					c = c + 1
-					totextex_res[c] = Concat(
+					totextex_res[c] = string.format("%s = %s",
 						self:valuetotextex(k),
-						" = ",
 						self:valuetotextex(v)
 					)
 				else
@@ -787,25 +779,19 @@ function Examine:totextex(obj)
 
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 
-		table.insert(totextex_res,1,Concat(
---~			 "<center>--",
-			"\t\t\t\t--",
+		table.insert(totextex_res,1,string.format(--[[<center>----]]"\t\t\t\t--%s%s%s@%s--"--[[--<vspace 6><left>--]],
 			self:HyperLink(function()
 				Examine_totextex(obj_metatable,self)
 			end),
 			obj.class,
 			HLEnd,
-			"@",
-			self:valuetotextex(obj:GetPos()),
---~ 			"--<vspace 6><left>"
-			"--"
+			self:valuetotextex(obj:GetPos())
 		))
 
 		if obj:IsValidPos() and IsValidEntity(obj.entity) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
-			table.insert(totextex_res, 2, Concat(
+			table.insert(totextex_res, 2, string.format("%s, step:%s%s%s",
 				GetStateName(obj:GetState()),
-				", step:",
 				self:HyperLink(function()
 					ShowMe(pos)
 				end),
@@ -815,12 +801,8 @@ function Examine:totextex(obj)
 		end
 
 	elseif obj_type == "table" and obj_metatable then
-			table.insert(totextex_res, 1, Concat(
---~				 "<center>--",
-				"\t\t\t\t--",
-				self:valuetotextex(obj_metatable),
---~ 				": metatable--<vspace 6><left>"
-				": metatable--"
+			table.insert(totextex_res, 1, string.format(--[[<center>----]]"\t\t\t\t--%s: metatable--"--[[: metatable--<vspace 6><left>--]],
+				self:valuetotextex(obj_metatable)
 			))
 	end
 
@@ -842,11 +824,11 @@ function Examine:totextex(obj)
 	elseif obj_type == "function" then
 		local dbg_value = "\ndebug.getinfo: "
 		if blacklist then
-			dbg_value = Concat(dbg_value,DebugGetInfo(obj))
+			dbg_value = string.format("%s%s",dbg_value,DebugGetInfo(obj))
 		else
 			local dbg_table = debug.getinfo(obj) or empty_table
 			for key,value in pairs(dbg_table) do
-				dbg_value = Concat(dbg_value,"\n",key,": ",value)
+				dbg_value = string.format("%s\n%s: %s",dbg_value,key,value)
 			end
 		end
 		c = c + 1
@@ -964,7 +946,7 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 		local c = #self.parents_menu_popup
 		c = c + 1
 		self.parents_menu_popup[c] = {
-			name = Concat("	 ---- ",title),
+			name = string.format("	 ---- %s",title),
 			hint = title,
 		}
 		for i = 1, #list do
@@ -1006,9 +988,9 @@ function Examine:SetObj(obj,skip_thread)
 	if obj_type == "table" then
 		-- add object name to title
 		if type(obj.handle) == "number" then
-			name = Concat(name," (",obj.handle,")")
+			name = string.format("%s (%s)",name,obj.handle)
 		elseif #obj > 0 then
-			name = Concat(name," (",#obj,")")
+			name = string.format("%s (%s)",name,#obj)
 		end
 
 		if obj.class then
@@ -1033,10 +1015,11 @@ function Examine:SetObj(obj,skip_thread)
 
 					self.attaches_menu_popup[attach_amount] = {
 						name = RetName(a),
-						hint = Concat(
-							a.class,"\n",
-							S[302535920000955--[[Handle--]]],": ",a.handle or S[6761--[[None--]]],"\n",
-							pos and Concat("Pos: ",pos)
+						hint = string.format("%s\n%s: %s\npos: %s",
+							a.class,
+							S[302535920000955--[[Handle--]]],
+							a.handle or S[6761--[[None--]]],
+							pos
 						),
 						showme = a,
 						clicked = function()
@@ -1057,7 +1040,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059-
 	end -- istable
 
 	-- limit caption length so we don't cover up close button
-	self.idCaption:SetText(utf8.sub(Concat(S[302535920000069--[[Examine--]]],": ",name), 1, 45))
+	self.idCaption:SetText(utf8.sub(string.format("%s: %s",S[302535920000069--[[Examine--]]],name), 1, 45))
 
 	-- don't create a new thread if we're already in one from auto-refresh
 	if skip_thread then

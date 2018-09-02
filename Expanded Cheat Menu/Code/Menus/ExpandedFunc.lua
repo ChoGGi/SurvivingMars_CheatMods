@@ -1,10 +1,10 @@
 -- See LICENSE for terms
---funcs under Gameplay menu without a separate file
 
-local Concat = ChoGGi.ComFuncs.Concat
---~ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
+-- funcs under Gameplay menu without a separate file
+
 --~ local Trans = ChoGGi.ComFuncs.Translate
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local RetName = ChoGGi.ComFuncs.RetName
 local S = ChoGGi.Strings
 
 --~ local default_icon = "UI/Icons/Sections/storage.tga"
@@ -42,9 +42,12 @@ do -- ViewObjInfo_Toggle
 
 	local GetInfo = {
 		OutsideBuildings = function(obj)
-			return Concat(
-				"- ",RetName(obj)," -\n",
-				S[302535920000035--[[Grids--]]],": ",S[682--[[Oxygen--]]],"(",obj.air and obj.air.grid.ChoGGi_GridHandle,") ",S[681--[[Water--]]],"(",obj.water and obj.water.grid.ChoGGi_GridHandle,") ",S[302535920000037--[[Electricity--]]],"(",obj.electricity and obj.electricity.grid.ChoGGi_GridHandle,")"
+			return string.format("- %s -\n%s: %s(%s) %s(%s) %s(%s)",
+				RetName(obj),
+				S[302535920000035--[[Grids--]]],
+				S[682--[[Oxygen--]]],obj.air and obj.air.grid.ChoGGi_GridHandle,
+				S[681--[[Water--]]],obj.water and obj.water.grid.ChoGGi_GridHandle,
+				S[302535920000037--[[Electricity--]]],obj.electricity and obj.electricity.grid.ChoGGi_GridHandle
 			)
 		end,
 --~ 		Power = function(obj)
@@ -52,33 +55,32 @@ do -- ViewObjInfo_Toggle
 --~ 		["Life-Support"] = function(obj)
 --~ 		end,
 		SubsurfaceDeposit = function(obj)
-			return Concat(
-				"- ",RetName(obj)," -\n",
-				S[6--[[Depth Layer--]]],": ",obj.depth_layer,", ",
-				S[7--[[Is Revealed--]]],": ",obj.revealed,"\n",
-				S[16--[[Grade--]]],": ",obj.grade,", ",
-				S[1000100--[[Amount--]]],": ",obj.amount / r,"/",obj.max_amount / r
+			return string.format("- %s -\n%s: %s, %s: %s\n%s: %s, %s: %s/%s",
+				RetName(obj),
+				S[6--[[Depth Layer--]]],obj.depth_layer,
+				S[7--[[Is Revealed--]]],obj.revealed,
+				S[16--[[Grade--]]],obj.grade,
+				S[1000100--[[Amount--]]],obj.amount / r,obj.max_amount / r
 			)
 		end,
 		DroneControl = function(obj)
-			return Concat(
-				"- ",RetName(obj)," -\n",
-				S[517--[[Drones: %s--]]],": ",#(obj.drones or ""),"/",obj:GetMaxDronesCount(),"\n",
-				S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),", ",
-				S[302535920000081--[[Workers--]]],": ",--[[obj:GetTransportDronesCount() + --]]obj:GetMiningDronesCount(),", ",
-				S[293--[[Broken: %s--]]]:format(obj:GetBrokenDronesCount()),", ",
+			return string.format("- %s -\n%s: %s/%s\n%s, %s: %s, %s, %s",
+				RetName(obj),
+				S[517--[[Drones: %s--]]],#(obj.drones or ""),obj:GetMaxDronesCount(),
+				S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),
+				S[302535920000081--[[Workers--]]],obj:GetMiningDronesCount(),
+				S[293--[[Broken: %s--]]]:format(obj:GetBrokenDronesCount()),
 				S[294--[[Discharged: %s--]]]:format(obj:GetDischargedDronesCount())
 			)
 		end,
 		Drone = function(obj)
-			return Concat(
-				"- ",RetName(obj)," -\n",
-				S[584248706535--[[Carrying: %s--]]]:format(Concat((obj.amount or 0) / r))," (",obj.resource,"), ",
-				S[63--[[Travelling--]]],": ",obj.moving,", ",
-				S[40--[[Recharge--]]],": ",obj.going_to_recharger,"\n",
-
-				S[4448--[[Dust--]]],": ",obj.dust / r,"/",obj.dust_max / r,", ",
-				S[7607--[[Battery--]]],": ",obj.battery / r,"/",obj.battery_max / r
+			return string.format("- %s -\n%s (%s), %s: %s, %s: %s\n%s: %s/%s, %s: %s/%s",
+				RetName(obj),
+				S[584248706535--[[Carrying: %s--]]]:format((obj.amount or 0) / r),obj.resource,
+				S[63--[[Travelling--]]],obj.moving,
+				S[40--[[Recharge--]]],obj.going_to_recharger,
+				S[4448--[[Dust--]]],obj.dust / r,obj.dust_max / r,
+				S[7607--[[Battery--]]],obj.battery / r,obj.battery_max / r
 			)
 		end,
 		Production = function(obj)
@@ -93,34 +95,31 @@ do -- ViewObjInfo_Toggle
 			if waste then
 				predprod = waste:GetPredictedProduction()
 				prefix = "0."
-				if string.len(predprod) > 3 then
+				if predprod:len() > 3 then
 					prefix = ""
 					predprod = predprod / r
 				end
-				waste = Concat(
-				"\n-",S[4518--[[Waste Rock--]]],"-\n",
-				S[80--[[Production--]]],": ",prefix,predprod,", ",
-				S[6729--[[Daily Production : %s--]]]:format(waste:GetPredictedDailyProduction() / r),", ",
-				S[434--[[Lifetime: %s--]]]:format(waste.lifetime_production / r),"\n",
-
-				S[519--[[Storage--]]],": ",waste:GetAmountStored() / r,"/",waste.max_storage / r
+				waste = string.format("\n-%s-\n%s: %s%s, %s, %s\n%s: %s/%s",
+				S[4518--[[Waste Rock--]]],
+				S[80--[[Production--]]],prefix,predprod,
+				S[6729--[[Daily Production : %s--]]]:format(waste:GetPredictedDailyProduction() / r),
+				S[434--[[Lifetime: %s--]]]:format(waste.lifetime_production / r),
+				S[519--[[Storage--]]],waste:GetAmountStored() / r,waste.max_storage / r
 				)
 			end
 			predprod = prod:GetPredictedProduction()
 			prefix = "0."
-			if string.len(predprod) > 3 then
+			if predprod:len() > 3 then
 				prefix = ""
 				predprod = predprod / r
 			end
-			return table.concat{Concat(
-				"- ",RetName(obj)," -\n",
-				S[80--[[Production--]]],": ",prefix,predprod,", ",
-				S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),", ",
-				S[434--[[Lifetime: %s--]]]:format(prod.lifetime_production / r),"\n",
-
-				S[519--[[Storage--]]],": ",prod:GetAmountStored() / r,"/",prod.max_storage / r
+			return TableConcat{string.format("- %s -\n%s: %s%s, %s, %s\n%s: %s/%s",
+				RetName(obj),
+				S[80--[[Production--]]],prefix,predprod,
+				S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),
+				S[434--[[Lifetime: %s--]]]:format(prod.lifetime_production / r),
+				S[519--[[Storage--]]],prod:GetAmountStored() / r,prod.max_storage / r
 			),waste}
-
 		end,
 		Dome = function(obj)
 			if not obj.air then
@@ -140,30 +139,39 @@ do -- ViewObjInfo_Toggle
 					end
 				end
 			end
-			return Concat(
-				"- ",RetName(obj)," -\n",
-				S[547--[[Colonists--]]],": ",#(obj.labels.Colonist or ""),"\n",
+			return string.format([[- %s -
+%s: %s
+%s: %s/%s, %s: %s/%s
+%s: %s, %s\n%s: %s, %s: %s, %s: %s, %s: %s
 
-				S[6859--[[Unemployed--]]],": ",#(obj.labels.Unemployed or ""),"/",Dome_GetWorkingSpace(obj),", ",
-				S[7553--[[Homeless--]]],": ",#(obj.labels.Homeless or ""),"/",obj:GetLivingSpace(),"\n",
+%s: %s/%s, %s: %s/%s, %s: %s/%s
+%s (%s): %s, %s: %s/%s
+%s (%s): %s, %s: %s/%s
 
-				S[7031--[[Renegades--]]],": ",#(obj.labels.Renegade or ""),", ",
-				S[5647--[[Dead Colonists: %s--]]]:format(#(obj.labels.DeadColonist or "")),"\n",
-
-				S[6647--[[Guru--]]],": ",#(obj.labels.Guru or ""),", ",
-				S[6640--[[Genius--]]],": ",#(obj.labels.Genius or ""),", ",
-				S[6642--[[Celebrity--]]],": ",#(obj.labels.Celebrity or ""),", ",
-				S[6644--[[Saint--]]],": ",#(obj.labels.Saint or ""),"\n\n",
-
-				S[79--[[Power--]]],": ",obj.electricity.current_consumption / r,"/",obj.electricity.consumption / r,", ",
-				S[682--[[Oxygen--]]],": ",obj.air.current_consumption / r,"/",obj.air.consumption / r,", ",
-				S[681--[[Water--]]],": ",obj.water.current_consumption / r,"/",obj.water.consumption / r,"\n",
-
-				S[1022--[[Food--]]]," (",#(obj.labels.needFood or ""),"): ",S[4439--[[Going to: %s--]]]:format(food_need),", ",S[526--[[Visitors--]]],": ",food_use,"/",food_max,"\n",
-
-				S[3862--[[Medic--]]]," (",#(obj.labels.needMedical or ""),"): ",S[4439--[[Going to: %s--]]]:format(medic_need),", ",S[526--[[Visitors--]]],": ",medic_use,"/",medic_max,"\n\n",
-
-				S[302535920000035--[[Grids--]]],": ",S[682--[[Oxygen--]]],"(",obj.air.grid.ChoGGi_GridHandle,") ",S[681--[[Water--]]],"(",obj.water.grid.ChoGGi_GridHandle,") ",S[302535920000037--[[Electricity--]]],"(",obj.electricity.grid.ChoGGi_GridHandle,")"
+%s: %s(%s) %s(%s) %s(%s)]],
+				RetName(obj),
+				S[547--[[Colonists--]]],#(obj.labels.Colonist or ""),
+				S[6859--[[Unemployed--]]],#(obj.labels.Unemployed or ""),Dome_GetWorkingSpace(obj),
+				S[7553--[[Homeless--]]],#(obj.labels.Homeless or ""),obj:GetLivingSpace(),
+				S[7031--[[Renegades--]]],#(obj.labels.Renegade or ""),
+				S[5647--[[Dead Colonists: %s--]]]:format(#(obj.labels.DeadColonist or "")),
+				S[6647--[[Guru--]]],#(obj.labels.Guru or ""),
+				S[6640--[[Genius--]]],#(obj.labels.Genius or ""),
+				S[6642--[[Celebrity--]]],#(obj.labels.Celebrity or ""),
+				S[6644--[[Saint--]]],#(obj.labels.Saint or ""),
+				S[79--[[Power--]]],obj.electricity.current_consumption / r,obj.electricity.consumption / r,
+				S[682--[[Oxygen--]]],obj.air.current_consumption / r,obj.air.consumption / r,
+				S[681--[[Water--]]],obj.water.current_consumption / r,obj.water.consumption / r,
+				S[1022--[[Food--]]],#(obj.labels.needFood or ""),
+				S[4439--[[Going to: %s--]]]:format(food_need),
+				S[526--[[Visitors--]]],food_use,food_max,
+				S[3862--[[Medic--]]],#(obj.labels.needMedical or ""),
+				S[4439--[[Going to: %s--]]]:format(medic_need),
+				S[526--[[Visitors--]]],medic_use,medic_max,
+				S[302535920000035--[[Grids--]]],
+				S[682--[[Oxygen--]]],obj.air.grid.ChoGGi_GridHandle,
+				S[681--[[Water--]]],obj.water.grid.ChoGGi_GridHandle,
+				S[302535920000037--[[Electricity--]]],obj.electricity.grid.ChoGGi_GridHandle
 			)
 		end,
 	}
@@ -184,7 +192,7 @@ do -- ViewObjInfo_Toggle
 				text_orient.ChoGGi_ViewObjInfo_o = true
 				text_obj.ChoGGi_ViewObjInfo_t = true
 				text_obj:SetText(GetInfo[label](obj))
---~ 				text_obj:SetFontId(UIL.GetFontID(Concat(ChoGGi.font,", 14, bold, aa")))
+--~ 				text_obj:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
 				text_obj:SetCenter(true)
 
 				local _, origin = obj:GetAllSpots(0)
@@ -312,10 +320,10 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 	local ItemList = {
 		{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 		{text = "",value = "New"},
-		{text = Concat(S[302535920000035--[[Grids--]]],": ",S[891--[[Air--]]]),value = "Air"},
-		{text = Concat(S[302535920000035--[[Grids--]]],": ",S[302535920000037--[[Electricity--]]]),value = "Electricity"},
-		{text = Concat(S[302535920000035--[[Grids--]]],": ",S[681--[[Water--]]]),value = "Water"},
-		{text = Concat(S[302535920000035--[[Grids--]]],": ",S[891--[[Air--]]],"/",S[302535920000037--[[Electricity--]]],"/",S[681--[[Water--]]]),value = "Grids"},
+		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]]),value = "Air"},
+		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[302535920000037--[[Electricity--]]]),value = "Electricity"},
+		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[681--[[Water--]]]),value = "Water"},
+		{text = string.format("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[302535920000037--[[Electricity--]]],S[681--[[Water--]]]),value = "Grids"},
 		{text = S[302535920000042--[[City--]]],value = "City"},
 		{text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
 		{text = S[5238--[[Rockets--]]],value = "Rockets"},

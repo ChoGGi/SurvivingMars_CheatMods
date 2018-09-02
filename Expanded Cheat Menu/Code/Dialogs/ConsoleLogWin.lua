@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
@@ -124,13 +123,13 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		local old_text = dlg.idText:GetText()
 
 		if bNewLine then
-			text = Concat(old_text,"\n",text)
+			text = string.format("%s\n%s",old_text,text)
 		else
-			text = Concat(old_text,text)
+			text = string.format("%s%s",old_text,text)
 		end
 		dlg.idText:SetText(text)
 
 		-- always scroll to end of text
-		dlg.idScrollBox:ScrollTo(0, utf8.len(text))
+		dlg.idScrollBox:ScrollTo(0, text:len())
 	end
 end

@@ -2,13 +2,13 @@
 
 -- all purpose items list
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
+local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
-local type,tostring = type,tostring
+local type,tostring,string = type,tostring,string
 
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -79,7 +79,7 @@ Press Enter to show all items."--]]],
 		}, self.idDialog)
 
 		for i = 1, #self.list.check do
-			local name1 = Concat("idCheckBox",i)
+			local name1 = string.format("idCheckBox%s",i)
 			self[name1] = g_Classes.ChoGGi_CheckButton:new({
 				Id = name1,
 				Text = S[588--[[Empty--]]],
@@ -162,8 +162,26 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
 
+	-- are we sorting the list?
+	if not self.list.skip_sort then
+		-- sort table by display text
+		local sortby = self.list.sortby or "text"
+		table.sort(self.list.items,
+			function(a,b)
+				return CompareTableValue(a,b,sortby)
+			end
+		)
+	end
+	-- append blank item for adding custom value
+	if not self.list.custom_type then
+		self.list.items[#self.list.items+1] = {text = "",hint = "",value = false}
+	end
+
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
 	self:BuildList()
+
+	-- focus on list
+	self.idList:SetFocus()
 
 	-- add the colour picker?
 	if self.custom_type == 2 or self.custom_type == 5 then
@@ -233,6 +251,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	end -- end of colour picker if
 
 	if self.list.multisel then
+		-- if it's a multiselect then add a hint
+		self.list.hint = string.format("%s\n\n%s",self.list.hint,S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
+
 		self.idList.MultipleSelection = true
 		if type(self.list.multisel) == "number" then
 			-- select all of number
@@ -241,9 +262,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			end
 		end
 	end
-
-	-- focus on list
-	self.idList:SetFocus()
 
 	self.idList.OnKbdKeyDown = function(_, vk)
 		if vk == const.vkEnter then
@@ -260,7 +278,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	local hint = CheckText(self.list.hint)
 	if hint ~= "" then
 		self.idList.RolloverText = hint
-		self.idOK.RolloverText = Concat(self.idOK:GetRolloverText(),"\n\n\n",hint)
+		self.idOK.RolloverText = string.format("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
 
 	-- hide ok/cancel buttons as they don't do jack
@@ -304,9 +322,9 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		local text
 		if item.icon then
 			if item.icon:find("<image ") then
-				text = Concat(item.icon," ",item.text)
+				text = string.format("%s %s",item.icon,item.text)
 			else
-				text = Concat("<image ",item.icon," 2500> ",item.text)
+				text = string.format("<image %s> %s",item.icon,item.text)
 			end
 		else
 			text = item.text
@@ -325,7 +343,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 			else
 				value_str = item.value
 			end
-			title = Concat(item.text,": <color 200 255 200>",value_str,"</color>")
+			title = string.format("%s: <color 200 255 200>%s</color>",item.text,value_str)
 		end
 		listitem.RolloverTitle = title
 
@@ -528,7 +546,7 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	-- add checkbox statuses
 	if self.list.check and #self.list.check > 0 then
 		for i = 1, #self.list.check do
-			self.choices[1][Concat("check",i)] = self[Concat("idCheckBox",i)]:GetCheck()
+			self.choices[1][string.format("check%s",i)] = self[string.format("idCheckBox%s",i)]:GetCheck()
 		end
 	end
 	-- and if it's a colourpicker list send that back as well

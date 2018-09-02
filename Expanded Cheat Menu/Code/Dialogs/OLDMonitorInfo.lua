@@ -6,7 +6,6 @@ if true then
 	return
 end
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
 

@@ -2,7 +2,6 @@
 
 -- shows a dialog with a single line edit to execute code in
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 
@@ -19,7 +18,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 
 	self.obj = context.obj
 	self.obj_name = RetName(self.obj)
-	self.title = Concat(S[302535920001305--[[Find Within--]]],": ",self.obj_name)
+	self.title = string.format("%s: %s",S[302535920001305--[[Find Within--]]],self.obj_name)
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -144,9 +143,9 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,case,limit,level)
 		local name2 = tostring(obj)
 		local obj_string
 		if name1 == name2 then
-			obj_string = Concat(S[302535920001307--[[L%s--]]]:format(level),": ",name1)
+			obj_string = string.format("%s: %s",S[302535920001307--[[L%s--]]]:format(level),name1)
 		else
-			obj_string = Concat(S[302535920001307--[[L%s--]]]:format(level),": ",name1," (",name2,")")
+			obj_string = string.format("%s: %s (%s)",S[302535920001307--[[L%s--]]]:format(level),name1,name2)
 		end
 		for key,value in pairs(obj) do
 			local key_str,key_type = ReturnStr(key,case)

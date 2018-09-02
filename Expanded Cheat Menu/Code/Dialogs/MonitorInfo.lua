@@ -9,7 +9,6 @@ if true then
 	return
 end
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
 
@@ -64,7 +63,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 
 	ChoGGi.ComFuncs.DialogAddCloseX(self)
 	ChoGGi.ComFuncs.DialogAddCaption(self,{
-		prefix = Concat(S[302535920000555--[[Monitor Info--]]],": "),
+		prefix = string.format("%s : ",S[302535920000555--[[Monitor Info--]]]),
 		pos = point(25, border),
 		size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
 	})

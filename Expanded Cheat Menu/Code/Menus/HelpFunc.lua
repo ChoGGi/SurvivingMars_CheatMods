@@ -2,7 +2,6 @@
 
 local default_icon = "UI/Icons/Sections/attention.tga"
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local S = ChoGGi.Strings
@@ -16,19 +15,20 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 	local c = 0
 
 	local actions = ChoGGi.Temp.Actions
+	local hint = "%s\n\n<color 200 255 200>%s</color>"
+	local icon = "<image %s 2500>"
 	for i = 1, #actions do
 		local a = actions[i]
 		-- skip menus
 		if a.OnActionEffect ~= "popup" and a.ActionName ~= "" then
 			c = c + 1
-			local hint = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
-
+			local hint_text = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
 			ItemList[c] = {
 				text = a.ActionName,
 				value = a.ActionName,
-				icon = a.ActionIcon,
+				icon = icon:format(a.ActionIcon),
 				func = a.OnAction,
-				hint = Concat(hint,"\n\n<color 200 255 200>",a.ActionId,"</color>"),
+				hint = hint:format(hint_text,a.ActionId),
 			}
 		end
 	end
@@ -47,7 +47,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 		custom_type = 7,
 		custom_func = CallBackFunc,
 		height = 800.0,
---~ 		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+--~ 		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 	}
 
 end
@@ -66,7 +66,7 @@ end
 function ChoGGi.MenuFuncs.RetMapInfo()
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n","")
-	ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data,"\n"))
+	ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"))
 end
 
 do -- ModUpload
@@ -155,24 +155,23 @@ do -- ModUpload
 					err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
 					if not err then
 						for i = 1, #(files or "") do
-							local dest_file = Concat(dest,files[i])
+							local dest_file = string.format("%s%s",dest,files[i])
 							local dir = SplitPath(dest_file)
 							AsyncCreatePath(dir)
-							err = AsyncCopyFile(Concat(mod.path,files[i]), dest_file, "raw")
+							err = AsyncCopyFile(string.format("%s%s",mod.path,files[i]), dest_file, "raw")
 						end
 					end
 				end
 
 				-- update mod on workshop
 				if not err or blank_mod then
-					local os_dest = Concat(dest,"Pack/ModContent.hpk")
+					-- check if .hpk exists, and use it if so
+					local os_dest = string.format("%sPack/ModContent.hpk",dest)
 					if ChoGGi.ComFuncs.FileExists(os_dest) then
 						os_dest = ConvertToOSPath(os_dest)
 					else
 						os_dest = ConvertToOSPath(dest)
 					end
-
---~ 					print(ConvertToOSPath(os_dest))
 
 					if Platform.steam then
 						err = AsyncSteamWorkshopUpdateItem{
@@ -202,7 +201,7 @@ do -- ModUpload
 				end
 
 				-- update mod log and print it to console log
-				ModLog(Concat("\n",msg,": ",mod.title))
+				ModLog(string.format("\n%s: %s",msg,mod.title))
 				local ModMessageLog = ModMessageLog
 				print(S[302535920001265--[[ModMessageLog--]]],":")
 				for i = 1, #ModMessageLog do
@@ -212,7 +211,7 @@ do -- ModUpload
 				-- let user know if we're good or not
 				ChoGGi.ComFuncs.MsgWait(
 					msg,
-					Concat(title,": ",mod.title),
+					string.format("%s: %s",title,mod.title),
 					"UI/Common/mod_steam_workshop.tga"
 				)
 
@@ -269,8 +268,8 @@ end -- do
 
 function ChoGGi.MenuFuncs.EditECMSettings()
 	local ChoGGi = ChoGGi
+	-- make sure any changed settings are current
 	if not ChoGGi.testing then
-		-- make sure any changed settings are current
 		ChoGGi.SettingFuncs.WriteSettings()
 	end
 	-- load up settings file in the editor
@@ -305,8 +304,8 @@ function ChoGGi.MenuFuncs.DisableECM()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Concat(S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-CheatMenuModSettings.lua > DisableECM to re-enable them."--]]],"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
+		string.format("%s\n\n%s",S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+CheatMenuModSettings.lua > DisableECM to re-enable them."--]]],S[302535920001070--[[Restart to take effect.--]]]),
 		CallBackFunc,
 		302535920000142--[[Disable--]]
 	)
@@ -324,20 +323,6 @@ function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
 	end
 	ChoGGi.SettingFuncs.WriteSettings()
 end
-
---~ function ChoGGi.MenuFuncs.ShowChangelogECM()
---~	 local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"Changelog.md"))
---~	 if not file_error then
---~		 ChoGGi.ComFuncs.OpenInExamineDlg(str)
---~	 end
---~ end
-
---~ function ChoGGi.MenuFuncs.ShowReadmeECM()
---~	 local file_error, str = AsyncFileToString(Concat(ChoGGi.ModPath,"README.md"))
---~	 if not file_error then
---~		 ChoGGi.ComFuncs.OpenInExamineDlg(str)
---~	 end
---~ end
 
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 	local ChoGGi = ChoGGi
@@ -368,7 +353,7 @@ end
 function ChoGGi.MenuFuncs.ResetECMSettings()
 
 	local file = ChoGGi.SettingsFile
-	local old = Concat(file,".old")
+	local old = string.format("%s.old",file)
 
 	local function CallBackFunc(answer)
 		if answer then
@@ -384,6 +369,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 				ThreadUnlockKey(file)
 			end
 
+			ChoGGi.Temp.ResetECMSettings = true
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
@@ -395,10 +381,10 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		Concat(S[302535920001072--[[Are you sure you want to reset ECM settings?
-Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old),"\n\n",S[302535920001070--[[Restart to take effect.--]]]),
+		string.format("%s\n\n%s",S[302535920001072--[[Are you sure you want to reset ECM settings?
+Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old),S[302535920001070--[[Restart to take effect.--]]]),
 		CallBackFunc,
-		Concat(S[302535920001084--[[Reset--]]],"!")
+		string.format("%s!",S[302535920001084--[[Reset--]]])
 	)
 end
 

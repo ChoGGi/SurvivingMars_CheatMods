@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
 local Trans = ChoGGi.ComFuncs.Translate
@@ -79,8 +78,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			for i = 1, #Table do
 				if Table[i].ChoGGi_Soylent then
 					Table[i]:Done()
-					--Table[i]:PopAndCallDestructor()
-					ChoGGi.CodeFuncs.DeleteObject(Table[i])
+					DoneObject(Table[i])
 				end
 			end
 		end)
@@ -95,25 +93,35 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
 	--culling the herd
 	local ItemList = {
-		{text = Concat(" ",S[7553--[[Homeless--]]]),value = "Homeless"},
-		{text = Concat(" ",S[6859--[[Unemployed--]]]),value = "Unemployed"},
-		{text = Concat(" ",S[7031--[[Renegades--]]]),value = "Renegade"},
-		{text = Concat(S[240--[[Specialization--]]],": ",S[6761--[[None--]]]),value = "none"},
+		{text = string.format(" %s",S[7553--[[Homeless--]]]),value = "Homeless"},
+		{text = string.format(" %s",S[6859--[[Unemployed--]]]),value = "Unemployed"},
+		{text = string.format(" %s",S[7031--[[Renegades--]]]),value = "Renegade"},
+		{text = string.format(" %s: %s",S[240--[[Specialization--]]],S[6761--[[None--]]]),value = "none"},
 	}
 	local function AddToList(c,text)
 		for i = 1, #c do
 			ItemList[#ItemList+1] = {
-				text = Concat(S[text],": ",c[i]),
+				text = string.format("%s: %s",S[text],c[i]),
 				value = c[i],
 				idx = i,
 			}
 		end
 	end
 	AddToList(ChoGGi.Tables.ColonistAges,987289847467--[[Age Groups--]])
-	AddToList(ChoGGi.Tables.ColonistBirthplaces,4357--[[Birthplace--]])
 	AddToList(ChoGGi.Tables.ColonistGenders,4356--[[Sex--]])
 	AddToList(ChoGGi.Tables.ColonistRaces,302535920000741--[[Race--]])
 	AddToList(ChoGGi.Tables.ColonistSpecializations,240--[[Specialization--]])
+	local birth = ChoGGi.Tables.ColonistBirthplaces
+	local icon = "%s\n\n<image %s>"
+	for i = 1, #birth do
+		local name = Trans(birth[i].text)
+		ItemList[#ItemList+1] = {
+			text = string.format("%s: %s",S[4357--[[Birthplace--]]],name),
+			value = birth[i].value,
+			idx = i,
+			hint = icon:format(name,birth[i].flag),
+		}
+	end
 
 	local function CallBackFunc(choice)
 		local value = choice[1].value
@@ -297,7 +305,7 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000757--[[Add Applicants To Pool--]],
-		hint = Concat(S[6779--[[Warning--]]],": ",S[302535920000758--[[Will take some time for 25K and up.--]]]),
+		hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000758--[[Will take some time for 25K and up.--]]]),
 		check = {
 			{
 				title = 302535920000759--[[Clear Applicant Pool--]],
@@ -371,7 +379,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 	local hint_low = S[302535920000767--[[Lower = more babies--]]]
 	local hint_high = S[302535920000768--[[Higher = less babies--]]]
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 0,value = 0,hint = hint_low},
 		{text = 35,value = 35,hint = hint_low},
 		{text = 140,value = 140,hint = hint_high},
@@ -397,7 +405,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Concat(S[302535920000769--[[Selected--]]],": ",choice[1].text,S[302535920000770--[[
+				string.format("%s: %s%s",S[302535920000769--[[Selected--]]],choice[1].text,S[302535920000770--[[
 Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.--]]]),
 				547--[[Colonists--]],
 				default_icon,
@@ -410,7 +418,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000771--[[Set the minimum comfort needed for birth--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -677,7 +685,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 	local ChoGGi = ChoGGi
 	local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 15,value = 15},
 		{text = 20,value = 20},
 		{text = 25,value = 25},
@@ -718,7 +726,7 @@ Until tomorrow, you know I'm free to roam--]]]:format(choice[1].text),
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000790--[[Set Outside Workplace Radius--]],
-		hint = Concat(S[302535920000791--[[Current distance--]]],": ",hint,"\n\n",S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000791--[[Current distance--]]],hint,S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]]),
 		skip_sort = true,
 	}
 end
@@ -819,7 +827,7 @@ end
 
 local function IsChild(value)
 	if value == "Child" then
-		return Concat(S[6779--[[Warning--]]],": ",S[302535920000805--[[Child will remove specialization.--]]])
+		return string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]])
 	end
 end
 function ChoGGi.MenuFuncs.SetColonistsAge(iType)
@@ -830,7 +838,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 	local sSetting = "NewColonistAge"
 
 	if iType == 1 then
-		sType = Concat(S[398847925160--[[New--]]]," ")
+		sType = string.format("%s ",S[398847925160--[[New--]]])
 	else
 		sType = ""
 		DefaultSetting = S[3490--[[Random--]]]
@@ -839,11 +847,11 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 
 	local ItemList = {}
 	ItemList[#ItemList+1] = {
-		text = Concat(" ",DefaultSetting),
+		text = string.format(" %s",DefaultSetting),
 		value = DefaultSetting,
 	}
 	for i = 1, #ChoGGi.Tables.ColonistAges do
-	ItemList[#ItemList+1] = {
+		ItemList[#ItemList+1] = {
 			text = ChoGGi.Tables.ColonistAges[i],
 			value = ChoGGi.Tables.ColonistAges[i],
 			hint = IsChild(ChoGGi.Tables.ColonistAges[i]),
@@ -856,7 +864,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 		if ChoGGi.UserSettings[sSetting] then
 			hint = ChoGGi.UserSettings[sSetting]
 		end
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint,"\n\n",S[302535920000805--[[Warning: Child will remove specialization.--]]])
+		hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hint,S[302535920000805--[[Warning: Child will remove specialization.--]]])
 	end
 
 	local function CallBackFunc(choice)
@@ -900,7 +908,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 		end
 
 		MsgPopup(
-			Concat(choice[1].text,": ",sType,S[547--[[Colonists--]]]),
+			string.format("%s: %s%s",choice[1].text,sType,S[547--[[Colonists--]]]),
 			547--[[Colonists--]],
 			default_icon
 		)
@@ -909,7 +917,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000807--[[Colonist Age--]]]),
+		title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000807--[[Colonist Age--]]]),
 		hint = hint,
 		check = {
 			{
@@ -932,7 +940,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 	local sSetting = "NewColonistGender"
 
 	if iType == 1 then
-		sType = Concat(S[398847925160--[[New--]]]," ")
+		sType = string.format("%s ",S[398847925160--[[New--]]])
 	else
 		sType = ""
 		DefaultSetting = S[3490--[[Random--]]]
@@ -941,12 +949,12 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 
 	local ItemList = {}
 	ItemList[#ItemList+1] = {
-		text = Concat(" ",DefaultSetting),
+		text = string.format(" %s",DefaultSetting),
 		value = DefaultSetting,
 		hint = 302535920000808--[[How the game normally works--]],
 	}
 	ItemList[#ItemList+1] = {
-		text = Concat(" ",MaleOrFemale),
+		text = string.format(" %s",MaleOrFemale),
 		value = MaleOrFemale,
 		hint = 302535920000809--[[Only set as male or female--]],
 	}
@@ -963,7 +971,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 		if ChoGGi.UserSettings[sSetting] then
 			hint = ChoGGi.UserSettings[sSetting]
 		end
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
 	end
 
 	local function CallBackFunc(choice)
@@ -1005,7 +1013,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 
 		end
 		MsgPopup(
-			Concat(choice[1].text,": ",sType,S[547--[[Colonists--]]]),
+			string.format("%s: %s",choice[1].text,sType,S[547--[[Colonists--]]]),
 			547--[[Colonists--]],
 			default_icon
 		)
@@ -1014,7 +1022,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000810--[[Colonist Gender--]]]),
+		title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000810--[[Colonist Gender--]]]),
 		hint = hint,
 		check = {
 			{
@@ -1036,7 +1044,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 	local sSetting = "NewColonistSpecialization"
 
 	if iType == 1 then
-		sType = Concat(S[398847925160--[[New--]]]," ")
+		sType = string.format("%s ",S[398847925160--[[New--]]])
 	else
 		sType = ""
 		DefaultSetting = S[3490--[[Random--]]]
@@ -1074,7 +1082,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 		if ChoGGi.UserSettings[sSetting] then
 			hint = ChoGGi.UserSettings[sSetting]
 		end
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
 	end
 
 	local function CallBackFunc(choice)
@@ -1125,7 +1133,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000813--[[Colonist Specialization--]]]),
+		title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000813--[[Colonist Specialization--]]]),
 		hint = hint,
 		check = {
 			{
@@ -1147,7 +1155,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 	local sSetting = "NewColonistRace"
 
 	if iType == 1 then
-		sType = Concat(S[398847925160--[[New--]]]," ")
+		sType = string.format("%s ",S[398847925160--[[New--]]])
 	else
 		sType = ""
 		DefaultSetting = S[3490--[[Random--]]]
@@ -1156,7 +1164,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 
 	local ItemList = {}
 	ItemList[#ItemList+1] = {
-		text = Concat(" ",DefaultSetting),
+		text = string.format(" %s",DefaultSetting),
 		value = DefaultSetting,
 		race = DefaultSetting,
 	}
@@ -1175,7 +1183,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 		if ChoGGi.UserSettings[sSetting] then
 			hint = ChoGGi.UserSettings[sSetting]
 		end
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
 	end
 
 	local function CallBackFunc(choice)
@@ -1236,7 +1244,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000820--[[Colonist Race--]]]),
+		title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000820--[[Colonist Race--]]]),
 		hint = hint,
 		check = {
 			{
@@ -1256,7 +1264,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 	local DataInstances = DataInstances
 	local DefaultSetting = S[1000121--[[Default--]]]
 	local sSetting = "NewColonistTraits"
-	local sType = Concat(S[398847925160--[[New--]]]," ")
+	local sType = string.format("%s ",S[398847925160--[[New--]]])
 
 	local hint = ""
 	if iType == 1 then
@@ -1265,23 +1273,23 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		if saved then
 			hint = ""
 			for i = 1, #saved do
-				hint = Concat(hint,saved[i],",")
+				hint = string.format("%s%s,",hint,saved[i])
 			end
 		end
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint)
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
 	elseif iType == 2 then
 		sType = ""
 		DefaultSetting = S[3490--[[Random--]]]
 	end
 
-	hint = Concat(hint,"\n\n",S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
+	hint = string.format("%s\n\n%s",hint,S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
 
 	local ItemList = {
-		{text = Concat(" ",DefaultSetting),value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
-		{text = Concat(" ",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
-		{text = Concat(" ",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
-		{text = Concat(" ",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
-		{text = Concat(" ",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
+		{text = DefaultSetting,value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
+		{text = string.format(" %s",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
+		{text = string.format(" %s",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
+		{text = string.format(" %s",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
+		{text = string.format(" %s",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
 	}
 
 	if iType == 2 then
@@ -1310,7 +1318,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 	for i = 1, #ItemList do
 		local hinttemp = DataInstances.Trait[ItemList[i].text]
 		if hinttemp then
-			ItemList[i].hint = Concat(": ",Trans(hinttemp.description))
+			ItemList[i].hint = string.format(": %s",Trans(hinttemp.description))
 		end
 	end
 
@@ -1421,7 +1429,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		end
 
 		MsgPopup(
-			Concat(#TraitsList,": ",sType,S[302535920000830--[[Colonists traits set--]]]),
+			string.format("%s: %s%s",#TraitsList,sType,S[302535920000830--[[Colonists traits set--]]]),
 			547--[[Colonists--]],
 			default_icon
 		)
@@ -1431,7 +1439,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000831--[[Colonist Traits--]]]),
+			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
 			hint = hint,
 			multisel = true,
 		}
@@ -1439,7 +1447,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = Concat(S[302535920000129--[[Set--]]]," ",sType,S[302535920000831--[[Colonist Traits--]]]),
+			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
 			hint = hint,
 			multisel = true,
 			check = {
@@ -1465,15 +1473,15 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 	local ChoGGi = ChoGGi
 	local r = ChoGGi.Consts.ResourceScale
 	local ItemList = {
-		{text = Concat(S[302535920000833--[[All Stats--]]]," ",S[302535920000834--[[Max--]]]),value = 1},
-		{text = Concat(S[302535920000833--[[All Stats--]]]," ",S[302535920000835--[[Fill--]]]),value = 2},
-		{text = Concat(S[4291--[[Health--]]]," ",S[302535920000834--[[Max--]]]),value = 3},
-		{text = Concat(S[4291--[[Health--]]]," ",S[302535920000835--[[Fill--]]]),value = 4},
-		{text = Concat(S[4297--[[Morale--]]]," ",S[302535920000835--[[Fill--]]]),value = 5},
-		{text = Concat(S[4293--[[Sanity--]]]," ",S[302535920000834--[[Max--]]]),value = 6},
-		{text = Concat(S[4293--[[Sanity--]]]," ",S[302535920000835--[[Fill--]]]),value = 7},
-		{text = Concat(S[4295--[[Comfort--]]]," ",S[302535920000834--[[Max--]]]),value = 8},
-		{text = Concat(S[4295--[[Comfort--]]]" ",S[302535920000835--[[Fill--]]]),value = 9},
+		{text = string.format("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000834--[[Max--]]]),value = 1},
+		{text = string.format("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000835--[[Fill--]]]),value = 2},
+		{text = string.format("%s %s",S[4291--[[Health--]]],S[302535920000834--[[Max--]]]),value = 3},
+		{text = string.format("%s %s",S[4291--[[Health--]]],S[302535920000835--[[Fill--]]]),value = 4},
+		{text = string.format("%s %s",S[4297--[[Morale--]]],S[302535920000835--[[Fill--]]]),value = 5},
+		{text = string.format("%s %s",S[4293--[[Sanity--]]],S[302535920000834--[[Max--]]]),value = 6},
+		{text = string.format("%s %s",S[4293--[[Sanity--]]],S[302535920000835--[[Fill--]]]),value = 7},
+		{text = string.format("%s %s",S[4295--[[Comfort--]]],S[302535920000834--[[Max--]]]),value = 8},
+		{text = string.format("%s %s",S[4295--[[Comfort--]]],S[302535920000835--[[Fill--]]]),value = 9},
 	}
 
 	local function CallBackFunc(choice)
@@ -1569,7 +1577,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 	local r = ChoGGi.Consts.ResourceScale
 	local DefaultSetting = ChoGGi.Consts.SpeedColonist
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting / r),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting},
 		{text = 5,value = 5 * r},
 		{text = 10,value = 10 * r},
 		{text = 15,value = 15 * r},
@@ -1651,7 +1659,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 	local DefaultSetting = ChoGGi.Consts.GravityColonist
 	local r = ChoGGi.Consts.ResourceScale
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 1,value = 1},
 		{text = 2,value = 2},
 		{text = 3,value = 3},
@@ -1753,14 +1761,14 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 	end
 
 	local ItemList = {}
-	local str_hint = Concat(S[302535920000106--[[Current--]]],": %s")
+	local str_hint = string.format("%s: %s",S[302535920000106--[[Current--]]],"%s")
 	for i = 1, #ChoGGi.Tables.NegativeTraits do
 		local trait = ChoGGi.Tables.NegativeTraits[i]
 		local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
+			hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 	for i = 1, #ChoGGi.Tables.PositiveTraits do
@@ -1769,7 +1777,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
+			hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 	for i = 1, #ChoGGi.Tables.OtherTraits do
@@ -1778,7 +1786,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ItemList[#ItemList+1] = {
 			text = trait,
 			value = trait,
-			hint = Concat(str_hint:format(status),"\n",Trans(DataInstances.Trait[trait].description)),
+			hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
 		}
 	end
 
@@ -1830,7 +1838,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		ChoGGi.SettingFuncs.WriteSettings()
 
 		MsgPopup(
-			Concat(S[302535920000843--[[Toggled traits--]]],": ",#choice,check1 and " ",check1 and S[302535920000844--[[Fired workers--]]] or ""),
+			string.format("%s: %s%s%s",S[302535920000843--[[Toggled traits--]]],#choice,check1 and " ",check1 and S[302535920000844--[[Fired workers--]]] or ""),
 			4801--[[Workplace--]],
 			default_icon
 		)
@@ -1840,7 +1848,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 	if BuildingSettings[id] and BuildingSettings[id][toggle_type] then
 		hint[#hint+1] = S[302535920000106--[[Current--]]]
 		hint[#hint+1] = ": "
-		hint[#hint+1] = Concat(BuildingSettings[id][toggle_type],",")
+		hint[#hint+1] = string.format("%s,",BuildingSettings[id][toggle_type])
 	end
 
 	hint[#hint+1] = "\n\n"
@@ -1848,7 +1856,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000992--[[Building Traits--]]]," ",S[302535920000846--[[For--]]]," ",name),
+		title = string.format("%s %s %s %s",S[302535920000129--[[Set--]]],S[302535920000992--[[Building Traits--]]],S[302535920000846--[[For--]]],name),
 		hint = ChoGGi.ComFuncs.TableConcat(hint),
 		multisel = true,
 		check = {

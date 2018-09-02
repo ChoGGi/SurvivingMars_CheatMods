@@ -2,7 +2,6 @@
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
---~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local text = "Editor12Bold"
 if ChoGGi.testing then

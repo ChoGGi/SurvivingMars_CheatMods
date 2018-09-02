@@ -1,9 +1,9 @@
 -- See LICENSE for terms
---funcs under Gameplay menu without a separate file
 
-local Concat = ChoGGi.ComFuncs.Concat
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+-- funcs under Gameplay menu without a separate file
+
 --~ local Trans = ChoGGi.ComFuncs.Translate
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 
 local default_icon = "UI/Icons/Sections/storage.tga"
@@ -47,7 +47,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	local r = ChoGGi.Consts.ResourceScale
 	local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
 		{text = 75,value = 75},
@@ -87,7 +87,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001190--[[Set Food Per Rocket Passenger--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end

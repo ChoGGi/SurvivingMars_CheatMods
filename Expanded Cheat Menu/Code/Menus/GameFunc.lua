@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
@@ -15,6 +14,193 @@ local guic = guic
 --~ function OnMsg.DataLoaded()
 --~   RebuildFXRules()
 --~ end
+
+do -- ChangeSurfaceSignsToMaterials
+	local function ChangeEntity(cls,entity,random)
+		MapForEach("map",cls,function(o)
+			if random then
+				o:ChangeEntity(string.format("%s%s",entity,Random(1,random)))
+			else
+				o:ChangeEntity(entity)
+			end
+		end)
+	end
+
+	function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
+
+		local ItemList = {
+			{text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
+			{text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
+		}
+
+		local function CallBackFunc(choice)
+			local value = choice[1].value
+			if not value then
+				return
+			end
+			if value == 1 then
+				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
+				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
+				ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
+				ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
+				ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
+				ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
+				ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+			else
+				ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
+				ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
+				ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
+				ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
+				ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
+				ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
+				ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
+				ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
+				ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001083--[[Change Surface Signs--]],
+		}
+	end
+end -- do
+
+-- build and show a list of attachments for changing their colours
+function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
+	local ChoGGi = ChoGGi
+	obj = obj or ChoGGi.CodeFuncs.SelObject()
+
+	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+		MsgPopup(
+			302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]],
+			302535920000016--[[Colour--]]
+		)
+		return
+	end
+	local ItemList = {}
+
+	-- has no Attaches so just open as is
+	if obj:GetNumAttaches() == 0 then
+		ChoGGi.CodeFuncs.ChangeObjectColour(obj)
+		return
+	else
+		ItemList[#ItemList+1] = {
+			text = string.format(" %s"," ",obj.class),
+			value = obj.class,
+			obj = obj,
+			hint = 302535920001106--[[Change main object colours.--]],
+		}
+		-- check and add attachments
+		if obj:IsKindOf("ComponentAttach") then
+			obj:ForEachAttach(function(a)
+				if a:IsKindOf("ColorizableObject") then
+					ItemList[#ItemList+1] = {
+						text = a.class,
+						value = a.class,
+						parentobj = obj,
+						obj = a,
+						hint = string.format("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
+					}
+				end
+			end)
+		end
+		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
+		for _,attach in pairs(obj) do
+			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
+				ItemList[#ItemList+1] = {
+					text = attach.class,
+					value = attach.class,
+					parentobj = obj,
+					obj = attach,
+					hint = 302535920001107--[[Change colours of an attached object.--]],
+				}
+			end
+		end
+
+	end
+
+	local function FiredOnMenuClick(sel,dialog)
+		ChoGGi.CodeFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = function()end,
+		items = ItemList,
+		title = string.format("%s: %s",S[302535920000021--[[Change Colour--]]],RetName(obj)),
+		hint = 302535920001108--[[Double click to open object/attachment to edit.--]],
+		custom_type = 1,
+		custom_func = FiredOnMenuClick,
+	}
+end
+
+function ChoGGi.MenuFuncs.SetObjectOpacity()
+	local ChoGGi = ChoGGi
+	local sel = ChoGGi.CodeFuncs.SelObject()
+	if not sel then
+		return
+	end
+	local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
+
+	local ItemList = {
+		{text = string.format("%s: %s",S[302535920001084--[[Reset--]]],S[3984--[[Anomalies--]]]),value = "Anomaly",hint = hint_loop:format(S[3984--[[Anomalies--]]])},
+		{text = string.format("%s: %s",S[302535920001084--[[Reset--]]],S[3980--[[Buildings--]]]),value = "Building",hint = hint_loop:format(S[3980--[[Buildings--]]])},
+		{text = string.format("%s: %s",S[302535920001084--[[Reset--]]],S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
+		{text = string.format("%s: %s",S[302535920001084--[[Reset--]]],S[547--[[Colonists--]]]),value = "Colonists",hint = hint_loop:format(S[547--[[Colonists--]]])},
+		{text = string.format("%s: %s & %s",S[302535920001084--[[Reset--]]],S[5438--[[Rovers--]]],S[517--[[Drones--]]]),value = "Unit",hint = hint_loop:format(string.format("%s & %s",S[5438--[[Rovers--]]],S[517--[[Drones--]]]))},
+		{text = string.format("%s: %s",S[302535920001084--[[Reset--]]],S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = hint_loop:format(S[3982--[[Deposits--]]])},
+		{text = 0,value = 0},
+		{text = 25,value = 25},
+		{text = 50,value = 50},
+		{text = 75,value = 75},
+		{text = 100,value = 100},
+	}
+
+	local function CallBackFunc(choice)
+		local value = choice[1].value
+		if not value then
+			return
+		end
+		if type(value) == "number" then
+			sel:SetOpacity(value)
+		elseif type(value) == "string" then
+			local function SettingOpacity(label)
+				local tab = UICity.labels[label] or ""
+				for i = 1, #tab do
+					tab[i]:SetOpacity(100)
+				end
+			end
+			SettingOpacity(value)
+			--extra ones
+			if value == "Building" then
+				SettingOpacity("AllRockets")
+			elseif value == "Anomaly" then
+				SettingOpacity("SubsurfaceAnomalyMarker")
+			elseif value == "SurfaceDeposit" then
+				SettingOpacity("SubsurfaceDeposit")
+				SettingOpacity("TerrainDeposit")
+			end
+		end
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
+			302535920001117--[[Opacity--]],
+			"UI/Icons/Sections/attention.tga"
+		)
+	end
+	local hint = S[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]]]
+	if sel then
+		hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],sel:GetOpacity(),hint)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = string.format("%s: %s",S[302535920000694--[[Set Opacity--]]],RetName(sel)),
+		hint = hint,
+		skip_sort = true,
+	}
+end
 
 do -- AnnoyingSounds_Toggle
 	local function MirrorSphere_Toggle()
@@ -202,7 +388,7 @@ do -- ListAllObjects
 				local name = RetName(obj)
 				local class = obj.class
 				if name ~= class then
-					name = Concat(class,": ",name)
+					name = string.format("%s: %s",class,name)
 				end
 				ItemList[#ItemList+1] = {
 					text = name,
@@ -216,7 +402,7 @@ do -- ListAllObjects
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc_Objects,
 			items = ItemList,
-			title = Concat(S[302535920001292--[[List All Objects--]]],": ",choice.text or choice[1].text),
+			title = string.format("%s: %s",S[302535920001292--[[List All Objects--]]],choice[1].text),
 			custom_type = 1,
 			custom_func = CallBackFunc_Objects,
 --~ 			check = {
@@ -232,10 +418,10 @@ do -- ListAllObjects
 	end
 
 	function ChoGGi.MenuFuncs.ListAllObjects()
-		local ItemList = {{text = Concat(" ",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
+		local ItemList = {{text = string.format(" %s",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
 		for label,list in pairs(UICity.labels) do
 			if label ~= "Consts" and #list > 0 then
-				ItemList[#ItemList+1] = {text = Concat(label,": ",#list),value = label}
+				ItemList[#ItemList+1] = {text = string.format("%s: %s",label,#list),value = label}
 			end
 		end
 
@@ -265,9 +451,9 @@ function ChoGGi.MenuFuncs.DeleteAllRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Concat(S[6779--[[Warning--]]],"!\n",S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
+		string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
 		CallBackFunc,
-		Concat(S[6779--[[Warning--]]],": ",S[302535920000855--[[Last chance before deletion!--]]])
+		string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
 	)
 end
 
@@ -519,9 +705,9 @@ function ChoGGi.MenuFuncs.ChangeMap()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000866--[[Set MissionParams NewMap--]],
-		hint = Concat(S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
+		hint = string.format("%s\n\n%s",S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-See the examine list on the left for ids."--]]],"\n\n",str_hint_rules),
+See the examine list on the left for ids."--]]],str_hint_rules),
 		custom_type = 4,
 	}
 
@@ -638,11 +824,16 @@ end
 
 function ChoGGi.MenuFuncs.ChangeTerrainType()
 	local ItemList = {}
-	local Table = DepositionTypes
-	for i = 1, #Table do
+	local objs = TerrainTextures
+
+	local image = "<image %s 100>"
+	local imageL = "<image %s>"
+	for i = 1, #objs do
 		ItemList[#ItemList+1] = {
-			text = Table[i]:gsub("_mesh.mtl",""):gsub("Terrain",""),
+			text = objs[i].name,
 			value = i,
+			icon = image:format(objs[i].texture),
+			hint = imageL:format(objs[i].texture),
 		}
 	end
 
@@ -666,6 +857,7 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 		items = ItemList,
 		title = 302535920000973--[[Change Terrain Texture--]],
 		hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
+		skip_sort = true,
 	}
 end
 
@@ -683,12 +875,23 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
 	for i = 1, #def do
 		if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
 			ItemList[#ItemList+1] = {
-				text = Concat(def[i].editor == "color" and "<color 100 100 255>" or "",def[i].id,"</color>" or def[i].id),
+				text = string.format("%s%s%s",def[i].editor == "color" and "<color 100 100 255>" or "",def[i].id,"</color>" or def[i].id),
 				sort = def[i].id,
 				value = def[i].default,
 				default = def[i].default,
 				editor = def[i].editor,
-				hint = Concat("",(def[i].id or ""),"\n",help_str,": ",(def[i].help or ""),"\n\n",default_str,": ",(tostring(def[i].default) or "")," ",min_str,": ",(def[i].min or "")," ",max_str,": ",(def[i].max or "")," ",scale_str,": ",(def[i].scale or "")),
+				hint = string.format("%s\n%s: %s\n\n%s: %s %s: %s %s: %s %s: %s",
+					def[i].id or "",
+					help_str,
+					def[i].help or "",
+					default_str,
+					tostring(def[i].default) or "",
+					min_str,
+					def[i].min or "",
+					max_str,
+					def[i].max or "",
+					scale_str,
+					def[i].scale or ""),
 			}
 		end
 	end
@@ -761,12 +964,12 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
 	local ItemList = {}
 	if not Browse then
 		ItemList[#ItemList+1] = {
-			text = Concat(" ",S[1000121--[[Default--]]]),
+			text = string.format(" %s",S[1000121--[[Default--]]]),
 			value = "ChoGGi_Default",
 			hint = 302535920000981--[[Choose to this remove Permanent setting.--]],
 		}
 		ItemList[#ItemList+1] = {
-			text = Concat(" ",S[302535920000982--[[Custom--]]]),
+			text = string.format(" %s",S[302535920000982--[[Custom--]]]),
 			value = "ChoGGi_Custom",
 			hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
 		}
@@ -952,9 +1155,9 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 		{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 		{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 		{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
-		{text = Concat(S[302535920001006--[[03 Low (90)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 90},
-		{text = Concat(S[302535920001007--[[04 Medium (95)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 95},
-		{text = Concat(S[302535920001008--[[05 High (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
+		{text = string.format("%s < %s",S[302535920001006--[[03 Low (90)--]]],S[302535920001065--[[Menu Option--]]]),value = 90},
+		{text = string.format("%s < %s",S[302535920001007--[[04 Medium (95)--]]],S[302535920001065--[[Menu Option--]]]),value = 95},
+		{text = string.format("%s < %s",S[302535920001008--[[05 High (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
 		{text = S[302535920001009--[[06 Ultra (200)--]]],value = 200},
 		{text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
 		{text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
@@ -989,7 +1192,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001016--[[Set Lights Radius--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hr.LightsRadiusModifier,"\n\n",S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hr.LightsRadiusModifier,S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]]),
 		skip_sort = true,
 	}
 end
@@ -1001,13 +1204,13 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 		{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 		{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 		{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
-		{text = Concat(S[302535920001021--[[03 Low (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
-		{text = Concat(S[302535920001022--[[04 Medium (150)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 150},
-		{text = Concat(S[302535920001008--[[05 High (100)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 100},
-		{text = Concat(S[302535920001024--[[06 Ultra (200)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 200},
+		{text = string.format("%s < %s",S[302535920001021--[[03 Low (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
+		{text = string.format("%s < %s",S[302535920001022--[[04 Medium (150)--]]],S[302535920001065--[[Menu Option--]]]),value = 150},
+		{text = string.format("%s < %s",S[302535920001008--[[05 High (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
+		{text = string.format("%s < %s",S[302535920001024--[[06 Ultra (200)--]]],S[302535920001065--[[Menu Option--]]]),value = 200},
 		{text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
 		{text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
-		{text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = Concat("\n",S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]])},
+		{text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = string.format("\n%s",S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]])},
 	}
 
 	local function CallBackFunc(choice)
@@ -1036,8 +1239,8 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000635--[[Terrain Detail--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hr.TR_MaxChunks,"\n",S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
+		title = string.format("%s %s",S[302535920000129--[[Set--]]],S[302535920000635--[[Terrain Detail--]]]),
+		hint = string.format("%s: %s\n%s",S[302535920000106--[[Current--]]],hr.TR_MaxChunks,S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
 And yes Medium is using a higher setting than High..."--]]]),
 		skip_sort = true,
@@ -1052,10 +1255,10 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 		{text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
 		{text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
 		{text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
-		{text = Concat(S[302535920001034--[[4 Low (256)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 256},
-		{text = Concat(S[302535920001035--[[5 Medium (512)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 512},
-		{text = Concat(S[302535920001036--[[6 High (1024)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1024},
-		{text = Concat(S[302535920001037--[[7 Ultra (2048)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 2048},
+		{text = string.format("%s < %s",S[302535920001034--[[4 Low (256)--]]],S[302535920001065--[[Menu Option--]]]),value = 256},
+		{text = string.format("%s < %s",S[302535920001035--[[5 Medium (512)--]]],S[302535920001065--[[Menu Option--]]]),value = 512},
+		{text = string.format("%s < %s",S[302535920001036--[[6 High (1024)--]]],S[302535920001065--[[Menu Option--]]]),value = 1024},
+		{text = string.format("%s < %s",S[302535920001037--[[7 Ultra (2048)--]]],S[302535920001065--[[Menu Option--]]]),value = 2048},
 		{text = S[302535920001038--[[8 Ultra-er (4096)--]]],value = 4096},
 		{text = S[302535920001039--[[9 Ultra-er-er (8192)--]]],value = 8192},
 	}
@@ -1084,7 +1287,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001041--[[Set Video Memory Use--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hr.DTM_VideoMemory),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hr.DTM_VideoMemory),
 		skip_sort = true,
 	}
 end
@@ -1092,14 +1295,14 @@ end
 function ChoGGi.MenuFuncs.SetShadowmapSize()
 	local ChoGGi = ChoGGi
 	local hr = hr
-	local hint_highest = Concat(S[6779--[[Warning--]]],": ",S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
+	local hint_highest = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
 	local ItemList = {
 		{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 		{text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
 		{text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
-		{text = Concat(S[302535920001045--[[3 Low (1536)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 1536},
-		{text = Concat(S[302535920001046--[[4 Medium (2048)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 2048},
-		{text = Concat(S[302535920001047--[[5 High (4096)--]]]," < ",S[302535920001065--[[Menu Option--]]]),value = 4096},
+		{text = string.format("%s < %s",S[302535920001045--[[3 Low (1536)--]]],S[302535920001065--[[Menu Option--]]]),value = 1536},
+		{text = string.format("%s < %s",S[302535920001046--[[4 Medium (2048)--]]],S[302535920001065--[[Menu Option--]]]),value = 2048},
+		{text = string.format("%s < %s",S[302535920001047--[[5 High (4096)--]]],S[302535920001065--[[Menu Option--]]]),value = 4096},
 		{text = S[302535920001048--[[6 Higher (8192)--]]],value = 8192},
 		{text = S[302535920001049--[[7 Highest (16384)--]]],value = 16384,hint = hint_highest},
 	}
@@ -1132,7 +1335,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001051--[[Set Shadowmap Size--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hr.ShadowmapSize,"\n\n",hint_highest,"\n\n",S[302535920001052--[[Max limited to 16384 (or crashing).--]]]),
+		hint = string.format("%s: %s\n\n%s\n\n%s",S[302535920000106--[[Current--]]],hr.ShadowmapSize,hint_highest,S[302535920001052--[[Max limited to 16384 (or crashing).--]]]),
 		skip_sort = true,
 	}
 end
@@ -1157,7 +1360,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 	local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
 	local hint_fps = S[302535920001056--[[FPS hit--]]]
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 240,value = 240,hint = hint_min},
 		{text = 360,value = 360,hint = hint_min},
 		{text = 480,value = 480,hint = hint_min},
@@ -1197,7 +1400,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000643--[[Higher Render Distance--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -1311,7 +1514,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	local DefaultSetting = 5
 	local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]]),value = DefaultSetting},
+		{text = S[1000121--[[Default--]]],value = DefaultSetting},
 		{text = 0,value = 0,hint = 302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]},
 		{text = 1,value = 1,hint = hint_down},
 		{text = 2,value = 2,hint = hint_down},
@@ -1336,7 +1539,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Concat(choice[1].value,": ",S[302535920001064--[[Mouse--]]]," ",S[302535920000647--[[Border Scrolling--]]]),
+				string.format("%s: %s %s",choice[1].value,S[302535920001064--[[Mouse--]]],S[302535920000647--[[Border Scrolling--]]]),
 				302535920000647--[[Border Scrolling--]],
 				"UI/Icons/IPButtons/status_effects.tga"
 			)
@@ -1346,8 +1549,8 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",S[302535920000647--[[Border Scrolling--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		title = string.format("%s %s",S[302535920000129--[[Set--]]],S[302535920000647--[[Border Scrolling--]]]),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -1355,7 +1558,7 @@ end
 function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 	local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 16000,value = 16000},
 		{text = 20000,value = 20000},
 		{text = 24000,value = 24000, hint = 302535920001066--[[What used to be the default for this ECM setting--]]},
@@ -1378,7 +1581,7 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Concat(choice[1].text,": ",S[302535920001058--[[Camera--]]]," ",S[302535920001067--[[Zoom--]]]),
+				string.format("%s: %s %s",choice[1].text,S[302535920001058--[[Camera--]]],S[302535920001067--[[Zoom--]]]),
 				302535920001058--[[Camera--]],
 				"UI/Icons/IPButtons/status_effects.tga"
 			)
@@ -1388,8 +1591,8 @@ function ChoGGi.MenuFuncs.CameraZoom_Toggle()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920001058--[[Camera--]]]," ",S[302535920001067--[[Zoom--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		title = string.format("%s %s",S[302535920001058--[[Camera--]]],S[302535920001067--[[Zoom--]]]),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end

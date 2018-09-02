@@ -3,7 +3,6 @@
 local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
 local default_icon2 = "UI/Icons/Sections/storage.tga"
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Trans = ChoGGi.ComFuncs.Translate
@@ -62,7 +61,7 @@ function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001336--[[Export When This Amount--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -74,7 +73,7 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(setting_name,title)
 	local UserSettings = ChoGGi.UserSettings
 	local id = "SpaceElevator"
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 15,value = 15},
 		{text = 20,value = 20},
@@ -129,7 +128,7 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(setting_name,title)
 		callback = CallBackFunc,
 		items = ItemList,
 		title = title,
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -152,7 +151,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 	local UserSettings = ChoGGi.UserSettings
 	local r = ChoGGi.Consts.ResourceScale
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 15,value = 15},
 		{text = 20,value = 20},
@@ -207,7 +206,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000105--[[Set Food Storage--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -251,7 +250,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 	local id = sel.encyclopedia_id
 	local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 40,value = 40},
 		{text = 80,value = 80},
 		{text = 160,value = 160},
@@ -301,7 +300,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000114--[[Set Protection Radius--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint,"\n\n",S[302535920000115--[[Toggle selection to update visible hex grid.--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hint,S[302535920000115--[[Toggle selection to update visible hex grid.--]]]),
 		skip_sort = true,
 	}
 end
@@ -410,7 +409,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Concat(RetName(sel)," ",S[str2]),
+		string.format("%s %s",RetName(sel),S[str2]),
 		3980--[[Buildings--]],
 		default_icon
 	)
@@ -480,11 +479,11 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 
 	--get default amount
 	local template = BuildingTemplates[id]
-	local DefaultSettingC = template[Concat("max_",CapType,"_charge")] / r
-	local DefaultSettingD = template[Concat("max_",CapType,"_discharge")] / r
+	local DefaultSettingC = template[string.format("max_%s_charge",CapType)] / r
+	local DefaultSettingD = template[string.format("max_%s_discharge",CapType)] / r
 
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]]),value = S[1000121--[[Default--]]],hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)},
+		{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = string.format("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],DefaultSettingC,S[302535920000125--[[Discharge--]]],DefaultSettingD)},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
 		{text = 75,value = 75},
@@ -502,11 +501,11 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 		ChoGGi.UserSettings.BuildingSettings[id] = {}
 	end
 
-	local hint = Concat(S[302535920000124--[[Charge--]]],": ",DefaultSettingC," / ",S[302535920000125--[[Discharge--]]],": ",DefaultSettingD)
+	local hint = string.format("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],DefaultSettingC,S[302535920000125--[[Discharge--]]],DefaultSettingD)
 	local setting = ChoGGi.UserSettings.BuildingSettings[id]
 	if setting then
 		if setting.charge and setting.discharge then
-			hint = Concat(S[302535920000124--[[Charge--]]],": ",setting.charge / r," / ",S[302535920000125--[[Discharge--]]],": ",setting.discharge / r)
+			hint = string.format("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],setting.charge / r,S[302535920000125--[[Discharge--]]],setting.discharge / r)
 		elseif setting.charge then
 			hint = setting.charge / r
 		elseif setting.discharge then
@@ -560,11 +559,11 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 					if tab[i].encyclopedia_id == id then
 						if check1 then
 							tab[i][CapType].max_charge = numberC
-							tab[i][Concat("max_",CapType,"_charge")] = numberC
+							tab[i][string.format("max_%s_charge",CapType)] = numberC
 						end
 						if check2 then
 							tab[i][CapType].max_discharge = numberD
-							tab[i][Concat("max_",CapType,"_discharge")] = numberD
+							tab[i][string.format("max_%s_discharge",CapType)] = numberD
 						end
 						ChoGGi.CodeFuncs.ToggleWorking(tab[i])
 					end
@@ -575,11 +574,11 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 					if tab[i].encyclopedia_id == id then
 						if check1 then
 							tab[i][CapType].max_charge = numberC
-							tab[i][Concat("max_",CapType,"_charge")] = numberC
+							tab[i][string.format("max_%s_charge",CapType)] = numberC
 						end
 						if check2 then
 							tab[i][CapType].max_discharge = numberD
-							tab[i][Concat("max_",CapType,"_discharge")] = numberD
+							tab[i][string.format("max_%s_discharge",CapType)] = numberD
 						end
 						ChoGGi.CodeFuncs.ToggleWorking(tab[i])
 					end
@@ -598,8 +597,8 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",name," ",S[302535920000130--[[Dis/Charge Rates--]]]),
-		hint = Concat(S[302535920000131--[[Current rate--]]],": ",hint),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920000130--[[Dis/Charge Rates--]]]),
+		hint = string.format("%s: %s",S[302535920000131--[[Current rate--]]],hint),
 		check = {
 			{
 				title = 302535920000124--[[Charge--]],
@@ -685,11 +684,11 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	if ProdType == "other" then
 		DefaultSetting = sel.base_production_per_day1 / r
 	else
-		DefaultSetting = sel[Concat("base_",ProdType,"_production")] / r
+		DefaultSetting = sel[string.format("base_%s_production",ProdType)] / r
 	end
 
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
 		{text = 75,value = 75},
@@ -783,8 +782,8 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",name," ",S[302535920000139--[[Production Amount--]]]),
-		hint = Concat(S[302535920000140--[[Current production--]]],": ",hint),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920000139--[[Production Amount--]]]),
+		hint = string.format("%s: %s",S[302535920000140--[[Current production--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -804,7 +803,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 	local name = Trans(sel.display_name)
 
 	local ItemList = {
-		{text = Concat(S[302535920000142--[[Disable--]]]),value = "disable"},
+		{text = S[302535920000142--[[Disable--]]],value = "disable"},
 		{text = 100,value = 100},
 		{text = 150,value = 150},
 		{text = 250,value = 250},
@@ -874,13 +873,13 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(name,": ",S[302535920000144--[[Automated Performance--]]]),
+		title = string.format("%s: %s",name,S[302535920000144--[[Automated Performance--]]]),
 		hint = S[302535920000145--[["Sets performance of all automated buildings of this type
 Current: %s"--]]]:format(hint),
 		check = {
 			{
 				title = 302535920000769--[[Selected--]],
-				hint = Concat(S[302535920000147--[[Only apply to selected object instead of all--]]]," ",name),
+				hint = string.format("%s %s",S[302535920000147--[[Only apply to selected object instead of all--]]],name),
 			},
 		},
 		skip_sort = true,
@@ -1195,7 +1194,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Concat(ChoGGi.UserSettings.Building_wonder,": ",S[302535920000159--[[Unlimited Wonders--]]]),
+		string.format("%s: %s",ChoGGi.UserSettings.Building_wonder,S[302535920000159--[[Unlimited Wonders--]]]),
 		3980--[[Buildings--]],
 		"UI/Icons/Sections/theory_1.tga"
 	)
@@ -1256,9 +1255,9 @@ end
 
 function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 	local ChoGGi = ChoGGi
-	local DefaultSetting = _G[id]:GetDefaultPropertyValue("UIRange")
+	local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 15,value = 15},
 		{text = 25,value = 25},
@@ -1305,7 +1304,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Concat(choice[1].text,":\n",Strings[msgpopup]),
+				string.format("%s:\n%s",choice[1].text,S[msgpopup]),
 				id,
 				"UI/Icons/Upgrades/polymer_blades_04.tga",
 				true
@@ -1316,8 +1315,8 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",id," ",S[302535920000163--[[Radius--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",hint),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],id,S[302535920000163--[[Radius--]]]),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		skip_sort = true,
 	}
 end

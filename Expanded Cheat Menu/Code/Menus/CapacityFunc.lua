@@ -1,7 +1,7 @@
 -- See LICENSE for terms
---funcs under Gameplay menu without a separate file
 
-local Concat = ChoGGi.ComFuncs.Concat
+-- funcs under Gameplay menu without a separate file
+
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 --~ local Trans = ChoGGi.ComFuncs.Translate
@@ -45,10 +45,10 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	end
 	local ChoGGi = ChoGGi
 	local DefaultSetting = sel.base_max_workers
-	local hint_toolarge = Concat(S[6779--[[Warning--]]]," ",S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
+	local hint_toolarge = string.format("%s %s",S[6779--[[Warning--]]],S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
 
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
@@ -108,8 +108,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[302535920000567--[[Worker Capacity--]]]),
-		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_toolarge),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[302535920000567--[[Worker Capacity--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_toolarge),
 		skip_sort = true,
 	}
 end
@@ -126,7 +126,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 	local ChoGGi = ChoGGi
 	local r = ChoGGi.Consts.ResourceScale
-	local hint_toolarge = Concat(S[6779--[[Warning--]]]," ",S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
+	local hint_toolarge = string.format("%s %s",S[6779--[[Warning--]]],S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
 
 	--get type of capacity
 	local CapType
@@ -145,7 +145,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	if CapType == "electricity" or CapType == "colonist" then
 		DefaultSetting = sel.base_capacity
 	else
-		DefaultSetting = sel[Concat("base_",CapType,"_capacity")]
+		DefaultSetting = sel[string.format("base_%s_capacity",CapType)]
 	end
 
 	if CapType ~= "colonist" then
@@ -153,7 +153,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
@@ -237,7 +237,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 				local tab = UICity.labels["Life-Support"] or ""
 				for i = 1, #tab do
 					if tab[i].encyclopedia_id == sel.encyclopedia_id then
-						tab[i][Concat(CapType,"_capacity")] = amount
+						tab[i][string.format("%s_capacity",CapType)] = amount
 						tab[i][CapType].storage_capacity = amount
 						tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
 						ChoGGi.CodeFuncs.ToggleWorking(tab[i])
@@ -264,8 +264,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[109035890389--[[Capacity--]]]),
-		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_toolarge),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[109035890389--[[Capacity--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_toolarge),
 		skip_sort = true,
 	}
 end
@@ -283,7 +283,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	local ChoGGi = ChoGGi
 	local DefaultSetting = sel.base_max_visitors
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 10,value = 10},
 		{text = 25,value = 25},
 		{text = 50,value = 50},
@@ -336,8 +336,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",RetName(sel)," ",S[302535920000961--[[Visitor Capacity--]]]),
-		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[302535920000961--[[Visitor Capacity--]]]),
+		hint = string.format("%s: %s",S[302535920000914--[[Current capacity--]]],hint),
 		skip_sort = true,
 	}
 end
@@ -352,7 +352,7 @@ Other: 20,000
 Waste: 1,000,000
 Mechanized: 1,000,000--]]]
 	local ItemList = {
-		{text = Concat(S[1000121--[[Default--]]],": ",DefaultSetting),value = DefaultSetting},
+		{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 		{text = 50,value = 50},
 		{text = 100,value = 100},
 		{text = 250,value = 250},
@@ -436,7 +436,7 @@ Mechanized: 1,000,000--]]]
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Concat(choice[1].text,": ",sType),
+				string.format("%s: %s",choice[1].text,sType),
 				519--[[Storage--]],
 				"UI/Icons/Sections/basic.tga"
 			)
@@ -446,8 +446,8 @@ Mechanized: 1,000,000--]]]
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]],": ",sType," ",S[302535920000963--[[Size--]]]),
-		hint = Concat(S[302535920000914--[[Current capacity--]]],": ",hint,"\n\n",hint_max),
+		title = string.format("%s: %s %s",S[302535920000129--[[Set--]]],sType,S[302535920000963--[[Size--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_max),
 		skip_sort = true,
 	}
 end

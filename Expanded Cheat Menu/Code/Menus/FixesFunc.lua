@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local S = ChoGGi.Strings
@@ -275,9 +274,9 @@ do -- Colonist stuff
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Concat(S[6779--[[Warning--]]],"!\n",S[302535920000055--[[Reset All Colonists--]]],"\n",S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
+			string.format("%s!\n%s\n%s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]],S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
 			CallBackFunc,
-			Concat(S[6779--[[Warning--]]],": ",S[302535920000055--[[Reset All Colonists--]]])
+			string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]])
 		)
 	end
 
@@ -603,17 +602,7 @@ end -- do
 
 ------------------------- toggles
 
-function ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle()
-	local ChoGGi = ChoGGi
-	ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle)
-
-	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle,302535920001071--[[Drone Charges From Rover Wrong Angle--]]),
-		517--[[Drones--]]
-	)
-end
-
+-- fucking ai mods... (fix your shit or take it down kthxbai)
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 	local ChoGGi = ChoGGi
 	if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then

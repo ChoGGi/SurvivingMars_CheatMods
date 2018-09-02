@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -192,7 +191,7 @@ local str_Debug_Grids = "Debug.Grids"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Debug",
-	ActionName = Concat(S[302535920000035--[[Grids--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000035--[[Grids--]]]),
 	ActionId = ".Grids",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -286,7 +285,7 @@ local str_Debug_DebugFX = "Debug.Debug FX"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Debug",
-	ActionName = Concat(S[302535920001175--[[Debug FX--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920001175--[[Debug FX--]]]),
 	ActionId = ".Debug FX",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -348,7 +347,7 @@ local str_Debug_PathMarkers = "Debug.Path Markers"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Debug",
-	ActionName = Concat(S[302535920000467--[[Path Markers--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000467--[[Path Markers--]]]),
 	ActionId = ".Path Markers",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -358,10 +357,10 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_Debug_PathMarkers,
-	ActionName = Concat(S[302535920000467--[[Path Markers--]]]," ",S[4099--[[Game Time--]]]),
+	ActionName = string.format("%s %s",S[302535920000467--[[Path Markers--]]],S[4099--[[Game Time--]]]),
 	ActionId = ".Game Time",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
-	RolloverText = Concat(S[302535920000462--[[Maps paths in real time--]]]," ",S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
+	RolloverText = string.format("%s %s",S[302535920000462--[[Maps paths in real time--]]],S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
 	OnAction = function()
 		ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
 	end,
@@ -385,7 +384,7 @@ local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Debug",
-	ActionName = Concat(S[302535920000489--[[Delete Object(s)--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
 	ActionId = ".Delete Object(s)",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -398,7 +397,7 @@ Actions[c] = {
 	ActionName = S[302535920000146--[[Delete Saved Games--]]],
 	ActionId = ".Delete Saved Games",
 	ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
-	RolloverText = Concat(S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],"\n\n",S[302535920001274--[[This is permanent!--]]]),
+	RolloverText = string.format("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
 	OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
 	ActionSortKey = "98",
 }

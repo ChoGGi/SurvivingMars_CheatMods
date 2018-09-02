@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -42,7 +41,7 @@ Actions[c] = {
 	ActionMenubar = "Game",
 	ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
 	ActionId = ".Terrain Editor Toggle",
-	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 	RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
 	OnAction = ChoGGi.MenuFuncs.TerrainEditor_Toggle,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TerrainEditor_Toggle,
@@ -59,6 +58,17 @@ Actions[c] = {
 Use Shift + Arrow keys to change the height/radius.--]]],
 	OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
 	ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Game",
+	ActionName = S[302535920000623--[[Change Terrain Type--]]],
+	ActionId = ".Change Terrain Type",
+	ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
+	RolloverText = S[302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]],
+	OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
 }
 
 c = c + 1
@@ -92,17 +102,6 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Game",
-	ActionName = S[302535920000623--[[Change Terrain Type--]]],
-	ActionId = ".Change Terrain Type",
-	ActionIcon = "CommonAssets/UI/Menu/prefabs.tga",
-	RolloverText = S[302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]]],
-	OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = "Game",
 	ActionName = S[302535920000625--[[Change Light Model--]]],
 	ActionId = ".Change Light Model",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
@@ -122,9 +121,9 @@ Actions[c] = {
 	ActionId = ".Change Light Model Custom",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom),
-			302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]
+		-- it can get large, so for this one and this one only we stick the description first.
+		return string.format("%s:\n%s",S[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]],
+			ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom)
 		)
 	end,
 	OnAction = function()
@@ -158,11 +157,45 @@ Actions[c] = {
 	OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
 }
 
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Game",
+	ActionName = S[302535920000694--[[Set Opacity--]]],
+	ActionId = ".Set Opacity",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = S[302535920000695--[[Change the opacity of objects.--]]],
+	OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
+	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetObjectOpacity,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Game",
+	ActionName = S[302535920000021--[[Change Colour--]]],
+	ActionId = ".Change Colour",
+	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+	RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours.--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
+	end,
+	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CreateObjectListAndAttaches,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Game",
+	ActionName = S[302535920000678--[[Change Surface Signs To Materials--]]],
+	ActionId = ".Change Surface Signs To Materials",
+	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
+	RolloverText = S[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
+	OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
+}
+
 local str_Game_Camera = "Game.Camera"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Game",
-	ActionName = Concat(S[302535920001058--[[Camera--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920001058--[[Camera--]]]),
 	ActionId = ".Camera",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -237,7 +270,7 @@ local str_Game_Render = "Game.Render"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Game",
-	ActionName = Concat(S[302535920000845--[[Render--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000845--[[Render--]]]),
 	ActionId = ".Render",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",

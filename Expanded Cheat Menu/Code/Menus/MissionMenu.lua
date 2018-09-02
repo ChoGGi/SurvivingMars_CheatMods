@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -9,7 +8,7 @@ local str_ExpandedCM_Mission = "Expanded CM.Mission"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
-	ActionName = Concat(S[1635--[[Mission--]]]," .."),
+	ActionName = string.format("%s ..",S[1635--[[Mission--]]]),
 	ActionId = ".Mission",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -112,7 +111,7 @@ local str_ExpandedCM_Mission_Disasters = "Expanded CM.Mission.Disasters"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Mission",
-	ActionName = Concat(S[3983--[[Disasters--]]]," .."),
+	ActionName = string.format("%s ..",S[3983--[[Disasters--]]]),
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",

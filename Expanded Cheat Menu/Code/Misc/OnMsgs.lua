@@ -1,6 +1,5 @@
 --	See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
@@ -193,7 +192,7 @@ function OnMsg.ModsLoaded()
 			Actions[c] = {
 				ActionMenubar = "Presets",
 				ActionName = name,
-				ActionId = Concat("Presets.",name),
+				ActionId = string.format("Presets.%s",name),
 				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
 				RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
 				OnAction = function()
@@ -211,7 +210,7 @@ function OnMsg.ModsLoaded()
 			if Actions[i].ActionId:sub(1,1) == "." then
 				Actions[i].ActionTranslate = false
 				Actions[i].replace_matching_id = true
-				Actions[i].ActionId = Concat(Actions[i].ActionMenubar,Actions[i].ActionId)
+				Actions[i].ActionId = string.format("%s%s",Actions[i].ActionMenubar,Actions[i].ActionId)
 			end
 		end
 
@@ -310,7 +309,7 @@ local function Rebuildshortcuts()
 
 --~ Actions = {}
 --~ Actions[#Actions+1] = {
---~	 ActionId = Concat("ChoGGi_ShowConsoleTilde"),
+--~	 ActionId = "ChoGGi_ShowConsoleTilde",
 --~	 OnAction = function()
 --~	 local dlgConsole = dlgConsole
 --~	 if dlgConsole then
@@ -721,8 +720,8 @@ end
 function OnMsg.ApplicationQuit()
 	local ChoGGi = ChoGGi
 
-	-- my comp or if we're resetting settings
-	if ChoGGi.testing then
+	-- resetting settings?
+	if ChoGGi.Temp.ResetECMSettings or ChoGGi.testing then
 		return
 	end
 
@@ -874,11 +873,11 @@ do -- CheckForRate
 	local function SetValue(obj,value,res)
 		if value.charge then
 			obj[res].max_charge = value.charge
-			obj[Concat("max_",res,"_charge")] = value.charge
+			obj[string.format("max_%s_charge",res)] = value.charge
 		end
 		if value.discharge then
 			obj[res].max_discharge = value.discharge
-			obj[Concat("max_",res,"_discharge")] = value.discharge
+			obj[string.format("max_%s_discharge",res)] = value.discharge
 		end
 	end
 	local function CheckForRate(obj)
@@ -976,7 +975,7 @@ do -- LoadGame/CityStart
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local tab = Presets[preset].Default or ""
 		for i = 1, #tab do
-			if UserSettings[Concat(which,tab[i].id)] then
+			if UserSettings[string.format("%s%s",which,tab[i].id)] then
 				Func(tab[i].id)
 			end
 		end
@@ -1086,10 +1085,6 @@ do -- LoadGame/CityStart
 				-- always show menu on my computer
 				if UserSettings.ShowCheatsMenu or ChoGGi.testing then
 					XShortcutsTarget:SetVisible(true)
-
---~ 					if UserSettings.KeepCheatsMenuPosition then
---~ 						XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
---~ 					end
 				end
 
 				-- that info text about right-clicking expands the menu instead of just hiding or something
@@ -1120,7 +1115,7 @@ do -- LoadGame/CityStart
 
 		-- all yours XxUnkn0wnxX
 		if not blacklist then
-			local autoexec = Concat(ChoGGi.scripts,"/autoexec.lua")
+			local autoexec = string.format("%s/autoexec.lua",ChoGGi.scripts)
 			if ChoGGi.ComFuncs.FileExists(autoexec) then
 				print("ECM executing: ",autoexec)
 				dofile(autoexec)
@@ -1354,18 +1349,16 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(Concat(S[1079--[[Surviving Mars--]]],": ",S[302535920000887--[[ECM--]]]," v",ChoGGi._VERSION))
+			terminal.SetOSWindowTitle(string.format("%s: %s v%s",S[1079--[[Surviving Mars--]]],S[302535920000887--[[ECM--]]],ChoGGi._VERSION))
 		end
 
 		-- first time run info
 		if ChoGGi.UserSettings.FirstRun ~= false then
---~		 local S = ChoGGi.Strings
---~		 local Concat = ChoGGi.ComFuncs.Concat
 			ChoGGi.ComFuncs.MsgWait(
-				Concat(S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],"\n",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
-				Concat(S[302535920000000--[[Expanded Cheat Menu--]]]," ",S[302535920000201--[[Active--]]]),
-				Concat(ChoGGi.ModPath,"Preview.png")
+				string.format("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
+				string.format("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
+				string.format("%sPreview.png",ChoGGi.ModPath)
 			)
 			ChoGGi.UserSettings.FirstRun = false
 			ChoGGi.Temp.WriteSettings = true
@@ -1387,9 +1380,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			FlushLogFile()
 		end
 
-		if ChoGGi.testing then
-			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>: <color 128 255 128>Testing Enabled</color>")
-		end
+		printC("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>: <color 128 255 128>Testing Enabled</color>")
 
 		-- how long startup takes
 		if ChoGGi.testing or UserSettings.ShowStartupTicks then

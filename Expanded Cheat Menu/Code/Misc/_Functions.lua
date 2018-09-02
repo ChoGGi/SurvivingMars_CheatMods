@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 --any funcs called from Code/*
 
-local Concat = ChoGGi.ComFuncs.Concat
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -341,7 +340,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,age)
 	if age == "Retiree" then
 		c.age = 65 --why isn't there a base_MinAge_Retiree...
 	else
-		c.age = c[Concat("base_MinAge_",age)]
+		c.age = c[string.format("base_MinAge_%s",age)]
 	end
 
 	if age == "Child" then
@@ -749,7 +748,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	end
 
 	local res = oldobj.resource
-	local amount = oldobj[Concat("GetStored_",res)](oldobj)
+	local amount = oldobj[string.format("GetStored_%s",res)](oldobj)
 	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
 	if amount > 20000000 then
 		amount = amount
@@ -790,7 +789,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 
 	-- create new depot, and set max amount to stored amount of old depot
 	local newobj = PlaceObj("UniversalStorageDepot", {
-		"template_name", Concat("Storage",res2),
+		"template_name", string.format("Storage%s",res2),
 		"resource", {res},
 		"stockpiled_amount", {},
 		"max_storage_per_resource", amount,
@@ -867,21 +866,21 @@ do -- ChangeObjectColour
 		local ItemList = {}
 		local c = 0
 		for i = 1, 4 do
-			local text = Concat("Color",i)
+			local text = string.format("Color%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
 			}
-			text = Concat("Metallic",i)
+			text = string.format("Metallic%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
-			text = Concat("Roughness",i)
+			text = string.format("Roughness%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
@@ -969,7 +968,7 @@ do -- ChangeObjectColour
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
+			title = string.format("%s: %s",S[302535920000021--[[Change Colour--]]],RetName(obj)),
 			hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
 
 	The colour picker doesn't work for Metallic/Roughness.
@@ -1033,7 +1032,7 @@ do -- FindNearestResource
 			ItemList[i] = {
 				text = Trans(item.display_name),
 				value = item.name,
-				icon = TagLookupTable[Concat("icon_",item.name)],
+				icon = TagLookupTable[string.format("icon_%s",item.name)],
 			}
 		end
 
@@ -1045,7 +1044,7 @@ do -- FindNearestResource
 				local labels = UICity.labels
 
 				local stockpiles = {}
-				table.append(stockpiles,labels[Concat("MechanizedDepot",value)])
+				table.append(stockpiles,labels[string.format("MechanizedDepot%s",value)])
 				if value == "BlackCube" then
 					table.append(stockpiles,labels.BlackCubeDumpSite)
 				elseif value == "MysteryResource" then
@@ -1056,7 +1055,7 @@ do -- FindNearestResource
 					table.append(stockpiles,labels.UniversalStorageDepot)
 				end
 				-- filter out empty/diff res stockpiles
-				local GetStored = Concat("GetStored_",value)
+				local GetStored = string.format("GetStored_%s",value)
 				stockpiles = FilterObjectsC({
 					filter = function(o)
 						if o[GetStored] and o[GetStored](o) > 999 then
@@ -1099,7 +1098,7 @@ do -- FindNearestResource
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = Concat(S[302535920000031--[[Find Nearest Resource--]]]," ",RetName(obj)),
+			title = string.format("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
 			hint = 302535920000032--[[Select a resource to find--]],
 			skip_sort = true,
 			custom_type = 7,
@@ -1179,20 +1178,21 @@ end -- do
 
 do -- BuildingConsumption
 	local function AddConsumption(obj,name)
-		--if this is here we know it has what we need so no need to check for mod/consump
-		if obj[Concat("ChoGGi_mod_",name)] then
+		local tempname = string.format("ChoGGi_mod_%s",name)
+		-- if this is here we know it has what we need so no need to check for mod/consump
+		if obj[tempname] then
 			local mod = obj.modifications[name]
 			if mod[1] then
 				mod = mod[1]
 			end
-			local orig = obj[Concat("ChoGGi_mod_",name)]
+			local orig = obj[tempname]
 			if mod:IsKindOf("ObjectModifier") then
 				mod:Change(orig.amount,orig.percent)
 			else
 				mod.amount = orig.amount
 				mod.percent = orig.percent
 			end
-			obj[Concat("ChoGGi_mod_",name)] = nil
+			obj[tempname] = nil
 		end
 		local amount = BuildingTemplates[obj.id ~= "" and obj.id or obj.encyclopedia_id][name]
 		obj:SetBase(name, amount)
@@ -1204,8 +1204,9 @@ do -- BuildingConsumption
 			if mod[1] then
 				mod = mod[1]
 			end
-			if not obj[Concat("ChoGGi_mod_",name)] then
-				obj[Concat("ChoGGi_mod_",name)] = {
+			local tempname = string.format("ChoGGi_mod_%s",name)
+			if not obj[tempname] then
+				obj[tempname] = {
 					amount = mod.amount,
 					percent = mod.percent
 				}
@@ -1468,7 +1469,7 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 
 	for key,value in pairs(GetMemoryInfo()) do
 		cm = cm + 1
-		mem[cm] = Concat(key,": ",value,"\n")
+		mem[cm] = string.format("%s: %s\n",key,value)
 	end
 
 	local hw = {}
@@ -1476,39 +1477,58 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 	for key,value in pairs(GetHardwareInfo(0)) do
 		if key == "gpu" then
 			chw = chw + 1
-			hw[chw] = Concat(key,": ",GetGpuDescription(),"\n")
+			hw[chw] = string.format("%s: %s\n",key,GetGpuDescription())
 		else
 			chw = chw + 1
-			hw[chw] = Concat(key,": ",value,"\n")
+			hw[chw] = string.format("%s: %s\n",key,value)
 		end
 	end
 	table.sort(hw)
 	chw = chw + 1
 	hw[chw] = "\n"
 
-	return Concat(
-		"GetHardwareInfo(0): ",TableConcat(hw),"\n\n",
-		"GetMemoryInfo(): ",TableConcat(mem),"\n",
-		"AdapterMode(0): ",TableConcat({GetAdapterMode(0)}," "),"\n\n",
-		"GetMachineID(): ",GetMachineID(),"\n\n",
-		"GetSupportedMSAAModes(): ",TableConcat(GetSupportedMSAAModes()," "):gsub("HR::",""),"\n\n",
-		"GetSupportedShaderModel(): ",GetSupportedShaderModel(),"\n\n",
-		"GetMaxStrIDMemoryStats(): ",GetMaxStrIDMemoryStats(),"\n\n\n\n",
+	return string.format([[GetHardwareInfo(0): %s
 
-		"GameObjectStats(): ",GameObjectStats(),"\n\n\n\n",
+GetMemoryInfo(): %s
+AdapterMode(0): %s
+GetMachineID(): %s
+GetSupportedMSAAModes(): %s
+GetSupportedShaderModel(): %s
+GetMaxStrIDMemoryStats(): %s
 
-		"GetCWD(): ",GetCWD(),"\n\n",
-		"GetExecDirectory(): ",GetExecDirectory(),"\n\n",
-		"GetExecName(): ",GetExecName(),"\n\n",
-		"GetDate(): ",GetDate(),"\n\n",
-		"GetOSName(): ",GetOSName(),"\n\n",
-		"GetOSVersion(): ",GetOSVersion(),"\n\n",
-		"GetUsername(): ",GetUsername(),"\n\n",
-		"GetSystemDPI(): ",GetSystemDPI(),"\n\n",
-		"GetComputerName(): ",GetComputerName(),"\n\n\n\n"
+GameObjectStats(): %s
+
+GetCWD(): %s
+GetExecDirectory(): %s
+GetExecName(): %s
+GetDate(): %s
+GetOSName(): %s
+GetOSVersion(): %s
+GetUsername(): %s
+GetSystemDPI(): %s
+GetComputerName(): %s
+
+
+]],
+		TableConcat(hw),
+		TableConcat(mem),
+		TableConcat({GetAdapterMode(0)}," "),
+		GetMachineID(),
+		TableConcat(GetSupportedMSAAModes()," "):gsub("HR::",""),
+		GetSupportedShaderModel(),
+		GetMaxStrIDMemoryStats(),
+		GameObjectStats(),
+		GetCWD(),
+		GetExecDirectory(),
+		GetExecName(),
+		GetDate(),
+		GetOSName(),
+		GetOSVersion(),
+		GetUsername(),
+		GetSystemDPI(),
+		GetComputerName()
 	)
 end
-
 
 do -- AddXTemplate
 	local function RemoveXTemplateSections(list,name)
@@ -1523,7 +1543,7 @@ do -- AddXTemplate
 		if not (name or template or list) then
 			return
 		end
-		local stored_name = Concat("ChoGGi_ECM_",name)
+		local stored_name = string.format("ChoGGi_ECM_%s",name)
 		local XTemplates = XTemplates
 
 		-- check for and remove old object (these are created on new game / new dlc)

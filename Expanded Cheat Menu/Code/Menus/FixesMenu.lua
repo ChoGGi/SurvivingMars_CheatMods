@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local icon = "CommonAssets/UI/Menu/ReportBug.tga"
@@ -10,7 +9,7 @@ local str_ExpandedCM_Fixes = "Expanded CM.Fixes"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM",
-	ActionName = Concat(S[302535920000922--[[Fixes--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000922--[[Fixes--]]]),
 	ActionId = ".Fixes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -54,7 +53,7 @@ This resets all pipes to the default skin.--]]],
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
-	ActionName = Concat(S[302535920001084--[[Reset--]]]," ",S[5221--[[RC Commanders--]]]),
+	ActionName = string.format("%s %s",S[302535920001084--[[Reset--]]],S[5221--[[RC Commanders--]]]),
 	ActionId = ".Reset Commanders",
 	ActionIcon = icon,
 	RolloverText = S[302535920000882--[[If you have borked commanders, this will probably fix them (may take a few seconds to apply).
@@ -118,7 +117,7 @@ Actions[c] = {
 	ActionName = S[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
 	ActionId = ".Remove Missing Class Objects (Warning)",
 	ActionIcon = icon,
-	RolloverText = Concat(S[6779--[[Warning--]]],": ",S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
+	RolloverText = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
 	OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
 	ActionSortKey = "9",
 }
@@ -126,20 +125,20 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes,
-	ActionName = Concat(" ",S[302535920000589--[[Fire Most Fixes--]]]),
+	ActionName = S[302535920000589--[[Fire Most Fixes--]]],
 	ActionId = ".Fire Most Fixes",
 	ActionIcon = icon,
 	RolloverText = S[302535920000590--[[Fires all the fixes in the "Most" menu (nuke 'em from orbit and all that).
 Should be safe to use without breaking anything.--]]],
 	OnAction = ChoGGi.MenuFuncs.FireMostFixes,
-	ActionSortKey = "0",
+	ActionSortKey = "-1",
 }
 
 local str_ExpandedCM_Fixes_Most = "Expanded CM.Fixes.Most"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
-	ActionName = Concat(S[302535920000935--[[Most--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000935--[[Most--]]]),
 	ActionId = ".Most",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
@@ -244,7 +243,7 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Fixes_Most,
-	ActionName = Concat(S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]]),
+	ActionName = string.format("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000607--[[Instant Repair--]]]),
 	ActionId = ".Cables & Pipes: Instant Repair",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = S[302535920000608--[[Instantly repair all broken pipes and cables.--]]],
@@ -265,29 +264,12 @@ local str_ExpandedCM_Fixes_Toggles = "Expanded CM.Fixes.Toggles"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
-	ActionName = Concat(S[302535920000938--[[Toggles--]]]," .."),
+	ActionName = string.format("%s ..",S[302535920000938--[[Toggles--]]]),
 	ActionId = ".Toggles",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "6Toggles",
 }
-
-if ChoGGi.testing then
-	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Fixes_Toggles,
-		ActionName = S[302535920001071--[[Drone Charges From Rover Wrong Angle--]]],
-		ActionId = ".Drone Charges From Rover Wrong Angle",
-		ActionIcon = icon,
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle,
-				302535920001071--[[Drone Charges From Rover Wrong Angle--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.DroneChargesFromRoverWrongAngle_Toggle,
-	}
-end
 
 c = c + 1
 Actions[c] = {
@@ -362,7 +344,7 @@ local str_ExpandedCM_Fixes_ECMFixes = "Expanded CM.Fixes.ECM Fixes"
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Expanded CM.Fixes",
-	ActionName = Concat(S[302535920000887--[[ECM--]]]," ",S[302535920000922--[[Fixes--]]]," .."),
+	ActionName = string.format("%s %s ..",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),
 	ActionId = ".ECM Fixes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",

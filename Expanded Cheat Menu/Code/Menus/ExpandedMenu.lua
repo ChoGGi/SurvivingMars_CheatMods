@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
---~ local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions

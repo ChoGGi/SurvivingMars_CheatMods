@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
@@ -109,7 +108,7 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000712--[[Set Sponsor--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name)),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name)),
 	}
 end
 
@@ -135,7 +134,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 			ItemList[#ItemList+1] = {
 				text = Trans(obj.display_name),
 				value = obj.id,
-				hint = Concat(Trans(T{obj.effect,stats[2]}),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",ChoGGi.UserSettings[Concat("Sponsor",obj.id)])
+				hint = string.format("%s\n\n%s: %s",Trans(T{obj.effect,stats[2]}),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[string.format("Sponsor%s",obj.id)])
 			}
 		end
 	end
@@ -149,7 +148,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 			for i = 1, #ItemList do
 				local value = ItemList[i].value
 				if type(value) == "string" then
-					value = Concat("Sponsor",value)
+					value = string.format("Sponsor%s",value)
 					ChoGGi.UserSettings[value] = nil
 				end
 			end
@@ -159,7 +158,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 					--check to make sure it isn't a fake name (no sense in saving it)
 					local value = choice[i].value
 					if ItemList[j].value == value and type(value) == "string" then
-						local name = Concat("Sponsor",value)
+						local name = string.format("Sponsor%s",value)
 						if choice[1].check1 then
 							ChoGGi.UserSettings[name] = nil
 						else
@@ -183,8 +182,8 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920001162--[[Sponsor--]]]," ",S[302535920001166--[[Bonuses--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionSponsorPreset.Default[g_CurrentMissionParams.idMissionSponsor].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]],"\n\n",S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
+		title = string.format("%s %s",S[302535920001162--[[Sponsor--]]],S[302535920001166--[[Bonuses--]]]),
+		hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name),S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
 		multisel = true,
 		check = {
 			{
@@ -225,9 +224,8 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 		for i = 1, #ItemList do
 			--check to make sure it isn't a fake name (no sense in saving it)
 			if ItemList[i].value == value then
-				--new comm
+				-- new comm
 				g_CurrentMissionParams.idCommanderProfile = value
-
 				-- apply tech from new commmander
 				local comm = GetCommanderProfile()
 				local UICity = UICity
@@ -253,7 +251,7 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920000716--[[Set Commander--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name)),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
 	}
 end
 
@@ -269,7 +267,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 			ItemList[#ItemList+1] = {
 				text = Trans(obj.display_name),
 				value = obj.id,
-				hint = Concat(Trans(obj.effect),"\n\n",S[302535920001165--[[Enabled Status--]]],": ",ChoGGi.UserSettings[Concat("Commander",obj.id)])
+				hint = string.format("%s\n\n%s: %s",Trans(obj.effect),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[string.format("Commander%s",obj.id)])
 			}
 		end
 	end
@@ -283,7 +281,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 			for i = 1, #ItemList do
 				local value = ItemList[i].value
 				if type(value) == "string" then
-					value = Concat("Commander",value)
+					value = string.format("Commander%s",value)
 					ChoGGi.UserSettings[value] = nil
 				end
 			end
@@ -293,7 +291,7 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 					--check to make sure it isn't a fake name (no sense in saving it)
 					local value = choice[i].value
 					if ItemList[j].value == value and type(value) == "string" then
-						local name = Concat("Commander",value)
+						local name = string.format("Commander%s",value)
 						if choice[1].check1 then
 							ChoGGi.UserSettings[name] = nil
 						else
@@ -317,8 +315,8 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920001174--[[Commander--]]]," ",S[302535920001166--[[Bonuses--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.CommanderProfilePreset.Default[g_CurrentMissionParams.idCommanderProfile].display_name),"\n\n",S[302535920001167--[[Use Ctrl/Shift for multiple bonuses.--]]]),
+		title = string.format("%s %s",S[302535920001174--[[Commander--]]],S[302535920001166--[[Bonuses--]]]),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
 		multisel = true,
 		check = {
 			{
@@ -347,7 +345,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	end
 
 	local function CallBackFunc(choice)
-		--any newly built/landed uses this logo
+		-- any newly built/landed uses this logo
 		local value = choice[1].value
 		if not value then
 			return
@@ -380,7 +378,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 				ChangeLogo("Building",entity_name)
 
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920001177--[[Logo--]]),
+					choice[1].text,
 					302535920001177--[[Logo--]],
 					default_icon
 				)
@@ -392,7 +390,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001178--[[Set New Logo--]],
-		hint = Concat(S[302535920000106--[[Current--]]],": ",Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)),
 	}
 end
 
@@ -400,10 +398,11 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 	local mapdata = mapdata
 
 	local ItemList = {{
-		text = Concat(" ",S[302535920000036--[[Disabled--]]]),
+		text = string.format(" %s",S[302535920000036--[[Disabled--]]]),
 		value = "disabled"
 	}}
-	local data = DataInstances[Concat("MapSettings_",sType)]
+	local set_name = string.format("MapSettings_%s",sType)
+	local data = DataInstances[set_name]
 
 	for i = 1, #data do
 		ItemList[#ItemList+1] = {
@@ -418,7 +417,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 			return
 		end
 
-		mapdata[Concat("MapSettings_",sType)] = value
+		mapdata[set_name] = value
 		if sType == "Meteor" then
 			RestartGlobalGameTimeThread("Meteors")
 			RestartGlobalGameTimeThread("MeteorStorm")
@@ -436,8 +435,8 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = Concat(S[302535920000129--[[Set--]]]," ",sType," ",S[302535920001180--[[Disaster Occurrences--]]]),
-		hint = Concat(S[302535920000106--[[Current--]]],": ",mapdata[Concat("MapSettings_",sType)]),
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],sType,S[302535920001180--[[Disaster Occurrences--]]]),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],mapdata[set_name]),
 	}
 end
 
@@ -454,7 +453,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 			ItemList[#ItemList+1] = {
 				text = Trans(def.display_name),
 				value = def.id,
-				hint = Concat(Trans(def.description),"\n",Trans(def.flavor))
+				hint = string.format("%s\n%s",Trans(def.description),Trans(def.flavor))
 			}
 		end
 	end

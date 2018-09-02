@@ -1,67 +1,12 @@
 -- See LICENSE for terms
 
-local Concat = ChoGGi.ComFuncs.Concat
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
---~ local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 local next,type = next,type
-
-local pf_SetStepLen = pf.SetStepLen
-
-do -- ChangeSurfaceSignsToMaterials
-	local function ChangeEntity(cls,entity,random)
-		MapForEach("map",cls,function(o)
-			if random then
-				o:ChangeEntity(Concat(entity,Random(1,random)))
-			else
-				o:ChangeEntity(entity)
-			end
-		end)
-	end
-
-	function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
-
-		local ItemList = {
-			{text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
-			{text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
-		}
-
-		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
-				return
-			end
-			if value == 1 then
-				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
-				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
-				ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
-				ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
-				ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
-				ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
-				ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
-			else
-				ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
-				ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
-				ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
-				ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
-				ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
-				ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
-				ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
-				ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
-				ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = 302535920001083--[[Change Surface Signs--]],
-		}
-	end
-end -- do
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	local ChoGGi = ChoGGi
@@ -171,7 +116,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001095--[[Auto Remove Items From Pin List--]],
-		hint = Concat(EnabledList),
+		hint = TableConcat(EnabledList),
 		multisel = true,
 		check = {
 			{
@@ -216,141 +161,6 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 		302535920001104--[[Fixed all--]],
 		302535920001103--[[Objects--]]
 	)
-end
-
--- build and show a list of attachments for changing their colours
-function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
-	local ChoGGi = ChoGGi
-	obj = obj or ChoGGi.CodeFuncs.SelObject()
-
-	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-		MsgPopup(
-			302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]],
-			302535920000016--[[Colour--]]
-		)
-		return
-	end
-	local ItemList = {}
-
-	-- has no Attaches so just open as is
-	if obj:GetNumAttaches() == 0 then
-		ChoGGi.CodeFuncs.ChangeObjectColour(obj)
-		return
-	else
-		ItemList[#ItemList+1] = {
-			text = Concat(" ",obj.class),
-			value = obj.class,
-			obj = obj,
-			hint = 302535920001106--[[Change main object colours.--]],
-		}
-		-- check and add attachments
-		if obj:IsKindOf("ComponentAttach") then
-			obj:ForEachAttach(function(a)
-				if a:IsKindOf("ColorizableObject") then
-					ItemList[#ItemList+1] = {
-						text = a.class,
-						value = a.class,
-						parentobj = obj,
-						obj = a,
-						hint = Concat(S[302535920001107--[[Change colours of an attached object.--]]],"\n",S[302535920000955--[[Handle--]]],": ",a.handle),
-					}
-				end
-			end)
-		end
-		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
-		for _,attach in pairs(obj) do
-			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
-				ItemList[#ItemList+1] = {
-					text = attach.class,
-					value = attach.class,
-					parentobj = obj,
-					obj = attach,
-					hint = 302535920001107--[[Change colours of an attached object.--]],
-				}
-			end
-		end
-
-	end
-
-	local function FiredOnMenuClick(sel,dialog)
-		ChoGGi.CodeFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = function()end,
-		items = ItemList,
-		title = Concat(S[302535920000021--[[Change Colour--]]],": ",RetName(obj)),
-		hint = 302535920001108--[[Double click to open object/attachment to edit.--]],
-		custom_type = 1,
-		custom_func = FiredOnMenuClick,
-	}
-end
-
-function ChoGGi.MenuFuncs.SetObjectOpacity()
-	local ChoGGi = ChoGGi
-	local sel = ChoGGi.CodeFuncs.SelObject()
-	if not sel then
-		return
-	end
-	local hint_loop = S[302535920001109--[[Loops though and makes all--]]]
-
-	local ItemList = {
-		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[3984--[[Anomalies--]]]),value = "Anomaly",hint = Concat(hint_loop," ",S[302535920001110--[[anomalies visible.--]]])},
-		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[3980--[[Buildings--]]]),value = "Building",hint = Concat(hint_loop," ",S[302535920001111--[[buildings visible.--]]])},
-		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = Concat(hint_loop," ",S[302535920001113--[[pipes and cables visible.--]]])},
-		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[547--[[Colonists--]]]),value = "Colonists",hint = Concat(hint_loop," ",S[302535920001114--[[colonists visible.--]]])},
-		{text = Concat(S[302535920001084--[[Reset--]]],": ",S[3981--[[Units--]]]),value = "Unit",hint = Concat(hint_loop," ",S[302535920001115--[[rovers and drones visible.--]]])},
-		{text = Concat(S[302535920001084--[[Reset--]]]": ",S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = Concat(hint_loop," ",S[302535920000138--[["surface, subsurface, and terrain deposits visible."--]]])},
-		{text = 0,value = 0},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-	}
-
-	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
-			return
-		end
-		if type(value) == "number" then
-			sel:SetOpacity(value)
-		elseif type(value) == "string" then
-			local function SettingOpacity(label)
-				local tab = UICity.labels[label] or ""
-				for i = 1, #tab do
-					tab[i]:SetOpacity(100)
-				end
-			end
-			SettingOpacity(value)
-			--extra ones
-			if value == "Building" then
-				SettingOpacity("AllRockets")
-			elseif value == "Anomaly" then
-				SettingOpacity("SubsurfaceAnomalyMarker")
-			elseif value == "SurfaceDeposit" then
-				SettingOpacity("SubsurfaceDeposit")
-				SettingOpacity("TerrainDeposit")
-			end
-		end
-		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-			302535920001117--[[Opacity--]],
-			"UI/Icons/Sections/attention.tga"
-		)
-	end
-	local hint = S[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]]]
-	if sel then
-		hint = Concat(S[302535920000106--[[Current--]]],": ",sel:GetOpacity(),"\n\n",hint)
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = ItemList,
-		title = Concat(S[302535920000694--[[Set Opacity--]]],": ",RetName(sel)),
-		hint = hint,
-		skip_sort = true,
-	}
 end
 
 function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
@@ -504,31 +314,26 @@ do -- SetEntity
 		local hint_noanim = S[302535920001140--[[No animation.--]]]
 		if #entity_table == 0 then
 			entity_table = {
-				{text = Concat("	",S[302535920001141--[[Default Entity--]]]),value = "Default"},
-				{text = Concat(" ",S[302535920001142--[[Kosmonavt--]]]),value = "Kosmonavt"},
-				{text = Concat(" ",S[302535920001143--[[Jama--]]]),value = "Lama"},
-				{text = Concat(" ",S[302535920001144--[[Green Man--]]]),value = "GreenMan"},
-				{text = Concat(" ",S[302535920001145--[[Planet Mars--]]]),value = "PlanetMars",hint = hint_noanim},
-				{text = Concat(" ",S[302535920001146--[[Planet Earth--]]]),value = "PlanetEarth",hint = hint_noanim},
-				{text = Concat(" ",S[302535920001147--[[Rocket Small--]]]),value = "RocketUI",hint = hint_noanim},
-				{text = Concat(" ",S[302535920001148--[[Rocket Regular--]]]),value = "Rocket",hint = hint_noanim},
-				{text = Concat(" ",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
-				{text = Concat(" ",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001141--[[Default Entity--]]]),value = "Default"},
+				{text = string.format(" %s",S[302535920001142--[[Kosmonavt--]]]),value = "Kosmonavt"},
+				{text = string.format(" %s",S[302535920001143--[[Jama--]]]),value = "Lama"},
+				{text = string.format(" %s",S[302535920001144--[[Green Man--]]]),value = "GreenMan"},
+				{text = string.format(" %s",S[302535920001145--[[Planet Mars--]]]),value = "PlanetMars",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001146--[[Planet Earth--]]]),value = "PlanetEarth",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001147--[[Rocket Small--]]]),value = "RocketUI",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001148--[[Rocket Regular--]]]),value = "Rocket",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
+				{text = string.format(" %s",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
 			}
+			local c = #entity_table
 			for key,_ in pairs(EntityData) do
-				entity_table[#entity_table+1] = {
+				c = c + 1
+				entity_table[c] = {
 					text = key,
 					value = key,
 					hint = hint_noanim
 				}
 			end
---~			 for _,bld in pairs(BuildingTemplates or {}) do
---~				 entity_table[#entity_table+1] = {
---~					 text = bld.entity,
---~					 value = bld.entity,
---~					 hint = hint_noanim
---~				 }
---~			 end
 		end
 		local ItemList = entity_table
 
@@ -567,7 +372,7 @@ do -- SetEntity
 					end)
 				end
 				MsgPopup(
-					Concat(choice[1].text,": ",RetName(sel)),
+					string.format("%s: %s",choice[1].text,RetName(sel)),
 					entity_str
 				)
 			end
@@ -577,7 +382,7 @@ do -- SetEntity
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
-			hint = Concat(S[302535920000106--[[Current--]]],": ",(sel.ChoGGi_OrigEntity or sel.entity),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],"\n\n",S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+			hint = string.format("%s: %s\n%s\n\n%s",S[302535920000106--[[Current--]]],sel.ChoGGi_OrigEntity or sel.entity,S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
 Not permanent for colonists after they exit buildings (for now).--]]]),
 			check = {
@@ -595,6 +400,7 @@ Not permanent for colonists after they exit buildings (for now).--]]]),
 end -- do
 
 do -- SetEntityScale
+	local SetStepLen = pf.SetStepLen
 	local function SetScale(obj,Scale)
 		local ChoGGi = ChoGGi
 		local cUserSettings = ChoGGi.UserSettings
@@ -605,7 +411,7 @@ do -- SetEntityScale
 		DelayedCall(500, function()
 			if obj.class == "Drone" then
 				if cUserSettings.SpeedDrone then
-					pf_SetStepLen(obj,cUserSettings.SpeedDrone)
+					SetStepLen(obj,cUserSettings.SpeedDrone)
 				else
 					obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
 				end
@@ -617,13 +423,13 @@ do -- SetEntityScale
 				end
 			elseif obj.class == "Colonist" then
 				if cUserSettings.SpeedColonist then
-					pf_SetStepLen(obj,cUserSettings.SpeedColonist)
+					SetStepLen(obj,cUserSettings.SpeedColonist)
 				else
 					obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
 				end
 			elseif obj:IsKindOf("BaseRover") then
 				if cUserSettings.SpeedRC then
-					pf_SetStepLen(obj,cUserSettings.SpeedRC)
+					SetStepLen(obj,cUserSettings.SpeedRC)
 				else
 					obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
 				end
@@ -688,7 +494,7 @@ do -- SetEntityScale
 					end)
 				end
 				MsgPopup(
-					Concat(choice[1].text,": ",RetName(sel)),
+					string.format("%s: %s",choice[1].text,RetName(sel)),
 					1000081--[[Scale--]],
 					nil,
 					nil,
@@ -701,7 +507,7 @@ do -- SetEntityScale
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
-			hint = Concat(S[302535920001156--[[Current object--]]],": ",sel:GetScale(),"\n",S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
+			hint = string.format("%s: %s\n%s",S[302535920001156--[[Current object--]]],sel:GetScale(),S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
 			check = {
 				{
 					title = 302535920000750--[[Dome Only--]],

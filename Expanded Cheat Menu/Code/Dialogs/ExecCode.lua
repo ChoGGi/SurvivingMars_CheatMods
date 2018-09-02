@@ -2,7 +2,6 @@
 
 -- shows a dialog with a single line edit to execute code in
 
-local Concat = ChoGGi.ComFuncs.Concat
 local S = ChoGGi.Strings
 
 DefineClass.ChoGGi_ExecCodeDlg = {
@@ -22,7 +21,7 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self.obj = context.obj
 	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or S[302535920001073--[[Console--]]]
 
-	self.title = Concat(S[302535920000040--[[Exec Code--]]],": ",self.obj_name)
+	self.title = string.format("%s: %s",S[302535920000040--[[Exec Code--]]],self.obj_name)
 
 	if not self.obj then
 		self.dialog_width = 800.0
