@@ -40,7 +40,7 @@
 - Examine dialog getting wrong zorder when using "Destroy It".
 - Buildings>Sanatoriums & Schools: Show All Traits wasn't toggling School traits (also changed it to a saved option).
 - I broke a few building cheats when updating to DA.
-- Change Sponsor/Commander broke in DA (thanks Dawnmist).
+- Set Sponsor/Commander broke in DA (thanks Dawnmist).
 
 ## v8.5 (26 Aug 2018)
 ### Added:

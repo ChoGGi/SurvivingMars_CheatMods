@@ -495,9 +495,6 @@ do -- ReadSettingsOrig
 		if is_error or type(ChoGGi.UserSettings) ~= "table" then
 			-- so now at least the game will start
 			ChoGGi.UserSettings = ChoGGi.Defaults
-			if ChoGGi.testing then
-				ChoGGi.UserSettings.WriteLogs = true
-			end
 			return ChoGGi.Defaults
 		end
 

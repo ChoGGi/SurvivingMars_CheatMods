@@ -986,6 +986,8 @@ end
 
 function Examine:SetObj(obj,skip_thread)
 
+	self.onclick_handles = {}
+
 	local obj_type = type(obj)
 	if obj_type == "string" then
 		-- check if obj string is a ref to an actual object
@@ -996,7 +998,6 @@ function Examine:SetObj(obj,skip_thread)
 		end
 	end
 
-	table.iclear(self.onclick_handles)
 	self.idLinks:SetText(self:menu(obj))
 
 	local name = RetName(obj)

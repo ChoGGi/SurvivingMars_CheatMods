@@ -35,8 +35,8 @@ end
 local function WriteConsoleLog()
 	local ChoGGi = ChoGGi
 	if ChoGGi.UserSettings.WriteLogs then
-		ChoGGi.UserSettings.WriteLogs = nil
-		ChoGGi.ComFuncs.WriteLogs_Toggle()
+		ChoGGi.UserSettings.WriteLogs = false
+		ChoGGi.ComFuncs.WriteLogs_Toggle(false)
 	else
 		ChoGGi.UserSettings.WriteLogs = true
 		ChoGGi.ComFuncs.WriteLogs_Toggle(true)
