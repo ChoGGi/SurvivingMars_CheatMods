@@ -517,15 +517,19 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 		if g_Classes[value] then
 
 			local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
---~			 NewObj.__parents[#NewObj.__parents] = "Building"
 			NewObj.__parents[#NewObj.__parents] = "InfopanelObj"
 			NewObj.ip_template = "ipEverything"
 			NewObj.ChoGGi_Spawned = true
-			NewObj:GetEnumFlags(const.efSelectable)
+			NewObj:SetEnumFlags(const.efSelectable)
 
-			--so we know something is selected
-			NewObj.OnSelected = function()
-				SelectionArrowAdd(NewObj)
+			-- so user knows something is selected
+			local orig_OnSelected = NewObj.OnSelected
+			function NewObj:OnSelected(...)
+				-- all the help i can give
+				print(S[302535920001110--[[Press F4--]]])
+
+				SelectionArrowAdd(self)
+				orig_OnSelected(self,...)
 			end
 
 			ObjModified(NewObj)

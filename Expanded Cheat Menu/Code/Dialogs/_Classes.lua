@@ -181,8 +181,10 @@ DefineClass.ChoGGi_DialogSection = {
 
 DefineClass.ChoGGi_ScrollArea = {
 	__parents = {"XScrollArea"},
-	UniformColumnWidth = true,
-	UniformRowHeight = true,
+--~ 	UniformColumnWidth = true,
+--~ 	UniformRowHeight = true,
+	Margins = box(4,4,4,4),
+	BorderWidth = 0,
 }
 
 DefineClass.ChoGGi_SleekScroll = {
@@ -382,8 +384,6 @@ function ChoGGi_Window:AddScrollText()
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
-		Margins = box(4,4,4,4),
-		BorderWidth = 0,
 	}, self.idScrollSection)
 
 	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
@@ -418,7 +418,6 @@ function ChoGGi_Window:AddScrollList()
 	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
-		Margins = box(4,4,4,4),
 	}, self.idScrollSection)
 
 	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({

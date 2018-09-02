@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- go away... there's HexPainter(building) if you wanna have some fun
+
 if ChoGGi.testing then
 	local TickStart = ChoGGi.ComFuncs.TickStart
 	local TickEnd = ChoGGi.ComFuncs.TickEnd

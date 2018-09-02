@@ -1,5 +1,6 @@
 -- See LICENSE for terms
---any funcs called from Code/*
+
+-- any funcs called from Code/*
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -1530,46 +1531,45 @@ GetComputerName(): %s
 	)
 end
 
-do -- AddXTemplate
-	local function RemoveXTemplateSections(list,name)
-		for i = 1, #list do
-			if list[i][name] then
-				table.remove(list,i)
-				break
-			end
+function ChoGGi.CodeFuncs.RemoveXTemplateSections(list,name)
+	for i = 1, #list do
+		if list[i][name] then
+			table.remove(list,i)
+			break
 		end
 	end
-	function ChoGGi.CodeFuncs.AddXTemplate(name,template,list)
-		if not (name or template or list) then
-			return
-		end
-		local stored_name = string.format("ChoGGi_ECM_%s",name)
-		local XTemplates = XTemplates
+end
 
-		-- check for and remove old object (these are created on new game / new dlc)
-		RemoveXTemplateSections(XTemplates[template][1],stored_name)
+function ChoGGi.CodeFuncs.AddXTemplate(name,template,list)
+	if not (name or template or list) then
+		return
+	end
+	local stored_name = string.format("ChoGGi_ECM_%s",name)
+	local XTemplates = XTemplates
 
-		XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
-			stored_name, true,
-			"__context_of_kind", list.__context_of_kind or "Infopanel",
-			"__template", list.__template or "InfopanelSection",
-			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"Title", list.Title or S[588--[[Empty--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
-			"RolloverTitle", list.RolloverTitle or S[1000016--[[Title--]]],
-			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
-			"OnContextUpdate", list.OnContextUpdate
-		}, {
-			PlaceObj("XTemplateFunc", {
-			"name", "OnActivate(self, context)",
-			"parent", function(parent, _)
-					return parent.parent
-				end,
-			"func", list.func or "function() return end"
-			})
+	-- check for and remove old object (these are created on new game / new dlc)
+	ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates[template][1],stored_name)
+
+	XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
+		stored_name, true,
+		"__context_of_kind", list.__context_of_kind or "Infopanel",
+		"__template", list.__template or "InfopanelSection",
+		"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+		"Title", list.Title or S[588--[[Empty--]]],
+		"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+		"RolloverTitle", list.RolloverTitle or S[1000016--[[Title--]]],
+		"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+		"OnContextUpdate", list.OnContextUpdate
+	}, {
+		PlaceObj("XTemplateFunc", {
+		"name", "OnActivate(self, context)",
+		"parent", function(parent, _)
+				return parent.parent
+			end,
+		"func", list.func or "function() return end"
 		})
-	end
-end -- do
+	})
+end
 
 function ChoGGi.CodeFuncs.SetCommanderBonuses(sType)
 	local currentname = g_CurrentMissionParams.idCommanderProfile
@@ -1886,44 +1886,31 @@ function ChoGGi.CodeFuncs.Editor_Toggle()
 	ChoGGi.CodeFuncs.SetCameraSettings()
 end
 
+local GetSafeAreaBox = GetSafeAreaBox
 function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
 	local g_Classes = g_Classes
 
-	obj.idChoGGi_Dialog = g_Classes.XDrawCacheDialog:new({}, obj)
-
-	obj.idChoGGi_ScrollArea = g_Classes.ChoGGi_DialogSection:new({
+	obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
 		Id = "idChoGGi_ScrollArea",
-		BorderWidth = 1,
-		Margins = box(0,0,0,0),
-		BorderColor = 0,
-	}, obj.idChoGGi_Dialog)
+	}, obj)
 
 	obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
 		Id = "idChoGGi_ScrollV",
 		Target = "idChoGGi_ScrollBox",
-		Dock = "right",
+		Dock = "left",
 	}, obj.idChoGGi_ScrollArea)
 
-	obj.idChoGGi_ScrollH = g_Classes.ChoGGi_SleekScroll:new({
-		Id = "idChoGGi_ScrollH",
-		Target = "idChoGGi_ScrollBox",
-		Dock = "bottom",
-		Horizontal = true,
-	}, obj.idChoGGi_ScrollArea)
-
+	local safe = GetSafeAreaBox():maxy()
 	obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
 		Id = "idChoGGi_ScrollBox",
 		VScroll = "idChoGGi_ScrollV",
-		HScroll = "idChoGGi_ScrollH",
-		Margins = box(4,4,4,4),
-		BorderWidth = 0,
+		LayoutMethod = "VList",
+		MaxHeight = ((safe * ChoGGi.Temp.UIScale) / 2) - 25,
 	}, obj.idChoGGi_ScrollArea)
 
-	for i = #obj, 1, -1 do
-		if obj[i].class ~= "XDrawCacheDialog" then
-			obj[i]:SetParent(obj.idChoGGi_ScrollBox)
-		end
-	end
+	-- move content list to scrollarea
+	obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
+
 end
 
 do -- AddGridHandles

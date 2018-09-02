@@ -11,3 +11,5 @@ XShortcutsHost.GetSize = function(self)
 	local GetSize = ChoGGi_Window.GetSize
 	return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
 end
+
+-- some other functions someday

@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001110,,
 302535920001111,,
 302535920001113,,
 302535920001114,,
@@ -219,11 +218,10 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000477,Clear out the windowed console log.,
 302535920000865,Toggle Trans,
 302535920001321,UI Click To Select,
-302535920001322,"Allows you to examine UI controls by clicking them.
+302535920001322,"Examine UI controls by clicking them.
 This dialog will freeze till you click something.",
 302535920000970,UI Flash,
-302535920000972,"Toggle flashing the UI object being examined.
-This may temporarily add some extra values to objects (BorderWidth/BorderColor).",
+302535920000972,Flash visibility of the UI object being examined.,
 302535920001057,Data,
 302535920001239,Functions,
 302535920001240,Show all functions of this object and parents/ancestors.,
@@ -819,6 +817,7 @@ Works after colonist idle.",
 Not permanent.",
 302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920001110,Press F4,
 302535920000724,Show Grid Square,
 302535920000725,Square (use Disable to hide.,
 302535920001192,Show Grid 45 Square,

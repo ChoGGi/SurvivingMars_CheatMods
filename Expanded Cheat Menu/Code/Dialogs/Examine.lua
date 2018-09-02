@@ -30,6 +30,8 @@ DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 	-- what we're examining
 	obj = false,
+	-- used to store visibility of obj
+	orig_vis_flash = false,
 
 	dialog_width = 650.0,
 	dialog_height = 750.0,
@@ -392,7 +394,7 @@ Which you can then mess around with some more in the console."--]]],
 		{name = "	 ---- "},
 		{
 			name = S[302535920001321--[[UI Click To Select--]]],
-			hint = S[302535920001322--[["Allows you to inspect UI controls by clicking them.
+			hint = S[302535920001322--[["Examine UI controls by clicking them.
 This dialog will freeze till you click something."--]]],
 			clicked = function()
 				ChoGGi_TerminalRolloverMode(true,self)
@@ -400,8 +402,7 @@ This dialog will freeze till you click something."--]]],
 		},
 		{
 			name = S[302535920000970--[[UI Flash--]]],
-			hint = S[302535920000972--[["Toggle flashing the UI object being examined.
-This may temporarily add some extra values to objects (BorderWidth/BorderColor)."--]]],
+			hint = S[302535920000972--[[Flash visibility of the UI object being examined.--]]],
 			clicked = function()
 				ChoGGi.UserSettings.FlashExamineObject = not ChoGGi.UserSettings.FlashExamineObject
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -442,13 +443,24 @@ do -- FlashWindow
 
 	function Examine:FlashWindow(obj)
 		obj = obj or self.obj
-		local orig_vis = obj:GetVisible()
+
+		-- doesn't lead to good stuff
+		if not obj.desktop then
+			return
+		end
+
+		-- don't want to end up with something invis when it shouldn't be
+		if not self.orig_vis_flash then
+			self.orig_vis_flash = obj:GetVisible()
+		end
 
 		-- always kill off old thread first
 		DeleteThread(flashing_thread)
+
 		flashing_thread = CreateRealTimeThread(function()
+
 			local vis = nil
-			for _ = 1, 6 do
+			for _ = 1, 5 do
 				if obj.window_state == "destroying" then
 					break
 				end
@@ -456,9 +468,11 @@ do -- FlashWindow
 				Sleep(100)
 				vis = not vis
 			end
+
 			if obj.window_state ~= "destroying" then
-				obj:SetVisible(orig_vis)
+				obj:SetVisible(self.orig_vis_flash)
 			end
+
 		end)
 	end
 end -- do

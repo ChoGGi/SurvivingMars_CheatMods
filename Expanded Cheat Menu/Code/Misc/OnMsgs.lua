@@ -1,5 +1,7 @@
 --	See LICENSE for terms
 
+-- any onsmgs
+
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
@@ -81,31 +83,31 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
 
-		-- don't show cheats pane for ResourceOverview
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
-			--no sense in doing anything without cheats pane enabled
+			-- no sense in doing anything without cheats pane enabled, and there's not cheats for res overview
 			if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
 				return false
 			end
 			return context:CreateCheatActions(parent)
 		end
 
-		-- limit height of cheats pane and others in the selection panel
-		XTemplates.sectionCheats[1][1].Clip = true
-		XTemplates.sectionCheats[1][1].MaxHeight = 0
-		XTemplates.sectionResidence[1][1].MaxHeight = 256
-
+		if not ChoGGi.UserSettings.ScrollSelection then
+			-- limit height of cheats pane and others in the selection panel
+			XTemplates.sectionCheats[1][1].Clip = true
+			XTemplates.sectionCheats[1][1].MaxHeight = 0
+			XTemplates.sectionResidence[1][1].MaxHeight = 256
+		end
 		-- add rollovers to cheats toolbar
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
-		-- only added to stuff spawned with object spawner
-		XTemplates.ipEverything = nil
-
+		-- added to stuff spawned with object spawner
+		if XTemplates.ipEverything then
+			XTemplates.ipEverything:delete()
+		end
 		PlaceObj('XTemplate', {
 			group = "Infopanel Sections",
 			id = "ipEverything",
 			PlaceObj('XTemplateTemplate', {
-	--~			 '__context_of_kind', "Object",
 				'__condition', function (_, context) return context.ChoGGi_Spawned end,
 				'__template', "Infopanel",
 				'Description', S[313911890683--[[<description>--]]],
@@ -379,8 +381,8 @@ function OnMsg.ConstructionComplete(obj)
 
 --~ 	-- if it's a fancy dome then we allow building in the removed entrances
 --~ 	if obj:IsKindOf("Dome") then
---~ 		local start_id, end_id = obj:GetAllSpots(obj:GetState())
---~ 		for i = start_id, end_id do
+--~ 		local startid, endid = obj:GetAllSpots(obj:GetState())
+--~ 		for i = startid, endid do
 --~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
 --~ 				print(111)
 --~ 			end

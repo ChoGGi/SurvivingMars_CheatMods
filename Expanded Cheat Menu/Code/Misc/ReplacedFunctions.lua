@@ -863,76 +863,72 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 
-		function InfopanelDlg:Open(...)
-			-- fire the orig func so we can edit the dialog (and keep the return value to pass on later)
-			local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
+		local function InfopanelDlgOpen(self)
+			local UserSettings = ChoGGi.UserSettings
 
-			CreateRealTimeThread(function()
-				while #self < 1 do
-					Sleep(5)
-				end
-				 printC("AddScrollDialogXTemplates")
---~ 				 if ChoGGi.testing then
---~ 					 ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
---~ 				 end
+			if UserSettings.ScrollSelection then
+				self.idActionsFrame.parent:SetZOrder(2)
+				ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+			end
 
-				local c = self.idContent
+			local c = self.idContent
 
-				-- this limits height of traits you can choose to 3 till mouse over
-				if ChoGGi.UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
+			-- this limits height of traits you can choose to 3 till mouse over
+			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
 
-					local idx
-					if self.context:IsKindOf("School") then
-						idx = 20
-					else
-						-- Sanitarium
-						idx = 18
-					end
-
-					-- initially set to hidden
-					ToggleVis(idx,c,false,0)
-
-					local visthread
-					self.OnMouseEnter = function()
-						DeleteThread(visthread)
-						ToggleVis(idx,c,true)
-					end
-					self.OnMouseLeft = function()
-						visthread = CreateRealTimeThread(function()
-							Sleep(1000)
-							ToggleVis(idx,c,false,0)
-						end)
-					end
-
+				local idx
+				if self.context:IsKindOf("School") then
+					idx = 20
+				else
+					-- Sanitarium
+					idx = 18
 				end
 
-				-- loop all the sections
-				for i = 1, #c do
-					local section = c[i]
-					if section.class == "XSection" then
-						local title = TGetID(section.idSectionTitle.Text)
-						local content = section.idContent[2]
+				-- initially set to hidden
+				ToggleVis(idx,c,false,0)
 
-						-- enlarge worker section if over the max amount visible
-						if section.idWorkers and #section.idWorkers > 14 then
-							-- set height to default height
-							content:SetMaxHeight(32)
+				local visthread
+				self.OnMouseEnter = function()
+					DeleteThread(visthread)
+					ToggleVis(idx,c,true)
+				end
+				self.OnMouseLeft = function()
+					visthread = CreateRealTimeThread(function()
+						Sleep(1000)
+						ToggleVis(idx,c,false,0)
+					end)
+				end
 
-							local expandthread
-							section.OnMouseEnter = function()
-								DeleteThread(expandthread)
-								content:SetLayoutMethod("HWrap")
-								content:SetMaxHeight()
-							end
-							section.OnMouseLeft = function()
-								expandthread = CreateRealTimeThread(function()
-									Sleep(500)
-									content:SetLayoutMethod("HList")
-									content:SetMaxHeight(32)
-								end)
-							end
+			end
 
-						elseif title == 27--[[Cheats--]] then
+			-- loop all the sections
+			for i = 1, #c do
+				local section = c[i]
+				if section.class == "XSection" then
+					local title = TGetID(section.idSectionTitle.Text)
+					local content = section.idContent[2]
+
+					-- enlarge worker section if over the max amount visible
+					if section.idWorkers and #section.idWorkers > 14 then
+						-- set height to default height
+						content:SetMaxHeight(32)
+
+						local expandthread
+						section.OnMouseEnter = function()
+							DeleteThread(expandthread)
+							content:SetLayoutMethod("HWrap")
+							content:SetMaxHeight()
+						end
+						section.OnMouseLeft = function()
+							expandthread = CreateRealTimeThread(function()
+								Sleep(500)
+								content:SetLayoutMethod("HList")
+								content:SetMaxHeight(32)
+							end)
+						end
+
+					elseif not UserSettings.ScrollSelection then
+						if title == 27--[[Cheats--]] then
 
 							local expandthread
 							section.OnMouseEnter = function()
@@ -941,7 +937,7 @@ function OnMsg.ClassesBuilt()
 							end
 							section.OnMouseLeft = function()
 								expandthread = CreateRealTimeThread(function()
-									Sleep(ChoGGi.UserSettings.CheatsInfoPanelHideDelay or 1500)
+									Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
 									content:SetMaxHeight(0)
 								end)
 							end
@@ -970,10 +966,53 @@ function OnMsg.ClassesBuilt()
 							end
 
 						end
-					end -- if XSection
-				end
+					end -- UserSettings.ScrollSelection
 
+				end -- if XSection
+			end
+		end
+
+		local infopanel_list = {
+			ipAlienDigger = true,
+			ipAnomaly = true,
+			ipAttackRover = true,
+			ipBuilding = true,
+			ipColonist = true,
+			ipConstruction = true,
+			ipDrone = true,
+			ipFirefly = true,
+			ipGridConstruction = true,
+			ipLeak = true,
+			ipMirrorSphere = true,
+			ipMirrorSphereBuilding = true,
+			ipPassage = true,
+			ipPillaredPipe = true,
+			ipResourcePile = true,
+			ipRover = true,
+			ipShuttle = true,
+			ipSinkhole = true,
+			ipSubsurfaceDeposit = true,
+			ipSurfaceDeposit = true,
+			ipSwitch = true,
+			ipTerrainDeposit = true,
+		}
+
+		-- the actual function
+		function InfopanelDlg:Open(...)
+			-- skip stuff we don't care about (res overview for one)
+			if not infopanel_list[self.XTemplate] then
+				return ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)
+			end
+			-- fire the orig func so we can edit the dialog (and keep the return value to pass on later)
+			local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
+
+			CreateRealTimeThread(function()
+				while not self.visible do
+					Sleep(10)
+				end
+				InfopanelDlgOpen(self)
 			end)
+
 			return table.unpack(ret)
 		end
 	end -- do
