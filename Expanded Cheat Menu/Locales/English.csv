@@ -1,11 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001114,,
-302535920001115,,
-302535920001116,,
-302535920000138,,
-302535920001338,,
-302535920001339,,
-302535920001340,,
 302535920001341,,
 302535920001342,,
 302535920001343,,
@@ -305,6 +298,14 @@ Press Enter to refresh list (update names).
 Double click selected item to open in new manipulator.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920001114,Service Building Stats,
+302535920001115,"Tweak settings for parks and such.
+Health change, Sanity change, Service Comfort, Comfort increase.",
+302535920001116,Select a %s.,
+302535920000138,Value needs to be a %s.,
+302535920001338,Reset to default.,
+302535920001339,Are settings custom: %s,
+302535920001340,Invalid settings will be skipped.,
 302535920001336,Export When This Amount,
 302535920001337,When you have this many rares in storage launch right away.,
 302535920001330,Instant Export On Toggle,
@@ -354,7 +355,7 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment.",
 302535920000144,Automated Performance,
 302535920000145,"Sets performance of all automated buildings of this type
 Current: %s",
-302535920000147,Only apply to selected object instead of all,
+302535920000147,Only apply to selected object instead of all %s.,
 302535920000148,"%s:
 You keep your work station so clean, Jerome.
 It's next to godliness. Isn't that what they say?",

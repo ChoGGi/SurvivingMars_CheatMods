@@ -159,13 +159,14 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
-		--add it to the actual object
+		local value = choice[1].value
+
+		-- add it to the actual object
 		self.obj[tostring(value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
-		--refresh list
+		-- refresh list
 		self:UpdateListContent()
 	end
 

@@ -34,7 +34,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 	end
 ------------------------------LIGHTMODEL CUSTOM SETTING IS OFF
 	local function CallBackFunc(choice)
-		if not choice[1].func then
+		if #choice < 1 or not choice[1].func then
 			return
 		end
 		choice[1].func()

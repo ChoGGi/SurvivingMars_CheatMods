@@ -83,6 +83,7 @@ ChoGGi.Defaults = {
 		"Consts",
 		"const",
 		"FXRules",
+		"g_Classes",
 		"GetInGameInterface",
 		"MsgThreads",
 		"Presets",

@@ -124,10 +124,10 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local check1 = choice[1].check1
 		local dome
 		sel = SelectedObj
@@ -273,10 +273,10 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if choice[1].check1 then
 			g_ApplicantPool = {}
 			MsgPopup(
@@ -340,10 +340,10 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local shift
 		if value == 3.1415926535 then
 			shift = {true,true,true}
@@ -386,18 +386,16 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 		{text = 280,value = 280,hint = hint_high},
 	}
 
-	--other hint type
 	local hint = DefaultSetting
 	if ChoGGi.UserSettings.MinComfortBirth then
 		hint = ChoGGi.UserSettings.MinComfortBirth / r
 	end
 
-	--callback
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			value = value * r
 			ChoGGi.ComFuncs.SetConstsG("MinComfortBirth",value)
@@ -459,10 +457,10 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local dome
 		local sel = SelectedObj
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -506,6 +504,7 @@ So then, you haven't seen everything."--]],
 				hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
 			},
 		},
+		skip_sort = true,
 	}
 end
 
@@ -701,10 +700,10 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("DefaultOutsideWorkplacesRadius",value)
 			ChoGGi.ComFuncs.SetSavedSetting("DefaultOutsideWorkplacesRadius",value)
@@ -756,10 +755,10 @@ function ChoGGi.MenuFuncs.SetDeathAge()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local amount
 		if value == "LoganNovel" then
 			amount = 21
@@ -868,10 +867,10 @@ function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -975,10 +974,10 @@ function ChoGGi.MenuFuncs.SetColonistsGender(iType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1086,10 +1085,10 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1187,10 +1186,10 @@ function ChoGGi.MenuFuncs.SetColonistsRace(iType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1323,10 +1322,10 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1485,10 +1484,10 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1588,18 +1587,16 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 		{text = 10000,value = 10000 * r},
 	}
 
-	--other hint type
 	local hint = DefaultSetting
 	if ChoGGi.UserSettings.SpeedColonist then
 		hint = ChoGGi.UserSettings.SpeedColonist
 	end
 
-	--callback
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1681,10 +1678,10 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local sel = SelectedObj
 		local dome
 		if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1791,10 +1788,10 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local check1 = choice[1].check1
 		for i = 1, #choice do
 			local value = choice[i].value

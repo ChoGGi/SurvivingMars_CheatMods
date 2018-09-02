@@ -479,6 +479,12 @@ function OnMsg.ConstructionComplete(obj)
 				obj.shoot_range = setting.protect_range * ChoGGi.Consts.guim
 			end
 			-- fully auto building
+			if setting.auto_performance then
+				obj.max_workers = 0
+				obj.automation = 1
+				obj.auto_performance = setting.auto_performance
+			end
+			-- legacy setting
 			if setting.performance then
 				obj.max_workers = 0
 				obj.automation = 1
@@ -496,8 +502,13 @@ function OnMsg.ConstructionComplete(obj)
 			if setting.cargo_capacity then
 				obj.cargo_capacity = setting.cargo_capacity
 			end
+			-- service comforts
+			if next(setting.service_stats) then
+				ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,setting.service_stats)
+			end
 
 		else
+			-- empty table so remove
 			UserSettings.BuildingSettings[obj.encyclopedia_id] = nil
 		end
 	end
@@ -1027,6 +1038,20 @@ do -- LoadGame/CityStart
 		UICity.labels.ChoGGi_GridElements = nil
 		UICity.labels.ChoGGi_LifeSupportGridElement = nil
 		UICity.labels.ChoGGi_ElectricityGridElement = nil
+
+		-- fix an issue I added...
+		for _,settings in pairs(UserSettings.BuildingSettings) do
+			if settings.performance and settings.auto_performance then
+				settings.performance = nil
+				ChoGGi.Temp.WriteSettings = true
+			end
+			for key,value in pairs(settings) do
+				if key == "performance" and value == "disable" then
+					settings.performance = nil
+					ChoGGi.Temp.WriteSettings = true
+				end
+			end
+		end
 
 		-- update cargo resupply
 		ChoGGi.ComFuncs.UpdateDataTables(true)

@@ -49,10 +49,10 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local check1 = choice[1].check1
 		local check2 = choice[1].check2
 		--nothing checked so just return
@@ -227,10 +227,10 @@ do -- SetGameSpeed
 		{text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64},
 	}
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local const = const
 			-- update values that are checked when speed is changed
@@ -338,10 +338,10 @@ do -- SetEntity
 		local ItemList = entity_table
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 			if check1 and check2 then
@@ -460,10 +460,10 @@ do -- SetEntityScale
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 			if check1 and check2 then

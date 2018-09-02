@@ -281,10 +281,10 @@ do -- ViewObjInfo_Toggle
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 
 			-- cleanup
 			if viewing_obj_info[value] then
@@ -334,10 +334,10 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if value == "New" then
 			ChoGGi.ComFuncs.MsgWait(
 				S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),

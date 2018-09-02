@@ -60,10 +60,10 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		{text = "ToggleSafearea",value = "ToggleSafearea"},
 	}
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		local new_value
 		local obj = ChoGGi.ComFuncs.DotNameToObject(value)
@@ -148,10 +148,10 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		if not choice[1].check1 then
 			MsgPopup(
@@ -476,10 +476,11 @@ function ChoGGi.MenuFuncs.SetAnimState()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+
+		local value = choice[1].value
 		sel:SetStateText(value)
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
@@ -510,10 +511,10 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if g_Classes[value] then
 
 			local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
@@ -906,10 +907,10 @@ do --path markers
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			local UICity = UICity
 			-- remove wp/lines and reset colours
 			if choice[1].check1 then

@@ -331,6 +331,19 @@ Actions[c] = {
 	OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 }
 
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+	ActionName = S[302535920001114--[[Service Building Stats--]]],
+	ActionId = ".Service Building Stats",
+	ActionIcon = icon,
+	RolloverText = S[302535920001115--[["Tweak settings for parks and such.
+Health change, Sanity change, Service Comfort, Comfort increase."--]]],
+	OnAction = function()
+		ChoGGi.MenuFuncs.SetServiceBuildingStats()
+	end,
+}
+
 local str_ExpandedCM_Buildings_Toggle = "Expanded CM.Buildings.Toggle"
 c = c + 1
 Actions[c] = {

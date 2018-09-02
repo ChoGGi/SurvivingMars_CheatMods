@@ -53,10 +53,10 @@ do -- ChangeSurfaceSignsToMaterials
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			if value == 1 then
 				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
 				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
@@ -177,10 +177,10 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			sel:SetOpacity(value)
 		elseif type(value) == "string" then
@@ -272,10 +272,10 @@ do -- AnnoyingSounds_Toggle
 
 		--callback
 		local function CallBackFunc(choice,skip)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			local FXRules = FXRules
 			if value == "SensorTowerWorking" then
 				table.remove(FXRules.Working.start.SensorTower.any,3)
@@ -364,19 +364,19 @@ end
 
 do -- ListAllObjects
 	local function CallBackFunc_Objects(choice)
-		local obj = choice[1].obj
-		if not obj then
+		if #choice < 1 then
 			return
 		end
+		local obj = choice[1].obj
 		ViewObjectMars(obj)
 		SelectObj(obj)
 	end
 
 	local function CallBackFunc_List(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		local UICity = UICity
 		local handles = {}
@@ -694,7 +694,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	}
 
 	local function CallBackFunc(choice)
-		if type(choice) ~= "table" then
+		if #choice < 1 then
 			return
 		end
 		for i = 1, #choice do
@@ -859,10 +859,10 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			terrain.SetTerrainType{type = 1}
 
@@ -968,10 +968,10 @@ function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local model_table = {}
 		for i = 1, #choice do
 			local value = choice[i].value
@@ -1046,10 +1046,10 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "string" then
 			if Browse or choice[1].check2 then
 				ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
@@ -1168,12 +1168,12 @@ function ChoGGi.MenuFuncs.SetTransparencyUI()
 		{text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = 302535920000995--[[Infopanel (selection)--]]},
 		{text = "PinsDlg",value = trans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
 	}
-	-- callback
+
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		for i = 1, #choice do
 			local value = choice[i].value
 			local text = choice[i].text

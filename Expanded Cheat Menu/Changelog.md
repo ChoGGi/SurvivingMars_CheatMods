@@ -8,7 +8,8 @@
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 - Help>List All Menu Items: Show all the cheat menu items in a list dialog.
 - Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
-- Fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors).
+- Fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors mod).
+- Buildings>Service Building Stats: Change amount of comfort, time it takes, etc (gardens and so on).
 - Rockets
 - > Max Export Amount: Change how many rares per rocket you can export.
 - > Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
@@ -44,6 +45,7 @@
 - I broke a few building cheats when updating to DA.
 - Set Sponsor/Commander broke in DA (thanks Dawnmist).
 - Change Terrain Type now restores concrete/dome textures.
+- Issue with Fully Automated Buildings (thanks hchsiao).
 
 ## v8.5 (26 Aug 2018)
 ### Added:
@@ -785,7 +787,7 @@ Please and thank you.
 - Change logo/sponsor/commander were broke in Opportunity.
 - Change logo only changed one logo per object.
 - Set Production default was setting to default * 1000.
-- Disabling FullyAutomatedBuildings was making WorkAuto performance 0.
+- Disabling Fully Automated Buildings was making WorkAuto performance 0.
 - Issue with changing production and updating grid production values (thanks JesseWV).
 
 ## v3.3 (26 Apr 2018)

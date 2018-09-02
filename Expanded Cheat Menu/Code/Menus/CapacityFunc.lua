@@ -77,10 +77,10 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			local tab = UICity.labels.Workplace or ""
@@ -188,10 +188,10 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			--colonist cap doesn't use res scale
@@ -306,10 +306,10 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local tab = UICity.labels.BuildingNoDomes or ""
 			for i = 1, #tab do
@@ -372,10 +372,10 @@ Mechanized: 1,000,000--]]]
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			local value = value * r

@@ -72,12 +72,12 @@ function ChoGGi.MenuFuncs.ChangeSponsor()
 			}
 		end
 	end
---~ Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
+
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local g_CurrentMissionParams = g_CurrentMissionParams
 		for i = 1, #ItemList do
 			-- check to make sure it isn't a fake name (no sense in saving it)
@@ -140,10 +140,10 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if choice[1].check2 then
 			for i = 1, #ItemList do
 				local value = ItemList[i].value
@@ -217,10 +217,10 @@ function ChoGGi.MenuFuncs.ChangeCommander()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		for i = 1, #ItemList do
 			--check to make sure it isn't a fake name (no sense in saving it)
 			if ItemList[i].value == value then
@@ -273,10 +273,10 @@ function ChoGGi.MenuFuncs.SetCommanderBonus()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if choice[1].check2 then
 			for i = 1, #ItemList do
 				local value = ItemList[i].value
@@ -345,11 +345,10 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	end
 
 	local function CallBackFunc(choice)
-		-- any newly built/landed uses this logo
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		local function ChangeLogo(Label,Name)
 			local tab = UICity.labels[Label] or ""
@@ -412,10 +411,10 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		mapdata[set_name] = value
 		if sType == "Meteor" then
@@ -459,10 +458,10 @@ function ChoGGi.MenuFuncs.ChangeRules()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		local check1 = choice[1].check1
 		local check2 = choice[1].check2

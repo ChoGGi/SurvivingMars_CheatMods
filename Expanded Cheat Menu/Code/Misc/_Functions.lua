@@ -898,12 +898,11 @@ do -- ChangeObjectColour
 	If you want to change the colour of an object you can't with 1-4 (like drones)."--]],
 		}
 
-		--callback
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 
 			if #choice == 13 then
 				--needed to set attachment colours
@@ -1038,6 +1037,9 @@ do -- FindNearestResource
 		end
 
 		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
 			local value = choice[1].value
 			if type(value) == "string" then
 
@@ -1953,5 +1955,47 @@ function ChoGGi.CodeFuncs.SetTaskReqAmount(obj,value,task,setting)
 		task:AddAmount(obj[setting] * -1)
 	else
 		task:AddAmount(amount * -1)
+	end
+end
+
+function ChoGGi.CodeFuncs.RetEditorType(list,key,value)
+	local idx = table.find(list, key, value)
+	value = list[idx].editor
+	-- I use it to compare to type() so
+	if value == "bool" then
+		return "boolean"
+	elseif value == "text" then
+		return "string"
+	else
+		-- at least number is number, and i don't give a shit about the rest
+		return value
+	end
+end
+
+function ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,service_stats)
+	if not obj or not service_stats then
+		return
+	end
+	local type = type
+	if type(service_stats.health_change) ~= "nil" then
+		obj.health_change = service_stats.health_change
+	end
+	if type(service_stats.sanity_change) ~= "nil" then
+		obj.sanity_change = service_stats.sanity_change
+	end
+	if type(service_stats.service_comfort) ~= "nil" then
+		obj.service_comfort = service_stats.service_comfort
+	end
+	if type(service_stats.comfort_increase) ~= "nil" then
+		obj.comfort_increase = service_stats.comfort_increase
+	end
+	if type(service_stats.visit_duration) ~= "nil" then
+		obj.visit_duration = service_stats.visit_duration
+	end
+	if type(service_stats.usable_by_children) ~= "nil" then
+		obj.usable_by_children = service_stats.usable_by_children
+	end
+	if type(service_stats.children_only) ~= "nil" then
+		obj.children_only = service_stats.children_only
 	end
 end

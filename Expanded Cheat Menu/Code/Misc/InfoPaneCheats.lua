@@ -170,8 +170,9 @@ do
 		self.max_workers = 0
 		self.automation = 1
 		local bs = ChoGGi.UserSettings.BuildingSettings
-		bs = bs and bs[self.encyclopedia_id] and bs[self.encyclopedia_id].performance or 150
-		self.auto_performance = bs
+		bs = bs and bs[self.encyclopedia_id]
+		-- changed saving as performance to auto_performance, get rid of this in a few months
+		self.auto_performance = bs.auto_performance or bs.performance or 150
 		ChoGGi.CodeFuncs.ToggleWorking(self)
 	end
 	function Workplace:CheatWorkManual()

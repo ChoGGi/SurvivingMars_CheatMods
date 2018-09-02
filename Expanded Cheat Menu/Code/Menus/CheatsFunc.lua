@@ -223,10 +223,10 @@ function ChoGGi.MenuFuncs.DisastersTrigger()
 --~	 end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		for i = 1, #choice do
 			local value = choice[i].value
 			if value == "Stop" then
@@ -293,7 +293,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 	}
 
 	local function CallBackFunc(choice)
-		if not choice[1].value then
+		if #choice < 1 then
 			return
 		end
 
@@ -354,7 +354,7 @@ function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
 	}
 
 	local function CallBackFunc(choice)
-		if not choice[1].value then
+		if #choice < 1 then
 			return
 		end
 		local function ExploreDeep()
@@ -448,10 +448,10 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			CheatSpawnNColonists(value)
 			MsgPopup(
@@ -483,10 +483,10 @@ function ChoGGi.MenuFuncs.ShowMysteryList()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if choice[1].check1 then
 			-- instant
 			ChoGGi.MenuFuncs.StartMystery(value,true)
@@ -630,10 +630,10 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local ThreadsMessageToThreads = ThreadsMessageToThreads or empty_table
 		local seed = choice[1].seed
 		if choice[1].check2 then
@@ -873,10 +873,10 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			UICity:AddResearchPoints(value)
 		elseif value == "Reset" then
@@ -934,10 +934,10 @@ function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			const.OmegaTelescopeBreakthroughsCount = value
 			ChoGGi.ComFuncs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
@@ -976,10 +976,10 @@ function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			const.BreakThroughTechsPerGame = value
 			ChoGGi.ComFuncs.SetSavedSetting("BreakThroughTechsPerGame",value)
@@ -1024,10 +1024,10 @@ function ChoGGi.MenuFuncs.SetResearchQueueSize()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			const.ResearchQueueSize = value
@@ -1101,10 +1101,10 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local check1 = choice[1].check1
 		local check2 = choice[1].check2
 

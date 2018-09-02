@@ -8,6 +8,121 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SetServiceBuildingStats()
+	local ChoGGi = ChoGGi
+	local sel = ChoGGi.CodeFuncs.SelObject()
+	if not sel or not sel:IsKindOf("Service") then
+		MsgPopup(
+			S[302535920001116--[[Select a %s.--]]]:format(S[5439--[[Service Buildings--]]]),
+			4810--[[Service--]],
+			"UI/Icons/Sections/morale.tga"
+		)
+		return
+	end
+	local id = sel.encyclopedia_id
+	local name = RetName(sel)
+
+	local RetEditorType = ChoGGi.CodeFuncs.RetEditorType
+	local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
+	local ItemList = {
+		{text = S[728--[[Health change on visit--]]],value = sel.health_change,setting = "health_change",hint = hint_type:format(RetEditorType(sel.properties,"id","health_change"))},
+		{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change,setting = "sanity_change",hint = hint_type:format(RetEditorType(sel.properties,"id","sanity_change"))},
+		{text = S[730--[[Service Comfort--]]],value = sel.service_comfort,setting = "service_comfort",hint = hint_type:format(RetEditorType(sel.properties,"id","service_comfort"))},
+		{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase,setting = "comfort_increase",hint = hint_type:format(RetEditorType(sel.properties,"id","comfort_increase"))},
+		{text = S[734--[[Visit duration--]]],value = sel.visit_duration,setting = "visit_duration",hint = hint_type:format(RetEditorType(sel.properties,"id","visit_duration"))},
+		{text = S[735--[[Usable by children--]]],value = sel.usable_by_children,setting = "usable_by_children",hint = hint_type:format(RetEditorType(sel.properties,"id","usable_by_children"))},
+		{text = S[736--[[Children Only--]]],value = sel.children_only,setting = "children_only",hint = hint_type:format(RetEditorType(sel.properties,"id","children_only"))},
+	}
+
+	local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
+	if not BuildingSettings[id] then
+		BuildingSettings[id] = {}
+	end
+
+	local bs_setting = BuildingSettings[id]
+	if not bs_setting.service_stats then
+		bs_setting.service_stats = {}
+	end
+
+	local function CallBackFunc(choice)
+		if #choice < 1 then
+			return
+		end
+		local set = S[302535920000129--[[Set--]]]
+
+		if choice[1].check1 then
+			set = S[1000121--[[Default--]]]
+
+			bs_setting.service_stats = nil
+			-- get defaults
+			local temp = {
+				health_change = sel:GetDefaultPropertyValue("health_change"),
+				sanity_change = sel:GetDefaultPropertyValue("sanity_change"),
+				service_comfort = sel:GetDefaultPropertyValue("service_comfort"),
+				comfort_increase = sel:GetDefaultPropertyValue("comfort_increase"),
+				visit_duration = sel:GetDefaultPropertyValue("visit_duration"),
+				usable_by_children = sel:GetDefaultPropertyValue("usable_by_children"),
+				children_only = sel:GetDefaultPropertyValue("children_only"),
+			}
+			-- reset existing to defaults
+			local objs = UICity.labels[id] or ""
+			for i = 1, #objs do
+				local obj = objs[i]
+				obj.health_change = temp.health_change
+				obj.sanity_change = temp.sanity_change
+				obj.service_comfort = temp.service_comfort
+				obj.comfort_increase = temp.comfort_increase
+				obj.visit_duration = temp.visit_duration
+				obj.usable_by_children = temp.usable_by_children
+				obj.children_only = temp.children_only
+			end
+		else
+			-- build setting to save
+			for i = 1,#choice do
+				local setting = choice[i].setting
+				local value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+				-- check user added correct
+				if type(value) == RetEditorType(sel.properties,"id",setting) then
+					bs_setting.service_stats[setting] = value
+				end
+			end
+			-- update existing buildings
+			local objs = UICity.labels[id] or ""
+			for i = 1, #objs do
+				ChoGGi.CodeFuncs.UpdateServiceComfortBld(objs[i],service_stats)
+			end
+		end
+
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(set,302535920001114--[[Service Building Stats--]]),
+			4810--[[Service--]],
+			"UI/Icons/Sections/morale.tga"
+		)
+	end
+
+	local custom_settings = false
+	if next(bs_setting.service_stats) then
+		custom_settings = true
+	end
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = string.format("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920001114--[[Service Building Stats--]]]),
+		hint = S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings),
+		hint = string.format("%s\n\n%s",S[302535920001340--[[Invalid settings will be skipped.--]]],S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings)),
+		custom_type = 4,
+		check = {
+			{
+				title = 1000121--[[Default--]],
+				hint = 302535920001338--[[Reset to default.--]],
+			},
+		},
+		skip_sort = true,
+	}
+end
+
 function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 	local ChoGGi = ChoGGi
 	local DefaultSetting = S[1000121--[[Default--]]]
@@ -38,10 +153,10 @@ function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 
 		if value == DefaultSetting then
 			setting.export_when_this_amount = nil
@@ -97,10 +212,10 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(setting_name,title)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			value = value * r
 
@@ -170,10 +285,10 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			value = value * r
 
@@ -269,10 +384,10 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			local tab = UICity.labels[id] or ""
@@ -319,10 +434,10 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 	end
 
 	local function CallBackFunc(choices)
-		local value = choices[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choices[1].value
 		for i = 1, #choices do
 			UnlockBuilding(choices[i].value)
 		end
@@ -514,10 +629,10 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local check1 = choice[1].check1
 		local check2 = choice[1].check2
 
@@ -704,7 +819,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 		{text = 100000,value = 100000},
 	}
 
-	--check if there's an entry for building
+	-- check if there's an entry for building
 	if not ChoGGi.UserSettings.BuildingSettings[id] then
 		ChoGGi.UserSettings.BuildingSettings[id] = {}
 	end
@@ -716,23 +831,23 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local amount = value * r
 
-			--setting we use to actually update prod
+			-- setting we use to actually update prod
 			if value == DefaultSetting then
-				--remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
+				-- remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
 				ChoGGi.UserSettings.BuildingSettings[id].production = nil
 			else
-				--update/create saved setting
+				-- update/create saved setting
 				ChoGGi.UserSettings.BuildingSettings[id].production = amount
 			end
 
-			--all this just to update the displayed amount :)
+			-- all this just to update the displayed amount :)
 			local function SetProd(Label)
 				local tab = UICity.labels[Label] or ""
 				for i = 1, #tab do
@@ -742,12 +857,12 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 				end
 			end
 			if ProdType == "electricity" then
-				--electricity
+				-- electricity
 				SetProd("Power")
 			elseif ProdType == "water" or ProdType == "air" then
-				--water/air
+				-- water/air
 				SetProd("Life-Support")
-			else --other prod
+			else -- other prod
 
 				local function SetProdOther(Label)
 					local tab = UICity.labels[Label] or ""
@@ -758,11 +873,11 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 						end
 					end
 				end
-				--extractors/factories
+				-- extractors/factories
 				SetProdOther("Production")
-				--moholemine/theexvacator
+				-- moholemine/theexvacator
 				SetProdOther("Wonders")
-				--farms
+				-- farms
 				if id:find("Farm") then
 					SetProdOther("BaseFarm")
 					SetProdOther("FungalFarm")
@@ -800,10 +915,9 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		return
 	end
 	local id = sel.encyclopedia_id
-	local name = Trans(sel.display_name)
 
 	local ItemList = {
-		{text = S[302535920000142--[[Disable--]]],value = "disable"},
+		{text = S[302535920000142--[[Disable--]]],value = "Disable"},
 		{text = 100,value = 100},
 		{text = 150,value = 150},
 		{text = 250,value = 250},
@@ -818,37 +932,47 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
-		local function SetPerf(a,b)
+		local value = choice[1].value
+
+		if value == "Disable" then
+			value = nil
 			if choice[1].check then
-				sel.max_workers = a
-				sel.automation = b
+				sel.max_workers = sel.base_max_workers
+				sel.automation = sel.base_automation
+				sel.auto_performance = sel.base_auto_performance
+				ChoGGi.CodeFuncs.ToggleWorking(sel)
+			else
+				local blds = UICity.labels[sel.class] or ""
+				for i = 1, #blds do
+					local bld = blds[i]
+					bld.max_workers = bld.base_max_workers
+					bld.automation = bld.base_automation
+					bld.auto_performance = bld.base_auto_performance
+					ChoGGi.CodeFuncs.ToggleWorking(bld)
+				end
+			end
+		elseif type(value) == "number" then
+			if choice[1].check then
+				sel.max_workers = 0
+				sel.automation = 1
 				sel.auto_performance = value
 				ChoGGi.CodeFuncs.ToggleWorking(sel)
 			else
-				local tab = UICity.labels.BuildingNoDomes or ""
-				for i = 1, #tab do
-					if tab[i].base_max_workers then
-						tab[i].max_workers = a
-						tab[i].automation = b
-						tab[i].auto_performance = value
-						ChoGGi.CodeFuncs.ToggleWorking(tab[i])
-				 end
+				local blds = UICity.labels[sel.class] or ""
+				for i = 1, #blds do
+					local bld = blds[i]
+					bld.max_workers = 0
+					bld.automation = 1
+					bld.auto_performance = value
+					ChoGGi.CodeFuncs.ToggleWorking(bld)
 				end
 			end
-
-			ChoGGi.UserSettings.BuildingSettings[id].performance = value
 		end
 
-		if value == "disable" then
-			SetPerf()
-		elseif type(value) == "number" then
-			SetPerf(0,1)
-		end
-
+		ChoGGi.UserSettings.BuildingSettings[id].auto_performance = value
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000143--[["%s
@@ -859,7 +983,7 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
 		)
 	end
 
-	--check if there's an entry for building
+	-- check if there's an entry for building
 	if not ChoGGi.UserSettings.BuildingSettings[id] then
 		ChoGGi.UserSettings.BuildingSettings[id] = {}
 	end
@@ -870,6 +994,7 @@ I presume the PM's in favour of the scheme because it'll reduce unemployment."--
 		hint = tostring(setting.performance)
 	end
 
+	local name = RetName(sel)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
@@ -879,7 +1004,7 @@ Current: %s"--]]]:format(hint),
 		check = {
 			{
 				title = 302535920000769--[[Selected--]],
-				hint = string.format("%s %s",S[302535920000147--[[Only apply to selected object instead of all--]]],name),
+				hint = S[302535920000147--[[Only apply to selected object instead of all %s.--]]]:format(name),
 			},
 		},
 		skip_sort = true,
@@ -1278,10 +1403,10 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			if value == DefaultSetting then

@@ -22,10 +22,11 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+
+		local value = choice[1].value
 		local UICity = UICity
 		if type(value) == "number" then
 			for _ = 1, value do
@@ -65,10 +66,10 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger",value)
@@ -112,10 +113,10 @@ function ChoGGi.MenuFuncs.AddPrefabs()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		local text = choice[1].text
 
 		if type(value) == "number" then
@@ -159,10 +160,10 @@ Fix with: %s--]]]:format(DefaultSetting)
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			if value == 500 then
 				-- reset money back to 0

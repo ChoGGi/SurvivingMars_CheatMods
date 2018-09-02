@@ -36,10 +36,10 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			if value == DefaultSetting then
@@ -85,10 +85,10 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxRadius",value)
@@ -137,10 +137,10 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxRadius",value)
@@ -184,18 +184,16 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 		{text = 500,value = 500},
 	}
 
-	--other hint type
 	local hint = DefaultSetting
 	if ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount then
 		hint = ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount
 	end
 
-	--callback
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
 
@@ -237,18 +235,16 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		table.insert(ItemList,2,{text = string.format("%s: %s",S[302535920000890--[[Upgraded--]]],UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
 	end
 
-	-- other hint type
 	local hint = UpgradedSetting
 	if ChoGGi.UserSettings.SpeedDrone then
 		hint = ChoGGi.UserSettings.SpeedDrone
 	end
 
-	--callback
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local tab = UICity.labels.Drone or ""
 			for i = 1, #tab do
@@ -295,18 +291,16 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		table.insert(ItemList,2,{text = string.format("%s: %s",S[302535920000890--[[Upgraded--]]],UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
 	end
 
-	--other hint type
 	local hint = UpgradedSetting
 	if ChoGGi.UserSettings.SpeedRC then
 		hint = ChoGGi.UserSettings.SpeedRC
 	end
 
-	--callback
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
 			local tab = UICity.labels.Rover or ""
@@ -353,10 +347,10 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 
 			local change = S[302535920000746--[[added--]]]
@@ -425,10 +419,10 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local tab = UICity.labels.DroneFactory or ""
 			for i = 1, #tab do
@@ -588,10 +582,10 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			--somewhere above 1000 fucks the save
 			if value > 1000 then
@@ -641,10 +635,10 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxDrones",value)
 			ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxDrones",value)
@@ -689,10 +683,10 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("RCRoverMaxDrones",value)
 			ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxDrones",value)
@@ -736,10 +730,10 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			--somewhere above 2000 fucks the save
@@ -794,10 +788,10 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			-- not tested but I assume too much = dead save as well (like rc and transport)
@@ -855,10 +849,10 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			-- loop through and set all shuttles
@@ -912,10 +906,10 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			--loop through and set all shuttles
 			local tab = UICity.labels.ShuttleHub or ""
@@ -973,10 +967,10 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			local tab = UICity.labels.Rover or ""
@@ -1029,10 +1023,10 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 		hint = ChoGGi.UserSettings.GravityDrone / r
 	end
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			--loop through and set all
@@ -1081,10 +1075,10 @@ do --ChangeResupplySettings
 		}
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 
 			if not ChoGGi.UserSettings.CargoSettings[name] then
 				ChoGGi.UserSettings.CargoSettings[name] = {}
@@ -1135,10 +1129,10 @@ do --ChangeResupplySettings
 		end
 
 		local function CallBackFunc(choice)
-			local value = choice[1].value
-			if not value then
+			if #choice < 1 then
 				return
 			end
+			local value = choice[1].value
 			ShowResupplyList(value,choice[1].meta)
 		end
 
@@ -1185,10 +1179,10 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
 			ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
@@ -1238,10 +1232,10 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
 			ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars",value)
@@ -1283,10 +1277,10 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket",value)
 			ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
@@ -1330,10 +1324,10 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			if value == DefaultSetting then
 				ChoGGi.UserSettings.RocketMaxExportAmount = nil
@@ -1422,10 +1416,10 @@ function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
-		if not value then
+		if #choice < 1 then
 			return
 		end
+		local value = choice[1].value
 		if type(value) == "number" then
 			if value == DefaultSetting then
 				ChoGGi.UserSettings.LaunchFuelPerRocket = nil
