@@ -15,6 +15,25 @@ local guic = guic
 --~   RebuildFXRules()
 --~ end
 
+function ChoGGi.MenuFuncs.WhiterRocks(obj)
+	-- less brown rocks
+	local function WhiteThoseRocks(cls)
+		MapForEach("map",cls,function(o)
+			if o.class:find("Dark") then
+				o:SetColorModifier(white)
+			-- skip delete StoneSmall since it takes too damned long
+			elseif not cls ~= "StoneSmall" then
+				-- these ones don't look good like this so buhbye
+				o:delete()
+			end
+		end)
+	end
+	WhiteThoseRocks("Deposition")
+	WhiteThoseRocks("WasteRockObstructorSmall")
+	WhiteThoseRocks("WasteRockObstructor")
+	WhiteThoseRocks("StoneSmall")
+end
+
 do -- ChangeSurfaceSignsToMaterials
 	local function ChangeEntity(cls,entity,random)
 		MapForEach("map",cls,function(o)
@@ -827,13 +846,15 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 	local objs = TerrainTextures
 
 	local image = "<image %s 100>"
-	local imageL = "<image %s>"
+	local imageL = "<image %s>\n\n"
+	local GetTerrainImage = GetTerrainImage
 	for i = 1, #objs do
+		local filename = GetTerrainImage(objs[i].texture)
 		ItemList[#ItemList+1] = {
 			text = objs[i].name,
 			value = i,
-			icon = image:format(objs[i].texture),
-			hint = imageL:format(objs[i].texture),
+			icon = image:format(filename),
+			hint = imageL:format(filename),
 		}
 	end
 
@@ -843,7 +864,50 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 			return
 		end
 		if type(value) == "number" then
-			terrain.SetTerrainType{type = value}
+			terrain.SetTerrainType{type = 1}
+
+			-- add back dome grass
+			local domes = UICity.labels.Domes or ""
+			for i = 1, #domes do
+				domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
+			end
+
+			-- re-paint concrete
+			local new_texture = 30 -- I perfer 24, but you're the boss
+			local SetTypeCircle = terrain.SetTypeCircle
+			local GetHeight = terrain.GetHeight
+			local TerrainDeposit_Decode = TerrainDeposit_Decode
+			local point = point
+			local grid_spacing = const.GridSpacing/2
+			local TerrainDepositsInfo = TerrainDepositsInfo
+			local guim = guim
+
+			local gpts = HexGridWorldValues(TerrainDepositGrid, true)
+			if #gpts == 0 then
+				return
+			end
+			local mx, my, data = gpts[1]:xyz()
+			local gtype, gvol = TerrainDeposit_Decode(data)
+			local gmin, gmax = gvol, gvol
+			for i = 2, #gpts do
+				mx, my, data = gpts[i]:xyz()
+				gtype, gvol = TerrainDeposit_Decode(data)
+				if gvol < gmin then gmin = gvol
+				elseif gvol > gmax then gmax = gvol
+				end
+			end
+			if gmax <= gmin then
+				return
+			end
+			for i = 1, #gpts do
+				mx, my, data = gpts[i]:xyz()
+				gtype, gvol = TerrainDeposit_Decode(data)
+				local info = TerrainDepositsInfo[gtype]
+				local dv = gvol - gmin
+				if dv > 0 and info then
+					SetTypeCircle(point(mx, my, GetHeight(mx, my) + guim), grid_spacing, new_texture)
+				end
+			end
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),
@@ -857,7 +921,6 @@ function ChoGGi.MenuFuncs.ChangeTerrainType()
 		items = ItemList,
 		title = 302535920000973--[[Change Terrain Texture--]],
 		hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
-		skip_sort = true,
 	}
 end
 

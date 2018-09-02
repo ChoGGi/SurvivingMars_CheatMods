@@ -74,6 +74,16 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Game",
+	ActionName = S[302535920001111--[[Whiter Rocks--]]],
+	ActionId = ".Whiter Rocks",
+	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
+	RolloverText = S[302535920001113--[[Helps the rocks blend in better when using the polar ground texture.--]]],
+	OnAction = ChoGGi.MenuFuncs.WhiterRocks,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = "Game",
 	ActionName = S[302535920000493--[[Change Map--]]],
 	ActionId = ".Change Map",
 	ActionIcon = "CommonAssets/UI/Menu/load_city.tga",

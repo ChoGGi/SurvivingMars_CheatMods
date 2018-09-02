@@ -973,28 +973,11 @@ function OnMsg.ClassesBuilt()
 		end
 
 		local infopanel_list = {
-			ipAlienDigger = true,
-			ipAnomaly = true,
-			ipAttackRover = true,
 			ipBuilding = true,
 			ipColonist = true,
-			ipConstruction = true,
+--~ 			ipConstruction = true,
 			ipDrone = true,
-			ipFirefly = true,
-			ipGridConstruction = true,
-			ipLeak = true,
-			ipMirrorSphere = true,
-			ipMirrorSphereBuilding = true,
-			ipPassage = true,
-			ipPillaredPipe = true,
-			ipResourcePile = true,
 			ipRover = true,
-			ipShuttle = true,
-			ipSinkhole = true,
-			ipSubsurfaceDeposit = true,
-			ipSurfaceDeposit = true,
-			ipSwitch = true,
-			ipTerrainDeposit = true,
 		}
 
 		-- the actual function

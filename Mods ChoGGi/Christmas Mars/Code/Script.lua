@@ -43,7 +43,7 @@ function OnMsg.DepositsSpawned()
 
 	-- less brown rocks
 	local function WhiteThoseRocks(cls)
-		MapForEach("map", cls,nil,nil,nil, function(o)
+		MapForEach("map",cls,function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
 			-- skip delete StoneSmall since it takes too damned long

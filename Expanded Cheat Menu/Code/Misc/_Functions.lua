@@ -1139,7 +1139,8 @@ do -- DeleteObject
 
 		-- deleting domes will freeze game if they have anything in them.
 --~ 		if obj:IsKindOf("Dome") and obj.air then
-		if obj:IsKindOf("Dome") and #obj.labels.Buildings > 0 then
+		local dome = obj:IsKindOf("Dome")
+		if dome and #obj.labels.Buildings > 0 then
 			return
 		end
 
@@ -1168,7 +1169,10 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
-		DeleteObject_ExecFunc(obj,"DestroyAttaches")
+		-- takes too long
+		if not dome then
+			DeleteObject_ExecFunc(obj,"DestroyAttaches")
+		end
 
 		-- I did ask nicely
 		if IsValid(obj) then

@@ -15,6 +15,7 @@
 - > Instant Export On Toggle: Toggle Forbid Exports to have it instantly export current stock.
 - > Export When This Amount: When you have this many rares in storage launch right away.
 - > Import/Export Amount Per Trip: How much cargo space/ How many rares per.
+- Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
@@ -41,6 +42,7 @@
 - Buildings>Sanatoriums & Schools: Show All Traits wasn't toggling School traits (also changed it to a saved option).
 - I broke a few building cheats when updating to DA.
 - Set Sponsor/Commander broke in DA (thanks Dawnmist).
+- Change Terrain Type now restores concrete/dome textures.
 
 ## v8.5 (26 Aug 2018)
 ### Added:
