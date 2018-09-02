@@ -187,10 +187,6 @@ do -- ModUpload
 						err = "no steam"
 					end
 				end
-				-- show id in console (figure out a decent way to add this to metadat.lua)
-				if item_id then
-					print(mod.title,": ",S[1000107--[[Mod--]]]," ",S[1000021--[[Steam ID--]]],": ",item_id)
-				end
 				local msg, title
 				if err and not blank_mod then
 					msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
@@ -206,6 +202,11 @@ do -- ModUpload
 				print(S[302535920001265--[[ModMessageLog--]]],":")
 				for i = 1, #ModMessageLog do
 					print(ModMessageLog[i])
+				end
+
+				-- show id in console (figure out a decent way to add this to metadata.lua?)
+				if item_id then
+					print(mod.title,":",S[1000107--[[Mod--]]],S[1000021--[[Steam ID--]]],":",item_id)
 				end
 
 				-- let user know if we're good or not
