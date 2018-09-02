@@ -1,30 +1,5 @@
 -- See LICENSE for terms
 
-if ChoGGi.testing then
-
-	local org_ShowNotifications = ShowNotifications
-
-	function ShowNotifications() -- called on load game
-		if type(g_ShownOnScreenNotifications) ~= "table" then
-			g_ShownOnScreenNotifications = {}
-		end
-		if type(g_ActiveOnScreenNotifications) ~= "table" then
-			g_ActiveOnScreenNotifications = {}
-		end
-
-		local notifications = g_ActiveOnScreenNotifications
-		g_ActiveOnScreenNotifications = {}
-		for _, notification in ipairs(notifications) do
-			if notification.custom_preset then
-				LoadCustomOnScreenNotification(notification)
-			else
-				AddOnScreenNotification(unpack_params(notification))
-			end
-		end
-	end
-end
-
-
 --~ local Trans = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
@@ -69,7 +44,16 @@ do --funcs without a class
 	SaveOrigFunc("IsDlcAvailable")
 	SaveOrigFunc("UIGetBuildingPrerequisites")
 	SaveOrigFunc("GetMaxCargoShuttleCapacity")
+	SaveOrigFunc("LoadCustomOnScreenNotification")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+	-- fix for sending nil id to it
+	function LoadCustomOnScreenNotification(notification)
+		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
+		if unpack_params(notification) then
+			return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification)
+		end
+	end
 
 	function GetMaxCargoShuttleCapacity()
 		local ChoGGi = ChoGGi

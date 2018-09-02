@@ -16,6 +16,7 @@
 - > Export When This Amount: When you have this many rares in storage launch right away.
 - > Import/Export Amount Per Trip: How much cargo space/ How many rares per.
 - Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
+- Added fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors).
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
