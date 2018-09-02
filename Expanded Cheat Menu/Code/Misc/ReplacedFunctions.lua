@@ -1,5 +1,30 @@
 -- See LICENSE for terms
 
+if ChoGGi.testing then
+
+	local org_ShowNotifications = ShowNotifications
+
+	function ShowNotifications() -- called on load game
+		if type(g_ShownOnScreenNotifications) ~= "table" then
+			g_ShownOnScreenNotifications = {}
+		end
+		if type(g_ActiveOnScreenNotifications) ~= "table" then
+			g_ActiveOnScreenNotifications = {}
+		end
+
+		local notifications = g_ActiveOnScreenNotifications
+		g_ActiveOnScreenNotifications = {}
+		for _, notification in ipairs(notifications) do
+			if notification.custom_preset then
+				LoadCustomOnScreenNotification(notification)
+			else
+				AddOnScreenNotification(unpack_params(notification))
+			end
+		end
+	end
+end
+
+
 --~ local Trans = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
@@ -863,10 +888,19 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 
+		local infopanel_list = {
+			ipBuilding = true,
+			ipColonist = true,
+--~ 			ipConstruction = true,
+			ipDrone = true,
+			ipRover = true,
+		}
+
 		local function InfopanelDlgOpen(self)
 			local UserSettings = ChoGGi.UserSettings
 
-			if UserSettings.ScrollSelection then
+			-- skip stuff we don't care about (res overview for one)
+			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
 				self.idActionsFrame.parent:SetZOrder(2)
 				ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
 			end
@@ -972,20 +1006,8 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 
-		local infopanel_list = {
-			ipBuilding = true,
-			ipColonist = true,
---~ 			ipConstruction = true,
-			ipDrone = true,
-			ipRover = true,
-		}
-
 		-- the actual function
 		function InfopanelDlg:Open(...)
-			-- skip stuff we don't care about (res overview for one)
-			if not infopanel_list[self.XTemplate] then
-				return ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)
-			end
 			-- fire the orig func so we can edit the dialog (and keep the return value to pass on later)
 			local ret = {ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)}
 

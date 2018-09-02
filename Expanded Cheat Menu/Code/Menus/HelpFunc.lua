@@ -287,6 +287,10 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 					ChoGGi.SettingFuncs.ReadSettings()
 					-- now I just need to have some stuff update when this happens
 					Msg("ChoGGi_SettingsUpdated")
+					MsgPopup(
+						S[4273--[[Saved on %s--]]]:format(string.format("%s:%s:%s",FormatElapsedTime(os.time(), "dhm"))),
+						302535920001308--[[Settings--]]
+					)
 				end
 			end
 		end,
