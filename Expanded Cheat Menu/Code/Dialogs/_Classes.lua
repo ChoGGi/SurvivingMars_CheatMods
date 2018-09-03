@@ -91,6 +91,9 @@ DefineClass.ChoGGi_ConsoleButton = {
 	Padding = box(5, 2, 5, 2),
 	TextFont = "Editor16Bold",
 	RolloverAnchor = "right",
+	BorderWidth = 1,
+	BorderColor = black,
+	RolloverBorderColor = black,
 }
 
 DefineClass.ChoGGi_ButtonMenu = {

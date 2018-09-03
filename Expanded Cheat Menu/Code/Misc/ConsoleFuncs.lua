@@ -196,8 +196,6 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	dlgConsole.idContainer = g_Classes.XWindow:new({
 		Id = "idContainer",
 		Margins = box(10, 0, 0, 0),
-		BorderWidth = 1,
-		Background = -13158858, --dark_gray
 		HAlign = "left",
 		Dock = "bottom",
 		LayoutMethod = "HList",
