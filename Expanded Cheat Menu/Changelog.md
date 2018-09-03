@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v8.6 (Unreleased)
+## v8.7 (Unreleased)
+
+## v8.6 (02 Sep 2018)
 ### Added:
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 - Help>List All Menu Items: Show all the cheat menu items in a list dialog.
