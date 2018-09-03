@@ -188,7 +188,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		OnPress = function()
 			dlgConsole:Show()
 		end,
-		Margins = box(0, 0, 0, -53),
+		Margins = box(0, 0, 0, -25),
 		Dock = "bottom",
 	}, dlgConsole)
 
