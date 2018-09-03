@@ -1,9 +1,57 @@
---  See LICENSE for terms
+-- See LICENSE for terms
 
-local TConcat = ChoGGi_Miner.ComFuncs.TableConcat
-local Concat = ChoGGi_Miner.ComFuncs.Concat
+local LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
 
-local table,select,type,tostring = table,select,type,tostring
+All of my code is licensed under the MIT License as follows:
+
+MIT License
+
+Copyright (c) [2018] [ChoGGi]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.]]
+
+-- if we use global func more then once: make them local for that small bit o' speed
+local select,tostring,type,pcall,table = select,tostring,type,pcall,table
+
+local TableConcat
+-- just in case they remove oldTableConcat
+pcall(function()
+  TableConcat = oldTableConcat
+end)
+-- thanks for replacing concat... what's wrong with using table.concat2?
+TableConcat = TableConcat or table.concat
+
+-- hello
+ChoGGi_Miner = {
+  _LICENSE = LICENSE,
+  email = "SM_Mods@choggi.org",
+  id = "ChoGGi_PortableMiner",
+	ModPath = CurrentModPath,
+  -- orig funcs that we replace
+  OrigFuncs = {},
+  -- CommonFunctions.lua
+  ComFuncs = {
+    TableConcat = TableConcat,
+  },
+}
+local ChoGGi_Miner = ChoGGi_Miner
+
 
 local DoneObject = DoneObject
 local GetEntityCombinedShape = GetEntityCombinedShape
@@ -17,80 +65,80 @@ local PlaceObj = PlaceObj
 local PlaceObject = PlaceObject
 local Sleep = Sleep
 local TerrainDeposit_Extract = TerrainDeposit_Extract
-local XTemplates = XTemplates
 
-do -- this do keeps these locals local to the do -> end scope
-  local BuildingDepositExploiterComponent = BuildingDepositExploiterComponent
-  local DefineClass = DefineClass
-  local const = const
-  DefineClass.PortableMiner = {
-    __parents = {
-      "AttackRover",
-      "PinnableObject",
-      "ComponentAttach",
-      "Demolishable",
-      "ResourceStockpileBase",
-      "Constructable",
-      -- mining
-      "ResourceProducer",
-      "BuildingDepositExploiterComponent",
-      "TerrainDepositExtractor",
-    },
+DefineClass.PortableMiner = {
+	__parents = {
+		"BaseRover",
+		"ComponentAttach",
+		-- mining
+		"ResourceProducer",
+		"TerrainDepositExtractor",
+		-- battery
+		"BuildingDepositExploiterComponent",
+	},
 
-    -- how much to mine
-    mine_amount = 1 * const.ResourceScale,
+	-- how much to mine
+	mine_amount = 1 * const.ResourceScale,
 --~     mine_amount = 100 * const.ResourceScale,
-    -- how much to store in res pile
-    max_res_amount = 100 * const.ResourceScale, -- visible is limited to 100
+	-- how much to store in res pile
+	max_res_amount = 100 * const.ResourceScale, -- visible is limited to 100
 --~     max_res_amount = 10000 * const.ResourceScale,
-    -- mine once an hour
-    building_update_time = const.HourDuration,
-    -- color of bands
-    custom_color = -13031651,
+	-- mine once an hour
+	building_update_time = const.HourDuration,
 
-    -- custom_entity = "Lama",
-    -- custom_entity = "Kosmonavt",
-    -- custom_scale = 500, -- 100 is default size
-    -- custom_anim = "playBasketball", -- object:GetStates()
-    -- custom_anim = "playTaiChi", -- takes quite awhile, may want to increase mined amount or set limit on time
-    -- custom_anim_idle = "layDying",
+	-- custom_entity = "Lama",
+	-- custom_entity = "Kosmonavt",
+	-- custom_scale = 500, -- 100 is default size
+	-- custom_anim = "playBasketball", -- object:GetStates()
+	-- custom_anim = "playTaiChi", -- takes quite awhile, may want to increase mined amount or set limit on time
+	-- custom_anim_idle = "layDying",
 
-    -- set to false to use length of animation (these are in game times, i think at normal speed 1 is 1 millisecond)
-    -- anim_time = false,
-    -- idle_time = false,
-    anim_time = 1000,
-    idle_time = 1500,
+	-- set to false to use length of animation (these are in game times, i think at normal speed 1 is 1 millisecond)
+	-- anim_time = false,
+	-- idle_time = false,
+	anim_time = 1000,
+	idle_time = 1500,
 
-    -- how close to the resource icon do we need to be
-    mine_dist = 1500,
-    -- area around it to mine for concrete
-    mine_area = "DomeMega",
+	-- how close to the resource icon do we need to be
+	mine_dist = 1500,
+	-- area around it to mine for concrete
+	mine_area = "DomeMega",
 
-    -- if you want the battery to drain
-    battery_hourly_drain_rate = 0,
-    -- stuff for mining
-    UpdateUI = BuildingDepositExploiterComponent.UpdateUI,
-    last_serviced_time = 0,
-    resource = "Metals",
-    nearby_deposits = false,
-    accumulate_dust = true,
-    notworking_sign = false,
-    pooper_shooter = "Droneentrance",
+	-- if you want the battery to drain
+--~ 	battery_hourly_drain_rate = 0,
+	-- stuff for mining
 
-    produced_total = 0,
-    produced_last_deposit = 0,
-  }
+	last_serviced_time = 0,
+	resource = "Metals",
+	nearby_deposits = false,
+	accumulate_dust = true,
+	notworking_sign = false,
+	pooper_shooter = "Droneentrance",
 
-  DefineClass.PortableMinerBuilding = {
-    __parents = {"BaseRoverBuilding"},
-    rover_class = "PortableMiner",
-  }
+	produced_total = 0,
+	produced_last_deposit = 0,
 
-end
+	entity = "CombatRover",
+
+  name = [[RC Miner]],
+	description = [[Will slowly mine Metal or Concrete into a resource pile.]],
+	display_icon = string.format("%srover_combat.tga",ChoGGi_Miner.ModPath),
+}
+
+DefineClass.PortableMinerBuilding = {
+	__parents = {"BaseRoverBuilding"},
+	rover_class = "PortableMiner",
+}
 
 function PortableMiner:GameInit()
-  -- give it a groundy looking colour
-  self:SetColor3(self.custom_color)
+	-- colour #, Color, Roughness, Metallic
+	-- middle area
+	self:SetColorizationMaterial(1, -10592674, -128, 120)
+	-- body
+	self:SetColorizationMaterial(2, -9013642, 120, 20)
+	-- color of bands
+	self:SetColorizationMaterial(3, -13031651, -128, 48)
+
   if self.custom_entity then
     self:ChangeEntity(self.custom_entity)
   end
@@ -108,43 +156,12 @@ function PortableMiner:GameInit()
     self.default_anim_idle = 0
   end
 
-  -- dunno it was in attackrover (maybe for some fx stuff with rockets or the mystery it's from?)
-  self.name = self.display_name
-
-  self:SetCommand("Roam")
 end
 
---~   local OrigFunc_PortableMiner_Repair
-function PortableMiner:Repair()
-  AttackRover.Repair(self)
---~     OrigFunc_PortableMiner_Repair(self)
-  -- orig func calls :DisconnectFromCommandCenters()
-  self:ConnectToCommandCenters()
-end
-
--- needed someplace to override it, and roam only happens after it's done what it needs to do and we need a place to add a Sleep
-function PortableMiner:Roam()
-  local city = self.city or UICity
-  city:RemoveFromLabel("HostileAttackRovers", self)
-  city:AddToLabel("Rover", self)
-  self.reclaimed = true
-  -- self.affected_by_no_battery_tech = true
-  -- needs a very slight delay or something fucks up when you spawn it on a deposit...sigh
-  Sleep(1)
-  self:SetCommand("Idle")
-end
-
--- added by SkyRich, see if this fixes it.
---~ function PortableMiner:Idle()
---~ 	self:SetState("idle")
---~ 	Sleep(1000)
---~ end
-
-function PortableMiner:IsReloading()
+function PortableMiner:Idle()
   if self.ui_working and self:DepositNearby() then
     --  get to work
     self:SetCommand("Load")
-    return true
   elseif not self.ui_working and
     -- check if stockpile is existing and full
       (self:GetDist2D(self.stockpile) >= 5000 or
@@ -152,26 +169,35 @@ function PortableMiner:IsReloading()
     self.ui_working = true
     self:ShowNotWorkingSign(false)
   end
+
+	self:Gossip("Idle")
+	self:SetState("idle")
+	Halt()
 end
 
 function PortableMiner:DepositNearby()
-  local res = NearestObject(self:GetVisualPos(),GetObjects({class="Deposit"}),self.mine_dist)
-  if not res or res and (res:IsKindOf("SubsurfaceAnomaly") or res:IsKindOf("SubsurfaceDepositWater")) then
-    self.nearby_deposits = false
-    return false
-  end
+  local res = NearestObject(self:GetLogicalPos(),UICity.labels.SubsurfaceDeposit,self.mine_dist)
+	if not res then
+		res = NearestObject(self:GetLogicalPos(),UICity.labels.TerrainDeposit,self.mine_dist)
+	end
+--~ 	if not res then
+--~ 		res = NearestObject(self:GetLogicalPos(),UICity.labels.SurfaceDeposit,self.mine_dist)
+--~ 	end
 
-  if res:IsKindOf("SubsurfaceDeposit") or res:IsKindOf("TerrainDepositConcrete") then
-    self.resource = res.resource
-    self.nearby_deposits = res
-    return true
-  elseif res and res[1] then
-    if not res[1]:IsKindOf("SubsurfaceAnomaly") and not res[1]:IsKindOf("SubsurfaceDepositWater") then
-      self.resource = res[1].resource
-      self.nearby_deposits = res[1]
-      return true
-    end
-  end
+	if res then
+		-- if it's surface then we're good, if it's sub then check depth + tech researched
+--~ 		if res:IsKindOfClasses("SurfaceDepositMetals","TerrainDepositConcrete") or
+		if res:IsKindOf("TerrainDepositConcrete") or
+				(res:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
+				(res.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction"))) then
+			self.resource = res.resource
+			self.nearby_deposits = res
+			return true
+		end
+	end
+	-- nadda
+	self.nearby_deposits = false
+	return false
 end
 
 function PortableMiner:ShowNotWorkingSign(bool)
@@ -199,16 +225,13 @@ function PortableMiner:Load()
     if not self.stockpile or
         self:GetDist2D(self.stockpile) >= 5000 or
         self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.Miner_Handle ~= self.handle) then
-      local stockpile = NearestObject(self:GetPos(),GetObjects({class="ResourceStockpile"}),5000)
+      local stockpile = NearestObject(self:GetLogicalPos(),UICity.labels.ResourceStockpile,5000)
 
       if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
         -- plunk down a new res stockpile
         stockpile = PlaceObj("ResourceStockpile", {
-
           -- time to get all humping robot on christmas
           "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
-          -- "Pos", ScalePoint(pt, scalex, scaley, scalez)(self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)),1000,1000),
-          -- find a way to get angle so we can move it back a bit
           "Angle", self:GetAngle(),
           "resource", self.resource,
           "destroy_when_empty", true
@@ -217,6 +240,7 @@ function PortableMiner:Load()
       -- why doesn't this work in PlaceObj? needs happen after GameInit maybe?
       stockpile.max_z = 10
       stockpile.Miner_Handle = self.handle
+			--
       self.stockpile = stockpile
     end
     --  stops at 100 per stockpile
@@ -278,8 +302,29 @@ function PortableMiner:DigErUpMetals(amount)
     return
   end
 
-  amount = self.nearby_deposits:TakeAmount(amount)
-  Msg("ResourceExtracted", self.nearby_deposits.resource, amount)
+	-- stupid surface deposits
+--~ 	if self.nearby_deposits:IsKindOfClasses("SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers") then
+--~ 		local res = self.nearby_deposits
+--~ 		res = res.group and res.group[1] or res
+--~ 		-- get one with amounts
+--~ 		while true do
+--~ 			if res.transport_request:GetActualAmount() == 0 then
+--~ 				table.remove(self.nearby_deposits.group,1)
+--~ 				res = self.nearby_deposits
+--~ 				res = res.group and res.group[1] or res
+--~ 			else
+--~ 				break
+--~ 			end
+--~ 		end
+--~ 		-- remove what we need
+--~ 		if res.transport_request:GetActualAmount() >= amount then
+--~ 			res.transport_request:SetAmount(amount * -1)
+--~ 		end
+--~ 	else
+--~ 		amount = self.nearby_deposits:TakeAmount(amount)
+--~ 	end
+	amount = self.nearby_deposits:TakeAmount(amount)
+	Msg("ResourceExtracted", self.nearby_deposits.resource, amount)
 
   if self.nearby_deposits:IsDepleted() then
     -- omg it's isn't doing anythings @!@!#!?
@@ -356,7 +401,7 @@ end
 --~ 	}
 --~ 	AvailableDeposits(self, lines)
 
---~ 	return TConcat(lines, "<newline><left>")
+--~ 	return TableConcat(lines, "<newline><left>")
 --~ end
 
 --~ function PortableMiner:GetDepositResource()
@@ -364,7 +409,7 @@ end
 --~ end
 
 --~ function PortableMiner:GetResourceProducedIcon()
---~ 	return Concat("UI/Icons/Sections/",self.resource,"_2.tga")
+--~ 	return string.format("UI/Icons/Sections/%s_2.tga",self.resource)
 --~ end
 
 function OnMsg.ClassesPostprocess()
@@ -379,49 +424,16 @@ function OnMsg.ClassesPostprocess()
 
     "dome_forbidden",true,
     "display_name",[[RC Miner]],
-    "display_name_pl",[[RC Miner]],
+--~     "display_name_pl",[[RC Miner]],
     "description",[[Will slowly mine Metal or Concrete into a resource pile.]],
     "build_category","Infrastructure",
     "Group", "Infrastructure",
-    "display_icon", Concat(ChoGGi_Miner.ModPath,"/rover_combat.tga"),
+    "display_icon", string.format("%srover_combat.tga",ChoGGi_Miner.ModPath),
     "encyclopedia_exclude",true,
     "on_off_button",false,
-    "prio_button",false,
+--~     "prio_button",false,
     "entity","CombatRover",
     "palettes","AttackRoverBlue"
   })
 
 end -- ClassesPostprocess
-
---~ function OnMsg.ClassesBuilt()
-
---~   if not XTemplates.ipAttackRover.ChoGGi_PortableMiner then
---~     XTemplates.ipAttackRover.ChoGGi_PortableMiner = true
-
---~     XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplate", {
---~       ChoGGi_PortableMiner, true,
---~       group = "Infopanel Sections",
---~       id = "sectionMine",
---~       PlaceObj("XTemplateTemplate", {
---~         "__context_of_kind", "PortableMiner",
---~         "__template", "InfopanelSection",
---~         "RolloverText", T{604012311372, -- [[XTemplate sectionMine RolloverText]] "<UISectionMineRollover>"},
---~         "Title", T{80, -- [[XTemplate sectionMine Title]] "Production"},
---~         "Icon", "UI/Icons/Sections/facility.tga",
---~       }, {
---~         PlaceObj("XTemplateCode", {
---~           "run", function (self, parent, context)
---~             parent.parent:SetIcon(context:GetResourceProducedIcon())
---~           end,
---~         }),
---~         PlaceObj("XTemplateTemplate", {
---~           "__template", "InfopanelText",
---~           "Text", T{472, -- [[XTemplate sectionMine Text]] "Production per Sol<right><resource(PredictedDailyProduction, GetResourceProduced)>"},
---~         }),
---~       }),
---~     })
-
-
---~   end -- XTemplates
-
---~ end -- ClassesBuilt

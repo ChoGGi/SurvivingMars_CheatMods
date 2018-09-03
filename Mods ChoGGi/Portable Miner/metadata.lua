@@ -1,16 +1,13 @@
 return PlaceObj("ModDef", {
-  "title", "Portable Miner v0.5",
-  "version", 5,
-  "saved", 1534334400,
+  "title", "Portable Miner v0.6",
+  "version", 6,
+  "saved", 1535976000,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
   "steam_id", "1411113412",
-  "code", {
-    "Code/1 Script.lua",
-    "Code/2 Portable Miner.lua",
-  },
+  "code", {"Code/Script.lua"},
 	"lua_revision", LuaRevision,
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
 

@@ -994,11 +994,9 @@ do -- ChangeObjectColour
 			callback = CallBackFunc,
 			items = ItemList,
 			title = string.format("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
-			hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
+			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
-	The colour picker doesn't work for Metallic/Roughness.
-	You can copy and paste numbers if you want (click item again after picking)."--]],
-			multisel = true,
+You can copy and paste numbers if you want."--]],
 			parent = dialog,
 			custom_type = 2,
 			check = {
@@ -1188,10 +1186,10 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
-		-- takes too long
-		if not dome then
-			DeleteObject_ExecFunc(obj,"DestroyAttaches")
-		end
+--~ 		-- takes too long
+--~ 		if not dome then
+--~ 			DeleteObject_ExecFunc(obj,"DestroyAttaches")
+--~ 		end
 
 		-- I did ask nicely
 		if IsValid(obj) then
@@ -2019,9 +2017,14 @@ end
 
 do -- AddBlinkyToObj
 	local DeleteThread = DeleteThread
+	local IsValid = IsValid
+	local WaitMsg = WaitMsg
 	local blinky_obj
 	local blinky_thread
 	function ChoGGi.CodeFuncs.AddBlinkyToObj(obj,timeout)
+		if not IsValid(obj) then
+			return
+		end
 		-- if it was attached to something deleted, or fresh start
 		if not blinky_obj then
 			blinky_obj = RotatyThing:new()
@@ -2030,8 +2033,23 @@ do -- AddBlinkyToObj
 		DeleteThread(blinky_thread)
 		-- make it visible incase it isn't
 		blinky_obj:SetOpacity(100)
+		-- pick a spot to show it
+		local spot
+		local offset = 0
+		if obj:HasSpot("Top") then
+			spot = obj:GetSpotBeginIndex("Top")
+		else
+			spot = obj:GetSpotBeginIndex("Origin")
+			local bb = obj:GetEntityBBox()
+			offset = bb:sizey()
+			-- if it's larger then a dome, but isn't a BaseBuilding then we'll just ignore it (DomeGeoscapeWater)
+			if offset > 10000 and not obj:IsKindOf("BaseBuilding") or offset < 250 then
+				offset = 250
+			end
+		end
 		-- attach blinky so it's obvious
-		obj:Attach(blinky_obj, obj:GetSpotBeginIndex("Top") or obj:GetSpotBeginIndex("Origin"))
+		obj:Attach(blinky_obj,spot)
+		blinky_obj:SetAttachOffset(point(0,0,offset))
 		-- hide blinky after timeout or 10s
 		blinky_thread = CreateRealTimeThread(function()
 			WaitMsg("SelectedObjChange",timeout or 10000)

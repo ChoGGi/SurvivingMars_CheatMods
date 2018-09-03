@@ -32,8 +32,12 @@ DefineClass.ChoGGi_Text = {
 	SelectionBackground = light_gray,
 	SelectionColor = black,
 	TextFont = text,
---~	 WordWrap = true,
+
+	RolloverTemplate = "Rollover",
+	RolloverTitle = S[126095410863--[[Info--]]],
 }
+--~ function XText:OnHyperLinkRollover(hyperlink, hyperlink_box, pos)
+--~ end
 
 DefineClass.ChoGGi_MultiLineEdit = {
 	__parents = {"XMultiLineEdit"},

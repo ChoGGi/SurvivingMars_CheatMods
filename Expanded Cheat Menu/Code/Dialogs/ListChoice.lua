@@ -5,6 +5,7 @@
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
 local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
+local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
@@ -298,10 +299,15 @@ end
 
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local text = self.idEditValue:GetText()
-	local value = ChoGGi.ComFuncs.RetProperType(text)
+	local value = RetProperType(text)
 	if self.custom_type > 0 then
 		if #self.idList.selection > 0 then
-			self.idList[self.idList.selection[1]].item.value = value
+--~ 			self.idList[self.idList.selection[1]].item.value = value
+			self.idList[self.idList.selection[#self.idList.selection]].item.value = value
+			if self.idColourContainer then
+				-- update obj colours
+				self:UpdateColour()
+			end
 		end
 	else
 		-- last item is a blank item for custom value
@@ -390,6 +396,24 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	self.idList.selection = {}
 end
 
+function ChoGGi_ListChoiceDlg:UpdateColour()
+	if not self.obj then
+		-- grab the object from the last list item
+		self.obj = self.idList[#self.idList].item.obj
+	end
+	-- checks/backs up old colours
+	ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
+	-- update object colour
+	local items = self.idList
+	for i = 1, 4 do
+		local color = items[i].item.value
+		local metallic = items[i+4].item.value
+		local roughness = items[i+8].item.value
+		self.obj:SetColorizationMaterial(i,color,roughness,metallic)
+	end
+	self.obj:SetColorModifier(self.idList[#self.idList].item.value)
+end
+
 function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 	local sel_idx = self.idList.selection[1]
 	-- no list item selected, so just return
@@ -412,22 +436,7 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 
 	-- colour selector
 	if self.custom_type == 2 then
-		if not self.obj then
-			-- grab the object from the last list item
-			self.obj = self.idList[#self.idList].item.obj
-		end
-		-- checks/backsup old colours
-		ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
-		-- update object colour
-		local items = self.idList
-		for i = 1, 4 do
-			local color = items[i].item.value
-			local metallic = items[i+4].item.value
-			local roughness = items[i+8].item.value
-			self.obj:SetColorizationMaterial(i,color,roughness,metallic)
-		end
-		self.obj:SetColorModifier(self.idList[#self.idList].item.value)
-
+		self:UpdateColour()
 	elseif self.custom_type == 5 then
 		self:BuildAndApplyLightmodel()
 	end
@@ -440,6 +449,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 
 	-- update selection (select last selected if multisel)
 	self.sel = self.idList[self.idList.selection[#self.idList.selection]].item
+
 	if self.idEditValue then
 		-- update the custom value box
 		self.idEditValue:SetText(tostring(self.sel.value))
@@ -452,6 +462,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 	if self.custom_type > 0 then
 		-- 2 = showing the colour picker
 		if self.custom_type == 2 then
+			-- move the colour picker circle
 			self:UpdateColourPicker(self.sel.text)
 			-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
 			self.idColorPicker:UpdateComponent("ALPHA", 1000)
@@ -544,7 +555,7 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 		for i = 1, #items do
 			if i == 1 and self.idEditValue then
 				-- always return the custom value (and try to convert it to correct type)
-				items[i].editvalue = ChoGGi.ComFuncs.RetProperType(self.idEditValue:GetText())
+				items[i].editvalue = RetProperType(self.idEditValue:GetText())
 			end
 			c = c + 1
 			self.choices[c] = items[i]

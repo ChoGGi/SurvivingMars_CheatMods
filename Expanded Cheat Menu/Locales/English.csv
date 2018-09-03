@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000016,,
-302535920000021,,
 302535920001341,,
 302535920001342,,
 302535920001343,,
@@ -103,14 +101,14 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000012,Error borked building: %s,
 302535920000015,Can't colour %s.,
 302535920000017,Use the colour picker (dbl right-click for instant change).,
-302535920000018,Don't use the colour picker: Numbers range from -255 to 255.,
+302535920000018,"Don't use the colour picker: Numbers range from -128 to 120.
+If you want shiny metal: use 120 for Metallic and -128 for Roughness.",
 302535920000019,"Single colour for object (this colour will interact with the other colours).
 If you want to change the colour of an object you can't with 1-4 (like drones).",
 302535920000020,Colour is set on %s.,
-302535920000022,"If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
+302535920000022,"If number is 8421504 then you probably can't change that colour.
 
-The colour picker doesn't work for Metallic/Roughness.
-You can copy and paste numbers if you want (click item again after picking).",
+You can copy and paste numbers if you want.",
 302535920000023,All of type,
 302535920000024,Change all objects of the same type.,
 302535920000025,Default Colour,
@@ -208,6 +206,8 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
 302535920000865,Toggle Trans,
+302535920000016,Remove any green spheres/reset green coloured objects.,
+302535920000021,Mark object with green sphere and/or paint.,
 302535920001321,UI Click To Select,
 302535920001322,"Examine UI controls by clicking them.
 This dialog will freeze till you click something.",
@@ -245,7 +245,7 @@ Which you can then mess around with some more in the console.",
 302535920000054,Any objects attached to this object.,
 302535920000056,Trace Log,
 302535920000057,relative times,
-302535920000058,[ShowIt],
+302535920000058,[Show It],
 302535920000059,[Clear Markers],
 302535920000060,[Destroy It!],
 302535920000061,[Log],
@@ -282,7 +282,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 302535920000088,Double right-click to open list of objects.,
 302535920000089,Nothing left,
 302535920000091,Auto-refresh list every second (turn off to edit values).,
-302535920000092,Refresh list.,
+302535920000092,Updates list with any changed values.,
 302535920000093,Go to Obj,
 302535920000094,View/select object on map.,
 302535920000095,New Entry,

@@ -213,18 +213,14 @@ SaveOrigFunc("XShortcutsHost","SetVisible")
 
 -- allows you to build outside buildings inside and vice
 do -- CursorBuilding:GameInit
-	local function SetDefault(cc,name)
-		cc.template_obj[name] = cc.template_obj:GetDefaultPropertyValue(name)
-	end
 	function CursorBuilding:GameInit()
 		if ChoGGi.UserSettings.RemoveBuildingLimits then
 			self.template_obj.dome_required = false
 			self.template_obj.dome_forbidden = false
-		else
-			SetDefault(self,"dome_required")
-			SetDefault(self,"dome_forbidden")
+		elseif self.template_obj then
+			self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
+			self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
 		end
-
 		return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self)
 	end
 end -- do

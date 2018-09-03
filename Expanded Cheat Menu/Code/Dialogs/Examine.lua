@@ -26,6 +26,15 @@ local HLEnd = "</h></color>"
 local white = white
 local black = black
 
+-- used for updating text button rollover hints
+local idLinks_hypertext = {
+	[string.format("[%s]",S[1000220--[[Refresh--]]])] = S[302535920000092--[[Updates list with any changed values.--]]],
+	[S[302535920000059--[[[Clear Markers]--]]]] = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]],
+	[S[302535920000064--[[[Transp]--]]]] = string.format("%s %s",S[302535920000069--[[Examine--]]],S[302535920000629--[[UI Transparency--]]]),
+	[S[302535920000058--[[[Show It]--]]]] = S[302535920000021--[[Mark object with green sphere and/or paint.--]]],
+	[S[302535920000060--[[[Destroy It!]--]]]] = S[302535920000414--[[Are you sure you wish to destroy it?--]]],
+}
+
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 	-- what we're examining
@@ -90,6 +99,11 @@ function Examine:Init(parent, context)
 		Dock = "left",
 		VAlign = "top",
 		FontStyle = "Editor14",
+		OnHyperLinkRollover = function(links)
+			if links.hovered_hyperlink then
+				links.RolloverText = idLinks_hypertext[links.hovered_hyperlink.text]
+			end
+		end,
 		OnHyperLink = function(_, link, _, box, pos, button)
 			self.onclick_handles[tonumber(link)](box, pos, button)
 		end,
@@ -944,7 +958,7 @@ function Examine:menu(obj)
 --~	 local obj_metatable = getmetatable(obj)
 	local obj_type = type(obj)
 	local res = {
-		"	",
+--~ 		"	",
 		self:HyperLink(function()
 			Refresh_menu(self)
 		end),
@@ -952,17 +966,17 @@ function Examine:menu(obj)
 		S[1000220--[[Refresh--]]],
 		"]",
 		HLEnd,
---~		 " ",
-		self:HyperLink(ClearShowMe_menu),
-		S[302535920000059--[[[Clear Markers]--]]],
-		HLEnd,
---~		 " ",
+		" ",
 		self:HyperLink(function()
 			SetTransp_menu(self)
 		end),
 		S[302535920000064--[[[Transp]--]]],
 		HLEnd,
---~		 " ",
+		" ",
+		self:HyperLink(ClearShowMe_menu),
+		S[302535920000059--[[[Clear Markers]--]]],
+		HLEnd,
+		" ",
 	}
 
 	if obj_type == "table" then
@@ -973,12 +987,14 @@ function Examine:menu(obj)
 				Show_menu(obj)
 			end)
 			c = c + 1
-			res[c] = S[302535920000058--[[[ShowIt]--]]]
+			res[c] = S[302535920000058--[[[Show It]--]]]
 			c = c + 1
 			res[c] = HLEnd
 		end
 
 		if obj.class then
+			c = c + 1
+			res[c] = " "
 			c = c + 1
 			res[c] = self:HyperLink(function()
 				Destroy_menu(obj,self)
@@ -1076,6 +1092,10 @@ function Examine:SetObj(obj,skip_thread)
 				end)
 
 				if attach_amount > 0 then
+					table.sort(self.attaches_menu_popup, function(a, b)
+						return CmpLower(a.name, b.name)
+					end)
+
 					self.idAttaches:SetVisible(true)
 					self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
 Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Clear Markers]--]]])

@@ -8,8 +8,10 @@
 - Keys are now bindable in the options (if there's any menu items you want a shortcut for?).
 - Change Logo/Upload Mod shows image in hint.
 - Random Object Colour is more random.
-- Change Colour renamed to Color Modifier.
-- Color Modifier object list will now blink object when you select a list item.
+- Change Colour:
+- > Renamed to Color Modifier.
+- > Attachment list item will now show a blinky when you click something in the list.
+- > Object colour updates when you type in custom values (useful for Metallic/Roughness).
 
 ### Fixed:
 - Wrong images in Mystery Log.

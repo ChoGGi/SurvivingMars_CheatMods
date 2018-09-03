@@ -1,3 +1,7 @@
+v0.6
+Fixed not being able to launch rockets (hopefully, never been able to repro it).
+Battery drains.
+Miner now respects not being able to access deep/core resources.
 v0.5
 Da Vinci
 The not working signing will actually go away now.

@@ -266,10 +266,15 @@ do
 	local function CheatBattCapDef(self)
 		self.battery_max = const.BaseRoverMaxBattery
 	end
+	local function CheatBattEmpty(self)
+		self:ApplyBatteryChange(self.battery_max * -1)
+	end
 	Drone.CheatBattCapDbl = CheatBattCapDbl
 	Drone.CheatBattCapDef = CheatBattCapDef
+	Drone.CheatBattEmpty = CheatBattEmpty
 	BaseRover.CheatBattCapDbl = CheatBattCapDbl
 	BaseRover.CheatBattCapDef = CheatBattCapDef
+	BaseRover.CheatBattEmpty = CheatBattEmpty
 	--CheatMoveSpeedDbl
 	local function CheatMoveSpeedDbl(self)
 		--self:SetMoveSpeed(self:GetMoveSpeed() * 2)

@@ -62,7 +62,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Id = "idRefresh",
 		Text = S[1000220--[[Refresh--]]],
 		Dock = "left",
-		RolloverText = S[302535920000092--[[Refresh list.--]]],
+		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
 		RolloverAnchor = "top",
 		OnPress = function()
 			self:UpdateListContent()
