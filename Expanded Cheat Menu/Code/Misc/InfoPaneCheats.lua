@@ -171,8 +171,12 @@ do
 		self.automation = 1
 		local bs = ChoGGi.UserSettings.BuildingSettings
 		bs = bs and bs[self.encyclopedia_id]
-		-- changed saving as performance to auto_performance, get rid of this in a few months
-		self.auto_performance = bs.auto_performance or bs.performance or 150
+		if bs then
+			-- changed saving as performance to auto_performance, get rid of this in a few months
+			self.auto_performance = bs.auto_performance or bs.performance
+		else
+			self.auto_performance = 150
+		end
 		ChoGGi.CodeFuncs.ToggleWorking(self)
 	end
 	function Workplace:CheatWorkManual()

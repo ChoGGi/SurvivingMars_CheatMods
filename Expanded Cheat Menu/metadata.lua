@@ -111,12 +111,9 @@ When I say object that means either the selected object or the object under the 
 
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>ECM>Misc>Infopanel Cheats (on by default)
-Hover over menu items for a description (will say if enabled or disabled).
 
 Settings are saved at %%APPDATA%%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist isn't disabled.
-Help>Reset Settings will also do the same thing.
-
-To manually edit see: Help>ECM>Edit Settings.
+There's also Help>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
 
 
 
