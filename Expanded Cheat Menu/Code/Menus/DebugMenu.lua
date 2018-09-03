@@ -51,7 +51,9 @@ Actions[c] = {
 	ActionId = ".Attach Spots Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 	RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
-	OnAction = ChoGGi.MenuFuncs.AttachSpots_Toggle,
+	OnAction = function()
+		ChoGGi.CodeFuncs.AttachSpots_Toggle()
+	end,
 }
 
 c = c + 1
@@ -95,7 +97,9 @@ Actions[c] = {
 	ActionId = ".Anim State Set",
 	ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 	RolloverText = S[302535920000458--[[Make object dance on command.--]]],
-	OnAction = ChoGGi.MenuFuncs.SetAnimState,
+	OnAction = function()
+		ChoGGi.MenuFuncs.SetAnimState()
+	end,
 }
 
 c = c + 1
@@ -105,7 +109,9 @@ Actions[c] = {
 	ActionId = ".Anim Debug Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 	RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
-	OnAction = ChoGGi.MenuFuncs.ShowAnimDebug_Toggle,
+	OnAction = function()
+		ChoGGi.CodeFuncs.ShowAnimDebug_Toggle()
+	end,
 }
 
 c = c + 1

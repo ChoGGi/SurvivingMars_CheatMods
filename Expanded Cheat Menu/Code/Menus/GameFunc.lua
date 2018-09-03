@@ -90,14 +90,14 @@ end -- do
 function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 	local ChoGGi = ChoGGi
 	obj = obj or ChoGGi.CodeFuncs.SelObject()
-
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
 			302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]],
-			302535920000016--[[Colour--]]
+			3595--[[Color--]]
 		)
 		return
 	end
+
 	local ItemList = {}
 
 	-- has no Attaches so just open as is
@@ -106,14 +106,14 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 		return
 	else
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s"," ",obj.class),
+			text = string.format(" %s",obj.class),
 			value = obj.class,
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
 		}
 		-- check and add attachments
 		if obj:IsKindOf("ComponentAttach") then
-			obj:ForEachAttach(function(a)
+			obj:ForEachAttach("",function(a)
 				if a:IsKindOf("ColorizableObject") then
 					ItemList[#ItemList+1] = {
 						text = a.class,
@@ -126,6 +126,7 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 			end)
 		end
 		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
+		local IsValid = IsValid
 		for _,attach in pairs(obj) do
 			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
 				ItemList[#ItemList+1] = {
@@ -147,10 +148,11 @@ function ChoGGi.MenuFuncs.CreateObjectListAndAttaches(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = function()end,
 		items = ItemList,
-		title = string.format("%s: %s",S[302535920000021--[[Change Colour--]]],RetName(obj)),
-		hint = 302535920001108--[[Double click to open object/attachment to edit.--]],
+		title = string.format("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+		hint = 302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]],
 		custom_type = 1,
 		custom_func = FiredOnMenuClick,
+		select_flash = true,
 	}
 end
 

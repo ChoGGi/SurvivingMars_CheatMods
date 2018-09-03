@@ -4,6 +4,16 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.7 (Unreleased)
+### Changed:
+- Change Logo/Upload Mod shows image in hint.
+- Random Object Colour is more random.
+- Change Colour renamed to Color Modifier.
+- Color Modifier object list will now blink object when you select a list item.
+
+### Fixed:
+- Wrong images in Mystery Log.
+- For multi-select list choices one of the hints was missing.
+- Examine popups would show a list from another examine.
 
 ## v8.6 (02 Sep 2018)
 ### Added:

@@ -29,11 +29,9 @@ do -- cheat menu custom menus
 	AddMenuitem("Help",487939677892,"06")
 end -- do
 
--- useful lists
+-- easy access to colonist data, cargo, mystery
 ChoGGi.Tables = {
 	-- display names only! (stored as numbers, not names like the rest; which is why i'm guessing)
---~ s.race = 1
---~ s:ChooseEntity()
 	ColonistRaces = {
 		S[1859--[[White--]]],[S[1859--[[White--]]]] = true,
 		S[302535920000739--[[Black--]]],[S[302535920000739--[[Black--]]]] = true,
@@ -41,6 +39,9 @@ ChoGGi.Tables = {
 		S[302535920001283--[[Indian--]]],[S[302535920001283--[[Indian--]]]] = true,
 		S[302535920001284--[[Southeast Asian--]]],[S[302535920001284--[[Southeast Asian--]]]] = true,
 	},
+--~ s.race = 1
+--~ s:ChooseEntity()
+
 	-- some names need to be fixed when doing construction placement
 	ConstructionNamesListFix = {
 		RCRover = "RCRoverBuilding",
@@ -49,8 +50,20 @@ ChoGGi.Tables = {
 		ExplorerRover = "RCExplorerBuilding",
 		Rocket = "SupplyRocket",
 	},
+	Cargo = {},
+	CargoPresets = {},
+	Mystery = {},
+	NegativeTraits = {},
+	PositiveTraits = {},
+	OtherTraits = {},
+	ColonistAges = {},
+	ColonistGenders = {},
+	ColonistSpecializations = {},
+	ColonistBirthplaces = {},
+	Resources = {},
+	SchoolTraits = {},
+	SanatoriumTraits = {},
 }
--- easy access to colonist data, cargo, mystery
 ChoGGi.ComFuncs.UpdateDataTables()
 
 -- stores defaults

@@ -1440,10 +1440,19 @@ do -- UpdateDataTables
 		local Tables = ChoGGi.Tables
 		local c = 0
 
+		Tables.Mystery = {}
+		Tables.NegativeTraits = {}
+		Tables.PositiveTraits = {}
+		Tables.OtherTraits = {}
+		Tables.ColonistAges = {}
+		Tables.ColonistGenders = {}
+		Tables.ColonistSpecializations = {}
+		Tables.ColonistBirthplaces = {}
+		Tables.Resources = {}
 		Tables.SchoolTraits = const.SchoolTraits
 		Tables.SanatoriumTraits = const.SanatoriumTraits
+
 ------------- mysteries
-		Tables.Mystery = {}
 		c = 0
 		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
 		local g_Classes = g_Classes
@@ -1465,14 +1474,8 @@ do -- UpdateDataTables
 			c = c + 1
 			Tables.Mystery[c] = temptable
 		end)
+
 ----------- colonists
-		Tables.NegativeTraits = {}
-		Tables.PositiveTraits = {}
-		Tables.OtherTraits = {}
-		Tables.ColonistAges = {}
-		Tables.ColonistGenders = {}
-		Tables.ColonistSpecializations = {}
-		Tables.ColonistBirthplaces = {}
 		--add as index and associative tables for ease of filtering
 		local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
 		for id,t in pairs(TraitPresets) do
@@ -1519,11 +1522,13 @@ do -- UpdateDataTables
 		end
 
 ------------- cargo
-		Tables.Cargo = {}
-		Tables.CargoPresets = {}
-
-		-- only called when ResupplyItemDefinitions is built
+		-- we only need to call when ResupplyItemDefinitions is built (start of new games)
 		if cargo_update == true then
+			-- values rocket checks
+			Tables.Cargo = {}
+			-- defaults
+			Tables.CargoPresets = {}
+
 			local ResupplyItemDefinitions = ResupplyItemDefinitions
 			for i = 1, #ResupplyItemDefinitions do
 				local meta = getmetatable(ResupplyItemDefinitions[i]).__index
@@ -1531,46 +1536,21 @@ do -- UpdateDataTables
 				Tables.Cargo[meta.id] = meta
 			end
 
-			-- just used to check defaults for cargo
-			local preset = Presets.Cargo
+			-- used to check defaults for cargo
 			c = 0
-			for i = 1, #preset do
-				for j = 1, #preset[i] do
-					local cp = preset[i][j]
-					c = c + 1
-					Tables.CargoPresets[c] = cp
-					Tables.CargoPresets[cp.id] = cp
-				end
+			for cargo_id,cargo in pairs(CargoPreset) do
+				c = c + 1
+				Tables.CargoPresets[c] = cargo
+				Tables.CargoPresets[cargo_id] = cargo
 			end
 		end
 
 -------------- resources
-		Tables.Resources = {}
 		local AllResourcesList = AllResourcesList
 		for i = 1, #AllResourcesList do
 			Tables.Resources[i] = AllResourcesList[i]
 			Tables.Resources[AllResourcesList[i]] = true
 		end
-
---~ 		table.sort(Tables.ColonistBirthplaces,
---~ 			function(a,b)
---~ 				return CmpLower(a.value,b.value)
---~ 			end
---~ 		)
-
---~ 		table.sort(Tables.Mystery,
---~ 			function(a,b)
---~ 				return CmpLower(a.class,b.class)
---~ 			end
---~ 		)
-
---~ 		table.sort(Tables.NegativeTraits)
---~ 		table.sort(Tables.PositiveTraits)
---~ 		table.sort(Tables.OtherTraits)
---~ 		table.sort(Tables.ColonistAges)
---~ 		table.sort(Tables.ColonistGenders)
---~ 		table.sort(Tables.ColonistSpecializations)
---~ 		table.sort(Tables.Resources)
 	end
 end -- do
 

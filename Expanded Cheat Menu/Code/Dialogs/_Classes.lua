@@ -180,6 +180,7 @@ DefineClass.ChoGGi_DialogSection = {
 	Margins = box(4,4,4,4),
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
+	RolloverTitle = S[126095410863--[[Info--]]],
 }
 
 DefineClass.ChoGGi_ScrollArea = {
@@ -246,6 +247,7 @@ function ChoGGi_Window:AddElements(_,context)
 		Background = medium_gray,
 		Margins = box(0,0,0,0),
 	}, self.idDialog)
+
 
 	self.idMoveControl = g_Classes.XMoveControl:new({
 		MinHeight = 30,

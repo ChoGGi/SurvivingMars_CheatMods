@@ -237,12 +237,23 @@ do -- ModUpload
 			return
 		end
 		local ItemList = {}
+		local c = 0
 		local Mods = Mods
 		for id,mod in pairs(Mods) do
-			ItemList[#ItemList+1] = {
+			local hint_str = "%s"
+			local image = ""
+			if mod.image ~= "" then
+				hint_str = "<image %s>\n%s"
+				-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
+				local slash = string.find(mod.image:reverse(),"/",1,true)
+				local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path
+				image = string.format("%s%s",path,mod.image:sub((slash - 1) * -1))
+			end
+			c = c + 1
+			ItemList[c] = {
 				text = mod.title,
 				value = id,
-				hint = mod.description,
+				hint = hint_str:format(image,mod.description),
 				mod = mod,
 			}
 		end

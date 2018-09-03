@@ -181,10 +181,11 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = "Game",
-	ActionName = S[302535920000021--[[Change Colour--]]],
+	ActionName = S[174--[[Color Modifier--]]],
 	ActionId = ".Change Colour",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-	RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours.--]]],
+	RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.--]]],
 	OnAction = function()
 		ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
 	end,

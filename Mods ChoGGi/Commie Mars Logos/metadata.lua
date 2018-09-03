@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {"Code/Script.lua"},
-	"description", [[Flags, Coat of Arms, Emblems, etc...
+	"description", [[Flags, Coats of Arms, Emblems, etc...
 45 different logos in all (and you thought one Space Communism logo was enough).
 
 From Marx with love.

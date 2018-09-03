@@ -514,36 +514,27 @@ end
 function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
 	local ChoGGi = ChoGGi
 	local UICity = UICity
-	local Presets = Presets
-	--inform people of actions, so they don't add a bunch of them
+	-- inform people of actions, so they don't add a bunch of them
 	ChoGGi.UserSettings.ShowMysteryMsgs = true
 
 	UICity.mystery_id = mystery_id
-	local fields = Presets.TechFieldPreset.Default
-	for i = 1, #fields do
-		local field = fields[i]
-		local field_id = field.id
-		local list = UICity.tech_field[field_id] or ""
-		UICity.tech_field[field_id] = list
-		local ids = Presets.TechPreset[field_id] or ""
-		for j = 1, #ids do
-			if ids[j].mystery == mystery_id then
-				local tech_id = ids[j].id
-				list[#list + 1] = tech_id
-				UICity.tech_status[tech_id] = {points = 0, field = field_id}
-				ids[j]:EffectsInit(UICity)
+	for tech_id,tech in pairs(TechDef) do
+		if tech.mystery == mystery_id then
+			if not UICity.tech_status[tech_id] then
+				UICity.tech_status[tech_id] = {points = 0, field = tech.group}
+				tech:EffectsInit(UICity)
 			end
 		end
 	end
 	UICity:InitMystery()
 
-	--might help
+	-- might help
 	if UICity.mystery then
 		UICity.mystery_id = UICity.mystery.class
 		UICity.mystery:ApplyMysteryResourceProperties()
 	end
 
-	--instant start
+	-- instant start
 	if instant then
 		local seqs = UICity.mystery.seq_player.seq_list[1]
 		for i = 1, #seqs do
@@ -559,11 +550,11 @@ function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
 		end
 	end
 
-	--needed to start mystery
+	-- needed to start mystery
 	UICity.mystery.seq_player:AutostartSequences()
 end
 
---loops through all the sequence and adds the logs we've already seen
+-- loops through all the sequences and adds the logs we've already seen
 local function ShowMysteryLog(MystName)
 	local msgs = {string.format("%s\n\n%s\n",MystName,S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
 g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
@@ -585,7 +576,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 						for k = 1, #scenarios do
 							local seq = scenarios[k]
 							if seq.class == "SA_WaitMessage" then
-								--add to msg list
+								-- add to msg list
 								msgs[#msgs+1] = {
 									[" "] = string.format("%s: %s\n\n\n\n%s: %s",S[302535920000273--[[Speech--]]],Trans(seq.voiced_text),S[302535920000274--[[Message--]]],Trans(seq.text)),
 									speech = seq.voiced_text,
@@ -616,14 +607,18 @@ function ChoGGi.MenuFuncs.ShowStartedMysteryList()
 			local ip = PlayerList[i].seq_states[seq_list[1].name].ip
 
 			ItemList[#ItemList+1] = {
-				text = string.format("%s: %s",id,mysteries[id].name),value = id,func = id,seed = PlayerList[i].seed,hint = string.format(
+				text = string.format("%s: %s",id,mysteries[id].name),
+				value = id,
+				func = id,
+				seed = PlayerList[i].seed,
+				hint = string.format(
 					"%s\n\n<color 255 75 75>%s</color>: %s <color 255 75 75>%s</color>: %s\n\n\n\n<image %s>\n\n",
 					mysteries[id].description,
 					S[302535920000275--[[Total parts--]]],
 					totalparts,
 					S[302535920000289--[[Current part--]]],
 					ip or S[302535920000276--[[done?--]]],
-					mysteries[i].image
+					mysteries[id].image
 				)
 			}
 		end
@@ -1053,7 +1048,6 @@ end
 
 function ChoGGi.MenuFuncs.ShowResearchTechList()
 	local ChoGGi = ChoGGi
-	local Presets = Presets
 	local ItemList = {}
 	local c = 1
 	ItemList[c] = {
@@ -1082,22 +1076,19 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 
 	local icon = "<image %s 250>"
 	local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
-	for i = 1, #Presets.TechPreset do
-		for j = 1, #Presets.TechPreset[i] do
-			local tech = Presets.TechPreset[i][j]
-			local text = Trans(tech.display_name)
-			--remove " from that one tech...
-			if text:find("\"") then
-				text = text:gsub("\"","")
-			end
-			c = c + 1
-			ItemList[c] = {
-				text = text,
-				value = tech.id,
-				icon = icon:format(tech.icon),
-				hint = hint:format(Trans(T{tech.description,tech}),S[1000097--[[Category--]]],tech.group,tech.icon),
-			}
+	for tech_id,tech in pairs(TechDef) do
+		local text = Trans(tech.display_name)
+		-- remove " from that one tech...
+		if text:find("\"") then
+			text = text:gsub("\"","")
 		end
+		c = c + 1
+		ItemList[c] = {
+			text = text,
+			value = tech_id,
+			icon = icon:format(tech.icon),
+			hint = hint:format(Trans(T{tech.description,tech}),S[1000097--[[Category--]]],tech.group,tech.icon),
+		}
 	end
 
 	local function CallBackFunc(choice)
@@ -1169,26 +1160,34 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 	}
 end
 
---tech_func = DiscoverTech/GrantTech
-local function ListFields(tech_func,field,tech)
-	for i = 1, #tech[field] do
-		_G[tech_func](tech[field][i].id)
+-- tech_func = DiscoverTech/GrantTech
+local function ListFields(tech_func,group)
+	for tech_id,tech in pairs(TechDef) do
+		if tech.group == group then
+			_G[tech_func](tech_id)
+		end
 	end
 end
 
 function ChoGGi.MenuFuncs.SetTech_EveryMystery(tech_func)
-	ListFields(tech_func,"Mysteries",Presets.TechPreset)
+	ListFields(tech_func,"Mysteries")
 end
 
 function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(tech_func)
-	ListFields(tech_func,"Breakthroughs",Presets.TechPreset)
+	ListFields(tech_func,"Breakthroughs")
 end
 
+local groups = {
+	Biotech = true,
+	Engineering = true,
+	Physics = true,
+	Robotics = true,
+	Social = true,
+}
 function ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
-	local tech = Presets.TechPreset
-	ListFields(tech_func,"Biotech",tech)
-	ListFields(tech_func,"Engineering",tech)
-	ListFields(tech_func,"Physics",tech)
-	ListFields(tech_func,"Robotics",tech)
-	ListFields(tech_func,"Social",tech)
+	for tech_id,tech in pairs(TechDef) do
+		if groups[tech.group] then
+			_G[tech_func](tech_id)
+		end
+	end
 end

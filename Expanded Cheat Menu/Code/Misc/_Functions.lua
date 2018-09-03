@@ -608,54 +608,75 @@ function ChoGGi.CodeFuncs.RandomColour(amount)
 	return Random(-16777216,0)
 end
 
-do -- SetRandColour
-	local function SetRandColour(obj,colour,ChoGGi)
-		colour = colour or ChoGGi.CodeFuncs.RandomColour()
-		local c1,c2,c3,c4 = obj:GetColorizationMaterial(1),obj:GetColorizationMaterial(2),obj:GetColorizationMaterial(3),obj:GetColorizationMaterial(4)
+function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
+	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+		return
+	end
+	local ChoGGi = ChoGGi
+	local attaches = {}
+	local c = 0
+
+	-- add regular attachments
+	if obj:IsKindOf("ComponentAttach") then
+		obj:ForEachAttach("ColorizableObject",function(a)
+			c = c + 1
+			attaches[c] = {obj = a,c = {}}
+		end)
+	end
+
+	-- add any non-attached attaches
+	local IsValid = IsValid
+	for _,a in pairs(obj) do
+		if IsValid(a) and a:IsKindOf("ColorizableObject") then
+			c = c + 1
+			attaches[c] = {obj = a,c = {}}
+		end
+	end
+
+	-- random is random after all, so lets try for at least slightly different colours
+	-- you can do 4 colours on each object
+	local colours = ChoGGi.CodeFuncs.RandomColour((c * 4) + 4)
+	-- attach obj to list
+	c = c + 1
+	attaches[c] = {obj = obj,c = {}}
+
+	-- add colours to each colour table attached to each obj
+	local cc = 0
+	local ac = 1
+	for i = 1, #colours do
+		-- add 1 to colour count
+		cc = cc + 1
+		-- add colour to attach colours
+		attaches[ac].c[cc] = colours[i]
+
+		if cc == 4 then
+			-- when we get to four increment attach colours num, and reset colour count
+			cc = 0
+			ac = ac + 1
+		end
+	end
+
+	local Random = Random
+	for i = 1, c do
+		obj = attaches[i].obj
+		local c = attaches[i].c
+
 		-- likely can only change basecolour
-		if c1 == 8421504 and c2 == 8421504 and c3 == 8421504 and c4 == 8421504 then
-			obj:SetColorModifier(colour)
+		if obj:GetColorizationMaterial(1) == 8421504 and obj:GetColorizationMaterial(2) == 8421504 and obj:GetColorizationMaterial(3) == 8421504 and obj:GetColorizationMaterial(4) == 8421504 then
+			obj:SetColorModifier(c[1])
 		else
 			if not obj.ChoGGi_origcolors then
 				ChoGGi.CodeFuncs.SaveOldPalette(obj)
 			end
 			-- object,1,Color, Roughness, Metallic
-			local Random = Random -- ChoGGi.ComFuncs.Random
-			obj:SetColorizationMaterial(1, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
-			obj:SetColorizationMaterial(2, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
-			obj:SetColorizationMaterial(3, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
-			obj:SetColorizationMaterial(4, ChoGGi.CodeFuncs.RandomColour(), Random(-255,255),Random(-255,255))
+			obj:SetColorizationMaterial(1, c[1], Random(-255,255), Random(-255,255))
+			obj:SetColorizationMaterial(2, c[2], Random(-255,255), Random(-255,255))
+			obj:SetColorizationMaterial(3, c[3], Random(-255,255), Random(-255,255))
+			obj:SetColorizationMaterial(4, c[4], Random(-255,255), Random(-255,255))
 		end
-	end
+	end -- for
 
-	function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
-		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-			return
-		end
-		local ChoGGi = ChoGGi
-		local attaches = obj:IsKindOf("ComponentAttach") and obj:GetAttaches() or {}
-		local c = #attaches
-		-- add any non-attached attaches
-		local IsValid = IsValid
-		for _,attach in pairs(obj) do
-			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
-				c = c + 1
-				attaches[c] = attach
-			end
-		end
-
-		-- random is random after all, so lets try for at least slightly different colours
-		local colours = ChoGGi.CodeFuncs.RandomColour(c + 1)
-
-		for i = 1, c do
-			if attaches[i]:IsKindOf("ColorizableObject") then
-				SetRandColour(attaches[i],colours[i],ChoGGi)
-			end
-		end
-
-		SetRandColour(obj,colours[#colours],ChoGGi)
-	end
-end -- do
+end
 
 do -- SetDefColour
 	local function SetDefColour(obj)
@@ -670,20 +691,25 @@ do -- SetDefColour
 	end
 
 	function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
-		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+		obj = obj or ChoGGi.CodeFuncs.SelObject()
+		if not obj then
 			return
 		end
-		SetDefColour(obj)
-		-- attaches
+
+		if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
+			SetDefColour(obj)
+		end
+		-- regular attaches
 		if obj:IsKindOf("ComponentAttach") then
-			obj:ForEachAttach(function(a)
+			obj:ForEachAttach("ColorizableObject",function(a)
 				SetDefColour(a)
 			end)
 		end
 		-- other attaches
-		for _,attach in pairs(obj) do
-			if type(attach) == "table" then
-				SetDefColour(attach)
+		local IsValid = IsValid
+		for _,a in pairs(obj) do
+			if IsValid(a) and a:IsKindOf("ColorizableObject") then
+				SetDefColour(a)
 			end
 		end
 
@@ -857,8 +883,8 @@ do -- ChangeObjectColour
 		local ChoGGi = ChoGGi
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
-				302535920000015--[[Can't colour object--]],
-				302535920000016--[[Colour--]]
+				S[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
+				3595--[[Color--]]
 			)
 			return
 		end
@@ -957,7 +983,7 @@ do -- ChangeObjectColour
 
 				MsgPopup(
 					S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
-					302535920000016--[[Colour--]],
+					3595--[[Color--]],
 					nil,
 					nil,
 					obj
@@ -968,7 +994,7 @@ do -- ChangeObjectColour
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s: %s",S[302535920000021--[[Change Colour--]]],RetName(obj)),
+			title = string.format("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
 			hint = 302535920000022--[["If number is 8421504 (0 for Metallic/Roughness) then you probably can't change that colour.
 
 	The colour picker doesn't work for Metallic/Roughness.
@@ -1078,17 +1104,9 @@ do -- FindNearestResource
 				local nearest = FindNearestObject(stockpiles,obj)
 				-- if there's no resource then there's no "nearest"
 				if nearest then
-					-- make sure we don't already have a blinky (don't give a shit about a non-visible waitmsg)
-					nearest:DestroyAttaches("RotatyThing")
-					-- add a blinky so it's obvious
-					nearest:Attach(PlaceObject("RotatyThing"), nearest:GetSpotBeginIndex("Top"))
 					-- the power of god
 					ViewObjectMars(nearest)
-					-- remove blinky after 10s
-					CreateRealTimeThread(function()
-						WaitMsg("SelectedObjChange",10000)
-						nearest:DestroyAttaches("RotatyThing")
-					end)
+					ChoGGi.CodeFuncs.AddBlinkyToObj(nearest)
 				else
 					MsgPopup(
 						S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
@@ -1405,11 +1423,11 @@ do -- CollisionsObject_Toggle
 			local c = const.efCollision + const.efApplyToGrids
 			-- are we disabling col or enabling
 			if which then
-				sel:ForEachAttach(function(a)
+				sel:ForEachAttach("",function(a)
 					a:ClearEnumFlags(c)
 				end)
 			else
-				sel:ForEachAttach(function(a)
+				sel:ForEachAttach("",function(a)
 					a:SetEnumFlags(c)
 				end)
 			end
@@ -1999,3 +2017,109 @@ function ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,service_stats)
 		obj.children_only = service_stats.children_only
 	end
 end
+
+do -- AddBlinkyToObj
+	local DeleteThread = DeleteThread
+	local blinky_obj
+	local blinky_thread
+	function ChoGGi.CodeFuncs.AddBlinkyToObj(obj,timeout)
+		-- if it was attached to something deleted, or fresh start
+		if not blinky_obj then
+			blinky_obj = RotatyThing:new()
+		end
+		-- stop any previous countdown
+		DeleteThread(blinky_thread)
+		-- make it visible incase it isn't
+		blinky_obj:SetOpacity(100)
+		-- attach blinky so it's obvious
+		obj:Attach(blinky_obj, obj:GetSpotBeginIndex("Top") or obj:GetSpotBeginIndex("Origin"))
+		-- hide blinky after timeout or 10s
+		blinky_thread = CreateRealTimeThread(function()
+			WaitMsg("SelectedObjChange",timeout or 10000)
+			blinky_obj:SetOpacity(0)
+		end)
+	end
+end -- do
+
+function ChoGGi.CodeFuncs.AttachSpots_Toggle(sel)
+	sel = sel or ChoGGi.CodeFuncs.SelObject()
+	if not sel then
+		return
+	end
+	if sel.ChoGGi_ShowAttachSpots then
+		sel:HideSpots()
+		sel.ChoGGi_ShowAttachSpots = nil
+	else
+		sel:ShowSpots()
+		sel.ChoGGi_ShowAttachSpots = true
+	end
+end
+
+do -- ShowAnimDebug_Toggle
+	local function AnimDebug_Show(obj,colour)
+		local text = PlaceObject("Text")
+		text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
+		text:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
+		text:SetCenter(true)
+		local orient = Orientation:new()
+
+		text.ChoGGi_AnimDebug = true
+		obj:Attach(text, 0)
+		obj:Attach(orient, 0)
+		text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
+		CreateGameTimeThread(function()
+			while IsValid(text) do
+				local str = "%d. %s\n"
+				text:SetText(str:format(1,obj:GetAnimDebug(1)))
+				WaitNextFrame()
+			end
+		end)
+	end
+
+	local function AnimDebug_ShowAll(cls)
+		local objs = UICity.labels[cls] or ""
+		for i = 1, #objs do
+			AnimDebug_Show(objs[i])
+		end
+	end
+
+	local function AnimDebug_Hide(obj)
+		obj:ForEachAttach("",function(a)
+			if a.ChoGGi_AnimDebug then
+				a:delete()
+			end
+		end)
+	end
+
+	local function AnimDebug_HideAll(cls)
+		local objs = UICity.labels[cls] or ""
+		for i = 1, #objs do
+			AnimDebug_Hide(objs[i])
+		end
+	end
+
+	function ChoGGi.CodeFuncs.ShowAnimDebug_Toggle(sel)
+		local sel = sel or SelectedObj
+		if sel then
+			if sel.ChoGGi_ShowAnimDebug then
+				sel.ChoGGi_ShowAnimDebug = nil
+				AnimDebug_Hide(sel)
+			else
+				sel.ChoGGi_ShowAnimDebug = true
+				AnimDebug_Show(sel,white)
+			end
+		else
+			local ChoGGi = ChoGGi
+			ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+			if ChoGGi.Temp.ShowAnimDebug then
+				AnimDebug_ShowAll("Building")
+				AnimDebug_ShowAll("Unit")
+				AnimDebug_ShowAll("CargoShuttle")
+			else
+				AnimDebug_HideAll("Building")
+				AnimDebug_HideAll("Unit")
+				AnimDebug_HideAll("CargoShuttle")
+			end
+		end
+	end
+end -- do

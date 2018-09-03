@@ -333,14 +333,14 @@ end
 
 --pick a logo
 function ChoGGi.MenuFuncs.ChangeGameLogo()
-	local Presets = Presets
+	local MissionLogoPresetMap = MissionLogoPresetMap
 
 	local ItemList = {}
-	local tab = Presets.MissionLogoPreset.Default or ""
-	for i = 1, #tab do
+	for id,def in pairs(MissionLogoPresetMap) do
 		ItemList[#ItemList+1] = {
-			text = Trans(tab[i].display_name),
-			value = tab[i].id,
+			text = Trans(def.display_name),
+			value = id,
+			hint = string.format("<image %s>",def.image),
 		}
 	end
 
@@ -349,39 +349,33 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 			return
 		end
 		local value = choice[1].value
+		local logo = MissionLogoPresetMap[value]
 
-		local function ChangeLogo(Label,Name)
-			local tab = UICity.labels[Label] or ""
-			for i = 1, #tab do
-				local tab2 = tab[i]:GetAttaches("Logo") or ""
-				for j = 1, #tab2 do
-					--if tab2[j].class == "Logo" then
-						local tempLogo = tab2[j]
-						if tempLogo then
-							tempLogo:ChangeEntity(Name)
-						end
-					--end
+		-- check if user typed custom name and fucked up
+		if logo then
+			local entity_name = logo.entity_name
+
+			local function ChangeLogo(label)
+				label = UICity.labels[label] or ""
+				for i = 1, #label do
+					label[i]:ForEachAttach("Logo",function(a)
+						tempLogo:ChangeEntity(entity_name)
+					end)
 				end
 			end
-		end
 
-		local tab = Presets.MissionLogoPreset.Default or ""
-		for i = 1, #tab do
-			if tab[i].id == value then
-				-- for any new objects
-				g_CurrentMissionParams.idMissionLogo = value
-				local entity_name = Presets.MissionLogoPreset.Default[value].entity_name
-				-- loop through rockets and change logo
-				ChangeLogo("AllRockets",entity_name)
-				-- same for any buildings that use the logo
-				ChangeLogo("Building",entity_name)
+			-- for any new objects
+			g_CurrentMissionParams.idMissionLogo = value
+			-- loop through rockets and change logo
+			ChangeLogo("AllRockets")
+			-- same for any buildings that use the logo
+			ChangeLogo("Building")
 
-				MsgPopup(
-					choice[1].text,
-					302535920001177--[[Logo--]],
-					default_icon
-				)
-			end
+			MsgPopup(
+				choice[1].text,
+				302535920001177--[[Logo--]],
+				default_icon
+			)
 		end
 	end
 
@@ -389,7 +383,8 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = 302535920001178--[[Set New Logo--]],
-		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(Presets.MissionLogoPreset.Default[g_CurrentMissionParams.idMissionLogo].display_name)),
+		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name)),
+		height = 625.0,
 	}
 end
 

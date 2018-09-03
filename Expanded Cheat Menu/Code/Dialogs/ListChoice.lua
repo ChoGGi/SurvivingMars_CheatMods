@@ -16,9 +16,12 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 	colorpicker = false,
 	-- we don't want OnColorChanged to fire till after window is loaded
 	skip_color_change = true,
+	-- do different stuff for different numbers
 	custom_type = 0,
+	-- some different stuff fires off a func
 	custom_func = false,
-	hidden = false,
+	-- if listitem has .obj and this is true we "flash" it
+	select_flash = false,
 
 	sel = false,
 	obj = false,
@@ -34,9 +37,10 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.custom_func = self.list.custom_func
 	self.custom_type = self.list.custom_type
 	self.title = self.list.title
+	self.select_flash = self.list.select_flash
 
 	self.dialog_width = self.list.width or 500.0
-	self.dialog_height = self.list.height or 610.0
+	self.dialog_height = self.list.height or 615.0
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -252,7 +256,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
-		self.list.hint = string.format("%s\n\n%s",self.list.hint,S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
+		self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
 
 		self.idList.MultipleSelection = true
 		if type(self.list.multisel) == "number" then
@@ -277,6 +281,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- are we showing a hint?
 	local hint = CheckText(self.list.hint)
 	if hint ~= "" then
+		self.idTitleArea.RolloverText = hint
 		self.idList.RolloverText = hint
 		self.idOK.RolloverText = string.format("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
@@ -439,6 +444,11 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 		-- update the custom value box
 		self.idEditValue:SetText(tostring(self.sel.value))
 	end
+
+	if self.select_flash and self.sel.obj then
+		ChoGGi.CodeFuncs.AddBlinkyToObj(self.sel.obj,8000)
+	end
+
 	if self.custom_type > 0 then
 		-- 2 = showing the colour picker
 		if self.custom_type == 2 then

@@ -36,19 +36,38 @@ DefineClass.Examine = {
 	dialog_width = 650.0,
 	dialog_height = 750.0,
 
-	-- declare our tables ahead of time, then clear tables instead
-	parents_menu_popup = {},
-	attaches_menu_popup = {},
-	parents = {},
-	ancestors = {},
+	-- add some random numbers as ids so when you click a popup of the same name from another examine it'll close then open the new one
+	idAttachesMenu = false,
+	idParentsMenu = false,
+	idToolsMenu = false,
+	-- any tables
+	parents_menu_popup = false,
+	attaches_menu_popup = false,
+	pmenu_skip_dupes = false,
+	parents = false,
+	ancestors = false,
+	menu_added = false,
+	menu_list_items = false,
 	-- clickable purple text
-	onclick_handles = {},
+	onclick_handles = false,
 }
 
 function Examine:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 	local const = const
+
+	self.idAttachesMenu = ChoGGi.ComFuncs.Random()
+	self.idParentsMenu = ChoGGi.ComFuncs.Random()
+	self.idToolsMenu = ChoGGi.ComFuncs.Random()
+
+	self.attaches_menu_popup = {}
+	self.parents = {}
+	self.ancestors = {}
+	self.menu_added = {}
+	self.menu_list_items = {}
+	-- clickable purple text
+	self.onclick_handles = {}
 
 	self.obj = context.obj
 
@@ -123,7 +142,7 @@ Right-click to scroll to top."--]]],
 		OnMouseButtonDown = function(obj,pt,button,...)
 			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
 			if button == "L" then
-				PopupToggle(obj,"idToolsMenu",tools_menu_popup,"bottom")
+				PopupToggle(obj,self.idToolsMenu,tools_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -136,7 +155,7 @@ Right-click to scroll to top."--]]],
 		OnMouseButtonDown = function(obj,pt,button,...)
 			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
 			if button == "L" then
-				PopupToggle(obj,"idParentsMenu",self.parents_menu_popup,"bottom")
+				PopupToggle(obj,self.idParentsMenu,self.parents_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -150,7 +169,7 @@ Right-click to scroll to top."--]]],
 		OnMouseButtonDown = function(obj,pt,button,...)
 			g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
 			if button == "L" then
-				PopupToggle(obj,"idAttachesMenu",self.attaches_menu_popup,"bottom")
+				PopupToggle(obj,self.idAttachesMenu,self.attaches_menu_popup,"bottom")
 			end
 		end,
 		Dock = "left",
@@ -183,7 +202,19 @@ Right-click to scroll to top."--]]],
 	self:SetTranspMode(self.transp_mode)
 
 	-- load up obj in text display
-	self:SetObj(self.obj)
+	local is_obj = self:SetObj(self.obj)
+
+	if is_obj then
+		self.parents_menu_popup = {}
+		self.pmenu_skip_dupes = {}
+		-- build menu list
+		self:BuildParents(self.obj.__parents,"parents",S[302535920000520--[[Parents--]]])
+		self:BuildParents(self.obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
+		-- if anything was added to the list then add to the menu
+		if #self.parents_menu_popup > 0 then
+			self.idParents:SetVisible(true)
+		end
+	end
 
 	-- needs a bit of a delay since we delay in SetObj
 	if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
@@ -243,8 +274,6 @@ function Examine:idFilterOnKbdKeyDown(obj,vk)
 	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
-local menu_added = {}
-local menu_list_items = {}
 -- adds class name then list of functions below
 function Examine:BuildFuncList(obj_name,prefix)
 	prefix = prefix or ""
@@ -252,24 +281,24 @@ function Examine:BuildFuncList(obj_name,prefix)
 	local skip = true
 	for key,_ in pairs(class) do
 		if type(class[key]) == "function" then
-			menu_list_items[string.format("%s%s.%s: ",prefix,obj_name,key)] = class[key]
+			self.menu_list_items[string.format("%s%s.%s: ",prefix,obj_name,key)] = class[key]
 			skip = false
 		end
 	end
 	if not skip then
-		menu_list_items[string.format("%s%s",prefix,obj_name)] = "\n\n\n"
+		self.menu_list_items[string.format("%s%s",prefix,obj_name)] = "\n\n\n"
 	end
 end
 
 function Examine:ProcessList(list,prefix)
 	for i = 1, #list do
-		if not menu_added[list[i]] then
+		if not self.menu_added[list[i]] then
 			-- CObject and Object are pretty much the same (Object has a couple more funcs)
 			if list[i] == "CObject" then
 				-- keep it for later (for the rare objects that use CObject, but not Object)
-				menu_added[list[i]] = prefix
+				self.menu_added[list[i]] = prefix
 			else
-				menu_added[list[i]] = true
+				self.menu_added[list[i]] = true
 				self:BuildFuncList(list[i],prefix)
 			end
 		end
@@ -346,8 +375,8 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
 			clicked = function()
 				if #self.parents > 0 or #self.ancestors > 0 then
-					table.clear(menu_added)
-					table.clear(menu_list_items)
+					table.clear(self.menu_added)
+					table.clear(self.menu_list_items)
 
 					if #self.parents > 0 then
 						self:ProcessList(self.parents,string.format(" %s: ",S[302535920000520--[[Parents--]]]))
@@ -358,17 +387,32 @@ This can take time on something like the ""Building"" metatable (don't use this 
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj.class,"	")
 					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
-					if not menu_added.Object and menu_added.CObject then
-						self:BuildFuncList("CObject",menu_added.CObject)
+					if not self.menu_added.Object and self.menu_added.CObject then
+						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					ChoGGi.ComFuncs.OpenInExamineDlg(menu_list_items,self)
+					ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items,self)
 				else
 					-- close enough
 					print(S[9763--[[No objects matching current filters.--]]])
 				end
 			end,
 		},
+		{
+			name = S[302535920000449--[[Attach Spots Toggle--]]],
+			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
+			clicked = function()
+				ChoGGi.CodeFuncs.AttachSpots_Toggle(self.obj)
+			end,
+		},
+		{
+			name = S[302535920000459--[[Anim Debug Toggle--]]],
+			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+			clicked = function()
+				ChoGGi.CodeFuncs.ShowAnimDebug_Toggle(self.obj)
+			end,
+		},
+		{name = "	 ---- "},
 		{
 			name = string.format("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
@@ -951,7 +995,6 @@ end
 
 -- used to build parents/ancestors menu
 
-local pmenu_skip_dupes = {}
 function Examine:BuildParents(list,list_type,title,sort_type)
 	local g_Classes = g_Classes
 	if list and next(list) then
@@ -965,8 +1008,8 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 		}
 		for i = 1, #list do
 			-- no sense in having an item in parents and ancestors
-			if not pmenu_skip_dupes[list[i]] then
-				pmenu_skip_dupes[list[i]] = true
+			if not self.pmenu_skip_dupes[list[i]] then
+				self.pmenu_skip_dupes[list[i]] = true
 				c = c + 1
 				self.parents_menu_popup[c] = {
 					name = list[i],
@@ -1008,24 +1051,14 @@ function Examine:SetObj(obj,skip_thread)
 		end
 
 		if obj.class then
-			-- reset menu list
-			table.iclear(self.parents_menu_popup)
-			table.clear(pmenu_skip_dupes)
-			-- build menu list
-			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
-			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
-			-- if anything was added to the list then add to the menu
-			if #self.parents_menu_popup > 0 then
-				self.idParents:SetVisible(true)
-			end
 
 			-- attaches button/menu
 			if IsValid(obj) and obj:IsKindOf("ComponentAttach") then
 				table.iclear(self.attaches_menu_popup)
 				local attach_amount = 0
-				obj:ForEachAttach(function(a)
+				obj:ForEachAttach("",function(a)
 					attach_amount = attach_amount + 1
-					local pos = type(a.GetVisualPos) == "function" and a:GetVisualPos()
+					local pos = a.GetVisualPos and a:GetVisualPos()
 
 					self.attaches_menu_popup[attach_amount] = {
 						name = RetName(a),
@@ -1065,6 +1098,8 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059-
 			self.idText:SetText(self:totextex(obj))
 		end)
 	end
+
+	return obj_type == "table" and obj.class
 end
 
 local function PopupClose(name)
@@ -1075,8 +1110,8 @@ local function PopupClose(name)
 end
 function Examine:Done(result)
 	DeleteThread(self.autorefresh_thread)
-	PopupClose("idAttachesMenu")
-	PopupClose("idParentsMenu")
-	PopupClose("idToolsMenu")
+	PopupClose(self.idAttachesMenu)
+	PopupClose(self.idParentsMenu)
+	PopupClose(self.idToolsMenu)
 	ChoGGi_Window.Done(self,result)
 end

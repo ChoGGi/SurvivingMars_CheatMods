@@ -325,20 +325,6 @@ function ChoGGi.MenuFuncs.ParticlesReload()
 	ParticlesReload("", true)
 end
 
-function ChoGGi.MenuFuncs.AttachSpots_Toggle()
-	local sel = ChoGGi.CodeFuncs.SelObject()
-	if not sel then
-		return
-	end
-	if sel.ChoGGi_ShowAttachSpots then
-		sel:HideSpots()
-		sel.ChoGGi_ShowAttachSpots = nil
-	else
-		sel:ShowSpots()
-		sel.ChoGGi_ShowAttachSpots = true
-	end
-end
-
 function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 	local MeasureTool = MeasureTool
 	MeasureTool.SetEnabled(not MeasureTool.enabled)
@@ -391,80 +377,13 @@ function ChoGGi.MenuFuncs.ObjectCloner(obj)
 	end
 end
 
-local function AnimDebug_Show(obj,colour,g)
-	local text = PlaceObject("Text")
-	text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-	text:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
-	text:SetCenter(true)
-	local orient = g.Orientation:new()
-
-	text.ChoGGi_AnimDebug = true
-	obj:Attach(text, 0)
-	obj:Attach(orient, 0)
-	text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
-	CreateGameTimeThread(function()
-		while IsValid(text) do
-			local str = "%d. %s\n"
-			text:SetText(str:format(1,obj:GetAnimDebug(1)))
-			WaitNextFrame()
-		end
-	end)
-end
-
-local function AnimDebug_ShowAll(cls,g)
-	local objs = UICity.labels[cls] or ""
-	for i = 1, #objs do
-		AnimDebug_Show(objs[i])
-	end
-end
-
-local function AnimDebug_Hide(obj)
-	obj:ForEachAttach(function(a)
-		if a.ChoGGi_AnimDebug then
-			a:delete()
-		end
-	end)
-end
-
-local function AnimDebug_HideAll(cls)
-	local objs = UICity.labels[cls] or ""
-	for i = 1, #objs do
-		AnimDebug_Hide(objs[i])
-	end
-end
-
-function ChoGGi.MenuFuncs.ShowAnimDebug_Toggle()
-	if SelectedObj then
-		local sel = SelectedObj
-		if sel.ChoGGi_ShowAnimDebug then
-			sel.ChoGGi_ShowAnimDebug = nil
-			AnimDebug_Hide(sel)
-		else
-			sel.ChoGGi_ShowAnimDebug = true
-			AnimDebug_Show(sel,white)
-		end
-	else
-		local ChoGGi = ChoGGi
-		ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
-		local g = g_Classes
-		if ChoGGi.Temp.ShowAnimDebug then
-			AnimDebug_ShowAll("Building",g)
-			AnimDebug_ShowAll("Unit",g)
-			AnimDebug_ShowAll("CargoShuttle",g)
-		else
-			AnimDebug_HideAll("Building",g)
-			AnimDebug_HideAll("Unit",g)
-			AnimDebug_HideAll("CargoShuttle",g)
-		end
-	end
-end
-
-function ChoGGi.MenuFuncs.SetAnimState()
+function ChoGGi.MenuFuncs.SetAnimState(sel)
 	local ChoGGi = ChoGGi
-	local sel = ChoGGi.CodeFuncs.SelObject()
+	sel = sel or ChoGGi.CodeFuncs.SelObject()
 	if not sel then
 		return
 	end
+
 	local ItemList = {}
 	local Table = sel:GetStates() or empty_table
 
