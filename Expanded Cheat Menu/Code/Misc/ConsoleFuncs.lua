@@ -195,7 +195,10 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	-- stick everything in
 	dlgConsole.idContainer = g_Classes.XWindow:new({
 		Id = "idContainer",
-		Margins = box(10, 0, 0, dlgConsole.idEdit.box:sizey() + 6),
+		Margins = box(10, 0, 0, 0),
+		BorderWidth = 1,
+		Background = -13158858, --dark_gray
+		HAlign = "left",
 		Dock = "bottom",
 		LayoutMethod = "HList",
 		Image = "CommonAssets/UI/round-frame-20.tga",
