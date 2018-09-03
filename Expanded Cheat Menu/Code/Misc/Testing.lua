@@ -3,10 +3,35 @@
 -- go away... there's HexPainter(building) if you wanna have some fun
 
 if ChoGGi.testing then
+
+--~ 	ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarsLogos)
+
+	-- checks for /Logos folder and adds all images to mod as logos (have to be min of 8bit, and makes them power of 2 if they aren't already)
+	-- (Mods.MODID,".png")
+	-- p.s. it adds tga files after converting, but you can just use the pngs
+	function ChoGGi.testing.ConvertImagesPathToLogos(mod,ext)
+		ext = ext or ".png"
+		local mod_path = string.format("%s/Logos",mod.env.CurrentModPath or mod.content_path or mod.path)
+		local images = ChoGGi.ComFuncs.RetFilesInFolder(mod_path,ext)
+		if images then
+			for i = 1, #images do
+				local item = ModItemDecalEntity:new{}
+				item.entity_name = images[i].name
+				item.name = images[i].name
+					-- it expects filename to be a fqpn with /
+				item.filename = ConvertToOSPath(images[i].path):gsub("\\","/")
+				item.mod = mod
+				item.Import(nil,item)
+			end
+		end
+
+	end
+
+
 	local TickStart = ChoGGi.ComFuncs.TickStart
 	local TickEnd = ChoGGi.ComFuncs.TickEnd
 
-	function ChoGGi.CodeFuncs.TestTableInsert()
+	function ChoGGi.testing.TestTableInsert()
 		TickStart("TestTableInsert.Tick")
 		local t1 = {}
 		local c = 0
@@ -28,7 +53,7 @@ if ChoGGi.testing then
 	end
 
 	-- compare compression speed/size
-	function ChoGGi.CodeFuncs.TestCompress(amount)
+	function ChoGGi.testing.TestCompress(amount)
 		-- uncompressed TableToLuaCode(TranslationTable)
 		-- #786351
 
@@ -65,7 +90,7 @@ if ChoGGi.testing then
 	end
 
 	-- checking how fast examine is for examining large amounts of objects
-	function ChoGGi.CodeFuncs.TestConcatExamine(amount)
+	function ChoGGi.testing.TestConcatExamine(amount)
 		local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 		TickStart("TestConcatExamine.Total")
 
@@ -81,7 +106,7 @@ if ChoGGi.testing then
 
 		TickEnd("TestConcatExamine.Total")
 	end
-	function ChoGGi.CodeFuncs.TestRandomColour(amount)
+	function ChoGGi.testing.TestRandomColour(amount)
 		TickStart("TestRandomColour.Total")
 		local RandomColour = ChoGGi.CodeFuncs.RandomColour
 		for _ = 1, amount or 5 do
@@ -92,7 +117,7 @@ if ChoGGi.testing then
 		TickEnd("TestRandomColour.Total")
 	end
 
-	function ChoGGi.CodeFuncs.TestRandomColour2(amount)
+	function ChoGGi.testing.TestRandomColour2(amount)
 		TickStart("TestRandomColour.Total")
 		local RandomColour = ChoGGi.CodeFuncs.RandomColour2
 		for _ = 1, amount or 5 do
@@ -103,7 +128,7 @@ if ChoGGi.testing then
 		TickEnd("TestRandomColour.Total")
 	end
 
-	function ChoGGi.CodeFuncs.TestRandom(amount)
+	function ChoGGi.testing.TestRandom(amount)
 		TickStart("TestRandom.Total")
 		local Random = Random
 		local Random1 = ChoGGi.ComFuncs.Random

@@ -440,21 +440,20 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 end
 
 function ChoGGi.MenuFuncs.ChangeRules()
-	local Presets = Presets
 	local GameRulesMap = GameRulesMap
 	local g_CurrentMissionParams = g_CurrentMissionParams
 
 	local ItemList = {}
-	local defs = Presets.GameRules.Default
-	for i = 1, #defs do
-		local def = defs[i]
-		if def.id ~= "random" then
-			ItemList[#ItemList+1] = {
-				text = Trans(def.display_name),
-				value = def.id,
-				hint = string.format("%s\n%s",Trans(def.description),Trans(def.flavor))
-			}
-		end
+	for id,def in pairs(GameRulesMap) do
+		ItemList[#ItemList+1] = {
+			text = Trans(def.display_name),
+			value = id,
+			hint = string.format([[%s
+%s
+%s: %s
+
+%s: %s]],Trans(def.description),Trans(def.flavor),S[3491--[[Challenge Mod (%)--]]],def.challenge_mod,S[452690473931--[[Exclusion List--]]],def.exclusionlist or "")
+		}
 	end
 
 	local function CallBackFunc(choice)
@@ -482,7 +481,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		end
 
 		for i = 1, #ItemList do
-			--check to make sure it isn't a fake name (no sense in saving it)
+			-- check to make sure it isn't a fake name (no sense in saving it)
 			for j = 1, #choice do
 				local value = choice[j].value
 				if ItemList[i].value == value then
@@ -501,16 +500,16 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		-- apply new rules, something tells me this doesn't disable old rules...
 		local rules = GetActiveGameRules()
+		local UICity = UICity
 		for i = 1, #rules do
-			local rule = rules[i]
-			GameRulesMap[rule]:OnInitEffect(UICity)
-			GameRulesMap[rule]:OnApplyEffect(UICity)
+			GameRulesMap[rules[i]]:EffectsInit(UICity)
+			GameRulesMap[rules[i]]:EffectsApply(UICity)
 		end
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choice,302535920000129--[[Set--]]),
 			302535920001181--[[Rules--]],
-			default_icon
+			"UI/Icons/Sections/workshifts.tga"
 		)
 	end
 
@@ -521,7 +520,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		hint[#hint+1] = ":"
 		for Key,_ in pairs(rules) do
 			hint[#hint+1] = " "
-			hint[#hint+1] = Trans(Presets.GameRules.Default[Key].display_name)
+			hint[#hint+1] = Trans(GameRulesMap[Key].display_name)
 		end
 	end
 
@@ -535,6 +534,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 			{
 				title = 302535920001183--[[Add--]],
 				hint = 302535920001185--[[Add selected rules--]],
+				checked = true,
 			},
 			{
 				title = 302535920000281--[[Remove--]],

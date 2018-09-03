@@ -129,7 +129,7 @@ do -- translate
 end
 
 if Mods.ChoGGi_testing then
-	ChoGGi.testing = true
+	ChoGGi.testing = {}
 end
 
 function printC(...)

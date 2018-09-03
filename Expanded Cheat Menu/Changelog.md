@@ -46,6 +46,7 @@
 - Set Sponsor/Commander broke in DA (thanks Dawnmist).
 - Change Terrain Type now restores concrete/dome textures.
 - Issue with Fully Automated Buildings (thanks hchsiao).
+- Set Game Rules broke in DA (thanks SkiRich).
 
 ## v8.5 (26 Aug 2018)
 ### Added:
