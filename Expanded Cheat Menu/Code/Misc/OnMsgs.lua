@@ -208,11 +208,12 @@ function OnMsg.ModsLoaded()
 
 		-- add the defaults we skip to my actions
 		for i = 1, c do
+			local a = Actions[i]
 			-- if it's a . than we haven't updated it yet
-			if Actions[i].ActionId:sub(1,1) == "." then
-				Actions[i].ActionTranslate = false
-				Actions[i].replace_matching_id = true
-				Actions[i].ActionId = string.format("%s%s",Actions[i].ActionMenubar,Actions[i].ActionId)
+			if a.ActionId:sub(1,1) == "." then
+				a.ActionTranslate = false
+				a.replace_matching_id = true
+				a.ActionId = string.format("%s%s",a.ActionMenubar,a.ActionId)
 			end
 		end
 
@@ -318,7 +319,7 @@ local function Rebuildshortcuts()
 --~		 ShowConsole(not dlgConsole:GetVisible())
 --~	 end
 --~	 end,
---~	 ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+--~	 ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
 --~ }
 
 	for i = 1, #Actions do
@@ -1038,6 +1039,8 @@ do -- LoadGame/CityStart
 		UICity.labels.ChoGGi_GridElements = nil
 		UICity.labels.ChoGGi_LifeSupportGridElement = nil
 		UICity.labels.ChoGGi_ElectricityGridElement = nil
+		-- re-binding is now an in-game thing, so keys are just defaults
+		UserSettings.KeyBindings = nil
 
 		-- fix an issue I added...
 		for _,settings in pairs(UserSettings.BuildingSettings) do

@@ -64,7 +64,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = S[302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]],
 	OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.MeasureTool_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.MeasureTool_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -87,7 +88,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.MenuFuncs.ObjectCloner()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectCloner,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectCloner,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -124,7 +126,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.OpenInObjectManipulator,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.OpenInObjectManipulator,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -138,7 +141,8 @@ Actions[c] = {
 Warning: Unable to mouse select items after spawn
 hover mouse over and use Delete Selected Object"--]]],
 	OnAction = ChoGGi.MenuFuncs.ObjectSpawner,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectSpawner,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectSpawner,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -152,7 +156,8 @@ click+drag for multiple selection.
 
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."--]]],
 	OnAction = ChoGGi.CodeFuncs.Editor_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.Editor_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.Editor_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -180,7 +185,8 @@ Actions[c] = {
 			ChoGGi.ComFuncs.OpenInExamineDlg(obj)
 		end
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjExaminer,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjExaminer,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -212,7 +218,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
 	OnAction = ChoGGi.MenuFuncs.debug_build_grid,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.debug_grid_build,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.debug_grid_build,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -225,7 +232,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.CodeFuncs.FlightGrid_Toggle()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.debug_grid_squares,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.debug_grid_squares,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -236,7 +244,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
 	RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
 	OnAction = ToggleTerrainDepositGrid,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleTerrainDepositGrid,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleTerrainDepositGrid,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -370,7 +379,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetPathMarkersGameTime,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetPathMarkersGameTime,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -383,7 +393,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.MenuFuncs.SetPathMarkersVisible()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetPathMarkersVisible,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetPathMarkersVisible,
+	ActionBindable = true,
 }
 
 local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
@@ -433,6 +444,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
 	OnAction = function()
 		ChoGGi.CodeFuncs.DeleteObject()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.DeleteObject,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.DeleteObject,
+	ActionBindable = true,
 	ActionSortKey = "99",
 }

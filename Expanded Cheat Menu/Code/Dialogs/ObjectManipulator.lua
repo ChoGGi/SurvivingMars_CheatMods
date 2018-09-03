@@ -47,6 +47,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[302535920000084--[[Auto-Refresh--]]],
 		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
 		Dock = "left",
+		RolloverAnchor = "top",
 		OnChange = function()
 			self.idAutoRefreshToggle(self)
 		end,
@@ -62,6 +63,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[1000220--[[Refresh--]]],
 		Dock = "left",
 		RolloverText = S[302535920000092--[[Refresh list.--]]],
+		RolloverAnchor = "top",
 		OnPress = function()
 			self:UpdateListContent()
 		end,
@@ -73,6 +75,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[302535920000093--[[Goto Obj--]]],
 		Dock = "left",
 		RolloverText = S[302535920000094--[[View/select object on map.--]]],
+		RolloverAnchor = "top",
 		OnPress = function()
 			ViewAndSelectObject(self.obj)
 		end,
@@ -84,6 +87,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[398847925160--[[New--]]],
 		Dock = "left",
 		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
+		RolloverAnchor = "top",
 		OnPress = function()
 			self:idAddNewOnPress()
 		end,
@@ -94,6 +98,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Text = S[302535920000099--[[Apply To All--]]],
 		Dock = "left",
 		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
+		RolloverAnchor = "top",
 		OnPress = function()
 			self:idApplyOnPress()
 		end,
@@ -124,6 +129,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		OnTextChanged = function()
 			self:idEditValueOnTextChanged()
 		end,
+		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
 	self:SetInitPos(context.parent)

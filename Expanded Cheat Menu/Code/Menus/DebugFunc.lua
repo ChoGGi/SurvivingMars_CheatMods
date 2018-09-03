@@ -123,7 +123,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		local data = SavegamesList[i]
 
 		-- build played time
-		local playtime = local_T{77, "Unknown"}
+		local playtime = T{77, "Unknown"}
 		if data.playtime then
 			local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 			local hours = string.format("%02d", h)

@@ -44,7 +44,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 	RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
 	OnAction = ChoGGi.MenuFuncs.TerrainEditor_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TerrainEditor_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.TerrainEditor_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -57,7 +58,8 @@ Actions[c] = {
 
 Use Shift + Arrow keys to change the height/radius.--]]],
 	OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenTerrain_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenTerrain_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -149,7 +151,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 	RolloverText = S[302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetTransparencyUI,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetTransparencyUI,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -175,7 +178,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 	RolloverText = S[302535920000695--[[Change the opacity of objects.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetObjectOpacity,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetObjectOpacity,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -189,7 +193,8 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 	OnAction = function()
 		ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CreateObjectListAndAttaches,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CreateObjectListAndAttaches,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -251,7 +256,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 	RolloverText = S[302535920000652--[[I believe I can fly.--]]],
 	OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFree_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CameraFree_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -262,7 +268,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
 	RolloverText = S[302535920000654--[[Select (or mouse over) an object to follow.--]]],
 	OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CameraFollow_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CameraFollow_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -273,7 +280,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 	RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
 	OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CursorVisible_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CursorVisible_Toggle,
+	ActionBindable = true,
 }
 
 

@@ -543,8 +543,7 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1, #objs do
 		local c = objs[i]
---~		 if c.entity:find("Child",1,true) then
-		if c.entity:find("Child",1,true) and c.specialist ~= "none" then
+		if c.entity:find("Child") and c.specialist ~= "none" then
 			c.specialist = "none"
 
 			c.traits.Youth = nil

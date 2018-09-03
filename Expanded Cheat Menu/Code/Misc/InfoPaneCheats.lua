@@ -133,7 +133,7 @@ do
 	end
 	function Colonist:CheatRandomSpec()
 		-- skip children, or they'll be a black cube
-		if not self.entity:find("Child",1,true) then
+		if not self.entity:find("Child") then
 			self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,6)],"init")
 		end
 	end

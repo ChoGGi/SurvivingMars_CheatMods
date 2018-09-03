@@ -4,6 +4,7 @@
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
+local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
 
@@ -22,7 +23,6 @@ local function SetTrans(obj)
 end
 
 do -- funcs without a class
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	local function SaveOrigFunc(func_name)
 		if not ChoGGi_OrigFuncs[func_name] then
 			ChoGGi_OrigFuncs[func_name] = _G[func_name]
@@ -38,6 +38,15 @@ do -- funcs without a class
 	SaveOrigFunc("UIGetBuildingPrerequisites")
 	SaveOrigFunc("GetMaxCargoShuttleCapacity")
 	SaveOrigFunc("LoadCustomOnScreenNotification")
+	SaveOrigFunc("TDevModeGetEnglishText")
+
+	-- I guess, don't pass a string to it?
+	function TDevModeGetEnglishText(T, deep, no_assert,...)
+		if type(T) == "string" then
+			return T
+		end
+		return ChoGGi_OrigFuncs.TDevModeGetEnglishText(T, deep, no_assert,...)
+	end
 
 	-- fix for sending nil id to it
 	local unpack_params = unpack_params
@@ -182,10 +191,8 @@ do -- funcs without a class
 		ChoGGi_OrigFuncs.ShowConsoleLog(...)
 		SetTrans(dlgConsoleLog)
 	end
-
 end -- do
 
-local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local function SaveOrigFunc(class_name,func_name)
 	local new_name = string.format("%s_%s",class_name,func_name)
 	if not ChoGGi_OrigFuncs[new_name] then
@@ -193,241 +200,262 @@ local function SaveOrigFunc(class_name,func_name)
 	end
 end
 
--- ClassesGenerate
-function OnMsg.ClassesGenerate()
-	SaveOrigFunc("BaseRover","GetCableNearby")
-	SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
-	SaveOrigFunc("GridObject","GetPipeConnections")
-	SaveOrigFunc("UIRangeBuilding","SetUIRange")
-	SaveOrigFunc("Workplace","AddWorker")
-	SaveOrigFunc("XPopupMenu","RebuildActions")
-	SaveOrigFunc("XShortcutsHost","SetVisible")
-	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
-	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
+SaveOrigFunc("CursorBuilding","GameInit")
+SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
+SaveOrigFunc("Workplace","GetWorkshiftPerformance")
+SaveOrigFunc("BaseRover","GetCableNearby")
+SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
+SaveOrigFunc("GridObject","GetPipeConnections")
+SaveOrigFunc("UIRangeBuilding","SetUIRange")
+SaveOrigFunc("Workplace","AddWorker")
+SaveOrigFunc("XPopupMenu","RebuildActions")
+SaveOrigFunc("XShortcutsHost","SetVisible")
 
-	function SupplyRocket:HasEnoughFuelToLaunch(...)
-		if ChoGGi.UserSettings.RocketsIgnoreFuel then
-			return true
+-- allows you to build outside buildings inside and vice
+do -- CursorBuilding:GameInit
+	local function SetDefault(cc,name)
+		cc.template_obj[name] = cc.template_obj:GetDefaultPropertyValue(name)
+	end
+	function CursorBuilding:GameInit()
+		if ChoGGi.UserSettings.RemoveBuildingLimits then
+			self.template_obj.dome_required = false
+			self.template_obj.dome_forbidden = false
 		else
-			return ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
+			SetDefault(self,"dome_required")
+			SetDefault(self,"dome_forbidden")
 		end
+
+		return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self)
 	end
+end -- do
 
-	-- override any performance changes if needed
-	function Workplace:GetWorkshiftPerformance(...)
-		local set = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
-		if set and set.performance_notauto then
-			return set.performance_notauto
-		end
-		return ChoGGi_OrigFuncs.Workplace_GetWorkshiftPerformance(self,...)
+-- no need for fuel to launch rocket
+function SupplyRocket:HasEnoughFuelToLaunch(...)
+	if ChoGGi.UserSettings.RocketsIgnoreFuel then
+		return true
+	else
+		return ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
 	end
+end
 
-	-- UI transparency cheats menu
-	function XShortcutsHost:SetVisible(...)
-		SetTrans(self)
-		return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self,...)
+-- override any performance changes if needed
+function Workplace:GetWorkshiftPerformance(...)
+	local set = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+	if set and set.performance_notauto then
+		return set.performance_notauto
 	end
+	return ChoGGi_OrigFuncs.Workplace_GetWorkshiftPerformance(self,...)
+end
 
-	-- yeah who gives a shit about mouseover hints on menu items
-	function XPopupMenu:RebuildActions(host)
-		local menu = self.MenuEntries
-		local context = host.context
-		local ShowIcons = self.ShowIcons
-		self.idContainer:DeleteChildren()
-		for i = 1, #host.actions do
-			local action = host.actions[i]
-			if action.ActionMenubar == menu and host:FilterAction(action) then
-				local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+-- UI transparency cheats menu
+function XShortcutsHost:SetVisible(...)
+	SetTrans(self)
+	return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self,...)
+end
 
-				-- that was hard...
-				if type(action.RolloverText) == "function" then
-					entry.RolloverText = action.RolloverText()
-				else
-					entry.RolloverText = action.RolloverText
-				end
-				entry.RolloverTitle = S[126095410863--[[Info--]]]
+-- yeah who gives a shit about mouseover hints on menu items
+function XPopupMenu:RebuildActions(host)
+	local menu = self.MenuEntries
+	local context = host.context
+	local ShowIcons = self.ShowIcons
+	self.idContainer:DeleteChildren()
+	for i = 1, #host.actions do
+		local action = host.actions[i]
+		if action.ActionMenubar == menu and host:FilterAction(action) then
+			local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
 
-				function entry.OnPress(this, _)
-					if action.OnActionEffect ~= "popup" then
-						self:ClosePopupMenus()
-					end
-					host:OnAction(action, this)
-					if action.ActionToggle and self.window_state ~= "destroying" then
-						self:RebuildActions(host)
-					end
-				end
-				function entry.OnAltPress(this, _)
-					self:ClosePopupMenus()
-					action:OnAltAction(host, this)
-				end
-				entry:SetFontProps(self)
-				entry:SetTranslate(action.ActionTranslate)
-				entry:SetText(action.ActionName)
-				if action.ActionToggle then
-					entry:SetToggled(action:ActionToggled(host))
-				else
-					entry:SetIconReservedSpace(self.IconReservedSpace)
-				end
-				if ShowIcons then
-					entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
-				end
-				entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-				entry:Open()
+			-- that was hard...
+			if type(action.RolloverText) == "function" then
+				entry.RolloverText = action.RolloverText()
 			else
+				entry.RolloverText = action.RolloverText
 			end
+			entry.RolloverTitle = S[126095410863--[[Info--]]]
+
+			function entry.OnPress(this, _)
+				if action.OnActionEffect ~= "popup" then
+					self:ClosePopupMenus()
+				end
+				host:OnAction(action, this)
+				if action.ActionToggle and self.window_state ~= "destroying" then
+					self:RebuildActions(host)
+				end
+			end
+			function entry.OnAltPress(this, _)
+				self:ClosePopupMenus()
+				action:OnAltAction(host, this)
+			end
+			entry:SetFontProps(self)
+			entry:SetTranslate(action.ActionTranslate)
+			entry:SetText(action.ActionName)
+			if action.ActionToggle then
+				entry:SetToggled(action:ActionToggled(host))
+			else
+				entry:SetIconReservedSpace(self.IconReservedSpace)
+			end
+			if ShowIcons then
+				entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
+			end
+			entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+			entry:Open()
+		else
 		end
 	end
+end
 
-	do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
-		local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
-		local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
-		local decor_spot = "Tubedecor"
-		local IsValidEntity = IsValidEntity
-		local point = point
-		local WorldToHex = WorldToHex
-		local IsKindOf = IsKindOf
-		function GridObject:GetPipeConnections()
-			if ChoGGi.Temp.FixingPipes then
-				if not IsKindOf(self, "LifeSupportGridObject") then
-					return
-				end
+do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
+	local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
+	local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
+	local decor_spot = "Tubedecor"
+	local IsValidEntity = IsValidEntity
+	local point = point
+	local WorldToHex = WorldToHex
+	local IsKindOf = IsKindOf
+	function GridObject:GetPipeConnections()
+		if ChoGGi.Temp.FixingPipes then
+			if not IsKindOf(self, "LifeSupportGridObject") then
+				return
+			end
 
-				local gsn = self:GetGridSkinName()
-				local entity = self.entity
-				local cache_key = self:GetEntityNameForPipeConnections(gsn)
-				local list = PipeConnectionsCache[cache_key]
-				if not list then
-					local skin = TubeSkinsBuildingConnections[gsn]
+			local gsn = self:GetGridSkinName()
+			local entity = self.entity
+			local cache_key = self:GetEntityNameForPipeConnections(gsn)
+			local list = PipeConnectionsCache[cache_key]
+			if not list then
+				local skin = TubeSkinsBuildingConnections[gsn]
 
-					list = {}
-					PipeConnectionsCache[cache_key] = list
+				list = {}
+				PipeConnectionsCache[cache_key] = list
 
-					--figure out if there is a "decor" spot.
-					local decor_spot_info_t = HasSpot(entity, "idle", decor_spot) and {entity, false} or false
-					if not decor_spot_info_t and self.configurable_attaches then
-						for i = #self.configurable_attaches, 1, -1 do
-							local attach = self.configurable_attaches[i]
-							local attach_entity, attach_spot = _G[attach[1]]:GetEntity(), attach[2]
-							if HasSpot(attach_entity, "idle", decor_spot) then
-								decor_spot_info_t = {attach_entity, attach_spot}
-								break
-							end
+				--figure out if there is a "decor" spot.
+				local decor_spot_info_t = HasSpot(entity, "idle", decor_spot) and {entity, false} or false
+				if not decor_spot_info_t and self.configurable_attaches then
+					for i = #self.configurable_attaches, 1, -1 do
+						local attach = self.configurable_attaches[i]
+						local attach_entity, attach_spot = _G[attach[1]]:GetEntity(), attach[2]
+						if HasSpot(attach_entity, "idle", decor_spot) then
+							decor_spot_info_t = {attach_entity, attach_spot}
+							break
 						end
 					end
+				end
 
-					for s, spot in ipairs(spots) do
-						local first, last = GetSpotRange(entity, "idle", spot)
-						local pipe_entity, pt_end, angle_end
-						for i = first, last do
-							pipe_entity = pipe_entity or (cache_key .. spot_attach[s])
-							if not IsValidEntity(pipe_entity) then
-								--default connection tube.
-								pipe_entity = skin.default_tube
-							end
-							pt_end = pt_end or GetEntitySpotPos(pipe_entity, GetSpotBeginIndex(pipe_entity, "idle", "End"))
-							angle_end = angle_end or CalcOrientation(pt_end)
-							if pt_end:x() ~= 0 or pt_end:y() ~= 0 then
-								local spot_pos_pt = GetEntitySpotPos(entity, i)
-								local dir = HexAngleToDirection(angle_end + GetEntitySpotAngle(entity, i))
-								local pt = point(WorldToHex(spot_pos_pt + Rotate(point(guim, 0), angle_end + GetEntitySpotAngle(entity, i))))
-								-- this will allow us to ignore the error and change the skin
+				for s, spot in ipairs(spots) do
+					local first, last = GetSpotRange(entity, "idle", spot)
+					local pipe_entity, pt_end, angle_end
+					for i = first, last do
+						pipe_entity = pipe_entity or (cache_key .. spot_attach[s])
+						if not IsValidEntity(pipe_entity) then
+							--default connection tube.
+							pipe_entity = skin.default_tube
+						end
+						pt_end = pt_end or GetEntitySpotPos(pipe_entity, GetSpotBeginIndex(pipe_entity, "idle", "End"))
+						angle_end = angle_end or CalcOrientation(pt_end)
+						if pt_end:x() ~= 0 or pt_end:y() ~= 0 then
+							local spot_pos_pt = GetEntitySpotPos(entity, i)
+							local dir = HexAngleToDirection(angle_end + GetEntitySpotAngle(entity, i))
+							local pt = point(WorldToHex(spot_pos_pt + Rotate(point(guim, 0), angle_end + GetEntitySpotAngle(entity, i))))
+							-- this will allow us to ignore the error and change the skin
 --~								 for _, entry in ipairs(list) do
 --~									 if entry[1] == pt and entry[2] == dir then
 --~										 printf("Duplicate pipe connection: entity %s, spot %s, pipe entity %s", entity, spot, pipe_entity)
 --~										 pt = nil
 --~									 end
 --~								 end
-								if pt then
-									local decor_t = nil
-									if decor_spot_info_t then
-										decor_t = {skin.decor_entity}
-										if not decor_spot_info_t[2] then
-											--decor spot on main entity
-											decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot, spot_pos_pt), entity}
-										else
-											--decor spot on auto attach
-											decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot_info_t[2], spot_pos_pt), entity}
-											decor_t[3] = {GetEntityNearestSpotIdx(decor_spot_info_t[1], decor_spot, Rotate(spot_pos_pt - GetEntitySpotPos(entity, decor_t[2][1]), -GetEntitySpotAngle(entity, decor_t[2][1])) ), decor_spot_info_t[1]}
-										end
+							if pt then
+								local decor_t = nil
+								if decor_spot_info_t then
+									decor_t = {skin.decor_entity}
+									if not decor_spot_info_t[2] then
+										--decor spot on main entity
+										decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot, spot_pos_pt), entity}
+									else
+										--decor spot on auto attach
+										decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot_info_t[2], spot_pos_pt), entity}
+										decor_t[3] = {GetEntityNearestSpotIdx(decor_spot_info_t[1], decor_spot, Rotate(spot_pos_pt - GetEntitySpotPos(entity, decor_t[2][1]), -GetEntitySpotAngle(entity, decor_t[2][1])) ), decor_spot_info_t[1]}
 									end
-
-									list[#list + 1] = { pt, dir, i, pipe_entity, decor_t }
 								end
-							else
-								printf("Pipe entity %s does not have a valid 'End' spot", pipe_entity)
+
+								list[#list + 1] = { pt, dir, i, pipe_entity, decor_t }
 							end
+						else
+							printf("Pipe entity %s does not have a valid 'End' spot", pipe_entity)
 						end
 					end
 				end
-				return list
-			else
-				return ChoGGi_OrigFuncs.GridObject_GetPipeConnections(self)
 			end
-		end
-	end
-
-	--larger trib/subsurfheater radius
-	function UIRangeBuilding:SetUIRange(radius)
-		local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
-		if rad and rad.uirange then
-			radius = rad.uirange
-		end
-		return ChoGGi_OrigFuncs.UIRangeBuilding_SetUIRange(self, radius)
-	end
-
-	--block certain traits from workplaces
-	function Workplace:AddWorker(worker, shift)
-		local ChoGGi = ChoGGi
-		local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
-		--check that the tables contain at least one trait
-		local bt = s and s.blocktraits and type(s.blocktraits) == "table" and next(s.blocktraits) and s.blocktraits
-		local rt = s and s.restricttraits and type(s.restricttraits) == "table" and next(s.restricttraits) and s.restricttraits
-		if bt or rt then
-
-			local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,s)
-			if block then
-				return
-			end
-			if restrict then
-				self.workers[shift] = self.workers[shift] or empty_table
-				self.workers[shift][#self.workers[shift]+1] = worker
-				--table.insert(self.workers[shift], worker)
-				self:UpdatePerformance()
-				self:SetWorkplaceWorking()
-				self:UpdateAttachedSigns()
-			end
-
+			return list
 		else
-			return ChoGGi_OrigFuncs.Workplace_AddWorker(self, worker, shift)
+			return ChoGGi_OrigFuncs.GridObject_GetPipeConnections(self)
 		end
 	end
+end
 
-	do -- BuildingVisualDustComponent:SetDustVisuals
-		local ApplyToObjAndAttaches = ApplyToObjAndAttaches
-		local MulDivRound = MulDivRound
-		-- set amount of dust applied
-		function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
-			if ChoGGi.UserSettings.AlwaysDustyBuildings then
-				if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
-					self.ChoGGi_AlwaysDust = dust
-				end
-				dust = self.ChoGGi_AlwaysDust
+--larger trib/subsurfheater radius
+function UIRangeBuilding:SetUIRange(radius)
+	local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+	if rad and rad.uirange then
+		radius = rad.uirange
+	end
+	return ChoGGi_OrigFuncs.UIRangeBuilding_SetUIRange(self, radius)
+end
+
+--block certain traits from workplaces
+function Workplace:AddWorker(worker, shift)
+	local ChoGGi = ChoGGi
+	local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+	--check that the tables contain at least one trait
+	local bt = s and s.blocktraits and type(s.blocktraits) == "table" and next(s.blocktraits) and s.blocktraits
+	local rt = s and s.restricttraits and type(s.restricttraits) == "table" and next(s.restricttraits) and s.restricttraits
+	if bt or rt then
+
+		local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,s)
+		if block then
+			return
+		end
+		if restrict then
+			self.workers[shift] = self.workers[shift] or empty_table
+			self.workers[shift][#self.workers[shift]+1] = worker
+			--table.insert(self.workers[shift], worker)
+			self:UpdatePerformance()
+			self:SetWorkplaceWorking()
+			self:UpdateAttachedSigns()
+		end
+
+	else
+		return ChoGGi_OrigFuncs.Workplace_AddWorker(self, worker, shift)
+	end
+end
+
+do -- BuildingVisualDustComponent:SetDustVisuals
+	local ApplyToObjAndAttaches = ApplyToObjAndAttaches
+	local MulDivRound = MulDivRound
+	-- set amount of dust applied
+	function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
+		if ChoGGi.UserSettings.AlwaysDustyBuildings then
+			if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
+				self.ChoGGi_AlwaysDust = dust
 			end
-
-			local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
-			ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
+			dust = self.ChoGGi_AlwaysDust
 		end
-	end --do
 
-	--change dist we can charge from cables
-	function BaseRover:GetCableNearby(rad)
-		local new_rad = ChoGGi.UserSettings.RCChargeDist
-		if new_rad then
-			rad = new_rad
-		end
-		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
+		local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
+		ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
 	end
-end -- ClassesGenerate
+end --do
+
+--change dist we can charge from cables
+function BaseRover:GetCableNearby(rad)
+	local new_rad = ChoGGi.UserSettings.RCChargeDist
+	if new_rad then
+		rad = new_rad
+	end
+	return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
+end
+
+--~ -- ClassesGenerate
+--~ function OnMsg.ClassesGenerate()
+--~ end -- ClassesGenerate
 
 -- ClassesPreprocess
 function OnMsg.ClassesPreprocess()
@@ -435,7 +463,7 @@ function OnMsg.ClassesPreprocess()
 
 	local GetActionsHost = GetActionsHost
 	function InfopanelObj:CreateCheatActions(win)
-		--fire orig func to build cheats
+		-- fire orig func to build cheats
 		if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
 			--then we can add some hints to the cheats
 			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
@@ -812,44 +840,41 @@ function OnMsg.ClassesBuilt()
 		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)
 	end
 
-	--remove spire spot limit, and other limits on placing buildings
+	--remove spire spot limit
 	do -- ConstructionController:UpdateCursor
-		local function SetDefault(cc,name)
-			cc.template_obj[name] = cc.template_obj:GetDefaultPropertyValue(name)
-		end
+		local IsValid = IsValid
+		local UnbuildableZ = buildUnbuildableZ()
+		local HexGetNearestCenter = HexGetNearestCenter
+		local GetBuildableZ = GetBuildableZ
+		local WorldToHex = WorldToHex
+		local GetHeight = terrain.GetHeight
+		local FixConstructPos = FixConstructPos
+		local ShowNearbyHexGrid = ShowNearbyHexGrid
+		local ObjModified = ObjModified
+
 		function ConstructionController:UpdateCursor(pos, force)
-			local UserSettings = ChoGGi.UserSettings
-			local force_override
+			if ChoGGi.UserSettings.Building_dome_spot then
+				if IsValid(self.cursor_obj) then
+					self.spireless_dome = false
+					local hex_world_pos = HexGetNearestCenter(pos)
+					local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+					if build_z == UnbuildableZ then
+						build_z = pos:z() or GetHeight(pos)
+					end
+					hex_world_pos = hex_world_pos:SetZ(build_z)
 
-			-- used a different method that works with domes
---~			 if UserSettings.Building_instant_build then
---~				 --instant_build on domes = missing textures on domes
---~				 if self.template_obj.achievement ~= "FirstDome" then
---~					 self.template_obj.instant_build = true
---~				 end
---~			 else
---~				 SetDefault(self,"instant_build")
---~				 --self.template_obj.instant_build = self.template_obj:GetDefaultPropertyValue("instant_build")
---~			 end
+					local new_pos = self.snap_to_grid and hex_world_pos or pos
+					new_pos = FixConstructPos(new_pos)
 
-			if UserSettings.Building_dome_spot then
-				self.template_obj.dome_spot = "none"
-				--force_override = true
-			else
-				SetDefault(self,"dome_spot")
-			end
-
-			if UserSettings.RemoveBuildingLimits then
-				self.template_obj.dome_required = false
-				self.template_obj.dome_forbidden = false
-				force_override = true
-			else
-				SetDefault(self,"dome_required")
-				SetDefault(self,"dome_forbidden")
-			end
-
-			if force_override then
-				return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, false)
+					if force or (self.cursor_obj:GetPos() ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+						ShowNearbyHexGrid(hex_world_pos)
+						self.cursor_obj:SetPos(new_pos)
+						self:UpdateConstructionObstructors()
+						self:UpdateConstructionStatuses() --should go after obstructors
+						self:UpdateShortConstructionStatus()
+						ObjModified(self)
+					end
+				end
 			else
 				return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, force)
 			end

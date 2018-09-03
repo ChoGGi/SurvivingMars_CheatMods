@@ -60,7 +60,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = S[302535920000658--[[Write screenshot--]]],
 	OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshot,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.TakeScreenshot,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -73,7 +74,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.MenuFuncs.TakeScreenshot(true)
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TakeScreenshotUpsampled,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.TakeScreenshotUpsampled,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -110,7 +112,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
 	RolloverText = S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
 	OnAction = ChoGGi.MenuFuncs.Interface_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ToggleInterface,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleInterface,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -121,7 +124,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 	RolloverText = S[302535920000665--[[Concrete, metal deposits, not working, etc...--]]],
 	OnAction = ChoGGi.MenuFuncs.SignsInterface_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SignsInterface_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -218,7 +222,8 @@ Actions[c] = {
 	RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
 	OnAction = ChoGGi.MenuFuncs.CheatsMenu_Toggle,
 	ActionSortKey = "5",
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatsMenu_Toggle,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CheatsMenu_Toggle,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -272,7 +277,18 @@ Actions[c] = {
 	ActionId = ".*Info*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = string.format("%s : %s",S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]],ChoGGi.email),
-	ActionSortKey = "-1",
+	ActionSortKey = "-0*Info*",
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Help_Text,
+	ActionName = string.format("*%s & %s %s*",S[283142739680--[[Game--]]],S[987648737170--[[Map--]]],S[126095410863--[[Info--]]]),
+	ActionId = ".*Game & Map Info*",
+	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+	RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],
+	OnAction = ChoGGi.MenuFuncs.RetMapInfo,
+	ActionSortKey = "-1*Game & Map Info*",
 }
 
 c = c + 1
@@ -285,17 +301,7 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.RetHardwareInfo())
 	end,
-	ActionSortKey = "0",
-}
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_Help_Text,
-	ActionName = string.format("*%s & %s %s*",S[283142739680--[[Game--]]],S[987648737170--[[Map--]]],S[126095410863--[[Info--]]]),
-	ActionId = ".*Game & Map Info*",
-	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
-	RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],
-	OnAction = ChoGGi.MenuFuncs.RetMapInfo,
-	ActionSortKey = "1",
+	ActionSortKey = "-2*Stats*",
 }
 
 c = c + 1
@@ -308,33 +314,7 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/GameFunctions.lua"))
 	end,
-	ActionSortKey = "0",
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_Help_Text,
-	ActionName = [[Misc]],
-	ActionId = ".Misc",
-	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-	RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-	OnAction = function()
-		OpenUrl(str_url:format("Tutorials/Misc.md"))
-	end,
-	ActionSortKey = "96",
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_Help_Text,
-	ActionName = [[Save Load Mod Settings]],
-	ActionId = ".Save Load Mod Settings",
-	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-	RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-	OnAction = function()
-		OpenUrl(str_url:format("Tutorials/Save Load Mod Settings.md"))
-	end,
-	ActionSortKey = "97",
+	ActionSortKey = "-2*Game Functions*",
 }
 
 c = c + 1
@@ -347,7 +327,7 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/OnMsgs Easy Start.md"))
 	end,
-	ActionSortKey = "98",
+	ActionSortKey = "-3OnMsgs Easy Start",
 }
 
 c = c + 1
@@ -360,7 +340,7 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/OnMsgs Load Game.md"))
 	end,
-	ActionSortKey = "98",
+	ActionSortKey = "-3OnMsgs Load Game",
 }
 
 c = c + 1
@@ -373,7 +353,31 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/OnMsgs New Game.md"))
 	end,
-	ActionSortKey = "98",
+	ActionSortKey = "-3OnMsgs New Game",
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Help_Text,
+	ActionName = [[Misc]],
+	ActionId = ".Misc",
+	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+	RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+	OnAction = function()
+		OpenUrl(str_url:format("Tutorials/Misc.md"))
+	end,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_Help_Text,
+	ActionName = [[Save Load Mod Settings]],
+	ActionId = ".Save Load Mod Settings",
+	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+	RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+	OnAction = function()
+		OpenUrl(str_url:format("Tutorials/Save Load Mod Settings.md"))
+	end,
 }
 
 c = c + 1
@@ -386,7 +390,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Add New Trait.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -399,7 +402,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Change Animation.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -412,7 +414,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/DroneNoBatteryNeeded.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -425,7 +426,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Hidden Milestones.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -438,7 +438,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Locales.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -451,7 +450,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Random number.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -464,7 +462,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Return All Nearby Objects.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -477,7 +474,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Return Random Colours.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -490,7 +486,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/Show A List of Choices.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -503,7 +498,6 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/TaskRequestFuncs.md"))
 	end,
-	ActionSortKey = "99",
 }
 
 c = c + 1
@@ -516,5 +510,4 @@ Actions[c] = {
 	OnAction = function()
 		OpenUrl(str_url:format("Tutorials/String To Object.md"))
 	end,
-	ActionSortKey = "99",
 }

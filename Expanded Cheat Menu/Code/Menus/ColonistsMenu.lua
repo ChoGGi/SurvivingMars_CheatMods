@@ -63,7 +63,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = S[302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]],
 	OnAction = ChoGGi.MenuFuncs.TheSoylentOption,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.TheSoylentOption,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.TheSoylentOption,
+	ActionBindable = true,
 }
 
 c = c + 1

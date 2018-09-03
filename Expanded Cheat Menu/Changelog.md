@@ -5,6 +5,7 @@
 
 ## v8.7 (Unreleased)
 ### Changed:
+- Keys are now bindable in the options (if there's any menu items you want a shortcut for?).
 - Change Logo/Upload Mod shows image in hint.
 - Random Object Colour is more random.
 - Change Colour renamed to Color Modifier.
@@ -14,6 +15,7 @@
 - Wrong images in Mystery Log.
 - For multi-select list choices one of the hints was missing.
 - Examine popups would show a list from another examine.
+- Find Value was using patterns instead of plain text.
 
 ## v8.6 (02 Sep 2018)
 ### Added:

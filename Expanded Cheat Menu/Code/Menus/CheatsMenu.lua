@@ -112,7 +112,8 @@ Actions[c] = {
 	RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
 	OnAction = CheatCompleteAllConstructions,
 	ActionSortKey = "11Complete Constructions",
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.CheatCompleteAllConstructions,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.CheatCompleteAllConstructions,
+	ActionBindable = true,
 }
 
 c = c + 1

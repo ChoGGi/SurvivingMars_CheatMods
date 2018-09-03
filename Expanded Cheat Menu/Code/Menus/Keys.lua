@@ -117,7 +117,8 @@ c = c + 1
 Actions[c] = {
 	ActionId = "ChoGGi_ClearConsoleLog",
 	OnAction = cls,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ClearConsoleLog,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ClearConsoleLog,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -126,7 +127,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.CodeFuncs.SelObject())
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourRandom,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourRandom,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -135,7 +137,8 @@ Actions[c] = {
 	OnAction = function()
 		ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.CodeFuncs.SelObject())
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ObjectColourDefault,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourDefault,
+	ActionBindable = true,
 }
 
 local function ToggleConsole()
@@ -152,7 +155,8 @@ Actions[c] = {
 	OnAction = function()
 		ToggleConsole()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleTilde,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -161,7 +165,8 @@ Actions[c] = {
 	OnAction = function()
 		ToggleConsole()
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ShowConsoleEnter,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleEnter,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -177,7 +182,8 @@ Actions[c] = {
 			dlgConsole.idEdit:SetText("restart")
 		end
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.ConsoleRestart,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.ConsoleRestart,
+	ActionBindable = true,
 }
 
 -- goes to placement mode with last built object
@@ -190,7 +196,8 @@ Actions[c] = {
 			ChoGGi.MenuFuncs.ConstructionModeSet(last.encyclopedia_id ~= "" and last.encyclopedia_id or last.entity)
 		end
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastConstructedBuilding,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.LastConstructedBuilding,
+	ActionBindable = true,
 }
 
 -- goes to placement mode with SelectedObj
@@ -205,7 +212,8 @@ Actions[c] = {
 			ChoGGi.MenuFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
 		end
 	end,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.LastPlacedObject,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.LastPlacedObject,
+	ActionBindable = true,
 }
 
 -- fired as last lua in Menus

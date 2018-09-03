@@ -401,7 +401,6 @@ end
 
 function ChoGGi.CodeFuncs.ColonistUpdateSpecialization(c,spec)
 	-- children don't have spec models so they get black cubed
---~ 	if not c.entity:find("Child") then
 	if c.age_trait ~= "Child" then
 		if spec == S[3490--[[Random--]]] then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]

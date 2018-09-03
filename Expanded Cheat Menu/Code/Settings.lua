@@ -634,11 +634,11 @@ function OnMsg.OptionsApply()
 		end
 	end
 
-	for key,value in pairs(ChoGGi.Defaults.KeyBindings) do
-		if type(ChoGGi.UserSettings.KeyBindings[key]) == "nil" then
-			ChoGGi.UserSettings.KeyBindings[key] = value
-		end
-	end
+--~ 	for key,value in pairs(ChoGGi.Defaults.XXXXXXX) do
+--~ 		if type(ChoGGi.UserSettings.XXXXXXX[key]) == "nil" then
+--~ 			ChoGGi.UserSettings.XXXXXXX[key] = value
+--~ 		end
+--~ 	end
 
 	-- get the default values for our Consts
 	for SettingName,_ in pairs(ChoGGi.Consts) do

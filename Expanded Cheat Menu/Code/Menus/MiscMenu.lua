@@ -78,15 +78,16 @@ Actions[c] = {
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.InfopanelCheats_Toggle,
-	ActionSortKey = "-1",
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.InfopanelCheats_Toggle,
+	ActionBindable = true,
+	ActionSortKey = "-1Infopanel Cheats",
 }
 
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Misc,
 	ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
-	ActionId = ".302535920000698--[[Infopanel Cheats Cleanup",
+	ActionId = ".Infopanel Cheats Cleanup",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
@@ -97,7 +98,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor--]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
-	ActionSortKey = "-1",
+	ActionSortKey = "-1Infopanel Cheats Cleanup",
 }
 
 c = c + 1

@@ -450,12 +450,13 @@ Works on any building that produces.",
 302535920000223,Unlimited wonder build limit.,
 302535920000224,Show Hidden Buildings,
 302535920000225,Show hidden buildings (restart game to toggle).,
-302535920000226,Build Spires Outside of Spire Point,
-302535920000227,"Build spires outside spire point.
-Use with Remove Building Limits to fill up a dome with spires.",
+302535920000226,Remove Spire Point Limit,
+302535920000227,"Build spires anywhere in the dome.
+Use with %s to fill up a dome with spires.",
 302535920000229,Buildings are built instantly.,
 302535920000230,Remove Building Limits,
-302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).",
+302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
+See also %s.",
 302535920000292,Resets sponsor points to default for that sponsor,
 302535920000329,Scan all anomalies.,
 302535920001286,Scan all or certain types of anomalies.,

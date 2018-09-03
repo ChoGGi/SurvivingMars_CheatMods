@@ -11,6 +11,8 @@ DefineClass.ChoGGi_FindValueDlg = {
 	obj_name = false,
 	dialog_width = 700.0,
 	dialog_height = 110.0,
+
+	found_objs = false,
 }
 
 function ChoGGi_FindValueDlg:Init(parent, context)
@@ -87,28 +89,32 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self:SetInitPos(context.parent)
 end
 
-local found_objs
 function ChoGGi_FindValueDlg:FindText()
-	-- always start off empty
-	found_objs = {}
-
-	local case = self.idCaseSen:GetCheck()
-	local str = case and self.idEdit:GetText() or self.idEdit:GetText():lower()
-
+	local str = self.idEdit:GetText()
 	-- no sense in finding nothing
 	if str == "" then
 		return
 	end
+
+	local case = self.idCaseSen:GetCheck()
+
+	if not case then
+		str = str:lower()
+	end
+
+	-- always start off empty
+	self.found_objs = {}
 
 	-- build our list of objs
 	self:RetObjects(
 		self.obj,
 		str,
 		case,
-		tonumber(self.idLimit:GetText() or 1)
+		tonumber(self.idLimit:GetText()) or 1
 	)
+
 	-- and fire off a new dialog
-	ChoGGi.ComFuncs.OpenInExamineDlg(found_objs):SetPos(self:GetPos()+point(0,self.header))
+	ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs):SetPos(self:GetPos()+point(0,self.header))
 end
 
 local function ReturnStr(obj,case)
@@ -151,13 +157,13 @@ function ChoGGi_FindValueDlg:RetObjects(obj,str,case,limit,level)
 			local key_str,key_type = ReturnStr(key,case)
 			local value_str,value_type = ReturnStr(value,case)
 
-			if key_str:find(str) or value_str:find(str) then
+			if key_str:find(str,1,true) or value_str:find(str,1,true) then
 --~ 			if key_str:find_lower(str) or value_str:find_lower(str) then
 				-- makes dupes
-				-- found_objs[#found_objs+1] = obj
+				-- self.found_objs[#self.found_objs+1] = obj
 				-- should be decent enough?
-				if not found_objs[obj_string] then
-					found_objs[obj_string] = obj
+				if not self.found_objs[obj_string] then
+					self.found_objs[obj_string] = obj
 				end
 			else
 				if key_type == "table" then

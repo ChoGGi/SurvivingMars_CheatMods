@@ -85,7 +85,8 @@ Actions[c] = {
 	ActionIcon = iconD,
 	RolloverText = S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetDroneAmountDroneHub,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetDroneAmountDroneHub,
+	ActionBindable = true,
 }
 
 c = c + 1

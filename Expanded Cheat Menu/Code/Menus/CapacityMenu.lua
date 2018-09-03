@@ -38,7 +38,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]],
 	OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetWorkerCapacity,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetWorkerCapacity,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -49,7 +50,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetBuildingCapacity,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetBuildingCapacity,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -60,8 +62,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetVisitorCapacity,
-	ActionSortKey = "",
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetVisitorCapacity,
+	ActionBindable = true,
 }
 
 c = c + 1

@@ -567,7 +567,7 @@ end
 					end
 					flatten_height = temp_height
 				end,
-				ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_RaiseHeight,
+				ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_RaiseHeight,
 			})
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionId = "ChoGGi_FlattenGround_LowerHeight",
@@ -579,7 +579,7 @@ end
 					end
 					flatten_height = temp_height
 				end,
-				ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_LowerHeight,
+				ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_LowerHeight,
 			})
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionId = "ChoGGi_FlattenGround_WidenRadius",
@@ -589,7 +589,7 @@ end
 					visual_circle:SetRadius(size)
 					radius = size * guic
 				end,
-				ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_WidenRadius,
+				ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_WidenRadius,
 			})
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionId = "ChoGGi_FlattenGround_ShrinkRadius",
@@ -599,7 +599,7 @@ end
 					visual_circle:SetRadius(size)
 					radius = size * guic
 				end,
-				ActionShortcut = ChoGGi.UserSettings.KeyBindings.FlattenGround_ShrinkRadius,
+				ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_ShrinkRadius,
 			})
 		else
 			ReloadShortcuts()

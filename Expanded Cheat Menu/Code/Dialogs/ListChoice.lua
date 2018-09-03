@@ -326,7 +326,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		-- is there an icon to add
 		local text
 		if item.icon then
-			if item.icon:find("<image ") then
+			if item.icon:find("<image ",1,true) then
 				text = string.format("%s %s",item.icon,item.text)
 			else
 				text = string.format("<image %s> %s",item.icon,item.text)

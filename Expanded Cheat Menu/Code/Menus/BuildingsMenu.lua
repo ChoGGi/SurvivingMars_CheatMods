@@ -264,7 +264,8 @@ Actions[c] = {
 	RolloverText = S[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
 Works on any building that produces."--]]],
 	OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetProductionAmount,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetProductionAmount,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -275,7 +276,7 @@ Actions[c] = {
 	ActionIcon = icon,
 	RolloverText = S[302535920000187--[[Toggle electricity use for selected building type.--]]],
 	OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
-	ActionSortKey = "12",
+	ActionSortKey = "2Power-free Building",
 }
 
 c = c + 1
@@ -286,7 +287,7 @@ Actions[c] = {
 	ActionIcon = icon,
 	RolloverText = S[302535920001252--[[Toggle water use for selected building type.--]]],
 	OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
-	ActionSortKey = "13",
+	ActionSortKey = "2Water-free Building",
 }
 
 c = c + 1
@@ -297,7 +298,7 @@ Actions[c] = {
 	ActionIcon = icon,
 	RolloverText = S[302535920001254--[[Toggle oxygen use for selected building type.--]]],
 	OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
-	ActionSortKey = "14",
+	ActionSortKey = "2Oxygen-free Building",
 }
 
 c = c + 1
@@ -308,7 +309,8 @@ Actions[c] = {
 	ActionIcon = icon,
 	RolloverText = S[302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetMaxChangeOrDischarge,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetMaxChangeOrDischarge,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -388,22 +390,6 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-	ActionName = S[302535920000226--[[Build Spires Outside of Spire Point--]]],
-	ActionId = ".Build Spires Outside of Spire Point",
-	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
-	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.Building_dome_spot,
-			302535920000227--[["Build spires outside spire point.
-Use with Remove Building Limits to fill up a dome with spires."--]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
-}
-
-c = c + 1
-Actions[c] = {
-	ActionMenubar = str_ExpandedCM_Buildings_Toggle,
 	ActionName = S[302535920001241--[[Instant Build--]]],
 	ActionId = ".Instant Build",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
@@ -419,13 +405,30 @@ Actions[c] = {
 c = c + 1
 Actions[c] = {
 	ActionMenubar = str_ExpandedCM_Buildings_Toggle,
+	ActionName = S[302535920000226--[[Remove Spire Point Limit--]]],
+	ActionId = ".Remove Spire Point Limit",
+	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.Building_dome_spot,
+			S[302535920000227--[["Build spires anywhere in the dome.
+Use with %s to fill up a dome with spires."--]]]:format(S[302535920000230--[[Remove Building Limits--]]])
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
+}
+
+c = c + 1
+Actions[c] = {
+	ActionMenubar = str_ExpandedCM_Buildings_Toggle,
 	ActionName = S[302535920000230--[[Remove Building Limits--]]],
 	ActionId = ".Remove Building Limits",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.RemoveBuildingLimits,
-			302535920000231--[[Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).--]]
+			S[302535920000231--[["Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
+See also %s."--]]]:format(S[302535920000226--[[Remove Spire Point Limit--]]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,
@@ -504,7 +507,8 @@ Actions[c] = {
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.UseLastOrientation,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.UseLastOrientation,
+	ActionBindable = true,
 }
 
 c = c + 1

@@ -58,7 +58,8 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = S[302535920000726--[[Add more funding (or reset back to 500 M).--]]],
 	OnAction = ChoGGi.MenuFuncs.SetFunding,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.SetFunding,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.SetFunding,
+	ActionBindable = true,
 }
 
 c = c + 1
@@ -69,5 +70,6 @@ Actions[c] = {
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = S[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],
 	OnAction = ChoGGi.MenuFuncs.FillResource,
-	ActionShortcut = ChoGGi.UserSettings.KeyBindings.FillResource,
+	ActionShortcut = ChoGGi.Defaults.KeyBindings.FillResource,
+	ActionBindable = true,
 }

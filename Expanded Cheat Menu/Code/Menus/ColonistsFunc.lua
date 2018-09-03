@@ -183,20 +183,20 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			CullLabel(value)
 		elseif value == "Renegade" then
 			CullTrait(value)
-		elseif text:find(S[240--[[Specialization--]]]) and (ChoGGi.Tables.ColonistSpecializations[value] or value == "none") then
+		elseif text:find(S[240--[[Specialization--]]],1,true) and (ChoGGi.Tables.ColonistSpecializations[value] or value == "none") then
 			CullLabel(value)
-		elseif text:find(S[987289847467--[[Age Groups--]]]) and ChoGGi.Tables.ColonistAges[value] then
+		elseif text:find(S[987289847467--[[Age Groups--]]],1,true) and ChoGGi.Tables.ColonistAges[value] then
 			CullTrait(value)
-		elseif text:find(S[4357--[[Birthplace--]]]) and ChoGGi.Tables.ColonistBirthplaces[value] then
+		elseif text:find(S[4357--[[Birthplace--]]],1,true) and ChoGGi.Tables.ColonistBirthplaces[value] then
 			Cull(value,"birthplace")
 			-- bonus round
 			if not UICity.ChoGGi.DaddysLittleHitler then
 				Msg("ChoGGi_DaddysLittleHitler")
 				UICity.ChoGGi.DaddysLittleHitler = true
 			end
-		elseif text:find(S[4356--[[Sex--]]]) and ChoGGi.Tables.ColonistGenders[value] then
+		elseif text:find(S[4356--[[Sex--]]],1,true) and ChoGGi.Tables.ColonistGenders[value] then
 			CullTrait(value)
-		elseif text:find(S[302535920000741--[[Race--]]]) and ChoGGi.Tables.ColonistRaces[value] then
+		elseif text:find(S[302535920000741--[[Race--]]],1,true) and ChoGGi.Tables.ColonistRaces[value] then
 			Cull(value,"race",choice[1].idx)
 			-- bonus round
 			if not UICity.ChoGGi.DaddysLittleHitler then
