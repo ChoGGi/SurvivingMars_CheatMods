@@ -101,12 +101,12 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
 		-- added to stuff spawned with object spawner
-		if XTemplates.ipEverything then
-			XTemplates.ipEverything:delete()
+		if XTemplates.ipChoGGi_Everything then
+			XTemplates.ipChoGGi_Everything:delete()
 		end
 		PlaceObj('XTemplate', {
 			group = "Infopanel Sections",
-			id = "ipEverything",
+			id = "ipChoGGi_Everything",
 			PlaceObj('XTemplateTemplate', {
 				'__condition', function (_, context) return context.ChoGGi_Spawned end,
 				'__template', "Infopanel",

@@ -38,29 +38,29 @@ end)
 -- thanks for replacing concat... what's wrong with using table.concat2?
 TableConcat = TableConcat or table.concat
 
--- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
--- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
--- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
-local concat_table = {}
-local function Concat(...)
-  -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
-  table.iclear(concat_table)
-  -- build table from args
-  local concat_value
-  local concat_type
-  for i = 1, select("#",...) do
-    concat_value = select(i,...)
-    -- no sense in calling a func more then we need to
-    concat_type = type(concat_value)
-    if concat_type == "string" or concat_type == "number" then
-      concat_table[i] = concat_value
-    else
-      concat_table[i] = tostring(concat_value)
-    end
-  end
-  -- and done
-  return TableConcat(concat_table)
-end
+--~ -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
+--~ -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)
+--~ -- this is also used instead of "str .. str"; anytime you do that lua will hash the new string, and store it till exit (which means this is faster, and uses less memory)
+--~ local concat_table = {}
+--~ local function Concat(...)
+--~   -- sm devs added a c func to clear tables, which does seem to be faster than a lua loop
+--~   table.iclear(concat_table)
+--~   -- build table from args
+--~   local concat_value
+--~   local concat_type
+--~   for i = 1, select("#",...) do
+--~     concat_value = select(i,...)
+--~     -- no sense in calling a func more then we need to
+--~     concat_type = type(concat_value)
+--~     if concat_type == "string" or concat_type == "number" then
+--~       concat_table[i] = concat_value
+--~     else
+--~       concat_table[i] = tostring(concat_value)
+--~     end
+--~   end
+--~   -- and done
+--~   return TableConcat(concat_table)
+--~ end
 
 -- hello
 Terraformer = {
@@ -72,7 +72,7 @@ Terraformer = {
   -- CommonFunctions.lua
   ComFuncs = {
     TableConcat = TableConcat,
-    Concat = Concat,
+--~     Concat = Concat,
   },
   -- /Code/_Functions.lua
   CodeFuncs = {},

@@ -37,7 +37,7 @@ function OnMsg.ClassesPostprocess()
     "description", [[Anything added to this depot will disappear.]],
     "Group", "Storages",
     "build_category", "Storages",
-    "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
+    "display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
 --~     "entity", "StorageDepot",
     "entity", "ResourcePlatform",
     "on_off_button", false,

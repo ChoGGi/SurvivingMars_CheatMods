@@ -1,13 +1,18 @@
 return PlaceObj("ModDef", {
-  "title", "Solaria Telepresence v0.4",
-  "version", 4,
-  "saved", 1529841600,
+  "title", "Solaria Telepresence v0.5",
+  "version", 5,
+  "saved", 1536062400,
   "tags", "Buildings",
 	"image", "Preview.png",
   "id", "ChoGGi_SolariaTelepresence",
   "author", "ChoGGi",
   "steam_id", "1411115080",
-  "code", {"Script.lua"},
+  "code", {
+		"Code/CommonFunctions.lua",
+		"Code/_Classes.lua",
+		"Code/SolariaTelepresence.lua",
+		"Code/WorkVRWorkshop.lua",
+	},
 	"lua_revision", LuaRevision,
   "description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 

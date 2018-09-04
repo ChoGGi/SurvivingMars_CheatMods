@@ -438,7 +438,7 @@ function ChoGGi.MenuFuncs.ObjectSpawner()
 
 			local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
 			NewObj.__parents[#NewObj.__parents] = "InfopanelObj"
-			NewObj.ip_template = "ipEverything"
+			NewObj.ip_template = "ipChoGGi_Everything"
 			NewObj.ChoGGi_Spawned = true
 			NewObj:SetEnumFlags(const.efSelectable)
 

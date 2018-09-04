@@ -6,7 +6,7 @@ local function MsgPopup(Msg,Title,Icon)
   pcall(function()
     --returns translated text corresponding to number if we don't do tostring for numbers
     Msg = tostring(Msg)
-    Title = Title or "Placeholder"
+    Title = Title or [[Placeholder]]
     Icon = Icon or "UI/Icons/Notifications/placeholder.tga"
     local id = AsyncRand()
     local timeout = 8000
@@ -26,5 +26,8 @@ local ChangeFunding = ChangeFunding
 function OnMsg.NewDay()
   local amount = (UICity.funding / 1000000) * 0.01 -- 0.01 = 1%
   ChangeFunding(amount)
-  MsgPopup(table.concat{"You've received: ",amount," M"},"1 Percenter")
+  MsgPopup(
+		string.format([[You've received: %s M]],amount),
+		[[1 Percenter]]
+	)
 end

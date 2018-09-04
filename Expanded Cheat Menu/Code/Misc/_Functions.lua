@@ -1186,10 +1186,10 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
---~ 		-- takes too long
---~ 		if not dome then
---~ 			DeleteObject_ExecFunc(obj,"DestroyAttaches")
---~ 		end
+		-- takes too long
+		if not dome then
+			DeleteObject_ExecFunc(obj,"DestroyAttaches")
+		end
 
 		-- I did ask nicely
 		if IsValid(obj) then
@@ -1553,11 +1553,9 @@ GetComputerName(): %s
 end
 
 function ChoGGi.CodeFuncs.RemoveXTemplateSections(list,name)
-	for i = 1, #list do
-		if list[i][name] then
-			table.remove(list,i)
-			break
-		end
+	local idx = table.find(list, name, true)
+	if idx then
+		table.remove(list,idx)
 	end
 end
 

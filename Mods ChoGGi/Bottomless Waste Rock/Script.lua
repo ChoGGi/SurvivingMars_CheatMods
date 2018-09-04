@@ -31,7 +31,7 @@ function OnMsg.ClassesPostprocess()
     "description", [[Any rocks dumped at this depot will disappear.]],
     "Group", "Storages",
     "build_category", "Storages",
-    "display_icon", table.concat{CurrentModPath,"res_waste_rock.tga"},
+    "display_icon", string.format("%sres_waste_rock.tga",CurrentModPath),
     "entity", "ResourcePlatform",
     "on_off_button", false,
     "prio_button", false,

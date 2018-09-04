@@ -3,7 +3,7 @@ local that_time_of_the_year = GetDate():find("Dec")
 -- we always add the logo
 pcall(function()
 	-- needs to happen before the decal object is placed
-	DelayedLoadEntity(Mods.ChoGGi_ChristmasMars, "ChristmasMars", table.concat{CurrentModPath,"Entities/ChristmasMars.ent"})
+	DelayedLoadEntity(Mods.ChoGGi_ChristmasMars, "ChristmasMars", string.format("%sEntities/ChristmasMars.ent",CurrentModPath))
 
 	PlaceObj("Decal", {
 		"name", "ChristmasMars",
@@ -16,7 +16,7 @@ function OnMsg.ClassesPostprocess()
 		display_name = "Christmas Mars",
 		entity_name = "ChristmasMars",
 		id = "ChristmasMars",
-		image = table.concat{CurrentModPath,"UI/logo.png"},
+		image = string.format("%sUI/logo.png",CurrentModPath),
 	})
 	-- default logo during spending month
 	if that_time_of_the_year then
@@ -118,11 +118,10 @@ end -- OnMsg.DepositsSpawned()
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local Msg = Msg
-local concat = table.concat
 local select = select
 local OrigFuncs = {}
 local function AddMsgToFunc(ClassName,FuncName,sMsg)
-	local name = concat{ClassName,"_",FuncName}
+	local name = string.format("%s_%s",ClassName,FuncName)
 	if not OrigFuncs[name] then
 		-- save orig
 		OrigFuncs[name] = _G[ClassName][FuncName]

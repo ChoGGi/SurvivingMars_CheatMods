@@ -1076,19 +1076,23 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 
 	local icon = "<image %s 250>"
 	local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
+	local IsTechResearched = IsTechResearched
 	for tech_id,tech in pairs(TechDef) do
-		local text = Trans(tech.display_name)
-		-- remove " from that one tech...
-		if text:find("\"") then
-			text = text:gsub("\"","")
+		-- only show stuff not yet researched
+		if not IsTechResearched(tech_id) then
+			local text = Trans(tech.display_name)
+			-- remove " from that one tech...
+			if text:find("\"") then
+				text = text:gsub("\"","")
+			end
+			c = c + 1
+			ItemList[c] = {
+				text = text,
+				value = tech_id,
+				icon = icon:format(tech.icon),
+				hint = hint:format(Trans(T{tech.description,tech}),S[1000097--[[Category--]]],tech.group,tech.icon),
+			}
 		end
-		c = c + 1
-		ItemList[c] = {
-			text = text,
-			value = tech_id,
-			icon = icon:format(tech.icon),
-			hint = hint:format(Trans(T{tech.description,tech}),S[1000097--[[Category--]]],tech.group,tech.icon),
-		}
 	end
 
 	local function CallBackFunc(choice)
@@ -1099,7 +1103,7 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 		local check1 = choice[1].check1
 		local check2 = choice[1].check2
 
-		--nothing checked so we discover
+		-- nothing checked so we discover
 		if not check1 and not check2 then
 			check1 = true
 		end
@@ -1108,11 +1112,12 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 		local text
 		if check1 then
 			func = "DiscoverTech"
-			text = S[8690--[[Unlocked--]]]
+			text = S[2--[[Unlock Tech--]]]
 		end
+		-- override if both checked
 		if check2 then
 			func = "GrantTech"
-			text = S[302535920000314--[[Researched--]]]
+			text = S[3--[[Grant Research--]]]
 		end
 
 		for i = 1, #choice do
@@ -1142,12 +1147,12 @@ function ChoGGi.MenuFuncs.ShowResearchTechList()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = 302535920000316--[[Research Unlock--]],
-		hint = 302535920000317--[[Select Unlock or Research then select the tech you want (Ctrl/Shift to multi-select).--]],
+		title = string.format("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
+		hint = 302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.--]],
 		multisel = true,
 		check = {
 			{
-				title = 302535920000318--[[Unlock--]],
+				title = 2--[[Unlock Tech--]],
 				hint = 302535920000319--[[Just unlocks in the research tree.--]],
 				checked = true,
 			},

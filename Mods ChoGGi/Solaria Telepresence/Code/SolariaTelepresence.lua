@@ -1,10 +1,10 @@
---See LICENSE for terms
+-- See LICENSE for terms
 
-local Concat = SolariaTelepresence.ComFuncs.Concat
 local PopupToggle = SolariaTelepresence.ComFuncs.PopupToggle
 local RetName = SolariaTelepresence.ComFuncs.RetName
 local FilterFromTable = SolariaTelepresence.ComFuncs.FilterFromTable
 local MsgPopup = SolariaTelepresence.ComFuncs.MsgPopup
+local RemoveXTemplateSections = SolariaTelepresence.ComFuncs.RemoveXTemplateSections
 
 local type,tostring,pcall,string = type,tostring,pcall,string
 
@@ -25,15 +25,15 @@ DefineClass.Solaria = {
     "Workplace",
     "InteriorAmbientLife",
   },
-  --anim inside
+  -- anim inside
   interior = {"ResearchLabInterior"},
   spots = {"Terminal"},
   anims = {{anim = "terminal",all = true}},
 
-  --production is workers * (prod.base_production_per_day / 4)
-  --how much performance does each worker add? this'll add bonus prod on top
+  -- production is workers * (prod.base_production_per_day / 4)
+  -- how much performance does each worker add? this'll add bonus prod on top
   perf_per_viewer = 12.5,
-  --stores table of controlled obj, handle and worker amount
+  -- stores table of controlled obj, handle and worker amount
   SolariaTelepresence_Remote_Controller = false,
 }
 
@@ -41,13 +41,13 @@ local g_Classes = g_Classes
 
 function Solaria:GameInit()
   g_Classes.Workplace.GameInit(self)
-  --always leave it turned off, so it doesn't use resources till user turns it on
+  -- always leave it turned off, so it doesn't use resources till user turns it on
   self:ToggleWorking()
-  --brown/yellow seems a good choice for a vr workplace
+  -- brown/yellow seems a good choice for a vr workplace
   self:SetColor1(-10991554)
   self:SetColor2(-7963804)
   self:SetColor3(-10263981)
-  --it's a workplace after all
+  -- it's a workplace after all
   self:DestroyAttaches("VRWorkshopHologram")
   self:DestroyAttaches("DecorInt_02")
   local att = self:GetAttaches()
@@ -58,7 +58,7 @@ function Solaria:GameInit()
   end
 end
 
---build and show a list of viable buildings
+-- build and show a list of viable buildings
 local filter_table = {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PreciousMetalsExtractor=true}
 local function ClickObj(self,obj,button,which)
   if button == "R" then
@@ -81,224 +81,231 @@ function Solaria:ListBuildings(which,parent)
 Right click to view selected list item building.]]
   local ItemList = {}
 
-  --show list to add controller
+  -- show list to add controller
   if which == "activate" then
-    hint = Concat([[Click to remotely control building.]],hint)
-    --remove any we already control
+    hint = [[Click to remotely control building.
+
+Right click to view selected list item building.]]
+    -- remove any we already control
     Table = FilterObjects({
-      filter = function(Obj)
-        if not Obj.SolariaTelepresence_Remote_Controlled then
-          return Obj
+      filter = function(o)
+        if not o.SolariaTelepresence_Remote_Controlled then
+          return o
         end
       end
     },Table)
 
-    --filter list to the types we want
+    -- filter list to the types we want
     Table = FilterFromTable(
       Table,
       nil,
       filter_table,
       "class"
     )
-  --show controlled for remove list
+  -- show controlled for remove list
   elseif which == "remove" then
-    hint = Concat([[Click to remove control of building.]],hint)
+    hint = [[Click to remove control of building.%s
+
+Right click to view selected list item building.]]
     Table = FilterObjects({
-      filter = function(Obj)
-        if Obj.SolariaTelepresence_Remote_Controlled then
-          return Obj
+      filter = function(o)
+        if o.SolariaTelepresence_Remote_Controlled then
+          return o
         end
       end
     },Table)
   end
 
-  --make it pretty
+  -- make it pretty
   for i = 1, #Table do
     local obj = Table[i]
     local pos = obj:GetVisualPos()
     ItemList[#ItemList+1] = {
       pos = pos,
       name = RetName(obj),
-      class = "XTextButton",
-      hint = Concat(hint," at pos: ",pos), --something to provide a slight reference
+      hint = string.format("%s at pos: %s",hint,pos), -- something to provide a slight reference
       clicked = function(_,_,button)
         ClickObj(self,obj,button,which)
       end,
     }
   end
 
-  --if list is empty that means no controlled/able buildings so return
+  -- if list is empty that means no controlled/able buildings so return
   if #ItemList == 0 then
-    MsgPopup([[Nothing to control.]],
-      [[Solaria]],"UI/Icons/Upgrades/holographic_scanner_04.tga"
+    MsgPopup(
+			[[Nothing to control.]],
+      [[Solaria]],
+			"UI/Icons/Upgrades/holographic_scanner_04.tga"
     )
     return
   end
 
-  --add controller for ease of movement
+  -- add controller for ease of movement
   ItemList[#ItemList+1] = {
     name = [[ Solaria Controller]],
     pos = self:GetVisualPos(),
---~     value = self.handle,
---~     obj = self,
-    class = "XTextButton",
     hint = [[Solaria control building.
 You can't remove... Only view (or maybe See would be a better term).]],
     clicked = function(_,_,button)
       ClickObj(self,obj,button,which)
     end,
---~     func = self,
   }
 
-  local popup = rawget(terminal.desktop, "idSolariaTelepresenceMenu")
-  if popup then
-    popup:Close()
-  else
-    PopupToggle(parent,"idSolariaTelepresenceMenu",ItemList)
-  end
-
+	PopupToggle(parent,"idSolariaTelepresenceMenu",ItemList,"left")
 end
 
-function Solaria:AttachBuilding(Obj)
-  if not IsValid(Obj) or Obj.handle == self.handle then
+function Solaria:AttachBuilding(obj)
+  if not IsValid(obj) or obj.handle == self.handle then
     return
   end
   local UICity = UICity
   UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings + 1
 
-  --setup controller
+  -- setup controller
   self.SolariaTelepresence_Remote_Controller = {
-    building = Obj,
-    handle = Obj.handle,
-    workers = Obj.max_workers
+    building = obj,
+    handle = obj.handle,
+    workers = obj.max_workers
   }
-  self.max_workers = Obj.max_workers
+  self.max_workers = obj.max_workers
 
-  --controlled
-  Obj.SolariaTelepresence_Remote_Controlled = self
-  --needed for not needing any workers
-  Obj.max_workers = 0
-  Obj.automation = 1
+  -- controlled
+  obj.SolariaTelepresence_Remote_Controlled = self
+  -- needed for not needing any workers
+  obj.max_workers = 0
+  obj.automation = 1
 
-  --lower base prod to 0 (no workers no prod
-  if type(Obj.GetProducerObj) == "function" then
-    Obj:GetProducerObj().production_per_day = 0
-  elseif Obj.electricity.production then
-    Obj.electricity.production = 0
+  -- lower base prod to 0 (no workers no prod
+  if obj.GetProducerObj then
+    obj:GetProducerObj().production_per_day = 0
+  elseif obj.electricity.production then
+    obj.electricity.production = 0
   end
 
-  --turn them on if off
+	-- toggle Solaria shift based on controlled building
+	self.closed_shifts = obj.closed_shifts
+
+  -- turn them on if off
   RebuildInfopanel(self)
   self:SetUIWorking(true)
-  Obj:SetUIWorking(true)
+  obj:SetUIWorking(true)
 
-  MsgPopup(string.format([[Viewing: %s Pos: %s]],RetName(Obj),tostring(Obj:GetVisualPos())),
-    [[Solaria]],"UI/Icons/Upgrades/holographic_scanner_04.tga"
+  MsgPopup(
+		string.format([[Viewing: %s Pos: %s]],RetName(obj),obj:GetVisualPos()),
+    [[Solaria]],
+		"UI/Icons/Upgrades/holographic_scanner_04.tga"
   )
 end
 
-function Solaria:RemoveBuilding(Obj)
-  if Obj.handle == self.handle then
+function Solaria:RemoveBuilding(obj)
+  if obj.handle == self.handle then
     return
   end
 
   local UICity = UICity
 
-  Obj = Obj or self.SolariaTelepresence_Remote_Controller.building
-  --update Solaria
+  obj = obj or self.SolariaTelepresence_Remote_Controller.building
+  -- update Solaria
   self.SolariaTelepresence_Remote_Controller = false
   self.max_workers = nil
-  if self.working then
-    self:ToggleWorking()
-  end
+	if not self.suspended then
+		RebuildInfopanel(self)
+		self:SetUIWorking(false)
+	end
 
-  pcall(function()
-    --this shouldn't happen as RemoveBuilding gets called when buildings are removed
-    DebugPrintNL([[Solaria Telepresence Error: Controlled building was removed without removing control.]])
-    --update controlled building
-    Obj.SolariaTelepresence_Remote_Controlled = nil
-    Obj.production_per_day = nil
+	if not obj then
+    -- this shouldn't happen as RemoveBuilding gets called when buildings are removed
+    print([[Solaria Telepresence Error: Controlled building was removed without removing control.]])
+	else
+		-- update controlled building
+		obj.SolariaTelepresence_Remote_Controlled = nil
+		obj.production_per_day = nil
 
-    if type(Obj.GetProducerObj) == "function" then
-      local prod = Obj:GetProducerObj()
-      prod.production_per_day = prod.base_production_per_day
-    elseif Obj.electricity.production then
-      Obj.electricity.production = Obj.base_electricity_production
-    end
+		if obj.GetProducerObj then
+			local prod = obj:GetProducerObj()
+			prod.production_per_day = prod.base_production_per_day
+		elseif obj.electricity.production then
+			obj.electricity.production = obj.base_electricity_production
+		end
 
-    Obj.max_workers = nil
-    Obj.automation = nil
-    Obj.auto_performance = nil
-  end)
+		obj.max_workers = nil
+		obj.automation = nil
+		obj.auto_performance = nil
 
-  UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
+		if not obj.suspended then
+			RebuildInfopanel(obj)
+			obj:SetUIWorking(false)
+		end
 
-  MsgPopup(string.format([[Removed: %s Pos: %s]],RetName(Obj),tostring(Obj:GetVisualPos())),
-    [[Solaria]],"UI/Icons/Upgrades/holographic_scanner_03.tga"
-  )
+		UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
+
+		MsgPopup(
+			string.format([[Removed: %s Pos: %s]],RetName(obj),obj:GetVisualPos()),
+			[[Solaria]],
+			"UI/Icons/Upgrades/holographic_scanner_03.tga"
+		)
+	end
 end
 
---update performance on controlled building (fires when worker starts work)
+-- update performance on controlled building (fires when worker starts work)
 function Solaria:StartWorkCycle(unit)
-  g_Classes.Workplace.StartWorkCycle(self, unit)
-  --only update if Solaria is controlling a building
+  Workplace.StartWorkCycle(self, unit)
+  -- only update if Solaria is controlling a building
   if self.SolariaTelepresence_Remote_Controller then
-    local Obj = self.SolariaTelepresence_Remote_Controller.building
-    --controlled building was removed
-    if not IsValid(Obj) then
+    local obj = self.SolariaTelepresence_Remote_Controller.building
+    -- controlled building was removed
+    if not IsValid(obj) then
       self.SolariaTelepresence_Remote_Controller = false
       self.max_workers = nil
+			if not self.suspended then
+				RebuildInfopanel(self)
+				self:SetUIWorking(false)
+			end
       return
     end
 
-    --get amount of workers for shifts
+    -- get amount of workers for shifts
     local shift = self.current_shift
-    --if shift is closed then 0
+    -- if shift is closed then 0
     local workers = 0
-    --toggle Solaria shift based on controlled building
-    if Obj.closed_shifts[shift] then
-      self.closed_shifts[shift] = true
-    else
-      self.closed_shifts[shift] = false
-    end
-    --update perf for controlled
+    -- set Solaria shifts based on controlled building
+		self.closed_shifts = obj.closed_shifts
+    -- update perf for controlled
     if not self.closed_shifts[shift] then
       workers = #self.workers[shift]
-      --amount of workers * perf_per_viewer = amount of perf (even idiots can do this job, make a filter for only idiots?)
-      Obj.auto_performance = workers * self.perf_per_viewer
+      -- amount of workers * perf_per_viewer = amount of perf (even idiots can do this job, make a filter for only idiots?)
+      obj.auto_performance = workers * self.perf_per_viewer
     else
-      --no workers no perf
-      Obj.auto_performance = 0
+      -- no workers no perf
+      obj.auto_performance = 0
     end
-    --update prod
-    if type(Obj.GetProducerObj) == "function" then
-      local prod = Obj:GetProducerObj()
+    -- update prod
+    if obj.GetProducerObj then
+      local prod = obj:GetProducerObj()
       prod.production_per_day = workers * (prod.base_production_per_day / 4)
-    elseif Obj.electricity.production then
-      Obj.electricity.production = workers * (Obj.base_electricity_production / 4)
+    elseif obj.electricity.production then
+      obj.electricity.production = workers * (obj.base_electricity_production / 4)
     end
 
-  --turn off Solaria if it isn't controlling
+  -- turn off Solaria if it isn't controlling
   elseif self.working then
-    self:ToggleWorking()
+		if not self.suspended then
+			RebuildInfopanel(self)
+			self:SetUIWorking(false)
+		end
   end
 end
 
-function OnMsg.ClassesGenerate()
-  local g_Classes = g_Classes
-
-  local g_Classes_Workplace_OnDestroyed = g_Classes.Workplace.OnDestroyed
-  function g_Classes.Workplace:OnDestroyed()
-    if self.SolariaTelepresence_Remote_Controlled then
-      self:RemoveBuilding()
-    end
-    g_Classes_Workplace_OnDestroyed(self)
-  end
-
+local orig_Workplace_OnDestroyed = Workplace.OnDestroyed
+function Workplace:OnDestroyed()
+	if self.SolariaTelepresence_Remote_Controlled then
+		self:RemoveBuilding()
+	end
+	orig_Workplace_OnDestroyed(self)
 end
 
 function OnMsg.ClassesPostprocess()
-  --add building to building template list
+  -- add building to building template list
   PlaceObj("BuildingTemplate", {
     "Id", "Solaria",
     "template_class", "Solaria",
@@ -319,7 +326,7 @@ Worker amount is dependent on controlled building.
 Telepresence control may take up to a shift to propagate to controlled building.]],
     "Group", "Dome Services",
     "build_category", "Dome Services",
-    "display_icon", Concat(SolariaTelepresence.ModPath,"/TheIncal.tga"),
+    "display_icon", string.format("%sCode/TheIncal.png",SolariaTelepresence.ModPath),
     "build_pos", 12,
     "label1", "InsideBuildings",
     "label2", "Workshop",
@@ -328,7 +335,7 @@ Telepresence control may take up to a shift to propagate to controlled building.
     "demolish_sinking", range(5, 10),
     "demolish_debris", 80,
     "electricity_consumption", 15000,
-    "max_workers", 0, --changed when controlling
+    "max_workers", 0, -- changed when controlling
   })
 
   PlaceObj("TechPreset", {
@@ -344,127 +351,128 @@ Telepresence control may take up to a shift to propagate to controlled building.
     position = range(11, 14),
     PlaceObj("Effect_TechUnlockBuilding", {
       Building = "Solaria",
-      HideBuilding = true,
     }),
   })
 
-end --ClassesPostprocess
+end -- ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
 
-  if not XTemplates.sectionWorkplace.SolariaTelepresence_Solaria then
-    XTemplates.sectionWorkplace.SolariaTelepresence_Solaria = true
-
-    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-      "SolariaTelepresence_sectionWorkplace1", true,
-      "__context_of_kind", "Solaria",
-      "__template", "InfopanelActiveSection",
-      "Icon", "",
-      "Title", "",
-      "RolloverText", "",
-      "RolloverTitle", [[Telepresence]],
-      "RolloverHint",  "",
-      "OnContextUpdate", function(self, context)
-        ---
-        if context.SolariaTelepresence_Remote_Controller then
-          self:SetRolloverText([[Remove the control of outside building from this building.]])
-          self:SetTitle([[Remove Remote Control]])
-          self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
-        else
-          self:SetRolloverText([[Shows list of buildings for telepresence control.
+	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace1")
+	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+		"SolariaTelepresence_sectionWorkplace1", true,
+		"__context_of_kind", "Solaria",
+		"__template", "InfopanelActiveSection",
+		"Icon", "",
+		"Title", "",
+		"RolloverText", "",
+		"RolloverTitle", [[Telepresence]],
+		"RolloverHint",  "",
+		"OnContextUpdate", function(self, context)
+			---
+			if context.SolariaTelepresence_Remote_Controller then
+				self:SetRolloverText([[Remove the control of outside building from this building.]])
+				self:SetTitle([[Remove Remote Control]])
+				self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
+			else
+				self:SetRolloverText([[Shows list of buildings for telepresence control.
 
 Right click in list to view (closes menu).]])
-          self:SetTitle([[Remote Control Building]])
-          self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
-        end
-        ---
-      end,
-    }, {
-      PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
-          return parent.parent
-        end,
-        "func", function(self, context)
-          ---
-          if not context.SolariaTelepresence_Remote_Controller then
-            context:ListBuildings("activate",self)
-          else
-            local building = context.SolariaTelepresence_Remote_Controller.building
-            local CallBackFunc = function()
-              context:RemoveBuilding(building)
-            end
-            SolariaTelepresence.ComFuncs.QuestionBox(
-              string.format([[Are you sure you want to remove telepresence viewing from %s located at %s]],RetName(building),tostring(building:GetVisualPos())),
-              CallBackFunc,
-              [[Solaria Telepresence]]
-            )
-          end
-          ---
-          ObjModified(context)
-        end
-      })
-    })
+				self:SetTitle([[Remote Control Building]])
+				self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
+			end
+			---
+		end,
+	}, {
+		PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(parent, context)
+				return parent.parent
+			end,
+			"func", function(self, context)
+				---
+				if not context.SolariaTelepresence_Remote_Controller then
+					context:ListBuildings("activate",self)
+				else
+					local building = context.SolariaTelepresence_Remote_Controller.building
+					local CallBackFunc = function(answer)
+						if answer then
+							context:RemoveBuilding(building)
+						end
+					end
+					SolariaTelepresence.ComFuncs.QuestionBox(
+						string.format([[Are you sure you want to remove telepresence viewing from %s located at %s]],RetName(building),building:GetVisualPos()),
+						CallBackFunc,
+						[[Solaria Telepresence]]
+					)
+				end
+				---
+				ObjModified(context)
+			end
+		})
+	})
 
-    --list controlled buildings
-    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-      "SolariaTelepresence_sectionWorkplace2", true,
-      "__context_of_kind", "Solaria",
-      "__template", "InfopanelActiveSection",
-      "Icon", "UI/Icons/Upgrades/build_2.tga",
-      "Title", [[All Attached Buildings]],
-      "RolloverText", [[Shows list of all controlled buildings (for removal of telepresence control).
+	-- list controlled buildings
+	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace2")
+	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+		"SolariaTelepresence_sectionWorkplace2", true,
+		"__context_of_kind", "Solaria",
+		"__template", "InfopanelActiveSection",
+		"Icon", "UI/Icons/Upgrades/build_2.tga",
+		"Title", [[All Attached Buildings]],
+		"RolloverText", [[Shows list of all controlled buildings (for removal of telepresence control).
 
 Right click list item to view (closes menu).]],
-      "RolloverTitle", [[Telepresence]],
-      "RolloverHint",  [[<left_click> Remove telepresence]],
-      "OnContextUpdate", function(self, context)
-        if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
-          self:SetVisible(true)
-          self:SetMaxHeight()
-        else
-          self:SetVisible(false)
-          self:SetMaxHeight(0)
-        end
-      end,
-    }, {
-      PlaceObj("XTemplateFunc", {
-        "name", "OnActivate(self, context)",
-        "parent", function(parent, context)
-          return parent.parent
-        end,
-        "func", function(self, context)
-          context:ListBuildings("remove",self)
-          ObjModified(context)
-        end
-      })
-    })
+		"RolloverTitle", [[Telepresence]],
+		"RolloverHint",  [[<left_click> Remove telepresence]],
+		"OnContextUpdate", function(self, context)
+			if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
+				self:SetVisible(true)
+				self:SetMaxHeight()
+			else
+				self:SetVisible(false)
+				self:SetMaxHeight(0)
+			end
+		end,
+	}, {
+		PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(parent, context)
+				return parent.parent
+			end,
+			"func", function(self, context)
+				context:ListBuildings("remove",self)
+				ObjModified(context)
+			end
+		})
+	})
 
-    --go to controlled/controller building
-    XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-      "SolariaTelepresence_sectionWorkplace3", true,
-      "__context_of_kind", "Workplace",
-      "__template", "InfopanelActiveSection",
-      "Icon", "UI/Icons/Anomaly_Event.tga",
-      "Title", "",
-      "RolloverText", "",
-      "RolloverTitle", [[Telepresence]],
-      "RolloverHint",  [[<left_click> Viewing]],
-      "OnContextUpdate", function(self, context)
-        --only show if on correct building and remote control is enabled
-        if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
-          if context.SolariaTelepresence_Remote_Controller then
-            self:SetTitle(RetName(context.SolariaTelepresence_Remote_Controller.building))
-            self:SetRolloverText([[Select and view controlled building.]])
-          elseif context.SolariaTelepresence_Remote_Controlled then
-            self:SetTitle([[Solaria Telepresence]])
-            self:SetRolloverText([[Select and view Solaria controller.]])
-          end
-          self:SetVisible(true)
-          self:SetMaxHeight()
-        else
-          self:SetVisible(false)
-          self:SetMaxHeight(0)
+	-- go to controlled/controller building
+	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace3")
+	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+		"SolariaTelepresence_sectionWorkplace3", true,
+		"__context_of_kind", "Workplace",
+		"__template", "InfopanelActiveSection",
+		"Icon", "UI/Icons/Anomaly_Event.tga",
+		"Title", "",
+		"RolloverText", "",
+		"RolloverTitle", [[Telepresence]],
+		"RolloverHint",  [[<left_click> Viewing]],
+		"OnContextUpdate", function(self, context)
+			-- only show if on correct building and remote control is enabled
+			if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
+				if context.SolariaTelepresence_Remote_Controller then
+					self:SetTitle(RetName(context.SolariaTelepresence_Remote_Controller.building))
+					self:SetRolloverText([[Select and view controlled building.]])
+				elseif context.SolariaTelepresence_Remote_Controlled then
+					self:SetTitle([[Solaria Telepresence]])
+					self:SetRolloverText([[Select and view Solaria controller.]])
+				end
+				self:SetVisible(true)
+				self:SetMaxHeight()
+			else
+				self:SetVisible(false)
+				self:SetMaxHeight(0)
         end
       end,
     }, {
@@ -483,26 +491,19 @@ Right click list item to view (closes menu).]],
         end
       })
     })
-
-  end --XTemplates
-end --ClassesBuilt
+end -- ClassesBuilt
 
 local function SomeCode()
-  --store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
+  -- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
   local UICity = UICity
-  if UICity and not UICity.SolariaTelepresence_RemoteControlledBuildings then
-    UICity.SolariaTelepresence_RemoteControlledBuildings = 0
-  end
-
-  if not UICity.tech_status.CreativeRealitiesSolaria then
-    UICity.tech_status.CreativeRealitiesSolaria = {
-      cost = 7000,
-      field = "Physics",
-      points = 0
-    }
-    UICity.tech_field.Physics[#UICity.tech_field.Physics+1] = "CreativeRealitiesSolaria"
-  end
-
+  if UICity then
+		if not UICity.SolariaTelepresence_RemoteControlledBuildings then
+			UICity.SolariaTelepresence_RemoteControlledBuildings = 0
+		end
+		if not IsTechResearched("CreativeRealitiesSolaria") then
+			LockBuilding("Solaria")
+		end
+	end
 end
 
 function OnMsg.CityStart()
@@ -511,4 +512,10 @@ end
 
 function OnMsg.LoadGame()
   SomeCode()
+end
+
+function OnMsg.TechResearched(tech_id)
+	if tech_id == "CreativeRealitiesSolaria" then
+		UnlockBuilding("Solaria")
+	end
 end

@@ -84,7 +84,7 @@ function OnMsg.ClassesPostprocess()
     "display_name_pl", [[Golden Storage]],
     "description", [[Converts Metals to PreciousMetals.]],
     "build_category", "Storages",
-    "display_icon", table.concat{CurrentModPath,"universal_storage.tga"},
+    "display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
     "entity", "ResourcePlatform",
     "on_off_button", false,
     "prio_button", false,

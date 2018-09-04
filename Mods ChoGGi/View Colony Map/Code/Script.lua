@@ -1,4 +1,4 @@
-local image_str = table.concat{CurrentModPath,"Maps/%s.png"}
+local image_str = string.format("%sMaps/%s.png",CurrentModPath,"%s")
 local mapname
 local showimage
 

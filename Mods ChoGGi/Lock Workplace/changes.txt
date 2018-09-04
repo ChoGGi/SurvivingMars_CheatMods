@@ -1,3 +1,5 @@
+v0.4
+Da Vinci.
 v0.3
 Stopped button showing up for colonists in training buildings (thanks SkiRich).
 v0.2

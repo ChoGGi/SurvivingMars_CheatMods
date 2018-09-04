@@ -135,11 +135,7 @@ do -- RetName
 				return obj.name
 			-- colonist names
 			elseif name_type == "table" and #obj.name == 3 then
-				return TableConcat{
-					Trans(obj.name[1]),
-					" ",
-					Trans(obj.name[3]),
-				}
+				return string.format("%s %s",Trans(obj.name[1]),Trans(obj.name[3]))
 
 			-- translated name
 			elseif obj.display_name and obj.display_name ~= "" then
@@ -1563,7 +1559,6 @@ function ChoGGi.ComFuncs.Random(m, n)
 		return m and AsyncRand(m) or AsyncRand()
 	end
 end
-
 
 function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
 

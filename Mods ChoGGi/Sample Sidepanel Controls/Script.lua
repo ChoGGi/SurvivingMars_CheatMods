@@ -5,11 +5,9 @@ local PlaceObj = PlaceObj
 
 -- remove (maybe) existing xtemplate entry (xtemplates are only built on New Game, and when new dlc is added?)
 local function RemoveXTemplateSections(list,name)
-	for i = 1, #list do
-		if list[i][name] then
-			table.remove(list,i)
-			break
-		end
+	local idx = table.find(list, name, true)
+	if idx then
+		table.remove(list,idx)
 	end
 end
 

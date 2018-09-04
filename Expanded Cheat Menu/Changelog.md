@@ -14,6 +14,7 @@
 - > Renamed to Color Modifier.
 - > Attachment list item will now show a blinky when you click something in the list.
 - > Object colour updates when you type in custom values (useful for Metallic/Roughness).
+- Research Tech only shows tech not researched.
 
 ### Fixed:
 - Wrong images in Mystery Log.

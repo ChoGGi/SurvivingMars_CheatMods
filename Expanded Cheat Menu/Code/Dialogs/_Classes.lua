@@ -2,7 +2,9 @@
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
+local CheckText = ChoGGi.ComFuncs.CheckText
 local S = ChoGGi.Strings
+
 local text = "Editor12Bold"
 if ChoGGi.testing then
 	text = "Editor14Bold"
@@ -10,7 +12,7 @@ end
 
 local box,point = box,point
 
-local white = -1
+local white = white
 local black = black
 local dark_gray = -13158858
 --~ local less_dark_gray = -12500671
@@ -272,7 +274,7 @@ function ChoGGi_Window:AddElements(_,context)
 		Translate = self.Translate,
 		TextColor = white,
 	}, self.idTitleArea)
-	self.idCaption:SetText(ChoGGi.ComFuncs.CheckText(self.title,""))
+	self.idCaption:SetText(CheckText(self.title,""))
 end
 
 -- returns point(x,y)

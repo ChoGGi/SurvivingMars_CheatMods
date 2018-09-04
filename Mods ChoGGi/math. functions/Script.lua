@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local LICENSE = [[
+Mods.ChoGGi_AddMathFunctions._LICENSE = [[
 Any code that isn't mine is under the respective copyright of that author.
 
 All of my code is licensed under the MIT License as follows:
@@ -31,21 +31,8 @@ SOFTWARE.
 -- local any funcs used below (more than once)
 local tonumber,tostring,pcall = tonumber,tostring,pcall
 local AsyncRand,_InternalTranslate,T = AsyncRand,_InternalTranslate,T
+local StringFormat = string.format
 
--- easy place to store some info
-local ChoGGi_MathFunctions = {
-  _LICENSE = LICENSE,
-  email = "SM_Mods@choggi.org",
-  id = "ChoGGi_AddMathFunctions",
-  ModPath = CurrentModPath,
-}
-
--- just in case they remove oldTableConcat
-local TableConcat
-pcall(function()
-  TableConcat = oldTableConcat
-end)
-TableConcat = TableConcat or table.concat
 -- just in case etc
 local floatfloor_tmp
 pcall(function()
@@ -53,47 +40,34 @@ pcall(function()
 end)
 
 do -- translate
-  --load up translation strings
-  local function LoadLocale(file)
-    if not pcall(function()
-      LoadTranslationTableFile(file)
-    end) then
-      DebugPrintNL(string.format([[Problem loading locale: %s
-
-Please send me latest log file: %s]],file,ChoGGi_MathFunctions.email))
-    end
-  end
-
-  -- load locale translation
-  local locale_file = TableConcat{ChoGGi_MathFunctions.ModPath,"Locales/",GetLanguage(),".csv"}
-  if AsyncFileOpen(locale_file) then
-    LoadLocale(locale_file)
-  else
-    LoadLocale(TableConcat{ChoGGi_MathFunctions.ModPath,"Locales/","English.csv"})
-  end
-  Msg("TranslationChanged")
+	local locale_path = StringFormat("%sLocales/%s.csv",CurrentModPath,"%s")
+	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
+		LoadTranslationTableFile(locale_path:format("English"))
+	end
+	Msg("TranslationChanged")
 end
+
 -- locale id to string
-local function trans(str)
+local function t(str)
   return _InternalTranslate(T{str})
 end
 
 local str = {
-  not_implemented = trans(302535920010000--[[math.%s not implemented yet.--]]),
-  error = trans(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]]),
-  zero = trans(302535920010002--[[zero--]]),
-  less_than_or_equals_zero = trans(302535920010003--[[less than or equals zero--]]),
-  less_than_zero = trans(302535920010004--[[less than zero--]]),
-  arg2_arg1_less_than_zero = trans(302535920010005--[[arg#2 - arg#1 == less than zero--]]),
-  test_start = trans(302535920010006--[[Testing math: Start--]]),
-  test_end = trans(302535920010007--[[Testing math: End--]]),
-  test_error = trans(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)--]]),
+  not_implemented = t(302535920010000--[[math.%s not implemented yet.--]]),
+  error = t(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]]),
+  zero = t(302535920010002--[[zero--]]),
+  less_than_or_equals_zero = t(302535920010003--[[less than or equals zero--]]),
+  less_than_zero = t(302535920010004--[[less than zero--]]),
+  arg2_arg1_less_than_zero = t(302535920010005--[[arg#2 - arg#1 == less than zero--]]),
+  test_start = t(302535920010006--[[Testing math: Start--]]),
+  test_end = t(302535920010007--[[Testing math: End--]]),
+  test_error = t(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)--]]),
 }
 
 -- whenever i get .cos etc added (needed for unit testing)
 --~ -- needed for tmp file when doing unit tests
---~ local mod_path = Mods.ChoGGi_AddMathFunctions.path
---~ local tmpfile = TableConcat{mod_path,"UnitTest.txt"}
+--~ local tmpfile = StringFormat("%sUnitTest.txt",CurrentModPath)
 
 local function CheckNum(x,name,arg)
   x = tonumber(x)
@@ -317,7 +291,7 @@ function math.random(m,n)
     return AsyncRand(m)
   else
     -- so it'll never return 1, close enough
-    return tonumber(TableConcat{"0.",AsyncRand()})
+		return tonumber(StringFormat("0.%s",AsyncRand()))
   end
 
 end
@@ -462,7 +436,7 @@ pcall(function()
   math.sm_xxhash = xxhash -- (arg1, arg2, arg3)
 
   -- not really mathy
-  math.sm_cs = cs
+--~   math.sm_cs = cs
   math.sm_perlin = perlin
   math.sm_Encode16 = Encode16
   math.sm_Decode16 = Decode16
@@ -511,8 +485,9 @@ math.mod = math.fmod
 function math.test()
   print(str.test_start)
 
-  local getinfo = debug.getinfo
-  local script_name = TableConcat{ChoGGi_MathFunctions.ModPath,"Script.lua"}
+  local getinfo = format_value
+--~   local  = debug.getinfo
+  local script_name = StringFormat("%sScript.lua",CurrentModPath)
 
   local function Test(line,func,n1,n2)
     if n1 == false then
@@ -526,37 +501,37 @@ function math.test()
     return math.abs(a-b) <= (limit or 10E-10)
   end
 
-  Test(getinfo(1).currentline,"huge",math.huge > 10e30)
-  Test(getinfo(1).currentline,"huge",-math.huge < -10e30)
+  Test(getinfo(function()end),"huge",math.huge > 10e30)
+  Test(getinfo(function()end),"huge",-math.huge < -10e30)
 
   -- testing mod operator
-  Test(getinfo(1).currentline,"pi",tostring(math.pi - math.pi % 1),"3.0")
-  Test(getinfo(1).currentline,"pi",tostring(math.pi - math.pi % 0.001),"3.141")
+  Test(getinfo(function()end),"pi",tostring(math.pi - math.pi % 1),"3.0")
+  Test(getinfo(function()end),"pi",tostring(math.pi - math.pi % 0.001),"3.141")
 
 --~     local function testbit(a, n)
 --~       return a/2^n % 2 >= 1
 --~     end
 
---~   Test(getinfo(1).currentline,"sin",eq(math.sin(-9.8)^2 + math.cos(-9.8)^2, 1))
---~   Test(getinfo(1).currentline,"tan",eq(math.tan(math.pi/4), 1))
---~   Test(getinfo(1).currentline,"sin",eq(math.sin(math.pi/2), 1) and eq(math.cos(math.pi/2), 0))
---~   Test(getinfo(1).currentline,"atan",eq(math.atan(1), math.pi/4) and eq(math.acos(0), math.pi/2) and
+--~   Test(getinfo(function()end),"sin",eq(math.sin(-9.8)^2 + math.cos(-9.8)^2, 1))
+--~   Test(getinfo(function()end),"tan",eq(math.tan(math.pi/4), 1))
+--~   Test(getinfo(function()end),"sin",eq(math.sin(math.pi/2), 1) and eq(math.cos(math.pi/2), 0))
+--~   Test(getinfo(function()end),"atan",eq(math.atan(1), math.pi/4) and eq(math.acos(0), math.pi/2) and
 --~          eq(math.asin(1), math.pi/2))
-  Test(getinfo(1).currentline,"deg",eq(math.deg(math.pi/2), 90) and eq(math.rad(90), math.pi/2))
-  Test(getinfo(1).currentline,"abs",math.abs(-10),10)
---~   Test(getinfo(1).currentline,"atan2",eq(math.atan2(1,0), math.pi/2))
-  Test(getinfo(1).currentline,"ceil",math.ceil(4.5),5)
-  Test(getinfo(1).currentline,"floor",math.floor(4.5),4)
-  Test(getinfo(1).currentline,"mod",math.mod(10,3),1)
-  Test(getinfo(1).currentline,"sqrt",eq(math.sqrt(10)^2, 10))
-  Test(getinfo(1).currentline,"log10",eq(math.log10(2), math.log(2)/math.log(10)))
-  Test(getinfo(1).currentline,"exp",eq(math.exp(0), 1))
+  Test(getinfo(function()end),"deg",eq(math.deg(math.pi/2), 90) and eq(math.rad(90), math.pi/2))
+  Test(getinfo(function()end),"abs",math.abs(-10),10)
+--~   Test(getinfo(function()end),"atan2",eq(math.atan2(1,0), math.pi/2))
+  Test(getinfo(function()end),"ceil",math.ceil(4.5),5)
+  Test(getinfo(function()end),"floor",math.floor(4.5),4)
+  Test(getinfo(function()end),"mod",math.mod(10,3),1)
+  Test(getinfo(function()end),"sqrt",eq(math.sqrt(10)^2, 10))
+  Test(getinfo(function()end),"log10",eq(math.log10(2), math.log(2)/math.log(10)))
+  Test(getinfo(function()end),"exp",eq(math.exp(0), 1))
 
---~   Test(getinfo(1).currentline,"sin",eq(math.sin(10), math.sin(10%(2*math.pi))))
+--~   Test(getinfo(function()end),"sin",eq(math.sin(10), math.sin(10%(2*math.pi))))
   local v,e = math.frexp(math.pi)
-  Test(getinfo(1).currentline,"ldexp",eq(math.ldexp(v,e), math.pi))
+  Test(getinfo(function()end),"ldexp",eq(math.ldexp(v,e), math.pi))
 
---~   Test(getinfo(1).currentline,"tanh",eq(math.tanh(3.5), math.sinh(3.5)/math.cosh(3.5)))
+--~   Test(getinfo(function()end),"tanh",eq(math.tanh(3.5), math.sinh(3.5)/math.cosh(3.5)))
 
 --~   if rawget(_G, "_soft") then return end
 
@@ -565,37 +540,37 @@ function math.test()
 --~   AsyncStringToFile(tmpfile,"a = {","-1")
 --~   i = 1
 --~   repeat
---~     AsyncStringToFile(tmpfile,TableConcat{"{", math.sin(i), ", ", math.cos(i), ", ", i/3, "},\n"},"-1")
+--~     AsyncStringToFile(tmpfile,StringFormat("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
 --~     i=i+1
 --~   until i > 1000
 --~   AsyncStringToFile(tmpfile,"}","-1")
 --~   f:seek("set", 0)
---~   Test(getinfo(1).currentline,"sin",loadstring(select(2,AsyncFileToString(tmpfile))))()
+--~   Test(getinfo(function()end),"sin",loadstring(select(2,AsyncFileToString(tmpfile))))()
 --~   ThreadUnlockKey(tmpfile)
 
---~   Test(getinfo(1).currentline,"sin",eq(a[300][1], math.sin(300)))
---~   Test(getinfo(1).currentline,"sin",eq(a[600][1], math.sin(600)))
---~   Test(getinfo(1).currentline,"cos",eq(a[500][2], math.cos(500)))
---~   Test(getinfo(1).currentline,"cos",eq(a[800][2], math.cos(800)))
---~   Test(getinfo(1).currentline,"sin",eq(a[200][3], 200/3))
---~   Test(getinfo(1).currentline,"sin",eq(a[1000][3], 1000/3, 0.001))
+--~   Test(getinfo(function()end),"sin",eq(a[300][1], math.sin(300)))
+--~   Test(getinfo(function()end),"sin",eq(a[600][1], math.sin(600)))
+--~   Test(getinfo(function()end),"cos",eq(a[500][2], math.cos(500)))
+--~   Test(getinfo(function()end),"cos",eq(a[800][2], math.cos(800)))
+--~   Test(getinfo(function()end),"sin",eq(a[200][3], 200/3))
+--~   Test(getinfo(function()end),"sin",eq(a[1000][3], 1000/3, 0.001))
 
   -- doesn't work in SM ("10e500 - 10e400" returns "-nan(ind)" instead of "nan")
 --~   do   -- testing NaN
 --~     local NaN = 10e500 - 10e400
---~     Test(getinfo(1).currentline,"nan",NaN ~= NaN)
---~     Test(getinfo(1).currentline,"nan",not (NaN < NaN))
---~     Test(getinfo(1).currentline,"nan",not (NaN <= NaN))
---~     Test(getinfo(1).currentline,"nan",not (NaN > NaN))
---~     Test(getinfo(1).currentline,"nan",not (NaN >= NaN))
---~     Test(getinfo(1).currentline,"nan",not (0 < NaN))
---~     Test(getinfo(1).currentline,"nan",not (NaN < 0))
+--~     Test(getinfo(function()end),"nan",NaN ~= NaN)
+--~     Test(getinfo(function()end),"nan",not (NaN < NaN))
+--~     Test(getinfo(function()end),"nan",not (NaN <= NaN))
+--~     Test(getinfo(function()end),"nan",not (NaN > NaN))
+--~     Test(getinfo(function()end),"nan",not (NaN >= NaN))
+--~     Test(getinfo(function()end),"nan",not (0 < NaN))
+--~     Test(getinfo(function()end),"nan",not (NaN < 0))
 --~     local a = {}
---~     Test(getinfo(1).currentline,"nan",not pcall(function () a[NaN] = 1 end))
---~     Test(getinfo(1).currentline,"nan",a[NaN],nil)
+--~     Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
+--~     Test(getinfo(function()end),"nan",a[NaN],nil)
 --~     a[1] = 1
---~     Test(getinfo(1).currentline,"nan",not pcall(function () a[NaN] = 1 end))
---~     Test(getinfo(1).currentline,"nan",a[NaN],nil)
+--~     Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
+--~     Test(getinfo(function()end),"nan",a[NaN],nil)
 --~   end
 
 --~   require "checktable"
@@ -607,7 +582,7 @@ function math.test()
 
   for _ = 1, 10 do
     local t = math.random(5)
-    Test(getinfo(1).currentline,"random",1 <= t and t <= 5)
+    Test(getinfo(function()end),"random",1 <= t and t <= 5)
   end
 
   local flag
@@ -621,34 +596,34 @@ function math.test()
     i=i+1
     flag = (Max == 0 and Min == -10)
   until flag or i>10000
-  Test(getinfo(1).currentline,"random",-10 <= Min and Max<=0)
-  Test(getinfo(1).currentline,"random",flag);
+  Test(getinfo(function()end),"random",-10 <= Min and Max<=0)
+  Test(getinfo(function()end),"random",flag);
 
   -- tests I added
 
-  Test(getinfo(1).currentline,"huge",math.huge + math.huge,math.huge)
-  Test(getinfo(1).currentline,"log",tostring(math.log(1.1)),"0.095310179804325")
-  Test(getinfo(1).currentline,"log",tostring(math.log(6.4643,25)),"0.57979705728765")
-  Test(getinfo(1).currentline,"exp",tostring(math.exp(5.453454)),"233.56350262858")
-  Test(getinfo(1).currentline,"exp",tostring(math.exp(-5.453454)),"0.0042814908525766")
-  Test(getinfo(1).currentline,"fmod",tostring(math.fmod(56546.45645,1)),"0.45644999999786")
-  Test(getinfo(1).currentline,"fmod",tostring(math.fmod(-56546.45645,1.5)),"-0.95644999999786")
-  Test(getinfo(1).currentline,"fmod",tostring(math.fmod(-876.0007665,-1)),"-0.00076650000005429")
-  Test(getinfo(1).currentline,"fmod",tostring(math.fmod(876.0007665,-1.6)),"0.80076650000001")
-  Test(getinfo(1).currentline,"ceil",math.ceil(123.334546452),124)
-  Test(getinfo(1).currentline,"ceil",math.ceil(-123.334546452),-123)
-  Test(getinfo(1).currentline,"floor",math.floor(-123.525645644),-124)
-  Test(getinfo(1).currentline,"floor",math.floor(123.525645644),123)
+  Test(getinfo(function()end),"huge",math.huge + math.huge,math.huge)
+  Test(getinfo(function()end),"log",tostring(math.log(1.1)),"0.095310179804325")
+  Test(getinfo(function()end),"log",tostring(math.log(6.4643,25)),"0.57979705728765")
+  Test(getinfo(function()end),"exp",tostring(math.exp(5.453454)),"233.56350262858")
+  Test(getinfo(function()end),"exp",tostring(math.exp(-5.453454)),"0.0042814908525766")
+  Test(getinfo(function()end),"fmod",tostring(math.fmod(56546.45645,1)),"0.45644999999786")
+  Test(getinfo(function()end),"fmod",tostring(math.fmod(-56546.45645,1.5)),"-0.95644999999786")
+  Test(getinfo(function()end),"fmod",tostring(math.fmod(-876.0007665,-1)),"-0.00076650000005429")
+  Test(getinfo(function()end),"fmod",tostring(math.fmod(876.0007665,-1.6)),"0.80076650000001")
+  Test(getinfo(function()end),"ceil",math.ceil(123.334546452),124)
+  Test(getinfo(function()end),"ceil",math.ceil(-123.334546452),-123)
+  Test(getinfo(function()end),"floor",math.floor(-123.525645644),-124)
+  Test(getinfo(function()end),"floor",math.floor(123.525645644),123)
 
   local int,flt = math.modf(3453444.54354645)
-  Test(getinfo(1).currentline,"modf",int,3453444)
-  Test(getinfo(1).currentline,"modf",tostring(flt),"0.5435464498587")
+  Test(getinfo(function()end),"modf",int,3453444)
+  Test(getinfo(function()end),"modf",tostring(flt),"0.5435464498587")
   int,flt = math.modf(-3453444.54354645)
-  Test(getinfo(1).currentline,"modf",int,-3453444)
-  Test(getinfo(1).currentline,"modf",tostring(flt),"-0.5435464498587")
+  Test(getinfo(function()end),"modf",int,-3453444)
+  Test(getinfo(function()end),"modf",tostring(flt),"-0.5435464498587")
 
   -- check error msg
---~   Test(getinfo(1).currentline,"test",1,0)
+--~   Test(getinfo(function()end),"test",1,0)
 
   print(str.test_end)
 end

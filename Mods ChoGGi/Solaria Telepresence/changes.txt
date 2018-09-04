@@ -1,6 +1,7 @@
 v0.5
+Da Vinci.
+Cleaned up the code a bit.
 Locked building behind a tech unlock.
-
 v0.4
 Removed list boxes for selection, now uses menus (right-click to close the menu).
 Uses 15 instead of 25 power.
