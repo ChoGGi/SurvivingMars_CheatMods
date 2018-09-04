@@ -18,6 +18,7 @@
 - For multi-select list choices one of the hints was missing.
 - Examine popups would show a list from another examine.
 - Find Value was using patterns instead of plain text.
+- Unlock Locked Buildings broke (thanks Antipatiko).
 
 ## v8.6 (02 Sep 2018)
 ### Added:
