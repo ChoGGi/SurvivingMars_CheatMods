@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001341,,
 302535920001342,,
 302535920001343,,
 302535920001344,,
@@ -263,6 +262,7 @@ Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920000073,Execute code in text box (Ctrl-Enter or Shift-Enter will also work).,
 302535920000075,Insert Obj,
 302535920000076,At caret position inserts: ChoGGi.CurObj,
+302535920001341,Double-click to apply without closing list.,
 302535920001167,Use Ctrl/Shift for multiple selection.,
 302535920001324,ECM: OpenInListChoice(list) is blank... This shouldn't happen.,
 302535920000068,Filter Text,

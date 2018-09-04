@@ -359,7 +359,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 				label = UICity.labels[label] or ""
 				for i = 1, #label do
 					label[i]:ForEachAttach("Logo",function(a)
-						tempLogo:ChangeEntity(entity_name)
+						a:ChangeEntity(entity_name)
 					end)
 				end
 			end
@@ -384,7 +384,9 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		items = ItemList,
 		title = 302535920001178--[[Set New Logo--]],
 		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name)),
-		height = 625.0,
+		height = 800.0,
+		custom_type = 7,
+		custom_func = CallBackFunc,
 	}
 end
 
