@@ -1971,7 +1971,7 @@ function ChoGGi.CodeFuncs.SetTaskReqAmount(obj,value,task,setting)
 	end
 end
 
-function ChoGGi.CodeFuncs.RetEditorType(list,key,value)
+function ChoGGi.CodeFuncs.ReturnEditorType(list,key,value)
 	local idx = table.find(list, key, value)
 	value = list[idx].editor
 	-- I use it to compare to type() so

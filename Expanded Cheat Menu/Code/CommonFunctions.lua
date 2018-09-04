@@ -1123,7 +1123,8 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
-	if type(setting) == "string" then
+
+	if type(setting) == "string" and setting:find(".",1,true) then
 		-- some of the menu items passed are "table.table.exists?.setting"
 		local obj = ChoGGi.ComFuncs.DotNameToObject(setting)
 		if obj then

@@ -22,16 +22,16 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 	local id = sel.encyclopedia_id
 	local name = RetName(sel)
 
-	local RetEditorType = ChoGGi.CodeFuncs.RetEditorType
+	local ReturnEditorType = ChoGGi.CodeFuncs.ReturnEditorType
 	local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 	local ItemList = {
-		{text = S[728--[[Health change on visit--]]],value = sel.health_change,setting = "health_change",hint = hint_type:format(RetEditorType(sel.properties,"id","health_change"))},
-		{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change,setting = "sanity_change",hint = hint_type:format(RetEditorType(sel.properties,"id","sanity_change"))},
-		{text = S[730--[[Service Comfort--]]],value = sel.service_comfort,setting = "service_comfort",hint = hint_type:format(RetEditorType(sel.properties,"id","service_comfort"))},
-		{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase,setting = "comfort_increase",hint = hint_type:format(RetEditorType(sel.properties,"id","comfort_increase"))},
-		{text = S[734--[[Visit duration--]]],value = sel.visit_duration,setting = "visit_duration",hint = hint_type:format(RetEditorType(sel.properties,"id","visit_duration"))},
-		{text = S[735--[[Usable by children--]]],value = sel.usable_by_children,setting = "usable_by_children",hint = hint_type:format(RetEditorType(sel.properties,"id","usable_by_children"))},
-		{text = S[736--[[Children Only--]]],value = sel.children_only,setting = "children_only",hint = hint_type:format(RetEditorType(sel.properties,"id","children_only"))},
+		{text = S[728--[[Health change on visit--]]],value = sel.health_change,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
+		{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
+		{text = S[730--[[Service Comfort--]]],value = sel.service_comfort,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
+		{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
+		{text = S[734--[[Visit duration--]]],value = sel.visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))},
+		{text = S[735--[[Usable by children--]]],value = sel.usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))},
+		{text = S[736--[[Children Only--]]],value = sel.children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))},
 	}
 
 	local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
@@ -82,14 +82,14 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 				local setting = choice[i].setting
 				local value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 				-- check user added correct
-				if type(value) == RetEditorType(sel.properties,"id",setting) then
+				if type(value) == ReturnEditorType(sel.properties,"id",setting) then
 					bs_setting.service_stats[setting] = value
 				end
 			end
 			-- update existing buildings
 			local objs = UICity.labels[id] or ""
 			for i = 1, #objs do
-				ChoGGi.CodeFuncs.UpdateServiceComfortBld(objs[i],service_stats)
+				ChoGGi.CodeFuncs.UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
 			end
 		end
 

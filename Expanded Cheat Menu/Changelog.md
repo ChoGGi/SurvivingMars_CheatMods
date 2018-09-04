@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v8.7 (Unreleased)
+## v8.8 (Unreleased)
+
+## v8.7 (04 Sep 2018)
 ### Changed:
 - Build Spires Outside of Spire Point is now Remove Spire Point Limit.
 - > You can now build spires anywhere in domes.
@@ -22,6 +24,7 @@
 - Examine popups would show a list from another examine.
 - Find Value was using patterns instead of plain text.
 - Unlock Locked Buildings broke (thanks Antipatiko).
+- Service Building Stats (thanks hchsiao).
 
 ## v8.6 (02 Sep 2018)
 ### Added:
