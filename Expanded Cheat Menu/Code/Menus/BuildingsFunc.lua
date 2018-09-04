@@ -433,17 +433,17 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 		end
 	end
 
-	local function CallBackFunc(choices)
+	local function CallBackFunc(choice)
 		if #choice < 1 then
 			return
 		end
-		local value = choices[1].value
-		for i = 1, #choices do
-			UnlockBuilding(choices[i].value)
+		local value = choice[1].value
+		for i = 1, #choice do
+			UnlockBuilding(choice[i].value)
 		end
 		ChoGGi.CodeFuncs.BuildMenu_Toggle()
 		MsgPopup(
-			S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choices),
+			S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
 			8690--[[Protect--]],
 			default_icon
 		)
