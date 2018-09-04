@@ -5,6 +5,8 @@
 
 ## v8.7 (Unreleased)
 ### Changed:
+- Build Spires Outside of Spire Point is now Remove Spire Point Limit.
+- > You can now build spires anywhere in domes.
 - Keys are now bindable in the options (if there's any menu items you want a shortcut for?).
 - Change Logo/Upload Mod shows image in hint.
 - Random Object Colour is more random.

@@ -411,7 +411,7 @@ Actions[c] = {
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.Building_dome_spot,
-			S[302535920000227--[["Build spires anywhere in the dome.
+			S[302535920000227--[["Build spires anywhere in domes.
 Use with %s to fill up a dome with spires."--]]]:format(S[302535920000230--[[Remove Building Limits--]]])
 		)
 	end,
