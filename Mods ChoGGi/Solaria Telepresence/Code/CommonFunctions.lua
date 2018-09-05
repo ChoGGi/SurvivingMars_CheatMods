@@ -70,9 +70,6 @@ local SolariaTelepresence = SolariaTelepresence
 
 -- if user has ECM enabled then use functions from it instead
 local function DotNameToObject(str,root,create)
-	if str:find("ChoGGi%.") and not rawget(_G,"ChoGGi") then
-		return
-	end
 	-- always start with _G
 	local obj = root or _G
 	-- https://www.lua.org/pil/14.1.html
@@ -97,7 +94,7 @@ do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
 	-- translate func that always returns a string
-	SolariaTelepresence.ComFuncs.Translate = DotNameToObject("ChoGGi.ComFuncs.Translate") or function(...)
+	SolariaTelepresence.ComFuncs.Translate = function(...)
 		local str
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
@@ -121,7 +118,7 @@ local Trans = SolariaTelepresence.ComFuncs.Translate
 
 -- shows a popup msg with the rest of the notifications
 -- objects can be a single obj, or {obj1,obj2,etc}
-	SolariaTelepresence.ComFuncs.MsgPopup = DotNameToObject("ChoGGi.ComFuncs.MsgPopup") or function(text,title,icon,size,objects)
+	SolariaTelepresence.ComFuncs.MsgPopup = function(text,title,icon,size,objects)
 	local SolariaTelepresence = SolariaTelepresence
 	if not SolariaTelepresence.Temp.MsgPopups then
 		SolariaTelepresence.Temp.MsgPopups = {}
@@ -172,7 +169,7 @@ local Trans = SolariaTelepresence.ComFuncs.Translate
 end
 
 -- well that's the question isn't it?
-SolariaTelepresence.ComFuncs.QuestionBox = DotNameToObject("ChoGGi.ComFuncs.QuestionBox") or function(text,func,title,ok_msg,cancel_msg,image,context,parent)
+SolariaTelepresence.ComFuncs.QuestionBox = function(text,func,title,ok_msg,cancel_msg,image,context,parent)
 	-- thread needed for WaitMarsQuestion
 	CreateRealTimeThread(function()
 		if WaitMarsQuestion(
@@ -198,7 +195,7 @@ SolariaTelepresence.ComFuncs.QuestionBox = DotNameToObject("ChoGGi.ComFuncs.Ques
 	end)
 end
 
-SolariaTelepresence.ComFuncs.FilterFromTable = DotNameToObject("ChoGGi.ComFuncs.FilterFromTable") or function(list,exclude_list,include_list,name)
+SolariaTelepresence.ComFuncs.FilterFromTable = function(list,exclude_list,include_list,name)
 	if #list < 1 then
 		return
 	end
@@ -229,7 +226,7 @@ SolariaTelepresence.ComFuncs.FilterFromTable = DotNameToObject("ChoGGi.ComFuncs.
 	},list)
 end
 
-SolariaTelepresence.ComFuncs.CompareTableValue = DotNameToObject("ChoGGi.ComFuncs.CompareTableValue") or function(a,b,name)
+SolariaTelepresence.ComFuncs.CompareTableValue = function(a,b,name)
 	if not a and not b then
 		return
 	end
@@ -244,7 +241,7 @@ end
 do -- RetName
 	local IsObjlist = IsObjlist
 	-- try to return a decent name for the obj, failing that return some sort of string
-	SolariaTelepresence.ComFuncs.RetName = DotNameToObject("ChoGGi.ComFuncs.RetName") or function(obj)
+	SolariaTelepresence.ComFuncs.RetName = function(obj)
 		if obj == _G then
 			return "_G"
 		end
@@ -289,7 +286,7 @@ do -- RetName
 end -- do
 
 
-SolariaTelepresence.ComFuncs.PopupToggle = DotNameToObject("ChoGGi.ComFuncs.PopupToggle") or function(parent,popup_id,items,anchor)
+SolariaTelepresence.ComFuncs.PopupToggle = function(parent,popup_id,items,anchor)
 	local opened_popup = rawget(terminal.desktop,popup_id)
 	if opened_popup then
 		opened_popup:Close()
@@ -381,7 +378,7 @@ SolariaTelepresence.ComFuncs.PopupToggle = DotNameToObject("ChoGGi.ComFuncs.Popu
 	end
 end
 
-SolariaTelepresence.ComFuncs.RemoveXTemplateSections = DotNameToObject("ChoGGi.ComFuncs.RemoveXTemplateSections") or function(list,name)
+SolariaTelepresence.ComFuncs.RemoveXTemplateSections = function(list,name)
 	local idx = table.find(list, name, true)
 	if idx then
 		table.remove(list,idx)

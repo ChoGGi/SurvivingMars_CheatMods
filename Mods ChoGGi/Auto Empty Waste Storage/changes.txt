@@ -1,2 +1,6 @@
-v0.4
+v0.3
+Cleaned up code.
+Stopped use of ModConfig, you can change options when you select a dump site.
+
+v0.2
 Da Vinci

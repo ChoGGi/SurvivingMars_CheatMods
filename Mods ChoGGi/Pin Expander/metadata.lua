@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Pin Expander v0.2",
-	"version", 2,
+	"title", "Pin Expander v0.3",
+	"version", 3,
 	"saved", 1536148800,
 	"image", "Preview.png",
 	"id", "ChoGGi_PinExpander",

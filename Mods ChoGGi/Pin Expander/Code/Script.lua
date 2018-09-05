@@ -379,23 +379,33 @@ function PinsDlg:InitPinButton(button)
 			-- then state text with two \n
 			hint = StringFormat("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n%s",str_state,state_text,hint)
 
-			items[i] = {
-				name = RetName(obj),
-				showme = obj,
-				image = image,
-				hint = hint,
-				hint_title = hint_title,
-				clicked = function(_,pt,mbut)
-					if mbut == "L" then
-						ViewObjectMars(obj)
-						SelectObj(obj)
-						PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
-					else
-						ViewObjectMars(obj)
-						PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
-					end
-				end,
-			}
+			if obj.class ~= "SupplyRocket" or obj.class == "SupplyRocket" and obj.name ~= "" then
+				items[i] = {
+					name = RetName(obj),
+					showme = obj,
+					image = image,
+					hint = hint,
+					hint_title = hint_title,
+					clicked = function(_,pt,mbut)
+						if mbut == "L" then
+							if obj.class == "SupplyRocket" then
+								orig_button_OnPress(button_obj,gamepad)
+							else
+								ViewObjectMars(obj)
+								SelectObj(obj)
+							end
+							PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
+						else
+							if obj.class == "SupplyRocket" then
+								orig_button_OnPress(button_obj,gamepad)
+							else
+								ViewObjectMars(obj)
+							end
+							PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
+						end
+					end,
+				}
+			end
 		end
 
 		-- sort by image then name
@@ -405,12 +415,14 @@ function PinsDlg:InitPinButton(button)
 
 		-- personal touch
 		local count = StringFormat("%s #: %s",Trans(298035641454--[[Object--]]),#items)
-		table.insert(items,1,{
-			name = count,
-			image = "UI/Icons/res_theoretical_research.tga",
-			hint = count,
-			hint_title = Trans(126095410863--[[Info--]]),
-		})
+		if #items > 1 then
+			table.insert(items,1,{
+				name = count,
+				image = "UI/Icons/res_theoretical_research.tga",
+				hint = count,
+				hint_title = Trans(126095410863--[[Info--]]),
+			})
+		end
 
 		-- fucked if i know
 		PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)

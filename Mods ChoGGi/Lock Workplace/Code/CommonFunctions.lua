@@ -48,9 +48,6 @@ LockWorkplace = {
 
 -- if user has ECM enabled then use functions from it instead
 local function DotNameToObject(str,root,create)
-	if str:find("ChoGGi%.") and not rawget(_G,"ChoGGi") then
-		return
-	end
 	-- always start with _G
 	local obj = root or _G
 	-- https://www.lua.org/pil/14.1.html
@@ -75,7 +72,7 @@ do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
 	-- translate func that always returns a string
-	LockWorkplace.ComFuncs.Trans = DotNameToObject("ChoGGi.ComFuncs.Translate") or function(...)
+	LockWorkplace.ComFuncs.Trans = function(...)
 		local str
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
@@ -100,7 +97,7 @@ local Trans = LockWorkplace.ComFuncs.Translate
 do -- RetName
 	local IsObjlist = IsObjlist
 	-- returns object name or at least always some string
-	LockWorkplace.ComFuncs.RetName = DotNameToObject("ChoGGi.ComFuncs.RetName") or function(obj)
+	LockWorkplace.ComFuncs.RetName = function(obj)
 		if obj == _G then
 			return "_G"
 		end
@@ -143,7 +140,7 @@ do -- RetName
 	end
 end -- do
 
-LockWorkplace.ComFuncs.RemoveXTemplateSections = DotNameToObject("ChoGGi.ComFuncs.RemoveXTemplateSections") or function(list,name)
+LockWorkplace.ComFuncs.RemoveXTemplateSections = function(list,name)
 	local idx = table.find(list, name, true)
 	if idx then
 		table.remove(list,idx)

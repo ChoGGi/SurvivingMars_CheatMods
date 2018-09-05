@@ -1,3 +1,5 @@
+v0.6
+0.5 was spamming the log. It still worked fine, but I like me a clean log.
 v0.5
 Da Vinci.
 Cleaned up the code a bit.

@@ -337,6 +337,12 @@ function OnMsg.ShortcutsReloaded()
 	-- we don't add shortcuts and ain't supposed to drink no booze
 	if not ChoGGi.UserSettings.DisableECM then
 		Rebuildshortcuts()
+
+		local dlgConsole = dlgConsole
+		if dlgConsole then
+			ShowConsole(not dlgConsole:GetVisible())
+			ShowConsole(not dlgConsole:GetVisible())
+		end
 	end
 end
 
@@ -346,7 +352,7 @@ function OnMsg.BuildingPlaced(obj)
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
 end --OnMsg
--- regular build
+
 local function QuickBuild(sites)
 	for i = 1, #sites do
 		if not sites[i].construction_group or sites[i].construction_group[1] == sites[i] then
@@ -354,6 +360,8 @@ local function QuickBuild(sites)
 		end
 	end
 end
+
+-- regular build
 function OnMsg.ConstructionSitePlaced(obj)
 	local ChoGGi = ChoGGi
 	if obj:IsKindOf("Building") then
@@ -361,6 +369,7 @@ function OnMsg.ConstructionSitePlaced(obj)
 	end
 
 	if ChoGGi.UserSettings.Building_instant_build then
+		-- i do it this way instead of using .instant_build so domes don't fuck up
 		DelayedCall(100, function()
 			local UICity = UICity
 			QuickBuild(UICity.labels.ConstructionSite or "")
@@ -370,10 +379,9 @@ function OnMsg.ConstructionSitePlaced(obj)
 end --OnMsg
 
 -- this gets called before buildings are completely initialized (no air/water/elec attached)
-
 function OnMsg.ConstructionComplete(obj)
 
-	--skip rockets
+	-- skip rockets
 	if obj.class == "RocketLandingSite" then
 		return
 	end

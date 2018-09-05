@@ -1,3 +1,7 @@
+v0.3
+Clicking a rocket will work properly now.
+Non-spawned rockets are now hidden from view.
+
 v0.2
 Faster (3K+ colonists takes 1-2 seconds).
 
