@@ -2,13 +2,11 @@
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
-local CheckText = ChoGGi.ComFuncs.CheckText
-local S = ChoGGi.Strings
+local CheckText = PinExpander.ComFuncs.CheckText
+local Trans = PinExpander.ComFuncs.Translate
+--~ local S = PinExpander.Strings
 
 local text = "Editor12Bold"
-if ChoGGi.testing then
-	text = "Editor14Bold"
-end
 
 local box,point = box,point
 
@@ -23,7 +21,11 @@ local rollover_blue = -14113793
 local invis = 0
 local invis_less = 268435456
 
-DefineClass.ChoGGi_Text = {
+
+local Info = Trans(126095410863--[[Info--]])
+
+
+DefineClass.PinExpander_Text = {
 	__parents = {"XText"},
 	-- default
 	Background = dark_gray,
@@ -37,12 +39,56 @@ DefineClass.ChoGGi_Text = {
 	TextFont = text,
 
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 }
 --~ function XText:OnHyperLinkRollover(hyperlink, hyperlink_box, pos)
 --~ end
+DefineClass.PinExpander_Label = {
+	__parents = {"XLabel"},
+	TextFont = "Editor14Bold",
+	Translate = false,
+	TextColor = white,
+	VAlign = "center",
+}
+function PinExpander_Label:SetTitle(win,title)
+	if win.prefix then
+		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,"")))
+	else
+		win.idCaption:SetText(CheckText(win.title,""))
+	end
+end
+DefineClass.PinExpander_Image = {
+	__parents = {"XImage"},
+	Column = 1,
+	Columns = 2,
+	VAlign = "center",
+	HandleKeyboard = false,
+	ImageScale = point(250, 250),
+	Margins = box(4, 0, 0, 0),
+}
 
-DefineClass.ChoGGi_MultiLineEdit = {
+DefineClass.PinExpander_MoveControl = {
+	__parents = {"XMoveControl"},
+	Dock = "top",
+	Background = medium_gray,
+	FocusedBackground = dark_blue,
+	FocusedColor = light_gray,
+	RolloverTitle = Trans(126095410863--[[Info--]]),
+	RolloverTemplate = "Rollover",
+}
+
+
+DefineClass.PinExpander_CloseButton = {
+	__parents = {"PinExpander_Buttons"},
+	Image = "UI/Common/mission_no.tga",
+	VAlign = "center",
+	HAlign = "right",
+	Margins = box(0, 0, 2, 0),
+	RolloverAnchor = "right",
+	RolloverText = Trans(1011--[[Close--]]),
+}
+
+DefineClass.PinExpander_MultiLineEdit = {
 	__parents = {"XMultiLineEdit"},
 	TextFont = "Editor16",
 	-- default
@@ -61,42 +107,9 @@ DefineClass.ChoGGi_MultiLineEdit = {
 	WordWrap = false,
 }
 
-DefineClass.ChoGGi_Label = {
-	__parents = {"XLabel"},
-	TextFont = "Editor14Bold",
-	Translate = false,
-	TextColor = white,
-	VAlign = "center",
-}
-function ChoGGi_Label:SetTitle(win,title)
-	if win.prefix then
-		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,"")))
-	else
-		win.idCaption:SetText(CheckText(win.title,""))
-	end
-end
-DefineClass.ChoGGi_Image = {
-	__parents = {"XImage"},
-	Column = 1,
-	Columns = 2,
-	VAlign = "center",
-	HandleKeyboard = false,
-	ImageScale = point(250, 250),
-	Margins = box(4, 0, 0, 0),
-}
-DefineClass.ChoGGi_MoveControl = {
-	__parents = {"XMoveControl"},
-	Dock = "top",
-	Background = medium_gray,
-	FocusedBackground = dark_blue,
-	FocusedColor = light_gray,
-	RolloverTitle = S[126095410863--[[Info--]]],
-	RolloverTemplate = "Rollover",
-}
-
-DefineClass.ChoGGi_Buttons = {
+DefineClass.PinExpander_Buttons = {
 	__parents = {"XTextButton"},
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	RolloverTextColor = white,
@@ -105,29 +118,19 @@ DefineClass.ChoGGi_Buttons = {
 	PressedTextColor = white,
 }
 
-DefineClass.ChoGGi_Button = {
-	__parents = {"ChoGGi_Buttons"},
+DefineClass.PinExpander_Button = {
+	__parents = {"PinExpander_Buttons"},
 	RolloverAnchor = "bottom",
 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = Trans(6878--[[OK--]]),
 	Background = light_gray,
 }
-function ChoGGi_Button:Init()
+function PinExpander_Button:Init()
 	self.idLabel:SetDock("box")
 end
 
-DefineClass.ChoGGi_CloseButton = {
-	__parents = {"ChoGGi_Buttons"},
-	Image = "UI/Common/mission_no.tga",
-	VAlign = "center",
-	HAlign = "right",
-	Margins = box(0, 0, 2, 0),
-	RolloverAnchor = "right",
-	RolloverText = S[1011--[[Close--]]],
-}
-
-DefineClass.ChoGGi_ConsoleButton = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.PinExpander_ConsoleButton = {
+	__parents = {"PinExpander_Button"},
 	Padding = box(5, 2, 5, 2),
 	TextFont = "Editor16Bold",
 	RolloverAnchor = "right",
@@ -137,44 +140,46 @@ DefineClass.ChoGGi_ConsoleButton = {
 	Margins = box(4,0,0,0),
 }
 
-DefineClass.ChoGGi_ButtonMenu = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.PinExpander_ButtonMenu = {
+	__parents = {"PinExpander_Button"},
 	LayoutMethod = "HList",
 	RolloverAnchor = "smart",
 	TextFont = "Editor16Bold",
 	TextColor = black,
 	Margins = box(0,0,0,0),
 }
-DefineClass.ChoGGi_ComboButton = {
+DefineClass.PinExpander_ComboButton = {
 	__parents = {"XComboButton"},
 	Background = light_gray,
+
 	RolloverBackground = rollover_blue,
 	RolloverTextColor = white,
 	RolloverAnchor = "top",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 	RolloverTemplate = "Rollover",
+
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
 	Margins = box(4,4,0,4),
 }
 
-DefineClass.ChoGGi_CheckButton = {
+DefineClass.PinExpander_CheckButton = {
 	__parents = {"XCheckButton"},
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 	RolloverTemplate = "Rollover",
 	RolloverAnchor = "right",
 	RolloverTextColor = light_gray,
 	TextColor = white,
 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = Trans(6878--[[OK--]]),
 }
-function ChoGGi_CheckButton:Init()
+function PinExpander_CheckButton:Init()
 --~	 XCheckButton.Init(self)
 	self.idIcon:SetBackground(light_gray)
 end
 
-DefineClass.ChoGGi_CheckButtonMenu = {
-	__parents = {"ChoGGi_CheckButton"},
+DefineClass.PinExpander_CheckButtonMenu = {
+	__parents = {"PinExpander_CheckButton"},
 	RolloverAnchor = "smart",
 	Background = light_gray,
 	TextHAlign = "left",
@@ -185,20 +190,20 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	Margins = box(4,0,0,0),
 }
 
-DefineClass.ChoGGi_TextInput = {
+DefineClass.PinExpander_TextInput = {
 	__parents = {"XEdit"},
 	WordWrap = false,
 	AllowTabs = false,
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 	RolloverAnchor = "top",
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
 }
---~ function ChoGGi_TextInput:Init()
+--~ function PinExpander_TextInput:Init()
 --~	 self:SetText(self.display_text or "")
 --~ end
 
-DefineClass.ChoGGi_List = {
+DefineClass.PinExpander_List = {
 	__parents = {"XList"},
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
@@ -206,7 +211,7 @@ DefineClass.ChoGGi_List = {
 	FocusedBackground = light_gray,
 }
 
-DefineClass.ChoGGi_Dialog = {
+DefineClass.PinExpander_Dialog = {
 	__parents = {"XDialog"},
 	HandleMouse = true,
 	Translate = false,
@@ -215,21 +220,21 @@ DefineClass.ChoGGi_Dialog = {
 --~ 	BackgroundColor = invis_less,
 	Dock = "ignore",
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 	Background = dark_gray,
 	BorderWidth = 2,
 	BorderColor = light_gray,
 }
 
-DefineClass.ChoGGi_DialogSection = {
+DefineClass.PinExpander_DialogSection = {
 	__parents = {"XWindow"},
 	HandleMouse = true,
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Info,
 }
 
-DefineClass.ChoGGi_ScrollArea = {
+DefineClass.PinExpander_ScrollArea = {
 	__parents = {"XScrollArea"},
 --~ 	UniformColumnWidth = true,
 --~ 	UniformRowHeight = true,
@@ -237,21 +242,21 @@ DefineClass.ChoGGi_ScrollArea = {
 	BorderWidth = 0,
 }
 
-DefineClass.ChoGGi_SleekScroll = {
+DefineClass.PinExpander_SleekScroll = {
 	__parents = {"XSleekScroll"},
 	MinThumbSize = 30,
 	AutoHide = true,
 	Background = invis,
 }
 -- convenience function
-function ChoGGi_SleekScroll:SetHorizontal()
+function PinExpander_SleekScroll:SetHorizontal()
 	self.MinHeight = 10
 --~	 self.MaxHeight = 10
 	self.MinWidth = 10
 --~	 self.MaxWidth = 10
 end
 
-DefineClass.ChoGGi_Window = {
+DefineClass.PinExpander_Window = {
 	__parents = {"XWindow"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
@@ -260,21 +265,21 @@ DefineClass.ChoGGi_Window = {
 	-- how far down to y-offset new dialogs
 	header = 33.0,
 
-	title = S[1000016--[[Title--]]],
+	title = Trans(1000016--[[Title--]]),
 	RolloverTemplate = "Rollover",
 }
 
-function ChoGGi_Window:AddElements(_,context)
+function PinExpander_Window:AddElements(_,context)
 	local g_Classes = g_Classes
 
 	-- scale to UI
-	local UIScale = ChoGGi.Temp.UIScale
+	local UIScale = PinExpander.Temp.UIScale
 	self.dialog_width = self.dialog_width * UIScale
 	self.dialog_height = self.dialog_height * UIScale
 	self.header = self.header * UIScale
 
 	-- add container dialog for everything to fit in
-	self.idDialog = g_Classes.ChoGGi_Dialog:new({
+	self.idDialog = g_Classes.PinExpander_Dialog:new({
 	}, self)
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
@@ -283,10 +288,10 @@ function ChoGGi_Window:AddElements(_,context)
 	self.idSizeControl = g_Classes.XSizeControl:new({
 	}, self.idDialog)
 
-	self.idMoveControl = g_Classes.ChoGGi_MoveControl:new({
+	self.idMoveControl = g_Classes.PinExpander_MoveControl:new({
 	}, self.idDialog)
 
-	self.idCloseX = ChoGGi_CloseButton:new({
+	self.idCloseX = PinExpander_CloseButton:new({
 		OnPress = context.func or function()
 			self:Close("cancel",false)
 		end,
@@ -294,14 +299,14 @@ function ChoGGi_Window:AddElements(_,context)
 
 	local image = self.title_image or self.obj and self.obj.display_icon
 	if image then
-		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
+		self.idCaptionImage = g_Classes.PinExpander_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
 		}, self.idMoveControl)
 		self.idCaptionImage:SetImage(image)
 	end
 
-	self.idCaption = g_Classes.ChoGGi_Label:new({
+	self.idCaption = g_Classes.PinExpander_Label:new({
 		Id = "idCaption",
 		MaxHeight = self.header,
 		Dock = "left",
@@ -318,7 +323,7 @@ function ChoGGi_Window:AddElements(_,context)
 end
 
 -- returns point(x,y)
-function ChoGGi_Window:GetPos(dialog)
+function PinExpander_Window:GetPos(dialog)
 	local b = self[dialog or "idDialog"].box
 	return point(b:minx(),b:miny())
 end
@@ -344,7 +349,7 @@ local function BoxSize(obj,self)
 end
 
 -- takes either a point, or obj to set pos
-function ChoGGi_Window:SetPos(obj)
+function PinExpander_Window:SetPos(obj)
 	local x,y,w,h
 	if IsPoint(obj) then
 		local box = self.idDialog.box
@@ -358,26 +363,26 @@ function ChoGGi_Window:SetPos(obj)
 	self.idDialog:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(size)
+function PinExpander_Window:SetSize(size)
 	local box = self.idDialog.box
 	local x,y = box:minx(),box:miny()
 	local w,h = size:x(),size:y()
 	self.idDialog:SetBox(x,y,w,h)
 end
-function ChoGGi_Window:SetWidth(w)
+function PinExpander_Window:SetWidth(w)
 	self:SetSize(point(w,self.idDialog.box:sizey()))
 end
-function ChoGGi_Window:SetHeight(h)
+function PinExpander_Window:SetHeight(h)
 	self:SetSize(point(self.idDialog.box:sizex(),h))
 end
-function ChoGGi_Window:GetSize(dialog)
+function PinExpander_Window:GetSize(dialog)
 	local b = self[dialog or "idDialog"].box
 	return point(b:sizex(),b:sizey())
 end
 
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
-function ChoGGi_Window:SetInitPos(parent)
+function PinExpander_Window:SetInitPos(parent)
 	local x,y,w,h
 
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
@@ -421,36 +426,36 @@ function ChoGGi_Window:SetInitPos(parent)
 end
 
 -- scrollable textbox
-function ChoGGi_Window:AddScrollText()
+function PinExpander_Window:AddScrollText()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.PinExpander_DialogSection:new({
 		Id = "idScrollSection",
 		BorderWidth = 1,
 		Margins = box(0,0,0,0),
 		BorderColor = light_gray,
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+	self.idScrollArea = g_Classes.PinExpander_ScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.PinExpander_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idScrollArea",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.PinExpander_SleekScroll:new({
 		Id = "idScrollH",
 		Target = "idScrollArea",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idText = g_Classes.ChoGGi_Text:new({
+	self.idText = g_Classes.PinExpander_Text:new({
 		Id = "idText",
 		OnHyperLink = function(_, link, _, box, pos, button)
 			self.onclick_handles[tonumber(link)](box, pos, button)
@@ -458,58 +463,58 @@ function ChoGGi_Window:AddScrollText()
 	}, self.idScrollArea)
 end
 
-function ChoGGi_Window:AddScrollList()
+function PinExpander_Window:AddScrollList()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.PinExpander_DialogSection:new({
 		Id = "idScrollSection",
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+	self.idScrollArea = g_Classes.PinExpander_ScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.PinExpander_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idScrollArea",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idList = g_Classes.ChoGGi_List:new({
+	self.idList = g_Classes.PinExpander_List:new({
 		Id = "idList",
 		VScroll = "idScrollV",
 	}, self.idScrollArea)
 
 end
 
-function ChoGGi_Window:AddScrollEdit()
+function PinExpander_Window:AddScrollEdit()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.PinExpander_DialogSection:new({
 		Id = "idScrollSection",
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.PinExpander_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idEdit",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.PinExpander_SleekScroll:new({
 		Id = "idScrollH",
 		Target = "idEdit",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idEdit = ChoGGi_MultiLineEdit:new({
+	self.idEdit = PinExpander_MultiLineEdit:new({
 		Id = "idEdit",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
 		Margins = box(4,4,4,4),
-		WordWrap = ChoGGi.UserSettings.WordWrap or false,
+		WordWrap = PinExpander.UserSettings.WordWrap or false,
 	}, self.idScrollSection)
 end

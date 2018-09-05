@@ -1,10 +1,13 @@
 return PlaceObj("ModDef", {
   "title", "Add Water Each Sol v0.5",
   "version", 5,
-  "saved", 1535803200,
+  "saved", 1536062400,
   "id", "ChoGGi_AddWaterEachSol",
   "author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua",
+		"Code/ModConfig.lua",
+	},
 	"image", "Preview.png",
   "steam_id", "1440164001",
 	"lua_revision", LuaRevision,

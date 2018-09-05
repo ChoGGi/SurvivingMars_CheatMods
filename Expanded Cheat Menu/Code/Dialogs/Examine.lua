@@ -37,12 +37,14 @@ local idLinks_hypertext = {
 
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
+
+	prefix = S[302535920000069--[[Examine--]]],
 	-- what we're examining
 	obj = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
 
-	dialog_width = 650.0,
+	dialog_width = 666.0,
 	dialog_height = 750.0,
 
 	-- add some random numbers as ids so when you click a popup of the same name from another examine it'll close then open the new one
@@ -1107,7 +1109,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059-
 	end -- istable
 
 	-- limit caption length so we don't cover up close button
-	self.idCaption:SetText(utf8.sub(string.format("%s: %s",S[302535920000069--[[Examine--]]],name), 1, 45))
+	self.idCaption:SetTitle(self,utf8.sub(name,1,45))
 
 	-- don't create a new thread if we're already in one from auto-refresh
 	if skip_thread then

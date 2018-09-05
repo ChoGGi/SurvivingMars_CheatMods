@@ -1,18 +1,3 @@
-ChoGGi_AddWaterEachSol = {
-	AmountOfWater = 50
-}
-
-function OnMsg.NewDay()
-	local water = ChoGGi_AddWaterEachSol.AmountOfWater * const.ResourceScale
-
-	MapForEach("map","SubsurfaceDepositWater",function(o)
-		o.amount = o.amount + water
-    if o.amount > o.max_amount then
-      o.amount = o.max_amount
-    end
-	end)
-end
-
 function OnMsg.ModConfigReady()
   local ModConfig = ModConfig
 
@@ -20,7 +5,7 @@ function OnMsg.ModConfigReady()
   ChoGGi_AddWaterEachSol.AmountOfWater = ModConfig:Get("ChoGGi_AddWaterEachSol", "AmountOfWater") or 50
 
   -- setup menu options
-  ModConfig:RegisterMod("ChoGGi_AddWaterEachSol", "Add Water Each Sol")
+  ModConfig:RegisterMod("ChoGGi_AddWaterEachSol", "Adds water each sol to deposits.")
 
   ModConfig:RegisterOption("ChoGGi_AddWaterEachSol", "AmountOfWater", {
     name = [[How much water each deposit receives each Sol.]],

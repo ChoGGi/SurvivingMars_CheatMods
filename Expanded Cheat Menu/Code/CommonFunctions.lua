@@ -81,6 +81,7 @@ AddMsgToFunc("SupplyRocket","GameInit","ChoGGi_SpawnedSupplyRocket")
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
+	local StringFormat = string.format
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str
@@ -97,26 +98,37 @@ do -- Translate
 				return arg2
 			end
 			-- done fucked up (just in case b)
-			return string.format("%s < Missing locale string id",select(1,...))
+			return StringFormat("%s < Missing locale string id",...)
 		end
+		-- and done
 		return str
 	end
 end -- do
 local Trans = ChoGGi.ComFuncs.Translate
 
--- check if text is already translated or needs to be, and return the text
-function ChoGGi.ComFuncs.CheckText(text,fallback)
-	if type(text) == "string" then
-		return text
-	else
-		text = S[text]
+do -- CheckText
+	-- check if text is already translated or needs to be, and return the text
+	local type = type
+	function ChoGGi.ComFuncs.CheckText(text,fallback)
+		local ret
+		-- no sense in translating a string
+		if type(text) == "string" then
+			return text
+		else
+			ret = S[text]
+		end
+		-- could be getting called from another mod, or it just isn't included in Strings
+		if not ret or type(ret) ~= "string" then
+			ret = Trans(text)
+		end
+		-- Trans will always return a string
+		if ret:find("Missing locale string id") then
+			ret = tostring(fallback or text)
+		end
+		-- have at it
+		return ret
 	end
-	-- probably missing locale id
-	if type(text) ~= "string" then
-		text = tostring(fallback or "")
-	end
-	return text
-end
+end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
@@ -239,20 +251,29 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 end
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
-	local opened_popup = rawget(terminal.desktop,popup_id)
-	if opened_popup then
-		opened_popup:Close()
-	else
+function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen)
+	local popup = rawget(terminal.desktop,popup_id)
+	local opened = popup
+	if opened then
+		popup:Close()
+	end
+
+	if not parent then
+		return
+	end
+
+	if not opened or reopen then
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
-		local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
 		local ShowMe = ChoGGi.ComFuncs.ShowMe
+		local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
 		local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 		local ViewObjectMars = ViewObjectMars
 		local black = black
+		local IsKeyPressed = terminal.IsKeyPressed
+		local vkShift = const.vkShift
 
-		local popup = g_Classes.XPopupList:new({
+		popup = g_Classes.XPopupList:new({
 			-- default to showing it, since we close it ourselves
 			Opened = true,
 			Id = popup_id,
@@ -261,6 +282,15 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 			LayoutMethod = "VList",
 		}, terminal.desktop)
 
+		-- hide any highlights
+		function popup.OnKillFocus(pop,new_focus)
+			ClearShowMe()
+			if not reopen or reopen and not IsKeyPressed(vkShift) then
+				g_Classes.XPopupList.OnKillFocus(pop,new_focus)
+				popup:Close()
+			end
+		end
+
 		for i = 1, #items do
 			local item = items[i]
 			local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
@@ -268,14 +298,22 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 			local button = cls:new({
 				TextColor = black,
 				RolloverText = CheckText(item.hint),
+				RolloverTitle = CheckText(item.hint_title),
 				Text = CheckText(item.name),
 				OnMouseButtonUp = function()
 					popup:Close()
 				end,
 			}, popup.idContainer)
 
+			if item.image then
+				button.idIcon:SetImage(item.image)
+			end
+
 			if item.clicked then
-				button.OnMouseButtonDown = item.clicked
+				function button.OnMouseButtonDown(...)
+					cls.OnMouseButtonDown(...)
+					item.clicked(...)
+				end
 			end
 
 			if item.showme then
@@ -284,7 +322,9 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor)
 					ClearShowMe()
 					ShowMe(item.showme, nil, true, true)
 				end
-			elseif item.pos then
+			end
+
+			if item.pos then
 				function button.OnMouseEnter(self, pt, child)
 					cls.OnMouseEnter(self, pt, child)
 					ViewObjectMars(item.pos)
@@ -642,7 +682,7 @@ do -- WriteLogs_Toggle
 			if arg2 and type(arg2) == "boolean" then
 				Dump(string.format("%s\r\n",select(1,...)),nil,filename,"log",true)
 			else
-				Dump(string.format("%s\r\n",...),nil,filename,"log",true)
+				Dump(string.format("%s\r\n",... or ""),nil,filename,"log",true)
 			end
 			if type(ChoGGi.OrigFuncs[funcname]) == "function" then
 				ChoGGi.OrigFuncs[funcname](...)

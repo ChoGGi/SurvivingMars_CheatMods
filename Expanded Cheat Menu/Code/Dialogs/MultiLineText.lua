@@ -46,6 +46,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	if context.checkbox then
 		g_Classes.ChoGGi_CheckButton:new({
 			Dock = "left",
+			Margins = box(4,0,0,0),
 			Text = S[302535920000721--[[Overwrite--]]],
 			RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
 

@@ -70,6 +70,9 @@ local SolariaTelepresence = SolariaTelepresence
 
 -- if user has ECM enabled then use functions from it instead
 local function DotNameToObject(str,root,create)
+	if str:find("ChoGGi%.") and not rawget(_G,"ChoGGi") then
+		return
+	end
 	-- always start with _G
 	local obj = root or _G
 	-- https://www.lua.org/pil/14.1.html

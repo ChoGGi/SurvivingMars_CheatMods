@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.8 (Unreleased)
+### Changed:
+- Dialog touch ups (colours, icons added).
+
 
 ## v8.7 (04 Sep 2018)
 ### Changed:

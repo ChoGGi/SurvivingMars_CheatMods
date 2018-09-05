@@ -112,7 +112,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		self:idListOnMouseButtonDown()
 	end
 	function self.idList.OnMouseButtonDoubleClick()
-		if #self.idList.selection > 0 then
+		if self.idList.focused_item then
 			ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
 		end
 	end
@@ -140,10 +140,10 @@ end
 
 -- update edit text box with selected value
 function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown()
-	if not self.idList.selection[1] then
+	if not self.idList.focused_item then
 		return
 	end
-	self.sel = self.idList[self.idList.selection[1]].item
+	self.sel = self.idList[self.idList.focused_item].item
 	-- update the edit value box
 	self.idEditValue:SetText(self.sel.value)
 	self.idEditValue:SetFocus()
@@ -197,10 +197,10 @@ function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
-	if not self.idList.selection[1] then
+	if not self.idList.focused_item then
 		return
 	end
-	local sel_idx = self.idList.selection[1]
+	local sel_idx = self.idList.focused_item
 	--
 	local edit_text = self.idEditValue:GetText()
 	local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)

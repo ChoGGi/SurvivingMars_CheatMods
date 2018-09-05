@@ -35,6 +35,8 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	self.list = context.list
 	self.items = self.list.items
+
+	self.obj = context.obj or self.items[1].obj
 	self.custom_func = self.list.custom_func
 	self.custom_type = self.list.custom_type
 	self.title = self.list.title
@@ -223,7 +225,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 		self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckElec",
-			Text = S[302535920000037--[[Electricity--]]],
+			Text = S[79--[[Power--]]],
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
@@ -243,7 +245,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idColorCheckArea)
 
 		self.idList:SetSelection(1, true)
-		self.sel = self.idList[self.idList.selection[1]].item
+		self.sel = self.idList[self.idList.focused_item].item
 		self.idEditValue:SetText(tostring(self.sel.value))
 		self:UpdateColourPicker(self.sel.text)
 		if self.custom_type == 2 then
@@ -286,7 +288,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- are we showing a hint?
 	local hint = CheckText(self.list.hint)
 	if hint ~= "" then
-		self.idTitleArea.RolloverText = hint
+		self.idMoveControl.RolloverText = hint
 		self.idList.RolloverText = hint
 		self.idOK.RolloverText = string.format("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
@@ -305,12 +307,14 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local text = self.idEditValue:GetText()
 	local value = RetProperType(text)
 	if self.custom_type > 0 then
-		if #self.idList.selection > 0 then
---~ 			self.idList[self.idList.selection[1]].item.value = value
-			self.idList[self.idList.selection[#self.idList.selection]].item.value = value
+		if self.idList.focused_item then
+			self.idList[self.idList.focused_item].item.value = value
 			if self.idColourContainer then
 				-- update obj colours
 				self:UpdateColour()
+				if type(value) == "number" then
+					self.idColorPicker:SetColor(value)
+				end
 			end
 		end
 	else
@@ -397,7 +401,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 			table.remove(self.idList,i)
 		end
 	end
-	self.idList.selection = {}
+	self.idList.focused_item = false
 end
 
 function ChoGGi_ListChoiceDlg:UpdateColour()
@@ -419,7 +423,7 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 end
 
 function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
-	local sel_idx = self.idList.selection[1]
+	local sel_idx = self.idList.focused_item
 	-- no list item selected, so just return
 	if not sel_idx then
 		return
@@ -447,12 +451,12 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 end
 
 function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
-	if button ~= "L" or #self.idList.selection < 1 then
+	if button ~= "L" or not self.idList.focused_item then
 		return
 	end
 
-	-- update selection (select last selected if multisel)
-	self.sel = self.idList[self.idList.selection[#self.idList.selection]].item
+	-- update selection
+	self.sel = self.idList[self.idList.focused_item].item
 
 	if self.idEditValue then
 		-- update the custom value box

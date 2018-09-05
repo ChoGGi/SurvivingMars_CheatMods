@@ -1311,9 +1311,9 @@ do -- DisplayMonitorList
 			info = info_grid
 			info_grid.title = S[891--[[Air--]]]
 			AddGrid(UICity,"air",info)
-		elseif value == "Electricity" then
+		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = S[302535920000037--[[Electricity--]]]
+			info_grid.title = S[79--[[Power--]]]
 			AddGrid(UICity,"electricity",info)
 		elseif value == "Water" then
 			info = info_grid

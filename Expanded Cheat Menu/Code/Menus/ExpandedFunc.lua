@@ -47,7 +47,7 @@ do -- ViewObjInfo_Toggle
 				S[302535920000035--[[Grids--]]],
 				S[682--[[Oxygen--]]],obj.air and obj.air.grid.ChoGGi_GridHandle,
 				S[681--[[Water--]]],obj.water and obj.water.grid.ChoGGi_GridHandle,
-				S[302535920000037--[[Electricity--]]],obj.electricity and obj.electricity.grid.ChoGGi_GridHandle
+				S[79--[[Power--]]],obj.electricity and obj.electricity.grid.ChoGGi_GridHandle
 			)
 		end,
 --~ 		Power = function(obj)
@@ -171,7 +171,7 @@ do -- ViewObjInfo_Toggle
 				S[302535920000035--[[Grids--]]],
 				S[682--[[Oxygen--]]],obj.air.grid.ChoGGi_GridHandle,
 				S[681--[[Water--]]],obj.water.grid.ChoGGi_GridHandle,
-				S[302535920000037--[[Electricity--]]],obj.electricity.grid.ChoGGi_GridHandle
+				S[79--[[Power--]]],obj.electricity.grid.ChoGGi_GridHandle
 			)
 		end,
 	}
@@ -192,7 +192,6 @@ do -- ViewObjInfo_Toggle
 				text_orient.ChoGGi_ViewObjInfo_o = true
 				text_obj.ChoGGi_ViewObjInfo_t = true
 				text_obj:SetText(GetInfo[label](obj))
---~ 				text_obj:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
 				text_obj:SetCenter(true)
 
 				local _, origin = obj:GetAllSpots(0)
@@ -321,9 +320,9 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 		{text = "",value = "New"},
 		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]]),value = "Air"},
-		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[302535920000037--[[Electricity--]]]),value = "Electricity"},
+		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[79--[[Power--]]]),value = "Power"},
 		{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[681--[[Water--]]]),value = "Water"},
-		{text = string.format("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[302535920000037--[[Electricity--]]],S[681--[[Water--]]]),value = "Grids"},
+		{text = string.format("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[79--[[Power--]]],S[681--[[Water--]]]),value = "Grids"},
 		{text = S[302535920000042--[[City--]]],value = "City"},
 		{text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
 		{text = S[5238--[[Rockets--]]],value = "Rockets"},
