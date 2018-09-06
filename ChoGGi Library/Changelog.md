@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v0.6 (Unreleased)
+## v0.7 (Unreleased)
+
+## v0.6 (06 Sep 2018)
+### Fixed:
+- Problem with Examine dialogs and ECM.
 
 ## v0.5 (05 Sep 2018)
 ### Fixed:
