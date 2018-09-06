@@ -1,3 +1,6 @@
+v0.4
+Cleaning up code (ChoGGi's Library).
+
 v0.3
 Clicking a rocket will work properly now.
 Non-spawned rockets are now hidden from view.

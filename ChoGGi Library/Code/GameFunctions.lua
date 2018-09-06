@@ -225,7 +225,7 @@ do -- SetCameraSettings
 				SetZoomLimits(0,24000)
 			end
 
-			--5760x1080 doesn't get the correct zoom size till after zooming out
+			-- 5760x1080 doesn't get the correct zoom size till after zooming out
 			if GetScreenSize():x() == 5760 then
 				SetFovY(2580)
 				SetFovX(7745)

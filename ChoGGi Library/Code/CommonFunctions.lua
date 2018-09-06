@@ -273,7 +273,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen)
 			local button = cls:new({
 				TextColor = black,
 				RolloverText = CheckText(item.hint),
-				RolloverTitle = CheckText(item.hint_title),
+				RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
 				Text = CheckText(item.name),
 				OnMouseButtonUp = function()
 					popup:Close()

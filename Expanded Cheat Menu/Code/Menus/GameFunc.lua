@@ -359,8 +359,6 @@ function OnMsg.ChoGGi_Library_Loaded(mod_id)
 		if Platform.editor then
 			editor.ClearSel()
 			SetEditorBrush(const.ebtTerrainType)
-			camera.Unlock(1)
-			ChoGGi.CodeFuncs.SetCameraSettings()
 		else
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions(ChoGGi)
@@ -368,7 +366,6 @@ function OnMsg.ChoGGi_Library_Loaded(mod_id)
 			RecalcBuildableGrid()
 			-- and back on when we're done
 			ToggleCollisions(ChoGGi)
-
 		end
 	end
 

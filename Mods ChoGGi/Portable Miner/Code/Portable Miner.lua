@@ -29,30 +29,6 @@ SOFTWARE.]]
 -- if we use global func more then once: make them local for that small bit o' speed
 local select,tostring,type,pcall,table = select,tostring,type,pcall,table
 
-local TableConcat
--- just in case they remove oldTableConcat
-pcall(function()
-  TableConcat = oldTableConcat
-end)
--- thanks for replacing concat... what's wrong with using table.concat2?
-TableConcat = TableConcat or table.concat
-
--- hello
-ChoGGi_Miner = {
-  _LICENSE = LICENSE,
-  email = "SM_Mods@choggi.org",
-  id = "ChoGGi_PortableMiner",
-	ModPath = CurrentModPath,
-  -- orig funcs that we replace
-  OrigFuncs = {},
-  -- CommonFunctions.lua
-  ComFuncs = {
-    TableConcat = TableConcat,
-  },
-}
-local ChoGGi_Miner = ChoGGi_Miner
-
-
 local DoneObject = DoneObject
 local GetEntityCombinedShape = GetEntityCombinedShape
 local GetObjects = GetObjects
@@ -122,7 +98,7 @@ DefineClass.PortableMiner = {
 
   name = [[RC Miner]],
 	description = [[Will slowly mine Metal or Concrete into a resource pile.]],
-	display_icon = string.format("%srover_combat.tga",ChoGGi_Miner.ModPath),
+	display_icon = string.format("%srover_combat.tga",CurrentModPath),
 }
 
 DefineClass.PortableMinerBuilding = {
@@ -401,7 +377,7 @@ end
 --~ 	}
 --~ 	AvailableDeposits(self, lines)
 
---~ 	return TableConcat(lines, "<newline><left>")
+--~ 	return table.concat(lines, "<newline><left>")
 --~ end
 
 --~ function PortableMiner:GetDepositResource()
@@ -428,7 +404,7 @@ function OnMsg.ClassesPostprocess()
     "description",[[Will slowly mine Metal or Concrete into a resource pile.]],
     "build_category","Infrastructure",
     "Group", "Infrastructure",
-    "display_icon", string.format("%srover_combat.tga",ChoGGi_Miner.ModPath),
+    "display_icon", string.format("%srover_combat.tga",CurrentModPath),
     "encyclopedia_exclude",true,
     "on_off_button",false,
 --~     "prio_button",false,

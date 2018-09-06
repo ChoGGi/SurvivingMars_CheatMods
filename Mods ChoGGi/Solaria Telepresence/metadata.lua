@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "title", "Solaria Telepresence v0.6",
-  "version", 6,
+  "title", "Solaria Telepresence v0.7",
+  "version", 7,
   "saved", 1536148800,
   "tags", "Buildings",
 	"image", "Preview.png",
@@ -8,9 +8,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1411115080",
   "code", {
-		"Code/CommonFunctions.lua",
-		"Code/_Classes.lua",
-		"Code/SolariaTelepresence.lua",
+		"Code/Solaria Telepresence.lua",
 		"Code/WorkVRWorkshop.lua",
 	},
 	"lua_revision", LuaRevision,

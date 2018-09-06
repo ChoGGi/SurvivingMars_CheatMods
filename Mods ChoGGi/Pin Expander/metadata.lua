@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Pin Expander v0.3",
-	"version", 3,
+	"title", "Pin Expander v0.4",
+	"version", 4,
 	"saved", 1536148800,
 	"image", "Preview.png",
 	"id", "ChoGGi_PinExpander",
@@ -8,9 +8,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {
-		"Code/CommonFunctions.lua",
-		"Code/_Classes.lua",
-		"Code/Script.lua",
+		"Code/Pin Expander.lua",
 	},
 	"description", [[Clicking a pinned object will show a list of all objects of the same type.
 

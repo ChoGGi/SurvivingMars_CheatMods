@@ -1,8 +1,0 @@
-ID,Text,Translation
-302535920000485,Flatten Terrain Toggle,
-302535920000486,Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.,
-302535920001163,"Flatten height has been choosen %s, press shortcut again to update buildable.",
-302535920001164,"Flattening has been stopped, now updating buildable.",
-302535920000864,Delete All Rocks,
-302535920001238,Removes any rocks for that smooth map feel (will take about 30 seconds).,
-302535920000855,Last chance before deletion!,

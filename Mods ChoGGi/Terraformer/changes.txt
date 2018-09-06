@@ -1,3 +1,6 @@
+v0.6
+Keys work properly now (in editor mode).
+Cleaning up code (ChoGGi's Library).
 v0.5
 Da Vinci
 Changed to use the built-in map editor as it can make smooth formations, paint, etc.

@@ -1,10 +1,12 @@
 return PlaceObj("ModDef", {
-  "title", "Colonists: Force To New Dome v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "Colonists: Force To New Dome v0.2",
+  "version", 2,
+  "saved", 1536148800,
   "id", "ChoGGi_ColonistsForceToNewDome",
   "author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Force To New Dome.lua",
+	},
 	"image", "Preview.png",
   "steam_id", "1432964482",
 	"lua_revision", LuaRevision,

@@ -1,4 +1,3 @@
--- ========== THIS IS AN AUTOMATICALLY GENERATED FILE! ==========
 function OnMsg.ClassesBuilt()
   PlaceObj('AmbientLife', {
     group = "Work",

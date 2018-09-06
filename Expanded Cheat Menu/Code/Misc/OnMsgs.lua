@@ -652,17 +652,17 @@ function OnMsg.ChoGGi_Library_Loaded(mod_id)
 
 			-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 			if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-				local UICity = UICity
+				local labels = UICity.labels
 
 				-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-				local prods = UICity.labels.ResourceProducer or ""
+				local prods = labels.ResourceProducer or ""
 				for i = 1, #prods do
 					ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
 					if prods[i].wasterock_producer then
 						ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
 					end
 				end
-				prods = UICity.labels.BlackCubeStockpiles or ""
+				prods = labels.BlackCubeStockpiles or ""
 				for i = 1, #prods do
 					ChoGGi.CodeFuncs.FuckingDrones(prods[i])
 				end

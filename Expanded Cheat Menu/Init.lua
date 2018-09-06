@@ -53,6 +53,7 @@ function OnMsg.ChoGGi_Library_Loaded(mod_id)
 		return
 	end
 	is_loaded = true
+	-- nope nope nope
 
 	local ChoGGi = ChoGGi
 

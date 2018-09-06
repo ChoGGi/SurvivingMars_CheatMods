@@ -1,13 +1,16 @@
 return PlaceObj("ModDef", {
-  "title", "Defence Towers Attack DustDevils v0.1",
-  "version", 1,
-  "saved", 1533297600,
+  "title", "Defence Towers Attack DustDevils v0.2",
+  "version", 2,
+  "saved", 1536148800,
   "tags", "Cheats",
   "id", "ChoGGi_DefenceTowersAttackDustDevils",
   "author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Defence Towers Attack DustDevils.lua",
+	},
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,
+--~ 	"steam_id", "000000000",
   "description", [[Defence towers will attack dustdevils.
 
 Requested by: rdr99 and Emmote

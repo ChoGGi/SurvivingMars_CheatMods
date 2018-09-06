@@ -1,13 +1,12 @@
 return PlaceObj("ModDef", {
-  "title", "Lock Workplace v0.5",
-  "version", 5,
-  "saved", 1536062400,
+  "title", "Lock Workplace v0.6",
+  "version", 6,
+  "saved", 1536148800,
 	"image", "Preview.png",
   "id", "ChoGGi_LockWorkplace",
   "author", "ChoGGi",
   "steam_id", "1422914403",
   "code", {
-		"Code/CommonFunctions.lua",
 		"Code/Lock Workplace.lua",
 	},
 	"lua_revision", LuaRevision,

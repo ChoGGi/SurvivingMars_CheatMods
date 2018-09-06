@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v0.5 (Unreleased)
+## v0.6 (Unreleased)
+
+## v0.5 (05 Sep 2018)
+Fixed:
+Some menus may have shown "nil" for the title.
 
 ## v0.4 (05 Sep 2018)
 *Sigh*
