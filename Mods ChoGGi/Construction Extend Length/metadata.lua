@@ -10,5 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {"Code/Script.lua"},
 	"description", [[Extend length of pipes/cables/passages from 20 to 1000.
 
-Requested by Adi.]],
+Requested by Adi.
+
+Part of ECM.]],
 })

@@ -18,10 +18,10 @@ end
 -- nope not hacky at all
 local is_loaded
 function OnMsg.ClassesGenerate()
-	Msg("ChoGGi_Library_Loaded","ChoGGi_ColonistsForceToNewDome")
+	Msg("ChoGGi_Library_Loaded")
 end
-function OnMsg.ChoGGi_Library_Loaded(mod_id)
-	if is_loaded or mod_id and mod_id ~= "ChoGGi_ColonistsForceToNewDome" then
+function OnMsg.ChoGGi_Library_Loaded()
+	if is_loaded then
 		return
 	end
 	is_loaded = true

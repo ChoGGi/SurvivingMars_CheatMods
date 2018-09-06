@@ -18,13 +18,14 @@ end
 -- nope not hacky at all
 local is_loaded
 function OnMsg.ClassesGenerate()
-	Msg("ChoGGi_Library_Loaded","ChoGGi_RestoreRequestMaintenance")
+	Msg("ChoGGi_Library_Loaded")
 end
-function OnMsg.ChoGGi_Library_Loaded(mod_id)
-	if is_loaded or mod_id and mod_id ~= "ChoGGi_RestoreRequestMaintenance" then
+function OnMsg.ChoGGi_Library_Loaded()
+	if is_loaded then
 		return
 	end
 	is_loaded = true
+	-- nope nope nope
 
 	local T,PlayFX,IsKindOf,XTemplates = T,PlayFX,IsKindOf,XTemplates
 	local RebuildInfopanel,IsMassUIModifierPressed = RebuildInfopanel,IsMassUIModifierPressed

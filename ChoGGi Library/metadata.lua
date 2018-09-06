@@ -29,7 +29,7 @@ return PlaceObj("ModDef", {
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
 
-		-- let my mods know we're good to go
+		-- let my mods know we're good to go (well the ones loaded before it, any others will execute at ClassesGenerate)
 		"LibraryLoaded.lua",
 	},
 	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
