@@ -4,7 +4,6 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local S = ChoGGi.Strings
 
 local string = string
-
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local GetTerrainCursor = GetTerrainCursor

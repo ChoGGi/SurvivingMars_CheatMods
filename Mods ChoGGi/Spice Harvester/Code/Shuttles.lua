@@ -1,13 +1,5 @@
 -- See LICENSE for terms
 
-function OnMsg.ModsLoaded()
-	if not table.find(ModsLoaded,"id","ChoGGi_Library") then
-		print([[Error: This mod requires ChoGGi's Library:
-https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
-Check Mod Manager to make sure it's enabled.]])
-	end
-end
-
 -- nope not hacky at all
 local is_loaded
 function OnMsg.ClassesGenerate()

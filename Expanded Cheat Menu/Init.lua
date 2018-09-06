@@ -35,11 +35,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- offer to download the library if it isn't enabled.
 function OnMsg.ModsLoaded()
 	if not table.find(ModsLoaded,"id","ChoGGi_Library") then
-		print([[Error: This mod requires ChoGGi's Library:
-https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
-Check Mod Manager to make sure it's enabled.]])
+		CreateRealTimeThread(function()
+			local Sleep = Sleep
+			while not UICity do
+				Sleep(1000)
+			end
+			if WaitMarsQuestion(nil,nil,[[Error: This mod requires ChoGGi's Library.
+Press Ok to download it or check Mod Manager to make sure it's enabled.]]) == "ok" then
+				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+			end
+		end)
 	end
 end
 
@@ -55,24 +63,21 @@ function OnMsg.ChoGGi_Library_Loaded(mod_id)
 	is_loaded = true
 	-- nope nope nope
 
-	local ChoGGi = ChoGGi
-
+	local ChoGGi,Mods = ChoGGi,Mods
 	ChoGGi._LICENSE = LICENSE
-
-	local blacklist,Mods = Mods[ChoGGi.id].env,Mods
 
 	-- I should really split this into funcs and settings... one of these days
 	ChoGGi._VERSION = Mods[ChoGGi.id].version
 	-- is ECM shanghaied by the blacklist?
-	ChoGGi.blacklist = blacklist
+	ChoGGi.blacklist = Mods[ChoGGi.id].env
 	-- path to this mods' folder
-	ChoGGi.ModPath = blacklist and CurrentModPath or Mods[ChoGGi.id].content_path or Mods[ChoGGi.id].path
+	ChoGGi.ModPath = ChoGGi.blacklist and CurrentModPath or Mods[ChoGGi.id].content_path or Mods[ChoGGi.id].path
 	-- Console>Scripts folder
 	ChoGGi.scripts = "AppData/ECM Scripts"
 	-- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
-	ChoGGi.SettingsFile = blacklist and nil or "AppData/CheatMenuModSettings.lua"
+	ChoGGi.SettingsFile = ChoGGi.blacklist and nil or "AppData/CheatMenuModSettings.lua"
 
-	if not blacklist then
+	if not ChoGGi.blacklist then
 		local AsyncGetFileAttribute = AsyncGetFileAttribute
 
 		function ChoGGi.ComFuncs.FileExists(file)

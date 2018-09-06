@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library v0.5",
-	"version", 5,
-	"saved", 1536148800,
+	"title", "ChoGGi's Library v0.6",
+	"version", 6,
+	"saved", 1536235200,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",
@@ -21,13 +21,13 @@ return PlaceObj("ModDef", {
 		"Code/CommonFunctions.lua",
 		-- defaults,consts
 		"Code/Settings.lua",
-		-- any funcs called from Code/*
+		-- more like in-game functions?
 		"Code/GameFunctions.lua",
 
 		-- custom dialogs
-		"Code/Dialogs/_Classes.lua",
-		"Code/Dialogs/ListChoice.lua",
-		"Code/Dialogs/MultiLineText.lua",
+		"Code/_Classes.lua",
+		"Code/ListChoice.lua",
+		"Code/MultiLineText.lua",
 
 		-- let my mods know we're good to go
 		"LibraryLoaded.lua",

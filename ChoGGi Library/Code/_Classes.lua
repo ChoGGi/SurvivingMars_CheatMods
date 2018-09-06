@@ -292,7 +292,7 @@ function ChoGGi_Window:AddElements(_,context)
 		end,
 	}, self.idMoveControl)
 
-	local image = self.title_image or self.obj and self.obj.display_icon
+	local image = self.title_image or type(self.obj) == "table" and self.obj.display_icon
 	if image then
 		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
 			Id = "idCaptionImage",
