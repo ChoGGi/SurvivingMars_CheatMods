@@ -5,8 +5,9 @@
 
 ## v8.8 (Unreleased)
 ### Changed:
+- Requires ChoGGi's Library:
+- > https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
 - Dialog touch ups (colours, icons added).
-
 
 ## v8.7 (04 Sep 2018)
 ### Changed:

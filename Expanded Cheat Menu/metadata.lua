@@ -5,45 +5,35 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",
+	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"code", {
 		-- start 'er up
 		"Init.lua",
-		-- gets the font (if not eng lang), and builds a table of translated strings
-		"Code/Strings.lua",
-		-- Msg("ChoGGi_ComFuncs"), lets people know OpenExamine is available
-		"Code/CommonFunctions.lua",
+		-- common functions
+		"Code/ECM_Functions.lua",
 		-- defaults,consts,read/save settings
 		"Code/Settings.lua",
 
 		-- custom dialogs
-		"Code/Dialogs/_Classes.lua",
 		"Code/Dialogs/ConsoleLogWin.lua",
 		"Code/Dialogs/Examine.lua",
 		"Code/Dialogs/ExecCode.lua",
 		"Code/Dialogs/FindValue.lua",
-		"Code/Dialogs/ListChoice.lua",
-		"Code/Dialogs/MultiLineText.lua",
---~		 -- temp added to check out keys for XXXUnknownXXX
---~ 		"Code/Dialogs/KeyPresser.lua",
 		"Code/Dialogs/MonitorInfo.lua",
 		"Code/Dialogs/ObjectManipulator.lua",
-		-- always fired last for the Msg("ChoGGi_Dialogs") in it
 		"Code/Dialogs/TerminalRolloverMode.lua",
 
 		-- stuff that can come later
-		"Code/Misc/_Functions.lua",
 		"Code/Misc/AddedFunctions.lua",
 		"Code/Misc/ConsoleFuncs.lua",
 		"Code/Misc/InfoPaneCheats.lua",
 		"Code/Misc/Testing.lua",
 		"Code/Misc/ReplacedFunctions.lua",
-		-- always fired last for the Msg("ChoGGi_CodeFuncs") in it
 		"Code/Misc/OnMsgs.lua",
 
 		-- menus/menu items/shortcuts
@@ -73,7 +63,6 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ResourcesMenu.lua",
 		"Code/Menus/VehiclesFunc.lua",
 		"Code/Menus/VehiclesMenu.lua",
-		-- always fired last for the Msg("ChoGGi_MenuFuncs") in it
 		"Code/Menus/Keys.lua",
 
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.

@@ -8,69 +8,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 local Trans = ChoGGi.ComFuncs.Translate
-local blacklist = ChoGGi.blacklist
-
--- add some shortened func names
-do -- for those that don't know "do ... end" is a way of keeping "local =" local to the do
-	-- make some easy to type names
-	local ChoGGi = ChoGGi
-	if not blacklist then
-		function dump(...)
-			ChoGGi.ComFuncs.Dump(...)
-		end
-		function dumplua(...)
-			ChoGGi.ComFuncs.DumpLua(...)
-		end
-		function dumptable(...)
-			ChoGGi.ComFuncs.DumpTable(...)
-		end
-		function dumpl(...)
-			ChoGGi.ComFuncs.DumpLua(...)
-		end
-		function dumpt(...)
-			ChoGGi.ComFuncs.DumpTable(...)
-		end
-	end
-
---~	 local function RemoveLast(str)
---~		 --remove restart/quit as the last cmd so we don't hit it by accident
---~		 local dlgConsole = dlgConsole
---~		 if dlgConsole.history_queue[1] == str then
---~			 table.remove(dlgConsole.history_queue,1)
---~			 --and save it?
---~			 if rawget(_G, "dlgConsole") then
---~				 dlgConsole:StoreHistory()
---~			 end
---~		 end
---~	 end
---~	 local orig_quit = quit
---~	 function quit(...)
---~		 orig_quit(...)
---~		 RemoveLast("quit")
---~	 end
-
-	-- works with userdata or index number
-	trans = ChoGGi.ComFuncs.Translate
-	function so()
-		return ChoGGi.CodeFuncs.SelObject()
-	end
-end
--- no need to have these in the do
-function restart()
-	quit("restart")
-end
-reboot = restart
-exit = quit
-mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
-mhc = GetTerrainCursorObj -- returns obj under cursor
-mc = GetPreciseCursorObj
-m = SelectionMouseObj
-c = GetTerrainCursor -- cursor position on map
-cs = terminal.GetMousePos -- cursor pos on screen
-s = false -- used to store SelectedObj
 
 -- check if tech is researched before we get value
-do
+do -- get tech stuff
 	local ChoGGi = ChoGGi
 	local r = ChoGGi.Consts.ResourceScale
 	function ChoGGi.CodeFuncs.GetSpeedDrone()
@@ -219,7 +159,8 @@ end
 
 --if building requires a dome and that dome is borked then assign it to nearest dome
 function ChoGGi.CodeFuncs.AttachToNearestDome(building)
-	local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome or "",nil,nil,"working")
+	local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome,nil,nil,"working")
+
 	--check for dome and ignore outdoor buildings *and* if there aren't any domes on map
 	if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
 		--find the nearest dome
@@ -256,45 +197,47 @@ function ChoGGi.CodeFuncs.ToggleWorking(building)
 	end
 end
 
-local SetZoomLimits = cameraRTS.SetZoomLimits
-local SetFovY = camera.SetFovY
-local SetFovX = camera.SetFovX
-local SetProperties = cameraRTS.SetProperties
-local GetScreenSize = UIL.GetScreenSize
-function ChoGGi.CodeFuncs.SetCameraSettings()
-	local ChoGGi = ChoGGi
-	--cameraRTS.GetProperties(1)
+do -- SetCameraSettings
+	local SetZoomLimits = cameraRTS.SetZoomLimits
+	local SetFovY = camera.SetFovY
+	local SetFovX = camera.SetFovX
+	local SetProperties = cameraRTS.SetProperties
+	local GetScreenSize = UIL.GetScreenSize
+	function ChoGGi.CodeFuncs.SetCameraSettings()
+		local ChoGGi = ChoGGi
+		--cameraRTS.GetProperties(1)
 
-	--size of activation area for border scrolling
-	if ChoGGi.UserSettings.BorderScrollingArea then
-		SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
-	else
-		--default
-		SetProperties(1,{ScrollBorder = 5})
-	end
-
-	--zoom
-	--camera.GetFovY()
-	--camera.GetFovX()
-	if ChoGGi.UserSettings.CameraZoomToggle then
-		if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
-			SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
+		--size of activation area for border scrolling
+		if ChoGGi.UserSettings.BorderScrollingArea then
+			SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
 		else
-			SetZoomLimits(0,24000)
+			--default
+			SetProperties(1,{ScrollBorder = 5})
 		end
 
-		--5760x1080 doesn't get the correct zoom size till after zooming out
-		if GetScreenSize():x() == 5760 then
-			SetFovY(2580)
-			SetFovX(7745)
+		--zoom
+		--camera.GetFovY()
+		--camera.GetFovX()
+		if ChoGGi.UserSettings.CameraZoomToggle then
+			if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
+				SetZoomLimits(0,ChoGGi.UserSettings.CameraZoomToggle)
+			else
+				SetZoomLimits(0,24000)
+			end
+
+			--5760x1080 doesn't get the correct zoom size till after zooming out
+			if GetScreenSize():x() == 5760 then
+				SetFovY(2580)
+				SetFovX(7745)
+			end
+		else
+			--default
+			SetZoomLimits(400,15000)
 		end
-	else
-		--default
-		SetZoomLimits(400,15000)
+
+		--SetProperties(1,{HeightInertia = 0})
 	end
-
-	--SetProperties(1,{HeightInertia = 0})
-end
+end -- do
 
 function ChoGGi.CodeFuncs.ShowBuildMenu(which)
 	local BuildCategories = BuildCategories
@@ -690,7 +633,7 @@ do -- SetDefColour
 	end
 
 	function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
-		obj = obj or ChoGGi.CodeFuncs.SelObject()
+		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			return
 		end
@@ -767,7 +710,7 @@ end
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
-	oldobj = oldobj and oldobj:IsKindOf("MechanizedDepot") or ChoGGi.CodeFuncs.SelObject()
+	oldobj = oldobj and oldobj:IsKindOf("MechanizedDepot") or ChoGGi.ComFuncs.SelObject()
 
 	if not oldobj or not oldobj:IsKindOf("MechanizedDepot") then
 		return
@@ -1018,12 +961,6 @@ function ChoGGi.CodeFuncs.CursorNearestHex(pt)
 	return HexGetNearestCenter(pt or GetTerrainCursor())
 end
 
---returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
-function ChoGGi.CodeFuncs.SelObject()
-	local c = GetTerrainCursor()
-	return SelectedObj or SelectionMouseObj() or MapFindNearest(c, c, 1500)
-end
-
 function ChoGGi.CodeFuncs.DeleteAllAttaches(obj)
 	if obj:IsKindOf("ComponentAttach") then
 		obj:DestroyAttaches()
@@ -1036,7 +973,7 @@ do -- FindNearestResource
 	local FindNearestObject = FindNearestObject
 
 	function ChoGGi.CodeFuncs.FindNearestResource(obj)
-		obj = obj or ChoGGi.CodeFuncs.SelObject()
+		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			MsgPopup(
 				302535920000027--[[Nothing selected--]],
@@ -1146,7 +1083,7 @@ do -- DeleteObject
 					end
 				end
 			elseif not obj then
-				obj = ChoGGi.CodeFuncs.SelObject()
+				obj = ChoGGi.ComFuncs.SelObject()
 			end
 		end
 
@@ -1432,7 +1369,7 @@ do -- CollisionsObject_Toggle
 	end
 
 	function ChoGGi.CodeFuncs.CollisionsObject_Toggle(obj,skip_msg)
-		obj = obj or ChoGGi.CodeFuncs.SelObject()
+		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			if not skip_msg then
 				MsgPopup(
@@ -1876,61 +1813,63 @@ function ChoGGi.CodeFuncs.Editor_Toggle()
 	local Platform = Platform
 
 	if IsEditorActive() then
-    EditorState(0)
-    table.restore(hr, "Editor")
-    editor.SavedDynRes = false
-    XShortcutsSetMode("Game")
+		EditorState(0)
+		table.restore(hr, "Editor")
+		editor.SavedDynRes = false
+		XShortcutsSetMode("Game")
 		Platform.editor = false
 		Platform.developer = false
 	else
 		Platform.editor = true
 		Platform.developer = true
-    table.change(hr, "Editor", {
-      ResolutionPercent = 100,
-      SceneWidth = 0,
-      SceneHeight = 0,
-      DynResTargetFps = 0,
-      EnablePreciseSelection = 1,
-      ObjectCounter = 1,
-      VerticesCounter = 1,
-      FarZ = 1500000
-    })
-    XShortcutsSetMode("Editor", function()
-      EditorDeactivate()
-    end)
-    EditorState(1,1)
+		table.change(hr, "Editor", {
+			ResolutionPercent = 100,
+			SceneWidth = 0,
+			SceneHeight = 0,
+			DynResTargetFps = 0,
+			EnablePreciseSelection = 1,
+			ObjectCounter = 1,
+			VerticesCounter = 1,
+			FarZ = 1500000
+		})
+		XShortcutsSetMode("Editor", function()
+			EditorDeactivate()
+		end)
+		EditorState(1,1)
 	end
 
 	camera.Unlock(1)
 	ChoGGi.CodeFuncs.SetCameraSettings()
 end
 
-local GetSafeAreaBox = GetSafeAreaBox
-function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
-	local g_Classes = g_Classes
+do -- AddScrollDialogXTemplates
+	local GetSafeAreaBox = GetSafeAreaBox
+	function ChoGGi.CodeFuncs.AddScrollDialogXTemplates(obj)
+		local g_Classes = g_Classes
 
-	obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-		Id = "idChoGGi_ScrollArea",
-	}, obj)
+		obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+			Id = "idChoGGi_ScrollArea",
+		}, obj)
 
-	obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
-		Id = "idChoGGi_ScrollV",
-		Target = "idChoGGi_ScrollBox",
-		Dock = "left",
-	}, obj.idChoGGi_ScrollArea)
+		obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
+			Id = "idChoGGi_ScrollV",
+			Target = "idChoGGi_ScrollBox",
+			Dock = "left",
+		}, obj.idChoGGi_ScrollArea)
 
-	local safe = GetSafeAreaBox():maxy()
-	obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-		Id = "idChoGGi_ScrollBox",
-		VScroll = "idChoGGi_ScrollV",
-		LayoutMethod = "VList",
-		MaxHeight = ((safe * ChoGGi.Temp.UIScale) / 2) - 25,
-	}, obj.idChoGGi_ScrollArea)
+		local safe = GetSafeAreaBox():maxy()
+		obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+			Id = "idChoGGi_ScrollBox",
+			VScroll = "idChoGGi_ScrollV",
+			LayoutMethod = "VList",
+			MaxHeight = ((safe * ChoGGi.Temp.UIScale) / 2) - 25,
+		}, obj.idChoGGi_ScrollArea)
 
-	-- move content list to scrollarea
-	obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
+		-- move content list to scrollarea
+		obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
 
-end
+	end
+end -- do
 
 do -- AddGridHandles
 	local function AddHandles(name)
@@ -2057,7 +1996,7 @@ do -- AddBlinkyToObj
 end -- do
 
 function ChoGGi.CodeFuncs.AttachSpots_Toggle(sel)
-	sel = sel or ChoGGi.CodeFuncs.SelObject()
+	sel = sel or ChoGGi.ComFuncs.SelObject()
 	if not sel then
 		return
 	end
