@@ -90,6 +90,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		self.onclick_handles = {}
 
 		self.obj = context.obj
+		self.title = context.title
 
 		-- reset any marked objects
 		if not self.obj then
