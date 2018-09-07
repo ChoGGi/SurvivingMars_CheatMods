@@ -72,7 +72,7 @@ function ChoGGi_Label:SetTitle(win,title)
 	if win.prefix then
 		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,"")))
 	else
-		win.idCaption:SetText(CheckText(win.title,""))
+		win.idCaption:SetText(CheckText(title or win.title,""))
 	end
 end
 DefineClass.ChoGGi_Image = {
@@ -260,7 +260,6 @@ DefineClass.ChoGGi_Window = {
 	-- how far down to y-offset new dialogs
 	header = 33.0,
 
-	title = S[1000016--[[Title--]]],
 	RolloverTemplate = "Rollover",
 }
 
@@ -326,8 +325,13 @@ end
 -- get size of box and offset header
 local function BoxSize(obj,self)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
+	local obj_dlg = obj.idDialog or obj.idContainer
+	if not obj_dlg then
+		return
+	end
+
 	local x,y,w,h
-	local box = obj.idDialog.box
+	local box = obj_dlg.box
 	x = box:minx()
 	y = box:miny() + self.header
 	if self.class == "Examine" then
@@ -345,16 +349,17 @@ end
 
 -- takes either a point, or obj to set pos
 function ChoGGi_Window:SetPos(obj)
-	local x,y,w,h
-	if IsPoint(obj) then
+	local x,y,w,h = BoxSize(obj,self)
+
+	if not x or IsPoint(obj) then
+		local pt = GetMousePos()
 		local box = self.idDialog.box
-		x = obj:x()
-		y = obj:y()
+		x = pt:x()
+		y = pt:y()
 		w = box:sizex()
 		h = box:sizey()
-	else
-		x,y,w,h = BoxSize(obj,self)
 	end
+
 	self.idDialog:SetBox(x,y,w,h)
 end
 
@@ -383,7 +388,9 @@ function ChoGGi_Window:SetInitPos(parent)
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
 	if parent then
 		x,y,w,h = BoxSize(parent,self)
-	else
+	end
+
+	if not parent or not x then
 		local pt = GetMousePos()
 		local box = self.idDialog.box
 		x = pt:x()
