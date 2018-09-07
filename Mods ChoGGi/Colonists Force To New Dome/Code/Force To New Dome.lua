@@ -107,35 +107,25 @@ Living Spaces: %s]],
 	end
 
 	function OnMsg.ClassesBuilt()
+		local XTemplates = XTemplates
 
 		if XTemplates.sectionDome.ChoGGi_ForceNewDome then
 			table.remove(XTemplates.sectionDome[1],#XTemplates.sectionDome[1])
 			XTemplates.sectionDome.ChoGGi_ForceNewDome = nil
 		end
-
 		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
-		XTemplates.sectionDome[1][#XTemplates.sectionDome[1]+1] = PlaceObj("XTemplateTemplate", {
-			"ChoGGi_ForceNewDome", true,
-			"__template", "InfopanelSection",
+
+		ChoGGi.CodeFuncs.AddXTemplate("ForceNewDome","sectionDome",{
 			-- skip any ruined domes
-			"__condition", function (parent, context) return context.air end,
-			"RolloverTitle", " ",
-			"RolloverHint",  "",
-			"Title",  [[Force New Dome]],
-			"RolloverText",  [[Use this to force colonists to migrate.]],
-			"Icon",  "UI/Icons/bmc_domes_shine.tga",
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					---
-					ListBuildings(self, context)
-					---
-				end
-			})
+			__condition = function(parent, context)
+				return context.working
+			end,
+			Icon = "UI/Icons/bmc_domes_shine.tga",
+			Title = [[Force New Dome]],
+			RolloverText = [[Use this to force colonists to migrate.]],
+			func = function(self, context)
+				ListBuildings(self, context)
+			end,
 		})
 
 	end --OnMsg

@@ -1,6 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000037,,
-302535920000316,,
+302535920000037,Always Clean,
+302535920000316,Buildings will never get dusty.,
 302535920001342,,
 302535920001343,,
 302535920001344,,
@@ -399,7 +399,8 @@ I trust you are not in too much distress.",
 302535920000172,Some smart quip about heating?,
 302535920000173,Extend the range of the heater.,
 302535920000174,Always Dusty,
-302535920000175,"Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).",
+302535920000175,"Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).
+Will be overridden by %s.",
 302535920000176,Empty Mech Depot,
 302535920000177,Empties out selected/moused over mech depot into a small depot in front of it.,
 302535920000178,Protection Radius,

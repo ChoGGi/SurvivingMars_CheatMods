@@ -24,7 +24,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 	--~   RebuildFXRules()
 	--~ end
 
-	function ChoGGi.MenuFuncs.WhiterRocks(obj)
+	function ChoGGi.MenuFuncs.WhiterRocks()
 		-- less brown rocks
 		local function WhiteThoseRocks(cls)
 			MapForEach("map",cls,function(o)
@@ -979,7 +979,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local model_table = {}
 			for i = 1, #choice do
 				local value = choice[i].value
@@ -1181,7 +1180,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			for i = 1, #choice do
 				local value = choice[i].value
 				local text = choice[i].text

@@ -658,29 +658,6 @@ do -- SetDefColour
 	end
 end -- do
 
-do -- CloseDialogsECM
-	local ChoGGi = ChoGGi
-	local term = terminal.desktop
-	function ChoGGi.CodeFuncs.RemoveOldDialogs(dialog)
-		while ChoGGi.ComFuncs.CheckForTypeInList(term,dialog) do
-			for i = #term, 1, -1 do
-				if term[i]:IsKindOf(dialog) then
-					term[i]:delete()
-				end
-			end
-		end
-	end
-
-	function ChoGGi.CodeFuncs.CloseDialogsECM()
-		ChoGGi.CodeFuncs.RemoveOldDialogs("Examine")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ListChoiceDlg")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_ExecCodeDlg")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
-		ChoGGi.CodeFuncs.RemoveOldDialogs("ChoGGi_FindValueDlg")
-	end
-end
 
 function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	amount = amount or 10
@@ -1028,7 +1005,7 @@ do -- FindNearestResource
 				},stockpiles)
 				-- attached stockpiles/stockpiles left from removed objects
 				table.append(stockpiles,
-					MapGet("map", {"ResourceStockpile","ResourceStockpileLR"}, function(o)
+					MapGet("map",{"ResourceStockpile","ResourceStockpileLR"}, function(o)
 						if o.resource == value and o:GetStoredAmount() > 999 then
 							return o
 						end
@@ -1489,6 +1466,7 @@ GetComputerName(): %s
 	)
 end
 
+-- check for and remove old object (these are created on new game / new dlc)
 function ChoGGi.CodeFuncs.RemoveXTemplateSections(list,name)
 	local idx = table.find(list, name, true)
 	if idx then
@@ -1496,35 +1474,62 @@ function ChoGGi.CodeFuncs.RemoveXTemplateSections(list,name)
 	end
 end
 
-function ChoGGi.CodeFuncs.AddXTemplate(name,template,list)
-	if not (name or template or list) then
+function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
+	if not name or template or list then
 		return
 	end
-	local stored_name = string.format("ChoGGi_ECM_%s",name)
+	local stored_name = string.format("ChoGGi_Template_%s",name)
 	local XTemplates = XTemplates
 
-	-- check for and remove old object (these are created on new game / new dlc)
-	ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates[template][1],stored_name)
-
-	XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
-		stored_name, true,
-		"__context_of_kind", list.__context_of_kind or "Infopanel",
-		"__template", list.__template or "InfopanelSection",
-		"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-		"Title", list.Title or S[588--[[Empty--]]],
-		"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
-		"RolloverTitle", list.RolloverTitle or S[1000016--[[Title--]]],
-		"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
-		"OnContextUpdate", list.OnContextUpdate
-	}, {
-		PlaceObj("XTemplateFunc", {
-		"name", "OnActivate(self, context)",
-		"parent", function(parent, _)
-				return parent.parent
+	if toplevel then
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates[template],stored_name)
+		XTemplates[template][#XTemplates[template]+1] = PlaceObj("XTemplateTemplate", {
+			stored_name, true,
+			"__condition", list.__condition or function()
+				return true
 			end,
-		"func", list.func or "function() return end"
+			"__context_of_kind", list.__context_of_kind or "",
+			"__template", list.__template or "InfopanelSection",
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+			"Title", list.Title or S[1000016--[[Title--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
+			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+			"OnContextUpdate", list.OnContextUpdate or function()end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(parent, _)
+					return parent.parent
+				end,
+			"func", list.func or function()end,
+			})
 		})
-	})
+	else
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates[template][1],stored_name)
+		XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
+			stored_name, true,
+			"__condition", list.__condition or function()
+				return true
+			end,
+			"__context_of_kind", list.__context_of_kind or "",
+			"__template", list.__template or "InfopanelSection",
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+			"Title", list.Title or S[1000016--[[Title--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
+			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+			"OnContextUpdate", list.OnContextUpdate or function()end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(parent, _)
+					return parent.parent
+				end,
+			"func", list.func or function()end,
+			})
+		})
+	end
 end
 
 function ChoGGi.CodeFuncs.SetCommanderBonuses(sType)

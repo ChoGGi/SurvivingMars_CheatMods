@@ -9,7 +9,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	is_loaded = true
 	-- nope nope nope
 
-	local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
@@ -270,6 +269,31 @@ function OnMsg.ChoGGi_Library_Loaded()
 			obj = obj,
 			parent = parent,
 		})
+	end
+
+	do -- CloseDialogsECM
+		local ChoGGi = ChoGGi
+		local term = terminal.desktop
+		function ChoGGi.ComFuncs.RemoveOldDialogs(dialog)
+			while ChoGGi.ComFuncs.CheckForTypeInList(term,dialog) do
+				for i = #term, 1, -1 do
+					if term[i]:IsKindOf(dialog) then
+						term[i]:delete()
+					end
+				end
+			end
+		end
+
+		function ChoGGi.ComFuncs.CloseDialogsECM()
+			local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
+			RemoveOldDialogs("Examine")
+			RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
+			RemoveOldDialogs("ChoGGi_ListChoiceDlg")
+			RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
+			RemoveOldDialogs("ChoGGi_ExecCodeDlg")
+			RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
+			RemoveOldDialogs("ChoGGi_FindValueDlg")
+		end
 	end
 
 end

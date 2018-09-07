@@ -32,9 +32,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local HLEnd = "</h></color>"
 	--~ Transparency
 
-	local white = white
-	local black = black
-
 	-- used for updating text button rollover hints
 	local idLinks_hypertext = {
 		[string.format("[%s]",S[1000220--[[Refresh--]]])] = S[302535920000092--[[Updates list with any changed values.--]]],

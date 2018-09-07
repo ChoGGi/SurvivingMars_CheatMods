@@ -9,7 +9,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	is_loaded = true
 	-- nope nope nope
 
-	local Trans = PinExpander.ComFuncs.Translate
 	local RetName = PinExpander.ComFuncs.RetName
 
 	DefineClass.PinExpander_PinsListDlg = {
@@ -27,8 +26,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	}
 
 	function PinExpander_PinsListDlg:Init(parent, context)
-		local g_Classes = g_Classes
-
 		self.obj = context.obj
 		self.title = getmetatable(self.obj).display_name
 		self.title_image = self.obj:GetPinIcon()
@@ -59,7 +56,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	end
 
 	function PinExpander_PinsListDlg:BuildList()
-		local g_Classes = g_Classes
 		local PinsDlg = Dialogs.PinsDlg
 		self.idList:Clear()
 

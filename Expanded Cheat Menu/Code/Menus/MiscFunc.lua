@@ -12,7 +12,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local Random = ChoGGi.ComFuncs.Random
 	local S = ChoGGi.Strings
 
 	local next,type = next,type
@@ -61,7 +60,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 			--nothing checked so just return

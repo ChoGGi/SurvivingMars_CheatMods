@@ -17,11 +17,10 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
-	local pcall,tostring,type,table = pcall,tostring,type,table
+	local tostring,type,table = tostring,type,table
 
 	local IsPoint = IsPoint
 	local Min = Min
-	local ObjectClass = ObjectClass
 	local CmpLower = CmpLower
 
 	DefineClass.ChoGGi_ObjectManipulatorDlg = {

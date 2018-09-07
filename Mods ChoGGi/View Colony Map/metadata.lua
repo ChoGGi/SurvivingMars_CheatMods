@@ -10,5 +10,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
 	"description", [[Shows the map before you load it in the "Colony Spot" screen.
 
-For those wondering: Purple = mountainous, other colours = buildable.]],
+For those wondering: Purple = mountainous, other colours = buildable.
+
+Gallery of all maps: https://imgur.com/a/nZmidtO]],
 })

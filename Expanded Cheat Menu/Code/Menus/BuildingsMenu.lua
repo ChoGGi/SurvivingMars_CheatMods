@@ -529,10 +529,26 @@ function OnMsg.ChoGGi_Library_Loaded()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.AlwaysDustyBuildings,
-				302535920000175--[[Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).--]]
+				S[302535920000175--[[Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).
+Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle,
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
+		ActionName = S[302535920000037--[[Always Clean--]]],
+		ActionId = ".Always Clean",
+		ActionIcon = icon,
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.AlwaysCleanBuildings,
+				302535920000316--[[Buildings will never get dusty.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.AlwaysCleanBuildings_Toggle,
 	}
 
 	c = c + 1

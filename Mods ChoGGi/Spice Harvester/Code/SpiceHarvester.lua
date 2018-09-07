@@ -214,24 +214,20 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
 		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
 
-		XTemplates.ipAttackRover[1][#XTemplates.ipAttackRover[1]+1] = PlaceObj("XTemplateTemplate", {
-			"Melanger_Destroy", true,
-			"__context_of_kind", "Melanger",
-			"__template", "InfopanelSection",
-			"Icon", "UI/Icons/Sections/resource_no_accept.tga",
-			"Title", [[Destroy]],
-			"RolloverText", [[Remove this harvester.]],
-			"RolloverTitle", [[Destroy]],
-		}, {
-			PlaceObj("XTemplateFunc", {
-			"name", "OnActivate(self, context)",
-			"parent", function(parent, context)
-					return parent.parent
-				end,
-			"func", function(parent, context)
+		ChoGGi.CodeFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
+			__context_of_kind = "Melanger",
+			Icon = "UI/Icons/Sections/resource_no_accept.tga",
+			Title = [[Destroy]],
+			RolloverTitle = [[Destroy]],
+			RolloverText = [[Remove this harvester.]],
+			OnContextUpdate = function(self, context)
+			end,
+			func = function(self, context)
+				---
 				local function CallBackFunc(answer)
 					if answer then
 						local Sleep = Sleep
+						local Random = Random
 						CreateRealTimeThread(function()
 							PlayFX("GroundExplosion", "start", context.fake_obj)
 							PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, context.fake_obj, 1000)
@@ -258,8 +254,8 @@ function OnMsg.ChoGGi_Library_Loaded()
 					[[Spareth ye sprynge]],
 					string.format("%sImages/Wormy.png",CurrentModPath)
 				)
-			end
-			})
+				---
+			end,
 		})
 
 	end -- ClassesBuilt

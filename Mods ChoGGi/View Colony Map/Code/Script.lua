@@ -1,5 +1,4 @@
 local image_str = string.format("%sMaps/%s.png",CurrentModPath,"%s")
-local mapname
 local showimage
 
 local skip_showing_image
@@ -8,7 +7,6 @@ local skip_showing_image
 local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, params)
 	local map = orig_FillRandomMapProps(gen, params)
-	mapname = map
 
 	-- if this doesn't work...
 	if not skip_showing_image then
@@ -17,9 +15,9 @@ function FillRandomMapProps(gen, params)
 			showimage = ChoGGi_ShowImage:new({}, terminal.desktop,{})
 		end
 		-- pretty little image
-		showimage.idImage:SetImage(image_str:format(mapname))
+		showimage.idImage:SetImage(image_str:format(map))
 		-- eh why not?
-		showimage.idCaption:SetText(mapname)
+		showimage.idCaption:SetText(map)
 	end
 
 	return map
@@ -52,7 +50,8 @@ function OnMsg.LoadGame()
 	ResetFunc()
 end
 
--- define a dialog that just shows an image
+
+-- a dialog that shows an image
 
 
 local white = white

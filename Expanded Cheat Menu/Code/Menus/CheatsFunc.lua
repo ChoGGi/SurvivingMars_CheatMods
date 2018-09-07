@@ -14,7 +14,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local S = ChoGGi.Strings
 	local default_icon = "UI/Icons/Notifications/research.tga"
 
-	local pairs,tostring,type = pairs,tostring,type
+	local pairs,type = pairs,type
 
 	function ChoGGi.MenuFuncs.InstantResearch_toggle()
 		local ChoGGi = ChoGGi
@@ -235,7 +235,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			for i = 1, #choice do
 				local value = choice[i].value
 				if value == "Stop" then
@@ -1108,7 +1107,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 

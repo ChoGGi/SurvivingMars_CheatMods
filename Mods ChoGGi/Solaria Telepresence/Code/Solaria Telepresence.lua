@@ -31,7 +31,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local FilterFromTable = ChoGGi.ComFuncs.FilterFromTable
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	local RemoveXTemplateSections = ChoGGi.CodeFuncs.RemoveXTemplateSections
 
 	local type,tostring,pcall,string = type,tostring,pcall,string
 
@@ -385,18 +384,16 @@ function OnMsg.ChoGGi_Library_Loaded()
 	end -- ClassesPostprocess
 
 	function OnMsg.ClassesBuilt()
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace1")
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace2")
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace3")
 
-		RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace1")
-		XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-			"SolariaTelepresence_sectionWorkplace1", true,
-			"__context_of_kind", "Solaria",
-			"__template", "InfopanelActiveSection",
-			"Icon", "",
-			"Title", "",
-			"RolloverText", "",
-			"RolloverTitle", [[Telepresence]],
-			"RolloverHint",  "",
-			"OnContextUpdate", function(self, context)
+		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
+			__context_of_kind = "Solaria",
+			RolloverTitle = [[Telepresence]],
+			RolloverHint = [[Change to Pickup and select resource pile you've previously marked for pickup.
+Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) next to it.]],
+			OnContextUpdate = function(self, context)
 				---
 				if context.SolariaTelepresence_Remote_Controller then
 					self:SetRolloverText([[Remove the control of outside building from this building.]])
@@ -411,49 +408,39 @@ function OnMsg.ChoGGi_Library_Loaded()
 				end
 				---
 			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					---
-					if not context.SolariaTelepresence_Remote_Controller then
-						context:ListBuildings("activate",self)
-					else
-						local building = context.SolariaTelepresence_Remote_Controller.building
-						local CallBackFunc = function(answer)
-							if answer then
-								context:RemoveBuilding(building)
-							end
+			func = function(self, context)
+				---
+				if not context.SolariaTelepresence_Remote_Controller then
+					context:ListBuildings("activate",self)
+				else
+					local building = context.SolariaTelepresence_Remote_Controller.building
+					local CallBackFunc = function(answer)
+						if answer then
+							context:RemoveBuilding(building)
 						end
-						ChoGGi.ComFuncs.QuestionBox(
-							string.format([[Are you sure you want to remove telepresence viewing from %s located at %s]],RetName(building),building:GetVisualPos()),
-							CallBackFunc,
-							[[Solaria Telepresence]]
-						)
 					end
-					---
-					ObjModified(context)
+					ChoGGi.ComFuncs.QuestionBox(
+						string.format([[Are you sure you want to remove telepresence viewing from %s located at %s]],RetName(building),building:GetVisualPos()),
+						CallBackFunc,
+						[[Solaria Telepresence]]
+					)
 				end
-			})
+				---
+				ObjModified(context)
+			end,
 		})
 
 		-- list controlled buildings
-		RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace2")
-		XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-			"SolariaTelepresence_sectionWorkplace2", true,
-			"__context_of_kind", "Solaria",
-			"__template", "InfopanelActiveSection",
-			"Icon", "UI/Icons/Upgrades/build_2.tga",
-			"Title", [[All Attached Buildings]],
-			"RolloverText", [[Shows list of all controlled buildings (for removal of telepresence control).
+		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2","sectionWorkplace",{
+			__context_of_kind = "Solaria",
+			Icon = "UI/Icons/Upgrades/build_2.tga",
+			Title = [[All Attached Buildings]],
+			RolloverTitle = [[Telepresence]],
+			RolloverHint = [[<left_click> Remove telepresence]],
+			RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).
 
 	Right click list item to view (closes menu).]],
-			"RolloverTitle", [[Telepresence]],
-			"RolloverHint",  [[<left_click> Remove telepresence]],
-			"OnContextUpdate", function(self, context)
+			OnContextUpdate = function(self, context)
 				if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 					self:SetVisible(true)
 					self:SetMaxHeight()
@@ -462,31 +449,19 @@ function OnMsg.ChoGGi_Library_Loaded()
 					self:SetMaxHeight(0)
 				end
 			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					context:ListBuildings("remove",self)
-					ObjModified(context)
-				end
-			})
+			func = function(self, context)
+				context:ListBuildings("remove",self)
+				ObjModified(context)
+			end,
 		})
 
 		-- go to controlled/controller building
-		RemoveXTemplateSections(XTemplates.sectionWorkplace,"SolariaTelepresence_sectionWorkplace3")
-		XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-		"SolariaTelepresence_sectionWorkplace3", true,
-		"__context_of_kind", "Workplace",
-		"__template", "InfopanelActiveSection",
-		"Icon", "UI/Icons/Anomaly_Event.tga",
-		"Title", "",
-		"RolloverText", "",
-		"RolloverTitle", [[Telepresence]],
-		"RolloverHint",  [[<left_click> Viewing]],
-		"OnContextUpdate", function(self, context)
+		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3","sectionWorkplace",{
+			__context_of_kind = "Workplace",
+			Icon = "UI/Icons/Anomaly_Event.tga",
+			RolloverTitle = [[Telepresence]],
+			RolloverHint = [[<left_click> Viewing]],
+			OnContextUpdate = function(self, context)
 			-- only show if on correct building and remote control is enabled
 			if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
 				if context.SolariaTelepresence_Remote_Controller then
@@ -503,21 +478,13 @@ function OnMsg.ChoGGi_Library_Loaded()
 				self:SetMaxHeight(0)
 				end
 			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					if context.SolariaTelepresence_Remote_Controller then
-						ViewAndSelectObject(context.SolariaTelepresence_Remote_Controller.building)
-					elseif context.SolariaTelepresence_Remote_Controlled then
-						ViewAndSelectObject(context.SolariaTelepresence_Remote_Controlled)
-					end
-
+			func = function(self, context)
+				if context.SolariaTelepresence_Remote_Controller then
+					ViewAndSelectObject(context.SolariaTelepresence_Remote_Controller.building)
+				elseif context.SolariaTelepresence_Remote_Controlled then
+					ViewAndSelectObject(context.SolariaTelepresence_Remote_Controlled)
 				end
-			})
+			end,
 		})
 
 		local rawget,setmetatable,type = rawget,setmetatable,type

@@ -360,6 +360,28 @@ function OnMsg.ChoGGi_Library_Loaded()
 		)
 	end
 
+	local function DustCleanUp(label)
+		for i = 1, #label do
+			ApplyToObjAndAttaches(label[i], SetObjDust, 0)
+		end
+	end
+	function ChoGGi.MenuFuncs.AlwaysCleanBuildings_Toggle()
+		local ChoGGi = ChoGGi
+		if ChoGGi.UserSettings.AlwaysCleanBuildings then
+			ChoGGi.UserSettings.AlwaysCleanBuildings = nil
+		else
+			ChoGGi.UserSettings.AlwaysCleanBuildings = true
+			DustCleanUp(UICity.labels.Building)
+			DustCleanUp(UICity.labels.GridElements)
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysCleanBuildings,302535920000037--[[Always Clean--]]),
+			3980--[[Buildings--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.SetProtectionRadius()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
@@ -446,7 +468,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			for i = 1, #choice do
 				UnlockBuilding(choice[i].value)
 			end

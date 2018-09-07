@@ -14,7 +14,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 	local S = ChoGGi.Strings
 	local default_icon = "UI/Icons/Sections/spaceship.tga"
 
-	local type,tostring = type,tostring
+	local type = type
 
 	function ChoGGi.MenuFuncs.InstantMissionGoal()
 		local UICity = UICity
@@ -61,6 +61,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		local Presets = Presets
 
 		local ItemList = {}
+    local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -68,13 +69,14 @@ function OnMsg.ChoGGi_Library_Loaded()
 				local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
-				for i = 1, #descr do
-					if type(descr[i]) == "table" then
-						stats = descr[i]
+				for j = 1, #descr do
+					if type(descr[j]) == "table" then
+						stats = descr[j]
 					end
 				end
 
-				ItemList[#ItemList+1] = {
+        c = c + 1
+				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
 					hint = Trans(T{obj.effect,stats[2]})
@@ -127,6 +129,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		local Presets = Presets
 
 		local ItemList = {}
+    local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -134,13 +137,14 @@ function OnMsg.ChoGGi_Library_Loaded()
 				local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
-				for i = 1, #descr do
-					if type(descr[i]) == "table" then
-						stats = descr[i]
+				for j = 1, #descr do
+					if type(descr[j]) == "table" then
+						stats = descr[j]
 					end
 				end
 
-				ItemList[#ItemList+1] = {
+        c = c + 1
+				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
 					hint = string.format("%s\n\n%s: %s",Trans(T{obj.effect,stats[2]}),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[string.format("Sponsor%s",obj.id)])
@@ -152,7 +156,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			if choice[1].check2 then
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
@@ -285,7 +288,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			if choice[1].check2 then
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
@@ -466,8 +468,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
-
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 			if not check1 and not check2 then

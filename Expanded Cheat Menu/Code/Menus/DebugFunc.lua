@@ -16,7 +16,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 	local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
 
-	local white = white
 	--~ local TerrainTextures = TerrainTextures
 
 	do -- PostProcGrids
@@ -499,7 +498,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			local CreateRealTimeThread = CreateRealTimeThread
 			local ChoGGi_HexSpot = ChoGGi_HexSpot
 
-			local g_Classes = g_Classes
 			local ObjectGrid = ObjectGrid
 			local UserSettings = ChoGGi.UserSettings
 			local build_grid_debug_range = 10

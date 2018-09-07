@@ -1334,7 +1334,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
 			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
@@ -1800,7 +1799,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local check1 = choice[1].check1
 			for i = 1, #choice do
 				local value = choice[i].value

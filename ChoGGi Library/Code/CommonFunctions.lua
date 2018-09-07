@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
+--~ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local S = ChoGGi.Strings
 
 local string = string
@@ -31,24 +31,26 @@ function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
 end
 
 -- changes a function to also post a Msg for use with OnMsg
-function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg)
+function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg,...)
+	local vararg = ...
 	local ChoGGi = ChoGGi
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
 	-- redefine it
 	_G[ClassName][FuncName] = function(...)
 		-- I just care about adding self to the msgs
-		Msg(sMsg,select(1,...))
+		Msg(sMsg,select(1,...),vararg)
 
---~		 --use to debug if getting an error
+--~		 -- use to debug if getting an error
 --~		 local params = {...}
---~		 --pass on args to orig func
+--~		 -- pass on args to orig func
 --~		 if not pcall(function()
 --~			 return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](table.unpack(params))
 --~		 end) then
 --~			 print("Function Error: ",string.format("%s_%s",ClassName,FuncName))
 --~			 ChoGGi.ComFuncs.OpenInExamineDlg({params})
 --~		 end
+
 		return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](...)
 	end
 end
@@ -223,7 +225,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		end
 	end)
 end
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+--~ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen)
 	local popup = rawget(terminal.desktop,popup_id)

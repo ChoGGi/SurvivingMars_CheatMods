@@ -2,7 +2,7 @@
 
 -- all purpose items list
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat
+--~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
 local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local RetProperType = ChoGGi.ComFuncs.RetProperType

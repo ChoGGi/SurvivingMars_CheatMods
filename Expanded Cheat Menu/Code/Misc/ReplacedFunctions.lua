@@ -221,26 +221,12 @@ function OnMsg.ChoGGi_Library_Loaded()
 	end -- do
 
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-	AddMsgToFunc("CargoShuttle","GameInit","ChoGGi_SpawnedShuttle")
-	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-	AddMsgToFunc("RCTransport","GameInit","ChoGGi_SpawnedRCTransport")
-	AddMsgToFunc("RCRover","GameInit","ChoGGi_SpawnedRCRover")
-	AddMsgToFunc("ExplorerRover","GameInit","ChoGGi_SpawnedExplorerRover")
-	AddMsgToFunc("Residence","GameInit","ChoGGi_SpawnedResidence")
-	AddMsgToFunc("Workplace","GameInit","ChoGGi_SpawnedWorkplace")
-	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducerElectricity")
-	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerAir")
-	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducerWater")
-	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducerSingle")
+	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
+	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
+	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
+	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","production_per_day")
+	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","water_production")
 	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
-	AddMsgToFunc("ResourceStockpileLR","GameInit","ChoGGi_SpawnedResourceStockpileLR")
-	AddMsgToFunc("DroneHub","GameInit","ChoGGi_SpawnedDroneHub")
-	AddMsgToFunc("Diner","GameInit","ChoGGi_SpawnedDinerGrocery")
-	AddMsgToFunc("Grocery","GameInit","ChoGGi_SpawnedDinerGrocery")
-	AddMsgToFunc("SpireBase","GameInit","ChoGGi_SpawnedSpireBase")
-	AddMsgToFunc("ElectricityStorage","GameInit","ChoGGi_SpawnedElectricityStorage")
-	AddMsgToFunc("LifeSupportGridObject","GameInit","ChoGGi_SpawnedLifeSupportGridObject")
-	AddMsgToFunc("SupplyRocket","GameInit","ChoGGi_SpawnedSupplyRocket")
 
 	local function SaveOrigFunc(class_name,func_name)
 		local new_name = string.format("%s_%s",class_name,func_name)
@@ -260,16 +246,19 @@ function OnMsg.ChoGGi_Library_Loaded()
 	SaveOrigFunc("Workplace","AddWorker")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
+	SaveOrigFunc("DustGridElement","AddDust")
 
 	-- allows you to build outside buildings inside and vice
 	do -- CursorBuilding:GameInit
 		function CursorBuilding:GameInit()
-			if ChoGGi.UserSettings.RemoveBuildingLimits then
-				self.template_obj.dome_required = false
-				self.template_obj.dome_forbidden = false
-			elseif self.template_obj then
-				self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
-				self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
+			if self.template_obj then
+				if ChoGGi.UserSettings.RemoveBuildingLimits then
+					self.template_obj.dome_required = false
+					self.template_obj.dome_forbidden = false
+				elseif self.template_obj then
+					self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
+					self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
+				end
 			end
 			return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self)
 		end
@@ -473,20 +462,31 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end
 
-	do -- BuildingVisualDustComponent:SetDustVisuals
-		local ApplyToObjAndAttaches = ApplyToObjAndAttaches
-		local MulDivRound = MulDivRound
-		-- set amount of dust applied
-		function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
-			if ChoGGi.UserSettings.AlwaysDustyBuildings then
-				if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
-					self.ChoGGi_AlwaysDust = dust
+	do -- SetDustVisuals/AddDust
+		local function ChangeDust(obj,func,dust,...)
+			local UserSettings = ChoGGi.UserSettings
+
+			if UserSettings.AlwaysCleanBuildings then
+				dust = 0
+				if func == "DustGridElement_AddDust" then
+					obj.dust_current = 0
 				end
-				dust = self.ChoGGi_AlwaysDust
+			elseif UserSettings.AlwaysDustyBuildings then
+				if not obj.ChoGGi_AlwaysDust or obj.ChoGGi_AlwaysDust < dust then
+					obj.ChoGGi_AlwaysDust = dust
+				end
+				dust = obj.ChoGGi_AlwaysDust
 			end
 
-			local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
-			ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
+			return ChoGGi_OrigFuncs[func](obj,dust, ...)
+		end
+
+		-- set amount of dust applied
+		function BuildingVisualDustComponent:SetDustVisuals(dust,...)
+			return ChangeDust(self,"BuildingVisualDustComponent_SetDustVisuals",dust,...)
+		end
+		function DustGridElement:AddDust(dust)
+			return ChangeDust(obj,"DustGridElement_AddDust",dust)
 		end
 	end --do
 

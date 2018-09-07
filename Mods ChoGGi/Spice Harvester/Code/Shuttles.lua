@@ -22,46 +22,46 @@ function OnMsg.ChoGGi_Library_Loaded()
 	function SpiceHarvester.SpawnShuttle(hub)
 		local UserSettings = SpiceHarvester
 		for _, s_i in pairs(hub.shuttle_infos) do
-	--~     if s_i:CanLaunch() and s_i.hub and s_i.hub.has_free_landing_slots then
+--~ 			if s_i:CanLaunch() and s_i.hub and s_i.hub.has_free_landing_slots then
+				if MapCount("map", "PersonalShuttle") >= UserSettings.Max_Shuttles or 50 then
+					return
+				end
+
 				-- ShuttleInfo:Launch(task)
 				local hub = s_i.hub
-				if MapCount("map", "SpiceHarvester_CargoShuttle") <= UserSettings.Max_Shuttles or 50 then
+				-- LRManagerInstance
+				local shuttle = SpiceHarvester_CargoShuttle:new{
+					-- we kill off shuttles if this isn't valid
+					SpiceHarvester_Harvester = hub.ChoGGi_Parent,
+					-- lets take it nice n slow
+					max_speed = 1000,
+					hub = hub,
+					transport_task = SpiceHarvester_ShuttleFollowTask:new{
+						state = "ready_to_follow",
+						dest_pos = GetTerrainCursor() or GetRandomPassable()
+					},
+					info_obj = s_i
+				}
 
-					-- LRManagerInstance
-					local shuttle = SpiceHarvester_CargoShuttle:new{
-						-- we kill off shuttles if this isn't valid
-						SpiceHarvester_Harvester = hub.ChoGGi_Parent,
-						-- lets take it nice n slow
-						max_speed = 1000,
-						hub = hub,
-						transport_task = SpiceHarvester_ShuttleFollowTask:new{
-							state = "ready_to_follow",
-							dest_pos = GetTerrainCursor() or GetRandomPassable()
-						},
-						info_obj = s_i
-					}
+				s_i.shuttle_obj = shuttle
+				local slot = hub:ReserveLandingSpot(shuttle)
+				shuttle:SetPos(slot.pos)
+				-- CargoShuttle:Launch()
+				shuttle:PushDestructor(function(s)
+					hub:ShuttleLeadOut(s)
+					hub:FreeLandingSpot(s)
+				end)
 
-					s_i.shuttle_obj = shuttle
-					local slot = hub:ReserveLandingSpot(shuttle)
-					shuttle:SetPos(slot.pos)
-					-- CargoShuttle:Launch()
-					shuttle:PushDestructor(function(s)
-						hub:ShuttleLeadOut(s)
-						hub:FreeLandingSpot(s)
-					end)
+				-- shit stained bugs
+				shuttle:SetColor1(UserSettings.Color1 or -12247037)
+				shuttle:SetColor2(UserSettings.Color2 or -11196403)
+				shuttle:SetColor3(UserSettings.Color3 or -13297406)
 
-					-- shit stained bugs
-					shuttle:SetColor1(UserSettings.Color1 or -12247037)
-					shuttle:SetColor2(UserSettings.Color2 or -11196403)
-					shuttle:SetColor3(UserSettings.Color3 or -13297406)
-
-					-- follow that cursor little minion
-	--~ 				shuttle:SpiceHarvester_FollowHarvester()
-					shuttle:SetCommand("SpiceHarvester_FollowHarvester")
-					-- stored refs to them in the harvester for future use?
-					return shuttle
-				end
-	--~     end
+				-- follow that cursor little minion
+				shuttle:SetCommand("SpiceHarvester_FollowHarvester")
+				-- stored refs to them in the harvester for future use?
+				return shuttle
+--~ 			end
 		end
 	end
 

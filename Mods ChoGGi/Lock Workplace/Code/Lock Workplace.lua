@@ -28,7 +28,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 	-- nope nope nope
 
 	local RetName = ChoGGi.ComFuncs.RetName
-	local RemoveXTemplateSections = ChoGGi.CodeFuncs.RemoveXTemplateSections
 
 	local function LoopWorkplace(context,which)
 		for i = 1, #context.workers do
@@ -50,15 +49,13 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 	function OnMsg.ClassesBuilt()
 
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipColonist[1],"ChoGGi_LockworkplaceColonist")
+		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"ChoGGi_LockworkplaceWorkplace")
+
 		-- add button to colonists
-		RemoveXTemplateSections(XTemplates.ipColonist[1],"ChoGGi_LockworkplaceColonist")
-		XTemplates.ipColonist[1][#XTemplates.ipColonist[1]+1] = PlaceObj("XTemplateTemplate", {
-			"ChoGGi_LockworkplaceColonist", true,
-			"__context_of_kind", "Colonist",
-			"__template", "InfopanelActiveSection",
-			"RolloverTitle","",
-			"RolloverHint",  "",
-			"OnContextUpdate", function(self, context)
+		ChoGGi.CodeFuncs.AddXTemplate("LockworkplaceColonist","ipColonist",{
+			__context_of_kind = "Colonist",
+			OnContextUpdate = function(self, context)
 				---
 				-- hide button if not working, and make sure to remove the lock (just in case)
 				if context.workplace and not context.workplace:IsKindOf("TrainingBuilding") then
@@ -81,34 +78,21 @@ function OnMsg.ChoGGi_Library_Loaded()
 				end
 				---
 			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					---
-					if context.ChoGGi_Lockworkplace then
-						context.ChoGGi_Lockworkplace = nil
-					else
-						context.ChoGGi_Lockworkplace = true
-					end
-					---
-					ObjModified(context)
+			func = function(self, context)
+				---
+				if context.ChoGGi_Lockworkplace then
+					context.ChoGGi_Lockworkplace = nil
+				else
+					context.ChoGGi_Lockworkplace = true
 				end
-			})
+				ObjModified(context)
+				---
+			end,
 		})
 
-		-- add button to workplaces
-		RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"ChoGGi_LockworkplaceWorkplace")
-		XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
-			"ChoGGi_LockworkplaceWorkplace", true,
-			"__context_of_kind", "Workplace",
-			"__template", "InfopanelActiveSection",
-			"RolloverTitle","",
-			"RolloverHint",  "",
-			"OnContextUpdate", function(self, context)
+		ChoGGi.CodeFuncs.AddXTemplate("LockworkplaceWorkplace","sectionWorkplace",{
+			__context_of_kind = "Workplace",
+			OnContextUpdate = function(self, context)
 				---
 				if context.ChoGGi_Lockworkplace then
 					self:SetRolloverText([[Remove the lock on this workplace.]])
@@ -121,27 +105,19 @@ function OnMsg.ChoGGi_Library_Loaded()
 				end
 				---
 			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(parent, context)
-					return parent.parent
-				end,
-				"func", function(self, context)
-					---
-					if context.ChoGGi_Lockworkplace then
-						context.ChoGGi_Lockworkplace = nil
-						LoopWorkplace(context)
-					else
-						context.ChoGGi_Lockworkplace = true
-						LoopWorkplace(context,true)
-					end
-					---
-					ObjModified(context)
+			func = function(self, context)
+				---
+				if context.ChoGGi_Lockworkplace then
+					context.ChoGGi_Lockworkplace = nil
+					LoopWorkplace(context)
+				else
+					context.ChoGGi_Lockworkplace = true
+					LoopWorkplace(context,true)
 				end
-			})
+				ObjModified(context)
+				---
+			end,
 		})
-
 	end
 
 end

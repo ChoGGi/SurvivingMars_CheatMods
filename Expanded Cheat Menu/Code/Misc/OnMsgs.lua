@@ -17,7 +17,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 	local pairs,type,next,tostring,print,pcall = pairs,type,next,tostring,print,pcall
 
-	local box = box
 	local FlushLogFile = FlushLogFile
 	local Msg = Msg
 
@@ -387,65 +386,119 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end --OnMsg
 
-	-- this gets called before buildings are completely initialized (no air/water/elec attached)
-	function OnMsg.ConstructionComplete(obj)
-
-		-- skip rockets
-		if obj.class == "RocketLandingSite" then
-			return
+	-- make sure they use with our new values
+	function OnMsg.ChoGGi_SpawnedProducer(obj,prod_type)
+		local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
+		if prod and prod.production then
+			obj[prod_type] = prod.production
 		end
+	end
+
+	-- :GameInit()
+	function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
 	--~ 	-- if it's a fancy dome then we allow building in the removed entrances
 	--~ 	if obj:IsKindOf("Dome") then
-	--~ 		local startid, endid = obj:GetAllSpots(obj:GetState())
-	--~ 		for i = startid, endid do
+	--~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
+	--~ 		for i = id_start, id_end do
 	--~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
 	--~ 				print(111)
 	--~ 			end
 	--~ 		end
 	--~ 	end
 
-		--print(obj.encyclopedia_id) print(obj.class)
-		if obj.class == "UniversalStorageDepot" then
-			if UserSettings.StorageUniversalDepot and obj.entity == "StorageDepot" then
-				obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
-			--other
-			elseif UserSettings.StorageOtherDepot and obj.entity ~= "StorageDepot" then
-				obj.max_storage_per_resource = UserSettings.StorageOtherDepot
+		if UserSettings.CommandCenterMaxRadius and obj:IsKindOf("DroneHub") then
+			-- we set it from the func itself
+			obj:SetWorkRadius()
+
+		elseif UserSettings.ServiceWorkplaceFoodStorage and obj:IsKindOfClasses("Grocery","Diner") then
+			-- for some reason InitConsumptionRequest always adds 5 to it
+			local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
+			obj.consumption_stored_resources = storedv
+			obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
+
+		elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
+			obj.max_export_storage = UserSettings.RocketMaxExportAmount
+
+		elseif obj:IsKindOfClasses("RCTransport","RCRover","ExplorerRover") then
+			if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
+				obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+			elseif UserSettings.RCRoverMaxRadius and obj:IsKindOf("RCRover") then
+				-- I override the func so no need to send a value here
+				obj:SetWorkRadius()
 			end
 
-		elseif UserSettings.StorageMechanizedDepot and obj.class:find("MechanizedDepot") then
+			-- applied to all rovers
+			if UserSettings.SpeedRC then
+				obj:SetMoveSpeed(UserSettings.SpeedRC)
+			end
+			if UserSettings.GravityRC then
+				obj:SetGravity(UserSettings.GravityRC)
+			end
+
+		elseif obj:IsKindOf("Drone") then
+			if UserSettings.GravityDrone then
+				obj:SetGravity(UserSettings.GravityDrone)
+			end
+			if UserSettings.SpeedDrone then
+				obj:SetMoveSpeed(UserSettings.SpeedDrone)
+			end
+
+		elseif obj:IsKindOf("CargoShuttle") then
+			if UserSettings.StorageShuttle then
+				obj.max_shared_storage = UserSettings.StorageShuttle
+			end
+			if UserSettings.SpeedShuttle then
+				obj.move_speed = UserSettings.SpeedShuttle
+			end
+
+		elseif UserSettings.StorageUniversalDepot and obj.entity == "StorageDepot" and obj:IsKindOf("UniversalStorageDepot") then
+			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
+
+		elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
 			obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
 
-		elseif UserSettings.StorageWasteDepot and obj.class == "WasteRockDumpSite" then
+		elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
 			obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
 			if obj:GetStoredAmount() < 0 then
 				obj:CheatEmpty()
 				obj:CheatFill()
 			end
 
-		elseif UserSettings.StorageOtherDepot and obj.class == "MysteryDepot" then
-			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
-
-		elseif UserSettings.StorageOtherDepot and obj.class == "BlackCubeDumpSite" then
-			obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
-
 		elseif UserSettings.ShuttleHubFuelStorage and obj.class:find("ShuttleHub") then
 			obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
-		elseif UserSettings.SchoolTrainAll and obj.class == "School" then
+		elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
 			for i = 1, #ChoGGi.Tables.PositiveTraits do
 				obj:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
 			end
 
-		elseif UserSettings.SanatoriumCureAll and obj.class == "Sanatorium" then
+		elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
 			for i = 1, #ChoGGi.Tables.NegativeTraits do
 				obj:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
 			end
 
-		end --end of elseifs
+		end -- end of elseif
+
+		if UserSettings.StorageMechanizedDepotsTemp and obj:IsKindOf("ResourceStockpileLR") and obj.parent:IsKindOf("MechanizedDepot") then
+			-- attached temporary resource depots
+			ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj.parent)
+		end
+
+		-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
+		if obj:IsKindOfClasses("Residence","Workplace","SpireBase") then
+			ChoGGi.CodeFuncs.AttachToNearestDome(obj)
+		end
+
+		if UserSettings.StorageOtherDepot then
+			if (obj.entity ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
+				obj.max_storage_per_resource = UserSettings.StorageOtherDepot
+			elseif UserSettings.StorageOtherDepot and obj.class == "BlackCubeDumpSite" then
+				obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
+			end
+		end
 
 		if UserSettings.InsideBuildingsNoMaintenance and obj.dome_required then
 			obj.ChoGGi_InsideBuildingsNoMaintenance = true
@@ -458,71 +511,81 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 
 		-- saved building settings
-		local setting = UserSettings.BuildingSettings[obj.encyclopedia_id]
-		if setting then
-			if next(setting) then
+		local bs = UserSettings.BuildingSettings[obj.encyclopedia_id]
+		if bs then
+			if next(bs) then
 				-- saved settings for capacity, shuttles
-				if setting.capacity then
+				if bs.capacity then
 					if obj.base_capacity then
-						obj.capacity = setting.capacity
+						obj.capacity = bs.capacity
 					elseif obj.base_air_capacity then
-						obj.air_capacity = setting.capacity
+						obj.air_capacity = bs.capacity
 					elseif obj.base_water_capacity then
-						obj.water_capacity = setting.capacity
+						obj.water_capacity = bs.capacity
 					elseif obj.base_max_shuttles then
-						obj.max_shuttles = setting.capacity
+						obj.max_shuttles = bs.capacity
 					end
 				end
 				-- max visitors
-				if setting.visitors and obj.base_max_visitors then
-					obj.max_visitors = setting.visitors
+				if bs.visitors and obj.base_max_visitors then
+					obj.max_visitors = bs.visitors
 				end
 				-- max workers
-				if setting.workers then
-					obj.max_workers = setting.workers
+				if bs.workers then
+					obj.max_workers = bs.workers
 				end
 				-- no power needed
-				if setting.nopower then
+				if bs.nopower then
 					ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
 				end
-				if setting.noair then
+				if bs.noair then
 					ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
 				end
-				if setting.nowater then
+				if bs.nowater then
 					ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
 				end
 				-- large protect_range for defence buildings
-				if setting.protect_range then
-					obj.protect_range = setting.protect_range
-					obj.shoot_range = setting.protect_range * ChoGGi.Consts.guim
+				if bs.protect_range then
+					obj.protect_range = bs.protect_range
+					obj.shoot_range = bs.protect_range * ChoGGi.Consts.guim
 				end
 				-- fully auto building
-				if setting.auto_performance then
+				if bs.auto_performance then
 					obj.max_workers = 0
 					obj.automation = 1
-					obj.auto_performance = setting.auto_performance
+					obj.auto_performance = bs.auto_performance
 				end
 				-- legacy setting
-				if setting.performance then
+				if bs.performance then
 					obj.max_workers = 0
 					obj.automation = 1
-					obj.auto_performance = setting.performance
+					obj.auto_performance = bs.performance
 				end
 				-- just perf boost
-				if setting.performance_notauto then
-					obj.performance = setting.performance_notauto
+				if bs.performance_notauto then
+					obj.performance = bs.performance_notauto
 				end
 				-- space ele export amount
-				if setting.max_export_storage then
-					obj.max_export_storage = setting.max_export_storage
+				if bs.max_export_storage then
+					obj.max_export_storage = bs.max_export_storage
 				end
 				-- space ele import amount
-				if setting.cargo_capacity then
-					obj.cargo_capacity = setting.cargo_capacity
+				if bs.cargo_capacity then
+					obj.cargo_capacity = bs.cargo_capacity
 				end
 				-- service comforts
-				if next(setting.service_stats) then
-					ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,setting.service_stats)
+				if bs.service_stats and next(bs.service_stats) then
+					ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
+				end
+				-- dis/charge rates
+				local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
+				if bs.charge then
+					obj[prod_type].max_charge = bs.charge
+					obj[string.format("max_%s_charge",prod_type)] = bs.charge
+				end
+				if bs.discharge then
+					obj[prod_type].max_discharge = bs.discharge
+					obj[string.format("max_%s_discharge",prod_type)] = bs.discharge
 				end
 
 			else
@@ -704,14 +767,13 @@ function OnMsg.ChoGGi_Library_Loaded()
 	end
 
 	-- if you pick a mystery from the cheat menu
-	local icon_logo_13 = "UI/Icons/Logos/logo_13.tga"
 	function OnMsg.MysteryBegin()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.ShowMysteryMsgs then
 			MsgPopup(
 				302535920000729--[[You've started a mystery!--]],
 				3486--[[Mystery--]],
-				icon_logo_13
+				"UI/Icons/Logos/logo_13.tga"
 			)
 		end
 	end
@@ -721,7 +783,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			MsgPopup(
 				302535920000730--[[You've chosen a mystery!--]],
 				3486--[[Mystery--]],
-				icon_logo_13
+				"UI/Icons/Logos/logo_13.tga"
 			)
 		end
 	end
@@ -729,9 +791,9 @@ function OnMsg.ChoGGi_Library_Loaded()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.ShowMysteryMsgs then
 			MsgPopup(
-				tostring(outcome),
+				outcome,
 				3486--[[Mystery--]],
-				icon_logo_13
+				"UI/Icons/Logos/logo_13.tga"
 			)
 		end
 	end
@@ -772,14 +834,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ChoGGi.SettingFuncs.WriteSettings()
 	end
 
-	-- attached temporary resource depots
-	function OnMsg.ChoGGi_SpawnedResourceStockpileLR(obj)
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.StorageMechanizedDepotsTemp and obj.parent.class:find("MechanizedDepot") then
-			ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj.parent)
-		end
-	end
-
 	function OnMsg.ChoGGi_TogglePinnableObject(obj)
 		local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
 		if type(UnpinObjects) == "table" and next(UnpinObjects) then
@@ -792,150 +846,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			end
 		end
 	end
-
-	-- shuttle comes out of a hub
-	function OnMsg.ChoGGi_SpawnedShuttle(obj)
-		local UserSettings = ChoGGi.UserSettings
-		if UserSettings.StorageShuttle then
-			obj.max_shared_storage = UserSettings.StorageShuttle
-		end
-		if UserSettings.SpeedShuttle then
-			obj.move_speed = UserSettings.SpeedShuttle
-		end
-	end
-
-	function OnMsg.ChoGGi_SpawnedDrone(obj)
-		local UserSettings = ChoGGi.UserSettings
-		if UserSettings.GravityDrone then
-			obj:SetGravity(UserSettings.GravityDrone)
-		end
-		if UserSettings.SpeedDrone then
-			obj:SetMoveSpeed(UserSettings.SpeedDrone)
-		end
-	end
-
-	do -- SpawnedRover
-		local function SpawnedRover(obj)
-			local UserSettings = ChoGGi.UserSettings
-			if UserSettings.SpeedRC then
-				obj:SetMoveSpeed(UserSettings.SpeedRC)
-			end
-			if UserSettings.GravityRC then
-				obj:SetGravity(UserSettings.GravityRC)
-			end
-		end
-
-		function OnMsg.ChoGGi_SpawnedRCTransport(obj)
-			local UserSettings = ChoGGi.UserSettings
-			if UserSettings.RCTransportStorageCapacity then
-				obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
-			end
-			SpawnedRover(obj)
-		end
-		function OnMsg.ChoGGi_SpawnedRCRover(obj)
-			if ChoGGi.UserSettings.RCRoverMaxRadius then
-				-- I override the func so no need to send a value here
-				obj:SetWorkRadius()
-			end
-			SpawnedRover(obj)
-		end
-		function OnMsg.ChoGGi_SpawnedExplorerRover(obj)
-			SpawnedRover(obj)
-		end
-	end -- do
-
-	function OnMsg.ChoGGi_SpawnedDroneHub(obj)
-		if ChoGGi.UserSettings.CommandCenterMaxRadius then
-			obj:SetWorkRadius()
-		end
-	end
-
-	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
-	function OnMsg.ChoGGi_SpawnedResidence(obj)
-		ChoGGi.CodeFuncs.AttachToNearestDome(obj)
-	end
-	function OnMsg.ChoGGi_SpawnedWorkplace(obj)
-		ChoGGi.CodeFuncs.AttachToNearestDome(obj)
-	end
-	function OnMsg.ChoGGi_SpawnedSpireBase(obj)
-		ChoGGi.CodeFuncs.AttachToNearestDome(obj)
-	end
-	function OnMsg.ChoGGi_SpawnedDinerGrocery(obj)
-		local ChoGGi = ChoGGi
-		-- more food for diner/grocery
-		if ChoGGi.UserSettings.ServiceWorkplaceFoodStorage then
-			-- for some reason InitConsumptionRequest always adds 5 to it
-			local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
-			obj.consumption_stored_resources = storedv
-			obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
-		end
-	end
-
-	function OnMsg.ChoGGi_SpawnedSupplyRocket(obj)
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.RocketMaxExportAmount then
-			obj.max_export_storage = ChoGGi.UserSettings.RocketMaxExportAmount
-		end
-	end
-
-	-- make sure they use with our new values
-	do -- SetProd
-		local function SetProd(obj,sType)
-			local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
-			if prod and prod.production then
-				obj[sType] = prod.production
-			end
-		end
-		function OnMsg.ChoGGi_SpawnedProducerElectricity(obj)
-			SetProd(obj,"electricity_production")
-		end
-		function OnMsg.ChoGGi_SpawnedProducerAir(obj)
-			SetProd(obj,"air_production")
-		end
-		function OnMsg.ChoGGi_SpawnedProducerWater(obj)
-			SetProd(obj,"water_production")
-		end
-		function OnMsg.ChoGGi_SpawnedProducerSingle(obj)
-			SetProd(obj,"production_per_day")
-		end
-	end -- do
-
-	do -- CheckForRate
-		local function SetValue(obj,value,res)
-			if value.charge then
-				obj[res].max_charge = value.charge
-				obj[string.format("max_%s_charge",res)] = value.charge
-			end
-			if value.discharge then
-				obj[res].max_discharge = value.discharge
-				obj[string.format("max_%s_discharge",res)] = value.discharge
-			end
-		end
-		local function CheckForRate(obj)
-			--charge/discharge
-			local value = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
-
-			if value then
-
-				if type(obj.GetStoredAir) == "function" then
-					SetValue(obj,value,"air")
-				elseif type(obj.GetStoredWater) == "function" then
-					SetValue(obj,value,"water")
-				elseif type(obj.GetStoredPower) == "function" then
-					SetValue(obj,value,"electricity")
-				end
-			end
-		end
-
-		--water/air tanks
-		function OnMsg.ChoGGi_SpawnedLifeSupportGridObject(obj)
-			CheckForRate(obj)
-		end
-		--battery
-		function OnMsg.ChoGGi_SpawnedElectricityStorage(obj)
-			CheckForRate(obj)
-		end
-	end -- do
 
 	-- hidden milestones
 	function OnMsg.ChoGGi_DaddysLittleHitler()
@@ -1141,7 +1051,9 @@ function OnMsg.ChoGGi_Library_Loaded()
 						end
 					end
 
-					ChoGGi.CodeFuncs.DraggableCheatsMenu(UserSettings.DraggableCheatsMenu)
+					ChoGGi.CodeFuncs.DraggableCheatsMenu(
+						UserSettings.DraggableCheatsMenu
+					)
 				end
 			end -- DisableECM
 
@@ -1348,7 +1260,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 				end
 
 				--remove any dialogs we opened
-				ChoGGi.CodeFuncs.CloseDialogsECM()
+				ChoGGi.ComFuncs.CloseDialogsECM()
 
 				--remove any outside buildings i accidentally attached to domes ;)
 				table_temp = UICity.labels.BuildingNoDomes or ""

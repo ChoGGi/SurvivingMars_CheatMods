@@ -4,10 +4,16 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v8.8 (Unreleased)
+### Added:
+- Buildings>Always Clean: Some people don't like dust.
+
 ### Changed:
 - Requires ChoGGi's Library:
 - > https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
 - Dialog touch ups (colours, icons added).
+
+### Fixed:
+- Newly spawned service buildings will have the settings from Service Building Stats properly applied (thanks hchsiao).
 
 ## v8.7 (04 Sep 2018)
 ### Changed:

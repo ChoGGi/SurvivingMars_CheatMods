@@ -22,7 +22,7 @@ local medium_gray = -10592674
 local light_gray = -2368549
 local rollover_blue = -14113793
 local invis = 0
-local invis_less = 268435456
+--~ local invis_less = 268435456
 
 DefineClass.ChoGGi_Text = {
 	__parents = {"XText"},
