@@ -3,6 +3,7 @@
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
 local CheckText = ChoGGi.ComFuncs.CheckText
+local RetName = ChoGGi.ComFuncs.RetName
 local S = ChoGGi.Strings
 
 local text = "Editor12Bold"
@@ -70,9 +71,9 @@ DefineClass.ChoGGi_Label = {
 }
 function ChoGGi_Label:SetTitle(win,title)
 	if win.prefix then
-		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,"")))
+		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,RetName(self))))
 	else
-		win.idCaption:SetText(CheckText(title or win.title,""))
+		win.idCaption:SetText(CheckText(title or win.title,RetName(self)))
 	end
 end
 DefineClass.ChoGGi_Image = {

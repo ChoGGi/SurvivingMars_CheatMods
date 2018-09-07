@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v0.7 (Unreleased)
+### Fixed:
+- My dialogs will try to use a parent object when being opened, added a fallback if they can't.
 
 ## v0.6 (06 Sep 2018)
 ### Fixed:
