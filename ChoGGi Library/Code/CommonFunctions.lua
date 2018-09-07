@@ -665,7 +665,7 @@ end
 --[[
 ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
 returns number from Object (so you know how much it changes)
-see: Data/Object.lua, or examine(Object)
+see: Data/Object.lua, or ex(Object)
 
 ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
 ^returns 10
@@ -852,19 +852,6 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	},list)
 end
 
-function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
-	if type(list) ~= "table" then
-		return
-	end
-
-	return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
-		obj = list,
-		parent = parent,
-		tables = list.tables,
-		values = list.values,
-	})
-end
-
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
 	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
 		obj = obj,
@@ -889,20 +876,6 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list)
 	end
 
 	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,list)
-end
-
-function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
-	if not obj then
-		obj = ChoGGi.ComFuncs.SelObject()
-	end
-	if not obj then
-		return
-	end
-
-	return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
-		obj = obj,
-		parent = parent,
-	})
 end
 
 --[[
@@ -953,18 +926,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		list = list,
 	})
 end
-
-function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
-	return Examine:new({}, terminal.desktop,{
-		obj = obj,
-		parent = parent,
-	})
-end
-
-function OpenExamine(obj,parent)
-	ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent)
-end
-ex = OpenExamine
 
 -- i keep forgetting this so, i'm adding it here
 function ChoGGi.ComFuncs.HandleToObject(h)

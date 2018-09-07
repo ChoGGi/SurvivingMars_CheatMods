@@ -230,4 +230,46 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end -- do
 
+	do -- OpenInExamineDlg
+		local function OpenInExamineDlg(obj,parent,title)
+			return Examine:new({}, terminal.desktop,{
+				obj = obj,
+				parent = parent,
+				title = title,
+			})
+		end
+		ChoGGi.ComFuncs.OpenInExamineDlg = OpenInExamineDlg
+		function OpenExamine(obj,parent,title)
+			OpenInExamineDlg(obj,parent,title)
+		end
+		ex = OpenExamine
+	end -- do
+
+	function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
+		if type(list) ~= "table" then
+			return
+		end
+
+		return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
+			obj = list,
+			parent = parent,
+			tables = list.tables,
+			values = list.values,
+		})
+	end
+
+	function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
+		if not obj then
+			obj = ChoGGi.ComFuncs.SelObject()
+		end
+		if not obj then
+			return
+		end
+
+		return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
+			obj = obj,
+			parent = parent,
+		})
+	end
+
 end
