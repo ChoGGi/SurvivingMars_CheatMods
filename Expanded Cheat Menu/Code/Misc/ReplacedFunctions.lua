@@ -487,7 +487,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			return ChangeDust(self,"BuildingVisualDustComponent_SetDustVisuals",dust,...)
 		end
 		function DustGridElement:AddDust(dust)
-			return ChangeDust(obj,"DustGridElement_AddDust",dust)
+			return ChangeDust(self,"DustGridElement_AddDust",dust)
 		end
 	end --do
 
