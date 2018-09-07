@@ -1119,7 +1119,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end -- istable
 
 		-- limit caption length so we don't cover up close button
-		self.idCaption:SetTitle(self,utf8.sub(name,1,45))
+		self.idCaption:SetTitle(self,self.title or utf8.sub(name,1,45))
 
 		-- don't create a new thread if we're already in one from auto-refresh
 		if skip_thread then
