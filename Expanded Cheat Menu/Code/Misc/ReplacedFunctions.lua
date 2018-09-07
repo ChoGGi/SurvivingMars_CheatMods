@@ -224,8 +224,8 @@ function OnMsg.ChoGGi_Library_Loaded()
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
 	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
 	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
-	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","production_per_day")
-	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","water_production")
+	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")
+	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
 	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
 
 	local function SaveOrigFunc(class_name,func_name)
@@ -247,6 +247,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	SaveOrigFunc("DustGridElement","AddDust")
+	SaveOrigFunc("Building","ApplyUpgrade")
 
 	-- allows you to build outside buildings inside and vice
 	do -- CursorBuilding:GameInit

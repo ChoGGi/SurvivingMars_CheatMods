@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v0.7 (Unreleased)
+### Changed:
+- Removed some more ECM only functions.
 ### Fixed:
 - My dialogs will try to use a parent object when being opened, added a fallback if they can't.
 

@@ -394,6 +394,22 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end
 
+	-- some upgrades change amounts, so reset them to ours
+	function OnMsg.BuildingUpgraded(obj)
+		if obj:IsKindOf("ElectricityProducer") then
+			Msg("ChoGGi_SpawnedProducer",obj,"electricity_production")
+		elseif obj:IsKindOf("AirProducer") then
+			Msg("ChoGGi_SpawnedProducer",obj,"air_production")
+		elseif obj:IsKindOf("WaterProducer") then
+			Msg("ChoGGi_SpawnedProducer",obj,"water_production")
+		elseif obj:IsKindOf("SingleResourceProducer") then
+			Msg("ChoGGi_SpawnedProducer",obj,"production_per_day")
+		else
+			-- do we want to check id for upgrades that don't change? seems too much like work
+			Msg("ChoGGi_SpawnedBaseBuilding",obj)
+		end
+	end
+
 	-- :GameInit()
 	function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		local ChoGGi = ChoGGi

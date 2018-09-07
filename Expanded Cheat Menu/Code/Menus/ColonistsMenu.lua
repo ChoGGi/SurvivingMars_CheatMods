@@ -142,7 +142,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TimeBeforeStarving,
 				302535920000419--[["Disable colonists starving with no food.
-	Works after colonist idle."--]]
+Works after colonist idle."--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsStarve_Toggle,

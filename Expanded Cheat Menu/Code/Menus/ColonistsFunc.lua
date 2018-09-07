@@ -630,9 +630,12 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000784--[[%s: Free Food--]]]:format(ChoGGi.UserSettings.TimeBeforeStarving),
+			S[302535920000784--[[%s: A stale piece of bread is better than nothing.
+And nothing is better than a big juicey steak.
+Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(ChoGGi.UserSettings.TimeBeforeStarving),
 			547--[[Colonists--]],
-			"UI/Icons/Sections/Food_2.tga"
+			"UI/Icons/Sections/Food_2.tga",
+			true
 		)
 	end
 
