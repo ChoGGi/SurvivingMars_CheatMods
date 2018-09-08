@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v0.7 (Unreleased)
+## v0.8 (Unreleased)
+
+## v0.7 (07 Sep 2018)
 ### Changed:
 - Removed some more ECM only functions.
 ### Fixed:

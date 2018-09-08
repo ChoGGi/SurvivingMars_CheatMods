@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v8.8 (Unreleased)
+## v8.9 (Unreleased)
+
+## v8.8 (07 Sep 2018)
 ### Added:
 - Buildings>Always Clean: Some people don't like dust.
 
