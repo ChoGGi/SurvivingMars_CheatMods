@@ -136,6 +136,8 @@ do -- RetName
 			-- plain old id
 			elseif obj.id and obj.id ~= "" then
 				return obj.id
+			elseif obj.Id and obj.Id ~= "" then
+				return obj.Id
 
 			-- class
 			elseif obj.class and obj.class ~= "" then

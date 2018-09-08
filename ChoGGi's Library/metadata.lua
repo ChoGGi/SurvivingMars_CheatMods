@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi%20Library/Changelog.md#library-changelog",
+	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
 	"code", {
 		-- build the ChoGGi object
 		"Init.lua",

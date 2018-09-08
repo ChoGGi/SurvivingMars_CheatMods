@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000037,Always Clean,
-302535920000316,Buildings will never get dusty.,
 302535920001342,,
 302535920001343,,
 302535920001344,,
@@ -299,6 +297,8 @@ Press Enter to refresh list (update names).
 Double click selected item to open in new manipulator.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920000037,Always Clean,
+302535920000316,Buildings will never get dusty.,
 302535920001114,Service Building Stats,
 302535920001115,"Tweak settings for parks and such.
 Health change, Sanity change, Service Comfort, Comfort increase.",
