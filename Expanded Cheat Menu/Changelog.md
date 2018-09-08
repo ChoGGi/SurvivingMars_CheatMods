@@ -15,6 +15,7 @@
 ### Fixed:
 - Newly spawned service buildings will have the settings from Service Building Stats properly applied (thanks hchsiao).
 - Upgraded buildings may reset some cheat settings (thanks hchsiao).
+- Drones didn't have move speed cheat after being re-assigned (thanks hchsiao).
 
 ## v8.7 (04 Sep 2018)
 ### Changed:

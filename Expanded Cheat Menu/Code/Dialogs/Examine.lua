@@ -51,7 +51,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		orig_vis_flash = false,
 
 		dialog_width = 666.0,
-		dialog_height = 750.0,
+		dialog_height = 850.0,
 
 		-- add some random numbers as ids so when you click a popup of the same name from another examine it'll close then open the new one
 		idAttachesMenu = false,

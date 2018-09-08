@@ -394,6 +394,17 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end
 
+	function OnMsg.ChoGGi_SpawnedDrone(obj)
+		local UserSettings = ChoGGi.UserSettings
+		if UserSettings.GravityDrone then
+			obj:SetGravity(UserSettings.GravityDrone)
+		end
+		if UserSettings.SpeedDrone then
+			pf.SetStepLen(obj,UserSettings.SpeedDrone)
+		end
+	end
+
+
 	-- some upgrades change amounts, so reset them to ours
 	function OnMsg.BuildingUpgraded(obj)
 		if obj:IsKindOf("ElectricityProducer") then
@@ -452,14 +463,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			end
 			if UserSettings.GravityRC then
 				obj:SetGravity(UserSettings.GravityRC)
-			end
-
-		elseif obj:IsKindOf("Drone") then
-			if UserSettings.GravityDrone then
-				obj:SetGravity(UserSettings.GravityDrone)
-			end
-			if UserSettings.SpeedDrone then
-				obj:SetMoveSpeed(UserSettings.SpeedDrone)
 			end
 
 		elseif obj:IsKindOf("CargoShuttle") then

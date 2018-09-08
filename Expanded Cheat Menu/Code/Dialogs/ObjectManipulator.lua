@@ -56,6 +56,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
 			Dock = "left",
 			RolloverAnchor = "top",
+			Margins = box(4,0,0,0),
 			OnChange = function()
 				self.idAutoRefreshToggle(self)
 			end,

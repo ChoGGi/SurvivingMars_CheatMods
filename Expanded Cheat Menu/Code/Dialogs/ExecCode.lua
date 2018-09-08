@@ -57,6 +57,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idButtonContainer",
 			Dock = "bottom",
+			Margins = box(0,0,0,4),
 		}, self.idDialog)
 
 		self.idOK = g_Classes.ChoGGi_Button:new({
