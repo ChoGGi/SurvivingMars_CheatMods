@@ -1,3 +1,5 @@
+v0.5
+Da Vinci
 v0.4
 Changed:
 .log(number,NaN) would assume NaN was Napier's constant, now it errors out.

@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
 	"code", {"Code/Script.lua"},
 	"description", [[Flags, Coats of Arms, Emblems, etc...
-82 different logos in all (and you thought one Space Communism logo was enough).
+83 different logos in all (and you thought one Space Communism logo was enough).
 
 From Marx with love.
 

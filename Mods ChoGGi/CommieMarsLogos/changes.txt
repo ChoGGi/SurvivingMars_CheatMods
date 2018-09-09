@@ -1,2 +1,4 @@
+v0.3
+One more logo.
 v0.2
 More logos.

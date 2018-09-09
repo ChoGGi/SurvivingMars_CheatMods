@@ -12,5 +12,5 @@ return PlaceObj("ModDef", {
 	"steam_id", "1485526508",
 	"description", [[Automatically empties waste storage sites.
 
-Use Mod Config to toggle enabled, and hourly/daily empty]],
+Use Mod Config to toggle enabled, and hourly/daily empty.]],
 })

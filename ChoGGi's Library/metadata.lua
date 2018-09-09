@@ -37,5 +37,7 @@ return PlaceObj("ModDef", {
 
 	"description", [[Contains stuff needed by most of my mods.
 
-Getting tired of the copy n paste updating.]],
+Getting tired of the copy n paste updating.
+
+Also available at https://www.nexusmods.com/survivingmars/mods/89]],
 })

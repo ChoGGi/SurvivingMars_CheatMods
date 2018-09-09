@@ -54,46 +54,48 @@ local function AddSpots(obj)
 
 	for i = 1, #SavegamesList do
 		local save = SavegamesList[i]
-		-- use this to build a table of locations for ease of dupe checking
-		local table_name = StringFormat("%s%s",save.longitude,save.latitude)
-		-- check if this location is already added
-		if new_markers[table_name] then
-			-- merge save names if dupe location
-			local text = new_markers[table_name].text:GetText()
-			new_markers[table_name].text:SetText(StringFormat("%s\n%s",text,save.displayname))
-		else
-			-- plunk down a new one (most of this code is copied from LandingSiteObject:AttachPredefinedSpots)
-			local attach = PlaceObject("Shapeshifter")
-			local text_obj = Text:new()
-			text_obj:SetText(save.displayname)
-			local marker = template:Clone()
-			marker:SetParent(landing_dlg)
+		if type(save.longitude) == "number" and type(save.latitude) == "number" then
+			-- use this to build a table of locations for ease of dupe checking
+			local table_name = StringFormat("%s%s",save.longitude,save.latitude)
+			-- check if this location is already added
+			if new_markers[table_name] then
+				-- merge save names if dupe location
+				local text = new_markers[table_name].text:GetText()
+				new_markers[table_name].text:SetText(StringFormat("%s\n%s",text,save.displayname))
+			else
+				-- plunk down a new one (most of this code is copied from LandingSiteObject:AttachPredefinedSpots)
+				local attach = PlaceObject("Shapeshifter")
+				local text_obj = Text:new()
+				text_obj:SetText(save.displayname)
+				local marker = template:Clone()
+				marker:SetParent(landing_dlg)
 
-			local marker_id = idmarker:format(idx)
-			new_markers[table_name] = {
-				id = marker_id,
-				longitude = save.longitude,
-				latitude = save.latitude,
-				text = text_obj,
-			}
+				local marker_id = idmarker:format(idx)
+				new_markers[table_name] = {
+					id = marker_id,
+					longitude = save.longitude,
+					latitude = save.latitude,
+					text = text_obj,
+				}
 
-			idx = idx + 1
-			marker:SetId(marker_id)
-			marker.DrawContent = template.DrawContent
-			PlanetRotation_object:Attach(attach, PlanetRotation_object:GetSpotBeginIndex("Planet"))
-			PlanetRotation_object:Attach(text_obj, PlanetRotation_object:GetSpotBeginIndex("Planet"))
-			marker:AddDynamicPosModifier{id = "planet_pos", target = attach}
-			marker:AddDynamicPosModifier{id = "planet_pos", target = text_obj}
+				idx = idx + 1
+				marker:SetId(marker_id)
+				marker.DrawContent = template.DrawContent
+				PlanetRotation_object:Attach(attach, PlanetRotation_object:GetSpotBeginIndex("Planet"))
+				PlanetRotation_object:Attach(text_obj, PlanetRotation_object:GetSpotBeginIndex("Planet"))
+				marker:AddDynamicPosModifier{id = "planet_pos", target = attach}
+				marker:AddDynamicPosModifier{id = "planet_pos", target = text_obj}
 
-			local lat, long = LandingSite_object:CalcPlanetCoordsFromScreenCoords(save.latitude * 60, save.longitude * 60)
-			local _, world_pt = LandingSite_object:CalcClickPosFromCoords(lat, long)
+				local lat, long = LandingSite_object:CalcPlanetCoordsFromScreenCoords(save.latitude * 60, save.longitude * 60)
+				local _, world_pt = LandingSite_object:CalcClickPosFromCoords(lat, long)
 
-			local offset = world_pt - PlanetRotation_object:GetPos()
-			--compensate for the planet's rotation
-			local planet_angle = 360*60 - MulDivRound(PlanetRotation_object:GetAnimPhase(1), 360 * 60, LandingSite_object.anim_duration)
-			offset = RotateAxis(offset, PlanetRotation_object:GetAxis(), -planet_angle)
-			attach:SetAttachOffset(offset)
-			text_obj:SetAttachOffset(offset)
+				local offset = world_pt - PlanetRotation_object:GetPos()
+				--compensate for the planet's rotation
+				local planet_angle = 360*60 - MulDivRound(PlanetRotation_object:GetAnimPhase(1), 360 * 60, LandingSite_object.anim_duration)
+				offset = RotateAxis(offset, PlanetRotation_object:GetAxis(), -planet_angle)
+				attach:SetAttachOffset(offset)
+				text_obj:SetAttachOffset(offset)
+			end
 		end
 	end
 

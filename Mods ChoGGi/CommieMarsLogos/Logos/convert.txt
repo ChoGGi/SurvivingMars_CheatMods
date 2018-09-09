@@ -1,0 +1,1 @@
+ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)

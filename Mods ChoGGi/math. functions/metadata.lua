@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", [["math." Functions v0.4]],
-  "version", 4,
-  "saved", 1533297600,
+  "title", [["math." Functions v0.5]],
+  "version", 5,
+  "saved", 1532865600,
   "id", "ChoGGi_AddMathFunctions",
   "author", "ChoGGi",
 	"code", {"Script.lua"},
@@ -23,8 +23,6 @@ abs,ceil,deg,exp,floor,fmod,huge,log,max,maxinteger,min,mininteger,modf,pi,rad,r
 Not implemented yet:
 cos,sin,tan,acos,asin,atan
 
-Known Issues:
-math.random() will never return 1
 
 I'm only implementing the ones listed in the manual, if you have some to add: feel free to send them to me.
 
