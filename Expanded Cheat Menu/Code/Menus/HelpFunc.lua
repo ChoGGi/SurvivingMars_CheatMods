@@ -243,9 +243,14 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 		function ChoGGi.MenuFuncs.ModUpload()
 			if blacklist then
-				print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+				print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access :)--]])
 				return
 			end
+
+			-- if user copied a mod over after game started
+			print("ECM ModUpload ModsReloadDefs:")
+			ModsReloadDefs()
+
 			local ItemList = {}
 			local c = 0
 			local Mods = Mods
