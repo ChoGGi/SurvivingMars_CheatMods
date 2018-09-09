@@ -216,7 +216,7 @@ function OnMsg.ModsLoaded()
 			}
 		end)
 
-		-- add the defaults we skip to my actions
+		-- add the defaults we skipped to my actions
 		for i = 1, c do
 			local a = Actions[i]
 			-- if it's a . than we haven't updated it yet

@@ -16,6 +16,56 @@ function OnMsg.ChoGGi_Library_Loaded()
 
 	local pairs,type = pairs,type
 
+	function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
+		local ChoGGi = ChoGGi
+		local DefaultSetting = ChoGGi.Consts.OutsourceMaxOrderCount
+		local ItemList = {
+			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = 100,value = 100},
+			{text = 150,value = 150},
+			{text = 250,value = 250},
+			{text = 500,value = 500},
+			{text = 1000,value = 1000},
+			{text = 2500,value = 2500},
+			{text = 5000,value = 5000},
+			{text = 10000,value = 10000},
+			{text = 25000,value = 25000},
+			{text = 50000,value = 50000},
+			{text = 100000,value = 100000},
+		}
+
+		local hint = DefaultSetting
+		if ChoGGi.UserSettings.OutsourceMaxOrderCount then
+			hint = ChoGGi.UserSettings.OutsourceMaxOrderCount
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			local value = choice[1].value
+			if type(value) == "number" then
+				ChoGGi.ComFuncs.SetConstsG("OutsourceMaxOrderCount",value)
+				ChoGGi.ComFuncs.SetSavedSetting("OutsourceMaxOrderCount",value)
+
+				ChoGGi.SettingFuncs.WriteSettings()
+				MsgPopup(
+					ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount,302535920001342--[[Change Outsource Limit--]]),
+					889032422791--[[OUTSOURCE--]],
+					default_icon
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001342--[[Change Outsource Limit--]],
+			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			skip_sort = true,
+		}
+	end
+
 	function ChoGGi.MenuFuncs.InstantResearch_toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)

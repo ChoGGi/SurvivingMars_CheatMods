@@ -335,7 +335,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 				end
 				entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
 				entry:Open()
-			else
 			end
 		end
 	end

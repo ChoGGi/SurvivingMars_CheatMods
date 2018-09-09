@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001342,,
-302535920001343,,
 302535920001344,,
 302535920001345,,
 302535920001346,,
@@ -459,6 +457,8 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001342,Change Outsource Limit,
+302535920001343,How many times you can outsource in a row.,
 302535920000292,Resets sponsor points to default for that sponsor,
 302535920000329,Scan all anomalies.,
 302535920001286,Scan all or certain types of anomalies.,

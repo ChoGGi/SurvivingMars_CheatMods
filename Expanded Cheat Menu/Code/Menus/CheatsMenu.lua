@@ -201,7 +201,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.InstantResearch_toggle,
-		ActionSortKey = "0",
 	}
 
 	c = c + 1
@@ -212,7 +211,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowResearchTechList,
-		ActionSortKey = "-1",
 	}
 
 	c = c + 1
@@ -228,7 +226,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetResearchQueueSize,
-		ActionSortKey = "0",
 	}
 
 	c = c + 1
@@ -239,7 +236,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
 		RolloverText = S[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetAllResearch,
-		ActionSortKey = "0",
 	}
 
 	c = c + 1
@@ -250,7 +246,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = S[302535920000352--[[Complete item currently being researched.--]]],
 		OnAction = CheatResearchCurrent,
-		ActionSortKey = "0",
 	}
 
 	c = c + 1
@@ -261,7 +256,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = S[302535920000354--[[Add a specified amount of research points.--]]],
 		OnAction = ChoGGi.MenuFuncs.AddResearchPoints,
-		ActionSortKey = "0",
 	}
 
 	c = c + 1
@@ -277,7 +271,21 @@ function OnMsg.ChoGGi_Library_Loaded()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
-		ActionSortKey = "0",
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_Cheats_Research,
+		ActionName = S[302535920001342--[[Change Outsource Limit--]]],
+		ActionId = ".Change Outsource Limit",
+		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.OutsourceMaxOrderCount,
+				302535920001343--[[How many times you can outsource in a row.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount,
 	}
 
 	c = c + 1
@@ -293,7 +301,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
-		ActionSortKey = "1",
+		ActionSortKey = "2Set Amount Of Breakthroughs Allowed",
 	}
 
 	c = c + 1
@@ -309,7 +317,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
-		ActionSortKey = "2",
+		ActionSortKey = "2Breakthroughs From OmegaTelescope",
 	}
 
 	local str_Cheats_Menu = "Cheats.Menu"

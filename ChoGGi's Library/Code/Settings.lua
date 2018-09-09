@@ -121,6 +121,7 @@ ChoGGi.Consts = {
 	MysteryDreamSanityDamage = false,
 	NoHomeComfort = false,
 	NonSpecialistPerformancePenalty = false,
+	OutsourceMaxOrderCount = false,
 	OutsourceResearch = false,
 	OutsourceResearchCost = false,
 	OxygenMaxOutsideTime = false,
