@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v0.8 (Unreleased)
+## v0.9 (Unreleased)
+
+## v0.8 (08 Sep 2018)
+### Fixed:
+- Broke some of my selection buttons.
 
 ## v0.7 (07 Sep 2018)
 ### Changed:

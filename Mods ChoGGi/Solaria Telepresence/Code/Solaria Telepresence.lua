@@ -105,14 +105,14 @@ function OnMsg.ChoGGi_Library_Loaded()
 		local Table = UICity.labels.OutsideBuildings or empty_table
 		local hint = [[
 
-	Right click to view selected list item building.]]
+Right click to view selected list item building.]]
 		local ItemList = {}
 
 		-- show list to add controller
 		if which == "activate" then
 			hint = [[Click to remotely control building.
 
-	Right click to view selected list item building.]]
+Right click to view selected list item building.]]
 			-- remove any we already control
 			Table = FilterObjects({
 				filter = function(o)
@@ -133,7 +133,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		elseif which == "remove" then
 			hint = [[Click to remove control of building.%s
 
-	Right click to view selected list item building.]]
+Right click to view selected list item building.]]
 			Table = FilterObjects({
 				filter = function(o)
 					if o.SolariaTelepresence_Remote_Controlled then
@@ -172,7 +172,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 			name = [[ Solaria Controller]],
 			pos = self:GetVisualPos(),
 			hint = [[Solaria control building.
-	You can't remove... Only view (or maybe See would be a better term).]],
+You can't remove... Only view (or maybe See would be a better term).]],
 			clicked = function(_,_,button)
 				ClickObj(self,obj,button,which)
 			end,
@@ -348,9 +348,9 @@ function OnMsg.ChoGGi_Library_Loaded()
 			"display_name", [[Solaria Telepresence]],
 			"display_name_pl", [[Solaria Telepresence]],
 			"description", [[A telepresence VR building, remote control factories and mines (with reduced production).
-	Worker amount is dependent on controlled building.
+Worker amount is dependent on controlled building.
 
-	Telepresence control may take up to a shift to propagate to controlled building.]],
+Telepresence control may take up to a shift to propagate to controlled building.]],
 			"Group", "Dome Services",
 			"build_category", "Dome Services",
 			"display_icon", string.format("%sCode/TheIncal.png",CurrentModPath),
@@ -369,8 +369,8 @@ function OnMsg.ChoGGi_Library_Loaded()
 			SortKey = 11,
 			description = T{0,[[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
 
-	<grey>"How do you know it's Sci-Fi? VR is commercially viable."
-	<right>Shams Jorjani</grey><left>]]},
+<grey>"How do you know it's Sci-Fi? VR is commercially viable."
+<right>Shams Jorjani</grey><left>]]},
 			display_name = [[Creative Realities Solaria]],
 			group = "Physics",
 			icon = "UI/Icons/Research/creative_realities.tga",
@@ -402,7 +402,7 @@ Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) nex
 				else
 					self:SetRolloverText([[Shows list of buildings for telepresence control.
 
-	Right click in list to view (closes menu).]])
+Right click in list to view (closes menu).]])
 					self:SetTitle([[Remote Control Building]])
 					self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
 				end
@@ -439,7 +439,7 @@ Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) nex
 			RolloverHint = [[<left_click> Remove telepresence]],
 			RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).
 
-	Right click list item to view (closes menu).]],
+Right click list item to view (closes menu).]],
 			OnContextUpdate = function(self, context)
 				if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 					self:SetVisible(true)

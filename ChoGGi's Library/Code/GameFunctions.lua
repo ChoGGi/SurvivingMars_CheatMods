@@ -687,9 +687,9 @@ end
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
-	oldobj = oldobj and oldobj:IsKindOf("MechanizedDepot") or ChoGGi.ComFuncs.SelObject()
+	oldobj = IsKindOf(oldobj,"MechanizedDepot") and oldobj or ChoGGi.ComFuncs.SelObject()
 
-	if not oldobj or not oldobj:IsKindOf("MechanizedDepot") then
+	if not oldobj or not IsKindOf(oldobj,"MechanizedDepot") then
 		return
 	end
 
@@ -723,9 +723,6 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 		newx = 500
 		newy = -500
 	end
-	local x,y,z = stock:GetVisualPosXYZ()
-	-- so it doesn't look weird make sure it's on a hex point
-	local newpos = HexGetNearestCenter(point(x + newx,y + newy,z))
 
 	-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
 	local res2 = res
@@ -733,13 +730,16 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 		res2 = "RareMetals"
 	end
 
+	local x,y,z = stock:GetVisualPosXYZ()
+	-- so it doesn't look weird make sure it's on a hex point
+
 	-- create new depot, and set max amount to stored amount of old depot
 	local newobj = PlaceObj("UniversalStorageDepot", {
 		"template_name", string.format("Storage%s",res2),
-		"resource", {res},
-		"stockpiled_amount", {},
+		"storable_resources", {res},
 		"max_storage_per_resource", amount,
-		"Pos", newpos,
+		-- so it doesn't look weird make sure it's on a hex point
+		"Pos", HexGetNearestCenter(point(x + newx,y + newy,z)),
 	})
 
 	-- make it align with the depot
@@ -749,13 +749,14 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	CreateRealTimeThread(function()
 		local time = 0
 		repeat
-			Sleep(25)
+			Sleep(250)
 			time = time + 25
 		until type(newobj.requester_id) == "number" or time > 5000
 		-- since we set new depot max amount to old amount we can just CheatFill it
 		newobj:CheatFill()
 		-- clean out old depot
 		oldobj:CheatEmpty()
+--~ 		ChoGGi.CodeFuncs.DeleteObject(oldobj)
 	end)
 
 end
@@ -1041,9 +1042,9 @@ end -- do
 
 do -- DeleteObject
 	local IsValid = IsValid
-	local function DeleteObject_ExecFunc(obj,name,param)
-		if type(obj[name]) == "function" then
-			obj[name](obj,param)
+	local function DeleteObject_ExecFunc(obj,funcname,param)
+		if obj[funcname] then
+			obj[funcname](obj,param)
 		end
 	end
 
@@ -1100,9 +1101,9 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
-		-- takes too long
-		if not dome then
-			DeleteObject_ExecFunc(obj,"DestroyAttaches")
+		-- takes too long for domes
+		if not dome and obj:CountAttaches() > 0 then
+			DeleteObject_ExecFunc(obj,"DestroyAttaches","")
 		end
 
 		-- I did ask nicely
@@ -1475,7 +1476,8 @@ function ChoGGi.CodeFuncs.RemoveXTemplateSections(list,name)
 end
 
 function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
-	if not name or template or list then
+	if not name or not template or not list then
+		print("Borked template: ",name, template, list)
 		return
 	end
 	local stored_name = string.format("ChoGGi_Template_%s",name)
@@ -1490,11 +1492,11 @@ function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelSection",
-			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"Title", list.Title or S[1000016--[[Title--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or function()end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -1514,11 +1516,11 @@ function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelSection",
-			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"Title", list.Title or S[1000016--[[Title--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-			"RolloverHint", list.RolloverHint or S[4248--[[Hints--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or function()end,
 		}, {
 			PlaceObj("XTemplateFunc", {
